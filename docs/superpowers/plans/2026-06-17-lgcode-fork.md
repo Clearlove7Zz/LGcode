@@ -277,7 +277,7 @@ find packages sdks .github -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.
 - [ ] **Step 3: Review and fix over-replacements**
 
 Manually check and revert accidental replacements in:
-- Third-party package names like `lgcode-gitlab-auth` → should stay unless those packages are also renamed
+- Third-party package names like `opencode-gitlab-auth` → should stay unless those packages are also renamed
 - `ghostty-web`: `github:anomalyco/ghostty-web#main` should not be changed
 - URLs like `modelhub.lgdg.cc` already removed in previous tasks
 - `packages/llm/src/providers/openai-compatible-profile.ts`: the `openrouter` provider string should remain `openrouter`, not `lgcode-router`
