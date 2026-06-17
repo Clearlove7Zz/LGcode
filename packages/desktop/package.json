@@ -1,14 +1,9 @@
 {
-  "name": "@opencode-ai/desktop",
+  "name": "@lgcode/desktop",
   "private": true,
   "version": "1.17.7",
   "type": "module",
   "license": "MIT",
-  "homepage": "https://opencode.ai",
-  "author": {
-    "name": "OpenCode",
-    "email": "hello@opencode.ai"
-  },
   "scripts": {
     "typecheck": "tsgo -b",
     "predev": "bun ./scripts/predev.ts",
@@ -36,8 +31,8 @@
   "devDependencies": {
     "@actions/artifact": "4.0.0",
     "@lydell/node-pty": "catalog:",
-    "@opencode-ai/app": "workspace:*",
-    "@opencode-ai/ui": "workspace:*",
+    "@lgcode/app": "workspace:*",
+    "@lgcode/ui": "workspace:*",
     "@sentry/solid": "catalog:",
     "@sentry/vite-plugin": "catalog:",
     "@solid-primitives/i18n": "2.2.1",

@@ -1,13 +1,9 @@
 {
-  "name": "opencode",
-  "displayName": "opencode",
-  "description": "opencode for VS Code",
+  "name": "lgcode-vscode",
+  "displayName": "lgcode",
+  "description": "lgcode for VS Code",
   "version": "1.17.7",
   "publisher": "sst-dev",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/anomalyco/opencode"
-  },
   "license": "MIT",
   "icon": "images/icon.png",
   "galleryBanner": {

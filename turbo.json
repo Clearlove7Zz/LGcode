@@ -8,16 +8,16 @@
       "dependsOn": [],
       "outputs": ["dist/**"]
     },
-    "opencode#test": {
+    "lgcode#test": {
       "dependsOn": ["^build"],
       "outputs": [],
       "passThroughEnv": ["*"]
     },
-    "@opencode-ai/app#test": {
+    "@lgcode/app#test": {
       "dependsOn": ["^build"],
       "outputs": []
     },
-    "@opencode-ai/ui#test": {
+    "@lgcode/ui#test": {
       "dependsOn": ["^build"],
       "outputs": []
     }
