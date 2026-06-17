@@ -73,7 +73,7 @@ const cli = yargs(args)
     Heap.start()
 
     process.env.AGENT = "1"
-    process.env.OPENCODE = "1"
+    process.env.LGCODE = "1"
     process.env.LGCODE_PID = String(process.pid)
   })
   .usage("")

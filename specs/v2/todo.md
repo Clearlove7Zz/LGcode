@@ -4,7 +4,7 @@ ok we need to work towards a launch of v2 so we can get out of this rebuild phas
 
 ## Post-Hono cleanup - Kit
 
-The opencode server has moved to the Effect HttpApi backend. Remaining work is
+The lgcode server has moved to the Effect HttpApi backend. Remaining work is
 mostly cleanup: delete compatibility shims, shrink Zod surfaces, and simplify
 test harnesses that used to compare Hono and HttpApi behavior.
 

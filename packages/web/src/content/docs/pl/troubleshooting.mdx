@@ -39,13 +39,13 @@ Ten katalog zawiera:
 
 ## Aplikacja desktopowa
 
-opencode Desktop uruchamia w tle lokalny serwer opencode (sidecar `opencode-cli`). Większość problemów jest spowodowana nieprawidłowo działającą wtyczką, uszkodzoną pamięcią podręczną lub złymi ustawieniami serwera.
+opencode Desktop uruchamia w tle lokalny serwer opencode (sidecar `lgcode-cli`). Większość problemów jest spowodowana nieprawidłowo działającą wtyczką, uszkodzoną pamięcią podręczną lub złymi ustawieniami serwera.
 
 ### Szybkie sprawdzenie
 
 - Całkowicie zakończ i uruchom ponownie aplikację.
 - Jeśli aplikacja wyświetli ekran błędu, kliknij **Uruchom ponownie** i skopiuj szczegóły błędu.
-- Tylko macOS: menu `OpenCode` -> **Załaduj ponownie przeglądarkę internetową** (pomaga, jeśli interfejs użytkownika jest pusty/zawieszony).
+- Tylko macOS: menu `LGcode` -> **Załaduj ponownie przeglądarkę internetową** (pomaga, jeśli interfejs użytkownika jest pusty/zawieszony).
 
 ---
 
@@ -65,7 +65,7 @@ Jeśli masz skonfigurowane wtyczki, tymczasowo je wyłącz, usuwając klucz lub 
 
 ```jsonc
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://modelhub.lgdg.cc/config.json",
   "plugin": [],
 }
 ```
@@ -115,9 +115,9 @@ Jeśli Twój `lgcode.json(c)` zawiera sekcję `server`, tymczasowo usuń ją i u
 
 #### Sprawdź zmienne środowiskowe
 
-Jeśli w swoim środowisku masz ustawiony `OPENCODE_PORT`, aplikacja komputerowa spróbuje użyć tego portu dla serwera lokalnego.
+Jeśli w swoim środowisku masz ustawiony `LGCODE_PORT`, aplikacja komputerowa spróbuje użyć tego portu dla serwera lokalnego.
 
-- usuń `OPENCODE_PORT` (lub wybierz wolny port) i uruchom ponownie.
+- usuń `LGCODE_PORT` (lub wybierz wolny port) i uruchom ponownie.
 
 ---
 
@@ -177,7 +177,7 @@ Jeśli masz problemy z opencode:
 
    Najlepszym sposobem zgłaszania błędów lub zgłaszania żądań funkcji jest skorzystanie z naszego repozytorium GitHub:
 
-   [**github.com/anomalyco/opencode/issues**](https://github.com/anomalyco/opencode/issues)
+   [**github.com/Clearlove7Zz/LGcode/issues**](https://github.com/Clearlove7Zz/LGcode/issues)
 
    Przed utworzeniem nowego problemu przeszukaj istniejące i sprawdź, czy Twój problem nie został już zgłoszony.
 
@@ -185,7 +185,7 @@ Jeśli masz problemy z opencode:
 
    Aby uzyskać pomoc w czasie rzeczywistym i dyskusję społeczności, dołącz do naszego serwera Discord:
 
-   [**opencode.ai/discord**](https://opencode.ai/discord)
+   [**modelhub.lgdg.cc/discord**](https://modelhub.lgdg.cc/discord)
 
 ---
 

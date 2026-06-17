@@ -68,7 +68,7 @@ Vous pouvez également avoir des règles globales dans un fichier `~/.config/ope
 
 ### Compatibilité des codes Claude
 
-Pour les utilisateurs migrant depuis Claude Code, OpenCode prend en charge les conventions de fichiers de Claude Code comme solutions de secours :
+Pour les utilisateurs migrant depuis Claude Code, LGcode prend en charge les conventions de fichiers de Claude Code comme solutions de secours :
 
 - **Règles du projet** : `CLAUDE.md` dans le répertoire de votre projet (utilisé si aucun `AGENTS.md` n'existe)
 - **Règles globales** : `~/.claude/CLAUDE.md` (utilisé si aucun `~/.config/opencode/AGENTS.md` n'existe)
@@ -77,9 +77,9 @@ Pour les utilisateurs migrant depuis Claude Code, OpenCode prend en charge les c
 Pour désactiver la compatibilité Claude Code, définissez l'une de ces variables d'environnement :
 
 ```bash
-export OPENCODE_DISABLE_CLAUDE_CODE=1        # Disable all .claude support
-export OPENCODE_DISABLE_CLAUDE_CODE_PROMPT=1 # Disable only ~/.claude/CLAUDE.md
-export OPENCODE_DISABLE_CLAUDE_CODE_SKILLS=1 # Disable only .claude/skills
+export LGCODE_DISABLE_CLAUDE_CODE=1        # Disable all .claude support
+export LGCODE_DISABLE_CLAUDE_CODE_PROMPT=1 # Disable only ~/.claude/CLAUDE.md
+export LGCODE_DISABLE_CLAUDE_CODE_SKILLS=1 # Disable only .claude/skills
 ```
 
 ---
@@ -104,7 +104,7 @@ Exemple:
 
 ```json title="lgcode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://modelhub.lgdg.cc/config.json",
   "instructions": ["CONTRIBUTING.md", "docs/guidelines.md", ".cursor/rules/*.md"]
 }
 ```
@@ -113,7 +113,7 @@ Vous pouvez également utiliser des URL distantes pour charger des instructions 
 
 ```json title="lgcode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://modelhub.lgdg.cc/config.json",
   "instructions": ["https://raw.githubusercontent.com/my-org/shared-rules/main/style.md"]
 }
 ```
@@ -134,7 +134,7 @@ L'approche recommandée consiste à utiliser le champ `instructions` dans `lgcod
 
 ```json title="lgcode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://modelhub.lgdg.cc/config.json",
   "instructions": ["docs/development-standards.md", "test/testing-guidelines.md", "packages/*/AGENTS.md"]
 }
 ```

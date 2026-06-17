@@ -164,7 +164,7 @@ Modify `package.json`:
 - `"@lgcode-ai/plugin": "workspace:*"` → `"@lgcode/plugin": "workspace:*"`
 - `"@lgcode-ai/script": "workspace:*"` → `"@lgcode/script": "workspace:*"`
 - `"@lgcode-ai/sdk": "workspace:*"` → `"@lgcode/sdk": "workspace:*"`
-- `"url": "https://github.com/anomalyco/opencode"` → remove
+- `"url": "https://github.com/Clearlove7Zz/LGcode"` → remove
 
 - [ ] **Step 2: Update `packages/lgcode/package.json`**
 

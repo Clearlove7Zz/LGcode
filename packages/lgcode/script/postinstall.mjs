@@ -24,7 +24,7 @@ const archMap = {
 
 const platform = platformMap[os.platform()] ?? os.platform()
 const arch = archMap[os.arch()] ?? os.arch()
-const base = `opencode-${platform}-${arch}`
+const base = `lgcode-${platform}-${arch}`
 const sourceBinary = platform === "windows" ? "opencode.exe" : "opencode"
 const targetBinary = path.join(__dirname, "bin", "opencode.exe")
 
@@ -127,7 +127,7 @@ function installPackage(name) {
   const version = packageJson.optionalDependencies?.[name]
   if (!version) return
 
-  const temp = fs.mkdtempSync(path.join(os.tmpdir(), "opencode-install-"))
+  const temp = fs.mkdtempSync(path.join(os.tmpdir(), "lgcode-install-"))
   try {
     const result = childProcess.spawnSync(
       "npm",

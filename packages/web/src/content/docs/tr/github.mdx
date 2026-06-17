@@ -33,7 +33,7 @@ Veya manuel olarak ayarlayabilirsiniz.
 
 1. **GitHub uygulamasını yükleyin**
 
-   [**github.com/apps/opencode-agent**](https://github.com/apps/opencode-agent)'a gidin. Hedef depoya kurulu olduğundan emin olun.
+   [**github.com/apps/lgcode-agent**](https://github.com/apps/lgcode-agent)'a gidin. Hedef depoya kurulu olduğundan emin olun.
 
 2. **İş akışını ekleyin**
 
@@ -63,8 +63,8 @@ Veya manuel olarak ayarlayabilirsiniz.
               fetch-depth: 1
               persist-credentials: false
 
-          - name: Run OpenCode
-           uses: anomalyco/opencode/github@latest
+          - name: Run LGcode
+           uses: Clearlove7Zz/LGcode/github@latest
            env:
              ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
            with:
@@ -118,8 +118,8 @@ opencode aşağıdaki GitHub olayları tarafından tetiklenebilir:
 
 Otomatik görevleri gerçekleştirmek için opencode'u bir zamanlamaya göre çalıştırın:
 
-```yaml title=".github/workflows/opencode-scheduled.yml"
-name: Scheduled OpenCode Task
+```yaml title=".github/workflows/lgcode-scheduled.yml"
+name: Scheduled LGcode Task
 
 on:
   schedule:
@@ -139,8 +139,8 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Run OpenCode
-        uses: anomalyco/opencode/github@latest
+      - name: Run LGcode
+        uses: Clearlove7Zz/LGcode/github@latest
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         with:
@@ -158,8 +158,8 @@ Zamanlanmış etkinlikler için, talimatların alınabileceği bir yorum bulunma
 
 PR'leri açıldığında veya güncellendiğinde otomatik olarak inceleyin:
 
-```yaml title=".github/workflows/opencode-review.yml"
-name: opencode-review
+```yaml title=".github/workflows/lgcode-review.yml"
+name: lgcode-review
 
 on:
   pull_request:
@@ -177,7 +177,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
-      - uses: anomalyco/opencode/github@latest
+      - uses: Clearlove7Zz/LGcode/github@latest
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -199,7 +199,7 @@ jobs:
 
 Yeni sorunları otomatik olarak önceliklendirin. Bu örnek, spam'i azaltmak için 30 günden eski hesapları filtreler:
 
-```yaml title=".github/workflows/opencode-triage.yml"
+```yaml title=".github/workflows/lgcode-triage.yml"
 name: Issue Triage
 
 on:
@@ -233,7 +233,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: anomalyco/opencode/github@latest
+      - uses: Clearlove7Zz/LGcode/github@latest
         if: steps.check.outputs.result == 'true'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -255,7 +255,7 @@ jobs:
 opencode'un davranışını iş akışınız için özelleştirmek için varsayılan istemi geçersiz kılın.
 
 ```yaml title=".github/workflows/opencode.yml"
-- uses: anomalyco/opencode/github@latest
+- uses: Clearlove7Zz/LGcode/github@latest
   with:
     model: anthropic/claude-sonnet-4-5
     prompt: |

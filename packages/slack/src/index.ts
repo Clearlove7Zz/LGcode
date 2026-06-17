@@ -13,7 +13,7 @@ console.log("- Bot token present:", !!process.env.SLACK_BOT_TOKEN)
 console.log("- Signing secret present:", !!process.env.SLACK_SIGNING_SECRET)
 console.log("- App token present:", !!process.env.SLACK_APP_TOKEN)
 
-console.log("🚀 Starting opencode server...")
+console.log("🚀 Starting lgcode server...")
 const opencode = await createOpencode({
   port: 0,
 })

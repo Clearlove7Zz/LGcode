@@ -11,7 +11,7 @@
 <p align="center">
   <a href="https://modelhub.lgdg.cc/discord"><img alt="Discord" src="https://img.shields.io/discord/1391832426048651334?style=flat-square&label=discord" /></a>
   <a href="https://www.npmjs.com/package/lgcode-ai"><img alt="npm" src="https://img.shields.io/npm/v/lgcode-ai?style=flat-square" /></a>
-  <a href="https://github.com/anomalyco/opencode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/anomalyco/opencode/publish.yml?style=flat-square&branch=dev" /></a>
+  <a href="https://github.com/Clearlove7Zz/LGcode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/Clearlove7Zz/LGcode/publish.yml?style=flat-square&branch=dev" /></a>
 </p>
 
 <p align="center">
@@ -58,7 +58,7 @@ brew install opencode              # macOS і Linux (офіційна форму
 sudo pacman -S opencode            # Arch Linux (Stable)
 paru -S lgcode-bin               # Arch Linux (Latest from AUR)
 mise use -g opencode               # Будь-яка ОС
-nix run nixpkgs#opencode           # або github:anomalyco/opencode для найновішої dev-гілки
+nix run nixpkgs#opencode           # або github:Clearlove7Zz/LGcode для найновішої dev-гілки
 ```
 
 > [!TIP]
@@ -66,7 +66,7 @@ nix run nixpkgs#opencode           # або github:anomalyco/opencode для н�
 
 ### Десктопний застосунок (BETA)
 
-LGcode також доступний як десктопний застосунок. Завантажуйте напряму зі [сторінки релізів](https://github.com/anomalyco/opencode/releases) або [modelhub.lgdg.cc/download](https://modelhub.lgdg.cc/download).
+LGcode також доступний як десктопний застосунок. Завантажуйте напряму зі [сторінки релізів](https://github.com/Clearlove7Zz/LGcode/releases) або [modelhub.lgdg.cc/download](https://modelhub.lgdg.cc/download).
 
 | Платформа             | Завантаження                       |
 | --------------------- | ---------------------------------- |

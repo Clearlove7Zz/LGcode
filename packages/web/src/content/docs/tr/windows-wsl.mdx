@@ -26,7 +26,7 @@ WSL, daha iyi dosya sistemi performansi, tam terminal destegi ve opencode'un day
    WSL hazir olduktan sonra WSL terminalini acin ve opencode'u [kurulum yontemlerinden](/docs/) biriyle yukleyin.
 
    ```bash
-   curl -fsSL https://opencode.ai/install | bash
+   curl -fsSL https://modelhub.lgdg.cc/install | bash
    ```
 
 3. **opencode'u WSL icinden kullanin**
@@ -49,7 +49,7 @@ opencode Desktop kullanmak isteyip sunucuyu WSL'de calistirmak istiyorsaniz:
 1. **Sunucuyu WSL'de baslatin** ve dis baglantilara izin vermek icin `--hostname 0.0.0.0` kullanin:
 
    ```bash
-   opencode serve --hostname 0.0.0.0 --port 4096
+   lgcode serve --hostname 0.0.0.0 --port 4096
    ```
 
 2. **Desktop uygulamasini** `http://localhost:4096` adresine baglayin
@@ -59,10 +59,10 @@ Kurulumunuzda `localhost` calismiyorsa bunun yerine WSL IP adresini kullanin (WS
 :::
 
 :::caution
-`--hostname 0.0.0.0` kullaniyorsaniz sunucuyu guvene almak icin `OPENCODE_SERVER_PASSWORD` ayarlayin.
+`--hostname 0.0.0.0` kullaniyorsaniz sunucuyu guvene almak icin `LGCODE_SERVER_PASSWORD` ayarlayin.
 
 ```bash
-OPENCODE_SERVER_PASSWORD=your-password opencode serve --hostname 0.0.0.0
+LGCODE_SERVER_PASSWORD=your-password lgcode serve --hostname 0.0.0.0
 ```
 
 :::
@@ -73,15 +73,15 @@ OPENCODE_SERVER_PASSWORD=your-password opencode serve --hostname 0.0.0.0
 
 Windows'ta en iyi web deneyimi icin:
 
-1. **`opencode web` komutunu PowerShell yerine WSL terminalinde calistirin**:
+1. **`lgcode web` komutunu PowerShell yerine WSL terminalinde calistirin**:
 
    ```bash
-   opencode web --hostname 0.0.0.0
+   lgcode web --hostname 0.0.0.0
    ```
 
 2. **Windows tarayicinizdan** `http://localhost:<port>` adresini acin (opencode URL'yi yazdirir)
 
-`opencode web` komutunu WSL'den calistirmak, dosya sistemi erisimi ve terminal entegrasyonunu daha tutarli hale getirirken tarayicidan erisimi korur.
+`lgcode web` komutunu WSL'den calistirmak, dosya sistemi erisimi ve terminal entegrasyonunu daha tutarli hale getirirken tarayicidan erisimi korur.
 
 ---
 

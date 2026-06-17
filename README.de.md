@@ -11,7 +11,7 @@
 <p align="center">
   <a href="https://modelhub.lgdg.cc/discord"><img alt="Discord" src="https://img.shields.io/discord/1391832426048651334?style=flat-square&label=discord" /></a>
   <a href="https://www.npmjs.com/package/lgcode-ai"><img alt="npm" src="https://img.shields.io/npm/v/lgcode-ai?style=flat-square" /></a>
-  <a href="https://github.com/anomalyco/opencode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/anomalyco/opencode/publish.yml?style=flat-square&branch=dev" /></a>
+  <a href="https://github.com/Clearlove7Zz/LGcode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/Clearlove7Zz/LGcode/publish.yml?style=flat-square&branch=dev" /></a>
 </p>
 
 <p align="center">
@@ -58,7 +58,7 @@ brew install opencode              # macOS und Linux (offizielle Brew-Formula, s
 sudo pacman -S opencode            # Arch Linux (Stable)
 paru -S lgcode-bin               # Arch Linux (Latest from AUR)
 mise use -g opencode               # jedes Betriebssystem
-nix run nixpkgs#opencode           # oder github:anomalyco/opencode für den neuesten dev-Branch
+nix run nixpkgs#opencode           # oder github:Clearlove7Zz/LGcode für den neuesten dev-Branch
 ```
 
 > [!TIP]
@@ -66,7 +66,7 @@ nix run nixpkgs#opencode           # oder github:anomalyco/opencode für den neu
 
 ### Desktop-App (BETA)
 
-LGcode ist auch als Desktop-Anwendung verfügbar. Lade sie direkt von der [Releases-Seite](https://github.com/anomalyco/opencode/releases) oder [modelhub.lgdg.cc/download](https://modelhub.lgdg.cc/download) herunter.
+LGcode ist auch als Desktop-Anwendung verfügbar. Lade sie direkt von der [Releases-Seite](https://github.com/Clearlove7Zz/LGcode/releases) oder [modelhub.lgdg.cc/download](https://modelhub.lgdg.cc/download) herunter.
 
 | Plattform             | Download                           |
 | --------------------- | ---------------------------------- |

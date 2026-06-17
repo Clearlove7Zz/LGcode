@@ -6,14 +6,14 @@ description: Interagissez avec le serveur opencode via HTTP.
 import config from "../../../../config.mjs"
 export const typesUrl = `${config.github}/blob/dev/packages/sdk/js/src/gen/types.gen.ts`
 
-La commande `opencode serve` exécute un serveur HTTP sans tête qui expose un point de terminaison OpenAPI qu'un client opencode peut utiliser.
+La commande `lgcode serve` exécute un serveur HTTP sans tête qui expose un point de terminaison OpenAPI qu'un client opencode peut utiliser.
 
 ---
 
 ### Usage
 
 ```bash
-opencode serve [--port <number>] [--hostname <string>] [--cors <origin>]
+lgcode serve [--port <number>] [--hostname <string>] [--cors <origin>]
 ```
 
 #### Options
@@ -29,17 +29,17 @@ opencode serve [--port <number>] [--hostname <string>] [--cors <origin>]
 `--cors` peut être transmis plusieurs fois :
 
 ```bash
-opencode serve --cors http://localhost:5173 --cors https://app.example.com
+lgcode serve --cors http://localhost:5173 --cors https://app.example.com
 ```
 
 ---
 
 ### Authentification
 
-Définissez `OPENCODE_SERVER_PASSWORD` pour protéger le serveur avec l'authentification de base HTTP. Le nom d'utilisateur est par défaut `opencode`, ou définissez `OPENCODE_SERVER_USERNAME` pour le remplacer. Cela s’applique à la fois à `opencode serve` et à `opencode web`.
+Définissez `LGCODE_SERVER_PASSWORD` pour protéger le serveur avec l'authentification de base HTTP. Le nom d'utilisateur est par défaut `opencode`, ou définissez `LGCODE_SERVER_USERNAME` pour le remplacer. Cela s’applique à la fois à `lgcode serve` et à `lgcode web`.
 
 ```bash
-OPENCODE_SERVER_PASSWORD=your-password opencode serve
+LGCODE_SERVER_PASSWORD=your-password lgcode serve
 ```
 
 ---
@@ -56,8 +56,8 @@ Utilisez le serveur opencode pour interagir avec opencode par programmation.
 
 Cette architecture permet à opencode de prendre en charge plusieurs clients et vous permet d'interagir avec opencode par programme.
 
-Vous pouvez exécuter `opencode serve` pour démarrer un serveur autonome. Si vous avez le
-opencode TUI en cours d'exécution, `opencode serve` démarrera un nouveau serveur.
+Vous pouvez exécuter `lgcode serve` pour démarrer un serveur autonome. Si vous avez le
+opencode TUI en cours d'exécution, `lgcode serve` démarrera un nouveau serveur.
 
 ---
 
@@ -65,7 +65,7 @@ opencode TUI en cours d'exécution, `opencode serve` démarrera un nouveau serve
 
 Lorsque vous démarrez le TUI, il attribue de manière aléatoire un port et un nom d'hôte. Vous pouvez à la place transmettre les `--hostname` et `--port` [flags](/docs/cli). Utilisez-le ensuite pour vous connecter à son serveur.
 
-Le point de terminaison [`/tui`](#tui) peut être utilisé pour piloter le TUI via le serveur. Par exemple, vous pouvez pré-remplir ou exécuter une invite. Cette configuration est utilisée par les plugins OpenCode [IDE](/docs/ide).
+Le point de terminaison [`/tui`](#tui) peut être utilisé pour piloter le TUI via le serveur. Par exemple, vous pouvez pré-remplir ou exécuter une invite. Cette configuration est utilisée par les plugins LGcode [IDE](/docs/ide).
 
 ---
 

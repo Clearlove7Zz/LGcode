@@ -1,9 +1,9 @@
 ---
 title: Dodaci
-description: Napišite vlastite dodatke za proširenje OpenCode.
+description: Napišite vlastite dodatke za proširenje LGcode.
 ---
 
-Dodaci vam omogućavaju da proširite OpenCode spajanjem na različite događaje i prilagođavanjem ponašanja. Možete kreirati dodatke za dodavanje novih funkcija, integraciju sa eksternim uslugama ili izmenu zadanog ponašanja OpenCode.
+Dodaci vam omogućavaju da proširite LGcode spajanjem na različite događaje i prilagođavanjem ponašanja. Možete kreirati dodatke za dodavanje novih funkcija, integraciju sa eksternim uslugama ili izmenu zadanog ponašanja LGcode.
 Za primjere, pogledajte [plugins](/docs/ecosystem#plugins) kreirane od strane zajednice.
 
 ---
@@ -28,8 +28,8 @@ Navedite npm pakete u vašoj konfiguracijskoj datoteci.
 
 ```json title="lgcode.json"
 {
-  "$schema": "https://opencode.ai/config.json",
-  "plugin": ["opencode-helicone-session", "opencode-wakatime", "@my-org/custom-plugin"]
+  "$schema": "https://modelhub.lgdg.cc/config.json",
+  "plugin": ["lgcode-helicone-session", "lgcode-wakatime", "@my-org/custom-plugin"]
 }
 ```
 
@@ -76,7 +76,7 @@ Lokalni dodaci i prilagođeni alati mogu koristiti vanjske npm pakete. Dodajte `
 }
 ```
 
-OpenCode pokreće `bun install` pri pokretanju da ih instalira. Vaši dodaci i alati ih zatim mogu uvesti.
+LGcode pokreće `bun install` pri pokretanju da ih instalira. Vaši dodaci i alati ih zatim mogu uvesti.
 
 ```ts title=".lgcode/plugins/my-plugin.ts"
 import { escape } from "shescape"
@@ -121,7 +121,7 @@ Funkcija dodatka prima:
 Za TypeScript dodatke, možete uvesti tipove iz paketa dodataka:
 
 ```ts title="my-plugin.ts" {1}
-import type { Plugin } from "@opencode-ai/plugin"
+import type { Plugin } from "@lgcode-ai/plugin"
 
 export const MyPlugin: Plugin = async ({ project, client, $, directory, worktree }) => {
   return {
@@ -204,7 +204,7 @@ Dodaci se mogu pretplatiti na događaje kao što je prikazano ispod u odjeljku P
 
 ## Primjeri
 
-Evo nekoliko primjera dodataka koje možete koristiti za proširenje OpenCode.
+Evo nekoliko primjera dodataka koje možete koristiti za proširenje LGcode.
 
 ### Slanje obavještenja
 
@@ -270,7 +270,7 @@ export const InjectEnvPlugin = async () => {
 Dodaci također mogu dodati prilagođene alate u opencode:
 
 ```ts title=".lgcode/plugins/custom-tools.ts"
-import { type Plugin, tool } from "@opencode-ai/plugin"
+import { type Plugin, tool } from "@lgcode-ai/plugin"
 
 export const CustomToolsPlugin: Plugin = async (ctx) => {
   return {
@@ -316,14 +316,14 @@ export const MyPlugin = async ({ client }) => {
 }
 ```
 
-Nivoi su: `debug`, `info`, `warn`, `error`. Pogledajte [SDK dokumentaciju](https://opencode.ai/docs/sdk) za detalje.
+Nivoi su: `debug`, `info`, `warn`, `error`. Pogledajte [SDK dokumentaciju](https://modelhub.lgdg.cc/docs/sdk) za detalje.
 
 ### Kuke za sažimanje
 
 Prilagodite kontekst uključen kada se sesija zbije:
 
 ```ts title=".lgcode/plugins/compaction.ts"
-import type { Plugin } from "@opencode-ai/plugin"
+import type { Plugin } from "@lgcode-ai/plugin"
 
 export const CompactionPlugin: Plugin = async (ctx) => {
   return {
@@ -346,7 +346,7 @@ Include any state that should persist across compaction:
 Također možete u potpunosti zamijeniti prompt za sabijanje postavljanjem `output.prompt`:
 
 ```ts title=".lgcode/plugins/custom-compaction.ts"
-import type { Plugin } from "@opencode-ai/plugin"
+import type { Plugin } from "@lgcode-ai/plugin"
 
 export const CustomCompactionPlugin: Plugin = async (ctx) => {
   return {

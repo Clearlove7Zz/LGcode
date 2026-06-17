@@ -39,13 +39,13 @@ import { McpCatalog } from "./catalog"
 const DEFAULT_TIMEOUT = 30_000
 const CLIENT_OPTIONS = {
   capabilities: {
-    // https://github.com/anomalyco/opencode/issues/11948
+    // https://github.com/Clearlove7Zz/LGcode/issues/11948
     // sampling: {},
-    // https://github.com/anomalyco/opencode/issues/23066
+    // https://github.com/Clearlove7Zz/LGcode/issues/23066
     // elicitation: {},
-    // https://github.com/anomalyco/opencode/issues/2308
+    // https://github.com/Clearlove7Zz/LGcode/issues/2308
     roots: {},
-    // https://github.com/anomalyco/opencode/issues/28567
+    // https://github.com/Clearlove7Zz/LGcode/issues/28567
     // tasks: {},
   },
 } satisfies ClientOptions

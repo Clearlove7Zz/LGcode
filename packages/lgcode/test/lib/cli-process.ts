@@ -95,7 +95,7 @@ export type RunOpts = SpawnOpts & {
   readonly extraArgs?: string[]
 }
 
-// `opencode serve` is a long-lived process — it never exits on its own.
+// `lgcode serve` is a long-lived process — it never exits on its own.
 // `serve(opts)` therefore returns a handle inside the caller's Scope: the
 // subprocess is killed when the scope closes (test end), and the URL the
 // server actually bound to (port 0 means OS-assigned) is parsed off stdout.
@@ -147,7 +147,7 @@ export type AcpHandle = {
 export type OpencodeCli = {
   // High-level: run a single prompt against the test model. Short-lived.
   readonly run: (message: string, opts?: RunOpts) => Effect.Effect<RunResult>
-  // Spawn `opencode serve` and wait until it's listening. Long-lived: the
+  // Spawn `lgcode serve` and wait until it's listening. Long-lived: the
   // returned handle is killed when the caller's Scope closes. Fails if the
   // listening line doesn't appear within `readyTimeoutMs`.
   readonly serve: (opts?: ServeOpts) => Effect.Effect<ServeHandle, Error, Scope.Scope>
@@ -282,7 +282,7 @@ export function withCliFixture<A, E>(
 
       // Watch stdout line-by-line for the listening sentinel. Format
       // (see src/cli/cmd/serve.ts):
-      //   "opencode server listening on http://<host>:<port>"
+      //   "lgcode server listening on http://<host>:<port>"
       const readyRe = /listening on (http:\/\/([^\s:]+):(\d+))/
       const readyDeferred = yield* Deferred.make<{ url: string; hostname: string; port: number }>()
       yield* Effect.forkScoped(
@@ -304,7 +304,7 @@ export function withCliFixture<A, E>(
           orElse: () =>
             Effect.fail(
               new Error(
-                `opencode serve did not become ready within ${readyTimeoutMs}ms\n` +
+                `lgcode serve did not become ready within ${readyTimeoutMs}ms\n` +
                   `stderr (last 2000):\n${stderrChunks.join("").slice(-2000)}`,
               ),
             ),

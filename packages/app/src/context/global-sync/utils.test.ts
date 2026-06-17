@@ -45,7 +45,7 @@ describe("directoryKey", () => {
   })
 
   test("trims trailing slashes without breaking roots", () => {
-    expect(String(directoryKey("C:/Repos/sst/opencode/"))).toBe("C:/Repos/sst/lgcode")
+    expect(String(directoryKey("C:/Repos/Clearlove7Zz/LGcode/"))).toBe("C:/Repos/sst/lgcode")
     expect(String(directoryKey("C:/"))).toBe("C:/")
     expect(String(directoryKey("/"))).toBe("/")
   })

@@ -286,7 +286,7 @@ async function assertOpencodeConnected() {
   } while (retry++ < 30)
 
   if (!connected) {
-    throw new Error("Failed to connect to opencode server")
+    throw new Error("Failed to connect to lgcode server")
   }
 }
 

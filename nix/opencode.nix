@@ -38,9 +38,9 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   '';
 
   env.MODELS_DEV_API_JSON = "${models-dev}/dist/_api.json";
-  env.OPENCODE_DISABLE_MODELS_FETCH = true;
-  env.OPENCODE_VERSION = finalAttrs.version;
-  env.OPENCODE_CHANNEL = "prod";
+  env.LGCODE_DISABLE_MODELS_FETCH = true;
+  env.LGCODE_VERSION = finalAttrs.version;
+  env.LGCODE_CHANNEL = "prod";
 
   buildPhase = ''
     runHook preBuild
@@ -55,7 +55,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   installPhase = ''
     runHook preInstall
 
-    install -Dm755 dist/opencode-*/bin/opencode $out/bin/opencode
+    install -Dm755 dist/lgcode-*/bin/opencode $out/bin/opencode
     install -Dm644 schema.json $out/share/opencode/schema.json
 
     wrapProgram $out/bin/opencode \
@@ -84,7 +84,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     writableTmpDirAsHomeHook
   ];
   doInstallCheck = true;
-  versionCheckKeepEnvironment = [ "HOME" "OPENCODE_DISABLE_MODELS_FETCH" ];
+  versionCheckKeepEnvironment = [ "HOME" "LGCODE_DISABLE_MODELS_FETCH" ];
   versionCheckProgramArg = "--version";
 
   passthru = {
@@ -94,7 +94,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   meta = {
     description = "The open source coding agent";
-    homepage = "https://opencode.ai";
+    homepage = "https://modelhub.lgdg.cc";
     license = lib.licenses.mit;
     mainProgram = "opencode";
     inherit (node_modules.meta) platforms;

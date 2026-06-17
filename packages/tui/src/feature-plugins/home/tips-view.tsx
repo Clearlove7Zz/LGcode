@@ -238,7 +238,7 @@ const TIPS: Tip[] = [
   "Use {highlight}opencode --continue{/highlight} to resume the last session",
   "Use {highlight}lgcode run -f file.ts{/highlight} to attach files via CLI",
   "Use {highlight}--format json{/highlight} for machine-readable output in scripts",
-  "Run {highlight}opencode serve{/highlight} for headless API access to LGcode",
+  "Run {highlight}lgcode serve{/highlight} for headless API access to LGcode",
   "Use {highlight}lgcode run --attach{/highlight} to connect to a running server",
   "Run {highlight}opencode upgrade{/highlight} to update to the latest version",
   "Run {highlight}opencode auth list{/highlight} to see all configured providers",
@@ -274,7 +274,7 @@ const TIPS: Tip[] = [
     shortcuts.commandList()
       ? `Toggle username display in chat via the command palette (${shortcutText(shortcuts.commandList())})`
       : "Toggle username display in chat via the command palette",
-  "Run {highlight}docker run -it --rm ghcr.io/anomalyco/opencode{/highlight} for containerized use",
+  "Run {highlight}docker run -it --rm ghcr.io/Clearlove7Zz/LGcode{/highlight} for containerized use",
   "Use {highlight}/connect{/highlight} with LGcode Zen for curated, tested models",
   "Commit your project's {highlight}AGENTS.md{/highlight} file to Git for team sharing",
   "Use {highlight}/review{/highlight} to review uncommitted changes, branches, or PRs",

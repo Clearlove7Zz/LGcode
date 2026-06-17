@@ -1,8 +1,8 @@
-import { createOpencodeClient, createOpencodeServer } from "@lgcode/sdk"
+import { createLgcodeClient, createOpencodeServer } from "@lgcode/sdk"
 import { pathToFileURL } from "bun"
 
 const server = await createOpencodeServer()
-const client = createOpencodeClient({ baseUrl: server.url })
+const client = createLgcodeClient({ baseUrl: server.url })
 
 const input = await Array.fromAsync(new Bun.Glob("packages/core/*.ts").scan())
 

@@ -86,7 +86,7 @@ Both will be available as selectable models under the `LGDG_ModelHub` provider. 
 | `@lgcode-ai/*` | `@lgcode/*` | Workspace package names |
 | `lgcode-ai` | `lgcode` | Published npm package scope/name |
 | `modelhub.lgdg.cc` / `https://modelhub.lgdg.cc/*` | `https://modelhub.lgdg.cc` | Model cluster base URL; other non-API `modelhub.lgdg.cc` URLs are removed |
-| `https://github.com/anomalyco/opencode` | temporarily removed | Repository references are removed until the private repo is made public |
+| `https://github.com/Clearlove7Zz/LGcode` | temporarily removed | Repository references are removed until the private repo is made public |
 | `~/.lgcode` | `~/.lgcode` | User configuration directory |
 
 ### Environment variables

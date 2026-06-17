@@ -15,7 +15,7 @@ This extension requires the [opencode CLI](https://modelhub.lgdg.cc) to be insta
 
 ## Support
 
-This is an early release. If you encounter issues or have feedback, please create an issue at https://github.com/anomalyco/opencode/issues.
+This is an early release. If you encounter issues or have feedback, please create an issue at https://github.com/Clearlove7Zz/LGcode/issues.
 
 ## Development
 

@@ -1,17 +1,17 @@
 ---
 title: GitHub
-description: Brug OpenCode i GitHub-problemer og Pull Requests.
+description: Brug LGcode i GitHub-problemer og Pull Requests.
 ---
 
-OpenCode integreres med din GitHub arbejdsgang. Nævn `/opencode` eller `/oc` i din kommentar, og OpenCode vil udføre opgaver i din GitHub Actions-løber.
+LGcode integreres med din GitHub arbejdsgang. Nævn `/opencode` eller `/oc` i din kommentar, og LGcode vil udføre opgaver i din GitHub Actions-løber.
 
 ---
 
 ## Funktioner
 
-- **Triageproblemer**: Bed OpenCode om at undersøge et problem og forklare dig det.
-- **Ret og implementer**: Bed OpenCode om at løse et problem eller implementere en funktion. Og det vil fungere i en ny branch og indsende en PR med alle ændringerne.
-- **Sikker**: OpenCode løber inde i din GitHubs løbere.
+- **Triageproblemer**: Bed LGcode om at undersøge et problem og forklare dig det.
+- **Ret og implementer**: Bed LGcode om at løse et problem eller implementere en funktion. Og det vil fungere i en ny branch og indsende en PR med alle ændringerne.
+- **Sikker**: LGcode løber inde i din GitHubs løbere.
 
 ---
 
@@ -33,7 +33,7 @@ Eller du kan indstille det manuelt.
 
 1. **Installationsprogrammet GitHub-appen**
 
-   Gå over til [**github.com/apps/opencode-agent**](https://github.com/apps/opencode-agent). Sørg for, at det er installeret på mållageret.
+   Gå over til [**github.com/apps/lgcode-agent**](https://github.com/apps/lgcode-agent). Sørg for, at det er installeret på mållageret.
 
 2. **Tilføj arbejdsgangen**
 
@@ -63,8 +63,8 @@ Eller du kan indstille det manuelt.
               fetch-depth: 1
               persist-credentials: false
 
-          - name: Run OpenCode
-           uses: anomalyco/opencode/github@latest
+          - name: Run LGcode
+           uses: Clearlove7Zz/LGcode/github@latest
            env:
              ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
            with:
@@ -81,13 +81,13 @@ Eller du kan indstille det manuelt.
 
 ## Konfiguration
 
-- `model`: Den model, der skal bruges med OpenCode. Antager formatet `provider/model`. Dette er **påkrævet**.
+- `model`: Den model, der skal bruges med LGcode. Antager formatet `provider/model`. Dette er **påkrævet**.
 - `agent`: Agenten, der skal bruges. Skal være en primær agent. Falder tilbage til `default_agent` fra config eller `"build"`, hvis den ikke findes.
-- `share`: Om OpenCode-sessionen skal dele. Standard er **true** for offentlige arkiver.
-- `prompt`: Valgfri brugerdefineret prompt for at tilsidesætte standardadfærden. Brug dette til at tilpasse, hvordan OpenCode behandler anmodninger.
-- `token`: Valgfrit GitHub adgangstoken til at udføre operationer såsom oprettelse af kommentarer, begå ændringer og åbning af Pull Requests. Som standard bruger OpenCode installationsadgangstokenet fra OpenCode GitHub-appen, så commits, kommentarer og Pull Requests ser ud til at komme fra appen.
+- `share`: Om LGcode-sessionen skal dele. Standard er **true** for offentlige arkiver.
+- `prompt`: Valgfri brugerdefineret prompt for at tilsidesætte standardadfærden. Brug dette til at tilpasse, hvordan LGcode behandler anmodninger.
+- `token`: Valgfrit GitHub adgangstoken til at udføre operationer såsom oprettelse af kommentarer, begå ændringer og åbning af Pull Requests. Som standard bruger LGcode installationsadgangstokenet fra LGcode GitHub-appen, så commits, kommentarer og Pull Requests ser ud til at komme fra appen.
 
-  Alternativt kan du bruge GitHub Action runners [built-in `GITHUB_TOKEN`](OpenCode) uden at installere OpenCode GitHub appen. Bare sørg for at give de nødvendige tilladelser i dit workflow:
+  Alternativt kan du bruge GitHub Action runners [built-in `GITHUB_TOKEN`](LGcode) uden at installere LGcode GitHub appen. Bare sørg for at give de nødvendige tilladelser i dit workflow:
 
   ```yaml
   permissions:
@@ -103,23 +103,23 @@ Eller du kan indstille det manuelt.
 
 ## Understøttede begivenheder
 
-OpenCode kan udløses af følgende GitHub hændelser:
+LGcode kan udløses af følgende GitHub hændelser:
 
 | Begivenhedstype               | Udløst af                               | Detaljer                                                                                                                |
 | ----------------------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `issue_comment`               | Kommentarer og problemer eller PR       | Nævn `/opencode` eller `/oc` i din kommentar. OpenCode læser kontekst og kan oprette brancher, åbne PR'er eller svare.  |
-| `pull_request_review_comment` | Kommenter specifikke kodelinjer i en PR | Nævn `/opencode` eller `/oc`, mens du gennemgår koden. OpenCode modtager filsti, linjenumre og diff-kontekst.           |
-| `issues`                      | Udgave åbnet eller redigeret            | Udløs automatisk OpenCode, når problemer oprettes eller ændres. Kræver `prompt` input.                                  |
-| `pull_request`                | PR åbnet eller opdateret                | Udløs automatisk OpenCode, når PR'er åbnes, synkroniseres eller genåbnes. Nyttigt til automatiserede kodegennemgange.   |
-| `schedule`                    | Cron-baseret tidsplan                   | Kør OpenCode efter en tidsplan. Kræver `prompt` input. Output går til logfiler og PR'er (intet problem ved kommentere). |
-| `workflow_dispatch`           | Manuel trigger fra GitHub UI            | Udløs OpenCode efter behov via fanen Handlinger. Kræver `prompt` input. Output går til logfiler og PR'er.               |
+| `issue_comment`               | Kommentarer og problemer eller PR       | Nævn `/opencode` eller `/oc` i din kommentar. LGcode læser kontekst og kan oprette brancher, åbne PR'er eller svare.  |
+| `pull_request_review_comment` | Kommenter specifikke kodelinjer i en PR | Nævn `/opencode` eller `/oc`, mens du gennemgår koden. LGcode modtager filsti, linjenumre og diff-kontekst.           |
+| `issues`                      | Udgave åbnet eller redigeret            | Udløs automatisk LGcode, når problemer oprettes eller ændres. Kræver `prompt` input.                                  |
+| `pull_request`                | PR åbnet eller opdateret                | Udløs automatisk LGcode, når PR'er åbnes, synkroniseres eller genåbnes. Nyttigt til automatiserede kodegennemgange.   |
+| `schedule`                    | Cron-baseret tidsplan                   | Kør LGcode efter en tidsplan. Kræver `prompt` input. Output går til logfiler og PR'er (intet problem ved kommentere). |
+| `workflow_dispatch`           | Manuel trigger fra GitHub UI            | Udløs LGcode efter behov via fanen Handlinger. Kræver `prompt` input. Output går til logfiler og PR'er.               |
 
 ### Tidsplan eksempel
 
-Kør OpenCode efter en tidsplan for at udføre automatiske opgaver:
+Kør LGcode efter en tidsplan for at udføre automatiske opgaver:
 
-```yaml title=".github/workflows/opencode-scheduled.yml"
-name: Scheduled OpenCode Task
+```yaml title=".github/workflows/lgcode-scheduled.yml"
+name: Scheduled LGcode Task
 
 on:
   schedule:
@@ -139,8 +139,8 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Run OpenCode
-        uses: anomalyco/opencode/github@latest
+      - name: Run LGcode
+        uses: Clearlove7Zz/LGcode/github@latest
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         with:
@@ -150,7 +150,7 @@ jobs:
             If you find issues worth addressing, open an issue to track them.
 ```
 
-For planlagte begivenheder er `prompt` input **påkrævet**, da der ikke er nogen kommentarer at udtrække instruktioner fra. Planlagte arbejdsgange kører uden en brugerkontekst til kontrol af tilladelser, så arbejdsgangen skal give `contents: write` og `pull-requests: write`, hvis du forventer, at OpenCode skal oprette brancher eller PR'er.
+For planlagte begivenheder er `prompt` input **påkrævet**, da der ikke er nogen kommentarer at udtrække instruktioner fra. Planlagte arbejdsgange kører uden en brugerkontekst til kontrol af tilladelser, så arbejdsgangen skal give `contents: write` og `pull-requests: write`, hvis du forventer, at LGcode skal oprette brancher eller PR'er.
 
 ---
 
@@ -158,8 +158,8 @@ For planlagte begivenheder er `prompt` input **påkrævet**, da der ikke er noge
 
 Gennemgå automatisk PR'er, når de åbnes eller opdateres:
 
-```yaml title=".github/workflows/opencode-review.yml"
-name: opencode-review
+```yaml title=".github/workflows/lgcode-review.yml"
+name: lgcode-review
 
 on:
   pull_request:
@@ -177,7 +177,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
-      - uses: anomalyco/opencode/github@latest
+      - uses: Clearlove7Zz/LGcode/github@latest
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -191,7 +191,7 @@ jobs:
             - Suggest improvements
 ```
 
-For `pull_request` hændelser, hvis der ikke er angivet nogen `prompt`, vil OpenCode som standard gennemgå Pull Requesten.
+For `pull_request` hændelser, hvis der ikke er angivet nogen `prompt`, vil LGcode som standard gennemgå Pull Requesten.
 
 ---
 
@@ -199,7 +199,7 @@ For `pull_request` hændelser, hvis der ikke er angivet nogen `prompt`, vil Open
 
 Triage automatisk nye problemer. Dette eksempel filtrerer til konti ældre end 30 dage for at reducere spam:
 
-```yaml title=".github/workflows/opencode-triage.yml"
+```yaml title=".github/workflows/lgcode-triage.yml"
 name: Issue Triage
 
 on:
@@ -233,7 +233,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: anomalyco/opencode/github@latest
+      - uses: Clearlove7Zz/LGcode/github@latest
         if: steps.check.outputs.result == 'true'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -252,10 +252,10 @@ For `issues` begivenheder er `prompt` input **påkrævet**, da der ikke er nogen
 
 ## Brugerdefinerede prompter
 
-Tilsidesæt standardprompten for at tilpasse OpenCodes adfærd til din arbejdsgang.
+Tilsidesæt standardprompten for at tilpasse LGcodes adfærd til din arbejdsgang.
 
 ```yaml title=".github/workflows/opencode.yml"
-- uses: anomalyco/opencode/github@latest
+- uses: Clearlove7Zz/LGcode/github@latest
   with:
     model: anthropic/claude-sonnet-4-5
     prompt: |
@@ -271,7 +271,7 @@ Dette er nyttigt til at håndhæve specifikke gennemgangskriterier, kodningsstan
 
 ## Eksempler
 
-Her er nogle eksempler på, hvordan du kan bruge OpenCode i GitHub.
+Her er nogle eksempler på, hvordan du kan bruge LGcode i GitHub.
 
 - **Forklar et problem**
 
@@ -281,7 +281,7 @@ Her er nogle eksempler på, hvordan du kan bruge OpenCode i GitHub.
   /opencode explain this issue
   ```
 
-  OpenCode vil læse hele tråden, inklusive alle kommentarer, og svare med en klar forklaring.
+  LGcode vil læse hele tråden, inklusive alle kommentarer, og svare med en klar forklaring.
 
 - **Løs et problem**
 
@@ -291,7 +291,7 @@ Her er nogle eksempler på, hvordan du kan bruge OpenCode i GitHub.
   /opencode fix this
   ```
 
-  Og OpenCode vil oprette en ny branch, implementere ændringer og åbne en PR med ændringer.
+  Og LGcode vil oprette en ny branch, implementere ændringer og åbne en PR med ændringer.
 
 - **Gennemgå PR'er og foretag ændringer**
 
@@ -301,18 +301,18 @@ Her er nogle eksempler på, hvordan du kan bruge OpenCode i GitHub.
   Delete the attachment from S3 when the note is removed /oc
   ```
 
-  OpenCode vil implementere den ønskede ændring og forpligtelse til den samme PR.
+  LGcode vil implementere den ønskede ændring og forpligtelse til den samme PR.
 
 - **Gennemgå specifikke kodelinjer**
 
-  Efterlad en kommentar direkte på kodelinjer i PR's faneblad "Filer". OpenCode detekterer automatisk filer, linjenumrene og diff-konteksten for at give præcise svar.
+  Efterlad en kommentar direkte på kodelinjer i PR's faneblad "Filer". LGcode detekterer automatisk filer, linjenumrene og diff-konteksten for at give præcise svar.
 
   ```
   [Comment on specific lines in Files tab]
   /oc add error handling here
   ```
 
-  Når du kommenterer på specifikke linjer, modtager OpenCode:
+  Når du kommenterer på specifikke linjer, modtager LGcode:
   - Den nøjagtige fil bliver gennemgået
   - De specifikke kodelinjer
   - Den omgivende forskellig kontekst

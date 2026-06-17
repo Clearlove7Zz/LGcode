@@ -33,7 +33,7 @@ Można też uszkodzić to rozwiązanie.
 
 1. **Zainstaluj aplikację GitHub**
 
-   Wejdź na [**github.com/apps/opencode-agent**](https://github.com/apps/opencode-agent). wystąpienie się, że jest natychmiastowe w repozytorium usuwam.
+   Wejdź na [**github.com/apps/lgcode-agent**](https://github.com/apps/lgcode-agent). wystąpienie się, że jest natychmiastowe w repozytorium usuwam.
 
 2. **Dodaj przepływ pracy**
 
@@ -63,8 +63,8 @@ Można też uszkodzić to rozwiązanie.
               fetch-depth: 1
               persist-credentials: false
 
-          - name: Run OpenCode
-           uses: anomalyco/opencode/github@latest
+          - name: Run LGcode
+           uses: Clearlove7Zz/LGcode/github@latest
            env:
              ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
            with:
@@ -118,8 +118,8 @@ opencode może zostać wywołany przez zdarzenie GitHub:
 
 Uruchamiaj opencode zgodnie z harmonogramem, aby wykonać zautomatyzowane zadania:
 
-```yaml title=".github/workflows/opencode-scheduled.yml"
-name: Scheduled OpenCode Task
+```yaml title=".github/workflows/lgcode-scheduled.yml"
+name: Scheduled LGcode Task
 
 on:
   schedule:
@@ -139,8 +139,8 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Run OpenCode
-        uses: anomalyco/opencode/github@latest
+      - name: Run LGcode
+        uses: Clearlove7Zz/LGcode/github@latest
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         with:
@@ -158,8 +158,8 @@ W przypadku wystąpienia danych wyjściowych `prompt` są **wymagane**, które n
 
 Automatycznie przeglądaj żądania ściągnięcia po ich otwarciu lub aktualizacji:
 
-```yaml title=".github/workflows/opencode-review.yml"
-name: opencode-review
+```yaml title=".github/workflows/lgcode-review.yml"
+name: lgcode-review
 
 on:
   pull_request:
@@ -177,7 +177,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
-      - uses: anomalyco/opencode/github@latest
+      - uses: Clearlove7Zz/LGcode/github@latest
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -199,7 +199,7 @@ W przypadku zdarzenia `pull_request`, jeśli nie podano `prompt`, opencode użyt
 
 Automatycznie segreguj nowe problemy. Dziesięć przykładów filtruje do kont starszych niż 30 dni w celu ograniczenia spamu:
 
-```yaml title=".github/workflows/opencode-triage.yml"
+```yaml title=".github/workflows/lgcode-triage.yml"
 name: Issue Triage
 
 on:
@@ -233,7 +233,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: anomalyco/opencode/github@latest
+      - uses: Clearlove7Zz/LGcode/github@latest
         if: steps.check.outputs.result == 'true'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -255,7 +255,7 @@ W przypadku zdarzenia `issues` wprowadzenie `prompt` jest **wymagane**, poniewa�
 Zastąp domyślne monit, aby zastosować zachowanie opencode do twojego własnego pracy.
 
 ```yaml title=".github/workflows/opencode.yml"
-- uses: anomalyco/opencode/github@latest
+- uses: Clearlove7Zz/LGcode/github@latest
   with:
     model: anthropic/claude-sonnet-4-5
     prompt: |
