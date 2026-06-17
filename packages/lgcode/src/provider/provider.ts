@@ -1301,6 +1301,50 @@ export const layer = Layer.effect(
         const catalog = mapValues(modelsDev, fromModelsDevProvider)
         const database = mapValues(catalog, toPublicInfo)
 
+        // Add LGdg (company model cluster) as a built-in provider
+        const lgdgID = ProviderV2.ID.make("lgdg")
+        if (!database[lgdgID]) {
+          database[lgdgID] = {
+            id: lgdgID,
+            name: "LGDG_ModelHub",
+            env: ["LG_CODE_API_KEY"],
+            source: "config",
+            options: {},
+            models: {
+              "DeepSeek-V4-Flash-w8a8-mtp": {
+                id: ModelV2.ID.make("DeepSeek-V4-Flash-w8a8-mtp"),
+                api: { id: "DeepSeek-V4-Flash-w8a8-mtp", npm: "@ai-sdk/openai-compatible", url: "https://modelhub.lgdg.cc/aigateway/v1" },
+                providerID: lgdgID,
+                name: "DeepSeek V4 Flash (w8a8-mtp)",
+                status: "active",
+                capabilities: { temperature: true, reasoning: true, attachment: false, toolcall: true, input: { text: true, audio: false, image: false, video: false, pdf: false }, output: { text: true, audio: false, image: false, video: false, pdf: false }, interleaved: false },
+                cost: { input: 0, output: 0, cache: { read: 0, write: 0 } },
+                options: {},
+                limit: { context: 128000, input: 128000, output: 8192 },
+                headers: {},
+                family: "deepseek",
+                release_date: "",
+                variants: {},
+              },
+              "GLM-5.1-w4a8": {
+                id: ModelV2.ID.make("GLM-5.1-w4a8"),
+                api: { id: "GLM-5.1-w4a8", npm: "@ai-sdk/openai-compatible", url: "https://modelhub.lgdg.cc/aigateway/v1" },
+                providerID: lgdgID,
+                name: "GLM 5.1 (w4a8)",
+                status: "active",
+                capabilities: { temperature: true, reasoning: false, attachment: false, toolcall: true, input: { text: true, audio: false, image: false, video: false, pdf: false }, output: { text: true, audio: false, image: false, video: false, pdf: false }, interleaved: false },
+                cost: { input: 0, output: 0, cache: { read: 0, write: 0 } },
+                options: {},
+                limit: { context: 128000, input: 128000, output: 8192 },
+                headers: {},
+                family: "glm",
+                release_date: "",
+                variants: {},
+              },
+            },
+          }
+        }
+
         const providers: Record<ProviderV2.ID, Info> = {} as Record<ProviderV2.ID, Info>
         const languages = new Map<string, LanguageModelV3>()
         const modelLoaders: {
