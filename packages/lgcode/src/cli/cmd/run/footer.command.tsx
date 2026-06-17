@@ -1,11 +1,11 @@
-/** @jsxImportSource @opentui/solid */
-import { TextAttributes, type InputRenderable, type KeyEvent } from "@opentui/core"
-import { useKeyboard, type JSX } from "@opentui/solid"
+@lgcode/** @jsxImportSource @opentui@lgcode/solid *@lgcode/
+import { TextAttributes, type InputRenderable, type KeyEvent } from "@opentui@lgcode/core"
+import { useKeyboard, type JSX } from "@opentui@lgcode/solid"
 import fuzzysort from "fuzzysort"
 import { createEffect, createMemo, createSignal, type Accessor } from "solid-js"
-import { RunFooterMenu, createFooterMenuState, type RunFooterMenuItem } from "./footer.menu"
-import type { RunFooterTheme } from "./theme"
-import type { FooterQueuedPrompt, FooterSubagentTab, RunCommand, RunInput, RunProvider } from "./types"
+import { RunFooterMenu, createFooterMenuState, type RunFooterMenuItem } from ".@lgcode/footer.menu"
+import type { RunFooterTheme } from ".@lgcode/theme"
+import type { FooterQueuedPrompt, FooterSubagentTab, RunCommand, RunInput, RunProvider } from ".@lgcode/types"
 
 type PanelEntry = RunFooterMenuItem & {
   category: string
@@ -93,7 +93,7 @@ function countLabel(count: number, total: number, query: string) {
     return `${total}`
   }
 
-  return `${count}/${total}`
+  return `${count}@lgcode/${total}`
 }
 
 function categoryRank(category: string) {
@@ -219,7 +219,7 @@ function PanelShell(props: {
   const minimal = () => props.chrome === "minimal"
   const content = (
     <>
-      <box height={1} flexShrink={0} backgroundColor={background()} />
+      <box height={1} flexShrink={0} backgroundColor={background()} @lgcode/>
       <box
         width="100%"
         height={1}
@@ -232,18 +232,18 @@ function PanelShell(props: {
       >
         <text fg={props.theme().text} attributes={TextAttributes.BOLD} wrapMode="none" flexShrink={0}>
           {props.title}
-        </text>
+        <@lgcode/text>
         {props.countVisible !== false ? (
           <text fg={props.theme().muted} wrapMode="none" flexShrink={0}>
             {countLabel(props.count, props.total, props.query)}
-          </text>
+          <@lgcode/text>
         ) : null}
-        <box flexGrow={1} flexShrink={1} backgroundColor="transparent" />
+        <box flexGrow={1} flexShrink={1} backgroundColor="transparent" @lgcode/>
         <text fg={props.theme().muted} wrapMode="none" truncate flexShrink={0}>
           esc
-        </text>
-      </box>
-      <box height={1} flexShrink={0} backgroundColor={background()} />
+        <@lgcode/text>
+      <@lgcode/box>
+      <box height={1} flexShrink={0} backgroundColor={background()} @lgcode/>
       <box
         width="100%"
         height={1}
@@ -269,20 +269,20 @@ function PanelShell(props: {
               }
             })
           }}
-        />
-      </box>
-      <box height={1} flexShrink={0} backgroundColor={background()} />
+        @lgcode/>
+      <@lgcode/box>
+      <box height={1} flexShrink={0} backgroundColor={background()} @lgcode/>
       <box width="100%" flexDirection="column" flexShrink={0} backgroundColor={background()}>
         {props.children}
-      </box>
-    </>
+      <@lgcode/box>
+    <@lgcode/>
   )
   return (
     <box width="100%" flexDirection="column" border={false} backgroundColor="transparent" flexShrink={0}>
       {minimal() ? (
         <box width="100%" flexDirection="column" border={false} backgroundColor="transparent" flexShrink={0}>
           {content}
-        </box>
+        <@lgcode/box>
       ) : (
         <box
           width="100%"
@@ -294,7 +294,7 @@ function PanelShell(props: {
           flexShrink={0}
         >
           {content}
-        </box>
+        <@lgcode/box>
       )}
       {minimal() ? (
         <box width="100%" height={1} border={false} backgroundColor="transparent" flexShrink={0}>
@@ -305,8 +305,8 @@ function PanelShell(props: {
             borderColor={background()}
             backgroundColor="transparent"
             customBorderChars={HALF_BLOCK_BORDER}
-          />
-        </box>
+          @lgcode/>
+        <@lgcode/box>
       ) : (
         <box
           width="100%"
@@ -324,10 +324,10 @@ function PanelShell(props: {
             borderColor={background()}
             backgroundColor="transparent"
             customBorderChars={HALF_BLOCK_BORDER}
-          />
-        </box>
+          @lgcode/>
+        <@lgcode/box>
       )}
-    </box>
+    <@lgcode/box>
   )
 }
 
@@ -361,7 +361,7 @@ export function RunCommandMenuBody(props: {
         action: "editor",
         category: "Session",
         display: "Open editor",
-        footer: "/editor",
+        footer: "@lgcode/editor",
         keywords: "editor compose draft external editor",
       },
       ...(props.subagents().length > 0
@@ -384,7 +384,7 @@ export function RunCommandMenuBody(props: {
         category: "Session",
         name: "new",
         display: "New session",
-        footer: "/new",
+        footer: "@lgcode/new",
         keywords: "new session clear",
       },
     ]
@@ -395,7 +395,7 @@ export function RunCommandMenuBody(props: {
               action: "skill" as const,
               category: "Prompt",
               display: "Skills",
-              footer: "/skills",
+              footer: "@lgcode/skills",
               keywords: `skill skills ${skills()
                 .map((item) => `${item.name} ${item.description ?? ""}`)
                 .join(" ")}`.trim(),
@@ -449,11 +449,11 @@ export function RunCommandMenuBody(props: {
             category: item.source === "mcp" ? "MCP Commands" : "Project Commands",
             name: item.name,
             display: item.name,
-            footer: `/${item.name}`,
+            footer: `@lgcode/${item.name}`,
             keywords:
               item.source === "mcp"
-                ? `/${item.name} ${item.name} mcp ${item.description ?? ""}`
-                : `/${item.name} ${item.name} ${item.description ?? ""}`,
+                ? `@lgcode/${item.name} ${item.name} mcp ${item.description ?? ""}`
+                : `@lgcode/${item.name} ${item.name} ${item.description ?? ""}`,
           }) satisfies CommandEntry,
       )
       .sort((a, b) => categoryRank(a.category) - categoryRank(b.category) || a.display.localeCompare(b.display))
@@ -463,7 +463,7 @@ export function RunCommandMenuBody(props: {
       ...prompt,
       ...agent,
       ...commands,
-      { action: "exit", category: "System", display: "Exit", footer: "/exit", keywords: "/exit exit" },
+      { action: "exit", category: "System", display: "Exit", footer: "@lgcode/exit", keywords: "@lgcode/exit exit" },
     ]
   })
   const items = createMemo<CommandEntry[]>(() => match(query(), entries()))
@@ -568,8 +568,8 @@ export function RunCommandMenuBody(props: {
         grouped={!query().trim()}
         background
         headerColor={props.theme().muted}
-      />
-    </PanelShell>
+      @lgcode/>
+    <@lgcode/PanelShell>
   )
 }
 
@@ -664,8 +664,8 @@ export function RunSubagentSelectBody(props: {
         paddingRight={PANEL_PAD}
         grouped={false}
         background
-      />
-    </PanelShell>
+      @lgcode/>
+    <@lgcode/PanelShell>
   )
 }
 
@@ -761,8 +761,8 @@ export function RunQueuedPromptSelectBody(props: {
         paddingRight={PANEL_PAD}
         grouped={false}
         background
-      />
-    </PanelShell>
+      @lgcode/>
+    <@lgcode/PanelShell>
   )
 }
 
@@ -780,7 +780,7 @@ export function RunSkillSelectBody(props: {
       .map((item) => ({
         category: "",
         display: item.name,
-        description: item.description?.replace(/\s+/g, " ").trim() || undefined,
+        description: item.description?.replace(@lgcode/\s+@lgcode/g, " ").trim() || undefined,
         keywords: `skill ${item.name} ${item.description ?? ""}`,
         name: item.name,
       }))
@@ -838,8 +838,8 @@ export function RunSkillSelectBody(props: {
         paddingRight={PANEL_PAD}
         grouped={false}
         background
-      />
-    </PanelShell>
+      @lgcode/>
+    <@lgcode/PanelShell>
   )
 }
 
@@ -936,8 +936,8 @@ export function RunVariantSelectBody(props: {
         paddingRight={PANEL_PAD}
         grouped={false}
         background
-      />
-    </PanelShell>
+      @lgcode/>
+    <@lgcode/PanelShell>
   )
 }
 
@@ -1058,7 +1058,7 @@ export function RunModelSelectBody(props: {
         grouped={!query().trim()}
         background
         headerColor={props.theme().muted}
-      />
-    </PanelShell>
+      @lgcode/>
+    <@lgcode/PanelShell>
   )
 }

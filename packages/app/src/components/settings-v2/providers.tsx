@@ -1,18 +1,18 @@
-import { ButtonV2 } from "@opencode@lgcode/ui/v2/button-v2"
-import { Tag } from "@opencode@lgcode/ui/v2/badge-v2"
-import { useDialog } from "@opencode@lgcode/ui/context/dialog"
-import { ProviderIcon } from "@opencode@lgcode/ui/provider-icon"
-import { showToast } from "@/utils/toast"
-import { popularProviders, useProviders } from "@/hooks/use-providers"
+import { ButtonV2 } from "@lgcode/ui@lgcode/v2@lgcode/button-v2"
+import { Tag } from "@lgcode/ui@lgcode/v2@lgcode/badge-v2"
+import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
+import { ProviderIcon } from "@lgcode/ui@lgcode/provider-icon"
+import { showToast } from "@@lgcode/utils@lgcode/toast"
+import { popularProviders, useProviders } from "@@lgcode/hooks@lgcode/use-providers"
 import { createMemo, type Component, For, Show } from "solid-js"
-import { useLanguage } from "@/context/language"
-import { useServerSDK } from "@/context/server-sdk"
-import { useServerSync } from "@/context/server-sync"
-import { DialogConnectProvider } from "../dialog-connect-provider"
-import { DialogSelectProvider } from "../dialog-select-provider"
-import { DialogCustomProvider } from "../dialog-custom-provider"
-import { SettingsListV2 } from "./parts/list"
-import "./settings-v2.css"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { useServerSDK } from "@@lgcode/context@lgcode/server-sdk"
+import { useServerSync } from "@@lgcode/context@lgcode/server-sync"
+import { DialogConnectProvider } from "..@lgcode/dialog-connect-provider"
+import { DialogSelectProvider } from "..@lgcode/dialog-select-provider"
+import { DialogCustomProvider } from "..@lgcode/dialog-custom-provider"
+import { SettingsListV2 } from ".@lgcode/parts@lgcode/list"
+import ".@lgcode/settings-v2.css"
 
 type ProviderSource = "env" | "api" | "config" | "custom"
 type ProviderItem = ReturnType<ReturnType<typeof useProviders>["connected"]>[number]
@@ -79,7 +79,7 @@ export const SettingsProvidersV2: Component = () => {
   const isConfigCustom = (providerID: string) => {
     const provider = serverSync().data.config.provider?.[providerID]
     if (!provider) return false
-    if (provider.npm !== "@ai-sdk/openai-compatible") return false
+    if (provider.npm !== "@ai-sdk@lgcode/openai-compatible") return false
     if (!provider.models || Object.keys(provider.models).length === 0) return false
     return true
   }
@@ -134,17 +134,17 @@ export const SettingsProvidersV2: Component = () => {
   return (
     <>
       <div class="settings-v2-tab-header">
-        <h2 class="settings-v2-tab-title">{language.t("settings.providers.title")}</h2>
-      </div>
+        <h2 class="settings-v2-tab-title">{language.t("settings.providers.title")}<@lgcode/h2>
+      <@lgcode/div>
 
       <div class="settings-v2-tab-body settings-v2-providers">
         <div class="settings-v2-section" data-component="connected-providers-section">
-          <h3 class="settings-v2-section-title">{language.t("settings.providers.section.connected")}</h3>
+          <h3 class="settings-v2-section-title">{language.t("settings.providers.section.connected")}<@lgcode/h3>
           <SettingsListV2>
             <Show
               when={connected().length > 0}
               fallback={
-                <div class="settings-v2-provider-empty">{language.t("settings.providers.connected.empty")}</div>
+                <div class="settings-v2-provider-empty">{language.t("settings.providers.connected.empty")}<@lgcode/div>
               }
             >
               <For each={connected()}>
@@ -156,33 +156,33 @@ export const SettingsProvidersV2: Component = () => {
                         width={PROVIDER_ICON_SIZE}
                         height={PROVIDER_ICON_SIZE}
                         class="settings-v2-provider-icon shrink-0"
-                      />
+                      @lgcode/>
                       <div class="settings-v2-provider-main">
-                        <span class="settings-v2-provider-name truncate">{item.name}</span>
-                        <Tag>{type(item)}</Tag>
-                      </div>
-                    </div>
+                        <span class="settings-v2-provider-name truncate">{item.name}<@lgcode/span>
+                        <Tag>{type(item)}<@lgcode/Tag>
+                      <@lgcode/div>
+                    <@lgcode/div>
                     <Show
                       when={canDisconnect(item)}
                       fallback={
                         <span class="settings-v2-provider-env-hint">
                           {language.t("settings.providers.connected.environmentDescription")}
-                        </span>
+                        <@lgcode/span>
                       }
                     >
                       <ButtonV2 size="normal" variant="ghost-muted" onClick={() => void disconnect(item.id, item.name)}>
                         {language.t("common.disconnect")}
-                      </ButtonV2>
-                    </Show>
-                  </div>
+                      <@lgcode/ButtonV2>
+                    <@lgcode/Show>
+                  <@lgcode/div>
                 )}
-              </For>
-            </Show>
-          </SettingsListV2>
-        </div>
+              <@lgcode/For>
+            <@lgcode/Show>
+          <@lgcode/SettingsListV2>
+        <@lgcode/div>
 
         <div class="settings-v2-section">
-          <h3 class="settings-v2-section-title">{language.t("settings.providers.section.popular")}</h3>
+          <h3 class="settings-v2-section-title">{language.t("settings.providers.section.popular")}<@lgcode/h3>
           <SettingsListV2>
             <For each={popular()}>
               {(item) => (
@@ -193,32 +193,32 @@ export const SettingsProvidersV2: Component = () => {
                       width={PROVIDER_ICON_SIZE}
                       height={PROVIDER_ICON_SIZE}
                       class="settings-v2-provider-icon shrink-0"
-                    />
+                    @lgcode/>
                     <div class="settings-v2-provider-copy">
                       <div class="settings-v2-provider-main">
-                        <span class="settings-v2-provider-name">{item.name}</span>
+                        <span class="settings-v2-provider-name">{item.name}<@lgcode/span>
                         <Show when={item.id === "opencode" || item.id === "opencode-go"}>
-                          <Tag>{language.t("dialog.provider.tag.recommended")}</Tag>
-                        </Show>
-                      </div>
+                          <Tag>{language.t("dialog.provider.tag.recommended")}<@lgcode/Tag>
+                        <@lgcode/Show>
+                      <@lgcode/div>
                       <Show when={note(item.id)}>
-                        {(key) => <p class="settings-v2-provider-description">{language.t(key())}</p>}
-                      </Show>
-                    </div>
-                  </div>
+                        {(key) => <p class="settings-v2-provider-description">{language.t(key())}<@lgcode/p>}
+                      <@lgcode/Show>
+                    <@lgcode/div>
+                  <@lgcode/div>
                   <ButtonV2
                     size="normal"
                     variant="neutral"
                     icon="plus"
                     onClick={() => {
-                      dialog.show(() => <DialogConnectProvider provider={item.id} />)
+                      dialog.show(() => <DialogConnectProvider provider={item.id} @lgcode/>)
                     }}
                   >
                     {language.t("common.connect")}
-                  </ButtonV2>
-                </div>
+                  <@lgcode/ButtonV2>
+                <@lgcode/div>
               )}
-            </For>
+            <@lgcode/For>
 
             <div class="settings-v2-provider-row" data-component="custom-provider-section">
               <div class="settings-v2-provider-lead">
@@ -227,39 +227,39 @@ export const SettingsProvidersV2: Component = () => {
                   width={PROVIDER_ICON_SIZE}
                   height={PROVIDER_ICON_SIZE}
                   class="settings-v2-provider-icon shrink-0"
-                />
+                @lgcode/>
                 <div class="settings-v2-provider-copy">
                   <div class="settings-v2-provider-main">
-                    <span class="settings-v2-provider-name">{language.t("provider.custom.title")}</span>
-                    <Tag>{language.t("settings.providers.tag.custom")}</Tag>
-                  </div>
-                  <p class="settings-v2-provider-description">{language.t("settings.providers.custom.description")}</p>
-                </div>
-              </div>
+                    <span class="settings-v2-provider-name">{language.t("provider.custom.title")}<@lgcode/span>
+                    <Tag>{language.t("settings.providers.tag.custom")}<@lgcode/Tag>
+                  <@lgcode/div>
+                  <p class="settings-v2-provider-description">{language.t("settings.providers.custom.description")}<@lgcode/p>
+                <@lgcode/div>
+              <@lgcode/div>
               <ButtonV2
                 size="normal"
                 variant="neutral"
                 icon="plus"
                 onClick={() => {
-                  dialog.show(() => <DialogCustomProvider back="close" />)
+                  dialog.show(() => <DialogCustomProvider back="close" @lgcode/>)
                 }}
               >
                 {language.t("common.connect")}
-              </ButtonV2>
-            </div>
-          </SettingsListV2>
+              <@lgcode/ButtonV2>
+            <@lgcode/div>
+          <@lgcode/SettingsListV2>
 
           <button
             type="button"
             class="settings-v2-providers-view-all"
             onClick={() => {
-              dialog.show(() => <DialogSelectProvider />)
+              dialog.show(() => <DialogSelectProvider @lgcode/>)
             }}
           >
             {language.t("dialog.provider.viewAll")}
-          </button>
-        </div>
-      </div>
-    </>
+          <@lgcode/button>
+        <@lgcode/div>
+      <@lgcode/div>
+    <@lgcode/>
   )
 }

@@ -1,8 +1,8 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { PluginV2 } from "@opencode@lgcode/core/plugin"
-import { VenicePlugin } from "@opencode@lgcode/core/plugin/provider/venice"
-import { fakeSelectorSdk, it, model } from "./provider-helper"
+import { PluginV2 } from "@lgcode/core@lgcode/plugin"
+import { VenicePlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/venice"
+import { fakeSelectorSdk, it, model } from ".@lgcode/provider-helper"
 
 describe("VenicePlugin", () => {
   it.effect("creates a Venice SDK for venice-ai-sdk-provider", () =>
@@ -54,14 +54,14 @@ describe("VenicePlugin", () => {
         "aisdk.sdk",
         {
           model: model("venice", "model"),
-          package: "file:///tmp/venice-ai-sdk-provider.js",
+          package: "file:@lgcode/@lgcode/@lgcode/tmp@lgcode/venice-ai-sdk-provider.js",
           options: { name: "venice" },
         },
         {},
       )
       const other = yield* plugin.trigger(
         "aisdk.sdk",
-        { model: model("venice", "model"), package: "@ai-sdk/openai-compatible", options: { name: "venice" } },
+        { model: model("venice", "model"), package: "@ai-sdk@lgcode/openai-compatible", options: { name: "venice" } },
         {},
       )
       expect(similar.sdk).toBeUndefined()

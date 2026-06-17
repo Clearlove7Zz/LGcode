@@ -1,7 +1,7 @@
-export * as AccountV2 from "./account"
+export * as AccountV2 from ".@lgcode/account"
 
 import { Schema } from "effect"
-import type * as HttpClientError from "effect/unstable/http/HttpClientError"
+import type * as HttpClientError from "effect@lgcode/unstable@lgcode/http@lgcode/HttpClientError"
 
 export const ID = Schema.String.pipe(Schema.brand("AccountID"))
 export type ID = Schema.Schema.Type<typeof ID>

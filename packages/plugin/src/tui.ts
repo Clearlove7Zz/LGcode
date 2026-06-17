@@ -15,23 +15,23 @@ import type {
   SessionStatus,
   TextPart,
   Config as SdkConfig,
-} from "@opencode@lgcode/sdk/v2"
-import type { CliRenderer, KeyEvent, RGBA, Renderable, SlotMode } from "@opentui/core"
-import type { Binding, Keymap } from "@opentui/keymap"
+} from "@lgcode/sdk@lgcode/v2"
+import type { CliRenderer, KeyEvent, RGBA, Renderable, SlotMode } from "@opentui@lgcode/core"
+import type { Binding, Keymap } from "@opentui@lgcode/keymap"
 import {
   createBindingLookup as createKeymapBindingLookup,
   type BindingConfig,
   type CreateBindingLookupOptions,
   type KeySequenceFormatPart,
   type SequenceBindingLike,
-} from "@opentui/keymap/extras"
-import type { JSX, SolidPlugin } from "@opentui/solid"
-import type { Config as PluginConfig, PluginOptions } from "./index.js"
+} from "@opentui@lgcode/keymap@lgcode/extras"
+import type { JSX, SolidPlugin } from "@opentui@lgcode/solid"
+import type { Config as PluginConfig, PluginOptions } from ".@lgcode/index.js"
 
-export type { CliRenderer, KeyEvent, Renderable, SlotMode } from "@opentui/core"
-export { stringifyKeySequence, stringifyKeyStroke } from "@opentui/keymap"
-export type { Binding, KeyLike, KeySequencePart, KeyStringifyInput, StringifyOptions } from "@opentui/keymap"
-export { formatCommandBindings, formatKeySequence } from "@opentui/keymap/extras"
+export type { CliRenderer, KeyEvent, Renderable, SlotMode } from "@opentui@lgcode/core"
+export { stringifyKeySequence, stringifyKeyStroke } from "@opentui@lgcode/keymap"
+export type { Binding, KeyLike, KeySequencePart, KeyStringifyInput, StringifyOptions } from "@opentui@lgcode/keymap"
+export { formatCommandBindings, formatKeySequence } from "@opentui@lgcode/keymap@lgcode/extras"
 export type {
   BindingConfig,
   BindingLookup,
@@ -41,7 +41,7 @@ export type {
   FormatKeySequenceOptions,
   KeySequenceFormatPart,
   SequenceBindingLike,
-} from "@opentui/keymap/extras"
+} from "@opentui@lgcode/keymap@lgcode/extras"
 
 export function createBindingLookup(
   config: BindingConfig<Renderable, KeyEvent> | undefined,
@@ -83,11 +83,11 @@ export type TuiModeApi = {
   push: (mode: string) => () => void
 }
 
-/**
+@lgcode/**
  * Legacy `api.command` shape kept so v1 plugins can initialize. Remove in v2.
  *
  * @deprecated Use `api.keymap.registerLayer({ commands, bindings })` instead.
- */
+ *@lgcode/
 export type TuiCommand = {
   title: string
   value: string
@@ -104,18 +104,18 @@ export type TuiCommand = {
   onSelect?: (dialog?: TuiDialogStack) => void | Promise<void>
 }
 
-/**
+@lgcode/**
  * Legacy `api.command` API kept so v1 plugins can initialize. Remove in v2.
  *
  * @deprecated Use `api.keymap.registerLayer`, `api.keymap.dispatchCommand`, and
  * `api.keymap.dispatchCommand("command.palette.show")` instead.
- */
+ *@lgcode/
 export type TuiCommandApi = {
-  /** @deprecated Use `api.keymap.registerLayer({ commands, bindings })` instead. */
+  @lgcode/** @deprecated Use `api.keymap.registerLayer({ commands, bindings })` instead. *@lgcode/
   register: (cb: () => TuiCommand[]) => () => void
-  /** @deprecated Use `api.keymap.dispatchCommand(name)` instead. */
+  @lgcode/** @deprecated Use `api.keymap.dispatchCommand(name)` instead. *@lgcode/
   trigger: (value: string) => void
-  /** @deprecated Use `api.keymap.dispatchCommand("command.palette.show")` instead. */
+  @lgcode/** @deprecated Use `api.keymap.dispatchCommand("command.palette.show")` instead. *@lgcode/
   show: () => void
 }
 
@@ -581,12 +581,12 @@ export type TuiWorkspace = {
 export type TuiPluginApi = {
   app: TuiApp
   attention: TuiAttention
-  /**
+  @lgcode/**
    * Legacy `api.command` API kept so v1 plugins can initialize. Remove in v2.
    *
    * @deprecated Use `api.keymap.registerLayer`, `api.keymap.dispatchCommand`, and
    * `api.keymap.dispatchCommand("command.palette.show")` instead.
-   */
+   *@lgcode/
   command?: TuiCommandApi
   keys: TuiKeys
   keymap: TuiKeymap

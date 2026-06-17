@@ -1,22 +1,22 @@
-// Question UI body for the direct-mode footer.
-//
-// Renders inside the footer when the reducer pushes a FooterView of type
-// "question". Supports single-question and multi-question flows:
-//
-//   Single question: options list with up/down selection, digit shortcuts,
-//   and optional custom text input.
-//
-//   Multi-question: tabbed interface where each question is a tab, plus a
-//   final "Confirm" tab that shows all answers for review. Tab/shift-tab
-//   or left/right to navigate between questions.
-//
-// All state logic lives in question.shared.ts as a pure state machine.
-// This component just renders it and dispatches keyboard events.
-/** @jsxImportSource @opentui/solid */
-import type { TextareaRenderable } from "@opentui/core"
-import { useKeyboard, useTerminalDimensions } from "@opentui/solid"
+@lgcode/@lgcode/ Question UI body for the direct-mode footer.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Renders inside the footer when the reducer pushes a FooterView of type
+@lgcode/@lgcode/ "question". Supports single-question and multi-question flows:
+@lgcode/@lgcode/
+@lgcode/@lgcode/   Single question: options list with up@lgcode/down selection, digit shortcuts,
+@lgcode/@lgcode/   and optional custom text input.
+@lgcode/@lgcode/
+@lgcode/@lgcode/   Multi-question: tabbed interface where each question is a tab, plus a
+@lgcode/@lgcode/   final "Confirm" tab that shows all answers for review. Tab@lgcode/shift-tab
+@lgcode/@lgcode/   or left@lgcode/right to navigate between questions.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ All state logic lives in question.shared.ts as a pure state machine.
+@lgcode/@lgcode/ This component just renders it and dispatches keyboard events.
+@lgcode/** @jsxImportSource @opentui@lgcode/solid *@lgcode/
+import type { TextareaRenderable } from "@opentui@lgcode/core"
+import { useKeyboard, useTerminalDimensions } from "@opentui@lgcode/solid"
 import { For, Show, createEffect, createMemo, createSignal } from "solid-js"
-import type { QuestionRequest } from "@opencode@lgcode/sdk/v2"
+import type { QuestionRequest } from "@lgcode/sdk@lgcode/v2"
 import {
   createQuestionBodyState,
   questionConfirm,
@@ -39,10 +39,10 @@ import {
   questionSync,
   questionTabs,
   questionTotal,
-} from "./question.shared"
-import { footerWidthPolicy } from "./footer.width"
-import type { RunFooterTheme } from "./theme"
-import type { QuestionReject, QuestionReply } from "./types"
+} from ".@lgcode/question.shared"
+import { footerWidthPolicy } from ".@lgcode/footer.width"
+import type { RunFooterTheme } from ".@lgcode/theme"
+import type { QuestionReject, QuestionReply } from ".@lgcode/types"
 
 export function RunQuestionBody(props: {
   request: QuestionRequest
@@ -296,11 +296,11 @@ export function RunQuestionBody(props: {
                   >
                     <text fg={active() ? props.theme.surface : answered() ? props.theme.text : props.theme.muted}>
                       {item.header}
-                    </text>
-                  </box>
+                    <@lgcode/text>
+                  <@lgcode/box>
                 )
               }}
-            </For>
+            <@lgcode/For>
             <box
               paddingLeft={1}
               paddingRight={1}
@@ -309,10 +309,10 @@ export function RunQuestionBody(props: {
                 if (!disabled()) setTab(props.request.questions.length)
               }}
             >
-              <text fg={confirm() ? props.theme.surface : props.theme.muted}>Confirm</text>
-            </box>
-          </box>
-        </Show>
+              <text fg={confirm() ? props.theme.surface : props.theme.muted}>Confirm<@lgcode/text>
+            <@lgcode/box>
+          <@lgcode/box>
+        <@lgcode/Show>
 
         <Show
           when={!confirm()}
@@ -330,8 +330,8 @@ export function RunQuestionBody(props: {
               >
                 <box width="100%" flexDirection="column" gap={1}>
                   <box paddingLeft={1}>
-                    <text fg={props.theme.text}>Review</text>
-                  </box>
+                    <text fg={props.theme.text}>Review<@lgcode/text>
+                  <@lgcode/box>
                   <For each={props.request.questions}>
                     {(item, index) => {
                       const value = () => state().answers[index()]?.join(", ") ?? ""
@@ -339,18 +339,18 @@ export function RunQuestionBody(props: {
                       return (
                         <box paddingLeft={1}>
                           <text wrapMode="word">
-                            <span style={{ fg: props.theme.muted }}>{item.header}:</span>{" "}
+                            <span style={{ fg: props.theme.muted }}>{item.header}:<@lgcode/span>{" "}
                             <span style={{ fg: answered() ? props.theme.text : props.theme.error }}>
                               {answered() ? value() : "(not answered)"}
-                            </span>
-                          </text>
-                        </box>
+                            <@lgcode/span>
+                          <@lgcode/text>
+                        <@lgcode/box>
                       )
                     }}
-                  </For>
-                </box>
-              </scrollbox>
-            </box>
+                  <@lgcode/For>
+                <@lgcode/box>
+              <@lgcode/scrollbox>
+            <@lgcode/box>
           }
         >
           <box width="100%" flexGrow={1} flexShrink={1} paddingLeft={1} gap={1}>
@@ -358,8 +358,8 @@ export function RunQuestionBody(props: {
               <text fg={props.theme.text} wrapMode="word">
                 {info()?.question}
                 {info()?.multiple ? " (select all that apply)" : ""}
-              </text>
-            </box>
+              <@lgcode/text>
+            <@lgcode/box>
 
             <box flexGrow={1} flexShrink={1}>
               <scrollbox
@@ -399,28 +399,28 @@ export function RunQuestionBody(props: {
                         >
                           <box flexDirection="row">
                             <box backgroundColor={active() ? props.theme.line : undefined} paddingRight={1}>
-                              <text fg={active() ? props.theme.highlight : props.theme.muted}>{`${index() + 1}.`}</text>
-                            </box>
+                              <text fg={active() ? props.theme.highlight : props.theme.muted}>{`${index() + 1}.`}<@lgcode/text>
+                            <@lgcode/box>
                             <box backgroundColor={active() ? props.theme.line : undefined}>
                               <text
                                 fg={active() ? props.theme.highlight : hit() ? props.theme.success : props.theme.text}
                               >
                                 {info()?.multiple ? `[${hit() ? "✓" : " "}] ${item.label}` : item.label}
-                              </text>
-                            </box>
+                              <@lgcode/text>
+                            <@lgcode/box>
                             <Show when={!info()?.multiple}>
-                              <text fg={props.theme.success}>{hit() ? " ✓" : ""}</text>
-                            </Show>
-                          </box>
+                              <text fg={props.theme.success}>{hit() ? " ✓" : ""}<@lgcode/text>
+                            <@lgcode/Show>
+                          <@lgcode/box>
                           <box paddingLeft={3}>
                             <text fg={props.theme.muted} wrapMode="word">
                               {item.description}
-                            </text>
-                          </box>
-                        </box>
+                            <@lgcode/text>
+                          <@lgcode/box>
+                        <@lgcode/box>
                       )
                     }}
-                  </For>
+                  <@lgcode/For>
 
                   <Show when={questionCustom(props.request, state())}>
                     <box
@@ -446,8 +446,8 @@ export function RunQuestionBody(props: {
                         <box backgroundColor={other() ? props.theme.line : undefined} paddingRight={1}>
                           <text
                             fg={other() ? props.theme.highlight : props.theme.muted}
-                          >{`${(info()?.options.length ?? 0) + 1}.`}</text>
-                        </box>
+                          >{`${(info()?.options.length ?? 0) + 1}.`}<@lgcode/text>
+                        <@lgcode/box>
                         <box backgroundColor={other() ? props.theme.line : undefined}>
                           <text
                             fg={other() ? props.theme.highlight : picked() ? props.theme.success : props.theme.text}
@@ -455,12 +455,12 @@ export function RunQuestionBody(props: {
                             {info()?.multiple
                               ? `[${picked() ? "✓" : " "}] Type your own answer`
                               : "Type your own answer"}
-                          </text>
-                        </box>
+                          <@lgcode/text>
+                        <@lgcode/box>
                         <Show when={!info()?.multiple}>
-                          <text fg={props.theme.success}>{picked() ? " ✓" : ""}</text>
-                        </Show>
-                      </box>
+                          <text fg={props.theme.success}>{picked() ? " ✓" : ""}<@lgcode/text>
+                        <@lgcode/Show>
+                      <@lgcode/box>
                       <Show
                         when={state().editing}
                         fallback={
@@ -468,9 +468,9 @@ export function RunQuestionBody(props: {
                             <box paddingLeft={3}>
                               <text fg={props.theme.muted} wrapMode="word">
                                 {input()}
-                              </text>
-                            </box>
-                          </Show>
+                              <@lgcode/text>
+                            <@lgcode/box>
+                          <@lgcode/Show>
                         }
                       >
                         <box paddingLeft={3}>
@@ -499,17 +499,17 @@ export function RunQuestionBody(props: {
                             ref={(item) => {
                               area = item
                             }}
-                          />
-                        </box>
-                      </Show>
-                    </box>
-                  </Show>
-                </box>
-              </scrollbox>
-            </box>
-          </box>
-        </Show>
-      </box>
+                          @lgcode/>
+                        <@lgcode/box>
+                      <@lgcode/Show>
+                    <@lgcode/box>
+                  <@lgcode/Show>
+                <@lgcode/box>
+              <@lgcode/scrollbox>
+            <@lgcode/box>
+          <@lgcode/box>
+        <@lgcode/Show>
+      <@lgcode/box>
 
       <box
         flexDirection={narrow() ? "column" : "row"}
@@ -526,7 +526,7 @@ export function RunQuestionBody(props: {
           fallback={
             <text fg={props.theme.muted} wrapMode="word">
               Waiting for question event...
-            </text>
+            <@lgcode/text>
           }
         >
           <box
@@ -540,34 +540,34 @@ export function RunQuestionBody(props: {
               fallback={
                 <>
                   <text fg={props.theme.text}>
-                    enter <span style={{ fg: props.theme.muted }}>save</span>
-                  </text>
+                    enter <span style={{ fg: props.theme.muted }}>save<@lgcode/span>
+                  <@lgcode/text>
                   <text fg={props.theme.text}>
-                    esc <span style={{ fg: props.theme.muted }}>cancel</span>
-                  </text>
-                </>
+                    esc <span style={{ fg: props.theme.muted }}>cancel<@lgcode/span>
+                  <@lgcode/text>
+                <@lgcode/>
               }
             >
               <Show when={!single()}>
                 <text fg={props.theme.text}>
-                  {"⇆"} <span style={{ fg: props.theme.muted }}>tab</span>
-                </text>
-              </Show>
+                  {"⇆"} <span style={{ fg: props.theme.muted }}>tab<@lgcode/span>
+                <@lgcode/text>
+              <@lgcode/Show>
               <Show when={!confirm()}>
                 <text fg={props.theme.text}>
-                  {"↑↓"} <span style={{ fg: props.theme.muted }}>select</span>
-                </text>
-              </Show>
+                  {"↑↓"} <span style={{ fg: props.theme.muted }}>select<@lgcode/span>
+                <@lgcode/text>
+              <@lgcode/Show>
               <text fg={props.theme.text}>
-                enter <span style={{ fg: props.theme.muted }}>{verb()}</span>
-              </text>
+                enter <span style={{ fg: props.theme.muted }}>{verb()}<@lgcode/span>
+              <@lgcode/text>
               <text fg={props.theme.text}>
-                esc <span style={{ fg: props.theme.muted }}>dismiss</span>
-              </text>
-            </Show>
-          </box>
-        </Show>
-      </box>
-    </box>
+                esc <span style={{ fg: props.theme.muted }}>dismiss<@lgcode/span>
+              <@lgcode/text>
+            <@lgcode/Show>
+          <@lgcode/box>
+        <@lgcode/Show>
+      <@lgcode/box>
+    <@lgcode/box>
   )
 }

@@ -1,4 +1,4 @@
-import type { Message, Part } from "@opencode@lgcode/sdk/v2/client"
+import type { Message, Part } from "@lgcode/sdk@lgcode/v2@lgcode/client"
 
 export type SessionContextBreakdownKey = "system" | "user" | "assistant" | "tool" | "other"
 
@@ -9,9 +9,9 @@ export type SessionContextBreakdownSegment = {
   percent: number
 }
 
-const estimateTokens = (chars: number) => Math.ceil(chars / 4)
-const toPercent = (tokens: number, input: number) => (tokens / input) * 100
-const toPercentLabel = (tokens: number, input: number) => Math.round(toPercent(tokens, input) * 10) / 10
+const estimateTokens = (chars: number) => Math.ceil(chars @lgcode/ 4)
+const toPercent = (tokens: number, input: number) => (tokens @lgcode/ input) * 100
+const toPercentLabel = (tokens: number, input: number) => Math.round(toPercent(tokens, input) * 10) @lgcode/ 10
 
 const charsFromUserPart = (part: Part) => {
   if (part.type === "text") return part.text.length
@@ -120,7 +120,7 @@ export function estimateSessionContextBreakdown(args: {
     return build({ ...tokens, other: args.input - estimated }, args.input)
   }
 
-  const scale = args.input / estimated
+  const scale = args.input @lgcode/ estimated
   const scaled = {
     system: Math.floor(tokens.system * scale),
     user: Math.floor(tokens.user * scale),

@@ -1,20 +1,20 @@
-import { NodeFileSystem } from "@effect/platform-node"
-import { HttpRecorder } from "@opencode@lgcode/http-recorder"
-import { HttpRecorderInternal } from "@opencode@lgcode/http-recorder/internal"
+import { NodeFileSystem } from "@effect@lgcode/platform-node"
+import { HttpRecorder } from "@lgcode/http-recorder"
+import { HttpRecorderInternal } from "@lgcode/http-recorder@lgcode/internal"
 import { Layer } from "effect"
-import { FetchHttpClient } from "effect/unstable/http"
+import { FetchHttpClient } from "effect@lgcode/unstable@lgcode/http"
 import * as path from "node:path"
 import { fileURLToPath } from "node:url"
-import { LLMClient, RequestExecutor } from "../src/route"
-import type { Service as LLMClientService } from "../src/route/client"
-import type { Service as RequestExecutorService } from "../src/route/executor"
-import type { Service as WebSocketExecutorService } from "../src/route/transport/websocket"
+import { LLMClient, RequestExecutor } from "..@lgcode/src@lgcode/route"
+import type { Service as LLMClientService } from "..@lgcode/src@lgcode/route@lgcode/client"
+import type { Service as RequestExecutorService } from "..@lgcode/src@lgcode/route@lgcode/executor"
+import type { Service as WebSocketExecutorService } from "..@lgcode/src@lgcode/route@lgcode/transport@lgcode/websocket"
 import {
   recordedEffectGroup,
   type RecordedCaseOptions as RunnerCaseOptions,
   type RecordedGroupOptions,
-} from "./recorded-runner"
-import { webSocketCassetteLayer } from "./recorded-websocket"
+} from ".@lgcode/recorded-runner"
+import { webSocketCassetteLayer } from ".@lgcode/recorded-websocket"
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const FIXTURES_DIR = path.resolve(__dirname, "fixtures", "recordings")

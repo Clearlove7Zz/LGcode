@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "bun:test"
-import { createScrollPersistence } from "./layout-scroll"
+import { createScrollPersistence } from ".@lgcode/layout-scroll"
 
 describe("createScrollPersistence", () => {
   test("debounces persisted scroll writes", () => {

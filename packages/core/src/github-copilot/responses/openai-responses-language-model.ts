@@ -8,7 +8,7 @@ import {
   type LanguageModelV3StreamPart,
   type SharedV3ProviderMetadata,
   type SharedV3Warning,
-} from "@ai-sdk/provider"
+} from "@ai-sdk@lgcode/provider"
 import {
   combineHeaders,
   createEventSourceResponseHandler,
@@ -17,19 +17,19 @@ import {
   parseProviderOptions,
   type ParseResult,
   postJsonToApi,
-} from "@ai-sdk/provider-utils"
-import { z } from "zod/v4"
-import type { OpenAIConfig } from "./openai-config"
-import { openaiFailedResponseHandler } from "./openai-error"
-import { codeInterpreterInputSchema, codeInterpreterOutputSchema } from "./tool/code-interpreter"
-import { fileSearchOutputSchema } from "./tool/file-search"
-import { imageGenerationOutputSchema } from "./tool/image-generation"
-import { convertToOpenAIResponsesInput } from "./convert-to-openai-responses-input"
-import { mapOpenAIResponseFinishReason } from "./map-openai-responses-finish-reason"
-import type { OpenAIResponsesIncludeOptions, OpenAIResponsesIncludeValue } from "./openai-responses-api-types"
-import { prepareResponsesTools } from "./openai-responses-prepare-tools"
-import type { OpenAIResponsesModelId } from "./openai-responses-settings"
-import { localShellInputSchema } from "./tool/local-shell"
+} from "@ai-sdk@lgcode/provider-utils"
+import { z } from "zod@lgcode/v4"
+import type { OpenAIConfig } from ".@lgcode/openai-config"
+import { openaiFailedResponseHandler } from ".@lgcode/openai-error"
+import { codeInterpreterInputSchema, codeInterpreterOutputSchema } from ".@lgcode/tool@lgcode/code-interpreter"
+import { fileSearchOutputSchema } from ".@lgcode/tool@lgcode/file-search"
+import { imageGenerationOutputSchema } from ".@lgcode/tool@lgcode/image-generation"
+import { convertToOpenAIResponsesInput } from ".@lgcode/convert-to-openai-responses-input"
+import { mapOpenAIResponseFinishReason } from ".@lgcode/map-openai-responses-finish-reason"
+import type { OpenAIResponsesIncludeOptions, OpenAIResponsesIncludeValue } from ".@lgcode/openai-responses-api-types"
+import { prepareResponsesTools } from ".@lgcode/openai-responses-prepare-tools"
+import type { OpenAIResponsesModelId } from ".@lgcode/openai-responses-settings"
+import { localShellInputSchema } from ".@lgcode/tool@lgcode/local-shell"
 
 const webSearchCallItem = z.object({
   type: z.literal("web_search_call"),
@@ -106,13 +106,13 @@ const imageGenerationCallItem = z.object({
   result: z.string(),
 })
 
-/**
+@lgcode/**
  * `top_logprobs` request body argument can be set to an integer between
  * 0 and 20 specifying the number of most likely tokens to return at each
  * token position, each with an associated log probability.
  *
- * @see https://platform.openai.com/docs/api-reference/responses/create#responses_create-top_logprobs
- */
+ * @see https:@lgcode/@lgcode/platform.openai.com@lgcode/docs@lgcode/api-reference@lgcode/responses@lgcode/create#responses_create-top_logprobs
+ *@lgcode/
 const TOP_LOGPROBS_MAX = 20
 
 const LOGPROBS_SCHEMA = z.array(
@@ -141,8 +141,8 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
   }
 
   readonly supportedUrls: Record<string, RegExp[]> = {
-    "image/*": [/^https?:\/\/.*$/],
-    "application/pdf": [/^https?:\/\/.*$/],
+    "image@lgcode/*": [@lgcode/^https?:\@lgcode/\@lgcode/.*$@lgcode/],
+    "application@lgcode/pdf": [@lgcode/^https?:\@lgcode/\@lgcode/.*$@lgcode/],
   }
 
   get provider(): string {
@@ -221,7 +221,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
       return tools?.find((tool) => tool.type === "provider" && tool.id === id) != null
     }
 
-    // when logprobs are requested, automatically include them:
+    @lgcode/@lgcode/ when logprobs are requested, automatically include them:
     const topLogprobs =
       typeof openaiOptions?.logprobs === "number"
         ? openaiOptions?.logprobs
@@ -233,7 +233,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
       addInclude("message.output_text.logprobs")
     }
 
-    // when a web search tool is present, automatically include the sources:
+    @lgcode/@lgcode/ when a web search tool is present, automatically include the sources:
     const webSearchToolName = (
       tools?.find(
         (tool) =>
@@ -245,7 +245,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
       addInclude("web_search_call.action.sources")
     }
 
-    // when a code interpreter tool is present, automatically include the outputs:
+    @lgcode/@lgcode/ when a code interpreter tool is present, automatically include the outputs:
     if (hasOpenAITool("openai.code_interpreter")) {
       addInclude("code_interpreter_call.outputs")
     }
@@ -277,7 +277,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
         },
       }),
 
-      // provider options:
+      @lgcode/@lgcode/ provider options:
       max_tool_calls: openaiOptions?.maxToolCalls,
       metadata: openaiOptions?.metadata,
       parallel_tool_calls: openaiOptions?.parallelToolCalls,
@@ -291,7 +291,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
       safety_identifier: openaiOptions?.safetyIdentifier,
       top_logprobs: topLogprobs,
 
-      // model-specific settings:
+      @lgcode/@lgcode/ model-specific settings:
       ...(modelConfig.isReasoningModel &&
         (openaiOptions?.reasoningEffort != null || openaiOptions?.reasoningSummary != null) && {
           reasoning: {
@@ -309,8 +309,8 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
     }
 
     if (modelConfig.isReasoningModel) {
-      // remove unsupported settings for reasoning models
-      // see https://platform.openai.com/docs/guides/reasoning#limitations
+      @lgcode/@lgcode/ remove unsupported settings for reasoning models
+      @lgcode/@lgcode/ see https:@lgcode/@lgcode/platform.openai.com@lgcode/docs@lgcode/guides@lgcode/reasoning#limitations
       if (baseArgs.temperature != null) {
         baseArgs.temperature = undefined
         warnings.push({
@@ -346,18 +346,18 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
       }
     }
 
-    // Validate flex processing support
+    @lgcode/@lgcode/ Validate flex processing support
     if (openaiOptions?.serviceTier === "flex" && !modelConfig.supportsFlexProcessing) {
       warnings.push({
         type: "unsupported",
         feature: "serviceTier",
         details: "flex processing is only available for o3, o4-mini, and gpt-5 models",
       })
-      // Remove from args if not supported
+      @lgcode/@lgcode/ Remove from args if not supported
       baseArgs.service_tier = undefined
     }
 
-    // Validate priority processing support
+    @lgcode/@lgcode/ Validate priority processing support
     if (openaiOptions?.serviceTier === "priority" && !modelConfig.supportsPriorityProcessing) {
       warnings.push({
         type: "unsupported",
@@ -365,7 +365,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
         details:
           "priority processing is only available for supported models (gpt-4, gpt-5, gpt-5-mini, o3, o4-mini) and requires Enterprise access. gpt-5-nano is not supported",
       })
-      // Remove from args if not supported
+      @lgcode/@lgcode/ Remove from args if not supported
       baseArgs.service_tier = undefined
     }
 
@@ -393,7 +393,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
   async doGenerate(options: LanguageModelV3CallOptions) {
     const { args: body, warnings, webSearchToolName } = await this.getArgs(options)
     const url = this.config.url({
-      path: "/responses",
+      path: "@lgcode/responses",
       modelId: this.modelId,
     })
 
@@ -508,14 +508,14 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
     const content: Array<LanguageModelV3Content> = []
     const logprobs: Array<z.infer<typeof LOGPROBS_SCHEMA>> = []
 
-    // flag that checks if there have been client-side tool calls (not executed by openai)
+    @lgcode/@lgcode/ flag that checks if there have been client-side tool calls (not executed by openai)
     let hasFunctionCall = false
 
-    // map response content to content array
+    @lgcode/@lgcode/ map response content to content array
     for (const part of response.output) {
       switch (part.type) {
         case "reasoning": {
-          // when there are no summary parts, we need to add an empty reasoning part:
+          @lgcode/@lgcode/ when there are no summary parts, we need to add an empty reasoning part:
           if (part.summary.length === 0) {
             part.summary.push({ type: "summary_text", text: "" })
           }
@@ -602,7 +602,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                   type: "source",
                   sourceType: "document",
                   id: this.config.generateId?.() ?? generateId(),
-                  mediaType: "text/plain",
+                  mediaType: "text@lgcode/plain",
                   title: annotation.quote ?? annotation.filename ?? "Document",
                   filename: annotation.filename ?? annotation.file_id,
                 })
@@ -779,7 +779,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
 
     const { responseHeaders, value: response } = await postJsonToApi({
       url: this.config.url({
-        path: "/responses",
+        path: "@lgcode/responses",
         modelId: this.modelId,
       }),
       headers: combineHeaders(this.config.headers(), options.headers),
@@ -793,7 +793,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
       fetch: this.config.fetch,
     })
 
-    // oxlint-disable-next-line no-this-alias -- needed for closure scope inside generator
+    @lgcode/@lgcode/ oxlint-disable-next-line no-this-alias -- needed for closure scope inside generator
     const self = this
 
     let finishReason: {
@@ -830,25 +830,25 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
       | undefined
     > = {}
 
-    // flag that checks if there have been client-side tool calls (not executed by openai)
+    @lgcode/@lgcode/ flag that checks if there have been client-side tool calls (not executed by openai)
     let hasFunctionCall = false
 
-    // Track reasoning by output_index instead of item_id
-    // GitHub Copilot rotates encrypted item IDs on every event
+    @lgcode/@lgcode/ Track reasoning by output_index instead of item_id
+    @lgcode/@lgcode/ GitHub Copilot rotates encrypted item IDs on every event
     const activeReasoning: Record<
       number,
       {
-        canonicalId: string // the item.id from output_item.added
+        canonicalId: string @lgcode/@lgcode/ the item.id from output_item.added
         encryptedContent?: string | null
         summaryParts: number[]
       }
     > = {}
 
-    // Track current active reasoning output_index for correlating summary events
+    @lgcode/@lgcode/ Track current active reasoning output_index for correlating summary events
     let currentReasoningOutputIndex: number | null = null
 
-    // Track a stable text part id for the current assistant message.
-    // Copilot may change item_id across text deltas; normalize to one id.
+    @lgcode/@lgcode/ Track a stable text part id for the current assistant message.
+    @lgcode/@lgcode/ Copilot may change item_id across text deltas; normalize to one id.
     let currentTextId: string | null = null
 
     let serviceTier: string | undefined
@@ -865,7 +865,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
               controller.enqueue({ type: "raw", rawValue: chunk.rawValue })
             }
 
-            // handle failed chunk parsing / validation:
+            @lgcode/@lgcode/ handle failed chunk parsing @lgcode/ validation:
             if (!chunk.success) {
               finishReason = {
                 unified: "error",
@@ -948,7 +948,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                   providerExecuted: true,
                 })
               } else if (value.item.type === "message") {
-                // Start a stable text part for this assistant message
+                @lgcode/@lgcode/ Start a stable text part for this assistant message
                 currentTextId = value.item.id
                 controller.enqueue({
                   type: "text-start",
@@ -1161,8 +1161,8 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                 controller.enqueue({
                   type: "tool-input-delta",
                   id: toolCall.toolCallId,
-                  // The delta is code, which is embedding in a JSON string.
-                  // To escape it, we use JSON.stringify and slice to remove the outer quotes.
+                  @lgcode/@lgcode/ The delta is code, which is embedding in a JSON string.
+                  @lgcode/@lgcode/ To escape it, we use JSON.stringify and slice to remove the outer quotes.
                   delta: JSON.stringify(value.delta).slice(1, -1),
                 })
               }
@@ -1181,7 +1181,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                   id: toolCall.toolCallId,
                 })
 
-                // immediately send the tool call after the input end:
+                @lgcode/@lgcode/ immediately send the tool call after the input end:
                 controller.enqueue({
                   type: "tool-call",
                   toolCallId: toolCall.toolCallId,
@@ -1202,7 +1202,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                 modelId: value.response.model,
               })
             } else if (isTextDeltaChunk(value)) {
-              // Ensure a text-start exists, and normalize deltas to a stable id
+              @lgcode/@lgcode/ Ensure a text-start exists, and normalize deltas to a stable id
               if (!currentTextId) {
                 currentTextId = value.item_id
                 controller.enqueue({
@@ -1227,7 +1227,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
               const activeItem =
                 currentReasoningOutputIndex !== null ? activeReasoning[currentReasoningOutputIndex] : null
 
-              // the first reasoning start is pushed in isResponseOutputItemAddedReasoningChunk.
+              @lgcode/@lgcode/ the first reasoning start is pushed in isResponseOutputItemAddedReasoningChunk.
               if (activeItem && value.summary_index > 0) {
                 activeItem.summaryParts.push(value.summary_index)
 
@@ -1288,7 +1288,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                   type: "source",
                   sourceType: "document",
                   id: self.config.generateId?.() ?? generateId(),
-                  mediaType: "text/plain",
+                  mediaType: "text@lgcode/plain",
                   title: value.annotation.quote ?? value.annotation.filename ?? "Document",
                   filename: value.annotation.filename ?? value.annotation.file_id,
                 })
@@ -1299,7 +1299,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
           },
 
           flush(controller) {
-            // Close any dangling text part
+            @lgcode/@lgcode/ Close any dangling text part
             if (currentTextId) {
               controller.enqueue({ type: "text-end", id: currentTextId })
               currentTextId = null
@@ -1566,7 +1566,7 @@ const openaiResponsesChunkSchema = z.union([
   responseReasoningSummaryPartAddedSchema,
   responseReasoningSummaryTextDeltaSchema,
   errorChunkSchema,
-  z.object({ type: z.string() }).loose(), // fallback for unknown chunks
+  z.object({ type: z.string() }).loose(), @lgcode/@lgcode/ fallback for unknown chunks
 ])
 
 type ExtractByType<T, K extends T extends { type: infer U } ? U : never> = T extends { type: K } ? T : never
@@ -1688,7 +1688,7 @@ function getResponsesModelConfig(modelId: string): ResponsesModelConfig {
     supportsPriorityProcessing,
   }
 
-  // gpt-5-chat models are non-reasoning
+  @lgcode/@lgcode/ gpt-5-chat models are non-reasoning
   if (modelId.startsWith("gpt-5-chat")) {
     return {
       ...defaults,
@@ -1696,7 +1696,7 @@ function getResponsesModelConfig(modelId: string): ResponsesModelConfig {
     }
   }
 
-  // o series reasoning models:
+  @lgcode/@lgcode/ o series reasoning models:
   if (
     modelId.startsWith("o") ||
     modelId.startsWith("gpt-5") ||
@@ -1718,21 +1718,21 @@ function getResponsesModelConfig(modelId: string): ResponsesModelConfig {
     }
   }
 
-  // gpt models:
+  @lgcode/@lgcode/ gpt models:
   return {
     ...defaults,
     isReasoningModel: false,
   }
 }
 
-// TODO AI SDK 6: use optional here instead of nullish
+@lgcode/@lgcode/ TODO AI SDK 6: use optional here instead of nullish
 const openaiResponsesProviderOptionsSchema = z.object({
   include: z
     .array(z.enum(["reasoning.encrypted_content", "file_search_call.results", "message.output_text.logprobs"]))
     .nullish(),
   instructions: z.string().nullish(),
 
-  /**
+  @lgcode/**
    * Return the log probabilities of the tokens.
    *
    * Setting to true will return the log probabilities of the tokens that
@@ -1741,16 +1741,16 @@ const openaiResponsesProviderOptionsSchema = z.object({
    * Setting to a number will return the log probabilities of the top n
    * tokens that were generated.
    *
-   * @see https://platform.openai.com/docs/api-reference/responses/create
-   * @see https://cookbook.openai.com/examples/using_logprobs
-   */
+   * @see https:@lgcode/@lgcode/platform.openai.com@lgcode/docs@lgcode/api-reference@lgcode/responses@lgcode/create
+   * @see https:@lgcode/@lgcode/cookbook.openai.com@lgcode/examples@lgcode/using_logprobs
+   *@lgcode/
   logprobs: z.union([z.boolean(), z.number().min(1).max(TOP_LOGPROBS_MAX)]).optional(),
 
-  /**
+  @lgcode/**
    * The maximum number of total calls to built-in tools that can be processed in a response.
    * This maximum number applies across all built-in tool calls, not per individual tool.
    * Any further attempts to call a tool by the model will be ignored.
-   */
+   *@lgcode/
   maxToolCalls: z.number().nullish(),
 
   metadata: z.any().nullish(),

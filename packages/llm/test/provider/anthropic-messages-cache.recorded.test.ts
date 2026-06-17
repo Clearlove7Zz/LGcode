@@ -1,25 +1,25 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { CacheHint, LLM } from "../../src"
-import { LLMClient } from "../../src/route"
-import * as Anthropic from "../../src/providers/anthropic"
-import { LARGE_CACHEABLE_SYSTEM } from "../recorded-scenarios"
-import { recordedTests } from "../recorded-test"
+import { CacheHint, LLM } from "..@lgcode/..@lgcode/src"
+import { LLMClient } from "..@lgcode/..@lgcode/src@lgcode/route"
+import * as Anthropic from "..@lgcode/..@lgcode/src@lgcode/providers@lgcode/anthropic"
+import { LARGE_CACHEABLE_SYSTEM } from "..@lgcode/recorded-scenarios"
+import { recordedTests } from "..@lgcode/recorded-test"
 
 const model = Anthropic.configure({
   apiKey: process.env.ANTHROPIC_API_KEY ?? "fixture",
 }).model("claude-haiku-4-5-20251001")
 
-// Two identical generations in a row. The first call writes the prefix into
-// Anthropic's cache; the second should report a cache read against the same
-// prefix. Cassette captures both interactions in order.
+@lgcode/@lgcode/ Two identical generations in a row. The first call writes the prefix into
+@lgcode/@lgcode/ Anthropic's cache; the second should report a cache read against the same
+@lgcode/@lgcode/ prefix. Cassette captures both interactions in order.
 const cacheRequest = LLM.request({
   id: "recorded_anthropic_cache",
   model,
   system: [{ type: "text", text: LARGE_CACHEABLE_SYSTEM, cache: new CacheHint({ type: "ephemeral" }) }],
   prompt: "Say hi.",
-  // Manual hint on the system part is the only marker we want here — skip the
-  // auto-policy's latest-user-message breakpoint so the cassette body matches.
+  @lgcode/@lgcode/ Manual hint on the system part is the only marker we want here — skip the
+  @lgcode/@lgcode/ auto-policy's latest-user-message breakpoint so the cassette body matches.
   cache: "none",
   generation: { maxTokens: 16, temperature: 0 },
 })
@@ -29,8 +29,8 @@ const recorded = recordedTests({
   provider: "anthropic",
   protocol: "anthropic-messages",
   requires: ["ANTHROPIC_API_KEY"],
-  // Two identical requests in one cassette — replay walks the cassette in
-  // recording order so the second call replays the cached-hit interaction.
+  @lgcode/@lgcode/ Two identical requests in one cassette — replay walks the cassette in
+  @lgcode/@lgcode/ recording order so the second call replays the cached-hit interaction.
   options: {
     redact: { allowRequestHeaders: ["anthropic-version"] },
   },
@@ -40,10 +40,10 @@ describe("Anthropic Messages cache recorded", () => {
   recorded.effect.with("writes then reads cache_control on identical second call", { tags: ["cache"] }, () =>
     Effect.gen(function* () {
       const first = yield* LLMClient.generate(cacheRequest)
-      // The first call may write the cache (cacheWriteInputTokens > 0) or it
-      // may be a fresh miss (both fields 0) depending on whether the prefix is
-      // already warm on Anthropic's side. The assertion that matters is that
-      // the SECOND call reports a non-zero cache read.
+      @lgcode/@lgcode/ The first call may write the cache (cacheWriteInputTokens > 0) or it
+      @lgcode/@lgcode/ may be a fresh miss (both fields 0) depending on whether the prefix is
+      @lgcode/@lgcode/ already warm on Anthropic's side. The assertion that matters is that
+      @lgcode/@lgcode/ the SECOND call reports a non-zero cache read.
       expect(first.usage?.cacheReadInputTokens ?? 0).toBeGreaterThanOrEqual(0)
 
       const second = yield* LLMClient.generate(cacheRequest)

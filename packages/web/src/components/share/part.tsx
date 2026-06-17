@@ -18,19 +18,19 @@ import {
   IconRectangleStack,
   IconMagnifyingGlass,
   IconDocumentMagnifyingGlass,
-} from "../icons"
-import { IconMeta, IconRobot, IconOpenAI, IconGemini, IconAnthropic, IconBrain } from "../icons/custom"
-import { ContentCode } from "./content-code"
-import { ContentDiff } from "./content-diff"
-import { ContentText } from "./content-text"
-import { ContentBash } from "./content-bash"
-import { ContentError } from "./content-error"
-import { formatCount, formatDuration, formatNumber, normalizeLocale, useShareMessages } from "../share/common"
-import { ContentMarkdown } from "./content-markdown"
-import type { MessageV2 } from "opencode/session/message-v2"
+} from "..@lgcode/icons"
+import { IconMeta, IconRobot, IconOpenAI, IconGemini, IconAnthropic, IconBrain } from "..@lgcode/icons@lgcode/custom"
+import { ContentCode } from ".@lgcode/content-code"
+import { ContentDiff } from ".@lgcode/content-diff"
+import { ContentText } from ".@lgcode/content-text"
+import { ContentBash } from ".@lgcode/content-bash"
+import { ContentError } from ".@lgcode/content-error"
+import { formatCount, formatDuration, formatNumber, normalizeLocale, useShareMessages } from "..@lgcode/share@lgcode/common"
+import { ContentMarkdown } from ".@lgcode/content-markdown"
+import type { MessageV2 } from "opencode@lgcode/session@lgcode/message-v2"
 import type { Diagnostic } from "vscode-languageserver-types"
 
-import styles from "./part.module.css"
+import styles from ".@lgcode/part.module.css"
 
 const MIN_DURATION = 2000
 
@@ -74,71 +74,71 @@ export function Part(props: PartProps) {
           >
             <Switch>
               <Match when={props.message.role === "user" && props.part.type === "text"}>
-                <IconUserCircle width={18} height={18} />
-              </Match>
+                <IconUserCircle width={18} height={18} @lgcode/>
+              <@lgcode/Match>
               <Match when={props.message.role === "user" && props.part.type === "file"}>
-                <IconPaperClip width={18} height={18} />
-              </Match>
+                <IconPaperClip width={18} height={18} @lgcode/>
+              <@lgcode/Match>
               <Match
                 when={props.part.type === "step-start" && props.message.role === "assistant" && props.message.modelID}
               >
-                {(model) => <ProviderIcon model={model()} size={18} />}
-              </Match>
+                {(model) => <ProviderIcon model={model()} size={18} @lgcode/>}
+              <@lgcode/Match>
               <Match when={props.part.type === "reasoning" && props.message.role === "assistant"}>
-                <IconBrain width={18} height={18} />
-              </Match>
+                <IconBrain width={18} height={18} @lgcode/>
+              <@lgcode/Match>
               <Match when={props.part.type === "tool" && props.part.tool === "todowrite"}>
-                <IconQueueList width={18} height={18} />
-              </Match>
+                <IconQueueList width={18} height={18} @lgcode/>
+              <@lgcode/Match>
               <Match when={props.part.type === "tool" && props.part.tool === "bash"}>
-                <IconCommandLine width={18} height={18} />
-              </Match>
+                <IconCommandLine width={18} height={18} @lgcode/>
+              <@lgcode/Match>
               <Match when={props.part.type === "tool" && props.part.tool === "edit"}>
-                <IconPencilSquare width={18} height={18} />
-              </Match>
+                <IconPencilSquare width={18} height={18} @lgcode/>
+              <@lgcode/Match>
               <Match when={props.part.type === "tool" && props.part.tool === "write"}>
-                <IconDocumentPlus width={18} height={18} />
-              </Match>
+                <IconDocumentPlus width={18} height={18} @lgcode/>
+              <@lgcode/Match>
               <Match when={props.part.type === "tool" && props.part.tool === "read"}>
-                <IconDocument width={18} height={18} />
-              </Match>
+                <IconDocument width={18} height={18} @lgcode/>
+              <@lgcode/Match>
               <Match when={props.part.type === "tool" && props.part.tool === "grep"}>
-                <IconDocumentMagnifyingGlass width={18} height={18} />
-              </Match>
+                <IconDocumentMagnifyingGlass width={18} height={18} @lgcode/>
+              <@lgcode/Match>
               <Match when={props.part.type === "tool" && props.part.tool === "list"}>
-                <IconRectangleStack width={18} height={18} />
-              </Match>
+                <IconRectangleStack width={18} height={18} @lgcode/>
+              <@lgcode/Match>
               <Match when={props.part.type === "tool" && props.part.tool === "glob"}>
-                <IconMagnifyingGlass width={18} height={18} />
-              </Match>
+                <IconMagnifyingGlass width={18} height={18} @lgcode/>
+              <@lgcode/Match>
               <Match when={props.part.type === "tool" && props.part.tool === "webfetch"}>
-                <IconGlobeAlt width={18} height={18} />
-              </Match>
+                <IconGlobeAlt width={18} height={18} @lgcode/>
+              <@lgcode/Match>
               <Match when={props.part.type === "tool" && props.part.tool === "task"}>
-                <IconRobot width={18} height={18} />
-              </Match>
+                <IconRobot width={18} height={18} @lgcode/>
+              <@lgcode/Match>
               <Match when={true}>
-                <IconSparkles width={18} height={18} />
-              </Match>
-            </Switch>
-            <IconHashtag width={18} height={18} />
-            <IconCheckCircle width={18} height={18} />
-          </a>
-          <span data-slot="tooltip">{messages.copied}</span>
-        </div>
-        <div data-slot="bar"></div>
-      </div>
+                <IconSparkles width={18} height={18} @lgcode/>
+              <@lgcode/Match>
+            <@lgcode/Switch>
+            <IconHashtag width={18} height={18} @lgcode/>
+            <IconCheckCircle width={18} height={18} @lgcode/>
+          <@lgcode/a>
+          <span data-slot="tooltip">{messages.copied}<@lgcode/span>
+        <@lgcode/div>
+        <div data-slot="bar"><@lgcode/div>
+      <@lgcode/div>
       <div data-component="content">
         {props.message.role === "user" && props.part.type === "text" && (
           <div data-component="user-text">
-            <ContentText text={props.part.text} expand={props.last} />
-          </div>
+            <ContentText text={props.part.text} expand={props.last} @lgcode/>
+          <@lgcode/div>
         )}
         {props.message.role === "assistant" && props.part.type === "text" && (
           <div data-component="assistant-text">
             <div data-component="assistant-text-markdown">
-              <ContentMarkdown expand={props.last} text={props.part.text} />
-            </div>
+              <ContentMarkdown expand={props.last} text={props.part.text} @lgcode/>
+            <@lgcode/div>
             {props.last && props.message.role === "assistant" && props.message.time.completed && (
               <Footer
                 title={DateTime.fromMillis(props.message.time.completed)
@@ -148,43 +148,43 @@ export function Part(props: PartProps) {
                 {DateTime.fromMillis(props.message.time.completed)
                   .setLocale(normalizeLocale(messages.locale))
                   .toLocaleString(DateTime.DATETIME_MED)}
-              </Footer>
+              <@lgcode/Footer>
             )}
-          </div>
+          <@lgcode/div>
         )}
         {props.message.role === "assistant" && props.part.type === "reasoning" && (
           <div data-component="tool">
             <div data-component="tool-title">
-              <span data-slot="name">{messages.thinking}</span>
-            </div>
+              <span data-slot="name">{messages.thinking}<@lgcode/span>
+            <@lgcode/div>
             <Show when={props.part.text}>
               <div data-component="assistant-reasoning">
                 <ResultsButton showCopy={messages.show_details} hideCopy={messages.hide_details}>
                   <div data-component="assistant-reasoning-markdown">
-                    <ContentMarkdown expand text={props.part.text || messages.thinking_pending} />
-                  </div>
-                </ResultsButton>
-              </div>
-            </Show>
-          </div>
+                    <ContentMarkdown expand text={props.part.text || messages.thinking_pending} @lgcode/>
+                  <@lgcode/div>
+                <@lgcode/ResultsButton>
+              <@lgcode/div>
+            <@lgcode/Show>
+          <@lgcode/div>
         )}
         {props.message.role === "user" && props.part.type === "file" && (
           <div data-component="attachment">
-            <div data-slot="copy">{messages.attachment}</div>
-            <div data-slot="filename">{props.part.filename}</div>
-          </div>
+            <div data-slot="copy">{messages.attachment}<@lgcode/div>
+            <div data-slot="filename">{props.part.filename}<@lgcode/div>
+          <@lgcode/div>
         )}
         {props.part.type === "step-start" && props.message.role === "assistant" && (
           <div data-component="step-start">
-            <div data-slot="provider">{props.message.providerID}</div>
-            <div data-slot="model">{props.message.modelID}</div>
-          </div>
+            <div data-slot="provider">{props.message.providerID}<@lgcode/div>
+            <div data-slot="model">{props.message.modelID}<@lgcode/div>
+          <@lgcode/div>
         )}
         {props.part.type === "tool" && props.part.state.status === "error" && (
           <div data-component="tool" data-tool="error">
-            <ContentError>{formatErrorString(props.part.state.error, messages.error)}</ContentError>
-            <Spacer />
-          </div>
+            <ContentError>{formatErrorString(props.part.state.error, messages.error)}<@lgcode/ContentError>
+            <Spacer @lgcode/>
+          <@lgcode/div>
         )}
         {props.part.type === "tool" &&
           props.part.state.status === "completed" &&
@@ -198,99 +198,99 @@ export function Part(props: PartProps) {
                       id={props.part.id}
                       tool={props.part.tool}
                       state={props.part.state}
-                    />
-                  </Match>
+                    @lgcode/>
+                  <@lgcode/Match>
                   <Match when={props.part.tool === "glob"}>
                     <GlobTool
                       message={props.message}
                       id={props.part.id}
                       tool={props.part.tool}
                       state={props.part.state}
-                    />
-                  </Match>
+                    @lgcode/>
+                  <@lgcode/Match>
                   <Match when={props.part.tool === "list"}>
                     <ListTool
                       message={props.message}
                       id={props.part.id}
                       tool={props.part.tool}
                       state={props.part.state}
-                    />
-                  </Match>
+                    @lgcode/>
+                  <@lgcode/Match>
                   <Match when={props.part.tool === "read"}>
                     <ReadTool
                       message={props.message}
                       id={props.part.id}
                       tool={props.part.tool}
                       state={props.part.state}
-                    />
-                  </Match>
+                    @lgcode/>
+                  <@lgcode/Match>
                   <Match when={props.part.tool === "write"}>
                     <WriteTool
                       message={props.message}
                       id={props.part.id}
                       tool={props.part.tool}
                       state={props.part.state}
-                    />
-                  </Match>
+                    @lgcode/>
+                  <@lgcode/Match>
                   <Match when={props.part.tool === "edit"}>
                     <EditTool
                       message={props.message}
                       id={props.part.id}
                       tool={props.part.tool}
                       state={props.part.state}
-                    />
-                  </Match>
+                    @lgcode/>
+                  <@lgcode/Match>
                   <Match when={props.part.tool === "bash"}>
                     <BashTool
                       id={props.part.id}
                       tool={props.part.tool}
                       state={props.part.state}
                       message={props.message}
-                    />
-                  </Match>
+                    @lgcode/>
+                  <@lgcode/Match>
                   <Match when={props.part.tool === "todowrite"}>
                     <TodoWriteTool
                       message={props.message}
                       id={props.part.id}
                       tool={props.part.tool}
                       state={props.part.state}
-                    />
-                  </Match>
+                    @lgcode/>
+                  <@lgcode/Match>
                   <Match when={props.part.tool === "webfetch"}>
                     <WebFetchTool
                       message={props.message}
                       id={props.part.id}
                       tool={props.part.tool}
                       state={props.part.state}
-                    />
-                  </Match>
+                    @lgcode/>
+                  <@lgcode/Match>
                   <Match when={props.part.tool === "task"}>
                     <TaskTool
                       id={props.part.id}
                       tool={props.part.tool}
                       message={props.message}
                       state={props.part.state}
-                    />
-                  </Match>
+                    @lgcode/>
+                  <@lgcode/Match>
                   <Match when={true}>
                     <FallbackTool
                       message={props.message}
                       id={props.part.id}
                       tool={props.part.tool}
                       state={props.part.state}
-                    />
-                  </Match>
-                </Switch>
-              </div>
+                    @lgcode/>
+                  <@lgcode/Match>
+                <@lgcode/Switch>
+              <@lgcode/div>
               <ToolFooter
                 time={DateTime.fromMillis(props.part.state.time.end)
                   .diff(DateTime.fromMillis(props.part.state.time.start))
                   .toMillis()}
-              />
-            </>
+              @lgcode/>
+            <@lgcode/>
           )}
-      </div>
-    </div>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }
 
@@ -312,7 +312,7 @@ interface Todo {
 function stripWorkingDirectory(filePath?: string, workingDir?: string) {
   if (filePath === undefined || workingDir === undefined) return filePath
 
-  const prefix = workingDir.endsWith("/") ? workingDir : workingDir + "/"
+  const prefix = workingDir.endsWith("@lgcode/") ? workingDir : workingDir + "@lgcode/"
 
   if (filePath === workingDir) {
     return ""
@@ -356,12 +356,12 @@ function getDiagnostics(
       <pre>
         <span data-color="red" data-marker="label">
           {label}
-        </span>
+        <@lgcode/span>
         <span data-color="dimmed" data-separator>
           [{line}:{column}]
-        </span>
-        <span>{d.message}</span>
-      </pre>,
+        <@lgcode/span>
+        <span>{d.message}<@lgcode/span>
+      <@lgcode/pre>,
     )
   }
 
@@ -376,13 +376,13 @@ function formatErrorString(error: string, label: string): JSX.Element {
     <pre>
       <span data-color="red" data-marker="label" data-separator>
         {label}
-      </span>
-      <span>{error.slice(errorMarker.length)}</span>
-    </pre>
+      <@lgcode/span>
+      <span>{error.slice(errorMarker.length)}<@lgcode/span>
+    <@lgcode/pre>
   ) : (
     <pre>
-      <span data-color="dimmed">{error}</span>
-    </pre>
+      <span data-color="dimmed">{error}<@lgcode/span>
+    <@lgcode/pre>
   )
 }
 
@@ -404,24 +404,24 @@ export function TodoWriteTool(props: ToolProps) {
       <div data-component="tool-title">
         <span data-slot="name">
           <Switch fallback={messages.updating_plan}>
-            <Match when={starting()}>{messages.creating_plan}</Match>
-            <Match when={finished()}>{messages.completing_plan}</Match>
-          </Switch>
-        </span>
-      </div>
+            <Match when={starting()}>{messages.creating_plan}<@lgcode/Match>
+            <Match when={finished()}>{messages.completing_plan}<@lgcode/Match>
+          <@lgcode/Switch>
+        <@lgcode/span>
+      <@lgcode/div>
       <Show when={todos().length > 0}>
         <ul data-component="todos">
           <For each={todos()}>
             {(todo) => (
               <li data-slot="item" data-status={todo.status}>
-                <span></span>
+                <span><@lgcode/span>
                 {todo.content}
-              </li>
+              <@lgcode/li>
             )}
-          </For>
-        </ul>
-      </Show>
-    </>
+          <@lgcode/For>
+        <@lgcode/ul>
+      <@lgcode/Show>
+    <@lgcode/>
   )
 }
 
@@ -431,9 +431,9 @@ export function GrepTool(props: ToolProps) {
   return (
     <>
       <div data-component="tool-title">
-        <span data-slot="name">Grep</span>
-        <span data-slot="target">&ldquo;{props.state.input.pattern}&rdquo;</span>
-      </div>
+        <span data-slot="name">Grep<@lgcode/span>
+        <span data-slot="target">&ldquo;{props.state.input.pattern}&rdquo;<@lgcode/span>
+      <@lgcode/div>
       <div data-component="tool-result">
         <Switch>
           <Match when={props.state.metadata?.matches && props.state.metadata?.matches > 0}>
@@ -445,15 +445,15 @@ export function GrepTool(props: ToolProps) {
                 messages.match_other,
               )}
             >
-              <ContentText expand compact text={props.state.output} />
-            </ResultsButton>
-          </Match>
+              <ContentText expand compact text={props.state.output} @lgcode/>
+            <@lgcode/ResultsButton>
+          <@lgcode/Match>
           <Match when={props.state.output}>
-            <ContentText expand compact text={props.state.output} data-size="sm" data-color="dimmed" />
-          </Match>
-        </Switch>
-      </div>
-    </>
+            <ContentText expand compact text={props.state.output} data-size="sm" data-color="dimmed" @lgcode/>
+          <@lgcode/Match>
+        <@lgcode/Switch>
+      <@lgcode/div>
+    <@lgcode/>
   )
 }
 
@@ -467,21 +467,21 @@ export function ListTool(props: ToolProps) {
   return (
     <>
       <div data-component="tool-title">
-        <span data-slot="name">LS</span>
+        <span data-slot="name">LS<@lgcode/span>
         <span data-slot="target" title={props.state.input?.path}>
           {path()}
-        </span>
-      </div>
+        <@lgcode/span>
+      <@lgcode/div>
       <div data-component="tool-result">
         <Switch>
           <Match when={props.state.output}>
             <ResultsButton>
-              <ContentText expand compact text={props.state.output} />
-            </ResultsButton>
-          </Match>
-        </Switch>
-      </div>
-    </>
+              <ContentText expand compact text={props.state.output} @lgcode/>
+            <@lgcode/ResultsButton>
+          <@lgcode/Match>
+        <@lgcode/Switch>
+      <@lgcode/div>
+    <@lgcode/>
   )
 }
 
@@ -491,22 +491,22 @@ export function WebFetchTool(props: ToolProps) {
   return (
     <>
       <div data-component="tool-title">
-        <span data-slot="name">Fetch</span>
-        <span data-slot="target">{props.state.input.url}</span>
-      </div>
+        <span data-slot="name">Fetch<@lgcode/span>
+        <span data-slot="target">{props.state.input.url}<@lgcode/span>
+      <@lgcode/div>
       <div data-component="tool-result">
         <Switch>
           <Match when={props.state.metadata?.error}>
-            <ContentError>{formatErrorString(props.state.output, messages.error)}</ContentError>
-          </Match>
+            <ContentError>{formatErrorString(props.state.output, messages.error)}<@lgcode/ContentError>
+          <@lgcode/Match>
           <Match when={props.state.output}>
             <ResultsButton>
-              <ContentCode lang={props.state.input.format || "text"} code={props.state.output} />
-            </ResultsButton>
-          </Match>
-        </Switch>
-      </div>
-    </>
+              <ContentCode lang={props.state.input.format || "text"} code={props.state.output} @lgcode/>
+            <@lgcode/ResultsButton>
+          <@lgcode/Match>
+        <@lgcode/Switch>
+      <@lgcode/div>
+    <@lgcode/>
   )
 }
 
@@ -517,29 +517,29 @@ export function ReadTool(props: ToolProps) {
   return (
     <>
       <div data-component="tool-title">
-        <span data-slot="name">Read</span>
+        <span data-slot="name">Read<@lgcode/span>
         <span data-slot="target" title={props.state.input?.filePath}>
           {filePath()}
-        </span>
-      </div>
+        <@lgcode/span>
+      <@lgcode/div>
       <div data-component="tool-result">
         <Switch>
           <Match when={props.state.metadata?.error}>
-            <ContentError>{formatErrorString(props.state.output, messages.error)}</ContentError>
-          </Match>
+            <ContentError>{formatErrorString(props.state.output, messages.error)}<@lgcode/ContentError>
+          <@lgcode/Match>
           <Match when={typeof props.state.metadata?.preview === "string"}>
             <ResultsButton showCopy={messages.show_preview} hideCopy={messages.hide_preview}>
-              <ContentCode lang={getShikiLang(filePath() || "")} code={props.state.metadata?.preview} />
-            </ResultsButton>
-          </Match>
+              <ContentCode lang={getShikiLang(filePath() || "")} code={props.state.metadata?.preview} @lgcode/>
+            <@lgcode/ResultsButton>
+          <@lgcode/Match>
           <Match when={typeof props.state.metadata?.preview !== "string" && props.state.output}>
             <ResultsButton>
-              <ContentText expand compact text={props.state.output} />
-            </ResultsButton>
-          </Match>
-        </Switch>
-      </div>
-    </>
+              <ContentText expand compact text={props.state.output} @lgcode/>
+            <@lgcode/ResultsButton>
+          <@lgcode/Match>
+        <@lgcode/Switch>
+      <@lgcode/div>
+    <@lgcode/>
   )
 }
 
@@ -553,27 +553,27 @@ export function WriteTool(props: ToolProps) {
   return (
     <>
       <div data-component="tool-title">
-        <span data-slot="name">Write</span>
+        <span data-slot="name">Write<@lgcode/span>
         <span data-slot="target" title={props.state.input?.filePath}>
           {filePath()}
-        </span>
-      </div>
+        <@lgcode/span>
+      <@lgcode/div>
       <Show when={diagnostics().length > 0}>
-        <ContentError>{diagnostics()}</ContentError>
-      </Show>
+        <ContentError>{diagnostics()}<@lgcode/ContentError>
+      <@lgcode/Show>
       <div data-component="tool-result">
         <Switch>
           <Match when={props.state.metadata?.error}>
-            <ContentError>{formatErrorString(props.state.output, messages.error)}</ContentError>
-          </Match>
+            <ContentError>{formatErrorString(props.state.output, messages.error)}<@lgcode/ContentError>
+          <@lgcode/Match>
           <Match when={props.state.input?.content}>
             <ResultsButton showCopy={messages.show_contents} hideCopy={messages.hide_contents}>
-              <ContentCode lang={getShikiLang(filePath() || "")} code={props.state.input?.content} />
-            </ResultsButton>
-          </Match>
-        </Switch>
-      </div>
-    </>
+              <ContentCode lang={getShikiLang(filePath() || "")} code={props.state.input?.content} @lgcode/>
+            <@lgcode/ResultsButton>
+          <@lgcode/Match>
+        <@lgcode/Switch>
+      <@lgcode/div>
+    <@lgcode/>
   )
 }
 
@@ -587,27 +587,27 @@ export function EditTool(props: ToolProps) {
   return (
     <>
       <div data-component="tool-title">
-        <span data-slot="name">Edit</span>
+        <span data-slot="name">Edit<@lgcode/span>
         <span data-slot="target" title={props.state.input?.filePath}>
           {filePath()}
-        </span>
-      </div>
+        <@lgcode/span>
+      <@lgcode/div>
       <div data-component="tool-result">
         <Switch>
           <Match when={props.state.metadata?.error}>
-            <ContentError>{formatErrorString(props.state.metadata?.message || "", messages.error)}</ContentError>
-          </Match>
+            <ContentError>{formatErrorString(props.state.metadata?.message || "", messages.error)}<@lgcode/ContentError>
+          <@lgcode/Match>
           <Match when={props.state.metadata?.diff}>
             <div data-component="diff">
-              <ContentDiff diff={props.state.metadata?.diff} lang={getShikiLang(filePath() || "")} />
-            </div>
-          </Match>
-        </Switch>
-      </div>
+              <ContentDiff diff={props.state.metadata?.diff} lang={getShikiLang(filePath() || "")} @lgcode/>
+            <@lgcode/div>
+          <@lgcode/Match>
+        <@lgcode/Switch>
+      <@lgcode/div>
       <Show when={diagnostics().length > 0}>
-        <ContentError>{diagnostics()}</ContentError>
-      </Show>
-    </>
+        <ContentError>{diagnostics()}<@lgcode/ContentError>
+      <@lgcode/Show>
+    <@lgcode/>
   )
 }
 
@@ -617,7 +617,7 @@ export function BashTool(props: ToolProps) {
       command={props.state.input.command}
       output={props.state.metadata.output ?? props.state.metadata?.stdout}
       description={props.state.metadata.description}
-    />
+    @lgcode/>
   )
 }
 
@@ -627,9 +627,9 @@ export function GlobTool(props: ToolProps) {
   return (
     <>
       <div data-component="tool-title">
-        <span data-slot="name">Glob</span>
-        <span data-slot="target">&ldquo;{props.state.input.pattern}&rdquo;</span>
-      </div>
+        <span data-slot="name">Glob<@lgcode/span>
+        <span data-slot="target">&ldquo;{props.state.input.pattern}&rdquo;<@lgcode/span>
+      <@lgcode/div>
       <Switch>
         <Match when={props.state.metadata?.count && props.state.metadata?.count > 0}>
           <div data-component="tool-result">
@@ -641,15 +641,15 @@ export function GlobTool(props: ToolProps) {
                 messages.result_other,
               )}
             >
-              <ContentText expand compact text={props.state.output} />
-            </ResultsButton>
-          </div>
-        </Match>
+              <ContentText expand compact text={props.state.output} @lgcode/>
+            <@lgcode/ResultsButton>
+          <@lgcode/div>
+        <@lgcode/Match>
         <Match when={props.state.output}>
-          <ContentText expand text={props.state.output} data-size="sm" data-color="dimmed" />
-        </Match>
-      </Switch>
-    </>
+          <ContentText expand text={props.state.output} data-size="sm" data-color="dimmed" @lgcode/>
+        <@lgcode/Match>
+      <@lgcode/Switch>
+    <@lgcode/>
   )
 }
 
@@ -664,27 +664,27 @@ function ResultsButton(props: ResultsButtonProps) {
   return (
     <>
       <button type="button" data-component="button-text" data-more onClick={() => setShow((e) => !e)}>
-        <span>{show() ? props.hideCopy || messages.hide_results : props.showCopy || messages.show_results}</span>
+        <span>{show() ? props.hideCopy || messages.hide_results : props.showCopy || messages.show_results}<@lgcode/span>
         <span data-slot="icon">
-          <Show when={show()} fallback={<IconChevronRight width={11} height={11} />}>
-            <IconChevronDown width={11} height={11} />
-          </Show>
-        </span>
-      </button>
-      <Show when={show()}>{props.children}</Show>
-    </>
+          <Show when={show()} fallback={<IconChevronRight width={11} height={11} @lgcode/>}>
+            <IconChevronDown width={11} height={11} @lgcode/>
+          <@lgcode/Show>
+        <@lgcode/span>
+      <@lgcode/button>
+      <Show when={show()}>{props.children}<@lgcode/Show>
+    <@lgcode/>
   )
 }
 
 export function Spacer() {
-  return <div data-component="spacer"></div>
+  return <div data-component="spacer"><@lgcode/div>
 }
 
 function Footer(props: ParentProps<{ title: string }>) {
   return (
     <div data-component="content-footer" title={props.title}>
       {props.children}
-    </div>
+    <@lgcode/div>
   )
 }
 
@@ -694,7 +694,7 @@ function ToolFooter(props: { time: number }) {
     props.time > MIN_DURATION && (
       <Footer title={`${formatNumber(props.time, messages.locale)}ms`}>
         {formatDuration(props.time, messages.locale)}
-      </Footer>
+      <@lgcode/Footer>
     )
   )
 }
@@ -705,16 +705,16 @@ function TaskTool(props: ToolProps) {
   return (
     <>
       <div data-component="tool-title">
-        <span data-slot="name">Task</span>
-        <span data-slot="target">{props.state.input.description}</span>
-      </div>
-      <div data-component="tool-input">&ldquo;{props.state.input.prompt}&rdquo;</div>
+        <span data-slot="name">Task<@lgcode/span>
+        <span data-slot="target">{props.state.input.description}<@lgcode/span>
+      <@lgcode/div>
+      <div data-component="tool-input">&ldquo;{props.state.input.prompt}&rdquo;<@lgcode/div>
       <ResultsButton showCopy={messages.show_output} hideCopy={messages.hide_output}>
         <div data-component="tool-output">
-          <ContentMarkdown expand text={props.state.output} />
-        </div>
-      </ResultsButton>
-    </>
+          <ContentMarkdown expand text={props.state.output} @lgcode/>
+        <@lgcode/div>
+      <@lgcode/ResultsButton>
+    <@lgcode/>
   )
 }
 
@@ -722,40 +722,40 @@ export function FallbackTool(props: ToolProps) {
   return (
     <>
       <div data-component="tool-title">
-        <span data-slot="name">{props.tool}</span>
-      </div>
+        <span data-slot="name">{props.tool}<@lgcode/span>
+      <@lgcode/div>
       <div data-component="tool-args">
         <For each={flattenToolArgs(props.state.input)}>
           {(arg) => (
             <>
-              <div></div>
-              <div>{arg[0]}</div>
+              <div><@lgcode/div>
+              <div>{arg[0]}<@lgcode/div>
               <div>
                 {typeof arg[1] === "string" || typeof arg[1] === "number" || typeof arg[1] === "boolean"
                   ? String(arg[1])
                   : arg[1] == null
                     ? ""
                     : JSON.stringify(arg[1])}
-              </div>
-            </>
+              <@lgcode/div>
+            <@lgcode/>
           )}
-        </For>
-      </div>
+        <@lgcode/For>
+      <@lgcode/div>
       <Switch>
         <Match when={props.state.output}>
           <div data-component="tool-result">
             <ResultsButton>
-              <ContentText expand compact text={props.state.output} data-size="sm" data-color="dimmed" />
-            </ResultsButton>
-          </div>
-        </Match>
-      </Switch>
-    </>
+              <ContentText expand compact text={props.state.output} data-size="sm" data-color="dimmed" @lgcode/>
+            <@lgcode/ResultsButton>
+          <@lgcode/div>
+        <@lgcode/Match>
+      <@lgcode/Switch>
+    <@lgcode/>
   )
 }
 
-// Converts nested objects/arrays into [path, value] pairs.
-// E.g. {a:{b:{c:1}}, d:[{e:2}, 3]} => [["a.b.c",1], ["d[0].e",2], ["d[1]",3]]
+@lgcode/@lgcode/ Converts nested objects@lgcode/arrays into [path, value] pairs.
+@lgcode/@lgcode/ E.g. {a:{b:{c:1}}, d:[{e:2}, 3]} => [["a.b.c",1], ["d[0].e",2], ["d[1]",3]]
 function flattenToolArgs(obj: unknown, prefix: string = ""): Array<[string, unknown]> {
   const entries: Array<[string, unknown]> = []
   if (typeof obj !== "object" || obj === null) return entries
@@ -787,10 +787,10 @@ function flattenToolArgs(obj: unknown, prefix: string = ""): Array<[string, unkn
 function getProvider(model: string) {
   const lowerModel = model.toLowerCase()
 
-  if (/claude|anthropic/.test(lowerModel)) return "anthropic"
-  if (/gpt|o[1-4]|codex|openai/.test(lowerModel)) return "openai"
-  if (/gemini|palm|bard|google/.test(lowerModel)) return "gemini"
-  if (/llama|meta/.test(lowerModel)) return "meta"
+  if (@lgcode/claude|anthropic@lgcode/.test(lowerModel)) return "anthropic"
+  if (@lgcode/gpt|o[1-4]|codex|openai@lgcode/.test(lowerModel)) return "openai"
+  if (@lgcode/gemini|palm|bard|google@lgcode/.test(lowerModel)) return "gemini"
+  if (@lgcode/llama|meta@lgcode/.test(lowerModel)) return "meta"
 
   return "any"
 }
@@ -799,19 +799,19 @@ export function ProviderIcon(props: { model: string; size?: number }) {
   const provider = getProvider(props.model)
   const size = props.size || 16
   return (
-    <Switch fallback={<IconSparkles width={size} height={size} />}>
+    <Switch fallback={<IconSparkles width={size} height={size} @lgcode/>}>
       <Match when={provider === "openai"}>
-        <IconOpenAI width={size} height={size} />
-      </Match>
+        <IconOpenAI width={size} height={size} @lgcode/>
+      <@lgcode/Match>
       <Match when={provider === "anthropic"}>
-        <IconAnthropic width={size} height={size} />
-      </Match>
+        <IconAnthropic width={size} height={size} @lgcode/>
+      <@lgcode/Match>
       <Match when={provider === "gemini"}>
-        <IconGemini width={size} height={size} />
-      </Match>
+        <IconGemini width={size} height={size} @lgcode/>
+      <@lgcode/Match>
       <Match when={provider === "meta"}>
-        <IconMeta width={size} height={size} />
-      </Match>
-    </Switch>
+        <IconMeta width={size} height={size} @lgcode/>
+      <@lgcode/Match>
+    <@lgcode/Switch>
   )
 }

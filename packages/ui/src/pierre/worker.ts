@@ -1,5 +1,5 @@
-import { WorkerPoolManager } from "@pierre/diffs/worker"
-import ShikiWorkerUrl from "@pierre/diffs/worker/worker.js?worker&url"
+import { WorkerPoolManager } from "@pierre@lgcode/diffs@lgcode/worker"
+import ShikiWorkerUrl from "@pierre@lgcode/diffs@lgcode/worker@lgcode/worker.js?worker&url"
 
 export type WorkerPoolStyle = "unified" | "split"
 
@@ -11,11 +11,11 @@ function createPool(lineDiffType: "none" | "word-alt") {
   const pool = new WorkerPoolManager(
     {
       workerFactory,
-      // poolSize defaults to 8. More workers = more parallelism but
-      // also more memory. Too many can actually slow things down.
-      // NOTE: 2 is probably better for OpenCode, as I think 8 might be
-      // a bit overkill, especially because Safari has a significantly slower
-      // boot up time for workers
+      @lgcode/@lgcode/ poolSize defaults to 8. More workers = more parallelism but
+      @lgcode/@lgcode/ also more memory. Too many can actually slow things down.
+      @lgcode/@lgcode/ NOTE: 2 is probably better for OpenCode, as I think 8 might be
+      @lgcode/@lgcode/ a bit overkill, especially because Safari has a significantly slower
+      @lgcode/@lgcode/ boot up time for workers
       poolSize: 2,
     },
     {

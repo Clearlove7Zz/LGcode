@@ -1,11 +1,11 @@
 import { describe, expect } from "bun:test"
-import type { McpServer } from "@agentclientprotocol/sdk"
+import type { McpServer } from "@agentclientprotocol@lgcode/sdk"
 import { Effect } from "effect"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { ModelV2 } from "@opencode@lgcode/core/model"
-import * as ACPError from "@/acp/error"
-import * as ACPSession from "@/acp/session"
-import { testEffect } from "../lib/effect"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
+import * as ACPError from "@@lgcode/acp@lgcode/error"
+import * as ACPSession from "@@lgcode/acp@lgcode/session"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const sessionTest = testEffect(ACPSession.defaultLayer)
 
@@ -28,7 +28,7 @@ describe("acp session state", () => {
       const created = yield* ACPSession.Service.use((session) =>
         session.create({
           id: "ses_1",
-          cwd: "/workspace",
+          cwd: "@lgcode/workspace",
           mcpServers: [mcpServer],
           createdAt,
           model: model("anthropic", "claude-sonnet"),
@@ -40,7 +40,7 @@ describe("acp session state", () => {
 
       expect(created).toMatchObject({
         id: "ses_1",
-        cwd: "/workspace",
+        cwd: "@lgcode/workspace",
         mcpServers: [mcpServer],
         model: model("anthropic", "claude-sonnet"),
         variant: "high",
@@ -77,7 +77,7 @@ describe("acp session state", () => {
       yield* ACPSession.Service.use((session) =>
         session.create({
           id: "ses_model",
-          cwd: "/workspace",
+          cwd: "@lgcode/workspace",
           mcpServers: [mcpServer],
           model: model("anthropic", "claude-sonnet"),
           variant: "high",
@@ -90,7 +90,7 @@ describe("acp session state", () => {
       )
 
       expect(updated.id).toBe("ses_model")
-      expect(updated.cwd).toBe("/workspace")
+      expect(updated.cwd).toBe("@lgcode/workspace")
       expect(updated.mcpServers).toEqual([mcpServer])
       expect(updated.model).toEqual(model("openai", "gpt-5"))
       expect(updated.variant).toBe("high")
@@ -103,7 +103,7 @@ describe("acp session state", () => {
       yield* ACPSession.Service.use((session) =>
         session.load({
           id: "ses_config",
-          cwd: "/workspace",
+          cwd: "@lgcode/workspace",
           model: model("anthropic", "claude-sonnet"),
           variant: "low",
           modeId: "plan",
@@ -122,7 +122,7 @@ describe("acp session state", () => {
 
   sessionTest.effect("records known message part metadata for delta routing", () =>
     Effect.gen(function* () {
-      yield* ACPSession.Service.use((session) => session.create({ id: "ses_parts", cwd: "/workspace" }))
+      yield* ACPSession.Service.use((session) => session.create({ id: "ses_parts", cwd: "@lgcode/workspace" }))
 
       const metadata = yield* ACPSession.Service.use((session) =>
         session.recordPartMetadata({
@@ -149,7 +149,7 @@ describe("acp session state", () => {
 
   sessionTest.effect("keeps repeated part ids distinct across messages", () =>
     Effect.gen(function* () {
-      yield* ACPSession.Service.use((session) => session.create({ id: "ses_duplicate_parts", cwd: "/workspace" }))
+      yield* ACPSession.Service.use((session) => session.create({ id: "ses_duplicate_parts", cwd: "@lgcode/workspace" }))
       yield* ACPSession.Service.use((session) =>
         session.recordPartMetadata({
           sessionId: "ses_duplicate_parts",
@@ -181,7 +181,7 @@ describe("acp session state", () => {
 
   sessionTest.effect("removing a session clears its known part metadata", () =>
     Effect.gen(function* () {
-      yield* ACPSession.Service.use((session) => session.create({ id: "ses_remove", cwd: "/workspace" }))
+      yield* ACPSession.Service.use((session) => session.create({ id: "ses_remove", cwd: "@lgcode/workspace" }))
       yield* ACPSession.Service.use((session) =>
         session.recordPartMetadata({ sessionId: "ses_remove", messageId: "msg_1", partId: "part_1" }),
       )

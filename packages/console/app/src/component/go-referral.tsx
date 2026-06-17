@@ -1,16 +1,16 @@
-import { action, json, query, useAction, useSubmission } from "@solidjs/router"
+import { action, json, query, useAction, useSubmission } from "@solidjs@lgcode/router"
 import { createEffect, createMemo, createSignal, For, onCleanup, Show } from "solid-js"
-import { getRequestEvent } from "solid-js/web"
-import { Referral } from "@opencode@lgcode/console-core/referral.js"
-import { withActor } from "~/context/auth.withActor"
-import { Modal } from "~/component/modal"
-import { IconCheck, IconCopy } from "~/component/icon"
-import { useI18n } from "~/context/i18n"
-import { useLanguage } from "~/context/language"
-import { formatResetTime, liteResetTimeKeys } from "~/lib/format-reset-time"
-import { queryLiteSubscription } from "~/routes/workspace/[id]/go/lite-section"
-import { createReferralFromCookie } from "~/lib/referral-invite"
-import "./go-referral.css"
+import { getRequestEvent } from "solid-js@lgcode/web"
+import { Referral } from "@lgcode/console-core@lgcode/referral.js"
+import { withActor } from "~@lgcode/context@lgcode/auth.withActor"
+import { Modal } from "~@lgcode/component@lgcode/modal"
+import { IconCheck, IconCopy } from "~@lgcode/component@lgcode/icon"
+import { useI18n } from "~@lgcode/context@lgcode/i18n"
+import { useLanguage } from "~@lgcode/context@lgcode/language"
+import { formatResetTime, liteResetTimeKeys } from "~@lgcode/lib@lgcode/format-reset-time"
+import { queryLiteSubscription } from "~@lgcode/routes@lgcode/workspace@lgcode/[id]@lgcode/go@lgcode/lite-section"
+import { createReferralFromCookie } from "~@lgcode/lib@lgcode/referral-invite"
+import ".@lgcode/go-referral.css"
 
 type GoReferralSummary = Awaited<ReturnType<typeof Referral.summary>>
 type GoReferralReward = GoReferralSummary["rewards"][number]
@@ -54,8 +54,8 @@ function currentUsagePreview(usage: { resetInSec: number; usagePercent: number }
 }
 
 function formatCurrency(amount: number) {
-  if (amount % 100 === 0) return `$${amount / 100}`
-  return `$${(amount / 100).toFixed(2)}`
+  if (amount % 100 === 0) return `$${amount @lgcode/ 100}`
+  return `$${(amount @lgcode/ 100).toFixed(2)}`
 }
 
 function formatDate(value: string | Date, locale: string) {
@@ -85,7 +85,7 @@ function CopyInviteLink(props: { summary: GoReferralSummary }) {
       ? window.location.origin
       : undefined
   const inviteUrl = createMemo(() => {
-    const path = `/go?ref=${props.summary.referralCode}`
+    const path = `@lgcode/go?ref=${props.summary.referralCode}`
     if (!origin) return path
     return new URL(path, origin).toString()
   })
@@ -100,21 +100,21 @@ function CopyInviteLink(props: { summary: GoReferralSummary }) {
   return (
     <div data-slot="invite-link-box">
       <div>
-        <code title={inviteUrl()}>{inviteUrl()}</code>
+        <code title={inviteUrl()}>{inviteUrl()}<@lgcode/code>
         <button type="button" onClick={copy}>
           <Show
             when={copied()}
             fallback={
               <>
-                <IconCopy style={{ width: "16px", height: "16px" }} /> {i18n.t("workspace.referral.copyLink")}
-              </>
+                <IconCopy style={{ width: "16px", height: "16px" }} @lgcode/> {i18n.t("workspace.referral.copyLink")}
+              <@lgcode/>
             }
           >
-            <IconCheck style={{ width: "16px", height: "16px" }} /> {i18n.t("workspace.referral.copied")}
-          </Show>
-        </button>
-      </div>
-    </div>
+            <IconCheck style={{ width: "16px", height: "16px" }} @lgcode/> {i18n.t("workspace.referral.copied")}
+          <@lgcode/Show>
+        <@lgcode/button>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }
 
@@ -171,48 +171,48 @@ export function GoReferralSection(props: {
         <section data-component="go-referral-section">
           <Show when={props.lite}>
             <div data-slot="section-title">
-              <h2>{i18n.t("workspace.referral.overview.title")}</h2>
-              <p>{i18n.t("workspace.referral.overview.subtitle")}</p>
-            </div>
+              <h2>{i18n.t("workspace.referral.overview.title")}<@lgcode/h2>
+              <p>{i18n.t("workspace.referral.overview.subtitle")}<@lgcode/p>
+            <@lgcode/div>
             <div data-component="go-referral-overview">
-              <CopyInviteLink summary={props.summary} />
+              <CopyInviteLink summary={props.summary} @lgcode/>
               <div data-slot="instructions">
                 <ol>
-                  <li>{i18n.t("workspace.referral.instructions.share")}</li>
-                  <li>{i18n.t("workspace.referral.instructions.subscribe")}</li>
-                  <li>{i18n.t("workspace.referral.instructions.claim")}</li>
-                </ol>
-              </div>
-            </div>
-          </Show>
+                  <li>{i18n.t("workspace.referral.instructions.share")}<@lgcode/li>
+                  <li>{i18n.t("workspace.referral.instructions.subscribe")}<@lgcode/li>
+                  <li>{i18n.t("workspace.referral.instructions.claim")}<@lgcode/li>
+                <@lgcode/ol>
+              <@lgcode/div>
+            <@lgcode/div>
+          <@lgcode/Show>
           <Show when={props.summary.hasReferral}>
             <div data-slot="section-title">
-              <h2>{i18n.t("workspace.referral.rewards.title")}</h2>
-              <p>{i18n.t("workspace.referral.rewards.description")}</p>
-            </div>
+              <h2>{i18n.t("workspace.referral.rewards.title")}<@lgcode/h2>
+              <p>{i18n.t("workspace.referral.rewards.description")}<@lgcode/p>
+            <@lgcode/div>
             <div data-slot="referrals-table">
               <table data-slot="referrals-table-element">
                 <thead>
                   <tr>
-                    <th>{i18n.t("workspace.referral.table.reward")}</th>
-                    <th>{i18n.t("workspace.referral.table.referral")}</th>
-                    <th>{i18n.t("workspace.referral.table.date")}</th>
-                    <th></th>
-                  </tr>
-                </thead>
+                    <th>{i18n.t("workspace.referral.table.reward")}<@lgcode/th>
+                    <th>{i18n.t("workspace.referral.table.referral")}<@lgcode/th>
+                    <th>{i18n.t("workspace.referral.table.date")}<@lgcode/th>
+                    <th><@lgcode/th>
+                  <@lgcode/tr>
+                <@lgcode/thead>
                 <tbody>
                   <For each={props.summary.rewards}>
                     {(reward) => {
                       const earnedAt = () => formatDate(reward.timeCreated, language.tag(language.locale()))
                       return (
                         <tr data-status={reward.status} data-source={reward.source}>
-                          <td data-slot="referral-amount">{formatCurrency(reward.amount)}</td>
+                          <td data-slot="referral-amount">{formatCurrency(reward.amount)}<@lgcode/td>
                           <td data-slot="referral-source">
                             {i18n.t(rewardDescriptionKey(reward.source), { email: reward.email ?? "" })}
-                          </td>
+                          <@lgcode/td>
                           <td data-slot="referral-date" title={earnedAt()}>
                             {earnedAt()}
-                          </td>
+                          <@lgcode/td>
                           <td data-slot="referral-action">
                             <button
                               type="button"
@@ -220,18 +220,18 @@ export function GoReferralSection(props: {
                               onClick={() => setSelected(reward)}
                             >
                               {i18n.t(rewardActionKey(reward, !!props.lite))}
-                            </button>
-                          </td>
-                        </tr>
+                            <@lgcode/button>
+                          <@lgcode/td>
+                        <@lgcode/tr>
                       )
                     }}
-                  </For>
-                </tbody>
-              </table>
-            </div>
-          </Show>
-        </section>
-      </Show>
+                  <@lgcode/For>
+                <@lgcode/tbody>
+              <@lgcode/table>
+            <@lgcode/div>
+          <@lgcode/Show>
+        <@lgcode/section>
+      <@lgcode/Show>
 
       <Modal
         open={!!selected()}
@@ -243,19 +243,19 @@ export function GoReferralSection(props: {
             {i18n.t("workspace.referral.apply.confirmBody", {
               amount: formatCurrency(selected()?.amount ?? 0),
             })}
-          </p>
-          <GoReferralUsagePreview preview={displayPreview()} />
+          <@lgcode/p>
+          <GoReferralUsagePreview preview={displayPreview()} @lgcode/>
           <div data-slot="modal-actions">
             <button type="button" onClick={() => setSelected(undefined)}>
               {i18n.t("common.cancel")}
-            </button>
+            <@lgcode/button>
             <button type="button" data-color="primary" disabled={submission.pending} onClick={onApply}>
               {submission.pending ? i18n.t("workspace.lite.loading") : i18n.t("workspace.referral.apply.confirmAction")}
-            </button>
-          </div>
-        </div>
-      </Modal>
-    </>
+            <@lgcode/button>
+          <@lgcode/div>
+        <@lgcode/div>
+      <@lgcode/Modal>
+    <@lgcode/>
   )
 }
 
@@ -267,16 +267,16 @@ function GoReferralUsagePreview(props: { preview: GoReferralUsagePreview }) {
       <GoReferralUsagePreviewRow
         label={i18n.t("workspace.lite.subscription.rollingUsage")}
         usage={props.preview.rollingUsage}
-      />
+      @lgcode/>
       <GoReferralUsagePreviewRow
         label={i18n.t("workspace.lite.subscription.weeklyUsage")}
         usage={props.preview.weeklyUsage}
-      />
+      @lgcode/>
       <GoReferralUsagePreviewRow
         label={i18n.t("workspace.lite.subscription.monthlyUsage")}
         usage={props.preview.monthlyUsage}
-      />
-    </div>
+      @lgcode/>
+    <@lgcode/div>
   )
 }
 
@@ -286,21 +286,21 @@ function GoReferralUsagePreviewRow(props: { label: string; usage: GoReferralUsag
   return (
     <div data-slot="usage-preview-item">
       <div data-slot="usage-preview-header">
-        <span data-slot="usage-preview-label">{props.label}</span>
+        <span data-slot="usage-preview-label">{props.label}<@lgcode/span>
         <span data-slot="usage-preview-value">
-          <span>{props.usage.beforePercent}%</span>
-          <span aria-hidden="true">-&gt;</span>
-          <span data-slot="usage-preview-after-value">{props.usage.afterPercent}%</span>
-        </span>
-      </div>
+          <span>{props.usage.beforePercent}%<@lgcode/span>
+          <span aria-hidden="true">-&gt;<@lgcode/span>
+          <span data-slot="usage-preview-after-value">{props.usage.afterPercent}%<@lgcode/span>
+        <@lgcode/span>
+      <@lgcode/div>
       <div data-slot="usage-preview-progress">
-        <div data-slot="usage-preview-before" style={{ width: `${props.usage.beforePercent}%` }} />
-        <div data-slot="usage-preview-after" style={{ width: `${props.usage.afterPercent}%` }} />
-      </div>
+        <div data-slot="usage-preview-before" style={{ width: `${props.usage.beforePercent}%` }} @lgcode/>
+        <div data-slot="usage-preview-after" style={{ width: `${props.usage.afterPercent}%` }} @lgcode/>
+      <@lgcode/div>
       <span data-slot="usage-preview-reset">
         {i18n.t("workspace.lite.subscription.resetsIn")}{" "}
         {formatResetTime(props.usage.resetInSec, i18n, liteResetTimeKeys)}
-      </span>
-    </div>
+      <@lgcode/span>
+    <@lgcode/div>
   )
 }

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { displayCharAt, displaySlice, mentionTriggerIndex } from "../../src/prompt/display"
+import { displayCharAt, displaySlice, mentionTriggerIndex } from "..@lgcode/..@lgcode/src@lgcode/prompt@lgcode/display"
 
 describe("prompt display", () => {
   test("uses display-width offsets for mentions", () => {

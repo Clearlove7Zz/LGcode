@@ -1,15 +1,15 @@
-export * as FileSystemSearch from "./search"
+export * as FileSystemSearch from ".@lgcode/search"
 
 import path from "path"
 import { Context, Effect, Layer, Scope } from "effect"
 import { Fff } from "#fff"
 import fuzzysort from "fuzzysort"
-import { FileSystem } from "../filesystem"
-import { FSUtil } from "../fs-util"
-import { Location } from "../location"
-import { Ripgrep } from "../ripgrep"
-import { RelativePath } from "../schema"
-import { Flag } from "../flag/flag"
+import { FileSystem } from "..@lgcode/filesystem"
+import { FSUtil } from "..@lgcode/fs-util"
+import { Location } from "..@lgcode/location"
+import { Ripgrep } from "..@lgcode/ripgrep"
+import { RelativePath } from "..@lgcode/schema"
+import { Flag } from "..@lgcode/flag@lgcode/flag"
 
 export interface Interface {
   readonly find: (input: FileSystem.FindInput) => Effect.Effect<FileSystem.Entry[]>
@@ -17,7 +17,7 @@ export interface Interface {
   readonly grep: (input: FileSystem.GrepInput) => Effect.Effect<readonly FileSystem.Match[]>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/v2/FileSystem/Search") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/FileSystem@lgcode/Search") {}
 
 export const ripgrepLayer = Layer.effect(
   Service,
@@ -39,8 +39,8 @@ export const ripgrepLayer = Layer.effect(
         onEntry: (entry) =>
           Effect.sync(() => {
             state.files.push(entry.path)
-            const parts = entry.path.split("/")
-            parts.slice(0, -1).forEach((_, index) => directories.add(parts.slice(0, index + 1).join("/") + path.sep))
+            const parts = entry.path.split("@lgcode/")
+            parts.slice(0, -1).forEach((_, index) => directories.add(parts.slice(0, index + 1).join("@lgcode/") + path.sep))
             state.directories = Array.from(directories)
           }),
       })
@@ -115,7 +115,7 @@ export const ripgrepLayer = Layer.effect(
             return new FileSystem.Entry({
               path: RelativePath.make(relative),
               type,
-              mime: type === "directory" ? "application/x-directory" : FSUtil.mimeType(absolute),
+              mime: type === "directory" ? "application@lgcode/x-directory" : FSUtil.mimeType(absolute),
             })
           })
         }),
@@ -142,8 +142,8 @@ export const fffLayer = Layer.effect(
     return Service.of({
       glob: (input) =>
         Effect.sync(() => {
-          const prefix = input.path?.replaceAll("\\", "/").replace(/\/$/, "")
-          const found = result.value.glob(prefix ? `${prefix}/${input.pattern}` : input.pattern, {
+          const prefix = input.path?.replaceAll("\\", "@lgcode/").replace(@lgcode/\@lgcode/$@lgcode/, "")
+          const found = result.value.glob(prefix ? `${prefix}@lgcode/${input.pattern}` : input.pattern, {
             pageIndex: 0,
             pageSize: input.limit,
           })
@@ -151,7 +151,7 @@ export const fffLayer = Layer.effect(
           return found.value.items.map((item) => {
             const absolute = path.resolve(location.directory, item.relativePath)
             return new FileSystem.Entry({
-              path: RelativePath.make(item.relativePath.replaceAll("\\", "/")),
+              path: RelativePath.make(item.relativePath.replaceAll("\\", "@lgcode/")),
               type: "file",
               mime: FSUtil.mimeType(absolute),
             })
@@ -159,9 +159,9 @@ export const fffLayer = Layer.effect(
         }),
       grep: (input) =>
         Effect.sync(() => {
-          const prefix = input.path?.replaceAll("\\", "/").replace(/\/$/, "")
+          const prefix = input.path?.replaceAll("\\", "@lgcode/").replace(@lgcode/\@lgcode/$@lgcode/, "")
           const found = result.value.grep(
-            [prefix ? `${prefix}/**` : undefined, input.include, input.pattern]
+            [prefix ? `${prefix}@lgcode/**` : undefined, input.include, input.pattern]
               .filter((value) => value !== undefined)
               .join(" "),
             { mode: "regex", pageSize: input.limit, timeBudgetMs: 1_500 },
@@ -171,7 +171,7 @@ export const fffLayer = Layer.effect(
             const bytes = Buffer.from(match.lineContent)
             return new FileSystem.Match({
               entry: new FileSystem.Entry({
-                path: RelativePath.make(match.relativePath.replaceAll("\\", "/")),
+                path: RelativePath.make(match.relativePath.replaceAll("\\", "@lgcode/")),
                 type: "file",
                 mime: FSUtil.mimeType(match.relativePath),
               }),
@@ -219,12 +219,12 @@ export const fffLayer = Layer.effect(
           return items
             .sort((a, b) => b.score - a.score || a.path.length - b.path.length)
             .map((item) => {
-              const relative = item.path.replaceAll("\\", "/").replace(/\/$/, "")
+              const relative = item.path.replaceAll("\\", "@lgcode/").replace(@lgcode/\@lgcode/$@lgcode/, "")
               const absolute = path.resolve(location.directory, relative)
               return new FileSystem.Entry({
                 path: RelativePath.make(relative + (item.type === "directory" ? path.sep : "")),
                 type: item.type,
-                mime: item.type === "directory" ? "application/x-directory" : FSUtil.mimeType(absolute),
+                mime: item.type === "directory" ? "application@lgcode/x-directory" : FSUtil.mimeType(absolute),
               })
             })
         }),

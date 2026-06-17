@@ -1,11 +1,11 @@
-/* oxlint-disable */
-import type * as Effect from "effect/Effect"
-import { applyEffectWrapper, type QueryEffectHKTBase } from "drizzle-orm/effect-core/query-effect"
-import { entityKind } from "drizzle-orm/entity"
-import type { RunnableQuery } from "drizzle-orm/runnable-query"
-import type { PreparedQuery } from "drizzle-orm/session"
-import type { Query, SQL, SQLWrapper } from "drizzle-orm/sql/sql"
-import type { SQLiteAsyncDialect } from "drizzle-orm/sqlite-core/dialect"
+@lgcode/* oxlint-disable *@lgcode/
+import type * as Effect from "effect@lgcode/Effect"
+import { applyEffectWrapper, type QueryEffectHKTBase } from "drizzle-orm@lgcode/effect-core@lgcode/query-effect"
+import { entityKind } from "drizzle-orm@lgcode/entity"
+import type { RunnableQuery } from "drizzle-orm@lgcode/runnable-query"
+import type { PreparedQuery } from "drizzle-orm@lgcode/session"
+import type { Query, SQL, SQLWrapper } from "drizzle-orm@lgcode/sql@lgcode/sql"
+import type { SQLiteAsyncDialect } from "drizzle-orm@lgcode/sqlite-core@lgcode/dialect"
 
 type SQLiteEffectRawAction = "all" | "get" | "values" | "run"
 
@@ -26,7 +26,7 @@ export class SQLiteEffectRaw<TResult, TEffectHKT extends QueryEffectHKTBase = Qu
 
   constructor(
     public execute: () => Effect.Effect<TResult, TEffectHKT["error"], TEffectHKT["context"]>,
-    /** @internal */
+    @lgcode/** @internal *@lgcode/
     public getSQL: () => SQL,
     private action: SQLiteEffectRawAction,
     private dialect: SQLiteAsyncDialect,

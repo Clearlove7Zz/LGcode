@@ -7,13 +7,13 @@ import type { Configuration } from "electron-builder"
 
 const execFileAsync = promisify(execFile)
 const packageDir = path.dirname(fileURLToPath(import.meta.url))
-const rootDir = path.resolve(packageDir, "../..")
+const rootDir = path.resolve(packageDir, "..@lgcode/..")
 const signScript = path.join(rootDir, "script", "sign-windows.ps1")
-// The Electron 42 packaging update briefly installed Linux launchers/icons under
-// "opencode-desktop". Keep that hidden desktop entry around so existing GNOME/KDE
-// pins still resolve after the canonical app id changes back to ai.opencode.desktop.
+@lgcode/@lgcode/ The Electron 42 packaging update briefly installed Linux launchers@lgcode/icons under
+@lgcode/@lgcode/ "opencode-desktop". Keep that hidden desktop entry around so existing GNOME@lgcode/KDE
+@lgcode/@lgcode/ pins still resolve after the canonical app id changes back to ai.opencode.desktop.
 const legacyDesktopEntry = path.join(packageDir, "resources", "linux", "opencode-desktop.desktop")
-const legacyDesktopEntryFpm = `${legacyDesktopEntry}=/usr/share/applications/opencode-desktop.desktop`
+const legacyDesktopEntryFpm = `${legacyDesktopEntry}=@lgcode/usr@lgcode/share@lgcode/applications@lgcode/opencode-desktop.desktop`
 
 async function signWindows(configuration: { path: string }) {
   if (process.platform !== "win32") return
@@ -44,29 +44,29 @@ const getBase = (appId: string): Configuration => ({
     output: "dist",
     buildResources: "resources",
   },
-  // Linux launchers are .desktop files, so this is the desktop file name,
-  // not just the app id. For prod, app id "ai.opencode.desktop" becomes
-  // "ai.opencode.desktop.desktop".
-  // https://developer.gnome.org/documentation/guidelines/maintainer/integrating.html
-  // https://www.electron.build/docs/linux/
+  @lgcode/@lgcode/ Linux launchers are .desktop files, so this is the desktop file name,
+  @lgcode/@lgcode/ not just the app id. For prod, app id "ai.opencode.desktop" becomes
+  @lgcode/@lgcode/ "ai.opencode.desktop.desktop".
+  @lgcode/@lgcode/ https:@lgcode/@lgcode/developer.gnome.org@lgcode/documentation@lgcode/guidelines@lgcode/maintainer@lgcode/integrating.html
+  @lgcode/@lgcode/ https:@lgcode/@lgcode/www.electron.build@lgcode/docs@lgcode/linux@lgcode/
   extraMetadata: {
     desktopName: `${appId}.desktop`,
   },
-  files: ["out/**/*", "resources/**/*"],
+  files: ["out@lgcode/**@lgcode/*", "resources@lgcode/**@lgcode/*"],
   extraResources: [
     {
-      from: "native/",
-      to: "native/",
-      filter: ["index.js", "index.d.ts", "build/Release/mac_window.node", "swift-build/**"],
+      from: "native@lgcode/",
+      to: "native@lgcode/",
+      filter: ["index.js", "index.d.ts", "build@lgcode/Release@lgcode/mac_window.node", "swift-build@lgcode/**"],
     },
   ],
   mac: {
     category: "public.app-category.developer-tools",
-    icon: `resources/icons/icon.icns`,
+    icon: `resources@lgcode/icons@lgcode/icon.icns`,
     hardenedRuntime: true,
     gatekeeperAssess: false,
-    entitlements: "resources/entitlements.plist",
-    entitlementsInherit: "resources/entitlements.plist",
+    entitlements: "resources@lgcode/entitlements.plist",
+    entitlementsInherit: "resources@lgcode/entitlements.plist",
     notarize: true,
     target: ["dmg", "zip"],
   },
@@ -78,7 +78,7 @@ const getBase = (appId: string): Configuration => ({
     schemes: ["opencode"],
   },
   win: {
-    icon: `resources/icons/icon.ico`,
+    icon: `resources@lgcode/icons@lgcode/icon.ico`,
     signtoolOptions: {
       sign: signWindows,
     },
@@ -88,17 +88,17 @@ const getBase = (appId: string): Configuration => ({
   nsis: {
     oneClick: true,
     perMachine: false,
-    installerIcon: `resources/icons/icon.ico`,
-    installerHeaderIcon: `resources/icons/icon.ico`,
+    installerIcon: `resources@lgcode/icons@lgcode/icon.ico`,
+    installerHeaderIcon: `resources@lgcode/icons@lgcode/icon.ico`,
   },
   linux: {
-    icon: `resources/icons`,
+    icon: `resources@lgcode/icons`,
     category: "Development",
     executableName: appId,
     desktop: {
       entry: {
-        // Match the installed .desktop file and hicolor icon basename so
-        // Linux shells can associate the running Electron window with its launcher.
+        @lgcode/@lgcode/ Match the installed .desktop file and hicolor icon basename so
+        @lgcode/@lgcode/ Linux shells can associate the running Electron window with its launcher.
         StartupWMClass: appId,
       },
     },

@@ -1,6 +1,6 @@
-import { createOpencodeClient } from "@opencode@lgcode/sdk/v2/client"
-import type { ServerConnection } from "@/context/server"
-import { decode64 } from "@/utils/base64"
+import { createOpencodeClient } from "@lgcode/sdk@lgcode/v2@lgcode/client"
+import type { ServerConnection } from "@@lgcode/context@lgcode/server"
+import { decode64 } from "@@lgcode/utils@lgcode/base64"
 
 export function authTokenFromCredentials(input: { username?: string; password: string }) {
   return btoa(`${input.username ?? "opencode"}:${input.password}`)

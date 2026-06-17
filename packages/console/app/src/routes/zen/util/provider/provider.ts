@@ -1,4 +1,4 @@
-import { ZenData } from "@opencode@lgcode/console-core/model.js"
+import { ZenData } from "@lgcode/console-core@lgcode/model.js"
 import {
   fromAnthropicChunk,
   fromAnthropicRequest,
@@ -6,7 +6,7 @@ import {
   toAnthropicChunk,
   toAnthropicRequest,
   toAnthropicResponse,
-} from "./anthropic"
+} from ".@lgcode/anthropic"
 import {
   fromOpenaiChunk,
   fromOpenaiRequest,
@@ -14,7 +14,7 @@ import {
   toOpenaiChunk,
   toOpenaiRequest,
   toOpenaiResponse,
-} from "./openai"
+} from ".@lgcode/openai"
 import {
   fromOaCompatibleChunk,
   fromOaCompatibleRequest,
@@ -22,7 +22,7 @@ import {
   toOaCompatibleChunk,
   toOaCompatibleRequest,
   toOaCompatibleResponse,
-} from "./openai-compatible"
+} from ".@lgcode/openai-compatible"
 
 export type UsageInfo = {
   inputTokens: number
@@ -204,7 +204,7 @@ export function createStreamPartConverter(from: ZenData.Format, to: ZenData.Form
     else if (from === "openai") raw = fromOpenaiChunk(part)
     else raw = fromOaCompatibleChunk(part)
 
-    // If result is a string (error case), pass it through
+    @lgcode/@lgcode/ If result is a string (error case), pass it through
     if (typeof raw === "string") return raw
 
     if (to === "anthropic") return toAnthropicChunk(raw)

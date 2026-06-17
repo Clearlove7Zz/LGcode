@@ -1,18 +1,18 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { Database } from "@opencode@lgcode/core/database/database"
-import { EventV2 } from "@opencode@lgcode/core/event"
-import { PermissionV2 } from "@opencode@lgcode/core/permission"
-import { Project } from "@opencode@lgcode/core/project"
-import { ProjectTable } from "@opencode@lgcode/core/project/sql"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { SessionV2 } from "@opencode@lgcode/core/session"
-import { SessionTable } from "@opencode@lgcode/core/session/sql"
-import { SessionTodo } from "@opencode@lgcode/core/session/todo"
-import { TodoWriteTool } from "@opencode@lgcode/core/tool/todowrite"
-import { ToolRegistry } from "@opencode@lgcode/core/tool/registry"
-import { testEffect } from "./lib/effect"
-import { toolIdentity, executeTool, settleTool, toolDefinitions } from "./lib/tool"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { EventV2 } from "@lgcode/core@lgcode/event"
+import { PermissionV2 } from "@lgcode/core@lgcode/permission"
+import { Project } from "@lgcode/core@lgcode/project"
+import { ProjectTable } from "@lgcode/core@lgcode/project@lgcode/sql"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { SessionV2 } from "@lgcode/core@lgcode/session"
+import { SessionTable } from "@lgcode/core@lgcode/session@lgcode/sql"
+import { SessionTodo } from "@lgcode/core@lgcode/session@lgcode/todo"
+import { TodoWriteTool } from "@lgcode/core@lgcode/tool@lgcode/todowrite"
+import { ToolRegistry } from "@lgcode/core@lgcode/tool@lgcode/registry"
+import { testEffect } from ".@lgcode/lib@lgcode/effect"
+import { toolIdentity, executeTool, settleTool, toolDefinitions } from ".@lgcode/lib@lgcode/tool"
 
 const sessionID = SessionV2.ID.make("ses_todowrite_tool_test")
 const assertions: PermissionV2.AssertInput[] = []
@@ -45,7 +45,7 @@ const setup = Effect.gen(function* () {
   const { db } = yield* Database.Service
   yield* db
     .insert(ProjectTable)
-    .values({ id: Project.ID.global, worktree: AbsolutePath.make("/project"), sandboxes: [] })
+    .values({ id: Project.ID.global, worktree: AbsolutePath.make("@lgcode/project"), sandboxes: [] })
     .run()
     .pipe(Effect.orDie)
   yield* db
@@ -54,7 +54,7 @@ const setup = Effect.gen(function* () {
       id: sessionID,
       project_id: Project.ID.global,
       slug: "todowrite",
-      directory: "/project",
+      directory: "@lgcode/project",
       title: "todowrite",
       version: "test",
     })

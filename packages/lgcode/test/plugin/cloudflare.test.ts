@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import { CloudflareAIGatewayAuthPlugin } from "@/plugin/cloudflare"
+import { CloudflareAIGatewayAuthPlugin } from "@@lgcode/plugin@lgcode/cloudflare"
 
 const pluginInput = {
   client: {} as never,
@@ -9,7 +9,7 @@ const pluginInput = {
   experimental_workspace: {
     register() {},
   },
-  serverUrl: new URL("https://example.com"),
+  serverUrl: new URL("https:@lgcode/@lgcode/example.com"),
   $: {} as never,
 }
 
@@ -21,7 +21,7 @@ function makeHookInput(overrides: { providerID?: string; apiId?: string; reasoni
     message: {} as never,
     model: {
       providerID: overrides.providerID ?? "cloudflare-ai-gateway",
-      api: { id: overrides.apiId ?? "openai/gpt-5.2-codex", url: "", npm: "ai-gateway-provider" },
+      api: { id: overrides.apiId ?? "openai@lgcode/gpt-5.2-codex", url: "", npm: "ai-gateway-provider" },
       capabilities: {
         reasoning: overrides.reasoning ?? true,
         temperature: false,
@@ -42,21 +42,21 @@ function makeHookOutput() {
 test("omits maxOutputTokens for openai reasoning models on cloudflare-ai-gateway", async () => {
   const hooks = await CloudflareAIGatewayAuthPlugin(pluginInput)
   const out = makeHookOutput()
-  await hooks["chat.params"]!(makeHookInput({ apiId: "openai/gpt-5.2-codex", reasoning: true }), out)
+  await hooks["chat.params"]!(makeHookInput({ apiId: "openai@lgcode/gpt-5.2-codex", reasoning: true }), out)
   expect(out.maxOutputTokens).toBeUndefined()
 })
 
 test("keeps maxOutputTokens for openai non-reasoning models", async () => {
   const hooks = await CloudflareAIGatewayAuthPlugin(pluginInput)
   const out = makeHookOutput()
-  await hooks["chat.params"]!(makeHookInput({ apiId: "openai/gpt-4-turbo", reasoning: false }), out)
+  await hooks["chat.params"]!(makeHookInput({ apiId: "openai@lgcode/gpt-4-turbo", reasoning: false }), out)
   expect(out.maxOutputTokens).toBe(32_000)
 })
 
 test("keeps maxOutputTokens for non-openai reasoning models on cloudflare-ai-gateway", async () => {
   const hooks = await CloudflareAIGatewayAuthPlugin(pluginInput)
   const out = makeHookOutput()
-  await hooks["chat.params"]!(makeHookInput({ apiId: "anthropic/claude-sonnet-4-5", reasoning: true }), out)
+  await hooks["chat.params"]!(makeHookInput({ apiId: "anthropic@lgcode/claude-sonnet-4-5", reasoning: true }), out)
   expect(out.maxOutputTokens).toBe(32_000)
 })
 

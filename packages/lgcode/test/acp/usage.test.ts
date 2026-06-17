@@ -1,11 +1,11 @@
 import { describe, expect, test } from "bun:test"
-import type { SessionNotification } from "@agentclientprotocol/sdk"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { ModelV2 } from "@opencode@lgcode/core/model"
-import { UsageService } from "@/acp/usage"
-import { Provider } from "@/provider/provider"
+import type { SessionNotification } from "@agentclientprotocol@lgcode/sdk"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { UsageService } from "@@lgcode/acp@lgcode/usage"
+import { Provider } from "@@lgcode/provider@lgcode/provider"
 import { Effect, Layer } from "effect"
-import { it } from "../lib/effect"
+import { it } from "..@lgcode/lib@lgcode/effect"
 
 const assistant = (
   input: Partial<UsageService.AssistantMessage> & Pick<UsageService.AssistantMessage, "cost">,
@@ -47,8 +47,8 @@ const model = (providerID: ProviderV2.ID, modelID: ModelV2.ID, context: number):
   providerID,
   api: {
     id: modelID,
-    url: "https://example.com",
-    npm: "@ai-sdk/openai-compatible",
+    url: "https:@lgcode/@lgcode/example.com",
+    npm: "@ai-sdk@lgcode/openai-compatible",
   },
   name: modelID,
   family: "test",
@@ -173,24 +173,24 @@ describe("acp usage", () => {
     expect(UsageService.totalSessionCost([assistant({ cost: 1.25 }), user(), assistant({ cost: 2.5 })])).toBe(3.75)
   })
 
-  it.effect("loads context limits from providers and caches by directory/provider/model", () => {
+  it.effect("loads context limits from providers and caches by directory@lgcode/provider@lgcode/model", () => {
     const calls: string[] = []
     return Effect.gen(function* () {
       const usage = yield* UsageService.Service
       const first = yield* usage.contextLimit({
-        directory: "/workspace",
+        directory: "@lgcode/workspace",
         providerID: ProviderV2.ID.make("anthropic"),
         modelID: ModelV2.ID.make("claude-sonnet"),
       })
       const second = yield* usage.contextLimit({
-        directory: "/workspace",
+        directory: "@lgcode/workspace",
         providerID: ProviderV2.ID.make("anthropic"),
         modelID: ModelV2.ID.make("claude-sonnet"),
       })
 
       expect(first).toBe(200_000)
       expect(second).toBe(200_000)
-      expect(calls).toEqual(["/workspace"])
+      expect(calls).toEqual(["@lgcode/workspace"])
     }).pipe(
       Effect.provide(
         fakeLayer({
@@ -211,7 +211,7 @@ describe("acp usage", () => {
       yield* usage.sendUpdate({
         connection: connection(updates),
         sessionID: "ses_1",
-        directory: "/workspace",
+        directory: "@lgcode/workspace",
       })
 
       expect(updates).toEqual([
@@ -252,7 +252,7 @@ describe("acp usage", () => {
       yield* usage.sendUpdate({
         connection: connection(updates),
         sessionID: "ses_1",
-        directory: "/workspace",
+        directory: "@lgcode/workspace",
       })
 
       expect(updates).toEqual([])
@@ -266,7 +266,7 @@ describe("acp usage", () => {
       yield* usage.sendUpdate({
         connection: connection(updates),
         sessionID: "ses_1",
-        directory: "/workspace",
+        directory: "@lgcode/workspace",
       })
 
       expect(updates).toEqual([])
@@ -280,7 +280,7 @@ describe("acp usage", () => {
       yield* usage.sendUpdate({
         connection: connection(updates),
         sessionID: "ses_1",
-        directory: "/workspace",
+        directory: "@lgcode/workspace",
       })
 
       expect(updates).toEqual([])
@@ -300,7 +300,7 @@ describe("acp usage", () => {
       yield* usage.sendUpdate({
         connection: connection(updates),
         sessionID: "ses_1",
-        directory: "/workspace",
+        directory: "@lgcode/workspace",
       })
 
       expect(updates).toEqual([])

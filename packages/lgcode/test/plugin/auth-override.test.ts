@@ -2,18 +2,18 @@ import { describe, expect, test } from "bun:test"
 import path from "path"
 import { pathToFileURL } from "url"
 import { Effect, Layer } from "effect"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { provideInstance, TestInstance, tmpdirScoped } from "../fixture/fixture"
-import { ProviderAuth } from "@/provider/auth"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { provideInstance, TestInstance, tmpdirScoped } from "..@lgcode/fixture@lgcode/fixture"
+import { ProviderAuth } from "@@lgcode/provider@lgcode/auth"
 
-import { Plugin } from "@/plugin"
-import { RuntimeFlags } from "@/effect/runtime-flags"
-import { Auth } from "@/auth"
-import { EventV2Bridge } from "@/event-v2-bridge"
-import { TestConfig } from "../fixture/config"
-import { testEffect } from "../lib/effect"
-import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { Plugin } from "@@lgcode/plugin"
+import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
+import { Auth } from "@@lgcode/auth"
+import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
+import { TestConfig } from "..@lgcode/fixture@lgcode/config"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
 
 const it = testEffect(Layer.mergeAll(CrossSpawnSpawner.defaultLayer, FSUtil.defaultLayer))
 
@@ -89,17 +89,17 @@ describe("plugin.auth-override", () => {
   )
 })
 
-const file = path.join(import.meta.dir, "../../src/plugin/index.ts")
+const file = path.join(import.meta.dir, "..@lgcode/..@lgcode/src@lgcode/plugin@lgcode/index.ts")
 
 describe("plugin.config-hook-error-isolation", () => {
   test("config hooks are individually error-isolated in the layer factory", async () => {
     const src = await Bun.file(file).text()
 
-    // Each hook's config call is wrapped in Effect.tryPromise with error logging + Effect.ignore
+    @lgcode/@lgcode/ Each hook's config call is wrapped in Effect.tryPromise with error logging + Effect.ignore
     expect(src).toContain("plugin config hook failed")
 
     const pattern =
-      /for\s*\(const hook of hooks\)\s*\{[\s\S]*?Effect\.tryPromise[\s\S]*?\.config\?\.\([\s\S]*?plugin config hook failed[\s\S]*?Effect\.ignore/
+      @lgcode/for\s*\(const hook of hooks\)\s*\{[\s\S]*?Effect\.tryPromise[\s\S]*?\.config\?\.\([\s\S]*?plugin config hook failed[\s\S]*?Effect\.ignore@lgcode/
     expect(pattern.test(src)).toBe(true)
   })
 })

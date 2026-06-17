@@ -1,6 +1,6 @@
-import type { DesktopMenuAction } from "@opencode@lgcode/app/desktop-menu"
-import type { WslServersPlatform } from "@opencode@lgcode/app/wsl/types"
-import type { UpdaterState } from "@opencode@lgcode/app/updater"
+import type { DesktopMenuAction } from "@lgcode/app@lgcode/desktop-menu"
+import type { WslServersPlatform } from "@lgcode/app@lgcode/wsl@lgcode/types"
+import type { UpdaterState } from "@lgcode/app@lgcode/updater"
 export type {
   WslDistroProbe,
   WslInstalledDistro,
@@ -13,7 +13,7 @@ export type {
   WslServerRuntime,
   WslServersEvent,
   WslServersState,
-} from "@opencode@lgcode/app/wsl/types"
+} from "@lgcode/app@lgcode/wsl@lgcode/types"
 
 export type ServerReadyData = {
   url: string

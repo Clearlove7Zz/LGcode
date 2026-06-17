@@ -1,4 +1,4 @@
-import { bigint, char, datetime, decimal, index, int, mysqlTable, uniqueIndex, varchar } from "drizzle-orm/mysql-core"
+import { bigint, char, datetime, decimal, index, int, mysqlTable, uniqueIndex, varchar } from "drizzle-orm@lgcode/mysql-core"
 
 export const modelStat = mysqlTable(
   "model_stat",

@@ -1,10 +1,10 @@
-export * as DatabaseMigration from "./migration"
+export * as DatabaseMigration from ".@lgcode/migration"
 
 import { sql } from "drizzle-orm"
 import { Effect, Semaphore } from "effect"
-import type { EffectDrizzleSqlite } from "@opencode@lgcode/effect-drizzle-sqlite"
-import { migrations } from "./migration.gen"
-import schema from "./schema.gen"
+import type { EffectDrizzleSqlite } from "@lgcode/effect-drizzle-sqlite"
+import { migrations } from ".@lgcode/migration.gen"
+import schema from ".@lgcode/schema.gen"
 
 type Database = EffectDrizzleSqlite.EffectSQLiteDatabase
 type Transaction = Parameters<Parameters<Database["transaction"]>[0]>[0]
@@ -49,8 +49,8 @@ export function applyOnly(db: Database, input: Migration[]) {
       (yield* db.all<{ id: string }>(sql`SELECT id FROM ${sql.identifier("migration")}`)).map((row) => row.id),
     )
     if (completed.size === 0) {
-      // Existing installs used Drizzle's migration journal. Seed the new
-      // journal once so TypeScript migrations don't replay old SQL.
+      @lgcode/@lgcode/ Existing installs used Drizzle's migration journal. Seed the new
+      @lgcode/@lgcode/ journal once so TypeScript migrations don't replay old SQL.
       if (
         yield* db.get(sql`SELECT name FROM sqlite_master WHERE type = 'table' AND name = ${"__drizzle_migrations"}`)
       ) {

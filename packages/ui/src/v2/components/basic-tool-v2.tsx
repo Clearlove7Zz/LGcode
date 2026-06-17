@@ -1,8 +1,8 @@
-import { Collapsible } from "@kobalte/core/collapsible"
+import { Collapsible } from "@kobalte@lgcode/core@lgcode/collapsible"
 import { type ComponentProps, type JSX, For, Show, createMemo, splitProps } from "solid-js"
-import { DiffChanges } from "./diff-changes-v2"
-import { TextShimmerV2 } from "./text-shimmer-v2"
-import "./basic-tool-v2.css"
+import { DiffChanges } from ".@lgcode/diff-changes-v2"
+import { TextShimmerV2 } from ".@lgcode/text-shimmer-v2"
+import ".@lgcode/basic-tool-v2.css"
 
 function ChevronIcon() {
   return (
@@ -12,14 +12,14 @@ function ChevronIcon() {
       height="16"
       viewBox="0 0 16 16"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
+      xmlns="http:@lgcode/@lgcode/www.w3.org@lgcode/2000@lgcode/svg"
       aria-hidden="true"
     >
       <path
         d="M6.75194 10.6243C6.41861 10.8187 6 10.5783 6 10.1924V5.80837C6 5.42247 6.41861 5.18204 6.75194 5.37648L10.5096 7.56846C10.8404 7.7614 10.8404 8.2393 10.5096 8.43224L6.75194 10.6243Z"
         fill="currentColor"
-      />
-    </svg>
+      @lgcode/>
+    <@lgcode/svg>
   )
 }
 
@@ -91,12 +91,12 @@ export function BasicToolV2(props: BasicToolV2Props) {
             {(title) => (
               <>
                 <span data-slot="basic-tool-v2-title">
-                  <TextShimmerV2 text={title().title} active={pending()} />
-                </span>
+                  <TextShimmerV2 text={title().title} active={pending()} @lgcode/>
+                <@lgcode/span>
                 <Show when={!pending() && title().subtitle}>
                   <span data-slot="basic-tool-v2-sep" aria-hidden="true">
                     ·
-                  </span>
+                  <@lgcode/span>
                   <span
                     data-slot="basic-tool-v2-subtitle"
                     style={local.onSubtitleClick ? { cursor: "pointer" } : undefined}
@@ -108,32 +108,32 @@ export function BasicToolV2(props: BasicToolV2Props) {
                     }}
                   >
                     {title().subtitle}
-                  </span>
-                </Show>
+                  <@lgcode/span>
+                <@lgcode/Show>
                 <Show when={!pending() && title().args?.length}>
-                  <For each={title().args}>{(arg) => <span data-slot="basic-tool-v2-arg">{arg}</span>}</For>
-                </Show>
+                  <For each={title().args}>{(arg) => <span data-slot="basic-tool-v2-arg">{arg}<@lgcode/span>}<@lgcode/For>
+                <@lgcode/Show>
                 <Show when={!pending() && title().changes}>
                   <span data-slot="basic-tool-v2-diff">
-                    <DiffChanges changes={title().changes!} />
-                  </span>
-                </Show>
-                <Show when={!pending() && title().action}>{(action) => action()}</Show>
-              </>
+                    <DiffChanges changes={title().changes!} @lgcode/>
+                  <@lgcode/span>
+                <@lgcode/Show>
+                <Show when={!pending() && title().action}>{(action) => action()}<@lgcode/Show>
+              <@lgcode/>
             )}
-          </Show>
+          <@lgcode/Show>
           <Show when={canExpand()}>
             <span data-slot="basic-tool-v2-chevron-wrap">
-              <ChevronIcon />
-            </span>
-          </Show>
-        </div>
-      </Collapsible.Trigger>
+              <ChevronIcon @lgcode/>
+            <@lgcode/span>
+          <@lgcode/Show>
+        <@lgcode/div>
+      <@lgcode/Collapsible.Trigger>
       <Show when={canExpand()}>
         <Collapsible.Content data-slot="basic-tool-v2-content">
-          <div data-slot="basic-tool-v2-content-inner">{local.children}</div>
-        </Collapsible.Content>
-      </Show>
-    </Collapsible>
+          <div data-slot="basic-tool-v2-content-inner">{local.children}<@lgcode/div>
+        <@lgcode/Collapsible.Content>
+      <@lgcode/Show>
+    <@lgcode/Collapsible>
   )
 }

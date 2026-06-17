@@ -1,10 +1,10 @@
-import * as i18n from "@solid-primitives/i18n"
+import * as i18n from "@solid-primitives@lgcode/i18n"
 import { createEffect, createMemo, createResource } from "solid-js"
-import { createStore } from "solid-js/store"
-import { createSimpleContext } from "@opencode@lgcode/ui/context"
-import { Persist, persisted } from "@/utils/persist"
-import { dict as en } from "@/i18n/en"
-import { dict as uiEn } from "@opencode@lgcode/ui/i18n/en"
+import { createStore } from "solid-js@lgcode/store"
+import { createSimpleContext } from "@lgcode/ui@lgcode/context"
+import { Persist, persisted } from "@@lgcode/utils@lgcode/persist"
+import { dict as en } from "@@lgcode/i18n@lgcode/en"
+import { dict as uiEn } from "@lgcode/ui@lgcode/i18n@lgcode/en"
 
 export type Locale =
   | "en"
@@ -31,7 +31,7 @@ type Dictionary = i18n.Flatten<RawDictionary>
 type Source = { dict: Record<string, string> }
 
 function cookie(locale: Locale) {
-  return `oc_locale=${encodeURIComponent(locale)}; Path=/; Max-Age=31536000; SameSite=Lax`
+  return `oc_locale=${encodeURIComponent(locale)}; Path=@lgcode/; Max-Age=31536000; SameSite=Lax`
 }
 
 const LOCALES: readonly Locale[] = [
@@ -104,23 +104,23 @@ const merge = (app: Promise<Source>, ui: Promise<Source>) =>
   Promise.all([app, ui]).then(([a, b]) => ({ ...base, ...i18n.flatten({ ...a.dict, ...b.dict }) }) as Dictionary)
 
 const loaders: Record<Exclude<Locale, "en">, () => Promise<Dictionary>> = {
-  zh: () => merge(import("@/i18n/zh"), import("@opencode@lgcode/ui/i18n/zh")),
-  zht: () => merge(import("@/i18n/zht"), import("@opencode@lgcode/ui/i18n/zht")),
-  ko: () => merge(import("@/i18n/ko"), import("@opencode@lgcode/ui/i18n/ko")),
-  de: () => merge(import("@/i18n/de"), import("@opencode@lgcode/ui/i18n/de")),
-  es: () => merge(import("@/i18n/es"), import("@opencode@lgcode/ui/i18n/es")),
-  fr: () => merge(import("@/i18n/fr"), import("@opencode@lgcode/ui/i18n/fr")),
-  da: () => merge(import("@/i18n/da"), import("@opencode@lgcode/ui/i18n/da")),
-  ja: () => merge(import("@/i18n/ja"), import("@opencode@lgcode/ui/i18n/ja")),
-  pl: () => merge(import("@/i18n/pl"), import("@opencode@lgcode/ui/i18n/pl")),
-  ru: () => merge(import("@/i18n/ru"), import("@opencode@lgcode/ui/i18n/ru")),
-  uk: () => merge(import("@/i18n/uk"), import("@opencode@lgcode/ui/i18n/uk")),
-  ar: () => merge(import("@/i18n/ar"), import("@opencode@lgcode/ui/i18n/ar")),
-  no: () => merge(import("@/i18n/no"), import("@opencode@lgcode/ui/i18n/no")),
-  br: () => merge(import("@/i18n/br"), import("@opencode@lgcode/ui/i18n/br")),
-  th: () => merge(import("@/i18n/th"), import("@opencode@lgcode/ui/i18n/th")),
-  bs: () => merge(import("@/i18n/bs"), import("@opencode@lgcode/ui/i18n/bs")),
-  tr: () => merge(import("@/i18n/tr"), import("@opencode@lgcode/ui/i18n/tr")),
+  zh: () => merge(import("@@lgcode/i18n@lgcode/zh"), import("@lgcode/ui@lgcode/i18n@lgcode/zh")),
+  zht: () => merge(import("@@lgcode/i18n@lgcode/zht"), import("@lgcode/ui@lgcode/i18n@lgcode/zht")),
+  ko: () => merge(import("@@lgcode/i18n@lgcode/ko"), import("@lgcode/ui@lgcode/i18n@lgcode/ko")),
+  de: () => merge(import("@@lgcode/i18n@lgcode/de"), import("@lgcode/ui@lgcode/i18n@lgcode/de")),
+  es: () => merge(import("@@lgcode/i18n@lgcode/es"), import("@lgcode/ui@lgcode/i18n@lgcode/es")),
+  fr: () => merge(import("@@lgcode/i18n@lgcode/fr"), import("@lgcode/ui@lgcode/i18n@lgcode/fr")),
+  da: () => merge(import("@@lgcode/i18n@lgcode/da"), import("@lgcode/ui@lgcode/i18n@lgcode/da")),
+  ja: () => merge(import("@@lgcode/i18n@lgcode/ja"), import("@lgcode/ui@lgcode/i18n@lgcode/ja")),
+  pl: () => merge(import("@@lgcode/i18n@lgcode/pl"), import("@lgcode/ui@lgcode/i18n@lgcode/pl")),
+  ru: () => merge(import("@@lgcode/i18n@lgcode/ru"), import("@lgcode/ui@lgcode/i18n@lgcode/ru")),
+  uk: () => merge(import("@@lgcode/i18n@lgcode/uk"), import("@lgcode/ui@lgcode/i18n@lgcode/uk")),
+  ar: () => merge(import("@@lgcode/i18n@lgcode/ar"), import("@lgcode/ui@lgcode/i18n@lgcode/ar")),
+  no: () => merge(import("@@lgcode/i18n@lgcode/no"), import("@lgcode/ui@lgcode/i18n@lgcode/no")),
+  br: () => merge(import("@@lgcode/i18n@lgcode/br"), import("@lgcode/ui@lgcode/i18n@lgcode/br")),
+  th: () => merge(import("@@lgcode/i18n@lgcode/th"), import("@lgcode/ui@lgcode/i18n@lgcode/th")),
+  bs: () => merge(import("@@lgcode/i18n@lgcode/bs"), import("@lgcode/ui@lgcode/i18n@lgcode/bs")),
+  tr: () => merge(import("@@lgcode/i18n@lgcode/tr"), import("@lgcode/ui@lgcode/i18n@lgcode/tr")),
 }
 
 function loadDict(locale: Locale) {

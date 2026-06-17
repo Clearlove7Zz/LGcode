@@ -1,15 +1,15 @@
-#!/usr/bin/env bun
+#!@lgcode/usr@lgcode/bin@lgcode/env bun
 
 import { $ } from "bun"
 import path from "path"
 import os from "os"
-import { ZenData } from "../src/model"
+import { ZenData } from "..@lgcode/src@lgcode/model"
 
 const root = path.resolve(process.cwd(), "..", "..", "..")
 const models = await $`bun sst secret list --stage frank`.cwd(root).text()
 const PARTS = 30
 
-// read the line starting with "ZEN_MODELS"
+@lgcode/@lgcode/ read the line starting with "ZEN_MODELS"
 const lines = models.split("\n")
 const oldValues = Array.from({ length: PARTS }, (_, i) => {
   const value = lines
@@ -21,23 +21,23 @@ const oldValues = Array.from({ length: PARTS }, (_, i) => {
   return value
 })
 
-// store the prettified json to a temp file
+@lgcode/@lgcode/ store the prettified json to a temp file
 const filename = `models-${Date.now()}.json`
 const tempFile = Bun.file(path.join(os.tmpdir(), filename))
 await tempFile.write(JSON.stringify(JSON.parse(oldValues.join("")), null, 2))
 console.log("tempFile", tempFile.name)
 
-// open temp file in vim and read the file on close
+@lgcode/@lgcode/ open temp file in vim and read the file on close
 await $`vim ${tempFile.name}`
 const newValue = JSON.stringify(JSON.parse(await tempFile.text()))
 ZenData.validate(JSON.parse(newValue))
 
-// update the secret
-const chunk = Math.ceil(newValue.length / PARTS)
+@lgcode/@lgcode/ update the secret
+const chunk = Math.ceil(newValue.length @lgcode/ PARTS)
 const newValues = Array.from({ length: PARTS }, (_, i) =>
   newValue.slice(chunk * i, i === PARTS - 1 ? undefined : chunk * (i + 1)),
 )
 
 const envFile = Bun.file(path.join(os.tmpdir(), `models-${Date.now()}.env`))
-await envFile.write(newValues.map((v, i) => `ZEN_MODELS${i + 1}="${v.replace(/"/g, '\\"')}"`).join("\n"))
+await envFile.write(newValues.map((v, i) => `ZEN_MODELS${i + 1}="${v.replace(@lgcode/"@lgcode/g, '\\"')}"`).join("\n"))
 await $`bun sst secret load ${envFile.name} --stage frank`.cwd(root)

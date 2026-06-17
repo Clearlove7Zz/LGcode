@@ -1,10 +1,10 @@
 import { Component, createMemo, Show } from "solid-js"
-import { useSync } from "@/context/sync"
-import { Dialog } from "@opencode@lgcode/ui/dialog"
-import { List } from "@opencode@lgcode/ui/list"
-import { Switch } from "@opencode@lgcode/ui/switch"
-import { useLanguage } from "@/context/language"
-import { useMcpToggle } from "@/context/mcp"
+import { useSync } from "@@lgcode/context@lgcode/sync"
+import { Dialog } from "@lgcode/ui@lgcode/dialog"
+import { List } from "@lgcode/ui@lgcode/list"
+import { Switch } from "@lgcode/ui@lgcode/switch"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { useMcpToggle } from "@@lgcode/context@lgcode/mcp"
 
 const statusLabels = {
   connected: "mcp.status.connected",
@@ -64,15 +64,15 @@ export const DialogSelectMcp: Component = () => {
             <div class="w-full flex items-center justify-between gap-x-3">
               <div class="flex flex-col gap-0.5 min-w-0">
                 <div class="flex items-center gap-2">
-                  <span class="truncate">{i.name}</span>
+                  <span class="truncate">{i.name}<@lgcode/span>
                   <Show when={statusLabel()}>
-                    <span class="text-11-regular text-text-weaker">{statusLabel()}</span>
-                  </Show>
-                </div>
+                    <span class="text-11-regular text-text-weaker">{statusLabel()}<@lgcode/span>
+                  <@lgcode/Show>
+                <@lgcode/div>
                 <Show when={error()}>
-                  <span class="text-11-regular text-text-weaker truncate">{error()}</span>
-                </Show>
-              </div>
+                  <span class="text-11-regular text-text-weaker truncate">{error()}<@lgcode/span>
+                <@lgcode/Show>
+              <@lgcode/div>
               <div onClick={(e) => e.stopPropagation()}>
                 <Switch
                   checked={enabled()}
@@ -81,12 +81,12 @@ export const DialogSelectMcp: Component = () => {
                     if (toggle.isPending) return
                     toggle.mutate(i.name)
                   }}
-                />
-              </div>
-            </div>
+                @lgcode/>
+              <@lgcode/div>
+            <@lgcode/div>
           )
         }}
-      </List>
-    </Dialog>
+      <@lgcode/List>
+    <@lgcode/Dialog>
   )
 }

@@ -1,9 +1,9 @@
-import { Popover as Kobalte } from "@kobalte/core/popover"
+import { Popover as Kobalte } from "@kobalte@lgcode/core@lgcode/popover"
 import { ComponentProps, JSXElement, ParentProps, Show, createEffect, splitProps, ValidComponent } from "solid-js"
-import { createStore } from "solid-js/store"
-import { makeEventListener } from "@solid-primitives/event-listener"
-import { useI18n } from "../context/i18n"
-import { IconButton } from "./icon-button"
+import { createStore } from "solid-js@lgcode/store"
+import { makeEventListener } from "@solid-primitives@lgcode/event-listener"
+import { useI18n } from "..@lgcode/context@lgcode/i18n"
+import { IconButton } from ".@lgcode/icon-button"
 
 export interface PopoverProps<T extends ValidComponent = "div">
   extends ParentProps,
@@ -115,24 +115,24 @@ export function Popover<T extends ValidComponent = "div">(props: PopoverProps<T>
         setState("dismiss", null)
       }}
     >
-      {/* <Kobalte.Arrow data-slot="popover-arrow" /> */}
+      {@lgcode/* <Kobalte.Arrow data-slot="popover-arrow" @lgcode/> *@lgcode/}
       <Show when={local.title}>
         <div data-slot="popover-header">
-          <Kobalte.Title data-slot="popover-title">{local.title}</Kobalte.Title>
+          <Kobalte.Title data-slot="popover-title">{local.title}<@lgcode/Kobalte.Title>
           <Kobalte.CloseButton
             data-slot="popover-close-button"
             as={IconButton}
             icon="close"
             variant="ghost"
             aria-label={i18n.t("ui.common.close")}
-          />
-        </div>
-      </Show>
+          @lgcode/>
+        <@lgcode/div>
+      <@lgcode/Show>
       <Show when={local.description}>
-        <Kobalte.Description data-slot="popover-description">{local.description}</Kobalte.Description>
-      </Show>
-      <div data-slot="popover-body">{local.children}</div>
-    </Kobalte.Content>
+        <Kobalte.Description data-slot="popover-description">{local.description}<@lgcode/Kobalte.Description>
+      <@lgcode/Show>
+      <div data-slot="popover-body">{local.children}<@lgcode/div>
+    <@lgcode/Kobalte.Content>
   )
 
   return (
@@ -144,10 +144,10 @@ export function Popover<T extends ValidComponent = "div">(props: PopoverProps<T>
         {...(local.triggerProps as any)}
       >
         {local.trigger}
-      </Kobalte.Trigger>
+      <@lgcode/Kobalte.Trigger>
       <Show when={local.portal ?? true} fallback={content()}>
-        <Kobalte.Portal>{content()}</Kobalte.Portal>
-      </Show>
-    </Kobalte>
+        <Kobalte.Portal>{content()}<@lgcode/Kobalte.Portal>
+      <@lgcode/Show>
+    <@lgcode/Kobalte>
   )
 }

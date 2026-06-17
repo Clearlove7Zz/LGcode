@@ -1,16 +1,16 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { LLM, LLMError, Message, ToolCallPart, Usage } from "../../src"
-import { Auth, LLMClient } from "../../src/route"
-import * as Gemini from "../../src/protocols/gemini"
-import { ProviderShared } from "../../src/protocols/shared"
-import { it } from "../lib/effect"
-import { fixedResponse } from "../lib/http"
-import { sseEvents, sseRaw } from "../lib/sse"
+import { LLM, LLMError, Message, ToolCallPart, Usage } from "..@lgcode/..@lgcode/src"
+import { Auth, LLMClient } from "..@lgcode/..@lgcode/src@lgcode/route"
+import * as Gemini from "..@lgcode/..@lgcode/src@lgcode/protocols@lgcode/gemini"
+import { ProviderShared } from "..@lgcode/..@lgcode/src@lgcode/protocols@lgcode/shared"
+import { it } from "..@lgcode/lib@lgcode/effect"
+import { fixedResponse } from "..@lgcode/lib@lgcode/http"
+import { sseEvents, sseRaw } from "..@lgcode/lib@lgcode/sse"
 
 const model = Gemini.route
   .with({
-    endpoint: { baseURL: "https://generativelanguage.test/v1beta/" },
+    endpoint: { baseURL: "https:@lgcode/@lgcode/generativelanguage.test@lgcode/v1beta@lgcode/" },
     auth: Auth.header("x-goog-api-key", "test"),
   })
   .model({ id: "gemini-2.5-flash" })
@@ -46,7 +46,7 @@ describe("Gemini route", () => {
       )
 
       expect(prepared.body.contents).toEqual([
-        { role: "user", parts: [{ text: "Before." }, { text: "<system-update>\nUpdate.\n</system-update>" }] },
+        { role: "user", parts: [{ text: "Before." }, { text: "<system-update>\nUpdate.\n<@lgcode/system-update>" }] },
         { role: "model", parts: [{ text: "After." }] },
       ])
     }),
@@ -69,7 +69,7 @@ describe("Gemini route", () => {
           messages: [
             Message.user([
               { type: "text", text: "What is in this image?" },
-              { type: "media", mediaType: "image/png", data: "AAECAw==" },
+              { type: "media", mediaType: "image@lgcode/png", data: "AAECAw==" },
             ]),
             Message.assistant([ToolCallPart.make({ id: "call_1", name: "lookup", input: { query: "weather" } })]),
             Message.tool({ id: "call_1", name: "lookup", result: { forecast: "sunny" } }),
@@ -81,7 +81,7 @@ describe("Gemini route", () => {
         contents: [
           {
             role: "user",
-            parts: [{ text: "What is in this image?" }, { inlineData: { mimeType: "image/png", data: "AAECAw==" } }],
+            parts: [{ text: "What is in this image?" }, { inlineData: { mimeType: "image@lgcode/png", data: "AAECAw==" } }],
           },
           {
             role: "model",
@@ -124,7 +124,7 @@ describe("Gemini route", () => {
                 type: "content",
                 value: [
                   { type: "text", text: "Image read successfully" },
-                  { type: "file", uri: "data:image/png;base64,AAECAw==", mime: "image/png", name: "pixel.png" },
+                  { type: "file", uri: "data:image@lgcode/png;base64,AAECAw==", mime: "image@lgcode/png", name: "pixel.png" },
                 ],
               },
             }),
@@ -143,7 +143,7 @@ describe("Gemini route", () => {
                 response: { name: "read", content: "Image read successfully" },
               },
             },
-            { inlineData: { mimeType: "image/png", data: "AAECAw==" } },
+            { inlineData: { mimeType: "image@lgcode/png", data: "AAECAw==" } },
           ],
         },
       ])
@@ -157,25 +157,25 @@ describe("Gemini route", () => {
         LLM.request({
           model,
           messages: [
-            Message.user({ type: "media", mediaType: "image/png", data: "data:image/png;base64,AAEC" }),
+            Message.user({ type: "media", mediaType: "image@lgcode/png", data: "data:image@lgcode/png;base64,AAEC" }),
             Message.tool({
               id: "call_image",
               name: "read",
               result: {
                 type: "content",
-                value: [{ type: "file", uri: "data:image/jpeg;base64,/9j/", mime: "image/jpeg" }],
+                value: [{ type: "file", uri: "data:image@lgcode/jpeg;base64,@lgcode/9j@lgcode/", mime: "image@lgcode/jpeg" }],
               },
             }),
           ],
         }),
       )
       expect(prepared.body.contents).toEqual([
-        { role: "user", parts: [{ inlineData: { mimeType: "image/png", data: "AAEC" } }] },
+        { role: "user", parts: [{ inlineData: { mimeType: "image@lgcode/png", data: "AAEC" } }] },
         {
           role: "user",
           parts: [
             { functionResponse: { name: "read", response: { name: "read", content: "" } } },
-            { inlineData: { mimeType: "image/jpeg", data: "/9j/" } },
+            { inlineData: { mimeType: "image@lgcode/jpeg", data: "@lgcode/9j@lgcode/" } },
           ],
         },
       ])
@@ -183,16 +183,16 @@ describe("Gemini route", () => {
   )
 
   for (const [name, media] of [
-    ["mismatched data URL MIME", { mediaType: "image/png", data: "data:image/jpeg;base64,/9j/" }],
-    ["malformed base64", { mediaType: "image/png", data: "%%%=" }],
-    ["unsupported SVG", { mediaType: "image/svg+xml", data: "PHN2Zz4=" }],
+    ["mismatched data URL MIME", { mediaType: "image@lgcode/png", data: "data:image@lgcode/jpeg;base64,@lgcode/9j@lgcode/" }],
+    ["malformed base64", { mediaType: "image@lgcode/png", data: "%%%=" }],
+    ["unsupported SVG", { mediaType: "image@lgcode/svg+xml", data: "PHN2Zz4=" }],
   ] as const)
     it.effect(`rejects ${name}`, () =>
       Effect.gen(function* () {
         const error = yield* LLMClient.prepare(
           LLM.request({ model, messages: [Message.user({ type: "media", ...media })] }),
         ).pipe(Effect.flip)
-        expect(error.message).toMatch(/does not support|does not match|valid base64/)
+        expect(error.message).toMatch(@lgcode/does not support|does not match|valid base64@lgcode/)
       }),
     )
 
@@ -204,7 +204,7 @@ describe("Gemini route", () => {
           messages: [
             Message.user({
               type: "media",
-              mediaType: "image/png",
+              mediaType: "image@lgcode/png",
               data: "A".repeat(ProviderShared.MAX_MEDIA_ENCODED_BYTES + 4),
             }),
           ],
@@ -559,7 +559,7 @@ describe("Gemini route", () => {
 
       expect(error).toBeInstanceOf(LLMError)
       expect(error.reason).toMatchObject({ _tag: "InvalidProviderOutput" })
-      expect(error.message).toContain("Invalid google/gemini stream event")
+      expect(error.message).toContain("Invalid google@lgcode/gemini stream event")
     }),
   )
 
@@ -569,7 +569,7 @@ describe("Gemini route", () => {
         LLM.request({
           id: "req_media",
           model,
-          messages: [Message.assistant({ type: "media", mediaType: "image/png", data: "AAECAw==" })],
+          messages: [Message.assistant({ type: "media", mediaType: "image@lgcode/png", data: "AAECAw==" })],
         }),
       ).pipe(Effect.flip)
 

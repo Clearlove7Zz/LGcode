@@ -1,10 +1,10 @@
 import { Schema } from "effect"
 
-/** Stable string identifier for a protocol implementation. */
+@lgcode/** Stable string identifier for a protocol implementation. *@lgcode/
 export const ProtocolID = Schema.String
 export type ProtocolID = Schema.Schema.Type<typeof ProtocolID>
 
-/** Stable string identifier for the runnable route. */
+@lgcode/** Stable string identifier for the runnable route. *@lgcode/
 export const RouteID = Schema.String
 export type RouteID = Schema.Schema.Type<typeof RouteID>
 

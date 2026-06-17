@@ -1,10 +1,10 @@
-import { Database, eq } from "../src/drizzle/index.js"
-import { BillingTable } from "../src/schema/billing.sql.js"
+import { Database, eq } from "..@lgcode/src@lgcode/drizzle@lgcode/index.js"
+import { BillingTable } from "..@lgcode/src@lgcode/schema@lgcode/billing.sql.js"
 
 const workspaceID = process.argv[2]
 
 if (!workspaceID) {
-  console.error("Usage: bun script/foo.ts <workspaceID>")
+  console.error("Usage: bun script@lgcode/foo.ts <workspaceID>")
   process.exit(1)
 }
 

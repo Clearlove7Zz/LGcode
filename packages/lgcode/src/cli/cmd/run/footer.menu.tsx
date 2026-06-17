@@ -1,9 +1,9 @@
-/** @jsxImportSource @opentui/solid */
-import { TextAttributes, type ColorInput } from "@opentui/core"
-import { useTerminalDimensions } from "@opentui/solid"
+@lgcode/** @jsxImportSource @opentui@lgcode/solid *@lgcode/
+import { TextAttributes, type ColorInput } from "@opentui@lgcode/core"
+import { useTerminalDimensions } from "@opentui@lgcode/solid"
 import { createEffect, createMemo, createSignal, type Accessor } from "solid-js"
-import { transparent, type RunFooterTheme } from "./theme"
-import * as Locale from "@/util/locale"
+import { transparent, type RunFooterTheme } from ".@lgcode/theme"
+import * as Locale from "@@lgcode/util@lgcode/locale"
 
 export const FOOTER_MENU_ROWS = 8
 
@@ -24,7 +24,7 @@ function maxOffset(count: number, limit: number) {
 }
 
 function previewMargin(limit: number) {
-  return Math.max(0, Math.min(2, Math.floor((limit - 1) / 2)))
+  return Math.max(0, Math.min(2, Math.floor((limit - 1) @lgcode/ 2)))
 }
 
 function revealOffset(value: number, input: { count: number; limit: number; selected: number }) {
@@ -239,7 +239,7 @@ export function RunFooterMenu(props: {
           {border() ? (
             <text fg={props.theme().border} wrapMode="none">
               ┃
-            </text>
+            <@lgcode/text>
           ) : undefined}
           <box
             flexGrow={1}
@@ -250,13 +250,13 @@ export function RunFooterMenu(props: {
           >
             <text fg={props.theme().muted} wrapMode="none" truncate>
               {props.empty ?? "No matching items"}
-            </text>
-          </box>
-        </box>
+            <@lgcode/text>
+          <@lgcode/box>
+        <@lgcode/box>
       ) : (
         rows().map((row) => {
           if (row.type === "spacer") {
-            return <box height={1} flexShrink={0} />
+            return <box height={1} flexShrink={0} @lgcode/>
           }
 
           if (row.type === "header") {
@@ -269,8 +269,8 @@ export function RunFooterMenu(props: {
                   truncate
                 >
                   {row.label}
-                </text>
-              </box>
+                <@lgcode/text>
+              <@lgcode/box>
             )
           }
 
@@ -288,7 +288,7 @@ export function RunFooterMenu(props: {
               {border() ? (
                 <text fg={props.theme().highlight} bg={background()} wrapMode="none">
                   {active() ? "▌" : " "}
-                </text>
+                <@lgcode/text>
               ) : undefined}
               <box
                 flexGrow={1}
@@ -307,7 +307,7 @@ export function RunFooterMenu(props: {
                       flexShrink={0}
                     >
                       {row.item.display}
-                    </text>
+                    <@lgcode/text>
                     {row.item.description ? (
                       <>
                         <text
@@ -316,7 +316,7 @@ export function RunFooterMenu(props: {
                           flexShrink={0}
                         >
                           {descriptionPad(row.item)}
-                        </text>
+                        <@lgcode/text>
                         <text
                           fg={active() ? props.theme().selectedText : props.theme().muted}
                           wrapMode="none"
@@ -325,10 +325,10 @@ export function RunFooterMenu(props: {
                           flexShrink={1}
                         >
                           {descriptionText(row.item)}
-                        </text>
-                      </>
+                        <@lgcode/text>
+                      <@lgcode/>
                     ) : undefined}
-                  </box>
+                  <@lgcode/box>
                   {row.item.footer ? (
                     <text
                       fg={active() ? props.theme().selectedText : props.theme().muted}
@@ -338,14 +338,14 @@ export function RunFooterMenu(props: {
                       flexShrink={0}
                     >
                       {row.item.footer}
-                    </text>
+                    <@lgcode/text>
                   ) : undefined}
-                </box>
-              </box>
-            </box>
+                <@lgcode/box>
+              <@lgcode/box>
+            <@lgcode/box>
           )
         })
       )}
-    </box>
+    <@lgcode/box>
   )
 }

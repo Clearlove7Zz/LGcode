@@ -1,16 +1,16 @@
-import { useFilteredList } from "@opencode@lgcode/ui/hooks"
-import { ProviderIcon } from "@opencode@lgcode/ui/provider-icon"
-import { Switch } from "@opencode@lgcode/ui/v2/switch-v2"
-import { Icon as IconV2 } from "@opencode@lgcode/ui/v2/icon"
-import { IconButtonV2 } from "@opencode@lgcode/ui/v2/icon-button-v2"
-import { TextInputV2 } from "@opencode@lgcode/ui/v2/text-input-v2"
+import { useFilteredList } from "@lgcode/ui@lgcode/hooks"
+import { ProviderIcon } from "@lgcode/ui@lgcode/provider-icon"
+import { Switch } from "@lgcode/ui@lgcode/v2@lgcode/switch-v2"
+import { Icon as IconV2 } from "@lgcode/ui@lgcode/v2@lgcode/icon"
+import { IconButtonV2 } from "@lgcode/ui@lgcode/v2@lgcode/icon-button-v2"
+import { TextInputV2 } from "@lgcode/ui@lgcode/v2@lgcode/text-input-v2"
 import { type Component, For, Show } from "solid-js"
-import { useLanguage } from "@/context/language"
-import { useModels } from "@/context/models"
-import { popularProviders } from "@/hooks/use-providers"
-import { SettingsListV2 } from "./parts/list"
-import { SettingsRowV2 } from "./parts/row"
-import "./settings-v2.css"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { useModels } from "@@lgcode/context@lgcode/models"
+import { popularProviders } from "@@lgcode/hooks@lgcode/use-providers"
+import { SettingsListV2 } from ".@lgcode/parts@lgcode/list"
+import { SettingsRowV2 } from ".@lgcode/parts@lgcode/row"
+import ".@lgcode/settings-v2.css"
 
 type ModelItem = ReturnType<ReturnType<typeof useModels>["list"]>[number]
 
@@ -45,7 +45,7 @@ export const SettingsModelsV2: Component = () => {
   return (
     <>
       <div class="settings-v2-tab-header settings-v2-tab-header--stacked">
-        <h2 class="settings-v2-tab-title">{language.t("settings.models.title")}</h2>
+        <h2 class="settings-v2-tab-title">{language.t("settings.models.title")}<@lgcode/h2>
         <div class="settings-v2-tab-search">
           <TextInputV2
             type="search"
@@ -58,19 +58,19 @@ export const SettingsModelsV2: Component = () => {
             autocomplete="off"
             autocapitalize="off"
             aria-label={language.t("dialog.model.search.placeholder")}
-          />
+          @lgcode/>
           <Show when={list.filter()}>
             <IconButtonV2
               type="button"
               variant="ghost-muted"
               size="small"
               class="settings-v2-tab-search-clear"
-              icon={<IconV2 name="close" size="large" class="text-v2-icon-icon-muted" />}
+              icon={<IconV2 name="close" size="large" class="text-v2-icon-icon-muted" @lgcode/>}
               onClick={() => list.clear()}
-            />
-          </Show>
-        </div>
-      </div>
+            @lgcode/>
+          <@lgcode/Show>
+        <@lgcode/div>
+      <@lgcode/div>
 
       <div class="settings-v2-tab-body settings-v2-models">
         <Show
@@ -79,18 +79,18 @@ export const SettingsModelsV2: Component = () => {
             <div class="settings-v2-models-status">
               {language.t("common.loading")}
               {language.t("common.loading.ellipsis")}
-            </div>
+            <@lgcode/div>
           }
         >
           <Show
             when={list.flat().length > 0}
             fallback={
               <div class="settings-v2-models-status">
-                <span>{language.t("dialog.model.empty")}</span>
+                <span>{language.t("dialog.model.empty")}<@lgcode/span>
                 <Show when={list.filter()}>
-                  <span class="settings-v2-models-status-filter">&quot;{list.filter()}&quot;</span>
-                </Show>
-              </div>
+                  <span class="settings-v2-models-status-filter">&quot;{list.filter()}&quot;<@lgcode/span>
+                <@lgcode/Show>
+              <@lgcode/div>
             }
           >
             <For each={list.grouped.latest}>
@@ -102,9 +102,9 @@ export const SettingsModelsV2: Component = () => {
                       width={PROVIDER_ICON_SIZE}
                       height={PROVIDER_ICON_SIZE}
                       class="settings-v2-models-provider-icon shrink-0"
-                    />
-                    <h3 class="settings-v2-section-title">{group.items[0].provider.name}</h3>
-                  </div>
+                    @lgcode/>
+                    <h3 class="settings-v2-section-title">{group.items[0].provider.name}<@lgcode/h3>
+                  <@lgcode/div>
                   <SettingsListV2>
                     <For each={group.items}>
                       {(item) => {
@@ -120,19 +120,19 @@ export const SettingsModelsV2: Component = () => {
                                 hideLabel
                               >
                                 {item.name}
-                              </Switch>
-                            </div>
-                          </SettingsRowV2>
+                              <@lgcode/Switch>
+                            <@lgcode/div>
+                          <@lgcode/SettingsRowV2>
                         )
                       }}
-                    </For>
-                  </SettingsListV2>
-                </div>
+                    <@lgcode/For>
+                  <@lgcode/SettingsListV2>
+                <@lgcode/div>
               )}
-            </For>
-          </Show>
-        </Show>
-      </div>
-    </>
+            <@lgcode/For>
+          <@lgcode/Show>
+        <@lgcode/Show>
+      <@lgcode/div>
+    <@lgcode/>
   )
 }

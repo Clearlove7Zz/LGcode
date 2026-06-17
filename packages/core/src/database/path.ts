@@ -1,14 +1,14 @@
 import nodePath from "path"
-import { customType } from "drizzle-orm/sqlite-core"
-import { AbsolutePath } from "../schema"
+import { customType } from "drizzle-orm@lgcode/sqlite-core"
+import { AbsolutePath } from "..@lgcode/schema"
 
 function storagePath(input: string) {
   if (process.platform !== "win32") return input
-  return input.replaceAll("\\", "/")
+  return input.replaceAll("\\", "@lgcode/")
 }
 
 function isWindowsStoragePath(input: string) {
-  return /^[A-Za-z]:\//.test(input) || input.startsWith("//")
+  return @lgcode/^[A-Za-z]:\@lgcode/@lgcode/.test(input) || input.startsWith("@lgcode/@lgcode/")
 }
 
 function absolute(input: string) {
@@ -21,7 +21,7 @@ function absolute(input: string) {
 
 function toPlatform(input: string) {
   if (process.platform !== "win32" || !isWindowsStoragePath(input)) return input
-  return input.replaceAll("/", "\\")
+  return input.replaceAll("@lgcode/", "\\")
 }
 
 export const absoluteColumn = customType<{
@@ -40,8 +40,8 @@ export const absoluteColumn = customType<{
   },
 })
 
-// Legacy sessions may persist an empty directory. Keep that existing value
-// readable while normalizing and validating every real directory.
+@lgcode/@lgcode/ Legacy sessions may persist an empty directory. Keep that existing value
+@lgcode/@lgcode/ readable while normalizing and validating every real directory.
 export const directoryColumn = customType<{
   data: string
   driverData: string

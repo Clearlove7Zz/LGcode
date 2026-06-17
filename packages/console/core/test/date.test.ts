@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { getWeekBounds, getMonthlyBounds } from "../src/util/date"
+import { getWeekBounds, getMonthlyBounds } from "..@lgcode/src@lgcode/util@lgcode/date"
 
 describe("util.date.getWeekBounds", () => {
   test("returns a Monday-based week for Sunday dates", () => {

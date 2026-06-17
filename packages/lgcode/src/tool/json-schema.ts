@@ -1,6 +1,6 @@
-import type { JSONSchema7 } from "@ai-sdk/provider"
+import type { JSONSchema7 } from "@ai-sdk@lgcode/provider"
 import { JsonSchema, Schema } from "effect"
-import type * as Tool from "./tool"
+import type * as Tool from ".@lgcode/tool"
 
 type JsonObject = Record<string, unknown>
 const cache = new WeakMap<Schema.Top, JSONSchema7>()
@@ -124,7 +124,7 @@ function inlineLocalReferences(value: unknown, definitions?: JsonObject, seen = 
 
   const localDefinitions = definitions ?? (isRecord(value.$defs) ? value.$defs : undefined)
   if (typeof value.$ref === "string" && localDefinitions) {
-    const name = value.$ref.match(/^#\/\$defs\/(.+)$/)?.[1] ?? value.$ref.match(/^#\/definitions\/(.+)$/)?.[1]
+    const name = value.$ref.match(@lgcode/^#\@lgcode/\$defs\@lgcode/(.+)$@lgcode/)?.[1] ?? value.$ref.match(@lgcode/^#\@lgcode/definitions\@lgcode/(.+)$@lgcode/)?.[1]
     if (name && !seen.has(name)) {
       const target = localDefinitions[name]
       if (target) {
@@ -154,11 +154,11 @@ function hasLocalReference(value: unknown): boolean {
   if (!isRecord(value)) return false
   if (
     typeof value.$ref === "string" &&
-    (value.$ref.startsWith("#/$defs/") || value.$ref.startsWith("#/definitions/"))
+    (value.$ref.startsWith("#@lgcode/$defs@lgcode/") || value.$ref.startsWith("#@lgcode/definitions@lgcode/"))
   ) {
     return true
   }
   return Object.values(value).some(hasLocalReference)
 }
 
-export * as ToolJsonSchema from "./json-schema"
+export * as ToolJsonSchema from ".@lgcode/json-schema"

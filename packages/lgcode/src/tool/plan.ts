@@ -1,14 +1,14 @@
 import path from "path"
-import { SessionV1 } from "@opencode@lgcode/core/v1/session"
+import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
 import { Effect, Schema } from "effect"
-import * as Tool from "./tool"
-import { Question } from "../question"
-import { Session } from "@/session/session"
-import { MessageV2 } from "../session/message-v2"
-import { Provider } from "@/provider/provider"
-import { InstanceState } from "@/effect/instance-state"
-import { MessageID, PartID } from "../session/schema"
-import EXIT_DESCRIPTION from "./plan-exit.txt"
+import * as Tool from ".@lgcode/tool"
+import { Question } from "..@lgcode/question"
+import { Session } from "@@lgcode/session@lgcode/session"
+import { MessageV2 } from "..@lgcode/session@lgcode/message-v2"
+import { Provider } from "@@lgcode/provider@lgcode/provider"
+import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
+import { MessageID, PartID } from "..@lgcode/session@lgcode/schema"
+import EXIT_DESCRIPTION from ".@lgcode/plan-exit.txt"
 
 export const Parameters = Schema.Struct({})
 

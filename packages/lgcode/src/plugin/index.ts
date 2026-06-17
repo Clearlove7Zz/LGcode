@@ -1,42 +1,42 @@
-import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
 import type {
   Hooks,
   PluginInput,
   Plugin as PluginInstance,
   PluginModule,
   WorkspaceAdapter as PluginWorkspaceAdapter,
-} from "@opencode@lgcode/plugin"
-import { Config } from "@/config/config"
-import { createOpencodeClient } from "@opencode@lgcode/sdk"
-import { ServerAuth } from "@/server/auth"
-import { CodexAuthPlugin } from "./openai/codex"
-import { Session } from "@/session/session"
-import { NamedError } from "@opencode@lgcode/core/util/error"
-import { CopilotAuthPlugin } from "./github-copilot/copilot"
+} from "@lgcode/plugin"
+import { Config } from "@@lgcode/config@lgcode/config"
+import { createOpencodeClient } from "@lgcode/sdk"
+import { ServerAuth } from "@@lgcode/server@lgcode/auth"
+import { CodexAuthPlugin } from ".@lgcode/openai@lgcode/codex"
+import { Session } from "@@lgcode/session@lgcode/session"
+import { NamedError } from "@lgcode/core@lgcode/util@lgcode/error"
+import { CopilotAuthPlugin } from ".@lgcode/github-copilot@lgcode/copilot"
 import { gitlabAuthPlugin as GitlabAuthPlugin } from "opencode-gitlab-auth"
 import { PoeAuthPlugin } from "opencode-poe-auth"
-import { CloudflareAIGatewayAuthPlugin, CloudflareWorkersAuthPlugin } from "./cloudflare"
-import { AzureAuthPlugin } from "./azure"
-import { DigitalOceanAuthPlugin } from "./digitalocean"
-import { XaiAuthPlugin } from "./xai"
-import { SnowflakeCortexAuthPlugin } from "./snowflake-cortex"
+import { CloudflareAIGatewayAuthPlugin, CloudflareWorkersAuthPlugin } from ".@lgcode/cloudflare"
+import { AzureAuthPlugin } from ".@lgcode/azure"
+import { DigitalOceanAuthPlugin } from ".@lgcode/digitalocean"
+import { XaiAuthPlugin } from ".@lgcode/xai"
+import { SnowflakeCortexAuthPlugin } from ".@lgcode/snowflake-cortex"
 import { Effect, Layer, Context } from "effect"
-import { EffectBridge } from "@/effect/bridge"
-import { InstanceState } from "@/effect/instance-state"
-import { errorMessage } from "@/util/error"
-import { PluginLoader } from "./loader"
-import { parsePluginSpecifier, readPluginId, readV1Plugin, resolvePluginId } from "./shared"
-import { registerAdapter } from "@/control-plane/adapters"
-import type { WorkspaceAdapter } from "@/control-plane/types"
-import { RuntimeFlags } from "@/effect/runtime-flags"
-import { EventV2Bridge } from "@/event-v2-bridge"
-import { InstallationChannel } from "@opencode@lgcode/core/installation/version"
+import { EffectBridge } from "@@lgcode/effect@lgcode/bridge"
+import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
+import { errorMessage } from "@@lgcode/util@lgcode/error"
+import { PluginLoader } from ".@lgcode/loader"
+import { parsePluginSpecifier, readPluginId, readV1Plugin, resolvePluginId } from ".@lgcode/shared"
+import { registerAdapter } from "@@lgcode/control-plane@lgcode/adapters"
+import type { WorkspaceAdapter } from "@@lgcode/control-plane@lgcode/types"
+import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
+import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
+import { InstallationChannel } from "@lgcode/core@lgcode/installation@lgcode/version"
 
 type State = {
   hooks: Hooks[]
 }
 
-// Hook names that follow the (input, output) => Promise<void> trigger pattern
+@lgcode/@lgcode/ Hook names that follow the (input, output) => Promise<void> trigger pattern
 type TriggerName = {
   [K in keyof Hooks]-?: NonNullable<Hooks[K]> extends (input: any, output: any) => Promise<void> ? K : never
 }[keyof Hooks]
@@ -55,16 +55,16 @@ export interface Interface {
   readonly init: () => Effect.Effect<void>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/Plugin") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/Plugin") {}
 
 export function experimentalWebSocketsEnabled(input: { enabled: boolean; channel?: string }) {
   return input.enabled || ["local", "dev", "beta"].includes(input.channel ?? InstallationChannel)
 }
 
-// Built-in plugins that are directly imported (not installed from npm)
+@lgcode/@lgcode/ Built-in plugins that are directly imported (not installed from npm)
 function internalPlugins(flags: RuntimeFlags.Info): PluginInstance[] {
   return [
-    // Temporary rollout: pre-release builds use WebSockets by default; releases require explicit opt-in.
+    @lgcode/@lgcode/ Temporary rollout: pre-release builds use WebSockets by default; releases require explicit opt-in.
     (input) =>
       CodexAuthPlugin(input, {
         experimentalWebSockets: experimentalWebSocketsEnabled({ enabled: flags.experimentalWebSockets }),
@@ -136,11 +136,11 @@ export const layer = Layer.effect(
           bridge.fork(events.publish(Session.Event.Error, { error: new NamedError.Unknown({ message }).toObject() }))
         }
 
-        const { Server } = yield* Effect.promise(() => import("../server/server"))
+        const { Server } = yield* Effect.promise(() => import("..@lgcode/server@lgcode/server"))
 
         const serverUrl = Server.url
         const client = createOpencodeClient({
-          baseUrl: serverUrl?.toString() ?? "http://localhost:4096",
+          baseUrl: serverUrl?.toString() ?? "http:@lgcode/@lgcode/localhost:4096",
           directory: ctx.directory,
           headers: ServerAuth.headers(),
           ...(serverUrl ? {} : { fetch: async (...args) => Server.Default().app.fetch(...args) }),
@@ -157,9 +157,9 @@ export const layer = Layer.effect(
             },
           },
           get serverUrl(): URL {
-            return Server.url ?? new URL("http://localhost:4096")
+            return Server.url ?? new URL("http:@lgcode/@lgcode/localhost:4096")
           },
-          // @ts-expect-error
+          @lgcode/@lgcode/ @ts-expect-error
           $: typeof Bun === "undefined" ? undefined : Bun.$,
         }
 
@@ -215,8 +215,8 @@ export const layer = Layer.effect(
         for (const load of loaded) {
           if (!load) continue
 
-          // Keep plugin execution sequential so hook registration and execution
-          // order remains deterministic across plugin runs.
+          @lgcode/@lgcode/ Keep plugin execution sequential so hook registration and execution
+          @lgcode/@lgcode/ order remains deterministic across plugin runs.
           yield* Effect.tryPromise({
             try: () => applyPlugin(load, input, hooks),
             catch: (err) => {
@@ -226,18 +226,18 @@ export const layer = Layer.effect(
           }).pipe(
             Effect.tapError((error) => Effect.logError("failed to load plugin", { path: load.spec, error })),
             Effect.catch(() => {
-              // TODO: make proper events for this
-              // events.publish(Session.Event.Error, {
-              //   error: new NamedError.Unknown({
-              //     message: `Failed to load plugin ${load.spec}: ${message}`,
-              //   }).toObject(),
-              // })
+              @lgcode/@lgcode/ TODO: make proper events for this
+              @lgcode/@lgcode/ events.publish(Session.Event.Error, {
+              @lgcode/@lgcode/   error: new NamedError.Unknown({
+              @lgcode/@lgcode/     message: `Failed to load plugin ${load.spec}: ${message}`,
+              @lgcode/@lgcode/   }).toObject(),
+              @lgcode/@lgcode/ })
               return Effect.void
             }),
           )
         }
 
-        // Notify plugins of current config
+        @lgcode/@lgcode/ Notify plugins of current config
         for (const hook of hooks) {
           yield* Effect.tryPromise({
             try: () => Promise.resolve((hook as any).config?.(cfg)),

@@ -1,14 +1,14 @@
 import { For, Show, onMount, Suspense, onCleanup, createMemo, createSignal, SuspenseList } from "solid-js"
 import { DateTime } from "luxon"
-import { createStore, reconcile } from "solid-js/store"
-import { IconArrowDown } from "./icons"
-import { IconOpencode } from "./icons/custom"
-import { ShareI18nProvider, formatCurrency, formatNumber, normalizeLocale } from "./share/common"
-import styles from "./share.module.css"
-import type { MessageV2 } from "opencode/session/message-v2"
-import type { Message } from "opencode/session/message"
-import type { Session } from "opencode/session/index"
-import { Part, ProviderIcon } from "./share/part"
+import { createStore, reconcile } from "solid-js@lgcode/store"
+import { IconArrowDown } from ".@lgcode/icons"
+import { IconOpencode } from ".@lgcode/icons@lgcode/custom"
+import { ShareI18nProvider, formatCurrency, formatNumber, normalizeLocale } from ".@lgcode/share@lgcode/common"
+import styles from ".@lgcode/share.module.css"
+import type { MessageV2 } from "opencode@lgcode/session@lgcode/message-v2"
+import type { Message } from "opencode@lgcode/session@lgcode/message"
+import type { Session } from "opencode@lgcode/session@lgcode/index"
+import { Part, ProviderIcon } from ".@lgcode/share@lgcode/part"
 
 type MessageWithParts = MessageV2.Info & { parts: MessageV2.Part[] }
 
@@ -95,31 +95,31 @@ export default function Share(props: {
     let reconnectTimer: number | undefined
     let socket: WebSocket | null = null
 
-    // Function to create and set up WebSocket with auto-reconnect
+    @lgcode/@lgcode/ Function to create and set up WebSocket with auto-reconnect
     const setupWebSocket = () => {
-      // Close any existing connection
+      @lgcode/@lgcode/ Close any existing connection
       if (socket) {
         socket.close()
       }
 
       setConnectionStatus(["connecting"])
 
-      // Always use secure WebSocket protocol (wss)
-      const wsBaseUrl = apiUrl.replace(/^https?:\/\//, "wss://")
-      const wsUrl = `${wsBaseUrl}/share_poll?id=${props.id}`
-      // Create WebSocket connection
+      @lgcode/@lgcode/ Always use secure WebSocket protocol (wss)
+      const wsBaseUrl = apiUrl.replace(@lgcode/^https?:\@lgcode/\@lgcode/@lgcode/, "wss:@lgcode/@lgcode/")
+      const wsUrl = `${wsBaseUrl}@lgcode/share_poll?id=${props.id}`
+      @lgcode/@lgcode/ Create WebSocket connection
       socket = new WebSocket(wsUrl)
 
-      // Handle connection opening
+      @lgcode/@lgcode/ Handle connection opening
       socket.onopen = () => {
         setConnectionStatus(["connected"])
       }
 
-      // Handle incoming messages
+      @lgcode/@lgcode/ Handle incoming messages
       socket.onmessage = (event) => {
         try {
           const d = JSON.parse(event.data)
-          const [root, type, ...splits] = d.key.split("/")
+          const [root, type, ...splits] = d.key.split("@lgcode/")
           if (root !== "session") return
           if (type === "info") {
             setStore("info", reconcile(d.content))
@@ -146,26 +146,26 @@ export default function Share(props: {
         }
       }
 
-      // Handle errors
+      @lgcode/@lgcode/ Handle errors
       socket.onerror = (error) => {
         console.error("WebSocket error:", error)
         setConnectionStatus(["error", props.messages.error_connection_failed])
       }
 
-      // Handle connection close and reconnection
+      @lgcode/@lgcode/ Handle connection close and reconnection
       socket.onclose = () => {
         setConnectionStatus(["reconnecting"])
 
-        // Try to reconnect after 2 seconds
+        @lgcode/@lgcode/ Try to reconnect after 2 seconds
         clearTimeout(reconnectTimer)
         reconnectTimer = window.setTimeout(setupWebSocket, 2000) as unknown as number
       }
     }
 
-    // Initial connection
+    @lgcode/@lgcode/ Initial connection
     setupWebSocket()
 
-    // Clean up on component unmount
+    @lgcode/@lgcode/ Clean up on component unmount
     onCleanup(() => {
       if (socket) {
         socket.close()
@@ -177,28 +177,28 @@ export default function Share(props: {
   function checkScrollNeed() {
     const currentScrollY = window.scrollY
     const isScrollingDown = currentScrollY > lastScrollY
-    const scrolled = currentScrollY > 200 // Show after scrolling 200px
+    const scrolled = currentScrollY > 200 @lgcode/@lgcode/ Show after scrolling 200px
 
-    // Only show when scrolling down, scrolled enough, and not near bottom
+    @lgcode/@lgcode/ Only show when scrolling down, scrolled enough, and not near bottom
     const shouldShow = isScrollingDown && scrolled && !isNearBottom()
 
-    // Update last scroll position
+    @lgcode/@lgcode/ Update last scroll position
     lastScrollY = currentScrollY
 
     if (shouldShow) {
       setShowScrollButton(true)
-      // Clear existing timeout
+      @lgcode/@lgcode/ Clear existing timeout
       if (scrollTimeout) {
         clearTimeout(scrollTimeout)
       }
-      // Hide button after 3 seconds of no scrolling (unless hovered)
+      @lgcode/@lgcode/ Hide button after 3 seconds of no scrolling (unless hovered)
       scrollTimeout = window.setTimeout(() => {
         if (!isButtonHovered()) {
           setShowScrollButton(false)
         }
       }, 1500)
     } else if (!isButtonHovered()) {
-      // Only hide if not hovered (to prevent disappearing while user is about to click)
+      @lgcode/@lgcode/ Only hide if not hovered (to prevent disappearing while user is about to click)
       setShowScrollButton(false)
       if (scrollTimeout) {
         clearTimeout(scrollTimeout)
@@ -207,9 +207,9 @@ export default function Share(props: {
   }
 
   onMount(() => {
-    lastScrollY = window.scrollY // Initialize scroll position
+    lastScrollY = window.scrollY @lgcode/@lgcode/ Initialize scroll position
 
-    // Create sentinel element
+    @lgcode/@lgcode/ Create sentinel element
     const sentinel = document.createElement("div")
     sentinel.style.height = "1px"
     sentinel.style.position = "absolute"
@@ -218,13 +218,13 @@ export default function Share(props: {
     sentinel.style.pointerEvents = "none"
     document.body.appendChild(sentinel)
 
-    // Create intersection observer
+    @lgcode/@lgcode/ Create intersection observer
     const observer = new IntersectionObserver((entries) => {
       setIsNearBottom(entries[0].isIntersecting)
     })
     observer.observe(sentinel)
 
-    // Store references for cleanup
+    @lgcode/@lgcode/ Store references for cleanup
     scrollSentinel = sentinel
     scrollObserver = observer
 
@@ -237,7 +237,7 @@ export default function Share(props: {
     window.removeEventListener("scroll", checkScrollNeed)
     window.removeEventListener("resize", checkScrollNeed)
 
-    // Clean up observer and sentinel
+    @lgcode/@lgcode/ Clean up observer and sentinel
     if (scrollObserver) {
       scrollObserver.disconnect()
     }
@@ -300,35 +300,35 @@ export default function Share(props: {
       <ShareI18nProvider messages={props.messages}>
         <main classList={{ [styles.root]: true, "not-content": true }}>
           <div data-component="header">
-            <h1 data-component="header-title">{store.info?.title}</h1>
+            <h1 data-component="header-title">{store.info?.title}<@lgcode/h1>
             <div data-component="header-details">
               <ul data-component="header-stats">
                 <li title={props.messages.opencode_version} data-slot="item">
                   <div data-slot="icon" title={props.messages.opencode_name}>
-                    <IconOpencode width={16} height={16} />
-                  </div>
+                    <IconOpencode width={16} height={16} @lgcode/>
+                  <@lgcode/div>
                   <Show when={store.info?.version} fallback="v0.0.1">
-                    <span>v{store.info?.version}</span>
-                  </Show>
-                </li>
+                    <span>v{store.info?.version}<@lgcode/span>
+                  <@lgcode/Show>
+                <@lgcode/li>
                 {Object.values(data().models).length > 0 ? (
                   <For each={Object.values(data().models)}>
                     {([provider, model]) => (
                       <li data-slot="item">
                         <div data-slot="icon" title={provider}>
-                          <ProviderIcon model={model} />
-                        </div>
-                        <span data-slot="model">{model}</span>
-                      </li>
+                          <ProviderIcon model={model} @lgcode/>
+                        <@lgcode/div>
+                        <span data-slot="model">{model}<@lgcode/span>
+                      <@lgcode/li>
                     )}
-                  </For>
+                  <@lgcode/For>
                 ) : (
                   <li>
-                    <span data-element-label>{props.messages.models}</span>
-                    <span data-placeholder>&mdash;</span>
-                  </li>
+                    <span data-element-label>{props.messages.models}<@lgcode/span>
+                    <span data-placeholder>&mdash;<@lgcode/span>
+                  <@lgcode/li>
                 )}
-              </ul>
+              <@lgcode/ul>
               <div
                 data-component="header-time"
                 title={DateTime.fromMillis(data().created || 0)
@@ -338,12 +338,12 @@ export default function Share(props: {
                 {DateTime.fromMillis(data().created || 0)
                   .setLocale(normalizeLocale(props.messages.locale))
                   .toLocaleString(DateTime.DATETIME_MED)}
-              </div>
-            </div>
-          </div>
+              <@lgcode/div>
+            <@lgcode/div>
+          <@lgcode/div>
 
           <div>
-            <Show when={data().messages.length > 0} fallback={<p>{props.messages.waiting_for_messages}</p>}>
+            <Show when={data().messages.length > 0} fallback={<p>{props.messages.waiting_for_messages}<@lgcode/p>}>
               <div class={styles.parts}>
                 <SuspenseList revealOrder="forwards">
                   <For each={data().messages}>
@@ -371,66 +371,66 @@ export default function Share(props: {
 
                               onMount(() => {
                                 const hash = window.location.hash.slice(1)
-                                // Wait till all parts are loaded
+                                @lgcode/@lgcode/ Wait till all parts are loaded
                                 if (hash !== "" && !hasScrolledToAnchor && last()) {
                                   hasScrolledToAnchor = true
                                   scrollToAnchor(hash)
                                 }
                               })
 
-                              return <Part last={last()} part={part} index={partIndex()} message={msg} />
+                              return <Part last={last()} part={part} index={partIndex()} message={msg} @lgcode/>
                             }}
-                          </For>
-                        </Suspense>
+                          <@lgcode/For>
+                        <@lgcode/Suspense>
                       )
                     }}
-                  </For>
-                </SuspenseList>
+                  <@lgcode/For>
+                <@lgcode/SuspenseList>
                 <div data-section="part" data-part-type="summary">
                   <div data-section="decoration">
-                    <span data-status={connectionStatus()[0]}></span>
-                  </div>
+                    <span data-status={connectionStatus()[0]}><@lgcode/span>
+                  <@lgcode/div>
                   <div data-section="content">
-                    <p data-section="copy">{getStatusText(connectionStatus(), props.messages)}</p>
+                    <p data-section="copy">{getStatusText(connectionStatus(), props.messages)}<@lgcode/p>
                     <ul data-section="stats">
                       <li>
-                        <span data-element-label>{props.messages.cost}</span>
+                        <span data-element-label>{props.messages.cost}<@lgcode/span>
                         {data().cost !== undefined ? (
-                          <span>{formatCurrency(data().cost, props.messages.locale)}</span>
+                          <span>{formatCurrency(data().cost, props.messages.locale)}<@lgcode/span>
                         ) : (
-                          <span data-placeholder>&mdash;</span>
+                          <span data-placeholder>&mdash;<@lgcode/span>
                         )}
-                      </li>
+                      <@lgcode/li>
                       <li>
-                        <span data-element-label>{props.messages.input_tokens}</span>
+                        <span data-element-label>{props.messages.input_tokens}<@lgcode/span>
                         {data().tokens.input ? (
-                          <span>{formatNumber(data().tokens.input, props.messages.locale)}</span>
+                          <span>{formatNumber(data().tokens.input, props.messages.locale)}<@lgcode/span>
                         ) : (
-                          <span data-placeholder>&mdash;</span>
+                          <span data-placeholder>&mdash;<@lgcode/span>
                         )}
-                      </li>
+                      <@lgcode/li>
                       <li>
-                        <span data-element-label>{props.messages.output_tokens}</span>
+                        <span data-element-label>{props.messages.output_tokens}<@lgcode/span>
                         {data().tokens.output ? (
-                          <span>{formatNumber(data().tokens.output, props.messages.locale)}</span>
+                          <span>{formatNumber(data().tokens.output, props.messages.locale)}<@lgcode/span>
                         ) : (
-                          <span data-placeholder>&mdash;</span>
+                          <span data-placeholder>&mdash;<@lgcode/span>
                         )}
-                      </li>
+                      <@lgcode/li>
                       <li>
-                        <span data-element-label>{props.messages.reasoning_tokens}</span>
+                        <span data-element-label>{props.messages.reasoning_tokens}<@lgcode/span>
                         {data().tokens.reasoning ? (
-                          <span>{formatNumber(data().tokens.reasoning, props.messages.locale)}</span>
+                          <span>{formatNumber(data().tokens.reasoning, props.messages.locale)}<@lgcode/span>
                         ) : (
-                          <span data-placeholder>&mdash;</span>
+                          <span data-placeholder>&mdash;<@lgcode/span>
                         )}
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </Show>
-          </div>
+                      <@lgcode/li>
+                    <@lgcode/ul>
+                  <@lgcode/div>
+                <@lgcode/div>
+              <@lgcode/div>
+            <@lgcode/Show>
+          <@lgcode/div>
 
           <Show when={debug}>
             <div style={{ margin: "2rem 0" }}>
@@ -441,7 +441,7 @@ export default function Share(props: {
                   "overflow-y": "auto",
                 }}
               >
-                <Show when={data().messages.length > 0} fallback={<p>{props.messages.waiting_for_messages}</p>}>
+                <Show when={data().messages.length > 0} fallback={<p>{props.messages.waiting_for_messages}<@lgcode/p>}>
                   <ul style={{ "list-style-type": "none", padding: 0 }}>
                     <For each={data().messages}>
                       {(msg) => (
@@ -453,17 +453,17 @@ export default function Share(props: {
                           }}
                         >
                           <div>
-                            <strong>{props.messages.debug_key}:</strong> {msg.id}
-                          </div>
-                          <pre>{JSON.stringify(msg, null, 2)}</pre>
-                        </li>
+                            <strong>{props.messages.debug_key}:<@lgcode/strong> {msg.id}
+                          <@lgcode/div>
+                          <pre>{JSON.stringify(msg, null, 2)}<@lgcode/pre>
+                        <@lgcode/li>
                       )}
-                    </For>
-                  </ul>
-                </Show>
-              </div>
-            </div>
-          </Show>
+                    <@lgcode/For>
+                  <@lgcode/ul>
+                <@lgcode/Show>
+              <@lgcode/div>
+            <@lgcode/div>
+          <@lgcode/Show>
 
           <Show when={showScrollButton()}>
             <button
@@ -489,12 +489,12 @@ export default function Share(props: {
               title={props.messages.scroll_to_bottom}
               aria-label={props.messages.scroll_to_bottom}
             >
-              <IconArrowDown width={20} height={20} />
-            </button>
-          </Show>
-        </main>
-      </ShareI18nProvider>
-    </Show>
+              <IconArrowDown width={20} height={20} @lgcode/>
+            <@lgcode/button>
+          <@lgcode/Show>
+        <@lgcode/main>
+      <@lgcode/ShareI18nProvider>
+    <@lgcode/Show>
   )
 }
 

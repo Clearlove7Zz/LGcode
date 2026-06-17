@@ -1,7 +1,7 @@
-// @ts-nocheck
+@lgcode/@lgcode/ @ts-nocheck
 
-import { OpenCode } from "@opencode@lgcode/core"
-import { ReadTool } from "@opencode@lgcode/core/tools"
+import { OpenCode } from "@lgcode/core"
+import { ReadTool } from "@lgcode/core@lgcode/tools"
 
 const opencode = OpenCode.make({})
 
@@ -56,8 +56,8 @@ await opencode.session.prompt({
   text: "what is up with this",
   files: [
     {
-      mime: "image/png",
-      uri: "data:image/png;base64,xxxx",
+      mime: "image@lgcode/png",
+      uri: "data:image@lgcode/png;base64,xxxx",
     },
   ],
 })

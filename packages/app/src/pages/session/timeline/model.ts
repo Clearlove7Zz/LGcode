@@ -1,10 +1,10 @@
-import type { Message, UserMessage } from "@opencode@lgcode/sdk/v2"
+import type { Message, UserMessage } from "@lgcode/sdk@lgcode/v2"
 import { createMemo, createResource, onCleanup, untrack, type Accessor } from "solid-js"
-import { getSessionPrefetch, SESSION_PREFETCH_TTL } from "@/context/global-sync/session-prefetch"
-import { useSDK } from "@/context/sdk"
-import { useServerSDK } from "@/context/server-sdk"
-import { useSync } from "@/context/sync"
-import { same } from "@/utils/same"
+import { getSessionPrefetch, SESSION_PREFETCH_TTL } from "@@lgcode/context@lgcode/global-sync@lgcode/session-prefetch"
+import { useSDK } from "@@lgcode/context@lgcode/sdk"
+import { useServerSDK } from "@@lgcode/context@lgcode/server-sdk"
+import { useSync } from "@@lgcode/context@lgcode/sync"
+import { same } from "@@lgcode/utils@lgcode/same"
 
 const emptyUserMessages: UserMessage[] = []
 
@@ -126,7 +126,7 @@ export async function loadOlderTimeline(input: {
   const id = input.sessionID()
   if (!id || !input.more() || input.loading()) return
 
-  // A history page may contain only assistant messages or user turns hidden by a revert boundary.
+  @lgcode/@lgcode/ A history page may contain only assistant messages or user turns hidden by a revert boundary.
   const beforeVisible = input.visible()
   let loaded = input.loaded()
   input.before?.()

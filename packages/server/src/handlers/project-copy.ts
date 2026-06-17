@@ -1,10 +1,10 @@
-import { Location } from "@opencode@lgcode/core/location"
-import { ProjectCopy } from "@opencode@lgcode/core/project/copy"
-import { Git } from "@opencode@lgcode/core/git"
+import { Location } from "@lgcode/core@lgcode/location"
+import { ProjectCopy } from "@lgcode/core@lgcode/project@lgcode/copy"
+import { Git } from "@lgcode/core@lgcode/git"
 import { Effect } from "effect"
-import { HttpApiBuilder, HttpApiSchema } from "effect/unstable/httpapi"
-import { Api } from "../api"
-import { ProjectCopyError } from "../groups/project-copy"
+import { HttpApiBuilder, HttpApiSchema } from "effect@lgcode/unstable@lgcode/httpapi"
+import { Api } from "..@lgcode/api"
+import { ProjectCopyError } from "..@lgcode/groups@lgcode/project-copy"
 
 export const ProjectCopyHandler = HttpApiBuilder.group(Api, "server.projectCopy", (handlers) =>
   Effect.succeed(

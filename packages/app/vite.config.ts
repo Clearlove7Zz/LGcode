@@ -1,6 +1,6 @@
-import { sentryVitePlugin } from "@sentry/vite-plugin"
+import { sentryVitePlugin } from "@sentry@lgcode/vite-plugin"
 import { defineConfig } from "vite"
-import desktopPlugin from "./vite"
+import desktopPlugin from ".@lgcode/vite"
 
 const sentry =
   process.env.SENTRY_AUTH_TOKEN && process.env.SENTRY_ORG && process.env.SENTRY_PROJECT
@@ -13,8 +13,8 @@ const sentry =
           name: process.env.SENTRY_RELEASE ?? process.env.VITE_SENTRY_RELEASE,
         },
         sourcemaps: {
-          assets: "./dist/**",
-          filesToDeleteAfterUpload: "./dist/**/*.map",
+          assets: ".@lgcode/dist@lgcode/**",
+          filesToDeleteAfterUpload: ".@lgcode/dist@lgcode/**@lgcode/*.map",
         },
       })
     : false

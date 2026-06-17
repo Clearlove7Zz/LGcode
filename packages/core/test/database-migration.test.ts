@@ -2,27 +2,27 @@ import { describe, expect, test } from "bun:test"
 import { $ } from "bun"
 import { fileURLToPath } from "url"
 import path from "path"
-import { SqliteClient } from "@effect/sql-sqlite-bun"
-import { EffectDrizzleSqlite } from "@opencode@lgcode/effect-drizzle-sqlite"
+import { SqliteClient } from "@effect@lgcode/sql-sqlite-bun"
+import { EffectDrizzleSqlite } from "@lgcode/effect-drizzle-sqlite"
 import { Effect, Layer } from "effect"
 import { eq, inArray, sql } from "drizzle-orm"
-import { DatabaseMigration } from "@opencode@lgcode/core/database/migration"
-import { migrations } from "@opencode@lgcode/core/database/migration.gen"
-import sessionUsageMigration from "@opencode@lgcode/core/database/migration/20260510033149_session_usage"
-import normalizeStoragePathsMigration from "@opencode@lgcode/core/database/migration/20260601010001_normalize_storage_paths"
-import sessionMessageProjectionOrderMigration from "@opencode@lgcode/core/database/migration/20260603040000_session_message_projection_order"
-import eventSourcedSessionInputMigration from "@opencode@lgcode/core/database/migration/20260604172448_event_sourced_session_input"
-import contextEpochAgentMigration from "@opencode@lgcode/core/database/migration/20260605042240_add_context_epoch_agent"
-import simplifyIntegrationCredentialsMigration from "@opencode@lgcode/core/database/migration/20260611192811_lush_chimera"
-import { ProjectV2 } from "@opencode@lgcode/core/project"
-import { ProjectTable } from "@opencode@lgcode/core/project/sql"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { SessionSchema } from "@opencode@lgcode/core/session/schema"
-import { SessionTable } from "@opencode@lgcode/core/session/sql"
-import sessionMetadataMigration from "@opencode@lgcode/core/database/migration/20260511173437_session-metadata"
-import type { SqlClient as SqlClientService } from "effect/unstable/sql/SqlClient"
-import { Database } from "@opencode@lgcode/core/database/database"
-import { tmpdir } from "./fixture/tmpdir"
+import { DatabaseMigration } from "@lgcode/core@lgcode/database@lgcode/migration"
+import { migrations } from "@lgcode/core@lgcode/database@lgcode/migration.gen"
+import sessionUsageMigration from "@lgcode/core@lgcode/database@lgcode/migration@lgcode/20260510033149_session_usage"
+import normalizeStoragePathsMigration from "@lgcode/core@lgcode/database@lgcode/migration@lgcode/20260601010001_normalize_storage_paths"
+import sessionMessageProjectionOrderMigration from "@lgcode/core@lgcode/database@lgcode/migration@lgcode/20260603040000_session_message_projection_order"
+import eventSourcedSessionInputMigration from "@lgcode/core@lgcode/database@lgcode/migration@lgcode/20260604172448_event_sourced_session_input"
+import contextEpochAgentMigration from "@lgcode/core@lgcode/database@lgcode/migration@lgcode/20260605042240_add_context_epoch_agent"
+import simplifyIntegrationCredentialsMigration from "@lgcode/core@lgcode/database@lgcode/migration@lgcode/20260611192811_lush_chimera"
+import { ProjectV2 } from "@lgcode/core@lgcode/project"
+import { ProjectTable } from "@lgcode/core@lgcode/project@lgcode/sql"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { SessionSchema } from "@lgcode/core@lgcode/session@lgcode/schema"
+import { SessionTable } from "@lgcode/core@lgcode/session@lgcode/sql"
+import sessionMetadataMigration from "@lgcode/core@lgcode/database@lgcode/migration@lgcode/20260511173437_session-metadata"
+import type { SqlClient as SqlClientService } from "effect@lgcode/unstable@lgcode/sql@lgcode/SqlClient"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { tmpdir } from ".@lgcode/fixture@lgcode/tmpdir"
 
 const run = <A, E>(effect: Effect.Effect<A, E, SqlClientService>) =>
   Effect.runPromise(
@@ -46,7 +46,7 @@ describe("DatabaseMigration", () => {
   })
   if (process.platform === "linux") {
     test("declared schema has no ungenerated migrations", async () => {
-      const result = await $`bun ${fileURLToPath(new URL("../script/migration.ts", import.meta.url))} --check`
+      const result = await $`bun ${fileURLToPath(new URL("..@lgcode/script@lgcode/migration.ts", import.meta.url))} --check`
         .quiet()
         .nothrow()
       expect(result.exitCode, result.stderr.toString()).toBe(0)
@@ -316,7 +316,7 @@ describe("DatabaseMigration", () => {
         const db = yield* makeDb
         yield* db.run(sql`CREATE TABLE project (id text PRIMARY KEY, worktree text NOT NULL, sandboxes text NOT NULL)`)
         yield* db.run(sql`CREATE TABLE session (id text PRIMARY KEY, directory text NOT NULL, path text)`)
-        // Windows-shaped rows (drive + backslash) must be normalized.
+        @lgcode/@lgcode/ Windows-shaped rows (drive + backslash) must be normalized.
         yield* db.run(
           sql`INSERT INTO project (id, worktree, sandboxes) VALUES (${"win"}, ${"C:\\Repo\\Thing"}, ${JSON.stringify([
             "C:\\Repo\\Thing\\sandbox",
@@ -325,36 +325,36 @@ describe("DatabaseMigration", () => {
         yield* db.run(
           sql`INSERT INTO session (id, directory, path) VALUES (${"win"}, ${"C:\\Repo\\Thing\\packages\\api"}, ${"packages\\api"})`,
         )
-        // UNC worktrees and their sandboxes must normalize too (not just drive paths).
+        @lgcode/@lgcode/ UNC worktrees and their sandboxes must normalize too (not just drive paths).
         yield* db.run(
           sql`INSERT INTO project (id, worktree, sandboxes) VALUES (${"unc"}, ${"\\\\server\\share"}, ${JSON.stringify([
             "\\\\server\\share\\sandbox",
           ])})`,
         )
-        // The "/" worktree sentinel and POSIX paths (including a pathological
-        // backslash in a POSIX filename) must survive byte-for-byte.
-        yield* db.run(sql`INSERT INTO project (id, worktree, sandboxes) VALUES (${"global"}, ${"/"}, ${"[]"})`)
+        @lgcode/@lgcode/ The "@lgcode/" worktree sentinel and POSIX paths (including a pathological
+        @lgcode/@lgcode/ backslash in a POSIX filename) must survive byte-for-byte.
+        yield* db.run(sql`INSERT INTO project (id, worktree, sandboxes) VALUES (${"global"}, ${"@lgcode/"}, ${"[]"})`)
         yield* db.run(
-          sql`INSERT INTO session (id, directory, path) VALUES (${"posix"}, ${"/home/me/we\\ird"}, ${"src\\weird"})`,
+          sql`INSERT INTO session (id, directory, path) VALUES (${"posix"}, ${"@lgcode/home@lgcode/me@lgcode/we\\ird"}, ${"src\\weird"})`,
         )
 
         yield* DatabaseMigration.applyOnly(db, [normalizeStoragePathsMigration])
 
         expect(yield* db.get(sql`SELECT worktree, sandboxes FROM project WHERE id = 'win'`)).toEqual({
-          worktree: "C:/Repo/Thing",
-          sandboxes: JSON.stringify(["C:/Repo/Thing/sandbox"]),
+          worktree: "C:@lgcode/Repo@lgcode/Thing",
+          sandboxes: JSON.stringify(["C:@lgcode/Repo@lgcode/Thing@lgcode/sandbox"]),
         })
         expect(yield* db.get(sql`SELECT directory, path FROM session WHERE id = 'win'`)).toEqual({
-          directory: "C:/Repo/Thing/packages/api",
-          path: "packages/api",
+          directory: "C:@lgcode/Repo@lgcode/Thing@lgcode/packages@lgcode/api",
+          path: "packages@lgcode/api",
         })
         expect(yield* db.get(sql`SELECT worktree, sandboxes FROM project WHERE id = 'unc'`)).toEqual({
-          worktree: "//server/share",
-          sandboxes: JSON.stringify(["//server/share/sandbox"]),
+          worktree: "@lgcode/@lgcode/server@lgcode/share",
+          sandboxes: JSON.stringify(["@lgcode/@lgcode/server@lgcode/share@lgcode/sandbox"]),
         })
-        expect(yield* db.get(sql`SELECT worktree FROM project WHERE id = 'global'`)).toEqual({ worktree: "/" })
+        expect(yield* db.get(sql`SELECT worktree FROM project WHERE id = 'global'`)).toEqual({ worktree: "@lgcode/" })
         expect(yield* db.get(sql`SELECT directory, path FROM session WHERE id = 'posix'`)).toEqual({
-          directory: "/home/me/we\\ird",
+          directory: "@lgcode/home@lgcode/me@lgcode/we\\ird",
           path: "src\\weird",
         })
       }),
@@ -418,16 +418,16 @@ describe("DatabaseMigration", () => {
             sql`SELECT worktree, sandboxes FROM project WHERE id = ${projectID}`,
           ),
         ).toEqual({
-          worktree: "C:/Repo/Thing",
-          sandboxes: JSON.stringify(["C:/Repo/Thing/sandbox"]),
+          worktree: "C:@lgcode/Repo@lgcode/Thing",
+          sandboxes: JSON.stringify(["C:@lgcode/Repo@lgcode/Thing@lgcode/sandbox"]),
         })
         expect(
           yield* db.get<{ directory: string; path: string }>(
             sql`SELECT directory, path FROM session WHERE id = ${sessionID}`,
           ),
         ).toEqual({
-          directory: "C:/Repo/Thing/packages/api",
-          path: "packages/api",
+          directory: "C:@lgcode/Repo@lgcode/Thing@lgcode/packages@lgcode/api",
+          path: "packages@lgcode/api",
         })
 
         const project = yield* db.select().from(ProjectTable).where(eq(ProjectTable.worktree, worktree)).get()
@@ -435,7 +435,7 @@ describe("DatabaseMigration", () => {
         expect(project?.worktree).toBe(worktree)
         expect(project?.sandboxes).toEqual([sandbox])
         expect(session?.directory).toBe(directory)
-        expect(session?.path).toBe("packages/api")
+        expect(session?.path).toBe("packages@lgcode/api")
 
         expect((yield* db.select().from(SessionTable).where(eq(SessionTable.path, "packages\\api")).get())?.id).toBe(
           sessionID,
@@ -454,7 +454,7 @@ describe("DatabaseMigration", () => {
           yield* db.get<{ worktree: string; sandboxes: string }>(
             sql`SELECT worktree, sandboxes FROM project WHERE id = ${projectID}`,
           ),
-        ).toEqual({ worktree: "D:/Moved/Thing", sandboxes: JSON.stringify(["D:/Moved/Thing"]) })
+        ).toEqual({ worktree: "D:@lgcode/Moved@lgcode/Thing", sandboxes: JSON.stringify(["D:@lgcode/Moved@lgcode/Thing"]) })
         expect(
           (yield* db
             .select()

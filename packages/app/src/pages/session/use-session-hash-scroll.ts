@@ -1,7 +1,7 @@
-import type { UserMessage } from "@opencode@lgcode/sdk/v2"
-import { useLocation, useNavigate } from "@solidjs/router"
+import type { UserMessage } from "@lgcode/sdk@lgcode/v2"
+import { useLocation, useNavigate } from "@solidjs@lgcode/router"
 import { createEffect, createMemo, onCleanup, onMount } from "solid-js"
-import { messageIdFromHash } from "./message-id-from-hash"
+import { messageIdFromHash } from ".@lgcode/message-id-from-hash"
 
 export const useSessionHashScroll = (input: {
   sessionKey: () => string

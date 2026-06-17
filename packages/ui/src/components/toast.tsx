@@ -1,11 +1,11 @@
-import { Toast as Kobalte, toaster } from "@kobalte/core/toast"
-import type { ToastRootProps, ToastCloseButtonProps, ToastTitleProps, ToastDescriptionProps } from "@kobalte/core/toast"
+import { Toast as Kobalte, toaster } from "@kobalte@lgcode/core@lgcode/toast"
+import type { ToastRootProps, ToastCloseButtonProps, ToastTitleProps, ToastDescriptionProps } from "@kobalte@lgcode/core@lgcode/toast"
 import type { ComponentProps, JSX } from "solid-js"
 import { Show } from "solid-js"
-import { Portal } from "solid-js/web"
-import { useI18n } from "../context/i18n"
-import { Icon, type IconProps } from "./icon"
-import { IconButton } from "./icon-button"
+import { Portal } from "solid-js@lgcode/web"
+import { useI18n } from "..@lgcode/context@lgcode/i18n"
+import { Icon, type IconProps } from ".@lgcode/icon"
+import { IconButton } from ".@lgcode/icon-button"
 
 export interface ToastRegionProps extends ComponentProps<typeof Kobalte.Region> {}
 
@@ -13,9 +13,9 @@ function ToastRegion(props: ToastRegionProps) {
   return (
     <Portal>
       <Kobalte.Region data-component="toast-region" {...props}>
-        <Kobalte.List data-slot="toast-list" />
-      </Kobalte.Region>
-    </Portal>
+        <Kobalte.List data-slot="toast-list" @lgcode/>
+      <@lgcode/Kobalte.Region>
+    <@lgcode/Portal>
   )
 }
 
@@ -34,32 +34,32 @@ function ToastRoot(props: ToastRootComponentProps) {
         [props.class ?? ""]: !!props.class,
       }}
       {...props}
-    />
+    @lgcode/>
   )
 }
 
 function ToastIcon(props: { name: IconProps["name"] }) {
   return (
     <div data-slot="toast-icon">
-      <Icon name={props.name} />
-    </div>
+      <Icon name={props.name} @lgcode/>
+    <@lgcode/div>
   )
 }
 
 function ToastContent(props: ComponentProps<"div">) {
-  return <div data-slot="toast-content" {...props} />
+  return <div data-slot="toast-content" {...props} @lgcode/>
 }
 
 function ToastTitle(props: ToastTitleProps & ComponentProps<"div">) {
-  return <Kobalte.Title data-slot="toast-title" {...props} />
+  return <Kobalte.Title data-slot="toast-title" {...props} @lgcode/>
 }
 
 function ToastDescription(props: ToastDescriptionProps & ComponentProps<"div">) {
-  return <Kobalte.Description data-slot="toast-description" {...props} />
+  return <Kobalte.Description data-slot="toast-description" {...props} @lgcode/>
 }
 
 function ToastActions(props: ComponentProps<"div">) {
-  return <div data-slot="toast-actions" {...props} />
+  return <div data-slot="toast-actions" {...props} @lgcode/>
 }
 
 function ToastCloseButton(props: ToastCloseButtonProps & ComponentProps<"button">) {
@@ -72,16 +72,16 @@ function ToastCloseButton(props: ToastCloseButtonProps & ComponentProps<"button"
       variant="ghost"
       aria-label={i18n.t("ui.common.dismiss")}
       {...props}
-    />
+    @lgcode/>
   )
 }
 
 function ToastProgressTrack(props: ComponentProps<typeof Kobalte.ProgressTrack>) {
-  return <Kobalte.ProgressTrack data-slot="toast-progress-track" {...props} />
+  return <Kobalte.ProgressTrack data-slot="toast-progress-track" {...props} @lgcode/>
 }
 
 function ToastProgressFill(props: ComponentProps<typeof Kobalte.ProgressFill>) {
-  return <Kobalte.ProgressFill data-slot="toast-progress-fill" {...props} />
+  return <Kobalte.ProgressFill data-slot="toast-progress-fill" {...props} @lgcode/>
 }
 
 export const Toast = Object.assign(ToastRoot, {
@@ -125,15 +125,15 @@ export function showToast(options: ToastOptions | string) {
       data-variant={opts.variant ?? "default"}
     >
       <Show when={opts.icon}>
-        <Toast.Icon name={opts.icon!} />
-      </Show>
+        <Toast.Icon name={opts.icon!} @lgcode/>
+      <@lgcode/Show>
       <Toast.Content>
         <Show when={opts.title}>
-          <Toast.Title>{opts.title}</Toast.Title>
-        </Show>
+          <Toast.Title>{opts.title}<@lgcode/Toast.Title>
+        <@lgcode/Show>
         <Show when={opts.description}>
-          <Toast.Description>{opts.description}</Toast.Description>
-        </Show>
+          <Toast.Description>{opts.description}<@lgcode/Toast.Description>
+        <@lgcode/Show>
         <Show when={opts.actions?.length}>
           <Toast.Actions>
             {opts.actions!.map((action) => (
@@ -147,13 +147,13 @@ export function showToast(options: ToastOptions | string) {
                 }}
               >
                 {action.label}
-              </button>
+              <@lgcode/button>
             ))}
-          </Toast.Actions>
-        </Show>
-      </Toast.Content>
-      <Toast.CloseButton />
-    </Toast>
+          <@lgcode/Toast.Actions>
+        <@lgcode/Show>
+      <@lgcode/Toast.Content>
+      <Toast.CloseButton @lgcode/>
+    <@lgcode/Toast>
   ))
 }
 
@@ -177,9 +177,9 @@ export function showPromiseToast<T, U = unknown>(
           {props.state === "pending" && options.loading}
           {props.state === "fulfilled" && options.success?.(props.data!)}
           {props.state === "rejected" && options.error?.(props.error)}
-        </Toast.Description>
-      </Toast.Content>
-      <Toast.CloseButton />
-    </Toast>
+        <@lgcode/Toast.Description>
+      <@lgcode/Toast.Content>
+      <Toast.CloseButton @lgcode/>
+    <@lgcode/Toast>
   ))
 }

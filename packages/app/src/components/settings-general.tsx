@@ -1,19 +1,19 @@
 import { Component, Show, createMemo, createResource, onMount, type JSX } from "solid-js"
-import { Button } from "@opencode@lgcode/ui/button"
-import { Icon } from "@opencode@lgcode/ui/icon"
-import { Select } from "@opencode@lgcode/ui/select"
-import { Switch } from "@opencode@lgcode/ui/switch"
-import { TextField } from "@opencode@lgcode/ui/text-field"
-import { Tooltip } from "@opencode@lgcode/ui/tooltip"
-import { useTheme, type ColorScheme } from "@opencode@lgcode/ui/theme/context"
-import { useDialog } from "@opencode@lgcode/ui/context/dialog"
-import { useParams } from "@solidjs/router"
-import { useLanguage } from "@/context/language"
-import { usePermission } from "@/context/permission"
-import { usePlatform, type DisplayBackend } from "@/context/platform"
-import { useServerSync } from "@/context/server-sync"
-import { useServerSDK } from "@/context/server-sdk"
-import { useUpdaterAction } from "./updater-action"
+import { Button } from "@lgcode/ui@lgcode/button"
+import { Icon } from "@lgcode/ui@lgcode/icon"
+import { Select } from "@lgcode/ui@lgcode/select"
+import { Switch } from "@lgcode/ui@lgcode/switch"
+import { TextField } from "@lgcode/ui@lgcode/text-field"
+import { Tooltip } from "@lgcode/ui@lgcode/tooltip"
+import { useTheme, type ColorScheme } from "@lgcode/ui@lgcode/theme@lgcode/context"
+import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
+import { useParams } from "@solidjs@lgcode/router"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { usePermission } from "@@lgcode/context@lgcode/permission"
+import { usePlatform, type DisplayBackend } from "@@lgcode/context@lgcode/platform"
+import { useServerSync } from "@@lgcode/context@lgcode/server-sync"
+import { useServerSDK } from "@@lgcode/context@lgcode/server-sdk"
+import { useUpdaterAction } from ".@lgcode/updater-action"
 import {
   monoDefault,
   monoFontFamily,
@@ -25,11 +25,11 @@ import {
   terminalFontFamily,
   terminalInput,
   useSettings,
-} from "@/context/settings"
-import { decode64 } from "@/utils/base64"
-import { playSoundById, SOUND_OPTIONS } from "@/utils/sound"
-import { Link } from "./link"
-import { SettingsList } from "./settings-list"
+} from "@@lgcode/context@lgcode/settings"
+import { decode64 } from "@@lgcode/utils@lgcode/base64"
+import { playSoundById, SOUND_OPTIONS } from "@@lgcode/utils@lgcode/sound"
+import { Link } from ".@lgcode/link"
+import { SettingsList } from ".@lgcode/settings-list"
 
 let demoSoundState = {
   cleanup: undefined as (() => void) | undefined,
@@ -54,8 +54,8 @@ type ShellSelectOption = {
   label: string
 }
 
-// To prevent audio from overlapping/playing very quickly when navigating the settings menus,
-// delay the playback by 100ms during quick selection changes and pause existing sounds.
+@lgcode/@lgcode/ To prevent audio from overlapping@lgcode/playing very quickly when navigating the settings menus,
+@lgcode/@lgcode/ delay the playback by 100ms during quick selection changes and pause existing sounds.
 const stopDemoSound = () => {
   demoSoundState.run += 1
   if (demoSoundState.cleanup) {
@@ -170,7 +170,7 @@ export const SettingsGeneral: Component = () => {
         const label = s.acceptable ? text : `${text} (${language.t("settings.general.row.shell.terminalOnly")})`
         return {
           id: s.path,
-          // Prefer name over path - "bash" is much cleaner than the explicit full route even when it may change due to PATH.
+          @lgcode/@lgcode/ Prefer name over path - "bash" is much cleaner than the explicit full route even when it may change due to PATH.
           value: ambiguousName ? s.path : s.name,
           label,
         }
@@ -265,17 +265,17 @@ export const SettingsGeneral: Component = () => {
             variant="secondary"
             size="small"
             triggerVariant="settings"
-          />
-        </SettingsRow>
+          @lgcode/>
+        <@lgcode/SettingsRow>
 
         <SettingsRow
           title={language.t("command.permissions.autoaccept.enable")}
           description={language.t("toast.permissions.autoaccept.on.description")}
         >
           <div data-action="settings-auto-accept-permissions">
-            <Switch checked={accepting()} disabled={!dir()} onChange={toggleAccept} />
-          </div>
-        </SettingsRow>
+            <Switch checked={accepting()} disabled={!dir()} onChange={toggleAccept} @lgcode/>
+          <@lgcode/div>
+        <@lgcode/SettingsRow>
 
         <SettingsRow
           title={language.t("settings.general.row.shell.title")}
@@ -296,8 +296,8 @@ export const SettingsGeneral: Component = () => {
             size="small"
             triggerVariant="settings"
             triggerStyle={{ "min-width": "180px" }}
-          />
-        </SettingsRow>
+          @lgcode/>
+        <@lgcode/SettingsRow>
 
         <SettingsRow
           title={language.t("settings.general.row.reasoningSummaries.title")}
@@ -307,9 +307,9 @@ export const SettingsGeneral: Component = () => {
             <Switch
               checked={settings.general.showReasoningSummaries()}
               onChange={(checked) => settings.general.setShowReasoningSummaries(checked)}
-            />
-          </div>
-        </SettingsRow>
+            @lgcode/>
+          <@lgcode/div>
+        <@lgcode/SettingsRow>
 
         <SettingsRow
           title={language.t("settings.general.row.shellToolPartsExpanded.title")}
@@ -319,9 +319,9 @@ export const SettingsGeneral: Component = () => {
             <Switch
               checked={settings.general.shellToolPartsExpanded()}
               onChange={(checked) => settings.general.setShellToolPartsExpanded(checked)}
-            />
-          </div>
-        </SettingsRow>
+            @lgcode/>
+          <@lgcode/div>
+        <@lgcode/SettingsRow>
 
         <SettingsRow
           title={language.t("settings.general.row.editToolPartsExpanded.title")}
@@ -331,9 +331,9 @@ export const SettingsGeneral: Component = () => {
             <Switch
               checked={settings.general.editToolPartsExpanded()}
               onChange={(checked) => settings.general.setEditToolPartsExpanded(checked)}
-            />
-          </div>
-        </SettingsRow>
+            @lgcode/>
+          <@lgcode/div>
+        <@lgcode/SettingsRow>
 
         <SettingsRow
           title={language.t("settings.general.row.showSessionProgressBar.title")}
@@ -343,9 +343,9 @@ export const SettingsGeneral: Component = () => {
             <Switch
               checked={settings.general.showSessionProgressBar()}
               onChange={(checked) => settings.general.setShowSessionProgressBar(checked)}
-            />
-          </div>
-        </SettingsRow>
+            @lgcode/>
+          <@lgcode/div>
+        <@lgcode/SettingsRow>
 
         <SettingsRow
           title={language.t("settings.general.row.newLayoutDesigns.title")}
@@ -357,20 +357,20 @@ export const SettingsGeneral: Component = () => {
               onChange={(checked) => {
                 settings.general.setNewLayoutDesigns(checked)
                 if (!checked) return
-                void import("@/components/settings-v2").then((module) => {
-                  dialog.show(() => <module.DialogSettings />)
+                void import("@@lgcode/components@lgcode/settings-v2").then((module) => {
+                  dialog.show(() => <module.DialogSettings @lgcode/>)
                 })
               }}
-            />
-          </div>
-        </SettingsRow>
-      </SettingsList>
-    </div>
+            @lgcode/>
+          <@lgcode/div>
+        <@lgcode/SettingsRow>
+      <@lgcode/SettingsList>
+    <@lgcode/div>
   )
 
   const AdvancedSection = () => (
     <div class="flex flex-col gap-1">
-      <h3 class="text-14-medium text-text-strong pb-2">{language.t("settings.general.section.advanced")}</h3>
+      <h3 class="text-14-medium text-text-strong pb-2">{language.t("settings.general.section.advanced")}<@lgcode/h3>
 
       <SettingsList>
         <SettingsRow
@@ -381,9 +381,9 @@ export const SettingsGeneral: Component = () => {
             <Switch
               checked={settings.general.showFileTree()}
               onChange={(checked) => settings.general.setShowFileTree(checked)}
-            />
-          </div>
-        </SettingsRow>
+            @lgcode/>
+          <@lgcode/div>
+        <@lgcode/SettingsRow>
 
         <SettingsRow
           title={language.t("settings.general.row.showNavigation.title")}
@@ -393,9 +393,9 @@ export const SettingsGeneral: Component = () => {
             <Switch
               checked={settings.general.showNavigation()}
               onChange={(checked) => settings.general.setShowNavigation(checked)}
-            />
-          </div>
-        </SettingsRow>
+            @lgcode/>
+          <@lgcode/div>
+        <@lgcode/SettingsRow>
 
         <SettingsRow
           title={language.t("settings.general.row.showSearch.title")}
@@ -405,9 +405,9 @@ export const SettingsGeneral: Component = () => {
             <Switch
               checked={settings.general.showSearch()}
               onChange={(checked) => settings.general.setShowSearch(checked)}
-            />
-          </div>
-        </SettingsRow>
+            @lgcode/>
+          <@lgcode/div>
+        <@lgcode/SettingsRow>
 
         <SettingsRow
           title={language.t("settings.general.row.showStatus.title")}
@@ -417,9 +417,9 @@ export const SettingsGeneral: Component = () => {
             <Switch
               checked={settings.general.showStatus()}
               onChange={(checked) => settings.general.setShowStatus(checked)}
-            />
-          </div>
-        </SettingsRow>
+            @lgcode/>
+          <@lgcode/div>
+        <@lgcode/SettingsRow>
 
         <SettingsRow
           title={language.t("settings.general.row.showCustomAgents.title")}
@@ -429,16 +429,16 @@ export const SettingsGeneral: Component = () => {
             <Switch
               checked={settings.general.showCustomAgents()}
               onChange={(checked) => settings.general.setShowCustomAgents(checked)}
-            />
-          </div>
-        </SettingsRow>
-      </SettingsList>
-    </div>
+            @lgcode/>
+          <@lgcode/div>
+        <@lgcode/SettingsRow>
+      <@lgcode/SettingsList>
+    <@lgcode/div>
   )
 
   const AppearanceSection = () => (
     <div class="flex flex-col gap-1">
-      <h3 class="text-14-medium text-text-strong pb-2">{language.t("settings.general.section.appearance")}</h3>
+      <h3 class="text-14-medium text-text-strong pb-2">{language.t("settings.general.section.appearance")}<@lgcode/h3>
 
       <SettingsList>
         <SettingsRow
@@ -461,16 +461,16 @@ export const SettingsGeneral: Component = () => {
             size="small"
             triggerVariant="settings"
             triggerStyle={{ "min-width": "220px" }}
-          />
-        </SettingsRow>
+          @lgcode/>
+        <@lgcode/SettingsRow>
 
         <SettingsRow
           title={language.t("settings.general.row.theme.title")}
           description={
             <>
               {language.t("settings.general.row.theme.description")}{" "}
-              <Link href="https://opencode.ai/docs/themes/">{language.t("common.learnMore")}</Link>
-            </>
+              <Link href="https:@lgcode/@lgcode/opencode.ai@lgcode/docs@lgcode/themes@lgcode/">{language.t("common.learnMore")}<@lgcode/Link>
+            <@lgcode/>
           }
         >
           <Select
@@ -491,8 +491,8 @@ export const SettingsGeneral: Component = () => {
             variant="secondary"
             size="small"
             triggerVariant="settings"
-          />
-        </SettingsRow>
+          @lgcode/>
+        <@lgcode/SettingsRow>
 
         <SettingsRow
           title={language.t("settings.general.row.uiFont.title")}
@@ -513,9 +513,9 @@ export const SettingsGeneral: Component = () => {
               autocapitalize="off"
               class="text-12-regular"
               style={{ "font-family": sansFontFamily(settings.appearance.uiFont()) }}
-            />
-          </div>
-        </SettingsRow>
+            @lgcode/>
+          <@lgcode/div>
+        <@lgcode/SettingsRow>
 
         <SettingsRow
           title={language.t("settings.general.row.font.title")}
@@ -536,9 +536,9 @@ export const SettingsGeneral: Component = () => {
               autocapitalize="off"
               class="text-12-regular"
               style={{ "font-family": monoFontFamily(settings.appearance.font()) }}
-            />
-          </div>
-        </SettingsRow>
+            @lgcode/>
+          <@lgcode/div>
+        <@lgcode/SettingsRow>
 
         <SettingsRow
           title={language.t("settings.general.row.terminalFont.title")}
@@ -559,16 +559,16 @@ export const SettingsGeneral: Component = () => {
               autocapitalize="off"
               class="text-12-regular"
               style={{ "font-family": terminalFontFamily(settings.appearance.terminalFont()) }}
-            />
-          </div>
-        </SettingsRow>
-      </SettingsList>
-    </div>
+            @lgcode/>
+          <@lgcode/div>
+        <@lgcode/SettingsRow>
+      <@lgcode/SettingsList>
+    <@lgcode/div>
   )
 
   const NotificationsSection = () => (
     <div class="flex flex-col gap-1">
-      <h3 class="text-14-medium text-text-strong pb-2">{language.t("settings.general.section.notifications")}</h3>
+      <h3 class="text-14-medium text-text-strong pb-2">{language.t("settings.general.section.notifications")}<@lgcode/h3>
 
       <SettingsList>
         <SettingsRow
@@ -579,9 +579,9 @@ export const SettingsGeneral: Component = () => {
             <Switch
               checked={settings.notifications.agent()}
               onChange={(checked) => settings.notifications.setAgent(checked)}
-            />
-          </div>
-        </SettingsRow>
+            @lgcode/>
+          <@lgcode/div>
+        <@lgcode/SettingsRow>
 
         <SettingsRow
           title={language.t("settings.general.notifications.permissions.title")}
@@ -591,9 +591,9 @@ export const SettingsGeneral: Component = () => {
             <Switch
               checked={settings.notifications.permissions()}
               onChange={(checked) => settings.notifications.setPermissions(checked)}
-            />
-          </div>
-        </SettingsRow>
+            @lgcode/>
+          <@lgcode/div>
+        <@lgcode/SettingsRow>
 
         <SettingsRow
           title={language.t("settings.general.notifications.errors.title")}
@@ -603,16 +603,16 @@ export const SettingsGeneral: Component = () => {
             <Switch
               checked={settings.notifications.errors()}
               onChange={(checked) => settings.notifications.setErrors(checked)}
-            />
-          </div>
-        </SettingsRow>
-      </SettingsList>
-    </div>
+            @lgcode/>
+          <@lgcode/div>
+        <@lgcode/SettingsRow>
+      <@lgcode/SettingsList>
+    <@lgcode/div>
   )
 
   const SoundsSection = () => (
     <div class="flex flex-col gap-1">
-      <h3 class="text-14-medium text-text-strong pb-2">{language.t("settings.general.section.sounds")}</h3>
+      <h3 class="text-14-medium text-text-strong pb-2">{language.t("settings.general.section.sounds")}<@lgcode/h3>
 
       <SettingsList>
         <SettingsRow
@@ -627,8 +627,8 @@ export const SettingsGeneral: Component = () => {
               (value) => settings.sounds.setAgentEnabled(value),
               (id) => settings.sounds.setAgent(id),
             )}
-          />
-        </SettingsRow>
+          @lgcode/>
+        <@lgcode/SettingsRow>
 
         <SettingsRow
           title={language.t("settings.general.sounds.permissions.title")}
@@ -642,8 +642,8 @@ export const SettingsGeneral: Component = () => {
               (value) => settings.sounds.setPermissionsEnabled(value),
               (id) => settings.sounds.setPermissions(id),
             )}
-          />
-        </SettingsRow>
+          @lgcode/>
+        <@lgcode/SettingsRow>
 
         <SettingsRow
           title={language.t("settings.general.sounds.errors.title")}
@@ -657,15 +657,15 @@ export const SettingsGeneral: Component = () => {
               (value) => settings.sounds.setErrorsEnabled(value),
               (id) => settings.sounds.setErrors(id),
             )}
-          />
-        </SettingsRow>
-      </SettingsList>
-    </div>
+          @lgcode/>
+        <@lgcode/SettingsRow>
+      <@lgcode/SettingsList>
+    <@lgcode/div>
   )
 
   const UpdatesSection = () => (
     <div class="flex flex-col gap-1">
-      <h3 class="text-14-medium text-text-strong pb-2">{language.t("settings.general.section.updates")}</h3>
+      <h3 class="text-14-medium text-text-strong pb-2">{language.t("settings.general.section.updates")}<@lgcode/h3>
 
       <SettingsList>
         <SettingsRow
@@ -676,9 +676,9 @@ export const SettingsGeneral: Component = () => {
             <Switch
               checked={settings.general.releaseNotes()}
               onChange={(checked) => settings.general.setReleaseNotes(checked)}
-            />
-          </div>
-        </SettingsRow>
+            @lgcode/>
+          <@lgcode/div>
+        <@lgcode/SettingsRow>
 
         <SettingsRow
           title={language.t("settings.updates.row.check.title")}
@@ -686,16 +686,16 @@ export const SettingsGeneral: Component = () => {
         >
           <Button size="small" variant="secondary" disabled={!updater.action().run} onClick={updater.run}>
             {language.t(updater.action().label)}
-          </Button>
-        </SettingsRow>
-      </SettingsList>
-    </div>
+          <@lgcode/Button>
+        <@lgcode/SettingsRow>
+      <@lgcode/SettingsList>
+    <@lgcode/div>
   )
 
   const DisplaySection = () => (
     <Show when={desktop()}>
       <div class="flex flex-col gap-1">
-        <h3 class="text-14-medium text-text-strong pb-2">{language.t("settings.general.section.display")}</h3>
+        <h3 class="text-14-medium text-text-strong pb-2">{language.t("settings.general.section.display")}<@lgcode/h3>
 
         <SettingsList>
           <SettingsRow
@@ -703,60 +703,60 @@ export const SettingsGeneral: Component = () => {
             description={language.t("settings.general.row.pinchZoom.description")}
           >
             <div data-action="settings-pinch-zoom">
-              <Switch checked={pinchZoom.latest} onChange={onPinchZoomChange} />
-            </div>
-          </SettingsRow>
+              <Switch checked={pinchZoom.latest} onChange={onPinchZoomChange} @lgcode/>
+            <@lgcode/div>
+          <@lgcode/SettingsRow>
 
           <Show when={linux()}>
             <SettingsRow
               title={
                 <div class="flex items-center gap-2">
-                  <span>{language.t("settings.general.row.wayland.title")}</span>
+                  <span>{language.t("settings.general.row.wayland.title")}<@lgcode/span>
                   <Tooltip value={language.t("settings.general.row.wayland.tooltip")} placement="top">
                     <span class="text-text-weak">
-                      <Icon name="help" size="small" />
-                    </span>
-                  </Tooltip>
-                </div>
+                      <Icon name="help" size="small" @lgcode/>
+                    <@lgcode/span>
+                  <@lgcode/Tooltip>
+                <@lgcode/div>
               }
               description={language.t("settings.general.row.wayland.description")}
             >
               <div data-action="settings-wayland">
-                <Switch checked={displayBackend.latest === "wayland"} onChange={onDisplayBackendChange} />
-              </div>
-            </SettingsRow>
-          </Show>
-        </SettingsList>
-      </div>
-    </Show>
+                <Switch checked={displayBackend.latest === "wayland"} onChange={onDisplayBackendChange} @lgcode/>
+              <@lgcode/div>
+            <@lgcode/SettingsRow>
+          <@lgcode/Show>
+        <@lgcode/SettingsList>
+      <@lgcode/div>
+    <@lgcode/Show>
   )
 
   return (
     <div class="flex flex-col h-full overflow-y-auto no-scrollbar px-4 pb-10 sm:px-10 sm:pb-10">
       <div class="sticky top-0 z-10 bg-[linear-gradient(to_bottom,var(--surface-stronger-non-alpha)_calc(100%_-_24px),transparent)]">
         <div class="flex flex-col gap-1 pt-6 pb-8">
-          <h2 class="text-16-medium text-text-strong">{language.t("settings.tab.general")}</h2>
-        </div>
-      </div>
+          <h2 class="text-16-medium text-text-strong">{language.t("settings.tab.general")}<@lgcode/h2>
+        <@lgcode/div>
+      <@lgcode/div>
 
       <div class="flex flex-col gap-8 w-full">
-        <GeneralSection />
+        <GeneralSection @lgcode/>
 
-        <AppearanceSection />
+        <AppearanceSection @lgcode/>
 
-        <NotificationsSection />
+        <NotificationsSection @lgcode/>
 
-        <SoundsSection />
+        <SoundsSection @lgcode/>
 
-        <UpdatesSection />
+        <UpdatesSection @lgcode/>
 
-        <DisplaySection />
+        <DisplaySection @lgcode/>
 
         <Show when={desktop()}>
-          <AdvancedSection />
-        </Show>
-      </div>
-    </div>
+          <AdvancedSection @lgcode/>
+        <@lgcode/Show>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }
 
@@ -770,10 +770,10 @@ const SettingsRow: Component<SettingsRowProps> = (props) => {
   return (
     <div class="flex flex-wrap items-center gap-4 py-3 border-b border-border-weak-base last:border-none sm:flex-nowrap">
       <div class="flex min-w-0 flex-1 flex-col gap-0.5">
-        <span class="text-14-medium text-text-strong">{props.title}</span>
-        <span class="text-12-regular text-text-weak">{props.description}</span>
-      </div>
-      <div class="flex w-full justify-end sm:w-auto sm:shrink-0">{props.children}</div>
-    </div>
+        <span class="text-14-medium text-text-strong">{props.title}<@lgcode/span>
+        <span class="text-12-regular text-text-weak">{props.description}<@lgcode/span>
+      <@lgcode/div>
+      <div class="flex w-full justify-end sm:w-auto sm:shrink-0">{props.children}<@lgcode/div>
+    <@lgcode/div>
   )
 }

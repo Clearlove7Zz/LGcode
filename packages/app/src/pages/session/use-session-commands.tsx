@@ -1,23 +1,23 @@
-import { useNavigate } from "@solidjs/router"
-import { useCommand, type CommandOption } from "@/context/command"
-import { useDialog } from "@opencode@lgcode/ui/context/dialog"
-import { previewSelectedLines } from "@opencode@lgcode/ui/pierre/selection-bridge"
-import { useFile, selectionFromLines, type FileSelection, type SelectedLineRange } from "@/context/file"
-import { useLanguage } from "@/context/language"
-import { useLayout } from "@/context/layout"
-import { useLocal } from "@/context/local"
-import { usePermission } from "@/context/permission"
-import { usePrompt } from "@/context/prompt"
-import { useSDK } from "@/context/sdk"
-import { useSettings } from "@/context/settings"
-import { useSync } from "@/context/sync"
-import { useTerminal } from "@/context/terminal"
-import { showToast } from "@/utils/toast"
-import { findLast } from "@opencode@lgcode/core/util/array"
-import { createSessionTabs } from "@/pages/session/helpers"
-import { extractPromptFromParts } from "@/utils/prompt"
-import { UserMessage } from "@opencode@lgcode/sdk/v2"
-import { useSessionLayout } from "@/pages/session/session-layout"
+import { useNavigate } from "@solidjs@lgcode/router"
+import { useCommand, type CommandOption } from "@@lgcode/context@lgcode/command"
+import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
+import { previewSelectedLines } from "@lgcode/ui@lgcode/pierre@lgcode/selection-bridge"
+import { useFile, selectionFromLines, type FileSelection, type SelectedLineRange } from "@@lgcode/context@lgcode/file"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { useLayout } from "@@lgcode/context@lgcode/layout"
+import { useLocal } from "@@lgcode/context@lgcode/local"
+import { usePermission } from "@@lgcode/context@lgcode/permission"
+import { usePrompt } from "@@lgcode/context@lgcode/prompt"
+import { useSDK } from "@@lgcode/context@lgcode/sdk"
+import { useSettings } from "@@lgcode/context@lgcode/settings"
+import { useSync } from "@@lgcode/context@lgcode/sync"
+import { useTerminal } from "@@lgcode/context@lgcode/terminal"
+import { showToast } from "@@lgcode/utils@lgcode/toast"
+import { findLast } from "@lgcode/core@lgcode/util@lgcode/array"
+import { createSessionTabs } from "@@lgcode/pages@lgcode/session@lgcode/helpers"
+import { extractPromptFromParts } from "@@lgcode/utils@lgcode/prompt"
+import { UserMessage } from "@lgcode/sdk@lgcode/v2"
+import { useSessionLayout } from "@@lgcode/pages@lgcode/session@lgcode/session-layout"
 
 export type SessionCommandContext = {
   navigateMessageByOffset: (offset: number) => void
@@ -56,7 +56,7 @@ export const useSessionCommands = (actions: SessionCommandContext) => {
   }
   const hasReview = () => !!params.id
   const normalizeTab = (tab: string) => {
-    if (!tab.startsWith("file://")) return tab
+    if (!tab.startsWith("file:@lgcode/@lgcode/")) return tab
     return file.tab(tab)
   }
   const tabState = createSessionTabs({
@@ -214,8 +214,8 @@ export const useSessionCommands = (actions: SessionCommandContext) => {
   }
 
   const openFile = () => {
-    void import("@/components/dialog-select-file").then((x) => {
-      dialog.show(() => <x.DialogSelectFile onOpenFile={showAllFiles} />)
+    void import("@@lgcode/components@lgcode/dialog-select-file").then((x) => {
+      dialog.show(() => <x.DialogSelectFile onOpenFile={showAllFiles} @lgcode/>)
     })
   }
 
@@ -250,14 +250,14 @@ export const useSessionCommands = (actions: SessionCommandContext) => {
   }
 
   const chooseModel = () => {
-    void import("@/components/dialog-select-model").then((x) => {
-      dialog.show(() => <x.DialogSelectModel model={local.model} />)
+    void import("@@lgcode/components@lgcode/dialog-select-model").then((x) => {
+      dialog.show(() => <x.DialogSelectModel model={local.model} @lgcode/>)
     })
   }
 
   const chooseMcp = () => {
-    void import("@/components/dialog-select-mcp").then((x) => {
-      dialog.show(() => <x.DialogSelectMcp />)
+    void import("@@lgcode/components@lgcode/dialog-select-mcp").then((x) => {
+      dialog.show(() => <x.DialogSelectMcp @lgcode/>)
     })
   }
 
@@ -346,8 +346,8 @@ export const useSessionCommands = (actions: SessionCommandContext) => {
   }
 
   const fork = () => {
-    void import("@/components/dialog-fork").then((x) => {
-      dialog.show(() => <x.DialogFork />)
+    void import("@@lgcode/components@lgcode/dialog-fork").then((x) => {
+      dialog.show(() => <x.DialogFork @lgcode/>)
     })
   }
 
@@ -381,7 +381,7 @@ export const useSessionCommands = (actions: SessionCommandContext) => {
       title: language.t("command.session.new"),
       keybind: "mod+shift+s",
       slash: "new",
-      onSelect: () => navigate(`/${params.dir}/session`),
+      onSelect: () => navigate(`@lgcode/${params.dir}@lgcode/session`),
     }),
     sessionCommand({
       id: "session.undo",

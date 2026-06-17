@@ -1,20 +1,20 @@
-// Pure state machine for the question UI.
-//
-// Supports both single-question and multi-question flows. Single questions
-// submit immediately on selection. Multi-question flows use tabs and a
-// final confirmation step.
-//
-// State transitions:
-//   questionSelect  → picks an option (single: submits, multi: toggles/advances)
-//   questionSave    → saves custom text input
-//   questionMove    → arrow key navigation through options
-//   questionSetTab  → tab navigation between questions
-//   questionSubmit  → builds the final QuestionReply with all answers
-//
-// Custom answers: if a question has custom=true, an extra "Type your own
-// answer" option appears. Selecting it enters editing mode with a text field.
-import type { QuestionInfo, QuestionRequest } from "@opencode@lgcode/sdk/v2"
-import type { QuestionReject, QuestionReply } from "./types"
+@lgcode/@lgcode/ Pure state machine for the question UI.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Supports both single-question and multi-question flows. Single questions
+@lgcode/@lgcode/ submit immediately on selection. Multi-question flows use tabs and a
+@lgcode/@lgcode/ final confirmation step.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ State transitions:
+@lgcode/@lgcode/   questionSelect  → picks an option (single: submits, multi: toggles@lgcode/advances)
+@lgcode/@lgcode/   questionSave    → saves custom text input
+@lgcode/@lgcode/   questionMove    → arrow key navigation through options
+@lgcode/@lgcode/   questionSetTab  → tab navigation between questions
+@lgcode/@lgcode/   questionSubmit  → builds the final QuestionReply with all answers
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Custom answers: if a question has custom=true, an extra "Type your own
+@lgcode/@lgcode/ answer" option appears. Selecting it enters editing mode with a text field.
+import type { QuestionInfo, QuestionRequest } from "@lgcode/sdk@lgcode/v2"
+import type { QuestionReject, QuestionReply } from ".@lgcode/types"
 
 export type QuestionBodyState = {
   requestID: string

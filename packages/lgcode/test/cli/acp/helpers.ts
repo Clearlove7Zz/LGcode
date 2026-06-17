@@ -1,15 +1,15 @@
 import { expect } from "bun:test"
-import type { InitializeResponse, NewSessionResponse, SessionConfigOption } from "@agentclientprotocol/sdk"
+import type { InitializeResponse, NewSessionResponse, SessionConfigOption } from "@agentclientprotocol@lgcode/sdk"
 import { Effect } from "effect"
-import type { CliFixture } from "../../lib/cli-process"
-import { testProviderConfig } from "../../lib/test-provider"
+import type { CliFixture } from "..@lgcode/..@lgcode/lib@lgcode/cli-process"
+import { testProviderConfig } from "..@lgcode/..@lgcode/lib@lgcode/test-provider"
 import {
   createAcpClient as createJsonRpcAcpClient,
   expectOk,
   flattenSelectOptions,
   selectConfigOption,
   type AcpClient,
-} from "./acp-test-client"
+} from ".@lgcode/acp-test-client"
 
 export function createAcpClient(input: Pick<CliFixture, "opencode">, env?: Record<string, string>) {
   return Effect.gen(function* () {
@@ -31,7 +31,7 @@ export function initialize(acp: AcpClient) {
 
 export function newSession(acp: AcpClient, cwd: string) {
   return Effect.gen(function* () {
-    return expectOk(yield* acp.request<NewSessionResponse>("session/new", { cwd, mcpServers: [] }))
+    return expectOk(yield* acp.request<NewSessionResponse>("session@lgcode/new", { cwd, mcpServers: [] }))
   })
 }
 
@@ -39,7 +39,7 @@ export function verifierConfig(llmUrl: string, skills?: string) {
   const config = testProviderConfig(llmUrl)
   return {
     ...config,
-    model: "test/test-model",
+    model: "test@lgcode/test-model",
     ...(skills ? { skills: { paths: [skills] } } : {}),
     provider: {
       test: {

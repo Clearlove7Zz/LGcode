@@ -1,30 +1,30 @@
 import { Component, For, Show, createMemo, lazy, onCleanup, onMount } from "solid-js"
-import { createStore } from "solid-js/store"
-import { makeEventListener } from "@solid-primitives/event-listener"
-import { Button } from "@opencode@lgcode/ui/button"
-import { Icon } from "@opencode@lgcode/ui/icon"
-import { IconButton } from "@opencode@lgcode/ui/icon-button"
-import { TextField } from "@opencode@lgcode/ui/text-field"
-import { showToast } from "@/utils/toast"
+import { createStore } from "solid-js@lgcode/store"
+import { makeEventListener } from "@solid-primitives@lgcode/event-listener"
+import { Button } from "@lgcode/ui@lgcode/button"
+import { Icon } from "@lgcode/ui@lgcode/icon"
+import { IconButton } from "@lgcode/ui@lgcode/icon-button"
+import { TextField } from "@lgcode/ui@lgcode/text-field"
+import { showToast } from "@@lgcode/utils@lgcode/toast"
 import fuzzysort from "fuzzysort"
-import { formatKeybind, parseKeybind, useCommand } from "@/context/command"
-import { useLanguage } from "@/context/language"
-import { useSettings } from "@/context/settings"
-import { SettingsList } from "./settings-list"
+import { formatKeybind, parseKeybind, useCommand } from "@@lgcode/context@lgcode/command"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { useSettings } from "@@lgcode/context@lgcode/settings"
+import { SettingsList } from ".@lgcode/settings-list"
 
-const ButtonV2 = lazy(() => import("@opencode@lgcode/ui/v2/button-v2").then((module) => ({ default: module.ButtonV2 })))
-const IconV2 = lazy(() => import("@opencode@lgcode/ui/v2/icon").then((module) => ({ default: module.Icon })))
+const ButtonV2 = lazy(() => import("@lgcode/ui@lgcode/v2@lgcode/button-v2").then((module) => ({ default: module.ButtonV2 })))
+const IconV2 = lazy(() => import("@lgcode/ui@lgcode/v2@lgcode/icon").then((module) => ({ default: module.Icon })))
 const IconButtonV2 = lazy(() =>
-  import("@opencode@lgcode/ui/v2/icon-button-v2").then((module) => ({ default: module.IconButtonV2 })),
+  import("@lgcode/ui@lgcode/v2@lgcode/icon-button-v2").then((module) => ({ default: module.IconButtonV2 })),
 )
 const TextInputV2 = lazy(() =>
-  import("@opencode@lgcode/ui/v2/text-input-v2").then((module) => ({ default: module.TextInputV2 })),
+  import("@lgcode/ui@lgcode/v2@lgcode/text-input-v2").then((module) => ({ default: module.TextInputV2 })),
 )
 const SettingsListV2 = lazy(() =>
-  import("./settings-v2/parts/list").then((module) => ({ default: module.SettingsListV2 })),
+  import(".@lgcode/settings-v2@lgcode/parts@lgcode/list").then((module) => ({ default: module.SettingsListV2 })),
 )
 
-const IS_MAC = typeof navigator === "object" && /(Mac|iPod|iPhone|iPad)/.test(navigator.platform)
+const IS_MAC = typeof navigator === "object" && @lgcode/(Mac|iPod|iPhone|iPad)@lgcode/.test(navigator.platform)
 const PALETTE_ID = "command.palette"
 const DEFAULT_PALETTE_KEYBIND = "mod+shift+p"
 
@@ -397,7 +397,7 @@ export const SettingsKeybinds: Component<{ v2?: boolean }> = (props) => {
           }}
         >
           {language.t("settings.shortcuts.search.empty")}
-        </span>
+        <@lgcode/span>
         <Show when={store.filter}>
           <span
             classList={{
@@ -406,10 +406,10 @@ export const SettingsKeybinds: Component<{ v2?: boolean }> = (props) => {
             }}
           >
             &quot;{store.filter}&quot;
-          </span>
-        </Show>
-      </div>
-    </Show>
+          <@lgcode/span>
+        <@lgcode/Show>
+      <@lgcode/div>
+    <@lgcode/Show>
   )
 
   const List = props.v2 ? SettingsListV2 : SettingsList
@@ -437,7 +437,7 @@ export const SettingsKeybinds: Component<{ v2?: boolean }> = (props) => {
                 }}
               >
                 {language.t(groupKey[group])}
-              </h3>
+              <@lgcode/h3>
               <List>
                 <For each={filtered().get(group) ?? []}>
                   {(id) => (
@@ -448,7 +448,7 @@ export const SettingsKeybinds: Component<{ v2?: boolean }> = (props) => {
                         }}
                       >
                         {title(id)}
-                      </span>
+                      <@lgcode/span>
                       <button
                         type="button"
                         data-keybind-id={id}
@@ -468,18 +468,18 @@ export const SettingsKeybinds: Component<{ v2?: boolean }> = (props) => {
                           fallback={command.keybind(id) || language.t("settings.shortcuts.unassigned")}
                         >
                           {language.t("settings.shortcuts.pressKeys")}
-                        </Show>
-                      </button>
-                    </div>
+                        <@lgcode/Show>
+                      <@lgcode/button>
+                    <@lgcode/div>
                   )}
-                </For>
-              </List>
-            </div>
-          </Show>
+                <@lgcode/For>
+              <@lgcode/List>
+            <@lgcode/div>
+          <@lgcode/Show>
         )}
-      </For>
+      <@lgcode/For>
       {emptyResults}
-    </div>
+    <@lgcode/div>
   )
 
   return (
@@ -490,14 +490,14 @@ export const SettingsKeybinds: Component<{ v2?: boolean }> = (props) => {
           <div class="sticky top-0 z-10 bg-[linear-gradient(to_bottom,var(--surface-stronger-non-alpha)_calc(100%_-_24px),transparent)]">
             <div class="flex flex-col gap-4 pt-6 pb-6 max-w-[720px]">
               <div class="flex items-center justify-between gap-4">
-                <h2 class="text-16-medium text-text-strong">{language.t("settings.shortcuts.title")}</h2>
+                <h2 class="text-16-medium text-text-strong">{language.t("settings.shortcuts.title")}<@lgcode/h2>
                 <Button size="small" variant="secondary" onClick={resetAll} disabled={!hasOverrides()}>
                   {language.t("settings.shortcuts.reset.button")}
-                </Button>
-              </div>
+                <@lgcode/Button>
+              <@lgcode/div>
 
               <div class="flex items-center gap-2 px-3 h-9 rounded-lg bg-surface-base">
-                <Icon name="magnifying-glass" class="text-icon-weak-base flex-shrink-0" />
+                <Icon name="magnifying-glass" class="text-icon-weak-base flex-shrink-0" @lgcode/>
                 <TextField
                   variant="ghost"
                   type="text"
@@ -509,25 +509,25 @@ export const SettingsKeybinds: Component<{ v2?: boolean }> = (props) => {
                   autocomplete="off"
                   autocapitalize="off"
                   class="flex-1"
-                />
+                @lgcode/>
                 <Show when={store.filter}>
-                  <IconButton icon="circle-x" variant="ghost" onClick={() => setStore("filter", "")} />
-                </Show>
-              </div>
-            </div>
-          </div>
+                  <IconButton icon="circle-x" variant="ghost" onClick={() => setStore("filter", "")} @lgcode/>
+                <@lgcode/Show>
+              <@lgcode/div>
+            <@lgcode/div>
+          <@lgcode/div>
           {groups}
-        </div>
+        <@lgcode/div>
       }
     >
       <>
         <div class="settings-v2-tab-header settings-v2-tab-header--stacked">
           <div class="settings-v2-tab-header-row">
-            <h2 class="settings-v2-tab-title">{language.t("settings.shortcuts.title")}</h2>
+            <h2 class="settings-v2-tab-title">{language.t("settings.shortcuts.title")}<@lgcode/h2>
             <ButtonV2 variant="ghost" onClick={resetAll} disabled={!hasOverrides()}>
               {language.t("settings.shortcuts.reset.button")}
-            </ButtonV2>
-          </div>
+            <@lgcode/ButtonV2>
+          <@lgcode/div>
           <div class="settings-v2-tab-search">
             <TextInputV2
               type="search"
@@ -540,21 +540,21 @@ export const SettingsKeybinds: Component<{ v2?: boolean }> = (props) => {
               autocomplete="off"
               autocapitalize="off"
               aria-label={language.t("settings.shortcuts.search.placeholder")}
-            />
+            @lgcode/>
             <Show when={store.filter}>
               <IconButtonV2
                 type="button"
                 variant="ghost-muted"
                 size="small"
                 class="settings-v2-tab-search-clear"
-                icon={<IconV2 name="close" size="large" class="text-v2-icon-icon-muted" />}
+                icon={<IconV2 name="close" size="large" class="text-v2-icon-icon-muted" @lgcode/>}
                 onClick={() => setStore("filter", "")}
-              />
-            </Show>
-          </div>
-        </div>
-        <div class="settings-v2-tab-body">{groups}</div>
-      </>
-    </Show>
+              @lgcode/>
+            <@lgcode/Show>
+          <@lgcode/div>
+        <@lgcode/div>
+        <div class="settings-v2-tab-body">{groups}<@lgcode/div>
+      <@lgcode/>
+    <@lgcode/Show>
   )
 }

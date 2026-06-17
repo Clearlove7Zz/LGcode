@@ -1,12 +1,12 @@
-import { Config } from "@/config/config"
-import { ConfigV1 } from "@opencode@lgcode/core/v1/config/config"
-import { EventV2 } from "@opencode@lgcode/core/event"
-import { InstanceDisposed } from "@/server/event"
-import "@opencode@lgcode/core/account"
-import "@/server/event"
+import { Config } from "@@lgcode/config@lgcode/config"
+import { ConfigV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/config"
+import { EventV2 } from "@lgcode/core@lgcode/event"
+import { InstanceDisposed } from "@@lgcode/server@lgcode/event"
+import "@lgcode/core@lgcode/account"
+import "@@lgcode/server@lgcode/event"
 import { Schema } from "effect"
-import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, HttpApiSchema, OpenApi } from "effect/unstable/httpapi"
-import { described } from "./metadata"
+import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, HttpApiSchema, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
+import { described } from ".@lgcode/metadata"
 
 const GlobalHealth = Schema.Struct({
   healthy: Schema.Literal(true),
@@ -65,11 +65,11 @@ const GlobalUpgradeResult = Schema.Union([
 ])
 
 export const GlobalPaths = {
-  health: "/global/health",
-  event: "/global/event",
-  config: "/global/config",
-  dispose: "/global/dispose",
-  upgrade: "/global/upgrade",
+  health: "@lgcode/global@lgcode/health",
+  event: "@lgcode/global@lgcode/event",
+  config: "@lgcode/global@lgcode/config",
+  dispose: "@lgcode/global@lgcode/dispose",
+  upgrade: "@lgcode/global@lgcode/upgrade",
 } as const
 
 export const GlobalApi = HttpApi.make("global").add(

@@ -1,7 +1,7 @@
-import { DropdownMenu } from "@kobalte/core/dropdown-menu"
-import { ContextMenu } from "@kobalte/core/context-menu"
+import { DropdownMenu } from "@kobalte@lgcode/core@lgcode/dropdown-menu"
+import { ContextMenu } from "@kobalte@lgcode/core@lgcode/context-menu"
 import { Show, splitProps, type Component, type ComponentProps, type JSX, type ParentProps } from "solid-js"
-import "./menu-v2.css"
+import ".@lgcode/menu-v2.css"
 
 const ChevronRight: Component = () => (
   <svg
@@ -10,23 +10,23 @@ const ChevronRight: Component = () => (
     height="16"
     viewBox="0 0 16 16"
     fill="none"
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns="http:@lgcode/@lgcode/www.w3.org@lgcode/2000@lgcode/svg"
     aria-hidden="true"
   >
-    <path d="M6 4L10 8L6 12V4Z" fill="currentColor" />
-  </svg>
+    <path d="M6 4L10 8L6 12V4Z" fill="currentColor" @lgcode/>
+  <@lgcode/svg>
 )
 
 const CheckMark: Component = () => (
-  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http:@lgcode/@lgcode/www.w3.org@lgcode/2000@lgcode/svg" aria-hidden="true">
     <path
       d="M3.53564 8.17857L6.39279 11.75L12.4642 4.25"
       stroke="currentColor"
       stroke-width="1"
       stroke-linecap="round"
       stroke-linejoin="round"
-    />
-  </svg>
+    @lgcode/>
+  <@lgcode/svg>
 )
 
 function ItemBody(
@@ -38,11 +38,11 @@ function ItemBody(
 ) {
   return (
     <>
-      <span data-slot="menu-v2-item-content">{props.children}</span>
-      <Show when={props.shortcut}>{(shortcut) => <span data-slot="menu-v2-item-shortcut">{shortcut()}</span>}</Show>
-      <Show when={props.badge}>{(badge) => <span data-slot="menu-v2-item-badge">{badge()}</span>}</Show>
+      <span data-slot="menu-v2-item-content">{props.children}<@lgcode/span>
+      <Show when={props.shortcut}>{(shortcut) => <span data-slot="menu-v2-item-shortcut">{shortcut()}<@lgcode/span>}<@lgcode/Show>
+      <Show when={props.badge}>{(badge) => <span data-slot="menu-v2-item-badge">{badge()}<@lgcode/span>}<@lgcode/Show>
       {props.trailing}
-    </>
+    <@lgcode/>
   )
 }
 
@@ -57,8 +57,8 @@ function MenuV2Item(props: ParentProps<MenuV2ItemProps>) {
     <DropdownMenu.Item {...r} data-component="menu-v2-item" classList={{ ...s.classList, [s.class ?? ""]: !!s.class }}>
       <ItemBody shortcut={s.shortcut} badge={s.badge}>
         {s.children}
-      </ItemBody>
-    </DropdownMenu.Item>
+      <@lgcode/ItemBody>
+    <@lgcode/DropdownMenu.Item>
   )
 }
 
@@ -80,13 +80,13 @@ function MenuV2CheckboxItem(props: ParentProps<MenuV2CheckboxItemProps>) {
         badge={s.badge}
         trailing={
           <DropdownMenu.ItemIndicator data-slot="menu-v2-item-indicator" forceMount>
-            <CheckMark />
-          </DropdownMenu.ItemIndicator>
+            <CheckMark @lgcode/>
+          <@lgcode/DropdownMenu.ItemIndicator>
         }
       >
         {s.children}
-      </ItemBody>
-    </DropdownMenu.CheckboxItem>
+      <@lgcode/ItemBody>
+    <@lgcode/DropdownMenu.CheckboxItem>
   )
 }
 
@@ -108,13 +108,13 @@ function MenuV2RadioItem(props: ParentProps<MenuV2RadioItemProps>) {
         badge={s.badge}
         trailing={
           <DropdownMenu.ItemIndicator data-slot="menu-v2-item-indicator" forceMount>
-            <CheckMark />
-          </DropdownMenu.ItemIndicator>
+            <CheckMark @lgcode/>
+          <@lgcode/DropdownMenu.ItemIndicator>
         }
       >
         {s.children}
-      </ItemBody>
-    </DropdownMenu.RadioItem>
+      <@lgcode/ItemBody>
+    <@lgcode/DropdownMenu.RadioItem>
   )
 }
 
@@ -131,10 +131,10 @@ function MenuV2SubTrigger(props: ParentProps<MenuV2SubTriggerProps>) {
       data-component="menu-v2-item"
       classList={{ ...s.classList, [s.class ?? ""]: !!s.class }}
     >
-      <ItemBody shortcut={s.shortcut} badge={s.badge} trailing={<ChevronRight />}>
+      <ItemBody shortcut={s.shortcut} badge={s.badge} trailing={<ChevronRight @lgcode/>}>
         {s.children}
-      </ItemBody>
-    </DropdownMenu.SubTrigger>
+      <@lgcode/ItemBody>
+    <@lgcode/DropdownMenu.SubTrigger>
   )
 }
 
@@ -145,7 +145,7 @@ function MenuV2SubContent(props: ComponentProps<typeof DropdownMenu.SubContent>)
       {...r}
       data-component="menu-v2-content"
       classList={{ ...s.classList, [s.class ?? ""]: !!s.class }}
-    />
+    @lgcode/>
   )
 }
 
@@ -156,7 +156,7 @@ function MenuV2GroupLabel(props: ComponentProps<typeof DropdownMenu.GroupLabel>)
       {...r}
       data-slot="menu-v2-group-label"
       classList={{ ...s.classList, [s.class ?? ""]: !!s.class }}
-    />
+    @lgcode/>
   )
 }
 
@@ -167,7 +167,7 @@ function MenuV2Separator(props: ComponentProps<typeof DropdownMenu.Separator>) {
       {...r}
       data-slot="menu-v2-separator"
       classList={{ ...s.classList, [s.class ?? ""]: !!s.class }}
-    />
+    @lgcode/>
   )
 }
 
@@ -178,16 +178,16 @@ function MenuV2Content(props: ComponentProps<typeof DropdownMenu.Content>) {
       {...r}
       data-component="menu-v2-content"
       classList={{ ...s.classList, [s.class ?? ""]: !!s.class }}
-    />
+    @lgcode/>
   )
 }
 
 function MenuV2Root(props: ComponentProps<typeof DropdownMenu>) {
-  return <DropdownMenu {...props} />
+  return <DropdownMenu {...props} @lgcode/>
 }
 
 function MenuV2ContextRoot(props: ComponentProps<typeof ContextMenu>) {
-  return <ContextMenu {...props} />
+  return <ContextMenu {...props} @lgcode/>
 }
 
 function MenuV2ContextContent(props: ComponentProps<typeof ContextMenu.Content>) {
@@ -197,7 +197,7 @@ function MenuV2ContextContent(props: ComponentProps<typeof ContextMenu.Content>)
       {...r}
       data-component="menu-v2-content"
       classList={{ ...s.classList, [s.class ?? ""]: !!s.class }}
-    />
+    @lgcode/>
   )
 }
 

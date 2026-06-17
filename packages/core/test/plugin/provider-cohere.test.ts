@@ -1,13 +1,13 @@
 import { describe, expect, mock } from "bun:test"
 import { Effect } from "effect"
-import { ModelV2 } from "@opencode@lgcode/core/model"
-import { PluginV2 } from "@opencode@lgcode/core/plugin"
-import { CoherePlugin } from "@opencode@lgcode/core/plugin/provider/cohere"
-import { fakeSelectorSdk, it, model } from "./provider-helper"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { PluginV2 } from "@lgcode/core@lgcode/plugin"
+import { CoherePlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/cohere"
+import { fakeSelectorSdk, it, model } from ".@lgcode/provider-helper"
 
 const cohereOptions: Record<string, any>[] = []
 
-void mock.module("@ai-sdk/cohere", () => ({
+void mock.module("@ai-sdk@lgcode/cohere", () => ({
   createCohere: (options: Record<string, any>) => {
     cohereOptions.push({ ...options })
     return {
@@ -21,21 +21,21 @@ void mock.module("@ai-sdk/cohere", () => ({
 }))
 
 describe("CoherePlugin", () => {
-  it.effect("creates a Cohere SDK only for @ai-sdk/cohere", () =>
+  it.effect("creates a Cohere SDK only for @ai-sdk@lgcode/cohere", () =>
     Effect.gen(function* () {
       const plugin = yield* PluginV2.Service
       yield* plugin.add(CoherePlugin)
 
       const ignored = yield* plugin.trigger(
         "aisdk.sdk",
-        { model: model("cohere", "command"), package: "@ai-sdk/openai-compatible", options: { name: "cohere" } },
+        { model: model("cohere", "command"), package: "@ai-sdk@lgcode/openai-compatible", options: { name: "cohere" } },
         {},
       )
       expect(ignored.sdk).toBeUndefined()
 
       const result = yield* plugin.trigger(
         "aisdk.sdk",
-        { model: model("cohere", "command"), package: "@ai-sdk/cohere", options: { name: "cohere" } },
+        { model: model("cohere", "command"), package: "@ai-sdk@lgcode/cohere", options: { name: "cohere" } },
         {},
       )
       expect(result.sdk).toBeDefined()
@@ -50,8 +50,8 @@ describe("CoherePlugin", () => {
         "aisdk.sdk",
         {
           model: model("custom-cohere", "command-r-plus"),
-          package: "@ai-sdk/cohere",
-          options: { name: "custom-cohere", apiKey: "test", baseURL: "https://cohere.example" },
+          package: "@ai-sdk@lgcode/cohere",
+          options: { name: "custom-cohere", apiKey: "test", baseURL: "https:@lgcode/@lgcode/cohere.example" },
         },
         {},
       )
@@ -59,7 +59,7 @@ describe("CoherePlugin", () => {
       expect(cohereOptions.at(-1)).toEqual({
         name: "custom-cohere",
         apiKey: "test",
-        baseURL: "https://cohere.example",
+        baseURL: "https:@lgcode/@lgcode/cohere.example",
       })
       expect(result.sdk?.languageModel("command-r-plus").provider).toBe("custom-cohere.chat")
     }),

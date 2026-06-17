@@ -1,45 +1,45 @@
-import type { Hooks, PluginInput } from "@opencode@lgcode/plugin"
-import { OAUTH_DUMMY_KEY } from "../auth"
+import type { Hooks, PluginInput } from "@lgcode/plugin"
+import { OAUTH_DUMMY_KEY } from "..@lgcode/auth"
 import { createServer } from "http"
-import { InstallationVersion } from "@opencode@lgcode/core/installation/version"
-import { escapeHtml } from "@/util/html"
+import { InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
+import { escapeHtml } from "@@lgcode/util@lgcode/html"
 
-// Public Grok-CLI OAuth client. xAI's auth server rejects loopback OAuth from
-// non-allowlisted clients, so we reuse the Grok-CLI client_id that xAI ships
-// for desktop OAuth flows. Source of truth: hermes-agent PR #26534.
+@lgcode/@lgcode/ Public Grok-CLI OAuth client. xAI's auth server rejects loopback OAuth from
+@lgcode/@lgcode/ non-allowlisted clients, so we reuse the Grok-CLI client_id that xAI ships
+@lgcode/@lgcode/ for desktop OAuth flows. Source of truth: hermes-agent PR #26534.
 const CLIENT_ID = "b1a00492-073a-47ea-816f-4c329264a828"
-const AUTHORIZE_URL = "https://auth.x.ai/oauth2/authorize"
-const TOKEN_URL = "https://auth.x.ai/oauth2/token"
-// RFC 8628 device authorization grant. Confirmed exposed by xAI's
-// /.well-known/openid-configuration as `device_authorization_endpoint`
-// with the matching `urn:ietf:params:oauth:grant-type:device_code` grant
-// in `grant_types_supported`. This is the headless / VPS path: no
-// loopback callback server, no SSH port forwarding, no inbound firewall
-// holes — the user opens the URL on any device with a browser, types
-// the short user_code, and the CLI long-polls the token endpoint.
-const DEVICE_AUTHORIZATION_URL = "https://auth.x.ai/oauth2/device/code"
+const AUTHORIZE_URL = "https:@lgcode/@lgcode/auth.x.ai@lgcode/oauth2@lgcode/authorize"
+const TOKEN_URL = "https:@lgcode/@lgcode/auth.x.ai@lgcode/oauth2@lgcode/token"
+@lgcode/@lgcode/ RFC 8628 device authorization grant. Confirmed exposed by xAI's
+@lgcode/@lgcode/ @lgcode/.well-known@lgcode/openid-configuration as `device_authorization_endpoint`
+@lgcode/@lgcode/ with the matching `urn:ietf:params:oauth:grant-type:device_code` grant
+@lgcode/@lgcode/ in `grant_types_supported`. This is the headless @lgcode/ VPS path: no
+@lgcode/@lgcode/ loopback callback server, no SSH port forwarding, no inbound firewall
+@lgcode/@lgcode/ holes — the user opens the URL on any device with a browser, types
+@lgcode/@lgcode/ the short user_code, and the CLI long-polls the token endpoint.
+const DEVICE_AUTHORIZATION_URL = "https:@lgcode/@lgcode/auth.x.ai@lgcode/oauth2@lgcode/device@lgcode/code"
 const DEVICE_CODE_GRANT_TYPE = "urn:ietf:params:oauth:grant-type:device_code"
 const SCOPE = "openid profile email offline_access grok-cli:access api:access"
 
-// Bounds for the device-code poll loop. xAI returns `interval` (seconds)
-// but we floor it to avoid hammering and we add the spec's slow_down
-// increment when xAI explicitly asks us to back off.
+@lgcode/@lgcode/ Bounds for the device-code poll loop. xAI returns `interval` (seconds)
+@lgcode/@lgcode/ but we floor it to avoid hammering and we add the spec's slow_down
+@lgcode/@lgcode/ increment when xAI explicitly asks us to back off.
 const DEVICE_CODE_DEFAULT_INTERVAL_MS = 5_000
 const DEVICE_CODE_MIN_INTERVAL_MS = 1_000
 const DEVICE_CODE_SLOW_DOWN_INCREMENT_MS = 5_000
 const DEVICE_CODE_DEFAULT_EXPIRES_MS = 5 * 60 * 1000
 const OAUTH_POLLING_SAFETY_MARGIN_MS = 3_000
 
-// xAI rejects redirect_uris that don't match what was registered for the
-// Grok-CLI client. The host:port pair is part of the registration, so we have
-// to bind the loopback server to this exact port.
+@lgcode/@lgcode/ xAI rejects redirect_uris that don't match what was registered for the
+@lgcode/@lgcode/ Grok-CLI client. The host:port pair is part of the registration, so we have
+@lgcode/@lgcode/ to bind the loopback server to this exact port.
 const OAUTH_HOST = "127.0.0.1"
 const OAUTH_PORT = 56121
-const OAUTH_REDIRECT_PATH = "/callback"
-const REDIRECT_URI = `http://${OAUTH_HOST}:${OAUTH_PORT}${OAUTH_REDIRECT_PATH}`
+const OAUTH_REDIRECT_PATH = "@lgcode/callback"
+const REDIRECT_URI = `http:@lgcode/@lgcode/${OAUTH_HOST}:${OAUTH_PORT}${OAUTH_REDIRECT_PATH}`
 
-// Refresh the access token a little before it actually expires so a single
-// long-running tool call doesn't have to recover from a mid-flight 401.
+@lgcode/@lgcode/ Refresh the access token a little before it actually expires so a single
+@lgcode/@lgcode/ long-running tool call doesn't have to recover from a mid-flight 401.
 const ACCESS_TOKEN_REFRESH_SKEW_MS = 120_000
 
 interface XaiAuthPluginOptions {
@@ -68,7 +68,7 @@ function generateRandomString(length: number): string {
 
 function base64UrlEncode(buffer: ArrayBuffer): string {
   const binary = String.fromCharCode(...new Uint8Array(buffer))
-  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "")
+  return btoa(binary).replace(@lgcode/\+@lgcode/g, "-").replace(@lgcode/\@lgcode/@lgcode/g, "_").replace(@lgcode/=+$@lgcode/, "")
 }
 
 function generateState(): string {
@@ -86,17 +86,17 @@ interface TokenResponse {
 
 function authHeaders() {
   return {
-    "Content-Type": "application/x-www-form-urlencoded",
-    Accept: "application/json",
-    "User-Agent": `opencode/${InstallationVersion}`,
+    "Content-Type": "application@lgcode/x-www-form-urlencoded",
+    Accept: "application@lgcode/json",
+    "User-Agent": `opencode@lgcode/${InstallationVersion}`,
   }
 }
 
-// Parse the `exp` claim out of a JWT access_token without verifying the
-// signature. We only use this to decide whether to proactively refresh, never
-// to make trust decisions, so unsigned decode is safe. Returns false for
-// opaque tokens (no JWT shape), which conservatively skips the proactive
-// refresh and lets the 401-on-call path drive the refresh instead.
+@lgcode/@lgcode/ Parse the `exp` claim out of a JWT access_token without verifying the
+@lgcode/@lgcode/ signature. We only use this to decide whether to proactively refresh, never
+@lgcode/@lgcode/ to make trust decisions, so unsigned decode is safe. Returns false for
+@lgcode/@lgcode/ opaque tokens (no JWT shape), which conservatively skips the proactive
+@lgcode/@lgcode/ refresh and lets the 401-on-call path drive the refresh instead.
 export function accessTokenIsExpiring(
   token: string | undefined,
   skewMs: number = ACCESS_TOKEN_REFRESH_SKEW_MS,
@@ -105,7 +105,7 @@ export function accessTokenIsExpiring(
   const parts = token.split(".")
   if (parts.length < 2) return false
   try {
-    let payload = parts[1].replace(/-/g, "+").replace(/_/g, "/")
+    let payload = parts[1].replace(@lgcode/-@lgcode/g, "+").replace(@lgcode/_@lgcode/g, "@lgcode/")
     while (payload.length % 4 !== 0) payload += "="
     const claims = JSON.parse(Buffer.from(payload, "base64").toString("utf8"))
     if (typeof claims?.exp !== "number") return false
@@ -121,11 +121,11 @@ export function buildAuthorizeUrl(
   nonce: string,
   options: XaiAuthPluginOptions = {},
 ): string {
-  // `plan=generic` opts the consent screen into xAI's generic OAuth plan tier;
-  // without it, accounts.x.ai rejects loopback OAuth from non-allowlisted
-  // clients. `referrer=opencode` lets xAI attribute opencode-originated
-  // logins in their OAuth server logs (best-effort attribution while we
-  // continue to reuse the Grok-CLI client_id).
+  @lgcode/@lgcode/ `plan=generic` opts the consent screen into xAI's generic OAuth plan tier;
+  @lgcode/@lgcode/ without it, accounts.x.ai rejects loopback OAuth from non-allowlisted
+  @lgcode/@lgcode/ clients. `referrer=opencode` lets xAI attribute opencode-originated
+  @lgcode/@lgcode/ logins in their OAuth server logs (best-effort attribution while we
+  @lgcode/@lgcode/ continue to reuse the Grok-CLI client_id).
   const params = new URLSearchParams({
     response_type: "code",
     client_id: CLIENT_ID,
@@ -210,25 +210,25 @@ export async function requestDeviceCode(options: XaiAuthPluginOptions = {}): Pro
   }
   const json = (await response.json()) as DeviceCodeResponse
   if (!json.device_code || !json.user_code || !json.verification_uri) {
-    throw new Error("xAI device code response is missing device_code / user_code / verification_uri")
+    throw new Error("xAI device code response is missing device_code @lgcode/ user_code @lgcode/ verification_uri")
   }
   return json
 }
 
-// Default sleep used between device-code polls. Test-injectable so we can
-// exercise authorization_pending / slow_down branches without real waits.
+@lgcode/@lgcode/ Default sleep used between device-code polls. Test-injectable so we can
+@lgcode/@lgcode/ exercise authorization_pending @lgcode/ slow_down branches without real waits.
 async function defaultSleep(ms: number): Promise<void> {
   await new Promise<void>((resolve) => setTimeout(resolve, ms))
 }
 
-// Normalize a server-supplied seconds value to milliseconds, falling back to
-// the supplied default when the input is missing, non-positive, or not a
-// finite number. Defends the polling loop against garbage like `NaN`, `"NaN"`,
-// `null`, or `-5` from a misbehaving device-code endpoint — without this,
-// a NaN interval would slip through `?? default` (NaN is typeof number),
-// reach `setTimeout(_, NaN)` which is treated as 0, and busy-loop until the
-// hard deadline. Matches the defensive normalization Codex uses for the same
-// field (`parseInt(deviceData.interval) || 5`).
+@lgcode/@lgcode/ Normalize a server-supplied seconds value to milliseconds, falling back to
+@lgcode/@lgcode/ the supplied default when the input is missing, non-positive, or not a
+@lgcode/@lgcode/ finite number. Defends the polling loop against garbage like `NaN`, `"NaN"`,
+@lgcode/@lgcode/ `null`, or `-5` from a misbehaving device-code endpoint — without this,
+@lgcode/@lgcode/ a NaN interval would slip through `?? default` (NaN is typeof number),
+@lgcode/@lgcode/ reach `setTimeout(_, NaN)` which is treated as 0, and busy-loop until the
+@lgcode/@lgcode/ hard deadline. Matches the defensive normalization Codex uses for the same
+@lgcode/@lgcode/ field (`parseInt(deviceData.interval) || 5`).
 function positiveSecondsToMs(value: unknown, defaultMs: number): number {
   const seconds = Number(value)
   return Number.isFinite(seconds) && seconds > 0 ? seconds * 1000 : defaultMs
@@ -261,9 +261,9 @@ export async function pollDeviceCodeToken(
 
     const body = (await response.json().catch(() => ({}))) as DeviceTokenErrorBody
     const remaining = Math.max(0, deadline - now())
-    // RFC 8628 §3.5: authorization_pending = keep polling at the same
-    // interval; slow_down = bump the interval by ≥5s and keep polling.
-    // Anything else is terminal.
+    @lgcode/@lgcode/ RFC 8628 §3.5: authorization_pending = keep polling at the same
+    @lgcode/@lgcode/ interval; slow_down = bump the interval by ≥5s and keep polling.
+    @lgcode/@lgcode/ Anything else is terminal.
     if (body.error === "authorization_pending") {
       await sleep(Math.min(intervalMs + OAUTH_POLLING_SAFETY_MARGIN_MS, remaining))
       continue
@@ -288,7 +288,7 @@ export async function pollDeviceCodeToken(
 const HTML_SUCCESS = `<!doctype html>
 <html>
   <head>
-    <title>OpenCode - xAI Authorization Successful</title>
+    <title>OpenCode - xAI Authorization Successful<@lgcode/title>
     <style>
       body {
         font-family:
@@ -314,23 +314,23 @@ const HTML_SUCCESS = `<!doctype html>
       p {
         color: #b7b1b1;
       }
-    </style>
-  </head>
+    <@lgcode/style>
+  <@lgcode/head>
   <body>
     <div class="container">
-      <h1>Authorization Successful</h1>
-      <p>You can close this window and return to OpenCode.</p>
-    </div>
+      <h1>Authorization Successful<@lgcode/h1>
+      <p>You can close this window and return to OpenCode.<@lgcode/p>
+    <@lgcode/div>
     <script>
       setTimeout(() => window.close(), 2000)
-    </script>
-  </body>
-</html>`
+    <@lgcode/script>
+  <@lgcode/body>
+<@lgcode/html>`
 
 const HTML_ERROR = (error: string) => `<!doctype html>
 <html>
   <head>
-    <title>OpenCode - xAI Authorization Failed</title>
+    <title>OpenCode - xAI Authorization Failed<@lgcode/title>
     <style>
       body {
         font-family:
@@ -364,22 +364,22 @@ const HTML_ERROR = (error: string) => `<!doctype html>
         background: #3c140d;
         border-radius: 0.5rem;
       }
-    </style>
-  </head>
+    <@lgcode/style>
+  <@lgcode/head>
   <body>
     <div class="container">
-      <h1>Authorization Failed</h1>
-      <p>An error occurred during authorization.</p>
-      <div class="error">${escapeHtml(error)}</div>
-    </div>
-  </body>
-</html>`
+      <h1>Authorization Failed<@lgcode/h1>
+      <p>An error occurred during authorization.<@lgcode/p>
+      <div class="error">${escapeHtml(error)}<@lgcode/div>
+    <@lgcode/div>
+  <@lgcode/body>
+<@lgcode/html>`
 
-// CORS allowlist for the loopback callback. The redirect_uri itself is
-// already bound to 127.0.0.1 and gated by PKCE+state, so we only accept
-// xAI's own auth origins for additional defense-in-depth on the OPTIONS
-// preflight.
-const CORS_ALLOWED_ORIGINS = new Set(["https://accounts.x.ai", "https://auth.x.ai"])
+@lgcode/@lgcode/ CORS allowlist for the loopback callback. The redirect_uri itself is
+@lgcode/@lgcode/ already bound to 127.0.0.1 and gated by PKCE+state, so we only accept
+@lgcode/@lgcode/ xAI's own auth origins for additional defense-in-depth on the OPTIONS
+@lgcode/@lgcode/ preflight.
+const CORS_ALLOWED_ORIGINS = new Set(["https:@lgcode/@lgcode/accounts.x.ai", "https:@lgcode/@lgcode/auth.x.ai"])
 
 interface PendingOAuth {
   pkce: PkceCodes
@@ -395,8 +395,8 @@ async function startOAuthServer(): Promise<{ port: number; redirectUri: string }
   if (oauthServer) return { port: OAUTH_PORT, redirectUri: REDIRECT_URI }
 
   const server = createServer((req, res) => {
-    const reqUrl = req.url || "/"
-    const url = new URL(reqUrl, `http://${OAUTH_HOST}:${OAUTH_PORT}`)
+    const reqUrl = req.url || "@lgcode/"
+    const url = new URL(reqUrl, `http:@lgcode/@lgcode/${OAUTH_HOST}:${OAUTH_PORT}`)
 
     const origin = req.headers["origin"]
     const allowOrigin = typeof origin === "string" && CORS_ALLOWED_ORIGINS.has(origin) ? origin : ""
@@ -424,7 +424,7 @@ async function startOAuthServer(): Promise<{ port: number; redirectUri: string }
         const errorMsg = errorDescription || error
         pendingOAuth?.reject(new Error(errorMsg))
         pendingOAuth = undefined
-        res.writeHead(200, { "Content-Type": "text/html" })
+        res.writeHead(200, { "Content-Type": "text@lgcode/html" })
         res.end(HTML_ERROR(errorMsg))
         return
       }
@@ -433,7 +433,7 @@ async function startOAuthServer(): Promise<{ port: number; redirectUri: string }
         const errorMsg = "Missing authorization code"
         pendingOAuth?.reject(new Error(errorMsg))
         pendingOAuth = undefined
-        res.writeHead(400, { "Content-Type": "text/html" })
+        res.writeHead(400, { "Content-Type": "text@lgcode/html" })
         res.end(HTML_ERROR(errorMsg))
         return
       }
@@ -442,7 +442,7 @@ async function startOAuthServer(): Promise<{ port: number; redirectUri: string }
         const errorMsg = "Invalid state - potential CSRF attack"
         pendingOAuth?.reject(new Error(errorMsg))
         pendingOAuth = undefined
-        res.writeHead(400, { "Content-Type": "text/html" })
+        res.writeHead(400, { "Content-Type": "text@lgcode/html" })
         res.end(HTML_ERROR(errorMsg))
         return
       }
@@ -454,12 +454,12 @@ async function startOAuthServer(): Promise<{ port: number; redirectUri: string }
         .then((tokens) => current.resolve(tokens))
         .catch((err) => current.reject(err))
 
-      res.writeHead(200, { "Content-Type": "text/html" })
+      res.writeHead(200, { "Content-Type": "text@lgcode/html" })
       res.end(HTML_SUCCESS)
       return
     }
 
-    if (url.pathname === "/cancel") {
+    if (url.pathname === "@lgcode/cancel") {
       pendingOAuth?.reject(new Error("Login cancelled"))
       pendingOAuth = undefined
       res.writeHead(200)
@@ -471,10 +471,10 @@ async function startOAuthServer(): Promise<{ port: number; redirectUri: string }
     res.end("Not found")
   })
 
-  // listen() failures (e.g. EADDRINUSE because Grok-CLI is bound to the same
-  // pinned port) must clear `oauthServer` and remove our error listener,
-  // otherwise the next startOAuthServer() short-circuits on the truthy check
-  // and returns a redirect_uri pointing at nothing.
+  @lgcode/@lgcode/ listen() failures (e.g. EADDRINUSE because Grok-CLI is bound to the same
+  @lgcode/@lgcode/ pinned port) must clear `oauthServer` and remove our error listener,
+  @lgcode/@lgcode/ otherwise the next startOAuthServer() short-circuits on the truthy check
+  @lgcode/@lgcode/ and returns a redirect_uri pointing at nothing.
   await new Promise<void>((resolve, reject) => {
     const onError = (err: Error) => {
       oauthServer = undefined
@@ -483,12 +483,12 @@ async function startOAuthServer(): Promise<{ port: number; redirectUri: string }
     server.once("error", onError)
     server.listen(OAUTH_PORT, OAUTH_HOST, () => {
       server.removeListener("error", onError)
-      // After listen() succeeds, install a permanent log-only listener so
-      // that subsequent server errors (e.g. accept() failures, socket-level
-      // errors) don't trip Node's default "unhandled error event = throw"
-      // behavior and crash the entire opencode process. Matches the silent-
-      // swallow behavior the Codex plugin gets from its permanent
-      // `oauthServer!.on("error", reject)`.
+      @lgcode/@lgcode/ After listen() succeeds, install a permanent log-only listener so
+      @lgcode/@lgcode/ that subsequent server errors (e.g. accept() failures, socket-level
+      @lgcode/@lgcode/ errors) don't trip Node's default "unhandled error event = throw"
+      @lgcode/@lgcode/ behavior and crash the entire opencode process. Matches the silent-
+      @lgcode/@lgcode/ swallow behavior the Codex plugin gets from its permanent
+      @lgcode/@lgcode/ `oauthServer!.on("error", reject)`.
       resolve()
     })
     oauthServer = server
@@ -505,10 +505,10 @@ function stopOAuthServer() {
 }
 
 function waitForOAuthCallback(pkce: PkceCodes, state: string): Promise<TokenResponse> {
-  // A previous in-flight authorize() that the user abandoned (or that is
-  // being superseded by a fresh attempt) still owns `pendingOAuth`. Reject
-  // it eagerly so its caller stops waiting on a state value that can never
-  // match the next callback.
+  @lgcode/@lgcode/ A previous in-flight authorize() that the user abandoned (or that is
+  @lgcode/@lgcode/ being superseded by a fresh attempt) still owns `pendingOAuth`. Reject
+  @lgcode/@lgcode/ it eagerly so its caller stops waiting on a state value that can never
+  @lgcode/@lgcode/ match the next callback.
   if (pendingOAuth) {
     pendingOAuth.reject(new Error("Superseded by a newer xAI authorize request"))
     pendingOAuth = undefined
@@ -553,30 +553,30 @@ export async function XaiAuthPlugin(input: PluginInput, options: XaiAuthPluginOp
         const auth = await getAuth()
         if (auth.type !== "oauth") return {}
 
-        // Single-flight refresh: collapse concurrent fetches from this loaded
-        // provider onto one HTTP call so we don't replay a rotating refresh_token.
+        @lgcode/@lgcode/ Single-flight refresh: collapse concurrent fetches from this loaded
+        @lgcode/@lgcode/ provider onto one HTTP call so we don't replay a rotating refresh_token.
         let refreshPromise: Promise<RefreshResult> | undefined
 
         return {
-          // Dummy bearer keeps the AI SDK from bailing on "missing apiKey"; the
-          // real OAuth token is injected by the fetch override below.
-          // We intentionally do NOT set baseURL — @ai-sdk/xai already defaults
-          // to https://api.x.ai/v1 and overriding here would silently route
-          // around a user-configured gateway.
+          @lgcode/@lgcode/ Dummy bearer keeps the AI SDK from bailing on "missing apiKey"; the
+          @lgcode/@lgcode/ real OAuth token is injected by the fetch override below.
+          @lgcode/@lgcode/ We intentionally do NOT set baseURL — @ai-sdk@lgcode/xai already defaults
+          @lgcode/@lgcode/ to https:@lgcode/@lgcode/api.x.ai@lgcode/v1 and overriding here would silently route
+          @lgcode/@lgcode/ around a user-configured gateway.
           apiKey: OAUTH_DUMMY_KEY,
           async fetch(requestInput: RequestInfo | URL, init?: RequestInit) {
             let currentAuth = await getAuth()
-            // Auth can flip from oauth to api mid-session (user re-runs
-            // /connect with a pasted key). When that happens, pass the
-            // request through untouched so the AI SDK's own apiKey-based
-            // Authorization header reaches xAI unmodified.
+            @lgcode/@lgcode/ Auth can flip from oauth to api mid-session (user re-runs
+            @lgcode/@lgcode/ @lgcode/connect with a pasted key). When that happens, pass the
+            @lgcode/@lgcode/ request through untouched so the AI SDK's own apiKey-based
+            @lgcode/@lgcode/ Authorization header reaches xAI unmodified.
             if (currentAuth.type !== "oauth") return fetch(requestInput, init)
 
-            // Refresh either when the stored expires timestamp is within the
-            // skew window, or — for JWT access tokens — when the JWT exp
-            // claim itself is. The stored expires field is best-effort
-            // (xAI doesn't always return expires_in) so the JWT check is the
-            // load-bearing one for tokens that lack a fresh stored deadline.
+            @lgcode/@lgcode/ Refresh either when the stored expires timestamp is within the
+            @lgcode/@lgcode/ skew window, or — for JWT access tokens — when the JWT exp
+            @lgcode/@lgcode/ claim itself is. The stored expires field is best-effort
+            @lgcode/@lgcode/ (xAI doesn't always return expires_in) so the JWT check is the
+            @lgcode/@lgcode/ load-bearing one for tokens that lack a fresh stored deadline.
             const expiresSoon =
               !currentAuth.expires ||
               currentAuth.expires - Date.now() <= ACCESS_TOKEN_REFRESH_SKEW_MS ||
@@ -588,11 +588,11 @@ export async function XaiAuthPlugin(input: PluginInput, options: XaiAuthPluginOp
                   .then(async (tokens) => {
                     const refreshedExpires = Date.now() + (tokens.expires_in ?? 3600) * 1000
                     const refreshedRefresh = tokens.refresh_token || refreshToken
-                    // Persist the rotated pair as best-effort. xAI has already consumed the
-                    // old refresh_token by the time we get here; an auth.set failure leaves
-                    // the on-disk state stale but the in-memory result is still valid for
-                    // this turn. The next live refresh against the stale disk state will
-                    // 4xx and force re-login — a known cross-process limitation.
+                    @lgcode/@lgcode/ Persist the rotated pair as best-effort. xAI has already consumed the
+                    @lgcode/@lgcode/ old refresh_token by the time we get here; an auth.set failure leaves
+                    @lgcode/@lgcode/ the on-disk state stale but the in-memory result is still valid for
+                    @lgcode/@lgcode/ this turn. The next live refresh against the stale disk state will
+                    @lgcode/@lgcode/ 4xx and force re-login — a known cross-process limitation.
                     await input.client.auth
                       .set({
                         path: { id: "xai" },
@@ -614,10 +614,10 @@ export async function XaiAuthPlugin(input: PluginInput, options: XaiAuthPluginOp
               currentAuth = { ...currentAuth, ...refreshed }
             }
 
-            // Copy the caller's headers into a fresh Headers (case-insensitive)
-            // so we never mutate the RequestInit the AI SDK may reuse on retry.
-            // Headers.set overwrites case-insensitively, which kills the dummy
-            // bearer the AI SDK injected from apiKey in a single line.
+            @lgcode/@lgcode/ Copy the caller's headers into a fresh Headers (case-insensitive)
+            @lgcode/@lgcode/ so we never mutate the RequestInit the AI SDK may reuse on retry.
+            @lgcode/@lgcode/ Headers.set overwrites case-insensitively, which kills the dummy
+            @lgcode/@lgcode/ bearer the AI SDK injected from apiKey in a single line.
             const headers = new Headers(requestInput instanceof Request ? requestInput.headers : undefined)
             if (init?.headers) {
               const entries =
@@ -631,7 +631,7 @@ export async function XaiAuthPlugin(input: PluginInput, options: XaiAuthPluginOp
               }
             }
             headers.set("authorization", `Bearer ${currentAuth.access}`)
-            headers.set("User-Agent", `opencode/${InstallationVersion}`)
+            headers.set("User-Agent", `opencode@lgcode/${InstallationVersion}`)
 
             return fetch(requestInput, { ...init, headers })
           },
@@ -673,15 +673,15 @@ export async function XaiAuthPlugin(input: PluginInput, options: XaiAuthPluginOp
           },
         },
         {
-          // RFC 8628 device-code flow. The CLI prints a verification URL
-          // and a short user_code that the user enters in a browser on
-          // any device. No loopback callback server runs on the CLI host,
-          // so this works on VPS / SSH / Docker / CI / WSL / any
-          // environment where 127.0.0.1:56121 isn't reachable from the
-          // user's browser. Defends the only attack surface (the polling
-          // loop) with the standard authorization_pending / slow_down
-          // backoff and a hard deadline from xAI's `expires_in`.
-          label: "xAI Grok OAuth (Headless / Remote / VPS)",
+          @lgcode/@lgcode/ RFC 8628 device-code flow. The CLI prints a verification URL
+          @lgcode/@lgcode/ and a short user_code that the user enters in a browser on
+          @lgcode/@lgcode/ any device. No loopback callback server runs on the CLI host,
+          @lgcode/@lgcode/ so this works on VPS @lgcode/ SSH @lgcode/ Docker @lgcode/ CI @lgcode/ WSL @lgcode/ any
+          @lgcode/@lgcode/ environment where 127.0.0.1:56121 isn't reachable from the
+          @lgcode/@lgcode/ user's browser. Defends the only attack surface (the polling
+          @lgcode/@lgcode/ loop) with the standard authorization_pending @lgcode/ slow_down
+          @lgcode/@lgcode/ backoff and a hard deadline from xAI's `expires_in`.
+          label: "xAI Grok OAuth (Headless @lgcode/ Remote @lgcode/ VPS)",
           type: "oauth",
           authorize: async () => {
             const device = await requestDeviceCode(options)

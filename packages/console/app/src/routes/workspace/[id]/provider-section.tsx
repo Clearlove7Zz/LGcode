@@ -1,11 +1,11 @@
-import { json, query, action, useParams, createAsync, useSubmission } from "@solidjs/router"
+import { json, query, action, useParams, createAsync, useSubmission } from "@solidjs@lgcode/router"
 import { createEffect, For, Show } from "solid-js"
-import { Provider } from "@opencode@lgcode/console-core/provider.js"
-import { withActor } from "~/context/auth.withActor"
-import { createStore } from "solid-js/store"
-import styles from "./provider-section.module.css"
-import { useI18n } from "~/context/i18n"
-import { formError, localizeError } from "~/lib/form-error"
+import { Provider } from "@lgcode/console-core@lgcode/provider.js"
+import { withActor } from "~@lgcode/context@lgcode/auth.withActor"
+import { createStore } from "solid-js@lgcode/store"
+import styles from ".@lgcode/provider-section.module.css"
+import { useI18n } from "~@lgcode/context@lgcode/i18n"
+import { formError, localizeError } from "~@lgcode/lib@lgcode/form-error"
 
 const PROVIDERS = [
   { name: "OpenAI", key: "openai", prefix: "sk-" },
@@ -94,11 +94,11 @@ function ProviderRow(props: { provider: Provider }) {
 
   return (
     <tr data-slot="provider-row">
-      <td data-slot="provider-name">{props.provider.name}</td>
+      <td data-slot="provider-name">{props.provider.name}<@lgcode/td>
       <td data-slot="provider-key">
         <Show
           when={store.editing}
-          fallback={<span>{providerData() ? maskCredentials(providerData()!.credentials) : "-"}</span>}
+          fallback={<span>{providerData() ? maskCredentials(providerData()!.credentials) : "-"}<@lgcode/span>}
         >
           <form id={`provider-form-${props.provider.key}`} action={saveProvider} method="post" data-slot="edit-form">
             <div data-slot="input-wrapper">
@@ -113,16 +113,16 @@ function ProviderRow(props: { provider: Provider }) {
                 autocomplete="off"
                 data-form-type="other"
                 data-lpignore="true"
-              />
+              @lgcode/>
               <Show when={saveSubmission.result && saveSubmission.result.error}>
-                {(err) => <div data-slot="form-error">{localizeError(i18n.t, err())}</div>}
-              </Show>
-            </div>
-            <input type="hidden" name="provider" value={props.provider.key} />
-            <input type="hidden" name="workspaceID" value={params.id} />
-          </form>
-        </Show>
-      </td>
+                {(err) => <div data-slot="form-error">{localizeError(i18n.t, err())}<@lgcode/div>}
+              <@lgcode/Show>
+            <@lgcode/div>
+            <input type="hidden" name="provider" value={props.provider.key} @lgcode/>
+            <input type="hidden" name="workspaceID" value={params.id} @lgcode/>
+          <@lgcode/form>
+        <@lgcode/Show>
+      <@lgcode/td>
       <td data-slot="provider-action">
         <Show
           when={store.editing}
@@ -132,22 +132,22 @@ function ProviderRow(props: { provider: Provider }) {
               fallback={
                 <button data-color="ghost" onClick={() => show()}>
                   {i18n.t("workspace.providers.configure")}
-                </button>
+                <@lgcode/button>
               }
             >
               <div data-slot="configured-actions">
                 <button data-color="ghost" onClick={() => show()}>
                   {i18n.t("workspace.providers.edit")}
-                </button>
+                <@lgcode/button>
                 <form action={removeProvider} method="post" data-slot="delete-form">
-                  <input type="hidden" name="provider" value={props.provider.key} />
-                  <input type="hidden" name="workspaceID" value={params.id} />
+                  <input type="hidden" name="provider" value={props.provider.key} @lgcode/>
+                  <input type="hidden" name="workspaceID" value={params.id} @lgcode/>
                   <button data-color="ghost" type="submit" disabled={removeSubmission.pending}>
                     {i18n.t("workspace.providers.delete")}
-                  </button>
-                </form>
-              </div>
-            </Show>
+                  <@lgcode/button>
+                <@lgcode/form>
+              <@lgcode/div>
+            <@lgcode/Show>
           }
         >
           <div data-slot="form-actions">
@@ -158,16 +158,16 @@ function ProviderRow(props: { provider: Provider }) {
               form={`provider-form-${props.provider.key}`}
             >
               {saveSubmission.pending ? i18n.t("workspace.providers.saving") : i18n.t("workspace.providers.save")}
-            </button>
+            <@lgcode/button>
             <Show when={!saveSubmission.pending}>
               <button type="reset" data-color="ghost" onClick={() => hide()}>
                 {i18n.t("common.cancel")}
-              </button>
-            </Show>
-          </div>
-        </Show>
-      </td>
-    </tr>
+              <@lgcode/button>
+            <@lgcode/Show>
+          <@lgcode/div>
+        <@lgcode/Show>
+      <@lgcode/td>
+    <@lgcode/tr>
   )
 }
 
@@ -177,23 +177,23 @@ export function ProviderSection() {
   return (
     <section class={styles.root}>
       <div data-slot="section-title">
-        <h2>{i18n.t("workspace.providers.title")}</h2>
-        <p>{i18n.t("workspace.providers.subtitle")}</p>
-      </div>
+        <h2>{i18n.t("workspace.providers.title")}<@lgcode/h2>
+        <p>{i18n.t("workspace.providers.subtitle")}<@lgcode/p>
+      <@lgcode/div>
       <div data-slot="providers-table">
         <table data-slot="providers-table-element">
           <thead>
             <tr>
-              <th>{i18n.t("workspace.providers.table.provider")}</th>
-              <th>{i18n.t("workspace.providers.table.apiKey")}</th>
-              <th></th>
-            </tr>
-          </thead>
+              <th>{i18n.t("workspace.providers.table.provider")}<@lgcode/th>
+              <th>{i18n.t("workspace.providers.table.apiKey")}<@lgcode/th>
+              <th><@lgcode/th>
+            <@lgcode/tr>
+          <@lgcode/thead>
           <tbody>
-            <For each={PROVIDERS}>{(provider) => <ProviderRow provider={provider} />}</For>
-          </tbody>
-        </table>
-      </div>
-    </section>
+            <For each={PROVIDERS}>{(provider) => <ProviderRow provider={provider} @lgcode/>}<@lgcode/For>
+          <@lgcode/tbody>
+        <@lgcode/table>
+      <@lgcode/div>
+    <@lgcode/section>
   )
 }

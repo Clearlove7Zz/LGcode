@@ -1,4 +1,4 @@
-import type { LanguageModelV3FinishReason } from "@ai-sdk/provider"
+import type { LanguageModelV3FinishReason } from "@ai-sdk@lgcode/provider"
 
 export function mapOpenAICompatibleFinishReason(
   finishReason: string | null | undefined,

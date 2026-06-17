@@ -1,7 +1,7 @@
-import { TextAttributes } from "@opentui/core"
-import { useTheme } from "../context/theme"
-import { useDialog } from "./dialog"
-import { useBindings, useCommandShortcut } from "../keymap"
+import { TextAttributes } from "@opentui@lgcode/core"
+import { useTheme } from "..@lgcode/context@lgcode/theme"
+import { useDialog } from ".@lgcode/dialog"
+import { useBindings, useCommandShortcut } from "..@lgcode/keymap"
 
 export function DialogHelp() {
   const dialog = useDialog()
@@ -20,21 +20,21 @@ export function DialogHelp() {
       <box flexDirection="row" justifyContent="space-between">
         <text attributes={TextAttributes.BOLD} fg={theme.text}>
           Help
-        </text>
+        <@lgcode/text>
         <text fg={theme.textMuted} onMouseUp={() => dialog.clear()}>
-          esc/enter
-        </text>
-      </box>
+          esc@lgcode/enter
+        <@lgcode/text>
+      <@lgcode/box>
       <box paddingBottom={1}>
         <text fg={theme.textMuted}>
           Press {commandShortcut()} to see all available actions and commands in any context.
-        </text>
-      </box>
+        <@lgcode/text>
+      <@lgcode/box>
       <box flexDirection="row" justifyContent="flex-end" paddingBottom={1}>
         <box paddingLeft={3} paddingRight={3} backgroundColor={theme.primary} onMouseUp={() => dialog.clear()}>
-          <text fg={theme.selectedListItemText}>ok</text>
-        </box>
-      </box>
-    </box>
+          <text fg={theme.selectedListItemText}>ok<@lgcode/text>
+        <@lgcode/box>
+      <@lgcode/box>
+    <@lgcode/box>
   )
 }

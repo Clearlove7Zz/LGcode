@@ -1,19 +1,19 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import * as TestClock from "effect/testing/TestClock"
-import { Location } from "@opencode@lgcode/core/location"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { Global } from "@opencode@lgcode/core/global"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { SystemContext } from "@opencode@lgcode/core/system-context"
-import { SystemContextBuiltIns } from "@opencode@lgcode/core/system-context/builtins"
-import { SystemContextRegistry } from "@opencode@lgcode/core/system-context/registry"
-import { location } from "../fixture/location"
-import { testEffect } from "../lib/effect"
+import * as TestClock from "effect@lgcode/testing@lgcode/TestClock"
+import { Location } from "@lgcode/core@lgcode/location"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { Global } from "@lgcode/core@lgcode/global"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { SystemContext } from "@lgcode/core@lgcode/system-context"
+import { SystemContextBuiltIns } from "@lgcode/core@lgcode/system-context@lgcode/builtins"
+import { SystemContextRegistry } from "@lgcode/core@lgcode/system-context@lgcode/registry"
+import { location } from "..@lgcode/fixture@lgcode/location"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
-const directory = AbsolutePath.make(FSUtil.resolve("/repo/packages/core"))
-const projectDirectory = AbsolutePath.make(FSUtil.resolve("/repo"))
-const instructionFile = FSUtil.resolve("/repo/AGENTS.md")
+const directory = AbsolutePath.make(FSUtil.resolve("@lgcode/repo@lgcode/packages@lgcode/core"))
+const projectDirectory = AbsolutePath.make(FSUtil.resolve("@lgcode/repo"))
+const instructionFile = FSUtil.resolve("@lgcode/repo@lgcode/AGENTS.md")
 const timestamp = Date.parse("2026-06-03T12:00:00.000Z")
 const localDate = (time: number) => new Date(time).toDateString()
 const locationLayer = Layer.succeed(
@@ -21,14 +21,14 @@ const locationLayer = Layer.succeed(
   Location.Service.of(
     location(
       { directory },
-      { projectDirectory, vcs: { type: "git", store: AbsolutePath.make(FSUtil.resolve("/repo/.git")) } },
+      { projectDirectory, vcs: { type: "git", store: AbsolutePath.make(FSUtil.resolve("@lgcode/repo@lgcode/.git")) } },
     ),
   ),
 )
 const it = testEffect(
   SystemContextBuiltIns.locationLayer.pipe(
     Layer.provide(FSUtil.defaultLayer),
-    Layer.provide(Global.layerWith({ config: "/global" })),
+    Layer.provide(Global.layerWith({ config: "@lgcode/global" })),
     Layer.provide(locationLayer),
   ),
 )
@@ -47,7 +47,7 @@ const instructionFS = Layer.effect(
 const itWithInstructions = testEffect(
   SystemContextBuiltIns.locationLayer.pipe(
     Layer.provide(instructionFS),
-    Layer.provide(Global.layerWith({ config: "/global" })),
+    Layer.provide(Global.layerWith({ config: "@lgcode/global" })),
     Layer.provide(locationLayer),
   ),
 )
@@ -67,7 +67,7 @@ describe("SystemContextBuiltIns", () => {
           `  Workspace root folder: ${projectDirectory}`,
           "  Is directory a git repo: yes",
           `  Platform: ${process.platform}`,
-          "</env>",
+          "<@lgcode/env>",
           "",
           `Today's date: ${localDate(timestamp)}`,
         ].join("\n"),
@@ -115,7 +115,7 @@ describe("SystemContextBuiltIns", () => {
           `  Workspace root folder: ${projectDirectory}`,
           "  Is directory a git repo: yes",
           `  Platform: ${process.platform}`,
-          "</env>",
+          "<@lgcode/env>",
           "",
           `Today's date: ${localDate(timestamp)}`,
           "",

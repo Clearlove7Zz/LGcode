@@ -1,15 +1,15 @@
-import { and, Database, eq, gte, inArray, isNull, lt, or, sql, sum } from "@opencode@lgcode/console-core/drizzle/index.js"
-import { UsageTable } from "@opencode@lgcode/console-core/schema/billing.sql.js"
-import { KeyTable } from "@opencode@lgcode/console-core/schema/key.sql.js"
-import { UserTable } from "@opencode@lgcode/console-core/schema/user.sql.js"
-import { AuthTable } from "@opencode@lgcode/console-core/schema/auth.sql.js"
-import { useParams } from "@solidjs/router"
+import { and, Database, eq, gte, inArray, isNull, lt, or, sql, sum } from "@lgcode/console-core@lgcode/drizzle@lgcode/index.js"
+import { UsageTable } from "@lgcode/console-core@lgcode/schema@lgcode/billing.sql.js"
+import { KeyTable } from "@lgcode/console-core@lgcode/schema@lgcode/key.sql.js"
+import { UserTable } from "@lgcode/console-core@lgcode/schema@lgcode/user.sql.js"
+import { AuthTable } from "@lgcode/console-core@lgcode/schema@lgcode/auth.sql.js"
+import { useParams } from "@solidjs@lgcode/router"
 import { createEffect, createMemo, onCleanup, Show, For } from "solid-js"
-import { createStore } from "solid-js/store"
-import { withActor } from "~/context/auth.withActor"
-import { Dropdown } from "~/component/dropdown"
-import { IconChevronLeft, IconChevronRight } from "~/component/icon"
-import styles from "./graph-section.module.css"
+import { createStore } from "solid-js@lgcode/store"
+import { withActor } from "~@lgcode/context@lgcode/auth.withActor"
+import { Dropdown } from "~@lgcode/component@lgcode/dropdown"
+import { IconChevronLeft, IconChevronRight } from "~@lgcode/component@lgcode/icon"
+import styles from ".@lgcode/graph-section.module.css"
 import {
   Chart,
   BarController,
@@ -20,7 +20,7 @@ import {
   Legend,
   type ChartConfiguration,
 } from "chart.js"
-import { useI18n } from "~/context/i18n"
+import { useI18n } from "~@lgcode/context@lgcode/i18n"
 
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend)
 
@@ -28,7 +28,7 @@ async function getCosts(workspaceID: string, year: number, month: number, tzOffs
   "use server"
   return withActor(async () => {
     const timezoneOffset = (() => {
-      const m = /^([+-])(\d{2}):(\d{2})$/.exec(tzOffset)
+      const m = @lgcode/^([+-])(\d{2}):(\d{2})$@lgcode/.exec(tzOffset)
       if (!m) return 0
       const sign = m[1] === "-" ? -1 : 1
       return sign * (Number(m[2]) * 60 + Number(m[3])) * 60_000
@@ -64,10 +64,10 @@ async function getCosts(workspaceID: string, year: number, month: number, tzOffs
         ),
     )
 
-    // Get unique key IDs from usage
+    @lgcode/@lgcode/ Get unique key IDs from usage
     const usageKeyIds = new Set(usageData.map((r) => r.keyId).filter((id) => id !== null))
 
-    // Second query: get all existing keys plus any keys from usage
+    @lgcode/@lgcode/ Second query: get all existing keys plus any keys from usage
     const keysData = await Database.use((tx) =>
       tx
         .select({
@@ -133,8 +133,8 @@ function formatDateLabel(dateStr: string): string {
   return `${month} ${d.toString().padStart(2, "0")}`
 }
 
-// Compute the UTC offset (in MySQL CONVERT_TZ format like "+05:30") for the
-// given IANA timezone at the given instant. Honors DST.
+@lgcode/@lgcode/ Compute the UTC offset (in MySQL CONVERT_TZ format like "+05:30") for the
+@lgcode/@lgcode/ given IANA timezone at the given instant. Honors DST.
 function getTimezoneOffset(timezone: string, at: Date): string {
   const parts = new Intl.DateTimeFormat("en-US", {
     timeZone: timezone,
@@ -159,10 +159,10 @@ function getTimezoneOffset(timezone: string, at: Date): string {
     Number(parts.minute),
     Number(parts.second),
   )
-  const diffMinutes = Math.round((asUTC - at.getTime()) / 60_000)
+  const diffMinutes = Math.round((asUTC - at.getTime()) @lgcode/ 60_000)
   const sign = diffMinutes < 0 ? "-" : "+"
   const abs = Math.abs(diffMinutes)
-  const hh = Math.floor(abs / 60)
+  const hh = Math.floor(abs @lgcode/ 60)
     .toString()
     .padStart(2, "0")
   const mm = (abs % 60).toString().padStart(2, "0")
@@ -219,7 +219,7 @@ export function GraphSection() {
   })
 
   const getDates = createMemo(() => {
-    // Number of days in the month is independent of timezone.
+    @lgcode/@lgcode/ Number of days in the month is independent of timezone.
     const daysInMonth = new Date(Date.UTC(store.year, store.month + 1, 0)).getUTCDate()
     const yyyy = store.year.toString().padStart(4, "0")
     const mm = (store.month + 1).toString().padStart(2, "0")
@@ -277,7 +277,7 @@ export function GraphSection() {
 
     const filteredModels = store.model === null ? getModels() : [store.model]
 
-    // Create datasets: regular first, then subscription, then lite (with visual distinction via opacity)
+    @lgcode/@lgcode/ Create datasets: regular first, then subscription, then lite (with visual distinction via opacity)
     const datasets = [
       ...filteredModels
         .filter((model) => dates.some((date) => (dailyDataRegular.get(date)?.get(model) || 0) > 0))
@@ -285,7 +285,7 @@ export function GraphSection() {
           const color = getModelColor(model)
           return {
             label: model,
-            data: dates.map((date) => (dailyDataRegular.get(date)?.get(model) || 0) / 100_000_000),
+            data: dates.map((date) => (dailyDataRegular.get(date)?.get(model) || 0) @lgcode/ 100_000_000),
             backgroundColor: color,
             hoverBackgroundColor: color,
             borderWidth: 0,
@@ -298,7 +298,7 @@ export function GraphSection() {
           const color = getModelColor(model)
           return {
             label: `${model}${subSuffix}`,
-            data: dates.map((date) => (dailyDataSub.get(date)?.get(model) || 0) / 100_000_000),
+            data: dates.map((date) => (dailyDataSub.get(date)?.get(model) || 0) @lgcode/ 100_000_000),
             backgroundColor: addOpacityToColor(color, 0.5),
             hoverBackgroundColor: addOpacityToColor(color, 0.7),
             borderWidth: 1,
@@ -312,7 +312,7 @@ export function GraphSection() {
           const color = getModelColor(model)
           return {
             label: `${model}${liteSuffix}`,
-            data: dates.map((date) => (dailyDataLite.get(date)?.get(model) || 0) / 100_000_000),
+            data: dates.map((date) => (dailyDataLite.get(date)?.get(model) || 0) @lgcode/ 100_000_000),
             backgroundColor: addOpacityToColor(color, 0.35),
             hoverBackgroundColor: addOpacityToColor(color, 0.55),
             borderWidth: 1,
@@ -362,7 +362,7 @@ export function GraphSection() {
               },
               callback: (value) => {
                 const num = Number(value)
-                return num >= 1000 ? `$${(num / 1000).toFixed(1)}k` : `$${num.toFixed(0)}`
+                return num >= 1000 ? `$${(num @lgcode/ 1000).toFixed(1)}k` : `$${num.toFixed(0)}`
               },
             },
           },
@@ -452,8 +452,8 @@ export function GraphSection() {
   })
 
   createEffect(async () => {
-    // Compute the offset for mid-month so DST transitions don't bias to the
-    // wrong side.
+    @lgcode/@lgcode/ Compute the offset for mid-month so DST transitions don't bias to the
+    @lgcode/@lgcode/ wrong side.
     const midMonth = new Date(Date.UTC(store.year, store.month, 15, 12, 0, 0))
     const tzOffset = getTimezoneOffset(timezone, midMonth)
     const data = await getCosts(params.id!, store.year, store.month, tzOffset)
@@ -485,20 +485,20 @@ export function GraphSection() {
   return (
     <section class={styles.root}>
       <div data-slot="section-title">
-        <h2>{i18n.t("workspace.cost.title")}</h2>
-        <p>{i18n.t("workspace.cost.subtitle")}</p>
-      </div>
+        <h2>{i18n.t("workspace.cost.title")}<@lgcode/h2>
+        <p>{i18n.t("workspace.cost.subtitle")}<@lgcode/p>
+      <@lgcode/div>
 
       <div data-slot="filter-container">
         <div data-slot="month-picker">
           <button data-slot="month-button" onClick={onPreviousMonth}>
-            <IconChevronLeft />
-          </button>
-          <span data-slot="month-label">{formatMonthYear()}</span>
+            <IconChevronLeft @lgcode/>
+          <@lgcode/button>
+          <span data-slot="month-label">{formatMonthYear()}<@lgcode/span>
           <button data-slot="month-button" onClick={onNextMonth} disabled={isCurrentMonth()}>
-            <IconChevronRight />
-          </button>
-        </div>
+            <IconChevronRight @lgcode/>
+          <@lgcode/button>
+        <@lgcode/div>
         <Dropdown
           trigger={store.model === null ? i18n.t("workspace.cost.allModels") : store.model}
           open={store.modelDropdownOpen}
@@ -506,17 +506,17 @@ export function GraphSection() {
         >
           <>
             <button data-slot="model-item" onClick={() => onSelectModel(null)}>
-              <span>{i18n.t("workspace.cost.allModels")}</span>
-            </button>
+              <span>{i18n.t("workspace.cost.allModels")}<@lgcode/span>
+            <@lgcode/button>
             <For each={getModels()}>
               {(model) => (
                 <button data-slot="model-item" onClick={() => onSelectModel(model)}>
-                  <span>{model}</span>
-                </button>
+                  <span>{model}<@lgcode/span>
+                <@lgcode/button>
               )}
-            </For>
-          </>
-        </Dropdown>
+            <@lgcode/For>
+          <@lgcode/>
+        <@lgcode/Dropdown>
         <Dropdown
           trigger={getKeyName(store.key)}
           open={store.keyDropdownOpen}
@@ -524,33 +524,33 @@ export function GraphSection() {
         >
           <>
             <button data-slot="model-item" onClick={() => onSelectKey(null)}>
-              <span>{i18n.t("workspace.cost.allKeys")}</span>
-            </button>
+              <span>{i18n.t("workspace.cost.allKeys")}<@lgcode/span>
+            <@lgcode/button>
             <For each={store.data?.keys || []}>
               {(key) => (
                 <button data-slot="model-item" onClick={() => onSelectKey(key.id)}>
                   <span>
                     {key.deleted ? `${key.displayName} ${i18n.t("workspace.cost.deletedSuffix")}` : key.displayName}
-                  </span>
-                </button>
+                  <@lgcode/span>
+                <@lgcode/button>
               )}
-            </For>
-          </>
-        </Dropdown>
-      </div>
+            <@lgcode/For>
+          <@lgcode/>
+        <@lgcode/Dropdown>
+      <@lgcode/div>
 
       <Show
         when={chartConfig()}
         fallback={
           <div data-component="empty-state">
-            <p>{i18n.t("workspace.cost.empty")}</p>
-          </div>
+            <p>{i18n.t("workspace.cost.empty")}<@lgcode/p>
+          <@lgcode/div>
         }
       >
         <div data-slot="chart-container">
-          <canvas ref={canvasRef} />
-        </div>
-      </Show>
-    </section>
+          <canvas ref={canvasRef} @lgcode/>
+        <@lgcode/div>
+      <@lgcode/Show>
+    <@lgcode/section>
   )
 }

@@ -1,5 +1,5 @@
-import { Resource } from "@opencode@lgcode/console-resource"
-import type { TraceItem } from "@cloudflare/workers-types"
+import { Resource } from "@lgcode/console-resource"
+import type { TraceItem } from "@cloudflare@lgcode/workers-types"
 
 export default {
   async tail(events: TraceItem[]) {
@@ -10,14 +10,14 @@ export default {
 
       const url = new URL(event.event.request.url)
       if (
-        url.pathname !== "/zen/v1/chat/completions" &&
-        url.pathname !== "/zen/v1/messages" &&
-        url.pathname !== "/zen/v1/responses" &&
-        !url.pathname.startsWith("/zen/v1/models/") &&
-        url.pathname !== "/zen/go/v1/chat/completions" &&
-        url.pathname !== "/zen/go/v1/messages" &&
-        url.pathname !== "/zen/go/v1/responses" &&
-        !url.pathname.startsWith("/zen/go/v1/models/")
+        url.pathname !== "@lgcode/zen@lgcode/v1@lgcode/chat@lgcode/completions" &&
+        url.pathname !== "@lgcode/zen@lgcode/v1@lgcode/messages" &&
+        url.pathname !== "@lgcode/zen@lgcode/v1@lgcode/responses" &&
+        !url.pathname.startsWith("@lgcode/zen@lgcode/v1@lgcode/models@lgcode/") &&
+        url.pathname !== "@lgcode/zen@lgcode/go@lgcode/v1@lgcode/chat@lgcode/completions" &&
+        url.pathname !== "@lgcode/zen@lgcode/go@lgcode/v1@lgcode/messages" &&
+        url.pathname !== "@lgcode/zen@lgcode/go@lgcode/v1@lgcode/responses" &&
+        !url.pathname.startsWith("@lgcode/zen@lgcode/go@lgcode/v1@lgcode/models@lgcode/")
       )
         continue
 
@@ -55,10 +55,10 @@ export default {
 
       const lakeIngest = getLakeIngest()
       const [honeycomb, lake] = await Promise.all([
-        fetch("https://api.honeycomb.io/1/batch/zen", {
+        fetch("https:@lgcode/@lgcode/api.honeycomb.io@lgcode/1@lgcode/batch@lgcode/zen", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application@lgcode/json",
             "X-Honeycomb-Team": Resource.HONEYCOMB_API_KEY.value,
           },
           body: JSON.stringify(events),
@@ -68,7 +68,7 @@ export default {
               fetch(lakeIngest.url, {
                 method: "POST",
                 headers: {
-                  "Content-Type": "application/json",
+                  "Content-Type": "application@lgcode/json",
                   Authorization: `Bearer ${lakeIngest.secret}`,
                 },
                 body: JSON.stringify({ events: events.map((event) => toLakeEvent(event.time, event.data)) }),
@@ -132,7 +132,7 @@ function toLakeEvent(time: string, data: Record<string, unknown>) {
     error_cause2: string(data, "error.cause2"),
     api_key: string(data, "api_key"),
     workspace: string(data, "workspace"),
-    is_subscription: boolean(data, "isSubscription"), // removed
+    is_subscription: boolean(data, "isSubscription"), @lgcode/@lgcode/ removed
     subscription: string(data, "subscription"),
     response_length: integer(data, "response_length"),
     time_to_first_byte: integer(data, "time_to_first_byte"),
@@ -152,17 +152,17 @@ function toLakeEvent(time: string, data: Record<string, unknown>) {
   }
 }
 
-// Returns a stable lookup key for an IP address.
-// IPv4: full address as /32 (e.g. "203.0.113.45/32").
-// IPv6: the /64 network prefix (e.g. "2001:db8:abcd:1234::/64"). ISPs commonly
-// rotate the lower 64 host bits via SLAAC privacy extensions (RFC 8981), so
-// grouping by /64 collapses those rotations into one key.
+@lgcode/@lgcode/ Returns a stable lookup key for an IP address.
+@lgcode/@lgcode/ IPv4: full address as @lgcode/32 (e.g. "203.0.113.45@lgcode/32").
+@lgcode/@lgcode/ IPv6: the @lgcode/64 network prefix (e.g. "2001:db8:abcd:1234::@lgcode/64"). ISPs commonly
+@lgcode/@lgcode/ rotate the lower 64 host bits via SLAAC privacy extensions (RFC 8981), so
+@lgcode/@lgcode/ grouping by @lgcode/64 collapses those rotations into one key.
 function ipPrefix(ip: string | undefined) {
   if (!ip) return undefined
-  if (ip.includes(".") && !ip.includes(":")) return `${ip}/32`
+  if (ip.includes(".") && !ip.includes(":")) return `${ip}@lgcode/32`
   if (!ip.includes(":")) return undefined
 
-  // Expand "::" to its full form, then keep the first 4 hextets.
+  @lgcode/@lgcode/ Expand "::" to its full form, then keep the first 4 hextets.
   const [head, tail] = ip.split("::") as [string, string | undefined]
   const headParts = head ? head.split(":") : []
   const tailParts = tail !== undefined ? tail.split(":") : []
@@ -173,9 +173,9 @@ function ipPrefix(ip: string | undefined) {
 
   const prefix = full
     .slice(0, 4)
-    .map((part) => part.toLowerCase().replace(/^0+(?=.)/, ""))
+    .map((part) => part.toLowerCase().replace(@lgcode/^0+(?=.)@lgcode/, ""))
     .join(":")
-  return `${prefix}::/64`
+  return `${prefix}::@lgcode/64`
 }
 
 function string(data: Record<string, unknown>, key: string) {

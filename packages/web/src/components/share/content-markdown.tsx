@@ -1,17 +1,17 @@
 import { marked } from "marked"
 import { codeToHtml } from "shiki"
 import markedShiki from "marked-shiki"
-import { createOverflow, useShareMessages } from "./common"
-import { CopyButton } from "./copy-button"
+import { createOverflow, useShareMessages } from ".@lgcode/common"
+import { CopyButton } from ".@lgcode/copy-button"
 import { createResource, createSignal } from "solid-js"
-import style from "./content-markdown.module.css"
+import style from ".@lgcode/content-markdown.module.css"
 
 const markedWithShiki = marked.use(
   {
     renderer: {
       link({ href, title, text }) {
         const titleAttr = title ? ` title="${title}"` : ""
-        return `<a href="${href}"${titleAttr} target="_blank" rel="noopener noreferrer">${text}</a>`
+        return `<a href="${href}"${titleAttr} target="_blank" rel="noopener noreferrer">${text}<@lgcode/a>`
       },
     },
   },
@@ -50,7 +50,7 @@ export function ContentMarkdown(props: Props) {
       data-highlight={props.highlight === true ? true : undefined}
       data-expanded={expanded() || props.expand === true ? true : undefined}
     >
-      <div data-slot="markdown" ref={overflow.ref} innerHTML={html()} />
+      <div data-slot="markdown" ref={overflow.ref} innerHTML={html()} @lgcode/>
 
       {!props.expand && overflow.status && (
         <button
@@ -60,15 +60,15 @@ export function ContentMarkdown(props: Props) {
           onClick={() => setExpanded((e) => !e)}
         >
           {expanded() ? messages.show_less : messages.show_more}
-        </button>
+        <@lgcode/button>
       )}
-      <CopyButton text={props.text} />
-    </div>
+      <CopyButton text={props.text} @lgcode/>
+    <@lgcode/div>
   )
 }
 
 function strip(text: string): string {
-  const wrappedRe = /^\s*<([A-Za-z]\w*)>\s*([\s\S]*?)\s*<\/\1>\s*$/
+  const wrappedRe = @lgcode/^\s*<([A-Za-z]\w*)>\s*([\s\S]*?)\s*<\@lgcode/\1>\s*$@lgcode/
   const match = text.match(wrappedRe)
   return match ? match[2] : text
 }

@@ -1,4 +1,4 @@
 import path from "path"
-import { Global } from "@opencode@lgcode/core/global"
+import { Global } from "@lgcode/core@lgcode/global"
 
 export const TRUNCATION_DIR = path.join(Global.Path.data, "tool-output")

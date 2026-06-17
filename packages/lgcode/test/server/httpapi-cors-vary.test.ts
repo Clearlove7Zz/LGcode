@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, test } from "bun:test"
-import { Server } from "../../src/server/server"
-import { resetDatabase } from "../fixture/db"
-import { disposeAllInstances } from "../fixture/fixture"
+import { Server } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/server"
+import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
+import { disposeAllInstances } from "..@lgcode/fixture@lgcode/fixture"
 
 afterEach(async () => {
   await disposeAllInstances()
@@ -13,31 +13,31 @@ function app() {
 }
 
 const PREFLIGHT_HEADERS = {
-  origin: "http://localhost:3000",
+  origin: "http:@lgcode/@lgcode/localhost:3000",
   "access-control-request-method": "POST",
   "access-control-request-headers": "content-type, x-opencode-directory",
 }
 
-// effect-smol's HttpMiddleware.cors overwrites `Vary: Origin` with
-// `Vary: Access-Control-Request-Headers` on OPTIONS preflight responses
-// (the two share the same record key during the spread). With dynamic
-// origin echoing, missing Vary: Origin lets shared caches serve a preflight
-// cached for one origin against a different origin. corsVaryFixLayer
-// restores the merged form.
+@lgcode/@lgcode/ effect-smol's HttpMiddleware.cors overwrites `Vary: Origin` with
+@lgcode/@lgcode/ `Vary: Access-Control-Request-Headers` on OPTIONS preflight responses
+@lgcode/@lgcode/ (the two share the same record key during the spread). With dynamic
+@lgcode/@lgcode/ origin echoing, missing Vary: Origin lets shared caches serve a preflight
+@lgcode/@lgcode/ cached for one origin against a different origin. corsVaryFixLayer
+@lgcode/@lgcode/ restores the merged form.
 describe("CORS preflight Vary header", () => {
   test("HTTP API backend preflight Vary contains Origin", async () => {
-    const response = await app().request("/global/config", {
+    const response = await app().request("@lgcode/global@lgcode/config", {
       method: "OPTIONS",
       headers: PREFLIGHT_HEADERS,
     })
 
     expect([200, 204]).toContain(response.status)
-    expect(response.headers.get("access-control-allow-origin")).toBe("http://localhost:3000")
+    expect(response.headers.get("access-control-allow-origin")).toBe("http:@lgcode/@lgcode/localhost:3000")
     expect((response.headers.get("vary") ?? "").toLowerCase()).toContain("origin")
   })
 
   test("HTTP API backend preflight Vary still preserves Access-Control-Request-Headers", async () => {
-    const response = await app().request("/global/config", {
+    const response = await app().request("@lgcode/global@lgcode/config", {
       method: "OPTIONS",
       headers: PREFLIGHT_HEADERS,
     })
@@ -48,7 +48,7 @@ describe("CORS preflight Vary header", () => {
   })
 
   test("HTTP API backend does not duplicate Origin in Vary", async () => {
-    const response = await app().request("/global/config", {
+    const response = await app().request("@lgcode/global@lgcode/config", {
       method: "OPTIONS",
       headers: PREFLIGHT_HEADERS,
     })

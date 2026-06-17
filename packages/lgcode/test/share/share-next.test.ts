@@ -1,23 +1,23 @@
 import { beforeEach, describe, expect } from "bun:test"
 import { Effect, Exit, Layer, Option } from "effect"
-import { HttpClient, HttpClientRequest, HttpClientResponse } from "effect/unstable/http"
-import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
-import { httpClient } from "@opencode@lgcode/core/effect/layer-node-platform"
-import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
-import { SessionProjector } from "@opencode@lgcode/core/session/projector"
+import { HttpClient, HttpClientRequest, HttpClientResponse } from "effect@lgcode/unstable@lgcode/http"
+import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
+import { httpClient } from "@lgcode/core@lgcode/effect@lgcode/layer-node-platform"
+import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
+import { SessionProjector } from "@lgcode/core@lgcode/session@lgcode/projector"
 
-import { AccessToken, AccountID, OrgID, RefreshToken } from "../../src/account/schema"
-import { AccountRepo } from "../../src/account/repo"
-import { EventV2Bridge } from "../../src/event-v2-bridge"
-import { Session } from "@/session/session"
-import type { SessionID } from "../../src/session/schema"
-import { ShareNext } from "@/share/share-next"
-import { SessionShareTable } from "@opencode@lgcode/core/share/sql"
-import { Database } from "@opencode@lgcode/core/database/database"
+import { AccessToken, AccountID, OrgID, RefreshToken } from "..@lgcode/..@lgcode/src@lgcode/account@lgcode/schema"
+import { AccountRepo } from "..@lgcode/..@lgcode/src@lgcode/account@lgcode/repo"
+import { EventV2Bridge } from "..@lgcode/..@lgcode/src@lgcode/event-v2-bridge"
+import { Session } from "@@lgcode/session@lgcode/session"
+import type { SessionID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
+import { ShareNext } from "@@lgcode/share@lgcode/share-next"
+import { SessionShareTable } from "@lgcode/core@lgcode/share@lgcode/sql"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
 import { eq } from "drizzle-orm"
-import { provideTmpdirInstance } from "../fixture/fixture"
-import { resetDatabase } from "../fixture/db"
-import { pollWithTimeout, testEffect } from "../lib/effect"
+import { provideTmpdirInstance } from "..@lgcode/fixture@lgcode/fixture"
+import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
+import { pollWithTimeout, testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const env = LayerNode.buildLayer(CrossSpawnSpawner.node)
 const it = testEffect(env)
@@ -27,7 +27,7 @@ const json = (req: Parameters<typeof HttpClientResponse.fromWeb>[0], body: unkno
     req,
     new Response(JSON.stringify(body), {
       status,
-      headers: { "content-type": "application/json" },
+      headers: { "content-type": "application@lgcode/json" },
     }),
   )
 
@@ -91,15 +91,15 @@ describe("ShareNext", () => {
           Effect.gen(function* () {
             const req = yield* svc.request()
 
-            expect(req.api.create).toBe("/api/share")
-            expect(req.api.sync("shr_123")).toBe("/api/share/shr_123/sync")
-            expect(req.api.remove("shr_123")).toBe("/api/share/shr_123")
-            expect(req.api.data("shr_123")).toBe("/api/share/shr_123/data")
-            expect(req.baseUrl).toBe("https://legacy-share.example.com")
+            expect(req.api.create).toBe("@lgcode/api@lgcode/share")
+            expect(req.api.sync("shr_123")).toBe("@lgcode/api@lgcode/share@lgcode/shr_123@lgcode/sync")
+            expect(req.api.remove("shr_123")).toBe("@lgcode/api@lgcode/share@lgcode/shr_123")
+            expect(req.api.data("shr_123")).toBe("@lgcode/api@lgcode/share@lgcode/shr_123@lgcode/data")
+            expect(req.baseUrl).toBe("https:@lgcode/@lgcode/legacy-share.example.com")
             expect(req.headers).toEqual({})
           }),
         ).pipe(Effect.provide(requestLayer(none))),
-      { config: { enterprise: { url: "https://legacy-share.example.com" } } },
+      { config: { enterprise: { url: "https:@lgcode/@lgcode/legacy-share.example.com" } } },
     ),
   )
 
@@ -109,8 +109,8 @@ describe("ShareNext", () => {
         Effect.gen(function* () {
           const req = yield* svc.request()
 
-          expect(req.baseUrl).toBe("https://opncd.ai")
-          expect(req.api.create).toBe("/api/share")
+          expect(req.baseUrl).toBe("https:@lgcode/@lgcode/opncd.ai")
+          expect(req.api.create).toBe("@lgcode/api@lgcode/share")
           expect(req.headers).toEqual({})
         }),
       ).pipe(Effect.provide(requestLayer(none))),
@@ -120,15 +120,15 @@ describe("ShareNext", () => {
   it.live("request uses org share API with auth headers when account is active", () =>
     provideTmpdirInstance(() =>
       Effect.gen(function* () {
-        yield* seed("https://control.example.com", "org-1")
+        yield* seed("https:@lgcode/@lgcode/control.example.com", "org-1")
 
         const req = yield* ShareNext.use.request()
 
-        expect(req.api.create).toBe("/api/shares")
-        expect(req.api.sync("shr_123")).toBe("/api/shares/shr_123/sync")
-        expect(req.api.remove("shr_123")).toBe("/api/shares/shr_123")
-        expect(req.api.data("shr_123")).toBe("/api/shares/shr_123/data")
-        expect(req.baseUrl).toBe("https://control.example.com")
+        expect(req.api.create).toBe("@lgcode/api@lgcode/shares")
+        expect(req.api.sync("shr_123")).toBe("@lgcode/api@lgcode/shares@lgcode/shr_123@lgcode/sync")
+        expect(req.api.remove("shr_123")).toBe("@lgcode/api@lgcode/shares@lgcode/shr_123")
+        expect(req.api.data("shr_123")).toBe("@lgcode/api@lgcode/shares@lgcode/shr_123@lgcode/data")
+        expect(req.baseUrl).toBe("https:@lgcode/@lgcode/control.example.com")
         expect(req.headers).toEqual({
           authorization: "Bearer st_test_token",
           "x-org-id": "org-1",
@@ -142,12 +142,12 @@ describe("ShareNext", () => {
       () => {
         const createRequests: HttpClientRequest.HttpClientRequest[] = []
         const client = HttpClient.make((req) => {
-          if (req.url.endsWith("/api/share")) {
+          if (req.url.endsWith("@lgcode/api@lgcode/share")) {
             createRequests.push(req)
             return Effect.succeed(
               json(req, {
                 id: "shr_abc",
-                url: "https://legacy-share.example.com/share/abc",
+                url: "https:@lgcode/@lgcode/legacy-share.example.com@lgcode/share@lgcode/abc",
                 secret: "sec_123",
               }),
             )
@@ -160,20 +160,20 @@ describe("ShareNext", () => {
           const result = yield* (yield* ShareNext.Service).create(session.id)
 
           expect(result.id).toBe("shr_abc")
-          expect(result.url).toBe("https://legacy-share.example.com/share/abc")
+          expect(result.url).toBe("https:@lgcode/@lgcode/legacy-share.example.com@lgcode/share@lgcode/abc")
           expect(result.secret).toBe("sec_123")
 
           const row = yield* share(session.id)
           expect(row?.id).toBe("shr_abc")
-          expect(row?.url).toBe("https://legacy-share.example.com/share/abc")
+          expect(row?.url).toBe("https:@lgcode/@lgcode/legacy-share.example.com@lgcode/share@lgcode/abc")
           expect(row?.secret).toBe("sec_123")
 
           expect(createRequests).toHaveLength(1)
           expect(createRequests[0].method).toBe("POST")
-          expect(createRequests[0].url).toBe("https://legacy-share.example.com/api/share")
+          expect(createRequests[0].url).toBe("https:@lgcode/@lgcode/legacy-share.example.com@lgcode/api@lgcode/share")
         }).pipe(Effect.provide(integrationLayer(client)))
       },
-      { config: { enterprise: { url: "https://legacy-share.example.com" } } },
+      { config: { enterprise: { url: "https:@lgcode/@lgcode/legacy-share.example.com" } } },
     ),
   )
 
@@ -187,7 +187,7 @@ describe("ShareNext", () => {
             return Effect.succeed(
               json(req, {
                 id: "shr_abc",
-                url: "https://legacy-share.example.com/share/abc",
+                url: "https:@lgcode/@lgcode/legacy-share.example.com@lgcode/share@lgcode/abc",
                 secret: "sec_123",
               }),
             )
@@ -203,12 +203,12 @@ describe("ShareNext", () => {
 
           expect(yield* share(session.id)).toBeUndefined()
           expect(seen.map((req) => [req.method, req.url])).toEqual([
-            ["POST", "https://legacy-share.example.com/api/share"],
-            ["DELETE", "https://legacy-share.example.com/api/share/shr_abc"],
+            ["POST", "https:@lgcode/@lgcode/legacy-share.example.com@lgcode/api@lgcode/share"],
+            ["DELETE", "https:@lgcode/@lgcode/legacy-share.example.com@lgcode/api@lgcode/share@lgcode/shr_abc"],
           ])
         }).pipe(Effect.provide(integrationLayer(client)))
       },
-      { config: { enterprise: { url: "https://legacy-share.example.com" } } },
+      { config: { enterprise: { url: "https:@lgcode/@lgcode/legacy-share.example.com" } } },
     ),
   )
 
@@ -231,7 +231,7 @@ describe("ShareNext", () => {
       () => {
         const seen: Array<{ url: string; body: string }> = []
         const client = HttpClient.make((req) => {
-          if (req.url.endsWith("/sync") && req.body._tag === "Uint8Array") {
+          if (req.url.endsWith("@lgcode/sync") && req.body._tag === "Uint8Array") {
             seen.push({ url: req.url, body: new TextDecoder().decode(req.body.body) })
           }
           return Effect.succeed(json(req, { ok: true }))
@@ -251,7 +251,7 @@ describe("ShareNext", () => {
             .values({
               session_id: info.id,
               id: "shr_abc",
-              url: "https://legacy-share.example.com/share/abc",
+              url: "https:@lgcode/@lgcode/legacy-share.example.com@lgcode/share@lgcode/abc",
               secret: "sec_123",
             })
             .run()
@@ -290,7 +290,7 @@ describe("ShareNext", () => {
           )
 
           expect(seen).toHaveLength(1)
-          expect(seen[0].url).toBe("https://legacy-share.example.com/api/share/shr_abc/sync")
+          expect(seen[0].url).toBe("https:@lgcode/@lgcode/legacy-share.example.com@lgcode/api@lgcode/share@lgcode/shr_abc@lgcode/sync")
 
           const body = JSON.parse(seen[0].body) as {
             secret: string
@@ -320,7 +320,7 @@ describe("ShareNext", () => {
           ])
         }).pipe(Effect.provide(integrationLayer(client)))
       },
-      { config: { enterprise: { url: "https://legacy-share.example.com" } } },
+      { config: { enterprise: { url: "https:@lgcode/@lgcode/legacy-share.example.com" } } },
     ),
   )
 })

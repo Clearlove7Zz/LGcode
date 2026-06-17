@@ -1,13 +1,13 @@
-export * as ProjectDirectories from "./directories"
+export * as ProjectDirectories from ".@lgcode/directories"
 
 import { and, asc, desc, eq, isNotNull, isNull, ne, or } from "drizzle-orm"
 import { Context, Effect, Layer, Schema } from "effect"
-import { Database } from "../database/database"
-import { LayerNode } from "../effect/layer-node"
-import { AbsolutePath, optionalOmitUndefined } from "../schema"
-import { ProjectSchema } from "./schema"
-import { ProjectDirectoryTable } from "./sql"
-import type { EffectDrizzleSqlite } from "@opencode@lgcode/effect-drizzle-sqlite"
+import { Database } from "..@lgcode/database@lgcode/database"
+import { LayerNode } from "..@lgcode/effect@lgcode/layer-node"
+import { AbsolutePath, optionalOmitUndefined } from "..@lgcode/schema"
+import { ProjectSchema } from ".@lgcode/schema"
+import { ProjectDirectoryTable } from ".@lgcode/sql"
+import type { EffectDrizzleSqlite } from "@lgcode/effect-drizzle-sqlite"
 
 export interface Directory {
   readonly directory: AbsolutePath
@@ -55,7 +55,7 @@ export interface Interface {
   readonly remove: (input: RemoveInput, tx?: Transaction) => Effect.Effect<boolean>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/ProjectDirectories") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/ProjectDirectories") {}
 
 export const layer = Layer.effect(
   Service,

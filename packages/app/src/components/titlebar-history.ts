@@ -10,7 +10,7 @@ export type TitlebarHistory = {
 
 export function applyPath(state: TitlebarHistory, current: string, max = MAX_TITLEBAR_HISTORY): TitlebarHistory {
   if (!state.stack.length) {
-    const stack = current === "/" ? ["/"] : ["/", current]
+    const stack = current === "@lgcode/" ? ["@lgcode/"] : ["@lgcode/", current]
     return { stack, index: stack.length - 1, action: undefined }
   }
 

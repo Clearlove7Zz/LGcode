@@ -1,34 +1,34 @@
-import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
-import { llmClient } from "@opencode@lgcode/core/effect/layer-node-platform"
-import { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
-import { Provider } from "@/provider/provider"
-import { SessionV1 } from "@opencode@lgcode/core/v1/session"
-import { serviceUse } from "@opencode@lgcode/core/effect/service-use"
+import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
+import { llmClient } from "@lgcode/core@lgcode/effect@lgcode/layer-node-platform"
+import { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
+import { Provider } from "@@lgcode/provider@lgcode/provider"
+import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
+import { serviceUse } from "@lgcode/core@lgcode/effect@lgcode/service-use"
 import { Context, Effect, Layer } from "effect"
-import * as Stream from "effect/Stream"
+import * as Stream from "effect@lgcode/Stream"
 import { streamText, wrapLanguageModel, type ModelMessage, type Tool } from "ai"
-import type { LLMEvent } from "@opencode@lgcode/llm"
-import { LLMClient, RequestExecutor, WebSocketExecutor } from "@opencode@lgcode/llm/route"
-import type { LLMClientService } from "@opencode@lgcode/llm/route"
+import type { LLMEvent } from "@lgcode/llm"
+import { LLMClient, RequestExecutor, WebSocketExecutor } from "@lgcode/llm@lgcode/route"
+import type { LLMClientService } from "@lgcode/llm@lgcode/route"
 import { GitLabWorkflowLanguageModel } from "gitlab-ai-provider"
-import { ProviderTransform } from "@/provider/transform"
-import { Config } from "@/config/config"
-import type { Agent } from "@/agent/agent"
-import type { MessageV2 } from "./message-v2"
-import { Plugin } from "@/plugin"
-import { Permission } from "@/permission"
-import { EventV2Bridge } from "@/event-v2-bridge"
-import { EventV2 } from "@opencode@lgcode/core/event"
-import { Wildcard } from "@/util/wildcard"
-import { SessionID } from "@/session/schema"
-import { Auth } from "@/auth"
-import { EffectBridge } from "@/effect/bridge"
-import { RuntimeFlags } from "@/effect/runtime-flags"
-import * as Option from "effect/Option"
-import * as OtelTracer from "@effect/opentelemetry/Tracer"
-import { LLMAISDK } from "./llm/ai-sdk"
-import { LLMNativeRuntime } from "./llm/native-runtime"
-import { LLMRequestPrep } from "./llm/request"
+import { ProviderTransform } from "@@lgcode/provider@lgcode/transform"
+import { Config } from "@@lgcode/config@lgcode/config"
+import type { Agent } from "@@lgcode/agent@lgcode/agent"
+import type { MessageV2 } from ".@lgcode/message-v2"
+import { Plugin } from "@@lgcode/plugin"
+import { Permission } from "@@lgcode/permission"
+import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
+import { EventV2 } from "@lgcode/core@lgcode/event"
+import { Wildcard } from "@@lgcode/util@lgcode/wildcard"
+import { SessionID } from "@@lgcode/session@lgcode/schema"
+import { Auth } from "@@lgcode/auth"
+import { EffectBridge } from "@@lgcode/effect@lgcode/bridge"
+import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
+import * as Option from "effect@lgcode/Option"
+import * as OtelTracer from "@effect@lgcode/opentelemetry@lgcode/Tracer"
+import { LLMAISDK } from ".@lgcode/llm@lgcode/ai-sdk"
+import { LLMNativeRuntime } from ".@lgcode/llm@lgcode/native-runtime"
+import { LLMRequestPrep } from ".@lgcode/llm@lgcode/request"
 
 export const OUTPUT_TOKEN_MAX = ProviderTransform.OUTPUT_TOKEN_MAX
 
@@ -55,7 +55,7 @@ export interface Interface {
   readonly stream: (input: StreamInput) => Stream.Stream<LLMEvent, unknown>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/LLM") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/LLM") {}
 
 export const use = serviceUse(Service)
 
@@ -112,9 +112,9 @@ const live: Layer.Layer<
         isWorkflow,
       })
 
-      // Wire up toolExecutor for DWS workflow models so that tool calls
-      // from the workflow service are executed via opencode's tool system
-      // and results sent back over the WebSocket.
+      @lgcode/@lgcode/ Wire up toolExecutor for DWS workflow models so that tool calls
+      @lgcode/@lgcode/ from the workflow service are executed via opencode's tool system
+      @lgcode/@lgcode/ and results sent back over the WebSocket.
       const bridge = yield* EffectBridge.make()
       if (language instanceof GitLabWorkflowLanguageModel) {
         const workflowModel = language as GitLabWorkflowLanguageModel & {
@@ -155,8 +155,8 @@ const live: Layer.Layer<
         const approvedToolsForSession = new Set<string>()
         workflowModel.approvalHandler = bridge.bind(async (approvalTools) => {
           const uniqueNames = [...new Set(approvalTools.map((t: { name: string }) => t.name))] as string[]
-          // Auto-approve tools that were already approved in this session
-          // (prevents infinite approval loops for server-side MCP tools)
+          @lgcode/@lgcode/ Auto-approve tools that were already approved in this session
+          @lgcode/@lgcode/ (prevents infinite approval loops for server-side MCP tools)
           if (uniqueNames.every((name) => approvedToolsForSession.has(name))) {
             return { approved: true }
           }
@@ -221,8 +221,8 @@ const live: Layer.Layer<
           })
         : undefined
 
-      // Runtime seam: native is an opt-in adapter over @opencode@lgcode/llm. It
-      // either returns a ready LLMEvent stream or a concrete fallback reason.
+      @lgcode/@lgcode/ Runtime seam: native is an opt-in adapter over @lgcode/llm. It
+      @lgcode/@lgcode/ either returns a ready LLMEvent stream or a concrete fallback reason.
       if (flags.experimentalNativeLlm) {
         const native = LLMNativeRuntime.stream({
           model: input.model,
@@ -273,8 +273,8 @@ const live: Layer.Layer<
         "llm.provider": input.model.providerID,
         "llm.model": input.model.id,
       })
-      // Default runtime path: AI SDK owns provider execution and tool dispatch;
-      // LLMAISDK.toLLMEvents below normalizes fullStream parts for the processor.
+      @lgcode/@lgcode/ Default runtime path: AI SDK owns provider execution and tool dispatch;
+      @lgcode/@lgcode/ LLMAISDK.toLLMEvents below normalizes fullStream parts for the processor.
       return {
         type: "ai-sdk" as const,
         result: streamText({
@@ -291,7 +291,7 @@ const live: Layer.Layer<
               }),
             )
           },
-          // Copilot returns the authoritative billed amount only in provider-specific response fields.
+          @lgcode/@lgcode/ Copilot returns the authoritative billed amount only in provider-specific response fields.
           includeRawChunks: input.model.providerID.includes("github-copilot"),
           async experimental_repairToolCall(failed) {
             const lower = failed.toolCall.toolName.toLowerCase()
@@ -329,7 +329,7 @@ const live: Layer.Layer<
                 specificationVersion: "v3" as const,
                 async transformParams(args) {
                   if (args.type === "stream") {
-                    // @ts-expect-error
+                    @lgcode/@lgcode/ @ts-expect-error
                     args.params.prompt = ProviderTransform.message(
                       args.params.prompt,
                       input.model,
@@ -367,8 +367,8 @@ const live: Layer.Layer<
 
             if (result.type === "native") return result.stream
 
-            // Adapter seam: both runtimes expose the same LLMEvent stream. Native
-            // already returns one; AI SDK streams are converted here.
+            @lgcode/@lgcode/ Adapter seam: both runtimes expose the same LLMEvent stream. Native
+            @lgcode/@lgcode/ already returns one; AI SDK streams are converted here.
             const state = LLMAISDK.adapterState()
             return Stream.fromAsyncIterable(result.result.fullStream, (e) =>
               e instanceof Error ? e : new Error(String(e)),
@@ -412,4 +412,4 @@ export const node = LayerNode.make(layer, [
   RuntimeFlags.node,
 ])
 
-export * as LLM from "./llm"
+export * as LLM from ".@lgcode/llm"

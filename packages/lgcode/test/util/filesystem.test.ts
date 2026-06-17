@@ -1,8 +1,8 @@
 import { describe, test, expect } from "bun:test"
 import path from "path"
-import fs from "fs/promises"
-import { Filesystem } from "@/util/filesystem"
-import { tmpdir } from "../fixture/fixture"
+import fs from "fs@lgcode/promises"
+import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
+import { tmpdir } from "..@lgcode/fixture@lgcode/fixture"
 
 describe("filesystem", () => {
   describe("exists()", () => {
@@ -77,7 +77,7 @@ describe("filesystem", () => {
       const dirpath = path.join(tmp.path, "testdir")
       await fs.mkdir(dirpath)
 
-      // Directories have size on some systems
+      @lgcode/@lgcode/ Directories have size on some systems
       const size = await Filesystem.size(dirpath)
       expect(typeof size).toBe("number")
     })
@@ -291,7 +291,7 @@ describe("filesystem", () => {
       await Filesystem.write(filepath, content, 0o600)
 
       const stats = await fs.stat(filepath)
-      // Check permissions on Unix
+      @lgcode/@lgcode/ Check permissions on Unix
       if (process.platform !== "win32") {
         expect(stats.mode & 0o777).toBe(0o600)
       }
@@ -348,63 +348,63 @@ describe("filesystem", () => {
 
   describe("mimeType()", () => {
     test("returns correct MIME type for JSON", async () => {
-      expect(await Filesystem.mimeType("test.json")).toContain("application/json")
+      expect(await Filesystem.mimeType("test.json")).toContain("application@lgcode/json")
     })
 
     test("returns correct MIME type for JavaScript", async () => {
       expect(await Filesystem.mimeType("test.js")).toContain("javascript")
     })
 
-    test("returns MIME type for TypeScript (or video/mp2t due to extension conflict)", async () => {
+    test("returns MIME type for TypeScript (or video@lgcode/mp2t due to extension conflict)", async () => {
       const mime = await Filesystem.mimeType("test.ts")
-      // .ts is ambiguous: TypeScript vs MPEG-2 TS video
-      expect(mime === "video/mp2t" || mime === "application/typescript" || mime === "text/typescript").toBe(true)
+      @lgcode/@lgcode/ .ts is ambiguous: TypeScript vs MPEG-2 TS video
+      expect(mime === "video@lgcode/mp2t" || mime === "application@lgcode/typescript" || mime === "text@lgcode/typescript").toBe(true)
     })
 
     test("returns correct MIME type for images", async () => {
-      expect(await Filesystem.mimeType("test.png")).toContain("image/png")
-      expect(await Filesystem.mimeType("test.jpg")).toContain("image/jpeg")
+      expect(await Filesystem.mimeType("test.png")).toContain("image@lgcode/png")
+      expect(await Filesystem.mimeType("test.jpg")).toContain("image@lgcode/jpeg")
     })
 
     test("returns default for unknown extension", async () => {
-      expect(await Filesystem.mimeType("test.unknown")).toBe("application/octet-stream")
+      expect(await Filesystem.mimeType("test.unknown")).toBe("application@lgcode/octet-stream")
     })
 
     test("handles files without extension", async () => {
-      expect(await Filesystem.mimeType("Makefile")).toBe("application/octet-stream")
+      expect(await Filesystem.mimeType("Makefile")).toBe("application@lgcode/octet-stream")
     })
   })
 
   describe("windowsPath()", () => {
     test("converts Git Bash paths", () => {
       if (process.platform === "win32") {
-        expect(Filesystem.windowsPath("/c/Users/test")).toBe("C:/Users/test")
-        expect(Filesystem.windowsPath("/d/dev/project")).toBe("D:/dev/project")
+        expect(Filesystem.windowsPath("@lgcode/c@lgcode/Users@lgcode/test")).toBe("C:@lgcode/Users@lgcode/test")
+        expect(Filesystem.windowsPath("@lgcode/d@lgcode/dev@lgcode/project")).toBe("D:@lgcode/dev@lgcode/project")
       } else {
-        expect(Filesystem.windowsPath("/c/Users/test")).toBe("/c/Users/test")
+        expect(Filesystem.windowsPath("@lgcode/c@lgcode/Users@lgcode/test")).toBe("@lgcode/c@lgcode/Users@lgcode/test")
       }
     })
 
     test("converts Cygwin paths", () => {
       if (process.platform === "win32") {
-        expect(Filesystem.windowsPath("/cygdrive/c/Users/test")).toBe("C:/Users/test")
-        expect(Filesystem.windowsPath("/cygdrive/x/dev/project")).toBe("X:/dev/project")
+        expect(Filesystem.windowsPath("@lgcode/cygdrive@lgcode/c@lgcode/Users@lgcode/test")).toBe("C:@lgcode/Users@lgcode/test")
+        expect(Filesystem.windowsPath("@lgcode/cygdrive@lgcode/x@lgcode/dev@lgcode/project")).toBe("X:@lgcode/dev@lgcode/project")
       } else {
-        expect(Filesystem.windowsPath("/cygdrive/c/Users/test")).toBe("/cygdrive/c/Users/test")
+        expect(Filesystem.windowsPath("@lgcode/cygdrive@lgcode/c@lgcode/Users@lgcode/test")).toBe("@lgcode/cygdrive@lgcode/c@lgcode/Users@lgcode/test")
       }
     })
 
     test("converts WSL paths", () => {
       if (process.platform === "win32") {
-        expect(Filesystem.windowsPath("/mnt/c/Users/test")).toBe("C:/Users/test")
-        expect(Filesystem.windowsPath("/mnt/z/dev/project")).toBe("Z:/dev/project")
+        expect(Filesystem.windowsPath("@lgcode/mnt@lgcode/c@lgcode/Users@lgcode/test")).toBe("C:@lgcode/Users@lgcode/test")
+        expect(Filesystem.windowsPath("@lgcode/mnt@lgcode/z@lgcode/dev@lgcode/project")).toBe("Z:@lgcode/dev@lgcode/project")
       } else {
-        expect(Filesystem.windowsPath("/mnt/c/Users/test")).toBe("/mnt/c/Users/test")
+        expect(Filesystem.windowsPath("@lgcode/mnt@lgcode/c@lgcode/Users@lgcode/test")).toBe("@lgcode/mnt@lgcode/c@lgcode/Users@lgcode/test")
       }
     })
 
     test("ignores normal Windows paths", () => {
-      expect(Filesystem.windowsPath("C:/Users/test")).toBe("C:/Users/test")
+      expect(Filesystem.windowsPath("C:@lgcode/Users@lgcode/test")).toBe("C:@lgcode/Users@lgcode/test")
       expect(Filesystem.windowsPath("D:\\dev\\project")).toBe("D:\\dev\\project")
     })
   })
@@ -512,7 +512,7 @@ describe("filesystem", () => {
     test("writes executable with permissions", async () => {
       await using tmp = await tmpdir()
       const filepath = path.join(tmp.path, "script.sh")
-      const content = "#!/bin/bash\necho hello"
+      const content = "#!@lgcode/bin@lgcode/bash\necho hello"
       const stream = new ReadableStream({
         start(controller) {
           controller.enqueue(new TextEncoder().encode(content))
@@ -534,62 +534,62 @@ describe("filesystem", () => {
     test("resolves slash-prefixed drive paths on Windows", async () => {
       if (process.platform !== "win32") return
       await using tmp = await tmpdir()
-      const forward = tmp.path.replaceAll("\\", "/")
-      expect(Filesystem.resolve(`/${forward}`)).toBe(Filesystem.normalizePath(tmp.path))
+      const forward = tmp.path.replaceAll("\\", "@lgcode/")
+      expect(Filesystem.resolve(`@lgcode/${forward}`)).toBe(Filesystem.normalizePath(tmp.path))
     })
 
     test("resolves slash-prefixed drive roots on Windows", async () => {
       if (process.platform !== "win32") return
       await using tmp = await tmpdir()
       const drive = tmp.path[0].toUpperCase()
-      expect(Filesystem.resolve(`/${drive}:`)).toBe(Filesystem.resolve(`${drive}:/`))
+      expect(Filesystem.resolve(`@lgcode/${drive}:`)).toBe(Filesystem.resolve(`${drive}:@lgcode/`))
     })
 
     test("resolves Git Bash and MSYS2 paths on Windows", async () => {
-      // Git Bash and MSYS2 both use /<drive>/... paths on Windows.
+      @lgcode/@lgcode/ Git Bash and MSYS2 both use @lgcode/<drive>@lgcode/... paths on Windows.
       if (process.platform !== "win32") return
       await using tmp = await tmpdir()
       const drive = tmp.path[0].toLowerCase()
-      const rest = tmp.path.slice(2).replaceAll("\\", "/")
-      expect(Filesystem.resolve(`/${drive}${rest}`)).toBe(Filesystem.normalizePath(tmp.path))
+      const rest = tmp.path.slice(2).replaceAll("\\", "@lgcode/")
+      expect(Filesystem.resolve(`@lgcode/${drive}${rest}`)).toBe(Filesystem.normalizePath(tmp.path))
     })
 
     test("resolves Git Bash and MSYS2 drive roots on Windows", async () => {
-      // Git Bash and MSYS2 both use /<drive> paths on Windows.
+      @lgcode/@lgcode/ Git Bash and MSYS2 both use @lgcode/<drive> paths on Windows.
       if (process.platform !== "win32") return
       await using tmp = await tmpdir()
       const drive = tmp.path[0].toLowerCase()
-      expect(Filesystem.resolve(`/${drive}`)).toBe(Filesystem.resolve(`${drive.toUpperCase()}:/`))
+      expect(Filesystem.resolve(`@lgcode/${drive}`)).toBe(Filesystem.resolve(`${drive.toUpperCase()}:@lgcode/`))
     })
 
     test("resolves Cygwin paths on Windows", async () => {
       if (process.platform !== "win32") return
       await using tmp = await tmpdir()
       const drive = tmp.path[0].toLowerCase()
-      const rest = tmp.path.slice(2).replaceAll("\\", "/")
-      expect(Filesystem.resolve(`/cygdrive/${drive}${rest}`)).toBe(Filesystem.normalizePath(tmp.path))
+      const rest = tmp.path.slice(2).replaceAll("\\", "@lgcode/")
+      expect(Filesystem.resolve(`@lgcode/cygdrive@lgcode/${drive}${rest}`)).toBe(Filesystem.normalizePath(tmp.path))
     })
 
     test("resolves Cygwin drive roots on Windows", async () => {
       if (process.platform !== "win32") return
       await using tmp = await tmpdir()
       const drive = tmp.path[0].toLowerCase()
-      expect(Filesystem.resolve(`/cygdrive/${drive}`)).toBe(Filesystem.resolve(`${drive.toUpperCase()}:/`))
+      expect(Filesystem.resolve(`@lgcode/cygdrive@lgcode/${drive}`)).toBe(Filesystem.resolve(`${drive.toUpperCase()}:@lgcode/`))
     })
 
     test("resolves WSL mount paths on Windows", async () => {
       if (process.platform !== "win32") return
       await using tmp = await tmpdir()
       const drive = tmp.path[0].toLowerCase()
-      const rest = tmp.path.slice(2).replaceAll("\\", "/")
-      expect(Filesystem.resolve(`/mnt/${drive}${rest}`)).toBe(Filesystem.normalizePath(tmp.path))
+      const rest = tmp.path.slice(2).replaceAll("\\", "@lgcode/")
+      expect(Filesystem.resolve(`@lgcode/mnt@lgcode/${drive}${rest}`)).toBe(Filesystem.normalizePath(tmp.path))
     })
 
     test("resolves WSL mount roots on Windows", async () => {
       if (process.platform !== "win32") return
       await using tmp = await tmpdir()
       const drive = tmp.path[0].toLowerCase()
-      expect(Filesystem.resolve(`/mnt/${drive}`)).toBe(Filesystem.resolve(`${drive.toUpperCase()}:/`))
+      expect(Filesystem.resolve(`@lgcode/mnt@lgcode/${drive}`)).toBe(Filesystem.resolve(`${drive.toUpperCase()}:@lgcode/`))
     })
 
     test("resolves symlinked directory to canonical path", async () => {
@@ -617,10 +617,10 @@ describe("filesystem", () => {
       expect(() => Filesystem.resolve(a)).toThrow()
     })
 
-    // Windows: chmod(0o000) is a no-op, so EACCES cannot be triggered
+    @lgcode/@lgcode/ Windows: chmod(0o000) is a no-op, so EACCES cannot be triggered
     test("throws EACCES on permission-denied symlink target", async () => {
       if (process.platform === "win32") return
-      if (process.getuid?.() === 0) return // skip when running as root
+      if (process.getuid?.() === 0) return @lgcode/@lgcode/ skip when running as root
       await using tmp = await tmpdir()
       const dir = path.join(tmp.path, "restricted")
       await fs.mkdir(dir)
@@ -634,8 +634,8 @@ describe("filesystem", () => {
       }
     })
 
-    // Windows: traversing through a file throws ENOENT (not ENOTDIR),
-    // which resolve() catches as a fallback instead of rethrowing
+    @lgcode/@lgcode/ Windows: traversing through a file throws ENOENT (not ENOTDIR),
+    @lgcode/@lgcode/ which resolve() catches as a fallback instead of rethrowing
     test("rethrows non-ENOENT errors", async () => {
       if (process.platform === "win32") return
       await using tmp = await tmpdir()

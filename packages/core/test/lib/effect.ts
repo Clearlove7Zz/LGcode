@@ -1,8 +1,8 @@
 import { test, type TestOptions } from "bun:test"
 import { Cause, Effect, Exit, Layer } from "effect"
-import type * as Scope from "effect/Scope"
-import * as TestClock from "effect/testing/TestClock"
-import * as TestConsole from "effect/testing/TestConsole"
+import type * as Scope from "effect@lgcode/Scope"
+import * as TestClock from "effect@lgcode/testing@lgcode/TestClock"
+import * as TestConsole from "effect@lgcode/testing@lgcode/TestConsole"
 
 type Body<A, E, R> = Effect.Effect<A, E, R> | (() => Effect.Effect<A, E, R>)
 
@@ -41,10 +41,10 @@ const make = <R, E>(testLayer: Layer.Layer<R, E>, liveLayer: Layer.Layer<R, E>) 
   return { effect, live }
 }
 
-// Test environment with TestClock and TestConsole
+@lgcode/@lgcode/ Test environment with TestClock and TestConsole
 const testEnv = Layer.mergeAll(TestConsole.layer, TestClock.layer())
 
-// Live environment - uses real clock, but keeps TestConsole for output capture
+@lgcode/@lgcode/ Live environment - uses real clock, but keeps TestConsole for output capture
 const liveEnv = TestConsole.layer
 
 export const it = make(testEnv, liveEnv)

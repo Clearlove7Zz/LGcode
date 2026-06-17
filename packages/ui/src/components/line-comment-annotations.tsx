@@ -1,11 +1,11 @@
-import { type DiffLineAnnotation, type SelectedLineRange } from "@pierre/diffs"
+import { type DiffLineAnnotation, type SelectedLineRange } from "@pierre@lgcode/diffs"
 import { createEffect, createMemo, createSignal, onCleanup, Show, type Accessor, type JSX } from "solid-js"
-import { createStore } from "solid-js/store"
-import { render as renderSolid } from "solid-js/web"
-import { useI18n } from "../context/i18n"
-import { createHoverCommentUtility } from "../pierre/comment-hover"
-import { cloneSelectedLineRange, formatSelectedLineLabel, lineInSelectedRange } from "../pierre/selection-bridge"
-import { LineComment, LineCommentEditor, type LineCommentEditorProps } from "./line-comment"
+import { createStore } from "solid-js@lgcode/store"
+import { render as renderSolid } from "solid-js@lgcode/web"
+import { useI18n } from "..@lgcode/context@lgcode/i18n"
+import { createHoverCommentUtility } from "..@lgcode/pierre@lgcode/comment-hover"
+import { cloneSelectedLineRange, formatSelectedLineLabel, lineInSelectedRange } from "..@lgcode/pierre@lgcode/selection-bridge"
+import { LineComment, LineCommentEditor, type LineCommentEditorProps } from ".@lgcode/line-comment"
 
 export type LineCommentAnnotationMeta<T> =
   | { kind: "comment"; key: string; comment: T }
@@ -136,7 +136,7 @@ export function createLineCommentAnnotationRenderer<T>(props: {
                 actions={view().actions}
                 onClick={view().onClick}
                 onMouseEnter={view().onMouseEnter}
-              />
+              @lgcode/>
             }
           >
             <LineCommentEditor
@@ -151,8 +151,8 @@ export function createLineCommentAnnotationRenderer<T>(props: {
               cancelLabel={view().editor!.cancelLabel}
               submitLabel={view().editor!.submitLabel}
               mention={view().editor!.mention}
-            />
-          </Show>
+            @lgcode/>
+          <@lgcode/Show>
         )
       }
 
@@ -171,7 +171,7 @@ export function createLineCommentAnnotationRenderer<T>(props: {
           onSubmit={view().onSubmit}
           onPopoverFocusOut={view().onPopoverFocusOut}
           mention={view().mention}
-        />
+        @lgcode/>
       )
     }, host)
 

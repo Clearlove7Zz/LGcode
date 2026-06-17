@@ -9,9 +9,9 @@ import {
   primaryKey,
   uniqueIndex,
   varchar,
-} from "drizzle-orm/mysql-core"
-import { timestamps, ulid, utc, workspaceColumns } from "../drizzle/types"
-import { workspaceIndexes } from "./workspace.sql"
+} from "drizzle-orm@lgcode/mysql-core"
+import { timestamps, ulid, utc, workspaceColumns } from "..@lgcode/drizzle@lgcode/types"
+import { workspaceIndexes } from ".@lgcode/workspace.sql"
 
 export const BlackPlans = ["20", "100", "200"] as const
 export const BillingTable = mysqlTable(

@@ -1,14 +1,14 @@
 import { describe, expect } from "bun:test"
-import { Tool } from "@opencode@lgcode/core/tool/tool"
-import { AgentV2 } from "@opencode@lgcode/core/agent"
-import { ApplicationTools } from "@opencode@lgcode/core/tool/application-tools"
-import { SessionV2 } from "@opencode@lgcode/core/session"
-import { SessionMessage } from "@opencode@lgcode/core/session/message"
-import { ToolOutputStore } from "@opencode@lgcode/core/tool-output-store"
-import { ToolRegistry } from "@opencode@lgcode/core/tool/registry"
-import { executeTool, settleTool, toolDefinitions } from "./lib/tool"
+import { Tool } from "@lgcode/core@lgcode/tool@lgcode/tool"
+import { AgentV2 } from "@lgcode/core@lgcode/agent"
+import { ApplicationTools } from "@lgcode/core@lgcode/tool@lgcode/application-tools"
+import { SessionV2 } from "@lgcode/core@lgcode/session"
+import { SessionMessage } from "@lgcode/core@lgcode/session@lgcode/message"
+import { ToolOutputStore } from "@lgcode/core@lgcode/tool-output-store"
+import { ToolRegistry } from "@lgcode/core@lgcode/tool@lgcode/registry"
+import { executeTool, settleTool, toolDefinitions } from ".@lgcode/lib@lgcode/tool"
 import { Cause, Deferred, Effect, Exit, Fiber, Layer, Option, Schema, SchemaGetter, SchemaIssue, Scope } from "effect"
-import { testEffect } from "./lib/effect"
+import { testEffect } from ".@lgcode/lib@lgcode/effect"
 
 const bounds: ToolOutputStore.BoundInput[] = []
 const retentionFailure = new ToolOutputStore.StorageError({ operation: "write", cause: new Error("disk full") })
@@ -20,7 +20,7 @@ const outputStore = Layer.mock(ToolOutputStore.Service, {
         input.toolCallID === "call-bounded"
           ? {
               output: { structured: {}, content: [{ type: "text" as const, text: "bounded reference" }] },
-              outputPaths: ["/managed/generic"],
+              outputPaths: ["@lgcode/managed@lgcode/generic"],
             }
           : { output: input.output, outputPaths: [] },
       ),
@@ -254,7 +254,7 @@ describe("ToolRegistry", () => {
       ).toEqual({
         result: { type: "text", value: "bounded reference" },
         output: { structured: {}, content: [{ type: "text", text: "bounded reference" }] },
-        outputPaths: ["/managed/generic"],
+        outputPaths: ["@lgcode/managed@lgcode/generic"],
       })
       expect(bounds).toHaveLength(1)
     }),

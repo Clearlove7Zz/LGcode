@@ -1,13 +1,13 @@
 import { expect, test } from "bun:test"
-import { testRender } from "@opentui/solid"
-import { abbreviateHome } from "../src/runtime"
-import { TuiPathsProvider, useTuiPaths } from "../src/context/runtime"
+import { testRender } from "@opentui@lgcode/solid"
+import { abbreviateHome } from "..@lgcode/src@lgcode/runtime"
+import { TuiPathsProvider, useTuiPaths } from "..@lgcode/src@lgcode/context@lgcode/runtime"
 
 test("abbreviates paths within home boundaries", () => {
-  expect(abbreviateHome("/home/test", "/home/test")).toBe("~")
-  expect(abbreviateHome("/home/test/project", "/home/test")).toBe("~/project")
-  expect(abbreviateHome("/home/tester/project", "/home/test")).toBe("/home/tester/project")
-  expect(abbreviateHome("/tmp/project", "/home/test")).toBe("/tmp/project")
+  expect(abbreviateHome("@lgcode/home@lgcode/test", "@lgcode/home@lgcode/test")).toBe("~")
+  expect(abbreviateHome("@lgcode/home@lgcode/test@lgcode/project", "@lgcode/home@lgcode/test")).toBe("~@lgcode/project")
+  expect(abbreviateHome("@lgcode/home@lgcode/tester@lgcode/project", "@lgcode/home@lgcode/test")).toBe("@lgcode/home@lgcode/tester@lgcode/project")
+  expect(abbreviateHome("@lgcode/tmp@lgcode/project", "@lgcode/home@lgcode/test")).toBe("@lgcode/tmp@lgcode/project")
 })
 
 test("provides focused immutable runtime inputs", async () => {
@@ -15,21 +15,21 @@ test("provides focused immutable runtime inputs", async () => {
 
   function Runtime() {
     paths = useTuiPaths()
-    return <text>{paths.cwd}</text>
+    return <text>{paths.cwd}<@lgcode/text>
   }
 
   const app = await testRender(
     () => (
-      <TuiPathsProvider value={{ cwd: "/work", home: "/home/test", state: "/state", worktree: "/worktree" }}>
-        <Runtime />
-      </TuiPathsProvider>
+      <TuiPathsProvider value={{ cwd: "@lgcode/work", home: "@lgcode/home@lgcode/test", state: "@lgcode/state", worktree: "@lgcode/worktree" }}>
+        <Runtime @lgcode/>
+      <@lgcode/TuiPathsProvider>
     ),
     { width: 40, height: 3 },
   )
 
   try {
     await app.renderOnce()
-    expect(app.captureCharFrame()).toContain("/work")
+    expect(app.captureCharFrame()).toContain("@lgcode/work")
     expect(Object.isFrozen(paths!)).toBe(true)
   } finally {
     app.renderer.destroy()

@@ -1,10 +1,10 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { Catalog } from "@opencode@lgcode/core/catalog"
-import { PluginV2 } from "@opencode@lgcode/core/plugin"
-import { VercelPlugin } from "@opencode@lgcode/core/plugin/provider/vercel"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { it, model, provider } from "./provider-helper"
+import { Catalog } from "@lgcode/core@lgcode/catalog"
+import { PluginV2 } from "@lgcode/core@lgcode/plugin"
+import { VercelPlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/vercel"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { it, model, provider } from ".@lgcode/provider-helper"
 
 describe("VercelPlugin", () => {
   it.effect("applies legacy lower-case referer headers", () =>
@@ -15,7 +15,7 @@ describe("VercelPlugin", () => {
       const transform = yield* catalog.transform()
       yield* transform((catalog) => {
         const item = provider("vercel", {
-          api: { type: "aisdk", package: "@ai-sdk/vercel" },
+          api: { type: "aisdk", package: "@ai-sdk@lgcode/vercel" },
           request: { headers: { Existing: "1" }, body: {} },
         })
         catalog.provider.update(item.id, (draft) => {
@@ -25,7 +25,7 @@ describe("VercelPlugin", () => {
       })
       expect((yield* catalog.provider.get(ProviderV2.ID.make("vercel"))).request.headers).toEqual({
         Existing: "1",
-        "http-referer": "https://opencode.ai/",
+        "http-referer": "https:@lgcode/@lgcode/opencode.ai@lgcode/",
         "x-title": "opencode",
       })
     }),
@@ -38,7 +38,7 @@ describe("VercelPlugin", () => {
       yield* plugin.add(VercelPlugin)
       const transform = yield* catalog.transform()
       yield* transform((catalog) => {
-        const item = provider("vercel", { api: { type: "aisdk", package: "@ai-sdk/vercel" } })
+        const item = provider("vercel", { api: { type: "aisdk", package: "@ai-sdk@lgcode/vercel" } })
         catalog.provider.update(item.id, (draft) => {
           draft.api = item.api
         })
@@ -50,13 +50,13 @@ describe("VercelPlugin", () => {
     }),
   )
 
-  it.effect("creates @ai-sdk/vercel SDKs for custom provider IDs", () =>
+  it.effect("creates @ai-sdk@lgcode/vercel SDKs for custom provider IDs", () =>
     Effect.gen(function* () {
       const plugin = yield* PluginV2.Service
       yield* plugin.add(VercelPlugin)
       const event = yield* plugin.trigger(
         "aisdk.sdk",
-        { model: model("custom-vercel", "v0-1.0-md"), package: "@ai-sdk/vercel", options: { name: "custom-vercel" } },
+        { model: model("custom-vercel", "v0-1.0-md"), package: "@ai-sdk@lgcode/vercel", options: { name: "custom-vercel" } },
         {},
       )
       expect(event.sdk).toBeDefined()

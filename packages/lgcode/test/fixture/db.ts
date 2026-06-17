@@ -1,6 +1,6 @@
-import { rm } from "fs/promises"
-import { Database } from "@opencode@lgcode/core/database/database"
-import { disposeAllInstances } from "./fixture"
+import { rm } from "fs@lgcode/promises"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { disposeAllInstances } from ".@lgcode/fixture"
 
 export async function resetDatabase() {
   await disposeAllInstances().catch(() => undefined)

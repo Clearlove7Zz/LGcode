@@ -1,12 +1,12 @@
-import type { Hooks, PluginInput } from "@opencode@lgcode/plugin"
-import { OAUTH_DUMMY_KEY } from "../auth"
-import { InstallationVersion } from "@opencode@lgcode/core/installation/version"
+import type { Hooks, PluginInput } from "@lgcode/plugin"
+import { OAUTH_DUMMY_KEY } from "..@lgcode/auth"
+import { InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
 import { createServer } from "http"
 import open from "open"
 
 const OAUTH_CLIENT_ID = "LOCAL_APPLICATION"
 const OAUTH_CALLBACK_HOST = "127.0.0.1"
-const OAUTH_CALLBACK_PATH = "/"
+const OAUTH_CALLBACK_PATH = "@lgcode/"
 const OAUTH_TIMEOUT_MS = 5 * 60 * 1000
 const ACCESS_TOKEN_REFRESH_SKEW_MS = 120_000
 
@@ -37,9 +37,9 @@ let oauthServerPort: number | undefined
 function normalizeAccount(input: string) {
   return input
     .trim()
-    .replace(/^https?:\/\//, "")
-    .replace(/\.snowflakecomputing\.com\/?$/, "")
-    .replace(/\/+$/, "")
+    .replace(@lgcode/^https?:\@lgcode/\@lgcode/@lgcode/, "")
+    .replace(@lgcode/\.snowflakecomputing\.com\@lgcode/?$@lgcode/, "")
+    .replace(@lgcode/\@lgcode/+$@lgcode/, "")
 }
 
 function generateRandomString(length: number) {
@@ -51,7 +51,7 @@ function generateRandomString(length: number) {
 
 function base64UrlEncode(buffer: ArrayBuffer) {
   const binary = String.fromCharCode(...new Uint8Array(buffer))
-  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "")
+  return btoa(binary).replace(@lgcode/\+@lgcode/g, "-").replace(@lgcode/\@lgcode/@lgcode/g, "_").replace(@lgcode/=+$@lgcode/, "")
 }
 
 async function generatePKCE(): Promise<PkceCodes> {
@@ -65,21 +65,21 @@ async function generatePKCE(): Promise<PkceCodes> {
 
 function callbackUrl() {
   if (!oauthServerPort) throw new Error("Snowflake OAuth callback server is not running")
-  return `http://${OAUTH_CALLBACK_HOST}:${oauthServerPort}${OAUTH_CALLBACK_PATH}`
+  return `http:@lgcode/@lgcode/${OAUTH_CALLBACK_HOST}:${oauthServerPort}${OAUTH_CALLBACK_PATH}`
 }
 
 export function oauthScope(role: string | undefined) {
   if (!role) return "refresh_token"
-  return /^[-_A-Za-z0-9]+$/.test(role)
+  return @lgcode/^[-_A-Za-z0-9]+$@lgcode/.test(role)
     ? `refresh_token session:role:${role}`
     : `refresh_token session:role-encoded:${encodeURIComponent(role)}`
 }
 
 function authHeaders() {
   return {
-    "Content-Type": "application/x-www-form-urlencoded",
-    Accept: "application/json",
-    "User-Agent": `opencode/${InstallationVersion}`,
+    "Content-Type": "application@lgcode/x-www-form-urlencoded",
+    Accept: "application@lgcode/json",
+    "User-Agent": `opencode@lgcode/${InstallationVersion}`,
   }
 }
 
@@ -98,11 +98,11 @@ function buildAuthorizeUrl(account: string, role: string | undefined, state: str
     code_challenge: pkce.challenge,
     code_challenge_method: "S256",
   })
-  return `https://${account}.snowflakecomputing.com/oauth/authorize?${params.toString()}`
+  return `https:@lgcode/@lgcode/${account}.snowflakecomputing.com@lgcode/oauth@lgcode/authorize?${params.toString()}`
 }
 
 async function exchangeCodeForToken(account: string, code: string, pkce: PkceCodes) {
-  const response = await fetch(`https://${account}.snowflakecomputing.com/oauth/token-request`, {
+  const response = await fetch(`https:@lgcode/@lgcode/${account}.snowflakecomputing.com@lgcode/oauth@lgcode/token-request`, {
     method: "POST",
     headers: {
       ...authHeaders(),
@@ -133,7 +133,7 @@ async function exchangeCodeForToken(account: string, code: string, pkce: PkceCod
 }
 
 async function refreshAccessToken(account: string, refreshToken: string) {
-  const response = await fetch(`https://${account}.snowflakecomputing.com/oauth/token-request`, {
+  const response = await fetch(`https:@lgcode/@lgcode/${account}.snowflakecomputing.com@lgcode/oauth@lgcode/token-request`, {
     method: "POST",
     headers: {
       ...authHeaders(),
@@ -158,33 +158,33 @@ async function refreshAccessToken(account: string, refreshToken: string) {
 
 const HTML_SUCCESS = `<!doctype html>
 <html>
-  <head><title>OpenCode - Snowflake Authorization Successful</title></head>
+  <head><title>OpenCode - Snowflake Authorization Successful<@lgcode/title><@lgcode/head>
   <body style="font-family: system-ui; display:flex; align-items:center; justify-content:center; height:100vh; margin:0; background:#111; color:#eee;">
     <div style="text-align:center; max-width:36rem; padding:2rem;">
-      <h1 style="color:#7ee787;">Authorization Successful</h1>
-      <p>You can close this window and return to OpenCode.</p>
-    </div>
-    <script>setTimeout(() => window.close(), 1500)</script>
-  </body>
-</html>`
+      <h1 style="color:#7ee787;">Authorization Successful<@lgcode/h1>
+      <p>You can close this window and return to OpenCode.<@lgcode/p>
+    <@lgcode/div>
+    <script>setTimeout(() => window.close(), 1500)<@lgcode/script>
+  <@lgcode/body>
+<@lgcode/html>`
 
 const htmlError = (message: string) => `<!doctype html>
 <html>
-  <head><title>OpenCode - Snowflake Authorization Failed</title></head>
+  <head><title>OpenCode - Snowflake Authorization Failed<@lgcode/title><@lgcode/head>
   <body style="font-family: system-ui; display:flex; align-items:center; justify-content:center; height:100vh; margin:0; background:#111; color:#eee;">
     <div style="text-align:center; max-width:48rem; padding:2rem;">
-      <h1 style="color:#ff7b72;">Authorization Failed</h1>
-      <pre style="white-space:pre-wrap; color:#ffb3ad; background:#2a1210; padding:1rem; border-radius:.5rem;">${message}</pre>
-    </div>
-  </body>
-</html>`
+      <h1 style="color:#ff7b72;">Authorization Failed<@lgcode/h1>
+      <pre style="white-space:pre-wrap; color:#ffb3ad; background:#2a1210; padding:1rem; border-radius:.5rem;">${message}<@lgcode/pre>
+    <@lgcode/div>
+  <@lgcode/body>
+<@lgcode/html>`
 
 async function startOAuthServer() {
   if (oauthServer) return
 
   oauthServer = createServer((req, res) => {
     const host = req.headers.host || `${OAUTH_CALLBACK_HOST}:${oauthServerPort ?? 0}`
-    const url = new URL(req.url || "/", `http://${host}`)
+    const url = new URL(req.url || "@lgcode/", `http:@lgcode/@lgcode/${host}`)
 
     if (url.pathname !== OAUTH_CALLBACK_PATH) {
       res.writeHead(404)
@@ -197,12 +197,12 @@ async function startOAuthServer() {
     const error = url.searchParams.get("error")
     const errorDescription = url.searchParams.get("error_description")
 
-    // CSRF guard: validate state before processing any callback
+    @lgcode/@lgcode/ CSRF guard: validate state before processing any callback
     if (!pendingOAuth || state !== pendingOAuth.state) {
       const message = "Invalid state - potential CSRF attack"
       pendingOAuth?.reject(new Error(message))
       pendingOAuth = undefined
-      res.writeHead(400, { "Content-Type": "text/html" })
+      res.writeHead(400, { "Content-Type": "text@lgcode/html" })
       res.end(htmlError(message))
       return
     }
@@ -213,7 +213,7 @@ async function startOAuthServer() {
     if (error) {
       const message = errorDescription || error
       current.reject(new Error(message))
-      res.writeHead(200, { "Content-Type": "text/html" })
+      res.writeHead(200, { "Content-Type": "text@lgcode/html" })
       res.end(htmlError(message))
       return
     }
@@ -221,7 +221,7 @@ async function startOAuthServer() {
     if (!code) {
       const message = "Missing authorization code"
       current.reject(new Error(message))
-      res.writeHead(400, { "Content-Type": "text/html" })
+      res.writeHead(400, { "Content-Type": "text@lgcode/html" })
       res.end(htmlError(message))
       return
     }
@@ -230,7 +230,7 @@ async function startOAuthServer() {
       .then((tokens) => current.resolve(tokens))
       .catch((err) => current.reject(err instanceof Error ? err : new Error(String(err))))
 
-    res.writeHead(200, { "Content-Type": "text/html" })
+    res.writeHead(200, { "Content-Type": "text@lgcode/html" })
     res.end(HTML_SUCCESS)
   })
 
@@ -402,7 +402,7 @@ export async function SnowflakeCortexAuthPlugin(_input: PluginInput): Promise<Ho
                 }
               }
               headers.set("authorization", `Bearer ${currentOauth.access}`)
-              headers.set("User-Agent", `opencode/${InstallationVersion}`)
+              headers.set("User-Agent", `opencode@lgcode/${InstallationVersion}`)
 
               let body = init?.body
               if (body && typeof body === "string") {
@@ -429,13 +429,13 @@ export async function SnowflakeCortexAuthPlugin(_input: PluginInput): Promise<Ho
                       JSON.stringify({
                         choices: [{ finish_reason: "stop", message: { content: "", role: "assistant" } }],
                       }),
-                      { status: 200, headers: new Headers({ "content-type": "application/json" }) },
+                      { status: 200, headers: new Headers({ "content-type": "application@lgcode/json" }) },
                     )
                   }
                 } catch {}
               }
 
-              if (response.body && response.headers.get("content-type")?.includes("text/event-stream")) {
+              if (response.body && response.headers.get("content-type")?.includes("text@lgcode/event-stream")) {
                 const reader = response.body.getReader()
                 const encoder = new TextEncoder()
                 const decoder = new TextDecoder()
@@ -447,7 +447,7 @@ export async function SnowflakeCortexAuthPlugin(_input: PluginInput): Promise<Ho
                       return
                     }
                     const text = decoder.decode(value, { stream: true })
-                    ctrl.enqueue(encoder.encode(text.replace(/"role"\s*:\s*""/g, '"role":"assistant"')))
+                    ctrl.enqueue(encoder.encode(text.replace(@lgcode/"role"\s*:\s*""@lgcode/g, '"role":"assistant"')))
                   },
                   cancel() {
                     reader.cancel()

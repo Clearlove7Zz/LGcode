@@ -1,13 +1,13 @@
-export * as SessionSchema from "./schema"
+export * as SessionSchema from ".@lgcode/schema"
 
 import { Schema } from "effect"
-import { Location } from "../location"
-import { ModelV2 } from "../model"
-import { ProjectV2 } from "../project"
-import { externalID, type ExternalID, RelativePath, optionalOmitUndefined, withStatics } from "../schema"
-import { Identifier } from "../util/identifier"
-import { V2Schema } from "../v2-schema"
-import { AgentV2 } from "../agent"
+import { Location } from "..@lgcode/location"
+import { ModelV2 } from "..@lgcode/model"
+import { ProjectV2 } from "..@lgcode/project"
+import { externalID, type ExternalID, RelativePath, optionalOmitUndefined, withStatics } from "..@lgcode/schema"
+import { Identifier } from "..@lgcode/util@lgcode/identifier"
+import { V2Schema } from "..@lgcode/v2-schema"
+import { AgentV2 } from "..@lgcode/agent"
 
 export const ID = Schema.String.check(Schema.isStartsWith("ses")).pipe(
   Schema.brand("SessionID"),

@@ -1,32 +1,32 @@
-import { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
-import { ConfigV1 } from "@opencode@lgcode/core/v1/config/config"
+import { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
+import { ConfigV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/config"
 import { afterAll, beforeAll, beforeEach, describe, expect, test } from "bun:test"
-import { SessionV1 } from "@opencode@lgcode/core/v1/session"
+import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
 import path from "path"
 import { tool, type ModelMessage } from "ai"
 import { Cause, Effect, Exit, Fiber, Layer, Stream } from "effect"
-import { InstanceRef } from "../../src/effect/instance-ref"
-import { HttpClientRequest, HttpClientResponse } from "effect/unstable/http"
+import { InstanceRef } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/instance-ref"
+import { HttpClientRequest, HttpClientResponse } from "effect@lgcode/unstable@lgcode/http"
 import z from "zod"
-import { LLM } from "../../src/session/llm"
-import { LLMClient, RequestExecutor, WebSocketExecutor } from "@opencode@lgcode/llm/route"
-import { Auth } from "@/auth"
-import { Config } from "@/config/config"
-import { Provider } from "@/provider/provider"
-import { ProviderTransform } from "@/provider/transform"
-import { ModelsDev } from "@opencode@lgcode/core/models-dev"
-import { Plugin } from "@/plugin"
+import { LLM } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/llm"
+import { LLMClient, RequestExecutor, WebSocketExecutor } from "@lgcode/llm@lgcode/route"
+import { Auth } from "@@lgcode/auth"
+import { Config } from "@@lgcode/config@lgcode/config"
+import { Provider } from "@@lgcode/provider@lgcode/provider"
+import { ProviderTransform } from "@@lgcode/provider@lgcode/transform"
+import { ModelsDev } from "@lgcode/core@lgcode/models-dev"
+import { Plugin } from "@@lgcode/plugin"
 
-import { testEffect } from "../lib/effect"
-import type { Agent } from "../../src/agent/agent"
-import { MessageV2 } from "../../src/session/message-v2"
-import { SessionID, MessageID } from "../../src/session/schema"
-import { RuntimeFlags } from "@/effect/runtime-flags"
-import { Permission } from "@/permission"
-import { LLMAISDK } from "@/session/llm/ai-sdk"
-import { Session as SessionNs } from "@/session/session"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { ModelV2 } from "@opencode@lgcode/core/model"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import type { Agent } from "..@lgcode/..@lgcode/src@lgcode/agent@lgcode/agent"
+import { MessageV2 } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/message-v2"
+import { SessionID, MessageID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
+import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
+import { Permission } from "@@lgcode/permission"
+import { LLMAISDK } from "@@lgcode/session@lgcode/llm@lgcode/ai-sdk"
+import { Session as SessionNs } from "@@lgcode/session@lgcode/session"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
 
 type ConfigModel = NonNullable<NonNullable<ConfigV1.Info["provider"]>[string]["models"]>[string]
 
@@ -38,8 +38,8 @@ const openAIConfig = (model: ModelsDev.Provider["models"][string], baseURL: stri
       openai: {
         name: "OpenAI",
         env: ["OPENAI_API_KEY"],
-        npm: "@ai-sdk/openai",
-        api: "https://api.openai.com/v1",
+        npm: "@ai-sdk@lgcode/openai",
+        api: "https:@lgcode/@lgcode/api.openai.com@lgcode/v1",
         models: {
           [model.id]: JSON.parse(JSON.stringify(configModel)) as ConfigModel,
         },
@@ -54,13 +54,13 @@ const openAIConfig = (model: ModelsDev.Provider["models"][string], baseURL: stri
 
 const it = testEffect(Layer.mergeAll(LLM.defaultLayer, Provider.defaultLayer))
 
-// LLM.stream returns a Stream, not an Effect, so we can't use the serviceUse proxy.
+@lgcode/@lgcode/ LLM.stream returns a Stream, not an Effect, so we can't use the serviceUse proxy.
 const drain = (input: LLM.StreamInput) => LLM.Service.use((svc) => svc.stream(input).pipe(Stream.runDrain))
 
-// drainWith builds an isolated runtime so the custom layer fully owns LLM and
-// its transitive deps — `Effect.provide(layer)` over an existing runtime layers
-// the new services on top, but transitive Service overrides (e.g. RequestExecutor)
-// resolved through the outer LLM.defaultLayer leak through.
+@lgcode/@lgcode/ drainWith builds an isolated runtime so the custom layer fully owns LLM and
+@lgcode/@lgcode/ its transitive deps — `Effect.provide(layer)` over an existing runtime layers
+@lgcode/@lgcode/ the new services on top, but transitive Service overrides (e.g. RequestExecutor)
+@lgcode/@lgcode/ resolved through the outer LLM.defaultLayer leak through.
 const drainWith = (layer: Layer.Layer<LLM.Service>, input: LLM.StreamInput) =>
   Effect.gen(function* () {
     const ctx = yield* InstanceRef
@@ -182,7 +182,7 @@ describe("session.llm.ai-sdk adapter", () => {
       Effect.forEach(events, (event) => LLMAISDK.toLLMEvents(state, event)).pipe(Effect.map((items) => items.flat())),
     )
   }
-  // oxlint-disable-next-line typescript-eslint/no-unsafe-type-assertion -- tests defensive adapter branches outside AI SDK's current typed surface
+  @lgcode/@lgcode/ oxlint-disable-next-line typescript-eslint@lgcode/no-unsafe-type-assertion -- tests defensive adapter branches outside AI SDK's current typed surface
   const uncheckedAdapterEvent = (input: unknown) => input as AISDKAdapterEvent
 
   test("maps AI SDK stream chunks without losing session-visible fields", async () => {
@@ -357,10 +357,10 @@ describe("session.llm.ai-sdk adapter", () => {
   })
 
   test("emits undefined usage when every AI SDK usage field is missing", async () => {
-    // If every numeric field is undefined the translator should signal "no usage info"
-    // by emitting undefined, not by polluting the event with usage: {}. Downstream cost
-    // telemetry distinguishes "missing" from "zero," so emitting an empty object causes
-    // false positives ("usage was tracked, just empty") instead of correct nulls.
+    @lgcode/@lgcode/ If every numeric field is undefined the translator should signal "no usage info"
+    @lgcode/@lgcode/ by emitting undefined, not by polluting the event with usage: {}. Downstream cost
+    @lgcode/@lgcode/ telemetry distinguishes "missing" from "zero," so emitting an empty object causes
+    @lgcode/@lgcode/ false positives ("usage was tracked, just empty") instead of correct nulls.
     const events = await adapt([
       {
         type: "finish-step",
@@ -387,11 +387,11 @@ describe("session.llm.ai-sdk adapter", () => {
   })
 
   test("reuses adapter state cleanly across streams once finish has fired", async () => {
-    // adapterState() is meant to be per-stream, but the only thing finish currently clears
-    // is toolNames — step, text counters, and the current text/reasoning IDs all leak
-    // forward. A caller that reuses a state across two streams sees text-1/reasoning-1/
-    // step index 1 on the second stream's first events. The test pins the intended
-    // contract: after finish, the same state can be reused and starts fresh.
+    @lgcode/@lgcode/ adapterState() is meant to be per-stream, but the only thing finish currently clears
+    @lgcode/@lgcode/ is toolNames — step, text counters, and the current text@lgcode/reasoning IDs all leak
+    @lgcode/@lgcode/ forward. A caller that reuses a state across two streams sees text-1@lgcode/reasoning-1@lgcode/
+    @lgcode/@lgcode/ step index 1 on the second stream's first events. The test pins the intended
+    @lgcode/@lgcode/ contract: after finish, the same state can be reused and starts fresh.
     const state = LLMAISDK.adapterState()
     const run = (events: ReadonlyArray<AISDKAdapterEvent>) =>
       Effect.runPromise(
@@ -449,9 +449,9 @@ describe("session.llm.ai-sdk adapter", () => {
     ])
   })
 
-  // Anthropic emits cache write counts in providerMetadata.anthropic.cacheCreationInputTokens
-  // rather than usage.inputTokenDetails.cacheWriteTokens. Session.getUsage falls back to the
-  // metadata path — but only if the adapter preserves providerMetadata on step-finish.
+  @lgcode/@lgcode/ Anthropic emits cache write counts in providerMetadata.anthropic.cacheCreationInputTokens
+  @lgcode/@lgcode/ rather than usage.inputTokenDetails.cacheWriteTokens. Session.getUsage falls back to the
+  @lgcode/@lgcode/ metadata path — but only if the adapter preserves providerMetadata on step-finish.
   test("preserves providerMetadata on step-finish so Anthropic cache writes survive getUsage", async () => {
     const events = await adapt([
       {
@@ -459,7 +459,7 @@ describe("session.llm.ai-sdk adapter", () => {
         response: { id: "msg_test", timestamp: new Date(0), modelId: "claude-3-5-sonnet" },
         finishReason: "stop",
         rawFinishReason: "stop",
-        // Anthropic's AI SDK shape: cacheWriteTokens is NOT in usage, it arrives via providerMetadata.
+        @lgcode/@lgcode/ Anthropic's AI SDK shape: cacheWriteTokens is NOT in usage, it arrives via providerMetadata.
         usage: {
           inputTokens: 1000,
           outputTokens: 500,
@@ -478,7 +478,7 @@ describe("session.llm.ai-sdk adapter", () => {
     expect(stepFinish.usage?.cacheWriteInputTokens).toBeUndefined()
     expect(stepFinish.usage?.cacheReadInputTokens).toBe(200)
 
-    // End-to-end: with the metadata preserved, getUsage extracts cache.write from the fallback path.
+    @lgcode/@lgcode/ End-to-end: with the metadata preserved, getUsage extracts cache.write from the fallback path.
     const result = SessionNs.getUsage({
       model: {
         id: "claude-3-5-sonnet",
@@ -494,7 +494,7 @@ describe("session.llm.ai-sdk adapter", () => {
           input: { text: true, image: false, audio: false, video: false },
           output: { text: true, image: false, audio: false, video: false },
         },
-        api: { npm: "@ai-sdk/anthropic" },
+        api: { npm: "@ai-sdk@lgcode/anthropic" },
         options: {},
       } as never,
       usage: stepFinish.usage!,
@@ -624,7 +624,7 @@ function waitStreamingRequest(pathname: string) {
         }),
         {
           status: 200,
-          headers: { "Content-Type": "text/event-stream" },
+          headers: { "Content-Type": "text@lgcode/event-stream" },
         },
       )
     },
@@ -700,7 +700,7 @@ function createChatStream(text: string) {
 }
 
 const MODELS_FIXTURE = JSON.parse(
-  await Bun.file(path.join(import.meta.dir, "../tool/fixtures/models-api.json")).text(),
+  await Bun.file(path.join(import.meta.dir, "..@lgcode/tool@lgcode/fixtures@lgcode/models-api.json")).text(),
 ) as Record<string, ModelsDev.Provider>
 
 function loadFixture(providerID: string, modelID: string) {
@@ -748,7 +748,7 @@ function createEventStream(chunks: unknown[], includeDone = false) {
 function createEventResponse(chunks: unknown[], includeDone = false) {
   return new Response(createEventStream(chunks, includeDone), {
     status: 200,
-    headers: { "Content-Type": "text/event-stream" },
+    headers: { "Content-Type": "text@lgcode/event-stream" },
   })
 }
 
@@ -760,10 +760,10 @@ describe("session.llm.stream", () => {
       Effect.gen(function* () {
         const fixture = loadFixture(vivgridFixture.providerID, vivgridFixture.modelID)
         const request = waitRequest(
-          "/chat/completions",
+          "@lgcode/chat@lgcode/completions",
           new Response(createChatStream("Hello"), {
             status: 200,
-            headers: { "Content-Type": "text/event-stream" },
+            headers: { "Content-Type": "text@lgcode/event-stream" },
           }),
         )
 
@@ -805,8 +805,8 @@ describe("session.llm.stream", () => {
         const headers = capture.headers
         const url = capture.url
 
-        expect(url.pathname.startsWith("/v1/")).toBe(true)
-        expect(url.pathname.endsWith("/chat/completions")).toBe(true)
+        expect(url.pathname.startsWith("@lgcode/v1@lgcode/")).toBe(true)
+        expect(url.pathname.endsWith("@lgcode/chat@lgcode/completions")).toBe(true)
         expect(headers.get("Authorization")).toBe("Bearer test-key")
 
         expect(body.model).toBe(resolved.api.id)
@@ -826,7 +826,7 @@ describe("session.llm.stream", () => {
         enabled_providers: [vivgridFixture.providerID],
         provider: {
           [vivgridFixture.providerID]: {
-            options: { apiKey: "test-key", baseURL: `${state.server!.url.origin}/v1` },
+            options: { apiKey: "test-key", baseURL: `${state.server!.url.origin}@lgcode/v1` },
           },
         },
       }),
@@ -839,7 +839,7 @@ describe("session.llm.stream", () => {
     () =>
       Effect.gen(function* () {
         const fixture = loadFixture(alibabaQwenFixture.providerID, alibabaQwenFixture.modelID)
-        const pending = waitStreamingRequest("/chat/completions")
+        const pending = waitStreamingRequest("@lgcode/chat@lgcode/completions")
 
         const resolved = yield* Provider.use.getModel(
           ProviderV2.ID.make(alibabaQwenFixture.providerID),
@@ -876,7 +876,7 @@ describe("session.llm.stream", () => {
 
         yield* Effect.promise(() => Promise.race([pending.responseCanceled, timeout(500)]))
         const exit = yield* Fiber.await(fiber)
-        // Fiber.await returns an Exit<Exit<...>>. Unwrap once.
+        @lgcode/@lgcode/ Fiber.await returns an Exit<Exit<...>>. Unwrap once.
         const inner = Exit.isSuccess(exit) ? exit.value : exit
         expect(Exit.isFailure(inner)).toBe(true)
         if (Exit.isFailure(inner)) {
@@ -889,7 +889,7 @@ describe("session.llm.stream", () => {
         enabled_providers: [alibabaQwenFixture.providerID],
         provider: {
           [alibabaQwenFixture.providerID]: {
-            options: { apiKey: "test-key", baseURL: `${state.server!.url.origin}/v1` },
+            options: { apiKey: "test-key", baseURL: `${state.server!.url.origin}@lgcode/v1` },
           },
         },
       }),
@@ -902,10 +902,10 @@ describe("session.llm.stream", () => {
       Effect.gen(function* () {
         const fixture = loadFixture(alibabaQwenFixture.providerID, alibabaQwenFixture.modelID)
         const request = waitRequest(
-          "/chat/completions",
+          "@lgcode/chat@lgcode/completions",
           new Response(createChatStream("Hello"), {
             status: 200,
-            headers: { "Content-Type": "text/event-stream" },
+            headers: { "Content-Type": "text@lgcode/event-stream" },
           }),
         )
 
@@ -957,7 +957,7 @@ describe("session.llm.stream", () => {
         enabled_providers: [alibabaQwenFixture.providerID],
         provider: {
           [alibabaQwenFixture.providerID]: {
-            options: { apiKey: "test-key", baseURL: `${state.server!.url.origin}/v1` },
+            options: { apiKey: "test-key", baseURL: `${state.server!.url.origin}@lgcode/v1` },
           },
         },
       }),
@@ -975,7 +975,7 @@ describe("session.llm.stream", () => {
             type: "response.created",
             response: {
               id: "resp-1",
-              created_at: Math.floor(Date.now() / 1000),
+              created_at: Math.floor(Date.now() @lgcode/ 1000),
               model: model.id,
               service_tier: null,
             },
@@ -1012,7 +1012,7 @@ describe("session.llm.stream", () => {
             },
           },
         ]
-        const request = waitRequest("/responses", createEventResponse(responseChunks, true))
+        const request = waitRequest("@lgcode/responses", createEventResponse(responseChunks, true))
 
         const resolved = yield* Provider.use.getModel(ProviderV2.ID.openai, ModelV2.ID.make(model.id))
         const sessionID = SessionID.make("session-test-2")
@@ -1046,15 +1046,15 @@ describe("session.llm.stream", () => {
         const capture = yield* Effect.promise(() => request)
         const body = capture.body
 
-        expect(capture.url.pathname.endsWith("/responses")).toBe(true)
+        expect(capture.url.pathname.endsWith("@lgcode/responses")).toBe(true)
         expect(body.model).toBe(resolved.api.id)
         expect(body.stream).toBe(true)
         expect((body.reasoning as { effort?: string } | undefined)?.effort).toBe("high")
 
         const maxTokens = body.max_output_tokens as number | undefined
-        expect(maxTokens).toBe(undefined) // match codex cli behavior
+        expect(maxTokens).toBe(undefined) @lgcode/@lgcode/ match codex cli behavior
       }),
-    { config: () => openAIConfig(loadFixture("openai", "gpt-5.2").model, `${state.server!.url.origin}/v1`) },
+    { config: () => openAIConfig(loadFixture("openai", "gpt-5.2").model, `${state.server!.url.origin}@lgcode/v1`) },
   )
 
   it.instance(
@@ -1063,14 +1063,14 @@ describe("session.llm.stream", () => {
       Effect.gen(function* () {
         const model = loadFixture("openai", "gpt-5.2").model
         const request = waitRequest(
-          "/responses",
+          "@lgcode/responses",
           createEventResponse(
             [
               {
                 type: "response.created",
                 response: {
                   id: "resp-flag-off",
-                  created_at: Math.floor(Date.now() / 1000),
+                  created_at: Math.floor(Date.now() @lgcode/ 1000),
                   model: model.id,
                   service_tier: null,
                 },
@@ -1156,10 +1156,10 @@ describe("session.llm.stream", () => {
         )
 
         const capture = yield* Effect.promise(() => request)
-        expect(capture.url.pathname.endsWith("/responses")).toBe(true)
+        expect(capture.url.pathname.endsWith("@lgcode/responses")).toBe(true)
         expect(capture.body.model).toBe(resolved.api.id)
       }),
-    { config: () => openAIConfig(loadFixture("openai", "gpt-5.2").model, `${state.server!.url.origin}/v1`) },
+    { config: () => openAIConfig(loadFixture("openai", "gpt-5.2").model, `${state.server!.url.origin}@lgcode/v1`) },
   )
 
   it.instance(
@@ -1187,7 +1187,7 @@ describe("session.llm.stream", () => {
             },
           },
         ]
-        const request = waitRequest("/responses", createEventResponse(chunks, true))
+        const request = waitRequest("@lgcode/responses", createEventResponse(chunks, true))
 
         const resolved = yield* Provider.use.getModel(ProviderV2.ID.openai, ModelV2.ID.make(model.id))
         const sessionID = SessionID.make("session-test-native")
@@ -1217,7 +1217,7 @@ describe("session.llm.stream", () => {
         })
 
         const capture = yield* Effect.promise(() => request)
-        expect(capture.url.pathname.endsWith("/responses")).toBe(true)
+        expect(capture.url.pathname.endsWith("@lgcode/responses")).toBe(true)
         expect(capture.headers.get("Authorization")).toBe("Bearer test-openai-key")
         expect(capture.body.model).toBe(model.id)
         expect(capture.body.stream).toBe(true)
@@ -1226,7 +1226,7 @@ describe("session.llm.stream", () => {
         expect(JSON.stringify(capture.body.input)).toContain("You are a helpful assistant.")
         expect(capture.body.input).toContainEqual({ role: "user", content: [{ type: "input_text", text: "Hello" }] })
       }),
-    { config: () => openAIConfig(loadFixture("openai", "gpt-5.2").model, `${state.server!.url.origin}/v1`) },
+    { config: () => openAIConfig(loadFixture("openai", "gpt-5.2").model, `${state.server!.url.origin}@lgcode/v1`) },
   )
 
   it.instance(
@@ -1319,13 +1319,13 @@ describe("session.llm.stream", () => {
               properties: { query: { type: "string" } },
               required: ["query"],
               additionalProperties: false,
-              $schema: "http://json-schema.org/draft-07/schema#",
+              $schema: "http:@lgcode/@lgcode/json-schema.org@lgcode/draft-07@lgcode/schema#",
             },
           },
         ])
         expect(executed).toEqual({ args: { query: "weather" }, toolCallId: "call-injected-tool" })
       }),
-    { config: () => openAIConfig(loadFixture("openai", "gpt-5.2").model, "https://injected-openai.test/v1") },
+    { config: () => openAIConfig(loadFixture("openai", "gpt-5.2").model, "https:@lgcode/@lgcode/injected-openai.test@lgcode/v1") },
   )
 
   it.instance(
@@ -1358,7 +1358,7 @@ describe("session.llm.stream", () => {
             response: { incomplete_details: null, usage: { input_tokens: 1, output_tokens: 1 } },
           },
         ]
-        const request = waitRequest("/responses", createEventResponse(chunks, true))
+        const request = waitRequest("@lgcode/responses", createEventResponse(chunks, true))
         let executed: unknown
 
         const resolved = yield* Provider.use.getModel(ProviderV2.ID.openai, ModelV2.ID.make(model.id))
@@ -1407,7 +1407,7 @@ describe("session.llm.stream", () => {
               properties: { query: { type: "string" } },
               required: ["query"],
               additionalProperties: false,
-              $schema: "http://json-schema.org/draft-07/schema#",
+              $schema: "http:@lgcode/@lgcode/json-schema.org@lgcode/draft-07@lgcode/schema#",
             },
           },
         ])
@@ -1422,10 +1422,10 @@ describe("session.llm.stream", () => {
             openai: {
               name: "OpenAI",
               env: ["OPENAI_API_KEY"],
-              npm: "@ai-sdk/openai",
-              api: "https://api.openai.com/v1",
+              npm: "@ai-sdk@lgcode/openai",
+              api: "https:@lgcode/@lgcode/api.openai.com@lgcode/v1",
               models: { [model.id]: JSON.parse(JSON.stringify(model)) as ConfigModel },
-              options: { apiKey: "test-openai-key", baseURL: `${state.server!.url.origin}/v1` },
+              options: { apiKey: "test-openai-key", baseURL: `${state.server!.url.origin}@lgcode/v1` },
             },
           },
         }
@@ -1443,7 +1443,7 @@ describe("session.llm.stream", () => {
             type: "response.created",
             response: {
               id: "resp-data-url",
-              created_at: Math.floor(Date.now() / 1000),
+              created_at: Math.floor(Date.now() @lgcode/ 1000),
               model: model.id,
               service_tier: null,
             },
@@ -1480,10 +1480,10 @@ describe("session.llm.stream", () => {
             },
           },
         ]
-        const request = waitRequest("/responses", createEventResponse(chunks, true))
-        const image = `data:image/png;base64,${Buffer.from(
+        const request = waitRequest("@lgcode/responses", createEventResponse(chunks, true))
+        const image = `data:image@lgcode/png;base64,${Buffer.from(
           yield* Effect.promise(() =>
-            Bun.file(path.join(import.meta.dir, "../tool/fixtures/large-image.png")).arrayBuffer(),
+            Bun.file(path.join(import.meta.dir, "..@lgcode/tool@lgcode/fixtures@lgcode/large-image.png")).arrayBuffer(),
           ),
         ).toString("base64")}`
 
@@ -1516,7 +1516,7 @@ describe("session.llm.stream", () => {
               role: "user",
               content: [
                 { type: "text", text: "Describe this image" },
-                { type: "file", mediaType: "image/png", filename: "large-image.png", data: image },
+                { type: "file", mediaType: "image@lgcode/png", filename: "large-image.png", data: image },
               ],
             },
           ] as ModelMessage[],
@@ -1524,9 +1524,9 @@ describe("session.llm.stream", () => {
         })
 
         const capture = yield* Effect.promise(() => request)
-        expect(capture.url.pathname.endsWith("/responses")).toBe(true)
+        expect(capture.url.pathname.endsWith("@lgcode/responses")).toBe(true)
       }),
-    { config: () => openAIConfig(loadFixture("openai", "gpt-5.2").model, `${state.server!.url.origin}/v1`) },
+    { config: () => openAIConfig(loadFixture("openai", "gpt-5.2").model, `${state.server!.url.origin}@lgcode/v1`) },
   )
 
   const minimaxFixture = { providerID: "minimax", modelID: "MiniMax-M2.5" }
@@ -1572,7 +1572,7 @@ describe("session.llm.stream", () => {
           },
           { type: "message_stop" },
         ]
-        const request = waitRequest("/messages", createEventResponse(chunks))
+        const request = waitRequest("@lgcode/messages", createEventResponse(chunks))
 
         const resolved = yield* Provider.use.getModel(
           ProviderV2.ID.make(minimaxFixture.providerID),
@@ -1610,7 +1610,7 @@ describe("session.llm.stream", () => {
         const capture = yield* Effect.promise(() => request)
         const body = capture.body
 
-        expect(capture.url.pathname.endsWith("/messages")).toBe(true)
+        expect(capture.url.pathname.endsWith("@lgcode/messages")).toBe(true)
         expect(body.model).toBe(resolved.api.id)
         expect(body.max_tokens).toBe(ProviderTransform.maxOutputTokens(resolved))
         expect(body.temperature).toBe(0.4)
@@ -1621,7 +1621,7 @@ describe("session.llm.stream", () => {
         enabled_providers: [minimaxFixture.providerID],
         provider: {
           [minimaxFixture.providerID]: {
-            options: { apiKey: "test-anthropic-key", baseURL: `${state.server!.url.origin}/v1` },
+            options: { apiKey: "test-anthropic-key", baseURL: `${state.server!.url.origin}@lgcode/v1` },
           },
         },
       }),
@@ -1669,7 +1669,7 @@ describe("session.llm.stream", () => {
           },
           { type: "message_stop" },
         ]
-        const request = waitRequest("/messages", createEventResponse(chunks))
+        const request = waitRequest("@lgcode/messages", createEventResponse(chunks))
 
         const resolved = yield* Provider.use.getModel(ProviderV2.ID.make("anthropic"), ModelV2.ID.make(model.id))
         const sessionID = SessionID.make("session-test-anthropic-tools")
@@ -1717,7 +1717,7 @@ describe("session.llm.stream", () => {
               mode: "gentleman",
               agent: "gentleman",
               variant: "max",
-              path: { cwd: "/root", root: "/" },
+              path: { cwd: "@lgcode/root", root: "@lgcode/" },
               cost: 0,
               tokens: { input: 0, output: 0, reasoning: 0, cache: { read: 0, write: 0 } },
               modelID: "claude-opus-4-6",
@@ -1741,8 +1741,8 @@ describe("session.llm.stream", () => {
                 callID: "toolu_01N8mDEzG8DSTs7UPHFtmgCT",
                 state: {
                   status: "completed",
-                  input: { filePath: "/root" },
-                  output: "<path>/root</path>",
+                  input: { filePath: "@lgcode/root" },
+                  output: "<path>@lgcode/root<@lgcode/path>",
                   metadata: {},
                   title: "root",
                   time: { start: 10, end: 11 },
@@ -1757,7 +1757,7 @@ describe("session.llm.stream", () => {
                 callID: "toolu_01APxrADs7VozN8uWzw9WwHr",
                 state: {
                   status: "completed",
-                  input: { pattern: "**/*.pdf", path: "/root" },
+                  input: { pattern: "**@lgcode/*.pdf", path: "@lgcode/root" },
                   output: "No files found",
                   metadata: {},
                   title: "root",
@@ -1801,7 +1801,7 @@ describe("session.llm.stream", () => {
         const capture = yield* Effect.promise(() => request)
         const body = capture.body
 
-        expect(capture.url.pathname.endsWith("/messages")).toBe(true)
+        expect(capture.url.pathname.endsWith("@lgcode/messages")).toBe(true)
         const messages = body.messages as Array<{ role: string; content: Array<Record<string, unknown>> }>
         expect(messages[0]?.role).toBe("user")
         expect(messages[0]?.content[0]).toMatchObject({
@@ -1817,19 +1817,19 @@ describe("session.llm.stream", () => {
             type: "tool_use",
             id: "toolu_01N8mDEzG8DSTs7UPHFtmgCT",
             name: "read",
-            input: { filePath: "/root" },
+            input: { filePath: "@lgcode/root" },
           },
           {
             type: "tool_use",
             id: "toolu_01APxrADs7VozN8uWzw9WwHr",
             name: "glob",
-            input: { pattern: "**/*.pdf", path: "/root" },
+            input: { pattern: "**@lgcode/*.pdf", path: "@lgcode/root" },
           },
         ])
         expect(messages[toolUseIndex + 1]).toMatchObject({
           role: "user",
           content: [
-            { type: "tool_result", tool_use_id: "toolu_01N8mDEzG8DSTs7UPHFtmgCT", content: "<path>/root</path>" },
+            { type: "tool_result", tool_use_id: "toolu_01N8mDEzG8DSTs7UPHFtmgCT", content: "<path>@lgcode/root<@lgcode/path>" },
             { type: "tool_result", tool_use_id: "toolu_01APxrADs7VozN8uWzw9WwHr", content: "No files found" },
           ],
         })
@@ -1843,10 +1843,10 @@ describe("session.llm.stream", () => {
             anthropic: {
               name: "Anthropic",
               env: ["ANTHROPIC_API_KEY"],
-              npm: "@ai-sdk/anthropic",
-              api: "https://api.anthropic.com/v1",
+              npm: "@ai-sdk@lgcode/anthropic",
+              api: "https:@lgcode/@lgcode/api.anthropic.com@lgcode/v1",
               models: { [model.id]: configModel(model) as ConfigModel },
-              options: { apiKey: "test-anthropic-key", baseURL: `${state.server!.url.origin}/v1` },
+              options: { apiKey: "test-anthropic-key", baseURL: `${state.server!.url.origin}@lgcode/v1` },
             },
           },
         }
@@ -1860,7 +1860,7 @@ describe("session.llm.stream", () => {
     () =>
       Effect.gen(function* () {
         const model = loadFixture(geminiFixture.providerID, geminiFixture.modelID).model
-        const pathSuffix = `/v1beta/models/${model.id}:streamGenerateContent`
+        const pathSuffix = `@lgcode/v1beta@lgcode/models@lgcode/${model.id}:streamGenerateContent`
 
         const chunks = [
           {
@@ -1923,7 +1923,7 @@ describe("session.llm.stream", () => {
         enabled_providers: [geminiFixture.providerID],
         provider: {
           [geminiFixture.providerID]: {
-            options: { apiKey: "test-google-key", baseURL: `${state.server!.url.origin}/v1beta` },
+            options: { apiKey: "test-google-key", baseURL: `${state.server!.url.origin}@lgcode/v1beta` },
           },
         },
       }),

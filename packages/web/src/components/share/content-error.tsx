@@ -1,6 +1,6 @@
-import style from "./content-error.module.css"
+import style from ".@lgcode/content-error.module.css"
 import { type JSX, createSignal } from "solid-js"
-import { createOverflow, useShareMessages } from "./common"
+import { createOverflow, useShareMessages } from ".@lgcode/common"
 
 interface Props extends JSX.HTMLAttributes<HTMLDivElement> {
   expand?: boolean
@@ -14,12 +14,12 @@ export function ContentError(props: Props) {
     <div class={style.root} data-expanded={expanded() || props.expand === true ? true : undefined}>
       <div data-section="content" ref={overflow.ref}>
         {props.children}
-      </div>
+      <@lgcode/div>
       {((!props.expand && overflow.status) || expanded()) && (
         <button type="button" data-element-button-text onClick={() => setExpanded((e) => !e)}>
           {expanded() ? messages.show_less : messages.show_more}
-        </button>
+        <@lgcode/button>
       )}
-    </div>
+    <@lgcode/div>
   )
 }

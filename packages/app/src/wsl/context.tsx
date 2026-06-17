@@ -1,8 +1,8 @@
-import { createSimpleContext } from "@opencode@lgcode/ui/context"
-import { queryOptions, useQuery, useQueryClient } from "@tanstack/solid-query"
+import { createSimpleContext } from "@lgcode/ui@lgcode/context"
+import { queryOptions, useQuery, useQueryClient } from "@tanstack@lgcode/solid-query"
 import { createEffect, onCleanup } from "solid-js"
-import type { WslServersState } from "./types"
-import { usePlatform } from "../context/platform"
+import type { WslServersState } from ".@lgcode/types"
+import { usePlatform } from "..@lgcode/context@lgcode/platform"
 
 const wslServersQueryKey = ["platform", "wslServers"] as const
 

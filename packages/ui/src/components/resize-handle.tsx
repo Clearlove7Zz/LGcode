@@ -77,6 +77,6 @@ export function ResizeHandle(props: ResizeHandleProps) {
         [local.class ?? ""]: !!local.class,
       }}
       onMouseDown={handleMouseDown}
-    />
+    @lgcode/>
   )
 }

@@ -1,11 +1,11 @@
-import { NodeHttpServer, NodeServices } from "@effect/platform-node"
+import { NodeHttpServer, NodeServices } from "@effect@lgcode/platform-node"
 import Http from "node:http"
 import { describe, expect } from "bun:test"
 import { Context, Effect, Layer, Queue } from "effect"
-import { FetchHttpClient, HttpClient, HttpServer, HttpServerRequest, HttpServerResponse } from "effect/unstable/http"
-import * as Socket from "effect/unstable/socket/Socket"
-import { HttpApiProxy } from "../../src/server/routes/instance/httpapi/middleware/proxy"
-import { testEffect } from "../lib/effect"
+import { FetchHttpClient, HttpClient, HttpServer, HttpServerRequest, HttpServerResponse } from "effect@lgcode/unstable@lgcode/http"
+import * as Socket from "effect@lgcode/unstable@lgcode/socket@lgcode/Socket"
+import { HttpApiProxy } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/middleware@lgcode/proxy"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 function serverUrl() {
   return HttpServer.HttpServer.use((server) => Effect.succeed(HttpServer.formatAddress(server.address)))
@@ -32,8 +32,8 @@ function listenServer<E, R>(handler: TestHandler<E, R>) {
 
 function listenTestServer<E, R>(handler: TestHandler<E, R>) {
   return Effect.gen(function* () {
-    // Build into the current test scope so the listener stays alive until the
-    // test finishes. Using Effect.provide here would release it immediately.
+    @lgcode/@lgcode/ Build into the current test scope so the listener stays alive until the
+    @lgcode/@lgcode/ test finishes. Using Effect.provide here would release it immediately.
     const context = yield* Layer.build(NodeHttpServer.layer(Http.createServer, { host: "127.0.0.1", port: 0 }))
     const server = Context.get(context, HttpServer.HttpServer)
     yield* server.serve(HttpServerRequest.HttpServerRequest.use(handler))
@@ -45,8 +45,8 @@ function echoWebSocket(request: HttpServerRequest.HttpServerRequest) {
   return Effect.gen(function* () {
     const socket = yield* Effect.orDie(request.upgrade)
     const write = yield* socket.writer
-    // The upstream announces the negotiated protocol, then echoes every
-    // received frame. The assertions use those messages to prove proxy flow.
+    @lgcode/@lgcode/ The upstream announces the negotiated protocol, then echoes every
+    @lgcode/@lgcode/ received frame. The assertions use those messages to prove proxy flow.
     yield* socket
       .runRaw((message) => write(`echo:${String(message)}`), {
         onOpen: write(`protocol:${request.headers["sec-websocket-protocol"] ?? "none"}`).pipe(
@@ -79,12 +79,12 @@ describe("HttpApi workspace proxy", () => {
       )
 
       const request = HttpServerRequest.fromWeb(
-        new Request("http://localhost/session/abc", { method: "POST", body: "request-body" }),
+        new Request("http:@lgcode/@lgcode/localhost@lgcode/session@lgcode/abc", { method: "POST", body: "request-body" }),
       )
       const httpClient = yield* HttpClient.HttpClient
       const response = yield* HttpApiProxy.http(
         httpClient,
-        `${url}/session/abc?keep=yes`,
+        `${url}@lgcode/session@lgcode/abc?keep=yes`,
         { "x-extra": "injected" },
         request,
       )
@@ -92,7 +92,7 @@ describe("HttpApi workspace proxy", () => {
       expect(response.status).toBe(201)
       const client = HttpServerResponse.toClientResponse(response)
       expect(yield* client.json).toEqual({
-        path: "/session/abc?keep=yes",
+        path: "@lgcode/session@lgcode/abc?keep=yes",
         method: "POST",
         body: "request-body",
       })
@@ -104,9 +104,9 @@ describe("HttpApi workspace proxy", () => {
 
   it.live("returns 500 when remote is unreachable", () =>
     Effect.gen(function* () {
-      const request = HttpServerRequest.fromWeb(new Request("http://localhost/anything"))
+      const request = HttpServerRequest.fromWeb(new Request("http:@lgcode/@lgcode/localhost@lgcode/anything"))
       const httpClient = yield* HttpClient.HttpClient
-      const response = yield* HttpApiProxy.http(httpClient, "http://127.0.0.1:1/unreachable", undefined, request)
+      const response = yield* HttpApiProxy.http(httpClient, "http:@lgcode/@lgcode/127.0.0.1:1@lgcode/unreachable", undefined, request)
 
       expect(response.status).toBe(500)
     }),
@@ -119,9 +119,9 @@ describe("HttpApi workspace proxy", () => {
           return yield* HttpServerResponse.json({ method: req.method, body: yield* req.text })
         }),
       )
-      const request = HttpServerRequest.fromWeb(new Request("http://localhost/session/abc/abort", { method: "POST" }))
+      const request = HttpServerRequest.fromWeb(new Request("http:@lgcode/@lgcode/localhost@lgcode/session@lgcode/abc@lgcode/abort", { method: "POST" }))
       const httpClient = yield* HttpClient.HttpClient
-      const response = yield* HttpApiProxy.http(httpClient, `${url}/session/abc/abort`, undefined, request)
+      const response = yield* HttpApiProxy.http(httpClient, `${url}@lgcode/session@lgcode/abc@lgcode/abort`, undefined, request)
 
       expect(response.status).toBe(200)
       expect(yield* HttpServerResponse.toClientResponse(response).json).toEqual({ method: "POST", body: "" })
@@ -139,16 +139,16 @@ describe("HttpApi workspace proxy", () => {
       )
 
       const request = HttpServerRequest.fromWeb(
-        new Request("http://localhost/test", {
+        new Request("http:@lgcode/@lgcode/localhost@lgcode/test", {
           headers: {
-            "x-opencode-directory": "/secret/path",
+            "x-opencode-directory": "@lgcode/secret@lgcode/path",
             "x-opencode-workspace": "ws_123",
             "x-custom": "preserved",
           },
         }),
       )
       const httpClient = yield* HttpClient.HttpClient
-      yield* HttpApiProxy.http(httpClient, `${url}/test`, { "x-injected": "extra" }, request)
+      yield* HttpApiProxy.http(httpClient, `${url}@lgcode/test`, { "x-injected": "extra" }, request)
 
       expect(forwarded["x-opencode-directory"]).toBeUndefined()
       expect(forwarded["x-opencode-workspace"]).toBeUndefined()
@@ -161,11 +161,11 @@ describe("HttpApi workspace proxy", () => {
     Effect.gen(function* () {
       const upstreamUrl = yield* listenTestServer(echoWebSocket)
 
-      // Client -> proxy listener -> HttpApiProxy.websocket -> upstream listener.
-      // The client never connects to upstream directly.
-      const proxyUrl = yield* listenServer((request) => HttpApiProxy.websocket(request, `${upstreamUrl}/echo`))
+      @lgcode/@lgcode/ Client -> proxy listener -> HttpApiProxy.websocket -> upstream listener.
+      @lgcode/@lgcode/ The client never connects to upstream directly.
+      const proxyUrl = yield* listenServer((request) => HttpApiProxy.websocket(request, `${upstreamUrl}@lgcode/echo`))
 
-      const socket = yield* Socket.makeWebSocket(`${proxyUrl.replace(/^http/, "ws")}/proxy`, {
+      const socket = yield* Socket.makeWebSocket(`${proxyUrl.replace(@lgcode/^http@lgcode/, "ws")}@lgcode/proxy`, {
         closeCodeIsError: () => false,
         protocols: "chat",
       })

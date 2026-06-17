@@ -1,17 +1,17 @@
-import { Popover as Kobalte } from "@kobalte/core/popover"
+import { Popover as Kobalte } from "@kobalte@lgcode/core@lgcode/popover"
 import { Component, ComponentProps, createMemo, JSX, Show, ValidComponent } from "solid-js"
-import { createStore } from "solid-js/store"
-import { useLocal } from "@/context/local"
-import { useDialog } from "@opencode@lgcode/ui/context/dialog"
-import { popularProviders } from "@/hooks/use-providers"
-import { Button } from "@opencode@lgcode/ui/button"
-import { IconButton } from "@opencode@lgcode/ui/icon-button"
-import { Tag } from "@opencode@lgcode/ui/tag"
-import { Dialog } from "@opencode@lgcode/ui/dialog"
-import { List } from "@opencode@lgcode/ui/list"
-import { Tooltip } from "@opencode@lgcode/ui/tooltip"
-import { ModelTooltip } from "./model-tooltip"
-import { useLanguage } from "@/context/language"
+import { createStore } from "solid-js@lgcode/store"
+import { useLocal } from "@@lgcode/context@lgcode/local"
+import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
+import { popularProviders } from "@@lgcode/hooks@lgcode/use-providers"
+import { Button } from "@lgcode/ui@lgcode/button"
+import { IconButton } from "@lgcode/ui@lgcode/icon-button"
+import { Tag } from "@lgcode/ui@lgcode/tag"
+import { Dialog } from "@lgcode/ui@lgcode/dialog"
+import { List } from "@lgcode/ui@lgcode/list"
+import { Tooltip } from "@lgcode/ui@lgcode/tooltip"
+import { ModelTooltip } from ".@lgcode/model-tooltip"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
 
 const isFree = (provider: string, cost: { input: number } | undefined) =>
   provider === "opencode" && (!cost || cost.input === 0)
@@ -58,10 +58,10 @@ const ModelList: Component<{
           class="w-full"
           placement="right-start"
           gutter={12}
-          value={<ModelTooltip model={item} latest={item.latest} free={isFree(item.provider.id, item.cost)} />}
+          value={<ModelTooltip model={item} latest={item.latest} free={isFree(item.provider.id, item.cost)} @lgcode/>}
         >
           {node}
-        </Tooltip>
+        <@lgcode/Tooltip>
       )}
       onSelect={(x) => {
         model.set(x ? { modelID: x.id, providerID: x.provider.id } : undefined, {
@@ -72,16 +72,16 @@ const ModelList: Component<{
     >
       {(i) => (
         <div class="w-full flex items-center gap-x-2 text-13-regular">
-          <span class="truncate">{i.name}</span>
+          <span class="truncate">{i.name}<@lgcode/span>
           <Show when={isFree(i.provider.id, i.cost)}>
-            <Tag>{language.t("model.tag.free")}</Tag>
-          </Show>
+            <Tag>{language.t("model.tag.free")}<@lgcode/Tag>
+          <@lgcode/Show>
           <Show when={i.latest}>
-            <Tag>{language.t("model.tag.latest")}</Tag>
-          </Show>
-        </div>
+            <Tag>{language.t("model.tag.latest")}<@lgcode/Tag>
+          <@lgcode/Show>
+        <@lgcode/div>
       )}
-    </List>
+    <@lgcode/List>
   )
 }
 
@@ -112,15 +112,15 @@ export function ModelSelectorPopover(props: {
 
   const handleManage = () => {
     close("manage")
-    void import("./dialog-manage-models").then((x) => {
-      dialog.show(() => <x.DialogManageModels />)
+    void import(".@lgcode/dialog-manage-models").then((x) => {
+      dialog.show(() => <x.DialogManageModels @lgcode/>)
     })
   }
 
   const handleConnectProvider = () => {
     close("provider")
-    void import("./dialog-select-provider").then((x) => {
-      dialog.show(() => <x.DialogSelectProvider />)
+    void import(".@lgcode/dialog-select-provider").then((x) => {
+      dialog.show(() => <x.DialogSelectProvider @lgcode/>)
     })
   }
   const language = useLanguage()
@@ -138,7 +138,7 @@ export function ModelSelectorPopover(props: {
     >
       <Kobalte.Trigger as={props.triggerAs ?? "div"} {...props.triggerProps}>
         {props.children}
-      </Kobalte.Trigger>
+      <@lgcode/Kobalte.Trigger>
       <Kobalte.Portal>
         <Kobalte.Content
           class="w-72 h-80 flex flex-col p-2 rounded-md border border-border-base bg-surface-raised-stronger-non-alpha shadow-md z-50 outline-none overflow-hidden"
@@ -159,7 +159,7 @@ export function ModelSelectorPopover(props: {
             setStore("dismiss", null)
           }}
         >
-          <Kobalte.Title class="sr-only">{language.t("dialog.model.select.title")}</Kobalte.Title>
+          <Kobalte.Title class="sr-only">{language.t("dialog.model.select.title")}<@lgcode/Kobalte.Title>
           <ModelList
             provider={props.provider}
             model={props.model}
@@ -175,8 +175,8 @@ export function ModelSelectorPopover(props: {
                     class="size-6"
                     aria-label={language.t("command.provider.connect")}
                     onClick={handleConnectProvider}
-                  />
-                </Tooltip>
+                  @lgcode/>
+                <@lgcode/Tooltip>
                 <Tooltip placement="top" value={language.t("dialog.model.manage")}>
                   <IconButton
                     icon="sliders"
@@ -185,14 +185,14 @@ export function ModelSelectorPopover(props: {
                     class="size-6"
                     aria-label={language.t("dialog.model.manage")}
                     onClick={handleManage}
-                  />
-                </Tooltip>
-              </div>
+                  @lgcode/>
+                <@lgcode/Tooltip>
+              <@lgcode/div>
             }
-          />
-        </Kobalte.Content>
-      </Kobalte.Portal>
-    </Kobalte>
+          @lgcode/>
+        <@lgcode/Kobalte.Content>
+      <@lgcode/Kobalte.Portal>
+    <@lgcode/Kobalte>
   )
 }
 
@@ -201,14 +201,14 @@ export const DialogSelectModel: Component<{ provider?: string; model?: ModelStat
   const language = useLanguage()
 
   const provider = () => {
-    void import("./dialog-select-provider").then((x) => {
-      dialog.show(() => <x.DialogSelectProvider />)
+    void import(".@lgcode/dialog-select-provider").then((x) => {
+      dialog.show(() => <x.DialogSelectProvider @lgcode/>)
     })
   }
 
   const manage = () => {
-    void import("./dialog-manage-models").then((x) => {
-      dialog.show(() => <x.DialogManageModels />)
+    void import(".@lgcode/dialog-manage-models").then((x) => {
+      dialog.show(() => <x.DialogManageModels @lgcode/>)
     })
   }
 
@@ -218,13 +218,13 @@ export const DialogSelectModel: Component<{ provider?: string; model?: ModelStat
       action={
         <Button class="h-7 -my-1 text-14-medium" icon="plus-small" tabIndex={-1} onClick={provider}>
           {language.t("command.provider.connect")}
-        </Button>
+        <@lgcode/Button>
       }
     >
-      <ModelList provider={props.provider} model={props.model} onSelect={() => dialog.close()} />
+      <ModelList provider={props.provider} model={props.model} onSelect={() => dialog.close()} @lgcode/>
       <Button variant="ghost" class="ml-3 mt-5 mb-6 text-text-base self-start" onClick={manage}>
         {language.t("dialog.model.manage")}
-      </Button>
-    </Dialog>
+      <@lgcode/Button>
+    <@lgcode/Dialog>
   )
 }

@@ -1,4 +1,4 @@
-// @refresh reload
+@lgcode/@lgcode/ @refresh reload
 
 import {
   ACCEPTED_FILE_EXTENSIONS,
@@ -13,21 +13,21 @@ import {
   ServerConnection,
   useCommand,
   useWslServers,
-} from "@opencode@lgcode/app"
-import type { UpdaterState } from "@opencode@lgcode/app/updater"
-import * as Sentry from "@sentry/solid"
-import type { AsyncStorage } from "@solid-primitives/storage"
-import { MemoryRouter } from "@solidjs/router"
+} from "@lgcode/app"
+import type { UpdaterState } from "@lgcode/app@lgcode/updater"
+import * as Sentry from "@sentry@lgcode/solid"
+import type { AsyncStorage } from "@solid-primitives@lgcode/storage"
+import { MemoryRouter } from "@solidjs@lgcode/router"
 import { createEffect, createMemo, createResource, createSignal, onCleanup, onMount, Show } from "solid-js"
-import { render } from "solid-js/web"
-import pkg from "../../package.json"
-import { initI18n, t } from "./i18n"
-import { initializationData, initializationReady } from "./initialization"
-import { resetZoom, setPinchZoomEnabled, webviewZoom, zoomIn, zoomOut } from "./webview-zoom"
-import { availableStartupServer, readyWslConnections } from "./wsl/connections"
-import "./styles.css"
-import { Splash } from "@opencode@lgcode/ui/logo"
-import { useTheme } from "@opencode@lgcode/ui/theme/context"
+import { render } from "solid-js@lgcode/web"
+import pkg from "..@lgcode/..@lgcode/package.json"
+import { initI18n, t } from ".@lgcode/i18n"
+import { initializationData, initializationReady } from ".@lgcode/initialization"
+import { resetZoom, setPinchZoomEnabled, webviewZoom, zoomIn, zoomOut } from ".@lgcode/webview-zoom"
+import { availableStartupServer, readyWslConnections } from ".@lgcode/wsl@lgcode/connections"
+import ".@lgcode/styles.css"
+import { Splash } from "@lgcode/ui@lgcode/logo"
+import { useTheme } from "@lgcode/ui@lgcode/theme@lgcode/context"
 
 const root = document.getElementById("root")
 if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
@@ -216,7 +216,7 @@ const createPlatform = (): Platform => {
 
       const notification = new Notification(title, {
         body: description ?? "",
-        icon: "https://opencode.ai/favicon-96x96-v3.png",
+        icon: "https:@lgcode/@lgcode/opencode.ai@lgcode/favicon-96x96-v3.png",
       })
       notification.onclick = () => {
         void window.api.showWindow()
@@ -268,9 +268,9 @@ const createPlatform = (): Platform => {
     async readClipboardImage() {
       const image = await window.api.readClipboardImage().catch(() => null)
       if (!image) return null
-      const blob = new Blob([image.buffer], { type: "image/png" })
+      const blob = new Blob([image.buffer], { type: "image@lgcode/png" })
       return new File([blob], `pasted-image-${Date.now()}.png`, {
-        type: "image/png",
+        type: "image@lgcode/png",
       })
     },
   }
@@ -289,7 +289,7 @@ render(() => {
     const legacy = current ? undefined : await platform.storage?.().getItem("language.v1")
     const raw = current ?? legacy
     if (!raw) return
-    const locale = raw.match(/"locale"\s*:\s*"([^"]+)"/)?.[1]
+    const locale = raw.match(@lgcode/"locale"\s*:\s*"([^"]+)"@lgcode/)?.[1]
     if (!locale) return
     const next = normalizeLocale(locale)
     if (next !== "en") await loadLocaleDict(next)
@@ -298,7 +298,7 @@ render(() => {
 
   const [windowCount] = createResource(() => window.api.getWindowCount())
 
-  // Fetch sidecar credentials (available immediately, before health check)
+  @lgcode/@lgcode/ Fetch sidecar credentials (available immediately, before health check)
   const [sidecar] = createResource(() => window.api.awaitInitialization())
 
   const [defaultServer] = createResource(() => platform.getDefaultServer?.())
@@ -334,8 +334,8 @@ render(() => {
     const wslServers = useWslServers()
     const splash = (
       <div class="h-dvh w-screen flex flex-col items-center justify-center bg-background-base">
-        <Splash class="w-16 h-20 opacity-50 animate-pulse" />
-      </div>
+        <Splash class="w-16 h-20 opacity-50 animate-pulse" @lgcode/>
+      <@lgcode/div>
     )
 
     const ready = createMemo(
@@ -368,11 +368,11 @@ render(() => {
         <Show when={effectiveDefaultServer()} keyed>
           {(key) => (
             <AppInterface defaultServer={key} servers={servers()} router={MemoryRouter}>
-              <Inner />
-            </AppInterface>
+              <Inner @lgcode/>
+            <@lgcode/AppInterface>
           )}
-        </Show>
-      </Show>
+        <@lgcode/Show>
+      <@lgcode/Show>
     )
   }
 
@@ -386,8 +386,8 @@ render(() => {
   return (
     <PlatformProvider value={platform}>
       <AppBaseProviders locale={locale.latest}>
-        <Show when={true}>{(_) => <App />}</Show>
-      </AppBaseProviders>
-    </PlatformProvider>
+        <Show when={true}>{(_) => <App @lgcode/>}<@lgcode/Show>
+      <@lgcode/AppBaseProviders>
+    <@lgcode/PlatformProvider>
   )
 }, root!)

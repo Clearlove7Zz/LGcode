@@ -1,6 +1,6 @@
-// @ts-nocheck
-import * as mod from "./file-icon"
-import { create } from "../storybook/scaffold"
+@lgcode/@lgcode/ @ts-nocheck
+import * as mod from ".@lgcode/file-icon"
+import { create } from "..@lgcode/storybook@lgcode/scaffold"
 
 const docs = `### Overview
 File and folder icon renderer based on file name and extension.
@@ -20,13 +20,13 @@ Use in file trees and lists.
 ### Accessibility
 - Provide adjacent text labels for filenames; icons are decorative.
 
-### Theming/tokens
+### Theming@lgcode/tokens
 - Uses \`data-component="file-icon"\` and sprite-based styling.
 
 `
 
 const story = create({
-  title: "UI/FileIcon",
+  title: "UI@lgcode/FileIcon",
   mod,
   args: {
     node: { path: "package.json", type: "file" },
@@ -35,7 +35,7 @@ const story = create({
 })
 
 export default {
-  title: "UI/FileIcon",
+  title: "UI@lgcode/FileIcon",
   id: "components-file-icon",
   component: story.meta.component,
   tags: ["autodocs"],
@@ -84,11 +84,11 @@ export const Samples = {
       >
         {items.map((node) => (
           <div style={{ display: "flex", gap: "8px", "align-items": "center" }}>
-            <mod.FileIcon node={{ path: node.path, type: node.type }} mono={false} />
-            <div style={{ "font-size": "12px", color: "var(--text-weak)" }}>{node.path}</div>
-          </div>
+            <mod.FileIcon node={{ path: node.path, type: node.type }} mono={false} @lgcode/>
+            <div style={{ "font-size": "12px", color: "var(--text-weak)" }}>{node.path}<@lgcode/div>
+          <@lgcode/div>
         ))}
-      </div>
+      <@lgcode/div>
     )
   },
 }

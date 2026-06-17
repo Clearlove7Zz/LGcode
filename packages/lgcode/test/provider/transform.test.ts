@@ -1,20 +1,20 @@
 import { describe, expect, test } from "bun:test"
 import { Effect } from "effect"
-import { ProviderTransform } from "@/provider/transform"
-import { LLMRequestPrep } from "@/session/llm/request"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { ModelV2 } from "@opencode@lgcode/core/model"
+import { ProviderTransform } from "@@lgcode/provider@lgcode/transform"
+import { LLMRequestPrep } from "@@lgcode/session@lgcode/llm@lgcode/request"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
 
 describe("ProviderTransform.options - setCacheKey", () => {
   const sessionID = "test-session-123"
 
   const mockModel = {
-    id: "anthropic/claude-3-5-sonnet",
+    id: "anthropic@lgcode/claude-3-5-sonnet",
     providerID: "anthropic",
     api: {
       id: "claude-3-5-sonnet-20241022",
-      url: "https://api.anthropic.com",
-      npm: "@ai-sdk/anthropic",
+      url: "https:@lgcode/@lgcode/api.anthropic.com",
+      npm: "@ai-sdk@lgcode/anthropic",
     },
     name: "Claude 3.5 Sonnet",
     capabilities: {
@@ -78,8 +78,8 @@ describe("ProviderTransform.options - setCacheKey", () => {
       providerID: "openai",
       api: {
         id: "gpt-4",
-        url: "https://api.openai.com",
-        npm: "@ai-sdk/openai",
+        url: "https:@lgcode/@lgcode/api.openai.com",
+        npm: "@ai-sdk@lgcode/openai",
       },
     }
     const result = ProviderTransform.options({ model: openaiModel, sessionID, providerOptions: {} })
@@ -92,8 +92,8 @@ describe("ProviderTransform.options - setCacheKey", () => {
       providerID: "openai",
       api: {
         id: "gpt-4",
-        url: "https://api.openai.com",
-        npm: "@ai-sdk/openai",
+        url: "https:@lgcode/@lgcode/api.openai.com",
+        npm: "@ai-sdk@lgcode/openai",
       },
     }
     const result = ProviderTransform.options({
@@ -110,8 +110,8 @@ describe("ProviderTransform.options - setCacheKey", () => {
       providerID: "azure",
       api: {
         id: "gpt-4",
-        url: "https://azure.com",
-        npm: "@ai-sdk/azure",
+        url: "https:@lgcode/@lgcode/azure.com",
+        npm: "@ai-sdk@lgcode/azure",
       },
     }
     const result = ProviderTransform.options({
@@ -123,17 +123,17 @@ describe("ProviderTransform.options - setCacheKey", () => {
   })
 })
 
-describe("ProviderTransform.options - zai/zhipuai thinking", () => {
+describe("ProviderTransform.options - zai@lgcode/zhipuai thinking", () => {
   const sessionID = "test-session-123"
 
   const createModel = (providerID: string) =>
     ({
-      id: `${providerID}/glm-4.6`,
+      id: `${providerID}@lgcode/glm-4.6`,
       providerID,
       api: {
         id: "glm-4.6",
-        url: "https://open.bigmodel.cn/api/paas/v4",
-        npm: "@ai-sdk/openai-compatible",
+        url: "https:@lgcode/@lgcode/open.bigmodel.cn@lgcode/api@lgcode/paas@lgcode/v4",
+        npm: "@ai-sdk@lgcode/openai-compatible",
       },
       name: "GLM 4.6",
       capabilities: {
@@ -178,11 +178,11 @@ describe("ProviderTransform.options - zai/zhipuai thinking", () => {
 describe("ProviderTransform.options - minimax m3 thinking", () => {
   const createModel = (npm: string) =>
     ({
-      id: "minimax/minimax-m3",
+      id: "minimax@lgcode/minimax-m3",
       providerID: "minimax",
       api: {
         id: "minimax-m3",
-        url: "https://api.minimax.com",
+        url: "https:@lgcode/@lgcode/api.minimax.com",
         npm,
       },
       capabilities: { reasoning: true },
@@ -192,7 +192,7 @@ describe("ProviderTransform.options - minimax m3 thinking", () => {
   test("explicitly enables adaptive thinking with the anthropic SDK", () => {
     expect(
       ProviderTransform.options({
-        model: createModel("@ai-sdk/anthropic"),
+        model: createModel("@ai-sdk@lgcode/anthropic"),
         sessionID: "test-session-123",
       }).thinking,
     ).toEqual({ type: "adaptive" })
@@ -201,7 +201,7 @@ describe("ProviderTransform.options - minimax m3 thinking", () => {
   test("uses the native default with the openai-compatible SDK", () => {
     expect(
       ProviderTransform.options({
-        model: createModel("@ai-sdk/openai-compatible"),
+        model: createModel("@ai-sdk@lgcode/openai-compatible"),
         sessionID: "test-session-123",
       }).thinking,
     ).toBeUndefined()
@@ -211,13 +211,13 @@ describe("ProviderTransform.options - minimax m3 thinking", () => {
 describe("ProviderTransform.options - google thinkingConfig gating", () => {
   const sessionID = "test-session-123"
 
-  const createGoogleModel = (reasoning: boolean, npm: "@ai-sdk/google" | "@ai-sdk/google-vertex") =>
+  const createGoogleModel = (reasoning: boolean, npm: "@ai-sdk@lgcode/google" | "@ai-sdk@lgcode/google-vertex") =>
     ({
-      id: `${npm === "@ai-sdk/google" ? "google" : "google-vertex"}/gemini-2.0-flash`,
-      providerID: npm === "@ai-sdk/google" ? "google" : "google-vertex",
+      id: `${npm === "@ai-sdk@lgcode/google" ? "google" : "google-vertex"}@lgcode/gemini-2.0-flash`,
+      providerID: npm === "@ai-sdk@lgcode/google" ? "google" : "google-vertex",
       api: {
         id: "gemini-2.0-flash",
-        url: npm === "@ai-sdk/google" ? "https://generativelanguage.googleapis.com" : "https://vertexai.googleapis.com",
+        url: npm === "@ai-sdk@lgcode/google" ? "https:@lgcode/@lgcode/generativelanguage.googleapis.com" : "https:@lgcode/@lgcode/vertexai.googleapis.com",
         npm,
       },
       name: "Gemini 2.0 Flash",
@@ -246,7 +246,7 @@ describe("ProviderTransform.options - google thinkingConfig gating", () => {
 
   test("does not set thinkingConfig for google models without reasoning capability", () => {
     const result = ProviderTransform.options({
-      model: createGoogleModel(false, "@ai-sdk/google"),
+      model: createGoogleModel(false, "@ai-sdk@lgcode/google"),
       sessionID,
       providerOptions: {},
     })
@@ -255,7 +255,7 @@ describe("ProviderTransform.options - google thinkingConfig gating", () => {
 
   test("sets thinkingConfig for google models with reasoning capability", () => {
     const result = ProviderTransform.options({
-      model: createGoogleModel(true, "@ai-sdk/google"),
+      model: createGoogleModel(true, "@ai-sdk@lgcode/google"),
       sessionID,
       providerOptions: {},
     })
@@ -266,7 +266,7 @@ describe("ProviderTransform.options - google thinkingConfig gating", () => {
 
   test("does not set thinkingConfig for vertex models without reasoning capability", () => {
     const result = ProviderTransform.options({
-      model: createGoogleModel(false, "@ai-sdk/google-vertex"),
+      model: createGoogleModel(false, "@ai-sdk@lgcode/google-vertex"),
       sessionID,
       providerOptions: {},
     })
@@ -279,12 +279,12 @@ describe("ProviderTransform.options - gpt-5 textVerbosity", () => {
 
   const createGpt5Model = (apiId: string) =>
     ({
-      id: `openai/${apiId}`,
+      id: `openai@lgcode/${apiId}`,
       providerID: "openai",
       api: {
         id: apiId,
-        url: "https://api.openai.com",
-        npm: "@ai-sdk/openai",
+        url: "https:@lgcode/@lgcode/api.openai.com",
+        npm: "@ai-sdk@lgcode/openai",
       },
       name: apiId,
       capabilities: {
@@ -313,12 +313,12 @@ describe("ProviderTransform.options - gpt-5 textVerbosity", () => {
   test("Bedrock Mantle gpt-5.5 uses OpenAI Responses defaults", () => {
     const model = {
       ...createGpt5Model("openai.gpt-5.5"),
-      id: "amazon-bedrock/openai.gpt-5.5",
+      id: "amazon-bedrock@lgcode/openai.gpt-5.5",
       providerID: "amazon-bedrock",
       api: {
         id: "openai.gpt-5.5",
-        url: "https://bedrock-mantle.us-east-2.api.aws/openai/v1",
-        npm: "@ai-sdk/amazon-bedrock/mantle",
+        url: "https:@lgcode/@lgcode/bedrock-mantle.us-east-2.api.aws@lgcode/openai@lgcode/v1",
+        npm: "@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle",
       },
     }
     const result = ProviderTransform.options({ model, sessionID, providerOptions: {} })
@@ -332,12 +332,12 @@ describe("ProviderTransform.options - gpt-5 textVerbosity", () => {
   test("openai-compatible gpt-5 models omit Responses-only reasoningSummary", () => {
     const model = {
       ...createGpt5Model("gpt-5.4"),
-      id: "cortecs/gpt-5.4",
+      id: "cortecs@lgcode/gpt-5.4",
       providerID: "cortecs",
       api: {
         id: "gpt-5.4",
-        url: "https://api.cortecs.ai/v1",
-        npm: "@ai-sdk/openai-compatible",
+        url: "https:@lgcode/@lgcode/api.cortecs.ai@lgcode/v1",
+        npm: "@ai-sdk@lgcode/openai-compatible",
       },
     }
     const result = ProviderTransform.options({ model, sessionID, providerOptions: {} })
@@ -349,12 +349,12 @@ describe("ProviderTransform.options - gpt-5 textVerbosity", () => {
   test("azure chat completions omit Responses-only reasoning options after variants merge", async () => {
     const model = {
       ...createGpt5Model("gpt-5.4"),
-      id: "azure/gpt-5.4",
+      id: "azure@lgcode/gpt-5.4",
       providerID: "azure",
       api: {
         id: "gpt-5.4",
-        url: "https://azure.com",
-        npm: "@ai-sdk/azure",
+        url: "https:@lgcode/@lgcode/azure.com",
+        npm: "@ai-sdk@lgcode/azure",
       },
       variants: {
         high: {
@@ -443,12 +443,12 @@ describe("ProviderTransform.options - gpt-5 reasoningEffort", () => {
 
   const createModel = (apiId: string) =>
     ({
-      id: `azure/${apiId}`,
+      id: `azure@lgcode/${apiId}`,
       providerID: "azure",
       api: {
         id: apiId,
-        url: "https://azure.com",
-        npm: "@ai-sdk/azure",
+        url: "https:@lgcode/@lgcode/azure.com",
+        npm: "@ai-sdk@lgcode/azure",
       },
       name: apiId,
       capabilities: {
@@ -516,8 +516,8 @@ describe("ProviderTransform.options - gateway", () => {
       providerID: "vercel",
       api: {
         id,
-        url: "https://ai-gateway.vercel.sh/v3/ai",
-        npm: "@ai-sdk/gateway",
+        url: "https:@lgcode/@lgcode/ai-gateway.vercel.sh@lgcode/v3@lgcode/ai",
+        npm: "@ai-sdk@lgcode/gateway",
       },
       name: id,
       capabilities: {
@@ -545,7 +545,7 @@ describe("ProviderTransform.options - gateway", () => {
     }) as any
 
   test("puts gateway defaults under gateway key", () => {
-    const model = createModel("anthropic/claude-sonnet-4")
+    const model = createModel("anthropic@lgcode/claude-sonnet-4")
     const result = ProviderTransform.options({ model, sessionID, providerOptions: {} })
     expect(result).toEqual({
       gateway: {
@@ -558,12 +558,12 @@ describe("ProviderTransform.options - gateway", () => {
 describe("ProviderTransform.providerOptions", () => {
   const createModel = (overrides: Partial<any> = {}) =>
     ({
-      id: "test/test-model",
+      id: "test@lgcode/test-model",
       providerID: "test",
       api: {
         id: "test-model",
-        url: "https://api.test.com",
-        npm: "@ai-sdk/openai",
+        url: "https:@lgcode/@lgcode/api.test.com",
+        npm: "@ai-sdk@lgcode/openai",
       },
       name: "Test Model",
       capabilities: {
@@ -596,8 +596,8 @@ describe("ProviderTransform.providerOptions", () => {
       providerID: "my-bedrock",
       api: {
         id: "anthropic.claude-sonnet-4",
-        url: "https://bedrock.aws",
-        npm: "@ai-sdk/amazon-bedrock",
+        url: "https:@lgcode/@lgcode/bedrock.aws",
+        npm: "@ai-sdk@lgcode/amazon-bedrock",
       },
     })
 
@@ -610,9 +610,9 @@ describe("ProviderTransform.providerOptions", () => {
     const model = createModel({
       providerID: "vercel",
       api: {
-        id: "anthropic/claude-sonnet-4",
-        url: "https://ai-gateway.vercel.sh/v3/ai",
-        npm: "@ai-sdk/gateway",
+        id: "anthropic@lgcode/claude-sonnet-4",
+        url: "https:@lgcode/@lgcode/ai-gateway.vercel.sh@lgcode/v3@lgcode/ai",
+        npm: "@ai-sdk@lgcode/gateway",
       },
     })
 
@@ -623,12 +623,12 @@ describe("ProviderTransform.providerOptions", () => {
 
   test("falls back to gateway key when gateway api id is unscoped", () => {
     const model = createModel({
-      id: "anthropic/claude-sonnet-4",
+      id: "anthropic@lgcode/claude-sonnet-4",
       providerID: "vercel",
       api: {
         id: "claude-sonnet-4",
-        url: "https://ai-gateway.vercel.sh/v3/ai",
-        npm: "@ai-sdk/gateway",
+        url: "https:@lgcode/@lgcode/ai-gateway.vercel.sh@lgcode/v3@lgcode/ai",
+        npm: "@ai-sdk@lgcode/gateway",
       },
     })
 
@@ -641,9 +641,9 @@ describe("ProviderTransform.providerOptions", () => {
     const model = createModel({
       providerID: "vercel",
       api: {
-        id: "anthropic/claude-sonnet-4",
-        url: "https://ai-gateway.vercel.sh/v3/ai",
-        npm: "@ai-sdk/gateway",
+        id: "anthropic@lgcode/claude-sonnet-4",
+        url: "https:@lgcode/@lgcode/ai-gateway.vercel.sh@lgcode/v3@lgcode/ai",
+        npm: "@ai-sdk@lgcode/gateway",
       },
     })
 
@@ -664,8 +664,8 @@ describe("ProviderTransform.providerOptions", () => {
       providerID: "vercel",
       api: {
         id: "claude-sonnet-4",
-        url: "https://ai-gateway.vercel.sh/v3/ai",
-        npm: "@ai-sdk/gateway",
+        url: "https:@lgcode/@lgcode/ai-gateway.vercel.sh@lgcode/v3@lgcode/ai",
+        npm: "@ai-sdk@lgcode/gateway",
       },
     })
 
@@ -678,9 +678,9 @@ describe("ProviderTransform.providerOptions", () => {
     const model = createModel({
       providerID: "vercel",
       api: {
-        id: "amazon/nova-2-lite",
-        url: "https://ai-gateway.vercel.sh/v3/ai",
-        npm: "@ai-sdk/gateway",
+        id: "amazon@lgcode/nova-2-lite",
+        url: "https:@lgcode/@lgcode/ai-gateway.vercel.sh@lgcode/v3@lgcode/ai",
+        npm: "@ai-sdk@lgcode/gateway",
       },
     })
 
@@ -694,8 +694,8 @@ describe("ProviderTransform.providerOptions", () => {
       providerID: "amazon-bedrock",
       api: {
         id: "openai.gpt-5.5",
-        url: "https://bedrock-mantle.us-east-2.api.aws/openai/v1",
-        npm: "@ai-sdk/amazon-bedrock/mantle",
+        url: "https:@lgcode/@lgcode/bedrock-mantle.us-east-2.api.aws@lgcode/openai@lgcode/v1",
+        npm: "@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle",
       },
     })
 
@@ -708,9 +708,9 @@ describe("ProviderTransform.providerOptions", () => {
     const model = createModel({
       providerID: "vercel",
       api: {
-        id: "groq/llama-3.3-70b-versatile",
-        url: "https://ai-gateway.vercel.sh/v3/ai",
-        npm: "@ai-sdk/gateway",
+        id: "groq@lgcode/llama-3.3-70b-versatile",
+        url: "https:@lgcode/@lgcode/ai-gateway.vercel.sh@lgcode/v3@lgcode/ai",
+        npm: "@ai-sdk@lgcode/gateway",
       },
     })
 
@@ -760,7 +760,7 @@ describe("ProviderTransform.schema - gemini nested array items", () => {
           type: "array",
           items: {
             type: "array",
-            items: {}, // Empty items object
+            items: {}, @lgcode/@lgcode/ Empty items object
           },
         },
       },
@@ -768,7 +768,7 @@ describe("ProviderTransform.schema - gemini nested array items", () => {
 
     const result = ProviderTransform.schema(geminiModel, schema) as any
 
-    // Inner items should have a default type
+    @lgcode/@lgcode/ Inner items should have a default type
     expect(result.properties.values.items.items.type).toBe("string")
   })
 
@@ -778,7 +778,7 @@ describe("ProviderTransform.schema - gemini nested array items", () => {
       properties: {
         data: {
           type: "array",
-          items: { type: "array" }, // No items at all
+          items: { type: "array" }, @lgcode/@lgcode/ No items at all
         },
       },
     } as any
@@ -799,7 +799,7 @@ describe("ProviderTransform.schema - gemini nested array items", () => {
             type: "array",
             items: {
               type: "array",
-              // No items
+              @lgcode/@lgcode/ No items
             },
           },
         },
@@ -820,7 +820,7 @@ describe("ProviderTransform.schema - gemini nested array items", () => {
           type: "array",
           items: {
             type: "array",
-            items: { type: "number" }, // Has explicit type
+            items: { type: "number" }, @lgcode/@lgcode/ Has explicit type
           },
         },
       },
@@ -828,7 +828,7 @@ describe("ProviderTransform.schema - gemini nested array items", () => {
 
     const result = ProviderTransform.schema(geminiModel, schema) as any
 
-    // Should preserve the explicit type
+    @lgcode/@lgcode/ Should preserve the explicit type
     expect(result.properties.numbers.items.items.type).toBe("number")
   })
 
@@ -843,7 +843,7 @@ describe("ProviderTransform.schema - gemini nested array items", () => {
               type: "array",
               items: {
                 type: "array",
-                items: {}, // Empty items
+                items: {}, @lgcode/@lgcode/ Empty items
               },
             },
           },
@@ -858,12 +858,12 @@ describe("ProviderTransform.schema - gemini nested array items", () => {
 })
 
 describe("ProviderTransform.schema - gemini type arrays", () => {
-  // Mirrors @ai-sdk/google's convertJSONSchemaToOpenAPISchema: JSON Schema type
-  // arrays (e.g. `["number","string"]`, common in MCP tool schemas) become an
-  // `anyOf` of single-type schemas, with `null` lifted into `nullable`. Plain
-  // @ai-sdk/google rewrites these, but OpenAI-compatible transports such as
-  // GitHub Copilot (proxying to Gemini) forward them verbatim and the backend
-  // rejects the array form.
+  @lgcode/@lgcode/ Mirrors @ai-sdk@lgcode/google's convertJSONSchemaToOpenAPISchema: JSON Schema type
+  @lgcode/@lgcode/ arrays (e.g. `["number","string"]`, common in MCP tool schemas) become an
+  @lgcode/@lgcode/ `anyOf` of single-type schemas, with `null` lifted into `nullable`. Plain
+  @lgcode/@lgcode/ @ai-sdk@lgcode/google rewrites these, but OpenAI-compatible transports such as
+  @lgcode/@lgcode/ GitHub Copilot (proxying to Gemini) forward them verbatim and the backend
+  @lgcode/@lgcode/ rejects the array form.
   const geminiModel = {
     providerID: "google",
     api: {
@@ -884,7 +884,7 @@ describe("ProviderTransform.schema - gemini type arrays", () => {
     expect(result.properties.status.type).toBeUndefined()
     expect(result.properties.status.anyOf).toEqual([{ type: "number" }, { type: "string" }])
     expect(result.properties.status.nullable).toBeUndefined()
-    // Sibling keywords stay alongside the generated anyOf.
+    @lgcode/@lgcode/ Sibling keywords stay alongside the generated anyOf.
     expect(result.properties.status.description).toBe("status filter")
   })
 
@@ -922,7 +922,7 @@ describe("ProviderTransform.schema - gemini type arrays", () => {
       providerID: "github-copilot",
       api: {
         id: "gemini-3.5-flash",
-        npm: "@ai-sdk/github-copilot",
+        npm: "@ai-sdk@lgcode/github-copilot",
       },
     } as any
 
@@ -1159,13 +1159,13 @@ describe("ProviderTransform.schema - openai supported schema subset", () => {
     providerID: "openai",
     api: {
       id: "gpt-4.1",
-      npm: "@ai-sdk/openai",
+      npm: "@ai-sdk@lgcode/openai",
     },
   } as any
 
   test("removes unsupported JSON Schema keywords recursively", () => {
     const result = ProviderTransform.schema(openaiModel, {
-      $schema: "https://json-schema.org/draft/2020-12/schema",
+      $schema: "https:@lgcode/@lgcode/json-schema.org@lgcode/draft@lgcode/2020-12@lgcode/schema",
       title: "Search",
       type: "object",
       properties: {
@@ -1173,10 +1173,10 @@ describe("ProviderTransform.schema - openai supported schema subset", () => {
           type: "string",
           description: "Search query",
           format: "uri",
-          pattern: "^https://",
+          pattern: "^https:@lgcode/@lgcode/",
           minLength: 1,
           maxLength: 100,
-          default: "https://example.com",
+          default: "https:@lgcode/@lgcode/example.com",
         },
         count: {
           type: "integer",
@@ -1264,7 +1264,7 @@ describe("ProviderTransform.schema - openai supported schema subset", () => {
       type: "object",
       properties: {
         value: {
-          $ref: "#/$defs/Value",
+          $ref: "#@lgcode/$defs@lgcode/Value",
           description: "Referenced value",
           examples: ["ignored"],
         },
@@ -1283,7 +1283,7 @@ describe("ProviderTransform.schema - openai supported schema subset", () => {
     } as any) as any
 
     expect(result.properties.value).toEqual({
-      $ref: "#/$defs/Value",
+      $ref: "#@lgcode/$defs@lgcode/Value",
       description: "Referenced value",
     })
     expect(result.$defs).toEqual({
@@ -1303,7 +1303,7 @@ describe("ProviderTransform.schema - openai supported schema subset", () => {
         providerID: "anthropic",
         api: {
           id: "claude-sonnet-4",
-          npm: "@ai-sdk/anthropic",
+          npm: "@ai-sdk@lgcode/anthropic",
         },
       } as any,
       {
@@ -1311,19 +1311,19 @@ describe("ProviderTransform.schema - openai supported schema subset", () => {
         properties: {
           query: {
             type: "string",
-            pattern: "^https://",
+            pattern: "^https:@lgcode/@lgcode/",
           },
         },
       } as any,
     ) as any
 
-    expect(result.properties.query.pattern).toBe("^https://")
+    expect(result.properties.query.pattern).toBe("^https:@lgcode/@lgcode/")
   })
 
   test.each([
-    ["opencode", "@ai-sdk/openai"],
-    ["custom-openai-compatible", "@ai-sdk/openai"],
-    ["azure", "@ai-sdk/azure"],
+    ["opencode", "@ai-sdk@lgcode/openai"],
+    ["custom-openai-compatible", "@ai-sdk@lgcode/openai"],
+    ["azure", "@ai-sdk@lgcode/azure"],
   ])("sanitizes %s models using %s", (providerID, npm) => {
     expect(
       ProviderTransform.schema(
@@ -1339,7 +1339,7 @@ describe("ProviderTransform.schema - openai supported schema subset", () => {
           properties: {
             query: {
               type: "string",
-              pattern: "^https://",
+              pattern: "^https:@lgcode/@lgcode/",
             },
           },
         } as any,
@@ -1393,7 +1393,7 @@ describe("ProviderTransform.schema - moonshot $ref siblings", () => {
           type: "array",
         },
         variantOptions: {
-          $ref: "#/$defs/VariantOptions",
+          $ref: "#@lgcode/$defs@lgcode/VariantOptions",
           description:
             "Required. The variant options for generation, including the number of variants, creative range, and aspects to focus on.",
         },
@@ -1433,7 +1433,7 @@ describe("ProviderTransform.schema - moonshot $ref siblings", () => {
     const result = ProviderTransform.schema(moonshotModel, schema) as any
 
     expect(result.properties.variantOptions).toEqual({
-      $ref: "#/$defs/VariantOptions",
+      $ref: "#@lgcode/$defs@lgcode/VariantOptions",
     })
     expect(result.$defs.VariantOptions.description).toBe(schema.$defs.VariantOptions.description)
   })
@@ -1444,14 +1444,14 @@ describe("ProviderTransform.schema - moonshot $ref siblings", () => {
         providerID: "openrouter",
         name: "Kimi K2",
         api: {
-          id: "moonshotai/kimi-k2",
+          id: "moonshotai@lgcode/kimi-k2",
         },
       } as any,
       {
         type: "object",
         properties: {
           value: {
-            $ref: "#/$defs/Value",
+            $ref: "#@lgcode/$defs@lgcode/Value",
             description: "Moonshot rejects this sibling after ref expansion.",
           },
         },
@@ -1465,7 +1465,7 @@ describe("ProviderTransform.schema - moonshot $ref siblings", () => {
     ) as any
 
     expect(result.properties.value).toEqual({
-      $ref: "#/$defs/Value",
+      $ref: "#@lgcode/$defs@lgcode/Value",
     })
   })
 
@@ -1519,12 +1519,12 @@ describe("ProviderTransform.message - DeepSeek reasoning content", () => {
     const result = ProviderTransform.message(
       msgs,
       {
-        id: ModelV2.ID.make("deepseek/deepseek-chat"),
+        id: ModelV2.ID.make("deepseek@lgcode/deepseek-chat"),
         providerID: ProviderV2.ID.make("deepseek"),
         api: {
           id: "deepseek-chat",
-          url: "https://api.deepseek.com",
-          npm: "@ai-sdk/openai-compatible",
+          url: "https:@lgcode/@lgcode/api.deepseek.com",
+          npm: "@ai-sdk@lgcode/openai-compatible",
         },
         name: "DeepSeek Chat",
         capabilities: {
@@ -1581,12 +1581,12 @@ describe("ProviderTransform.message - DeepSeek reasoning content", () => {
     const result = ProviderTransform.message(
       msgs,
       {
-        id: ModelV2.ID.make("openai/gpt-4"),
+        id: ModelV2.ID.make("openai@lgcode/gpt-4"),
         providerID: ProviderV2.ID.make("openai"),
         api: {
           id: "gpt-4",
-          url: "https://api.openai.com",
-          npm: "@ai-sdk/openai",
+          url: "https:@lgcode/@lgcode/api.openai.com",
+          npm: "@ai-sdk@lgcode/openai",
         },
         name: "GPT-4",
         capabilities: {
@@ -1625,12 +1625,12 @@ describe("ProviderTransform.message - DeepSeek reasoning content", () => {
 
 describe("ProviderTransform.message - surrogate sanitization", () => {
   const model = {
-    id: "test/test-model",
+    id: "test@lgcode/test-model",
     providerID: "test",
     api: {
       id: "test-model",
-      url: "https://api.test.com",
-      npm: "@ai-sdk/openai-compatible",
+      url: "https:@lgcode/@lgcode/api.test.com",
+      npm: "@ai-sdk@lgcode/openai-compatible",
     },
     name: "Test Model",
     capabilities: {
@@ -1662,7 +1662,7 @@ describe("ProviderTransform.message - surrogate sanitization", () => {
         role: "user",
         content: [
           { type: "text", text: text("user text") },
-          { type: "image", image: "data:image/png;base64,abcd" },
+          { type: "image", image: "data:image@lgcode/png;base64,abcd" },
         ],
       },
       { role: "assistant", content: text("assistant string") },
@@ -1671,7 +1671,7 @@ describe("ProviderTransform.message - surrogate sanitization", () => {
         content: [
           { type: "text", text: text("assistant text") },
           { type: "reasoning", text: text("assistant reasoning") },
-          { type: "tool-call", toolCallId: "call-1", toolName: "Read", input: { filePath: ".opencode/tool/emoji.ts" } },
+          { type: "tool-call", toolCallId: "call-1", toolName: "Read", input: { filePath: ".opencode@lgcode/tool@lgcode/emoji.ts" } },
           {
             type: "tool-result",
             toolCallId: "call-2",
@@ -1731,18 +1731,18 @@ describe("ProviderTransform.message - surrogate sanitization", () => {
     expect(result[5].content[0].output.value).toBe(expected("tool text"))
     expect(result[5].content[1].output.value).toBe(expected("tool error"))
     expect(result[5].content[2].output.value[0].text).toBe(expected("tool content"))
-    expect(result[2].content[1]).toEqual({ type: "image", image: "data:image/png;base64,abcd" })
+    expect(result[2].content[1]).toEqual({ type: "image", image: "data:image@lgcode/png;base64,abcd" })
   })
 })
 
 describe("ProviderTransform.message - empty image handling", () => {
   const mockModel = {
-    id: "anthropic/claude-3-5-sonnet",
+    id: "anthropic@lgcode/claude-3-5-sonnet",
     providerID: "anthropic",
     api: {
       id: "claude-3-5-sonnet-20241022",
-      url: "https://api.anthropic.com",
-      npm: "@ai-sdk/anthropic",
+      url: "https:@lgcode/@lgcode/api.anthropic.com",
+      npm: "@ai-sdk@lgcode/anthropic",
     },
     name: "Claude 3.5 Sonnet",
     capabilities: {
@@ -1774,7 +1774,7 @@ describe("ProviderTransform.message - empty image handling", () => {
         role: "user",
         content: [
           { type: "text", text: "What is in this image?" },
-          { type: "image", image: "data:image/png;base64," },
+          { type: "image", image: "data:image@lgcode/png;base64," },
         ],
       },
     ] as any[]
@@ -1798,7 +1798,7 @@ describe("ProviderTransform.message - empty image handling", () => {
         role: "user",
         content: [
           { type: "text", text: "What is in this image?" },
-          { type: "image", image: `data:image/png;base64,${validBase64}` },
+          { type: "image", image: `data:image@lgcode/png;base64,${validBase64}` },
         ],
       },
     ] as any[]
@@ -1808,7 +1808,7 @@ describe("ProviderTransform.message - empty image handling", () => {
     expect(result).toHaveLength(1)
     expect(result[0].content).toHaveLength(2)
     expect(result[0].content[0]).toEqual({ type: "text", text: "What is in this image?" })
-    expect(result[0].content[1]).toEqual({ type: "image", image: `data:image/png;base64,${validBase64}` })
+    expect(result[0].content[1]).toEqual({ type: "image", image: `data:image@lgcode/png;base64,${validBase64}` })
   })
 
   test("should handle mixed valid and empty images", () => {
@@ -1819,8 +1819,8 @@ describe("ProviderTransform.message - empty image handling", () => {
         role: "user",
         content: [
           { type: "text", text: "Compare these images" },
-          { type: "image", image: `data:image/png;base64,${validBase64}` },
-          { type: "image", image: "data:image/jpeg;base64," },
+          { type: "image", image: `data:image@lgcode/png;base64,${validBase64}` },
+          { type: "image", image: "data:image@lgcode/jpeg;base64," },
         ],
       },
     ] as any[]
@@ -1830,7 +1830,7 @@ describe("ProviderTransform.message - empty image handling", () => {
     expect(result).toHaveLength(1)
     expect(result[0].content).toHaveLength(3)
     expect(result[0].content[0]).toEqual({ type: "text", text: "Compare these images" })
-    expect(result[0].content[1]).toEqual({ type: "image", image: `data:image/png;base64,${validBase64}` })
+    expect(result[0].content[1]).toEqual({ type: "image", image: `data:image@lgcode/png;base64,${validBase64}` })
     expect(result[0].content[2]).toEqual({
       type: "text",
       text: "ERROR: Image file is empty or corrupted. Please provide a valid image.",
@@ -1840,12 +1840,12 @@ describe("ProviderTransform.message - empty image handling", () => {
 
 describe("ProviderTransform.message - anthropic empty content filtering", () => {
   const anthropicModel = {
-    id: "anthropic/claude-3-5-sonnet",
+    id: "anthropic@lgcode/claude-3-5-sonnet",
     providerID: "anthropic",
     api: {
       id: "claude-3-5-sonnet-20241022",
-      url: "https://api.anthropic.com",
-      npm: "@ai-sdk/anthropic",
+      url: "https:@lgcode/@lgcode/api.anthropic.com",
+      npm: "@ai-sdk@lgcode/anthropic",
     },
     name: "Claude 3.5 Sonnet",
     capabilities: {
@@ -1943,7 +1943,7 @@ describe("ProviderTransform.message - anthropic empty content filtering", () => 
     expect(result[1].content).toBe("World")
   })
 
-  test("keeps non-text/reasoning parts even if text parts are empty", () => {
+  test("keeps non-text@lgcode/reasoning parts even if text parts are empty", () => {
     const msgs = [
       {
         role: "assistant",
@@ -1989,12 +1989,12 @@ describe("ProviderTransform.message - anthropic empty content filtering", () => 
   test("filters empty content for bedrock provider", () => {
     const bedrockModel = {
       ...anthropicModel,
-      id: "amazon-bedrock/anthropic.claude-opus-4-6",
+      id: "amazon-bedrock@lgcode/anthropic.claude-opus-4-6",
       providerID: "amazon-bedrock",
       api: {
         id: "anthropic.claude-opus-4-6",
-        url: "https://bedrock-runtime.us-east-1.amazonaws.com",
-        npm: "@ai-sdk/amazon-bedrock",
+        url: "https:@lgcode/@lgcode/bedrock-runtime.us-east-1.amazonaws.com",
+        npm: "@ai-sdk@lgcode/amazon-bedrock",
       },
     }
 
@@ -2024,8 +2024,8 @@ describe("ProviderTransform.message - anthropic empty content filtering", () => 
       providerID: "openai",
       api: {
         id: "gpt-4",
-        url: "https://api.openai.com",
-        npm: "@ai-sdk/openai",
+        url: "https:@lgcode/@lgcode/api.openai.com",
+        npm: "@ai-sdk@lgcode/openai",
       },
     }
 
@@ -2050,8 +2050,8 @@ describe("ProviderTransform.message - anthropic empty content filtering", () => 
         role: "assistant",
         content: [
           { type: "text", text: "I checked your home directory and looked for PDF files." },
-          { type: "tool-call", toolCallId: "toolu_1", toolName: "read", input: { filePath: "/root" } },
-          { type: "tool-call", toolCallId: "toolu_2", toolName: "glob", input: { pattern: "**/*.pdf" } },
+          { type: "tool-call", toolCallId: "toolu_1", toolName: "read", input: { filePath: "@lgcode/root" } },
+          { type: "tool-call", toolCallId: "toolu_2", toolName: "glob", input: { pattern: "**@lgcode/*.pdf" } },
         ],
       },
     ] as any[]
@@ -2061,20 +2061,20 @@ describe("ProviderTransform.message - anthropic empty content filtering", () => 
     expect(result).toHaveLength(1)
     expect(result[0].content).toMatchObject([
       { type: "text", text: "I checked your home directory and looked for PDF files." },
-      { type: "tool-call", toolCallId: "toolu_1", toolName: "read", input: { filePath: "/root" } },
-      { type: "tool-call", toolCallId: "toolu_2", toolName: "glob", input: { pattern: "**/*.pdf" } },
+      { type: "tool-call", toolCallId: "toolu_1", toolName: "read", input: { filePath: "@lgcode/root" } },
+      { type: "tool-call", toolCallId: "toolu_2", toolName: "glob", input: { pattern: "**@lgcode/*.pdf" } },
     ])
   })
 })
 
 describe("ProviderTransform.message - strip openai metadata when store=false", () => {
   const openaiModel = {
-    id: "openai/gpt-5",
+    id: "openai@lgcode/gpt-5",
     providerID: "openai",
     api: {
       id: "gpt-5",
-      url: "https://api.openai.com",
-      npm: "@ai-sdk/openai",
+      url: "https:@lgcode/@lgcode/api.openai.com",
+      npm: "@ai-sdk@lgcode/openai",
     },
     name: "GPT-5",
     capabilities: {
@@ -2200,8 +2200,8 @@ describe("ProviderTransform.message - strip openai metadata when store=false", (
       providerID: "azure",
       api: {
         id: "gpt-5",
-        url: "https://example.openai.azure.com",
-        npm: "@ai-sdk/azure",
+        url: "https:@lgcode/@lgcode/example.openai.azure.com",
+        npm: "@ai-sdk@lgcode/azure",
       },
     }
     const msgs = [
@@ -2233,8 +2233,8 @@ describe("ProviderTransform.message - strip openai metadata when store=false", (
       providerID: "amazon-bedrock",
       api: {
         id: "openai.gpt-5.5",
-        url: "https://bedrock-mantle.us-east-2.api.aws/openai/v1",
-        npm: "@ai-sdk/amazon-bedrock/mantle",
+        url: "https:@lgcode/@lgcode/bedrock-mantle.us-east-2.api.aws@lgcode/openai@lgcode/v1",
+        npm: "@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle",
       },
     }
     const msgs = [
@@ -2279,7 +2279,7 @@ describe("ProviderTransform.message - strip openai metadata when store=false", (
       },
     ] as any[]
 
-    // openai package preserves itemId regardless of store value
+    @lgcode/@lgcode/ openai package preserves itemId regardless of store value
     const result = ProviderTransform.message(msgs, openaiModel, { store: true }) as any[]
 
     expect(result[0].content[0].providerOptions?.openai?.itemId).toBe("msg_123")
@@ -2291,8 +2291,8 @@ describe("ProviderTransform.message - strip openai metadata when store=false", (
       providerID: "anthropic",
       api: {
         id: "claude-3",
-        url: "https://api.anthropic.com",
-        npm: "@ai-sdk/anthropic",
+        url: "https:@lgcode/@lgcode/api.anthropic.com",
+        npm: "@ai-sdk@lgcode/anthropic",
       },
     }
     const msgs = [
@@ -2312,7 +2312,7 @@ describe("ProviderTransform.message - strip openai metadata when store=false", (
       },
     ] as any[]
 
-    // store=false preserves metadata for non-openai packages
+    @lgcode/@lgcode/ store=false preserves metadata for non-openai packages
     const result = ProviderTransform.message(msgs, anthropicModel, { store: false }) as any[]
 
     expect(result[0].content[0].providerOptions?.openai?.itemId).toBe("msg_123")
@@ -2324,8 +2324,8 @@ describe("ProviderTransform.message - strip openai metadata when store=false", (
       providerID: "opencode",
       api: {
         id: "opencode-test",
-        url: "https://api.opencode.ai",
-        npm: "@ai-sdk/openai-compatible",
+        url: "https:@lgcode/@lgcode/api.opencode.ai",
+        npm: "@ai-sdk@lgcode/openai-compatible",
       },
     }
     const msgs = [
@@ -2358,8 +2358,8 @@ describe("ProviderTransform.message - strip openai metadata when store=false", (
       providerID: "opencode",
       api: {
         id: "opencode-test",
-        url: "https://api.opencode.ai",
-        npm: "@ai-sdk/openai-compatible",
+        url: "https:@lgcode/@lgcode/api.opencode.ai",
+        npm: "@ai-sdk@lgcode/openai-compatible",
       },
     }
     const msgs = [
@@ -2400,8 +2400,8 @@ describe("ProviderTransform.message - strip openai metadata when store=false", (
       providerID: "anthropic",
       api: {
         id: "claude-3",
-        url: "https://api.anthropic.com",
-        npm: "@ai-sdk/anthropic",
+        url: "https:@lgcode/@lgcode/api.anthropic.com",
+        npm: "@ai-sdk@lgcode/anthropic",
       },
     }
     const msgs = [
@@ -2430,11 +2430,11 @@ describe("ProviderTransform.message - strip openai metadata when store=false", (
 describe("ProviderTransform.message - providerOptions key remapping", () => {
   const createModel = (providerID: string, npm: string) =>
     ({
-      id: `${providerID}/test-model`,
+      id: `${providerID}@lgcode/test-model`,
       providerID,
       api: {
         id: "test-model",
-        url: "https://api.test.com",
+        url: "https:@lgcode/@lgcode/api.test.com",
         npm,
       },
       name: "Test Model",
@@ -2455,7 +2455,7 @@ describe("ProviderTransform.message - providerOptions key remapping", () => {
     }) as any
 
   test("azure keeps 'azure' key and does not remap to 'openai'", () => {
-    const model = createModel("azure", "@ai-sdk/azure")
+    const model = createModel("azure", "@ai-sdk@lgcode/azure")
     const msgs = [
       {
         role: "user",
@@ -2473,7 +2473,7 @@ describe("ProviderTransform.message - providerOptions key remapping", () => {
   })
 
   test("azure cognitive services remaps providerID to 'azure' key", () => {
-    const model = createModel("azure-cognitive-services", "@ai-sdk/azure")
+    const model = createModel("azure-cognitive-services", "@ai-sdk@lgcode/azure")
     const msgs = [
       {
         role: "user",
@@ -2502,7 +2502,7 @@ describe("ProviderTransform.message - providerOptions key remapping", () => {
   })
 
   test("copilot remaps providerID to 'copilot' key", () => {
-    const model = createModel("github-copilot", "@ai-sdk/github-copilot")
+    const model = createModel("github-copilot", "@ai-sdk@lgcode/github-copilot")
     const msgs = [
       {
         role: "user",
@@ -2520,7 +2520,7 @@ describe("ProviderTransform.message - providerOptions key remapping", () => {
   })
 
   test("bedrock remaps providerID to 'bedrock' key", () => {
-    const model = createModel("my-bedrock", "@ai-sdk/amazon-bedrock")
+    const model = createModel("my-bedrock", "@ai-sdk@lgcode/amazon-bedrock")
     const msgs = [
       {
         role: "user",
@@ -2538,15 +2538,15 @@ describe("ProviderTransform.message - providerOptions key remapping", () => {
   })
 })
 
-describe("ProviderTransform.message - claude w/bedrock custom inference profile", () => {
+describe("ProviderTransform.message - claude w@lgcode/bedrock custom inference profile", () => {
   test("adds cachePoint", () => {
     const model = {
-      id: "amazon-bedrock/custom-claude-sonnet-4.5",
+      id: "amazon-bedrock@lgcode/custom-claude-sonnet-4.5",
       providerID: "amazon-bedrock",
       api: {
-        id: "arn:aws:bedrock:xxx:yyy:application-inference-profile/zzz",
-        url: "https://api.test.com",
-        npm: "@ai-sdk/amazon-bedrock",
+        id: "arn:aws:bedrock:xxx:yyy:application-inference-profile@lgcode/zzz",
+        url: "https:@lgcode/@lgcode/api.test.com",
+        npm: "@ai-sdk@lgcode/amazon-bedrock",
       },
       name: "Custom inference profile",
       capabilities: {},
@@ -2576,12 +2576,12 @@ describe("ProviderTransform.message - claude w/bedrock custom inference profile"
 describe("ProviderTransform.message - bedrock caching with non-bedrock providerID", () => {
   test("applies cache options at message level when npm package is amazon-bedrock", () => {
     const model = {
-      id: "aws/us.anthropic.claude-opus-4-6-v1",
+      id: "aws@lgcode/us.anthropic.claude-opus-4-6-v1",
       providerID: "aws",
       api: {
         id: "us.anthropic.claude-opus-4-6-v1",
-        url: "https://bedrock-runtime.us-east-1.amazonaws.com",
-        npm: "@ai-sdk/amazon-bedrock",
+        url: "https:@lgcode/@lgcode/bedrock-runtime.us-east-1.amazonaws.com",
+        npm: "@ai-sdk@lgcode/amazon-bedrock",
       },
       name: "Claude Opus 4.6",
       capabilities: {},
@@ -2602,7 +2602,7 @@ describe("ProviderTransform.message - bedrock caching with non-bedrock providerI
 
     const result = ProviderTransform.message(msgs, model, {}) as any[]
 
-    // Cache should be at the message level and not the content-part level
+    @lgcode/@lgcode/ Cache should be at the message level and not the content-part level
     expect(result[0].providerOptions?.bedrock).toEqual({
       cachePoint: { type: "default" },
     })
@@ -2613,12 +2613,12 @@ describe("ProviderTransform.message - bedrock caching with non-bedrock providerI
 describe("ProviderTransform.message - cache control on gateway", () => {
   const createModel = (overrides: Partial<any> = {}) =>
     ({
-      id: "anthropic/claude-sonnet-4",
+      id: "anthropic@lgcode/claude-sonnet-4",
       providerID: "vercel",
       api: {
-        id: "anthropic/claude-sonnet-4",
-        url: "https://ai-gateway.vercel.sh/v3/ai",
-        npm: "@ai-sdk/gateway",
+        id: "anthropic@lgcode/claude-sonnet-4",
+        url: "https:@lgcode/@lgcode/ai-gateway.vercel.sh@lgcode/v3@lgcode/ai",
+        npm: "@ai-sdk@lgcode/gateway",
       },
       name: "Claude Sonnet 4",
       capabilities: {
@@ -2662,8 +2662,8 @@ describe("ProviderTransform.message - cache control on gateway", () => {
       providerID: "anthropic",
       api: {
         id: "claude-sonnet-4",
-        url: "https://api.anthropic.com",
-        npm: "@ai-sdk/anthropic",
+        url: "https:@lgcode/@lgcode/api.anthropic.com",
+        npm: "@ai-sdk@lgcode/anthropic",
       },
     })
     const msgs = [
@@ -2718,8 +2718,8 @@ describe("ProviderTransform.message - cache control on gateway", () => {
       providerID: "google-vertex-anthropic",
       api: {
         id: "google-vertex-anthropic",
-        url: "https://us-central1-aiplatform.googleapis.com",
-        npm: "@ai-sdk/google-vertex/anthropic",
+        url: "https:@lgcode/@lgcode/us-central1-aiplatform.googleapis.com",
+        npm: "@ai-sdk@lgcode/google-vertex@lgcode/anthropic",
       },
       id: "claude-sonnet-4@20250514",
     })
@@ -2773,18 +2773,18 @@ describe("ProviderTransform.message - cache control on gateway", () => {
 
 describe("ProviderTransform.temperature - Cohere North", () => {
   test("defaults north-mini-code models to 1.0", () => {
-    expect(ProviderTransform.temperature({ id: "cohere/North-Mini-Code-1-0-latest" } as any)).toBe(1.0)
+    expect(ProviderTransform.temperature({ id: "cohere@lgcode/North-Mini-Code-1-0-latest" } as any)).toBe(1.0)
   })
 })
 
 describe("ProviderTransform.variants", () => {
   const createMockModel = (overrides: Partial<any> = {}): any => ({
-    id: "test/test-model",
+    id: "test@lgcode/test-model",
     providerID: "test",
     api: {
       id: "test-model",
-      url: "https://api.test.com",
-      npm: "@ai-sdk/openai",
+      url: "https:@lgcode/@lgcode/api.test.com",
+      npm: "@ai-sdk@lgcode/openai",
     },
     name: "Test Model",
     capabilities: {
@@ -2822,12 +2822,12 @@ describe("ProviderTransform.variants", () => {
 
   test("deepseek returns empty object", () => {
     const model = createMockModel({
-      id: "deepseek/deepseek-chat",
+      id: "deepseek@lgcode/deepseek-chat",
       providerID: "deepseek",
       api: {
         id: "deepseek-chat",
-        url: "https://api.deepseek.com",
-        npm: "@ai-sdk/openai-compatible",
+        url: "https:@lgcode/@lgcode/api.deepseek.com",
+        npm: "@ai-sdk@lgcode/openai-compatible",
       },
     })
     const result = ProviderTransform.variants(model)
@@ -2836,12 +2836,12 @@ describe("ProviderTransform.variants", () => {
 
   test("minimax returns empty object", () => {
     const model = createMockModel({
-      id: "minimax/minimax-model",
+      id: "minimax@lgcode/minimax-model",
       providerID: "minimax",
       api: {
         id: "minimax-model",
-        url: "https://api.minimax.com",
-        npm: "@ai-sdk/openai-compatible",
+        url: "https:@lgcode/@lgcode/api.minimax.com",
+        npm: "@ai-sdk@lgcode/openai-compatible",
       },
     })
     const result = ProviderTransform.variants(model)
@@ -2850,12 +2850,12 @@ describe("ProviderTransform.variants", () => {
 
   test("minimax m3 using anthropic returns thinking toggles", () => {
     const model = createMockModel({
-      id: "minimax/minimax-m3",
+      id: "minimax@lgcode/minimax-m3",
       providerID: "minimax",
       api: {
         id: "MiniMax-M3",
-        url: "https://api.minimax.com/anthropic/v1",
-        npm: "@ai-sdk/anthropic",
+        url: "https:@lgcode/@lgcode/api.minimax.com@lgcode/anthropic@lgcode/v1",
+        npm: "@ai-sdk@lgcode/anthropic",
       },
     })
     const result = ProviderTransform.variants(model)
@@ -2867,12 +2867,12 @@ describe("ProviderTransform.variants", () => {
 
   test("minimax m3 using openai-compatible returns thinking toggles", () => {
     const model = createMockModel({
-      id: "minimax/minimax-m3",
+      id: "minimax@lgcode/minimax-m3",
       providerID: "minimax",
       api: {
         id: "minimax-m3",
-        url: "https://api.minimax.com/v1",
-        npm: "@ai-sdk/openai-compatible",
+        url: "https:@lgcode/@lgcode/api.minimax.com@lgcode/v1",
+        npm: "@ai-sdk@lgcode/openai-compatible",
       },
     })
     expect(ProviderTransform.variants(model)).toEqual({
@@ -2883,12 +2883,12 @@ describe("ProviderTransform.variants", () => {
 
   test("glm returns empty object", () => {
     const model = createMockModel({
-      id: "glm/glm-4",
+      id: "glm@lgcode/glm-4",
       providerID: "glm",
       api: {
         id: "glm-4",
-        url: "https://api.glm.com",
-        npm: "@ai-sdk/openai-compatible",
+        url: "https:@lgcode/@lgcode/api.glm.com",
+        npm: "@ai-sdk@lgcode/openai-compatible",
       },
     })
     const result = ProviderTransform.variants(model)
@@ -2897,12 +2897,12 @@ describe("ProviderTransform.variants", () => {
 
   test("mistral models with reasoning support return variants", () => {
     const model = createMockModel({
-      id: "mistral/mistral-small-latest",
+      id: "mistral@lgcode/mistral-small-latest",
       providerID: "mistral",
       api: {
         id: "mistral-small-latest",
-        url: "https://api.mistral.com",
-        npm: "@ai-sdk/mistral",
+        url: "https:@lgcode/@lgcode/api.mistral.com",
+        npm: "@ai-sdk@lgcode/mistral",
       },
       capabilities: { reasoning: true },
     })
@@ -2914,12 +2914,12 @@ describe("ProviderTransform.variants", () => {
 
   test("mistral-medium-3.5 with reasoning returns variants", () => {
     const model = createMockModel({
-      id: "mistral/mistral-medium-3.5",
+      id: "mistral@lgcode/mistral-medium-3.5",
       providerID: "mistral",
       api: {
         id: "mistral-medium-3.5",
-        url: "https://api.mistral.com",
-        npm: "@ai-sdk/mistral",
+        url: "https:@lgcode/@lgcode/api.mistral.com",
+        npm: "@ai-sdk@lgcode/mistral",
       },
       capabilities: { reasoning: true },
     })
@@ -2931,12 +2931,12 @@ describe("ProviderTransform.variants", () => {
 
   test("mistral without reasoning returns empty object", () => {
     const model = createMockModel({
-      id: "mistral/mistral-large",
+      id: "mistral@lgcode/mistral-large",
       providerID: "mistral",
       api: {
         id: "mistral-large-latest",
-        url: "https://api.mistral.com",
-        npm: "@ai-sdk/mistral",
+        url: "https:@lgcode/@lgcode/api.mistral.com",
+        npm: "@ai-sdk@lgcode/mistral",
       },
       capabilities: { reasoning: false },
     })
@@ -2946,12 +2946,12 @@ describe("ProviderTransform.variants", () => {
 
   test("mistral large with reasoning returns empty object (only small supports reasoning)", () => {
     const model = createMockModel({
-      id: "mistral/mistral-large",
+      id: "mistral@lgcode/mistral-large",
       providerID: "mistral",
       api: {
         id: "mistral-large-latest",
-        url: "https://api.mistral.com",
-        npm: "@ai-sdk/mistral",
+        url: "https:@lgcode/@lgcode/api.mistral.com",
+        npm: "@ai-sdk@lgcode/mistral",
       },
       capabilities: { reasoning: true },
     })
@@ -2959,15 +2959,15 @@ describe("ProviderTransform.variants", () => {
     expect(result).toEqual({})
   })
 
-  describe("@openrouter/ai-sdk-provider", () => {
+  describe("@openrouter@lgcode/ai-sdk-provider", () => {
     test("returns widely supported efforts for other reasoning models", () => {
       const model = createMockModel({
-        id: "openrouter/test-model",
+        id: "openrouter@lgcode/test-model",
         providerID: "openrouter",
         api: {
           id: "test-model",
-          url: "https://openrouter.ai",
-          npm: "@openrouter/ai-sdk-provider",
+          url: "https:@lgcode/@lgcode/openrouter.ai",
+          npm: "@openrouter@lgcode/ai-sdk-provider",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -2977,12 +2977,12 @@ describe("ProviderTransform.variants", () => {
 
     test("gpt models return OPENAI_EFFORTS with reasoning", () => {
       const model = createMockModel({
-        id: "openrouter/gpt-4",
+        id: "openrouter@lgcode/gpt-4",
         providerID: "openrouter",
         api: {
           id: "gpt-4",
-          url: "https://openrouter.ai",
-          npm: "@openrouter/ai-sdk-provider",
+          url: "https:@lgcode/@lgcode/openrouter.ai",
+          npm: "@openrouter@lgcode/ai-sdk-provider",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -2992,15 +2992,15 @@ describe("ProviderTransform.variants", () => {
     })
 
     for (const testCase of [
-      { id: "openai/o3-mini", efforts: ["none", "minimal", "low", "medium", "high", "xhigh"] },
-      { id: "openai/gpt-5.4", efforts: ["none", "low", "medium", "high", "xhigh"] },
-      { id: "openai/gpt-5-pro", efforts: ["high"] },
-      { id: "openai/gpt-5.5-pro", efforts: ["medium", "high", "xhigh"] },
-      { id: "openai/gpt-5.2-codex", efforts: ["low", "medium", "high", "xhigh"] },
-      { id: "openai/gpt-5.3-codex", efforts: ["none", "low", "medium", "high", "xhigh"] },
-      { id: "openai/gpt-5.3-codex-max", efforts: ["none", "low", "medium", "high", "xhigh"] },
-      { id: "openai/gpt-5-chat-latest", efforts: [] },
-      { id: "openai/gpt-5.2-chat-latest", efforts: ["medium"] },
+      { id: "openai@lgcode/o3-mini", efforts: ["none", "minimal", "low", "medium", "high", "xhigh"] },
+      { id: "openai@lgcode/gpt-5.4", efforts: ["none", "low", "medium", "high", "xhigh"] },
+      { id: "openai@lgcode/gpt-5-pro", efforts: ["high"] },
+      { id: "openai@lgcode/gpt-5.5-pro", efforts: ["medium", "high", "xhigh"] },
+      { id: "openai@lgcode/gpt-5.2-codex", efforts: ["low", "medium", "high", "xhigh"] },
+      { id: "openai@lgcode/gpt-5.3-codex", efforts: ["none", "low", "medium", "high", "xhigh"] },
+      { id: "openai@lgcode/gpt-5.3-codex-max", efforts: ["none", "low", "medium", "high", "xhigh"] },
+      { id: "openai@lgcode/gpt-5-chat-latest", efforts: [] },
+      { id: "openai@lgcode/gpt-5.2-chat-latest", efforts: ["medium"] },
     ]) {
       test(`${testCase.id} returns supported OpenAI reasoning efforts`, () => {
         const result = ProviderTransform.variants(
@@ -3009,8 +3009,8 @@ describe("ProviderTransform.variants", () => {
             providerID: "openrouter",
             api: {
               id: testCase.id,
-              url: "https://openrouter.ai",
-              npm: "@openrouter/ai-sdk-provider",
+              url: "https:@lgcode/@lgcode/openrouter.ai",
+              npm: "@openrouter@lgcode/ai-sdk-provider",
             },
           }),
         )
@@ -3020,12 +3020,12 @@ describe("ProviderTransform.variants", () => {
 
     test("gemini-3 returns widely supported efforts with reasoning", () => {
       const model = createMockModel({
-        id: "openrouter/gemini-3-5-pro",
+        id: "openrouter@lgcode/gemini-3-5-pro",
         providerID: "openrouter",
         api: {
           id: "gemini-3-5-pro",
-          url: "https://openrouter.ai",
-          npm: "@openrouter/ai-sdk-provider",
+          url: "https:@lgcode/@lgcode/openrouter.ai",
+          npm: "@openrouter@lgcode/ai-sdk-provider",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3034,12 +3034,12 @@ describe("ProviderTransform.variants", () => {
 
     test("grok-4 returns empty object", () => {
       const model = createMockModel({
-        id: "openrouter/grok-4",
+        id: "openrouter@lgcode/grok-4",
         providerID: "openrouter",
         api: {
           id: "grok-4",
-          url: "https://openrouter.ai",
-          npm: "@openrouter/ai-sdk-provider",
+          url: "https:@lgcode/@lgcode/openrouter.ai",
+          npm: "@openrouter@lgcode/ai-sdk-provider",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3048,12 +3048,12 @@ describe("ProviderTransform.variants", () => {
 
     test("grok-3-mini returns low and high with reasoning", () => {
       const model = createMockModel({
-        id: "openrouter/grok-3-mini",
+        id: "openrouter@lgcode/grok-3-mini",
         providerID: "openrouter",
         api: {
           id: "grok-3-mini",
-          url: "https://openrouter.ai",
-          npm: "@openrouter/ai-sdk-provider",
+          url: "https:@lgcode/@lgcode/openrouter.ai",
+          npm: "@openrouter@lgcode/ai-sdk-provider",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3063,15 +3063,15 @@ describe("ProviderTransform.variants", () => {
     })
   })
 
-  describe("@ai-sdk/gateway", () => {
+  describe("@ai-sdk@lgcode/gateway", () => {
     test("anthropic sonnet 4.6 models return adaptive thinking options", () => {
       const model = createMockModel({
-        id: "anthropic/claude-sonnet-4-6",
+        id: "anthropic@lgcode/claude-sonnet-4-6",
         providerID: "gateway",
         api: {
-          id: "anthropic/claude-sonnet-4-6",
-          url: "https://gateway.ai",
-          npm: "@ai-sdk/gateway",
+          id: "anthropic@lgcode/claude-sonnet-4-6",
+          url: "https:@lgcode/@lgcode/gateway.ai",
+          npm: "@ai-sdk@lgcode/gateway",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3086,12 +3086,12 @@ describe("ProviderTransform.variants", () => {
 
     test("anthropic sonnet 4.6 dot-format models return adaptive thinking options", () => {
       const model = createMockModel({
-        id: "anthropic/claude-sonnet-4-6",
+        id: "anthropic@lgcode/claude-sonnet-4-6",
         providerID: "gateway",
         api: {
-          id: "anthropic/claude-sonnet-4.6",
-          url: "https://gateway.ai",
-          npm: "@ai-sdk/gateway",
+          id: "anthropic@lgcode/claude-sonnet-4.6",
+          url: "https:@lgcode/@lgcode/gateway.ai",
+          npm: "@ai-sdk@lgcode/gateway",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3106,12 +3106,12 @@ describe("ProviderTransform.variants", () => {
 
     test("anthropic opus 4.6 dot-format models return adaptive thinking options", () => {
       const model = createMockModel({
-        id: "anthropic/claude-opus-4-6",
+        id: "anthropic@lgcode/claude-opus-4-6",
         providerID: "gateway",
         api: {
-          id: "anthropic/claude-opus-4.6",
-          url: "https://gateway.ai",
-          npm: "@ai-sdk/gateway",
+          id: "anthropic@lgcode/claude-opus-4.6",
+          url: "https:@lgcode/@lgcode/gateway.ai",
+          npm: "@ai-sdk@lgcode/gateway",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3126,12 +3126,12 @@ describe("ProviderTransform.variants", () => {
 
     test("anthropic opus 4.7 models return adaptive thinking options with xhigh", () => {
       const model = createMockModel({
-        id: "anthropic/claude-opus-4-7",
+        id: "anthropic@lgcode/claude-opus-4-7",
         providerID: "gateway",
         api: {
-          id: "anthropic/claude-opus-4-7",
-          url: "https://gateway.ai",
-          npm: "@ai-sdk/gateway",
+          id: "anthropic@lgcode/claude-opus-4-7",
+          url: "https:@lgcode/@lgcode/gateway.ai",
+          npm: "@ai-sdk@lgcode/gateway",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3154,12 +3154,12 @@ describe("ProviderTransform.variants", () => {
 
     test("anthropic opus 4.7 dot-format models return adaptive thinking options with xhigh", () => {
       const model = createMockModel({
-        id: "anthropic/claude-opus-4-7",
+        id: "anthropic@lgcode/claude-opus-4-7",
         providerID: "gateway",
         api: {
-          id: "anthropic/claude-opus-4.7",
-          url: "https://gateway.ai",
-          npm: "@ai-sdk/gateway",
+          id: "anthropic@lgcode/claude-opus-4.7",
+          url: "https:@lgcode/@lgcode/gateway.ai",
+          npm: "@ai-sdk@lgcode/gateway",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3168,12 +3168,12 @@ describe("ProviderTransform.variants", () => {
 
     test("anthropic opus 4.8 forces display summarized for adaptive reasoning", () => {
       const model = createMockModel({
-        id: "anthropic/claude-opus-4-8",
+        id: "anthropic@lgcode/claude-opus-4-8",
         providerID: "gateway",
         api: {
-          id: "anthropic/claude-opus-4-8",
-          url: "https://gateway.ai",
-          npm: "@ai-sdk/gateway",
+          id: "anthropic@lgcode/claude-opus-4-8",
+          url: "https:@lgcode/@lgcode/gateway.ai",
+          npm: "@ai-sdk@lgcode/gateway",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3189,12 +3189,12 @@ describe("ProviderTransform.variants", () => {
 
     test("anthropic opus 4.6 omits display so it keeps the summarized default", () => {
       const model = createMockModel({
-        id: "anthropic/claude-opus-4-6",
+        id: "anthropic@lgcode/claude-opus-4-6",
         providerID: "gateway",
         api: {
-          id: "anthropic/claude-opus-4-6",
-          url: "https://gateway.ai",
-          npm: "@ai-sdk/gateway",
+          id: "anthropic@lgcode/claude-opus-4-6",
+          url: "https:@lgcode/@lgcode/gateway.ai",
+          npm: "@ai-sdk@lgcode/gateway",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3209,12 +3209,12 @@ describe("ProviderTransform.variants", () => {
 
     test("anthropic models return anthropic thinking options", () => {
       const model = createMockModel({
-        id: "anthropic/claude-sonnet-4",
+        id: "anthropic@lgcode/claude-sonnet-4",
         providerID: "gateway",
         api: {
-          id: "anthropic/claude-sonnet-4",
-          url: "https://gateway.ai",
-          npm: "@ai-sdk/gateway",
+          id: "anthropic@lgcode/claude-sonnet-4",
+          url: "https:@lgcode/@lgcode/gateway.ai",
+          npm: "@ai-sdk@lgcode/gateway",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3235,12 +3235,12 @@ describe("ProviderTransform.variants", () => {
 
     test("returns OPENAI_EFFORTS with reasoningEffort", () => {
       const model = createMockModel({
-        id: "gateway/gateway-model",
+        id: "gateway@lgcode/gateway-model",
         providerID: "gateway",
         api: {
           id: "gateway-model",
-          url: "https://gateway.ai",
-          npm: "@ai-sdk/gateway",
+          url: "https:@lgcode/@lgcode/gateway.ai",
+          npm: "@ai-sdk@lgcode/gateway",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3250,14 +3250,14 @@ describe("ProviderTransform.variants", () => {
     })
 
     for (const testCase of [
-      { id: "openai/gpt-5-5", efforts: ["none", "low", "medium", "high", "xhigh"] },
-      { id: "openai/gpt-5-pro", efforts: ["high"] },
-      { id: "openai/gpt-5-5-pro", efforts: ["medium", "high", "xhigh"] },
-      { id: "openai/gpt-5-2-codex", efforts: ["low", "medium", "high", "xhigh"] },
-      { id: "openai/gpt-5-3-codex", efforts: ["none", "low", "medium", "high", "xhigh"] },
-      { id: "openai/gpt-5-3-codex-max", efforts: ["none", "low", "medium", "high", "xhigh"] },
-      { id: "openai/gpt-5-chat-latest", efforts: [] },
-      { id: "openai/gpt-5-2-chat-latest", efforts: ["medium"] },
+      { id: "openai@lgcode/gpt-5-5", efforts: ["none", "low", "medium", "high", "xhigh"] },
+      { id: "openai@lgcode/gpt-5-pro", efforts: ["high"] },
+      { id: "openai@lgcode/gpt-5-5-pro", efforts: ["medium", "high", "xhigh"] },
+      { id: "openai@lgcode/gpt-5-2-codex", efforts: ["low", "medium", "high", "xhigh"] },
+      { id: "openai@lgcode/gpt-5-3-codex", efforts: ["none", "low", "medium", "high", "xhigh"] },
+      { id: "openai@lgcode/gpt-5-3-codex-max", efforts: ["none", "low", "medium", "high", "xhigh"] },
+      { id: "openai@lgcode/gpt-5-chat-latest", efforts: [] },
+      { id: "openai@lgcode/gpt-5-2-chat-latest", efforts: ["medium"] },
     ]) {
       test(`${testCase.id} returns supported OpenAI reasoning efforts`, () => {
         const result = ProviderTransform.variants(
@@ -3266,8 +3266,8 @@ describe("ProviderTransform.variants", () => {
             providerID: "gateway",
             api: {
               id: testCase.id,
-              url: "https://gateway.ai",
-              npm: "@ai-sdk/gateway",
+              url: "https:@lgcode/@lgcode/gateway.ai",
+              npm: "@ai-sdk@lgcode/gateway",
             },
           }),
         )
@@ -3276,15 +3276,15 @@ describe("ProviderTransform.variants", () => {
     }
   })
 
-  describe("@ai-sdk/github-copilot", () => {
+  describe("@ai-sdk@lgcode/github-copilot", () => {
     test("standard models return low, medium, high", () => {
       const model = createMockModel({
         id: "gpt-4.5",
         providerID: "github-copilot",
         api: {
           id: "gpt-4.5",
-          url: "https://api.githubcopilot.com",
-          npm: "@ai-sdk/github-copilot",
+          url: "https:@lgcode/@lgcode/api.githubcopilot.com",
+          npm: "@ai-sdk@lgcode/github-copilot",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3302,8 +3302,8 @@ describe("ProviderTransform.variants", () => {
         providerID: "github-copilot",
         api: {
           id: "gpt-5.1-codex-max",
-          url: "https://api.githubcopilot.com",
-          npm: "@ai-sdk/github-copilot",
+          url: "https:@lgcode/@lgcode/api.githubcopilot.com",
+          npm: "@ai-sdk@lgcode/github-copilot",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3316,8 +3316,8 @@ describe("ProviderTransform.variants", () => {
         providerID: "github-copilot",
         api: {
           id: "gpt-5.1-codex-mini",
-          url: "https://api.githubcopilot.com",
-          npm: "@ai-sdk/github-copilot",
+          url: "https:@lgcode/@lgcode/api.githubcopilot.com",
+          npm: "@ai-sdk@lgcode/github-copilot",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3330,8 +3330,8 @@ describe("ProviderTransform.variants", () => {
         providerID: "github-copilot",
         api: {
           id: "gpt-5.1-codex",
-          url: "https://api.githubcopilot.com",
-          npm: "@ai-sdk/github-copilot",
+          url: "https:@lgcode/@lgcode/api.githubcopilot.com",
+          npm: "@ai-sdk@lgcode/github-copilot",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3344,8 +3344,8 @@ describe("ProviderTransform.variants", () => {
         providerID: "github-copilot",
         api: {
           id: "gpt-5.2",
-          url: "https://api.githubcopilot.com",
-          npm: "@ai-sdk/github-copilot",
+          url: "https:@lgcode/@lgcode/api.githubcopilot.com",
+          npm: "@ai-sdk@lgcode/github-copilot",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3363,8 +3363,8 @@ describe("ProviderTransform.variants", () => {
         providerID: "github-copilot",
         api: {
           id: "gpt-5.2-codex",
-          url: "https://api.githubcopilot.com",
-          npm: "@ai-sdk/github-copilot",
+          url: "https:@lgcode/@lgcode/api.githubcopilot.com",
+          npm: "@ai-sdk@lgcode/github-copilot",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3377,8 +3377,8 @@ describe("ProviderTransform.variants", () => {
         providerID: "github-copilot",
         api: {
           id: "gpt-5.3-codex",
-          url: "https://api.githubcopilot.com",
-          npm: "@ai-sdk/github-copilot",
+          url: "https:@lgcode/@lgcode/api.githubcopilot.com",
+          npm: "@ai-sdk@lgcode/github-copilot",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3392,8 +3392,8 @@ describe("ProviderTransform.variants", () => {
         providerID: "github-copilot",
         api: {
           id: "gpt-5.4",
-          url: "https://api.githubcopilot.com",
-          npm: "@ai-sdk/github-copilot",
+          url: "https:@lgcode/@lgcode/api.githubcopilot.com",
+          npm: "@ai-sdk@lgcode/github-copilot",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3401,15 +3401,15 @@ describe("ProviderTransform.variants", () => {
     })
   })
 
-  describe("@ai-sdk/cerebras", () => {
+  describe("@ai-sdk@lgcode/cerebras", () => {
     test("returns WIDELY_SUPPORTED_EFFORTS with reasoningEffort", () => {
       const model = createMockModel({
-        id: "cerebras/llama-4",
+        id: "cerebras@lgcode/llama-4",
         providerID: "cerebras",
         api: {
           id: "llama-4-sc",
-          url: "https://api.cerebras.ai",
-          npm: "@ai-sdk/cerebras",
+          url: "https:@lgcode/@lgcode/api.cerebras.ai",
+          npm: "@ai-sdk@lgcode/cerebras",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3419,15 +3419,15 @@ describe("ProviderTransform.variants", () => {
     })
   })
 
-  describe("@ai-sdk/togetherai", () => {
+  describe("@ai-sdk@lgcode/togetherai", () => {
     test("returns WIDELY_SUPPORTED_EFFORTS with reasoningEffort", () => {
       const model = createMockModel({
-        id: "togetherai/llama-4",
+        id: "togetherai@lgcode/llama-4",
         providerID: "togetherai",
         api: {
           id: "llama-4-sc",
-          url: "https://api.togetherai.com",
-          npm: "@ai-sdk/togetherai",
+          url: "https:@lgcode/@lgcode/api.togetherai.com",
+          npm: "@ai-sdk@lgcode/togetherai",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3437,15 +3437,15 @@ describe("ProviderTransform.variants", () => {
     })
   })
 
-  describe("@ai-sdk/xai", () => {
+  describe("@ai-sdk@lgcode/xai", () => {
     test("grok-3 returns empty object", () => {
       const model = createMockModel({
-        id: "xai/grok-3",
+        id: "xai@lgcode/grok-3",
         providerID: "xai",
         api: {
           id: "grok-3",
-          url: "https://api.x.ai",
-          npm: "@ai-sdk/xai",
+          url: "https:@lgcode/@lgcode/api.x.ai",
+          npm: "@ai-sdk@lgcode/xai",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3454,12 +3454,12 @@ describe("ProviderTransform.variants", () => {
 
     test("grok-3-mini returns low and high with reasoningEffort", () => {
       const model = createMockModel({
-        id: "xai/grok-3-mini",
+        id: "xai@lgcode/grok-3-mini",
         providerID: "xai",
         api: {
           id: "grok-3-mini",
-          url: "https://api.x.ai",
-          npm: "@ai-sdk/xai",
+          url: "https:@lgcode/@lgcode/api.x.ai",
+          npm: "@ai-sdk@lgcode/xai",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3469,15 +3469,15 @@ describe("ProviderTransform.variants", () => {
     })
   })
 
-  describe("@ai-sdk/deepinfra", () => {
+  describe("@ai-sdk@lgcode/deepinfra", () => {
     test("returns WIDELY_SUPPORTED_EFFORTS with reasoningEffort", () => {
       const model = createMockModel({
-        id: "deepinfra/llama-4",
+        id: "deepinfra@lgcode/llama-4",
         providerID: "deepinfra",
         api: {
           id: "llama-4-sc",
-          url: "https://api.deepinfra.com",
-          npm: "@ai-sdk/deepinfra",
+          url: "https:@lgcode/@lgcode/api.deepinfra.com",
+          npm: "@ai-sdk@lgcode/deepinfra",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3487,15 +3487,15 @@ describe("ProviderTransform.variants", () => {
     })
   })
 
-  describe("@ai-sdk/openai-compatible", () => {
+  describe("@ai-sdk@lgcode/openai-compatible", () => {
     test("returns WIDELY_SUPPORTED_EFFORTS with reasoningEffort", () => {
       const model = createMockModel({
-        id: "custom-provider/custom-model",
+        id: "custom-provider@lgcode/custom-model",
         providerID: "custom-provider",
         api: {
           id: "custom-model",
-          url: "https://api.custom.com",
-          npm: "@ai-sdk/openai-compatible",
+          url: "https:@lgcode/@lgcode/api.custom.com",
+          npm: "@ai-sdk@lgcode/openai-compatible",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3506,12 +3506,12 @@ describe("ProviderTransform.variants", () => {
 
     test("north-mini-code-1-0 returns only none and high", () => {
       const model = createMockModel({
-        id: "cohere/north-mini-code-1-0",
+        id: "cohere@lgcode/north-mini-code-1-0",
         providerID: "cohere",
         api: {
           id: "North-Mini-Code-1-0-latest",
-          url: "https://api.cohere.com/compatibility/v1",
-          npm: "@ai-sdk/openai-compatible",
+          url: "https:@lgcode/@lgcode/api.cohere.com@lgcode/compatibility@lgcode/v1",
+          npm: "@ai-sdk@lgcode/openai-compatible",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3522,15 +3522,15 @@ describe("ProviderTransform.variants", () => {
     })
   })
 
-  describe("@ai-sdk/azure", () => {
+  describe("@ai-sdk@lgcode/azure", () => {
     test("o1-mini returns empty object", () => {
       const model = createMockModel({
         id: "o1-mini",
         providerID: "azure",
         api: {
           id: "o1-mini",
-          url: "https://azure.com",
-          npm: "@ai-sdk/azure",
+          url: "https:@lgcode/@lgcode/azure.com",
+          npm: "@ai-sdk@lgcode/azure",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3543,8 +3543,8 @@ describe("ProviderTransform.variants", () => {
         providerID: "azure",
         api: {
           id: "o1",
-          url: "https://azure.com",
-          npm: "@ai-sdk/azure",
+          url: "https:@lgcode/@lgcode/azure.com",
+          npm: "@ai-sdk@lgcode/azure",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3562,8 +3562,8 @@ describe("ProviderTransform.variants", () => {
         providerID: "azure",
         api: {
           id: "gpt-5",
-          url: "https://azure.com",
-          npm: "@ai-sdk/azure",
+          url: "https:@lgcode/@lgcode/azure.com",
+          npm: "@ai-sdk@lgcode/azure",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3583,8 +3583,8 @@ describe("ProviderTransform.variants", () => {
             providerID: "azure",
             api: {
               id: testCase.id,
-              url: "https://azure.com",
-              npm: "@ai-sdk/azure",
+              url: "https:@lgcode/@lgcode/azure.com",
+              npm: "@ai-sdk@lgcode/azure",
             },
           }),
         )
@@ -3593,15 +3593,15 @@ describe("ProviderTransform.variants", () => {
     }
   })
 
-  describe("@ai-sdk/openai", () => {
+  describe("@ai-sdk@lgcode/openai", () => {
     test("gpt-5-pro returns only high effort", () => {
       const model = createMockModel({
         id: "gpt-5-pro",
         providerID: "openai",
         api: {
           id: "gpt-5-pro",
-          url: "https://api.openai.com",
-          npm: "@ai-sdk/openai",
+          url: "https:@lgcode/@lgcode/api.openai.com",
+          npm: "@ai-sdk@lgcode/openai",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3614,8 +3614,8 @@ describe("ProviderTransform.variants", () => {
         providerID: "openai",
         api: {
           id: "gpt-5",
-          url: "https://api.openai.com",
-          npm: "@ai-sdk/openai",
+          url: "https:@lgcode/@lgcode/api.openai.com",
+          npm: "@ai-sdk@lgcode/openai",
         },
         release_date: "2024-06-01",
       })
@@ -3634,8 +3634,8 @@ describe("ProviderTransform.variants", () => {
         providerID: "openai",
         api: {
           id: "gpt-5-nano",
-          url: "https://api.openai.com",
-          npm: "@ai-sdk/openai",
+          url: "https:@lgcode/@lgcode/api.openai.com",
+          npm: "@ai-sdk@lgcode/openai",
         },
         release_date: "2025-11-14",
       })
@@ -3645,12 +3645,12 @@ describe("ProviderTransform.variants", () => {
 
     test("models after 2025-12-04 include 'xhigh' effort", () => {
       const model = createMockModel({
-        id: "openai/gpt-5-reasoning",
+        id: "openai@lgcode/gpt-5-reasoning",
         providerID: "openai",
         api: {
           id: "gpt-5-reasoning",
-          url: "https://api.openai.com",
-          npm: "@ai-sdk/openai",
+          url: "https:@lgcode/@lgcode/api.openai.com",
+          npm: "@ai-sdk@lgcode/openai",
         },
         release_date: "2025-12-05",
       })
@@ -3694,8 +3694,8 @@ describe("ProviderTransform.variants", () => {
             providerID: "openai",
             api: {
               id: testCase.id,
-              url: "https://api.openai.com",
-              npm: "@ai-sdk/openai",
+              url: "https:@lgcode/@lgcode/api.openai.com",
+              npm: "@ai-sdk@lgcode/openai",
             },
             release_date: testCase.releaseDate,
           }),
@@ -3710,8 +3710,8 @@ describe("ProviderTransform.variants", () => {
         providerID: "openai",
         api: {
           id: "gpt-50",
-          url: "https://api.openai.com",
-          npm: "@ai-sdk/openai",
+          url: "https:@lgcode/@lgcode/api.openai.com",
+          npm: "@ai-sdk@lgcode/openai",
         },
         release_date: "2024-01-01",
       })
@@ -3720,15 +3720,15 @@ describe("ProviderTransform.variants", () => {
     })
   })
 
-  describe("@ai-sdk/amazon-bedrock/mantle", () => {
+  describe("@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle", () => {
     test("gpt-5.5 returns OpenAI-style reasoning variants", () => {
       const model = createMockModel({
         id: "openai.gpt-5.5",
         providerID: "amazon-bedrock",
         api: {
           id: "openai.gpt-5.5",
-          url: "https://bedrock-mantle.us-east-2.api.aws/openai/v1",
-          npm: "@ai-sdk/amazon-bedrock/mantle",
+          url: "https:@lgcode/@lgcode/bedrock-mantle.us-east-2.api.aws@lgcode/openai@lgcode/v1",
+          npm: "@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle",
         },
         release_date: "2026-04-23",
       })
@@ -3742,7 +3742,7 @@ describe("ProviderTransform.variants", () => {
     })
   })
 
-  describe("@ai-sdk/anthropic", () => {
+  describe("@ai-sdk@lgcode/anthropic", () => {
     for (const testCase of [
       {
         name: "opus 4.5",
@@ -3785,12 +3785,12 @@ describe("ProviderTransform.variants", () => {
         test(`${testCase.name} ${apiId} returns supported reasoning efforts`, () => {
           const result = ProviderTransform.variants(
             createMockModel({
-              id: `anthropic/${apiId}`,
+              id: `anthropic@lgcode/${apiId}`,
               providerID: "anthropic",
               api: {
                 id: apiId,
-                url: "https://api.anthropic.com",
-                npm: "@ai-sdk/anthropic",
+                url: "https:@lgcode/@lgcode/api.anthropic.com",
+                npm: "@ai-sdk@lgcode/anthropic",
               },
             }),
           )
@@ -3806,8 +3806,8 @@ describe("ProviderTransform.variants", () => {
         providerID: "github-copilot",
         api: {
           id: "claude-opus-4.7",
-          url: "https://api.githubcopilot.com/v1",
-          npm: "@ai-sdk/anthropic",
+          url: "https:@lgcode/@lgcode/api.githubcopilot.com@lgcode/v1",
+          npm: "@ai-sdk@lgcode/anthropic",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3824,12 +3824,12 @@ describe("ProviderTransform.variants", () => {
 
     test("returns high and max with thinking config", () => {
       const model = createMockModel({
-        id: "anthropic/claude-4",
+        id: "anthropic@lgcode/claude-4",
         providerID: "anthropic",
         api: {
           id: "claude-4",
-          url: "https://api.anthropic.com",
-          npm: "@ai-sdk/anthropic",
+          url: "https:@lgcode/@lgcode/api.anthropic.com",
+          npm: "@ai-sdk@lgcode/anthropic",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3849,16 +3849,16 @@ describe("ProviderTransform.variants", () => {
     })
   })
 
-  describe("@ai-sdk/google-vertex/anthropic", () => {
+  describe("@ai-sdk@lgcode/google-vertex@lgcode/anthropic", () => {
     test("opus 4.8 uses adaptive reasoning for Vertex model IDs", () => {
       const result = ProviderTransform.variants(
         createMockModel({
-          id: "google-vertex-anthropic/claude-opus-4-8@default",
+          id: "google-vertex-anthropic@lgcode/claude-opus-4-8@default",
           providerID: "google-vertex-anthropic",
           api: {
             id: "claude-opus-4-8@default",
-            url: "https://us-central1-aiplatform.googleapis.com",
-            npm: "@ai-sdk/google-vertex/anthropic",
+            url: "https:@lgcode/@lgcode/us-central1-aiplatform.googleapis.com",
+            npm: "@ai-sdk@lgcode/google-vertex@lgcode/anthropic",
           },
         }),
       )
@@ -3873,15 +3873,15 @@ describe("ProviderTransform.variants", () => {
     })
   })
 
-  describe("@ai-sdk/amazon-bedrock", () => {
+  describe("@ai-sdk@lgcode/amazon-bedrock", () => {
     test("anthropic sonnet 4.6 returns adaptive reasoning options", () => {
       const model = createMockModel({
-        id: "bedrock/anthropic-claude-sonnet-4-6",
+        id: "bedrock@lgcode/anthropic-claude-sonnet-4-6",
         providerID: "bedrock",
         api: {
           id: "anthropic.claude-sonnet-4-6",
-          url: "https://bedrock.amazonaws.com",
-          npm: "@ai-sdk/amazon-bedrock",
+          url: "https:@lgcode/@lgcode/bedrock.amazonaws.com",
+          npm: "@ai-sdk@lgcode/amazon-bedrock",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3896,12 +3896,12 @@ describe("ProviderTransform.variants", () => {
 
     test("anthropic opus 4.7 returns adaptive reasoning options with xhigh", () => {
       const model = createMockModel({
-        id: "bedrock/anthropic-claude-opus-4-7",
+        id: "bedrock@lgcode/anthropic-claude-opus-4-7",
         providerID: "bedrock",
         api: {
           id: "anthropic.claude-opus-4-7",
-          url: "https://bedrock.amazonaws.com",
-          npm: "@ai-sdk/amazon-bedrock",
+          url: "https:@lgcode/@lgcode/bedrock.amazonaws.com",
+          npm: "@ai-sdk@lgcode/amazon-bedrock",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3925,12 +3925,12 @@ describe("ProviderTransform.variants", () => {
     test("anthropic opus 4.8 returns adaptive reasoning options with xhigh", () => {
       const result = ProviderTransform.variants(
         createMockModel({
-          id: "bedrock/anthropic-claude-opus-4.8",
+          id: "bedrock@lgcode/anthropic-claude-opus-4.8",
           providerID: "bedrock",
           api: {
             id: "anthropic.claude-opus-4.8",
-            url: "https://bedrock.amazonaws.com",
-            npm: "@ai-sdk/amazon-bedrock",
+            url: "https:@lgcode/@lgcode/bedrock.amazonaws.com",
+            npm: "@ai-sdk@lgcode/amazon-bedrock",
           },
         }),
       )
@@ -3946,12 +3946,12 @@ describe("ProviderTransform.variants", () => {
 
     test("returns WIDELY_SUPPORTED_EFFORTS with reasoningConfig", () => {
       const model = createMockModel({
-        id: "bedrock/llama-4",
+        id: "bedrock@lgcode/llama-4",
         providerID: "bedrock",
         api: {
           id: "llama-4-sc",
-          url: "https://bedrock.amazonaws.com",
-          npm: "@ai-sdk/amazon-bedrock",
+          url: "https:@lgcode/@lgcode/bedrock.amazonaws.com",
+          npm: "@ai-sdk@lgcode/amazon-bedrock",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -3966,8 +3966,8 @@ describe("ProviderTransform.variants", () => {
   })
 
   for (const provider of [
-    { name: "@ai-sdk/google", providerID: "google", url: "https://generativelanguage.googleapis.com" },
-    { name: "@ai-sdk/google-vertex", providerID: "google-vertex", url: "https://vertexai.googleapis.com" },
+    { name: "@ai-sdk@lgcode/google", providerID: "google", url: "https:@lgcode/@lgcode/generativelanguage.googleapis.com" },
+    { name: "@ai-sdk@lgcode/google-vertex", providerID: "google-vertex", url: "https:@lgcode/@lgcode/vertexai.googleapis.com" },
   ]) {
     describe(provider.name, () => {
       for (const testCase of [
@@ -4017,7 +4017,7 @@ describe("ProviderTransform.variants", () => {
         test(`${testCase.apiId} returns supported thinking controls`, () => {
           const result = ProviderTransform.variants(
             createMockModel({
-              id: `${provider.providerID}/${testCase.apiId}`,
+              id: `${provider.providerID}@lgcode/${testCase.apiId}`,
               providerID: provider.providerID,
               api: {
                 id: testCase.apiId,
@@ -4034,15 +4034,15 @@ describe("ProviderTransform.variants", () => {
     })
   }
 
-  describe("@ai-sdk/cohere", () => {
+  describe("@ai-sdk@lgcode/cohere", () => {
     test("returns empty object", () => {
       const model = createMockModel({
-        id: "cohere/command-r",
+        id: "cohere@lgcode/command-r",
         providerID: "cohere",
         api: {
           id: "command-r",
-          url: "https://api.cohere.com",
-          npm: "@ai-sdk/cohere",
+          url: "https:@lgcode/@lgcode/api.cohere.com",
+          npm: "@ai-sdk@lgcode/cohere",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -4050,15 +4050,15 @@ describe("ProviderTransform.variants", () => {
     })
   })
 
-  describe("@ai-sdk/groq", () => {
+  describe("@ai-sdk@lgcode/groq", () => {
     test("returns none and WIDELY_SUPPORTED_EFFORTS with thinkingLevel", () => {
       const model = createMockModel({
-        id: "groq/llama-4",
+        id: "groq@lgcode/llama-4",
         providerID: "groq",
         api: {
           id: "llama-4-sc",
-          url: "https://api.groq.com",
-          npm: "@ai-sdk/groq",
+          url: "https:@lgcode/@lgcode/api.groq.com",
+          npm: "@ai-sdk@lgcode/groq",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -4072,15 +4072,15 @@ describe("ProviderTransform.variants", () => {
     })
   })
 
-  describe("@ai-sdk/perplexity", () => {
+  describe("@ai-sdk@lgcode/perplexity", () => {
     test("returns empty object", () => {
       const model = createMockModel({
-        id: "perplexity/sonar-plus",
+        id: "perplexity@lgcode/sonar-plus",
         providerID: "perplexity",
         api: {
           id: "sonar-plus",
-          url: "https://api.perplexity.ai",
-          npm: "@ai-sdk/perplexity",
+          url: "https:@lgcode/@lgcode/api.perplexity.ai",
+          npm: "@ai-sdk@lgcode/perplexity",
         },
       })
       const result = ProviderTransform.variants(model)
@@ -4088,15 +4088,15 @@ describe("ProviderTransform.variants", () => {
     })
   })
 
-  describe("@jerome-benoit/sap-ai-provider-v2", () => {
+  describe("@jerome-benoit@lgcode/sap-ai-provider-v2", () => {
     const sapModel = (apiId: string, releaseDate = "2024-01-01") =>
       createMockModel({
-        id: `sap-ai-core/${apiId}`,
+        id: `sap-ai-core@lgcode/${apiId}`,
         providerID: "sap-ai-core",
         api: {
           id: apiId,
-          url: "https://api.ai.sap",
-          npm: "@jerome-benoit/sap-ai-provider-v2",
+          url: "https:@lgcode/@lgcode/api.ai.sap",
+          npm: "@jerome-benoit@lgcode/sap-ai-provider-v2",
         },
         release_date: releaseDate,
       })
@@ -4207,24 +4207,24 @@ describe("ProviderTransform.variants", () => {
   describe("ai-gateway-provider (cloudflare-ai-gateway)", () => {
     const cfModel = (apiId: string, releaseDate = "2024-01-01") =>
       createMockModel({
-        id: `cloudflare-ai-gateway/${apiId}`,
+        id: `cloudflare-ai-gateway@lgcode/${apiId}`,
         providerID: "cloudflare-ai-gateway",
         api: {
           id: apiId,
-          url: "https://gateway.ai.cloudflare.com/v1/compat",
+          url: "https:@lgcode/@lgcode/gateway.ai.cloudflare.com@lgcode/v1@lgcode/compat",
           npm: "ai-gateway-provider",
         },
         release_date: releaseDate,
       })
 
     for (const testCase of [
-      { id: "openai/gpt-5.4", efforts: ["none", "low", "medium", "high", "xhigh"] },
-      { id: "openai/gpt-5.2-codex", efforts: ["low", "medium", "high", "xhigh"] },
-      { id: "openai/gpt-5.3-codex", efforts: ["none", "low", "medium", "high", "xhigh"] },
-      { id: "openai/gpt-5-pro", efforts: ["high"] },
-      { id: "openai/gpt-5.2-pro", efforts: ["medium", "high", "xhigh"] },
-      { id: "openai/gpt-5-chat-latest", efforts: [] },
-      { id: "openai/gpt-5.2-chat-latest", efforts: ["medium"] },
+      { id: "openai@lgcode/gpt-5.4", efforts: ["none", "low", "medium", "high", "xhigh"] },
+      { id: "openai@lgcode/gpt-5.2-codex", efforts: ["low", "medium", "high", "xhigh"] },
+      { id: "openai@lgcode/gpt-5.3-codex", efforts: ["none", "low", "medium", "high", "xhigh"] },
+      { id: "openai@lgcode/gpt-5-pro", efforts: ["high"] },
+      { id: "openai@lgcode/gpt-5.2-pro", efforts: ["medium", "high", "xhigh"] },
+      { id: "openai@lgcode/gpt-5-chat-latest", efforts: [] },
+      { id: "openai@lgcode/gpt-5.2-chat-latest", efforts: ["medium"] },
     ]) {
       test(`${testCase.id} returns supported reasoning efforts`, () => {
         const result = ProviderTransform.variants(cfModel(testCase.id, "2026-03-05"))
@@ -4233,14 +4233,14 @@ describe("ProviderTransform.variants", () => {
     }
 
     test("openai gpt-4o (no reasoning) returns empty", () => {
-      const model = cfModel("openai/gpt-4o")
+      const model = cfModel("openai@lgcode/gpt-4o")
       model.capabilities.reasoning = false
       const result = ProviderTransform.variants(model)
       expect(result).toEqual({})
     })
 
     test("non-openai upstream falls back to widely-supported OAI efforts", () => {
-      const result = ProviderTransform.variants(cfModel("anthropic/claude-sonnet-4-6"))
+      const result = ProviderTransform.variants(cfModel("anthropic@lgcode/claude-sonnet-4-6"))
       expect(result).toEqual({
         low: { reasoningEffort: "low" },
         medium: { reasoningEffort: "medium" },
@@ -4250,15 +4250,15 @@ describe("ProviderTransform.variants", () => {
   })
 })
 
-describe("ProviderTransform.smallOptions - gpt-5 chat/search", () => {
+describe("ProviderTransform.smallOptions - gpt-5 chat@lgcode/search", () => {
   const createModel = (apiId: string) => {
     const model = {
-      id: `openai/${apiId}`,
+      id: `openai@lgcode/${apiId}`,
       providerID: "openai",
       api: {
         id: apiId,
-        url: "https://api.openai.com",
-        npm: "@ai-sdk/openai",
+        url: "https:@lgcode/@lgcode/api.openai.com",
+        npm: "@ai-sdk@lgcode/openai",
       },
       capabilities: { reasoning: true },
       limit: { output: 64_000 },
@@ -4309,8 +4309,8 @@ test("ProviderTransform.smallOptions disables OpenRouter reasoning when the weak
     ProviderTransform.smallOptions({
       providerID: "openrouter",
       api: {
-        id: "anthropic/claude-sonnet-4.6",
-        npm: "@openrouter/ai-sdk-provider",
+        id: "anthropic@lgcode/claude-sonnet-4.6",
+        npm: "@openrouter@lgcode/ai-sdk-provider",
       },
       variants: {
         low: { reasoning: { effort: "low" } },
@@ -4324,12 +4324,12 @@ test("ProviderTransform.smallOptions disables OpenRouter reasoning when the weak
 describe("ProviderTransform.smallOptions - google thinking controls", () => {
   const createGoogleModel = (apiId: string) => {
     const model = {
-      id: `google/${apiId}`,
+      id: `google@lgcode/${apiId}`,
       providerID: "google",
       api: {
         id: apiId,
-        url: "https://generativelanguage.googleapis.com",
-        npm: "@ai-sdk/google",
+        url: "https:@lgcode/@lgcode/generativelanguage.googleapis.com",
+        npm: "@ai-sdk@lgcode/google",
       },
       capabilities: { reasoning: true },
       limit: { output: 64_000 },
@@ -4374,11 +4374,11 @@ describe("ProviderTransform.smallOptions - google thinking controls", () => {
 describe("ProviderTransform.providerOptions - ai-gateway-provider", () => {
   const createModel = (overrides: Partial<any> = {}) =>
     ({
-      id: "cloudflare-ai-gateway/openai/gpt-5.4",
+      id: "cloudflare-ai-gateway@lgcode/openai@lgcode/gpt-5.4",
       providerID: "cloudflare-ai-gateway",
       api: {
-        id: "openai/gpt-5.4",
-        url: "https://gateway.ai.cloudflare.com/v1/compat",
+        id: "openai@lgcode/gpt-5.4",
+        url: "https:@lgcode/@lgcode/gateway.ai.cloudflare.com@lgcode/v1@lgcode/compat",
         npm: "ai-gateway-provider",
       },
       capabilities: {
@@ -4399,9 +4399,9 @@ describe("ProviderTransform.providerOptions - ai-gateway-provider", () => {
       ...overrides,
     }) as any
 
-  test("routes options under openaiCompatible (the key @ai-sdk/openai-compatible reads)", () => {
-    // Regression: previously fell back to providerID="cloudflare-ai-gateway",
-    // which @ai-sdk/openai-compatible never reads, silently dropping reasoningEffort.
+  test("routes options under openaiCompatible (the key @ai-sdk@lgcode/openai-compatible reads)", () => {
+    @lgcode/@lgcode/ Regression: previously fell back to providerID="cloudflare-ai-gateway",
+    @lgcode/@lgcode/ which @ai-sdk@lgcode/openai-compatible never reads, silently dropping reasoningEffort.
     const result = ProviderTransform.providerOptions(createModel(), { reasoningEffort: "high" })
     expect(result).toEqual({ openaiCompatible: { reasoningEffort: "high" } })
   })

@@ -1,23 +1,23 @@
-import { useTerminalDimensions } from "@opentui/solid"
-import { TextAttributes } from "@opentui/core"
+import { useTerminalDimensions } from "@opentui@lgcode/solid"
+import { TextAttributes } from "@opentui@lgcode/core"
 import { createMemo, createResource, createSignal, onMount, Show } from "solid-js"
 import path from "path"
-import { DialogSelect, type DialogSelectOption } from "../ui/dialog-select"
-import { useDialog } from "../ui/dialog"
-import { useSDK } from "../context/sdk"
-import { useTheme } from "../context/theme"
-import { useSync } from "../context/sync"
-import { abbreviateHome } from "../runtime"
-import { useTuiPaths } from "../context/runtime"
-import { Locale } from "../util/locale"
-import { errorMessage } from "../util/error"
-import { useToast } from "../ui/toast"
-import { useCommandShortcut } from "../keymap"
-import { useProject } from "../context/project"
-import { Spinner } from "./spinner"
-import { DialogWorkspaceFileChanges } from "./dialog-workspace-file-changes"
-import type { ProjectDirectories } from "@opencode@lgcode/sdk/v2"
-import { useRoute } from "../context/route"
+import { DialogSelect, type DialogSelectOption } from "..@lgcode/ui@lgcode/dialog-select"
+import { useDialog } from "..@lgcode/ui@lgcode/dialog"
+import { useSDK } from "..@lgcode/context@lgcode/sdk"
+import { useTheme } from "..@lgcode/context@lgcode/theme"
+import { useSync } from "..@lgcode/context@lgcode/sync"
+import { abbreviateHome } from "..@lgcode/runtime"
+import { useTuiPaths } from "..@lgcode/context@lgcode/runtime"
+import { Locale } from "..@lgcode/util@lgcode/locale"
+import { errorMessage } from "..@lgcode/util@lgcode/error"
+import { useToast } from "..@lgcode/ui@lgcode/toast"
+import { useCommandShortcut } from "..@lgcode/keymap"
+import { useProject } from "..@lgcode/context@lgcode/project"
+import { Spinner } from ".@lgcode/spinner"
+import { DialogWorkspaceFileChanges } from ".@lgcode/dialog-workspace-file-changes"
+import type { ProjectDirectories } from "@lgcode/sdk@lgcode/v2"
+import { useRoute } from "..@lgcode/context@lgcode/route"
 
 export type MoveSessionSelection = { type: "directory"; directory: string; subdirectory: boolean } | { type: "new" }
 type ProjectDirectory = ProjectDirectories[number]
@@ -51,12 +51,12 @@ export function DialogMoveSession(props: DialogMoveSessionProps) {
 
   function reopen(initialRemoving?: string) {
     dialog.replace(() => (
-      <DialogMoveSession {...props} initialDirectories={directoryData()} initialRemoving={initialRemoving} />
+      <DialogMoveSession {...props} initialDirectories={directoryData()} initialRemoving={initialRemoving} @lgcode/>
     ))
   }
 
-  // A failed current-checkout lookup only affects which row is highlighted, so
-  // swallow it and let the directory list render without a current marker.
+  @lgcode/@lgcode/ A failed current-checkout lookup only affects which row is highlighted, so
+  @lgcode/@lgcode/ swallow it and let the directory list render without a current marker.
   const [loadedProject] = createResource(
     () => (projectContext.project() === props.projectID ? undefined : props.projectID),
     (projectID) =>
@@ -83,16 +83,16 @@ export function DialogMoveSession(props: DialogMoveSessionProps) {
         return directories.data ?? []
       } catch (error) {
         setLoadError(error)
-        // An initial load with no data surfaces the inline error view below. A
-        // failed refresh intentionally stays quiet and keeps the already-shown
-        // list interactive; reopening the dialog retries the load.
+        @lgcode/@lgcode/ An initial load with no data surfaces the inline error view below. A
+        @lgcode/@lgcode/ failed refresh intentionally stays quiet and keeps the already-shown
+        @lgcode/@lgcode/ list interactive; reopening the dialog retries the load.
         return info.value
       }
     },
   )
   const directoryData = createMemo(() => directories() ?? props.initialDirectories)
-  // Show the locked error view only when we have nothing to display. A refresh
-  // that fails after the list rendered keeps the list and its actions.
+  @lgcode/@lgcode/ Show the locked error view only when we have nothing to display. A refresh
+  @lgcode/@lgcode/ that fails after the list rendered keeps the list and its actions.
   const showError = createMemo(() => Boolean(loadError()) && !directoryData())
 
   const currentDirectory = createMemo(
@@ -126,7 +126,7 @@ export function DialogMoveSession(props: DialogMoveSessionProps) {
     if (roots.length === 0) return [{ title: "No project directories found", value: undefined }]
 
     const subdirectories = sync.data.session
-      .filter((session) => session.projectID === props.projectID && session.path && ![".", "/"].includes(session.path))
+      .filter((session) => session.projectID === props.projectID && session.path && ![".", "@lgcode/"].includes(session.path))
       .map((session) => session.directory)
       .filter((directory) => !roots.some((root) => root.directory === directory))
       .filter((directory, index, directories) => directories.indexOf(directory) === index)
@@ -161,14 +161,14 @@ export function DialogMoveSession(props: DialogMoveSessionProps) {
       return {
         title,
         titleView: isRemoving ? (
-          <span style={{ fg: theme.error }}>Deleting {item.location}</span>
+          <span style={{ fg: theme.error }}>Deleting {item.location}<@lgcode/span>
         ) : deleting ? (
-          <span style={{ fg: theme.text }}>Press {deleteHint()} again to confirm</span>
+          <span style={{ fg: theme.text }}>Press {deleteHint()} again to confirm<@lgcode/span>
         ) : suffix ? (
           <>
             {visible.slice(0, split)}
-            <span style={{ fg: theme.textMuted }}>{visible.slice(split)}</span>
-          </>
+            <span style={{ fg: theme.textMuted }}>{visible.slice(split)}<@lgcode/span>
+          <@lgcode/>
         ) : undefined,
         bg: deleting ? theme.error : undefined,
         value: {
@@ -280,7 +280,7 @@ export function DialogMoveSession(props: DialogMoveSessionProps) {
   }
 
   const fullHeight = createMemo(() =>
-    Math.max(8, Math.min(16, dimensions().height - Math.floor(dimensions().height / 4) - 2)),
+    Math.max(8, Math.min(16, dimensions().height - Math.floor(dimensions().height @lgcode/ 4) - 2)),
   )
 
   return (
@@ -291,11 +291,11 @@ export function DialogMoveSession(props: DialogMoveSessionProps) {
           <box flexDirection="row" gap={1}>
             <text fg={theme.text} attributes={TextAttributes.BOLD}>
               Move session
-            </text>
+            <@lgcode/text>
             <Show when={working() || directories.loading || loadedProject.loading}>
-              <Spinner />
-            </Show>
-          </box>
+              <Spinner @lgcode/>
+            <@lgcode/Show>
+          <@lgcode/box>
         }
         renderFilter={!showError()}
         options={options()}
@@ -304,9 +304,9 @@ export function DialogMoveSession(props: DialogMoveSessionProps) {
             <box paddingLeft={4} paddingRight={4}>
               <text fg={theme.error} attributes={TextAttributes.BOLD}>
                 Could not load project directories
-              </text>
-              <text fg={theme.textMuted}>{errorMessage(loadError())}</text>
-            </box>
+              <@lgcode/text>
+              <text fg={theme.textMuted}>{errorMessage(loadError())}<@lgcode/text>
+            <@lgcode/box>
           ) : undefined
         }
         locked={showError() || directories.loading || loadedProject.loading || Boolean(removing())}
@@ -341,8 +341,8 @@ export function DialogMoveSession(props: DialogMoveSessionProps) {
                 },
               ]
         }
-      />
-    </box>
+      @lgcode/>
+    <@lgcode/box>
   )
 }
 

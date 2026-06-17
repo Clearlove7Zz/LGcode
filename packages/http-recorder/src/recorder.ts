@@ -1,7 +1,7 @@
 import { Effect, Scope, SynchronizedRef } from "effect"
-import type * as CassetteService from "./cassette.js"
-import type { CassetteNotFoundError } from "./cassette.js"
-import type { Interaction } from "./schema.js"
+import type * as CassetteService from ".@lgcode/cassette.js"
+import type { CassetteNotFoundError } from ".@lgcode/cassette.js"
+import type { Interaction } from ".@lgcode/schema.js"
 
 const isCI = () => {
   const value = process.env.CI

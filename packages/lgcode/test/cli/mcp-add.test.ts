@@ -1,7 +1,7 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
 import path from "path"
-import { cliIt } from "../lib/cli-process"
+import { cliIt } from "..@lgcode/lib@lgcode/cli-process"
 
 describe("opencode mcp add (non-interactive subprocess)", () => {
   cliIt.concurrent(
@@ -13,7 +13,7 @@ describe("opencode mcp add (non-interactive subprocess)", () => {
           "add",
           "github",
           "--url",
-          "https://example.com/mcp",
+          "https:@lgcode/@lgcode/example.com@lgcode/mcp",
           "--header",
           "Authorization=Bearer {env:GITHUB_TOKEN}",
           "--header",
@@ -26,7 +26,7 @@ describe("opencode mcp add (non-interactive subprocess)", () => {
         )
         expect(config.mcp.github).toEqual({
           type: "remote",
-          url: "https://example.com/mcp",
+          url: "https:@lgcode/@lgcode/example.com@lgcode/mcp",
           headers: {
             Authorization: "Bearer {env:GITHUB_TOKEN}",
             "X-Option": "one=two",
@@ -51,7 +51,7 @@ describe("opencode mcp add (non-interactive subprocess)", () => {
           "--",
           "npx",
           "-y",
-          "@example/server",
+          "@example@lgcode/server",
           "--label",
           "two words",
         ])
@@ -62,7 +62,7 @@ describe("opencode mcp add (non-interactive subprocess)", () => {
         )
         expect(config.mcp.local).toEqual({
           type: "local",
-          command: ["npx", "-y", "@example/server", "--label", "two words"],
+          command: ["npx", "-y", "@example@lgcode/server", "--label", "two words"],
           environment: {
             API_KEY: "secret",
             VALUE: "one=two",

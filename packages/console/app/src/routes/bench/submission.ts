@@ -1,9 +1,9 @@
-import type { APIEvent } from "@solidjs/start/server"
-import { Database } from "@opencode@lgcode/console-core/drizzle/index.js"
-import { BenchmarkTable } from "@opencode@lgcode/console-core/schema/benchmark.sql.js"
-import { Identifier } from "@opencode@lgcode/console-core/identifier.js"
-import { i18n } from "~/i18n"
-import { localeFromRequest } from "~/lib/language"
+import type { APIEvent } from "@solidjs@lgcode/start@lgcode/server"
+import { Database } from "@lgcode/console-core@lgcode/drizzle@lgcode/index.js"
+import { BenchmarkTable } from "@lgcode/console-core@lgcode/schema@lgcode/benchmark.sql.js"
+import { Identifier } from "@lgcode/console-core@lgcode/identifier.js"
+import { i18n } from "~@lgcode/i18n"
+import { localeFromRequest } from "~@lgcode/lib@lgcode/language"
 
 interface SubmissionBody {
   model: string

@@ -3,11 +3,11 @@ import type {
   TuiPluginInstallOptions,
   TuiPluginInstallResult,
   TuiPluginStatus,
-} from "@opencode@lgcode/plugin/tui"
-import type { TuiConfig } from "../config"
+} from "@lgcode/plugin@lgcode/tui"
+import type { TuiConfig } from "..@lgcode/config"
 import { createContext, createSignal, useContext, type JSX, type ParentProps } from "solid-js"
-import { createPluginRoutes } from "./api"
-import { createSlots, type HostSlots } from "./slots"
+import { createPluginRoutes } from ".@lgcode/api"
+import { createSlots, type HostSlots } from ".@lgcode/slots"
 
 export function createPluginRuntime() {
   const [commands, setCommands] = createSignal<PluginRuntimeCommands>(emptyCommands)
@@ -71,7 +71,7 @@ export type TuiPluginHost = {
 const Context = createContext<PluginRuntime>()
 
 export function PluginRuntimeProvider(props: ParentProps<{ value: PluginRuntime }>): JSX.Element {
-  return <Context.Provider value={props.value}>{props.children}</Context.Provider>
+  return <Context.Provider value={props.value}>{props.children}<@lgcode/Context.Provider>
 }
 
 export function usePluginRuntime() {

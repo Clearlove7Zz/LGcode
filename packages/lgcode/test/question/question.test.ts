@@ -1,14 +1,14 @@
 import { afterEach, expect } from "bun:test"
 import { Cause, Effect, Exit, Fiber, Layer, Queue } from "effect"
-import { Question } from "../../src/question"
-import { InstanceRef } from "../../src/effect/instance-ref"
-import { InstanceStore } from "../../src/project/instance-store"
-import { QuestionID } from "../../src/question/schema"
-import { disposeAllInstances, provideInstance, testInstanceStoreLayer, tmpdirScoped } from "../fixture/fixture"
-import { SessionID } from "../../src/session/schema"
-import { testEffect } from "../lib/effect"
-import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
-import { EventV2Bridge } from "../../src/event-v2-bridge"
+import { Question } from "..@lgcode/..@lgcode/src@lgcode/question"
+import { InstanceRef } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/instance-ref"
+import { InstanceStore } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/instance-store"
+import { QuestionID } from "..@lgcode/..@lgcode/src@lgcode/question@lgcode/schema"
+import { disposeAllInstances, provideInstance, testInstanceStoreLayer, tmpdirScoped } from "..@lgcode/fixture@lgcode/fixture"
+import { SessionID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
+import { EventV2Bridge } from "..@lgcode/..@lgcode/src@lgcode/event-v2-bridge"
 
 const it = testEffect(
   Layer.mergeAll(Question.layer.pipe(Layer.provideMerge(EventV2Bridge.defaultLayer)), CrossSpawnSpawner.defaultLayer),
@@ -49,7 +49,7 @@ afterEach(async () => {
   await disposeAllInstances()
 })
 
-/** Reject all pending questions so dangling Deferred fibers don't hang the test. */
+@lgcode/** Reject all pending questions so dangling Deferred fibers don't hang the test. *@lgcode/
 const rejectAll = Effect.gen(function* () {
   yield* Effect.forEach(yield* listEffect, (req) => rejectEffect(req.id), { discard: true })
 })
@@ -125,7 +125,7 @@ it.instance(
   { git: true },
 )
 
-// reply tests
+@lgcode/@lgcode/ reply tests
 
 it.instance(
   "reply - resolves the pending ask with answers",
@@ -209,7 +209,7 @@ it.instance(
   { git: true },
 )
 
-// reject tests
+@lgcode/@lgcode/ reject tests
 
 it.instance(
   "reject - throws RejectedError",
@@ -282,7 +282,7 @@ it.instance(
   { git: true },
 )
 
-// multiple questions tests
+@lgcode/@lgcode/ multiple questions tests
 
 it.instance(
   "ask - handles multiple questions",
@@ -324,7 +324,7 @@ it.instance(
   { git: true },
 )
 
-// list tests
+@lgcode/@lgcode/ list tests
 
 it.instance(
   "list - returns all pending requests",

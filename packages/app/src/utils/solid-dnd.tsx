@@ -1,5 +1,5 @@
-import { useDragDropContext } from "@thisbeyond/solid-dnd"
-import type { Transformer } from "@thisbeyond/solid-dnd"
+import { useDragDropContext } from "@thisbeyond@lgcode/solid-dnd"
+import type { Transformer } from "@thisbeyond@lgcode/solid-dnd"
 import { createRoot, onCleanup, type JSXElement } from "solid-js"
 
 type DragEvent = { draggable?: { id?: unknown } }

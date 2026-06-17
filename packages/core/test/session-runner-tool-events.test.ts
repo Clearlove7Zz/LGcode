@@ -1,13 +1,13 @@
 import { expect, test } from "bun:test"
 import { Effect, Schema, Stream } from "effect"
-import { LLMEvent } from "@opencode@lgcode/llm"
-import { EventV2 } from "@opencode@lgcode/core/event"
-import { SessionEvent } from "@opencode@lgcode/core/session/event"
-import { SessionMessage } from "@opencode@lgcode/core/session/message"
-import { SessionV2 } from "@opencode@lgcode/core/session"
-import { ModelV2 } from "@opencode@lgcode/core/model"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { createLLMEventPublisher } from "@opencode@lgcode/core/session/runner/publish-llm-event"
+import { LLMEvent } from "@lgcode/llm"
+import { EventV2 } from "@lgcode/core@lgcode/event"
+import { SessionEvent } from "@lgcode/core@lgcode/session@lgcode/event"
+import { SessionMessage } from "@lgcode/core@lgcode/session@lgcode/message"
+import { SessionV2 } from "@lgcode/core@lgcode/session"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { createLLMEventPublisher } from "@lgcode/core@lgcode/session@lgcode/runner@lgcode/publish-llm-event"
 
 const sessionID = SessionV2.ID.make("ses_tool_event_test")
 const base64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAAB"
@@ -57,14 +57,14 @@ const result = LLMEvent.toolResult({
     type: "content",
     value: [
       { type: "text", text: "Image read successfully" },
-      { type: "file", uri: `data:image/png;base64,${base64}`, mime: "image/png", name: "pixel.png" },
+      { type: "file", uri: `data:image@lgcode/png;base64,${base64}`, mime: "image@lgcode/png", name: "pixel.png" },
     ],
   },
   output: {
-    structured: { type: "media", mime: "image/png" },
+    structured: { type: "media", mime: "image@lgcode/png" },
     content: [
       { type: "text", text: "Image read successfully" },
-      { type: "file", uri: `data:image/png;base64,${base64}`, mime: "image/png", name: "pixel.png" },
+      { type: "file", uri: `data:image@lgcode/png;base64,${base64}`, mime: "image@lgcode/png", name: "pixel.png" },
     ],
   },
 })
@@ -83,7 +83,7 @@ test("local tool success serializes media base64 once and reconstructs from stru
   expect(success?.data).toMatchObject({
     content: [
       { type: "text", text: "Image read successfully" },
-      { type: "file", uri: `data:image/png;base64,${base64}`, mime: "image/png" },
+      { type: "file", uri: `data:image@lgcode/png;base64,${base64}`, mime: "image@lgcode/png" },
     ],
   })
 })
@@ -118,9 +118,9 @@ test("old success event data containing result still decodes", () => {
     timestamp: Date.now(),
     assistantMessageID: SessionMessage.ID.create(),
     callID: "call-old",
-    structured: { type: "media", mime: "image/png" },
-    content: [{ type: "file", uri: `data:image/png;base64,${base64}`, mime: "image/png" }],
-    result: { type: "content", value: [{ type: "file", uri: `data:image/png;base64,${base64}`, mime: "image/png" }] },
+    structured: { type: "media", mime: "image@lgcode/png" },
+    content: [{ type: "file", uri: `data:image@lgcode/png;base64,${base64}`, mime: "image@lgcode/png" }],
+    result: { type: "content", value: [{ type: "file", uri: `data:image@lgcode/png;base64,${base64}`, mime: "image@lgcode/png" }] },
     provider: { executed: false },
   })
   expect(decoded.result).toMatchObject({ type: "content" })

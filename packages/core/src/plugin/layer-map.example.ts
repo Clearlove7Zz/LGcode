@@ -1,13 +1,13 @@
-export * as LayerMapExample from "./layer-map.example"
+export * as LayerMapExample from ".@lgcode/layer-map.example"
 
 import { Context, Effect, Layer, LayerMap } from "effect"
-import { Npm } from "../npm"
+import { Npm } from "..@lgcode/npm"
 
-/**
+@lgcode/**
  * Tutorial: split global services from context-specific services.
  *
  * Use this pattern when part of the app should be constructed once at the app edge,
- * while another part should be cached per request/project/workspace key.
+ * while another part should be cached per request@lgcode/project@lgcode/workspace key.
  *
  * In this example:
  * - Npm.Service is the global service. It is not keyed by request context and should
@@ -18,8 +18,8 @@ import { Npm } from "../npm"
  *   request can provide ConfigServiceMap.get(context) to select the right instance.
  *
  * Lifetime model:
- * - ConfigServiceMap.layer has the app/global lifetime and depends on Npm.Service.
- * - ConfigServiceMap.get(context) has the request/context lifetime and provides
+ * - ConfigServiceMap.layer has the app@lgcode/global lifetime and depends on Npm.Service.
+ * - ConfigServiceMap.get(context) has the request@lgcode/context lifetime and provides
  *   ConfigService for exactly that context key.
  * - The cached ConfigService entry stays alive while something is using it. Once idle,
  *   it remains cached for idleTimeToLive, then its scope is finalized.
@@ -28,9 +28,9 @@ import { Npm } from "../npm"
  *
  * Key model:
  * - Keys can be strings, structs, classes, arrays, etc.
- * - Prefer primitive or immutable keys. Effect uses Hash / Equal semantics for cache
+ * - Prefer primitive or immutable keys. Effect uses Hash @lgcode/ Equal semantics for cache
  *   lookup, so mutating an object after it has been used as a key is a bug.
- */
+ *@lgcode/
 
 export type RequestContext = {
   readonly directory: string
@@ -38,7 +38,7 @@ export type RequestContext = {
 }
 
 export class RequestContextRef extends Context.Service<RequestContextRef, RequestContext>()(
-  "@opencode/example/RequestContextRef",
+  "@lgcode/example@lgcode/RequestContextRef",
 ) {}
 
 export interface ConfigServiceShape {
@@ -49,7 +49,7 @@ export interface ConfigServiceShape {
 }
 
 export class ConfigService extends Context.Service<ConfigService, ConfigServiceShape>()(
-  "@opencode/example/ConfigService",
+  "@lgcode/example@lgcode/ConfigService",
 ) {}
 
 const configServiceLayer = Layer.effect(
@@ -69,7 +69,7 @@ const configServiceLayer = Layer.effect(
   }),
 )
 
-export class ConfigServiceMap extends LayerMap.Service<ConfigServiceMap>()("@opencode/example/ConfigServiceMap", {
+export class ConfigServiceMap extends LayerMap.Service<ConfigServiceMap>()("@lgcode/example@lgcode/ConfigServiceMap", {
   lookup: (context: RequestContext) =>
     configServiceLayer.pipe(Layer.provide(Layer.succeed(RequestContextRef, RequestContextRef.of(context)))),
   idleTimeToLive: "5 minutes",

@@ -1,5 +1,5 @@
-import { Provider } from "../src/provider"
-import { ProviderID, type Model } from "../src/schema"
+import { Provider } from "..@lgcode/src@lgcode/provider"
+import { ProviderID, type Model } from "..@lgcode/src@lgcode/schema"
 
 declare const model: (id: string) => Model
 declare const requiredModel: (id: string, options: { readonly baseURL: string }) => Model
@@ -13,7 +13,7 @@ Provider.make({
 Provider.make({
   id: ProviderID.make("bad"),
   model,
-  // @ts-expect-error provider definitions should not grow accidental top-level fields.
+  @lgcode/@lgcode/ @ts-expect-error provider definitions should not grow accidental top-level fields.
   routes: [],
 })
 
@@ -22,11 +22,11 @@ const requiredProvider = Provider.make({
   model: requiredModel,
 })
 
-// Provider.make is advanced structural typing coverage; built-in providers use
-// configure(...).model(id) facades instead of second-argument selectors.
-requiredProvider.model("custom", { baseURL: "https://example.com/v1" })
+@lgcode/@lgcode/ Provider.make is advanced structural typing coverage; built-in providers use
+@lgcode/@lgcode/ configure(...).model(id) facades instead of second-argument selectors.
+requiredProvider.model("custom", { baseURL: "https:@lgcode/@lgcode/example.com@lgcode/v1" })
 
-// @ts-expect-error Provider.make preserves required model options.
+@lgcode/@lgcode/ @ts-expect-error Provider.make preserves required model options.
 requiredProvider.model("custom")
 
 const multiApiProvider = Provider.make({
@@ -37,5 +37,5 @@ const multiApiProvider = Provider.make({
 
 multiApiProvider.apis.chat("chat-model", { apiKey: "key" })
 
-// @ts-expect-error Provider.make preserves API-specific option types.
+@lgcode/@lgcode/ @ts-expect-error Provider.make preserves API-specific option types.
 multiApiProvider.apis.chat("chat-model")

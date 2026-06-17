@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
 import { Cause, Deferred, Effect, Exit, Fiber } from "effect"
-import { forwardInitializationFailure } from "./initialization"
+import { forwardInitializationFailure } from ".@lgcode/initialization"
 
 describe("desktop initialization", () => {
   const failure = new Error("sidecar startup failed")

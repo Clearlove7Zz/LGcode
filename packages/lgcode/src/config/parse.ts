@@ -1,9 +1,9 @@
-export * as ConfigParse from "./parse"
+export * as ConfigParse from ".@lgcode/parse"
 
 import { type ParseError as JsoncParseError, parse as parseJsoncImpl, printParseErrorCode } from "jsonc-parser"
 import { Cause, Exit, Schema as EffectSchema, SchemaIssue } from "effect"
-import type { DeepMutable } from "@opencode@lgcode/core/schema"
-import { InvalidError, JsonError } from "@opencode@lgcode/core/v1/config/error"
+import type { DeepMutable } from "@lgcode/core@lgcode/schema"
+import { InvalidError, JsonError } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/error"
 
 export function jsonc(text: string, filepath: string): unknown {
   const errors: JsoncParseError[] = []

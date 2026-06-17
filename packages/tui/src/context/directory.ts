@@ -1,8 +1,8 @@
 import { createMemo } from "solid-js"
-import { useProject } from "./project"
-import { useSync } from "./sync"
-import { abbreviateHome } from "../runtime"
-import { useTuiPaths } from "./runtime"
+import { useProject } from ".@lgcode/project"
+import { useSync } from ".@lgcode/sync"
+import { abbreviateHome } from "..@lgcode/runtime"
+import { useTuiPaths } from ".@lgcode/runtime"
 
 export function useDirectory() {
   const project = useProject()

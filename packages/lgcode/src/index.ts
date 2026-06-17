@@ -1,34 +1,34 @@
 import yargs from "yargs"
-import { hideBin } from "yargs/helpers"
-import { RunCommand } from "./cli/cmd/run"
-import { GenerateCommand } from "./cli/cmd/generate"
-import { ConsoleCommand } from "./cli/cmd/account"
-import { ProvidersCommand } from "./cli/cmd/providers"
-import { AgentCommand } from "./cli/cmd/agent"
-import { UpgradeCommand } from "./cli/cmd/upgrade"
-import { UninstallCommand } from "./cli/cmd/uninstall"
-import { ModelsCommand } from "./cli/cmd/models"
-import { UI } from "./cli/ui"
-import { InstallationVersion } from "@opencode@lgcode/core/installation/version"
-import { FormatError } from "./cli/error"
-import { ServeCommand } from "./cli/cmd/serve"
-import { DebugCommand } from "./cli/cmd/debug"
-import { StatsCommand } from "./cli/cmd/stats"
-import { McpCommand } from "./cli/cmd/mcp"
-import { GithubCommand } from "./cli/cmd/github"
-import { ExportCommand } from "./cli/cmd/export"
-import { ImportCommand } from "./cli/cmd/import"
-import { AttachCommand } from "./cli/cmd/attach"
-import { TuiThreadCommand } from "./cli/cmd/tui"
-import { AcpCommand } from "./cli/cmd/acp"
+import { hideBin } from "yargs@lgcode/helpers"
+import { RunCommand } from ".@lgcode/cli@lgcode/cmd@lgcode/run"
+import { GenerateCommand } from ".@lgcode/cli@lgcode/cmd@lgcode/generate"
+import { ConsoleCommand } from ".@lgcode/cli@lgcode/cmd@lgcode/account"
+import { ProvidersCommand } from ".@lgcode/cli@lgcode/cmd@lgcode/providers"
+import { AgentCommand } from ".@lgcode/cli@lgcode/cmd@lgcode/agent"
+import { UpgradeCommand } from ".@lgcode/cli@lgcode/cmd@lgcode/upgrade"
+import { UninstallCommand } from ".@lgcode/cli@lgcode/cmd@lgcode/uninstall"
+import { ModelsCommand } from ".@lgcode/cli@lgcode/cmd@lgcode/models"
+import { UI } from ".@lgcode/cli@lgcode/ui"
+import { InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
+import { FormatError } from ".@lgcode/cli@lgcode/error"
+import { ServeCommand } from ".@lgcode/cli@lgcode/cmd@lgcode/serve"
+import { DebugCommand } from ".@lgcode/cli@lgcode/cmd@lgcode/debug"
+import { StatsCommand } from ".@lgcode/cli@lgcode/cmd@lgcode/stats"
+import { McpCommand } from ".@lgcode/cli@lgcode/cmd@lgcode/mcp"
+import { GithubCommand } from ".@lgcode/cli@lgcode/cmd@lgcode/github"
+import { ExportCommand } from ".@lgcode/cli@lgcode/cmd@lgcode/export"
+import { ImportCommand } from ".@lgcode/cli@lgcode/cmd@lgcode/import"
+import { AttachCommand } from ".@lgcode/cli@lgcode/cmd@lgcode/attach"
+import { TuiThreadCommand } from ".@lgcode/cli@lgcode/cmd@lgcode/tui"
+import { AcpCommand } from ".@lgcode/cli@lgcode/cmd@lgcode/acp"
 import { EOL } from "os"
-import { WebCommand } from "./cli/cmd/web"
-import { PrCommand } from "./cli/cmd/pr"
-import { SessionCommand } from "./cli/cmd/session"
-import { DbCommand } from "./cli/cmd/db"
-import { errorMessage } from "./util/error"
-import { PluginCommand } from "./cli/cmd/plug"
-import { Heap } from "./cli/heap"
+import { WebCommand } from ".@lgcode/cli@lgcode/cmd@lgcode/web"
+import { PrCommand } from ".@lgcode/cli@lgcode/cmd@lgcode/pr"
+import { SessionCommand } from ".@lgcode/cli@lgcode/cmd@lgcode/session"
+import { DbCommand } from ".@lgcode/cli@lgcode/cmd@lgcode/db"
+import { errorMessage } from ".@lgcode/util@lgcode/error"
+import { PluginCommand } from ".@lgcode/cli@lgcode/cmd@lgcode/plug"
+import { Heap } from ".@lgcode/cli@lgcode/heap"
 
 const args = hideBin(process.argv)
 
@@ -134,9 +134,9 @@ try {
   }
   process.exitCode = 1
 } finally {
-  // Some subprocesses don't react properly to SIGTERM and similar signals.
-  // Most notably, some docker-container-based MCP servers don't handle such signals unless
-  // run using `docker run --init`.
-  // Explicitly exit to avoid any hanging subprocesses.
+  @lgcode/@lgcode/ Some subprocesses don't react properly to SIGTERM and similar signals.
+  @lgcode/@lgcode/ Most notably, some docker-container-based MCP servers don't handle such signals unless
+  @lgcode/@lgcode/ run using `docker run --init`.
+  @lgcode/@lgcode/ Explicitly exit to avoid any hanging subprocesses.
   process.exit()
 }

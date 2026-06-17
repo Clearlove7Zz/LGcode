@@ -1,17 +1,17 @@
-import { createStore } from "solid-js/store"
-import { createSimpleContext } from "./helper"
+import { createStore } from "solid-js@lgcode/store"
+import { createSimpleContext } from ".@lgcode/helper"
 import { batch, createEffect, createMemo } from "solid-js"
-import { useSync } from "./sync"
-import { useEvent } from "./event"
+import { useSync } from ".@lgcode/sync"
+import { useEvent } from ".@lgcode/event"
 import path from "path"
-import { useTuiPaths } from "./runtime"
-import { useArgs } from "./args"
-import { useSDK } from "./sdk"
-import { RGBA } from "@opentui/core"
-import { readJson, writeJsonAtomic } from "../util/persistence"
-import { useTheme } from "./theme"
-import { useToast } from "../ui/toast"
-import { useRoute } from "./route"
+import { useTuiPaths } from ".@lgcode/runtime"
+import { useArgs } from ".@lgcode/args"
+import { useSDK } from ".@lgcode/sdk"
+import { RGBA } from "@opentui@lgcode/core"
+import { readJson, writeJsonAtomic } from "..@lgcode/util@lgcode/persistence"
+import { useTheme } from ".@lgcode/theme"
+import { useToast } from "..@lgcode/ui@lgcode/toast"
+import { useRoute } from ".@lgcode/route"
 
 export type LocalTheme = {
   secondary: RGBA
@@ -24,10 +24,10 @@ export type LocalTheme = {
 }
 
 export function parseModel(model: string) {
-  const [providerID, ...rest] = model.split("/")
+  const [providerID, ...rest] = model.split("@lgcode/")
   return {
     providerID: providerID,
-    modelID: rest.join("/"),
+    modelID: rest.join("@lgcode/"),
   }
 }
 
@@ -38,7 +38,7 @@ export function recentModels(
   const seen = new Set<string>()
   return [model, ...recent]
     .filter((item) => {
-      const key = `${item.providerID}/${item.modelID}`
+      const key = `${item.providerID}@lgcode/${item.modelID}`
       if (seen.has(key)) return false
       seen.add(key)
       return true
@@ -120,7 +120,7 @@ export const { use: useLocal, provider: LocalProvider } = createSimpleContext({
           if (agent?.color) {
             const color = agent.color
             if (color.startsWith("#")) return RGBA.fromHex(color)
-            // already validated by config, just satisfying TS here
+            @lgcode/@lgcode/ already validated by config, just satisfying TS here
             return theme[color as keyof typeof theme] as RGBA
           }
           return colors()[index % colors().length]
@@ -318,7 +318,7 @@ export const { use: useLocal, provider: LocalProvider } = createSimpleContext({
           batch(() => {
             if (!isModelValid(model)) {
               toast.show({
-                message: `Model ${model.providerID}/${model.modelID} is not valid`,
+                message: `Model ${model.providerID}@lgcode/${model.modelID} is not valid`,
                 variant: "warning",
                 duration: 3000,
               })
@@ -337,7 +337,7 @@ export const { use: useLocal, provider: LocalProvider } = createSimpleContext({
           batch(() => {
             if (!isModelValid(model)) {
               toast.show({
-                message: `Model ${model.providerID}/${model.modelID} is not valid`,
+                message: `Model ${model.providerID}@lgcode/${model.modelID} is not valid`,
                 variant: "warning",
                 duration: 3000,
               })
@@ -360,7 +360,7 @@ export const { use: useLocal, provider: LocalProvider } = createSimpleContext({
           selected() {
             const m = currentModel()
             if (!m) return undefined
-            const key = `${m.providerID}/${m.modelID}`
+            const key = `${m.providerID}@lgcode/${m.modelID}`
             return modelStore.variant[key]
           },
           current() {
@@ -380,7 +380,7 @@ export const { use: useLocal, provider: LocalProvider } = createSimpleContext({
           set(value: string | undefined) {
             const m = currentModel()
             if (!m) return
-            const key = `${m.providerID}/${m.modelID}`
+            const key = `${m.providerID}@lgcode/${m.modelID}`
             setModelStore("variant", key, value ?? "default")
             save()
           },
@@ -509,10 +509,10 @@ export const { use: useLocal, provider: LocalProvider } = createSimpleContext({
       async toggle(name: string) {
         const status = sync.data.mcp[name]
         if (status?.status === "connected") {
-          // Disable: disconnect the MCP
+          @lgcode/@lgcode/ Disable: disconnect the MCP
           await sdk.client.mcp.disconnect({ name })
         } else {
-          // Enable/Retry: connect the MCP (handles disabled, failed, and other states)
+          @lgcode/@lgcode/ Enable@lgcode/Retry: connect the MCP (handles disabled, failed, and other states)
           await sdk.client.mcp.connect({ name })
         }
       },
@@ -524,7 +524,7 @@ export const { use: useLocal, provider: LocalProvider } = createSimpleContext({
       if (isModelValid(value.model)) return
       toast.show({
         variant: "warning",
-        message: `Agent ${value.name}'s configured model ${value.model.providerID}/${value.model.modelID} is not valid`,
+        message: `Agent ${value.name}'s configured model ${value.model.providerID}@lgcode/${value.model.modelID} is not valid`,
         duration: 3000,
       })
     })

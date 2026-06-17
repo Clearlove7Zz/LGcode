@@ -1,7 +1,7 @@
 import { describe, expect } from "bun:test"
-import { State } from "@opencode@lgcode/core/state"
+import { State } from "@lgcode/core@lgcode/state"
 import { Deferred, Effect, Exit, Fiber, Layer, Scope } from "effect"
-import { testEffect } from "./lib/effect"
+import { testEffect } from ".@lgcode/lib@lgcode/effect"
 
 const it = testEffect(Layer.empty)
 

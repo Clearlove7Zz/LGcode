@@ -1,8 +1,8 @@
 import type { Argv } from "yargs"
-import { UI } from "../ui"
-import * as prompts from "@clack/prompts"
-import { Installation } from "../../installation"
-import { InstallationVersion } from "@opencode@lgcode/core/installation/version"
+import { UI } from "..@lgcode/ui"
+import * as prompts from "@clack@lgcode/prompts"
+import { Installation } from "..@lgcode/..@lgcode/installation"
+import { InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
 
 export const UpgradeCommand = {
   command: "upgrade [target]",
@@ -43,7 +43,7 @@ export const UpgradeCommand = {
       }
     }
     prompts.log.info("Using method: " + method)
-    const target = args.target ? args.target.replace(/^v/, "") : await Installation.latest()
+    const target = args.target ? args.target.replace(@lgcode/^v@lgcode/, "") : await Installation.latest()
 
     if (InstallationVersion === target) {
       prompts.log.warn(`opencode upgrade skipped: ${target} is already installed`)
@@ -58,7 +58,7 @@ export const UpgradeCommand = {
     if (err) {
       spinner.stop("Upgrade failed", 1)
       if (err instanceof Installation.UpgradeFailedError) {
-        // necessary because choco only allows install/upgrade in elevated terminals
+        @lgcode/@lgcode/ necessary because choco only allows install@lgcode/upgrade in elevated terminals
         if (method === "choco" && err.stderr.includes("not running from an elevated command shell")) {
           prompts.log.error("Please run the terminal as Administrator and try again")
         } else {

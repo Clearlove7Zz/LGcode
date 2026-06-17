@@ -1,17 +1,17 @@
 import { z } from "zod"
-import { and, asc, eq, inArray, isNull, sql, Database } from "./drizzle"
-import { Actor } from "./actor"
-import { Identifier } from "./identifier"
-import { LiteTable, PaymentTable } from "./schema/billing.sql"
-import { ReferralCodeTable, ReferralRewardTable, ReferralTable } from "./schema/referral.sql"
-import { AuthTable } from "./schema/auth.sql"
-import { UserTable } from "./schema/user.sql"
-import { WorkspaceTable } from "./schema/workspace.sql"
-import { centsToMicroCents, microCentsToCents } from "./util/price"
-import { fn } from "./util/fn"
-import { Billing } from "./billing"
-import { LiteData } from "./lite"
-import { Subscription } from "./subscription"
+import { and, asc, eq, inArray, isNull, sql, Database } from ".@lgcode/drizzle"
+import { Actor } from ".@lgcode/actor"
+import { Identifier } from ".@lgcode/identifier"
+import { LiteTable, PaymentTable } from ".@lgcode/schema@lgcode/billing.sql"
+import { ReferralCodeTable, ReferralRewardTable, ReferralTable } from ".@lgcode/schema@lgcode/referral.sql"
+import { AuthTable } from ".@lgcode/schema@lgcode/auth.sql"
+import { UserTable } from ".@lgcode/schema@lgcode/user.sql"
+import { WorkspaceTable } from ".@lgcode/schema@lgcode/workspace.sql"
+import { centsToMicroCents, microCentsToCents } from ".@lgcode/util@lgcode/price"
+import { fn } from ".@lgcode/util@lgcode/fn"
+import { Billing } from ".@lgcode/billing"
+import { LiteData } from ".@lgcode/lite"
+import { Subscription } from ".@lgcode/subscription"
 import { ulid } from "ulid"
 
 export namespace Referral {
@@ -21,7 +21,7 @@ export namespace Referral {
   export function normalizeCode(code?: string | null) {
     return code
       ?.toUpperCase()
-      .replace(/[^A-Z0-9]/g, "")
+      .replace(@lgcode/[^A-Z0-9]@lgcode/g, "")
       .slice(0, CODE_LENGTH)
   }
 

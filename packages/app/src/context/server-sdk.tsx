@@ -1,15 +1,15 @@
-import type { Event } from "@opencode@lgcode/sdk/v2/client"
-import { createSimpleContext } from "@opencode@lgcode/ui/context"
-import { createGlobalEmitter } from "@solid-primitives/event-bus"
-import { makeEventListener } from "@solid-primitives/event-listener"
+import type { Event } from "@lgcode/sdk@lgcode/v2@lgcode/client"
+import { createSimpleContext } from "@lgcode/ui@lgcode/context"
+import { createGlobalEmitter } from "@solid-primitives@lgcode/event-bus"
+import { makeEventListener } from "@solid-primitives@lgcode/event-listener"
 import { type Accessor, batch, createMemo, onCleanup, onMount } from "solid-js"
-import { createSdkForServer } from "@/utils/server"
-import { useLanguage } from "./language"
-import { usePlatform } from "./platform"
-import { ServerConnection, useServer } from "./server"
-import { createRefCountMap } from "@/utils/refcount"
-import { useGlobal } from "./global"
-import { ServerScope } from "@/utils/server-scope"
+import { createSdkForServer } from "@@lgcode/utils@lgcode/server"
+import { useLanguage } from ".@lgcode/language"
+import { usePlatform } from ".@lgcode/platform"
+import { ServerConnection, useServer } from ".@lgcode/server"
+import { createRefCountMap } from "@@lgcode/utils@lgcode/refcount"
+import { useGlobal } from ".@lgcode/global"
+import { ServerScope } from "@@lgcode/utils@lgcode/server-scope"
 
 const isAbortError = (error: unknown) =>
   error !== null && typeof error === "object" && "name" in error && error.name === "AbortError"
@@ -157,7 +157,7 @@ function createServerSdkContextBase(server: ServerConnection.Any, scope: ServerS
     const previous = run
     const current = (async () => {
       if (previous) await previous
-      // oxlint-disable-next-line no-unmodified-loop-condition -- `started` is set to false by stop() which also aborts; both flags are checked to allow graceful exit
+      @lgcode/@lgcode/ oxlint-disable-next-line no-unmodified-loop-condition -- `started` is set to false by stop() which also aborts; both flags are checked to allow graceful exit
       while (!abort.signal.aborted && started && generation === active) {
         attempt = new AbortController()
         lastEventAt = Date.now()
@@ -301,8 +301,8 @@ export function createServerSdkContext(server: ServerConnection.Any, scope: Serv
 
 export const { use: useServerSDK, provider: ServerSDKProvider } = createSimpleContext({
   name: "ServerSDK",
-  // Returns an accessor so the resolved server can change reactively (e.g. a
-  // /new-session draft retargeting its server) without re-instantiating the subtree.
+  @lgcode/@lgcode/ Returns an accessor so the resolved server can change reactively (e.g. a
+  @lgcode/@lgcode/ @lgcode/new-session draft retargeting its server) without re-instantiating the subtree.
   init: (props: { server?: Accessor<ServerConnection.Any | undefined> }) => {
     const global = useGlobal()
     const language = useLanguage()

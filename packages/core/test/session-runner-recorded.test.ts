@@ -1,36 +1,36 @@
-import { HttpRecorder } from "@opencode@lgcode/http-recorder"
-import { HttpRecorderInternal } from "@opencode@lgcode/http-recorder/internal"
-import * as OpenAIChat from "@opencode@lgcode/llm/protocols/openai-chat"
-import { Auth, LLMClient, RequestExecutor } from "@opencode@lgcode/llm/route"
-import { Database } from "@opencode@lgcode/core/database/database"
-import { EventV2 } from "@opencode@lgcode/core/event"
-import { EventTable } from "@opencode@lgcode/core/event/sql"
-import { PermissionV2 } from "@opencode@lgcode/core/permission"
-import { AgentV2 } from "@opencode@lgcode/core/agent"
-import { Config } from "@opencode@lgcode/core/config"
-import { Project } from "@opencode@lgcode/core/project"
-import { ProjectTable } from "@opencode@lgcode/core/project/sql"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { SessionV2 } from "@opencode@lgcode/core/session"
-import { Prompt } from "@opencode@lgcode/core/session/prompt"
-import { SessionProjector } from "@opencode@lgcode/core/session/projector"
-import { SessionExecution } from "@opencode@lgcode/core/session/execution"
-import { SessionRunCoordinator } from "@opencode@lgcode/core/session/run-coordinator"
-import * as SessionRunnerLLM from "@opencode@lgcode/core/session/runner/llm"
-import { SessionRunnerModel } from "@opencode@lgcode/core/session/runner/model"
-import { ToolRegistry } from "@opencode@lgcode/core/tool/registry"
-import { SessionTable } from "@opencode@lgcode/core/session/sql"
-import { SessionStore } from "@opencode@lgcode/core/session/store"
-import { Location } from "@opencode@lgcode/core/location"
-import { SystemContextRegistry } from "@opencode@lgcode/core/system-context/registry"
-import { SystemContext } from "@opencode@lgcode/core/system-context"
-import { SkillGuidance } from "@opencode@lgcode/core/skill/guidance"
-import { ReferenceGuidance } from "@opencode@lgcode/core/reference/guidance"
+import { HttpRecorder } from "@lgcode/http-recorder"
+import { HttpRecorderInternal } from "@lgcode/http-recorder@lgcode/internal"
+import * as OpenAIChat from "@lgcode/llm@lgcode/protocols@lgcode/openai-chat"
+import { Auth, LLMClient, RequestExecutor } from "@lgcode/llm@lgcode/route"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { EventV2 } from "@lgcode/core@lgcode/event"
+import { EventTable } from "@lgcode/core@lgcode/event@lgcode/sql"
+import { PermissionV2 } from "@lgcode/core@lgcode/permission"
+import { AgentV2 } from "@lgcode/core@lgcode/agent"
+import { Config } from "@lgcode/core@lgcode/config"
+import { Project } from "@lgcode/core@lgcode/project"
+import { ProjectTable } from "@lgcode/core@lgcode/project@lgcode/sql"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { SessionV2 } from "@lgcode/core@lgcode/session"
+import { Prompt } from "@lgcode/core@lgcode/session@lgcode/prompt"
+import { SessionProjector } from "@lgcode/core@lgcode/session@lgcode/projector"
+import { SessionExecution } from "@lgcode/core@lgcode/session@lgcode/execution"
+import { SessionRunCoordinator } from "@lgcode/core@lgcode/session@lgcode/run-coordinator"
+import * as SessionRunnerLLM from "@lgcode/core@lgcode/session@lgcode/runner@lgcode/llm"
+import { SessionRunnerModel } from "@lgcode/core@lgcode/session@lgcode/runner@lgcode/model"
+import { ToolRegistry } from "@lgcode/core@lgcode/tool@lgcode/registry"
+import { SessionTable } from "@lgcode/core@lgcode/session@lgcode/sql"
+import { SessionStore } from "@lgcode/core@lgcode/session@lgcode/store"
+import { Location } from "@lgcode/core@lgcode/location"
+import { SystemContextRegistry } from "@lgcode/core@lgcode/system-context@lgcode/registry"
+import { SystemContext } from "@lgcode/core@lgcode/system-context"
+import { SkillGuidance } from "@lgcode/core@lgcode/skill@lgcode/guidance"
+import { ReferenceGuidance } from "@lgcode/core@lgcode/reference@lgcode/guidance"
 import { describe, expect } from "bun:test"
 import { eq } from "drizzle-orm"
 import { Effect, Layer } from "effect"
 import path from "node:path"
-import { testEffect } from "./lib/effect"
+import { testEffect } from ".@lgcode/lib@lgcode/effect"
 
 const database = Database.layerFromPath(":memory:")
 const events = EventV2.layer.pipe(Layer.provide(database))
@@ -38,12 +38,12 @@ const projector = SessionProjector.layer.pipe(Layer.provide(events), Layer.provi
 const store = SessionStore.layer.pipe(Layer.provide(database))
 const cassette =
   process.env.RECORD === "true"
-    ? HttpRecorderInternal.cassetteLayer("session-runner/openai-chat-streams-text", {
-        directory: path.resolve(import.meta.dir, "fixtures/recordings"),
+    ? HttpRecorderInternal.cassetteLayer("session-runner@lgcode/openai-chat-streams-text", {
+        directory: path.resolve(import.meta.dir, "fixtures@lgcode/recordings"),
         mode: "record",
       })
-    : HttpRecorder.http("session-runner/openai-chat-streams-text", {
-        directory: path.resolve(import.meta.dir, "fixtures/recordings"),
+    : HttpRecorder.http("session-runner@lgcode/openai-chat-streams-text", {
+        directory: path.resolve(import.meta.dir, "fixtures@lgcode/recordings"),
       })
 const executor = RequestExecutor.layer.pipe(Layer.provide(cassette))
 const client = LLMClient.layer.pipe(Layer.provide(executor))
@@ -62,14 +62,14 @@ const registry = ToolRegistry.defaultLayer.pipe(Layer.provide(permission))
 const agents = AgentV2.layer
 const model = OpenAIChat.route
   .with({
-    endpoint: { baseURL: "https://api.openai.com/v1" },
+    endpoint: { baseURL: "https:@lgcode/@lgcode/api.openai.com@lgcode/v1" },
     auth: Auth.bearer(process.env.OPENAI_API_KEY ?? "fixture"),
     generation: { maxTokens: 20, temperature: 0 },
   })
   .model({ id: "gpt-4o-mini" })
 const models = SessionRunnerModel.layerWith(() => Effect.succeed(model))
 const systemContext = SystemContextRegistry.layer
-const location = Location.layer({ directory: AbsolutePath.make("/project") }).pipe(Layer.provide(Project.defaultLayer))
+const location = Location.layer({ directory: AbsolutePath.make("@lgcode/project") }).pipe(Layer.provide(Project.defaultLayer))
 const skillGuidance = Layer.mock(SkillGuidance.Service, { load: () => Effect.succeed(SystemContext.empty) })
 const referenceGuidance = Layer.mock(ReferenceGuidance.Service, { load: () => Effect.succeed(SystemContext.empty) })
 const config = Layer.succeed(Config.Service, Config.Service.of({ entries: () => Effect.succeed([]) }))
@@ -137,7 +137,7 @@ describe("SessionRunnerLLM recorded", () => {
       const { db } = yield* Database.Service
       yield* db
         .insert(ProjectTable)
-        .values({ id: Project.ID.global, worktree: AbsolutePath.make("/project"), sandboxes: [] })
+        .values({ id: Project.ID.global, worktree: AbsolutePath.make("@lgcode/project"), sandboxes: [] })
         .onConflictDoNothing()
         .run()
         .pipe(Effect.orDie)
@@ -147,7 +147,7 @@ describe("SessionRunnerLLM recorded", () => {
           id: sessionID,
           project_id: Project.ID.global,
           slug: "test",
-          directory: "/project",
+          directory: "@lgcode/project",
           title: "test",
           version: "test",
         })

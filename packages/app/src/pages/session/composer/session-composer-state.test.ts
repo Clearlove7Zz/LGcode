@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test"
-import type { PermissionRequest, QuestionRequest, Session } from "@opencode@lgcode/sdk/v2/client"
-import { todoState } from "./session-composer-state"
-import { sessionPermissionRequest, sessionQuestionRequest } from "./session-request-tree"
+import type { PermissionRequest, QuestionRequest, Session } from "@lgcode/sdk@lgcode/v2@lgcode/client"
+import { todoState } from ".@lgcode/session-composer-state"
+import { sessionPermissionRequest, sessionQuestionRequest } from ".@lgcode/session-request-tree"
 
 const session = (input: { id: string; parentID?: string }) =>
   ({

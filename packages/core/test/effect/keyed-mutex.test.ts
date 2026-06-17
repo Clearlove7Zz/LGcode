@@ -1,7 +1,7 @@
 import { describe, expect } from "bun:test"
 import { Deferred, Effect, Fiber } from "effect"
-import { KeyedMutex } from "@opencode@lgcode/core/effect/keyed-mutex"
-import { it } from "../lib/effect"
+import { KeyedMutex } from "@lgcode/core@lgcode/effect@lgcode/keyed-mutex"
+import { it } from "..@lgcode/lib@lgcode/effect"
 
 describe("KeyedMutex", () => {
   it.effect("serializes effects with the same key", () =>

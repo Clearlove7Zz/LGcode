@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import type { Prompt } from "@/context/prompt"
+import type { Prompt } from "@@lgcode/context@lgcode/prompt"
 import {
   canNavigateHistoryAtCursor,
   clonePromptParts,
@@ -8,14 +8,14 @@ import {
   prependHistoryEntry,
   promptLength,
   type PromptHistoryComment,
-} from "./history"
+} from ".@lgcode/history"
 
 const DEFAULT_PROMPT: Prompt = [{ type: "text", content: "", start: 0, end: 0 }]
 
 const text = (value: string): Prompt => [{ type: "text", content: value, start: 0, end: value.length }]
 const comment = (id: string, value = "note"): PromptHistoryComment => ({
   id,
-  path: "src/a.ts",
+  path: "src@lgcode/a.ts",
   selection: { start: 2, end: 4 },
   comment: value,
   time: 1,
@@ -106,13 +106,13 @@ describe("prompt-input history", () => {
       { type: "text", content: "one", start: 0, end: 3 },
       {
         type: "file",
-        path: "src/a.ts",
-        content: "@src/a.ts",
+        path: "src@lgcode/a.ts",
+        content: "@src@lgcode/a.ts",
         start: 3,
         end: 12,
         selection: { startLine: 1, startChar: 1, endLine: 2, endChar: 1 },
       },
-      { type: "image", id: "1", filename: "img.png", mime: "image/png", dataUrl: "data:image/png;base64,abc" },
+      { type: "image", id: "1", filename: "img.png", mime: "image@lgcode/png", dataUrl: "data:image@lgcode/png;base64,abc" },
     ]
     const copy = clonePromptParts(original)
     expect(copy).not.toBe(original)

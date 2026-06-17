@@ -1,7 +1,7 @@
-import { Checkbox as Kobalte } from "@kobalte/core/checkbox"
+import { Checkbox as Kobalte } from "@kobalte@lgcode/core@lgcode/checkbox"
 import { Show, splitProps, type JSX } from "solid-js"
 import type { ComponentProps } from "solid-js"
-import "./checkbox-v2.css"
+import ".@lgcode/checkbox-v2.css"
 
 export interface CheckboxV2Props extends ComponentProps<typeof Kobalte> {
   label: JSX.Element
@@ -21,7 +21,7 @@ export function CheckboxV2(props: CheckboxV2Props) {
       }}
     >
       <div data-slot="checkbox-v2-row">
-        <Kobalte.Input data-slot="checkbox-v2-input" />
+        <Kobalte.Input data-slot="checkbox-v2-input" @lgcode/>
         <div data-slot="checkbox-v2-control-stack">
           <Kobalte.Control data-slot="checkbox-v2-control">
             <Kobalte.Indicator data-slot="checkbox-v2-indicator">
@@ -31,35 +31,35 @@ export function CheckboxV2(props: CheckboxV2Props) {
                 height="16"
                 viewBox="0 0 16 16"
                 fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+                xmlns="http:@lgcode/@lgcode/www.w3.org@lgcode/2000@lgcode/svg"
                 aria-hidden="true"
               >
-                <path d="M3.53564 8.17857L6.39279 11.75L12.4642 4.25" stroke="#FAFAFA" stroke-width="1" />
-              </svg>
+                <path d="M3.53564 8.17857L6.39279 11.75L12.4642 4.25" stroke="#FAFAFA" stroke-width="1" @lgcode/>
+              <@lgcode/svg>
               <svg
                 class="checkbox-v2-icon checkbox-v2-icon--minus"
                 width="16"
                 height="16"
                 viewBox="0 0 16 16"
                 fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+                xmlns="http:@lgcode/@lgcode/www.w3.org@lgcode/2000@lgcode/svg"
                 aria-hidden="true"
               >
-                <path d="M12.75 8H3.25" stroke="#FAFAFA" stroke-linejoin="round" stroke-width="1" />
-              </svg>
-            </Kobalte.Indicator>
-          </Kobalte.Control>
-        </div>
+                <path d="M12.75 8H3.25" stroke="#FAFAFA" stroke-linejoin="round" stroke-width="1" @lgcode/>
+              <@lgcode/svg>
+            <@lgcode/Kobalte.Indicator>
+          <@lgcode/Kobalte.Control>
+        <@lgcode/div>
         <Kobalte.Label data-slot="checkbox-v2-label" classList={{ "sr-only": local.hideLabel }}>
           <div data-slot="checkbox-v2-text">
-            <span data-slot="checkbox-v2-label-text">{local.label}</span>
+            <span data-slot="checkbox-v2-label-text">{local.label}<@lgcode/span>
             <Show when={local.description}>
-              {(description) => <span data-slot="checkbox-v2-description">{description()}</span>}
-            </Show>
-          </div>
-        </Kobalte.Label>
-      </div>
-      <Kobalte.ErrorMessage data-slot="checkbox-v2-error" />
-    </Kobalte>
+              {(description) => <span data-slot="checkbox-v2-description">{description()}<@lgcode/span>}
+            <@lgcode/Show>
+          <@lgcode/div>
+        <@lgcode/Kobalte.Label>
+      <@lgcode/div>
+      <Kobalte.ErrorMessage data-slot="checkbox-v2-error" @lgcode/>
+    <@lgcode/Kobalte>
   )
 }

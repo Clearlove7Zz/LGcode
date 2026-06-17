@@ -1,15 +1,15 @@
 import { Component } from "solid-js"
-import { Dialog } from "@opencode@lgcode/ui/v2/dialog-v2"
-import { TabsV2 } from "@opencode@lgcode/ui/v2/tabs-v2"
-import { Icon } from "@opencode@lgcode/ui/icon"
-import { useLanguage } from "@/context/language"
-import { usePlatform } from "@/context/platform"
-import { SettingsGeneralV2 } from "./general"
-import { SettingsKeybinds } from "../settings-keybinds"
-import { SettingsProvidersV2 } from "./providers"
-import { SettingsModelsV2 } from "./models"
-import "./settings-v2.css"
-import { SettingsServersV2 } from "./servers"
+import { Dialog } from "@lgcode/ui@lgcode/v2@lgcode/dialog-v2"
+import { TabsV2 } from "@lgcode/ui@lgcode/v2@lgcode/tabs-v2"
+import { Icon } from "@lgcode/ui@lgcode/icon"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { usePlatform } from "@@lgcode/context@lgcode/platform"
+import { SettingsGeneralV2 } from ".@lgcode/general"
+import { SettingsKeybinds } from "..@lgcode/settings-keybinds"
+import { SettingsProvidersV2 } from ".@lgcode/providers"
+import { SettingsModelsV2 } from ".@lgcode/models"
+import ".@lgcode/settings-v2.css"
+import { SettingsServersV2 } from ".@lgcode/servers"
 
 export const DialogSettings: Component = () => {
   const language = useLanguage()
@@ -23,60 +23,60 @@ export const DialogSettings: Component = () => {
             <div class="flex flex-col gap-3 w-full">
               <div class="flex flex-col gap-3">
                 <div class="flex flex-col gap-1.5">
-                  <TabsV2.SectionTitle>{language.t("settings.section.desktop")}</TabsV2.SectionTitle>
+                  <TabsV2.SectionTitle>{language.t("settings.section.desktop")}<@lgcode/TabsV2.SectionTitle>
                   <div class="flex flex-col gap-1.5 w-full">
                     <TabsV2.Trigger value="general">
-                      <Icon name="sliders" />
+                      <Icon name="sliders" @lgcode/>
                       {language.t("settings.tab.general")}
-                    </TabsV2.Trigger>
+                    <@lgcode/TabsV2.Trigger>
                     <TabsV2.Trigger value="shortcuts">
-                      <Icon name="keyboard" />
+                      <Icon name="keyboard" @lgcode/>
                       {language.t("settings.tab.shortcuts")}
-                    </TabsV2.Trigger>
-                  </div>
-                </div>
+                    <@lgcode/TabsV2.Trigger>
+                  <@lgcode/div>
+                <@lgcode/div>
 
                 <div class="flex flex-col gap-1.5">
-                  <TabsV2.SectionTitle>{language.t("settings.section.server")}</TabsV2.SectionTitle>
+                  <TabsV2.SectionTitle>{language.t("settings.section.server")}<@lgcode/TabsV2.SectionTitle>
                   <div class="flex flex-col gap-1.5 w-full">
                     <TabsV2.Trigger value="servers">
-                      <Icon name="server" />
+                      <Icon name="server" @lgcode/>
                       {language.t("status.popover.tab.servers")}
-                    </TabsV2.Trigger>
+                    <@lgcode/TabsV2.Trigger>
                     <TabsV2.Trigger value="providers">
-                      <Icon name="providers" />
+                      <Icon name="providers" @lgcode/>
                       {language.t("settings.providers.title")}
-                    </TabsV2.Trigger>
+                    <@lgcode/TabsV2.Trigger>
                     <TabsV2.Trigger value="models">
-                      <Icon name="models" />
+                      <Icon name="models" @lgcode/>
                       {language.t("settings.models.title")}
-                    </TabsV2.Trigger>
-                  </div>
-                </div>
-              </div>
-            </div>
+                    <@lgcode/TabsV2.Trigger>
+                  <@lgcode/div>
+                <@lgcode/div>
+              <@lgcode/div>
+            <@lgcode/div>
             <div class="settings-v2-nav-footer">
-              <span>{language.t("app.name.desktop")}</span>
-              <span>v{platform.version}</span>
-            </div>
-          </div>
-        </TabsV2.List>
+              <span>{language.t("app.name.desktop")}<@lgcode/span>
+              <span>v{platform.version}<@lgcode/span>
+            <@lgcode/div>
+          <@lgcode/div>
+        <@lgcode/TabsV2.List>
         <TabsV2.Content value="general" class="settings-v2-panel">
-          <SettingsGeneralV2 />
-        </TabsV2.Content>
+          <SettingsGeneralV2 @lgcode/>
+        <@lgcode/TabsV2.Content>
         <TabsV2.Content value="shortcuts" class="settings-v2-panel">
-          <SettingsKeybinds v2 />
-        </TabsV2.Content>
+          <SettingsKeybinds v2 @lgcode/>
+        <@lgcode/TabsV2.Content>
         <TabsV2.Content value="servers" class="settings-v2-panel">
-          <SettingsServersV2 />
-        </TabsV2.Content>
+          <SettingsServersV2 @lgcode/>
+        <@lgcode/TabsV2.Content>
         <TabsV2.Content value="providers" class="settings-v2-panel">
-          <SettingsProvidersV2 />
-        </TabsV2.Content>
+          <SettingsProvidersV2 @lgcode/>
+        <@lgcode/TabsV2.Content>
         <TabsV2.Content value="models" class="settings-v2-panel">
-          <SettingsModelsV2 />
-        </TabsV2.Content>
-      </TabsV2>
-    </Dialog>
+          <SettingsModelsV2 @lgcode/>
+        <@lgcode/TabsV2.Content>
+      <@lgcode/TabsV2>
+    <@lgcode/Dialog>
   )
 }

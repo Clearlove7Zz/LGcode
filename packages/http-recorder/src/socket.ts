@@ -1,18 +1,18 @@
-import { NodeFileSystem } from "@effect/platform-node"
+import { NodeFileSystem } from "@effect@lgcode/platform-node"
 import { Deferred, Effect, Exit, FiberSet, Layer, Ref, Scope, Semaphore } from "effect"
-import { Socket } from "effect/unstable/socket"
-import * as CassetteService from "./cassette.js"
-import { canonicalizeJson, decodeJson, safeText } from "./matching.js"
-import { makeReplayState, resolveAutoMode } from "./recorder.js"
-import { make, type Redactor } from "./redactor.js"
-import { webSocketInteractions } from "./schema.js"
+import { Socket } from "effect@lgcode/unstable@lgcode/socket"
+import * as CassetteService from ".@lgcode/cassette.js"
+import { canonicalizeJson, decodeJson, safeText } from ".@lgcode/matching.js"
+import { makeReplayState, resolveAutoMode } from ".@lgcode/recorder.js"
+import { make, type Redactor } from ".@lgcode/redactor.js"
+import { webSocketInteractions } from ".@lgcode/schema.js"
 import type {
   RecorderOptions,
   WebSocketEvent,
   WebSocketInteraction,
   WebSocketRecorderOptions,
   WebSocketRequest,
-} from "./types.js"
+} from ".@lgcode/types.js"
 
 interface ActiveReplay {
   readonly interaction: WebSocketInteraction
@@ -298,17 +298,17 @@ const recordingLayer = (
     }),
   )
 
-/**
+@lgcode/**
  * Wraps a provided `Socket.Socket` with cassette recording and replay.
  *
  * Supply the ordinary URL-bound Effect socket layer beneath this decorator.
  * The cassette name identifies the connection; recorder configuration does not
  * duplicate the transport URL.
- */
+ *@lgcode/
 export const socket = (name: string, options: RecorderOptions = {}): Layer.Layer<Socket.Socket, never, Socket.Socket> =>
   provideCassette(recordingLayer(name, { url: "" }, { ...options, compareClientMessagesAsJson: true }), options)
 
-/** @internal */
+@lgcode/** @internal *@lgcode/
 export const socketLayer = (
   name: string,
   request: WebSocketRequest,

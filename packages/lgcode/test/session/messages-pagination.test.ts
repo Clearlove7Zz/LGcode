@@ -1,15 +1,15 @@
 import { describe, expect, test } from "bun:test"
-import { SessionV1 } from "@opencode@lgcode/core/v1/session"
-import { Database } from "@opencode@lgcode/core/database/database"
+import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
 import { Effect, Layer, Option } from "effect"
-import { Session as SessionNs } from "@/session/session"
-import { MessageV2 } from "../../src/session/message-v2"
-import { MessageID, PartID, type SessionID } from "../../src/session/schema"
+import { Session as SessionNs } from "@@lgcode/session@lgcode/session"
+import { MessageV2 } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/message-v2"
+import { MessageID, PartID, type SessionID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
 
-import { NotFoundError } from "@/storage/storage"
-import { testEffect } from "../lib/effect"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { ModelV2 } from "@opencode@lgcode/core/model"
+import { NotFoundError } from "@@lgcode/storage@lgcode/storage"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
 
 const it = testEffect(Layer.mergeAll(SessionNs.defaultLayer, Database.defaultLayer))
 
@@ -26,7 +26,7 @@ const withSession = <A, E, R>(
     (input) => input.session.remove(input.sessionID).pipe(Effect.ignore),
   )
 
-// Helper functions using Effect.gen
+@lgcode/@lgcode/ Helper functions using Effect.gen
 const fill = Effect.fn("Test.fill")(function* (
   sessionID: SessionID,
   count: number,
@@ -100,7 +100,7 @@ const addAssistant = Effect.fn("Test.addAssistant")(function* (
     providerID: ProviderV2.ID.make("test"),
     mode: "",
     agent: "default",
-    path: { cwd: "/", root: "/" },
+    path: { cwd: "@lgcode/", root: "@lgcode/" },
     cost: 0,
     tokens: { input: 0, output: 0, reasoning: 0, cache: { read: 0, write: 0 } },
     summary: opts?.summary,
@@ -603,7 +603,7 @@ describe("MessageV2.filterCompacted", () => {
 
         const result = MessageV2.filterCompacted(yield* MessageV2.stream(sessionID))
         expect(result).toHaveLength(5)
-        // reversed from newest-first to chronological
+        @lgcode/@lgcode/ reversed from newest-first to chronological
         expect(result.map((item) => item.info.id)).toEqual(ids)
       }),
     ),
@@ -612,8 +612,8 @@ describe("MessageV2.filterCompacted", () => {
   it.instance("stops at compaction boundary and returns chronological order", () =>
     withSession(({ session, sessionID }) =>
       Effect.gen(function* () {
-        // Chronological: u1(+compaction part), a1(summary, parentID=u1), u2, a2
-        // Stream (newest first): a2, u2, a1(adds u1 to completed), u1(in completed + compaction) -> break
+        @lgcode/@lgcode/ Chronological: u1(+compaction part), a1(summary, parentID=u1), u2, a2
+        @lgcode/@lgcode/ Stream (newest first): a2, u2, a1(adds u1 to completed), u1(in completed + compaction) -> break
         const u1 = yield* addUser(sessionID, "first question")
         const a1 = yield* addAssistant(sessionID, u1, { summary: true, finish: "end_turn" })
         yield* session.updatePart({
@@ -636,7 +636,7 @@ describe("MessageV2.filterCompacted", () => {
         })
 
         const result = MessageV2.filterCompacted(yield* MessageV2.stream(sessionID))
-        // Includes compaction boundary: u1, a1, u2, a2
+        @lgcode/@lgcode/ Includes compaction boundary: u1, a1, u2, a2
         expect(result[0].info.id).toBe(u1)
         expect(result.length).toBe(4)
       }),
@@ -677,7 +677,7 @@ describe("MessageV2.filterCompacted", () => {
         yield* addUser(sessionID, "retry")
 
         const result = MessageV2.filterCompacted(yield* MessageV2.stream(sessionID))
-        // Error assistant doesn't add to completed, so compaction boundary never triggers
+        @lgcode/@lgcode/ Error assistant doesn't add to completed, so compaction boundary never triggers
         expect(result).toHaveLength(3)
       }),
     ),
@@ -689,7 +689,7 @@ describe("MessageV2.filterCompacted", () => {
         const u1 = yield* addUser(sessionID, "hello")
         yield* addCompactionPart(sessionID, u1)
 
-        // summary=true but no finish
+        @lgcode/@lgcode/ summary=true but no finish
         yield* addAssistant(sessionID, u1, { summary: true })
         yield* addUser(sessionID, "next")
 
@@ -946,7 +946,7 @@ describe("MessageV2.filterCompacted", () => {
   )
 
   test("works with array input", () => {
-    // filterCompacted accepts any Iterable, not just generators
+    @lgcode/@lgcode/ filterCompacted accepts any Iterable, not just generators
     const id = MessageID.ascending()
     const items: SessionV1.WithParts[] = [
       {
@@ -968,7 +968,7 @@ describe("MessageV2.filterCompacted", () => {
 })
 
 describe("MessageV2.cursor", () => {
-  test("encode/decode roundtrip", () => {
+  test("encode@lgcode/decode roundtrip", () => {
     const input = { id: MessageID.ascending(), time: 1234567890 }
     const encoded = MessageV2.cursor.encode(input)
     const decoded = MessageV2.cursor.decode(encoded)
@@ -976,7 +976,7 @@ describe("MessageV2.cursor", () => {
     expect(decoded.time).toBe(input.time)
   })
 
-  test("encode/decode with fractional time", () => {
+  test("encode@lgcode/decode with fractional time", () => {
     const input = { id: MessageID.ascending(), time: 1234567890.5 }
     const encoded = MessageV2.cursor.encode(input)
     const decoded = MessageV2.cursor.decode(encoded)
@@ -985,7 +985,7 @@ describe("MessageV2.cursor", () => {
 
   test("encoded cursor is base64url", () => {
     const encoded = MessageV2.cursor.encode({ id: MessageID.ascending(), time: 0 })
-    expect(encoded).toMatch(/^[A-Za-z0-9_-]+$/)
+    expect(encoded).toMatch(@lgcode/^[A-Za-z0-9_-]+$@lgcode/)
   })
 })
 

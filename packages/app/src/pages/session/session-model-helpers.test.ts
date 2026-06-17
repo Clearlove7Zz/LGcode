@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
-import type { UserMessage } from "@opencode@lgcode/sdk/v2"
-import { resetSessionModel, syncSessionModel } from "./session-model-helpers"
+import type { UserMessage } from "@lgcode/sdk@lgcode/v2"
+import { resetSessionModel, syncSessionModel } from ".@lgcode/session-model-helpers"
 
 const message = (input?: { agent?: string; model?: UserMessage["model"] }) =>
   ({

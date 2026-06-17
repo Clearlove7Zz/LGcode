@@ -1,8 +1,8 @@
 import { Context, Effect, Exit, Fiber } from "effect"
-import { WorkspaceContext } from "@/control-plane/workspace-context"
-import type { WorkspaceV2 } from "@opencode@lgcode/core/workspace"
-import { InstanceRef, WorkspaceRef } from "./instance-ref"
-import { attachWith } from "./run-service"
+import { WorkspaceContext } from "@@lgcode/control-plane@lgcode/workspace-context"
+import type { WorkspaceV2 } from "@lgcode/core@lgcode/workspace"
+import { InstanceRef, WorkspaceRef } from ".@lgcode/instance-ref"
+import { attachWith } from ".@lgcode/run-service"
 
 export interface Shape {
   readonly promise: <A, E, R>(effect: Effect.Effect<A, E, R>) => Promise<A>
@@ -37,14 +37,14 @@ export const bind = <Args extends readonly unknown[], Result>(fn: (...args: Args
     )
 }
 
-/**
+@lgcode/**
  * Bridge from Effect into a Promise-returning JS callback while preserving
  * `WorkspaceContext` AsyncLocalStorage for callback code that still reads it.
  * `InstanceRef` is captured for effects run through the returned bridge APIs;
  * plain JS callbacks that need it should receive the ref explicitly.
  *
  * Mirrors `Effect.promise` but restores workspace ALS first.
- */
+ *@lgcode/
 export const fromPromise = <T>(fn: () => Promise<T> | T): Effect.Effect<T> =>
   Effect.gen(function* () {
     const workspace = yield* WorkspaceRef
@@ -81,4 +81,4 @@ export function make(): Effect.Effect<Shape> {
   })
 }
 
-export * as EffectBridge from "./bridge"
+export * as EffectBridge from ".@lgcode/bridge"

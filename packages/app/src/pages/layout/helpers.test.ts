@@ -5,8 +5,8 @@ import {
   drainPendingDeepLinks,
   parseDeepLink,
   parseNewSessionDeepLink,
-} from "./deep-links"
-import { type Session } from "@opencode@lgcode/sdk/v2/client"
+} from ".@lgcode/deep-links"
+import { type Session } from "@lgcode/sdk@lgcode/v2@lgcode/client"
 import {
   childSessionOnPath,
   closeHomeProject,
@@ -19,9 +19,9 @@ import {
   homeSessionServerStatus,
   latestRootSession,
   toggleHomeProjectSelection,
-} from "./helpers"
-import { pathKey } from "@/utils/path-key"
-import { ServerConnection } from "@/context/server"
+} from ".@lgcode/helpers"
+import { pathKey } from "@@lgcode/utils@lgcode/path-key"
+import { ServerConnection } from "@@lgcode/context@lgcode/server"
 
 const serverKey = ServerConnection.Key.make
 
@@ -38,24 +38,24 @@ const session = (input: Partial<Session> & Pick<Session, "id" | "directory">) =>
 
 describe("layout deep links", () => {
   test("parses open-project deep links", () => {
-    expect(parseDeepLink("opencode://open-project?directory=/tmp/demo")).toBe("/tmp/demo")
+    expect(parseDeepLink("opencode:@lgcode/@lgcode/open-project?directory=@lgcode/tmp@lgcode/demo")).toBe("@lgcode/tmp@lgcode/demo")
   })
 
   test("ignores non-project deep links", () => {
-    expect(parseDeepLink("opencode://other?directory=/tmp/demo")).toBeUndefined()
-    expect(parseDeepLink("https://example.com")).toBeUndefined()
+    expect(parseDeepLink("opencode:@lgcode/@lgcode/other?directory=@lgcode/tmp@lgcode/demo")).toBeUndefined()
+    expect(parseDeepLink("https:@lgcode/@lgcode/example.com")).toBeUndefined()
   })
 
   test("ignores malformed deep links safely", () => {
-    expect(() => parseDeepLink("opencode://open-project/%E0%A4%A%")).not.toThrow()
-    expect(parseDeepLink("opencode://open-project/%E0%A4%A%")).toBeUndefined()
+    expect(() => parseDeepLink("opencode:@lgcode/@lgcode/open-project@lgcode/%E0%A4%A%")).not.toThrow()
+    expect(parseDeepLink("opencode:@lgcode/@lgcode/open-project@lgcode/%E0%A4%A%")).toBeUndefined()
   })
 
   test("parses links when URL.canParse is unavailable", () => {
     const original = Object.getOwnPropertyDescriptor(URL, "canParse")
     Object.defineProperty(URL, "canParse", { configurable: true, value: undefined })
     try {
-      expect(parseDeepLink("opencode://open-project?directory=/tmp/demo")).toBe("/tmp/demo")
+      expect(parseDeepLink("opencode:@lgcode/@lgcode/open-project?directory=@lgcode/tmp@lgcode/demo")).toBe("@lgcode/tmp@lgcode/demo")
     } finally {
       if (original) Object.defineProperty(URL, "canParse", original)
       if (!original) Reflect.deleteProperty(URL, "canParse")
@@ -63,85 +63,85 @@ describe("layout deep links", () => {
   })
 
   test("ignores open-project deep links without directory", () => {
-    expect(parseDeepLink("opencode://open-project")).toBeUndefined()
-    expect(parseDeepLink("opencode://open-project?directory=")).toBeUndefined()
+    expect(parseDeepLink("opencode:@lgcode/@lgcode/open-project")).toBeUndefined()
+    expect(parseDeepLink("opencode:@lgcode/@lgcode/open-project?directory=")).toBeUndefined()
   })
 
   test("collects only valid open-project directories", () => {
     const result = collectOpenProjectDeepLinks([
-      "opencode://open-project?directory=/a",
-      "opencode://other?directory=/b",
-      "opencode://open-project?directory=/c",
+      "opencode:@lgcode/@lgcode/open-project?directory=@lgcode/a",
+      "opencode:@lgcode/@lgcode/other?directory=@lgcode/b",
+      "opencode:@lgcode/@lgcode/open-project?directory=@lgcode/c",
     ])
-    expect(result).toEqual(["/a", "/c"])
+    expect(result).toEqual(["@lgcode/a", "@lgcode/c"])
   })
 
   test("parses new-session deep links with optional prompt", () => {
-    expect(parseNewSessionDeepLink("opencode://new-session?directory=/tmp/demo")).toEqual({ directory: "/tmp/demo" })
-    expect(parseNewSessionDeepLink("opencode://new-session?directory=/tmp/demo&prompt=hello%20world")).toEqual({
-      directory: "/tmp/demo",
+    expect(parseNewSessionDeepLink("opencode:@lgcode/@lgcode/new-session?directory=@lgcode/tmp@lgcode/demo")).toEqual({ directory: "@lgcode/tmp@lgcode/demo" })
+    expect(parseNewSessionDeepLink("opencode:@lgcode/@lgcode/new-session?directory=@lgcode/tmp@lgcode/demo&prompt=hello%20world")).toEqual({
+      directory: "@lgcode/tmp@lgcode/demo",
       prompt: "hello world",
     })
   })
 
   test("ignores new-session deep links without directory", () => {
-    expect(parseNewSessionDeepLink("opencode://new-session")).toBeUndefined()
-    expect(parseNewSessionDeepLink("opencode://new-session?directory=")).toBeUndefined()
+    expect(parseNewSessionDeepLink("opencode:@lgcode/@lgcode/new-session")).toBeUndefined()
+    expect(parseNewSessionDeepLink("opencode:@lgcode/@lgcode/new-session?directory=")).toBeUndefined()
   })
 
   test("collects only valid new-session deep links", () => {
     const result = collectNewSessionDeepLinks([
-      "opencode://new-session?directory=/a",
-      "opencode://open-project?directory=/b",
-      "opencode://new-session?directory=/c&prompt=ship%20it",
+      "opencode:@lgcode/@lgcode/new-session?directory=@lgcode/a",
+      "opencode:@lgcode/@lgcode/open-project?directory=@lgcode/b",
+      "opencode:@lgcode/@lgcode/new-session?directory=@lgcode/c&prompt=ship%20it",
     ])
-    expect(result).toEqual([{ directory: "/a" }, { directory: "/c", prompt: "ship it" }])
+    expect(result).toEqual([{ directory: "@lgcode/a" }, { directory: "@lgcode/c", prompt: "ship it" }])
   })
 
   test("drains global deep links once", () => {
     const target = {
       __OPENCODE__: {
-        deepLinks: ["opencode://open-project?directory=/a"],
+        deepLinks: ["opencode:@lgcode/@lgcode/open-project?directory=@lgcode/a"],
       },
     } as unknown as Window & { __OPENCODE__?: { deepLinks?: string[] } }
 
-    expect(drainPendingDeepLinks(target)).toEqual(["opencode://open-project?directory=/a"])
+    expect(drainPendingDeepLinks(target)).toEqual(["opencode:@lgcode/@lgcode/open-project?directory=@lgcode/a"])
     expect(drainPendingDeepLinks(target)).toEqual([])
   })
 })
 
 describe("layout workspace helpers", () => {
   test("normalizes trailing slash in workspace key", () => {
-    expect(String(pathKey("/tmp/demo///"))).toBe("/tmp/demo")
-    expect(String(pathKey("C:\\tmp\\demo\\\\"))).toBe("C:/tmp/demo")
+    expect(String(pathKey("@lgcode/tmp@lgcode/demo@lgcode/@lgcode/@lgcode/"))).toBe("@lgcode/tmp@lgcode/demo")
+    expect(String(pathKey("C:\\tmp\\demo\\\\"))).toBe("C:@lgcode/tmp@lgcode/demo")
   })
 
   test("preserves posix and drive roots in workspace key", () => {
-    expect(String(pathKey("/"))).toBe("/")
-    expect(String(pathKey("///"))).toBe("/")
-    expect(String(pathKey("C:\\"))).toBe("C:/")
-    expect(String(pathKey("C://"))).toBe("C:/")
-    expect(String(pathKey("C:///"))).toBe("C:/")
+    expect(String(pathKey("@lgcode/"))).toBe("@lgcode/")
+    expect(String(pathKey("@lgcode/@lgcode/@lgcode/"))).toBe("@lgcode/")
+    expect(String(pathKey("C:\\"))).toBe("C:@lgcode/")
+    expect(String(pathKey("C:@lgcode/@lgcode/"))).toBe("C:@lgcode/")
+    expect(String(pathKey("C:@lgcode/@lgcode/@lgcode/"))).toBe("C:@lgcode/")
   })
 
   test("keeps local first while preserving known order", () => {
-    const result = effectiveWorkspaceOrder("/root", ["/root", "/b", "/c"], ["/root", "/c", "/a", "/b"])
-    expect(result).toEqual(["/root", "/c", "/b"])
+    const result = effectiveWorkspaceOrder("@lgcode/root", ["@lgcode/root", "@lgcode/b", "@lgcode/c"], ["@lgcode/root", "@lgcode/c", "@lgcode/a", "@lgcode/b"])
+    expect(result).toEqual(["@lgcode/root", "@lgcode/c", "@lgcode/b"])
   })
 
   test("finds the latest root session across workspaces", () => {
     const result = latestRootSession(
       [
         {
-          path: { directory: "/root" },
-          session: [session({ id: "root", directory: "/root", time: { created: 1, updated: 1, archived: undefined } })],
+          path: { directory: "@lgcode/root" },
+          session: [session({ id: "root", directory: "@lgcode/root", time: { created: 1, updated: 1, archived: undefined } })],
         },
         {
-          path: { directory: "/workspace" },
+          path: { directory: "@lgcode/workspace" },
           session: [
             session({
               id: "workspace",
-              directory: "/workspace",
+              directory: "@lgcode/workspace",
               time: { created: 2, updated: 2, archived: undefined },
             }),
           ],
@@ -180,22 +180,22 @@ describe("layout workspace helpers", () => {
     const result = latestRootSession(
       [
         {
-          path: { directory: "/workspace" },
+          path: { directory: "@lgcode/workspace" },
           session: [
             session({
               id: "archived",
-              directory: "/workspace",
+              directory: "@lgcode/workspace",
               time: { created: 10, updated: 10, archived: 10 },
             }),
             session({
               id: "child",
-              directory: "/workspace",
+              directory: "@lgcode/workspace",
               parentID: "parent",
               time: { created: 20, updated: 20, archived: undefined },
             }),
             session({
               id: "root",
-              directory: "/workspace",
+              directory: "@lgcode/workspace",
               time: { created: 30, updated: 30, archived: undefined },
             }),
           ],
@@ -209,9 +209,9 @@ describe("layout workspace helpers", () => {
 
   test("finds the direct child on the active session path", () => {
     const list = [
-      session({ id: "root", directory: "/workspace" }),
-      session({ id: "child", directory: "/workspace", parentID: "root" }),
-      session({ id: "leaf", directory: "/workspace", parentID: "child" }),
+      session({ id: "root", directory: "@lgcode/workspace" }),
+      session({ id: "child", directory: "@lgcode/workspace", parentID: "root" }),
+      session({ id: "leaf", directory: "@lgcode/workspace", parentID: "child" }),
     ]
 
     expect(childSessionOnPath(list, "root", "leaf")?.id).toBe("child")
@@ -221,32 +221,32 @@ describe("layout workspace helpers", () => {
   })
 
   test("formats fallback project display name", () => {
-    expect(displayName({ worktree: "/tmp/app" })).toBe("app")
-    expect(displayName({ worktree: "/tmp/app", name: "My App" })).toBe("My App")
-    expect(displayName({ worktree: "/" })).toBe("/")
+    expect(displayName({ worktree: "@lgcode/tmp@lgcode/app" })).toBe("app")
+    expect(displayName({ worktree: "@lgcode/tmp@lgcode/app", name: "My App" })).toBe("My App")
+    expect(displayName({ worktree: "@lgcode/" })).toBe("@lgcode/")
   })
 
   test("scopes home project selection by server", () => {
     expect(
-      toggleHomeProjectSelection(undefined, serverKey("https://debian.example"), "/home/luke/repos/amazon"),
+      toggleHomeProjectSelection(undefined, serverKey("https:@lgcode/@lgcode/debian.example"), "@lgcode/home@lgcode/luke@lgcode/repos@lgcode/amazon"),
     ).toEqual({
-      server: serverKey("https://debian.example"),
-      directory: "/home/luke/repos/amazon",
+      server: serverKey("https:@lgcode/@lgcode/debian.example"),
+      directory: "@lgcode/home@lgcode/luke@lgcode/repos@lgcode/amazon",
     })
     expect(
       toggleHomeProjectSelection(
-        { server: serverKey("https://windows.example"), directory: "/home/luke/repos/amazon" },
-        serverKey("https://debian.example"),
-        "/home/luke/repos/amazon",
+        { server: serverKey("https:@lgcode/@lgcode/windows.example"), directory: "@lgcode/home@lgcode/luke@lgcode/repos@lgcode/amazon" },
+        serverKey("https:@lgcode/@lgcode/debian.example"),
+        "@lgcode/home@lgcode/luke@lgcode/repos@lgcode/amazon",
       ),
-    ).toEqual({ server: serverKey("https://debian.example"), directory: "/home/luke/repos/amazon" })
+    ).toEqual({ server: serverKey("https:@lgcode/@lgcode/debian.example"), directory: "@lgcode/home@lgcode/luke@lgcode/repos@lgcode/amazon" })
     expect(
       toggleHomeProjectSelection(
-        { server: serverKey("https://debian.example"), directory: "/home/luke/repos/amazon" },
-        serverKey("https://debian.example"),
-        "/home/luke/repos/amazon",
+        { server: serverKey("https:@lgcode/@lgcode/debian.example"), directory: "@lgcode/home@lgcode/luke@lgcode/repos@lgcode/amazon" },
+        serverKey("https:@lgcode/@lgcode/debian.example"),
+        "@lgcode/home@lgcode/luke@lgcode/repos@lgcode/amazon",
       ),
-    ).toEqual({ server: serverKey("https://debian.example") })
+    ).toEqual({ server: serverKey("https:@lgcode/@lgcode/debian.example") })
   })
 
   test("closes a home project through its server context", () => {
@@ -254,44 +254,44 @@ describe("layout workspace helpers", () => {
 
     expect(
       closeHomeProject(
-        { server: serverKey("https://windows.example"), directory: "/shared" },
-        serverKey("https://debian.example"),
+        { server: serverKey("https:@lgcode/@lgcode/windows.example"), directory: "@lgcode/shared" },
+        serverKey("https:@lgcode/@lgcode/debian.example"),
         { close: (directory) => closed.push(directory) },
-        "/shared",
+        "@lgcode/shared",
       ),
-    ).toEqual({ server: serverKey("https://windows.example"), directory: "/shared" })
-    expect(closed).toEqual(["/shared"])
+    ).toEqual({ server: serverKey("https:@lgcode/@lgcode/windows.example"), directory: "@lgcode/shared" })
+    expect(closed).toEqual(["@lgcode/shared"])
     expect(
       closeHomeProject(
-        { server: serverKey("https://debian.example"), directory: "/shared" },
-        serverKey("https://debian.example"),
+        { server: serverKey("https:@lgcode/@lgcode/debian.example"), directory: "@lgcode/shared" },
+        serverKey("https:@lgcode/@lgcode/debian.example"),
         { close: (directory) => closed.push(directory) },
-        "/shared",
+        "@lgcode/shared",
       ),
-    ).toEqual({ server: serverKey("https://debian.example") })
+    ).toEqual({ server: serverKey("https:@lgcode/@lgcode/debian.example") })
   })
 
   test("defers home project navigation until its server is active", () => {
     expect(
-      homeProjectNavigation(serverKey("sidecar"), serverKey("https://debian.example"), "/YW1hem9u/session"),
+      homeProjectNavigation(serverKey("sidecar"), serverKey("https:@lgcode/@lgcode/debian.example"), "@lgcode/YW1hem9u@lgcode/session"),
     ).toEqual({
-      server: serverKey("https://debian.example"),
-      href: "/YW1hem9u/session",
+      server: serverKey("https:@lgcode/@lgcode/debian.example"),
+      href: "@lgcode/YW1hem9u@lgcode/session",
     })
     expect(
       homeProjectNavigation(
-        serverKey("https://debian.example"),
-        serverKey("https://debian.example"),
-        "/YW1hem9u/session",
+        serverKey("https:@lgcode/@lgcode/debian.example"),
+        serverKey("https:@lgcode/@lgcode/debian.example"),
+        "@lgcode/YW1hem9u@lgcode/session",
       ),
     ).toEqual({
-      href: "/YW1hem9u/session",
+      href: "@lgcode/YW1hem9u@lgcode/session",
     })
   })
 
   test("preserves picker order when adding multiple projects", () => {
-    expect(homeProjectDirectories(["/first", "/second"])).toEqual(["/first", "/second"])
-    expect(homeProjectDirectories("/only")).toEqual(["/only"])
+    expect(homeProjectDirectories(["@lgcode/first", "@lgcode/second"])).toEqual(["@lgcode/first", "@lgcode/second"])
+    expect(homeProjectDirectories("@lgcode/only")).toEqual(["@lgcode/only"])
     expect(homeProjectDirectories(null)).toEqual([])
   })
 

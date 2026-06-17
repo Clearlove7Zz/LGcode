@@ -1,24 +1,24 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { FetchHttpClient } from "effect/unstable/http"
-import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { EffectFlock } from "@opencode@lgcode/core/util/effect-flock"
+import { FetchHttpClient } from "effect@lgcode/unstable@lgcode/http"
+import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { EffectFlock } from "@lgcode/core@lgcode/util@lgcode/effect-flock"
 import path from "path"
 import { pathToFileURL } from "url"
-import { EventV2Bridge } from "../../src/event-v2-bridge"
-import { Config } from "../../src/config/config"
-import { Env } from "../../src/env"
-import { RuntimeFlags } from "../../src/effect/runtime-flags"
-import { Plugin } from "../../src/plugin/index"
+import { EventV2Bridge } from "..@lgcode/..@lgcode/src@lgcode/event-v2-bridge"
+import { Config } from "..@lgcode/..@lgcode/src@lgcode/config@lgcode/config"
+import { Env } from "..@lgcode/..@lgcode/src@lgcode/env"
+import { RuntimeFlags } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/runtime-flags"
+import { Plugin } from "..@lgcode/..@lgcode/src@lgcode/plugin@lgcode/index"
 
-import { TestInstance } from "../fixture/fixture"
-import { testEffect } from "../lib/effect"
-import { AccountTest } from "../fake/account"
-import { AuthTest } from "../fake/auth"
-import { NpmTest } from "../fake/npm"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { ModelV2 } from "@opencode@lgcode/core/model"
+import { TestInstance } from "..@lgcode/fixture@lgcode/fixture"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { AccountTest } from "..@lgcode/fake@lgcode/account"
+import { AuthTest } from "..@lgcode/fake@lgcode/auth"
+import { NpmTest } from "..@lgcode/fake@lgcode/npm"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
 
 const configLayer = Config.layer.pipe(
   Layer.provide(EffectFlock.defaultLayer),
@@ -53,7 +53,7 @@ function withProject<A, E, R>(source: string, self: Effect.Effect<A, E, R>) {
             path.join(test.directory, "opencode.json"),
             JSON.stringify(
               {
-                $schema: "https://opencode.ai/config.json",
+                $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
                 plugin: [pathToFileURL(file).href],
               },
               null,

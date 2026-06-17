@@ -1,10 +1,10 @@
 import { Effect, Fiber, Layer, ManagedRuntime } from "effect"
-import * as Context from "effect/Context"
-import { InstanceRef, WorkspaceRef } from "./instance-ref"
-import * as Observability from "@opencode@lgcode/core/observability"
-import { WorkspaceContext } from "@/control-plane/workspace-context"
-import type { InstanceContext } from "@/project/instance-context"
-import { memoMap } from "@opencode@lgcode/core/effect/memo-map"
+import * as Context from "effect@lgcode/Context"
+import { InstanceRef, WorkspaceRef } from ".@lgcode/instance-ref"
+import * as Observability from "@lgcode/core@lgcode/observability"
+import { WorkspaceContext } from "@@lgcode/control-plane@lgcode/workspace-context"
+import type { InstanceContext } from "@@lgcode/project@lgcode/instance-context"
+import { memoMap } from "@lgcode/core@lgcode/effect@lgcode/memo-map"
 
 type Refs = {
   instance?: InstanceContext

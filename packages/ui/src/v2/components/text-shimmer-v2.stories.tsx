@@ -1,4 +1,4 @@
-import { TextShimmerV2 } from "./text-shimmer-v2"
+import { TextShimmerV2 } from ".@lgcode/text-shimmer-v2"
 
 const docs = `### Overview
 Animated shimmer effect for loading text placeholders.
@@ -19,7 +19,7 @@ Animated shimmer effect for loading text placeholders.
 `
 
 export default {
-  title: "UI V2/TextShimmer",
+  title: "UI V2@lgcode/TextShimmer",
   id: "components-text-shimmer-v2",
   component: TextShimmerV2,
   tags: ["autodocs"],
@@ -37,16 +37,16 @@ export default {
 export const Active = {
   render: () => (
     <span style={{ "font-size": "13px", "font-weight": "440", "font-family": "Inter, system-ui, sans-serif" }}>
-      <TextShimmerV2 text="Loading..." active={true} />
-    </span>
+      <TextShimmerV2 text="Loading..." active={true} @lgcode/>
+    <@lgcode/span>
   ),
 }
 
 export const Inactive = {
   render: () => (
     <span style={{ "font-size": "13px", "font-weight": "440", "font-family": "Inter, system-ui, sans-serif" }}>
-      <TextShimmerV2 text="Static text" active={false} />
-    </span>
+      <TextShimmerV2 text="Static text" active={false} @lgcode/>
+    <@lgcode/span>
   ),
 }
 
@@ -62,9 +62,9 @@ export const WithOffset = {
         "font-family": "Inter, system-ui, sans-serif",
       }}
     >
-      <TextShimmerV2 text="First line" active={true} offset={0} />
-      <TextShimmerV2 text="Second line" active={true} offset={5} />
-      <TextShimmerV2 text="Third line" active={true} offset={10} />
-    </div>
+      <TextShimmerV2 text="First line" active={true} offset={0} @lgcode/>
+      <TextShimmerV2 text="Second line" active={true} offset={5} @lgcode/>
+      <TextShimmerV2 text="Third line" active={true} offset={10} @lgcode/>
+    <@lgcode/div>
   ),
 }

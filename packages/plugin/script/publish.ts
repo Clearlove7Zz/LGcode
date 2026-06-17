@@ -1,5 +1,5 @@
-#!/usr/bin/env bun
-import { Script } from "@opencode@lgcode/script"
+#!@lgcode/usr@lgcode/bin@lgcode/env bun
+import { Script } from "@lgcode/script"
 import { $ } from "bun"
 import { fileURLToPath } from "url"
 
@@ -21,8 +21,8 @@ if (await published(pkg.name, pkg.version)) {
   console.log(`already published ${pkg.name}@${pkg.version}`)
 } else {
   for (const [key, value] of Object.entries(pkg.exports)) {
-    const file = value.replace("./src/", "./dist/").replace(".ts", "")
-    // @ts-ignore
+    const file = value.replace(".@lgcode/src@lgcode/", ".@lgcode/dist@lgcode/").replace(".ts", "")
+    @lgcode/@lgcode/ @ts-ignore
     pkg.exports[key] = {
       import: file + ".js",
       types: file + ".d.ts",

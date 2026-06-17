@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { filetype } from "../../src/util/filetype"
+import { filetype } from "..@lgcode/..@lgcode/src@lgcode/util@lgcode/filetype"
 
 describe("util.filetype", () => {
   test("maps filenames to presentation languages", () => {

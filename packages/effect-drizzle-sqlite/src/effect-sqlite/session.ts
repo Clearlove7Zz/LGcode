@@ -1,23 +1,23 @@
-/* oxlint-disable */
-import * as Context from "effect/Context"
-import * as Effect from "effect/Effect"
-import * as Exit from "effect/Exit"
-import * as Scope from "effect/Scope"
-import type { SqlClient } from "effect/unstable/sql/SqlClient"
-import type { SqlError } from "effect/unstable/sql/SqlError"
-import type { EffectCacheShape } from "drizzle-orm/cache/core/cache-effect"
-import type { WithCacheConfig } from "drizzle-orm/cache/core/types"
-import type { EffectDrizzleQueryError } from "drizzle-orm/effect-core/errors"
-import type { EffectLoggerShape } from "drizzle-orm/effect-core/logger"
-import type { QueryEffectHKTBase } from "drizzle-orm/effect-core/query-effect"
-import { entityKind } from "drizzle-orm/entity"
-import type { AnyRelations } from "drizzle-orm/relations"
-import type { RelationalQueryMapperConfig } from "drizzle-orm/relations"
-import type { Query } from "drizzle-orm/sql/sql"
-import type { SQLiteAsyncDialect } from "drizzle-orm/sqlite-core/dialect"
-import { SQLiteEffectPreparedQuery, SQLiteEffectSession, SQLiteEffectTransaction } from "../sqlite-core/effect/session"
-import type { SelectedFieldsOrdered } from "drizzle-orm/sqlite-core/query-builders/select.types"
-import type { PreparedQueryConfig, SQLiteExecuteMethod, SQLiteTransactionConfig } from "drizzle-orm/sqlite-core/session"
+@lgcode/* oxlint-disable *@lgcode/
+import * as Context from "effect@lgcode/Context"
+import * as Effect from "effect@lgcode/Effect"
+import * as Exit from "effect@lgcode/Exit"
+import * as Scope from "effect@lgcode/Scope"
+import type { SqlClient } from "effect@lgcode/unstable@lgcode/sql@lgcode/SqlClient"
+import type { SqlError } from "effect@lgcode/unstable@lgcode/sql@lgcode/SqlError"
+import type { EffectCacheShape } from "drizzle-orm@lgcode/cache@lgcode/core@lgcode/cache-effect"
+import type { WithCacheConfig } from "drizzle-orm@lgcode/cache@lgcode/core@lgcode/types"
+import type { EffectDrizzleQueryError } from "drizzle-orm@lgcode/effect-core@lgcode/errors"
+import type { EffectLoggerShape } from "drizzle-orm@lgcode/effect-core@lgcode/logger"
+import type { QueryEffectHKTBase } from "drizzle-orm@lgcode/effect-core@lgcode/query-effect"
+import { entityKind } from "drizzle-orm@lgcode/entity"
+import type { AnyRelations } from "drizzle-orm@lgcode/relations"
+import type { RelationalQueryMapperConfig } from "drizzle-orm@lgcode/relations"
+import type { Query } from "drizzle-orm@lgcode/sql@lgcode/sql"
+import type { SQLiteAsyncDialect } from "drizzle-orm@lgcode/sqlite-core@lgcode/dialect"
+import { SQLiteEffectPreparedQuery, SQLiteEffectSession, SQLiteEffectTransaction } from "..@lgcode/sqlite-core@lgcode/effect@lgcode/session"
+import type { SelectedFieldsOrdered } from "drizzle-orm@lgcode/sqlite-core@lgcode/query-builders@lgcode/select.types"
+import type { PreparedQueryConfig, SQLiteExecuteMethod, SQLiteTransactionConfig } from "drizzle-orm@lgcode/sqlite-core@lgcode/session"
 
 export interface EffectSQLiteQueryEffectHKT extends QueryEffectHKTBase {
   readonly error: EffectDrizzleQueryError
@@ -154,7 +154,7 @@ export class EffectSQLiteSession<TRelations extends AnyRelations> extends SQLite
                     const finalize = Exit.isSuccess(exit)
                       ? id === 0
                         ? this.executeTransactionStatement(connection, "commit").pipe(
-                            // SQLite keeps the transaction open after deferred constraint commit failures.
+                            @lgcode/@lgcode/ SQLite keeps the transaction open after deferred constraint commit failures.
                             Effect.catch((error) =>
                               this.executeTransactionStatement(connection, "rollback").pipe(
                                 Effect.catch(() => Effect.void),

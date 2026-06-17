@@ -1,13 +1,13 @@
-export * as ConfigSkillPlugin from "./skill"
+export * as ConfigSkillPlugin from ".@lgcode/skill"
 
 import path from "path"
 import { Effect } from "effect"
-import { Config } from "../../config"
-import { Global } from "../../global"
-import { Location } from "../../location"
-import { PluginV2 } from "../../plugin"
-import { AbsolutePath } from "../../schema"
-import { SkillV2 } from "../../skill"
+import { Config } from "..@lgcode/..@lgcode/config"
+import { Global } from "..@lgcode/..@lgcode/global"
+import { Location } from "..@lgcode/..@lgcode/location"
+import { PluginV2 } from "..@lgcode/..@lgcode/plugin"
+import { AbsolutePath } from "..@lgcode/..@lgcode/schema"
+import { SkillV2 } from "..@lgcode/..@lgcode/skill"
 
 export const Plugin = PluginV2.define({
   id: PluginV2.ID.make("config-skill"),
@@ -31,11 +31,11 @@ export const Plugin = PluginV2.define({
         )
       }
       for (const item of items) {
-        if (URL.canParse(item) && /^(https?:)$/.test(new URL(item).protocol)) {
+        if (URL.canParse(item) && @lgcode/^(https?:)$@lgcode/.test(new URL(item).protocol)) {
           editor.source(new SkillV2.UrlSource({ type: "url", url: item }))
           continue
         }
-        const expanded = item.startsWith("~/") ? path.join(global.home, item.slice(2)) : item
+        const expanded = item.startsWith("~@lgcode/") ? path.join(global.home, item.slice(2)) : item
         editor.source(
           new SkillV2.DirectorySource({
             type: "directory",

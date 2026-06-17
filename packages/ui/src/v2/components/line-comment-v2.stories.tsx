@@ -1,6 +1,6 @@
-// @ts-nocheck
+@lgcode/@lgcode/ @ts-nocheck
 import { createSignal } from "solid-js"
-import { LineCommentEditorV2, LineCommentV2, LineCommentV2OverflowIcon } from "./line-comment-v2"
+import { LineCommentEditorV2, LineCommentV2, LineCommentV2OverflowIcon } from ".@lgcode/line-comment-v2"
 
 const docs = `### Overview
 Line comment **display** and **editor** cards aligned with OpenCode line-comment specs (raised \`#FAFAFA\` surface, footer line context, \`ButtonV2\` neutral + contrast actions).
@@ -10,12 +10,12 @@ Line comment **display** and **editor** cards aligned with OpenCode line-comment
 - Use \`LineCommentV2OverflowIcon\` inside a \`data-slot="line-comment-v2-overflow"\` button for the Figma dots control.
 
 ### Editor
-- \`LineCommentEditorV2\`: optional \`heading\` above the textarea (default “Comment”), footer (selection meta + Cancel / Comment).
-- \`Enter\` submits (Shift+Enter newline); \`Escape\` cancels. Controlled via \`value\` / \`onInput\`.
+- \`LineCommentEditorV2\`: optional \`heading\` above the textarea (default “Comment”), footer (selection meta + Cancel @lgcode/ Comment).
+- \`Enter\` submits (Shift+Enter newline); \`Escape\` cancels. Controlled via \`value\` @lgcode/ \`onInput\`.
 `
 
 export default {
-  title: "UI V2/LineComment",
+  title: "UI V2@lgcode/LineComment",
   id: "components-line-comment-v2",
   component: LineCommentV2,
   tags: ["autodocs"],
@@ -36,19 +36,19 @@ export const Display = {
         selection="Comment on line 40"
         actions={
           <button type="button" data-slot="line-comment-v2-overflow" aria-label="Comment actions">
-            <LineCommentV2OverflowIcon />
-          </button>
+            <LineCommentV2OverflowIcon @lgcode/>
+          <@lgcode/button>
         }
-      />
-    </div>
+      @lgcode/>
+    <@lgcode/div>
   ),
 }
 
 export const DisplayWithoutActions = {
   render: () => (
     <div style={{ width: "400px" }}>
-      <LineCommentV2 comment="Consider guarding against empty arrays." selection="Comment on line 40" />
-    </div>
+      <LineCommentV2 comment="Consider guarding against empty arrays." selection="Comment on line 40" @lgcode/>
+    <@lgcode/div>
   ),
 }
 
@@ -63,8 +63,8 @@ export const Editor = {
           onCancel={() => setValue("")}
           onSubmit={() => setValue("")}
           selection="Comment on line 40"
-        />
-      </div>
+        @lgcode/>
+      <@lgcode/div>
     )
   },
 }
@@ -81,8 +81,8 @@ export const EditorFilled = {
           onSubmit={() => {}}
           selection="Comment on line 40"
           autofocus={false}
-        />
-      </div>
+        @lgcode/>
+      <@lgcode/div>
     )
   },
 }

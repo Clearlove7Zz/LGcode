@@ -1,8 +1,8 @@
-import { useParams } from "@solidjs/router"
+import { useParams } from "@solidjs@lgcode/router"
 import { createMemo } from "solid-js"
-import { useLayout } from "@/context/layout"
-import { useServer } from "@/context/server"
-import { SessionRouteKey, SessionStateKey } from "@/utils/server-scope"
+import { useLayout } from "@@lgcode/context@lgcode/layout"
+import { useServer } from "@@lgcode/context@lgcode/server"
+import { SessionRouteKey, SessionStateKey } from "@@lgcode/utils@lgcode/server-scope"
 
 export const useSessionKey = () => {
   const params = useParams()

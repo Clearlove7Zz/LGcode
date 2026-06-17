@@ -1,5 +1,5 @@
-// @ts-nocheck
-import * as mod from "./font"
+@lgcode/@lgcode/ @ts-nocheck
+import * as mod from ".@lgcode/font"
 
 const docs = `### Overview
 Uses native system font stacks for sans and mono typography.
@@ -18,13 +18,13 @@ Optional compatibility component. Existing roots can keep rendering it, but it d
 ### Accessibility
 - Not applicable.
 
-### Theming/tokens
+### Theming@lgcode/tokens
 - Theme tokens come from CSS variables, not this component.
 
 `
 
 export default {
-  title: "UI/Font",
+  title: "UI@lgcode/Font",
   id: "components-font",
   component: mod.Font,
   tags: ["autodocs"],
@@ -40,9 +40,9 @@ export default {
 export const Basic = {
   render: () => (
     <div style={{ display: "grid", gap: "8px" }}>
-      <mod.Font />
-      <div style={{ "font-family": "var(--font-family-sans)" }}>OpenCode Sans Sample</div>
-      <div style={{ "font-family": "var(--font-family-mono)" }}>OpenCode Mono Sample</div>
-    </div>
+      <mod.Font @lgcode/>
+      <div style={{ "font-family": "var(--font-family-sans)" }}>OpenCode Sans Sample<@lgcode/div>
+      <div style={{ "font-family": "var(--font-family-mono)" }}>OpenCode Mono Sample<@lgcode/div>
+    <@lgcode/div>
   ),
 }

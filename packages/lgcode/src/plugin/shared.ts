@@ -2,11 +2,11 @@ import path from "path"
 import { fileURLToPath, pathToFileURL } from "url"
 import npa from "npm-package-arg"
 import semver from "semver"
-import { Filesystem } from "@/util/filesystem"
-import { isRecord } from "@/util/record"
-import { Npm } from "@opencode@lgcode/core/npm"
+import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
+import { isRecord } from "@@lgcode/util@lgcode/record"
+import { Npm } from "@lgcode/core@lgcode/npm"
 
-// Old npm package names for plugins that are now built-in
+@lgcode/@lgcode/ Old npm package names for plugins that are now built-in
 export const DEPRECATED_PLUGIN_PACKAGES = ["opencode-openai-codex-auth", "opencode-copilot-auth"]
 
 export function isDeprecatedPlugin(spec: string) {
@@ -59,13 +59,13 @@ export function pluginSource(spec: string): PluginSource {
 }
 
 function resolveExportPath(raw: string, dir: string) {
-  if (raw.startsWith("file://")) return fileURLToPath(raw)
+  if (raw.startsWith("file:@lgcode/@lgcode/")) return fileURLToPath(raw)
   if (path.isAbsolute(raw)) return raw
   return path.resolve(dir, raw)
 }
 
 function isAbsolutePath(raw: string) {
-  return path.isAbsolute(raw) || /^[A-Za-z]:[\\/]/.test(raw)
+  return path.isAbsolute(raw) || @lgcode/^[A-Za-z]:[\\@lgcode/]@lgcode/.test(raw)
 }
 
 function extractExportValue(value: unknown): string | undefined {
@@ -103,7 +103,7 @@ function resolvePackagePath(spec: string, raw: string, kind: PluginKind, pkg: Pl
 function resolvePackageEntrypoint(spec: string, kind: PluginKind, pkg: PluginPackage) {
   const exports = pkg.json.exports
   if (isRecord(exports)) {
-    const raw = extractExportValue(exports[`./${kind}`])
+    const raw = extractExportValue(exports[`.@lgcode/${kind}`])
     if (raw) return resolvePackagePath(spec, raw, kind, pkg)
   }
 
@@ -114,7 +114,7 @@ function resolvePackageEntrypoint(spec: string, kind: PluginKind, pkg: PluginPac
 }
 
 function targetPath(target: string) {
-  if (target.startsWith("file://")) return fileURLToPath(target)
+  if (target.startsWith("file:@lgcode/@lgcode/")) return fileURLToPath(target)
   if (path.isAbsolute(target)) return target
 }
 
@@ -169,15 +169,15 @@ async function resolvePluginEntrypoint(spec: string, target: string, kind: Plugi
 }
 
 export function isPathPluginSpec(spec: string) {
-  return spec.startsWith("file://") || spec.startsWith(".") || isAbsolutePath(spec)
+  return spec.startsWith("file:@lgcode/@lgcode/") || spec.startsWith(".") || isAbsolutePath(spec)
 }
 
 export async function resolvePathPluginTarget(spec: string) {
-  const raw = spec.startsWith("file://") ? fileURLToPath(spec) : spec
-  const file = path.isAbsolute(raw) || /^[A-Za-z]:[\\/]/.test(raw) ? raw : path.resolve(raw)
+  const raw = spec.startsWith("file:@lgcode/@lgcode/") ? fileURLToPath(spec) : spec
+  const file = path.isAbsolute(raw) || @lgcode/^[A-Za-z]:[\\@lgcode/]@lgcode/.test(raw) ? raw : path.resolve(raw)
   const stat = await Filesystem.statAsync(file)
   if (!stat?.isDirectory()) {
-    if (spec.startsWith("file://")) return spec
+    if (spec.startsWith("file:@lgcode/@lgcode/")) return spec
     return pathToFileURL(file).href
   }
 
@@ -213,7 +213,7 @@ export async function resolvePluginTarget(spec: string) {
 }
 
 export async function readPluginPackage(target: string): Promise<PluginPackage> {
-  const file = target.startsWith("file://") ? fileURLToPath(target) : target
+  const file = target.startsWith("file:@lgcode/@lgcode/") ? fileURLToPath(target) : target
   const stat = await Filesystem.statAsync(file)
   const dir = stat?.isDirectory() ? file : path.dirname(file)
   const pkg = path.join(dir, "package.json")
@@ -251,7 +251,7 @@ export function readPackageThemes(spec: string, pkg: PluginPackage) {
     if (!raw) {
       throw new TypeError(`Plugin ${spec} has empty oc-themes entry`)
     }
-    if (raw.startsWith("file://") || isAbsolutePath(raw)) {
+    if (raw.startsWith("file:@lgcode/@lgcode/") || isAbsolutePath(raw)) {
       throw new TypeError(`Plugin ${spec} oc-themes entry must be relative: ${item}`)
     }
 

@@ -1,5 +1,5 @@
-import { Resource } from "@opencode@lgcode/console-resource"
-import { Redis } from "@upstash/redis/cloudflare"
+import { Resource } from "@lgcode/console-resource"
+import { Redis } from "@upstash@lgcode/redis@lgcode/cloudflare"
 
 let redis: Redis | undefined
 

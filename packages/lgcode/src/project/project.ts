@@ -1,26 +1,26 @@
-import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
 import { and, eq, sql } from "drizzle-orm"
-import { Database } from "@opencode@lgcode/core/database/database"
-import { ProjectDirectoryTable, ProjectTable } from "@opencode@lgcode/core/project/sql"
-import { ProjectDirectories } from "@opencode@lgcode/core/project/directories"
-import { SessionTable } from "@opencode@lgcode/core/session/sql"
-import { WorkspaceTable } from "@opencode@lgcode/core/control-plane/workspace.sql"
-import { Flag } from "@opencode@lgcode/core/flag/flag"
-import { GlobalBus } from "@/bus/global"
-import { which } from "@opencode@lgcode/core/util/which"
-import { Command } from "@/command"
-import { InstanceState } from "@/effect/instance-state"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { ProjectDirectoryTable, ProjectTable } from "@lgcode/core@lgcode/project@lgcode/sql"
+import { ProjectDirectories } from "@lgcode/core@lgcode/project@lgcode/directories"
+import { SessionTable } from "@lgcode/core@lgcode/session@lgcode/sql"
+import { WorkspaceTable } from "@lgcode/core@lgcode/control-plane@lgcode/workspace.sql"
+import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
+import { GlobalBus } from "@@lgcode/bus@lgcode/global"
+import { which } from "@lgcode/core@lgcode/util@lgcode/which"
+import { Command } from "@@lgcode/command"
+import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
 import { Effect, Layer, Scope, Context, Stream, Types, Schema } from "effect"
-import { ChildProcess, ChildProcessSpawner } from "effect/unstable/process"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { AppProcess } from "@opencode@lgcode/core/process"
-import { ProjectV2 } from "@opencode@lgcode/core/project"
-import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
-import { AbsolutePath, NonNegativeInt, optionalOmitUndefined } from "@opencode@lgcode/core/schema"
-import { serviceUse } from "@opencode@lgcode/core/effect/service-use"
-import { RuntimeFlags } from "@/effect/runtime-flags"
-import { EventV2Bridge } from "@/event-v2-bridge"
-import { EventV2 } from "@opencode@lgcode/core/event"
+import { ChildProcess, ChildProcessSpawner } from "effect@lgcode/unstable@lgcode/process"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { AppProcess } from "@lgcode/core@lgcode/process"
+import { ProjectV2 } from "@lgcode/core@lgcode/project"
+import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
+import { AbsolutePath, NonNegativeInt, optionalOmitUndefined } from "@lgcode/core@lgcode/schema"
+import { serviceUse } from "@lgcode/core@lgcode/effect@lgcode/service-use"
+import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
+import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
+import { EventV2 } from "@lgcode/core@lgcode/event"
 
 const ProjectVcs = Schema.Literal("git")
 
@@ -104,16 +104,16 @@ export class NotFoundError extends Schema.TaggedErrorClass<NotFoundError>()("Pro
   projectID: ProjectV2.ID,
 }) {}
 
-// ---------------------------------------------------------------------------
-// Effect service
-// ---------------------------------------------------------------------------
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
+@lgcode/@lgcode/ Effect service
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
 
 export interface Interface {
-  /**
-   * Per-instance setup. Subscribes to the `/init` slash command for the
+  @lgcode/**
+   * Per-instance setup. Subscribes to the `@lgcode/init` slash command for the
    * current instance and stamps the project's initialized timestamp when it
    * fires. Subscription lifetime is tied to the per-instance state scope.
-   */
+   *@lgcode/
   readonly init: () => Effect.Effect<void>
   readonly fromDirectory: (directory: string) => Effect.Effect<{ project: Info; sandbox: string }>
   readonly discover: (input: Info) => Effect.Effect<void>
@@ -127,7 +127,7 @@ export interface Interface {
   readonly removeSandbox: (id: ProjectV2.ID, directory: string) => Effect.Effect<void>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/Project") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/Project") {}
 
 type GitResult = { code: number; text: string; stderr: string }
 
@@ -197,10 +197,10 @@ export const layer = Layer.effect(
                   .run()
               }
 
-              // Project directories may be shared across distinct
-              // checkouts which have diverged. Clear the directory
-              // list and rely on it being re-populated to ensure
-              // accuracy
+              @lgcode/@lgcode/ Project directories may be shared across distinct
+              @lgcode/@lgcode/ checkouts which have diverged. Clear the directory
+              @lgcode/@lgcode/ list and rely on it being re-populated to ensure
+              @lgcode/@lgcode/ accuracy
               yield* d.delete(ProjectDirectoryTable).where(eq(ProjectDirectoryTable.project_id, oldID)).run()
 
               yield* d
@@ -243,9 +243,9 @@ export const layer = Layer.effect(
       yield* Effect.logInfo("fromDirectory", { directory })
 
       const data = yield* projectV2.resolve(AbsolutePath.make(directory))
-      const worktree = data.id === ProjectV2.ID.make("global") && !data.vcs ? "/" : data.directory
+      const worktree = data.id === ProjectV2.ID.make("global") && !data.vcs ? "@lgcode/" : data.directory
 
-      // Phase 2: upsert
+      @lgcode/@lgcode/ Phase 2: upsert
       const projectID = ProjectV2.ID.make(data.id)
       yield* migrateProjectId(data.previous ? ProjectV2.ID.make(data.previous) : undefined, projectID)
       const row = yield* db.select().from(ProjectTable).where(eq(ProjectTable.id, projectID)).get().pipe(Effect.orDie)
@@ -344,7 +344,7 @@ export const layer = Layer.effect(
       if (input.icon?.url) return
 
       const matches = yield* fs
-        .glob("**/favicon.{ico,png,svg,jpg,jpeg,webp}", {
+        .glob("**@lgcode/favicon.{ico,png,svg,jpg,jpeg,webp}", {
           cwd: input.worktree,
           absolute: true,
           include: "file",
@@ -516,4 +516,4 @@ export const node = LayerNode.make(layer, [
   Database.node,
 ])
 
-export * as Project from "./project"
+export * as Project from ".@lgcode/project"

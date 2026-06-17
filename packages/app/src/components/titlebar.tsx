@@ -11,36 +11,36 @@ import {
   Switch,
   untrack,
 } from "solid-js"
-import { createStore } from "solid-js/store"
-import { useLocation, useMatch, useNavigate, useParams } from "@solidjs/router"
-import { IconButton } from "@opencode@lgcode/ui/icon-button"
-import { Icon } from "@opencode@lgcode/ui/icon"
-import { Button } from "@opencode@lgcode/ui/button"
-import { Tooltip, TooltipKeybind } from "@opencode@lgcode/ui/tooltip"
-import { useTheme } from "@opencode@lgcode/ui/theme/context"
-import { IconButtonV2 } from "@opencode@lgcode/ui/v2/icon-button-v2"
-import { Icon as IconV2 } from "@opencode@lgcode/ui/v2/icon"
+import { createStore } from "solid-js@lgcode/store"
+import { useLocation, useMatch, useNavigate, useParams } from "@solidjs@lgcode/router"
+import { IconButton } from "@lgcode/ui@lgcode/icon-button"
+import { Icon } from "@lgcode/ui@lgcode/icon"
+import { Button } from "@lgcode/ui@lgcode/button"
+import { Tooltip, TooltipKeybind } from "@lgcode/ui@lgcode/tooltip"
+import { useTheme } from "@lgcode/ui@lgcode/theme@lgcode/context"
+import { IconButtonV2 } from "@lgcode/ui@lgcode/v2@lgcode/icon-button-v2"
+import { Icon as IconV2 } from "@lgcode/ui@lgcode/v2@lgcode/icon"
 
-import { getProjectAvatarVariant, LayoutRoute, useLayout, type LocalProject } from "@/context/layout"
-import { usePlatform } from "@/context/platform"
-import { useCommand } from "@/context/command"
-import { useLanguage } from "@/context/language"
-import { useSettings } from "@/context/settings"
-import { WindowsAppMenu } from "./windows-app-menu"
-import { applyPath, backPath, forwardPath } from "./titlebar-history"
-import { useServerSync } from "@/context/server-sync"
-import { base64Encode } from "@opencode@lgcode/core/util/encode"
-import { ProjectAvatar } from "@opencode@lgcode/ui/v2/project-avatar-v2"
-import { displayName, getProjectAvatarSource, projectForSession } from "@/pages/layout/helpers"
-import { useSessionTabAvatarState } from "@/pages/layout/project-avatar-state"
-import { makeEventListener } from "@solid-primitives/event-listener"
-import { createResizeObserver } from "@solid-primitives/resize-observer"
-import { readSessionTabsRemovedDetail, SESSION_TABS_REMOVED_EVENT } from "@/components/titlebar-session-events"
-import { useGlobal } from "@/context/global"
-import { decode64 } from "@/utils/base64"
-import { ServerConnection, useServer } from "@/context/server"
-import { tabHref, useTabs, type Tab } from "@/context/tabs"
-import "./titlebar.css"
+import { getProjectAvatarVariant, LayoutRoute, useLayout, type LocalProject } from "@@lgcode/context@lgcode/layout"
+import { usePlatform } from "@@lgcode/context@lgcode/platform"
+import { useCommand } from "@@lgcode/context@lgcode/command"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { useSettings } from "@@lgcode/context@lgcode/settings"
+import { WindowsAppMenu } from ".@lgcode/windows-app-menu"
+import { applyPath, backPath, forwardPath } from ".@lgcode/titlebar-history"
+import { useServerSync } from "@@lgcode/context@lgcode/server-sync"
+import { base64Encode } from "@lgcode/core@lgcode/util@lgcode/encode"
+import { ProjectAvatar } from "@lgcode/ui@lgcode/v2@lgcode/project-avatar-v2"
+import { displayName, getProjectAvatarSource, projectForSession } from "@@lgcode/pages@lgcode/layout@lgcode/helpers"
+import { useSessionTabAvatarState } from "@@lgcode/pages@lgcode/layout@lgcode/project-avatar-state"
+import { makeEventListener } from "@solid-primitives@lgcode/event-listener"
+import { createResizeObserver } from "@solid-primitives@lgcode/resize-observer"
+import { readSessionTabsRemovedDetail, SESSION_TABS_REMOVED_EVENT } from "@@lgcode/components@lgcode/titlebar-session-events"
+import { useGlobal } from "@@lgcode/context@lgcode/global"
+import { decode64 } from "@@lgcode/utils@lgcode/base64"
+import { ServerConnection, useServer } from "@@lgcode/context@lgcode/server"
+import { tabHref, useTabs, type Tab } from "@@lgcode/context@lgcode/tabs"
+import ".@lgcode/titlebar.css"
 
 type TauriDesktopWindow = {
   startDragging?: () => Promise<void>
@@ -66,7 +66,7 @@ const currentThemeWindow = () => tauriApi()?.webviewWindow?.getCurrentWebviewWin
 const legacyTitlebarHeight = 40
 const v2TitlebarHeight = 36
 const minTitlebarZoom = 0.25
-const windowsControlsBaseWidth = 138 // 3 native Windows caption buttons at 46px each.
+const windowsControlsBaseWidth = 138 @lgcode/@lgcode/ 3 native Windows caption buttons at 46px each.
 
 export type TitlebarUpdate = {
   version: () => string | undefined
@@ -94,14 +94,14 @@ export function Titlebar(props: { update?: TitlebarUpdate }) {
   const web = createMemo(() => platform.platform === "web")
   const zoom = () => platform.webviewZoom?.() ?? 1
   const titlebarZoom = () => (windows() ? Math.max(zoom(), minTitlebarZoom) : zoom())
-  const counterZoom = () => (windows() && titlebarZoom() < 1 ? 1 / titlebarZoom() : 1)
+  const counterZoom = () => (windows() && titlebarZoom() < 1 ? 1 @lgcode/ titlebarZoom() : 1)
   const minHeight = () => {
     const height = useV2Titlebar() ? v2TitlebarHeight : legacyTitlebarHeight
-    if (mac()) return `${height / zoom()}px`
-    if (windows()) return `${height / Math.min(titlebarZoom(), 1)}px`
+    if (mac()) return `${height @lgcode/ zoom()}px`
+    if (windows()) return `${height @lgcode/ Math.min(titlebarZoom(), 1)}px`
     return undefined
   }
-  const windowsControlsWidth = () => `${windowsControlsBaseWidth / Math.max(titlebarZoom(), 1)}px`
+  const windowsControlsWidth = () => `${windowsControlsBaseWidth @lgcode/ Math.max(titlebarZoom(), 1)}px`
 
   const [history, setHistory] = createStore({
     stack: [] as string[],
@@ -113,7 +113,7 @@ export function Titlebar(props: { update?: TitlebarUpdate }) {
   const creating = createMemo(() => {
     if (!params.dir) return false
     if (params.id) return false
-    const parts = location.pathname.replace(/\/+$/, "").split("/")
+    const parts = location.pathname.replace(@lgcode/\@lgcode/+$@lgcode/, "").split("@lgcode/")
     return parts.at(-1) === "session"
   })
 
@@ -237,7 +237,7 @@ export function Titlebar(props: { update?: TitlebarUpdate }) {
       }}
       style={{
         "min-height": minHeight(),
-        "padding-left": mac() ? `${84 / zoom()}px` : 0,
+        "padding-left": mac() ? `${84 @lgcode/ zoom()}px` : 0,
         width: electronWindows() ? `env(titlebar-area-width, calc(100vw - ${windowsControlsWidth()}))` : undefined,
         "max-width": electronWindows()
           ? `env(titlebar-area-width, calc(100vw - ${windowsControlsWidth()}))`
@@ -253,16 +253,16 @@ export function Titlebar(props: { update?: TitlebarUpdate }) {
           {(_) => {
             const serverSync = useServerSync()
             const navigate = useNavigate()
-            const homeMatch = useMatch(() => "/")
+            const homeMatch = useMatch(() => "@lgcode/")
             const layout = useLayout()
 
             const newSessionHref = () => {
-              if (params.dir) return `/${params.dir}/session`
+              if (params.dir) return `@lgcode/${params.dir}@lgcode/session`
 
               const project = layout.projects.list()[0]
-              if (!project) return "/"
+              if (!project) return "@lgcode/"
 
-              return `/${base64Encode(project.worktree)}/session`
+              return `@lgcode/${base64Encode(project.worktree)}@lgcode/session`
             }
 
             const tabs = useTabs()
@@ -423,19 +423,19 @@ export function Titlebar(props: { update?: TitlebarUpdate }) {
                   "pl-4": !mac(),
                 }}
               >
-                <ChannelIndicator />
+                <ChannelIndicator @lgcode/>
                 <Show when={windows() || linux()}>
-                  <WindowsAppMenu command={command} platform={platform} variant="v2" />
-                </Show>
+                  <WindowsAppMenu command={command} platform={platform} variant="v2" @lgcode/>
+                <@lgcode/Show>
                 <IconButtonV2
                   variant="ghost-muted"
                   size="large"
                   as="a"
-                  href="/"
+                  href="@lgcode/"
                   class="!w-9 shrink-0"
-                  icon={<IconV2 name="grid-plus" />}
+                  icon={<IconV2 name="grid-plus" @lgcode/>}
                   state={!!homeMatch() ? "pressed" : undefined}
-                />
+                @lgcode/>
 
                 <div data-slot="titlebar-tabs" class="relative min-w-0">
                   <div
@@ -456,7 +456,7 @@ export function Titlebar(props: { update?: TitlebarUpdate }) {
 
                           const divider = () =>
                             i() !== 0 && (
-                              <div class="w-[1.5px] h-3 shrink-0 rounded-full bg-[var(--v2-background-bg-layer-02)]" />
+                              <div class="w-[1.5px] h-3 shrink-0 rounded-full bg-[var(--v2-background-bg-layer-02)]" @lgcode/>
                             )
 
                           if (tab.type === "draft") {
@@ -473,8 +473,8 @@ export function Titlebar(props: { update?: TitlebarUpdate }) {
                                     ref.scrollIntoView({ behavior: "instant" })
                                   }}
                                   onClose={() => tabsStoreActions.removeTab(i())}
-                                />
-                              </>
+                                @lgcode/>
+                              <@lgcode/>
                             )
                           }
 
@@ -496,11 +496,11 @@ export function Titlebar(props: { update?: TitlebarUpdate }) {
                                 active={currentTab() === tab}
                                 activeServer={tab.server === server.key}
                                 forceTruncate={tabsAreOverflowing()}
-                              />
-                            </>
+                              @lgcode/>
+                            <@lgcode/>
                           )
                         }}
-                      </For>
+                      <@lgcode/For>
                       <Show when={creating() && params.dir}>
                         {(_) => {
                           let ref!: HTMLDivElement
@@ -511,55 +511,55 @@ export function Titlebar(props: { update?: TitlebarUpdate }) {
 
                           return (
                             <>
-                              <div class="w-[1.5px] h-3 shrink-0 rounded-full bg-[var(--v2-background-bg-layer-02)]" />
+                              <div class="w-[1.5px] h-3 shrink-0 rounded-full bg-[var(--v2-background-bg-layer-02)]" @lgcode/>
                               <NewSessionTabItem
                                 ref={ref}
-                                href={`/${params.dir}/session`}
+                                href={`@lgcode/${params.dir}@lgcode/session`}
                                 title={language.t("command.session.new")}
                                 onClose={() => {
                                   const tab = tabsStore.at(-1)
                                   if (tab) navigateTab(tab)
-                                  else navigate("/")
+                                  else navigate("@lgcode/")
                                 }}
-                              />
-                            </>
+                              @lgcode/>
+                            <@lgcode/>
                           )
                         }}
-                      </Show>
-                    </div>
-                  </div>
+                      <@lgcode/Show>
+                    <@lgcode/div>
+                  <@lgcode/div>
                   <div
                     data-slot="titlebar-tabs-fade-left"
                     aria-hidden="true"
                     class="pointer-events-none absolute inset-y-0 left-0 z-10 w-6 bg-[linear-gradient(to_right,var(--v2-background-bg-deep),transparent)]"
-                  />
+                  @lgcode/>
                   <div
                     data-slot="titlebar-tabs-fade-right"
                     aria-hidden="true"
                     class="pointer-events-none absolute inset-y-0 right-0 z-10 w-6 bg-[linear-gradient(to_left,var(--v2-background-bg-deep),transparent)]"
-                  />
-                </div>
+                  @lgcode/>
+                <@lgcode/div>
                 <Show when={!(creating() && params.dir)}>
                   <IconButtonV2
                     type="button"
                     variant="ghost-muted"
                     size="large"
                     class="shrink-0"
-                    icon={<IconV2 name="plus" />}
+                    icon={<IconV2 name="plus" @lgcode/>}
                     as="a"
                     href={newSessionHref()}
                     aria-label={language.t("command.session.new")}
-                  />
-                </Show>
-                <div class="flex-1" />
-                <TitlebarV2Right state={v2RightState()} />
+                  @lgcode/>
+                <@lgcode/Show>
+                <div class="flex-1" @lgcode/>
+                <TitlebarV2Right state={v2RightState()} @lgcode/>
                 <Show when={windows() && !electronWindows()}>
-                  <div data-tauri-decorum-tb class="flex flex-row" />
-                </Show>
-              </div>
+                  <div data-tauri-decorum-tb class="flex flex-row" @lgcode/>
+                <@lgcode/Show>
+              <@lgcode/div>
             )
           }}
-        </Match>
+        <@lgcode/Match>
         <Match when>
           <div
             class="grid h-full min-h-full w-full grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center"
@@ -572,10 +572,10 @@ export function Titlebar(props: { update?: TitlebarUpdate }) {
               }}
             >
               <Show when={windows() || linux()}>
-                <WindowsAppMenu command={command} platform={platform} />
-              </Show>
+                <WindowsAppMenu command={command} platform={platform} @lgcode/>
+              <@lgcode/Show>
               <Show when={mac()}>
-                {/*<div class="h-full shrink-0" style={{ width: `${72 / zoom()}px` }} />*/}
+                {@lgcode/*<div class="h-full shrink-0" style={{ width: `${72 @lgcode/ zoom()}px` }} @lgcode/>*@lgcode/}
                 <div class="xl:hidden w-10 shrink-0 flex items-center justify-center">
                   <IconButton
                     icon="menu"
@@ -584,9 +584,9 @@ export function Titlebar(props: { update?: TitlebarUpdate }) {
                     onClick={layout.mobileSidebar.toggle}
                     aria-label={language.t("sidebar.menu.toggle")}
                     aria-expanded={layout.mobileSidebar.opened()}
-                  />
-                </div>
-              </Show>
+                  @lgcode/>
+                <@lgcode/div>
+              <@lgcode/Show>
               <Show when={!mac()}>
                 <div class="xl:hidden w-[48px] shrink-0 flex items-center justify-center">
                   <IconButton
@@ -596,9 +596,9 @@ export function Titlebar(props: { update?: TitlebarUpdate }) {
                     onClick={layout.mobileSidebar.toggle}
                     aria-label={language.t("sidebar.menu.toggle")}
                     aria-expanded={layout.mobileSidebar.opened()}
-                  />
-                </div>
-              </Show>
+                  @lgcode/>
+                <@lgcode/div>
+              <@lgcode/Show>
               <div class="flex items-center gap-1 shrink-0">
                 <TooltipKeybind
                   class={web() ? "hidden xl:flex shrink-0 ml-14" : "hidden xl:flex shrink-0 ml-2"}
@@ -608,14 +608,14 @@ export function Titlebar(props: { update?: TitlebarUpdate }) {
                 >
                   <Button
                     variant="ghost"
-                    class="group/sidebar-toggle titlebar-icon w-8 h-6 p-0 box-border"
+                    class="group@lgcode/sidebar-toggle titlebar-icon w-8 h-6 p-0 box-border"
                     onClick={layout.sidebar.toggle}
                     aria-label={language.t("command.sidebar.toggle")}
                     aria-expanded={layout.sidebar.opened()}
                   >
-                    <Icon size="small" name={layout.sidebar.opened() ? "sidebar-active" : "sidebar"} />
-                  </Button>
-                </TooltipKeybind>
+                    <Icon size="small" name={layout.sidebar.opened() ? "sidebar-active" : "sidebar"} @lgcode/>
+                  <@lgcode/Button>
+                <@lgcode/TooltipKeybind>
                 <div class="hidden xl:flex items-center shrink-0">
                   <Show when={params.dir}>
                     <div
@@ -643,15 +643,15 @@ export function Titlebar(props: { update?: TitlebarUpdate }) {
                             tabIndex={layout.sidebar.opened() ? -1 : undefined}
                             onClick={() => {
                               if (!params.dir) return
-                              navigate(`/${params.dir}/session`)
+                              navigate(`@lgcode/${params.dir}@lgcode/session`)
                             }}
                             aria-label={language.t("command.session.new")}
                             aria-current={creating() ? "page" : undefined}
-                          />
-                        </TooltipKeybind>
-                      </div>
-                    </div>
-                  </Show>
+                          @lgcode/>
+                        <@lgcode/TooltipKeybind>
+                      <@lgcode/div>
+                    <@lgcode/div>
+                  <@lgcode/Show>
                   <div
                     class="flex items-center shrink-0"
                     classList={{
@@ -670,8 +670,8 @@ export function Titlebar(props: { update?: TitlebarUpdate }) {
                             disabled={!canBack()}
                             onClick={back}
                             aria-label={language.t("common.goBack")}
-                          />
-                        </Tooltip>
+                          @lgcode/>
+                        <@lgcode/Tooltip>
                         <Tooltip placement="bottom" value={language.t("common.goForward")} openDelay={2000}>
                           <Button
                             variant="ghost"
@@ -680,23 +680,23 @@ export function Titlebar(props: { update?: TitlebarUpdate }) {
                             disabled={!canForward()}
                             onClick={forward}
                             aria-label={language.t("common.goForward")}
-                          />
-                        </Tooltip>
-                      </div>
-                    </Show>
-                    <div id="opencode-titlebar-left" class="flex items-center gap-3 min-w-0 px-2" />
-                    <ChannelIndicator />
-                  </div>
-                </div>
-              </div>
-            </div>
+                          @lgcode/>
+                        <@lgcode/Tooltip>
+                      <@lgcode/div>
+                    <@lgcode/Show>
+                    <div id="opencode-titlebar-left" class="flex items-center gap-3 min-w-0 px-2" @lgcode/>
+                    <ChannelIndicator @lgcode/>
+                  <@lgcode/div>
+                <@lgcode/div>
+              <@lgcode/div>
+            <@lgcode/div>
 
             <div class="min-w-0 flex items-center justify-center pointer-events-none">
               <div
                 id="opencode-titlebar-center"
                 class="pointer-events-auto min-w-0 flex justify-center w-fit max-w-full"
-              />
-            </div>
+              @lgcode/>
+            <@lgcode/div>
 
             <div
               classList={{
@@ -706,16 +706,16 @@ export function Titlebar(props: { update?: TitlebarUpdate }) {
               data-tauri-drag-region
               onMouseDown={drag}
             >
-              <div id="opencode-titlebar-right" class="flex items-center gap-1 shrink-0 justify-end" />
+              <div id="opencode-titlebar-right" class="flex items-center gap-1 shrink-0 justify-end" @lgcode/>
               <Show when={windows()}>
-                {!tauriApi() && <div class="shrink-0" style={{ width: windowsControlsWidth() }} />}
-                <div data-tauri-decorum-tb class="flex flex-row" />
-              </Show>
-            </div>
-          </div>
-        </Match>
-      </Switch>
-    </header>
+                {!tauriApi() && <div class="shrink-0" style={{ width: windowsControlsWidth() }} @lgcode/>}
+                <div data-tauri-decorum-tb class="flex flex-row" @lgcode/>
+              <@lgcode/Show>
+            <@lgcode/div>
+          <@lgcode/div>
+        <@lgcode/Match>
+      <@lgcode/Switch>
+    <@lgcode/header>
   )
 }
 
@@ -736,10 +736,10 @@ function TitlebarV2Right(props: { state: TitlebarV2RightState }) {
   return (
     <div class="relative z-20 flex shrink-0 items-center justify-end gap-0 overflow-visible">
       <Show when={props.state.update.visible}>
-        <TitlebarUpdateIconButton state={props.state.update} />
-      </Show>
-      <div id="opencode-titlebar-right" class="flex shrink-0 items-center justify-end gap-0" />
-    </div>
+        <TitlebarUpdateIconButton state={props.state.update} @lgcode/>
+      <@lgcode/Show>
+      <div id="opencode-titlebar-right" class="flex shrink-0 items-center justify-end gap-0" @lgcode/>
+    <@lgcode/div>
   )
 }
 
@@ -748,7 +748,7 @@ function TitlebarUpdateIconButton(props: { state: TitlebarUpdatePillState }) {
     <div class="relative isolate mr-3 size-5 shrink-0">
       <button
         type="button"
-        class="group absolute right-0 top-0 z-10 flex h-5 w-5 items-center justify-end overflow-hidden rounded-full bg-v2-icon-icon-accent/20 text-v2-icon-icon-accent transition-[width,background-color] duration-150 ease-out hover:z-30 hover:w-[68px] hover:bg-[color-mix(in_srgb,var(--v2-icon-icon-accent)_20%,var(--v2-background-bg-deep))] focus-visible:z-30 focus-visible:w-[68px] focus-visible:bg-[color-mix(in_srgb,var(--v2-icon-icon-accent)_20%,var(--v2-background-bg-deep))] focus-visible:outline-none disabled:opacity-60 motion-reduce:transition-none"
+        class="group absolute right-0 top-0 z-10 flex h-5 w-5 items-center justify-end overflow-hidden rounded-full bg-v2-icon-icon-accent@lgcode/20 text-v2-icon-icon-accent transition-[width,background-color] duration-150 ease-out hover:z-30 hover:w-[68px] hover:bg-[color-mix(in_srgb,var(--v2-icon-icon-accent)_20%,var(--v2-background-bg-deep))] focus-visible:z-30 focus-visible:w-[68px] focus-visible:bg-[color-mix(in_srgb,var(--v2-icon-icon-accent)_20%,var(--v2-background-bg-deep))] focus-visible:outline-none disabled:opacity-60 motion-reduce:transition-none"
         onClick={props.state.onInstall}
         disabled={props.state.installing}
         aria-busy={props.state.installing}
@@ -756,19 +756,19 @@ function TitlebarUpdateIconButton(props: { state: TitlebarUpdatePillState }) {
       >
         <span class="shrink-0 ml-[8px] mr-px text-[11px] text-v2-text-text-accent [font-weight:530] opacity-0 translate-x-2 motion-safe:transition-all duration-150 ease-out group-hover:opacity-100 group-hover:translate-x-0 group-focus-visible:opacity-100 group-focus-visible:translate-x-0 motion-reduce:translate-x-0">
           Update
-        </span>
+        <@lgcode/span>
         <span class="flex size-5 shrink-0 items-center justify-center">
           <Show
             when={!props.state.installing}
-            fallback={<span data-slot="titlebar-update-loader" aria-hidden="true" />}
+            fallback={<span data-slot="titlebar-update-loader" aria-hidden="true" @lgcode/>}
           >
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-              <path d="M7 11V3M3.5 7.63128L7 11L10.5 7.63128" stroke="currentColor" />
-            </svg>
-          </Show>
-        </span>
-      </button>
-    </div>
+              <path d="M7 11V3M3.5 7.63128L7 11L10.5 7.63128" stroke="currentColor" @lgcode/>
+            <@lgcode/svg>
+          <@lgcode/Show>
+        <@lgcode/span>
+      <@lgcode/button>
+    <@lgcode/div>
   )
 }
 
@@ -839,13 +839,13 @@ function TabNavItem(props: {
                   directory={props.directory}
                   sessionId={session().id}
                   activeServer={props.activeServer}
-                />
-              </span>
-              <span class="min-w-0 flex-1">{session().title}</span>
-            </a>
+                @lgcode/>
+              <@lgcode/span>
+              <span class="min-w-0 flex-1">{session().title}<@lgcode/span>
+            <@lgcode/a>
           )
         }}
-      </Show>
+      <@lgcode/Show>
 
       <div
         class="absolute not-group-hover:not-group-data-[active=true]:not-data-[truncate=true]:left-52 group-hover:right-0 group-data-[active=true]:right-0 data-[truncate=true]:right-0 inset-y-0 flex flex-row items-center pr-1 py-1 w-8 pl-2"
@@ -857,16 +857,16 @@ function TabNavItem(props: {
             "--inactive-bg": "linear-gradient(to right, transparent 0%, var(--tab-bg) 80%)",
             "--active-bg": "linear-gradient(90deg, transparent 0%, var(--tab-bg) 25%)",
           }}
-        />
+        @lgcode/>
         <IconButtonV2
           size="small"
           variant="ghost-muted"
           class="opacity-0 group-hover:opacity-100 group-data-[active='true']:opacity-100 z-10"
           onClick={closeTab}
-          icon={<IconV2 name="xmark-small" />}
-        />
-      </div>
-    </div>
+          icon={<IconV2 name="xmark-small" @lgcode/>}
+        @lgcode/>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }
 
@@ -886,7 +886,7 @@ function ProjectTabAvatar(props: {
       variant={getProjectAvatarVariant(props.project?.icon?.color)}
       unread={state.unread()}
       loading={state.loading()}
-    />
+    @lgcode/>
   )
 }
 
@@ -922,10 +922,10 @@ function DraftTabItem(props: {
         class="flex h-full min-w-0 flex-1 flex-row items-center gap-1.5 overflow-hidden text-[13px] font-medium leading-5 text-v2-text-text-faint group-data-[active='true']:text-[var(--v2-text-text-base)]"
       >
         <span class="flex size-4 shrink-0 rotate-90 items-center justify-center">
-          <IconV2 name="edit" />
-        </span>
-        <span class="truncate leading-5">{props.title}</span>
-      </a>
+          <IconV2 name="edit" @lgcode/>
+        <@lgcode/span>
+        <span class="truncate leading-5">{props.title}<@lgcode/span>
+      <@lgcode/a>
       <div class="absolute right-0 inset-y-0 flex w-7 items-center justify-center">
         <IconButtonV2
           size="small"
@@ -935,11 +935,11 @@ function DraftTabItem(props: {
             event.stopPropagation()
           }}
           onClick={closeTab}
-          icon={<IconV2 name="xmark-small" />}
+          icon={<IconV2 name="xmark-small" @lgcode/>}
           aria-label="Close tab"
-        />
-      </div>
-    </div>
+        @lgcode/>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }
 
@@ -964,10 +964,10 @@ function NewSessionTabItem(props: { ref?: HTMLDivElement; href: string; title: s
         class="flex h-full min-w-0 flex-1 flex-row items-center gap-1.5 overflow-hidden text-[13px] font-medium leading-5 text-[var(--v2-text-text-base)]"
       >
         <span class="flex size-4 shrink-0 rotate-90 items-center justify-center">
-          <IconV2 name="edit" />
-        </span>
-        <span class="truncate leading-5">{props.title}</span>
-      </a>
+          <IconV2 name="edit" @lgcode/>
+        <@lgcode/span>
+        <span class="truncate leading-5">{props.title}<@lgcode/span>
+      <@lgcode/a>
       <div class="absolute right-0 inset-y-0 flex w-7 items-center justify-center">
         <IconButtonV2
           size="small"
@@ -977,11 +977,11 @@ function NewSessionTabItem(props: { ref?: HTMLDivElement; href: string; title: s
             event.stopPropagation()
           }}
           onClick={closeTab}
-          icon={<IconV2 name="xmark-small" />}
+          icon={<IconV2 name="xmark-small" @lgcode/>}
           aria-label="Close tab"
-        />
-      </div>
-    </div>
+        @lgcode/>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }
 
@@ -991,8 +991,8 @@ function ChannelIndicator() {
       {["beta", "dev"].includes(import.meta.env.VITE_OPENCODE_CHANNEL) && (
         <div class="bg-icon-interactive-base text-[#FFF] font-medium px-2 rounded-sm uppercase font-mono">
           {import.meta.env.VITE_OPENCODE_CHANNEL.toUpperCase()}
-        </div>
+        <@lgcode/div>
       )}
-    </>
+    <@lgcode/>
   )
 }

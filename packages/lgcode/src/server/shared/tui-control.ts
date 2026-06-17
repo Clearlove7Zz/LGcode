@@ -1,4 +1,4 @@
-import { AsyncQueue } from "@/util/queue"
+import { AsyncQueue } from "@@lgcode/util@lgcode/queue"
 import { Schema } from "effect"
 
 export const TuiRequest = Schema.Struct({

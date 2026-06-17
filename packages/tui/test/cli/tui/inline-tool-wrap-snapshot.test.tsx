@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, test } from "bun:test"
 import { createSignal, For, Show } from "solid-js"
-import type { ScrollBoxRenderable } from "@opentui/core"
-import { testRender, type JSX } from "@opentui/solid"
+import type { ScrollBoxRenderable } from "@opentui@lgcode/core"
+import { testRender, type JSX } from "@opentui@lgcode/solid"
 import {
   formatCompletedSubagentDetail,
   formatSubagentRetry,
@@ -14,7 +14,7 @@ import {
   parseQuestions,
   parseTodos,
   toolDisplay,
-} from "../../../src/routes/session"
+} from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/routes@lgcode/session"
 
 let testSetup: Awaited<ReturnType<typeof testRender>> | undefined
 
@@ -29,37 +29,37 @@ const tools: readonly ToolFixture[] = [
   {
     icon: "✱",
     label:
-      'Grep "OPENCODE.*DB|database|sqlite|drizzle|dev.*db|data.*dir|xdg|APPDATA" in packages/opencode/src (151 matches)',
+      'Grep "OPENCODE.*DB|database|sqlite|drizzle|dev.*db|data.*dir|xdg|APPDATA" in packages@lgcode/opencode@lgcode/src (151 matches)',
   },
   {
     icon: "✱",
-    label: 'Glob "**/*db*" in packages/opencode (6 matches)',
+    label: 'Glob "**@lgcode/*db*" in packages@lgcode/opencode (6 matches)',
   },
   {
     icon: "→",
-    label: "Read packages/opencode/src/storage/db.ts [offset=1, limit=130]",
+    label: "Read packages@lgcode/opencode@lgcode/src@lgcode/storage@lgcode/db.ts [offset=1, limit=130]",
   },
   {
     icon: "→",
-    label: "Read packages/opencode/src/index.ts [offset=1, limit=100]",
+    label: "Read packages@lgcode/opencode@lgcode/src@lgcode/index.ts [offset=1, limit=100]",
     error: "No LSP server available for this file type.",
   },
   {
     icon: "✱",
     label:
-      'Grep "export const OPENCODE_DB|OPENCODE_DB|OPENCODE_DEV|Global\\.Path\\.data|data =" in packages/opencode/src (115 matches)',
+      'Grep "export const OPENCODE_DB|OPENCODE_DB|OPENCODE_DEV|Global\\.Path\\.data|data =" in packages@lgcode/opencode@lgcode/src (115 matches)',
   },
 ] as const
 
 function ShellOutput() {
   return (
     <box id="tool-block-shell" marginTop={1} paddingTop={1} paddingBottom={1} paddingLeft={2} gap={1}>
-      <text paddingLeft={3}># List files</text>
+      <text paddingLeft={3}># List files<@lgcode/text>
       <box gap={1}>
-        <text>$ ls</text>
-        <text>file.ts</text>
-      </box>
-    </box>
+        <text>$ ls<@lgcode/text>
+        <text>file.ts<@lgcode/text>
+      <@lgcode/box>
+    <@lgcode/box>
   )
 }
 
@@ -67,9 +67,9 @@ function UserMessage() {
   return (
     <box id="message-user">
       <box paddingTop={1} paddingBottom={1} paddingLeft={2}>
-        <text>Check whether the next tool remains separated.</text>
-      </box>
-    </box>
+        <text>Check whether the next tool remains separated.<@lgcode/text>
+      <@lgcode/box>
+    <@lgcode/box>
   )
 }
 
@@ -77,8 +77,8 @@ function Fixture(props: { errorExpanded?: boolean; before?: "shell" | "user" }) 
   return (
     <box flexDirection="column" width={72}>
       <box flexDirection="column">
-        {props.before === "shell" && <ShellOutput />}
-        {props.before === "user" && <UserMessage />}
+        {props.before === "shell" && <ShellOutput @lgcode/>}
+        {props.before === "user" && <UserMessage @lgcode/>}
         <For each={tools}>
           {(item) => (
             <InlineToolRow
@@ -91,11 +91,11 @@ function Fixture(props: { errorExpanded?: boolean; before?: "shell" | "user" }) 
               separateAfter={(id) => id === "message-user"}
             >
               {item.label}
-            </InlineToolRow>
+            <@lgcode/InlineToolRow>
           )}
-        </For>
-      </box>
-    </box>
+        <@lgcode/For>
+      <@lgcode/box>
+    <@lgcode/box>
   )
 }
 
@@ -104,17 +104,17 @@ function SubagentGroupFixture() {
     <box flexDirection="column" width={72}>
       <InlineToolRow id="tool-inline-before" icon="✱" complete={true} pending="">
         Grep "Task" (2 matches)
-      </InlineToolRow>
+      <@lgcode/InlineToolRow>
       <InlineToolRow id="tool-inline-subagent-one" icon="⠙" complete={true} pending="" subagent={true}>
         Explore Task — Inspect active task spacing
-      </InlineToolRow>
+      <@lgcode/InlineToolRow>
       <InlineToolRow id="tool-inline-subagent-two" icon="✓" complete={true} pending="" subagent={true}>
         {"General Task — Confirm completed task spacing\n↳ 1 toolcall · 501ms"}
-      </InlineToolRow>
+      <@lgcode/InlineToolRow>
       <InlineToolRow id="tool-inline-after" icon="→" complete={true} pending="">
-        Read src/cli/cmd/tui/routes/session/index.tsx
-      </InlineToolRow>
-    </box>
+        Read src@lgcode/cli@lgcode/cmd@lgcode/tui@lgcode/routes@lgcode/session@lgcode/index.tsx
+      <@lgcode/InlineToolRow>
+    <@lgcode/box>
   )
 }
 
@@ -122,15 +122,15 @@ function LoadedReadBeforeSubagentFixture() {
   return (
     <box flexDirection="column" width={72}>
       <InlineToolRow id="tool-inline-read" icon="→" complete={true} pending="">
-        Read src/cli/cmd/tui/routes/session/index.tsx
-      </InlineToolRow>
+        Read src@lgcode/cli@lgcode/cmd@lgcode/tui@lgcode/routes@lgcode/session@lgcode/index.tsx
+      <@lgcode/InlineToolRow>
       <box id="tool-inline-loaded-read-child" paddingLeft={3}>
-        <text paddingLeft={3}>↳ Loaded src/cli/cmd/tui/routes/session/tools.tsx</text>
-      </box>
+        <text paddingLeft={3}>↳ Loaded src@lgcode/cli@lgcode/cmd@lgcode/tui@lgcode/routes@lgcode/session@lgcode/tools.tsx<@lgcode/text>
+      <@lgcode/box>
       <InlineToolRow id="tool-inline-subagent-after-read" icon="✓" complete={true} pending="" subagent={true}>
         {"Explore Task — Inspect active task spacing\n↳ 1 toolcall · 501ms"}
-      </InlineToolRow>
-    </box>
+      <@lgcode/InlineToolRow>
+    <@lgcode/box>
   )
 }
 
@@ -138,12 +138,12 @@ function AssistantSummaryBeforeSubagentFixture() {
   return (
     <box flexDirection="column" width={72}>
       <box id="assistant-summary-message-one" paddingLeft={3}>
-        <text>▣ Build · Little Frank · 53.1s</text>
-      </box>
+        <text>▣ Build · Little Frank · 53.1s<@lgcode/text>
+      <@lgcode/box>
       <InlineToolRow id="tool-inline-subagent-one" icon="✓" complete={true} pending="" subagent={true}>
         {"Build Task — Review changes\n↳ 48 toolcalls · 1m 40s"}
-      </InlineToolRow>
-    </box>
+      <@lgcode/InlineToolRow>
+    <@lgcode/box>
   )
 }
 
@@ -151,12 +151,12 @@ function AssistantErrorBeforeSubagentFixture() {
   return (
     <box flexDirection="column" width={72}>
       <box id="assistant-error-message-one" border={["left"]} paddingTop={1} paddingBottom={1} paddingLeft={2}>
-        <text>Managed inference requires an active Member plan</text>
-      </box>
+        <text>Managed inference requires an active Member plan<@lgcode/text>
+      <@lgcode/box>
       <InlineToolRow id="tool-inline-subagent-one" icon="✓" complete={true} pending="" subagent={true}>
         {"Build Task — Review changes\n↳ 48 toolcalls · 1m 40s"}
-      </InlineToolRow>
-    </box>
+      <@lgcode/InlineToolRow>
+    <@lgcode/box>
   )
 }
 
@@ -164,20 +164,20 @@ function StickyScrollFixture(props: { separated: boolean; scroll: (scroll: Scrol
   return (
     <scrollbox ref={props.scroll} stickyScroll={true} stickyStart="bottom" height={3} width={72}>
       <box height={1}>
-        <text>First row</text>
-      </box>
+        <text>First row<@lgcode/text>
+      <@lgcode/box>
       <box height={1}>
-        <text>Second row</text>
-      </box>
+        <text>Second row<@lgcode/text>
+      <@lgcode/box>
       <Show when={props.separated}>
         <box id="text-before-tool">
-          <text>Assistant text</text>
-        </box>
-      </Show>
+          <text>Assistant text<@lgcode/text>
+        <@lgcode/box>
+      <@lgcode/Show>
       <InlineToolRow icon="→" complete={true} pending="">
-        Read src/cli/cmd/tui/routes/session/index.tsx
-      </InlineToolRow>
-    </scrollbox>
+        Read src@lgcode/cli@lgcode/cmd@lgcode/tui@lgcode/routes@lgcode/session@lgcode/index.tsx
+      <@lgcode/InlineToolRow>
+    <@lgcode/scrollbox>
   )
 }
 
@@ -185,15 +185,15 @@ function FailedPendingToolFixture() {
   return (
     <InlineToolRow icon="%" complete={false} pending="Preparing patch..." failed={true} failure="Patch failed">
       Patch
-    </InlineToolRow>
+    <@lgcode/InlineToolRow>
   )
 }
 
 function FailedCompleteToolFixture() {
   return (
     <InlineToolRow icon="→" complete={true} pending="Reading file..." failed={true} failure="Read failed">
-      Read src/index.ts
-    </InlineToolRow>
+      Read src@lgcode/index.ts
+    <@lgcode/InlineToolRow>
   )
 }
 
@@ -216,14 +216,14 @@ describe("TUI inline tool wrapping", () => {
   })
 
   test("replaces pending copy when a tool fails before completion", async () => {
-    const frame = await renderFrame(() => <FailedPendingToolFixture />, { width: 72, height: 3 })
+    const frame = await renderFrame(() => <FailedPendingToolFixture @lgcode/>, { width: 72, height: 3 })
     expect(frame).toContain("Patch failed")
     expect(frame).not.toContain("Preparing patch")
   })
 
   test("preserves useful completed copy when a tool fails", async () => {
-    const frame = await renderFrame(() => <FailedCompleteToolFixture />, { width: 72, height: 3 })
-    expect(frame).toContain("Read src/index.ts")
+    const frame = await renderFrame(() => <FailedCompleteToolFixture @lgcode/>, { width: 72, height: 3 })
+    expect(frame).toContain("Read src@lgcode/index.ts")
     expect(frame).not.toContain("Read failed")
   })
 
@@ -279,44 +279,44 @@ describe("TUI inline tool wrapping", () => {
   })
 
   test("snapshots consecutive grep, glob, and read rows at a narrow width", async () => {
-    expect(await renderFrame(() => <Fixture />, { width: 72, height: 12 })).toMatchSnapshot()
+    expect(await renderFrame(() => <Fixture @lgcode/>, { width: 72, height: 12 })).toMatchSnapshot()
   })
 
   test("snapshots expanded tool errors under the tool text", async () => {
-    expect(await renderFrame(() => <Fixture errorExpanded />, { width: 72, height: 12 })).toMatchSnapshot()
+    expect(await renderFrame(() => <Fixture errorExpanded @lgcode/>, { width: 72, height: 12 })).toMatchSnapshot()
   })
 
   test("keeps separation after a shell output block", async () => {
-    expect(await renderFrame(() => <Fixture before="shell" />, { width: 72, height: 16 })).toMatchSnapshot()
+    expect(await renderFrame(() => <Fixture before="shell" @lgcode/>, { width: 72, height: 16 })).toMatchSnapshot()
   })
 
   test("keeps separation after a padded user message", async () => {
-    expect(await renderFrame(() => <Fixture before="user" />, { width: 72, height: 14 })).toMatchSnapshot()
+    expect(await renderFrame(() => <Fixture before="user" @lgcode/>, { width: 72, height: 14 })).toMatchSnapshot()
   })
 
   test("separates a contiguous subagent group from inline tools", async () => {
-    expect(await renderFrame(() => <SubagentGroupFixture />, { width: 72, height: 10 })).toMatchSnapshot()
+    expect(await renderFrame(() => <SubagentGroupFixture @lgcode/>, { width: 72, height: 10 })).toMatchSnapshot()
   })
 
   test("separates a subagent group after an expanded read", async () => {
-    expect(await renderFrame(() => <LoadedReadBeforeSubagentFixture />, { width: 72, height: 8 })).toMatchSnapshot()
+    expect(await renderFrame(() => <LoadedReadBeforeSubagentFixture @lgcode/>, { width: 72, height: 8 })).toMatchSnapshot()
   })
 
   test("separates a subagent from the previous assistant summary", async () => {
     expect(
-      await renderFrame(() => <AssistantSummaryBeforeSubagentFixture />, { width: 72, height: 5 }),
+      await renderFrame(() => <AssistantSummaryBeforeSubagentFixture @lgcode/>, { width: 72, height: 5 }),
     ).toMatchSnapshot()
   })
 
   test("separates a subagent from the previous assistant error", async () => {
-    expect(await renderFrame(() => <AssistantErrorBeforeSubagentFixture />, { width: 72, height: 7 })).toMatchSnapshot()
+    expect(await renderFrame(() => <AssistantErrorBeforeSubagentFixture @lgcode/>, { width: 72, height: 7 })).toMatchSnapshot()
   })
 
   test("updates sticky-bottom geometry when a text separator mounts and unmounts", async () => {
     const [separated, setSeparated] = createSignal(false)
     let scroll: ScrollBoxRenderable | undefined
     testSetup = await testRender(
-      () => <StickyScrollFixture separated={separated()} scroll={(value) => (scroll = value)} />,
+      () => <StickyScrollFixture separated={separated()} scroll={(value) => (scroll = value)} @lgcode/>,
       {
         width: 72,
         height: 3,

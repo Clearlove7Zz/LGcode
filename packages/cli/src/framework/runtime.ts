@@ -1,7 +1,7 @@
-import * as Effect from "effect/Effect"
-import * as Command from "effect/unstable/cli/Command"
-import { Spec } from "./spec"
-import { Daemon } from "../services/daemon"
+import * as Effect from "effect@lgcode/Effect"
+import * as Command from "effect@lgcode/unstable@lgcode/cli@lgcode/Command"
+import { Spec } from ".@lgcode/spec"
+import { Daemon } from "..@lgcode/services@lgcode/daemon"
 
 export type Input<Value> =
   Value extends Spec.Node<infer _Name, infer Command, infer _Commands>
@@ -76,4 +76,4 @@ function provide(node: Spec.Any, handlers: ReadonlyArray<LazyHandler>): Provided
   ) as ProvidedCommand
 }
 
-export * as Runtime from "./runtime"
+export * as Runtime from ".@lgcode/runtime"

@@ -5,10 +5,10 @@ import {
   desktopMenuVisible,
   type DesktopMenuEntry,
   type DesktopMenuRole,
-} from "@opencode@lgcode/app/desktop-menu"
+} from "@lgcode/app@lgcode/desktop-menu"
 
-import { UPDATER_ENABLED } from "./constants"
-import { runDesktopMenuAction } from "./desktop-menu-actions"
+import { UPDATER_ENABLED } from ".@lgcode/constants"
+import { runDesktopMenuAction } from ".@lgcode/desktop-menu-actions"
 
 type Deps = {
   trigger: (id: string) => void

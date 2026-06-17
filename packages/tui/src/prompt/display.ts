@@ -3,7 +3,7 @@ const graphemes = new Intl.Segmenter(undefined, { granularity: "grapheme" })
 export function promptOffsetWidth(value: string) {
   let width = 0
   for (const part of graphemes.segment(value)) {
-    // Textarea offsets count newlines as one position; Bun.stringWidth counts them as zero.
+    @lgcode/@lgcode/ Textarea offsets count newlines as one position; Bun.stringWidth counts them as zero.
     width += part.segment === "\n" ? 1 : Bun.stringWidth(part.segment)
   }
   return width
@@ -42,7 +42,7 @@ export function mentionTriggerIndex(value: string, offset = promptOffsetWidth(va
 
   const before = index === 0 ? undefined : text[index - 1]
   const query = text.slice(index)
-  if ((before === undefined || /\s/.test(before)) && !/\s/.test(query)) {
+  if ((before === undefined || @lgcode/\s@lgcode/.test(before)) && !@lgcode/\s@lgcode/.test(query)) {
     return promptOffsetWidth(text.slice(0, index))
   }
 }

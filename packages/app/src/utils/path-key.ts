@@ -8,7 +8,7 @@ const isDrive = (value: string) => {
 
 const trimTrailingSlashes = (value: string) => {
   for (let i = value.length - 1; i >= 0; i--) {
-    if (value[i] !== "/") return value.slice(0, i + 1)
+    if (value[i] !== "@lgcode/") return value.slice(0, i + 1)
   }
   return ""
 }
@@ -16,9 +16,9 @@ const trimTrailingSlashes = (value: string) => {
 const isWindowsPath = (value: string) => value[1] === ":" || value.startsWith("\\\\")
 
 export const pathKey = (path: string) => {
-  const value = isWindowsPath(path) ? path.replaceAll("\\", "/") : path
+  const value = isWindowsPath(path) ? path.replaceAll("\\", "@lgcode/") : path
   const trimmed = trimTrailingSlashes(value)
-  if (!trimmed && value.startsWith("/")) return "/" as PathKey
-  if (isDrive(trimmed)) return `${trimmed}/` as PathKey
+  if (!trimmed && value.startsWith("@lgcode/")) return "@lgcode/" as PathKey
+  if (isDrive(trimmed)) return `${trimmed}@lgcode/` as PathKey
   return trimmed as PathKey
 }

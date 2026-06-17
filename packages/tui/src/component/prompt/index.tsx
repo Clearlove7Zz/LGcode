@@ -7,55 +7,55 @@ import {
   decodePasteBytes,
   type KeyEvent,
   type Renderable,
-} from "@opentui/core"
-import type { CommandContext } from "@opentui/keymap"
+} from "@opentui@lgcode/core"
+import type { CommandContext } from "@opentui@lgcode/keymap"
 import { createEffect, createMemo, onMount, createSignal, onCleanup, on, Show, Switch, Match } from "solid-js"
-import "opentui-spinner/solid"
+import "opentui-spinner@lgcode/solid"
 import path from "path"
 import { fileURLToPath } from "url"
-import { useLocal } from "../../context/local"
-import { Flag } from "@opencode@lgcode/core/flag/flag"
-import { tint, useTheme } from "../../context/theme"
-import { EmptyBorder, SplitBorder } from "../../ui/border"
-import { useTuiPaths, useTuiTerminalEnvironment } from "../../context/runtime"
-import { useClipboard } from "../../context/clipboard"
-import { Spinner } from "../spinner"
-import { useSDK } from "../../context/sdk"
-import { useRoute } from "../../context/route"
-import { useProject } from "../../context/project"
-import { useSync } from "../../context/sync"
-import { useEvent } from "../../context/event"
-import { editorSelectionKey, useEditorContext, type EditorSelection } from "../../context/editor"
-import { normalizePromptContent, openEditor } from "../../editor"
-import { useExit } from "../../context/exit"
-import { promptOffsetWidth } from "../../prompt/display"
-import { createStore, produce, unwrap } from "solid-js/store"
-import { usePromptHistory, type PromptInfo } from "../../prompt/history"
-import { computePromptTraits } from "../../prompt/traits"
-import { expandPastedTextPlaceholders, expandTrackedPastedText } from "../../prompt/part"
-import { usePromptStash } from "../../prompt/stash"
-import { DialogStash } from "../dialog-stash"
-import { type AutocompleteRef, Autocomplete } from "./autocomplete"
-import { useRenderer, useTerminalDimensions, type JSX } from "@opentui/solid"
-import type { AssistantMessage, FilePart, UserMessage } from "@opencode@lgcode/sdk/v2"
-import { Locale } from "../../util/locale"
-import { errorMessage } from "../../util/error"
-import { formatDuration } from "../../util/format"
-import { createColors, createFrames } from "../../ui/spinner"
-import { useDialog } from "../../ui/dialog"
-import { DialogProvider as DialogProviderConnect } from "../dialog-provider"
-import { DialogAlert } from "../../ui/dialog-alert"
-import { useToast } from "../../ui/toast"
-import { useKV } from "../../context/kv"
-import { createFadeIn } from "../../util/signal"
-import { DialogSkill } from "../dialog-skill"
-import { DialogWorkspaceUnavailable } from "../dialog-workspace-unavailable"
-import { useArgs } from "../../context/args"
-import { OPENCODE_BASE_MODE, useBindings, useCommandShortcut, useLeaderActive, useOpencodeKeymap } from "../../keymap"
-import { useTuiConfig } from "../../config"
-import { usePromptWorkspace } from "./workspace"
-import { usePromptMove } from "./move"
-import { readLocalAttachment } from "./local-attachment"
+import { useLocal } from "..@lgcode/..@lgcode/context@lgcode/local"
+import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
+import { tint, useTheme } from "..@lgcode/..@lgcode/context@lgcode/theme"
+import { EmptyBorder, SplitBorder } from "..@lgcode/..@lgcode/ui@lgcode/border"
+import { useTuiPaths, useTuiTerminalEnvironment } from "..@lgcode/..@lgcode/context@lgcode/runtime"
+import { useClipboard } from "..@lgcode/..@lgcode/context@lgcode/clipboard"
+import { Spinner } from "..@lgcode/spinner"
+import { useSDK } from "..@lgcode/..@lgcode/context@lgcode/sdk"
+import { useRoute } from "..@lgcode/..@lgcode/context@lgcode/route"
+import { useProject } from "..@lgcode/..@lgcode/context@lgcode/project"
+import { useSync } from "..@lgcode/..@lgcode/context@lgcode/sync"
+import { useEvent } from "..@lgcode/..@lgcode/context@lgcode/event"
+import { editorSelectionKey, useEditorContext, type EditorSelection } from "..@lgcode/..@lgcode/context@lgcode/editor"
+import { normalizePromptContent, openEditor } from "..@lgcode/..@lgcode/editor"
+import { useExit } from "..@lgcode/..@lgcode/context@lgcode/exit"
+import { promptOffsetWidth } from "..@lgcode/..@lgcode/prompt@lgcode/display"
+import { createStore, produce, unwrap } from "solid-js@lgcode/store"
+import { usePromptHistory, type PromptInfo } from "..@lgcode/..@lgcode/prompt@lgcode/history"
+import { computePromptTraits } from "..@lgcode/..@lgcode/prompt@lgcode/traits"
+import { expandPastedTextPlaceholders, expandTrackedPastedText } from "..@lgcode/..@lgcode/prompt@lgcode/part"
+import { usePromptStash } from "..@lgcode/..@lgcode/prompt@lgcode/stash"
+import { DialogStash } from "..@lgcode/dialog-stash"
+import { type AutocompleteRef, Autocomplete } from ".@lgcode/autocomplete"
+import { useRenderer, useTerminalDimensions, type JSX } from "@opentui@lgcode/solid"
+import type { AssistantMessage, FilePart, UserMessage } from "@lgcode/sdk@lgcode/v2"
+import { Locale } from "..@lgcode/..@lgcode/util@lgcode/locale"
+import { errorMessage } from "..@lgcode/..@lgcode/util@lgcode/error"
+import { formatDuration } from "..@lgcode/..@lgcode/util@lgcode/format"
+import { createColors, createFrames } from "..@lgcode/..@lgcode/ui@lgcode/spinner"
+import { useDialog } from "..@lgcode/..@lgcode/ui@lgcode/dialog"
+import { DialogProvider as DialogProviderConnect } from "..@lgcode/dialog-provider"
+import { DialogAlert } from "..@lgcode/..@lgcode/ui@lgcode/dialog-alert"
+import { useToast } from "..@lgcode/..@lgcode/ui@lgcode/toast"
+import { useKV } from "..@lgcode/..@lgcode/context@lgcode/kv"
+import { createFadeIn } from "..@lgcode/..@lgcode/util@lgcode/signal"
+import { DialogSkill } from "..@lgcode/dialog-skill"
+import { DialogWorkspaceUnavailable } from "..@lgcode/dialog-workspace-unavailable"
+import { useArgs } from "..@lgcode/..@lgcode/context@lgcode/args"
+import { OPENCODE_BASE_MODE, useBindings, useCommandShortcut, useLeaderActive, useOpencodeKeymap } from "..@lgcode/..@lgcode/keymap"
+import { useTuiConfig } from "..@lgcode/..@lgcode/config"
+import { usePromptWorkspace } from ".@lgcode/workspace"
+import { usePromptMove } from ".@lgcode/move"
+import { readLocalAttachment } from ".@lgcode/local-attachment"
 
 export type PromptProps = {
   sessionID?: string
@@ -73,14 +73,14 @@ export type PromptProps = {
 }
 
 function pastedFilepath(value: string, platform: string) {
-  const raw = value.replace(/^['"]+|['"]+$/g, "")
-  if (raw.startsWith("file://")) {
+  const raw = value.replace(@lgcode/^['"]+|['"]+$@lgcode/g, "")
+  if (raw.startsWith("file:@lgcode/@lgcode/")) {
     try {
       return fileURLToPath(raw)
     } catch {}
   }
   if (platform === "win32") return raw
-  return raw.replace(/\\(.)/g, "$1")
+  return raw.replace(@lgcode/\\(.)@lgcode/g, "$1")
 }
 
 export type PromptRef = {
@@ -125,14 +125,14 @@ function getEditorRangeLabel(selection: EditorSelection["ranges"][number]) {
 function formatEditorContext(selection: EditorSelection) {
   const selected = selection.ranges.filter(hasEditorRangeSelection)
   if (selected.length === 0)
-    return `<system-reminder>Note: The user opened the file "${selection.filePath}". This may or may not be relevant to the current task.</system-reminder>\n`
+    return `<system-reminder>Note: The user opened the file "${selection.filePath}". This may or may not be relevant to the current task.<@lgcode/system-reminder>\n`
 
   const ranges = selected.map((range, index) => {
     const prefix = selected.length > 1 ? `Selection ${index + 1}: ` : ""
     return `Note: The user selected ${prefix}${getEditorRangeLabel(range)} from "${selection.filePath}". \`\`\`${range.text}\`\`\`\n\n`
   })
 
-  return `<system-reminder>${ranges.join("\n")} This may or may not be relevant to the current task.</system-reminder>\n`
+  return `<system-reminder>${ranges.join("\n")} This may or may not be relevant to the current task.<@lgcode/system-reminder>\n`
 }
 
 let stashed: { prompt: PromptInfo; cursor: number } | undefined
@@ -191,15 +191,15 @@ export function Prompt(props: PromptProps) {
     const value = editorPath()
     if (!value) return
     const filename = path.basename(value)
-    const file = /^index\.[^./]+$/.test(filename)
-      ? [path.basename(path.dirname(value)), filename].filter(Boolean).join("/")
+    const file = @lgcode/^index\.[^.@lgcode/]+$@lgcode/.test(filename)
+      ? [path.basename(path.dirname(value)), filename].filter(Boolean).join("@lgcode/")
       : filename
-    return `${file.split(path.sep).join("/")}${editorSelectionLabel() ?? ""}`
+    return `${file.split(path.sep).join("@lgcode/")}${editorSelectionLabel() ?? ""}`
   })
   const editorFileLabelDisplay = createMemo(() => {
     const file = editorFileLabel()
     if (!file) return
-    return Locale.truncateMiddle(file, Math.max(12, Math.min(48, Math.floor(dimensions().width / 3))))
+    return Locale.truncateMiddle(file, Math.max(12, Math.min(48, Math.floor(dimensions().width @lgcode/ 3))))
   })
   const editorContextLabelState = createMemo(() => editor.labelState())
   const [auto, setAuto] = createSignal<AutocompleteRef>()
@@ -216,7 +216,7 @@ export function Prompt(props: PromptProps) {
       duration: 3000,
     })
     if (sync.data.provider.length === 0) {
-      dialog.replace(() => <DialogProviderConnect />)
+      dialog.replace(() => <DialogProviderConnect @lgcode/>)
     }
   }
 
@@ -235,7 +235,7 @@ export function Prompt(props: PromptProps) {
     if (!input || input.isDestroyed) return
     input.insertText(evt.properties.text)
     setTimeout(() => {
-      // setTimeout is a workaround and needs to be addressed properly
+      @lgcode/@lgcode/ setTimeout is a workaround and needs to be addressed properly
       if (!input || input.isDestroyed) return
       input.getLayoutNode().markDirty()
       input.gotoBufferEnd()
@@ -268,7 +268,7 @@ export function Prompt(props: PromptProps) {
     if (tokens <= 0) return
 
     const model = sync.data.provider.find((item) => item.id === last.providerID)?.models[last.modelID]
-    const pct = model?.limit.context ? `${Math.round((tokens / model.limit.context) * 100)}%` : undefined
+    const pct = model?.limit.context ? `${Math.round((tokens @lgcode/ model.limit.context) * 100)}%` : undefined
     const cost = session?.cost ?? 0
     return {
       context: pct ? `${Locale.number(tokens)} (${pct})` : Locale.number(tokens),
@@ -303,7 +303,7 @@ export function Prompt(props: PromptProps) {
     ),
   )
 
-  // Initialize agent/model/variant from last user message when session changes
+  @lgcode/@lgcode/ Initialize agent@lgcode/model@lgcode/variant from last user message when session changes
   let syncedSessionID: string | undefined
   createEffect(() => {
     const sessionID = props.sessionID
@@ -314,10 +314,10 @@ export function Prompt(props: PromptProps) {
 
       syncedSessionID = sessionID
 
-      // Only set agent if it's a primary agent (not a subagent)
+      @lgcode/@lgcode/ Only set agent if it's a primary agent (not a subagent)
       const isPrimaryAgent = local.agent.list().some((x) => x.name === msg.agent)
       if (msg.agent && isPrimaryAgent) {
-        // Keep command line --agent if specified.
+        @lgcode/@lgcode/ Keep command line --agent if specified.
         if (!args.agent) local.agent.set(msg.agent)
         if (msg.model) {
           local.model.set(msg.model)
@@ -371,7 +371,7 @@ export function Prompt(props: PromptProps) {
           ctx.event.preventDefault()
           ctx.event.stopPropagation()
           const content = await clipboard.read?.()
-          if (content?.mime.startsWith("image/")) {
+          if (content?.mime.startsWith("image@lgcode/")) {
             await pasteAttachment({
               filename: "clipboard",
               mime: content.mime,
@@ -379,7 +379,7 @@ export function Prompt(props: PromptProps) {
             })
             return
           }
-          if (content?.mime === "text/plain") {
+          if (content?.mime === "text@lgcode/plain") {
             await pasteInputText(content.data)
           }
         },
@@ -393,7 +393,7 @@ export function Prompt(props: PromptProps) {
         run: () => {
           if (auto()?.visible) return
           if (!input.focused) return
-          // TODO: this should be its own command
+          @lgcode/@lgcode/ TODO: this should be its own command
           if (store.mode === "shell") {
             setStore("mode", "normal")
             return
@@ -423,7 +423,7 @@ export function Prompt(props: PromptProps) {
         run: async () => {
           dialog.clear()
 
-          // replace summarized text parts with the actual text
+          @lgcode/@lgcode/ replace summarized text parts with the actual text
           const text = store.prompt.parts
             .filter((p) => p.type === "text")
             .reduce((acc, p) => {
@@ -438,7 +438,7 @@ export function Prompt(props: PromptProps) {
             renderer,
             value,
             cwd:
-              (project.instance.path().worktree === "/" ? undefined : project.instance.path().worktree) ||
+              (project.instance.path().worktree === "@lgcode/" ? undefined : project.instance.path().worktree) ||
               project.instance.directory() ||
               paths.cwd,
           })
@@ -447,10 +447,10 @@ export function Prompt(props: PromptProps) {
 
           input.setText(normalized)
 
-          // Update positions for nonTextParts based on their location in new content
-          // Filter out parts whose virtual text was deleted
-          // this handles a case where the user edits the text in the editor
-          // such that the virtual text moves around or is deleted
+          @lgcode/@lgcode/ Update positions for nonTextParts based on their location in new content
+          @lgcode/@lgcode/ Filter out parts whose virtual text was deleted
+          @lgcode/@lgcode/ this handles a case where the user edits the text in the editor
+          @lgcode/@lgcode/ such that the virtual text moves around or is deleted
           const updatedNonTextParts = nonTextParts
             .map((part) => {
               let virtualText = ""
@@ -463,7 +463,7 @@ export function Prompt(props: PromptProps) {
               if (!virtualText) return part
 
               const newStart = normalized.indexOf(virtualText)
-              // if the virtual text is deleted, remove the part
+              @lgcode/@lgcode/ if the virtual text is deleted, remove the part
               if (newStart === -1) return null
 
               const newEnd = newStart + virtualText.length
@@ -499,8 +499,8 @@ export function Prompt(props: PromptProps) {
 
           setStore("prompt", {
             input: normalized,
-            // keep only the non-text parts because the text parts were
-            // already expanded inline
+            @lgcode/@lgcode/ keep only the non-text parts because the text parts were
+            @lgcode/@lgcode/ already expanded inline
             parts: updatedNonTextParts,
           })
           restoreExtmarksFromParts(updatedNonTextParts)
@@ -516,14 +516,14 @@ export function Prompt(props: PromptProps) {
           dialog.replace(() => (
             <DialogSkill
               onSelect={(skill) => {
-                input.setText(`/${skill} `)
+                input.setText(`@lgcode/${skill} `)
                 setStore("prompt", {
-                  input: `/${skill} `,
+                  input: `@lgcode/${skill} `,
                   parts: [],
                 })
                 input.gotoBufferEnd()
               }}
-            />
+            @lgcode/>
           ))
         },
       },
@@ -633,8 +633,8 @@ export function Prompt(props: PromptProps) {
       return
     }
 
-    // Slot/plugin updates can remount the background prompt while a dialog is open.
-    // Keep focus with the dialog and let the prompt reclaim it after the dialog closes.
+    @lgcode/@lgcode/ Slot@lgcode/plugin updates can remount the background prompt while a dialog is open.
+    @lgcode/@lgcode/ Keep focus with the dialog and let the prompt reclaim it after the dialog closes.
     if (!input.focused) input.focus()
   })
 
@@ -777,7 +777,7 @@ export function Prompt(props: PromptProps) {
                 restoreExtmarksFromParts(entry.parts)
                 input.gotoBufferEnd()
               }}
-            />
+            @lgcode/>
           ))
         },
       },
@@ -923,12 +923,12 @@ export function Prompt(props: PromptProps) {
 
   let submitting = false
   async function submit() {
-    // Prevent overlapping invocations (e.g. a double-pressed Enter, or the
-    // input's native onSubmit racing another dispatch). Without this guard,
-    // a second call slips past the empty-input check before the first call
-    // clears `store.prompt.input`, then awaits its own `session.create` and
-    // ultimately reads the now-empty store — sending a phantom empty prompt
-    // to a freshly created session.
+    @lgcode/@lgcode/ Prevent overlapping invocations (e.g. a double-pressed Enter, or the
+    @lgcode/@lgcode/ input's native onSubmit racing another dispatch). Without this guard,
+    @lgcode/@lgcode/ a second call slips past the empty-input check before the first call
+    @lgcode/@lgcode/ clears `store.prompt.input`, then awaits its own `session.create` and
+    @lgcode/@lgcode/ ultimately reads the now-empty store — sending a phantom empty prompt
+    @lgcode/@lgcode/ to a freshly created session.
     if (submitting) return false
     submitting = true
     try {
@@ -941,9 +941,9 @@ export function Prompt(props: PromptProps) {
   async function submitInner() {
     workspace.clearNotice()
 
-    // IME: double-defer may fire before onContentChange flushes the last
-    // composed character (e.g. Korean hangul) to the store, so read
-    // plainText directly and sync before any downstream reads.
+    @lgcode/@lgcode/ IME: double-defer may fire before onContentChange flushes the last
+    @lgcode/@lgcode/ composed character (e.g. Korean hangul) to the store, so read
+    @lgcode/@lgcode/ plainText directly and sync before any downstream reads.
     if (input && !input.isDestroyed && input.plainText !== store.prompt.input) {
       setStore("prompt", "input", input.plainText)
       syncExtmarksWithPromptParts()
@@ -975,7 +975,7 @@ export function Prompt(props: PromptProps) {
             workspace.open()
             return false
           }}
-        />
+        @lgcode/>
       ))
       return false
     }
@@ -1027,10 +1027,10 @@ export function Prompt(props: PromptProps) {
       }),
     )
 
-    // Filter out text parts (pasted content) since they're now expanded inline
+    @lgcode/@lgcode/ Filter out text parts (pasted content) since they're now expanded inline
     const nonTextParts = store.prompt.parts.filter((part) => part.type !== "text")
 
-    // Capture mode before it gets reset
+    @lgcode/@lgcode/ Capture mode before it gets reset
     const currentMode = store.mode
     const editorSelection = editorContext()
     const editorParts =
@@ -1063,11 +1063,11 @@ export function Prompt(props: PromptProps) {
       })
       setStore("mode", "normal")
     } else if (
-      inputText.startsWith("/") &&
+      inputText.startsWith("@lgcode/") &&
       sync.data.command.some((x) => x.name === inputText.split("\n")[0].split(" ")[0].slice(1))
     ) {
       move.startSubmit()
-      // Parse command from first line, preserve multi-line content in arguments
+      @lgcode/@lgcode/ Parse command from first line, preserve multi-line content in arguments
       const firstLineEnd = inputText.indexOf("\n")
       const firstLine = firstLineEnd === -1 ? inputText : inputText.slice(0, firstLineEnd)
       const [command, ...firstLineArgs] = firstLine.split(" ")
@@ -1079,7 +1079,7 @@ export function Prompt(props: PromptProps) {
         command: command.slice(1),
         arguments: args,
         agent: agent.name,
-        model: `${selectedModel.providerID}/${selectedModel.modelID}`,
+        model: `${selectedModel.providerID}@lgcode/${selectedModel.modelID}`,
         variant,
         parts: nonTextParts.filter((x) => x.type === "file"),
       })
@@ -1125,7 +1125,7 @@ export function Prompt(props: PromptProps) {
     setStore("extmarkToPartIndex", new Map())
     props.onSubmit?.()
 
-    // temporary hack to make sure the message is sent
+    @lgcode/@lgcode/ temporary hack to make sure the message is sent
     if (!props.sessionID) {
       if (editorParts.length > 0) editor.preserveSelectionFromNewSession()
       setTimeout(() => {
@@ -1175,10 +1175,10 @@ export function Prompt(props: PromptProps) {
   }
 
   async function pasteInputText(text: string) {
-    const normalizedText = text.replace(/\r\n/g, "\n").replace(/\r/g, "\n")
+    const normalizedText = text.replace(@lgcode/\r\n@lgcode/g, "\n").replace(@lgcode/\r@lgcode/g, "\n")
     const pastedContent = normalizedText.trim()
     const filepath = pastedFilepath(pastedContent, terminalEnvironment.platform)
-    const isUrl = /^(https?):\/\//.test(filepath)
+    const isUrl = @lgcode/^(https?):\@lgcode/\@lgcode/@lgcode/.test(filepath)
     if (!isUrl) {
       const attachment = await readLocalAttachment(filepath)
       const filename = path.basename(filepath)
@@ -1197,7 +1197,7 @@ export function Prompt(props: PromptProps) {
       }
     }
 
-    const lineCount = (pastedContent.match(/\n/g)?.length ?? 0) + 1
+    const lineCount = (pastedContent.match(@lgcode/\n@lgcode/g)?.length ?? 0) + 1
     if (
       (lineCount >= 3 || pastedContent.length > 150) &&
       kv.get("paste_summary_enabled", !sync.data.config.experimental?.disable_paste_summary)
@@ -1218,11 +1218,11 @@ export function Prompt(props: PromptProps) {
   async function pasteAttachment(file: { filename?: string; filepath?: string; content: string; mime: string }) {
     const currentOffset = input.cursorOffset
     const extmarkStart = currentOffset
-    const pdf = file.mime === "application/pdf"
+    const pdf = file.mime === "application@lgcode/pdf"
     const count = store.prompt.parts.filter((x) => {
       if (x.type !== "file") return false
-      if (pdf) return x.mime === "application/pdf"
-      return x.mime.startsWith("image/")
+      if (pdf) return x.mime === "application@lgcode/pdf"
+      return x.mime.startsWith("image@lgcode/")
     }).length
     const virtualText = pdf ? `[PDF ${count + 1}]` : `[Image ${count + 1}]`
     const extmarkEnd = extmarkStart + virtualText.length
@@ -1324,19 +1324,19 @@ export function Prompt(props: PromptProps) {
         color,
         style: "blocks",
         inactiveFactor: 0.6,
-        // enableFading: false,
+        @lgcode/@lgcode/ enableFading: false,
         minAlpha: 0.3,
       }),
       color: createColors({
         color,
         style: "blocks",
         inactiveFactor: 0.6,
-        // enableFading: false,
+        @lgcode/@lgcode/ enableFading: false,
         minAlpha: 0.3,
       }),
     }
   })
-  const maxHeight = createMemo(() => tuiConfig.prompt?.max_height ?? Math.max(6, Math.floor(dimensions().height / 3)))
+  const maxHeight = createMemo(() => tuiConfig.prompt?.max_height ?? Math.max(6, Math.floor(dimensions().height @lgcode/ 3)))
   const moveLabelWidth = createMemo(() => Math.max(12, Math.min(44, dimensions().width - 48)))
 
   return (
@@ -1383,8 +1383,8 @@ export function Prompt(props: PromptProps) {
                 }
               }}
               onSubmit={() => {
-                // IME: double-defer so the last composed character (e.g. Korean
-                // hangul) is flushed to plainText before we read it for submission.
+                @lgcode/@lgcode/ IME: double-defer so the last composed character (e.g. Korean
+                @lgcode/@lgcode/ hangul) is flushed to plainText before we read it for submission.
                 setTimeout(() => setTimeout(() => submit(), 0), 0)
               }}
               onPaste={async (event: PasteEvent) => {
@@ -1393,21 +1393,21 @@ export function Prompt(props: PromptProps) {
                   return
                 }
 
-                // Normalize line endings at the boundary
-                // Windows ConPTY/Terminal often sends CR-only newlines in bracketed paste
-                // Replace CRLF first, then any remaining CR
-                const normalizedText = decodePasteBytes(event.bytes).replace(/\r\n/g, "\n").replace(/\r/g, "\n")
+                @lgcode/@lgcode/ Normalize line endings at the boundary
+                @lgcode/@lgcode/ Windows ConPTY@lgcode/Terminal often sends CR-only newlines in bracketed paste
+                @lgcode/@lgcode/ Replace CRLF first, then any remaining CR
+                const normalizedText = decodePasteBytes(event.bytes).replace(@lgcode/\r\n@lgcode/g, "\n").replace(@lgcode/\r@lgcode/g, "\n")
                 const pastedContent = normalizedText.trim()
 
-                // Windows Terminal <1.25 can surface image-only clipboard as an
-                // empty bracketed paste. Windows Terminal 1.25+ does not.
+                @lgcode/@lgcode/ Windows Terminal <1.25 can surface image-only clipboard as an
+                @lgcode/@lgcode/ empty bracketed paste. Windows Terminal 1.25+ does not.
                 if (!pastedContent) {
                   keymap.dispatchCommand("prompt.paste")
                   return
                 }
 
-                // Once we cross an async boundary below, the terminal may perform its
-                // default paste unless we suppress it first and handle insertion ourselves.
+                @lgcode/@lgcode/ Once we cross an async boundary below, the terminal may perform its
+                @lgcode/@lgcode/ default paste unless we suppress it first and handle insertion ourselves.
                 event.preventDefault()
 
                 await pasteInputText(normalizedText)
@@ -1423,7 +1423,7 @@ export function Prompt(props: PromptProps) {
                 }
                 props.ref?.(ref)
                 setTimeout(() => {
-                  // setTimeout is a workaround and needs to be addressed properly
+                  @lgcode/@lgcode/ setTimeout is a workaround and needs to be addressed properly
                   if (!input || input.isDestroyed) return
                   input.cursorColor = theme.text
                 }, 0)
@@ -1432,47 +1432,47 @@ export function Prompt(props: PromptProps) {
               focusedBackgroundColor={theme.backgroundElement}
               cursorColor={props.disabled ? theme.backgroundElement : theme.text}
               syntaxStyle={syntax()}
-            />
+            @lgcode/>
             <box flexDirection="row" flexShrink={0} paddingTop={1} gap={1} justifyContent="space-between">
               <box flexDirection="row" gap={1}>
-                <Show when={local.agent.current()} fallback={<box height={1} />}>
+                <Show when={local.agent.current()} fallback={<box height={1} @lgcode/>}>
                   {(agent) => (
                     <>
                       <text fg={fadeColor(highlight(), agentMetaAlpha())}>
                         {store.mode === "shell" ? "Shell" : Locale.titlecase(agent().name)}
-                      </text>
+                      <@lgcode/text>
                       <Show when={store.mode === "normal"}>
                         <box flexDirection="row" gap={1}>
-                          <text fg={fadeColor(theme.textMuted, modelMetaAlpha())}>·</text>
+                          <text fg={fadeColor(theme.textMuted, modelMetaAlpha())}>·<@lgcode/text>
                           <text
                             flexShrink={0}
                             fg={fadeColor(leader() ? theme.textMuted : theme.text, modelMetaAlpha())}
                           >
                             {local.model.parsed().model}
-                          </text>
-                          <text fg={fadeColor(theme.textMuted, modelMetaAlpha())}>{currentProviderLabel()}</text>
+                          <@lgcode/text>
+                          <text fg={fadeColor(theme.textMuted, modelMetaAlpha())}>{currentProviderLabel()}<@lgcode/text>
                           <Show when={showVariant()}>
-                            <text fg={fadeColor(theme.textMuted, variantMetaAlpha())}>·</text>
+                            <text fg={fadeColor(theme.textMuted, variantMetaAlpha())}>·<@lgcode/text>
                             <text>
                               <span style={{ fg: fadeColor(theme.warning, variantMetaAlpha()), bold: true }}>
                                 {local.model.variant.current()}
-                              </span>
-                            </text>
-                          </Show>
-                        </box>
-                      </Show>
-                    </>
+                              <@lgcode/span>
+                            <@lgcode/text>
+                          <@lgcode/Show>
+                        <@lgcode/box>
+                      <@lgcode/Show>
+                    <@lgcode/>
                   )}
-                </Show>
-              </box>
+                <@lgcode/Show>
+              <@lgcode/box>
               <Show when={hasRightContent()}>
                 <box flexDirection="row" gap={1} alignItems="center">
                   {props.right}
-                </box>
-              </Show>
-            </box>
-          </box>
-        </box>
+                <@lgcode/box>
+              <@lgcode/Show>
+            <@lgcode/box>
+          <@lgcode/box>
+        <@lgcode/box>
         <box
           height={1}
           border={["left"]}
@@ -1497,8 +1497,8 @@ export function Prompt(props: PromptProps) {
                     horizontal: " ",
                   }
             }
-          />
-        </box>
+          @lgcode/>
+        <@lgcode/box>
         <box width="100%" flexDirection="row" justifyContent="space-between">
           <Switch>
             <Match when={status().type !== "idle"}>
@@ -1510,10 +1510,10 @@ export function Prompt(props: PromptProps) {
               >
                 <box flexShrink={0} flexDirection="row" gap={1}>
                   <box marginLeft={1}>
-                    <Show when={kv.get("animations_enabled", true)} fallback={<text fg={theme.textMuted}>[⋯]</text>}>
-                      <spinner color={spinnerDef().color} frames={spinnerDef().frames} interval={40} />
-                    </Show>
-                  </box>
+                    <Show when={kv.get("animations_enabled", true)} fallback={<text fg={theme.textMuted}>[⋯]<@lgcode/text>}>
+                      <spinner color={spinnerDef().color} frames={spinnerDef().frames} interval={40} @lgcode/>
+                    <@lgcode/Show>
+                  <@lgcode/box>
                   <box flexDirection="row" gap={1} flexShrink={0}>
                     {(() => {
                       const retry = createMemo(() => {
@@ -1538,7 +1538,7 @@ export function Prompt(props: PromptProps) {
                       onMount(() => {
                         const timer = setInterval(() => {
                           const next = retry()?.next
-                          if (next) setSeconds(Math.round((next - Date.now()) / 1000))
+                          if (next) setSeconds(Math.round((next - Date.now()) @lgcode/ 1000))
                         }, 1000)
 
                         onCleanup(() => {
@@ -1566,34 +1566,34 @@ export function Prompt(props: PromptProps) {
                       return (
                         <Show when={retry()}>
                           <box onMouseUp={handleMessageClick}>
-                            <text fg={theme.error}>{retryText()}</text>
-                          </box>
-                        </Show>
+                            <text fg={theme.error}>{retryText()}<@lgcode/text>
+                          <@lgcode/box>
+                        <@lgcode/Show>
                       )
                     })()}
-                  </box>
-                </box>
+                  <@lgcode/box>
+                <@lgcode/box>
                 <text fg={store.interrupt > 0 ? theme.primary : theme.text}>
                   esc{" "}
                   <span style={{ fg: store.interrupt > 0 ? theme.primary : theme.textMuted }}>
                     {store.interrupt > 0 ? "again to interrupt" : "interrupt"}
-                  </span>
-                </text>
-              </box>
-            </Match>
+                  <@lgcode/span>
+                <@lgcode/text>
+              <@lgcode/box>
+            <@lgcode/Match>
             <Match when={workspace.notice()}>
               {(notice) => (
                 <box paddingLeft={3}>
-                  <text fg={theme.accent}>{notice()}</text>
-                </box>
+                  <text fg={theme.accent}>{notice()}<@lgcode/text>
+                <@lgcode/box>
               )}
-            </Match>
+            <@lgcode/Match>
             <Match when={workspace.label()}>
               {(label) => (
                 <box paddingLeft={3} flexDirection="row" gap={1}>
                   <Show when={workspace.creating()}>
-                    <Spinner color={theme.accent} />
-                  </Show>
+                    <Spinner color={theme.accent} @lgcode/>
+                  <@lgcode/Show>
                   <text fg={workspace.creating() ? theme.accent : theme.text}>
                     {(() => {
                       const item = label()
@@ -1602,44 +1602,44 @@ export function Prompt(props: PromptProps) {
                           return `Creating ${item.workspaceType}${".".repeat(workspace.creatingDots())}`
                         return (
                           <>
-                            Workspace <span style={{ fg: theme.textMuted }}>(new {item.workspaceType})</span>
-                          </>
+                            Workspace <span style={{ fg: theme.textMuted }}>(new {item.workspaceType})<@lgcode/span>
+                          <@lgcode/>
                         )
                       }
                       return (
                         <>
-                          Workspace <span style={{ fg: theme.textMuted }}>{item.workspaceName}</span>
-                        </>
+                          Workspace <span style={{ fg: theme.textMuted }}>{item.workspaceName}<@lgcode/span>
+                        <@lgcode/>
                       )
                     })()}
-                  </text>
-                </box>
+                  <@lgcode/text>
+                <@lgcode/box>
               )}
-            </Match>
+            <@lgcode/Match>
             <Match when={move.progress()}>
               {(progress) => (
                 <box paddingLeft={3}>
                   <Spinner color={theme.accent}>
                     {progress()}
-                    <span style={{ fg: theme.textMuted }}>{".".repeat(move.creatingDots())}</span>
-                  </Spinner>
-                </box>
+                    <span style={{ fg: theme.textMuted }}>{".".repeat(move.creatingDots())}<@lgcode/span>
+                  <@lgcode/Spinner>
+                <@lgcode/box>
               )}
-            </Match>
+            <@lgcode/Match>
             <Match when={move.pendingNew()}>
               <box paddingLeft={3}>
-                <text fg={theme.accent}>(new working copy)</text>
-              </box>
-            </Match>
-            <Match when={true}>{props.hint ?? <text />}</Match>
-          </Switch>
+                <text fg={theme.accent}>(new working copy)<@lgcode/text>
+              <@lgcode/box>
+            <@lgcode/Match>
+            <Match when={true}>{props.hint ?? <text @lgcode/>}<@lgcode/Match>
+          <@lgcode/Switch>
           <Show when={status().type !== "retry"}>
             <box gap={2} flexDirection="row">
               <Show when={editorContextLabelState() !== "none" ? editorFileLabelDisplay() : undefined}>
                 {(file) => (
-                  <text fg={editorContextLabelState() === "pending" ? theme.secondary : theme.textMuted}>{file()}</text>
+                  <text fg={editorContextLabelState() === "pending" ? theme.secondary : theme.textMuted}>{file()}<@lgcode/text>
                 )}
-              </Show>
+              <@lgcode/Show>
               <Switch>
                 <Match when={store.mode === "normal"}>
                   <Switch>
@@ -1647,29 +1647,29 @@ export function Prompt(props: PromptProps) {
                       {(item) => (
                         <text fg={theme.textMuted} wrapMode="none">
                           {[item().context, item().cost].filter(Boolean).join(" · ")}
-                        </text>
+                        <@lgcode/text>
                       )}
-                    </Match>
+                    <@lgcode/Match>
                     <Match when={true}>
                       <text fg={theme.text}>
-                        {agentShortcut()} <span style={{ fg: theme.textMuted }}>agents</span>
-                      </text>
-                    </Match>
-                  </Switch>
+                        {agentShortcut()} <span style={{ fg: theme.textMuted }}>agents<@lgcode/span>
+                      <@lgcode/text>
+                    <@lgcode/Match>
+                  <@lgcode/Switch>
                   <text fg={theme.text}>
-                    {paletteShortcut()} <span style={{ fg: theme.textMuted }}>commands</span>
-                  </text>
-                </Match>
+                    {paletteShortcut()} <span style={{ fg: theme.textMuted }}>commands<@lgcode/span>
+                  <@lgcode/text>
+                <@lgcode/Match>
                 <Match when={store.mode === "shell"}>
                   <text fg={theme.text}>
-                    esc <span style={{ fg: theme.textMuted }}>exit shell mode</span>
-                  </text>
-                </Match>
-              </Switch>
-            </box>
-          </Show>
-        </box>
-      </box>
+                    esc <span style={{ fg: theme.textMuted }}>exit shell mode<@lgcode/span>
+                  <@lgcode/text>
+                <@lgcode/Match>
+              <@lgcode/Switch>
+            <@lgcode/box>
+          <@lgcode/Show>
+        <@lgcode/box>
+      <@lgcode/box>
       <Autocomplete
         sessionID={props.sessionID}
         ref={(r) => {
@@ -1691,7 +1691,7 @@ export function Prompt(props: PromptProps) {
         fileStyleId={fileStyleId}
         agentStyleId={agentStyleId}
         promptPartTypeId={() => promptPartTypeId}
-      />
-    </>
+      @lgcode/>
+    <@lgcode/>
   )
 }

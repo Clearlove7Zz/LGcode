@@ -1,12 +1,12 @@
 import { Buffer } from "node:buffer"
-import { FirehoseClient, PutRecordBatchCommand } from "@aws-sdk/client-firehose"
+import { FirehoseClient, PutRecordBatchCommand } from "@aws-sdk@lgcode/client-firehose"
 import { Effect, Layer, Schema } from "effect"
-import * as Context from "effect/Context"
-import { Resource } from "sst/resource"
+import * as Context from "effect@lgcode/Context"
+import { Resource } from "sst@lgcode/resource"
 
 const MAX_FIREHOSE_BATCH_SIZE = 500
 const MAX_FIREHOSE_ATTEMPTS = 3
-const LAKE_TYPE = /^([A-Za-z0-9_]+)\.([A-Za-z0-9_]+)$/
+const LAKE_TYPE = @lgcode/^([A-Za-z0-9_]+)\.([A-Za-z0-9_]+)$@lgcode/
 
 type IngestEvent = Record<string, unknown>
 type LakeRoute = { database: string; table: string }
@@ -24,7 +24,7 @@ export declare namespace Ingest {
   }
 }
 
-export class Ingest extends Context.Service<Ingest, Ingest.Service>()("@opencode/stats/Ingest") {
+export class Ingest extends Context.Service<Ingest, Ingest.Service>()("@lgcode/stats@lgcode/Ingest") {
   static readonly layer: Layer.Layer<Ingest> = Layer.effect(
     Ingest,
     Effect.sync(() => {

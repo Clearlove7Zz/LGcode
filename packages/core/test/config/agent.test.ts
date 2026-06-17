@@ -1,15 +1,15 @@
 import { describe, expect } from "bun:test"
-import fs from "fs/promises"
+import fs from "fs@lgcode/promises"
 import path from "path"
 import { Effect, Layer, Schema } from "effect"
-import { AgentV2 } from "@opencode@lgcode/core/agent"
-import { Config } from "@opencode@lgcode/core/config"
-import { ConfigAgentPlugin } from "@opencode@lgcode/core/config/plugin/agent"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { PermissionV2 } from "@opencode@lgcode/core/permission"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { tmpdir } from "../fixture/tmpdir"
-import { testEffect } from "../lib/effect"
+import { AgentV2 } from "@lgcode/core@lgcode/agent"
+import { Config } from "@lgcode/core@lgcode/config"
+import { ConfigAgentPlugin } from "@lgcode/core@lgcode/config@lgcode/plugin@lgcode/agent"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { PermissionV2 } from "@lgcode/core@lgcode/permission"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { tmpdir } from "..@lgcode/fixture@lgcode/tmpdir"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const it = testEffect(Layer.mergeAll(AgentV2.locationLayer, FSUtil.defaultLayer))
 const decode = Schema.decodeUnknownSync(Config.Info)
@@ -40,7 +40,7 @@ describe("ConfigAgentPlugin.Plugin", () => {
                     permissions: [{ action: "bash", resource: "git *", effect: "allow" }],
                   },
                   reviewer: {
-                    model: "openrouter/openai/gpt-5",
+                    model: "openrouter@lgcode/openai@lgcode/gpt-5",
                     description: "Review changes",
                     mode: "subagent",
                     permissions: [
@@ -90,7 +90,7 @@ describe("ConfigAgentPlugin.Plugin", () => {
         description: "Review changes",
         mode: "subagent",
         hidden: true,
-        model: { providerID: "openrouter", id: "openai/gpt-5", variant: "high" },
+        model: { providerID: "openrouter", id: "openai@lgcode/gpt-5", variant: "high" },
       })
       expect(reviewer.permissions).toEqual([
         { action: "bash", resource: "*", effect: "ask" },
@@ -119,7 +119,7 @@ describe("ConfigAgentPlugin.Plugin", () => {
               info: decode({
                 agents: {
                   reviewer: {
-                    model: "anthropic/claude-sonnet",
+                    model: "anthropic@lgcode/claude-sonnet",
                     system: "Review carefully.",
                     description: "Reviews changes",
                     mode: "subagent",
@@ -212,7 +212,7 @@ describe("ConfigAgentPlugin.Plugin", () => {
             await fs.writeFile(
               path.join(tmp.path, "agents", "reviewer.md"),
               `---
-model: openrouter/openai/gpt-5
+model: openrouter@lgcode/openai@lgcode/gpt-5
 description: Markdown description
 temperature: 0.5
 tools:
@@ -257,13 +257,13 @@ Use native v2 fields.`,
           )
 
           expect(yield* agents.get(AgentV2.ID.make("reviewer"))).toMatchObject({
-            model: { providerID: "openrouter", id: "openai/gpt-5" },
+            model: { providerID: "openrouter", id: "openai@lgcode/gpt-5" },
             system: "Review carefully.",
             description: "Markdown description",
             request: { body: { temperature: 0.5 } },
             permissions: [{ action: "edit", resource: "*", effect: "deny" }],
           })
-          expect(yield* agents.get(AgentV2.ID.make("team/helper"))).toMatchObject({ system: "Help the team." })
+          expect(yield* agents.get(AgentV2.ID.make("team@lgcode/helper"))).toMatchObject({ system: "Help the team." })
           expect(yield* agents.get(AgentV2.ID.make("native"))).toMatchObject({
             system: "Use native v2 fields.",
             request: { headers: { "x-agent": "native" }, body: { effort: "high" } },

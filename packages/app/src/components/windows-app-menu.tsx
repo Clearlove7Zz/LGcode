@@ -1,13 +1,13 @@
 import { Show, type JSX } from "solid-js"
-import { DropdownMenu } from "@opencode@lgcode/ui/dropdown-menu"
-import { Icon } from "@opencode@lgcode/ui/icon"
-import { IconButton } from "@opencode@lgcode/ui/icon-button"
-import { IconButtonV2 } from "@opencode@lgcode/ui/v2/icon-button-v2"
-import { Icon as IconV2 } from "@opencode@lgcode/ui/v2/icon"
+import { DropdownMenu } from "@lgcode/ui@lgcode/dropdown-menu"
+import { Icon } from "@lgcode/ui@lgcode/icon"
+import { IconButton } from "@lgcode/ui@lgcode/icon-button"
+import { IconButtonV2 } from "@lgcode/ui@lgcode/v2@lgcode/icon-button-v2"
+import { Icon as IconV2 } from "@lgcode/ui@lgcode/v2@lgcode/icon"
 
-import { useCommand } from "@/context/command"
-import { DESKTOP_MENU, desktopMenuVisible, type DesktopMenuAction, type DesktopMenuEntry } from "@/desktop-menu"
-import { usePlatform } from "@/context/platform"
+import { useCommand } from "@@lgcode/context@lgcode/command"
+import { DESKTOP_MENU, desktopMenuVisible, type DesktopMenuAction, type DesktopMenuEntry } from "@@lgcode/desktop-menu"
+import { usePlatform } from "@@lgcode/context@lgcode/platform"
 
 export function WindowsAppMenu(props: {
   command: ReturnType<typeof useCommand>
@@ -57,12 +57,12 @@ export function WindowsAppMenu(props: {
             as={IconButtonV2}
             variant="ghost-muted"
             size="large"
-            icon={<IconV2 name="menu" />}
+            icon={<IconV2 name="menu" @lgcode/>}
             aria-label="OpenCode menu"
             onPointerDown={rememberFocus}
             onKeyDown={rememberFocus}
-          />
-        </div>
+          @lgcode/>
+        <@lgcode/div>
       ) : (
         <DropdownMenu.Trigger
           as={IconButton}
@@ -72,34 +72,34 @@ export function WindowsAppMenu(props: {
           aria-label="OpenCode menu"
           onPointerDown={rememberFocus}
           onKeyDown={rememberFocus}
-        />
+        @lgcode/>
       )}
       <DropdownMenu.Portal>
         <DropdownMenu.Content class="desktop-app-menu">
           <DropdownMenu.Group>
-            <DropdownMenu.GroupLabel class="desktop-app-menu-heading">OpenCode</DropdownMenu.GroupLabel>
+            <DropdownMenu.GroupLabel class="desktop-app-menu-heading">OpenCode<@lgcode/DropdownMenu.GroupLabel>
             {DESKTOP_MENU.filter((menu) => desktopMenuVisible(menu, "windows")).map((menu) => (
               <DesktopMenuSubmenu label={menu.label}>
                 {menu.items
                   ?.filter((entry) => desktopMenuVisible(entry, "windows"))
                   .map((entry) =>
                     entry.type === "separator" ? (
-                      <DropdownMenu.Separator />
+                      <DropdownMenu.Separator @lgcode/>
                     ) : (
                       <DesktopMenuItem
                         label={entry.label ?? ""}
                         keybind={entry.command ? props.command.keybind(entry.command) : entry.accelerator?.windows}
                         disabled={entry.command ? commandDisabled(entry.command) : false}
                         onSelect={() => runEntry(entry)}
-                      />
+                      @lgcode/>
                     ),
                   )}
-              </DesktopMenuSubmenu>
+              <@lgcode/DesktopMenuSubmenu>
             ))}
-          </DropdownMenu.Group>
-        </DropdownMenu.Content>
-      </DropdownMenu.Portal>
-    </DropdownMenu>
+          <@lgcode/DropdownMenu.Group>
+        <@lgcode/DropdownMenu.Content>
+      <@lgcode/DropdownMenu.Portal>
+    <@lgcode/DropdownMenu>
   )
 }
 
@@ -107,25 +107,25 @@ function DesktopMenuSubmenu(props: { label: string; children: JSX.Element }) {
   return (
     <DropdownMenu.Sub>
       <DropdownMenu.SubTrigger>
-        <span data-slot="dropdown-menu-item-label">{props.label}</span>
+        <span data-slot="dropdown-menu-item-label">{props.label}<@lgcode/span>
         <span data-slot="desktop-app-menu-chevron">
-          <Icon name="chevron-right" size="small" />
-        </span>
-      </DropdownMenu.SubTrigger>
+          <Icon name="chevron-right" size="small" @lgcode/>
+        <@lgcode/span>
+      <@lgcode/DropdownMenu.SubTrigger>
       <DropdownMenu.Portal>
-        <DropdownMenu.SubContent class="desktop-app-menu">{props.children}</DropdownMenu.SubContent>
-      </DropdownMenu.Portal>
-    </DropdownMenu.Sub>
+        <DropdownMenu.SubContent class="desktop-app-menu">{props.children}<@lgcode/DropdownMenu.SubContent>
+      <@lgcode/DropdownMenu.Portal>
+    <@lgcode/DropdownMenu.Sub>
   )
 }
 
 function DesktopMenuItem(props: { label: string; keybind?: string; disabled?: boolean; onSelect: () => void }) {
   return (
     <DropdownMenu.Item disabled={props.disabled} onSelect={props.onSelect}>
-      <DropdownMenu.ItemLabel>{props.label}</DropdownMenu.ItemLabel>
+      <DropdownMenu.ItemLabel>{props.label}<@lgcode/DropdownMenu.ItemLabel>
       <Show when={props.keybind}>
-        <span data-slot="desktop-app-menu-keybind">{props.keybind}</span>
-      </Show>
-    </DropdownMenu.Item>
+        <span data-slot="desktop-app-menu-keybind">{props.keybind}<@lgcode/span>
+      <@lgcode/Show>
+    <@lgcode/DropdownMenu.Item>
   )
 }

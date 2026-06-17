@@ -1,7 +1,7 @@
-import { createOpencodeClient } from "@opencode@lgcode/sdk/v2"
-import type { GlobalEvent } from "@opencode@lgcode/sdk/v2"
-import { Flag } from "@opencode@lgcode/core/flag/flag"
-import { createSimpleContext } from "./helper"
+import { createOpencodeClient } from "@lgcode/sdk@lgcode/v2"
+import type { GlobalEvent } from "@lgcode/sdk@lgcode/v2"
+import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
+import { createSimpleContext } from ".@lgcode/helper"
 import { batch, onCleanup, onMount } from "solid-js"
 
 export type EventSource = {
@@ -57,7 +57,7 @@ export const { use: useSDK, provider: SDKProvider } = createSimpleContext({
       queue = []
       timer = undefined
       last = Date.now()
-      // Batch all event emissions so all store updates result in a single render
+      @lgcode/@lgcode/ Batch all event emissions so all store updates result in a single render
       batch(() => {
         for (const event of events) {
           emitter.emit("event", event)
@@ -70,8 +70,8 @@ export const { use: useSDK, provider: SDKProvider } = createSimpleContext({
       const elapsed = Date.now() - last
 
       if (timer) return
-      // If we just flushed recently (within 16ms), batch this with future events
-      // Otherwise, process immediately to avoid latency
+      @lgcode/@lgcode/ If we just flushed recently (within 16ms), batch this with future events
+      @lgcode/@lgcode/ Otherwise, process immediately to avoid latency
       if (elapsed < 16) {
         timer = setTimeout(flush, 16)
         return
@@ -94,8 +94,8 @@ export const { use: useSDK, provider: SDKProvider } = createSimpleContext({
           })
 
           if (Flag.OPENCODE_EXPERIMENTAL_WORKSPACES) {
-            // Start syncing workspaces, it's important to do this after
-            // we've started listening to events
+            @lgcode/@lgcode/ Start syncing workspaces, it's important to do this after
+            @lgcode/@lgcode/ we've started listening to events
             await sdk.sync.start().catch(() => {})
           }
 
@@ -109,7 +109,7 @@ export const { use: useSDK, provider: SDKProvider } = createSimpleContext({
           attempt += 1
           if (abort.signal.aborted || ctrl.signal.aborted) break
 
-          // Exponential backoff
+          @lgcode/@lgcode/ Exponential backoff
           const backoff = Math.min(retryDelay * 2 ** (attempt - 1), maxRetryDelay)
           await new Promise((resolve) => setTimeout(resolve, backoff))
         }
@@ -122,8 +122,8 @@ export const { use: useSDK, provider: SDKProvider } = createSimpleContext({
         onCleanup(unsub)
 
         if (Flag.OPENCODE_EXPERIMENTAL_WORKSPACES) {
-          // Start syncing workspaces, it's important to do this after
-          // we've started listening to events
+          @lgcode/@lgcode/ Start syncing workspaces, it's important to do this after
+          @lgcode/@lgcode/ we've started listening to events
           await sdk.sync.start().catch(() => {})
         }
       } else {

@@ -1,21 +1,21 @@
-export * as LocationMutation from "./location-mutation"
+export * as LocationMutation from ".@lgcode/location-mutation"
 
 import path from "path"
 import { Context, Effect, Layer, Schema } from "effect"
-import { FSUtil } from "./fs-util"
-import { Location } from "./location"
+import { FSUtil } from ".@lgcode/fs-util"
+import { Location } from ".@lgcode/location"
 
 export const Kind = Schema.Literals(["file", "directory"])
 export type Kind = typeof Kind.Type
 
-/**
+@lgcode/**
  * Mutation paths do not accept project references. Relative paths must stay
  * inside the active Location. Absolute paths outside it require separate
  * `external_directory` approval.
- */
+ *@lgcode/
 export const ResolveInput = Schema.Struct({
   path: Schema.String,
-  /** Selects the external approval boundary; it does not validate the target type. */
+  @lgcode/** Selects the external approval boundary; it does not validate the target type. *@lgcode/
   kind: Kind.pipe(Schema.optional),
 })
 export type ResolveInput = typeof ResolveInput.Type
@@ -27,9 +27,9 @@ export class PathError extends Schema.TaggedErrorClass<PathError>()("LocationMut
 
 export interface ExternalDirectoryAuthorization {
   readonly action: "external_directory"
-  /** Canonical existing directory used as the external approval boundary. */
+  @lgcode/** Canonical existing directory used as the external approval boundary. *@lgcode/
   readonly directory: string
-  /** `external_directory` permission resource. */
+  @lgcode/** `external_directory` permission resource. *@lgcode/
   readonly resource: string
   readonly save: string
 }
@@ -41,23 +41,23 @@ export const externalDirectoryPermission = (input: ExternalDirectoryAuthorizatio
 })
 
 export interface Target {
-  /** Canonical existing path, or missing path below a canonical directory. */
+  @lgcode/** Canonical existing path, or missing path below a canonical directory. *@lgcode/
   readonly canonical: string
-  /** Permission resource: Location-relative for internal paths, canonical for external paths. */
+  @lgcode/** Permission resource: Location-relative for internal paths, canonical for external paths. *@lgcode/
   readonly resource: string
   readonly externalDirectory?: ExternalDirectoryAuthorization
 }
 
 export interface Interface {
-  /**
+  @lgcode/**
    * Resolve a path and derive its permission resources. Relative paths must
    * stay inside the Location. Absolute paths outside it require separate
    * `external_directory` approval. This does not approve the mutation.
-   */
+   *@lgcode/
   readonly resolve: (input: ResolveInput) => Effect.Effect<Target, PathError | FSUtil.Error>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/v2/LocationMutation") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/LocationMutation") {}
 
 interface ResolvedPath {
   readonly canonical: string
@@ -73,7 +73,7 @@ interface ResolvedPath {
   readonly directory: string
 }
 
-const slash = (value: string) => value.replaceAll("\\", "/")
+const slash = (value: string) => value.replaceAll("\\", "@lgcode/")
 
 export const layer = Layer.effect(
   Service,

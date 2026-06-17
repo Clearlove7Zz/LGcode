@@ -1,23 +1,23 @@
-import { Database } from "@opencode@lgcode/core/database/database"
-import { LocationServiceMap } from "@opencode@lgcode/core/location-layer"
-import { Location } from "@opencode@lgcode/core/location"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { SessionV2 } from "@opencode@lgcode/core/session"
-import { SessionTable } from "@opencode@lgcode/core/session/sql"
-import { WorkspaceV2 } from "@opencode@lgcode/core/workspace"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { LocationServiceMap } from "@lgcode/core@lgcode/location-layer"
+import { Location } from "@lgcode/core@lgcode/location"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { SessionV2 } from "@lgcode/core@lgcode/session"
+import { SessionTable } from "@lgcode/core@lgcode/session@lgcode/sql"
+import { WorkspaceV2 } from "@lgcode/core@lgcode/workspace"
 import { eq } from "drizzle-orm"
 import { Effect, Layer, Schema } from "effect"
-import { HttpRouter } from "effect/unstable/http"
-import { HttpApiMiddleware } from "effect/unstable/httpapi"
-import { InvalidRequestError, SessionNotFoundError } from "../errors"
-import type { LocationServices } from "../groups/location"
+import { HttpRouter } from "effect@lgcode/unstable@lgcode/http"
+import { HttpApiMiddleware } from "effect@lgcode/unstable@lgcode/httpapi"
+import { InvalidRequestError, SessionNotFoundError } from "..@lgcode/errors"
+import type { LocationServices } from "..@lgcode/groups@lgcode/location"
 
 export class SessionLocationMiddleware extends HttpApiMiddleware.Service<
   SessionLocationMiddleware,
   {
     provides: LocationServices
   }
->()("@opencode/HttpApiSessionLocation", {
+>()("@lgcode/HttpApiSessionLocation", {
   error: [InvalidRequestError, SessionNotFoundError],
 }) {}
 

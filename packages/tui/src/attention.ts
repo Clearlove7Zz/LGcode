@@ -1,4 +1,4 @@
-/// <reference path="./audio.d.ts" />
+@lgcode/@lgcode/@lgcode/ <reference path=".@lgcode/audio.d.ts" @lgcode/>
 import type {
   TuiAttention,
   TuiAttentionNotifyInput,
@@ -9,17 +9,17 @@ import type {
   TuiAttentionSoundName,
   TuiAttentionSoundPack,
   TuiAttentionSoundPackInfo,
-} from "@opencode@lgcode/plugin/tui"
-import { AttentionSoundName, type TuiConfig } from "./config"
+} from "@lgcode/plugin@lgcode/tui"
+import { AttentionSoundName, type TuiConfig } from ".@lgcode/config"
 import { Schema } from "effect"
 import stripAnsi from "strip-ansi"
-import * as TuiAudio from "./audio"
-import defaultSoundPath from "@opencode@lgcode/ui/audio/bip-bop-01.mp3" with { type: "file" }
-import questionSoundPath from "@opencode@lgcode/ui/audio/bip-bop-03.mp3" with { type: "file" }
-import permissionSoundPath from "@opencode@lgcode/ui/audio/staplebops-06.mp3" with { type: "file" }
-import errorSoundPath from "@opencode@lgcode/ui/audio/nope-03.mp3" with { type: "file" }
-import doneSoundPath from "@opencode@lgcode/ui/audio/bip-bop-01.mp3" with { type: "file" }
-import subagentDoneSoundPath from "@opencode@lgcode/ui/audio/yup-01.mp3" with { type: "file" }
+import * as TuiAudio from ".@lgcode/audio"
+import defaultSoundPath from "@lgcode/ui@lgcode/audio@lgcode/bip-bop-01.mp3" with { type: "file" }
+import questionSoundPath from "@lgcode/ui@lgcode/audio@lgcode/bip-bop-03.mp3" with { type: "file" }
+import permissionSoundPath from "@lgcode/ui@lgcode/audio@lgcode/staplebops-06.mp3" with { type: "file" }
+import errorSoundPath from "@lgcode/ui@lgcode/audio@lgcode/nope-03.mp3" with { type: "file" }
+import doneSoundPath from "@lgcode/ui@lgcode/audio@lgcode/bip-bop-01.mp3" with { type: "file" }
+import subagentDoneSoundPath from "@lgcode/ui@lgcode/audio@lgcode/yup-01.mp3" with { type: "file" }
 
 type FocusState = "unknown" | "focused" | "blurred"
 
@@ -68,8 +68,8 @@ function skipped(reason: TuiAttentionNotifySkipReason): TuiAttentionNotifyResult
 
 function normalizeText(input: string | undefined, fallback: string, limit: number) {
   const text = stripAnsi(input ?? "")
-    .replace(/[ \t]*[\r\n]+[ \t]*/g, " ")
-    .replace(/[\u0000-\u0009\u000B\u000C\u000E-\u001F\u007F-\u009F]/g, "")
+    .replace(@lgcode/[ \t]*[\r\n]+[ \t]*@lgcode/g, " ")
+    .replace(@lgcode/[\u0000-\u0009\u000B\u000C\u000E-\u001F\u007F-\u009F]@lgcode/g, "")
     .trim()
   const normalized = text.length ? text : fallback
   return Array.from(normalized).slice(0, limit).join("")

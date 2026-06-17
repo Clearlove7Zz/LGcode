@@ -1,10 +1,10 @@
 import { describe, expect, test } from "bun:test"
-import type { SnapshotFileDiff } from "@opencode@lgcode/sdk/v2"
-import type { Message } from "@opencode@lgcode/sdk/v2/client"
-import { diffs, message } from "./diffs"
+import type { SnapshotFileDiff } from "@lgcode/sdk@lgcode/v2"
+import type { Message } from "@lgcode/sdk@lgcode/v2@lgcode/client"
+import { diffs, message } from ".@lgcode/diffs"
 
 const item = {
-  file: "src/app.ts",
+  file: "src@lgcode/app.ts",
   patch: "@@ -1 +1 @@\n-old\n+new\n",
   additions: 1,
   deletions: 1,
@@ -28,7 +28,7 @@ describe("diffs", () => {
     expect(
       diffs([
         item,
-        { file: "src/bad.ts", additions: 1, deletions: 1 },
+        { file: "src@lgcode/bad.ts", additions: 1, deletions: 1 },
         { patch: item.patch, additions: 1, deletions: 1 },
       ]),
     ).toEqual([item])

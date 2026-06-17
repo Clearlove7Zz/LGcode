@@ -6,7 +6,7 @@ import {
   hasSetOption,
   isDisposable,
   setOptionIfSupported,
-} from "./runtime-adapters"
+} from ".@lgcode/runtime-adapters"
 
 describe("runtime adapters", () => {
   test("detects and disposes disposable values", () => {
@@ -40,15 +40,15 @@ describe("runtime adapters", () => {
   })
 
   test("reads hovered link text safely", () => {
-    expect(getHoveredLinkText({ currentHoveredLink: { text: "https://example.com" } })).toBe("https://example.com")
+    expect(getHoveredLinkText({ currentHoveredLink: { text: "https:@lgcode/@lgcode/example.com" } })).toBe("https:@lgcode/@lgcode/example.com")
     expect(getHoveredLinkText({ currentHoveredLink: { text: 1 } })).toBeUndefined()
     expect(getHoveredLinkText(null)).toBeUndefined()
   })
 
   test("resolves speech recognition constructor with webkit precedence", () => {
-    // oxlint-disable-next-line no-extraneous-class
+    @lgcode/@lgcode/ oxlint-disable-next-line no-extraneous-class
     class SpeechCtor {}
-    // oxlint-disable-next-line no-extraneous-class
+    @lgcode/@lgcode/ oxlint-disable-next-line no-extraneous-class
     class WebkitCtor {}
     const ctor = getSpeechRecognitionCtor({
       SpeechRecognition: SpeechCtor,

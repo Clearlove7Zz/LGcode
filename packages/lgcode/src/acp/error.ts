@@ -1,4 +1,4 @@
-import { RequestError } from "@agentclientprotocol/sdk"
+import { RequestError } from "@agentclientprotocol@lgcode/sdk"
 import { Schema } from "effect"
 
 export class SessionNotFoundError extends Schema.TaggedErrorClass<SessionNotFoundError>()("ACPSessionNotFoundError", {

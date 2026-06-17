@@ -1,17 +1,17 @@
-import { action, useSubmission } from "@solidjs/router"
-import { Resource } from "@opencode@lgcode/console-resource"
+import { action, useSubmission } from "@solidjs@lgcode/router"
+import { Resource } from "@lgcode/console-resource"
 import { Show } from "solid-js"
-import { useI18n } from "~/context/i18n"
+import { useI18n } from "~@lgcode/context@lgcode/i18n"
 
 const emailSignup = action(async (formData: FormData) => {
   "use server"
   const emailAddress = formData.get("email")!
   const listId = "8b9bb82c-9d5f-11f0-975f-0df6fd1e4945"
-  const response = await fetch(`https://api.emailoctopus.com/lists/${listId}/contacts`, {
+  const response = await fetch(`https:@lgcode/@lgcode/api.emailoctopus.com@lgcode/lists@lgcode/${listId}@lgcode/contacts`, {
     method: "PUT",
     headers: {
       Authorization: `Bearer ${Resource.EMAILOCTOPUS_API_KEY.value}`,
-      "Content-Type": "application/json",
+      "Content-Type": "application@lgcode/json",
     },
     body: JSON.stringify({
       email_address: emailAddress,
@@ -27,21 +27,21 @@ export function EmailSignup() {
   return (
     <section data-component="email">
       <div data-slot="section-title">
-        <h3>{i18n.t("email.title")}</h3>
-        <p>{i18n.t("email.subtitle")}</p>
-      </div>
+        <h3>{i18n.t("email.title")}<@lgcode/h3>
+        <p>{i18n.t("email.subtitle")}<@lgcode/p>
+      <@lgcode/div>
       <form data-slot="form" action={emailSignup} method="post">
-        <input type="email" name="email" placeholder={i18n.t("email.placeholder")} required />
+        <input type="email" name="email" placeholder={i18n.t("email.placeholder")} required @lgcode/>
         <button type="submit" disabled={submission.pending}>
           {i18n.t("email.subscribe")}
-        </button>
-      </form>
+        <@lgcode/button>
+      <@lgcode/form>
       <Show when={submission.result}>
-        <div style="color: #03B000; margin-top: 24px;">{i18n.t("email.success")}</div>
-      </Show>
+        <div style="color: #03B000; margin-top: 24px;">{i18n.t("email.success")}<@lgcode/div>
+      <@lgcode/Show>
       <Show when={submission.error}>
-        <div style="color: #FF408F; margin-top: 24px;">{submission.error}</div>
-      </Show>
-    </section>
+        <div style="color: #FF408F; margin-top: 24px;">{submission.error}<@lgcode/div>
+      <@lgcode/Show>
+    <@lgcode/section>
   )
 }

@@ -1,12 +1,12 @@
 import { expect } from "bun:test"
 import { Effect, Layer, Context } from "effect"
-import { InstanceRef } from "../../src/effect/instance-ref"
-import { makeRuntime } from "../../src/effect/run-service"
-import { ProjectV2 } from "@opencode@lgcode/core/project"
-import { it } from "../lib/effect"
+import { InstanceRef } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/instance-ref"
+import { makeRuntime } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/run-service"
+import { ProjectV2 } from "@lgcode/core@lgcode/project"
+import { it } from "..@lgcode/lib@lgcode/effect"
 
-class Shared extends Context.Service<Shared, { readonly id: number }>()("@test/Shared") {}
-const testDirectory = "/tmp/opencode-test"
+class Shared extends Context.Service<Shared, { readonly id: number }>()("@test@lgcode/Shared") {}
+const testDirectory = "@lgcode/tmp@lgcode/opencode-test"
 
 it.live("makeRuntime shares dependent layers through the shared memo map", () =>
   Effect.gen(function* () {
@@ -20,7 +20,7 @@ it.live("makeRuntime shares dependent layers through the shared memo map", () =>
       }),
     )
 
-    class One extends Context.Service<One, { readonly get: () => Effect.Effect<number> }>()("@test/One") {}
+    class One extends Context.Service<One, { readonly get: () => Effect.Effect<number> }>()("@test@lgcode/One") {}
     const one = Layer.effect(
       One,
       Effect.gen(function* () {
@@ -31,7 +31,7 @@ it.live("makeRuntime shares dependent layers through the shared memo map", () =>
       }),
     ).pipe(Layer.provide(shared))
 
-    class Two extends Context.Service<Two, { readonly get: () => Effect.Effect<number> }>()("@test/Two") {}
+    class Two extends Context.Service<Two, { readonly get: () => Effect.Effect<number> }>()("@test@lgcode/Two") {}
     const two = Layer.effect(
       Two,
       Effect.gen(function* () {
@@ -56,7 +56,7 @@ it.live("makeRuntime inherits InstanceRef from the current fiber", () =>
     class NeedsInstance extends Context.Service<
       NeedsInstance,
       { readonly directory: () => Effect.Effect<string | undefined> }
-    >()("@test/NeedsInstance") {}
+    >()("@test@lgcode/NeedsInstance") {}
 
     const runtime = makeRuntime(
       NeedsInstance,

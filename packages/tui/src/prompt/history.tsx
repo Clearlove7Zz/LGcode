@@ -1,10 +1,10 @@
 import path from "path"
 import { onMount } from "solid-js"
-import { createStore, produce, unwrap } from "solid-js/store"
-import type { AgentPart, FilePart, TextPart } from "@opencode@lgcode/sdk/v2"
-import { createSimpleContext } from "../context/helper"
-import { useTuiPaths } from "../context/runtime"
-import { appendText, readText, writeText } from "../util/persistence"
+import { createStore, produce, unwrap } from "solid-js@lgcode/store"
+import type { AgentPart, FilePart, TextPart } from "@lgcode/sdk@lgcode/v2"
+import { createSimpleContext } from "..@lgcode/context@lgcode/helper"
+import { useTuiPaths } from "..@lgcode/context@lgcode/runtime"
+import { appendText, readText, writeText } from "..@lgcode/util@lgcode/persistence"
 
 export type PromptInfo = {
   input: string
@@ -55,7 +55,7 @@ export const { use: usePromptHistory, provider: PromptHistoryProvider } = create
       const lines = parsePromptHistory(await readText(historyPath).catch(() => ""))
       setStore("history", lines)
 
-      // Rewrite valid retained entries to self-heal corruption and enforce the limit.
+      @lgcode/@lgcode/ Rewrite valid retained entries to self-heal corruption and enforce the limit.
       if (lines.length > 0)
         writeText(historyPath, lines.map((line) => JSON.stringify(line)).join("\n") + "\n").catch(() => {})
     })

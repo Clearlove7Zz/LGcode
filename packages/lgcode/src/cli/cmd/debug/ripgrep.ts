@@ -1,9 +1,9 @@
 import { EOL } from "os"
 import { Effect } from "effect"
-import { Ripgrep } from "@opencode@lgcode/core/ripgrep"
-import { effectCmd } from "../../effect-cmd"
-import { cmd } from "../cmd"
-import { InstanceRef } from "@/effect/instance-ref"
+import { Ripgrep } from "@lgcode/core@lgcode/ripgrep"
+import { effectCmd } from "..@lgcode/..@lgcode/effect-cmd"
+import { cmd } from "..@lgcode/cmd"
+import { InstanceRef } from "@@lgcode/effect@lgcode/instance-ref"
 
 export const RipgrepCommand = cmd({
   command: "rg",
@@ -36,7 +36,7 @@ const FilesCommand = effectCmd({
     const files = yield* ripgrep
       .glob({
         cwd: ctx.directory,
-        pattern: args.glob ?? "**/*",
+        pattern: args.glob ?? "**@lgcode/*",
         limit: args.limit ?? 10_000,
       })
       .pipe(Effect.orDie)

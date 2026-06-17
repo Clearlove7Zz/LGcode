@@ -16,7 +16,7 @@ export function publish(port: number, domain?: string) {
       type: "http",
       host,
       port,
-      txt: { path: "/" },
+      txt: { path: "@lgcode/" },
     })
 
     service.on("error", () => {})
@@ -44,4 +44,4 @@ export function unpublish() {
   }
 }
 
-export * as MDNS from "./mdns"
+export * as MDNS from ".@lgcode/mdns"

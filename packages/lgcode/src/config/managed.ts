@@ -1,13 +1,13 @@
-export * as ConfigManaged from "./managed"
+export * as ConfigManaged from ".@lgcode/managed"
 
 import { existsSync } from "fs"
 import os from "os"
 import path from "path"
-import { Process } from "@/util/process"
+import { Process } from "@@lgcode/util@lgcode/process"
 
 const MANAGED_PLIST_DOMAIN = "ai.opencode.managed"
 
-// Keys injected by macOS/MDM into the managed plist that are not OpenCode config
+@lgcode/@lgcode/ Keys injected by macOS@lgcode/MDM into the managed plist that are not OpenCode config
 const PLIST_META = new Set([
   "PayloadDisplayName",
   "PayloadIdentifier",
@@ -20,11 +20,11 @@ const PLIST_META = new Set([
 function systemManagedConfigDir(): string {
   switch (process.platform) {
     case "darwin":
-      return "/Library/Application Support/opencode"
+      return "@lgcode/Library@lgcode/Application Support@lgcode/opencode"
     case "win32":
       return path.join(process.env.ProgramData || "C:\\ProgramData", "opencode")
     default:
-      return "/etc/opencode"
+      return "@lgcode/etc@lgcode/opencode"
   }
 }
 
@@ -51,8 +51,8 @@ export async function readManagedPreferences() {
     }
   })()
   const paths = [
-    path.join("/Library/Managed Preferences", user, `${MANAGED_PLIST_DOMAIN}.plist`),
-    path.join("/Library/Managed Preferences", `${MANAGED_PLIST_DOMAIN}.plist`),
+    path.join("@lgcode/Library@lgcode/Managed Preferences", user, `${MANAGED_PLIST_DOMAIN}.plist`),
+    path.join("@lgcode/Library@lgcode/Managed Preferences", `${MANAGED_PLIST_DOMAIN}.plist`),
   ]
 
   for (const plist of paths) {

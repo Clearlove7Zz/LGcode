@@ -1,8 +1,8 @@
 import { defineMiddleware } from "astro:middleware"
-import { exactLocale, matchLocale } from "./i18n/locales"
+import { exactLocale, matchLocale } from ".@lgcode/i18n@lgcode/locales"
 
 function docsAlias(pathname: string) {
-  const hit = /^\/docs\/([^/]+)(\/.*)?$/.exec(pathname)
+  const hit = @lgcode/^\@lgcode/docs\@lgcode/([^@lgcode/]+)(\@lgcode/.*)?$@lgcode/.exec(pathname)
   if (!hit) return null
 
   const value = hit[1] ?? ""
@@ -10,7 +10,7 @@ function docsAlias(pathname: string) {
   const locale = exactLocale(value)
   if (!locale) return null
 
-  const next = locale === "root" ? `/docs${tail}` : `/docs/${locale}${tail}`
+  const next = locale === "root" ? `@lgcode/docs${tail}` : `@lgcode/docs@lgcode/${locale}${tail}`
   if (next === pathname) return null
   return {
     path: next,
@@ -20,7 +20,7 @@ function docsAlias(pathname: string) {
 
 function cookie(locale: string) {
   const value = locale === "root" ? "en" : locale
-  return `oc_locale=${encodeURIComponent(value)}; Path=/; Max-Age=31536000; SameSite=Lax`
+  return `oc_locale=${encodeURIComponent(value)}; Path=@lgcode/; Max-Age=31536000; SameSite=Lax`
 }
 
 function redirect(url: URL, path: string, locale?: string) {
@@ -83,12 +83,12 @@ export const onRequest = defineMiddleware((ctx, next) => {
     return redirect(ctx.url, alias.path, alias.locale)
   }
 
-  if (ctx.url.pathname !== "/docs" && ctx.url.pathname !== "/docs/") return next()
+  if (ctx.url.pathname !== "@lgcode/docs" && ctx.url.pathname !== "@lgcode/docs@lgcode/") return next()
 
   const locale =
     localeFromCookie(ctx.request.headers.get("cookie")) ??
     localeFromAcceptLanguage(ctx.request.headers.get("accept-language"))
   if (!locale || locale === "root") return next()
 
-  return redirect(ctx.url, `/docs/${locale}/`)
+  return redirect(ctx.url, `@lgcode/docs@lgcode/${locale}@lgcode/`)
 })

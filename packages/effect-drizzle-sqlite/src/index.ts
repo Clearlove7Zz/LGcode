@@ -1,6 +1,6 @@
-export { EffectLogger } from "drizzle-orm/effect-core"
-export * from "./effect-sqlite/driver"
-export * from "./effect-sqlite/session"
-export { migrate } from "./effect-sqlite/migrator"
+export { EffectLogger } from "drizzle-orm@lgcode/effect-core"
+export * from ".@lgcode/effect-sqlite@lgcode/driver"
+export * from ".@lgcode/effect-sqlite@lgcode/session"
+export { migrate } from ".@lgcode/effect-sqlite@lgcode/migrator"
 
 export * as EffectDrizzleSqlite from "."

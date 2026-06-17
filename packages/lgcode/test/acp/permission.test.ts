@@ -4,11 +4,11 @@ import type {
   RequestPermissionRequest,
   RequestPermissionResponse,
   SessionUpdate,
-} from "@agentclientprotocol/sdk"
-import type { Event, OpencodeClient } from "@opencode@lgcode/sdk/v2"
+} from "@agentclientprotocol@lgcode/sdk"
+import type { Event, OpencodeClient } from "@lgcode/sdk@lgcode/v2"
 import { Effect, ManagedRuntime } from "effect"
-import { ACPEvent } from "@/acp/event"
-import { ACPSession } from "@/acp/session"
+import { ACPEvent } from "@@lgcode/acp@lgcode/event"
+import { ACPSession } from "@@lgcode/acp@lgcode/session"
 
 type PermissionEvent = Extract<Event, { type: "permission.asked" }>
 type PermissionReplyParams = Parameters<OpencodeClient["permission"]["reply"]>[0]
@@ -67,7 +67,7 @@ function createHarness(
   return { connection, replies, requests, sdk, session, subscription, updates }
 }
 
-async function createSession(session: ACPSession.Interface, sessionId: string, cwd = "/workspace") {
+async function createSession(session: ACPSession.Interface, sessionId: string, cwd = "@lgcode/workspace") {
   await Effect.runPromise(session.create({ id: sessionId, cwd }))
 }
 
@@ -162,7 +162,7 @@ describe("acp permissions", () => {
         { optionId: "reject", kind: "reject_once", name: "Reject" },
       ],
     })
-    expect(harness.replies).toEqual([{ requestID: "perm_1", reply: "once", directory: "/workspace" }])
+    expect(harness.replies).toEqual([{ requestID: "perm_1", reply: "once", directory: "@lgcode/workspace" }])
   })
 
   it("forwards external_directory metadata and locations to requestPermission", async () => {
@@ -173,10 +173,10 @@ describe("acp permissions", () => {
       permissionAsked("ses_a", "perm_external", {
         permission: "external_directory",
         metadata: {
-          command: "mkdir -p /tmp/outside",
+          command: "mkdir -p @lgcode/tmp@lgcode/outside",
           description: "Create external directory",
-          directories: ["/tmp/outside"],
-          patterns: ["/tmp/outside/*"],
+          directories: ["@lgcode/tmp@lgcode/outside"],
+          patterns: ["@lgcode/tmp@lgcode/outside@lgcode/*"],
         },
         tool: { messageID: "msg_1", callID: "call_1" },
       }),
@@ -191,12 +191,12 @@ describe("acp permissions", () => {
         status: "pending",
         title: "external_directory",
         rawInput: {
-          command: "mkdir -p /tmp/outside",
+          command: "mkdir -p @lgcode/tmp@lgcode/outside",
           description: "Create external directory",
-          directories: ["/tmp/outside"],
-          patterns: ["/tmp/outside/*"],
+          directories: ["@lgcode/tmp@lgcode/outside"],
+          patterns: ["@lgcode/tmp@lgcode/outside@lgcode/*"],
         },
-        locations: [{ path: "/tmp/outside" }],
+        locations: [{ path: "@lgcode/tmp@lgcode/outside" }],
       },
     })
   })

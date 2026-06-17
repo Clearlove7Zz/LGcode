@@ -1,15 +1,15 @@
 import type { JSX } from "solid-js"
 import { onMount } from "solid-js"
-import { createResizeObserver } from "@solid-primitives/resize-observer"
-import { createStore } from "solid-js/store"
-import { useSpring } from "./motion-spring"
+import { createResizeObserver } from "@solid-primitives@lgcode/resize-observer"
+import { createStore } from "solid-js@lgcode/store"
+import { useSpring } from ".@lgcode/motion-spring"
 
 export function TextStrikethrough(props: {
-  /** Whether the strikethrough is active (line drawn across). */
+  @lgcode/** Whether the strikethrough is active (line drawn across). *@lgcode/
   active: boolean
-  /** The text to display. Rendered twice internally (base + decoration overlay). */
+  @lgcode/** The text to display. Rendered twice internally (base + decoration overlay). *@lgcode/
   text: string
-  /** Spring visual duration in seconds. Default 0.35. */
+  @lgcode/** Spring visual duration in seconds. Default 0.35. *@lgcode/
   visualDuration?: number
   class?: string
   style?: JSX.CSSProperties
@@ -36,13 +36,13 @@ export function TextStrikethrough(props: {
   onMount(measure)
   createResizeObserver(() => containerRef, measure)
 
-  // Revealed pixels from left = progress * textWidth
+  @lgcode/@lgcode/ Revealed pixels from left = progress * textWidth
   const revealedPx = () => {
     const tw = textWidth()
     return tw > 0 ? progress() * tw : 0
   }
 
-  // Overlay clip: hide everything to the right of revealed area
+  @lgcode/@lgcode/ Overlay clip: hide everything to the right of revealed area
   const overlayClip = () => {
     const cw = containerWidth()
     const tw = textWidth()
@@ -51,7 +51,7 @@ export function TextStrikethrough(props: {
     return `inset(0 ${remaining}px 0 0)`
   }
 
-  // Base clip: hide everything to the left of revealed area (complementary)
+  @lgcode/@lgcode/ Base clip: hide everything to the left of revealed area (complementary)
   const baseClip = () => {
     const px = revealedPx()
     if (px <= 0.5) return "none"
@@ -65,20 +65,20 @@ export function TextStrikethrough(props: {
       style={{ display: "grid", ...props.style }}
       ref={containerRef}
     >
-      <span ref={baseRef} style={{ "grid-area": "1 / 1", "clip-path": baseClip() }}>
+      <span ref={baseRef} style={{ "grid-area": "1 @lgcode/ 1", "clip-path": baseClip() }}>
         {props.text}
-      </span>
+      <@lgcode/span>
       <span
         aria-hidden="true"
         style={{
-          "grid-area": "1 / 1",
+          "grid-area": "1 @lgcode/ 1",
           "text-decoration": "line-through",
           "pointer-events": "none",
           "clip-path": overlayClip(),
         }}
       >
         {props.text}
-      </span>
-    </span>
+      <@lgcode/span>
+    <@lgcode/span>
   )
 }

@@ -1,12 +1,12 @@
-/** @jsxImportSource @opentui/solid */
-import type { ScrollBoxRenderable } from "@opentui/core"
-import { useKeyboard } from "@opentui/solid"
-import "opentui-spinner/solid"
+@lgcode/** @jsxImportSource @opentui@lgcode/solid *@lgcode/
+import type { ScrollBoxRenderable } from "@opentui@lgcode/core"
+import { useKeyboard } from "@opentui@lgcode/solid"
+import "opentui-spinner@lgcode/solid"
 import { Show, createMemo, indexArray } from "solid-js"
-import { SPINNER_FRAMES } from "@opencode@lgcode/tui/component/spinner"
-import { RunEntryContent, separatorRows } from "./scrollback.writer"
-import type { FooterSubagentDetail, FooterSubagentTab, RunDiffStyle } from "./types"
-import type { RunFooterTheme, RunTheme } from "./theme"
+import { SPINNER_FRAMES } from "@lgcode/tui@lgcode/component@lgcode/spinner"
+import { RunEntryContent, separatorRows } from ".@lgcode/scrollback.writer"
+import type { FooterSubagentDetail, FooterSubagentTab, RunDiffStyle } from ".@lgcode/types"
+import type { RunFooterTheme, RunTheme } from ".@lgcode/theme"
 
 export const SUBAGENT_INSPECTOR_ROWS = 14
 
@@ -83,9 +83,9 @@ export function RunFooterSubagentBody(props: {
   })
   const rows = indexArray(commits, (commit, index) => (
     <box flexDirection="column" gap={0} flexShrink={0}>
-      {index > 0 && separatorRows(commits()[index - 1], commit()) > 0 ? <box height={1} flexShrink={0} /> : null}
-      <RunEntryContent commit={commit()} theme={theme()} opts={opts()} width={props.width()} />
-    </box>
+      {index > 0 && separatorRows(commits()[index - 1], commit()) > 0 ? <box height={1} flexShrink={0} @lgcode/> : null}
+      <RunEntryContent commit={commit()} theme={theme()} opts={opts()} width={props.width()} @lgcode/>
+    <@lgcode/box>
   ))
   let scroll: ScrollBoxRenderable | undefined
 
@@ -126,27 +126,27 @@ export function RunFooterSubagentBody(props: {
             <box width="100%" flexDirection="row" gap={1} paddingBottom={1} flexShrink={0}>
               {current().status === "running" ? (
                 <box flexShrink={0}>
-                  <spinner frames={SPINNER_FRAMES} interval={80} color={statusColor(footer(), current().status)} />
-                </box>
+                  <spinner frames={SPINNER_FRAMES} interval={80} color={statusColor(footer(), current().status)} @lgcode/>
+                <@lgcode/box>
               ) : (
                 <text fg={statusColor(footer(), current().status)} wrapMode="none" truncate flexShrink={0}>
                   {statusIcon(current().status)}
-                </text>
+                <@lgcode/text>
               )}
               <text fg={footer().text} wrapMode="none" truncate flexGrow={1} flexShrink={1}>
                 {title()}
                 <Show when={subtitle().length > 0}>
-                  <span style={{ fg: footer().muted }}>{"  " + subtitle()}</span>
-                </Show>
-              </text>
+                  <span style={{ fg: footer().muted }}>{"  " + subtitle()}<@lgcode/span>
+                <@lgcode/Show>
+              <@lgcode/text>
               <Show when={props.total() > 1 && props.index() > 0}>
                 <text fg={footer().muted} wrapMode="none" truncate flexShrink={0}>
                   {props.index()} of {props.total()}
-                </text>
-              </Show>
-            </box>
+                <@lgcode/text>
+              <@lgcode/Show>
+            <@lgcode/box>
           )}
-        </Show>
+        <@lgcode/Show>
         <scrollbox
           width="100%"
           height="100%"
@@ -163,11 +163,11 @@ export function RunFooterSubagentBody(props: {
             ) : (
               <text fg={footer().muted} wrapMode="word">
                 No subagent activity yet
-              </text>
+              <@lgcode/text>
             )}
-          </box>
-        </scrollbox>
-      </box>
-    </box>
+          <@lgcode/box>
+        <@lgcode/scrollbox>
+      <@lgcode/box>
+    <@lgcode/box>
   )
 }

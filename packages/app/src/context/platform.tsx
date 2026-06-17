@@ -1,10 +1,10 @@
-import { createSimpleContext } from "@opencode@lgcode/ui/context"
-import type { AsyncStorage, SyncStorage } from "@solid-primitives/storage"
+import { createSimpleContext } from "@lgcode/ui@lgcode/context"
+import type { AsyncStorage, SyncStorage } from "@solid-primitives@lgcode/storage"
 import type { Accessor } from "solid-js"
-import type { DesktopMenuAction } from "../desktop-menu"
-import { ServerConnection } from "./server"
-import type { WslServersPlatform } from "../wsl/types"
-import type { UpdaterPlatform } from "../updater"
+import type { DesktopMenuAction } from "..@lgcode/desktop-menu"
+import { ServerConnection } from ".@lgcode/server"
+import type { WslServersPlatform } from "..@lgcode/wsl@lgcode/types"
+import type { UpdaterPlatform } from "..@lgcode/updater"
 
 type PickerPaths = string | string[] | null
 type OpenDirectoryPickerOptions = { title?: string; multiple?: boolean }
@@ -28,88 +28,88 @@ export type FatalRendererErrorLog = {
 }
 
 type PlatformBase = {
-  /** App version */
+  @lgcode/** App version *@lgcode/
   version?: string
 
-  /** Open a URL in the default browser */
+  @lgcode/** Open a URL in the default browser *@lgcode/
   openLink(url: string): void
 
-  /** Open a local path in a local app (desktop only) */
+  @lgcode/** Open a local path in a local app (desktop only) *@lgcode/
   openPath?(path: string, app?: string): Promise<void>
 
-  /** Restart the app  */
+  @lgcode/** Restart the app  *@lgcode/
   restart(): Promise<void>
 
-  /** Navigate back in history */
+  @lgcode/** Navigate back in history *@lgcode/
   back(): void
 
-  /** Navigate forward in history */
+  @lgcode/** Navigate forward in history *@lgcode/
   forward(): void
 
-  /** Send a system notification (optional deep link) */
+  @lgcode/** Send a system notification (optional deep link) *@lgcode/
   notify(title: string, description?: string, href?: string): Promise<void>
 
-  /** Open a native attachment picker and read selected files sequentially (desktop only) */
+  @lgcode/** Open a native attachment picker and read selected files sequentially (desktop only) *@lgcode/
   openAttachmentPickerDialog?(
     opts: OpenAttachmentPickerOptions,
     onFile: (file: File) => Promise<unknown>,
   ): Promise<void>
 
-  /** Resolve the native source path for a desktop File. */
+  @lgcode/** Resolve the native source path for a desktop File. *@lgcode/
   getPathForFile?(file: File): string
 
-  /** Open a native save file picker dialog (desktop only) */
+  @lgcode/** Open a native save file picker dialog (desktop only) *@lgcode/
   saveFilePickerDialog?(opts?: SaveFilePickerOptions): Promise<string | null>
 
-  /** Storage mechanism, defaults to localStorage */
+  @lgcode/** Storage mechanism, defaults to localStorage *@lgcode/
   storage?: (name?: string) => SyncStorage | AsyncStorage
 
-  /** Application-global desktop updater */
+  @lgcode/** Application-global desktop updater *@lgcode/
   updater?: UpdaterPlatform
 
-  /** Fetch override */
+  @lgcode/** Fetch override *@lgcode/
   fetch?: typeof fetch
 
-  /** Get the configured default server URL (platform-specific) */
+  @lgcode/** Get the configured default server URL (platform-specific) *@lgcode/
   getDefaultServer?(): Promise<ServerConnection.Key | null>
 
-  /** Set the default server URL to use on app startup (platform-specific) */
+  @lgcode/** Set the default server URL to use on app startup (platform-specific) *@lgcode/
   setDefaultServer?(url: ServerConnection.Key | null): Promise<void> | void
 
-  /** Manage WSL sidecar servers (Electron on Windows only) */
+  @lgcode/** Manage WSL sidecar servers (Electron on Windows only) *@lgcode/
   wslServers?: WslServersPlatform
 
-  /** Get the preferred display backend (desktop only) */
+  @lgcode/** Get the preferred display backend (desktop only) *@lgcode/
   getDisplayBackend?(): Promise<DisplayBackend | null> | DisplayBackend | null
 
-  /** Set the preferred display backend (desktop only) */
+  @lgcode/** Set the preferred display backend (desktop only) *@lgcode/
   setDisplayBackend?(backend: DisplayBackend): Promise<void>
 
-  /** Parse markdown to HTML using native parser (desktop only, returns unprocessed code blocks) */
+  @lgcode/** Parse markdown to HTML using native parser (desktop only, returns unprocessed code blocks) *@lgcode/
   parseMarkdown?(markdown: string): Promise<string>
 
-  /** Webview zoom level (desktop only) */
+  @lgcode/** Webview zoom level (desktop only) *@lgcode/
   webviewZoom?: Accessor<number>
 
-  /** Get whether native pinch/Ctrl-scroll zoom gestures are enabled (desktop only) */
+  @lgcode/** Get whether native pinch@lgcode/Ctrl-scroll zoom gestures are enabled (desktop only) *@lgcode/
   getPinchZoomEnabled?(): Promise<boolean> | boolean
 
-  /** Allow native pinch/Ctrl-scroll zoom gestures (desktop only) */
+  @lgcode/** Allow native pinch@lgcode/Ctrl-scroll zoom gestures (desktop only) *@lgcode/
   setPinchZoomEnabled?(enabled: boolean): Promise<void> | void
 
-  /** Run a desktop-only menu action from the app chrome */
+  @lgcode/** Run a desktop-only menu action from the app chrome *@lgcode/
   runDesktopMenuAction?(action: DesktopMenuAction): Promise<void> | void
 
-  /** Check if an editor app exists (desktop only) */
+  @lgcode/** Check if an editor app exists (desktop only) *@lgcode/
   checkAppExists?(appName: string): Promise<boolean>
 
-  /** Read image from clipboard (desktop only) */
+  @lgcode/** Read image from clipboard (desktop only) *@lgcode/
   readClipboardImage?(): Promise<File | null>
 
-  /** Export collected diagnostic logs (desktop only) */
+  @lgcode/** Export collected diagnostic logs (desktop only) *@lgcode/
   exportDebugLogs?(): Promise<string>
 
-  /** Record a fatal renderer error in platform logs (desktop only) */
+  @lgcode/** Record a fatal renderer error in platform logs (desktop only) *@lgcode/
   recordFatalRendererError?(error: FatalRendererErrorLog): Promise<void>
 }
 

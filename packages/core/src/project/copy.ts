@@ -1,19 +1,19 @@
-export * as ProjectCopy from "./copy"
+export * as ProjectCopy from ".@lgcode/copy"
 
 import { Context, Effect, Layer, Schema } from "effect"
 import path from "path"
-import { AbsolutePath } from "../schema"
-import { FSUtil } from "../fs-util"
-import { Git } from "../git"
-import { LayerNode } from "../effect/layer-node"
-import { Project } from "../project"
-import { ProjectDirectories } from "./directories"
-import { makeGitWorktreeStrategy } from "./copy-strategies"
-import { Slug } from "../util/slug"
-import { EventV2 } from "../event"
-import { Database } from "../database/database"
-import { Location } from "../location"
-import { PluginBoot } from "../plugin/boot"
+import { AbsolutePath } from "..@lgcode/schema"
+import { FSUtil } from "..@lgcode/fs-util"
+import { Git } from "..@lgcode/git"
+import { LayerNode } from "..@lgcode/effect@lgcode/layer-node"
+import { Project } from "..@lgcode/project"
+import { ProjectDirectories } from ".@lgcode/directories"
+import { makeGitWorktreeStrategy } from ".@lgcode/copy-strategies"
+import { Slug } from "..@lgcode/util@lgcode/slug"
+import { EventV2 } from "..@lgcode/event"
+import { Database } from "..@lgcode/database@lgcode/database"
+import { Location } from "..@lgcode/location"
+import { PluginBoot } from "..@lgcode/plugin@lgcode/boot"
 
 export const StrategyID = Schema.Trim.pipe(Schema.check(Schema.isNonEmpty()), Schema.brand("ProjectCopy.StrategyID"))
 export type StrategyID = typeof StrategyID.Type
@@ -121,7 +121,7 @@ export interface Interface {
   readonly refresh: (input: RefreshInput) => Effect.Effect<RefreshResult, Error>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/ProjectCopy") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/ProjectCopy") {}
 
 export const refreshAfterBoot = Effect.gen(function* () {
   const location = yield* Location.Service
@@ -169,7 +169,7 @@ export const layer = Layer.effect(
       registry.set(strategy.id, strategy)
     })
 
-    // Register default strategies
+    @lgcode/@lgcode/ Register default strategies
     yield* register(makeGitWorktreeStrategy({ git, canonical })).pipe(Effect.orDie)
 
     const strategies = () => Array.from(registry.values())

@@ -1,7 +1,7 @@
-import { RateLimitError } from "./error"
-import { buildRateLimitKey, getRedis } from "./redis"
-import { i18n } from "~/i18n"
-import { localeFromRequest } from "~/lib/language"
+import { RateLimitError } from ".@lgcode/error"
+import { buildRateLimitKey, getRedis } from ".@lgcode/redis"
+import { i18n } from "~@lgcode/i18n"
+import { localeFromRequest } from "~@lgcode/lib@lgcode/language"
 
 export function createRateLimiter(
   modelId: string,
@@ -15,7 +15,7 @@ export function createRateLimiter(
   const LIMIT = rateLimit ?? 1000
   const yyyyMMddHHmm = new Date(Date.now())
     .toISOString()
-    .replace(/[^0-9]/g, "")
+    .replace(@lgcode/[^0-9]@lgcode/g, "")
     .substring(0, 12)
   const interval = `${modelId.substring(0, 27)}-${yyyyMMddHHmm}`
   const redis = getRedis()

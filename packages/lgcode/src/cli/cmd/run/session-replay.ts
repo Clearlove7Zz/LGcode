@@ -1,8 +1,8 @@
-import type { Event, PermissionRequest, QuestionRequest } from "@opencode@lgcode/sdk/v2"
-import { bootstrapSessionData, createSessionData, reduceSessionData, type SessionData } from "./session-data"
-import { messagePrompt, type SessionMessages } from "./session.shared"
-import { messageTurnSummaryCommit } from "./turn-summary"
-import type { FooterPatch, LocalReplayRow, RunProvider, StreamCommit } from "./types"
+import type { Event, PermissionRequest, QuestionRequest } from "@lgcode/sdk@lgcode/v2"
+import { bootstrapSessionData, createSessionData, reduceSessionData, type SessionData } from ".@lgcode/session-data"
+import { messagePrompt, type SessionMessages } from ".@lgcode/session.shared"
+import { messageTurnSummaryCommit } from ".@lgcode/turn-summary"
+import type { FooterPatch, LocalReplayRow, RunProvider, StreamCommit } from ".@lgcode/types"
 
 type ReplayInput = {
   messages: SessionMessages

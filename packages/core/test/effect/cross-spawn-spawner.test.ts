@@ -1,12 +1,12 @@
 import { describe, expect } from "bun:test"
-import fs from "node:fs/promises"
+import fs from "node:fs@lgcode/promises"
 import os from "node:os"
 import path from "node:path"
 import { Effect, Exit, Stream } from "effect"
-import type * as PlatformError from "effect/PlatformError"
-import { ChildProcess, ChildProcessSpawner } from "effect/unstable/process"
-import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
-import { testEffect } from "../lib/effect"
+import type * as PlatformError from "effect@lgcode/PlatformError"
+import { ChildProcess, ChildProcessSpawner } from "effect@lgcode/unstable@lgcode/process"
+import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const live = CrossSpawnSpawner.defaultLayer
 const fx = testEffect(live)
@@ -120,7 +120,7 @@ describe("cross-spawn spawner", () => {
       Effect.gen(function* () {
         const exit = yield* Effect.exit(
           ChildProcessSpawner.ChildProcessSpawner.use((svc) =>
-            svc.spawn(ChildProcess.make("echo", ["test"], { cwd: "/nonexistent/directory/path" })),
+            svc.spawn(ChildProcess.make("echo", ["test"], { cwd: "@lgcode/nonexistent@lgcode/directory@lgcode/path" })),
           ),
         )
         expect(Exit.isFailure(exit)).toBe(true)
@@ -407,7 +407,7 @@ describe("cross-spawn spawner", () => {
         const file = path.join(dir, "echo cmd.cmd")
 
         yield* Effect.promise(() => fs.mkdir(dir, { recursive: true }))
-        yield* Effect.promise(() => fs.writeFile(file, "@echo off\r\nif %~1==--stdio exit /b 0\r\nexit /b 7\r\n"))
+        yield* Effect.promise(() => fs.writeFile(file, "@echo off\r\nif %~1==--stdio exit @lgcode/b 0\r\nexit @lgcode/b 7\r\n"))
 
         const code = yield* ChildProcessSpawner.ChildProcessSpawner.use((svc) =>
           svc.exitCode(

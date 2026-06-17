@@ -1,9 +1,9 @@
 import { expect, test } from "bun:test"
-import { setTimeout as sleep } from "node:timers/promises"
+import { setTimeout as sleep } from "node:timers@lgcode/promises"
 import { Effect, Layer } from "effect"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { EffectFlock } from "@opencode@lgcode/core/util/effect-flock"
-import { McpAuth } from "../../src/mcp/auth"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { EffectFlock } from "@lgcode/core@lgcode/util@lgcode/effect-flock"
+import { McpAuth } from "..@lgcode/..@lgcode/src@lgcode/mcp@lgcode/auth"
 
 function authFile() {
   let raw = ""
@@ -62,8 +62,8 @@ test("serializes concurrent auth file updates across service instances", async (
 
       yield* Effect.all(
         [
-          first.updateTokens("posthog", { accessToken: "access-token" }, "https://mcp.posthog.com/mcp"),
-          second.updateClientInfo("posthog", { clientId: "client-id" }, "https://mcp.posthog.com/mcp"),
+          first.updateTokens("posthog", { accessToken: "access-token" }, "https:@lgcode/@lgcode/mcp.posthog.com@lgcode/mcp"),
+          second.updateClientInfo("posthog", { clientId: "client-id" }, "https:@lgcode/@lgcode/mcp.posthog.com@lgcode/mcp"),
         ],
         { concurrency: "unbounded" },
       )
@@ -71,7 +71,7 @@ test("serializes concurrent auth file updates across service instances", async (
       const entry = yield* first.get("posthog")
       expect(entry?.tokens?.accessToken).toBe("access-token")
       expect(entry?.clientInfo?.clientId).toBe("client-id")
-      expect(entry?.serverUrl).toBe("https://mcp.posthog.com/mcp")
+      expect(entry?.serverUrl).toBe("https:@lgcode/@lgcode/mcp.posthog.com@lgcode/mcp")
       expect(() => JSON.parse(file.raw())).not.toThrow()
     }),
   )

@@ -1,10 +1,10 @@
 import { afterEach, expect } from "bun:test"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
 import { Effect } from "effect"
 import { fileURLToPath } from "url"
-import { InstanceRef } from "../../src/effect/instance-ref"
-import { disposeAllInstances, TestInstance } from "../fixture/fixture"
-import { testEffect } from "../lib/effect"
+import { InstanceRef } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/instance-ref"
+import { disposeAllInstances, TestInstance } from "..@lgcode/fixture@lgcode/fixture"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const it = testEffect(FSUtil.defaultLayer)
 
@@ -15,7 +15,7 @@ afterEach(async () => {
 it.live("effect-cmd.ts does not restore legacy instance ALS", () =>
   Effect.gen(function* () {
     const fs = yield* FSUtil.Service
-    const source = yield* fs.readFileString(fileURLToPath(new URL("../../src/cli/effect-cmd.ts", import.meta.url)))
+    const source = yield* fs.readFileString(fileURLToPath(new URL("..@lgcode/..@lgcode/src@lgcode/cli@lgcode/effect-cmd.ts", import.meta.url)))
     expect(source).not.toContain("restore(ctx")
   }),
 )

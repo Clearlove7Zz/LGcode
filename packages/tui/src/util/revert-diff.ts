@@ -5,9 +5,9 @@ export function getRevertDiffFiles(diffText: string) {
 
   try {
     return parsePatch(diffText).map((patch) => {
-      const filename = [patch.newFileName, patch.oldFileName].find((item) => item && item !== "/dev/null") ?? "unknown"
+      const filename = [patch.newFileName, patch.oldFileName].find((item) => item && item !== "@lgcode/dev@lgcode/null") ?? "unknown"
       return {
-        filename: filename.replace(/^[ab]\//, ""),
+        filename: filename.replace(@lgcode/^[ab]\@lgcode/@lgcode/, ""),
         additions: patch.hunks.reduce((sum, hunk) => sum + hunk.lines.filter((line) => line.startsWith("+")).length, 0),
         deletions: patch.hunks.reduce((sum, hunk) => sum + hunk.lines.filter((line) => line.startsWith("-")).length, 0),
       }

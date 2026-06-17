@@ -1,17 +1,17 @@
-import { NodeHttpServer } from "@effect/platform-node"
-import { Session } from "@/session/session"
+import { NodeHttpServer } from "@effect@lgcode/platform-node"
+import { Session } from "@@lgcode/session@lgcode/session"
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { HttpClient, HttpClientRequest, HttpRouter } from "effect/unstable/http"
-import { HttpApi, HttpApiBuilder } from "effect/unstable/httpapi"
-import { McpApi, McpPaths } from "../../src/server/routes/instance/httpapi/groups/mcp"
-import { Authorization } from "../../src/server/routes/instance/httpapi/middleware/authorization"
-import { InstanceContextMiddleware } from "../../src/server/routes/instance/httpapi/middleware/instance-context"
+import { HttpClient, HttpClientRequest, HttpRouter } from "effect@lgcode/unstable@lgcode/http"
+import { HttpApi, HttpApiBuilder } from "effect@lgcode/unstable@lgcode/httpapi"
+import { McpApi, McpPaths } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/mcp"
+import { Authorization } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/middleware@lgcode/authorization"
+import { InstanceContextMiddleware } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/middleware@lgcode/instance-context"
 import {
   WorkspaceRouteContext,
   WorkspaceRoutingMiddleware,
-} from "../../src/server/routes/instance/httpapi/middleware/workspace-routing"
-import { testEffect } from "../lib/effect"
+} from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/middleware@lgcode/workspace-routing"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const TestHttpApi = HttpApi.make("opencode-instance").addHttpApi(McpApi)
 const fakeSession = Layer.mock(Session.Service)({})
@@ -21,7 +21,7 @@ const testMcpHandlers = HttpApiBuilder.group(TestHttpApi, "mcp", (handlers) =>
       .handle("status", () => Effect.die("unexpected MCP status"))
       .handle("add", () => Effect.die("unexpected MCP add"))
       .handle("authStart", () =>
-        Effect.succeed({ authorizationUrl: "https://auth.example/start", oauthState: "state-123" }),
+        Effect.succeed({ authorizationUrl: "https:@lgcode/@lgcode/auth.example@lgcode/start", oauthState: "state-123" }),
       )
       .handle("authCallback", () => Effect.die("unexpected MCP authCallback"))
       .handle("authAuthenticate", () => Effect.die("unexpected MCP authAuthenticate"))
@@ -65,7 +65,7 @@ describe("mcp HttpApi OAuth", () => {
 
       expect(response.status).toBe(200)
       expect(yield* response.json).toEqual({
-        authorizationUrl: "https://auth.example/start",
+        authorizationUrl: "https:@lgcode/@lgcode/auth.example@lgcode/start",
         oauthState: "state-123",
       })
     }),

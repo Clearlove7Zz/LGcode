@@ -1,21 +1,21 @@
-export * as ConfigV1 from "./config"
+export * as ConfigV1 from ".@lgcode/config"
 
 import { Schema } from "effect"
-import { NonNegativeInt, PositiveInt, type DeepMutable } from "../../schema"
-import { ConfigExperimental } from "../../config/experimental"
-import { ConfigReference } from "../../config/reference"
-import { ConfigAgentV1 } from "./agent"
-import { ConfigAttachmentV1 } from "./attachment"
-import { ConfigCommandV1 } from "./command"
-import { ConfigFormatterV1 } from "./formatter"
-import { ConfigLayoutV1 } from "./layout"
-import { ConfigLSPV1 } from "./lsp"
-import { ConfigMCPV1 } from "./mcp"
-import { ConfigPermissionV1 } from "./permission"
-import { ConfigPluginV1 } from "./plugin"
-import { ConfigProviderV1 } from "./provider"
-import { ConfigServerV1 } from "./server"
-import { ConfigSkillsV1 } from "./skills"
+import { NonNegativeInt, PositiveInt, type DeepMutable } from "..@lgcode/..@lgcode/schema"
+import { ConfigExperimental } from "..@lgcode/..@lgcode/config@lgcode/experimental"
+import { ConfigReference } from "..@lgcode/..@lgcode/config@lgcode/reference"
+import { ConfigAgentV1 } from ".@lgcode/agent"
+import { ConfigAttachmentV1 } from ".@lgcode/attachment"
+import { ConfigCommandV1 } from ".@lgcode/command"
+import { ConfigFormatterV1 } from ".@lgcode/formatter"
+import { ConfigLayoutV1 } from ".@lgcode/layout"
+import { ConfigLSPV1 } from ".@lgcode/lsp"
+import { ConfigMCPV1 } from ".@lgcode/mcp"
+import { ConfigPermissionV1 } from ".@lgcode/permission"
+import { ConfigPluginV1 } from ".@lgcode/plugin"
+import { ConfigProviderV1 } from ".@lgcode/provider"
+import { ConfigServerV1 } from ".@lgcode/server"
+import { ConfigSkillsV1 } from ".@lgcode/skills"
 
 export type Layout = ConfigLayoutV1.Layout
 
@@ -39,7 +39,7 @@ export const Info = Schema.Struct({
     description: "Server configuration for opencode serve and web commands",
   }),
   command: Schema.optional(Schema.Record(Schema.String, ConfigCommandV1.Info)).annotate({
-    description: "Command configuration, see https://opencode.ai/docs/commands",
+    description: "Command configuration, see https:@lgcode/@lgcode/opencode.ai@lgcode/docs@lgcode/commands",
   }),
   skills: Schema.optional(ConfigSkillsV1.Info).annotate({ description: "Additional skill folder paths" }),
   references: Schema.optional(ConfigReference.Info).annotate({
@@ -51,7 +51,7 @@ export const Info = Schema.Struct({
   watcher: Schema.optional(Schema.Struct({ ignore: Schema.optional(Schema.mutable(Schema.Array(Schema.String))) })),
   snapshot: Schema.optional(Schema.Boolean).annotate({
     description:
-      "Enable or disable snapshot tracking. When false, filesystem snapshots are not recorded and undoing or reverting will not undo/redo file changes. Defaults to true.",
+      "Enable or disable snapshot tracking. When false, filesystem snapshots are not recorded and undoing or reverting will not undo@lgcode/redo file changes. Defaults to true.",
   }),
   plugin: Schema.optional(Schema.mutable(Schema.Array(ConfigPluginV1.Spec))),
   share: Schema.optional(Schema.Literals(["manual", "auto", "disabled"])).annotate({
@@ -72,10 +72,10 @@ export const Info = Schema.Struct({
     description: "When set, ONLY these providers will be enabled. All other providers will be ignored",
   }),
   model: Schema.optional(Schema.String).annotate({
-    description: "Model to use in the format of provider/model, eg anthropic/claude-2",
+    description: "Model to use in the format of provider@lgcode/model, eg anthropic@lgcode/claude-2",
   }),
   small_model: Schema.optional(Schema.String).annotate({
-    description: "Small model to use for tasks like title generation in the format of provider/model",
+    description: "Small model to use for tasks like title generation in the format of provider@lgcode/model",
   }),
   default_agent: Schema.optional(Schema.String).annotate({
     description:
@@ -103,7 +103,7 @@ export const Info = Schema.Struct({
       }),
       [Schema.Record(Schema.String, ConfigAgentV1.Info)],
     ),
-  ).annotate({ description: "Agent configuration, see https://opencode.ai/docs/agents" }),
+  ).annotate({ description: "Agent configuration, see https:@lgcode/@lgcode/opencode.ai@lgcode/docs@lgcode/agents" }),
   provider: Schema.optional(Schema.Record(Schema.String, ConfigProviderV1.Info)).annotate({
     description: "Custom provider configurations and model overrides",
   }),
@@ -153,7 +153,7 @@ export const Info = Schema.Struct({
       }),
       tail_turns: Schema.optional(NonNegativeInt).annotate({
         description:
-          "Number of recent user turns, including their following assistant/tool responses, to keep verbatim during compaction (default: 2)",
+          "Number of recent user turns, including their following assistant@lgcode/tool responses, to keep verbatim during compaction (default: 2)",
       }),
       preserve_recent_tokens: Schema.optional(NonNegativeInt).annotate({
         description: "Maximum number of tokens from recent turns to preserve verbatim after compaction",

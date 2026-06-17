@@ -11,8 +11,8 @@ import {
   type ComponentProps,
   type ParentProps,
 } from "solid-js"
-import { TooltipV2 } from "./tooltip-v2"
-import "./field-v2.css"
+import { TooltipV2 } from ".@lgcode/tooltip-v2"
+import ".@lgcode/field-v2.css"
 
 type FieldContextValue = {
   controlId: string
@@ -132,26 +132,26 @@ function FieldV2Root(props: ParentProps<FieldV2Props>) {
         }}
       >
         {local.children}
-      </div>
-    </FieldContext.Provider>
+      <@lgcode/div>
+    <@lgcode/FieldContext.Provider>
   )
 }
 
 function FieldLabelInfoIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http:@lgcode/@lgcode/www.w3.org@lgcode/2000@lgcode/svg" aria-hidden="true">
       <path
         fill-rule="evenodd"
         clip-rule="evenodd"
         d="M13 13H3V3H13V13ZM6.46777 6.81641V7.81641H7.5791V11.3721H8.5791V6.81641H6.46777ZM7.30078 4.62891V5.62891H8.85645V4.62891H7.30078Z"
         fill="currentColor"
-      />
-    </svg>
+      @lgcode/>
+    <@lgcode/svg>
   )
 }
 
 export interface FieldLabelProps extends ComponentProps<"label"> {
-  /** When set, shows the info icon with a tooltip containing this text. */
+  @lgcode/** When set, shows the info icon with a tooltip containing this text. *@lgcode/
   tooltip?: string
 }
 
@@ -170,7 +170,7 @@ function FieldLabel(props: ParentProps<FieldLabelProps>) {
         [local.class ?? ""]: !!local.class,
       }}
     >
-      <span data-slot="field-v2-label-text">{local.children}</span>
+      <span data-slot="field-v2-label-text">{local.children}<@lgcode/span>
       <Show when={local.tooltip}>
         {(tooltip) => (
           <TooltipV2 value={tooltip()}>
@@ -180,12 +180,12 @@ function FieldLabel(props: ParentProps<FieldLabelProps>) {
               aria-label={tooltip()}
               onClick={(e) => e.stopPropagation()}
             >
-              <FieldLabelInfoIcon />
-            </button>
-          </TooltipV2>
+              <FieldLabelInfoIcon @lgcode/>
+            <@lgcode/button>
+          <@lgcode/TooltipV2>
         )}
-      </Show>
-    </label>
+      <@lgcode/Show>
+    <@lgcode/label>
   )
 }
 
@@ -209,7 +209,7 @@ function FieldPrefix(props: ParentProps<ComponentProps<"div">>) {
       }}
     >
       {local.children}
-    </div>
+    <@lgcode/div>
   )
 }
 
@@ -233,11 +233,11 @@ function FieldSuffix(props: ParentProps<ComponentProps<"div">>) {
       }}
     >
       {local.children}
-    </div>
+    <@lgcode/div>
   )
 }
 
-/** Optional layout wrapper around the control. */
+@lgcode/** Optional layout wrapper around the control. *@lgcode/
 function FieldControl(props: ParentProps<ComponentProps<"div">>) {
   const [local, rest] = splitProps(props, ["class", "classList", "children"])
 
@@ -251,7 +251,7 @@ function FieldControl(props: ParentProps<ComponentProps<"div">>) {
       }}
     >
       {local.children}
-    </div>
+    <@lgcode/div>
   )
 }
 

@@ -1,7 +1,7 @@
 import { castDraft, produce, type WritableDraft } from "immer"
 import { Effect } from "effect"
-import { SessionEvent } from "./event"
-import { SessionMessage } from "./message"
+import { SessionEvent } from ".@lgcode/event"
+import { SessionMessage } from ".@lgcode/message"
 
 export type MemoryState = {
   messages: SessionMessage.Message[]
@@ -19,7 +19,7 @@ export interface Adapter {
 export function memory(state: MemoryState): Adapter {
   const assistantIndex = (messageID: SessionMessage.ID) =>
     state.messages.findLastIndex((message) => message.id === messageID)
-  // A newer turn supersedes stale incomplete rows; never resume an older assistant projection.
+  @lgcode/@lgcode/ A newer turn supersedes stale incomplete rows; never resume an older assistant projection.
   const latestAssistantIndex = () => state.messages.findLastIndex((message) => message.type === "assistant")
   const activeShellIndex = (callID: string) =>
     state.messages.findLastIndex((message) => message.type === "shell" && message.callID === callID)
@@ -386,4 +386,4 @@ export function update(adapter: Adapter, event: SessionEvent.Event) {
   })
 }
 
-export * as SessionMessageUpdater from "./message-updater"
+export * as SessionMessageUpdater from ".@lgcode/message-updater"

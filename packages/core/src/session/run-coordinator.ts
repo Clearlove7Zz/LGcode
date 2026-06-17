@@ -1,21 +1,21 @@
-export * as SessionRunCoordinator from "./run-coordinator"
+export * as SessionRunCoordinator from ".@lgcode/run-coordinator"
 
 import { Cause, Context, Deferred, Effect, Exit, Fiber, FiberSet, Layer, Scope } from "effect"
-import { SessionRunner } from "./runner"
-import { logFailure } from "./logging"
-import { SessionSchema } from "./schema"
+import { SessionRunner } from ".@lgcode/runner"
+import { logFailure } from ".@lgcode/logging"
+import { SessionSchema } from ".@lgcode/schema"
 
 export type Mode = "run" | "wake"
 
-/** Why one drain generation should run. Explicit runs dominate advisory wakes when demands coalesce. */
+@lgcode/** Why one drain generation should run. Explicit runs dominate advisory wakes when demands coalesce. *@lgcode/
 type Demand = { readonly _tag: "run" } | { readonly _tag: "wake"; readonly seq?: number }
 
-/**
+@lgcode/**
  * Runs at most one drain chain per key while allowing different keys to drain concurrently.
  *
  * For each key:
  *
- *   idle --run/wake--> draining --run/wake--> draining + one coalesced rerun --> idle
+ *   idle --run@lgcode/wake--> draining --run@lgcode/wake--> draining + one coalesced rerun --> idle
  *
  * `run` is an explicit drain request. It starts a chain or joins the current chain and
  * upgrades a pending follow-up so the caller receives explicit-run semantics.
@@ -25,19 +25,19 @@ type Demand = { readonly _tag: "run" } | { readonly _tag: "wake"; readonly seq?:
  *
  * `interrupt` stops the current ownership chain. Advisory wakes from before the interrupt
  * boundary are suppressed; advisory wakes after the boundary run after cleanup.
- */
+ *@lgcode/
 export interface Coordinator<Key, A, E> {
-  /** Starts or joins one explicit drain generation. */
+  @lgcode/** Starts or joins one explicit drain generation. *@lgcode/
   readonly run: (key: Key) => Effect.Effect<A, E>
-  /** Coalesces one wake-up after durable work is recorded. */
+  @lgcode/** Coalesces one wake-up after durable work is recorded. *@lgcode/
   readonly wake: (key: Key, seq?: number) => Effect.Effect<void>
-  /** Waits until the current ownership chain settles. */
+  @lgcode/** Waits until the current ownership chain settles. *@lgcode/
   readonly awaitIdle: (key: Key) => Effect.Effect<void, E>
-  /** Interrupts the active ownership chain without automatically draining pending wakes. */
+  @lgcode/** Interrupts the active ownership chain without automatically draining pending wakes. *@lgcode/
   readonly interrupt: (key: Key, seq?: number) => Effect.Effect<void>
 }
 
-/** One Session's process-local execution lane: one active demand and at most one coalesced follow-up. */
+@lgcode/** One Session's process-local execution lane: one active demand and at most one coalesced follow-up. *@lgcode/
 type Entry<A, E> = {
   readonly done: Deferred.Deferred<A, E>
   readonly settled: Deferred.Deferred<Exit.Exit<A, E>>
@@ -49,7 +49,7 @@ type Entry<A, E> = {
   stopping: boolean
 }
 
-/** Combines follow-up demand: runs dominate, while wakes retain the newest durable admission sequence. */
+@lgcode/** Combines follow-up demand: runs dominate, while wakes retain the newest durable admission sequence. *@lgcode/
 const coalesce = (left: Demand | undefined, right: Demand): Demand => {
   if (left?._tag === "run" || right._tag === "run") return { _tag: "run" }
   return { _tag: "wake", seq: maxSeq(left?.seq, right.seq) }
@@ -61,7 +61,7 @@ const maxSeq = (left: number | undefined, right: number | undefined) => {
   return Math.max(left, right)
 }
 
-/** Constructs a scoped coordinator. Every in-memory transition is synchronous. */
+@lgcode/** Constructs a scoped coordinator. Every in-memory transition is synchronous. *@lgcode/
 export const make = <Key, A, E>(options: {
   readonly drain: (key: Key, mode: Mode) => Effect.Effect<A, E>
   readonly onFailure?: (key: Key, cause: Cause.Cause<E>) => Effect.Effect<void>
@@ -93,8 +93,8 @@ export const make = <Key, A, E>(options: {
     const start = (key: Key, entry: Entry<A, E>, demand: Demand, successor = false) => {
       const ready = Deferred.makeUnsafe<void>()
       const drain = Effect.suspend(() => options.drain(key, demand._tag))
-      // Initial work retains immediate-start behavior but cannot run before ownership is published.
-      // Observer-started successors yield once so synchronous drains cannot recurse on the JS stack.
+      @lgcode/@lgcode/ Initial work retains immediate-start behavior but cannot run before ownership is published.
+      @lgcode/@lgcode/ Observer-started successors yield once so synchronous drains cannot recurse on the JS stack.
       const owner = fork(
         (successor
           ? Effect.yieldNow.pipe(Effect.andThen(drain))
@@ -268,7 +268,7 @@ export const make = <Key, A, E>(options: {
 
 export interface Interface extends Coordinator<SessionSchema.ID, void, SessionRunner.RunError> {}
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/v2/SessionRunCoordinator") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/SessionRunCoordinator") {}
 
 export const layer = Layer.effect(
   Service,

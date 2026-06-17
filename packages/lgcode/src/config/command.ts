@@ -1,18 +1,18 @@
-export * as ConfigCommand from "./command"
+export * as ConfigCommand from ".@lgcode/command"
 
 import path from "path"
 import { Cause, Exit, Schema } from "effect"
-import { Glob } from "@opencode@lgcode/core/util/glob"
-import { ConfigCommandV1 } from "@opencode@lgcode/core/v1/config/command"
-import { configEntryNameFromPath } from "./entry-name"
-import { InvalidError } from "@opencode@lgcode/core/v1/config/error"
-import * as ConfigMarkdown from "./markdown"
+import { Glob } from "@lgcode/core@lgcode/util@lgcode/glob"
+import { ConfigCommandV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/command"
+import { configEntryNameFromPath } from ".@lgcode/entry-name"
+import { InvalidError } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/error"
+import * as ConfigMarkdown from ".@lgcode/markdown"
 
 const decodeInfo = Schema.decodeUnknownExit(ConfigCommandV1.Info)
 
 export async function load(dir: string) {
   const result: Record<string, ConfigCommandV1.Info> = {}
-  for (const item of await Glob.scan("{command,commands}/**/*.md", {
+  for (const item of await Glob.scan("{command,commands}@lgcode/**@lgcode/*.md", {
     cwd: dir,
     absolute: true,
     dot: true,
@@ -21,7 +21,7 @@ export async function load(dir: string) {
     const md = await ConfigMarkdown.parse(item).catch(() => undefined)
     if (!md) continue
 
-    const name = configEntryNameFromPath(path.relative(dir, item), ["command/", "commands/"])
+    const name = configEntryNameFromPath(path.relative(dir, item), ["command@lgcode/", "commands@lgcode/"])
 
     const config = {
       name,

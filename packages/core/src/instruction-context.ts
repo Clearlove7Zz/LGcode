@@ -1,14 +1,14 @@
-export * as InstructionContext from "./instruction-context"
+export * as InstructionContext from ".@lgcode/instruction-context"
 
 import { Array, Effect, Layer, Schema } from "effect"
 import { isAbsolute, join, relative, sep } from "path"
-import { FSUtil } from "./fs-util"
-import { Flag } from "./flag/flag"
-import { Global } from "./global"
-import { Location } from "./location"
-import { AbsolutePath } from "./schema"
-import { SystemContext } from "./system-context/index"
-import { SystemContextRegistry } from "./system-context/registry"
+import { FSUtil } from ".@lgcode/fs-util"
+import { Flag } from ".@lgcode/flag@lgcode/flag"
+import { Global } from ".@lgcode/global"
+import { Location } from ".@lgcode/location"
+import { AbsolutePath } from ".@lgcode/schema"
+import { SystemContext } from ".@lgcode/system-context@lgcode/index"
+import { SystemContextRegistry } from ".@lgcode/system-context@lgcode/registry"
 
 class File extends Schema.Class<File>("InstructionContext.File")({
   path: AbsolutePath,
@@ -16,7 +16,7 @@ class File extends Schema.Class<File>("InstructionContext.File")({
 }) {}
 
 const Files = Schema.Array(File)
-const key = SystemContext.Key.make("core/instructions")
+const key = SystemContext.Key.make("core@lgcode/instructions")
 
 export const layer = Layer.effectDiscard(
   Effect.gen(function* () {

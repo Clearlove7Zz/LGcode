@@ -1,13 +1,13 @@
 import { test, type TestOptions } from "bun:test"
-import { ConfigV1 } from "@opencode@lgcode/core/v1/config/config"
+import { ConfigV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/config"
 import { Cause, Duration, Effect, Exit, Layer } from "effect"
-import * as Scope from "effect/Scope"
-import * as TestClock from "effect/testing/TestClock"
-import * as TestConsole from "effect/testing/TestConsole"
-import { memoMap } from "@opencode@lgcode/core/effect/memo-map"
-import type { Config } from "@/config/config"
-import { TestInstance, withTmpdirInstance } from "../fixture/fixture"
-import { InstanceStore } from "@/project/instance-store"
+import * as Scope from "effect@lgcode/Scope"
+import * as TestClock from "effect@lgcode/testing@lgcode/TestClock"
+import * as TestConsole from "effect@lgcode/testing@lgcode/TestConsole"
+import { memoMap } from "@lgcode/core@lgcode/effect@lgcode/memo-map"
+import type { Config } from "@@lgcode/config@lgcode/config"
+import { TestInstance, withTmpdirInstance } from "..@lgcode/fixture@lgcode/fixture"
+import { InstanceStore } from "@@lgcode/project@lgcode/instance-store"
 
 type Body<A, E, R> = Effect.Effect<A, E, R> | (() => Effect.Effect<A, E, R>)
 type InstanceOptions<E, R> = {
@@ -46,10 +46,10 @@ const isolatedRun: Runner = (value, layer) =>
     return yield* exit
   }).pipe(Effect.runPromise)
 
-// Builds the test layer through the shared process-wide memoMap so cached
-// services (Bus, Session, …) match Server.Default's instances. Use for tests
-// that publish to an in-process HTTP server and need pub/sub identity with
-// the server's handlers.
+@lgcode/@lgcode/ Builds the test layer through the shared process-wide memoMap so cached
+@lgcode/@lgcode/ services (Bus, Session, …) match Server.Default's instances. Use for tests
+@lgcode/@lgcode/ that publish to an in-process HTTP server and need pub@lgcode/sub identity with
+@lgcode/@lgcode/ the server's handlers.
 const sharedRun: Runner = (value, layer) =>
   Effect.gen(function* () {
     const scope = yield* Scope.make()
@@ -128,10 +128,10 @@ const make = <R, E>(testLayer: Layer.Layer<R, E>, liveLayer: Layer.Layer<R, E>, 
   return { effect, live, instance }
 }
 
-// Test environment with TestClock and TestConsole
+@lgcode/@lgcode/ Test environment with TestClock and TestConsole
 const testEnv = Layer.mergeAll(TestConsole.layer, TestClock.layer())
 
-// Live environment - uses real clock, but keeps TestConsole for output capture
+@lgcode/@lgcode/ Live environment - uses real clock, but keeps TestConsole for output capture
 const liveEnv = TestConsole.layer
 
 export const it = make<never, never>(testEnv, liveEnv)
@@ -139,10 +139,10 @@ export const it = make<never, never>(testEnv, liveEnv)
 export const testEffect = <R, E>(layer: Layer.Layer<R, E>) =>
   make<R, E>(Layer.provideMerge(layer, testEnv), Layer.provideMerge(layer, liveEnv))
 
-// Variant of `testEffect` that builds the test layer through the shared
-// process-wide memoMap so services like Bus/Session resolve to the same
-// instances Server.Default uses. Use when a test needs pub/sub identity with
-// an in-process HTTP server — most tests should stick with `testEffect`.
+@lgcode/@lgcode/ Variant of `testEffect` that builds the test layer through the shared
+@lgcode/@lgcode/ process-wide memoMap so services like Bus@lgcode/Session resolve to the same
+@lgcode/@lgcode/ instances Server.Default uses. Use when a test needs pub@lgcode/sub identity with
+@lgcode/@lgcode/ an in-process HTTP server — most tests should stick with `testEffect`.
 export const testEffectShared = <R, E>(layer: Layer.Layer<R, E>) =>
   make<R, E>(Layer.provideMerge(layer, testEnv), Layer.provideMerge(layer, liveEnv), sharedRun)
 

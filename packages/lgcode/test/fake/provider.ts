@@ -1,7 +1,7 @@
 import { Effect, Layer } from "effect"
-import { Provider } from "@/provider/provider"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { ModelV2 } from "@opencode@lgcode/core/model"
+import { Provider } from "@@lgcode/provider@lgcode/provider"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
 
 export namespace ProviderTest {
   export function model(override: Partial<Provider.Model> = {}): Provider.Model {
@@ -20,7 +20,7 @@ export namespace ProviderTest {
         input: { text: true, image: false, audio: false, video: false, pdf: false },
         output: { text: true, image: false, audio: false, video: false, pdf: false },
       },
-      api: { id, url: "https://example.com", npm: "@ai-sdk/openai" },
+      api: { id, url: "https:@lgcode/@lgcode/example.com", npm: "@ai-sdk@lgcode/openai" },
       cost: { input: 0, output: 0, cache: { read: 0, write: 0 } },
       limit: { context: 200_000, output: 10_000 },
       status: "active",
@@ -60,7 +60,7 @@ export namespace ProviderTest {
           }),
           getModel: Effect.fn("TestProvider.getModel")((providerID, modelID) => {
             if (providerID === row.id && modelID === mdl.id) return Effect.succeed(mdl)
-            return Effect.die(new Error(`Unknown test model: ${providerID}/${modelID}`))
+            return Effect.die(new Error(`Unknown test model: ${providerID}@lgcode/${modelID}`))
           }),
           getLanguage: Effect.fn("TestProvider.getLanguage")(() =>
             Effect.die(new Error("ProviderTest.getLanguage not configured")),

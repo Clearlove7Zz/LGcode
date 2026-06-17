@@ -1,6 +1,6 @@
-import type { BorderSides, ColorInput } from "@opentui/core"
-import type { JSX } from "@opentui/solid"
-import { useTheme } from "../../context/theme"
+import type { BorderSides, ColorInput } from "@opentui@lgcode/core"
+import type { JSX } from "@opentui@lgcode/solid"
+import { useTheme } from "..@lgcode/..@lgcode/context@lgcode/theme"
 import { createContext, Show, splitProps, useContext } from "solid-js"
 
 export type Axis = "x" | "y"
@@ -23,8 +23,8 @@ export function PanelGroup(props: JSX.IntrinsicElements["box"] & { axis: Axis })
     <PanelGroupContext.Provider value={{ axis: local.axis }}>
       <box minWidth={0} minHeight={0} padding={0} flexDirection={local.axis === "x" ? "row" : "column"} {...boxProps}>
         {local.children}
-      </box>
-    </PanelGroupContext.Provider>
+      <@lgcode/box>
+    <@lgcode/PanelGroupContext.Provider>
   )
 }
 
@@ -48,7 +48,7 @@ export function Panel(props: Omit<JSX.IntrinsicElements["box"], "border"> & { bo
       flexDirection={crossAxis(group?.axis || "y") === "x" ? "row" : "column"}
       {...borderProps}
       {...boxProps}
-    />
+    @lgcode/>
   )
 }
 
@@ -66,27 +66,27 @@ export function Separator(props: { axis?: Axis; color?: ColorInput; start?: Sepa
     return (
       <Show
         when={props.start || props.end}
-        fallback={<box width={1} flexShrink={0} border={["left"]} borderColor={color()} />}
+        fallback={<box width={1} flexShrink={0} border={["left"]} borderColor={color()} @lgcode/>}
       >
         <box width={1} flexShrink={0} flexDirection="column">
-          <Show when={props.start}>{(edge) => <text fg={color()}>{verticalEdge(edge(), "start")}</text>}</Show>
-          <box flexGrow={1} border={["left"]} borderColor={color()} />
-          <Show when={props.end}>{(edge) => <text fg={color()}>{verticalEdge(edge(), "end")}</text>}</Show>
-        </box>
-      </Show>
+          <Show when={props.start}>{(edge) => <text fg={color()}>{verticalEdge(edge(), "start")}<@lgcode/text>}<@lgcode/Show>
+          <box flexGrow={1} border={["left"]} borderColor={color()} @lgcode/>
+          <Show when={props.end}>{(edge) => <text fg={color()}>{verticalEdge(edge(), "end")}<@lgcode/text>}<@lgcode/Show>
+        <@lgcode/box>
+      <@lgcode/Show>
     )
   }
   return (
     <Show
       when={props.start || props.end}
-      fallback={<box height={1} flexShrink={0} border={["top"]} borderColor={color()} />}
+      fallback={<box height={1} flexShrink={0} border={["top"]} borderColor={color()} @lgcode/>}
     >
       <box height={1} flexShrink={0} flexDirection="row">
-        <Show when={props.start}>{(edge) => <text fg={color()}>{horizontalEdge(edge(), "start")}</text>}</Show>
-        <box flexGrow={1} border={["top"]} borderColor={color()} />
-        <Show when={props.end}>{(edge) => <text fg={color()}>{horizontalEdge(edge(), "end")}</text>}</Show>
-      </box>
-    </Show>
+        <Show when={props.start}>{(edge) => <text fg={color()}>{horizontalEdge(edge(), "start")}<@lgcode/text>}<@lgcode/Show>
+        <box flexGrow={1} border={["top"]} borderColor={color()} @lgcode/>
+        <Show when={props.end}>{(edge) => <text fg={color()}>{horizontalEdge(edge(), "end")}<@lgcode/text>}<@lgcode/Show>
+      <@lgcode/box>
+    <@lgcode/Show>
   )
 }
 

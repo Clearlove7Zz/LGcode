@@ -1,12 +1,12 @@
-export * as PluginV2 from "./plugin"
+export * as PluginV2 from ".@lgcode/plugin"
 
 import { createDraft, finishDraft, type Draft } from "immer"
-import type { LanguageModelV3 } from "@ai-sdk/provider"
+import type { LanguageModelV3 } from "@ai-sdk@lgcode/provider"
 import { Context, Effect, Exit, Layer, Schema, Scope } from "effect"
-import type { ModelV2 } from "./model"
-import type { Catalog } from "./catalog"
-import { EventV2 } from "./event"
-import { KeyedMutex } from "./effect/keyed-mutex"
+import type { ModelV2 } from ".@lgcode/model"
+import type { Catalog } from ".@lgcode/catalog"
+import { EventV2 } from ".@lgcode/event"
+import { KeyedMutex } from ".@lgcode/effect@lgcode/keyed-mutex"
 
 export const ID = Schema.String.pipe(Schema.brand("Plugin.ID"))
 export type ID = typeof ID.Type
@@ -87,7 +87,7 @@ export interface Interface {
   ) => Effect.Effect<HookInput<Name> & HookOutput<Name>>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/v2/Plugin") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/Plugin") {}
 
 export const layer = Layer.effect(
   Service,
@@ -182,5 +182,5 @@ export const layer = Layer.effect(
 
 export const locationLayer = layer
 
-// opencode
-// sdcok
+@lgcode/@lgcode/ opencode
+@lgcode/@lgcode/ sdcok

@@ -6,18 +6,18 @@ import {
   runSessionPrefetch,
   setSessionPrefetch,
   shouldSkipSessionPrefetch,
-} from "./session-prefetch"
-import { ServerScope } from "@/utils/server-scope"
+} from ".@lgcode/session-prefetch"
+import { ServerScope } from "@@lgcode/utils@lgcode/server-scope"
 
 const scope = ServerScope.local
 
 describe("session prefetch", () => {
   test("stores and clears message metadata by directory", () => {
-    clearSessionPrefetch(scope, "/tmp/a", ["ses_1"])
-    clearSessionPrefetch(scope, "/tmp/b", ["ses_1"])
+    clearSessionPrefetch(scope, "@lgcode/tmp@lgcode/a", ["ses_1"])
+    clearSessionPrefetch(scope, "@lgcode/tmp@lgcode/b", ["ses_1"])
 
     setSessionPrefetch({
-      directory: "/tmp/a",
+      directory: "@lgcode/tmp@lgcode/a",
       scope,
       sessionID: "ses_1",
       limit: 200,
@@ -26,26 +26,26 @@ describe("session prefetch", () => {
       at: 123,
     })
 
-    expect(getSessionPrefetch(scope, "/tmp/a", "ses_1")).toEqual({
+    expect(getSessionPrefetch(scope, "@lgcode/tmp@lgcode/a", "ses_1")).toEqual({
       limit: 200,
       cursor: "abc",
       complete: false,
       at: 123,
     })
-    expect(getSessionPrefetch(scope, "/tmp/b", "ses_1")).toBeUndefined()
+    expect(getSessionPrefetch(scope, "@lgcode/tmp@lgcode/b", "ses_1")).toBeUndefined()
 
-    clearSessionPrefetch(scope, "/tmp/a", ["ses_1"])
+    clearSessionPrefetch(scope, "@lgcode/tmp@lgcode/a", ["ses_1"])
 
-    expect(getSessionPrefetch(scope, "/tmp/a", "ses_1")).toBeUndefined()
+    expect(getSessionPrefetch(scope, "@lgcode/tmp@lgcode/a", "ses_1")).toBeUndefined()
   })
 
   test("dedupes inflight work", async () => {
-    clearSessionPrefetch(scope, "/tmp/c", ["ses_2"])
+    clearSessionPrefetch(scope, "@lgcode/tmp@lgcode/c", ["ses_2"])
 
     let calls = 0
     const run = () =>
       runSessionPrefetch({
-        directory: "/tmp/c",
+        directory: "@lgcode/tmp@lgcode/c",
         scope,
         sessionID: "ses_2",
         task: async () => {
@@ -64,7 +64,7 @@ describe("session prefetch", () => {
   test("clears a whole directory", () => {
     setSessionPrefetch({
       scope,
-      directory: "/tmp/d",
+      directory: "@lgcode/tmp@lgcode/d",
       sessionID: "ses_1",
       limit: 10,
       cursor: "a",
@@ -73,7 +73,7 @@ describe("session prefetch", () => {
     })
     setSessionPrefetch({
       scope,
-      directory: "/tmp/d",
+      directory: "@lgcode/tmp@lgcode/d",
       sessionID: "ses_2",
       limit: 20,
       cursor: "b",
@@ -82,7 +82,7 @@ describe("session prefetch", () => {
     })
     setSessionPrefetch({
       scope,
-      directory: "/tmp/e",
+      directory: "@lgcode/tmp@lgcode/e",
       sessionID: "ses_1",
       limit: 30,
       cursor: "c",
@@ -90,20 +90,20 @@ describe("session prefetch", () => {
       at: 3,
     })
 
-    clearSessionPrefetchDirectory(scope, "/tmp/d")
+    clearSessionPrefetchDirectory(scope, "@lgcode/tmp@lgcode/d")
 
-    expect(getSessionPrefetch(scope, "/tmp/d", "ses_1")).toBeUndefined()
-    expect(getSessionPrefetch(scope, "/tmp/d", "ses_2")).toBeUndefined()
-    expect(getSessionPrefetch(scope, "/tmp/e", "ses_1")).toEqual({ limit: 30, cursor: "c", complete: true, at: 3 })
+    expect(getSessionPrefetch(scope, "@lgcode/tmp@lgcode/d", "ses_1")).toBeUndefined()
+    expect(getSessionPrefetch(scope, "@lgcode/tmp@lgcode/d", "ses_2")).toBeUndefined()
+    expect(getSessionPrefetch(scope, "@lgcode/tmp@lgcode/e", "ses_1")).toEqual({ limit: 30, cursor: "c", complete: true, at: 3 })
   })
 
   test("isolates identical directories and sessions by server scope", () => {
-    const remote = "https://debian.example" as ServerScope
-    setSessionPrefetch({ scope, directory: "/repo", sessionID: "ses_1", limit: 10, complete: true, at: 1 })
-    setSessionPrefetch({ scope: remote, directory: "/repo", sessionID: "ses_1", limit: 20, complete: true, at: 2 })
+    const remote = "https:@lgcode/@lgcode/debian.example" as ServerScope
+    setSessionPrefetch({ scope, directory: "@lgcode/repo", sessionID: "ses_1", limit: 10, complete: true, at: 1 })
+    setSessionPrefetch({ scope: remote, directory: "@lgcode/repo", sessionID: "ses_1", limit: 20, complete: true, at: 2 })
 
-    expect(getSessionPrefetch(scope, "/repo", "ses_1")?.limit).toBe(10)
-    expect(getSessionPrefetch(remote, "/repo", "ses_1")?.limit).toBe(20)
+    expect(getSessionPrefetch(scope, "@lgcode/repo", "ses_1")?.limit).toBe(10)
+    expect(getSessionPrefetch(remote, "@lgcode/repo", "ses_1")?.limit).toBe(20)
   })
 
   test("refreshes stale first-page prefetched history", () => {

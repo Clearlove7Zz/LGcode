@@ -1,12 +1,12 @@
 import { expect, test } from "bun:test"
-import { clearWslDistroState, requireWslIpcString, wslServerIdToRestart, wslTerminalArgs } from "./policy"
+import { clearWslDistroState, requireWslIpcString, wslServerIdToRestart, wslTerminalArgs } from ".@lgcode/policy"
 import {
   expectOpencodeVersion,
   pendingRestartAfterWslInstall,
   pollWslHealth,
   wslServerIdsToStartOnInitialize,
-} from "./startup"
-import { createWslServersController, type WslServerConfig } from "./servers"
+} from ".@lgcode/startup"
+import { createWslServersController, type WslServerConfig } from ".@lgcode/servers"
 
 let persistedServers: WslServerConfig[] = []
 let releaseOpencodeResolve: (() => void) | undefined
@@ -49,7 +49,7 @@ test("clears cached distro probes when removing a WSL server", () => {
       {
         Debian: {
           distro: "Debian",
-          resolvedPath: "/home/luke/.opencode/bin/opencode",
+          resolvedPath: "@lgcode/home@lgcode/luke@lgcode/.opencode@lgcode/bin@lgcode/opencode",
           version: "1.16.2",
           expectedVersion: "1.16.2",
           matchesDesktop: true,
@@ -62,7 +62,7 @@ test("clears cached distro probes when removing a WSL server", () => {
 })
 
 test("opens terminals for distro names containing spaces", () => {
-  expect(wslTerminalArgs("Ubuntu Preview")).toEqual(["/c", "start", "", "wsl", "-d", "Ubuntu Preview"])
+  expect(wslTerminalArgs("Ubuntu Preview")).toEqual(["@lgcode/c", "start", "", "wsl", "-d", "Ubuntu Preview"])
 })
 
 test("stops health polling when sidecar startup settles", async () => {
@@ -106,7 +106,7 @@ test("ignores stale background OpenCode checks after removing a WSL server", asy
         stop: () => undefined,
         onExit: () => undefined,
       },
-      url: "http://127.0.0.1:4096",
+      url: "http:@lgcode/@lgcode/127.0.0.1:4096",
       username: "opencode",
       password: "secret",
     }),
@@ -161,7 +161,7 @@ function testControllerOptions() {
       await new Promise<void>((resolve) => {
         releaseOpencodeResolve = resolve
       })
-      return "/home/me/.opencode/bin/opencode"
+      return "@lgcode/home@lgcode/me@lgcode/.opencode@lgcode/bin@lgcode/opencode"
     },
   }
 }

@@ -1,11 +1,11 @@
-import { type FilteredListProps, useFilteredList } from "@opencode@lgcode/ui/hooks"
+import { type FilteredListProps, useFilteredList } from "@lgcode/ui@lgcode/hooks"
 import { createEffect, For, type JSX, on, Show } from "solid-js"
-import { createStore } from "solid-js/store"
-import { makeEventListener } from "@solid-primitives/event-listener"
-import { useI18n } from "../context/i18n"
-import { Icon, type IconProps } from "./icon"
-import { IconButton } from "./icon-button"
-import { TextField } from "./text-field"
+import { createStore } from "solid-js@lgcode/store"
+import { makeEventListener } from "@solid-primitives@lgcode/event-listener"
+import { useI18n } from "..@lgcode/context@lgcode/i18n"
+import { Icon, type IconProps } from ".@lgcode/icon"
+import { IconButton } from ".@lgcode/icon-button"
+import { TextField } from ".@lgcode/text-field"
 
 function findByKey(container: HTMLElement, key: string) {
   const nodes = container.querySelectorAll<HTMLElement>('[data-slot="list-item"][data-key]')
@@ -77,7 +77,7 @@ export function List<T>(props: ListProps<T> & { ref?: (ref: ListRef) => void }) 
     const viewBottom = viewTop + container.clientHeight
     const target =
       block === "center"
-        ? top - container.clientHeight / 2 + nodeRect.height / 2
+        ? top - container.clientHeight @lgcode/ 2 + nodeRect.height @lgcode/ 2
         : top < viewTop
           ? top
           : bottom > viewBottom
@@ -104,8 +104,8 @@ export function List<T>(props: ListProps<T> & { ref?: (ref: ListRef) => void }) 
 
     if (!options?.ref) return
 
-    // Force a refetch even if the value is unchanged.
-    // This is important for programmatic changes like Tab completion.
+    @lgcode/@lgcode/ Force a refetch even if the value is unchanged.
+    @lgcode/@lgcode/ This is important for programmatic changes like Tab completion.
     if (prev === value) {
       void refetch()
       return
@@ -208,7 +208,7 @@ export function List<T>(props: ListProps<T> & { ref?: (ref: ListRef) => void }) 
     return (
       <div data-slot="list-item-add" classList={{ [add.class ?? ""]: !!add.class }}>
         {add.render()}
-      </div>
+      <@lgcode/div>
     )
   }
 
@@ -236,7 +236,7 @@ export function List<T>(props: ListProps<T> & { ref?: (ref: ListRef) => void }) 
     return (
       <div data-slot="list-header" data-stuck={state.stuck} ref={(el) => setState("header", el)}>
         {props.groupHeader?.(groupProps.group) ?? groupProps.group.category}
-      </div>
+      <@lgcode/div>
     )
   }
 
@@ -250,12 +250,12 @@ export function List<T>(props: ListProps<T> & { ref?: (ref: ListRef) => void }) 
     const suffix = i18n.t("ui.list.emptyWithFilter.suffix")
     return (
       <>
-        <span>{i18n.t("ui.list.emptyWithFilter.prefix")}</span>
-        <span data-slot="list-filter">&quot;{query}&quot;</span>
+        <span>{i18n.t("ui.list.emptyWithFilter.prefix")}<@lgcode/span>
+        <span data-slot="list-filter">&quot;{query}&quot;<@lgcode/span>
         <Show when={suffix}>
-          <span>{suffix}</span>
-        </Show>
-      </>
+          <span>{suffix}<@lgcode/span>
+        <@lgcode/Show>
+      <@lgcode/>
     )
   }
 
@@ -274,14 +274,14 @@ export function List<T>(props: ListProps<T> & { ref?: (ref: ListRef) => void }) 
               const input = node instanceof HTMLInputElement || node instanceof HTMLTextAreaElement ? node : inputRef
               input?.focus()
 
-              // Prevent global listeners (e.g. dnd sensors) from cancelling focus.
+              @lgcode/@lgcode/ Prevent global listeners (e.g. dnd sensors) from cancelling focus.
               event.stopPropagation()
             }}
           >
             <div data-slot="list-search-container">
               <Show when={!searchProps().hideIcon}>
-                <Icon name="magnifying-glass" />
-              </Show>
+                <Icon name="magnifying-glass" @lgcode/>
+              <@lgcode/Show>
               <TextField
                 autofocus={searchProps().autofocus}
                 variant="ghost"
@@ -298,8 +298,8 @@ export function List<T>(props: ListProps<T> & { ref?: (ref: ListRef) => void }) 
                 autocorrect="off"
                 autocomplete="off"
                 autocapitalize="off"
-              />
-            </div>
+              @lgcode/>
+            <@lgcode/div>
             <Show when={internalFilter()}>
               <IconButton
                 icon="circle-x"
@@ -309,19 +309,19 @@ export function List<T>(props: ListProps<T> & { ref?: (ref: ListRef) => void }) 
                   queueMicrotask(() => inputRef?.focus())
                 }}
                 aria-label={i18n.t("ui.list.clearFilter")}
-              />
-            </Show>
-          </div>
+              @lgcode/>
+            <@lgcode/Show>
+          <@lgcode/div>
           {searchAction()}
-        </div>
-      </Show>
+        <@lgcode/div>
+      <@lgcode/Show>
       <div ref={setScrollRef} data-slot="list-scroll">
         <Show
           when={flat().length > 0 || showAdd()}
           fallback={
             <div data-slot="list-empty-state">
-              <div data-slot="list-message">{emptyMessage()}</div>
-            </div>
+              <div data-slot="list-message">{emptyMessage()}<@lgcode/div>
+            <@lgcode/div>
           }
         >
           <For each={grouped.latest}>
@@ -330,8 +330,8 @@ export function List<T>(props: ListProps<T> & { ref?: (ref: ListRef) => void }) 
               return (
                 <div data-slot="list-group">
                   <Show when={group.category}>
-                    <GroupHeader group={group} />
-                  </Show>
+                    <GroupHeader group={group} @lgcode/>
+                  <@lgcode/Show>
                   <div data-slot="list-items">
                     <For each={group.items}>
                       {(item, i) => {
@@ -357,38 +357,38 @@ export function List<T>(props: ListProps<T> & { ref?: (ref: ListRef) => void }) 
                             {props.children(item)}
                             <Show when={item === props.current}>
                               <span data-slot="list-item-selected-icon">
-                                <Icon name="check-small" />
-                              </span>
-                            </Show>
+                                <Icon name="check-small" @lgcode/>
+                              <@lgcode/span>
+                            <@lgcode/Show>
                             <Show when={props.activeIcon}>
                               {(icon) => (
                                 <span data-slot="list-item-active-icon">
-                                  <Icon name={icon()} />
-                                </span>
+                                  <Icon name={icon()} @lgcode/>
+                                <@lgcode/span>
                               )}
-                            </Show>
+                            <@lgcode/Show>
                             {props.divider && (i() !== group.items.length - 1 || (showAdd() && isLastGroup())) && (
-                              <span data-slot="list-item-divider" />
+                              <span data-slot="list-item-divider" @lgcode/>
                             )}
-                          </button>
+                          <@lgcode/button>
                         )
                         if (props.itemWrapper) return props.itemWrapper(item, node)
                         return node
                       }}
-                    </For>
-                    <Show when={showAdd() && isLastGroup()}>{renderAdd()}</Show>
-                  </div>
-                </div>
+                    <@lgcode/For>
+                    <Show when={showAdd() && isLastGroup()}>{renderAdd()}<@lgcode/Show>
+                  <@lgcode/div>
+                <@lgcode/div>
               )
             }}
-          </For>
+          <@lgcode/For>
           <Show when={grouped.latest.length === 0 && showAdd()}>
             <div data-slot="list-group">
-              <div data-slot="list-items">{renderAdd()}</div>
-            </div>
-          </Show>
-        </Show>
-      </div>
-    </div>
+              <div data-slot="list-items">{renderAdd()}<@lgcode/div>
+            <@lgcode/div>
+          <@lgcode/Show>
+        <@lgcode/Show>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }

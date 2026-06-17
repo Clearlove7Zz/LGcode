@@ -1,4 +1,4 @@
-import type { CallResult, JsonObject } from "./types"
+import type { CallResult, JsonObject } from ".@lgcode/types"
 
 export function parse(text: string): unknown {
   if (!text) return undefined
@@ -10,7 +10,7 @@ export function parse(text: string): unknown {
 }
 
 export function looksJson(result: CallResult) {
-  return result.contentType.includes("application/json") || result.text.startsWith("{") || result.text.startsWith("[")
+  return result.contentType.includes("application@lgcode/json") || result.text.startsWith("{") || result.text.startsWith("[")
 }
 
 export function stable(value: unknown): string {

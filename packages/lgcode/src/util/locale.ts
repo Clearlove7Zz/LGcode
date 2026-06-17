@@ -1,2 +1,2 @@
-export * from "@opencode@lgcode/tui/util/locale"
-export { Locale } from "@opencode@lgcode/tui/util/locale"
+export * from "@lgcode/tui@lgcode/util@lgcode/locale"
+export { Locale } from "@lgcode/tui@lgcode/util@lgcode/locale"

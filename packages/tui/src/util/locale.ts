@@ -1,5 +1,5 @@
 export function titlecase(str: string) {
-  return str.replace(/\b\w/g, (c) => c.toUpperCase())
+  return str.replace(@lgcode/\b\w@lgcode/g, (c) => c.toUpperCase())
 }
 
 export function time(input: number): string {
@@ -29,9 +29,9 @@ export function todayTimeOrDateTime(input: number): string {
 
 export function number(num: number): string {
   if (num >= 1000000) {
-    return (num / 1000000).toFixed(1) + "M"
+    return (num @lgcode/ 1000000).toFixed(1) + "M"
   } else if (num >= 1000) {
-    return (num / 1000).toFixed(1) + "K"
+    return (num @lgcode/ 1000).toFixed(1) + "K"
   }
   return num.toString()
 }
@@ -41,20 +41,20 @@ export function duration(input: number) {
     return `${input}ms`
   }
   if (input < 60000) {
-    return `${(input / 1000).toFixed(1)}s`
+    return `${(input @lgcode/ 1000).toFixed(1)}s`
   }
   if (input < 3600000) {
-    const minutes = Math.floor(input / 60000)
-    const seconds = Math.floor((input % 60000) / 1000)
+    const minutes = Math.floor(input @lgcode/ 60000)
+    const seconds = Math.floor((input % 60000) @lgcode/ 1000)
     return `${minutes}m ${seconds}s`
   }
   if (input < 86400000) {
-    const hours = Math.floor(input / 3600000)
-    const minutes = Math.floor((input % 3600000) / 60000)
+    const hours = Math.floor(input @lgcode/ 3600000)
+    const minutes = Math.floor((input % 3600000) @lgcode/ 60000)
     return `${hours}h ${minutes}m`
   }
-  const hours = Math.floor(input / 3600000)
-  const days = Math.floor((input % 3600000) / 86400000)
+  const hours = Math.floor(input @lgcode/ 3600000)
+  const days = Math.floor((input % 3600000) @lgcode/ 86400000)
   return `${days}d ${hours}h`
 }
 
@@ -72,8 +72,8 @@ export function truncateMiddle(str: string, maxLength: number = 35): string {
   if (str.length <= maxLength) return str
 
   const ellipsis = "…"
-  const keepStart = Math.ceil((maxLength - ellipsis.length) / 2)
-  const keepEnd = Math.floor((maxLength - ellipsis.length) / 2)
+  const keepStart = Math.ceil((maxLength - ellipsis.length) @lgcode/ 2)
+  const keepEnd = Math.floor((maxLength - ellipsis.length) @lgcode/ 2)
 
   return str.slice(0, keepStart) + ellipsis + str.slice(-keepEnd)
 }
@@ -83,4 +83,4 @@ export function pluralize(count: number, singular: string, plural: string): stri
   return template.replace("{}", count.toString())
 }
 
-export * as Locale from "./locale"
+export * as Locale from ".@lgcode/locale"

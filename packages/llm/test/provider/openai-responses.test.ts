@@ -1,19 +1,19 @@
 import { describe, expect } from "bun:test"
 import { ConfigProvider, Effect, Layer, Stream } from "effect"
-import { Headers, HttpClientRequest } from "effect/unstable/http"
-import { LLM, LLMError, Message, Model, ToolCallPart, Usage } from "../../src"
-import { Auth, LLMClient, RequestExecutor, WebSocketExecutor } from "../../src/route"
-import * as Azure from "../../src/providers/azure"
-import * as OpenAI from "../../src/providers/openai"
-import * as OpenAIResponses from "../../src/protocols/openai-responses"
-import * as ProviderShared from "../../src/protocols/shared"
-import { continuationRequest, nativeOpenAIResponsesContinuation } from "../continuation-scenarios"
-import { it } from "../lib/effect"
-import { dynamicResponse, fixedResponse } from "../lib/http"
-import { sseEvents } from "../lib/sse"
+import { Headers, HttpClientRequest } from "effect@lgcode/unstable@lgcode/http"
+import { LLM, LLMError, Message, Model, ToolCallPart, Usage } from "..@lgcode/..@lgcode/src"
+import { Auth, LLMClient, RequestExecutor, WebSocketExecutor } from "..@lgcode/..@lgcode/src@lgcode/route"
+import * as Azure from "..@lgcode/..@lgcode/src@lgcode/providers@lgcode/azure"
+import * as OpenAI from "..@lgcode/..@lgcode/src@lgcode/providers@lgcode/openai"
+import * as OpenAIResponses from "..@lgcode/..@lgcode/src@lgcode/protocols@lgcode/openai-responses"
+import * as ProviderShared from "..@lgcode/..@lgcode/src@lgcode/protocols@lgcode/shared"
+import { continuationRequest, nativeOpenAIResponsesContinuation } from "..@lgcode/continuation-scenarios"
+import { it } from "..@lgcode/lib@lgcode/effect"
+import { dynamicResponse, fixedResponse } from "..@lgcode/lib@lgcode/http"
+import { sseEvents } from "..@lgcode/lib@lgcode/sse"
 
 const model = OpenAIResponses.route
-  .with({ endpoint: { baseURL: "https://api.openai.test/v1/" }, auth: Auth.bearer("test") })
+  .with({ endpoint: { baseURL: "https:@lgcode/@lgcode/api.openai.test@lgcode/v1@lgcode/" }, auth: Auth.bearer("test") })
   .model({ id: "gpt-4.1-mini" })
 
 const request = LLM.request({
@@ -137,7 +137,7 @@ describe("OpenAI Responses route", () => {
           model,
           messages: [
             Message.user("Before."),
-            Message.system("Treat </system-update> literally."),
+            Message.system("Treat <@lgcode/system-update> literally."),
             Message.assistant("After."),
           ],
         }),
@@ -148,7 +148,7 @@ describe("OpenAI Responses route", () => {
           role: "user",
           content: [
             { type: "input_text", text: "Before." },
-            { type: "input_text", text: "<system-update>\nTreat &lt;/system-update&gt; literally.\n</system-update>" },
+            { type: "input_text", text: "<system-update>\nTreat &lt;@lgcode/system-update&gt; literally.\n<@lgcode/system-update>" },
           ],
         },
         { role: "assistant", content: [{ type: "output_text", text: "After." }] },
@@ -160,7 +160,7 @@ describe("OpenAI Responses route", () => {
     Effect.gen(function* () {
       const prepared = yield* LLMClient.prepare(
         LLM.updateRequest(request, {
-          model: OpenAI.configure({ baseURL: "https://api.openai.test/v1/", apiKey: "test" }).responsesWebSocket(
+          model: OpenAI.configure({ baseURL: "https:@lgcode/@lgcode/api.openai.test@lgcode/v1@lgcode/", apiKey: "test" }).responsesWebSocket(
             "gpt-4.1-mini",
           ),
         }),
@@ -208,7 +208,7 @@ describe("OpenAI Responses route", () => {
       )
       const response = yield* LLMClient.generate(
         LLM.request({
-          model: OpenAI.configure({ baseURL: "https://api.openai.test/v1/", apiKey: "test" }).responsesWebSocket(
+          model: OpenAI.configure({ baseURL: "https:@lgcode/@lgcode/api.openai.test@lgcode/v1@lgcode/", apiKey: "test" }).responsesWebSocket(
             "gpt-4.1-mini",
           ),
           prompt: "Say hello.",
@@ -216,7 +216,7 @@ describe("OpenAI Responses route", () => {
       ).pipe(Effect.provide(LLMClient.layer.pipe(Layer.provide(deps))))
 
       expect(response.text).toBe("Hi")
-      expect(opened).toEqual([{ url: "wss://api.openai.test/v1/responses", authorization: "Bearer test" }])
+      expect(opened).toEqual([{ url: "wss:@lgcode/@lgcode/api.openai.test@lgcode/v1@lgcode/responses", authorization: "Bearer test" }])
       expect(closed).toBe(true)
       expect(sent).toHaveLength(1)
       expect(JSON.parse(sent[0])).toEqual({
@@ -231,9 +231,9 @@ describe("OpenAI Responses route", () => {
   it.effect("fails immediately when WebSocket is already closed", () =>
     Effect.gen(function* () {
       const error = yield* WebSocketExecutor.fromWebSocket(
-        // oxlint-disable-next-line typescript-eslint/no-unsafe-type-assertion -- fromWebSocket reads readyState before touching WebSocket methods on this branch.
+        @lgcode/@lgcode/ oxlint-disable-next-line typescript-eslint@lgcode/no-unsafe-type-assertion -- fromWebSocket reads readyState before touching WebSocket methods on this branch.
         { readyState: globalThis.WebSocket.CLOSED } as globalThis.WebSocket,
-        { url: "wss://api.openai.test/v1/responses", headers: Headers.empty },
+        { url: "wss:@lgcode/@lgcode/api.openai.test@lgcode/v1@lgcode/responses", headers: Headers.empty },
       ).pipe(Effect.flip)
 
       expect(error.message).toContain("closed before opening")
@@ -251,9 +251,9 @@ describe("OpenAI Responses route", () => {
           dynamicResponse((input) =>
             Effect.gen(function* () {
               const web = yield* HttpClientRequest.toWeb(input.request).pipe(Effect.orDie)
-              expect(web.url).toBe("https://api.openai.test/v1/responses?api-version=v1")
+              expect(web.url).toBe("https:@lgcode/@lgcode/api.openai.test@lgcode/v1@lgcode/responses?api-version=v1")
               return input.respond(sseEvents({ type: "response.completed", response: {} }), {
-                headers: { "content-type": "text/event-stream" },
+                headers: { "content-type": "text@lgcode/event-stream" },
               })
             }),
           ),
@@ -267,7 +267,7 @@ describe("OpenAI Responses route", () => {
       yield* LLMClient.generate(
         LLM.updateRequest(request, {
           model: Azure.configure({
-            baseURL: "https://opencode-test.openai.azure.com/openai/v1/",
+            baseURL: "https:@lgcode/@lgcode/opencode-test.openai.azure.com@lgcode/openai@lgcode/v1@lgcode/",
             apiKey: "azure-key",
             headers: { authorization: "Bearer stale" },
           }).responses("gpt-4.1-mini"),
@@ -277,11 +277,11 @@ describe("OpenAI Responses route", () => {
           dynamicResponse((input) =>
             Effect.gen(function* () {
               const web = yield* HttpClientRequest.toWeb(input.request).pipe(Effect.orDie)
-              expect(web.url).toBe("https://opencode-test.openai.azure.com/openai/v1/responses?api-version=v1")
+              expect(web.url).toBe("https:@lgcode/@lgcode/opencode-test.openai.azure.com@lgcode/openai@lgcode/v1@lgcode/responses?api-version=v1")
               expect(web.headers.get("api-key")).toBe("azure-key")
               expect(web.headers.get("authorization")).toBeNull()
               return input.respond(sseEvents({ type: "response.completed", response: {} }), {
-                headers: { "content-type": "text/event-stream" },
+                headers: { "content-type": "text@lgcode/event-stream" },
               })
             }),
           ),
@@ -293,7 +293,7 @@ describe("OpenAI Responses route", () => {
   it.effect("loads OpenAI default auth from Effect Config", () =>
     LLMClient.generate(
       LLM.updateRequest(request, {
-        model: OpenAI.configure({ baseURL: "https://api.openai.test/v1/" }).responses("gpt-4.1-mini"),
+        model: OpenAI.configure({ baseURL: "https:@lgcode/@lgcode/api.openai.test@lgcode/v1@lgcode/" }).responses("gpt-4.1-mini"),
       }),
     ).pipe(
       configEnv({ OPENAI_API_KEY: "env-key" }),
@@ -303,7 +303,7 @@ describe("OpenAI Responses route", () => {
             const web = yield* HttpClientRequest.toWeb(input.request).pipe(Effect.orDie)
             expect(web.headers.get("authorization")).toBe("Bearer env-key")
             return input.respond(sseEvents({ type: "response.completed", response: {} }), {
-              headers: { "content-type": "text/event-stream" },
+              headers: { "content-type": "text@lgcode/event-stream" },
             })
           }),
         ),
@@ -315,7 +315,7 @@ describe("OpenAI Responses route", () => {
     LLMClient.generate(
       LLM.updateRequest(request, {
         model: OpenAI.configure({
-          baseURL: "https://api.openai.test/v1/",
+          baseURL: "https:@lgcode/@lgcode/api.openai.test@lgcode/v1@lgcode/",
           auth: Auth.bearer("oauth-token"),
         }).responses("gpt-4.1-mini"),
       }),
@@ -326,7 +326,7 @@ describe("OpenAI Responses route", () => {
             const web = yield* HttpClientRequest.toWeb(input.request).pipe(Effect.orDie)
             expect(web.headers.get("authorization")).toBe("Bearer oauth-token")
             return input.respond(sseEvents({ type: "response.completed", response: {} }), {
-              headers: { "content-type": "text/event-stream" },
+              headers: { "content-type": "text@lgcode/event-stream" },
             })
           }),
         ),
@@ -360,8 +360,8 @@ describe("OpenAI Responses route", () => {
     }),
   )
 
-  // Regression: screenshot/read tool results must stay structured so base64
-  // image data is not JSON-stringified into `function_call_output.output`.
+  @lgcode/@lgcode/ Regression: screenshot@lgcode/read tool results must stay structured so base64
+  @lgcode/@lgcode/ image data is not JSON-stringified into `function_call_output.output`.
   it.effect("lowers image tool-result content as structured input_image items", () =>
     Effect.gen(function* () {
       const prepared = yield* LLMClient.prepare<OpenAIResponses.OpenAIResponsesBody>(
@@ -377,7 +377,7 @@ describe("OpenAI Responses route", () => {
               resultType: "content",
               result: [
                 { type: "text", text: "Image read successfully" },
-                { type: "file", uri: "data:image/png;base64,AAECAw==", mime: "image/png" },
+                { type: "file", uri: "data:image@lgcode/png;base64,AAECAw==", mime: "image@lgcode/png" },
               ],
             }),
           ],
@@ -386,7 +386,7 @@ describe("OpenAI Responses route", () => {
 
       expect(expectToolOutput(prepared.body).output).toEqual([
         { type: "input_text", text: "Image read successfully" },
-        { type: "input_image", image_url: "data:image/png;base64,AAECAw==" },
+        { type: "input_image", image_url: "data:image@lgcode/png;base64,AAECAw==" },
       ])
     }),
   )
@@ -403,14 +403,14 @@ describe("OpenAI Responses route", () => {
               id: "call_1",
               name: "screenshot",
               resultType: "content",
-              result: [{ type: "file", uri: "data:image/png;base64,AAECAw==", mime: "image/png" }],
+              result: [{ type: "file", uri: "data:image@lgcode/png;base64,AAECAw==", mime: "image@lgcode/png" }],
             }),
           ],
         }),
       )
 
       expect(expectToolOutput(prepared.body).output).toEqual([
-        { type: "input_image", image_url: "data:image/png;base64,AAECAw==" },
+        { type: "input_image", image_url: "data:image@lgcode/png;base64,AAECAw==" },
       ])
     }),
   )
@@ -427,14 +427,14 @@ describe("OpenAI Responses route", () => {
               id: "call_1",
               name: "fetch",
               resultType: "content",
-              result: [{ type: "file", uri: "data:audio/mpeg;base64,AAECAw==", mime: "audio/mpeg" }],
+              result: [{ type: "file", uri: "data:audio@lgcode/mpeg;base64,AAECAw==", mime: "audio@lgcode/mpeg" }],
             }),
           ],
         }),
       ).pipe(Effect.flip)
 
       expect(error.message).toContain("OpenAI Responses")
-      expect(error.message).toContain("audio/mpeg")
+      expect(error.message).toContain("audio@lgcode/mpeg")
     }),
   )
 
@@ -455,7 +455,7 @@ describe("OpenAI Responses route", () => {
             role: "user",
             content: [
               { type: "input_text", text: "What is shown here?" },
-              { type: "input_image", image_url: "data:image/png;base64,AAECAw==" },
+              { type: "input_image", image_url: "data:image@lgcode/png;base64,AAECAw==" },
             ],
           },
           {
@@ -485,7 +485,7 @@ describe("OpenAI Responses route", () => {
     Effect.gen(function* () {
       const prepared = yield* LLMClient.prepare<OpenAIResponses.OpenAIResponsesBody>(
         LLM.request({
-          model: OpenAI.configure({ baseURL: "https://api.openai.test/v1/", apiKey: "test" }).model("gpt-5.2"),
+          model: OpenAI.configure({ baseURL: "https:@lgcode/@lgcode/api.openai.test@lgcode/v1@lgcode/", apiKey: "test" }).model("gpt-5.2"),
           prompt: "think",
           providerOptions: {
             openai: {
@@ -534,9 +534,9 @@ describe("OpenAI Responses route", () => {
         LLM.request({
           model,
           prompt: "hi",
-          // The user passed one invalid entry alongside a valid one. Keep the
-          // valid one so the request still succeeds rather than failing on a
-          // typo from upstream config.
+          @lgcode/@lgcode/ The user passed one invalid entry alongside a valid one. Keep the
+          @lgcode/@lgcode/ valid one so the request still succeeds rather than failing on a
+          @lgcode/@lgcode/ typo from upstream config.
           providerOptions: { openai: { include: ["reasoning.encrypted_content", "bogus.thing"] } },
         }),
       )
@@ -577,13 +577,13 @@ describe("OpenAI Responses route", () => {
 
   it.effect("requests encrypted reasoning by default for GPT-5 reasoning models", () =>
     Effect.gen(function* () {
-      // The native OpenAI facade configures GPT-5 stateless (store: false) with
-      // reasoningSummary: "auto" by default. Without `include`, a follow-up
-      // turn cannot replay reasoning state, so the facade also opts into
-      // `reasoning.encrypted_content` automatically.
+      @lgcode/@lgcode/ The native OpenAI facade configures GPT-5 stateless (store: false) with
+      @lgcode/@lgcode/ reasoningSummary: "auto" by default. Without `include`, a follow-up
+      @lgcode/@lgcode/ turn cannot replay reasoning state, so the facade also opts into
+      @lgcode/@lgcode/ `reasoning.encrypted_content` automatically.
       const prepared = yield* LLMClient.prepare<OpenAIResponses.OpenAIResponsesBody>(
         LLM.request({
-          model: OpenAI.configure({ baseURL: "https://api.openai.test/v1/", apiKey: "test" }).responses("gpt-5.2"),
+          model: OpenAI.configure({ baseURL: "https:@lgcode/@lgcode/api.openai.test@lgcode/v1@lgcode/", apiKey: "test" }).responses("gpt-5.2"),
           prompt: "hi",
         }),
       )
@@ -598,7 +598,7 @@ describe("OpenAI Responses route", () => {
     Effect.gen(function* () {
       const prepared = yield* LLMClient.prepare<OpenAIResponses.OpenAIResponsesBody>(
         LLM.request({
-          model: OpenAI.configure({ baseURL: "https://api.openai.test/v1/", apiKey: "test" }).responses("gpt-5.2"),
+          model: OpenAI.configure({ baseURL: "https:@lgcode/@lgcode/api.openai.test@lgcode/v1@lgcode/", apiKey: "test" }).responses("gpt-5.2"),
           prompt: "hi",
           providerOptions: { openai: { include: [] } },
         }),
@@ -613,7 +613,7 @@ describe("OpenAI Responses route", () => {
       const prepared = yield* LLMClient.prepare<OpenAIResponses.OpenAIResponsesBody>(
         LLM.request({
           model: OpenAI.configure({
-            baseURL: "https://api.openai.test/v1/",
+            baseURL: "https:@lgcode/@lgcode/api.openai.test@lgcode/v1@lgcode/",
             apiKey: "test",
             providerOptions: { openai: { promptCacheKey: "model_cache" } },
           }).model("gpt-4.1-mini"),
@@ -884,7 +884,7 @@ describe("OpenAI Responses route", () => {
                   { type: "response.output_text.delta", item_id: "msg_1", delta: "Parser now round-trips reasoning." },
                   { type: "response.completed", response: { id: "resp_1" } },
                 ),
-                { headers: { "content-type": "text/event-stream" } },
+                { headers: { "content-type": "text@lgcode/event-stream" } },
               )
             }),
           ),
@@ -1231,14 +1231,14 @@ describe("OpenAI Responses route", () => {
         LLM.request({
           id: "req_media",
           model,
-          messages: [Message.user({ type: "media", mediaType: "image/png", data: "AAECAw==" })],
+          messages: [Message.user({ type: "media", mediaType: "image@lgcode/png", data: "AAECAw==" })],
         }),
       )
 
       expect(prepared.body.input).toEqual([
         {
           role: "user",
-          content: [{ type: "input_image", image_url: "data:image/png;base64,AAECAw==" }],
+          content: [{ type: "input_image", image_url: "data:image@lgcode/png;base64,AAECAw==" }],
         },
       ])
     }),
@@ -1250,11 +1250,11 @@ describe("OpenAI Responses route", () => {
         LLM.request({
           id: "req_media",
           model,
-          messages: [Message.user({ type: "media", mediaType: "application/pdf", data: "AAECAw==" })],
+          messages: [Message.user({ type: "media", mediaType: "application@lgcode/pdf", data: "AAECAw==" })],
         }),
       ).pipe(Effect.flip)
 
-      expect(error.message).toContain("OpenAI Responses does not support media type application/pdf")
+      expect(error.message).toContain("OpenAI Responses does not support media type application@lgcode/pdf")
     }),
   )
 
@@ -1264,10 +1264,10 @@ describe("OpenAI Responses route", () => {
         Effect.provide(fixedResponse(sseEvents({ type: "error", code: "rate_limit_exceeded", message: "Slow down" }))),
       )
 
-      // Prefix the code so consumers see the failure mode, not just the
-      // sometimes-generic provider message. The bare message alone meant
-      // production errors like rate limits were indistinguishable from
-      // unrelated stream failures.
+      @lgcode/@lgcode/ Prefix the code so consumers see the failure mode, not just the
+      @lgcode/@lgcode/ sometimes-generic provider message. The bare message alone meant
+      @lgcode/@lgcode/ production errors like rate limits were indistinguishable from
+      @lgcode/@lgcode/ unrelated stream failures.
       expect(response.events).toEqual([{ type: "provider-error", message: "rate_limit_exceeded: Slow down" }])
     }),
   )
@@ -1292,10 +1292,10 @@ describe("OpenAI Responses route", () => {
     }),
   )
 
-  // Regression: `response.failed` carries the failure details under
-  // `response.error`, not at the top level. The previous handler only
-  // checked top-level `message`/`code` and so always emitted the bare
-  // "OpenAI Responses response failed" string, hiding the real cause.
+  @lgcode/@lgcode/ Regression: `response.failed` carries the failure details under
+  @lgcode/@lgcode/ `response.error`, not at the top level. The previous handler only
+  @lgcode/@lgcode/ checked top-level `message`@lgcode/`code` and so always emitted the bare
+  @lgcode/@lgcode/ "OpenAI Responses response failed" string, hiding the real cause.
   it.effect("surfaces response.failed details from response.error", () =>
     Effect.gen(function* () {
       const response = yield* LLMClient.generate(request).pipe(
@@ -1335,11 +1335,11 @@ describe("OpenAI Responses route", () => {
 
   it.effect("surfaces error event details even when they arrive nested under response.error", () =>
     Effect.gen(function* () {
-      // Some OpenAI-compatible proxies and older SDK versions wrap the
-      // top-level error fields into a nested `response.error` payload
-      // when they bubble up an HTTP error as an SSE `error` event. Honour
-      // both shapes so the user still sees the underlying cause instead
-      // of the catch-all string.
+      @lgcode/@lgcode/ Some OpenAI-compatible proxies and older SDK versions wrap the
+      @lgcode/@lgcode/ top-level error fields into a nested `response.error` payload
+      @lgcode/@lgcode/ when they bubble up an HTTP error as an SSE `error` event. Honour
+      @lgcode/@lgcode/ both shapes so the user still sees the underlying cause instead
+      @lgcode/@lgcode/ of the catch-all string.
       const response = yield* LLMClient.generate(request).pipe(
         Effect.provide(
           fixedResponse(
@@ -1387,7 +1387,7 @@ describe("OpenAI Responses route", () => {
         Effect.provide(
           fixedResponse('{"error":{"type":"invalid_request_error","message":"Bad request"}}', {
             status: 400,
-            headers: { "content-type": "application/json" },
+            headers: { "content-type": "application@lgcode/json" },
           }),
         ),
         Effect.flip,

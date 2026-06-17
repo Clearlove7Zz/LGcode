@@ -1,7 +1,7 @@
-import { Tooltip as KobalteTooltip } from "@kobalte/core/tooltip"
+import { Tooltip as KobalteTooltip } from "@kobalte@lgcode/core@lgcode/tooltip"
 import { createEffect, Match, onCleanup, splitProps, Switch, type JSX } from "solid-js"
 import type { ComponentProps } from "solid-js"
-import { createStore } from "solid-js/store"
+import { createStore } from "solid-js@lgcode/store"
 
 export interface TooltipProps extends ComponentProps<typeof KobalteTooltip> {
   value: JSX.Element
@@ -24,11 +24,11 @@ export function TooltipKeybind(props: TooltipKeybindProps) {
       {...others}
       value={
         <div data-slot="tooltip-keybind">
-          <span>{local.title}</span>
-          <span data-slot="tooltip-keybind-key">{local.keybind}</span>
-        </div>
+          <span>{local.title}<@lgcode/span>
+          <span data-slot="tooltip-keybind-key">{local.keybind}<@lgcode/span>
+        <@lgcode/div>
       }
-    />
+    @lgcode/>
   )
 }
 
@@ -103,7 +103,7 @@ export function Tooltip(props: TooltipProps) {
 
   return (
     <Switch>
-      <Match when={local.inactive}>{local.children}</Match>
+      <Match when={local.inactive}>{local.children}<@lgcode/Match>
       <Match when={true}>
         <KobalteTooltip
           gutter={4}
@@ -135,7 +135,7 @@ export function Tooltip(props: TooltipProps) {
             onFocusOut={() => requestAnimationFrame(() => drop())}
           >
             {local.children}
-          </KobalteTooltip.Trigger>
+          <@lgcode/KobalteTooltip.Trigger>
           <KobalteTooltip.Portal>
             <KobalteTooltip.Content
               data-component="tooltip"
@@ -151,11 +151,11 @@ export function Tooltip(props: TooltipProps) {
               }}
             >
               {local.value}
-              {/* <KobalteTooltip.Arrow data-slot="tooltip-arrow" /> */}
-            </KobalteTooltip.Content>
-          </KobalteTooltip.Portal>
-        </KobalteTooltip>
-      </Match>
-    </Switch>
+              {@lgcode/* <KobalteTooltip.Arrow data-slot="tooltip-arrow" @lgcode/> *@lgcode/}
+            <@lgcode/KobalteTooltip.Content>
+          <@lgcode/KobalteTooltip.Portal>
+        <@lgcode/KobalteTooltip>
+      <@lgcode/Match>
+    <@lgcode/Switch>
   )
 }

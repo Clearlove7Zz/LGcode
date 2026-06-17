@@ -1,6 +1,6 @@
-// @ts-nocheck
-import * as mod from "./select"
-import { create } from "../storybook/scaffold"
+@lgcode/@lgcode/ @ts-nocheck
+import * as mod from ".@lgcode/select"
+import { create } from "..@lgcode/storybook@lgcode/scaffold"
 
 const docs = `### Overview
 Select menu for choosing a single option with optional grouping.
@@ -21,13 +21,13 @@ Use \`children\` to customize option rendering.
 ### Accessibility
 - TODO: confirm keyboard navigation and aria attributes from Kobalte.
 
-### Theming/tokens
+### Theming@lgcode/tokens
 - Uses \`data-component="select"\` with slot attributes.
 
 `
 
 const story = create({
-  title: "UI/Select",
+  title: "UI@lgcode/Select",
   mod,
   args: {
     options: ["One", "Two", "Three"],
@@ -39,7 +39,7 @@ const story = create({
 })
 
 export default {
-  title: "UI/Select",
+  title: "UI@lgcode/Select",
   id: "components-select",
   component: story.meta.component,
   tags: ["autodocs"],
@@ -76,7 +76,7 @@ export const Grouped = {
         groupBy={(item) => item.group}
         placeholder="Choose..."
         variant="secondary"
-      />
+      @lgcode/>
     )
   },
 }
@@ -95,8 +95,8 @@ export const CustomRender = {
       placeholder="Choose..."
       variant="secondary"
     >
-      {(item) => <span style={{ "text-transform": "uppercase" }}>{item}</span>}
-    </mod.Select>
+      {(item) => <span style={{ "text-transform": "uppercase" }}>{item}<@lgcode/span>}
+    <@lgcode/mod.Select>
   ),
 }
 

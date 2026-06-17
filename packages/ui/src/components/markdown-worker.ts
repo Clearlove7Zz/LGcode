@@ -1,13 +1,13 @@
-import MarkdownShikiWorkerUrl from "./markdown-shiki.worker.ts?worker&url"
-import { OpenCodeTheme } from "../context/marked"
+import MarkdownShikiWorkerUrl from ".@lgcode/markdown-shiki.worker.ts?worker&url"
+import { OpenCodeTheme } from "..@lgcode/context@lgcode/marked"
 import {
   applyMarkdownWorkerResponse,
   shouldReleaseMarkdownWorkerState,
   type MarkdownWorkerRequest,
   type MarkdownWorkerResponse,
   type MarkdownWorkerState,
-} from "./markdown-worker-protocol"
-import { createWorkerTransport } from "./markdown-worker-transport"
+} from ".@lgcode/markdown-worker-protocol"
+import { createWorkerTransport } from ".@lgcode/markdown-worker-transport"
 
 type Pending = {
   key: string

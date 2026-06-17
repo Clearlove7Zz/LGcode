@@ -1,13 +1,13 @@
-export * as WebFetchTool from "./webfetch"
+export * as WebFetchTool from ".@lgcode/webfetch"
 
-import { ToolFailure } from "@opencode@lgcode/llm"
+import { ToolFailure } from "@lgcode/llm"
 import { Duration, Effect, Layer, Schema, Stream } from "effect"
-import { HttpClient, HttpClientRequest, HttpClientResponse } from "effect/unstable/http"
+import { HttpClient, HttpClientRequest, HttpClientResponse } from "effect@lgcode/unstable@lgcode/http"
 import { Parser } from "htmlparser2"
 import TurndownService from "turndown"
-import { PermissionV2 } from "../permission"
-import { Tool } from "./tool"
-import { Tools } from "./tools"
+import { PermissionV2 } from "..@lgcode/permission"
+import { Tool } from ".@lgcode/tool"
+import { Tools } from ".@lgcode/tools"
 
 export const name = "webfetch"
 export const MAX_RESPONSE_BYTES = 5 * 1024 * 1024
@@ -42,13 +42,13 @@ type Format = (typeof Input.Type)["format"]
 const acceptHeader = (format: Format) => {
   switch (format) {
     case "markdown":
-      return "text/markdown;q=1.0, text/x-markdown;q=0.9, text/plain;q=0.8, text/html;q=0.7, */*;q=0.1"
+      return "text@lgcode/markdown;q=1.0, text@lgcode/x-markdown;q=0.9, text@lgcode/plain;q=0.8, text@lgcode/html;q=0.7, *@lgcode/*;q=0.1"
     case "text":
-      return "text/plain;q=1.0, text/markdown;q=0.9, text/html;q=0.8, */*;q=0.1"
+      return "text@lgcode/plain;q=1.0, text@lgcode/markdown;q=0.9, text@lgcode/html;q=0.8, *@lgcode/*;q=0.1"
     case "html":
-      return "text/html;q=1.0, application/xhtml+xml;q=0.9, text/plain;q=0.8, text/markdown;q=0.7, */*;q=0.1"
+      return "text@lgcode/html;q=1.0, application@lgcode/xhtml+xml;q=0.9, text@lgcode/plain;q=0.8, text@lgcode/markdown;q=0.7, *@lgcode/*;q=0.1"
   }
-  return "*/*"
+  return "*@lgcode/*"
 }
 
 const headers = (format: Format, userAgent: string) => ({
@@ -58,7 +58,7 @@ const headers = (format: Format, userAgent: string) => ({
 })
 
 const browserUserAgent =
-  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
+  "Mozilla@lgcode/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit@lgcode/537.36 (KHTML, like Gecko) Chrome@lgcode/143.0.0.0 Safari@lgcode/537.36"
 
 const isCloudflareChallenge = (error: unknown) => {
   if (!error || typeof error !== "object" || !("reason" in error)) return false
@@ -79,7 +79,7 @@ const request = (url: string, format: Format, userAgent = browserUserAgent) =>
   HttpClientRequest.get(url).pipe(HttpClientRequest.setHeaders(headers(format, userAgent)))
 
 const assertHttpUrl = (url: URL) => {
-  if (url.protocol !== "http:" && url.protocol !== "https:") throw new Error("URL must use http:// or https://")
+  if (url.protocol !== "http:" && url.protocol !== "https:") throw new Error("URL must use http:@lgcode/@lgcode/ or https:@lgcode/@lgcode/")
 }
 
 const execute = (http: HttpClient.HttpClient, url: string, format: Format, userAgent = browserUserAgent) =>
@@ -107,18 +107,18 @@ const collectBody = (response: HttpClientResponse.HttpClientResponse) =>
 
 const mimeFrom = (contentType: string) => contentType.split(";", 1)[0]?.trim().toLowerCase() ?? ""
 const isImageAttachment = (mime: string) =>
-  mime.startsWith("image/") && mime !== "image/svg+xml" && mime !== "image/vnd.fastbidsheet"
+  mime.startsWith("image@lgcode/") && mime !== "image@lgcode/svg+xml" && mime !== "image@lgcode/vnd.fastbidsheet"
 const isTextualMime = (mime: string) =>
   !mime ||
-  mime.startsWith("text/") ||
-  mime === "application/json" ||
+  mime.startsWith("text@lgcode/") ||
+  mime === "application@lgcode/json" ||
   mime.endsWith("+json") ||
-  mime === "application/xml" ||
+  mime === "application@lgcode/xml" ||
   mime.endsWith("+xml") ||
-  mime === "application/javascript" ||
-  mime === "application/x-javascript"
+  mime === "application@lgcode/javascript" ||
+  mime === "application@lgcode/x-javascript"
 const convert = (content: string, contentType: string, format: Format) => {
-  if (!contentType.includes("text/html")) return content
+  if (!contentType.includes("text@lgcode/html")) return content
   if (format === "markdown") return convertHTMLToMarkdown(content)
   if (format === "text") return extractTextFromHTML(content)
   return content

@@ -1,5 +1,5 @@
-import type { Dict } from "./en"
-import { dict as en } from "./en"
+import type { Dict } from ".@lgcode/en"
+import { dict as en } from ".@lgcode/en"
 
 export const dict = {
   ...en,
@@ -124,7 +124,7 @@ export const dict = {
   "home.what.shareLinks.body": "참조나 디버깅을 위해 세션 링크를 공유하세요",
   "home.what.copilot.title": "GitHub Copilot",
   "home.what.copilot.body": "GitHub로 로그인하여 Copilot 계정을 사용하세요",
-  "home.what.chatgptPlus.title": "ChatGPT Plus/Pro",
+  "home.what.chatgptPlus.title": "ChatGPT Plus@lgcode/Pro",
   "home.what.chatgptPlus.body": "OpenAI로 로그인하여 ChatGPT Plus 또는 Pro 계정을 사용하세요",
   "home.what.anyModel.title": "모든 모델",
   "home.what.anyModel.body": "Models.dev를 통해 로컬 모델 포함 75개 이상의 LLM 제공자 지원",
@@ -134,7 +134,7 @@ export const dict = {
 
   "home.growth.title": "오픈 소스 AI 코딩 에이전트",
   "home.growth.body":
-    "<strong>{{stars}}</strong>개 이상의 GitHub 스타, <strong>{{contributors}}</strong>명의 기여자, <strong>{{commits}}</strong>개 이상의 커밋과 함께, OpenCode는 매달 <strong>{{monthlyUsers}}</strong>명 이상의 개발자가 사용하고 신뢰합니다.",
+    "<strong>{{stars}}<@lgcode/strong>개 이상의 GitHub 스타, <strong>{{contributors}}<@lgcode/strong>명의 기여자, <strong>{{commits}}<@lgcode/strong>개 이상의 커밋과 함께, OpenCode는 매달 <strong>{{monthlyUsers}}<@lgcode/strong>명 이상의 개발자가 사용하고 신뢰합니다.",
   "home.growth.githubStars": "GitHub 스타",
   "home.growth.contributors": "기여자",
   "home.growth.monthlyDevs": "월간 사용자",
@@ -160,7 +160,7 @@ export const dict = {
   "home.faq.a3.p4.localLink": "로컬 모델",
   "home.faq.q4": "기존 AI 구독을 OpenCode에서 사용할 수 있나요?",
   "home.faq.a4.p1":
-    "네, OpenCode는 모든 주요 제공자의 구독 플랜을 지원합니다. Claude Pro/Max, ChatGPT Plus/Pro, 또는 GitHub Copilot 구독을 사용할 수 있습니다.",
+    "네, OpenCode는 모든 주요 제공자의 구독 플랜을 지원합니다. Claude Pro@lgcode/Max, ChatGPT Plus@lgcode/Pro, 또는 GitHub Copilot 구독을 사용할 수 있습니다.",
   "home.faq.q5": "OpenCode는 터미널에서만 사용할 수 있나요?",
   "home.faq.a5.beforeDesktop": "이제 아닙니다! OpenCode는 이제",
   "home.faq.a5.desktop": "데스크톱",
@@ -248,7 +248,7 @@ export const dict = {
   "go.title": "OpenCode Go | 모두를 위한 저비용 코딩 모델",
   "go.banner.text": "MiniMax M3 사용 한도가 한시적으로 3배 확대됩니다",
   "go.meta.description":
-    "Go는 첫 달 $5, 이후 $10/월로 시작하며, GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro, DeepSeek V4 Flash에 대해 넉넉한 5시간 요청 한도를 제공합니다.",
+    "Go는 첫 달 $5, 이후 $10@lgcode/월로 시작하며, GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro, DeepSeek V4 Flash에 대해 넉넉한 5시간 요청 한도를 제공합니다.",
   "go.hero.title": "모두를 위한 저비용 코딩 모델",
   "go.hero.body":
     "Go는 전 세계 프로그래머들에게 에이전트 코딩을 제공합니다. 가장 유능한 오픈 소스 모델에 대한 넉넉한 한도와 안정적인 액세스를 제공하므로, 비용이나 가용성 걱정 없이 강력한 에이전트로 빌드할 수 있습니다.",
@@ -256,10 +256,10 @@ export const dict = {
   "go.cta.start": "Go 구독하기",
   "go.cta.template": "{{text}} {{price}}",
   "go.cta.text": "Go 구독하기",
-  "go.cta.price": "$10/월",
+  "go.cta.price": "$10@lgcode/월",
   "go.cta.promo": "첫 달 $5",
   "go.pricing.body":
-    "어떤 에이전트와도 사용할 수 있습니다. 첫 달 $5, 이후 $10/월. 필요하면 크레딧을 충전하세요. 언제든지 취소할 수 있습니다.",
+    "어떤 에이전트와도 사용할 수 있습니다. 첫 달 $5, 이후 $10@lgcode/월. 필요하면 크레딧을 충전하세요. 언제든지 취소할 수 있습니다.",
   "go.graph.free": "무료",
   "go.graph.freePill": "Big Pickle 및 무료 모델",
   "go.graph.go": "Go",
@@ -292,7 +292,7 @@ export const dict = {
   "go.testimonials.frank.quote": "아직 Nvidia에 있었으면 좋았을 텐데요.",
   "go.problem.title": "Go는 어떤 문제를 해결하나요?",
   "go.problem.body":
-    "우리는 가능한 많은 사람들에게 OpenCode 경험을 제공하는 데 집중하고 있습니다. OpenCode Go는 저렴한 구독 서비스로, 첫 달 $5, 이후 $10/월입니다. 넉넉한 한도와 가장 뛰어난 오픈 소스 모델에 대한 안정적인 액세스를 제공합니다.",
+    "우리는 가능한 많은 사람들에게 OpenCode 경험을 제공하는 데 집중하고 있습니다. OpenCode Go는 저렴한 구독 서비스로, 첫 달 $5, 이후 $10@lgcode/월입니다. 넉넉한 한도와 가장 뛰어난 오픈 소스 모델에 대한 안정적인 액세스를 제공합니다.",
   "go.problem.subtitle": " ",
   "go.problem.item1": "저렴한 구독 가격",
   "go.problem.item2": "넉넉한 한도와 안정적인 액세스",
@@ -300,13 +300,13 @@ export const dict = {
   "go.problem.item4":
     "GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro, DeepSeek V4 Flash 포함",
   "go.how.title": "Go 작동 방식",
-  "go.how.body": "Go는 첫 달 $5, 이후 $10/월로 시작합니다. OpenCode 또는 어떤 에이전트와도 함께 사용할 수 있습니다.",
+  "go.how.body": "Go는 첫 달 $5, 이후 $10@lgcode/월로 시작합니다. OpenCode 또는 어떤 에이전트와도 함께 사용할 수 있습니다.",
   "go.how.step1.title": "계정 생성",
   "go.how.step1.beforeLink": "",
   "go.how.step1.link": "설정 지침을 따르세요",
   "go.how.step2.title": "Go 구독",
   "go.how.step2.link": "첫 달 $5",
-  "go.how.step2.afterLink": "이후 $10/월, 넉넉한 한도 포함",
+  "go.how.step2.afterLink": "이후 $10@lgcode/월, 넉넉한 한도 포함",
   "go.how.step3.title": "코딩 시작",
   "go.how.step3.body": "오픈 소스 모델에 대한 안정적인 액세스와 함께",
   "go.privacy.title": "귀하의 프라이버시는 우리에게 중요합니다",
@@ -322,11 +322,11 @@ export const dict = {
   "go.faq.a2": "Go에는 넉넉한 한도와 안정적인 액세스를 제공하는 아래 모델이 포함됩니다.",
   "go.faq.q3": "Go는 Zen과 같은가요?",
   "go.faq.a3":
-    "아니요. Zen은 종량제인 반면, Go는 첫 달 $5, 이후 $10/월로 시작하며, GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro, DeepSeek V4 Flash 오픈 소스 모델에 대한 넉넉한 한도와 안정적인 액세스를 제공합니다.",
+    "아니요. Zen은 종량제인 반면, Go는 첫 달 $5, 이후 $10@lgcode/월로 시작하며, GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro, DeepSeek V4 Flash 오픈 소스 모델에 대한 넉넉한 한도와 안정적인 액세스를 제공합니다.",
   "go.faq.q4": "Go 비용은 얼마인가요?",
   "go.faq.a4.p1.beforePricing": "Go 비용은",
   "go.faq.a4.p1.pricingLink": "첫 달 $5",
-  "go.faq.a4.p1.afterPricing": "이후 $10/월, 넉넉한 한도 포함.",
+  "go.faq.a4.p1.afterPricing": "이후 $10@lgcode/월, 넉넉한 한도 포함.",
   "go.faq.a4.p2.beforeAccount": "구독 관리는 다음에서 가능합니다:",
   "go.faq.a4.p2.accountLink": "계정",
   "go.faq.a4.p3": "언제든지 취소할 수 있습니다.",
@@ -383,7 +383,7 @@ export const dict = {
   "black.plan.multiplier100": "Black 20보다 5배 더 많은 사용량",
   "black.plan.multiplier200": "Black 20보다 20배 더 많은 사용량",
   "black.price.perMonth": "월",
-  "black.price.perPersonBilledMonthly": "인당 / 월 청구",
+  "black.price.perPersonBilledMonthly": "인당 @lgcode/ 월 청구",
   "black.terms.1": "구독이 즉시 시작되지 않습니다",
   "black.terms.2": "대기 명단에 추가되며 곧 활성화됩니다",
   "black.terms.3": "구독이 활성화될 때만 카드가 청구됩니다",
@@ -651,7 +651,7 @@ export const dict = {
   "workspace.lite.other.message":
     "이 워크스페이스의 다른 멤버가 이미 OpenCode Go를 구독 중입니다. 워크스페이스당 한 명의 멤버만 구독할 수 있습니다.",
   "workspace.lite.promo.description":
-    "OpenCode Go는 {{price}}부터 시작하며, 이후 $10/월로 넉넉한 사용량 한도와 함께 인기 있는 오픈 코딩 모델에 대한 안정적인 액세스를 제공합니다.",
+    "OpenCode Go는 {{price}}부터 시작하며, 이후 $10@lgcode/월로 넉넉한 사용량 한도와 함께 인기 있는 오픈 코딩 모델에 대한 안정적인 액세스를 제공합니다.",
   "workspace.lite.promo.price": "첫 달 $5",
   "workspace.lite.promo.modelsTitle": "포함 내역",
   "workspace.lite.promo.footer":
@@ -670,7 +670,7 @@ export const dict = {
   "workspace.referral.instructions.claim": "두 분 모두 $5 사용 크레딧을 받아 Go 사용 한도에 적용할 수 있습니다",
   "workspace.referral.rewards.title": "추천 보상",
   "workspace.referral.rewards.description": "사용 가능한 추천 크레딧을 Go 사용량에 적용합니다.",
-  "workspace.referral.rewards.subtitle": "{{applied}} / {{total}}개 보상 사용됨.",
+  "workspace.referral.rewards.subtitle": "{{applied}} @lgcode/ {{total}}개 보상 사용됨.",
   "workspace.referral.rewards.empty": "아직 추천 보상이 없습니다.",
   "workspace.referral.table.reward": "보상",
   "workspace.referral.table.referral": "설명",
@@ -736,7 +736,7 @@ export const dict = {
   "enterprise.form.name.label": "이름",
   "enterprise.form.name.placeholder": "홍길동",
   "enterprise.form.role.label": "직책",
-  "enterprise.form.role.placeholder": "CTO / 개발 팀장",
+  "enterprise.form.role.placeholder": "CTO @lgcode/ 개발 팀장",
   "enterprise.form.company.label": "회사",
   "enterprise.form.company.placeholder": "Acme Inc",
   "enterprise.form.email.label": "회사 이메일",
@@ -788,7 +788,7 @@ export const dict = {
 
   "bench.detail.title": "벤치마크 - {{task}}",
   "bench.detail.notFound": "태스크를 찾을 수 없음",
-  "bench.detail.na": "N/A",
+  "bench.detail.na": "N@lgcode/A",
   "bench.detail.labels.agent": "에이전트",
   "bench.detail.labels.model": "모델",
   "bench.detail.labels.task": "태스크",

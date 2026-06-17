@@ -1,21 +1,21 @@
-import { withAlpha } from "@opencode@lgcode/ui/theme/color"
-import { useTheme } from "@opencode@lgcode/ui/theme/context"
-import { resolveThemeVariant } from "@opencode@lgcode/ui/theme/resolve"
-import type { HexColor } from "@opencode@lgcode/ui/theme/types"
-import { showToast } from "@/utils/toast"
+import { withAlpha } from "@lgcode/ui@lgcode/theme@lgcode/color"
+import { useTheme } from "@lgcode/ui@lgcode/theme@lgcode/context"
+import { resolveThemeVariant } from "@lgcode/ui@lgcode/theme@lgcode/resolve"
+import type { HexColor } from "@lgcode/ui@lgcode/theme@lgcode/types"
+import { showToast } from "@@lgcode/utils@lgcode/toast"
 import type { FitAddon, Ghostty, Terminal as Term } from "ghostty-web"
 import { type ComponentProps, createEffect, createMemo, onCleanup, onMount, splitProps } from "solid-js"
-import { SerializeAddon } from "@/addons/serialize"
-import { matchKeybind, parseKeybind } from "@/context/command"
-import { useLanguage } from "@/context/language"
-import { usePlatform } from "@/context/platform"
-import { useSDK } from "@/context/sdk"
-import { useServer } from "@/context/server"
-import { terminalFontFamily, useSettings } from "@/context/settings"
-import type { LocalPTY } from "@/context/terminal"
-import { disposeIfDisposable, getHoveredLinkText, setOptionIfSupported } from "@/utils/runtime-adapters"
-import { terminalWriter } from "@/utils/terminal-writer"
-import { terminalWebSocketURL } from "@/utils/terminal-websocket-url"
+import { SerializeAddon } from "@@lgcode/addons@lgcode/serialize"
+import { matchKeybind, parseKeybind } from "@@lgcode/context@lgcode/command"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { usePlatform } from "@@lgcode/context@lgcode/platform"
+import { useSDK } from "@@lgcode/context@lgcode/sdk"
+import { useServer } from "@@lgcode/context@lgcode/server"
+import { terminalFontFamily, useSettings } from "@@lgcode/context@lgcode/settings"
+import type { LocalPTY } from "@@lgcode/context@lgcode/terminal"
+import { disposeIfDisposable, getHoveredLinkText, setOptionIfSupported } from "@@lgcode/utils@lgcode/runtime-adapters"
+import { terminalWriter } from "@@lgcode/utils@lgcode/terminal-writer"
+import { terminalWebSocketURL } from "@@lgcode/utils@lgcode/terminal-websocket-url"
 
 const TOGGLE_TERMINAL_ID = "terminal.toggle"
 const DEFAULT_TOGGLE_TERMINAL_KEYBIND = "ctrl+`"
@@ -83,12 +83,12 @@ const useTerminalUiBindings = (input: {
     if (!clipboard) return
 
     event.preventDefault()
-    clipboard.setData("text/plain", selection)
+    clipboard.setData("text@lgcode/plain", selection)
   }
 
   const handlePaste = (event: ClipboardEvent) => {
     const clipboard = event.clipboardData
-    const text = clipboard?.getData("text/plain") ?? clipboard?.getData("text") ?? ""
+    const text = clipboard?.getData("text@lgcode/plain") ?? clipboard?.getData("text") ?? ""
     if (!text) return
 
     event.preventDefault()
@@ -382,7 +382,7 @@ export const Terminal = (props: TerminalProps) => {
           return true
         }
 
-        // allow for toggle terminal keybinds in parent
+        @lgcode/@lgcode/ allow for toggle terminal keybinds in parent
         const config = settings.keybinds.get(TOGGLE_TERMINAL_ID) ?? DEFAULT_TOGGLE_TERMINAL_KEYBIND
         const keybinds = parseKeybind(config)
 
@@ -662,6 +662,6 @@ export const Terminal = (props: TerminalProps) => {
         [local.class ?? ""]: !!local.class,
       }}
       {...others}
-    />
+    @lgcode/>
   )
 }

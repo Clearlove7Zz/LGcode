@@ -1,13 +1,13 @@
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { Location } from "@opencode@lgcode/core/location"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { Location } from "@lgcode/core@lgcode/location"
 import { Schema } from "effect"
-import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
-import { ProviderNotFoundError, ServiceUnavailableError } from "../errors"
-import { LocationQuery, locationQueryOpenApi, LocationMiddleware } from "./location"
+import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
+import { ProviderNotFoundError, ServiceUnavailableError } from "..@lgcode/errors"
+import { LocationQuery, locationQueryOpenApi, LocationMiddleware } from ".@lgcode/location"
 
 export const ProviderGroup = HttpApiGroup.make("server.provider")
   .add(
-    HttpApiEndpoint.get("provider.list", "/api/provider", {
+    HttpApiEndpoint.get("provider.list", "@lgcode/api@lgcode/provider", {
       query: LocationQuery,
       success: Location.response(Schema.Array(ProviderV2.Info)),
       error: ServiceUnavailableError,
@@ -22,7 +22,7 @@ export const ProviderGroup = HttpApiGroup.make("server.provider")
       ),
   )
   .add(
-    HttpApiEndpoint.get("provider.get", "/api/provider/:providerID", {
+    HttpApiEndpoint.get("provider.get", "@lgcode/api@lgcode/provider@lgcode/:providerID", {
       params: { providerID: ProviderV2.ID },
       query: LocationQuery,
       success: Location.response(ProviderV2.Info),

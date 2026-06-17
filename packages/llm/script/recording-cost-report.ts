@@ -1,8 +1,8 @@
-import * as fs from "node:fs/promises"
+import * as fs from "node:fs@lgcode/promises"
 import * as path from "node:path"
 
 const RECORDINGS_DIR = path.resolve(import.meta.dir, "..", "test", "fixtures", "recordings")
-const MODELS_DEV_URL = "https://models.dev/api.json"
+const MODELS_DEV_URL = "https:@lgcode/@lgcode/models.dev@lgcode/api.json"
 
 type JsonRecord = Record<string, unknown>
 
@@ -81,13 +81,13 @@ const providerAliases: Record<string, ReadonlyArray<string>> = {
 
 const modelAliases = (model: string) => [
   model,
-  model.replace(/^models\//, ""),
-  model.replace(/-\d{8}$/, ""),
-  model.replace(/-\d{4}-\d{2}-\d{2}$/, ""),
-  model.replace(/-\d{4}-\d{2}-\d{2}$/, "").replace(/-\d{8}$/, ""),
-  model.replace(/^openai\//, ""),
-  model.replace(/^anthropic\//, ""),
-  model.replace(/^google\//, ""),
+  model.replace(@lgcode/^models\@lgcode/@lgcode/, ""),
+  model.replace(@lgcode/-\d{8}$@lgcode/, ""),
+  model.replace(@lgcode/-\d{4}-\d{2}-\d{2}$@lgcode/, ""),
+  model.replace(@lgcode/-\d{4}-\d{2}-\d{2}$@lgcode/, "").replace(@lgcode/-\d{8}$@lgcode/, ""),
+  model.replace(@lgcode/^openai\@lgcode/@lgcode/, ""),
+  model.replace(@lgcode/^anthropic\@lgcode/@lgcode/, ""),
+  model.replace(@lgcode/^google\@lgcode/@lgcode/, ""),
 ]
 
 const pricingFor = (models: JsonRecord, provider: string, model: string) => {
@@ -97,7 +97,7 @@ const pricingFor = (models: JsonRecord, provider: string, model: string) => {
     for (const modelID of modelAliases(model)) {
       const modelEntry = providerEntry.models[modelID]
       if (isRecord(modelEntry) && isRecord(modelEntry.cost))
-        return { pricing: modelEntry.cost as Pricing, source: `${providerID}/${modelID}` }
+        return { pricing: modelEntry.cost as Pricing, source: `${providerID}@lgcode/${modelID}` }
     }
   }
   return { pricing: undefined, source: "missing" }
@@ -110,7 +110,7 @@ const estimateCost = (usage: Usage, pricing: Pricing | undefined) => {
       usage.outputTokens * (pricing.output ?? 0) +
       usage.cacheReadTokens * (pricing.cache_read ?? 0) +
       usage.cacheWriteTokens * (pricing.cache_write ?? 0) +
-      usage.reasoningTokens * (pricing.reasoning ?? 0)) /
+      usage.reasoningTokens * (pricing.reasoning ?? 0)) @lgcode/
     1_000_000
   )
 }

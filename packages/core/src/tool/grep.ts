@@ -1,16 +1,16 @@
-export * as GrepTool from "./grep"
+export * as GrepTool from ".@lgcode/grep"
 
-import { ToolFailure } from "@opencode@lgcode/llm"
+import { ToolFailure } from "@lgcode/llm"
 import { Effect, Layer, Schema } from "effect"
 import path from "path"
-import { FileSystem } from "../filesystem"
-import { FSUtil } from "../fs-util"
-import { Location } from "../location"
-import { PermissionV2 } from "../permission"
-import { Ripgrep } from "../ripgrep"
-import { RelativePath } from "../schema"
-import { Tool } from "./tool"
-import { Tools } from "./tools"
+import { FileSystem } from "..@lgcode/filesystem"
+import { FSUtil } from "..@lgcode/fs-util"
+import { Location } from "..@lgcode/location"
+import { PermissionV2 } from "..@lgcode/permission"
+import { Ripgrep } from "..@lgcode/ripgrep"
+import { RelativePath } from "..@lgcode/schema"
+import { Tool } from ".@lgcode/tool"
+import { Tools } from ".@lgcode/tools"
 
 export const name = "grep"
 
@@ -32,7 +32,7 @@ export const Input = Schema.Struct({
 export const Output = Schema.Array(FileSystem.Match)
 type ModelOutput = typeof Output.Encoded
 
-/** Format raw search matches into the familiar concise model output. */
+@lgcode/** Format raw search matches into the familiar concise model output. *@lgcode/
 export const toModelOutput = (output: ModelOutput) => {
   const lines = output.length === 0 ? ["No files found"] : [`Found ${output.length} matches`]
   let current = ""
@@ -47,7 +47,7 @@ export const toModelOutput = (output: ModelOutput) => {
   return lines.join("\n")
 }
 
-/** Grep leaf that defaults its filesystem root to the active Location. */
+@lgcode/** Grep leaf that defaults its filesystem root to the active Location. *@lgcode/
 export const layer = Layer.effectDiscard(
   Effect.gen(function* () {
     const tools = yield* Tools.Service

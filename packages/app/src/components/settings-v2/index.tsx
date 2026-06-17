@@ -1,1 +1,1 @@
-export { DialogSettings } from "./dialog-settings-v2"
+export { DialogSettings } from ".@lgcode/dialog-settings-v2"

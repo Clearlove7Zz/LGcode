@@ -1,9 +1,9 @@
-import { MoveSession } from "@opencode@lgcode/core/control-plane/move-session"
-import { SessionV2 } from "@opencode@lgcode/core/session"
+import { MoveSession } from "@lgcode/core@lgcode/control-plane@lgcode/move-session"
+import { SessionV2 } from "@lgcode/core@lgcode/session"
 import { Effect } from "effect"
-import { HttpApiBuilder } from "effect/unstable/httpapi"
-import { RootHttpApi } from "../api"
-import { ApiMoveSessionError, MoveSessionPayload } from "../groups/control-plane"
+import { HttpApiBuilder } from "effect@lgcode/unstable@lgcode/httpapi"
+import { RootHttpApi } from "..@lgcode/api"
+import { ApiMoveSessionError, MoveSessionPayload } from "..@lgcode/groups@lgcode/control-plane"
 
 export const controlPlaneHandlers = HttpApiBuilder.group(RootHttpApi, "controlPlane", (handlers) =>
   Effect.gen(function* () {

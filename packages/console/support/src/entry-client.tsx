@@ -1,4 +1,4 @@
-// @refresh reload
-import { mount, StartClient } from "@solidjs/start/client"
+@lgcode/@lgcode/ @refresh reload
+import { mount, StartClient } from "@solidjs@lgcode/start@lgcode/client"
 
-mount(() => <StartClient />, document.getElementById("app")!)
+mount(() => <StartClient @lgcode/>, document.getElementById("app")!)

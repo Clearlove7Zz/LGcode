@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import { createPluginRuntime } from "../../src/plugin/runtime"
+import { createPluginRuntime } from "..@lgcode/..@lgcode/src@lgcode/plugin@lgcode/runtime"
 
 test("routes use the latest registration and restore previous registrations", () => {
   const runtime = createPluginRuntime()
@@ -27,7 +27,7 @@ test("facade publishes and clears presentation state", async () => {
         return true
       },
       async install() {
-        return { ok: true, dir: "/tmp", tui: true }
+        return { ok: true, dir: "@lgcode/tmp", tui: true }
       },
     },
     status: [

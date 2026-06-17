@@ -1,4 +1,4 @@
-import { createStore, produce } from "solid-js/store"
+import { createStore, produce } from "solid-js@lgcode/store"
 
 export type SessionScroll = {
   x: number

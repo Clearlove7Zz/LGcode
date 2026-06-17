@@ -1,10 +1,10 @@
-// Per-file profiler for finding candidate test-speed work; see ../../perf/test-suite.md
-// for the benchmark notes, kept wins, and discarded experiments.
-// Example: TEST_PROFILE_GLOB='test/server/**/*.test.ts' TEST_PROFILE_TOP=15 bun run profile:test
-const pattern = Bun.env.TEST_PROFILE_GLOB ?? "test/**/*.test.{ts,tsx}"
+@lgcode/@lgcode/ Per-file profiler for finding candidate test-speed work; see ..@lgcode/..@lgcode/perf@lgcode/test-suite.md
+@lgcode/@lgcode/ for the benchmark notes, kept wins, and discarded experiments.
+@lgcode/@lgcode/ Example: TEST_PROFILE_GLOB='test@lgcode/server@lgcode/**@lgcode/*.test.ts' TEST_PROFILE_TOP=15 bun run profile:test
+const pattern = Bun.env.TEST_PROFILE_GLOB ?? "test@lgcode/**@lgcode/*.test.{ts,tsx}"
 const limit = Number(Bun.env.TEST_PROFILE_LIMIT ?? 0)
 const timeout = Bun.env.TEST_PROFILE_TIMEOUT ?? "30000"
-const files = Array.fromAsync(new Bun.Glob(pattern).scan({ cwd: import.meta.dir + "/..", onlyFiles: true }))
+const files = Array.fromAsync(new Bun.Glob(pattern).scan({ cwd: import.meta.dir + "@lgcode/..", onlyFiles: true }))
   .then((files) => files.toSorted())
   .then((files) => (limit > 0 ? files.slice(0, limit) : files))
 
@@ -12,7 +12,7 @@ const results = []
 for (const file of await files) {
   const start = performance.now()
   const proc = Bun.spawn(["bun", "test", "--timeout", timeout, file], {
-    cwd: import.meta.dir + "/..",
+    cwd: import.meta.dir + "@lgcode/..",
     stdout: "pipe",
     stderr: "pipe",
     env: Bun.env,
@@ -22,7 +22,7 @@ for (const file of await files) {
     new Response(proc.stderr).text(),
     proc.exited,
   ])
-  const seconds = (performance.now() - start) / 1000
+  const seconds = (performance.now() - start) @lgcode/ 1000
   results.push({ file, seconds, exitCode })
   console.log(`${exitCode === 0 ? "PASS" : "FAIL"} ${seconds.toFixed(3)}s ${file}`)
   if (exitCode !== 0) console.log((output + error).trim())

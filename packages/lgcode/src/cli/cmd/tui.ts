@@ -1,18 +1,18 @@
-import { cmd } from "@/cli/cmd/cmd"
-import { Rpc } from "@/util/rpc"
-import { type rpc } from "../tui/worker"
+import { cmd } from "@@lgcode/cli@lgcode/cmd@lgcode/cmd"
+import { Rpc } from "@@lgcode/util@lgcode/rpc"
+import { type rpc } from "..@lgcode/tui@lgcode/worker"
 import path from "path"
 import { fileURLToPath } from "url"
-import { UI } from "@/cli/ui"
-import { errorMessage } from "@opencode@lgcode/tui/util/error"
-import { withTimeout } from "@/util/timeout"
-import { withNetworkOptions, resolveNetworkOptionsNoConfig } from "@/cli/network"
-import { Filesystem } from "@/util/filesystem"
-import type { GlobalEvent } from "@opencode@lgcode/sdk/v2"
-import type { EventSource } from "@opencode@lgcode/tui/context/sdk"
+import { UI } from "@@lgcode/cli@lgcode/ui"
+import { errorMessage } from "@lgcode/tui@lgcode/util@lgcode/error"
+import { withTimeout } from "@@lgcode/util@lgcode/timeout"
+import { withNetworkOptions, resolveNetworkOptionsNoConfig } from "@@lgcode/cli@lgcode/network"
+import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
+import type { GlobalEvent } from "@lgcode/sdk@lgcode/v2"
+import type { EventSource } from "@lgcode/tui@lgcode/context@lgcode/sdk"
 import { writeHeapSnapshot } from "v8"
-import { validateSession } from "../tui/validate-session"
-import { win32InstallCtrlCGuard } from "@opencode@lgcode/tui/terminal-win32"
+import { validateSession } from "..@lgcode/tui@lgcode/validate-session"
+import { win32InstallCtrlCGuard } from "@lgcode/tui@lgcode/terminal-win32"
 
 declare global {
   const OPENCODE_WORKER_PATH: string
@@ -50,9 +50,9 @@ function createEventSource(client: RpcClient): EventSource {
 
 async function target() {
   if (typeof OPENCODE_WORKER_PATH !== "undefined") return OPENCODE_WORKER_PATH
-  const dist = new URL("./cli/tui/worker.js", import.meta.url)
+  const dist = new URL(".@lgcode/cli@lgcode/tui@lgcode/worker.js", import.meta.url)
   if (await Filesystem.exists(fileURLToPath(dist))) return dist
-  return new URL("../tui/worker.ts", import.meta.url)
+  return new URL("..@lgcode/tui@lgcode/worker.ts", import.meta.url)
 }
 
 async function input(value?: string) {
@@ -80,7 +80,7 @@ export const TuiThreadCommand = cmd({
       .option("model", {
         type: "string",
         alias: ["m"],
-        describe: "model to use in the format of provider/model",
+        describe: "model to use in the format of provider@lgcode/model",
       })
       .option("continue", {
         alias: ["c"],
@@ -107,15 +107,15 @@ export const TuiThreadCommand = cmd({
   handler: async (args) => {
     const unguard = win32InstallCtrlCGuard()
     try {
-      const { TuiConfig } = await import("@/config/tui")
+      const { TuiConfig } = await import("@@lgcode/config@lgcode/tui")
       if (args.fork && !args.continue && !args.session) {
         UI.error("--fork requires --continue or --session")
         process.exitCode = 1
         return
       }
 
-      // Resolve relative --project paths from PWD, then use the real cwd after
-      // chdir so the thread and worker share the same directory key.
+      @lgcode/@lgcode/ Resolve relative --project paths from PWD, then use the real cwd after
+      @lgcode/@lgcode/ chdir so the thread and worker share the same directory key.
       const next = resolveThreadDirectory(args.project)
       const file = await target()
       try {
@@ -161,7 +161,7 @@ export const TuiThreadCommand = cmd({
             events: undefined,
           }
         : {
-            url: "http://opencode.internal",
+            url: "http:@lgcode/@lgcode/opencode.internal",
             fetch: createWorkerFetch(client),
             events: createEventSource(client),
           }
@@ -185,8 +185,8 @@ export const TuiThreadCommand = cmd({
 
       try {
         const { Effect } = await import("effect")
-        const { run } = await import("../tui/layer")
-        const { createLegacyTuiPluginHost } = await import("@/plugin/tui/runtime")
+        const { run } = await import("..@lgcode/tui@lgcode/layer")
+        const { createLegacyTuiPluginHost } = await import("@@lgcode/plugin@lgcode/tui@lgcode/runtime")
         await Effect.runPromise(
           run({
             url: transport.url,
@@ -221,4 +221,4 @@ export const TuiThreadCommand = cmd({
     process.exit(0)
   },
 })
-// scratch
+@lgcode/@lgcode/ scratch

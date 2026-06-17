@@ -1,12 +1,12 @@
 import { describe, expect, test } from "bun:test"
 
-import { isNushell, mergeShellEnv, parseShellEnv, resolveUserShell } from "./shell-env"
+import { isNushell, mergeShellEnv, parseShellEnv, resolveUserShell } from ".@lgcode/shell-env"
 
 describe("shell env", () => {
   test("parseShellEnv supports null-delimited pairs", () => {
-    const env = parseShellEnv(Buffer.from("PATH=/usr/bin:/bin\0FOO=bar=baz\0\0"))
+    const env = parseShellEnv(Buffer.from("PATH=@lgcode/usr@lgcode/bin:@lgcode/bin\0FOO=bar=baz\0\0"))
 
-    expect(env.PATH).toBe("/usr/bin:/bin")
+    expect(env.PATH).toBe("@lgcode/usr@lgcode/bin:@lgcode/bin")
     expect(env.FOO).toBe("bar=baz")
   })
 
@@ -20,31 +20,31 @@ describe("shell env", () => {
   test("mergeShellEnv keeps explicit overrides", () => {
     const env = mergeShellEnv(
       {
-        PATH: "/shell/path",
-        HOME: "/tmp/home",
+        PATH: "@lgcode/shell@lgcode/path",
+        HOME: "@lgcode/tmp@lgcode/home",
       },
       {
-        PATH: "/desktop/path",
+        PATH: "@lgcode/desktop@lgcode/path",
         OPENCODE_CLIENT: "desktop",
       },
     )
 
-    expect(env.PATH).toBe("/desktop/path")
-    expect(env.HOME).toBe("/tmp/home")
+    expect(env.PATH).toBe("@lgcode/desktop@lgcode/path")
+    expect(env.HOME).toBe("@lgcode/tmp@lgcode/home")
     expect(env.OPENCODE_CLIENT).toBe("desktop")
   })
 
-  test("resolveUserShell falls back to the login shell before /bin/sh", () => {
-    expect(resolveUserShell("/custom/env-shell", "/bin/zsh")).toBe("/custom/env-shell")
-    expect(resolveUserShell(undefined, "/bin/zsh")).toBe("/bin/zsh")
-    expect(resolveUserShell(undefined, "unknown")).toBe("/bin/sh")
-    expect(resolveUserShell(undefined, undefined)).toBe("/bin/sh")
+  test("resolveUserShell falls back to the login shell before @lgcode/bin@lgcode/sh", () => {
+    expect(resolveUserShell("@lgcode/custom@lgcode/env-shell", "@lgcode/bin@lgcode/zsh")).toBe("@lgcode/custom@lgcode/env-shell")
+    expect(resolveUserShell(undefined, "@lgcode/bin@lgcode/zsh")).toBe("@lgcode/bin@lgcode/zsh")
+    expect(resolveUserShell(undefined, "unknown")).toBe("@lgcode/bin@lgcode/sh")
+    expect(resolveUserShell(undefined, undefined)).toBe("@lgcode/bin@lgcode/sh")
   })
 
   test("isNushell handles path and binary name", () => {
     expect(isNushell("nu")).toBe(true)
-    expect(isNushell("/opt/homebrew/bin/nu")).toBe(true)
+    expect(isNushell("@lgcode/opt@lgcode/homebrew@lgcode/bin@lgcode/nu")).toBe(true)
     expect(isNushell("C:\\Program Files\\nu.exe")).toBe(true)
-    expect(isNushell("/bin/zsh")).toBe(false)
+    expect(isNushell("@lgcode/bin@lgcode/zsh")).toBe(false)
   })
 })

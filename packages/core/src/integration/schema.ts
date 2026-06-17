@@ -1,4 +1,4 @@
-export * as IntegrationSchema from "./schema"
+export * as IntegrationSchema from ".@lgcode/schema"
 
 import { Schema } from "effect"
 

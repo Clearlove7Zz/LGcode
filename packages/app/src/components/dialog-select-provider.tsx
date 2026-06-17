@@ -1,13 +1,13 @@
 import { Component, Show } from "solid-js"
-import { useDialog } from "@opencode@lgcode/ui/context/dialog"
-import { popularProviders, useProviders } from "@/hooks/use-providers"
-import { Dialog } from "@opencode@lgcode/ui/dialog"
-import { List } from "@opencode@lgcode/ui/list"
-import { Tag } from "@opencode@lgcode/ui/tag"
-import { ProviderIcon } from "@opencode@lgcode/ui/provider-icon"
-import { DialogConnectProvider } from "./dialog-connect-provider"
-import { useLanguage } from "@/context/language"
-import { DialogCustomProvider } from "./dialog-custom-provider"
+import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
+import { popularProviders, useProviders } from "@@lgcode/hooks@lgcode/use-providers"
+import { Dialog } from "@lgcode/ui@lgcode/dialog"
+import { List } from "@lgcode/ui@lgcode/list"
+import { Tag } from "@lgcode/ui@lgcode/tag"
+import { ProviderIcon } from "@lgcode/ui@lgcode/provider-icon"
+import { DialogConnectProvider } from ".@lgcode/dialog-connect-provider"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { DialogCustomProvider } from ".@lgcode/dialog-custom-provider"
 
 const CUSTOM_ID = "_custom"
 
@@ -56,32 +56,32 @@ export const DialogSelectProvider: Component = () => {
         onSelect={(x) => {
           if (!x) return
           if (x.id === CUSTOM_ID) {
-            dialog.show(() => <DialogCustomProvider back="providers" />)
+            dialog.show(() => <DialogCustomProvider back="providers" @lgcode/>)
             return
           }
-          dialog.show(() => <DialogConnectProvider provider={x.id} />)
+          dialog.show(() => <DialogConnectProvider provider={x.id} @lgcode/>)
         }}
       >
         {(i) => (
           <div class="px-1.25 w-full flex items-center gap-x-3">
-            <ProviderIcon data-slot="list-item-extra-icon" id={i.id} />
-            <span>{i.name}</span>
+            <ProviderIcon data-slot="list-item-extra-icon" id={i.id} @lgcode/>
+            <span>{i.name}<@lgcode/span>
             <Show when={i.id === "opencode"}>
-              <div class="text-14-regular text-text-weak">{language.t("dialog.provider.opencode.tagline")}</div>
-            </Show>
+              <div class="text-14-regular text-text-weak">{language.t("dialog.provider.opencode.tagline")}<@lgcode/div>
+            <@lgcode/Show>
             <Show when={i.id === CUSTOM_ID}>
-              <Tag>{language.t("settings.providers.tag.custom")}</Tag>
-            </Show>
+              <Tag>{language.t("settings.providers.tag.custom")}<@lgcode/Tag>
+            <@lgcode/Show>
             <Show when={i.id === "opencode"}>
-              <Tag>{language.t("dialog.provider.tag.recommended")}</Tag>
-            </Show>
-            <Show when={note(i.id)}>{(value) => <div class="text-14-regular text-text-weak">{value()}</div>}</Show>
+              <Tag>{language.t("dialog.provider.tag.recommended")}<@lgcode/Tag>
+            <@lgcode/Show>
+            <Show when={note(i.id)}>{(value) => <div class="text-14-regular text-text-weak">{value()}<@lgcode/div>}<@lgcode/Show>
             <Show when={i.id === "opencode-go"}>
-              <Tag>{language.t("dialog.provider.tag.recommended")}</Tag>
-            </Show>
-          </div>
+              <Tag>{language.t("dialog.provider.tag.recommended")}<@lgcode/Tag>
+            <@lgcode/Show>
+          <@lgcode/div>
         )}
-      </List>
-    </Dialog>
+      <@lgcode/List>
+    <@lgcode/Dialog>
   )
 }

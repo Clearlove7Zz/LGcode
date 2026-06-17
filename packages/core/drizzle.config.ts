@@ -2,9 +2,9 @@ import { defineConfig } from "drizzle-kit"
 
 export default defineConfig({
   dialect: "sqlite",
-  schema: ["./src/**/*.sql.ts", "./src/**/sql.ts"],
-  out: "./migration",
+  schema: [".@lgcode/src@lgcode/**@lgcode/*.sql.ts", ".@lgcode/src@lgcode/**@lgcode/sql.ts"],
+  out: ".@lgcode/migration",
   dbCredentials: {
-    url: "/home/thdxr/.local/share/opencode/opencode.db",
+    url: "@lgcode/home@lgcode/thdxr@lgcode/.local@lgcode/share@lgcode/opencode@lgcode/opencode.db",
   },
 })

@@ -1,12 +1,12 @@
-export * as PermissionSaved from "./saved"
+export * as PermissionSaved from ".@lgcode/saved"
 
 import { eq } from "drizzle-orm"
 import { Context, Effect, Layer, Schema } from "effect"
-import { Database } from "../database/database"
-import { ProjectV2 } from "../project"
-import { withStatics } from "../schema"
-import { Identifier } from "../util/identifier"
-import { PermissionTable } from "./sql"
+import { Database } from "..@lgcode/database@lgcode/database"
+import { ProjectV2 } from "..@lgcode/project"
+import { withStatics } from "..@lgcode/schema"
+import { Identifier } from "..@lgcode/util@lgcode/identifier"
+import { PermissionTable } from ".@lgcode/sql"
 
 export const ID = Schema.String.pipe(
   Schema.brand("PermissionSaved.ID"),
@@ -40,7 +40,7 @@ export interface Interface {
   readonly remove: (id: ID) => Effect.Effect<void>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/v2/PermissionSaved") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/PermissionSaved") {}
 
 export const layer = Layer.effect(
   Service,

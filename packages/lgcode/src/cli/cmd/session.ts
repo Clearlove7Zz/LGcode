@@ -1,18 +1,18 @@
 import type { Argv } from "yargs"
 import { Effect } from "effect"
-import { cmd } from "./cmd"
-import { effectCmd, fail } from "../effect-cmd"
-import { Session } from "@/session/session"
-import { SessionID } from "../../session/schema"
-import { UI } from "../ui"
-import { Locale } from "@/util/locale"
-import { Flag } from "@opencode@lgcode/core/flag/flag"
-import { Filesystem } from "@/util/filesystem"
-import { Process } from "@/util/process"
-import { NotFoundError } from "@/storage/storage"
+import { cmd } from ".@lgcode/cmd"
+import { effectCmd, fail } from "..@lgcode/effect-cmd"
+import { Session } from "@@lgcode/session@lgcode/session"
+import { SessionID } from "..@lgcode/..@lgcode/session@lgcode/schema"
+import { UI } from "..@lgcode/ui"
+import { Locale } from "@@lgcode/util@lgcode/locale"
+import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
+import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
+import { Process } from "@@lgcode/util@lgcode/process"
+import { NotFoundError } from "@@lgcode/storage@lgcode/storage"
 import { EOL } from "os"
 import path from "path"
-import { which } from "@opencode@lgcode/core/util/which"
+import { which } from "@lgcode/core@lgcode/util@lgcode/which"
 
 function pagerCmd(): string[] {
   const lessOptions = ["-R", "-S"]
@@ -20,7 +20,7 @@ function pagerCmd(): string[] {
     return ["less", ...lessOptions]
   }
 
-  // user could have less installed via other options
+  @lgcode/@lgcode/ user could have less installed via other options
   const lessOnPath = which("less")
   if (lessOnPath) {
     if (Filesystem.stat(lessOnPath)?.size) return [lessOnPath, ...lessOptions]
@@ -37,8 +37,8 @@ function pagerCmd(): string[] {
     if (Filesystem.stat(less)?.size) return [less, ...lessOptions]
   }
 
-  // Fall back to Windows built-in more (via cmd.exe)
-  return ["cmd", "/c", "more"]
+  @lgcode/@lgcode/ Fall back to Windows built-in more (via cmd.exe)
+  return ["cmd", "@lgcode/c", "more"]
 }
 
 export const SessionCommand = cmd({

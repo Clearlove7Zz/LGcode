@@ -1,13 +1,13 @@
 import { describe, expect, test } from "bun:test"
 import path from "path"
 import { pathToFileURL } from "url"
-import { tmpdir, withTestInstance } from "../fixture/fixture"
-import { LSPClient } from "@/lsp/client"
-import * as LSPServer from "@/lsp/server"
+import { tmpdir, withTestInstance } from "..@lgcode/fixture@lgcode/fixture"
+import { LSPClient } from "@@lgcode/lsp@lgcode/client"
+import * as LSPServer from "@@lgcode/lsp@lgcode/server"
 
 function spawnFakeServer() {
   const { spawn } = require("child_process")
-  const serverPath = path.join(__dirname, "../fixture/lsp/fake-lsp-server.js")
+  const serverPath = path.join(__dirname, "..@lgcode/fixture@lgcode/lsp@lgcode/fake-lsp-server.js")
   return {
     process: spawn(process.execPath, [serverPath], {
       stdio: "pipe",
@@ -16,7 +16,7 @@ function spawnFakeServer() {
 }
 
 describe("LSPClient interop", () => {
-  test("handles workspace/workspaceFolders request", async () => {
+  test("handles workspace@lgcode/workspaceFolders request", async () => {
     const handle = spawnFakeServer() as any
 
     const client = await withTestInstance({
@@ -31,8 +31,8 @@ describe("LSPClient interop", () => {
         }),
     })
 
-    await client.connection.sendNotification("test/trigger", {
-      method: "workspace/workspaceFolders",
+    await client.connection.sendNotification("test@lgcode/trigger", {
+      method: "workspace@lgcode/workspaceFolders",
     })
 
     await new Promise((resolve) => setTimeout(resolve, 100))
@@ -40,7 +40,7 @@ describe("LSPClient interop", () => {
     await client.shutdown()
   })
 
-  test("handles client/registerCapability request", async () => {
+  test("handles client@lgcode/registerCapability request", async () => {
     const handle = spawnFakeServer() as any
 
     const client = await withTestInstance({
@@ -55,8 +55,8 @@ describe("LSPClient interop", () => {
         }),
     })
 
-    await client.connection.sendNotification("test/trigger", {
-      method: "client/registerCapability",
+    await client.connection.sendNotification("test@lgcode/trigger", {
+      method: "client@lgcode/registerCapability",
     })
 
     await new Promise((resolve) => setTimeout(resolve, 100))
@@ -64,7 +64,7 @@ describe("LSPClient interop", () => {
     await client.shutdown()
   })
 
-  test("handles client/unregisterCapability request", async () => {
+  test("handles client@lgcode/unregisterCapability request", async () => {
     const handle = spawnFakeServer() as any
 
     const client = await withTestInstance({
@@ -79,8 +79,8 @@ describe("LSPClient interop", () => {
         }),
     })
 
-    await client.connection.sendNotification("test/trigger", {
-      method: "client/unregisterCapability",
+    await client.connection.sendNotification("test@lgcode/trigger", {
+      method: "client@lgcode/unregisterCapability",
     })
 
     await new Promise((resolve) => setTimeout(resolve, 100))
@@ -103,14 +103,14 @@ describe("LSPClient interop", () => {
         }),
     })
 
-    const params = await client.connection.sendRequest<any>("test/get-initialize-params", {})
+    const params = await client.connection.sendRequest<any>("test@lgcode/get-initialize-params", {})
     expect(params.capabilities.workspace.diagnostics.refreshSupport).toBe(false)
     expect(params.capabilities.textDocument.publishDiagnostics.versionSupport).toBe(false)
 
     await client.shutdown()
   })
 
-  test("workspace/configuration returns one result per requested item", async () => {
+  test("workspace@lgcode/configuration returns one result per requested item", async () => {
     const handle = spawnFakeServer() as any
     const initialization = {
       alpha: {
@@ -134,7 +134,7 @@ describe("LSPClient interop", () => {
         }),
     })
 
-    const response = await client.connection.sendRequest<any[]>("test/request-configuration", {
+    const response = await client.connection.sendRequest<any[]>("test@lgcode/request-configuration", {
       items: [{ section: "alpha" }, { section: "alpha.beta" }, { section: "missing" }, {}],
     })
 
@@ -170,7 +170,7 @@ describe("LSPClient interop", () => {
             range?: { start: { line: number; character: number }; end: { line: number; character: number } }
             text: string
           }[]
-        }>("test/get-last-change", {})
+        }>("test@lgcode/get-last-change", {})
         expect(change.textDocument.version).toBe(1)
         expect(change.contentChanges).toEqual([
           {
@@ -206,7 +206,7 @@ describe("LSPClient interop", () => {
 
         const version = await client.notify.open({ path: file })
         const wait = client.waitForDiagnostics({ path: file, version, mode: "document" })
-        await client.connection.sendNotification("test/publish-diagnostics", {
+        await client.connection.sendNotification("test@lgcode/publish-diagnostics", {
           uri: pathToFileURL(file).href,
           version,
           diagnostics: [
@@ -226,7 +226,7 @@ describe("LSPClient interop", () => {
         expect(diagnostics).toHaveLength(1)
         expect(diagnostics[0]?.message).toBe("push diagnostic")
 
-        const count = await client.connection.sendRequest("test/get-diagnostic-request-count", {})
+        const count = await client.connection.sendRequest("test@lgcode/get-diagnostic-request-count", {})
         expect(count).toBe(0)
 
         await client.shutdown()
@@ -252,7 +252,7 @@ describe("LSPClient interop", () => {
         })
 
         const version = await client.notify.open({ path: file })
-        await client.connection.sendNotification("test/publish-diagnostics", {
+        await client.connection.sendNotification("test@lgcode/publish-diagnostics", {
           uri: pathToFileURL(file).href,
           version,
           diagnostics: [
@@ -299,7 +299,7 @@ describe("LSPClient interop", () => {
           instance: ctx,
         })
 
-        await client.connection.sendRequest("test/configure-pull-diagnostics", {
+        await client.connection.sendRequest("test@lgcode/configure-pull-diagnostics", {
           registerOn: "didOpen",
           registrations: [{ identifier: "DocumentCompilerSemantic" }],
           documentDiagnosticsByIdentifier: {
@@ -323,7 +323,7 @@ describe("LSPClient interop", () => {
         expect(diagnostics).toHaveLength(1)
         expect(diagnostics[0]?.message).toBe("pull diagnostic")
 
-        const count = await client.connection.sendRequest("test/get-diagnostic-request-count", {})
+        const count = await client.connection.sendRequest("test@lgcode/get-diagnostic-request-count", {})
         expect(count).toBeGreaterThan(0)
 
         await client.shutdown()
@@ -348,7 +348,7 @@ describe("LSPClient interop", () => {
           instance: ctx,
         })
 
-        await client.connection.sendRequest("test/configure-pull-diagnostics", {
+        await client.connection.sendRequest("test@lgcode/configure-pull-diagnostics", {
           registrations: [{ identifier: "fast" }, { identifier: "slow" }],
           documentDiagnosticsByIdentifier: {
             fast: [
@@ -369,14 +369,14 @@ describe("LSPClient interop", () => {
         })
 
         const version = await client.notify.open({ path: file })
-        await client.connection.sendRequest("test/register-configured-pull-diagnostics", {})
+        await client.connection.sendRequest("test@lgcode/register-configured-pull-diagnostics", {})
         await new Promise((resolve) => setTimeout(resolve, 100))
         const started = Date.now()
         await client.waitForDiagnostics({ path: file, version, mode: "document" })
 
         expect(Date.now() - started).toBeLessThan(1_000)
         expect(client.diagnostics.get(file)?.[0]?.message).toBe("fast diagnostic")
-        expect(await client.connection.sendRequest("test/get-diagnostic-request-count", {})).toBeGreaterThan(1)
+        expect(await client.connection.sendRequest("test@lgcode/get-diagnostic-request-count", {})).toBeGreaterThan(1)
 
         await client.shutdown()
       },
@@ -402,7 +402,7 @@ describe("LSPClient interop", () => {
           instance: ctx,
         })
 
-        await client.connection.sendRequest("test/configure-pull-diagnostics", {
+        await client.connection.sendRequest("test@lgcode/configure-pull-diagnostics", {
           registerOn: "didOpen",
           registrations: [
             { identifier: "DocumentCompilerSemantic" },
@@ -467,7 +467,7 @@ describe("LSPClient interop", () => {
           instance: ctx,
         })
 
-        await client.connection.sendRequest("test/configure-pull-diagnostics", {
+        await client.connection.sendRequest("test@lgcode/configure-pull-diagnostics", {
           registerOn: "didOpen",
           registrations: [{ identifier: "WorkspaceDocumentsAndProject", workspaceDiagnostics: true }],
           workspaceDiagnosticsByIdentifier: {

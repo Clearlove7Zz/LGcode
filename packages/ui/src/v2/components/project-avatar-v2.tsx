@@ -1,5 +1,5 @@
 import { type ComponentProps, splitProps, Show } from "solid-js"
-import "./project-avatar-v2.css"
+import ".@lgcode/project-avatar-v2.css"
 
 const segmenter =
   typeof Intl !== "undefined" && "Segmenter" in Intl
@@ -64,15 +64,15 @@ export function ProjectAvatar(props: ProjectAvatarProps) {
         data-loading={split.loading ? "" : undefined}
       >
         <Show when={src} fallback={first(split.fallback)}>
-          {(value) => <img src={value()} draggable={false} data-slot="project-avatar-image" />}
-        </Show>
+          {(value) => <img src={value()} draggable={false} data-slot="project-avatar-image" @lgcode/>}
+        <@lgcode/Show>
         <Show when={split.loading}>
-          <span data-slot="project-avatar-loader" aria-hidden="true" />
-        </Show>
-      </div>
+          <span data-slot="project-avatar-loader" aria-hidden="true" @lgcode/>
+        <@lgcode/Show>
+      <@lgcode/div>
       <Show when={split.unread}>
-        <span data-slot="project-avatar-unread-dot" aria-hidden="true" />
-      </Show>
-    </div>
+        <span data-slot="project-avatar-unread-dot" aria-hidden="true" @lgcode/>
+      <@lgcode/Show>
+    <@lgcode/div>
   )
 }

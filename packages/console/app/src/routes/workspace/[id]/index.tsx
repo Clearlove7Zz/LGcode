@@ -1,13 +1,13 @@
 import { Show, createMemo } from "solid-js"
-import { createStore } from "solid-js/store"
-import { createAsync, useParams, useAction, useSubmission } from "@solidjs/router"
-import { NewUserSection } from "./new-user-section"
-import { ModelSection } from "./model-section"
-import { ProviderSection } from "./provider-section"
-import { IconZen } from "~/component/icon"
-import { querySessionInfo, queryBillingInfo, createCheckoutUrl, formatBalance } from "../common"
-import { useI18n } from "~/context/i18n"
-import { useLanguage } from "~/context/language"
+import { createStore } from "solid-js@lgcode/store"
+import { createAsync, useParams, useAction, useSubmission } from "@solidjs@lgcode/router"
+import { NewUserSection } from ".@lgcode/new-user-section"
+import { ModelSection } from ".@lgcode/model-section"
+import { ProviderSection } from ".@lgcode/provider-section"
+import { IconZen } from "~@lgcode/component@lgcode/icon"
+import { querySessionInfo, queryBillingInfo, createCheckoutUrl, formatBalance } from "..@lgcode/common"
+import { useI18n } from "~@lgcode/context@lgcode/i18n"
+import { useLanguage } from "~@lgcode/context@lgcode/language"
 
 export default function () {
   const params = useParams()
@@ -34,15 +34,15 @@ export default function () {
   return (
     <div data-page="workspace-[id]">
       <section data-component="header-section">
-        <IconZen />
+        <IconZen @lgcode/>
         <p>
           <span>
             {i18n.t("workspace.home.banner.beforeLink")}{" "}
-            <a target="_blank" href={language.route("/docs/zen")}>
+            <a target="_blank" href={language.route("@lgcode/docs@lgcode/zen")}>
               {i18n.t("common.learnMore")}
-            </a>
+            <@lgcode/a>
             .
-          </span>
+          <@lgcode/span>
           <Show when={userInfo()?.isAdmin}>
             <span data-slot="billing-info">
               <Show
@@ -57,25 +57,25 @@ export default function () {
                     {checkoutSubmission.pending || store.checkoutRedirecting
                       ? i18n.t("workspace.home.billing.loading")
                       : i18n.t("workspace.home.billing.enable")}
-                  </button>
+                  <@lgcode/button>
                 }
               >
                 <span data-slot="balance">
-                  {i18n.t("workspace.home.billing.currentBalance")} <b>${balance()}</b>
-                </span>
-              </Show>
-            </span>
-          </Show>
-        </p>
-      </section>
+                  {i18n.t("workspace.home.billing.currentBalance")} <b>${balance()}<@lgcode/b>
+                <@lgcode/span>
+              <@lgcode/Show>
+            <@lgcode/span>
+          <@lgcode/Show>
+        <@lgcode/p>
+      <@lgcode/section>
 
       <div data-slot="sections">
-        <NewUserSection />
-        <ModelSection />
+        <NewUserSection @lgcode/>
+        <ModelSection @lgcode/>
         <Show when={userInfo()?.isAdmin}>
-          <ProviderSection />
-        </Show>
-      </div>
-    </div>
+          <ProviderSection @lgcode/>
+        <@lgcode/Show>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }

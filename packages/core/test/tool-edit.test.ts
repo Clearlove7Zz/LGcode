@@ -1,21 +1,21 @@
-import fs from "fs/promises"
+import fs from "fs@lgcode/promises"
 import path from "path"
 import { fileURLToPath } from "url"
 import { describe, expect, test } from "bun:test"
 import { Effect, Layer } from "effect"
-import { FileMutation } from "@opencode@lgcode/core/file-mutation"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { Location } from "@opencode@lgcode/core/location"
-import { LocationMutation } from "@opencode@lgcode/core/location-mutation"
-import { PermissionV2 } from "@opencode@lgcode/core/permission"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { SessionV2 } from "@opencode@lgcode/core/session"
-import { ToolRegistry } from "@opencode@lgcode/core/tool/registry"
-import { EditTool } from "@opencode@lgcode/core/tool/edit"
-import { location } from "./fixture/location"
-import { tmpdir } from "./fixture/tmpdir"
-import { testEffect } from "./lib/effect"
-import { toolIdentity, executeTool, settleTool, toolDefinitions } from "./lib/tool"
+import { FileMutation } from "@lgcode/core@lgcode/file-mutation"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { Location } from "@lgcode/core@lgcode/location"
+import { LocationMutation } from "@lgcode/core@lgcode/location-mutation"
+import { PermissionV2 } from "@lgcode/core@lgcode/permission"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { SessionV2 } from "@lgcode/core@lgcode/session"
+import { ToolRegistry } from "@lgcode/core@lgcode/tool@lgcode/registry"
+import { EditTool } from "@lgcode/core@lgcode/tool@lgcode/edit"
+import { location } from ".@lgcode/fixture@lgcode/location"
+import { tmpdir } from ".@lgcode/fixture@lgcode/tmpdir"
+import { testEffect } from ".@lgcode/lib@lgcode/effect"
+import { toolIdentity, executeTool, settleTool, toolDefinitions } from ".@lgcode/lib@lgcode/tool"
 
 const sessionID = SessionV2.ID.make("ses_edit_tool_test")
 const assertions: PermissionV2.AssertInput[] = []
@@ -396,7 +396,7 @@ describe("EditTool", () => {
 })
 
 test("keeps the locked edit schema, semantics docstring, and deferred TODOs visible", async () => {
-  const source = (await fs.readFile(new URL("../src/tool/edit.ts", import.meta.url), "utf8")).replaceAll("\r\n", "\n")
+  const source = (await fs.readFile(new URL("..@lgcode/src@lgcode/tool@lgcode/edit.ts", import.meta.url), "utf8")).replaceAll("\r\n", "\n")
   const definition = await Effect.runPromise(
     withTool(path.dirname(fileURLToPath(import.meta.url)), (registry) => toolDefinitions(registry)),
   )
@@ -409,8 +409,8 @@ test("keeps the locked edit schema, semantics docstring, and deferred TODOs visi
   for (const todo of [
     "Port V1 fuzzy correction strategies only after exact-edit behavior is established: line-trimmed matching, block-anchor fallback, indentation correction, and similarity-threshold review.",
     "Add formatter integration after V2 formatter runtime exists.",
-    "Publish watcher/file-edit events after V2 watcher integration exists.",
-    "Add snapshots / undo after design exists.",
+    "Publish watcher@lgcode/file-edit events after V2 watcher integration exists.",
+    "Add snapshots @lgcode/ undo after design exists.",
     "Add LSP notification and diagnostics after V2 LSP runtime exists.",
   ]) {
     expect(source).toContain(`TODO: ${todo}`)

@@ -1,19 +1,19 @@
-import { Server } from "@/server/server"
-import { InstanceRuntime } from "@/project/instance-runtime"
-import { Rpc } from "@/util/rpc"
-import { upgrade } from "@/cli/upgrade"
-import { Config } from "@/config/config"
-import { GlobalBus } from "@/bus/global"
-import { ServerAuth } from "@/server/auth"
+import { Server } from "@@lgcode/server@lgcode/server"
+import { InstanceRuntime } from "@@lgcode/project@lgcode/instance-runtime"
+import { Rpc } from "@@lgcode/util@lgcode/rpc"
+import { upgrade } from "@@lgcode/cli@lgcode/upgrade"
+import { Config } from "@@lgcode/config@lgcode/config"
+import { GlobalBus } from "@@lgcode/bus@lgcode/global"
+import { ServerAuth } from "@@lgcode/server@lgcode/auth"
 import { writeHeapSnapshot } from "node:v8"
-import { Heap } from "@/cli/heap"
-import { AppRuntime } from "@/effect/app-runtime"
+import { Heap } from "@@lgcode/cli@lgcode/heap"
+import { AppRuntime } from "@@lgcode/effect@lgcode/app-runtime"
 import { Effect } from "effect"
-import { disposeAllInstancesAndEmitGlobalDisposed } from "@/server/global-lifecycle"
+import { disposeAllInstancesAndEmitGlobalDisposed } from "@@lgcode/server@lgcode/global-lifecycle"
 
 Heap.start()
 
-// Subscribe to global events and forward them via RPC
+@lgcode/@lgcode/ Subscribe to global events and forward them via RPC
 GlobalBus.on("event", (event) => {
   Rpc.emit("global.event", event)
 })

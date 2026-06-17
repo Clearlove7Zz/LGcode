@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { createUpdaterSubscriptions } from "./updater-subscriptions"
+import { createUpdaterSubscriptions } from ".@lgcode/updater-subscriptions"
 
 describe("updater subscriptions", () => {
   test("replaces the previous renderer subscription on reload", () => {

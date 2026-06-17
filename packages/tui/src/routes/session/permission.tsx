@@ -1,21 +1,21 @@
-import { createStore } from "solid-js/store"
+import { createStore } from "solid-js@lgcode/store"
 import { dirname } from "node:path"
 import { createMemo, For, Match, Show, Switch } from "solid-js"
-import { Portal, useRenderer, useTerminalDimensions, type JSX } from "@opentui/solid"
-import type { TextareaRenderable } from "@opentui/core"
-import { useTheme, selectedForeground } from "../../context/theme"
-import type { PermissionRequest } from "@opencode@lgcode/sdk/v2"
-import { useSDK } from "../../context/sdk"
-import { SplitBorder } from "../../ui/border"
-import { useSync } from "../../context/sync"
-import { useProject } from "../../context/project"
-import { filetype } from "../../util/filetype"
-import { Locale } from "../../util/locale"
-import { webSearchProviderLabel } from "../../util/tool-display"
-import { getScrollAcceleration } from "../../util/scroll"
-import { useTuiConfig } from "../../config"
-import { OPENCODE_BASE_MODE, useBindings, useCommandShortcut } from "../../keymap"
-import { usePathFormatter } from "../../context/path-format"
+import { Portal, useRenderer, useTerminalDimensions, type JSX } from "@opentui@lgcode/solid"
+import type { TextareaRenderable } from "@opentui@lgcode/core"
+import { useTheme, selectedForeground } from "..@lgcode/..@lgcode/context@lgcode/theme"
+import type { PermissionRequest } from "@lgcode/sdk@lgcode/v2"
+import { useSDK } from "..@lgcode/..@lgcode/context@lgcode/sdk"
+import { SplitBorder } from "..@lgcode/..@lgcode/ui@lgcode/border"
+import { useSync } from "..@lgcode/..@lgcode/context@lgcode/sync"
+import { useProject } from "..@lgcode/..@lgcode/context@lgcode/project"
+import { filetype } from "..@lgcode/..@lgcode/util@lgcode/filetype"
+import { Locale } from "..@lgcode/..@lgcode/util@lgcode/locale"
+import { webSearchProviderLabel } from "..@lgcode/..@lgcode/util@lgcode/tool-display"
+import { getScrollAcceleration } from "..@lgcode/..@lgcode/util@lgcode/scroll"
+import { useTuiConfig } from "..@lgcode/..@lgcode/config"
+import { OPENCODE_BASE_MODE, useBindings, useCommandShortcut } from "..@lgcode/..@lgcode/keymap"
+import { usePathFormatter } from "..@lgcode/..@lgcode/context@lgcode/path-format"
 
 type PermissionStage = "permission" | "always" | "reject"
 
@@ -75,15 +75,15 @@ function EditBody(props: { request: PermissionRequest }) {
             lineNumberBg={theme.diffContextBg}
             addedLineNumberBg={theme.diffAddedLineNumberBg}
             removedLineNumberBg={theme.diffRemovedLineNumberBg}
-          />
-        </scrollbox>
-      </Show>
+          @lgcode/>
+        <@lgcode/scrollbox>
+      <@lgcode/Show>
       <Show when={!diff()}>
         <box paddingLeft={1}>
-          <text fg={theme.textMuted}>No diff provided</text>
-        </box>
-      </Show>
-    </box>
+          <text fg={theme.textMuted}>No diff provided<@lgcode/text>
+        <@lgcode/box>
+      <@lgcode/Show>
+    <@lgcode/box>
   )
 }
 
@@ -95,16 +95,16 @@ function TextBody(props: { title: string; description?: string; icon?: string })
         <Show when={props.icon}>
           <text fg={theme.textMuted} flexShrink={0}>
             {props.icon}
-          </text>
-        </Show>
-        <text fg={theme.textMuted}>{props.title}</text>
-      </box>
+          <@lgcode/text>
+        <@lgcode/Show>
+        <text fg={theme.textMuted}>{props.title}<@lgcode/text>
+      <@lgcode/box>
       <Show when={props.description}>
         <box paddingLeft={1}>
-          <text fg={theme.text}>{props.description}</text>
-        </box>
-      </Show>
-    </>
+          <text fg={theme.text}>{props.description}<@lgcode/text>
+        <@lgcode/box>
+      <@lgcode/Show>
+    <@lgcode/>
   )
 }
 
@@ -141,24 +141,24 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
           body={
             <Switch>
               <Match when={props.request.always.length === 1 && props.request.always[0] === "*"}>
-                <TextBody title={"This will allow " + props.request.permission + " until OpenCode is restarted."} />
-              </Match>
+                <TextBody title={"This will allow " + props.request.permission + " until OpenCode is restarted."} @lgcode/>
+              <@lgcode/Match>
               <Match when={true}>
                 <box paddingLeft={1} gap={1}>
-                  <text fg={theme.textMuted}>This will allow the following patterns until OpenCode is restarted</text>
+                  <text fg={theme.textMuted}>This will allow the following patterns until OpenCode is restarted<@lgcode/text>
                   <box>
                     <For each={props.request.always}>
                       {(pattern) => (
                         <text fg={theme.text}>
                           {"- "}
                           {pattern}
-                        </text>
+                        <@lgcode/text>
                       )}
-                    </For>
-                  </box>
-                </box>
-              </Match>
-            </Switch>
+                    <@lgcode/For>
+                  <@lgcode/box>
+                <@lgcode/box>
+              <@lgcode/Match>
+            <@lgcode/Switch>
           }
           options={{ confirm: "Confirm", cancel: "Cancel" }}
           escapeKey="cancel"
@@ -172,8 +172,8 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
               workspace: project.workspace.current(),
             })
           }}
-        />
-      </Match>
+        @lgcode/>
+      <@lgcode/Match>
       <Match when={store.stage === "reject"}>
         <RejectPrompt
           onConfirm={(message) => {
@@ -188,8 +188,8 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
           onCancel={() => {
             setStore("stage", "permission")
           }}
-        />
-      </Match>
+        @lgcode/>
+      <@lgcode/Match>
       <Match when={store.stage === "permission"}>
         {(() => {
           const info = () => {
@@ -202,7 +202,7 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
               return {
                 icon: "→",
                 title: `Edit ${pathFormatter.format(filepath)}`,
-                body: <EditBody request={props.request} />,
+                body: <EditBody request={props.request} @lgcode/>,
               }
             }
 
@@ -215,9 +215,9 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
                 body: (
                   <Show when={filePath}>
                     <box paddingLeft={1}>
-                      <text fg={theme.textMuted}>{"Path: " + pathFormatter.format(filePath)}</text>
-                    </box>
-                  </Show>
+                      <text fg={theme.textMuted}>{"Path: " + pathFormatter.format(filePath)}<@lgcode/text>
+                    <@lgcode/box>
+                  <@lgcode/Show>
                 ),
               }
             }
@@ -230,9 +230,9 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
                 body: (
                   <Show when={pattern}>
                     <box paddingLeft={1}>
-                      <text fg={theme.textMuted}>{"Pattern: " + pattern}</text>
-                    </box>
-                  </Show>
+                      <text fg={theme.textMuted}>{"Pattern: " + pattern}<@lgcode/text>
+                    <@lgcode/box>
+                  <@lgcode/Show>
                 ),
               }
             }
@@ -245,9 +245,9 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
                 body: (
                   <Show when={pattern}>
                     <box paddingLeft={1}>
-                      <text fg={theme.textMuted}>{"Pattern: " + pattern}</text>
-                    </box>
-                  </Show>
+                      <text fg={theme.textMuted}>{"Pattern: " + pattern}<@lgcode/text>
+                    <@lgcode/box>
+                  <@lgcode/Show>
                 ),
               }
             }
@@ -261,9 +261,9 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
                 body: (
                   <Show when={dir}>
                     <box paddingLeft={1}>
-                      <text fg={theme.textMuted}>{"Path: " + pathFormatter.format(dir)}</text>
-                    </box>
-                  </Show>
+                      <text fg={theme.textMuted}>{"Path: " + pathFormatter.format(dir)}<@lgcode/text>
+                    <@lgcode/box>
+                  <@lgcode/Show>
                 ),
               }
             }
@@ -278,9 +278,9 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
                 body: (
                   <Show when={command}>
                     <box paddingLeft={1}>
-                      <text fg={theme.text}>{"$ " + command}</text>
-                    </box>
-                  </Show>
+                      <text fg={theme.text}>{"$ " + command}<@lgcode/text>
+                    <@lgcode/box>
+                  <@lgcode/Show>
                 ),
               }
             }
@@ -294,9 +294,9 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
                 body: (
                   <Show when={desc}>
                     <box paddingLeft={1}>
-                      <text fg={theme.text}>{"◉ " + desc}</text>
-                    </box>
-                  </Show>
+                      <text fg={theme.text}>{"◉ " + desc}<@lgcode/text>
+                    <@lgcode/box>
+                  <@lgcode/Show>
                 ),
               }
             }
@@ -309,9 +309,9 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
                 body: (
                   <Show when={url}>
                     <box paddingLeft={1}>
-                      <text fg={theme.textMuted}>{"URL: " + url}</text>
-                    </box>
-                  </Show>
+                      <text fg={theme.textMuted}>{"URL: " + url}<@lgcode/text>
+                    <@lgcode/box>
+                  <@lgcode/Show>
                 ),
               }
             }
@@ -324,9 +324,9 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
                 body: (
                   <Show when={query}>
                     <box paddingLeft={1}>
-                      <text fg={theme.textMuted}>{"Query: " + query}</text>
-                    </box>
-                  </Show>
+                      <text fg={theme.textMuted}>{"Query: " + query}<@lgcode/text>
+                    <@lgcode/box>
+                  <@lgcode/Show>
                 ),
               }
             }
@@ -349,12 +349,12 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
                 body: (
                   <Show when={patterns.length > 0}>
                     <box paddingLeft={1} gap={1}>
-                      <text fg={theme.textMuted}>Patterns</text>
+                      <text fg={theme.textMuted}>Patterns<@lgcode/text>
                       <box>
-                        <For each={patterns}>{(p) => <text fg={theme.text}>{"- " + p}</text>}</For>
-                      </box>
-                    </box>
-                  </Show>
+                        <For each={patterns}>{(p) => <text fg={theme.text}>{"- " + p}<@lgcode/text>}<@lgcode/For>
+                      <@lgcode/box>
+                    <@lgcode/box>
+                  <@lgcode/Show>
                 ),
               }
             }
@@ -365,8 +365,8 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
                 title: "Continue after repeated failures",
                 body: (
                   <box paddingLeft={1}>
-                    <text fg={theme.textMuted}>This keeps the session running despite repeated failures.</text>
-                  </box>
+                    <text fg={theme.textMuted}>This keeps the session running despite repeated failures.<@lgcode/text>
+                  <@lgcode/box>
                 ),
               }
             }
@@ -376,8 +376,8 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
               title: `Call tool ${permission}`,
               body: (
                 <box paddingLeft={1}>
-                  <text fg={theme.textMuted}>{"Tool: " + permission}</text>
-                </box>
+                  <text fg={theme.textMuted}>{"Tool: " + permission}<@lgcode/text>
+                <@lgcode/box>
               ),
             }
           }
@@ -387,16 +387,16 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
           const header = () => (
             <box flexDirection="column" gap={0}>
               <box flexDirection="row" gap={1} flexShrink={0}>
-                <text fg={theme.warning}>{"△"}</text>
-                <text fg={theme.text}>Permission required</text>
-              </box>
+                <text fg={theme.warning}>{"△"}<@lgcode/text>
+                <text fg={theme.text}>Permission required<@lgcode/text>
+              <@lgcode/box>
               <box flexDirection="row" gap={1} paddingLeft={2} flexShrink={0}>
                 <text fg={theme.textMuted} flexShrink={0}>
                   {current.icon}
-                </text>
-                <text fg={theme.text}>{current.title}</text>
-              </box>
-            </box>
+                <@lgcode/text>
+                <text fg={theme.text}>{current.title}<@lgcode/text>
+              <@lgcode/box>
+            <@lgcode/box>
           )
 
           const body = (
@@ -432,13 +432,13 @@ export function PermissionPrompt(props: { request: PermissionRequest; directory?
                   workspace: project.workspace.current(),
                 })
               }}
-            />
+            @lgcode/>
           )
 
           return body
         })()}
-      </Match>
-    </Switch>
+      <@lgcode/Match>
+    <@lgcode/Switch>
   )
 }
 
@@ -481,13 +481,13 @@ function RejectPrompt(props: { onConfirm: (message: string) => void; onCancel: (
     >
       <box gap={1} paddingLeft={1} paddingRight={3} paddingTop={1} paddingBottom={1}>
         <box flexDirection="row" gap={1} paddingLeft={1}>
-          <text fg={theme.error}>{"△"}</text>
-          <text fg={theme.text}>Reject permission</text>
-        </box>
+          <text fg={theme.error}>{"△"}<@lgcode/text>
+          <text fg={theme.text}>Reject permission<@lgcode/text>
+        <@lgcode/box>
         <box paddingLeft={1}>
-          <text fg={theme.textMuted}>Tell OpenCode what to do differently</text>
-        </box>
-      </box>
+          <text fg={theme.textMuted}>Tell OpenCode what to do differently<@lgcode/text>
+        <@lgcode/box>
+      <@lgcode/box>
       <box
         flexDirection={narrow() ? "column" : "row"}
         flexShrink={0}
@@ -509,17 +509,17 @@ function RejectPrompt(props: { onConfirm: (message: string) => void; onCancel: (
           textColor={theme.text}
           focusedTextColor={theme.text}
           cursorColor={theme.primary}
-        />
+        @lgcode/>
         <box flexDirection="row" gap={2} flexShrink={0}>
           <text fg={theme.text}>
-            enter <span style={{ fg: theme.textMuted }}>confirm</span>
-          </text>
+            enter <span style={{ fg: theme.textMuted }}>confirm<@lgcode/span>
+          <@lgcode/text>
           <text fg={theme.text}>
-            esc <span style={{ fg: theme.textMuted }}>cancel</span>
-          </text>
-        </box>
-      </box>
-    </box>
+            esc <span style={{ fg: theme.textMuted }}>cancel<@lgcode/span>
+          <@lgcode/text>
+        <@lgcode/box>
+      <@lgcode/box>
+    <@lgcode/box>
   )
 }
 
@@ -652,17 +652,17 @@ function Prompt<const T extends Record<string, string>>(props: {
           when={props.header}
           fallback={
             <box flexDirection="row" gap={1} paddingLeft={1} flexShrink={0}>
-              <text fg={theme.warning}>{"△"}</text>
-              <text fg={theme.text}>{props.title}</text>
-            </box>
+              <text fg={theme.warning}>{"△"}<@lgcode/text>
+              <text fg={theme.text}>{props.title}<@lgcode/text>
+            <@lgcode/box>
           }
         >
           <box paddingLeft={1} flexShrink={0}>
             {props.header}
-          </box>
-        </Show>
+          <@lgcode/box>
+        <@lgcode/Show>
         {props.body}
-      </box>
+      <@lgcode/box>
       <box
         flexDirection={narrow() ? "column" : "row"}
         flexShrink={0}
@@ -690,31 +690,31 @@ function Prompt<const T extends Record<string, string>>(props: {
               >
                 <text fg={option === store.selected ? selectedForeground(theme, theme.warning) : theme.textMuted}>
                   {props.options[option]}
-                </text>
-              </box>
+                <@lgcode/text>
+              <@lgcode/box>
             )}
-          </For>
-        </box>
+          <@lgcode/For>
+        <@lgcode/box>
         <box flexDirection="row" gap={2} flexShrink={0}>
           <Show when={props.fullscreen}>
             <text fg={theme.text}>
-              {fullscreenHint()} <span style={{ fg: theme.textMuted }}>{hint()}</span>
-            </text>
-          </Show>
+              {fullscreenHint()} <span style={{ fg: theme.textMuted }}>{hint()}<@lgcode/span>
+            <@lgcode/text>
+          <@lgcode/Show>
           <text fg={theme.text}>
-            {"⇆"} <span style={{ fg: theme.textMuted }}>select</span>
-          </text>
+            {"⇆"} <span style={{ fg: theme.textMuted }}>select<@lgcode/span>
+          <@lgcode/text>
           <text fg={theme.text}>
-            enter <span style={{ fg: theme.textMuted }}>confirm</span>
-          </text>
-        </box>
-      </box>
-    </box>
+            enter <span style={{ fg: theme.textMuted }}>confirm<@lgcode/span>
+          <@lgcode/text>
+        <@lgcode/box>
+      <@lgcode/box>
+    <@lgcode/box>
   )
 
   return (
-    <Show when={!store.expanded} fallback={<Portal>{content()}</Portal>}>
+    <Show when={!store.expanded} fallback={<Portal>{content()}<@lgcode/Portal>}>
       {content()}
-    </Show>
+    <@lgcode/Show>
   )
 }

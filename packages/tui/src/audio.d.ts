@@ -3,7 +3,7 @@ declare module "*.mp3" {
   export default path
 }
 
-declare module "@opencode@lgcode/ui/audio/*.mp3" {
+declare module "@lgcode/ui@lgcode/audio@lgcode/*.mp3" {
   const path: string
   export default path
 }

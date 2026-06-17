@@ -1,6 +1,6 @@
-// @ts-nocheck
-import * as mod from "./avatar"
-import { create } from "../storybook/scaffold"
+@lgcode/@lgcode/ @ts-nocheck
+import * as mod from ".@lgcode/avatar"
+import { create } from "..@lgcode/storybook@lgcode/scaffold"
 
 const docs = `### Overview
 User avatar with image fallback to initials.
@@ -21,15 +21,15 @@ Use in user lists and headers.
 ### Accessibility
 - TODO: provide alt text when using images; currently image is decorative.
 
-### Theming/tokens
+### Theming@lgcode/tokens
 - Uses \`data-component="avatar"\` with size and image state attributes.
 
 `
 
-const story = create({ title: "UI/Avatar", mod, args: { fallback: "A" } })
+const story = create({ title: "UI@lgcode/Avatar", mod, args: { fallback: "A" } })
 
 export default {
-  title: "UI/Avatar",
+  title: "UI@lgcode/Avatar",
   id: "components-avatar",
   component: story.meta.component,
   tags: ["autodocs"],
@@ -52,7 +52,7 @@ export const Basic = story.Basic
 
 export const WithImage = {
   args: {
-    src: "https://placehold.co/80x80/png",
+    src: "https:@lgcode/@lgcode/placehold.co@lgcode/80x80@lgcode/png",
     fallback: "J",
   },
 }
@@ -60,10 +60,10 @@ export const WithImage = {
 export const Sizes = {
   render: () => (
     <div style={{ display: "flex", gap: "12px", "align-items": "center" }}>
-      <mod.Avatar size="small" fallback="S" />
-      <mod.Avatar size="normal" fallback="N" />
-      <mod.Avatar size="large" fallback="L" />
-    </div>
+      <mod.Avatar size="small" fallback="S" @lgcode/>
+      <mod.Avatar size="normal" fallback="N" @lgcode/>
+      <mod.Avatar size="large" fallback="L" @lgcode/>
+    <@lgcode/div>
   ),
 }
 

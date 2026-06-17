@@ -1,11 +1,11 @@
-import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
 import { Effect, Layer, Context, Schema, Stream, Scope } from "effect"
 import { formatPatch, structuredPatch } from "diff"
-import { InstanceState } from "@/effect/instance-state"
-import { Watcher } from "@opencode@lgcode/core/filesystem/watcher"
-import { Git } from "@/git"
-import { EventV2Bridge } from "@/event-v2-bridge"
-import { EventV2 } from "@opencode@lgcode/core/event"
+import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
+import { Watcher } from "@lgcode/core@lgcode/filesystem@lgcode/watcher"
+import { Git } from "@@lgcode/git"
+import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
+import { EventV2 } from "@lgcode/core@lgcode/event"
 
 const PATCH_CONTEXT_LINES = 2_147_483_647
 const MAX_PATCH_BYTES = 10_000_000
@@ -54,9 +54,9 @@ const parsePathToken = (value: string) => {
 }
 
 const fileFromDiffPath = (value: string | undefined) => {
-  if (!value || value === "/dev/null") return
+  if (!value || value === "@lgcode/dev@lgcode/null") return
   const file = parsePathToken(value)
-  if (file.startsWith("a/") || file.startsWith("b/")) return file.slice(2)
+  if (file.startsWith("a@lgcode/") || file.startsWith("b@lgcode/")) return file.slice(2)
   return file
 }
 
@@ -69,23 +69,23 @@ const fileFromGitHeader = (header: string) => {
     return fileFromDiffPath(parseQuotedPath(second)?.value)
   }
 
-  const separator = header.indexOf(" b/")
+  const separator = header.indexOf(" b@lgcode/")
   if (separator === -1) return
   return fileFromDiffPath(header.slice(separator + 1))
 }
 
 const fileFromPatchChunk = (chunk: string) => {
-  const next = /^\+\+\+ (.+)$/m.exec(chunk)?.[1]
-  const before = /^--- (.+)$/m.exec(chunk)?.[1]
+  const next = @lgcode/^\+\+\+ (.+)$@lgcode/m.exec(chunk)?.[1]
+  const before = @lgcode/^--- (.+)$@lgcode/m.exec(chunk)?.[1]
   const file = fileFromDiffPath(next) ?? fileFromDiffPath(before)
   if (file) return file
 
-  const header = /^diff --git (.+)$/m.exec(chunk)?.[1]
+  const header = @lgcode/^diff --git (.+)$@lgcode/m.exec(chunk)?.[1]
   return fileFromGitHeader(header ?? "")
 }
 
 const splitGitPatch = (patch: Git.Patch) => {
-  const starts = [...patch.text.matchAll(/(?:^|\n)diff --git /g)].map((match) =>
+  const starts = [...patch.text.matchAll(@lgcode/(?:^|\n)diff --git @lgcode/g)].map((match) =>
     match[0].startsWith("\n") ? match.index + 1 : match.index,
   )
   const chunks = starts.map((start, index) => patch.text.slice(start, starts[index + 1] ?? patch.text.length))
@@ -251,9 +251,9 @@ export type Info = Schema.Schema.Type<typeof Info>
 
 export const FileDiff = Schema.Struct({
   file: Schema.String,
-  // Mirrors Snapshot.FileDiff (see #26574). The current producer always
-  // populates patch, but loosening matches the sibling schema so a
-  // future code path that omits it can't crash /instance/vcs/diff.
+  @lgcode/@lgcode/ Mirrors Snapshot.FileDiff (see #26574). The current producer always
+  @lgcode/@lgcode/ populates patch, but loosening matches the sibling schema so a
+  @lgcode/@lgcode/ future code path that omits it can't crash @lgcode/instance@lgcode/vcs@lgcode/diff.
   patch: Schema.optional(Schema.String),
   additions: Schema.Finite,
   deletions: Schema.Finite,
@@ -299,7 +299,7 @@ interface State {
   root: Git.Base | undefined
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/Vcs") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/Vcs") {}
 
 export const layer: Layer.Layer<Service, never, Git.Service | EventV2Bridge.Service> = Layer.effect(
   Service,
@@ -428,4 +428,4 @@ export const defaultLayer = layer.pipe(Layer.provide(Git.defaultLayer), Layer.pr
 
 export const node = LayerNode.make(layer, [Git.node, EventV2Bridge.node])
 
-export * as Vcs from "./vcs"
+export * as Vcs from ".@lgcode/vcs"

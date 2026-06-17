@@ -1,8 +1,8 @@
-import { UserMessage } from "@opencode@lgcode/sdk/v2"
-import { HoverCard } from "@kobalte/core/hover-card"
+import { UserMessage } from "@lgcode/sdk@lgcode/v2"
+import { HoverCard } from "@kobalte@lgcode/core@lgcode/hover-card"
 import { ComponentProps, For, Match, Show, createSignal, splitProps, Switch } from "solid-js"
-import { DiffChanges } from "./diff-changes"
-import { useI18n } from "../context/i18n"
+import { DiffChanges } from ".@lgcode/diff-changes"
+import { useI18n } from "..@lgcode/context@lgcode/i18n"
 
 export function MessageNav(
   props: ComponentProps<"ul"> & {
@@ -46,12 +46,12 @@ export function MessageNav(
                     onClick={handleClick}
                     onKeyDown={handleKeyPress}
                   >
-                    <div data-slot="message-nav-tick-line" />
-                  </div>
-                </Match>
+                    <div data-slot="message-nav-tick-line" @lgcode/>
+                  <@lgcode/div>
+                <@lgcode/Match>
                 <Match when={local.size === "normal"}>
                   <button data-slot="message-nav-message-button" onClick={handleClick} onKeyDown={handleKeyPress}>
-                    <DiffChanges changes={message.summary?.diffs ?? []} variant="bars" />
+                    <DiffChanges changes={message.summary?.diffs ?? []} variant="bars" @lgcode/>
                     <div
                       data-slot="message-nav-title-preview"
                       data-active={message.id === local.current?.id || undefined}
@@ -61,16 +61,16 @@ export function MessageNav(
                         fallback={i18n.t("ui.messageNav.newMessage")}
                       >
                         {local.getLabel?.(message) ?? message.summary?.title}
-                      </Show>
-                    </div>
-                  </button>
-                </Match>
-              </Switch>
-            </li>
+                      <@lgcode/Show>
+                    <@lgcode/div>
+                  <@lgcode/button>
+                <@lgcode/Match>
+              <@lgcode/Switch>
+            <@lgcode/li>
           )
         }}
-      </For>
-    </ul>
+      <@lgcode/For>
+    <@lgcode/ul>
   )
 
   return (
@@ -88,15 +88,15 @@ export function MessageNav(
         >
           <HoverCard.Trigger as="div" data-component="message-nav-hovercard" class={local.class}>
             {content()}
-          </HoverCard.Trigger>
+          <@lgcode/HoverCard.Trigger>
           <HoverCard.Portal>
             <HoverCard.Content data-slot="message-nav-hovercard-content">
-              <MessageNav {...props} size="normal" class="" onMessageSelect={selectMessage} />
-            </HoverCard.Content>
-          </HoverCard.Portal>
-        </HoverCard>
-      </Match>
-      <Match when={local.size === "normal"}>{content(local.class)}</Match>
-    </Switch>
+              <MessageNav {...props} size="normal" class="" onMessageSelect={selectMessage} @lgcode/>
+            <@lgcode/HoverCard.Content>
+          <@lgcode/HoverCard.Portal>
+        <@lgcode/HoverCard>
+      <@lgcode/Match>
+      <Match when={local.size === "normal"}>{content(local.class)}<@lgcode/Match>
+    <@lgcode/Switch>
   )
 }

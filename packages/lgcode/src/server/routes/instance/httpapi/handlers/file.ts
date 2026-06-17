@@ -1,15 +1,15 @@
-import * as InstanceState from "@/effect/instance-state"
-import { FileSystem } from "@opencode@lgcode/core/filesystem"
-import { LocationServiceMap } from "@opencode@lgcode/core/location-layer"
-import { Ripgrep } from "@opencode@lgcode/core/ripgrep"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { Location } from "@opencode@lgcode/core/location"
-import { AbsolutePath, RelativePath } from "@opencode@lgcode/core/schema"
+import * as InstanceState from "@@lgcode/effect@lgcode/instance-state"
+import { FileSystem } from "@lgcode/core@lgcode/filesystem"
+import { LocationServiceMap } from "@lgcode/core@lgcode/location-layer"
+import { Ripgrep } from "@lgcode/core@lgcode/ripgrep"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { Location } from "@lgcode/core@lgcode/location"
+import { AbsolutePath, RelativePath } from "@lgcode/core@lgcode/schema"
 import { Effect, Layer, Option } from "effect"
 import ignore from "ignore"
 import path from "path"
-import { HttpApiBuilder } from "effect/unstable/httpapi"
-import { InstanceHttpApi } from "../api"
+import { HttpApiBuilder } from "effect@lgcode/unstable@lgcode/httpapi"
+import { InstanceHttpApi } from "..@lgcode/api"
 
 export const fileHandlers = HttpApiBuilder.group(InstanceHttpApi, "file", (handlers) =>
   Effect.gen(function* () {
@@ -86,7 +86,7 @@ export const fileHandlers = HttpApiBuilder.group(InstanceHttpApi, "file", (handl
             type: item.type,
             ignored: ignored.ignores(
               path.relative(location.project.directory, path.resolve(location.directory, item.path)) +
-                (item.type === "directory" ? "/" : ""),
+                (item.type === "directory" ? "@lgcode/" : ""),
             ),
           }))
         }),

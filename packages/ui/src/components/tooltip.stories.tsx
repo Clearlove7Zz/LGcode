@@ -1,6 +1,6 @@
-// @ts-nocheck
-import * as mod from "./tooltip"
-import { create } from "../storybook/scaffold"
+@lgcode/@lgcode/ @ts-nocheck
+import * as mod from ".@lgcode/tooltip"
+import { create } from "..@lgcode/storybook@lgcode/scaffold"
 
 const docs = `### Overview
 Tooltip for contextual hints and keybind callouts.
@@ -15,20 +15,20 @@ Use for short hints; avoid long descriptions.
 - Supports keybind-style tooltip via \`TooltipKeybind\`.
 
 ### Behavior
-- Opens on hover/focus; can be forced open.
+- Opens on hover@lgcode/focus; can be forced open.
 
 ### Accessibility
 - TODO: confirm trigger semantics and focus behavior.
 
-### Theming/tokens
+### Theming@lgcode/tokens
 - Uses \`data-component="tooltip"\` and related slots.
 
 `
 
-const story = create({ title: "UI/Tooltip", mod, args: { value: "Tooltip", children: "Hover me" } })
+const story = create({ title: "UI@lgcode/Tooltip", mod, args: { value: "Tooltip", children: "Hover me" } })
 
 export default {
-  title: "UI/Tooltip",
+  title: "UI@lgcode/Tooltip",
   id: "components-tooltip",
   component: story.meta.component,
   tags: ["autodocs"],
@@ -46,8 +46,8 @@ export const Basic = story.Basic
 export const Keybind = {
   render: () => (
     <mod.TooltipKeybind title="Search" keybind="Cmd+K">
-      <span style={{ "text-decoration": "underline" }}>Hover for keybind</span>
-    </mod.TooltipKeybind>
+      <span style={{ "text-decoration": "underline" }}>Hover for keybind<@lgcode/span>
+    <@lgcode/mod.TooltipKeybind>
   ),
 }
 

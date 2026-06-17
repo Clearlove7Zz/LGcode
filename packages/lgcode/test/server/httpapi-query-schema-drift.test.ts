@@ -1,34 +1,34 @@
 import { afterEach, describe, expect } from "bun:test"
 import { Effect, Schema } from "effect"
-import { OpenApi } from "effect/unstable/httpapi"
-import { Flag } from "@opencode@lgcode/core/flag/flag"
-import { Server } from "../../src/server/server"
-import { SessionID } from "../../src/session/schema"
-import { PublicApi } from "../../src/server/routes/instance/httpapi/public"
+import { OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
+import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
+import { Server } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/server"
+import { SessionID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
+import { PublicApi } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/public"
 import {
   FilePaths,
   FileQuery,
   FindFileQuery,
   FindTextQuery,
-} from "../../src/server/routes/instance/httpapi/groups/file"
+} from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/file"
 import {
   ExperimentalPaths,
   SessionListQuery as ExperimentalSessionListQuery,
   ToolListQuery,
-} from "../../src/server/routes/instance/httpapi/groups/experimental"
-import { InstancePaths, VcsDiffQuery } from "../../src/server/routes/instance/httpapi/groups/instance"
-import { WorkspacePaths } from "../../src/server/routes/instance/httpapi/groups/workspace"
+} from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/experimental"
+import { InstancePaths, VcsDiffQuery } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/instance"
+import { WorkspacePaths } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/workspace"
 import {
   ListQuery as SessionListQuery,
   MessagesQuery,
   SessionPaths,
-} from "../../src/server/routes/instance/httpapi/groups/session"
-import { PtyPaths } from "../../src/server/routes/instance/httpapi/groups/pty"
-import { SessionMessagesQuery } from "@opencode@lgcode/server/groups/message"
-import { QueryBoolean, QueryBooleanOpenApi } from "../../src/server/routes/instance/httpapi/groups/query"
-import { resetDatabase } from "../fixture/db"
-import { disposeAllInstances, tmpdir } from "../fixture/fixture"
-import { it } from "../lib/effect"
+} from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/session"
+import { PtyPaths } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/pty"
+import { SessionMessagesQuery } from "@lgcode/server@lgcode/groups@lgcode/message"
+import { QueryBoolean, QueryBooleanOpenApi } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/query"
+import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
+import { disposeAllInstances, tmpdir } from "..@lgcode/fixture@lgcode/fixture"
+import { it } from "..@lgcode/lib@lgcode/effect"
 
 const originalWorkspaces = Flag.OPENCODE_EXPERIMENTAL_WORKSPACES
 
@@ -54,7 +54,7 @@ const openApiDriftRoutes = [
   { method: "get", path: ExperimentalPaths.session, query: ExperimentalSessionListQuery },
   { method: "get", path: ExperimentalPaths.tool, query: ToolListQuery },
   { method: "get", path: InstancePaths.vcsDiff, query: VcsDiffQuery },
-  { method: "get", path: "/api/session/:sessionID/message", query: SessionMessagesQuery },
+  { method: "get", path: "@lgcode/api@lgcode/session@lgcode/:sessionID@lgcode/message", query: SessionMessagesQuery },
 ] satisfies Array<{ method: Method; path: string; query: QuerySchema }>
 
 const numericSdkQueryParams = [
@@ -70,7 +70,7 @@ const numericSdkQueryParams = [
     name: "limit",
     schema: { type: "integer", minimum: 0, maximum: Number.MAX_SAFE_INTEGER },
   },
-  { method: "get", path: "/api/session/:sessionID/message", name: "limit", schema: { type: "number" } },
+  { method: "get", path: "@lgcode/api@lgcode/session@lgcode/:sessionID@lgcode/message", name: "limit", schema: { type: "number" } },
 ] satisfies Array<{ method: Method; path: string; name: string; schema: OpenApiSchema }>
 
 const booleanSdkQueryParams = [
@@ -88,8 +88,8 @@ const pathParamPatterns = [
   { method: "get", path: SessionPaths.message, name: "messageID", pattern: "^msg" },
   { method: "patch", path: SessionPaths.updatePart, name: "partID", pattern: "^prt" },
   { method: "post", path: SessionPaths.permissions, name: "permissionID", pattern: "^per" },
-  { method: "post", path: "/permission/:requestID/reply", name: "requestID", pattern: "^per" },
-  { method: "post", path: "/question/:requestID/reply", name: "requestID", pattern: "^que" },
+  { method: "post", path: "@lgcode/permission@lgcode/:requestID@lgcode/reply", name: "requestID", pattern: "^per" },
+  { method: "post", path: "@lgcode/question@lgcode/:requestID@lgcode/reply", name: "requestID", pattern: "^que" },
   { method: "put", path: PtyPaths.update, name: "ptyID", pattern: "^pty" },
   { method: "delete", path: WorkspacePaths.remove, name: "id", pattern: "^wrk" },
 ] satisfies Array<{ method: Method; path: string; name: string; pattern: string }>
@@ -113,7 +113,7 @@ function withTmp<A, E, R>(
 }
 
 function openApiPath(path: string) {
-  return path.replace(/:([A-Za-z0-9_]+)/g, "{$1}")
+  return path.replace(@lgcode/:([A-Za-z0-9_]+)@lgcode/g, "{$1}")
 }
 
 function queryParameters(operation: OpenApiOperation | undefined) {
@@ -149,9 +149,9 @@ afterEach(async () => {
   await resetDatabase()
 })
 
-// Regression for the "OpenAPI advertises ?directory&workspace, runtime
-// rejects them" drift class. Each affected route must accept both params
-// without 400.
+@lgcode/@lgcode/ Regression for the "OpenAPI advertises ?directory&workspace, runtime
+@lgcode/@lgcode/ rejects them" drift class. Each affected route must accept both params
+@lgcode/@lgcode/ without 400.
 describe("httpapi query schema drift", () => {
   const routingParams = (dir: string) =>
     `directory=${encodeURIComponent(dir)}&workspace=${encodeURIComponent("ws_test")}`
@@ -233,7 +233,7 @@ describe("httpapi query schema drift", () => {
               { name: "workspace", in: "query" },
             ],
           },
-          path: "/fixture",
+          path: "@lgcode/fixture",
           query: Schema.Struct({}),
         }),
       ).toThrow("advertises query params not accepted by runtime schema")
@@ -244,7 +244,7 @@ describe("httpapi query schema drift", () => {
     "session list accepts directory and workspace",
     withTmp({ config: { formatter: false, lsp: false } }, (tmp) =>
       Effect.gen(function* () {
-        const url = `/session?${routingParams(tmp.path)}`
+        const url = `@lgcode/session?${routingParams(tmp.path)}`
         const response = yield* request(url)
         expectNotSchemaRejection(response.status, url)
       }),
@@ -255,7 +255,7 @@ describe("httpapi query schema drift", () => {
     "session messages accepts directory and workspace",
     withTmp({ config: { formatter: false, lsp: false } }, (tmp) =>
       Effect.gen(function* () {
-        const url = `/session/${SessionID.descending()}/message?limit=80&${routingParams(tmp.path)}`
+        const url = `@lgcode/session@lgcode/${SessionID.descending()}@lgcode/message?limit=80&${routingParams(tmp.path)}`
         const response = yield* request(url)
         expectNotSchemaRejection(response.status, url)
       }),
@@ -263,10 +263,10 @@ describe("httpapi query schema drift", () => {
   )
 
   it.live(
-    "file find/file accepts directory and workspace",
+    "file find@lgcode/file accepts directory and workspace",
     withTmp({ config: { formatter: false, lsp: false } }, (tmp) =>
       Effect.gen(function* () {
-        const url = `/find/file?query=foo&${routingParams(tmp.path)}`
+        const url = `@lgcode/find@lgcode/file?query=foo&${routingParams(tmp.path)}`
         const response = yield* request(url)
         expectNotSchemaRejection(response.status, url)
       }),
@@ -274,10 +274,10 @@ describe("httpapi query schema drift", () => {
   )
 
   it.live(
-    "file find/text accepts directory and workspace",
+    "file find@lgcode/text accepts directory and workspace",
     withTmp({ config: { formatter: false, lsp: false } }, (tmp) =>
       Effect.gen(function* () {
-        const url = `/find?pattern=foo&${routingParams(tmp.path)}`
+        const url = `@lgcode/find?pattern=foo&${routingParams(tmp.path)}`
         const response = yield* request(url)
         expectNotSchemaRejection(response.status, url)
       }),
@@ -288,7 +288,7 @@ describe("httpapi query schema drift", () => {
     "file read accepts directory and workspace",
     withTmp({ config: { formatter: false, lsp: false } }, (tmp) =>
       Effect.gen(function* () {
-        const url = `/file?path=foo&${routingParams(tmp.path)}`
+        const url = `@lgcode/file?path=foo&${routingParams(tmp.path)}`
         const response = yield* request(url)
         expectNotSchemaRejection(response.status, url)
       }),
@@ -299,7 +299,7 @@ describe("httpapi query schema drift", () => {
     "experimental session list accepts directory and workspace",
     withTmp({ config: { formatter: false, lsp: false } }, (tmp) =>
       Effect.gen(function* () {
-        const url = `/experimental/session?${routingParams(tmp.path)}`
+        const url = `@lgcode/experimental@lgcode/session?${routingParams(tmp.path)}`
         const response = yield* request(url)
         expectNotSchemaRejection(response.status, url)
       }),
@@ -310,7 +310,7 @@ describe("httpapi query schema drift", () => {
     "experimental tool list accepts directory and workspace",
     withTmp({ config: { formatter: false, lsp: false } }, (tmp) =>
       Effect.gen(function* () {
-        const url = `/experimental/tool?provider=anthropic&model=claude&${routingParams(tmp.path)}`
+        const url = `@lgcode/experimental@lgcode/tool?provider=anthropic&model=claude&${routingParams(tmp.path)}`
         const response = yield* request(url)
         expectNotSchemaRejection(response.status, url)
       }),
@@ -321,7 +321,7 @@ describe("httpapi query schema drift", () => {
     "vcs diff accepts directory and workspace",
     withTmp({ config: { formatter: false, lsp: false } }, (tmp) =>
       Effect.gen(function* () {
-        const url = `/vcs/diff?mode=working&${routingParams(tmp.path)}`
+        const url = `@lgcode/vcs@lgcode/diff?mode=working&${routingParams(tmp.path)}`
         const response = yield* request(url)
         expectNotSchemaRejection(response.status, url)
       }),

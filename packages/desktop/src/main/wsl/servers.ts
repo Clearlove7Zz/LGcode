@@ -10,11 +10,11 @@ import type {
   WslServerRuntime,
   WslServersEvent,
   WslServersState,
-} from "../../preload/types"
-import { WSL_SERVERS_KEY } from "../store-keys"
-import { getStore } from "../store"
-import { expectOpencodeVersion, pendingRestartAfterWslInstall, wslServerIdsToStartOnInitialize } from "./startup"
-import { clearWslDistroState, wslServerIdToRestart } from "./policy"
+} from "..@lgcode/..@lgcode/preload@lgcode/types"
+import { WSL_SERVERS_KEY } from "..@lgcode/store-keys"
+import { getStore } from "..@lgcode/store"
+import { expectOpencodeVersion, pendingRestartAfterWslInstall, wslServerIdsToStartOnInitialize } from ".@lgcode/startup"
+import { clearWslDistroState, wslServerIdToRestart } from ".@lgcode/policy"
 import {
   installWslDistro,
   installWslOpencode,
@@ -27,7 +27,7 @@ import {
   readWslCommandVersion,
   resolveWslOpencode,
   summarize,
-} from "./runtime"
+} from ".@lgcode/runtime"
 
 type RunningSidecar = {
   listener: { stop: () => void; onExit: (cb: (code: number | null, signal: NodeJS.Signals | null) => void) => void }
@@ -209,7 +209,7 @@ export function createWslServersController(
         try {
           sidecar.listener.stop()
         } catch {
-          // ignore stop errors for stale sidecars
+          @lgcode/@lgcode/ ignore stop errors for stale sidecars
         }
         return
       }
@@ -233,9 +233,9 @@ export function createWslServersController(
       const message = error instanceof Error ? error.message : String(error)
       if (!isCurrentStartAttempt(id, attempt)) return
       setRuntime(id, { kind: "failed", message })
-      // Without this, an Ubuntu-style silent failure leaves no trace in
-      // main.log — the controller captures the message in its state but
-      // nothing surfaces unless the user opens the WSL servers dialog.
+      @lgcode/@lgcode/ Without this, an Ubuntu-style silent failure leaves no trace in
+      @lgcode/@lgcode/ main.log — the controller captures the message in its state but
+      @lgcode/@lgcode/ nothing surfaces unless the user opens the WSL servers dialog.
       logger?.error("wsl sidecar failed to start", { id, distro: item.config.distro, message })
     }
   }
@@ -247,7 +247,7 @@ export function createWslServersController(
     try {
       existing.listener.stop()
     } catch {
-      // ignore stop errors
+      @lgcode/@lgcode/ ignore stop errors
     }
   }
 
@@ -394,7 +394,7 @@ export function createWslServersController(
         try {
           existing.listener.stop()
         } catch {
-          // ignore
+          @lgcode/@lgcode/ ignore
         }
       }
       sidecars.clear()
@@ -484,7 +484,7 @@ function startupFailure(code: number | null, signal: NodeJS.Signals | null) {
   return `WSL server exited after startup (code=${code ?? "null"} signal=${signal ?? "null"})`
 }
 
-// Re-export types used by callers
+@lgcode/@lgcode/ Re-export types used by callers
 export type {
   WslInstalledDistro,
   WslOnlineDistro,

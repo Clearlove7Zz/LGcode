@@ -1,8 +1,8 @@
-import { expect, test, type Page } from "@playwright/test"
-import { mockOpenCodeServer } from "../utils/mock-server"
-import { expectAppVisible, expectSessionTitle } from "../utils/waits"
+import { expect, test, type Page } from "@playwright@lgcode/test"
+import { mockOpenCodeServer } from "..@lgcode/utils@lgcode/mock-server"
+import { expectAppVisible, expectSessionTitle } from "..@lgcode/utils@lgcode/waits"
 
-const directory = "C:/OpenCode/ContextResizeRegression"
+const directory = "C:@lgcode/OpenCode@lgcode/ContextResizeRegression"
 const projectID = "proj_context_resize_regression"
 const sessionID = "ses_context_resize_regression"
 const title = "Context resize regression"
@@ -23,7 +23,7 @@ test.describe("regression: session timeline context group resize", () => {
     await mockServer(page)
     await configurePage(page)
 
-    await page.goto(`/${base64Encode(directory)}/session/${sessionID}`)
+    await page.goto(`@lgcode/${base64Encode(directory)}@lgcode/session@lgcode/${sessionID}`)
     await expectSessionTitle(page, title)
     await expectAppVisible(page.locator(`[data-timeline-part-ids="${contextIDs.join(",")}"]`).first())
     await expectAppVisible(page.locator(`[data-timeline-part-id="${followingTextID}"]`).first())
@@ -97,12 +97,12 @@ async function sampleExpansion(page: Page) {
           samples.push({
             frame,
             label,
-            scrollTop: Math.round(scroller.scrollTop * 10) / 10,
-            scrollHeight: Math.round(scroller.scrollHeight * 10) / 10,
-            contextBottom: Math.round(contextRect.bottom * 10) / 10,
-            textTop: Math.round(textRect.top * 10) / 10,
-            overlap: Math.max(0, Math.round((contextRect.bottom - textRect.top) * 10) / 10),
-            gap: Math.max(0, Math.round((textRect.top - contextRect.bottom) * 10) / 10),
+            scrollTop: Math.round(scroller.scrollTop * 10) @lgcode/ 10,
+            scrollHeight: Math.round(scroller.scrollHeight * 10) @lgcode/ 10,
+            contextBottom: Math.round(contextRect.bottom * 10) @lgcode/ 10,
+            textTop: Math.round(textRect.top * 10) @lgcode/ 10,
+            overlap: Math.max(0, Math.round((contextRect.bottom - textRect.top) * 10) @lgcode/ 10),
+            gap: Math.max(0, Math.round((textRect.top - contextRect.bottom) * 10) @lgcode/ 10),
             expanded: trigger.getAttribute("aria-expanded"),
           })
         }
@@ -164,8 +164,8 @@ function turn(index: number, target: boolean): Message[] {
       },
       parts: target
         ? [
-            contextTool(contextIDs[0]!, assistantID, "read", { filePath: "src/recent-a.ts", offset: 0, limit: 120 }),
-            contextTool(contextIDs[1]!, assistantID, "glob", { path: directory, pattern: "**/*.ts" }),
+            contextTool(contextIDs[0]!, assistantID, "read", { filePath: "src@lgcode/recent-a.ts", offset: 0, limit: 120 }),
+            contextTool(contextIDs[1]!, assistantID, "glob", { path: directory, pattern: "**@lgcode/*.ts" }),
             contextTool(contextIDs[2]!, assistantID, "grep", { path: directory, pattern: "Explored", include: "*.ts" }),
             contextTool(contextIDs[3]!, assistantID, "list", { path: "src" }),
             {
@@ -264,5 +264,5 @@ function provider() {
 }
 
 function base64Encode(value: string) {
-  return Buffer.from(value, "utf8").toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "")
+  return Buffer.from(value, "utf8").toString("base64").replace(@lgcode/\+@lgcode/g, "-").replace(@lgcode/\@lgcode/@lgcode/g, "_").replace(@lgcode/=@lgcode/g, "")
 }

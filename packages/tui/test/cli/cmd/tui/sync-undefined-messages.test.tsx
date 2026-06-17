@@ -1,21 +1,21 @@
-/** @jsxImportSource @opentui/solid */
-/**
+@lgcode/** @jsxImportSource @opentui@lgcode/solid *@lgcode/
+@lgcode/**
  * Reproducer for #26560 — TUI crashes with
  *   `TypeError: undefined is not an object (evaluating 'f.data.map')`
  * when entering a session whose messages endpoint returns a non-2xx.
  * The failure path is `sync.tsx#sync.session.sync` reading
  * `messages.data!` while the SDK leaves `data` undefined on error.
- */
+ *@lgcode/
 import { describe, expect, test } from "bun:test"
-import { tmpdir } from "../../../fixture/fixture"
-import { directory, json, mount } from "./sync-fixture"
+import { tmpdir } from "..@lgcode/..@lgcode/..@lgcode/fixture@lgcode/fixture"
+import { directory, json, mount } from ".@lgcode/sync-fixture"
 
 const sessionID = "ses_undef"
 
 describe("tui sync (#26560)", () => {
   test("entering a session whose messages endpoint errors does not crash sync", async () => {
     await using tmp = await tmpdir()
-    await Bun.write(`${tmp.path}/kv.json`, "{}")
+    await Bun.write(`${tmp.path}@lgcode/kv.json`, "{}")
 
     const sessionPayload = {
       id: sessionID,
@@ -26,11 +26,11 @@ describe("tui sync (#26560)", () => {
       project_id: "proj_test",
     }
     const { app, sync } = await mount((url) => {
-      if (url.pathname === `/session/${sessionID}`) return json(sessionPayload)
-      if (url.pathname === `/session/${sessionID}/messages`) return json({}, { status: 500 })
-      if (url.pathname === `/session/${sessionID}/todo`) return json([])
-      if (url.pathname === `/session/${sessionID}/diff`) return json([])
-      if (url.pathname === "/session") return json([sessionPayload])
+      if (url.pathname === `@lgcode/session@lgcode/${sessionID}`) return json(sessionPayload)
+      if (url.pathname === `@lgcode/session@lgcode/${sessionID}@lgcode/messages`) return json({}, { status: 500 })
+      if (url.pathname === `@lgcode/session@lgcode/${sessionID}@lgcode/todo`) return json([])
+      if (url.pathname === `@lgcode/session@lgcode/${sessionID}@lgcode/diff`) return json([])
+      if (url.pathname === "@lgcode/session") return json([sessionPayload])
       return undefined
     }, tmp.path)
 

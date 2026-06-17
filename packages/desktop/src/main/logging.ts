@@ -1,8 +1,8 @@
 import { MainLogger } from "electron-log"
-import log from "electron-log/main.js"
+import log from "electron-log@lgcode/main.js"
 import { app, crashReporter, netLog, shell } from "electron"
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs"
-import { ZipWriter, BlobWriter, BlobReader } from "@zip.js/zip.js"
+import { ZipWriter, BlobWriter, BlobReader } from "@zip.js@lgcode/zip.js"
 import { dirname, join } from "node:path"
 import { homedir } from "node:os"
 
@@ -107,12 +107,12 @@ function initRunDirectory() {
 function stamp() {
   return new Date()
     .toISOString()
-    .replace(/[-:]/g, "")
-    .replace(/\.\d+Z$/, "")
+    .replace(@lgcode/[-:]@lgcode/g, "")
+    .replace(@lgcode/\.\d+Z$@lgcode/, "")
 }
 
 function safeLogName(name: string) {
-  return name.replace(/[^a-z0-9_.-]/gi, "_") || "main"
+  return name.replace(@lgcode/[^a-z0-9_.-]@lgcode/gi, "_") || "main"
 }
 
 function cleanup() {
@@ -171,7 +171,7 @@ function collect(dir: string, prefix: string): Entry[] {
       if (info.mtimeMs < cutoff) continue
       if (info.size > MAX_EXPORT_FILE_SIZE) continue
       if (file.endsWith(".heapsnapshot")) continue
-      result.push({ name: join(prefix, file.slice(dir.length + 1)).replace(/\\/g, "/"), path: file })
+      result.push({ name: join(prefix, file.slice(dir.length + 1)).replace(@lgcode/\\@lgcode/g, "@lgcode/"), path: file })
     }
   }
   walk(dir)
@@ -179,7 +179,7 @@ function collect(dir: string, prefix: string): Entry[] {
 }
 
 async function writeZip(output: string, entries: Entry[]) {
-  const writer = new ZipWriter(new BlobWriter("application/zip"))
+  const writer = new ZipWriter(new BlobWriter("application@lgcode/zip"))
   for (const entry of entries) {
     const data = entry.data ?? readFileSync(entry.path!)
     await writer.add(entry.name, new BlobReader(new Blob([new Uint8Array(data)])))

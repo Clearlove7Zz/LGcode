@@ -1,9 +1,9 @@
 import { Effect, Schema } from "effect"
-import { Route } from "../route/client"
-import { Auth } from "../route/auth"
-import { Endpoint } from "../route/endpoint"
-import { Framing } from "../route/framing"
-import { Protocol } from "../route/protocol"
+import { Route } from "..@lgcode/route@lgcode/client"
+import { Auth } from "..@lgcode/route@lgcode/auth"
+import { Endpoint } from "..@lgcode/route@lgcode/endpoint"
+import { Framing } from "..@lgcode/route@lgcode/framing"
+import { Protocol } from "..@lgcode/route@lgcode/protocol"
 import {
   LLMEvent,
   Usage,
@@ -15,18 +15,18 @@ import {
   type ToolCallPart,
   type ToolDefinition,
   type ToolContent,
-} from "../schema"
-import { JsonObject, optionalArray, ProviderShared } from "./shared"
-import { GeminiToolSchema } from "./utils/gemini-tool-schema"
-import { Lifecycle } from "./utils/lifecycle"
+} from "..@lgcode/schema"
+import { JsonObject, optionalArray, ProviderShared } from ".@lgcode/shared"
+import { GeminiToolSchema } from ".@lgcode/utils@lgcode/gemini-tool-schema"
+import { Lifecycle } from ".@lgcode/utils@lgcode/lifecycle"
 
 const ADAPTER = "gemini"
 const IMAGE_MIMES = new Set<string>(ProviderShared.IMAGE_MIMES)
-export const DEFAULT_BASE_URL = "https://generativelanguage.googleapis.com/v1beta"
+export const DEFAULT_BASE_URL = "https:@lgcode/@lgcode/generativelanguage.googleapis.com@lgcode/v1beta"
 
-// =============================================================================
-// Request Body Schema
-// =============================================================================
+@lgcode/@lgcode/ =============================================================================
+@lgcode/@lgcode/ Request Body Schema
+@lgcode/@lgcode/ =============================================================================
 const GeminiTextPart = Schema.Struct({
   text: Schema.String,
   thought: Schema.optional(Schema.Boolean),
@@ -142,30 +142,30 @@ interface ParserState {
   readonly reasoningSignature?: string
 }
 
-// =============================================================================
-// Tool Schema Conversion
-// =============================================================================
-// Tool-schema conversion has two distinct concerns:
-//
-// 1. Sanitize — fix common authoring mistakes Gemini rejects: integer/number
-//    enums (must be strings), `required` entries that don't match a property,
-//    untyped arrays (`items` must be present), and `properties`/`required`
-//    keys on non-object scalars. Mirrors OpenCode's historical Gemini rules.
-//
-// 2. Project — lossy mapping from JSON Schema to Gemini's schema dialect:
-//    drop empty objects, derive `nullable: true` from `type: [..., "null"]`,
-//    coerce `const` to `[const]` enum, recurse properties/items, propagate
-//    only an allowlisted set of keys (description, required, format, type,
-//    properties, items, allOf, anyOf, oneOf, minLength). Anything outside the
-//    allowlist (e.g. `additionalProperties`, `$ref`) is silently dropped.
-//
-// Sanitize runs first, then project. The implementation lives in
-// `utils/gemini-tool-schema` so this protocol keeps the same shape as the other
-// provider protocols.
+@lgcode/@lgcode/ =============================================================================
+@lgcode/@lgcode/ Tool Schema Conversion
+@lgcode/@lgcode/ =============================================================================
+@lgcode/@lgcode/ Tool-schema conversion has two distinct concerns:
+@lgcode/@lgcode/
+@lgcode/@lgcode/ 1. Sanitize — fix common authoring mistakes Gemini rejects: integer@lgcode/number
+@lgcode/@lgcode/    enums (must be strings), `required` entries that don't match a property,
+@lgcode/@lgcode/    untyped arrays (`items` must be present), and `properties`@lgcode/`required`
+@lgcode/@lgcode/    keys on non-object scalars. Mirrors OpenCode's historical Gemini rules.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ 2. Project — lossy mapping from JSON Schema to Gemini's schema dialect:
+@lgcode/@lgcode/    drop empty objects, derive `nullable: true` from `type: [..., "null"]`,
+@lgcode/@lgcode/    coerce `const` to `[const]` enum, recurse properties@lgcode/items, propagate
+@lgcode/@lgcode/    only an allowlisted set of keys (description, required, format, type,
+@lgcode/@lgcode/    properties, items, allOf, anyOf, oneOf, minLength). Anything outside the
+@lgcode/@lgcode/    allowlist (e.g. `additionalProperties`, `$ref`) is silently dropped.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Sanitize runs first, then project. The implementation lives in
+@lgcode/@lgcode/ `utils@lgcode/gemini-tool-schema` so this protocol keeps the same shape as the other
+@lgcode/@lgcode/ provider protocols.
 
-// =============================================================================
-// Request Lowering
-// =============================================================================
+@lgcode/@lgcode/ =============================================================================
+@lgcode/@lgcode/ Request Lowering
+@lgcode/@lgcode/ =============================================================================
 const lowerTool = (tool: ToolDefinition) => ({
   name: tool.name,
   description: tool.description,
@@ -321,21 +321,21 @@ const fromRequest = Effect.fn("Gemini.fromRequest")(function* (request: LLMReque
   }
 })
 
-// =============================================================================
-// Stream Parsing
-// =============================================================================
-// Gemini reports `promptTokenCount` (inclusive total) with a
-// `cachedContentTokenCount` subset. `candidatesTokenCount` is *exclusive*
-// of `thoughtsTokenCount` — visible-only, not a total — so we sum the two
-// to produce the inclusive `outputTokens` the rest of the contract expects.
+@lgcode/@lgcode/ =============================================================================
+@lgcode/@lgcode/ Stream Parsing
+@lgcode/@lgcode/ =============================================================================
+@lgcode/@lgcode/ Gemini reports `promptTokenCount` (inclusive total) with a
+@lgcode/@lgcode/ `cachedContentTokenCount` subset. `candidatesTokenCount` is *exclusive*
+@lgcode/@lgcode/ of `thoughtsTokenCount` — visible-only, not a total — so we sum the two
+@lgcode/@lgcode/ to produce the inclusive `outputTokens` the rest of the contract expects.
 const mapUsage = (usage: GeminiUsage | undefined) => {
   if (!usage) return undefined
   const cached = usage.cachedContentTokenCount
   const nonCached = ProviderShared.subtractTokens(usage.promptTokenCount, cached)
-  // `candidatesTokenCount` is visible-only; sum with thoughts to produce the
-  // inclusive `outputTokens` the contract expects. Only compute the total
-  // when the visible component is reported — otherwise we'd fabricate an
-  // inclusive number from a partial breakdown.
+  @lgcode/@lgcode/ `candidatesTokenCount` is visible-only; sum with thoughts to produce the
+  @lgcode/@lgcode/ inclusive `outputTokens` the contract expects. Only compute the total
+  @lgcode/@lgcode/ when the visible component is reported — otherwise we'd fabricate an
+  @lgcode/@lgcode/ inclusive number from a partial breakdown.
   const outputTokens =
     usage.candidatesTokenCount !== undefined ? usage.candidatesTokenCount + (usage.thoughtsTokenCount ?? 0) : undefined
   return new Usage({
@@ -450,14 +450,14 @@ const step = (state: ParserState, event: GeminiEvent) => {
   ] as const)
 }
 
-// =============================================================================
-// Protocol And Gemini Route
-// =============================================================================
-/**
+@lgcode/@lgcode/ =============================================================================
+@lgcode/@lgcode/ Protocol And Gemini Route
+@lgcode/@lgcode/ =============================================================================
+@lgcode/**
  * The Gemini protocol — request body construction, body schema, and the
  * streaming-event state machine. Used by Google AI Studio Gemini and (once
  * registered) Vertex Gemini.
- */
+ *@lgcode/
 export const protocol = Protocol.make({
   id: ADAPTER,
   body: {
@@ -476,12 +476,12 @@ export const route = Route.make({
   id: ADAPTER,
   provider: "google",
   protocol,
-  // Gemini's path embeds the model id and pins SSE framing at the URL level.
-  endpoint: Endpoint.path(({ request }) => `/models/${request.model.id}:streamGenerateContent?alt=sse`, {
+  @lgcode/@lgcode/ Gemini's path embeds the model id and pins SSE framing at the URL level.
+  endpoint: Endpoint.path(({ request }) => `@lgcode/models@lgcode/${request.model.id}:streamGenerateContent?alt=sse`, {
     baseURL: DEFAULT_BASE_URL,
   }),
   auth: Auth.none,
   framing: Framing.sse,
 })
 
-export * as Gemini from "./gemini"
+export * as Gemini from ".@lgcode/gemini"

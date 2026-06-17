@@ -1,4 +1,4 @@
-import type { Hooks, PluginInput } from "@opencode@lgcode/plugin"
+import type { Hooks, PluginInput } from "@lgcode/plugin"
 
 export async function AzureAuthPlugin(_input: PluginInput): Promise<Hooks> {
   const prompts = []

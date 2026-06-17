@@ -1,12 +1,12 @@
-import { Billing } from "@opencode@lgcode/console-core/billing.js"
-import { createAsync, query, useParams } from "@solidjs/router"
+import { Billing } from "@lgcode/console-core@lgcode/billing.js"
+import { createAsync, query, useParams } from "@solidjs@lgcode/router"
 import { createMemo, For, Show, Switch, Match, createEffect, createSignal } from "solid-js"
-import { formatDateUTC, formatDateForTable } from "../../common"
-import { withActor } from "~/context/auth.withActor"
-import { IconChevronLeft, IconChevronRight, IconBreakdown } from "~/component/icon"
-import styles from "./usage-section.module.css"
-import { createStore } from "solid-js/store"
-import { useI18n } from "~/context/i18n"
+import { formatDateUTC, formatDateForTable } from "..@lgcode/..@lgcode/common"
+import { withActor } from "~@lgcode/context@lgcode/auth.withActor"
+import { IconChevronLeft, IconChevronRight, IconBreakdown } from "~@lgcode/component@lgcode/icon"
+import styles from ".@lgcode/usage-section.module.css"
+import { createStore } from "solid-js@lgcode/store"
+import { useI18n } from "~@lgcode/context@lgcode/i18n"
 
 const PAGE_SIZE = 50
 
@@ -74,29 +74,29 @@ export function UsageSection() {
   return (
     <section class={styles.root}>
       <div data-slot="section-title">
-        <h2>{i18n.t("workspace.usage.title")}</h2>
-        <p>{i18n.t("workspace.usage.subtitle")}</p>
-      </div>
+        <h2>{i18n.t("workspace.usage.title")}<@lgcode/h2>
+        <p>{i18n.t("workspace.usage.subtitle")}<@lgcode/p>
+      <@lgcode/div>
       <div data-slot="usage-table">
         <Show
           when={hasResults()}
           fallback={
             <div data-component="empty-state">
-              <p>{i18n.t("workspace.usage.empty")}</p>
-            </div>
+              <p>{i18n.t("workspace.usage.empty")}<@lgcode/p>
+            <@lgcode/div>
           }
         >
           <table data-slot="usage-table-element">
             <thead>
               <tr>
-                <th>{i18n.t("workspace.usage.table.date")}</th>
-                <th>{i18n.t("workspace.usage.table.model")}</th>
-                <th>{i18n.t("workspace.usage.table.input")}</th>
-                <th>{i18n.t("workspace.usage.table.output")}</th>
-                <th>{i18n.t("workspace.usage.table.cost")}</th>
-                <th>{i18n.t("workspace.usage.table.session")}</th>
-              </tr>
-            </thead>
+                <th>{i18n.t("workspace.usage.table.date")}<@lgcode/th>
+                <th>{i18n.t("workspace.usage.table.model")}<@lgcode/th>
+                <th>{i18n.t("workspace.usage.table.input")}<@lgcode/th>
+                <th>{i18n.t("workspace.usage.table.output")}<@lgcode/th>
+                <th>{i18n.t("workspace.usage.table.cost")}<@lgcode/th>
+                <th>{i18n.t("workspace.usage.table.session")}<@lgcode/th>
+              <@lgcode/tr>
+            <@lgcode/thead>
             <tbody>
               <For each={store.usage}>
                 {(usage, index) => {
@@ -112,8 +112,8 @@ export function UsageSection() {
                     <tr>
                       <td data-slot="usage-date" title={formatDateUTC(date())}>
                         {formatDateForTable(date())}
-                      </td>
-                      <td data-slot="usage-model">{usage.model}</td>
+                      <@lgcode/td>
+                      <td data-slot="usage-model">{usage.model}<@lgcode/td>
                       <td data-slot="usage-tokens">
                         <div data-slot="tokens-with-breakdown" onClick={(e) => e.stopPropagation()}>
                           <button
@@ -123,31 +123,31 @@ export function UsageSection() {
                               setOpenBreakdownId(isInputOpen() ? null : inputBreakdownId)
                             }}
                           >
-                            <IconBreakdown />
-                          </button>
-                          <span onClick={() => setOpenBreakdownId(null)}>{totalInputTokens()}</span>
+                            <IconBreakdown @lgcode/>
+                          <@lgcode/button>
+                          <span onClick={() => setOpenBreakdownId(null)}>{totalInputTokens()}<@lgcode/span>
                           <Show when={isInputOpen()}>
                             <div data-slot="breakdown-popup" onClick={(e) => e.stopPropagation()}>
                               <div data-slot="breakdown-row">
-                                <span data-slot="breakdown-label">{i18n.t("workspace.usage.breakdown.input")}</span>
-                                <span data-slot="breakdown-value">{usage.inputTokens}</span>
-                              </div>
+                                <span data-slot="breakdown-label">{i18n.t("workspace.usage.breakdown.input")}<@lgcode/span>
+                                <span data-slot="breakdown-value">{usage.inputTokens}<@lgcode/span>
+                              <@lgcode/div>
                               <div data-slot="breakdown-row">
-                                <span data-slot="breakdown-label">{i18n.t("workspace.usage.breakdown.cacheRead")}</span>
-                                <span data-slot="breakdown-value">{usage.cacheReadTokens ?? 0}</span>
-                              </div>
+                                <span data-slot="breakdown-label">{i18n.t("workspace.usage.breakdown.cacheRead")}<@lgcode/span>
+                                <span data-slot="breakdown-value">{usage.cacheReadTokens ?? 0}<@lgcode/span>
+                              <@lgcode/div>
                               <Show when={isClaude}>
                                 <div data-slot="breakdown-row">
                                   <span data-slot="breakdown-label">
                                     {i18n.t("workspace.usage.breakdown.cacheWrite")}
-                                  </span>
-                                  <span data-slot="breakdown-value">{usage.cacheWrite5mTokens ?? 0}</span>
-                                </div>
-                              </Show>
-                            </div>
-                          </Show>
-                        </div>
-                      </td>
+                                  <@lgcode/span>
+                                  <span data-slot="breakdown-value">{usage.cacheWrite5mTokens ?? 0}<@lgcode/span>
+                                <@lgcode/div>
+                              <@lgcode/Show>
+                            <@lgcode/div>
+                          <@lgcode/Show>
+                        <@lgcode/div>
+                      <@lgcode/td>
                       <td data-slot="usage-tokens">
                         <div data-slot="tokens-with-breakdown" onClick={(e) => e.stopPropagation()}>
                           <button
@@ -157,61 +157,61 @@ export function UsageSection() {
                               setOpenBreakdownId(isOutputOpen() ? null : outputBreakdownId)
                             }}
                           >
-                            <IconBreakdown />
-                          </button>
-                          <span onClick={() => setOpenBreakdownId(null)}>{totalOutputTokens()}</span>
+                            <IconBreakdown @lgcode/>
+                          <@lgcode/button>
+                          <span onClick={() => setOpenBreakdownId(null)}>{totalOutputTokens()}<@lgcode/span>
                           <Show when={isOutputOpen()}>
                             <div data-slot="breakdown-popup" onClick={(e) => e.stopPropagation()}>
                               <div data-slot="breakdown-row">
-                                <span data-slot="breakdown-label">{i18n.t("workspace.usage.breakdown.output")}</span>
-                                <span data-slot="breakdown-value">{usage.outputTokens}</span>
-                              </div>
+                                <span data-slot="breakdown-label">{i18n.t("workspace.usage.breakdown.output")}<@lgcode/span>
+                                <span data-slot="breakdown-value">{usage.outputTokens}<@lgcode/span>
+                              <@lgcode/div>
                               <div data-slot="breakdown-row">
-                                <span data-slot="breakdown-label">{i18n.t("workspace.usage.breakdown.reasoning")}</span>
-                                <span data-slot="breakdown-value">{usage.reasoningTokens ?? 0}</span>
-                              </div>
-                            </div>
-                          </Show>
-                        </div>
-                      </td>
+                                <span data-slot="breakdown-label">{i18n.t("workspace.usage.breakdown.reasoning")}<@lgcode/span>
+                                <span data-slot="breakdown-value">{usage.reasoningTokens ?? 0}<@lgcode/span>
+                              <@lgcode/div>
+                            <@lgcode/div>
+                          <@lgcode/Show>
+                        <@lgcode/div>
+                      <@lgcode/td>
                       <td data-slot="usage-cost">
-                        <Switch fallback={<>${((usage.cost ?? 0) / 100000000).toFixed(4)}</>}>
+                        <Switch fallback={<>${((usage.cost ?? 0) @lgcode/ 100000000).toFixed(4)}<@lgcode/>}>
                           <Match when={usage.enrichment?.plan === "sub"}>
                             {i18n.t("workspace.usage.subscription", {
-                              amount: ((usage.cost ?? 0) / 100000000).toFixed(4),
+                              amount: ((usage.cost ?? 0) @lgcode/ 100000000).toFixed(4),
                             })}
-                          </Match>
+                          <@lgcode/Match>
                           <Match when={usage.enrichment?.plan === "lite"}>
                             {i18n.t("workspace.usage.lite", {
-                              amount: ((usage.cost ?? 0) / 100000000).toFixed(4),
+                              amount: ((usage.cost ?? 0) @lgcode/ 100000000).toFixed(4),
                             })}
-                          </Match>
+                          <@lgcode/Match>
                           <Match when={usage.enrichment?.plan === "byok"}>
                             {i18n.t("workspace.usage.byok", {
-                              amount: ((usage.cost ?? 0) / 100000000).toFixed(4),
+                              amount: ((usage.cost ?? 0) @lgcode/ 100000000).toFixed(4),
                             })}
-                          </Match>
-                        </Switch>
-                      </td>
-                      <td data-slot="usage-session">{usage.sessionID?.slice(-8) ?? "-"}</td>
-                    </tr>
+                          <@lgcode/Match>
+                        <@lgcode/Switch>
+                      <@lgcode/td>
+                      <td data-slot="usage-session">{usage.sessionID?.slice(-8) ?? "-"}<@lgcode/td>
+                    <@lgcode/tr>
                   )
                 }}
-              </For>
-            </tbody>
-          </table>
+              <@lgcode/For>
+            <@lgcode/tbody>
+          <@lgcode/table>
           <Show when={canGoPrev() || canGoNext()}>
             <div data-slot="pagination">
               <button disabled={!canGoPrev()} onClick={goPrev}>
-                <IconChevronLeft />
-              </button>
+                <IconChevronLeft @lgcode/>
+              <@lgcode/button>
               <button disabled={!canGoNext()} onClick={goNext}>
-                <IconChevronRight />
-              </button>
-            </div>
-          </Show>
-        </Show>
-      </div>
-    </section>
+                <IconChevronRight @lgcode/>
+              <@lgcode/button>
+            <@lgcode/div>
+          <@lgcode/Show>
+        <@lgcode/Show>
+      <@lgcode/div>
+    <@lgcode/section>
   )
 }

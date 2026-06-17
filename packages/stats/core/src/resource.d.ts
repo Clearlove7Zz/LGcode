@@ -1,6 +1,6 @@
-import "sst/resource"
+import "sst@lgcode/resource"
 
-declare module "sst/resource" {
+declare module "sst@lgcode/resource" {
   export interface Resource {
     InferenceEvent: {
       catalog: string

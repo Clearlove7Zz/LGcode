@@ -1,10 +1,10 @@
-import { Model } from "@opencode@lgcode/console-core/model.js"
-import { query, action, useParams, createAsync, json } from "@solidjs/router"
+import { Model } from "@lgcode/console-core@lgcode/model.js"
+import { query, action, useParams, createAsync, json } from "@solidjs@lgcode/router"
 import { createMemo, For, Show } from "solid-js"
-import { withActor } from "~/context/auth.withActor"
-import { ZenData } from "@opencode@lgcode/console-core/model.js"
-import styles from "./model-section.module.css"
-import { querySessionInfo } from "../common"
+import { withActor } from "~@lgcode/context@lgcode/auth.withActor"
+import { ZenData } from "@lgcode/console-core@lgcode/model.js"
+import styles from ".@lgcode/model-section.module.css"
+import { querySessionInfo } from "..@lgcode/common"
 import {
   IconAlibaba,
   IconAnthropic,
@@ -19,10 +19,10 @@ import {
   IconXai,
   IconXiaomi,
   IconZai,
-} from "~/component/icon"
-import { useI18n } from "~/context/i18n"
-import { useLanguage } from "~/context/language"
-import { formError } from "~/lib/form-error"
+} from "~@lgcode/component@lgcode/icon"
+import { useI18n } from "~@lgcode/context@lgcode/i18n"
+import { useLanguage } from "~@lgcode/context@lgcode/language"
+import { formError } from "~@lgcode/lib@lgcode/form-error"
 
 const getModelLab = (modelId: string) => {
   if (modelId.startsWith("claude")) return "Anthropic"
@@ -117,23 +117,23 @@ export function ModelSection() {
   return (
     <section class={styles.root}>
       <div data-slot="section-title">
-        <h2>{i18n.t("workspace.models.title")}</h2>
+        <h2>{i18n.t("workspace.models.title")}<@lgcode/h2>
         <p>
           {i18n.t("workspace.models.subtitle.beforeLink")}{" "}
-          <a href={language.route("/docs/zen#pricing")}>{i18n.t("common.learnMore")}</a>.
-        </p>
-      </div>
+          <a href={language.route("@lgcode/docs@lgcode/zen#pricing")}>{i18n.t("common.learnMore")}<@lgcode/a>.
+        <@lgcode/p>
+      <@lgcode/div>
       <div data-slot="models-list">
         <Show when={modelsInfo()}>
           <div data-slot="models-table">
             <table data-slot="models-table-element">
               <thead>
                 <tr>
-                  <th>{i18n.t("workspace.models.table.model")}</th>
-                  <th></th>
-                  <th>{i18n.t("workspace.models.table.enabled")}</th>
-                </tr>
-              </thead>
+                  <th>{i18n.t("workspace.models.table.model")}<@lgcode/th>
+                  <th><@lgcode/th>
+                  <th>{i18n.t("workspace.models.table.enabled")}<@lgcode/th>
+                <@lgcode/tr>
+              <@lgcode/thead>
               <tbody>
                 <For each={modelsWithLab()}>
                   {({ id, name, lab }) => {
@@ -145,42 +145,42 @@ export function ModelSection() {
                             {(() => {
                               switch (lab) {
                                 case "OpenAI":
-                                  return <IconOpenAI width={16} height={16} />
+                                  return <IconOpenAI width={16} height={16} @lgcode/>
                                 case "Anthropic":
-                                  return <IconAnthropic width={16} height={16} />
+                                  return <IconAnthropic width={16} height={16} @lgcode/>
                                 case "Google":
-                                  return <IconGemini width={16} height={16} />
+                                  return <IconGemini width={16} height={16} @lgcode/>
                                 case "DeepSeek":
-                                  return <IconDeepSeek width={16} height={16} />
+                                  return <IconDeepSeek width={16} height={16} @lgcode/>
                                 case "Moonshot AI":
-                                  return <IconMoonshotAI width={16} height={16} />
+                                  return <IconMoonshotAI width={16} height={16} @lgcode/>
                                 case "Z.ai":
-                                  return <IconZai width={16} height={16} />
+                                  return <IconZai width={16} height={16} @lgcode/>
                                 case "Alibaba":
-                                  return <IconAlibaba width={16} height={16} />
+                                  return <IconAlibaba width={16} height={16} @lgcode/>
                                 case "xAI":
-                                  return <IconXai width={16} height={16} />
+                                  return <IconXai width={16} height={16} @lgcode/>
                                 case "MiniMax":
-                                  return <IconMiniMax width={16} height={16} />
+                                  return <IconMiniMax width={16} height={16} @lgcode/>
                                 case "Xiaomi":
-                                  return <IconXiaomi width={16} height={16} />
+                                  return <IconXiaomi width={16} height={16} @lgcode/>
                                 case "NVIDIA":
-                                  return <IconNvidia width={16} height={16} />
+                                  return <IconNvidia width={16} height={16} @lgcode/>
                                 case "Arcee":
-                                  return <IconArcee width={16} height={16} />
+                                  return <IconArcee width={16} height={16} @lgcode/>
                                 default:
-                                  return <IconStealth width={16} height={16} />
+                                  return <IconStealth width={16} height={16} @lgcode/>
                               }
                             })()}
-                            <span>{name}</span>
-                          </div>
-                        </td>
-                        <td data-slot="model-lab">{lab}</td>
+                            <span>{name}<@lgcode/span>
+                          <@lgcode/div>
+                        <@lgcode/td>
+                        <td data-slot="model-lab">{lab}<@lgcode/td>
                         <td data-slot="model-toggle">
                           <form action={updateModel} method="post">
-                            <input type="hidden" name="model" value={id} />
-                            <input type="hidden" name="workspaceID" value={params.id} />
-                            <input type="hidden" name="enabled" value={String(isEnabled())} />
+                            <input type="hidden" name="model" value={id} @lgcode/>
+                            <input type="hidden" name="workspaceID" value={params.id} @lgcode/>
+                            <input type="hidden" name="enabled" value={String(isEnabled())} @lgcode/>
                             <label data-slot="model-toggle-label">
                               <input
                                 type="checkbox"
@@ -190,20 +190,20 @@ export function ModelSection() {
                                   const form = e.currentTarget.closest("form")
                                   if (form) form.requestSubmit()
                                 }}
-                              />
-                              <span></span>
-                            </label>
-                          </form>
-                        </td>
-                      </tr>
+                              @lgcode/>
+                              <span><@lgcode/span>
+                            <@lgcode/label>
+                          <@lgcode/form>
+                        <@lgcode/td>
+                      <@lgcode/tr>
                     )
                   }}
-                </For>
-              </tbody>
-            </table>
-          </div>
-        </Show>
-      </div>
-    </section>
+                <@lgcode/For>
+              <@lgcode/tbody>
+            <@lgcode/table>
+          <@lgcode/div>
+        <@lgcode/Show>
+      <@lgcode/div>
+    <@lgcode/section>
   )
 }

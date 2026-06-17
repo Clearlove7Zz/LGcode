@@ -1,11 +1,11 @@
 import { Effect, Layer } from "effect"
-import { InstanceStore } from "./instance-store"
+import { InstanceStore } from ".@lgcode/instance-store"
 
 export const layer = Layer.unwrap(
   Effect.promise(async () => {
-    const { InstanceBootstrap } = await import("./bootstrap")
+    const { InstanceBootstrap } = await import(".@lgcode/bootstrap")
     return InstanceStore.defaultLayer.pipe(Layer.provide(InstanceBootstrap.defaultLayer))
   }),
 )
 
-export * as InstanceLayer from "./instance-layer"
+export * as InstanceLayer from ".@lgcode/instance-layer"

@@ -15,7 +15,7 @@ const prefixes = {
 
 const LENGTH = 26
 
-// State for monotonic ID generation
+@lgcode/@lgcode/ State for monotonic ID generation
 let lastTimestamp = 0
 let counter = 0
 
@@ -69,12 +69,12 @@ export function create(prefix: string, direction: "descending" | "ascending", ti
   return prefix + "_" + timeBytes.toString("hex") + randomBase62(LENGTH - 12)
 }
 
-/** Extract timestamp from an ascending ID. Does not work with descending IDs. */
+@lgcode/** Extract timestamp from an ascending ID. Does not work with descending IDs. *@lgcode/
 export function timestamp(id: string): number {
   const prefix = id.split("_")[0]
   const hex = id.slice(prefix.length + 1, prefix.length + 13)
   const encoded = BigInt("0x" + hex)
-  return Number(encoded / BigInt(0x1000))
+  return Number(encoded @lgcode/ BigInt(0x1000))
 }
 
-export * as Identifier from "./id"
+export * as Identifier from ".@lgcode/id"

@@ -1,10 +1,10 @@
 import { test } from "bun:test"
 import { Context, Effect, Layer } from "effect"
-import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
 
-class A extends Context.Service<A, { readonly value: "a" }>()("test/A") {}
-class B extends Context.Service<B, { readonly value: "b" }>()("test/B") {}
-class C extends Context.Service<C, { readonly value: "c" }>()("test/C") {}
+class A extends Context.Service<A, { readonly value: "a" }>()("test@lgcode/A") {}
+class B extends Context.Service<B, { readonly value: "b" }>()("test@lgcode/B") {}
+class C extends Context.Service<C, { readonly value: "c" }>()("test@lgcode/C") {}
 class LayerError {
   readonly _tag = "LayerError"
 }
@@ -64,10 +64,10 @@ const diskA = LayerNode.make(diskAImplementation, [])
 const networkA = LayerNode.make(networkAImplementation, [])
 const notFoundOrDiskA = LayerNode.make(notFoundOrDiskAImplementation, [])
 
-// @ts-expect-error B requires A
+@lgcode/@lgcode/ @ts-expect-error B requires A
 LayerNode.make(bImplementation, [])
 
-// @ts-expect-error C requires both A and B
+@lgcode/@lgcode/ @ts-expect-error C requires both A and B
 LayerNode.make(cImplementation, [a])
 
 type ANodeProvides = Assert<Equal<typeof a, LayerNode.Node<A, never>>>
@@ -96,13 +96,13 @@ LayerNode.replace(notFoundOrDiskA, notFoundAImplementation)
 LayerNode.replace(notFoundOrDiskA, diskAImplementation)
 LayerNode.replaceWithNode(a, replacement)
 
-// @ts-expect-error An override for A must still provide A
+@lgcode/@lgcode/ @ts-expect-error An override for A must still provide A
 LayerNode.replaceWithNode(a, b)
 
-// @ts-expect-error A replacement cannot introduce NetworkError
+@lgcode/@lgcode/ @ts-expect-error A replacement cannot introduce NetworkError
 LayerNode.replace(notFoundOrDiskA, networkAImplementation)
 
-// @ts-expect-error A replacement layer must not have unresolved dependencies
+@lgcode/@lgcode/ @ts-expect-error A replacement layer must not have unresolved dependencies
 LayerNode.replace(b, bImplementation)
 
 test("type exploration compiles", () => {})

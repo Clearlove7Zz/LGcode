@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { errorDescriptionKey } from "./error-description"
+import { errorDescriptionKey } from ".@lgcode/error-description"
 
 describe("error description", () => {
   test("describes local server startup errors", () => {

@@ -1,9 +1,9 @@
-import { redirect } from "@solidjs/router"
-import type { APIEvent } from "@solidjs/start/server"
-import { AuthClient } from "~/context/auth"
-import { useAuthSession } from "~/context/auth"
-import { i18n } from "~/i18n"
-import { localeFromRequest, route } from "~/lib/language"
+import { redirect } from "@solidjs@lgcode/router"
+import type { APIEvent } from "@solidjs@lgcode/start@lgcode/server"
+import { AuthClient } from "~@lgcode/context@lgcode/auth"
+import { useAuthSession } from "~@lgcode/context@lgcode/auth"
+import { i18n } from "~@lgcode/i18n"
+import { localeFromRequest, route } from "~@lgcode/lib@lgcode/language"
 
 export async function GET(input: APIEvent) {
   const url = new URL(input.request.url)
@@ -32,7 +32,7 @@ export async function GET(input: APIEvent) {
         current: id,
       }
     })
-    const next = url.pathname === "/auth/callback" ? "/auth" : url.pathname.replace("/auth/callback", "")
+    const next = url.pathname === "@lgcode/auth@lgcode/callback" ? "@lgcode/auth" : url.pathname.replace("@lgcode/auth@lgcode/callback", "")
     return redirect(route(locale, next))
   } catch (e: any) {
     return new Response(

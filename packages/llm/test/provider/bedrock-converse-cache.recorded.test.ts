@@ -1,17 +1,17 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { CacheHint, LLM } from "../../src"
-import { LLMClient } from "../../src/route"
-import { AmazonBedrock } from "../../src/providers"
-import { LARGE_CACHEABLE_SYSTEM } from "../recorded-scenarios"
-import { recordedTests } from "../recorded-test"
+import { CacheHint, LLM } from "..@lgcode/..@lgcode/src"
+import { LLMClient } from "..@lgcode/..@lgcode/src@lgcode/route"
+import { AmazonBedrock } from "..@lgcode/..@lgcode/src@lgcode/providers"
+import { LARGE_CACHEABLE_SYSTEM } from "..@lgcode/recorded-scenarios"
+import { recordedTests } from "..@lgcode/recorded-test"
 
 const RECORDING_REGION = process.env.BEDROCK_RECORDING_REGION ?? "us-east-1"
 
-// Use a Claude model on Bedrock — Nova has automatic prefix caching that
-// doesn't reliably surface `cacheRead`/`cacheWrite` in usage, so the second
-// call wouldn't deterministically prove cache mapping works. Override with
-// BEDROCK_CACHE_MODEL_ID if your account has access elsewhere.
+@lgcode/@lgcode/ Use a Claude model on Bedrock — Nova has automatic prefix caching that
+@lgcode/@lgcode/ doesn't reliably surface `cacheRead`@lgcode/`cacheWrite` in usage, so the second
+@lgcode/@lgcode/ call wouldn't deterministically prove cache mapping works. Override with
+@lgcode/@lgcode/ BEDROCK_CACHE_MODEL_ID if your account has access elsewhere.
 const model = AmazonBedrock.configure({
   credentials: {
     region: RECORDING_REGION,
@@ -26,8 +26,8 @@ const cacheRequest = LLM.request({
   model,
   system: [{ type: "text", text: LARGE_CACHEABLE_SYSTEM, cache: new CacheHint({ type: "ephemeral" }) }],
   prompt: "Say hi.",
-  // Manual hint on the system part is the only marker we want here — skip the
-  // auto-policy's latest-user-message breakpoint so the cassette body matches.
+  @lgcode/@lgcode/ Manual hint on the system part is the only marker we want here — skip the
+  @lgcode/@lgcode/ auto-policy's latest-user-message breakpoint so the cassette body matches.
   cache: "none",
   generation: { maxTokens: 16, temperature: 0 },
 })
@@ -37,8 +37,8 @@ const recorded = recordedTests({
   provider: "amazon-bedrock",
   protocol: "bedrock-converse",
   requires: ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY"],
-  // Two identical requests in one cassette — replay walks the cassette in
-  // recording order so the second call replays the cached-hit interaction.
+  @lgcode/@lgcode/ Two identical requests in one cassette — replay walks the cassette in
+  @lgcode/@lgcode/ recording order so the second call replays the cached-hit interaction.
 })
 
 describe("Bedrock Converse cache recorded", () => {

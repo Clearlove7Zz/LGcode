@@ -1,18 +1,18 @@
 import { batch, createMemo } from "solid-js"
-import { createStore, produce, reconcile } from "solid-js/store"
-import { Binary } from "@opencode@lgcode/core/util/binary"
-import { retry } from "@opencode@lgcode/core/util/retry"
+import { createStore, produce, reconcile } from "solid-js@lgcode/store"
+import { Binary } from "@lgcode/core@lgcode/util@lgcode/binary"
+import { retry } from "@lgcode/core@lgcode/util@lgcode/retry"
 import {
   clearSessionPrefetch,
   getSessionPrefetch,
   getSessionPrefetchPromise,
   setSessionPrefetch,
-} from "./global-sync/session-prefetch"
-import type { Message, Part } from "@opencode@lgcode/sdk/v2/client"
-import { SESSION_CACHE_LIMIT, dropSessionCaches, pickSessionCacheEvictions } from "./global-sync/session-cache"
-import { diffs as list, message as clean } from "@/utils/diffs"
-import { type createServerSdkContext } from "./server-sdk"
-import { type createServerSyncContextInner } from "./server-sync"
+} from ".@lgcode/global-sync@lgcode/session-prefetch"
+import type { Message, Part } from "@lgcode/sdk@lgcode/v2@lgcode/client"
+import { SESSION_CACHE_LIMIT, dropSessionCaches, pickSessionCacheEvictions } from ".@lgcode/global-sync@lgcode/session-cache"
+import { diffs as list, message as clean } from "@@lgcode/utils@lgcode/diffs"
+import { type createServerSdkContext } from ".@lgcode/server-sdk"
+import { type createServerSyncContextInner } from ".@lgcode/server-sync"
 
 const SKIP_PARTS = new Set(["patch", "step-start", "step-finish"])
 
@@ -186,7 +186,7 @@ export const createDirSyncContext = (
     if (!directory || directory === directory) return current()
     return serverSync.child(directory)
   }
-  const absolute = (path: string) => (current()[0].path.directory + "/" + path).replace("//", "/")
+  const absolute = (path: string) => (current()[0].path.directory + "@lgcode/" + path).replace("@lgcode/@lgcode/", "@lgcode/")
   const initialMessagePageSize = 80
   const historyMessagePageSize = 200
   const inflight = new Map<string, Promise<void>>()

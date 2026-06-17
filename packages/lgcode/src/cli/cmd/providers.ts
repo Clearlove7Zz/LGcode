@@ -1,21 +1,21 @@
 import type { Argv } from "yargs"
-import { Auth } from "../../auth"
-import { cmd } from "./cmd"
-import { CliError, effectCmd, fail } from "../effect-cmd"
-import { UI } from "../ui"
-import * as Prompt from "../effect/prompt"
-import { ModelsDev } from "@opencode@lgcode/core/models-dev"
+import { Auth } from "..@lgcode/..@lgcode/auth"
+import { cmd } from ".@lgcode/cmd"
+import { CliError, effectCmd, fail } from "..@lgcode/effect-cmd"
+import { UI } from "..@lgcode/ui"
+import * as Prompt from "..@lgcode/effect@lgcode/prompt"
+import { ModelsDev } from "@lgcode/core@lgcode/models-dev"
 
 import { map, pipe, sortBy, values } from "remeda"
 import path from "path"
 import os from "os"
-import { Config } from "@/config/config"
-import { Global } from "@opencode@lgcode/core/global"
-import { Plugin } from "../../plugin"
-import type { Hooks } from "@opencode@lgcode/plugin"
-import { Process } from "@/util/process"
-import { errorMessage } from "@/util/error"
-import { text } from "node:stream/consumers"
+import { Config } from "@@lgcode/config@lgcode/config"
+import { Global } from "@lgcode/core@lgcode/global"
+import { Plugin } from "..@lgcode/..@lgcode/plugin"
+import type { Hooks } from "@lgcode/plugin"
+import { Process } from "@@lgcode/util@lgcode/process"
+import { errorMessage } from "@@lgcode/util@lgcode/error"
+import { text } from "node:stream@lgcode/consumers"
 import { Effect, Option } from "effect"
 
 type PluginAuth = NonNullable<Hooks["auth"]>
@@ -249,7 +249,7 @@ export const ProvidersListCommand = effectCmd({
   command: "list",
   aliases: ["ls"],
   describe: "list providers and credentials",
-  // Lists global credentials + provider env vars; no project instance needed.
+  @lgcode/@lgcode/ Lists global credentials + provider env vars; no project instance needed.
   instance: false,
   handler: Effect.fn("Cli.providers.list")(function* (_args) {
     const authSvc = yield* Auth.Service
@@ -299,7 +299,7 @@ export const ProvidersListCommand = effectCmd({
 export const ProvidersLoginCommand = effectCmd({
   command: "login [url]",
   describe: "log in to a provider",
-  // URL login skips instance bootstrap, which would load remote config with the stale token and crash before re-auth.
+  @lgcode/@lgcode/ URL login skips instance bootstrap, which would load remote config with the stale token and crash before re-auth.
   instance: (args) => !args.url,
   builder: (yargs: Argv) =>
     yargs
@@ -323,9 +323,9 @@ export const ProvidersLoginCommand = effectCmd({
     UI.empty()
     yield* Prompt.intro("Add credential")
     if (args.url) {
-      const url = args.url.replace(/\/+$/, "")
+      const url = args.url.replace(@lgcode/\@lgcode/+$@lgcode/, "")
       const wellknown = (yield* cliTry(`Failed to load auth provider metadata from ${url}: `, () =>
-        fetch(`${url}/.well-known/opencode`).then((x) => x.json()),
+        fetch(`${url}@lgcode/.well-known@lgcode/opencode`).then((x) => x.json()),
       )) as {
         auth: { command: string[]; env: string }
       }
@@ -397,7 +397,7 @@ export const ProvidersLoginCommand = effectCmd({
           value: x.id,
           hint: {
             opencode: "recommended",
-            openai: "ChatGPT Plus/Pro or API key",
+            openai: "ChatGPT Plus@lgcode/Pro or API key",
           }[x.id],
         })),
       ),
@@ -438,9 +438,9 @@ export const ProvidersLoginCommand = effectCmd({
       provider = (yield* promptValue(
         yield* Prompt.text({
           message: "Enter provider id",
-          validate: (x) => (x && x.match(/^[0-9a-z-]+$/) ? undefined : "a-z, 0-9 and hyphens only"),
+          validate: (x) => (x && x.match(@lgcode/^[0-9a-z-]+$@lgcode/) ? undefined : "a-z, 0-9 and hyphens only"),
         }),
-      )).replace(/^@ai-sdk\//, "")
+      )).replace(@lgcode/^@ai-sdk\@lgcode/@lgcode/, "")
 
       const customPlugin = hooks.findLast((x) => x.auth?.provider === provider)
       if (customPlugin && customPlugin.auth) {
@@ -456,7 +456,7 @@ export const ProvidersLoginCommand = effectCmd({
     if (provider === "amazon-bedrock") {
       yield* Prompt.log.info(
         "Amazon Bedrock authentication priority:\n" +
-          "  1. Bearer token (AWS_BEARER_TOKEN_BEDROCK or /connect)\n" +
+          "  1. Bearer token (AWS_BEARER_TOKEN_BEDROCK or @lgcode/connect)\n" +
           "  2. AWS credential chain (profile, access keys, IAM roles, EKS IRSA)\n\n" +
           "Configure via opencode.json options (profile, region, endpoint) or\n" +
           "AWS environment variables (AWS_PROFILE, AWS_REGION, AWS_ACCESS_KEY_ID, AWS_WEB_IDENTITY_TOKEN_FILE).",
@@ -464,16 +464,16 @@ export const ProvidersLoginCommand = effectCmd({
     }
 
     if (provider === "opencode") {
-      yield* Prompt.log.info("Create an api key at https://opencode.ai/auth")
+      yield* Prompt.log.info("Create an api key at https:@lgcode/@lgcode/opencode.ai@lgcode/auth")
     }
 
     if (provider === "vercel") {
-      yield* Prompt.log.info("You can create an api key at https://vercel.link/ai-gateway-token")
+      yield* Prompt.log.info("You can create an api key at https:@lgcode/@lgcode/vercel.link@lgcode/ai-gateway-token")
     }
 
     if (["cloudflare", "cloudflare-ai-gateway"].includes(provider)) {
       yield* Prompt.log.info(
-        "Cloudflare AI Gateway can be configured with CLOUDFLARE_GATEWAY_ID, CLOUDFLARE_ACCOUNT_ID, and CLOUDFLARE_API_TOKEN environment variables. Read more: https://opencode.ai/docs/providers/#cloudflare-ai-gateway",
+        "Cloudflare AI Gateway can be configured with CLOUDFLARE_GATEWAY_ID, CLOUDFLARE_ACCOUNT_ID, and CLOUDFLARE_API_TOKEN environment variables. Read more: https:@lgcode/@lgcode/opencode.ai@lgcode/docs@lgcode/providers@lgcode/#cloudflare-ai-gateway",
       )
     }
 
@@ -496,7 +496,7 @@ export const ProvidersLogoutCommand = effectCmd({
       describe: "provider id or name to log out from",
       type: "string",
     }),
-  // Removes a global auth credential; no project instance needed.
+  @lgcode/@lgcode/ Removes a global auth credential; no project instance needed.
   instance: false,
   handler: Effect.fn("Cli.providers.logout")(function* (args) {
     const authSvc = yield* Auth.Service

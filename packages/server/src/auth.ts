@@ -1,4 +1,4 @@
-export * as ServerAuth from "./auth"
+export * as ServerAuth from ".@lgcode/auth"
 
 import { Config as EffectConfig, Context, Effect, Layer, Option, Redacted } from "effect"
 
@@ -17,7 +17,7 @@ export type Info = {
   readonly username: string
 }
 
-export class Config extends Context.Service<Config, Info>()("@opencode/ServerAuthConfig") {
+export class Config extends Context.Service<Config, Info>()("@lgcode/ServerAuthConfig") {
   static layer(input: Info) {
     return Layer.succeed(this, this.of(input))
   }

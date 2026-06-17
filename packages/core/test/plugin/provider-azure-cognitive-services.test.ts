@@ -1,10 +1,10 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { Catalog } from "@opencode@lgcode/core/catalog"
-import { PluginV2 } from "@opencode@lgcode/core/plugin"
-import { AzureCognitiveServicesPlugin } from "@opencode@lgcode/core/plugin/provider/azure"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { fakeSelectorSdk, it, model, provider, withEnv } from "./provider-helper"
+import { Catalog } from "@lgcode/core@lgcode/catalog"
+import { PluginV2 } from "@lgcode/core@lgcode/plugin"
+import { AzureCognitiveServicesPlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/azure"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { fakeSelectorSdk, it, model, provider, withEnv } from ".@lgcode/provider-helper"
 
 describe("AzureCognitiveServicesPlugin", () => {
   it.effect("maps the resource env var to the Azure SDK baseURL", () =>
@@ -16,14 +16,14 @@ describe("AzureCognitiveServicesPlugin", () => {
         const transform = yield* catalog.transform()
         yield* transform((catalog) => {
           catalog.provider.update(ProviderV2.ID.make("azure-cognitive-services"), (item) => {
-            item.api = { type: "aisdk", package: "@ai-sdk/openai-compatible" }
+            item.api = { type: "aisdk", package: "@ai-sdk@lgcode/openai-compatible" }
           })
         })
         const result = yield* catalog.provider.get(ProviderV2.ID.make("azure-cognitive-services"))
         expect(result.api).toEqual({
           type: "aisdk",
-          package: "@ai-sdk/openai-compatible",
-          url: "https://cognitive.cognitiveservices.azure.com/openai",
+          package: "@ai-sdk@lgcode/openai-compatible",
+          url: "https:@lgcode/@lgcode/cognitive.cognitiveservices.azure.com@lgcode/openai",
         })
         expect(result.request.body.baseURL).toBeUndefined()
         expect(result.request.body.resourceName).toBeUndefined()
@@ -40,7 +40,7 @@ describe("AzureCognitiveServicesPlugin", () => {
         const transform = yield* catalog.transform()
         yield* transform((catalog) => {
           const azure = provider("azure-cognitive-services", {
-            api: { type: "aisdk", package: "@ai-sdk/openai-compatible" },
+            api: { type: "aisdk", package: "@ai-sdk@lgcode/openai-compatible" },
           })
           const openai = provider("openai")
           catalog.provider.update(azure.id, (item) => {
@@ -53,7 +53,7 @@ describe("AzureCognitiveServicesPlugin", () => {
         const azure = yield* catalog.provider.get(ProviderV2.ID.make("azure-cognitive-services"))
         const openai = yield* catalog.provider.get(ProviderV2.ID.openai)
         expect(azure.request.body.baseURL).toBeUndefined()
-        expect(azure.api).toEqual({ type: "aisdk", package: "@ai-sdk/openai-compatible" })
+        expect(azure.api).toEqual({ type: "aisdk", package: "@ai-sdk@lgcode/openai-compatible" })
         expect(openai.request.body.baseURL).toBeUndefined()
         expect(openai.api).toEqual({ type: "aisdk", package: "test-provider" })
       }),

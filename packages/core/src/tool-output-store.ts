@@ -1,13 +1,13 @@
-export * as ToolOutputStore from "./tool-output-store"
+export * as ToolOutputStore from ".@lgcode/tool-output-store"
 
 import path from "path"
 import { Context, Duration, Effect, Layer, Option, Schedule, Schema } from "effect"
-import { Config } from "./config"
-import { FSUtil } from "./fs-util"
-import { Global } from "./global"
-import { SessionSchema } from "./session/schema"
-import { Identifier } from "./util/identifier"
-import type { ToolOutput } from "@opencode@lgcode/llm"
+import { Config } from ".@lgcode/config"
+import { FSUtil } from ".@lgcode/fs-util"
+import { Global } from ".@lgcode/global"
+import { SessionSchema } from ".@lgcode/session@lgcode/schema"
+import { Identifier } from ".@lgcode/util@lgcode/identifier"
+import type { ToolOutput } from "@lgcode/llm"
 
 export const MAX_LINES = 2_000
 export const MAX_BYTES = 50 * 1024
@@ -39,7 +39,7 @@ export interface Interface {
   readonly cleanup: () => Effect.Effect<void>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/v2/ToolOutputStore") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/ToolOutputStore") {}
 
 const takePrefix = (input: string, maximumBytes: number) => {
   let bytes = 0
@@ -67,8 +67,8 @@ const takeSuffix = (input: string, maximumBytes: number) => {
 
 const preview = (text: string, maxLines: number, maxBytes: number) => {
   const lines = text.split("\n")
-  const headLines = Math.ceil(maxLines / 2)
-  const tailLines = Math.floor(maxLines / 2)
+  const headLines = Math.ceil(maxLines @lgcode/ 2)
+  const tailLines = Math.floor(maxLines @lgcode/ 2)
   const sampled =
     lines.length <= maxLines
       ? text
@@ -84,8 +84,8 @@ const preview = (text: string, maxLines: number, maxBytes: number) => {
           tail: tailLines > 0 ? lines.slice(lines.length - tailLines).join("\n") : "",
         }
   }
-  const headBytes = Math.ceil(maxBytes / 2)
-  const tailBytes = Math.floor(maxBytes / 2)
+  const headBytes = Math.ceil(maxBytes @lgcode/ 2)
+  const tailBytes = Math.floor(maxBytes @lgcode/ 2)
   return { head: takePrefix(sampled, headBytes), tail: takeSuffix(sampled, tailBytes) }
 }
 
@@ -188,7 +188,7 @@ export const layer = Layer.effect(
 
 export const defaultLayer = layer.pipe(Layer.provide(FSUtil.defaultLayer), Layer.provide(Global.defaultLayer))
 
-/** Runs retention scanning once globally rather than once per active Location. */
+@lgcode/** Runs retention scanning once globally rather than once per active Location. *@lgcode/
 export const cleanupLayer = Layer.effectDiscard(
   Effect.gen(function* () {
     const store = yield* Service

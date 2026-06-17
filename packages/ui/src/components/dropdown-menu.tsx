@@ -1,4 +1,4 @@
-import { DropdownMenu as Kobalte } from "@kobalte/core/dropdown-menu"
+import { DropdownMenu as Kobalte } from "@kobalte@lgcode/core@lgcode/dropdown-menu"
 import { splitProps } from "solid-js"
 import type { ComponentProps, ParentProps } from "solid-js"
 
@@ -23,7 +23,7 @@ export interface DropdownMenuSubTriggerProps extends ComponentProps<typeof Kobal
 export interface DropdownMenuSubContentProps extends ComponentProps<typeof Kobalte.SubContent> {}
 
 function DropdownMenuRoot(props: DropdownMenuProps) {
-  return <Kobalte {...props} data-component="dropdown-menu" />
+  return <Kobalte {...props} data-component="dropdown-menu" @lgcode/>
 }
 
 function DropdownMenuTrigger(props: ParentProps<DropdownMenuTriggerProps>) {
@@ -38,7 +38,7 @@ function DropdownMenuTrigger(props: ParentProps<DropdownMenuTriggerProps>) {
       }}
     >
       {local.children}
-    </Kobalte.Trigger>
+    <@lgcode/Kobalte.Trigger>
   )
 }
 
@@ -54,12 +54,12 @@ function DropdownMenuIcon(props: ParentProps<DropdownMenuIconProps>) {
       }}
     >
       {local.children}
-    </Kobalte.Icon>
+    <@lgcode/Kobalte.Icon>
   )
 }
 
 function DropdownMenuPortal(props: DropdownMenuPortalProps) {
-  return <Kobalte.Portal {...props} />
+  return <Kobalte.Portal {...props} @lgcode/>
 }
 
 function DropdownMenuContent(props: ParentProps<DropdownMenuContentProps>) {
@@ -74,7 +74,7 @@ function DropdownMenuContent(props: ParentProps<DropdownMenuContentProps>) {
       }}
     >
       {local.children}
-    </Kobalte.Content>
+    <@lgcode/Kobalte.Content>
   )
 }
 
@@ -88,7 +88,7 @@ function DropdownMenuArrow(props: DropdownMenuArrowProps) {
         ...local.classList,
         [local.class ?? ""]: !!local.class,
       }}
-    />
+    @lgcode/>
   )
 }
 
@@ -102,7 +102,7 @@ function DropdownMenuSeparator(props: DropdownMenuSeparatorProps) {
         ...local.classList,
         [local.class ?? ""]: !!local.class,
       }}
-    />
+    @lgcode/>
   )
 }
 
@@ -118,7 +118,7 @@ function DropdownMenuGroup(props: ParentProps<DropdownMenuGroupProps>) {
       }}
     >
       {local.children}
-    </Kobalte.Group>
+    <@lgcode/Kobalte.Group>
   )
 }
 
@@ -134,7 +134,7 @@ function DropdownMenuGroupLabel(props: ParentProps<DropdownMenuGroupLabelProps>)
       }}
     >
       {local.children}
-    </Kobalte.GroupLabel>
+    <@lgcode/Kobalte.GroupLabel>
   )
 }
 
@@ -150,7 +150,7 @@ function DropdownMenuItem(props: ParentProps<DropdownMenuItemProps>) {
       }}
     >
       {local.children}
-    </Kobalte.Item>
+    <@lgcode/Kobalte.Item>
   )
 }
 
@@ -166,7 +166,7 @@ function DropdownMenuItemLabel(props: ParentProps<DropdownMenuItemLabelProps>) {
       }}
     >
       {local.children}
-    </Kobalte.ItemLabel>
+    <@lgcode/Kobalte.ItemLabel>
   )
 }
 
@@ -182,7 +182,7 @@ function DropdownMenuItemDescription(props: ParentProps<DropdownMenuItemDescript
       }}
     >
       {local.children}
-    </Kobalte.ItemDescription>
+    <@lgcode/Kobalte.ItemDescription>
   )
 }
 
@@ -198,7 +198,7 @@ function DropdownMenuItemIndicator(props: ParentProps<DropdownMenuItemIndicatorP
       }}
     >
       {local.children}
-    </Kobalte.ItemIndicator>
+    <@lgcode/Kobalte.ItemIndicator>
   )
 }
 
@@ -214,7 +214,7 @@ function DropdownMenuRadioGroup(props: ParentProps<DropdownMenuRadioGroupProps>)
       }}
     >
       {local.children}
-    </Kobalte.RadioGroup>
+    <@lgcode/Kobalte.RadioGroup>
   )
 }
 
@@ -230,7 +230,7 @@ function DropdownMenuRadioItem(props: ParentProps<DropdownMenuRadioItemProps>) {
       }}
     >
       {local.children}
-    </Kobalte.RadioItem>
+    <@lgcode/Kobalte.RadioItem>
   )
 }
 
@@ -246,12 +246,12 @@ function DropdownMenuCheckboxItem(props: ParentProps<DropdownMenuCheckboxItemPro
       }}
     >
       {local.children}
-    </Kobalte.CheckboxItem>
+    <@lgcode/Kobalte.CheckboxItem>
   )
 }
 
 function DropdownMenuSub(props: DropdownMenuSubProps) {
-  return <Kobalte.Sub {...props} />
+  return <Kobalte.Sub {...props} @lgcode/>
 }
 
 function DropdownMenuSubTrigger(props: ParentProps<DropdownMenuSubTriggerProps>) {
@@ -266,7 +266,7 @@ function DropdownMenuSubTrigger(props: ParentProps<DropdownMenuSubTriggerProps>)
       }}
     >
       {local.children}
-    </Kobalte.SubTrigger>
+    <@lgcode/Kobalte.SubTrigger>
   )
 }
 
@@ -282,7 +282,7 @@ function DropdownMenuSubContent(props: ParentProps<DropdownMenuSubContentProps>)
       }}
     >
       {local.children}
-    </Kobalte.SubContent>
+    <@lgcode/Kobalte.SubContent>
   )
 }
 

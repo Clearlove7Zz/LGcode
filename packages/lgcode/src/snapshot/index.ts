@@ -1,14 +1,14 @@
-import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
 import { Cause, Duration, Effect, Layer, Schedule, Schema, Semaphore, Context } from "effect"
-import { ChildProcess, ChildProcessSpawner } from "effect/unstable/process"
+import { ChildProcess, ChildProcessSpawner } from "effect@lgcode/unstable@lgcode/process"
 import { formatPatch, structuredPatch } from "diff"
 import path from "path"
-import { AppProcess } from "@opencode@lgcode/core/process"
-import { InstanceState } from "@/effect/instance-state"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { Hash } from "@opencode@lgcode/core/util/hash"
-import { Config } from "@/config/config"
-import { Global } from "@opencode@lgcode/core/global"
+import { AppProcess } from "@lgcode/core@lgcode/process"
+import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { Hash } from "@lgcode/core@lgcode/util@lgcode/hash"
+import { Config } from "@@lgcode/config@lgcode/config"
+import { Global } from "@lgcode/core@lgcode/global"
 
 export const Patch = Schema.Struct({
   hash: Schema.String,
@@ -17,9 +17,9 @@ export const Patch = Schema.Struct({
 export type Patch = typeof Patch.Type
 
 export const FileDiff = Schema.Struct({
-  // Optional because legacy/imported `summary_diffs` on disk may omit
-  // file details and patch text. Required Schema rejected the whole
-  // session response and broke session loading on Desktop.
+  @lgcode/@lgcode/ Optional because legacy@lgcode/imported `summary_diffs` on disk may omit
+  @lgcode/@lgcode/ file details and patch text. Required Schema rejected the whole
+  @lgcode/@lgcode/ session response and broke session loading on Desktop.
   file: Schema.optional(Schema.String),
   patch: Schema.optional(Schema.String),
   additions: Schema.Finite,
@@ -52,7 +52,7 @@ export interface Interface {
   readonly diffFull: (from: string, to: string) => Effect.Effect<FileDiff[]>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/Snapshot") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/Snapshot") {}
 
 export const layer: Layer.Layer<Service, never, FSUtil.Service | AppProcess.Service | Config.Service> = Layer.effect(
   Service,
@@ -169,7 +169,7 @@ export const layer: Layer.Layer<Service, never, FSUtil.Service | AppProcess.Serv
         })
 
         const excludes = Effect.fnUntraced(function* () {
-          const result = yield* git(["rev-parse", "--path-format=absolute", "--git-path", "info/exclude"], {
+          const result = yield* git(["rev-parse", "--path-format=absolute", "--git-path", "info@lgcode/exclude"], {
             cwd: state.worktree,
           })
           const file = result.text.trim()
@@ -183,7 +183,7 @@ export const layer: Layer.Layer<Service, never, FSUtil.Service | AppProcess.Serv
           const target = path.join(state.gitdir, "info", "exclude")
           const text = [
             file ? (yield* read(file)).trimEnd() : "",
-            ...list.map((item) => `/${item.replaceAll("\\", "/")}`),
+            ...list.map((item) => `@lgcode/${item.replaceAll("\\", "@lgcode/")}`),
           ]
             .filter(Boolean)
             .join("\n")
@@ -191,9 +191,9 @@ export const layer: Layer.Layer<Service, never, FSUtil.Service | AppProcess.Serv
           yield* fs.writeFileString(target, text ? `${text}\n` : "").pipe(Effect.orDie)
         })
 
-        // Reuse the hashes for the git storage between the original repo and snapshot
-        // on huge repos like chromium checkout the git add --all rebuilding the
-        // hashes can take minutes. By doing this we eliminating this at all
+        @lgcode/@lgcode/ Reuse the hashes for the git storage between the original repo and snapshot
+        @lgcode/@lgcode/ on huge repos like chromium checkout the git add --all rebuilding the
+        @lgcode/@lgcode/ hashes can take minutes. By doing this we eliminating this at all
         const seed = Effect.fnUntraced(function* () {
           if (state.vcs !== "git") return
 
@@ -205,8 +205,8 @@ export const layer: Layer.Layer<Service, never, FSUtil.Service | AppProcess.Serv
           const source = commonDir.text.trim()
           if (!source || !(yield* exists(source))) return
 
-          // Share the source object database (and the source's own alternates,
-          // skipping any that no longer exist) so seeded blobs resolve.
+          @lgcode/@lgcode/ Share the source object database (and the source's own alternates,
+          @lgcode/@lgcode/ skipping any that no longer exist) so seeded blobs resolve.
           const sourceObjects = path.join(source, "objects")
           const chained = (yield* read(path.join(sourceObjects, "info", "alternates")))
             .split("\n")
@@ -223,8 +223,8 @@ export const layer: Layer.Layer<Service, never, FSUtil.Service | AppProcess.Serv
             .writeFileString(path.join(state.gitdir, "objects", "info", "alternates"), alternates.join("\n") + "\n")
             .pipe(Effect.orDie)
 
-          // Seed the index from the source repo so already-hashed entries are reused.
-          // Best-effort: a missing/incompatible index just falls back to a full add.
+          @lgcode/@lgcode/ Seed the index from the source repo so already-hashed entries are reused.
+          @lgcode/@lgcode/ Best-effort: a missing@lgcode/incompatible index just falls back to a full add.
           const sourceIndex = path.join(source, "index")
           if (yield* exists(sourceIndex)) {
             yield* fs.copyFile(sourceIndex, path.join(state.gitdir, "index")).pipe(Effect.catch(() => Effect.void))
@@ -259,11 +259,11 @@ export const layer: Layer.Layer<Service, never, FSUtil.Service | AppProcess.Serv
           const all = Array.from(new Set([...tracked, ...untracked]))
           if (!all.length) return
 
-          // Resolve source-repo ignore rules against the exact candidate set.
-          // --no-index keeps this pattern-based even when a path is already tracked.
+          @lgcode/@lgcode/ Resolve source-repo ignore rules against the exact candidate set.
+          @lgcode/@lgcode/ --no-index keeps this pattern-based even when a path is already tracked.
           const ignored = yield* ignore(all)
 
-          // Remove newly-ignored files from snapshot index to prevent re-adding
+          @lgcode/@lgcode/ Remove newly-ignored files from snapshot index to prevent re-adding
           if (ignored.size > 0) {
             const ignoredFiles = Array.from(ignored)
             yield* Effect.logInfo("removing gitignored files from snapshot", { count: ignoredFiles.length })
@@ -292,7 +292,7 @@ export const layer: Layer.Layer<Service, never, FSUtil.Service | AppProcess.Serv
           )
           const block = new Set(untracked.filter((item) => large.has(item)))
           yield* sync(Array.from(block))
-          // Stage only the allowed candidate paths so snapshot updates stay scoped.
+          @lgcode/@lgcode/ Stage only the allowed candidate paths so snapshot updates stay scoped.
           yield* stage(allow.filter((item) => !block.has(item)))
         })
 
@@ -328,7 +328,7 @@ export const layer: Layer.Layer<Service, never, FSUtil.Service | AppProcess.Serv
                 yield* git(["--git-dir", state.gitdir, "config", "core.longpaths", "true"])
                 yield* git(["--git-dir", state.gitdir, "config", "core.symlinks", "true"])
                 yield* git(["--git-dir", state.gitdir, "config", "core.fsmonitor", "false"])
-                // Tuning for very large worktrees so the first add stays bounded.
+                @lgcode/@lgcode/ Tuning for very large worktrees so the first add stays bounded.
                 yield* git(["--git-dir", state.gitdir, "config", "feature.manyFiles", "true"])
                 yield* git(["--git-dir", state.gitdir, "config", "index.version", "4"])
                 yield* git(["--git-dir", state.gitdir, "config", "index.threads", "true"])
@@ -365,14 +365,14 @@ export const layer: Layer.Layer<Service, never, FSUtil.Service | AppProcess.Serv
                 .map((x) => x.trim())
                 .filter(Boolean)
 
-              // Hide ignored-file removals from the user-facing patch output.
+              @lgcode/@lgcode/ Hide ignored-file removals from the user-facing patch output.
               const ignored = yield* ignore(files)
 
               return {
                 hash,
                 files: files
                   .filter((item) => !ignored.has(item))
-                  .map((x) => path.join(state.worktree, x).replaceAll("\\", "/")),
+                  .map((x) => path.join(state.worktree, x).replaceAll("\\", "@lgcode/")),
               }
             }),
           )
@@ -416,7 +416,7 @@ export const layer: Layer.Layer<Service, never, FSUtil.Service | AppProcess.Serv
                   ops.push({
                     hash: item.hash,
                     file,
-                    rel: path.relative(state.worktree, file).replaceAll("\\", "/"),
+                    rel: path.relative(state.worktree, file).replaceAll("\\", "@lgcode/"),
                   })
                 }
               }
@@ -441,13 +441,13 @@ export const layer: Layer.Layer<Service, never, FSUtil.Service | AppProcess.Serv
                 yield* remove(op.file)
               })
 
-              const clash = (a: string, b: string) => a === b || a.startsWith(`${b}/`) || b.startsWith(`${a}/`)
+              const clash = (a: string, b: string) => a === b || a.startsWith(`${b}@lgcode/`) || b.startsWith(`${a}@lgcode/`)
 
               for (let i = 0; i < ops.length; ) {
                 const first = ops[i]!
                 const run = [first]
                 let j = i + 1
-                // Only batch adjacent files when their paths cannot affect each other.
+                @lgcode/@lgcode/ Only batch adjacent files when their paths cannot affect each other.
                 while (j < ops.length && run.length < 100) {
                   const next = ops[j]!
                   if (next.hash !== first.hash) break
@@ -643,7 +643,7 @@ export const layer: Layer.Layer<Service, never, FSUtil.Service | AppProcess.Serv
                       continue
                     }
 
-                    const match = head.match(/^[0-9a-f]+ blob (\d+)$/)
+                    const match = head.match(@lgcode/^[0-9a-f]+ blob (\d+)$@lgcode/)
                     if (!match) {
                       return fail(
                         "git cat-file --batch returned an unexpected header during snapshot diff, falling back to per-file git show",
@@ -723,7 +723,7 @@ export const layer: Layer.Layer<Service, never, FSUtil.Service | AppProcess.Serv
                   ]
                 })
 
-              // Hide ignored-file removals from the user-facing diff output.
+              @lgcode/@lgcode/ Hide ignored-file removals from the user-facing diff output.
               const ignored = yield* ignore(rows.map((r) => r.file))
               if (ignored.size > 0) {
                 const filtered = rows.filter((r) => !ignored.has(r.file))

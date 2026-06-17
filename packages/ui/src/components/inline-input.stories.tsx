@@ -1,6 +1,6 @@
-// @ts-nocheck
-import * as mod from "./inline-input"
-import { create } from "../storybook/scaffold"
+@lgcode/@lgcode/ @ts-nocheck
+import * as mod from ".@lgcode/inline-input"
+import { create } from "..@lgcode/storybook@lgcode/scaffold"
 
 const docs = `### Overview
 Compact inline input for short values.
@@ -20,14 +20,14 @@ Use inside text or table rows for quick edits.
 ### Accessibility
 - Provide a label or aria-label when used standalone.
 
-### Theming/tokens
+### Theming@lgcode/tokens
 - Uses \`data-component="inline-input"\`.
 
 `
 
-const story = create({ title: "UI/InlineInput", mod, args: { placeholder: "Type...", value: "Inline" } })
+const story = create({ title: "UI@lgcode/InlineInput", mod, args: { placeholder: "Type...", value: "Inline" } })
 export default {
-  title: "UI/InlineInput",
+  title: "UI@lgcode/InlineInput",
   id: "components-inline-input",
   component: story.meta.component,
   tags: ["autodocs"],

@@ -1,8 +1,8 @@
 import { describe, expect, mock } from "bun:test"
 import { Effect } from "effect"
-import { PluginV2 } from "@opencode@lgcode/core/plugin"
-import { CloudflareAIGatewayPlugin } from "@opencode@lgcode/core/plugin/provider/cloudflare-ai-gateway"
-import { it, model, withEnv } from "./provider-helper"
+import { PluginV2 } from "@lgcode/core@lgcode/plugin"
+import { CloudflareAIGatewayPlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/cloudflare-ai-gateway"
+import { it, model, withEnv } from ".@lgcode/provider-helper"
 
 const aiGatewayCalls: Record<string, unknown>[] = []
 const unifiedCalls: string[] = []
@@ -57,7 +57,7 @@ mock.module("ai-gateway-provider", () => ({
   },
 }))
 
-mock.module("ai-gateway-provider/providers/unified", () => ({
+mock.module("ai-gateway-provider@lgcode/providers@lgcode/unified", () => ({
   createUnified() {
     return (modelID: string) => {
       unifiedCalls.push(modelID)
@@ -82,13 +82,13 @@ describe("CloudflareAIGatewayPlugin", () => {
           const result = yield* plugin.trigger(
             "aisdk.sdk",
             {
-              model: model("cloudflare-ai-gateway", "openai/gpt-5"),
+              model: model("cloudflare-ai-gateway", "openai@lgcode/gpt-5"),
               package: "ai-gateway-provider",
               options: { name: "cloudflare-ai-gateway" },
             },
             {},
           )
-          expect(result.sdk.languageModel("openai/gpt-5")).toBeDefined()
+          expect(result.sdk.languageModel("openai@lgcode/gpt-5")).toBeDefined()
         }),
     ),
   )
@@ -103,7 +103,7 @@ describe("CloudflareAIGatewayPlugin", () => {
         yield* plugin.trigger(
           "aisdk.sdk",
           {
-            model: model("cloudflare-ai-gateway", "openai/gpt-5"),
+            model: model("cloudflare-ai-gateway", "openai@lgcode/gpt-5"),
             package: "ai-gateway-provider",
             options: {
               name: "cloudflare-ai-gateway",
@@ -129,7 +129,7 @@ describe("CloudflareAIGatewayPlugin", () => {
             skipCache: true,
             collectLog: false,
             headers: {
-              "User-Agent": expect.stringContaining("opencode/"),
+              "User-Agent": expect.stringContaining("opencode@lgcode/"),
             },
           },
         })
@@ -147,7 +147,7 @@ describe("CloudflareAIGatewayPlugin", () => {
         yield* plugin.trigger(
           "aisdk.sdk",
           {
-            model: model("cloudflare-ai-gateway", "openai/gpt-5"),
+            model: model("cloudflare-ai-gateway", "openai@lgcode/gpt-5"),
             package: "ai-gateway-provider",
             options: {
               name: "cloudflare-ai-gateway",
@@ -166,7 +166,7 @@ describe("CloudflareAIGatewayPlugin", () => {
     ),
   )
 
-  it.effect("prefers Cloudflare env values over auth/config-derived options", () =>
+  it.effect("prefers Cloudflare env values over auth@lgcode/config-derived options", () =>
     withEnv(cloudflareEnv(), () =>
       Effect.gen(function* () {
         resetCalls()
@@ -176,7 +176,7 @@ describe("CloudflareAIGatewayPlugin", () => {
         yield* plugin.trigger(
           "aisdk.sdk",
           {
-            model: model("cloudflare-ai-gateway", "openai/gpt-5"),
+            model: model("cloudflare-ai-gateway", "openai@lgcode/gpt-5"),
             package: "ai-gateway-provider",
             options: {
               name: "cloudflare-ai-gateway",
@@ -213,7 +213,7 @@ describe("CloudflareAIGatewayPlugin", () => {
           yield* plugin.trigger(
             "aisdk.sdk",
             {
-              model: model("cloudflare-ai-gateway", "openai/gpt-5"),
+              model: model("cloudflare-ai-gateway", "openai@lgcode/gpt-5"),
               package: "ai-gateway-provider",
               options: {
                 name: "cloudflare-ai-gateway",
@@ -244,7 +244,7 @@ describe("CloudflareAIGatewayPlugin", () => {
         yield* plugin.trigger(
           "aisdk.sdk",
           {
-            model: model("cloudflare-ai-gateway", "openai/gpt-5"),
+            model: model("cloudflare-ai-gateway", "openai@lgcode/gpt-5"),
             package: "ai-gateway-provider",
             options: { name: "cloudflare-ai-gateway" },
           },
@@ -266,7 +266,7 @@ describe("CloudflareAIGatewayPlugin", () => {
         const result = yield* plugin.trigger(
           "aisdk.sdk",
           {
-            model: model("cloudflare-ai-gateway", "openai/gpt-5"),
+            model: model("cloudflare-ai-gateway", "openai@lgcode/gpt-5"),
             package: "ai-gateway-provider",
             options: { name: "cloudflare-ai-gateway" },
           },
@@ -289,7 +289,7 @@ describe("CloudflareAIGatewayPlugin", () => {
         const result = yield* plugin.trigger(
           "aisdk.sdk",
           {
-            model: model("cloudflare-ai-gateway", "openai/gpt-5"),
+            model: model("cloudflare-ai-gateway", "openai@lgcode/gpt-5"),
             package: "ai-gateway-provider",
             options: { name: "cloudflare-ai-gateway" },
           },
@@ -318,9 +318,9 @@ describe("CloudflareAIGatewayPlugin", () => {
           const result = yield* plugin.trigger(
             "aisdk.sdk",
             {
-              model: model("cloudflare-ai-gateway", "openai/gpt-5"),
+              model: model("cloudflare-ai-gateway", "openai@lgcode/gpt-5"),
               package: "ai-gateway-provider",
-              options: { name: "cloudflare-ai-gateway", baseURL: "https://proxy.example/v1" },
+              options: { name: "cloudflare-ai-gateway", baseURL: "https:@lgcode/@lgcode/proxy.example@lgcode/v1" },
             },
             {},
           )
@@ -331,7 +331,7 @@ describe("CloudflareAIGatewayPlugin", () => {
     ),
   )
 
-  it.effect("maps provider/model IDs through the unified Cloudflare provider unchanged", () =>
+  it.effect("maps provider@lgcode/model IDs through the unified Cloudflare provider unchanged", () =>
     withEnv(cloudflareEnv(), () =>
       Effect.gen(function* () {
         resetCalls()
@@ -341,20 +341,20 @@ describe("CloudflareAIGatewayPlugin", () => {
         const result = yield* plugin.trigger(
           "aisdk.sdk",
           {
-            model: model("cloudflare-ai-gateway", "anthropic/claude-sonnet-4-5"),
+            model: model("cloudflare-ai-gateway", "anthropic@lgcode/claude-sonnet-4-5"),
             package: "ai-gateway-provider",
             options: { name: "cloudflare-ai-gateway" },
           },
           {},
         )
 
-        expect(result.sdk.languageModel("anthropic/claude-sonnet-4-5")).toEqual({
-          modelId: { unifiedModelID: "anthropic/claude-sonnet-4-5" },
+        expect(result.sdk.languageModel("anthropic@lgcode/claude-sonnet-4-5")).toEqual({
+          modelId: { unifiedModelID: "anthropic@lgcode/claude-sonnet-4-5" },
           provider: "cloudflare-ai-gateway",
           specificationVersion: "v3",
         })
-        expect(unifiedCalls).toEqual(["anthropic/claude-sonnet-4-5"])
-        expect(gatewayModelCalls).toEqual([{ unifiedModelID: "anthropic/claude-sonnet-4-5" }])
+        expect(unifiedCalls).toEqual(["anthropic@lgcode/claude-sonnet-4-5"])
+        expect(gatewayModelCalls).toEqual([{ unifiedModelID: "anthropic@lgcode/claude-sonnet-4-5" }])
       }),
     ),
   )
@@ -369,8 +369,8 @@ describe("CloudflareAIGatewayPlugin", () => {
         const result = yield* plugin.trigger(
           "aisdk.sdk",
           {
-            model: model("cloudflare-ai-gateway", "openai/gpt-5"),
-            package: "@ai-sdk/openai-compatible",
+            model: model("cloudflare-ai-gateway", "openai@lgcode/gpt-5"),
+            package: "@ai-sdk@lgcode/openai-compatible",
             options: { name: "cloudflare-ai-gateway" },
           },
           {},

@@ -1,6 +1,6 @@
-// @ts-nocheck
-import * as mod from "./list"
-import { create } from "../storybook/scaffold"
+@lgcode/@lgcode/ @ts-nocheck
+import * as mod from ".@lgcode/list"
+import { create } from "..@lgcode/storybook@lgcode/scaffold"
 
 const docs = `### Overview
 Filterable list with keyboard navigation and optional search input.
@@ -22,13 +22,13 @@ Use within panels or popovers where keyboard navigation is expected.
 ### Accessibility
 - TODO: confirm ARIA roles for list items and search input.
 
-### Theming/tokens
+### Theming@lgcode/tokens
 - Uses \`data-component="list"\` and data slots for structure.
 
 `
 
 const story = create({
-  title: "UI/List",
+  title: "UI@lgcode/List",
   mod,
   args: {
     items: ["One", "Two", "Three", "Four"],
@@ -39,7 +39,7 @@ const story = create({
 })
 
 export default {
-  title: "UI/List",
+  title: "UI@lgcode/List",
   id: "components-list",
   component: story.meta.component,
   tags: ["autodocs"],
@@ -64,7 +64,7 @@ export const Grouped = {
     return (
       <mod.List items={items} key={(item) => item.id} groupBy={(item) => item.group} search={true}>
         {(item) => item.title}
-      </mod.List>
+      <@lgcode/mod.List>
     )
   },
 }
@@ -73,7 +73,7 @@ export const Empty = {
   render: () => (
     <mod.List items={[]} key={(item) => item} search={true}>
       {(item) => item}
-    </mod.List>
+    <@lgcode/mod.List>
   ),
 }
 
@@ -87,12 +87,12 @@ export const WithAdd = {
         render: () => (
           <button type="button" data-slot="list-item">
             Add item
-          </button>
+          <@lgcode/button>
         ),
       }}
     >
       {(item) => item}
-    </mod.List>
+    <@lgcode/mod.List>
   ),
 }
 
@@ -100,7 +100,7 @@ export const Divider = {
   render: () => (
     <mod.List items={["One", "Two", "Three"]} key={(item) => item} divider={true}>
       {(item) => item}
-    </mod.List>
+    <@lgcode/mod.List>
   ),
 }
 
@@ -108,7 +108,7 @@ export const ActiveIcon = {
   render: () => (
     <mod.List items={["Alpha", "Beta", "Gamma"]} key={(item) => item} activeIcon="chevron-right">
       {(item) => item}
-    </mod.List>
+    <@lgcode/mod.List>
   ),
 }
 
@@ -116,7 +116,7 @@ export const NoSearch = {
   render: () => (
     <mod.List items={["One", "Two", "Three"]} key={(item) => item} search={false}>
       {(item) => item}
-    </mod.List>
+    <@lgcode/mod.List>
   ),
 }
 
@@ -128,11 +128,11 @@ export const SearchOptions = {
       search={{
         placeholder: "Filter...",
         hideIcon: true,
-        action: <button type="button">Action</button>,
+        action: <button type="button">Action<@lgcode/button>,
       }}
     >
       {(item) => item}
-    </mod.List>
+    <@lgcode/mod.List>
   ),
 }
 
@@ -142,11 +142,11 @@ export const ItemWrapper = {
       items={["One", "Two", "Three"]}
       key={(item) => item}
       itemWrapper={(item, node) => (
-        <div style={{ border: "1px solid var(--border-weak)", "border-radius": "6px", margin: "4px 0" }}>{node}</div>
+        <div style={{ border: "1px solid var(--border-weak)", "border-radius": "6px", margin: "4px 0" }}>{node}<@lgcode/div>
       )}
     >
       {(item) => item}
-    </mod.List>
+    <@lgcode/mod.List>
   ),
 }
 
@@ -161,10 +161,10 @@ export const GroupHeader = {
         items={items}
         key={(item) => item.id}
         groupBy={(item) => item.group}
-        groupHeader={(group) => <strong>{group.category}</strong>}
+        groupHeader={(group) => <strong>{group.category}<@lgcode/strong>}
       >
         {(item) => item.title}
-      </mod.List>
+      <@lgcode/mod.List>
     )
   },
 }

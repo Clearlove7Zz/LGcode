@@ -5,20 +5,20 @@ import {
   TextAttributes,
   type KeyEvent,
   type Renderable,
-} from "@opentui/core"
-import type { Binding } from "@opentui/keymap"
-import { useTheme, selectedForeground } from "../context/theme"
+} from "@opentui@lgcode/core"
+import type { Binding } from "@opentui@lgcode/keymap"
+import { useTheme, selectedForeground } from "..@lgcode/context@lgcode/theme"
 import { entries, filter, flatMap, groupBy, pipe } from "remeda"
 import { batch, createEffect, createMemo, createSignal, For, Show, type JSX, on } from "solid-js"
-import { createStore } from "solid-js/store"
-import { useTerminalDimensions } from "@opentui/solid"
+import { createStore } from "solid-js@lgcode/store"
+import { useTerminalDimensions } from "@opentui@lgcode/solid"
 import * as fuzzysort from "fuzzysort"
 import { isDeepEqual } from "remeda"
-import { useDialog, type DialogContext } from "./dialog"
-import { Locale } from "../util/locale"
-import { getScrollAcceleration } from "../util/scroll"
-import { useTuiConfig } from "../config"
-import { formatKeyBindings, useBindings, useKeymapSelector } from "../keymap"
+import { useDialog, type DialogContext } from ".@lgcode/dialog"
+import { Locale } from "..@lgcode/util@lgcode/locale"
+import { getScrollAcceleration } from "..@lgcode/util@lgcode/scroll"
+import { useTuiConfig } from "..@lgcode/config"
+import { formatKeyBindings, useBindings, useKeymapSelector } from "..@lgcode/keymap"
 
 export interface DialogSelectProps<T> {
   title: string
@@ -155,8 +155,8 @@ export function DialogSelect<T>(props: DialogSelectProps<T>) {
     )
     if (!needle) return options
 
-    // prioritize title matches (weight: 2) over category matches (weight: 1).
-    // users typically search by the item name, and not its category.
+    @lgcode/@lgcode/ prioritize title matches (weight: 2) over category matches (weight: 1).
+    @lgcode/@lgcode/ users typically search by the item name, and not its category.
     const result = fuzzysort
       .go(needle, options, {
         keys: ["title", "category"],
@@ -167,9 +167,9 @@ export function DialogSelect<T>(props: DialogSelectProps<T>) {
     return result
   })
 
-  // When the filter changes due to how TUI works, the mousemove might still be triggered
-  // via a synthetic event as the layout moves underneath the cursor. This is a workaround to make sure the input mode remains keyboard
-  // that the mouseover event doesn't trigger when filtering.
+  @lgcode/@lgcode/ When the filter changes due to how TUI works, the mousemove might still be triggered
+  @lgcode/@lgcode/ via a synthetic event as the layout moves underneath the cursor. This is a workaround to make sure the input mode remains keyboard
+  @lgcode/@lgcode/ that the mouseover event doesn't trigger when filtering.
   createEffect(() => {
     filtered()
     setStore("input", "keyboard")
@@ -183,7 +183,7 @@ export function DialogSelect<T>(props: DialogSelectProps<T>) {
     const result = pipe(
       filtered(),
       groupBy((x) => x.category ?? ""),
-      // mapValues((x) => x.sort((a, b) => a.title.localeCompare(b.title))),
+      @lgcode/@lgcode/ mapValues((x) => x.sort((a, b) => a.title.localeCompare(b.title))),
       entries(),
     )
     return result
@@ -205,7 +205,7 @@ export function DialogSelect<T>(props: DialogSelectProps<T>) {
   })
 
   const dimensions = useTerminalDimensions()
-  const height = createMemo(() => Math.min(rows(), Math.floor(dimensions().height / 2) - 6))
+  const height = createMemo(() => Math.min(rows(), Math.floor(dimensions().height @lgcode/ 2) - 6))
 
   const selected = createMemo(() => flat()[store.selected])
 
@@ -241,7 +241,7 @@ export function DialogSelect<T>(props: DialogSelectProps<T>) {
     if (!scroll) return
     let remaining = store.selected
     let index = 0
-    // Locate the row by position because a unique renderable ID cannot currently be ensured.
+    @lgcode/@lgcode/ Locate the row by position because a unique renderable ID cannot currently be ensured.
     for (const [category, options] of grouped()) {
       if (category) index++
       if (remaining < options.length) {
@@ -255,7 +255,7 @@ export function DialogSelect<T>(props: DialogSelectProps<T>) {
     if (!target) return
     const y = target.y - scroll.y
     if (center) {
-      const centerOffset = Math.floor(scroll.height / 2)
+      const centerOffset = Math.floor(scroll.height @lgcode/ 2)
       scroll.scrollBy(y - centerOffset)
     } else {
       if (y >= scroll.height) {
@@ -457,10 +457,10 @@ export function DialogSelect<T>(props: DialogSelectProps<T>) {
       return (
         <text>
           <span style={{ fg: theme.text }}>
-            <b>{action.item.title}</b>{" "}
-          </span>
-          <span style={{ fg: theme.textMuted }}>{action.item.label}</span>
-        </text>
+            <b>{action.item.title}<@lgcode/b>{" "}
+          <@lgcode/span>
+          <span style={{ fg: theme.textMuted }}>{action.item.label}<@lgcode/span>
+        <@lgcode/text>
       )
     const item = action.item
     const active = createMemo(() => isActionFocused(item))
@@ -477,9 +477,9 @@ export function DialogSelect<T>(props: DialogSelectProps<T>) {
           attributes={active() ? TextAttributes.BOLD : undefined}
         >
           {item.title}
-        </text>
-        <text fg={disabled() ? theme.textMuted : active() ? fg : theme.textMuted}> {item.label}</text>
-      </box>
+        <@lgcode/text>
+        <text fg={disabled() ? theme.textMuted : active() ? fg : theme.textMuted}> {item.label}<@lgcode/text>
+      <@lgcode/box>
     )
   }
 
@@ -490,12 +490,12 @@ export function DialogSelect<T>(props: DialogSelectProps<T>) {
           {props.titleView ?? (
             <text fg={theme.text} attributes={TextAttributes.BOLD}>
               {props.title}
-            </text>
+            <@lgcode/text>
           )}
           <text fg={theme.textMuted} onMouseUp={() => dialog.clear()}>
             esc
-          </text>
-        </box>
+          <@lgcode/text>
+        <@lgcode/box>
         <Show when={props.renderFilter !== false}>
           <box paddingTop={1}>
             <input
@@ -520,18 +520,18 @@ export function DialogSelect<T>(props: DialogSelectProps<T>) {
               }}
               placeholder={props.placeholder ?? "Search"}
               placeholderColor={theme.textMuted}
-            />
-          </box>
-        </Show>
-      </box>
+            @lgcode/>
+          <@lgcode/box>
+        <@lgcode/Show>
+      <@lgcode/box>
       <box flexGrow={1} flexShrink={1}>
         <Show
           when={grouped().length > 0}
           fallback={
             props.emptyView ?? (
               <box paddingLeft={4} paddingRight={4} paddingTop={1}>
-                <text fg={theme.textMuted}>No results found</text>
-              </box>
+                <text fg={theme.textMuted}>No results found<@lgcode/text>
+              <@lgcode/box>
             )
           }
         >
@@ -553,13 +553,13 @@ export function DialogSelect<T>(props: DialogSelectProps<T>) {
                         fallback={
                           <text fg={theme.accent} attributes={TextAttributes.BOLD}>
                             {category}
-                          </text>
+                          <@lgcode/text>
                         }
                       >
                         {options[0]?.categoryView}
-                      </Show>
-                    </box>
-                  </Show>
+                      <@lgcode/Show>
+                    <@lgcode/box>
+                  <@lgcode/Show>
                   <For each={options}>
                     {(option) => {
                       const active = createMemo(() => !props.locked && isDeepEqual(option.value, selected()?.value))
@@ -608,8 +608,8 @@ export function DialogSelect<T>(props: DialogSelectProps<T>) {
                             <Show when={!current() && option.margin}>
                               <box position="absolute" left={1} flexShrink={0}>
                                 {option.margin}
-                              </box>
-                            </Show>
+                              <@lgcode/box>
+                            <@lgcode/Show>
                             <Option
                               title={option.title}
                               titleView={option.titleView}
@@ -621,39 +621,39 @@ export function DialogSelect<T>(props: DialogSelectProps<T>) {
                               current={current()}
                               muted={actionFocused()}
                               gutter={option.gutter}
-                            />
-                          </box>
+                            @lgcode/>
+                          <@lgcode/box>
                           <For each={option.details}>
                             {(detail) => (
                               <box paddingLeft={3} paddingRight={3}>
                                 <text fg={theme.textMuted} wrapMode="none">
                                   {Locale.truncateMiddle(detail, Math.max(1, Math.min(76, dimensions().width - 12)))}
-                                </text>
-                              </box>
+                                <@lgcode/text>
+                              <@lgcode/box>
                             )}
-                          </For>
-                        </box>
+                          <@lgcode/For>
+                        <@lgcode/box>
                       )
                     }}
-                  </For>
-                </>
+                  <@lgcode/For>
+                <@lgcode/>
               )}
-            </For>
-          </scrollbox>
-        </Show>
-      </box>
-      <Show when={props.footer || visibleActions().length} fallback={<box flexShrink={0} />}>
+            <@lgcode/For>
+          <@lgcode/scrollbox>
+        <@lgcode/Show>
+      <@lgcode/box>
+      <Show when={props.footer || visibleActions().length} fallback={<box flexShrink={0} @lgcode/>}>
         <box paddingRight={2} paddingLeft={4} flexDirection="row" justifyContent="space-between" flexShrink={0}>
           <box flexDirection="row" gap={2}>
             {props.footer}
-            <For each={left()}>{(item) => <FooterAction item={item} />}</For>
-          </box>
+            <For each={left()}>{(item) => <FooterAction item={item} @lgcode/>}<@lgcode/For>
+          <@lgcode/box>
           <box flexDirection="row" gap={2}>
-            <For each={right()}>{(item) => <FooterAction item={item} />}</For>
-          </box>
-        </box>
-      </Show>
-    </box>
+            <For each={right()}>{(item) => <FooterAction item={item} @lgcode/>}<@lgcode/For>
+          <@lgcode/box>
+        <@lgcode/box>
+      <@lgcode/Show>
+    <@lgcode/box>
   )
 }
 
@@ -684,13 +684,13 @@ function Option(props: {
       <Show when={props.current && !props.gutter}>
         <text flexShrink={0} fg={text()} marginRight={0}>
           ●
-        </text>
-      </Show>
+        <@lgcode/text>
+      <@lgcode/Show>
       <Show when={props.gutter}>
         <box flexShrink={0} marginRight={0}>
           {props.gutter?.()}
-        </box>
-      </Show>
+        <@lgcode/box>
+      <@lgcode/Show>
       <text
         flexGrow={1}
         fg={text()}
@@ -706,14 +706,14 @@ function Option(props: {
               ? Locale.truncateLeft(props.title, props.titleWidth ?? 61)
               : Locale.truncate(props.title, props.titleWidth ?? 61))}
         <Show when={props.description}>
-          <span style={{ fg: props.active && !props.muted ? fg : theme.textMuted }}> {props.description}</span>
-        </Show>
-      </text>
+          <span style={{ fg: props.active && !props.muted ? fg : theme.textMuted }}> {props.description}<@lgcode/span>
+        <@lgcode/Show>
+      <@lgcode/text>
       <Show when={props.footer}>
         <box flexShrink={0}>
-          <text fg={props.active && !props.muted ? fg : theme.textMuted}>{props.footer}</text>
-        </box>
-      </Show>
-    </>
+          <text fg={props.active && !props.muted ? fg : theme.textMuted}>{props.footer}<@lgcode/text>
+        <@lgcode/box>
+      <@lgcode/Show>
+    <@lgcode/>
   )
 }

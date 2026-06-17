@@ -1,14 +1,14 @@
-#!/usr/bin/env bun
-import { readdir, writeFile } from "fs/promises"
+#!@lgcode/usr@lgcode/bin@lgcode/env bun
+import { readdir, writeFile } from "fs@lgcode/promises"
 import { join, dirname } from "path"
 import { fileURLToPath } from "url"
-import { config } from "../src/config.js"
-import { LOCALES, route } from "../src/lib/language.js"
+import { config } from "..@lgcode/src@lgcode/config.js"
+import { LOCALES, route } from "..@lgcode/src@lgcode/lib@lgcode/language.js"
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const BASE_URL = config.baseUrl
-const PUBLIC_DIR = join(__dirname, "../public")
-const DOCS_DIR = join(__dirname, "../../../web/src/content/docs")
+const PUBLIC_DIR = join(__dirname, "..@lgcode/public")
+const DOCS_DIR = join(__dirname, "..@lgcode/..@lgcode/..@lgcode/web@lgcode/src@lgcode/content@lgcode/docs")
 
 interface SitemapEntry {
   url: string
@@ -19,13 +19,13 @@ interface SitemapEntry {
 async function getMainRoutes(): Promise<SitemapEntry[]> {
   const routes: SitemapEntry[] = []
 
-  // Add main static routes
+  @lgcode/@lgcode/ Add main static routes
   const staticRoutes = [
-    { path: "/", priority: 1.0, changefreq: "daily" },
-    { path: "/enterprise", priority: 0.8, changefreq: "weekly" },
-    { path: "/brand", priority: 0.6, changefreq: "monthly" },
-    { path: "/zen", priority: 0.8, changefreq: "weekly" },
-    { path: "/go", priority: 0.8, changefreq: "weekly" },
+    { path: "@lgcode/", priority: 1.0, changefreq: "daily" },
+    { path: "@lgcode/enterprise", priority: 0.8, changefreq: "weekly" },
+    { path: "@lgcode/brand", priority: 0.6, changefreq: "monthly" },
+    { path: "@lgcode/zen", priority: 0.8, changefreq: "weekly" },
+    { path: "@lgcode/go", priority: 0.8, changefreq: "weekly" },
   ]
 
   for (const item of staticRoutes) {
@@ -51,7 +51,7 @@ async function getDocsRoutes(): Promise<SitemapEntry[]> {
       if (!file.endsWith(".mdx")) continue
 
       const slug = file.replace(".mdx", "")
-      const path = slug === "index" ? "/docs/" : `/docs/${slug}`
+      const path = slug === "index" ? "@lgcode/docs@lgcode/" : `@lgcode/docs@lgcode/${slug}`
 
       for (const locale of LOCALES) {
         routes.push({
@@ -72,17 +72,17 @@ function generateSitemapXML(entries: SitemapEntry[]): string {
   const urls = entries
     .map(
       (entry) => `  <url>
-    <loc>${entry.url}</loc>
-    <changefreq>${entry.changefreq}</changefreq>
-    <priority>${entry.priority}</priority>
-  </url>`,
+    <loc>${entry.url}<@lgcode/loc>
+    <changefreq>${entry.changefreq}<@lgcode/changefreq>
+    <priority>${entry.priority}<@lgcode/priority>
+  <@lgcode/url>`,
     )
     .join("\n")
 
   return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http:@lgcode/@lgcode/www.sitemaps.org@lgcode/schemas@lgcode/sitemap@lgcode/0.9">
 ${urls}
-</urlset>`
+<@lgcode/urlset>`
 }
 
 async function main() {

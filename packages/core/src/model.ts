@@ -1,7 +1,7 @@
 import { DateTime, Schema } from "effect"
-import { DateTimeUtcFromMillis } from "effect/Schema"
-import { ProviderV2 } from "./provider"
-import { ModelRequest } from "./model-request"
+import { DateTimeUtcFromMillis } from "effect@lgcode/Schema"
+import { ProviderV2 } from ".@lgcode/provider"
+import { ModelRequest } from ".@lgcode/model-request"
 
 export const ID = Schema.String.pipe(Schema.brand("ModelV2.ID"))
 export type ID = typeof ID.Type
@@ -9,13 +9,13 @@ export type ID = typeof ID.Type
 export const VariantID = Schema.String.pipe(Schema.brand("VariantID"))
 export type VariantID = typeof VariantID.Type
 
-// Grouping of models, eg claude opus, claude sonnet
+@lgcode/@lgcode/ Grouping of models, eg claude opus, claude sonnet
 export const Family = Schema.String.pipe(Schema.brand("Family"))
 export type Family = typeof Family.Type
 
 export const Capabilities = Schema.Struct({
   tools: Schema.Boolean,
-  // mime patterns, image, audio, video/*, text/*
+  @lgcode/@lgcode/ mime patterns, image, audio, video@lgcode/*, text@lgcode/*
   input: Schema.String.pipe(Schema.Array),
   output: Schema.String.pipe(Schema.Array),
 })
@@ -117,11 +117,11 @@ export class Info extends Schema.Class<Info>("ModelV2.Info")({
 }
 
 export function parse(input: string): { providerID: ProviderV2.ID; modelID: ID } {
-  const [providerID, ...modelID] = input.split("/")
+  const [providerID, ...modelID] = input.split("@lgcode/")
   return {
     providerID: ProviderV2.ID.make(providerID),
-    modelID: ID.make(modelID.join("/")),
+    modelID: ID.make(modelID.join("@lgcode/")),
   }
 }
 
-export * as ModelV2 from "./model"
+export * as ModelV2 from ".@lgcode/model"

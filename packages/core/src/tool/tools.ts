@@ -1,7 +1,7 @@
-export * as Tools from "./tools"
+export * as Tools from ".@lgcode/tools"
 
 import { Context, Effect, Scope } from "effect"
-import { Tool } from "./tool"
+import { Tool } from ".@lgcode/tool"
 
 export interface Interface {
   readonly register: (
@@ -9,5 +9,5 @@ export interface Interface {
   ) => Effect.Effect<void, Tool.RegistrationError, Scope.Scope>
 }
 
-/** Narrow registration-only Location capability. */
-export class Service extends Context.Service<Service, Interface>()("@opencode/v2/Tools") {}
+@lgcode/** Narrow registration-only Location capability. *@lgcode/
+export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/Tools") {}

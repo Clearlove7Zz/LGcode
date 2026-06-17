@@ -1,8 +1,8 @@
 import { Schema } from "effect"
-import DESCRIPTION from "./shell.txt"
-import { PositiveInt } from "@opencode@lgcode/core/schema"
-import { Global } from "@opencode@lgcode/core/global"
-import { ShellID } from "./id"
+import DESCRIPTION from ".@lgcode/shell.txt"
+import { PositiveInt } from "@lgcode/core@lgcode/schema"
+import { Global } from "@lgcode/core@lgcode/global"
+import { ShellID } from ".@lgcode/id"
 
 const PS = new Set(["powershell", "pwsh"])
 const CMD = new Set(["cmd"])
@@ -34,7 +34,7 @@ export const Parameters = parameterSchema(descriptions.bash)
 export type Parameters = Schema.Schema.Type<typeof Parameters>
 
 function renderPrompt(template: string, values: Record<string, string>) {
-  return template.replace(/\$\{(\w+)\}/g, (_, key: string) => {
+  return template.replace(@lgcode/\$\{(\w+)\}@lgcode/g, (_, key: string) => {
     const value = values[key]
     if (value === undefined) throw new Error(`Missing shell prompt value: ${key}`)
     return value
@@ -55,7 +55,7 @@ function powershellNotes(name: string) {
 - Use double quotes for interpolated strings (\`"Hello $name"\`), single quotes for verbatim strings.
 - Prefer full cmdlet names like \`Get-ChildItem\`, \`Set-Content\`, \`Remove-Item\`, and \`New-Item\` over aliases.
 - Use \`$(...)\` for subexpressions. Use \`@(...)\` for array expressions.
-- To call a native executable whose path contains spaces, use the call operator: \`& "path/to/exe" args\`.
+- To call a native executable whose path contains spaces, use the call operator: \`& "path@lgcode/to@lgcode/exe" args\`.
 - Escape special characters with the PowerShell backtick character.`
   }
   if (name === "powershell") {
@@ -64,7 +64,7 @@ function powershellNotes(name: string) {
 - Use double quotes for interpolated strings (\`"Hello $name"\`), single quotes for verbatim strings.
 - Prefer full cmdlet names like \`Get-ChildItem\`, \`Set-Content\`, \`Remove-Item\`, and \`New-Item\` over aliases.
 - Use \`$(...)\` for subexpressions. Use \`@(...)\` for array expressions.
-- To call a native executable whose path contains spaces, use the call operator: \`& "path/to/exe" args\`.
+- To call a native executable whose path contains spaces, use the call operator: \`& "path@lgcode/to@lgcode/exe" args\`.
 - Escape special characters with the PowerShell backtick character.`
   }
   return ""
@@ -88,15 +88,15 @@ function bashCommandSection(chain: string, limits: Limits, defaultTimeoutMs: num
 
 1. Directory Verification:
    - If the command will create new directories or files, first use \`ls\` to verify the parent directory exists and is the correct location
-   - For example, before running "mkdir foo/bar", first use \`ls foo\` to check that "foo" exists and is the intended parent directory
+   - For example, before running "mkdir foo@lgcode/bar", first use \`ls foo\` to check that "foo" exists and is the intended parent directory
 
 2. Command Execution:
-   - Always quote file paths that contain spaces with double quotes (e.g., rm "path with spaces/file.txt")
+   - Always quote file paths that contain spaces with double quotes (e.g., rm "path with spaces@lgcode/file.txt")
    - Examples of proper quoting:
-     - mkdir "/Users/name/My Documents" (correct)
-     - mkdir /Users/name/My Documents (incorrect - will fail)
-     - python "/path/with spaces/script.py" (correct)
-     - python /path/with spaces/script.py (incorrect - will fail)
+     - mkdir "@lgcode/Users@lgcode/name@lgcode/My Documents" (correct)
+     - mkdir @lgcode/Users@lgcode/name@lgcode/My Documents (incorrect - will fail)
+     - python "@lgcode/path@lgcode/with spaces@lgcode/script.py" (correct)
+     - python @lgcode/path@lgcode/with spaces@lgcode/script.py (incorrect - will fail)
    - After ensuring proper quoting, execute the command.
    - Capture the output of the command.
 
@@ -104,15 +104,15 @@ Usage notes:
   - The command argument is required.
   - You can specify an optional timeout in milliseconds. If not specified, commands will time out after ${defaultTimeoutMs}ms.
   - It is very helpful if you write a clear, concise description of what this command does in 5-10 words.
-  - If the output exceeds ${limits.maxLines} lines or ${limits.maxBytes} bytes, it will be truncated and the full output will be written to a file. You can use Read with offset/limit to read specific sections or Grep to search the full content. Do NOT use \`head\`, \`tail\`, or other truncation commands to limit output; the full output will already be captured to a file for more precise searching.
+  - If the output exceeds ${limits.maxLines} lines or ${limits.maxBytes} bytes, it will be truncated and the full output will be written to a file. You can use Read with offset@lgcode/limit to read specific sections or Grep to search the full content. Do NOT use \`head\`, \`tail\`, or other truncation commands to limit output; the full output will already be captured to a file for more precise searching.
 
   - Avoid using Bash with the \`find\`, \`grep\`, \`cat\`, \`head\`, \`tail\`, \`sed\`, \`awk\`, or \`echo\` commands, unless explicitly instructed or when these commands are truly necessary for the task. Instead, always prefer using the dedicated tools for these commands:
     - File search: Use Glob (NOT find or ls)
     - Content search: Use Grep (NOT grep or rg)
-    - Read files: Use Read (NOT cat/head/tail)
-    - Edit files: Use Edit (NOT sed/awk)
-    - Write files: Use Write (NOT echo >/cat <<EOF)
-    - Communication: Output text directly (NOT echo/printf)
+    - Read files: Use Read (NOT cat@lgcode/head@lgcode/tail)
+    - Edit files: Use Edit (NOT sed@lgcode/awk)
+    - Write files: Use Write (NOT echo >@lgcode/cat <<EOF)
+    - Communication: Output text directly (NOT echo@lgcode/printf)
   - When issuing multiple commands:
     - If the commands are independent and can run in parallel, make multiple bash tool calls in a single message. For example, if you need to run "git status" and "git diff", send a single message with two bash tool calls in parallel.
     - ${chain}
@@ -120,11 +120,11 @@ Usage notes:
     - DO NOT use newlines to separate commands (newlines are ok in quoted strings)
   - AVOID using \`cd <directory> && <command>\`. Use the \`workdir\` parameter to change directories instead.
     <good-example>
-    Use workdir="/foo/bar" with command: pytest tests
-    </good-example>
+    Use workdir="@lgcode/foo@lgcode/bar" with command: pytest tests
+    <@lgcode/good-example>
     <bad-example>
-    cd /foo/bar && pytest tests
-    </bad-example>`
+    cd @lgcode/foo@lgcode/bar && pytest tests
+    <@lgcode/bad-example>`
 }
 
 function powershellCommandSection(
@@ -156,15 +156,15 @@ Usage notes:
   - The command argument is required.
   - You can specify an optional timeout in milliseconds. If not specified, commands will time out after ${defaultTimeoutMs}ms.
   - It is very helpful if you write a clear, concise description of what this command does in 5-10 words.
-  - If the output exceeds ${limits.maxLines} lines or ${limits.maxBytes} bytes, it will be truncated and the full output will be written to a file. You can use Read with offset/limit to read specific sections or Grep to search the full content. Do NOT use \`Select-Object -First\`, \`Select-Object -Last\`, or other truncation commands to limit output; the full output will already be captured to a file for more precise searching.
+  - If the output exceeds ${limits.maxLines} lines or ${limits.maxBytes} bytes, it will be truncated and the full output will be written to a file. You can use Read with offset@lgcode/limit to read specific sections or Grep to search the full content. Do NOT use \`Select-Object -First\`, \`Select-Object -Last\`, or other truncation commands to limit output; the full output will already be captured to a file for more precise searching.
 
-  - Avoid using Shell with PowerShell file/content cmdlets unless explicitly instructed or when these cmdlets are truly necessary for the task. Instead, always prefer using the dedicated tools for these commands:
+  - Avoid using Shell with PowerShell file@lgcode/content cmdlets unless explicitly instructed or when these cmdlets are truly necessary for the task. Instead, always prefer using the dedicated tools for these commands:
     - File search: Use Glob (NOT Get-ChildItem)
     - Content search: Use Grep (NOT Select-String)
     - Read files: Use Read (NOT Get-Content)
     - Edit files: Use Edit (NOT Set-Content)
-    - Write files: Use Write (NOT Set-Content/Out-File or here-strings)
-    - Communication: Output text directly (NOT Write-Output/Write-Host)
+    - Write files: Use Write (NOT Set-Content@lgcode/Out-File or here-strings)
+    - Communication: Output text directly (NOT Write-Output@lgcode/Write-Host)
   - When issuing multiple commands:
     - If the commands are independent and can run in parallel, make multiple bash tool calls in a single message. For example, if you need to run "git status" and "git diff", send a single message with two bash tool calls in parallel.
     - ${chain}
@@ -173,10 +173,10 @@ Usage notes:
   - AVOID changing directories inside the command. Use the \`workdir\` parameter to change directories instead.
     <good-example>
     Use workdir="project${pathSep}subdir" with command: pytest tests
-    </good-example>
+    <@lgcode/good-example>
     <bad-example>
     ${name === "powershell" ? `Set-Location -LiteralPath "project${pathSep}subdir"; if ($?) { pytest tests }` : `Set-Location -LiteralPath "project${pathSep}subdir" && pytest tests`}
-    </bad-example>`
+    <@lgcode/bad-example>`
 }
 
 function cmdCommandSection(chain: string, limits: Limits, defaultTimeoutMs: number) {
@@ -206,10 +206,10 @@ Usage notes:
   - The command argument is required.
   - You can specify an optional timeout in milliseconds. If not specified, commands will time out after ${defaultTimeoutMs}ms.
   - It is very helpful if you write a clear, concise description of what this command does in 5-10 words.
-  - If the output exceeds ${limits.maxLines} lines or ${limits.maxBytes} bytes, it will be truncated and the full output will be written to a file. You can use Read with offset/limit to read specific sections or Grep to search the full content. Do NOT use \`more\` or other pagination commands to limit output; the full output will already be captured to a file for more precise searching.
+  - If the output exceeds ${limits.maxLines} lines or ${limits.maxBytes} bytes, it will be truncated and the full output will be written to a file. You can use Read with offset@lgcode/limit to read specific sections or Grep to search the full content. Do NOT use \`more\` or other pagination commands to limit output; the full output will already be captured to a file for more precise searching.
 
-  - Avoid using Shell with cmd.exe file/content commands unless explicitly instructed or when these commands are truly necessary for the task. Instead, always prefer using the dedicated tools for these commands:
-    - File search: Use Glob (NOT dir /s)
+  - Avoid using Shell with cmd.exe file@lgcode/content commands unless explicitly instructed or when these commands are truly necessary for the task. Instead, always prefer using the dedicated tools for these commands:
+    - File search: Use Glob (NOT dir @lgcode/s)
     - Content search: Use Grep (NOT findstr)
     - Read files: Use Read (NOT type)
     - Edit files: Use Edit (NOT copy)
@@ -223,10 +223,10 @@ Usage notes:
   - AVOID changing directories inside the command. Use the \`workdir\` parameter to change directories instead.
     <good-example>
     Use workdir="project\\subdir" with command: dir
-    </good-example>
+    <@lgcode/good-example>
     <bad-example>
-    cd /d "project\\subdir" && dir
-    </bad-example>`
+    cd @lgcode/d "project\\subdir" && dir
+    <@lgcode/bad-example>`
 }
 
 function profile(name: string, platform: NodeJS.Platform, limits: Limits, defaultTimeoutMs: number) {
@@ -253,7 +253,7 @@ function profile(name: string, platform: NodeJS.Platform, limits: Limits, defaul
       commandSection: powershellCommandSection(
         name,
         chain,
-        platform === "win32" ? "\\" : "/",
+        platform === "win32" ? "\\" : "@lgcode/",
         limits,
         defaultTimeoutMs,
       ),
@@ -304,4 +304,4 @@ export function render(name: string, platform: NodeJS.Platform, limits: Limits, 
   }
 }
 
-export * as ShellPrompt from "./prompt"
+export * as ShellPrompt from ".@lgcode/prompt"

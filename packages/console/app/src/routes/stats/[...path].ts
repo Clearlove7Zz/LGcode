@@ -1,4 +1,4 @@
-import { statsRedirect } from "~/lib/stats-proxy"
+import { statsRedirect } from "~@lgcode/lib@lgcode/stats-proxy"
 
 export const GET = statsRedirect
 export const POST = statsRedirect

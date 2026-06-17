@@ -1,4 +1,4 @@
-export * as ModelRequest from "./model-request"
+export * as ModelRequest from ".@lgcode/model-request"
 
 import { Effect, Schema } from "effect"
 
@@ -57,7 +57,7 @@ interface Profile {
 
 const profiles = new Map<string, Profile>([
   [
-    "@ai-sdk/openai",
+    "@ai-sdk@lgcode/openai",
     {
       namespace: "openai",
       semantics: new Map([
@@ -73,7 +73,7 @@ const profiles = new Map<string, Profile>([
     },
   ],
   [
-    "@ai-sdk/openai-compatible",
+    "@ai-sdk@lgcode/openai-compatible",
     {
       namespace: "openai",
       semantics: new Map([
@@ -84,7 +84,7 @@ const profiles = new Map<string, Profile>([
       ]),
     },
   ],
-  ["@ai-sdk/anthropic", { namespace: "anthropic", semantics: new Map([["thinking", "thinking"]]) }],
+  ["@ai-sdk@lgcode/anthropic", { namespace: "anthropic", semantics: new Map([["thinking", "thinking"]]) }],
 ])
 
 export const namespace = (packageName: string) => profiles.get(packageName)?.namespace
@@ -103,7 +103,7 @@ export const assign = (target: MutableRequest, override: Partial<Request>) => {
   Object.assign((target.options ??= {}), override.options)
 }
 
-/** Partitions AI-SDK-shaped request options before they enter the Catalog. */
+@lgcode/** Partitions AI-SDK-shaped request options before they enter the Catalog. *@lgcode/
 export function normalizeAiSdkOptions(packageName: string | undefined, input: Readonly<Record<string, unknown>>) {
   const generation: Record<string, number | ReadonlyArray<string>> = {}
   const options: Record<string, unknown> = {}

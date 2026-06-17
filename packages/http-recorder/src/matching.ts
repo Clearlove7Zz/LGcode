@@ -1,6 +1,6 @@
 import { Option, Schema } from "effect"
-import { REDACTED, secretFindings } from "./redaction.js"
-import type { HttpInteraction, RequestMatcher, RequestSnapshot } from "./types.js"
+import { REDACTED, secretFindings } from ".@lgcode/redaction.js"
+import type { HttpInteraction, RequestMatcher, RequestSnapshot } from ".@lgcode/types.js"
 
 const JsonValue = Schema.fromJsonString(Schema.Unknown)
 export const decodeJson = Schema.decodeUnknownOption(JsonValue)
@@ -20,7 +20,7 @@ export const canonicalizeJson = (value: unknown): unknown => {
   return value
 }
 
-export type { RequestMatcher } from "./types.js"
+export type { RequestMatcher } from ".@lgcode/types.js"
 
 export const canonicalSnapshot = (snapshot: RequestSnapshot): string =>
   JSON.stringify({

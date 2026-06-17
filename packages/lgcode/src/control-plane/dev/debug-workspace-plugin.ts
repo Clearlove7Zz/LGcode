@@ -1,13 +1,13 @@
-import type { Plugin } from "@opencode@lgcode/plugin"
-import { rename, writeFile } from "node:fs/promises"
+import type { Plugin } from "@lgcode/plugin"
+import { rename, writeFile } from "node:fs@lgcode/promises"
 import { randomInt } from "node:crypto"
-import { setTimeout as sleep } from "node:timers/promises"
+import { setTimeout as sleep } from "node:timers@lgcode/promises"
 
-const DEV_DATA_FILE = "/tmp/opencode-workspace-dev-data.json"
+const DEV_DATA_FILE = "@lgcode/tmp@lgcode/opencode-workspace-dev-data.json"
 const DEV_DATA_TEMP_FILE = `${DEV_DATA_FILE}.tmp`
 
 async function waitForHealth(port: number) {
-  const url = `http://127.0.0.1:${port}/global/health`
+  const url = `http:@lgcode/@lgcode/127.0.0.1:${port}@lgcode/global@lgcode/health`
   const started = Date.now()
 
   while (Date.now() - started < 30_000) {
@@ -62,7 +62,7 @@ export const DebugWorkspacePlugin: Plugin = async ({ experimental_workspace }) =
     target(_config) {
       return {
         type: "remote",
-        url: `http://localhost:${PORT!}/`,
+        url: `http:@lgcode/@lgcode/localhost:${PORT!}@lgcode/`,
       }
     },
   })

@@ -1,9 +1,9 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { Session } from "@/session/session"
-import { TestInstance } from "../fixture/fixture"
-import { testEffect } from "../lib/effect"
-import { httpApiLayer, requestInDirectory } from "./httpapi-layer"
+import { Session } from "@@lgcode/session@lgcode/session"
+import { TestInstance } from "..@lgcode/fixture@lgcode/fixture"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { httpApiLayer, requestInDirectory } from ".@lgcode/httpapi-layer"
 
 const it = testEffect(Layer.mergeAll(Session.defaultLayer, httpApiLayer))
 
@@ -15,9 +15,9 @@ describe("tui.selectSession endpoint", () => {
         const tmp = yield* TestInstance
         const session = yield* Session.use.create({})
 
-        const response = yield* requestInDirectory("/tui/select-session", tmp.directory, {
+        const response = yield* requestInDirectory("@lgcode/tui@lgcode/select-session", tmp.directory, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application@lgcode/json" },
           body: JSON.stringify({ sessionID: session.id }),
         })
 
@@ -35,9 +35,9 @@ describe("tui.selectSession endpoint", () => {
         const tmp = yield* TestInstance
         const nonExistentSessionID = "ses_nonexistent123"
 
-        const response = yield* requestInDirectory("/tui/select-session", tmp.directory, {
+        const response = yield* requestInDirectory("@lgcode/tui@lgcode/select-session", tmp.directory, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application@lgcode/json" },
           body: JSON.stringify({ sessionID: nonExistentSessionID }),
         })
 
@@ -53,9 +53,9 @@ describe("tui.selectSession endpoint", () => {
         const tmp = yield* TestInstance
         const invalidSessionID = "invalid_session_id"
 
-        const response = yield* requestInDirectory("/tui/select-session", tmp.directory, {
+        const response = yield* requestInDirectory("@lgcode/tui@lgcode/select-session", tmp.directory, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application@lgcode/json" },
           body: JSON.stringify({ sessionID: invalidSessionID }),
         })
 

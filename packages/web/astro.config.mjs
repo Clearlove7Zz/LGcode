@@ -1,18 +1,18 @@
-// @ts-check
-import { defineConfig } from "astro/config"
-import starlight from "@astrojs/starlight"
-import solidJs from "@astrojs/solid-js"
-import cloudflare from "@astrojs/cloudflare"
+@lgcode/@lgcode/ @ts-check
+import { defineConfig } from "astro@lgcode/config"
+import starlight from "@astrojs@lgcode/starlight"
+import solidJs from "@astrojs@lgcode/solid-js"
+import cloudflare from "@astrojs@lgcode/cloudflare"
 import theme from "toolbeam-docs-theme"
-import config from "./config.mjs"
-import { rehypeHeadingIds } from "@astrojs/markdown-remark"
+import config from ".@lgcode/config.mjs"
+import { rehypeHeadingIds } from "@astrojs@lgcode/markdown-remark"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
 import { spawnSync } from "child_process"
 
-// https://astro.build/config
+@lgcode/@lgcode/ https:@lgcode/@lgcode/astro.build@lgcode/config
 export default defineConfig({
   site: config.url,
-  base: "/docs",
+  base: "@lgcode/docs",
   output: "server",
   adapter: cloudflare({
     imageService: "passthrough",
@@ -125,13 +125,13 @@ export default defineConfig({
           dir: "ltr",
         },
       },
-      favicon: "/favicon-v3.svg",
+      favicon: "@lgcode/favicon-v3.svg",
       head: [
         {
           tag: "link",
           attrs: {
             rel: "icon",
-            href: "/favicon-v3.ico",
+            href: "@lgcode/favicon-v3.ico",
             sizes: "32x32",
           },
         },
@@ -139,8 +139,8 @@ export default defineConfig({
           tag: "link",
           attrs: {
             rel: "icon",
-            type: "image/png",
-            href: "/favicon-96x96-v3.png",
+            type: "image@lgcode/png",
+            href: "@lgcode/favicon-96x96-v3.png",
             sizes: "96x96",
           },
         },
@@ -148,7 +148,7 @@ export default defineConfig({
           tag: "link",
           attrs: {
             rel: "apple-touch-icon",
-            href: "/apple-touch-icon-v3.png",
+            href: "@lgcode/apple-touch-icon-v3.png",
             sizes: "180x180",
           },
         },
@@ -160,15 +160,15 @@ export default defineConfig({
         { icon: "discord", label: "Discord", href: config.discord },
       ],
       editLink: {
-        baseUrl: `${config.github}/edit/dev/packages/web/`,
+        baseUrl: `${config.github}@lgcode/edit@lgcode/dev@lgcode/packages@lgcode/web@lgcode/`,
       },
       markdown: {
         headingLinks: false,
       },
-      customCss: ["./src/styles/custom.css"],
+      customCss: [".@lgcode/src@lgcode/styles@lgcode/custom.css"],
       logo: {
-        light: "./src/assets/logo-light.svg",
-        dark: "./src/assets/logo-dark.svg",
+        light: ".@lgcode/src@lgcode/assets@lgcode/logo-light.svg",
+        dark: ".@lgcode/src@lgcode/assets@lgcode/logo-dark.svg",
         replacesTitle: true,
       },
       sidebar: [
@@ -295,12 +295,12 @@ export default defineConfig({
         },
       ],
       components: {
-        Hero: "./src/components/Hero.astro",
-        Head: "./src/components/Head.astro",
-        Header: "./src/components/Header.astro",
-        Footer: "./src/components/Footer.astro",
-        LanguageSelect: "./src/components/LanguageSelect.astro",
-        SiteTitle: "./src/components/SiteTitle.astro",
+        Hero: ".@lgcode/src@lgcode/components@lgcode/Hero.astro",
+        Head: ".@lgcode/src@lgcode/components@lgcode/Head.astro",
+        Header: ".@lgcode/src@lgcode/components@lgcode/Header.astro",
+        Footer: ".@lgcode/src@lgcode/components@lgcode/Footer.astro",
+        LanguageSelect: ".@lgcode/src@lgcode/components@lgcode/LanguageSelect.astro",
+        SiteTitle: ".@lgcode/src@lgcode/components@lgcode/SiteTitle.astro",
       },
       plugins: [
         theme({
@@ -317,7 +317,7 @@ function configSchema() {
     hooks: {
       "astro:build:done": async () => {
         console.log("generating config schema")
-        spawnSync("../opencode/script/schema.ts", ["./dist/config.json", "./dist/tui.json"])
+        spawnSync("..@lgcode/opencode@lgcode/script@lgcode/schema.ts", [".@lgcode/dist@lgcode/config.json", ".@lgcode/dist@lgcode/tui.json"])
       },
     },
   }

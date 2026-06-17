@@ -1,7 +1,7 @@
-// @ts-nocheck
-import * as mod from "./markdown"
-import { create } from "../storybook/scaffold"
-import { markdown } from "../storybook/fixtures"
+@lgcode/@lgcode/ @ts-nocheck
+import * as mod from ".@lgcode/markdown"
+import { create } from "..@lgcode/storybook@lgcode/scaffold"
+import { markdown } from "..@lgcode/storybook@lgcode/fixtures"
 
 const docs = `### Overview
 Render sanitized Markdown with code blocks, inline code, and safe links.
@@ -23,13 +23,13 @@ Pair with \`Code\` for standalone code views.
 - Copy buttons include aria-labels from i18n.
 - TODO: confirm link target behavior in sanitized output.
 
-### Theming/tokens
+### Theming@lgcode/tokens
 - Uses \`data-component="markdown"\` and related slots for styling.
 
 `
 
 const story = create({
-  title: "UI/Markdown",
+  title: "UI@lgcode/Markdown",
   mod,
   args: {
     text: markdown,
@@ -37,7 +37,7 @@ const story = create({
 })
 
 export default {
-  title: "UI/Markdown",
+  title: "UI@lgcode/Markdown",
   id: "components-markdown",
   component: story.meta.component,
   tags: ["autodocs"],

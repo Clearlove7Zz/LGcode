@@ -1,21 +1,21 @@
-import type { ProviderAuthAuthorization, ProviderAuthMethod } from "@opencode@lgcode/sdk/v2/client"
-import { Button } from "@opencode@lgcode/ui/button"
-import { useDialog } from "@opencode@lgcode/ui/context/dialog"
-import { Dialog } from "@opencode@lgcode/ui/dialog"
-import { Icon } from "@opencode@lgcode/ui/icon"
-import { IconButton } from "@opencode@lgcode/ui/icon-button"
-import { List, type ListRef } from "@opencode@lgcode/ui/list"
-import { ProviderIcon } from "@opencode@lgcode/ui/provider-icon"
-import { Spinner } from "@opencode@lgcode/ui/spinner"
-import { TextField } from "@opencode@lgcode/ui/text-field"
-import { showToast } from "@/utils/toast"
+import type { ProviderAuthAuthorization, ProviderAuthMethod } from "@lgcode/sdk@lgcode/v2@lgcode/client"
+import { Button } from "@lgcode/ui@lgcode/button"
+import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
+import { Dialog } from "@lgcode/ui@lgcode/dialog"
+import { Icon } from "@lgcode/ui@lgcode/icon"
+import { IconButton } from "@lgcode/ui@lgcode/icon-button"
+import { List, type ListRef } from "@lgcode/ui@lgcode/list"
+import { ProviderIcon } from "@lgcode/ui@lgcode/provider-icon"
+import { Spinner } from "@lgcode/ui@lgcode/spinner"
+import { TextField } from "@lgcode/ui@lgcode/text-field"
+import { showToast } from "@@lgcode/utils@lgcode/toast"
 import { createEffect, createMemo, createResource, Match, onCleanup, onMount, Switch } from "solid-js"
-import { createStore, produce } from "solid-js/store"
-import { Link } from "@/components/link"
-import { useServerSDK } from "@/context/server-sdk"
-import { useServerSync } from "@/context/server-sync"
-import { useLanguage } from "@/context/language"
-import { useProviders } from "@/hooks/use-providers"
+import { createStore, produce } from "solid-js@lgcode/store"
+import { Link } from "@@lgcode/components@lgcode/link"
+import { useServerSDK } from "@@lgcode/context@lgcode/server-sdk"
+import { useServerSync } from "@@lgcode/context@lgcode/server-sync"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { useProviders } from "@@lgcode/hooks@lgcode/use-providers"
 
 export function DialogConnectProvider(props: { provider: string }) {
   const dialog = useDialog()
@@ -25,8 +25,8 @@ export function DialogConnectProvider(props: { provider: string }) {
   const providers = useProviders()
 
   const all = () => {
-    void import("./dialog-select-provider").then((x) => {
-      dialog.show(() => <x.DialogSelectProvider />)
+    void import(".@lgcode/dialog-select-provider").then((x) => {
+      dialog.show(() => <x.DialogSelectProvider @lgcode/>)
     })
   }
 
@@ -267,14 +267,14 @@ export function DialogConnectProvider(props: { provider: string }) {
                 if (!prompt) return
                 setFormStore("value", prompt.key, value)
               }}
-            />
+            @lgcode/>
             <Button class="w-auto" type="submit" size="large" variant="primary" disabled={!valid()}>
               {language.t("common.continue")}
-            </Button>
-          </Match>
+            <@lgcode/Button>
+          <@lgcode/Match>
           <Match when={item()?.prompt.type === "select"}>
             <div class="w-full flex flex-col gap-1.5">
-              <div class="text-14-regular text-text-base">{select()?.message}</div>
+              <div class="text-14-regular text-text-base">{select()?.message}<@lgcode/div>
               <div>
                 <List
                   class="px-3"
@@ -296,18 +296,18 @@ export function DialogConnectProvider(props: { provider: string }) {
                   {(option) => (
                     <div class="w-full flex items-center gap-x-2">
                       <div class="w-4 h-2 rounded-[1px] bg-input-base shadow-xs-border-base flex items-center justify-center">
-                        <div class="w-2.5 h-0.5 ml-0 bg-icon-strong-base hidden" data-slot="list-item-extra-icon" />
-                      </div>
-                      <span>{option.label}</span>
-                      <span class="text-14-regular text-text-weak">{option.hint}</span>
-                    </div>
+                        <div class="w-2.5 h-0.5 ml-0 bg-icon-strong-base hidden" data-slot="list-item-extra-icon" @lgcode/>
+                      <@lgcode/div>
+                      <span>{option.label}<@lgcode/span>
+                      <span class="text-14-regular text-text-weak">{option.hint}<@lgcode/span>
+                    <@lgcode/div>
                   )}
-                </List>
-              </div>
-            </div>
-          </Match>
-        </Switch>
-      </form>
+                <@lgcode/List>
+              <@lgcode/div>
+            <@lgcode/div>
+          <@lgcode/Match>
+        <@lgcode/Switch>
+      <@lgcode/form>
     )
   }
 
@@ -362,7 +362,7 @@ export function DialogConnectProvider(props: { provider: string }) {
       <>
         <div class="text-14-regular text-text-base">
           {language.t("provider.connect.selectMethod", { provider: provider().name })}
-        </div>
+        <@lgcode/div>
         <div>
           <List
             class="px-3"
@@ -379,14 +379,14 @@ export function DialogConnectProvider(props: { provider: string }) {
             {(i) => (
               <div class="w-full flex items-center gap-x-2">
                 <div class="w-4 h-2 rounded-[1px] bg-input-base shadow-xs-border-base flex items-center justify-center">
-                  <div class="w-2.5 h-0.5 ml-0 bg-icon-strong-base hidden" data-slot="list-item-extra-icon" />
-                </div>
-                <span>{methodLabel(i)}</span>
-              </div>
+                  <div class="w-2.5 h-0.5 ml-0 bg-icon-strong-base hidden" data-slot="list-item-extra-icon" @lgcode/>
+                <@lgcode/div>
+                <span>{methodLabel(i)}<@lgcode/span>
+              <@lgcode/div>
             )}
-          </List>
-        </div>
-      </>
+          <@lgcode/List>
+        <@lgcode/div>
+      <@lgcode/>
     )
   }
 
@@ -424,23 +424,23 @@ export function DialogConnectProvider(props: { provider: string }) {
         <Switch>
           <Match when={provider().id === "opencode"}>
             <div class="flex flex-col gap-4">
-              <div class="text-14-regular text-text-base">{language.t("provider.connect.opencodeZen.line1")}</div>
-              <div class="text-14-regular text-text-base">{language.t("provider.connect.opencodeZen.line2")}</div>
+              <div class="text-14-regular text-text-base">{language.t("provider.connect.opencodeZen.line1")}<@lgcode/div>
+              <div class="text-14-regular text-text-base">{language.t("provider.connect.opencodeZen.line2")}<@lgcode/div>
               <div class="text-14-regular text-text-base">
                 {language.t("provider.connect.opencodeZen.visit.prefix")}
-                <Link href="https://opencode.ai/zen" tabIndex={-1}>
+                <Link href="https:@lgcode/@lgcode/opencode.ai@lgcode/zen" tabIndex={-1}>
                   {language.t("provider.connect.opencodeZen.visit.link")}
-                </Link>
+                <@lgcode/Link>
                 {language.t("provider.connect.opencodeZen.visit.suffix")}
-              </div>
-            </div>
-          </Match>
+              <@lgcode/div>
+            <@lgcode/div>
+          <@lgcode/Match>
           <Match when={true}>
             <div class="text-14-regular text-text-base">
               {language.t("provider.connect.apiKey.description", { provider: provider().name })}
-            </div>
-          </Match>
-        </Switch>
+            <@lgcode/div>
+          <@lgcode/Match>
+        <@lgcode/Switch>
         <form onSubmit={handleSubmit} class="flex flex-col items-start gap-4">
           <TextField
             autofocus
@@ -452,12 +452,12 @@ export function DialogConnectProvider(props: { provider: string }) {
             onChange={(v) => setFormStore("value", v)}
             validationState={formStore.error ? "invalid" : undefined}
             error={formStore.error}
-          />
+          @lgcode/>
           <Button class="w-auto" type="submit" size="large" variant="primary">
             {language.t("common.continue")}
-          </Button>
-        </form>
-      </div>
+          <@lgcode/Button>
+        <@lgcode/form>
+      <@lgcode/div>
     )
   }
 
@@ -499,9 +499,9 @@ export function DialogConnectProvider(props: { provider: string }) {
       <div class="flex flex-col gap-6">
         <div class="text-14-regular text-text-base">
           {language.t("provider.connect.oauth.code.visit.prefix")}
-          <Link href={store.authorization!.url}>{language.t("provider.connect.oauth.code.visit.link")}</Link>
+          <Link href={store.authorization!.url}>{language.t("provider.connect.oauth.code.visit.link")}<@lgcode/Link>
           {language.t("provider.connect.oauth.code.visit.suffix", { provider: provider().name })}
-        </div>
+        <@lgcode/div>
         <form onSubmit={handleSubmit} class="flex flex-col items-start gap-4">
           <TextField
             autofocus
@@ -513,12 +513,12 @@ export function DialogConnectProvider(props: { provider: string }) {
             onChange={(v) => setFormStore("value", v)}
             validationState={formStore.error ? "invalid" : undefined}
             error={formStore.error}
-          />
+          @lgcode/>
           <Button class="w-auto" type="submit" size="large" variant="primary">
             {language.t("common.continue")}
-          </Button>
-        </form>
-      </div>
+          <@lgcode/Button>
+        <@lgcode/form>
+      <@lgcode/div>
     )
   }
 
@@ -557,21 +557,21 @@ export function DialogConnectProvider(props: { provider: string }) {
       <div class="flex flex-col gap-6">
         <div class="text-14-regular text-text-base">
           {language.t("provider.connect.oauth.auto.visit.prefix")}
-          <Link href={store.authorization!.url}>{language.t("provider.connect.oauth.auto.visit.link")}</Link>
+          <Link href={store.authorization!.url}>{language.t("provider.connect.oauth.auto.visit.link")}<@lgcode/Link>
           {language.t("provider.connect.oauth.auto.visit.suffix", { provider: provider().name })}
-        </div>
+        <@lgcode/div>
         <TextField
           label={language.t("provider.connect.oauth.auto.confirmationCode")}
           class="font-mono"
           value={code()}
           readOnly
           copyable
-        />
+        @lgcode/>
         <div class="text-14-regular text-text-base flex items-center gap-4">
-          <Spinner />
-          <span>{language.t("provider.connect.status.waiting")}</span>
-        </div>
-      </div>
+          <Spinner @lgcode/>
+          <span>{language.t("provider.connect.status.waiting")}<@lgcode/span>
+        <@lgcode/div>
+      <@lgcode/div>
     )
   }
 
@@ -584,71 +584,71 @@ export function DialogConnectProvider(props: { provider: string }) {
           variant="ghost"
           onClick={goBack}
           aria-label={language.t("common.goBack")}
-        />
+        @lgcode/>
       }
     >
       <div class="flex flex-col gap-6 px-2.5 pb-3">
         <div class="px-2.5 flex gap-4 items-center">
-          <ProviderIcon id={props.provider} class="size-5 shrink-0 icon-strong-base" />
+          <ProviderIcon id={props.provider} class="size-5 shrink-0 icon-strong-base" @lgcode/>
           <div class="text-16-medium text-text-strong">
             <Switch>
               <Match when={props.provider === "anthropic" && method()?.label?.toLowerCase().includes("max")}>
                 {language.t("provider.connect.title.anthropicProMax")}
-              </Match>
-              <Match when={true}>{language.t("provider.connect.title", { provider: provider().name })}</Match>
-            </Switch>
-          </div>
-        </div>
+              <@lgcode/Match>
+              <Match when={true}>{language.t("provider.connect.title", { provider: provider().name })}<@lgcode/Match>
+            <@lgcode/Switch>
+          <@lgcode/div>
+        <@lgcode/div>
         <div class="px-2.5 pb-10 flex flex-col gap-6">
           <div onKeyDown={handleKey} tabIndex={0} autofocus={store.methodIndex === undefined ? true : undefined}>
             <Switch>
               <Match when={loading()}>
                 <div class="text-14-regular text-text-base">
                   <div class="flex items-center gap-x-2">
-                    <Spinner />
-                    <span>{language.t("provider.connect.status.inProgress")}</span>
-                  </div>
-                </div>
-              </Match>
+                    <Spinner @lgcode/>
+                    <span>{language.t("provider.connect.status.inProgress")}<@lgcode/span>
+                  <@lgcode/div>
+                <@lgcode/div>
+              <@lgcode/Match>
               <Match when={store.methodIndex === undefined}>
-                <MethodSelection />
-              </Match>
+                <MethodSelection @lgcode/>
+              <@lgcode/Match>
               <Match when={store.state === "pending"}>
                 <div class="text-14-regular text-text-base">
                   <div class="flex items-center gap-x-2">
-                    <Spinner />
-                    <span>{language.t("provider.connect.status.inProgress")}</span>
-                  </div>
-                </div>
-              </Match>
+                    <Spinner @lgcode/>
+                    <span>{language.t("provider.connect.status.inProgress")}<@lgcode/span>
+                  <@lgcode/div>
+                <@lgcode/div>
+              <@lgcode/Match>
               <Match when={store.state === "prompt"}>
-                <OAuthPromptsView />
-              </Match>
+                <OAuthPromptsView @lgcode/>
+              <@lgcode/Match>
               <Match when={store.state === "error"}>
                 <div class="text-14-regular text-text-base">
                   <div class="flex items-center gap-x-2">
-                    <Icon name="circle-ban-sign" class="text-icon-critical-base" />
-                    <span>{language.t("provider.connect.status.failed", { error: store.error ?? "" })}</span>
-                  </div>
-                </div>
-              </Match>
+                    <Icon name="circle-ban-sign" class="text-icon-critical-base" @lgcode/>
+                    <span>{language.t("provider.connect.status.failed", { error: store.error ?? "" })}<@lgcode/span>
+                  <@lgcode/div>
+                <@lgcode/div>
+              <@lgcode/Match>
               <Match when={method()?.type === "api"}>
-                <ApiAuthView />
-              </Match>
+                <ApiAuthView @lgcode/>
+              <@lgcode/Match>
               <Match when={method()?.type === "oauth"}>
                 <Switch>
                   <Match when={store.authorization?.method === "code"}>
-                    <OAuthCodeView />
-                  </Match>
+                    <OAuthCodeView @lgcode/>
+                  <@lgcode/Match>
                   <Match when={store.authorization?.method === "auto"}>
-                    <OAuthAutoView />
-                  </Match>
-                </Switch>
-              </Match>
-            </Switch>
-          </div>
-        </div>
-      </div>
-    </Dialog>
+                    <OAuthAutoView @lgcode/>
+                  <@lgcode/Match>
+                <@lgcode/Switch>
+              <@lgcode/Match>
+            <@lgcode/Switch>
+          <@lgcode/div>
+        <@lgcode/div>
+      <@lgcode/div>
+    <@lgcode/Dialog>
   )
 }

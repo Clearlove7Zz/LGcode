@@ -1,11 +1,11 @@
 import { describe, expect, it } from "bun:test"
-import type { AgentSideConnection } from "@agentclientprotocol/sdk"
-import type { Event, Message, OpencodeClient, Part, SessionMessageResponse, ToolPart } from "@opencode@lgcode/sdk/v2"
+import type { AgentSideConnection } from "@agentclientprotocol@lgcode/sdk"
+import type { Event, Message, OpencodeClient, Part, SessionMessageResponse, ToolPart } from "@lgcode/sdk@lgcode/v2"
 import { Effect, ManagedRuntime } from "effect"
-import { ACPEvent } from "@/acp/event"
-import * as ACPService from "@/acp/service"
-import { Directory } from "@/acp/directory"
-import { ACPSession } from "@/acp/session"
+import { ACPEvent } from "@@lgcode/acp@lgcode/event"
+import * as ACPService from "@@lgcode/acp@lgcode/service"
+import { Directory } from "@@lgcode/acp@lgcode/directory"
+import { ACPSession } from "@@lgcode/acp@lgcode/session"
 
 type SessionUpdateParams = Parameters<AgentSideConnection["sessionUpdate"]>[0]
 type ToolSessionUpdateParams = SessionUpdateParams & {
@@ -178,7 +178,7 @@ function assistantMessage(sessionID: string, messageID: string, partID: string, 
       providerID: "provider",
       mode: "build",
       agent: "build",
-      path: { cwd: "/workspace", root: "/workspace" },
+      path: { cwd: "@lgcode/workspace", root: "@lgcode/workspace" },
       cost: 0,
       tokens: { input: 0, output: 0, reasoning: 0, cache: { read: 0, write: 0 } },
     },
@@ -215,7 +215,7 @@ function assistantToolMessage(part: ToolPart) {
       providerID: "provider",
       mode: "build",
       agent: "build",
-      path: { cwd: "/workspace", root: "/workspace" },
+      path: { cwd: "@lgcode/workspace", root: "@lgcode/workspace" },
       cost: 0,
       tokens: { input: 0, output: 0, reasoning: 0, cache: { read: 0, write: 0 } },
     },
@@ -305,7 +305,7 @@ async function createKnownSession(
   sessionId: string,
   part: { messageId: string; partId: string; partType: Part["type"]; role?: Message["role"] },
 ) {
-  await Effect.runPromise(session.create({ id: sessionId, cwd: "/workspace" }))
+  await Effect.runPromise(session.create({ id: sessionId, cwd: "@lgcode/workspace" }))
   await Effect.runPromise(
     session.recordPartMetadata({
       sessionId,
@@ -361,7 +361,7 @@ describe("acp event routing", () => {
         get: () =>
           Effect.succeed(
             Directory.build({
-              directory: "/workspace",
+              directory: "@lgcode/workspace",
               providers: {},
               modes: [],
               defaultModeID: "build",
@@ -371,7 +371,7 @@ describe("acp event routing", () => {
         refresh: () =>
           Effect.succeed(
             Directory.build({
-              directory: "/workspace",
+              directory: "@lgcode/workspace",
               providers: {},
               modes: [],
               defaultModeID: "build",
@@ -387,9 +387,9 @@ describe("acp event routing", () => {
     })
 
     await pollUntil(() => harness.calls.eventSubscribe === 1, "event subscription did not start")
-    await Effect.runPromise(service.loadSession({ cwd: "/workspace", sessionId: "ses_loaded", mcpServers: [] }))
-    await Effect.runPromise(service.loadSession({ cwd: "/workspace", sessionId: "ses_loaded", mcpServers: [] }))
-    await Effect.runPromise(service.loadSession({ cwd: "/workspace", sessionId: "ses_loaded", mcpServers: [] }))
+    await Effect.runPromise(service.loadSession({ cwd: "@lgcode/workspace", sessionId: "ses_loaded", mcpServers: [] }))
+    await Effect.runPromise(service.loadSession({ cwd: "@lgcode/workspace", sessionId: "ses_loaded", mcpServers: [] }))
+    await Effect.runPromise(service.loadSession({ cwd: "@lgcode/workspace", sessionId: "ses_loaded", mcpServers: [] }))
 
     expect(harness.calls.eventSubscribe).toBe(1)
     subscription?.stop()
@@ -412,7 +412,7 @@ describe("acp event routing", () => {
     const harness = createHarness({
       msg_a: assistantMessage("ses_a", "msg_a", "part_a", "text"),
     })
-    await Effect.runPromise(harness.session.create({ id: "ses_a", cwd: "/workspace" }))
+    await Effect.runPromise(harness.session.create({ id: "ses_a", cwd: "@lgcode/workspace" }))
 
     await harness.subscription.handle(partUpdated("ses_a", "msg_a", "part_a", "text"))
     await harness.subscription.handle(textDelta("ses_a", "msg_a", "part_a", "a"))
@@ -466,7 +466,7 @@ describe("acp event routing", () => {
         get: () =>
           Effect.succeed(
             Directory.build({
-              directory: "/workspace",
+              directory: "@lgcode/workspace",
               providers: {},
               modes: [],
               defaultModeID: "build",
@@ -476,7 +476,7 @@ describe("acp event routing", () => {
         refresh: () =>
           Effect.succeed(
             Directory.build({
-              directory: "/workspace",
+              directory: "@lgcode/workspace",
               providers: {},
               modes: [],
               defaultModeID: "build",
@@ -490,7 +490,7 @@ describe("acp event routing", () => {
       },
     })
 
-    await Effect.runPromise(service.loadSession({ cwd: "/workspace", sessionId: "ses_loaded", mcpServers: [] }))
+    await Effect.runPromise(service.loadSession({ cwd: "@lgcode/workspace", sessionId: "ses_loaded", mcpServers: [] }))
 
     expect(toolUpdates(updates).map((item) => item.update.toolCallId)).toEqual([
       "call_slow",
@@ -519,7 +519,7 @@ describe("acp event routing", () => {
 
   it("exposes the shell command on the synthetic pending tool call", async () => {
     const harness = createHarness()
-    await Effect.runPromise(harness.session.create({ id: "ses_tool", cwd: "/workspace" }))
+    await Effect.runPromise(harness.session.create({ id: "ses_tool", cwd: "@lgcode/workspace" }))
 
     await harness.subscription.handle(toolUpdated(runningTool("ses_tool", "call_1", "hello")))
 
@@ -532,15 +532,15 @@ describe("acp event routing", () => {
       toolCallId: "call_1",
       title: "printf hello",
       kind: "execute",
-      locations: [{ path: "/workspace" }],
-      rawInput: { cmd: "printf hello", cwd: "/workspace" },
+      locations: [{ path: "@lgcode/workspace" }],
+      rawInput: { cmd: "printf hello", cwd: "@lgcode/workspace" },
     })
     expect(harness.updates[1]?.update).toMatchObject({ status: "in_progress", toolCallId: "call_1" })
   })
 
   it("includes available input in the synthetic pending tool call", async () => {
     const harness = createHarness()
-    await Effect.runPromise(harness.session.create({ id: "ses_pending_input", cwd: "/workspace" }))
+    await Effect.runPromise(harness.session.create({ id: "ses_pending_input", cwd: "@lgcode/workspace" }))
 
     await harness.subscription.handle(
       toolUpdated({
@@ -552,7 +552,7 @@ describe("acp event routing", () => {
         tool: "read",
         state: {
           status: "running",
-          input: { filePath: "/workspace/file.ts" },
+          input: { filePath: "@lgcode/workspace@lgcode/file.ts" },
           title: "Read file.ts",
           time: { start: Date.now() },
         },
@@ -565,14 +565,14 @@ describe("acp event routing", () => {
       status: "pending",
       title: "Read file.ts",
       kind: "read",
-      rawInput: { filePath: "/workspace/file.ts" },
-      locations: [{ path: "/workspace/file.ts" }],
+      rawInput: { filePath: "@lgcode/workspace@lgcode/file.ts" },
+      locations: [{ path: "@lgcode/workspace@lgcode/file.ts" }],
     })
   })
 
   it("does not emit duplicate synthetic pending after a replayed running tool", async () => {
     const harness = createHarness()
-    await Effect.runPromise(harness.session.create({ id: "ses_replay", cwd: "/workspace" }))
+    await Effect.runPromise(harness.session.create({ id: "ses_replay", cwd: "@lgcode/workspace" }))
 
     await harness.subscription.replayMessage(assistantToolMessage(runningTool("ses_replay", "call_replay", "first")))
     await harness.subscription.handle(toolUpdated(runningTool("ses_replay", "call_replay", "second")))
@@ -587,7 +587,7 @@ describe("acp event routing", () => {
 
   it("dedupes shell output snapshots while still sending status-only running updates", async () => {
     const harness = createHarness()
-    await Effect.runPromise(harness.session.create({ id: "ses_shell", cwd: "/workspace" }))
+    await Effect.runPromise(harness.session.create({ id: "ses_shell", cwd: "@lgcode/workspace" }))
 
     await harness.subscription.handle(toolUpdated(runningTool("ses_shell", "call_shell", "same")))
     await harness.subscription.handle(toolUpdated(runningTool("ses_shell", "call_shell", "same")))
@@ -604,7 +604,7 @@ describe("acp event routing", () => {
 
   it("clears shell snapshot marker when a tool returns to pending", async () => {
     const harness = createHarness()
-    await Effect.runPromise(harness.session.create({ id: "ses_pending", cwd: "/workspace" }))
+    await Effect.runPromise(harness.session.create({ id: "ses_pending", cwd: "@lgcode/workspace" }))
 
     await harness.subscription.handle(toolUpdated(runningTool("ses_pending", "call_pending", "repeat")))
     await harness.subscription.handle(
@@ -636,7 +636,7 @@ describe("acp event routing", () => {
 
   it("emits completed tool output and rawOutput", async () => {
     const harness = createHarness()
-    await Effect.runPromise(harness.session.create({ id: "ses_done", cwd: "/workspace" }))
+    await Effect.runPromise(harness.session.create({ id: "ses_done", cwd: "@lgcode/workspace" }))
 
     await harness.subscription.handle(toolUpdated(completedTool("ses_done", "call_done", "finished")))
 
@@ -651,22 +651,22 @@ describe("acp event routing", () => {
 
   it("emits clean read display content and preserves rawOutput", async () => {
     const harness = createHarness()
-    await Effect.runPromise(harness.session.create({ id: "ses_read", cwd: "/workspace" }))
+    await Effect.runPromise(harness.session.create({ id: "ses_read", cwd: "@lgcode/workspace" }))
     const output = [
-      "<path>/workspace/file.ts</path>",
-      "<type>file</type>",
+      "<path>@lgcode/workspace@lgcode/file.ts<@lgcode/path>",
+      "<type>file<@lgcode/type>",
       "<content>",
-      "1: import { value } from './value'",
+      "1: import { value } from '.@lgcode/value'",
       "2: export { value }",
       "",
       "(End of file - total 2 lines)",
-      "</content>",
+      "<@lgcode/content>",
     ].join("\n")
     const metadata = {
       display: {
         type: "file",
-        path: "/workspace/file.ts",
-        text: "import { value } from './value'\nexport { value }",
+        path: "@lgcode/workspace@lgcode/file.ts",
+        text: "import { value } from '.@lgcode/value'\nexport { value }",
         lineStart: 1,
         lineEnd: 2,
         totalLines: 2,
@@ -678,7 +678,7 @@ describe("acp event routing", () => {
       toolUpdated(
         completedTool("ses_read", "call_read", output, [], {
           tool: "read",
-          input: { filePath: "/workspace/file.ts" },
+          input: { filePath: "@lgcode/workspace@lgcode/file.ts" },
           metadata,
         }),
       ),
@@ -691,7 +691,7 @@ describe("acp event routing", () => {
       content: [
         {
           type: "content",
-          content: { type: "text", text: "import { value } from './value'\nexport { value }" },
+          content: { type: "text", text: "import { value } from '.@lgcode/value'\nexport { value }" },
         },
       ],
       rawOutput: { output, metadata },
@@ -700,7 +700,7 @@ describe("acp event routing", () => {
 
   it("emits error tool output", async () => {
     const harness = createHarness()
-    await Effect.runPromise(harness.session.create({ id: "ses_error", cwd: "/workspace" }))
+    await Effect.runPromise(harness.session.create({ id: "ses_error", cwd: "@lgcode/workspace" }))
 
     await harness.subscription.handle(toolUpdated(errorTool("ses_error", "call_error")))
 
@@ -721,11 +721,11 @@ describe("acp event routing", () => {
       sessionID: "ses_image",
       messageID: "msg_image",
       type: "file",
-      mime: "image/png",
+      mime: "image@lgcode/png",
       filename: "image.png",
-      url: `data:image/png;base64,${image}`,
+      url: `data:image@lgcode/png;base64,${image}`,
     } as const
-    await Effect.runPromise(harness.session.create({ id: "ses_image", cwd: "/workspace" }))
+    await Effect.runPromise(harness.session.create({ id: "ses_image", cwd: "@lgcode/workspace" }))
 
     await harness.subscription.handle(toolUpdated(completedTool("ses_image", "call_live", "live", [attachment])))
     await harness.subscription.replayMessage(
@@ -739,11 +739,11 @@ describe("acp event routing", () => {
     ).toEqual([
       [
         { type: "content", content: { type: "text", text: "live" } },
-        { type: "content", content: { type: "image", mimeType: "image/png", data: image } },
+        { type: "content", content: { type: "image", mimeType: "image@lgcode/png", data: image } },
       ],
       [
         { type: "content", content: { type: "text", text: "replayed" } },
-        { type: "content", content: { type: "image", mimeType: "image/png", data: image } },
+        { type: "content", content: { type: "image", mimeType: "image@lgcode/png", data: image } },
       ],
     ])
   })

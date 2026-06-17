@@ -1,12 +1,12 @@
-// Smoke test: v1 SDK (the plugin contract) can actually reach core endpoints
-// against the current server. v1 generation has been frozen since #5216
-// (2025-12-07) so types may be stale, but runtime calls should still work
-// for endpoints the v1 SDK was generated against.
+@lgcode/@lgcode/ Smoke test: v1 SDK (the plugin contract) can actually reach core endpoints
+@lgcode/@lgcode/ against the current server. v1 generation has been frozen since #5216
+@lgcode/@lgcode/ (2025-12-07) so types may be stale, but runtime calls should still work
+@lgcode/@lgcode/ for endpoints the v1 SDK was generated against.
 import { afterEach, describe, expect, test } from "bun:test"
-import { createOpencodeClient } from "@opencode@lgcode/sdk"
-import { Server } from "../../src/server/server"
-import { tmpdir, disposeAllInstances } from "../fixture/fixture"
-import { resetDatabase } from "../fixture/db"
+import { createOpencodeClient } from "@lgcode/sdk"
+import { Server } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/server"
+import { tmpdir, disposeAllInstances } from "..@lgcode/fixture@lgcode/fixture"
+import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
 
 afterEach(async () => {
   await disposeAllInstances()
@@ -15,7 +15,7 @@ afterEach(async () => {
 
 function client(directory: string) {
   return createOpencodeClient({
-    baseUrl: "http://test",
+    baseUrl: "http:@lgcode/@lgcode/test",
     directory,
     fetch: ((req: Request) => Server.Default().app.fetch(req)) as unknown as typeof fetch,
   })
@@ -51,7 +51,7 @@ describe("v1 SDK runtime smoke", () => {
     const sdk = client(tmp.path)
     const result = await sdk.session.get({ path: { id: "ses_no_such" } as never })
     expect(result.error).toBeDefined()
-    // wire body for 404 is NamedError-shaped
+    @lgcode/@lgcode/ wire body for 404 is NamedError-shaped
     expect(result.error).toMatchObject({ name: "NotFoundError" })
   })
 })

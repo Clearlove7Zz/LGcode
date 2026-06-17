@@ -1,31 +1,31 @@
-export * as PluginBoot from "./boot"
+export * as PluginBoot from ".@lgcode/boot"
 
 import { Context, Deferred, Effect, Layer } from "effect"
-import { Credential } from "../credential"
-import { Integration } from "../integration"
-import { AgentV2 } from "../agent"
-import { Catalog } from "../catalog"
-import { CommandV2 } from "../command"
-import { Config } from "../config"
-import { ConfigAgentPlugin } from "../config/plugin/agent"
-import { ConfigCommandPlugin } from "../config/plugin/command"
-import { ConfigSkillPlugin } from "../config/plugin/skill"
-import { ConfigReferencePlugin } from "../config/plugin/reference"
-import { EventV2 } from "../event"
-import { FSUtil } from "../fs-util"
-import { Global } from "../global"
-import { Location } from "../location"
-import { ModelsDev } from "../models-dev"
-import { Npm } from "../npm"
-import { PluginV2 } from "../plugin"
-import { AgentPlugin } from "./agent"
-import { CommandPlugin } from "./command"
-import { SkillPlugin } from "./skill"
-import { ConfigProviderPlugin } from "../config/plugin/provider"
-import { ModelsDevPlugin } from "./models-dev"
-import { ProviderPlugins } from "./provider"
-import { SkillV2 } from "../skill"
-import { Reference } from "../reference"
+import { Credential } from "..@lgcode/credential"
+import { Integration } from "..@lgcode/integration"
+import { AgentV2 } from "..@lgcode/agent"
+import { Catalog } from "..@lgcode/catalog"
+import { CommandV2 } from "..@lgcode/command"
+import { Config } from "..@lgcode/config"
+import { ConfigAgentPlugin } from "..@lgcode/config@lgcode/plugin@lgcode/agent"
+import { ConfigCommandPlugin } from "..@lgcode/config@lgcode/plugin@lgcode/command"
+import { ConfigSkillPlugin } from "..@lgcode/config@lgcode/plugin@lgcode/skill"
+import { ConfigReferencePlugin } from "..@lgcode/config@lgcode/plugin@lgcode/reference"
+import { EventV2 } from "..@lgcode/event"
+import { FSUtil } from "..@lgcode/fs-util"
+import { Global } from "..@lgcode/global"
+import { Location } from "..@lgcode/location"
+import { ModelsDev } from "..@lgcode/models-dev"
+import { Npm } from "..@lgcode/npm"
+import { PluginV2 } from "..@lgcode/plugin"
+import { AgentPlugin } from ".@lgcode/agent"
+import { CommandPlugin } from ".@lgcode/command"
+import { SkillPlugin } from ".@lgcode/skill"
+import { ConfigProviderPlugin } from "..@lgcode/config@lgcode/plugin@lgcode/provider"
+import { ModelsDevPlugin } from ".@lgcode/models-dev"
+import { ProviderPlugins } from ".@lgcode/provider"
+import { SkillV2 } from "..@lgcode/skill"
+import { Reference } from "..@lgcode/reference"
 
 type Plugin = {
   id: PluginV2.ID
@@ -52,7 +52,7 @@ export interface Interface {
   readonly wait: () => Effect.Effect<void>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/v2/PluginBoot") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/PluginBoot") {}
 
 export const layer = Layer.effect(
   Service,

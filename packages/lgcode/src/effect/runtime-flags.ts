@@ -1,5 +1,5 @@
 import { Config, ConfigProvider, Context, Effect, Layer, Option } from "effect"
-import { ConfigService } from "@/effect/config-service"
+import { ConfigService } from "@@lgcode/effect@lgcode/config-service"
 
 const bool = (name: string) => Config.boolean(name).pipe(Config.withDefault(false))
 const positiveInteger = (name: string) =>
@@ -13,7 +13,7 @@ const enabledByExperimental = (name: string) =>
     Config.map((flags) => Option.getOrElse(flags.enabled, () => flags.experimental)),
   )
 
-export class Service extends ConfigService.Service<Service>()("@opencode/RuntimeFlags", {
+export class Service extends ConfigService.Service<Service>()("@lgcode/RuntimeFlags", {
   autoShare: bool("OPENCODE_AUTO_SHARE"),
   pure: bool("OPENCODE_PURE"),
   disableDefaultPlugins: bool("OPENCODE_DISABLE_DEFAULT_PLUGINS"),
@@ -75,5 +75,5 @@ export const defaultLayer = Service.defaultLayer.pipe(Layer.orDie)
 
 export const node = LayerNode.make(defaultLayer, [])
 
-export * as RuntimeFlags from "./runtime-flags"
-import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+export * as RuntimeFlags from ".@lgcode/runtime-flags"
+import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"

@@ -1,17 +1,17 @@
-import { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
-import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
-import { Ripgrep } from "@opencode@lgcode/core/ripgrep"
+import { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
+import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
+import { Ripgrep } from "@lgcode/core@lgcode/ripgrep"
 import { Cause, Effect, Exit, Layer } from "effect"
 import { afterEach, describe, expect } from "bun:test"
 import path from "path"
 import { pathToFileURL } from "url"
-import type { Permission } from "../../src/permission"
-import type { Tool } from "@/tool/tool"
-import { SkillTool } from "../../src/tool/skill"
-import { ToolRegistry } from "@/tool/registry"
-import { disposeAllInstances, TestInstance } from "../fixture/fixture"
-import { SessionID, MessageID } from "../../src/session/schema"
-import { testEffect } from "../lib/effect"
+import type { Permission } from "..@lgcode/..@lgcode/src@lgcode/permission"
+import type { Tool } from "@@lgcode/tool@lgcode/tool"
+import { SkillTool } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/skill"
+import { ToolRegistry } from "@@lgcode/tool@lgcode/registry"
+import { disposeAllInstances, TestInstance } from "..@lgcode/fixture@lgcode/fixture"
+import { SessionID, MessageID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const baseCtx: Omit<Tool.Context, "ask"> = {
   sessionID: SessionID.make("ses_test"),
@@ -91,7 +91,7 @@ Use this skill.
       expect(result.metadata.dir).toBe(skill)
       expect(result.output).toContain(`<skill_content name="tool-skill">`)
       expect(result.output).toContain(`Base directory for this skill: ${pathToFileURL(skill).href}`)
-      expect(result.output).toContain(`<file>${file}</file>`)
+      expect(result.output).toContain(`<file>${file}<@lgcode/file>`)
     }),
   )
 

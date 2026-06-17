@@ -1,7 +1,7 @@
-import { getFilename } from "@opencode@lgcode/core/util/path"
-import { type Session } from "@opencode@lgcode/sdk/v2/client"
-import { pathKey } from "@/utils/path-key"
-import type { ServerConnection } from "@/context/server"
+import { getFilename } from "@lgcode/core@lgcode/util@lgcode/path"
+import { type Session } from "@lgcode/sdk@lgcode/v2@lgcode/client"
+import { pathKey } from "@@lgcode/utils@lgcode/path-key"
+import type { ServerConnection } from "@@lgcode/context@lgcode/server"
 
 type SessionStore = {
   session?: Session[]
@@ -96,7 +96,7 @@ export function homeSessionServerStatus(active: boolean, status: () => { working
 const OPENCODE_PROJECT_ID = "4b0ea68d7af9a6031a7ffda7ad66e0cb83315750"
 
 export function getProjectAvatarSource(id?: string, icon?: { color?: string; url?: string; override?: string }) {
-  if (id === OPENCODE_PROJECT_ID) return "https://opencode.ai/favicon.svg"
+  if (id === OPENCODE_PROJECT_ID) return "https:@lgcode/@lgcode/opencode.ai@lgcode/favicon.svg"
   if (icon?.override) return icon.override
   if (icon?.color) return undefined
   return icon?.url

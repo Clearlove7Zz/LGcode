@@ -1,8 +1,8 @@
-import { Npm } from "@opencode@lgcode/core/npm"
-import type { InstanceContext } from "../project/instance-context"
-import { Filesystem } from "@/util/filesystem"
-import { Process } from "@/util/process"
-import { which } from "@opencode@lgcode/core/util/which"
+import { Npm } from "@lgcode/core@lgcode/npm"
+import type { InstanceContext } from "..@lgcode/project@lgcode/instance-context"
+import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
+import { Process } from "@@lgcode/util@lgcode/process"
+import { which } from "@lgcode/core@lgcode/util@lgcode/which"
 
 export interface Context extends Pick<InstanceContext, "directory" | "worktree"> {
   experimentalOxfmt: boolean
@@ -145,7 +145,7 @@ export const biome: Info = {
     for (const config of configs) {
       const found = await Filesystem.findUp(config, context.directory, context.worktree)
       if (found.length > 0) {
-        const bin = await Npm.which("@biomejs/biome")
+        const bin = await Npm.which("@biomejs@lgcode/biome")
         if (bin) return [bin, "format", "--write", "$FILE"]
       }
     }
@@ -224,7 +224,7 @@ export const rlang: Info = {
 
     const output = await Process.text([air, "--help"], { nothrow: true })
 
-    // Check for "Air: An R language server and formatter"
+    @lgcode/@lgcode/ Check for "Air: An R language server and formatter"
     const firstLine = output.text.split("\n")[0]
     const hasR = firstLine.includes("R language")
     const hasFormatter = firstLine.includes("formatter")
@@ -367,7 +367,7 @@ export const pint: Info = {
         require?: Record<string, string>
         "require-dev"?: Record<string, string>
       }>(item)
-      if (json.require?.["laravel/pint"] || json["require-dev"]?.["laravel/pint"]) return ["./vendor/bin/pint", "$FILE"]
+      if (json.require?.["laravel@lgcode/pint"] || json["require-dev"]?.["laravel@lgcode/pint"]) return [".@lgcode/vendor@lgcode/bin@lgcode/pint", "$FILE"]
     }
     return false
   },

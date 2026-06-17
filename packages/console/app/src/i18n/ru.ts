@@ -1,5 +1,5 @@
-import type { Dict } from "./en"
-import { dict as en } from "./en"
+import type { Dict } from ".@lgcode/en"
+import { dict as en } from ".@lgcode/en"
 
 export const dict = {
   ...en,
@@ -124,7 +124,7 @@ export const dict = {
   "home.what.shareLinks.body": "Делитесь ссылкой на любую сессию для справки или отладки",
   "home.what.copilot.title": "GitHub Copilot",
   "home.what.copilot.body": "Войдите через GitHub, чтобы использовать ваш аккаунт Copilot",
-  "home.what.chatgptPlus.title": "ChatGPT Plus/Pro",
+  "home.what.chatgptPlus.title": "ChatGPT Plus@lgcode/Pro",
   "home.what.chatgptPlus.body": "Войдите через OpenAI, чтобы использовать ваш аккаунт ChatGPT Plus или Pro",
   "home.what.anyModel.title": "Любая модель",
   "home.what.anyModel.body": "75+ провайдеров LLM через Models.dev, включая локальные модели",
@@ -134,7 +134,7 @@ export const dict = {
 
   "home.growth.title": "AI-агент с открытым кодом для программирования",
   "home.growth.body":
-    "С более чем <strong>{{stars}}</strong> звезд на GitHub, <strong>{{contributors}}</strong> контрибьюторов и <strong>{{commits}}</strong> коммитов, OpenCode доверяют более <strong>{{monthlyUsers}}</strong> разработчиков ежемесячно.",
+    "С более чем <strong>{{stars}}<@lgcode/strong> звезд на GitHub, <strong>{{contributors}}<@lgcode/strong> контрибьюторов и <strong>{{commits}}<@lgcode/strong> коммитов, OpenCode доверяют более <strong>{{monthlyUsers}}<@lgcode/strong> разработчиков ежемесячно.",
   "home.growth.githubStars": "Звезд на GitHub",
   "home.growth.contributors": "Контрибьюторов",
   "home.growth.monthlyDevs": "Разработчиков в месяц",
@@ -163,7 +163,7 @@ export const dict = {
   "home.faq.a3.p4.localLink": "локальные модели",
   "home.faq.q4": "Могу ли я использовать мои существующие AI-подписки с OpenCode?",
   "home.faq.a4.p1":
-    "Да, OpenCode поддерживает подписки всех основных провайдеров. Вы можете использовать ваши подписки Claude Pro/Max, ChatGPT Plus/Pro или GitHub Copilot.",
+    "Да, OpenCode поддерживает подписки всех основных провайдеров. Вы можете использовать ваши подписки Claude Pro@lgcode/Max, ChatGPT Plus@lgcode/Pro или GitHub Copilot.",
   "home.faq.q5": "Можно ли использовать OpenCode только в терминале?",
   "home.faq.a5.beforeDesktop": "Больше нет! OpenCode теперь доступен как приложение для",
   "home.faq.a5.desktop": "десктопа",
@@ -256,7 +256,7 @@ export const dict = {
   "go.title": "OpenCode Go | Недорогие модели для кодинга для всех",
   "go.banner.text": "MiniMax M3 получает 3x лимиты использования на ограниченное время",
   "go.meta.description":
-    "Go начинается с $5 за первый месяц, затем $10/месяц, с щедрыми лимитами запросов за 5 часов для GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro и DeepSeek V4 Flash.",
+    "Go начинается с $5 за первый месяц, затем $10@lgcode/месяц, с щедрыми лимитами запросов за 5 часов для GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro и DeepSeek V4 Flash.",
   "go.hero.title": "Недорогие модели для кодинга для всех",
   "go.hero.body":
     "Go открывает доступ к агентам-программистам разработчикам по всему миру. Предлагая щедрые лимиты и надежный доступ к наиболее способным моделям с открытым исходным кодом, вы можете создавать проекты с мощными агентами, не беспокоясь о затратах или доступности.",
@@ -264,10 +264,10 @@ export const dict = {
   "go.cta.start": "Подписаться на Go",
   "go.cta.template": "{{text}} {{price}}",
   "go.cta.text": "Подписаться на Go",
-  "go.cta.price": "$10/месяц",
+  "go.cta.price": "$10@lgcode/месяц",
   "go.cta.promo": "$5 первый месяц",
   "go.pricing.body":
-    "Используйте с любым агентом. $5 за первый месяц, затем $10/месяц. Пополняйте баланс при необходимости. Отменить можно в любое время.",
+    "Используйте с любым агентом. $5 за первый месяц, затем $10@lgcode/месяц. Пополняйте баланс при необходимости. Отменить можно в любое время.",
   "go.graph.free": "Бесплатно",
   "go.graph.freePill": "Big Pickle и бесплатные модели",
   "go.graph.go": "Go",
@@ -300,7 +300,7 @@ export const dict = {
   "go.testimonials.frank.quote": "Жаль, что я больше не в Nvidia.",
   "go.problem.title": "Какую проблему решает Go?",
   "go.problem.body":
-    "Мы стремимся сделать OpenCode доступным для как можно большего числа людей. OpenCode Go - это недорогая подписка: $5 за первый месяц, затем $10/месяц. Она предоставляет щедрые лимиты и надежный доступ к самым мощным моделям с открытым исходным кодом.",
+    "Мы стремимся сделать OpenCode доступным для как можно большего числа людей. OpenCode Go - это недорогая подписка: $5 за первый месяц, затем $10@lgcode/месяц. Она предоставляет щедрые лимиты и надежный доступ к самым мощным моделям с открытым исходным кодом.",
   "go.problem.subtitle": " ",
   "go.problem.item1": "Недорогая подписка",
   "go.problem.item2": "Щедрые лимиты и надежный доступ",
@@ -309,13 +309,13 @@ export const dict = {
     "Включает GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro и DeepSeek V4 Flash",
   "go.how.title": "Как работает Go",
   "go.how.body":
-    "Go начинается с $5 за первый месяц, затем $10/месяц. Вы можете использовать его с OpenCode или любым агентом.",
+    "Go начинается с $5 за первый месяц, затем $10@lgcode/месяц. Вы можете использовать его с OpenCode или любым агентом.",
   "go.how.step1.title": "Создайте аккаунт",
   "go.how.step1.beforeLink": "следуйте",
   "go.how.step1.link": "инструкциям по настройке",
   "go.how.step2.title": "Подпишитесь на Go",
   "go.how.step2.link": "$5 за первый месяц",
-  "go.how.step2.afterLink": "затем $10/месяц с щедрыми лимитами",
+  "go.how.step2.afterLink": "затем $10@lgcode/месяц с щедрыми лимитами",
   "go.how.step3.title": "Начните кодить",
   "go.how.step3.body": "с надежным доступом к open-source моделям",
   "go.privacy.title": "Ваша приватность важна для нас",
@@ -332,11 +332,11 @@ export const dict = {
   "go.faq.a2": "Go включает перечисленные ниже модели с щедрыми лимитами и надежным доступом.",
   "go.faq.q3": "Go — это то же самое, что и Zen?",
   "go.faq.a3":
-    "Нет. Zen - это оплата по мере использования, в то время как Go начинается с $5 за первый месяц, затем $10/месяц, с щедрыми лимитами и надежным доступом к моделям с открытым исходным кодом GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro и DeepSeek V4 Flash.",
+    "Нет. Zen - это оплата по мере использования, в то время как Go начинается с $5 за первый месяц, затем $10@lgcode/месяц, с щедрыми лимитами и надежным доступом к моделям с открытым исходным кодом GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro и DeepSeek V4 Flash.",
   "go.faq.q4": "Сколько стоит Go?",
   "go.faq.a4.p1.beforePricing": "Go стоит",
   "go.faq.a4.p1.pricingLink": "$5 за первый месяц",
-  "go.faq.a4.p1.afterPricing": "затем $10/месяц с щедрыми лимитами.",
+  "go.faq.a4.p1.afterPricing": "затем $10@lgcode/месяц с щедрыми лимитами.",
   "go.faq.a4.p2.beforeAccount": "Вы можете управлять подпиской в своем",
   "go.faq.a4.p2.accountLink": "аккаунте",
   "go.faq.a4.p3": "Отмена в любое время.",
@@ -356,7 +356,7 @@ export const dict = {
 
   "go.faq.q9": "В чем разница между бесплатными моделями и Go?",
   "go.faq.a9":
-    "Бесплатные модели включают Big Pickle плюс промо-модели, доступные на данный момент, с квотой 200 запросов/день. Go включает GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro и DeepSeek V4 Flash с более высокими квотами запросов, применяемыми в скользящих окнах (5 часов, неделя и месяц), что примерно эквивалентно $12 за 5 часов, $30 в неделю и $60 в месяц (фактическое количество запросов зависит от модели и использования).",
+    "Бесплатные модели включают Big Pickle плюс промо-модели, доступные на данный момент, с квотой 200 запросов@lgcode/день. Go включает GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro и DeepSeek V4 Flash с более высокими квотами запросов, применяемыми в скользящих окнах (5 часов, неделя и месяц), что примерно эквивалентно $12 за 5 часов, $30 в неделю и $60 в месяц (фактическое количество запросов зависит от модели и использования).",
 
   "zen.api.error.rateLimitExceeded": "Превышен лимит запросов. Пожалуйста, попробуйте позже.",
   "zen.api.error.modelNotSupported": "Модель {{model}} не поддерживается",
@@ -665,7 +665,7 @@ export const dict = {
   "workspace.lite.other.message":
     "Другой участник в этом рабочем пространстве уже подписан на OpenCode Go. Только один участник в рабочем пространстве может оформить подписку.",
   "workspace.lite.promo.description":
-    "OpenCode Go начинается с {{price}}, затем $10/месяц и предоставляет надежный доступ к популярным открытым моделям кодирования с щедрыми лимитами использования.",
+    "OpenCode Go начинается с {{price}}, затем $10@lgcode/месяц и предоставляет надежный доступ к популярным открытым моделям кодирования с щедрыми лимитами использования.",
   "workspace.lite.promo.price": "$5 за первый месяц",
   "workspace.lite.promo.modelsTitle": "Что включено",
   "workspace.lite.promo.footer":
@@ -685,7 +685,7 @@ export const dict = {
     "Вы оба получаете кредит на использование $5, который можно применить к лимитам использования Go",
   "workspace.referral.rewards.title": "Реферальные награды",
   "workspace.referral.rewards.description": "Используйте доступные реферальные кредиты для оплаты использования Go.",
-  "workspace.referral.rewards.subtitle": "Использовано {{applied}} / {{total}} наград.",
+  "workspace.referral.rewards.subtitle": "Использовано {{applied}} @lgcode/ {{total}} наград.",
   "workspace.referral.rewards.empty": "Реферальных наград пока нет.",
   "workspace.referral.table.reward": "Награда",
   "workspace.referral.table.referral": "Описание",
@@ -805,7 +805,7 @@ export const dict = {
 
   "bench.detail.title": "Бенчмарк - {{task}}",
   "bench.detail.notFound": "Задача не найдена",
-  "bench.detail.na": "Н/Д",
+  "bench.detail.na": "Н@lgcode/Д",
   "bench.detail.labels.agent": "Агент",
   "bench.detail.labels.model": "Модель",
   "bench.detail.labels.task": "Задача",

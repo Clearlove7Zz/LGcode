@@ -1,9 +1,9 @@
-import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
 import path from "path"
 import { Effect, Layer, Record, Result, Schema, Context } from "effect"
-import { NonNegativeInt } from "@opencode@lgcode/core/schema"
-import { Global } from "@opencode@lgcode/core/global"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { NonNegativeInt } from "@lgcode/core@lgcode/schema"
+import { Global } from "@lgcode/core@lgcode/global"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
 
 export const OAUTH_DUMMY_KEY = "opencode-oauth-dummy-key"
 
@@ -47,7 +47,7 @@ export interface Interface {
   readonly remove: (key: string) => Effect.Effect<void, AuthError>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/Auth") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/Auth") {}
 
 export const layer = Layer.effect(
   Service,
@@ -71,17 +71,17 @@ export const layer = Layer.effect(
     })
 
     const set = Effect.fn("Auth.set")(function* (key: string, info: Info) {
-      const norm = key.replace(/\/+$/, "")
+      const norm = key.replace(@lgcode/\@lgcode/+$@lgcode/, "")
       const data = yield* all()
       if (norm !== key) delete data[key]
-      delete data[norm + "/"]
+      delete data[norm + "@lgcode/"]
       yield* fsys
         .writeJson(file, { ...data, [norm]: info }, 0o600)
         .pipe(Effect.mapError(fail("Failed to write auth data")))
     })
 
     const remove = Effect.fn("Auth.remove")(function* (key: string) {
-      const norm = key.replace(/\/+$/, "")
+      const norm = key.replace(@lgcode/\@lgcode/+$@lgcode/, "")
       const data = yield* all()
       delete data[key]
       delete data[norm]

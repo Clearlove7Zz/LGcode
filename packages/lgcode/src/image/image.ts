@@ -1,8 +1,8 @@
-import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
-import { Config } from "@/config/config"
-import { SessionV1 } from "@opencode@lgcode/core/v1/session"
-import type { MessageV2 } from "@/session/message-v2"
-import photonWasm from "@silvia-odwyer/photon-node/photon_rs_bg.wasm" with { type: "file" }
+import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
+import { Config } from "@@lgcode/config@lgcode/config"
+import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
+import type { MessageV2 } from "@@lgcode/session@lgcode/message-v2"
+import photonWasm from "@silvia-odwyer@lgcode/photon-node@lgcode/photon_rs_bg.wasm" with { type: "file" }
 import { Context, Effect, Layer, Schema } from "effect"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
@@ -44,7 +44,7 @@ export class SizeError extends Schema.TaggedErrorClass<SizeError>()("ImageSizeEr
   max_height: Schema.Number,
 }) {
   override get message() {
-    return `Image ${this.width}x${this.height} with base64 size ${this.bytes} exceeds configured limits and could not be resized below ${this.max_width}x${this.max_height}/${this.max} bytes`
+    return `Image ${this.width}x${this.height} with base64 size ${this.bytes} exceeds configured limits and could not be resized below ${this.max_width}x${this.max_height}@lgcode/${this.max} bytes`
   }
 }
 
@@ -54,7 +54,7 @@ export interface Interface {
   readonly normalize: (input: SessionV1.FilePart) => Effect.Effect<SessionV1.FilePart, Error>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/Image") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/Image") {}
 
 export const layer = Layer.effect(
   Service,
@@ -62,11 +62,11 @@ export const layer = Layer.effect(
     const config = yield* Config.Service
     const loadPhoton = yield* Effect.cached(
       Effect.sync(() => {
-        // Patched photon-node reads this during module init so Bun compiled binaries use the embedded wasm path.
+        @lgcode/@lgcode/ Patched photon-node reads this during module init so Bun compiled binaries use the embedded wasm path.
         ;(globalThis as typeof globalThis & { __OPENCODE_PHOTON_WASM_PATH?: string }).__OPENCODE_PHOTON_WASM_PATH =
           path.isAbsolute(photonWasm) ? photonWasm : fileURLToPath(new URL(photonWasm, import.meta.url))
       }).pipe(
-        Effect.andThen(() => Effect.tryPromise(() => import("@silvia-odwyer/photon-node"))),
+        Effect.andThen(() => Effect.tryPromise(() => import("@silvia-odwyer@lgcode/photon-node"))),
         Effect.tapError((error) => Effect.logWarning("failed to load photon", { error })),
         Effect.mapError(() => new ResizerUnavailableError()),
       ),
@@ -108,7 +108,7 @@ export const layer = Layer.effect(
             max_height: info.maxHeight,
           })
 
-        const scale = Math.min(1, info.maxWidth / originalWidth, info.maxHeight / originalHeight)
+        const scale = Math.min(1, info.maxWidth @lgcode/ originalWidth, info.maxHeight @lgcode/ originalHeight)
         for (const size of Array.from({ length: 32 }).reduce<Array<{ width: number; height: number }>>((acc) => {
           const previous = acc.at(-1) ?? {
             width: Math.max(1, Math.round(originalWidth * scale)),
@@ -125,10 +125,10 @@ export const layer = Layer.effect(
         }, [])) {
           const resized = photon.resize(decoded, size.width, size.height, photon.SamplingFilter.Lanczos3)
           const candidate = [
-            { data: Buffer.from(resized.get_bytes()).toString("base64"), mime: "image/png" },
+            { data: Buffer.from(resized.get_bytes()).toString("base64"), mime: "image@lgcode/png" },
             ...JPEG_QUALITIES.map((quality) => ({
               data: Buffer.from(resized.get_bytes_jpeg(quality)).toString("base64"),
-              mime: "image/jpeg",
+              mime: "image@lgcode/jpeg",
             })),
           ]
             .map((item) => ({ ...item, bytes: Buffer.byteLength(item.data, "utf8") }))
@@ -171,4 +171,4 @@ export const defaultLayer = layer.pipe(Layer.provide(Config.defaultLayer))
 
 export const node = LayerNode.make(layer, [Config.node])
 
-export * as Image from "./image"
+export * as Image from ".@lgcode/image"

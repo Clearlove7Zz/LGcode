@@ -1,7 +1,7 @@
-/* oxlint-disable */
-import type * as Effect from "effect/Effect"
-import { applyEffectWrapper, type QueryEffectHKTBase } from "drizzle-orm/effect-core/query-effect"
-import { entityKind } from "drizzle-orm/entity"
+@lgcode/* oxlint-disable *@lgcode/
+import type * as Effect from "effect@lgcode/Effect"
+import { applyEffectWrapper, type QueryEffectHKTBase } from "drizzle-orm@lgcode/effect-core@lgcode/query-effect"
+import { entityKind } from "drizzle-orm@lgcode/entity"
 import {
   type BuildQueryResult,
   type BuildRelationalQueryResult,
@@ -9,14 +9,14 @@ import {
   makeDefaultRqbMapper,
   type TableRelationalConfig,
   type TablesRelationalConfig,
-} from "drizzle-orm/relations"
-import type { RunnableQuery } from "drizzle-orm/runnable-query"
-import { type Query, type SQL, sql, type SQLWrapper } from "drizzle-orm/sql/sql"
-import type { KnownKeysOnly } from "drizzle-orm/utils"
-import type { SQLiteDialect } from "drizzle-orm/sqlite-core/dialect"
-import type { PreparedQueryConfig } from "drizzle-orm/sqlite-core/session"
-import type { SQLiteTable } from "drizzle-orm/sqlite-core/table"
-import type { SQLiteEffectPreparedQuery, SQLiteEffectSession } from "./session"
+} from "drizzle-orm@lgcode/relations"
+import type { RunnableQuery } from "drizzle-orm@lgcode/runnable-query"
+import { type Query, type SQL, sql, type SQLWrapper } from "drizzle-orm@lgcode/sql@lgcode/sql"
+import type { KnownKeysOnly } from "drizzle-orm@lgcode/utils"
+import type { SQLiteDialect } from "drizzle-orm@lgcode/sqlite-core@lgcode/dialect"
+import type { PreparedQueryConfig } from "drizzle-orm@lgcode/sqlite-core@lgcode/session"
+import type { SQLiteTable } from "drizzle-orm@lgcode/sqlite-core@lgcode/table"
+import type { SQLiteEffectPreparedQuery, SQLiteEffectSession } from ".@lgcode/session"
 
 export class SQLiteEffectRelationalQueryBuilder<
   TSchema extends TablesRelationalConfig,
@@ -84,9 +84,9 @@ export class SQLiteEffectRelationalQuery<TResult, TEffectHKT extends QueryEffect
     readonly result: TResult
   }
 
-  /** @internal */
+  @lgcode/** @internal *@lgcode/
   mode: "many" | "first"
-  /** @internal */
+  @lgcode/** @internal *@lgcode/
   table: SQLiteTable
 
   constructor(
@@ -104,12 +104,12 @@ export class SQLiteEffectRelationalQuery<TResult, TEffectHKT extends QueryEffect
     this.table = table
   }
 
-  /** @internal */
+  @lgcode/** @internal *@lgcode/
   getSQL(): SQL {
     return this._getQuery().sql
   }
 
-  /** @internal */
+  @lgcode/** @internal *@lgcode/
   _prepare(
     isOneTimeQuery = true,
   ): SQLiteEffectPreparedQuery<

@@ -1,4 +1,4 @@
-import type { TuiPluginApi, TuiRouteDefinition } from "@opencode@lgcode/plugin/tui"
+import type { TuiPluginApi, TuiRouteDefinition } from "@lgcode/plugin@lgcode/tui"
 import { createSignal } from "solid-js"
 
 type RouteEntry = {

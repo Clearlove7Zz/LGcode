@@ -1,11 +1,11 @@
-import "../index.css"
-import { Link, Meta, Title } from "@solidjs/meta"
-import { ProviderIcon } from "@opencode@lgcode/ui/provider-icon"
+import "..@lgcode/index.css"
+import { Link, Meta, Title } from "@solidjs@lgcode/meta"
+import { ProviderIcon } from "@lgcode/ui@lgcode/provider-icon"
 import { geoEquirectangular, geoPath } from "d3-geo"
 import { scaleSqrt } from "d3-scale"
-import countryCodesSource from "i18n-iso-countries/codes.json?raw"
+import countryCodesSource from "i18n-iso-countries@lgcode/codes.json?raw"
 import { feature, mesh } from "topojson-client"
-import countriesTopologySource from "world-atlas/countries-50m.json?raw"
+import countriesTopologySource from "world-atlas@lgcode/countries-50m.json?raw"
 import {
   getStatsModelData,
   type CountryEntry,
@@ -13,11 +13,11 @@ import {
   type ModelUsagePoint,
   type StatsModelData,
   type UsageRange,
-} from "@opencode@lgcode/stats-core/domain/home"
-import { runtime } from "@opencode@lgcode/stats-core/runtime"
-import { createAsync, query, useParams } from "@solidjs/router"
+} from "@lgcode/stats-core@lgcode/domain@lgcode/home"
+import { runtime } from "@lgcode/stats-core@lgcode/runtime"
+import { createAsync, query, useParams } from "@solidjs@lgcode/router"
 import { createMemo, createSignal, For, onMount, Show, type JSX } from "solid-js"
-import { getRequestEvent } from "solid-js/web"
+import { getRequestEvent } from "solid-js@lgcode/web"
 import type { FeatureCollection, GeometryObject, GeoJsonProperties } from "geojson"
 import type { GeometryCollection, Topology } from "topojson-specification"
 import {
@@ -26,7 +26,7 @@ import {
   getModelCatalog,
   type ModelCatalogCost,
   type ModelCatalogEntry,
-} from "../model-catalog"
+} from "..@lgcode/model-catalog"
 import {
   applyThemePreference,
   Footer,
@@ -36,9 +36,9 @@ import {
   themeStorageKey,
   type HeaderLink,
   type ThemePreference,
-} from "../stats-shell"
+} from "..@lgcode/stats-shell"
 
-const statsCanonicalBaseUrl = "https://opencode.ai/data/"
+const statsCanonicalBaseUrl = "https:@lgcode/@lgcode/opencode.ai@lgcode/data@lgcode/"
 const statsUnfurlPath = "banner.png"
 const statsUnfurlAlt = "OpenCode Data wordmark on a dark patterned background"
 const statsUnfurlUrl = new URL(statsUnfurlPath, statsCanonicalBaseUrl).toString()
@@ -128,7 +128,7 @@ export default function StatsModel() {
   )
   const modelUrl = createMemo(() =>
     new URL(
-      catalogEntry()?.id ?? [labParam(), stats()?.slug ?? modelParam()].filter((part) => part.length > 0).join("/"),
+      catalogEntry()?.id ?? [labParam(), stats()?.slug ?? modelParam()].filter((part) => part.length > 0).join("@lgcode/"),
       statsCanonicalBaseUrl,
     ).toString(),
   )
@@ -149,47 +149,47 @@ export default function StatsModel() {
 
   return (
     <main data-page="stats" data-theme={themePreference()}>
-      <Title>{modelTitle()}</Title>
-      <Meta name="description" content={modelDescription()} />
-      <Link rel="canonical" href={modelUrl()} />
-      <Meta property="og:type" content="website" />
-      <Meta property="og:site_name" content="OpenCode" />
-      <Meta property="og:title" content={modelTitle()} />
-      <Meta property="og:description" content={modelDescription()} />
-      <Meta property="og:url" content={modelUrl()} />
-      <Meta property="og:image" content={statsUnfurlUrl} />
-      <Meta property="og:image:type" content="image/png" />
-      <Meta property="og:image:width" content="1200" />
-      <Meta property="og:image:height" content="630" />
-      <Meta property="og:image:alt" content={statsUnfurlAlt} />
-      <Meta name="twitter:card" content="summary_large_image" />
-      <Meta name="twitter:title" content={modelTitle()} />
-      <Meta name="twitter:description" content={modelDescription()} />
-      <Meta name="twitter:image" content={statsUnfurlUrl} />
-      <Meta name="twitter:image:alt" content={statsUnfurlAlt} />
-      <Header githubStars={githubStars() ?? "150K"} links={modelHeaderLinks} brandHref={import.meta.env.BASE_URL} />
+      <Title>{modelTitle()}<@lgcode/Title>
+      <Meta name="description" content={modelDescription()} @lgcode/>
+      <Link rel="canonical" href={modelUrl()} @lgcode/>
+      <Meta property="og:type" content="website" @lgcode/>
+      <Meta property="og:site_name" content="OpenCode" @lgcode/>
+      <Meta property="og:title" content={modelTitle()} @lgcode/>
+      <Meta property="og:description" content={modelDescription()} @lgcode/>
+      <Meta property="og:url" content={modelUrl()} @lgcode/>
+      <Meta property="og:image" content={statsUnfurlUrl} @lgcode/>
+      <Meta property="og:image:type" content="image@lgcode/png" @lgcode/>
+      <Meta property="og:image:width" content="1200" @lgcode/>
+      <Meta property="og:image:height" content="630" @lgcode/>
+      <Meta property="og:image:alt" content={statsUnfurlAlt} @lgcode/>
+      <Meta name="twitter:card" content="summary_large_image" @lgcode/>
+      <Meta name="twitter:title" content={modelTitle()} @lgcode/>
+      <Meta name="twitter:description" content={modelDescription()} @lgcode/>
+      <Meta name="twitter:image" content={statsUnfurlUrl} @lgcode/>
+      <Meta name="twitter:image:alt" content={statsUnfurlAlt} @lgcode/>
+      <Header githubStars={githubStars() ?? "150K"} links={modelHeaderLinks} brandHref={import.meta.env.BASE_URL} @lgcode/>
       <div data-component="container">
         <div data-component="content">
-          <Show when={catalogEntry() || stats() !== undefined} fallback={<ModelLoading />}>
-            <Show when={catalogEntry() || stats()} fallback={<ModelNotFound lab={labParam()} model={modelParam()} />}>
+          <Show when={catalogEntry() || stats() !== undefined} fallback={<ModelLoading @lgcode/>}>
+            <Show when={catalogEntry() || stats()} fallback={<ModelNotFound lab={labParam()} model={modelParam()} @lgcode/>}>
               <>
-                <ModelHero data={stats() ?? null} catalog={catalogEntry() ?? null} labName={labName()} />
-                <ModelOverview data={stats() ?? null} />
-                <ModelUsageSection data={stats()?.usage ?? []} />
-                <ModelEfficiencySection data={stats() ?? null} catalog={catalogEntry() ?? null} />
-                <ModelGeoBreakdownSection data={stats()?.country ?? emptyCountryRecord()} />
-                <ModelPeersSection data={stats() ?? null} />
-              </>
-            </Show>
-          </Show>
-        </div>
+                <ModelHero data={stats() ?? null} catalog={catalogEntry() ?? null} labName={labName()} @lgcode/>
+                <ModelOverview data={stats() ?? null} @lgcode/>
+                <ModelUsageSection data={stats()?.usage ?? []} @lgcode/>
+                <ModelEfficiencySection data={stats() ?? null} catalog={catalogEntry() ?? null} @lgcode/>
+                <ModelGeoBreakdownSection data={stats()?.country ?? emptyCountryRecord()} @lgcode/>
+                <ModelPeersSection data={stats() ?? null} @lgcode/>
+              <@lgcode/>
+            <@lgcode/Show>
+          <@lgcode/Show>
+        <@lgcode/div>
         <Footer
           themePreference={themePreference()}
           onThemePreferenceChange={updateThemePreference}
           links={modelFooterLinks}
-        />
-      </div>
-    </main>
+        @lgcode/>
+      <@lgcode/div>
+    <@lgcode/main>
   )
 }
 
@@ -201,16 +201,16 @@ function ModelLoading() {
           <div data-slot="model-hero-copy">
             <a data-slot="model-back-link" href={import.meta.env.BASE_URL}>
               Data
-            </a>
-            <h1>Model Data</h1>
-            <p>Reading model aggregates from model_stat.</p>
-          </div>
-        </div>
-      </section>
+            <@lgcode/a>
+            <h1>Model Data<@lgcode/h1>
+            <p>Reading model aggregates from model_stat.<@lgcode/p>
+          <@lgcode/div>
+        <@lgcode/div>
+      <@lgcode/section>
       <section data-section="model-panel">
-        <ModelEmptyState title="Loading model data" description="Reading the model profile." />
-      </section>
-    </>
+        <ModelEmptyState title="Loading model data" description="Reading the model profile." @lgcode/>
+      <@lgcode/section>
+    <@lgcode/>
   )
 }
 
@@ -222,16 +222,16 @@ function ModelNotFound(props: { lab: string; model: string }) {
           <div data-slot="model-hero-copy">
             <a data-slot="model-back-link" href={import.meta.env.BASE_URL}>
               Data
-            </a>
-            <h1>{props.model || "Model"}</h1>
-            <p>No model facts or model_stat rows matched {props.lab ? `${props.lab}/${props.model}` : props.model}.</p>
-          </div>
-        </div>
-      </section>
+            <@lgcode/a>
+            <h1>{props.model || "Model"}<@lgcode/h1>
+            <p>No model facts or model_stat rows matched {props.lab ? `${props.lab}@lgcode/${props.model}` : props.model}.<@lgcode/p>
+          <@lgcode/div>
+        <@lgcode/div>
+      <@lgcode/section>
       <section data-section="model-panel">
-        <ModelEmptyState title="No model data" description="Try opening a model from the leaderboard." />
-      </section>
-    </>
+        <ModelEmptyState title="No model data" description="Try opening a model from the leaderboard." @lgcode/>
+      <@lgcode/section>
+    <@lgcode/>
   )
 }
 
@@ -243,21 +243,21 @@ function ModelHero(props: { data: StatsModelData | null; catalog: ModelCatalogEn
     <section id="overview" data-section="model-hero">
       <a data-slot="model-back-link" href={import.meta.env.BASE_URL}>
         Data
-      </a>
+      <@lgcode/a>
       <div data-slot="model-hero-grid">
         <div data-slot="model-hero-copy">
           <div data-slot="model-hero-tags">
             <a data-slot="hero-meta" href={`${import.meta.env.BASE_URL}${providerSlug(labId())}`}>
-              <ProviderIcon aria-hidden="true" id={getProviderIconId(labId())} />
-              <span>{props.labName}</span>
-            </a>
-            <span data-slot="model-id-tag">{modelId()}</span>
-          </div>
-          <h1>{props.catalog?.name ?? props.data?.model ?? "Model"}</h1>
+              <ProviderIcon aria-hidden="true" id={getProviderIconId(labId())} @lgcode/>
+              <span>{props.labName}<@lgcode/span>
+            <@lgcode/a>
+            <span data-slot="model-id-tag">{modelId()}<@lgcode/span>
+          <@lgcode/div>
+          <h1>{props.catalog?.name ?? props.data?.model ?? "Model"}<@lgcode/h1>
           <Show
             when={props.data}
             fallback={
-              <p>Model facts from the shared model index. OpenCode usage appears once this model has activity.</p>
+              <p>Model facts from the shared model index. OpenCode usage appears once this model has activity.<@lgcode/p>
             }
           >
             {(data) => (
@@ -266,40 +266,40 @@ function ModelHero(props: { data: StatsModelData | null; catalog: ModelCatalogEn
                   ? "Unranked across last week's OpenCode Go usage"
                   : `Ranked #${data().rank} across last week's OpenCode Go usage`}{" "}
                 with {formatPercent(data().tokenShare)} of observed 2M volume.
-              </p>
+              <@lgcode/p>
             )}
-          </Show>
+          <@lgcode/Show>
           <Show when={props.catalog?.openWeights && weights()}>
             {(weight) => (
               <a data-slot="model-weight-link" href={weight().url} target="_blank" rel="noopener noreferrer">
                 Model weights: {weight().label}
-              </a>
+              <@lgcode/a>
             )}
-          </Show>
-        </div>
-        <Show when={props.data} fallback={<ModelCatalogCallout catalog={props.catalog} />}>
+          <@lgcode/Show>
+        <@lgcode/div>
+        <Show when={props.data} fallback={<ModelCatalogCallout catalog={props.catalog} @lgcode/>}>
           {(data) => (
             <div data-component="model-rank-panel">
-              <span>7D Rank</span>
-              <strong>{data().rank === null ? "—" : `#${data().rank}`}</strong>
-              <p>{formatModelRankMoveLabel(data())}</p>
-            </div>
+              <span>7D Rank<@lgcode/span>
+              <strong>{data().rank === null ? "—" : `#${data().rank}`}<@lgcode/strong>
+              <p>{formatModelRankMoveLabel(data())}<@lgcode/p>
+            <@lgcode/div>
           )}
-        </Show>
-      </div>
-      <div data-slot="model-hero-pattern" aria-hidden="true" />
-      <Show when={props.catalog}>{(catalog) => <ModelCatalogPanel data={catalog()} />}</Show>
-    </section>
+        <@lgcode/Show>
+      <@lgcode/div>
+      <div data-slot="model-hero-pattern" aria-hidden="true" @lgcode/>
+      <Show when={props.catalog}>{(catalog) => <ModelCatalogPanel data={catalog()} @lgcode/>}<@lgcode/Show>
+    <@lgcode/section>
   )
 }
 
 function ModelCatalogCallout(props: { catalog: ModelCatalogEntry | null }) {
   return (
     <div data-component="model-rank-panel">
-      <span>Model Profile</span>
-      <strong>{props.catalog?.releaseDate ? formatCatalogDate(props.catalog.releaseDate) : "Listed"}</strong>
-      <p>No OpenCode usage in the current data window.</p>
-    </div>
+      <span>Model Profile<@lgcode/span>
+      <strong>{props.catalog?.releaseDate ? formatCatalogDate(props.catalog.releaseDate) : "Listed"}<@lgcode/strong>
+      <p>No OpenCode usage in the current data window.<@lgcode/p>
+    <@lgcode/div>
   )
 }
 
@@ -307,52 +307,52 @@ function ModelCatalogPanel(props: { data: ModelCatalogEntry }) {
   return (
     <aside data-component="model-catalog" aria-label="Model facts">
       <div data-slot="model-catalog-grid">
-        <CatalogDatum label="Context" value={formatCatalogLimit(props.data.limit?.context)} />
-        <CatalogDatum label="Output" value={formatCatalogLimit(props.data.limit?.output)} />
-        <CatalogDatum label="Knowledge" value={formatCatalogDate(props.data.knowledge)} />
-        <CatalogDatum label="Release" value={formatCatalogDate(props.data.releaseDate)} />
-        <CatalogDatum label="Inputs" value={formatCatalogModalities(props.data.modalities.input)} />
-      </div>
-    </aside>
+        <CatalogDatum label="Context" value={formatCatalogLimit(props.data.limit?.context)} @lgcode/>
+        <CatalogDatum label="Output" value={formatCatalogLimit(props.data.limit?.output)} @lgcode/>
+        <CatalogDatum label="Knowledge" value={formatCatalogDate(props.data.knowledge)} @lgcode/>
+        <CatalogDatum label="Release" value={formatCatalogDate(props.data.releaseDate)} @lgcode/>
+        <CatalogDatum label="Inputs" value={formatCatalogModalities(props.data.modalities.input)} @lgcode/>
+      <@lgcode/div>
+    <@lgcode/aside>
   )
 }
 
 function CatalogDatum(props: { label: string; value: string }) {
   return (
     <article data-component="model-catalog-datum">
-      <span>{props.label}</span>
-      <strong>{props.value}</strong>
-    </article>
+      <span>{props.label}<@lgcode/span>
+      <strong>{props.value}<@lgcode/strong>
+    <@lgcode/article>
   )
 }
 
 function ModelOverview(props: { data: StatsModelData | null }) {
   return (
     <section data-section="model-panel">
-      <SectionTitle title="Overview" description="Recent tokens, sessions, and market position." />
+      <SectionTitle title="Overview" description="Recent tokens, sessions, and market position." @lgcode/>
       <Show
         when={props.data}
-        fallback={<ModelEmptyState title="No usage summary" description="This model has no OpenCode usage rows yet." />}
+        fallback={<ModelEmptyState title="No usage summary" description="This model has no OpenCode usage rows yet." @lgcode/>}
       >
         {(data) => (
           <div data-component="model-metric-grid">
-            <MetricCard label="Tokens" value={formatTokens(data().totals.tokens)} detail="last two months" />
-            <MetricCard label="Sessions" value={formatInteger(data().totals.sessions)} detail="completed sessions" />
+            <MetricCard label="Tokens" value={formatTokens(data().totals.tokens)} detail="last two months" @lgcode/>
+            <MetricCard label="Sessions" value={formatInteger(data().totals.sessions)} detail="completed sessions" @lgcode/>
             <MetricCard
               label="Token Share"
               value={formatPercent(data().tokenShare)}
               detail={`${data().totalModels} models`}
-            />
+            @lgcode/>
             <MetricCard
               label="Momentum"
               value={formatChange(data().tokenChange)}
               detail="vs previous window"
               state={data().tokenChange < 0 ? "negative" : "positive"}
-            />
-          </div>
+            @lgcode/>
+          <@lgcode/div>
         )}
-      </Show>
-    </section>
+      <@lgcode/Show>
+    <@lgcode/section>
   )
 }
 
@@ -367,10 +367,10 @@ function ModelUsageSection(props: { data: ModelUsagePoint[] }) {
 
   return (
     <section id="usage" data-section="model-panel">
-      <SectionTitle title="Usage" description="Daily token volume over the recent two-month window." />
+      <SectionTitle title="Usage" description="Daily token volume over the recent two-month window." @lgcode/>
       <Show
         when={props.data.some((item) => item.tokens > 0)}
-        fallback={<ModelEmptyState title="No usage" description="No usage landed in the current window." />}
+        fallback={<ModelEmptyState title="No usage" description="No usage landed in the current window." @lgcode/>}
       >
         <div
           data-component="model-usage-chart"
@@ -391,13 +391,13 @@ function ModelUsageSection(props: { data: ModelUsagePoint[] }) {
                   data-label-hidden={isModelUsageLabelHidden(index(), props.data.length) ? "true" : undefined}
                 >
                   <span data-slot="model-usage-label">
-                    <span data-slot="model-usage-total">{formatTokens(point.tokens)}</span>
-                    <span data-slot="model-usage-date">{point.date}</span>
-                  </span>
-                </div>
+                    <span data-slot="model-usage-total">{formatTokens(point.tokens)}<@lgcode/span>
+                    <span data-slot="model-usage-date">{point.date}<@lgcode/span>
+                  <@lgcode/span>
+                <@lgcode/div>
               )}
-            </For>
-          </div>
+            <@lgcode/For>
+          <@lgcode/div>
           <div data-slot="model-usage-bars">
             <For each={props.data}>
               {(point, index) => (
@@ -429,70 +429,70 @@ function ModelUsageSection(props: { data: ModelUsagePoint[] }) {
                   <div
                     data-slot="model-usage-bar"
                     style={{ "--model-usage-fill": `${modelUsageHeight(point.tokens, max())}%` } as JSX.CSSProperties}
-                  />
+                  @lgcode/>
                   <Show when={activeIndex() === index() && activePoint()}>
                     {(active) => (
                       <div
                         data-component="chart-tooltip"
                         data-placement={index() > props.data.length * 0.62 ? "left" : "right"}
                       >
-                        <strong>{active().date}</strong>
-                        <span>{formatTokens(active().tokens)} tokens</span>
-                        <div data-slot="tooltip-divider" />
+                        <strong>{active().date}<@lgcode/strong>
+                        <span>{formatTokens(active().tokens)} tokens<@lgcode/span>
+                        <div data-slot="tooltip-divider" @lgcode/>
                         <p>
                           <span data-slot="tooltip-label">
-                            <i /> Daily tokens
-                          </span>
-                          <b>{formatTokens(active().tokens)}</b>
-                        </p>
-                      </div>
+                            <i @lgcode/> Daily tokens
+                          <@lgcode/span>
+                          <b>{formatTokens(active().tokens)}<@lgcode/b>
+                        <@lgcode/p>
+                      <@lgcode/div>
                     )}
-                  </Show>
-                </div>
+                  <@lgcode/Show>
+                <@lgcode/div>
               )}
-            </For>
-          </div>
-        </div>
-      </Show>
-    </section>
+            <@lgcode/For>
+          <@lgcode/div>
+        <@lgcode/div>
+      <@lgcode/Show>
+    <@lgcode/section>
   )
 }
 
 function ModelEfficiencySection(props: { data: StatsModelData | null; catalog: ModelCatalogEntry | null }) {
   return (
     <section id="efficiency" data-section="model-panel">
-      <SectionTitle title="Efficiency" description="Cost, cache behavior, and average session shape." />
+      <SectionTitle title="Efficiency" description="Cost, cache behavior, and average session shape." @lgcode/>
       <Show
         when={props.data}
         fallback={
-          <ModelEmptyState title="No efficiency data" description="Efficiency data appears after usage lands." />
+          <ModelEmptyState title="No efficiency data" description="Efficiency data appears after usage lands." @lgcode/>
         }
       >
         {(data) => (
           <div data-component="model-metric-grid" data-variant="dense">
-            <MetricCard label="Cost" value={formatMoney(data().totals.cost)} detail="total spend" />
+            <MetricCard label="Cost" value={formatMoney(data().totals.cost)} detail="total spend" @lgcode/>
             <MetricCard
-              label="Cost / 1M"
+              label="Cost @lgcode/ 1M"
               value={
                 props.catalog?.cost ? formatCatalogPrice(props.catalog.cost) : formatMoney(data().totals.costPerMillion)
               }
-              detail={props.catalog?.cost ? "input / output" : "observed all tokens"}
-            />
+              detail={props.catalog?.cost ? "input @lgcode/ output" : "observed all tokens"}
+            @lgcode/>
             <MetricCard
-              label="Cost / Session"
+              label="Cost @lgcode/ Session"
               value={formatSessionCost(data().totals.costPerSession)}
               detail="average"
-            />
+            @lgcode/>
             <MetricCard
-              label="Tokens / Session"
+              label="Tokens @lgcode/ Session"
               value={formatTokens(data().totals.tokensPerSession)}
               detail="average"
-            />
-            <MetricCard label="Cache Ratio" value={formatPercent(data().totals.cacheRatio)} detail="input tokens" />
-          </div>
+            @lgcode/>
+            <MetricCard label="Cache Ratio" value={formatPercent(data().totals.cacheRatio)} detail="input tokens" @lgcode/>
+          <@lgcode/div>
         )}
-      </Show>
-    </section>
+      <@lgcode/Show>
+    <@lgcode/section>
   )
 }
 
@@ -521,10 +521,10 @@ function ModelGeoBreakdownSection(props: { data: Record<UsageRange, CountryEntry
         setActiveCountry(undefined)
       }}
     >
-      <SectionTitle title="Geo Breakdown" description="Model tokens used by country." />
+      <SectionTitle title="Geo Breakdown" description="Model tokens used by country." @lgcode/>
       <Show
         when={data().length > 0}
-        fallback={<ModelEmptyState title="No geo data" description="No geo_stat rows matched this model." />}
+        fallback={<ModelEmptyState title="No geo data" description="No geo_stat rows matched this model." @lgcode/>}
       >
         <div data-component="geo-breakdown">
           <div data-slot="geo-map-panel">
@@ -533,29 +533,29 @@ function ModelGeoBreakdownSection(props: { data: Record<UsageRange, CountryEntry
               activeCountry={activeCountry()}
               maxTokens={maxTokens()}
               onActiveCountryChange={setActiveCountry}
-            />
+            @lgcode/>
             <Show when={active()}>
               {(country) => (
                 <div data-slot="geo-active-country">
-                  <span>#{String(country().rank).padStart(2, "0")}</span>
-                  <strong>{formatCountryName(country().country)}</strong>
+                  <span>#{String(country().rank).padStart(2, "0")}<@lgcode/span>
+                  <strong>{formatCountryName(country().country)}<@lgcode/strong>
                   <p>
-                    <b>{formatGeoTokens(country().tokens)}</b>
-                    <em>{formatGeoShare(country().share)}</em>
-                  </p>
-                </div>
+                    <b>{formatGeoTokens(country().tokens)}<@lgcode/b>
+                    <em>{formatGeoShare(country().share)}<@lgcode/em>
+                  <@lgcode/p>
+                <@lgcode/div>
               )}
-            </Show>
-          </div>
+            <@lgcode/Show>
+          <@lgcode/div>
           <GeoCountryList
             data={topCountries()}
             activeCountry={activeCountry()}
             maxTokens={maxTokens()}
             onActiveCountryChange={setActiveCountry}
-          />
-        </div>
-      </Show>
-    </section>
+          @lgcode/>
+        <@lgcode/div>
+      <@lgcode/Show>
+    <@lgcode/section>
   )
 }
 
@@ -580,7 +580,7 @@ function GeoWorldMap(props: {
       role="img"
       aria-label="World map of model token usage by country"
     >
-      <title>Geo Breakdown map</title>
+      <title>Geo Breakdown map<@lgcode/title>
       <g data-slot="geo-countries">
         <For each={worldCountryPaths}>
           {(country) => {
@@ -603,11 +603,11 @@ function GeoWorldMap(props: {
                   if (!item) return
                   props.onActiveCountryChange(item.country)
                 }}
-              />
+              @lgcode/>
             )
           }}
-        </For>
-      </g>
+        <@lgcode/For>
+      <@lgcode/g>
       <g data-slot="geo-country-markers">
         <For each={worldCountryPaths}>
           {(country) => {
@@ -632,15 +632,15 @@ function GeoWorldMap(props: {
                       if (!item) return
                       props.onActiveCountryChange(item.country)
                     }}
-                  />
+                  @lgcode/>
                 )}
-              </Show>
+              <@lgcode/Show>
             )
           }}
-        </For>
-      </g>
-      <path data-slot="geo-borders" d={worldBorderPath} aria-hidden="true" />
-    </svg>
+        <@lgcode/For>
+      <@lgcode/g>
+      <path data-slot="geo-borders" d={worldBorderPath} aria-hidden="true" @lgcode/>
+    <@lgcode/svg>
   )
 }
 
@@ -668,44 +668,44 @@ function GeoCountryList(props: {
               onPointerEnter={() => props.onActiveCountryChange(country.country)}
               onFocus={() => props.onActiveCountryChange(country.country)}
             >
-              <span>{String(country.rank).padStart(2, "0")}</span>
-              <i />
-              <strong>{formatCountryName(country.country)}</strong>
-              <em>{formatGeoTokens(country.tokens)}</em>
-              <b>{formatGeoShare(country.share)}</b>
-            </button>
-          </li>
+              <span>{String(country.rank).padStart(2, "0")}<@lgcode/span>
+              <i @lgcode/>
+              <strong>{formatCountryName(country.country)}<@lgcode/strong>
+              <em>{formatGeoTokens(country.tokens)}<@lgcode/em>
+              <b>{formatGeoShare(country.share)}<@lgcode/b>
+            <@lgcode/button>
+          <@lgcode/li>
         )}
-      </For>
-    </ol>
+      <@lgcode/For>
+    <@lgcode/ol>
   )
 }
 
 function ModelPeersSection(props: { data: StatsModelData | null }) {
   return (
     <section id="peers" data-section="model-panel">
-      <SectionTitle title="Peers" description="Nearby models by recent token volume." />
+      <SectionTitle title="Peers" description="Nearby models by recent token volume." @lgcode/>
       <Show
         when={props.data?.peers.length}
-        fallback={<ModelEmptyState title="No peers" description="Peer rankings appear after usage lands." />}
+        fallback={<ModelEmptyState title="No peers" description="Peer rankings appear after usage lands." @lgcode/>}
       >
         <ol data-component="model-peer-list">
           <For each={props.data?.peers ?? []}>
-            {(peer) => <PeerRow peer={peer} active={peer.model === props.data?.model} />}
-          </For>
-        </ol>
-      </Show>
-    </section>
+            {(peer) => <PeerRow peer={peer} active={peer.model === props.data?.model} @lgcode/>}
+          <@lgcode/For>
+        <@lgcode/ol>
+      <@lgcode/Show>
+    <@lgcode/section>
   )
 }
 
 function MetricCard(props: { label: string; value: string; detail: string; state?: "positive" | "negative" }) {
   return (
     <article data-component="model-metric" data-state={props.state}>
-      <span>{props.label}</span>
-      <strong>{props.value}</strong>
-      <p>{props.detail}</p>
-    </article>
+      <span>{props.label}<@lgcode/span>
+      <strong>{props.value}<@lgcode/strong>
+      <p>{props.detail}<@lgcode/p>
+    <@lgcode/article>
   )
 }
 
@@ -713,33 +713,33 @@ function PeerRow(props: { peer: ModelPeerEntry; active: boolean }) {
   return (
     <li>
       <a
-        href={`${import.meta.env.BASE_URL}${providerSlug(props.peer.provider)}/${props.peer.slug}`}
+        href={`${import.meta.env.BASE_URL}${providerSlug(props.peer.provider)}@lgcode/${props.peer.slug}`}
         data-active={props.active ? "true" : undefined}
       >
-        <span>{String(props.peer.rank).padStart(2, "0")}</span>
-        <ProviderIcon aria-hidden="true" id={getProviderIconId(props.peer.author)} />
-        <strong>{props.peer.model}</strong>
-        <em>{props.peer.author}</em>
-        <b>{formatTokens(props.peer.tokens)}</b>
-      </a>
-    </li>
+        <span>{String(props.peer.rank).padStart(2, "0")}<@lgcode/span>
+        <ProviderIcon aria-hidden="true" id={getProviderIconId(props.peer.author)} @lgcode/>
+        <strong>{props.peer.model}<@lgcode/strong>
+        <em>{props.peer.author}<@lgcode/em>
+        <b>{formatTokens(props.peer.tokens)}<@lgcode/b>
+      <@lgcode/a>
+    <@lgcode/li>
   )
 }
 
 function SectionTitle(props: { title: string; description: string }) {
   return (
     <p data-slot="section-title">
-      <strong>{props.title}.</strong> <span>{props.description}</span>
-    </p>
+      <strong>{props.title}.<@lgcode/strong> <span>{props.description}<@lgcode/span>
+    <@lgcode/p>
   )
 }
 
 function ModelEmptyState(props: { title: string; description: string; compact?: boolean }) {
   return (
     <div data-component="empty-state" data-compact={props.compact ? "true" : undefined}>
-      <strong>{props.title}</strong>
-      <p>{props.description}</p>
-    </div>
+      <strong>{props.title}<@lgcode/strong>
+      <p>{props.description}<@lgcode/p>
+    <@lgcode/div>
   )
 }
 
@@ -747,7 +747,7 @@ function getProviderIconId(author: string) {
   if (author === "MiniMax") return "minimax"
   if (author === "Moonshot") return "moonshotai"
   if (author === "Zhipu") return "zhipuai"
-  return author.toLowerCase().replace(/[^a-z0-9]+/g, "")
+  return author.toLowerCase().replace(@lgcode/[^a-z0-9]+@lgcode/g, "")
 }
 
 function emptyCountryRecord(): Record<UsageRange, CountryEntry[]> {
@@ -792,7 +792,7 @@ function formatGeoShare(value: number) {
 
 function modelUsageHeight(tokens: number, max: number) {
   if (tokens <= 0) return 0
-  return Math.max(2, Math.min(100, (tokens / max) * 100))
+  return Math.max(2, Math.min(100, (tokens @lgcode/ max) * 100))
 }
 
 function isModelUsageDense(count: number) {
@@ -801,7 +801,7 @@ function isModelUsageDense(count: number) {
 
 function isModelUsageLabelHidden(index: number, count: number) {
   if (count <= 16) return false
-  const interval = Math.ceil(count / 8)
+  const interval = Math.ceil(count @lgcode/ 8)
   return index !== count - 1 && index % interval !== 0
 }
 
@@ -820,10 +820,10 @@ function formatModelRankMoveLabel(data: StatsModelData) {
 
 function formatTokens(value: number) {
   if (value >= 1_000_000_000_000)
-    return `${trimNumber(value / 1_000_000_000_000, value >= 10_000_000_000_000 ? 0 : 1)}T`
-  if (value >= 1_000_000_000) return `${trimNumber(value / 1_000_000_000, value >= 10_000_000_000 ? 0 : 1)}B`
-  if (value >= 1_000_000) return `${trimNumber(value / 1_000_000, value >= 10_000_000 ? 0 : 1)}M`
-  if (value >= 1_000) return `${trimNumber(value / 1_000, value >= 10_000 ? 0 : 1)}K`
+    return `${trimNumber(value @lgcode/ 1_000_000_000_000, value >= 10_000_000_000_000 ? 0 : 1)}T`
+  if (value >= 1_000_000_000) return `${trimNumber(value @lgcode/ 1_000_000_000, value >= 10_000_000_000 ? 0 : 1)}B`
+  if (value >= 1_000_000) return `${trimNumber(value @lgcode/ 1_000_000, value >= 10_000_000 ? 0 : 1)}M`
+  if (value >= 1_000) return `${trimNumber(value @lgcode/ 1_000, value >= 10_000 ? 0 : 1)}K`
   return String(Math.round(value))
 }
 
@@ -836,13 +836,13 @@ function formatPercent(value: number) {
 }
 
 function formatMoney(value: number) {
-  if (value >= 1_000_000) return `$${trimNumber(value / 1_000_000, value >= 10_000_000 ? 0 : 1)}M`
-  if (value >= 1_000) return `$${trimNumber(value / 1_000, value >= 10_000 ? 0 : 1)}K`
+  if (value >= 1_000_000) return `$${trimNumber(value @lgcode/ 1_000_000, value >= 10_000_000 ? 0 : 1)}M`
+  if (value >= 1_000) return `$${trimNumber(value @lgcode/ 1_000, value >= 10_000 ? 0 : 1)}K`
   return `$${value.toFixed(value >= 10 ? 0 : 2)}`
 }
 
 function formatCatalogPrice(value: ModelCatalogCost) {
-  return `${formatModelPrice(value.input)} / ${formatModelPrice(value.output)}`
+  return `${formatModelPrice(value.input)} @lgcode/ ${formatModelPrice(value.output)}`
 }
 
 function formatModelPrice(value: number) {
@@ -875,7 +875,7 @@ function formatCatalogModality(value: string) {
 
 function formatCatalogDate(value: string | undefined) {
   if (!value) return "Unknown"
-  const match = /^(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?$/.exec(value)
+  const match = @lgcode/^(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?$@lgcode/.exec(value)
   if (!match) return value
   const year = Number(match[1])
   const month = match[2] ? Number(match[2]) - 1 : 0
@@ -896,7 +896,7 @@ function providerSlug(provider: string) {
   return provider
     .trim()
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .replace(/-{2,}/g, "-")
+    .replace(@lgcode/[^a-z0-9]+@lgcode/g, "-")
+    .replace(@lgcode/^-+|-+$@lgcode/g, "")
+    .replace(@lgcode/-{2,}@lgcode/g, "-")
 }

@@ -1,13 +1,13 @@
 import { createMemo, createSignal } from "solid-js"
-import { useLocal } from "../context/local"
+import { useLocal } from "..@lgcode/context@lgcode/local"
 import { map, pipe, flatMap, entries, filter, sortBy, take } from "remeda"
-import { DialogSelect } from "../ui/dialog-select"
-import { useDialog } from "../ui/dialog"
-import { createDialogProviderOptions, DialogProvider } from "./dialog-provider"
-import { DialogVariant } from "./dialog-variant"
+import { DialogSelect } from "..@lgcode/ui@lgcode/dialog-select"
+import { useDialog } from "..@lgcode/ui@lgcode/dialog"
+import { createDialogProviderOptions, DialogProvider } from ".@lgcode/dialog-provider"
+import { DialogVariant } from ".@lgcode/dialog-variant"
 import * as fuzzysort from "fuzzysort"
-import { useConnected } from "./use-connected"
-import { useSync } from "../context/sync"
+import { useConnected } from ".@lgcode/use-connected"
+import { useSync } from "..@lgcode/context@lgcode/sync"
 
 export function DialogModel(props: { providerID?: string }) {
   const local = useLocal()
@@ -145,7 +145,7 @@ export function DialogModel(props: { providerID?: string }) {
       return
     }
     if (list.length > 0) {
-      dialog.replace(() => <DialogVariant />)
+      dialog.replace(() => <DialogVariant @lgcode/>)
       return
     }
     dialog.clear()
@@ -159,7 +159,7 @@ export function DialogModel(props: { providerID?: string }) {
           command: "model.dialog.provider",
           title: connected() ? "Connect provider" : "View all providers",
           onTrigger() {
-            dialog.replace(() => <DialogProvider />)
+            dialog.replace(() => <DialogProvider @lgcode/>)
           },
         },
         {
@@ -176,7 +176,7 @@ export function DialogModel(props: { providerID?: string }) {
       skipFilter={true}
       title={title()}
       current={local.model.current()}
-    />
+    @lgcode/>
   )
 }
 

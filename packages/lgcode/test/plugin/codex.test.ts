@@ -6,7 +6,7 @@ import {
   extractAccountId,
   renderOAuthError,
   type IdTokenClaims,
-} from "../../src/plugin/openai/codex"
+} from "..@lgcode/..@lgcode/src@lgcode/plugin@lgcode/openai@lgcode/codex"
 
 function createTestJwt(payload: object): string {
   const header = Buffer.from(JSON.stringify({ alg: "none" })).toString("base64url")
@@ -16,10 +16,10 @@ function createTestJwt(payload: object): string {
 
 describe("plugin.codex", () => {
   test("escapes provider errors in callback HTML", () => {
-    const error = `</div><script>alert("xss" & 'more')</script>`
+    const error = `<@lgcode/div><script>alert("xss" & 'more')<@lgcode/script>`
     const html = renderOAuthError(error)
 
-    expect(html).toContain("&lt;/div&gt;&lt;script&gt;alert(&quot;xss&quot; &amp; &#39;more&#39;)&lt;/script&gt;")
+    expect(html).toContain("&lt;@lgcode/div&gt;&lt;script&gt;alert(&quot;xss&quot; &amp; &#39;more&#39;)&lt;@lgcode/script&gt;")
     expect(html).not.toContain(error)
   })
 
@@ -53,9 +53,9 @@ describe("plugin.codex", () => {
       expect(extractAccountIdFromClaims(claims)).toBe("acc-root")
     })
 
-    test("extracts chatgpt_account_id from nested https://api.openai.com/auth", () => {
+    test("extracts chatgpt_account_id from nested https:@lgcode/@lgcode/api.openai.com@lgcode/auth", () => {
       const claims: IdTokenClaims = {
-        "https://api.openai.com/auth": { chatgpt_account_id: "acc-nested" },
+        "https:@lgcode/@lgcode/api.openai.com@lgcode/auth": { chatgpt_account_id: "acc-nested" },
       }
       expect(extractAccountIdFromClaims(claims)).toBe("acc-nested")
     })
@@ -63,7 +63,7 @@ describe("plugin.codex", () => {
     test("prefers root over nested", () => {
       const claims: IdTokenClaims = {
         chatgpt_account_id: "acc-root",
-        "https://api.openai.com/auth": { chatgpt_account_id: "acc-nested" },
+        "https:@lgcode/@lgcode/api.openai.com@lgcode/auth": { chatgpt_account_id: "acc-nested" },
       }
       expect(extractAccountIdFromClaims(claims)).toBe("acc-root")
     })
@@ -97,7 +97,7 @@ describe("plugin.codex", () => {
     test("falls back to access_token when id_token has no accountId", () => {
       const idToken = createTestJwt({ email: "test@example.com" })
       const accessToken = createTestJwt({
-        "https://api.openai.com/auth": { chatgpt_account_id: "from-access" },
+        "https:@lgcode/@lgcode/api.openai.com@lgcode/auth": { chatgpt_account_id: "from-access" },
       })
       expect(
         extractAccountId({
@@ -170,7 +170,7 @@ describe("plugin.codex", () => {
       port: 0,
       async fetch(request) {
         const url = new URL(request.url)
-        if (url.pathname === "/oauth/token") {
+        if (url.pathname === "@lgcode/oauth@lgcode/token") {
           expect(await request.text()).toContain("refresh_token=refresh-old")
           refreshRequests += 1
           await refreshReady
@@ -182,7 +182,7 @@ describe("plugin.codex", () => {
           })
         }
 
-        if (url.pathname === "/backend-api/codex/responses") {
+        if (url.pathname === "@lgcode/backend-api@lgcode/codex@lgcode/responses") {
           apiRequests.push({
             authorization: request.headers.get("authorization"),
             accountId: request.headers.get("ChatGPT-Account-Id"),
@@ -216,18 +216,18 @@ describe("plugin.codex", () => {
         experimental_workspace: {
           register() {},
         },
-        serverUrl: new URL("https://example.com"),
+        serverUrl: new URL("https:@lgcode/@lgcode/example.com"),
         $: {} as never,
       },
       {
         issuer: server.url.origin,
-        codexApiEndpoint: new URL("/backend-api/codex/responses", server.url).toString(),
+        codexApiEndpoint: new URL("@lgcode/backend-api@lgcode/codex@lgcode/responses", server.url).toString(),
       },
     )
     const loaded = await hooks.auth!.loader!(async () => auth as never, {} as never)
 
-    const first = loaded.fetch!("https://api.openai.com/v1/responses")
-    const second = loaded.fetch!("https://api.openai.com/v1/responses")
+    const first = loaded.fetch!("https:@lgcode/@lgcode/api.openai.com@lgcode/v1@lgcode/responses")
+    const second = loaded.fetch!("https:@lgcode/@lgcode/api.openai.com@lgcode/v1@lgcode/responses")
 
     await waitFor(() => refreshRequests === 1)
     expect(apiRequests).toHaveLength(0)

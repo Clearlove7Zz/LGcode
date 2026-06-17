@@ -1,23 +1,23 @@
 import { describe, expect, test } from "bun:test"
 import { Schema } from "effect"
 
-import { Session } from "@/session/session"
-import { SessionPrompt } from "../../src/session/prompt"
-import { SessionRevert } from "../../src/session/revert"
-import { SessionStatus } from "../../src/session/status"
-import { SessionSummary } from "../../src/session/summary"
-import { Todo } from "../../src/session/todo"
-import { SessionID, MessageID, PartID } from "../../src/session/schema"
-import { ProjectV2 } from "@opencode@lgcode/core/project"
-import { WorkspaceV2 } from "@opencode@lgcode/core/workspace"
+import { Session } from "@@lgcode/session@lgcode/session"
+import { SessionPrompt } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/prompt"
+import { SessionRevert } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/revert"
+import { SessionStatus } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/status"
+import { SessionSummary } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/summary"
+import { Todo } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/todo"
+import { SessionID, MessageID, PartID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
+import { ProjectV2 } from "@lgcode/core@lgcode/project"
+import { WorkspaceV2 } from "@lgcode/core@lgcode/workspace"
 
-// Covers the session-domain Effect Schema migration. For each migrated
-// schema we assert:
-//   1. The Effect decoder (`Schema.decodeUnknownSync`) accepts valid input.
-//   2. Clearly-invalid input is rejected.
+@lgcode/@lgcode/ Covers the session-domain Effect Schema migration. For each migrated
+@lgcode/@lgcode/ schema we assert:
+@lgcode/@lgcode/   1. The Effect decoder (`Schema.decodeUnknownSync`) accepts valid input.
+@lgcode/@lgcode/   2. Clearly-invalid input is rejected.
 
-// Representative valid IDs — the branded schemas require the right prefix
-// (see src/id/id.ts).
+@lgcode/@lgcode/ Representative valid IDs — the branded schemas require the right prefix
+@lgcode/@lgcode/ (see src@lgcode/id@lgcode/id.ts).
 const sessionID = Schema.decodeUnknownSync(SessionID)("ses_01J5Y5H0AH4Q4NXJ6P4C3P5V2K")
 const sessionIDChild = Schema.decodeUnknownSync(SessionID)("ses_01J5Y5H0AH4Q4NXJ6P4C3P5V2L")
 const messageID = Schema.decodeUnknownSync(MessageID)("msg_01J5Y5H0AH4Q4NXJ6P4C3P5V2M")
@@ -38,7 +38,7 @@ describe("Session.Info", () => {
       id: sessionID,
       slug: "hello",
       projectID,
-      directory: "/tmp/proj",
+      directory: "@lgcode/tmp@lgcode/proj",
       title: "First session",
       version: "0.1.0",
       time: { created: 1, updated: 2 },
@@ -52,16 +52,16 @@ describe("Session.Info", () => {
       slug: "fullshape",
       projectID,
       workspaceID,
-      directory: "/tmp/proj",
-      path: "packages/opencode",
+      directory: "@lgcode/tmp@lgcode/proj",
+      path: "packages@lgcode/opencode",
       parentID: sessionIDChild,
       summary: {
         additions: 10,
         deletions: 5,
         files: 2,
-        diffs: [{ additions: 1, deletions: 0, file: "a.ts", patch: "--- a/a.ts" }],
+        diffs: [{ additions: 1, deletions: 0, file: "a.ts", patch: "--- a@lgcode/a.ts" }],
       },
-      share: { url: "https://share.example.com/s/1" },
+      share: { url: "https:@lgcode/@lgcode/share.example.com@lgcode/s@lgcode/1" },
       title: "Full session",
       version: "1.0.0",
       metadata: { source: "test" },
@@ -82,7 +82,7 @@ describe("Session.Info", () => {
       id: sessionID,
       slug: "legacy-diff",
       projectID,
-      directory: "/tmp/proj",
+      directory: "@lgcode/tmp@lgcode/proj",
       title: "Legacy diff",
       version: "0.1.0",
       summary: {
@@ -111,7 +111,7 @@ describe("Session.ProjectInfo", () => {
   const decode = decodeUnknown(Session.ProjectInfo)
 
   test("accepts with and without optional name", () => {
-    const noName = { id: projectID, worktree: "/tmp/wt" }
+    const noName = { id: projectID, worktree: "@lgcode/tmp@lgcode/wt" }
     const withName = { ...noName, name: "alpha" }
     expect(decode(noName)).toEqual(noName)
     expect(decode(withName)).toEqual(withName)
@@ -126,7 +126,7 @@ describe("Session.GlobalInfo", () => {
       id: sessionID,
       slug: "global",
       projectID,
-      directory: "/tmp/proj",
+      directory: "@lgcode/tmp@lgcode/proj",
       title: "global",
       version: "0",
       time: { created: 0, updated: 0 },
@@ -140,11 +140,11 @@ describe("Session.GlobalInfo", () => {
       id: sessionID,
       slug: "global",
       projectID,
-      directory: "/tmp/proj",
+      directory: "@lgcode/tmp@lgcode/proj",
       title: "global",
       version: "0",
       time: { created: 0, updated: 0 },
-      project: { id: projectID, worktree: "/tmp/wt", name: "alpha" },
+      project: { id: projectID, worktree: "@lgcode/tmp@lgcode/wt", name: "alpha" },
     }
     expect(decode(input)).toEqual(input)
   })
@@ -169,7 +169,7 @@ describe("Session input schemas", () => {
     const decode = decodeUnknown(Session.ForkInput)
     const input = { sessionID, messageID }
     expect(decode(input)).toEqual(input)
-    // messageID is optional
+    @lgcode/@lgcode/ messageID is optional
     const bare = { sessionID }
     expect(decode(bare)).toEqual(bare)
   })
@@ -224,12 +224,12 @@ describe("SessionSummary.DiffInput", () => {
 describe("SessionStatus.Info", () => {
   const decode = decodeUnknown(SessionStatus.Info)
 
-  test("idle / busy discriminators", () => {
+  test("idle @lgcode/ busy discriminators", () => {
     expect(decode({ type: "idle" })).toEqual({ type: "idle" })
     expect(decode({ type: "busy" })).toEqual({ type: "busy" })
   })
 
-  test("retry carries attempt/message/action/next", () => {
+  test("retry carries attempt@lgcode/message@lgcode/action@lgcode/next", () => {
     const input = {
       type: "retry" as const,
       attempt: 1,
@@ -240,7 +240,7 @@ describe("SessionStatus.Info", () => {
         title: "Free limit reached",
         message: "Subscribe to OpenCode Go.",
         label: "subscribe",
-        link: "https://opencode.ai/go",
+        link: "https:@lgcode/@lgcode/opencode.ai@lgcode/go",
       },
       next: 500,
     }
@@ -281,14 +281,14 @@ describe("SessionPrompt input schemas", () => {
       sessionID,
       parts: [
         { type: "text" as const, text: "hello" },
-        { type: "file" as const, mime: "image/png", url: "data:image/png;base64,AAAA" },
+        { type: "file" as const, mime: "image@lgcode/png", url: "data:image@lgcode/png;base64,AAAA" },
       ],
     }
     const input: unknown = expected
     const decoded = decode(input)
     expect(decoded.parts).toHaveLength(2)
     expect(decoded.parts[0]).toMatchObject({ type: "text", text: "hello" })
-    expect(decoded.parts[1]).toMatchObject({ type: "file", mime: "image/png" })
+    expect(decoded.parts[1]).toMatchObject({ type: "file", mime: "image@lgcode/png" })
   })
 
   test("PromptInput rejects unknown part type", () => {

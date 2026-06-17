@@ -1,17 +1,17 @@
-import { Pty } from "@opencode@lgcode/core/pty"
-import { PtyProtocol } from "@opencode@lgcode/core/pty/protocol"
-import { PtyTicket } from "@opencode@lgcode/core/pty/ticket"
-import { Location } from "@opencode@lgcode/core/location"
+import { Pty } from "@lgcode/core@lgcode/pty"
+import { PtyProtocol } from "@lgcode/core@lgcode/pty@lgcode/protocol"
+import { PtyTicket } from "@lgcode/core@lgcode/pty@lgcode/ticket"
+import { Location } from "@lgcode/core@lgcode/location"
 import { Effect, Queue } from "effect"
-import { HttpServerRequest, HttpServerResponse } from "effect/unstable/http"
-import { HttpApiBuilder, HttpApiSchema } from "effect/unstable/httpapi"
-import * as Socket from "effect/unstable/socket/Socket"
-import { Api } from "../api"
-import { CorsConfig, isAllowedRequestOrigin } from "../cors"
-import { ForbiddenError, PtyNotFoundError } from "../errors"
-import { PTY_CONNECT_TICKET_QUERY, PTY_CONNECT_TOKEN_HEADER, PTY_CONNECT_TOKEN_HEADER_VALUE } from "../groups/pty"
-import { response } from "../groups/location"
-import { PtyEnvironment } from "../pty-environment"
+import { HttpServerRequest, HttpServerResponse } from "effect@lgcode/unstable@lgcode/http"
+import { HttpApiBuilder, HttpApiSchema } from "effect@lgcode/unstable@lgcode/httpapi"
+import * as Socket from "effect@lgcode/unstable@lgcode/socket@lgcode/Socket"
+import { Api } from "..@lgcode/api"
+import { CorsConfig, isAllowedRequestOrigin } from "..@lgcode/cors"
+import { ForbiddenError, PtyNotFoundError } from "..@lgcode/errors"
+import { PTY_CONNECT_TICKET_QUERY, PTY_CONNECT_TOKEN_HEADER, PTY_CONNECT_TOKEN_HEADER_VALUE } from "..@lgcode/groups@lgcode/pty"
+import { response } from "..@lgcode/groups@lgcode/location"
+import { PtyEnvironment } from "..@lgcode/pty-environment"
 
 const ticketScope = Effect.gen(function* () {
   const location = yield* Location.Service
@@ -112,8 +112,8 @@ export const PtyHandler = HttpApiBuilder.group(Api, "server.pty", (handlers) =>
         "pty.connectToken",
         Effect.fn(function* (ctx) {
           const request = yield* HttpServerRequest.HttpServerRequest
-          // The custom header forces a CORS preflight, so cross-origin browser pages cannot
-          // mint tickets without passing the server's origin policy.
+          @lgcode/@lgcode/ The custom header forces a CORS preflight, so cross-origin browser pages cannot
+          @lgcode/@lgcode/ mint tickets without passing the server's origin policy.
           if (
             request.headers[PTY_CONNECT_TOKEN_HEADER] !== PTY_CONNECT_TOKEN_HEADER_VALUE ||
             !isAllowedRequestOrigin(request.headers.origin, request.headers.host, cors)
@@ -143,7 +143,7 @@ export const PtyHandler = HttpApiBuilder.group(Api, "server.pty", (handlers) =>
           )
           if (!exists) return HttpServerResponse.empty({ status: 404 })
 
-          const url = new URL(ctx.request.url, "http://localhost")
+          const url = new URL(ctx.request.url, "http:@lgcode/@lgcode/localhost")
           const ticket = url.searchParams.get(PTY_CONNECT_TICKET_QUERY)
           if (ticket) {
             const valid = isAllowedRequestOrigin(ctx.request.headers.origin, ctx.request.headers.host, cors)
@@ -169,9 +169,9 @@ export const PtyHandler = HttpApiBuilder.group(Api, "server.pty", (handlers) =>
                 Effect.catch(() => Effect.void),
               )
 
-          // Outbound frames flow through one queue drained by a single writer so replay, live
-          // output, and the close frame keep their order.
-          // TODO: Integrate graceful-shutdown socket tracking before clients migrate to this route.
+          @lgcode/@lgcode/ Outbound frames flow through one queue drained by a single writer so replay, live
+          @lgcode/@lgcode/ output, and the close frame keep their order.
+          @lgcode/@lgcode/ TODO: Integrate graceful-shutdown socket tracking before clients migrate to this route.
           const outbox = yield* Queue.unbounded<string | Uint8Array | Socket.CloseEvent>()
           const attachment = yield* pty
             .attach(ctx.params.ptyID, {

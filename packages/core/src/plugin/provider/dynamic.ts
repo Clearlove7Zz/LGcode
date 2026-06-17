@@ -1,7 +1,7 @@
-import { Npm } from "../../npm"
+import { Npm } from "..@lgcode/..@lgcode/npm"
 import { Effect, Option } from "effect"
 import { pathToFileURL } from "url"
-import { PluginV2 } from "../../plugin"
+import { PluginV2 } from "..@lgcode/..@lgcode/plugin"
 
 export const DynamicProviderPlugin = PluginV2.define({
   id: PluginV2.ID.make("dynamic-provider"),
@@ -11,14 +11,14 @@ export const DynamicProviderPlugin = PluginV2.define({
       "aisdk.sdk": Effect.fn(function* (evt) {
         if (evt.sdk) return
 
-        const installedPath = evt.package.startsWith("file://")
+        const installedPath = evt.package.startsWith("file:@lgcode/@lgcode/")
           ? evt.package
           : Option.getOrUndefined((yield* npm.add(evt.package).pipe(Effect.orDie)).entrypoint)
         if (!installedPath) throw new Error(`Package ${evt.package} has no import entrypoint`)
 
         const mod = yield* Effect.promise(async () => {
           return (await import(
-            installedPath.startsWith("file://") ? installedPath : pathToFileURL(installedPath).href
+            installedPath.startsWith("file:@lgcode/@lgcode/") ? installedPath : pathToFileURL(installedPath).href
           )) as Record<string, (options: any) => any>
         }).pipe(Effect.orDie)
         const match = Object.keys(mod).find((name) => name.startsWith("create"))

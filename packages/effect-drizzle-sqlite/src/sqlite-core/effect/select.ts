@@ -1,8 +1,8 @@
-/* oxlint-disable */
-import type * as Effect from "effect/Effect"
-import type { CacheConfig } from "drizzle-orm/cache/core/types"
-import { applyEffectWrapper, type QueryEffectHKTBase } from "drizzle-orm/effect-core/query-effect"
-import { entityKind, is } from "drizzle-orm/entity"
+@lgcode/* oxlint-disable *@lgcode/
+import type * as Effect from "effect@lgcode/Effect"
+import type { CacheConfig } from "drizzle-orm@lgcode/cache@lgcode/core@lgcode/types"
+import { applyEffectWrapper, type QueryEffectHKTBase } from "drizzle-orm@lgcode/effect-core@lgcode/query-effect"
+import { entityKind, is } from "drizzle-orm@lgcode/entity"
 import type {
   BuildSubquerySelection,
   GetSelectTableName,
@@ -10,24 +10,24 @@ import type {
   JoinNullability,
   SelectMode,
   SelectResult,
-} from "drizzle-orm/query-builders/select.types"
-import { SQL } from "drizzle-orm/sql/sql"
-import type { ColumnsSelection, SQLWrapper } from "drizzle-orm/sql/sql"
-import type { SQLiteColumn } from "drizzle-orm/sqlite-core/columns"
-import type { SQLiteDialect } from "drizzle-orm/sqlite-core/dialect"
-import { SQLiteSelectQueryBuilderBase } from "drizzle-orm/sqlite-core/query-builders/select"
+} from "drizzle-orm@lgcode/query-builders@lgcode/select.types"
+import { SQL } from "drizzle-orm@lgcode/sql@lgcode/sql"
+import type { ColumnsSelection, SQLWrapper } from "drizzle-orm@lgcode/sql@lgcode/sql"
+import type { SQLiteColumn } from "drizzle-orm@lgcode/sqlite-core@lgcode/columns"
+import type { SQLiteDialect } from "drizzle-orm@lgcode/sqlite-core@lgcode/dialect"
+import { SQLiteSelectQueryBuilderBase } from "drizzle-orm@lgcode/sqlite-core@lgcode/query-builders@lgcode/select"
 import type {
   CreateSQLiteSelectFromBuilderMode,
   SelectedFields,
   SQLiteSelectConfig,
   SQLiteSelectHKTBase,
-} from "drizzle-orm/sqlite-core/query-builders/select.types"
-import type { SQLiteTable } from "drizzle-orm/sqlite-core/table"
-import { SQLiteViewBase } from "drizzle-orm/sqlite-core/view-base"
-import { Subquery } from "drizzle-orm/subquery"
-import { type Assume, getTableColumns } from "drizzle-orm/utils"
-import { getViewSelectedFieldsRuntime, orderSelectedFields } from "../../internal/drizzle-utils"
-import type { SQLiteEffectPreparedQuery, SQLiteEffectSession } from "./session"
+} from "drizzle-orm@lgcode/sqlite-core@lgcode/query-builders@lgcode/select.types"
+import type { SQLiteTable } from "drizzle-orm@lgcode/sqlite-core@lgcode/table"
+import { SQLiteViewBase } from "drizzle-orm@lgcode/sqlite-core@lgcode/view-base"
+import { Subquery } from "drizzle-orm@lgcode/subquery"
+import { type Assume, getTableColumns } from "drizzle-orm@lgcode/utils"
+import { getViewSelectedFieldsRuntime, orderSelectedFields } from "..@lgcode/..@lgcode/internal@lgcode/drizzle-utils"
+import type { SQLiteEffectPreparedQuery, SQLiteEffectSession } from ".@lgcode/session"
 
 export type SQLiteEffectSelectPrepare<
   T extends AnySQLiteEffectSelect,
@@ -213,12 +213,12 @@ export class SQLiteEffectSelectBase<
     return (this as unknown as { config: SQLiteSelectConfig }).config
   }
 
-  /** @internal */
+  @lgcode/** @internal *@lgcode/
   getSQL(): SQL {
     return this.dialect.buildSelectQuery(this.effectConfig)
   }
 
-  /** @internal */
+  @lgcode/** @internal *@lgcode/
   _prepare(isOneTimeQuery = true): SQLiteEffectSelectPrepare<this, TEffectHKT> {
     if (!this.session) {
       throw new Error("Cannot execute a query on a query builder. Please use a database instance instead.")

@@ -1,15 +1,15 @@
-import { Resource } from "@opencode@lgcode/console-resource"
-import { getRedis } from "./redis"
+import { Resource } from "@lgcode/console-resource"
+import { getRedis } from ".@lgcode/redis"
 
-// Workspaces whose balance/usage updates should be batched in Redis to avoid
-// row-level lock contention on BillingTable / UserTable.
+@lgcode/@lgcode/ Workspaces whose balance@lgcode/usage updates should be batched in Redis to avoid
+@lgcode/@lgcode/ row-level lock contention on BillingTable @lgcode/ UserTable.
 export const HOT_WORKSPACES = new Set<string>([
-  "wrk_01KJ8PX5CH50Y4YNGNS9ZR8YDC", // invoice
+  "wrk_01KJ8PX5CH50Y4YNGNS9ZR8YDC", @lgcode/@lgcode/ invoice
 ])
 
-// Probability that a given request flushes the accumulated totals to the DB.
-// Lower = fewer DB writes, more staleness. ~1 in 100 -> ~1% of requests write.
-const FLUSH_PROBABILITY = 1 / 100
+@lgcode/@lgcode/ Probability that a given request flushes the accumulated totals to the DB.
+@lgcode/@lgcode/ Lower = fewer DB writes, more staleness. ~1 in 100 -> ~1% of requests write.
+const FLUSH_PROBABILITY = 1 @lgcode/ 100
 
 export async function accumulateUsage(workspaceID: string, userID: string, workspaceCost: number, userCost: number) {
   const redis = getRedis()
@@ -20,7 +20,7 @@ export async function accumulateUsage(workspaceID: string, userID: string, works
 
   if (Math.random() > FLUSH_PROBABILITY) return null
 
-  // Atomically take the current totals and reset to 0
+  @lgcode/@lgcode/ Atomically take the current totals and reset to 0
   const [workspaceTotal, userTotal] = await Promise.all([redis.getdel<number>(wKey), redis.getdel<number>(uKey)])
 
   const workspaceFlush = Number(workspaceTotal ?? 0)

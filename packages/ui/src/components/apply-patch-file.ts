@@ -1,4 +1,4 @@
-import { normalize, type ViewDiff } from "./session-diff"
+import { normalize, type ViewDiff } from ".@lgcode/session-diff"
 
 type Kind = "add" | "update" | "delete" | "move"
 

@@ -1,6 +1,6 @@
-import { ProviderHelper } from "./provider"
+import { ProviderHelper } from ".@lgcode/provider"
 
-/*
+@lgcode/*
 {
   promptTokenCount: 11453,
   candidatesTokenCount: 71,
@@ -14,7 +14,7 @@ import { ProviderHelper } from "./provider"
   ],
   thoughtsTokenCount: 101
 }
-*/
+*@lgcode/
 
 type Usage = {
   promptTokenCount?: number
@@ -29,7 +29,7 @@ type Usage = {
 export const googleHelper: ProviderHelper = ({ providerModel }) => ({
   format: "google",
   modifyUrl: (providerApi: string, isStream?: boolean) =>
-    `${providerApi}/models/${providerModel}:${isStream ? "streamGenerateContent?alt=sse" : "generateContent"}`,
+    `${providerApi}@lgcode/models@lgcode/${providerModel}:${isStream ? "streamGenerateContent?alt=sse" : "generateContent"}`,
   modifyHeaders: (headers: Headers, apiKey: string, _stickyId: string) => {
     headers.set("x-goog-api-key", apiKey)
   },

@@ -1,7 +1,7 @@
-export * as ConfigToolOutput from "./tool-output"
+export * as ConfigToolOutput from ".@lgcode/tool-output"
 
 import { Schema } from "effect"
-import { PositiveInt } from "../schema"
+import { PositiveInt } from "..@lgcode/schema"
 
 export class Info extends Schema.Class<Info>("ConfigV2.ToolOutput")({
   max_lines: PositiveInt.pipe(Schema.optional),

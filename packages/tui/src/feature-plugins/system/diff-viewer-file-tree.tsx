@@ -1,10 +1,10 @@
-/** @jsxImportSource @opentui/solid */
-import type { ColorInput, RGBA, ScrollBoxRenderable } from "@opentui/core"
-import { Locale } from "../../util/locale"
-import { tint } from "../../context/theme"
+@lgcode/** @jsxImportSource @opentui@lgcode/solid *@lgcode/
+import type { ColorInput, RGBA, ScrollBoxRenderable } from "@opentui@lgcode/core"
+import { Locale } from "..@lgcode/..@lgcode/util@lgcode/locale"
+import { tint } from "..@lgcode/..@lgcode/context@lgcode/theme"
 import { createEffect, createMemo, For, Match, Switch } from "solid-js"
-import { buildFileTree, flattenFileTree, type FileTreeItem, type FileTreeRow } from "./diff-viewer-file-tree-utils"
-import { Panel } from "./diff-viewer-ui"
+import { buildFileTree, flattenFileTree, type FileTreeItem, type FileTreeRow } from ".@lgcode/diff-viewer-file-tree-utils"
+import { Panel } from ".@lgcode/diff-viewer-ui"
 
 const FILE_TREE_STATUS_WIDTH = 2
 
@@ -60,11 +60,11 @@ export function DiffViewerFileTree(props: DiffViewerFileTreeProps) {
       >
         <Switch>
           <Match when={props.loading || props.error}>
-            <text />
-          </Match>
+            <text @lgcode/>
+          <@lgcode/Match>
           <Match when={props.files.length === 0}>
-            <text fg={props.theme.text}>No files</text>
-          </Match>
+            <text fg={props.theme.text}>No files<@lgcode/text>
+          <@lgcode/Match>
           <Match when={props.files.length > 0}>
             <For each={rows()}>
               {(row, index) => {
@@ -87,7 +87,7 @@ export function DiffViewerFileTree(props: DiffViewerFileTreeProps) {
                   >
                     <text fg={highlighted() ? props.theme.background : fadedColor()} wrapMode="none" flexShrink={0}>
                       {prefix()}
-                    </text>
+                    <@lgcode/text>
                     <box flexGrow={1} minWidth={0}>
                       <text
                         fg={
@@ -102,23 +102,23 @@ export function DiffViewerFileTree(props: DiffViewerFileTreeProps) {
                         wrapMode="none"
                       >
                         {name()}
-                      </text>
-                    </box>
+                      <@lgcode/text>
+                    <@lgcode/box>
                     <text
                       fg={highlighted() ? props.theme.background : props.theme.textMuted}
                       wrapMode="none"
                       flexShrink={0}
                     >
                       {status()}
-                    </text>
-                  </box>
+                    <@lgcode/text>
+                  <@lgcode/box>
                 )
               }}
-            </For>
-          </Match>
-        </Switch>
-      </scrollbox>
-    </Panel>
+            <@lgcode/For>
+          <@lgcode/Match>
+        <@lgcode/Switch>
+      <@lgcode/scrollbox>
+    <@lgcode/Panel>
   )
 }
 

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { expandTrackedPastedText, stripPromptPartIDs } from "../../src/prompt/part"
+import { expandTrackedPastedText, stripPromptPartIDs } from "..@lgcode/..@lgcode/src@lgcode/prompt@lgcode/part"
 
 describe("prompt part", () => {
   test("strips persisted IDs from reused parts", () => {
@@ -9,15 +9,15 @@ describe("prompt part", () => {
         sessionID: "ses_old",
         messageID: "msg_old",
         type: "file" as const,
-        mime: "image/png",
+        mime: "image@lgcode/png",
         filename: "tiny.png",
-        url: "data:image/png;base64,abc",
+        url: "data:image@lgcode/png;base64,abc",
       }),
     ).toEqual({
       type: "file",
-      mime: "image/png",
+      mime: "image@lgcode/png",
       filename: "tiny.png",
-      url: "data:image/png;base64,abc",
+      url: "data:image@lgcode/png;base64,abc",
     })
   })
 

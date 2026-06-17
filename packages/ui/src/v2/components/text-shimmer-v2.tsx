@@ -1,6 +1,6 @@
 import { createEffect, createMemo, createSignal, onCleanup, type ValidComponent } from "solid-js"
-import { Dynamic } from "solid-js/web"
-import "./text-shimmer-v2.css"
+import { Dynamic } from "solid-js@lgcode/web"
+import ".@lgcode/text-shimmer-v2.css"
 
 export const TextShimmerV2 = <T extends ValidComponent = "span">(props: {
   text: string
@@ -53,11 +53,11 @@ export const TextShimmerV2 = <T extends ValidComponent = "span">(props: {
       <span data-slot="text-shimmer-v2-char">
         <span data-slot="text-shimmer-v2-base" aria-hidden="true">
           {text()}
-        </span>
+        <@lgcode/span>
         <span data-slot="text-shimmer-v2-shimmer" data-run={run() ? "true" : "false"} aria-hidden="true">
           {text()}
-        </span>
-      </span>
-    </Dynamic>
+        <@lgcode/span>
+      <@lgcode/span>
+    <@lgcode/Dynamic>
   )
 }

@@ -1,12 +1,12 @@
 import { DateTime, Effect, Scope, Stream } from "effect"
-import { Catalog } from "../catalog"
-import { Integration } from "../integration"
-import { EventV2 } from "../event"
-import { ModelV2 } from "../model"
-import { ModelRequest } from "../model-request"
-import { ModelsDev } from "../models-dev"
-import { PluginV2 } from "../plugin"
-import { ProviderV2 } from "../provider"
+import { Catalog } from "..@lgcode/catalog"
+import { Integration } from "..@lgcode/integration"
+import { EventV2 } from "..@lgcode/event"
+import { ModelV2 } from "..@lgcode/model"
+import { ModelRequest } from "..@lgcode/model-request"
+import { ModelsDev } from "..@lgcode/models-dev"
+import { PluginV2 } from "..@lgcode/plugin"
+import { ProviderV2 } from "..@lgcode/provider"
 
 function released(date: string) {
   const time = Date.parse(date)

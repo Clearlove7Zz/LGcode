@@ -1,16 +1,16 @@
 import { afterEach, describe, expect } from "bun:test"
-import { SessionV1 } from "@opencode@lgcode/core/v1/session"
+import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
 import { Effect, Layer } from "effect"
-import { HttpClientResponse } from "effect/unstable/http"
-import { Session as SessionNs } from "@/session/session"
-import { MessageV2 } from "../../src/session/message-v2"
+import { HttpClientResponse } from "effect@lgcode/unstable@lgcode/http"
+import { Session as SessionNs } from "@@lgcode/session@lgcode/session"
+import { MessageV2 } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/message-v2"
 
-import { MessageID, PartID, type SessionID } from "../../src/session/schema"
-import { disposeAllInstances, TestInstance } from "../fixture/fixture"
-import { testEffect } from "../lib/effect"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { ModelV2 } from "@opencode@lgcode/core/model"
-import { httpApiLayer, requestInDirectory } from "./httpapi-layer"
+import { MessageID, PartID, type SessionID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
+import { disposeAllInstances, TestInstance } from "..@lgcode/fixture@lgcode/fixture"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { httpApiLayer, requestInDirectory } from ".@lgcode/httpapi-layer"
 
 const it = testEffect(Layer.mergeAll(SessionNs.defaultLayer, httpApiLayer))
 
@@ -92,7 +92,7 @@ describe("session messages endpoint", () => {
         const session = yield* sessionScoped
         const ids = yield* fill(session.id, 5)
 
-        const a = yield* request(`/session/${session.id}/message?limit=2`)
+        const a = yield* request(`@lgcode/session@lgcode/${session.id}@lgcode/message?limit=2`)
         expect(a.status).toBe(200)
         const aBody = yield* json<SessionV1.WithParts[]>(a)
         expect(aBody.map((item) => item.info.id)).toEqual(ids.slice(-2))
@@ -100,7 +100,7 @@ describe("session messages endpoint", () => {
         expect(cursor).toBeTruthy()
         expect(a.headers["link"]).toContain('rel="next"')
 
-        const b = yield* request(`/session/${session.id}/message?limit=2&before=${encodeURIComponent(cursor!)}`)
+        const b = yield* request(`@lgcode/session@lgcode/${session.id}@lgcode/message?limit=2&before=${encodeURIComponent(cursor!)}`)
         expect(b.status).toBe(200)
         const bBody = yield* json<SessionV1.WithParts[]>(b)
         expect(bBody.map((item) => item.info.id)).toEqual(ids.slice(-4, -2))
@@ -116,7 +116,7 @@ describe("session messages endpoint", () => {
         const session = yield* sessionScoped
         const ids = yield* fill(session.id, 3)
 
-        const res = yield* request(`/session/${session.id}/message`)
+        const res = yield* request(`@lgcode/session@lgcode/${session.id}@lgcode/message`)
         expect(res.status).toBe(200)
         const body = yield* json<SessionV1.WithParts[]>(res)
         expect(body.map((item) => item.info.id)).toEqual(ids)
@@ -131,10 +131,10 @@ describe("session messages endpoint", () => {
       Effect.gen(function* () {
         const session = yield* sessionScoped
 
-        const bad = yield* request(`/session/${session.id}/message?limit=2&before=bad`)
+        const bad = yield* request(`@lgcode/session@lgcode/${session.id}@lgcode/message?limit=2&before=bad`)
         expect(bad.status).toBe(400)
 
-        const miss = yield* request(`/session/ses_missing/message?limit=2`)
+        const miss = yield* request(`@lgcode/session@lgcode/ses_missing@lgcode/message?limit=2`)
         expect(miss.status).toBe(404)
       }),
     ),
@@ -148,7 +148,7 @@ describe("session messages endpoint", () => {
         const session = yield* sessionScoped
         yield* fill(session.id, 520)
 
-        const res = yield* request(`/session/${session.id}/message?limit=510`)
+        const res = yield* request(`@lgcode/session@lgcode/${session.id}@lgcode/message?limit=510`)
         expect(res.status).toBe(200)
         const body = yield* json<SessionV1.WithParts[]>(res)
         expect(body).toHaveLength(510)
@@ -166,7 +166,7 @@ describe("session messages endpoint", () => {
         yield* fill(session.id, 1)
 
         const res = yield* request(
-          `/session/${session.id}/message?limit=80&directory=${encodeURIComponent(tmp.directory)}`,
+          `@lgcode/session@lgcode/${session.id}@lgcode/message?limit=80&directory=${encodeURIComponent(tmp.directory)}`,
         )
         expect(res.status).toBe(200)
         const body = yield* json<unknown[]>(res)

@@ -1,6 +1,6 @@
 import { test, expect, describe } from "bun:test"
-import { resolvePluginProviders } from "../../src/cli/cmd/providers"
-import type { Hooks } from "@opencode@lgcode/plugin"
+import { resolvePluginProviders } from "..@lgcode/..@lgcode/src@lgcode/cli@lgcode/cmd@lgcode/providers"
+import type { Hooks } from "@lgcode/plugin"
 
 function hookWithAuth(provider: string): Hooks {
   return {

@@ -1,7 +1,7 @@
-// @ts-nocheck
+@lgcode/@lgcode/ @ts-nocheck
 import { createSignal } from "solid-js"
-import { Field as FieldV2 } from "./field-v2"
-import { TextareaV2 } from "./textarea-v2"
+import { Field as FieldV2 } from ".@lgcode/field-v2"
+import { TextareaV2 } from ".@lgcode/textarea-v2"
 
 const docs = `### Overview
 Multiline text field with the same neutral elevation, states, and tokens as TextInput v2.
@@ -17,11 +17,11 @@ Multiline text field with the same neutral elevation, states, and tokens as Text
 - **Disabled**: 50% opacity.
 
 ### Field
-Compose with \`Field\` for label, helper prefix/suffix, and tooltip — see the **Field** story.
+Compose with \`Field\` for label, helper prefix@lgcode/suffix, and tooltip — see the **Field** story.
 `
 
 export default {
-  title: "UI V2/Textarea",
+  title: "UI V2@lgcode/Textarea",
   id: "components-textarea-v2",
   component: TextareaV2,
   tags: ["autodocs"],
@@ -63,7 +63,7 @@ export const Controlled = {
     const [value, setValue] = createSignal("Controlled value")
     return (
       <div style={{ display: "grid", gap: "12px", width: "280px" }}>
-        <TextareaV2 value={value()} onInput={(e) => setValue(e.currentTarget.value)} placeholder="Type here…" />
+        <TextareaV2 value={value()} onInput={(e) => setValue(e.currentTarget.value)} placeholder="Type here…" @lgcode/>
         <div
           style={{
             "font-family": "var(--v2-font-family-sans)",
@@ -72,8 +72,8 @@ export const Controlled = {
           }}
         >
           Value: {value()}
-        </div>
-      </div>
+        <@lgcode/div>
+      <@lgcode/div>
     )
   },
 }
@@ -83,29 +83,29 @@ export const Field = {
   render: () => (
     <div style={{ display: "grid", gap: "24px", width: "280px" }}>
       <FieldV2>
-        <FieldV2.Label tooltip="Additional context">Label</FieldV2.Label>
-        <FieldV2.Prefix>Prefix</FieldV2.Prefix>
-        <TextareaV2 placeholder="Text" />
-        <FieldV2.Suffix>Suffix</FieldV2.Suffix>
-      </FieldV2>
+        <FieldV2.Label tooltip="Additional context">Label<@lgcode/FieldV2.Label>
+        <FieldV2.Prefix>Prefix<@lgcode/FieldV2.Prefix>
+        <TextareaV2 placeholder="Text" @lgcode/>
+        <FieldV2.Suffix>Suffix<@lgcode/FieldV2.Suffix>
+      <@lgcode/FieldV2>
       <FieldV2 invalid>
-        <FieldV2.Label>Label</FieldV2.Label>
-        <FieldV2.Prefix>Prefix</FieldV2.Prefix>
-        <TextareaV2 placeholder="Text" defaultValue="Invalid value" />
-        <FieldV2.Suffix>Suffix</FieldV2.Suffix>
-      </FieldV2>
-    </div>
+        <FieldV2.Label>Label<@lgcode/FieldV2.Label>
+        <FieldV2.Prefix>Prefix<@lgcode/FieldV2.Prefix>
+        <TextareaV2 placeholder="Text" defaultValue="Invalid value" @lgcode/>
+        <FieldV2.Suffix>Suffix<@lgcode/FieldV2.Suffix>
+      <@lgcode/FieldV2>
+    <@lgcode/div>
   ),
 }
 
 export const States = {
   render: () => (
     <div style={{ display: "grid", gap: "20px", width: "280px" }}>
-      <TextareaV2 placeholder="Default" />
-      <TextareaV2 placeholder="With value" defaultValue="Hello world" />
-      <TextareaV2 placeholder="Invalid" defaultValue="Invalid value" invalid />
-      <TextareaV2 placeholder="Disabled" disabled />
-      <TextareaV2 placeholder="Disabled with value" defaultValue="Read only" disabled />
-    </div>
+      <TextareaV2 placeholder="Default" @lgcode/>
+      <TextareaV2 placeholder="With value" defaultValue="Hello world" @lgcode/>
+      <TextareaV2 placeholder="Invalid" defaultValue="Invalid value" invalid @lgcode/>
+      <TextareaV2 placeholder="Disabled" disabled @lgcode/>
+      <TextareaV2 placeholder="Disabled with value" defaultValue="Read only" disabled @lgcode/>
+    <@lgcode/div>
   ),
 }

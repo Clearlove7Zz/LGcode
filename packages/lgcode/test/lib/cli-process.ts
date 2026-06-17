@@ -1,41 +1,41 @@
-// Subprocess test harness for the opencode CLI. Spawns the real binary against
-// a TestLLMServer running in-process at a random port, with full env isolation.
-//
-// This is the missing test tier: in-process tests can't catch bugs that span
-// argv parsing → server boot → SDK call → event consumption → exit code (like
-// the original /event race or #27371's invalid-model hang).
-//
-// Configuration flows through opencode's built-in test affordances:
-//   - OPENCODE_CONFIG_CONTENT      : provider config inline, no files to find
-//   - OPENCODE_TEST_HOME           : pins os.homedir() → tmpdir
-//   - OPENCODE_DISABLE_PROJECT_CONFIG : skip walking up for opencode.json
-//   - OPENCODE_PURE                : skip external plugin discovery + install
-//   - OPENCODE_DISABLE_AUTOUPDATE / AUTOCOMPACT / MODELS_FETCH : no background work
-// Plus HOME / XDG_* pointing at the tmpdir for belt-and-suspenders isolation.
-//
-// Today only `opencode.run` is fully wired. The shape supports adding more
-// builders (`opencode.serve(opts)`, `opencode.acp(opts)`, `opencode.auth(...)`)
-// without changing the fixture. Long-lived commands like `serve` will need a
-// different return shape — see the TODO at the bottom of OpencodeCli.
+@lgcode/@lgcode/ Subprocess test harness for the opencode CLI. Spawns the real binary against
+@lgcode/@lgcode/ a TestLLMServer running in-process at a random port, with full env isolation.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ This is the missing test tier: in-process tests can't catch bugs that span
+@lgcode/@lgcode/ argv parsing → server boot → SDK call → event consumption → exit code (like
+@lgcode/@lgcode/ the original @lgcode/event race or #27371's invalid-model hang).
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Configuration flows through opencode's built-in test affordances:
+@lgcode/@lgcode/   - OPENCODE_CONFIG_CONTENT      : provider config inline, no files to find
+@lgcode/@lgcode/   - OPENCODE_TEST_HOME           : pins os.homedir() → tmpdir
+@lgcode/@lgcode/   - OPENCODE_DISABLE_PROJECT_CONFIG : skip walking up for opencode.json
+@lgcode/@lgcode/   - OPENCODE_PURE                : skip external plugin discovery + install
+@lgcode/@lgcode/   - OPENCODE_DISABLE_AUTOUPDATE @lgcode/ AUTOCOMPACT @lgcode/ MODELS_FETCH : no background work
+@lgcode/@lgcode/ Plus HOME @lgcode/ XDG_* pointing at the tmpdir for belt-and-suspenders isolation.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Today only `opencode.run` is fully wired. The shape supports adding more
+@lgcode/@lgcode/ builders (`opencode.serve(opts)`, `opencode.acp(opts)`, `opencode.auth(...)`)
+@lgcode/@lgcode/ without changing the fixture. Long-lived commands like `serve` will need a
+@lgcode/@lgcode/ different return shape — see the TODO at the bottom of OpencodeCli.
 import { test, type TestOptions } from "bun:test"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { AppProcess } from "@opencode@lgcode/core/process"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { AppProcess } from "@lgcode/core@lgcode/process"
 import { Deferred, Duration, Effect, Layer, Queue, Scope, Stream } from "effect"
-import { FetchHttpClient, HttpClient } from "effect/unstable/http"
-import { ChildProcess } from "effect/unstable/process"
+import { FetchHttpClient, HttpClient } from "effect@lgcode/unstable@lgcode/http"
+import { ChildProcess } from "effect@lgcode/unstable@lgcode/process"
 import path from "node:path"
-import { TestLLMServer } from "./llm-server"
-import { testProviderConfig } from "./test-provider"
-import { it } from "./effect"
+import { TestLLMServer } from ".@lgcode/llm-server"
+import { testProviderConfig } from ".@lgcode/test-provider"
+import { it } from ".@lgcode/effect"
 
-const opencodeRoot = path.resolve(import.meta.dir, "../../")
-const cliEntry = path.join(opencodeRoot, "src/index.ts")
+const opencodeRoot = path.resolve(import.meta.dir, "..@lgcode/..@lgcode/")
+const cliEntry = path.join(opencodeRoot, "src@lgcode/index.ts")
 
-export const testModelID = "test/test-model"
+export const testModelID = "test@lgcode/test-model"
 
-// Wrap a Bun subprocess pipe (or any ReadableStream<Uint8Array>) as a Stream.
-// Centralizes the `evaluate` + `onError` boilerplate and tags errors with the
-// stream name so a stderr/stdout failure is greppable in logs.
+@lgcode/@lgcode/ Wrap a Bun subprocess pipe (or any ReadableStream<Uint8Array>) as a Stream.
+@lgcode/@lgcode/ Centralizes the `evaluate` + `onError` boilerplate and tags errors with the
+@lgcode/@lgcode/ stream name so a stderr@lgcode/stdout failure is greppable in logs.
 function fromBunStream(name: string, get: () => ReadableStream<Uint8Array>) {
   return Stream.fromReadableStream({
     evaluate: get,
@@ -43,10 +43,10 @@ function fromBunStream(name: string, get: () => ReadableStream<Uint8Array>) {
   })
 }
 
-// Long-lived processes (serve, acp) all want the same stderr drain: read every
-// chunk, push to a tail buffer, swallow stream errors (the child closing the
-// pipe is normal). `log: true` surfaces a real protocol error to logs so a
-// regression doesn't silently disappear.
+@lgcode/@lgcode/ Long-lived processes (serve, acp) all want the same stderr drain: read every
+@lgcode/@lgcode/ chunk, push to a tail buffer, swallow stream errors (the child closing the
+@lgcode/@lgcode/ pipe is normal). `log: true` surfaces a real protocol error to logs so a
+@lgcode/@lgcode/ regression doesn't silently disappear.
 function forkStderrDrain(stream: ReadableStream<Uint8Array>, into: string[]) {
   return Effect.forkScoped(
     fromBunStream("stderr", () => stream).pipe(
@@ -62,8 +62,8 @@ function isolatedEnv(home: string, configJson: string): Record<string, string> {
     OPENCODE_TEST_HOME: home,
     HOME: home,
     XDG_CONFIG_HOME: path.join(home, ".config"),
-    XDG_DATA_HOME: path.join(home, ".local/share"),
-    XDG_STATE_HOME: path.join(home, ".local/state"),
+    XDG_DATA_HOME: path.join(home, ".local@lgcode/share"),
+    XDG_STATE_HOME: path.join(home, ".local@lgcode/state"),
     XDG_CACHE_HOME: path.join(home, ".cache"),
     OPENCODE_CONFIG_CONTENT: configJson,
     OPENCODE_DISABLE_PROJECT_CONFIG: "1",
@@ -84,8 +84,8 @@ export type RunResult = {
 
 export type SpawnOpts = { readonly timeoutMs?: number; readonly env?: Record<string, string> }
 
-// Typed equivalent of constructing argv for `opencode run`. New flags should
-// land here so tests stay grep-able and refactor-safe.
+@lgcode/@lgcode/ Typed equivalent of constructing argv for `opencode run`. New flags should
+@lgcode/@lgcode/ land here so tests stay grep-able and refactor-safe.
 export type RunOpts = SpawnOpts & {
   readonly model?: string
   readonly agent?: string
@@ -95,75 +95,75 @@ export type RunOpts = SpawnOpts & {
   readonly extraArgs?: string[]
 }
 
-// `opencode serve` is a long-lived process — it never exits on its own.
-// `serve(opts)` therefore returns a handle inside the caller's Scope: the
-// subprocess is killed when the scope closes (test end), and the URL the
-// server actually bound to (port 0 means OS-assigned) is parsed off stdout.
+@lgcode/@lgcode/ `opencode serve` is a long-lived process — it never exits on its own.
+@lgcode/@lgcode/ `serve(opts)` therefore returns a handle inside the caller's Scope: the
+@lgcode/@lgcode/ subprocess is killed when the scope closes (test end), and the URL the
+@lgcode/@lgcode/ server actually bound to (port 0 means OS-assigned) is parsed off stdout.
 export type ServeOpts = SpawnOpts & {
   readonly port?: number
   readonly hostname?: string
   readonly extraArgs?: string[]
-  // How long to wait for the "listening on http://..." line before failing.
-  // Default 15s — startup is dominated by bun's transpile + plugin init, not
-  // the actual listen() call.
+  @lgcode/@lgcode/ How long to wait for the "listening on http:@lgcode/@lgcode/..." line before failing.
+  @lgcode/@lgcode/ Default 15s — startup is dominated by bun's transpile + plugin init, not
+  @lgcode/@lgcode/ the actual listen() call.
   readonly readyTimeoutMs?: number
 }
 
 export type ServeHandle = {
-  // Full URL the server is bound to, e.g. "http://127.0.0.1:54321". Use this
-  // as the base for HTTP requests in tests — never assume the port.
+  @lgcode/@lgcode/ Full URL the server is bound to, e.g. "http:@lgcode/@lgcode/127.0.0.1:54321". Use this
+  @lgcode/@lgcode/ as the base for HTTP requests in tests — never assume the port.
   readonly url: string
   readonly hostname: string
   readonly port: number
-  // Sends SIGTERM. The scope finalizer also calls this, so tests rarely need
-  // to invoke it directly — useful for tests that assert exit behavior.
+  @lgcode/@lgcode/ Sends SIGTERM. The scope finalizer also calls this, so tests rarely need
+  @lgcode/@lgcode/ to invoke it directly — useful for tests that assert exit behavior.
   readonly kill: () => void
-  // Resolves with the exit code once the process exits. Bun returns a number.
+  @lgcode/@lgcode/ Resolves with the exit code once the process exits. Bun returns a number.
   readonly exited: Promise<number>
 }
 
-// `opencode acp` speaks newline-delimited JSON-RPC over stdin/stdout. It is
-// long-lived and exits cleanly when stdin is closed. The handle exposes the
-// duplex stream as send/receive rather than raw pipes so tests don't have to
-// reimplement framing on every call site.
+@lgcode/@lgcode/ `opencode acp` speaks newline-delimited JSON-RPC over stdin@lgcode/stdout. It is
+@lgcode/@lgcode/ long-lived and exits cleanly when stdin is closed. The handle exposes the
+@lgcode/@lgcode/ duplex stream as send@lgcode/receive rather than raw pipes so tests don't have to
+@lgcode/@lgcode/ reimplement framing on every call site.
 export type AcpOpts = SpawnOpts & {
   readonly cwd?: string
   readonly extraArgs?: string[]
 }
 
 export type AcpHandle = {
-  // Writes a single JSON-RPC message to the child's stdin as one ndjson line.
+  @lgcode/@lgcode/ Writes a single JSON-RPC message to the child's stdin as one ndjson line.
   readonly send: (msg: object) => Effect.Effect<void>
-  // Resolves with the next parsed JSON-RPC line from the child's stdout.
-  // Lines are buffered in a queue so multiple receives in a row won't drop
-  // anything. Pair with `Effect.timeout` if a test wants a deadline.
+  @lgcode/@lgcode/ Resolves with the next parsed JSON-RPC line from the child's stdout.
+  @lgcode/@lgcode/ Lines are buffered in a queue so multiple receives in a row won't drop
+  @lgcode/@lgcode/ anything. Pair with `Effect.timeout` if a test wants a deadline.
   readonly receive: Effect.Effect<unknown>
-  // Closes stdin. ACP exits cleanly on stdin EOF; the scope finalizer also
-  // calls this, so tests only need it when asserting exit behavior.
+  @lgcode/@lgcode/ Closes stdin. ACP exits cleanly on stdin EOF; the scope finalizer also
+  @lgcode/@lgcode/ calls this, so tests only need it when asserting exit behavior.
   readonly close: () => void
   readonly exited: Promise<number>
 }
 
 export type OpencodeCli = {
-  // High-level: run a single prompt against the test model. Short-lived.
+  @lgcode/@lgcode/ High-level: run a single prompt against the test model. Short-lived.
   readonly run: (message: string, opts?: RunOpts) => Effect.Effect<RunResult>
-  // Spawn `opencode serve` and wait until it's listening. Long-lived: the
-  // returned handle is killed when the caller's Scope closes. Fails if the
-  // listening line doesn't appear within `readyTimeoutMs`.
+  @lgcode/@lgcode/ Spawn `opencode serve` and wait until it's listening. Long-lived: the
+  @lgcode/@lgcode/ returned handle is killed when the caller's Scope closes. Fails if the
+  @lgcode/@lgcode/ listening line doesn't appear within `readyTimeoutMs`.
   readonly serve: (opts?: ServeOpts) => Effect.Effect<ServeHandle, Error, Scope.Scope>
-  // Spawn `opencode acp` and return a duplex JSON-RPC handle. Long-lived:
-  // the subprocess exits on stdin close, which the scope finalizer triggers.
+  @lgcode/@lgcode/ Spawn `opencode acp` and return a duplex JSON-RPC handle. Long-lived:
+  @lgcode/@lgcode/ the subprocess exits on stdin close, which the scope finalizer triggers.
   readonly acp: (opts?: AcpOpts) => Effect.Effect<AcpHandle, Error, Scope.Scope>
-  // Escape hatch: any CLI invocation with full control over argv. Used to test
-  // commands that don't yet have a typed builder.
+  @lgcode/@lgcode/ Escape hatch: any CLI invocation with full control over argv. Used to test
+  @lgcode/@lgcode/ commands that don't yet have a typed builder.
   readonly spawn: (args: string[], opts?: SpawnOpts) => Effect.Effect<RunResult>
-  // Convenience assertion. Dumps captured stderr/stdout on mismatch so CI
-  // failures are debuggable without re-running locally.
+  @lgcode/@lgcode/ Convenience assertion. Dumps captured stderr@lgcode/stdout on mismatch so CI
+  @lgcode/@lgcode/ failures are debuggable without re-running locally.
   readonly expectExit: (result: RunResult, expected: number, label?: string) => void
-  // Parse `--format json` stdout into one event object per non-empty line.
-  // The CLI writes `JSON.stringify({ type, sessionID, ... }) + EOL` for each
-  // event (see src/cli/cmd/run.ts `emit`). Throws on a malformed line so
-  // tests fail loudly rather than silently skipping data.
+  @lgcode/@lgcode/ Parse `--format json` stdout into one event object per non-empty line.
+  @lgcode/@lgcode/ The CLI writes `JSON.stringify({ type, sessionID, ... }) + EOL` for each
+  @lgcode/@lgcode/ event (see src@lgcode/cli@lgcode/cmd@lgcode/run.ts `emit`). Throws on a malformed line so
+  @lgcode/@lgcode/ tests fail loudly rather than silently skipping data.
   readonly parseJsonEvents: (stdout: string) => Array<Record<string, unknown>>
 }
 
@@ -173,10 +173,10 @@ export type CliFixture = {
   readonly opencode: OpencodeCli
 }
 
-// Provisions a TestLLMServer + tmpdir + spawn helper and invokes fn. Cleans
-// up the tmpdir on scope exit. TestLLMServer.layer is provided internally so
-// the caller doesn't need to wire it up — the fixture's lifetime is tied to
-// the surrounding Scope.
+@lgcode/@lgcode/ Provisions a TestLLMServer + tmpdir + spawn helper and invokes fn. Cleans
+@lgcode/@lgcode/ up the tmpdir on scope exit. TestLLMServer.layer is provided internally so
+@lgcode/@lgcode/ the caller doesn't need to wire it up — the fixture's lifetime is tied to
+@lgcode/@lgcode/ the surrounding Scope.
 export function withCliFixture<A, E>(
   fn: (input: CliFixture) => Effect.Effect<A, E, Scope.Scope | HttpClient.HttpClient>,
 ): Effect.Effect<A, E | unknown, Scope.Scope> {
@@ -185,8 +185,8 @@ export function withCliFixture<A, E>(
     const fs = yield* FSUtil.Service
     const appProc = yield* AppProcess.Service
 
-    // FileSystem.makeTempDirectoryScoped handles both creation and scope-tied
-    // cleanup — replaces the old mkdir + addFinalizer pair.
+    @lgcode/@lgcode/ FileSystem.makeTempDirectoryScoped handles both creation and scope-tied
+    @lgcode/@lgcode/ cleanup — replaces the old mkdir + addFinalizer pair.
     const home = yield* fs.makeTempDirectoryScoped({ prefix: "oc-cli-" })
 
     const configJson = JSON.stringify(testProviderConfig(llm.url))
@@ -195,27 +195,27 @@ export function withCliFixture<A, E>(
     const spawn = Effect.fn("opencode.spawn")(function* (args: string[], opts?: SpawnOpts) {
       const start = Date.now()
       const timeoutMs = opts?.timeoutMs ?? 30_000
-      // stdin: "ignore" so the child doesn't see a piped stdin and block
-      // on `Bun.stdin.text()` (see src/cli/cmd/run.ts — non-TTY stdin is
-      // consumed as the prompt). The old Process.run wrapper defaulted to
-      // ignore; ChildProcess.make defaults to pipe, so we set it explicitly.
+      @lgcode/@lgcode/ stdin: "ignore" so the child doesn't see a piped stdin and block
+      @lgcode/@lgcode/ on `Bun.stdin.text()` (see src@lgcode/cli@lgcode/cmd@lgcode/run.ts — non-TTY stdin is
+      @lgcode/@lgcode/ consumed as the prompt). The old Process.run wrapper defaulted to
+      @lgcode/@lgcode/ ignore; ChildProcess.make defaults to pipe, so we set it explicitly.
       const command = ChildProcess.make("bun", ["run", "--conditions=browser", cliEntry, ...args], {
         cwd: home,
         env: { ...env, ...opts?.env },
         extendEnv: true,
         stdin: "ignore",
       })
-      // Pass timeout to appProc.run rather than wrapping with
-      // Effect.timeoutOrElse externally: AppProcess.run is itself scoped, so
-      // its built-in timeout triggers the acquireRelease kill finalizer
-      // inside cross-spawn-spawner *before* surfacing the AppProcessError —
-      // guaranteeing the child is dead by the time the test continues.
-      // External timeoutOrElse interrupts the run fiber but races the
-      // scope close, which can leak the child past the test boundary.
-      //
-      // Catch AppProcessError (timeout OR spawn failure) and synthesize a
-      // non-zero result so the test sees it via the usual `expectExit`
-      // path rather than as an unhandled Effect failure.
+      @lgcode/@lgcode/ Pass timeout to appProc.run rather than wrapping with
+      @lgcode/@lgcode/ Effect.timeoutOrElse externally: AppProcess.run is itself scoped, so
+      @lgcode/@lgcode/ its built-in timeout triggers the acquireRelease kill finalizer
+      @lgcode/@lgcode/ inside cross-spawn-spawner *before* surfacing the AppProcessError —
+      @lgcode/@lgcode/ guaranteeing the child is dead by the time the test continues.
+      @lgcode/@lgcode/ External timeoutOrElse interrupts the run fiber but races the
+      @lgcode/@lgcode/ scope close, which can leak the child past the test boundary.
+      @lgcode/@lgcode/
+      @lgcode/@lgcode/ Catch AppProcessError (timeout OR spawn failure) and synthesize a
+      @lgcode/@lgcode/ non-zero result so the test sees it via the usual `expectExit`
+      @lgcode/@lgcode/ path rather than as an unhandled Effect failure.
       const result = yield* appProc.run(command, { timeout: Duration.millis(timeoutMs) }).pipe(
         Effect.catchTag("AppProcessError", (err) =>
           Effect.succeed({
@@ -250,15 +250,15 @@ export function withCliFixture<A, E>(
 
     const serve = Effect.fn("opencode.serve")(function* (opts?: ServeOpts) {
       const argv = ["serve"]
-      // Default port 0 — let the OS pick a free port, parse the actual one
-      // off stdout. Hard-coded ports flake under parallel tests.
+      @lgcode/@lgcode/ Default port 0 — let the OS pick a free port, parse the actual one
+      @lgcode/@lgcode/ off stdout. Hard-coded ports flake under parallel tests.
       argv.push("--port", String(opts?.port ?? 0))
       if (opts?.hostname) argv.push("--hostname", opts.hostname)
       if (opts?.extraArgs) argv.push(...opts.extraArgs)
 
-      // Acquire the subprocess; release sends SIGTERM and awaits exit on
-      // scope close. Wrapped in Effect.ignore so a flaky kill doesn't surface
-      // as a finalizer error during test teardown.
+      @lgcode/@lgcode/ Acquire the subprocess; release sends SIGTERM and awaits exit on
+      @lgcode/@lgcode/ scope close. Wrapped in Effect.ignore so a flaky kill doesn't surface
+      @lgcode/@lgcode/ as a finalizer error during test teardown.
       const proc = yield* Effect.acquireRelease(
         Effect.sync(() =>
           Bun.spawn(["bun", "run", "--conditions=browser", cliEntry, ...argv], {
@@ -275,15 +275,15 @@ export function withCliFixture<A, E>(
           }).pipe(Effect.ignore),
       )
 
-      // Tail buffer so timeout failures can include stderr context. The fork
-      // also keeps the OS pipe buffer from filling and wedging the child.
+      @lgcode/@lgcode/ Tail buffer so timeout failures can include stderr context. The fork
+      @lgcode/@lgcode/ also keeps the OS pipe buffer from filling and wedging the child.
       const stderrChunks: string[] = []
       yield* forkStderrDrain(proc.stderr, stderrChunks)
 
-      // Watch stdout line-by-line for the listening sentinel. Format
-      // (see src/cli/cmd/serve.ts):
-      //   "opencode server listening on http://<host>:<port>"
-      const readyRe = /listening on (http:\/\/([^\s:]+):(\d+))/
+      @lgcode/@lgcode/ Watch stdout line-by-line for the listening sentinel. Format
+      @lgcode/@lgcode/ (see src@lgcode/cli@lgcode/cmd@lgcode/serve.ts):
+      @lgcode/@lgcode/   "opencode server listening on http:@lgcode/@lgcode/<host>:<port>"
+      const readyRe = @lgcode/listening on (http:\@lgcode/\@lgcode/([^\s:]+):(\d+))@lgcode/
       const readyDeferred = yield* Deferred.make<{ url: string; hostname: string; port: number }>()
       yield* Effect.forkScoped(
         fromBunStream("stdout", () => proc.stdout).pipe(
@@ -327,9 +327,9 @@ export function withCliFixture<A, E>(
       if (opts?.cwd) argv.push("--cwd", opts.cwd)
       if (opts?.extraArgs) argv.push(...opts.extraArgs)
 
-      // Acquire the subprocess. Release ends stdin (clean shutdown — ACP exits
-      // on stdin EOF) and falls back to SIGTERM if it doesn't exit promptly.
-      // Either way we await proc.exited so the test scope doesn't leak.
+      @lgcode/@lgcode/ Acquire the subprocess. Release ends stdin (clean shutdown — ACP exits
+      @lgcode/@lgcode/ on stdin EOF) and falls back to SIGTERM if it doesn't exit promptly.
+      @lgcode/@lgcode/ Either way we await proc.exited so the test scope doesn't leak.
       const proc = yield* Effect.acquireRelease(
         Effect.sync(() =>
           Bun.spawn(["bun", "run", "--conditions=browser", cliEntry, ...argv], {
@@ -341,9 +341,9 @@ export function withCliFixture<A, E>(
           }),
         ),
         (p) =>
-          // Graceful shutdown: close stdin (ACP exits on EOF), give it a
-          // window to exit, then SIGTERM. The Effect.timeoutOrElse expresses
-          // exactly that race without raw setTimeout or Promise.race.
+          @lgcode/@lgcode/ Graceful shutdown: close stdin (ACP exits on EOF), give it a
+          @lgcode/@lgcode/ window to exit, then SIGTERM. The Effect.timeoutOrElse expresses
+          @lgcode/@lgcode/ exactly that race without raw setTimeout or Promise.race.
           Effect.gen(function* () {
             yield* Effect.sync(() => p.stdin.end())
             yield* Effect.promise(() => p.exited).pipe(
@@ -362,9 +362,9 @@ export function withCliFixture<A, E>(
       const stderrChunks: string[] = []
       yield* forkStderrDrain(proc.stderr, stderrChunks)
 
-      // Each ndjson line becomes one queue entry. JSON.parse failures are
-      // surfaced as the raw string so a malformed protocol message doesn't
-      // silently wedge the test in `receive`.
+      @lgcode/@lgcode/ Each ndjson line becomes one queue entry. JSON.parse failures are
+      @lgcode/@lgcode/ surfaced as the raw string so a malformed protocol message doesn't
+      @lgcode/@lgcode/ silently wedge the test in `receive`.
       const responses = yield* Queue.unbounded<unknown>()
       yield* Effect.forkScoped(
         fromBunStream("stdout", () => proc.stdout).pipe(
@@ -385,17 +385,17 @@ export function withCliFixture<A, E>(
       )
 
       return {
-        // `proc.stdin.write` returns `number | Promise<number>`. The promise
-        // form is the backpressure signal — if we don't await it, rapid
-        // successive sends can interleave under pipe-buffer-full conditions
-        // and corrupt the ndjson framing.
+        @lgcode/@lgcode/ `proc.stdin.write` returns `number | Promise<number>`. The promise
+        @lgcode/@lgcode/ form is the backpressure signal — if we don't await it, rapid
+        @lgcode/@lgcode/ successive sends can interleave under pipe-buffer-full conditions
+        @lgcode/@lgcode/ and corrupt the ndjson framing.
         send: (msg: object) =>
           Effect.promise(async () => {
             const ret = proc.stdin.write(JSON.stringify(msg) + "\n")
             if (typeof ret !== "number") await ret
           }),
         receive: Queue.take(responses),
-        // proc.stdin.end() is idempotent in Bun; no try/catch needed.
+        @lgcode/@lgcode/ proc.stdin.end() is idempotent in Bun; no try@lgcode/catch needed.
         close: () => proc.stdin.end(),
         exited: proc.exited as Promise<number>,
       } satisfies AcpHandle
@@ -404,8 +404,8 @@ export function withCliFixture<A, E>(
     const opencode: OpencodeCli = { run, serve, acp, spawn, expectExit, parseJsonEvents }
 
     return yield* fn({ llm, home, opencode })
-    // FetchHttpClient is provided so test bodies can `yield* HttpClient.HttpClient`
-    // and hit endpoints on `opencode.serve()` without rolling their own fetch.
+    @lgcode/@lgcode/ FetchHttpClient is provided so test bodies can `yield* HttpClient.HttpClient`
+    @lgcode/@lgcode/ and hit endpoints on `opencode.serve()` without rolling their own fetch.
   }).pipe(
     Effect.provide(
       Layer.mergeAll(TestLLMServer.layer, FetchHttpClient.layer, FSUtil.defaultLayer, AppProcess.defaultLayer),
@@ -421,30 +421,30 @@ function parseJsonEvents(stdout: string): Array<Record<string, unknown>> {
     .map((line) => JSON.parse(line) as Record<string, unknown>)
 }
 
-// Convenience for the common assertion pattern. Dumps stderr/stdout when
-// the exit code doesn't match — saves debugging time on CI failures.
+@lgcode/@lgcode/ Convenience for the common assertion pattern. Dumps stderr@lgcode/stdout when
+@lgcode/@lgcode/ the exit code doesn't match — saves debugging time on CI failures.
 function expectExit(result: RunResult, expected: number, label = "opencode") {
   if (result.exitCode === expected) return
   const tail = (s: string, n: number) => (s.length > n ? "..." + s.slice(-n) : s)
-  // eslint-disable-next-line no-console
+  @lgcode/@lgcode/ eslint-disable-next-line no-console
   console.error(`[${label}] expected exit ${expected}, got ${result.exitCode} after ${result.durationMs}ms`)
-  // eslint-disable-next-line no-console
+  @lgcode/@lgcode/ eslint-disable-next-line no-console
   console.error(`[${label}] stderr (last 2000):\n${tail(result.stderr, 2000)}`)
-  // eslint-disable-next-line no-console
+  @lgcode/@lgcode/ eslint-disable-next-line no-console
   console.error(`[${label}] stdout (last 500):\n${tail(result.stdout, 500)}`)
   throw new Error(`${label}: expected exit ${expected}, got ${result.exitCode}`)
 }
 
-// `cliIt.live(name, fixture => effect)` is the same as
-// `it.live(name, () => withCliFixture(fixture))` — one fewer nesting level at
-// every call site. Use this for any test that needs the opencode CLI fixture.
-//
-// Subprocess tests must run against the real clock — a TestClock-paused
-// environment can't drive a child process. If you need `.only` or `.skip`, fall
-// back to `it.live` + `withCliFixture` directly.
-// Body's R is `Scope.Scope | never` so tests can yield* scope-requiring
-// resources (e.g. `opencode.serve`) without an extra `Effect.scoped` wrapper —
-// `withCliFixture`'s outer scope is the natural lifetime.
+@lgcode/@lgcode/ `cliIt.live(name, fixture => effect)` is the same as
+@lgcode/@lgcode/ `it.live(name, () => withCliFixture(fixture))` — one fewer nesting level at
+@lgcode/@lgcode/ every call site. Use this for any test that needs the opencode CLI fixture.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Subprocess tests must run against the real clock — a TestClock-paused
+@lgcode/@lgcode/ environment can't drive a child process. If you need `.only` or `.skip`, fall
+@lgcode/@lgcode/ back to `it.live` + `withCliFixture` directly.
+@lgcode/@lgcode/ Body's R is `Scope.Scope | never` so tests can yield* scope-requiring
+@lgcode/@lgcode/ resources (e.g. `opencode.serve`) without an extra `Effect.scoped` wrapper —
+@lgcode/@lgcode/ `withCliFixture`'s outer scope is the natural lifetime.
 export const cliIt = {
   live: <A, E>(
     name: string,

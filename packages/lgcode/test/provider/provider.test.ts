@@ -1,25 +1,25 @@
 import { afterEach, expect, test } from "bun:test"
-import { mkdir, unlink } from "fs/promises"
+import { mkdir, unlink } from "fs@lgcode/promises"
 import path from "path"
 import { Effect, Layer } from "effect"
-import { ModelsDev } from "@opencode@lgcode/core/models-dev"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
-import { Global } from "@opencode@lgcode/core/global"
-import { disposeAllInstances, provideInstanceEffect, tmpdirScoped, TestInstance } from "../fixture/fixture"
-import { markPluginDependenciesReady } from "../fixture/plugin"
-import { Auth } from "@/auth"
-import { Config } from "@/config/config"
-import { Env } from "../../src/env"
-import { Plugin } from "../../src/plugin/index"
-import { Provider } from "@/provider/provider"
+import { ModelsDev } from "@lgcode/core@lgcode/models-dev"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
+import { Global } from "@lgcode/core@lgcode/global"
+import { disposeAllInstances, provideInstanceEffect, tmpdirScoped, TestInstance } from "..@lgcode/fixture@lgcode/fixture"
+import { markPluginDependenciesReady } from "..@lgcode/fixture@lgcode/plugin"
+import { Auth } from "@@lgcode/auth"
+import { Config } from "@@lgcode/config@lgcode/config"
+import { Env } from "..@lgcode/..@lgcode/src@lgcode/env"
+import { Plugin } from "..@lgcode/..@lgcode/src@lgcode/plugin@lgcode/index"
+import { Provider } from "@@lgcode/provider@lgcode/provider"
 
-import { RuntimeFlags } from "@/effect/runtime-flags"
-import { Filesystem } from "@/util/filesystem"
-import { InstanceLayer } from "@/project/instance-layer"
-import { testEffect } from "../lib/effect"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { ModelV2 } from "@opencode@lgcode/core/model"
+import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
+import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
+import { InstanceLayer } from "@@lgcode/project@lgcode/instance-layer"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
 
 const originalEnv = new Map<string, string | undefined>()
 
@@ -84,8 +84,8 @@ const alphaProviderConfig = {
   provider: {
     "custom-provider": {
       name: "Custom Provider",
-      npm: "@ai-sdk/openai-compatible",
-      api: "https://api.custom.com/v1",
+      npm: "@ai-sdk@lgcode/openai-compatible",
+      api: "https:@lgcode/@lgcode/api.custom.com@lgcode/v1",
       models: {
         "active-model": {
           name: "Active Model",
@@ -107,8 +107,8 @@ it.instance("provider loaded from env variable", () =>
     yield* setProcessEnv("ANTHROPIC_API_KEY", "test-api-key")
     const providers = yield* list
     expect(providers[ProviderV2.ID.anthropic]).toBeDefined()
-    // Provider should retain its connection source even if custom loaders
-    // merge additional options.
+    @lgcode/@lgcode/ Provider should retain its connection source even if custom loaders
+    @lgcode/@lgcode/ merge additional options.
     expect(providers[ProviderV2.ID.anthropic].source).toBe("env")
     expect(providers[ProviderV2.ID.anthropic].options.headers["anthropic-beta"]).toBeDefined()
   }),
@@ -201,8 +201,8 @@ it.instance(
       provider: {
         "custom-provider": {
           name: "Custom Provider",
-          npm: "@ai-sdk/openai-compatible",
-          api: "https://api.custom.com/v1",
+          npm: "@ai-sdk@lgcode/openai-compatible",
+          api: "https:@lgcode/@lgcode/api.custom.com@lgcode/v1",
           env: ["CUSTOM_API_KEY"],
           models: {
             "custom-model": {
@@ -255,8 +255,8 @@ it.instance(
       provider: {
         "custom-provider": {
           name: "Custom Provider",
-          npm: "@ai-sdk/openai-compatible",
-          api: "https://api.custom.com/v1",
+          npm: "@ai-sdk@lgcode/openai-compatible",
+          api: "https:@lgcode/@lgcode/api.custom.com@lgcode/v1",
           models: {
             "deepseek-r1": { name: "DeepSeek R1" },
             "deepseek-details": { name: "DeepSeek Details", interleaved: { field: "reasoning_details" } },
@@ -266,8 +266,8 @@ it.instance(
         },
         "custom-anthropic-provider": {
           name: "Custom Anthropic Provider",
-          npm: "@ai-sdk/anthropic",
-          api: "https://api.custom.com/v1",
+          npm: "@ai-sdk@lgcode/anthropic",
+          api: "https:@lgcode/@lgcode/api.custom.com@lgcode/v1",
           models: { "deepseek-r1": { name: "DeepSeek R1" } },
           options: { apiKey: "custom-key" },
         },
@@ -282,7 +282,7 @@ it.instance(
     yield* setProcessEnv("ANTHROPIC_API_KEY", "env-api-key")
     const providers = yield* list
     expect(providers[ProviderV2.ID.anthropic]).toBeDefined()
-    // Config options should be merged
+    @lgcode/@lgcode/ Config options should be merged
     expect(providers[ProviderV2.ID.anthropic].options.timeout).toBe(60000)
     expect(providers[ProviderV2.ID.anthropic].options.headerTimeout).toBe(10000)
     expect(providers[ProviderV2.ID.anthropic].options.chunkTimeout).toBe(15000)
@@ -290,7 +290,7 @@ it.instance(
   { config: { provider: { anthropic: { options: { timeout: 60000, headerTimeout: 10000, chunkTimeout: 15000 } } } } },
 )
 
-it.instance("getModel returns model for valid provider/model", () =>
+it.instance("getModel returns model for valid provider@lgcode/model", () =>
   Effect.gen(function* () {
     yield* setProcessEnv("ANTHROPIC_API_KEY", "test-api-key")
     const provider = yield* Provider.Service
@@ -322,18 +322,18 @@ it.instance("getModel throws ModelNotFoundError for invalid provider", () =>
   }),
 )
 
-// Pure synchronous unit tests — no Effect runtime needed.
+@lgcode/@lgcode/ Pure synchronous unit tests — no Effect runtime needed.
 
-test("parseModel correctly parses provider/model string", () => {
-  const result = Provider.parseModel("anthropic/claude-sonnet-4")
+test("parseModel correctly parses provider@lgcode/model string", () => {
+  const result = Provider.parseModel("anthropic@lgcode/claude-sonnet-4")
   expect(String(result.providerID)).toBe("anthropic")
   expect(String(result.modelID)).toBe("claude-sonnet-4")
 })
 
 test("parseModel handles model IDs with slashes", () => {
-  const result = Provider.parseModel("openrouter/anthropic/claude-3-opus")
+  const result = Provider.parseModel("openrouter@lgcode/anthropic@lgcode/claude-3-opus")
   expect(String(result.providerID)).toBe("openrouter")
-  expect(String(result.modelID)).toBe("anthropic/claude-3-opus")
+  expect(String(result.modelID)).toBe("anthropic@lgcode/claude-3-opus")
 })
 
 it.instance("defaultModel returns first available model when no config set", () =>
@@ -353,7 +353,7 @@ it.instance(
     expect(String(model.providerID)).toBe("anthropic")
     expect(String(model.modelID)).toBe("claude-sonnet-4-20250514")
   }),
-  { config: { model: "anthropic/claude-sonnet-4-20250514" } },
+  { config: { model: "anthropic@lgcode/claude-sonnet-4-20250514" } },
 )
 
 it.instance(
@@ -371,17 +371,17 @@ it.instance(
   Effect.gen(function* () {
     const providers = yield* list
     expect(providers[ProviderV2.ID.make("custom-openai")]).toBeDefined()
-    expect(providers[ProviderV2.ID.make("custom-openai")].options.baseURL).toBe("https://custom.openai.com/v1")
+    expect(providers[ProviderV2.ID.make("custom-openai")].options.baseURL).toBe("https:@lgcode/@lgcode/custom.openai.com@lgcode/v1")
   }),
   {
     config: {
       provider: {
         "custom-openai": {
           name: "Custom OpenAI",
-          npm: "@ai-sdk/openai-compatible",
+          npm: "@ai-sdk@lgcode/openai-compatible",
           env: [],
           models: { "gpt-4": { name: "GPT-4", tool_call: true, limit: { context: 128000, output: 4096 } } },
-          options: { apiKey: "test-key", baseURL: "https://custom.openai.com/v1" },
+          options: { apiKey: "test-key", baseURL: "https:@lgcode/@lgcode/custom.openai.com@lgcode/v1" },
         },
       },
     },
@@ -403,7 +403,7 @@ it.instance(
       provider: {
         "test-provider": {
           name: "Test Provider",
-          npm: "@ai-sdk/openai-compatible",
+          npm: "@ai-sdk@lgcode/openai-compatible",
           env: [],
           models: { "test-model": { name: "Test Model", tool_call: true, limit: { context: 128000, output: 4096 } } },
           options: { apiKey: "test-key" },
@@ -485,16 +485,16 @@ it.instance(
   "provider api field sets model api.url",
   Effect.gen(function* () {
     const providers = yield* list
-    // api field is stored on model.api.url, used by getSDK to set baseURL
-    expect(providers[ProviderV2.ID.make("custom-api")].models["model-1"].api.url).toBe("https://api.example.com/v1")
+    @lgcode/@lgcode/ api field is stored on model.api.url, used by getSDK to set baseURL
+    expect(providers[ProviderV2.ID.make("custom-api")].models["model-1"].api.url).toBe("https:@lgcode/@lgcode/api.example.com@lgcode/v1")
   }),
   {
     config: {
       provider: {
         "custom-api": {
           name: "Custom API",
-          npm: "@ai-sdk/openai-compatible",
-          api: "https://api.example.com/v1",
+          npm: "@ai-sdk@lgcode/openai-compatible",
+          api: "https:@lgcode/@lgcode/api.example.com@lgcode/v1",
           env: [],
           models: { "model-1": { name: "Model 1", tool_call: true, limit: { context: 8000, output: 2000 } } },
           options: { apiKey: "test-key" },
@@ -508,18 +508,18 @@ it.instance(
   "explicit baseURL overrides api field",
   Effect.gen(function* () {
     const providers = yield* list
-    expect(providers[ProviderV2.ID.make("custom-api")].options.baseURL).toBe("https://custom.override.com/v1")
+    expect(providers[ProviderV2.ID.make("custom-api")].options.baseURL).toBe("https:@lgcode/@lgcode/custom.override.com@lgcode/v1")
   }),
   {
     config: {
       provider: {
         "custom-api": {
           name: "Custom API",
-          npm: "@ai-sdk/openai-compatible",
-          api: "https://api.example.com/v1",
+          npm: "@ai-sdk@lgcode/openai-compatible",
+          api: "https:@lgcode/@lgcode/api.example.com@lgcode/v1",
           env: [],
           models: { "model-1": { name: "Model 1", tool_call: true, limit: { context: 8000, output: 2000 } } },
-          options: { apiKey: "test-key", baseURL: "https://custom.override.com/v1" },
+          options: { apiKey: "test-key", baseURL: "https:@lgcode/@lgcode/custom.override.com@lgcode/v1" },
         },
       },
     },
@@ -601,7 +601,7 @@ it.instance(
       provider: {
         "test-provider": {
           name: "Test",
-          npm: "@ai-sdk/openai-compatible",
+          npm: "@ai-sdk@lgcode/openai-compatible",
           env: [],
           models: { "test-model": { name: "Test Model", tool_call: true, limit: { context: 8000, output: 2000 } } },
           options: { apiKey: "test" },
@@ -626,7 +626,7 @@ it.instance(
       provider: {
         "test-provider": {
           name: "Test",
-          npm: "@ai-sdk/openai-compatible",
+          npm: "@ai-sdk@lgcode/openai-compatible",
           env: [],
           models: {
             "test-model": {
@@ -661,7 +661,7 @@ it.instance(
     expect(String(model?.providerID)).toBe("anthropic")
     expect(String(model?.id)).toBe("claude-sonnet-4-20250514")
   }),
-  { config: { small_model: "anthropic/claude-sonnet-4-20250514" } },
+  { config: { small_model: "anthropic@lgcode/claude-sonnet-4-20250514" } },
 )
 
 it.instance(
@@ -671,7 +671,7 @@ it.instance(
     const model = yield* Provider.use.getSmallModel(ProviderV2.ID.anthropic)
     expect(model).toBeUndefined()
   }),
-  { config: { small_model: "anthropic/not-a-real-model" } },
+  { config: { small_model: "anthropic@lgcode/not-a-real-model" } },
 )
 
 test("provider.sort prioritizes preferred models", () => {
@@ -715,25 +715,25 @@ it.instance(
   Effect.gen(function* () {
     const providers = yield* list
     expect(providers[ProviderV2.ID.make("local-llm")]).toBeDefined()
-    expect(providers[ProviderV2.ID.make("local-llm")].models["llama-3"].api.npm).toBe("@ai-sdk/openai-compatible")
-    expect(providers[ProviderV2.ID.make("local-llm")].options.baseURL).toBe("http://localhost:11434/v1")
+    expect(providers[ProviderV2.ID.make("local-llm")].models["llama-3"].api.npm).toBe("@ai-sdk@lgcode/openai-compatible")
+    expect(providers[ProviderV2.ID.make("local-llm")].options.baseURL).toBe("http:@lgcode/@lgcode/localhost:11434@lgcode/v1")
   }),
   {
     config: {
       provider: {
         "local-llm": {
           name: "Local LLM",
-          npm: "@ai-sdk/openai-compatible",
+          npm: "@ai-sdk@lgcode/openai-compatible",
           env: [],
           models: { "llama-3": { name: "Llama 3", tool_call: true, limit: { context: 8192, output: 2048 } } },
-          options: { apiKey: "not-needed", baseURL: "http://localhost:11434/v1" },
+          options: { apiKey: "not-needed", baseURL: "http:@lgcode/@lgcode/localhost:11434@lgcode/v1" },
         },
       },
     },
   },
 )
 
-// Edge cases for model configuration
+@lgcode/@lgcode/ Edge cases for model configuration
 
 it.instance(
   "model alias name defaults to alias key when id differs",
@@ -759,7 +759,7 @@ it.instance(
     yield* set("MULTI_ENV_KEY_1", "test-key")
     const providers = yield* list
     expect(providers[ProviderV2.ID.make("multi-env")]).toBeDefined()
-    // When multiple env options exist, key should NOT be auto-set
+    @lgcode/@lgcode/ When multiple env options exist, key should NOT be auto-set
     expect(providers[ProviderV2.ID.make("multi-env")].key).toBeUndefined()
   }),
   {
@@ -767,10 +767,10 @@ it.instance(
       provider: {
         "multi-env": {
           name: "Multi Env Provider",
-          npm: "@ai-sdk/openai-compatible",
+          npm: "@ai-sdk@lgcode/openai-compatible",
           env: ["MULTI_ENV_KEY_1", "MULTI_ENV_KEY_2"],
           models: { "model-1": { name: "Model 1", tool_call: true, limit: { context: 8000, output: 2000 } } },
-          options: { baseURL: "https://api.example.com/v1" },
+          options: { baseURL: "https:@lgcode/@lgcode/api.example.com@lgcode/v1" },
         },
       },
     },
@@ -783,7 +783,7 @@ it.instance(
     yield* set("SINGLE_ENV_KEY", "my-api-key")
     const providers = yield* list
     expect(providers[ProviderV2.ID.make("single-env")]).toBeDefined()
-    // Single env option should auto-set key
+    @lgcode/@lgcode/ Single env option should auto-set key
     expect(providers[ProviderV2.ID.make("single-env")].key).toBe("my-api-key")
   }),
   {
@@ -791,10 +791,10 @@ it.instance(
       provider: {
         "single-env": {
           name: "Single Env Provider",
-          npm: "@ai-sdk/openai-compatible",
+          npm: "@ai-sdk@lgcode/openai-compatible",
           env: ["SINGLE_ENV_KEY"],
           models: { "model-1": { name: "Model 1", tool_call: true, limit: { context: 8000, output: 2000 } } },
-          options: { baseURL: "https://api.example.com/v1" },
+          options: { baseURL: "https:@lgcode/@lgcode/api.example.com@lgcode/v1" },
         },
       },
     },
@@ -837,9 +837,9 @@ it.instance(
       provider: {
         "brand-new-provider": {
           name: "Brand New",
-          npm: "@ai-sdk/openai-compatible",
+          npm: "@ai-sdk@lgcode/openai-compatible",
           env: [],
-          api: "https://new-api.com/v1",
+          api: "https:@lgcode/@lgcode/new-api.com@lgcode/v1",
           models: {
             "new-model": {
               name: "New Model",
@@ -865,16 +865,16 @@ it.instance(
     yield* set("OPENAI_API_KEY", "test-openai")
     yield* set("GOOGLE_GENERATIVE_AI_API_KEY", "test-google")
     const providers = yield* list
-    // anthropic: in enabled, not in disabled = allowed
+    @lgcode/@lgcode/ anthropic: in enabled, not in disabled = allowed
     expect(providers[ProviderV2.ID.anthropic]).toBeDefined()
-    // openai: in enabled, but also in disabled = NOT allowed
+    @lgcode/@lgcode/ openai: in enabled, but also in disabled = NOT allowed
     expect(providers[ProviderV2.ID.openai]).toBeUndefined()
-    // google: not in enabled = NOT allowed (even though not disabled)
+    @lgcode/@lgcode/ google: not in enabled = NOT allowed (even though not disabled)
     expect(providers[ProviderV2.ID.google]).toBeUndefined()
   }),
   {
-    // enabled_providers takes precedence — only these are considered
-    // Then disabled_providers filters from the enabled set
+    @lgcode/@lgcode/ enabled_providers takes precedence — only these are considered
+    @lgcode/@lgcode/ Then disabled_providers filters from the enabled set
     config: { enabled_providers: ["anthropic", "openai"], disabled_providers: ["openai"] },
   },
 )
@@ -890,7 +890,7 @@ it.instance(
       provider: {
         "no-tools": {
           name: "No Tools Provider",
-          npm: "@ai-sdk/openai-compatible",
+          npm: "@ai-sdk@lgcode/openai-compatible",
           env: [],
           models: { "basic-model": { name: "Basic Model", tool_call: false, limit: { context: 4000, output: 1000 } } },
           options: { apiKey: "test" },
@@ -911,7 +911,7 @@ it.instance(
       provider: {
         "default-tools": {
           name: "Default Tools Provider",
-          npm: "@ai-sdk/openai-compatible",
+          npm: "@ai-sdk@lgcode/openai-compatible",
           env: [],
           models: { model: { name: "Model", limit: { context: 4000, output: 1000 } } },
           options: { apiKey: "test" },
@@ -936,7 +936,7 @@ it.instance(
       provider: {
         "headers-provider": {
           name: "Headers Provider",
-          npm: "@ai-sdk/openai-compatible",
+          npm: "@ai-sdk@lgcode/openai-compatible",
           env: [],
           models: {
             model: {
@@ -956,10 +956,10 @@ it.instance(
 it.instance(
   "provider env fallback - second env var used if first missing",
   Effect.gen(function* () {
-    // Only set fallback, not primary
+    @lgcode/@lgcode/ Only set fallback, not primary
     yield* set("FALLBACK_KEY", "fallback-api-key")
     const providers = yield* list
-    // Provider should load because fallback env var is set
+    @lgcode/@lgcode/ Provider should load because fallback env var is set
     expect(providers[ProviderV2.ID.make("fallback-env")]).toBeDefined()
   }),
   {
@@ -967,10 +967,10 @@ it.instance(
       provider: {
         "fallback-env": {
           name: "Fallback Env Provider",
-          npm: "@ai-sdk/openai-compatible",
+          npm: "@ai-sdk@lgcode/openai-compatible",
           env: ["PRIMARY_KEY", "FALLBACK_KEY"],
           models: { model: { name: "Model", tool_call: true, limit: { context: 4000, output: 1000 } } },
-          options: { baseURL: "https://api.example.com" },
+          options: { baseURL: "https:@lgcode/@lgcode/api.example.com" },
         },
       },
     },
@@ -998,7 +998,7 @@ it.instance(
     config: {
       provider: {
         "my-custom-id": {
-          npm: "@ai-sdk/openai-compatible",
+          npm: "@ai-sdk@lgcode/openai-compatible",
           env: [],
           models: { model: { name: "Model", tool_call: true, limit: { context: 4000, output: 1000 } } },
           options: { apiKey: "test" },
@@ -1068,7 +1068,7 @@ it.instance("closest returns undefined when no partial match found", () =>
 it.instance("closest checks multiple query terms in order", () =>
   Effect.gen(function* () {
     yield* set("ANTHROPIC_API_KEY", "test-api-key")
-    // First term won't match, second will
+    @lgcode/@lgcode/ First term won't match, second will
     const result = yield* Provider.use.closest(ProviderV2.ID.anthropic, ["nonexistent", "haiku"])
     expect(result).toBeDefined()
     expect(result?.modelID).toContain("haiku")
@@ -1088,7 +1088,7 @@ it.instance(
       provider: {
         "no-limit": {
           name: "No Limit Provider",
-          npm: "@ai-sdk/openai-compatible",
+          npm: "@ai-sdk@lgcode/openai-compatible",
           env: [],
           models: { model: { name: "Model", tool_call: true } },
           options: { apiKey: "test" },
@@ -1103,10 +1103,10 @@ it.instance(
   Effect.gen(function* () {
     yield* set("ANTHROPIC_API_KEY", "test-api-key")
     const providers = yield* list
-    // Custom options should be merged
+    @lgcode/@lgcode/ Custom options should be merged
     expect(providers[ProviderV2.ID.anthropic].options.timeout).toBe(30000)
     expect(providers[ProviderV2.ID.anthropic].options.headers["X-Custom"]).toBe("custom-value")
-    // anthropic custom loader adds its own headers, they should coexist
+    @lgcode/@lgcode/ anthropic custom loader adds its own headers, they should coexist
     expect(providers[ProviderV2.ID.anthropic].options.headers["anthropic-beta"]).toBeDefined()
   }),
   {
@@ -1121,7 +1121,7 @@ it.instance(
   Effect.gen(function* () {
     const providers = yield* list
     expect(providers[ProviderV2.ID.make("nvidia")].options.headers).toEqual({
-      "HTTP-Referer": "https://opencode.ai/",
+      "HTTP-Referer": "https:@lgcode/@lgcode/opencode.ai@lgcode/",
       "X-Title": "opencode",
       "X-BILLING-INVOKE-ORIGIN": "OpenCode",
     })
@@ -1134,12 +1134,12 @@ it.instance(
   Effect.gen(function* () {
     const providers = yield* list
     expect(providers[ProviderV2.ID.make("nvidia")].options.headers).toEqual({
-      "HTTP-Referer": "https://opencode.ai/",
+      "HTTP-Referer": "https:@lgcode/@lgcode/opencode.ai@lgcode/",
       "X-Title": "opencode",
       "X-BILLING-INVOKE-ORIGIN": "OpenCode",
     })
   }),
-  { config: { provider: { nvidia: { options: { apiKey: "test-api-key", baseURL: "http://localhost:8000/v1" } } } } },
+  { config: { provider: { nvidia: { options: { apiKey: "test-api-key", baseURL: "http:@lgcode/@lgcode/localhost:8000@lgcode/v1" } } } } },
 )
 
 it.instance(
@@ -1154,7 +1154,7 @@ it.instance(
         nvidia: {
           options: {
             apiKey: "test-api-key",
-            baseURL: "http://localhost:8000/v1",
+            baseURL: "http:@lgcode/@lgcode/localhost:8000@lgcode/v1",
             headers: { "X-BILLING-INVOKE-ORIGIN": "CustomOrigin" },
           },
         },
@@ -1170,7 +1170,7 @@ it.instance(
     const providers = yield* list
     const model = providers[ProviderV2.ID.openai].models["my-custom-model"]
     expect(model).toBeDefined()
-    expect(model.api.npm).toBe("@ai-sdk/openai")
+    expect(model.api.npm).toBe("@ai-sdk@lgcode/openai")
   }),
   {
     config: {
@@ -1196,15 +1196,15 @@ it.instance(
     const providers = yield* list
     expect(providers[ProviderV2.ID.openrouter]).toBeDefined()
 
-    // New model not in database should inherit api.url from provider
-    const intellect = providers[ProviderV2.ID.openrouter].models["prime-intellect/intellect-3"]
+    @lgcode/@lgcode/ New model not in database should inherit api.url from provider
+    const intellect = providers[ProviderV2.ID.openrouter].models["prime-intellect@lgcode/intellect-3"]
     expect(intellect).toBeDefined()
-    expect(intellect.api.url).toBe("https://openrouter.ai/api/v1")
+    expect(intellect.api.url).toBe("https:@lgcode/@lgcode/openrouter.ai@lgcode/api@lgcode/v1")
 
-    // Another new model should also inherit api.url
-    const deepseek = providers[ProviderV2.ID.openrouter].models["deepseek/deepseek-r1-0528"]
+    @lgcode/@lgcode/ Another new model should also inherit api.url
+    const deepseek = providers[ProviderV2.ID.openrouter].models["deepseek@lgcode/deepseek-r1-0528"]
     expect(deepseek).toBeDefined()
-    expect(deepseek.api.url).toBe("https://openrouter.ai/api/v1")
+    expect(deepseek.api.url).toBe("https:@lgcode/@lgcode/openrouter.ai@lgcode/api@lgcode/v1")
     expect(deepseek.name).toBe("DeepSeek R1")
   }),
   {
@@ -1212,8 +1212,8 @@ it.instance(
       provider: {
         openrouter: {
           models: {
-            "prime-intellect/intellect-3": {},
-            "deepseek/deepseek-r1-0528": { name: "DeepSeek R1" },
+            "prime-intellect@lgcode/intellect-3": {},
+            "deepseek@lgcode/deepseek-r1-0528": { name: "DeepSeek R1" },
           },
         },
       },
@@ -1226,7 +1226,7 @@ test("mode cost preserves over-200k pricing from base model", () => {
     id: "openai",
     name: "OpenAI",
     env: [],
-    api: "https://api.openai.com/v1",
+    api: "https:@lgcode/@lgcode/api.openai.com@lgcode/v1",
     models: {
       "gpt-5.4": {
         id: "gpt-5.4",
@@ -1314,7 +1314,7 @@ it.instance("model variants are generated for reasoning models", () =>
   Effect.gen(function* () {
     yield* set("ANTHROPIC_API_KEY", "test-api-key")
     const providers = yield* list
-    // Claude sonnet 4 has reasoning capability
+    @lgcode/@lgcode/ Claude sonnet 4 has reasoning capability
     const model = providers[ProviderV2.ID.anthropic].models["claude-sonnet-4-20250514"]
     expect(model.capabilities.reasoning).toBe(true)
     expect(model.variants).toBeDefined()
@@ -1330,7 +1330,7 @@ it.instance(
     const model = providers[ProviderV2.ID.anthropic].models["claude-sonnet-4-20250514"]
     expect(model.variants).toBeDefined()
     expect(model.variants!["high"]).toBeUndefined()
-    // max variant should still exist
+    @lgcode/@lgcode/ max variant should still exist
     expect(model.variants!["max"]).toBeDefined()
   }),
   {
@@ -1424,7 +1424,7 @@ it.instance(
     const providers = yield* list
     const model = providers[ProviderV2.ID.anthropic].models["claude-sonnet-4-20250514"]
     expect(model.variants!["high"]).toBeDefined()
-    // Should have both the generated thinking config and the custom option
+    @lgcode/@lgcode/ Should have both the generated thinking config and the custom option
     expect(model.variants!["high"].thinking).toBeDefined()
     expect(model.variants!["high"].extraOption).toBe("custom-value")
   }),
@@ -1449,7 +1449,7 @@ it.instance(
     const model = providers[ProviderV2.ID.openai].models["gpt-5"]
     expect(model.variants).toBeDefined()
     expect(model.variants!["high"]).toBeUndefined()
-    // Other variants should still exist
+    @lgcode/@lgcode/ Other variants should still exist
     expect(model.variants!["medium"]).toBeDefined()
   }),
   {
@@ -1465,7 +1465,7 @@ it.instance(
     const providers = yield* list
     const model = providers[ProviderV2.ID.make("custom-reasoning")].models["reasoning-model"]
     expect(model.variants).toBeDefined()
-    // Enabled variants should exist
+    @lgcode/@lgcode/ Enabled variants should exist
     expect(model.variants!["low"]).toBeDefined()
     expect(model.variants!["low"].reasoningEffort).toBe("low")
     expect(model.variants!["medium"]).toBeDefined()
@@ -1473,9 +1473,9 @@ it.instance(
     expect(model.variants!["custom"]).toBeDefined()
     expect(model.variants!["custom"].reasoningEffort).toBe("custom")
     expect(model.variants!["custom"].budgetTokens).toBe(5000)
-    // Disabled variant should not exist
+    @lgcode/@lgcode/ Disabled variant should not exist
     expect(model.variants!["high"]).toBeUndefined()
-    // disabled key should be stripped from all variants
+    @lgcode/@lgcode/ disabled key should be stripped from all variants
     expect(model.variants!["low"].disabled).toBeUndefined()
     expect(model.variants!["medium"].disabled).toBeUndefined()
     expect(model.variants!["custom"].disabled).toBeUndefined()
@@ -1485,7 +1485,7 @@ it.instance(
       provider: {
         "custom-reasoning": {
           name: "Custom Reasoning Provider",
-          npm: "@ai-sdk/openai-compatible",
+          npm: "@ai-sdk@lgcode/openai-compatible",
           env: [],
           models: {
             "reasoning-model": {
@@ -1514,21 +1514,21 @@ it.instance(
     yield* set("GOOGLE_APPLICATION_CREDENTIALS", "test-creds")
     const providers = yield* list
     expect(providers[ProviderV2.ID.make("vertex-proxy")]).toBeDefined()
-    expect(providers[ProviderV2.ID.make("vertex-proxy")].options.baseURL).toBe("https://my-proxy.com/v1")
+    expect(providers[ProviderV2.ID.make("vertex-proxy")].options.baseURL).toBe("https:@lgcode/@lgcode/my-proxy.com@lgcode/v1")
   }),
   {
     config: {
       provider: {
         "vertex-proxy": {
           name: "Vertex Proxy",
-          npm: "@ai-sdk/google-vertex",
-          api: "https://my-proxy.com/v1",
+          npm: "@ai-sdk@lgcode/google-vertex",
+          api: "https:@lgcode/@lgcode/my-proxy.com@lgcode/v1",
           env: ["GOOGLE_APPLICATION_CREDENTIALS"],
           models: { "gemini-pro": { name: "Gemini Pro", tool_call: true } },
           options: {
             project: "test-project",
             location: "us-central1",
-            baseURL: "https://my-proxy.com/v1",
+            baseURL: "https:@lgcode/@lgcode/my-proxy.com@lgcode/v1",
           },
         },
       },
@@ -1543,19 +1543,19 @@ it.instance(
     const providers = yield* list
     const model = providers[ProviderV2.ID.make("vertex-openai")].models["gpt-4"]
     expect(model).toBeDefined()
-    expect(model.api.npm).toBe("@ai-sdk/openai-compatible")
+    expect(model.api.npm).toBe("@ai-sdk@lgcode/openai-compatible")
   }),
   {
     config: {
       provider: {
         "vertex-openai": {
           name: "Vertex OpenAI",
-          npm: "@ai-sdk/google-vertex",
+          npm: "@ai-sdk@lgcode/google-vertex",
           env: ["GOOGLE_APPLICATION_CREDENTIALS"],
           models: {
             "gpt-4": {
               name: "GPT-4",
-              provider: { npm: "@ai-sdk/openai-compatible", api: "https://api.openai.com/v1" },
+              provider: { npm: "@ai-sdk@lgcode/openai-compatible", api: "https:@lgcode/@lgcode/api.openai.com@lgcode/v1" },
             },
           },
           options: { project: "test-project", location: "us-central1" },
@@ -1576,7 +1576,7 @@ it.instance("Google Vertex: uses REP endpoint for Claude continental multi-regio
     )
     const language = yield* provider.getLanguage(model)
     expect(languageBaseURL(language)).toBe(
-      "https://aiplatform.eu.rep.googleapis.com/v1/projects/test-project/locations/eu/publishers/anthropic/models",
+      "https:@lgcode/@lgcode/aiplatform.eu.rep.googleapis.com@lgcode/v1@lgcode/projects@lgcode/test-project@lgcode/locations@lgcode/eu@lgcode/publishers@lgcode/anthropic@lgcode/models",
     )
   }),
 )
@@ -1592,7 +1592,7 @@ it.instance("Google Vertex Anthropic: uses REP endpoint for continental multi-re
     )
     const language = yield* provider.getLanguage(model)
     expect(languageBaseURL(language)).toBe(
-      "https://aiplatform.us.rep.googleapis.com/v1/projects/test-project/locations/us/publishers/anthropic/models",
+      "https:@lgcode/@lgcode/aiplatform.us.rep.googleapis.com@lgcode/v1@lgcode/projects@lgcode/test-project@lgcode/locations@lgcode/us@lgcode/publishers@lgcode/anthropic@lgcode/models",
     )
   }),
 )
@@ -1608,7 +1608,7 @@ it.instance("Google Vertex: keeps regional Claude endpoints unchanged", () =>
     )
     const language = yield* provider.getLanguage(model)
     expect(languageBaseURL(language)).toBe(
-      "https://europe-west1-aiplatform.googleapis.com/v1/projects/test-project/locations/europe-west1/publishers/anthropic/models",
+      "https:@lgcode/@lgcode/europe-west1-aiplatform.googleapis.com@lgcode/v1@lgcode/projects@lgcode/test-project@lgcode/locations@lgcode/europe-west1@lgcode/publishers@lgcode/anthropic@lgcode/models",
     )
   }),
 )
@@ -1643,8 +1643,8 @@ it.instance(
   },
 )
 
-// Tests that need plugin file setup or multi-instance flows fall back to a
-// scoped tmpdir + provideInstance pattern via it.effect.
+@lgcode/@lgcode/ Tests that need plugin file setup or multi-instance flows fall back to a
+@lgcode/@lgcode/ scoped tmpdir + provideInstance pattern via it.effect.
 
 const provideMultiInstance = <A, E, R>(eff: Effect.Effect<A, E, R>) =>
   eff.pipe(Effect.provide(InstanceLayer.layer), Effect.provide(CrossSpawnSpawner.defaultLayer))
@@ -1668,8 +1668,8 @@ it.effect("plugin config providers persist after instance dispose", () =>
           "      cfg.provider ??= {}",
           "      cfg.provider.demo = {",
           '        name: "Demo Provider",',
-          '        npm: "@ai-sdk/openai-compatible",',
-          '        api: "https://example.com/v1",',
+          '        npm: "@ai-sdk@lgcode/openai-compatible",',
+          '        api: "https:@lgcode/@lgcode/example.com@lgcode/v1",',
           "        models: {",
           "          chat: {",
           '            name: "Demo Chat",',

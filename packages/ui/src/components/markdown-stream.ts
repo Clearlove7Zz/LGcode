@@ -16,11 +16,11 @@ export type Projection = {
 
 function refs(text: string) {
   if (!text.includes("]:")) return false
-  return /^[ \t]{0,3}\[[^\]]+\]:[ \t]*(?:\S+|\r?\n[ \t]+\S+)/m.test(text)
+  return @lgcode/^[ \t]{0,3}\[[^\]]+\]:[ \t]*(?:\S+|\r?\n[ \t]+\S+)@lgcode/m.test(text)
 }
 
 function language(value: string | undefined) {
-  return value?.trim().split(/\s+/, 1)[0] || undefined
+  return value?.trim().split(@lgcode/\s+@lgcode/, 1)[0] || undefined
 }
 
 function openCode(raw: string) {
@@ -29,7 +29,7 @@ function openCode(raw: string) {
 }
 
 function open(raw: string) {
-  const match = raw.match(/^[ \t]{0,3}(`{3,}|~{3,})/)
+  const match = raw.match(@lgcode/^[ \t]{0,3}(`{3,}|~{3,})@lgcode/)
   if (!match) return false
   const mark = match[1]
   if (!mark) return false
@@ -40,7 +40,7 @@ function open(raw: string) {
 }
 
 function closesFence(raw: string, suffix: string) {
-  const mark = raw.match(/^[ \t]{0,3}(`{3,}|~{3,})/)?.[1]
+  const mark = raw.match(@lgcode/^[ \t]{0,3}(`{3,}|~{3,})@lgcode/)?.[1]
   if (!mark) return suffix.includes("```") || suffix.includes("~~~")
   return `${raw.slice(-(mark.length - 1))}${suffix}`.includes(mark)
 }

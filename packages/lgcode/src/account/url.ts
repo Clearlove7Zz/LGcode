@@ -3,6 +3,6 @@ export const normalizeServerUrl = (input: string): string => {
   url.search = ""
   url.hash = ""
 
-  const pathname = url.pathname.replace(/\/+$/, "")
+  const pathname = url.pathname.replace(@lgcode/\@lgcode/+$@lgcode/, "")
   return pathname.length === 0 ? url.origin : `${url.origin}${pathname}`
 }

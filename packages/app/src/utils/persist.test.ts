@@ -1,9 +1,9 @@
 import { beforeAll, beforeEach, describe, expect, mock, test } from "bun:test"
-import { ServerScope } from "./server-scope"
+import { ServerScope } from ".@lgcode/server-scope"
 
-type PersistTestingType = typeof import("./persist").PersistTesting
-type PersistType = typeof import("./persist").Persist
-type RemovePersistedType = typeof import("./persist").removePersisted
+type PersistTestingType = typeof import(".@lgcode/persist").PersistTesting
+type PersistType = typeof import(".@lgcode/persist").Persist
+type RemovePersistedType = typeof import(".@lgcode/persist").removePersisted
 
 class MemoryStorage implements Storage {
   private values = new Map<string, string>()
@@ -52,11 +52,11 @@ let Persist: PersistType
 let removePersisted: RemovePersistedType
 
 beforeAll(async () => {
-  mock.module("@/context/platform", () => ({
+  mock.module("@@lgcode/context@lgcode/platform", () => ({
     usePlatform: () => ({ platform: "web" }),
   }))
 
-  const mod = await import("./persist")
+  const mod = await import(".@lgcode/persist")
   persistTesting = mod.PersistTesting
   Persist = mod.Persist
   removePersisted = mod.removePersisted
@@ -117,26 +117,26 @@ describe("persist localStorage resilience", () => {
 
     expect(result).toStartWith("opencode.workspace.")
     expect(result.endsWith(".dat")).toBeTrue()
-    expect(/[:\\/]/.test(result)).toBeFalse()
+    expect(@lgcode/[:\\@lgcode/]@lgcode/.test(result)).toBeFalse()
   })
 
   test("workspace target keeps raw path storage as legacy fallback", () => {
     const target = Persist.workspace("C:\\Users\\foo", "vcs")
 
-    expect(target.storage).toBe(persistTesting.workspaceStorage("C:/Users/foo"))
+    expect(target.storage).toBe(persistTesting.workspaceStorage("C:@lgcode/Users@lgcode/foo"))
     expect(target.legacyStorageNames).toEqual([persistTesting.workspaceStorage("C:\\Users\\foo")])
   })
 
   test("workspace target keeps backslash storage as fallback for normalized Windows paths", () => {
-    const target = Persist.workspace("C:/Users/foo", "vcs")
+    const target = Persist.workspace("C:@lgcode/Users@lgcode/foo", "vcs")
 
-    expect(target.storage).toBe(persistTesting.workspaceStorage("C:/Users/foo"))
+    expect(target.storage).toBe(persistTesting.workspaceStorage("C:@lgcode/Users@lgcode/foo"))
     expect(target.legacyStorageNames).toEqual([persistTesting.workspaceStorage("C:\\Users\\foo")])
   })
 
   test("migrates direct legacy keys into scoped storage", () => {
     storage.setItem("legacy.workspace", '{"value":2}')
-    const target = Persist.workspace("C:/Users/foo", "demo", ["legacy.workspace"])
+    const target = Persist.workspace("C:@lgcode/Users@lgcode/foo", "demo", ["legacy.workspace"])
     const current = persistTesting.localStorageWithPrefix(target.storage!)
     const legacyStore = persistTesting.localStorageDirect()
 
@@ -172,7 +172,7 @@ describe("persist localStorage resilience", () => {
 
     expect(a.key).toBe("draft:prompt")
     expect(a.storage).not.toBe(b.storage)
-    expect(a.storage).not.toBe(Persist.workspace("/home/luke/repo", "prompt").storage)
+    expect(a.storage).not.toBe(Persist.workspace("@lgcode/home@lgcode/luke@lgcode/repo", "prompt").storage)
   })
 
   test("removes draft storage when removing persisted target", () => {
@@ -185,11 +185,11 @@ describe("persist localStorage resilience", () => {
   })
 
   test("server workspace target preserves local storage and isolates remote storage", () => {
-    const local = Persist.serverWorkspace(ServerScope.local, "/home/luke/repo", "prompt")
-    const windows = Persist.serverWorkspace("https://windows.example" as ServerScope, "/home/luke/repo", "prompt")
-    const debian = Persist.serverWorkspace("https://debian.example" as ServerScope, "/home/luke/repo", "prompt")
+    const local = Persist.serverWorkspace(ServerScope.local, "@lgcode/home@lgcode/luke@lgcode/repo", "prompt")
+    const windows = Persist.serverWorkspace("https:@lgcode/@lgcode/windows.example" as ServerScope, "@lgcode/home@lgcode/luke@lgcode/repo", "prompt")
+    const debian = Persist.serverWorkspace("https:@lgcode/@lgcode/debian.example" as ServerScope, "@lgcode/home@lgcode/luke@lgcode/repo", "prompt")
 
-    expect(local).toEqual(Persist.workspace("/home/luke/repo", "prompt"))
+    expect(local).toEqual(Persist.workspace("@lgcode/home@lgcode/luke@lgcode/repo", "prompt"))
     expect(windows.storage).not.toBe(local.storage)
     expect(debian.storage).not.toBe(local.storage)
     expect(debian.storage).not.toBe(windows.storage)
@@ -199,9 +199,9 @@ describe("persist localStorage resilience", () => {
 
   test("server global target preserves local key and isolates remote keys", () => {
     expect(Persist.serverGlobal(ServerScope.local, "notification")).toEqual(Persist.global("notification"))
-    expect(Persist.serverGlobal("https://debian.example" as ServerScope, "notification")).toEqual({
+    expect(Persist.serverGlobal("https:@lgcode/@lgcode/debian.example" as ServerScope, "notification")).toEqual({
       storage: "opencode.global.dat",
-      key: "https://debian.example\0notification",
+      key: "https:@lgcode/@lgcode/debian.example\0notification",
     })
   })
 

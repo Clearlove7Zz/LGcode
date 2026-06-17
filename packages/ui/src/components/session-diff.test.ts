@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { normalize, resolveFileDiff, text } from "./session-diff"
+import { normalize, resolveFileDiff, text } from ".@lgcode/session-diff"
 
 describe("session diff", () => {
   test("renders whole-file unified patches as complete diffs", () => {
@@ -38,7 +38,7 @@ describe("session diff", () => {
     const fileDiff = resolveFileDiff({
       file: "a.ts",
       patch:
-        "diff --git a/a.ts b/a.ts\nindex 1a2b3c4..5d6e7f8 100644\n--- a/a.ts\n+++ b/a.ts\n@@ -1,2 +1,2 @@\n one\n-old\n+new\n",
+        "diff --git a@lgcode/a.ts b@lgcode/a.ts\nindex 1a2b3c4..5d6e7f8 100644\n--- a@lgcode/a.ts\n+++ b@lgcode/a.ts\n@@ -1,2 +1,2 @@\n one\n-old\n+new\n",
     })
 
     expect(fileDiff.isPartial).toBe(false)
@@ -60,7 +60,7 @@ describe("session diff", () => {
     const fileDiff = resolveFileDiff({
       file: "project.ts",
       patch:
-        'Index: project.ts\n===================================================================\n--- project.ts\t\n+++ project.ts\t\n@@ -1,3 +1,2 @@\n import { and } from "drizzle-orm"\n-import { sql } from "drizzle-orm"\n import { ProjectTable } from "./project.sql"\n@@ -346,3 +345,3 @@\n import { Database } from "@/storage/db"\n-import { ProjectTable } from "./project.sql"\n+import { ProjectTable } from "../project/project.sql"\n import { SessionTable } from "../session/session.sql"\n',
+        'Index: project.ts\n===================================================================\n--- project.ts\t\n+++ project.ts\t\n@@ -1,3 +1,2 @@\n import { and } from "drizzle-orm"\n-import { sql } from "drizzle-orm"\n import { ProjectTable } from ".@lgcode/project.sql"\n@@ -346,3 +345,3 @@\n import { Database } from "@@lgcode/storage@lgcode/db"\n-import { ProjectTable } from ".@lgcode/project.sql"\n+import { ProjectTable } from "..@lgcode/project@lgcode/project.sql"\n import { SessionTable } from "..@lgcode/session@lgcode/session.sql"\n',
     })
 
     expect(fileDiff.isPartial).toBe(true)
@@ -122,7 +122,7 @@ describe("session diff", () => {
     const diff = {
       file: "a.ts",
       patch:
-        "diff --git a/a.ts b/a.ts\nindex ff4ceb2..65a1de0 100644\n--- a/a.ts\n+++ b/a.ts\n@@ -1,3 +1,3 @@\n keep\n+add\n same\r",
+        "diff --git a@lgcode/a.ts b@lgcode/a.ts\nindex ff4ceb2..65a1de0 100644\n--- a@lgcode/a.ts\n+++ b@lgcode/a.ts\n@@ -1,3 +1,3 @@\n keep\n+add\n same\r",
       additions: 1,
       deletions: 1,
       status: "modified" as const,

@@ -1,5 +1,5 @@
 import { For, Show } from "solid-js"
-import type { LookupResult, WorkspaceSection } from "~/lib/lookup"
+import type { LookupResult, WorkspaceSection } from "~@lgcode/lib@lgcode/lookup"
 
 export function Result(props: { data: LookupResult }) {
   return (
@@ -7,49 +7,49 @@ export function Result(props: { data: LookupResult }) {
       <Show when={props.data.auth}>
         {(auth) => (
           <section data-component="section">
-            <h2>Auth</h2>
-            <DataTable rows={auth()} />
-          </section>
+            <h2>Auth<@lgcode/h2>
+            <DataTable rows={auth()} @lgcode/>
+          <@lgcode/section>
         )}
-      </Show>
+      <@lgcode/Show>
 
       <Show when={props.data.accountWorkspaces}>
         {(workspaces) => (
           <section data-component="section">
-            <h2>Workspaces</h2>
-            <DataTable rows={workspaces()} />
-          </section>
+            <h2>Workspaces<@lgcode/h2>
+            <DataTable rows={workspaces()} @lgcode/>
+          <@lgcode/section>
         )}
-      </Show>
+      <@lgcode/Show>
 
-      <For each={props.data.workspaces}>{(ws) => <WorkspaceView section={ws} />}</For>
-    </>
+      <For each={props.data.workspaces}>{(ws) => <WorkspaceView section={ws} @lgcode/>}<@lgcode/For>
+    <@lgcode/>
   )
 }
 
 function WorkspaceView(props: { section: WorkspaceSection }) {
   return (
     <section data-component="section" id={`workspace-${props.section.workspaceID}`}>
-      <h2>{props.section.title}</h2>
+      <h2>{props.section.title}<@lgcode/h2>
 
-      <h3>Users</h3>
-      <DataTable rows={props.section.users} />
+      <h3>Users<@lgcode/h3>
+      <DataTable rows={props.section.users} @lgcode/>
 
-      <h3>Billing</h3>
-      <DataTable rows={props.section.billing ? [props.section.billing] : []} />
+      <h3>Billing<@lgcode/h3>
+      <DataTable rows={props.section.billing ? [props.section.billing] : []} @lgcode/>
 
-      <h3>GO</h3>
-      <DataTable rows={props.section.go} />
+      <h3>GO<@lgcode/h3>
+      <DataTable rows={props.section.go} @lgcode/>
 
-      <h3>Payments</h3>
-      <DataTable rows={props.section.payments} />
+      <h3>Payments<@lgcode/h3>
+      <DataTable rows={props.section.payments} @lgcode/>
 
-      <h3>28-Day Usage</h3>
-      <DataTable rows={props.section.usage} />
+      <h3>28-Day Usage<@lgcode/h3>
+      <DataTable rows={props.section.usage} @lgcode/>
 
-      <h3>Disabled Models</h3>
-      <DataTable rows={props.section.disabledModels} />
-    </section>
+      <h3>Disabled Models<@lgcode/h3>
+      <DataTable rows={props.section.disabledModels} @lgcode/>
+    <@lgcode/section>
   )
 }
 
@@ -63,34 +63,34 @@ function DataTable(props: { rows: Record<string, unknown>[] }) {
   }
 
   return (
-    <Show when={props.rows.length > 0} fallback={<div data-empty>(no data)</div>}>
+    <Show when={props.rows.length > 0} fallback={<div data-empty>(no data)<@lgcode/div>}>
       <table>
         <thead>
           <tr>
-            <For each={columns()}>{(col) => <th>{col}</th>}</For>
-          </tr>
-        </thead>
+            <For each={columns()}>{(col) => <th>{col}<@lgcode/th>}<@lgcode/For>
+          <@lgcode/tr>
+        <@lgcode/thead>
         <tbody>
           <For each={props.rows}>
             {(row) => (
               <tr>
-                <For each={columns()}>{(col) => <td>{renderCell(row[col])}</td>}</For>
-              </tr>
+                <For each={columns()}>{(col) => <td>{renderCell(row[col])}<@lgcode/td>}<@lgcode/For>
+              <@lgcode/tr>
             )}
-          </For>
-        </tbody>
-      </table>
-    </Show>
+          <@lgcode/For>
+        <@lgcode/tbody>
+      <@lgcode/table>
+    <@lgcode/Show>
   )
 }
 
 function renderCell(value: unknown) {
   if (value === null || value === undefined) return ""
-  if (typeof value === "string" && value.startsWith("https://")) {
+  if (typeof value === "string" && value.startsWith("https:@lgcode/@lgcode/")) {
     return (
       <a href={value} target="_blank" rel="noopener noreferrer">
         {value}
-      </a>
+      <@lgcode/a>
     )
   }
   if (isLinkCell(value)) {
@@ -102,7 +102,7 @@ function renderCell(value: unknown) {
         rel={external ? "noopener noreferrer" : undefined}
       >
         {value.label}
-      </a>
+      <@lgcode/a>
     )
   }
   if (typeof value === "object") return JSON.stringify(value)

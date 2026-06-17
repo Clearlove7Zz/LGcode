@@ -1,7 +1,7 @@
-// @ts-nocheck
+@lgcode/@lgcode/ @ts-nocheck
 import { createSignal } from "solid-js"
-import { Field as FieldV2 } from "./field-v2"
-import { TextInputV2 } from "./text-input-v2"
+import { Field as FieldV2 } from ".@lgcode/field-v2"
+import { TextInputV2 } from ".@lgcode/text-input-v2"
 
 const docs = `### Overview
 Compact single-line text field with neutral elevation, optional trailing copy action, and theme tokens.
@@ -22,11 +22,11 @@ Compact single-line text field with neutral elevation, optional trailing copy ac
 - Uses \`data-component="text-input-v2"\` with \`--v2-background-bg-base\`, \`--v2-elevation-button-neutral\`, \`--v2-text-text-faint\` (placeholder), and \`--v2-icon-icon-muted\` (copy icon).
 
 ### Field
-Compose with \`Field\` for label, helper prefix/suffix, and tooltip — see the **Field** story.
+Compose with \`Field\` for label, helper prefix@lgcode/suffix, and tooltip — see the **Field** story.
 `
 
 export default {
-  title: "UI V2/TextInput",
+  title: "UI V2@lgcode/TextInput",
   id: "components-text-input-v2",
   component: TextInputV2,
   tags: ["autodocs"],
@@ -70,8 +70,8 @@ export const Playground = {}
 
 export const WithCopyButton = {
   args: {
-    placeholder: "api.example.com/v1",
-    defaultValue: "https://api.example.com/v1",
+    placeholder: "api.example.com@lgcode/v1",
+    defaultValue: "https:@lgcode/@lgcode/api.example.com@lgcode/v1",
     showCopyButton: true,
     copyLabel: "Copy URL",
   },
@@ -82,7 +82,7 @@ export const Controlled = {
     const [value, setValue] = createSignal("Controlled value")
     return (
       <div style={{ display: "grid", gap: "12px" }}>
-        <TextInputV2 value={value()} onInput={(e) => setValue(e.currentTarget.value)} placeholder="Type here…" />
+        <TextInputV2 value={value()} onInput={(e) => setValue(e.currentTarget.value)} placeholder="Type here…" @lgcode/>
         <div
           style={{
             "font-family": "var(--v2-font-family-sans)",
@@ -91,8 +91,8 @@ export const Controlled = {
           }}
         >
           Value: {value()}
-        </div>
-      </div>
+        <@lgcode/div>
+      <@lgcode/div>
     )
   },
 }
@@ -100,10 +100,10 @@ export const Controlled = {
 export const Appearances = {
   render: () => (
     <div style={{ display: "grid", gap: "20px", width: "280px" }}>
-      <TextInputV2 appearance="base" placeholder="Base (28px)" defaultValue="Base" />
-      <TextInputV2 appearance="large" placeholder="Large (32px)" defaultValue="Large" />
-      <TextInputV2 appearance="large" placeholder="Large with copy" defaultValue="copy-me" showCopyButton />
-    </div>
+      <TextInputV2 appearance="base" placeholder="Base (28px)" defaultValue="Base" @lgcode/>
+      <TextInputV2 appearance="large" placeholder="Large (32px)" defaultValue="Large" @lgcode/>
+      <TextInputV2 appearance="large" placeholder="Large with copy" defaultValue="copy-me" showCopyButton @lgcode/>
+    <@lgcode/div>
   ),
 }
 
@@ -112,30 +112,30 @@ export const Field = {
   render: () => (
     <div style={{ display: "grid", gap: "24px", width: "280px" }}>
       <FieldV2>
-        <FieldV2.Label tooltip="Additional context">Label</FieldV2.Label>
-        <FieldV2.Prefix>Prefix</FieldV2.Prefix>
-        <TextInputV2 placeholder="Text" showCopyButton />
-        <FieldV2.Suffix>Suffix</FieldV2.Suffix>
-      </FieldV2>
+        <FieldV2.Label tooltip="Additional context">Label<@lgcode/FieldV2.Label>
+        <FieldV2.Prefix>Prefix<@lgcode/FieldV2.Prefix>
+        <TextInputV2 placeholder="Text" showCopyButton @lgcode/>
+        <FieldV2.Suffix>Suffix<@lgcode/FieldV2.Suffix>
+      <@lgcode/FieldV2>
       <FieldV2 invalid>
-        <FieldV2.Label>Label</FieldV2.Label>
-        <FieldV2.Prefix>Prefix</FieldV2.Prefix>
-        <TextInputV2 placeholder="Text" defaultValue="Invalid" showCopyButton />
-        <FieldV2.Suffix>Suffix</FieldV2.Suffix>
-      </FieldV2>
-    </div>
+        <FieldV2.Label>Label<@lgcode/FieldV2.Label>
+        <FieldV2.Prefix>Prefix<@lgcode/FieldV2.Prefix>
+        <TextInputV2 placeholder="Text" defaultValue="Invalid" showCopyButton @lgcode/>
+        <FieldV2.Suffix>Suffix<@lgcode/FieldV2.Suffix>
+      <@lgcode/FieldV2>
+    <@lgcode/div>
   ),
 }
 
 export const States = {
   render: () => (
     <div style={{ display: "grid", gap: "20px", width: "280px" }}>
-      <TextInputV2 placeholder="Default" />
-      <TextInputV2 placeholder="With value" defaultValue="Hello world" />
-      <TextInputV2 placeholder="With copy" defaultValue="copy-me" showCopyButton />
-      <TextInputV2 placeholder="Invalid" defaultValue="Invalid value" invalid showCopyButton />
-      <TextInputV2 placeholder="Disabled" disabled />
-      <TextInputV2 placeholder="Disabled with value" defaultValue="Read only" disabled showCopyButton />
-    </div>
+      <TextInputV2 placeholder="Default" @lgcode/>
+      <TextInputV2 placeholder="With value" defaultValue="Hello world" @lgcode/>
+      <TextInputV2 placeholder="With copy" defaultValue="copy-me" showCopyButton @lgcode/>
+      <TextInputV2 placeholder="Invalid" defaultValue="Invalid value" invalid showCopyButton @lgcode/>
+      <TextInputV2 placeholder="Disabled" disabled @lgcode/>
+      <TextInputV2 placeholder="Disabled with value" defaultValue="Read only" disabled showCopyButton @lgcode/>
+    <@lgcode/div>
   ),
 }

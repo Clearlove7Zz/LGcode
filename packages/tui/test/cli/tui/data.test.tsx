@@ -1,13 +1,13 @@
-/** @jsxImportSource @opentui/solid */
+@lgcode/** @jsxImportSource @opentui@lgcode/solid *@lgcode/
 import { expect, test } from "bun:test"
-import { testRender } from "@opentui/solid"
-import type { Event, GlobalEvent } from "@opencode@lgcode/sdk/v2"
+import { testRender } from "@opentui@lgcode/solid"
+import type { Event, GlobalEvent } from "@lgcode/sdk@lgcode/v2"
 import { onMount } from "solid-js"
-import { ProjectProvider } from "../../../src/context/project"
-import { SDKProvider } from "../../../src/context/sdk"
-import { DataProvider, useData } from "../../../src/context/data"
-import { createEventSource, createFetch, directory, json } from "../../fixture/tui-sdk"
-import { TestTuiContexts } from "../../fixture/tui-environment"
+import { ProjectProvider } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/context@lgcode/project"
+import { SDKProvider } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/context@lgcode/sdk"
+import { DataProvider, useData } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/context@lgcode/data"
+import { createEventSource, createFetch, directory, json } from "..@lgcode/..@lgcode/fixture@lgcode/tui-sdk"
+import { TestTuiContexts } from "..@lgcode/..@lgcode/fixture@lgcode/tui-environment"
 
 async function wait(fn: () => boolean, timeout = 2000) {
   const start = Date.now()
@@ -31,7 +31,7 @@ test("refreshes resources into reactive getters", async () => {
     project: { id: "proj_test", directory },
   }
   const calls = createFetch((url) => {
-    if (url.pathname === "/api/session/ses_test")
+    if (url.pathname === "@lgcode/api@lgcode/session@lgcode/ses_test")
       return json({
         data: {
           id: "ses_test",
@@ -43,7 +43,7 @@ test("refreshes resources into reactive getters", async () => {
           location: { directory },
         },
       })
-    if (url.pathname === "/api/agent")
+    if (url.pathname === "@lgcode/api@lgcode/agent")
       return json({
         location,
         data: [{ id: "build", request: { headers: {}, body: {} }, mode: "primary", hidden: false, permissions: [] }],
@@ -60,19 +60,19 @@ test("refreshes resources into reactive getters", async () => {
   function Probe() {
     data = useData()
     onMount(ready)
-    return <box />
+    return <box @lgcode/>
   }
 
   const app = await testRender(() => (
     <TestTuiContexts>
-      <SDKProvider url="http://test" directory={directory} events={events.source} fetch={calls.fetch}>
+      <SDKProvider url="http:@lgcode/@lgcode/test" directory={directory} events={events.source} fetch={calls.fetch}>
         <ProjectProvider>
           <DataProvider>
-            <Probe />
-          </DataProvider>
-        </ProjectProvider>
-      </SDKProvider>
-    </TestTuiContexts>
+            <Probe @lgcode/>
+          <@lgcode/DataProvider>
+        <@lgcode/ProjectProvider>
+      <@lgcode/SDKProvider>
+    <@lgcode/TestTuiContexts>
   ))
 
   try {
@@ -96,15 +96,15 @@ test("refreshes integrations after integration updates", async () => {
   const events = createEventSource()
   const requests = { integration: 0, model: 0, provider: 0 }
   const calls = createFetch((url) => {
-    if (url.pathname === "/api/model") {
+    if (url.pathname === "@lgcode/api@lgcode/model") {
       requests.model++
       return json({ location: { directory, project: { id: "proj_test", directory } }, data: [] })
     }
-    if (url.pathname === "/api/provider") {
+    if (url.pathname === "@lgcode/api@lgcode/provider") {
       requests.provider++
       return json({ location: { directory, project: { id: "proj_test", directory } }, data: [] })
     }
-    if (url.pathname !== "/api/integration") return
+    if (url.pathname !== "@lgcode/api@lgcode/integration") return
     requests.integration++
     return json({
       location: { directory, project: { id: "proj_test", directory } },
@@ -129,19 +129,19 @@ test("refreshes integrations after integration updates", async () => {
   function Probe() {
     data = useData()
     onMount(ready)
-    return <box />
+    return <box @lgcode/>
   }
 
   const app = await testRender(() => (
     <TestTuiContexts>
-      <SDKProvider url="http://test" directory={directory} events={events.source} fetch={calls.fetch}>
+      <SDKProvider url="http:@lgcode/@lgcode/test" directory={directory} events={events.source} fetch={calls.fetch}>
         <ProjectProvider>
           <DataProvider>
-            <Probe />
-          </DataProvider>
-        </ProjectProvider>
-      </SDKProvider>
-    </TestTuiContexts>
+            <Probe @lgcode/>
+          <@lgcode/DataProvider>
+        <@lgcode/ProjectProvider>
+      <@lgcode/SDKProvider>
+    <@lgcode/TestTuiContexts>
   ))
 
   try {
@@ -163,11 +163,11 @@ test("refreshes effective catalog data after catalog updates", async () => {
   const events = createEventSource()
   const requests = { model: 0, provider: 0 }
   const calls = createFetch((url) => {
-    if (url.pathname === "/api/model") {
+    if (url.pathname === "@lgcode/api@lgcode/model") {
       requests.model++
       return json({ location: { directory, project: { id: "proj_test", directory } }, data: [] })
     }
-    if (url.pathname === "/api/provider") {
+    if (url.pathname === "@lgcode/api@lgcode/provider") {
       requests.provider++
       return json({ location: { directory, project: { id: "proj_test", directory } }, data: [] })
     }
@@ -175,14 +175,14 @@ test("refreshes effective catalog data after catalog updates", async () => {
 
   const app = await testRender(() => (
     <TestTuiContexts>
-      <SDKProvider url="http://test" directory={directory} events={events.source} fetch={calls.fetch}>
+      <SDKProvider url="http:@lgcode/@lgcode/test" directory={directory} events={events.source} fetch={calls.fetch}>
         <ProjectProvider>
           <DataProvider>
-            <box />
-          </DataProvider>
-        </ProjectProvider>
-      </SDKProvider>
-    </TestTuiContexts>
+            <box @lgcode/>
+          <@lgcode/DataProvider>
+        <@lgcode/ProjectProvider>
+      <@lgcode/SDKProvider>
+    <@lgcode/TestTuiContexts>
   ))
 
   try {
@@ -199,11 +199,11 @@ test("refreshes references after updates", async () => {
   const events = createEventSource()
   let requests = 0
   const calls = createFetch((url) => {
-    if (url.pathname !== "/api/reference") return
+    if (url.pathname !== "@lgcode/api@lgcode/reference") return
     requests++
     return json({
       location: { directory, project: { id: "proj_test", directory } },
-      data: requests === 1 ? [] : [{ name: "docs", path: "/docs", source: { type: "local", path: "/docs" } }],
+      data: requests === 1 ? [] : [{ name: "docs", path: "@lgcode/docs", source: { type: "local", path: "@lgcode/docs" } }],
     })
   })
   let data!: ReturnType<typeof useData>
@@ -215,19 +215,19 @@ test("refreshes references after updates", async () => {
   function Probe() {
     data = useData()
     onMount(ready)
-    return <box />
+    return <box @lgcode/>
   }
 
   const app = await testRender(() => (
     <TestTuiContexts>
-      <SDKProvider url="http://test" directory={directory} events={events.source} fetch={calls.fetch}>
+      <SDKProvider url="http:@lgcode/@lgcode/test" directory={directory} events={events.source} fetch={calls.fetch}>
         <ProjectProvider>
           <DataProvider>
-            <Probe />
-          </DataProvider>
-        </ProjectProvider>
-      </SDKProvider>
-    </TestTuiContexts>
+            <Probe @lgcode/>
+          <@lgcode/DataProvider>
+        <@lgcode/ProjectProvider>
+      <@lgcode/SDKProvider>
+    <@lgcode/TestTuiContexts>
   ))
 
   try {
@@ -253,19 +253,19 @@ test("settles pending tools when a live failure arrives", async () => {
   function Probe() {
     sync = useData()
     onMount(ready)
-    return <box />
+    return <box @lgcode/>
   }
 
   const app = await testRender(() => (
     <TestTuiContexts>
-      <SDKProvider url="http://test" directory={directory} events={events.source} fetch={calls.fetch}>
+      <SDKProvider url="http:@lgcode/@lgcode/test" directory={directory} events={events.source} fetch={calls.fetch}>
         <ProjectProvider>
           <DataProvider>
-            <Probe />
-          </DataProvider>
-        </ProjectProvider>
-      </SDKProvider>
-    </TestTuiContexts>
+            <Probe @lgcode/>
+          <@lgcode/DataProvider>
+        <@lgcode/ProjectProvider>
+      <@lgcode/SDKProvider>
+    <@lgcode/TestTuiContexts>
   ))
 
   try {
@@ -382,19 +382,19 @@ test("renders admitted prompts only after promotion", async () => {
   function Probe() {
     sync = useData()
     onMount(ready)
-    return <box />
+    return <box @lgcode/>
   }
 
   const app = await testRender(() => (
     <TestTuiContexts>
-      <SDKProvider url="http://test" directory={directory} events={events.source} fetch={calls.fetch}>
+      <SDKProvider url="http:@lgcode/@lgcode/test" directory={directory} events={events.source} fetch={calls.fetch}>
         <ProjectProvider>
           <DataProvider>
-            <Probe />
-          </DataProvider>
-        </ProjectProvider>
-      </SDKProvider>
-    </TestTuiContexts>
+            <Probe @lgcode/>
+          <@lgcode/DataProvider>
+        <@lgcode/ProjectProvider>
+      <@lgcode/SDKProvider>
+    <@lgcode/TestTuiContexts>
   ))
 
   try {
@@ -446,19 +446,19 @@ test("renders a promoted prompt when admission was missed", async () => {
   function Probe() {
     sync = useData()
     onMount(ready)
-    return <box />
+    return <box @lgcode/>
   }
 
   const app = await testRender(() => (
     <TestTuiContexts>
-      <SDKProvider url="http://test" directory={directory} events={events.source} fetch={calls.fetch}>
+      <SDKProvider url="http:@lgcode/@lgcode/test" directory={directory} events={events.source} fetch={calls.fetch}>
         <ProjectProvider>
           <DataProvider>
-            <Probe />
-          </DataProvider>
-        </ProjectProvider>
-      </SDKProvider>
-    </TestTuiContexts>
+            <Probe @lgcode/>
+          <@lgcode/DataProvider>
+        <@lgcode/ProjectProvider>
+      <@lgcode/SDKProvider>
+    <@lgcode/TestTuiContexts>
   ))
 
   try {
@@ -494,19 +494,19 @@ test("projects live context updates with their message ID", async () => {
   function Probe() {
     sync = useData()
     onMount(ready)
-    return <box />
+    return <box @lgcode/>
   }
 
   const app = await testRender(() => (
     <TestTuiContexts>
-      <SDKProvider url="http://test" directory={directory} events={events.source} fetch={calls.fetch}>
+      <SDKProvider url="http:@lgcode/@lgcode/test" directory={directory} events={events.source} fetch={calls.fetch}>
         <ProjectProvider>
           <DataProvider>
-            <Probe />
-          </DataProvider>
-        </ProjectProvider>
-      </SDKProvider>
-    </TestTuiContexts>
+            <Probe @lgcode/>
+          <@lgcode/DataProvider>
+        <@lgcode/ProjectProvider>
+      <@lgcode/SDKProvider>
+    <@lgcode/TestTuiContexts>
   ))
 
   try {

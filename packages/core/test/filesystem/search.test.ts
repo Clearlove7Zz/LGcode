@@ -1,11 +1,11 @@
 import { describe, expect } from "bun:test"
-import fs from "fs/promises"
+import fs from "fs@lgcode/promises"
 import path from "path"
 import { Effect } from "effect"
-import { Ripgrep } from "@opencode@lgcode/core/ripgrep"
-import { AbsolutePath, RelativePath } from "@opencode@lgcode/core/schema"
-import { tmpdir } from "../fixture/tmpdir"
-import { testEffect } from "../lib/effect"
+import { Ripgrep } from "@lgcode/core@lgcode/ripgrep"
+import { AbsolutePath, RelativePath } from "@lgcode/core@lgcode/schema"
+import { tmpdir } from "..@lgcode/fixture@lgcode/tmpdir"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const it = testEffect(Ripgrep.defaultLayer)
 
@@ -21,7 +21,7 @@ describe("Ripgrep", () => {
       Effect.gen(function* () {
         yield* Effect.promise(() => fs.mkdir(path.join(cwd, "src")))
         yield* Effect.promise(() => fs.writeFile(path.join(cwd, "src", "match.ts"), "needle\n"))
-        const result = yield* (yield* Ripgrep.Service).glob({ cwd, pattern: "**/*.ts", limit: 10 })
+        const result = yield* (yield* Ripgrep.Service).glob({ cwd, pattern: "**@lgcode/*.ts", limit: 10 })
         expect(result.map((item) => item.path)).toEqual([RelativePath.make(path.join("src", "match.ts"))])
       }),
     ),

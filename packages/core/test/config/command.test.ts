@@ -1,16 +1,16 @@
-import fs from "fs/promises"
+import fs from "fs@lgcode/promises"
 import path from "path"
 import { describe, expect } from "bun:test"
 import { Effect, Layer, Schema } from "effect"
-import { CommandV2 } from "@opencode@lgcode/core/command"
-import { Config } from "@opencode@lgcode/core/config"
-import { ConfigCommandPlugin } from "@opencode@lgcode/core/config/plugin/command"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { ModelV2 } from "@opencode@lgcode/core/model"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { tmpdir } from "../fixture/tmpdir"
-import { testEffect } from "../lib/effect"
+import { CommandV2 } from "@lgcode/core@lgcode/command"
+import { Config } from "@lgcode/core@lgcode/config"
+import { ConfigCommandPlugin } from "@lgcode/core@lgcode/config@lgcode/plugin@lgcode/command"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { tmpdir } from "..@lgcode/fixture@lgcode/tmpdir"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const it = testEffect(Layer.mergeAll(CommandV2.locationLayer, FSUtil.defaultLayer))
 const decode = Schema.decodeUnknownSync(Config.Info)
@@ -30,7 +30,7 @@ describe("ConfigCommandPlugin.Plugin", () => {
               `---
 description: File review
 agent: reviewer
-model: anthropic/claude
+model: anthropic@lgcode/claude
 variant: high
 subtask: true
 ---
@@ -72,7 +72,7 @@ Review files`,
               subtask: true,
             }),
             new CommandV2.Info({ name: "empty", template: "" }),
-            new CommandV2.Info({ name: "nested/docs", template: "Write docs" }),
+            new CommandV2.Info({ name: "nested@lgcode/docs", template: "Write docs" }),
           ])
         }),
       ),

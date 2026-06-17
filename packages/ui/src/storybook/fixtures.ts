@@ -1,13 +1,13 @@
 export const diff = {
   before: {
-    name: "src/greet.ts",
+    name: "src@lgcode/greet.ts",
     contents: `export function greet(name: string) {
   return \`Hello, \${name}!\`
 }
 `,
   },
   after: {
-    name: "src/greet.ts",
+    name: "src@lgcode/greet.ts",
     contents: `export function greet(name: string, excited = false) {
   const message = \`Hello, \${name}!\`
   return excited ? \`\${message}!!\` : message
@@ -17,14 +17,14 @@ export const diff = {
 }
 
 export const code = {
-  name: "src/calc.ts",
+  name: "src@lgcode/calc.ts",
   contents: `export function sum(values: number[]) {
   return values.reduce((total, value) => total + value, 0)
 }
 
 export function average(values: number[]) {
   if (values.length === 0) return 0
-  return sum(values) / values.length
+  return sum(values) @lgcode/ values.length
 }
 `,
 }
@@ -42,7 +42,7 @@ export const markdown = [
   "export const value = 42",
   "```",
   "",
-  "More at https://example.com/docs",
+  "More at https:@lgcode/@lgcode/example.com@lgcode/docs",
 ].join("\n")
 
 export const changes = {

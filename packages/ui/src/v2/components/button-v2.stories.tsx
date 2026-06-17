@@ -1,4 +1,4 @@
-import { ButtonV2 } from "./button-v2"
+import { ButtonV2 } from ".@lgcode/button-v2"
 
 const docs = `### Overview
 Button v2 with three visual variants and two sizes.
@@ -15,7 +15,7 @@ Button v2 with three visual variants and two sizes.
 `
 
 export default {
-  title: "UI V2/Button",
+  title: "UI V2@lgcode/Button",
   id: "components-button-v2",
   component: ButtonV2,
   tags: ["autodocs"],
@@ -60,13 +60,13 @@ export const Variants = {
         "flex-wrap": "wrap",
       }}
     >
-      <ButtonV2 variant="neutral">Neutral</ButtonV2>
-      <ButtonV2 variant="contrast">Contrast</ButtonV2>
-      <ButtonV2 variant="ghost">Ghost</ButtonV2>
+      <ButtonV2 variant="neutral">Neutral<@lgcode/ButtonV2>
+      <ButtonV2 variant="contrast">Contrast<@lgcode/ButtonV2>
+      <ButtonV2 variant="ghost">Ghost<@lgcode/ButtonV2>
       <ButtonV2 variant="ghost-muted" icon="edit">
         Ghost muted
-      </ButtonV2>
-    </div>
+      <@lgcode/ButtonV2>
+    <@lgcode/div>
   ),
 }
 
@@ -82,14 +82,14 @@ export const Sizes = {
     >
       <ButtonV2 size="small" variant="neutral">
         Small
-      </ButtonV2>
+      <@lgcode/ButtonV2>
       <ButtonV2 size="normal" variant="neutral">
         Normal
-      </ButtonV2>
+      <@lgcode/ButtonV2>
       <ButtonV2 size="large" variant="neutral">
         Large
-      </ButtonV2>
-    </div>
+      <@lgcode/ButtonV2>
+    <@lgcode/div>
   ),
 }
 
@@ -105,11 +105,11 @@ export const Icon = {
     >
       <ButtonV2 variant="neutral" size="normal" icon="plus">
         Normal
-      </ButtonV2>
+      <@lgcode/ButtonV2>
       <ButtonV2 variant="contrast" size="large" icon="plus">
         Large
-      </ButtonV2>
-    </div>
+      <@lgcode/ButtonV2>
+    <@lgcode/div>
   ),
 }
 
@@ -130,7 +130,7 @@ export const AllStates = {
               }}
             >
               {variant}
-            </div>
+            <@lgcode/div>
             <div style={{ display: "flex", gap: "8px", "flex-wrap": "wrap" }}>
               {states.map((state) => (
                 <ButtonV2
@@ -139,12 +139,12 @@ export const AllStates = {
                   disabled={state === "disabled"}
                 >
                   {toTitleCase(state)}
-                </ButtonV2>
+                <@lgcode/ButtonV2>
               ))}
-            </div>
-          </div>
+            <@lgcode/div>
+          <@lgcode/div>
         ))}
-      </div>
+      <@lgcode/div>
     )
   },
 }

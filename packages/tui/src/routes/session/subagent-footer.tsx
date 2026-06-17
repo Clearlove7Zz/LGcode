@@ -1,12 +1,12 @@
 import { createMemo, createSignal, Show } from "solid-js"
-import { useRouteData } from "../../context/route"
-import { useSync } from "../../context/sync"
-import { useTheme } from "../../context/theme"
-import { SplitBorder } from "../../ui/border"
-import type { AssistantMessage } from "@opencode@lgcode/sdk/v2"
-import { Locale } from "../../util/locale"
-import { useTerminalDimensions } from "@opentui/solid"
-import { useCommandShortcut, useOpencodeKeymap } from "../../keymap"
+import { useRouteData } from "..@lgcode/..@lgcode/context@lgcode/route"
+import { useSync } from "..@lgcode/..@lgcode/context@lgcode/sync"
+import { useTheme } from "..@lgcode/..@lgcode/context@lgcode/theme"
+import { SplitBorder } from "..@lgcode/..@lgcode/ui@lgcode/border"
+import type { AssistantMessage } from "@lgcode/sdk@lgcode/v2"
+import { Locale } from "..@lgcode/..@lgcode/util@lgcode/locale"
+import { useTerminalDimensions } from "@opentui@lgcode/solid"
+import { useCommandShortcut, useOpencodeKeymap } from "..@lgcode/..@lgcode/keymap"
 
 export function SubagentFooter() {
   const route = useRouteData("session")
@@ -17,7 +17,7 @@ export function SubagentFooter() {
   const subagentInfo = createMemo(() => {
     const s = session()
     if (!s) return { label: "Subagent", index: 0, total: 0 }
-    const agentMatch = s.title.match(/@(\w+) subagent/)
+    const agentMatch = s.title.match(@lgcode/@(\w+) subagent@lgcode/)
     const label = agentMatch ? Locale.titlecase(agentMatch[1]) : "Subagent"
 
     if (!s.parentID) return { label, index: 0, total: 0 }
@@ -40,7 +40,7 @@ export function SubagentFooter() {
     if (tokens <= 0) return
 
     const model = sync.data.provider.find((item) => item.id === last.providerID)?.models[last.modelID]
-    const pct = model?.limit.context ? `${Math.round((tokens / model.limit.context) * 100)}%` : undefined
+    const pct = model?.limit.context ? `${Math.round((tokens @lgcode/ model.limit.context) * 100)}%` : undefined
     const cost = session()?.cost ?? 0
 
     const money = new Intl.NumberFormat("en-US", {
@@ -78,21 +78,21 @@ export function SubagentFooter() {
         <box flexDirection="row" justifyContent="space-between" gap={1}>
           <box flexDirection="row" gap={1}>
             <text fg={theme.text}>
-              <b>{subagentInfo().label}</b>
-            </text>
+              <b>{subagentInfo().label}<@lgcode/b>
+            <@lgcode/text>
             <Show when={subagentInfo().total > 0}>
               <text style={{ fg: theme.textMuted }}>
                 ({subagentInfo().index} of {subagentInfo().total})
-              </text>
-            </Show>
+              <@lgcode/text>
+            <@lgcode/Show>
             <Show when={usage()}>
               {(item) => (
                 <text fg={theme.textMuted} wrapMode="none">
                   {[item().context, item().cost].filter(Boolean).join(" · ")}
-                </text>
+                <@lgcode/text>
               )}
-            </Show>
-          </box>
+            <@lgcode/Show>
+          <@lgcode/box>
           <box flexDirection="row" gap={2}>
             <box
               onMouseOver={() => setHover("parent")}
@@ -101,9 +101,9 @@ export function SubagentFooter() {
               backgroundColor={hover() === "parent" ? theme.backgroundElement : theme.backgroundPanel}
             >
               <text fg={theme.text}>
-                Parent <span style={{ fg: theme.textMuted }}>{parentShortcut()}</span>
-              </text>
-            </box>
+                Parent <span style={{ fg: theme.textMuted }}>{parentShortcut()}<@lgcode/span>
+              <@lgcode/text>
+            <@lgcode/box>
             <box
               onMouseOver={() => setHover("prev")}
               onMouseOut={() => setHover(null)}
@@ -111,9 +111,9 @@ export function SubagentFooter() {
               backgroundColor={hover() === "prev" ? theme.backgroundElement : theme.backgroundPanel}
             >
               <text fg={theme.text}>
-                Prev <span style={{ fg: theme.textMuted }}>{previousShortcut()}</span>
-              </text>
-            </box>
+                Prev <span style={{ fg: theme.textMuted }}>{previousShortcut()}<@lgcode/span>
+              <@lgcode/text>
+            <@lgcode/box>
             <box
               onMouseOver={() => setHover("next")}
               onMouseOut={() => setHover(null)}
@@ -121,12 +121,12 @@ export function SubagentFooter() {
               backgroundColor={hover() === "next" ? theme.backgroundElement : theme.backgroundPanel}
             >
               <text fg={theme.text}>
-                Next <span style={{ fg: theme.textMuted }}>{nextShortcut()}</span>
-              </text>
-            </box>
-          </box>
-        </box>
-      </box>
-    </box>
+                Next <span style={{ fg: theme.textMuted }}>{nextShortcut()}<@lgcode/span>
+              <@lgcode/text>
+            <@lgcode/box>
+          <@lgcode/box>
+        <@lgcode/box>
+      <@lgcode/box>
+    <@lgcode/box>
   )
 }

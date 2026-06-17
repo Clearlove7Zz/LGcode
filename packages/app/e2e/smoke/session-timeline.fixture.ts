@@ -23,7 +23,7 @@ const words = [
 
 const sourceID = "ses_smoke_source"
 const targetID = "ses_smoke_target"
-const directory = "C:/OpenCode/SmokeProject"
+const directory = "C:@lgcode/OpenCode@lgcode/SmokeProject"
 const projectID = "proj_smoke_timeline"
 const model = { providerID: "opencode", modelID: "claude-opus-4-6", variant: "max" }
 
@@ -123,7 +123,7 @@ function toolPart(
       ? { files: [patchFile(index, "update"), patchFile(index + 1, index % 2 === 0 ? "add" : "delete")] }
       : tool === "edit" || tool === "write"
         ? {
-            filediff: fileDiff(String(input.filePath ?? `src/generated/file-${index}.ts`), index),
+            filediff: fileDiff(String(input.filePath ?? `src@lgcode/generated@lgcode/file-${index}.ts`), index),
             diff: patch(index, outputLength),
             preview: patch(index + 1, 420),
           }
@@ -148,8 +148,8 @@ function toolPart(
 
 function patchFile(seed: number, type: "add" | "update" | "delete") {
   return {
-    filePath: `src/generated/patch-${seed}.ts`,
-    relativePath: `src/generated/patch-${seed}.ts`,
+    filePath: `src@lgcode/generated@lgcode/patch-${seed}.ts`,
+    relativePath: `src@lgcode/generated@lgcode/patch-${seed}.ts`,
     type,
     additions: (seed % 7) + 1,
     deletions: type === "add" ? 0 : seed % 4,
@@ -170,7 +170,7 @@ function fileDiff(file: string, seed: number) {
 }
 
 function patch(seed: number, length: number) {
-  return `diff --git a/src/generated/file-${seed}.ts b/src/generated/file-${seed}.ts\n+${lorem(seed, length).replace(/\n/g, "\n+")}`
+  return `diff --git a@lgcode/src@lgcode/generated@lgcode/file-${seed}.ts b@lgcode/src@lgcode/generated@lgcode/file-${seed}.ts\n+${lorem(seed, length).replace(@lgcode/\n@lgcode/g, "\n+")}`
 }
 
 function code(seed: number, lines: number) {
@@ -180,30 +180,30 @@ function code(seed: number, lines: number) {
 }
 
 function turn(index: number): Message[] {
-  const diff = index % 9 === 0 ? [fileDiff(`src/generated/summary-${index}.ts`, index)] : []
+  const diff = index % 9 === 0 ? [fileDiff(`src@lgcode/generated@lgcode/summary-${index}.ts`, index)] : []
   const user = userMessage(targetID, index, 100 + (index % 4) * 80, diff)
   const parts = [
     ...(index % 5 === 0 ? [reasoningPart(index, 0, 420)] : []),
     ...(index % 3 === 0
       ? [
-          toolPart(index, 0, "read", { filePath: `src/generated/file-${index}.ts`, offset: 0, limit: 80 }, 220),
-          toolPart(index, 5, "glob", { path: directory, pattern: `**/*sample-${index}*.ts` }, 140),
+          toolPart(index, 0, "read", { filePath: `src@lgcode/generated@lgcode/file-${index}.ts`, offset: 0, limit: 80 }, 220),
+          toolPart(index, 5, "glob", { path: directory, pattern: `**@lgcode/*sample-${index}*.ts` }, 140),
           toolPart(index, 1, "grep", { path: directory, pattern: `sample-${index}`, include: "*.ts" }, 180),
-          toolPart(index, 6, "list", { path: `src/generated/${index}` }, 120),
+          toolPart(index, 6, "list", { path: `src@lgcode/generated@lgcode/${index}` }, 120),
         ]
       : []),
     textPart(index, 2, 160 + (index % 6) * 90),
-    ...(index % 4 === 0 ? [toolPart(index, 3, "edit", { filePath: `src/generated/file-${index}.ts` }, 700)] : []),
+    ...(index % 4 === 0 ? [toolPart(index, 3, "edit", { filePath: `src@lgcode/generated@lgcode/file-${index}.ts` }, 700)] : []),
     ...(index % 6 === 0
-      ? [toolPart(index, 7, "write", { filePath: `src/generated/write-${index}.ts`, content: code(index, 28) }, 560)]
+      ? [toolPart(index, 7, "write", { filePath: `src@lgcode/generated@lgcode/write-${index}.ts`, content: code(index, 28) }, 560)]
       : []),
     ...(index % 8 === 0
-      ? [toolPart(index, 8, "apply_patch", { files: [`src/generated/patch-${index}.ts`] }, 620)]
+      ? [toolPart(index, 8, "apply_patch", { files: [`src@lgcode/generated@lgcode/patch-${index}.ts`] }, 620)]
       : []),
     ...(index % 7 === 0
       ? [toolPart(index, 4, "bash", { command: "bun typecheck", description: "Verify generated output" }, 620)]
       : []),
-    ...(index % 10 === 0 ? [toolPart(index, 9, "webfetch", { url: "https://example.com/docs/sample" }, 120)] : []),
+    ...(index % 10 === 0 ? [toolPart(index, 9, "webfetch", { url: "https:@lgcode/@lgcode/example.com@lgcode/docs@lgcode/sample" }, 120)] : []),
     ...(index % 11 === 0 ? [toolPart(index, 10, "websearch", { query: "sample movement notes" }, 240)] : []),
     ...(index % 13 === 0
       ? [

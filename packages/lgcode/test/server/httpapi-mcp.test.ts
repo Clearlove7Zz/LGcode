@@ -1,11 +1,11 @@
 import { describe, expect } from "bun:test"
 import { Context, Effect, Layer } from "effect"
-import { HttpApiApp } from "../../src/server/routes/instance/httpapi/server"
-import { McpPaths } from "../../src/server/routes/instance/httpapi/groups/mcp"
-import { Server } from "../../src/server/server"
-import { resetDatabase } from "../fixture/db"
-import { TestInstance } from "../fixture/fixture"
-import { testEffect } from "../lib/effect"
+import { HttpApiApp } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/server"
+import { McpPaths } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/mcp"
+import { Server } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/server"
+import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
+import { TestInstance } from "..@lgcode/fixture@lgcode/fixture"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const context = Context.empty() as Context.Context<unknown>
 const testStateLayer = Layer.effectDiscard(
@@ -33,7 +33,7 @@ const request = Effect.fnUntraced(function* (
   return yield* Effect.promise(() =>
     Promise.resolve(
       handler.handler(
-        new Request(`http://localhost${route}`, {
+        new Request(`http:@lgcode/@lgcode/localhost${route}`, {
           ...init,
           headers,
         }),
@@ -88,7 +88,7 @@ describe("mcp HttpApi", () => {
         const handler = HttpApiApp.webHandler()
         const added = yield* request(handler, McpPaths.status, tmp.directory, {
           method: "POST",
-          headers: { "content-type": "application/json" },
+          headers: { "content-type": "application@lgcode/json" },
           body: JSON.stringify({
             name: "added",
             config: {
@@ -101,15 +101,15 @@ describe("mcp HttpApi", () => {
         expect(added.status).toBe(200)
         expect(yield* json(added)).toMatchObject({ added: { status: "disabled" } })
 
-        const addedDisconnected = yield* request(handler, "/mcp/added/disconnect", tmp.directory, { method: "POST" })
+        const addedDisconnected = yield* request(handler, "@lgcode/mcp@lgcode/added@lgcode/disconnect", tmp.directory, { method: "POST" })
         expect(addedDisconnected.status).toBe(200)
         expect(yield* json(addedDisconnected)).toBe(true)
 
-        const connected = yield* request(handler, "/mcp/demo/connect", tmp.directory, { method: "POST" })
+        const connected = yield* request(handler, "@lgcode/mcp@lgcode/demo@lgcode/connect", tmp.directory, { method: "POST" })
         expect(connected.status).toBe(200)
         expect(yield* json(connected)).toBe(true)
 
-        const disconnected = yield* request(handler, "/mcp/demo/disconnect", tmp.directory, { method: "POST" })
+        const disconnected = yield* request(handler, "@lgcode/mcp@lgcode/demo@lgcode/disconnect", tmp.directory, { method: "POST" })
         expect(disconnected.status).toBe(200)
         expect(yield* json(disconnected)).toBe(true)
       }),
@@ -132,13 +132,13 @@ describe("mcp HttpApi", () => {
       Effect.gen(function* () {
         const tmp = yield* TestInstance
         const handler = HttpApiApp.webHandler()
-        const start = yield* request(handler, "/mcp/demo/auth", tmp.directory, { method: "POST" })
+        const start = yield* request(handler, "@lgcode/mcp@lgcode/demo@lgcode/auth", tmp.directory, { method: "POST" })
         expect(start.status).toBe(400)
 
-        const authenticate = yield* request(handler, "/mcp/demo/auth/authenticate", tmp.directory, { method: "POST" })
+        const authenticate = yield* request(handler, "@lgcode/mcp@lgcode/demo@lgcode/auth@lgcode/authenticate", tmp.directory, { method: "POST" })
         expect(authenticate.status).toBe(400)
 
-        const removed = yield* request(handler, "/mcp/demo/auth", tmp.directory, { method: "DELETE" })
+        const removed = yield* request(handler, "@lgcode/mcp@lgcode/demo@lgcode/auth", tmp.directory, { method: "DELETE" })
         expect(removed.status).toBe(200)
         expect(yield* json(removed)).toEqual({ success: true })
       }),
@@ -163,7 +163,7 @@ describe("mcp HttpApi", () => {
         const dir = tmp.directory
         const headers = { "x-opencode-directory": dir }
 
-        yield* Effect.forEach(["/mcp/demo/auth", "/mcp/demo/auth/authenticate"], (path) =>
+        yield* Effect.forEach(["@lgcode/mcp@lgcode/demo@lgcode/auth", "@lgcode/mcp@lgcode/demo@lgcode/auth@lgcode/authenticate"], (path) =>
           Effect.gen(function* () {
             const response = yield* readResponse({ app: app(), path, headers })
 
@@ -197,16 +197,16 @@ describe("mcp HttpApi", () => {
         const handler = HttpApiApp.webHandler()
 
         for (const input of [
-          { method: "POST", route: "/mcp/missing/auth" },
-          { method: "POST", route: "/mcp/missing/auth/authenticate" },
-          { method: "POST", route: "/mcp/missing/auth/callback", body: JSON.stringify({ code: "code" }) },
-          { method: "DELETE", route: "/mcp/missing/auth" },
-          { method: "POST", route: "/mcp/missing/connect" },
-          { method: "POST", route: "/mcp/missing/disconnect" },
+          { method: "POST", route: "@lgcode/mcp@lgcode/missing@lgcode/auth" },
+          { method: "POST", route: "@lgcode/mcp@lgcode/missing@lgcode/auth@lgcode/authenticate" },
+          { method: "POST", route: "@lgcode/mcp@lgcode/missing@lgcode/auth@lgcode/callback", body: JSON.stringify({ code: "code" }) },
+          { method: "DELETE", route: "@lgcode/mcp@lgcode/missing@lgcode/auth" },
+          { method: "POST", route: "@lgcode/mcp@lgcode/missing@lgcode/connect" },
+          { method: "POST", route: "@lgcode/mcp@lgcode/missing@lgcode/disconnect" },
         ]) {
           const response = yield* request(handler, input.route, tmp.directory, {
             method: input.method,
-            headers: input.body ? { "content-type": "application/json" } : undefined,
+            headers: input.body ? { "content-type": "application@lgcode/json" } : undefined,
             body: input.body,
           })
 

@@ -1,11 +1,11 @@
 import { describe, expect, test } from "bun:test"
-import { createStore } from "solid-js/store"
-import { QueryClient } from "@tanstack/solid-query"
-import type { Config, OpencodeClient, Project } from "@opencode@lgcode/sdk/v2/client"
-import type { NormalizedProviderListResponse } from "@opencode@lgcode/ui/context"
-import { bootstrapDirectory, loadPathQuery, loadProvidersQuery } from "./bootstrap"
-import type { State, VcsCache } from "./types"
-import { ServerScope } from "@/utils/server-scope"
+import { createStore } from "solid-js@lgcode/store"
+import { QueryClient } from "@tanstack@lgcode/solid-query"
+import type { Config, OpencodeClient, Project } from "@lgcode/sdk@lgcode/v2@lgcode/client"
+import type { NormalizedProviderListResponse } from "@lgcode/ui@lgcode/context"
+import { bootstrapDirectory, loadPathQuery, loadProvidersQuery } from ".@lgcode/bootstrap"
+import type { State, VcsCache } from ".@lgcode/types"
+import { ServerScope } from "@@lgcode/utils@lgcode/server-scope"
 
 const provider = { all: new Map(), connected: [], default: {} } satisfies NormalizedProviderListResponse
 
@@ -22,7 +22,7 @@ describe("bootstrapDirectory", () => {
       provider_ready: true,
       provider,
       config: {},
-      path: { state: "", config: "", worktree: "/project", directory: "/project", home: "/home" },
+      path: { state: "", config: "", worktree: "@lgcode/project", directory: "@lgcode/project", home: "@lgcode/home" },
       session: [],
       sessionTotal: 0,
       session_status: {},
@@ -45,13 +45,13 @@ describe("bootstrapDirectory", () => {
     })
 
     await bootstrapDirectory({
-      directory: "/project",
+      directory: "@lgcode/project",
       scope: ServerScope.local,
       mcp: false,
       global: {
         config: {} satisfies Config,
-        path: { state: "", config: "", worktree: "/project", directory: "/project", home: "/home" },
-        project: [{ id: "project", worktree: "/project" } as Project],
+        path: { state: "", config: "", worktree: "@lgcode/project", directory: "@lgcode/project", home: "@lgcode/home" },
+        project: [{ id: "project", worktree: "@lgcode/project" } as Project],
         provider,
       },
       sdk: {
@@ -95,12 +95,12 @@ describe("bootstrapDirectory", () => {
 describe("query keys", () => {
   test("partitions identical directories by server scope", () => {
     const client = {} as OpencodeClient
-    const remote = "https://debian.example" as typeof ServerScope.local
+    const remote = "https:@lgcode/@lgcode/debian.example" as typeof ServerScope.local
 
-    expect([...loadPathQuery(ServerScope.local, "/repo", client).queryKey]).toEqual(["local", "/repo", "path"])
-    expect([...loadPathQuery(remote, "/repo", client).queryKey]).toEqual(["https://debian.example", "/repo", "path"])
+    expect([...loadPathQuery(ServerScope.local, "@lgcode/repo", client).queryKey]).toEqual(["local", "@lgcode/repo", "path"])
+    expect([...loadPathQuery(remote, "@lgcode/repo", client).queryKey]).toEqual(["https:@lgcode/@lgcode/debian.example", "@lgcode/repo", "path"])
     expect([...loadProvidersQuery(remote, null, client).queryKey]).toEqual([
-      "https://debian.example",
+      "https:@lgcode/@lgcode/debian.example",
       null,
       "providers",
     ])

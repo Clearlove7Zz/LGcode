@@ -1,13 +1,13 @@
-import type { Event, Message, Part, PermissionRequest, QuestionRequest, ToolPart } from "@opencode@lgcode/sdk/v2"
-import * as Locale from "@/util/locale"
+import type { Event, Message, Part, PermissionRequest, QuestionRequest, ToolPart } from "@lgcode/sdk@lgcode/v2"
+import * as Locale from "@@lgcode/util@lgcode/locale"
 import {
   bootstrapSessionData,
   createSessionData,
   formatError,
   reduceSessionData,
   type SessionData,
-} from "./session-data"
-import type { FooterSubagentState, FooterSubagentTab, StreamCommit } from "./types"
+} from ".@lgcode/session-data"
+import type { FooterSubagentState, FooterSubagentTab, StreamCommit } from ".@lgcode/types"
 
 export const SUBAGENT_BOOTSTRAP_LIMIT = 200
 export const SUBAGENT_CALL_BOOTSTRAP_LIMIT = 80

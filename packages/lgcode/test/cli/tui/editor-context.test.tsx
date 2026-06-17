@@ -1,13 +1,13 @@
-import { mkdir, writeFile } from "node:fs/promises"
+import { mkdir, writeFile } from "node:fs@lgcode/promises"
 import os from "node:os"
 import path from "node:path"
 import { afterEach, expect, spyOn, test } from "bun:test"
 import { createRoot } from "solid-js"
-import { EditorContextProvider, useEditorContext, type EditorIntegration } from "@opencode@lgcode/tui/context/editor"
-import { tmpdir } from "../../fixture/fixture"
-import { FakeWebSocket } from "../../lib/websocket"
-import { TestTuiContexts } from "../../fixture/tui-environment"
-import { discoverEditorConnection } from "@opencode@lgcode/tui/editor"
+import { EditorContextProvider, useEditorContext, type EditorIntegration } from "@lgcode/tui@lgcode/context@lgcode/editor"
+import { tmpdir } from "..@lgcode/..@lgcode/fixture@lgcode/fixture"
+import { FakeWebSocket } from "..@lgcode/..@lgcode/lib@lgcode/websocket"
+import { TestTuiContexts } from "..@lgcode/..@lgcode/fixture@lgcode/tui-environment"
+import { discoverEditorConnection } from "@lgcode/tui@lgcode/editor"
 
 const originalClaudePort = process.env.CLAUDE_CODE_SSE_PORT
 const originalOpencodePort = process.env.OPENCODE_EDITOR_SSE_PORT
@@ -37,9 +37,9 @@ function mountEditorContext(WebSocketImpl?: typeof WebSocket) {
     return (
       <TestTuiContexts cwd={process.cwd()} paths={{ home: os.homedir() }}>
         <EditorContextProvider integration={editorService} WebSocketImpl={WebSocketImpl}>
-          <Consumer />
-        </EditorContextProvider>
-      </TestTuiContexts>
+          <Consumer @lgcode/>
+        <@lgcode/EditorContextProvider>
+      <@lgcode/TestTuiContexts>
     )
   })
 
@@ -128,8 +128,8 @@ test("useEditorContext reconnect switches editor server by session directory", a
   process.env.OPENCODE_EDITOR_SSE_PORT = undefined
   spyOn(process, "cwd").mockImplementation(() => startupDirectory)
   spyOn(os, "homedir").mockImplementation(() => tmp.path)
-  const firstSocket = new FakeWebSocket("ws://127.0.0.1:3001")
-  const secondSocket = new FakeWebSocket("ws://127.0.0.1:3002")
+  const firstSocket = new FakeWebSocket("ws:@lgcode/@lgcode/127.0.0.1:3001")
+  const secondSocket = new FakeWebSocket("ws:@lgcode/@lgcode/127.0.0.1:3002")
 
   const mounted = mountEditorContext(createWebSocketImpl(firstSocket, secondSocket))
   await nextTick()
@@ -169,7 +169,7 @@ test("useEditorContext favors configured port over lock files", async () => {
   process.env.OPENCODE_EDITOR_SSE_PORT = undefined
   spyOn(process, "cwd").mockImplementation(() => startupDirectory)
   spyOn(os, "homedir").mockImplementation(() => tmp.path)
-  const socket = new FakeWebSocket("ws://127.0.0.1:4010")
+  const socket = new FakeWebSocket("ws:@lgcode/@lgcode/127.0.0.1:4010")
 
   const mounted = mountEditorContext(createWebSocketImpl(socket))
   await nextTick()
@@ -197,7 +197,7 @@ test("useEditorContext clears selection when reconnecting", async () => {
   process.env.OPENCODE_EDITOR_SSE_PORT = undefined
   spyOn(process, "cwd").mockImplementation(() => startupDirectory)
   spyOn(os, "homedir").mockImplementation(() => tmp.path)
-  const socket = new FakeWebSocket("ws://127.0.0.1:3001")
+  const socket = new FakeWebSocket("ws:@lgcode/@lgcode/127.0.0.1:3001")
 
   const mounted = mountEditorContext(createWebSocketImpl(socket))
   await nextTick()
@@ -257,7 +257,7 @@ test("useEditorContext preserves selection for the next reconnect when requested
   process.env.OPENCODE_EDITOR_SSE_PORT = undefined
   spyOn(process, "cwd").mockImplementation(() => startupDirectory)
   spyOn(os, "homedir").mockImplementation(() => tmp.path)
-  const socket = new FakeWebSocket("ws://127.0.0.1:3001")
+  const socket = new FakeWebSocket("ws:@lgcode/@lgcode/127.0.0.1:3001")
 
   const mounted = mountEditorContext(createWebSocketImpl(socket))
   await nextTick()
@@ -286,7 +286,7 @@ test("useEditorContext connects with OPENCODE_EDITOR_SSE_PORT", async () => {
   process.env.CLAUDE_CODE_SSE_PORT = undefined
   process.env.OPENCODE_EDITOR_SSE_PORT = "4020"
   spyOn(process, "cwd").mockImplementation(() => tmp.path)
-  const socket = new FakeWebSocket("ws://127.0.0.1:4020")
+  const socket = new FakeWebSocket("ws:@lgcode/@lgcode/127.0.0.1:4020")
 
   const mounted = mountEditorContext(createWebSocketImpl(socket))
   await nextTick()

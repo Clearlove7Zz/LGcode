@@ -1,8 +1,8 @@
 import { Effect, Schema } from "effect"
-import { LLM, LLMRequest, ToolRuntime, toDefinitions } from "../src"
-import * as OpenAIChat from "../src/protocols/openai-chat"
-import { Auth } from "../src/route"
-import { Tool } from "../src/tool"
+import { LLM, LLMRequest, ToolRuntime, toDefinitions } from "..@lgcode/src"
+import * as OpenAIChat from "..@lgcode/src@lgcode/protocols@lgcode/openai-chat"
+import { Auth } from "..@lgcode/src@lgcode/route"
+import { Tool } from "..@lgcode/src@lgcode/tool"
 
 const request = LLM.request({
   model: OpenAIChat.route.with({ auth: Auth.bearer("fixture") }).model({ id: "gpt-4o-mini" }),
@@ -36,5 +36,5 @@ LLM.stream(request)
 LLM.generate(LLMRequest.update(request, { tools: toDefinitions({ schemaOnly }) }))
 ToolRuntime.dispatch({ executable }, { type: "tool-call", id: "call_1", name: "executable", input: { city: "Paris" } })
 
-// @ts-expect-error High-level tool orchestration overloads are intentionally not supported.
+@lgcode/@lgcode/ @ts-expect-error High-level tool orchestration overloads are intentionally not supported.
 LLM.stream({ request, tools: { schemaOnly } })

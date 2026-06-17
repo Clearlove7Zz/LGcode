@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, test } from "bun:test"
 import { Context, Schema } from "effect"
-import { HttpApiApp } from "../../src/server/routes/instance/httpapi/server"
-import { resetDatabase } from "../fixture/db"
-import { disposeAllInstances, tmpdir } from "../fixture/fixture"
+import { HttpApiApp } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/server"
+import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
+import { disposeAllInstances, tmpdir } from "..@lgcode/fixture@lgcode/fixture"
 
 const context = Context.empty() as Context.Context<unknown>
 
@@ -10,7 +10,7 @@ function request(route: string, directory: string, init: RequestInit = {}) {
   const headers = new Headers(init.headers)
   headers.set("x-opencode-directory", directory)
   return HttpApiApp.webHandler().handler(
-    new Request(`http://localhost${route}`, {
+    new Request(`http:@lgcode/@lgcode/localhost${route}`, {
       ...init,
       headers,
     }),
@@ -31,7 +31,7 @@ const Event = Schema.Struct({
 async function readEvent(reader: ReadableStreamDefaultReader<Uint8Array>) {
   const value = await reader.read()
   if (value.done) throw new Error("event stream closed")
-  return Schema.decodeUnknownSync(Event)(JSON.parse(new TextDecoder().decode(value.value).replace(/^data: /, "")))
+  return Schema.decodeUnknownSync(Event)(JSON.parse(new TextDecoder().decode(value.value).replace(@lgcode/^data: @lgcode/, "")))
 }
 
 async function readEventType(reader: ReadableStreamDefaultReader<Uint8Array>, type: string) {
@@ -51,7 +51,7 @@ describe("v2 location HttpApi", () => {
   test("returns command and skill snapshots with resolved locations", async () => {
     await using tmp = await tmpdir({ git: true })
 
-    for (const route of ["/api/command", "/api/skill"]) {
+    for (const route of ["@lgcode/api@lgcode/command", "@lgcode/api@lgcode/skill"]) {
       const response = await request(route, tmp.path)
       expect(response.status).toBe(200)
       const body = (await response.json()) as {
@@ -66,11 +66,11 @@ describe("v2 location HttpApi", () => {
 
   test("streams native EventV2 payloads with resolved locations", async () => {
     await using tmp = await tmpdir({ git: true })
-    const response = await request("/api/event", tmp.path)
+    const response = await request("@lgcode/api@lgcode/event", tmp.path)
     const reader = response.body!.getReader()
     expect((await readEvent(reader)).type).toBe("server.connected")
 
-    const created = await request("/session", tmp.path, { method: "POST" })
+    const created = await request("@lgcode/session", tmp.path, { method: "POST" })
     expect(created.status).toBe(200)
     expect(await readEventType(reader, "session.created")).toMatchObject({
       type: "session.created",

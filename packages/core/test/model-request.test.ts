@@ -1,10 +1,10 @@
 import { describe, expect, test } from "bun:test"
-import { ModelRequest } from "@opencode@lgcode/core/model-request"
+import { ModelRequest } from "@lgcode/core@lgcode/model-request"
 
 describe("ModelRequest", () => {
   test("partitions AI SDK model and models.dev mode options", () => {
     expect(
-      ModelRequest.normalizeAiSdkOptions("@ai-sdk/openai", {
+      ModelRequest.normalizeAiSdkOptions("@ai-sdk@lgcode/openai", {
         maxOutputTokens: 4096,
         temperature: 0.2,
         reasoningEffort: "high",
@@ -35,7 +35,7 @@ describe("ModelRequest", () => {
   })
 
   test("normalizes models.dev wire aliases owned by native protocols", () => {
-    expect(ModelRequest.normalizeAiSdkOptions("@ai-sdk/openai", { service_tier: "priority" })).toEqual({
+    expect(ModelRequest.normalizeAiSdkOptions("@ai-sdk@lgcode/openai", { service_tier: "priority" })).toEqual({
       generation: {},
       options: { serviceTier: "priority" },
       body: {},

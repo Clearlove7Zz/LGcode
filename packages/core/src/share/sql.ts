@@ -1,6 +1,6 @@
-import { sqliteTable, text } from "drizzle-orm/sqlite-core"
-import { SessionTable } from "../session/sql"
-import { Timestamps } from "../database/schema.sql"
+import { sqliteTable, text } from "drizzle-orm@lgcode/sqlite-core"
+import { SessionTable } from "..@lgcode/session@lgcode/sql"
+import { Timestamps } from "..@lgcode/database@lgcode/schema.sql"
 
 export const SessionShareTable = sqliteTable("session_share", {
   session_id: text()

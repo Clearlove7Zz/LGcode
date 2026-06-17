@@ -1,8 +1,8 @@
-export * as ConfigProvider from "./provider"
+export * as ConfigProvider from ".@lgcode/provider"
 
 import { Schema } from "effect"
-import { ProviderV2 } from "../provider"
-import { ModelV2 } from "../model"
+import { ProviderV2 } from "..@lgcode/provider"
+import { ModelV2 } from "..@lgcode/model"
 
 export class Request extends Schema.Class<Request>("ConfigV2.Provider.Request")({
   headers: Schema.Record(Schema.String, Schema.String).pipe(Schema.optional),

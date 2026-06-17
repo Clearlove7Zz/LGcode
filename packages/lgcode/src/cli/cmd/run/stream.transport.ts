@@ -1,23 +1,23 @@
-// Global event subscription and prompt turn coordination.
-//
-// Creates a long-lived global event stream subscription and feeds relevant
-// events for the current session tree through the reducers. The reducers
-// produce scrollback commits and footer patches, which get forwarded to the
-// footer through stream.ts.
-//
-// Prompt turns are one-at-a-time: runPromptTurn() sends the prompt, arms a
-// deferred Wait, and resolves when the session becomes idle.
-// Prefer session.status idle events, but also poll session.status because some
-// transports can miss status events while still delivering message events. If
-// the turn is aborted (user interrupt), it flushes any in-progress parts as
-// interrupted entries.
-//
-// The tick counter prevents stale idle events from resolving the wrong turn.
-// We also re-check live session status before resolving an idle event so a
-// delayed idle from an older turn cannot complete a newer busy turn.
-import type { Event, GlobalEvent, OpencodeClient } from "@opencode@lgcode/sdk/v2"
+@lgcode/@lgcode/ Global event subscription and prompt turn coordination.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Creates a long-lived global event stream subscription and feeds relevant
+@lgcode/@lgcode/ events for the current session tree through the reducers. The reducers
+@lgcode/@lgcode/ produce scrollback commits and footer patches, which get forwarded to the
+@lgcode/@lgcode/ footer through stream.ts.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Prompt turns are one-at-a-time: runPromptTurn() sends the prompt, arms a
+@lgcode/@lgcode/ deferred Wait, and resolves when the session becomes idle.
+@lgcode/@lgcode/ Prefer session.status idle events, but also poll session.status because some
+@lgcode/@lgcode/ transports can miss status events while still delivering message events. If
+@lgcode/@lgcode/ the turn is aborted (user interrupt), it flushes any in-progress parts as
+@lgcode/@lgcode/ interrupted entries.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ The tick counter prevents stale idle events from resolving the wrong turn.
+@lgcode/@lgcode/ We also re-check live session status before resolving an idle event so a
+@lgcode/@lgcode/ delayed idle from an older turn cannot complete a newer busy turn.
+import type { Event, GlobalEvent, OpencodeClient } from "@lgcode/sdk@lgcode/v2"
 import { Context, Deferred, Effect, Exit, Layer, Scope, Stream } from "effect"
-import { makeRuntime } from "@/effect/run-service"
+import { makeRuntime } from "@@lgcode/effect@lgcode/run-service"
 import {
   blockerStatus,
   bootstrapSessionData,
@@ -26,8 +26,8 @@ import {
   pickBlockerView,
   reduceSessionData,
   type SessionData,
-} from "./session-data"
-import { replayActiveText, replayLocalRows, replaySession } from "./session-replay"
+} from ".@lgcode/session-data"
+import { replayActiveText, replayLocalRows, replaySession } from ".@lgcode/session-replay"
 import {
   bootstrapSubagentCalls,
   bootstrapSubagentData,
@@ -41,8 +41,8 @@ import {
   SUBAGENT_BOOTSTRAP_LIMIT,
   SUBAGENT_CALL_BOOTSTRAP_LIMIT,
   type SubagentData,
-} from "./subagent-data"
-import { traceFooterOutput, writeSessionOutput } from "./stream"
+} from ".@lgcode/subagent-data"
+import { traceFooterOutput, writeSessionOutput } from ".@lgcode/stream"
 import type {
   FooterApi,
   FooterOutput,
@@ -58,7 +58,7 @@ import type {
   RunPromptPart,
   RunProvider,
   StreamCommit,
-} from "./types"
+} from ".@lgcode/types"
 
 type Trace = {
   write(type: string, data?: unknown): void
@@ -130,7 +130,7 @@ type TransportService = {
   readonly close: () => Effect.Effect<void>
 }
 
-class Service extends Context.Service<Service, TransportService>()("@opencode/RunStreamTransport") {}
+class Service extends Context.Service<Service, TransportService>()("@lgcode/RunStreamTransport") {}
 
 function sid(event: Event): string | undefined {
   if (event.type === "message.updated") {
@@ -226,7 +226,7 @@ function active(event: Event, sessionID: string): boolean {
   return event.properties.status.type !== "idle"
 }
 
-// Races the turn's deferred completion against an abort signal.
+@lgcode/@lgcode/ Races the turn's deferred completion against an abort signal.
 function waitTurn(done: Wait["done"], signal: AbortSignal) {
   return Effect.raceAll([
     Deferred.await(done).pipe(Effect.as("idle" as const), Effect.exit),
@@ -1283,7 +1283,7 @@ function createLayer(input: StreamInput) {
                             sessionID: input.sessionID,
                             messageID: next.prompt.messageID,
                             agent: next.agent,
-                            model: next.model ? `${next.model.providerID}/${next.model.modelID}` : undefined,
+                            model: next.model ? `${next.model.providerID}@lgcode/${next.model.modelID}` : undefined,
                             variant: next.variant,
                             command: command.name,
                             arguments: command.arguments,
@@ -1440,15 +1440,15 @@ function createLayer(input: StreamInput) {
   )
 }
 
-// Opens an SDK event subscription and returns a SessionTransport.
-//
-// The background `watch` loop consumes every SDK event, runs it through the
-// reducer, and writes output to the footer. When a session.status idle
-// event arrives, it resolves the current turn's Wait so runPromptTurn()
-// can return.
-//
-// The transport is single-turn: only one runPromptTurn() call can be active
-// at a time. The prompt queue enforces this from above.
+@lgcode/@lgcode/ Opens an SDK event subscription and returns a SessionTransport.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ The background `watch` loop consumes every SDK event, runs it through the
+@lgcode/@lgcode/ reducer, and writes output to the footer. When a session.status idle
+@lgcode/@lgcode/ event arrives, it resolves the current turn's Wait so runPromptTurn()
+@lgcode/@lgcode/ can return.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ The transport is single-turn: only one runPromptTurn() call can be active
+@lgcode/@lgcode/ at a time. The prompt queue enforces this from above.
 export async function createSessionTransport(input: StreamInput): Promise<SessionTransport> {
   const runtime = makeRuntime(Service, createLayer(input))
   await runtime.runPromise(() => Effect.void)

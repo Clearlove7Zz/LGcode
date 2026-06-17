@@ -1,10 +1,10 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { Catalog } from "@opencode@lgcode/core/catalog"
-import { PluginV2 } from "@opencode@lgcode/core/plugin"
-import { AmazonBedrockPlugin } from "@opencode@lgcode/core/plugin/provider/amazon-bedrock"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { fakeSelectorSdk, it, model, provider, withEnv } from "./provider-helper"
+import { Catalog } from "@lgcode/core@lgcode/catalog"
+import { PluginV2 } from "@lgcode/core@lgcode/plugin"
+import { AmazonBedrockPlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/amazon-bedrock"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { fakeSelectorSdk, it, model, provider, withEnv } from ".@lgcode/provider-helper"
 
 function bedrockBaseURL(sdk: unknown, modelID = "anthropic.claude-sonnet-4-5") {
   const language = (sdk as { languageModel: (id: string) => unknown }).languageModel(modelID)
@@ -34,10 +34,10 @@ describe("AmazonBedrockPlugin", () => {
       const transform = yield* catalog.transform()
       yield* transform((catalog) => {
         const bedrock = provider("amazon-bedrock", {
-          api: { type: "aisdk", package: "@ai-sdk/amazon-bedrock" },
+          api: { type: "aisdk", package: "@ai-sdk@lgcode/amazon-bedrock" },
           request: {
             headers: {},
-            body: { endpoint: "https://bedrock.example" },
+            body: { endpoint: "https:@lgcode/@lgcode/bedrock.example" },
           },
         })
         catalog.provider.update(bedrock.id, (item) => {
@@ -48,8 +48,8 @@ describe("AmazonBedrockPlugin", () => {
       const result = yield* catalog.provider.get(ProviderV2.ID.amazonBedrock)
       expect(result.api).toEqual({
         type: "aisdk",
-        package: "@ai-sdk/amazon-bedrock",
-        url: "https://bedrock.example",
+        package: "@ai-sdk@lgcode/amazon-bedrock",
+        url: "https:@lgcode/@lgcode/bedrock.example",
       })
       expect(result.request.body.endpoint).toBeUndefined()
     }),
@@ -64,18 +64,18 @@ describe("AmazonBedrockPlugin", () => {
           "aisdk.sdk",
           {
             model: model("amazon-bedrock", "anthropic.claude-sonnet-4-5"),
-            package: "@ai-sdk/amazon-bedrock",
+            package: "@ai-sdk@lgcode/amazon-bedrock",
             options: {
               name: "amazon-bedrock",
               bearerToken: "token",
-              baseURL: "https://base.example",
-              endpoint: "https://endpoint.example",
+              baseURL: "https:@lgcode/@lgcode/base.example",
+              endpoint: "https:@lgcode/@lgcode/endpoint.example",
               region: "us-east-1",
             },
           },
           {},
         )
-        expect(bedrockBaseURL(result.sdk)).toBe("https://endpoint.example")
+        expect(bedrockBaseURL(result.sdk)).toBe("https:@lgcode/@lgcode/endpoint.example")
       }),
     ),
   )
@@ -89,17 +89,17 @@ describe("AmazonBedrockPlugin", () => {
           "aisdk.sdk",
           {
             model: model("amazon-bedrock", "anthropic.claude-sonnet-4-5"),
-            package: "@ai-sdk/amazon-bedrock",
+            package: "@ai-sdk@lgcode/amazon-bedrock",
             options: {
               name: "amazon-bedrock",
               bearerToken: "token",
-              baseURL: "https://base.example",
+              baseURL: "https:@lgcode/@lgcode/base.example",
               region: "us-east-1",
             },
           },
           {},
         )
-        expect(bedrockBaseURL(result.sdk)).toBe("https://base.example")
+        expect(bedrockBaseURL(result.sdk)).toBe("https:@lgcode/@lgcode/base.example")
       }),
     ),
   )
@@ -123,13 +123,13 @@ describe("AmazonBedrockPlugin", () => {
             "aisdk.sdk",
             {
               model: model("amazon-bedrock", "anthropic.claude-sonnet-4-5"),
-              package: "@ai-sdk/amazon-bedrock",
+              package: "@ai-sdk@lgcode/amazon-bedrock",
               options: { name: "amazon-bedrock" },
             },
             {},
           )
           expect(result.sdk).toBeDefined()
-          expect(bedrockBaseURL(result.sdk)).toBe("https://bedrock-runtime.us-east-1.amazonaws.com")
+          expect(bedrockBaseURL(result.sdk)).toBe("https:@lgcode/@lgcode/bedrock-runtime.us-east-1.amazonaws.com")
         }),
     ),
   )
@@ -143,12 +143,12 @@ describe("AmazonBedrockPlugin", () => {
           "aisdk.sdk",
           {
             model: model("amazon-bedrock", "anthropic.claude-sonnet-4-5"),
-            package: "@ai-sdk/amazon-bedrock",
+            package: "@ai-sdk@lgcode/amazon-bedrock",
             options: { name: "amazon-bedrock", region: "eu-west-1" },
           },
           {},
         )
-        expect(bedrockBaseURL(result.sdk)).toBe("https://bedrock-runtime.eu-west-1.amazonaws.com")
+        expect(bedrockBaseURL(result.sdk)).toBe("https:@lgcode/@lgcode/bedrock-runtime.eu-west-1.amazonaws.com")
       }),
     ),
   )
@@ -162,12 +162,12 @@ describe("AmazonBedrockPlugin", () => {
           "aisdk.sdk",
           {
             model: model("amazon-bedrock", "anthropic.claude-sonnet-4-5"),
-            package: "@ai-sdk/amazon-bedrock",
+            package: "@ai-sdk@lgcode/amazon-bedrock",
             options: { name: "amazon-bedrock" },
           },
           {},
         )
-        expect(bedrockBaseURL(result.sdk)).toBe("https://bedrock-runtime.eu-west-1.amazonaws.com")
+        expect(bedrockBaseURL(result.sdk)).toBe("https:@lgcode/@lgcode/bedrock-runtime.eu-west-1.amazonaws.com")
       }),
     ),
   )
@@ -181,12 +181,12 @@ describe("AmazonBedrockPlugin", () => {
           "aisdk.sdk",
           {
             model: model("amazon-bedrock", "anthropic.claude-sonnet-4-5"),
-            package: "@ai-sdk/amazon-bedrock",
+            package: "@ai-sdk@lgcode/amazon-bedrock",
             options: { name: "amazon-bedrock" },
           },
           {},
         )
-        expect(bedrockBaseURL(result.sdk)).toBe("https://bedrock-runtime.us-east-1.amazonaws.com")
+        expect(bedrockBaseURL(result.sdk)).toBe("https:@lgcode/@lgcode/bedrock-runtime.us-east-1.amazonaws.com")
       }),
     ),
   )
@@ -201,7 +201,7 @@ describe("AmazonBedrockPlugin", () => {
           "aisdk.sdk",
           {
             model: model("amazon-bedrock", "anthropic.claude-sonnet-4-5"),
-            package: "@ai-sdk/amazon-bedrock",
+            package: "@ai-sdk@lgcode/amazon-bedrock",
             options: {
               name: "amazon-bedrock",
               bearerToken: "option-token",
@@ -213,7 +213,7 @@ describe("AmazonBedrockPlugin", () => {
           },
           {},
         )
-        yield* Effect.promise(() => bedrockFetch(result.sdk)("https://bedrock.example", { method: "POST" }))
+        yield* Effect.promise(() => bedrockFetch(result.sdk)("https:@lgcode/@lgcode/bedrock.example", { method: "POST" }))
         expect(process.env.AWS_BEARER_TOKEN_BEDROCK).toBe("option-token")
         expect(headers).toEqual(["Bearer option-token"])
       }),
@@ -230,7 +230,7 @@ describe("AmazonBedrockPlugin", () => {
           "aisdk.sdk",
           {
             model: model("amazon-bedrock", "anthropic.claude-sonnet-4-5"),
-            package: "@ai-sdk/amazon-bedrock",
+            package: "@ai-sdk@lgcode/amazon-bedrock",
             options: {
               name: "amazon-bedrock",
               bearerToken: "option-token",
@@ -242,7 +242,7 @@ describe("AmazonBedrockPlugin", () => {
           },
           {},
         )
-        yield* Effect.promise(() => bedrockFetch(result.sdk)("https://bedrock.example", { method: "POST" }))
+        yield* Effect.promise(() => bedrockFetch(result.sdk)("https:@lgcode/@lgcode/bedrock.example", { method: "POST" }))
         expect(process.env.AWS_BEARER_TOKEN_BEDROCK).toBe("env-token")
         expect(headers).toEqual(["Bearer env-token"])
       }),
@@ -258,21 +258,21 @@ describe("AmazonBedrockPlugin", () => {
           "aisdk.sdk",
           {
             model: model("amazon-bedrock", "openai.gpt-5.5", {
-              api: { type: "aisdk", package: "@ai-sdk/amazon-bedrock/mantle" },
+              api: { type: "aisdk", package: "@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle" },
             }),
-            package: "@ai-sdk/amazon-bedrock/mantle",
+            package: "@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle",
             options: {
               name: "amazon-bedrock",
               bearerToken: "token",
-              baseURL: "https://bedrock-mantle.us-east-2.api.aws/openai/v1",
+              baseURL: "https:@lgcode/@lgcode/bedrock-mantle.us-east-2.api.aws@lgcode/openai@lgcode/v1",
               region: "us-east-2",
             },
           },
           {},
         )
         const language = result.sdk.responses("openai.gpt-5.5")
-        expect(openAIUrl(language, "/responses", "openai.gpt-5.5")).toBe(
-          "https://bedrock-mantle.us-east-2.api.aws/openai/v1/responses",
+        expect(openAIUrl(language, "@lgcode/responses", "openai.gpt-5.5")).toBe(
+          "https:@lgcode/@lgcode/bedrock-mantle.us-east-2.api.aws@lgcode/openai@lgcode/v1@lgcode/responses",
         )
       }),
     ),
@@ -287,10 +287,10 @@ describe("AmazonBedrockPlugin", () => {
         "aisdk.language",
         {
           model: model("amazon-bedrock", "openai.gpt-5.5", {
-            api: { type: "aisdk", package: "@ai-sdk/amazon-bedrock/mantle" },
+            api: { type: "aisdk", package: "@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle" },
           }),
           sdk: fakeSelectorSdk(calls),
-          options: { baseURL: "https://bedrock-mantle.us-east-2.api.aws/openai/v1", region: "us-east-2" },
+          options: { baseURL: "https:@lgcode/@lgcode/bedrock-mantle.us-east-2.api.aws@lgcode/openai@lgcode/v1", region: "us-east-2" },
         },
         {},
       )
@@ -298,7 +298,7 @@ describe("AmazonBedrockPlugin", () => {
         "aisdk.language",
         {
           model: model("amazon-bedrock", "openai.gpt-oss-safeguard-120b", {
-            api: { type: "aisdk", package: "@ai-sdk/amazon-bedrock/mantle" },
+            api: { type: "aisdk", package: "@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle" },
           }),
           sdk: fakeSelectorSdk(calls),
           options: { region: "us-east-1" },
@@ -317,9 +317,9 @@ describe("AmazonBedrockPlugin", () => {
         "aisdk.sdk",
         {
           model: model("amazon-bedrock", "anthropic.claude-sonnet-4-5", {
-            api: { type: "aisdk", package: "@ai-sdk/amazon-bedrock/anthropic" },
+            api: { type: "aisdk", package: "@ai-sdk@lgcode/amazon-bedrock@lgcode/anthropic" },
           }),
-          package: "@ai-sdk/amazon-bedrock/anthropic",
+          package: "@ai-sdk@lgcode/amazon-bedrock@lgcode/anthropic",
           options: { name: "amazon-bedrock" },
         },
         {},
@@ -346,7 +346,7 @@ describe("AmazonBedrockPlugin", () => {
             "aisdk.sdk",
             {
               model: model("amazon-bedrock", "anthropic.claude-sonnet-4-5"),
-              package: "@ai-sdk/amazon-bedrock",
+              package: "@ai-sdk@lgcode/amazon-bedrock",
               options: {
                 name: "amazon-bedrock",
                 fetch: async (_input: Parameters<typeof fetch>[0], init?: RequestInit) => {
@@ -358,7 +358,7 @@ describe("AmazonBedrockPlugin", () => {
             {},
           )
           yield* Effect.promise(() =>
-            bedrockFetch(result.sdk)("https://bedrock-runtime.us-east-1.amazonaws.com/model/test/invoke", {
+            bedrockFetch(result.sdk)("https:@lgcode/@lgcode/bedrock-runtime.us-east-1.amazonaws.com@lgcode/model@lgcode/test@lgcode/invoke", {
               body: "{}",
               method: "POST",
             }),

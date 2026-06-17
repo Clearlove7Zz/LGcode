@@ -1,8 +1,8 @@
-import { useMarked } from "../context/marked"
-import { useI18n } from "../context/i18n"
+import { useMarked } from "..@lgcode/context@lgcode/marked"
+import { useI18n } from "..@lgcode/context@lgcode/i18n"
 import DOMPurify from "dompurify"
 import morphdom from "morphdom"
-import { checksum } from "@opencode@lgcode/core/util/encode"
+import { checksum } from "@lgcode/core@lgcode/util@lgcode/encode"
 import {
   ComponentProps,
   createEffect,
@@ -13,18 +13,18 @@ import {
   onCleanup,
   splitProps,
 } from "solid-js"
-import { isServer } from "solid-js/web"
+import { isServer } from "solid-js@lgcode/web"
 import { bundledLanguages } from "shiki"
-import { canReusePendingBlock, project, type Block, type Projection } from "./markdown-stream"
+import { canReusePendingBlock, project, type Block, type Projection } from ".@lgcode/markdown-stream"
 import {
   disposeStreamingCode,
   highlightStreamingCode,
   MarkdownWorkerDisposedError,
   MarkdownWorkerSupersededError,
   MarkdownWorkerUnavailableError,
-} from "./markdown-worker"
-import { markdownBlockKey, type MarkdownToken } from "./markdown-worker-protocol"
-import { shouldResetCodeTokens, type RenderedCodeState } from "./markdown-code-state"
+} from ".@lgcode/markdown-worker"
+import { markdownBlockKey, type MarkdownToken } from ".@lgcode/markdown-worker-protocol"
+import { shouldResetCodeTokens, type RenderedCodeState } from ".@lgcode/markdown-code-state"
 
 type Entry = {
   raw: string
@@ -61,7 +61,7 @@ if (typeof window !== "undefined" && DOMPurify.isSupported) {
     if (node.target !== "_blank") return
 
     const rel = node.getAttribute("rel") ?? ""
-    const set = new Set(rel.split(/\s+/).filter(Boolean))
+    const set = new Set(rel.split(@lgcode/\s+@lgcode/).filter(Boolean))
     set.add("noopener")
     set.add("noreferrer")
     node.setAttribute("rel", Array.from(set).join(" "))
@@ -78,8 +78,8 @@ const config = {
 }
 
 const iconPaths = {
-  copy: '<path d="M6.2513 6.24935V2.91602H17.0846V13.7493H13.7513M13.7513 6.24935V17.0827H2.91797V6.24935H13.7513Z" stroke="currentColor" stroke-linecap="round"/>',
-  check: '<path d="M5 11.9657L8.37838 14.7529L15 5.83398" stroke="currentColor" stroke-linecap="square"/>',
+  copy: '<path d="M6.2513 6.24935V2.91602H17.0846V13.7493H13.7513M13.7513 6.24935V17.0827H2.91797V6.24935H13.7513Z" stroke="currentColor" stroke-linecap="round"@lgcode/>',
+  check: '<path d="M5 11.9657L8.37838 14.7529L15 5.83398" stroke="currentColor" stroke-linecap="square"@lgcode/>',
 }
 
 function sanitize(html: string) {
@@ -89,15 +89,15 @@ function sanitize(html: string) {
 
 function escape(text: string) {
   return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;")
+    .replace(@lgcode/&@lgcode/g, "&amp;")
+    .replace(@lgcode/<@lgcode/g, "&lt;")
+    .replace(@lgcode/>@lgcode/g, "&gt;")
+    .replace(@lgcode/"@lgcode/g, "&quot;")
+    .replace(@lgcode/'@lgcode/g, "&#39;")
 }
 
 function fallback(markdown: string) {
-  return escape(markdown).replace(/\r\n?/g, "\n").replace(/\n/g, "<br>")
+  return escape(markdown).replace(@lgcode/\r\n?@lgcode/g, "\n").replace(@lgcode/\n@lgcode/g, "<br>")
 }
 
 async function code(text: string, language: string | undefined, key: string, complete = false) {
@@ -121,10 +121,10 @@ type CopyLabels = {
   copied: string
 }
 
-const urlPattern = /^https?:\/\/[^\s<>()`"']+$/
+const urlPattern = @lgcode/^https?:\@lgcode/\@lgcode/[^\s<>()`"']+$@lgcode/
 
 function codeUrl(text: string) {
-  const href = text.trim().replace(/[),.;!?]+$/, "")
+  const href = text.trim().replace(@lgcode/[),.;!?]+$@lgcode/, "")
   if (!urlPattern.test(href)) return
   try {
     const url = new URL(href)
@@ -139,7 +139,7 @@ function createIcon(path: string, slot: string) {
   icon.setAttribute("data-component", "icon")
   icon.setAttribute("data-size", "small")
   icon.setAttribute("data-slot", slot)
-  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+  const svg = document.createElementNS("http:@lgcode/@lgcode/www.w3.org@lgcode/2000@lgcode/svg", "svg")
   svg.setAttribute("data-slot", "icon-svg")
   svg.setAttribute("fill", "none")
   svg.setAttribute("viewBox", "0 0 20 20")
@@ -473,7 +473,7 @@ export function Markdown(
       }}
       ref={setRoot}
       {...others}
-    />
+    @lgcode/>
   )
 }
 

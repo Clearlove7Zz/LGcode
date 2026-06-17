@@ -1,12 +1,12 @@
-export * as SessionMessage from "./message"
+export * as SessionMessage from ".@lgcode/message"
 
 import { Schema } from "effect"
-import { ProviderMetadata, ToolContent } from "@opencode@lgcode/llm"
-import { ModelV2 } from "../model"
-import { V2Schema } from "../v2-schema"
-import { SessionEvent } from "./event"
-import { Prompt } from "./prompt"
-import { SessionMessageID } from "./message-id"
+import { ProviderMetadata, ToolContent } from "@lgcode/llm"
+import { ModelV2 } from "..@lgcode/model"
+import { V2Schema } from "..@lgcode/v2-schema"
+import { SessionEvent } from ".@lgcode/event"
+import { Prompt } from ".@lgcode/prompt"
+import { SessionMessageID } from ".@lgcode/message-id"
 
 export const ID = SessionMessageID.ID
 export type ID = typeof ID.Type

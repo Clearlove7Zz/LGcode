@@ -1,5 +1,5 @@
-import type { TuiPlugin, TuiPluginApi } from "@opencode@lgcode/plugin/tui"
-import type { BuiltinTuiPlugin } from "../builtins"
+import type { TuiPlugin, TuiPluginApi } from "@lgcode/plugin@lgcode/tui"
+import type { BuiltinTuiPlugin } from "..@lgcode/builtins"
 import { createMemo, For, Match, Show, Switch, createSignal } from "solid-js"
 
 const id = "internal:sidebar-mcp"
@@ -31,18 +31,18 @@ function View(props: { api: TuiPluginApi }) {
       <box>
         <box flexDirection="row" gap={1} onMouseDown={() => list().length > 2 && setOpen((x) => !x)}>
           <Show when={list().length > 2}>
-            <text fg={theme().text}>{open() ? "▼" : "▶"}</text>
-          </Show>
+            <text fg={theme().text}>{open() ? "▼" : "▶"}<@lgcode/text>
+          <@lgcode/Show>
           <text fg={theme().text}>
-            <b>MCP</b>
+            <b>MCP<@lgcode/b>
             <Show when={!open()}>
               <span style={{ fg: theme().textMuted }}>
                 {" "}
                 ({on()} active{bad() > 0 ? `, ${bad()} error${bad() > 1 ? "s" : ""}` : ""})
-              </span>
-            </Show>
-          </text>
-        </box>
+              <@lgcode/span>
+            <@lgcode/Show>
+          <@lgcode/text>
+        <@lgcode/box>
         <Show when={list().length <= 2 || open()}>
           <For each={list()}>
             {(item) => (
@@ -54,27 +54,27 @@ function View(props: { api: TuiPluginApi }) {
                   }}
                 >
                   •
-                </text>
+                <@lgcode/text>
                 <text fg={theme().text} wrapMode="word">
                   {item.name}{" "}
                   <span style={{ fg: theme().textMuted }}>
                     <Switch fallback={item.status}>
-                      <Match when={item.status === "connected"}>Connected</Match>
+                      <Match when={item.status === "connected"}>Connected<@lgcode/Match>
                       <Match when={item.status === "failed"}>
-                        <i>{item.error}</i>
-                      </Match>
-                      <Match when={item.status === "disabled"}>Disabled</Match>
-                      <Match when={item.status === "needs_auth"}>Needs auth</Match>
-                      <Match when={item.status === "needs_client_registration"}>Needs client ID</Match>
-                    </Switch>
-                  </span>
-                </text>
-              </box>
+                        <i>{item.error}<@lgcode/i>
+                      <@lgcode/Match>
+                      <Match when={item.status === "disabled"}>Disabled<@lgcode/Match>
+                      <Match when={item.status === "needs_auth"}>Needs auth<@lgcode/Match>
+                      <Match when={item.status === "needs_client_registration"}>Needs client ID<@lgcode/Match>
+                    <@lgcode/Switch>
+                  <@lgcode/span>
+                <@lgcode/text>
+              <@lgcode/box>
             )}
-          </For>
-        </Show>
-      </box>
-    </Show>
+          <@lgcode/For>
+        <@lgcode/Show>
+      <@lgcode/box>
+    <@lgcode/Show>
   )
 }
 
@@ -83,7 +83,7 @@ const tui: TuiPlugin = async (api) => {
     order: 200,
     slots: {
       sidebar_content() {
-        return <View api={api} />
+        return <View api={api} @lgcode/>
       },
     },
   })

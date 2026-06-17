@@ -1,37 +1,37 @@
 export type Runtime = {
-  PublicApi: (typeof import("../../../src/server/routes/instance/httpapi/public"))["PublicApi"]
-  HttpApiApp: (typeof import("../../../src/server/routes/instance/httpapi/server"))["HttpApiApp"]
-  AppLayer: (typeof import("../../../src/effect/app-runtime"))["AppLayer"]
+  PublicApi: (typeof import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/public"))["PublicApi"]
+  HttpApiApp: (typeof import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/server"))["HttpApiApp"]
+  AppLayer: (typeof import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/effect@lgcode/app-runtime"))["AppLayer"]
   memoMap: import("effect").Layer.MemoMap
-  InstanceRef: (typeof import("../../../src/effect/instance-ref"))["InstanceRef"]
-  InstanceStore: (typeof import("../../../src/project/instance-store"))["InstanceStore"]
-  Session: (typeof import("../../../src/session/session"))["Session"]
-  Todo: (typeof import("../../../src/session/todo"))["Todo"]
-  Worktree: (typeof import("../../../src/worktree"))["Worktree"]
-  Project: (typeof import("../../../src/project/project"))["Project"]
-  Tui: typeof import("../../../src/server/shared/tui-control")
-  disposeAllInstances: (typeof import("../../fixture/fixture"))["disposeAllInstances"]
-  tmpdir: (typeof import("../../fixture/fixture"))["tmpdir"]
-  resetDatabase: (typeof import("../../fixture/db"))["resetDatabase"]
+  InstanceRef: (typeof import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/effect@lgcode/instance-ref"))["InstanceRef"]
+  InstanceStore: (typeof import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/project@lgcode/instance-store"))["InstanceStore"]
+  Session: (typeof import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/session@lgcode/session"))["Session"]
+  Todo: (typeof import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/session@lgcode/todo"))["Todo"]
+  Worktree: (typeof import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/worktree"))["Worktree"]
+  Project: (typeof import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/project@lgcode/project"))["Project"]
+  Tui: typeof import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/server@lgcode/shared@lgcode/tui-control")
+  disposeAllInstances: (typeof import("..@lgcode/..@lgcode/fixture@lgcode/fixture"))["disposeAllInstances"]
+  tmpdir: (typeof import("..@lgcode/..@lgcode/fixture@lgcode/fixture"))["tmpdir"]
+  resetDatabase: (typeof import("..@lgcode/..@lgcode/fixture@lgcode/db"))["resetDatabase"]
 }
 
 let runtimePromise: Promise<Runtime> | undefined
 
 export function runtime() {
   return (runtimePromise ??= (async () => {
-    const publicApi = await import("../../../src/server/routes/instance/httpapi/public")
-    const httpApiServer = await import("../../../src/server/routes/instance/httpapi/server")
-    const appRuntime = await import("../../../src/effect/app-runtime")
+    const publicApi = await import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/public")
+    const httpApiServer = await import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/server")
+    const appRuntime = await import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/effect@lgcode/app-runtime")
     const { Layer } = await import("effect")
-    const instanceRef = await import("../../../src/effect/instance-ref")
-    const instanceStore = await import("../../../src/project/instance-store")
-    const session = await import("../../../src/session/session")
-    const todo = await import("../../../src/session/todo")
-    const worktree = await import("../../../src/worktree")
-    const project = await import("../../../src/project/project")
-    const tui = await import("../../../src/server/shared/tui-control")
-    const fixture = await import("../../fixture/fixture")
-    const db = await import("../../fixture/db")
+    const instanceRef = await import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/effect@lgcode/instance-ref")
+    const instanceStore = await import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/project@lgcode/instance-store")
+    const session = await import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/session@lgcode/session")
+    const todo = await import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/session@lgcode/todo")
+    const worktree = await import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/worktree")
+    const project = await import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/project@lgcode/project")
+    const tui = await import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/server@lgcode/shared@lgcode/tui-control")
+    const fixture = await import("..@lgcode/..@lgcode/fixture@lgcode/fixture")
+    const db = await import("..@lgcode/..@lgcode/fixture@lgcode/db")
     return {
       PublicApi: publicApi.PublicApi,
       HttpApiApp: httpApiServer.HttpApiApp,

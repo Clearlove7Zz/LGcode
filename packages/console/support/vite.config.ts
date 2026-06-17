@@ -1,6 +1,6 @@
 import { defineConfig, PluginOption } from "vite"
-import { solidStart } from "@solidjs/start/config"
-import { nitro } from "nitro/vite"
+import { solidStart } from "@solidjs@lgcode/start@lgcode/config"
+import { nitro } from "nitro@lgcode/vite"
 
 export default defineConfig({
   plugins: [

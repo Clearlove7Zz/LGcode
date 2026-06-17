@@ -4,34 +4,34 @@ import {
   shouldAttachShareAuthHeaders,
   transformShareData,
   type ShareData,
-} from "../../src/cli/cmd/import"
+} from "..@lgcode/..@lgcode/src@lgcode/cli@lgcode/cmd@lgcode/import"
 
-// parseShareUrl tests
+@lgcode/@lgcode/ parseShareUrl tests
 test("parses valid share URLs", () => {
-  expect(parseShareUrl("https://opncd.ai/share/Jsj3hNIW")).toBe("Jsj3hNIW")
-  expect(parseShareUrl("https://custom.example.com/share/abc123")).toBe("abc123")
-  expect(parseShareUrl("http://localhost:3000/share/test_id-123")).toBe("test_id-123")
+  expect(parseShareUrl("https:@lgcode/@lgcode/opncd.ai@lgcode/share@lgcode/Jsj3hNIW")).toBe("Jsj3hNIW")
+  expect(parseShareUrl("https:@lgcode/@lgcode/custom.example.com@lgcode/share@lgcode/abc123")).toBe("abc123")
+  expect(parseShareUrl("http:@lgcode/@lgcode/localhost:3000@lgcode/share@lgcode/test_id-123")).toBe("test_id-123")
 })
 
 test("rejects invalid URLs", () => {
-  expect(parseShareUrl("https://opncd.ai/s/Jsj3hNIW")).toBeNull() // legacy format
-  expect(parseShareUrl("https://opncd.ai/share/")).toBeNull()
-  expect(parseShareUrl("https://opncd.ai/share/id/extra")).toBeNull()
+  expect(parseShareUrl("https:@lgcode/@lgcode/opncd.ai@lgcode/s@lgcode/Jsj3hNIW")).toBeNull() @lgcode/@lgcode/ legacy format
+  expect(parseShareUrl("https:@lgcode/@lgcode/opncd.ai@lgcode/share@lgcode/")).toBeNull()
+  expect(parseShareUrl("https:@lgcode/@lgcode/opncd.ai@lgcode/share@lgcode/id@lgcode/extra")).toBeNull()
   expect(parseShareUrl("not-a-url")).toBeNull()
 })
 
 test("only attaches share auth headers for same-origin URLs", () => {
-  expect(shouldAttachShareAuthHeaders("https://control.example.com/share/abc", "https://control.example.com")).toBe(
+  expect(shouldAttachShareAuthHeaders("https:@lgcode/@lgcode/control.example.com@lgcode/share@lgcode/abc", "https:@lgcode/@lgcode/control.example.com")).toBe(
     true,
   )
-  expect(shouldAttachShareAuthHeaders("https://other.example.com/share/abc", "https://control.example.com")).toBe(false)
-  expect(shouldAttachShareAuthHeaders("https://control.example.com:443/share/abc", "https://control.example.com")).toBe(
+  expect(shouldAttachShareAuthHeaders("https:@lgcode/@lgcode/other.example.com@lgcode/share@lgcode/abc", "https:@lgcode/@lgcode/control.example.com")).toBe(false)
+  expect(shouldAttachShareAuthHeaders("https:@lgcode/@lgcode/control.example.com:443@lgcode/share@lgcode/abc", "https:@lgcode/@lgcode/control.example.com")).toBe(
     true,
   )
-  expect(shouldAttachShareAuthHeaders("not-a-url", "https://control.example.com")).toBe(false)
+  expect(shouldAttachShareAuthHeaders("not-a-url", "https:@lgcode/@lgcode/control.example.com")).toBe(false)
 })
 
-// transformShareData tests
+@lgcode/@lgcode/ transformShareData tests
 test("transforms share data to storage format", () => {
   const data: ShareData[] = [
     { type: "session", data: { id: "sess-1", title: "Test" } as any },
@@ -50,5 +50,5 @@ test("transforms share data to storage format", () => {
 test("returns null for invalid share data", () => {
   expect(transformShareData([])).toBeNull()
   expect(transformShareData([{ type: "message", data: {} as any }])).toBeNull()
-  expect(transformShareData([{ type: "session", data: { id: "s" } as any }])).toBeNull() // no messages
+  expect(transformShareData([{ type: "session", data: { id: "s" } as any }])).toBeNull() @lgcode/@lgcode/ no messages
 })

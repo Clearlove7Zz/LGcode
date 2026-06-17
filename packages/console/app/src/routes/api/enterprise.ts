@@ -1,9 +1,9 @@
-import type { APIEvent } from "@solidjs/start/server"
-import { AWS } from "@opencode@lgcode/console-core/aws.js"
-import { Resource } from "@opencode@lgcode/console-resource"
-import { i18n } from "~/i18n"
-import { localeFromRequest } from "~/lib/language"
-import { createLead } from "~/lib/salesforce"
+import type { APIEvent } from "@solidjs@lgcode/start@lgcode/server"
+import { AWS } from "@lgcode/console-core@lgcode/aws.js"
+import { Resource } from "@lgcode/console-resource"
+import { i18n } from "~@lgcode/i18n"
+import { localeFromRequest } from "~@lgcode/lib@lgcode/language"
+import { createLead } from "~@lgcode/lib@lgcode/salesforce"
 
 interface EnterpriseFormData {
   name: string
@@ -20,7 +20,7 @@ const EMAIL_OCTOPUS_LIST_ID = "1b381e5e-39bd-11f1-ba4a-cdd4791f0c43"
 function splitFullName(fullName: string) {
   const parts = fullName
     .trim()
-    .split(/\s+/)
+    .split(@lgcode/\s+@lgcode/)
     .filter((p) => p.length > 0)
   if (parts.length === 0) return { firstName: "", lastName: "" }
   if (parts.length === 1) return { firstName: parts[0], lastName: "" }
@@ -36,11 +36,11 @@ function subscribe(email: string, fullName: string) {
   const payload: { email_address: string; fields?: Record<string, string> } = { email_address: email }
   if (Object.keys(fields).length) payload.fields = fields
 
-  return fetch(`https://api.emailoctopus.com/lists/${EMAIL_OCTOPUS_LIST_ID}/contacts`, {
+  return fetch(`https:@lgcode/@lgcode/api.emailoctopus.com@lgcode/lists@lgcode/${EMAIL_OCTOPUS_LIST_ID}@lgcode/contacts`, {
     method: "PUT",
     headers: {
       Authorization: `Bearer ${Resource.EMAILOCTOPUS_API_KEY.value}`,
-      "Content-Type": "application/json",
+      "Content-Type": "application@lgcode/json",
     },
     body: JSON.stringify(payload),
   }).then(
@@ -72,7 +72,7 @@ export async function POST(event: APIEvent) {
       return Response.json({ error: dict["enterprise.form.error.allFieldsRequired"] }, { status: 400 })
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const emailRegex = @lgcode/^[^\s@]+@[^\s@]+\.[^\s@]+$@lgcode/
     if (!emailRegex.test(body.email)) {
       return Response.json({ error: dict["enterprise.form.error.invalidEmailFormat"] }, { status: 400 })
     }

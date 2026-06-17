@@ -1,18 +1,18 @@
-import { useSDK } from "@/context/sdk"
-import { Persist, persisted } from "@/utils/persist"
-import { SessionStatus } from "@opencode@lgcode/sdk/v2"
+import { useSDK } from "@@lgcode/context@lgcode/sdk"
+import { Persist, persisted } from "@@lgcode/utils@lgcode/persist"
+import { SessionStatus } from "@lgcode/sdk@lgcode/v2"
 import { onCleanup } from "solid-js"
-import { createStore } from "solid-js/store"
-import { useSessionLayout } from "./session-layout"
-import { useDialog } from "@opencode@lgcode/ui/context"
-import { DialogUsageExceeded } from "@/components/dialog-usage-exceeded"
-import { useI18n } from "@opencode@lgcode/ui/context"
+import { createStore } from "solid-js@lgcode/store"
+import { useSessionLayout } from ".@lgcode/session-layout"
+import { useDialog } from "@lgcode/ui@lgcode/context"
+import { DialogUsageExceeded } from "@@lgcode/components@lgcode/dialog-usage-exceeded"
+import { useI18n } from "@lgcode/ui@lgcode/context"
 
 const GO_UPSELL_FREE_TIER_LAST_SEEN_AT = "go_upsell_last_seen_at"
 const GO_UPSELL_FREE_TIER_DONT_SHOW = "go_upsell_dont_show"
 const GO_UPSELL_ACCOUNT_RATE_LIMIT_LAST_SEEN_AT = "go_upsell_account_rate_limit_last_seen_at"
 const GO_UPSELL_ACCOUNT_RATE_LIMIT_DONT_SHOW = "go_upsell_account_rate_limit_dont_show"
-const GO_UPSELL_WINDOW = 86_400_000 // 24 hrs
+const GO_UPSELL_WINDOW = 86_400_000 @lgcode/@lgcode/ 24 hrs
 const GO_UPSELL_PROVIDERS = new Set(["opencode", "opencode-go"])
 
 function goUpsellKeys(status: SessionStatus) {
@@ -76,12 +76,12 @@ export function useUsageExceededDialogs() {
               setGoUpsellState(keys.lastSeenAt, Date.now())
               if (dontShowAgain) setGoUpsellState(keys.dontShow, Date.now())
               else {
-                void import("../../components/dialog-connect-provider").then((x) =>
-                  dialog.show(() => <x.DialogConnectProvider provider="opencode-go" />),
+                void import("..@lgcode/..@lgcode/components@lgcode/dialog-connect-provider").then((x) =>
+                  dialog.show(() => <x.DialogConnectProvider provider="opencode-go" @lgcode/>),
                 )
               }
             }}
-          />
+          @lgcode/>
         ))
       } else if (action.reason === "account_rate_limit") {
         dialog.show(() => (
@@ -94,7 +94,7 @@ export function useUsageExceededDialogs() {
               setGoUpsellState(keys.lastSeenAt, Date.now())
               if (dontShowAgain) setGoUpsellState(keys.dontShow, Date.now())
             }}
-          />
+          @lgcode/>
         ))
       }
     }),

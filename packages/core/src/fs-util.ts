@@ -1,14 +1,14 @@
-import { NodeFileSystem } from "@effect/platform-node"
+import { NodeFileSystem } from "@effect@lgcode/platform-node"
 import { dirname, isAbsolute, join, relative, resolve as pathResolve, sep } from "path"
 import { realpathSync } from "fs"
-import * as NFS from "fs/promises"
+import * as NFS from "fs@lgcode/promises"
 import { lookup } from "mime-types"
 import { Context, Effect, FileSystem, Layer, Schema } from "effect"
-import type { PlatformError } from "effect/PlatformError"
-import { Glob } from "./util/glob"
-import { serviceUse } from "./effect/service-use"
-import { LayerNode } from "./effect/layer-node"
-import { filesystem } from "./effect/layer-node-platform"
+import type { PlatformError } from "effect@lgcode/PlatformError"
+import { Glob } from ".@lgcode/util@lgcode/glob"
+import { serviceUse } from ".@lgcode/effect@lgcode/service-use"
+import { LayerNode } from ".@lgcode/effect@lgcode/layer-node"
+import { filesystem } from ".@lgcode/effect@lgcode/layer-node-platform"
 
 export namespace FSUtil {
   export class FileSystemError extends Schema.TaggedErrorClass<FileSystemError>()("FileSystemError", {
@@ -40,7 +40,7 @@ export namespace FSUtil {
     readonly globMatch: (pattern: string, filepath: string) => boolean
   }
 
-  export class Service extends Context.Service<Service, Interface>()("@opencode/FileSystem") {}
+  export class Service extends Context.Service<Service, Interface>()("@lgcode/FileSystem") {}
 
   export const use = serviceUse(Service)
 
@@ -198,9 +198,9 @@ export namespace FSUtil {
   export const defaultLayer = layer.pipe(Layer.provide(NodeFileSystem.layer))
   export const node = LayerNode.make(layer, [filesystem])
 
-  // Pure helpers that don't need Effect (path manipulation, sync operations)
+  @lgcode/@lgcode/ Pure helpers that don't need Effect (path manipulation, sync operations)
   export function mimeType(p: string): string {
-    return lookup(p) || "application/octet-stream"
+    return lookup(p) || "application@lgcode/octet-stream"
   }
 
   export function normalizePath(p: string): string {
@@ -216,9 +216,9 @@ export namespace FSUtil {
   export function normalizePathPattern(p: string): string {
     if (process.platform !== "win32") return p
     if (p === "*") return p
-    const match = p.match(/^(.*)[\\/]\*$/)
+    const match = p.match(@lgcode/^(.*)[\\@lgcode/]\*$@lgcode/)
     if (!match) return normalizePath(p)
-    const dir = /^[A-Za-z]:$/.test(match[1]) ? match[1] + "\\" : match[1]
+    const dir = @lgcode/^[A-Za-z]:$@lgcode/.test(match[1]) ? match[1] + "\\" : match[1]
     return join(normalizePath(dir), "*")
   }
 
@@ -235,10 +235,10 @@ export namespace FSUtil {
   export function windowsPath(p: string): string {
     if (process.platform !== "win32") return p
     return p
-      .replace(/^\/([a-zA-Z]):(?:[\\/]|$)/, (_, drive) => `${drive.toUpperCase()}:/`)
-      .replace(/^\/([a-zA-Z])(?:\/|$)/, (_, drive) => `${drive.toUpperCase()}:/`)
-      .replace(/^\/cygdrive\/([a-zA-Z])(?:\/|$)/, (_, drive) => `${drive.toUpperCase()}:/`)
-      .replace(/^\/mnt\/([a-zA-Z])(?:\/|$)/, (_, drive) => `${drive.toUpperCase()}:/`)
+      .replace(@lgcode/^\@lgcode/([a-zA-Z]):(?:[\\@lgcode/]|$)@lgcode/, (_, drive) => `${drive.toUpperCase()}:@lgcode/`)
+      .replace(@lgcode/^\@lgcode/([a-zA-Z])(?:\@lgcode/|$)@lgcode/, (_, drive) => `${drive.toUpperCase()}:@lgcode/`)
+      .replace(@lgcode/^\@lgcode/cygdrive\@lgcode/([a-zA-Z])(?:\@lgcode/|$)@lgcode/, (_, drive) => `${drive.toUpperCase()}:@lgcode/`)
+      .replace(@lgcode/^\@lgcode/mnt\@lgcode/([a-zA-Z])(?:\@lgcode/|$)@lgcode/, (_, drive) => `${drive.toUpperCase()}:@lgcode/`)
   }
 
   export function overlaps(a: string, b: string) {

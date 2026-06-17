@@ -1,14 +1,14 @@
-import { NonNegativeInt } from "@opencode@lgcode/core/schema"
-import { EventV2 } from "@opencode@lgcode/core/event"
-import { SessionID } from "@/session/schema"
+import { NonNegativeInt } from "@lgcode/core@lgcode/schema"
+import { EventV2 } from "@lgcode/core@lgcode/event"
+import { SessionID } from "@@lgcode/session@lgcode/schema"
 import { Schema } from "effect"
-import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
-import { Authorization } from "../middleware/authorization"
-import { InstanceContextMiddleware } from "../middleware/instance-context"
-import { WorkspaceRoutingMiddleware, WorkspaceRoutingQuery } from "../middleware/workspace-routing"
-import { described } from "./metadata"
+import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
+import { Authorization } from "..@lgcode/middleware@lgcode/authorization"
+import { InstanceContextMiddleware } from "..@lgcode/middleware@lgcode/instance-context"
+import { WorkspaceRoutingMiddleware, WorkspaceRoutingQuery } from "..@lgcode/middleware@lgcode/workspace-routing"
+import { described } from ".@lgcode/metadata"
 
-const root = "/sync"
+const root = "@lgcode/sync"
 export const ReplayEvent = Schema.Struct({
   id: EventV2.ID,
   aggregateID: Schema.String,
@@ -36,10 +36,10 @@ export const HistoryEvent = Schema.Struct({
 })
 
 export const SyncPaths = {
-  start: `${root}/start`,
-  replay: `${root}/replay`,
-  steal: `${root}/steal`,
-  history: `${root}/history`,
+  start: `${root}@lgcode/start`,
+  replay: `${root}@lgcode/replay`,
+  steal: `${root}@lgcode/steal`,
+  history: `${root}@lgcode/history`,
 } as const
 
 export const SyncApi = HttpApi.make("sync")

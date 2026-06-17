@@ -1,5 +1,5 @@
-// @ts-nocheck
-import { Tag } from "./badge-v2"
+@lgcode/@lgcode/ @ts-nocheck
+import { Tag } from ".@lgcode/badge-v2"
 
 const docs = `### Overview
 Small label tag for metadata and status chips.
@@ -20,13 +20,13 @@ Use alongside headings or lists for quick metadata.
 ### Accessibility
 - Ensure text conveys meaning; avoid color-only distinction.
 
-### Theming/tokens
+### Theming@lgcode/tokens
 - Uses \`data-component="tag"\`.
 
 `
 
 export default {
-  title: "UI V2/Badge",
+  title: "UI V2@lgcode/Badge",
   id: "components-badge-v2",
   component: Tag,
   tags: ["autodocs"],
@@ -47,8 +47,8 @@ export const Basic = {}
 export const HighContrast = {
   render: () => (
     <div style={{ display: "flex", gap: "8px", "align-items": "center" }}>
-      <Tag>Label</Tag>
-      <Tag data-high-contrast>Label</Tag>
-    </div>
+      <Tag>Label<@lgcode/Tag>
+      <Tag data-high-contrast>Label<@lgcode/Tag>
+    <@lgcode/div>
   ),
 }

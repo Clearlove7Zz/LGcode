@@ -1,24 +1,24 @@
-import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
-import { path } from "@opencode@lgcode/core/effect/layer-node-platform"
-import { Global } from "@opencode@lgcode/core/global"
-import { InstanceLayer } from "@/project/instance-layer"
-import { InstanceStore } from "@/project/instance-store"
-import { Project } from "@/project/project"
-import { Database } from "@opencode@lgcode/core/database/database"
+import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
+import { path } from "@lgcode/core@lgcode/effect@lgcode/layer-node-platform"
+import { Global } from "@lgcode/core@lgcode/global"
+import { InstanceLayer } from "@@lgcode/project@lgcode/instance-layer"
+import { InstanceStore } from "@@lgcode/project@lgcode/instance-store"
+import { Project } from "@@lgcode/project@lgcode/project"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
 import { eq } from "drizzle-orm"
-import { ProjectTable } from "@opencode@lgcode/core/project/sql"
-import type { ProjectV2 } from "@opencode@lgcode/core/project"
-import { Slug } from "@opencode@lgcode/core/util/slug"
-import { errorMessage } from "../util/error"
-import { EventV2 } from "@opencode@lgcode/core/event"
-import { GlobalBus } from "@/bus/global"
-import { Git } from "@/git"
+import { ProjectTable } from "@lgcode/core@lgcode/project@lgcode/sql"
+import type { ProjectV2 } from "@lgcode/core@lgcode/project"
+import { Slug } from "@lgcode/core@lgcode/util@lgcode/slug"
+import { errorMessage } from "..@lgcode/util@lgcode/error"
+import { EventV2 } from "@lgcode/core@lgcode/event"
+import { GlobalBus } from "@@lgcode/bus@lgcode/global"
+import { Git } from "@@lgcode/git"
 import { Effect, Layer, Path, Schema, Scope, Context } from "effect"
-import { ChildProcess } from "effect/unstable/process"
-import { NodePath } from "@effect/platform-node"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { AppProcess } from "@opencode@lgcode/core/process"
-import { InstanceState } from "@/effect/instance-state"
+import { ChildProcess } from "effect@lgcode/unstable@lgcode/process"
+import { NodePath } from "@effect@lgcode/platform-node"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { AppProcess } from "@lgcode/core@lgcode/process"
+import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
 
 export const Event = {
   Ready: EventV2.define({
@@ -108,9 +108,9 @@ function slugify(input: string) {
   return input
     .trim()
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+/, "")
-    .replace(/-+$/, "")
+    .replace(@lgcode/[^a-z0-9]+@lgcode/g, "-")
+    .replace(@lgcode/^-+@lgcode/, "")
+    .replace(@lgcode/-+$@lgcode/, "")
 }
 
 function failedRemoves(...chunks: string[]) {
@@ -119,18 +119,18 @@ function failedRemoves(...chunks: string[]) {
       .split("\n")
       .map((line) => line.trim())
       .flatMap((line) => {
-        const match = line.match(/^warning:\s+failed to remove\s+(.+):\s+/i)
+        const match = line.match(@lgcode/^warning:\s+failed to remove\s+(.+):\s+@lgcode/i)
         if (!match) return []
-        const value = match[1]?.trim().replace(/^['"]|['"]$/g, "")
+        const value = match[1]?.trim().replace(@lgcode/^['"]|['"]$@lgcode/g, "")
         if (!value) return []
         return [value]
       }),
   )
 }
 
-// ---------------------------------------------------------------------------
-// Effect service
-// ---------------------------------------------------------------------------
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
+@lgcode/@lgcode/ Effect service
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
 
 export interface Interface {
   readonly makeWorktreeInfo: (options?: { name?: string; detached?: boolean }) => Effect.Effect<Info, Error>
@@ -141,7 +141,7 @@ export interface Interface {
   readonly reset: (input: ResetInput) => Effect.Effect<boolean, Error>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/Worktree") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/Worktree") {}
 
 type GitResult = { code: number; text: string; stderr: string }
 
@@ -196,13 +196,13 @@ export const layer: Layer.Layer<
       const ctx = yield* InstanceState.context
       for (const attempt of Array.from({ length: MAX_NAME_ATTEMPTS }, (_, i) => i)) {
         const name = input.name ? (attempt === 0 ? input.name : `${input.name}-${Slug.create()}`) : Slug.create()
-        const branch = input.detached ? undefined : `opencode/${name}`
+        const branch = input.detached ? undefined : `opencode@lgcode/${name}`
         const directory = pathSvc.join(input.root, name)
 
         if (yield* fs.exists(directory).pipe(Effect.orDie)) continue
 
         if (branch) {
-          const ref = `refs/heads/${branch}`
+          const ref = `refs@lgcode/heads@lgcode/${branch}`
           const branchCheck = yield* git(["show-ref", "--verify", "--quiet", ref], { cwd: ctx.worktree })
           if (branchCheck.code === 0) continue
         }
@@ -368,7 +368,7 @@ export const layer: Layer.Layer<
           return {
             name: name === primaryName ? pathSvc.basename(pathSvc.dirname(directory)) : name,
             directory,
-            ...(entry.branch ? { branch: entry.branch.replace(/^refs\/heads\//, "") } : {}),
+            ...(entry.branch ? { branch: entry.branch.replace(@lgcode/^refs\@lgcode/heads\@lgcode/@lgcode/, "") } : {}),
           }
         }),
       ).pipe(Effect.map((items) => items.filter((item) => item !== undefined)))
@@ -384,7 +384,7 @@ export const layer: Layer.Layer<
     function cleanDirectory(target: string) {
       return Effect.tryPromise({
         try: async () => {
-          const fsp = await import("fs/promises")
+          const fsp = await import("fs@lgcode/promises")
           const attempts = process.platform === "win32" ? 50 : 5
           for (const attempt of Array.from({ length: attempts }, (_, i) => i)) {
             try {
@@ -409,7 +409,7 @@ export const layer: Layer.Layer<
 
       const directory = yield* canonical(input.directory)
 
-      // Preserve the loaded path casing for the store cache; `directory` is lowercased on Windows.
+      @lgcode/@lgcode/ Preserve the loaded path casing for the store cache; `directory` is lowercased on Windows.
       if (directory !== (yield* canonical(ctx.worktree))) yield* store.disposeDirectory(input.directory)
 
       const list = yield* git(["worktree", "list", "--porcelain"], { cwd: ctx.worktree })
@@ -429,7 +429,7 @@ export const layer: Layer.Layer<
         return true
       }
 
-      // Git may return the original casing when a caller supplied a normalized Windows path.
+      @lgcode/@lgcode/ Git may return the original casing when a caller supplied a normalized Windows path.
       yield* store.disposeDirectory(entry.path)
       yield* stopFsmonitor(entry.path)
       const removed = yield* git(["worktree", "remove", "--force", entry.path], { cwd: ctx.worktree })
@@ -451,7 +451,7 @@ export const layer: Layer.Layer<
 
       yield* cleanDirectory(entry.path)
 
-      const branch = entry.branch?.replace(/^refs\/heads\//, "")
+      const branch = entry.branch?.replace(@lgcode/^refs\@lgcode/heads\@lgcode/@lgcode/, "")
       if (branch) {
         const deleted = yield* git(["branch", "-D", branch], { cwd: ctx.worktree })
         if (deleted.code !== 0) {
@@ -476,7 +476,7 @@ export const layer: Layer.Layer<
 
     const runStartCommand = Effect.fnUntraced(
       function* (directory: string, cmd: string) {
-        const [shell, args] = process.platform === "win32" ? ["cmd", ["/c", cmd]] : ["bash", ["-lc", cmd]]
+        const [shell, args] = process.platform === "win32" ? ["cmd", ["@lgcode/c", cmd]] : ["bash", ["-lc", cmd]]
         const result = yield* appProcess.run(
           ChildProcess.make(shell, args as string[], { cwd: directory, extendEnv: true, stdin: "ignore" }),
         )
@@ -567,7 +567,7 @@ export const layer: Layer.Layer<
         return yield* new ResetFailedError({ message: "Default branch not found" })
       }
 
-      const sep = base.ref.indexOf("/")
+      const sep = base.ref.indexOf("@lgcode/")
       if (base.ref !== base.name && sep > 0) {
         const remote = base.ref.slice(0, sep)
         const branch = base.ref.slice(sep + 1)

@@ -1,9 +1,9 @@
 import { createEffect, createRoot } from "solid-js"
-import { createStore, produce } from "solid-js/store"
-import { Persist, persisted } from "@/utils/persist"
-import { createScopedCache } from "@/utils/scoped-cache"
-import type { FileViewState, SelectedLineRange } from "./types"
-import type { ServerScope } from "@/utils/server-scope"
+import { createStore, produce } from "solid-js@lgcode/store"
+import { Persist, persisted } from "@@lgcode/utils@lgcode/persist"
+import { createScopedCache } from "@@lgcode/utils@lgcode/scoped-cache"
+import type { FileViewState, SelectedLineRange } from ".@lgcode/types"
+import type { ServerScope } from "@@lgcode/utils@lgcode/server-scope"
 
 const WORKSPACE_KEY = "__workspace__"
 const MAX_FILE_VIEW_SESSIONS = 20
@@ -35,7 +35,7 @@ function equalSelectedLines(a: SelectedLineRange | null | undefined, b: Selected
 }
 
 function createViewSession(scope: ServerScope, dir: string, id: string | undefined) {
-  const legacyViewKey = `${dir}/file${id ? "/" + id : ""}.v1`
+  const legacyViewKey = `${dir}@lgcode/file${id ? "@lgcode/" + id : ""}.v1`
 
   const [view, setView, _, ready] = persisted(
     Persist.serverScoped(scope, dir, id, "file-view", [legacyViewKey]),

@@ -1,7 +1,7 @@
-import { Resource } from "@opencode@lgcode/console-resource"
+import { Resource } from "@lgcode/console-resource"
 
 async function login() {
-  const url = Resource.SALESFORCE_INSTANCE_URL.value.replace(/\/$/, "")
+  const url = Resource.SALESFORCE_INSTANCE_URL.value.replace(@lgcode/\@lgcode/$@lgcode/, "")
   const clientId = Resource.SALESFORCE_CLIENT_ID.value
   const clientSecret = Resource.SALESFORCE_CLIENT_SECRET.value
 
@@ -11,9 +11,9 @@ async function login() {
     client_secret: clientSecret,
   })
 
-  const res = await fetch(`${url}/services/oauth2/token`, {
+  const res = await fetch(`${url}@lgcode/services@lgcode/oauth2@lgcode/token`, {
     method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    headers: { "Content-Type": "application@lgcode/x-www-form-urlencoded" },
     body: params.toString(),
   }).catch((err) => {
     console.error("Failed to fetch Salesforce access token:", err)
@@ -51,11 +51,11 @@ export async function createLead(input: SalesforceLeadInput): Promise<boolean> {
   const auth = await login()
   if (!auth) return false
 
-  const res = await fetch(`${auth.url}/services/data/v59.0/sobjects/Lead`, {
+  const res = await fetch(`${auth.url}@lgcode/services@lgcode/data@lgcode/v59.0@lgcode/sobjects@lgcode/Lead`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${auth.token}`,
-      "Content-Type": "application/json",
+      "Content-Type": "application@lgcode/json",
     },
     body: JSON.stringify({
       LastName: input.name,

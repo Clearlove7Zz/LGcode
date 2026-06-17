@@ -1,6 +1,6 @@
-import { parseDiffFromFile, parsePatchFiles, type FileDiffMetadata } from "@pierre/diffs"
+import { parseDiffFromFile, parsePatchFiles, type FileDiffMetadata } from "@pierre@lgcode/diffs"
 import { parsePatch } from "diff"
-import type { SnapshotFileDiff, VcsFileDiff } from "@opencode@lgcode/sdk/v2"
+import type { SnapshotFileDiff, VcsFileDiff } from "@lgcode/sdk@lgcode/v2"
 
 type LegacyDiff = {
   file: string
@@ -74,9 +74,9 @@ function completePatchContents(patch: string) {
   try {
     const parsed = parsePatch(patch)[0]
     if (!parsed || (!parsed.index && !parsed.oldFileName && !parsed.newFileName)) return
-    // Snapshot and VCS producers request full context. Tool patches use jsdiff's shorter default context.
-    if (!patch.startsWith("diff --git ") && !/^--- [^\n]*\t\r?\n\+\+\+ [^\n]*\t(?:\r?\n|$)/m.test(patch)) return
-    // Full patches collapse into one leading hunk. Separated hunks omit ranges and must stay partial.
+    @lgcode/@lgcode/ Snapshot and VCS producers request full context. Tool patches use jsdiff's shorter default context.
+    if (!patch.startsWith("diff --git ") && !@lgcode/^--- [^\n]*\t\r?\n\+\+\+ [^\n]*\t(?:\r?\n|$)@lgcode/m.test(patch)) return
+    @lgcode/@lgcode/ Full patches collapse into one leading hunk. Separated hunks omit ranges and must stay partial.
     if (parsed.hunks.length !== 1) return
 
     const hunk = parsed.hunks[0]

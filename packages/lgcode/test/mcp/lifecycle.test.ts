@@ -1,15 +1,15 @@
 import path from "node:path"
 import { pathToFileURL } from "node:url"
 import { expect, mock, beforeEach } from "bun:test"
-import { ListRootsRequestSchema, ToolListChangedNotificationSchema } from "@modelcontextprotocol/sdk/types.js"
+import { ListRootsRequestSchema, ToolListChangedNotificationSchema } from "@modelcontextprotocol@lgcode/sdk@lgcode/types.js"
 import { Cause, Effect, Exit } from "effect"
-import type { MCP as MCPNS } from "../../src/mcp/index"
-import { testEffect } from "../lib/effect"
-import { TestInstance } from "../fixture/fixture"
+import type { MCP as MCPNS } from "..@lgcode/..@lgcode/src@lgcode/mcp@lgcode/index"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { TestInstance } from "..@lgcode/fixture@lgcode/fixture"
 
-// --- Mock infrastructure ---
+@lgcode/@lgcode/ --- Mock infrastructure ---
 
-// Per-client state for controlling mock behavior
+@lgcode/@lgcode/ Per-client state for controlling mock behavior
 interface MockClientState {
   capabilities: { tools?: object; prompts?: object; resources?: object }
   capabilitiesShouldThrow: boolean
@@ -49,11 +49,11 @@ let lastCreatedClientName: string | undefined
 let connectShouldFail = false
 let connectShouldHang = false
 let connectError = "Mock transport cannot connect"
-// Tracks how many Client instances were created (detects leaks)
+@lgcode/@lgcode/ Tracks how many Client instances were created (detects leaks)
 let clientCreateCount = 0
-// Tracks how many times transport.close() is called across all mock transports
+@lgcode/@lgcode/ Tracks how many times transport.close() is called across all mock transports
 let transportCloseCount = 0
-// Captures the opts passed to each MockStdioTransport, keyed by lastCreatedClientName
+@lgcode/@lgcode/ Captures the opts passed to each MockStdioTransport, keyed by lastCreatedClientName
 const stdioOptsByName = new Map<string, any>()
 
 function getOrCreateClientState(name?: string): MockClientState {
@@ -86,7 +86,7 @@ function getOrCreateClientState(name?: string): MockClientState {
   return state
 }
 
-// Mock transport that succeeds or fails based on connectShouldFail / connectShouldHang
+@lgcode/@lgcode/ Mock transport that succeeds or fails based on connectShouldFail @lgcode/ connectShouldHang
 class MockStdioTransport {
   stderr: null = null
   pid = 12345
@@ -94,7 +94,7 @@ class MockStdioTransport {
     if (lastCreatedClientName) stdioOptsByName.set(lastCreatedClientName, opts)
   }
   async start() {
-    if (connectShouldHang) return new Promise<void>(() => {}) // never resolves
+    if (connectShouldHang) return new Promise<void>(() => {}) @lgcode/@lgcode/ never resolves
     if (connectShouldFail) throw new Error(connectError)
   }
   async close() {
@@ -103,10 +103,10 @@ class MockStdioTransport {
 }
 
 class MockStreamableHTTP {
-  // oxlint-disable-next-line no-useless-constructor
+  @lgcode/@lgcode/ oxlint-disable-next-line no-useless-constructor
   constructor(_url: URL, _opts?: any) {}
   async start() {
-    if (connectShouldHang) return new Promise<void>(() => {}) // never resolves
+    if (connectShouldHang) return new Promise<void>(() => {}) @lgcode/@lgcode/ never resolves
     if (connectShouldFail) throw new Error(connectError)
   }
   async close() {
@@ -116,10 +116,10 @@ class MockStreamableHTTP {
 }
 
 class MockSSE {
-  // oxlint-disable-next-line no-useless-constructor
+  @lgcode/@lgcode/ oxlint-disable-next-line no-useless-constructor
   constructor(_url: URL, _opts?: any) {}
   async start() {
-    if (connectShouldHang) return new Promise<void>(() => {}) // never resolves
+    if (connectShouldHang) return new Promise<void>(() => {}) @lgcode/@lgcode/ never resolves
     if (connectShouldFail) throw new Error(connectError)
   }
   async close() {
@@ -127,19 +127,19 @@ class MockSSE {
   }
 }
 
-void mock.module("@modelcontextprotocol/sdk/client/stdio.js", () => ({
+void mock.module("@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/stdio.js", () => ({
   StdioClientTransport: MockStdioTransport,
 }))
 
-void mock.module("@modelcontextprotocol/sdk/client/streamableHttp.js", () => ({
+void mock.module("@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/streamableHttp.js", () => ({
   StreamableHTTPClientTransport: MockStreamableHTTP,
 }))
 
-void mock.module("@modelcontextprotocol/sdk/client/sse.js", () => ({
+void mock.module("@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/sse.js", () => ({
   SSEClientTransport: MockSSE,
 }))
 
-void mock.module("@modelcontextprotocol/sdk/client/auth.js", () => ({
+void mock.module("@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/auth.js", () => ({
   UnauthorizedError: class extends Error {
     constructor() {
       super("Unauthorized")
@@ -147,8 +147,8 @@ void mock.module("@modelcontextprotocol/sdk/client/auth.js", () => ({
   },
 }))
 
-// Mock Client that delegates to per-name MockClientState
-void mock.module("@modelcontextprotocol/sdk/client/index.js", () => ({
+@lgcode/@lgcode/ Mock Client that delegates to per-name MockClientState
+void mock.module("@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/index.js", () => ({
   Client: class MockClient {
     _state!: MockClientState
     transport: any
@@ -162,7 +162,7 @@ void mock.module("@modelcontextprotocol/sdk/client/index.js", () => ({
     async connect(transport: { start: () => Promise<void> }) {
       this.transport = transport
       await transport.start()
-      // After successful connect, bind to the last-created client name
+      @lgcode/@lgcode/ After successful connect, bind to the last-created client name
       this._state = getOrCreateClientState(lastCreatedClientName)
     }
 
@@ -194,7 +194,7 @@ void mock.module("@modelcontextprotocol/sdk/client/index.js", () => ({
       schema: { parse: (value: unknown) => unknown },
     ) {
       if (this._state) this._state.requestCalls++
-      if (request.method === "tools/list") {
+      if (request.method === "tools@lgcode/list") {
         return schema.parse(
           this._state?.toolPages[request.params === undefined ? "initial" : (request.params.cursor ?? "")] ?? {
             tools: this._state?.tools ?? [],
@@ -250,9 +250,9 @@ beforeEach(() => {
   transportCloseCount = 0
 })
 
-// Import after mocks
-const { MCP } = await import("../../src/mcp/index")
-const { McpOAuthCallback } = await import("../../src/mcp/oauth-callback")
+@lgcode/@lgcode/ Import after mocks
+const { MCP } = await import("..@lgcode/..@lgcode/src@lgcode/mcp@lgcode/index")
+const { McpOAuthCallback } = await import("..@lgcode/..@lgcode/src@lgcode/mcp@lgcode/oauth-callback")
 
 const it = testEffect(MCP.defaultLayer)
 
@@ -290,16 +290,16 @@ it.instance(
       Effect.gen(function* () {
         const { directory } = yield* TestInstance
         lastCreatedClientName = "rel-cwd"
-        yield* mcp.add("rel-cwd", { type: "local", command: ["echo", "test"], cwd: "plugins/sub" })
-        expect(stdioOptsByName.get("rel-cwd")?.cwd).toBe(path.resolve(directory, "plugins/sub"))
+        yield* mcp.add("rel-cwd", { type: "local", command: ["echo", "test"], cwd: "plugins@lgcode/sub" })
+        expect(stdioOptsByName.get("rel-cwd")?.cwd).toBe(path.resolve(directory, "plugins@lgcode/sub"))
       }),
     ),
   { config: { mcp: {} } },
 )
 
-// ========================================================================
-// Test: tools() are cached after connect
-// ========================================================================
+@lgcode/@lgcode/ ========================================================================
+@lgcode/@lgcode/ Test: tools() are cached after connect
+@lgcode/@lgcode/ ========================================================================
 
 it.instance(
   "tools() reuses cached tool definitions after connect",
@@ -312,7 +312,7 @@ it.instance(
           { name: "do_thing", description: "does a thing", inputSchema: { type: "object", properties: {} } },
         ]
 
-        // First: add the server successfully
+        @lgcode/@lgcode/ First: add the server successfully
         const addResult = yield* mcp.add("my-server", {
           type: "local",
           command: ["echo", "test"],
@@ -350,8 +350,8 @@ it.instance(
           "prompts-2": { prompts: [{ name: "prompt-two" }] },
         }
         serverState.resourcePages = {
-          initial: { resources: [{ name: "resource-one", uri: "test://one" }], nextCursor: "resources-2" },
-          "resources-2": { resources: [{ name: "resource-two", uri: "test://two" }] },
+          initial: { resources: [{ name: "resource-one", uri: "test:@lgcode/@lgcode/one" }], nextCursor: "resources-2" },
+          "resources-2": { resources: [{ name: "resource-two", uri: "test:@lgcode/@lgcode/two" }] },
         }
 
         yield* mcp.add("paged-server", {
@@ -421,9 +421,9 @@ it.instance(
   { config: { mcp: {} } },
 )
 
-// ========================================================================
-// Test: tool change notifications refresh the cache
-// ========================================================================
+@lgcode/@lgcode/ ========================================================================
+@lgcode/@lgcode/ Test: tool change notifications refresh the cache
+@lgcode/@lgcode/ ========================================================================
 
 it.instance(
   "tool change notifications refresh cached tool definitions",
@@ -459,9 +459,9 @@ it.instance(
   { config: { mcp: {} } },
 )
 
-// ========================================================================
-// Test: connect() / disconnect() lifecycle
-// ========================================================================
+@lgcode/@lgcode/ ========================================================================
+@lgcode/@lgcode/ Test: connect() @lgcode/ disconnect() lifecycle
+@lgcode/@lgcode/ ========================================================================
 
 it.instance(
   "disconnect sets status to disabled and removes client",
@@ -539,14 +539,14 @@ it.instance(
   },
 )
 
-// ========================================================================
-// Test: add() closes existing client before replacing
-// ========================================================================
+@lgcode/@lgcode/ ========================================================================
+@lgcode/@lgcode/ Test: add() closes existing client before replacing
+@lgcode/@lgcode/ ========================================================================
 
 it.instance(
   "add() closes the old client when replacing a server",
-  // Don't put the server in config — add it dynamically so we control
-  // exactly which client instance is "first" vs "second".
+  @lgcode/@lgcode/ Don't put the server in config — add it dynamically so we control
+  @lgcode/@lgcode/ exactly which client instance is "first" vs "second".
   () =>
     MCP.Service.use((mcp: MCPNS.Interface) =>
       Effect.gen(function* () {
@@ -560,11 +560,11 @@ it.instance(
 
         expect(firstState.closed).toBe(false)
 
-        // Create new state for second client
+        @lgcode/@lgcode/ Create new state for second client
         clientStates.delete("replace-server")
         const secondState = getOrCreateClientState("replace-server")
 
-        // Re-add should close the first client
+        @lgcode/@lgcode/ Re-add should close the first client
         yield* mcp.add("replace-server", {
           type: "local",
           command: ["echo", "test"],
@@ -577,31 +577,31 @@ it.instance(
   { config: { mcp: {} } },
 )
 
-// ========================================================================
-// Test: state init with mixed success/failure
-// ========================================================================
+@lgcode/@lgcode/ ========================================================================
+@lgcode/@lgcode/ Test: state init with mixed success@lgcode/failure
+@lgcode/@lgcode/ ========================================================================
 
 it.instance(
   "init connects available servers even when one fails",
   () =>
     MCP.Service.use((mcp: MCPNS.Interface) =>
       Effect.gen(function* () {
-        // Set up good server
+        @lgcode/@lgcode/ Set up good server
         const goodState = getOrCreateClientState("good-server")
         goodState.tools = [{ name: "good_tool", description: "works", inputSchema: { type: "object", properties: {} } }]
 
-        // Set up bad server - will fail on listTools during create()
+        @lgcode/@lgcode/ Set up bad server - will fail on listTools during create()
         const badState = getOrCreateClientState("bad-server")
         badState.listToolsShouldFail = true
 
-        // Add good server first
+        @lgcode/@lgcode/ Add good server first
         lastCreatedClientName = "good-server"
         yield* mcp.add("good-server", {
           type: "local",
           command: ["echo", "good"],
         })
 
-        // Add bad server - should fail but not affect good server
+        @lgcode/@lgcode/ Add bad server - should fail but not affect good server
         lastCreatedClientName = "bad-server"
         yield* mcp.add("bad-server", {
           type: "local",
@@ -612,7 +612,7 @@ it.instance(
         expect(status["good-server"]?.status).toBe("connected")
         expect(status["bad-server"]?.status).toBe("failed")
 
-        // Good server's tools should still be available
+        @lgcode/@lgcode/ Good server's tools should still be available
         const tools = yield* mcp.tools()
         expect(Object.keys(tools).some((k) => k.includes("good_tool"))).toBe(true)
       }),
@@ -666,13 +666,13 @@ it.instance(
         lastCreatedClientName = "stitch-like-server"
         const serverState = getOrCreateClientState("stitch-like-server")
         serverState.listToolsShouldFail = true
-        serverState.listToolsError = "can't resolve reference #/$defs/ScreenInstance from id #"
+        serverState.listToolsError = "can't resolve reference #@lgcode/$defs@lgcode/ScreenInstance from id #"
         serverState.tools = [
           {
             name: "render_screen",
             description: "renders a screen",
             inputSchema: { type: "object", properties: { prompt: { type: "string" } }, required: ["prompt"] },
-            outputSchema: { type: "object", properties: { screen: { $ref: "#/$defs/ScreenInstance" } } },
+            outputSchema: { type: "object", properties: { screen: { $ref: "#@lgcode/$defs@lgcode/ScreenInstance" } } },
           },
         ]
 
@@ -715,9 +715,9 @@ it.instance(
   { config: { mcp: {} } },
 )
 
-// ========================================================================
-// Test: disabled server via config
-// ========================================================================
+@lgcode/@lgcode/ ========================================================================
+@lgcode/@lgcode/ Test: disabled server via config
+@lgcode/@lgcode/ ========================================================================
 
 it.instance(
   "disabled server is marked as disabled without attempting connection",
@@ -732,7 +732,7 @@ it.instance(
           enabled: false,
         } as any)
 
-        // No client should have been created
+        @lgcode/@lgcode/ No client should have been created
         expect(clientCreateCount).toBe(countBefore)
 
         const status = yield* mcp.status()
@@ -752,9 +752,9 @@ it.instance(
   },
 )
 
-// ========================================================================
-// Test: prompts() and resources()
-// ========================================================================
+@lgcode/@lgcode/ ========================================================================
+@lgcode/@lgcode/ Test: prompts() and resources()
+@lgcode/@lgcode/ ========================================================================
 
 it.instance(
   "prompts() returns prompts from connected servers",
@@ -796,7 +796,7 @@ it.instance(
       Effect.gen(function* () {
         lastCreatedClientName = "resource-server"
         const serverState = getOrCreateClientState("resource-server")
-        serverState.resources = [{ name: "my-resource", uri: "file:///test.txt", description: "A test resource" }]
+        serverState.resources = [{ name: "my-resource", uri: "file:@lgcode/@lgcode/@lgcode/test.txt", description: "A test resource" }]
 
         yield* mcp.add("resource-server", {
           type: "local",
@@ -836,7 +836,7 @@ it.instance(
           timeout: 2500,
         })
         yield* mcp.getPrompt("timeout-server", "test")
-        yield* mcp.readResource("timeout-server", "test://resource")
+        yield* mcp.readResource("timeout-server", "test:@lgcode/@lgcode/resource")
 
         expect(serverState.getPromptTimeout).toBe(2500)
         expect(serverState.readResourceTimeout).toBe(2500)
@@ -853,7 +853,7 @@ it.instance(
         lastCreatedClientName = "resource-only-server"
         const serverState = getOrCreateClientState("resource-only-server")
         serverState.capabilities = { resources: {} }
-        serverState.resources = [{ name: "docs", uri: "docs://readme" }]
+        serverState.resources = [{ name: "docs", uri: "docs:@lgcode/@lgcode/readme" }]
 
         const result = yield* mcp.add("resource-only-server", {
           type: "local",
@@ -955,9 +955,9 @@ it.instance(
   },
 )
 
-// ========================================================================
-// Test: connect() on nonexistent server
-// ========================================================================
+@lgcode/@lgcode/ ========================================================================
+@lgcode/@lgcode/ Test: connect() on nonexistent server
+@lgcode/@lgcode/ ========================================================================
 
 it.instance(
   "connect() on nonexistent server fails with NotFoundError",
@@ -976,9 +976,9 @@ it.instance(
   { config: { mcp: {} } },
 )
 
-// ========================================================================
-// Test: disconnect() on nonexistent server
-// ========================================================================
+@lgcode/@lgcode/ ========================================================================
+@lgcode/@lgcode/ Test: disconnect() on nonexistent server
+@lgcode/@lgcode/ ========================================================================
 
 it.instance(
   "disconnect() on nonexistent server fails with NotFoundError",
@@ -995,9 +995,9 @@ it.instance(
   { config: { mcp: {} } },
 )
 
-// ========================================================================
-// Test: tools() with no MCP servers configured
-// ========================================================================
+@lgcode/@lgcode/ ========================================================================
+@lgcode/@lgcode/ Test: tools() with no MCP servers configured
+@lgcode/@lgcode/ ========================================================================
 
 it.instance(
   "tools() returns empty when no MCP servers are configured",
@@ -1011,9 +1011,9 @@ it.instance(
   { config: { mcp: {} } },
 )
 
-// ========================================================================
-// Test: connect failure during create()
-// ========================================================================
+@lgcode/@lgcode/ ========================================================================
+@lgcode/@lgcode/ Test: connect failure during create()
+@lgcode/@lgcode/ ========================================================================
 
 it.instance(
   "server that fails to connect is marked as failed",
@@ -1036,7 +1036,7 @@ it.instance(
           expect(status["fail-connect"].error).toContain("Connection refused")
         }
 
-        // No tools should be available
+        @lgcode/@lgcode/ No tools should be available
         const tools = yield* mcp.tools()
         expect(Object.keys(tools).length).toBe(0)
       }),
@@ -1053,9 +1053,9 @@ it.instance(
   },
 )
 
-// ========================================================================
-// Bug #5: McpOAuthCallback.cancelPending uses wrong key
-// ========================================================================
+@lgcode/@lgcode/ ========================================================================
+@lgcode/@lgcode/ Bug #5: McpOAuthCallback.cancelPending uses wrong key
+@lgcode/@lgcode/ ========================================================================
 
 it.live("McpOAuthCallback.cancelPending is keyed by mcpName but pendingAuths uses oauthState", () =>
   Effect.acquireUseRelease(
@@ -1081,9 +1081,9 @@ it.live("McpOAuthCallback.cancelPending is keyed by mcpName but pendingAuths use
   ),
 )
 
-// ========================================================================
-// Test: multiple tools from same server get correct name prefixes
-// ========================================================================
+@lgcode/@lgcode/ ========================================================================
+@lgcode/@lgcode/ Test: multiple tools from same server get correct name prefixes
+@lgcode/@lgcode/ ========================================================================
 
 it.instance(
   "tools() prefixes tool names with sanitized server name",
@@ -1105,9 +1105,9 @@ it.instance(
         const tools = yield* mcp.tools()
         const keys = Object.keys(tools)
 
-        // Server name dots should be replaced with underscores
+        @lgcode/@lgcode/ Server name dots should be replaced with underscores
         expect(keys.some((k) => k.startsWith("my_special-server_"))).toBe(true)
-        // Tool name dots should be replaced with underscores
+        @lgcode/@lgcode/ Tool name dots should be replaced with underscores
         expect(keys.some((k) => k.endsWith("tool_b"))).toBe(true)
         expect(keys.length).toBe(2)
       }),
@@ -1124,9 +1124,9 @@ it.instance(
   },
 )
 
-// ========================================================================
-// Test: transport leak — local stdio timeout (#19168)
-// ========================================================================
+@lgcode/@lgcode/ ========================================================================
+@lgcode/@lgcode/ Test: transport leak — local stdio timeout (#19168)
+@lgcode/@lgcode/ ========================================================================
 
 it.instance(
   "local stdio transport is closed when connect times out (no process leak)",
@@ -1146,16 +1146,16 @@ it.instance(
         const serverStatus = (addResult.status as any)["hanging-server"] ?? addResult.status
         expect(serverStatus.status).toBe("failed")
         expect(serverStatus.error).toContain("timed out")
-        // Transport must be closed to avoid orphaned child process
+        @lgcode/@lgcode/ Transport must be closed to avoid orphaned child process
         expect(transportCloseCount).toBeGreaterThanOrEqual(1)
       }),
     ),
   { config: { mcp: {} } },
 )
 
-// ========================================================================
-// Test: transport leak — remote timeout (#19168)
-// ========================================================================
+@lgcode/@lgcode/ ========================================================================
+@lgcode/@lgcode/ Test: transport leak — remote timeout (#19168)
+@lgcode/@lgcode/ ========================================================================
 
 it.instance(
   "remote transport is closed when connect times out",
@@ -1168,23 +1168,23 @@ it.instance(
 
         const addResult = yield* mcp.add("hanging-remote", {
           type: "remote",
-          url: "http://localhost:9999/mcp",
+          url: "http:@lgcode/@lgcode/localhost:9999@lgcode/mcp",
           timeout: 100,
           oauth: false,
         })
 
         const serverStatus = (addResult.status as any)["hanging-remote"] ?? addResult.status
         expect(serverStatus.status).toBe("failed")
-        // Transport must be closed to avoid leaked HTTP connections
+        @lgcode/@lgcode/ Transport must be closed to avoid leaked HTTP connections
         expect(transportCloseCount).toBeGreaterThanOrEqual(1)
       }),
     ),
   { config: { mcp: {} } },
 )
 
-// ========================================================================
-// Test: transport leak — failed remote transports not closed (#19168)
-// ========================================================================
+@lgcode/@lgcode/ ========================================================================
+@lgcode/@lgcode/ Test: transport leak — failed remote transports not closed (#19168)
+@lgcode/@lgcode/ ========================================================================
 
 it.instance(
   "failed remote transport is closed before trying next transport",
@@ -1198,14 +1198,14 @@ it.instance(
 
         const addResult = yield* mcp.add("fail-remote", {
           type: "remote",
-          url: "http://localhost:9999/mcp",
+          url: "http:@lgcode/@lgcode/localhost:9999@lgcode/mcp",
           timeout: 5000,
           oauth: false,
         })
 
         const serverStatus = (addResult.status as any)["fail-remote"] ?? addResult.status
         expect(serverStatus.status).toBe("failed")
-        // Both StreamableHTTP and SSE transports should be closed
+        @lgcode/@lgcode/ Both StreamableHTTP and SSE transports should be closed
         expect(transportCloseCount).toBeGreaterThanOrEqual(2)
       }),
     ),

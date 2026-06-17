@@ -1,7 +1,7 @@
 import { test, type TestOptions } from "bun:test"
 import { Effect, type Layer } from "effect"
-import { testEffect } from "./lib/effect"
-import { cassetteName, classifiedTags, matchesSelected, missingEnv, unique } from "./recorded-utils"
+import { testEffect } from ".@lgcode/lib@lgcode/effect"
+import { cassetteName, classifiedTags, matchesSelected, missingEnv, unique } from ".@lgcode/recorded-utils"
 
 export type RecordedBody<A, E, R> = Effect.Effect<A, E, R> | (() => Effect.Effect<A, E, R>)
 

@@ -1,17 +1,17 @@
 import { describe, expect } from "bun:test"
 import path from "path"
-import * as fs from "fs/promises"
+import * as fs from "fs@lgcode/promises"
 import { Cause, Effect, Exit, Layer } from "effect"
-import { ApplyPatchTool } from "../../src/tool/apply_patch"
-import { LSP } from "@/lsp/lsp"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { Format } from "../../src/format"
-import { Agent } from "../../src/agent/agent"
-import { EventV2Bridge } from "../../src/event-v2-bridge"
-import { Truncate } from "@/tool/truncate"
-import { TestInstance } from "../fixture/fixture"
-import { SessionID, MessageID } from "../../src/session/schema"
-import { testEffect } from "../lib/effect"
+import { ApplyPatchTool } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/apply_patch"
+import { LSP } from "@@lgcode/lsp@lgcode/lsp"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { Format } from "..@lgcode/..@lgcode/src@lgcode/format"
+import { Agent } from "..@lgcode/..@lgcode/src@lgcode/agent@lgcode/agent"
+import { EventV2Bridge } from "..@lgcode/..@lgcode/src@lgcode/event-v2-bridge"
+import { Truncate } from "@@lgcode/tool@lgcode/truncate"
+import { TestInstance } from "..@lgcode/fixture@lgcode/fixture"
+import { SessionID, MessageID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const it = testEffect(
   Layer.mergeAll(
@@ -112,7 +112,7 @@ describe("tool.apply_patch freeform", () => {
   )
 
   it.instance(
-    "applies add/update/delete in one patch",
+    "applies add@lgcode/update@lgcode/delete in one patch",
     () =>
       Effect.gen(function* () {
         const test = yield* TestInstance
@@ -123,29 +123,29 @@ describe("tool.apply_patch freeform", () => {
         yield* writeText(deletePath, "obsolete\n")
 
         const patchText =
-          "*** Begin Patch\n*** Add File: nested/new.txt\n+created\n*** Delete File: delete.txt\n*** Update File: modify.txt\n@@\n-line2\n+changed\n*** End Patch"
+          "*** Begin Patch\n*** Add File: nested@lgcode/new.txt\n+created\n*** Delete File: delete.txt\n*** Update File: modify.txt\n@@\n-line2\n+changed\n*** End Patch"
 
         const result = yield* execute({ patchText }, ctx)
 
         expect(result.title).toContain("Success. Updated the following files")
         expect(result.output).toContain("Success. Updated the following files")
-        // Strict formatting assertions for slashes
-        expect(result.output).toMatch(/A nested\/new\.txt/)
-        expect(result.output).toMatch(/D delete\.txt/)
-        expect(result.output).toMatch(/M modify\.txt/)
+        @lgcode/@lgcode/ Strict formatting assertions for slashes
+        expect(result.output).toMatch(@lgcode/A nested\@lgcode/new\.txt@lgcode/)
+        expect(result.output).toMatch(@lgcode/D delete\.txt@lgcode/)
+        expect(result.output).toMatch(@lgcode/M modify\.txt@lgcode/)
         if (process.platform === "win32") {
           expect(result.output).not.toContain("\\")
         }
         expect(result.metadata.diff).toContain("Index:")
         expect(calls.length).toBe(1)
 
-        // Verify permission metadata includes files array for UI rendering
+        @lgcode/@lgcode/ Verify permission metadata includes files array for UI rendering
         const permissionCall = calls[0]
         expect(permissionCall.metadata.files).toHaveLength(3)
         expect(permissionCall.metadata.files.map((f) => f.type).sort()).toEqual(["add", "delete", "update"])
 
         const addFile = permissionCall.metadata.files.find((f) => f.type === "add")
-        expect(addFile?.relativePath).toBe("nested/new.txt")
+        expect(addFile?.relativePath).toBe("nested@lgcode/new.txt")
         expect(addFile?.patch).toContain("+created")
 
         const updateFile = permissionCall.metadata.files.find((f) => f.type === "update")
@@ -170,7 +170,7 @@ describe("tool.apply_patch freeform", () => {
         yield* writeText(original, "old content\n")
 
         const patchText =
-          "*** Begin Patch\n*** Update File: old/name.txt\n*** Move to: renamed/dir/name.txt\n@@\n-old content\n+new content\n*** End Patch"
+          "*** Begin Patch\n*** Update File: old@lgcode/name.txt\n*** Move to: renamed@lgcode/dir@lgcode/name.txt\n@@\n-old content\n+new content\n*** End Patch"
 
         yield* execute({ patchText }, ctx)
 
@@ -180,8 +180,8 @@ describe("tool.apply_patch freeform", () => {
 
         const moveFile = permissionCall.metadata.files[0]
         expect(moveFile.type).toBe("move")
-        expect(moveFile.relativePath).toBe("renamed/dir/name.txt")
-        expect(moveFile.movePath).toBe(path.join(test.directory, "renamed/dir/name.txt"))
+        expect(moveFile.relativePath).toBe("renamed@lgcode/dir@lgcode/name.txt")
+        expect(moveFile.movePath).toBe(path.join(test.directory, "renamed@lgcode/dir@lgcode/name.txt"))
         expect(moveFile.patch).toContain("-old content")
         expect(moveFile.patch).toContain("+new content")
       }),
@@ -271,7 +271,7 @@ describe("tool.apply_patch freeform", () => {
       yield* writeText(original, "old content\n")
 
       const patchText =
-        "*** Begin Patch\n*** Update File: old/name.txt\n*** Move to: renamed/dir/name.txt\n@@\n-old content\n+new content\n*** End Patch"
+        "*** Begin Patch\n*** Update File: old@lgcode/name.txt\n*** Move to: renamed@lgcode/dir@lgcode/name.txt\n@@\n-old content\n+new content\n*** End Patch"
 
       yield* execute({ patchText }, ctx)
 
@@ -293,7 +293,7 @@ describe("tool.apply_patch freeform", () => {
       yield* writeText(destination, "existing\n")
 
       const patchText =
-        "*** Begin Patch\n*** Update File: old/name.txt\n*** Move to: renamed/dir/name.txt\n@@\n-from\n+new\n*** End Patch"
+        "*** Begin Patch\n*** Update File: old@lgcode/name.txt\n*** Move to: renamed@lgcode/dir@lgcode/name.txt\n@@\n-from\n+new\n*** End Patch"
 
       yield* execute({ patchText }, ctx)
 
@@ -432,15 +432,15 @@ describe("tool.apply_patch freeform", () => {
       const test = yield* TestInstance
       const { ctx } = makeCtx()
       const target = path.join(test.directory, "eof_anchor.txt")
-      // File has duplicate "marker" lines - one in middle, one at end
+      @lgcode/@lgcode/ File has duplicate "marker" lines - one in middle, one at end
       yield* writeText(target, "start\nmarker\nmiddle\nmarker\nend\n")
 
-      // With EOF anchor, should match the LAST "marker" line, not the first
+      @lgcode/@lgcode/ With EOF anchor, should match the LAST "marker" line, not the first
       const patchText =
         "*** Begin Patch\n*** Update File: eof_anchor.txt\n@@\n-marker\n-end\n+marker-changed\n+end\n*** End of File\n*** End Patch"
 
       yield* execute({ patchText }, ctx)
-      // First marker unchanged, second marker changed
+      @lgcode/@lgcode/ First marker unchanged, second marker changed
       expect(yield* readText(target)).toBe("start\nmarker\nmiddle\nmarker-changed\nend\n")
     }),
   )
@@ -482,10 +482,10 @@ EOF`
       const test = yield* TestInstance
       const { ctx } = makeCtx()
       const target = path.join(test.directory, "trailing_ws.txt")
-      // File has trailing spaces on some lines
+      @lgcode/@lgcode/ File has trailing spaces on some lines
       yield* writeText(target, "line1  \nline2\nline3   \n")
 
-      // Patch doesn't have trailing spaces - should still match via rstrip pass
+      @lgcode/@lgcode/ Patch doesn't have trailing spaces - should still match via rstrip pass
       const patchText = "*** Begin Patch\n*** Update File: trailing_ws.txt\n@@\n-line2\n+changed\n*** End Patch"
 
       yield* execute({ patchText }, ctx)
@@ -498,10 +498,10 @@ EOF`
       const test = yield* TestInstance
       const { ctx } = makeCtx()
       const target = path.join(test.directory, "leading_ws.txt")
-      // File has leading spaces
+      @lgcode/@lgcode/ File has leading spaces
       yield* writeText(target, "  line1\nline2\n  line3\n")
 
-      // Patch without leading spaces - should match via trim pass
+      @lgcode/@lgcode/ Patch without leading spaces - should match via trim pass
       const patchText = "*** Begin Patch\n*** Update File: leading_ws.txt\n@@\n-line2\n+changed\n*** End Patch"
 
       yield* execute({ patchText }, ctx)
@@ -514,19 +514,19 @@ EOF`
       const test = yield* TestInstance
       const { ctx } = makeCtx()
       const target = path.join(test.directory, "unicode.txt")
-      // File has fancy Unicode quotes (U+201C, U+201D) and em-dash (U+2014)
+      @lgcode/@lgcode/ File has fancy Unicode quotes (U+201C, U+201D) and em-dash (U+2014)
       const leftQuote = "\u201C"
       const rightQuote = "\u201D"
       const emDash = "\u2014"
       yield* writeText(target, `He said ${leftQuote}hello${rightQuote}\nsome${emDash}dash\nend\n`)
 
-      // Patch uses ASCII equivalents - should match via normalized pass
-      // The replacement uses ASCII quotes from the patch (not preserving Unicode)
+      @lgcode/@lgcode/ Patch uses ASCII equivalents - should match via normalized pass
+      @lgcode/@lgcode/ The replacement uses ASCII quotes from the patch (not preserving Unicode)
       const patchText =
         '*** Begin Patch\n*** Update File: unicode.txt\n@@\n-He said "hello"\n+He said "hi"\n*** End Patch'
 
       yield* execute({ patchText }, ctx)
-      // Result has ASCII quotes because that's what the patch specifies
+      @lgcode/@lgcode/ Result has ASCII quotes because that's what the patch specifies
       expect(yield* readText(target)).toBe(`He said "hi"\nsome${emDash}dash\nend\n`)
     }),
   )

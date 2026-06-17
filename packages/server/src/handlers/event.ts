@@ -1,10 +1,10 @@
-import { EventV2 } from "@opencode@lgcode/core/event"
-import { Location } from "@opencode@lgcode/core/location"
+import { EventV2 } from "@lgcode/core@lgcode/event"
+import { Location } from "@lgcode/core@lgcode/location"
 import { Effect, Stream } from "effect"
-import { HttpServerResponse } from "effect/unstable/http"
-import { HttpApiBuilder } from "effect/unstable/httpapi"
-import * as Sse from "effect/unstable/encoding/Sse"
-import { Api } from "../api"
+import { HttpServerResponse } from "effect@lgcode/unstable@lgcode/http"
+import { HttpApiBuilder } from "effect@lgcode/unstable@lgcode/httpapi"
+import * as Sse from "effect@lgcode/unstable@lgcode/encoding@lgcode/Sse"
+import { Api } from "..@lgcode/api"
 
 function eventData(data: unknown): Sse.Event {
   return {
@@ -49,7 +49,7 @@ export const EventHandler = HttpApiBuilder.group(Api, "server.event", (handlers)
             Stream.encodeText,
           ),
           {
-            contentType: "text/event-stream",
+            contentType: "text@lgcode/event-stream",
             headers: {
               "Cache-Control": "no-cache, no-transform",
               "X-Accel-Buffering": "no",

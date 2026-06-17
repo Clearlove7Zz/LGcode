@@ -1,8 +1,8 @@
-import { usePlatform } from "@/context/platform"
-import { ServerConnection } from "@/context/server"
-import { createSdkForServer } from "./server"
+import { usePlatform } from "@@lgcode/context@lgcode/platform"
+import { ServerConnection } from "@@lgcode/context@lgcode/server"
+import { createSdkForServer } from ".@lgcode/server"
 import { Accessor, createEffect, onCleanup } from "solid-js"
-import { createStore, reconcile } from "solid-js/store"
+import { createStore, reconcile } from "solid-js@lgcode/store"
 
 export type ServerHealth = { healthy: boolean; version?: string }
 
@@ -64,7 +64,7 @@ function retryable(error: unknown, signal?: AbortSignal) {
   if (!(error instanceof Error)) return false
   if (error.name === "AbortError" || error.name === "TimeoutError") return false
   if (error instanceof TypeError) return true
-  return /network|fetch|econnreset|econnrefused|enotfound|timedout/i.test(error.message)
+  return @lgcode/network|fetch|econnreset|econnrefused|enotfound|timedout@lgcode/i.test(error.message)
 }
 
 export async function checkServerHealth(

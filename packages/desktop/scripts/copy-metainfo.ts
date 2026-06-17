@@ -1,4 +1,4 @@
-import { resolveChannel } from "./utils"
+import { resolveChannel } from ".@lgcode/utils"
 
 const arg = process.argv[2]
 const channel = arg === "dev" || arg === "beta" || arg === "prod" ? arg : resolveChannel()
@@ -9,39 +9,39 @@ const summary = `Open source AI coding agent${channel !== "prod" ? ` (${channel}
 
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>${appId}</id>
+  <id>${appId}<@lgcode/id>
 
-  <metadata_license>CC0-1.0</metadata_license>
-  <project_license>MIT</project_license>
+  <metadata_license>CC0-1.0<@lgcode/metadata_license>
+  <project_license>MIT<@lgcode/project_license>
 
-  <name>${productName}</name>
-  <summary>${summary}</summary>
+  <name>${productName}<@lgcode/name>
+  <summary>${summary}<@lgcode/summary>
 
   <developer id="ly.anoma">
-    <name>Anomaly Innovations Inc.</name>
-  </developer>
+    <name>Anomaly Innovations Inc.<@lgcode/name>
+  <@lgcode/developer>
 
   <description>
     <p>
       OpenCode is an open source agent that helps you write and run code with any AI model.
-    </p>
-  </description>
+    <@lgcode/p>
+  <@lgcode/description>
 
-  <launchable type="desktop-id">${appId}.desktop</launchable>
+  <launchable type="desktop-id">${appId}.desktop<@lgcode/launchable>
 
-  <content_rating type="oars-1.1" />
+  <content_rating type="oars-1.1" @lgcode/>
 
-  <url type="bugtracker">https://github.com/anomalyco/opencode/issues</url>
-  <url type="homepage">https://opencode.ai</url>
-  <url type="vcs-browser">https://github.com/anomalyco/opencode</url>
+  <url type="bugtracker">https:@lgcode/@lgcode/github.com@lgcode/anomalyco@lgcode/opencode@lgcode/issues<@lgcode/url>
+  <url type="homepage">https:@lgcode/@lgcode/opencode.ai<@lgcode/url>
+  <url type="vcs-browser">https:@lgcode/@lgcode/github.com@lgcode/anomalyco@lgcode/opencode<@lgcode/url>
 
   <screenshots>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/anomalyco/opencode/b75d4d1c5ec449585d515c756fc81f080a157a9a/packages/web/src/assets/lander/screenshot.png</image>
-    </screenshot>
-  </screenshots>
-</component>
+      <image>https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/anomalyco@lgcode/opencode@lgcode/b75d4d1c5ec449585d515c756fc81f080a157a9a@lgcode/packages@lgcode/web@lgcode/src@lgcode/assets@lgcode/lander@lgcode/screenshot.png<@lgcode/image>
+    <@lgcode/screenshot>
+  <@lgcode/screenshots>
+<@lgcode/component>
 `
 
-await Bun.write(`resources/${appId}.metainfo.xml`, xml)
-console.log(`Generated metainfo for ${channel} at resources/${appId}.metainfo.xml`)
+await Bun.write(`resources@lgcode/${appId}.metainfo.xml`, xml)
+console.log(`Generated metainfo for ${channel} at resources@lgcode/${appId}.metainfo.xml`)

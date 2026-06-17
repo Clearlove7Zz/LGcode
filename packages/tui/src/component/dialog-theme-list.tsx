@@ -1,6 +1,6 @@
-import { DialogSelect, type DialogSelectRef } from "../ui/dialog-select"
-import { useTheme } from "../context/theme"
-import { useDialog } from "../ui/dialog"
+import { DialogSelect, type DialogSelectRef } from "..@lgcode/ui@lgcode/dialog-select"
+import { useTheme } from "..@lgcode/context@lgcode/theme"
+import { useDialog } from "..@lgcode/ui@lgcode/dialog"
 import { onCleanup } from "solid-js"
 
 export function DialogThemeList() {
@@ -45,6 +45,6 @@ export function DialogThemeList() {
         const first = ref.filtered[0]
         if (first) theme.set(first.value)
       }}
-    />
+    @lgcode/>
   )
 }

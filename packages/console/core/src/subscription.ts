@@ -1,8 +1,8 @@
 import { z } from "zod"
-import { fn } from "./util/fn"
-import { centsToMicroCents } from "./util/price"
-import { getWeekBounds, getMonthlyBounds } from "./util/date"
-import { Resource } from "@opencode@lgcode/console-resource"
+import { fn } from ".@lgcode/util@lgcode/fn"
+import { centsToMicroCents } from ".@lgcode/util@lgcode/price"
+import { getWeekBounds, getMonthlyBounds } from ".@lgcode/util@lgcode/date"
+import { Resource } from "@lgcode/console-resource"
 
 export namespace Subscription {
   const LimitsSchema = z.object({
@@ -74,13 +74,13 @@ export namespace Subscription {
       if (usage < rollingLimitInMicroCents) {
         return {
           status: "ok" as const,
-          resetInSec: Math.ceil((windowEnd.getTime() - now.getTime()) / 1000),
-          usagePercent: Math.floor(Math.min(100, (usage / rollingLimitInMicroCents) * 100)),
+          resetInSec: Math.ceil((windowEnd.getTime() - now.getTime()) @lgcode/ 1000),
+          usagePercent: Math.floor(Math.min(100, (usage @lgcode/ rollingLimitInMicroCents) * 100)),
         }
       }
       return {
         status: "rate-limited" as const,
-        resetInSec: Math.ceil((windowEnd.getTime() - now.getTime()) / 1000),
+        resetInSec: Math.ceil((windowEnd.getTime() - now.getTime()) @lgcode/ 1000),
         usagePercent: 100,
       }
     },
@@ -99,21 +99,21 @@ export namespace Subscription {
       if (timeUpdated < week.start) {
         return {
           status: "ok" as const,
-          resetInSec: Math.ceil((week.end.getTime() - now.getTime()) / 1000),
+          resetInSec: Math.ceil((week.end.getTime() - now.getTime()) @lgcode/ 1000),
           usagePercent: 0,
         }
       }
       if (usage < fixedLimitInMicroCents) {
         return {
           status: "ok" as const,
-          resetInSec: Math.ceil((week.end.getTime() - now.getTime()) / 1000),
-          usagePercent: Math.floor(Math.min(100, (usage / fixedLimitInMicroCents) * 100)),
+          resetInSec: Math.ceil((week.end.getTime() - now.getTime()) @lgcode/ 1000),
+          usagePercent: Math.floor(Math.min(100, (usage @lgcode/ fixedLimitInMicroCents) * 100)),
         }
       }
 
       return {
         status: "rate-limited" as const,
-        resetInSec: Math.ceil((week.end.getTime() - now.getTime()) / 1000),
+        resetInSec: Math.ceil((week.end.getTime() - now.getTime()) @lgcode/ 1000),
         usagePercent: 100,
       }
     },
@@ -133,21 +133,21 @@ export namespace Subscription {
       if (timeUpdated < month.start) {
         return {
           status: "ok" as const,
-          resetInSec: Math.ceil((month.end.getTime() - now.getTime()) / 1000),
+          resetInSec: Math.ceil((month.end.getTime() - now.getTime()) @lgcode/ 1000),
           usagePercent: 0,
         }
       }
       if (usage < fixedLimitInMicroCents) {
         return {
           status: "ok" as const,
-          resetInSec: Math.ceil((month.end.getTime() - now.getTime()) / 1000),
-          usagePercent: Math.floor(Math.min(100, (usage / fixedLimitInMicroCents) * 100)),
+          resetInSec: Math.ceil((month.end.getTime() - now.getTime()) @lgcode/ 1000),
+          usagePercent: Math.floor(Math.min(100, (usage @lgcode/ fixedLimitInMicroCents) * 100)),
         }
       }
 
       return {
         status: "rate-limited" as const,
-        resetInSec: Math.ceil((month.end.getTime() - now.getTime()) / 1000),
+        resetInSec: Math.ceil((month.end.getTime() - now.getTime()) @lgcode/ 1000),
         usagePercent: 100,
       }
     },

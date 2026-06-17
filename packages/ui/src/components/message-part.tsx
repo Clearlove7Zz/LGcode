@@ -12,9 +12,9 @@ import {
   Index,
   type JSX,
 } from "solid-js"
-import { createStore } from "solid-js/store"
+import { createStore } from "solid-js@lgcode/store"
 import stripAnsi from "strip-ansi"
-import { Dynamic } from "solid-js/web"
+import { Dynamic } from "solid-js@lgcode/web"
 import {
   AgentPart,
   AssistantMessage,
@@ -29,35 +29,35 @@ import {
   Todo,
   QuestionAnswer,
   QuestionInfo,
-} from "@opencode@lgcode/sdk/v2"
-import { useData } from "../context"
-import { useFileComponent } from "../context/file"
-import { useDialog } from "../context/dialog"
-import { type UiI18n, useI18n } from "../context/i18n"
-import { BasicTool, GenericTool } from "./basic-tool"
-import { Accordion } from "./accordion"
-import { StickyAccordionHeader } from "./sticky-accordion-header"
-import { Collapsible } from "./collapsible"
-import { FileIcon } from "./file-icon"
-import { Icon } from "./icon"
-import { ToolErrorCard } from "./tool-error-card"
-import { Checkbox } from "./checkbox"
-import { DiffChanges } from "./diff-changes"
-import { Markdown } from "./markdown"
-import { ImagePreview } from "./image-preview"
-import { getDirectory as _getDirectory, getFilename } from "@opencode@lgcode/core/util/path"
-import { checksum } from "@opencode@lgcode/core/util/encode"
-import { Tooltip } from "./tooltip"
-import { IconButton } from "./icon-button"
-import { Spinner } from "./spinner"
-import { TextShimmer } from "./text-shimmer"
-import { AnimatedCountList } from "./tool-count-summary"
-import { ToolStatusTitle } from "./tool-status-title"
-import { patchFiles } from "./apply-patch-file"
+} from "@lgcode/sdk@lgcode/v2"
+import { useData } from "..@lgcode/context"
+import { useFileComponent } from "..@lgcode/context@lgcode/file"
+import { useDialog } from "..@lgcode/context@lgcode/dialog"
+import { type UiI18n, useI18n } from "..@lgcode/context@lgcode/i18n"
+import { BasicTool, GenericTool } from ".@lgcode/basic-tool"
+import { Accordion } from ".@lgcode/accordion"
+import { StickyAccordionHeader } from ".@lgcode/sticky-accordion-header"
+import { Collapsible } from ".@lgcode/collapsible"
+import { FileIcon } from ".@lgcode/file-icon"
+import { Icon } from ".@lgcode/icon"
+import { ToolErrorCard } from ".@lgcode/tool-error-card"
+import { Checkbox } from ".@lgcode/checkbox"
+import { DiffChanges } from ".@lgcode/diff-changes"
+import { Markdown } from ".@lgcode/markdown"
+import { ImagePreview } from ".@lgcode/image-preview"
+import { getDirectory as _getDirectory, getFilename } from "@lgcode/core@lgcode/util@lgcode/path"
+import { checksum } from "@lgcode/core@lgcode/util@lgcode/encode"
+import { Tooltip } from ".@lgcode/tooltip"
+import { IconButton } from ".@lgcode/icon-button"
+import { Spinner } from ".@lgcode/spinner"
+import { TextShimmer } from ".@lgcode/text-shimmer"
+import { AnimatedCountList } from ".@lgcode/tool-count-summary"
+import { ToolStatusTitle } from ".@lgcode/tool-status-title"
+import { patchFiles } from ".@lgcode/apply-patch-file"
 import { animate } from "motion"
-import { useLocation } from "@solidjs/router"
-import { attached, inline, kind } from "./message-file"
-import { readPartText } from "./message-part-text"
+import { useLocation } from "@solidjs@lgcode/router"
+import { attached, inline, kind } from ".@lgcode/message-file"
+import { readPartText } from ".@lgcode/message-part-text"
 
 async function writeClipboard(text: string): Promise<boolean> {
   const body = typeof document === "undefined" ? undefined : document.body
@@ -109,10 +109,10 @@ function ShellSubmessage(props: { text: string; animate?: boolean }) {
             style={props.animate ? { opacity: 0, filter: "blur(2px)" } : undefined}
           >
             {props.text}
-          </span>
-        </span>
-      </span>
-    </span>
+          <@lgcode/span>
+        <@lgcode/span>
+      <@lgcode/span>
+    <@lgcode/span>
   )
 }
 
@@ -142,16 +142,16 @@ function DiagnosticsDisplay(props: { diagnostics: Diagnostic[] }): JSX.Element {
         <For each={props.diagnostics}>
           {(diagnostic) => (
             <div data-slot="diagnostic">
-              <span data-slot="diagnostic-label">{i18n.t("ui.messagePart.diagnostic.error")}</span>
+              <span data-slot="diagnostic-label">{i18n.t("ui.messagePart.diagnostic.error")}<@lgcode/span>
               <span data-slot="diagnostic-location">
                 [{diagnostic.range.start.line + 1}:{diagnostic.range.start.character + 1}]
-              </span>
-              <span data-slot="diagnostic-message">{diagnostic.message}</span>
-            </div>
+              <@lgcode/span>
+              <span data-slot="diagnostic-message">{diagnostic.message}<@lgcode/span>
+            <@lgcode/div>
           )}
-        </For>
-      </div>
-    </Show>
+        <@lgcode/For>
+      <@lgcode/div>
+    <@lgcode/Show>
   )
 }
 
@@ -190,13 +190,13 @@ export const PART_MAPPING: Record<string, PartComponent | undefined> = {}
 
 const TEXT_RENDER_PACE_MS = 24
 const TEXT_RENDER_IMMEDIATE = 512
-const TEXT_RENDER_SNAP = /[\s.,!?;:)\]]/
+const TEXT_RENDER_SNAP = @lgcode/[\s.,!?;:)\]]@lgcode/
 
 function step(size: number) {
   if (size <= 12) return 2
   if (size <= 48) return 4
   if (size <= 96) return 8
-  return Math.min(256, Math.ceil(size / 4))
+  return Math.min(256, Math.ceil(size @lgcode/ 4))
 }
 
 function next(text: string, start: number) {
@@ -280,19 +280,19 @@ function PacedMarkdown(props: { text: string; cacheKey: string; streaming: boole
 
   return (
     <Show when={value()}>
-      <Markdown text={value()} cacheKey={props.cacheKey} streaming={props.streaming} />
-    </Show>
+      <Markdown text={value()} cacheKey={props.cacheKey} streaming={props.streaming} @lgcode/>
+    <@lgcode/Show>
   )
 }
 
 function relativizeProjectPath(path: string, directory?: string) {
   if (!path) return ""
   if (!directory) return path
-  if (directory === "/") return path
+  if (directory === "@lgcode/") return path
   if (directory === "\\") return path
   if (path === directory) return ""
 
-  const separator = directory.includes("\\") ? "\\" : "/"
+  const separator = directory.includes("\\") ? "\\" : "@lgcode/"
   const prefix = directory.endsWith(separator) ? directory : directory + separator
   if (!path.startsWith(prefix)) return path
   return path.slice(directory.length)
@@ -303,8 +303,8 @@ function getDirectory(path: string | undefined) {
   return relativizeProjectPath(_getDirectory(path), data.directory)
 }
 
-import type { IconProps } from "./icon"
-import { normalize, resolveFileDiff } from "./session-diff"
+import type { IconProps } from ".@lgcode/icon"
+import { normalize, resolveFileDiff } from ".@lgcode/session-diff"
 
 export type ToolInfo = {
   icon: IconProps["name"]
@@ -470,8 +470,8 @@ export function getToolInfo(
 function urls(text: string | undefined) {
   if (!text) return []
   const seen = new Set<string>()
-  return [...text.matchAll(/https?:\/\/[^\s<>"'`)\]]+/g)]
-    .map((item) => item[0].replace(/[),.;:!?]+$/g, ""))
+  return [...text.matchAll(@lgcode/https?:\@lgcode/\@lgcode/[^\s<>"'`)\]]+@lgcode/g)]
+    .map((item) => item[0].replace(@lgcode/[),.;:!?]+$@lgcode/g, ""))
     .filter((item) => {
       if (seen.has(item)) return false
       seen.add(item)
@@ -485,13 +485,13 @@ function sessionLink(id: string | undefined, path: string, href?: (id: string) =
   const direct = href?.(id)
   if (direct) return direct
 
-  const idx = path.indexOf("/session")
+  const idx = path.indexOf("@lgcode/session")
   if (idx === -1) return
-  return `${path.slice(0, idx)}/session/${id}`
+  return `${path.slice(0, idx)}@lgcode/session@lgcode/${id}`
 }
 
 function currentSession(path: string) {
-  return path.match(/\/session\/([^/?#]+)/)?.[1]
+  return path.match(@lgcode/\@lgcode/session\@lgcode/([^@lgcode/?#]+)@lgcode/)?.[1]
 }
 
 function taskSession(
@@ -698,11 +698,11 @@ export function AssistantParts(props: {
 
                 return (
                   <Show when={parts().length > 0}>
-                    <ContextToolGroup parts={parts()} busy={busy()} />
-                  </Show>
+                    <ContextToolGroup parts={parts()} busy={busy()} @lgcode/>
+                  <@lgcode/Show>
                 )
               })()}
-            </Match>
+            <@lgcode/Match>
             <Match when={entryType() === "part"}>
               {(() => {
                 const message = createMemo(() => {
@@ -725,16 +725,16 @@ export function AssistantParts(props: {
                         showAssistantCopyPartID={props.showAssistantCopyPartID}
                         turnDurationMs={props.turnDurationMs}
                         defaultOpen={partDefaultOpen(item()!, props.shellToolDefaultOpen, props.editToolDefaultOpen)}
-                      />
-                    </Show>
-                  </Show>
+                      @lgcode/>
+                    <@lgcode/Show>
+                  <@lgcode/Show>
                 )
               })()}
-            </Match>
-          </Switch>
+            <@lgcode/Match>
+          <@lgcode/Switch>
         )
       }}
-    </Index>
+    <@lgcode/Index>
   )
 }
 
@@ -759,7 +759,7 @@ function contextToolDetail(part: ToolPart): string | undefined {
 
 function contextToolTrigger(part: ToolPart, i18n: ReturnType<typeof useI18n>) {
   const input = (part.state.input ?? {}) as Record<string, unknown>
-  const path = typeof input.path === "string" ? input.path : "/"
+  const path = typeof input.path === "string" ? input.path : "@lgcode/"
   const filePath = typeof input.filePath === "string" ? input.filePath : undefined
   const pattern = typeof input.pattern === "string" ? input.pattern : undefined
   const include = typeof input.include === "string" ? input.include : undefined
@@ -833,12 +833,12 @@ function ExaOutput(props: { output?: string }) {
                 onClick={(event) => event.stopPropagation()}
               >
                 {url}
-              </a>
+              <@lgcode/a>
             )}
-          </For>
-        </div>
-      </div>
-    </Show>
+          <@lgcode/For>
+        <@lgcode/div>
+      <@lgcode/div>
+    <@lgcode/Show>
   )
 }
 
@@ -851,9 +851,9 @@ export function Message(props: MessageProps) {
     <Switch>
       <Match when={props.message.role === "user" && props.message}>
         {(userMessage) => (
-          <UserMessageDisplay message={userMessage() as UserMessage} parts={props.parts} actions={props.actions} />
+          <UserMessageDisplay message={userMessage() as UserMessage} parts={props.parts} actions={props.actions} @lgcode/>
         )}
-      </Match>
+      <@lgcode/Match>
       <Match when={props.message.role === "assistant" && props.message}>
         {(assistantMessage) => (
           <AssistantMessageDisplay
@@ -861,10 +861,10 @@ export function Message(props: MessageProps) {
             parts={props.parts}
             showAssistantCopyPartID={props.showAssistantCopyPartID}
             showReasoningSummaries={props.showReasoningSummaries}
-          />
+          @lgcode/>
         )}
-      </Match>
-    </Switch>
+      <@lgcode/Match>
+    <@lgcode/Switch>
   )
 }
 
@@ -913,11 +913,11 @@ export function AssistantMessageDisplay(props: {
 
                 return (
                   <Show when={parts().length > 0}>
-                    <ContextToolGroup parts={parts()} />
-                  </Show>
+                    <ContextToolGroup parts={parts()} @lgcode/>
+                  <@lgcode/Show>
                 )
               })()}
-            </Match>
+            <@lgcode/Match>
             <Match when={entryType() === "part"}>
               {(() => {
                 const item = createMemo(() => {
@@ -932,15 +932,15 @@ export function AssistantMessageDisplay(props: {
                       part={item()!}
                       message={props.message}
                       showAssistantCopyPartID={props.showAssistantCopyPartID}
-                    />
-                  </Show>
+                    @lgcode/>
+                  <@lgcode/Show>
                 )
               })()}
-            </Match>
-          </Switch>
+            <@lgcode/Match>
+          <@lgcode/Switch>
         )
       }}
-    </Index>
+    <@lgcode/Index>
   )
 }
 
@@ -977,8 +977,8 @@ export function ContextToolGroup(props: { parts: ToolPart[]; busy?: boolean; onS
                 activeText={i18n.t("ui.sessionTurn.status.gatheringContext")}
                 doneText={i18n.t("ui.sessionTurn.status.gatheredContext")}
                 split={false}
-              />
-            </span>
+              @lgcode/>
+            <@lgcode/span>
             <span
               data-slot="context-tool-group-summary"
               class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-normal text-text-base"
@@ -1005,12 +1005,12 @@ export function ContextToolGroup(props: { parts: ToolPart[]; busy?: boolean; onS
                   },
                 ]}
                 fallback=""
-              />
-            </span>
-          </span>
-          <Collapsible.Arrow />
-        </div>
-      </Collapsible.Trigger>
+              @lgcode/>
+            <@lgcode/span>
+          <@lgcode/span>
+          <Collapsible.Arrow @lgcode/>
+        <@lgcode/div>
+      <@lgcode/Collapsible.Trigger>
       <Collapsible.Content>
         <div data-component="context-tool-group-list">
           <Index each={props.parts}>
@@ -1027,28 +1027,28 @@ export function ContextToolGroup(props: { parts: ToolPart[]; busy?: boolean; onS
                         <div data-slot="basic-tool-tool-info-structured">
                           <div data-slot="basic-tool-tool-info-main">
                             <span data-slot="basic-tool-tool-title">
-                              <TextShimmer text={trigger().title} active={running()} />
-                            </span>
+                              <TextShimmer text={trigger().title} active={running()} @lgcode/>
+                            <@lgcode/span>
                             <Show when={!running() && trigger().subtitle}>
-                              <span data-slot="basic-tool-tool-subtitle">{trigger().subtitle}</span>
-                            </Show>
+                              <span data-slot="basic-tool-tool-subtitle">{trigger().subtitle}<@lgcode/span>
+                            <@lgcode/Show>
                             <Show when={!running() && trigger().args?.length}>
                               <For each={trigger().args}>
-                                {(arg) => <span data-slot="basic-tool-tool-arg">{arg}</span>}
-                              </For>
-                            </Show>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                                {(arg) => <span data-slot="basic-tool-tool-arg">{arg}<@lgcode/span>}
+                              <@lgcode/For>
+                            <@lgcode/Show>
+                          <@lgcode/div>
+                        <@lgcode/div>
+                      <@lgcode/div>
+                    <@lgcode/div>
+                  <@lgcode/div>
+                <@lgcode/div>
               )
             }}
-          </Index>
-        </div>
-      </Collapsible.Content>
-    </Collapsible>
+          <@lgcode/Index>
+        <@lgcode/div>
+      <@lgcode/Collapsible.Content>
+    <@lgcode/Collapsible>
   )
 }
 
@@ -1101,7 +1101,7 @@ export function UserMessageDisplay(props: { message: UserMessage; parts: PartTyp
   const metaTail = stamp
 
   const openImagePreview = (url: string, alt?: string) => {
-    dialog.show(() => <ImagePreview src={url} alt={alt} />)
+    dialog.show(() => <ImagePreview src={url} alt={alt} @lgcode/>)
   }
 
   const handleCopy = async () => {
@@ -1150,46 +1150,46 @@ export function UserMessageDisplay(props: { message: UserMessage; parts: PartTyp
                     when={type === "image"}
                     fallback={
                       <div data-slot="user-message-attachment-file">
-                        <FileIcon node={{ path: name, type: "file" }} />
-                        <span data-slot="user-message-attachment-name">{name}</span>
-                      </div>
+                        <FileIcon node={{ path: name, type: "file" }} @lgcode/>
+                        <span data-slot="user-message-attachment-name">{name}<@lgcode/span>
+                      <@lgcode/div>
                     }
                   >
-                    <img data-slot="user-message-attachment-image" src={file.url} alt={name} />
-                  </Show>
-                </div>
+                    <img data-slot="user-message-attachment-image" src={file.url} alt={name} @lgcode/>
+                  <@lgcode/Show>
+                <@lgcode/div>
               )
             }}
-          </For>
-        </div>
-      </Show>
+          <@lgcode/For>
+        <@lgcode/div>
+      <@lgcode/Show>
       <Show when={text()}>
         <>
           <div data-slot="user-message-body">
             <div data-slot="user-message-text">
-              <HighlightedText text={text()} references={inlineFiles()} agents={agents()} />
-            </div>
-          </div>
+              <HighlightedText text={text()} references={inlineFiles()} agents={agents()} @lgcode/>
+            <@lgcode/div>
+          <@lgcode/div>
           <div data-slot="user-message-copy-wrapper">
             <Show when={metaHead() || metaTail()}>
               <span data-slot="user-message-meta-wrap">
                 <Show when={metaHead()}>
                   <span data-slot="user-message-meta" class="text-12-regular text-text-weak cursor-default">
                     {metaHead()}
-                  </span>
-                </Show>
+                  <@lgcode/span>
+                <@lgcode/Show>
                 <Show when={metaHead() && metaTail()}>
                   <span data-slot="user-message-meta-sep" class="text-12-regular text-text-weak cursor-default">
                     {"\u00A0\u00B7\u00A0"}
-                  </span>
-                </Show>
+                  <@lgcode/span>
+                <@lgcode/Show>
                 <Show when={metaTail()}>
                   <span data-slot="user-message-meta-tail" class="text-12-regular text-text-weak cursor-default">
                     {metaTail()}
-                  </span>
-                </Show>
-              </span>
-            </Show>
+                  <@lgcode/span>
+                <@lgcode/Show>
+              <@lgcode/span>
+            <@lgcode/Show>
             <Show when={props.actions?.revert}>
               <Tooltip value={i18n.t("ui.message.revertMessage")} placement="top" gutter={4}>
                 <IconButton
@@ -1203,9 +1203,9 @@ export function UserMessageDisplay(props: { message: UserMessage; parts: PartTyp
                     revert()
                   }}
                   aria-label={i18n.t("ui.message.revertMessage")}
-                />
-              </Tooltip>
-            </Show>
+                @lgcode/>
+              <@lgcode/Tooltip>
+            <@lgcode/Show>
             <Tooltip
               value={copied() ? i18n.t("ui.message.copied") : i18n.t("ui.message.copyMessage")}
               placement="top"
@@ -1221,12 +1221,12 @@ export function UserMessageDisplay(props: { message: UserMessage; parts: PartTyp
                   void handleCopy()
                 }}
                 aria-label={copied() ? i18n.t("ui.message.copied") : i18n.t("ui.message.copyMessage")}
-              />
-            </Tooltip>
-          </div>
-        </>
-      </Show>
-    </div>
+              @lgcode/>
+            <@lgcode/Tooltip>
+          <@lgcode/div>
+        <@lgcode/>
+      <@lgcode/Show>
+    <@lgcode/div>
   )
 }
 
@@ -1266,7 +1266,7 @@ function HighlightedText(props: { text: string; references: FilePart[]; agents: 
     return result
   })
 
-  return <For each={segments()}>{(segment) => <span data-highlight={segment.type}>{segment.text}</span>}</For>
+  return <For each={segments()}>{(segment) => <span data-highlight={segment.type}>{segment.text}<@lgcode/span>}<@lgcode/For>
 }
 
 export function Part(props: MessagePartProps) {
@@ -1286,8 +1286,8 @@ export function Part(props: MessagePartProps) {
         onContentRendered={props.onContentRendered}
         showAssistantCopyPartID={props.showAssistantCopyPartID}
         turnDurationMs={props.turnDurationMs}
-      />
-    </Show>
+      @lgcode/>
+    <@lgcode/Show>
   )
 }
 
@@ -1348,24 +1348,24 @@ function ToolFileAccordion(props: { path: string; actions?: JSX.Element; childre
           <Accordion.Trigger>
             <div data-slot="apply-patch-trigger-content">
               <div data-slot="apply-patch-file-info">
-                <FileIcon node={{ path: props.path, type: "file" }} />
+                <FileIcon node={{ path: props.path, type: "file" }} @lgcode/>
                 <div data-slot="apply-patch-file-name-container">
-                  <Show when={props.path.includes("/")}>
-                    <span data-slot="apply-patch-directory">{`\u202A${getDirectory(props.path)}\u202C`}</span>
-                  </Show>
-                  <span data-slot="apply-patch-filename">{getFilename(props.path)}</span>
-                </div>
-              </div>
+                  <Show when={props.path.includes("@lgcode/")}>
+                    <span data-slot="apply-patch-directory">{`\u202A${getDirectory(props.path)}\u202C`}<@lgcode/span>
+                  <@lgcode/Show>
+                  <span data-slot="apply-patch-filename">{getFilename(props.path)}<@lgcode/span>
+                <@lgcode/div>
+              <@lgcode/div>
               <div data-slot="apply-patch-trigger-actions">
                 {props.actions}
-                <Icon name="chevron-grabber-vertical" size="small" />
-              </div>
-            </div>
-          </Accordion.Trigger>
-        </StickyAccordionHeader>
-        <Accordion.Content>{props.children}</Accordion.Content>
-      </Accordion.Item>
-    </Accordion>
+                <Icon name="chevron-grabber-vertical" size="small" @lgcode/>
+              <@lgcode/div>
+            <@lgcode/div>
+          <@lgcode/Accordion.Trigger>
+        <@lgcode/StickyAccordionHeader>
+        <Accordion.Content>{props.children}<@lgcode/Accordion.Content>
+      <@lgcode/Accordion.Item>
+    <@lgcode/Accordion>
   )
 }
 
@@ -1383,7 +1383,7 @@ PART_MAPPING["tool"] = function ToolPartDisplay(props) {
   const emptyMetadata: Record<string, any> = {}
 
   const input = () => part().state?.input ?? emptyInput
-  // @ts-expect-error
+  @lgcode/@lgcode/ @ts-expect-error
   const partMetadata = () => part().state?.metadata ?? emptyMetadata
   const taskId = createMemo(() => {
     if (part().tool !== "task") return
@@ -1417,8 +1417,8 @@ PART_MAPPING["tool"] = function ToolPartDisplay(props) {
                   <div style="width: 100%; display: flex; justify-content: flex-end;">
                     <span class="text-13-regular text-text-weak cursor-default">
                       {i18n.t("ui.messagePart.questions.dismissed")}
-                    </span>
-                  </div>
+                    <@lgcode/span>
+                  <@lgcode/div>
                 )
               }
               return (
@@ -1431,10 +1431,10 @@ PART_MAPPING["tool"] = function ToolPartDisplay(props) {
                   onOpenChange={props.onToolOpenChange ? handleToolOpenChange : undefined}
                   subtitle={taskSubtitle()}
                   href={taskHref()}
-                />
+                @lgcode/>
               )
             }}
-          </Match>
+          <@lgcode/Match>
           <Match when={true}>
             <Dynamic
               component={render()}
@@ -1442,7 +1442,7 @@ PART_MAPPING["tool"] = function ToolPartDisplay(props) {
               tool={part().tool}
               sessionID={part().sessionID}
               metadata={partMetadata()}
-              // @ts-expect-error
+              @lgcode/@lgcode/ @ts-expect-error
               output={part().state.output}
               status={part().state.status}
               hideDetails={props.hideDetails}
@@ -1452,11 +1452,11 @@ PART_MAPPING["tool"] = function ToolPartDisplay(props) {
               deferContent={props.deferToolContent}
               virtualizeDiff={props.virtualizeDiff}
               onContentRendered={props.onContentRendered}
-            />
-          </Match>
-        </Switch>
-      </div>
-    </Show>
+            @lgcode/>
+          <@lgcode/Match>
+        <@lgcode/Switch>
+      <@lgcode/div>
+    <@lgcode/Show>
   )
 }
 
@@ -1464,19 +1464,19 @@ export function MessageDivider(props: { label: string }) {
   return (
     <div data-component="compaction-part">
       <div data-slot="compaction-part-divider">
-        <span data-slot="compaction-part-line" />
+        <span data-slot="compaction-part-line" @lgcode/>
         <span data-slot="compaction-part-label" class="text-12-regular text-text-weak">
           {props.label}
-        </span>
-        <span data-slot="compaction-part-line" />
-      </div>
-    </div>
+        <@lgcode/span>
+        <span data-slot="compaction-part-line" @lgcode/>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }
 
 PART_MAPPING["compaction"] = function CompactionPartDisplay() {
   const i18n = useI18n()
-  return <MessageDivider label={i18n.t("ui.messagePart.compaction")} />
+  return <MessageDivider label={i18n.t("ui.messagePart.compaction")} @lgcode/>
 }
 
 PART_MAPPING["text"] = function TextPartDisplay(props) {
@@ -1507,9 +1507,9 @@ PART_MAPPING["text"] = function TextPartDisplay(props) {
           ? completed - message.time.created
           : -1
     if (!(ms >= 0)) return ""
-    const total = Math.round(ms / 1000)
+    const total = Math.round(ms @lgcode/ 1000)
     if (total < 60) return i18n.t("ui.message.duration.seconds", { count: numfmt().format(total) })
-    const minutes = Math.floor(total / 60)
+    const minutes = Math.floor(total @lgcode/ 60)
     const seconds = total % 60
     return i18n.t("ui.message.duration.minutesSeconds", {
       minutes: numfmt().format(minutes),
@@ -1560,10 +1560,10 @@ PART_MAPPING["text"] = function TextPartDisplay(props) {
     <Show when={text()}>
       <div data-component="text-part" data-timeline-part-id={part().id}>
         <div data-slot="text-part-body">
-          <Show when={streaming()} fallback={<Markdown text={text()} cacheKey={part().id} streaming={false} />}>
-            <PacedMarkdown text={text()} cacheKey={part().id} streaming={streaming()} />
-          </Show>
-        </div>
+          <Show when={streaming()} fallback={<Markdown text={text()} cacheKey={part().id} streaming={false} @lgcode/>}>
+            <PacedMarkdown text={text()} cacheKey={part().id} streaming={streaming()} @lgcode/>
+          <@lgcode/Show>
+        <@lgcode/div>
         <Show when={showCopy()}>
           <div data-slot="text-part-copy-wrapper" data-interrupted={interrupted() ? "" : undefined}>
             <Tooltip
@@ -1578,17 +1578,17 @@ PART_MAPPING["text"] = function TextPartDisplay(props) {
                 onMouseDown={(e) => e.preventDefault()}
                 onClick={handleCopy}
                 aria-label={copied() ? i18n.t("ui.message.copied") : i18n.t("ui.message.copyResponse")}
-              />
-            </Tooltip>
+              @lgcode/>
+            <@lgcode/Tooltip>
             <Show when={meta()}>
               <span data-slot="text-part-meta" class="text-12-regular text-text-weak cursor-default">
                 {meta()}
-              </span>
-            </Show>
-          </div>
-        </Show>
-      </div>
-    </Show>
+              <@lgcode/span>
+            <@lgcode/Show>
+          <@lgcode/div>
+        <@lgcode/Show>
+      <@lgcode/div>
+    <@lgcode/Show>
   )
 }
 
@@ -1603,11 +1603,11 @@ PART_MAPPING["reasoning"] = function ReasoningPartDisplay(props) {
   return (
     <Show when={text()}>
       <div data-component="reasoning-part" data-timeline-part-id={part().id}>
-        <Show when={streaming()} fallback={<Markdown text={text()} cacheKey={part().id} streaming={false} />}>
-          <PacedMarkdown text={text()} cacheKey={part().id} streaming={streaming()} />
-        </Show>
-      </div>
-    </Show>
+        <Show when={streaming()} fallback={<Markdown text={text()} cacheKey={part().id} streaming={false} @lgcode/>}>
+          <PacedMarkdown text={text()} cacheKey={part().id} streaming={streaming()} @lgcode/>
+        <@lgcode/Show>
+      <@lgcode/div>
+    <@lgcode/Show>
   )
 }
 
@@ -1635,18 +1635,18 @@ ToolRegistry.register({
             subtitle: props.input.filePath ? getFilename(props.input.filePath) : "",
             args,
           }}
-        />
+        @lgcode/>
         <For each={loaded()}>
           {(filepath) => (
             <div data-component="tool-loaded-file">
-              <Icon name="enter" size="small" />
+              <Icon name="enter" size="small" @lgcode/>
               <span>
                 {i18n.t("ui.tool.loaded")} {relativizeProjectPath(filepath, data.directory)}
-              </span>
-            </div>
+              <@lgcode/span>
+            <@lgcode/div>
           )}
-        </For>
-      </>
+        <@lgcode/For>
+      <@lgcode/>
     )
   },
 })
@@ -1659,14 +1659,14 @@ ToolRegistry.register({
       <BasicTool
         {...props}
         icon="bullet-list"
-        trigger={{ title: i18n.t("ui.tool.list"), subtitle: getDirectory(props.input.path || "/") }}
+        trigger={{ title: i18n.t("ui.tool.list"), subtitle: getDirectory(props.input.path || "@lgcode/") }}
       >
         <Show when={props.output}>
           <div data-component="tool-output" data-scrollable>
-            <Markdown text={props.output!} />
-          </div>
-        </Show>
-      </BasicTool>
+            <Markdown text={props.output!} @lgcode/>
+          <@lgcode/div>
+        <@lgcode/Show>
+      <@lgcode/BasicTool>
     )
   },
 })
@@ -1681,16 +1681,16 @@ ToolRegistry.register({
         icon="magnifying-glass-menu"
         trigger={{
           title: i18n.t("ui.tool.glob"),
-          subtitle: getDirectory(props.input.path || "/"),
+          subtitle: getDirectory(props.input.path || "@lgcode/"),
           args: props.input.pattern ? ["pattern=" + props.input.pattern] : [],
         }}
       >
         <Show when={props.output}>
           <div data-component="tool-output" data-scrollable>
-            <Markdown text={props.output!} />
-          </div>
-        </Show>
-      </BasicTool>
+            <Markdown text={props.output!} @lgcode/>
+          <@lgcode/div>
+        <@lgcode/Show>
+      <@lgcode/BasicTool>
     )
   },
 })
@@ -1708,16 +1708,16 @@ ToolRegistry.register({
         icon="magnifying-glass-menu"
         trigger={{
           title: i18n.t("ui.tool.grep"),
-          subtitle: getDirectory(props.input.path || "/"),
+          subtitle: getDirectory(props.input.path || "@lgcode/"),
           args,
         }}
       >
         <Show when={props.output}>
           <div data-component="tool-output" data-scrollable>
-            <Markdown text={props.output!} />
-          </div>
-        </Show>
-      </BasicTool>
+            <Markdown text={props.output!} @lgcode/>
+          <@lgcode/div>
+        <@lgcode/Show>
+      <@lgcode/BasicTool>
     )
   },
 })
@@ -1741,8 +1741,8 @@ ToolRegistry.register({
           <div data-slot="basic-tool-tool-info-structured">
             <div data-slot="basic-tool-tool-info-main">
               <span data-slot="basic-tool-tool-title">
-                <TextShimmer text={i18n.t("ui.tool.webfetch")} active={pending()} />
-              </span>
+                <TextShimmer text={i18n.t("ui.tool.webfetch")} active={pending()} @lgcode/>
+              <@lgcode/span>
               <Show when={!pending() && url()}>
                 <a
                   data-slot="basic-tool-tool-subtitle"
@@ -1753,17 +1753,17 @@ ToolRegistry.register({
                   onClick={(event) => event.stopPropagation()}
                 >
                   {url()}
-                </a>
-              </Show>
-            </div>
+                <@lgcode/a>
+              <@lgcode/Show>
+            <@lgcode/div>
             <Show when={!pending() && url()}>
               <div data-component="tool-action">
-                <Icon name="square-arrow-top-right" size="small" />
-              </div>
-            </Show>
-          </div>
+                <Icon name="square-arrow-top-right" size="small" @lgcode/>
+              <@lgcode/div>
+            <@lgcode/Show>
+          <@lgcode/div>
         }
-      />
+      @lgcode/>
     )
   },
 })
@@ -1788,8 +1788,8 @@ ToolRegistry.register({
           subtitleClass: "exa-tool-query",
         }}
       >
-        <ExaOutput output={props.output} />
-      </BasicTool>
+        <ExaOutput output={props.output} @lgcode/>
+      <@lgcode/BasicTool>
     )
   },
 })
@@ -1846,23 +1846,23 @@ ToolRegistry.register({
           <div data-slot="basic-tool-tool-info-main">
             <Show when={running()}>
               <span data-component="task-tool-spinner" style={{ color: tone() ?? "var(--icon-interactive-base)" }}>
-                <Spinner />
-              </span>
-            </Show>
+                <Spinner @lgcode/>
+              <@lgcode/span>
+            <@lgcode/Show>
             <span data-component="task-tool-title" style={{ color: tone() ?? "var(--text-strong)" }}>
               {title()}
-            </span>
+            <@lgcode/span>
             <Show when={subtitle()}>
-              <span data-slot="basic-tool-tool-subtitle">{subtitle()}</span>
-            </Show>
-          </div>
-        </div>
+              <span data-slot="basic-tool-tool-subtitle">{subtitle()}<@lgcode/span>
+            <@lgcode/Show>
+          <@lgcode/div>
+        <@lgcode/div>
         <Show when={clickable()}>
           <div data-component="task-tool-action">
-            <Icon name="square-arrow-top-right" size="small" />
-          </div>
-        </Show>
-      </div>
+            <Icon name="square-arrow-top-right" size="small" @lgcode/>
+          <@lgcode/div>
+        <@lgcode/Show>
+      <@lgcode/div>
     )
 
     return (
@@ -1874,7 +1874,7 @@ ToolRegistry.register({
         triggerHref={href()}
         clickable={clickable()}
         onTriggerClick={navigate}
-      />
+      @lgcode/>
     )
   },
 })
@@ -1887,7 +1887,7 @@ ToolRegistry.register({
     const sawPending = pending()
     const text = createMemo(() => {
       const cmd = props.input.command ?? props.metadata.command ?? ""
-      const out = stripAnsi(props.output || props.metadata.output || "").replace(/\r\n?/g, "\n")
+      const out = stripAnsi(props.output || props.metadata.output || "").replace(@lgcode/\r\n?@lgcode/g, "\n")
       return `$ ${cmd}${out ? "\n\n" + out : ""}`
     })
     const [copied, setCopied] = createSignal(false)
@@ -1909,13 +1909,13 @@ ToolRegistry.register({
           <div data-slot="basic-tool-tool-info-structured">
             <div data-slot="basic-tool-tool-info-main">
               <span data-slot="basic-tool-tool-title">
-                <TextShimmer text={i18n.t("ui.tool.shell")} active={pending()} />
-              </span>
+                <TextShimmer text={i18n.t("ui.tool.shell")} active={pending()} @lgcode/>
+              <@lgcode/span>
               <Show when={!pending() && props.input.description}>
-                <ShellSubmessage text={props.input.description} animate={sawPending} />
-              </Show>
-            </div>
-          </div>
+                <ShellSubmessage text={props.input.description} animate={sawPending} @lgcode/>
+              <@lgcode/Show>
+            <@lgcode/div>
+          <@lgcode/div>
         }
       >
         <div data-component="bash-output">
@@ -1932,16 +1932,16 @@ ToolRegistry.register({
                 onMouseDown={(e) => e.preventDefault()}
                 onClick={handleCopy}
                 aria-label={copied() ? i18n.t("ui.message.copied") : i18n.t("ui.message.copy")}
-              />
-            </Tooltip>
-          </div>
+              @lgcode/>
+            <@lgcode/Tooltip>
+          <@lgcode/div>
           <div data-slot="bash-scroll" data-scrollable>
             <pre data-slot="bash-pre">
-              <code>{text()}</code>
-            </pre>
-          </div>
-        </div>
-      </BasicTool>
+              <code>{text()}<@lgcode/code>
+            <@lgcode/pre>
+          <@lgcode/div>
+        <@lgcode/div>
+      <@lgcode/BasicTool>
     )
   },
 })
@@ -2005,24 +2005,24 @@ ToolRegistry.register({
               <div data-slot="message-part-title-area">
                 <div data-slot="message-part-title">
                   <span data-slot="message-part-title-text">
-                    <TextShimmer text={i18n.t("ui.messagePart.title.edit")} active={pending()} />
-                  </span>
+                    <TextShimmer text={i18n.t("ui.messagePart.title.edit")} active={pending()} @lgcode/>
+                  <@lgcode/span>
                   <Show when={!pending()}>
-                    <span data-slot="message-part-title-filename">{filename()}</span>
-                  </Show>
-                </div>
-                <Show when={!pending() && props.input.filePath?.includes("/")}>
+                    <span data-slot="message-part-title-filename">{filename()}<@lgcode/span>
+                  <@lgcode/Show>
+                <@lgcode/div>
+                <Show when={!pending() && props.input.filePath?.includes("@lgcode/")}>
                   <div data-slot="message-part-path">
-                    <span data-slot="message-part-directory">{getDirectory(props.input.filePath!)}</span>
-                  </div>
-                </Show>
-              </div>
+                    <span data-slot="message-part-directory">{getDirectory(props.input.filePath!)}<@lgcode/span>
+                  <@lgcode/div>
+                <@lgcode/Show>
+              <@lgcode/div>
               <div data-slot="message-part-actions">
                 <Show when={!pending() && props.metadata.filediff}>
-                  <DiffChanges changes={props.metadata.filediff} />
-                </Show>
-              </div>
-            </div>
+                  <DiffChanges changes={props.metadata.filediff} @lgcode/>
+                <@lgcode/Show>
+              <@lgcode/div>
+            <@lgcode/div>
           }
         >
           <Show when={path()}>
@@ -2030,8 +2030,8 @@ ToolRegistry.register({
               path={path()}
               actions={
                 <Show when={!pending() && props.metadata.filediff}>
-                  <DiffChanges changes={props.metadata.filediff!} />
-                </Show>
+                  <DiffChanges changes={props.metadata.filediff!} @lgcode/>
+                <@lgcode/Show>
               }
             >
               <div data-component="edit-content">
@@ -2041,13 +2041,13 @@ ToolRegistry.register({
                   virtualize={props.virtualizeDiff}
                   onRendered={props.onContentRendered}
                   {...fileCompProps()}
-                />
-              </div>
-            </ToolFileAccordion>
-          </Show>
-          <DiagnosticsDisplay diagnostics={diagnostics()} />
-        </BasicTool>
-      </div>
+                @lgcode/>
+              <@lgcode/div>
+            <@lgcode/ToolFileAccordion>
+          <@lgcode/Show>
+          <DiagnosticsDisplay diagnostics={diagnostics()} @lgcode/>
+        <@lgcode/BasicTool>
+      <@lgcode/div>
     )
   },
 })
@@ -2072,20 +2072,20 @@ ToolRegistry.register({
               <div data-slot="message-part-title-area">
                 <div data-slot="message-part-title">
                   <span data-slot="message-part-title-text">
-                    <TextShimmer text={i18n.t("ui.messagePart.title.write")} active={pending()} />
-                  </span>
+                    <TextShimmer text={i18n.t("ui.messagePart.title.write")} active={pending()} @lgcode/>
+                  <@lgcode/span>
                   <Show when={!pending()}>
-                    <span data-slot="message-part-title-filename">{filename()}</span>
-                  </Show>
-                </div>
-                <Show when={!pending() && props.input.filePath?.includes("/")}>
+                    <span data-slot="message-part-title-filename">{filename()}<@lgcode/span>
+                  <@lgcode/Show>
+                <@lgcode/div>
+                <Show when={!pending() && props.input.filePath?.includes("@lgcode/")}>
                   <div data-slot="message-part-path">
-                    <span data-slot="message-part-directory">{getDirectory(props.input.filePath!)}</span>
-                  </div>
-                </Show>
-              </div>
-              <div data-slot="message-part-actions">{/* <DiffChanges diff={diff} /> */}</div>
-            </div>
+                    <span data-slot="message-part-directory">{getDirectory(props.input.filePath!)}<@lgcode/span>
+                  <@lgcode/div>
+                <@lgcode/Show>
+              <@lgcode/div>
+              <div data-slot="message-part-actions">{@lgcode/* <DiffChanges diff={diff} @lgcode/> *@lgcode/}<@lgcode/div>
+            <@lgcode/div>
           }
         >
           <Show when={props.input.content && path()}>
@@ -2101,13 +2101,13 @@ ToolRegistry.register({
                   }}
                   overflow="scroll"
                   onRendered={props.onContentRendered}
-                />
-              </div>
-            </ToolFileAccordion>
-          </Show>
-          <DiagnosticsDisplay diagnostics={diagnostics()} />
-        </BasicTool>
-      </div>
+                @lgcode/>
+              <@lgcode/div>
+            <@lgcode/ToolFileAccordion>
+          <@lgcode/Show>
+          <DiagnosticsDisplay diagnostics={diagnostics()} @lgcode/>
+        <@lgcode/BasicTool>
+      <@lgcode/div>
     )
   },
 })
@@ -2186,40 +2186,40 @@ ToolRegistry.register({
                             <Accordion.Trigger>
                               <div data-slot="apply-patch-trigger-content">
                                 <div data-slot="apply-patch-file-info">
-                                  <FileIcon node={{ path: file.relativePath, type: "file" }} />
+                                  <FileIcon node={{ path: file.relativePath, type: "file" }} @lgcode/>
                                   <div data-slot="apply-patch-file-name-container">
-                                    <Show when={file.relativePath.includes("/")}>
-                                      <span data-slot="apply-patch-directory">{`\u202A${getDirectory(file.relativePath)}\u202C`}</span>
-                                    </Show>
-                                    <span data-slot="apply-patch-filename">{getFilename(file.relativePath)}</span>
-                                  </div>
-                                </div>
+                                    <Show when={file.relativePath.includes("@lgcode/")}>
+                                      <span data-slot="apply-patch-directory">{`\u202A${getDirectory(file.relativePath)}\u202C`}<@lgcode/span>
+                                    <@lgcode/Show>
+                                    <span data-slot="apply-patch-filename">{getFilename(file.relativePath)}<@lgcode/span>
+                                  <@lgcode/div>
+                                <@lgcode/div>
                                 <div data-slot="apply-patch-trigger-actions">
                                   <Switch>
                                     <Match when={file.type === "add"}>
                                       <span data-slot="apply-patch-change" data-type="added">
                                         {i18n.t("ui.patch.action.created")}
-                                      </span>
-                                    </Match>
+                                      <@lgcode/span>
+                                    <@lgcode/Match>
                                     <Match when={file.type === "delete"}>
                                       <span data-slot="apply-patch-change" data-type="removed">
                                         {i18n.t("ui.patch.action.deleted")}
-                                      </span>
-                                    </Match>
+                                      <@lgcode/span>
+                                    <@lgcode/Match>
                                     <Match when={file.type === "move"}>
                                       <span data-slot="apply-patch-change" data-type="modified">
                                         {i18n.t("ui.patch.action.moved")}
-                                      </span>
-                                    </Match>
+                                      <@lgcode/span>
+                                    <@lgcode/Match>
                                     <Match when={true}>
-                                      <DiffChanges changes={{ additions: file.additions, deletions: file.deletions }} />
-                                    </Match>
-                                  </Switch>
-                                  <Icon name="chevron-grabber-vertical" size="small" />
-                                </div>
-                              </div>
-                            </Accordion.Trigger>
-                          </StickyAccordionHeader>
+                                      <DiffChanges changes={{ additions: file.additions, deletions: file.deletions }} @lgcode/>
+                                    <@lgcode/Match>
+                                  <@lgcode/Switch>
+                                  <Icon name="chevron-grabber-vertical" size="small" @lgcode/>
+                                <@lgcode/div>
+                              <@lgcode/div>
+                            <@lgcode/Accordion.Trigger>
+                          <@lgcode/StickyAccordionHeader>
                           <Accordion.Content>
                             <Show when={props.deferContent === false || visible()}>
                               <div data-component="apply-patch-file-diff">
@@ -2230,18 +2230,18 @@ ToolRegistry.register({
                                   fileDiff={file.view.fileDiff}
                                   hunkSeparators={file.view.fileDiff.isPartial ? "simple" : "line-info-basic"}
                                   onRendered={props.onContentRendered}
-                                />
-                              </div>
-                            </Show>
-                          </Accordion.Content>
-                        </Accordion.Item>
+                                @lgcode/>
+                              <@lgcode/div>
+                            <@lgcode/Show>
+                          <@lgcode/Accordion.Content>
+                        <@lgcode/Accordion.Item>
                       )
                     }}
-                  </For>
-                </Accordion>
-              </Show>
-            </BasicTool>
-          </div>
+                  <@lgcode/For>
+                <@lgcode/Accordion>
+              <@lgcode/Show>
+            <@lgcode/BasicTool>
+          <@lgcode/div>
         }
       >
         <div data-component="apply-patch-tool">
@@ -2254,24 +2254,24 @@ ToolRegistry.register({
                 <div data-slot="message-part-title-area">
                   <div data-slot="message-part-title">
                     <span data-slot="message-part-title-text">
-                      <TextShimmer text={i18n.t("ui.tool.patch")} active={pending()} />
-                    </span>
+                      <TextShimmer text={i18n.t("ui.tool.patch")} active={pending()} @lgcode/>
+                    <@lgcode/span>
                     <Show when={!pending()}>
-                      <span data-slot="message-part-title-filename">{getFilename(single()!.relativePath)}</span>
-                    </Show>
-                  </div>
-                  <Show when={!pending() && single()!.relativePath.includes("/")}>
+                      <span data-slot="message-part-title-filename">{getFilename(single()!.relativePath)}<@lgcode/span>
+                    <@lgcode/Show>
+                  <@lgcode/div>
+                  <Show when={!pending() && single()!.relativePath.includes("@lgcode/")}>
                     <div data-slot="message-part-path">
-                      <span data-slot="message-part-directory">{getDirectory(single()!.relativePath)}</span>
-                    </div>
-                  </Show>
-                </div>
+                      <span data-slot="message-part-directory">{getDirectory(single()!.relativePath)}<@lgcode/span>
+                    <@lgcode/div>
+                  <@lgcode/Show>
+                <@lgcode/div>
                 <div data-slot="message-part-actions">
                   <Show when={!pending()}>
-                    <DiffChanges changes={{ additions: single()!.additions, deletions: single()!.deletions }} />
-                  </Show>
-                </div>
-              </div>
+                    <DiffChanges changes={{ additions: single()!.additions, deletions: single()!.deletions }} @lgcode/>
+                  <@lgcode/Show>
+                <@lgcode/div>
+              <@lgcode/div>
             }
           >
             <ToolFileAccordion
@@ -2281,22 +2281,22 @@ ToolRegistry.register({
                   <Match when={single()!.type === "add"}>
                     <span data-slot="apply-patch-change" data-type="added">
                       {i18n.t("ui.patch.action.created")}
-                    </span>
-                  </Match>
+                    <@lgcode/span>
+                  <@lgcode/Match>
                   <Match when={single()!.type === "delete"}>
                     <span data-slot="apply-patch-change" data-type="removed">
                       {i18n.t("ui.patch.action.deleted")}
-                    </span>
-                  </Match>
+                    <@lgcode/span>
+                  <@lgcode/Match>
                   <Match when={single()!.type === "move"}>
                     <span data-slot="apply-patch-change" data-type="modified">
                       {i18n.t("ui.patch.action.moved")}
-                    </span>
-                  </Match>
+                    <@lgcode/span>
+                  <@lgcode/Match>
                   <Match when={true}>
-                    <DiffChanges changes={{ additions: single()!.additions, deletions: single()!.deletions }} />
-                  </Match>
-                </Switch>
+                    <DiffChanges changes={{ additions: single()!.additions, deletions: single()!.deletions }} @lgcode/>
+                  <@lgcode/Match>
+                <@lgcode/Switch>
               }
             >
               <div data-component="apply-patch-file-diff">
@@ -2306,12 +2306,12 @@ ToolRegistry.register({
                   virtualize={props.virtualizeDiff}
                   fileDiff={single()!.view.fileDiff}
                   onRendered={props.onContentRendered}
-                />
-              </div>
-            </ToolFileAccordion>
-          </BasicTool>
-        </div>
-      </Show>
+                @lgcode/>
+              <@lgcode/div>
+            <@lgcode/ToolFileAccordion>
+          <@lgcode/BasicTool>
+        <@lgcode/div>
+      <@lgcode/Show>
     )
   },
 })
@@ -2333,7 +2333,7 @@ ToolRegistry.register({
     const subtitle = createMemo(() => {
       const list = todos()
       if (list.length === 0) return ""
-      return `${list.filter((t: Todo) => t.status === "completed").length}/${list.length}`
+      return `${list.filter((t: Todo) => t.status === "completed").length}@lgcode/${list.length}`
     })
 
     return (
@@ -2356,13 +2356,13 @@ ToolRegistry.register({
                     data-completed={todo.status === "completed" ? "completed" : undefined}
                   >
                     {todo.content}
-                  </span>
-                </Checkbox>
+                  <@lgcode/span>
+                <@lgcode/Checkbox>
               )}
-            </For>
-          </div>
-        </Show>
-      </BasicTool>
+            <@lgcode/For>
+          <@lgcode/div>
+        <@lgcode/Show>
+      <@lgcode/BasicTool>
     )
   },
 })
@@ -2399,15 +2399,15 @@ ToolRegistry.register({
                 const answer = () => answers()[i()] ?? []
                 return (
                   <div data-slot="question-answer-item">
-                    <div data-slot="question-text">{q.question}</div>
-                    <div data-slot="answer-text">{answer().join(", ") || i18n.t("ui.question.answer.none")}</div>
-                  </div>
+                    <div data-slot="question-text">{q.question}<@lgcode/div>
+                    <div data-slot="answer-text">{answer().join(", ") || i18n.t("ui.question.answer.none")}<@lgcode/div>
+                  <@lgcode/div>
                 )
               }}
-            </For>
-          </div>
-        </Show>
-      </BasicTool>
+            <@lgcode/For>
+          <@lgcode/div>
+        <@lgcode/Show>
+      <@lgcode/BasicTool>
     )
   },
 })
@@ -2419,18 +2419,18 @@ ToolRegistry.register({
     const title = createMemo(() => props.input.name || i18n.t("ui.tool.skill"))
     const running = createMemo(() => props.status === "pending" || props.status === "running")
 
-    const titleContent = () => <TextShimmer text={title()} active={running()} />
+    const titleContent = () => <TextShimmer text={title()} active={running()} @lgcode/>
 
     const trigger = () => (
       <div data-slot="basic-tool-tool-info-structured">
         <div data-slot="basic-tool-tool-info-main">
           <span data-slot="basic-tool-tool-title" class="capitalize agent-title">
             {titleContent()}
-          </span>
-        </div>
-      </div>
+          <@lgcode/span>
+        <@lgcode/div>
+      <@lgcode/div>
     )
 
-    return <BasicTool icon="brain" status={props.status} trigger={trigger()} hideDetails />
+    return <BasicTool icon="brain" status={props.status} trigger={trigger()} hideDetails @lgcode/>
   },
 })

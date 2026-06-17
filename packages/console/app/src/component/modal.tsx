@@ -1,6 +1,6 @@
-import { Dialog as Kobalte } from "@kobalte/core/dialog"
+import { Dialog as Kobalte } from "@kobalte@lgcode/core@lgcode/dialog"
 import { JSX, Show } from "solid-js"
-import "./modal.css"
+import ".@lgcode/modal.css"
 
 interface ModalProps {
   open: boolean
@@ -34,13 +34,13 @@ export function Modal(props: ModalProps) {
               }}
             >
               <Show when={props.title}>
-                <Kobalte.Title data-slot="title">{props.title}</Kobalte.Title>
-              </Show>
+                <Kobalte.Title data-slot="title">{props.title}<@lgcode/Kobalte.Title>
+              <@lgcode/Show>
               {props.children}
-            </Kobalte.Content>
-          </Kobalte.Overlay>
-        </Kobalte.Portal>
-      </Kobalte>
-    </Show>
+            <@lgcode/Kobalte.Content>
+          <@lgcode/Kobalte.Overlay>
+        <@lgcode/Kobalte.Portal>
+      <@lgcode/Kobalte>
+    <@lgcode/Show>
   )
 }

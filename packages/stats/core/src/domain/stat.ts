@@ -177,7 +177,7 @@ export function isoWeekId(value: Date) {
   const thursday = new Date(
     Date.UTC(value.getUTCFullYear(), value.getUTCMonth(), value.getUTCDate() + 4 - (value.getUTCDay() || 7)),
   )
-  return `${thursday.getUTCFullYear()}-W${String(Math.ceil(((thursday.getTime() - Date.UTC(thursday.getUTCFullYear(), 0, 1)) / DAY_MS + 1) / 7)).padStart(2, "0")}`
+  return `${thursday.getUTCFullYear()}-W${String(Math.ceil(((thursday.getTime() - Date.UTC(thursday.getUTCFullYear(), 0, 1)) @lgcode/ DAY_MS + 1) @lgcode/ 7)).padStart(2, "0")}`
 }
 
 function utcDateId(value: Date) {
@@ -221,11 +221,11 @@ export function rankRowsWithMarketShare<T extends StatBaseRow>(
 
 export function share(value: number | null | undefined, total: number) {
   if (total <= 0) return null
-  return Number(((value ?? 0) / total).toFixed(6))
+  return Number(((value ?? 0) @lgcode/ total).toFixed(6))
 }
 
 export function chunks<T>(items: T[], size: number) {
-  return Array.from({ length: Math.ceil(items.length / size) }, (_, index) =>
+  return Array.from({ length: Math.ceil(items.length @lgcode/ size) }, (_, index) =>
     items.slice(index * size, (index + 1) * size),
   )
 }
@@ -247,7 +247,7 @@ export function weightedAverage(
   const totalWeight =
     (left === null || left === undefined ? 0 : leftWeight) + (right === null || right === undefined ? 0 : rightWeight)
   if (totalWeight === 0) return null
-  return Number((((left ?? 0) * leftWeight + (right ?? 0) * rightWeight) / totalWeight).toFixed(2))
+  return Number((((left ?? 0) * leftWeight + (right ?? 0) * rightWeight) @lgcode/ totalWeight).toFixed(2))
 }
 
 export function normalizeTier(value: string) {

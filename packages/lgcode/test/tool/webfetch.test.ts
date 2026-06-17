@@ -1,12 +1,12 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { FetchHttpClient } from "effect/unstable/http"
-import { Agent } from "../../src/agent/agent"
-import { Truncate } from "@/tool/truncate"
-import { WebFetchTool } from "../../src/tool/webfetch"
-import { SessionID, MessageID } from "../../src/session/schema"
-import { Tool } from "@/tool/tool"
-import { testEffect } from "../lib/effect"
+import { FetchHttpClient } from "effect@lgcode/unstable@lgcode/http"
+import { Agent } from "..@lgcode/..@lgcode/src@lgcode/agent@lgcode/agent"
+import { Truncate } from "@@lgcode/tool@lgcode/truncate"
+import { WebFetchTool } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/webfetch"
+import { SessionID, MessageID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
+import { Tool } from "@@lgcode/tool@lgcode/tool"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const it = testEffect(Layer.mergeAll(FetchHttpClient.layer, Truncate.defaultLayer, Agent.defaultLayer))
 
@@ -42,16 +42,16 @@ describe("tool.webfetch", () => {
     Effect.gen(function* () {
       const bytes = new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10])
       yield* withFetch(
-        () => new Response(bytes, { status: 200, headers: { "content-type": "IMAGE/PNG; charset=binary" } }),
+        () => new Response(bytes, { status: 200, headers: { "content-type": "IMAGE@lgcode/PNG; charset=binary" } }),
         (url) =>
           Effect.gen(function* () {
-            const result = yield* exec({ url: new URL("/image.png", url).toString(), format: "markdown" })
+            const result = yield* exec({ url: new URL("@lgcode/image.png", url).toString(), format: "markdown" })
             expect(result.output).toBe("Image fetched successfully")
             expect(result.attachments).toBeDefined()
             expect(result.attachments?.length).toBe(1)
             expect(result.attachments?.[0].type).toBe("file")
-            expect(result.attachments?.[0].mime).toBe("image/png")
-            expect(result.attachments?.[0].url.startsWith("data:image/png;base64,")).toBe(true)
+            expect(result.attachments?.[0].mime).toBe("image@lgcode/png")
+            expect(result.attachments?.[0].url.startsWith("data:image@lgcode/png;base64,")).toBe(true)
             expect(result.attachments?.[0]).not.toHaveProperty("id")
             expect(result.attachments?.[0]).not.toHaveProperty("sessionID")
             expect(result.attachments?.[0]).not.toHaveProperty("messageID")
@@ -63,13 +63,13 @@ describe("tool.webfetch", () => {
   it.instance("keeps svg as text output", () =>
     withFetch(
       () =>
-        new Response('<svg xmlns="http://www.w3.org/2000/svg"><text>hello</text></svg>', {
+        new Response('<svg xmlns="http:@lgcode/@lgcode/www.w3.org@lgcode/2000@lgcode/svg"><text>hello<@lgcode/text><@lgcode/svg>', {
           status: 200,
-          headers: { "content-type": "image/svg+xml; charset=UTF-8" },
+          headers: { "content-type": "image@lgcode/svg+xml; charset=UTF-8" },
         }),
       (url) =>
         Effect.gen(function* () {
-          const result = yield* exec({ url: new URL("/image.svg", url).toString(), format: "html" })
+          const result = yield* exec({ url: new URL("@lgcode/image.svg", url).toString(), format: "html" })
           expect(result.output).toContain("<svg")
           expect(result.attachments).toBeUndefined()
         }),
@@ -81,11 +81,11 @@ describe("tool.webfetch", () => {
       () =>
         new Response("hello from webfetch", {
           status: 200,
-          headers: { "content-type": "text/plain; charset=utf-8" },
+          headers: { "content-type": "text@lgcode/plain; charset=utf-8" },
         }),
       (url) =>
         Effect.gen(function* () {
-          const result = yield* exec({ url: new URL("/file.txt", url).toString(), format: "text" })
+          const result = yield* exec({ url: new URL("@lgcode/file.txt", url).toString(), format: "text" })
           expect(result.output).toBe("hello from webfetch")
           expect(result.attachments).toBeUndefined()
         }),
@@ -96,15 +96,15 @@ describe("tool.webfetch", () => {
     withFetch(
       () =>
         new Response(
-          "<html><head><style>.hidden{}</style><script>alert('x')</script></head><body>Hello <b>world</b></body></html>",
+          "<html><head><style>.hidden{}<@lgcode/style><script>alert('x')<@lgcode/script><@lgcode/head><body>Hello <b>world<@lgcode/b><@lgcode/body><@lgcode/html>",
           {
             status: 200,
-            headers: { "content-type": "text/html; charset=utf-8" },
+            headers: { "content-type": "text@lgcode/html; charset=utf-8" },
           },
         ),
       (url) =>
         Effect.gen(function* () {
-          const result = yield* exec({ url: new URL("/page.html", url).toString(), format: "text" })
+          const result = yield* exec({ url: new URL("@lgcode/page.html", url).toString(), format: "text" })
           expect(result.output).toBe("Hello world")
           expect(result.attachments).toBeUndefined()
         }),

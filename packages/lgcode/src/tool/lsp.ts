@@ -1,12 +1,12 @@
 import { Effect, Schema } from "effect"
-import * as Tool from "./tool"
+import * as Tool from ".@lgcode/tool"
 import path from "path"
-import { LSP } from "@/lsp/lsp"
-import DESCRIPTION from "./lsp.txt"
-import { InstanceState } from "@/effect/instance-state"
+import { LSP } from "@@lgcode/lsp@lgcode/lsp"
+import DESCRIPTION from ".@lgcode/lsp.txt"
+import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
 import { pathToFileURL } from "url"
-import { assertExternalDirectoryEffect } from "./external-directory"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { assertExternalDirectoryEffect } from ".@lgcode/external-directory"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
 
 const operations = [
   "goToDefinition",

@@ -1,7 +1,7 @@
-import { FinishReason, LLMEvent, ProviderMetadata, ToolResultValue } from "@opencode@lgcode/llm"
+import { FinishReason, LLMEvent, ProviderMetadata, ToolResultValue } from "@lgcode/llm"
 import { Effect, Schema } from "effect"
 import { type streamText } from "ai"
-import { errorMessage } from "@/util/error"
+import { errorMessage } from "@@lgcode/util@lgcode/error"
 
 type Result = Awaited<ReturnType<typeof streamText>>
 type AISDKEvent = Result["fullStream"] extends AsyncIterable<infer T> ? T : never
@@ -27,8 +27,8 @@ function providerMetadata(value: unknown): ProviderMetadata | undefined {
   return Schema.is(ProviderMetadata)(value) ? value : undefined
 }
 
-// Temporary AI SDK bridge: Copilot billing survives only in raw provider chunks here.
-// Move this extraction into @opencode@lgcode/llm when Copilot is handled by the native runtime.
+@lgcode/@lgcode/ Temporary AI SDK bridge: Copilot billing survives only in raw provider chunks here.
+@lgcode/@lgcode/ Move this extraction into @lgcode/llm when Copilot is handled by the native runtime.
 function copilotTotalNanoAiu(value: unknown) {
   if (!value || typeof value !== "object") return
   const raw = value as Record<string, unknown>
@@ -117,8 +117,8 @@ export function toLLMEvents(
             providerMetadata: "providerMetadata" in event ? providerMetadata(event.providerMetadata) : undefined,
           }),
         ]
-        // Reset so the adapter can be reused for a follow-up stream without leaking
-        // counters or block IDs. adapterState() is the single source of truth for shape.
+        @lgcode/@lgcode/ Reset so the adapter can be reused for a follow-up stream without leaking
+        @lgcode/@lgcode/ counters or block IDs. adapterState() is the single source of truth for shape.
         Object.assign(state, adapterState())
         return events
       })
@@ -285,4 +285,4 @@ export function toLLMEvents(
   }
 }
 
-export * as LLMAISDK from "./ai-sdk"
+export * as LLMAISDK from ".@lgcode/ai-sdk"

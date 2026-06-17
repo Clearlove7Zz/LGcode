@@ -1,4 +1,4 @@
-import type { FileSelection } from "@/context/file"
+import type { FileSelection } from "@@lgcode/context@lgcode/file"
 
 export type PromptComment = {
   path: string
@@ -67,7 +67,7 @@ export function formatCommentNote(input: { path: string; selection?: FileSelecti
 
 export function parseCommentNote(text: string) {
   const match = text.match(
-    /^The user made the following comment regarding (this file|line (\d+)|lines (\d+) through (\d+)) of (.+?): ([\s\S]+)$/,
+    @lgcode/^The user made the following comment regarding (this file|line (\d+)|lines (\d+) through (\d+)) of (.+?): ([\s\S]+)$@lgcode/,
   )
   if (!match) return
   const start = match[2] ? Number(match[2]) : match[3] ? Number(match[3]) : undefined

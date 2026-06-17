@@ -1,17 +1,17 @@
-import { PermissionV2 } from "@opencode@lgcode/core/permission"
-import { Location } from "@opencode@lgcode/core/location"
-import { PermissionSaved } from "@opencode@lgcode/core/permission/saved"
-import { ProjectV2 } from "@opencode@lgcode/core/project"
-import { SessionV2 } from "@opencode@lgcode/core/session"
+import { PermissionV2 } from "@lgcode/core@lgcode/permission"
+import { Location } from "@lgcode/core@lgcode/location"
+import { PermissionSaved } from "@lgcode/core@lgcode/permission@lgcode/saved"
+import { ProjectV2 } from "@lgcode/core@lgcode/project"
+import { SessionV2 } from "@lgcode/core@lgcode/session"
 import { Schema } from "effect"
-import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect/unstable/httpapi"
-import { PermissionNotFoundError, SessionNotFoundError } from "../errors"
-import { SessionLocationMiddleware } from "../middleware/session-location"
-import { LocationQuery, locationQueryOpenApi, LocationMiddleware } from "./location"
+import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
+import { PermissionNotFoundError, SessionNotFoundError } from "..@lgcode/errors"
+import { SessionLocationMiddleware } from "..@lgcode/middleware@lgcode/session-location"
+import { LocationQuery, locationQueryOpenApi, LocationMiddleware } from ".@lgcode/location"
 
 export const PermissionGroup = HttpApiGroup.make("server.permission")
   .add(
-    HttpApiEndpoint.get("permission.request.list", "/api/permission/request", {
+    HttpApiEndpoint.get("permission.request.list", "@lgcode/api@lgcode/permission@lgcode/request", {
       query: LocationQuery,
       success: Location.response(Schema.Array(PermissionV2.Request)),
     })
@@ -25,7 +25,7 @@ export const PermissionGroup = HttpApiGroup.make("server.permission")
       ),
   )
   .add(
-    HttpApiEndpoint.get("permission.saved.list", "/api/permission/saved", {
+    HttpApiEndpoint.get("permission.saved.list", "@lgcode/api@lgcode/permission@lgcode/saved", {
       query: Schema.Struct({ projectID: ProjectV2.ID.pipe(Schema.optional) }),
       success: Schema.Struct({ data: Schema.Array(PermissionSaved.Info) }),
     }).annotateMerge(
@@ -37,7 +37,7 @@ export const PermissionGroup = HttpApiGroup.make("server.permission")
     ),
   )
   .add(
-    HttpApiEndpoint.delete("permission.saved.remove", "/api/permission/saved/:id", {
+    HttpApiEndpoint.delete("permission.saved.remove", "@lgcode/api@lgcode/permission@lgcode/saved@lgcode/:id", {
       params: { id: PermissionSaved.ID },
       success: HttpApiSchema.NoContent,
     }).annotateMerge(
@@ -50,7 +50,7 @@ export const PermissionGroup = HttpApiGroup.make("server.permission")
   )
   .middleware(LocationMiddleware)
   .add(
-    HttpApiEndpoint.get("session.permission.list", "/api/session/:sessionID/permission", {
+    HttpApiEndpoint.get("session.permission.list", "@lgcode/api@lgcode/session@lgcode/:sessionID@lgcode/permission", {
       params: { sessionID: SessionV2.ID },
       success: Schema.Struct({ data: Schema.Array(PermissionV2.Request) }),
       error: SessionNotFoundError,
@@ -65,7 +65,7 @@ export const PermissionGroup = HttpApiGroup.make("server.permission")
       ),
   )
   .add(
-    HttpApiEndpoint.post("session.permission.reply", "/api/session/:sessionID/permission/:requestID/reply", {
+    HttpApiEndpoint.post("session.permission.reply", "@lgcode/api@lgcode/session@lgcode/:sessionID@lgcode/permission@lgcode/:requestID@lgcode/reply", {
       params: { sessionID: SessionV2.ID, requestID: PermissionV2.ID },
       payload: Schema.Struct({
         reply: PermissionV2.Reply,

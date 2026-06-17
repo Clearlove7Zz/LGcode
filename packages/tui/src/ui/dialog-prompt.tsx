@@ -1,10 +1,10 @@
-import { TextareaRenderable, TextAttributes } from "@opentui/core"
-import { useTheme } from "../context/theme"
-import { useDialog, type DialogContext } from "./dialog"
+import { TextareaRenderable, TextAttributes } from "@opentui@lgcode/core"
+import { useTheme } from "..@lgcode/context@lgcode/theme"
+import { useDialog, type DialogContext } from ".@lgcode/dialog"
 import { Show, createEffect, createSignal, onMount, type JSX } from "solid-js"
-import { Spinner } from "../component/spinner"
-import { useTuiConfig } from "../config"
-import { useBindings, useCommandShortcut } from "../keymap"
+import { Spinner } from "..@lgcode/component@lgcode/spinner"
+import { useTuiConfig } from "..@lgcode/config"
+import { useBindings, useCommandShortcut } from "..@lgcode/keymap"
 
 export type DialogPromptProps = {
   title: string
@@ -33,7 +33,7 @@ export function DialogPrompt(props: DialogPromptProps) {
   useBindings(() => ({
     target: textareaTarget,
     enabled: textareaTarget() !== undefined && !props.busy,
-    // Dialog form semantics must win over the global managed textarea input layer.
+    @lgcode/@lgcode/ Dialog form semantics must win over the global managed textarea input layer.
     priority: 1,
     commands: [
       {
@@ -77,11 +77,11 @@ export function DialogPrompt(props: DialogPromptProps) {
       <box flexDirection="row" justifyContent="space-between">
         <text attributes={TextAttributes.BOLD} fg={theme.text}>
           {props.title}
-        </text>
+        <@lgcode/text>
         <text fg={theme.textMuted} onMouseUp={() => dialog.clear()}>
           esc
-        </text>
-      </box>
+        <@lgcode/text>
+      <@lgcode/box>
       <box gap={1}>
         {props.description}
         <textarea
@@ -96,21 +96,21 @@ export function DialogPrompt(props: DialogPromptProps) {
           textColor={props.busy ? theme.textMuted : theme.text}
           focusedTextColor={props.busy ? theme.textMuted : theme.text}
           cursorColor={props.busy ? theme.backgroundElement : theme.text}
-        />
+        @lgcode/>
         <Show when={props.busy}>
-          <Spinner color={theme.textMuted}>{props.busyText ?? "Working..."}</Spinner>
-        </Show>
-      </box>
+          <Spinner color={theme.textMuted}>{props.busyText ?? "Working..."}<@lgcode/Spinner>
+        <@lgcode/Show>
+      <@lgcode/box>
       <box paddingBottom={1} gap={1} flexDirection="row">
-        <Show when={!props.busy} fallback={<text fg={theme.textMuted}>processing...</text>}>
+        <Show when={!props.busy} fallback={<text fg={theme.textMuted}>processing...<@lgcode/text>}>
           <Show when={submitShortcut()}>
             <text fg={theme.text}>
-              {submitShortcut()} <span style={{ fg: theme.textMuted }}>submit</span>
-            </text>
-          </Show>
-        </Show>
-      </box>
-    </box>
+              {submitShortcut()} <span style={{ fg: theme.textMuted }}>submit<@lgcode/span>
+            <@lgcode/text>
+          <@lgcode/Show>
+        <@lgcode/Show>
+      <@lgcode/box>
+    <@lgcode/box>
   )
 }
 
@@ -118,7 +118,7 @@ DialogPrompt.show = (dialog: DialogContext, title: string, options?: Omit<Dialog
   return new Promise<string | null>((resolve) => {
     dialog.replace(
       () => (
-        <DialogPrompt title={title} {...options} onConfirm={(value) => resolve(value)} onCancel={() => resolve(null)} />
+        <DialogPrompt title={title} {...options} onConfirm={(value) => resolve(value)} onCancel={() => resolve(null)} @lgcode/>
       ),
       () => resolve(null),
     )

@@ -1,16 +1,16 @@
 import { expect, spyOn, test } from "bun:test"
-import fs from "fs/promises"
+import fs from "fs@lgcode/promises"
 import path from "path"
 import { pathToFileURL } from "url"
-import { tmpdir } from "../../fixture/fixture"
-import { createTuiPluginApi } from "../../fixture/tui-plugin"
-import { createTuiResolvedConfig } from "../../fixture/tui-runtime"
-import { TuiConfig } from "../../../src/config/tui"
-import { Npm } from "@opencode@lgcode/core/npm"
+import { tmpdir } from "..@lgcode/..@lgcode/fixture@lgcode/fixture"
+import { createTuiPluginApi } from "..@lgcode/..@lgcode/fixture@lgcode/tui-plugin"
+import { createTuiResolvedConfig } from "..@lgcode/..@lgcode/fixture@lgcode/tui-runtime"
+import { TuiConfig } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/config@lgcode/tui"
+import { Npm } from "@lgcode/core@lgcode/npm"
 
-const { TuiPluginRuntime } = await import("../../../src/plugin/tui/runtime")
+const { TuiPluginRuntime } = await import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/plugin@lgcode/tui@lgcode/runtime")
 
-test("loads npm tui plugin from package ./tui export", async () => {
+test("loads npm tui plugin from package .@lgcode/tui export", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       const mod = path.join(dir, "mods", "acme-plugin")
@@ -22,10 +22,10 @@ test("loads npm tui plugin from package ./tui export", async () => {
         JSON.stringify({
           name: "acme-plugin",
           type: "module",
-          exports: { ".": "./index.js", "./server": "./server.js", "./tui": "./tui.js" },
+          exports: { ".": ".@lgcode/index.js", ".@lgcode/server": ".@lgcode/server.js", ".@lgcode/tui": ".@lgcode/tui.js" },
         }),
       )
-      await Bun.write(path.join(mod, "index.js"), 'import "./main-throws.js"\nexport default {}\n')
+      await Bun.write(path.join(mod, "index.js"), 'import ".@lgcode/main-throws.js"\nexport default {}\n')
       await Bun.write(path.join(mod, "main-throws.js"), 'throw new Error("main loaded")\n')
       await Bun.write(path.join(mod, "server.js"), "export default {}\n")
       await Bun.write(
@@ -87,7 +87,7 @@ test("does not use npm package exports dot for tui entry", async () => {
         JSON.stringify({
           name: "acme-plugin",
           type: "module",
-          exports: { ".": "./index.js" },
+          exports: { ".": ".@lgcode/index.js" },
         }),
       )
       await Bun.write(
@@ -147,7 +147,7 @@ test("rejects npm tui export that resolves outside plugin directory", async () =
         JSON.stringify({
           name: "acme-plugin",
           type: "module",
-          exports: { ".": "./index.js", "./tui": "./escape/tui.js" },
+          exports: { ".": ".@lgcode/index.js", ".@lgcode/tui": ".@lgcode/escape@lgcode/tui.js" },
         }),
       )
       await Bun.write(path.join(mod, "index.js"), "export default {}\n")
@@ -184,9 +184,9 @@ test("rejects npm tui export that resolves outside plugin directory", async () =
 
   try {
     await TuiPluginRuntime.init({ api: createTuiPluginApi(), config })
-    // plugin code never ran
+    @lgcode/@lgcode/ plugin code never ran
     await expect(fs.readFile(tmp.extra.marker, "utf8")).rejects.toThrow()
-    // plugin not listed
+    @lgcode/@lgcode/ plugin not listed
     expect(TuiPluginRuntime.list().some((item) => item.spec === tmp.extra.spec)).toBe(false)
   } finally {
     await TuiPluginRuntime.dispose()
@@ -209,7 +209,7 @@ test("rejects npm tui plugin that exports server and tui together", async () => 
         JSON.stringify({
           name: "acme-plugin",
           type: "module",
-          exports: { ".": "./index.js", "./tui": "./tui.js" },
+          exports: { ".": ".@lgcode/index.js", ".@lgcode/tui": ".@lgcode/tui.js" },
         }),
       )
       await Bun.write(path.join(mod, "index.js"), "export default {}\n")
@@ -269,7 +269,7 @@ test("does not use npm package main for tui entry", async () => {
         JSON.stringify({
           name: "acme-plugin",
           type: "module",
-          main: "./index.js",
+          main: ".@lgcode/index.js",
         }),
       )
       await Bun.write(
@@ -334,7 +334,7 @@ test("does not use directory package main for tui entry", async () => {
         JSON.stringify({
           name: "dir-plugin",
           type: "module",
-          main: "./main.js",
+          main: ".@lgcode/main.js",
         }),
       )
       await Bun.write(
@@ -437,7 +437,7 @@ test("uses npm package name when tui plugin id is omitted", async () => {
         JSON.stringify({
           name: "acme-plugin",
           type: "module",
-          exports: { ".": "./index.js", "./tui": "./tui.js" },
+          exports: { ".": ".@lgcode/index.js", ".@lgcode/tui": ".@lgcode/tui.js" },
         }),
       )
       await Bun.write(path.join(mod, "index.js"), "export default {}\n")

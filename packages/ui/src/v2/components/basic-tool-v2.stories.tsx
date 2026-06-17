@@ -1,13 +1,13 @@
 import { createSignal } from "solid-js"
-import { BasicToolV2 } from "./basic-tool-v2"
+import { BasicToolV2 } from ".@lgcode/basic-tool-v2"
 
 const docs = `### Overview
-Compact collapsible tool row showing title, subtitle, args, and diff changes, with an expand/collapse chevron.
+Compact collapsible tool row showing title, subtitle, args, and diff changes, with an expand@lgcode/collapse chevron.
 
 ### API
-- \`BasicToolV2\` wraps Kobalte \`Collapsible\`. Pass \`open\`, \`defaultOpen\`, and \`onOpenChange\` for controlled/uncontrolled disclosure.
+- \`BasicToolV2\` wraps Kobalte \`Collapsible\`. Pass \`open\`, \`defaultOpen\`, and \`onOpenChange\` for controlled@lgcode/uncontrolled disclosure.
 - \`trigger\` accepts either a \`BasicToolV2TriggerTitle\` object (title, subtitle, args, changes) or arbitrary JSX.
-- When \`status\` is \`"pending"\` or \`"running"\`, subtitle/args/chevron hide and the title shows a shimmer animation.
+- When \`status\` is \`"pending"\` or \`"running"\`, subtitle@lgcode/args@lgcode/chevron hide and the title shows a shimmer animation.
 - Pass \`children\` for expandable detail content.
 
 ### Theming
@@ -15,7 +15,7 @@ Compact collapsible tool row showing title, subtitle, args, and diff changes, wi
 `
 
 export default {
-  title: "UI V2/BasicTool",
+  title: "UI V2@lgcode/BasicTool",
   id: "components-basic-tool-v2",
   component: BasicToolV2,
   tags: ["autodocs"],
@@ -35,14 +35,14 @@ export const Default = {
     <BasicToolV2
       trigger={{
         title: "Read",
-        subtitle: "src/index.ts",
+        subtitle: "src@lgcode/index.ts",
         args: ["lines=1-50"],
         changes: { additions: 12, deletions: 3 },
       }}
       defaultOpen={false}
     >
       File content appears here.
-    </BasicToolV2>
+    <@lgcode/BasicToolV2>
   ),
 }
 
@@ -51,14 +51,14 @@ export const Expanded = {
     <BasicToolV2
       trigger={{
         title: "Read",
-        subtitle: "src/index.ts",
+        subtitle: "src@lgcode/index.ts",
         args: ["lines=1-50"],
         changes: { additions: 12, deletions: 3 },
       }}
       defaultOpen={true}
     >
       File content appears here.
-    </BasicToolV2>
+    <@lgcode/BasicToolV2>
   ),
 }
 
@@ -67,12 +67,12 @@ export const Pending = {
     <BasicToolV2
       trigger={{
         title: "Read",
-        subtitle: "src/index.ts",
+        subtitle: "src@lgcode/index.ts",
         args: ["lines=1-50"],
         changes: { additions: 12, deletions: 3 },
       }}
       status="pending"
-    />
+    @lgcode/>
   ),
 }
 
@@ -84,7 +84,7 @@ export const NoChildren = {
         subtitle: "pattern=TODO",
         args: ["recursive=true"],
       }}
-    />
+    @lgcode/>
   ),
 }
 
@@ -92,11 +92,11 @@ export const CustomTrigger = {
   render: () => (
     <BasicToolV2
       trigger={
-        <span style={{ color: "#161616", "font-size": "13px", "font-weight": "440" }}>Custom trigger content</span>
+        <span style={{ color: "#161616", "font-size": "13px", "font-weight": "440" }}>Custom trigger content<@lgcode/span>
       }
     >
       Expandable detail for custom trigger.
-    </BasicToolV2>
+    <@lgcode/BasicToolV2>
   ),
 }
 
@@ -119,19 +119,19 @@ export const Controlled = {
           }}
         >
           Toggle from outside: {open() ? "Open" : "Closed"}
-        </button>
+        <@lgcode/button>
         <BasicToolV2
           trigger={{
             title: "Write",
-            subtitle: "src/utils.ts",
+            subtitle: "src@lgcode/utils.ts",
             changes: { additions: 8, deletions: 2 },
           }}
           open={open()}
           onOpenChange={setOpen}
         >
           Controlled content.
-        </BasicToolV2>
-      </div>
+        <@lgcode/BasicToolV2>
+      <@lgcode/div>
     )
   },
 }

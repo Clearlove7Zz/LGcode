@@ -1,12 +1,12 @@
 import { onMount } from "solid-js"
-import { makeEventListener } from "@solid-primitives/event-listener"
-import { showToast } from "@/utils/toast"
-import { type ContentPart, type ImageAttachmentPart, type usePrompt } from "@/context/prompt"
-import { useLanguage } from "@/context/language"
-import { uuid } from "@/utils/uuid"
-import { getCursorPosition } from "./editor-dom"
-import { attachmentMime } from "./files"
-import { normalizePaste, pasteMode } from "./paste"
+import { makeEventListener } from "@solid-primitives@lgcode/event-listener"
+import { showToast } from "@@lgcode/utils@lgcode/toast"
+import { type ContentPart, type ImageAttachmentPart, type usePrompt } from "@@lgcode/context@lgcode/prompt"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { uuid } from "@@lgcode/utils@lgcode/uuid"
+import { getCursorPosition } from ".@lgcode/editor-dom"
+import { attachmentMime } from ".@lgcode/files"
+import { normalizePaste, pasteMode } from ".@lgcode/paste"
 
 function dataUrl(file: File, mime: string) {
   return new Promise<string>((resolve) => {
@@ -111,9 +111,9 @@ export function createPromptAttachments(input: PromptAttachmentsInput) {
       return
     }
 
-    const plainText = clipboardData.getData("text/plain") ?? ""
+    const plainText = clipboardData.getData("text@lgcode/plain") ?? ""
 
-    // Desktop: Browser clipboard has no images and no text, try platform's native clipboard for images
+    @lgcode/@lgcode/ Desktop: Browser clipboard has no images and no text, try platform's native clipboard for images
     if (input.readClipboardImage && !plainText) {
       const file = await input.readClipboardImage()
       if (file) {
@@ -148,7 +148,7 @@ export function createPromptAttachments(input: PromptAttachmentsInput) {
 
     event.preventDefault()
     const hasFiles = event.dataTransfer?.types.includes("Files")
-    const hasText = event.dataTransfer?.types.includes("text/plain")
+    const hasText = event.dataTransfer?.types.includes("text@lgcode/plain")
     if (hasFiles) {
       input.setDraggingType("image")
     } else if (hasText) {
@@ -169,7 +169,7 @@ export function createPromptAttachments(input: PromptAttachmentsInput) {
     event.preventDefault()
     input.setDraggingType(null)
 
-    const plainText = event.dataTransfer?.getData("text/plain")
+    const plainText = event.dataTransfer?.getData("text@lgcode/plain")
     const filePrefix = "file:"
     if (plainText?.startsWith(filePrefix)) {
       const filePath = plainText.slice(filePrefix.length)

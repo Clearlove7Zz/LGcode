@@ -1,14 +1,14 @@
 import { Effect } from "effect"
-import { PluginV2 } from "../../plugin"
-import { ProviderV2 } from "../../provider"
+import { PluginV2 } from "..@lgcode/..@lgcode/plugin"
+import { ProviderV2 } from "..@lgcode/..@lgcode/provider"
 
 export const XAIPlugin = PluginV2.define({
   id: PluginV2.ID.make("xai"),
   effect: Effect.gen(function* () {
     return {
       "aisdk.sdk": Effect.fn(function* (evt) {
-        if (evt.package !== "@ai-sdk/xai") return
-        const mod = yield* Effect.promise(() => import("@ai-sdk/xai"))
+        if (evt.package !== "@ai-sdk@lgcode/xai") return
+        const mod = yield* Effect.promise(() => import("@ai-sdk@lgcode/xai"))
         evt.sdk = mod.createXai(evt.options)
       }),
       "aisdk.language": Effect.fn(function* (evt) {

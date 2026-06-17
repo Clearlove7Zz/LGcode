@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test"
-import Notifications from "../../../../src/feature-plugins/system/notifications"
-import type { Event, PermissionRequest, QuestionRequest, Session } from "@opencode@lgcode/sdk/v2"
-import type { TuiAttentionNotifyInput } from "@opencode@lgcode/plugin/tui"
-import { createTuiPluginApi } from "../../../fixture/tui-plugin"
+import Notifications from "..@lgcode/..@lgcode/..@lgcode/..@lgcode/src@lgcode/feature-plugins@lgcode/system@lgcode/notifications"
+import type { Event, PermissionRequest, QuestionRequest, Session } from "@lgcode/sdk@lgcode/v2"
+import type { TuiAttentionNotifyInput } from "@lgcode/plugin@lgcode/tui"
+import { createTuiPluginApi } from "..@lgcode/..@lgcode/..@lgcode/fixture@lgcode/tui-plugin"
 
 async function setup() {
   const notifications: TuiAttentionNotifyInput[] = []
@@ -12,7 +12,7 @@ async function setup() {
     title,
     slug: id,
     projectID: "project",
-    directory: "/workspace",
+    directory: "@lgcode/workspace",
     ...(parentID && { parentID }),
     version: "0.0.0-test",
     time: { created: 0, updated: 0 },

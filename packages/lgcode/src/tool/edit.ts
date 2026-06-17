@@ -1,23 +1,23 @@
-// the approaches in this edit tool are sourced from
-// https://github.com/cline/cline/blob/main/evals/diff-edits/diff-apply/diff-06-23-25.ts
-// https://github.com/google-gemini/gemini-cli/blob/main/packages/core/src/utils/editCorrector.ts
-// https://github.com/cline/cline/blob/main/evals/diff-edits/diff-apply/diff-06-26-25.ts
+@lgcode/@lgcode/ the approaches in this edit tool are sourced from
+@lgcode/@lgcode/ https:@lgcode/@lgcode/github.com@lgcode/cline@lgcode/cline@lgcode/blob@lgcode/main@lgcode/evals@lgcode/diff-edits@lgcode/diff-apply@lgcode/diff-06-23-25.ts
+@lgcode/@lgcode/ https:@lgcode/@lgcode/github.com@lgcode/google-gemini@lgcode/gemini-cli@lgcode/blob@lgcode/main@lgcode/packages@lgcode/core@lgcode/src@lgcode/utils@lgcode/editCorrector.ts
+@lgcode/@lgcode/ https:@lgcode/@lgcode/github.com@lgcode/cline@lgcode/cline@lgcode/blob@lgcode/main@lgcode/evals@lgcode/diff-edits@lgcode/diff-apply@lgcode/diff-06-26-25.ts
 
 import * as path from "path"
 import { Effect, Schema, Semaphore } from "effect"
-import * as Tool from "./tool"
-import { LSP } from "@/lsp/lsp"
+import * as Tool from ".@lgcode/tool"
+import { LSP } from "@@lgcode/lsp@lgcode/lsp"
 import { createTwoFilesPatch, diffLines } from "diff"
-import DESCRIPTION from "./edit.txt"
-import { FileSystem } from "@opencode@lgcode/core/filesystem"
-import { Watcher } from "@opencode@lgcode/core/filesystem/watcher"
-import { EventV2Bridge } from "@/event-v2-bridge"
-import { Format } from "../format"
-import { InstanceState } from "@/effect/instance-state"
-import { Snapshot } from "@/snapshot"
-import { assertExternalDirectoryEffect } from "./external-directory"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import * as Bom from "@/util/bom"
+import DESCRIPTION from ".@lgcode/edit.txt"
+import { FileSystem } from "@lgcode/core@lgcode/filesystem"
+import { Watcher } from "@lgcode/core@lgcode/filesystem@lgcode/watcher"
+import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
+import { Format } from "..@lgcode/format"
+import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
+import { Snapshot } from "@@lgcode/snapshot"
+import { assertExternalDirectoryEffect } from ".@lgcode/external-directory"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import * as Bom from "@@lgcode/util@lgcode/bom"
 
 function normalizeLineEndings(text: string): string {
   return text.replaceAll("\r\n", "\n")
@@ -216,15 +216,15 @@ export const EditTool = Tool.define(
 
 export type Replacer = (content: string, find: string) => Generator<string, void, unknown>
 
-// Similarity thresholds for block anchor fallback matching
+@lgcode/@lgcode/ Similarity thresholds for block anchor fallback matching
 const SINGLE_CANDIDATE_SIMILARITY_THRESHOLD = 0.65
 const MULTIPLE_CANDIDATES_SIMILARITY_THRESHOLD = 0.65
 
-/**
+@lgcode/**
  * Levenshtein distance algorithm implementation
- */
+ *@lgcode/
 function levenshtein(a: string, b: string): number {
-  // Handle empty strings
+  @lgcode/@lgcode/ Handle empty strings
   if (a === "" || b === "") {
     return Math.max(a.length, b.length)
   }
@@ -276,7 +276,7 @@ export const LineTrimmedReplacer: Replacer = function* (content, find) {
       for (let k = 0; k < searchLines.length; k++) {
         matchEndIndex += originalLines[i + k].length
         if (k < searchLines.length - 1) {
-          matchEndIndex += 1 // Add newline character except for the last line
+          matchEndIndex += 1 @lgcode/@lgcode/ Add newline character except for the last line
         }
       }
 
@@ -302,37 +302,37 @@ export const BlockAnchorReplacer: Replacer = function* (content, find) {
   const searchBlockSize = searchLines.length
   const maxLineDelta = Math.max(1, Math.floor(searchBlockSize * 0.25))
 
-  // Collect all candidate positions where both anchors match
+  @lgcode/@lgcode/ Collect all candidate positions where both anchors match
   const candidates: Array<{ startLine: number; endLine: number }> = []
   for (let i = 0; i < originalLines.length; i++) {
     if (originalLines[i].trim() !== firstLineSearch) {
       continue
     }
 
-    // Look for the matching last line after this first line
+    @lgcode/@lgcode/ Look for the matching last line after this first line
     for (let j = i + 2; j < originalLines.length; j++) {
       if (originalLines[j].trim() === lastLineSearch) {
         const actualBlockSize = j - i + 1
         if (Math.abs(actualBlockSize - searchBlockSize) <= maxLineDelta) {
           candidates.push({ startLine: i, endLine: j })
         }
-        break // Only match the first occurrence of the last line
+        break @lgcode/@lgcode/ Only match the first occurrence of the last line
       }
     }
   }
 
-  // Return immediately if no candidates
+  @lgcode/@lgcode/ Return immediately if no candidates
   if (candidates.length === 0) {
     return
   }
 
-  // Handle single candidate scenario (using relaxed threshold)
+  @lgcode/@lgcode/ Handle single candidate scenario (using relaxed threshold)
   if (candidates.length === 1) {
     const { startLine, endLine } = candidates[0]
     const actualBlockSize = endLine - startLine + 1
 
     let similarity = 0
-    const linesToCheck = Math.min(searchBlockSize - 2, actualBlockSize - 2) // Middle lines only
+    const linesToCheck = Math.min(searchBlockSize - 2, actualBlockSize - 2) @lgcode/@lgcode/ Middle lines only
 
     if (linesToCheck > 0) {
       for (let j = 1; j < searchBlockSize - 1 && j < actualBlockSize - 1; j++) {
@@ -343,15 +343,15 @@ export const BlockAnchorReplacer: Replacer = function* (content, find) {
           continue
         }
         const distance = levenshtein(originalLine, searchLine)
-        similarity += (1 - distance / maxLen) / linesToCheck
+        similarity += (1 - distance @lgcode/ maxLen) @lgcode/ linesToCheck
 
-        // Exit early when threshold is reached
+        @lgcode/@lgcode/ Exit early when threshold is reached
         if (similarity >= SINGLE_CANDIDATE_SIMILARITY_THRESHOLD) {
           break
         }
       }
     } else {
-      // No middle lines to compare, just accept based on anchors
+      @lgcode/@lgcode/ No middle lines to compare, just accept based on anchors
       similarity = 1.0
     }
 
@@ -364,7 +364,7 @@ export const BlockAnchorReplacer: Replacer = function* (content, find) {
       for (let k = startLine; k <= endLine; k++) {
         matchEndIndex += originalLines[k].length
         if (k < endLine) {
-          matchEndIndex += 1 // Add newline character except for the last line
+          matchEndIndex += 1 @lgcode/@lgcode/ Add newline character except for the last line
         }
       }
       yield content.substring(matchStartIndex, matchEndIndex)
@@ -372,7 +372,7 @@ export const BlockAnchorReplacer: Replacer = function* (content, find) {
     return
   }
 
-  // Calculate similarity for multiple candidates
+  @lgcode/@lgcode/ Calculate similarity for multiple candidates
   let bestMatch: { startLine: number; endLine: number } | null = null
   let maxSimilarity = -1
 
@@ -381,7 +381,7 @@ export const BlockAnchorReplacer: Replacer = function* (content, find) {
     const actualBlockSize = endLine - startLine + 1
 
     let similarity = 0
-    const linesToCheck = Math.min(searchBlockSize - 2, actualBlockSize - 2) // Middle lines only
+    const linesToCheck = Math.min(searchBlockSize - 2, actualBlockSize - 2) @lgcode/@lgcode/ Middle lines only
 
     if (linesToCheck > 0) {
       for (let j = 1; j < searchBlockSize - 1 && j < actualBlockSize - 1; j++) {
@@ -392,11 +392,11 @@ export const BlockAnchorReplacer: Replacer = function* (content, find) {
           continue
         }
         const distance = levenshtein(originalLine, searchLine)
-        similarity += 1 - distance / maxLen
+        similarity += 1 - distance @lgcode/ maxLen
       }
-      similarity /= linesToCheck // Average similarity
+      similarity @lgcode/= linesToCheck @lgcode/@lgcode/ Average similarity
     } else {
-      // No middle lines to compare, just accept based on anchors
+      @lgcode/@lgcode/ No middle lines to compare, just accept based on anchors
       similarity = 1.0
     }
 
@@ -406,7 +406,7 @@ export const BlockAnchorReplacer: Replacer = function* (content, find) {
     }
   }
 
-  // Threshold judgment
+  @lgcode/@lgcode/ Threshold judgment
   if (maxSimilarity >= MULTIPLE_CANDIDATES_SIMILARITY_THRESHOLD && bestMatch) {
     const { startLine, endLine } = bestMatch
     let matchStartIndex = 0
@@ -425,23 +425,23 @@ export const BlockAnchorReplacer: Replacer = function* (content, find) {
 }
 
 export const WhitespaceNormalizedReplacer: Replacer = function* (content, find) {
-  const normalizeWhitespace = (text: string) => text.replace(/\s+/g, " ").trim()
+  const normalizeWhitespace = (text: string) => text.replace(@lgcode/\s+@lgcode/g, " ").trim()
   const normalizedFind = normalizeWhitespace(find)
 
-  // Handle single line matches
+  @lgcode/@lgcode/ Handle single line matches
   const lines = content.split("\n")
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]
     if (normalizeWhitespace(line) === normalizedFind) {
       yield line
     } else {
-      // Only check for substring matches if the full line doesn't match
+      @lgcode/@lgcode/ Only check for substring matches if the full line doesn't match
       const normalizedLine = normalizeWhitespace(line)
       if (normalizedLine.includes(normalizedFind)) {
-        // Find the actual substring in the original line that matches
-        const words = find.trim().split(/\s+/)
+        @lgcode/@lgcode/ Find the actual substring in the original line that matches
+        const words = find.trim().split(@lgcode/\s+@lgcode/)
         if (words.length > 0) {
-          const pattern = words.map((word) => word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("\\s+")
+          const pattern = words.map((word) => word.replace(@lgcode/[.*+?^${}()|[\]\\]@lgcode/g, "\\$&")).join("\\s+")
           try {
             const regex = new RegExp(pattern)
             const match = line.match(regex)
@@ -449,14 +449,14 @@ export const WhitespaceNormalizedReplacer: Replacer = function* (content, find) 
               yield match[0]
             }
           } catch {
-            // Invalid regex pattern, skip
+            @lgcode/@lgcode/ Invalid regex pattern, skip
           }
         }
       }
     }
   }
 
-  // Handle multi-line matches
+  @lgcode/@lgcode/ Handle multi-line matches
   const findLines = find.split("\n")
   if (findLines.length > 1) {
     for (let i = 0; i <= lines.length - findLines.length; i++) {
@@ -476,7 +476,7 @@ export const IndentationFlexibleReplacer: Replacer = function* (content, find) {
 
     const minIndent = Math.min(
       ...nonEmptyLines.map((line) => {
-        const match = line.match(/^(\s*)/)
+        const match = line.match(@lgcode/^(\s*)@lgcode/)
         return match ? match[1].length : 0
       }),
     )
@@ -498,7 +498,7 @@ export const IndentationFlexibleReplacer: Replacer = function* (content, find) {
 
 export const EscapeNormalizedReplacer: Replacer = function* (content, find) {
   const unescapeString = (str: string): string => {
-    return str.replace(/\\(n|t|r|'|"|`|\\|\n|\$)/g, (match, capturedChar) => {
+    return str.replace(@lgcode/\\(n|t|r|'|"|`|\\|\n|\$)@lgcode/g, (match, capturedChar) => {
       switch (capturedChar) {
         case "n":
           return "\n"
@@ -526,12 +526,12 @@ export const EscapeNormalizedReplacer: Replacer = function* (content, find) {
 
   const unescapedFind = unescapeString(find)
 
-  // Try direct match with unescaped find string
+  @lgcode/@lgcode/ Try direct match with unescaped find string
   if (content.includes(unescapedFind)) {
     yield unescapedFind
   }
 
-  // Also try finding escaped versions in content that match unescaped find
+  @lgcode/@lgcode/ Also try finding escaped versions in content that match unescaped find
   const lines = content.split("\n")
   const findLines = unescapedFind.split("\n")
 
@@ -546,8 +546,8 @@ export const EscapeNormalizedReplacer: Replacer = function* (content, find) {
 }
 
 export const MultiOccurrenceReplacer: Replacer = function* (content, find) {
-  // This replacer yields all exact matches, allowing the replace function
-  // to handle multiple occurrences based on replaceAll parameter
+  @lgcode/@lgcode/ This replacer yields all exact matches, allowing the replace function
+  @lgcode/@lgcode/ to handle multiple occurrences based on replaceAll parameter
   let startIndex = 0
 
   while (true) {
@@ -563,16 +563,16 @@ export const TrimmedBoundaryReplacer: Replacer = function* (content, find) {
   const trimmedFind = find.trim()
 
   if (trimmedFind === find) {
-    // Already trimmed, no point in trying
+    @lgcode/@lgcode/ Already trimmed, no point in trying
     return
   }
 
-  // Try to find the trimmed version
+  @lgcode/@lgcode/ Try to find the trimmed version
   if (content.includes(trimmedFind)) {
     yield trimmedFind
   }
 
-  // Also try finding blocks where trimmed content matches
+  @lgcode/@lgcode/ Also try finding blocks where trimmed content matches
   const lines = content.split("\n")
   const findLines = find.split("\n")
 
@@ -588,34 +588,34 @@ export const TrimmedBoundaryReplacer: Replacer = function* (content, find) {
 export const ContextAwareReplacer: Replacer = function* (content, find) {
   const findLines = find.split("\n")
   if (findLines.length < 3) {
-    // Need at least 3 lines to have meaningful context
+    @lgcode/@lgcode/ Need at least 3 lines to have meaningful context
     return
   }
 
-  // Remove trailing empty line if present
+  @lgcode/@lgcode/ Remove trailing empty line if present
   if (findLines[findLines.length - 1] === "") {
     findLines.pop()
   }
 
   const contentLines = content.split("\n")
 
-  // Extract first and last lines as context anchors
+  @lgcode/@lgcode/ Extract first and last lines as context anchors
   const firstLine = findLines[0].trim()
   const lastLine = findLines[findLines.length - 1].trim()
 
-  // Find blocks that start and end with the context anchors
+  @lgcode/@lgcode/ Find blocks that start and end with the context anchors
   for (let i = 0; i < contentLines.length; i++) {
     if (contentLines[i].trim() !== firstLine) continue
 
-    // Look for the matching last line
+    @lgcode/@lgcode/ Look for the matching last line
     for (let j = i + 2; j < contentLines.length; j++) {
       if (contentLines[j].trim() === lastLine) {
-        // Found a potential context block
+        @lgcode/@lgcode/ Found a potential context block
         const blockLines = contentLines.slice(i, j + 1)
         const block = blockLines.join("\n")
 
-        // Check if the middle content has reasonable similarity
-        // (simple heuristic: at least 50% of non-empty lines should match when trimmed)
+        @lgcode/@lgcode/ Check if the middle content has reasonable similarity
+        @lgcode/@lgcode/ (simple heuristic: at least 50% of non-empty lines should match when trimmed)
         if (blockLines.length === findLines.length) {
           let matchingLines = 0
           let totalNonEmptyLines = 0
@@ -632,9 +632,9 @@ export const ContextAwareReplacer: Replacer = function* (content, find) {
             }
           }
 
-          if (totalNonEmptyLines === 0 || matchingLines / totalNonEmptyLines >= 0.5) {
+          if (totalNonEmptyLines === 0 || matchingLines @lgcode/ totalNonEmptyLines >= 0.5) {
             yield block
-            break // Only match the first occurrence
+            break @lgcode/@lgcode/ Only match the first occurrence
           }
         }
         break
@@ -658,7 +658,7 @@ export function trimDiff(diff: string): string {
   for (const line of contentLines) {
     const content = line.slice(1)
     if (content.trim().length > 0) {
-      const match = content.match(/^(\s*)/)
+      const match = content.match(@lgcode/^(\s*)@lgcode/)
       if (match) min = Math.min(min, match[1].length)
     }
   }

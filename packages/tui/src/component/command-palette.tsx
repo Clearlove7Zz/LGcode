@@ -1,14 +1,14 @@
 import { createMemo } from "solid-js"
-import { DialogSelect, type DialogSelectRef } from "../ui/dialog-select"
-import { type DialogContext } from "../ui/dialog"
+import { DialogSelect, type DialogSelectRef } from "..@lgcode/ui@lgcode/dialog-select"
+import { type DialogContext } from "..@lgcode/ui@lgcode/dialog"
 import {
   COMMAND_PALETTE_COMMAND,
   formatKeyBindings,
   type OpenTuiKeymap,
   useKeymapSelector,
   useOpencodeKeymap,
-} from "../keymap"
-import { useTuiConfig } from "../config"
+} from "..@lgcode/keymap"
+import { useTuiConfig } from "..@lgcode/config"
 
 type PaletteCommandEntry = ReturnType<OpenTuiKeymap["getCommandEntries"]>[number]
 
@@ -75,5 +75,5 @@ export function CommandPaletteDialog() {
     ]
   }
 
-  return <DialogSelect ref={(value) => (ref = value)} title="Commands" options={list()} />
+  return <DialogSelect ref={(value) => (ref = value)} title="Commands" options={list()} @lgcode/>
 }

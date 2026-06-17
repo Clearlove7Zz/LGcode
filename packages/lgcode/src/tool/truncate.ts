@@ -1,14 +1,14 @@
-import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
-import { NodePath } from "@effect/platform-node"
+import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
+import { NodePath } from "@effect@lgcode/platform-node"
 import { Cause, Duration, Effect, Layer, Option, Schedule, Context } from "effect"
 import path from "path"
-import type { Agent } from "../agent/agent"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { evaluate } from "@/permission/evaluate"
-import { Config } from "@/config/config"
-import { Identifier } from "../id/id"
-import { ToolID } from "./schema"
-import { TRUNCATION_DIR } from "./truncation-dir"
+import type { Agent } from "..@lgcode/agent@lgcode/agent"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { evaluate } from "@@lgcode/permission@lgcode/evaluate"
+import { Config } from "@@lgcode/config@lgcode/config"
+import { Identifier } from "..@lgcode/id@lgcode/id"
+import { ToolID } from ".@lgcode/schema"
+import { TRUNCATION_DIR } from ".@lgcode/truncation-dir"
 
 const RETENTION = Duration.days(7)
 
@@ -33,18 +33,18 @@ function hasTaskTool(agent?: Agent.Info) {
 export interface Interface {
   readonly cleanup: () => Effect.Effect<void>
   readonly write: (text: string) => Effect.Effect<string>
-  /**
+  @lgcode/**
    * Returns output unchanged when it fits within the limits, otherwise writes the full text
    * to the truncation directory and returns a preview plus a hint to inspect the saved file.
-   */
+   *@lgcode/
   readonly output: (text: string, options?: Options, agent?: Agent.Info) => Effect.Effect<Result>
-  /**
-   * Resolved truncation limits: values from `tool_output` in opencode config, or MAX_LINES / MAX_BYTES if unset.
-   */
+  @lgcode/**
+   * Resolved truncation limits: values from `tool_output` in opencode config, or MAX_LINES @lgcode/ MAX_BYTES if unset.
+   *@lgcode/
   readonly limits: () => Effect.Effect<{ maxLines: number; maxBytes: number }>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/Truncate") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/Truncate") {}
 
 export const layer = Layer.effect(
   Service,
@@ -127,8 +127,8 @@ export const layer = Layer.effect(
       const file = yield* write(text)
 
       const hint = hasTaskTool(agent)
-        ? `The tool call succeeded but the output was truncated. Full output saved to: ${file}\nUse the Task tool to have explore agent process this file with Grep and Read (with offset/limit). Do NOT read the full file yourself - delegate to save context.`
-        : `The tool call succeeded but the output was truncated. Full output saved to: ${file}\nUse Grep to search the full content or Read with offset/limit to view specific sections.`
+        ? `The tool call succeeded but the output was truncated. Full output saved to: ${file}\nUse the Task tool to have explore agent process this file with Grep and Read (with offset@lgcode/limit). Do NOT read the full file yourself - delegate to save context.`
+        : `The tool call succeeded but the output was truncated. Full output saved to: ${file}\nUse Grep to search the full content or Read with offset@lgcode/limit to view specific sections.`
 
       return {
         content:
@@ -155,4 +155,4 @@ export const defaultLayer = layer.pipe(Layer.provide(FSUtil.defaultLayer), Layer
 
 export const node = LayerNode.make(layer, [FSUtil.node])
 
-export * as Truncate from "./truncate"
+export * as Truncate from ".@lgcode/truncate"

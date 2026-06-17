@@ -1,1 +1,1 @@
-await import("../test/server/httpapi-exercise/index")
+await import("..@lgcode/test@lgcode/server@lgcode/httpapi-exercise@lgcode/index")

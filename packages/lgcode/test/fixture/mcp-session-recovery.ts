@@ -1,6 +1,6 @@
-import { Client } from "@modelcontextprotocol/sdk/client/index.js"
-import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js"
-import { LATEST_PROTOCOL_VERSION } from "@modelcontextprotocol/sdk/types.js"
+import { Client } from "@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/index.js"
+import { StreamableHTTPClientTransport } from "@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/streamableHttp.js"
+import { LATEST_PROTOCOL_VERSION } from "@modelcontextprotocol@lgcode/sdk@lgcode/types.js"
 
 const posts: Array<{ method: string; session: string | null }> = []
 let initializeCount = 0
@@ -31,7 +31,7 @@ const server = Bun.serve({
       )
     }
 
-    if (message.method === "notifications/initialized") return new Response(null, { status: 202 })
+    if (message.method === "notifications@lgcode/initialized") return new Response(null, { status: 202 })
 
     pingCount++
     if (pingCount === 1) return new Response("Session not found", { status: 404 })

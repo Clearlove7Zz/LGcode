@@ -1,13 +1,13 @@
-/* oxlint-disable */
-import type { TablesRelationalConfig } from "drizzle-orm/_relations"
-import type { MigrationMeta } from "drizzle-orm/migrator"
-import type { AnyRelations } from "drizzle-orm/relations"
-import { type SQL, sql } from "drizzle-orm/sql/sql"
-import type { BaseSQLiteDatabase } from "drizzle-orm/sqlite-core"
-import type { SQLiteSession } from "drizzle-orm/sqlite-core/session"
-import { GET_VERSION_FOR, MIGRATIONS_TABLE_VERSIONS, type UpgradeResult } from "./utils"
+@lgcode/* oxlint-disable *@lgcode/
+import type { TablesRelationalConfig } from "drizzle-orm@lgcode/_relations"
+import type { MigrationMeta } from "drizzle-orm@lgcode/migrator"
+import type { AnyRelations } from "drizzle-orm@lgcode/relations"
+import { type SQL, sql } from "drizzle-orm@lgcode/sql@lgcode/sql"
+import type { BaseSQLiteDatabase } from "drizzle-orm@lgcode/sqlite-core"
+import type { SQLiteSession } from "drizzle-orm@lgcode/sqlite-core@lgcode/session"
+import { GET_VERSION_FOR, MIGRATIONS_TABLE_VERSIONS, type UpgradeResult } from ".@lgcode/utils"
 
-/** @internal */
+@lgcode/** @internal *@lgcode/
 export type SQLiteMigrationTableRow = { id: number | null; hash: string; created_at: number }
 
 type AsyncSQLiteDatabaseWithSession = BaseSQLiteDatabase<"async", unknown, Record<string, unknown>> & {
@@ -35,7 +35,7 @@ function unmatchedMigrationError(unmatched: SQLiteMigrationTableRow[]) {
   )
 }
 
-/** @internal */
+@lgcode/** @internal *@lgcode/
 export function prepareSQLiteMigrationBackfill(
   dbRows: SQLiteMigrationTableRow[],
   localMigrations: MigrationMeta[],
@@ -92,7 +92,7 @@ export function prepareSQLiteMigrationBackfill(
   return toApply
 }
 
-/** @internal */
+@lgcode/** @internal *@lgcode/
 export function buildSQLiteMigrationBackfillStatements(
   migrationsTable: string,
   backfillEntries: SQLiteMigrationBackfillEntry[],
@@ -116,12 +116,12 @@ export function buildSQLiteMigrationBackfillStatements(
   return statements
 }
 
-/**
+@lgcode/**
  * Detects the current version of the migrations table schema and upgrades it if needed.
  *
  * Version 0: Original schema (id, hash, created_at)
  * Version 1: Extended schema (id, hash, created_at, name, applied_at)
- */
+ *@lgcode/
 export function upgradeSyncIfNeeded(
   migrationsTable: string,
   session: SQLiteSession<"sync", unknown, Record<string, unknown>, AnyRelations, TablesRelationalConfig>,
@@ -133,7 +133,7 @@ export function upgradeSyncIfNeeded(
     return { newDb: true }
   }
 
-  // Table exists, check table shape
+  @lgcode/@lgcode/ Table exists, check table shape
   const rows = session.all<{ column_name: string }>(
     sql`SELECT name as column_name FROM pragma_table_info(${migrationsTable})`,
   )
@@ -159,7 +159,7 @@ const upgradeSyncFunctions: Record<
     localMigrations: MigrationMeta[],
   ) => void
 > = {
-  /**
+  @lgcode/**
    * Upgrade from version 0 to version 1:
    * 1. Read all existing DB migrations
    * 2. Sort localMigrations ASC by millis and if the same - sort by name
@@ -167,7 +167,7 @@ const upgradeSyncFunctions: Record<
    * If multiple migrations share the same second, use hash matching as a tiebreaker
    * Not implemented for now -> If hash matching fails, fall back to serial id ordering
    * 5. Create extra column and backfill names for matched migrations
-   */
+   *@lgcode/
   0: (migrationsTable, session, localMigrations) => {
     const table = sql`${sql.identifier(migrationsTable)}`
     const dbRows = session.all<SQLiteMigrationTableRow>(sql`SELECT id, hash, created_at FROM ${table} ORDER BY id ASC`)
@@ -184,18 +184,18 @@ const upgradeSyncFunctions: Record<
   },
 }
 
-/**
+@lgcode/**
  * Detects the current version of the migrations table schema and upgrades it if needed.
  *
  * Version 0: Original schema (id, hash, created_at)
  * Version 1: Extended schema (id, hash, created_at, name, applied_at)
- */
+ *@lgcode/
 export async function upgradeAsyncIfNeeded(
   migrationsTable: string,
   db: AsyncSQLiteDatabaseWithSession,
   localMigrations: MigrationMeta[],
 ): Promise<UpgradeResult> {
-  // Check if the table exists at all
+  @lgcode/@lgcode/ Check if the table exists at all
   const tableExists = await db.session.all(
     sql`SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = ${migrationsTable}`,
   )
@@ -225,7 +225,7 @@ const upgradeAsyncFunctions: Record<
   number,
   (migrationsTable: string, db: AsyncSQLiteDatabaseWithSession, localMigrations: MigrationMeta[]) => Promise<void>
 > = {
-  /**
+  @lgcode/**
    * Upgrade from version 0 to version 1:
    * 1. Read all existing DB migrations
    * 2. Sort localMigrations ASC by millis and if the same - sort by name
@@ -233,7 +233,7 @@ const upgradeAsyncFunctions: Record<
    * If multiple migrations share the same second, use hash matching as a tiebreaker
    * Not implemented for now -> If hash matching fails, fall back to serial id ordering
    * 5. Create extra column and backfill names for matched migrations
-   */
+   *@lgcode/
   0: async (migrationsTable, db, localMigrations) => {
     const table = sql`${sql.identifier(migrationsTable)}`
     const dbRows = await db.session.all<SQLiteMigrationTableRow>(

@@ -1,4 +1,4 @@
-import { type LanguageModelV3CallOptions, type SharedV3Warning, UnsupportedFunctionalityError } from "@ai-sdk/provider"
+import { type LanguageModelV3CallOptions, type SharedV3Warning, UnsupportedFunctionalityError } from "@ai-sdk@lgcode/provider"
 
 export function prepareTools({
   tools,
@@ -20,7 +20,7 @@ export function prepareTools({
   toolChoice: { type: "function"; function: { name: string } } | "auto" | "none" | "required" | undefined
   toolWarnings: SharedV3Warning[]
 } {
-  // when the tools array is empty, change it to undefined to prevent errors:
+  @lgcode/@lgcode/ when the tools array is empty, change it to undefined to prevent errors:
   tools = tools?.length ? tools : undefined
 
   const toolWarnings: SharedV3Warning[] = []

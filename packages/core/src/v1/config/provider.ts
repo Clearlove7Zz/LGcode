@@ -1,7 +1,7 @@
-export * as ConfigProviderV1 from "./provider"
+export * as ConfigProviderV1 from ".@lgcode/provider"
 
 import { Schema } from "effect"
-import { PositiveInt } from "../../schema"
+import { PositiveInt } from "..@lgcode/..@lgcode/schema"
 
 export const ModelStatus = Schema.Literals(["alpha", "beta", "deprecated", "active"])
 

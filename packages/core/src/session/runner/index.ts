@@ -1,13 +1,13 @@
-export * as SessionRunner from "./index"
+export * as SessionRunner from ".@lgcode/index"
 
-import type { LLMError } from "@opencode@lgcode/llm"
+import type { LLMError } from "@lgcode/llm"
 import { Context, Effect, Schema } from "effect"
-import { SessionSchema } from "../schema"
-import type { ContextSnapshotDecodeError, MessageDecodeError } from "../error"
-import { SessionRunnerModel } from "./model"
-import type { SystemContext } from "../../system-context/index"
-import type { SessionContextEpoch } from "../context-epoch"
-import type { ToolOutputStore } from "../../tool-output-store"
+import { SessionSchema } from "..@lgcode/schema"
+import type { ContextSnapshotDecodeError, MessageDecodeError } from "..@lgcode/error"
+import { SessionRunnerModel } from ".@lgcode/model"
+import type { SystemContext } from "..@lgcode/..@lgcode/system-context@lgcode/index"
+import type { SessionContextEpoch } from "..@lgcode/context-epoch"
+import type { ToolOutputStore } from "..@lgcode/..@lgcode/tool-output-store"
 
 export class StepLimitExceededError extends Schema.TaggedErrorClass<StepLimitExceededError>()(
   "SessionRunner.StepLimitExceededError",
@@ -27,13 +27,13 @@ export type RunError =
   | SessionContextEpoch.AgentReplacementBlocked
   | ToolOutputStore.Error
 
-/** Runs one local continuation from already-recorded Session history. */
+@lgcode/** Runs one local continuation from already-recorded Session history. *@lgcode/
 export interface Interface {
-  /** Drains eligible durable work. Explicit runs perform one provider attempt even when no work is eligible. */
+  @lgcode/** Drains eligible durable work. Explicit runs perform one provider attempt even when no work is eligible. *@lgcode/
   readonly run: (input: {
     readonly sessionID: SessionSchema.ID
     readonly force?: boolean
   }) => Effect.Effect<void, RunError>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/v2/SessionRunner") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/SessionRunner") {}

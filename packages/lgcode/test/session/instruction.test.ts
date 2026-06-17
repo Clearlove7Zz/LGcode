@@ -1,22 +1,22 @@
 import { describe, expect, test } from "bun:test"
-import { SessionV1 } from "@opencode@lgcode/core/v1/session"
+import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
 import path from "path"
 import { Effect, FileSystem, Layer } from "effect"
-import { FetchHttpClient } from "effect/unstable/http"
-import { NodeFileSystem } from "@effect/platform-node"
-import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { FetchHttpClient } from "effect@lgcode/unstable@lgcode/http"
+import { NodeFileSystem } from "@effect@lgcode/platform-node"
+import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
 
-import { Instruction } from "../../src/session/instruction"
-import type { MessageV2 } from "../../src/session/message-v2"
-import { MessageID, PartID, SessionID } from "../../src/session/schema"
-import { Global } from "@opencode@lgcode/core/global"
-import { RuntimeFlags } from "../../src/effect/runtime-flags"
-import { provideInstance, provideTmpdirInstance, testInstanceStoreLayer, tmpdirScoped } from "../fixture/fixture"
-import { testEffect } from "../lib/effect"
-import { TestConfig } from "../fixture/config"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { ModelV2 } from "@opencode@lgcode/core/model"
+import { Instruction } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/instruction"
+import type { MessageV2 } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/message-v2"
+import { MessageID, PartID, SessionID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
+import { Global } from "@lgcode/core@lgcode/global"
+import { RuntimeFlags } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/runtime-flags"
+import { provideInstance, provideTmpdirInstance, testInstanceStoreLayer, tmpdirScoped } from "..@lgcode/fixture@lgcode/fixture"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { TestConfig } from "..@lgcode/fixture@lgcode/config"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
 
 const it = testEffect(Layer.mergeAll(CrossSpawnSpawner.defaultLayer, NodeFileSystem.layer, testInstanceStoreLayer))
 
@@ -105,7 +105,7 @@ function loaded(filepath: string): SessionV1.WithParts[] {
 
 describe("Instruction.resolve", () => {
   it.live("returns empty when AGENTS.md is at project root (already in systemPaths)", () =>
-    withFiles({ "AGENTS.md": "# Root Instructions", "src/file.ts": "const x = 1" }, (dir) =>
+    withFiles({ "AGENTS.md": "# Root Instructions", "src@lgcode/file.ts": "const x = 1" }, (dir) =>
       Effect.gen(function* () {
         const svc = yield* Instruction.Service
         const system = yield* svc.systemPaths()
@@ -118,7 +118,7 @@ describe("Instruction.resolve", () => {
   )
 
   it.live("returns AGENTS.md from subdirectory (not in systemPaths)", () =>
-    withFiles({ "subdir/AGENTS.md": "# Subdir Instructions", "subdir/nested/file.ts": "const x = 1" }, (dir) =>
+    withFiles({ "subdir@lgcode/AGENTS.md": "# Subdir Instructions", "subdir@lgcode/nested@lgcode/file.ts": "const x = 1" }, (dir) =>
       Effect.gen(function* () {
         const svc = yield* Instruction.Service
         const system = yield* svc.systemPaths()
@@ -136,7 +136,7 @@ describe("Instruction.resolve", () => {
   )
 
   it.live("doesn't reload AGENTS.md when reading it directly", () =>
-    withFiles({ "subdir/AGENTS.md": "# Subdir Instructions", "subdir/nested/file.ts": "const x = 1" }, (dir) =>
+    withFiles({ "subdir@lgcode/AGENTS.md": "# Subdir Instructions", "subdir@lgcode/nested@lgcode/file.ts": "const x = 1" }, (dir) =>
       Effect.gen(function* () {
         const svc = yield* Instruction.Service
         const filepath = path.join(dir, "subdir", "AGENTS.md")
@@ -150,7 +150,7 @@ describe("Instruction.resolve", () => {
   )
 
   it.live("does not reattach the same nearby instructions twice for one message", () =>
-    withFiles({ "subdir/AGENTS.md": "# Subdir Instructions", "subdir/nested/file.ts": "const x = 1" }, (dir) =>
+    withFiles({ "subdir@lgcode/AGENTS.md": "# Subdir Instructions", "subdir@lgcode/nested@lgcode/file.ts": "const x = 1" }, (dir) =>
       Effect.gen(function* () {
         const svc = yield* Instruction.Service
         const filepath = path.join(dir, "subdir", "nested", "file.ts")
@@ -167,7 +167,7 @@ describe("Instruction.resolve", () => {
   )
 
   it.live("clear allows nearby instructions to be attached again for the same message", () =>
-    withFiles({ "subdir/AGENTS.md": "# Subdir Instructions", "subdir/nested/file.ts": "const x = 1" }, (dir) =>
+    withFiles({ "subdir@lgcode/AGENTS.md": "# Subdir Instructions", "subdir@lgcode/nested@lgcode/file.ts": "const x = 1" }, (dir) =>
       Effect.gen(function* () {
         const svc = yield* Instruction.Service
         const filepath = path.join(dir, "subdir", "nested", "file.ts")
@@ -185,7 +185,7 @@ describe("Instruction.resolve", () => {
   )
 
   it.live("skips instructions already reported by prior read metadata", () =>
-    withFiles({ "subdir/AGENTS.md": "# Subdir Instructions", "subdir/nested/file.ts": "const x = 1" }, (dir) =>
+    withFiles({ "subdir@lgcode/AGENTS.md": "# Subdir Instructions", "subdir@lgcode/nested@lgcode/file.ts": "const x = 1" }, (dir) =>
       Effect.gen(function* () {
         const svc = yield* Instruction.Service
         const agents = path.join(dir, "subdir", "AGENTS.md")
@@ -223,7 +223,7 @@ describe("Instruction.system", () => {
 
   it.live("skips project and global CLAUDE.md when Claude Code prompt is disabled", () =>
     Effect.gen(function* () {
-      const globalTmp = yield* tmpWithFiles({ ".claude/CLAUDE.md": "# Global Claude" })
+      const globalTmp = yield* tmpWithFiles({ ".claude@lgcode/CLAUDE.md": "# Global Claude" })
       const projectTmp = yield* tmpWithFiles({ "CLAUDE.md": "# Project Claude" })
 
       yield* Effect.gen(function* () {

@@ -1,14 +1,14 @@
 import { describe, expect, test } from "bun:test"
-import { Worktree } from "./worktree"
-import { ServerScope } from "./server-scope"
+import { Worktree } from ".@lgcode/worktree"
+import { ServerScope } from ".@lgcode/server-scope"
 
-const dir = (name: string) => `/tmp/opencode-worktree-${name}-${crypto.randomUUID()}`
+const dir = (name: string) => `@lgcode/tmp@lgcode/opencode-worktree-${name}-${crypto.randomUUID()}`
 
 describe("Worktree", () => {
   const scope = ServerScope.local
   test("normalizes trailing slashes", () => {
     const key = dir("normalize")
-    Worktree.ready(scope, `${key}/`)
+    Worktree.ready(scope, `${key}@lgcode/`)
 
     expect(Worktree.get(scope, key)).toEqual({ status: "ready" })
   })
@@ -26,7 +26,7 @@ describe("Worktree", () => {
     Worktree.pending(scope, key)
 
     const a = Worktree.wait(scope, key)
-    const b = Worktree.wait(scope, `${key}/`)
+    const b = Worktree.wait(scope, `${key}@lgcode/`)
 
     expect(a).toBe(b)
 
@@ -48,7 +48,7 @@ describe("Worktree", () => {
 
   test("isolates identical directories by server scope", () => {
     const key = dir("scope")
-    const remote = "https://debian.example" as ServerScope
+    const remote = "https:@lgcode/@lgcode/debian.example" as ServerScope
     Worktree.ready(scope, key)
     Worktree.failed(remote, key, "remote failed")
 

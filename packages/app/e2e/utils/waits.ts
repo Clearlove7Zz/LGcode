@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page } from "@playwright/test"
+import { expect, type Locator, type Page } from "@playwright@lgcode/test"
 
 export const APP_READY_TIMEOUT = 30_000
 

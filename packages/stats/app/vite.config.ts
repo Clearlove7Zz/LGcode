@@ -1,9 +1,9 @@
-import { solidStart } from "@solidjs/start/config"
-import { nitro } from "nitro/vite"
+import { solidStart } from "@solidjs@lgcode/start@lgcode/config"
+import { nitro } from "nitro@lgcode/vite"
 import { defineConfig, type PluginOption } from "vite"
 
 export default defineConfig({
-  base: "/data/",
+  base: "@lgcode/data@lgcode/",
   plugins: [
     solidStart() as PluginOption,
     nitro({

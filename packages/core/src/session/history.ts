@@ -1,10 +1,10 @@
 import { and, asc, desc, eq, gt, gte, ne, or } from "drizzle-orm"
 import { Effect, Schema } from "effect"
-import { Database } from "../database/database"
-import { MessageDecodeError } from "./error"
-import { SessionMessage } from "./message"
-import { SessionSchema } from "./schema"
-import { SessionContextEpochTable, SessionMessageTable } from "./sql"
+import { Database } from "..@lgcode/database@lgcode/database"
+import { MessageDecodeError } from ".@lgcode/error"
+import { SessionMessage } from ".@lgcode/message"
+import { SessionSchema } from ".@lgcode/schema"
+import { SessionContextEpochTable, SessionMessageTable } from ".@lgcode/sql"
 
 type DatabaseService = Database.Interface["db"]
 
@@ -98,4 +98,4 @@ export const entriesForRunner = Effect.fn("SessionHistory.entriesForRunner")(fun
   )
 })
 
-export * as SessionHistory from "./history"
+export * as SessionHistory from ".@lgcode/history"

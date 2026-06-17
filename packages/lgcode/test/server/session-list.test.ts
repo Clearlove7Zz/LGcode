@@ -1,18 +1,18 @@
 import { afterEach, describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { Database } from "@opencode@lgcode/core/database/database"
-import { SessionProjector } from "@opencode@lgcode/core/session/projector"
-import { Session as SessionNs } from "@/session/session"
-import { disposeAllInstances, provideInstance, TestInstance } from "../fixture/fixture"
-import { mkdir } from "fs/promises"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { SessionProjector } from "@lgcode/core@lgcode/session@lgcode/projector"
+import { Session as SessionNs } from "@@lgcode/session@lgcode/session"
+import { disposeAllInstances, provideInstance, TestInstance } from "..@lgcode/fixture@lgcode/fixture"
+import { mkdir } from "fs@lgcode/promises"
 import path from "path"
-import { SessionTable } from "@opencode@lgcode/core/session/sql"
+import { SessionTable } from "@lgcode/core@lgcode/session@lgcode/sql"
 import { eq } from "drizzle-orm"
-import { testEffect } from "../lib/effect"
-import { EventV2Bridge } from "@/event-v2-bridge"
-import { Storage } from "@/storage/storage"
-import { RuntimeFlags } from "@/effect/runtime-flags"
-import { BackgroundJob } from "@/background/job"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
+import { Storage } from "@@lgcode/storage@lgcode/storage"
+import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
+import { BackgroundJob } from "@@lgcode/background@lgcode/job"
 
 const layer = (experimentalWorkspaces: boolean) =>
   Layer.mergeAll(
@@ -133,14 +133,14 @@ describe("session.list", () => {
 
         const created = yield* withSession({ title: "separator" }).pipe(provideInstance(dir))
 
-        // A forward-slash query (e.g. from the SDK/HTTP layer) must still find it —
-        // this is the regression: backslash-stored vs forward-slash-queried.
+        @lgcode/@lgcode/ A forward-slash query (e.g. from the SDK@lgcode/HTTP layer) must still find it —
+        @lgcode/@lgcode/ this is the regression: backslash-stored vs forward-slash-queried.
         const forwardIDs = (yield* SessionNs.Service.use((session) =>
-          session.list({ directory: dir.replaceAll("\\", "/") }),
+          session.list({ directory: dir.replaceAll("\\", "@lgcode/") }),
         )).map((session) => session.id)
         expect(forwardIDs).toContain(created.id)
 
-        // The native form must keep matching too.
+        @lgcode/@lgcode/ The native form must keep matching too.
         const nativeIDs = (yield* SessionNs.Service.use((session) => session.list({ directory: dir }))).map(
           (session) => session.id,
         )
@@ -175,7 +175,7 @@ describe("session.list", () => {
         const pathIDs = (yield* SessionNs.Service.use((session) =>
           session.list({
             directory: path.join(test.directory, "packages", "app"),
-            path: "packages/opencode/src",
+            path: "packages@lgcode/opencode@lgcode/src",
           }),
         )).map((session) => session.id)
         expect(pathIDs).not.toContain(parent.id)
@@ -228,7 +228,7 @@ describe("session.list", () => {
         const pathIDs = (yield* SessionNs.Service.use((session) =>
           session.list({
             directory: path.join(test.directory, "packages", "opencode", "src"),
-            path: "packages/opencode/src",
+            path: "packages@lgcode/opencode@lgcode/src",
           }),
         )).map((session) => session.id)
         expect(pathIDs).toContain(current.id)

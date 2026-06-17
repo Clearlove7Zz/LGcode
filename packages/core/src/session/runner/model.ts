@@ -1,21 +1,21 @@
-export * as SessionRunnerModel from "./model"
+export * as SessionRunnerModel from ".@lgcode/model"
 
-import { type Model } from "@opencode@lgcode/llm"
-import * as AnthropicMessages from "@opencode@lgcode/llm/protocols/anthropic-messages"
-import * as OpenAICompatibleChat from "@opencode@lgcode/llm/protocols/openai-compatible-chat"
-import * as OpenAIResponses from "@opencode@lgcode/llm/protocols/openai-responses"
-import { Auth, type AnyRoute } from "@opencode@lgcode/llm/route"
+import { type Model } from "@lgcode/llm"
+import * as AnthropicMessages from "@lgcode/llm@lgcode/protocols@lgcode/anthropic-messages"
+import * as OpenAICompatibleChat from "@lgcode/llm@lgcode/protocols@lgcode/openai-compatible-chat"
+import * as OpenAIResponses from "@lgcode/llm@lgcode/protocols@lgcode/openai-responses"
+import { Auth, type AnyRoute } from "@lgcode/llm@lgcode/route"
 import { Context, Effect, Layer, Option, Schema } from "effect"
 import { produce } from "immer"
-import { Catalog } from "../../catalog"
-import { Credential } from "../../credential"
-import { Integration } from "../../integration"
-import { IntegrationConnection } from "../../integration/connection"
-import { ModelV2 } from "../../model"
-import { ModelRequest } from "../../model-request"
-import { PluginBoot } from "../../plugin/boot"
-import { ProviderV2 } from "../../provider"
-import { SessionSchema } from "../schema"
+import { Catalog } from "..@lgcode/..@lgcode/catalog"
+import { Credential } from "..@lgcode/..@lgcode/credential"
+import { Integration } from "..@lgcode/..@lgcode/integration"
+import { IntegrationConnection } from "..@lgcode/..@lgcode/integration@lgcode/connection"
+import { ModelV2 } from "..@lgcode/..@lgcode/model"
+import { ModelRequest } from "..@lgcode/..@lgcode/model-request"
+import { PluginBoot } from "..@lgcode/..@lgcode/plugin@lgcode/boot"
+import { ProviderV2 } from "..@lgcode/..@lgcode/provider"
+import { SessionSchema } from "..@lgcode/schema"
 
 export class ModelNotSelectedError extends Schema.TaggedErrorClass<ModelNotSelectedError>()(
   "SessionRunnerModel.ModelNotSelectedError",
@@ -43,9 +43,9 @@ export interface Interface {
   readonly resolve: (session: SessionSchema.Info) => Effect.Effect<Model, Error>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/v2/SessionRunnerModel") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/SessionRunnerModel") {}
 
-/** Test or embedding seam for supplying a model resolver directly. */
+@lgcode/** Test or embedding seam for supplying a model resolver directly. *@lgcode/
 export const layerWith = (resolve: Interface["resolve"]) => Layer.succeed(Service, Service.of({ resolve }))
 
 const apiKey = (model: ModelV2.Info, connection?: IntegrationConnection.Info, credential?: Credential.Stored) => {
@@ -98,21 +98,21 @@ export const fromCatalogModel = (
           Object.assign(draft.request.body, credential.value.metadata)
         })
   const key = apiKey(resolved, connection, credential)
-  if (resolved.api.type === "aisdk" && resolved.api.package === "@ai-sdk/openai") {
+  if (resolved.api.type === "aisdk" && resolved.api.package === "@ai-sdk@lgcode/openai") {
     return Effect.succeed(
       withDefaults(resolved, OpenAIResponses.route)
         .with({ auth: key === undefined ? Auth.none : Auth.bearer(key) })
         .model({ id: resolved.api.id }),
     )
   }
-  if (resolved.api.type === "aisdk" && resolved.api.package === "@ai-sdk/anthropic") {
+  if (resolved.api.type === "aisdk" && resolved.api.package === "@ai-sdk@lgcode/anthropic") {
     return Effect.succeed(
       withDefaults(resolved, AnthropicMessages.route)
         .with({ auth: key === undefined ? Auth.none : Auth.header("x-api-key", key) })
         .model({ id: resolved.api.id }),
     )
   }
-  if (resolved.api.type === "aisdk" && resolved.api.package === "@ai-sdk/openai-compatible" && resolved.api.url) {
+  if (resolved.api.type === "aisdk" && resolved.api.package === "@ai-sdk@lgcode/openai-compatible" && resolved.api.url) {
     return Effect.succeed(
       withDefaults(resolved, OpenAICompatibleChat.route)
         .with({ auth: key === undefined ? Auth.none : Auth.bearer(key) })
@@ -133,11 +133,11 @@ export const resolve = (session: SessionSchema.Info, model: ModelV2.Info) =>
 
 export const supported = (model: ModelV2.Info) =>
   model.api.type === "aisdk" &&
-  (model.api.package === "@ai-sdk/openai" ||
-    model.api.package === "@ai-sdk/anthropic" ||
-    (model.api.package === "@ai-sdk/openai-compatible" && model.api.url !== undefined))
+  (model.api.package === "@ai-sdk@lgcode/openai" ||
+    model.api.package === "@ai-sdk@lgcode/anthropic" ||
+    (model.api.package === "@ai-sdk@lgcode/openai-compatible" && model.api.url !== undefined))
 
-/** Resolves models from the catalog belonging to the current Location runtime. */
+@lgcode/** Resolves models from the catalog belonging to the current Location runtime. *@lgcode/
 export const locationLayer = Layer.effect(
   Service,
   Effect.gen(function* () {
@@ -147,7 +147,7 @@ export const locationLayer = Layer.effect(
     const boot = yield* PluginBoot.Service
     return Service.of({
       resolve: Effect.fn("SessionRunnerModel.resolve")(function* (session) {
-        // Location plugins populate and filter the catalog asynchronously during layer startup.
+        @lgcode/@lgcode/ Location plugins populate and filter the catalog asynchronously during layer startup.
         yield* boot.wait()
         const selected = session.model
           ? yield* catalog.model.get(session.model.providerID, session.model.id)

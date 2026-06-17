@@ -1,16 +1,16 @@
 import { describe, test, expect } from "bun:test"
-import { ConfigV1 } from "@opencode@lgcode/core/v1/config/config"
-import { NodeFileSystem } from "@effect/platform-node"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { ConfigV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/config"
+import { NodeFileSystem } from "@effect@lgcode/platform-node"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
 import { Effect, FileSystem, Layer } from "effect"
-import { Truncate } from "@/tool/truncate"
-import { Config } from "@/config/config"
-import { Identifier } from "../../src/id/id"
-import { Process } from "@/util/process"
+import { Truncate } from "@@lgcode/tool@lgcode/truncate"
+import { Config } from "@@lgcode/config@lgcode/config"
+import { Identifier } from "..@lgcode/..@lgcode/src@lgcode/id@lgcode/id"
+import { Process } from "@@lgcode/util@lgcode/process"
 import path from "path"
-import { testEffect } from "../lib/effect"
-import { writeFileStringScoped } from "../lib/filesystem"
-import { TestConfig } from "../fixture/config"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { writeFileStringScoped } from "..@lgcode/lib@lgcode/filesystem"
+import { TestConfig } from "..@lgcode/fixture@lgcode/config"
 
 const FIXTURES_DIR = path.join(import.meta.dir, "fixtures")
 const ROOT = path.resolve(import.meta.dir, "..", "..")
@@ -107,7 +107,7 @@ describe("Truncate", () => {
       expect(Truncate.MAX_BYTES).toBe(50 * 1024)
     })
 
-    it.live("limits() falls back to MAX_LINES/MAX_BYTES when Config is not provided", () =>
+    it.live("limits() falls back to MAX_LINES@lgcode/MAX_BYTES when Config is not provided", () =>
       Effect.gen(function* () {
         const svc = yield* Truncate.Service
         const resolved = yield* svc.limits()
@@ -126,8 +126,8 @@ describe("Truncate", () => {
         }),
       )
 
-      // Huge byte budget isolates line truncation. 100 lines against max_lines: 10
-      // proves the configured line limit is what `output()` enforces.
+      @lgcode/@lgcode/ Huge byte budget isolates line truncation. 100 lines against max_lines: 10
+      @lgcode/@lgcode/ proves the configured line limit is what `output()` enforces.
       const lineIt = configuredIt({ tool_output: { max_lines: 10, max_bytes: 1024 * 1024 } })
       lineIt.live("output() truncates to configured max_lines", () =>
         Effect.gen(function* () {
@@ -138,7 +138,7 @@ describe("Truncate", () => {
         }),
       )
 
-      // Huge line budget isolates byte truncation.
+      @lgcode/@lgcode/ Huge line budget isolates byte truncation.
       const byteIt = configuredIt({ tool_output: { max_lines: 1_000_000, max_bytes: 100 } })
       byteIt.live("output() truncates to configured max_bytes", () =>
         Effect.gen(function* () {

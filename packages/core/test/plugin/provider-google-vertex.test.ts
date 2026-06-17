@@ -1,15 +1,15 @@
 import { describe, expect, mock } from "bun:test"
 import { Effect } from "effect"
-import { Catalog } from "@opencode@lgcode/core/catalog"
-import { PluginV2 } from "@opencode@lgcode/core/plugin"
-import { GoogleVertexPlugin } from "@opencode@lgcode/core/plugin/provider/google-vertex"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { fakeSelectorSdk, it, model, withEnv } from "./provider-helper"
+import { Catalog } from "@lgcode/core@lgcode/catalog"
+import { PluginV2 } from "@lgcode/core@lgcode/plugin"
+import { GoogleVertexPlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/google-vertex"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { fakeSelectorSdk, it, model, withEnv } from ".@lgcode/provider-helper"
 
 const vertexOptions: Record<string, any>[] = []
 const googleAuthOptions: Record<string, any>[] = []
 
-void mock.module("@ai-sdk/google-vertex", () => ({
+void mock.module("@ai-sdk@lgcode/google-vertex", () => ({
   createVertex: (options: Record<string, any>) => {
     vertexOptions.push(options)
     return {
@@ -45,8 +45,8 @@ describe("GoogleVertexPlugin", () => {
         catalog.provider.update(ProviderV2.ID.opencode, (provider) => {
           provider.api = {
             type: "aisdk",
-            package: "@ai-sdk/openai-compatible",
-            url: "https://opencode.ai/zen/v1",
+            package: "@ai-sdk@lgcode/openai-compatible",
+            url: "https:@lgcode/@lgcode/opencode.ai@lgcode/zen@lgcode/v1",
           }
         }),
       )
@@ -76,8 +76,8 @@ describe("GoogleVertexPlugin", () => {
             catalog.provider.update(ProviderV2.ID.make("google-vertex"), (provider) => {
               provider.api = {
                 type: "aisdk",
-                package: "@ai-sdk/openai-compatible",
-                url: "https://${GOOGLE_VERTEX_ENDPOINT}/v1/projects/${GOOGLE_VERTEX_PROJECT}/locations/${GOOGLE_VERTEX_LOCATION}",
+                package: "@ai-sdk@lgcode/openai-compatible",
+                url: "https:@lgcode/@lgcode/${GOOGLE_VERTEX_ENDPOINT}@lgcode/v1@lgcode/projects@lgcode/${GOOGLE_VERTEX_PROJECT}@lgcode/locations@lgcode/${GOOGLE_VERTEX_LOCATION}",
               }
             }),
           )
@@ -86,8 +86,8 @@ describe("GoogleVertexPlugin", () => {
           expect(provider.request.body.location).toBe("google-vertex-location")
           expect(provider.api).toEqual({
             type: "aisdk",
-            package: "@ai-sdk/openai-compatible",
-            url: "https://google-vertex-location-aiplatform.googleapis.com/v1/projects/google-cloud-project/locations/google-vertex-location",
+            package: "@ai-sdk@lgcode/openai-compatible",
+            url: "https:@lgcode/@lgcode/google-vertex-location-aiplatform.googleapis.com@lgcode/v1@lgcode/projects@lgcode/google-cloud-project@lgcode/locations@lgcode/google-vertex-location",
           })
         }),
     ),
@@ -115,8 +115,8 @@ describe("GoogleVertexPlugin", () => {
             catalog.provider.update(ProviderV2.ID.make("google-vertex"), (provider) => {
               provider.api = {
                 type: "aisdk",
-                package: "@ai-sdk/openai-compatible",
-                url: "https://${GOOGLE_VERTEX_ENDPOINT}/v1/projects/${GOOGLE_VERTEX_PROJECT}/locations/${GOOGLE_VERTEX_LOCATION}",
+                package: "@ai-sdk@lgcode/openai-compatible",
+                url: "https:@lgcode/@lgcode/${GOOGLE_VERTEX_ENDPOINT}@lgcode/v1@lgcode/projects@lgcode/${GOOGLE_VERTEX_PROJECT}@lgcode/locations@lgcode/${GOOGLE_VERTEX_LOCATION}",
               }
             }),
           )
@@ -125,9 +125,9 @@ describe("GoogleVertexPlugin", () => {
             "aisdk.sdk",
             {
               model: model("google-vertex", "gemini", {
-                api: { type: "aisdk", package: "@ai-sdk/google-vertex" },
+                api: { type: "aisdk", package: "@ai-sdk@lgcode/google-vertex" },
               }),
-              package: "@ai-sdk/google-vertex",
+              package: "@ai-sdk@lgcode/google-vertex",
               options: { name: "google-vertex" },
             },
             {},
@@ -136,8 +136,8 @@ describe("GoogleVertexPlugin", () => {
           expect(provider.request.body.project).toBe("vertex-project")
           expect(provider.api).toEqual({
             type: "aisdk",
-            package: "@ai-sdk/openai-compatible",
-            url: "https://europe-west4-aiplatform.googleapis.com/v1/projects/vertex-project/locations/europe-west4",
+            package: "@ai-sdk@lgcode/openai-compatible",
+            url: "https:@lgcode/@lgcode/europe-west4-aiplatform.googleapis.com@lgcode/v1@lgcode/projects@lgcode/vertex-project@lgcode/locations@lgcode/europe-west4",
           })
           expect(vertexOptions[0].project).toBe("vertex-project")
           expect(vertexOptions[0].location).toBe("europe-west4")
@@ -165,8 +165,8 @@ describe("GoogleVertexPlugin", () => {
             catalog.provider.update(ProviderV2.ID.make("google-vertex"), (provider) => {
               provider.api = {
                 type: "aisdk",
-                package: "@ai-sdk/openai-compatible",
-                url: "https://${GOOGLE_VERTEX_ENDPOINT}/v1/projects/${GOOGLE_VERTEX_PROJECT}/locations/${GOOGLE_VERTEX_LOCATION}",
+                package: "@ai-sdk@lgcode/openai-compatible",
+                url: "https:@lgcode/@lgcode/${GOOGLE_VERTEX_ENDPOINT}@lgcode/v1@lgcode/projects@lgcode/${GOOGLE_VERTEX_PROJECT}@lgcode/locations@lgcode/${GOOGLE_VERTEX_LOCATION}",
               }
               provider.request.body.project = "config-project"
               provider.request.body.location = "global"
@@ -177,8 +177,8 @@ describe("GoogleVertexPlugin", () => {
           expect(provider.request.body.location).toBe("global")
           expect(provider.api).toEqual({
             type: "aisdk",
-            package: "@ai-sdk/openai-compatible",
-            url: "https://aiplatform.googleapis.com/v1/projects/config-project/locations/global",
+            package: "@ai-sdk@lgcode/openai-compatible",
+            url: "https:@lgcode/@lgcode/aiplatform.googleapis.com@lgcode/v1@lgcode/projects@lgcode/config-project@lgcode/locations@lgcode/global",
           })
         }),
     ),
@@ -194,8 +194,8 @@ describe("GoogleVertexPlugin", () => {
         catalog.provider.update(ProviderV2.ID.make("google-vertex"), (provider) => {
           provider.api = {
             type: "aisdk",
-            package: "@ai-sdk/openai-compatible",
-            url: "https://${GOOGLE_VERTEX_ENDPOINT}/v1/projects/${GOOGLE_VERTEX_PROJECT}/locations/${GOOGLE_VERTEX_LOCATION}",
+            package: "@ai-sdk@lgcode/openai-compatible",
+            url: "https:@lgcode/@lgcode/${GOOGLE_VERTEX_ENDPOINT}@lgcode/v1@lgcode/projects@lgcode/${GOOGLE_VERTEX_PROJECT}@lgcode/locations@lgcode/${GOOGLE_VERTEX_LOCATION}",
           }
           provider.request.body.project = "config-project"
           provider.request.body.location = "eu"
@@ -204,8 +204,8 @@ describe("GoogleVertexPlugin", () => {
       const provider = yield* catalog.provider.get(ProviderV2.ID.make("google-vertex"))
       expect(provider.api).toEqual({
         type: "aisdk",
-        package: "@ai-sdk/openai-compatible",
-        url: "https://eu-aiplatform.googleapis.com/v1/projects/config-project/locations/eu",
+        package: "@ai-sdk@lgcode/openai-compatible",
+        url: "https:@lgcode/@lgcode/eu-aiplatform.googleapis.com@lgcode/v1@lgcode/projects@lgcode/config-project@lgcode/locations@lgcode/eu",
       })
     }),
   )
@@ -228,7 +228,7 @@ describe("GoogleVertexPlugin", () => {
           const transform = yield* catalog.transform()
           yield* transform((catalog) =>
             catalog.provider.update(ProviderV2.ID.make("google-vertex"), (provider) => {
-              provider.api = { type: "aisdk", package: "@ai-sdk/google-vertex" }
+              provider.api = { type: "aisdk", package: "@ai-sdk@lgcode/google-vertex" }
               provider.request.body.project = "config-project"
             }),
           )
@@ -254,9 +254,9 @@ describe("GoogleVertexPlugin", () => {
             "aisdk.sdk",
             {
               model: model("google-vertex", "gemini", {
-                api: { type: "aisdk", package: "@ai-sdk/google-vertex" },
+                api: { type: "aisdk", package: "@ai-sdk@lgcode/google-vertex" },
               }),
-              package: "@ai-sdk/google-vertex",
+              package: "@ai-sdk@lgcode/google-vertex",
               options: { name: "google-vertex" },
             },
             {},
@@ -281,9 +281,9 @@ describe("GoogleVertexPlugin", () => {
           "aisdk.sdk": (evt) =>
             Effect.promise(async () => {
               if (evt.model.providerID !== "google-vertex") return
-              if (evt.package !== "@ai-sdk/openai-compatible") return
+              if (evt.package !== "@ai-sdk@lgcode/openai-compatible") return
               expect(typeof evt.options.fetch).toBe("function")
-              await evt.options.fetch("https://vertex.example", {
+              await evt.options.fetch("https:@lgcode/@lgcode/vertex.example", {
                 headers: { "x-test": "1" },
               })
             }),
@@ -304,9 +304,9 @@ describe("GoogleVertexPlugin", () => {
             "aisdk.sdk",
             {
               model: model("google-vertex", "gemini", {
-                api: { type: "aisdk", package: "@ai-sdk/openai-compatible" },
+                api: { type: "aisdk", package: "@ai-sdk@lgcode/openai-compatible" },
               }),
-              package: "@ai-sdk/openai-compatible",
+              package: "@ai-sdk@lgcode/openai-compatible",
               options: { name: "google-vertex" },
             },
             {},
@@ -317,8 +317,8 @@ describe("GoogleVertexPlugin", () => {
           }),
       )
       expect(fetchCalls).toHaveLength(1)
-      expect(googleAuthOptions).toEqual([{ scopes: ["https://www.googleapis.com/auth/cloud-platform"] }])
-      expect(fetchCalls[0].input).toBe("https://vertex.example")
+      expect(googleAuthOptions).toEqual([{ scopes: ["https:@lgcode/@lgcode/www.googleapis.com@lgcode/auth@lgcode/cloud-platform"] }])
+      expect(fetchCalls[0].input).toBe("https:@lgcode/@lgcode/vertex.example")
       expect(new Headers(fetchCalls[0].init?.headers).get("authorization")).toBe("Bearer vertex-token")
       expect(new Headers(fetchCalls[0].init?.headers).get("x-test")).toBe("1")
     }),

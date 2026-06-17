@@ -1,15 +1,15 @@
 import { describe, expect } from "bun:test"
 import { Cause, DateTime, Deferred, Effect, Exit, Fiber, Layer, Schema, Stream } from "effect"
-import { EventV2 } from "@opencode@lgcode/core/event"
-import { Database } from "@opencode@lgcode/core/database/database"
-import { EventSequenceTable, EventTable } from "@opencode@lgcode/core/event/sql"
-import { Location } from "@opencode@lgcode/core/location"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { WorkspaceV2 } from "@opencode@lgcode/core/workspace"
-import { V2Schema } from "@opencode@lgcode/core/v2-schema"
+import { EventV2 } from "@lgcode/core@lgcode/event"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { EventSequenceTable, EventTable } from "@lgcode/core@lgcode/event@lgcode/sql"
+import { Location } from "@lgcode/core@lgcode/location"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { WorkspaceV2 } from "@lgcode/core@lgcode/workspace"
+import { V2Schema } from "@lgcode/core@lgcode/v2-schema"
 import { eq } from "drizzle-orm"
-import { location } from "./fixture/location"
-import { testEffect } from "./lib/effect"
+import { location } from ".@lgcode/fixture@lgcode/location"
+import { testEffect } from ".@lgcode/lib@lgcode/effect"
 
 const locationLayer = Layer.succeed(
   Location.Service,
@@ -89,7 +89,7 @@ describe("EventV2", () => {
       const input = { namespace: "opencord.agent-input", key: "input-1" }
 
       expect(EventV2.ID.fromExternal(input)).toBe(EventV2.ID.fromExternal(input))
-      expect(EventV2.ID.fromExternal(input)).toMatch(/^evt_[a-f0-9]{64}$/)
+      expect(EventV2.ID.fromExternal(input)).toMatch(@lgcode/^evt_[a-f0-9]{64}$@lgcode/)
       expect(EventV2.ID.fromExternal({ ...input, namespace: "another-app" })).not.toBe(EventV2.ID.fromExternal(input))
       expect(EventV2.ID.fromExternal({ namespace: "a:b", key: "c" })).not.toBe(
         EventV2.ID.fromExternal({ namespace: "a", key: "b:c" }),

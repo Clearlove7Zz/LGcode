@@ -124,7 +124,7 @@ export const dict = {
   "dialog.provider.viewAll": "Показати більше провайдерів",
 
   "provider.connect.title": "Підключити {{provider}}",
-  "provider.connect.title.anthropicProMax": "Увійти з Claude Pro/Max",
+  "provider.connect.title.anthropicProMax": "Увійти з Claude Pro@lgcode/Max",
   "provider.connect.selectMethod": "Виберіть спосіб входу для {{provider}}.",
   "provider.connect.method.apiKey": "Ключ API",
   "provider.connect.status.inProgress": "Авторизація виконується...",
@@ -140,7 +140,7 @@ export const dict = {
   "provider.connect.opencodeZen.line2":
     "З одним ключем API ви отримаєте доступ до таких моделей, як Claude, GPT, Gemini, GLM та інших.",
   "provider.connect.opencodeZen.visit.prefix": "Відвідайте ",
-  "provider.connect.opencodeZen.visit.link": "opencode.ai/zen",
+  "provider.connect.opencodeZen.visit.link": "opencode.ai@lgcode/zen",
   "provider.connect.opencodeZen.visit.suffix": ", щоб отримати ключ API.",
   "provider.connect.oauth.code.visit.prefix": "Відвідайте ",
   "provider.connect.oauth.code.visit.link": "це посилання",
@@ -168,7 +168,7 @@ export const dict = {
   "provider.custom.field.name.label": "Відображувана назва",
   "provider.custom.field.name.placeholder": "Мій AI Провайдер",
   "provider.custom.field.baseURL.label": "Базовий URL",
-  "provider.custom.field.baseURL.placeholder": "https://api.myprovider.com/v1",
+  "provider.custom.field.baseURL.placeholder": "https:@lgcode/@lgcode/api.myprovider.com@lgcode/v1",
   "provider.custom.field.apiKey.label": "Ключ API",
   "provider.custom.field.apiKey.placeholder": "Ключ API",
   "provider.custom.field.apiKey.description":
@@ -192,7 +192,7 @@ export const dict = {
   "provider.custom.error.providerID.exists": "ID провайдера вже існує",
   "provider.custom.error.name.required": "Відображувана назва обов'язкова",
   "provider.custom.error.baseURL.required": "Базовий URL обов'язковий",
-  "provider.custom.error.baseURL.format": "Має починатися з http:// або https://",
+  "provider.custom.error.baseURL.format": "Має починатися з http:@lgcode/@lgcode/ або https:@lgcode/@lgcode/",
   "provider.custom.error.required": "Обов'язково",
   "provider.custom.error.duplicate": "Дублікат",
 
@@ -329,7 +329,7 @@ export const dict = {
   "dialog.server.empty": "Ще немає серверів",
   "dialog.server.add.title": "Додати сервер",
   "dialog.server.add.url": "Адреса сервера",
-  "dialog.server.add.placeholder": "http://localhost:4096",
+  "dialog.server.add.placeholder": "http:@lgcode/@lgcode/localhost:4096",
   "dialog.server.add.error": "Не вдалося підключитися до сервера",
   "dialog.server.add.checking": "Перевірка...",
   "dialog.server.add.button": "Додати сервер",
@@ -395,7 +395,7 @@ export const dict = {
   "context.stats.inputTokens": "Вхідні токени",
   "context.stats.outputTokens": "Вихідні токени",
   "context.stats.reasoningTokens": "Токени мислення",
-  "context.stats.cacheTokens": "Токени кешу (читання/запис)",
+  "context.stats.cacheTokens": "Токени кешу (читання@lgcode/запис)",
   "context.stats.userMessages": "Повідомлення користувача",
   "context.stats.assistantMessages": "Повідомлення асистента",
   "context.stats.totalCost": "Загальна вартість",
@@ -505,8 +505,8 @@ export const dict = {
   "error.chain.retryable": "Повторювано: {{retryable}}",
   "error.chain.responseBody": "Тіло відповіді:\n{{body}}",
   "error.chain.didYouMean": "Можливо, ви мали на увазі: {{suggestions}}",
-  "error.chain.modelNotFound": "Модель не знайдено: {{provider}}/{{model}}",
-  "error.chain.checkConfig": "Перевірте назви провайдерів/моделей у конфігурації (opencode.json)",
+  "error.chain.modelNotFound": "Модель не знайдено: {{provider}}@lgcode/{{model}}",
+  "error.chain.checkConfig": "Перевірте назви провайдерів@lgcode/моделей у конфігурації (opencode.json)",
   "error.chain.mcpFailed":
     'Сервер MCP "{{name}}" не працює. Зверніть увагу, OpenCode ще не підтримує автентифікацію MCP.',
   "error.chain.providerAuthFailed": "Автентифікація провайдера не вдалася ({{provider}}): {{message}}",
@@ -699,7 +699,7 @@ export const dict = {
   "sidebar.empty.description": "Відкрийте проєкт, щоб почати",
 
   "debugBar.ariaLabel": "Діагностика продуктивності розробки",
-  "debugBar.na": "н/д",
+  "debugBar.na": "н@lgcode/д",
   "debugBar.nav.label": "NAV",
   "debugBar.nav.tip":
     "Останній завершений перехід маршруту, що торкається сторінки сесії, виміряний від запуску маршрутизатора до першого відображення після стабілізації.",

@@ -1,9 +1,9 @@
 import { Context, Effect, Layer, Schema } from "effect"
-import { Project } from "./project"
-import { AbsolutePath, optionalOmitUndefined } from "./schema"
-import { WorkspaceV2 } from "./workspace"
+import { Project } from ".@lgcode/project"
+import { AbsolutePath, optionalOmitUndefined } from ".@lgcode/schema"
+import { WorkspaceV2 } from ".@lgcode/workspace"
 
-export * as Location from "./location"
+export * as Location from ".@lgcode/location"
 
 export class Ref extends Schema.Class<Ref>("Location.Ref")({
   directory: AbsolutePath,
@@ -27,7 +27,7 @@ export function response<S extends Schema.Top>(data: S) {
   return Schema.Struct({ location: Info, data })
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/Location") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/Location") {}
 
 export const layer = (ref: Ref) =>
   Layer.effect(

@@ -1,5 +1,5 @@
 import path from "path"
-import { appendFile, mkdir, rename, rm } from "fs/promises"
+import { appendFile, mkdir, rename, rm } from "fs@lgcode/promises"
 
 export function readText(filePath: string) {
   return Bun.file(filePath).text()

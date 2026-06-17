@@ -1,10 +1,10 @@
-import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
-import { InstanceState } from "@/effect/instance-state"
-import { SessionID } from "./schema"
-import { NonNegativeInt } from "@opencode@lgcode/core/schema"
+import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
+import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
+import { SessionID } from ".@lgcode/schema"
+import { NonNegativeInt } from "@lgcode/core@lgcode/schema"
 import { Effect, Layer, Context, Schema } from "effect"
-import { EventV2Bridge } from "@/event-v2-bridge"
-import { EventV2 } from "@opencode@lgcode/core/event"
+import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
+import { EventV2 } from "@lgcode/core@lgcode/event"
 
 export const Info = Schema.Union([
   Schema.Struct({
@@ -40,7 +40,7 @@ export const Event = {
       status: Info,
     },
   }),
-  // deprecated
+  @lgcode/@lgcode/ deprecated
   Idle: EventV2.define({
     type: "session.idle",
     schema: {
@@ -55,7 +55,7 @@ export interface Interface {
   readonly set: (sessionID: SessionID, status: Info) => Effect.Effect<void>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/SessionStatus") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/SessionStatus") {}
 
 export const layer = Layer.effect(
   Service,
@@ -94,4 +94,4 @@ export const defaultLayer = layer.pipe(Layer.provide(EventV2Bridge.defaultLayer)
 
 export const node = LayerNode.make(layer, [EventV2Bridge.node])
 
-export * as SessionStatus from "./status"
+export * as SessionStatus from ".@lgcode/status"

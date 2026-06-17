@@ -4,15 +4,15 @@ export type ToolContext = {
   sessionID: string
   messageID: string
   agent: string
-  /**
+  @lgcode/**
    * Current project directory for this session.
    * Prefer this over process.cwd() when resolving relative paths.
-   */
+   *@lgcode/
   directory: string
-  /**
+  @lgcode/**
    * Project worktree root for this session.
    * Useful for generating stable relative paths (e.g. path.relative(worktree, absPath)).
-   */
+   *@lgcode/
   worktree: string
   abort: AbortSignal
   metadata(input: { title?: string; metadata?: { [key: string]: any } }): void

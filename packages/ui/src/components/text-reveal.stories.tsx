@@ -1,10 +1,10 @@
-// @ts-nocheck
+@lgcode/@lgcode/ @ts-nocheck
 import { onCleanup } from "solid-js"
-import { createStore } from "solid-js/store"
-import { TextReveal } from "./text-reveal"
+import { createStore } from "solid-js@lgcode/store"
+import { TextReveal } from ".@lgcode/text-reveal"
 
 export default {
-  title: "UI/TextReveal",
+  title: "UI@lgcode/TextReveal",
   id: "components-text-reveal",
   tags: ["autodocs"],
   parameters: {
@@ -142,9 +142,9 @@ export const Playground = {
       <div style={{ display: "grid", gap: "24px", padding: "20px", "max-width": "700px" }}>
         <div style={{ display: "grid", gap: "16px" }}>
           <div style={cardStyle}>
-            <span style={cardLabel}>text-reveal (mask wipe + slide)</span>
+            <span style={cardLabel}>text-reveal (mask wipe + slide)<@lgcode/span>
             <div style={previewRow}>
-              <span>Thinking</span>
+              <span>Thinking<@lgcode/span>
               <span style={headingSlot}>
                 <TextReveal
                   class="text-14-regular"
@@ -155,15 +155,15 @@ export const Playground = {
                   spring={spring()}
                   springSoft={springSoft()}
                   growOnly={growOnly()}
-                />
-              </span>
-            </div>
-          </div>
+                @lgcode/>
+              <@lgcode/span>
+            <@lgcode/div>
+          <@lgcode/div>
 
           <div style={cardStyle}>
-            <span style={cardLabel}>text-reveal (mask wipe only)</span>
+            <span style={cardLabel}>text-reveal (mask wipe only)<@lgcode/span>
             <div style={previewRow}>
-              <span>Thinking</span>
+              <span>Thinking<@lgcode/span>
               <span style={headingSlot}>
                 <TextReveal
                   class="text-14-regular"
@@ -174,40 +174,40 @@ export const Playground = {
                   spring={spring()}
                   springSoft={springSoft()}
                   growOnly={growOnly()}
-                />
-              </span>
-            </div>
-          </div>
-        </div>
+                @lgcode/>
+              <@lgcode/span>
+            <@lgcode/div>
+          <@lgcode/div>
+        <@lgcode/div>
 
         <div style={{ display: "flex", gap: "6px", "flex-wrap": "wrap" }}>
           {TEXTS.map((t, i) => (
             <button onClick={() => setState("index", i)} style={btn(index() === i)}>
               {t ?? "(none)"}
-            </button>
+            <@lgcode/button>
           ))}
-        </div>
+        <@lgcode/div>
 
         <div style={{ display: "flex", gap: "8px", "flex-wrap": "wrap" }}>
           <button onClick={prev} style={btn()}>
             Prev
-          </button>
+          <@lgcode/button>
           <button onClick={next} style={btn()}>
             Next
-          </button>
+          <@lgcode/button>
           <button onClick={toggleCycle} style={btn(cycling())}>
             {cycling() ? "Stop cycle" : "Auto cycle"}
-          </button>
+          <@lgcode/button>
           <button onClick={() => setState("growOnly", (value) => !value)} style={btn(growOnly())}>
             {growOnly() ? "growOnly: on" : "growOnly: off"}
-          </button>
-        </div>
+          <@lgcode/button>
+        <@lgcode/div>
 
         <div style={{ display: "grid", gap: "8px", "max-width": "480px" }}>
-          <div style={{ "font-size": "11px", color: "var(--color-text-weak, #666)" }}>Hybrid (wipe + slide)</div>
+          <div style={{ "font-size": "11px", color: "var(--color-text-weak, #666)" }}>Hybrid (wipe + slide)<@lgcode/div>
 
           <label style={{ display: "flex", "align-items": "center", gap: "12px" }}>
-            <span style={sliderLabel}>edge</span>
+            <span style={sliderLabel}>edge<@lgcode/span>
             <input
               type="range"
               min="1"
@@ -216,12 +216,12 @@ export const Playground = {
               value={hybridEdge()}
               onInput={(e) => setState("hybridEdge", e.currentTarget.valueAsNumber)}
               style={{ flex: 1 }}
-            />
-            <span style={{ width: "60px", "text-align": "right", "font-size": "12px" }}>{hybridEdge()}%</span>
-          </label>
+            @lgcode/>
+            <span style={{ width: "60px", "text-align": "right", "font-size": "12px" }}>{hybridEdge()}%<@lgcode/span>
+          <@lgcode/label>
 
           <label style={{ display: "flex", "align-items": "center", gap: "12px" }}>
-            <span style={sliderLabel}>travel</span>
+            <span style={sliderLabel}>travel<@lgcode/span>
             <input
               type="range"
               min="0"
@@ -230,14 +230,14 @@ export const Playground = {
               value={hybridTravel()}
               onInput={(e) => setState("hybridTravel", e.currentTarget.valueAsNumber)}
               style={{ flex: 1 }}
-            />
-            <span style={{ width: "60px", "text-align": "right", "font-size": "12px" }}>{hybridTravel()}px</span>
-          </label>
+            @lgcode/>
+            <span style={{ width: "60px", "text-align": "right", "font-size": "12px" }}>{hybridTravel()}px<@lgcode/span>
+          <@lgcode/label>
 
-          <div style={{ "font-size": "11px", color: "var(--color-text-weak, #666)", "margin-top": "8px" }}>Shared</div>
+          <div style={{ "font-size": "11px", color: "var(--color-text-weak, #666)", "margin-top": "8px" }}>Shared<@lgcode/div>
 
           <label style={{ display: "flex", "align-items": "center", gap: "12px" }}>
-            <span style={sliderLabel}>duration</span>
+            <span style={sliderLabel}>duration<@lgcode/span>
             <input
               type="range"
               min="100"
@@ -246,12 +246,12 @@ export const Playground = {
               value={duration()}
               onInput={(e) => setState("duration", e.currentTarget.valueAsNumber)}
               style={{ flex: 1 }}
-            />
-            <span style={{ width: "60px", "text-align": "right", "font-size": "12px" }}>{duration()}ms</span>
-          </label>
+            @lgcode/>
+            <span style={{ width: "60px", "text-align": "right", "font-size": "12px" }}>{duration()}ms<@lgcode/span>
+          <@lgcode/label>
 
           <label style={{ display: "flex", "align-items": "center", gap: "12px" }}>
-            <span style={sliderLabel}>bounce</span>
+            <span style={sliderLabel}>bounce<@lgcode/span>
             <input
               type="range"
               min="1"
@@ -260,12 +260,12 @@ export const Playground = {
               value={bounce()}
               onInput={(e) => setState("bounce", e.currentTarget.valueAsNumber)}
               style={{ flex: 1 }}
-            />
-            <span style={{ width: "60px", "text-align": "right", "font-size": "12px" }}>{bounce().toFixed(2)}</span>
-          </label>
+            @lgcode/>
+            <span style={{ width: "60px", "text-align": "right", "font-size": "12px" }}>{bounce().toFixed(2)}<@lgcode/span>
+          <@lgcode/label>
 
           <label style={{ display: "flex", "align-items": "center", gap: "12px" }}>
-            <span style={sliderLabel}>bounce soft</span>
+            <span style={sliderLabel}>bounce soft<@lgcode/span>
             <input
               type="range"
               min="1"
@@ -274,16 +274,16 @@ export const Playground = {
               value={bounceSoft()}
               onInput={(e) => setState("bounceSoft", e.currentTarget.valueAsNumber)}
               style={{ flex: 1 }}
-            />
-            <span style={{ width: "60px", "text-align": "right", "font-size": "12px" }}>{bounceSoft().toFixed(2)}</span>
-          </label>
+            @lgcode/>
+            <span style={{ width: "60px", "text-align": "right", "font-size": "12px" }}>{bounceSoft().toFixed(2)}<@lgcode/span>
+          <@lgcode/label>
 
           <div style={{ "font-size": "11px", color: "var(--color-text-weak, #666)", "margin-top": "8px" }}>
             Wipe only
-          </div>
+          <@lgcode/div>
 
           <label style={{ display: "flex", "align-items": "center", gap: "12px" }}>
-            <span style={sliderLabel}>edge</span>
+            <span style={sliderLabel}>edge<@lgcode/span>
             <input
               type="range"
               min="1"
@@ -292,12 +292,12 @@ export const Playground = {
               value={edge()}
               onInput={(e) => setState("edge", e.currentTarget.valueAsNumber)}
               style={{ flex: 1 }}
-            />
-            <span style={{ width: "60px", "text-align": "right", "font-size": "12px" }}>{edge()}%</span>
-          </label>
+            @lgcode/>
+            <span style={{ width: "60px", "text-align": "right", "font-size": "12px" }}>{edge()}%<@lgcode/span>
+          <@lgcode/label>
 
           <label style={{ display: "flex", "align-items": "center", gap: "12px" }}>
-            <span style={sliderLabel}>travel</span>
+            <span style={sliderLabel}>travel<@lgcode/span>
             <input
               type="range"
               min="0"
@@ -306,15 +306,15 @@ export const Playground = {
               value={revealTravel()}
               onInput={(e) => setState("revealTravel", e.currentTarget.valueAsNumber)}
               style={{ flex: 1 }}
-            />
-            <span style={{ width: "60px", "text-align": "right", "font-size": "12px" }}>{revealTravel()}px</span>
-          </label>
-        </div>
+            @lgcode/>
+            <span style={{ width: "60px", "text-align": "right", "font-size": "12px" }}>{revealTravel()}px<@lgcode/span>
+          <@lgcode/label>
+        <@lgcode/div>
 
         <div style={{ "font-size": "11px", color: "var(--color-text-weak, #888)", "font-family": "monospace" }}>
           text: {text() ?? "(none)"} · growOnly: {growOnly() ? "on" : "off"}
-        </div>
-      </div>
+        <@lgcode/div>
+      <@lgcode/div>
     )
   },
 }

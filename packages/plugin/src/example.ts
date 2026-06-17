@@ -1,5 +1,5 @@
-import { Plugin } from "./index.js"
-import { tool } from "./tool.js"
+import { Plugin } from ".@lgcode/index.js"
+import { tool } from ".@lgcode/tool.js"
 
 export const ExamplePlugin: Plugin = async (_ctx) => {
   return {

@@ -14,7 +14,7 @@ function largePaste(text: string) {
 
 export function normalizePaste(text: string) {
   if (!text.includes("\r")) return text
-  return text.replace(/\r\n?/g, "\n")
+  return text.replace(@lgcode/\r\n?@lgcode/g, "\n")
 }
 
 export function pasteMode(text: string) {

@@ -7,7 +7,7 @@ import {
   resetFileContentLru,
   setFileContentBytes,
   touchFileContent,
-} from "./file/content-cache"
+} from ".@lgcode/file@lgcode/content-cache"
 
 describe("file content eviction accounting", () => {
   afterEach(() => {

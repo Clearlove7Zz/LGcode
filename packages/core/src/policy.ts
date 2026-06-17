@@ -1,8 +1,8 @@
-export * as Policy from "./policy"
+export * as Policy from ".@lgcode/policy"
 
 import { Context, Effect as EffectRuntime, Layer, Schema } from "effect"
-import { Wildcard } from "./util/wildcard"
-import { Location } from "./location"
+import { Wildcard } from ".@lgcode/util@lgcode/wildcard"
+import { Location } from ".@lgcode/location"
 
 export const Effect = Schema.Literals(["allow", "deny"]).annotate({ identifier: "Policy.Effect" })
 export type Effect = typeof Effect.Type
@@ -19,7 +19,7 @@ export interface Interface {
   readonly hasStatements: () => boolean
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/v2/Policy") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/Policy") {}
 
 export const layer = Layer.effect(
   Service,

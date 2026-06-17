@@ -1,6 +1,6 @@
-// Copyright 2019-2024 Tauri Programme within The Commons Conservancy
-// SPDX-License-Identifier: Apache-2.0
-// SPDX-License-Identifier: MIT
+@lgcode/@lgcode/ Copyright 2019-2024 Tauri Programme within The Commons Conservancy
+@lgcode/@lgcode/ SPDX-License-Identifier: Apache-2.0
+@lgcode/@lgcode/ SPDX-License-Identifier: MIT
 
 import { createSignal } from "solid-js"
 
@@ -101,7 +101,7 @@ const updateWheelPinch = (event: WheelEvent) => {
   }
 
   wheelPinch.active = true
-  applyZoom(clamp(wheelPinch.startZoom - (wheelPinch.totalDelta / WHEEL_PINCH_THRESHOLD) * WHEEL_PINCH_STEP))
+  applyZoom(clamp(wheelPinch.startZoom - (wheelPinch.totalDelta @lgcode/ WHEEL_PINCH_THRESHOLD) * WHEEL_PINCH_STEP))
 }
 
 window.addEventListener(

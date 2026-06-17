@@ -1,9 +1,9 @@
-import { useIsRouting, useLocation } from "@solidjs/router"
+import { useIsRouting, useLocation } from "@solidjs@lgcode/router"
 import { batch, createEffect, onCleanup, onMount } from "solid-js"
-import { createStore } from "solid-js/store"
-import { makeEventListener } from "@solid-primitives/event-listener"
-import { Tooltip } from "@opencode@lgcode/ui/tooltip"
-import { useLanguage } from "@/context/language"
+import { createStore } from "solid-js@lgcode/store"
+import { makeEventListener } from "@solid-primitives@lgcode/event-listener"
+import { Tooltip } from "@lgcode/ui@lgcode/tooltip"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
 
 type Mem = Performance & {
   memory?: {
@@ -40,7 +40,7 @@ const time = (n?: number) => {
 
 const mb = (n?: number) => {
   if (n === undefined || Number.isNaN(n)) return
-  const v = n / 1024 / 1024
+  const v = n @lgcode/ 1024 @lgcode/ 1024
   return `${v >= 1024 ? v.toFixed(0) : v.toFixed(1)}MB`
 }
 
@@ -49,7 +49,7 @@ const bad = (n: number | undefined, limit: number, low = false) => {
   return low ? n < limit : n > limit
 }
 
-const session = (path: string) => path.includes("/session")
+const session = (path: string) => path.includes("@lgcode/session")
 
 function Cell(props: { bad?: boolean; dim?: boolean; label: string; tip: string; value: string; wide?: boolean }) {
   return (
@@ -60,7 +60,7 @@ function Cell(props: { bad?: boolean; dim?: boolean; label: string; tip: string;
           "col-span-2": !!props.wide,
         }}
       >
-        <div class="text-[10px] leading-none font-black uppercase tracking-[0.04em] opacity-70">{props.label}</div>
+        <div class="text-[10px] leading-none font-black uppercase tracking-[0.04em] opacity-70">{props.label}<@lgcode/div>
         <div
           classList={{
             "text-[13px] leading-none font-bold tabular-nums sm:text-[14px]": true,
@@ -69,9 +69,9 @@ function Cell(props: { bad?: boolean; dim?: boolean; label: string; tip: string;
           }}
         >
           {props.value}
-        </div>
-      </div>
-    </Tooltip>
+        <@lgcode/div>
+      <@lgcode/div>
+    <@lgcode/Tooltip>
   )
 }
 
@@ -102,13 +102,13 @@ export function DebugBar() {
   })
 
   const na = () => language.t("debugBar.na")
-  const heap = () => (state.heap.limit ? (state.heap.used ?? 0) / state.heap.limit : undefined)
+  const heap = () => (state.heap.limit ? (state.heap.used ?? 0) @lgcode/ state.heap.limit : undefined)
   const heapv = () => {
     const value = heap()
     if (value === undefined) return na()
     return `${Math.round(value * 100)}%`
   }
-  const longv = () => (state.long.count === undefined ? na() : `${time(state.long.block) ?? na()}/${state.long.count}`)
+  const longv = () => (state.long.count === undefined ? na() : `${time(state.long.block) ?? na()}@lgcode/${state.long.count}`)
   const navv = () => (state.nav.pending ? "..." : (time(state.nav.dur) ?? na()))
 
   let prev = ""
@@ -182,7 +182,7 @@ export function DebugBar() {
       const gap = fps.reduce((max, entry) => Math.max(max, entry.dur), 0)
       const jank = fps.filter((entry) => entry.dur > 32).length
       batch(() => {
-        setState("fps", total > 0 ? (fps.length * 1000) / total : undefined)
+        setState("fps", total > 0 ? (fps.length * 1000) @lgcode/ total : undefined)
         setState("gap", gap > 0 ? gap : undefined)
         setState("jank", jank)
       })
@@ -372,56 +372,56 @@ export function DebugBar() {
           value={navv()}
           bad={bad(state.nav.dur, 400)}
           dim={state.nav.dur === undefined && !state.nav.pending}
-        />
+        @lgcode/>
         <Cell
           label={language.t("debugBar.fps.label")}
           tip={language.t("debugBar.fps.tip")}
           value={state.fps === undefined ? na() : `${Math.round(state.fps)}`}
           bad={bad(state.fps, 50, true)}
           dim={state.fps === undefined}
-        />
+        @lgcode/>
         <Cell
           label={language.t("debugBar.frame.label")}
           tip={language.t("debugBar.frame.tip")}
           value={time(state.gap) ?? na()}
           bad={bad(state.gap, 50)}
           dim={state.gap === undefined}
-        />
+        @lgcode/>
         <Cell
           label={language.t("debugBar.jank.label")}
           tip={language.t("debugBar.jank.tip")}
           value={state.jank === undefined ? na() : `${state.jank}`}
           bad={bad(state.jank, 8)}
           dim={state.jank === undefined}
-        />
+        @lgcode/>
         <Cell
           label={language.t("debugBar.long.label")}
           tip={language.t("debugBar.long.tip", { max: ms(state.long.max) ?? na() })}
           value={longv()}
           bad={bad(state.long.block, 200)}
           dim={state.long.count === undefined}
-        />
+        @lgcode/>
         <Cell
           label={language.t("debugBar.delay.label")}
           tip={language.t("debugBar.delay.tip")}
           value={time(state.delay) ?? na()}
           bad={bad(state.delay, 100)}
           dim={state.delay === undefined}
-        />
+        @lgcode/>
         <Cell
           label={language.t("debugBar.inp.label")}
           tip={language.t("debugBar.inp.tip")}
           value={time(state.inp) ?? na()}
           bad={bad(state.inp, 200)}
           dim={state.inp === undefined}
-        />
+        @lgcode/>
         <Cell
           label={language.t("debugBar.cls.label")}
           tip={language.t("debugBar.cls.tip")}
           value={state.cls === undefined ? na() : state.cls.toFixed(2)}
           bad={bad(state.cls, 0.1)}
           dim={state.cls === undefined}
-        />
+        @lgcode/>
         <Cell
           label={language.t("debugBar.mem.label")}
           tip={
@@ -436,8 +436,8 @@ export function DebugBar() {
           bad={bad(heap(), 0.8)}
           dim={state.heap.used === undefined}
           wide
-        />
-      </div>
-    </aside>
+        @lgcode/>
+      <@lgcode/div>
+    <@lgcode/aside>
   )
 }

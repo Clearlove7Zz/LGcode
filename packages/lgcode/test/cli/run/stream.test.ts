@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
-import { writeSessionOutput } from "@/cli/cmd/run/stream"
-import type { FooterApi, FooterEvent, StreamCommit } from "@/cli/cmd/run/types"
+import { writeSessionOutput } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/stream"
+import type { FooterApi, FooterEvent, StreamCommit } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/types"
 
 function footer() {
   const events: FooterEvent[] = []

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
-import type { WslServersState } from "@opencode@lgcode/app/wsl/types"
-import { availableStartupServer, readyWslConnections } from "./connections"
+import type { WslServersState } from "@lgcode/app@lgcode/wsl@lgcode/types"
+import { availableStartupServer, readyWslConnections } from ".@lgcode/connections"
 
 const state = (kind: "starting" | "ready" | "failed" | "stopped"): WslServersState => ({
   runtime: null,
@@ -19,7 +19,7 @@ const state = (kind: "starting" | "ready" | "failed" | "stopped"): WslServersSta
 })
 
 function runtime(kind: "starting" | "ready" | "failed" | "stopped") {
-  if (kind === "ready") return { kind, url: "http://127.0.0.1:4096", username: "opencode", password: "secret" }
+  if (kind === "ready") return { kind, url: "http:@lgcode/@lgcode/127.0.0.1:4096", username: "opencode", password: "secret" }
   if (kind === "failed") return { kind, message: "boom" }
   return { kind }
 }

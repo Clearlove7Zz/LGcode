@@ -1,4 +1,4 @@
-import { InputRenderable, TextareaRenderable, type CliRenderer, type KeyEvent, type Renderable } from "@opentui/core"
+import { InputRenderable, TextareaRenderable, type CliRenderer, type KeyEvent, type Renderable } from "@opentui@lgcode/core"
 import {
   registerBackspacePopsPendingSequence,
   registerBaseLayoutFallback,
@@ -6,16 +6,16 @@ import {
   registerEscapeClearsPendingSequence,
   registerManagedTextareaLayer,
   registerTimedLeader,
-} from "@opentui/keymap/addons/opentui"
-import { stringifyKeyStroke, type Binding } from "@opentui/keymap"
+} from "@opentui@lgcode/keymap@lgcode/addons@lgcode/opentui"
+import { stringifyKeyStroke, type Binding } from "@opentui@lgcode/keymap"
 import {
   formatCommandBindings as formatCommandBindingsExtra,
   formatKeySequence as formatKeySequenceExtra,
-} from "@opentui/keymap/extras"
-import { KeymapProvider, useKeymap, useKeymapSelector, useBindings } from "@opentui/keymap/solid"
+} from "@opentui@lgcode/keymap@lgcode/extras"
+import { KeymapProvider, useKeymap, useKeymapSelector, useBindings } from "@opentui@lgcode/keymap@lgcode/solid"
 import { createMemo, type Accessor } from "solid-js"
-import { useTuiConfig } from "./config"
-import { TuiKeybind } from "./config/keybind"
+import { useTuiConfig } from ".@lgcode/config"
+import { TuiKeybind } from ".@lgcode/config@lgcode/keybind"
 
 export const LEADER_TOKEN = "leader"
 export const OPENCODE_BASE_MODE = "base"
@@ -273,7 +273,7 @@ export function useCommandSlashes(): Accessor<readonly CommandSlashEntry[]> {
       if (typeof slashName !== "string" || !slashName) return []
       const slashAliases = entry.command.slashAliases
       return {
-        display: `/${slashName}`,
+        display: `@lgcode/${slashName}`,
         description:
           typeof entry.command.desc === "string"
             ? entry.command.desc
@@ -281,7 +281,7 @@ export function useCommandSlashes(): Accessor<readonly CommandSlashEntry[]> {
               ? entry.command.title
               : undefined,
         aliases: Array.isArray(slashAliases)
-          ? slashAliases.filter((alias): alias is string => typeof alias === "string").map((alias) => `/${alias}`)
+          ? slashAliases.filter((alias): alias is string => typeof alias === "string").map((alias) => `@lgcode/${alias}`)
           : undefined,
         onSelect: () => keymap.dispatchCommand(entry.command.name),
       }

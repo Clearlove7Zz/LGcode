@@ -1,14 +1,14 @@
-import type { NamedError } from "@opencode@lgcode/core/util/error"
-import { SessionV1 } from "@opencode@lgcode/core/v1/session"
+import type { NamedError } from "@lgcode/core@lgcode/util@lgcode/error"
+import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
 import { Cause, Clock, Duration, Effect, Schedule } from "effect"
-import { MessageV2 } from "./message-v2"
-import { iife } from "@/util/iife"
-import { isRecord } from "@/util/record"
+import { MessageV2 } from ".@lgcode/message-v2"
+import { iife } from "@@lgcode/util@lgcode/iife"
+import { isRecord } from "@@lgcode/util@lgcode/record"
 
 export type Err = ReturnType<NamedError["toObject"]>
 
 export const GO_UPSELL_MESSAGE = "Free usage exceeded, subscribe to Go"
-export const GO_UPSELL_URL = "https://opencode.ai/go"
+export const GO_UPSELL_URL = "https:@lgcode/@lgcode/opencode.ai@lgcode/go"
 export type RetryReason = "free_tier_limit" | "account_rate_limit" | (string & {})
 
 export type Retryable = {
@@ -25,8 +25,8 @@ export type Retryable = {
 
 export const RETRY_INITIAL_DELAY = 2000
 export const RETRY_BACKOFF_FACTOR = 2
-export const RETRY_MAX_DELAY_NO_HEADERS = 30_000 // 30 seconds
-export const RETRY_MAX_DELAY = 2_147_483_647 // max 32-bit signed integer for setTimeout
+export const RETRY_MAX_DELAY_NO_HEADERS = 30_000 @lgcode/@lgcode/ 30 seconds
+export const RETRY_MAX_DELAY = 2_147_483_647 @lgcode/@lgcode/ max 32-bit signed integer for setTimeout
 
 function cap(ms: number) {
   return Math.min(ms, RETRY_MAX_DELAY)
@@ -48,10 +48,10 @@ export function delay(attempt: number, error?: SessionV1.APIError) {
       if (retryAfter) {
         const parsedSeconds = Number.parseFloat(retryAfter)
         if (!Number.isNaN(parsedSeconds)) {
-          // convert seconds to milliseconds
+          @lgcode/@lgcode/ convert seconds to milliseconds
           return cap(Math.ceil(parsedSeconds * 1000))
         }
-        // Try parsing as HTTP date format
+        @lgcode/@lgcode/ Try parsing as HTTP date format
         const parsed = Date.parse(retryAfter) - Date.now()
         if (!Number.isNaN(parsed) && parsed > 0) {
           return cap(Math.ceil(parsed))
@@ -66,12 +66,12 @@ export function delay(attempt: number, error?: SessionV1.APIError) {
 }
 
 export function retryable(error: Err, provider: string) {
-  // context overflow errors should not be retried
+  @lgcode/@lgcode/ context overflow errors should not be retried
   if (SessionV1.ContextOverflowError.isInstance(error)) return undefined
   if (SessionV1.APIError.isInstance(error)) {
     const status = error.data.statusCode
-    // 5xx errors are transient server failures and should always be retried,
-    // even when the provider SDK doesn't explicitly mark them as retryable.
+    @lgcode/@lgcode/ 5xx errors are transient server failures and should always be retried,
+    @lgcode/@lgcode/ even when the provider SDK doesn't explicitly mark them as retryable.
     if (!error.data.isRetryable && !(status !== undefined && status >= 500)) return undefined
     if (error.data.responseBody?.includes("FreeUsageLimitError")) {
       return {
@@ -80,7 +80,7 @@ export function retryable(error: Err, provider: string) {
           reason: "free_tier_limit",
           provider,
           title: "Free limit reached",
-          message: "Subscribe to OpenCode Go for reliable access to the best open-source models, starting at $5/month.",
+          message: "Subscribe to OpenCode Go for reliable access to the best open-source models, starting at $5@lgcode/month.",
           label: "subscribe",
           link: GO_UPSELL_URL,
         },
@@ -94,9 +94,9 @@ export function retryable(error: Err, provider: string) {
       const resetIn = iife(() => {
         if (retryAfter === undefined) return ""
         const seconds = Math.max(0, Math.ceil(retryAfter))
-        const days = Math.floor(seconds / 86_400)
-        const hours = Math.floor((seconds % 86_400) / 3_600)
-        const minutes = Math.ceil((seconds % 3_600) / 60)
+        const days = Math.floor(seconds @lgcode/ 86_400)
+        const hours = Math.floor((seconds % 86_400) @lgcode/ 3_600)
+        const minutes = Math.ceil((seconds % 3_600) @lgcode/ 60)
         const unit = (value: number, name: string) => `${value} ${name}${value === 1 ? "" : "s"}`
 
         if (days > 0) return hours > 0 ? `${unit(days, "day")} ${unit(hours, "hour")}` : unit(days, "day")
@@ -106,7 +106,7 @@ export function retryable(error: Err, provider: string) {
 
       const message = `${limitName ? `${limitName} usage limit` : "Usage limit"} reached. It will reset in ${resetIn}. To continue using this model now, enable usage from your available balance`
 
-      const link = `https://opencode.ai/workspace/${workspace}/go`
+      const link = `https:@lgcode/@lgcode/opencode.ai@lgcode/workspace@lgcode/${workspace}@lgcode/go`
       return {
         message: `${message} - ${link}`,
         action: {
@@ -122,7 +122,7 @@ export function retryable(error: Err, provider: string) {
     return { message: error.data.message.includes("Overloaded") ? "Provider is overloaded" : error.data.message }
   }
 
-  // Check for rate limit patterns in plain text error messages
+  @lgcode/@lgcode/ Check for rate limit patterns in plain text error messages
   const msg = isRecord(error.data) ? error.data.message : undefined
   if (typeof msg === "string") {
     const lower = msg.toLowerCase()
@@ -198,4 +198,4 @@ export function policy(opts: {
   )
 }
 
-export * as SessionRetry from "./retry"
+export * as SessionRetry from ".@lgcode/retry"

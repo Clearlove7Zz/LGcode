@@ -1,11 +1,11 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer, Stream } from "effect"
-import { HttpClient, HttpClientRequest, HttpClientResponse } from "effect/unstable/http"
-import { ChildProcess, ChildProcessSpawner } from "effect/unstable/process"
-import { Installation } from "../../src/installation"
-import { InstallationChannel } from "@opencode@lgcode/core/installation/version"
-import { AppProcess } from "@opencode@lgcode/core/process"
-import { testEffect } from "../lib/effect"
+import { HttpClient, HttpClientRequest, HttpClientResponse } from "effect@lgcode/unstable@lgcode/http"
+import { ChildProcess, ChildProcessSpawner } from "effect@lgcode/unstable@lgcode/process"
+import { Installation } from "..@lgcode/..@lgcode/src@lgcode/installation"
+import { InstallationChannel } from "@lgcode/core@lgcode/installation@lgcode/version"
+import { AppProcess } from "@lgcode/core@lgcode/process"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const encoder = new TextEncoder()
 
@@ -28,11 +28,11 @@ function mockSpawner(
         exitCode: Effect.succeed(ChildProcessSpawner.ExitCode(output.code)),
         isRunning: Effect.succeed(false),
         kill: () => Effect.void,
-        stdin: { [Symbol.for("effect/Sink/TypeId")]: Symbol.for("effect/Sink/TypeId") } as any,
+        stdin: { [Symbol.for("effect@lgcode/Sink@lgcode/TypeId")]: Symbol.for("effect@lgcode/Sink@lgcode/TypeId") } as any,
         stdout: output.stdout ? Stream.make(encoder.encode(output.stdout)) : Stream.empty,
         stderr: output.stderr ? Stream.make(encoder.encode(output.stderr)) : Stream.empty,
         all: Stream.empty,
-        getInputFd: () => ({ [Symbol.for("effect/Sink/TypeId")]: Symbol.for("effect/Sink/TypeId") }) as any,
+        getInputFd: () => ({ [Symbol.for("effect@lgcode/Sink@lgcode/TypeId")]: Symbol.for("effect@lgcode/Sink@lgcode/TypeId") }) as any,
         getOutputFd: () => Stream.empty,
         unref: Effect.succeed(Effect.void),
       }),
@@ -44,7 +44,7 @@ function mockSpawner(
 function jsonResponse(body: unknown) {
   return new Response(JSON.stringify(body), {
     status: 200,
-    headers: { "content-type": "application/json" },
+    headers: { "content-type": "application@lgcode/json" },
   })
 }
 
@@ -86,7 +86,7 @@ describe("installation", () => {
       Effect.gen(function* () {
         const result = yield* Installation.use.latest("npm")
         expect(result).toBe("1.5.0")
-        expect(npmCalls).toContain(`https://registry.npmjs.org/opencode@lgcode/${InstallationChannel}`)
+        expect(npmCalls).toContain(`https:@lgcode/@lgcode/registry.npmjs.org@lgcode/opencode@lgcode@lgcode/${InstallationChannel}`)
       }),
     )
 
@@ -100,7 +100,7 @@ describe("installation", () => {
       Effect.gen(function* () {
         const result = yield* Installation.use.latest("bun")
         expect(result).toBe("1.6.0")
-        expect(bunCalls).toContain(`https://registry.npmjs.org/opencode@lgcode/${InstallationChannel}`)
+        expect(bunCalls).toContain(`https:@lgcode/@lgcode/registry.npmjs.org@lgcode/opencode@lgcode@lgcode/${InstallationChannel}`)
       }),
     )
 
@@ -114,7 +114,7 @@ describe("installation", () => {
       Effect.gen(function* () {
         const result = yield* Installation.use.latest("pnpm")
         expect(result).toBe("1.7.0")
-        expect(pnpmCalls).toContain(`https://registry.npmjs.org/opencode@lgcode/${InstallationChannel}`)
+        expect(pnpmCalls).toContain(`https:@lgcode/@lgcode/registry.npmjs.org@lgcode/opencode@lgcode@lgcode/${InstallationChannel}`)
       }),
     )
 
@@ -138,8 +138,8 @@ describe("installation", () => {
       testLayer(
         () => jsonResponse({ versions: { stable: "2.0.0" } }),
         (cmd, args) => {
-          // getBrewFormula: return core formula (no tap)
-          if (cmd === "brew" && args.includes("--formula") && args.includes("anomalyco/tap/opencode")) return ""
+          @lgcode/@lgcode/ getBrewFormula: return core formula (no tap)
+          if (cmd === "brew" && args.includes("--formula") && args.includes("anomalyco@lgcode/tap@lgcode/opencode")) return ""
           if (cmd === "brew" && args.includes("--formula") && args.includes("opencode")) return "opencode"
           return ""
         },
@@ -156,9 +156,9 @@ describe("installation", () => {
     })
     testEffect(
       testLayer(
-        () => jsonResponse({}), // HTTP not used for tap formula
+        () => jsonResponse({}), @lgcode/@lgcode/ HTTP not used for tap formula
         (cmd, args) => {
-          if (cmd === "brew" && args.includes("anomalyco/tap/opencode") && args.includes("--formula")) return "opencode"
+          if (cmd === "brew" && args.includes("anomalyco@lgcode/tap@lgcode/opencode") && args.includes("--formula")) return "opencode"
           if (cmd === "brew" && args.includes("--json=v2")) return brewInfoJson
           return ""
         },

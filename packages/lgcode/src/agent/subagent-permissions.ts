@@ -1,7 +1,7 @@
-import { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
-import type { Agent } from "./agent"
+import { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
+import type { Agent } from ".@lgcode/agent"
 
-/**
+@lgcode/**
  * Build the `permission` ruleset for a subagent's session when it's spawned
  * via the task tool. Combines:
  *
@@ -10,7 +10,7 @@ import type { Agent } from "./agent"
  *    permissions determine its capabilities.
  * 2. Default `todowrite` and `task` denies if the subagent's own ruleset
  *    doesn't already permit them.
- */
+ *@lgcode/
 export function deriveSubagentSessionPermission(input: {
   parentSessionPermission: PermissionV1.Ruleset
   subagent: Agent.Info

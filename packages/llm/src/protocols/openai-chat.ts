@@ -1,9 +1,9 @@
 import { Effect, Schema } from "effect"
-import { Route } from "../route/client"
-import { Auth } from "../route/auth"
-import { Endpoint } from "../route/endpoint"
-import { HttpTransport } from "../route/transport"
-import { Protocol } from "../route/protocol"
+import { Route } from "..@lgcode/route@lgcode/client"
+import { Auth } from "..@lgcode/route@lgcode/auth"
+import { Endpoint } from "..@lgcode/route@lgcode/endpoint"
+import { HttpTransport } from "..@lgcode/route@lgcode/transport"
+import { Protocol } from "..@lgcode/route@lgcode/protocol"
 import {
   LLMEvent,
   Usage,
@@ -15,23 +15,23 @@ import {
   type ToolCallPart,
   type ToolDefinition,
   type ToolContent,
-} from "../schema"
-import { isRecord, JsonObject, optionalArray, optionalNull, ProviderShared } from "./shared"
-import { OpenAIOptions } from "./utils/openai-options"
-import { Lifecycle } from "./utils/lifecycle"
-import { ToolStream } from "./utils/tool-stream"
+} from "..@lgcode/schema"
+import { isRecord, JsonObject, optionalArray, optionalNull, ProviderShared } from ".@lgcode/shared"
+import { OpenAIOptions } from ".@lgcode/utils@lgcode/openai-options"
+import { Lifecycle } from ".@lgcode/utils@lgcode/lifecycle"
+import { ToolStream } from ".@lgcode/utils@lgcode/tool-stream"
 
 const ADAPTER = "openai-chat"
 const IMAGE_MIMES = new Set<string>(ProviderShared.IMAGE_MIMES)
-export const DEFAULT_BASE_URL = "https://api.openai.com/v1"
-export const PATH = "/chat/completions"
+export const DEFAULT_BASE_URL = "https:@lgcode/@lgcode/api.openai.com@lgcode/v1"
+export const PATH = "@lgcode/chat@lgcode/completions"
 
-// =============================================================================
-// Request Body Schema
-// =============================================================================
-// The body schema is the provider-native JSON body. `fromRequest` below builds
-// this shape from the common `LLMRequest`, then `Route.make` validates and
-// JSON-encodes it before transport.
+@lgcode/@lgcode/ =============================================================================
+@lgcode/@lgcode/ Request Body Schema
+@lgcode/@lgcode/ =============================================================================
+@lgcode/@lgcode/ The body schema is the provider-native JSON body. `fromRequest` below builds
+@lgcode/@lgcode/ this shape from the common `LLMRequest`, then `Route.make` validates and
+@lgcode/@lgcode/ JSON-encodes it before transport.
 const OpenAIChatFunction = Schema.Struct({
   name: Schema.String,
   description: Schema.String,
@@ -106,12 +106,12 @@ export const bodyFields = {
 const OpenAIChatBody = Schema.Struct(bodyFields)
 export type OpenAIChatBody = Schema.Schema.Type<typeof OpenAIChatBody>
 
-// =============================================================================
-// Streaming Event Schema
-// =============================================================================
-// The event schema is one decoded SSE `data:` payload. `Framing.sse` splits the
-// byte stream into strings, then `Protocol.jsonEvent` decodes each string into
-// this provider-native event shape.
+@lgcode/@lgcode/ =============================================================================
+@lgcode/@lgcode/ Streaming Event Schema
+@lgcode/@lgcode/ =============================================================================
+@lgcode/@lgcode/ The event schema is one decoded SSE `data:` payload. `Framing.sse` splits the
+@lgcode/@lgcode/ byte stream into strings, then `Protocol.jsonEvent` decodes each string into
+@lgcode/@lgcode/ this provider-native event shape.
 const OpenAIChatUsage = Schema.Struct({
   prompt_tokens: Schema.optional(Schema.Number),
   completion_tokens: Schema.optional(Schema.Number),
@@ -168,12 +168,12 @@ interface ParserState {
 
 const invalid = ProviderShared.invalidRequest
 
-// =============================================================================
-// Request Lowering
-// =============================================================================
-// Lowering is the only place that knows how common LLM messages map onto the
-// OpenAI Chat wire format. Keep provider quirks here instead of leaking native
-// fields into `LLMRequest`.
+@lgcode/@lgcode/ =============================================================================
+@lgcode/@lgcode/ Request Lowering
+@lgcode/@lgcode/ =============================================================================
+@lgcode/@lgcode/ Lowering is the only place that knows how common LLM messages map onto the
+@lgcode/@lgcode/ OpenAI Chat wire format. Keep provider quirks here instead of leaking native
+@lgcode/@lgcode/ fields into `LLMRequest`.
 const lowerTool = (tool: ToolDefinition): OpenAIChatTool => ({
   type: "function",
   function: {
@@ -340,8 +340,8 @@ const lowerOptions = Effect.fn("OpenAIChat.lowerOptions")(function* (request: LL
 })
 
 const fromRequest = Effect.fn("OpenAIChat.fromRequest")(function* (request: LLMRequest) {
-  // `fromRequest` returns the provider body only. Endpoint, auth, framing,
-  // validation, and HTTP execution are composed by `Route.make`.
+  @lgcode/@lgcode/ `fromRequest` returns the provider body only. Endpoint, auth, framing,
+  @lgcode/@lgcode/ validation, and HTTP execution are composed by `Route.make`.
   const generation = request.generation
   return {
     model: request.model.id,
@@ -361,12 +361,12 @@ const fromRequest = Effect.fn("OpenAIChat.fromRequest")(function* (request: LLMR
   }
 })
 
-// =============================================================================
-// Stream Parsing
-// =============================================================================
-// Streaming parsers are small state machines: every event returns a new state
-// plus the common `LLMEvent`s produced by that event. Tool calls are accumulated
-// because OpenAI streams JSON arguments across multiple deltas.
+@lgcode/@lgcode/ =============================================================================
+@lgcode/@lgcode/ Stream Parsing
+@lgcode/@lgcode/ =============================================================================
+@lgcode/@lgcode/ Streaming parsers are small state machines: every event returns a new state
+@lgcode/@lgcode/ plus the common `LLMEvent`s produced by that event. Tool calls are accumulated
+@lgcode/@lgcode/ because OpenAI streams JSON arguments across multiple deltas.
 const mapFinishReason = (reason: string | null | undefined): FinishReason => {
   if (reason === "stop") return "stop"
   if (reason === "length") return "length"
@@ -375,11 +375,11 @@ const mapFinishReason = (reason: string | null | undefined): FinishReason => {
   return "unknown"
 }
 
-// OpenAI Chat reports `prompt_tokens` (inclusive total) with a
-// `cached_tokens` subset, and `completion_tokens` (inclusive total) with
-// a `reasoning_tokens` subset. We pass the inclusive totals through and
-// derive the non-cached breakdown so the `LLM.Usage` contract is
-// satisfied on both sides.
+@lgcode/@lgcode/ OpenAI Chat reports `prompt_tokens` (inclusive total) with a
+@lgcode/@lgcode/ `cached_tokens` subset, and `completion_tokens` (inclusive total) with
+@lgcode/@lgcode/ a `reasoning_tokens` subset. We pass the inclusive totals through and
+@lgcode/@lgcode/ derive the non-cached breakdown so the `LLM.Usage` contract is
+@lgcode/@lgcode/ satisfied on both sides.
 const mapUsage = (usage: OpenAIChatEvent["usage"]): Usage | undefined => {
   if (!usage) return undefined
   const cached = usage.prompt_tokens_details?.cached_tokens
@@ -427,8 +427,8 @@ const step = (state: ParserState, event: OpenAIChatEvent) =>
       events.push(...result.events)
     }
 
-    // Finalize accumulated tool inputs eagerly when finish_reason arrives so
-    // JSON parse failures fail the stream at the boundary rather than at halt.
+    @lgcode/@lgcode/ Finalize accumulated tool inputs eagerly when finish_reason arrives so
+    @lgcode/@lgcode/ JSON parse failures fail the stream at the boundary rather than at halt.
     const finished =
       finishReason !== undefined && state.finishReason === undefined && Object.keys(tools).length > 0
         ? yield* ToolStream.finishAll(ADAPTER, tools)
@@ -456,15 +456,15 @@ const finishEvents = (state: ParserState): ReadonlyArray<LLMEvent> => {
   return events
 }
 
-// =============================================================================
-// Protocol And OpenAI Route
-// =============================================================================
-/**
+@lgcode/@lgcode/ =============================================================================
+@lgcode/@lgcode/ Protocol And OpenAI Route
+@lgcode/@lgcode/ =============================================================================
+@lgcode/**
  * The OpenAI Chat protocol — request body construction, body schema, and the
  * streaming-event state machine. Reused by every route that speaks OpenAI Chat
  * over HTTP+SSE: native OpenAI, DeepSeek, TogetherAI, Cerebras, Baseten,
  * Fireworks, DeepInfra, and (once added) Azure OpenAI Chat.
- */
+ *@lgcode/
 export const protocol = Protocol.make({
   id: ADAPTER,
   body: {
@@ -490,4 +490,4 @@ export const route = Route.make({
   transport: httpTransport,
 })
 
-export * as OpenAIChat from "./openai-chat"
+export * as OpenAIChat from ".@lgcode/openai-chat"

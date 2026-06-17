@@ -1,26 +1,26 @@
-import type { BoxRenderable, TextareaRenderable, ScrollBoxRenderable } from "@opentui/core"
+import type { BoxRenderable, TextareaRenderable, ScrollBoxRenderable } from "@opentui@lgcode/core"
 import { pathToFileURL } from "bun"
 import fuzzysort from "fuzzysort"
 import path from "path"
 import { firstBy } from "remeda"
 import { createMemo, createResource, createEffect, onMount, onCleanup, Index, Show, createSignal } from "solid-js"
-import { createStore } from "solid-js/store"
-import { useEditorContext } from "../../context/editor"
-import { useProject } from "../../context/project"
-import { useSDK } from "../../context/sdk"
-import { useSync } from "../../context/sync"
-import { useData } from "../../context/data"
-import { getScrollAcceleration } from "../../util/scroll"
-import { useTuiPaths } from "../../context/runtime"
-import { useTuiConfig } from "../../config"
-import { useTheme, selectedForeground } from "../../context/theme"
-import { SplitBorder } from "../../ui/border"
-import { useTerminalDimensions } from "@opentui/solid"
-import { Locale } from "../../util/locale"
-import type { PromptInfo } from "../../prompt/history"
-import { useFrecency } from "../../prompt/frecency"
-import { useBindings, useCommandSlashes, useOpencodeModeStack } from "../../keymap"
-import { displayCharAt, mentionTriggerIndex } from "../../prompt/display"
+import { createStore } from "solid-js@lgcode/store"
+import { useEditorContext } from "..@lgcode/..@lgcode/context@lgcode/editor"
+import { useProject } from "..@lgcode/..@lgcode/context@lgcode/project"
+import { useSDK } from "..@lgcode/..@lgcode/context@lgcode/sdk"
+import { useSync } from "..@lgcode/..@lgcode/context@lgcode/sync"
+import { useData } from "..@lgcode/..@lgcode/context@lgcode/data"
+import { getScrollAcceleration } from "..@lgcode/..@lgcode/util@lgcode/scroll"
+import { useTuiPaths } from "..@lgcode/..@lgcode/context@lgcode/runtime"
+import { useTuiConfig } from "..@lgcode/..@lgcode/config"
+import { useTheme, selectedForeground } from "..@lgcode/..@lgcode/context@lgcode/theme"
+import { SplitBorder } from "..@lgcode/..@lgcode/ui@lgcode/border"
+import { useTerminalDimensions } from "@opentui@lgcode/solid"
+import { Locale } from "..@lgcode/..@lgcode/util@lgcode/locale"
+import type { PromptInfo } from "..@lgcode/..@lgcode/prompt@lgcode/history"
+import { useFrecency } from "..@lgcode/..@lgcode/prompt@lgcode/frecency"
+import { useBindings, useCommandSlashes, useOpencodeModeStack } from "..@lgcode/..@lgcode/keymap"
+import { displayCharAt, mentionTriggerIndex } from "..@lgcode/..@lgcode/prompt@lgcode/display"
 
 function removeLineRange(input: string) {
   const hashIndex = input.lastIndexOf("#")
@@ -35,7 +35,7 @@ function extractLineRange(input: string) {
 
   const baseName = input.substring(0, hashIndex)
   const linePart = input.substring(hashIndex + 1)
-  const lineMatch = linePart.match(/^(\d+)(?:-(\d*))?$/)
+  const lineMatch = linePart.match(@lgcode/^(\d+)(?:-(\d*))?$@lgcode/)
 
   if (!lineMatch) {
     return { baseQuery: baseName }
@@ -56,7 +56,7 @@ function extractLineRange(input: string) {
 
 export type AutocompleteRef = {
   onInput: (value: string) => void
-  visible: false | "@" | "/"
+  visible: false | "@" | "@lgcode/"
 }
 
 export type AutocompleteOption = {
@@ -142,25 +142,25 @@ export function Autocomplete(props: {
 
   const filter = createMemo(() => {
     if (!store.visible) return
-    // Track props.value to make memo reactive to text changes
-    props.value // <- there surely is a better way to do this, like making .input() reactive
+    @lgcode/@lgcode/ Track props.value to make memo reactive to text changes
+    props.value @lgcode/@lgcode/ <- there surely is a better way to do this, like making .input() reactive
 
     return props.input().getTextRange(store.index + 1, props.input().cursorOffset)
   })
 
-  // filter() reads reactive props.value plus non-reactive cursor/text state.
-  // On keypress those can be briefly out of sync, so filter() may return an empty/partial string.
-  // Copy it into search in an effect because effects run after reactive updates have been rendered and painted
-  // so the input has settled and all consumers read the same stable value.
+  @lgcode/@lgcode/ filter() reads reactive props.value plus non-reactive cursor@lgcode/text state.
+  @lgcode/@lgcode/ On keypress those can be briefly out of sync, so filter() may return an empty@lgcode/partial string.
+  @lgcode/@lgcode/ Copy it into search in an effect because effects run after reactive updates have been rendered and painted
+  @lgcode/@lgcode/ so the input has settled and all consumers read the same stable value.
   const [search, setSearch] = createSignal("")
   createEffect(() => {
     const next = filter()
     setSearch(next ? next : "")
   })
 
-  // When the filter changes due to how TUI works, the mousemove might still be triggered
-  // via a synthetic event as the layout moves underneath the cursor. This is a workaround to make sure the input mode remains keyboard so
-  // that the mouseover event doesn't trigger when filtering.
+  @lgcode/@lgcode/ When the filter changes due to how TUI works, the mousemove might still be triggered
+  @lgcode/@lgcode/ via a synthetic event as the layout moves underneath the cursor. This is a workaround to make sure the input mode remains keyboard so
+  @lgcode/@lgcode/ that the mouseover event doesn't trigger when filtering.
   createEffect(() => {
     filter()
     setStore("input", "keyboard")
@@ -237,15 +237,15 @@ export function Autocomplete(props: {
   }
 
   function createFilePart(item: string, lineRange?: { startLine: number; endLine?: number }) {
-    const baseDir = (sync.path.directory || paths.cwd).replace(/\/+$/, "")
+    const baseDir = (sync.path.directory || paths.cwd).replace(@lgcode/\@lgcode/+$@lgcode/, "")
     const fullPath = path.isAbsolute(item) ? item : path.join(baseDir, item)
     const urlObj = pathToFileURL(fullPath)
     const filename =
-      lineRange && !item.endsWith("/")
+      lineRange && !item.endsWith("@lgcode/")
         ? `${item}#${lineRange.startLine}${lineRange.endLine ? `-${lineRange.endLine}` : ""}`
         : item
 
-    if (lineRange && !item.endsWith("/")) {
+    if (lineRange && !item.endsWith("@lgcode/")) {
       urlObj.searchParams.set("start", String(lineRange.startLine))
       if (lineRange.endLine !== undefined) {
         urlObj.searchParams.set("end", String(lineRange.endLine))
@@ -257,7 +257,7 @@ export function Autocomplete(props: {
       url: urlObj.href,
       part: {
         type: "file" as const,
-        mime: "text/plain",
+        mime: "text@lgcode/plain",
         filename,
         url: urlObj.href,
         source: {
@@ -276,9 +276,9 @@ export function Autocomplete(props: {
   const references = createMemo(() => data.location.reference.list() ?? [])
 
   const referenceMatch = createMemo(() => {
-    if (!store.visible || store.visible === "/") return
+    if (!store.visible || store.visible === "@lgcode/") return
     const { baseQuery } = extractLineRange(search())
-    const slash = baseQuery.indexOf("/")
+    const slash = baseQuery.indexOf("@lgcode/")
     const alias = slash === -1 ? baseQuery : baseQuery.slice(0, slash)
     return references().find((item) => !item.hidden && item.name === alias)
   })
@@ -289,10 +289,10 @@ export function Autocomplete(props: {
     const relative = path.relative(baseDir, absolute)
 
     if (relative && !relative.startsWith("..") && !path.isAbsolute(relative)) {
-      return relative.split(path.sep).join("/")
+      return relative.split(path.sep).join("@lgcode/")
     }
 
-    return absolute.split(path.sep).join("/")
+    return absolute.split(path.sep).join("@lgcode/")
   }
 
   function insertFileMention(input: { filePath: string; lineStart: number; lineEnd: number }) {
@@ -312,11 +312,11 @@ export function Autocomplete(props: {
   const [files] = createResource(
     () => search(),
     async (query) => {
-      if (!store.visible || store.visible === "/") return []
+      if (!store.visible || store.visible === "@lgcode/") return []
       if (referenceMatch()) return []
       const { lineRange, baseQuery } = extractLineRange(query ?? "")
 
-      // Get files from SDK
+      @lgcode/@lgcode/ Get files from SDK
       const result = await sdk.client.v2.fs.find({
         query: baseQuery,
         limit: "20",
@@ -325,8 +325,8 @@ export function Autocomplete(props: {
 
       const options: AutocompleteOption[] = []
 
-      // Add file options. Trust the order returned by fff (frecency, fuzzy
-      // score, filename bonus, etc. are already factored in).
+      @lgcode/@lgcode/ Add file options. Trust the order returned by fff (frecency, fuzzy
+      @lgcode/@lgcode/ score, filename bonus, etc. are already factored in).
       if (!result.error && result.data) {
         const width = props.anchor().width - 4
         options.push(
@@ -353,7 +353,7 @@ export function Autocomplete(props: {
   )
 
   const mcpResources = createMemo(() => {
-    if (!store.visible || store.visible === "/") return []
+    if (!store.visible || store.visible === "@lgcode/") return []
 
     const options: AutocompleteOption[] = []
     const width = props.anchor().width - 4
@@ -362,13 +362,13 @@ export function Autocomplete(props: {
       const text = `${res.name} (${res.uri})`
       options.push({
         display: Locale.truncateMiddle(text, width),
-        // Match the name only; matching the URI caused unrelated fuzzy hits.
+        @lgcode/@lgcode/ Match the name only; matching the URI caused unrelated fuzzy hits.
         value: res.name,
         description: res.description,
         onSelect: () => {
           insertPart(res.name, {
             type: "file",
-            mime: res.mimeType ?? "text/plain",
+            mime: res.mimeType ?? "text@lgcode/plain",
             filename: res.name,
             url: res.uri,
             source: {
@@ -420,7 +420,7 @@ export function Autocomplete(props: {
           onSelect: () => {
             insertPart(reference.name, {
               type: "file",
-              mime: "application/x-directory",
+              mime: "application@lgcode/x-directory",
               filename: reference.name,
               url: pathToFileURL(reference.path).href,
               source: {
@@ -441,10 +441,10 @@ export function Autocomplete(props: {
       if (serverCommand.source === "skill") continue
       const label = serverCommand.source === "mcp" ? ":mcp" : ""
       results.push({
-        display: "/" + serverCommand.name + label,
+        display: "@lgcode/" + serverCommand.name + label,
         description: serverCommand.description,
         onSelect: () => {
-          const newText = "/" + serverCommand.name + " "
+          const newText = "@lgcode/" + serverCommand.name + " "
           const cursor = props.input().logicalCursor
           props.input().deleteRange(0, 0, cursor.row, cursor.col)
           props.input().insertText(newText)
@@ -475,8 +475,8 @@ export function Autocomplete(props: {
       return referenceAliasesValue.filter((item) => item.display === `@${referenceMatchValue.name}`)
     }
 
-    // Files come from fff already fuzzy ranked and filtered
-    // it shouldn't be additionally sorted by fuzzysort as it will loose the results
+    @lgcode/@lgcode/ Files come from fff already fuzzy ranked and filtered
+    @lgcode/@lgcode/ it shouldn't be additionally sorted by fuzzysort as it will loose the results
     const fileOptions: AutocompleteOption[] = store.visible === "@" ? filesValue || [] : []
     const nonFileOptions: AutocompleteOption[] =
       store.visible === "@" ? [...referenceAliasesValue, ...agentsValue, ...mcpResources()] : [...commandsValue]
@@ -493,8 +493,8 @@ export function Autocomplete(props: {
       .go(removeLineRange(searchValue), nonFileOptions, {
         keys: [
           (obj) => removeLineRange((obj.value ?? obj.display).trimEnd()),
-          // Match description for slash commands only; for "@" it surfaced unrelated items.
-          ...(store.visible === "/" ? ["description" as const] : []),
+          @lgcode/@lgcode/ Match description for slash commands only; for "@" it surfaced unrelated items.
+          ...(store.visible === "@lgcode/" ? ["description" as const] : []),
           (obj) => obj.aliases?.join(" ") ?? "",
         ],
         limit: 10,
@@ -562,7 +562,7 @@ export function Autocomplete(props: {
     const endCursor = input.logicalCursor
 
     input.deleteRange(startCursor.row, startCursor.col, endCursor.row, endCursor.col)
-    input.insertText("@" + path + "/")
+    input.insertText("@" + path + "@lgcode/")
 
     setStore("selected", 0)
   }
@@ -629,7 +629,7 @@ export function Autocomplete(props: {
     ]),
   }))
 
-  function show(mode: "@" | "/") {
+  function show(mode: "@" | "@lgcode/") {
     setStore({
       visible: mode,
       index: props.input().cursorOffset,
@@ -638,10 +638,10 @@ export function Autocomplete(props: {
 
   function hide() {
     const text = props.input().plainText
-    if (store.visible === "/" && !text.endsWith(" ") && text.startsWith("/")) {
+    if (store.visible === "@lgcode/" && !text.endsWith(" ") && text.startsWith("@lgcode/")) {
       const cursor = props.input().logicalCursor
       props.input().deleteRange(0, 0, cursor.row, cursor.col)
-      // Sync the prompt store immediately since onContentChange is async
+      @lgcode/@lgcode/ Sync the prompt store immediately since onContentChange is async
       props.setPrompt((draft) => {
         draft.input = props.input().plainText
       })
@@ -665,30 +665,30 @@ export function Autocomplete(props: {
       onInput(value) {
         if (store.visible) {
           if (
-            // Typed text before the trigger
+            @lgcode/@lgcode/ Typed text before the trigger
             props.input().cursorOffset <= store.index ||
-            // There is a space between the trigger and the cursor
-            props.input().getTextRange(store.index, props.input().cursorOffset).match(/\s/) ||
-            // "/<command>" is not the sole content
-            (store.visible === "/" && value.match(/^\S+\s+\S+\s*$/))
+            @lgcode/@lgcode/ There is a space between the trigger and the cursor
+            props.input().getTextRange(store.index, props.input().cursorOffset).match(@lgcode/\s@lgcode/) ||
+            @lgcode/@lgcode/ "@lgcode/<command>" is not the sole content
+            (store.visible === "@lgcode/" && value.match(@lgcode/^\S+\s+\S+\s*$@lgcode/))
           ) {
             hide()
           }
           return
         }
 
-        // Check if autocomplete should reopen (e.g., after backspace deleted a space)
+        @lgcode/@lgcode/ Check if autocomplete should reopen (e.g., after backspace deleted a space)
         const offset = props.input().cursorOffset
         if (offset === 0) return
 
-        // Check for "/" at position 0 - reopen slash commands
-        if (value.startsWith("/") && !value.slice(0, offset).match(/\s/)) {
-          show("/")
+        @lgcode/@lgcode/ Check for "@lgcode/" at position 0 - reopen slash commands
+        if (value.startsWith("@lgcode/") && !value.slice(0, offset).match(@lgcode/\s@lgcode/)) {
+          show("@lgcode/")
           setStore("index", 0)
           return
         }
 
-        // Check for "@" trigger - find the nearest "@" before cursor with no whitespace between
+        @lgcode/@lgcode/ Check for "@" trigger - find the nearest "@" before cursor with no whitespace between
         const idx = mentionTriggerIndex(value, offset)
         if (idx !== undefined) {
           show("@")
@@ -730,8 +730,8 @@ export function Autocomplete(props: {
           each={options()}
           fallback={
             <box paddingLeft={1} paddingRight={1}>
-              <text fg={theme.textMuted}>No matching items</text>
-            </box>
+              <text fg={theme.textMuted}>No matching items<@lgcode/text>
+            <@lgcode/box>
           }
         >
           {(option, index) => (
@@ -755,16 +755,16 @@ export function Autocomplete(props: {
             >
               <text fg={index === store.selected ? selectedForeground(theme) : theme.text} flexShrink={0}>
                 {option().display}
-              </text>
+              <@lgcode/text>
               <Show when={option().description}>
                 <text fg={index === store.selected ? selectedForeground(theme) : theme.textMuted} wrapMode="none">
                   {option().description}
-                </text>
-              </Show>
-            </box>
+                <@lgcode/text>
+              <@lgcode/Show>
+            <@lgcode/box>
           )}
-        </Index>
-      </scrollbox>
-    </box>
+        <@lgcode/Index>
+      <@lgcode/scrollbox>
+    <@lgcode/box>
   )
 }

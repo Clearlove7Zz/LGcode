@@ -1,9 +1,9 @@
 import { describe, expect, test } from "bun:test"
 import { Schema } from "effect"
-import { ConfigProviderV1 } from "@opencode@lgcode/core/v1/config/provider"
-import { CatalogModelStatus, ModelStatus } from "@/provider/model-status"
-import { ModelsDev } from "@opencode@lgcode/core/models-dev"
-import { Provider } from "@/provider/provider"
+import { ConfigProviderV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/provider"
+import { CatalogModelStatus, ModelStatus } from "@@lgcode/provider@lgcode/model-status"
+import { ModelsDev } from "@lgcode/core@lgcode/models-dev"
+import { Provider } from "@@lgcode/provider@lgcode/provider"
 
 describe("provider model status schemas", () => {
   test("keeps catalog status separate from normalized provider status", () => {
@@ -33,7 +33,7 @@ describe("provider model status schemas", () => {
         api: {
           id: "test-model",
           url: "",
-          npm: "@ai-sdk/openai-compatible",
+          npm: "@ai-sdk@lgcode/openai-compatible",
         },
         name: "Test Model",
         capabilities: {

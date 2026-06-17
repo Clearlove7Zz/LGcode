@@ -1,10 +1,10 @@
-import fs from "fs/promises"
+import fs from "fs@lgcode/promises"
 import path from "path"
 import { describe, expect } from "bun:test"
 import { Effect, Schema } from "effect"
-import { AbsolutePath, Location, Model, OpenCode, Session, Tool } from "@opencode@lgcode/core/public"
-import { tmpdir } from "./fixture/tmpdir"
-import { testEffect } from "./lib/effect"
+import { AbsolutePath, Location, Model, OpenCode, Session, Tool } from "@lgcode/core@lgcode/public"
+import { tmpdir } from ".@lgcode/fixture@lgcode/tmpdir"
+import { testEffect } from ".@lgcode/lib@lgcode/effect"
 
 const it = testEffect(OpenCode.layer)
 

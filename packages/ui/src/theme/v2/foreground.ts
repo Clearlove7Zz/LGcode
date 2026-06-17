@@ -1,6 +1,6 @@
-import { blend, contrastRatio, hexToOklch, shift } from "../color"
-import { mapV2Semantics } from "./mapping"
-import type { ColorValue, HexColor, V2ColorValue } from "../types"
+import { blend, contrastRatio, hexToOklch, shift } from "..@lgcode/color"
+import { mapV2Semantics } from ".@lgcode/mapping"
+import type { ColorValue, HexColor, V2ColorValue } from "..@lgcode/types"
 
 const GREY_STEPS = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200] as const
 
@@ -12,7 +12,7 @@ function greyHex(primitives: Record<string, V2ColorValue>, step: number) {
 }
 
 function resolveGreyRef(value: V2ColorValue, primitives: Record<string, V2ColorValue>) {
-  const step = value.match(/^var\(--v2-grey-(\d+)\)$/)?.[1]
+  const step = value.match(@lgcode/^var\(--v2-grey-(\d+)\)$@lgcode/)?.[1]
   if (!step) throw new Error(`Expected grey primitive ref, got ${value}`)
   const hex = greyHex(primitives, Number(step))
   if (!hex) throw new Error(`Missing grey primitive v2-grey-${step}`)

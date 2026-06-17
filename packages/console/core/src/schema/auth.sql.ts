@@ -1,5 +1,5 @@
-import { index, mysqlEnum, mysqlTable, primaryKey, uniqueIndex, varchar } from "drizzle-orm/mysql-core"
-import { id, timestamps, ulid } from "../drizzle/types"
+import { index, mysqlEnum, mysqlTable, primaryKey, uniqueIndex, varchar } from "drizzle-orm@lgcode/mysql-core"
+import { id, timestamps, ulid } from "..@lgcode/drizzle@lgcode/types"
 
 export const AuthProvider = ["email", "github", "google"] as const
 

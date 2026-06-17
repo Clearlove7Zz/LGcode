@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, mock, spyOn, test } from "bun:test"
-import { OpencodeClient, type GlobalEvent } from "@opencode@lgcode/sdk/v2"
-import { createSessionTransport } from "@/cli/cmd/run/stream.transport"
-import type { FooterApi, FooterEvent, LocalReplayRow, RunFilePart, StreamCommit } from "@/cli/cmd/run/types"
+import { OpencodeClient, type GlobalEvent } from "@lgcode/sdk@lgcode/v2"
+import { createSessionTransport } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/stream.transport"
+import type { FooterApi, FooterEvent, LocalReplayRow, RunFilePart, StreamCommit } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/types"
 
 type EventStream = Awaited<ReturnType<OpencodeClient["event"]["subscribe"]>>["stream"]
 type GlobalEventStream = Awaited<ReturnType<OpencodeClient["global"]["event"]>>["stream"]
@@ -156,7 +156,7 @@ function ok<T>(data: T) {
   return Promise.resolve({
     data,
     error: undefined,
-    request: new Request("https://opencode.test"),
+    request: new Request("https:@lgcode/@lgcode/opencode.test"),
     response: new Response(),
   })
 }
@@ -201,8 +201,8 @@ function assistantMessage(input: { sessionID: string; id: string; parts: Session
       mode: "chat",
       agent: "build",
       path: {
-        cwd: "/tmp",
-        root: "/tmp",
+        cwd: "@lgcode/tmp",
+        root: "@lgcode/tmp",
       },
       cost: 0,
       tokens: {
@@ -353,7 +353,7 @@ function child(id: string): SessionChild {
     id,
     slug: id,
     projectID: "project-1",
-    directory: "/tmp",
+    directory: "@lgcode/tmp",
     title: id,
     version: "1",
     time: {
@@ -365,7 +365,7 @@ function child(id: string): SessionChild {
 
 function globalEvent(payload: GlobalEvent["payload"]): GlobalEvent {
   return {
-    directory: "/tmp",
+    directory: "@lgcode/tmp",
     project: "project-1",
     payload,
   }
@@ -1283,7 +1283,7 @@ describe("run stream transport", () => {
                   callID: "call-edit-1",
                   tool: "edit",
                   body: {
-                    filePath: "src/run/subagent-data.ts",
+                    filePath: "src@lgcode/run@lgcode/subagent-data.ts",
                     diff: "@@ -1 +1 @@",
                   },
                 }),
@@ -1298,7 +1298,7 @@ describe("run stream transport", () => {
               id: "perm-1",
               sessionID: "child-1",
               permission: "edit",
-              patterns: ["src/run/subagent-data.ts"],
+              patterns: ["src@lgcode/run@lgcode/subagent-data.ts"],
               metadata: {},
               always: [],
               tool: {
@@ -1338,7 +1338,7 @@ describe("run stream transport", () => {
           sessionID: "child-1",
           metadata: {
             input: {
-              filePath: "src/run/subagent-data.ts",
+              filePath: "src@lgcode/run@lgcode/subagent-data.ts",
               diff: "@@ -1 +1 @@",
             },
           },
@@ -1386,7 +1386,7 @@ describe("run stream transport", () => {
             id: "perm-1",
             metadata: {
               input: {
-                filePath: "src/run/subagent-data.ts",
+                filePath: "src@lgcode/run@lgcode/subagent-data.ts",
                 diff: "@@ -1 +1 @@",
               },
             },
@@ -2011,9 +2011,9 @@ describe("run stream transport", () => {
     const seen: unknown[] = []
     const file: RunFilePart = {
       type: "file",
-      url: "file:///tmp/a.ts",
+      url: "file:@lgcode/@lgcode/@lgcode/tmp@lgcode/a.ts",
       filename: "a.ts",
-      mime: "text/plain",
+      mime: "text@lgcode/plain",
     }
 
     const transport = await createSessionTransport({
@@ -2282,7 +2282,7 @@ describe("run stream transport", () => {
                 id: "evt-disposed",
                 type: "server.instance.disposed",
                 properties: {
-                  directory: "/tmp",
+                  directory: "@lgcode/tmp",
                 },
               })
             })(),
@@ -2293,7 +2293,7 @@ describe("run stream transport", () => {
         },
         status: async () => ok({}),
       }),
-      directory: "/tmp",
+      directory: "@lgcode/tmp",
       sessionID: "session-1",
       thinking: true,
       limits: () => ({}),

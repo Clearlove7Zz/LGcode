@@ -1,7 +1,7 @@
-import { usePlatform } from "@/context/platform"
-import { Button } from "@opencode@lgcode/ui/button"
-import { useDialog } from "@opencode@lgcode/ui/context/dialog"
-import { Dialog } from "@opencode@lgcode/ui/dialog"
+import { usePlatform } from "@@lgcode/context@lgcode/platform"
+import { Button } from "@lgcode/ui@lgcode/button"
+import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
+import { Dialog } from "@lgcode/ui@lgcode/dialog"
 import { JSX } from "solid-js"
 
 export type DialogGoUpsellProps = {
@@ -33,12 +33,12 @@ export function DialogUsageExceeded(props: DialogGoUpsellProps) {
         <div class="flex justify-end gap-2">
           <Button variant="ghost" size="large" onClick={dismiss}>
             Don't show again
-          </Button>
+          <@lgcode/Button>
           <Button variant="primary" size="large" onClick={runAction}>
             {props.actionLabel}
-          </Button>
-        </div>
-      </div>
-    </Dialog>
+          <@lgcode/Button>
+        <@lgcode/div>
+      <@lgcode/div>
+    <@lgcode/Dialog>
   )
 }

@@ -1,9 +1,9 @@
-import { AgentV2 } from "@opencode@lgcode/core/agent"
-import { PluginBoot } from "@opencode@lgcode/core/plugin/boot"
+import { AgentV2 } from "@lgcode/core@lgcode/agent"
+import { PluginBoot } from "@lgcode/core@lgcode/plugin@lgcode/boot"
 import { Effect } from "effect"
-import { HttpApiBuilder } from "effect/unstable/httpapi"
-import { Api } from "../api"
-import { response } from "../groups/location"
+import { HttpApiBuilder } from "effect@lgcode/unstable@lgcode/httpapi"
+import { Api } from "..@lgcode/api"
+import { response } from "..@lgcode/groups@lgcode/location"
 
 export const AgentHandler = HttpApiBuilder.group(Api, "server.agent", (handlers) =>
   handlers.handle("agent.list", () =>

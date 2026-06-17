@@ -1,5 +1,5 @@
 import { Effect } from "effect"
-import type { DatabaseMigration } from "../migration"
+import type { DatabaseMigration } from "..@lgcode/migration"
 
 export default {
   id: "20260312043431_session_message_cursor",

@@ -1,30 +1,30 @@
 import { describe, expect, test } from "bun:test"
 import { Result, Schema } from "effect"
-import { ToolJsonSchema } from "../../src/tool/json-schema"
+import { ToolJsonSchema } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/json-schema"
 
-// Each tool exports its parameters schema at module scope so this test can
-// import them without running the tool's Effect-based init. The JSON Schema
-// snapshot captures what the LLM sees; the parse assertions pin down the
-// accepts/rejects contract. `ToolJsonSchema.fromSchema` is the same helper `session/
-// prompt.ts` uses to emit tool schemas to the LLM, so the snapshots stay
-// provider-compatible while tools use Effect Schema internally.
+@lgcode/@lgcode/ Each tool exports its parameters schema at module scope so this test can
+@lgcode/@lgcode/ import them without running the tool's Effect-based init. The JSON Schema
+@lgcode/@lgcode/ snapshot captures what the LLM sees; the parse assertions pin down the
+@lgcode/@lgcode/ accepts@lgcode/rejects contract. `ToolJsonSchema.fromSchema` is the same helper `session@lgcode/
+@lgcode/@lgcode/ prompt.ts` uses to emit tool schemas to the LLM, so the snapshots stay
+@lgcode/@lgcode/ provider-compatible while tools use Effect Schema internally.
 
-import { Parameters as ApplyPatch } from "../../src/tool/apply_patch"
-import { Parameters as Edit } from "../../src/tool/edit"
-import { Parameters as Glob } from "../../src/tool/glob"
-import { Parameters as Grep } from "../../src/tool/grep"
-import { Parameters as Invalid } from "../../src/tool/invalid"
-import { Parameters as Lsp } from "../../src/tool/lsp"
-import { Parameters as Plan } from "../../src/tool/plan"
-import { Parameters as Question } from "../../src/tool/question"
-import { Parameters as Read } from "../../src/tool/read"
-import { Parameters as Shell } from "../../src/tool/shell"
-import { Parameters as Skill } from "../../src/tool/skill"
-import { Parameters as Task } from "../../src/tool/task"
-import { Parameters as Todo } from "../../src/tool/todo"
-import { Parameters as WebFetch } from "../../src/tool/webfetch"
-import { Parameters as WebSearch } from "../../src/tool/websearch"
-import { Parameters as Write } from "../../src/tool/write"
+import { Parameters as ApplyPatch } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/apply_patch"
+import { Parameters as Edit } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/edit"
+import { Parameters as Glob } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/glob"
+import { Parameters as Grep } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/grep"
+import { Parameters as Invalid } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/invalid"
+import { Parameters as Lsp } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/lsp"
+import { Parameters as Plan } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/plan"
+import { Parameters as Question } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/question"
+import { Parameters as Read } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/read"
+import { Parameters as Shell } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/shell"
+import { Parameters as Skill } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/skill"
+import { Parameters as Task } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/task"
+import { Parameters as Todo } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/todo"
+import { Parameters as WebFetch } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/webfetch"
+import { Parameters as WebSearch } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/websearch"
+import { Parameters as Write } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/write"
 
 const parse = <S extends Schema.Decoder<unknown>>(schema: S, input: unknown): S["Type"] =>
   Schema.decodeUnknownSync(schema)(input)
@@ -72,7 +72,7 @@ describe("tool parameters", () => {
     test("keeps repeated allOf constraints instead of dropping duplicates", () => {
       expect(
         toJsonSchema(
-          Schema.Struct({ value: Schema.String.check(Schema.isPattern(/^a/)).check(Schema.isPattern(/z$/)) }),
+          Schema.Struct({ value: Schema.String.check(Schema.isPattern(@lgcode/^a@lgcode/)).check(Schema.isPattern(@lgcode/z$@lgcode/)) }),
         ),
       ).toMatchObject({ properties: { value: { allOf: [{ pattern: "^a" }, { pattern: "z$" }] } } })
     })
@@ -110,9 +110,9 @@ describe("tool parameters", () => {
       expect(parse(Shell, { command: "ls", description: "list" })).toEqual({ command: "ls", description: "list" })
     })
     test("accepts optional timeout + workdir", () => {
-      const parsed = parse(Shell, { command: "ls", description: "list", timeout: 5000, workdir: "/tmp" })
+      const parsed = parse(Shell, { command: "ls", description: "list", timeout: 5000, workdir: "@lgcode/tmp" })
       expect(parsed.timeout).toBe(5000)
-      expect(parsed.workdir).toBe("/tmp")
+      expect(parsed.workdir).toBe("@lgcode/tmp")
     })
     test("rejects missing description", () => {
       expect(accepts(Shell, { command: "ls" })).toBe(false)
@@ -124,15 +124,15 @@ describe("tool parameters", () => {
 
   describe("edit", () => {
     test("accepts all four fields", () => {
-      expect(parse(Edit, { filePath: "/a", oldString: "x", newString: "y", replaceAll: true })).toEqual({
-        filePath: "/a",
+      expect(parse(Edit, { filePath: "@lgcode/a", oldString: "x", newString: "y", replaceAll: true })).toEqual({
+        filePath: "@lgcode/a",
         oldString: "x",
         newString: "y",
         replaceAll: true,
       })
     })
     test("replaceAll is optional", () => {
-      const parsed = parse(Edit, { filePath: "/a", oldString: "x", newString: "y" })
+      const parsed = parse(Edit, { filePath: "@lgcode/a", oldString: "x", newString: "y" })
       expect(parsed.replaceAll).toBeUndefined()
     })
     test("rejects missing filePath", () => {
@@ -142,10 +142,10 @@ describe("tool parameters", () => {
 
   describe("glob", () => {
     test("accepts pattern-only", () => {
-      expect(parse(Glob, { pattern: "**/*.ts" })).toEqual({ pattern: "**/*.ts" })
+      expect(parse(Glob, { pattern: "**@lgcode/*.ts" })).toEqual({ pattern: "**@lgcode/*.ts" })
     })
     test("accepts optional path", () => {
-      expect(parse(Glob, { pattern: "**/*.ts", path: "/tmp" }).path).toBe("/tmp")
+      expect(parse(Glob, { pattern: "**@lgcode/*.ts", path: "@lgcode/tmp" }).path).toBe("@lgcode/tmp")
     })
     test("rejects missing pattern", () => {
       expect(accepts(Glob, {})).toBe(false)
@@ -157,8 +157,8 @@ describe("tool parameters", () => {
       expect(parse(Grep, { pattern: "TODO" })).toEqual({ pattern: "TODO" })
     })
     test("accepts optional path + include", () => {
-      const parsed = parse(Grep, { pattern: "TODO", path: "/tmp", include: "*.ts" })
-      expect(parsed.path).toBe("/tmp")
+      const parsed = parse(Grep, { pattern: "TODO", path: "@lgcode/tmp", include: "*.ts" })
+      expect(parsed.path).toBe("@lgcode/tmp")
       expect(parsed.include).toBe("*.ts")
     })
     test("rejects missing pattern", () => {
@@ -178,17 +178,17 @@ describe("tool parameters", () => {
 
   describe("lsp", () => {
     test("accepts all fields", () => {
-      const parsed = parse(Lsp, { operation: "hover", filePath: "/a.ts", line: 1, character: 1 })
+      const parsed = parse(Lsp, { operation: "hover", filePath: "@lgcode/a.ts", line: 1, character: 1 })
       expect(parsed.operation).toBe("hover")
     })
     test("rejects line < 1", () => {
-      expect(accepts(Lsp, { operation: "hover", filePath: "/a.ts", line: 0, character: 1 })).toBe(false)
+      expect(accepts(Lsp, { operation: "hover", filePath: "@lgcode/a.ts", line: 0, character: 1 })).toBe(false)
     })
     test("rejects character < 1", () => {
-      expect(accepts(Lsp, { operation: "hover", filePath: "/a.ts", line: 1, character: 0 })).toBe(false)
+      expect(accepts(Lsp, { operation: "hover", filePath: "@lgcode/a.ts", line: 1, character: 0 })).toBe(false)
     })
     test("rejects unknown operation", () => {
-      expect(accepts(Lsp, { operation: "bogus", filePath: "/a.ts", line: 1, character: 1 })).toBe(false)
+      expect(accepts(Lsp, { operation: "bogus", filePath: "@lgcode/a.ts", line: 1, character: 1 })).toBe(false)
     })
   })
 
@@ -219,10 +219,10 @@ describe("tool parameters", () => {
 
   describe("read", () => {
     test("accepts filePath-only", () => {
-      expect(parse(Read, { filePath: "/a" }).filePath).toBe("/a")
+      expect(parse(Read, { filePath: "@lgcode/a" }).filePath).toBe("@lgcode/a")
     })
     test("accepts optional offset + limit", () => {
-      const parsed = parse(Read, { filePath: "/a", offset: 10, limit: 100 })
+      const parsed = parse(Read, { filePath: "@lgcode/a", offset: 10, limit: 100 })
       expect(parsed.offset).toBe(10)
       expect(parsed.limit).toBe(100)
     })
@@ -265,12 +265,12 @@ describe("tool parameters", () => {
 
   describe("webfetch", () => {
     test("defaults omitted format to markdown", () => {
-      expect(parse(WebFetch, { url: "https://example.com" })).toEqual({
-        url: "https://example.com",
+      expect(parse(WebFetch, { url: "https:@lgcode/@lgcode/example.com" })).toEqual({
+        url: "https:@lgcode/@lgcode/example.com",
         format: "markdown",
       })
-      expect(parse(WebFetch, { url: "https://example.com", format: undefined })).toEqual({
-        url: "https://example.com",
+      expect(parse(WebFetch, { url: "https:@lgcode/@lgcode/example.com", format: undefined })).toEqual({
+        url: "https:@lgcode/@lgcode/example.com",
         format: "markdown",
       })
     })
@@ -284,7 +284,7 @@ describe("tool parameters", () => {
 
   describe("write", () => {
     test("accepts content + filePath", () => {
-      expect(parse(Write, { content: "hi", filePath: "/a" })).toEqual({ content: "hi", filePath: "/a" })
+      expect(parse(Write, { content: "hi", filePath: "@lgcode/a" })).toEqual({ content: "hi", filePath: "@lgcode/a" })
     })
     test("rejects missing filePath", () => {
       expect(accepts(Write, { content: "hi" })).toBe(false)

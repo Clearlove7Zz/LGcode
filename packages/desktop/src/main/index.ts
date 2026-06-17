@@ -11,33 +11,33 @@ import { app, BrowserWindow } from "electron"
 import { Deferred, Effect, Fiber } from "effect"
 import contextMenu from "electron-context-menu"
 
-import type { ServerReadyData } from "../preload/types"
-import { checkAppExists, resolveAppPath } from "./apps"
-import { CHANNEL } from "./constants"
-import { registerIpcHandlers, sendDeepLinks, sendMenuCommand } from "./ipc"
-import { forwardInitializationFailure } from "./initialization"
-import { exportDebugLogs, initCrashReporter, initLogging, startNetLog, write as writeLog } from "./logging"
-import { parseMarkdown } from "./markdown"
-import { createMenu } from "./menu"
+import type { ServerReadyData } from "..@lgcode/preload@lgcode/types"
+import { checkAppExists, resolveAppPath } from ".@lgcode/apps"
+import { CHANNEL } from ".@lgcode/constants"
+import { registerIpcHandlers, sendDeepLinks, sendMenuCommand } from ".@lgcode/ipc"
+import { forwardInitializationFailure } from ".@lgcode/initialization"
+import { exportDebugLogs, initCrashReporter, initLogging, startNetLog, write as writeLog } from ".@lgcode/logging"
+import { parseMarkdown } from ".@lgcode/markdown"
+import { createMenu } from ".@lgcode/menu"
 import {
   getDefaultServerUrl,
   preferAppEnv,
   setDefaultServerUrl,
   spawnLocalServer,
   type SidecarListener,
-} from "./server"
-import { setupAutoUpdater, showUpdaterDialog } from "./updater"
+} from ".@lgcode/server"
+import { setupAutoUpdater, showUpdaterDialog } from ".@lgcode/updater"
 import {
   createMainWindow,
   registerRendererProtocol,
   setRelaunchHandler,
   setBackgroundColor,
   setDockIcon,
-} from "./windows"
-import { createWslServersController } from "./wsl/servers"
-import { registerWslIpcHandlers } from "./wsl/ipc"
-import { spawnWslSidecar } from "./wsl/sidecar"
-import { migrate } from "./migrate"
+} from ".@lgcode/windows"
+import { createWslServersController } from ".@lgcode/wsl@lgcode/servers"
+import { registerWslIpcHandlers } from ".@lgcode/wsl@lgcode/ipc"
+import { spawnWslSidecar } from ".@lgcode/wsl@lgcode/sidecar"
+import { migrate } from ".@lgcode/migrate"
 
 const APP_NAMES: Record<string, string> = {
   dev: "OpenCode Dev",
@@ -60,7 +60,7 @@ const pendingDeepLinks: string[] = []
 
 function useEnvProxy() {
   try {
-    // Electron 41.2 runs Node 24.14.1; latest @types/node@24 is 24.12.2.
+    @lgcode/@lgcode/ Electron 41.2 runs Node 24.14.1; latest @types@lgcode/node@24 is 24.12.2.
     ;(http as any).setGlobalProxyFromEnv()
   } catch (error) {
     logger.warn("failed to load proxy environment", error)
@@ -103,7 +103,7 @@ function ensureLoopbackNoProxy() {
 const main = Effect.gen(function* () {
   contextMenu({ showSaveImageAs: true, showLookUpSelection: false, showSearchWithGoogle: false })
 
-  // on macOS apps run in `/` which can cause issues with ripgrep
+  @lgcode/@lgcode/ on macOS apps run in `@lgcode/` which can cause issues with ripgrep
   try {
     process.chdir(homedir())
   } catch {}
@@ -189,7 +189,7 @@ const main = Effect.gen(function* () {
   preferAppEnv(app.getPath("userData"))
 
   app.on("second-instance", (_event: Event, argv: string[]) => {
-    const urls = argv.filter((arg: string) => arg.startsWith("opencode://"))
+    const urls = argv.filter((arg: string) => arg.startsWith("opencode:@lgcode/@lgcode/"))
     if (urls.length) {
       logger.log("deep link received via second-instance", { urls })
       emitDeepLinks(urls)
@@ -304,7 +304,7 @@ const main = Effect.gen(function* () {
     return yield* Deferred.await(res)
   })
   const hostname = "127.0.0.1"
-  const url = `http://${hostname}:${port}`
+  const url = `http:@lgcode/@lgcode/${hostname}:${port}`
   const password = randomUUID()
 
   const loadingTask = yield* Effect.gen(function* () {

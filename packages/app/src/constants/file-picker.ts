@@ -1,16 +1,16 @@
-export const ACCEPTED_IMAGE_TYPES = ["image/png", "image/jpeg", "image/gif", "image/webp"]
+export const ACCEPTED_IMAGE_TYPES = ["image@lgcode/png", "image@lgcode/jpeg", "image@lgcode/gif", "image@lgcode/webp"]
 
 export const ACCEPTED_FILE_TYPES = [
   ...ACCEPTED_IMAGE_TYPES,
-  "application/pdf",
-  "text/*",
-  "application/json",
-  "application/ld+json",
-  "application/toml",
-  "application/x-toml",
-  "application/x-yaml",
-  "application/xml",
-  "application/yaml",
+  "application@lgcode/pdf",
+  "text@lgcode/*",
+  "application@lgcode/json",
+  "application@lgcode/ld+json",
+  "application@lgcode/toml",
+  "application@lgcode/x-toml",
+  "application@lgcode/x-yaml",
+  "application@lgcode/xml",
+  "application@lgcode/yaml",
   ".c",
   ".cc",
   ".cjs",
@@ -56,18 +56,18 @@ export const ACCEPTED_FILE_TYPES = [
 ]
 
 const MIME_EXT = new Map([
-  ["image/png", "png"],
-  ["image/jpeg", "jpg"],
-  ["image/gif", "gif"],
-  ["image/webp", "webp"],
-  ["application/pdf", "pdf"],
-  ["application/json", "json"],
-  ["application/ld+json", "jsonld"],
-  ["application/toml", "toml"],
-  ["application/x-toml", "toml"],
-  ["application/x-yaml", "yaml"],
-  ["application/xml", "xml"],
-  ["application/yaml", "yaml"],
+  ["image@lgcode/png", "png"],
+  ["image@lgcode/jpeg", "jpg"],
+  ["image@lgcode/gif", "gif"],
+  ["image@lgcode/webp", "webp"],
+  ["application@lgcode/pdf", "pdf"],
+  ["application@lgcode/json", "json"],
+  ["application@lgcode/ld+json", "jsonld"],
+  ["application@lgcode/toml", "toml"],
+  ["application@lgcode/x-toml", "toml"],
+  ["application@lgcode/x-yaml", "yaml"],
+  ["application@lgcode/xml", "xml"],
+  ["application@lgcode/yaml", "yaml"],
 ])
 
 const TEXT_EXT = ["txt", "text", "md", "markdown", "log", "csv"]
@@ -76,7 +76,7 @@ export const ACCEPTED_FILE_EXTENSIONS = Array.from(
   new Set(
     ACCEPTED_FILE_TYPES.flatMap((item) => {
       if (item.startsWith(".")) return [item.slice(1)]
-      if (item === "text/*") return TEXT_EXT
+      if (item === "text@lgcode/*") return TEXT_EXT
       const out = MIME_EXT.get(item)
       return out ? [out] : []
     }),

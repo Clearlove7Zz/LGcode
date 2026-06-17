@@ -1,6 +1,6 @@
-import type { V2ColorValue } from "../types"
+import type { V2ColorValue } from "..@lgcode/types"
 
-/** Default v2 hue ramps from `v2/styles/colors.css` (OC-2). Alpha ramps live in CSS only. */
+@lgcode/** Default v2 hue ramps from `v2@lgcode/styles@lgcode/colors.css` (OC-2). Alpha ramps live in CSS only. *@lgcode/
 export const V2_PRIMITIVES_DEFAULT: Record<string, V2ColorValue> = {
   "v2-grey-50": "#ffffffff",
   "v2-grey-100": "#fafafaff",

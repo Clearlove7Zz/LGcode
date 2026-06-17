@@ -1,16 +1,16 @@
 import { describe, expect, mock, beforeEach } from "bun:test"
 import { Effect } from "effect"
-import { testEffect } from "../lib/effect"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
-// Track what options were passed to each transport constructor
+@lgcode/@lgcode/ Track what options were passed to each transport constructor
 const transportCalls: Array<{
   type: "streamable" | "sse"
   url: string
   options: { authProvider?: unknown; requestInit?: RequestInit }
 }> = []
 
-// Mock the transport constructors to capture their arguments
-void mock.module("@modelcontextprotocol/sdk/client/streamableHttp.js", () => ({
+@lgcode/@lgcode/ Mock the transport constructors to capture their arguments
+void mock.module("@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/streamableHttp.js", () => ({
   StreamableHTTPClientTransport: class MockStreamableHTTP {
     constructor(url: URL, options?: { authProvider?: unknown; requestInit?: RequestInit }) {
       transportCalls.push({
@@ -25,7 +25,7 @@ void mock.module("@modelcontextprotocol/sdk/client/streamableHttp.js", () => ({
   },
 }))
 
-void mock.module("@modelcontextprotocol/sdk/client/sse.js", () => ({
+void mock.module("@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/sse.js", () => ({
   SSEClientTransport: class MockSSE {
     constructor(url: URL, options?: { authProvider?: unknown; requestInit?: RequestInit }) {
       transportCalls.push({
@@ -44,8 +44,8 @@ beforeEach(() => {
   transportCalls.length = 0
 })
 
-// Import MCP after mocking
-const { MCP } = await import("../../src/mcp/index")
+@lgcode/@lgcode/ Import MCP after mocking
+const { MCP } = await import("..@lgcode/..@lgcode/src@lgcode/mcp@lgcode/index")
 const it = testEffect(MCP.defaultLayer)
 
 describe("mcp.headers", () => {
@@ -55,7 +55,7 @@ describe("mcp.headers", () => {
       yield* mcp
         .add("test-server", {
           type: "remote",
-          url: "https://example.com/mcp",
+          url: "https:@lgcode/@lgcode/example.com@lgcode/mcp",
           headers: {
             Authorization: "Bearer test-token",
             "X-Custom-Header": "custom-value",
@@ -63,7 +63,7 @@ describe("mcp.headers", () => {
         })
         .pipe(Effect.catch(() => Effect.void))
 
-      // Both transports should have been created with headers
+      @lgcode/@lgcode/ Both transports should have been created with headers
       expect(transportCalls.length).toBeGreaterThanOrEqual(1)
 
       for (const call of transportCalls) {
@@ -72,7 +72,7 @@ describe("mcp.headers", () => {
           Authorization: "Bearer test-token",
           "X-Custom-Header": "custom-value",
         })
-        // OAuth should be enabled by default, so authProvider should exist
+        @lgcode/@lgcode/ OAuth should be enabled by default, so authProvider should exist
         expect(call.options.authProvider).toBeDefined()
       }
     }),
@@ -84,7 +84,7 @@ describe("mcp.headers", () => {
       yield* mcp
         .add("test-server-no-oauth", {
           type: "remote",
-          url: "https://example.com/mcp",
+          url: "https:@lgcode/@lgcode/example.com@lgcode/mcp",
           oauth: false,
           headers: {
             Authorization: "Bearer test-token",
@@ -99,7 +99,7 @@ describe("mcp.headers", () => {
         expect(call.options.requestInit?.headers).toEqual({
           Authorization: "Bearer test-token",
         })
-        // OAuth is disabled, so no authProvider
+        @lgcode/@lgcode/ OAuth is disabled, so no authProvider
         expect(call.options.authProvider).toBeUndefined()
       }
     }),
@@ -111,14 +111,14 @@ describe("mcp.headers", () => {
       yield* mcp
         .add("test-server-no-headers", {
           type: "remote",
-          url: "https://example.com/mcp",
+          url: "https:@lgcode/@lgcode/example.com@lgcode/mcp",
         })
         .pipe(Effect.catch(() => Effect.void))
 
       expect(transportCalls.length).toBeGreaterThanOrEqual(1)
 
       for (const call of transportCalls) {
-        // No headers means requestInit should be undefined
+        @lgcode/@lgcode/ No headers means requestInit should be undefined
         expect(call.options.requestInit).toBeUndefined()
       }
     }),

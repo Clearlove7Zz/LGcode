@@ -1,5 +1,5 @@
-// @ts-nocheck
-import { Button } from "./button"
+@lgcode/@lgcode/ @ts-nocheck
+import { Button } from ".@lgcode/button"
 
 const docs = `### Overview
 Primary action button with size, variant, and optional icon support.
@@ -22,13 +22,13 @@ Use \`IconButton\` for icon-only actions.
 ### Accessibility
 - Provide clear label text; use \`aria-label\` for icon-only buttons.
 
-### Theming/tokens
-- Uses \`data-component="button"\` with size/variant data attributes.
+### Theming@lgcode/tokens
+- Uses \`data-component="button"\` with size@lgcode/variant data attributes.
 
 `
 
 export default {
-  title: "UI/Button",
+  title: "UI@lgcode/Button",
   id: "components-button",
   component: Button,
   tags: ["autodocs"],
@@ -96,13 +96,13 @@ export const Sizes = {
     <div style={{ display: "flex", gap: "12px", "align-items": "center" }}>
       <Button size="small" variant="secondary">
         Small
-      </Button>
+      <@lgcode/Button>
       <Button size="normal" variant="secondary">
         Normal
-      </Button>
+      <@lgcode/Button>
       <Button size="large" variant="secondary">
         Large
-      </Button>
-    </div>
+      <@lgcode/Button>
+    <@lgcode/div>
   ),
 }

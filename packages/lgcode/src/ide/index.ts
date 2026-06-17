@@ -1,7 +1,7 @@
-import { EventV2 } from "@opencode@lgcode/core/event"
+import { EventV2 } from "@lgcode/core@lgcode/event"
 import { Schema } from "effect"
-import { NamedError } from "@opencode@lgcode/core/util/error"
-import { Process } from "@/util/process"
+import { NamedError } from "@lgcode/core@lgcode/util@lgcode/error"
+import { Process } from "@@lgcode/util@lgcode/process"
 
 const SUPPORTED_IDES = [
   { name: "Windsurf" as const, cmd: "windsurf" },

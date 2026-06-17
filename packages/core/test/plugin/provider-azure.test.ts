@@ -1,18 +1,18 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { Credential } from "@opencode@lgcode/core/credential"
-import { Integration } from "@opencode@lgcode/core/integration"
-import { Database } from "@opencode@lgcode/core/database/database"
-import { Catalog } from "@opencode@lgcode/core/catalog"
-import { EventV2 } from "@opencode@lgcode/core/event"
-import { Location } from "@opencode@lgcode/core/location"
-import { PluginV2 } from "@opencode@lgcode/core/plugin"
-import { AzurePlugin } from "@opencode@lgcode/core/plugin/provider/azure"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { location } from "../fixture/location"
-import { testEffect } from "../lib/effect"
-import { fakeSelectorSdk, it, model, npmLayer, provider, withEnv } from "./provider-helper"
+import { Credential } from "@lgcode/core@lgcode/credential"
+import { Integration } from "@lgcode/core@lgcode/integration"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { Catalog } from "@lgcode/core@lgcode/catalog"
+import { EventV2 } from "@lgcode/core@lgcode/event"
+import { Location } from "@lgcode/core@lgcode/location"
+import { PluginV2 } from "@lgcode/core@lgcode/plugin"
+import { AzurePlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/azure"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { location } from "..@lgcode/fixture@lgcode/location"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { fakeSelectorSdk, it, model, npmLayer, provider, withEnv } from ".@lgcode/provider-helper"
 
 const database = Database.layerFromPath(":memory:").pipe(Layer.fresh)
 const preferences = Credential.layer.pipe(Layer.provide(database))
@@ -41,7 +41,7 @@ describe("AzurePlugin", () => {
         const transform = yield* catalog.transform()
         yield* transform((catalog) => {
           catalog.provider.update(ProviderV2.ID.azure, (item) => {
-            item.api = { type: "aisdk", package: "@ai-sdk/azure" }
+            item.api = { type: "aisdk", package: "@ai-sdk@lgcode/azure" }
           })
         })
         expect((yield* catalog.provider.get(ProviderV2.ID.azure)).request.body.resourceName).toBe("from-env")
@@ -58,7 +58,7 @@ describe("AzurePlugin", () => {
         const transform = yield* catalog.transform()
         yield* transform((catalog) => {
           const azure = provider("azure", {
-            api: { type: "aisdk", package: "@ai-sdk/azure" },
+            api: { type: "aisdk", package: "@ai-sdk@lgcode/azure" },
             request: { headers: {}, body: { resourceName: "from-config" } },
           })
           catalog.provider.update(azure.id, (item) => {
@@ -95,7 +95,7 @@ describe("AzurePlugin", () => {
           const transform = yield* catalog.transform()
           yield* transform((catalog) => {
             catalog.provider.update(ProviderV2.ID.azure, (item) => {
-              item.api = { type: "aisdk", package: "@ai-sdk/azure" }
+              item.api = { type: "aisdk", package: "@ai-sdk@lgcode/azure" }
             })
           })
           expect((yield* catalog.provider.get(ProviderV2.ID.azure)).request.body.resourceName).toBe("from-account")
@@ -112,7 +112,7 @@ describe("AzurePlugin", () => {
         const transform = yield* catalog.transform()
         yield* transform((catalog) => {
           const azure = provider("azure", {
-            api: { type: "aisdk", package: "@ai-sdk/azure" },
+            api: { type: "aisdk", package: "@ai-sdk@lgcode/azure" },
             request: { headers: {}, body: { resourceName: "" } },
           })
           catalog.provider.update(azure.id, (item) => {
@@ -134,7 +134,7 @@ describe("AzurePlugin", () => {
         const transform = yield* catalog.transform()
         yield* transform((catalog) => {
           const azure = provider("azure", {
-            api: { type: "aisdk", package: "@ai-sdk/azure" },
+            api: { type: "aisdk", package: "@ai-sdk@lgcode/azure" },
             request: { headers: {}, body: { resourceName: "   " } },
           })
           catalog.provider.update(azure.id, (item) => {
@@ -156,8 +156,8 @@ describe("AzurePlugin", () => {
           "aisdk.sdk",
           {
             model: model("azure", "deployment"),
-            package: "@ai-sdk/azure",
-            options: { name: "azure", baseURL: "https://proxy.example.com/openai" },
+            package: "@ai-sdk@lgcode/azure",
+            options: { name: "azure", baseURL: "https:@lgcode/@lgcode/proxy.example.com@lgcode/openai" },
           },
           {},
         )
@@ -174,7 +174,7 @@ describe("AzurePlugin", () => {
         const exit = yield* plugin
           .trigger(
             "aisdk.sdk",
-            { model: model("azure", "deployment"), package: "@ai-sdk/azure", options: { name: "azure" } },
+            { model: model("azure", "deployment"), package: "@ai-sdk@lgcode/azure", options: { name: "azure" } },
             {},
           )
           .pipe(Effect.exit)

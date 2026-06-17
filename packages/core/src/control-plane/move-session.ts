@@ -1,15 +1,15 @@
-export * as MoveSession from "./move-session"
+export * as MoveSession from ".@lgcode/move-session"
 
 import { Context, DateTime, Effect, Layer, Schema } from "effect"
-import { EventV2 } from "../event"
-import { Git } from "../git"
-import { Location } from "../location"
-import { ProjectV2 } from "../project"
-import { SessionV2 } from "../session"
-import { SessionExecution } from "../session/execution"
-import { SessionEvent } from "../session/event"
-import { SessionSchema } from "../session/schema"
-import { AbsolutePath, RelativePath } from "../schema"
+import { EventV2 } from "..@lgcode/event"
+import { Git } from "..@lgcode/git"
+import { Location } from "..@lgcode/location"
+import { ProjectV2 } from "..@lgcode/project"
+import { SessionV2 } from "..@lgcode/session"
+import { SessionExecution } from "..@lgcode/session@lgcode/execution"
+import { SessionEvent } from "..@lgcode/session@lgcode/event"
+import { SessionSchema } from "..@lgcode/session@lgcode/schema"
+import { AbsolutePath, RelativePath } from "..@lgcode/schema"
 import path from "path"
 
 export const Destination = Schema.Struct({
@@ -63,7 +63,7 @@ export interface Interface {
   readonly moveSession: (input: Input) => Effect.Effect<void, Error>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/ControlPlaneMoveSession") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/ControlPlaneMoveSession") {}
 
 export const layer = Layer.effect(
   Service,
@@ -99,7 +99,7 @@ export const layer = Layer.effect(
       yield* events.publish(SessionEvent.Moved, {
         sessionID: input.sessionID,
         location: Location.Ref.make({ directory }),
-        subdirectory: RelativePath.make(path.relative(destination.directory, directory).replaceAll("\\", "/")),
+        subdirectory: RelativePath.make(path.relative(destination.directory, directory).replaceAll("\\", "@lgcode/")),
         timestamp: yield* DateTime.now,
       })
 

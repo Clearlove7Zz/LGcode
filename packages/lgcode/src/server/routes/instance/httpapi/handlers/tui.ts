@@ -1,12 +1,12 @@
-import { EventV2Bridge } from "@/event-v2-bridge"
-import { TuiEvent } from "@/server/tui-event"
-import { Session } from "@/session/session"
+import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
+import { TuiEvent } from "@@lgcode/server@lgcode/tui-event"
+import { Session } from "@@lgcode/session@lgcode/session"
 import { Effect } from "effect"
-import { HttpApiBuilder, HttpApiError } from "effect/unstable/httpapi"
-import { nextTuiRequest, submitTuiResponse } from "@/server/shared/tui-control"
-import { InstanceHttpApi } from "../api"
-import { CommandPayload, TuiPublishPayload } from "../groups/tui"
-import * as SessionError from "./session-errors"
+import { HttpApiBuilder, HttpApiError } from "effect@lgcode/unstable@lgcode/httpapi"
+import { nextTuiRequest, submitTuiResponse } from "@@lgcode/server@lgcode/shared@lgcode/tui-control"
+import { InstanceHttpApi } from "..@lgcode/api"
+import { CommandPayload, TuiPublishPayload } from "..@lgcode/groups@lgcode/tui"
+import * as SessionError from ".@lgcode/session-errors"
 
 const commandAliases = {
   session_new: "session.new",
@@ -71,7 +71,7 @@ export const tuiHandlers = HttpApiBuilder.group(InstanceHttpApi, "tui", (handler
     const executeCommand = Effect.fn("TuiHttpApi.executeCommand")(function* (ctx: {
       payload: typeof CommandPayload.Type
     }) {
-      // Legacy only publishes known aliases; unknown commands become undefined.
+      @lgcode/@lgcode/ Legacy only publishes known aliases; unknown commands become undefined.
       yield* publishCommand(commandAliases[ctx.payload.command as keyof typeof commandAliases])
       return true
     })

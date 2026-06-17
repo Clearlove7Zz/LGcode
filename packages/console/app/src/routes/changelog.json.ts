@@ -1,4 +1,4 @@
-import { loadChangelog } from "~/lib/changelog"
+import { loadChangelog } from "~@lgcode/lib@lgcode/changelog"
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -15,7 +15,7 @@ export async function GET() {
   return new Response(JSON.stringify({ releases: result.releases }), {
     status: result.ok ? 200 : 503,
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application@lgcode/json",
       "Cache-Control": result.ok ? ok : error,
       ...cors,
     },

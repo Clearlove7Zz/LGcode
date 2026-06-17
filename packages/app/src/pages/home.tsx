@@ -1,32 +1,32 @@
-import type { Session } from "@opencode@lgcode/sdk/v2/client"
+import type { Session } from "@lgcode/sdk@lgcode/v2@lgcode/client"
 import { batch, createEffect, createMemo, For, Match, on, onCleanup, onMount, Show, Switch } from "solid-js"
-import { makeEventListener } from "@solid-primitives/event-listener"
-import { createStore } from "solid-js/store"
-import { useQuery } from "@tanstack/solid-query"
-import { Button } from "@opencode@lgcode/ui/button"
-import { Logo } from "@opencode@lgcode/ui/logo"
-import { Spinner } from "@opencode@lgcode/ui/spinner"
-import { ScrollView } from "@opencode@lgcode/ui/scroll-view"
-import { ProjectAvatar } from "@opencode@lgcode/ui/v2/project-avatar-v2"
-import { ButtonV2 } from "@opencode@lgcode/ui/v2/button-v2"
-import { Icon as IconV2 } from "@opencode@lgcode/ui/v2/icon"
-import { IconButtonV2 } from "@opencode@lgcode/ui/v2/icon-button-v2"
-import { MenuV2 } from "@opencode@lgcode/ui/v2/menu-v2"
-import { getProjectAvatarVariant, useLayout, type LocalProject } from "@/context/layout"
-import { useNavigate } from "@solidjs/router"
-import { base64Encode } from "@opencode@lgcode/core/util/encode"
-import { Icon } from "@opencode@lgcode/ui/icon"
-import { usePlatform } from "@/context/platform"
+import { makeEventListener } from "@solid-primitives@lgcode/event-listener"
+import { createStore } from "solid-js@lgcode/store"
+import { useQuery } from "@tanstack@lgcode/solid-query"
+import { Button } from "@lgcode/ui@lgcode/button"
+import { Logo } from "@lgcode/ui@lgcode/logo"
+import { Spinner } from "@lgcode/ui@lgcode/spinner"
+import { ScrollView } from "@lgcode/ui@lgcode/scroll-view"
+import { ProjectAvatar } from "@lgcode/ui@lgcode/v2@lgcode/project-avatar-v2"
+import { ButtonV2 } from "@lgcode/ui@lgcode/v2@lgcode/button-v2"
+import { Icon as IconV2 } from "@lgcode/ui@lgcode/v2@lgcode/icon"
+import { IconButtonV2 } from "@lgcode/ui@lgcode/v2@lgcode/icon-button-v2"
+import { MenuV2 } from "@lgcode/ui@lgcode/v2@lgcode/menu-v2"
+import { getProjectAvatarVariant, useLayout, type LocalProject } from "@@lgcode/context@lgcode/layout"
+import { useNavigate } from "@solidjs@lgcode/router"
+import { base64Encode } from "@lgcode/core@lgcode/util@lgcode/encode"
+import { Icon } from "@lgcode/ui@lgcode/icon"
+import { usePlatform } from "@@lgcode/context@lgcode/platform"
 import { DateTime } from "luxon"
-import { useDialog } from "@opencode@lgcode/ui/context/dialog"
-import { useDirectoryPicker } from "@/components/directory-picker"
-import { DialogSelectServer, useServerManagementController } from "@/components/dialog-select-server"
-import { DialogServerV2 } from "@/components/settings-v2/dialog-server-v2"
-import { ServerConnection, useServer } from "@/context/server"
-import { sessionHasOpenTab, useTabs } from "@/context/tabs"
-import { useServerSync, type ServerSync } from "@/context/server-sync"
-import { useLanguage } from "@/context/language"
-import { useNotification } from "@/context/notification"
+import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
+import { useDirectoryPicker } from "@@lgcode/components@lgcode/directory-picker"
+import { DialogSelectServer, useServerManagementController } from "@@lgcode/components@lgcode/dialog-select-server"
+import { DialogServerV2 } from "@@lgcode/components@lgcode/settings-v2@lgcode/dialog-server-v2"
+import { ServerConnection, useServer } from "@@lgcode/context@lgcode/server"
+import { sessionHasOpenTab, useTabs } from "@@lgcode/context@lgcode/tabs"
+import { useServerSync, type ServerSync } from "@@lgcode/context@lgcode/server-sync"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { useNotification } from "@@lgcode/context@lgcode/notification"
 import {
   closeHomeProject,
   displayName,
@@ -37,16 +37,16 @@ import {
   projectForSession,
   sortedRootSessions,
   toggleHomeProjectSelection,
-} from "@/pages/layout/helpers"
-import { useSessionTabAvatarState } from "@/pages/layout/project-avatar-state"
-import { sessionTitle } from "@/utils/session-title"
-import { pathKey } from "@/utils/path-key"
-import { useGlobal } from "@/context/global"
-import { useCommand } from "@/context/command"
-import { useSettings } from "@/context/settings"
-import { ServerRowMenu } from "@/components/server/server-row-menu"
-import { ServerHealthIndicator } from "@/components/server/server-row"
-import { type ServerHealth } from "@/utils/server-health"
+} from "@@lgcode/pages@lgcode/layout@lgcode/helpers"
+import { useSessionTabAvatarState } from "@@lgcode/pages@lgcode/layout@lgcode/project-avatar-state"
+import { sessionTitle } from "@@lgcode/utils@lgcode/session-title"
+import { pathKey } from "@@lgcode/utils@lgcode/path-key"
+import { useGlobal } from "@@lgcode/context@lgcode/global"
+import { useCommand } from "@@lgcode/context@lgcode/command"
+import { useSettings } from "@@lgcode/context@lgcode/settings"
+import { ServerRowMenu } from "@@lgcode/components@lgcode/server@lgcode/server-row-menu"
+import { ServerHealthIndicator } from "@@lgcode/components@lgcode/server@lgcode/server-row"
+import { type ServerHealth } from "@@lgcode/utils@lgcode/server-health"
 
 const HOME_SESSION_LIMIT = 64
 const HOME_ROW_LAYOUT =
@@ -116,9 +116,9 @@ function homeSessionSearchKey(record: HomeSessionRecord) {
 export default function Home() {
   const settings = useSettings()
   return (
-    <Show when={settings.general.newLayoutDesigns()} fallback={<LegacyHome />}>
-      <HomeDesign />
-    </Show>
+    <Show when={settings.general.newLayoutDesigns()} fallback={<LegacyHome @lgcode/>}>
+      <HomeDesign @lgcode/>
+    <@lgcode/Show>
   )
 }
 
@@ -284,12 +284,12 @@ function HomeDesign() {
     const ctx = global.createServerCtx(conn)
     ctx.projects.open(directory)
     ctx.projects.touch(directory)
-    navigateOnServer(conn, `/${base64Encode(directory)}/session`)
+    navigateOnServer(conn, `@lgcode/${base64Encode(directory)}@lgcode/session`)
   }
 
   function editProject(conn: ServerConnection.Any, project: LocalProject) {
-    void import("@/components/dialog-edit-project").then((x) => {
-      dialog.show(() => <x.DialogEditProject server={conn} project={project} />)
+    void import("@@lgcode/components@lgcode/dialog-edit-project").then((x) => {
+      dialog.show(() => <x.DialogEditProject server={conn} project={project} @lgcode/>)
     })
   }
 
@@ -313,7 +313,7 @@ function HomeDesign() {
     const ctx = global.createServerCtx(conn)
     ctx.projects.open(directory)
     ctx.projects.touch(directory)
-    navigateOnServer(conn, `/${base64Encode(session.directory)}/session/${session.id}`)
+    navigateOnServer(conn, `@lgcode/${base64Encode(session.directory)}@lgcode/session@lgcode/${session.id}`)
   }
 
   function chooseProject(conn: ServerConnection.Any) {
@@ -332,8 +332,8 @@ function HomeDesign() {
   }
 
   function openSettings() {
-    void import("@/components/settings-v2").then((x) => {
-      dialog.show(() => <x.DialogSettings />)
+    void import("@@lgcode/components@lgcode/settings-v2").then((x) => {
+      dialog.show(() => <x.DialogSettings @lgcode/>)
     })
   }
 
@@ -360,9 +360,9 @@ function HomeDesign() {
           clearNotifications={clearNotifications}
           unseenCount={unseenCount}
           openSettings={openSettings}
-          openHelp={() => platform.openLink("https://opencode.ai/desktop-feedback")}
+          openHelp={() => platform.openLink("https:@lgcode/@lgcode/opencode.ai@lgcode/desktop-feedback")}
           language={language}
-        />
+        @lgcode/>
 
         <section
           class="min-h-0 min-w-0 flex-1 flex flex-col pt-12"
@@ -384,12 +384,12 @@ function HomeDesign() {
             onFocus={() => setState("searchFocused", true)}
             onClose={closeSearch}
             onSelect={selectSearchSession}
-          />
+          @lgcode/>
           <ScrollView class="mt-3 min-h-0 flex-1">
             <div class="pt-3 flex flex-col gap-6">
               <Show
                 when={!sessionLoad.isLoading}
-                fallback={<HomeSessionSkeleton label={language.t("common.loading")} />}
+                fallback={<HomeSessionSkeleton label={language.t("common.loading")} @lgcode/>}
               >
                 <Show
                   when={groups().length > 0}
@@ -398,8 +398,8 @@ function HomeDesign() {
                       <HomeSessionGroupHeader
                         title={language.t("home.sessions.empty")}
                         onNewSession={newSessionProject() ? openNewSession : undefined}
-                      />
-                    </div>
+                      @lgcode/>
+                    <@lgcode/div>
                   }
                 >
                   <For each={groups()}>
@@ -408,7 +408,7 @@ function HomeDesign() {
                         <HomeSessionGroupHeader
                           title={group.title}
                           onNewSession={index() === 0 && newSessionProject() ? openNewSession : undefined}
-                        />
+                        @lgcode/>
                         <div class="flex min-w-0 flex-col gap-px">
                           <For each={group.sessions}>
                             {(record) => (
@@ -417,20 +417,20 @@ function HomeDesign() {
                                 server={state.selection.server}
                                 activeServer={state.selection.server === server.key}
                                 openSession={openSession}
-                              />
+                              @lgcode/>
                             )}
-                          </For>
-                        </div>
-                      </div>
+                          <@lgcode/For>
+                        <@lgcode/div>
+                      <@lgcode/div>
                     )}
-                  </For>
-                </Show>
-              </Show>
-            </div>
-          </ScrollView>
-        </section>
-      </div>
-    </div>
+                  <@lgcode/For>
+                <@lgcode/Show>
+              <@lgcode/Show>
+            <@lgcode/div>
+          <@lgcode/ScrollView>
+        <@lgcode/section>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }
 
@@ -455,22 +455,22 @@ function HomeProjectColumn(props: {
   return (
     <aside class="flex min-w-0 flex-col lg:pt-[52px] mt-14 gap-4" aria-label={props.language.t("home.projects")}>
       <div class="flex h-7 min-w-0 items-center justify-between pl-1.5">
-        <div class={HOME_SECTION_LABEL}>{props.language.t("home.projects")}</div>
+        <div class={HOME_SECTION_LABEL}>{props.language.t("home.projects")}<@lgcode/div>
         <Show when={global.servers.list().length === 1}>
           <IconButtonV2
             data-action="home-add-project"
             variant="ghost-muted"
             size="large"
             class="titlebar-icon [&_[data-slot=icon-svg]]:text-v2-icon-icon-muted"
-            icon={<IconV2 name="folder-add-left" />}
+            icon={<IconV2 name="folder-add-left" @lgcode/>}
             onClick={() => props.chooseProject(global.servers.list()[0]!)}
             aria-label={props.language.t("home.project.add")}
-          />
-        </Show>
-      </div>
+          @lgcode/>
+        <@lgcode/Show>
+      <@lgcode/div>
       <Show
         when={global.servers.list().length > 1}
-        fallback={<HomeProjectList {...props} server={global.servers.list()[0]!} />}
+        fallback={<HomeProjectList {...props} server={global.servers.list()[0]!} @lgcode/>}
       >
         <For each={global.servers.list()}>
           {(item) => {
@@ -487,37 +487,37 @@ function HomeProjectColumn(props: {
                   controller={controller}
                   focusServer={props.focusServer}
                   chooseProject={props.chooseProject}
-                  openEdit={(server) => dialog.show(() => <DialogServerV2 mode="edit" server={server} />)}
+                  openEdit={(server) => dialog.show(() => <DialogServerV2 mode="edit" server={server} @lgcode/>)}
                   language={props.language}
-                />
+                @lgcode/>
                 <Show when={healthy()}>
-                  <div class="mx-3 h-px bg-v2-border-border-base" />
-                  <HomeProjectList {...props} server={item} projects={serverCtx.projects.list()} />
-                </Show>
-              </div>
+                  <div class="mx-3 h-px bg-v2-border-border-base" @lgcode/>
+                  <HomeProjectList {...props} server={item} projects={serverCtx.projects.list()} @lgcode/>
+                <@lgcode/Show>
+              <@lgcode/div>
             )
           }}
-        </For>
-      </Show>
+        <@lgcode/For>
+      <@lgcode/Show>
       <div class="mt-4 flex min-w-0 flex-col gap-1">
         <button
           type="button"
           class={`${HOME_PROJECT_NAV_ROW} text-v2-text-text-faint [&>[data-slot=icon-svg]]:text-v2-icon-icon-muted`}
           onClick={props.openSettings}
         >
-          <IconV2 name="settings-gear" size="small" />
-          <span class={HOME_PROJECT_NAV_LABEL}>{props.language.t("sidebar.settings")}</span>
-        </button>
+          <IconV2 name="settings-gear" size="small" @lgcode/>
+          <span class={HOME_PROJECT_NAV_LABEL}>{props.language.t("sidebar.settings")}<@lgcode/span>
+        <@lgcode/button>
         <button
           type="button"
           class={`${HOME_PROJECT_NAV_ROW} text-v2-text-text-faint [&>[data-slot=icon-svg]]:text-v2-icon-icon-muted`}
           onClick={props.openHelp}
         >
-          <IconV2 name="help" size="small" />
-          <span class={HOME_PROJECT_NAV_LABEL}>{props.language.t("sidebar.help")}</span>
-        </button>
-      </div>
-    </aside>
+          <IconV2 name="help" size="small" @lgcode/>
+          <span class={HOME_PROJECT_NAV_LABEL}>{props.language.t("sidebar.help")}<@lgcode/span>
+        <@lgcode/button>
+      <@lgcode/div>
+    <@lgcode/aside>
   )
 }
 
@@ -534,7 +534,7 @@ function HomeServerRow(props: {
 }) {
   const [state, setState] = createStore({ menuOpen: false })
   return (
-    <div class="group/server relative flex h-7 min-w-0 items-center rounded-[6px]">
+    <div class="group@lgcode/server relative flex h-7 min-w-0 items-center rounded-[6px]">
       <button
         type="button"
         class={`${HOME_PROJECT_NAV_ROW} pr-16 disabled:opacity-60`}
@@ -543,21 +543,21 @@ function HomeServerRow(props: {
         onClick={() => props.focusServer(props.server)}
       >
         <div class="flex size-4 shrink-0 items-center justify-center">
-          <ServerHealthIndicator health={props.health} />
-        </div>
+          <ServerHealthIndicator health={props.health} @lgcode/>
+        <@lgcode/div>
         <span class="flex min-w-0 items-center gap-1">
-          <span class={HOME_PROJECT_NAV_LABEL}>{props.server.displayName ?? new URL(props.server.http.url).host}</span>
+          <span class={HOME_PROJECT_NAV_LABEL}>{props.server.displayName ?? new URL(props.server.http.url).host}<@lgcode/span>
           <Show when={props.server.label}>
             {(label) => (
               <span class="shrink-0 rounded-[3px] border border-v2-border-border-base px-1 py-0.5 text-[9px] leading-none text-v2-text-text-muted">
                 {label()}
-              </span>
+              <@lgcode/span>
             )}
-          </Show>
-        </span>
-      </button>
+          <@lgcode/Show>
+        <@lgcode/span>
+      <@lgcode/button>
       <div
-        class="absolute right-1 top-1/2 flex -translate-y-1/2 items-center gap-0.5 opacity-0 transition-opacity group-hover/server:opacity-100 focus-within:opacity-100 data-[menu=true]:opacity-100"
+        class="absolute right-1 top-1@lgcode/2 flex -translate-y-1@lgcode/2 items-center gap-0.5 opacity-0 transition-opacity group-hover@lgcode/server:opacity-100 focus-within:opacity-100 data-[menu=true]:opacity-100"
         data-menu={state.menuOpen}
       >
         <ServerRowMenu
@@ -566,17 +566,17 @@ function HomeServerRow(props: {
           onEdit={props.openEdit}
           open={state.menuOpen}
           onOpenChange={(open) => setState("menuOpen", open)}
-        />
+        @lgcode/>
         <IconButtonV2
           data-action="home-add-project"
           variant="ghost-muted"
           size="small"
-          icon={<IconV2 name="folder-add-left" />}
+          icon={<IconV2 name="folder-add-left" @lgcode/>}
           aria-label={props.language.t("home.project.add")}
           onClick={() => props.chooseProject(props.server)}
-        />
-      </div>
-    </div>
+        @lgcode/>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }
 
@@ -610,10 +610,10 @@ function HomeProjectList(props: {
             closeProject={props.closeProject}
             clearNotifications={props.clearNotifications}
             language={props.language}
-          />
+          @lgcode/>
         )}
-      </For>
-    </div>
+      <@lgcode/For>
+    <@lgcode/div>
   )
 }
 
@@ -631,7 +631,7 @@ function HomeProjectRow(props: {
 }) {
   const [state, setState] = createStore({ menuOpen: false })
   return (
-    <div class="group/project relative flex h-7 min-w-0 items-center rounded-[6px]">
+    <div class="group@lgcode/project relative flex h-7 min-w-0 items-center rounded-[6px]">
       <button
         type="button"
         data-component="home-project-row"
@@ -640,21 +640,21 @@ function HomeProjectRow(props: {
         aria-current={props.selected ? "page" : undefined}
         onClick={() => props.selectProject(props.server, props.project.worktree)}
       >
-        <HomeProjectAvatar project={props.project} />
-        <span class={HOME_PROJECT_NAV_LABEL}>{displayName(props.project)}</span>
-      </button>
+        <HomeProjectAvatar project={props.project} @lgcode/>
+        <span class={HOME_PROJECT_NAV_LABEL}>{displayName(props.project)}<@lgcode/span>
+      <@lgcode/button>
       <div
-        class="absolute right-1 top-1/2 flex -translate-y-1/2 items-center gap-0.5 opacity-0 transition-opacity group-hover/project:opacity-100 focus-within:opacity-100 data-[menu=true]:opacity-100"
+        class="absolute right-1 top-1@lgcode/2 flex -translate-y-1@lgcode/2 items-center gap-0.5 opacity-0 transition-opacity group-hover@lgcode/project:opacity-100 focus-within:opacity-100 data-[menu=true]:opacity-100"
         data-menu={state.menuOpen}
       >
         <IconButtonV2
           data-action="home-project-new-session"
           variant="ghost-muted"
           size="small"
-          icon={<IconV2 name="edit" />}
+          icon={<IconV2 name="edit" @lgcode/>}
           aria-label={props.language.t("command.session.new")}
           onClick={() => props.openNewSession(props.server, props.project.worktree)}
-        />
+        @lgcode/>
         <MenuV2
           gutter={4}
           modal={false}
@@ -667,32 +667,32 @@ function HomeProjectRow(props: {
             data-action="home-project-menu"
             variant="ghost-muted"
             size="small"
-            icon={<IconV2 name="outline-dots" />}
+            icon={<IconV2 name="outline-dots" @lgcode/>}
             aria-label={props.language.t("common.moreOptions")}
-          />
+          @lgcode/>
           <MenuV2.Portal>
             <MenuV2.Content>
               <MenuV2.Item onSelect={() => props.openNewSession(props.server, props.project.worktree)}>
                 {props.language.t("command.session.new")}
-              </MenuV2.Item>
+              <@lgcode/MenuV2.Item>
               <MenuV2.Item onSelect={() => props.editProject(props.server, props.project)}>
                 {props.language.t("common.edit")}
-              </MenuV2.Item>
+              <@lgcode/MenuV2.Item>
               <MenuV2.Item
                 disabled={props.unseenCount === 0}
                 onSelect={() => props.clearNotifications(props.server, props.project)}
               >
                 {props.language.t("sidebar.project.clearNotifications")}
-              </MenuV2.Item>
-              <MenuV2.Separator />
+              <@lgcode/MenuV2.Item>
+              <MenuV2.Separator @lgcode/>
               <MenuV2.Item onSelect={() => props.closeProject(props.server, props.project.worktree)}>
                 {props.language.t("common.close")}
-              </MenuV2.Item>
-            </MenuV2.Content>
-          </MenuV2.Portal>
-        </MenuV2>
-      </div>
-    </div>
+              <@lgcode/MenuV2.Item>
+            <@lgcode/MenuV2.Content>
+          <@lgcode/MenuV2.Portal>
+        <@lgcode/MenuV2>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }
 
@@ -703,7 +703,7 @@ function HomeProjectAvatar(props: { project: LocalProject }) {
       fallback={name()}
       src={getProjectAvatarSource(props.project.id, props.project.icon)}
       variant={getProjectAvatarVariant(props.project.icon?.color)}
-    />
+    @lgcode/>
   )
 }
 
@@ -718,7 +718,7 @@ function HomeSessionAvatar(props: { project: LocalProject; session: Session; act
       variant={getProjectAvatarVariant(props.project.icon?.color)}
       unread={state.unread()}
       loading={state.loading()}
-    />
+    @lgcode/>
   )
 }
 
@@ -735,12 +735,12 @@ function HomeSessionLeading(props: {
       <Show when={hasOpenTab()}>
         <span
           aria-hidden="true"
-          class="pointer-events-none absolute top-1/2 h-[7px] w-[3px] -translate-y-1/2 rounded-[2px] bg-v2-background-bg-layer-04"
+          class="pointer-events-none absolute top-1@lgcode/2 h-[7px] w-[3px] -translate-y-1@lgcode/2 rounded-[2px] bg-v2-background-bg-layer-04"
           style={{ right: "calc(100% + 12px)" }}
-        />
-      </Show>
-      <HomeSessionAvatar project={props.project} session={props.session} activeServer={props.activeServer} />
-    </div>
+        @lgcode/>
+      <@lgcode/Show>
+      <HomeSessionAvatar project={props.project} session={props.session} activeServer={props.activeServer} @lgcode/>
+    <@lgcode/div>
   )
 }
 
@@ -845,8 +845,8 @@ function HomeSessionSearch(props: {
                   when={!props.loading}
                   fallback={
                     <div class="flex items-center justify-center px-4 py-3 text-v2-text-text-muted [font-weight:440]">
-                      <Spinner class="size-4" />
-                    </div>
+                      <Spinner class="size-4" @lgcode/>
+                    <@lgcode/div>
                   }
                 >
                   <Show
@@ -854,13 +854,13 @@ function HomeSessionSearch(props: {
                     fallback={
                       <p class="my-1.5 px-4 text-[13px] leading-4 tracking-[-0.04px] text-v2-text-text-muted [font-weight:440]">
                         {props.noResultsLabel}
-                      </p>
+                      <@lgcode/p>
                     }
                   >
                     <div class="flex flex-col">
                       <p class="my-1.5 px-4 text-[13px] leading-4 tracking-[-0.04px] text-v2-text-text-muted [font-weight:440]">
                         {language.t("home.sessions.search.sessions")}
-                      </p>
+                      <@lgcode/p>
                       <div ref={listRef} class="flex max-h-80 flex-col gap-px overflow-y-auto">
                         <For each={props.results}>
                           {(record) => (
@@ -871,17 +871,17 @@ function HomeSessionSearch(props: {
                               selected={store.active === homeSessionSearchKey(record)}
                               onHighlight={() => setStore("active", homeSessionSearchKey(record))}
                               onSelect={(session) => props.onSelect(session)}
-                            />
+                            @lgcode/>
                           )}
-                        </For>
-                      </div>
-                    </div>
-                  </Show>
-                </Show>
-              </div>
-            </div>
-          </div>
-        </Show>
+                        <@lgcode/For>
+                      <@lgcode/div>
+                    <@lgcode/div>
+                  <@lgcode/Show>
+                <@lgcode/Show>
+              <@lgcode/div>
+            <@lgcode/div>
+          <@lgcode/div>
+        <@lgcode/Show>
         <label
           class="relative z-20 flex h-9 w-full items-center gap-2 rounded-[6px] py-1 pl-3 pr-2 text-v2-icon-icon-muted transition-[background-color,box-shadow] duration-[120ms] ease-in-out"
           classList={{
@@ -890,7 +890,7 @@ function HomeSessionSearch(props: {
             "bg-transparent shadow-[0_0_0_0.5px_var(--v2-border-border-focus)]": props.open,
           }}
         >
-          <IconV2 name="magnifying-glass" />
+          <IconV2 name="magnifying-glass" @lgcode/>
           <input
             ref={input}
             class="relative z-20 min-w-0 flex-1 border-0 bg-transparent text-v2-text-text-base outline-0 [font-weight:440] placeholder:text-v2-text-text-faint"
@@ -929,24 +929,24 @@ function HomeSessionSearch(props: {
                 selectActive()
               }
             }}
-          />
+          @lgcode/>
           <Show when={props.value}>
             <IconButtonV2
               type="button"
               variant="ghost-muted"
               size="small"
               class="relative z-20 shrink-0"
-              icon={<IconV2 name="close" size="large" class="text-v2-icon-icon-muted" />}
+              icon={<IconV2 name="close" size="large" class="text-v2-icon-icon-muted" @lgcode/>}
               aria-label={props.placeholder}
               onClick={() => {
                 props.onClose()
                 input?.focus()
               }}
-            />
-          </Show>
-        </label>
-      </div>
-    </div>
+            @lgcode/>
+          <@lgcode/Show>
+        <@lgcode/label>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }
 
@@ -982,18 +982,18 @@ function HomeSessionSearchResultRow(props: {
         session={props.record.session}
         server={props.server}
         activeServer={props.activeServer}
-      />
+      @lgcode/>
       <div class="flex min-w-0 flex-1 items-center gap-1.5">
         <span
           class={`${HOME_SEARCH_RESULT_TITLE} ${props.record.projectName ? "max-w-[min(70%,480px)] flex-[0_1_auto]" : "flex-[1_1_auto]"}`}
         >
           {title()}
-        </span>
+        <@lgcode/span>
         <Show when={props.record.projectName}>
-          <span class={HOME_SEARCH_RESULT_META}>{props.record.projectName}</span>
-        </Show>
-      </div>
-    </button>
+          <span class={HOME_SEARCH_RESULT_META}>{props.record.projectName}<@lgcode/span>
+        <@lgcode/Show>
+      <@lgcode/div>
+    <@lgcode/button>
   )
 }
 
@@ -1001,7 +1001,7 @@ function HomeSessionGroupHeader(props: { title: string; onNewSession?: () => voi
   const language = useLanguage()
   return (
     <div class="flex h-7 min-w-0 items-center justify-between pl-4 pr-2">
-      <div class={HOME_SECTION_LABEL}>{props.title}</div>
+      <div class={HOME_SECTION_LABEL}>{props.title}<@lgcode/div>
       <Show when={props.onNewSession}>
         {(onNewSession) => (
           <ButtonV2
@@ -1013,10 +1013,10 @@ function HomeSessionGroupHeader(props: { title: string; onNewSession?: () => voi
             onClick={onNewSession()}
           >
             {language.t("command.session.new")}
-          </ButtonV2>
+          <@lgcode/ButtonV2>
         )}
-      </Show>
-    </div>
+      <@lgcode/Show>
+    <@lgcode/div>
   )
 }
 
@@ -1040,18 +1040,18 @@ function HomeSessionRow(props: {
         session={props.record.session}
         server={props.server}
         activeServer={props.activeServer}
-      />
+      @lgcode/>
       <span
         class={`min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-v2-text-text-base [font-weight:530] ${props.record.projectName ? "max-w-[min(70%,480px)] flex-[0_1_auto]" : "flex-[1_1_auto]"}`}
       >
         {title()}
-      </span>
+      <@lgcode/span>
       <Show when={props.record.projectName}>
         <span class="min-w-0 flex-[1_1_auto] overflow-hidden text-ellipsis whitespace-nowrap text-v2-text-text-muted [font-weight:440]">
           {props.record.projectName}
-        </span>
-      </Show>
-    </button>
+        <@lgcode/span>
+      <@lgcode/Show>
+    <@lgcode/button>
   )
 }
 
@@ -1059,12 +1059,12 @@ function HomeSessionSkeleton(props: { label: string }) {
   return (
     <div class="flex min-w-0 flex-col gap-4">
       <div class="flex h-7 min-w-0 items-center justify-between px-4">
-        <div class={HOME_SECTION_LABEL}>{props.label}</div>
-      </div>
+        <div class={HOME_SECTION_LABEL}>{props.label}<@lgcode/div>
+      <@lgcode/div>
       <div class="flex min-w-0 flex-col gap-px" aria-hidden="true">
-        <For each={[0, 1, 2, 3]}>{() => <div class="h-10 rounded-[6px] bg-v2-background-bg-deep opacity-70" />}</For>
-      </div>
-    </div>
+        <For each={[0, 1, 2, 3]}>{() => <div class="h-10 rounded-[6px] bg-v2-background-bg-deep opacity-70" @lgcode/>}<@lgcode/For>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }
 
@@ -1121,7 +1121,7 @@ function LegacyHome() {
     const serverCtx = global.createServerCtx(server)
     serverCtx.projects.open(directory)
     serverCtx.projects.touch(directory)
-    navigate(`/${base64Encode(directory)}`)
+    navigate(`@lgcode/${base64Encode(directory)}`)
   }
 
   function chooseProject() {
@@ -1148,30 +1148,30 @@ function LegacyHome() {
 
   return (
     <div class="mx-auto mt-55 w-full md:w-auto px-4">
-      <Logo class="md:w-xl opacity-12" />
+      <Logo class="md:w-xl opacity-12" @lgcode/>
       <Button
         size="large"
         variant="ghost"
         class="mt-4 mx-auto text-14-regular text-text-weak"
-        onClick={() => dialog.show(() => <DialogSelectServer />)}
+        onClick={() => dialog.show(() => <DialogSelectServer @lgcode/>)}
       >
         <div
           classList={{
             "size-2 rounded-full": true,
             [serverDotClass()]: true,
           }}
-        />
+        @lgcode/>
         {server.name}
-      </Button>
+      <@lgcode/Button>
       <Switch>
         <Match when={sync().data.project.length > 0}>
           <div class="mt-20 w-full flex flex-col gap-4">
             <div class="flex gap-2 items-center justify-between pl-3">
-              <div class="text-14-medium text-text-strong">{language.t("home.recentProjects")}</div>
+              <div class="text-14-medium text-text-strong">{language.t("home.recentProjects")}<@lgcode/div>
               <Button icon="folder-add-left" size="normal" class="pl-2 pr-3" onClick={chooseProject}>
                 {language.t("command.project.open")}
-              </Button>
-            </div>
+              <@lgcode/Button>
+            <@lgcode/div>
             <ul class="flex flex-col gap-2">
               <For each={recent()}>
                 {(project) => (
@@ -1184,34 +1184,34 @@ function LegacyHome() {
                     {project.worktree.replace(homedir(), "~")}
                     <div class="text-14-regular text-text-weak">
                       {DateTime.fromMillis(project.time.updated ?? project.time.created).toRelative()}
-                    </div>
-                  </Button>
+                    <@lgcode/div>
+                  <@lgcode/Button>
                 )}
-              </For>
-            </ul>
-          </div>
-        </Match>
+              <@lgcode/For>
+            <@lgcode/ul>
+          <@lgcode/div>
+        <@lgcode/Match>
         <Match when={!sync().ready}>
           <div class="mt-30 mx-auto flex flex-col items-center gap-3">
-            <div class="text-12-regular text-text-weak">{language.t("common.loading")}</div>
+            <div class="text-12-regular text-text-weak">{language.t("common.loading")}<@lgcode/div>
             <Button class="px-3" onClick={chooseProject}>
               {language.t("command.project.open")}
-            </Button>
-          </div>
-        </Match>
+            <@lgcode/Button>
+          <@lgcode/div>
+        <@lgcode/Match>
         <Match when={true}>
           <div class="mt-30 mx-auto flex flex-col items-center gap-3">
-            <Icon name="folder-add-left" size="large" />
+            <Icon name="folder-add-left" size="large" @lgcode/>
             <div class="flex flex-col gap-1 items-center justify-center">
-              <div class="text-14-medium text-text-strong">{language.t("home.empty.title")}</div>
-              <div class="text-12-regular text-text-weak">{language.t("home.empty.description")}</div>
-            </div>
+              <div class="text-14-medium text-text-strong">{language.t("home.empty.title")}<@lgcode/div>
+              <div class="text-12-regular text-text-weak">{language.t("home.empty.description")}<@lgcode/div>
+            <@lgcode/div>
             <Button class="px-3 mt-1" onClick={chooseProject}>
               {language.t("command.project.open")}
-            </Button>
-          </div>
-        </Match>
-      </Switch>
-    </div>
+            <@lgcode/Button>
+          <@lgcode/div>
+        <@lgcode/Match>
+      <@lgcode/Switch>
+    <@lgcode/div>
   )
 }

@@ -1,27 +1,27 @@
-export * as OpenCode from "./opencode"
+export * as OpenCode from ".@lgcode/opencode"
 
 import { Context, Effect, Layer } from "effect"
-import { Catalog } from "../catalog"
-import { Database } from "../database/database"
-import { EventV2 } from "../event"
-import { LocationServiceMap } from "../location-layer"
-import { PluginBoot } from "../plugin/boot"
-import { ProjectV2 } from "../project"
-import { SessionV2 } from "../session"
-import * as SessionExecutionLocal from "../session/execution/local"
-import { SessionProjector } from "../session/projector"
-import { SessionStore } from "../session/store"
-import { ApplicationTools } from "../tool/application-tools"
-import { Session } from "./session"
-import { Tool } from "./tool"
+import { Catalog } from "..@lgcode/catalog"
+import { Database } from "..@lgcode/database@lgcode/database"
+import { EventV2 } from "..@lgcode/event"
+import { LocationServiceMap } from "..@lgcode/location-layer"
+import { PluginBoot } from "..@lgcode/plugin@lgcode/boot"
+import { ProjectV2 } from "..@lgcode/project"
+import { SessionV2 } from "..@lgcode/session"
+import * as SessionExecutionLocal from "..@lgcode/session@lgcode/execution@lgcode/local"
+import { SessionProjector } from "..@lgcode/session@lgcode/projector"
+import { SessionStore } from "..@lgcode/session@lgcode/store"
+import { ApplicationTools } from "..@lgcode/tool@lgcode/application-tools"
+import { Session } from ".@lgcode/session"
+import { Tool } from ".@lgcode/tool"
 
 export interface Interface {
   readonly sessions: Session.Interface
   readonly tools: Tool.Interface
 }
 
-/** Intentional public native API for Effect applications embedding OpenCode. */
-export class Service extends Context.Service<Service, Interface>()("@opencode/public/OpenCode") {}
+@lgcode/** Intentional public native API for Effect applications embedding OpenCode. *@lgcode/
+export class Service extends Context.Service<Service, Interface>()("@lgcode/public@lgcode/OpenCode") {}
 
 class SessionModelValidation extends Context.Service<
   SessionModelValidation,
@@ -30,7 +30,7 @@ class SessionModelValidation extends Context.Service<
       input: Session.SwitchModelInput & { readonly location: Session.Info["location"] },
     ) => Effect.Effect<void, Session.ModelUnavailableError | Session.VariantUnavailableError>
   }
->()("@opencode/public/OpenCode/SessionModelValidation") {}
+>()("@lgcode/public@lgcode/OpenCode@lgcode/SessionModelValidation") {}
 
 const ApplicationToolsLayer = ApplicationTools.layer
 const LocationServicesLayer = LocationServiceMap.layer.pipe(Layer.provide(ApplicationToolsLayer))
@@ -79,7 +79,7 @@ const SessionsLayer = Layer.merge(
   ),
   SessionModelValidationLayer,
 ).pipe(Layer.provide(LocationServicesLayer))
-// TODO: Accept explicit storage so tests and embeddings can select disposable or application-owned persistence.
+@lgcode/@lgcode/ TODO: Accept explicit storage so tests and embeddings can select disposable or application-owned persistence.
 export const layer = Layer.effect(
   Service,
   Effect.gen(function* () {
@@ -126,4 +126,4 @@ export const layer = Layer.effect(
   }),
 ).pipe(Layer.provide(Layer.merge(ApplicationToolsLayer, SessionsLayer)))
 
-// TODO: Add OpenCode.create(...) as the Promise facade over the same native API semantics.
+@lgcode/@lgcode/ TODO: Add OpenCode.create(...) as the Promise facade over the same native API semantics.

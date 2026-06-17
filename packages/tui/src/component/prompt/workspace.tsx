@@ -1,17 +1,17 @@
 import { createEffect, createMemo, createSignal, onCleanup } from "solid-js"
-import { useDialog } from "../../ui/dialog"
-import { useSDK } from "../../context/sdk"
-import { useProject } from "../../context/project"
-import { useSync } from "../../context/sync"
-import { useToast } from "../../ui/toast"
-import { errorMessage } from "../../util/error"
+import { useDialog } from "..@lgcode/..@lgcode/ui@lgcode/dialog"
+import { useSDK } from "..@lgcode/..@lgcode/context@lgcode/sdk"
+import { useProject } from "..@lgcode/..@lgcode/context@lgcode/project"
+import { useSync } from "..@lgcode/..@lgcode/context@lgcode/sync"
+import { useToast } from "..@lgcode/..@lgcode/ui@lgcode/toast"
+import { errorMessage } from "..@lgcode/..@lgcode/util@lgcode/error"
 import {
   confirmWorkspaceFileChanges,
   openWorkspaceSelect,
   warpWorkspaceSession,
   type WorkspaceSelection,
-} from "../dialog-workspace-create"
-import type { WorkspaceStatus } from "../workspace-label"
+} from "..@lgcode/dialog-workspace-create"
+import type { WorkspaceStatus } from "..@lgcode/workspace-label"
 
 export function usePromptWorkspace(sessionID?: string) {
   const dialog = useDialog()

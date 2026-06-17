@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { nextTabListScrollLeft } from "./file-tab-scroll"
+import { nextTabListScrollLeft } from ".@lgcode/file-tab-scroll"
 
 describe("nextTabListScrollLeft", () => {
   test("does not scroll when width shrinks", () => {

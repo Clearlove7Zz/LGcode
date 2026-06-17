@@ -1,18 +1,18 @@
 import { afterEach, describe, expect, test } from "bun:test"
 import { Context, Config as EffectConfig, Effect, Layer, Queue, Schema } from "effect"
-import { NodeHttpServer, NodeServices } from "@effect/platform-node"
-import { HttpClient, HttpClientRequest, HttpRouter, HttpServer } from "effect/unstable/http"
-import * as Socket from "effect/unstable/socket/Socket"
+import { NodeHttpServer, NodeServices } from "@effect@lgcode/platform-node"
+import { HttpClient, HttpClientRequest, HttpRouter, HttpServer } from "effect@lgcode/unstable@lgcode/http"
+import * as Socket from "effect@lgcode/unstable@lgcode/socket@lgcode/Socket"
 import path from "path"
 import { pathToFileURL } from "url"
-import { mkdir } from "fs/promises"
-import { Location } from "@opencode@lgcode/core/location"
-import { Pty } from "@opencode@lgcode/core/pty"
-import { PtyTicket } from "@opencode@lgcode/core/pty/ticket"
-import { HttpApiApp } from "../../src/server/routes/instance/httpapi/server"
-import { resetDatabase } from "../fixture/db"
-import { disposeAllInstances, tmpdir, tmpdirScoped } from "../fixture/fixture"
-import { testEffect } from "../lib/effect"
+import { mkdir } from "fs@lgcode/promises"
+import { Location } from "@lgcode/core@lgcode/location"
+import { Pty } from "@lgcode/core@lgcode/pty"
+import { PtyTicket } from "@lgcode/core@lgcode/pty@lgcode/ticket"
+import { HttpApiApp } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/server"
+import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
+import { disposeAllInstances, tmpdir, tmpdirScoped } from "..@lgcode/fixture@lgcode/fixture"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const context = Context.empty() as Context.Context<unknown>
 const testPty = process.platform === "win32" ? test.skip : test
@@ -21,7 +21,7 @@ function request(route: string, directory: string, init: RequestInit = {}) {
   const headers = new Headers(init.headers)
   headers.set("x-opencode-directory", directory)
   return HttpApiApp.webHandler().handler(
-    new Request(`http://localhost${route}`, {
+    new Request(`http:@lgcode/@lgcode/localhost${route}`, {
       ...init,
       headers,
     }),
@@ -66,25 +66,25 @@ describe("v2 pty HttpApi", () => {
   testPty("serves location-wrapped PTY routes and retains exited sessions", async () => {
     await using tmp = await tmpdir({ git: true, config: { formatter: false, lsp: false } })
 
-    const empty = await request("/api/pty", tmp.path)
+    const empty = await request("@lgcode/api@lgcode/pty", tmp.path)
     expect(empty.status).toBe(200)
     expect(Schema.decodeUnknownSync(Location.response(Schema.Array(Pty.Info)))(await empty.json()).data).toEqual([])
 
-    const created = await request("/api/pty", tmp.path, {
+    const created = await request("@lgcode/api@lgcode/pty", tmp.path, {
       method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ command: "/usr/bin/env", args: ["sh", "-c", "exit 4"], title: "v2" }),
+      headers: { "content-type": "application@lgcode/json" },
+      body: JSON.stringify({ command: "@lgcode/usr@lgcode/bin@lgcode/env", args: ["sh", "-c", "exit 4"], title: "v2" }),
     })
     expect(created.status).toBe(200)
     const body = Schema.decodeUnknownSync(Location.response(Pty.Info))(await created.json())
     expect(String(body.location.directory)).toBe(tmp.path)
     expect(body.data.title).toBe("v2")
 
-    // The canonical surface keeps exited sessions observable with their exit code.
+    @lgcode/@lgcode/ The canonical surface keeps exited sessions observable with their exit code.
     const deadline = Date.now() + 5_000
     let info: { status: string; exitCode?: number } | undefined
     while (Date.now() < deadline) {
-      const found = await request(`/api/pty/${body.data.id}`, tmp.path)
+      const found = await request(`@lgcode/api@lgcode/pty@lgcode/${body.data.id}`, tmp.path)
       expect(found.status).toBe(200)
       info = Schema.decodeUnknownSync(Location.response(Pty.Info))(await found.json()).data
       if (info.status === "exited") break
@@ -92,30 +92,30 @@ describe("v2 pty HttpApi", () => {
     }
     expect(info).toMatchObject({ status: "exited", exitCode: 4 })
 
-    const removed = await request(`/api/pty/${body.data.id}`, tmp.path, { method: "DELETE" })
+    const removed = await request(`@lgcode/api@lgcode/pty@lgcode/${body.data.id}`, tmp.path, { method: "DELETE" })
     expect(removed.status).toBe(204)
 
-    const missing = await request(`/api/pty/${body.data.id}`, tmp.path)
+    const missing = await request(`@lgcode/api@lgcode/pty@lgcode/${body.data.id}`, tmp.path)
     expect(missing.status).toBe(404)
     expect(await missing.json()).toMatchObject({ _tag: "PtyNotFoundError", ptyID: body.data.id })
   })
 
   testPty("rejects connect tokens without the CSRF header and connects with a valid ticket", async () => {
     await using tmp = await tmpdir({ git: true, config: { formatter: false, lsp: false } })
-    const created = await request("/api/pty", tmp.path, {
+    const created = await request("@lgcode/api@lgcode/pty", tmp.path, {
       method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ command: "/usr/bin/env", args: ["sh", "-c", "sleep 5"] }),
+      headers: { "content-type": "application@lgcode/json" },
+      body: JSON.stringify({ command: "@lgcode/usr@lgcode/bin@lgcode/env", args: ["sh", "-c", "sleep 5"] }),
     })
     expect(created.status).toBe(200)
     const info = Schema.decodeUnknownSync(Location.response(Pty.Info))(await created.json()).data
 
     try {
-      const forbidden = await request(`/api/pty/${info.id}/connect-token`, tmp.path, { method: "POST" })
+      const forbidden = await request(`@lgcode/api@lgcode/pty@lgcode/${info.id}@lgcode/connect-token`, tmp.path, { method: "POST" })
       expect(forbidden.status).toBe(403)
       expect(await forbidden.json()).toMatchObject({ _tag: "ForbiddenError" })
 
-      const token = await request(`/api/pty/${info.id}/connect-token`, tmp.path, {
+      const token = await request(`@lgcode/api@lgcode/pty@lgcode/${info.id}@lgcode/connect-token`, tmp.path, {
         method: "POST",
         headers: { "x-opencode-ticket": "1" },
       })
@@ -123,10 +123,10 @@ describe("v2 pty HttpApi", () => {
       const ticket = Schema.decodeUnknownSync(Location.response(PtyTicket.ConnectToken))(await token.json()).data.ticket
       expect(ticket).toBeTruthy()
 
-      const invalid = await request(`/api/pty/${info.id}/connect?ticket=not-a-ticket`, tmp.path)
+      const invalid = await request(`@lgcode/api@lgcode/pty@lgcode/${info.id}@lgcode/connect?ticket=not-a-ticket`, tmp.path)
       expect(invalid.status).toBe(403)
     } finally {
-      await request(`/api/pty/${info.id}`, tmp.path, { method: "DELETE" })
+      await request(`@lgcode/api@lgcode/pty@lgcode/${info.id}`, tmp.path, { method: "DELETE" })
     }
   })
   ;(process.platform === "win32" ? effectIt.live.skip : effectIt.live)(
@@ -134,9 +134,9 @@ describe("v2 pty HttpApi", () => {
     () =>
       Effect.gen(function* () {
         const dir = yield* tmpdirScoped({ git: true, config: { formatter: false, lsp: false } })
-        const created = yield* HttpClientRequest.post("/api/pty").pipe(
+        const created = yield* HttpClientRequest.post("@lgcode/api@lgcode/pty").pipe(
           directoryHeader(dir),
-          HttpClientRequest.bodyJson({ command: "/bin/cat", title: "v2-websocket" }),
+          HttpClientRequest.bodyJson({ command: "@lgcode/bin@lgcode/cat", title: "v2-websocket" }),
           Effect.flatMap(HttpClient.execute),
         )
         expect(created.status).toBe(200)
@@ -144,7 +144,7 @@ describe("v2 pty HttpApi", () => {
         const info = body.data
 
         const socket = yield* Socket.makeWebSocket(
-          `${(yield* serverUrl()).replace(/^http/, "ws")}/api/pty/${info.id}/connect?cursor=-1&location[directory]=${encodeURIComponent(dir)}`,
+          `${(yield* serverUrl()).replace(@lgcode/^http@lgcode/, "ws")}@lgcode/api@lgcode/pty@lgcode/${info.id}@lgcode/connect?cursor=-1&location[directory]=${encodeURIComponent(dir)}`,
           { closeCodeIsError: () => false },
         )
         const messages = yield* Queue.unbounded<string>()
@@ -167,7 +167,7 @@ describe("v2 pty HttpApi", () => {
         expect(yield* takeUntil("ping-v2")).toContain("ping-v2")
         yield* write(new Socket.CloseEvent(1000, "done")).pipe(Effect.catch(() => Effect.void))
 
-        const removed = yield* HttpClientRequest.delete(`/api/pty/${info.id}`).pipe(
+        const removed = yield* HttpClientRequest.delete(`@lgcode/api@lgcode/pty@lgcode/${info.id}`).pipe(
           directoryHeader(dir),
           HttpClient.execute,
         )
@@ -205,10 +205,10 @@ describe("v2 pty HttpApi", () => {
           ),
         )
 
-        const created = yield* HttpClientRequest.post("/api/pty").pipe(
+        const created = yield* HttpClientRequest.post("@lgcode/api@lgcode/pty").pipe(
           directoryHeader(dir),
           HttpClientRequest.bodyJson({
-            command: "/bin/sh",
+            command: "@lgcode/bin@lgcode/sh",
             args: ["-c", 'printf "%s|%s|%s|%s|%s\\n" "$CALLER" "$SHARED" "$PLUGIN" "$TERM" "$HOOK_CWD"; sleep 5'],
             cwd,
             env: { CALLER: "caller", SHARED: "caller", TERM: "caller" },
@@ -219,7 +219,7 @@ describe("v2 pty HttpApi", () => {
         const info = (yield* Schema.decodeUnknownEffect(Location.response(Pty.Info))(yield* created.json)).data
 
         const socket = yield* Socket.makeWebSocket(
-          `${(yield* serverUrl()).replace(/^http/, "ws")}/api/pty/${info.id}/connect?cursor=0&location[directory]=${encodeURIComponent(dir)}`,
+          `${(yield* serverUrl()).replace(@lgcode/^http@lgcode/, "ws")}@lgcode/api@lgcode/pty@lgcode/${info.id}@lgcode/connect?cursor=0&location[directory]=${encodeURIComponent(dir)}`,
           { closeCodeIsError: () => false },
         )
         const messages = yield* Queue.unbounded<string>()
@@ -244,7 +244,7 @@ describe("v2 pty HttpApi", () => {
           `caller|plugin|plugin|xterm-256color|${cwd}`,
         )
         yield* write(new Socket.CloseEvent(1000, "done")).pipe(Effect.catch(() => Effect.void))
-        yield* HttpClientRequest.delete(`/api/pty/${info.id}`).pipe(directoryHeader(dir), HttpClient.execute)
+        yield* HttpClientRequest.delete(`@lgcode/api@lgcode/pty@lgcode/${info.id}`).pipe(directoryHeader(dir), HttpClient.execute)
       }),
   )
 })

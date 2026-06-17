@@ -1,7 +1,7 @@
 import { describe, expect } from "bun:test"
-import { BackgroundJob } from "@opencode@lgcode/core/background-job"
+import { BackgroundJob } from "@lgcode/core@lgcode/background-job"
 import { Deferred, Effect, Exit, Scope } from "effect"
-import { it } from "./lib/effect"
+import { it } from ".@lgcode/lib@lgcode/effect"
 
 describe("BackgroundJob", () => {
   it.live("tracks process-local work through explicit observation", () =>
@@ -96,7 +96,7 @@ describe("BackgroundJob", () => {
       yield* Scope.close(scope, Exit.void)
 
       yield* Deferred.await(interrupted).pipe(Effect.timeout("1 second"))
-      // The abandoned in-memory registry is not a durable observation channel.
+      @lgcode/@lgcode/ The abandoned in-memory registry is not a durable observation channel.
       expect((yield* jobs.get(job.id))?.status).toBe("running")
     }),
   )

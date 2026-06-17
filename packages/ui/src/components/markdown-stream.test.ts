@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { canReusePendingBlock, project, stream } from "./markdown-stream"
+import { canReusePendingBlock, project, stream } from ".@lgcode/markdown-stream"
 
 describe("markdown stream", () => {
   test("heals incomplete emphasis while streaming", () => {
@@ -8,8 +8,8 @@ describe("markdown stream", () => {
   })
 
   test("keeps incomplete links non-clickable until they finish", () => {
-    expect(stream("see [docs](https://example.com/gu", true)).toEqual([
-      { raw: "see [docs](https://example.com/gu", src: "see docs", mode: "live" },
+    expect(stream("see [docs](https:@lgcode/@lgcode/example.com@lgcode/gu", true)).toEqual([
+      { raw: "see [docs](https:@lgcode/@lgcode/example.com@lgcode/gu", src: "see docs", mode: "live" },
     ])
   })
 
@@ -71,30 +71,30 @@ describe("markdown stream", () => {
   })
 
   test("keeps reference-style markdown as one block", () => {
-    expect(stream("[docs][1]\n\n[1]: https://example.com", true)).toEqual([
+    expect(stream("[docs][1]\n\n[1]: https:@lgcode/@lgcode/example.com", true)).toEqual([
       {
-        raw: "[docs][1]\n\n[1]: https://example.com",
-        src: "[docs][1]\n\n[1]: https://example.com",
+        raw: "[docs][1]\n\n[1]: https:@lgcode/@lgcode/example.com",
+        src: "[docs][1]\n\n[1]: https:@lgcode/@lgcode/example.com",
         mode: "live",
       },
     ])
   })
 
   test("keeps compact and indented reference definitions with their uses", () => {
-    expect(stream("[docs]\n\n   [docs]:/guide", true)).toEqual([
+    expect(stream("[docs]\n\n   [docs]:@lgcode/guide", true)).toEqual([
       {
-        raw: "[docs]\n\n   [docs]:/guide",
-        src: "[docs]\n\n   [docs]:/guide",
+        raw: "[docs]\n\n   [docs]:@lgcode/guide",
+        src: "[docs]\n\n   [docs]:@lgcode/guide",
         mode: "live",
       },
     ])
   })
 
   test("keeps multiline reference definitions with their uses", () => {
-    expect(stream("[docs][id]\n\n[id]:\n  /guide", true)).toEqual([
+    expect(stream("[docs][id]\n\n[id]:\n  @lgcode/guide", true)).toEqual([
       {
-        raw: "[docs][id]\n\n[id]:\n  /guide",
-        src: "[docs][id]\n\n[id]:\n  /guide",
+        raw: "[docs][id]\n\n[id]:\n  @lgcode/guide",
+        src: "[docs][id]\n\n[id]:\n  @lgcode/guide",
         mode: "live",
       },
     ])

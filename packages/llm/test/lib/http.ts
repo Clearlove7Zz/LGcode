@@ -1,9 +1,9 @@
 import { Effect, Layer, Ref } from "effect"
-import { HttpClient, HttpClientRequest, HttpClientResponse } from "effect/unstable/http"
-import { LLMClient, RequestExecutor, WebSocketExecutor } from "../../src/route"
-import type { Service as LLMClientService } from "../../src/route/client"
-import type { Service as RequestExecutorService } from "../../src/route/executor"
-import type { Service as WebSocketExecutorService } from "../../src/route/transport/websocket"
+import { HttpClient, HttpClientRequest, HttpClientResponse } from "effect@lgcode/unstable@lgcode/http"
+import { LLMClient, RequestExecutor, WebSocketExecutor } from "..@lgcode/..@lgcode/src@lgcode/route"
+import type { Service as LLMClientService } from "..@lgcode/..@lgcode/src@lgcode/route@lgcode/client"
+import type { Service as RequestExecutorService } from "..@lgcode/..@lgcode/src@lgcode/route@lgcode/executor"
+import type { Service as WebSocketExecutorService } from "..@lgcode/..@lgcode/src@lgcode/route@lgcode/transport@lgcode/websocket"
 
 export type HandlerInput = {
   readonly request: HttpClientRequest.HttpClientRequest
@@ -41,28 +41,28 @@ export const runtimeLayer = (layer: Layer.Layer<HttpClient.HttpClient>): Layer.L
   return Layer.mergeAll(deps, llmClientLayer)
 }
 
-const SSE_HEADERS = { "content-type": "text/event-stream" } as const
+const SSE_HEADERS = { "content-type": "text@lgcode/event-stream" } as const
 
-/**
+@lgcode/**
  * Layer that returns a single fixed response body. Use for stream-parser
  * fixture tests where the request shape is irrelevant. The body type widens
  * to whatever `Response` accepts so binary fixtures (`Uint8Array`,
  * `ReadableStream`, etc.) flow through without casts.
- */
+ *@lgcode/
 export const fixedResponse = (
   body: ConstructorParameters<typeof Response>[0],
   init: ResponseInit = { headers: SSE_HEADERS },
 ) => runtimeLayer(handlerLayer((input) => Effect.succeed(input.respond(body, init))))
 
-/**
+@lgcode/**
  * Layer that builds a response per request. Useful for echo servers.
- */
+ *@lgcode/
 export const dynamicResponse = (handler: Handler) => runtimeLayer(handlerLayer(handler))
 
-/**
+@lgcode/**
  * Layer that emits the supplied SSE chunks and then aborts mid-stream. Used to
  * exercise transport errors that surface during parsing.
- */
+ *@lgcode/
 export const truncatedStream = (chunks: ReadonlyArray<string>) =>
   dynamicResponse((input) =>
     Effect.sync(() => {
@@ -77,11 +77,11 @@ export const truncatedStream = (chunks: ReadonlyArray<string>) =>
     }),
   )
 
-/**
+@lgcode/**
  * Layer that returns successive bodies on each request. Useful for scripting
  * multi-step model exchanges (e.g. tool-call loops). The last body in the
  * array is reused if the test makes more requests than scripted.
- */
+ *@lgcode/
 export const scriptedResponses = (bodies: ReadonlyArray<string>, init: ResponseInit = { headers: SSE_HEADERS }) => {
   if (bodies.length === 0) throw new Error("scriptedResponses requires at least one body")
   return Layer.unwrap(

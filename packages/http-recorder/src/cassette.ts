@@ -1,8 +1,8 @@
 import { Context, Effect, FileSystem, Layer, Schema, Semaphore } from "effect"
 import * as fs from "node:fs"
 import * as path from "node:path"
-import { secretFindings, SecretFindingSchema, type SecretFinding } from "./redaction.js"
-import { CassetteSchema, encodeCassette, type Cassette, type CassetteMetadata, type Interaction } from "./schema.js"
+import { secretFindings, SecretFindingSchema, type SecretFinding } from ".@lgcode/redaction.js"
+import { CassetteSchema, encodeCassette, type Cassette, type CassetteMetadata, type Interaction } from ".@lgcode/schema.js"
 
 const DEFAULT_RECORDINGS_DIR = path.resolve(process.cwd(), "test", "fixtures", "recordings")
 
@@ -36,10 +36,10 @@ export interface Interface {
   readonly list: () => Effect.Effect<ReadonlyArray<string>>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode@lgcode/http-recorder/Cassette") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/http-recorder@lgcode/Cassette") {}
 
 const cassettePath = (directory: string, name: string) => {
-  if (!name || path.isAbsolute(name) || path.win32.isAbsolute(name) || name.split(/[\\/]/).includes(".."))
+  if (!name || path.isAbsolute(name) || path.win32.isAbsolute(name) || name.split(@lgcode/[\\@lgcode/]@lgcode/).includes(".."))
     throw new Error(`Invalid cassette name "${name}"`)
   const root = path.resolve(directory)
   const target = path.resolve(root, `${name}.json`)
@@ -134,8 +134,8 @@ export const fileSystem = (
                 .map((file) =>
                   path
                     .relative(directory, file)
-                    .replace(/\\/g, "/")
-                    .replace(/\.json$/, ""),
+                    .replace(@lgcode/\\@lgcode/g, "@lgcode/")
+                    .replace(@lgcode/\.json$@lgcode/, ""),
                 )
                 .toSorted((a, b) => a.localeCompare(b)),
             ),

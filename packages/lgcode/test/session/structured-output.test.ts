@@ -1,9 +1,9 @@
 import { describe, expect, test } from "bun:test"
-import { SessionV1 } from "@opencode@lgcode/core/v1/session"
+import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
 import { Exit, Schema } from "effect"
-import { MessageV2 } from "../../src/session/message-v2"
-import { SessionPrompt } from "../../src/session/prompt"
-import { SessionID, MessageID } from "../../src/session/schema"
+import { MessageV2 } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/message-v2"
+import { SessionPrompt } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/prompt"
+import { SessionID, MessageID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
 
 const decodeFormat = Schema.decodeUnknownExit(SessionV1.Format)
 const decodeUser = Schema.decodeUnknownExit(SessionV1.User)
@@ -27,7 +27,7 @@ describe("structured-output.OutputFormat", () => {
     if (Exit.isSuccess(result)) {
       expect(result.value.type).toBe("json_schema")
       if (result.value.type === "json_schema") {
-        expect(result.value.retryCount).toBe(2) // default value
+        expect(result.value.retryCount).toBe(2) @lgcode/@lgcode/ default value
       }
     }
   })
@@ -139,7 +139,7 @@ describe("structured-output.AssistantMessage", () => {
     providerID: "anthropic",
     mode: "default",
     agent: "default",
-    path: { cwd: "/test", root: "/test" },
+    path: { cwd: "@lgcode/test", root: "@lgcode/test" },
     cost: 0.001,
     tokens: { input: 100, output: 50, reasoning: 0, cache: { read: 0, write: 0 } },
     time: { created: Date.now() },
@@ -187,7 +187,7 @@ describe("structured-output.createStructuredOutputTool", () => {
       onSuccess: () => {},
     })
 
-    // AI SDK wraps schema in { jsonSchema: {...} }
+    @lgcode/@lgcode/ AI SDK wraps schema in { jsonSchema: {...} }
     expect(tool.inputSchema).toBeDefined()
     const inputSchema = tool.inputSchema as any
     expect(inputSchema.jsonSchema?.properties?.company).toBeDefined()
@@ -196,7 +196,7 @@ describe("structured-output.createStructuredOutputTool", () => {
 
   test("strips $schema property from inputSchema", () => {
     const schema = {
-      $schema: "http://json-schema.org/draft-07/schema#",
+      $schema: "http:@lgcode/@lgcode/json-schema.org@lgcode/draft-07@lgcode/schema#",
       type: "object",
       properties: { name: { type: "string" } },
     }
@@ -206,7 +206,7 @@ describe("structured-output.createStructuredOutputTool", () => {
       onSuccess: () => {},
     })
 
-    // AI SDK wraps schema in { jsonSchema: {...} }
+    @lgcode/@lgcode/ AI SDK wraps schema in { jsonSchema: {...} }
     const inputSchema = tool.inputSchema as any
     expect(inputSchema.jsonSchema?.$schema).toBeUndefined()
   })
@@ -235,9 +235,9 @@ describe("structured-output.createStructuredOutputTool", () => {
   })
 
   test("AI SDK validates schema before execute - missing required field", async () => {
-    // Note: The AI SDK validates the input against the schema BEFORE calling execute()
-    // So invalid inputs never reach the tool's execute function
-    // This test documents the expected schema behavior
+    @lgcode/@lgcode/ Note: The AI SDK validates the input against the schema BEFORE calling execute()
+    @lgcode/@lgcode/ So invalid inputs never reach the tool's execute function
+    @lgcode/@lgcode/ This test documents the expected schema behavior
     const tool = SessionPrompt.createStructuredOutputTool({
       schema: {
         type: "object",
@@ -250,7 +250,7 @@ describe("structured-output.createStructuredOutputTool", () => {
       onSuccess: () => {},
     })
 
-    // The schema requires both 'name' and 'age'
+    @lgcode/@lgcode/ The schema requires both 'name' and 'age'
     expect(tool.inputSchema).toBeDefined()
     const inputSchema = tool.inputSchema as any
     expect(inputSchema.jsonSchema?.required).toContain("name")
@@ -258,9 +258,9 @@ describe("structured-output.createStructuredOutputTool", () => {
   })
 
   test("AI SDK validates schema types before execute - wrong type", async () => {
-    // Note: The AI SDK validates the input against the schema BEFORE calling execute()
-    // So invalid inputs never reach the tool's execute function
-    // This test documents the expected schema behavior
+    @lgcode/@lgcode/ Note: The AI SDK validates the input against the schema BEFORE calling execute()
+    @lgcode/@lgcode/ So invalid inputs never reach the tool's execute function
+    @lgcode/@lgcode/ This test documents the expected schema behavior
     const tool = SessionPrompt.createStructuredOutputTool({
       schema: {
         type: "object",
@@ -272,7 +272,7 @@ describe("structured-output.createStructuredOutputTool", () => {
       onSuccess: () => {},
     })
 
-    // The schema defines 'count' as a number
+    @lgcode/@lgcode/ The schema defines 'count' as a number
     expect(tool.inputSchema).toBeDefined()
     const inputSchema = tool.inputSchema as any
     expect(inputSchema.jsonSchema?.properties?.count?.type).toBe("number")
@@ -301,7 +301,7 @@ describe("structured-output.createStructuredOutputTool", () => {
       },
     })
 
-    // Valid nested object - AI SDK validates before calling execute()
+    @lgcode/@lgcode/ Valid nested object - AI SDK validates before calling execute()
     const validResult = await tool.execute!(
       { user: { name: "John", email: "john@test.com" } },
       {
@@ -314,7 +314,7 @@ describe("structured-output.createStructuredOutputTool", () => {
     expect(capturedOutput).toEqual({ user: { name: "John", email: "john@test.com" } })
     expect(validResult.metadata.valid).toBe(true)
 
-    // Verify schema has correct nested structure
+    @lgcode/@lgcode/ Verify schema has correct nested structure
     const inputSchema = tool.inputSchema as any
     expect(inputSchema.jsonSchema?.properties?.user?.type).toBe("object")
     expect(inputSchema.jsonSchema?.properties?.user?.properties?.name?.type).toBe("string")
@@ -340,7 +340,7 @@ describe("structured-output.createStructuredOutputTool", () => {
       },
     })
 
-    // Valid array - AI SDK validates before calling execute()
+    @lgcode/@lgcode/ Valid array - AI SDK validates before calling execute()
     const validResult = await tool.execute!(
       { tags: ["a", "b", "c"] },
       {
@@ -353,7 +353,7 @@ describe("structured-output.createStructuredOutputTool", () => {
     expect(capturedOutput).toEqual({ tags: ["a", "b", "c"] })
     expect(validResult.metadata.valid).toBe(true)
 
-    // Verify schema has correct array structure
+    @lgcode/@lgcode/ Verify schema has correct array structure
     const inputSchema = tool.inputSchema as any
     expect(inputSchema.jsonSchema?.properties?.tags?.type).toBe("array")
     expect(inputSchema.jsonSchema?.properties?.tags?.items?.type).toBe("string")
@@ -381,7 +381,7 @@ describe("structured-output.createStructuredOutputTool", () => {
     expect(modelOutput.value).toBe("Test output")
   })
 
-  // Note: Retry behavior is handled by the AI SDK and the prompt loop, not the tool itself
-  // The tool simply calls onSuccess when execute() is called with valid args
-  // See prompt.ts loop() for actual retry logic
+  @lgcode/@lgcode/ Note: Retry behavior is handled by the AI SDK and the prompt loop, not the tool itself
+  @lgcode/@lgcode/ The tool simply calls onSuccess when execute() is called with valid args
+  @lgcode/@lgcode/ See prompt.ts loop() for actual retry logic
 })

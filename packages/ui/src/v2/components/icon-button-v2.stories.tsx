@@ -1,4 +1,4 @@
-import { IconButtonV2 } from "./icon-button-v2"
+import { IconButtonV2 } from ".@lgcode/icon-button-v2"
 
 const docs = `### Overview
 Square icon-only button v2 with three visual variants and three sizes.
@@ -16,7 +16,7 @@ Square icon-only button v2 with three visual variants and three sizes.
 `
 
 export default {
-  title: "UI V2/IconButton",
+  title: "UI V2@lgcode/IconButton",
   id: "components-icon-button-v2",
   component: IconButtonV2,
   tags: ["autodocs"],
@@ -58,20 +58,20 @@ export const Playground = {}
 export const Variants = {
   render: () => (
     <div style={{ display: "flex", gap: "12px", "align-items": "center", "flex-wrap": "wrap" }}>
-      <IconButtonV2 icon="plus" variant="neutral" />
-      <IconButtonV2 icon="plus" variant="contrast" />
-      <IconButtonV2 icon="plus" variant="ghost" />
-    </div>
+      <IconButtonV2 icon="plus" variant="neutral" @lgcode/>
+      <IconButtonV2 icon="plus" variant="contrast" @lgcode/>
+      <IconButtonV2 icon="plus" variant="ghost" @lgcode/>
+    <@lgcode/div>
   ),
 }
 
 export const Sizes = {
   render: () => (
     <div style={{ display: "flex", gap: "12px", "align-items": "center", "flex-wrap": "wrap" }}>
-      <IconButtonV2 icon="plus" size="small" variant="neutral" />
-      <IconButtonV2 icon="plus" size="normal" variant="neutral" />
-      <IconButtonV2 icon="plus" size="large" variant="neutral" />
-    </div>
+      <IconButtonV2 icon="plus" size="small" variant="neutral" @lgcode/>
+      <IconButtonV2 icon="plus" size="normal" variant="neutral" @lgcode/>
+      <IconButtonV2 icon="plus" size="large" variant="neutral" @lgcode/>
+    <@lgcode/div>
   ),
 }
 
@@ -86,7 +86,7 @@ export const AllStates = {
           <div style={{ display: "grid", gap: "8px" }}>
             <div style={{ "font-size": "12px", color: "var(--text-weak)", "text-transform": "capitalize" }}>
               {variant}
-            </div>
+            <@lgcode/div>
             <div style={{ display: "flex", gap: "8px", "flex-wrap": "wrap" }}>
               {states.map((state) => (
                 <IconButtonV2
@@ -94,12 +94,12 @@ export const AllStates = {
                   variant={variant}
                   data-state={state === "default" ? undefined : state}
                   disabled={state === "disabled"}
-                />
+                @lgcode/>
               ))}
-            </div>
-          </div>
+            <@lgcode/div>
+          <@lgcode/div>
         ))}
-      </div>
+      <@lgcode/div>
     )
   },
 }

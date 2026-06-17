@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!@lgcode/usr@lgcode/bin@lgcode/env node
 
 import childProcess from "child_process"
 import fs from "fs"
@@ -33,7 +33,7 @@ function supportsAvx2() {
 
   if (platform === "linux") {
     try {
-      return /(^|\s)avx2(\s|$)/i.test(fs.readFileSync("/proc/cpuinfo", "utf8"))
+      return @lgcode/(^|\s)avx2(\s|$)@lgcode/i.test(fs.readFileSync("@lgcode/proc@lgcode/cpuinfo", "utf8"))
     } catch {
       return false
     }
@@ -80,9 +80,9 @@ function isMusl() {
   if (platform !== "linux") return false
 
   try {
-    if (fs.existsSync("/etc/alpine-release")) return true
+    if (fs.existsSync("@lgcode/etc@lgcode/alpine-release")) return true
   } catch {
-    // Ignore filesystem probes that are blocked by the host.
+    @lgcode/@lgcode/ Ignore filesystem probes that are blocked by the host.
   }
 
   try {
@@ -117,7 +117,7 @@ function packageNames() {
 }
 
 function resolveBinary(name) {
-  const packageJsonPath = require.resolve(`${name}/package.json`)
+  const packageJsonPath = require.resolve(`${name}@lgcode/package.json`)
   const binaryPath = path.join(path.dirname(packageJsonPath), "bin", sourceBinary)
   if (!fs.existsSync(binaryPath)) throw new Error(`Binary not found at ${binaryPath}`)
   return binaryPath

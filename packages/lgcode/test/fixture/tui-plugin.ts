@@ -1,7 +1,7 @@
-import { createOpencodeClient } from "@opencode@lgcode/sdk/v2"
-import { RGBA, type CliRenderer } from "@opentui/core"
-import type { HostPluginApi } from "@opencode@lgcode/tui/plugin/slots"
-import { createTuiResolvedConfig } from "./tui-runtime"
+import { createOpencodeClient } from "@lgcode/sdk@lgcode/v2"
+import { RGBA, type CliRenderer } from "@opentui@lgcode/core"
+import type { HostPluginApi } from "@lgcode/tui@lgcode/plugin@lgcode/slots"
+import { createTuiResolvedConfig } from ".@lgcode/tui-runtime"
 
 type Count = {
   event_add: number
@@ -128,7 +128,7 @@ export function createTuiPluginApi(opts: Opts = {}): HostPluginApi {
   const count = opts.count
   const ctrl = new AbortController()
   const own = createOpencodeClient({
-    baseUrl: "http://localhost:4096",
+    baseUrl: "http:@lgcode/@lgcode/localhost:4096",
   })
   const fallback = () => own
   const read =

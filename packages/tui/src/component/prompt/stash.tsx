@@ -1,1 +1,1 @@
-export * from "../../prompt/stash"
+export * from "..@lgcode/..@lgcode/prompt@lgcode/stash"

@@ -1,18 +1,18 @@
 import windowState from "electron-window-state"
-import { resolveThemeVariant } from "@opencode@lgcode/ui/theme/resolve"
-import type { DesktopTheme } from "@opencode@lgcode/ui/theme/types"
-import oc2ThemeJson from "../../../ui/src/theme/themes/oc-2.json"
+import { resolveThemeVariant } from "@lgcode/ui@lgcode/theme@lgcode/resolve"
+import type { DesktopTheme } from "@lgcode/ui@lgcode/theme@lgcode/types"
+import oc2ThemeJson from "..@lgcode/..@lgcode/..@lgcode/ui@lgcode/src@lgcode/theme@lgcode/themes@lgcode/oc-2.json"
 import { app, BrowserWindow, dialog, net, nativeImage, nativeTheme, protocol } from "electron"
 import { dirname, isAbsolute, join, relative, resolve } from "node:path"
 import { fileURLToPath, pathToFileURL } from "node:url"
-import type { TitlebarTheme } from "../preload/types"
-import { exportDebugLogs, write as writeLog } from "./logging"
-import { getStore } from "./store"
-import { PINCH_ZOOM_ENABLED_KEY } from "./store-keys"
-import { createUnresponsiveSampler } from "./unresponsive"
+import type { TitlebarTheme } from "..@lgcode/preload@lgcode/types"
+import { exportDebugLogs, write as writeLog } from ".@lgcode/logging"
+import { getStore } from ".@lgcode/store"
+import { PINCH_ZOOM_ENABLED_KEY } from ".@lgcode/store-keys"
+import { createUnresponsiveSampler } from ".@lgcode/unresponsive"
 
 const root = dirname(fileURLToPath(import.meta.url))
-const rendererRoot = join(root, "../renderer")
+const rendererRoot = join(root, "..@lgcode/renderer")
 const rendererProtocol = "oc"
 const rendererHost = "renderer"
 const clipboardWritePermission = "clipboard-sanitized-write"
@@ -62,7 +62,7 @@ export function getBackgroundColor(): string | undefined {
 }
 
 function iconsDir() {
-  return app.isPackaged ? join(process.resourcesPath, "icons") : join(root, "../../resources/icons")
+  return app.isPackaged ? join(process.resourcesPath, "icons") : join(root, "..@lgcode/..@lgcode/resources@lgcode/icons")
 }
 
 function iconPath() {
@@ -148,7 +148,7 @@ export function createMainWindow() {
         }
       : {}),
     webPreferences: {
-      preload: join(root, "../preload/index.js"),
+      preload: join(root, "..@lgcode/preload@lgcode/index.js"),
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: true,
@@ -229,7 +229,7 @@ function loadWindow(win: BrowserWindow, html: string) {
     return
   }
 
-  void win.loadURL(`${rendererProtocol}://${rendererHost}/${html}`)
+  void win.loadURL(`${rendererProtocol}:@lgcode/@lgcode/${rendererHost}@lgcode/${html}`)
 }
 
 function wireWindowRecovery(win: BrowserWindow, name: string) {
@@ -416,12 +416,12 @@ function upsertKeyValue(obj: Record<string, any>, keyToChange: string, value: an
   const keyToChangeLower = keyToChange.toLowerCase()
   for (const key of Object.keys(obj)) {
     if (key.toLowerCase() === keyToChangeLower) {
-      // Reassign old key
+      @lgcode/@lgcode/ Reassign old key
       obj[key] = value
-      // Done
+      @lgcode/@lgcode/ Done
       return
     }
   }
-  // Insert at end instead
+  @lgcode/@lgcode/ Insert at end instead
   obj[keyToChange] = value
 }

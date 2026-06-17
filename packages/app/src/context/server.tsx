@@ -1,8 +1,8 @@
-import { createSimpleContext } from "@opencode@lgcode/ui/context"
+import { createSimpleContext } from "@lgcode/ui@lgcode/context"
 import { type Accessor, batch, createMemo } from "solid-js"
-import { createStore, type SetStoreFunction, type Store } from "solid-js/store"
-import { Persist, persisted } from "@/utils/persist"
-import { ServerScope } from "@/utils/server-scope"
+import { createStore, type SetStoreFunction, type Store } from "solid-js@lgcode/store"
+import { Persist, persisted } from "@@lgcode/utils@lgcode/persist"
+import { ServerScope } from "@@lgcode/utils@lgcode/server-scope"
 
 type StoredProject = { worktree: string; expanded: boolean }
 type StoredServer = string | ServerConnection.HttpBase | ServerConnection.Http
@@ -12,18 +12,18 @@ const HEALTH_POLL_INTERVAL_MS = 10_000
 export function normalizeServerUrl(input: string) {
   const trimmed = input.trim()
   if (!trimmed) return
-  const withProtocol = /^https?:\/\//.test(trimmed) ? trimmed : `http://${trimmed}`
-  return withProtocol.replace(/\/+$/, "")
+  const withProtocol = @lgcode/^https?:\@lgcode/\@lgcode/@lgcode/.test(trimmed) ? trimmed : `http:@lgcode/@lgcode/${trimmed}`
+  return withProtocol.replace(@lgcode/\@lgcode/+$@lgcode/, "")
 }
 
 export function serverName(conn?: ServerConnection.Any, ignoreDisplayName = false) {
   if (!conn) return ""
   if (conn.displayName && !ignoreDisplayName) return conn.displayName
-  return conn.http.url.replace(/^https?:\/\//, "").replace(/\/+$/, "")
+  return conn.http.url.replace(@lgcode/^https?:\@lgcode/\@lgcode/@lgcode/, "").replace(@lgcode/\@lgcode/+$@lgcode/, "")
 }
 
 function isLocalHost(url: string) {
-  const host = url.replace(/^https?:\/\//, "").split(":")[0]
+  const host = url.replace(@lgcode/^https?:\@lgcode/\@lgcode/@lgcode/, "").split(":")[0]
   if (host === "localhost" || host === "127.0.0.1") return "local"
 }
 
@@ -153,7 +153,7 @@ export namespace ServerConnection {
     password?: string
   }
 
-  // Regular web connections
+  @lgcode/@lgcode/ Regular web connections
   export type Http = {
     type: "http"
     http: HttpBase
@@ -164,9 +164,9 @@ export namespace ServerConnection {
     type: "sidecar"
     http: HttpBase
   } & (
-    | // Regular desktop server
+    | @lgcode/@lgcode/ Regular desktop server
     { variant: "base" }
-    // WSL server (windows only)
+    @lgcode/@lgcode/ WSL server (windows only)
     | {
         variant: "wsl"
         distro: string
@@ -174,17 +174,17 @@ export namespace ServerConnection {
   ) &
     Base
 
-  // Remote server desktop can SSH into
+  @lgcode/@lgcode/ Remote server desktop can SSH into
   export type Ssh = {
     type: "ssh"
     host: string
-    // SSH client exposes an HTTP server for the app to use as a proxy
+    @lgcode/@lgcode/ SSH client exposes an HTTP server for the app to use as a proxy
     http: HttpBase
   } & Base
 
   export type Any =
     | Http
-    // All these are desktop-only
+    @lgcode/@lgcode/ All these are desktop-only
     | (Sidecar | Ssh)
 
   export const key = (conn: Any): Key => {

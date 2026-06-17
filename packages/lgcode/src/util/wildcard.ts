@@ -1,15 +1,15 @@
 import { sortBy, pipe } from "remeda"
 
 export function match(str: string, pattern: string) {
-  if (str) str = str.replaceAll("\\", "/")
-  if (pattern) pattern = pattern.replaceAll("\\", "/")
+  if (str) str = str.replaceAll("\\", "@lgcode/")
+  if (pattern) pattern = pattern.replaceAll("\\", "@lgcode/")
   let escaped = pattern
-    .replace(/[.+^${}()|[\]\\]/g, "\\$&") // escape special regex chars
-    .replace(/\*/g, ".*") // * becomes .*
-    .replace(/\?/g, ".") // ? becomes .
+    .replace(@lgcode/[.+^${}()|[\]\\]@lgcode/g, "\\$&") @lgcode/@lgcode/ escape special regex chars
+    .replace(@lgcode/\*@lgcode/g, ".*") @lgcode/@lgcode/ * becomes .*
+    .replace(@lgcode/\?@lgcode/g, ".") @lgcode/@lgcode/ ? becomes .
 
-  // If pattern ends with " *" (space + wildcard), make the trailing part optional
-  // This allows "ls *" to match both "ls" and "ls -la"
+  @lgcode/@lgcode/ If pattern ends with " *" (space + wildcard), make the trailing part optional
+  @lgcode/@lgcode/ This allows "ls *" to match both "ls" and "ls -la"
   if (escaped.endsWith(" .*")) {
     escaped = escaped.slice(0, -3) + "( .*)?"
   }
@@ -34,7 +34,7 @@ export function allStructured(input: { head: string; tail: string[] }, patterns:
   const sorted = pipe(patterns, Object.entries, sortBy([([key]) => key.length, "asc"], [([key]) => key, "asc"]))
   let result = undefined
   for (const [pattern, value] of sorted) {
-    const parts = pattern.split(/\s+/)
+    const parts = pattern.split(@lgcode/\s+@lgcode/)
     if (!match(input.head, parts[0])) continue
     if (parts.length === 1 || matchSequence(input.tail, parts.slice(1))) {
       result = value
@@ -56,4 +56,4 @@ function matchSequence(items: string[], patterns: string[]): boolean {
   return false
 }
 
-export * as Wildcard from "./wildcard"
+export * as Wildcard from ".@lgcode/wildcard"

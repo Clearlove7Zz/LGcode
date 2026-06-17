@@ -1,10 +1,10 @@
-import { createOpencodeClient, createOpencodeServer } from "@opencode@lgcode/sdk"
+import { createOpencodeClient, createOpencodeServer } from "@lgcode/sdk"
 import { pathToFileURL } from "bun"
 
 const server = await createOpencodeServer()
 const client = createOpencodeClient({ baseUrl: server.url })
 
-const input = await Array.fromAsync(new Bun.Glob("packages/core/*.ts").scan())
+const input = await Array.fromAsync(new Bun.Glob("packages@lgcode/core@lgcode/*.ts").scan())
 
 const tasks: Promise<void>[] = []
 for await (const file of input) {
@@ -17,7 +17,7 @@ for await (const file of input) {
         parts: [
           {
             type: "file",
-            mime: "text/plain",
+            mime: "text@lgcode/plain",
             url: pathToFileURL(file).href,
           },
           {
@@ -41,7 +41,7 @@ await Promise.all(
         parts: [
           {
             type: "file",
-            mime: "text/plain",
+            mime: "text@lgcode/plain",
             url: pathToFileURL(file).href,
           },
           {

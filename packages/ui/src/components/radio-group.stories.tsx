@@ -1,6 +1,6 @@
-// @ts-nocheck
-import * as mod from "./radio-group"
-import { create } from "../storybook/scaffold"
+@lgcode/@lgcode/ @ts-nocheck
+import * as mod from ".@lgcode/radio-group"
+import { create } from "..@lgcode/storybook@lgcode/scaffold"
 
 const docs = `### Overview
 Segmented radio group for choosing a single option.
@@ -20,15 +20,15 @@ Use for view toggles or mode selection.
 - Maps options to segmented items and manages selection.
 
 ### Accessibility
-- TODO: confirm role/aria attributes from Kobalte SegmentedControl.
+- TODO: confirm role@lgcode/aria attributes from Kobalte SegmentedControl.
 
-### Theming/tokens
-- Uses \`data-component="radio-group"\` with size/pad data attributes.
+### Theming@lgcode/tokens
+- Uses \`data-component="radio-group"\` with size@lgcode/pad data attributes.
 
 `
 
 const story = create({
-  title: "UI/RadioGroup",
+  title: "UI@lgcode/RadioGroup",
   mod,
   args: {
     options: ["One", "Two", "Three"],
@@ -37,7 +37,7 @@ const story = create({
 })
 
 export default {
-  title: "UI/RadioGroup",
+  title: "UI@lgcode/RadioGroup",
   id: "components-radio-group",
   component: story.meta.component,
   tags: ["autodocs"],
@@ -68,9 +68,9 @@ export const Basic = story.Basic
 export const Sizes = {
   render: () => (
     <div style={{ display: "grid", gap: "12px" }}>
-      <mod.RadioGroup options={["One", "Two"]} defaultValue="One" size="small" />
-      <mod.RadioGroup options={["One", "Two"]} defaultValue="One" size="medium" />
-    </div>
+      <mod.RadioGroup options={["One", "Two"]} defaultValue="One" size="small" @lgcode/>
+      <mod.RadioGroup options={["One", "Two"]} defaultValue="One" size="medium" @lgcode/>
+    <@lgcode/div>
   ),
 }
 
@@ -87,6 +87,6 @@ export const CustomLabels = {
       options={["list", "grid"]}
       defaultValue="list"
       label={(value) => (value === "list" ? "List view" : "Grid view")}
-    />
+    @lgcode/>
   ),
 }

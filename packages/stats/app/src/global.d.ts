@@ -1,1 +1,1 @@
-/// <reference types="@solidjs/start/env" />
+@lgcode/@lgcode/@lgcode/ <reference types="@solidjs@lgcode/start@lgcode/env" @lgcode/>

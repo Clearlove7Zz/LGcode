@@ -1,13 +1,13 @@
 import { describe, expect } from "bun:test"
 import { Effect, Schema } from "effect"
-import { HttpClientRequest } from "effect/unstable/http"
-import { LLM, Message, ToolCallPart } from "../../src"
-import { Auth, LLMClient } from "../../src/route"
-import * as OpenAICompatible from "../../src/providers/openai-compatible"
-import * as OpenAICompatibleChat from "../../src/protocols/openai-compatible-chat"
-import { it } from "../lib/effect"
-import { dynamicResponse } from "../lib/http"
-import { sseEvents } from "../lib/sse"
+import { HttpClientRequest } from "effect@lgcode/unstable@lgcode/http"
+import { LLM, Message, ToolCallPart } from "..@lgcode/..@lgcode/src"
+import { Auth, LLMClient } from "..@lgcode/..@lgcode/src@lgcode/route"
+import * as OpenAICompatible from "..@lgcode/..@lgcode/src@lgcode/providers@lgcode/openai-compatible"
+import * as OpenAICompatibleChat from "..@lgcode/..@lgcode/src@lgcode/protocols@lgcode/openai-compatible-chat"
+import { it } from "..@lgcode/lib@lgcode/effect"
+import { dynamicResponse } from "..@lgcode/lib@lgcode/http"
+import { sseEvents } from "..@lgcode/lib@lgcode/sse"
 
 const Json = Schema.fromJsonString(Schema.Unknown)
 const decodeJson = Schema.decodeUnknownSync(Json)
@@ -15,7 +15,7 @@ const decodeJson = Schema.decodeUnknownSync(Json)
 const model = OpenAICompatibleChat.route
   .with({
     provider: "deepseek",
-    endpoint: { baseURL: "https://api.deepseek.test/v1/", query: { "api-version": "2026-01-01" } },
+    endpoint: { baseURL: "https:@lgcode/@lgcode/api.deepseek.test@lgcode/v1@lgcode/", query: { "api-version": "2026-01-01" } },
     auth: Auth.bearer("test-key"),
   })
   .model({ id: "deepseek-chat" })
@@ -41,12 +41,12 @@ const usageChunk = (usage: object) => ({
 })
 
 const providerFamilies = [
-  ["baseten", OpenAICompatible.baseten, "https://inference.baseten.co/v1"],
-  ["cerebras", OpenAICompatible.cerebras, "https://api.cerebras.ai/v1"],
-  ["deepinfra", OpenAICompatible.deepinfra, "https://api.deepinfra.com/v1/openai"],
-  ["deepseek", OpenAICompatible.deepseek, "https://api.deepseek.com/v1"],
-  ["fireworks", OpenAICompatible.fireworks, "https://api.fireworks.ai/inference/v1"],
-  ["togetherai", OpenAICompatible.togetherai, "https://api.together.xyz/v1"],
+  ["baseten", OpenAICompatible.baseten, "https:@lgcode/@lgcode/inference.baseten.co@lgcode/v1"],
+  ["cerebras", OpenAICompatible.cerebras, "https:@lgcode/@lgcode/api.cerebras.ai@lgcode/v1"],
+  ["deepinfra", OpenAICompatible.deepinfra, "https:@lgcode/@lgcode/api.deepinfra.com@lgcode/v1@lgcode/openai"],
+  ["deepseek", OpenAICompatible.deepseek, "https:@lgcode/@lgcode/api.deepseek.com@lgcode/v1"],
+  ["fireworks", OpenAICompatible.fireworks, "https:@lgcode/@lgcode/api.fireworks.ai@lgcode/inference@lgcode/v1"],
+  ["togetherai", OpenAICompatible.togetherai, "https:@lgcode/@lgcode/api.together.xyz@lgcode/v1"],
 ] as const
 
 describe("OpenAI-compatible Chat route", () => {
@@ -66,7 +66,7 @@ describe("OpenAI-compatible Chat route", () => {
         route: { id: "openai-compatible-chat" },
       })
       expect(prepared.model.route.endpoint).toMatchObject({
-        baseURL: "https://api.deepseek.test/v1/",
+        baseURL: "https:@lgcode/@lgcode/api.deepseek.test@lgcode/v1@lgcode/",
         query: { "api-version": "2026-01-01" },
       })
       expect(prepared.body).toEqual({
@@ -114,14 +114,14 @@ describe("OpenAI-compatible Chat route", () => {
       const custom = OpenAICompatible.deepseek
         .configure({
           apiKey: "test-key",
-          baseURL: "https://custom.deepseek.test/v1",
+          baseURL: "https:@lgcode/@lgcode/custom.deepseek.test@lgcode/v1",
         })
         .model("deepseek-chat")
       expect(custom).toMatchObject({
         provider: "deepseek",
         route: { id: "openai-compatible-chat" },
       })
-      expect(custom.route.endpoint.baseURL).toBe("https://custom.deepseek.test/v1")
+      expect(custom.route.endpoint.baseURL).toBe("https:@lgcode/@lgcode/custom.deepseek.test@lgcode/v1")
     }),
   )
 
@@ -206,7 +206,7 @@ describe("OpenAI-compatible Chat route", () => {
           dynamicResponse((input) =>
             Effect.gen(function* () {
               const web = yield* HttpClientRequest.toWeb(input.request).pipe(Effect.orDie)
-              expect(web.url).toBe("https://api.deepseek.test/v1/chat/completions?api-version=2026-01-01")
+              expect(web.url).toBe("https:@lgcode/@lgcode/api.deepseek.test@lgcode/v1@lgcode/chat@lgcode/completions?api-version=2026-01-01")
               expect(web.headers.get("authorization")).toBe("Bearer test-key")
               expect(decodeJson(input.text)).toMatchObject({
                 model: "deepseek-chat",
@@ -223,7 +223,7 @@ describe("OpenAI-compatible Chat route", () => {
                   deltaChunk({}, "stop"),
                   usageChunk({ prompt_tokens: 5, completion_tokens: 2, total_tokens: 7 }),
                 ),
-                { headers: { "content-type": "text/event-stream" } },
+                { headers: { "content-type": "text@lgcode/event-stream" } },
               )
             }),
           ),

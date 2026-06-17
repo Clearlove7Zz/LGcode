@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import { copyCommand } from "../src/clipboard"
+import { copyCommand } from "..@lgcode/src@lgcode/clipboard"
 
 test("prefers Wayland clipboard when available", () => {
   expect(copyCommand("linux", true, (name) => name === "wl-copy")).toEqual(["wl-copy"])

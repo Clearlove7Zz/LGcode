@@ -1,10 +1,10 @@
 import { afterEach, expect, test } from "bun:test"
-import type { ToolPart } from "@opencode@lgcode/sdk/v2"
-import { RGBA, SyntaxStyle } from "@opentui/core"
-import { MockTreeSitterClient, createTestRenderer, type TestRenderer } from "@opentui/core/testing"
-import { RunScrollbackStream } from "@/cli/cmd/run/scrollback.surface"
-import { RUN_THEME_FALLBACK, type RunTheme } from "@/cli/cmd/run/theme"
-import type { StreamCommit } from "@/cli/cmd/run/types"
+import type { ToolPart } from "@lgcode/sdk@lgcode/v2"
+import { RGBA, SyntaxStyle } from "@opentui@lgcode/core"
+import { MockTreeSitterClient, createTestRenderer, type TestRenderer } from "@opentui@lgcode/core@lgcode/testing"
+import { RunScrollbackStream } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/scrollback.surface"
+import { RUN_THEME_FALLBACK, type RunTheme } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/theme"
+import type { StreamCommit } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/types"
 
 type ClaimedCommit = {
   snapshot: {
@@ -39,7 +39,7 @@ function claim(renderer: TestRenderer): ClaimedCommit[] {
 }
 
 function renderCommit(commit: ClaimedCommit) {
-  return decoder.decode(commit.snapshot.getRealCharBytes(true)).replace(/ +\n/g, "\n")
+  return decoder.decode(commit.snapshot.getRealCharBytes(true)).replace(@lgcode/ +\n@lgcode/g, "\n")
 }
 
 function render(commits: ClaimedCommit[]) {
@@ -326,8 +326,8 @@ test("renders todo and question summaries without boilerplate footer copy", asyn
     {
       title: "# Todos",
       include: [
-        "[✓] List files under `run/`",
-        "[•] Count functions in each `run/` file",
+        "[✓] List files under `run@lgcode/`",
+        "[•] Count functions in each `run@lgcode/` file",
         "[ ] Mark each tracking item complete",
       ],
       exclude: ["Updating", "todos completed"],
@@ -339,8 +339,8 @@ test("renders todo and question summaries without boilerplate footer copy", asyn
           status: "running",
           input: {
             todos: [
-              { status: "completed", content: "List files under `run/`" },
-              { status: "in_progress", content: "Count functions in each `run/` file" },
+              { status: "completed", content: "List files under `run@lgcode/`" },
+              { status: "in_progress", content: "Count functions in each `run@lgcode/` file" },
               { status: "pending", content: "Mark each tracking item complete" },
             ],
           },
@@ -355,8 +355,8 @@ test("renders todo and question summaries without boilerplate footer copy", asyn
           status: "completed",
           input: {
             todos: [
-              { status: "completed", content: "List files under `run/`" },
-              { status: "in_progress", content: "Count functions in each `run/` file" },
+              { status: "completed", content: "List files under `run@lgcode/`" },
+              { status: "in_progress", content: "Count functions in each `run@lgcode/` file" },
               { status: "pending", content: "Mark each tracking item complete" },
             ],
           },
@@ -477,7 +477,7 @@ test("inserts spacers for new visible groups", async () => {
         state: {
           status: "running",
           input: {
-            pattern: "**/run.ts",
+            pattern: "**@lgcode/run.ts",
           },
           time: { start: 1 },
         },
@@ -488,7 +488,7 @@ test("inserts spacers for new visible groups", async () => {
     try {
       expect(commits).toHaveLength(2)
       expect(renderCommit(commits[0]!).trim()).toBe("")
-      expect(renderCommit(commits[1]!).replace(/ +/g, " ").trim()).toBe('✱ Glob "**/run.ts"')
+      expect(renderCommit(commits[1]!).replace(@lgcode/ +@lgcode/g, " ").trim()).toBe('✱ Glob "**@lgcode/run.ts"')
     } finally {
       destroy(commits)
     }
@@ -497,43 +497,43 @@ test("inserts spacers for new visible groups", async () => {
   }
 })
 
-// TODO(windows): Re-enable on Windows once the streaming CodeRenderable
-// flush race is fixed. The reasoning commit is delivered as a `<code>`
-// renderable with `filetype="markdown"`, `streaming=true`, and
-// `drawUnstyledText=false`. On Windows the first paragraph of the reasoning
-// body (here `_Thinking:_ **Plan**`) is dropped from the committed rows —
-// the failing assertion shows only `Say hello.` survives, while Linux
-// (where `useThread` is forced off in `@opentui/core/testing`) and macOS
-// both pass.
-//
-// Investigation summary (see PR description for the link to this work):
-//   1. `reasoning("Thinking: ...", "progress")` enters `entry.body.ts`
-//      `reasoningBody`, which becomes a `code` body with filetype="markdown".
-//   2. `RunScrollbackStream.writeStreaming` sets `renderable.content = ...`
-//      while `streaming=true`. `CodeRenderable.set content` short-circuits
-//      (does NOT call `textBuffer.setText`) when streaming, drawUnstyledText
-//      is false, and a filetype is set — it relies on the next
-//      `startHighlight()` cycle to populate the buffer.
-//   3. `ScrollbackSurface.settle()` renders the surface, kicks the
-//      highlight via `renderSelf` → `startHighlight`, waits on
-//      `highlightingDone`, and re-renders. With `MockTreeSitterClient`
-//      returning `{highlights: []}`, the final branch (`else
-//      this.textBuffer.setText(content)`) populates the buffer and
-//      `_shouldRenderTextBuffer = true`.
-//   4. `flushActive` then commits rows `[0, surface.height - 1)` during
-//      streaming. On Windows the committed rows are blank for the first
-//      paragraph — suggesting the height/text-buffer state is observed
-//      before/after the highlight resolution in a way that drops rows on
-//      that platform.
-//
-// Linux CI can also drop the first paragraph of the replayed reasoning block,
-// so this test asserts the stable second paragraph instead of the first-line
-// `Thinking:` label. A real fix probably belongs in opentui (either force
-// deterministic rendering for tests, or eagerly call `textBuffer.setText` in
-// `CodeRenderable.set content` when streaming updates a non-empty body).
-//
-// Skipping on win32 unblocks unrelated PRs; the assertion is still
-// exercised on Linux and macOS in CI.
+@lgcode/@lgcode/ TODO(windows): Re-enable on Windows once the streaming CodeRenderable
+@lgcode/@lgcode/ flush race is fixed. The reasoning commit is delivered as a `<code>`
+@lgcode/@lgcode/ renderable with `filetype="markdown"`, `streaming=true`, and
+@lgcode/@lgcode/ `drawUnstyledText=false`. On Windows the first paragraph of the reasoning
+@lgcode/@lgcode/ body (here `_Thinking:_ **Plan**`) is dropped from the committed rows —
+@lgcode/@lgcode/ the failing assertion shows only `Say hello.` survives, while Linux
+@lgcode/@lgcode/ (where `useThread` is forced off in `@opentui@lgcode/core@lgcode/testing`) and macOS
+@lgcode/@lgcode/ both pass.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Investigation summary (see PR description for the link to this work):
+@lgcode/@lgcode/   1. `reasoning("Thinking: ...", "progress")` enters `entry.body.ts`
+@lgcode/@lgcode/      `reasoningBody`, which becomes a `code` body with filetype="markdown".
+@lgcode/@lgcode/   2. `RunScrollbackStream.writeStreaming` sets `renderable.content = ...`
+@lgcode/@lgcode/      while `streaming=true`. `CodeRenderable.set content` short-circuits
+@lgcode/@lgcode/      (does NOT call `textBuffer.setText`) when streaming, drawUnstyledText
+@lgcode/@lgcode/      is false, and a filetype is set — it relies on the next
+@lgcode/@lgcode/      `startHighlight()` cycle to populate the buffer.
+@lgcode/@lgcode/   3. `ScrollbackSurface.settle()` renders the surface, kicks the
+@lgcode/@lgcode/      highlight via `renderSelf` → `startHighlight`, waits on
+@lgcode/@lgcode/      `highlightingDone`, and re-renders. With `MockTreeSitterClient`
+@lgcode/@lgcode/      returning `{highlights: []}`, the final branch (`else
+@lgcode/@lgcode/      this.textBuffer.setText(content)`) populates the buffer and
+@lgcode/@lgcode/      `_shouldRenderTextBuffer = true`.
+@lgcode/@lgcode/   4. `flushActive` then commits rows `[0, surface.height - 1)` during
+@lgcode/@lgcode/      streaming. On Windows the committed rows are blank for the first
+@lgcode/@lgcode/      paragraph — suggesting the height@lgcode/text-buffer state is observed
+@lgcode/@lgcode/      before@lgcode/after the highlight resolution in a way that drops rows on
+@lgcode/@lgcode/      that platform.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Linux CI can also drop the first paragraph of the replayed reasoning block,
+@lgcode/@lgcode/ so this test asserts the stable second paragraph instead of the first-line
+@lgcode/@lgcode/ `Thinking:` label. A real fix probably belongs in opentui (either force
+@lgcode/@lgcode/ deterministic rendering for tests, or eagerly call `textBuffer.setText` in
+@lgcode/@lgcode/ `CodeRenderable.set content` when streaming updates a non-empty body).
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Skipping on win32 unblocks unrelated PRs; the assertion is still
+@lgcode/@lgcode/ exercised on Linux and macOS in CI.
 test.skipIf(process.platform === "win32")(
   "renders replayed user, reasoning, and assistant output after completion",
   async () => {
@@ -603,7 +603,7 @@ test("renders completed bash output with one blank line after the command and be
       }
     }
 
-    await out.scrollback.append(user("/fmt bash"))
+    await out.scrollback.append(user("@lgcode/fmt bash"))
     take()
     await out.scrollback.append(
       toolCommit({
@@ -614,7 +614,7 @@ test("renders completed bash output with one blank line after the command and be
           status: "running",
           input: {
             command: "git status",
-            workdir: "/tmp/demo",
+            workdir: "@lgcode/tmp@lgcode/demo",
             description: "Show git status",
           },
           time: { start: 1 },
@@ -627,12 +627,12 @@ test("renders completed bash output with one blank line after the command and be
         tool: "bash",
         phase: "progress",
         toolState: "completed",
-        text: ["/tmp/demo", "git status", "On branch demo", "nothing to commit, working tree clean", ""].join("\n"),
+        text: ["@lgcode/tmp@lgcode/demo", "git status", "On branch demo", "nothing to commit, working tree clean", ""].join("\n"),
         state: {
           status: "completed",
           input: {
             command: "git status",
-            workdir: "/tmp/demo",
+            workdir: "@lgcode/tmp@lgcode/demo",
             description: "Show git status",
           },
           time: { start: 1, end: 2 },
@@ -676,7 +676,7 @@ test("inserts a spacer before the next tool after completed multiline bash outpu
           status: "running",
           input: {
             command: "pwd; ls -la",
-            workdir: "/tmp/demo",
+            workdir: "@lgcode/tmp@lgcode/demo",
             description: "Lists current directory files",
           },
           time: { start: 1 },
@@ -689,15 +689,15 @@ test("inserts a spacer before the next tool after completed multiline bash outpu
         tool: "bash",
         phase: "progress",
         toolState: "completed",
-        text: ["/tmp/demo", "pwd; ls -la", "/tmp/demo", "total 4", "", ""].join("\n"),
+        text: ["@lgcode/tmp@lgcode/demo", "pwd; ls -la", "@lgcode/tmp@lgcode/demo", "total 4", "", ""].join("\n"),
         state: {
           status: "completed",
           input: {
             command: "pwd; ls -la",
-            workdir: "/tmp/demo",
+            workdir: "@lgcode/tmp@lgcode/demo",
             description: "Lists current directory files",
           },
-          output: ["/tmp/demo", "pwd; ls -la", "/tmp/demo", "total 4", "", ""].join("\n"),
+          output: ["@lgcode/tmp@lgcode/demo", "pwd; ls -la", "@lgcode/tmp@lgcode/demo", "total 4", "", ""].join("\n"),
           title: "pwd; ls -la",
           metadata: {
             exitCode: 0,
@@ -715,8 +715,8 @@ test("inserts a spacer before the next tool after completed multiline bash outpu
         state: {
           status: "running",
           input: {
-            pattern: "**/*tool*",
-            path: "src/cli/cmd",
+            pattern: "**@lgcode/*tool*",
+            path: "src@lgcode/cli@lgcode/cmd",
           },
           time: { start: 3 },
         },
@@ -725,7 +725,7 @@ test("inserts a spacer before the next tool after completed multiline bash outpu
     take()
 
     const output = lines.join("\n")
-    expect(output).toContain('total 4\n\n✱ Glob "**/*tool*" in src/cli/cmd')
+    expect(output).toContain('total 4\n\n✱ Glob "**@lgcode/*tool*" in src@lgcode/cli@lgcode/cmd')
   } finally {
     out.scrollback.destroy()
   }
@@ -754,7 +754,7 @@ test("does not double-space before completed bash output when inline tool header
           status: "running",
           input: {
             command: "ls",
-            workdir: "src/cli/cmd/run",
+            workdir: "src@lgcode/cli@lgcode/cmd@lgcode/run",
             description: "Lists files in run directory",
           },
           time: { start: 1 },
@@ -770,8 +770,8 @@ test("does not double-space before completed bash output when inline tool header
         state: {
           status: "running",
           input: {
-            pattern: "**/*tool*",
-            path: "src/cli/cmd/run",
+            pattern: "**@lgcode/*tool*",
+            path: "src@lgcode/cli@lgcode/cmd@lgcode/run",
           },
           time: { start: 2 },
         },
@@ -787,7 +787,7 @@ test("does not double-space before completed bash output when inline tool header
           status: "running",
           input: {
             pattern: "tool",
-            path: "src/cli/cmd/run",
+            path: "src@lgcode/cli@lgcode/cmd@lgcode/run",
           },
           time: { start: 3 },
         },
@@ -799,15 +799,15 @@ test("does not double-space before completed bash output when inline tool header
         tool: "bash",
         phase: "progress",
         toolState: "completed",
-        text: ["src/cli/cmd/run", "ls", "demo.ts", "entry.body.ts", "", ""].join("\n"),
+        text: ["src@lgcode/cli@lgcode/cmd@lgcode/run", "ls", "demo.ts", "entry.body.ts", "", ""].join("\n"),
         state: {
           status: "completed",
           input: {
             command: "ls",
-            workdir: "src/cli/cmd/run",
+            workdir: "src@lgcode/cli@lgcode/cmd@lgcode/run",
             description: "Lists files in run directory",
           },
-          output: ["src/cli/cmd/run", "ls", "demo.ts", "entry.body.ts", "", ""].join("\n"),
+          output: ["src@lgcode/cli@lgcode/cmd@lgcode/run", "ls", "demo.ts", "entry.body.ts", "", ""].join("\n"),
           title: "ls",
           metadata: {
             exitCode: 0,
@@ -819,8 +819,8 @@ test("does not double-space before completed bash output when inline tool header
     take()
 
     const output = lines.join("\n")
-    expect(output).toContain('✱ Grep "tool" in src/cli/cmd/run\n\ndemo.ts')
-    expect(output).not.toContain('✱ Grep "tool" in src/cli/cmd/run\n\n\ndemo.ts')
+    expect(output).toContain('✱ Grep "tool" in src@lgcode/cli@lgcode/cmd@lgcode/run\n\ndemo.ts')
+    expect(output).not.toContain('✱ Grep "tool" in src@lgcode/cli@lgcode/cmd@lgcode/run\n\n\ndemo.ts')
   } finally {
     out.scrollback.destroy()
   }
@@ -848,7 +848,7 @@ test("does not emit blank patch snapshots between edit and task", async () => {
         state: {
           status: "completed",
           input: {
-            filePath: "src/demo-format.ts",
+            filePath: "src@lgcode/demo-format.ts",
           },
           output: "",
           title: "edit",
@@ -876,8 +876,8 @@ test("does not emit blank patch snapshots between edit and task", async () => {
             files: [
               {
                 type: "update",
-                filePath: "src/demo-format.ts",
-                relativePath: "src/demo-format.ts",
+                filePath: "src@lgcode/demo-format.ts",
+                relativePath: "src@lgcode/demo-format.ts",
                 diff: "@@ -1 +1 @@\n-export const demo = 1\n+export const demo = 42\n",
                 deletions: 1,
               },
@@ -901,7 +901,7 @@ test("does not emit blank patch snapshots between edit and task", async () => {
         state: {
           status: "completed",
           input: {
-            description: "Scan run/* for reducer touchpoints",
+            description: "Scan run@lgcode/* for reducer touchpoints",
             subagent_type: "explore",
           },
           output: "",
@@ -917,7 +917,7 @@ test("does not emit blank patch snapshots between edit and task", async () => {
 
     const output = lines.join("\n")
     expect(output).toContain("+ Created README-demo.md")
-    expect(output).not.toContain("~ Patched src/demo-format.ts")
+    expect(output).not.toContain("~ Patched src@lgcode/demo-format.ts")
     expect(output).toContain("+ Created README-demo.md\n\n# Explore Task")
     expect(output).not.toContain("+ Created README-demo.md\n\n\n# Explore Task")
   } finally {
@@ -940,7 +940,7 @@ test("renders plain errors with one blank line before and after the error block"
       }
     }
 
-    await out.scrollback.append(user("/fmt error"))
+    await out.scrollback.append(user("@lgcode/fmt error"))
     take()
     await out.scrollback.append(error("demo error event"))
     take((commits) => {
@@ -951,7 +951,7 @@ test("renders plain errors with one blank line before and after the error block"
     take()
 
     const output = lines.join("\n")
-    expect(output).toContain("› /fmt error\n\ndemo error event")
+    expect(output).toContain("› @lgcode/fmt error\n\ndemo error event")
     expect(output).toContain("demo error event\n\nnext line")
     expect(output).not.toContain("demo error event\n\n\nnext line")
   } finally {
@@ -973,7 +973,7 @@ test("renders structured write finals once as code blocks", async () => {
         state: {
           status: "running",
           input: {
-            filePath: "src/a.ts",
+            filePath: "src@lgcode/a.ts",
             content: "const x = 1\nconst y = 2\n",
           },
           time: { start: 1 },
@@ -992,7 +992,7 @@ test("renders structured write finals once as code blocks", async () => {
         state: {
           status: "completed",
           input: {
-            filePath: "src/a.ts",
+            filePath: "src@lgcode/a.ts",
             content: "const x = 1\nconst y = 2\n",
           },
           metadata: {},
@@ -1005,9 +1005,9 @@ test("renders structured write finals once as code blocks", async () => {
     try {
       expect(commits).toHaveLength(1)
       const output = render(commits[0] ? [commits[0]] : [])
-      expect(output).toContain("# Wrote src/a.ts")
-      expect(output).toMatch(/1\s+const x = 1/)
-      expect(output).toMatch(/2\s+const y = 2/)
+      expect(output).toContain("# Wrote src@lgcode/a.ts")
+      expect(output).toMatch(@lgcode/1\s+const x = 1@lgcode/)
+      expect(output).toMatch(@lgcode/2\s+const y = 2@lgcode/)
     } finally {
       destroy(commits)
     }
@@ -1034,13 +1034,13 @@ test("renders promoted task markdown without a leading blank row", async () => {
           output: [
             '<task id="child-1" state="completed">',
             "<task_result>",
-            "Location: `/tmp/run.ts`",
+            "Location: `@lgcode/tmp@lgcode/run.ts`",
             "",
             "Summary:",
             "- Local interactive mode",
             "- Attach mode",
-            "</task_result>",
-            "</task>",
+            "<@lgcode/task_result>",
+            "<@lgcode/task>",
           ].join("\n"),
           metadata: {
             sessionId: "child-1",

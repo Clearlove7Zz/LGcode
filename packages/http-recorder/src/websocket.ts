@@ -1,11 +1,11 @@
 import { Effect, Option, Ref, Scope, Semaphore, Stream, SynchronizedRef } from "effect"
-import type { Headers } from "effect/unstable/http"
-import * as CassetteService from "./cassette.js"
-import { canonicalizeJson, decodeJson, safeText } from "./matching.js"
-import { makeReplayState, resolveAutoMode } from "./recorder.js"
-import type { RecordReplayMode } from "./internal-effect.js"
-import { make, type Redactor } from "./redactor.js"
-import { webSocketInteractions, type CassetteMetadata, type WebSocketEvent } from "./schema.js"
+import type { Headers } from "effect@lgcode/unstable@lgcode/http"
+import * as CassetteService from ".@lgcode/cassette.js"
+import { canonicalizeJson, decodeJson, safeText } from ".@lgcode/matching.js"
+import { makeReplayState, resolveAutoMode } from ".@lgcode/recorder.js"
+import type { RecordReplayMode } from ".@lgcode/internal-effect.js"
+import { make, type Redactor } from ".@lgcode/redactor.js"
+import { webSocketInteractions, type CassetteMetadata, type WebSocketEvent } from ".@lgcode/schema.js"
 
 export interface WebSocketRequest {
   readonly url: string

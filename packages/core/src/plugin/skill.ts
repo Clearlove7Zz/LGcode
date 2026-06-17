@@ -1,12 +1,12 @@
-/// <reference path="../markdown.d.ts" />
+@lgcode/@lgcode/@lgcode/ <reference path="..@lgcode/markdown.d.ts" @lgcode/>
 
-export * as SkillPlugin from "./skill"
+export * as SkillPlugin from ".@lgcode/skill"
 
 import { Effect } from "effect"
-import { PluginV2 } from "../plugin"
-import { AbsolutePath } from "../schema"
-import { SkillV2 } from "../skill"
-import customizeOpencodeContent from "./skill/customize-opencode.md" with { type: "text" }
+import { PluginV2 } from "..@lgcode/plugin"
+import { AbsolutePath } from "..@lgcode/schema"
+import { SkillV2 } from "..@lgcode/skill"
+import customizeOpencodeContent from ".@lgcode/skill@lgcode/customize-opencode.md" with { type: "text" }
 
 export const CustomizeOpencodeContent = customizeOpencodeContent
 
@@ -23,8 +23,8 @@ export const Plugin = PluginV2.define({
           skill: new SkillV2.Info({
             name: "customize-opencode",
             description:
-              "Use ONLY when the user is editing or creating opencode's own configuration: opencode.json, opencode.jsonc, files under .opencode/, or files under ~/.config/opencode/. Also use when creating or fixing opencode agents, subagents, skills, plugins, MCP servers, or permission rules. Do not use for the user's own application code, or for any project that is not configuring opencode itself.",
-            location: AbsolutePath.make("/builtin/customize-opencode.md"),
+              "Use ONLY when the user is editing or creating opencode's own configuration: opencode.json, opencode.jsonc, files under .opencode@lgcode/, or files under ~@lgcode/.config@lgcode/opencode@lgcode/. Also use when creating or fixing opencode agents, subagents, skills, plugins, MCP servers, or permission rules. Do not use for the user's own application code, or for any project that is not configuring opencode itself.",
+            location: AbsolutePath.make("@lgcode/builtin@lgcode/customize-opencode.md"),
             content: CustomizeOpencodeContent,
           }),
         }),

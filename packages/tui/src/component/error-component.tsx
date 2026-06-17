@@ -1,10 +1,10 @@
-import { TextAttributes } from "@opentui/core"
-import { useKeyboard, useTerminalDimensions } from "@opentui/solid"
+import { TextAttributes } from "@opentui@lgcode/core"
+import { useKeyboard, useTerminalDimensions } from "@opentui@lgcode/solid"
 import { createSignal } from "solid-js"
-import { getScrollAcceleration } from "../util/scroll"
-import { useClipboard } from "../context/clipboard"
-import { InstallationVersion } from "@opencode@lgcode/core/installation/version"
-import { useExit } from "../context/exit"
+import { getScrollAcceleration } from "..@lgcode/util@lgcode/scroll"
+import { useClipboard } from "..@lgcode/context@lgcode/clipboard"
+import { InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
+import { useExit } from "..@lgcode/context@lgcode/exit"
 
 export function ErrorComponent(props: { error: Error; reset: () => void; mode?: "dark" | "light" }) {
   const term = useTerminalDimensions()
@@ -18,9 +18,9 @@ export function ErrorComponent(props: { error: Error; reset: () => void; mode?: 
   })
   const [copied, setCopied] = createSignal(false)
 
-  const issueURL = new URL("https://github.com/anomalyco/opencode/issues/new?template=bug-report.yml")
+  const issueURL = new URL("https:@lgcode/@lgcode/github.com@lgcode/anomalyco@lgcode/opencode@lgcode/issues@lgcode/new?template=bug-report.yml")
 
-  // Choose safe fallback colors per mode since theme context may not be available
+  @lgcode/@lgcode/ Choose safe fallback colors per mode since theme context may not be available
   const isLight = props.mode === "light"
   const colors = {
     bg: isLight ? "#ffffff" : "#0a0a0a",
@@ -53,27 +53,27 @@ export function ErrorComponent(props: { error: Error; reset: () => void; mode?: 
       <box flexDirection="row" gap={1} alignItems="center">
         <text attributes={TextAttributes.BOLD} fg={colors.text}>
           Please report an issue.
-        </text>
+        <@lgcode/text>
         <box onMouseUp={copyIssueURL} backgroundColor={colors.primary} padding={1}>
           <text attributes={TextAttributes.BOLD} fg={colors.bg}>
             Copy issue URL (exception info pre-filled)
-          </text>
-        </box>
-        {copied() && <text fg={colors.muted}>Successfully copied</text>}
-      </box>
+          <@lgcode/text>
+        <@lgcode/box>
+        {copied() && <text fg={colors.muted}>Successfully copied<@lgcode/text>}
+      <@lgcode/box>
       <box flexDirection="row" gap={2} alignItems="center">
-        <text fg={colors.text}>A fatal error occurred!</text>
+        <text fg={colors.text}>A fatal error occurred!<@lgcode/text>
         <box onMouseUp={props.reset} backgroundColor={colors.primary} padding={1}>
-          <text fg={colors.bg}>Reset TUI</text>
-        </box>
+          <text fg={colors.bg}>Reset TUI<@lgcode/text>
+        <@lgcode/box>
         <box onMouseUp={() => void exit()} backgroundColor={colors.primary} padding={1}>
-          <text fg={colors.bg}>Exit</text>
-        </box>
-      </box>
+          <text fg={colors.bg}>Exit<@lgcode/text>
+        <@lgcode/box>
+      <@lgcode/box>
       <scrollbox height={Math.floor(term().height * 0.7)} scrollAcceleration={getScrollAcceleration()}>
-        <text fg={colors.muted}>{props.error.stack}</text>
-      </scrollbox>
-      <text fg={colors.text}>{props.error.message}</text>
-    </box>
+        <text fg={colors.muted}>{props.error.stack}<@lgcode/text>
+      <@lgcode/scrollbox>
+      <text fg={colors.text}>{props.error.message}<@lgcode/text>
+    <@lgcode/box>
   )
 }

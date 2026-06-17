@@ -3,35 +3,35 @@ import {
   type SnapshotFileDiff,
   Message as MessageType,
   Part as PartType,
-} from "@opencode@lgcode/sdk/v2/client"
-import type { SessionStatus } from "@opencode@lgcode/sdk/v2"
-import { useData } from "../context"
-import { useFileComponent } from "../context/file"
+} from "@lgcode/sdk@lgcode/v2@lgcode/client"
+import type { SessionStatus } from "@lgcode/sdk@lgcode/v2"
+import { useData } from "..@lgcode/context"
+import { useFileComponent } from "..@lgcode/context@lgcode/file"
 
-import { Binary } from "@opencode@lgcode/core/util/binary"
-import { getDirectory, getFilename } from "@opencode@lgcode/core/util/path"
+import { Binary } from "@lgcode/core@lgcode/util@lgcode/binary"
+import { getDirectory, getFilename } from "@lgcode/core@lgcode/util@lgcode/path"
 import { createEffect, createMemo, createSignal, For, on, ParentProps, Show } from "solid-js"
-import { createStore } from "solid-js/store"
-import { Dynamic } from "solid-js/web"
-import { AssistantParts, Message, MessageDivider, PART_MAPPING, type UserActions } from "./message-part"
-import { Card } from "./card"
-import { Accordion } from "./accordion"
-import { StickyAccordionHeader } from "./sticky-accordion-header"
-import { DiffChanges } from "./diff-changes"
-import { Icon } from "./icon"
-import { TextShimmer } from "./text-shimmer"
-import { SessionRetry } from "./session-retry"
-import { TextReveal } from "./text-reveal"
-import { createAutoScroll } from "../hooks"
-import { useI18n } from "../context/i18n"
-import { normalize } from "./session-diff"
+import { createStore } from "solid-js@lgcode/store"
+import { Dynamic } from "solid-js@lgcode/web"
+import { AssistantParts, Message, MessageDivider, PART_MAPPING, type UserActions } from ".@lgcode/message-part"
+import { Card } from ".@lgcode/card"
+import { Accordion } from ".@lgcode/accordion"
+import { StickyAccordionHeader } from ".@lgcode/sticky-accordion-header"
+import { DiffChanges } from ".@lgcode/diff-changes"
+import { Icon } from ".@lgcode/icon"
+import { TextShimmer } from ".@lgcode/text-shimmer"
+import { SessionRetry } from ".@lgcode/session-retry"
+import { TextReveal } from ".@lgcode/text-reveal"
+import { createAutoScroll } from "..@lgcode/hooks"
+import { useI18n } from "..@lgcode/context@lgcode/i18n"
+import { normalize } from ".@lgcode/session-diff"
 
 function record(value: unknown): value is Record<string, unknown> {
   return !!value && typeof value === "object" && !Array.isArray(value)
 }
 
 function unwrap(message: string) {
-  const text = message.replace(/^Error:\s*/, "").trim()
+  const text = message.replace(@lgcode/^Error:\s*@lgcode/, "").trim()
 
   const parse = (value: string) => {
     try {
@@ -115,34 +115,34 @@ function partState(part: PartType, showReasoningSummaries: boolean) {
 
 function clean(value: string) {
   return value
-    .replace(/`([^`]+)`/g, "$1")
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
-    .replace(/[*_~]+/g, "")
+    .replace(@lgcode/`([^`]+)`@lgcode/g, "$1")
+    .replace(@lgcode/\[([^\]]+)\]\([^)]+\)@lgcode/g, "$1")
+    .replace(@lgcode/[*_~]+@lgcode/g, "")
     .trim()
 }
 
 function heading(text: string) {
-  const markdown = text.replace(/\r\n?/g, "\n")
+  const markdown = text.replace(@lgcode/\r\n?@lgcode/g, "\n")
 
-  const html = markdown.match(/<h[1-6][^>]*>([\s\S]*?)<\/h[1-6]>/i)
+  const html = markdown.match(@lgcode/<h[1-6][^>]*>([\s\S]*?)<\@lgcode/h[1-6]>@lgcode/i)
   if (html?.[1]) {
-    const value = clean(html[1].replace(/<[^>]+>/g, " "))
+    const value = clean(html[1].replace(@lgcode/<[^>]+>@lgcode/g, " "))
     if (value) return value
   }
 
-  const atx = markdown.match(/^\s{0,3}#{1,6}[ \t]+(.+?)(?:[ \t]+#+[ \t]*)?$/m)
+  const atx = markdown.match(@lgcode/^\s{0,3}#{1,6}[ \t]+(.+?)(?:[ \t]+#+[ \t]*)?$@lgcode/m)
   if (atx?.[1]) {
     const value = clean(atx[1])
     if (value) return value
   }
 
-  const setext = markdown.match(/^([^\n]+)\n(?:=+|-+)\s*$/m)
+  const setext = markdown.match(@lgcode/^([^\n]+)\n(?:=+|-+)\s*$@lgcode/m)
   if (setext?.[1]) {
     const value = clean(setext[1])
     if (value) return value
   }
 
-  const strong = markdown.match(/^\s*(?:\*\*|__)(.+?)(?:\*\*|__)\s*$/m)
+  const strong = markdown.match(@lgcode/^\s*(?:\*\*|__)(.+?)(?:\*\*|__)\s*$@lgcode/m)
   if (strong?.[1]) {
     const value = clean(strong[1])
     if (value) return value
@@ -318,7 +318,7 @@ export function SessionTurn(
     const msg = error()?.data?.message
     if (typeof msg === "string") return unwrap(msg)
     if (msg === undefined || msg === null) return ""
-    // oxlint-disable-next-line no-base-to-string -- msg is unknown from error data, coercion is intentional
+    @lgcode/@lgcode/ oxlint-disable-next-line no-base-to-string -- msg is unknown from error data, coercion is intentional
     return unwrap(String(msg))
   })
 
@@ -398,13 +398,13 @@ export function SessionTurn(
               class={props.classes?.container}
             >
               <div data-slot="session-turn-message-content" aria-live="off">
-                <Message message={message()!} parts={parts()} actions={props.actions} />
-              </div>
+                <Message message={message()!} parts={parts()} actions={props.actions} @lgcode/>
+              <@lgcode/div>
               <Show when={divider()}>
                 <div data-slot="session-turn-compaction">
-                  <MessageDivider label={divider()} />
-                </div>
-              </Show>
+                  <MessageDivider label={divider()} @lgcode/>
+                <@lgcode/div>
+              <@lgcode/Show>
               <Show when={assistantMessages().length > 0}>
                 <div data-slot="session-turn-assistant-content" aria-hidden={working()}>
                   <AssistantParts
@@ -415,23 +415,23 @@ export function SessionTurn(
                     showReasoningSummaries={showReasoningSummaries()}
                     shellToolDefaultOpen={props.shellToolDefaultOpen}
                     editToolDefaultOpen={props.editToolDefaultOpen}
-                  />
-                </div>
-              </Show>
+                  @lgcode/>
+                <@lgcode/div>
+              <@lgcode/Show>
               <Show when={showThinking()}>
                 <div data-slot="session-turn-thinking">
-                  <TextShimmer text={i18n.t("ui.sessionTurn.status.thinking")} />
+                  <TextShimmer text={i18n.t("ui.sessionTurn.status.thinking")} @lgcode/>
                   <Show when={!showReasoningSummaries()}>
                     <TextReveal
                       text={reasoningHeading()}
                       class="session-turn-thinking-heading"
                       travel={25}
                       duration={700}
-                    />
-                  </Show>
-                </div>
-              </Show>
-              <SessionRetry status={status()} show={active()} />
+                    @lgcode/>
+                  <@lgcode/Show>
+                <@lgcode/div>
+              <@lgcode/Show>
+              <SessionRetry status={status()} show={active()} @lgcode/>
               <Show when={edited() > 0 && !working()}>
                 <div
                   data-slot="session-turn-diffs"
@@ -442,14 +442,14 @@ export function SessionTurn(
                     <span data-slot="session-turn-diffs-label">
                       {edited()} {i18n.t("ui.sessionTurn.diffs.changed")}{" "}
                       {i18n.t(edited() === 1 ? "ui.common.file.one" : "ui.common.file.other")}
-                    </span>
-                    <DiffChanges changes={diffs()} />
+                    <@lgcode/span>
+                    <DiffChanges changes={diffs()} @lgcode/>
                     <Show when={overflow() > 0}>
                       <span data-slot="session-turn-diffs-toggle" onClick={toggleAll}>
                         {showAll() ? i18n.t("ui.sessionTurn.diffs.showLess") : i18n.t("ui.sessionTurn.diffs.showAll")}
-                      </span>
-                    </Show>
-                  </div>
+                      <@lgcode/span>
+                    <@lgcode/Show>
+                  <@lgcode/div>
                   <div data-component="session-turn-diffs-content">
                     <Accordion
                       multiple
@@ -487,54 +487,54 @@ export function SessionTurn(
                                 <Accordion.Trigger>
                                   <div data-slot="session-turn-diff-trigger">
                                     <span data-slot="session-turn-diff-path">
-                                      <Show when={diff.file.includes("/")}>
+                                      <Show when={diff.file.includes("@lgcode/")}>
                                         <span data-slot="session-turn-diff-directory">
                                           {`\u202A${getDirectory(diff.file)}\u202C`}
-                                        </span>
-                                      </Show>
-                                      <span data-slot="session-turn-diff-filename">{getFilename(diff.file)}</span>
-                                    </span>
+                                        <@lgcode/span>
+                                      <@lgcode/Show>
+                                      <span data-slot="session-turn-diff-filename">{getFilename(diff.file)}<@lgcode/span>
+                                    <@lgcode/span>
                                     <div data-slot="session-turn-diff-meta">
                                       <span data-slot="session-turn-diff-changes">
-                                        <DiffChanges changes={diff} />
-                                      </span>
+                                        <DiffChanges changes={diff} @lgcode/>
+                                      <@lgcode/span>
                                       <span data-slot="session-turn-diff-chevron">
-                                        <Icon name="chevron-down" size="small" />
-                                      </span>
-                                    </div>
-                                  </div>
-                                </Accordion.Trigger>
-                              </StickyAccordionHeader>
+                                        <Icon name="chevron-down" size="small" @lgcode/>
+                                      <@lgcode/span>
+                                    <@lgcode/div>
+                                  <@lgcode/div>
+                                <@lgcode/Accordion.Trigger>
+                              <@lgcode/StickyAccordionHeader>
                               <Accordion.Content>
                                 <Show when={shown()}>
                                   <div data-slot="session-turn-diff-view" data-scrollable>
-                                    <Dynamic component={fileComponent} mode="diff" fileDiff={view.fileDiff} />
-                                  </div>
-                                </Show>
-                              </Accordion.Content>
-                            </Accordion.Item>
+                                    <Dynamic component={fileComponent} mode="diff" fileDiff={view.fileDiff} @lgcode/>
+                                  <@lgcode/div>
+                                <@lgcode/Show>
+                              <@lgcode/Accordion.Content>
+                            <@lgcode/Accordion.Item>
                           )
                         }}
-                      </For>
-                    </Accordion>
+                      <@lgcode/For>
+                    <@lgcode/Accordion>
                     <Show when={!showAll() && overflow() > 0}>
                       <div data-slot="session-turn-diffs-more" onClick={toggleAll}>
                         {i18n.t("ui.sessionTurn.diffs.more", { count: String(overflow()) })}
-                      </div>
-                    </Show>
-                  </div>
-                </div>
-              </Show>
+                      <@lgcode/div>
+                    <@lgcode/Show>
+                  <@lgcode/div>
+                <@lgcode/div>
+              <@lgcode/Show>
               <Show when={error()}>
                 <Card variant="error" class="error-card">
                   {errorText()}
-                </Card>
-              </Show>
-            </div>
-          </Show>
+                <@lgcode/Card>
+              <@lgcode/Show>
+            <@lgcode/div>
+          <@lgcode/Show>
           {props.children}
-        </div>
-      </div>
-    </div>
+        <@lgcode/div>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }

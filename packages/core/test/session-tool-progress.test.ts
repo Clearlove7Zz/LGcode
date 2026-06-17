@@ -1,20 +1,20 @@
 import { describe, expect } from "bun:test"
 import { asc, eq } from "drizzle-orm"
 import { DateTime, Effect, Layer, Schema } from "effect"
-import { Database } from "@opencode@lgcode/core/database/database"
-import { EventV2 } from "@opencode@lgcode/core/event"
-import { EventTable } from "@opencode@lgcode/core/event/sql"
-import { ModelV2 } from "@opencode@lgcode/core/model"
-import { Project } from "@opencode@lgcode/core/project"
-import { ProjectTable } from "@opencode@lgcode/core/project/sql"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { SessionV2 } from "@opencode@lgcode/core/session"
-import { SessionEvent } from "@opencode@lgcode/core/session/event"
-import { SessionMessage } from "@opencode@lgcode/core/session/message"
-import { SessionProjector } from "@opencode@lgcode/core/session/projector"
-import { SessionTable, SessionMessageTable } from "@opencode@lgcode/core/session/sql"
-import { testEffect } from "./lib/effect"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { EventV2 } from "@lgcode/core@lgcode/event"
+import { EventTable } from "@lgcode/core@lgcode/event@lgcode/sql"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { Project } from "@lgcode/core@lgcode/project"
+import { ProjectTable } from "@lgcode/core@lgcode/project@lgcode/sql"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { SessionV2 } from "@lgcode/core@lgcode/session"
+import { SessionEvent } from "@lgcode/core@lgcode/session@lgcode/event"
+import { SessionMessage } from "@lgcode/core@lgcode/session@lgcode/message"
+import { SessionProjector } from "@lgcode/core@lgcode/session@lgcode/projector"
+import { SessionTable, SessionMessageTable } from "@lgcode/core@lgcode/session@lgcode/sql"
+import { testEffect } from ".@lgcode/lib@lgcode/effect"
 
 const database = Database.layerFromPath(":memory:")
 const events = EventV2.layer.pipe(Layer.provide(database))
@@ -33,7 +33,7 @@ describe("Tool.Progress", () => {
       const sessionID = SessionV2.ID.make("ses_tool_progress_projector")
       yield* db
         .insert(ProjectTable)
-        .values({ id: Project.ID.global, worktree: AbsolutePath.make("/project"), sandboxes: [] })
+        .values({ id: Project.ID.global, worktree: AbsolutePath.make("@lgcode/project"), sandboxes: [] })
         .onConflictDoNothing()
         .run()
         .pipe(Effect.orDie)
@@ -43,7 +43,7 @@ describe("Tool.Progress", () => {
           id: sessionID,
           project_id: Project.ID.global,
           slug: "progress",
-          directory: "/project",
+          directory: "@lgcode/project",
           title: "progress",
           version: "test",
         })

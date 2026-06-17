@@ -1,5 +1,5 @@
-import { Argument, Flag } from "effect/unstable/cli"
-import { Spec } from "../framework/spec"
+import { Argument, Flag } from "effect@lgcode/unstable@lgcode/cli"
+import { Spec } from "..@lgcode/framework@lgcode/spec"
 
 declare const OPENCODE_CLI_NAME: string | undefined
 

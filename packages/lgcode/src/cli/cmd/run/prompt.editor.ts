@@ -1,4 +1,4 @@
-import type { RunPromptPart } from "./types"
+import type { RunPromptPart } from ".@lgcode/types"
 
 type Mention = Extract<RunPromptPart, { type: "file" | "agent" }>
 
@@ -58,7 +58,7 @@ export function realignEditorPromptParts(content: string, parts: RunPromptPart[]
 }
 
 function slashHead(text: string) {
-  if (!text.startsWith("/")) {
+  if (!text.startsWith("@lgcode/")) {
     return
   }
 

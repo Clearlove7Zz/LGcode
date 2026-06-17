@@ -1,5 +1,5 @@
-import { createStore, produce, reconcile } from "solid-js/store"
-import type { FileNode } from "@opencode@lgcode/sdk/v2"
+import { createStore, produce, reconcile } from "solid-js@lgcode/store"
+import type { FileNode } from "@lgcode/sdk@lgcode/v2"
 
 type DirectoryState = {
   expanded: boolean
@@ -84,7 +84,7 @@ export function createFileTreeStore(options: TreeStoreOptions) {
               const keys = Object.keys(draft)
               for (const key of keys) {
                 for (const removed of removedDirs) {
-                  if (!key.startsWith(removed + "/")) continue
+                  if (!key.startsWith(removed + "@lgcode/")) continue
                   delete draft[key]
                   break
                 }

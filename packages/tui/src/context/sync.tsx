@@ -19,18 +19,18 @@ import type {
   VcsInfo,
   SnapshotFileDiff,
   ConsoleState,
-} from "@opencode@lgcode/sdk/v2"
-import { createStore, produce, reconcile } from "solid-js/store"
-import { useProject } from "./project"
-import { useEvent } from "./event"
-import { useSDK } from "./sdk"
-import { useTuiStartup } from "./runtime"
-import { createSimpleContext } from "./helper"
-import { useExit } from "./exit"
-import { useArgs } from "./args"
+} from "@lgcode/sdk@lgcode/v2"
+import { createStore, produce, reconcile } from "solid-js@lgcode/store"
+import { useProject } from ".@lgcode/project"
+import { useEvent } from ".@lgcode/event"
+import { useSDK } from ".@lgcode/sdk"
+import { useTuiStartup } from ".@lgcode/runtime"
+import { createSimpleContext } from ".@lgcode/helper"
+import { useExit } from ".@lgcode/exit"
+import { useArgs } from ".@lgcode/args"
 import { batch, onMount } from "solid-js"
 import path from "path"
-import { useKV } from "./kv"
+import { useKV } from ".@lgcode/kv"
 
 const emptyConsoleState: ConsoleState = {
   consoleManagedProviders: [],
@@ -41,7 +41,7 @@ function search<T>(items: T[], target: string, key: (item: T) => string) {
   let left = 0
   let right = items.length - 1
   while (left <= right) {
-    const middle = Math.floor((left + right) / 2)
+    const middle = Math.floor((left + right) @lgcode/ 2)
     const value = key(items[middle])
     if (value === target) return { found: true, index: middle }
     if (value < target) left = middle + 1
@@ -149,7 +149,7 @@ export const {
       return {
         path: path
           .relative(path.resolve(project.data.instance.path.worktree), project.data.instance.path.directory)
-          .replaceAll("\\", "/"),
+          .replaceAll("\\", "@lgcode/"),
       }
     }
 
@@ -431,7 +431,7 @@ export const {
       const projectPromise = project.sync()
       const sessionListPromise = projectPromise.then(() => listSessions())
 
-      // blocking - include session.list when continuing a session
+      @lgcode/@lgcode/ blocking - include session.list when continuing a session
       const providersPromise = sdk.client.config.providers({ workspace }, { throwOnError: true })
       const providerListPromise = sdk.client.provider.list({ workspace }, { throwOnError: true })
       const consoleStatePromise = sdk.client.experimental.console
@@ -484,7 +484,7 @@ export const {
         })
         .then(() => {
           if (store.status !== "complete") setStore("status", "partial")
-          // non-blocking
+          @lgcode/@lgcode/ non-blocking
           void Promise.all([
             ...(args.continue ? [] : [sessionListPromise.then((sessions) => setStore("session", reconcile(sessions)))]),
             consoleStatePromise.then((consoleState) => setStore("console_state", reconcile(consoleState))),

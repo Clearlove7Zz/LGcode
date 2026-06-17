@@ -4,16 +4,16 @@ export interface OpenAICompatibleProfile {
 }
 
 export const profiles = {
-  baseten: { provider: "baseten", baseURL: "https://inference.baseten.co/v1" },
-  cerebras: { provider: "cerebras", baseURL: "https://api.cerebras.ai/v1" },
-  deepinfra: { provider: "deepinfra", baseURL: "https://api.deepinfra.com/v1/openai" },
-  deepseek: { provider: "deepseek", baseURL: "https://api.deepseek.com/v1" },
-  fireworks: { provider: "fireworks", baseURL: "https://api.fireworks.ai/inference/v1" },
-  groq: { provider: "groq", baseURL: "https://api.groq.com/openai/v1" },
-  openrouter: { provider: "openrouter", baseURL: "https://openrouter.ai/api/v1" },
-  togetherai: { provider: "togetherai", baseURL: "https://api.together.xyz/v1" },
-  xai: { provider: "xai", baseURL: "https://api.x.ai/v1" },
-  lgdg: { provider: "lgdg", baseURL: "https://modelhub.lgdg.cc/aigateway/v1" },
+  baseten: { provider: "baseten", baseURL: "https:@lgcode/@lgcode/inference.baseten.co@lgcode/v1" },
+  cerebras: { provider: "cerebras", baseURL: "https:@lgcode/@lgcode/api.cerebras.ai@lgcode/v1" },
+  deepinfra: { provider: "deepinfra", baseURL: "https:@lgcode/@lgcode/api.deepinfra.com@lgcode/v1@lgcode/openai" },
+  deepseek: { provider: "deepseek", baseURL: "https:@lgcode/@lgcode/api.deepseek.com@lgcode/v1" },
+  fireworks: { provider: "fireworks", baseURL: "https:@lgcode/@lgcode/api.fireworks.ai@lgcode/inference@lgcode/v1" },
+  groq: { provider: "groq", baseURL: "https:@lgcode/@lgcode/api.groq.com@lgcode/openai@lgcode/v1" },
+  openrouter: { provider: "openrouter", baseURL: "https:@lgcode/@lgcode/openrouter.ai@lgcode/api@lgcode/v1" },
+  togetherai: { provider: "togetherai", baseURL: "https:@lgcode/@lgcode/api.together.xyz@lgcode/v1" },
+  xai: { provider: "xai", baseURL: "https:@lgcode/@lgcode/api.x.ai@lgcode/v1" },
+  lgdg: { provider: "lgdg", baseURL: "https:@lgcode/@lgcode/modelhub.lgdg.cc@lgcode/aigateway@lgcode/v1" },
 } as const satisfies Record<string, OpenAICompatibleProfile>
 
 export const byProvider: Record<string, OpenAICompatibleProfile> = Object.fromEntries(

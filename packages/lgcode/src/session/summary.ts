@@ -1,11 +1,11 @@
-import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
 import { Effect, Layer, Context, Schema } from "effect"
-import { SessionV1 } from "@opencode@lgcode/core/v1/session"
-import { EventV2Bridge } from "@/event-v2-bridge"
-import { Snapshot } from "@/snapshot"
-import { Session } from "./session"
-import { SessionID, MessageID } from "./schema"
-import { Config } from "@/config/config"
+import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
+import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
+import { Snapshot } from "@@lgcode/snapshot"
+import { Session } from ".@lgcode/session"
+import { SessionID, MessageID } from ".@lgcode/schema"
+import { Config } from "@@lgcode/config@lgcode/config"
 
 function unquoteGitPath(input: string) {
   if (!input.startsWith('"')) return input
@@ -28,7 +28,7 @@ function unquoteGitPath(input: string) {
 
     if (next >= "0" && next <= "7") {
       const chunk = body.slice(i + 1, i + 4)
-      const match = chunk.match(/^[0-7]{1,3}/)
+      const match = chunk.match(@lgcode/^[0-7]{1,3}@lgcode/)
       if (!match) {
         bytes.push(next.charCodeAt(0))
         i++
@@ -69,7 +69,7 @@ export interface Interface {
   readonly computeDiff: (input: { messages: SessionV1.WithParts[] }) => Effect.Effect<Snapshot.FileDiff[]>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/SessionSummary") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/SessionSummary") {}
 
 export const layer = Layer.effect(
   Service,
@@ -162,4 +162,4 @@ export type DiffInput = Schema.Schema.Type<typeof DiffInput>
 
 export const node = LayerNode.make(layer, [Session.node, Snapshot.node, EventV2Bridge.node, Config.node])
 
-export * as SessionSummary from "./summary"
+export * as SessionSummary from ".@lgcode/summary"

@@ -1,42 +1,42 @@
 import { test, expect, describe } from "bun:test"
-import { McpOAuthProvider, OAUTH_CALLBACK_PORT, OAUTH_CALLBACK_PATH } from "../../src/mcp/oauth-provider"
-import type { McpAuth } from "../../src/mcp/auth"
+import { McpOAuthProvider, OAUTH_CALLBACK_PORT, OAUTH_CALLBACK_PATH } from "..@lgcode/..@lgcode/src@lgcode/mcp@lgcode/oauth-provider"
+import type { McpAuth } from "..@lgcode/..@lgcode/src@lgcode/mcp@lgcode/auth"
 
-// Stub auth — only synchronous getters are exercised in these tests
+@lgcode/@lgcode/ Stub auth — only synchronous getters are exercised in these tests
 const stubAuth = {} as McpAuth.Interface
 
 const makeProvider = (config: ConstructorParameters<typeof McpOAuthProvider>[2]) =>
-  new McpOAuthProvider("test-server", "https://mcp.example.com/mcp", config, { onRedirect: async () => {} }, stubAuth)
+  new McpOAuthProvider("test-server", "https:@lgcode/@lgcode/mcp.example.com@lgcode/mcp", config, { onRedirect: async () => {} }, stubAuth)
 
 describe("McpOAuthProvider.redirectUrl", () => {
-  test("defaults to 127.0.0.1:19876/mcp/oauth/callback", () => {
+  test("defaults to 127.0.0.1:19876@lgcode/mcp@lgcode/oauth@lgcode/callback", () => {
     const provider = makeProvider({})
-    expect(provider.redirectUrl).toBe(`http://127.0.0.1:${OAUTH_CALLBACK_PORT}${OAUTH_CALLBACK_PATH}`)
+    expect(provider.redirectUrl).toBe(`http:@lgcode/@lgcode/127.0.0.1:${OAUTH_CALLBACK_PORT}${OAUTH_CALLBACK_PATH}`)
   })
 
   test("uses callbackPort when set", () => {
     const provider = makeProvider({ callbackPort: 6620 })
-    expect(provider.redirectUrl).toBe(`http://127.0.0.1:6620${OAUTH_CALLBACK_PATH}`)
+    expect(provider.redirectUrl).toBe(`http:@lgcode/@lgcode/127.0.0.1:6620${OAUTH_CALLBACK_PATH}`)
   })
 
   test("redirectUri takes precedence over callbackPort", () => {
     const provider = makeProvider({
       callbackPort: 6620,
-      redirectUri: "http://127.0.0.1:9999/custom/callback",
+      redirectUri: "http:@lgcode/@lgcode/127.0.0.1:9999@lgcode/custom@lgcode/callback",
     })
-    expect(provider.redirectUrl).toBe("http://127.0.0.1:9999/custom/callback")
+    expect(provider.redirectUrl).toBe("http:@lgcode/@lgcode/127.0.0.1:9999@lgcode/custom@lgcode/callback")
   })
 
   test("uses explicit redirectUri when set without callbackPort", () => {
-    const provider = makeProvider({ redirectUri: "http://127.0.0.1:8080/oauth/callback" })
-    expect(provider.redirectUrl).toBe("http://127.0.0.1:8080/oauth/callback")
+    const provider = makeProvider({ redirectUri: "http:@lgcode/@lgcode/127.0.0.1:8080@lgcode/oauth@lgcode/callback" })
+    expect(provider.redirectUrl).toBe("http:@lgcode/@lgcode/127.0.0.1:8080@lgcode/oauth@lgcode/callback")
   })
 })
 
 describe("McpOAuthProvider.clientMetadata", () => {
   test("includes redirect_uris from redirectUrl", () => {
     const provider = makeProvider({ callbackPort: 6620 })
-    expect(provider.clientMetadata.redirect_uris).toEqual([`http://127.0.0.1:6620${OAUTH_CALLBACK_PATH}`])
+    expect(provider.clientMetadata.redirect_uris).toEqual([`http:@lgcode/@lgcode/127.0.0.1:6620${OAUTH_CALLBACK_PATH}`])
   })
 
   test("includes scope when set in config", () => {

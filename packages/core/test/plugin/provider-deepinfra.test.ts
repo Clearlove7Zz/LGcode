@@ -1,11 +1,11 @@
 import { describe, expect, mock } from "bun:test"
 import { Effect, Layer } from "effect"
-import { AISDK } from "@opencode@lgcode/core/aisdk"
-import { EventV2 } from "@opencode@lgcode/core/event"
-import { PluginV2 } from "@opencode@lgcode/core/plugin"
-import { DeepInfraPlugin } from "@opencode@lgcode/core/plugin/provider/deepinfra"
-import { testEffect } from "../lib/effect"
-import { it, model } from "./provider-helper"
+import { AISDK } from "@lgcode/core@lgcode/aisdk"
+import { EventV2 } from "@lgcode/core@lgcode/event"
+import { PluginV2 } from "@lgcode/core@lgcode/plugin"
+import { DeepInfraPlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/deepinfra"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { it, model } from ".@lgcode/provider-helper"
 
 const itAISDK = testEffect(
   Layer.provideMerge(AISDK.layer, PluginV2.locationLayer.pipe(Layer.provide(EventV2.defaultLayer))),
@@ -13,7 +13,7 @@ const itAISDK = testEffect(
 const deepinfraOptions: Record<string, any>[] = []
 const deepinfraLanguageModels: string[] = []
 
-void mock.module("@ai-sdk/deepinfra", () => ({
+void mock.module("@ai-sdk@lgcode/deepinfra", () => ({
   createDeepInfra: (options: Record<string, any>) => {
     const captured = { ...options }
     deepinfraOptions.push(captured)
@@ -32,14 +32,14 @@ function resetDeepInfraMock() {
 }
 
 describe("DeepInfraPlugin", () => {
-  it.effect("creates a DeepInfra SDK for @ai-sdk/deepinfra", () =>
+  it.effect("creates a DeepInfra SDK for @ai-sdk@lgcode/deepinfra", () =>
     Effect.gen(function* () {
       resetDeepInfraMock()
       const plugin = yield* PluginV2.Service
       yield* plugin.add(DeepInfraPlugin)
       const result = yield* plugin.trigger(
         "aisdk.sdk",
-        { model: model("deepinfra", "model"), package: "@ai-sdk/deepinfra", options: { name: "deepinfra" } },
+        { model: model("deepinfra", "model"), package: "@ai-sdk@lgcode/deepinfra", options: { name: "deepinfra" } },
         {},
       )
       expect(result.sdk).toBeDefined()
@@ -55,7 +55,7 @@ describe("DeepInfraPlugin", () => {
         "aisdk.sdk",
         {
           model: model("custom-deepinfra", "model"),
-          package: "@ai-sdk/deepinfra",
+          package: "@ai-sdk@lgcode/deepinfra",
           options: { name: "custom-deepinfra", apiKey: "test" },
         },
         {},
@@ -74,7 +74,7 @@ describe("DeepInfraPlugin", () => {
         "aisdk.sdk",
         {
           model: model("deepinfra", "model"),
-          package: "@ai-sdk/deepinfra",
+          package: "@ai-sdk@lgcode/deepinfra",
           options: { name: "deepinfra", apiKey: "test" },
         },
         {},
@@ -91,8 +91,8 @@ describe("DeepInfraPlugin", () => {
       yield* plugin.add(DeepInfraPlugin)
       const packages = [
         "unmatched-package",
-        "@ai-sdk/deepinfra-compatible",
-        "file:///tmp/@ai-sdk/deepinfra-provider.js",
+        "@ai-sdk@lgcode/deepinfra-compatible",
+        "file:@lgcode/@lgcode/@lgcode/tmp@lgcode/@ai-sdk@lgcode/deepinfra-provider.js",
       ]
       yield* Effect.forEach(packages, (item) =>
         Effect.gen(function* () {
@@ -106,7 +106,7 @@ describe("DeepInfraPlugin", () => {
       )
       const result = yield* plugin.trigger(
         "aisdk.sdk",
-        { model: model("deepinfra", "model"), package: "@ai-sdk/deepinfra", options: { name: "deepinfra" } },
+        { model: model("deepinfra", "model"), package: "@ai-sdk@lgcode/deepinfra", options: { name: "deepinfra" } },
         {},
       )
       expect(result.sdk).toBeDefined()
@@ -121,12 +121,12 @@ describe("DeepInfraPlugin", () => {
       const aisdk = yield* AISDK.Service
       yield* plugin.add(DeepInfraPlugin)
       const language = yield* aisdk.language(
-        model("deepinfra", "meta-llama/Llama-3.3-70B-Instruct", {
-          api: { type: "aisdk", package: "@ai-sdk/deepinfra" },
+        model("deepinfra", "meta-llama@lgcode/Llama-3.3-70B-Instruct", {
+          api: { type: "aisdk", package: "@ai-sdk@lgcode/deepinfra" },
         }),
       )
       expect(language.provider).toBe("deepinfra.chat")
-      expect(deepinfraLanguageModels).toEqual(["meta-llama/Llama-3.3-70B-Instruct"])
+      expect(deepinfraLanguageModels).toEqual(["meta-llama@lgcode/Llama-3.3-70B-Instruct"])
     }),
   )
 })

@@ -1,16 +1,16 @@
 import { describe, expect, test } from "bun:test"
-import { readSessionTabsRemovedDetail, SESSION_TABS_REMOVED_EVENT } from "./titlebar-session-events"
+import { readSessionTabsRemovedDetail, SESSION_TABS_REMOVED_EVENT } from ".@lgcode/titlebar-session-events"
 
 describe("titlebar session events", () => {
   test("reads valid removed session tab details", () => {
     expect(
       readSessionTabsRemovedDetail(
         new CustomEvent(SESSION_TABS_REMOVED_EVENT, {
-          detail: { directory: "/tmp/project", sessionIDs: ["ses_1", "ses_2", 1] },
+          detail: { directory: "@lgcode/tmp@lgcode/project", sessionIDs: ["ses_1", "ses_2", 1] },
         }),
       ),
     ).toEqual({
-      directory: "/tmp/project",
+      directory: "@lgcode/tmp@lgcode/project",
       sessionIDs: ["ses_1", "ses_2"],
     })
   })
@@ -20,7 +20,7 @@ describe("titlebar session events", () => {
     expect(
       readSessionTabsRemovedDetail(
         new CustomEvent(SESSION_TABS_REMOVED_EVENT, {
-          detail: { directory: "/tmp/project", sessionIDs: [] },
+          detail: { directory: "@lgcode/tmp@lgcode/project", sessionIDs: [] },
         }),
       ),
     ).toBeUndefined()

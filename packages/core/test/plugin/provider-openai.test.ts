@@ -1,12 +1,12 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { Catalog } from "@opencode@lgcode/core/catalog"
-import { Integration } from "@opencode@lgcode/core/integration"
-import { ModelV2 } from "@opencode@lgcode/core/model"
-import { PluginV2 } from "@opencode@lgcode/core/plugin"
-import { OpenAIPlugin } from "@opencode@lgcode/core/plugin/provider/openai"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { fakeSelectorSdk, it, model, provider } from "./provider-helper"
+import { Catalog } from "@lgcode/core@lgcode/catalog"
+import { Integration } from "@lgcode/core@lgcode/integration"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { PluginV2 } from "@lgcode/core@lgcode/plugin"
+import { OpenAIPlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/openai"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { fakeSelectorSdk, it, model, provider } from ".@lgcode/provider-helper"
 
 function add(plugin: PluginV2.Interface, integrations: Integration.Interface) {
   return plugin.add({
@@ -24,18 +24,18 @@ describe("OpenAIPlugin", () => {
         {
           id: Integration.MethodID.make("chatgpt-browser"),
           type: "oauth",
-          label: "ChatGPT Pro/Plus (browser)",
+          label: "ChatGPT Pro@lgcode/Plus (browser)",
         },
         {
           id: Integration.MethodID.make("chatgpt-headless"),
           type: "oauth",
-          label: "ChatGPT Pro/Plus (headless)",
+          label: "ChatGPT Pro@lgcode/Plus (headless)",
         },
       ])
     }),
   )
 
-  it.effect("creates an OpenAI SDK for @ai-sdk/openai using the provider ID as SDK name", () =>
+  it.effect("creates an OpenAI SDK for @ai-sdk@lgcode/openai using the provider ID as SDK name", () =>
     Effect.gen(function* () {
       const plugin = yield* PluginV2.Service
       yield* add(plugin, yield* Integration.Service)
@@ -43,7 +43,7 @@ describe("OpenAIPlugin", () => {
         "aisdk.sdk",
         {
           model: model("custom-openai", "gpt-5"),
-          package: "@ai-sdk/openai",
+          package: "@ai-sdk@lgcode/openai",
           options: { name: "custom-openai", apiKey: "test" },
         },
         {},
@@ -58,7 +58,7 @@ describe("OpenAIPlugin", () => {
       yield* add(plugin, yield* Integration.Service)
       const result = yield* plugin.trigger(
         "aisdk.sdk",
-        { model: model("openai", "gpt-5"), package: "@ai-sdk/openai-compatible", options: { name: "openai" } },
+        { model: model("openai", "gpt-5"), package: "@ai-sdk@lgcode/openai-compatible", options: { name: "openai" } },
         {},
       )
       expect(result.sdk).toBeUndefined()
@@ -108,7 +108,7 @@ describe("OpenAIPlugin", () => {
       yield* add(plugin, yield* Integration.Service)
       const transform = yield* catalog.transform()
       yield* transform((catalog) => {
-        const item = provider("openai", { api: { type: "aisdk", package: "@ai-sdk/openai" } })
+        const item = provider("openai", { api: { type: "aisdk", package: "@ai-sdk@lgcode/openai" } })
         catalog.provider.update(item.id, (draft) => {
           draft.api = item.api
         })

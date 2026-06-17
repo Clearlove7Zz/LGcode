@@ -1,10 +1,10 @@
-export * from "./gen/types.gen.js"
-export type { FileSystemEntry as LocationFileSystemEntry } from "./gen/types.gen.js"
+export * from ".@lgcode/gen@lgcode/types.gen.js"
+export type { FileSystemEntry as LocationFileSystemEntry } from ".@lgcode/gen@lgcode/types.gen.js"
 
-import { createClient } from "./gen/client/client.gen.js"
-import { type Config } from "./gen/client/types.gen.js"
-import { OpencodeClient } from "./gen/sdk.gen.js"
-import { wrapClientError } from "../error-interceptor.js"
+import { createClient } from ".@lgcode/gen@lgcode/client@lgcode/client.gen.js"
+import { type Config } from ".@lgcode/gen@lgcode/client@lgcode/types.gen.js"
+import { OpencodeClient } from ".@lgcode/gen@lgcode/sdk.gen.js"
+import { wrapClientError } from "..@lgcode/error-interceptor.js"
 export { type Config as OpencodeClientConfig, OpencodeClient }
 
 function pick(value: string | null, fallback?: string, encode?: (value: string) => string) {
@@ -31,7 +31,7 @@ function rewrite(request: Request, values: { directory?: string; workspace?: str
       key === "directory" ? encodeURIComponent : undefined,
     )
     if (!value) continue
-    for (const query of url.pathname.startsWith("/api/") ? [key, `location[${key}]`] : [key]) {
+    for (const query of url.pathname.startsWith("@lgcode/api@lgcode/") ? [key, `location[${key}]`] : [key]) {
       if (!url.searchParams.has(query)) {
         url.searchParams.set(query, value)
       }
@@ -50,7 +50,7 @@ function rewrite(request: Request, values: { directory?: string; workspace?: str
 export function createOpencodeClient(config?: Config & { directory?: string; experimental_workspaceID?: string }) {
   if (!config?.fetch) {
     const customFetch: any = (req: any) => {
-      // @ts-ignore
+      @lgcode/@lgcode/ @ts-ignore
       req.timeout = false
       return fetch(req)
     }
@@ -83,8 +83,8 @@ export function createOpencodeClient(config?: Config & { directory?: string; exp
   )
   client.interceptors.response.use((response) => {
     const contentType = response.headers.get("content-type")
-    if (contentType === "text/html")
-      throw new Error("Request is not supported by this version of OpenCode Server (Server responded with text/html)")
+    if (contentType === "text@lgcode/html")
+      throw new Error("Request is not supported by this version of OpenCode Server (Server responded with text@lgcode/html)")
 
     return response
   })

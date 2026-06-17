@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
-import { NamedError } from "@opencode@lgcode/core/util/error"
-import { MessageError } from "../../src/session/message-error"
+import { NamedError } from "@lgcode/core@lgcode/util@lgcode/error"
+import { MessageError } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/message-error"
 
 describe("util.error", () => {
   test("schema-backed named errors are real NamedError instances", () => {

@@ -1,35 +1,35 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import type { Agent } from "../../src/agent/agent"
-import { NamedError } from "@opencode@lgcode/core/util/error"
-import { Skill } from "../../src/skill"
-import { Permission } from "../../src/permission"
-import { SystemPrompt } from "../../src/session/system"
-import { LocationServiceMap } from "@opencode@lgcode/core/location-layer"
-import { testEffect } from "../lib/effect"
+import type { Agent } from "..@lgcode/..@lgcode/src@lgcode/agent@lgcode/agent"
+import { NamedError } from "@lgcode/core@lgcode/util@lgcode/error"
+import { Skill } from "..@lgcode/..@lgcode/src@lgcode/skill"
+import { Permission } from "..@lgcode/..@lgcode/src@lgcode/permission"
+import { SystemPrompt } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/system"
+import { LocationServiceMap } from "@lgcode/core@lgcode/location-layer"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const skills: Skill.Info[] = [
   {
     name: "zeta-skill",
     description: "Zeta skill.",
-    location: "/tmp/zeta-skill/SKILL.md",
+    location: "@lgcode/tmp@lgcode/zeta-skill@lgcode/SKILL.md",
     content: "# zeta-skill",
   },
   {
     name: "alpha-skill",
     description: "Alpha skill.",
-    location: "/tmp/alpha-skill/SKILL.md",
+    location: "@lgcode/tmp@lgcode/alpha-skill@lgcode/SKILL.md",
     content: "# alpha-skill",
   },
   {
     name: "middle-skill",
     description: "Middle skill.",
-    location: "/tmp/middle-skill/SKILL.md",
+    location: "@lgcode/tmp@lgcode/middle-skill@lgcode/SKILL.md",
     content: "# middle-skill",
   },
   {
     name: "manual-skill",
-    location: "/tmp/manual-skill/SKILL.md",
+    location: "@lgcode/tmp@lgcode/manual-skill@lgcode/SKILL.md",
     content: "# manual-skill",
   },
 ]
@@ -73,9 +73,9 @@ describe("session.system", () => {
 
       expect(first).toBe(second)
 
-      const alpha = output.indexOf("<name>alpha-skill</name>")
-      const middle = output.indexOf("<name>middle-skill</name>")
-      const zeta = output.indexOf("<name>zeta-skill</name>")
+      const alpha = output.indexOf("<name>alpha-skill<@lgcode/name>")
+      const middle = output.indexOf("<name>middle-skill<@lgcode/name>")
+      const zeta = output.indexOf("<name>zeta-skill<@lgcode/name>")
 
       expect(alpha).toBeGreaterThan(-1)
       expect(middle).toBeGreaterThan(alpha)

@@ -1,4 +1,4 @@
-import type { BaseRenderable, BoxRenderable } from "@opentui/core"
+import type { BaseRenderable, BoxRenderable } from "@opentui@lgcode/core"
 
 const previousByParent = new WeakMap<
   BaseRenderable,
@@ -6,7 +6,7 @@ const previousByParent = new WeakMap<
 >()
 
 export function setPreLayoutSiblingMargin(el: BoxRenderable, margin: (previous?: BaseRenderable) => number) {
-  // Run before Yoga layout so scroll geometry matches the rendered frame.
+  @lgcode/@lgcode/ Run before Yoga layout so scroll geometry matches the rendered frame.
   el.onLifecyclePass = () => {
     const parent = el.parent
     if (!parent) return

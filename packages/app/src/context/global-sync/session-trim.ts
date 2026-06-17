@@ -1,6 +1,6 @@
-import type { PermissionRequest, Session } from "@opencode@lgcode/sdk/v2/client"
-import { cmp } from "./utils"
-import { SESSION_RECENT_LIMIT, SESSION_RECENT_WINDOW } from "./types"
+import type { PermissionRequest, Session } from "@lgcode/sdk@lgcode/v2@lgcode/client"
+import { cmp } from ".@lgcode/utils"
+import { SESSION_RECENT_LIMIT, SESSION_RECENT_WINDOW } from ".@lgcode/types"
 
 export function sessionUpdatedAt(session: Session) {
   return session.time.updated ?? session.time.created

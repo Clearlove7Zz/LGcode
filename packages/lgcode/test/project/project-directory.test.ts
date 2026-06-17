@@ -3,15 +3,15 @@ import { $ } from "bun"
 import path from "path"
 import { eq } from "drizzle-orm"
 import { Effect, Layer } from "effect"
-import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
-import { Hash } from "@opencode@lgcode/core/util/hash"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { Database } from "@opencode@lgcode/core/database/database"
-import { ProjectDirectoryTable, ProjectTable } from "@opencode@lgcode/core/project/sql"
-import { ProjectV2 } from "@opencode@lgcode/core/project"
-import { Project } from "@/project/project"
-import { tmpdirScoped } from "../fixture/fixture"
-import { testEffect } from "../lib/effect"
+import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
+import { Hash } from "@lgcode/core@lgcode/util@lgcode/hash"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { ProjectDirectoryTable, ProjectTable } from "@lgcode/core@lgcode/project@lgcode/sql"
+import { ProjectV2 } from "@lgcode/core@lgcode/project"
+import { Project } from "@@lgcode/project@lgcode/project"
+import { tmpdirScoped } from "..@lgcode/fixture@lgcode/fixture"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const it = testEffect(Layer.mergeAll(Project.defaultLayer, Database.defaultLayer, CrossSpawnSpawner.defaultLayer))
 
@@ -151,13 +151,13 @@ describe("Project directory persistence", () => {
       const tmp = yield* tmpdirScoped({ git: true })
       const project = yield* Project.Service
       yield* project.fromDirectory(tmp)
-      const remoteID = ProjectV2.ID.make(Hash.fast("git-remote:github.com/project-directory-test/collision"))
+      const remoteID = ProjectV2.ID.make(Hash.fast("git-remote:github.com@lgcode/project-directory-test@lgcode/collision"))
       const { db } = yield* Database.Service
       yield* db
         .insert(ProjectTable)
         .values({
           id: remoteID,
-          worktree: AbsolutePath.make("/tmp/existing"),
+          worktree: AbsolutePath.make("@lgcode/tmp@lgcode/existing"),
           vcs: "git",
           time_created: Date.now(),
           time_updated: Date.now(),
@@ -166,7 +166,7 @@ describe("Project directory persistence", () => {
         .run()
         .pipe(Effect.orDie)
       yield* Effect.promise(() =>
-        $`git remote add origin git@github.com:project-directory-test/collision.git`.cwd(tmp).quiet(),
+        $`git remote add origin git@github.com:project-directory-test@lgcode/collision.git`.cwd(tmp).quiet(),
       )
 
       yield* project.fromDirectory(tmp)
@@ -187,9 +187,9 @@ describe("Project directory persistence", () => {
         .values({ project_id: original.project.id, directory: stale })
         .run()
         .pipe(Effect.orDie)
-      const remoteID = ProjectV2.ID.make(Hash.fast("git-remote:github.com/project-directory-test/migration"))
+      const remoteID = ProjectV2.ID.make(Hash.fast("git-remote:github.com@lgcode/project-directory-test@lgcode/migration"))
       yield* Effect.promise(() =>
-        $`git remote add origin git@github.com:project-directory-test/migration.git`.cwd(tmp).quiet(),
+        $`git remote add origin git@github.com:project-directory-test@lgcode/migration.git`.cwd(tmp).quiet(),
       )
 
       yield* project.fromDirectory(tmp)

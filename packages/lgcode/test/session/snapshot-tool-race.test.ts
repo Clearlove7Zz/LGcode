@@ -1,4 +1,4 @@
-/**
+@lgcode/**
  * Reproducer for snapshot race condition with instant tool execution.
  *
  * When the mock LLM returns a tool call response instantly, the AI SDK
@@ -10,27 +10,27 @@
  * This is a real bug: the snapshot system assumes it can capture state
  * before tools run by hooking into start-step, but the AI SDK executes
  * tools internally during multi-step processing before emitting events.
- */
+ *@lgcode/
 import { expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
-import fs from "fs/promises"
+import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
+import fs from "fs@lgcode/promises"
 import path from "path"
-import { Session } from "@/session/session"
-import { SessionPrompt } from "../../src/session/prompt"
-import { SessionSummary } from "../../src/session/summary"
-import { MessageV2 } from "../../src/session/message-v2"
-import { SessionV1 } from "@opencode@lgcode/core/v1/session"
-import { Database } from "@opencode@lgcode/core/database/database"
-import { SessionProjector } from "@opencode@lgcode/core/session/projector"
-import { provideTmpdirServer } from "../fixture/fixture"
-import { testEffect } from "../lib/effect"
-import { TestLLMServer } from "../lib/llm-server"
+import { Session } from "@@lgcode/session@lgcode/session"
+import { SessionPrompt } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/prompt"
+import { SessionSummary } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/summary"
+import { MessageV2 } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/message-v2"
+import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { SessionProjector } from "@lgcode/core@lgcode/session@lgcode/projector"
+import { provideTmpdirServer } from "..@lgcode/fixture@lgcode/fixture"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { TestLLMServer } from "..@lgcode/lib@lgcode/llm-server"
 
-import { LSP } from "@/lsp/lsp"
-import { MCP } from "../../src/mcp"
-import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
-import { RuntimeFlags } from "@/effect/runtime-flags"
+import { LSP } from "@@lgcode/lsp@lgcode/lsp"
+import { MCP } from "..@lgcode/..@lgcode/src@lgcode/mcp"
+import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
+import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
 
 const mcp = Layer.succeed(
   MCP.Service,
@@ -100,7 +100,7 @@ const providerCfg = (url: string) => ({
       name: "Test",
       id: "test",
       env: [],
-      npm: "@ai-sdk/openai-compatible",
+      npm: "@ai-sdk@lgcode/openai-compatible",
       models: {
         "test-model": {
           id: "test-model",
@@ -135,7 +135,7 @@ it.live("tool execution produces non-empty session diff (snapshot race)", () =>
         permission: [{ permission: "*", pattern: "*", action: "allow" }],
       })
 
-      // Use bash tool (always registered) to create a file
+      @lgcode/@lgcode/ Use bash tool (always registered) to create a file
       const command = `echo 'snapshot race test content' > ${path.join(dir, "race-test.txt")}`
       yield* llm.toolMatch((hit) => JSON.stringify(hit.body).includes("create the file"), "bash", {
         command,
@@ -143,7 +143,7 @@ it.live("tool execution produces non-empty session diff (snapshot race)", () =>
       })
       yield* llm.textMatch((hit) => JSON.stringify(hit.body).includes("bash"), "done")
 
-      // Seed user message
+      @lgcode/@lgcode/ Seed user message
       yield* prompt.prompt({
         sessionID: session.id,
         agent: "build",
@@ -151,11 +151,11 @@ it.live("tool execution produces non-empty session diff (snapshot race)", () =>
         parts: [{ type: "text", text: "create the file" }],
       })
 
-      // Run the agent loop
+      @lgcode/@lgcode/ Run the agent loop
       const result = yield* prompt.loop({ sessionID: session.id })
       expect(result.info.role).toBe("assistant")
 
-      // Verify the file was created
+      @lgcode/@lgcode/ Verify the file was created
       const filePath = path.join(dir, "race-test.txt")
       const fileExists = yield* Effect.promise(() =>
         fs
@@ -165,7 +165,7 @@ it.live("tool execution produces non-empty session diff (snapshot race)", () =>
       )
       expect(fileExists).toBe(true)
 
-      // Verify the tool call completed (in the first assistant message)
+      @lgcode/@lgcode/ Verify the tool call completed (in the first assistant message)
       const allMsgs = yield* MessageV2.filterCompactedEffect(session.id)
       const user = allMsgs.find(
         (msg): msg is SessionV1.WithParts & { info: SessionV1.User } => msg.info.role === "user",
@@ -176,7 +176,7 @@ it.live("tool execution produces non-empty session diff (snapshot race)", () =>
       expect(tool?.state.status).toBe("completed")
       if (!user) throw new Error("Expected user message")
 
-      // Poll for the turn diff — summarize() is fire-and-forget.
+      @lgcode/@lgcode/ Poll for the turn diff — summarize() is fire-and-forget.
       let diff: Array<{ file?: string }> = []
       for (let i = 0; i < 50; i++) {
         diff = yield* summary.diff({ sessionID: session.id, messageID: user.info.id })

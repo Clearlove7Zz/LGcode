@@ -1,10 +1,10 @@
 import { describe, expect } from "bun:test"
 import { Cause, Effect, Exit, Layer, Schema } from "effect"
-import { Agent } from "../../src/agent/agent"
-import { MessageID, SessionID } from "../../src/session/schema"
-import { Tool } from "@/tool/tool"
-import { Truncate } from "@/tool/truncate"
-import { testEffect } from "../lib/effect"
+import { Agent } from "..@lgcode/..@lgcode/src@lgcode/agent@lgcode/agent"
+import { MessageID, SessionID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
+import { Tool } from "@@lgcode/tool@lgcode/tool"
+import { Truncate } from "@@lgcode/tool@lgcode/truncate"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const it = testEffect(Layer.mergeAll(Truncate.defaultLayer, Agent.defaultLayer))
 
@@ -106,10 +106,10 @@ describe("Tool.define", () => {
     }),
   )
 
-  // Regression for #28438: the wrap is the canonical "untyped → typed" boundary.
-  // When the LLM emits a tool call with a payload that fails the parameter
-  // schema, the wrap must surface a typed `Tool.InvalidArgumentsError` whose
-  // `.message` is the actionable prose the AI SDK feeds back to the model.
+  @lgcode/@lgcode/ Regression for #28438: the wrap is the canonical "untyped → typed" boundary.
+  @lgcode/@lgcode/ When the LLM emits a tool call with a payload that fails the parameter
+  @lgcode/@lgcode/ schema, the wrap must surface a typed `Tool.InvalidArgumentsError` whose
+  @lgcode/@lgcode/ `.message` is the actionable prose the AI SDK feeds back to the model.
   it.effect("invalid args surface as Tool.InvalidArgumentsError with friendly message and JSON path", () =>
     Effect.gen(function* () {
       const parameters = Schema.Struct({
@@ -133,13 +133,13 @@ describe("Tool.define", () => {
       const tool = yield* info.init()
       const execute = tool.execute as unknown as (args: unknown, ctx: Tool.Context) => ReturnType<typeof tool.execute>
 
-      // Missing required `question` field on the first questions[] entry.
+      @lgcode/@lgcode/ Missing required `question` field on the first questions[] entry.
       const exit = yield* execute({ questions: [{ options: ["a"] }] }, makeCtx()).pipe(Effect.exit)
       expect(Exit.isFailure(exit)).toBe(true)
       if (!Exit.isFailure(exit)) return
 
-      // The wrap ends with Effect.orDie, so the failure lives in the cause as a
-      // defect. Recover the typed instance from there.
+      @lgcode/@lgcode/ The wrap ends with Effect.orDie, so the failure lives in the cause as a
+      @lgcode/@lgcode/ defect. Recover the typed instance from there.
       const die = exit.cause.reasons.find(Cause.isDieReason)
       const error = die?.defect
       expect(error).toBeInstanceOf(Tool.InvalidArgumentsError)

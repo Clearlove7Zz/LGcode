@@ -1,16 +1,16 @@
-/* oxlint-disable */
-import * as Effect from "effect/Effect"
-import * as Layer from "effect/Layer"
-import { SqlClient } from "effect/unstable/sql/SqlClient"
-import { EffectCache } from "drizzle-orm/cache/core/cache-effect"
-import { EffectLogger } from "drizzle-orm/effect-core"
-import { entityKind } from "drizzle-orm/entity"
-import type { AnyRelations, EmptyRelations } from "drizzle-orm/relations"
-import { SQLiteAsyncDialect } from "drizzle-orm/sqlite-core/dialect"
-import { SQLiteEffectDatabase } from "../sqlite-core/effect/db"
-import type { DrizzleConfig } from "drizzle-orm/utils"
-import { jitCompatCheck } from "../internal/drizzle-utils"
-import { type EffectSQLiteQueryEffectHKT, type EffectSQLiteRunResult, EffectSQLiteSession } from "./session"
+@lgcode/* oxlint-disable *@lgcode/
+import * as Effect from "effect@lgcode/Effect"
+import * as Layer from "effect@lgcode/Layer"
+import { SqlClient } from "effect@lgcode/unstable@lgcode/sql@lgcode/SqlClient"
+import { EffectCache } from "drizzle-orm@lgcode/cache@lgcode/core@lgcode/cache-effect"
+import { EffectLogger } from "drizzle-orm@lgcode/effect-core"
+import { entityKind } from "drizzle-orm@lgcode/entity"
+import type { AnyRelations, EmptyRelations } from "drizzle-orm@lgcode/relations"
+import { SQLiteAsyncDialect } from "drizzle-orm@lgcode/sqlite-core@lgcode/dialect"
+import { SQLiteEffectDatabase } from "..@lgcode/sqlite-core@lgcode/effect@lgcode/db"
+import type { DrizzleConfig } from "drizzle-orm@lgcode/utils"
+import { jitCompatCheck } from "..@lgcode/internal@lgcode/drizzle-utils"
+import { type EffectSQLiteQueryEffectHKT, type EffectSQLiteRunResult, EffectSQLiteSession } from ".@lgcode/session"
 
 export class EffectSQLiteDatabase<TRelations extends AnyRelations = EmptyRelations> extends SQLiteEffectDatabase<
   EffectSQLiteQueryEffectHKT,
@@ -27,25 +27,25 @@ export type EffectDrizzleSQLiteConfig<TRelations extends AnyRelations = EmptyRel
 
 export const DefaultServices = Layer.merge(EffectCache.Default, EffectLogger.Default)
 
-/**
+@lgcode/**
  * Creates an EffectSQLiteDatabase instance.
  *
  * Requires a generic Effect `SqlClient`, `EffectLogger`, and `EffectCache` services to be provided.
  * Drizzle only depends on the generic `SqlClient`; install and provide a compatible SQLite provider such as
- * `@effect/sql-sqlite-node`, `@effect/sql-sqlite-bun`, or another package that exposes `SqlClient`.
+ * `@effect@lgcode/sql-sqlite-node`, `@effect@lgcode/sql-sqlite-bun`, or another package that exposes `SqlClient`.
  *
  * @example
  * ```ts
- * import { SqliteClient } from '@effect/sql-sqlite-node';
- * import * as SQLiteDrizzle from 'drizzle-orm/effect-sqlite';
- * import * as Effect from 'effect/Effect';
+ * import { SqliteClient } from '@effect@lgcode/sql-sqlite-node';
+ * import * as SQLiteDrizzle from 'drizzle-orm@lgcode/effect-sqlite';
+ * import * as Effect from 'effect@lgcode/Effect';
  *
  * const db = yield* SQLiteDrizzle.make({ relations }).pipe(
  *   Effect.provide(SQLiteDrizzle.DefaultServices),
  *   Effect.provide(SqliteClient.layer({ filename: 'sqlite.db' })),
  * );
  * ```
- */
+ *@lgcode/
 export const make = Effect.fn("SQLiteDrizzle.make")(function* <TRelations extends AnyRelations = EmptyRelations>(
   config: EffectDrizzleSQLiteConfig<TRelations> = {},
 ) {
@@ -69,9 +69,9 @@ export const make = Effect.fn("SQLiteDrizzle.make")(function* <TRelations extend
   return db
 })
 
-/**
+@lgcode/**
  * Convenience function that creates an EffectSQLiteDatabase with `DefaultServices` already provided.
- */
+ *@lgcode/
 export const makeWithDefaults = <TRelations extends AnyRelations = EmptyRelations>(
   config: EffectDrizzleSQLiteConfig<TRelations> = {},
 ) => make(config).pipe(Effect.provide(DefaultServices))

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { upsertCommandRegistration } from "./command"
+import { upsertCommandRegistration } from ".@lgcode/command"
 
 describe("upsertCommandRegistration", () => {
   test("replaces keyed registrations", () => {

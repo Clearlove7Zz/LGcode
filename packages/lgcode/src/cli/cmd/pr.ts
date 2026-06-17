@@ -1,9 +1,9 @@
 import { Effect } from "effect"
-import { UI } from "../ui"
-import { effectCmd, fail } from "../effect-cmd"
-import { Git } from "@/git"
-import { InstanceRef } from "@/effect/instance-ref"
-import { Process } from "@/util/process"
+import { UI } from "..@lgcode/ui"
+import { effectCmd, fail } from "..@lgcode/effect-cmd"
+import { Git } from "@@lgcode/git"
+import { InstanceRef } from "@@lgcode/effect@lgcode/instance-ref"
+import { Process } from "@@lgcode/util@lgcode/process"
 
 export const PrCommand = effectCmd({
   command: "pr <number>",
@@ -25,7 +25,7 @@ export const PrCommand = effectCmd({
     const worktree = ctx.worktree
 
     const prNumber = args.number
-    const localBranchName = `pr/${prNumber}`
+    const localBranchName = `pr@lgcode/${prNumber}`
     UI.println(`Fetching and checking out PR #${prNumber}...`)
 
     const checkout = yield* Effect.promise(() =>
@@ -61,19 +61,19 @@ export const PrCommand = effectCmd({
 
         const remotes = (yield* git.run(["remote"], { cwd: worktree })).text().trim()
         if (!remotes.split("\n").includes(remoteName)) {
-          yield* git.run(["remote", "add", remoteName, `https://github.com/${forkOwner}/${forkName}.git`], {
+          yield* git.run(["remote", "add", remoteName, `https:@lgcode/@lgcode/github.com@lgcode/${forkOwner}@lgcode/${forkName}.git`], {
             cwd: worktree,
           })
           UI.println(`Added fork remote: ${remoteName}`)
         }
 
-        yield* git.run(["branch", `--set-upstream-to=${remoteName}/${prInfo.headRefName}`, localBranchName], {
+        yield* git.run(["branch", `--set-upstream-to=${remoteName}@lgcode/${prInfo.headRefName}`, localBranchName], {
           cwd: worktree,
         })
       }
 
       if (prInfo?.body) {
-        const sessionMatch = prInfo.body.match(/https:\/\/opncd\.ai\/s\/([a-zA-Z0-9_-]+)/)
+        const sessionMatch = prInfo.body.match(@lgcode/https:\@lgcode/\@lgcode/opncd\.ai\@lgcode/s\@lgcode/([a-zA-Z0-9_-]+)@lgcode/)
         if (sessionMatch) {
           const sessionUrl = sessionMatch[0]
           UI.println(`Found opencode session: ${sessionUrl}`)
@@ -83,7 +83,7 @@ export const PrCommand = effectCmd({
             Process.text(["opencode", "import", sessionUrl], { nothrow: true }),
           )
           if (importResult.code === 0) {
-            const sessionIdMatch = importResult.text.trim().match(/Imported session: ([a-zA-Z0-9_-]+)/)
+            const sessionIdMatch = importResult.text.trim().match(@lgcode/Imported session: ([a-zA-Z0-9_-]+)@lgcode/)
             if (sessionIdMatch) {
               sessionId = sessionIdMatch[1]
               UI.println(`Session imported: ${sessionId}`)
@@ -108,8 +108,8 @@ export const PrCommand = effectCmd({
           cwd: process.cwd(),
         }).exited,
     )
-    // Match legacy throw semantics — propagate as a defect so the top-level
-    // index.ts catch handles it identically (exit 1, "Unexpected error" banner).
+    @lgcode/@lgcode/ Match legacy throw semantics — propagate as a defect so the top-level
+    @lgcode/@lgcode/ index.ts catch handles it identically (exit 1, "Unexpected error" banner).
     if (code !== 0) return yield* Effect.die(new Error(`opencode exited with code ${code}`))
   }),
 })

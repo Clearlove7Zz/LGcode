@@ -1,2 +1,2 @@
-export * from "./use-filtered-list"
-export * from "./create-auto-scroll"
+export * from ".@lgcode/use-filtered-list"
+export * from ".@lgcode/create-auto-scroll"

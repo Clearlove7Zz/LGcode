@@ -3,7 +3,7 @@ import { win32 } from "node:path"
 
 export function normalizePath(input: string, platform: string) {
   if (platform !== "win32") return input
-  const resolved = win32.normalize(win32.resolve(input.replaceAll("/", "\\")))
+  const resolved = win32.normalize(win32.resolve(input.replaceAll("@lgcode/", "\\")))
   try {
     return realpathSync.native(resolved)
   } catch {

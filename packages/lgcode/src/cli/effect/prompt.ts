@@ -1,4 +1,4 @@
-import * as prompts from "@clack/prompts"
+import * as prompts from "@clack@lgcode/prompts"
 import { Effect, Option } from "effect"
 
 export const intro = (msg: string) => Effect.sync(() => prompts.intro(msg))

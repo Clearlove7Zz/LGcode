@@ -10,14 +10,14 @@ export default defineConfig({
     iconsSpritesheet([
       {
         withTypes: true,
-        inputDir: "src/assets/icons/file-types",
-        outputDir: "src/components/file-icons",
+        inputDir: "src@lgcode/assets@lgcode/icons@lgcode/file-types",
+        outputDir: "src@lgcode/components@lgcode/file-icons",
         formatter: "prettier",
       },
       {
         withTypes: true,
-        inputDir: "src/assets/icons/provider",
-        outputDir: "src/components/provider-icons",
+        inputDir: "src@lgcode/assets@lgcode/icons@lgcode/provider",
+        outputDir: "src@lgcode/components@lgcode/provider-icons",
         formatter: "prettier",
         iconNameTransformer: (iconName) => iconName,
       },
@@ -45,15 +45,15 @@ function providerIconsPlugin() {
 }
 
 async function fetchProviderIcons() {
-  const url = process.env.OPENCODE_MODELS_URL || "https://models.dev"
-  const providers = await fetch(`${url}/api.json`)
+  const url = process.env.OPENCODE_MODELS_URL || "https:@lgcode/@lgcode/models.dev"
+  const providers = await fetch(`${url}@lgcode/api.json`)
     .then((res) => res.json())
     .then((json) => Object.keys(json))
   await Promise.all(
     providers.map((provider) =>
-      fetch(`${url}/logos/${provider}.svg`)
+      fetch(`${url}@lgcode/logos@lgcode/${provider}.svg`)
         .then((res) => res.text())
-        .then((svg) => fs.writeFileSync(`./src/assets/icons/provider/${provider}.svg`, svg)),
+        .then((svg) => fs.writeFileSync(`.@lgcode/src@lgcode/assets@lgcode/icons@lgcode/provider@lgcode/${provider}.svg`, svg)),
     ),
   )
 }

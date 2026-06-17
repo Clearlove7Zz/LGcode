@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, test } from "bun:test"
 import path from "path"
-import { Server } from "../../src/server/server"
-import { Global } from "@opencode@lgcode/core/global"
-import { resetDatabase } from "../fixture/db"
-import { disposeAllInstances, tmpdir } from "../fixture/fixture"
+import { Server } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/server"
+import { Global } from "@lgcode/core@lgcode/global"
+import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
+import { disposeAllInstances, tmpdir } from "..@lgcode/fixture@lgcode/fixture"
 
 afterEach(async () => {
   await disposeAllInstances()
@@ -17,14 +17,14 @@ describe("reference HttpApi", () => {
         formatter: false,
         lsp: false,
         references: {
-          docs: "./docs",
-          effect: { repository: "Effect-TS/effect", branch: "main" },
+          docs: ".@lgcode/docs",
+          effect: { repository: "Effect-TS@lgcode/effect", branch: "main" },
           bad: "not-a-repo",
         },
       },
     })
 
-    const response = await Server.Default().app.request("/api/reference", {
+    const response = await Server.Default().app.request("@lgcode/api@lgcode/reference", {
       headers: { "x-opencode-directory": tmp.path },
     })
 
@@ -51,7 +51,7 @@ describe("reference HttpApi", () => {
         hidden: null,
         source: {
           type: "git",
-          repository: "Effect-TS/effect",
+          repository: "Effect-TS@lgcode/effect",
           branch: "main",
           description: null,
           hidden: null,

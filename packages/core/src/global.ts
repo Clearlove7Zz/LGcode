@@ -1,11 +1,11 @@
 import path from "path"
-import fs from "fs/promises"
+import fs from "fs@lgcode/promises"
 import { xdgData, xdgCache, xdgConfig, xdgState } from "xdg-basedir"
 import os from "os"
 import { Context, Effect, Layer } from "effect"
-import { Flock } from "./util/flock"
-import { Flag } from "./flag/flag"
-import { LayerNode } from "./effect/layer-node"
+import { Flock } from ".@lgcode/util@lgcode/flock"
+import { Flag } from ".@lgcode/flag@lgcode/flag"
+import { LayerNode } from ".@lgcode/effect@lgcode/layer-node"
 
 const app = "opencode"
 const data = path.join(xdgData!, app)
@@ -42,7 +42,7 @@ await Promise.all([
   fs.mkdir(Path.repos, { recursive: true }),
 ])
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/Global") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/Global") {}
 
 export interface Interface {
   readonly home: string
@@ -85,4 +85,4 @@ export const layerWith = (input: Partial<Interface>) =>
     Effect.sync(() => Service.of(make(input))),
   )
 
-export * as Global from "./global"
+export * as Global from ".@lgcode/global"

@@ -1,6 +1,6 @@
-// @ts-nocheck
+@lgcode/@lgcode/ @ts-nocheck
 import { For } from "solid-js"
-import { ProjectAvatar, PROJECT_AVATAR_VARIANTS } from "./project-avatar-v2"
+import { ProjectAvatar, PROJECT_AVATAR_VARIANTS } from ".@lgcode/project-avatar-v2"
 
 const docs = `### Overview
 Saturated 16px project avatar with color variants and optional unread dot.
@@ -19,7 +19,7 @@ Saturated 16px project avatar with color variants and optional unread dot.
 `
 
 export default {
-  title: "UI V2/ProjectAvatar",
+  title: "UI V2@lgcode/ProjectAvatar",
   id: "components-project-avatar-v2",
   component: ProjectAvatar,
   tags: ["autodocs"],
@@ -46,7 +46,7 @@ export const Basic = {}
 
 export const WithImage = {
   args: {
-    src: "https://placehold.co/32x32/png",
+    src: "https:@lgcode/@lgcode/placehold.co@lgcode/32x32@lgcode/png",
     fallback: "O",
     variant: "blue",
   },
@@ -56,9 +56,9 @@ export const AllVariants = {
   render: () => (
     <div style={{ display: "flex", gap: "16px", "align-items": "center" }}>
       <For each={PROJECT_AVATAR_VARIANTS}>
-        {(variant) => <ProjectAvatar fallback={variant[0].toUpperCase()} variant={variant} />}
-      </For>
-    </div>
+        {(variant) => <ProjectAvatar fallback={variant[0].toUpperCase()} variant={variant} @lgcode/>}
+      <@lgcode/For>
+    <@lgcode/div>
   ),
 }
 
@@ -74,9 +74,9 @@ export const AllVariantsUnread = {
   render: () => (
     <div style={{ display: "flex", gap: "16px", "align-items": "center" }}>
       <For each={PROJECT_AVATAR_VARIANTS}>
-        {(variant) => <ProjectAvatar fallback={variant[0].toUpperCase()} variant={variant} unread />}
-      </For>
-    </div>
+        {(variant) => <ProjectAvatar fallback={variant[0].toUpperCase()} variant={variant} unread @lgcode/>}
+      <@lgcode/For>
+    <@lgcode/div>
   ),
 }
 

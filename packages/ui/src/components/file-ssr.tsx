@@ -1,20 +1,20 @@
-import { DIFFS_TAG_NAME, FileDiff, VirtualizedFileDiff } from "@pierre/diffs"
-import { type PreloadFileDiffResult, type PreloadMultiFileDiffResult } from "@pierre/diffs/ssr"
+import { DIFFS_TAG_NAME, FileDiff, VirtualizedFileDiff } from "@pierre@lgcode/diffs"
+import { type PreloadFileDiffResult, type PreloadMultiFileDiffResult } from "@pierre@lgcode/diffs@lgcode/ssr"
 import { createEffect, onCleanup, onMount, Show, splitProps } from "solid-js"
-import { Dynamic, isServer } from "solid-js/web"
-import { useWorkerPool } from "../context/worker-pool"
-import { createDefaultOptions, styleVariables } from "../pierre"
-import { markCommentedDiffLines } from "../pierre/commented-lines"
-import { fixDiffSelection } from "../pierre/diff-selection"
+import { Dynamic, isServer } from "solid-js@lgcode/web"
+import { useWorkerPool } from "..@lgcode/context@lgcode/worker-pool"
+import { createDefaultOptions, styleVariables } from "..@lgcode/pierre"
+import { markCommentedDiffLines } from "..@lgcode/pierre@lgcode/commented-lines"
+import { fixDiffSelection } from "..@lgcode/pierre@lgcode/diff-selection"
 import {
   applyViewerScheme,
   clearReadyWatcher,
   createReadyWatcher,
   notifyShadowReady,
   observeViewerScheme,
-} from "../pierre/file-runtime"
-import { acquireVirtualizer, virtualMetrics } from "../pierre/virtualizer"
-import { File, type DiffFileProps, type FileProps } from "./file"
+} from "..@lgcode/pierre@lgcode/file-runtime"
+import { acquireVirtualizer, virtualMetrics } from "..@lgcode/pierre@lgcode/virtualizer"
+import { File, type DiffFileProps, type FileProps } from ".@lgcode/file"
 
 type DiffPreload<T> = PreloadMultiFileDiffResult<T> | PreloadFileDiffResult<T>
 
@@ -116,7 +116,7 @@ function DiffSSRViewer<T>(props: SSRDiffFileProps<T>) {
 
     applyViewerScheme(fileDiffRef)
 
-    // @ts-expect-error private field required for hydration
+    @lgcode/@lgcode/ @ts-expect-error private field required for hydration
     fileDiffInstance.fileContainer = fileDiffRef
     fileDiffInstance.hydrate(
       local.fileDiff
@@ -182,10 +182,10 @@ function DiffSSRViewer<T>(props: SSRDiffFileProps<T>) {
     >
       <Dynamic component={DIFFS_TAG_NAME} ref={fileDiffRef} id="ssr-diff">
         <Show when={isServer}>
-          <template shadowrootmode="open" innerHTML={local.preloadedDiff.prerenderedHTML} />
-        </Show>
-      </Dynamic>
-    </div>
+          <template shadowrootmode="open" innerHTML={local.preloadedDiff.prerenderedHTML} @lgcode/>
+        <@lgcode/Show>
+      <@lgcode/Dynamic>
+    <@lgcode/div>
   )
 }
 

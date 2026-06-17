@@ -1,20 +1,20 @@
-import { Npm } from "@opencode@lgcode/core/npm"
-import type { LanguageModelV3 } from "@ai-sdk/provider"
+import { Npm } from "@lgcode/core@lgcode/npm"
+import type { LanguageModelV3 } from "@ai-sdk@lgcode/provider"
 import { expect } from "bun:test"
 import { Effect, Layer, Option } from "effect"
-import { Catalog } from "@opencode@lgcode/core/catalog"
-import { Integration } from "@opencode@lgcode/core/integration"
-import { Credential } from "@opencode@lgcode/core/credential"
-import { EventV2 } from "@opencode@lgcode/core/event"
-import { Location } from "@opencode@lgcode/core/location"
-import { ModelV2 } from "@opencode@lgcode/core/model"
-import { PluginV2 } from "@opencode@lgcode/core/plugin"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { location } from "../fixture/location"
-import { testEffect } from "../lib/effect"
+import { Catalog } from "@lgcode/core@lgcode/catalog"
+import { Integration } from "@lgcode/core@lgcode/integration"
+import { Credential } from "@lgcode/core@lgcode/credential"
+import { EventV2 } from "@lgcode/core@lgcode/event"
+import { Location } from "@lgcode/core@lgcode/location"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { PluginV2 } from "@lgcode/core@lgcode/plugin"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { location } from "..@lgcode/fixture@lgcode/location"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
-export const fixtureProvider = new URL("./fixtures/provider-factory.ts", import.meta.url).href
+export const fixtureProvider = new URL(".@lgcode/fixtures@lgcode/provider-factory.ts", import.meta.url).href
 const locationLayer = Layer.succeed(
   Location.Service,
   Location.Service.of(location({ directory: AbsolutePath.make("test") })),

@@ -1,13 +1,13 @@
-import { EventStreamCodec } from "@smithy/eventstream-codec"
-import { fromUtf8, toUtf8 } from "@smithy/util-utf8"
+import { EventStreamCodec } from "@smithy@lgcode/eventstream-codec"
+import { fromUtf8, toUtf8 } from "@smithy@lgcode/util-utf8"
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { CacheHint, LLM, Message, ToolCallPart, ToolChoice } from "../../src"
-import { LLMClient } from "../../src/route"
-import { AmazonBedrock } from "../../src/providers"
-import * as BedrockConverse from "../../src/protocols/bedrock-converse"
-import { it } from "../lib/effect"
-import { fixedResponse } from "../lib/http"
+import { CacheHint, LLM, Message, ToolCallPart, ToolChoice } from "..@lgcode/..@lgcode/src"
+import { LLMClient } from "..@lgcode/..@lgcode/src@lgcode/route"
+import { AmazonBedrock } from "..@lgcode/..@lgcode/src@lgcode/providers"
+import * as BedrockConverse from "..@lgcode/..@lgcode/src@lgcode/protocols@lgcode/bedrock-converse"
+import { it } from "..@lgcode/lib@lgcode/effect"
+import { fixedResponse } from "..@lgcode/lib@lgcode/http"
 import {
   eventSummary,
   expectWeatherToolLoop,
@@ -15,21 +15,21 @@ import {
   weatherTool,
   weatherToolLoopRequest,
   weatherToolName,
-} from "../recorded-scenarios"
-import { recordedTests } from "../recorded-test"
+} from "..@lgcode/recorded-scenarios"
+import { recordedTests } from "..@lgcode/recorded-test"
 
 const codec = new EventStreamCodec(toUtf8, fromUtf8)
 const utf8Encoder = new TextEncoder()
 
-// Build a single AWS event-stream frame for a Converse stream event. Each
-// frame carries `:message-type=event` + `:event-type=<name>` headers and a
-// JSON payload body.
+@lgcode/@lgcode/ Build a single AWS event-stream frame for a Converse stream event. Each
+@lgcode/@lgcode/ frame carries `:message-type=event` + `:event-type=<name>` headers and a
+@lgcode/@lgcode/ JSON payload body.
 const eventFrame = (type: string, payload: object) =>
   codec.encode({
     headers: {
       ":message-type": { type: "string", value: "event" },
       ":event-type": { type: "string", value: type },
-      ":content-type": { type: "string", value: "application/json" },
+      ":content-type": { type: "string", value: "application@lgcode/json" },
     },
     body: utf8Encoder.encode(JSON.stringify(payload)),
   })
@@ -48,13 +48,13 @@ const concat = (frames: ReadonlyArray<Uint8Array>) => {
 const eventStreamBody = (...payloads: ReadonlyArray<readonly [string, object]>) =>
   concat(payloads.map(([type, payload]) => eventFrame(type, payload)))
 
-// Override the default SSE content-type with the binary event-stream type so
-// the cassette layer treats the body as bytes when recording.
+@lgcode/@lgcode/ Override the default SSE content-type with the binary event-stream type so
+@lgcode/@lgcode/ the cassette layer treats the body as bytes when recording.
 const fixedBytes = (bytes: Uint8Array) =>
-  fixedResponse(bytes.slice().buffer, { headers: { "content-type": "application/vnd.amazon.eventstream" } })
+  fixedResponse(bytes.slice().buffer, { headers: { "content-type": "application@lgcode/vnd.amazon.eventstream" } })
 
 const model = AmazonBedrock.configure({
-  baseURL: "https://bedrock-runtime.test",
+  baseURL: "https:@lgcode/@lgcode/bedrock-runtime.test",
   apiKey: "test-bearer",
 }).model("anthropic.claude-3-5-sonnet-20240620-v1:0")
 
@@ -63,8 +63,8 @@ const baseRequest = LLM.request({
   model,
   system: "You are concise.",
   prompt: "Say hello.",
-  // Wire-shape assertions in this file predate the `cache: "auto"` default;
-  // pin the policy off so they only exercise the lowering path itself.
+  @lgcode/@lgcode/ Wire-shape assertions in this file predate the `cache: "auto"` default;
+  @lgcode/@lgcode/ pin the policy off so they only exercise the lowering path itself.
   cache: "none",
   generation: { maxTokens: 64, temperature: 0 },
 })
@@ -94,7 +94,7 @@ describe("Bedrock Converse route", () => {
       )
 
       expect(prepared.body.messages).toEqual([
-        { role: "user", content: [{ text: "Before." }, { text: "<system-update>\nUpdate.\n</system-update>" }] },
+        { role: "user", content: [{ text: "Before." }, { text: "<system-update>\nUpdate.\n<@lgcode/system-update>" }] },
         { role: "assistant", content: [{ text: "After." }] },
       ])
     }),
@@ -189,7 +189,7 @@ describe("Bedrock Converse route", () => {
                 type: "content",
                 value: [
                   { type: "text", text: "Screenshot captured." },
-                  { type: "file", uri: "data:image/png;base64,AAAA", mime: "image/png" },
+                  { type: "file", uri: "data:image@lgcode/png;base64,AAAA", mime: "image@lgcode/png" },
                 ],
               },
             }),
@@ -236,9 +236,9 @@ describe("Bedrock Converse route", () => {
 
       expect(response.text).toBe("Hello!")
       const finishes = response.events.filter((event) => event.type === "finish")
-      // Bedrock splits the finish across `messageStop` (carries reason) and
-      // `metadata` (carries usage). We consolidate them into a single
-      // terminal `finish` event with both.
+      @lgcode/@lgcode/ Bedrock splits the finish across `messageStop` (carries reason) and
+      @lgcode/@lgcode/ `metadata` (carries usage). We consolidate them into a single
+      @lgcode/@lgcode/ terminal `finish` event with both.
       expect(finishes).toHaveLength(1)
       expect(finishes[0]).toMatchObject({ type: "finish", reason: "stop" })
       expect(response.usage).toMatchObject({
@@ -371,7 +371,7 @@ describe("Bedrock Converse route", () => {
   it.effect("rejects requests with no auth path", () =>
     Effect.gen(function* () {
       const unsignedModel = AmazonBedrock.configure({
-        baseURL: "https://bedrock-runtime.test",
+        baseURL: "https:@lgcode/@lgcode/bedrock-runtime.test",
       }).model("anthropic.claude-3-5-sonnet-20240620-v1:0")
       const error = yield* LLMClient.generate(LLM.updateRequest(baseRequest, { model: unsignedModel })).pipe(
         Effect.provide(fixedBytes(eventStreamBody(["messageStop", { stopReason: "end_turn" }]))),
@@ -385,11 +385,11 @@ describe("Bedrock Converse route", () => {
   it.effect("signs requests with SigV4 when AWS credentials are provided (deterministic plumbing check)", () =>
     Effect.gen(function* () {
       const signed = AmazonBedrock.configure({
-        baseURL: "https://bedrock-runtime.test",
+        baseURL: "https:@lgcode/@lgcode/bedrock-runtime.test",
         credentials: {
           region: "us-east-1",
           accessKeyId: "AKIAIOSFODNN7EXAMPLE",
-          secretAccessKey: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+          secretAccessKey: "wJalrXUtnFEMI@lgcode/K7MDENG@lgcode/bPxRfiCYEXAMPLEKEY",
         },
       }).model("anthropic.claude-3-5-sonnet-20240620-v1:0")
       const prepared = yield* LLMClient.prepare(LLM.updateRequest(baseRequest, { model: signed }))
@@ -416,7 +416,7 @@ describe("Bedrock Converse route", () => {
       )
 
       expect(prepared.body).toMatchObject({
-        // System: text block followed by cachePoint marker.
+        @lgcode/@lgcode/ System: text block followed by cachePoint marker.
         system: [{ text: "System prefix." }, { cachePoint: { type: "default" } }],
         messages: [
           {
@@ -451,10 +451,10 @@ describe("Bedrock Converse route", () => {
           messages: [
             Message.user([
               { type: "text", text: "What is in this image?" },
-              { type: "media", mediaType: "image/png", data: "AAAA" },
-              { type: "media", mediaType: "image/jpeg", data: "BBBB" },
-              { type: "media", mediaType: "image/jpg", data: "CCCC" },
-              { type: "media", mediaType: "image/webp", data: "DDDD" },
+              { type: "media", mediaType: "image@lgcode/png", data: "AAAA" },
+              { type: "media", mediaType: "image@lgcode/jpeg", data: "BBBB" },
+              { type: "media", mediaType: "image@lgcode/jpg", data: "CCCC" },
+              { type: "media", mediaType: "image@lgcode/webp", data: "DDDD" },
             ]),
           ],
           cache: "none",
@@ -469,7 +469,7 @@ describe("Bedrock Converse route", () => {
               { text: "What is in this image?" },
               { image: { format: "png", source: { bytes: "AAAA" } } },
               { image: { format: "jpeg", source: { bytes: "BBBB" } } },
-              // image/jpg is a non-standard alias; we map it to jpeg.
+              @lgcode/@lgcode/ image@lgcode/jpg is a non-standard alias; we map it to jpeg.
               { image: { format: "jpeg", source: { bytes: "CCCC" } } },
               { image: { format: "webp", source: { bytes: "DDDD" } } },
             ],
@@ -485,11 +485,11 @@ describe("Bedrock Converse route", () => {
         LLM.request({
           id: "req_image_bytes",
           model,
-          messages: [Message.user([{ type: "media", mediaType: "image/png", data: new Uint8Array([1, 2, 3, 4, 5]) }])],
+          messages: [Message.user([{ type: "media", mediaType: "image@lgcode/png", data: new Uint8Array([1, 2, 3, 4, 5]) }])],
         }),
       )
 
-      // Buffer.from([1,2,3,4,5]).toString("base64") === "AQIDBAU="
+      @lgcode/@lgcode/ Buffer.from([1,2,3,4,5]).toString("base64") === "AQIDBAU="
       expect(prepared.body).toMatchObject({
         messages: [
           {
@@ -509,8 +509,8 @@ describe("Bedrock Converse route", () => {
           model,
           messages: [
             Message.user([
-              { type: "media", mediaType: "application/pdf", data: "UERGREFUQQ==", filename: "report.pdf" },
-              { type: "media", mediaType: "text/csv", data: "Q1NWREFUQQ==" },
+              { type: "media", mediaType: "application@lgcode/pdf", data: "UERGREFUQQ==", filename: "report.pdf" },
+              { type: "media", mediaType: "text@lgcode/csv", data: "Q1NWREFUQQ==" },
             ]),
           ],
         }),
@@ -521,9 +521,9 @@ describe("Bedrock Converse route", () => {
           {
             role: "user",
             content: [
-              // Filename round-trips when supplied.
+              @lgcode/@lgcode/ Filename round-trips when supplied.
               { document: { format: "pdf", name: "report.pdf", source: { bytes: "UERGREFUQQ==" } } },
-              // Falls back to a stable placeholder when filename is missing.
+              @lgcode/@lgcode/ Falls back to a stable placeholder when filename is missing.
               { document: { format: "csv", name: "document.csv", source: { bytes: "Q1NWREFUQQ==" } } },
             ],
           },
@@ -538,11 +538,11 @@ describe("Bedrock Converse route", () => {
         LLM.request({
           id: "req_bad_image",
           model,
-          messages: [Message.user([{ type: "media", mediaType: "image/svg+xml", data: "x" }])],
+          messages: [Message.user([{ type: "media", mediaType: "image@lgcode/svg+xml", data: "x" }])],
         }),
       ).pipe(Effect.flip)
 
-      expect(error.message).toContain("Bedrock Converse does not support image media type image/svg+xml")
+      expect(error.message).toContain("Bedrock Converse does not support image media type image@lgcode/svg+xml")
     }),
   )
 
@@ -552,11 +552,11 @@ describe("Bedrock Converse route", () => {
         LLM.request({
           id: "req_bad_doc",
           model,
-          messages: [Message.user([{ type: "media", mediaType: "application/x-tar", data: "x", filename: "a.tar" }])],
+          messages: [Message.user([{ type: "media", mediaType: "application@lgcode/x-tar", data: "x", filename: "a.tar" }])],
         }),
       ).pipe(Effect.flip)
 
-      expect(error.message).toContain("Bedrock Converse does not support media type application/x-tar")
+      expect(error.message).toContain("Bedrock Converse does not support media type application@lgcode/x-tar")
     }),
   )
 
@@ -633,22 +633,22 @@ describe("Bedrock Converse route", () => {
   )
 })
 
-// Live recorded integration tests. Run with `RECORD=true AWS_ACCESS_KEY_ID=...
-// AWS_SECRET_ACCESS_KEY=... [AWS_SESSION_TOKEN=...] bun run test ...` to refresh
-// cassettes; replay is the default and works without credentials.
-//
-// Region is pinned to us-east-1 in tests so the request URL is stable across
-// machines on replay. If you need to record from a different region (e.g. your
-// account has access elsewhere), pass `BEDROCK_RECORDING_REGION=eu-west-1` —
-// but then commit the resulting cassette and others should record from the
-// same region too.
+@lgcode/@lgcode/ Live recorded integration tests. Run with `RECORD=true AWS_ACCESS_KEY_ID=...
+@lgcode/@lgcode/ AWS_SECRET_ACCESS_KEY=... [AWS_SESSION_TOKEN=...] bun run test ...` to refresh
+@lgcode/@lgcode/ cassettes; replay is the default and works without credentials.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Region is pinned to us-east-1 in tests so the request URL is stable across
+@lgcode/@lgcode/ machines on replay. If you need to record from a different region (e.g. your
+@lgcode/@lgcode/ account has access elsewhere), pass `BEDROCK_RECORDING_REGION=eu-west-1` —
+@lgcode/@lgcode/ but then commit the resulting cassette and others should record from the
+@lgcode/@lgcode/ same region too.
 const RECORDING_REGION = process.env.BEDROCK_RECORDING_REGION ?? "us-east-1"
 
 const recordedModel = () =>
   AmazonBedrock.configure({
-    // Most newer Anthropic models on Bedrock require a cross-region inference
-    // profile (`us.` prefix). Nova does not require an Anthropic use-case form
-    // and is on-demand-throughput accessible by default for most accounts.
+    @lgcode/@lgcode/ Most newer Anthropic models on Bedrock require a cross-region inference
+    @lgcode/@lgcode/ profile (`us.` prefix). Nova does not require an Anthropic use-case form
+    @lgcode/@lgcode/ and is on-demand-throughput accessible by default for most accounts.
     credentials: {
       region: RECORDING_REGION,
       accessKeyId: process.env.AWS_ACCESS_KEY_ID ?? "fixture",

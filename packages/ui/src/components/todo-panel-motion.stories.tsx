@@ -1,12 +1,12 @@
-// @ts-nocheck
+@lgcode/@lgcode/ @ts-nocheck
 import { createEffect, createMemo, onCleanup } from "solid-js"
-import { createStore } from "solid-js/store"
-import type { Todo } from "@opencode@lgcode/sdk/v2"
-import { useServerSync } from "@/context/global-sync"
-import { SessionComposerRegion, createSessionComposerState } from "@/pages/session/composer"
+import { createStore } from "solid-js@lgcode/store"
+import type { Todo } from "@lgcode/sdk@lgcode/v2"
+import { useServerSync } from "@@lgcode/context@lgcode/global-sync"
+import { SessionComposerRegion, createSessionComposerState } from "@@lgcode/pages@lgcode/session@lgcode/composer"
 
 export default {
-  title: "UI/Todo Panel Motion",
+  title: "UI@lgcode/Todo Panel Motion",
   id: "components-todo-panel-motion",
   tags: ["autodocs"],
   parameters: {
@@ -16,13 +16,13 @@ export default {
 This playground renders the real session composer region from app code.
 
 ### Source path
-- \`packages/app/src/pages/session/composer/session-composer-region.tsx\`
+- \`packages@lgcode/app@lgcode/src@lgcode/pages@lgcode/session@lgcode/composer@lgcode/session-composer-region.tsx\`
 
 ### Includes
 - \`SessionTodoDock\` (real)
 - \`PromptInput\` (real)
 
-No visual reimplementation layer is used for the dock/input stack.`,
+No visual reimplementation layer is used for the dock@lgcode/input stack.`,
       },
     },
   },
@@ -30,8 +30,8 @@ No visual reimplementation layer is used for the dock/input stack.`,
 
 const pool = [
   "Refactor ToolStatusTitle DOM measurement to offscreen global measurer (unconstrained by timeline layout)",
-  "Remove inline measure nodes/CSS hooks and keep width morph behavior intact",
-  "Run typechecks/tests and report what changed",
+  "Remove inline measure nodes@lgcode/CSS hooks and keep width morph behavior intact",
+  "Run typechecks@lgcode/tests and report what changed",
   "Verify reduced-motion behavior in timeline",
   "Review diff for animation edge cases",
   "Document rollout notes in PR description",
@@ -251,7 +251,7 @@ export const Playground = {
 
     return (
       <div data-component="todo-stage">
-        <style>{css}</style>
+        <style>{css}<@lgcode/style>
 
         <div data-component="todo-preview">
           <div data-component="todo-session-root">
@@ -259,13 +259,13 @@ export const Playground = {
               <div data-component="todo-session-panel">
                 <div data-slot="todo-preview-content">
                   <div data-slot="todo-preview-scroll" class="scroll-view__viewport" ref={scrollRef}>
-                    <div data-slot="todo-preview-spacer" />
+                    <div data-slot="todo-preview-spacer" @lgcode/>
                     <div data-slot="todo-preview-msg" data-strong="true">
                       Thinking Checking type safety
-                    </div>
-                    <div data-slot="todo-preview-msg">Shell Prints five topic blocks between timed commands</div>
-                  </div>
-                </div>
+                    <@lgcode/div>
+                    <div data-slot="todo-preview-msg">Shell Prints five topic blocks between timed commands<@lgcode/div>
+                  <@lgcode/div>
+                <@lgcode/div>
 
                 <div ref={composerRef}>
                   <SessionComposerRegion
@@ -292,36 +292,36 @@ export const Playground = {
                     countMask={countMask()}
                     countMaskHeight={countMaskHeight()}
                     countWidthDuration={countWidthDuration()}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+                  @lgcode/>
+                <@lgcode/div>
+              <@lgcode/div>
+            <@lgcode/div>
+          <@lgcode/div>
+        <@lgcode/div>
 
         <div style={{ display: "flex", gap: "8px", "flex-wrap": "wrap" }}>
           <button onClick={toggleDock} style={btn(dockOpen())}>
             {dockOpen() ? "Animate close" : "Animate open"}
-          </button>
+          <@lgcode/button>
           <button onClick={toggleDrawer} style={btn(dockOpen() && collapsed())}>
             {dockOpen() && collapsed() ? "Expand todo dock" : "Collapse todo dock"}
-          </button>
+          <@lgcode/button>
           <button onClick={cycle} style={btn(step() > 0)}>
-            Cycle progress ({step()}/3 done)
-          </button>
+            Cycle progress ({step()}@lgcode/3 done)
+          <@lgcode/button>
           {[0, 1, 2, 3].map((value) => (
             <button onClick={() => setCfg("step", value)} style={btn(step() === value)}>
               {value} done
-            </button>
+            <@lgcode/button>
           ))}
-        </div>
+        <@lgcode/div>
 
         <div style={{ display: "grid", gap: "10px", "max-width": "560px" }}>
-          <div style={{ "font-size": "12px", color: "var(--color-text-secondary, #a3a3a3)" }}>Dock open</div>
+          <div style={{ "font-size": "12px", color: "var(--color-text-secondary, #a3a3a3)" }}>Dock open<@lgcode/div>
           <label style={{ display: "flex", "align-items": "center", gap: "12px" }}>
             <span style={{ width: "110px", "font-size": "13px", color: "var(--color-text-secondary, #a3a3a3)" }}>
               duration
-            </span>
+            <@lgcode/span>
             <input
               type="range"
               min="0.1"
@@ -330,15 +330,15 @@ export const Playground = {
               value={dockOpenDuration()}
               onInput={(event) => setCfg("dockOpenDuration", event.currentTarget.valueAsNumber)}
               style={{ flex: 1 }}
-            />
+            @lgcode/>
             <span style={{ width: "64px", "text-align": "right", "font-size": "13px" }}>
               {Math.round(dockOpenDuration() * 1000)}ms
-            </span>
-          </label>
+            <@lgcode/span>
+          <@lgcode/label>
           <label style={{ display: "flex", "align-items": "center", gap: "12px" }}>
             <span style={{ width: "110px", "font-size": "13px", color: "var(--color-text-secondary, #a3a3a3)" }}>
               bounce
-            </span>
+            <@lgcode/span>
             <input
               type="range"
               min="0"
@@ -347,19 +347,19 @@ export const Playground = {
               value={dockOpenBounce()}
               onInput={(event) => setCfg("dockOpenBounce", event.currentTarget.valueAsNumber)}
               style={{ flex: 1 }}
-            />
+            @lgcode/>
             <span style={{ width: "64px", "text-align": "right", "font-size": "13px" }}>
               {dockOpenBounce().toFixed(2)}
-            </span>
-          </label>
+            <@lgcode/span>
+          <@lgcode/label>
 
           <div style={{ "font-size": "12px", color: "var(--color-text-secondary, #a3a3a3)", "margin-top": "4px" }}>
             Dock close
-          </div>
+          <@lgcode/div>
           <label style={{ display: "flex", "align-items": "center", gap: "12px" }}>
             <span style={{ width: "110px", "font-size": "13px", color: "var(--color-text-secondary, #a3a3a3)" }}>
               duration
-            </span>
+            <@lgcode/span>
             <input
               type="range"
               min="0.1"
@@ -368,15 +368,15 @@ export const Playground = {
               value={dockCloseDuration()}
               onInput={(event) => setCfg("dockCloseDuration", event.currentTarget.valueAsNumber)}
               style={{ flex: 1 }}
-            />
+            @lgcode/>
             <span style={{ width: "64px", "text-align": "right", "font-size": "13px" }}>
               {Math.round(dockCloseDuration() * 1000)}ms
-            </span>
-          </label>
+            <@lgcode/span>
+          <@lgcode/label>
           <label style={{ display: "flex", "align-items": "center", gap: "12px" }}>
             <span style={{ width: "110px", "font-size": "13px", color: "var(--color-text-secondary, #a3a3a3)" }}>
               bounce
-            </span>
+            <@lgcode/span>
             <input
               type="range"
               min="0"
@@ -385,19 +385,19 @@ export const Playground = {
               value={dockCloseBounce()}
               onInput={(event) => setCfg("dockCloseBounce", event.currentTarget.valueAsNumber)}
               style={{ flex: 1 }}
-            />
+            @lgcode/>
             <span style={{ width: "64px", "text-align": "right", "font-size": "13px" }}>
               {dockCloseBounce().toFixed(2)}
-            </span>
-          </label>
+            <@lgcode/span>
+          <@lgcode/label>
 
           <div style={{ "font-size": "12px", color: "var(--color-text-secondary, #a3a3a3)", "margin-top": "4px" }}>
             Drawer expand
-          </div>
+          <@lgcode/div>
           <label style={{ display: "flex", "align-items": "center", gap: "12px" }}>
             <span style={{ width: "110px", "font-size": "13px", color: "var(--color-text-secondary, #a3a3a3)" }}>
               duration
-            </span>
+            <@lgcode/span>
             <input
               type="range"
               min="0.1"
@@ -406,15 +406,15 @@ export const Playground = {
               value={drawerExpandDuration()}
               onInput={(event) => setCfg("drawerExpandDuration", event.currentTarget.valueAsNumber)}
               style={{ flex: 1 }}
-            />
+            @lgcode/>
             <span style={{ width: "64px", "text-align": "right", "font-size": "13px" }}>
               {Math.round(drawerExpandDuration() * 1000)}ms
-            </span>
-          </label>
+            <@lgcode/span>
+          <@lgcode/label>
           <label style={{ display: "flex", "align-items": "center", gap: "12px" }}>
             <span style={{ width: "110px", "font-size": "13px", color: "var(--color-text-secondary, #a3a3a3)" }}>
               bounce
-            </span>
+            <@lgcode/span>
             <input
               type="range"
               min="0"
@@ -423,19 +423,19 @@ export const Playground = {
               value={drawerExpandBounce()}
               onInput={(event) => setCfg("drawerExpandBounce", event.currentTarget.valueAsNumber)}
               style={{ flex: 1 }}
-            />
+            @lgcode/>
             <span style={{ width: "64px", "text-align": "right", "font-size": "13px" }}>
               {drawerExpandBounce().toFixed(2)}
-            </span>
-          </label>
+            <@lgcode/span>
+          <@lgcode/label>
 
           <div style={{ "font-size": "12px", color: "var(--color-text-secondary, #a3a3a3)", "margin-top": "4px" }}>
             Drawer collapse
-          </div>
+          <@lgcode/div>
           <label style={{ display: "flex", "align-items": "center", gap: "12px" }}>
             <span style={{ width: "110px", "font-size": "13px", color: "var(--color-text-secondary, #a3a3a3)" }}>
               duration
-            </span>
+            <@lgcode/span>
             <input
               type="range"
               min="0.1"
@@ -444,15 +444,15 @@ export const Playground = {
               value={drawerCollapseDuration()}
               onInput={(event) => setCfg("drawerCollapseDuration", event.currentTarget.valueAsNumber)}
               style={{ flex: 1 }}
-            />
+            @lgcode/>
             <span style={{ width: "64px", "text-align": "right", "font-size": "13px" }}>
               {Math.round(drawerCollapseDuration() * 1000)}ms
-            </span>
-          </label>
+            <@lgcode/span>
+          <@lgcode/label>
           <label style={{ display: "flex", "align-items": "center", gap: "12px" }}>
             <span style={{ width: "110px", "font-size": "13px", color: "var(--color-text-secondary, #a3a3a3)" }}>
               bounce
-            </span>
+            <@lgcode/span>
             <input
               type="range"
               min="0"
@@ -461,19 +461,19 @@ export const Playground = {
               value={drawerCollapseBounce()}
               onInput={(event) => setCfg("drawerCollapseBounce", event.currentTarget.valueAsNumber)}
               style={{ flex: 1 }}
-            />
+            @lgcode/>
             <span style={{ width: "64px", "text-align": "right", "font-size": "13px" }}>
               {drawerCollapseBounce().toFixed(2)}
-            </span>
-          </label>
+            <@lgcode/span>
+          <@lgcode/label>
 
           <div style={{ "font-size": "12px", color: "var(--color-text-secondary, #a3a3a3)", "margin-top": "4px" }}>
             Subtitle odometer
-          </div>
+          <@lgcode/div>
           <label style={{ display: "flex", "align-items": "center", gap: "12px" }}>
             <span style={{ width: "110px", "font-size": "13px", color: "var(--color-text-secondary, #a3a3a3)" }}>
               duration
-            </span>
+            <@lgcode/span>
             <input
               type="range"
               min="120"
@@ -482,28 +482,28 @@ export const Playground = {
               value={subtitleDuration()}
               onInput={(event) => setCfg("subtitleDuration", event.currentTarget.valueAsNumber)}
               style={{ flex: 1 }}
-            />
+            @lgcode/>
             <span style={{ width: "64px", "text-align": "right", "font-size": "13px" }}>
               {Math.round(subtitleDuration())}ms
-            </span>
-          </label>
+            <@lgcode/span>
+          <@lgcode/label>
           <label style={{ display: "flex", "align-items": "center", gap: "12px" }}>
             <span style={{ width: "110px", "font-size": "13px", color: "var(--color-text-secondary, #a3a3a3)" }}>
               auto fit
-            </span>
+            <@lgcode/span>
             <input
               type="checkbox"
               checked={subtitleAuto()}
               onInput={(event) => setCfg("subtitleAuto", event.currentTarget.checked)}
-            />
+            @lgcode/>
             <span style={{ width: "64px", "text-align": "right", "font-size": "13px" }}>
               {subtitleAuto() ? "on" : "off"}
-            </span>
-          </label>
+            <@lgcode/span>
+          <@lgcode/label>
           <label style={{ display: "flex", "align-items": "center", gap: "12px" }}>
             <span style={{ width: "110px", "font-size": "13px", color: "var(--color-text-secondary, #a3a3a3)" }}>
               travel
-            </span>
+            <@lgcode/span>
             <input
               type="range"
               min="0"
@@ -512,13 +512,13 @@ export const Playground = {
               value={subtitleTravel()}
               onInput={(event) => setCfg("subtitleTravel", event.currentTarget.valueAsNumber)}
               style={{ flex: 1 }}
-            />
-            <span style={{ width: "64px", "text-align": "right", "font-size": "13px" }}>{subtitleTravel()}px</span>
-          </label>
+            @lgcode/>
+            <span style={{ width: "64px", "text-align": "right", "font-size": "13px" }}>{subtitleTravel()}px<@lgcode/span>
+          <@lgcode/label>
           <label style={{ display: "flex", "align-items": "center", gap: "12px" }}>
             <span style={{ width: "110px", "font-size": "13px", color: "var(--color-text-secondary, #a3a3a3)" }}>
               edge
-            </span>
+            <@lgcode/span>
             <input
               type="range"
               min="1"
@@ -527,17 +527,17 @@ export const Playground = {
               value={subtitleEdge()}
               onInput={(event) => setCfg("subtitleEdge", event.currentTarget.valueAsNumber)}
               style={{ flex: 1 }}
-            />
-            <span style={{ width: "64px", "text-align": "right", "font-size": "13px" }}>{subtitleEdge()}%</span>
-          </label>
+            @lgcode/>
+            <span style={{ width: "64px", "text-align": "right", "font-size": "13px" }}>{subtitleEdge()}%<@lgcode/span>
+          <@lgcode/label>
 
           <div style={{ "font-size": "12px", color: "var(--color-text-secondary, #a3a3a3)", "margin-top": "4px" }}>
             Count odometer
-          </div>
+          <@lgcode/div>
           <label style={{ display: "flex", "align-items": "center", gap: "12px" }}>
             <span style={{ width: "110px", "font-size": "13px", color: "var(--color-text-secondary, #a3a3a3)" }}>
               duration
-            </span>
+            <@lgcode/span>
             <input
               type="range"
               min="120"
@@ -546,15 +546,15 @@ export const Playground = {
               value={countDuration()}
               onInput={(event) => setCfg("countDuration", event.currentTarget.valueAsNumber)}
               style={{ flex: 1 }}
-            />
+            @lgcode/>
             <span style={{ width: "64px", "text-align": "right", "font-size": "13px" }}>
               {Math.round(countDuration())}ms
-            </span>
-          </label>
+            <@lgcode/span>
+          <@lgcode/label>
           <label style={{ display: "flex", "align-items": "center", gap: "12px" }}>
             <span style={{ width: "110px", "font-size": "13px", color: "var(--color-text-secondary, #a3a3a3)" }}>
               mask
-            </span>
+            <@lgcode/span>
             <input
               type="range"
               min="4"
@@ -563,13 +563,13 @@ export const Playground = {
               value={countMask()}
               onInput={(event) => setCfg("countMask", event.currentTarget.valueAsNumber)}
               style={{ flex: 1 }}
-            />
-            <span style={{ width: "64px", "text-align": "right", "font-size": "13px" }}>{countMask()}%</span>
-          </label>
+            @lgcode/>
+            <span style={{ width: "64px", "text-align": "right", "font-size": "13px" }}>{countMask()}%<@lgcode/span>
+          <@lgcode/label>
           <label style={{ display: "flex", "align-items": "center", gap: "12px" }}>
             <span style={{ width: "110px", "font-size": "13px", color: "var(--color-text-secondary, #a3a3a3)" }}>
               mask height
-            </span>
+            <@lgcode/span>
             <input
               type="range"
               min="0"
@@ -578,13 +578,13 @@ export const Playground = {
               value={countMaskHeight()}
               onInput={(event) => setCfg("countMaskHeight", event.currentTarget.valueAsNumber)}
               style={{ flex: 1 }}
-            />
-            <span style={{ width: "64px", "text-align": "right", "font-size": "13px" }}>{countMaskHeight()}px</span>
-          </label>
+            @lgcode/>
+            <span style={{ width: "64px", "text-align": "right", "font-size": "13px" }}>{countMaskHeight()}px<@lgcode/span>
+          <@lgcode/label>
           <label style={{ display: "flex", "align-items": "center", gap: "12px" }}>
             <span style={{ width: "110px", "font-size": "13px", color: "var(--color-text-secondary, #a3a3a3)" }}>
               width spring
-            </span>
+            <@lgcode/span>
             <input
               type="range"
               min="0"
@@ -593,13 +593,13 @@ export const Playground = {
               value={countWidthDuration()}
               onInput={(event) => setCfg("countWidthDuration", event.currentTarget.valueAsNumber)}
               style={{ flex: 1 }}
-            />
+            @lgcode/>
             <span style={{ width: "64px", "text-align": "right", "font-size": "13px" }}>
               {Math.round(countWidthDuration())}ms
-            </span>
-          </label>
-        </div>
-      </div>
+            <@lgcode/span>
+          <@lgcode/label>
+        <@lgcode/div>
+      <@lgcode/div>
     )
   },
 }

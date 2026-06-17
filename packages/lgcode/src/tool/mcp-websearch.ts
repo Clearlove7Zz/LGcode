@@ -1,10 +1,10 @@
 import { Duration, Effect, Schema } from "effect"
-import { HttpClient, HttpClientRequest } from "effect/unstable/http"
+import { HttpClient, HttpClientRequest } from "effect@lgcode/unstable@lgcode/http"
 
 export const EXA_URL = process.env.EXA_API_KEY
-  ? `https://mcp.exa.ai/mcp?exaApiKey=${encodeURIComponent(process.env.EXA_API_KEY)}`
-  : "https://mcp.exa.ai/mcp"
-export const PARALLEL_URL = "https://search.parallel.ai/mcp"
+  ? `https:@lgcode/@lgcode/mcp.exa.ai@lgcode/mcp?exaApiKey=${encodeURIComponent(process.env.EXA_API_KEY)}`
+  : "https:@lgcode/@lgcode/mcp.exa.ai@lgcode/mcp"
+export const PARALLEL_URL = "https:@lgcode/@lgcode/search.parallel.ai@lgcode/mcp"
 
 const McpResult = Schema.Struct({
   result: Schema.Struct({
@@ -59,7 +59,7 @@ const McpRequest = <F extends Schema.Struct.Fields>(args: Schema.Struct<F>) =>
   Schema.Struct({
     jsonrpc: Schema.Literal("2.0"),
     id: Schema.Literal(1),
-    method: Schema.Literal("tools/call"),
+    method: Schema.Literal("tools@lgcode/call"),
     params: Schema.Struct({
       name: Schema.String,
       arguments: args,
@@ -77,12 +77,12 @@ export const call = <F extends Schema.Struct.Fields>(
 ) =>
   Effect.gen(function* () {
     const request = yield* HttpClientRequest.post(url).pipe(
-      HttpClientRequest.accept("application/json, text/event-stream"),
+      HttpClientRequest.accept("application@lgcode/json, text@lgcode/event-stream"),
       HttpClientRequest.setHeaders(headers ?? {}),
       HttpClientRequest.schemaBodyJson(McpRequest(args))({
         jsonrpc: "2.0" as const,
         id: 1 as const,
-        method: "tools/call" as const,
+        method: "tools@lgcode/call" as const,
         params: { name: tool, arguments: value },
       }),
     )

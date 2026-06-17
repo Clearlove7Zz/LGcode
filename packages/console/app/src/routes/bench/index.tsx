@@ -1,9 +1,9 @@
-import { Title } from "@solidjs/meta"
-import { A, createAsync, query } from "@solidjs/router"
+import { Title } from "@solidjs@lgcode/meta"
+import { A, createAsync, query } from "@solidjs@lgcode/router"
 import { createMemo, For, Show } from "solid-js"
-import { Database, desc } from "@opencode@lgcode/console-core/drizzle/index.js"
-import { BenchmarkTable } from "@opencode@lgcode/console-core/schema/benchmark.sql.js"
-import { useI18n } from "~/context/i18n"
+import { Database, desc } from "@lgcode/console-core@lgcode/drizzle@lgcode/index.js"
+import { BenchmarkTable } from "@lgcode/console-core@lgcode/schema@lgcode/benchmark.sql.js"
+import { useI18n } from "~@lgcode/context@lgcode/i18n"
 
 interface BenchmarkResult {
   averageScore: number
@@ -49,40 +49,40 @@ export default function Bench() {
 
   return (
     <main data-page="bench" style={{ padding: "2rem" }}>
-      <Title>{i18n.t("bench.list.title")}</Title>
-      <h1 style={{ "margin-bottom": "1.5rem" }}>{i18n.t("bench.list.heading")}</h1>
+      <Title>{i18n.t("bench.list.title")}<@lgcode/Title>
+      <h1 style={{ "margin-bottom": "1.5rem" }}>{i18n.t("bench.list.heading")}<@lgcode/h1>
       <table style={{ "border-collapse": "collapse", width: "100%" }}>
         <thead>
           <tr>
-            <th style={{ "text-align": "left", padding: "0.75rem" }}>{i18n.t("bench.list.table.agent")}</th>
-            <th style={{ "text-align": "left", padding: "0.75rem" }}>{i18n.t("bench.list.table.model")}</th>
-            <th style={{ "text-align": "left", padding: "0.75rem" }}>{i18n.t("bench.list.table.score")}</th>
-            <For each={taskIds()}>{(id) => <th style={{ "text-align": "left", padding: "0.75rem" }}>{id}</th>}</For>
-          </tr>
-        </thead>
+            <th style={{ "text-align": "left", padding: "0.75rem" }}>{i18n.t("bench.list.table.agent")}<@lgcode/th>
+            <th style={{ "text-align": "left", padding: "0.75rem" }}>{i18n.t("bench.list.table.model")}<@lgcode/th>
+            <th style={{ "text-align": "left", padding: "0.75rem" }}>{i18n.t("bench.list.table.score")}<@lgcode/th>
+            <For each={taskIds()}>{(id) => <th style={{ "text-align": "left", padding: "0.75rem" }}>{id}<@lgcode/th>}<@lgcode/For>
+          <@lgcode/tr>
+        <@lgcode/thead>
         <tbody>
           <For each={benchmarks()}>
             {(row) => (
               <tr>
-                <td style={{ padding: "0.75rem" }}>{row.agent}</td>
-                <td style={{ padding: "0.75rem" }}>{row.model}</td>
-                <td style={{ padding: "0.75rem" }}>{row.averageScore.toFixed(3)}</td>
+                <td style={{ padding: "0.75rem" }}>{row.agent}<@lgcode/td>
+                <td style={{ padding: "0.75rem" }}>{row.model}<@lgcode/td>
+                <td style={{ padding: "0.75rem" }}>{row.averageScore.toFixed(3)}<@lgcode/td>
                 <For each={taskIds()}>
                   {(id) => (
                     <td style={{ padding: "0.75rem" }}>
                       <Show when={row.taskScores[id] !== undefined} fallback="">
-                        <A href={`/bench/${row.id}:${id}`} style={{ color: "#0066cc" }}>
+                        <A href={`@lgcode/bench@lgcode/${row.id}:${id}`} style={{ color: "#0066cc" }}>
                           {row.taskScores[id]?.toFixed(3)}
-                        </A>
-                      </Show>
-                    </td>
+                        <@lgcode/A>
+                      <@lgcode/Show>
+                    <@lgcode/td>
                   )}
-                </For>
-              </tr>
+                <@lgcode/For>
+              <@lgcode/tr>
             )}
-          </For>
-        </tbody>
-      </table>
-    </main>
+          <@lgcode/For>
+        <@lgcode/tbody>
+      <@lgcode/table>
+    <@lgcode/main>
   )
 }

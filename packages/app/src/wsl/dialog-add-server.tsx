@@ -1,20 +1,20 @@
-import { Button } from "@opencode@lgcode/ui/button"
-import { useDialog } from "@opencode@lgcode/ui/context/dialog"
-import { Spinner } from "@opencode@lgcode/ui/spinner"
-import { showToast } from "@opencode@lgcode/ui/toast"
+import { Button } from "@lgcode/ui@lgcode/button"
+import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
+import { Spinner } from "@lgcode/ui@lgcode/spinner"
+import { showToast } from "@lgcode/ui@lgcode/toast"
 import { createEffect, createMemo, For, Match, onCleanup, Show, Switch } from "solid-js"
-import { createStore } from "solid-js/store"
-import { useLanguage } from "@/context/language"
-import { usePlatform } from "@/context/platform"
-import { useWslServers } from "./context"
-import { enterWslOpencodeStep } from "./settings-model"
+import { createStore } from "solid-js@lgcode/store"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { usePlatform } from "@@lgcode/context@lgcode/platform"
+import { useWslServers } from ".@lgcode/context"
+import { enterWslOpencodeStep } from ".@lgcode/settings-model"
 
 type WslServerStep = "wsl" | "distro" | "opencode"
 
 const STEPS: WslServerStep[] = ["wsl", "distro", "opencode"]
 
 function isHiddenDistro(name: string) {
-  return /^docker-desktop(?:-data)?$/i.test(name)
+  return @lgcode/^docker-desktop(?:-data)?$@lgcode/i.test(name)
 }
 
 interface DialogWslServerProps {
@@ -104,7 +104,7 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
   const installableDistros = createMemo(() => {
     const online = visibleOnlineDistros()
     const installed = new Set(visibleInstalledDistros().map((item) => item.name))
-    const hasVersionedUbuntu = online.some((item) => /^Ubuntu-\d/.test(item.name))
+    const hasVersionedUbuntu = online.some((item) => @lgcode/^Ubuntu-\d@lgcode/.test(item.name))
     return online
       .filter((item) => !installed.has(item.name))
       .filter((item) => !(item.name === "Ubuntu" && hasVersionedUbuntu))
@@ -128,9 +128,9 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
     if (!distroReady()) return "distro"
     return "opencode"
   })
-  // activeStep falls back to recommendedStep when the user hasn't picked one.
-  // Once the user clicks a step tab we respect their choice rather than snapping
-  // them back when a probe result updates recommendedStep.
+  @lgcode/@lgcode/ activeStep falls back to recommendedStep when the user hasn't picked one.
+  @lgcode/@lgcode/ Once the user clicks a step tab we respect their choice rather than snapping
+  @lgcode/@lgcode/ them back when a probe result updates recommendedStep.
   const activeStep = createMemo(() => store.step ?? recommendedStep())
 
   const autoProbe = createMemo(() => {
@@ -164,9 +164,9 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
         await probe.run()
       } catch (err) {
         if (disposed) return
-        // Allow the same probe to run again when reactive inputs next change
-        // (e.g. user reselects a distro). Without this the user would be stuck
-        // on a transient wsl.exe failure until they pick a different distro.
+        @lgcode/@lgcode/ Allow the same probe to run again when reactive inputs next change
+        @lgcode/@lgcode/ (e.g. user reselects a distro). Without this the user would be stuck
+        @lgcode/@lgcode/ on a transient wsl.exe failure until they pick a different distro.
         if (lastAutoProbe === key) lastAutoProbe = null
         requestError(language, err)
       }
@@ -318,11 +318,11 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
     <div class="px-5 pb-5 flex flex-col gap-4">
       <Show
         when={!wslServers.isPending}
-        fallback={<div class="px-1 py-6 text-14-regular text-text-weak">{language.t("wsl.onboarding.loading")}</div>}
+        fallback={<div class="px-1 py-6 text-14-regular text-text-weak">{language.t("wsl.onboarding.loading")}<@lgcode/div>}
       >
         <Show
           when={!wslServers.isError}
-          fallback={<div class="px-1 py-6 text-14-regular text-text-weak">{loadError()}</div>}
+          fallback={<div class="px-1 py-6 text-14-regular text-text-weak">{loadError()}<@lgcode/div>}
         >
           <div class="flex gap-2 pb-1">
             <For each={steps()}>
@@ -332,24 +332,24 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
                   class="basis-0 flex-1 min-w-0 rounded-md border px-3 py-2 text-left transition-colors"
                   classList={{
                     "border-border-strong-base bg-surface-base-hover": item.state === "current",
-                    "border-icon-success-base/40 bg-surface-base": item.state === "done",
+                    "border-icon-success-base@lgcode/40 bg-surface-base": item.state === "done",
                     "border-border-weak-base bg-background-base opacity-60": item.state === "locked",
-                    "border-icon-warning-base/40 bg-surface-base": item.state === "warning",
+                    "border-icon-warning-base@lgcode/40 bg-surface-base": item.state === "warning",
                   }}
                   disabled={item.locked}
                   onClick={() => setStore("step", item.step)}
                 >
-                  <div class="text-13-medium text-text-strong">{item.title}</div>
-                </button>
+                  <div class="text-13-medium text-text-strong">{item.title}<@lgcode/div>
+                <@lgcode/button>
               )}
-            </For>
-          </div>
+            <@lgcode/For>
+          <@lgcode/div>
 
           <Switch>
             <Match when={activeStep() === "wsl"}>
               <div class="rounded-md bg-surface-base p-4 flex flex-col gap-3">
                 <div class="flex items-center justify-between gap-3">
-                  <div class="text-14-medium text-text-strong">{language.t("wsl.server.label")}</div>
+                  <div class="text-14-medium text-text-strong">{language.t("wsl.server.label")}<@lgcode/div>
                   <Show when={current()?.runtime && !wslReady() && !current()?.pendingRestart}>
                     <Button
                       variant="secondary"
@@ -358,17 +358,17 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
                       onClick={() => void run(() => api.installWsl())}
                     >
                       {language.t("wsl.onboarding.installWsl")}
-                    </Button>
-                  </Show>
-                </div>
-                <div class="text-12-regular text-text-weak whitespace-pre-wrap break-words">{wslMessage()}</div>
+                    <@lgcode/Button>
+                  <@lgcode/Show>
+                <@lgcode/div>
+                <div class="text-12-regular text-text-weak whitespace-pre-wrap break-words">{wslMessage()}<@lgcode/div>
                 <Show when={current()?.pendingRestart}>
                   <div class="rounded-md border border-border-weak-base px-3 py-3">
                     <div class="text-12-regular text-text-warning-base">
                       {language.t("wsl.onboarding.windowsRestartRequired")}
-                    </div>
-                  </div>
-                </Show>
+                    <@lgcode/div>
+                  <@lgcode/div>
+                <@lgcode/Show>
                 <div class="flex items-center justify-end">
                   <Button
                     variant="secondary"
@@ -377,15 +377,15 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
                     onClick={() => setStore("step", "distro")}
                   >
                     {language.t("wsl.onboarding.next")}
-                  </Button>
-                </div>
-              </div>
-            </Match>
+                  <@lgcode/Button>
+                <@lgcode/div>
+              <@lgcode/div>
+            <@lgcode/Match>
 
             <Match when={activeStep() === "distro"}>
               <div class="rounded-md bg-surface-base p-4 flex flex-col gap-3">
                 <div class="flex items-center justify-between gap-3">
-                  <div class="text-14-medium text-text-strong">{language.t("wsl.onboarding.step.distro")}</div>
+                  <div class="text-14-medium text-text-strong">{language.t("wsl.onboarding.step.distro")}<@lgcode/div>
                   <Show when={selectedDistro()}>
                     <Button
                       variant="ghost"
@@ -394,10 +394,10 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
                       onClick={() => runSelectedDistro((distro) => api.probeDistro(distro))}
                     >
                       {language.t("wsl.onboarding.refresh")}
-                    </Button>
-                  </Show>
-                </div>
-                <div class="text-12-regular text-text-weak whitespace-pre-wrap break-words">{distroMessage()}</div>
+                    <@lgcode/Button>
+                  <@lgcode/Show>
+                <@lgcode/div>
+                <div class="text-12-regular text-text-weak whitespace-pre-wrap break-words">{distroMessage()}<@lgcode/div>
 
                 <div class="flex flex-col gap-2">
                   <Show
@@ -409,7 +409,7 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
                           : current()?.runtime?.available
                             ? language.t("wsl.onboarding.noDistros")
                             : language.t("wsl.onboarding.checkingDistros")}
-                      </div>
+                      <@lgcode/div>
                     }
                   >
                     <For each={addableInstalledDistros()}>
@@ -420,24 +420,24 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
                           classList={{ "bg-surface-raised-base": selectedDistro() === item.name }}
                           onClick={() => selectDistro(item.name)}
                         >
-                          <div class="text-13-medium text-text-strong">{item.name}</div>
+                          <div class="text-13-medium text-text-strong">{item.name}<@lgcode/div>
                           <Show when={item.isDefault}>
-                            <div class="text-12-regular text-text-weak">{language.t("common.default")}</div>
-                          </Show>
-                        </button>
+                            <div class="text-12-regular text-text-weak">{language.t("common.default")}<@lgcode/div>
+                          <@lgcode/Show>
+                        <@lgcode/button>
                       )}
-                    </For>
-                  </Show>
-                </div>
+                    <@lgcode/For>
+                  <@lgcode/Show>
+                <@lgcode/div>
 
                 <Show when={installableDistros().length > 0}>
                   <div class="rounded-md border border-border-weak-base p-2 flex flex-col gap-2">
                     <div class="px-1 flex items-center justify-between gap-3">
-                      <div class="text-12-medium text-text-weak">{language.t("wsl.onboarding.install")}</div>
+                      <div class="text-12-medium text-text-weak">{language.t("wsl.onboarding.install")}<@lgcode/div>
                       <div class="flex items-center gap-2 shrink-0">
                         <Show when={installingDistro()}>
-                          <Spinner class="h-4 w-4 text-icon-info-base shrink-0" />
-                        </Show>
+                          <Spinner class="h-4 w-4 text-icon-info-base shrink-0" @lgcode/>
+                        <@lgcode/Show>
                         <Button
                           variant="secondary"
                           size="small"
@@ -447,9 +447,9 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
                           {installingDistro()
                             ? language.t("wsl.onboarding.installing")
                             : language.t("wsl.onboarding.install")}
-                        </Button>
-                      </div>
-                    </div>
+                        <@lgcode/Button>
+                      <@lgcode/div>
+                    <@lgcode/div>
                     <div
                       role="radiogroup"
                       aria-label={language.t("wsl.onboarding.installDistro")}
@@ -475,34 +475,34 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
                                 class="mt-0.5 h-4 w-4 rounded-full border border-border-strong-base flex items-center justify-center shrink-0"
                                 classList={{ "border-text-strong": selected() }}
                               >
-                                <div class="h-2 w-2 rounded-full bg-text-strong" classList={{ hidden: !selected() }} />
-                              </div>
-                              <div class="min-w-0 flex-1 text-13-medium text-text-strong truncate">{item.label}</div>
-                            </button>
+                                <div class="h-2 w-2 rounded-full bg-text-strong" classList={{ hidden: !selected() }} @lgcode/>
+                              <@lgcode/div>
+                              <div class="min-w-0 flex-1 text-13-medium text-text-strong truncate">{item.label}<@lgcode/div>
+                            <@lgcode/button>
                           )
                         }}
-                      </For>
-                    </div>
-                  </div>
-                </Show>
+                      <@lgcode/For>
+                    <@lgcode/div>
+                  <@lgcode/div>
+                <@lgcode/Show>
 
                 <Show when={selectedInstalled()?.version === 1 || distroUnavailableMessage() || distroMissingTools()}>
                   <div class="rounded-md border border-border-weak-base px-3 py-3 flex flex-col gap-1">
                     <Show when={selectedInstalled()?.version === 1}>
                       <div class="text-12-regular text-text-warning-base">
                         {language.t("wsl.onboarding.wsl2Required")}
-                      </div>
-                    </Show>
+                      <@lgcode/div>
+                    <@lgcode/Show>
                     <Show when={distroUnavailableMessage()}>
-                      {(message) => <div class="text-12-regular text-text-warning-base">{message()}</div>}
-                    </Show>
+                      {(message) => <div class="text-12-regular text-text-warning-base">{message()}<@lgcode/div>}
+                    <@lgcode/Show>
                     <Show when={distroMissingTools()}>
                       <div class="text-12-regular text-text-warning-base">
                         {language.t("wsl.onboarding.toolsRequired")}
-                      </div>
-                    </Show>
-                  </div>
-                </Show>
+                      <@lgcode/div>
+                    <@lgcode/Show>
+                  <@lgcode/div>
+                <@lgcode/Show>
 
                 <div class="flex items-center gap-2">
                   <Button
@@ -512,7 +512,7 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
                     onClick={() => runSelectedDistro((distro) => api.openTerminal(distro))}
                   >
                     {language.t("wsl.onboarding.openTerminal")}
-                  </Button>
+                  <@lgcode/Button>
                   <Button
                     variant="ghost"
                     size="large"
@@ -520,8 +520,8 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
                     onClick={() => runSelectedDistro((distro) => api.probeDistro(distro))}
                   >
                     {language.t("wsl.onboarding.refresh")}
-                  </Button>
-                </div>
+                  <@lgcode/Button>
+                <@lgcode/div>
 
                 <div class="flex items-center justify-end">
                   <Button
@@ -531,15 +531,15 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
                     onClick={openOpencodeStep}
                   >
                     {language.t("wsl.onboarding.next")}
-                  </Button>
-                </div>
-              </div>
-            </Match>
+                  <@lgcode/Button>
+                <@lgcode/div>
+              <@lgcode/div>
+            <@lgcode/Match>
 
             <Match when={activeStep() === "opencode"}>
               <div class="rounded-md bg-surface-base p-4 flex flex-col gap-3">
                 <div class="flex items-center justify-between gap-3">
-                  <div class="text-14-medium text-text-strong">{language.t("wsl.onboarding.step.opencode")}</div>
+                  <div class="text-14-medium text-text-strong">{language.t("wsl.onboarding.step.opencode")}<@lgcode/div>
                   <div class="flex items-center gap-2">
                     <Show when={selectedDistro()}>
                       <Button
@@ -549,8 +549,8 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
                         onClick={() => runSelectedDistro((distro) => api.probeOpencode(distro))}
                       >
                         {language.t("wsl.onboarding.refresh")}
-                      </Button>
-                    </Show>
+                      <@lgcode/Button>
+                    <@lgcode/Show>
                     <Show when={!opencodeReady() || opencodeCheck()?.matchesDesktop === false}>
                       <Button
                         variant="secondary"
@@ -559,16 +559,16 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
                         onClick={() => runSelectedDistro((distro) => api.installOpencode(distro))}
                       >
                         <Show when={installingOpencode()}>
-                          <Spinner class="size-4 shrink-0" />
-                        </Show>
+                          <Spinner class="size-4 shrink-0" @lgcode/>
+                        <@lgcode/Show>
                         {opencodeCheck()?.resolvedPath
                           ? language.t("wsl.onboarding.updateOpencode")
                           : language.t("wsl.onboarding.installOpencode")}
-                      </Button>
-                    </Show>
-                  </div>
-                </div>
-                <div class="text-12-regular text-text-weak whitespace-pre-wrap break-words">{opencodeMessage()}</div>
+                      <@lgcode/Button>
+                    <@lgcode/Show>
+                  <@lgcode/div>
+                <@lgcode/div>
+                <div class="text-12-regular text-text-weak whitespace-pre-wrap break-words">{opencodeMessage()}<@lgcode/div>
                 <Show when={opencodeCheck()?.matchesDesktop === false ? opencodeCheck() : null}>
                   {(check) => (
                     <div class="rounded-md border border-border-weak-base px-3 py-3 flex flex-col gap-1">
@@ -576,40 +576,40 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
                         {language.t("wsl.onboarding.path", {
                           path: check().resolvedPath ?? language.t("wsl.onboarding.notFound"),
                         })}
-                      </div>
+                      <@lgcode/div>
                       <div class="text-12-regular text-text-weak">
                         {language.t("wsl.onboarding.version", {
                           version: check().version ?? language.t("wsl.onboarding.unknown"),
                         })}
                         <Show when={check().expectedVersion}>
                           {(expected) => (
-                            <span>{` · ${language.t("wsl.onboarding.desktopVersion", { version: expected() })}`}</span>
+                            <span>{` · ${language.t("wsl.onboarding.desktopVersion", { version: expected() })}`}<@lgcode/span>
                           )}
-                        </Show>
-                      </div>
+                        <@lgcode/Show>
+                      <@lgcode/div>
                       <div class="text-12-regular text-text-warning-base">
                         {language.t("wsl.onboarding.versionMismatch")}
-                      </div>
-                    </div>
+                      <@lgcode/div>
+                    <@lgcode/div>
                   )}
-                </Show>
-              </div>
-            </Match>
-          </Switch>
+                <@lgcode/Show>
+              <@lgcode/div>
+            <@lgcode/Match>
+          <@lgcode/Switch>
 
           <Show when={activeStep() === "opencode" && allReady() && selectedDistro()}>
             <div class="flex items-center justify-end gap-2">
               <Button variant="ghost" size="large" disabled={store.adding} onClick={() => dialog.close()}>
                 {language.t("common.cancel")}
-              </Button>
+              <@lgcode/Button>
               <Button variant="primary" size="large" disabled={addDisabled()} onClick={() => void finish()}>
                 {store.adding ? language.t("wsl.onboarding.adding") : language.t("wsl.server.add")}
-              </Button>
-            </div>
-          </Show>
-        </Show>
-      </Show>
-    </div>
+              <@lgcode/Button>
+            <@lgcode/div>
+          <@lgcode/Show>
+        <@lgcode/Show>
+      <@lgcode/Show>
+    <@lgcode/div>
   )
 }
 

@@ -1,5 +1,5 @@
-import { Database } from "../src/drizzle/index.js"
-import { CouponTable, CouponType } from "../src/schema/billing.sql.js"
+import { Database } from "..@lgcode/src@lgcode/drizzle@lgcode/index.js"
+import { CouponTable, CouponType } from "..@lgcode/src@lgcode/schema@lgcode/billing.sql.js"
 
 const email = process.argv[2]
 const type = process.argv[3] as (typeof CouponType)[number]

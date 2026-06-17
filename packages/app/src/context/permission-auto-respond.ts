@@ -1,12 +1,12 @@
-import { base64Encode } from "@opencode@lgcode/core/util/encode"
+import { base64Encode } from "@lgcode/core@lgcode/util@lgcode/encode"
 
 export function acceptKey(sessionID: string, directory?: string) {
   if (!directory) return sessionID
-  return `${base64Encode(directory)}/${sessionID}`
+  return `${base64Encode(directory)}@lgcode/${sessionID}`
 }
 
 export function directoryAcceptKey(directory: string) {
-  return `${base64Encode(directory)}/*`
+  return `${base64Encode(directory)}@lgcode/*`
 }
 
 function accepted(autoAccept: Record<string, boolean>, sessionID: string, directory?: string) {

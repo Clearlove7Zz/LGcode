@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
-import { formatAssistantHeader, formatMessage, formatPart, formatTranscript } from "../../src/util/transcript"
-import type { AssistantMessage, Part, Provider, UserMessage } from "@opencode@lgcode/sdk/v2"
+import { formatAssistantHeader, formatMessage, formatPart, formatTranscript } from "..@lgcode/..@lgcode/src@lgcode/util@lgcode/transcript"
+import type { AssistantMessage, Part, Provider, UserMessage } from "@lgcode/sdk@lgcode/v2"
 
 const providers: Provider[] = [
   {
@@ -15,8 +15,8 @@ const providers: Provider[] = [
         providerID: "anthropic",
         api: {
           id: "claude-sonnet-4-20250514",
-          url: "https://example.com/claude-sonnet-4-20250514",
-          npm: "@ai-sdk/anthropic",
+          url: "https:@lgcode/@lgcode/example.com@lgcode/claude-sonnet-4-20250514",
+          npm: "@ai-sdk@lgcode/anthropic",
         },
         name: "Claude Sonnet 4",
         capabilities: {
@@ -72,7 +72,7 @@ describe("transcript", () => {
       providerID: "anthropic",
       mode: "",
       parentID: "msg_parent",
-      path: { cwd: "/test", root: "/test" },
+      path: { cwd: "@lgcode/test", root: "@lgcode/test" },
       cost: 0.001,
       tokens: { input: 100, output: 50, reasoning: 0, cache: { read: 0, write: 0 } },
       time: { created: 1000000, completed: 1005400 },
@@ -203,9 +203,9 @@ describe("transcript", () => {
         },
       }
       const result = formatPart(part, options)
-      // The tool header should not be inside a code block
+      @lgcode/@lgcode/ The tool header should not be inside a code block
       expect(result).toStartWith("**Tool: bash**\n")
-      // Input and output should each be in their own code blocks
+      @lgcode/@lgcode/ Input and output should each be in their own code blocks
       expect(result).toContain("**Input:**\n```json")
       expect(result).toContain("**Output:**\n```\n```hello```\n```")
     })
@@ -282,7 +282,7 @@ describe("transcript", () => {
         providerID: "anthropic",
         mode: "",
         parentID: "msg_parent",
-        path: { cwd: "/test", root: "/test" },
+        path: { cwd: "@lgcode/test", root: "@lgcode/test" },
         cost: 0.001,
         tokens: { input: 100, output: 50, reasoning: 0, cache: { read: 0, write: 0 } },
         time: { created: 1000000, completed: 1005400 },
@@ -323,7 +323,7 @@ describe("transcript", () => {
             providerID: "anthropic",
             mode: "",
             parentID: "msg_1",
-            path: { cwd: "/test", root: "/test" },
+            path: { cwd: "@lgcode/test", root: "@lgcode/test" },
             cost: 0.001,
             tokens: { input: 100, output: 50, reasoning: 0, cache: { read: 0, write: 0 } },
             time: { created: 1000000000100, completed: 1000000000600 },
@@ -366,7 +366,7 @@ describe("transcript", () => {
             providerID: "anthropic",
             mode: "",
             parentID: "msg_0",
-            path: { cwd: "/test", root: "/test" },
+            path: { cwd: "@lgcode/test", root: "@lgcode/test" },
             cost: 0.001,
             tokens: { input: 100, output: 50, reasoning: 0, cache: { read: 0, write: 0 } },
             time: { created: 1000000000100, completed: 1000000000600 },
@@ -401,7 +401,7 @@ describe("transcript", () => {
             providerID: "anthropic",
             mode: "",
             parentID: "msg_0",
-            path: { cwd: "/test", root: "/test" },
+            path: { cwd: "@lgcode/test", root: "@lgcode/test" },
             cost: 0.001,
             tokens: { input: 100, output: 50, reasoning: 0, cache: { read: 0, write: 0 } },
             time: { created: 1000000000100, completed: 1000000000600 },

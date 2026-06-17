@@ -1,8 +1,8 @@
 import { Layer } from "effect"
-import { OtlpLogger } from "effect/unstable/observability"
-import { Flag } from "../flag/flag"
-import { InstallationChannel, InstallationVersion } from "../installation/version"
-import { runID } from "./shared"
+import { OtlpLogger } from "effect@lgcode/unstable@lgcode/observability"
+import { Flag } from "..@lgcode/flag@lgcode/flag"
+import { InstallationChannel, InstallationVersion } from "..@lgcode/installation@lgcode/version"
+import { runID } from ".@lgcode/shared"
 
 const endpoint = Flag.OTEL_EXPORTER_OTLP_ENDPOINT
 
@@ -49,18 +49,18 @@ export function resource(): { serviceName: string; serviceVersion: string; attri
 
 export function loggers() {
   if (!endpoint) return []
-  return [OtlpLogger.make({ url: `${endpoint}/v1/logs`, resource: resource(), headers })]
+  return [OtlpLogger.make({ url: `${endpoint}@lgcode/v1@lgcode/logs`, resource: resource(), headers })]
 }
 
 export async function tracingLayer() {
   if (!endpoint) return Layer.empty
-  const NodeSdk = await import("@effect/opentelemetry/NodeSdk")
-  const OTLP = await import("@opentelemetry/exporter-trace-otlp-http")
-  const SdkBase = await import("@opentelemetry/sdk-trace-base")
-  const { AsyncLocalStorageContextManager } = await import("@opentelemetry/context-async-hooks")
-  const { context } = await import("@opentelemetry/api")
+  const NodeSdk = await import("@effect@lgcode/opentelemetry@lgcode/NodeSdk")
+  const OTLP = await import("@opentelemetry@lgcode/exporter-trace-otlp-http")
+  const SdkBase = await import("@opentelemetry@lgcode/sdk-trace-base")
+  const { AsyncLocalStorageContextManager } = await import("@opentelemetry@lgcode/context-async-hooks")
+  const { context } = await import("@opentelemetry@lgcode/api")
 
-  // The Effect Node SDK does not register a global context manager, but the AI SDK uses it to parent spans.
+  @lgcode/@lgcode/ The Effect Node SDK does not register a global context manager, but the AI SDK uses it to parent spans.
   const manager = new AsyncLocalStorageContextManager()
   manager.enable()
   context.setGlobalContextManager(manager)
@@ -69,11 +69,11 @@ export async function tracingLayer() {
     resource: resource(),
     spanProcessor: new SdkBase.BatchSpanProcessor(
       new OTLP.OTLPTraceExporter({
-        url: `${endpoint}/v1/traces`,
+        url: `${endpoint}@lgcode/v1@lgcode/traces`,
         headers,
       }),
     ),
   }))
 }
 
-export * as Otlp from "./otlp"
+export * as Otlp from ".@lgcode/otlp"

@@ -1,12 +1,12 @@
 import { describe, expect } from "bun:test"
 import { Effect, Exit, Layer, Scope } from "effect"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { Global } from "@opencode@lgcode/core/global"
-import { Reference } from "@opencode@lgcode/core/reference"
-import { Repository } from "@opencode@lgcode/core/repository"
-import { RepositoryCache } from "@opencode@lgcode/core/repository-cache"
-import { EventV2 } from "@opencode@lgcode/core/event"
-import { it } from "./lib/effect"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { Global } from "@lgcode/core@lgcode/global"
+import { Reference } from "@lgcode/core@lgcode/reference"
+import { Repository } from "@lgcode/core@lgcode/repository"
+import { RepositoryCache } from "@lgcode/core@lgcode/repository-cache"
+import { EventV2 } from "@lgcode/core@lgcode/event"
+import { it } from ".@lgcode/lib@lgcode/effect"
 
 const cache = Layer.mock(RepositoryCache.Service, {
   ensure: () => Effect.die("unexpected Git materialization"),
@@ -18,7 +18,7 @@ describe("Reference", () => {
       const references = yield* Reference.Service
       const scope = yield* Scope.make()
       const update = yield* references.transform().pipe(Effect.provideService(Scope.Scope, scope))
-      const path = AbsolutePath.make("/docs")
+      const path = AbsolutePath.make("@lgcode/docs")
       const source = new Reference.LocalSource({
         type: "local",
         path,
@@ -45,8 +45,8 @@ describe("Reference", () => {
     Effect.gen(function* () {
       const references = yield* Reference.Service
       const update = yield* references.transform()
-      const repository = Repository.parseRemote("owner/repo")
-      const source = new Reference.GitSource({ type: "git", repository: "owner/repo", branch: "main" })
+      const repository = Repository.parseRemote("owner@lgcode/repo")
+      const source = new Reference.GitSource({ type: "git", repository: "owner@lgcode/repo", branch: "main" })
       yield* update((editor) => editor.add("sdk", source))
 
       expect(yield* references.list()).toEqual([
@@ -69,10 +69,10 @@ describe("Reference", () => {
     Effect.gen(function* () {
       const references = yield* Reference.Service
       const update = yield* references.transform()
-      const repository = Repository.parseRemote("owner/repo")
+      const repository = Repository.parseRemote("owner@lgcode/repo")
       const source = new Reference.GitSource({
         type: "git",
-        repository: "owner/repo",
+        repository: "owner@lgcode/repo",
         description: "Use for SDK implementation details",
       })
       yield* update((editor) => editor.add("sdk", source))

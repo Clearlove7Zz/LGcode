@@ -1,12 +1,12 @@
-import { CommandV2 } from "@opencode@lgcode/core/command"
-import { Location } from "@opencode@lgcode/core/location"
+import { CommandV2 } from "@lgcode/core@lgcode/command"
+import { Location } from "@lgcode/core@lgcode/location"
 import { Schema } from "effect"
-import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
-import { LocationQuery, locationQueryOpenApi, LocationMiddleware } from "./location"
+import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
+import { LocationQuery, locationQueryOpenApi, LocationMiddleware } from ".@lgcode/location"
 
 export const CommandGroup = HttpApiGroup.make("server.command")
   .add(
-    HttpApiEndpoint.get("command.list", "/api/command", {
+    HttpApiEndpoint.get("command.list", "@lgcode/api@lgcode/command", {
       query: LocationQuery,
       success: Location.response(Schema.Array(CommandV2.Info)),
     })

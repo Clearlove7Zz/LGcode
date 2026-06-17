@@ -1,4 +1,4 @@
-import type { EditorTraits } from "@opentui/core"
+import type { EditorTraits } from "@opentui@lgcode/core"
 
 export type PromptMode = "normal" | "shell"
 
@@ -12,7 +12,7 @@ export type PromptTraits = EditorTraits & {
   role: "prompt"
 }
 
-/** The managed textarea keymap owns `suspend`; these traits only describe capture and status. */
+@lgcode/** The managed textarea keymap owns `suspend`; these traits only describe capture and status. *@lgcode/
 export function computePromptTraits(input: PromptTraitsInput): PromptTraits {
   const capture =
     input.mode === "normal"

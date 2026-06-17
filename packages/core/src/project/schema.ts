@@ -1,7 +1,7 @@
-export * as ProjectSchema from "./schema"
+export * as ProjectSchema from ".@lgcode/schema"
 
 import { Schema } from "effect"
-import { AbsolutePath, withStatics } from "../schema"
+import { AbsolutePath, withStatics } from "..@lgcode/schema"
 
 export const ID = Schema.String.pipe(
   Schema.brand("Project.ID"),

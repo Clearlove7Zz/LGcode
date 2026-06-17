@@ -1,6 +1,6 @@
-import type { APIEvent } from "@solidjs/start/server"
-import { ZenData } from "@opencode@lgcode/console-core/model.js"
-import { buildModelsResponse, buildOptionsResponse } from "../../util/modelsHandler"
+import type { APIEvent } from "@solidjs@lgcode/start@lgcode/server"
+import { ZenData } from "@lgcode/console-core@lgcode/model.js"
+import { buildModelsResponse, buildOptionsResponse } from "..@lgcode/..@lgcode/util@lgcode/modelsHandler"
 
 export async function OPTIONS(_input: APIEvent) {
   return buildOptionsResponse()

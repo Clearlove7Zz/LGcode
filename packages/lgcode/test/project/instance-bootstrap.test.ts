@@ -2,24 +2,24 @@ import { afterEach, expect } from "bun:test"
 import { existsSync } from "node:fs"
 import path from "node:path"
 import { pathToFileURL } from "node:url"
-import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
 import { Cause, Effect, Exit, Fiber, Layer } from "effect"
-import { bootstrap as cliBootstrap } from "../../src/cli/bootstrap"
-import { InstanceLayer } from "../../src/project/instance-layer"
-import { InstanceStore } from "../../src/project/instance-store"
-import { disposeAllInstances, tmpdirScoped } from "../fixture/fixture"
-import { testEffect } from "../lib/effect"
-import { waitGlobalBusEvent } from "../server/global-bus"
+import { bootstrap as cliBootstrap } from "..@lgcode/..@lgcode/src@lgcode/cli@lgcode/bootstrap"
+import { InstanceLayer } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/instance-layer"
+import { InstanceStore } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/instance-store"
+import { disposeAllInstances, tmpdirScoped } from "..@lgcode/fixture@lgcode/fixture"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { waitGlobalBusEvent } from "..@lgcode/server@lgcode/global-bus"
 
 const it = testEffect(Layer.mergeAll(InstanceLayer.layer, CrossSpawnSpawner.defaultLayer))
 
-// InstanceBootstrap must run before any code touches the instance —
-// originally tracked by PRs #25389 and #25449, now a permanent
-// invariant. The plugin config hook writes a marker file; the test
-// bodies deliberately avoid Plugin/config directly. The marker only
-// appears if InstanceBootstrap ran at the instance boundary.
-//
-// The boundaries below are transport-agnostic and stay.
+@lgcode/@lgcode/ InstanceBootstrap must run before any code touches the instance —
+@lgcode/@lgcode/ originally tracked by PRs #25389 and #25449, now a permanent
+@lgcode/@lgcode/ invariant. The plugin config hook writes a marker file; the test
+@lgcode/@lgcode/ bodies deliberately avoid Plugin@lgcode/config directly. The marker only
+@lgcode/@lgcode/ appears if InstanceBootstrap ran at the instance boundary.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ The boundaries below are transport-agnostic and stay.
 
 afterEach(async () => {
   await disposeAllInstances()
@@ -47,7 +47,7 @@ const bootstrapFixture = Effect.gen(function* () {
     Bun.write(
       path.join(dir, "opencode.json"),
       JSON.stringify({
-        $schema: "https://opencode.ai/config.json",
+        $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
         plugin: [pathToFileURL(pluginFile).href],
       }),
     ),

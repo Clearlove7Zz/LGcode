@@ -1,12 +1,12 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer, Schema } from "effect"
-import { Database } from "@opencode@lgcode/core/database/database"
-import { EventV2 } from "@opencode@lgcode/core/event"
-import { Project } from "@opencode@lgcode/core/project"
-import { ProjectDirectories } from "@opencode@lgcode/core/project/directories"
-import { ProjectTable } from "@opencode@lgcode/core/project/sql"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { testEffect } from "./lib/effect"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { EventV2 } from "@lgcode/core@lgcode/event"
+import { Project } from "@lgcode/core@lgcode/project"
+import { ProjectDirectories } from "@lgcode/core@lgcode/project@lgcode/directories"
+import { ProjectTable } from "@lgcode/core@lgcode/project@lgcode/sql"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { testEffect } from ".@lgcode/lib@lgcode/effect"
 
 const database = Database.layerFromPath(":memory:")
 const events = EventV2.layer.pipe(Layer.provide(database))
@@ -14,7 +14,7 @@ const directories = ProjectDirectories.layer.pipe(Layer.provide(database), Layer
 const it = testEffect(Layer.mergeAll(database, events, directories))
 
 const projectID = Project.ID.make("project-directories")
-const directory = AbsolutePath.make("/tmp/project-directories")
+const directory = AbsolutePath.make("@lgcode/tmp@lgcode/project-directories")
 
 function setup() {
   return Database.Service.use(({ db }) =>
@@ -50,14 +50,14 @@ describe("ProjectDirectories", () => {
     Effect.gen(function* () {
       yield* setup()
       const service = yield* ProjectDirectories.Service
-      yield* service.create({ projectID, directory, strategy: "old/strategy" })
+      yield* service.create({ projectID, directory, strategy: "old@lgcode/strategy" })
 
-      expect(yield* service.create({ projectID, directory, strategy: "new/strategy", behavior: "replace" })).toBe(true)
-      expect(yield* service.create({ projectID, directory, strategy: "new/strategy", behavior: "replace" })).toBe(false)
+      expect(yield* service.create({ projectID, directory, strategy: "new@lgcode/strategy", behavior: "replace" })).toBe(true)
+      expect(yield* service.create({ projectID, directory, strategy: "new@lgcode/strategy", behavior: "replace" })).toBe(false)
       expect(yield* service.create({ projectID, directory, behavior: "replace" })).toBe(true)
       expect(yield* service.create({ projectID, directory, behavior: "replace" })).toBe(false)
-      expect(yield* service.create({ projectID, directory, strategy: "new/strategy", behavior: "replace" })).toBe(true)
-      expect(yield* service.list(projectID)).toEqual([{ directory, strategy: "new/strategy" }])
+      expect(yield* service.create({ projectID, directory, strategy: "new@lgcode/strategy", behavior: "replace" })).toBe(true)
+      expect(yield* service.list(projectID)).toEqual([{ directory, strategy: "new@lgcode/strategy" }])
     }),
   )
 })

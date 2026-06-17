@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import type { QuestionRequest } from "@opencode@lgcode/sdk/v2"
+import type { QuestionRequest } from "@lgcode/sdk@lgcode/v2"
 import {
   createQuestionBodyState,
   questionConfirm,
@@ -10,7 +10,7 @@ import {
   questionStoreCustom,
   questionSubmit,
   questionSync,
-} from "@/cli/cmd/run/question.shared"
+} from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/question.shared"
 
 function req(input: Partial<QuestionRequest> = {}): QuestionRequest {
   return {

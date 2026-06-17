@@ -1,17 +1,17 @@
-export * as ConfigReferencePlugin from "./reference"
+export * as ConfigReferencePlugin from ".@lgcode/reference"
 
 import path from "path"
 import { Effect } from "effect"
-import { Config } from "../../config"
-import { ConfigReference } from "../reference"
-import { Global } from "../../global"
-import { Location } from "../../location"
-import { PluginV2 } from "../../plugin"
-import { Reference } from "../../reference"
-import { AbsolutePath } from "../../schema"
+import { Config } from "..@lgcode/..@lgcode/config"
+import { ConfigReference } from "..@lgcode/reference"
+import { Global } from "..@lgcode/..@lgcode/global"
+import { Location } from "..@lgcode/..@lgcode/location"
+import { PluginV2 } from "..@lgcode/..@lgcode/plugin"
+import { Reference } from "..@lgcode/..@lgcode/reference"
+import { AbsolutePath } from "..@lgcode/..@lgcode/schema"
 
 export const Plugin = {
-  id: PluginV2.ID.make("core/config-reference"),
+  id: PluginV2.ID.make("core@lgcode/config-reference"),
   effect: Effect.gen(function* () {
     const config = yield* Config.Service
     const global = yield* Global.Service
@@ -54,16 +54,16 @@ export const Plugin = {
 }
 
 function validAlias(name: string) {
-  return name.length > 0 && !/[\/\s`,]/.test(name)
+  return name.length > 0 && !@lgcode/[\@lgcode/\s`,]@lgcode/.test(name)
 }
 
 function local(entry: ConfigReference.Entry): entry is string | ConfigReference.Local {
   return typeof entry === "string"
-    ? entry.startsWith(".") || entry.startsWith("/") || entry.startsWith("~")
+    ? entry.startsWith(".") || entry.startsWith("@lgcode/") || entry.startsWith("~")
     : "path" in entry
 }
 
 function localPath(directory: string, home: string, value: string) {
-  if (value.startsWith("~/")) return path.join(home, value.slice(2))
+  if (value.startsWith("~@lgcode/")) return path.join(home, value.slice(2))
   return path.isAbsolute(value) ? value : path.resolve(directory, value)
 }

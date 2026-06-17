@@ -1,8 +1,8 @@
 import { createMemo, type Accessor } from "solid-js"
-import { useServerSync } from "@/context/server-sync"
-import { useNotification } from "@/context/notification"
-import { usePermission } from "@/context/permission"
-import { sessionPermissionRequest } from "@/pages/session/composer/session-request-tree"
+import { useServerSync } from "@@lgcode/context@lgcode/server-sync"
+import { useNotification } from "@@lgcode/context@lgcode/notification"
+import { usePermission } from "@@lgcode/context@lgcode/permission"
+import { sessionPermissionRequest } from "@@lgcode/pages@lgcode/session@lgcode/composer@lgcode/session-request-tree"
 
 export function useSessionTabAvatarState(
   directory: Accessor<string>,

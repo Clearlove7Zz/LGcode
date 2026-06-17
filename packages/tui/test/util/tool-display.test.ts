@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { toolDisplayMetadata, webSearchProviderLabel } from "../../src/util/tool-display"
+import { toolDisplayMetadata, webSearchProviderLabel } from "..@lgcode/..@lgcode/src@lgcode/util@lgcode/tool-display"
 
 describe("webSearchProviderLabel", () => {
   test("labels known providers", () => {

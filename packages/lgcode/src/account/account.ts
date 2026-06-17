@@ -1,18 +1,18 @@
-import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
-import { httpClient } from "@opencode@lgcode/core/effect/layer-node-platform"
+import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
+import { httpClient } from "@lgcode/core@lgcode/effect@lgcode/layer-node-platform"
 import { Cache, Clock, Duration, Effect, Layer, Option, Schema, SchemaGetter, Context } from "effect"
-import { serviceUse } from "@opencode@lgcode/core/effect/service-use"
+import { serviceUse } from "@lgcode/core@lgcode/effect@lgcode/service-use"
 import {
   FetchHttpClient,
   HttpClient,
   HttpClientError,
   HttpClientRequest,
   HttpClientResponse,
-} from "effect/unstable/http"
+} from "effect@lgcode/unstable@lgcode/http"
 
-import { withTransientReadRetry } from "@/util/effect-http-client"
-import { AccountRepo, type AccountRow } from "./repo"
-import { normalizeServerUrl } from "./url"
+import { withTransientReadRetry } from "@@lgcode/util@lgcode/effect-http-client"
+import { AccountRepo, type AccountRow } from ".@lgcode/repo"
+import { normalizeServerUrl } from ".@lgcode/url"
 import {
   type AccountError,
   AccessToken,
@@ -33,7 +33,7 @@ import {
   PollSlow,
   PollSuccess,
   UserCode,
-} from "./schema"
+} from ".@lgcode/schema"
 
 export {
   AccountID,
@@ -56,7 +56,7 @@ export {
   PollDenied,
   PollError,
   PollResult,
-} from "./schema"
+} from ".@lgcode/schema"
 
 export type AccountOrgs = {
   account: Info
@@ -182,7 +182,7 @@ export interface Interface {
   readonly poll: (input: Login) => Effect.Effect<PollResult, AccountError>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/Account") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/Account") {}
 
 export const use = serviceUse(Service)
 
@@ -217,7 +217,7 @@ export const layer: Layer.Layer<Service, never, AccountRepo.Service | HttpClient
       const now = yield* Clock.currentTimeMillis
 
       const response = yield* executeEffectOk(
-        HttpClientRequest.post(`${row.url}/auth/device/token`).pipe(
+        HttpClientRequest.post(`${row.url}@lgcode/auth@lgcode/device@lgcode/token`).pipe(
           HttpClientRequest.acceptJson,
           HttpClientRequest.schemaBodyJson(TokenRefreshRequest)(
             new TokenRefreshRequest({
@@ -284,7 +284,7 @@ export const layer: Layer.Layer<Service, never, AccountRepo.Service | HttpClient
 
     const fetchOrgs = Effect.fnUntraced(function* (url: string, accessToken: AccessToken) {
       const response = yield* executeReadOk(
-        HttpClientRequest.get(`${url}/api/orgs`).pipe(
+        HttpClientRequest.get(`${url}@lgcode/api@lgcode/orgs`).pipe(
           HttpClientRequest.acceptJson,
           HttpClientRequest.bearerToken(accessToken),
         ),
@@ -297,7 +297,7 @@ export const layer: Layer.Layer<Service, never, AccountRepo.Service | HttpClient
 
     const fetchUser = Effect.fnUntraced(function* (url: string, accessToken: AccessToken) {
       const response = yield* executeReadOk(
-        HttpClientRequest.get(`${url}/api/user`).pipe(
+        HttpClientRequest.get(`${url}@lgcode/api@lgcode/user`).pipe(
           HttpClientRequest.acceptJson,
           HttpClientRequest.bearerToken(accessToken),
         ),
@@ -355,7 +355,7 @@ export const layer: Layer.Layer<Service, never, AccountRepo.Service | HttpClient
       const { account, accessToken } = resolved.value
 
       const response = yield* executeRead(
-        HttpClientRequest.get(`${account.url}/api/config`).pipe(
+        HttpClientRequest.get(`${account.url}@lgcode/api@lgcode/config`).pipe(
           HttpClientRequest.acceptJson,
           HttpClientRequest.bearerToken(accessToken),
           HttpClientRequest.setHeaders({ "x-org-id": orgID }),
@@ -375,7 +375,7 @@ export const layer: Layer.Layer<Service, never, AccountRepo.Service | HttpClient
     const login = Effect.fn("Account.login")(function* (server: string) {
       const normalizedServer = normalizeServerUrl(server)
       const response = yield* executeEffectOk(
-        HttpClientRequest.post(`${normalizedServer}/auth/device/code`).pipe(
+        HttpClientRequest.post(`${normalizedServer}@lgcode/auth@lgcode/device@lgcode/code`).pipe(
           HttpClientRequest.acceptJson,
           HttpClientRequest.schemaBodyJson(ClientId)(new ClientId({ client_id: clientId })),
         ),
@@ -396,7 +396,7 @@ export const layer: Layer.Layer<Service, never, AccountRepo.Service | HttpClient
 
     const poll = Effect.fn("Account.poll")(function* (input: Login) {
       const response = yield* executeEffect(
-        HttpClientRequest.post(`${input.server}/auth/device/token`).pipe(
+        HttpClientRequest.post(`${input.server}@lgcode/auth@lgcode/device@lgcode/token`).pipe(
           HttpClientRequest.acceptJson,
           HttpClientRequest.schemaBodyJson(DeviceTokenRequest)(
             new DeviceTokenRequest({
@@ -420,7 +420,7 @@ export const layer: Layer.Layer<Service, never, AccountRepo.Service | HttpClient
 
       const [account, remoteOrgs] = yield* Effect.all([user, orgs], { concurrency: 2 })
 
-      // TODO: When there are multiple orgs, let the user choose
+      @lgcode/@lgcode/ TODO: When there are multiple orgs, let the user choose
       const firstOrgID = remoteOrgs.length > 0 ? Option.some(remoteOrgs[0].id) : Option.none<OrgID>()
 
       const now = yield* Clock.currentTimeMillis
@@ -460,4 +460,4 @@ export const defaultLayer = layer.pipe(Layer.provide(AccountRepo.defaultLayer), 
 
 export const node = LayerNode.make(layer, [AccountRepo.node, httpClient])
 
-export * as Account from "./account"
+export * as Account from ".@lgcode/account"

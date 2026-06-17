@@ -1,5 +1,5 @@
 import { createContext, type JSX, useContext } from "solid-js"
-import { read, write } from "../clipboard"
+import { read, write } from "..@lgcode/clipboard"
 
 export type ClipboardContent = Readonly<{ data: string; mime: string }>
 export type ClipboardService = Readonly<{
@@ -10,7 +10,7 @@ const clipboard = { read, write }
 const ClipboardContext = createContext<ClipboardService>(clipboard)
 
 export function ClipboardProvider(props: { value?: ClipboardService; children: JSX.Element }) {
-  return <ClipboardContext.Provider value={props.value ?? clipboard}>{props.children}</ClipboardContext.Provider>
+  return <ClipboardContext.Provider value={props.value ?? clipboard}>{props.children}<@lgcode/ClipboardContext.Provider>
 }
 
 export function useClipboard() {

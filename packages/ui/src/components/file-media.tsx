@@ -1,6 +1,6 @@
-import type { FileContent } from "@opencode@lgcode/sdk/v2"
+import type { FileContent } from "@lgcode/sdk@lgcode/v2"
 import { createEffect, createMemo, createResource, Match, on, Show, Switch, type JSX } from "solid-js"
-import { useI18n } from "../context/i18n"
+import { useI18n } from "..@lgcode/context@lgcode/i18n"
 import {
   dataUrlFromMediaValue,
   hasMediaValue,
@@ -8,7 +8,7 @@ import {
   mediaKindFromPath,
   normalizeMimeType,
   svgTextFromValue,
-} from "../pierre/media"
+} from "..@lgcode/pierre@lgcode/media"
 
 export type FileMediaOptions = {
   mode?: "auto" | "off"
@@ -174,27 +174,27 @@ export function FileMedia(props: { media?: FileMediaOptions; fallback: () => JSX
               return (
                 <div class="flex min-h-40 items-center justify-center px-6 py-4 text-center text-text-weak">
                   {i18n.t("ui.fileMedia.state.removed", { kind: label })}
-                </div>
+                <@lgcode/div>
               )
             }
             if (status() === "loading") {
               return (
                 <div class="flex min-h-40 items-center justify-center px-6 py-4 text-center text-text-weak">
                   {i18n.t("ui.fileMedia.state.loading", { kind: label })}
-                </div>
+                <@lgcode/div>
               )
             }
             if (status() === "error") {
               return (
                 <div class="flex min-h-40 items-center justify-center px-6 py-4 text-center text-text-weak">
                   {i18n.t("ui.fileMedia.state.error", { kind: label })}
-                </div>
+                <@lgcode/div>
               )
             }
             return (
               <div class="flex min-h-40 items-center justify-center px-6 py-4 text-center text-text-weak">
                 {i18n.t("ui.fileMedia.state.unavailable", { kind: label })}
-              </div>
+              <@lgcode/div>
             )
           })()}
         >
@@ -209,28 +209,28 @@ export function FileMedia(props: { media?: FileMediaOptions; fallback: () => JSX
                     alt={cfg()?.path}
                     class="max-h-[60vh] max-w-full rounded border border-border-weak-base bg-background-base object-contain"
                     onLoad={onLoad}
-                  />
-                </div>
+                  @lgcode/>
+                <@lgcode/div>
               )
             }
 
             return (
               <div class="flex justify-center bg-background-stronger px-6 py-4">
                 <audio class="w-full max-w-xl" controls preload="metadata" onLoadedMetadata={onLoad}>
-                  <source src={value()} type={audioMime()} />
-                </audio>
-              </div>
+                  <source src={value()} type={audioMime()} @lgcode/>
+                <@lgcode/audio>
+              <@lgcode/div>
             )
           }}
-        </Show>
-      </Match>
+        <@lgcode/Show>
+      <@lgcode/Match>
       <Match when={kind() === "svg"}>
         {(() => {
           if (svgSource() === undefined && svgSrc() == null) return props.fallback()
 
           return (
             <div class="flex flex-col gap-4 px-6 py-4">
-              <Show when={svgSource() !== undefined}>{props.fallback()}</Show>
+              <Show when={svgSource() !== undefined}>{props.fallback()}<@lgcode/Show>
               <Show when={svgSrc()}>
                 {(value) => (
                   <div class="flex justify-center">
@@ -239,29 +239,29 @@ export function FileMedia(props: { media?: FileMediaOptions; fallback: () => JSX
                       alt={cfg()?.path}
                       class="max-h-[60vh] max-w-full rounded border border-border-weak-base bg-background-base object-contain"
                       onLoad={onLoad}
-                    />
-                  </div>
+                    @lgcode/>
+                  <@lgcode/div>
                 )}
-              </Show>
-            </div>
+              <@lgcode/Show>
+            <@lgcode/div>
           )
         })()}
-      </Match>
+      <@lgcode/Match>
       <Match when={isBinary()}>
         <div class="flex min-h-56 flex-col items-center justify-center gap-2 px-6 py-10 text-center">
           <div class="text-14-semibold text-text-strong">
-            {cfg()?.path?.split("/").pop() ?? i18n.t("ui.fileMedia.binary.title")}
-          </div>
+            {cfg()?.path?.split("@lgcode/").pop() ?? i18n.t("ui.fileMedia.binary.title")}
+          <@lgcode/div>
           <div class="text-14-regular text-text-weak">
             {(() => {
               const path = cfg()?.path
               if (!path) return i18n.t("ui.fileMedia.binary.description.default")
               return i18n.t("ui.fileMedia.binary.description.path", { path })
             })()}
-          </div>
-        </div>
-      </Match>
-      <Match when={true}>{props.fallback()}</Match>
-    </Switch>
+          <@lgcode/div>
+        <@lgcode/div>
+      <@lgcode/Match>
+      <Match when={true}>{props.fallback()}<@lgcode/Match>
+    <@lgcode/Switch>
   )
 }

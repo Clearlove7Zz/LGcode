@@ -1,16 +1,16 @@
-import { createSimpleContext } from "@opencode@lgcode/ui/context"
-import { base64Encode } from "@opencode@lgcode/core/util/encode"
-import { useParams } from "@solidjs/router"
+import { createSimpleContext } from "@lgcode/ui@lgcode/context"
+import { base64Encode } from "@lgcode/core@lgcode/util@lgcode/encode"
+import { useParams } from "@solidjs@lgcode/router"
 import { batch, createEffect, createMemo } from "solid-js"
-import { createStore } from "solid-js/store"
-import { useModels } from "@/context/models"
-import { useProviders } from "@/hooks/use-providers"
-import { Persist, persisted } from "@/utils/persist"
-import { cycleModelVariant, getConfiguredAgentVariant, resolveModelVariant } from "./model-variant"
-import { useSDK } from "./sdk"
-import { useSync } from "./sync"
-import { useServerSDK } from "./server-sdk"
-import { ScopedKey, type ServerScope } from "@/utils/server-scope"
+import { createStore } from "solid-js@lgcode/store"
+import { useModels } from "@@lgcode/context@lgcode/models"
+import { useProviders } from "@@lgcode/hooks@lgcode/use-providers"
+import { Persist, persisted } from "@@lgcode/utils@lgcode/persist"
+import { cycleModelVariant, getConfiguredAgentVariant, resolveModelVariant } from ".@lgcode/model-variant"
+import { useSDK } from ".@lgcode/sdk"
+import { useSync } from ".@lgcode/sync"
+import { useServerSDK } from ".@lgcode/server-sdk"
+import { ScopedKey, type ServerScope } from "@@lgcode/utils@lgcode/server-scope"
 
 export type ModelKey = { providerID: string; modelID: string; variant?: string }
 
@@ -146,7 +146,7 @@ export const { use: useLocal, provider: LocalProvider } = createSimpleContext({
     const configuredModel = () => {
       const configured = sync().data.config.model
       if (!configured) return
-      const [providerID, modelID] = configured.split("/")
+      const [providerID, modelID] = configured.split("@lgcode/")
       const model = { providerID, modelID }
       if (validModel(model)) return model
     }

@@ -1,10 +1,10 @@
 import { Effect } from "effect"
-import { PluginV2 } from "../../plugin"
-import { ProviderV2 } from "../../provider"
+import { PluginV2 } from "..@lgcode/..@lgcode/plugin"
+import { ProviderV2 } from "..@lgcode/..@lgcode/provider"
 
 type FetchLike = (url: string | URL | Request, init?: RequestInit) => Promise<Response>
 
-// Exported for testing: intercepts Cortex-specific request/response quirks.
+@lgcode/@lgcode/ Exported for testing: intercepts Cortex-specific request@lgcode/response quirks.
 export function cortexFetch(upstream: FetchLike = fetch) {
   return async (url: string | URL | Request, init?: RequestInit): Promise<Response> => {
     if (init?.body && typeof init.body === "string") {
@@ -20,7 +20,7 @@ export function cortexFetch(upstream: FetchLike = fetch) {
 
     const response = await upstream(url, init)
 
-    // Cortex returns 400 "conversation complete" as a normal stop condition
+    @lgcode/@lgcode/ Cortex returns 400 "conversation complete" as a normal stop condition
     if (!response.ok && response.status === 400) {
       try {
         const errorData = (await response.clone().json()) as Record<string, unknown>
@@ -31,14 +31,14 @@ export function cortexFetch(upstream: FetchLike = fetch) {
         ) {
           return new Response(
             JSON.stringify({ choices: [{ finish_reason: "stop", message: { content: "", role: "assistant" } }] }),
-            { status: 200, headers: new Headers({ "content-type": "application/json" }) },
+            { status: 200, headers: new Headers({ "content-type": "application@lgcode/json" }) },
           )
         }
       } catch {}
     }
 
-    // Cortex returns role:"" in streaming deltas; the AI SDK schema requires "assistant"
-    if (response.body && response.headers.get("content-type")?.includes("text/event-stream")) {
+    @lgcode/@lgcode/ Cortex returns role:"" in streaming deltas; the AI SDK schema requires "assistant"
+    if (response.body && response.headers.get("content-type")?.includes("text@lgcode/event-stream")) {
       const reader = response.body.getReader()
       const encoder = new TextEncoder()
       const decoder = new TextDecoder()
@@ -50,7 +50,7 @@ export function cortexFetch(upstream: FetchLike = fetch) {
             return
           }
           ctrl.enqueue(
-            encoder.encode(decoder.decode(value, { stream: true }).replace(/"role"\s*:\s*""/g, '"role":"assistant"')),
+            encoder.encode(decoder.decode(value, { stream: true }).replace(@lgcode/"role"\s*:\s*""@lgcode/g, '"role":"assistant"')),
           )
         },
         cancel() {
@@ -77,7 +77,7 @@ export const SnowflakeCortexPlugin = PluginV2.define({
           (typeof evt.options.apiKey === "string" ? evt.options.apiKey : undefined)
         const upstream = typeof evt.options.fetch === "function" ? (evt.options.fetch as FetchLike) : undefined
         if (evt.options.includeUsage !== false) evt.options.includeUsage = true
-        const mod = yield* Effect.promise(() => import("@ai-sdk/openai-compatible"))
+        const mod = yield* Effect.promise(() => import("@ai-sdk@lgcode/openai-compatible"))
         evt.sdk = mod.createOpenAICompatible({
           ...evt.options,
           ...(token ? { apiKey: token } : {}),

@@ -1,11 +1,11 @@
-// @ts-nocheck
+@lgcode/@lgcode/ @ts-nocheck
 import { createEffect, onCleanup } from "solid-js"
-import { createStore } from "solid-js/store"
-import { BasicTool } from "./basic-tool"
+import { createStore } from "solid-js@lgcode/store"
+import { BasicTool } from ".@lgcode/basic-tool"
 import { animate } from "motion"
 
 export default {
-  title: "UI/Shell Submessage Motion",
+  title: "UI@lgcode/Shell Submessage Motion",
   id: "components-shell-submessage-motion",
   tags: ["autodocs"],
   parameters: {
@@ -15,8 +15,8 @@ export default {
 Interactive playground for animating the Shell tool subtitle ("submessage") in the timeline trigger row.
 
 ### Production component path
-- Trigger layout: \`packages/ui/src/components/basic-tool.tsx\`
-- Bash tool subtitle source: \`packages/ui/src/components/message-part.tsx\` (tool: \`bash\`, \`trigger.subtitle\`)
+- Trigger layout: \`packages@lgcode/ui@lgcode/src@lgcode/components@lgcode/basic-tool.tsx\`
+- Bash tool subtitle source: \`packages@lgcode/ui@lgcode/src@lgcode/components@lgcode/message-part.tsx\` (tool: \`bash\`, \`trigger.subtitle\`)
 
 ### What this playground tunes
 - Width reveal (spring-driven pixel width via \`useSpring\`)
@@ -130,10 +130,10 @@ function SpringSubmessage(props: { text: string; visible: boolean; visualDuratio
     <span ref={ref} data-component="shell-submessage">
       <span ref={widthRef} data-slot="shell-submessage-width" style={{ width: "0px" }}>
         <span data-slot="basic-tool-tool-subtitle">
-          <span data-slot="shell-submessage-value">{props.text || "\u00A0"}</span>
-        </span>
-      </span>
-    </span>
+          <span data-slot="shell-submessage-value">{props.text || "\u00A0"}<@lgcode/span>
+        <@lgcode/span>
+      <@lgcode/span>
+    <@lgcode/span>
   )
 }
 
@@ -201,7 +201,7 @@ export const Playground = {
           "--shell-sub-fade-ease": ease[fadeEase()],
         }}
       >
-        <style>{shellCss}</style>
+        <style>{shellCss}<@lgcode/style>
 
         <BasicTool
           icon="console"
@@ -209,10 +209,10 @@ export const Playground = {
           trigger={
             <div data-slot="basic-tool-tool-info-structured">
               <div data-slot="basic-tool-tool-info-main">
-                <span data-slot="basic-tool-tool-title">Shell</span>
-                <SpringSubmessage text={text()} visible={show()} visualDuration={visualDuration()} bounce={bounce()} />
-              </div>
-            </div>
+                <span data-slot="basic-tool-tool-title">Shell<@lgcode/span>
+                <SpringSubmessage text={text()} visible={show()} visualDuration={visualDuration()} bounce={bounce()} @lgcode/>
+              <@lgcode/div>
+            <@lgcode/div>
           }
         >
           <div
@@ -228,20 +228,20 @@ export const Playground = {
             }}
           >
             {"$ cat <<'TOPIC1'"}
-          </div>
-        </BasicTool>
+          <@lgcode/div>
+        <@lgcode/BasicTool>
 
         <div style={{ display: "flex", gap: "8px", "flex-wrap": "wrap" }}>
           <button onClick={replay} style={btn()}>
             Replay entry
-          </button>
+          <@lgcode/button>
           <button onClick={() => setState("show", (value) => !value)} style={btn(show())}>
             {show() ? "Hide subtitle" : "Show subtitle"}
-          </button>
+          <@lgcode/button>
           <button onClick={toggleAuto} style={btn(auto())}>
             {auto() ? "Stop auto replay" : "Auto replay"}
-          </button>
-        </div>
+          <@lgcode/button>
+        <@lgcode/div>
 
         <div
           style={{
@@ -252,7 +252,7 @@ export const Playground = {
           }}
         >
           <div style={{ display: "flex", "align-items": "center", gap: "12px" }}>
-            <span style={sliderLabel}>subtitle</span>
+            <span style={sliderLabel}>subtitle<@lgcode/span>
             <input
               value={text()}
               onInput={(e) => setState("text", e.currentTarget.value)}
@@ -265,11 +265,11 @@ export const Playground = {
                 background: "var(--color-fill-element, #222)",
                 color: "var(--color-text, #eee)",
               }}
-            />
-          </div>
+            @lgcode/>
+          <@lgcode/div>
 
           <div style={{ display: "flex", "align-items": "center", gap: "12px" }}>
-            <span style={sliderLabel}>visualDuration</span>
+            <span style={sliderLabel}>visualDuration<@lgcode/span>
             <input
               type="range"
               min={0.05}
@@ -277,12 +277,12 @@ export const Playground = {
               step={0.01}
               value={visualDuration()}
               onInput={(e) => setState("visualDuration", Number(e.currentTarget.value))}
-            />
-            <span style={sliderValue}>{visualDuration().toFixed(2)}s</span>
-          </div>
+            @lgcode/>
+            <span style={sliderValue}>{visualDuration().toFixed(2)}s<@lgcode/span>
+          <@lgcode/div>
 
           <div style={{ display: "flex", "align-items": "center", gap: "12px" }}>
-            <span style={sliderLabel}>bounce</span>
+            <span style={sliderLabel}>bounce<@lgcode/span>
             <input
               type="range"
               min={0}
@@ -290,12 +290,12 @@ export const Playground = {
               step={0.01}
               value={bounce()}
               onInput={(e) => setState("bounce", Number(e.currentTarget.value))}
-            />
-            <span style={sliderValue}>{bounce().toFixed(2)}</span>
-          </div>
+            @lgcode/>
+            <span style={sliderValue}>{bounce().toFixed(2)}<@lgcode/span>
+          <@lgcode/div>
 
           <div style={{ display: "flex", "align-items": "center", gap: "12px" }}>
-            <span style={sliderLabel}>fade ease</span>
+            <span style={sliderLabel}>fade ease<@lgcode/span>
             <button
               onClick={() =>
                 setState("fadeEase", (value) =>
@@ -311,11 +311,11 @@ export const Playground = {
               style={btn()}
             >
               {fadeEase()}
-            </button>
-          </div>
+            <@lgcode/button>
+          <@lgcode/div>
 
           <div style={{ display: "flex", "align-items": "center", gap: "12px" }}>
-            <span style={sliderLabel}>fade</span>
+            <span style={sliderLabel}>fade<@lgcode/span>
             <input
               type="range"
               min={0}
@@ -323,12 +323,12 @@ export const Playground = {
               step={10}
               value={fadeMs()}
               onInput={(e) => setState("fadeMs", Number(e.currentTarget.value))}
-            />
-            <span style={sliderValue}>{fadeMs()}ms</span>
-          </div>
+            @lgcode/>
+            <span style={sliderValue}>{fadeMs()}ms<@lgcode/span>
+          <@lgcode/div>
 
           <div style={{ display: "flex", "align-items": "center", gap: "12px" }}>
-            <span style={sliderLabel}>blur</span>
+            <span style={sliderLabel}>blur<@lgcode/span>
             <input
               type="range"
               min={0}
@@ -336,11 +336,11 @@ export const Playground = {
               step={0.5}
               value={blur()}
               onInput={(e) => setState("blur", Number(e.currentTarget.value))}
-            />
-            <span style={sliderValue}>{blur()}px</span>
-          </div>
-        </div>
-      </div>
+            @lgcode/>
+            <span style={sliderValue}>{blur()}px<@lgcode/span>
+          <@lgcode/div>
+        <@lgcode/div>
+      <@lgcode/div>
     )
   },
 }

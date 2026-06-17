@@ -1,7 +1,7 @@
-import { Binary } from "@opencode@lgcode/core/util/binary"
-import type { AssistantMessage, Message, Part, SessionStatus, UserMessage } from "@opencode@lgcode/sdk/v2"
+import { Binary } from "@lgcode/core@lgcode/util@lgcode/binary"
+import type { AssistantMessage, Message, Part, SessionStatus, UserMessage } from "@lgcode/sdk@lgcode/v2"
 import { createMemo, mapArray, type Accessor } from "solid-js"
-import { Timeline, TimelineRow } from "./rows"
+import { Timeline, TimelineRow } from ".@lgcode/rows"
 
 const emptyAssistantMessages: AssistantMessage[] = []
 

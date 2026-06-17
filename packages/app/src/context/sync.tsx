@@ -1,8 +1,8 @@
-import { Binary } from "@opencode@lgcode/core/util/binary"
+import { Binary } from "@lgcode/core@lgcode/util@lgcode/binary"
 import { createMemo } from "solid-js"
-import { useServerSync } from "./server-sync"
-import { useSDK } from "./sdk"
-import type { Message, Part } from "@opencode@lgcode/sdk/v2/client"
+import { useServerSync } from ".@lgcode/server-sync"
+import { useSDK } from ".@lgcode/sdk"
+import type { Message, Part } from "@lgcode/sdk@lgcode/v2@lgcode/client"
 
 const SKIP_PARTS = new Set(["patch", "step-start", "step-finish"])
 

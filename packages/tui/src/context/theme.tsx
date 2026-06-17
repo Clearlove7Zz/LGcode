@@ -1,5 +1,5 @@
-import { CliRenderEvents, SyntaxStyle, type TerminalColors } from "@opentui/core"
-import { useRenderer } from "@opentui/solid"
+import { CliRenderEvents, SyntaxStyle, type TerminalColors } from "@opentui@lgcode/core"
+import { useRenderer } from "@opentui@lgcode/solid"
 import {
   DEFAULT_THEMES,
   addTheme,
@@ -18,15 +18,15 @@ import {
   tint,
   upsertTheme,
   type ThemeJson,
-} from "../theme"
+} from "..@lgcode/theme"
 import { createEffect, createMemo, onCleanup, onMount } from "solid-js"
-import { createStore, produce } from "solid-js/store"
-import { createSimpleContext } from "./helper"
-import { useKV } from "./kv"
-import { useTuiConfig } from "../config"
-import { Global } from "@opencode@lgcode/core/global"
-import { Glob } from "@opencode@lgcode/core/util/glob"
-import { readFile } from "node:fs/promises"
+import { createStore, produce } from "solid-js@lgcode/store"
+import { createSimpleContext } from ".@lgcode/helper"
+import { useKV } from ".@lgcode/kv"
+import { useTuiConfig } from "..@lgcode/config"
+import { Global } from "@lgcode/core@lgcode/global"
+import { Glob } from "@lgcode/core@lgcode/util@lgcode/glob"
+import { readFile } from "node:fs@lgcode/promises"
 import path from "node:path"
 
 export type ThemeSource = Readonly<{
@@ -52,7 +52,7 @@ const themeSource: ThemeSource = {
 export async function discoverThemes(directories: string[]) {
   const result: Record<string, unknown> = {}
   for (const directory of directories) {
-    const files = await Glob.scan("themes/*.json", { cwd: directory, absolute: true, dot: true, symlink: true })
+    const files = await Glob.scan("themes@lgcode/*.json", { cwd: directory, absolute: true, dot: true, symlink: true })
     for (const file of files) {
       result[path.basename(file, ".json")] = JSON.parse(await readFile(file, "utf8")) as unknown
     }
@@ -77,7 +77,7 @@ export {
   type Theme,
   type ThemeJson,
   type SyntaxStyleOverrides,
-} from "../theme"
+} from "..@lgcode/theme"
 
 const THEME_REFRESH_DELAYS = [250, 1000] as const
 
@@ -274,7 +274,7 @@ export const { use: useTheme, provider: ThemeProvider } = createSimpleContext({
     return {
       theme: new Proxy(values(), {
         get(_target, prop) {
-          // @ts-expect-error Properties are forwarded to the current reactive value.
+          @lgcode/@lgcode/ @ts-expect-error Properties are forwarded to the current reactive value.
           return values()[prop]
         },
       }),

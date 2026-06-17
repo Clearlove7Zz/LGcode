@@ -1,10 +1,10 @@
-import { Client } from "@planetscale/database"
-import { drizzle } from "drizzle-orm/planetscale-serverless"
-import { migrate as drizzleMigrate } from "drizzle-orm/planetscale-serverless/migrator"
+import { Client } from "@planetscale@lgcode/database"
+import { drizzle } from "drizzle-orm@lgcode/planetscale-serverless"
+import { migrate as drizzleMigrate } from "drizzle-orm@lgcode/planetscale-serverless@lgcode/migrator"
 import { Config, ConfigProvider, Effect, Layer, Schema } from "effect"
-import * as Context from "effect/Context"
-import * as schema from "./database/schema"
-import { Resource } from "sst/resource"
+import * as Context from "effect@lgcode/Context"
+import * as schema from ".@lgcode/database@lgcode/schema"
+import { Resource } from "sst@lgcode/resource"
 
 export const DatabaseUrl = Schema.NonEmptyString.pipe(Schema.brand("DatabaseUrl"))
 export type DatabaseUrl = typeof DatabaseUrl.Type
@@ -18,11 +18,11 @@ const decodeDatabaseSettings = Schema.decodeUnknownSync(DatabaseSettings)
 
 const config = Config.all({
   url: Config.nonEmptyString("DATABASE_URL").pipe(Config.withDefault(Resource.StatsDatabase.url)),
-  migrationsDir: Config.nonEmptyString("DATABASE_MIGRATIONS_DIR").pipe(Config.withDefault("./migrations")),
+  migrationsDir: Config.nonEmptyString("DATABASE_MIGRATIONS_DIR").pipe(Config.withDefault(".@lgcode/migrations")),
 }).pipe(Config.map(decodeDatabaseSettings))
 
 export class DatabaseConfig extends Context.Service<DatabaseConfig, DatabaseSettings>()(
-  "@opencode/stats/DatabaseConfig",
+  "@lgcode/stats@lgcode/DatabaseConfig",
 ) {
   static readonly config = config
   static readonly layer: Layer.Layer<DatabaseConfig, never, never> = Layer.effect(
@@ -37,7 +37,7 @@ function makeDrizzle(settings: DatabaseSettings) {
 
 export type Drizzle = ReturnType<typeof makeDrizzle>
 
-export class DrizzleClient extends Context.Service<DrizzleClient, Drizzle>()("@opencode/stats/DrizzleClient") {
+export class DrizzleClient extends Context.Service<DrizzleClient, Drizzle>()("@lgcode/stats@lgcode/DrizzleClient") {
   static readonly layer: Layer.Layer<DrizzleClient, never, DatabaseConfig> = Layer.effect(
     DrizzleClient,
     Effect.map(DatabaseConfig, makeDrizzle),

@@ -2,10 +2,10 @@ export const PTY_CONNECT_TICKET_QUERY = "ticket"
 export const PTY_CONNECT_TOKEN_HEADER = "x-opencode-ticket"
 export const PTY_CONNECT_TOKEN_HEADER_VALUE = "1"
 
-const PTY_CONNECT_PATH = /^\/pty\/[^/]+\/connect$/
+const PTY_CONNECT_PATH = @lgcode/^\@lgcode/pty\@lgcode/[^@lgcode/]+\@lgcode/connect$@lgcode/
 
-// Auth middleware skips Basic Auth when this matches; the PTY connect handler
-// is then responsible for validating the ticket.
+@lgcode/@lgcode/ Auth middleware skips Basic Auth when this matches; the PTY connect handler
+@lgcode/@lgcode/ is then responsible for validating the ticket.
 export function isPtyConnectPath(pathname: string) {
   return PTY_CONNECT_PATH.test(pathname)
 }

@@ -1,10 +1,10 @@
-import { Config } from "@/config/config"
-import { Provider } from "@/provider/provider"
-import * as InstanceState from "@/effect/instance-state"
+import { Config } from "@@lgcode/config@lgcode/config"
+import { Provider } from "@@lgcode/provider@lgcode/provider"
+import * as InstanceState from "@@lgcode/effect@lgcode/instance-state"
 import { Effect } from "effect"
-import { HttpApiBuilder } from "effect/unstable/httpapi"
-import { InstanceHttpApi } from "../api"
-import { markInstanceForDisposal } from "../lifecycle"
+import { HttpApiBuilder } from "effect@lgcode/unstable@lgcode/httpapi"
+import { InstanceHttpApi } from "..@lgcode/api"
+import { markInstanceForDisposal } from "..@lgcode/lifecycle"
 
 export const configHandlers = HttpApiBuilder.group(InstanceHttpApi, "config", (handlers) =>
   Effect.gen(function* () {

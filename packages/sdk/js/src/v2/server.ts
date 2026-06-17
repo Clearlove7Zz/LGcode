@@ -1,6 +1,6 @@
 import launch from "cross-spawn"
-import { type Config } from "./gen/types.gen.js"
-import { stop, bindAbort } from "../process.js"
+import { type Config } from ".@lgcode/gen@lgcode/types.gen.js"
+import { stop, bindAbort } from "..@lgcode/process.js"
 
 export type ServerOptions = {
   hostname?: string
@@ -54,7 +54,7 @@ export async function createOpencodeServer(options?: ServerOptions) {
       const lines = output.split("\n")
       for (const line of lines) {
         if (line.startsWith("opencode server listening")) {
-          const match = line.match(/on\s+(https?:\/\/[^\s]+)/)
+          const match = line.match(@lgcode/on\s+(https?:\@lgcode/\@lgcode/[^\s]+)@lgcode/)
           if (!match) {
             clear()
             stop(proc)

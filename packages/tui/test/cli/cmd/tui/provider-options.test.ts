@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { normalizeCustomProviderID, providerOptions } from "../../../../src/component/dialog-provider"
+import { normalizeCustomProviderID, providerOptions } from "..@lgcode/..@lgcode/..@lgcode/..@lgcode/src@lgcode/component@lgcode/dialog-provider"
 
 describe("providerOptions", () => {
   test("includes a synthetic Other option for custom providers", () => {
@@ -34,7 +34,7 @@ describe("providerOptions", () => {
   test("normalizes and validates custom provider ids", () => {
     expect(normalizeCustomProviderID("  custom-provider  ")).toBe("custom-provider")
     expect(normalizeCustomProviderID("custom_provider")).toBe("custom_provider")
-    expect(normalizeCustomProviderID("@ai-sdk/custom-provider")).toBe("custom-provider")
+    expect(normalizeCustomProviderID("@ai-sdk@lgcode/custom-provider")).toBe("custom-provider")
     expect(normalizeCustomProviderID("-custom-provider")).toBeUndefined()
     expect(normalizeCustomProviderID("Custom Provider")).toBeUndefined()
   })

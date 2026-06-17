@@ -1,6 +1,6 @@
-// @ts-nocheck
+@lgcode/@lgcode/ @ts-nocheck
 import { createSignal, createMemo, createEffect, on, For, Show, batch } from "solid-js"
-import { createStore, produce } from "solid-js/store"
+import { createStore, produce } from "solid-js@lgcode/store"
 import type {
   Message,
   UserMessage,
@@ -11,20 +11,20 @@ import type {
   ToolPart,
   FilePart,
   AgentPart,
-} from "@opencode@lgcode/sdk/v2"
-import { DataProvider } from "../context/data"
-import { FileComponentProvider } from "../context/file"
-import { SessionTurn } from "./session-turn"
+} from "@lgcode/sdk@lgcode/v2"
+import { DataProvider } from "..@lgcode/context@lgcode/data"
+import { FileComponentProvider } from "..@lgcode/context@lgcode/file"
+import { SessionTurn } from ".@lgcode/session-turn"
 
-// ---------------------------------------------------------------------------
-// ID helpers
-// ---------------------------------------------------------------------------
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
+@lgcode/@lgcode/ ID helpers
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
 let seq = 0
 const uid = () => `pg-${++seq}-${Date.now().toString(36)}`
 
-// ---------------------------------------------------------------------------
-// Lorem ipsum content
-// ---------------------------------------------------------------------------
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
+@lgcode/@lgcode/ Lorem ipsum content
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
 const LOREM = [
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -33,9 +33,9 @@ const LOREM = [
   "Cras justo odio, dapibus ut facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper.",
 ]
 
-// ---------------------------------------------------------------------------
-// User message variants
-// ---------------------------------------------------------------------------
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
+@lgcode/@lgcode/ User message variants
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
 const USER_VARIANTS = {
   short: {
     label: "short",
@@ -61,21 +61,21 @@ Please also add appropriate CSS containment hints and make sure we don't break t
   },
   "with @file": {
     label: "with @file",
-    text: "Update @src/components/session-turn.tsx to fix the spacing issue between parts",
+    text: "Update @src@lgcode/components@lgcode/session-turn.tsx to fix the spacing issue between parts",
     parts: (() => {
       const id = `static-file-${Date.now()}`
       return [
         {
           id,
           type: "file",
-          mime: "text/plain",
+          mime: "text@lgcode/plain",
           filename: "session-turn.tsx",
-          url: "src/components/session-turn.tsx",
+          url: "src@lgcode/components@lgcode/session-turn.tsx",
           source: {
             type: "file",
-            path: "src/components/session-turn.tsx",
+            path: "src@lgcode/components@lgcode/session-turn.tsx",
             text: {
-              value: "@src/components/session-turn.tsx",
+              value: "@src@lgcode/components@lgcode/session-turn.tsx",
               start: 7,
               end: 38,
             },
@@ -102,14 +102,14 @@ Please also add appropriate CSS containment hints and make sure we don't break t
     label: "with image",
     text: "Here's a screenshot of the bug I'm seeing",
     parts: (() => {
-      // 1x1 blue pixel PNG as data URI for a realistic attachment
+      @lgcode/@lgcode/ 1x1 blue pixel PNG as data URI for a realistic attachment
       const pixel =
-        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+        "data:image@lgcode/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
       return [
         {
           id: `static-img-${Date.now()}`,
           type: "file",
-          mime: "image/png",
+          mime: "image@lgcode/png",
           filename: "screenshot.png",
           url: pixel,
         } as FilePart,
@@ -124,9 +124,9 @@ Please also add appropriate CSS containment hints and make sure we don't break t
         {
           id: `static-attach-${Date.now()}`,
           type: "file",
-          mime: "application/json",
+          mime: "application@lgcode/json",
           filename: "tsconfig.json",
-          url: "data:application/json;base64,e30=",
+          url: "data:application@lgcode/json;base64,e30=",
         } as FilePart,
       ]
     })(),
@@ -136,32 +136,32 @@ Please also add appropriate CSS containment hints and make sure we don't break t
     text: "Look at these files and the screenshot, then fix the layout",
     parts: (() => {
       const pixel =
-        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+        "data:image@lgcode/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
       return [
         {
           id: `static-multi-img-${Date.now()}`,
           type: "file",
-          mime: "image/png",
+          mime: "image@lgcode/png",
           filename: "layout-bug.png",
           url: pixel,
         } as FilePart,
         {
           id: `static-multi-file-${Date.now()}`,
           type: "file",
-          mime: "text/css",
+          mime: "text@lgcode/css",
           filename: "session-turn.css",
-          url: "data:text/css;base64,LyogZW1wdHkgKi8=",
+          url: "data:text@lgcode/css;base64,LyogZW1wdHkgKi8=",
         } as FilePart,
         {
           id: `static-multi-ref-${Date.now()}`,
           type: "file",
-          mime: "text/plain",
+          mime: "text@lgcode/plain",
           filename: "session-turn.tsx",
-          url: "src/components/session-turn.tsx",
+          url: "src@lgcode/components@lgcode/session-turn.tsx",
           source: {
             type: "file",
-            path: "src/components/session-turn.tsx",
-            text: { value: "@src/components/session-turn.tsx", start: 0, end: 0 },
+            path: "src@lgcode/components@lgcode/session-turn.tsx",
+            text: { value: "@src@lgcode/components@lgcode/session-turn.tsx", start: 0, end: 0 },
           },
         } as FilePart,
       ]
@@ -198,7 +198,7 @@ export function sum(values: number[]) {
 
 export function average(values: number[]) {
   if (values.length === 0) return 0
-  return sum(values) / values.length
+  return sum(values) @lgcode/ values.length
 }
 \`\`\`
 
@@ -228,7 +228,7 @@ The migration will handle existing data by setting \`project_id\` to the default
 
 ---
 
-For more details, see the [documentation](https://example.com/docs).`,
+For more details, see the [documentation](https:@lgcode/@lgcode/example.com@lgcode/docs).`,
 
   table: `## Comparison
 
@@ -250,17 +250,17 @@ The approach above was chosen for its simplicity.`,
 
   links: `Check out these resources:
 
-- [SolidJS docs](https://solidjs.com)
-- [TypeScript handbook](https://www.typescriptlang.org/docs/handbook)
-- The API is at \`https://api.example.com/v2\`
+- [SolidJS docs](https:@lgcode/@lgcode/solidjs.com)
+- [TypeScript handbook](https:@lgcode/@lgcode/www.typescriptlang.org@lgcode/docs@lgcode/handbook)
+- The API is at \`https:@lgcode/@lgcode/api.example.com@lgcode/v2\`
 
-You can also visit https://example.com/docs for more info.`,
+You can also visit https:@lgcode/@lgcode/example.com@lgcode/docs for more info.`,
 
   images: `## Screenshot
 
 Here's what the output looks like:
 
-![Alt text](https://via.placeholder.com/400x200)
+![Alt text](https:@lgcode/@lgcode/via.placeholder.com@lgcode/400x200)
 
 And below is the final result.`,
 }
@@ -295,22 +295,22 @@ This should be straightforward given the existing component architecture.`,
 const TOOL_SAMPLES = {
   read: {
     tool: "read",
-    input: { filePath: "src/components/session-turn.tsx", offset: 1, limit: 50 },
-    output: "export function SessionTurn(props) {\n  // component implementation\n  return <div>...</div>\n}",
-    title: "Read src/components/session-turn.tsx",
+    input: { filePath: "src@lgcode/components@lgcode/session-turn.tsx", offset: 1, limit: 50 },
+    output: "export function SessionTurn(props) {\n  @lgcode/@lgcode/ component implementation\n  return <div>...<@lgcode/div>\n}",
+    title: "Read src@lgcode/components@lgcode/session-turn.tsx",
     metadata: {},
   },
   glob: {
     tool: "glob",
-    input: { pattern: "**/*.tsx", path: "src/components" },
-    output: "src/components/button.tsx\nsrc/components/card.tsx\nsrc/components/session-turn.tsx",
+    input: { pattern: "**@lgcode/*.tsx", path: "src@lgcode/components" },
+    output: "src@lgcode/components@lgcode/button.tsx\nsrc@lgcode/components@lgcode/card.tsx\nsrc@lgcode/components@lgcode/session-turn.tsx",
     title: "Found 3 files",
     metadata: {},
   },
   grep: {
     tool: "grep",
     input: { pattern: "SessionTurn", path: "src", include: "*.tsx" },
-    output: "src/components/session-turn.tsx:141\nsrc/pages/session/timeline.tsx:987",
+    output: "src@lgcode/components@lgcode/session-turn.tsx:141\nsrc@lgcode/pages@lgcode/session@lgcode/timeline.tsx:987",
     title: "Found 2 matches",
     metadata: {},
   },
@@ -325,15 +325,15 @@ const TOOL_SAMPLES = {
   edit: {
     tool: "edit",
     input: {
-      filePath: "src/components/session-turn.tsx",
+      filePath: "src@lgcode/components@lgcode/session-turn.tsx",
       oldString: "gap: 12px",
       newString: "gap: 18px",
     },
     output: "File edited successfully",
-    title: "Edit src/components/session-turn.tsx",
+    title: "Edit src@lgcode/components@lgcode/session-turn.tsx",
     metadata: {
       filediff: {
-        file: "src/components/session-turn.tsx",
+        file: "src@lgcode/components@lgcode/session-turn.tsx",
         before: "  gap: 12px;\n  display: flex;",
         after: "  gap: 18px;\n  display: flex;",
         additions: 1,
@@ -344,12 +344,12 @@ const TOOL_SAMPLES = {
   write: {
     tool: "write",
     input: {
-      filePath: "src/utils/helpers.ts",
+      filePath: "src@lgcode/utils@lgcode/helpers.ts",
       content:
         "export function clamp(value: number, min: number, max: number) {\n  return Math.min(Math.max(value, min), max)\n}\n",
     },
     output: "File written successfully",
-    title: "Write src/utils/helpers.ts",
+    title: "Write src@lgcode/utils@lgcode/helpers.ts",
     metadata: {},
   },
   task: {
@@ -361,16 +361,16 @@ const TOOL_SAMPLES = {
   },
   webfetch: {
     tool: "webfetch",
-    input: { url: "https://solidjs.com/docs/latest/api" },
+    input: { url: "https:@lgcode/@lgcode/solidjs.com@lgcode/docs@lgcode/latest@lgcode/api" },
     output: "# SolidJS API Reference\n\nCore primitives for building reactive applications...",
-    title: "Fetch https://solidjs.com/docs/latest/api",
+    title: "Fetch https:@lgcode/@lgcode/solidjs.com@lgcode/docs@lgcode/latest@lgcode/api",
     metadata: {},
   },
   websearch: {
     tool: "websearch",
     input: { query: "SolidJS createStore performance" },
     output:
-      "https://solidjs.com/docs/latest/api#createstore\nhttps://dev.to/solidjs/understanding-solid-reactivity\nhttps://github.com/solidjs/solid/discussions/1234",
+      "https:@lgcode/@lgcode/solidjs.com@lgcode/docs@lgcode/latest@lgcode/api#createstore\nhttps:@lgcode/@lgcode/dev.to@lgcode/solidjs@lgcode/understanding-solid-reactivity\nhttps:@lgcode/@lgcode/github.com@lgcode/solidjs@lgcode/solid@lgcode/discussions@lgcode/1234",
     title: "Search: SolidJS createStore performance",
     metadata: {},
   },
@@ -420,9 +420,9 @@ const TOOL_SAMPLES = {
   },
 }
 
-// ---------------------------------------------------------------------------
-// Fake data generators
-// ---------------------------------------------------------------------------
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
+@lgcode/@lgcode/ Fake data generators
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
 const SESSION_ID = "playground-session"
 const DEFAULT_SESSION = { id: SESSION_ID, title: "Timeline Playground" }
 
@@ -485,7 +485,7 @@ function mkUser(text: string, extra: Part[] = [], sessionID = SESSION_ID): { mes
     } as UserMessage,
     parts: [
       { id: uid(), type: "text", text, time: { created: Date.now() } } as TextPart,
-      // Clone extra parts with fresh ids so each user message owns unique part instances
+      @lgcode/@lgcode/ Clone extra parts with fresh ids so each user message owns unique part instances
       ...extra.map((p) => ({ ...p, id: uid() })),
     ],
   }
@@ -502,7 +502,7 @@ function mkAssistant(parentID: string, sessionID = SESSION_ID): AssistantMessage
     providerID: "anthropic",
     mode: "default",
     agent: "code",
-    path: { cwd: "/project", root: "/project" },
+    path: { cwd: "@lgcode/project", root: "@lgcode/project" },
     cost: 0.003,
     tokens: { input: 1200, output: 800, reasoning: 200, cache: { read: 0, write: 0 } },
   } as AssistantMessage
@@ -554,24 +554,24 @@ function toolPart(sample: (typeof TOOL_SAMPLES)[keyof typeof TOOL_SAMPLES], stat
   } as ToolPart
 }
 
-// ---------------------------------------------------------------------------
-// CSS Controls definition
-// ---------------------------------------------------------------------------
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
+@lgcode/@lgcode/ CSS Controls definition
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
 
-// Source file basenames inside packages/ui/src/components/
+@lgcode/@lgcode/ Source file basenames inside packages@lgcode/ui@lgcode/src@lgcode/components@lgcode/
 const MD = "markdown.css"
 const MP = "message-part.css"
 const ST = "session-turn.css"
 const CL = "collapsible.css"
 const BT = "basic-tool.css"
 
-/**
+@lgcode/**
  * Source mapping for a CSS control.
  * - `anchor`: immutable text near the property (comment, selector, etc.) that
  *   won't change when values change — used to locate the right rule block.
  * - `prop`: the CSS property name whose value gets replaced.
  * - `format`: turns the slider number into a CSS value string.
- */
+ *@lgcode/
 type CSSSource = {
   file: string
   anchor: string
@@ -600,7 +600,7 @@ const pxZero = (v: string) => `${v}px 0`
 const pct = (v: string) => `${v}%`
 
 const CSS_CONTROLS: CSSControl[] = [
-  // --- Timeline spacing ---
+  @lgcode/@lgcode/ --- Timeline spacing ---
   {
     key: "turn-gap",
     label: "Above user messages",
@@ -658,7 +658,7 @@ const CSS_CONTROLS: CSSControl[] = [
     source: { file: MP, anchor: '[data-component="text-part"]', prop: "margin-top", format: px },
   },
 
-  // --- Markdown typography ---
+  @lgcode/@lgcode/ --- Markdown typography ---
   {
     key: "md-font-size",
     label: "Font size",
@@ -671,7 +671,7 @@ const CSS_CONTROLS: CSSControl[] = [
     max: "22",
     step: "1",
     unit: "px",
-    source: { file: MD, anchor: "/* Reset & Base Typography */", prop: "font-size", format: px },
+    source: { file: MD, anchor: "@lgcode/* Reset & Base Typography *@lgcode/", prop: "font-size", format: px },
   },
   {
     key: "md-line-height",
@@ -685,10 +685,10 @@ const CSS_CONTROLS: CSSControl[] = [
     max: "300",
     step: "5",
     unit: "%",
-    source: { file: MD, anchor: "/* Reset & Base Typography */", prop: "line-height", format: pct },
+    source: { file: MD, anchor: "@lgcode/* Reset & Base Typography *@lgcode/", prop: "line-height", format: pct },
   },
 
-  // --- Markdown headings ---
+  @lgcode/@lgcode/ --- Markdown headings ---
   {
     key: "md-heading-margin-top",
     label: "Heading margin-top",
@@ -701,7 +701,7 @@ const CSS_CONTROLS: CSSControl[] = [
     max: "60",
     step: "1",
     unit: "px",
-    source: { file: MD, anchor: "/* Headings:", prop: "margin-top", format: px },
+    source: { file: MD, anchor: "@lgcode/* Headings:", prop: "margin-top", format: px },
   },
   {
     key: "md-heading-margin-bottom",
@@ -715,7 +715,7 @@ const CSS_CONTROLS: CSSControl[] = [
     max: "40",
     step: "1",
     unit: "px",
-    source: { file: MD, anchor: "/* Headings:", prop: "margin-bottom", format: px },
+    source: { file: MD, anchor: "@lgcode/* Headings:", prop: "margin-bottom", format: px },
   },
   {
     key: "md-heading-font-size",
@@ -729,10 +729,10 @@ const CSS_CONTROLS: CSSControl[] = [
     max: "28",
     step: "1",
     unit: "px",
-    source: { file: MD, anchor: "/* Headings:", prop: "font-size", format: px },
+    source: { file: MD, anchor: "@lgcode/* Headings:", prop: "font-size", format: px },
   },
 
-  // --- Markdown paragraphs ---
+  @lgcode/@lgcode/ --- Markdown paragraphs ---
   {
     key: "md-p-margin-bottom",
     label: "Paragraph margin-bottom",
@@ -745,10 +745,10 @@ const CSS_CONTROLS: CSSControl[] = [
     max: "40",
     step: "1",
     unit: "px",
-    source: { file: MD, anchor: "/* Paragraphs */", prop: "margin-bottom", format: px },
+    source: { file: MD, anchor: "@lgcode/* Paragraphs *@lgcode/", prop: "margin-bottom", format: px },
   },
 
-  // --- Markdown lists ---
+  @lgcode/@lgcode/ --- Markdown lists ---
   {
     key: "md-list-margin-top",
     label: "List margin-top",
@@ -761,7 +761,7 @@ const CSS_CONTROLS: CSSControl[] = [
     max: "40",
     step: "1",
     unit: "px",
-    source: { file: MD, anchor: "/* Lists */", prop: "margin-top", format: px },
+    source: { file: MD, anchor: "@lgcode/* Lists *@lgcode/", prop: "margin-top", format: px },
   },
   {
     key: "md-list-margin-bottom",
@@ -775,7 +775,7 @@ const CSS_CONTROLS: CSSControl[] = [
     max: "40",
     step: "1",
     unit: "px",
-    source: { file: MD, anchor: "/* Lists */", prop: "margin-bottom", format: px },
+    source: { file: MD, anchor: "@lgcode/* Lists *@lgcode/", prop: "margin-bottom", format: px },
   },
   {
     key: "md-list-padding-left",
@@ -789,7 +789,7 @@ const CSS_CONTROLS: CSSControl[] = [
     max: "60",
     step: "1",
     unit: "px",
-    source: { file: MD, anchor: "/* Lists */", prop: "padding-left", format: px },
+    source: { file: MD, anchor: "@lgcode/* Lists *@lgcode/", prop: "padding-left", format: px },
   },
   {
     key: "md-li-margin-bottom",
@@ -803,11 +803,11 @@ const CSS_CONTROLS: CSSControl[] = [
     max: "20",
     step: "1",
     unit: "px",
-    // Anchor on `li {` to skip the `ul,ol` margin-bottom above
+    @lgcode/@lgcode/ Anchor on `li {` to skip the `ul,ol` margin-bottom above
     source: { file: MD, anchor: "\n  li {", prop: "margin-bottom", format: px },
   },
 
-  // --- Markdown code blocks ---
+  @lgcode/@lgcode/ --- Markdown code blocks ---
   {
     key: "md-pre-margin-top",
     label: "Code block margin-top",
@@ -879,7 +879,7 @@ const CSS_CONTROLS: CSSControl[] = [
     source: { file: MD, anchor: ".shiki {", prop: "border-radius", format: px },
   },
 
-  // --- Markdown blockquotes ---
+  @lgcode/@lgcode/ --- Markdown blockquotes ---
   {
     key: "md-blockquote-margin",
     label: "Blockquote margin",
@@ -892,7 +892,7 @@ const CSS_CONTROLS: CSSControl[] = [
     max: "60",
     step: "1",
     unit: "px",
-    source: { file: MD, anchor: "/* Blockquotes */", prop: "margin", format: pxZero },
+    source: { file: MD, anchor: "@lgcode/* Blockquotes *@lgcode/", prop: "margin", format: pxZero },
   },
   {
     key: "md-blockquote-padding-left",
@@ -906,7 +906,7 @@ const CSS_CONTROLS: CSSControl[] = [
     max: "40",
     step: "1",
     unit: "px",
-    source: { file: MD, anchor: "/* Blockquotes */", prop: "padding-left", format: px },
+    source: { file: MD, anchor: "@lgcode/* Blockquotes *@lgcode/", prop: "padding-left", format: px },
   },
   {
     key: "md-blockquote-border-width",
@@ -922,13 +922,13 @@ const CSS_CONTROLS: CSSControl[] = [
     unit: "px",
     source: {
       file: MD,
-      anchor: "/* Blockquotes */",
+      anchor: "@lgcode/* Blockquotes *@lgcode/",
       prop: "border-left",
       format: (v) => `${v}px solid var(--border-weak-base)`,
     },
   },
 
-  // --- Markdown tables ---
+  @lgcode/@lgcode/ --- Markdown tables ---
   {
     key: "md-table-margin",
     label: "Table margin",
@@ -941,7 +941,7 @@ const CSS_CONTROLS: CSSControl[] = [
     max: "60",
     step: "1",
     unit: "px",
-    source: { file: MD, anchor: "/* Tables */", prop: "margin", format: pxZero },
+    source: { file: MD, anchor: "@lgcode/* Tables *@lgcode/", prop: "margin", format: pxZero },
   },
   {
     key: "md-td-padding",
@@ -955,11 +955,11 @@ const CSS_CONTROLS: CSSControl[] = [
     max: "24",
     step: "1",
     unit: "px",
-    // Anchor on td selector to skip other padding rules
+    @lgcode/@lgcode/ Anchor on td selector to skip other padding rules
     source: { file: MD, anchor: "th,\n  td {", prop: "padding", format: px },
   },
 
-  // --- Markdown HR ---
+  @lgcode/@lgcode/ --- Markdown HR ---
   {
     key: "md-hr-margin",
     label: "HR margin",
@@ -972,10 +972,10 @@ const CSS_CONTROLS: CSSControl[] = [
     max: "80",
     step: "1",
     unit: "px",
-    source: { file: MD, anchor: "/* Horizontal Rule", prop: "margin", format: pxZero },
+    source: { file: MD, anchor: "@lgcode/* Horizontal Rule", prop: "margin", format: pxZero },
   },
 
-  // --- Reasoning part ---
+  @lgcode/@lgcode/ --- Reasoning part ---
   {
     key: "reasoning-md-font-size",
     label: "Reasoning font size",
@@ -1005,7 +1005,7 @@ const CSS_CONTROLS: CSSControl[] = [
     source: { file: MP, anchor: '[data-component="reasoning-part"]', prop: "margin-top", format: px },
   },
 
-  // --- User message ---
+  @lgcode/@lgcode/ --- User message ---
   {
     key: "user-msg-padding",
     label: "User bubble padding",
@@ -1035,7 +1035,7 @@ const CSS_CONTROLS: CSSControl[] = [
     source: { file: MP, anchor: '[data-slot="user-message-text"]', prop: "border-radius", format: px },
   },
 
-  // --- Tool parts ---
+  @lgcode/@lgcode/ --- Tool parts ---
   {
     key: "tool-subtitle-font-size",
     label: "Subtitle font size",
@@ -1066,7 +1066,7 @@ const CSS_CONTROLS: CSSControl[] = [
   },
   {
     key: "tool-content-gap",
-    label: "Trigger/content gap",
+    label: "Trigger@lgcode/content gap",
     group: "Tool Parts",
     type: "range",
     initial: "4",
@@ -1122,15 +1122,15 @@ const CSS_CONTROLS: CSSControl[] = [
   },
 ]
 
-// ---------------------------------------------------------------------------
-// Playground component
-// ---------------------------------------------------------------------------
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
+@lgcode/@lgcode/ Playground component
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
 function FileStub() {
-  return <div style={{ padding: "8px", color: "var(--text-weak)", "font-size": "13px" }}>File viewer stub</div>
+  return <div style={{ padding: "8px", color: "var(--text-weak)", "font-size": "13px" }}>File viewer stub<@lgcode/div>
 }
 
 function Playground() {
-  // ---- Messages & parts state ----
+  @lgcode/@lgcode/ ---- Messages & parts state ----
   const [state, setState] = createStore<{
     messages: Message[]
     parts: Record<string, Part[]>
@@ -1142,7 +1142,7 @@ function Playground() {
   const [loaded, setLoaded] = createSignal("")
   const [issue, setIssue] = createSignal("")
 
-  // ---- CSS overrides ----
+  @lgcode/@lgcode/ ---- CSS overrides ----
   const [css, setCss] = createStore<Record<string, string>>({})
   const [defaults, setDefaults] = createStore<Record<string, string>>({})
   let styleEl: HTMLStyleElement | undefined
@@ -1157,7 +1157,7 @@ function Playground() {
     )
   }
 
-  /** Read computed styles from the DOM to seed slider defaults */
+  @lgcode/** Read computed styles from the DOM to seed slider defaults *@lgcode/
   const readDefaults = () => {
     const root = previewRef
     if (!root) return
@@ -1170,14 +1170,14 @@ function Playground() {
         ? styles.getPropertyValue(ctrl.property).trim()
         : ((styles as any)[ctrl.property] as string)
       if (!raw) continue
-      // Shorthands may return "24px 0px" — take the first value
+      @lgcode/@lgcode/ Shorthands may return "24px 0px" — take the first value
       const num = parseFloat(raw.split(" ")[0])
       if (!Number.isFinite(num)) continue
-      // line-height returns px — convert back to % relative to font-size
+      @lgcode/@lgcode/ line-height returns px — convert back to % relative to font-size
       if (ctrl.unit === "%") {
         const fs = parseFloat(styles.fontSize)
         if (fs > 0) {
-          next[ctrl.key] = String(Math.round((num / fs) * 100))
+          next[ctrl.key] = String(Math.round((num @lgcode/ fs) * 100))
           continue
         }
       }
@@ -1211,7 +1211,7 @@ function Playground() {
     if (styleEl) styleEl.textContent = ""
   }
 
-  // ---- Derived ----
+  @lgcode/@lgcode/ ---- Derived ----
   const userMessages = createMemo(() => state.messages.filter((m): m is UserMessage => m.role === "user"))
 
   const data = createMemo(() => ({
@@ -1225,19 +1225,19 @@ function Playground() {
     },
   }))
 
-  // Read computed defaults once DOM has turn elements to query
+  @lgcode/@lgcode/ Read computed defaults once DOM has turn elements to query
   createEffect(
     on(
       () => userMessages().length,
       (len) => {
         if (len === 0) return
-        // Wait a frame for the DOM to settle after render
+        @lgcode/@lgcode/ Wait a frame for the DOM to settle after render
         requestAnimationFrame(readDefaults)
       },
     ),
   )
 
-  // ---- Find or create the last assistant message to append parts to ----
+  @lgcode/@lgcode/ ---- Find or create the last assistant message to append parts to ----
   const lastAssistantID = createMemo(() => {
     for (let i = state.messages.length - 1; i >= 0; i--) {
       if (state.messages[i].role === "assistant") return state.messages[i].id
@@ -1245,11 +1245,11 @@ function Playground() {
     return undefined
   })
 
-  /** Ensure a turn (user + assistant) exists and return the assistant message id */
+  @lgcode/** Ensure a turn (user + assistant) exists and return the assistant message id *@lgcode/
   const ensureTurn = (): string => {
     const id = lastAssistantID()
     if (id) return id
-    // Create a minimal placeholder turn
+    @lgcode/@lgcode/ Create a minimal placeholder turn
     const user = mkUser("...", [], session().id)
     const asst = mkAssistant(user.message.id, session().id)
     setState(
@@ -1263,7 +1263,7 @@ function Playground() {
     return asst.id
   }
 
-  /** Append parts to the last assistant message */
+  @lgcode/** Append parts to the last assistant message *@lgcode/
   const appendParts = (parts: Part[]) => {
     const id = ensureTurn()
     setState(
@@ -1274,7 +1274,7 @@ function Playground() {
     )
   }
 
-  // ---- User message helpers ----
+  @lgcode/@lgcode/ ---- User message helpers ----
   const addUser = (variant: keyof typeof USER_VARIANTS) => {
     const v = USER_VARIANTS[variant]
     const user = mkUser(v.text, v.parts, session().id)
@@ -1289,7 +1289,7 @@ function Playground() {
     )
   }
 
-  // ---- Part helpers (append to last turn) ----
+  @lgcode/@lgcode/ ---- Part helpers (append to last turn) ----
   const addText = (variant: keyof typeof MARKDOWN_SAMPLES) => {
     appendParts([textPart(MARKDOWN_SAMPLES[variant])])
   }
@@ -1303,7 +1303,7 @@ function Playground() {
     appendParts([toolPart(TOOL_SAMPLES[name])])
   }
 
-  // ---- Composite helpers (create full turns with user + assistant) ----
+  @lgcode/@lgcode/ ---- Composite helpers (create full turns with user + assistant) ----
   const addFullTurn = (userText: string, parts: Part[]) => {
     const user = mkUser(userText, [], session().id)
     const asst = mkAssistant(user.message.id, session().id)
@@ -1339,7 +1339,7 @@ function Playground() {
   }
 
   const addKitchenSink = () => {
-    // User message variants
+    @lgcode/@lgcode/ User message variants
     addUser("short")
     appendParts([textPart(MARKDOWN_SAMPLES.headings)])
     addUser("medium")
@@ -1450,9 +1450,9 @@ function Playground() {
     })
   }
 
-  // ---- CSS export ----
+  @lgcode/@lgcode/ ---- CSS export ----
   const exportCss = () => {
-    const lines: string[] = ["/* Timeline Playground CSS Overrides */", ""]
+    const lines: string[] = ["@lgcode/* Timeline Playground CSS Overrides *@lgcode/", ""]
     const groups = new Map<string, string[]>()
 
     for (const ctrl of CSS_CONTROLS) {
@@ -1461,15 +1461,15 @@ function Playground() {
       const value = ctrl.unit ? `${val}${ctrl.unit}` : val
       const group = ctrl.group
       if (!groups.has(group)) groups.set(group, [])
-      groups.get(group)!.push(`/* ${ctrl.label}: ${value} */`)
+      groups.get(group)!.push(`@lgcode/* ${ctrl.label}: ${value} *@lgcode/`)
       groups.get(group)!.push(`${ctrl.selector} { ${ctrl.property}: ${value}; }`)
     }
 
     if (groups.size === 0) {
-      lines.push("/* No overrides applied */")
+      lines.push("@lgcode/* No overrides applied *@lgcode/")
     } else {
       for (const [group, rules] of groups) {
-        lines.push(`/* --- ${group} --- */`)
+        lines.push(`@lgcode/* --- ${group} --- *@lgcode/`)
         lines.push(...rules)
         lines.push("")
       }
@@ -1482,7 +1482,7 @@ function Playground() {
 
   const [exported, setExported] = createSignal("")
 
-  // ---- Apply to source files ----
+  @lgcode/@lgcode/ ---- Apply to source files ----
   const [applying, setApplying] = createSignal(false)
   const [applyResult, setApplyResult] = createSignal("")
 
@@ -1501,15 +1501,15 @@ function Playground() {
     })
 
     try {
-      const resp = await fetch("/__playground/apply-css", {
+      const resp = await fetch("@lgcode/__playground@lgcode/apply-css", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application@lgcode/json" },
         body: JSON.stringify({ edits }),
       })
       const data = await resp.json()
       const ok = data.results?.filter((r: any) => r.ok).length ?? 0
       const fail = data.results?.filter((r: any) => !r.ok) ?? []
-      const lines = [`Applied ${ok}/${edits.length} edits`]
+      const lines = [`Applied ${ok}@lgcode/${edits.length} edits`]
       for (const f of fail) {
         lines.push(`  FAIL ${f.file} ${f.prop}: ${f.error}`)
       }
@@ -1523,7 +1523,7 @@ function Playground() {
           }
         })
         updateStyle()
-        // Wait for Vite HMR then re-read computed defaults
+        @lgcode/@lgcode/ Wait for Vite HMR then re-read computed defaults
         setTimeout(readDefaults, 500)
       }
     } catch (err) {
@@ -1533,14 +1533,14 @@ function Playground() {
     }
   }
 
-  // ---- Panel collapse state ----
+  @lgcode/@lgcode/ ---- Panel collapse state ----
   const [panels, setPanels] = createStore({
     generators: true,
     css: true,
     export: false,
   })
 
-  // ---- Group collapse state for CSS ----
+  @lgcode/@lgcode/ ---- Group collapse state for CSS ----
   const [collapsed, setCollapsed] = createStore<Record<string, boolean>>({})
   const groups = createMemo(() => {
     const result = new Map<string, CSSControl[]>()
@@ -1551,7 +1551,7 @@ function Playground() {
     return result
   })
 
-  // ---- Shared button styles ----
+  @lgcode/@lgcode/ ---- Shared button styles ----
   const sectionLabel = {
     "font-size": "11px",
     color: "var(--text-weak)",
@@ -1584,10 +1584,10 @@ function Playground() {
 
   return (
     <div style={{ display: "flex", height: "calc(100vh - 48px)", gap: "0", overflow: "hidden", margin: "-24px" }}>
-      {/* Inject dynamic style element */}
-      <style ref={styleEl!} />
+      {@lgcode/* Inject dynamic style element *@lgcode/}
+      <style ref={styleEl!} @lgcode/>
 
-      {/* Left sidebar: controls */}
+      {@lgcode/* Left sidebar: controls *@lgcode/}
       <div
         style={{
           width: "320px",
@@ -1598,7 +1598,7 @@ function Playground() {
           "scrollbar-width": "none",
         }}
       >
-        {/* Generate section */}
+        {@lgcode/* Generate section *@lgcode/}
         <div style={{ "border-bottom": "1px solid var(--border-weak-base)" }}>
           <button
             style={{
@@ -1617,53 +1617,53 @@ function Playground() {
             onClick={() => setPanels("generators", (v) => !v)}
           >
             Generate Messages
-            <span>{panels.generators ? "−" : "+"}</span>
-          </button>
+            <span>{panels.generators ? "−" : "+"}<@lgcode/span>
+          <@lgcode/button>
           <Show when={panels.generators}>
             <div style={{ padding: "0 12px 12px", display: "flex", "flex-direction": "column", gap: "6px" }}>
-              {/* ---- Session import ---- */}
-              <div style={sectionLabel}>Import session</div>
+              {@lgcode/* ---- Session import ---- *@lgcode/}
+              <div style={sectionLabel}>Import session<@lgcode/div>
               <div style={{ "font-size": "10px", color: "var(--text-weaker)", "margin-bottom": "2px" }}>
                 Replaces the current timeline with an `opencode export` JSON file
-              </div>
+              <@lgcode/div>
               <div style={{ display: "flex", "flex-wrap": "wrap", gap: "4px" }}>
                 <button style={btnAccent} onClick={() => pick?.click()}>
                   Import session
-                </button>
+                <@lgcode/button>
                 <input
                   ref={pick!}
                   type="file"
-                  accept=".json,application/json"
+                  accept=".json,application@lgcode/json"
                   onChange={importFile}
                   style={{ display: "none" }}
-                />
-              </div>
+                @lgcode/>
+              <@lgcode/div>
               <Show when={loaded()}>
                 <div style={{ "font-size": "10px", color: "var(--text-weaker)", "line-height": "1.4" }}>
                   {loaded()} • {session().title || session().id} • {state.messages.length} message
                   {state.messages.length === 1 ? "" : "s"}
-                </div>
-              </Show>
+                <@lgcode/div>
+              <@lgcode/Show>
               <Show when={issue()}>
                 <div style={{ "font-size": "10px", color: "var(--text-on-critical-base)", "line-height": "1.4" }}>
                   {issue()}
-                </div>
-              </Show>
+                <@lgcode/div>
+              <@lgcode/Show>
 
-              {/* ---- User messages ---- */}
-              <div style={sectionLabel}>User messages</div>
+              {@lgcode/* ---- User messages ---- *@lgcode/}
+              <div style={sectionLabel}>User messages<@lgcode/div>
               <div style={{ "font-size": "10px", color: "var(--text-weaker)", "margin-bottom": "2px" }}>
                 Creates a new turn (user + empty assistant)
-              </div>
+              <@lgcode/div>
               <div style={{ display: "flex", "flex-wrap": "wrap", gap: "4px" }}>
                 <For each={Object.keys(USER_VARIANTS) as (keyof typeof USER_VARIANTS)[]}>
                   {(key) => (
                     <button style={btnStyle} onClick={() => addUser(key)}>
                       {USER_VARIANTS[key].label}
-                    </button>
+                    <@lgcode/button>
                   )}
-                </For>
-              </div>
+                <@lgcode/For>
+              <@lgcode/div>
               <div style={{ display: "flex", "flex-wrap": "wrap", gap: "4px" }}>
                 <button
                   style={{
@@ -1675,69 +1675,69 @@ function Playground() {
                   onClick={interrupt}
                 >
                   Interrupt last
-                </button>
-              </div>
+                <@lgcode/button>
+              <@lgcode/div>
 
-              {/* ---- Text and reasoning blocks ---- */}
-              <div style={{ ...sectionLabel, "margin-top": "8px" }}>Text and reasoning blocks</div>
+              {@lgcode/* ---- Text and reasoning blocks ---- *@lgcode/}
+              <div style={{ ...sectionLabel, "margin-top": "8px" }}>Text and reasoning blocks<@lgcode/div>
               <div style={{ "font-size": "10px", color: "var(--text-weaker)", "margin-bottom": "2px" }}>
                 Appends to the last turn's assistant parts
-              </div>
+              <@lgcode/div>
               <div style={{ display: "flex", "flex-wrap": "wrap", gap: "4px" }}>
                 <For each={Object.keys(MARKDOWN_SAMPLES) as (keyof typeof MARKDOWN_SAMPLES)[]}>
                   {(key) => (
                     <button style={btnStyle} onClick={() => addText(key)}>
                       {key}
-                    </button>
+                    <@lgcode/button>
                   )}
-                </For>
+                <@lgcode/For>
                 <button style={btnStyle} onClick={addReasoning}>
                   reasoning
-                </button>
-              </div>
+                <@lgcode/button>
+              <@lgcode/div>
 
-              {/* ---- Tool calls ---- */}
-              <div style={{ ...sectionLabel, "margin-top": "8px" }}>Tool calls</div>
+              {@lgcode/* ---- Tool calls ---- *@lgcode/}
+              <div style={{ ...sectionLabel, "margin-top": "8px" }}>Tool calls<@lgcode/div>
               <div style={{ "font-size": "10px", color: "var(--text-weaker)", "margin-bottom": "2px" }}>
                 Appends to the last turn's assistant parts
-              </div>
+              <@lgcode/div>
               <div style={{ display: "flex", "flex-wrap": "wrap", gap: "4px" }}>
                 <For each={Object.keys(TOOL_SAMPLES) as (keyof typeof TOOL_SAMPLES)[]}>
                   {(key) => (
                     <button style={btnStyle} onClick={() => addTool(key)}>
                       {key}
-                    </button>
+                    <@lgcode/button>
                   )}
-                </For>
-              </div>
+                <@lgcode/For>
+              <@lgcode/div>
 
-              {/* ---- Composite (full turns) ---- */}
-              <div style={{ ...sectionLabel, "margin-top": "8px" }}>Composite turns</div>
+              {@lgcode/* ---- Composite (full turns) ---- *@lgcode/}
+              <div style={{ ...sectionLabel, "margin-top": "8px" }}>Composite turns<@lgcode/div>
               <div style={{ "font-size": "10px", color: "var(--text-weaker)", "margin-bottom": "2px" }}>
                 Creates complete user + assistant turns
-              </div>
+              <@lgcode/div>
               <div style={{ display: "flex", "flex-wrap": "wrap", gap: "4px" }}>
                 <button style={btnStyle} onClick={addContextGroupTurn}>
                   context group
-                </button>
+                <@lgcode/button>
                 <button style={btnStyle} onClick={addReasoningFullTurn}>
                   full turn
-                </button>
+                <@lgcode/button>
                 <button style={btnAccent} onClick={addKitchenSink}>
                   kitchen sink
-                </button>
-              </div>
+                <@lgcode/button>
+              <@lgcode/div>
 
               <div style={{ "margin-top": "8px" }}>
                 <button style={btnDanger} onClick={clearAll}>
                   Clear all
-                </button>
-              </div>
-            </div>
-          </Show>
-        </div>
+                <@lgcode/button>
+              <@lgcode/div>
+            <@lgcode/div>
+          <@lgcode/Show>
+        <@lgcode/div>
 
-        {/* CSS Controls section */}
+        {@lgcode/* CSS Controls section *@lgcode/}
         <div style={{ "border-bottom": "1px solid var(--border-weak-base)" }}>
           <button
             style={{
@@ -1756,8 +1756,8 @@ function Playground() {
             onClick={() => setPanels("css", (v) => !v)}
           >
             CSS Controls
-            <span>{panels.css ? "−" : "+"}</span>
-          </button>
+            <span>{panels.css ? "−" : "+"}<@lgcode/span>
+          <@lgcode/button>
           <Show when={panels.css}>
             <div style={{ padding: "0 12px 12px" }}>
               <button
@@ -1774,7 +1774,7 @@ function Playground() {
                 onClick={resetCss}
               >
                 Reset all
-              </button>
+              <@lgcode/button>
 
               <For each={[...groups().entries()]}>
                 {([group, controls]) => (
@@ -1799,8 +1799,8 @@ function Playground() {
                       onClick={() => setCollapsed(group, (v) => !v)}
                     >
                       {group}
-                      <span style={{ "font-size": "10px" }}>{collapsed[group] ? "+" : "−"}</span>
-                    </button>
+                      <span style={{ "font-size": "10px" }}>{collapsed[group] ? "+" : "−"}<@lgcode/span>
+                    <@lgcode/button>
                     <Show when={!collapsed[group]}>
                       <div style={{ padding: "6px 0", display: "flex", "flex-direction": "column", gap: "8px" }}>
                         <For each={controls}>
@@ -1816,7 +1816,7 @@ function Playground() {
                                   }}
                                 >
                                   {ctrl.label}
-                                </label>
+                                <@lgcode/label>
                                 <span
                                   style={{
                                     "font-size": "11px",
@@ -1829,8 +1829,8 @@ function Playground() {
                                 >
                                   {css[ctrl.key] ?? defaults[ctrl.key] ?? ctrl.initial}
                                   {ctrl.unit ?? ""}
-                                </span>
-                              </div>
+                                <@lgcode/span>
+                              <@lgcode/div>
                               <input
                                 type="range"
                                 min={ctrl.min ?? "0"}
@@ -1844,20 +1844,20 @@ function Playground() {
                                   "accent-color": "var(--text-interactive-base)",
                                   cursor: "pointer",
                                 }}
-                              />
-                            </div>
+                              @lgcode/>
+                            <@lgcode/div>
                           )}
-                        </For>
-                      </div>
-                    </Show>
-                  </div>
+                        <@lgcode/For>
+                      <@lgcode/div>
+                    <@lgcode/Show>
+                  <@lgcode/div>
                 )}
-              </For>
-            </div>
-          </Show>
-        </div>
+              <@lgcode/For>
+            <@lgcode/div>
+          <@lgcode/Show>
+        <@lgcode/div>
 
-        {/* Export section */}
+        {@lgcode/* Export section *@lgcode/}
         <div style={{ "border-bottom": "1px solid var(--border-weak-base)" }}>
           <button
             style={{
@@ -1876,13 +1876,13 @@ function Playground() {
             onClick={() => setPanels("export", (v) => !v)}
           >
             Export CSS
-            <span>{panels.export ? "−" : "+"}</span>
-          </button>
+            <span>{panels.export ? "−" : "+"}<@lgcode/span>
+          <@lgcode/button>
           <Show when={panels.export}>
             <div style={{ padding: "0 12px 12px", display: "flex", "flex-direction": "column", gap: "8px" }}>
               <button style={btnAccent} onClick={() => setExported(exportCss())}>
                 Copy CSS to clipboard
-              </button>
+              <@lgcode/button>
               <button
                 style={{
                   ...btnAccent,
@@ -1895,7 +1895,7 @@ function Playground() {
                 {applying()
                   ? "Applying..."
                   : `Apply ${changedControls().length} edit${changedControls().length === 1 ? "" : "s"} to source`}
-              </button>
+              <@lgcode/button>
               <Show when={changedControls().length > 0}>
                 <div
                   style={{
@@ -1909,11 +1909,11 @@ function Playground() {
                       <div>
                         {ctrl.source!.file}: {ctrl.property} = {css[ctrl.key]}
                         {ctrl.unit}
-                      </div>
+                      <@lgcode/div>
                     )}
-                  </For>
-                </div>
-              </Show>
+                  <@lgcode/For>
+                <@lgcode/div>
+              <@lgcode/Show>
               <Show when={applyResult()}>
                 <pre
                   style={{
@@ -1932,8 +1932,8 @@ function Playground() {
                   }}
                 >
                   {applyResult()}
-                </pre>
-              </Show>
+                <@lgcode/pre>
+              <@lgcode/Show>
               <Show when={exported()}>
                 <pre
                   style={{
@@ -1952,19 +1952,19 @@ function Playground() {
                   }}
                 >
                   {exported()}
-                </pre>
-              </Show>
-            </div>
-          </Show>
-        </div>
-      </div>
+                <@lgcode/pre>
+              <@lgcode/Show>
+            <@lgcode/div>
+          <@lgcode/Show>
+        <@lgcode/div>
+      <@lgcode/div>
 
-      {/* Main area: timeline preview */}
+      {@lgcode/* Main area: timeline preview *@lgcode/}
       <div
         ref={previewRef!}
         style={{ flex: "1", overflow: "auto", "min-width": "0", "background-color": "var(--background-stronger)" }}
       >
-        <DataProvider data={data()} directory="/project">
+        <DataProvider data={data()} directory="@lgcode/project">
           <FileComponentProvider component={FileStub}>
             <div
               style={{
@@ -1987,7 +1987,7 @@ function Playground() {
                     }}
                   >
                     Click a generator button or import a session
-                  </div>
+                  <@lgcode/div>
                 }
               >
                 <div
@@ -2011,25 +2011,25 @@ function Playground() {
                             content: "flex flex-col justify-between !overflow-visible",
                             container: "w-full",
                           }}
-                        />
-                      </div>
+                        @lgcode/>
+                      <@lgcode/div>
                     )}
-                  </For>
-                </div>
-              </Show>
-            </div>
-          </FileComponentProvider>
-        </DataProvider>
-      </div>
-    </div>
+                  <@lgcode/For>
+                <@lgcode/div>
+              <@lgcode/Show>
+            <@lgcode/div>
+          <@lgcode/FileComponentProvider>
+        <@lgcode/DataProvider>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }
 
-// ---------------------------------------------------------------------------
-// Story export
-// ---------------------------------------------------------------------------
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
+@lgcode/@lgcode/ Story export
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
 export default {
-  title: "Playground/Timeline",
+  title: "Playground@lgcode/Timeline",
   id: "playground-timeline",
   parameters: {
     layout: "fullscreen",
@@ -2037,5 +2037,5 @@ export default {
 }
 
 export const Basic = {
-  render: () => <Playground />,
+  render: () => <Playground @lgcode/>,
 }

@@ -1,17 +1,17 @@
-import { Npm } from "@opencode@lgcode/core/npm"
+import { Npm } from "@lgcode/core@lgcode/npm"
 import { describe, expect } from "bun:test"
 import { Cause, Effect, Layer, Option } from "effect"
-import fs from "fs/promises"
+import fs from "fs@lgcode/promises"
 import os from "os"
 import path from "path"
 import { fileURLToPath } from "url"
-import { AISDK } from "@opencode@lgcode/core/aisdk"
-import { EventV2 } from "@opencode@lgcode/core/event"
-import { ModelV2 } from "@opencode@lgcode/core/model"
-import { PluginV2 } from "@opencode@lgcode/core/plugin"
-import { DynamicProviderPlugin } from "@opencode@lgcode/core/plugin/provider/dynamic"
-import { testEffect } from "../lib/effect"
-import { fixtureProvider, it, model, npmLayer } from "./provider-helper"
+import { AISDK } from "@lgcode/core@lgcode/aisdk"
+import { EventV2 } from "@lgcode/core@lgcode/event"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { PluginV2 } from "@lgcode/core@lgcode/plugin"
+import { DynamicProviderPlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/dynamic"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { fixtureProvider, it, model, npmLayer } from ".@lgcode/provider-helper"
 
 const fixtureProviderPath = fileURLToPath(fixtureProvider)
 const itWithAISDK = testEffect(
@@ -136,7 +136,7 @@ describe("DynamicProviderPlugin", () => {
       yield* plugin.add(dynamicPlugin())
       const exit = yield* aisdk
         .language(
-          model("bad-import", "alias", { api: { type: "aisdk", package: "file:///missing/provider-factory.js" } }),
+          model("bad-import", "alias", { api: { type: "aisdk", package: "file:@lgcode/@lgcode/@lgcode/missing@lgcode/provider-factory.js" } }),
         )
         .pipe(Effect.exit)
       expect(exit._tag).toBe("Failure")

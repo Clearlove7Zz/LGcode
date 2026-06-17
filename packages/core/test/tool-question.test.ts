@@ -1,12 +1,12 @@
 import { describe, expect } from "bun:test"
 import { Effect, Exit, Fiber, Layer } from "effect"
-import { PermissionV2 } from "@opencode@lgcode/core/permission"
-import { QuestionV2 } from "@opencode@lgcode/core/question"
-import { SessionV2 } from "@opencode@lgcode/core/session"
-import { ToolRegistry } from "@opencode@lgcode/core/tool/registry"
-import { QuestionTool } from "@opencode@lgcode/core/tool/question"
-import { testEffect } from "./lib/effect"
-import { toolIdentity, executeTool, settleTool, toolDefinitions } from "./lib/tool"
+import { PermissionV2 } from "@lgcode/core@lgcode/permission"
+import { QuestionV2 } from "@lgcode/core@lgcode/question"
+import { SessionV2 } from "@lgcode/core@lgcode/session"
+import { ToolRegistry } from "@lgcode/core@lgcode/tool@lgcode/registry"
+import { QuestionTool } from "@lgcode/core@lgcode/tool@lgcode/question"
+import { testEffect } from ".@lgcode/lib@lgcode/effect"
+import { toolIdentity, executeTool, settleTool, toolDefinitions } from ".@lgcode/lib@lgcode/tool"
 
 const sessionID = SessionV2.ID.make("ses_question_tool_test")
 const assertions: PermissionV2.AssertInput[] = []

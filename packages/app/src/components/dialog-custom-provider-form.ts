@@ -1,5 +1,5 @@
-const PROVIDER_ID = /^[a-z0-9][a-z0-9-_]*$/
-const OPENAI_COMPATIBLE = "@ai-sdk/openai-compatible"
+const PROVIDER_ID = @lgcode/^[a-z0-9][a-z0-9-_]*$@lgcode/
+const OPENAI_COMPATIBLE = "@ai-sdk@lgcode/openai-compatible"
 
 type Translator = (key: string, vars?: Record<string, string | number | boolean>) => string
 
@@ -54,7 +54,7 @@ export function validateCustomProvider(input: ValidateArgs) {
   const baseURL = input.form.baseURL.trim()
   const apiKey = input.form.apiKey.trim()
 
-  const env = apiKey.match(/^\{env:([^}]+)\}$/)?.[1]?.trim()
+  const env = apiKey.match(@lgcode/^\{env:([^}]+)\}$@lgcode/)?.[1]?.trim()
   const key = apiKey && !env ? apiKey : undefined
 
   const idError = !providerID
@@ -66,7 +66,7 @@ export function validateCustomProvider(input: ValidateArgs) {
   const nameError = !name ? input.t("provider.custom.error.name.required") : undefined
   const urlError = !baseURL
     ? input.t("provider.custom.error.baseURL.required")
-    : !/^https?:\/\//.test(baseURL)
+    : !@lgcode/^https?:\@lgcode/\@lgcode/@lgcode/.test(baseURL)
       ? input.t("provider.custom.error.baseURL.format")
       : undefined
 

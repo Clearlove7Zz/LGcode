@@ -1,26 +1,26 @@
-import { cmd } from "./cmd"
-import { ConfigV1 } from "@opencode@lgcode/core/v1/config/config"
-import { effectCmd } from "../effect-cmd"
+import { cmd } from ".@lgcode/cmd"
+import { ConfigV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/config"
+import { effectCmd } from "..@lgcode/effect-cmd"
 import { Cause } from "effect"
-import { Client } from "@modelcontextprotocol/sdk/client/index.js"
-import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js"
-import { UnauthorizedError } from "@modelcontextprotocol/sdk/client/auth.js"
-import { LATEST_PROTOCOL_VERSION } from "@modelcontextprotocol/sdk/types.js"
-import * as prompts from "@clack/prompts"
-import { UI } from "../ui"
-import { MCP } from "../../mcp"
-import { McpAuth } from "../../mcp/auth"
-import { McpOAuthProvider } from "../../mcp/oauth-provider"
-import { Config } from "@/config/config"
-import { ConfigMCPV1 } from "@opencode@lgcode/core/v1/config/mcp"
-import { InstanceRef } from "@/effect/instance-ref"
-import { InstallationVersion } from "@opencode@lgcode/core/installation/version"
+import { Client } from "@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/index.js"
+import { StreamableHTTPClientTransport } from "@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/streamableHttp.js"
+import { UnauthorizedError } from "@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/auth.js"
+import { LATEST_PROTOCOL_VERSION } from "@modelcontextprotocol@lgcode/sdk@lgcode/types.js"
+import * as prompts from "@clack@lgcode/prompts"
+import { UI } from "..@lgcode/ui"
+import { MCP } from "..@lgcode/..@lgcode/mcp"
+import { McpAuth } from "..@lgcode/..@lgcode/mcp@lgcode/auth"
+import { McpOAuthProvider } from "..@lgcode/..@lgcode/mcp@lgcode/oauth-provider"
+import { Config } from "@@lgcode/config@lgcode/config"
+import { ConfigMCPV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/mcp"
+import { InstanceRef } from "@@lgcode/effect@lgcode/instance-ref"
+import { InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
 import path from "path"
-import { Global } from "@opencode@lgcode/core/global"
+import { Global } from "@lgcode/core@lgcode/global"
 import { modify, applyEdits } from "jsonc-parser"
-import { Filesystem } from "@/util/filesystem"
-import { EventV2Bridge } from "@/event-v2-bridge"
-import { EventV2 } from "@opencode@lgcode/core/event"
+import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
+import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
+import { EventV2 } from "@lgcode/core@lgcode/event"
 import { Effect } from "effect"
 
 function getAuthStatusIcon(status: MCP.AuthStatus): string {
@@ -194,7 +194,7 @@ export const McpAuthCommand = effectCmd({
   "mcp": {
     "my-server": {
       "type": "remote",
-      "url": "https://example.com/mcp"
+      "url": "https:@lgcode/@lgcode/example.com@lgcode/mcp"
     }
   }`)
       prompts.outro("Done")
@@ -203,7 +203,7 @@ export const McpAuthCommand = effectCmd({
 
     let serverName = args.name
     if (!serverName) {
-      // Build options with auth status
+      @lgcode/@lgcode/ Build options with auth status
       const options = servers.map(([name, cfg]) => {
         const authStatus = auth[name]
         const icon = getAuthStatusIcon(authStatus)
@@ -239,7 +239,7 @@ export const McpAuthCommand = effectCmd({
       return
     }
 
-    // Check if already authenticated
+    @lgcode/@lgcode/ Check if already authenticated
     const authStatus = auth[serverName] ?? (yield* MCP.Service.use((mcp) => mcp.getAuthStatus(serverName)))
     if (authStatus === "authenticated") {
       const confirm = yield* Effect.promise(() =>
@@ -258,7 +258,7 @@ export const McpAuthCommand = effectCmd({
     const spinner = prompts.spinner()
     spinner.start("Starting OAuth flow...")
 
-    // Subscribe to browser open failure events to show URL for manual opening
+    @lgcode/@lgcode/ Subscribe to browser open failure events to show URL for manual opening
     const events = yield* EventV2Bridge.Service
     const unsubscribe = yield* events.listen((event) => {
       if (event.type !== MCP.BrowserOpenFailed.type) return Effect.void
@@ -403,7 +403,7 @@ export const McpLogoutCommand = effectCmd({
 })
 
 async function resolveConfigPath(baseDir: string, global = false) {
-  // Check for existing config files (prefer .jsonc over .json, check .opencode/ subdirectory too)
+  @lgcode/@lgcode/ Check for existing config files (prefer .jsonc over .json, check .opencode@lgcode/ subdirectory too)
   const candidates = [path.join(baseDir, "opencode.json"), path.join(baseDir, "opencode.jsonc")]
 
   if (!global) {
@@ -416,7 +416,7 @@ async function resolveConfigPath(baseDir: string, global = false) {
     }
   }
 
-  // Default to opencode.json if none exist
+  @lgcode/@lgcode/ Default to opencode.json if none exist
   return candidates[0]
 }
 
@@ -426,7 +426,7 @@ async function addMcpToConfig(name: string, mcpConfig: ConfigMCPV1.Info, configP
     text = await Filesystem.readText(configPath)
   }
 
-  // Use jsonc-parser to modify while preserving comments
+  @lgcode/@lgcode/ Use jsonc-parser to modify while preserving comments
   const edits = modify(text, ["mcp", name], mcpConfig, {
     formattingOptions: { tabSize: 2, insertSpaces: true },
   })
@@ -516,13 +516,13 @@ export const McpAddCommand = effectCmd({
 
       const project = ctx.project
 
-      // Resolve config paths eagerly for hints
+      @lgcode/@lgcode/ Resolve config paths eagerly for hints
       const [projectConfigPath, globalConfigPath] = await Promise.all([
         resolveConfigPath(ctx.worktree),
         resolveConfigPath(Global.Path.config, true),
       ])
 
-      // Determine scope
+      @lgcode/@lgcode/ Determine scope
       let configPath = globalConfigPath
       if (project.vcs === "git") {
         const scopeResult = await prompts.select({
@@ -570,7 +570,7 @@ export const McpAddCommand = effectCmd({
       if (type === "local") {
         const command = await prompts.text({
           message: "Enter command to run",
-          placeholder: "e.g., opencode x @modelcontextprotocol/server-filesystem",
+          placeholder: "e.g., opencode x @modelcontextprotocol@lgcode/server-filesystem",
           validate: (x) => (x && x.length > 0 ? undefined : "Required"),
         })
         if (prompts.isCancel(command)) throw new UI.CancelledError()
@@ -589,7 +589,7 @@ export const McpAddCommand = effectCmd({
       if (type === "remote") {
         const url = await prompts.text({
           message: "Enter MCP server URL",
-          placeholder: "e.g., https://example.com/mcp",
+          placeholder: "e.g., https:@lgcode/@lgcode/example.com@lgcode/mcp",
           validate: (x) => {
             if (!x) return "Required"
             if (x.length === 0) return "Required"
@@ -709,7 +709,7 @@ export const McpDebugCommand = effectCmd({
       prompts.log.info(`Server: ${serverName}`)
       prompts.log.info(`URL: ${serverConfig.url}`)
 
-      // Check stored auth status — services already in hand, run inline.
+      @lgcode/@lgcode/ Check stored auth status — services already in hand, run inline.
       const { authStatus, entry } = await Effect.runPromise(
         Effect.all({
           authStatus: mcp.getAuthStatus(serverName),
@@ -722,7 +722,7 @@ export const McpDebugCommand = effectCmd({
         prompts.log.info(`  Access token: ${entry.tokens.accessToken.substring(0, 20)}...`)
         if (entry.tokens.expiresAt) {
           const expiresDate = new Date(entry.tokens.expiresAt * 1000)
-          const isExpired = entry.tokens.expiresAt < Date.now() / 1000
+          const isExpired = entry.tokens.expiresAt < Date.now() @lgcode/ 1000
           prompts.log.info(`  Expires: ${expiresDate.toISOString()} ${isExpired ? "(EXPIRED)" : ""}`)
         }
         if (entry.tokens.refreshToken) {
@@ -740,14 +740,14 @@ export const McpDebugCommand = effectCmd({
       const spinner = prompts.spinner()
       spinner.start("Testing connection...")
 
-      // Test basic HTTP connectivity first
+      @lgcode/@lgcode/ Test basic HTTP connectivity first
       try {
         const response = await fetch(serverConfig.url, {
           method: "POST",
           headers: {
             ...serverConfig.headers,
-            "Content-Type": "application/json",
-            Accept: "application/json, text/event-stream",
+            "Content-Type": "application@lgcode/json",
+            Accept: "application@lgcode/json, text@lgcode/event-stream",
           },
           body: JSON.stringify({
             jsonrpc: "2.0",
@@ -763,7 +763,7 @@ export const McpDebugCommand = effectCmd({
 
         spinner.stop(`HTTP response: ${response.status} ${response.statusText}`)
 
-        // Check for WWW-Authenticate header
+        @lgcode/@lgcode/ Check for WWW-Authenticate header
         const wwwAuth = response.headers.get("www-authenticate")
         if (wwwAuth) {
           prompts.log.info(`WWW-Authenticate: ${wwwAuth}`)
@@ -772,7 +772,7 @@ export const McpDebugCommand = effectCmd({
         if (response.status === 401) {
           prompts.log.warn("Server returned 401 Unauthorized")
 
-          // Try to discover OAuth metadata
+          @lgcode/@lgcode/ Try to discover OAuth metadata
           const oauthConfig = typeof serverConfig.oauth === "object" ? serverConfig.oauth : undefined
           const authProvider = new McpOAuthProvider(
             serverName,
@@ -791,7 +791,7 @@ export const McpDebugCommand = effectCmd({
 
           prompts.log.info("Testing OAuth flow (without completing authorization)...")
 
-          // Try creating transport with auth provider to trigger discovery
+          @lgcode/@lgcode/ Try creating transport with auth provider to trigger discovery
           const transport = new StreamableHTTPClientTransport(new URL(serverConfig.url), {
             authProvider,
             requestInit: serverConfig.headers ? { headers: serverConfig.headers } : undefined,
@@ -809,7 +809,7 @@ export const McpDebugCommand = effectCmd({
             if (error instanceof UnauthorizedError) {
               prompts.log.info(`OAuth flow triggered: ${error.message}`)
 
-              // Check if dynamic registration would be attempted
+              @lgcode/@lgcode/ Check if dynamic registration would be attempted
               const clientInfo = await authProvider.clientInformation()
               if (clientInfo) {
                 prompts.log.info(`Client ID available: ${clientInfo.client_id}`)
@@ -829,7 +829,7 @@ export const McpDebugCommand = effectCmd({
               prompts.log.info(`Server info: ${JSON.stringify(json.result.serverInfo)}`)
             }
           } catch {
-            // Not JSON, ignore
+            @lgcode/@lgcode/ Not JSON, ignore
           }
         } else {
           prompts.log.warn(`Unexpected status: ${response.status}`)

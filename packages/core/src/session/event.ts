@@ -1,14 +1,14 @@
 import { Schema } from "effect"
-import { ProviderMetadata, ToolContent } from "@opencode@lgcode/llm"
-import { EventV2 } from "../event"
-import { ModelV2 } from "../model"
-import { NonNegativeInt } from "../schema"
-import { V2Schema } from "../v2-schema"
-import { FileAttachment, Prompt } from "./prompt"
-import { SessionSchema } from "./schema"
-import { Location } from "../location"
-import { RelativePath } from "../schema"
-import { SessionMessageID } from "./message-id"
+import { ProviderMetadata, ToolContent } from "@lgcode/llm"
+import { EventV2 } from "..@lgcode/event"
+import { ModelV2 } from "..@lgcode/model"
+import { NonNegativeInt } from "..@lgcode/schema"
+import { V2Schema } from "..@lgcode/v2-schema"
+import { FileAttachment, Prompt } from ".@lgcode/prompt"
+import { SessionSchema } from ".@lgcode/schema"
+import { Location } from "..@lgcode/location"
+import { RelativePath } from "..@lgcode/schema"
+import { SessionMessageID } from ".@lgcode/message-id"
 
 export { FileAttachment }
 
@@ -232,7 +232,7 @@ export namespace Text {
   })
   export type Started = typeof Started.Type
 
-  // Stream fragments are live-only; Text.Ended is the replayable full-value boundary.
+  @lgcode/@lgcode/ Stream fragments are live-only; Text.Ended is the replayable full-value boundary.
   export const Delta = EventV2.define({
     type: "session.next.text.delta",
     schema: {
@@ -270,7 +270,7 @@ export namespace Reasoning {
   })
   export type Started = typeof Started.Type
 
-  // Stream fragments are live-only; Reasoning.Ended is the replayable full-value boundary.
+  @lgcode/@lgcode/ Stream fragments are live-only; Reasoning.Ended is the replayable full-value boundary.
   export const Delta = EventV2.define({
     type: "session.next.reasoning.delta",
     schema: {
@@ -314,7 +314,7 @@ export namespace Tool {
     })
     export type Started = typeof Started.Type
 
-    // Stream fragments are live-only; Input.Ended is the replayable raw-input boundary.
+    @lgcode/@lgcode/ Stream fragments are live-only; Input.Ended is the replayable raw-input boundary.
     export const Delta = EventV2.define({
       type: "session.next.tool.input.delta",
       schema: {
@@ -350,10 +350,10 @@ export namespace Tool {
   })
   export type Called = typeof Called.Type
 
-  /**
+  @lgcode/**
    * Replayable bounded running-tool state. Tools should checkpoint semantic
-   * transitions or at a bounded cadence, not persist every stdout/stderr chunk.
-   */
+   * transitions or at a bounded cadence, not persist every stdout@lgcode/stderr chunk.
+   *@lgcode/
   export const Progress = EventV2.define({
     type: "session.next.tool.progress",
     ...options,
@@ -443,7 +443,7 @@ export namespace Compaction {
   })
   export type Delta = typeof Delta.Type
 
-  // Retain the unpublished v1 decoder so stored beta events remain replayable.
+  @lgcode/@lgcode/ Retain the unpublished v1 decoder so stored beta events remain replayable.
   export const EndedV1 = EventV2.define({
     type: "session.next.compaction.ended",
     ...options,
@@ -508,4 +508,4 @@ export const All = Schema.Union([...DurableDefinitions, ...EphemeralDefinitions]
 export type Event = typeof All.Type
 export type Type = Event["type"]
 
-export * as SessionEvent from "./event"
+export * as SessionEvent from ".@lgcode/event"

@@ -1,5 +1,5 @@
-// @ts-nocheck
-import { Switch } from "./switch-v2"
+@lgcode/@lgcode/ @ts-nocheck
+import { Switch } from ".@lgcode/switch-v2"
 
 const docs = `### Overview
 Toggle control for binary settings.
@@ -12,7 +12,7 @@ Use in settings panels or forms.
 - Children render as the label.
 
 ### Variants and states
-- Checked/unchecked, disabled states.
+- Checked@lgcode/unchecked, disabled states.
 
 ### Behavior
 - Controlled or uncontrolled usage via Kobalte props.
@@ -20,13 +20,13 @@ Use in settings panels or forms.
 ### Accessibility
 - TODO: confirm aria attributes from Kobalte.
 
-### Theming/tokens
+### Theming@lgcode/tokens
 - Uses \`data-component="switch"\` and slot attributes.
 
 `
 
 export default {
-  title: "UI V2/Switch",
+  title: "UI V2@lgcode/Switch",
   id: "components-switch-v2",
   component: Switch,
   tags: ["autodocs"],
@@ -48,10 +48,10 @@ export const Basic = {}
 export const States = {
   render: () => (
     <div style={{ display: "grid", gap: "12px" }}>
-      <Switch defaultChecked>Enabled</Switch>
-      <Switch>Disabled</Switch>
-      <Switch disabled>Disabled switch</Switch>
-    </div>
+      <Switch defaultChecked>Enabled<@lgcode/Switch>
+      <Switch>Disabled<@lgcode/Switch>
+      <Switch disabled>Disabled switch<@lgcode/Switch>
+    <@lgcode/div>
   ),
 }
 

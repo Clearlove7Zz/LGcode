@@ -1,13 +1,13 @@
 import { afterEach, describe, expect, test } from "bun:test"
 import { ConfigProvider, Layer } from "effect"
-import { HttpRouter } from "effect/unstable/http"
-import { EventPaths } from "../../src/server/routes/instance/httpapi/groups/event"
-import { PtyPaths } from "../../src/server/routes/instance/httpapi/groups/pty"
-import { HttpApiApp } from "../../src/server/routes/instance/httpapi/server"
-import { ServerAuth } from "../../src/server/auth"
-import { PtyID } from "@opencode@lgcode/core/pty/schema"
-import { resetDatabase } from "../fixture/db"
-import { disposeAllInstances, tmpdir } from "../fixture/fixture"
+import { HttpRouter } from "effect@lgcode/unstable@lgcode/http"
+import { EventPaths } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/event"
+import { PtyPaths } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/pty"
+import { HttpApiApp } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/server"
+import { ServerAuth } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/auth"
+import { PtyID } from "@lgcode/core@lgcode/pty@lgcode/schema"
+import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
+import { disposeAllInstances, tmpdir } from "..@lgcode/fixture@lgcode/fixture"
 
 function app(input: { password?: string; username?: string }) {
   const handler = HttpRouter.toWebHandler(
@@ -27,7 +27,7 @@ function app(input: { password?: string; username?: string }) {
   return {
     fetch: (request: Request) => handler(request, HttpApiApp.context),
     request(input: string | URL | Request, init?: RequestInit) {
-      return this.fetch(input instanceof Request ? input : new Request(new URL(input, "http://localhost"), init))
+      return this.fetch(input instanceof Request ? input : new Request(new URL(input, "http:@lgcode/@lgcode/localhost"), init))
     },
   }
 }

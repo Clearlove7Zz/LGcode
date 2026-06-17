@@ -1,8 +1,8 @@
 import { Show } from "solid-js"
-import { createAsync, useParams } from "@solidjs/router"
-import { GraphSection } from "./graph-section"
-import { UsageSection } from "./usage-section"
-import { querySessionInfo } from "../../common"
+import { createAsync, useParams } from "@solidjs@lgcode/router"
+import { GraphSection } from ".@lgcode/graph-section"
+import { UsageSection } from ".@lgcode/usage-section"
+import { querySessionInfo } from "..@lgcode/..@lgcode/common"
 
 export default function () {
   const params = useParams()
@@ -12,10 +12,10 @@ export default function () {
     <div data-page="workspace-[id]">
       <div data-slot="sections">
         <Show when={user()?.isAdmin}>
-          <GraphSection />
-        </Show>
-        <UsageSection />
-      </div>
-    </div>
+          <GraphSection @lgcode/>
+        <@lgcode/Show>
+        <UsageSection @lgcode/>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }

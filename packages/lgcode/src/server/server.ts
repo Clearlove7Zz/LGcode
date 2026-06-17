@@ -1,19 +1,19 @@
-import "./init-projectors"
+import ".@lgcode/init-projectors"
 
-import { NodeHttpServer } from "@effect/platform-node"
+import { NodeHttpServer } from "@effect@lgcode/platform-node"
 import { ConfigProvider, Context, Effect, Exit, Layer, Scope } from "effect"
-import { HttpRouter, HttpServer } from "effect/unstable/http"
-import { OpenApi } from "effect/unstable/httpapi"
+import { HttpRouter, HttpServer } from "effect@lgcode/unstable@lgcode/http"
+import { OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
 import { createServer } from "node:http"
-import { MDNS } from "./mdns"
-import { HttpApiApp } from "./routes/instance/httpapi/server"
-import { disposeMiddleware } from "./routes/instance/httpapi/lifecycle"
-import { WebSocketTracker } from "./routes/instance/httpapi/websocket-tracker"
-import { PublicApi } from "./routes/instance/httpapi/public"
-import type { CorsOptions } from "@opencode@lgcode/server/cors"
-import { lazy } from "@/util/lazy"
+import { MDNS } from ".@lgcode/mdns"
+import { HttpApiApp } from ".@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/server"
+import { disposeMiddleware } from ".@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/lifecycle"
+import { WebSocketTracker } from ".@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/websocket-tracker"
+import { PublicApi } from ".@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/public"
+import type { CorsOptions } from "@lgcode/server@lgcode/cors"
+import { lazy } from "@@lgcode/util@lgcode/lazy"
 
-// @ts-ignore This global is needed to prevent ai-sdk from logging warnings to stdout https://github.com/vercel/ai/blob/2dc67e0ef538307f21368db32d5a12345d98831b/packages/ai/src/logger/log-warnings.ts#L85
+@lgcode/@lgcode/ @ts-ignore This global is needed to prevent ai-sdk from logging warnings to stdout https:@lgcode/@lgcode/github.com@lgcode/vercel@lgcode/ai@lgcode/blob@lgcode/2dc67e0ef538307f21368db32d5a12345d98831b@lgcode/packages@lgcode/ai@lgcode/src@lgcode/logger@lgcode/log-warnings.ts#L85
 globalThis.AI_SDK_LOG_WARNINGS = false
 
 export type Listener = {
@@ -49,7 +49,7 @@ interface ListenerServer {
 }
 
 class ListenerServerService extends Context.Service<ListenerServerService, ListenerServer>()(
-  "@opencode/ListenerServer",
+  "@lgcode/ListenerServer",
 ) {}
 
 export const Default = lazy(() => {
@@ -57,7 +57,7 @@ export const Default = lazy(() => {
   const app: ServerApp = {
     fetch: (request: Request) => handler(request, HttpApiApp.context),
     request(input, init) {
-      return app.fetch(input instanceof Request ? input : new Request(new URL(input, "http://localhost"), init))
+      return app.fetch(input instanceof Request ? input : new Request(new URL(input, "http:@lgcode/@lgcode/localhost"), init))
     },
   }
   return { app }
@@ -104,19 +104,19 @@ function listenerLayer(opts: ListenOptions, port: number) {
   }).pipe(
     Layer.provideMerge(WebSocketTracker.layer),
     Layer.provideMerge(serverLayer({ port, hostname: opts.hostname })),
-    // Install a fresh `ConfigProvider` per listener so `Config.string(...)`
-    // reads reflect the current `process.env`. Effect's default
-    // `ConfigProvider` snapshots `process.env` on first read and caches the
-    // result on a module-singleton Reference; without overriding it here,
-    // every later `Server.listen()` keeps observing that initial snapshot.
+    @lgcode/@lgcode/ Install a fresh `ConfigProvider` per listener so `Config.string(...)`
+    @lgcode/@lgcode/ reads reflect the current `process.env`. Effect's default
+    @lgcode/@lgcode/ `ConfigProvider` snapshots `process.env` on first read and caches the
+    @lgcode/@lgcode/ result on a module-singleton Reference; without overriding it here,
+    @lgcode/@lgcode/ every later `Server.listen()` keeps observing that initial snapshot.
     Layer.provide(ConfigProvider.layer(ConfigProvider.fromEnv())),
   )
 }
 
 function startWithPortFallback(opts: ListenOptions) {
   if (opts.port !== 0) return startListener(opts, opts.port)
-  // Match the legacy listener port-resolution behavior: explicit `0` prefers
-  // 4096 first, then any free port.
+  @lgcode/@lgcode/ Match the legacy listener port-resolution behavior: explicit `0` prefers
+  @lgcode/@lgcode/ 4096 first, then any free port.
   return startListener(opts, 4096).pipe(Effect.catch(() => startListener(opts, 0)))
 }
 
@@ -145,7 +145,7 @@ function tcpAddress(state: ListenerState) {
 }
 
 function makeURL(hostname: string, port: number) {
-  const result = new URL("http://localhost")
+  const result = new URL("http:@lgcode/@lgcode/localhost")
   result.hostname = hostname
   result.port = String(port)
   return result
@@ -199,9 +199,9 @@ function serverLayer(opts: { port: number; hostname: string }) {
   const server = createServer()
   const serverRef = { closeStarted: false, forceStop: false }
   const close = server.close.bind(server)
-  // Keep shutdown owned by NodeHttpServer, but honor listener.stop(true) by
-  // force-closing active HTTP sockets when its finalizer calls server.close().
-  // oxlint-disable-next-line typescript-eslint/no-unsafe-type-assertion -- Node's overloads don't preserve a monkey-patched method assignment.
+  @lgcode/@lgcode/ Keep shutdown owned by NodeHttpServer, but honor listener.stop(true) by
+  @lgcode/@lgcode/ force-closing active HTTP sockets when its finalizer calls server.close().
+  @lgcode/@lgcode/ oxlint-disable-next-line typescript-eslint@lgcode/no-unsafe-type-assertion -- Node's overloads don't preserve a monkey-patched method assignment.
   server.close = ((callback?: Parameters<typeof server.close>[0]) => {
     serverRef.closeStarted = true
     const result = close(callback)
@@ -222,4 +222,4 @@ function serverLayer(opts: { port: number; hostname: string }) {
   )
 }
 
-export * as Server from "./server"
+export * as Server from ".@lgcode/server"

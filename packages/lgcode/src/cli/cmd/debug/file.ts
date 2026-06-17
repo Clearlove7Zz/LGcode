@@ -1,11 +1,11 @@
 import { EOL } from "os"
 import { Effect } from "effect"
-import { FileSystem } from "@opencode@lgcode/core/filesystem"
-import { LocationServiceMap } from "@opencode@lgcode/core/location-layer"
-import { Location } from "@opencode@lgcode/core/location"
-import { AbsolutePath, RelativePath } from "@opencode@lgcode/core/schema"
-import { effectCmd } from "../../effect-cmd"
-import { cmd } from "../cmd"
+import { FileSystem } from "@lgcode/core@lgcode/filesystem"
+import { LocationServiceMap } from "@lgcode/core@lgcode/location-layer"
+import { Location } from "@lgcode/core@lgcode/location"
+import { AbsolutePath, RelativePath } from "@lgcode/core@lgcode/schema"
+import { effectCmd } from "..@lgcode/..@lgcode/effect-cmd"
+import { cmd } from "..@lgcode/cmd"
 
 const filesystem = <A, E, R>(effect: Effect.Effect<A, E, R>) =>
   effect.pipe(

@@ -1,6 +1,6 @@
-// @ts-nocheck
-import * as mod from "./dock-prompt"
-import { create } from "../storybook/scaffold"
+@lgcode/@lgcode/ @ts-nocheck
+import * as mod from ".@lgcode/dock-prompt"
+import { create } from "..@lgcode/storybook@lgcode/scaffold"
 
 const docs = `### Overview
 Docked prompt layout for questions and permission requests.
@@ -20,13 +20,13 @@ Use with form controls or confirmation buttons in the footer.
 ### Accessibility
 - Ensure header and footer content provide clear context and actions.
 
-### Theming/tokens
+### Theming@lgcode/tokens
 - Uses \`data-component="dock-prompt"\` with kind data attribute.
 
 `
 
 const story = create({
-  title: "UI/DockPrompt",
+  title: "UI@lgcode/DockPrompt",
   mod,
   args: {
     kind: "question",
@@ -37,7 +37,7 @@ const story = create({
 })
 
 export default {
-  title: "UI/DockPrompt",
+  title: "UI@lgcode/DockPrompt",
   id: "components-dock-prompt",
   component: story.meta.component,
   tags: ["autodocs"],

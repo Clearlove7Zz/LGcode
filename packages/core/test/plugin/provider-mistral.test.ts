@@ -1,18 +1,18 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { ModelV2 } from "@opencode@lgcode/core/model"
-import { PluginV2 } from "@opencode@lgcode/core/plugin"
-import { MistralPlugin } from "@opencode@lgcode/core/plugin/provider/mistral"
-import { fakeSelectorSdk, it, model } from "./provider-helper"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { PluginV2 } from "@lgcode/core@lgcode/plugin"
+import { MistralPlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/mistral"
+import { fakeSelectorSdk, it, model } from ".@lgcode/provider-helper"
 
 describe("MistralPlugin", () => {
-  it.effect("creates a Mistral SDK for @ai-sdk/mistral", () =>
+  it.effect("creates a Mistral SDK for @ai-sdk@lgcode/mistral", () =>
     Effect.gen(function* () {
       const plugin = yield* PluginV2.Service
       yield* plugin.add(MistralPlugin)
       const result = yield* plugin.trigger(
         "aisdk.sdk",
-        { model: model("mistral", "mistral-large"), package: "@ai-sdk/mistral", options: { name: "mistral" } },
+        { model: model("mistral", "mistral-large"), package: "@ai-sdk@lgcode/mistral", options: { name: "mistral" } },
         {},
       )
       expect(result.sdk).toBeDefined()
@@ -27,7 +27,7 @@ describe("MistralPlugin", () => {
         "aisdk.sdk",
         {
           model: model("mistral", "mistral-large"),
-          package: "@ai-sdk/openai-compatible",
+          package: "@ai-sdk@lgcode/openai-compatible",
           options: { name: "mistral" },
         },
         {},
@@ -52,7 +52,7 @@ describe("MistralPlugin", () => {
       })
       const result = yield* plugin.trigger(
         "aisdk.sdk",
-        { model: model("mistral", "mistral-large"), package: "@ai-sdk/mistral", options: { name: "mistral" } },
+        { model: model("mistral", "mistral-large"), package: "@ai-sdk@lgcode/mistral", options: { name: "mistral" } },
         {},
       )
       expect(result.sdk).toBeDefined()
@@ -78,7 +78,7 @@ describe("MistralPlugin", () => {
         "aisdk.sdk",
         {
           model: model("custom-mistral", "mistral-large"),
-          package: "@ai-sdk/mistral",
+          package: "@ai-sdk@lgcode/mistral",
           options: { name: "custom-mistral" },
         },
         {},

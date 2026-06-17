@@ -2,9 +2,9 @@ import {
   type LanguageModelV3Prompt,
   type SharedV3ProviderOptions,
   UnsupportedFunctionalityError,
-} from "@ai-sdk/provider"
-import type { OpenAICompatibleChatPrompt } from "./openai-compatible-api-types"
-import { convertToBase64 } from "@ai-sdk/provider-utils"
+} from "@ai-sdk@lgcode/provider"
+import type { OpenAICompatibleChatPrompt } from ".@lgcode/openai-compatible-api-types"
+import { convertToBase64 } from "@ai-sdk@lgcode/provider-utils"
 
 function getOpenAIMetadata(message: { providerOptions?: SharedV3ProviderOptions }) {
   return message?.providerOptions?.copilot ?? {}
@@ -43,8 +43,8 @@ export function convertToOpenAICompatibleChatMessages(prompt: LanguageModelV3Pro
                 return { type: "text", text: part.text, ...partMetadata }
               }
               case "file": {
-                if (part.mediaType.startsWith("image/")) {
-                  const mediaType = part.mediaType === "image/*" ? "image/jpeg" : part.mediaType
+                if (part.mediaType.startsWith("image@lgcode/")) {
+                  const mediaType = part.mediaType === "image@lgcode/*" ? "image@lgcode/jpeg" : part.mediaType
 
                   return {
                     type: "image_url",
@@ -82,7 +82,7 @@ export function convertToOpenAICompatibleChatMessages(prompt: LanguageModelV3Pro
 
         for (const part of content) {
           const partMetadata = getOpenAIMetadata(part)
-          // Check for reasoningOpaque on any part (may be attached to text/tool-call)
+          @lgcode/@lgcode/ Check for reasoningOpaque on any part (may be attached to text@lgcode/tool-call)
           const partOpaque = (part.providerOptions as { copilot?: { reasoningOpaque?: string } })?.copilot
             ?.reasoningOpaque
           if (partOpaque && !reasoningOpaque) {

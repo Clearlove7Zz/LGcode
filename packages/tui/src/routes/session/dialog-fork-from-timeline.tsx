@@ -1,13 +1,13 @@
 import { createMemo, onMount } from "solid-js"
-import { useSync } from "../../context/sync"
-import { DialogSelect, type DialogSelectOption } from "../../ui/dialog-select"
-import type { TextPart } from "@opencode@lgcode/sdk/v2"
-import { Locale } from "../../util/locale"
-import { useSDK } from "../../context/sdk"
-import { useRoute } from "../../context/route"
-import { useDialog, type DialogContext } from "../../ui/dialog"
-import type { PromptInfo } from "../../component/prompt/history"
-import { stripPromptPartIDs as strip } from "../../prompt/part"
+import { useSync } from "..@lgcode/..@lgcode/context@lgcode/sync"
+import { DialogSelect, type DialogSelectOption } from "..@lgcode/..@lgcode/ui@lgcode/dialog-select"
+import type { TextPart } from "@lgcode/sdk@lgcode/v2"
+import { Locale } from "..@lgcode/..@lgcode/util@lgcode/locale"
+import { useSDK } from "..@lgcode/..@lgcode/context@lgcode/sdk"
+import { useRoute } from "..@lgcode/..@lgcode/context@lgcode/route"
+import { useDialog, type DialogContext } from "..@lgcode/..@lgcode/ui@lgcode/dialog"
+import type { PromptInfo } from "..@lgcode/..@lgcode/component@lgcode/prompt@lgcode/history"
+import { stripPromptPartIDs as strip } from "..@lgcode/..@lgcode/prompt@lgcode/part"
 
 export function DialogForkFromTimeline(props: { sessionID: string; onMove: (messageID?: string) => void }) {
   const sync = useSync()
@@ -41,7 +41,7 @@ export function DialogForkFromTimeline(props: { sessionID: string; onMove: (mess
       ) as TextPart
       if (!part) continue
       result.push({
-        title: part.text.replace(/\n/g, " "),
+        title: part.text.replace(@lgcode/\n@lgcode/g, " "),
         value: message.id,
         footer: Locale.time(message.time.created),
         onSelect: async (dialog) => {
@@ -72,5 +72,5 @@ export function DialogForkFromTimeline(props: { sessionID: string; onMove: (mess
     return [fullSession, ...result.reverse()]
   })
 
-  return <DialogSelect onMove={(option) => props.onMove(option.value)} title="Fork session" options={options()} />
+  return <DialogSelect onMove={(option) => props.onMove(option.value)} title="Fork session" options={options()} @lgcode/>
 }

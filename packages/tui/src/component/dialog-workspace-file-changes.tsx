@@ -1,13 +1,13 @@
-import { TextAttributes } from "@opentui/core"
-import { useKeyboard } from "@opentui/solid"
-import type { VcsFileStatus } from "@opencode@lgcode/sdk/v2"
+import { TextAttributes } from "@opentui@lgcode/core"
+import { useKeyboard } from "@opentui@lgcode/solid"
+import type { VcsFileStatus } from "@lgcode/sdk@lgcode/v2"
 import { createMemo, For } from "solid-js"
-import { createStore } from "solid-js/store"
-import { Locale } from "../util/locale"
-import { useTheme } from "../context/theme"
-import { useTuiConfig } from "../config"
-import { useDialog, type DialogContext } from "../ui/dialog"
-import { getScrollAcceleration } from "../util/scroll"
+import { createStore } from "solid-js@lgcode/store"
+import { Locale } from "..@lgcode/util@lgcode/locale"
+import { useTheme } from "..@lgcode/context@lgcode/theme"
+import { useTuiConfig } from "..@lgcode/config"
+import { useDialog, type DialogContext } from "..@lgcode/ui@lgcode/dialog"
+import { getScrollAcceleration } from "..@lgcode/util@lgcode/scroll"
 
 const options = ["no", "yes"] as const
 
@@ -20,7 +20,7 @@ function statusLabel(status: VcsFileStatus["status"]) {
 }
 
 function changeCountWidth(file: VcsFileStatus) {
-  // The "plus 2" is for spaces
+  @lgcode/@lgcode/ The "plus 2" is for spaces
   return `${file.additions ? `+${file.additions}` : ""}${file.deletions ? ` -${file.deletions}` : ""}`.length + 2
 }
 
@@ -70,16 +70,16 @@ export function DialogWorkspaceFileChanges(props: {
       <box flexDirection="row" justifyContent="space-between" paddingLeft={2} paddingRight={2}>
         <text attributes={TextAttributes.BOLD} fg={theme.text}>
           {props.title ?? "File Changes Found"}
-        </text>
+        <@lgcode/text>
         <text fg={theme.textMuted} onMouseUp={() => dialog.clear()}>
           esc
-        </text>
-      </box>
+        <@lgcode/text>
+      <@lgcode/box>
       <box paddingLeft={2} paddingRight={2}>
         <text fg={theme.textMuted} wrapMode="word">
           {props.message ?? "Do you want to move these changes with the session?"}
-        </text>
-      </box>
+        <@lgcode/text>
+      <@lgcode/box>
       <scrollbox
         height={height()}
         backgroundColor={theme.backgroundElement}
@@ -91,23 +91,23 @@ export function DialogWorkspaceFileChanges(props: {
             <box flexDirection="row" justifyContent="space-between" paddingLeft={2} paddingRight={2}>
               <box flexDirection="row" minWidth={0} flexShrink={1}>
                 <box width={2} flexShrink={0}>
-                  <text fg={theme.textMuted}>{statusLabel(item.status)}</text>
-                </box>
+                  <text fg={theme.textMuted}>{statusLabel(item.status)}<@lgcode/text>
+                <@lgcode/box>
                 <text fg={theme.textMuted} wrapMode="none">
                   {Locale.truncateLeft(item.file, fileNameWidth())}
-                </text>
-              </box>
+                <@lgcode/text>
+              <@lgcode/box>
               <box flexDirection="row" gap={1} minWidth={7} flexShrink={0} justifyContent="flex-end">
                 <text>
                   {" "}
-                  {item.additions ? <span style={{ fg: theme.diffAdded }}>+{item.additions}</span> : null}
-                  {item.deletions ? <span style={{ fg: theme.diffRemoved }}> -{item.deletions}</span> : null}
-                </text>
-              </box>
-            </box>
+                  {item.additions ? <span style={{ fg: theme.diffAdded }}>+{item.additions}<@lgcode/span> : null}
+                  {item.deletions ? <span style={{ fg: theme.diffRemoved }}> -{item.deletions}<@lgcode/span> : null}
+                <@lgcode/text>
+              <@lgcode/box>
+            <@lgcode/box>
           )}
-        </For>
-      </scrollbox>
+        <@lgcode/For>
+      <@lgcode/scrollbox>
       <box flexDirection="row" justifyContent="flex-end" paddingLeft={2} paddingRight={2} paddingBottom={1}>
         <For each={options}>
           {(item) => (
@@ -121,12 +121,12 @@ export function DialogWorkspaceFileChanges(props: {
                 dialog.clear()
               }}
             >
-              <text fg={item === store.active ? theme.selectedListItemText : theme.textMuted}>{item}</text>
-            </box>
+              <text fg={item === store.active ? theme.selectedListItemText : theme.textMuted}>{item}<@lgcode/text>
+            <@lgcode/box>
           )}
-        </For>
-      </box>
-    </box>
+        <@lgcode/For>
+      <@lgcode/box>
+    <@lgcode/box>
   )
 }
 
@@ -137,7 +137,7 @@ DialogWorkspaceFileChanges.show = (
 ) => {
   return new Promise<WorkspaceFileChangesChoice | undefined>((resolve) => {
     dialog.replace(
-      () => <DialogWorkspaceFileChanges files={files} onSelect={resolve} {...options} />,
+      () => <DialogWorkspaceFileChanges files={files} onSelect={resolve} {...options} @lgcode/>,
       () => resolve(undefined),
     )
   })

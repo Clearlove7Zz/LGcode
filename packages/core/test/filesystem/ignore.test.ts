@@ -1,10 +1,10 @@
 import { expect, test } from "bun:test"
-import { Ignore } from "@opencode@lgcode/core/filesystem/ignore"
+import { Ignore } from "@lgcode/core@lgcode/filesystem@lgcode/ignore"
 
 test("match nested and non-nested", () => {
-  expect(Ignore.match("node_modules/index.js")).toBe(true)
+  expect(Ignore.match("node_modules@lgcode/index.js")).toBe(true)
   expect(Ignore.match("node_modules")).toBe(true)
-  expect(Ignore.match("node_modules/")).toBe(true)
-  expect(Ignore.match("node_modules/bar")).toBe(true)
-  expect(Ignore.match("node_modules/bar/")).toBe(true)
+  expect(Ignore.match("node_modules@lgcode/")).toBe(true)
+  expect(Ignore.match("node_modules@lgcode/bar")).toBe(true)
+  expect(Ignore.match("node_modules@lgcode/bar@lgcode/")).toBe(true)
 })

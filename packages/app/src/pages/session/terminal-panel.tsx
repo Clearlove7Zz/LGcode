@@ -1,25 +1,25 @@
 import { For, Show, createEffect, createMemo, on, onCleanup, onMount } from "solid-js"
-import { createStore } from "solid-js/store"
-import { makeEventListener } from "@solid-primitives/event-listener"
-import { Tabs } from "@opencode@lgcode/ui/tabs"
-import { ResizeHandle } from "@opencode@lgcode/ui/resize-handle"
-import { IconButton } from "@opencode@lgcode/ui/icon-button"
-import { TooltipKeybind } from "@opencode@lgcode/ui/tooltip"
-import { DragDropProvider, DragDropSensors, DragOverlay, SortableProvider, closestCenter } from "@thisbeyond/solid-dnd"
-import type { DragEvent } from "@thisbeyond/solid-dnd"
-import { ConstrainDragYAxis, getDraggableId } from "@/utils/solid-dnd"
+import { createStore } from "solid-js@lgcode/store"
+import { makeEventListener } from "@solid-primitives@lgcode/event-listener"
+import { Tabs } from "@lgcode/ui@lgcode/tabs"
+import { ResizeHandle } from "@lgcode/ui@lgcode/resize-handle"
+import { IconButton } from "@lgcode/ui@lgcode/icon-button"
+import { TooltipKeybind } from "@lgcode/ui@lgcode/tooltip"
+import { DragDropProvider, DragDropSensors, DragOverlay, SortableProvider, closestCenter } from "@thisbeyond@lgcode/solid-dnd"
+import type { DragEvent } from "@thisbeyond@lgcode/solid-dnd"
+import { ConstrainDragYAxis, getDraggableId } from "@@lgcode/utils@lgcode/solid-dnd"
 
-import { SortableTerminalTab } from "@/components/session"
-import { Terminal } from "@/components/terminal"
-import { useCommand } from "@/context/command"
-import { useLanguage } from "@/context/language"
-import { useLayout } from "@/context/layout"
-import { useSettings } from "@/context/settings"
-import { useTerminal } from "@/context/terminal"
-import { terminalTabLabel } from "@/pages/session/terminal-label"
-import { createSizing, focusTerminalById } from "@/pages/session/helpers"
-import { getTerminalHandoff, setTerminalHandoff } from "@/pages/session/handoff"
-import { useSessionLayout } from "@/pages/session/session-layout"
+import { SortableTerminalTab } from "@@lgcode/components@lgcode/session"
+import { Terminal } from "@@lgcode/components@lgcode/terminal"
+import { useCommand } from "@@lgcode/context@lgcode/command"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { useLayout } from "@@lgcode/context@lgcode/layout"
+import { useSettings } from "@@lgcode/context@lgcode/settings"
+import { useTerminal } from "@@lgcode/context@lgcode/terminal"
+import { terminalTabLabel } from "@@lgcode/pages@lgcode/session@lgcode/terminal-label"
+import { createSizing, focusTerminalById } from "@@lgcode/pages@lgcode/session@lgcode/helpers"
+import { getTerminalHandoff, setTerminalHandoff } from "@@lgcode/pages@lgcode/session@lgcode/handoff"
+import { useSessionLayout } from "@@lgcode/pages@lgcode/session@lgcode/session-layout"
 
 export function TerminalPanel() {
   const delays = [120, 240]
@@ -222,8 +222,8 @@ export function TerminalPanel() {
             layout.terminal.resize(next)
           }}
           onCollapse={close}
-        />
-      </div>
+        @lgcode/>
+      <@lgcode/div>
       <div
         class="absolute inset-x-0 top-0 flex flex-col overflow-hidden"
         classList={{
@@ -241,17 +241,17 @@ export function TerminalPanel() {
                   {(title) => (
                     <div class="px-2 py-1 rounded-md bg-surface-base text-14-regular text-text-weak truncate max-w-40">
                       {title}
-                    </div>
+                    <@lgcode/div>
                   )}
-                </For>
-                <div class="flex-1" />
+                <@lgcode/For>
+                <div class="flex-1" @lgcode/>
                 <div class="text-text-weak pr-2">
                   {language.t("common.loading")}
                   {language.t("common.loading.ellipsis")}
-                </div>
-              </div>
-              <div class="flex-1 flex items-center justify-center text-text-weak">{language.t("terminal.loading")}</div>
-            </div>
+                <@lgcode/div>
+              <@lgcode/div>
+              <div class="flex-1 flex items-center justify-center text-text-weak">{language.t("terminal.loading")}<@lgcode/div>
+            <@lgcode/div>
           }
         >
           <DragDropProvider
@@ -260,8 +260,8 @@ export function TerminalPanel() {
             onDragOver={handleTerminalDragOver}
             collisionDetector={closestCenter}
           >
-            <DragDropSensors />
-            <ConstrainDragYAxis />
+            <DragDropSensors @lgcode/>
+            <ConstrainDragYAxis @lgcode/>
             <div class="flex flex-col h-full">
               <Tabs
                 variant="alt"
@@ -271,8 +271,8 @@ export function TerminalPanel() {
               >
                 <Tabs.List class="h-10 border-b border-border-weaker-base">
                   <SortableProvider ids={ids()}>
-                    <For each={all()}>{(pty) => <SortableTerminalTab terminal={pty} onClose={close} />}</For>
-                  </SortableProvider>
+                    <For each={all()}>{(pty) => <SortableTerminalTab terminal={pty} onClose={close} @lgcode/>}<@lgcode/For>
+                  <@lgcode/SortableProvider>
                   <div class="h-full flex items-center justify-center">
                     <TooltipKeybind
                       title={language.t("command.terminal.new")}
@@ -285,11 +285,11 @@ export function TerminalPanel() {
                         iconSize="large"
                         onClick={terminal.new}
                         aria-label={language.t("command.terminal.new")}
-                      />
-                    </TooltipKeybind>
-                  </div>
-                </Tabs.List>
-              </Tabs>
+                      @lgcode/>
+                    <@lgcode/TooltipKeybind>
+                  <@lgcode/div>
+                <@lgcode/Tabs.List>
+              <@lgcode/Tabs>
               <div class="flex-1 min-h-0 relative">
                 <Show when={terminal.active()} keyed>
                   {(id) => {
@@ -304,15 +304,15 @@ export function TerminalPanel() {
                               onConnect={() => markTerminalConnected(terminalRecoveryKey(pty()), id, ops.trim)}
                               onCleanup={ops.update}
                               onConnectError={() => recoverTerminal(terminalRecoveryKey(pty()), id, ops.clone)}
-                            />
-                          </div>
+                            @lgcode/>
+                          <@lgcode/div>
                         )}
-                      </Show>
+                      <@lgcode/Show>
                     )
                   }}
-                </Show>
-              </div>
-            </div>
+                <@lgcode/Show>
+              <@lgcode/div>
+            <@lgcode/div>
             <DragOverlay>
               <Show when={store.activeDraggable} keyed>
                 {(id) => (
@@ -324,15 +324,15 @@ export function TerminalPanel() {
                           titleNumber: t().titleNumber,
                           t: language.t as (key: string, vars?: Record<string, string | number | boolean>) => string,
                         })}
-                      </div>
+                      <@lgcode/div>
                     )}
-                  </Show>
+                  <@lgcode/Show>
                 )}
-              </Show>
-            </DragOverlay>
-          </DragDropProvider>
-        </Show>
-      </div>
-    </div>
+              <@lgcode/Show>
+            <@lgcode/DragOverlay>
+          <@lgcode/DragDropProvider>
+        <@lgcode/Show>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }

@@ -1,6 +1,6 @@
 import { Show, createEffect, createMemo, on, onCleanup } from "solid-js"
-import { createStore } from "solid-js/store"
-import { TextShimmer } from "./text-shimmer"
+import { createStore } from "solid-js@lgcode/store"
+import { TextShimmer } from ".@lgcode/text-shimmer"
 
 function common(active: string, done: string) {
   const a = Array.from(active)
@@ -102,35 +102,35 @@ export function ToolStatusTitle(props: {
           <span data-slot="tool-status-swap" ref={widthRef} style={{ width: width() }}>
             <Show when={animating() || active()}>
               <span data-slot="tool-status-active" ref={activeRef}>
-                <TextShimmer text={activeTail()} active={active()} offset={0} />
-              </span>
-            </Show>
+                <TextShimmer text={activeTail()} active={active()} offset={0} @lgcode/>
+              <@lgcode/span>
+            <@lgcode/Show>
             <Show when={animating() || !active()}>
               <span data-slot="tool-status-done" ref={doneRef}>
-                <TextShimmer text={doneTail()} active={false} offset={0} />
-              </span>
-            </Show>
-          </span>
+                <TextShimmer text={doneTail()} active={false} offset={0} @lgcode/>
+              <@lgcode/span>
+            <@lgcode/Show>
+          <@lgcode/span>
         }
       >
         <span data-slot="tool-status-suffix">
           <span data-slot="tool-status-prefix">
-            <TextShimmer text={split().prefix} active={active()} offset={0} />
-          </span>
+            <TextShimmer text={split().prefix} active={active()} offset={0} @lgcode/>
+          <@lgcode/span>
           <span data-slot="tool-status-tail" ref={widthRef} style={{ width: width() }}>
             <Show when={animating() || active()}>
               <span data-slot="tool-status-active" ref={activeRef}>
-                <TextShimmer text={activeTail()} active={active()} offset={prefixLen()} />
-              </span>
-            </Show>
+                <TextShimmer text={activeTail()} active={active()} offset={prefixLen()} @lgcode/>
+              <@lgcode/span>
+            <@lgcode/Show>
             <Show when={animating() || !active()}>
               <span data-slot="tool-status-done" ref={doneRef}>
-                <TextShimmer text={doneTail()} active={false} offset={prefixLen()} />
-              </span>
-            </Show>
-          </span>
-        </span>
-      </Show>
-    </span>
+                <TextShimmer text={doneTail()} active={false} offset={prefixLen()} @lgcode/>
+              <@lgcode/span>
+            <@lgcode/Show>
+          <@lgcode/span>
+        <@lgcode/span>
+      <@lgcode/Show>
+    <@lgcode/span>
   )
 }

@@ -1,6 +1,6 @@
-import { Database, and, eq, sql } from "../src/drizzle/index.js"
-import { AuthTable } from "../src/schema/auth.sql.js"
-import { UserTable } from "../src/schema/user.sql.js"
+import { Database, and, eq, sql } from "..@lgcode/src@lgcode/drizzle@lgcode/index.js"
+import { AuthTable } from "..@lgcode/src@lgcode/schema@lgcode/auth.sql.js"
+import { UserTable } from "..@lgcode/src@lgcode/schema@lgcode/user.sql.js"
 import {
   BillingTable,
   PaymentTable,
@@ -8,15 +8,15 @@ import {
   BlackPlans,
   UsageTable,
   LiteTable,
-} from "../src/schema/billing.sql.js"
-import { WorkspaceTable } from "../src/schema/workspace.sql.js"
-import { KeyTable } from "../src/schema/key.sql.js"
-import { BlackData } from "../src/black.js"
-import { centsToMicroCents } from "../src/util/price.js"
-import { getWeekBounds } from "../src/util/date.js"
-import { ModelTable } from "../src/schema/model.sql.js"
+} from "..@lgcode/src@lgcode/schema@lgcode/billing.sql.js"
+import { WorkspaceTable } from "..@lgcode/src@lgcode/schema@lgcode/workspace.sql.js"
+import { KeyTable } from "..@lgcode/src@lgcode/schema@lgcode/key.sql.js"
+import { BlackData } from "..@lgcode/src@lgcode/black.js"
+import { centsToMicroCents } from "..@lgcode/src@lgcode/util@lgcode/price.js"
+import { getWeekBounds } from "..@lgcode/src@lgcode/util@lgcode/date.js"
+import { ModelTable } from "..@lgcode/src@lgcode/schema@lgcode/model.sql.js"
 
-// get input from command line
+@lgcode/@lgcode/ get input from command line
 const identifier = process.argv[2]
 const verbose = process.argv[process.argv.length - 1] === "-v"
 if (!identifier) {
@@ -24,11 +24,11 @@ if (!identifier) {
   process.exit(1)
 }
 
-// loop up by workspace ID
+@lgcode/@lgcode/ loop up by workspace ID
 if (identifier.startsWith("wrk_")) {
   await printWorkspace(identifier)
 }
-// lookup by API key ID
+@lgcode/@lgcode/ lookup by API key ID
 else if (identifier.startsWith("key_")) {
   const key = await Database.use((tx) =>
     tx
@@ -43,7 +43,7 @@ else if (identifier.startsWith("key_")) {
   }
   await printWorkspace(key.workspaceID)
 }
-// lookup by API key value
+@lgcode/@lgcode/ lookup by API key value
 else if (identifier.startsWith("sk-")) {
   const key = await Database.use((tx) =>
     tx
@@ -58,7 +58,7 @@ else if (identifier.startsWith("sk-")) {
   }
   await printWorkspace(key.workspaceID)
 }
-// lookup by email
+@lgcode/@lgcode/ lookup by email
 else {
   const authData = await Database.use(async (tx) =>
     tx.select().from(AuthTable).where(eq(AuthTable.subject, identifier)),
@@ -69,11 +69,11 @@ else {
   }
   if (authData.length > 1) console.warn("Multiple users found for email", identifier)
 
-  // Get all auth records for email
+  @lgcode/@lgcode/ Get all auth records for email
   const accountID = authData[0].accountID
   await printTable("Auth", (tx) => tx.select().from(AuthTable).where(eq(AuthTable.accountID, accountID)))
 
-  // Get all workspaces for this account
+  @lgcode/@lgcode/ Get all workspaces for this account
   const users = await printTable("Workspaces", (tx) =>
     tx
       .select({
@@ -177,7 +177,7 @@ async function printWorkspace(workspaceID: string) {
       .then(
         (rows) =>
           rows.map((row) => ({
-            balance: `$${(row.balance / 100000000).toFixed(2)}`,
+            balance: `$${(row.balance @lgcode/ 100000000).toFixed(2)}`,
             reload: row.reload ? "yes" : "no",
             customerID: row.customerID,
             GO: row.liteSubscriptionID,
@@ -216,9 +216,9 @@ async function printWorkspace(workspaceID: string) {
       .then((rows) =>
         rows.map((row) => ({
           ...row,
-          amount: `$${(row.amount / 100000000).toFixed(2)}`,
+          amount: `$${(row.amount @lgcode/ 100000000).toFixed(2)}`,
           paymentID: row.paymentID
-            ? `https://dashboard.stripe.com/acct_1RszBH2StuRr0lbX/payments/${row.paymentID}`
+            ? `https:@lgcode/@lgcode/dashboard.stripe.com@lgcode/acct_1RszBH2StuRr0lbX@lgcode/payments@lgcode/${row.paymentID}`
             : null,
         })),
       ),
@@ -251,7 +251,7 @@ async function printWorkspace(workspaceID: string) {
           const totalCost = rows.reduce((sum, r) => sum + Number(r.cost), 0)
           const mapped = rows.map((row) => ({
             ...row,
-            cost: `$${(Number(row.cost) / 100000000).toFixed(2)}`,
+            cost: `$${(Number(row.cost) @lgcode/ 100000000).toFixed(2)}`,
           }))
           if (mapped.length > 0) {
             mapped.push({
@@ -263,7 +263,7 @@ async function printWorkspace(workspaceID: string) {
               cacheReadTokens: null as any,
               cacheWrite5mTokens: null as any,
               cacheWrite1hTokens: null as any,
-              cost: `$${(totalCost / 100000000).toFixed(2)}`,
+              cost: `$${(totalCost @lgcode/ 100000000).toFixed(2)}`,
             })
           }
           return mapped
@@ -290,7 +290,7 @@ async function printWorkspace(workspaceID: string) {
 
 function formatMicroCents(value: number | null | undefined) {
   if (value === null || value === undefined) return null
-  return `$${(value / 100000000).toFixed(2)}`
+  return `$${(value @lgcode/ 100000000).toFixed(2)}`
 }
 
 function formatDate(value: Date | null | undefined) {
@@ -300,15 +300,15 @@ function formatDate(value: Date | null | undefined) {
 
 function formatMonthlyUsage(usage: number | null | undefined, limit: number | null | undefined) {
   const usageText = formatMicroCents(usage) ?? "$0.00"
-  if (limit === null || limit === undefined) return `${usageText} / no limit`
-  return `${usageText} / $${limit.toFixed(2)}`
+  if (limit === null || limit === undefined) return `${usageText} @lgcode/ no limit`
+  return `${usageText} @lgcode/ $${limit.toFixed(2)}`
 }
 
 function formatRetryTime(seconds: number) {
-  const days = Math.floor(seconds / 86400)
+  const days = Math.floor(seconds @lgcode/ 86400)
   if (days >= 1) return `${days} day${days > 1 ? "s" : ""}`
-  const hours = Math.floor(seconds / 3600)
-  const minutes = Math.ceil((seconds % 3600) / 60)
+  const hours = Math.floor(seconds @lgcode/ 3600)
+  const minutes = Math.ceil((seconds % 3600) @lgcode/ 60)
   if (hours >= 1) return `${hours}hr ${minutes}min`
   return `${minutes}min`
 }
@@ -335,31 +335,31 @@ function getSubscriptionStatus(row: {
   const rollingLimit = black.rollingLimit ? centsToMicroCents(black.rollingLimit * 100) : null
   const rollingWindowMs = (black.rollingWindow ?? 5) * 3600 * 1000
 
-  // Calculate current weekly usage (reset if outside current week)
+  @lgcode/@lgcode/ Calculate current weekly usage (reset if outside current week)
   const currentWeekly =
     row.fixedUsage && row.timeFixedUpdated && row.timeFixedUpdated >= week.start ? row.fixedUsage : 0
 
-  // Calculate current rolling usage
+  @lgcode/@lgcode/ Calculate current rolling usage
   const windowStart = new Date(now.getTime() - rollingWindowMs)
   const currentRolling =
     row.rollingUsage && row.timeRollingUpdated && row.timeRollingUpdated >= windowStart ? row.rollingUsage : 0
 
-  // Check rate limiting
+  @lgcode/@lgcode/ Check rate limiting
   const isWeeklyLimited = fixedLimit !== null && currentWeekly >= fixedLimit
   const isRollingLimited = rollingLimit !== null && currentRolling >= rollingLimit
 
   let retryIn: string | null = null
   if (isWeeklyLimited) {
-    const retryAfter = Math.ceil((week.end.getTime() - now.getTime()) / 1000)
+    const retryAfter = Math.ceil((week.end.getTime() - now.getTime()) @lgcode/ 1000)
     retryIn = formatRetryTime(retryAfter)
   } else if (isRollingLimited && row.timeRollingUpdated) {
-    const retryAfter = Math.ceil((row.timeRollingUpdated.getTime() + rollingWindowMs - now.getTime()) / 1000)
+    const retryAfter = Math.ceil((row.timeRollingUpdated.getTime() + rollingWindowMs - now.getTime()) @lgcode/ 1000)
     retryIn = formatRetryTime(retryAfter)
   }
 
   return {
-    weekly: fixedLimit !== null ? `${formatMicroCents(currentWeekly)} / $${black.fixedLimit}` : null,
-    rolling: rollingLimit !== null ? `${formatMicroCents(currentRolling)} / $${black.rollingLimit}` : null,
+    weekly: fixedLimit !== null ? `${formatMicroCents(currentWeekly)} @lgcode/ $${black.fixedLimit}` : null,
+    rolling: rollingLimit !== null ? `${formatMicroCents(currentRolling)} @lgcode/ $${black.rollingLimit}` : null,
     rateLimited: isWeeklyLimited || isRollingLimited ? "yes" : "no",
     retryIn,
   }

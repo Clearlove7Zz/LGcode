@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test"
-import { LLM, LLMClient, Provider } from "@opencode@lgcode/llm"
-import { Route, Protocol } from "@opencode@lgcode/llm/route"
-import { Provider as ProviderSubpath } from "@opencode@lgcode/llm/provider"
+import { LLM, LLMClient, Provider } from "@lgcode/llm"
+import { Route, Protocol } from "@lgcode/llm@lgcode/route"
+import { Provider as ProviderSubpath } from "@lgcode/llm@lgcode/provider"
 import {
   CloudflareAIGateway,
   CloudflareWorkersAI,
@@ -9,10 +9,10 @@ import {
   OpenAICompatible,
   OpenRouter,
   XAI,
-} from "@opencode@lgcode/llm/providers"
-import * as GitHubCopilot from "@opencode@lgcode/llm/providers/github-copilot"
-import { OpenAIChat, OpenAICompatibleChat, OpenAIResponses } from "@opencode@lgcode/llm/protocols"
-import * as AnthropicMessages from "@opencode@lgcode/llm/protocols/anthropic-messages"
+} from "@lgcode/llm@lgcode/providers"
+import * as GitHubCopilot from "@lgcode/llm@lgcode/providers@lgcode/github-copilot"
+import { OpenAIChat, OpenAICompatibleChat, OpenAIResponses } from "@lgcode/llm@lgcode/protocols"
+import * as AnthropicMessages from "@lgcode/llm@lgcode/protocols@lgcode/anthropic-messages"
 
 describe("public exports", () => {
   test("root exposes app-facing runtime APIs", () => {
@@ -48,7 +48,7 @@ describe("public exports", () => {
     expect(XAI.configure({ apiKey: "fixture" }).responses("grok-4.3").route.id).toBe("openai-responses")
     expect(XAI.configure({ apiKey: "fixture" }).chat("grok-4.3").route.id).toBe("openai-compatible-chat")
     expect(
-      GitHubCopilot.configure({ baseURL: "https://api.githubcopilot.test", apiKey: "fixture" }).model,
+      GitHubCopilot.configure({ baseURL: "https:@lgcode/@lgcode/api.githubcopilot.test", apiKey: "fixture" }).model,
     ).toBeFunction()
   })
 

@@ -1,7 +1,7 @@
-// @ts-nocheck
-import { IconButton } from "./icon-button"
+@lgcode/@lgcode/ @ts-nocheck
+import { IconButton } from ".@lgcode/icon-button"
 import { createSignal } from "solid-js"
-import * as mod from "./tabs"
+import * as mod from ".@lgcode/tabs"
 
 const docs = `### Overview
 Tabbed navigation for switching between related panels.
@@ -24,13 +24,13 @@ Compose \`Tabs.List\` + \`Tabs.Trigger\` + \`Tabs.Content\`.
 ### Accessibility
 - TODO: confirm keyboard interactions from Kobalte Tabs.
 
-### Theming/tokens
-- Uses \`data-component="tabs"\` with variant/orientation data attributes.
+### Theming@lgcode/tokens
+- Uses \`data-component="tabs"\` with variant@lgcode/orientation data attributes.
 
 `
 
 export default {
-  title: "UI/Tabs",
+  title: "UI@lgcode/Tabs",
   id: "components-tabs",
   component: mod.Tabs,
   tags: ["autodocs"],
@@ -62,14 +62,14 @@ export const Basic = {
   render: (props) => (
     <mod.Tabs {...props}>
       <mod.Tabs.List>
-        <mod.Tabs.Trigger value="overview">Overview</mod.Tabs.Trigger>
-        <mod.Tabs.Trigger value="details">Details</mod.Tabs.Trigger>
-        <mod.Tabs.Trigger value="activity">Activity</mod.Tabs.Trigger>
-      </mod.Tabs.List>
-      <mod.Tabs.Content value="overview">Overview content</mod.Tabs.Content>
-      <mod.Tabs.Content value="details">Details content</mod.Tabs.Content>
-      <mod.Tabs.Content value="activity">Activity content</mod.Tabs.Content>
-    </mod.Tabs>
+        <mod.Tabs.Trigger value="overview">Overview<@lgcode/mod.Tabs.Trigger>
+        <mod.Tabs.Trigger value="details">Details<@lgcode/mod.Tabs.Trigger>
+        <mod.Tabs.Trigger value="activity">Activity<@lgcode/mod.Tabs.Trigger>
+      <@lgcode/mod.Tabs.List>
+      <mod.Tabs.Content value="overview">Overview content<@lgcode/mod.Tabs.Content>
+      <mod.Tabs.Content value="details">Details content<@lgcode/mod.Tabs.Content>
+      <mod.Tabs.Content value="activity">Activity content<@lgcode/mod.Tabs.Content>
+    <@lgcode/mod.Tabs>
   ),
 }
 
@@ -82,12 +82,12 @@ export const Settings = {
   render: (props) => (
     <mod.Tabs {...props}>
       <mod.Tabs.List>
-        <mod.Tabs.Trigger value="general">General</mod.Tabs.Trigger>
-        <mod.Tabs.Trigger value="appearance">Appearance</mod.Tabs.Trigger>
-      </mod.Tabs.List>
-      <mod.Tabs.Content value="general">General settings</mod.Tabs.Content>
-      <mod.Tabs.Content value="appearance">Appearance settings</mod.Tabs.Content>
-    </mod.Tabs>
+        <mod.Tabs.Trigger value="general">General<@lgcode/mod.Tabs.Trigger>
+        <mod.Tabs.Trigger value="appearance">Appearance<@lgcode/mod.Tabs.Trigger>
+      <@lgcode/mod.Tabs.List>
+      <mod.Tabs.Content value="general">General settings<@lgcode/mod.Tabs.Content>
+      <mod.Tabs.Content value="appearance">Appearance settings<@lgcode/mod.Tabs.Content>
+    <@lgcode/mod.Tabs>
   ),
 }
 
@@ -100,12 +100,12 @@ export const Alt = {
   render: (props) => (
     <mod.Tabs {...props}>
       <mod.Tabs.List>
-        <mod.Tabs.Trigger value="first">First</mod.Tabs.Trigger>
-        <mod.Tabs.Trigger value="second">Second</mod.Tabs.Trigger>
-      </mod.Tabs.List>
-      <mod.Tabs.Content value="first">Alt content</mod.Tabs.Content>
-      <mod.Tabs.Content value="second">Alt content 2</mod.Tabs.Content>
-    </mod.Tabs>
+        <mod.Tabs.Trigger value="first">First<@lgcode/mod.Tabs.Trigger>
+        <mod.Tabs.Trigger value="second">Second<@lgcode/mod.Tabs.Trigger>
+      <@lgcode/mod.Tabs.List>
+      <mod.Tabs.Content value="first">Alt content<@lgcode/mod.Tabs.Content>
+      <mod.Tabs.Content value="second">Alt content 2<@lgcode/mod.Tabs.Content>
+    <@lgcode/mod.Tabs>
   ),
 }
 
@@ -118,12 +118,12 @@ export const Vertical = {
   render: (props) => (
     <mod.Tabs {...props}>
       <mod.Tabs.List>
-        <mod.Tabs.Trigger value="alpha">Alpha</mod.Tabs.Trigger>
-        <mod.Tabs.Trigger value="beta">Beta</mod.Tabs.Trigger>
-      </mod.Tabs.List>
-      <mod.Tabs.Content value="alpha">Alpha content</mod.Tabs.Content>
-      <mod.Tabs.Content value="beta">Beta content</mod.Tabs.Content>
-    </mod.Tabs>
+        <mod.Tabs.Trigger value="alpha">Alpha<@lgcode/mod.Tabs.Trigger>
+        <mod.Tabs.Trigger value="beta">Beta<@lgcode/mod.Tabs.Trigger>
+      <@lgcode/mod.Tabs.List>
+      <mod.Tabs.Content value="alpha">Alpha content<@lgcode/mod.Tabs.Content>
+      <mod.Tabs.Content value="beta">Beta content<@lgcode/mod.Tabs.Content>
+    <@lgcode/mod.Tabs>
   ),
 }
 
@@ -138,15 +138,15 @@ export const Closable = {
       <mod.Tabs.List>
         <mod.Tabs.Trigger
           value="tab-1"
-          closeButton={<IconButton icon="close" size="small" variant="ghost" aria-label="Close tab" />}
+          closeButton={<IconButton icon="close" size="small" variant="ghost" aria-label="Close tab" @lgcode/>}
         >
           Tab 1
-        </mod.Tabs.Trigger>
-        <mod.Tabs.Trigger value="tab-2">Tab 2</mod.Tabs.Trigger>
-      </mod.Tabs.List>
-      <mod.Tabs.Content value="tab-1">Closable content</mod.Tabs.Content>
-      <mod.Tabs.Content value="tab-2">Standard content</mod.Tabs.Content>
-    </mod.Tabs>
+        <@lgcode/mod.Tabs.Trigger>
+        <mod.Tabs.Trigger value="tab-2">Tab 2<@lgcode/mod.Tabs.Trigger>
+      <@lgcode/mod.Tabs.List>
+      <mod.Tabs.Content value="tab-1">Closable content<@lgcode/mod.Tabs.Content>
+      <mod.Tabs.Content value="tab-2">Standard content<@lgcode/mod.Tabs.Content>
+    <@lgcode/mod.Tabs>
   ),
 }
 
@@ -160,20 +160,20 @@ export const MiddleClick = {
     const [message, setMessage] = createSignal("Middle click a tab")
     return (
       <div style={{ display: "grid", gap: "8px" }}>
-        <div style={{ "font-size": "12px", color: "var(--text-weak)" }}>{message()}</div>
+        <div style={{ "font-size": "12px", color: "var(--text-weak)" }}>{message()}<@lgcode/div>
         <mod.Tabs {...props}>
           <mod.Tabs.List>
             <mod.Tabs.Trigger value="tab-1" onMiddleClick={() => setMessage("Middle clicked tab-1")}>
               Tab 1
-            </mod.Tabs.Trigger>
+            <@lgcode/mod.Tabs.Trigger>
             <mod.Tabs.Trigger value="tab-2" onMiddleClick={() => setMessage("Middle clicked tab-2")}>
               Tab 2
-            </mod.Tabs.Trigger>
-          </mod.Tabs.List>
-          <mod.Tabs.Content value="tab-1">Tab 1 content</mod.Tabs.Content>
-          <mod.Tabs.Content value="tab-2">Tab 2 content</mod.Tabs.Content>
-        </mod.Tabs>
-      </div>
+            <@lgcode/mod.Tabs.Trigger>
+          <@lgcode/mod.Tabs.List>
+          <mod.Tabs.Content value="tab-1">Tab 1 content<@lgcode/mod.Tabs.Content>
+          <mod.Tabs.Content value="tab-2">Tab 2 content<@lgcode/mod.Tabs.Content>
+        <@lgcode/mod.Tabs>
+      <@lgcode/div>
     )
   },
 }

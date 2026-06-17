@@ -1,18 +1,18 @@
-// Boot-time resolution for direct interactive mode.
-//
-// These functions run concurrently at startup to gather everything the runtime
-// needs before the first frame: TUI keymap config, diff display style,
-// model variant list with context limits, and session history for the prompt
-// history ring. All are async because they read config or hit the SDK, but
-// none block each other.
+@lgcode/@lgcode/ Boot-time resolution for direct interactive mode.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ These functions run concurrently at startup to gather everything the runtime
+@lgcode/@lgcode/ needs before the first frame: TUI keymap config, diff display style,
+@lgcode/@lgcode/ model variant list with context limits, and session history for the prompt
+@lgcode/@lgcode/ history ring. All are async because they read config or hit the SDK, but
+@lgcode/@lgcode/ none block each other.
 import { Context, Effect, Layer } from "effect"
-import { resolve } from "@opencode@lgcode/tui/config"
-import { TuiConfig } from "@/config/tui"
-import { makeRuntime } from "@/effect/run-service"
-import { reusePendingTask } from "./runtime.shared"
-import { resolveSession, sessionHistory } from "./session.shared"
-import type { RunDiffStyle, RunInput, RunPrompt, RunProvider, RunTuiConfig } from "./types"
-import { pickVariant } from "./variant.shared"
+import { resolve } from "@lgcode/tui@lgcode/config"
+import { TuiConfig } from "@@lgcode/config@lgcode/tui"
+import { makeRuntime } from "@@lgcode/effect@lgcode/run-service"
+import { reusePendingTask } from ".@lgcode/runtime.shared"
+import { resolveSession, sessionHistory } from ".@lgcode/session.shared"
+import type { RunDiffStyle, RunInput, RunPrompt, RunProvider, RunTuiConfig } from ".@lgcode/types"
+import { pickVariant } from ".@lgcode/variant.shared"
 
 export type ModelInfo = {
   providers: RunProvider[]
@@ -44,7 +44,7 @@ type BootService = {
 
 const configTask: { current?: Promise<Config> } = {}
 
-class Service extends Context.Service<Service, BootService>()("@opencode/RunBoot") {}
+class Service extends Context.Service<Service, BootService>()("@lgcode/RunBoot") {}
 
 function loadConfig() {
   return reusePendingTask(configTask, () => TuiConfig.get())
@@ -117,7 +117,7 @@ const layer = Layer.effect(
               return []
             }
 
-            return [[`${provider.id}/${modelID}`, limit] as const]
+            return [[`${provider.id}@lgcode/${modelID}`, limit] as const]
           }),
         ),
       )
@@ -174,7 +174,7 @@ const layer = Layer.effect(
 
 const runtime = makeRuntime(Service, layer)
 
-// Fetches available variants and context limits for every provider/model pair.
+@lgcode/@lgcode/ Fetches available variants and context limits for every provider@lgcode/model pair.
 export async function resolveModelInfo(
   sdk: RunInput["sdk"],
   directory: string,
@@ -183,7 +183,7 @@ export async function resolveModelInfo(
   return runtime.runPromise((svc) => svc.resolveModelInfo(sdk, directory, model)).catch(() => emptyModelInfo())
 }
 
-// Fetches session messages to determine if this is the first turn and build prompt history.
+@lgcode/@lgcode/ Fetches session messages to determine if this is the first turn and build prompt history.
 export async function resolveSessionInfo(
   sdk: RunInput["sdk"],
   sessionID: string,
@@ -192,7 +192,7 @@ export async function resolveSessionInfo(
   return runtime.runPromise((svc) => svc.resolveSessionInfo(sdk, sessionID, model)).catch(() => emptySessionInfo())
 }
 
-// Reads TUI config once for direct mode keymap setup and display preferences.
+@lgcode/@lgcode/ Reads TUI config once for direct mode keymap setup and display preferences.
 export async function resolveRunTuiConfig(): Promise<RunTuiConfig> {
   return runtime.runPromise((svc) => svc.resolveRunTuiConfig()).catch(() => defaultRunTuiConfig())
 }

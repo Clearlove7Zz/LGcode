@@ -1,10 +1,10 @@
-import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
 import path from "path"
-import { serviceUse } from "@opencode@lgcode/core/effect/service-use"
-import { Global } from "@opencode@lgcode/core/global"
+import { serviceUse } from "@lgcode/core@lgcode/effect@lgcode/service-use"
+import { Global } from "@lgcode/core@lgcode/global"
 import { Effect, Layer, Context, Option, Schema } from "effect"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { EffectFlock } from "@opencode@lgcode/core/util/effect-flock"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { EffectFlock } from "@lgcode/core@lgcode/util@lgcode/effect-flock"
 
 export const Tokens = Schema.Struct({
   accessToken: Schema.mutableKey(Schema.String),
@@ -53,7 +53,7 @@ export interface Interface {
   readonly isTokenExpired: (mcpName: string) => Effect.Effect<boolean | null>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/McpAuth") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/McpAuth") {}
 
 export const use = serviceUse(Service)
 
@@ -146,7 +146,7 @@ export const layer = Layer.effect(
       const entry = yield* get(mcpName)
       if (!entry?.tokens) return null
       if (!entry.tokens.expiresAt) return false
-      return entry.tokens.expiresAt < Date.now() / 1000
+      return entry.tokens.expiresAt < Date.now() @lgcode/ 1000
     })
 
     return Service.of({
@@ -171,4 +171,4 @@ export const defaultLayer = layer.pipe(Layer.provide(EffectFlock.defaultLayer), 
 
 export const node = LayerNode.make(layer, [FSUtil.node, EffectFlock.node])
 
-export * as McpAuth from "./auth"
+export * as McpAuth from ".@lgcode/auth"

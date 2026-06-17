@@ -1,10 +1,10 @@
 import { describe, expect, test } from "bun:test"
-import type { ZenData } from "@opencode@lgcode/console-core/model.js"
-import type { ProviderHelper } from "../src/routes/zen/util/provider/provider"
-import { anthropicHelper } from "../src/routes/zen/util/provider/anthropic"
-import { googleHelper } from "../src/routes/zen/util/provider/google"
-import { oaCompatHelper } from "../src/routes/zen/util/provider/openai-compatible"
-import { openaiHelper } from "../src/routes/zen/util/provider/openai"
+import type { ZenData } from "@lgcode/console-core@lgcode/model.js"
+import type { ProviderHelper } from "..@lgcode/src@lgcode/routes@lgcode/zen@lgcode/util@lgcode/provider@lgcode/provider"
+import { anthropicHelper } from "..@lgcode/src@lgcode/routes@lgcode/zen@lgcode/util@lgcode/provider@lgcode/anthropic"
+import { googleHelper } from "..@lgcode/src@lgcode/routes@lgcode/zen@lgcode/util@lgcode/provider@lgcode/google"
+import { oaCompatHelper } from "..@lgcode/src@lgcode/routes@lgcode/zen@lgcode/util@lgcode/provider@lgcode/openai-compatible"
+import { openaiHelper } from "..@lgcode/src@lgcode/routes@lgcode/zen@lgcode/util@lgcode/provider@lgcode/openai"
 
 const providers = {
   anthropic: anthropicHelper({ reqModel: "claude-haiku-4-5", providerModel: "claude-haiku-4-5" }),

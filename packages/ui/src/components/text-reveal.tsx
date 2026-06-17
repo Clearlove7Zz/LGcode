@@ -1,5 +1,5 @@
 import { createEffect, on, onCleanup, onMount } from "solid-js"
-import { createStore } from "solid-js/store"
+import { createStore } from "solid-js@lgcode/store"
 
 const px = (value: number | string | undefined, fallback: number) => {
   if (typeof value === "number") return `${value}px`
@@ -22,9 +22,9 @@ export function TextReveal(props: {
   text?: string
   class?: string
   duration?: number | string
-  /** Gradient edge softness as a percentage of the mask (0 = hard wipe, 17 = soft). */
+  @lgcode/** Gradient edge softness as a percentage of the mask (0 = hard wipe, 17 = soft). *@lgcode/
   edge?: number
-  /** Optional small vertical travel for entering text (px). Default 0. */
+  @lgcode/** Optional small vertical travel for entering text (px). Default 0. *@lgcode/
   travel?: number | string
   spring?: string
   springSoft?: string
@@ -133,11 +133,11 @@ export function TextReveal(props: {
       <span data-slot="text-reveal-track" style={{ width: props.truncate ? "100%" : width() }}>
         <span data-slot="text-reveal-entering" ref={inRef}>
           {cur() ?? "\u00A0"}
-        </span>
+        <@lgcode/span>
         <span data-slot="text-reveal-leaving" ref={outRef}>
           {old() ?? "\u00A0"}
-        </span>
-      </span>
-    </span>
+        <@lgcode/span>
+      <@lgcode/span>
+    <@lgcode/span>
   )
 }

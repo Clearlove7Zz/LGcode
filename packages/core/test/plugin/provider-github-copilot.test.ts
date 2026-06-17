@@ -1,11 +1,11 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { Catalog } from "@opencode@lgcode/core/catalog"
-import { ModelV2 } from "@opencode@lgcode/core/model"
-import { PluginV2 } from "@opencode@lgcode/core/plugin"
-import { GithubCopilotPlugin } from "@opencode@lgcode/core/plugin/provider/github-copilot"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { fakeSelectorSdk, it, model } from "./provider-helper"
+import { Catalog } from "@lgcode/core@lgcode/catalog"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { PluginV2 } from "@lgcode/core@lgcode/plugin"
+import { GithubCopilotPlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/github-copilot"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { fakeSelectorSdk, it, model } from ".@lgcode/provider-helper"
 
 describe("GithubCopilotPlugin", () => {
   it.effect("creates the bundled Copilot SDK for the GitHub Copilot package", () =>
@@ -16,7 +16,7 @@ describe("GithubCopilotPlugin", () => {
         "aisdk.sdk",
         {
           model: model("github-copilot", "gpt-5"),
-          package: "@ai-sdk/openai-compatible",
+          package: "@ai-sdk@lgcode/openai-compatible",
           options: { name: "github-copilot" },
         },
         {},
@@ -25,7 +25,7 @@ describe("GithubCopilotPlugin", () => {
         "aisdk.sdk",
         {
           model: model("github-copilot", "gpt-5"),
-          package: "@ai-sdk/github-copilot",
+          package: "@ai-sdk@lgcode/github-copilot",
           options: { name: "github-copilot" },
         },
         {},

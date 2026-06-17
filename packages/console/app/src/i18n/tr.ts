@@ -1,5 +1,5 @@
-import type { Dict } from "./en"
-import { dict as en } from "./en"
+import type { Dict } from ".@lgcode/en"
+import { dict as en } from ".@lgcode/en"
 
 export const dict = {
   ...en,
@@ -124,7 +124,7 @@ export const dict = {
   "home.what.shareLinks.body": "Referans veya hata ayıklama için herhangi bir oturumu bağlantı olarak paylaşın",
   "home.what.copilot.title": "GitHub Copilot",
   "home.what.copilot.body": "Copilot hesabınızı kullanmak için GitHub ile giriş yapın",
-  "home.what.chatgptPlus.title": "ChatGPT Plus/Pro",
+  "home.what.chatgptPlus.title": "ChatGPT Plus@lgcode/Pro",
   "home.what.chatgptPlus.body": "ChatGPT Plus veya Pro hesabınızı kullanmak için OpenAI ile giriş yapın",
   "home.what.anyModel.title": "Herhangi bir model",
   "home.what.anyModel.body": "Models.dev üzerinden 75+ LLM sağlayıcısı, yerel modeller dahil",
@@ -134,7 +134,7 @@ export const dict = {
 
   "home.growth.title": "Açık kaynaklı yapay zeka kodlama ajanı",
   "home.growth.body":
-    "GitHub'da <strong>{{stars}}</strong>+ yıldız, <strong>{{contributors}}</strong> katılımcı ve <strong>{{commits}}</strong>+ commit ile OpenCode, her ay <strong>{{monthlyUsers}}</strong>+ geliştirici tarafından kullanılıyor ve güveniliyor.",
+    "GitHub'da <strong>{{stars}}<@lgcode/strong>+ yıldız, <strong>{{contributors}}<@lgcode/strong> katılımcı ve <strong>{{commits}}<@lgcode/strong>+ commit ile OpenCode, her ay <strong>{{monthlyUsers}}<@lgcode/strong>+ geliştirici tarafından kullanılıyor ve güveniliyor.",
   "home.growth.githubStars": "GitHub Yıldızları",
   "home.growth.contributors": "Katılımcılar",
   "home.growth.monthlyDevs": "Aylık Geliştiriciler",
@@ -160,7 +160,7 @@ export const dict = {
   "home.faq.a3.p4.localLink": "yerel modellerinizi bağlayabilirsiniz",
   "home.faq.q4": "Mevcut AI aboneliklerimi OpenCode ile kullanabilir miyim?",
   "home.faq.a4.p1":
-    "Evet. OpenCode tüm büyük sağlayıcıların aboneliklerini destekler. Claude Pro/Max, ChatGPT Plus/Pro veya GitHub Copilot kullanabilirsiniz.",
+    "Evet. OpenCode tüm büyük sağlayıcıların aboneliklerini destekler. Claude Pro@lgcode/Max, ChatGPT Plus@lgcode/Pro veya GitHub Copilot kullanabilirsiniz.",
   "home.faq.q5": "OpenCode'u sadece terminalde mi kullanabilirim?",
   "home.faq.a5.beforeDesktop": "Artık hayır! OpenCode artık sizin bu cihazlarınıza",
   "home.faq.a5.desktop": "masaüstü",
@@ -681,7 +681,7 @@ export const dict = {
     "İkiniz de Go kullanım limitlerinize uygulamak için $5 kullanım kredisi alırsınız",
   "workspace.referral.rewards.title": "Davet ödülleri",
   "workspace.referral.rewards.description": "Mevcut davet kredilerini Go kullanımınıza uygulayın.",
-  "workspace.referral.rewards.subtitle": "{{applied}} / {{total}} ödül kullanıldı.",
+  "workspace.referral.rewards.subtitle": "{{applied}} @lgcode/ {{total}} ödül kullanıldı.",
   "workspace.referral.rewards.empty": "Henüz davet ödülü yok.",
   "workspace.referral.table.reward": "Ödül",
   "workspace.referral.table.referral": "Açıklama",
@@ -801,7 +801,7 @@ export const dict = {
 
   "bench.detail.title": "Benchmark - {{task}}",
   "bench.detail.notFound": "Görev bulunamadı",
-  "bench.detail.na": "N/A",
+  "bench.detail.na": "N@lgcode/A",
   "bench.detail.labels.agent": "Ajan",
   "bench.detail.labels.model": "Model",
   "bench.detail.labels.task": "Görev",

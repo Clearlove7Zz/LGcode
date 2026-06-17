@@ -1,18 +1,18 @@
 import { describe, expect, beforeAll, afterAll } from "bun:test"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
 import { Effect, Layer } from "effect"
-import { Discovery } from "../../src/skill/discovery"
-import { Global } from "@opencode@lgcode/core/global"
-import { Filesystem } from "@/util/filesystem"
-import { rm } from "fs/promises"
+import { Discovery } from "..@lgcode/..@lgcode/src@lgcode/skill@lgcode/discovery"
+import { Global } from "@lgcode/core@lgcode/global"
+import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
+import { rm } from "fs@lgcode/promises"
 import path from "path"
-import { testEffect } from "../lib/effect"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 let CLOUDFLARE_SKILLS_URL: string
 let server: ReturnType<typeof Bun.serve>
 let downloadCount = 0
 
-const fixturePath = path.join(import.meta.dir, "../fixture/skills")
+const fixturePath = path.join(import.meta.dir, "..@lgcode/fixture@lgcode/skills")
 const cacheDir = path.join(Global.Path.cache, "skills")
 const it = testEffect(Layer.mergeAll(Discovery.defaultLayer, FSUtil.defaultLayer))
 
@@ -24,9 +24,9 @@ beforeAll(async () => {
     async fetch(req) {
       const url = new URL(req.url)
 
-      // route /.well-known/skills/* to the fixture directory
-      if (url.pathname.startsWith("/.well-known/skills/")) {
-        const filePath = url.pathname.replace("/.well-known/skills/", "")
+      @lgcode/@lgcode/ route @lgcode/.well-known@lgcode/skills@lgcode/* to the fixture directory
+      if (url.pathname.startsWith("@lgcode/.well-known@lgcode/skills@lgcode/")) {
+        const filePath = url.pathname.replace("@lgcode/.well-known@lgcode/skills@lgcode/", "")
         const fullPath = path.join(fixturePath, filePath)
 
         if (await Filesystem.exists(fullPath)) {
@@ -41,7 +41,7 @@ beforeAll(async () => {
     },
   })
 
-  CLOUDFLARE_SKILLS_URL = `http://localhost:${server.port}/.well-known/skills/`
+  CLOUDFLARE_SKILLS_URL = `http:@lgcode/@lgcode/localhost:${server.port}@lgcode/.well-known@lgcode/skills@lgcode/`
 })
 
 afterAll(async () => {
@@ -68,7 +68,7 @@ describe("Discovery.pull", () => {
     Effect.gen(function* () {
       const fsys = yield* FSUtil.Service
       const discovery = yield* Discovery.Service
-      const dirs = yield* discovery.pull(CLOUDFLARE_SKILLS_URL.replace(/\/$/, ""))
+      const dirs = yield* discovery.pull(CLOUDFLARE_SKILLS_URL.replace(@lgcode/\@lgcode/$@lgcode/, ""))
       expect(dirs.length).toBeGreaterThan(0)
       for (const dir of dirs) {
         const md = path.join(dir, "SKILL.md")
@@ -80,16 +80,16 @@ describe("Discovery.pull", () => {
   it.live("returns empty array for invalid url", () =>
     Effect.gen(function* () {
       const discovery = yield* Discovery.Service
-      const dirs = yield* discovery.pull(`http://localhost:${server.port}/invalid-url/`)
+      const dirs = yield* discovery.pull(`http:@lgcode/@lgcode/localhost:${server.port}@lgcode/invalid-url@lgcode/`)
       expect(dirs).toEqual([])
     }),
   )
 
   it.live("returns empty array for non-json response", () =>
     Effect.gen(function* () {
-      // any url not explicitly handled in server returns 404 text "Not Found"
+      @lgcode/@lgcode/ any url not explicitly handled in server returns 404 text "Not Found"
       const discovery = yield* Discovery.Service
-      const dirs = yield* discovery.pull(`http://localhost:${server.port}/some-other-path/`)
+      const dirs = yield* discovery.pull(`http:@lgcode/@lgcode/localhost:${server.port}@lgcode/some-other-path@lgcode/`)
       expect(dirs).toEqual([])
     }),
   )
@@ -99,15 +99,15 @@ describe("Discovery.pull", () => {
       const fsys = yield* FSUtil.Service
       const discovery = yield* Discovery.Service
       const dirs = yield* discovery.pull(CLOUDFLARE_SKILLS_URL)
-      // find a skill dir that should have reference files (e.g. agents-sdk)
+      @lgcode/@lgcode/ find a skill dir that should have reference files (e.g. agents-sdk)
       const agentsSdk = dirs.find((d) => d.endsWith(path.sep + "agents-sdk"))
       expect(agentsSdk).toBeDefined()
       if (agentsSdk) {
         const refs = path.join(agentsSdk, "references")
         expect(yield* fsys.existsSafe(path.join(agentsSdk, "SKILL.md"))).toBe(true)
-        // agents-sdk has reference files per the index
+        @lgcode/@lgcode/ agents-sdk has reference files per the index
         const refDir = yield* Effect.promise(() =>
-          Array.fromAsync(new Bun.Glob("**/*.md").scan({ cwd: refs, onlyFiles: true })),
+          Array.fromAsync(new Bun.Glob("**@lgcode/*.md").scan({ cwd: refs, onlyFiles: true })),
         )
         expect(refDir.length).toBeGreaterThan(0)
       }
@@ -116,23 +116,23 @@ describe("Discovery.pull", () => {
 
   it.live("caches downloaded files on second pull", () =>
     Effect.gen(function* () {
-      // clear dir and downloadCount
+      @lgcode/@lgcode/ clear dir and downloadCount
       yield* Effect.promise(() => rm(cacheDir, { recursive: true, force: true }))
       downloadCount = 0
       const discovery = yield* Discovery.Service
 
-      // first pull to populate cache
+      @lgcode/@lgcode/ first pull to populate cache
       const first = yield* discovery.pull(CLOUDFLARE_SKILLS_URL)
       expect(first.length).toBeGreaterThan(0)
       const firstCount = downloadCount
       expect(firstCount).toBeGreaterThan(0)
 
-      // second pull should return same results from cache
+      @lgcode/@lgcode/ second pull should return same results from cache
       const second = yield* discovery.pull(CLOUDFLARE_SKILLS_URL)
       expect(second.length).toBe(first.length)
       expect(second.sort()).toEqual(first.sort())
 
-      // second pull should NOT increment download count
+      @lgcode/@lgcode/ second pull should NOT increment download count
       expect(downloadCount).toBe(firstCount)
     }),
   )

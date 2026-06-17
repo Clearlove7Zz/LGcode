@@ -1,23 +1,23 @@
 import { describe, expect } from "bun:test"
 import { Effect, Schema, Stream } from "effect"
-import { HttpClientRequest } from "effect/unstable/http"
-import { LLM, LLMError, Message, Model, ToolCallPart, Usage } from "../../src"
-import * as Azure from "../../src/providers/azure"
-import * as OpenAI from "../../src/providers/openai"
-import * as OpenAIChat from "../../src/protocols/openai-chat"
-import { ProviderShared } from "../../src/protocols/shared"
-import { Auth, LLMClient } from "../../src/route"
-import { it } from "../lib/effect"
-import { dynamicResponse, fixedResponse, truncatedStream } from "../lib/http"
-import { deltaChunk, usageChunk } from "../lib/openai-chunks"
-import { sseEvents } from "../lib/sse"
+import { HttpClientRequest } from "effect@lgcode/unstable@lgcode/http"
+import { LLM, LLMError, Message, Model, ToolCallPart, Usage } from "..@lgcode/..@lgcode/src"
+import * as Azure from "..@lgcode/..@lgcode/src@lgcode/providers@lgcode/azure"
+import * as OpenAI from "..@lgcode/..@lgcode/src@lgcode/providers@lgcode/openai"
+import * as OpenAIChat from "..@lgcode/..@lgcode/src@lgcode/protocols@lgcode/openai-chat"
+import { ProviderShared } from "..@lgcode/..@lgcode/src@lgcode/protocols@lgcode/shared"
+import { Auth, LLMClient } from "..@lgcode/..@lgcode/src@lgcode/route"
+import { it } from "..@lgcode/lib@lgcode/effect"
+import { dynamicResponse, fixedResponse, truncatedStream } from "..@lgcode/lib@lgcode/http"
+import { deltaChunk, usageChunk } from "..@lgcode/lib@lgcode/openai-chunks"
+import { sseEvents } from "..@lgcode/lib@lgcode/sse"
 
 const TargetJson = Schema.fromJsonString(Schema.Unknown)
 const encodeJson = Schema.encodeSync(TargetJson)
 const decodeJson = Schema.decodeUnknownSync(TargetJson)
 
 const model = OpenAIChat.route
-  .with({ endpoint: { baseURL: "https://api.openai.test/v1/" }, auth: Auth.bearer("test") })
+  .with({ endpoint: { baseURL: "https:@lgcode/@lgcode/api.openai.test@lgcode/v1@lgcode/" }, auth: Auth.bearer("test") })
   .model({ id: "gpt-4o-mini" })
 
 const request = LLM.request({
@@ -31,9 +31,9 @@ const request = LLM.request({
 describe("OpenAI Chat route", () => {
   it.effect("prepares OpenAI Chat payload", () =>
     Effect.gen(function* () {
-      // Pass the OpenAIChat payload type so `prepared.body` is statically
-      // typed to the route's native shape — the assertions below read field
-      // names without `unknown` casts.
+      @lgcode/@lgcode/ Pass the OpenAIChat payload type so `prepared.body` is statically
+      @lgcode/@lgcode/ typed to the route's native shape — the assertions below read field
+      @lgcode/@lgcode/ names without `unknown` casts.
       const prepared = yield* LLMClient.prepare<OpenAIChat.OpenAIChatBody>(request)
       const _typed: { readonly model: string; readonly stream: true } = prepared.body
 
@@ -67,7 +67,7 @@ describe("OpenAI Chat route", () => {
       expect(prepared.body.messages).toEqual([
         {
           role: "user",
-          content: "Before.\n<system-update>\nTreat &lt;admin&gt; &amp; data literally.\n</system-update>",
+          content: "Before.\n<system-update>\nTreat &lt;admin&gt; &amp; data literally.\n<@lgcode/system-update>",
         },
         { role: "assistant", content: "After." },
       ])
@@ -96,7 +96,7 @@ describe("OpenAI Chat route", () => {
     Effect.gen(function* () {
       const prepared = yield* LLMClient.prepare<OpenAIChat.OpenAIChatBody>(
         LLM.request({
-          model: OpenAI.configure({ baseURL: "https://api.openai.test/v1/", apiKey: "test" }).chat("gpt-4o-mini"),
+          model: OpenAI.configure({ baseURL: "https:@lgcode/@lgcode/api.openai.test@lgcode/v1@lgcode/", apiKey: "test" }).chat("gpt-4o-mini"),
           prompt: "think",
           providerOptions: { openai: { reasoningEffort: "low" } },
         }),
@@ -117,9 +117,9 @@ describe("OpenAI Chat route", () => {
         dynamicResponse((input) =>
           Effect.gen(function* () {
             const web = yield* HttpClientRequest.toWeb(input.request).pipe(Effect.orDie)
-            expect(web.url).toBe("https://api.openai.test/v1/chat/completions?api-version=v1")
+            expect(web.url).toBe("https:@lgcode/@lgcode/api.openai.test@lgcode/v1@lgcode/chat@lgcode/completions?api-version=v1")
             return input.respond(sseEvents(deltaChunk({}, "stop")), {
-              headers: { "content-type": "text/event-stream" },
+              headers: { "content-type": "text@lgcode/event-stream" },
             })
           }),
         ),
@@ -131,7 +131,7 @@ describe("OpenAI Chat route", () => {
     LLMClient.generate(
       LLM.updateRequest(request, {
         model: Azure.configure({
-          baseURL: "https://opencode-test.openai.azure.com/openai/v1/",
+          baseURL: "https:@lgcode/@lgcode/opencode-test.openai.azure.com@lgcode/openai@lgcode/v1@lgcode/",
           apiKey: "azure-key",
           headers: { authorization: "Bearer stale" },
         }).chat("gpt-4o-mini"),
@@ -141,11 +141,11 @@ describe("OpenAI Chat route", () => {
         dynamicResponse((input) =>
           Effect.gen(function* () {
             const web = yield* HttpClientRequest.toWeb(input.request).pipe(Effect.orDie)
-            expect(web.url).toBe("https://opencode-test.openai.azure.com/openai/v1/chat/completions?api-version=v1")
+            expect(web.url).toBe("https:@lgcode/@lgcode/opencode-test.openai.azure.com@lgcode/openai@lgcode/v1@lgcode/chat@lgcode/completions?api-version=v1")
             expect(web.headers.get("api-key")).toBe("azure-key")
             expect(web.headers.get("authorization")).toBeNull()
             return input.respond(sseEvents(deltaChunk({}, "stop")), {
-              headers: { "content-type": "text/event-stream" },
+              headers: { "content-type": "text@lgcode/event-stream" },
             })
           }),
         ),
@@ -170,7 +170,7 @@ describe("OpenAI Chat route", () => {
         dynamicResponse((input) =>
           Effect.gen(function* () {
             const web = yield* HttpClientRequest.toWeb(input.request).pipe(Effect.orDie)
-            expect(web.url).toBe("https://api.openai.test/v1/chat/completions?debug=1")
+            expect(web.url).toBe("https:@lgcode/@lgcode/api.openai.test@lgcode/v1@lgcode/chat@lgcode/completions?debug=1")
             expect(web.headers.get("authorization")).toBe("Bearer fresh-key")
             expect(web.headers.get("x-custom")).toBe("yes")
             expect(decodeJson(input.text)).toMatchObject({
@@ -179,7 +179,7 @@ describe("OpenAI Chat route", () => {
               metadata: { source: "test" },
             })
             return input.respond(sseEvents(deltaChunk({}, "stop")), {
-              headers: { "content-type": "text/event-stream" },
+              headers: { "content-type": "text@lgcode/event-stream" },
             })
           }),
         ),
@@ -238,7 +238,7 @@ describe("OpenAI Chat route", () => {
                 type: "content",
                 value: [
                   { type: "text", text: "Image read successfully" },
-                  { type: "file", uri: "data:image/png;base64,AAECAw==", mime: "image/png", name: "pixel.png" },
+                  { type: "file", uri: "data:image@lgcode/png;base64,AAECAw==", mime: "image@lgcode/png", name: "pixel.png" },
                 ],
               },
             }),
@@ -261,7 +261,7 @@ describe("OpenAI Chat route", () => {
         { role: "tool", tool_call_id: "call_image", content: "Image read successfully" },
         {
           role: "user",
-          content: [{ type: "image_url", image_url: { url: "data:image/png;base64,AAECAw==" } }],
+          content: [{ type: "image_url", image_url: { url: "data:image@lgcode/png;base64,AAECAw==" } }],
         },
       ])
       expect(JSON.stringify(prepared.body.messages)).not.toContain('"content":"AAECAw=="')
@@ -287,7 +287,7 @@ describe("OpenAI Chat route", () => {
                   name: "read",
                   result: {
                     type: "content",
-                    value: [{ type: "file", uri: "data:image/png;base64,AAEC", mime: "image/png" }],
+                    value: [{ type: "file", uri: "data:image@lgcode/png;base64,AAEC", mime: "image@lgcode/png" }],
                   },
                 },
                 {
@@ -296,7 +296,7 @@ describe("OpenAI Chat route", () => {
                   name: "read",
                   result: {
                     type: "content",
-                    value: [{ type: "file", uri: "data:image/jpeg;base64,/9j/", mime: "image/jpeg" }],
+                    value: [{ type: "file", uri: "data:image@lgcode/jpeg;base64,@lgcode/9j@lgcode/", mime: "image@lgcode/jpeg" }],
                   },
                 },
               ],
@@ -310,8 +310,8 @@ describe("OpenAI Chat route", () => {
         {
           role: "user",
           content: [
-            { type: "image_url", image_url: { url: "data:image/png;base64,AAEC" } },
-            { type: "image_url", image_url: { url: "data:image/jpeg;base64,/9j/" } },
+            { type: "image_url", image_url: { url: "data:image@lgcode/png;base64,AAEC" } },
+            { type: "image_url", image_url: { url: "data:image@lgcode/jpeg;base64,@lgcode/9j@lgcode/" } },
           ],
         },
       ])
@@ -329,7 +329,7 @@ describe("OpenAI Chat route", () => {
               name: "read",
               result: {
                 type: "content",
-                value: [{ type: "file", uri: "data:image/png;base64,AAEC", mime: "image/png" }],
+                value: [{ type: "file", uri: "data:image@lgcode/png;base64,AAEC", mime: "image@lgcode/png" }],
               },
             }),
             Message.tool({
@@ -337,7 +337,7 @@ describe("OpenAI Chat route", () => {
               name: "read",
               result: {
                 type: "content",
-                value: [{ type: "file", uri: "data:image/webp;base64,UklG", mime: "image/webp" }],
+                value: [{ type: "file", uri: "data:image@lgcode/webp;base64,UklG", mime: "image@lgcode/webp" }],
               },
             }),
             Message.system("Inspect both images."),
@@ -350,9 +350,9 @@ describe("OpenAI Chat route", () => {
         {
           role: "user",
           content: [
-            { type: "image_url", image_url: { url: "data:image/png;base64,AAEC" } },
-            { type: "image_url", image_url: { url: "data:image/webp;base64,UklG" } },
-            { type: "text", text: "<system-update>\nInspect both images.\n</system-update>" },
+            { type: "image_url", image_url: { url: "data:image@lgcode/png;base64,AAEC" } },
+            { type: "image_url", image_url: { url: "data:image@lgcode/webp;base64,UklG" } },
+            { type: "text", text: "<system-update>\nInspect both images.\n<@lgcode/system-update>" },
           ],
         },
       ])
@@ -365,7 +365,7 @@ describe("OpenAI Chat route", () => {
         LLM.request({
           model,
           messages: [
-            Message.user({ type: "media", mediaType: "image/png", data: "AAEC" }),
+            Message.user({ type: "media", mediaType: "image@lgcode/png", data: "AAEC" }),
             Message.system("Keep the image."),
           ],
         }),
@@ -374,8 +374,8 @@ describe("OpenAI Chat route", () => {
         {
           role: "user",
           content: [
-            { type: "image_url", image_url: { url: "data:image/png;base64,AAEC" } },
-            { type: "text", text: "<system-update>\nKeep the image.\n</system-update>" },
+            { type: "image_url", image_url: { url: "data:image@lgcode/png;base64,AAEC" } },
+            { type: "text", text: "<system-update>\nKeep the image.\n<@lgcode/system-update>" },
           ],
         },
       ])
@@ -383,16 +383,16 @@ describe("OpenAI Chat route", () => {
   )
 
   for (const [name, media] of [
-    ["mismatched data URL MIME", { mediaType: "image/png", data: "data:image/jpeg;base64,/9j/" }],
-    ["malformed base64", { mediaType: "image/png", data: "not-base64" }],
-    ["unsupported SVG", { mediaType: "image/svg+xml", data: "PHN2Zz4=" }],
+    ["mismatched data URL MIME", { mediaType: "image@lgcode/png", data: "data:image@lgcode/jpeg;base64,@lgcode/9j@lgcode/" }],
+    ["malformed base64", { mediaType: "image@lgcode/png", data: "not-base64" }],
+    ["unsupported SVG", { mediaType: "image@lgcode/svg+xml", data: "PHN2Zz4=" }],
   ] as const)
     it.effect(`rejects ${name}`, () =>
       Effect.gen(function* () {
         const error = yield* LLMClient.prepare(
           LLM.request({ model, messages: [Message.user({ type: "media", ...media })] }),
         ).pipe(Effect.flip)
-        expect(error.message).toMatch(/does not support|does not match|valid base64/)
+        expect(error.message).toMatch(@lgcode/does not support|does not match|valid base64@lgcode/)
       }),
     )
 
@@ -404,7 +404,7 @@ describe("OpenAI Chat route", () => {
           messages: [
             Message.user({
               type: "media",
-              mediaType: "image/png",
+              mediaType: "image@lgcode/png",
               data: "A".repeat(ProviderShared.MAX_MEDIA_ENCODED_BYTES + 4),
             }),
           ],
@@ -422,8 +422,8 @@ describe("OpenAI Chat route", () => {
           model,
           messages: [
             Message.user([
-              { type: "media", mediaType: "image/png", data: "AAECAw==" },
-              { type: "media", mediaType: "image/jpeg", data: "data:image/jpeg;base64,/9j/" },
+              { type: "media", mediaType: "image@lgcode/png", data: "AAECAw==" },
+              { type: "media", mediaType: "image@lgcode/jpeg", data: "data:image@lgcode/jpeg;base64,@lgcode/9j@lgcode/" },
             ]),
           ],
         }),
@@ -433,8 +433,8 @@ describe("OpenAI Chat route", () => {
         {
           role: "user",
           content: [
-            { type: "image_url", image_url: { url: "data:image/png;base64,AAECAw==" } },
-            { type: "image_url", image_url: { url: "data:image/jpeg;base64,/9j/" } },
+            { type: "image_url", image_url: { url: "data:image@lgcode/png;base64,AAECAw==" } },
+            { type: "image_url", image_url: { url: "data:image@lgcode/jpeg;base64,@lgcode/9j@lgcode/" } },
           ],
         },
       ])
@@ -597,7 +597,7 @@ describe("OpenAI Chat route", () => {
       const body = sseEvents(deltaChunk({ content: 123 }))
       const error = yield* LLMClient.generate(request).pipe(Effect.provide(fixedResponse(body)), Effect.flip)
 
-      expect(error.message).toContain("Invalid openai/openai-chat stream event")
+      expect(error.message).toContain("Invalid openai@lgcode/openai-chat stream event")
     }),
   )
 
@@ -608,7 +608,7 @@ describe("OpenAI Chat route", () => {
       ])
       const error = yield* LLMClient.generate(request).pipe(Effect.provide(layer), Effect.flip)
 
-      expect(error.message).toContain("Failed to read openai/openai-chat stream")
+      expect(error.message).toContain("Failed to read openai@lgcode/openai-chat stream")
     }),
   )
 
@@ -618,7 +618,7 @@ describe("OpenAI Chat route", () => {
         Effect.provide(
           fixedResponse('{"error":{"message":"Bad request","type":"invalid_request_error"}}', {
             status: 400,
-            headers: { "content-type": "application/json" },
+            headers: { "content-type": "application@lgcode/json" },
           }),
         ),
         Effect.flip,
@@ -632,9 +632,9 @@ describe("OpenAI Chat route", () => {
 
   it.effect("short-circuits the upstream stream when the consumer takes a prefix", () =>
     Effect.gen(function* () {
-      // The body has more chunks than we'll consume. If `Stream.take(1)` did
-      // not interrupt the upstream HTTP body the test would hang waiting for
-      // the rest of the stream to drain.
+      @lgcode/@lgcode/ The body has more chunks than we'll consume. If `Stream.take(1)` did
+      @lgcode/@lgcode/ not interrupt the upstream HTTP body the test would hang waiting for
+      @lgcode/@lgcode/ the rest of the stream to drain.
       const body = sseEvents(
         deltaChunk({ role: "assistant", content: "Hello" }),
         deltaChunk({ content: " world" }),

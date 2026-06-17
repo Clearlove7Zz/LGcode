@@ -1,25 +1,25 @@
-import { useNavigate, useParams } from "@solidjs/router"
+import { useNavigate, useParams } from "@solidjs@lgcode/router"
 import { createEffect, createMemo, For, Show, type Accessor, type JSX } from "solid-js"
-import { createStore } from "solid-js/store"
-import { createSortable } from "@thisbeyond/solid-dnd"
-import { createMediaQuery } from "@solid-primitives/media"
-import { base64Encode } from "@opencode@lgcode/core/util/encode"
-import { getFilename } from "@opencode@lgcode/core/util/path"
-import { Button } from "@opencode@lgcode/ui/button"
-import { Collapsible } from "@opencode@lgcode/ui/collapsible"
-import { DropdownMenu } from "@opencode@lgcode/ui/dropdown-menu"
-import { Icon } from "@opencode@lgcode/ui/icon"
-import { IconButton } from "@opencode@lgcode/ui/icon-button"
-import { Spinner } from "@opencode@lgcode/ui/spinner"
-import { Tooltip } from "@opencode@lgcode/ui/tooltip"
-import { type Session } from "@opencode@lgcode/sdk/v2/client"
-import { type LocalProject } from "@/context/layout"
-import { useServerSync, useQueryOptions } from "@/context/server-sync"
-import { useLanguage } from "@/context/language"
-import { pathKey } from "@/utils/path-key"
-import { NewSessionItem, SessionItem, SessionSkeleton } from "./sidebar-items"
-import { sortedRootSessions } from "./helpers"
-import { useIsFetching } from "@tanstack/solid-query"
+import { createStore } from "solid-js@lgcode/store"
+import { createSortable } from "@thisbeyond@lgcode/solid-dnd"
+import { createMediaQuery } from "@solid-primitives@lgcode/media"
+import { base64Encode } from "@lgcode/core@lgcode/util@lgcode/encode"
+import { getFilename } from "@lgcode/core@lgcode/util@lgcode/path"
+import { Button } from "@lgcode/ui@lgcode/button"
+import { Collapsible } from "@lgcode/ui@lgcode/collapsible"
+import { DropdownMenu } from "@lgcode/ui@lgcode/dropdown-menu"
+import { Icon } from "@lgcode/ui@lgcode/icon"
+import { IconButton } from "@lgcode/ui@lgcode/icon-button"
+import { Spinner } from "@lgcode/ui@lgcode/spinner"
+import { Tooltip } from "@lgcode/ui@lgcode/tooltip"
+import { type Session } from "@lgcode/sdk@lgcode/v2@lgcode/client"
+import { type LocalProject } from "@@lgcode/context@lgcode/layout"
+import { useServerSync, useQueryOptions } from "@@lgcode/context@lgcode/server-sync"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { pathKey } from "@@lgcode/utils@lgcode/path-key"
+import { NewSessionItem, SessionItem, SessionSkeleton } from ".@lgcode/sidebar-items"
+import { sortedRootSessions } from ".@lgcode/helpers"
+import { useIsFetching } from "@tanstack@lgcode/solid-query"
 
 type InlineEditorComponent = (props: {
   id: string
@@ -77,8 +77,8 @@ export const WorkspaceDragOverlay = (props: {
 
   return (
     <Show when={label()}>
-      {(value) => <div class="bg-background-base rounded-md px-2 py-1 text-14-medium text-text-strong">{value()}</div>}
-    </Show>
+      {(value) => <div class="bg-background-base rounded-md px-2 py-1 text-14-medium text-text-strong">{value()}<@lgcode/div>}
+    <@lgcode/Show>
   )
 }
 
@@ -98,19 +98,19 @@ const WorkspaceHeader = (props: {
 }): JSX.Element => (
   <div class="flex items-center gap-1 min-w-0 flex-1">
     <div class="flex items-center justify-center shrink-0 size-6">
-      <Show when={props.busy()} fallback={<Icon name="branch" size="small" />}>
-        <Spinner class="size-[15px]" />
-      </Show>
-    </div>
+      <Show when={props.busy()} fallback={<Icon name="branch" size="small" @lgcode/>}>
+        <Spinner class="size-[15px]" @lgcode/>
+      <@lgcode/Show>
+    <@lgcode/div>
     <span class="text-14-medium text-text-base shrink-0">
       {props.local() ? props.language.t("workspace.type.local") : props.language.t("workspace.type.sandbox")} :
-    </span>
+    <@lgcode/span>
     <Show
       when={!props.local()}
       fallback={
         <span class="text-14-medium text-text-base min-w-0 truncate">
           {props.branch() ?? getFilename(props.directory)}
-        </span>
+        <@lgcode/span>
       }
     >
       <props.InlineEditor
@@ -127,12 +127,12 @@ const WorkspaceHeader = (props: {
         editing={props.workspaceEditActive()}
         stopPropagation={false}
         openOnDblClick={false}
-      />
-    </Show>
-    <div class="flex items-center justify-center shrink-0 overflow-hidden w-0 opacity-0 transition-all duration-200 group-hover/workspace:w-3.5 group-hover/workspace:opacity-100 group-focus-within/workspace:w-3.5 group-focus-within/workspace:opacity-100">
-      <Icon name={props.open() ? "chevron-down" : "chevron-right"} size="small" class="text-icon-base" />
-    </div>
-  </div>
+      @lgcode/>
+    <@lgcode/Show>
+    <div class="flex items-center justify-center shrink-0 overflow-hidden w-0 opacity-0 transition-all duration-200 group-hover@lgcode/workspace:w-3.5 group-hover@lgcode/workspace:opacity-100 group-focus-within@lgcode/workspace:w-3.5 group-focus-within@lgcode/workspace:opacity-100">
+      <Icon name={props.open() ? "chevron-down" : "chevron-right"} size="small" class="text-icon-base" @lgcode/>
+    <@lgcode/div>
+  <@lgcode/div>
 )
 
 const WorkspaceActions = (props: {
@@ -155,12 +155,12 @@ const WorkspaceActions = (props: {
   navigateToNewSession: () => void
 }): JSX.Element => (
   <div
-    class="absolute right-1 top-1/2 -translate-y-1/2 flex items-center gap-0.5 transition-opacity"
+    class="absolute right-1 top-1@lgcode/2 -translate-y-1@lgcode/2 flex items-center gap-0.5 transition-opacity"
     classList={{
       "opacity-100 pointer-events-auto": props.menuOpen(),
       "opacity-0 pointer-events-none": !props.menuOpen(),
-      "group-hover/workspace:opacity-100 group-hover/workspace:pointer-events-auto": true,
-      "group-focus-within/workspace:opacity-100 group-focus-within/workspace:pointer-events-auto": true,
+      "group-hover@lgcode/workspace:opacity-100 group-hover@lgcode/workspace:pointer-events-auto": true,
+      "group-focus-within@lgcode/workspace:opacity-100 group-focus-within@lgcode/workspace:pointer-events-auto": true,
     }}
   >
     <DropdownMenu
@@ -177,8 +177,8 @@ const WorkspaceActions = (props: {
           data-action="workspace-menu"
           data-workspace={base64Encode(props.directory)}
           aria-label={props.language.t("common.moreOptions")}
-        />
-      </Tooltip>
+        @lgcode/>
+      <@lgcode/Tooltip>
       <DropdownMenu.Portal>
         <DropdownMenu.Content
           onCloseAutoFocus={(event) => {
@@ -195,29 +195,29 @@ const WorkspaceActions = (props: {
               props.setMenuOpen(false)
             }}
           >
-            <DropdownMenu.ItemLabel>{props.language.t("common.rename")}</DropdownMenu.ItemLabel>
-          </DropdownMenu.Item>
+            <DropdownMenu.ItemLabel>{props.language.t("common.rename")}<@lgcode/DropdownMenu.ItemLabel>
+          <@lgcode/DropdownMenu.Item>
           <DropdownMenu.Item
             disabled={props.local() || props.busy()}
             onSelect={() => props.showResetWorkspaceDialog(props.root, props.directory)}
           >
-            <DropdownMenu.ItemLabel>{props.language.t("common.reset")}</DropdownMenu.ItemLabel>
-          </DropdownMenu.Item>
+            <DropdownMenu.ItemLabel>{props.language.t("common.reset")}<@lgcode/DropdownMenu.ItemLabel>
+          <@lgcode/DropdownMenu.Item>
           <DropdownMenu.Item
             disabled={props.local() || props.busy()}
             onSelect={() => props.showDeleteWorkspaceDialog(props.root, props.directory)}
           >
-            <DropdownMenu.ItemLabel>{props.language.t("common.delete")}</DropdownMenu.ItemLabel>
-          </DropdownMenu.Item>
-        </DropdownMenu.Content>
-      </DropdownMenu.Portal>
-    </DropdownMenu>
+            <DropdownMenu.ItemLabel>{props.language.t("common.delete")}<@lgcode/DropdownMenu.ItemLabel>
+          <@lgcode/DropdownMenu.Item>
+        <@lgcode/DropdownMenu.Content>
+      <@lgcode/DropdownMenu.Portal>
+    <@lgcode/DropdownMenu>
     <Show when={!props.touch()}>
       <Tooltip value={props.language.t("command.session.new")} placement="top">
         <IconButton
           icon="new-session"
           variant="ghost"
-          class="size-6 rounded-md opacity-0 pointer-events-none group-hover/workspace:opacity-100 group-hover/workspace:pointer-events-auto group-focus-within/workspace:opacity-100 group-focus-within/workspace:pointer-events-auto"
+          class="size-6 rounded-md opacity-0 pointer-events-none group-hover@lgcode/workspace:opacity-100 group-hover@lgcode/workspace:pointer-events-auto group-focus-within@lgcode/workspace:opacity-100 group-focus-within@lgcode/workspace:pointer-events-auto"
           data-action="workspace-new-session"
           data-workspace={base64Encode(props.directory)}
           aria-label={props.language.t("command.session.new")}
@@ -227,10 +227,10 @@ const WorkspaceActions = (props: {
             props.clearHoverProjectSoon()
             props.navigateToNewSession()
           }}
-        />
-      </Tooltip>
-    </Show>
-  </div>
+        @lgcode/>
+      <@lgcode/Tooltip>
+    <@lgcode/Show>
+  <@lgcode/div>
 )
 
 const WorkspaceSessionList = (props: {
@@ -251,11 +251,11 @@ const WorkspaceSessionList = (props: {
         mobile={props.mobile}
         sidebarExpanded={props.ctx.sidebarExpanded}
         clearHoverProjectSoon={props.ctx.clearHoverProjectSoon}
-      />
-    </Show>
+      @lgcode/>
+    <@lgcode/Show>
     <Show when={props.loading()}>
-      <SessionSkeleton />
-    </Show>
+      <SessionSkeleton @lgcode/>
+    <@lgcode/Show>
     <For each={props.sessions()}>
       {(session) => (
         <SessionItem
@@ -269,9 +269,9 @@ const WorkspaceSessionList = (props: {
           clearHoverProjectSoon={props.ctx.clearHoverProjectSoon}
           prefetchSession={props.ctx.prefetchSession}
           archiveSession={props.ctx.archiveSession}
-        />
+        @lgcode/>
       )}
-    </For>
+    <@lgcode/For>
     <Show when={props.hasMore()}>
       <div class="relative w-full py-1">
         <Button
@@ -284,10 +284,10 @@ const WorkspaceSessionList = (props: {
           }}
         >
           {props.language.t("common.loadMore")}
-        </Button>
-      </div>
-    </Show>
-  </nav>
+        <@lgcode/Button>
+      <@lgcode/div>
+    <@lgcode/Show>
+  <@lgcode/nav>
 )
 
 export const SortableWorkspace = (props: {
@@ -346,7 +346,7 @@ export const SortableWorkspace = (props: {
       renameWorkspace={props.ctx.renameWorkspace}
       setEditor={props.ctx.setEditor}
       projectId={props.project.id}
-    />
+    @lgcode/>
   )
 
   const openWrapper = (value: boolean) => {
@@ -362,7 +362,7 @@ export const SortableWorkspace = (props: {
 
   return (
     <div
-      // @ts-ignore
+      @lgcode/@lgcode/ @ts-ignore
       use:sortable
       classList={{
         "opacity-30": sortable.isActiveDraggable,
@@ -372,7 +372,7 @@ export const SortableWorkspace = (props: {
       <Collapsible variant="ghost" open={open()} class="shrink-0" onOpenChange={openWrapper}>
         <div class="py-1">
           <div
-            class="group/workspace relative"
+            class="group@lgcode/workspace relative"
             data-component="workspace-item"
             data-workspace={base64Encode(props.directory)}
           >
@@ -383,22 +383,22 @@ export const SortableWorkspace = (props: {
                   <Collapsible.Trigger
                     class={`flex items-center justify-between w-full pl-2 py-1.5 rounded-md hover:bg-surface-raised-base-hover transition-[padding] duration-200 ${
                       menu.open ? "pr-16" : "pr-2"
-                    } group-hover/workspace:pr-16 group-focus-within/workspace:pr-16`}
+                    } group-hover@lgcode/workspace:pr-16 group-focus-within@lgcode/workspace:pr-16`}
                     data-action="workspace-toggle"
                     data-workspace={base64Encode(props.directory)}
                   >
                     {header()}
-                  </Collapsible.Trigger>
+                  <@lgcode/Collapsible.Trigger>
                 }
               >
                 <div
                   class={`flex items-center justify-between w-full pl-2 py-1.5 rounded-md transition-[padding] duration-200 ${
                     menu.open ? "pr-16" : "pr-2"
-                  } group-hover/workspace:pr-16 group-focus-within/workspace:pr-16`}
+                  } group-hover@lgcode/workspace:pr-16 group-focus-within@lgcode/workspace:pr-16`}
                 >
                   {header()}
-                </div>
-              </Show>
+                <@lgcode/div>
+              <@lgcode/Show>
               <WorkspaceActions
                 directory={props.directory}
                 local={local}
@@ -416,11 +416,11 @@ export const SortableWorkspace = (props: {
                 showDeleteWorkspaceDialog={props.ctx.showDeleteWorkspaceDialog}
                 root={props.project.worktree}
                 clearHoverProjectSoon={props.ctx.clearHoverProjectSoon}
-                navigateToNewSession={() => navigate(`/${slug()}/session`)}
-              />
-            </div>
-          </div>
-        </div>
+                navigateToNewSession={() => navigate(`@lgcode/${slug()}@lgcode/session`)}
+              @lgcode/>
+            <@lgcode/div>
+          <@lgcode/div>
+        <@lgcode/div>
 
         <Collapsible.Content>
           <WorkspaceSessionList
@@ -433,10 +433,10 @@ export const SortableWorkspace = (props: {
             hasMore={hasMore}
             loadMore={loadMore}
             language={language}
-          />
-        </Collapsible.Content>
-      </Collapsible>
-    </div>
+          @lgcode/>
+        <@lgcode/Collapsible.Content>
+      <@lgcode/Collapsible>
+    <@lgcode/div>
   )
 }
 
@@ -479,7 +479,7 @@ export const LocalWorkspace = (props: {
         hasMore={hasMore}
         loadMore={loadMore}
         language={language}
-      />
-    </div>
+      @lgcode/>
+    <@lgcode/div>
   )
 }

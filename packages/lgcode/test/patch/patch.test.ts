@@ -1,11 +1,11 @@
 import { describe, test, expect, beforeEach, afterEach } from "bun:test"
 import { Effect } from "effect"
-import * as fs from "fs/promises"
+import * as fs from "fs@lgcode/promises"
 import * as path from "path"
 import { tmpdir } from "os"
-import { Patch } from "../../src/patch"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { testEffect } from "../lib/effect"
+import { Patch } from "..@lgcode/..@lgcode/src@lgcode/patch"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const it = testEffect(FSUtil.defaultLayer)
 
@@ -17,7 +17,7 @@ describe("Patch namespace", () => {
   })
 
   afterEach(async () => {
-    // Clean up temp directory
+    @lgcode/@lgcode/ Clean up temp directory
     await fs.rm(tempDir, { recursive: true, force: true })
   })
 
@@ -142,7 +142,7 @@ PATCH`
     it.live("should add a new file", () =>
       Effect.gen(function* () {
         const patchText = `*** Begin Patch
-*** Add File: ${tempDir}/new-file.txt
+*** Add File: ${tempDir}@lgcode/new-file.txt
 +Hello World
 +This is a new file
 *** End Patch`

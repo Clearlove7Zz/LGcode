@@ -1,19 +1,19 @@
-import { action, useParams, useAction, useSubmission, json, query, createAsync } from "@solidjs/router"
-import { createStore } from "solid-js/store"
+import { action, useParams, useAction, useSubmission, json, query, createAsync } from "@solidjs@lgcode/router"
+import { createStore } from "solid-js@lgcode/store"
 import { Show } from "solid-js"
-import { Billing } from "@opencode@lgcode/console-core/billing.js"
-import { Database, eq, and, isNull, sql } from "@opencode@lgcode/console-core/drizzle/index.js"
-import { BillingTable, SubscriptionTable } from "@opencode@lgcode/console-core/schema/billing.sql.js"
-import { Actor } from "@opencode@lgcode/console-core/actor.js"
-import { Subscription } from "@opencode@lgcode/console-core/subscription.js"
-import { BlackData } from "@opencode@lgcode/console-core/black.js"
-import { withActor } from "~/context/auth.withActor"
-import { queryBillingInfo } from "../../common"
-import styles from "./black-section.module.css"
-import waitlistStyles from "./black-waitlist-section.module.css"
-import { useI18n } from "~/context/i18n"
-import { formError } from "~/lib/form-error"
-import { blackResetTimeKeys, formatResetTime } from "~/lib/format-reset-time"
+import { Billing } from "@lgcode/console-core@lgcode/billing.js"
+import { Database, eq, and, isNull, sql } from "@lgcode/console-core@lgcode/drizzle@lgcode/index.js"
+import { BillingTable, SubscriptionTable } from "@lgcode/console-core@lgcode/schema@lgcode/billing.sql.js"
+import { Actor } from "@lgcode/console-core@lgcode/actor.js"
+import { Subscription } from "@lgcode/console-core@lgcode/subscription.js"
+import { BlackData } from "@lgcode/console-core@lgcode/black.js"
+import { withActor } from "~@lgcode/context@lgcode/auth.withActor"
+import { queryBillingInfo } from "..@lgcode/..@lgcode/common"
+import styles from ".@lgcode/black-section.module.css"
+import waitlistStyles from ".@lgcode/black-waitlist-section.module.css"
+import { useI18n } from "~@lgcode/context@lgcode/i18n"
+import { formError } from "~@lgcode/lib@lgcode/form-error"
+import { blackResetTimeKeys, formatResetTime } from "~@lgcode/lib@lgcode/format-reset-time"
 
 const querySubscription = query(async (workspaceID: string) => {
   "use server"
@@ -171,9 +171,9 @@ export function BlackSection() {
         {(sub) => (
           <section class={styles.root}>
             <div data-slot="section-title">
-              <h2>{i18n.t("workspace.black.subscription.title")}</h2>
+              <h2>{i18n.t("workspace.black.subscription.title")}<@lgcode/h2>
               <div data-slot="title-row">
-                <p>{i18n.t("workspace.black.subscription.message", { plan: sub().plan })}</p>
+                <p>{i18n.t("workspace.black.subscription.message", { plan: sub().plan })}<@lgcode/p>
                 <button
                   data-color="primary"
                   disabled={sessionSubmission.pending || store.sessionRedirecting}
@@ -182,64 +182,64 @@ export function BlackSection() {
                   {sessionSubmission.pending || store.sessionRedirecting
                     ? i18n.t("workspace.black.loading")
                     : i18n.t("workspace.black.subscription.manage")}
-                </button>
-              </div>
-            </div>
+                <@lgcode/button>
+              <@lgcode/div>
+            <@lgcode/div>
             <div data-slot="usage">
               <div data-slot="usage-item">
                 <div data-slot="usage-header">
-                  <span data-slot="usage-label">{i18n.t("workspace.black.subscription.rollingUsage")}</span>
-                  <span data-slot="usage-value">{sub().rollingUsage.usagePercent}%</span>
-                </div>
+                  <span data-slot="usage-label">{i18n.t("workspace.black.subscription.rollingUsage")}<@lgcode/span>
+                  <span data-slot="usage-value">{sub().rollingUsage.usagePercent}%<@lgcode/span>
+                <@lgcode/div>
                 <div data-slot="progress">
-                  <div data-slot="progress-bar" style={{ width: `${sub().rollingUsage.usagePercent}%` }} />
-                </div>
+                  <div data-slot="progress-bar" style={{ width: `${sub().rollingUsage.usagePercent}%` }} @lgcode/>
+                <@lgcode/div>
                 <span data-slot="reset-time">
                   {i18n.t("workspace.black.subscription.resetsIn")}{" "}
                   {formatResetTime(sub().rollingUsage.resetInSec, i18n, blackResetTimeKeys)}
-                </span>
-              </div>
+                <@lgcode/span>
+              <@lgcode/div>
               <div data-slot="usage-item">
                 <div data-slot="usage-header">
-                  <span data-slot="usage-label">{i18n.t("workspace.black.subscription.weeklyUsage")}</span>
-                  <span data-slot="usage-value">{sub().weeklyUsage.usagePercent}%</span>
-                </div>
+                  <span data-slot="usage-label">{i18n.t("workspace.black.subscription.weeklyUsage")}<@lgcode/span>
+                  <span data-slot="usage-value">{sub().weeklyUsage.usagePercent}%<@lgcode/span>
+                <@lgcode/div>
                 <div data-slot="progress">
-                  <div data-slot="progress-bar" style={{ width: `${sub().weeklyUsage.usagePercent}%` }} />
-                </div>
+                  <div data-slot="progress-bar" style={{ width: `${sub().weeklyUsage.usagePercent}%` }} @lgcode/>
+                <@lgcode/div>
                 <span data-slot="reset-time">
                   {i18n.t("workspace.black.subscription.resetsIn")}{" "}
                   {formatResetTime(sub().weeklyUsage.resetInSec, i18n, blackResetTimeKeys)}
-                </span>
-              </div>
-            </div>
+                <@lgcode/span>
+              <@lgcode/div>
+            <@lgcode/div>
             <form action={setUseBalance} method="post" data-slot="setting-row">
-              <p>{i18n.t("workspace.black.subscription.useBalance")}</p>
-              <input type="hidden" name="workspaceID" value={params.id} />
-              <input type="hidden" name="useBalance" value={sub().useBalance ? "false" : "true"} />
+              <p>{i18n.t("workspace.black.subscription.useBalance")}<@lgcode/p>
+              <input type="hidden" name="workspaceID" value={params.id} @lgcode/>
+              <input type="hidden" name="useBalance" value={sub().useBalance ? "false" : "true"} @lgcode/>
               <label data-slot="toggle-label">
                 <input
                   type="checkbox"
                   checked={sub().useBalance}
                   disabled={useBalanceSubmission.pending}
                   onChange={(e) => e.currentTarget.form?.requestSubmit()}
-                />
-                <span></span>
-              </label>
-            </form>
-          </section>
+                @lgcode/>
+                <span><@lgcode/span>
+              <@lgcode/label>
+            <@lgcode/form>
+          <@lgcode/section>
         )}
-      </Show>
+      <@lgcode/Show>
       <Show when={billing()?.timeSubscriptionBooked}>
         <section class={waitlistStyles.root}>
           <div data-slot="section-title">
-            <h2>{i18n.t("workspace.black.waitlist.title")}</h2>
+            <h2>{i18n.t("workspace.black.waitlist.title")}<@lgcode/h2>
             <div data-slot="title-row">
               <p>
                 {billing()?.timeSubscriptionSelected
                   ? i18n.t("workspace.black.waitlist.ready", { plan: billing()?.subscriptionPlan ?? "" })
                   : i18n.t("workspace.black.waitlist.joined", { plan: billing()?.subscriptionPlan ?? "" })}
-              </p>
+              <@lgcode/p>
               <button
                 data-color="danger"
                 disabled={cancelSubmission.pending || store.cancelled}
@@ -250,9 +250,9 @@ export function BlackSection() {
                   : store.cancelled
                     ? i18n.t("workspace.black.waitlist.left")
                     : i18n.t("workspace.black.waitlist.leave")}
-              </button>
-            </div>
-          </div>
+              <@lgcode/button>
+            <@lgcode/div>
+          <@lgcode/div>
           <Show when={billing()?.timeSubscriptionSelected}>
             <div data-slot="enroll-section">
               <button
@@ -266,12 +266,12 @@ export function BlackSection() {
                   : store.enrolled
                     ? i18n.t("workspace.black.waitlist.enrolled")
                     : i18n.t("workspace.black.waitlist.enroll")}
-              </button>
-              <p data-slot="enroll-note">{i18n.t("workspace.black.waitlist.enrollNote")}</p>
-            </div>
-          </Show>
-        </section>
-      </Show>
-    </>
+              <@lgcode/button>
+              <p data-slot="enroll-note">{i18n.t("workspace.black.waitlist.enrollNote")}<@lgcode/p>
+            <@lgcode/div>
+          <@lgcode/Show>
+        <@lgcode/section>
+      <@lgcode/Show>
+    <@lgcode/>
   )
 }

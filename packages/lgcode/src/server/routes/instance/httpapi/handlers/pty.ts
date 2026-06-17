@@ -1,29 +1,29 @@
-import * as InstanceState from "@/effect/instance-state"
-import { registerDisposer } from "@/effect/instance-registry"
-import { InstanceRef, WorkspaceRef } from "@/effect/instance-ref"
-import { Plugin } from "@/plugin"
-import { Pty } from "@opencode@lgcode/core/pty"
-import { PtyProtocol } from "@opencode@lgcode/core/pty/protocol"
-import { PtyID } from "@opencode@lgcode/core/pty/schema"
-import { PtyTicket } from "@opencode@lgcode/core/pty/ticket"
-import { LocationServiceMap } from "@opencode@lgcode/core/location-layer"
-import { Location } from "@opencode@lgcode/core/location"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { Shell } from "@opencode@lgcode/core/shell"
-import { CorsConfig, isAllowedRequestOrigin, type CorsOptions } from "@opencode@lgcode/server/cors"
+import * as InstanceState from "@@lgcode/effect@lgcode/instance-state"
+import { registerDisposer } from "@@lgcode/effect@lgcode/instance-registry"
+import { InstanceRef, WorkspaceRef } from "@@lgcode/effect@lgcode/instance-ref"
+import { Plugin } from "@@lgcode/plugin"
+import { Pty } from "@lgcode/core@lgcode/pty"
+import { PtyProtocol } from "@lgcode/core@lgcode/pty@lgcode/protocol"
+import { PtyID } from "@lgcode/core@lgcode/pty@lgcode/schema"
+import { PtyTicket } from "@lgcode/core@lgcode/pty@lgcode/ticket"
+import { LocationServiceMap } from "@lgcode/core@lgcode/location-layer"
+import { Location } from "@lgcode/core@lgcode/location"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { Shell } from "@lgcode/core@lgcode/shell"
+import { CorsConfig, isAllowedRequestOrigin, type CorsOptions } from "@lgcode/server@lgcode/cors"
 import {
   PTY_CONNECT_TICKET_QUERY,
   PTY_CONNECT_TOKEN_HEADER,
   PTY_CONNECT_TOKEN_HEADER_VALUE,
-} from "@/server/shared/pty-ticket"
+} from "@@lgcode/server@lgcode/shared@lgcode/pty-ticket"
 import { Effect, Layer, Option, Queue, Schema } from "effect"
-import { HttpServerRequest, HttpServerResponse } from "effect/unstable/http"
-import { HttpApiBuilder } from "effect/unstable/httpapi"
-import * as Socket from "effect/unstable/socket/Socket"
-import { InstanceHttpApi } from "../api"
-import * as ApiError from "../errors"
-import { CursorQuery, PtyConnectApi } from "../groups/pty"
-import { WebSocketTracker } from "../websocket-tracker"
+import { HttpServerRequest, HttpServerResponse } from "effect@lgcode/unstable@lgcode/http"
+import { HttpApiBuilder } from "effect@lgcode/unstable@lgcode/httpapi"
+import * as Socket from "effect@lgcode/unstable@lgcode/socket@lgcode/Socket"
+import { InstanceHttpApi } from "..@lgcode/api"
+import * as ApiError from "..@lgcode/errors"
+import { CursorQuery, PtyConnectApi } from "..@lgcode/groups@lgcode/pty"
+import { WebSocketTracker } from "..@lgcode/websocket-tracker"
 
 function validOrigin(request: HttpServerRequest.HttpServerRequest, opts: CorsOptions | undefined) {
   return isAllowedRequestOrigin(request.headers.origin, request.headers.host, opts)
@@ -35,9 +35,9 @@ const ticketScope = Effect.gen(function* () {
   return { directory: instance?.directory, workspaceID }
 })
 
-// Legacy surface compatibility: before exited-session retention, sessions vanished the moment
-// their process exited. These routes preserve that observable behavior — exited sessions are
-// invisible here — while the canonical /api/pty surface exposes them until removal.
+@lgcode/@lgcode/ Legacy surface compatibility: before exited-session retention, sessions vanished the moment
+@lgcode/@lgcode/ their process exited. These routes preserve that observable behavior — exited sessions are
+@lgcode/@lgcode/ invisible here — while the canonical @lgcode/api@lgcode/pty surface exposes them until removal.
 export const ptyHandlers = HttpApiBuilder.group(InstanceHttpApi, "pty", (handlers) =>
   Effect.gen(function* () {
     const tickets = yield* PtyTicket.Service
@@ -192,7 +192,7 @@ export const ptyConnectHandlers = HttpApiBuilder.group(PtyConnectApi, "pty-conne
 
         const query = Schema.decodeUnknownOption(CursorQuery)(yield* HttpServerRequest.ParsedSearchParams)
         if (Option.isNone(query)) return HttpServerResponse.empty({ status: 400 })
-        const ticket = new URL(ctx.request.url, "http://localhost").searchParams.get(PTY_CONNECT_TICKET_QUERY)
+        const ticket = new URL(ctx.request.url, "http:@lgcode/@lgcode/localhost").searchParams.get(PTY_CONNECT_TICKET_QUERY)
         if (ticket) {
           const valid = validOrigin(ctx.request, cors)
             ? yield* tickets.consume({ ticket, ptyID: ctx.params.ptyID, ...(yield* ticketScope) })
@@ -220,8 +220,8 @@ export const ptyConnectHandlers = HttpApiBuilder.group(PtyConnectApi, "pty-conne
           return HttpServerResponse.empty()
         }
 
-        // Outbound frames flow through one queue drained by a single writer so replay, live
-        // output, and the close frame keep their order.
+        @lgcode/@lgcode/ Outbound frames flow through one queue drained by a single writer so replay, live
+        @lgcode/@lgcode/ output, and the close frame keep their order.
         const outbox = yield* Queue.unbounded<string | Uint8Array | Socket.CloseEvent>()
         const attachment = yield* pty(
           Pty.Service.use((service) =>
@@ -253,8 +253,8 @@ export const ptyConnectHandlers = HttpApiBuilder.group(PtyConnectApi, "pty-conne
           }
         })
 
-        // The reader runs concurrently with the writer; whichever finishes first ends the
-        // connection and the attachment is always released.
+        @lgcode/@lgcode/ The reader runs concurrently with the writer; whichever finishes first ends the
+        @lgcode/@lgcode/ connection and the attachment is always released.
         yield* Effect.race(
           drain,
           socket.runRaw((message) => {

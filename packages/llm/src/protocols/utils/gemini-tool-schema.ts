@@ -1,8 +1,8 @@
-import { ProviderShared } from "../shared"
+import { ProviderShared } from "..@lgcode/shared"
 
-// Gemini accepts a JSON Schema-like dialect for tool parameters, but rejects a
-// handful of common JSON Schema shapes. Keep this projection isolated so the
-// Gemini protocol file still reads like the other protocol modules.
+@lgcode/@lgcode/ Gemini accepts a JSON Schema-like dialect for tool parameters, but rejects a
+@lgcode/@lgcode/ handful of common JSON Schema shapes. Keep this projection isolated so the
+@lgcode/@lgcode/ Gemini protocol file still reads like the other protocol modules.
 const SCHEMA_INTENT_KEYS = [
   "type",
   "properties",
@@ -98,4 +98,4 @@ const projectNode = (schema: unknown): Record<string, unknown> | undefined => {
 
 export const convert = (schema: unknown) => projectNode(sanitizeNode(schema))
 
-export * as GeminiToolSchema from "./gemini-tool-schema"
+export * as GeminiToolSchema from ".@lgcode/gemini-tool-schema"

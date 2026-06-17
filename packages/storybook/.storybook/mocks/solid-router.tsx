@@ -17,7 +17,7 @@ export function useSearchParams<T extends Record<string, string>>() {
 
 export function useLocation() {
   return {
-    pathname: "/story/session/story-session",
+    pathname: "@lgcode/story@lgcode/session@lgcode/story-session",
     search: "",
     hash: "",
   }

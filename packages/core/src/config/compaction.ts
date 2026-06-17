@@ -1,7 +1,7 @@
-export * as ConfigCompaction from "./compaction"
+export * as ConfigCompaction from ".@lgcode/compaction"
 
 import { Schema } from "effect"
-import { NonNegativeInt } from "../schema"
+import { NonNegativeInt } from "..@lgcode/schema"
 
 export class Keep extends Schema.Class<Keep>("ConfigV2.Compaction.Keep")({
   tokens: NonNegativeInt.pipe(Schema.optional),

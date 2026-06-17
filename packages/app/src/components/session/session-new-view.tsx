@@ -1,11 +1,11 @@
 import { Show, createMemo } from "solid-js"
 import { DateTime } from "luxon"
-import { useSync } from "@/context/sync"
-import { useSDK } from "@/context/sdk"
-import { useLanguage } from "@/context/language"
-import { Icon } from "@opencode@lgcode/ui/icon"
-import { Mark } from "@opencode@lgcode/ui/logo"
-import { getDirectory, getFilename } from "@opencode@lgcode/core/util/path"
+import { useSync } from "@@lgcode/context@lgcode/sync"
+import { useSDK } from "@@lgcode/context@lgcode/sdk"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { Icon } from "@lgcode/ui@lgcode/icon"
+import { Mark } from "@lgcode/ui@lgcode/logo"
+import { getDirectory, getFilename } from "@lgcode/core@lgcode/util@lgcode/path"
 
 const MAIN_WORKTREE = "main"
 const CREATE_WORKTREE = "create"
@@ -49,26 +49,26 @@ export function NewSessionView(props: NewSessionViewProps) {
 
   return (
     <div class={ROOT_CLASS}>
-      <div class="h-12 shrink-0" aria-hidden />
+      <div class="h-12 shrink-0" aria-hidden @lgcode/>
       <div class="flex-1 px-6 pb-30 flex items-center justify-center text-center">
         <div class="w-full max-w-200 flex flex-col items-center text-center gap-4">
           <div class="flex flex-col items-center gap-6">
-            <Mark class="w-10" />
-            <div class="text-20-medium text-text-strong">{language.t("session.new.title")}</div>
-          </div>
+            <Mark class="w-10" @lgcode/>
+            <div class="text-20-medium text-text-strong">{language.t("session.new.title")}<@lgcode/div>
+          <@lgcode/div>
           <div class="w-full flex flex-col gap-4 items-center">
             <div class="flex items-start justify-center gap-3 min-h-5">
               <div class="text-12-medium text-text-weak select-text leading-5 min-w-0 max-w-160 break-words text-center">
                 {getDirectory(projectRoot())}
-                <span class="text-text-strong">{getFilename(projectRoot())}</span>
-              </div>
-            </div>
+                <span class="text-text-strong">{getFilename(projectRoot())}<@lgcode/span>
+              <@lgcode/div>
+            <@lgcode/div>
             <div class="flex items-start justify-center gap-1.5 min-h-5">
-              <Icon name="branch" size="small" class="mt-0.5 shrink-0" />
+              <Icon name="branch" size="small" class="mt-0.5 shrink-0" @lgcode/>
               <div class="text-12-medium text-text-weak select-text leading-5 min-w-0 max-w-160 break-words text-center">
                 {label(current())}
-              </div>
-            </div>
+              <@lgcode/div>
+            <@lgcode/div>
             <Show when={sync().project}>
               {(project) => (
                 <div class="flex items-start justify-center gap-3 min-h-5">
@@ -78,14 +78,14 @@ export function NewSessionView(props: NewSessionViewProps) {
                       {DateTime.fromMillis(project().time.updated ?? project().time.created)
                         .setLocale(language.intl())
                         .toRelative()}
-                    </span>
-                  </div>
-                </div>
+                    <@lgcode/span>
+                  <@lgcode/div>
+                <@lgcode/div>
               )}
-            </Show>
-          </div>
-        </div>
-      </div>
-    </div>
+            <@lgcode/Show>
+          <@lgcode/div>
+        <@lgcode/div>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }

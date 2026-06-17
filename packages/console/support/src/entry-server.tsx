@@ -1,5 +1,5 @@
-// @refresh reload
-import { createHandler, StartServer } from "@solidjs/start/server"
+@lgcode/@lgcode/ @refresh reload
+import { createHandler, StartServer } from "@solidjs@lgcode/start@lgcode/server"
 
 export default createHandler(
   () => (
@@ -7,18 +7,18 @@ export default createHandler(
       document={({ assets, children, scripts }) => (
         <html lang="en">
           <head>
-            <meta charset="utf-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
-            <meta name="robots" content="noindex,nofollow" />
+            <meta charset="utf-8" @lgcode/>
+            <meta name="viewport" content="width=device-width, initial-scale=1" @lgcode/>
+            <meta name="robots" content="noindex,nofollow" @lgcode/>
             {assets}
-          </head>
+          <@lgcode/head>
           <body>
-            <div id="app">{children}</div>
+            <div id="app">{children}<@lgcode/div>
             {scripts}
-          </body>
-        </html>
+          <@lgcode/body>
+        <@lgcode/html>
       )}
-    />
+    @lgcode/>
   ),
   {
     mode: "async",

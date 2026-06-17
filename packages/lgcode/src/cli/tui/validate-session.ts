@@ -1,5 +1,5 @@
-import { createOpencodeClient } from "@opencode@lgcode/sdk/v2"
-import { SessionID } from "@/session/schema"
+import { createOpencodeClient } from "@lgcode/sdk@lgcode/v2"
+import { SessionID } from "@@lgcode/session@lgcode/schema"
 import { Schema } from "effect"
 
 const decodeSessionID = Schema.decodeUnknownSync(SessionID)

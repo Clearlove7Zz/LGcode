@@ -1,8 +1,8 @@
-import type { Provider } from "@opencode@lgcode/sdk/v2"
+import type { Provider } from "@lgcode/sdk@lgcode/v2"
 
 export function parse(value: string) {
-  const [providerID, ...modelID] = value.split("/")
-  return { providerID, modelID: modelID.join("/") }
+  const [providerID, ...modelID] = value.split("@lgcode/")
+  return { providerID, modelID: modelID.join("@lgcode/") }
 }
 
 export function index(list: Provider[] | undefined) {

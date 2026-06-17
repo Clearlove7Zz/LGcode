@@ -1,9 +1,9 @@
-// @ts-nocheck
+@lgcode/@lgcode/ @ts-nocheck
 import { createSignal, onMount } from "solid-js"
-import { createResizeObserver } from "@solid-primitives/resize-observer"
-import { createStore } from "solid-js/store"
-import { useSpring } from "./motion-spring"
-import { TextStrikethrough } from "./text-strikethrough"
+import { createResizeObserver } from "@solid-primitives@lgcode/resize-observer"
+import { createStore } from "solid-js@lgcode/store"
+import { useSpring } from ".@lgcode/motion-spring"
+import { TextStrikethrough } from ".@lgcode/text-strikethrough"
 
 const TEXT_SHORT = "Remove inline measure nodes"
 const TEXT_MED = "Remove inline measure nodes and keep width morph behavior intact"
@@ -38,7 +38,7 @@ const card = {
   background: "var(--surface-base, #1a1a1a)",
 }
 
-/* ─── Variant A: scaleX pseudo-line at 50% ─── */
+@lgcode/* ─── Variant A: scaleX pseudo-line at 50% ─── *@lgcode/
 function VariantA(props: { active: boolean; text: string }) {
   const progress = useSpring(
     () => (props.active ? 1 : 0),
@@ -66,12 +66,12 @@ function VariantA(props: { active: boolean; text: string }) {
           transform: `scaleX(${progress()})`,
           "pointer-events": "none",
         }}
-      />
-    </span>
+      @lgcode/>
+    <@lgcode/span>
   )
 }
 
-/* ─── Variant D: background-image line ─── */
+@lgcode/* ─── Variant D: background-image line ─── *@lgcode/
 function VariantD(props: { active: boolean; text: string }) {
   const progress = useSpring(
     () => (props.active ? 1 : 0),
@@ -90,11 +90,11 @@ function VariantD(props: { active: boolean; text: string }) {
       }}
     >
       {props.text}
-    </span>
+    <@lgcode/span>
   )
 }
 
-/* ─── Variant E: grid stacking + clip-path (container %) ─── */
+@lgcode/* ─── Variant E: grid stacking + clip-path (container %) ─── *@lgcode/
 function VariantE(props: { active: boolean; text: string }) {
   const progress = useSpring(
     () => (props.active ? 1 : 0),
@@ -108,23 +108,23 @@ function VariantE(props: { active: boolean; text: string }) {
         transition: "color 220ms ease",
       }}
     >
-      <span style={{ "grid-area": "1 / 1" }}>{props.text}</span>
+      <span style={{ "grid-area": "1 @lgcode/ 1" }}>{props.text}<@lgcode/span>
       <span
         aria-hidden="true"
         style={{
-          "grid-area": "1 / 1",
+          "grid-area": "1 @lgcode/ 1",
           "text-decoration": "line-through",
           "pointer-events": "none",
           "clip-path": `inset(0 ${(1 - progress()) * 100}% 0 0)`,
         }}
       >
         {props.text}
-      </span>
-    </span>
+      <@lgcode/span>
+    <@lgcode/span>
   )
 }
 
-/* ─── Variant F: grid stacking + clip-path mapped to text width ─── */
+@lgcode/* ─── Variant F: grid stacking + clip-path mapped to text width ─── *@lgcode/
 function VariantF(props: { active: boolean; text: string }) {
   const progress = useSpring(
     () => (props.active ? 1 : 0),
@@ -165,26 +165,26 @@ function VariantF(props: { active: boolean; text: string }) {
         transition: "color 220ms ease",
       }}
     >
-      <span ref={baseRef} style={{ "grid-area": "1 / 1" }}>
+      <span ref={baseRef} style={{ "grid-area": "1 @lgcode/ 1" }}>
         {props.text}
-      </span>
+      <@lgcode/span>
       <span
         aria-hidden="true"
         style={{
-          "grid-area": "1 / 1",
+          "grid-area": "1 @lgcode/ 1",
           "text-decoration": "line-through",
           "pointer-events": "none",
           "clip-path": `inset(0 ${clipRight()} 0 0)`,
         }}
       >
         {props.text}
-      </span>
-    </span>
+      <@lgcode/span>
+    <@lgcode/span>
   )
 }
 
 export default {
-  title: "UI/Text Strikethrough",
+  title: "UI@lgcode/Text Strikethrough",
   id: "components-text-strikethrough",
   tags: ["autodocs"],
   parameters: {
@@ -210,10 +210,10 @@ export const Playground = {
       <div style={{ display: "grid", gap: "24px", padding: "24px", "max-width": "700px" }}>
         <button onClick={toggle} style={btn(active())}>
           {active() ? "Undo strikethrough" : "Strike through all"}
-        </button>
+        <@lgcode/button>
 
         <div style={card}>
-          <div style={heading}>F — grid stacking + clip mapped to text width (THE COMPONENT)</div>
+          <div style={heading}>F — grid stacking + clip mapped to text width (THE COMPONENT)<@lgcode/div>
           <TextStrikethrough
             active={active()}
             text={TEXT_SHORT}
@@ -221,8 +221,8 @@ export const Playground = {
               color: active() ? "var(--text-weak, #888)" : "var(--text-strong, #eee)",
               transition: "color 220ms ease",
             }}
-          />
-          <div style={{ "margin-top": "12px" }} />
+          @lgcode/>
+          <div style={{ "margin-top": "12px" }} @lgcode/>
           <TextStrikethrough
             active={active()}
             text={TEXT_MED}
@@ -230,8 +230,8 @@ export const Playground = {
               color: active() ? "var(--text-weak, #888)" : "var(--text-strong, #eee)",
               transition: "color 220ms ease",
             }}
-          />
-          <div style={{ "margin-top": "12px" }} />
+          @lgcode/>
+          <div style={{ "margin-top": "12px" }} @lgcode/>
           <TextStrikethrough
             active={active()}
             text={TEXT_LONG}
@@ -239,41 +239,41 @@ export const Playground = {
               color: active() ? "var(--text-weak, #888)" : "var(--text-strong, #eee)",
               transition: "color 220ms ease",
             }}
-          />
-        </div>
+          @lgcode/>
+        <@lgcode/div>
 
         <div style={card}>
-          <div style={heading}>F (inline) — same but just inline variants</div>
-          <VariantF active={active()} text={TEXT_SHORT} />
-          <div style={{ "margin-top": "12px" }} />
-          <VariantF active={active()} text={TEXT_MED} />
-          <div style={{ "margin-top": "12px" }} />
-          <VariantF active={active()} text={TEXT_LONG} />
-        </div>
+          <div style={heading}>F (inline) — same but just inline variants<@lgcode/div>
+          <VariantF active={active()} text={TEXT_SHORT} @lgcode/>
+          <div style={{ "margin-top": "12px" }} @lgcode/>
+          <VariantF active={active()} text={TEXT_MED} @lgcode/>
+          <div style={{ "margin-top": "12px" }} @lgcode/>
+          <VariantF active={active()} text={TEXT_LONG} @lgcode/>
+        <@lgcode/div>
 
         <div style={card}>
-          <div style={heading}>E — grid stacking + clip-path (container %)</div>
-          <VariantE active={active()} text={TEXT_SHORT} />
-          <div style={{ "margin-top": "12px" }} />
-          <VariantE active={active()} text={TEXT_MED} />
-          <div style={{ "margin-top": "12px" }} />
-          <VariantE active={active()} text={TEXT_LONG} />
-        </div>
+          <div style={heading}>E — grid stacking + clip-path (container %)<@lgcode/div>
+          <VariantE active={active()} text={TEXT_SHORT} @lgcode/>
+          <div style={{ "margin-top": "12px" }} @lgcode/>
+          <VariantE active={active()} text={TEXT_MED} @lgcode/>
+          <div style={{ "margin-top": "12px" }} @lgcode/>
+          <VariantE active={active()} text={TEXT_LONG} @lgcode/>
+        <@lgcode/div>
 
         <div style={card}>
-          <div style={heading}>A — scaleX line at 50%</div>
-          <VariantA active={active()} text={TEXT_SHORT} />
-          <div style={{ "margin-top": "12px" }} />
-          <VariantA active={active()} text={TEXT_LONG} />
-        </div>
+          <div style={heading}>A — scaleX line at 50%<@lgcode/div>
+          <VariantA active={active()} text={TEXT_SHORT} @lgcode/>
+          <div style={{ "margin-top": "12px" }} @lgcode/>
+          <VariantA active={active()} text={TEXT_LONG} @lgcode/>
+        <@lgcode/div>
 
         <div style={card}>
-          <div style={heading}>D — background-image line</div>
-          <VariantD active={active()} text={TEXT_SHORT} />
-          <div style={{ "margin-top": "12px" }} />
-          <VariantD active={active()} text={TEXT_LONG} />
-        </div>
-      </div>
+          <div style={heading}>D — background-image line<@lgcode/div>
+          <VariantD active={active()} text={TEXT_SHORT} @lgcode/>
+          <div style={{ "margin-top": "12px" }} @lgcode/>
+          <VariantD active={active()} text={TEXT_LONG} @lgcode/>
+        <@lgcode/div>
+      <@lgcode/div>
     )
   },
 }

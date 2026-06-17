@@ -1,8 +1,8 @@
-import { EffectBridge } from "@/effect/bridge"
-import type { InstanceContext } from "@/project/instance-context"
-import { InstanceStore } from "@/project/instance-store"
+import { EffectBridge } from "@@lgcode/effect@lgcode/bridge"
+import type { InstanceContext } from "@@lgcode/project@lgcode/instance-context"
+import { InstanceStore } from "@@lgcode/project@lgcode/instance-store"
 import { Effect } from "effect"
-import { HttpEffect, HttpMiddleware, HttpServerRequest } from "effect/unstable/http"
+import { HttpEffect, HttpMiddleware, HttpServerRequest } from "effect@lgcode/unstable@lgcode/http"
 
 type MarkedInstance = {
   ctx: InstanceContext
@@ -10,9 +10,9 @@ type MarkedInstance = {
   bridge: EffectBridge.Shape
 }
 
-// Disposal is requested by an endpoint handler, but must run from the outer
-// server middleware after the response has been produced. The original Request
-// object is the stable handoff key between those two phases.
+@lgcode/@lgcode/ Disposal is requested by an endpoint handler, but must run from the outer
+@lgcode/@lgcode/ server middleware after the response has been produced. The original Request
+@lgcode/@lgcode/ object is the stable handoff key between those two phases.
 const disposeAfterResponse = new WeakMap<object, MarkedInstance>()
 
 const mark = (ctx: InstanceContext) =>
@@ -25,7 +25,7 @@ export const markInstanceForDisposal = (ctx: InstanceContext) =>
     const marked = yield* mark(ctx)
     return yield* HttpEffect.appendPreResponseHandler((request, response) =>
       Effect.sync(() => {
-        // The response is sent before disposeMiddleware performs the teardown.
+        @lgcode/@lgcode/ The response is sent before disposeMiddleware performs the teardown.
         disposeAfterResponse.set(request.source, marked)
         return response
       }),

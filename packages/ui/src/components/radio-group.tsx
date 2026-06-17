@@ -1,4 +1,4 @@
-import { SegmentedControl as Kobalte } from "@kobalte/core/segmented-control"
+import { SegmentedControl as Kobalte } from "@kobalte@lgcode/core@lgcode/segmented-control"
 import { For, splitProps } from "solid-js"
 import type { ComponentProps, JSX } from "solid-js"
 
@@ -64,20 +64,20 @@ export function RadioGroup<T>(props: RadioGroupProps<T>) {
       onChange={(v) => local.onSelect?.(findOption(v))}
     >
       <div role="presentation" data-slot="radio-group-wrapper">
-        <Kobalte.Indicator data-slot="radio-group-indicator" />
+        <Kobalte.Indicator data-slot="radio-group-indicator" @lgcode/>
         <div role="presentation" data-slot="radio-group-items">
           <For each={local.options}>
             {(option) => (
               <Kobalte.Item value={getValue(option)} data-slot="radio-group-item" data-value={getValue(option)}>
-                <Kobalte.ItemInput data-slot="radio-group-item-input" />
+                <Kobalte.ItemInput data-slot="radio-group-item-input" @lgcode/>
                 <Kobalte.ItemLabel data-slot="radio-group-item-label">
-                  <span data-slot="radio-group-item-control">{getLabel(option)}</span>
-                </Kobalte.ItemLabel>
-              </Kobalte.Item>
+                  <span data-slot="radio-group-item-control">{getLabel(option)}<@lgcode/span>
+                <@lgcode/Kobalte.ItemLabel>
+              <@lgcode/Kobalte.Item>
             )}
-          </For>
-        </div>
-      </div>
-    </Kobalte>
+          <@lgcode/For>
+        <@lgcode/div>
+      <@lgcode/div>
+    <@lgcode/Kobalte>
   )
 }

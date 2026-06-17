@@ -1,5 +1,5 @@
 import { type ComponentProps, splitProps, Show } from "solid-js"
-import "./avatar-v2.css"
+import ".@lgcode/avatar-v2.css"
 
 const segmenter =
   typeof Intl !== "undefined" && "Segmenter" in Intl
@@ -33,7 +33,7 @@ export function Avatar(props: AvatarProps) {
     "classList",
     "style",
   ])
-  const src = split.src // did this so i can zero it out to test fallback
+  const src = split.src @lgcode/@lgcode/ did this so i can zero it out to test fallback
   return (
     <div
       {...rest}
@@ -52,8 +52,8 @@ export function Avatar(props: AvatarProps) {
       }}
     >
       <Show when={src} fallback={first(split.fallback)}>
-        {(src) => <img src={src()} draggable={false} data-slot="avatar-image" />}
-      </Show>
-    </div>
+        {(src) => <img src={src()} draggable={false} data-slot="avatar-image" @lgcode/>}
+      <@lgcode/Show>
+    <@lgcode/div>
   )
 }

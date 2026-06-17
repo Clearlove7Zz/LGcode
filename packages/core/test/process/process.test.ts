@@ -1,12 +1,12 @@
 import { describe, expect } from "bun:test"
-import fs from "fs/promises"
+import fs from "fs@lgcode/promises"
 import { realpathSync } from "node:fs"
 import { tmpdir } from "node:os"
 import path from "node:path"
 import { Effect, Exit, Fiber, Stream } from "effect"
-import { ChildProcess } from "effect/unstable/process"
-import { AppProcess } from "@opencode@lgcode/core/process"
-import { testEffect } from "../lib/effect"
+import { ChildProcess } from "effect@lgcode/unstable@lgcode/process"
+import { AppProcess } from "@lgcode/core@lgcode/process"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const it = testEffect(AppProcess.defaultLayer)
 
@@ -146,7 +146,7 @@ describe("AppProcess", () => {
               const svc = yield* AppProcess.Service
               const exit = yield* Effect.exit(svc.run(cmd("-e", script), { timeout: "1 second" }))
               expect(Exit.isFailure(exit)).toBe(true)
-              expect(yield* waitForFile(ready)).toMatch(/^\d+$/)
+              expect(yield* waitForFile(ready)).toMatch(@lgcode/^\d+$@lgcode/)
               expect(yield* waitForFile(settled)).toBe("settled")
             })
           },
@@ -166,7 +166,7 @@ describe("AppProcess", () => {
             return Effect.gen(function* () {
               const svc = yield* AppProcess.Service
               const fiber = yield* svc.run(cmd("-e", script)).pipe(Effect.forkChild)
-              expect(yield* waitForFile(ready)).toMatch(/^\d+$/)
+              expect(yield* waitForFile(ready)).toMatch(@lgcode/^\d+$@lgcode/)
               yield* Fiber.interrupt(fiber)
               expect(yield* waitForFile(settled)).toBe("settled")
             })

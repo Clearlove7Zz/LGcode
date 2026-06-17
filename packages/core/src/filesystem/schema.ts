@@ -1,5 +1,5 @@
 import { Schema } from "effect"
-import { NonNegativeInt, PositiveInt, RelativePath } from "../schema"
+import { NonNegativeInt, PositiveInt, RelativePath } from "..@lgcode/schema"
 
 export class Entry extends Schema.Class<Entry>("FileSystem.Entry")({
   path: RelativePath,

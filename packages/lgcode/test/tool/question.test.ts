@@ -1,13 +1,13 @@
 import { describe, expect } from "bun:test"
 import { Effect, Fiber, Layer, Queue } from "effect"
-import { QuestionTool } from "../../src/tool/question"
-import { Question } from "../../src/question"
-import { SessionID, MessageID } from "../../src/session/schema"
-import { Agent } from "../../src/agent/agent"
-import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
-import { Truncate } from "@/tool/truncate"
-import { testEffect } from "../lib/effect"
-import { EventV2Bridge } from "../../src/event-v2-bridge"
+import { QuestionTool } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/question"
+import { Question } from "..@lgcode/..@lgcode/src@lgcode/question"
+import { SessionID, MessageID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
+import { Agent } from "..@lgcode/..@lgcode/src@lgcode/agent@lgcode/agent"
+import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
+import { Truncate } from "@@lgcode/tool@lgcode/truncate"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { EventV2Bridge } from "..@lgcode/..@lgcode/src@lgcode/event-v2-bridge"
 
 const ctx = {
   sessionID: SessionID.make("ses_test-session"),
@@ -95,44 +95,44 @@ describe("tool.question", () => {
     }),
   )
 
-  // intentionally removed the zod validation due to tool call errors, hoping prompting is gonna be good enough
-  //   test("should throw an Error for header exceeding 30 characters", async () => {
-  //     const tool = await QuestionTool.init()
-  //     const questions = [
-  //       {
-  //         question: "What is your favorite animal?",
-  //         header: "This Header is Definitely More Than Thirty Characters Long",
-  //         options: [{ label: "Dog", description: "Man's best friend" }],
-  //       },
-  //     ]
-  //     try {
-  //       await tool.execute({ questions }, ctx)
-  //       // If it reaches here, the test should fail
-  //       expect(true).toBe(false)
-  //     } catch (e: any) {
-  //       expect(e).toBeInstanceOf(Error)
-  //       expect(e.cause).toBeInstanceOf(z.ZodError)
-  //     }
-  //   })
+  @lgcode/@lgcode/ intentionally removed the zod validation due to tool call errors, hoping prompting is gonna be good enough
+  @lgcode/@lgcode/   test("should throw an Error for header exceeding 30 characters", async () => {
+  @lgcode/@lgcode/     const tool = await QuestionTool.init()
+  @lgcode/@lgcode/     const questions = [
+  @lgcode/@lgcode/       {
+  @lgcode/@lgcode/         question: "What is your favorite animal?",
+  @lgcode/@lgcode/         header: "This Header is Definitely More Than Thirty Characters Long",
+  @lgcode/@lgcode/         options: [{ label: "Dog", description: "Man's best friend" }],
+  @lgcode/@lgcode/       },
+  @lgcode/@lgcode/     ]
+  @lgcode/@lgcode/     try {
+  @lgcode/@lgcode/       await tool.execute({ questions }, ctx)
+  @lgcode/@lgcode/       @lgcode/@lgcode/ If it reaches here, the test should fail
+  @lgcode/@lgcode/       expect(true).toBe(false)
+  @lgcode/@lgcode/     } catch (e: any) {
+  @lgcode/@lgcode/       expect(e).toBeInstanceOf(Error)
+  @lgcode/@lgcode/       expect(e.cause).toBeInstanceOf(z.ZodError)
+  @lgcode/@lgcode/     }
+  @lgcode/@lgcode/   })
 
-  //   test("should throw an Error for label exceeding 30 characters", async () => {
-  //     const tool = await QuestionTool.init()
-  //     const questions = [
-  //       {
-  //         question: "A question with a very long label",
-  //         header: "Long Label",
-  //         options: [
-  //           { label: "This is a very, very, very long label that will exceed the limit", description: "A description" },
-  //         ],
-  //       },
-  //     ]
-  //     try {
-  //       await tool.execute({ questions }, ctx)
-  //       // If it reaches here, the test should fail
-  //       expect(true).toBe(false)
-  //     } catch (e: any) {
-  //       expect(e).toBeInstanceOf(Error)
-  //       expect(e.cause).toBeInstanceOf(z.ZodError)
-  //     }
-  //   })
+  @lgcode/@lgcode/   test("should throw an Error for label exceeding 30 characters", async () => {
+  @lgcode/@lgcode/     const tool = await QuestionTool.init()
+  @lgcode/@lgcode/     const questions = [
+  @lgcode/@lgcode/       {
+  @lgcode/@lgcode/         question: "A question with a very long label",
+  @lgcode/@lgcode/         header: "Long Label",
+  @lgcode/@lgcode/         options: [
+  @lgcode/@lgcode/           { label: "This is a very, very, very long label that will exceed the limit", description: "A description" },
+  @lgcode/@lgcode/         ],
+  @lgcode/@lgcode/       },
+  @lgcode/@lgcode/     ]
+  @lgcode/@lgcode/     try {
+  @lgcode/@lgcode/       await tool.execute({ questions }, ctx)
+  @lgcode/@lgcode/       @lgcode/@lgcode/ If it reaches here, the test should fail
+  @lgcode/@lgcode/       expect(true).toBe(false)
+  @lgcode/@lgcode/     } catch (e: any) {
+  @lgcode/@lgcode/       expect(e).toBeInstanceOf(Error)
+  @lgcode/@lgcode/       expect(e.cause).toBeInstanceOf(z.ZodError)
+  @lgcode/@lgcode/     }
+  @lgcode/@lgcode/   })
 })

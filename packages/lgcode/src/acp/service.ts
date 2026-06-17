@@ -28,22 +28,22 @@ import {
   type SetSessionModelResponse,
   type SetSessionModeRequest,
   type SetSessionModeResponse,
-} from "@agentclientprotocol/sdk"
-import { InstallationVersion } from "@opencode@lgcode/core/installation/version"
-import type { Message, OpencodeClient, SessionMessageResponse } from "@opencode@lgcode/sdk/v2"
+} from "@agentclientprotocol@lgcode/sdk"
+import { InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
+import type { Message, OpencodeClient, SessionMessageResponse } from "@lgcode/sdk@lgcode/v2"
 import { Context, Effect, Layer, ManagedRuntime } from "effect"
-import * as ACPError from "./error"
-import { buildConfigOptions, parseModelSelection } from "./config-option"
-import { promptContentToParts } from "./content"
-import { Directory } from "./directory"
-import { ACPEvent } from "./event"
-import { ACPSession } from "./session"
-import { UsageService } from "./usage"
-import { ACPProfile } from "./profile"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { ModelV2 } from "@opencode@lgcode/core/model"
-import { Provider } from "@/provider/provider"
-import type { Command } from "@/command"
+import * as ACPError from ".@lgcode/error"
+import { buildConfigOptions, parseModelSelection } from ".@lgcode/config-option"
+import { promptContentToParts } from ".@lgcode/content"
+import { Directory } from ".@lgcode/directory"
+import { ACPEvent } from ".@lgcode/event"
+import { ACPSession } from ".@lgcode/session"
+import { UsageService } from ".@lgcode/usage"
+import { ACPProfile } from ".@lgcode/profile"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { Provider } from "@@lgcode/provider@lgcode/provider"
+import type { Command } from "@@lgcode/command"
 
 export const AuthMethodID = "opencode-login"
 
@@ -69,7 +69,7 @@ export type Interface = {
   readonly cancel: (input: CancelNotification) => Effect.Effect<void, Error>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/ACP/Service") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/ACP@lgcode/Service") {}
 
 export function make(input: {
   sdk: OpencodeClient
@@ -533,7 +533,7 @@ export function make(input: {
                 sessionID: current.id,
                 command: known.name,
                 arguments: command.args,
-                model: `${selected.providerID}/${selected.modelID}`,
+                model: `${selected.providerID}@lgcode/${selected.modelID}`,
                 ...(variant ? { variant } : {}),
                 ...(modeId ? { agent: modeId } : {}),
                 directory: current.cwd,
@@ -779,9 +779,9 @@ function defaultModelFromConfig(
   const configured = configuredModel ? Provider.parseModel(configuredModel) : undefined
   if (configured && providers[configured.providerID]?.models[configured.modelID]) return configured
 
-  // First-session ACP startup must not scan historical sessions just to infer
-  // a default. Configured model, opencode provider, then sorted best model keep
-  // the protocol response deterministic without extra session/message reads.
+  @lgcode/@lgcode/ First-session ACP startup must not scan historical sessions just to infer
+  @lgcode/@lgcode/ a default. Configured model, opencode provider, then sorted best model keep
+  @lgcode/@lgcode/ the protocol response deterministic without extra session@lgcode/message reads.
   const opencodeProvider = providers[ProviderV2.ID.make("opencode")]
   const opencodeModel = opencodeProvider ? Provider.sort(Object.values(opencodeProvider.models))[0] : undefined
   if (opencodeProvider && opencodeModel) return { providerID: opencodeProvider.id, modelID: opencodeModel.id }
@@ -804,9 +804,9 @@ function detectSlashCommand(parts: ReturnType<typeof promptContentToParts>) {
     .map((part) => part.text)
     .join("")
     .trim()
-  if (!text.startsWith("/")) return
+  if (!text.startsWith("@lgcode/")) return
 
-  const [name, ...rest] = text.slice(1).split(/\s+/)
+  const [name, ...rest] = text.slice(1).split(@lgcode/\s+@lgcode/)
   if (!name) return
   return { name, args: rest.join(" ").trim() }
 }

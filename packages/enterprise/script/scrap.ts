@@ -1,9 +1,9 @@
-import { Storage } from "../src/core/storage"
+import { Storage } from "..@lgcode/src@lgcode/core@lgcode/storage"
 
-// read share id from args
+@lgcode/@lgcode/ read share id from args
 const args = process.argv.slice(2)
 if (args.length !== 1) {
-  console.error("Usage: bun script/scrap.ts <shareID>")
+  console.error("Usage: bun script@lgcode/scrap.ts <shareID>")
   process.exit(1)
 }
 const shareID = args[0]

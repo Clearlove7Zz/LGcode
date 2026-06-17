@@ -1,17 +1,17 @@
-export * as SessionInput from "./input"
+export * as SessionInput from ".@lgcode/input"
 
 import { and, asc, eq, isNull, lte } from "drizzle-orm"
 import { DateTime, Effect, Schema } from "effect"
-import type { Database } from "../database/database"
-import type { EventV2 } from "../event"
-import { EventSequenceTable } from "../event/sql"
-import { NonNegativeInt } from "../schema"
-import { V2Schema } from "../v2-schema"
-import { SessionEvent } from "./event"
-import { SessionMessage } from "./message"
-import { Prompt } from "./prompt"
-import { SessionSchema } from "./schema"
-import { SessionInputTable, SessionMessageTable } from "./sql"
+import type { Database } from "..@lgcode/database@lgcode/database"
+import type { EventV2 } from "..@lgcode/event"
+import { EventSequenceTable } from "..@lgcode/event@lgcode/sql"
+import { NonNegativeInt } from "..@lgcode/schema"
+import { V2Schema } from "..@lgcode/v2-schema"
+import { SessionEvent } from ".@lgcode/event"
+import { SessionMessage } from ".@lgcode/message"
+import { Prompt } from ".@lgcode/prompt"
+import { SessionSchema } from ".@lgcode/schema"
+import { SessionInputTable, SessionMessageTable } from ".@lgcode/sql"
 
 type DatabaseService = Database.Interface["db"]
 

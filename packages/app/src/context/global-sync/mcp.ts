@@ -1,4 +1,4 @@
-import type { McpStatus } from "@opencode@lgcode/sdk/v2/client"
+import type { McpStatus } from "@lgcode/sdk@lgcode/v2@lgcode/client"
 
 export async function toggleMcp(input: {
   status: McpStatus["status"]

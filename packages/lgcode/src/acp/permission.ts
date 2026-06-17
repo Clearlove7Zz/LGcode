@@ -1,9 +1,9 @@
-import type { AgentSideConnection, PermissionOption, RequestPermissionResponse } from "@agentclientprotocol/sdk"
-import type { Event, OpencodeClient } from "@opencode@lgcode/sdk/v2"
+import type { AgentSideConnection, PermissionOption, RequestPermissionResponse } from "@agentclientprotocol@lgcode/sdk"
+import type { Event, OpencodeClient } from "@lgcode/sdk@lgcode/v2"
 import { applyPatch } from "diff"
-import { exists, readText } from "@/util/filesystem"
-import type { ACPSession } from "./session"
-import { toLocations, toToolKind, type ToolInput } from "./tool"
+import { exists, readText } from "@@lgcode/util@lgcode/filesystem"
+import type { ACPSession } from ".@lgcode/session"
+import { toLocations, toToolKind, type ToolInput } from ".@lgcode/tool"
 import { Effect } from "effect"
 
 type PermissionEvent = Extract<Event, { type: "permission.asked" }>
@@ -121,4 +121,4 @@ function stringValue(value: unknown) {
   return typeof value === "string" ? value : undefined
 }
 
-export * as ACPPermission from "./permission"
+export * as ACPPermission from ".@lgcode/permission"

@@ -1,6 +1,6 @@
 import { createElement } from "react"
-import { useGlobals } from "storybook/manager-api"
-import { ToggleButton } from "storybook/internal/components"
+import { useGlobals } from "storybook@lgcode/manager-api"
+import { ToggleButton } from "storybook@lgcode/internal@lgcode/components"
 
 export function ThemeTool() {
   const [globals, updateGlobals] = useGlobals()

@@ -1,12 +1,12 @@
 import { $ } from "bun"
 import { describe, expect } from "bun:test"
-import * as fs from "fs/promises"
+import * as fs from "fs@lgcode/promises"
 import path from "path"
 import { Effect, Layer } from "effect"
-import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
-import { Worktree } from "../../src/worktree"
-import { TestInstance } from "../fixture/fixture"
-import { testEffect } from "../lib/effect"
+import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
+import { Worktree } from "..@lgcode/..@lgcode/src@lgcode/worktree"
+import { TestInstance } from "..@lgcode/fixture@lgcode/fixture"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const it = testEffect(Layer.mergeAll(Worktree.defaultLayer, CrossSpawnSpawner.defaultLayer))
 const wintest = process.platform === "win32" ? it.instance : it.instance.skip
@@ -19,7 +19,7 @@ describe("Worktree.remove", () => {
         const root = (yield* TestInstance).directory
         const svc = yield* Worktree.Service
         const name = `remove-regression-${Date.now().toString(36)}`
-        const branch = `opencode/${name}`
+        const branch = `opencode@lgcode/${name}`
         const dir = path.join(root, "..", name)
 
         yield* Effect.promise(() => $`git worktree add --no-checkout -b ${branch} ${dir}`.cwd(root).quiet())
@@ -35,10 +35,10 @@ describe("Worktree.remove", () => {
           Bun.write(
             shim,
             [
-              "#!/bin/bash",
+              "#!@lgcode/bin@lgcode/bash",
               `REAL_GIT=${JSON.stringify(real)}`,
               'if [ "$1" = "worktree" ] && [ "$2" = "remove" ]; then',
-              '  "$REAL_GIT" "$@" >/dev/null 2>&1',
+              '  "$REAL_GIT" "$@" >@lgcode/dev@lgcode/null 2>&1',
               '  echo "fatal: failed to remove worktree: Directory not empty" >&2',
               "  exit 1",
               "fi",
@@ -77,7 +77,7 @@ describe("Worktree.remove", () => {
         expect(list).not.toContain(`worktree ${dir}`)
 
         const ref = yield* Effect.promise(() =>
-          $`git show-ref --verify --quiet refs/heads/${branch}`.cwd(root).quiet().nothrow(),
+          $`git show-ref --verify --quiet refs@lgcode/heads@lgcode/${branch}`.cwd(root).quiet().nothrow(),
         )
         expect(ref.exitCode).not.toBe(0)
       }),
@@ -91,7 +91,7 @@ describe("Worktree.remove", () => {
         const root = (yield* TestInstance).directory
         const svc = yield* Worktree.Service
         const name = `remove-fsmonitor-${Date.now().toString(36)}`
-        const branch = `opencode/${name}`
+        const branch = `opencode@lgcode/${name}`
         const dir = path.join(root, "..", name)
 
         yield* Effect.promise(() => $`git worktree add --no-checkout -b ${branch} ${dir}`.cwd(root).quiet())
@@ -117,7 +117,7 @@ describe("Worktree.remove", () => {
         ).toBe(false)
 
         const ref = yield* Effect.promise(() =>
-          $`git show-ref --verify --quiet refs/heads/${branch}`.cwd(root).quiet().nothrow(),
+          $`git show-ref --verify --quiet refs@lgcode/heads@lgcode/${branch}`.cwd(root).quiet().nothrow(),
         )
         expect(ref.exitCode).not.toBe(0)
       }),

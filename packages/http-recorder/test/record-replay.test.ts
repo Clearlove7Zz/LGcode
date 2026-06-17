@@ -1,15 +1,15 @@
-import { NodeFileSystem } from "@effect/platform-node"
+import { NodeFileSystem } from "@effect@lgcode/platform-node"
 import { describe, expect, test } from "bun:test"
 import { Cause, Deferred, Effect, Exit, Layer, Scope, Stream } from "effect"
-import { Headers, HttpBody, HttpClient, HttpClientRequest } from "effect/unstable/http"
-import { Socket } from "effect/unstable/socket"
+import { Headers, HttpBody, HttpClient, HttpClientRequest } from "effect@lgcode/unstable@lgcode/http"
+import { Socket } from "effect@lgcode/unstable@lgcode/socket"
 import * as fs from "node:fs"
 import * as os from "node:os"
 import * as path from "node:path"
-import { HttpRecorder } from "../src"
-import { HttpRecorderInternal } from "../src/internal"
-import { redactedErrorRequest } from "../src/internal-effect"
-import type { Interaction } from "../src/schema"
+import { HttpRecorder } from "..@lgcode/src"
+import { HttpRecorderInternal } from "..@lgcode/src@lgcode/internal"
+import { redactedErrorRequest } from "..@lgcode/src@lgcode/internal-effect"
+import type { Interaction } from "..@lgcode/src@lgcode/schema"
 
 const seedCassetteDirectory = (directory: string, name: string, interactions: ReadonlyArray<Interaction>) =>
   Effect.runPromise(
@@ -26,15 +26,15 @@ const post = (url: string, body: object) =>
   Effect.gen(function* () {
     const http = yield* HttpClient.HttpClient
     const request = HttpClientRequest.post(url, {
-      headers: { "content-type": "application/json" },
-      body: HttpBody.text(JSON.stringify(body), "application/json"),
+      headers: { "content-type": "application@lgcode/json" },
+      body: HttpBody.text(JSON.stringify(body), "application@lgcode/json"),
     })
     const response = yield* http.execute(request)
     return yield* response.text
   })
 
 const run = <A, E>(effect: Effect.Effect<A, E, HttpClient.HttpClient>) =>
-  Effect.runPromise(effect.pipe(Effect.provide(HttpRecorder.http("record-replay/multi-step"))))
+  Effect.runPromise(effect.pipe(Effect.provide(HttpRecorder.http("record-replay@lgcode/multi-step"))))
 
 const runWith = <A, E>(
   name: string,
@@ -65,27 +65,27 @@ describe("http-recorder", () => {
   test("redacts sensitive URL query parameters", () => {
     expect(
       HttpRecorderInternal.redactUrl(
-        "https://example.test/path?key=secret-google-key&api_key=secret-openai-key&safe=value&X-Amz-Signature=secret-signature",
+        "https:@lgcode/@lgcode/example.test@lgcode/path?key=secret-google-key&api_key=secret-openai-key&safe=value&X-Amz-Signature=secret-signature",
       ),
     ).toBe(
-      "https://example.test/path?key=%5BREDACTED%5D&api_key=%5BREDACTED%5D&safe=value&X-Amz-Signature=%5BREDACTED%5D",
+      "https:@lgcode/@lgcode/example.test@lgcode/path?key=%5BREDACTED%5D&api_key=%5BREDACTED%5D&safe=value&X-Amz-Signature=%5BREDACTED%5D",
     )
   })
 
   test("redacts URL credentials", () => {
-    expect(HttpRecorderInternal.redactUrl("https://user:password@example.test/path?safe=value")).toBe(
-      "https://%5BREDACTED%5D:%5BREDACTED%5D@example.test/path?safe=value",
+    expect(HttpRecorderInternal.redactUrl("https:@lgcode/@lgcode/user:password@example.test@lgcode/path?safe=value")).toBe(
+      "https:@lgcode/@lgcode/%5BREDACTED%5D:%5BREDACTED%5D@example.test@lgcode/path?safe=value",
     )
   })
 
   test("applies custom URL redaction after built-in redaction", () => {
     expect(
       HttpRecorderInternal.redactUrl(
-        "https://example.test/accounts/real-account/path?key=secret-key",
+        "https:@lgcode/@lgcode/example.test@lgcode/accounts@lgcode/real-account@lgcode/path?key=secret-key",
         undefined,
-        (url) => url.replace("/accounts/real-account/", "/accounts/{account}/"),
+        (url) => url.replace("@lgcode/accounts@lgcode/real-account@lgcode/", "@lgcode/accounts@lgcode/{account}@lgcode/"),
       ),
-    ).toBe("https://example.test/accounts/{account}/path?key=%5BREDACTED%5D")
+    ).toBe("https:@lgcode/@lgcode/example.test@lgcode/accounts@lgcode/{account}@lgcode/path?key=%5BREDACTED%5D")
   })
 
   test("redacts sensitive headers when allow-listed", () => {
@@ -93,7 +93,7 @@ describe("http-recorder", () => {
       HttpRecorderInternal.redactHeaders(
         {
           authorization: "Bearer secret-token",
-          "content-type": "application/json",
+          "content-type": "application@lgcode/json",
           "x-custom-token": "custom-secret",
           "x-api-key": "secret-key",
           "x-goog-api-key": "secret-google-key",
@@ -103,7 +103,7 @@ describe("http-recorder", () => {
       ),
     ).toEqual({
       authorization: "[REDACTED]",
-      "content-type": "application/json",
+      "content-type": "application@lgcode/json",
       "x-api-key": "[REDACTED]",
       "x-custom-token": "[REDACTED]",
       "x-goog-api-key": "[REDACTED]",
@@ -111,13 +111,13 @@ describe("http-recorder", () => {
   })
 
   test("redacts error requests without retaining headers, params, or body", () => {
-    const request = HttpClientRequest.post("https://example.test/path", {
+    const request = HttpClientRequest.post("https:@lgcode/@lgcode/example.test@lgcode/path", {
       headers: { authorization: "Bearer super-secret" },
-      body: HttpBody.text("super-secret-body", "text/plain"),
+      body: HttpBody.text("super-secret-body", "text@lgcode/plain"),
     }).pipe(HttpClientRequest.setUrlParam("api_key", "super-secret-key"))
 
     expect(redactedErrorRequest(request).toJSON()).toMatchObject({
-      url: "https://example.test/path",
+      url: "https:@lgcode/@lgcode/example.test@lgcode/path",
       urlParams: { params: [] },
       headers: {},
       body: { _tag: "Empty" },
@@ -133,7 +133,7 @@ describe("http-recorder", () => {
             transport: "http",
             request: {
               method: "POST",
-              url: "https://example.test/path?key=sk-123456789012345678901234",
+              url: "https:@lgcode/@lgcode/example.test@lgcode/path?key=sk-123456789012345678901234",
               headers: {},
               body: JSON.stringify({ nested: "AIzaSyDHibiBRvJZLsFnPYPoiTwxY4ztQ55yqCE" }),
             },
@@ -166,8 +166,8 @@ describe("http-recorder", () => {
     const redactor = HttpRecorderInternal.Redactor.make({ jsonFields: ["account_id"] })
     const request = redactor.request({
       method: "POST",
-      url: "https://example.test/path",
-      headers: { "content-type": "application/json" },
+      url: "https:@lgcode/@lgcode/example.test@lgcode/path",
+      headers: { "content-type": "application@lgcode/json" },
       body: JSON.stringify({
         password: "secret-password",
         accessToken: "access-token",
@@ -191,10 +191,10 @@ describe("http-recorder", () => {
     expect(
       redactor.request({
         method: "GET",
-        url: "https://example.test/path",
+        url: "https:@lgcode/@lgcode/example.test@lgcode/path",
         headers: {
           authorization: "Bearer secret",
-          "content-type": "application/json",
+          "content-type": "application@lgcode/json",
           "anthropic-version": "2023-06-01",
           "x-custom-token": "secret",
         },
@@ -202,12 +202,12 @@ describe("http-recorder", () => {
       }).headers,
     ).toEqual({
       "anthropic-version": "2023-06-01",
-      "content-type": "application/json",
+      "content-type": "application@lgcode/json",
       "x-custom-token": "[REDACTED]",
     })
   })
 
-  test("records WebSocket frames in observed client/server order", async () => {
+  test("records WebSocket frames in observed client@lgcode/server order", async () => {
     const directory = fs.mkdtempSync(path.join(os.tmpdir(), "http-recorder-websocket-"))
     const response = JSON.stringify({ type: "response.completed", token: "server-secret" })
     let receive: ((message: string | Uint8Array) => Effect.Effect<unknown, unknown, unknown> | void) | undefined
@@ -237,19 +237,19 @@ describe("http-recorder", () => {
         Effect.scoped,
         Effect.provide(
           HttpRecorderInternal.socketLayer(
-            "websocket/record",
-            { url: "wss://example.test/realtime", headers: { "content-type": "application/json" } },
+            "websocket@lgcode/record",
+            { url: "wss:@lgcode/@lgcode/example.test@lgcode/realtime", headers: { "content-type": "application@lgcode/json" } },
             { directory, metadata: { provider: "test" }, mode: "record" },
           ).pipe(Layer.provide(Layer.succeed(Socket.Socket, upstream))),
         ),
       ),
     )
 
-    expect(JSON.parse(fs.readFileSync(path.join(directory, "websocket/record.json"), "utf8"))).toMatchObject({
+    expect(JSON.parse(fs.readFileSync(path.join(directory, "websocket@lgcode/record.json"), "utf8"))).toMatchObject({
       interactions: [
         {
           transport: "websocket",
-          open: { url: "wss://example.test/realtime", headers: { "content-type": "application/json" } },
+          open: { url: "wss:@lgcode/@lgcode/example.test@lgcode/realtime", headers: { "content-type": "application@lgcode/json" } },
           events: [
             { direction: "client", kind: "text", body: '{"type":"response.create","token":"[REDACTED]"}' },
             { direction: "server", kind: "text", body: '{"type":"response.completed","token":"[REDACTED]"}' },
@@ -261,10 +261,10 @@ describe("http-recorder", () => {
 
   test("WebSocket replay preserves causal frame ordering", async () => {
     const directory = fs.mkdtempSync(path.join(os.tmpdir(), "http-recorder-websocket-"))
-    await seedCassetteDirectory(directory, "websocket/replay", [
+    await seedCassetteDirectory(directory, "websocket@lgcode/replay", [
       {
         transport: "websocket",
-        open: { url: "wss://example.test/realtime", headers: {} },
+        open: { url: "wss:@lgcode/@lgcode/example.test@lgcode/realtime", headers: {} },
         events: [
           { direction: "server", kind: "text", body: '{"type":"session.created"}' },
           { direction: "client", kind: "text", body: '{"type":"response.create","prompt":"hello"}' },
@@ -288,8 +288,8 @@ describe("http-recorder", () => {
         Effect.scoped,
         Effect.provide(
           HttpRecorderInternal.socketLayer(
-            "websocket/replay",
-            { url: "wss://example.test/realtime" },
+            "websocket@lgcode/replay",
+            { url: "wss:@lgcode/@lgcode/example.test@lgcode/realtime" },
             { directory, compareClientMessagesAsJson: true, mode: "replay" },
           ).pipe(
             Layer.provide(
@@ -311,7 +311,7 @@ describe("http-recorder", () => {
 
   test("the public socket decorator replays a provided Effect socket", async () => {
     const directory = fs.mkdtempSync(path.join(os.tmpdir(), "http-recorder-websocket-"))
-    await seedCassetteDirectory(directory, "websocket/public-layer", [
+    await seedCassetteDirectory(directory, "websocket@lgcode/public-layer", [
       {
         transport: "websocket",
         open: { url: "", headers: {} },
@@ -338,7 +338,7 @@ describe("http-recorder", () => {
       }).pipe(
         Effect.scoped,
         Effect.provide(
-          HttpRecorder.socket("websocket/public-layer", { directory }).pipe(
+          HttpRecorder.socket("websocket@lgcode/public-layer", { directory }).pipe(
             Layer.provide(
               Layer.succeed(
                 Socket.Socket,
@@ -358,10 +358,10 @@ describe("http-recorder", () => {
 
   test("WebSocket replay runs message handlers concurrently", async () => {
     const directory = fs.mkdtempSync(path.join(os.tmpdir(), "http-recorder-websocket-"))
-    await seedCassetteDirectory(directory, "websocket/concurrent-handlers", [
+    await seedCassetteDirectory(directory, "websocket@lgcode/concurrent-handlers", [
       {
         transport: "websocket",
-        open: { url: "wss://example.test/realtime", headers: {} },
+        open: { url: "wss:@lgcode/@lgcode/example.test@lgcode/realtime", headers: {} },
         events: [
           { direction: "server", kind: "text", body: "first" },
           { direction: "server", kind: "text", body: "second" },
@@ -380,8 +380,8 @@ describe("http-recorder", () => {
         Effect.scoped,
         Effect.provide(
           HttpRecorderInternal.socketLayer(
-            "websocket/concurrent-handlers",
-            { url: "wss://example.test/realtime" },
+            "websocket@lgcode/concurrent-handlers",
+            { url: "wss:@lgcode/@lgcode/example.test@lgcode/realtime" },
             { directory, mode: "replay" },
           ).pipe(
             Layer.provide(
@@ -401,10 +401,10 @@ describe("http-recorder", () => {
 
   test("WebSocket replay rejects close with unconsumed events", async () => {
     const directory = fs.mkdtempSync(path.join(os.tmpdir(), "http-recorder-websocket-"))
-    await seedCassetteDirectory(directory, "websocket/early-close", [
+    await seedCassetteDirectory(directory, "websocket@lgcode/early-close", [
       {
         transport: "websocket",
-        open: { url: "wss://example.test/realtime", headers: {} },
+        open: { url: "wss:@lgcode/@lgcode/example.test@lgcode/realtime", headers: {} },
         events: [{ direction: "client", kind: "text", body: "expected" }],
       },
     ])
@@ -418,8 +418,8 @@ describe("http-recorder", () => {
         Effect.scoped,
         Effect.provide(
           HttpRecorderInternal.socketLayer(
-            "websocket/early-close",
-            { url: "wss://example.test/realtime" },
+            "websocket@lgcode/early-close",
+            { url: "wss:@lgcode/@lgcode/example.test@lgcode/realtime" },
             { directory, mode: "replay" },
           ).pipe(
             Layer.provide(
@@ -449,8 +449,8 @@ describe("http-recorder", () => {
         Effect.scoped,
         Effect.provide(
           HttpRecorderInternal.socketLayer(
-            "websocket/failed-run",
-            { url: "wss://example.test/realtime" },
+            "websocket@lgcode/failed-run",
+            { url: "wss:@lgcode/@lgcode/example.test@lgcode/realtime" },
             { directory, mode: "record" },
           ).pipe(
             Layer.provide(
@@ -468,14 +468,14 @@ describe("http-recorder", () => {
     )
 
     expect(Exit.isFailure(exit)).toBe(true)
-    expect(fs.existsSync(path.join(directory, "websocket/failed-run.json"))).toBe(false)
+    expect(fs.existsSync(path.join(directory, "websocket@lgcode/failed-run.json"))).toBe(false)
   })
 
   test("WebSocket replay preserves binary frame kinds across reconnects", async () => {
     const directory = fs.mkdtempSync(path.join(os.tmpdir(), "http-recorder-websocket-"))
     const interaction = {
       transport: "websocket" as const,
-      open: { url: "wss://example.test/binary", headers: {} },
+      open: { url: "wss:@lgcode/@lgcode/example.test@lgcode/binary", headers: {} },
       events: [
         {
           direction: "client" as const,
@@ -491,7 +491,7 @@ describe("http-recorder", () => {
         },
       ],
     }
-    await seedCassetteDirectory(directory, "websocket/binary", [interaction, interaction])
+    await seedCassetteDirectory(directory, "websocket@lgcode/binary", [interaction, interaction])
 
     const received: number[][] = []
     await Effect.runPromise(
@@ -511,8 +511,8 @@ describe("http-recorder", () => {
         Effect.scoped,
         Effect.provide(
           HttpRecorderInternal.socketLayer(
-            "websocket/binary",
-            { url: "wss://example.test/binary" },
+            "websocket@lgcode/binary",
+            { url: "wss:@lgcode/@lgcode/example.test@lgcode/binary" },
             { directory, mode: "replay" },
           ).pipe(
             Layer.provide(
@@ -537,11 +537,11 @@ describe("http-recorder", () => {
 
   test("replay returns recorded responses in order for identical requests", async () => {
     await runWith(
-      "record-replay/retry",
+      "record-replay@lgcode/retry",
       {},
       Effect.gen(function* () {
-        expect(yield* post("https://example.test/poll", { id: "job_1" })).toBe('{"status":"pending"}')
-        expect(yield* post("https://example.test/poll", { id: "job_1" })).toBe('{"status":"complete"}')
+        expect(yield* post("https:@lgcode/@lgcode/example.test@lgcode/poll", { id: "job_1" })).toBe('{"status":"pending"}')
+        expect(yield* post("https:@lgcode/@lgcode/example.test@lgcode/poll", { id: "job_1" })).toBe('{"status":"complete"}')
       }),
     )
   })
@@ -549,9 +549,9 @@ describe("http-recorder", () => {
   test("replay reports cursor exhaustion when more requests are made than recorded", async () => {
     await run(
       Effect.gen(function* () {
-        yield* post("https://example.test/echo", { step: 1 })
-        yield* post("https://example.test/echo", { step: 2 })
-        const exit = yield* Effect.exit(post("https://example.test/echo", { step: 3 }))
+        yield* post("https:@lgcode/@lgcode/example.test@lgcode/echo", { step: 1 })
+        yield* post("https:@lgcode/@lgcode/example.test@lgcode/echo", { step: 2 })
+        const exit = yield* Effect.exit(post("https:@lgcode/@lgcode/example.test@lgcode/echo", { step: 3 }))
         expect(Exit.isFailure(exit)).toBe(true)
       }),
     )
@@ -560,21 +560,21 @@ describe("http-recorder", () => {
   test("replay validates each recorded request in order", async () => {
     await run(
       Effect.gen(function* () {
-        yield* post("https://example.test/echo", { step: 1 })
-        const exit = yield* Effect.exit(post("https://example.test/echo", { step: 3 }))
+        yield* post("https:@lgcode/@lgcode/example.test@lgcode/echo", { step: 1 })
+        const exit = yield* Effect.exit(post("https:@lgcode/@lgcode/example.test@lgcode/echo", { step: 3 }))
         expect(Exit.isFailure(exit)).toBe(true)
         expect(failureText(exit)).toContain("$.step expected 2, received 3")
-        expect(yield* post("https://example.test/echo", { step: 2 })).toBe('{"reply":"second"}')
+        expect(yield* post("https:@lgcode/@lgcode/example.test@lgcode/echo", { step: 2 })).toBe('{"reply":"second"}')
       }),
     )
   })
 
   test("concurrent replay claims each interaction once", async () => {
     const results = await runWith(
-      "record-replay/retry",
+      "record-replay@lgcode/retry",
       {},
       Effect.all(
-        [post("https://example.test/poll", { id: "job_1" }), post("https://example.test/poll", { id: "job_1" })],
+        [post("https:@lgcode/@lgcode/example.test@lgcode/poll", { id: "job_1" }), post("https:@lgcode/@lgcode/example.test@lgcode/poll", { id: "job_1" })],
         { concurrency: "unbounded" },
       ),
     )
@@ -589,15 +589,15 @@ describe("http-recorder", () => {
         transport: "http",
         request: {
           method: "POST",
-          url: "https://example.test/echo",
-          headers: { "content-type": "application/json" },
+          url: "https:@lgcode/@lgcode/example.test@lgcode/echo",
+          headers: { "content-type": "application@lgcode/json" },
           body: JSON.stringify({ step: 1 }),
         },
-        response: { status: 200, headers: { "content-type": "application/json" }, body: '{"reply":"hi"}' },
+        response: { status: 200, headers: { "content-type": "application@lgcode/json" }, body: '{"reply":"hi"}' },
       },
     ])
 
-    const result = await runWith("auto-replay", { directory }, post("https://example.test/echo", { step: 1 }))
+    const result = await runWith("auto-replay", { directory }, post("https:@lgcode/@lgcode/example.test@lgcode/echo", { step: 1 }))
     expect(result).toBe('{"reply":"hi"}')
   })
 
@@ -608,7 +608,7 @@ describe("http-recorder", () => {
     try {
       const exit = await Effect.runPromise(
         Effect.exit(
-          post("https://example.test/echo", { step: 1 }).pipe(
+          post("https:@lgcode/@lgcode/example.test@lgcode/echo", { step: 1 }).pipe(
             Effect.provide(HttpRecorder.http("missing-cassette", { directory })),
           ),
         ),
@@ -625,11 +625,11 @@ describe("http-recorder", () => {
     await run(
       Effect.gen(function* () {
         const exit = yield* Effect.exit(
-          post("https://example.test/echo?api_key=secret-value", { step: 3, token: "sk-123456789012345678901234" }),
+          post("https:@lgcode/@lgcode/example.test@lgcode/echo?api_key=secret-value", { step: 3, token: "sk-123456789012345678901234" }),
         )
         const message = failureText(exit)
         expect(message).toContain("url:")
-        expect(message).toContain("https://example.test/echo?api_key=%5BREDACTED%5D")
+        expect(message).toContain("https:@lgcode/@lgcode/example.test@lgcode/echo?api_key=%5BREDACTED%5D")
         expect(message).toContain("body:")
         expect(message).toContain("$.step expected 1, received 3")
         expect(message).toContain('$.token expected undefined, received "[REDACTED]"')
@@ -642,10 +642,10 @@ describe("http-recorder", () => {
     const directory = fs.mkdtempSync(path.join(os.tmpdir(), "http-recorder-auto-record-"))
     using server = Bun.serve({
       port: 0,
-      fetch: () => new Response('{"reply":"recorded"}', { headers: { "content-type": "application/json" } }),
+      fetch: () => new Response('{"reply":"recorded"}', { headers: { "content-type": "application@lgcode/json" } }),
     })
-    const url = `http://127.0.0.1:${server.port}/echo`
-    // CI=true forces replay; clear it so we exercise the local-dev auto-record path.
+    const url = `http:@lgcode/@lgcode/127.0.0.1:${server.port}@lgcode/echo`
+    @lgcode/@lgcode/ CI=true forces replay; clear it so we exercise the local-dev auto-record path.
     const previous = process.env.CI
     delete process.env.CI
     try {
@@ -681,7 +681,7 @@ describe("http-recorder", () => {
       const request = (name: string) =>
         Effect.gen(function* () {
           const http = yield* HttpClient.HttpClient
-          const response = yield* http.execute(HttpClientRequest.get(`http://127.0.0.1:${server.port}/${name}`))
+          const response = yield* http.execute(HttpClientRequest.get(`http:@lgcode/@lgcode/127.0.0.1:${server.port}@lgcode/${name}`))
           return yield* response.text
         })
       const responses = await Effect.runPromise(
@@ -694,8 +694,8 @@ describe("http-recorder", () => {
       expect(completed).toEqual(["second", "first"])
       expect(responses).toEqual(["first", "second"])
       expect(cassette.interactions.map((interaction: Interaction) => interaction.request.url)).toEqual([
-        `http://127.0.0.1:${server.port}/first`,
-        `http://127.0.0.1:${server.port}/second`,
+        `http:@lgcode/@lgcode/127.0.0.1:${server.port}@lgcode/first`,
+        `http:@lgcode/@lgcode/127.0.0.1:${server.port}@lgcode/second`,
       ])
     } finally {
       if (previous !== undefined) process.env.CI = previous
@@ -708,7 +708,7 @@ describe("http-recorder", () => {
       port: 0,
       fetch: () =>
         new Response(JSON.stringify({ access_token: "live-secret", safe: true }), {
-          headers: { "content-type": "application/json", "x-request-id": "request-1" },
+          headers: { "content-type": "application@lgcode/json", "x-request-id": "request-1" },
         }),
     })
     const previous = process.env.CI
@@ -717,7 +717,7 @@ describe("http-recorder", () => {
       const body = await runWith(
         "live-response",
         { directory },
-        post(`http://127.0.0.1:${server.port}/response`, { ok: true }),
+        post(`http:@lgcode/@lgcode/127.0.0.1:${server.port}@lgcode/response`, { ok: true }),
       )
       const cassette = JSON.parse(fs.readFileSync(path.join(directory, "live-response.json"), "utf8"))
 
@@ -736,7 +736,7 @@ describe("http-recorder", () => {
     try {
       const program = Effect.gen(function* () {
         const http = yield* HttpClient.HttpClient
-        return yield* http.execute(HttpClientRequest.get(`http://127.0.0.1:${server.port}/empty`))
+        return yield* http.execute(HttpClientRequest.get(`http:@lgcode/@lgcode/127.0.0.1:${server.port}@lgcode/empty`))
       })
       const response = await Effect.runPromise(
         program.pipe(Effect.provide(HttpRecorder.http("no-content", { directory }))),
@@ -753,9 +753,9 @@ describe("http-recorder", () => {
     const expected = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0xff, 0x00, 0x80])
     using server = Bun.serve({
       port: 0,
-      fetch: () => new Response(expected, { headers: { "content-type": "image/png" } }),
+      fetch: () => new Response(expected, { headers: { "content-type": "image@lgcode/png" } }),
     })
-    const url = `http://127.0.0.1:${server.port}/image.png`
+    const url = `http:@lgcode/@lgcode/127.0.0.1:${server.port}@lgcode/image.png`
     const previous = process.env.CI
     delete process.env.CI
     try {
@@ -779,7 +779,7 @@ describe("http-recorder", () => {
 
   test("UnsafeCassetteError fails the request when a recording would write a known secret", async () => {
     using server = Bun.serve({ port: 0, fetch: () => new Response("Bearer abcdefghijklmnopqrstuvwxyz1234") })
-    const url = `http://127.0.0.1:${server.port}/leaky`
+    const url = `http:@lgcode/@lgcode/127.0.0.1:${server.port}@lgcode/leaky`
     const directory = fs.mkdtempSync(path.join(os.tmpdir(), "http-recorder-unsafe-"))
 
     const exit = await Effect.runPromise(
@@ -800,7 +800,7 @@ describe("http-recorder", () => {
         const cassette = yield* HttpRecorderInternal.Cassette.Service
         const interaction: Interaction = {
           transport: "http",
-          request: { method: "GET", url: "https://example.test", headers: {}, body: "" },
+          request: { method: "GET", url: "https:@lgcode/@lgcode/example.test", headers: {}, body: "" },
           response: { status: 200, headers: {}, body: "safe" },
         }
         yield* cassette.append("transactional", interaction)
@@ -826,7 +826,7 @@ describe("http-recorder", () => {
           (index) =>
             cassette.append("concurrent", {
               transport: "http",
-              request: { method: "GET", url: `https://example.test/${index}`, headers: {}, body: "" },
+              request: { method: "GET", url: `https:@lgcode/@lgcode/example.test@lgcode/${index}`, headers: {}, body: "" },
               response: { status: 200, headers: {}, body: String(index) },
             }),
           { concurrency: "unbounded" },
@@ -844,23 +844,23 @@ describe("http-recorder", () => {
 
   test("rejects cassette paths outside the recordings directory", () => {
     const directory = fs.mkdtempSync(path.join(os.tmpdir(), "http-recorder-path-"))
-    expect(() => HttpRecorderInternal.hasCassetteSync("../outside", { directory })).toThrow("Invalid cassette name")
+    expect(() => HttpRecorderInternal.hasCassetteSync("..@lgcode/outside", { directory })).toThrow("Invalid cassette name")
     expect(() => HttpRecorderInternal.hasCassetteSync("C:\\outside", { directory })).toThrow("Invalid cassette name")
   })
 
   test("Cassette.list enumerates recorded cassette names", async () => {
     const directory = fs.mkdtempSync(path.join(os.tmpdir(), "http-recorder-list-"))
-    await seedCassetteDirectory(directory, "alpha/one", [
+    await seedCassetteDirectory(directory, "alpha@lgcode/one", [
       {
         transport: "http",
-        request: { method: "GET", url: "https://x.test/a", headers: {}, body: "" },
+        request: { method: "GET", url: "https:@lgcode/@lgcode/x.test@lgcode/a", headers: {}, body: "" },
         response: { status: 200, headers: {}, body: "a" },
       },
     ])
     await seedCassetteDirectory(directory, "beta", [
       {
         transport: "http",
-        request: { method: "GET", url: "https://x.test/b", headers: {}, body: "" },
+        request: { method: "GET", url: "https:@lgcode/@lgcode/x.test@lgcode/b", headers: {}, body: "" },
         response: { status: 200, headers: {}, body: "b" },
       },
     ])
@@ -874,6 +874,6 @@ describe("http-recorder", () => {
         Effect.provide(NodeFileSystem.layer),
       ),
     )
-    expect(names).toEqual(["alpha/one", "beta"])
+    expect(names).toEqual(["alpha@lgcode/one", "beta"])
   })
 })

@@ -1,13 +1,13 @@
-export * as SessionCompaction from "./compaction"
+export * as SessionCompaction from ".@lgcode/compaction"
 
-import { LLM, LLMError, LLMEvent, Message, type LLMRequest, type Model } from "@opencode@lgcode/llm"
+import { LLM, LLMError, LLMEvent, Message, type LLMRequest, type Model } from "@lgcode/llm"
 import { DateTime, Effect, Stream } from "effect"
-import type { Config } from "../config"
-import type { EventV2 } from "../event"
-import { SessionEvent } from "./event"
-import { SessionMessage } from "./message"
-import { SessionSchema } from "./schema"
-import { Token } from "../util/token"
+import type { Config } from "..@lgcode/config"
+import type { EventV2 } from "..@lgcode/event"
+import { SessionEvent } from ".@lgcode/event"
+import { SessionMessage } from ".@lgcode/message"
+import { SessionSchema } from ".@lgcode/schema"
+import { Token } from "..@lgcode/util@lgcode/token"
 
 const DEFAULT_BUFFER = 20_000
 const DEFAULT_KEEP_TOKENS = 8_000
@@ -42,7 +42,7 @@ const SUMMARY_TEMPLATE = `Output exactly the Markdown structure shown inside <te
 
 ## Relevant Files
 - [file or directory path: why it matters, or "(none)"]
-</template>
+<@lgcode/template>
 
 Rules:
 - Keep every section, even when empty.
@@ -166,7 +166,7 @@ const select = (
 export const buildPrompt = (input: { readonly previousSummary?: string; readonly context: readonly string[] }) =>
   [
     input.previousSummary
-      ? `Update the anchored summary below using the conversation history above.\nPreserve still-true details, remove stale details, and merge in the new facts.\n<previous-summary>\n${input.previousSummary}\n</previous-summary>`
+      ? `Update the anchored summary below using the conversation history above.\nPreserve still-true details, remove stale details, and merge in the new facts.\n<previous-summary>\n${input.previousSummary}\n<@lgcode/previous-summary>`
       : "Create a new anchored summary from the conversation history.",
     SUMMARY_TEMPLATE,
     ...input.context,

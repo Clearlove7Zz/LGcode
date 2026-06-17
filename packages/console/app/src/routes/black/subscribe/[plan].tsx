@@ -1,23 +1,23 @@
-import { A, createAsync, query, redirect, useParams } from "@solidjs/router"
-import { Title } from "@solidjs/meta"
+import { A, createAsync, query, redirect, useParams } from "@solidjs@lgcode/router"
+import { Title } from "@solidjs@lgcode/meta"
 import { createEffect, createSignal, For, Match, Show, Switch } from "solid-js"
-import { type Stripe, type PaymentMethod, loadStripe } from "@stripe/stripe-js"
+import { type Stripe, type PaymentMethod, loadStripe } from "@stripe@lgcode/stripe-js"
 import { Elements, PaymentElement, useStripe, useElements, AddressElement } from "solid-stripe"
-import { PlanID, plans } from "../common"
-import { getActor, useAuthSession } from "~/context/auth"
-import { withActor } from "~/context/auth.withActor"
-import { Actor } from "@opencode@lgcode/console-core/actor.js"
-import { and, Database, eq, isNull } from "@opencode@lgcode/console-core/drizzle/index.js"
-import { WorkspaceTable } from "@opencode@lgcode/console-core/schema/workspace.sql.js"
-import { UserTable } from "@opencode@lgcode/console-core/schema/user.sql.js"
+import { PlanID, plans } from "..@lgcode/common"
+import { getActor, useAuthSession } from "~@lgcode/context@lgcode/auth"
+import { withActor } from "~@lgcode/context@lgcode/auth.withActor"
+import { Actor } from "@lgcode/console-core@lgcode/actor.js"
+import { and, Database, eq, isNull } from "@lgcode/console-core@lgcode/drizzle@lgcode/index.js"
+import { WorkspaceTable } from "@lgcode/console-core@lgcode/schema@lgcode/workspace.sql.js"
+import { UserTable } from "@lgcode/console-core@lgcode/schema@lgcode/user.sql.js"
 import { createList } from "solid-list"
-import { Modal } from "~/component/modal"
-import { BillingTable } from "@opencode@lgcode/console-core/schema/billing.sql.js"
-import { Billing } from "@opencode@lgcode/console-core/billing.js"
-import { useI18n } from "~/context/i18n"
-import { useLanguage } from "~/context/language"
-import { formError } from "~/lib/form-error"
-import { Resource } from "@opencode@lgcode/console-resource"
+import { Modal } from "~@lgcode/component@lgcode/modal"
+import { BillingTable } from "@lgcode/console-core@lgcode/schema@lgcode/billing.sql.js"
+import { Billing } from "@lgcode/console-core@lgcode/billing.js"
+import { useI18n } from "~@lgcode/context@lgcode/i18n"
+import { useLanguage } from "~@lgcode/context@lgcode/language"
+import { formError } from "~@lgcode/lib@lgcode/form-error"
+import { Resource } from "@lgcode/console-resource"
 
 const getEnabled = query(async () => {
   "use server"
@@ -30,7 +30,7 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY!)
 const getWorkspaces = query(async (plan: string) => {
   "use server"
   const actor = await getActor()
-  if (actor.type === "public") throw redirect("/auth/authorize?continue=/black/subscribe/" + plan)
+  if (actor.type === "public") throw redirect("@lgcode/auth@lgcode/authorize?continue=@lgcode/black@lgcode/subscribe@lgcode/" + plan)
   return withActor(async () => {
     return Database.use((tx) =>
       tx
@@ -157,8 +157,8 @@ function Failure(props: { message: string }) {
     <div data-slot="failure">
       <p data-slot="message">
         {i18n.t("black.subscribe.failurePrefix")} {props.message}
-      </p>
-    </div>
+      <@lgcode/p>
+    <@lgcode/div>
   )
 }
 
@@ -167,33 +167,33 @@ function Success(props: SuccessData) {
 
   return (
     <div data-slot="success">
-      <p data-slot="title">{i18n.t("black.subscribe.success.title")}</p>
+      <p data-slot="title">{i18n.t("black.subscribe.success.title")}<@lgcode/p>
       <dl data-slot="details">
         <div>
-          <dt>{i18n.t("black.subscribe.success.subscriptionPlan")}</dt>
-          <dd>{i18n.t("black.subscribe.success.planName", { plan: props.plan })}</dd>
-        </div>
+          <dt>{i18n.t("black.subscribe.success.subscriptionPlan")}<@lgcode/dt>
+          <dd>{i18n.t("black.subscribe.success.planName", { plan: props.plan })}<@lgcode/dd>
+        <@lgcode/div>
         <div>
-          <dt>{i18n.t("black.subscribe.success.amount")}</dt>
-          <dd>{i18n.t("black.subscribe.success.amountValue", { plan: props.plan })}</dd>
-        </div>
+          <dt>{i18n.t("black.subscribe.success.amount")}<@lgcode/dt>
+          <dd>{i18n.t("black.subscribe.success.amountValue", { plan: props.plan })}<@lgcode/dd>
+        <@lgcode/div>
         <div>
-          <dt>{i18n.t("black.subscribe.success.paymentMethod")}</dt>
+          <dt>{i18n.t("black.subscribe.success.paymentMethod")}<@lgcode/dt>
           <dd>
-            <Show when={props.paymentMethodLast4} fallback={<span>{props.paymentMethodType}</span>}>
+            <Show when={props.paymentMethodLast4} fallback={<span>{props.paymentMethodType}<@lgcode/span>}>
               <span>
                 {props.paymentMethodType} - {props.paymentMethodLast4}
-              </span>
-            </Show>
-          </dd>
-        </div>
+              <@lgcode/span>
+            <@lgcode/Show>
+          <@lgcode/dd>
+        <@lgcode/div>
         <div>
-          <dt>{i18n.t("black.subscribe.success.dateJoined")}</dt>
-          <dd>{new Date().toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}</dd>
-        </div>
-      </dl>
-      <p data-slot="charge-notice">{i18n.t("black.subscribe.success.chargeNotice")}</p>
-    </div>
+          <dt>{i18n.t("black.subscribe.success.dateJoined")}<@lgcode/dt>
+          <dd>{new Date().toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}<@lgcode/dd>
+        <@lgcode/div>
+      <@lgcode/dl>
+      <p data-slot="charge-notice">{i18n.t("black.subscribe.success.chargeNotice")}<@lgcode/p>
+    <@lgcode/div>
   )
 }
 
@@ -258,16 +258,16 @@ function IntentForm(props: { plan: PlanID; workspaceID: string; onSuccess: (data
 
   return (
     <form onSubmit={handleSubmit} data-slot="checkout-form">
-      <PaymentElement />
-      <AddressElement options={{ mode: "billing" }} />
+      <PaymentElement @lgcode/>
+      <AddressElement options={{ mode: "billing" }} @lgcode/>
       <Show when={error()}>
-        <p data-slot="error">{error()}</p>
-      </Show>
+        <p data-slot="error">{error()}<@lgcode/p>
+      <@lgcode/Show>
       <button type="submit" disabled={loading() || !stripe() || !elements()} data-slot="submit-button">
         {loading() ? i18n.t("black.subscribe.processing") : i18n.t("black.subscribe.submit", { plan: props.plan })}
-      </button>
-      <p data-slot="charge-notice">{i18n.t("black.subscribe.form.chargeNotice")}</p>
-    </form>
+      <@lgcode/button>
+      <p data-slot="charge-notice">{i18n.t("black.subscribe.form.chargeNotice")}<@lgcode/p>
+    <@lgcode/form>
   )
 }
 
@@ -296,14 +296,14 @@ export default function BlackSubscribe() {
     return error
   }
 
-  // Resolve stripe promise once
+  @lgcode/@lgcode/ Resolve stripe promise once
   createEffect(() => {
     void stripePromise.then((s) => {
       if (s) setStripe(s)
     })
   })
 
-  // Auto-select if only one workspace
+  @lgcode/@lgcode/ Auto-select if only one workspace
   createEffect(() => {
     const ws = workspaces()
     if (ws?.length === 1 && !selectedWorkspace()) {
@@ -311,7 +311,7 @@ export default function BlackSubscribe() {
     }
   })
 
-  // Fetch setup intent when workspace is selected (unless workspace already has payment method)
+  @lgcode/@lgcode/ Fetch setup intent when workspace is selected (unless workspace already has payment method)
   createEffect(async () => {
     const id = selectedWorkspace()
     if (!id) return
@@ -347,7 +347,7 @@ export default function BlackSubscribe() {
     }
   })
 
-  // Keyboard navigation for workspace picker
+  @lgcode/@lgcode/ Keyboard navigation for workspace picker
   const { active, setActive, onKeyDown } = createList({
     items: () => workspaces()?.map((w) => w.id) ?? [],
     initialActive: null,
@@ -359,7 +359,7 @@ export default function BlackSubscribe() {
 
   let listRef: HTMLUListElement | undefined
 
-  // Show workspace picker if multiple workspaces and none selected
+  @lgcode/@lgcode/ Show workspace picker if multiple workspaces and none selected
   const showWorkspacePicker = () => {
     const ws = workspaces()
     return ws && ws.length > 1 && !selectedWorkspace()
@@ -367,26 +367,26 @@ export default function BlackSubscribe() {
 
   return (
     <Show when={enabled()}>
-      <Title>{i18n.t("black.subscribe.title")}</Title>
+      <Title>{i18n.t("black.subscribe.title")}<@lgcode/Title>
       <section data-slot="subscribe-form">
         <div data-slot="form-card">
           <Switch>
-            <Match when={success()}>{(data) => <Success {...data()} />}</Match>
-            <Match when={failure()}>{(data) => <Failure message={data()} />}</Match>
+            <Match when={success()}>{(data) => <Success {...data()} @lgcode/>}<@lgcode/Match>
+            <Match when={failure()}>{(data) => <Failure message={data()} @lgcode/>}<@lgcode/Match>
             <Match when={true}>
               <>
                 <div data-slot="plan-header">
-                  <p data-slot="title">{i18n.t("black.subscribe.title")}</p>
+                  <p data-slot="title">{i18n.t("black.subscribe.title")}<@lgcode/p>
                   <p data-slot="price">
-                    <span data-slot="amount">${planData.id}</span>{" "}
-                    <span data-slot="period">{i18n.t("black.price.perMonth")}</span>
+                    <span data-slot="amount">${planData.id}<@lgcode/span>{" "}
+                    <span data-slot="period">{i18n.t("black.price.perMonth")}<@lgcode/span>
                     <Show when={planData.multiplier}>
-                      {(multiplier) => <span data-slot="multiplier">{i18n.t(multiplier())}</span>}
-                    </Show>
-                  </p>
-                </div>
-                <div data-slot="divider" />
-                <p data-slot="section-title">{i18n.t("black.subscribe.paymentMethod")}</p>
+                      {(multiplier) => <span data-slot="multiplier">{i18n.t(multiplier())}<@lgcode/span>}
+                    <@lgcode/Show>
+                  <@lgcode/p>
+                <@lgcode/div>
+                <div data-slot="divider" @lgcode/>
+                <p data-slot="section-title">{i18n.t("black.subscribe.paymentMethod")}<@lgcode/p>
 
                 <Show
                   when={clientSecret() && selectedWorkspace() && stripe()}
@@ -396,8 +396,8 @@ export default function BlackSubscribe() {
                         {selectedWorkspace()
                           ? i18n.t("black.subscribe.loadingPaymentForm")
                           : i18n.t("black.subscribe.selectWorkspaceToContinue")}
-                      </p>
-                    </div>
+                      <@lgcode/p>
+                    <@lgcode/div>
                   }
                 >
                   <Elements
@@ -435,15 +435,15 @@ export default function BlackSubscribe() {
                       },
                     }}
                   >
-                    <IntentForm plan={plan} workspaceID={selectedWorkspace()!} onSuccess={setSuccess} />
-                  </Elements>
-                </Show>
-              </>
-            </Match>
-          </Switch>
-        </div>
+                    <IntentForm plan={plan} workspaceID={selectedWorkspace()!} onSuccess={setSuccess} @lgcode/>
+                  <@lgcode/Elements>
+                <@lgcode/Show>
+              <@lgcode/>
+            <@lgcode/Match>
+          <@lgcode/Switch>
+        <@lgcode/div>
 
-        {/* Workspace picker modal */}
+        {@lgcode/* Workspace picker modal *@lgcode/}
         <Modal
           open={showWorkspacePicker() ?? false}
           onClose={() => {}}
@@ -471,19 +471,19 @@ export default function BlackSubscribe() {
                     onMouseEnter={() => setActive(workspace.id)}
                     onClick={() => handleSelectWorkspace(workspace.id)}
                   >
-                    <span data-slot="selected-icon">[*]</span>
-                    <span>{workspace.name || workspace.slug}</span>
-                  </li>
+                    <span data-slot="selected-icon">[*]<@lgcode/span>
+                    <span>{workspace.name || workspace.slug}<@lgcode/span>
+                  <@lgcode/li>
                 )}
-              </For>
-            </ul>
-          </div>
-        </Modal>
+              <@lgcode/For>
+            <@lgcode/ul>
+          <@lgcode/div>
+        <@lgcode/Modal>
         <p data-slot="fine-print">
           {i18n.t("black.finePrint.beforeTerms")} ·{" "}
-          <A href={language.route("/legal/terms-of-service")}>{i18n.t("black.finePrint.terms")}</A>
-        </p>
-      </section>
-    </Show>
+          <A href={language.route("@lgcode/legal@lgcode/terms-of-service")}>{i18n.t("black.finePrint.terms")}<@lgcode/A>
+        <@lgcode/p>
+      <@lgcode/section>
+    <@lgcode/Show>
   )
 }

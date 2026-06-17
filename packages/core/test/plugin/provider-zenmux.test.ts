@@ -1,11 +1,11 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { Catalog } from "@opencode@lgcode/core/catalog"
-import { PluginV2 } from "@opencode@lgcode/core/plugin"
-import { ProviderPlugins } from "@opencode@lgcode/core/plugin/provider"
-import { ZenmuxPlugin } from "@opencode@lgcode/core/plugin/provider/zenmux"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { expectPluginRegistered, it, provider } from "./provider-helper"
+import { Catalog } from "@lgcode/core@lgcode/catalog"
+import { PluginV2 } from "@lgcode/core@lgcode/plugin"
+import { ProviderPlugins } from "@lgcode/core@lgcode/plugin@lgcode/provider"
+import { ZenmuxPlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/zenmux"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { expectPluginRegistered, it, provider } from ".@lgcode/provider-helper"
 
 describe("ZenmuxPlugin", () => {
   it.effect("is registered so legacy referer headers can be applied", () =>
@@ -25,14 +25,14 @@ describe("ZenmuxPlugin", () => {
       const transform = yield* catalog.transform()
       yield* transform((catalog) => {
         const item = provider("zenmux", {
-          api: { type: "aisdk", package: "@ai-sdk/openai-compatible", url: "https://zenmux.ai/api/v1" },
+          api: { type: "aisdk", package: "@ai-sdk@lgcode/openai-compatible", url: "https:@lgcode/@lgcode/zenmux.ai@lgcode/api@lgcode/v1" },
         })
         catalog.provider.update(item.id, (draft) => {
           draft.api = item.api
         })
       })
       const result = yield* catalog.provider.get(ProviderV2.ID.make("zenmux"))
-      expect(result.request.headers).toEqual({ "HTTP-Referer": "https://opencode.ai/", "X-Title": "opencode" })
+      expect(result.request.headers).toEqual({ "HTTP-Referer": "https:@lgcode/@lgcode/opencode.ai@lgcode/", "X-Title": "opencode" })
       expect(Object.keys(result.request.headers).sort()).toEqual(["HTTP-Referer", "X-Title"])
     }),
   )
@@ -45,7 +45,7 @@ describe("ZenmuxPlugin", () => {
       const transform = yield* catalog.transform()
       yield* transform((catalog) => {
         const item = provider("zenmux", {
-          api: { type: "aisdk", package: "@ai-sdk/openai-compatible", url: "https://zenmux.ai/api/v1" },
+          api: { type: "aisdk", package: "@ai-sdk@lgcode/openai-compatible", url: "https:@lgcode/@lgcode/zenmux.ai@lgcode/api@lgcode/v1" },
           request: { headers: { Existing: "value" }, body: {} },
         })
         catalog.provider.update(item.id, (draft) => {
@@ -56,7 +56,7 @@ describe("ZenmuxPlugin", () => {
 
       expect((yield* catalog.provider.get(ProviderV2.ID.make("zenmux"))).request.headers).toEqual({
         Existing: "value",
-        "HTTP-Referer": "https://opencode.ai/",
+        "HTTP-Referer": "https:@lgcode/@lgcode/opencode.ai@lgcode/",
         "X-Title": "opencode",
       })
     }),
@@ -70,9 +70,9 @@ describe("ZenmuxPlugin", () => {
       const transform = yield* catalog.transform()
       yield* transform((catalog) => {
         const item = provider("zenmux", {
-          api: { type: "aisdk", package: "@ai-sdk/openai-compatible", url: "https://zenmux.ai/api/v1" },
+          api: { type: "aisdk", package: "@ai-sdk@lgcode/openai-compatible", url: "https:@lgcode/@lgcode/zenmux.ai@lgcode/api@lgcode/v1" },
           request: {
-            headers: { "HTTP-Referer": "https://example.com/", "X-Title": "custom-title" },
+            headers: { "HTTP-Referer": "https:@lgcode/@lgcode/example.com@lgcode/", "X-Title": "custom-title" },
             body: {},
           },
         })
@@ -83,7 +83,7 @@ describe("ZenmuxPlugin", () => {
       })
 
       expect((yield* catalog.provider.get(ProviderV2.ID.make("zenmux"))).request.headers).toEqual({
-        "HTTP-Referer": "https://example.com/",
+        "HTTP-Referer": "https:@lgcode/@lgcode/example.com@lgcode/",
         "X-Title": "custom-title",
       })
     }),
@@ -98,7 +98,7 @@ describe("ZenmuxPlugin", () => {
       yield* transform((catalog) => {
         const item = provider("openrouter", {
           request: {
-            headers: { "HTTP-Referer": "https://example.com/", "X-Title": "custom-title" },
+            headers: { "HTTP-Referer": "https:@lgcode/@lgcode/example.com@lgcode/", "X-Title": "custom-title" },
             body: {},
           },
         })
@@ -108,7 +108,7 @@ describe("ZenmuxPlugin", () => {
       })
 
       expect((yield* catalog.provider.get(ProviderV2.ID.openrouter)).request.headers).toEqual({
-        "HTTP-Referer": "https://example.com/",
+        "HTTP-Referer": "https:@lgcode/@lgcode/example.com@lgcode/",
         "X-Title": "custom-title",
       })
     }),

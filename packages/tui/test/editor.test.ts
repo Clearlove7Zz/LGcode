@@ -1,5 +1,5 @@
 import { afterEach, expect, test } from "bun:test"
-import { normalizePromptContent, openEditor } from "../src/editor"
+import { normalizePromptContent, openEditor } from "..@lgcode/src@lgcode/editor"
 
 const editor = process.env.EDITOR
 const visual = process.env.VISUAL

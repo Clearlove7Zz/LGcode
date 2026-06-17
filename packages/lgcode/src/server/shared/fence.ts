@@ -1,8 +1,8 @@
-import { Database } from "@opencode@lgcode/core/database/database"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
 import { inArray } from "drizzle-orm"
-import { EventSequenceTable } from "@opencode@lgcode/core/event/sql"
-import { Workspace } from "@/control-plane/workspace"
-import type { WorkspaceV2 } from "@opencode@lgcode/core/workspace"
+import { EventSequenceTable } from "@lgcode/core@lgcode/event@lgcode/sql"
+import { Workspace } from "@@lgcode/control-plane@lgcode/workspace"
+import type { WorkspaceV2 } from "@lgcode/core@lgcode/workspace"
 import { Effect } from "effect"
 
 export const HEADER = "x-opencode-sync"

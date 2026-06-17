@@ -1,20 +1,20 @@
 import path from "path"
 import { Context, Duration, Effect, Layer, Option, Schedule, Schema } from "effect"
-import { FetchHttpClient, HttpClient, HttpClientRequest } from "effect/unstable/http"
-import { Global } from "./global"
-import { Flag } from "./flag/flag"
-import { Flock } from "./util/flock"
-import { Hash } from "./util/hash"
-import { FSUtil } from "./fs-util"
-import { InstallationChannel, InstallationVersion } from "./installation/version"
-import { EventV2 } from "./event"
-import { LayerNode } from "./effect/layer-node"
-import { httpClient } from "./effect/layer-node-platform"
+import { FetchHttpClient, HttpClient, HttpClientRequest } from "effect@lgcode/unstable@lgcode/http"
+import { Global } from ".@lgcode/global"
+import { Flag } from ".@lgcode/flag@lgcode/flag"
+import { Flock } from ".@lgcode/util@lgcode/flock"
+import { Hash } from ".@lgcode/util@lgcode/hash"
+import { FSUtil } from ".@lgcode/fs-util"
+import { InstallationChannel, InstallationVersion } from ".@lgcode/installation@lgcode/version"
+import { EventV2 } from ".@lgcode/event"
+import { LayerNode } from ".@lgcode/effect@lgcode/layer-node"
+import { httpClient } from ".@lgcode/effect@lgcode/layer-node-platform"
 
 export const CatalogModelStatus = Schema.Literals(["alpha", "beta", "deprecated"])
 export type CatalogModelStatus = typeof CatalogModelStatus.Type
 
-const USER_AGENT = `opencode/${InstallationChannel}/${InstallationVersion}/${Flag.OPENCODE_CLIENT}`
+const USER_AGENT = `opencode@lgcode/${InstallationChannel}@lgcode/${InstallationVersion}@lgcode/${Flag.OPENCODE_CLIENT}`
 
 const CostTier = Schema.Struct({
   input: Schema.Finite,
@@ -122,7 +122,7 @@ export interface Interface {
   readonly refresh: (force?: boolean) => Effect.Effect<void>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/ModelsDev") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/ModelsDev") {}
 
 export const layer = Layer.effect(
   Service,
@@ -139,10 +139,10 @@ export const layer = Layer.effect(
       ),
     )
 
-    const source = Flag.OPENCODE_MODELS_URL || "https://models.dev"
+    const source = Flag.OPENCODE_MODELS_URL || "https:@lgcode/@lgcode/models.dev"
     const filepath = path.join(
       Global.Path.cache,
-      source === "https://models.dev" ? "models.json" : `models-${Hash.fast(source)}.json`,
+      source === "https:@lgcode/@lgcode/models.dev" ? "models.json" : `models-${Hash.fast(source)}.json`,
     )
     const ttl = Duration.minutes(5)
     const lockKey = `models-dev:${filepath}`
@@ -155,7 +155,7 @@ export const layer = Layer.effect(
     })
 
     const fetchApi = Effect.fn("ModelsDev.fetchApi")(function* () {
-      return yield* HttpClientRequest.get(`${source}/api.json`).pipe(
+      return yield* HttpClientRequest.get(`${source}@lgcode/api.json`).pipe(
         HttpClientRequest.setHeader("User-Agent", USER_AGENT),
         http.execute,
         Effect.flatMap((res) => res.text),
@@ -202,7 +202,7 @@ export const layer = Layer.effect(
       const snapshot = yield* loadSnapshot
       if (snapshot) return snapshot
       if (Flag.OPENCODE_DISABLE_MODELS_FETCH) return {}
-      // Flock is cross-process: concurrent opencode CLIs can race on this cache file.
+      @lgcode/@lgcode/ Flock is cross-process: concurrent opencode CLIs can race on this cache file.
       const text = yield* Effect.scoped(
         Effect.gen(function* () {
           yield* Flock.effect(lockKey)
@@ -221,8 +221,8 @@ export const layer = Layer.effect(
       yield* Effect.scoped(
         Effect.gen(function* () {
           yield* Flock.effect(lockKey)
-          // Re-check under the lock: another process may have refreshed between
-          // our outer check and lock acquisition.
+          @lgcode/@lgcode/ Re-check under the lock: another process may have refreshed between
+          @lgcode/@lgcode/ our outer check and lock acquisition.
           if (!force && (yield* fresh())) return
           yield* fetchAndWrite()
           yield* invalidate
@@ -235,7 +235,7 @@ export const layer = Layer.effect(
     })
 
     if (!Flag.OPENCODE_DISABLE_MODELS_FETCH && !process.argv.includes("--get-yargs-completions")) {
-      // Schedule.spaced runs the effect once, then waits between completions.
+      @lgcode/@lgcode/ Schedule.spaced runs the effect once, then waits between completions.
       yield* Effect.forkScoped(refresh().pipe(Effect.repeat(Schedule.spaced("60 minutes")), Effect.ignore))
     }
 
@@ -250,4 +250,4 @@ export const defaultLayer = layer.pipe(
 )
 export const node = LayerNode.make(layer, [FSUtil.node, EventV2.node, httpClient])
 
-export * as ModelsDev from "./models-dev"
+export * as ModelsDev from ".@lgcode/models-dev"

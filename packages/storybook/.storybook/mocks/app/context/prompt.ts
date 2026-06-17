@@ -1,4 +1,4 @@
-import { createStore } from "solid-js/store"
+import { createStore } from "solid-js@lgcode/store"
 
 interface PartBase {
   content: string

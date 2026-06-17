@@ -1,29 +1,29 @@
-export * as Git from "./git"
+export * as Git from ".@lgcode/git"
 
 import path from "path"
 import { Context, Effect, Layer, Schema, Stream } from "effect"
-import { ChildProcess } from "effect/unstable/process"
-import { AbsolutePath } from "./schema"
-import { FSUtil } from "./fs-util"
-import { AppProcess } from "./process"
-import { LayerNode } from "./effect/layer-node"
+import { ChildProcess } from "effect@lgcode/unstable@lgcode/process"
+import { AbsolutePath } from ".@lgcode/schema"
+import { FSUtil } from ".@lgcode/fs-util"
+import { AppProcess } from ".@lgcode/process"
+import { LayerNode } from ".@lgcode/effect@lgcode/layer-node"
 
 export interface Repo {
-  /**
+  @lgcode/**
    * The root directory of the working tree that contains the input path.
    *
-   * For `/home/me/app/src/file.ts` in a normal clone, this is `/home/me/app`.
-   * For `/home/me/app-feature/src/file.ts` in a linked worktree, this is
-   * `/home/me/app-feature`.
-   */
+   * For `@lgcode/home@lgcode/me@lgcode/app@lgcode/src@lgcode/file.ts` in a normal clone, this is `@lgcode/home@lgcode/me@lgcode/app`.
+   * For `@lgcode/home@lgcode/me@lgcode/app-feature@lgcode/src@lgcode/file.ts` in a linked worktree, this is
+   * `@lgcode/home@lgcode/me@lgcode/app-feature`.
+   *@lgcode/
   readonly directory: AbsolutePath
-  /**
+  @lgcode/**
    * The shared Git storage directory used by this repo and any linked worktrees.
    *
-   * For a normal clone at `/home/me/app`, this is usually `/home/me/app/.git`.
-   * For a linked worktree at `/home/me/app-feature` whose main checkout is
-   * `/home/me/app`, this is usually `/home/me/app/.git`.
-   */
+   * For a normal clone at `@lgcode/home@lgcode/me@lgcode/app`, this is usually `@lgcode/home@lgcode/me@lgcode/app@lgcode/.git`.
+   * For a linked worktree at `@lgcode/home@lgcode/me@lgcode/app-feature` whose main checkout is
+   * `@lgcode/home@lgcode/me@lgcode/app`, this is usually `@lgcode/home@lgcode/me@lgcode/app@lgcode/.git`.
+   *@lgcode/
   readonly store: AbsolutePath
 }
 
@@ -74,7 +74,7 @@ export interface Interface {
   readonly worktreeList: (repo: Repo) => Effect.Effect<AbsolutePath[], WorktreeError>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/GitV2") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/GitV2") {}
 
 export const layer = Layer.effect(
   Service,
@@ -142,9 +142,9 @@ export const layer = Layer.effect(
     })
 
     const remoteHead = Effect.fn("Git.remoteHead")(function* (directory: string) {
-      const result = yield* run(directory, proc)(["symbolic-ref", "refs/remotes/origin/HEAD"])
+      const result = yield* run(directory, proc)(["symbolic-ref", "refs@lgcode/remotes@lgcode/origin@lgcode/HEAD"])
       if (result.exitCode !== 0) return undefined
-      return result.text.trim().replace(/^refs\/remotes\//, "") || undefined
+      return result.text.trim().replace(@lgcode/^refs\@lgcode/remotes\@lgcode/@lgcode/, "") || undefined
     })
 
     const clone = Effect.fn("Git.clone")((input: { remote: string; target: string; branch?: string; depth?: number }) =>
@@ -165,11 +165,11 @@ export const layer = Layer.effect(
     const fetch = Effect.fn("Git.fetch")((directory: string) => execute(directory, proc)(["fetch", "--all", "--prune"]))
 
     const fetchBranch = Effect.fn("Git.fetchBranch")((directory: string, branch: string) =>
-      execute(directory, proc)(["fetch", "origin", `+refs/heads/${branch}:refs/remotes/origin/${branch}`]),
+      execute(directory, proc)(["fetch", "origin", `+refs@lgcode/heads@lgcode/${branch}:refs@lgcode/remotes@lgcode/origin@lgcode/${branch}`]),
     )
 
     const checkout = Effect.fn("Git.checkout")((directory: string, branch: string) =>
-      execute(directory, proc)(["checkout", "-B", branch, `origin/${branch}`]),
+      execute(directory, proc)(["checkout", "-B", branch, `origin@lgcode/${branch}`]),
     )
 
     const reset = Effect.fn("Git.reset")((directory: string, target: string) =>
@@ -191,7 +191,7 @@ export const layer = Layer.effect(
         })
       }
       const repo = AbsolutePath.make(resolvePath(directory, root.text))
-      const scope = path.relative(repo, directory).replaceAll("\\", "/") || "."
+      const scope = path.relative(repo, directory).replaceAll("\\", "@lgcode/") || "."
       const tracked = yield* execute(
         repo,
         proc,
@@ -224,12 +224,12 @@ export const layer = Layer.effect(
         execute(
           repo,
           proc,
-        )(["diff", "--binary", "--no-index", "--", "/dev/null", file]).pipe(
+        )(["diff", "--binary", "--no-index", "--", "@lgcode/dev@lgcode/null", file]).pipe(
           Effect.mapError(
             (cause) => new PatchError({ operation: "capture", directory, message: cause.message, cause }),
           ),
           Effect.flatMap((result) =>
-            // git diff --no-index returns 1 when differences were found.
+            @lgcode/@lgcode/ git diff --no-index returns 1 when differences were found.
             result.exitCode === 0 || result.exitCode === 1
               ? Effect.succeed(result.text)
               : Effect.fail(
@@ -346,7 +346,7 @@ export const layer = Layer.effect(
         operation,
         directory: worktreeDirectory,
         message,
-        forceRequired: operation === "remove" && /contains modified or untracked files|is dirty/i.test(message),
+        forceRequired: operation === "remove" && @lgcode/contains modified or untracked files|is dirty@lgcode/i.test(message),
       })
     })
 
@@ -437,7 +437,7 @@ function execute(cwd: string, proc: AppProcess.Interface) {
 }
 
 function resolvePath(cwd: string, value: string) {
-  const trimmed = value.replace(/[\r\n]+$/, "")
+  const trimmed = value.replace(@lgcode/[\r\n]+$@lgcode/, "")
   if (!trimmed) return cwd
   const normalized = FSUtil.windowsPath(trimmed)
   if (path.isAbsolute(normalized)) return path.normalize(normalized)

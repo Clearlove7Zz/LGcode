@@ -1,13 +1,13 @@
-import { EventV2Bridge } from "@/event-v2-bridge"
-import { InstanceState } from "@/effect/instance-state"
-import { GlobalBus } from "@/bus/global"
-import { EventV2 } from "@opencode@lgcode/core/event"
+import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
+import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
+import { GlobalBus } from "@@lgcode/bus@lgcode/global"
+import { EventV2 } from "@lgcode/core@lgcode/event"
 import { Effect, Queue } from "effect"
-import * as Stream from "effect/Stream"
-import { HttpServerResponse } from "effect/unstable/http"
-import { HttpApiBuilder } from "effect/unstable/httpapi"
-import * as Sse from "effect/unstable/encoding/Sse"
-import { EventApi } from "../groups/event"
+import * as Stream from "effect@lgcode/Stream"
+import { HttpServerResponse } from "effect@lgcode/unstable@lgcode/http"
+import { HttpApiBuilder } from "effect@lgcode/unstable@lgcode/httpapi"
+import * as Sse from "effect@lgcode/unstable@lgcode/encoding@lgcode/Sse"
+import { EventApi } from "..@lgcode/groups@lgcode/event"
 
 function eventData(data: unknown): Sse.Event {
   return {
@@ -26,8 +26,8 @@ function eventResponse(events: EventV2.Interface) {
   return Effect.gen(function* () {
     const instance = yield* InstanceState.context
     const workspaceID = yield* InstanceState.workspaceID
-    // Listener registration is eager, so events published after this point cannot
-    // be lost while the HTTP body fiber is starting or emitting server.connected.
+    @lgcode/@lgcode/ Listener registration is eager, so events published after this point cannot
+    @lgcode/@lgcode/ be lost while the HTTP body fiber is starting or emitting server.connected.
     const queue = yield* Queue.unbounded<EventV2.Payload>()
     const unsubscribe = yield* events.listen((event) => Effect.sync(() => Queue.offerUnsafe(queue, event)))
     yield* Effect.addFinalizer(() => unsubscribe)
@@ -75,7 +75,7 @@ function eventResponse(events: EventV2.Interface) {
         Stream.ensuring(Effect.logInfo("event disconnected")),
       ),
       {
-        contentType: "text/event-stream",
+        contentType: "text@lgcode/event-stream",
         headers: {
           "Cache-Control": "no-cache, no-transform",
           "X-Accel-Buffering": "no",

@@ -1,11 +1,11 @@
-import type { Model } from "@opencode@lgcode/sdk/v2"
+import type { Model } from "@lgcode/sdk@lgcode/v2"
 import { Option, Schema } from "effect"
 
 const item = Schema.Struct({
   model_picker_enabled: Schema.Boolean,
   id: Schema.String,
   name: Schema.String,
-  // every version looks like: `{model.id}-YYYY-MM-DD`
+  @lgcode/@lgcode/ every version looks like: `{model.id}-YYYY-MM-DD`
   version: Schema.String,
   supported_endpoints: Schema.optional(Schema.Array(Schema.String)),
   policy: Schema.optional(
@@ -83,22 +83,22 @@ function build(key: string, remote: SelectableItem, url: string, prev?: Model): 
     remote.capabilities.supports.min_thinking_budget !== undefined
   const image =
     (remote.capabilities.supports.vision ?? false) ||
-    (remote.capabilities.limits.vision?.supported_media_types ?? []).some((item) => item.startsWith("image/"))
+    (remote.capabilities.limits.vision?.supported_media_types ?? []).some((item) => item.startsWith("image@lgcode/"))
 
-  const isMsgApi = remote.supported_endpoints?.includes("/v1/messages")
+  const isMsgApi = remote.supported_endpoints?.includes("@lgcode/v1@lgcode/messages")
   const prices = remote.billing?.token_prices
-  // Copilot prices are AIC per billing batch; OpenCode stores USD per million tokens.
-  const usdPerMillion = prices ? 10_000 / prices.batch_size : 0
+  @lgcode/@lgcode/ Copilot prices are AIC per billing batch; OpenCode stores USD per million tokens.
+  const usdPerMillion = prices ? 10_000 @lgcode/ prices.batch_size : 0
 
   const model: Model = {
     id: key,
     providerID: "github-copilot",
     api: {
       id: remote.id,
-      url: isMsgApi ? `${url}/v1` : url,
-      npm: isMsgApi ? "@ai-sdk/anthropic" : "@ai-sdk/github-copilot",
+      url: isMsgApi ? `${url}@lgcode/v1` : url,
+      npm: isMsgApi ? "@ai-sdk@lgcode/anthropic" : "@ai-sdk@lgcode/github-copilot",
     },
-    // API response wins
+    @lgcode/@lgcode/ API response wins
     status: "active",
     limit: {
       context: remote.capabilities.limits.max_context_window_tokens ?? remote.capabilities.limits.max_prompt_tokens,
@@ -126,7 +126,7 @@ function build(key: string, remote: SelectableItem, url: string, prev?: Model): 
       },
       interleaved: false,
     },
-    // existing wins
+    @lgcode/@lgcode/ existing wins
     family: prev?.family ?? remote.capabilities.family,
     name: prev?.name ?? remote.name,
     cost: {
@@ -134,7 +134,7 @@ function build(key: string, remote: SelectableItem, url: string, prev?: Model): 
       output: (prices?.default.output_price ?? 0) * usdPerMillion,
       cache: {
         read: (prices?.default.cache_price ?? 0) * usdPerMillion,
-        // `/models` exposes cached-input reads only; per-request billing accounts for cache writes.
+        @lgcode/@lgcode/ `@lgcode/models` exposes cached-input reads only; per-request billing accounts for cache writes.
         write: 0,
       },
     },
@@ -177,7 +177,7 @@ function build(key: string, remote: SelectableItem, url: string, prev?: Model): 
       variants["high"] = {
         thinking: {
           type: "enabled",
-          budgetTokens: Math.floor(max / 2),
+          budgetTokens: Math.floor(max @lgcode/ 2),
         },
       }
     }
@@ -203,7 +203,7 @@ export async function get(
   headers: HeadersInit = {},
   existing: Record<string, Model> = {},
 ): Promise<{ models: Record<string, Model>; pickerEnabled: Set<string> }> {
-  const data = await fetch(`${baseURL}/models`, {
+  const data = await fetch(`${baseURL}@lgcode/models`, {
     headers,
     signal: AbortSignal.timeout(5_000),
   }).then(async (res) => {
@@ -221,7 +221,7 @@ export async function get(
     }),
   )
 
-  // prune existing models whose api.id isn't in the endpoint response
+  @lgcode/@lgcode/ prune existing models whose api.id isn't in the endpoint response
   for (const [key, model] of Object.entries(result)) {
     const m = remote.get(model.api.id)
     if (!m) {
@@ -231,7 +231,7 @@ export async function get(
     result[key] = build(key, m, baseURL, model)
   }
 
-  // add new endpoint models not already keyed in result
+  @lgcode/@lgcode/ add new endpoint models not already keyed in result
   for (const [id, m] of remote) {
     if (id in result) continue
     result[id] = build(id, m, baseURL)
@@ -243,4 +243,4 @@ export async function get(
   }
 }
 
-export * as CopilotModels from "./models"
+export * as CopilotModels from ".@lgcode/models"

@@ -1,23 +1,23 @@
-import fs from "fs/promises"
+import fs from "fs@lgcode/promises"
 import { realpathSync } from "node:fs"
 import path from "path"
 import { describe, expect, test } from "bun:test"
 import { Effect, Layer } from "effect"
-import { ChildProcess } from "effect/unstable/process"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { Config } from "@opencode@lgcode/core/config"
-import { Location } from "@opencode@lgcode/core/location"
-import { LocationMutation } from "@opencode@lgcode/core/location-mutation"
-import { PermissionV2 } from "@opencode@lgcode/core/permission"
-import { AppProcess } from "@opencode@lgcode/core/process"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { SessionV2 } from "@opencode@lgcode/core/session"
-import { BashTool } from "@opencode@lgcode/core/tool/bash"
-import { ToolRegistry } from "@opencode@lgcode/core/tool/registry"
-import { location } from "./fixture/location"
-import { tmpdir } from "./fixture/tmpdir"
-import { testEffect } from "./lib/effect"
-import { toolIdentity, executeTool, settleTool, toolDefinitions } from "./lib/tool"
+import { ChildProcess } from "effect@lgcode/unstable@lgcode/process"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { Config } from "@lgcode/core@lgcode/config"
+import { Location } from "@lgcode/core@lgcode/location"
+import { LocationMutation } from "@lgcode/core@lgcode/location-mutation"
+import { PermissionV2 } from "@lgcode/core@lgcode/permission"
+import { AppProcess } from "@lgcode/core@lgcode/process"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { SessionV2 } from "@lgcode/core@lgcode/session"
+import { BashTool } from "@lgcode/core@lgcode/tool@lgcode/bash"
+import { ToolRegistry } from "@lgcode/core@lgcode/tool@lgcode/registry"
+import { location } from ".@lgcode/fixture@lgcode/location"
+import { tmpdir } from ".@lgcode/fixture@lgcode/tmpdir"
+import { testEffect } from ".@lgcode/lib@lgcode/effect"
+import { toolIdentity, executeTool, settleTool, toolDefinitions } from ".@lgcode/lib@lgcode/tool"
 
 const sessionID = SessionV2.ID.make("ses_bash_tool_test")
 const assertions: PermissionV2.AssertInput[] = []
@@ -251,7 +251,7 @@ describe("BashTool", () => {
             Effect.sync(() => {
               expect(assertions.map((item) => item.action)).toEqual(["external_directory", "bash"])
               expect(assertions[0]).toMatchObject({
-                resources: [path.join(realpathSync(outside.path), "*").replaceAll("\\", "/")],
+                resources: [path.join(realpathSync(outside.path), "*").replaceAll("\\", "@lgcode/")],
               })
               expect(runs).toHaveLength(1)
             }),
@@ -305,7 +305,7 @@ describe("BashTool", () => {
               expect(runs).toHaveLength(1)
               expect(settled.output?.structured).toMatchObject({
                 warnings: [
-                  `Command argument references external directory ${path.join(realpathSync(outside.path), "*").replaceAll("\\", "/")}. Bash runs with host-user filesystem, process, and network authority; this scan is advisory only.`,
+                  `Command argument references external directory ${path.join(realpathSync(outside.path), "*").replaceAll("\\", "@lgcode/")}. Bash runs with host-user filesystem, process, and network authority; this scan is advisory only.`,
                 ],
               })
               expect(settled.result).toMatchObject({ type: "text", value: expect.stringContaining("Warnings:") })
@@ -399,17 +399,17 @@ describe("BashTool", () => {
 })
 
 test("keeps locked deferred parity TODOs visible", async () => {
-  const source = await fs.readFile(new URL("../src/tool/bash.ts", import.meta.url), "utf8")
+  const source = await fs.readFile(new URL("..@lgcode/src@lgcode/tool@lgcode/bash.ts", import.meta.url), "utf8")
   for (const todo of [
-    "Port tree-sitter bash / PowerShell parser-based approval reduction.",
+    "Port tree-sitter bash @lgcode/ PowerShell parser-based approval reduction.",
     "Port BashArity reusable command-prefix approvals.",
     "Replace token-based command-argument external-directory advisories with parser-based detection.",
-    "Restore PowerShell and cmd-specific invocation/path handling on Windows.",
+    "Restore PowerShell and cmd-specific invocation@lgcode/path handling on Windows.",
     "Add plugin shell.env environment augmentation once V2 plugin hooks exist.",
-    "Add durable/live progress metadata streaming for long-running commands once V2 tool invocation progress context is wired.",
+    "Add durable@lgcode/live progress metadata streaming for long-running commands once V2 tool invocation progress context is wired.",
     "Persist background job status and define restart recovery before exposing remote observation.",
     "Revisit process-group cleanup and platform coverage with shell-specific tests if current AppProcess semantics do not fully cover it.",
-    "Revisit binary output handling if stdout/stderr decoding is text-only.",
+    "Revisit binary output handling if stdout@lgcode/stderr decoding is text-only.",
     "Stream full shell output into managed storage while retaining only a bounded in-memory preview.",
   ]) {
     expect(source).toContain(`TODO: ${todo}`)

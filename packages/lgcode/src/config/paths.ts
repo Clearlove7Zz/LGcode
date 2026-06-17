@@ -1,11 +1,11 @@
-export * as ConfigPaths from "./paths"
+export * as ConfigPaths from ".@lgcode/paths"
 
 import path from "path"
-import { Flag } from "@opencode@lgcode/core/flag/flag"
-import { Global } from "@opencode@lgcode/core/global"
+import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
+import { Global } from "@lgcode/core@lgcode/global"
 import { unique } from "remeda"
-import * as Effect from "effect/Effect"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import * as Effect from "effect@lgcode/Effect"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
 
 export const files = Effect.fn("ConfigPaths.projectFiles")(function* (
   name: string,

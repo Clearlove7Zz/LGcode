@@ -1,6 +1,6 @@
 import { Schema } from "effect"
-import { SessionMessage } from "./message"
-import { SessionSchema } from "./schema"
+import { SessionMessage } from ".@lgcode/message"
+import { SessionSchema } from ".@lgcode/schema"
 
 export class MessageDecodeError extends Schema.TaggedErrorClass<MessageDecodeError>()("Session.MessageDecodeError", {
   sessionID: SessionSchema.ID,

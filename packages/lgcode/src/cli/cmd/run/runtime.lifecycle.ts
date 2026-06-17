@@ -1,24 +1,24 @@
-// Lifecycle management for the split-footer renderer.
-//
-// Creates the OpenTUI CliRenderer in split-footer mode, resolves the theme
-// from the terminal palette, writes the entry splash to scrollback, and
-// constructs the RunFooter. Returns a Lifecycle handle whose close() writes
-// the exit splash and tears everything down in the right order:
-// footer.close → footer.destroy → renderer shutdown.
-//
-// Also wires SIGINT so Ctrl-c clears a live prompt draft first, then falls
-// back to the usual two-press exit sequence through RunFooter.requestExit().
+@lgcode/@lgcode/ Lifecycle management for the split-footer renderer.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Creates the OpenTUI CliRenderer in split-footer mode, resolves the theme
+@lgcode/@lgcode/ from the terminal palette, writes the entry splash to scrollback, and
+@lgcode/@lgcode/ constructs the RunFooter. Returns a Lifecycle handle whose close() writes
+@lgcode/@lgcode/ the exit splash and tears everything down in the right order:
+@lgcode/@lgcode/ footer.close → footer.destroy → renderer shutdown.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Also wires SIGINT so Ctrl-c clears a live prompt draft first, then falls
+@lgcode/@lgcode/ back to the usual two-press exit sequence through RunFooter.requestExit().
 import path from "path"
-import { CliRenderEvents, createCliRenderer, type CliRenderer, type ScrollbackWriter } from "@opentui/core"
-import { createDefaultOpenTuiKeymap } from "@opentui/keymap/opentui"
-import { Global } from "@opencode@lgcode/core/global"
-import { openEditor } from "@opencode@lgcode/tui/editor"
-import { registerOpencodeKeymap } from "@opencode@lgcode/tui/keymap"
-import { Session as SessionApi } from "@/session/session"
-import * as Locale from "@/util/locale"
-import { resolveInteractiveStdin } from "./runtime.stdin"
-import { entrySplash, exitSplash, splashMeta } from "./splash"
-import { resolveRunTheme } from "./theme"
+import { CliRenderEvents, createCliRenderer, type CliRenderer, type ScrollbackWriter } from "@opentui@lgcode/core"
+import { createDefaultOpenTuiKeymap } from "@opentui@lgcode/keymap@lgcode/opentui"
+import { Global } from "@lgcode/core@lgcode/global"
+import { openEditor } from "@lgcode/tui@lgcode/editor"
+import { registerOpencodeKeymap } from "@lgcode/tui@lgcode/keymap"
+import { Session as SessionApi } from "@@lgcode/session@lgcode/session"
+import * as Locale from "@@lgcode/util@lgcode/locale"
+import { resolveInteractiveStdin } from ".@lgcode/runtime.stdin"
+import { entrySplash, exitSplash, splashMeta } from ".@lgcode/splash"
+import { resolveRunTheme } from ".@lgcode/theme"
 import type {
   FooterApi,
   PermissionReply,
@@ -29,8 +29,8 @@ import type {
   RunPrompt,
   RunResource,
   RunTuiConfig,
-} from "./types"
-import { formatModelLabel } from "./variant.shared"
+} from ".@lgcode/types"
+import { formatModelLabel } from ".@lgcode/variant.shared"
 
 const FOOTER_HEIGHT = 4
 
@@ -85,9 +85,9 @@ export type Lifecycle = {
   close(input: { showExit: boolean; sessionTitle?: string; sessionID?: string; history?: RunPrompt[] }): Promise<void>
 }
 
-// Gracefully tears down the renderer. Order matters: switch external output
-// back to passthrough before leaving split-footer mode, so pending stdout
-// doesn't get captured into the now-dead scrollback pipeline.
+@lgcode/@lgcode/ Gracefully tears down the renderer. Order matters: switch external output
+@lgcode/@lgcode/ back to passthrough before leaving split-footer mode, so pending stdout
+@lgcode/@lgcode/ doesn't get captured into the now-dead scrollback pipeline.
 function shutdown(renderer: CliRenderer): void {
   if (renderer.isDestroyed) {
     return
@@ -145,7 +145,7 @@ function directoryLabel(directory: string) {
       : resolved.startsWith(`${Global.Path.home}${path.sep}`)
         ? resolved.replace(Global.Path.home, "~")
         : resolved
-  return display.replaceAll("\\", "/")
+  return display.replaceAll("\\", "@lgcode/")
 }
 
 function queueSplash(
@@ -168,11 +168,11 @@ function queueSplash(
   return true
 }
 
-// Boots the split-footer renderer and constructs the RunFooter.
-//
-// The renderer starts in split-footer mode with captured stdout so that
-// scrollback commits and footer repaints happen in the same frame. After
-// the entry splash, RunFooter takes over the footer region.
+@lgcode/@lgcode/ Boots the split-footer renderer and constructs the RunFooter.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ The renderer starts in split-footer mode with captured stdout so that
+@lgcode/@lgcode/ scrollback commits and footer repaints happen in the same frame. After
+@lgcode/@lgcode/ the entry splash, RunFooter takes over the footer region.
 export async function createRuntimeLifecycle(input: LifecycleInput): Promise<Lifecycle> {
   const source = resolveInteractiveStdin()
   let unregisterKeymap: (() => void) | undefined
@@ -211,7 +211,7 @@ export async function createRuntimeLifecycle(input: LifecycleInput): Promise<Lif
       model: input.model,
       variant: input.variant,
     })
-    const footerTask = import("./footer")
+    const footerTask = import(".@lgcode/footer")
     const wrote = queueSplash(
       renderer,
       state,

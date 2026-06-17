@@ -1,9 +1,9 @@
-import { MoveSession } from "@opencode@lgcode/core/control-plane/move-session"
+import { MoveSession } from "@lgcode/core@lgcode/control-plane@lgcode/move-session"
 import { Schema } from "effect"
-import { HttpApi, HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect/unstable/httpapi"
-import { described } from "./metadata"
+import { HttpApi, HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
+import { described } from ".@lgcode/metadata"
 
-const root = "/experimental/control-plane"
+const root = "@lgcode/experimental@lgcode/control-plane"
 export const MoveSessionPayload = Schema.Struct({ ...MoveSession.Input.fields })
 
 export class ApiMoveSessionError extends Schema.ErrorClass<ApiMoveSessionError>("MoveSessionError")(
@@ -19,7 +19,7 @@ export class ApiMoveSessionError extends Schema.ErrorClass<ApiMoveSessionError>(
 export const ControlPlaneApi = HttpApi.make("controlPlane").add(
   HttpApiGroup.make("controlPlane")
     .add(
-      HttpApiEndpoint.post("moveSession", `${root}/move-session`, {
+      HttpApiEndpoint.post("moveSession", `${root}@lgcode/move-session`, {
         payload: MoveSessionPayload,
         success: described(HttpApiSchema.NoContent, "Session moved"),
         error: ApiMoveSessionError,

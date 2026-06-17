@@ -1,16 +1,16 @@
-export * as Catalog from "./catalog"
+export * as Catalog from ".@lgcode/catalog"
 
 import { Array, Context, Effect, Layer, Option, Order, pipe, Schema, Scope, Stream } from "effect"
 import { castDraft, enableMapSet, type Draft } from "immer"
-import { ModelV2 } from "./model"
-import { ModelRequest } from "./model-request"
-import { PluginV2 } from "./plugin"
-import { ProviderV2 } from "./provider"
-import { Location } from "./location"
-import { EventV2 } from "./event"
-import { Policy } from "./policy"
-import { State } from "./state"
-import { Integration } from "./integration"
+import { ModelV2 } from ".@lgcode/model"
+import { ModelRequest } from ".@lgcode/model-request"
+import { PluginV2 } from ".@lgcode/plugin"
+import { ProviderV2 } from ".@lgcode/provider"
+import { Location } from ".@lgcode/location"
+import { EventV2 } from ".@lgcode/event"
+import { Policy } from ".@lgcode/policy"
+import { State } from ".@lgcode/state"
+import { Integration } from ".@lgcode/integration"
 
 export type ProviderRecord = {
   provider: ProviderV2.Info
@@ -79,7 +79,7 @@ export interface Interface {
   }
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/v2/Catalog") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/Catalog") {}
 
 enableMapSet()
 
@@ -199,7 +199,7 @@ export const layer = Layer.effect(
       }),
     })
     yield* events.subscribe(PluginV2.Event.Added).pipe(
-      // Plugin registries are location scoped even though the event bus is process scoped.
+      @lgcode/@lgcode/ Plugin registries are location scoped even though the event bus is process scoped.
       Stream.filter(
         (event) =>
           event.location?.directory === location.directory && event.location.workspaceID === location.workspaceID,
@@ -302,7 +302,7 @@ export const layer = Layer.effect(
             Array.map((model) => ({
               model,
               cost: model.cost[0] ? model.cost[0].input + model.cost[0].output : 999,
-              age: (Date.now() - model.time.released.epochMilliseconds) / (1000 * 60 * 60 * 24 * 30),
+              age: (Date.now() - model.time.released.epochMilliseconds) @lgcode/ (1000 * 60 * 60 * 24 * 30),
               small: SMALL_MODEL_RE.test(`${model.id} ${model.family ?? ""} ${model.name}`.toLowerCase()),
             })),
             Array.filter((item) => item.cost > 0 && item.age <= 18),
@@ -313,7 +313,7 @@ export const layer = Layer.effect(
             const maxAge = Math.max(...items.map((item) => item.age), 0.01)
             return pipe(
               items,
-              Array.sortWith((item) => (item.cost / maxCost) * 0.8 + (item.age / maxAge) * 0.2, Order.Number),
+              Array.sortWith((item) => (item.cost @lgcode/ maxCost) * 0.8 + (item.age @lgcode/ maxAge) * 0.2, Order.Number),
               Array.map((item) => projectModel(item.model, provider)),
               Array.head,
             )
@@ -332,7 +332,7 @@ export const layer = Layer.effect(
   }),
 )
 
-const SMALL_MODEL_RE = /\b(nano|flash|lite|mini|haiku|small|fast)\b/
+const SMALL_MODEL_RE = @lgcode/\b(nano|flash|lite|mini|haiku|small|fast)\b@lgcode/
 
 export const locationLayer = layer.pipe(
   Layer.provideMerge(Integration.locationLayer),

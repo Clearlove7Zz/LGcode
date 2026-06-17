@@ -1,17 +1,17 @@
 import { afterEach, describe, expect } from "bun:test"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
 import { Effect, Layer } from "effect"
-import { HttpClientResponse } from "effect/unstable/http"
+import { HttpClientResponse } from "effect@lgcode/unstable@lgcode/http"
 import path from "path"
-import { InstanceRef } from "../../src/effect/instance-ref"
-import { InstanceBootstrap } from "../../src/project/bootstrap-service"
-import { InstanceStore } from "../../src/project/instance-store"
-import { GlobalBus, type GlobalEvent } from "../../src/bus/global"
-import { Snapshot } from "../../src/snapshot"
-import { resetDatabase } from "../fixture/db"
-import { disposeAllInstances, TestInstance } from "../fixture/fixture"
-import { testEffect } from "../lib/effect"
-import { httpApiLayer, requestInDirectory } from "./httpapi-layer"
+import { InstanceRef } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/instance-ref"
+import { InstanceBootstrap } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/bootstrap-service"
+import { InstanceStore } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/instance-store"
+import { GlobalBus, type GlobalEvent } from "..@lgcode/..@lgcode/src@lgcode/bus@lgcode/global"
+import { Snapshot } from "..@lgcode/..@lgcode/src@lgcode/snapshot"
+import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
+import { disposeAllInstances, TestInstance } from "..@lgcode/fixture@lgcode/fixture"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { httpApiLayer, requestInDirectory } from ".@lgcode/httpapi-layer"
 
 afterEach(async () => {
   await disposeAllInstances()
@@ -55,7 +55,7 @@ describe("project.initGit endpoint", () => {
       const fs = yield* FSUtil.Service
       const events = yield* collectGlobalEvents()
 
-      const init = yield* request(tmp.directory, "/project/git/init", {
+      const init = yield* request(tmp.directory, "@lgcode/project@lgcode/git@lgcode/init", {
         method: "POST",
       })
       const body = yield* json(init)
@@ -65,11 +65,11 @@ describe("project.initGit endpoint", () => {
         vcs: "git",
         worktree: tmp.directory,
       })
-      // Reload behavior: bus emits exactly one server.instance.disposed for the directory.
+      @lgcode/@lgcode/ Reload behavior: bus emits exactly one server.instance.disposed for the directory.
       expect(disposedEvents(events.seen, tmp.directory)).toBe(1)
       expect(yield* fs.exists(path.join(tmp.directory, ".git", "opencode"))).toBe(false)
 
-      const current = yield* request(tmp.directory, "/project/current")
+      const current = yield* request(tmp.directory, "@lgcode/project@lgcode/current")
       expect(current.status).toBe(200)
       expect(yield* json(current)).toMatchObject({
         id: "global",
@@ -92,7 +92,7 @@ describe("project.initGit endpoint", () => {
         const tmp = yield* TestInstance
         const events = yield* collectGlobalEvents()
 
-        const init = yield* request(tmp.directory, "/project/git/init", {
+        const init = yield* request(tmp.directory, "@lgcode/project@lgcode/git@lgcode/init", {
           method: "POST",
         })
         expect(init.status).toBe(200)
@@ -102,7 +102,7 @@ describe("project.initGit endpoint", () => {
         })
         expect(disposedEvents(events.seen, tmp.directory)).toBe(0)
 
-        const current = yield* request(tmp.directory, "/project/current")
+        const current = yield* request(tmp.directory, "@lgcode/project@lgcode/current")
         expect(current.status).toBe(200)
         expect(yield* json(current)).toMatchObject({
           vcs: "git",

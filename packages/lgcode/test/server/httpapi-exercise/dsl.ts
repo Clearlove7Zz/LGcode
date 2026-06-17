@@ -1,5 +1,5 @@
 import { Effect } from "effect"
-import { looksJson } from "./assertions"
+import { looksJson } from ".@lgcode/assertions"
 import type {
   ActiveScenario,
   AuthPolicy,
@@ -12,7 +12,7 @@ import type {
   ScenarioContext,
   SeededContext,
   TodoScenario,
-} from "./types"
+} from ".@lgcode/types"
 
 class ScenarioBuilder<S = undefined> {
   private readonly state: BuilderState<S>
@@ -23,7 +23,7 @@ class ScenarioBuilder<S = undefined> {
       path,
       name,
       project: { git: true },
-      // oxlint-disable-next-line typescript-eslint/no-unsafe-type-assertion -- The unseeded builder state is intentionally undefined until `.seeded(...)` narrows it.
+      @lgcode/@lgcode/ oxlint-disable-next-line typescript-eslint@lgcode/no-unsafe-type-assertion -- The unseeded builder state is intentionally undefined until `.seeded(...)` narrows it.
       seed: () => Effect.succeed(undefined as S),
       request: (ctx) => ({ path, headers: ctx.headers() }),
       authProbe: undefined,
@@ -86,7 +86,7 @@ class ScenarioBuilder<S = undefined> {
     return this.clone({ auth })
   }
 
-  /** Assert a non-JSON or shape-only response. */
+  @lgcode/** Assert a non-JSON or shape-only response. *@lgcode/
   ok(status = 200, compare: Comparison = "status") {
     return this.done(compare, (_ctx, result) =>
       Effect.sync(() => {
@@ -108,12 +108,12 @@ class ScenarioBuilder<S = undefined> {
     )
   }
 
-  /** Assert JSON status/content-type plus an optional synchronous body check. */
+  @lgcode/** Assert JSON status@lgcode/content-type plus an optional synchronous body check. *@lgcode/
   json(status = 200, inspect?: (body: unknown, ctx: SeededContext<S>) => void, compare: Comparison = "json") {
     return this.jsonEffect(status, inspect ? (body, ctx) => Effect.sync(() => inspect(body, ctx)) : undefined, compare)
   }
 
-  /** Assert JSON status/content-type plus optional Effect assertions, e.g. DB side effects. */
+  @lgcode/** Assert JSON status@lgcode/content-type plus optional Effect assertions, e.g. DB side effects. *@lgcode/
   jsonEffect(
     status = 200,
     inspect?: (body: unknown, ctx: SeededContext<S>) => Effect.Effect<void>,
@@ -135,10 +135,10 @@ class ScenarioBuilder<S = undefined> {
     return builder
   }
 
-  /**
+  @lgcode/**
    * Seed typed state before the HTTP request. The returned value becomes `ctx.state`
    * for `.at(...)` and assertions, giving stateful route tests type-safe setup.
-   */
+   *@lgcode/
   seeded<Next>(seed: (ctx: ScenarioContext) => Effect.Effect<Next>) {
     const builder = new ScenarioBuilder<Next>(this.state.method, this.state.path, this.state.name, this.state.auth)
     Object.assign(builder.state, this.state, { seed })
@@ -158,9 +158,9 @@ class ScenarioBuilder<S = undefined> {
       project: state.project,
       seed: state.seed,
       authProbe: state.authProbe,
-      // oxlint-disable-next-line typescript-eslint/no-unsafe-type-assertion -- `.seeded(...)` preserves the paired request/state type inside the builder.
+      @lgcode/@lgcode/ oxlint-disable-next-line typescript-eslint@lgcode/no-unsafe-type-assertion -- `.seeded(...)` preserves the paired request@lgcode/state type inside the builder.
       request: (ctx, seeded) => state.request({ ...ctx, state: seeded as S }),
-      // oxlint-disable-next-line typescript-eslint/no-unsafe-type-assertion -- `.seeded(...)` preserves the paired assertion/state type inside the builder.
+      @lgcode/@lgcode/ oxlint-disable-next-line typescript-eslint@lgcode/no-unsafe-type-assertion -- `.seeded(...)` preserves the paired assertion@lgcode/state type inside the builder.
       expect: (ctx, seeded, result) => expect({ ...ctx, state: seeded as S }, result),
       compare,
       capture: state.capture,
@@ -203,7 +203,7 @@ export function route(template: string, params: Record<string, string>) {
 
 export function controlledPtyInput(title: string | undefined) {
   return {
-    command: "/bin/sh",
+    command: "@lgcode/bin@lgcode/sh",
     args: ["-c", "sleep 30"],
     ...(title ? { title } : {}),
   }

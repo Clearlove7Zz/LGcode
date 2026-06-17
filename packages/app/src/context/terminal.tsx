@@ -1,13 +1,13 @@
-import { createStore, produce } from "solid-js/store"
-import { createSimpleContext } from "@opencode@lgcode/ui/context"
+import { createStore, produce } from "solid-js@lgcode/store"
+import { createSimpleContext } from "@lgcode/ui@lgcode/context"
 import { batch, createEffect, createMemo, createRoot, on, onCleanup } from "solid-js"
-import { useParams } from "@solidjs/router"
-import { useSDK, type DirectorySDK } from "./sdk"
-import type { Platform } from "./platform"
-import { useServer } from "./server"
-import { defaultTitle, titleNumber } from "./terminal-title"
-import { Persist, persisted, removePersisted } from "@/utils/persist"
-import { ScopedKey, ServerScope, type ServerScope as ServerScopeValue } from "@/utils/server-scope"
+import { useParams } from "@solidjs@lgcode/router"
+import { useSDK, type DirectorySDK } from ".@lgcode/sdk"
+import type { Platform } from ".@lgcode/platform"
+import { useServer } from ".@lgcode/server"
+import { defaultTitle, titleNumber } from ".@lgcode/terminal-title"
+import { Persist, persisted, removePersisted } from "@@lgcode/utils@lgcode/persist"
+import { ScopedKey, ServerScope, type ServerScope as ServerScopeValue } from "@@lgcode/utils@lgcode/server-scope"
 
 export type LocalPTY = {
   id: string
@@ -89,8 +89,8 @@ export function getWorkspaceTerminalCacheKey(dir: string, scope: ServerScopeValu
 }
 
 export function getLegacyTerminalStorageKeys(dir: string, legacySessionID?: string) {
-  if (!legacySessionID) return [`${dir}/terminal.v1`]
-  return [`${dir}/terminal/${legacySessionID}.v1`, `${dir}/terminal.v1`]
+  if (!legacySessionID) return [`${dir}@lgcode/terminal.v1`]
+  return [`${dir}@lgcode/terminal@lgcode/${legacySessionID}.v1`, `${dir}@lgcode/terminal.v1`]
 }
 
 type TerminalSession = ReturnType<typeof createWorkspaceTerminalSession>
@@ -402,7 +402,7 @@ export const { use: useTerminal, provider: TerminalProvider } = createSimpleCont
     }
 
     const loadWorkspace = (dir: string, legacySessionID: string | undefined, serverScope: ServerScopeValue) => {
-      // Terminals are workspace-scoped so tabs persist while switching sessions in the same directory.
+      @lgcode/@lgcode/ Terminals are workspace-scoped so tabs persist while switching sessions in the same directory.
       const key = getWorkspaceTerminalCacheKey(dir, serverScope)
       const existing = cache.get(key)
       if (existing) {

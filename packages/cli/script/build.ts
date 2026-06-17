@@ -1,13 +1,13 @@
-#!/usr/bin/env bun
+#!@lgcode/usr@lgcode/bin@lgcode/env bun
 
 import { $ } from "bun"
 import fs from "fs"
-import { rm } from "fs/promises"
+import { rm } from "fs@lgcode/promises"
 import path from "path"
-import { Script } from "@opencode@lgcode/script"
-import { createSolidTransformPlugin } from "@opentui/solid/bun-plugin"
-import pkg from "../package.json"
-import { modelsData } from "./generate"
+import { Script } from "@lgcode/script"
+import { createSolidTransformPlugin } from "@opentui@lgcode/solid@lgcode/bun-plugin"
+import pkg from "..@lgcode/package.json"
+import { modelsData } from ".@lgcode/generate"
 
 const dir = path.resolve(import.meta.dirname, "..")
 const binary = "lildax"
@@ -49,10 +49,10 @@ const targets = singleFlag
     })
   : allTargets
 
-if (!skipInstall) await $`bun install --os="*" --cpu="*" @opentui/core@${pkg.dependencies["@opentui/core"]}`
+if (!skipInstall) await $`bun install --os="*" --cpu="*" @opentui@lgcode/core@${pkg.dependencies["@opentui@lgcode/core"]}`
 
-const localParserWorker = path.resolve(dir, "node_modules/@opentui/core/parser.worker.js")
-const rootParserWorker = path.resolve(dir, "../../node_modules/@opentui/core/parser.worker.js")
+const localParserWorker = path.resolve(dir, "node_modules@lgcode/@opentui@lgcode/core@lgcode/parser.worker.js")
+const rootParserWorker = path.resolve(dir, "..@lgcode/..@lgcode/node_modules@lgcode/@opentui@lgcode/core@lgcode/parser.worker.js")
 const parserWorker = fs.realpathSync(fs.existsSync(localParserWorker) ? localParserWorker : rootParserWorker)
 
 for (const item of targets) {
@@ -68,8 +68,8 @@ for (const item of targets) {
   const name = target.replace(binary, "cli")
   console.log(`building ${name}`)
   const result = await Bun.build({
-    entrypoints: ["./src/index.ts", parserWorker],
-    tsconfig: "./tsconfig.json",
+    entrypoints: [".@lgcode/src@lgcode/index.ts", parserWorker],
+    tsconfig: ".@lgcode/tsconfig.json",
     plugins: [plugin],
     external: ["node-gyp"],
     format: "esm",
@@ -82,8 +82,8 @@ for (const item of targets) {
       autoloadTsconfig: true,
       autoloadPackageJson: true,
       target: target.replace(binary, "bun") as Bun.Build.CompileTarget,
-      outfile: `./dist/${name}/bin/${binary}`,
-      execArgv: [`--user-agent=${binary}/${Script.version}`, "--use-system-ca", "--"],
+      outfile: `.@lgcode/dist@lgcode/${name}@lgcode/bin@lgcode/${binary}`,
+      execArgv: [`--user-agent=${binary}@lgcode/${Script.version}`, "--use-system-ca", "--"],
       windows: {},
     },
     define: {
@@ -92,11 +92,11 @@ for (const item of targets) {
       OPENCODE_MODELS_DEV: modelsData,
       OPENCODE_CHANNEL: `'${Script.channel}'`,
       OPENCODE_LIBC: item.os === "linux" ? `'${item.abi ?? "glibc"}'` : "undefined",
-      // FFF_LIBC selects the fff native lib variant: "musl" or "gnu".
+      @lgcode/@lgcode/ FFF_LIBC selects the fff native lib variant: "musl" or "gnu".
       FFF_LIBC: item.os === "linux" ? `'${item.abi ?? "gnu"}'` : "undefined",
       OTUI_TREE_SITTER_WORKER_PATH:
-        (item.os === "win32" ? '"B:/~BUN/root/' : '"/$bunfs/root/') +
-        path.relative(dir, parserWorker).replaceAll("\\", "/") +
+        (item.os === "win32" ? '"B:@lgcode/~BUN@lgcode/root@lgcode/' : '"@lgcode/$bunfs@lgcode/root@lgcode/') +
+        path.relative(dir, parserWorker).replaceAll("\\", "@lgcode/") +
         '"',
       ...(item.os === "linux" ? { "process.env.OPENTUI_LIBC": JSON.stringify(item.abi ?? "glibc") } : {}),
     },
@@ -108,13 +108,13 @@ for (const item of targets) {
   }
 
   await Bun.write(
-    `./dist/${name}/package.json`,
+    `.@lgcode/dist@lgcode/${name}@lgcode/package.json`,
     JSON.stringify(
       {
-        name: `@opencode@lgcode/${name}`,
+        name: `@lgcode/${name}`,
         version: Script.version,
         license: "MIT",
-        repository: { type: "git", url: "git+https://github.com/anomalyco/opencode.git" },
+        repository: { type: "git", url: "git+https:@lgcode/@lgcode/github.com@lgcode/anomalyco@lgcode/opencode.git" },
         os: [item.os],
         cpu: [item.arch],
       },

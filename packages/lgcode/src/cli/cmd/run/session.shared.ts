@@ -1,10 +1,10 @@
-// Session message extraction and prompt history.
-//
-// Fetches session messages from the SDK and extracts user turn text for
-// the prompt history ring. Also finds the most recently used variant for
-// the current model so the footer can pre-select it.
-import { promptCopy, promptSame } from "./prompt.shared"
-import type { RunInput, RunPrompt } from "./types"
+@lgcode/@lgcode/ Session message extraction and prompt history.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Fetches session messages from the SDK and extracts user turn text for
+@lgcode/@lgcode/ the prompt history ring. Also finds the most recently used variant for
+@lgcode/@lgcode/ the current model so the footer can pre-select it.
+import { promptCopy, promptSame } from ".@lgcode/prompt.shared"
+import type { RunInput, RunPrompt } from ".@lgcode/types"
 
 const LIMIT = 200
 
@@ -33,7 +33,7 @@ function fileName(url: string, filename?: string) {
       return url
     }
 
-    const name = next.pathname.split("/").at(-1)
+    const name = next.pathname.split("@lgcode/").at(-1)
     if (name) {
       return decodeURIComponent(name)
     }

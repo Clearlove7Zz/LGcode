@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
-import { createRefreshQueue } from "./queue"
-import { directoryKey } from "./utils"
+import { createRefreshQueue } from ".@lgcode/queue"
+import { directoryKey } from ".@lgcode/utils"
 
 const tick = () => new Promise((resolve) => setTimeout(resolve, 10))
 
@@ -17,7 +17,7 @@ describe("createRefreshQueue", () => {
     })
 
     queue.push("C:\\tmp\\demo")
-    queue.clear("C:/tmp/demo")
+    queue.clear("C:@lgcode/tmp@lgcode/demo")
 
     await tick()
 

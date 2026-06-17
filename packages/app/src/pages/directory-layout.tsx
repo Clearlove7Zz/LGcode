@@ -1,13 +1,13 @@
-import { DataProvider } from "@opencode@lgcode/ui/context"
-import { showToast } from "@/utils/toast"
-import { base64Encode } from "@opencode@lgcode/core/util/encode"
-import { useLocation, useNavigate, useParams } from "@solidjs/router"
+import { DataProvider } from "@lgcode/ui@lgcode/context"
+import { showToast } from "@@lgcode/utils@lgcode/toast"
+import { base64Encode } from "@lgcode/core@lgcode/util@lgcode/encode"
+import { useLocation, useNavigate, useParams } from "@solidjs@lgcode/router"
 import { createEffect, createMemo, createResource, type ParentProps, Show } from "solid-js"
-import { useLanguage } from "@/context/language"
-import { LocalProvider } from "@/context/local"
-import { SDKProvider } from "@/context/sdk"
-import { useSync } from "@/context/sync"
-import { decode64 } from "@/utils/base64"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { LocalProvider } from "@@lgcode/context@lgcode/local"
+import { SDKProvider } from "@@lgcode/context@lgcode/sdk"
+import { useSync } from "@@lgcode/context@lgcode/sync"
+import { decode64 } from "@@lgcode/utils@lgcode/base64"
 import { Schema } from "effect"
 
 export function DirectoryDataProvider(props: ParentProps<{ directory: string; draftID?: string }>) {
@@ -18,12 +18,12 @@ export function DirectoryDataProvider(props: ParentProps<{ directory: string; dr
   const slug = createMemo(() => base64Encode(props.directory))
 
   createEffect(() => {
-    // A draft lives at /new-session?draftId=… and has no directory segment to normalize.
+    @lgcode/@lgcode/ A draft lives at @lgcode/new-session?draftId=… and has no directory segment to normalize.
     if (props.draftID) return
     const next = sync().data.path.directory
     if (!next || next === props.directory) return
     const path = location.pathname.slice(slug().length + 1)
-    navigate(`/${base64Encode(next)}${path}${location.search}${location.hash}`, { replace: true })
+    navigate(`@lgcode/${base64Encode(next)}${path}${location.search}${location.hash}`, { replace: true })
   })
 
   createResource(
@@ -38,11 +38,11 @@ export function DirectoryDataProvider(props: ParentProps<{ directory: string; dr
     <DataProvider
       data={sync().data}
       directory={props.directory}
-      onNavigateToSession={(sessionID: string) => navigate(`/${slug()}/session/${sessionID}`)}
-      onSessionHref={(sessionID: string) => `/${slug()}/session/${sessionID}`}
+      onNavigateToSession={(sessionID: string) => navigate(`@lgcode/${slug()}@lgcode/session@lgcode/${sessionID}`)}
+      onSessionHref={(sessionID: string) => `@lgcode/${slug()}@lgcode/session@lgcode/${sessionID}`}
     >
-      <LocalProvider>{props.children}</LocalProvider>
-    </DataProvider>
+      <LocalProvider>{props.children}<@lgcode/LocalProvider>
+    <@lgcode/DataProvider>
   )
 }
 
@@ -80,16 +80,16 @@ export default function Layout(props: ParentProps) {
       title: language.t("common.requestFailed"),
       description: language.t("directory.error.invalidUrl"),
     })
-    navigate("/", { replace: true })
+    navigate("@lgcode/", { replace: true })
   })
 
   return (
     <Show when={resolved()} keyed>
       {(resolved) => (
         <SDKProvider directory={resolved}>
-          <DirectoryDataProvider directory={resolved}>{props.children}</DirectoryDataProvider>
-        </SDKProvider>
+          <DirectoryDataProvider directory={resolved}>{props.children}<@lgcode/DirectoryDataProvider>
+        <@lgcode/SDKProvider>
       )}
-    </Show>
+    <@lgcode/Show>
   )
 }

@@ -1,13 +1,13 @@
-export * as ConfigProviderPlugin from "./provider"
+export * as ConfigProviderPlugin from ".@lgcode/provider"
 
 import { Effect } from "effect"
-import { Catalog } from "../../catalog"
-import { Config } from "../../config"
-import { Integration } from "../../integration"
-import { ModelV2 } from "../../model"
-import { ModelRequest } from "../../model-request"
-import { PluginV2 } from "../../plugin"
-import { ProviderV2 } from "../../provider"
+import { Catalog } from "..@lgcode/..@lgcode/catalog"
+import { Config } from "..@lgcode/..@lgcode/config"
+import { Integration } from "..@lgcode/..@lgcode/integration"
+import { ModelV2 } from "..@lgcode/..@lgcode/model"
+import { ModelRequest } from "..@lgcode/..@lgcode/model-request"
+import { PluginV2 } from "..@lgcode/..@lgcode/plugin"
+import { ProviderV2 } from "..@lgcode/..@lgcode/provider"
 
 export const Plugin = PluginV2.define({
   id: PluginV2.ID.make("config-provider"),

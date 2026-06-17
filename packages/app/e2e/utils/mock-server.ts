@@ -1,16 +1,16 @@
-import type { Page, Route } from "@playwright/test"
+import type { Page, Route } from "@playwright@lgcode/test"
 
 const emptyList = new Set([
-  "/skill",
-  "/command",
-  "/lsp",
-  "/formatter",
-  "/permission",
-  "/question",
-  "/vcs/status",
-  "/vcs/diff",
+  "@lgcode/skill",
+  "@lgcode/command",
+  "@lgcode/lsp",
+  "@lgcode/formatter",
+  "@lgcode/permission",
+  "@lgcode/question",
+  "@lgcode/vcs@lgcode/status",
+  "@lgcode/vcs@lgcode/diff",
 ])
-const emptyObject = new Set(["/global/config", "/config", "/provider/auth", "/mcp", "/session/status"])
+const emptyObject = new Set(["@lgcode/global@lgcode/config", "@lgcode/config", "@lgcode/provider@lgcode/auth", "@lgcode/mcp", "@lgcode/session@lgcode/status"])
 
 export interface MockServerConfig {
   provider: unknown
@@ -26,42 +26,42 @@ export interface MockServerConfig {
 
 export async function mockOpenCodeServer(page: Page, config: MockServerConfig) {
   const staticRoutes: Record<string, unknown> = {
-    "/provider": config.provider,
-    "/path": {
+    "@lgcode/provider": config.provider,
+    "@lgcode/path": {
       state: config.directory,
       config: config.directory,
       worktree: config.directory,
       directory: config.directory,
-      home: "C:/OpenCode",
+      home: "C:@lgcode/OpenCode",
     },
-    "/project": [config.project],
-    "/project/current": config.project,
-    "/agent": [{ name: "build", mode: "primary" }],
-    "/vcs": { branch: "main", default_branch: "main" },
-    "/session": config.sessions,
+    "@lgcode/project": [config.project],
+    "@lgcode/project@lgcode/current": config.project,
+    "@lgcode/agent": [{ name: "build", mode: "primary" }],
+    "@lgcode/vcs": { branch: "main", default_branch: "main" },
+    "@lgcode/session": config.sessions,
   }
 
-  await page.route("**/*", async (route) => {
+  await page.route("**@lgcode/*", async (route) => {
     const url = new URL(route.request().url())
     const targetPort = process.env.PLAYWRIGHT_SERVER_PORT ?? "4096"
     if (url.port !== targetPort) return route.fallback()
 
     const path = url.pathname
-    if (path === "/global/event" || path === "/event") return sse(route, config.events?.(), config.eventRetry)
-    if (path === "/global/health") return json(route, { healthy: true })
+    if (path === "@lgcode/global@lgcode/event" || path === "@lgcode/event") return sse(route, config.events?.(), config.eventRetry)
+    if (path === "@lgcode/global@lgcode/health") return json(route, { healthy: true })
     if (emptyObject.has(path)) return json(route, {})
     if (emptyList.has(path)) return json(route, [])
     if (path in staticRoutes) return json(route, staticRoutes[path])
 
-    const sessionMatch = path.match(/^\/session\/([^/]+)$/)
+    const sessionMatch = path.match(@lgcode/^\@lgcode/session\@lgcode/([^@lgcode/]+)$@lgcode/)
     if (sessionMatch) {
       const session = config.sessions.find((s) => s.id === sessionMatch[1])
       return json(route, session ?? {})
     }
 
-    if (/^\/session\/[^/]+\/(children|todo|diff)$/.test(path)) return json(route, [])
+    if (@lgcode/^\@lgcode/session\@lgcode/[^@lgcode/]+\@lgcode/(children|todo|diff)$@lgcode/.test(path)) return json(route, [])
 
-    const messagesMatch = path.match(/^\/session\/([^/]+)\/message$/)
+    const messagesMatch = path.match(@lgcode/^\@lgcode/session\@lgcode/([^@lgcode/]+)\@lgcode/message$@lgcode/)
     if (messagesMatch) {
       const before = url.searchParams.get("before") ?? undefined
       config.onMessages?.({ sessionID: messagesMatch[1], before, phase: "start" })
@@ -79,7 +79,7 @@ export async function mockOpenCodeServer(page: Page, config: MockServerConfig) {
 function json(route: Route, body: unknown, headers?: Record<string, string>) {
   return route.fulfill({
     status: 200,
-    contentType: "application/json",
+    contentType: "application@lgcode/json",
     headers: {
       "access-control-allow-origin": "*",
       "access-control-expose-headers": "x-next-cursor",
@@ -92,7 +92,7 @@ function json(route: Route, body: unknown, headers?: Record<string, string>) {
 function sse(route: Route, events?: unknown[], retry?: number) {
   return route.fulfill({
     status: 200,
-    contentType: "text/event-stream",
+    contentType: "text@lgcode/event-stream",
     body: `${retry === undefined ? "" : `retry: ${retry}\n\n`}${events?.map((event) => `data: ${JSON.stringify(event)}\n\n`).join("") || ": ok\n\n"}`,
   })
 }

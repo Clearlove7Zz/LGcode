@@ -1,29 +1,29 @@
-import { useDialog } from "@opencode@lgcode/ui/context/dialog"
-import { Dialog } from "@opencode@lgcode/ui/dialog"
-import { FileIcon } from "@opencode@lgcode/ui/file-icon"
-import { Icon } from "@opencode@lgcode/ui/icon"
-import { Keybind } from "@opencode@lgcode/ui/keybind"
-import { List } from "@opencode@lgcode/ui/list"
-import { base64Encode } from "@opencode@lgcode/core/util/encode"
-import { getDirectory, getFilename } from "@opencode@lgcode/core/util/path"
-import { useNavigate } from "@solidjs/router"
+import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
+import { Dialog } from "@lgcode/ui@lgcode/dialog"
+import { FileIcon } from "@lgcode/ui@lgcode/file-icon"
+import { Icon } from "@lgcode/ui@lgcode/icon"
+import { Keybind } from "@lgcode/ui@lgcode/keybind"
+import { List } from "@lgcode/ui@lgcode/list"
+import { base64Encode } from "@lgcode/core@lgcode/util@lgcode/encode"
+import { getDirectory, getFilename } from "@lgcode/core@lgcode/util@lgcode/path"
+import { useNavigate } from "@solidjs@lgcode/router"
 import { createMemo, createSignal, lazy, Match, onCleanup, Show, Switch } from "solid-js"
-import { formatKeybind, useCommand, type CommandOption } from "@/context/command"
-import { useServerSDK, type ServerSDK } from "@/context/server-sdk"
-import { useServerSync } from "@/context/server-sync"
-import { useLayout } from "@/context/layout"
-import { useFile } from "@/context/file"
-import { useLanguage } from "@/context/language"
-import { usePlatform } from "@/context/platform"
-import { useServer } from "@/context/server"
-import { useSettings } from "@/context/settings"
-import { useSessionLayout } from "@/pages/session/session-layout"
-import { createSessionTabs } from "@/pages/session/helpers"
-import { decode64 } from "@/utils/base64"
-import { getRelativeTime } from "@/utils/time"
+import { formatKeybind, useCommand, type CommandOption } from "@@lgcode/context@lgcode/command"
+import { useServerSDK, type ServerSDK } from "@@lgcode/context@lgcode/server-sdk"
+import { useServerSync } from "@@lgcode/context@lgcode/server-sync"
+import { useLayout } from "@@lgcode/context@lgcode/layout"
+import { useFile } from "@@lgcode/context@lgcode/file"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { usePlatform } from "@@lgcode/context@lgcode/platform"
+import { useServer } from "@@lgcode/context@lgcode/server"
+import { useSettings } from "@@lgcode/context@lgcode/settings"
+import { useSessionLayout } from "@@lgcode/pages@lgcode/session@lgcode/session-layout"
+import { createSessionTabs } from "@@lgcode/pages@lgcode/session@lgcode/helpers"
+import { decode64 } from "@@lgcode/utils@lgcode/base64"
+import { getRelativeTime } from "@@lgcode/utils@lgcode/time"
 
 const DialogSelectFileV2 = lazy(() =>
-  import("./dialog-select-directory-v2").then((module) => ({ default: module.DialogSelectDirectoryV2 })),
+  import(".@lgcode/dialog-select-directory-v2").then((module) => ({ default: module.DialogSelectDirectoryV2 })),
 )
 
 type EntryType = "command" | "file" | "session"
@@ -145,7 +145,7 @@ function createFileEntries(props: {
   const tabState = createSessionTabs({
     tabs: props.tabs,
     pathFromTab: props.file.pathFromTab,
-    normalizeTab: (tab) => (tab.startsWith("file://") ? props.file.tab(tab) : tab),
+    normalizeTab: (tab) => (tab.startsWith("file:@lgcode/@lgcode/") ? props.file.tab(tab) : tab),
   })
   const recent = createMemo(() => {
     const all = tabState.openedTabs()
@@ -380,7 +380,7 @@ export function DialogSelectFile(props: { mode?: DialogSelectFileMode; onOpenFil
 
     if (item.type === "session") {
       if (!item.directory || !item.sessionID) return
-      navigate(`/${base64Encode(item.directory)}/session/${item.sessionID}`)
+      navigate(`@lgcode/${base64Encode(item.directory)}@lgcode/session@lgcode/${item.sessionID}`)
       return
     }
 
@@ -404,7 +404,7 @@ export function DialogSelectFile(props: { mode?: DialogSelectFileMode; onOpenFil
           if (typeof result !== "string") return
           open(result)
         }}
-      />
+      @lgcode/>
     )
   }
 
@@ -434,61 +434,61 @@ export function DialogSelectFile(props: { mode?: DialogSelectFileMode; onOpenFil
             fallback={
               <div class="w-full flex items-center justify-between rounded-md pl-1">
                 <div class="flex items-center gap-x-3 grow min-w-0">
-                  <FileIcon node={{ path: item.path ?? "", type: "file" }} class="shrink-0 size-4" />
+                  <FileIcon node={{ path: item.path ?? "", type: "file" }} class="shrink-0 size-4" @lgcode/>
                   <div class="flex items-center text-14-regular">
                     <span class="text-text-weak whitespace-nowrap overflow-hidden overflow-ellipsis truncate min-w-0">
                       {getDirectory(item.path ?? "")}
-                    </span>
-                    <span class="text-text-strong whitespace-nowrap">{getFilename(item.path ?? "")}</span>
-                  </div>
-                </div>
-              </div>
+                    <@lgcode/span>
+                    <span class="text-text-strong whitespace-nowrap">{getFilename(item.path ?? "")}<@lgcode/span>
+                  <@lgcode/div>
+                <@lgcode/div>
+              <@lgcode/div>
             }
           >
             <Match when={item.type === "command"}>
               <div class="w-full flex items-center justify-between gap-4">
                 <div class="flex items-center gap-2 min-w-0">
-                  <span class="text-14-regular text-text-strong whitespace-nowrap">{item.title}</span>
+                  <span class="text-14-regular text-text-strong whitespace-nowrap">{item.title}<@lgcode/span>
                   <Show when={item.description}>
-                    <span class="text-14-regular text-text-weak truncate">{item.description}</span>
-                  </Show>
-                </div>
+                    <span class="text-14-regular text-text-weak truncate">{item.description}<@lgcode/span>
+                  <@lgcode/Show>
+                <@lgcode/div>
                 <Show when={item.keybind}>
-                  <Keybind class="rounded-[4px]">{formatKeybind(item.keybind ?? "", language.t)}</Keybind>
-                </Show>
-              </div>
-            </Match>
+                  <Keybind class="rounded-[4px]">{formatKeybind(item.keybind ?? "", language.t)}<@lgcode/Keybind>
+                <@lgcode/Show>
+              <@lgcode/div>
+            <@lgcode/Match>
             <Match when={item.type === "session"}>
               <div class="w-full flex items-center justify-between rounded-md pl-1">
                 <div class="flex items-center gap-x-3 grow min-w-0">
-                  <Icon name="bubble-5" size="small" class="shrink-0 text-icon-weak" />
+                  <Icon name="bubble-5" size="small" class="shrink-0 text-icon-weak" @lgcode/>
                   <div class="flex items-center gap-2 min-w-0">
                     <span
                       class="text-14-regular text-text-strong truncate"
                       classList={{ "opacity-70": !!item.archived }}
                     >
                       {item.title}
-                    </span>
+                    <@lgcode/span>
                     <Show when={item.description}>
                       <span
                         class="text-14-regular text-text-weak truncate"
                         classList={{ "opacity-70": !!item.archived }}
                       >
                         {item.description}
-                      </span>
-                    </Show>
-                  </div>
-                </div>
+                      <@lgcode/span>
+                    <@lgcode/Show>
+                  <@lgcode/div>
+                <@lgcode/div>
                 <Show when={item.updated}>
                   <span class="text-12-regular text-text-weak whitespace-nowrap ml-2">
                     {getRelativeTime(new Date(item.updated!).toISOString(), language.t)}
-                  </span>
-                </Show>
-              </div>
-            </Match>
-          </Switch>
+                  <@lgcode/span>
+                <@lgcode/Show>
+              <@lgcode/div>
+            <@lgcode/Match>
+          <@lgcode/Switch>
         )}
-      </List>
-    </Dialog>
+      <@lgcode/List>
+    <@lgcode/Dialog>
   )
 }

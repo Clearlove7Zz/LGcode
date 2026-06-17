@@ -1,27 +1,27 @@
 import { describe, expect, test } from "bun:test"
-import { realignEditorPromptParts, resolveEditorSlashValue } from "@/cli/cmd/run/prompt.editor"
-import type { RunPromptPart } from "@/cli/cmd/run/types"
+import { realignEditorPromptParts, resolveEditorSlashValue } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/prompt.editor"
+import type { RunPromptPart } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/types"
 
 describe("run prompt editor helpers", () => {
-  test("strips the local /editor command from the initial editor text", () => {
-    expect(resolveEditorSlashValue("/editor")).toBe("")
-    expect(resolveEditorSlashValue("/editor draft message")).toBe("draft message")
-    expect(resolveEditorSlashValue("/editor first line\nsecond line")).toBe("first line\nsecond line")
+  test("strips the local @lgcode/editor command from the initial editor text", () => {
+    expect(resolveEditorSlashValue("@lgcode/editor")).toBe("")
+    expect(resolveEditorSlashValue("@lgcode/editor draft message")).toBe("draft message")
+    expect(resolveEditorSlashValue("@lgcode/editor first line\nsecond line")).toBe("first line\nsecond line")
   })
 
   test("realigns file and agent parts after external editing", () => {
     const filePart = {
       type: "file",
-      mime: "text/plain",
-      filename: "src/app.ts",
-      url: "file:///src/app.ts",
+      mime: "text@lgcode/plain",
+      filename: "src@lgcode/app.ts",
+      url: "file:@lgcode/@lgcode/@lgcode/src@lgcode/app.ts",
       source: {
         type: "file",
-        path: "src/app.ts",
+        path: "src@lgcode/app.ts",
         text: {
           start: 0,
           end: 11,
-          value: "@src/app.ts",
+          value: "@src@lgcode/app.ts",
         },
       },
     } satisfies RunPromptPart
@@ -36,7 +36,7 @@ describe("run prompt editor helpers", () => {
     } satisfies RunPromptPart
     const parts = [filePart, agentPart]
 
-    expect(realignEditorPromptParts("Please check @helper before @src/app.ts", parts)).toEqual([
+    expect(realignEditorPromptParts("Please check @helper before @src@lgcode/app.ts", parts)).toEqual([
       {
         ...filePart,
         source: {
@@ -45,7 +45,7 @@ describe("run prompt editor helpers", () => {
             ...filePart.source.text,
             start: 28,
             end: 39,
-            value: "@src/app.ts",
+            value: "@src@lgcode/app.ts",
           },
         },
       },
@@ -63,16 +63,16 @@ describe("run prompt editor helpers", () => {
   test("drops parts whose virtual text was deleted", () => {
     const filePart = {
       type: "file",
-      mime: "text/plain",
-      filename: "src/app.ts",
-      url: "file:///src/app.ts",
+      mime: "text@lgcode/plain",
+      filename: "src@lgcode/app.ts",
+      url: "file:@lgcode/@lgcode/@lgcode/src@lgcode/app.ts",
       source: {
         type: "file",
-        path: "src/app.ts",
+        path: "src@lgcode/app.ts",
         text: {
           start: 0,
           end: 11,
-          value: "@src/app.ts",
+          value: "@src@lgcode/app.ts",
         },
       },
     } satisfies RunPromptPart

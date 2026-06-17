@@ -1,7 +1,7 @@
-import type { ContentBlock, ContentChunk, ResourceLink, Role } from "@agentclientprotocol/sdk"
+import type { ContentBlock, ContentChunk, ResourceLink, Role } from "@agentclientprotocol@lgcode/sdk"
 import path from "node:path"
 import { pathToFileURL } from "node:url"
-import { SessionV1 } from "@opencode@lgcode/core/v1/session"
+import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
 
 export type PromptPart = SessionV1.TextPartInput | SessionV1.FilePartInput
 
@@ -59,7 +59,7 @@ export function contentBlockToParts(block: ContentBlock): PromptPart[] {
           },
         ]
       }
-      if (block.uri?.startsWith("http://") || block.uri?.startsWith("https://")) {
+      if (block.uri?.startsWith("http:@lgcode/@lgcode/") || block.uri?.startsWith("https:@lgcode/@lgcode/")) {
         return [
           {
             type: "file",
@@ -132,7 +132,7 @@ export function partToContentChunks(part: ReplayPart): ContentChunk[] {
 }
 
 function resourceLinkToPart(link: ResourceLink): PromptPart {
-  const parsed = uriToFilePart(link.uri, link.mimeType ?? "text/plain", link.name)
+  const parsed = uriToFilePart(link.uri, link.mimeType ?? "text@lgcode/plain", link.name)
   if (parsed.type === "file") return parsed
   return { type: "text", text: parsed.text }
 }
@@ -143,7 +143,7 @@ function uriToFilePart(
   filename?: string,
 ): SessionV1.FilePartInput | SessionV1.TextPartInput {
   try {
-    if (uri.startsWith("file://")) {
+    if (uri.startsWith("file:@lgcode/@lgcode/")) {
       return {
         type: "file",
         url: uri,
@@ -151,7 +151,7 @@ function uriToFilePart(
         mime,
       }
     }
-    if (uri.startsWith("zed://")) {
+    if (uri.startsWith("zed:@lgcode/@lgcode/")) {
       const pathname = new URL(uri).searchParams.get("path")
       if (pathname) {
         return {
@@ -169,7 +169,7 @@ function uriToFilePart(
 }
 
 function filePartToContentChunks(part: Extract<ReplayPart, { type: "file" }>): ContentChunk[] {
-  if (part.url.startsWith("file://")) {
+  if (part.url.startsWith("file:@lgcode/@lgcode/")) {
     return [
       {
         content: {
@@ -185,7 +185,7 @@ function filePartToContentChunks(part: Extract<ReplayPart, { type: "file" }>): C
 
   const data = decodeDataUrl(part.url)
   if (!data) return []
-  if (data.mime.startsWith("image/")) {
+  if (data.mime.startsWith("image@lgcode/")) {
     return [
       {
         content: {
@@ -203,7 +203,7 @@ function filePartToContentChunks(part: Extract<ReplayPart, { type: "file" }>): C
       content: {
         type: "resource",
         resource:
-          data.mime.startsWith("text/") || data.mime === "application/json"
+          data.mime.startsWith("text@lgcode/") || data.mime === "application@lgcode/json"
             ? {
                 uri: pathToFileURL(part.filename ?? "file").href,
                 mimeType: data.mime,
@@ -220,7 +220,7 @@ function filePartToContentChunks(part: Extract<ReplayPart, { type: "file" }>): C
 }
 
 function decodeDataUrl(url: string) {
-  const match = /^data:([^;]+);base64,(.*)$/.exec(url)
+  const match = @lgcode/^data:([^;]+);base64,(.*)$@lgcode/.exec(url)
   if (!match) return
   return { mime: match[1], base64: match[2] }
 }

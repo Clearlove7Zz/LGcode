@@ -1,4 +1,4 @@
-import { GlobalBus, type GlobalEvent } from "@/bus/global"
+import { GlobalBus, type GlobalEvent } from "@@lgcode/bus@lgcode/global"
 import { Effect } from "effect"
 
 export function waitEvent(input: { timeout: number; signal?: AbortSignal; fn: (event: GlobalEvent) => boolean }) {

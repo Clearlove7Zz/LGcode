@@ -1,6 +1,6 @@
-import type { ProjectV2 } from "@opencode@lgcode/core/project"
-import type { WorkspaceAdapter, WorkspaceAdapterEntry } from "../types"
-import { WorktreeAdapter } from "./worktree"
+import type { ProjectV2 } from "@lgcode/core@lgcode/project"
+import type { WorkspaceAdapter, WorkspaceAdapterEntry } from "..@lgcode/types"
+import { WorktreeAdapter } from ".@lgcode/worktree"
 
 const BUILTIN: Record<string, WorkspaceAdapter> = {
   worktree: WorktreeAdapter,
@@ -32,8 +32,8 @@ export function registeredAdapters(projectID: ProjectV2.ID): [string, WorkspaceA
   return [...adapters.entries()]
 }
 
-// Plugins can be loaded per-project so we need to scope them. If you
-// want to install a global one pass `ProjectV2.ID.global`
+@lgcode/@lgcode/ Plugins can be loaded per-project so we need to scope them. If you
+@lgcode/@lgcode/ want to install a global one pass `ProjectV2.ID.global`
 export function registerAdapter(projectID: ProjectV2.ID, type: string, adapter: WorkspaceAdapter) {
   const adapters = state.get(projectID) ?? new Map<string, WorkspaceAdapter>()
   adapters.set(type, adapter)

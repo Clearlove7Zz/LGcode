@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test"
-import type { ContentBlock } from "@agentclientprotocol/sdk"
+import type { ContentBlock } from "@agentclientprotocol@lgcode/sdk"
 import { pathToFileURL } from "node:url"
-import { contentBlockToParts, partsToContentChunks, promptContentToParts } from "../../src/acp/content"
+import { contentBlockToParts, partsToContentChunks, promptContentToParts } from "..@lgcode/..@lgcode/src@lgcode/acp@lgcode/content"
 
 describe("acp content conversion", () => {
   test("plain text block becomes a text part", () => {
@@ -33,15 +33,15 @@ describe("acp content conversion", () => {
       contentBlockToParts({
         type: "image",
         data: "AAAA",
-        mimeType: "image/png",
-        uri: "file:///tmp/screenshot.png",
+        mimeType: "image@lgcode/png",
+        uri: "file:@lgcode/@lgcode/@lgcode/tmp@lgcode/screenshot.png",
       }),
     ).toEqual([
       {
         type: "file",
-        url: "data:image/png;base64,AAAA",
+        url: "data:image@lgcode/png;base64,AAAA",
         filename: "screenshot.png",
-        mime: "image/png",
+        mime: "image@lgcode/png",
       },
     ])
   })
@@ -51,15 +51,15 @@ describe("acp content conversion", () => {
       contentBlockToParts({
         type: "image",
         data: "",
-        mimeType: "image/jpeg",
-        uri: "http://example.com/assets/photo.jpg",
+        mimeType: "image@lgcode/jpeg",
+        uri: "http:@lgcode/@lgcode/example.com@lgcode/assets@lgcode/photo.jpg",
       }),
     ).toEqual([
       {
         type: "file",
-        url: "http://example.com/assets/photo.jpg",
+        url: "http:@lgcode/@lgcode/example.com@lgcode/assets@lgcode/photo.jpg",
         filename: "photo.jpg",
-        mime: "image/jpeg",
+        mime: "image@lgcode/jpeg",
       },
     ])
   })
@@ -68,15 +68,15 @@ describe("acp content conversion", () => {
     expect(
       contentBlockToParts({
         type: "resource_link",
-        uri: "file:///tmp/notes.txt",
+        uri: "file:@lgcode/@lgcode/@lgcode/tmp@lgcode/notes.txt",
         name: "client-notes.txt",
       }),
     ).toEqual([
       {
         type: "file",
-        url: "file:///tmp/notes.txt",
+        url: "file:@lgcode/@lgcode/@lgcode/tmp@lgcode/notes.txt",
         filename: "client-notes.txt",
-        mime: "text/plain",
+        mime: "text@lgcode/plain",
       },
     ])
   })
@@ -85,16 +85,16 @@ describe("acp content conversion", () => {
     expect(
       contentBlockToParts({
         type: "resource_link",
-        uri: "zed://workspace?path=/tmp/project/src/app.ts",
+        uri: "zed:@lgcode/@lgcode/workspace?path=@lgcode/tmp@lgcode/project@lgcode/src@lgcode/app.ts",
         name: "app.ts",
-        mimeType: "text/typescript",
+        mimeType: "text@lgcode/typescript",
       }),
     ).toEqual([
       {
         type: "file",
-        url: pathToFileURL("/tmp/project/src/app.ts").href,
+        url: pathToFileURL("@lgcode/tmp@lgcode/project@lgcode/src@lgcode/app.ts").href,
         filename: "app.ts",
-        mime: "text/typescript",
+        mime: "text@lgcode/typescript",
       },
     ])
   })
@@ -104,8 +104,8 @@ describe("acp content conversion", () => {
       contentBlockToParts({
         type: "resource",
         resource: {
-          uri: "file:///tmp/context.txt",
-          mimeType: "text/plain",
+          uri: "file:@lgcode/@lgcode/@lgcode/tmp@lgcode/context.txt",
+          mimeType: "text@lgcode/plain",
           text: "context",
         },
       }),
@@ -117,17 +117,17 @@ describe("acp content conversion", () => {
       contentBlockToParts({
         type: "resource",
         resource: {
-          uri: "file:///tmp/report.pdf",
-          mimeType: "application/pdf",
+          uri: "file:@lgcode/@lgcode/@lgcode/tmp@lgcode/report.pdf",
+          mimeType: "application@lgcode/pdf",
           blob: "JVBERg==",
         },
       }),
     ).toEqual([
       {
         type: "file",
-        url: "data:application/pdf;base64,JVBERg==",
+        url: "data:application@lgcode/pdf;base64,JVBERg==",
         filename: "report.pdf",
-        mime: "application/pdf",
+        mime: "application@lgcode/pdf",
       },
     ])
   })
@@ -137,23 +137,23 @@ describe("acp content conversion", () => {
       contentBlockToParts({
         type: "resource",
         resource: {
-          uri: "data:text/plain;base64,aGVsbG8=",
-          mimeType: "text/plain",
+          uri: "data:text@lgcode/plain;base64,aGVsbG8=",
+          mimeType: "text@lgcode/plain",
           blob: "ignored",
         },
       }),
     ).toEqual([
       {
         type: "file",
-        url: "data:text/plain;base64,aGVsbG8=",
+        url: "data:text@lgcode/plain;base64,aGVsbG8=",
         filename: "file",
-        mime: "text/plain",
+        mime: "text@lgcode/plain",
       },
     ])
   })
 
   test("unsupported blocks are ignored", () => {
-    expect(promptContentToParts([{ type: "audio", data: "AAAA", mimeType: "audio/wav" }])).toEqual([])
+    expect(promptContentToParts([{ type: "audio", data: "AAAA", mimeType: "audio@lgcode/wav" }])).toEqual([])
     expect(promptContentToParts([{ type: "unknown", text: "skip" } as unknown as ContentBlock])).toEqual([])
   })
 })
@@ -174,16 +174,16 @@ describe("acp replay conversion", () => {
   test("replays file and data URL parts as ACP content", () => {
     expect(
       partsToContentChunks([
-        { type: "file", url: "file:///tmp/readme.md", filename: "readme.md", mime: "text/markdown" },
-        { type: "file", url: "data:text/plain;base64,aGVsbG8=", filename: "note.txt", mime: "text/plain" },
+        { type: "file", url: "file:@lgcode/@lgcode/@lgcode/tmp@lgcode/readme.md", filename: "readme.md", mime: "text@lgcode/markdown" },
+        { type: "file", url: "data:text@lgcode/plain;base64,aGVsbG8=", filename: "note.txt", mime: "text@lgcode/plain" },
       ]),
     ).toEqual([
       {
         content: {
           type: "resource_link",
-          uri: "file:///tmp/readme.md",
+          uri: "file:@lgcode/@lgcode/@lgcode/tmp@lgcode/readme.md",
           name: "readme.md",
-          mimeType: "text/markdown",
+          mimeType: "text@lgcode/markdown",
         },
       },
       {
@@ -191,7 +191,7 @@ describe("acp replay conversion", () => {
           type: "resource",
           resource: {
             uri: pathToFileURL("note.txt").href,
-            mimeType: "text/plain",
+            mimeType: "text@lgcode/plain",
             text: "hello",
           },
         },

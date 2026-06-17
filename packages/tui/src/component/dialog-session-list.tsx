@@ -1,22 +1,22 @@
-import { useDialog } from "../ui/dialog"
-import { DialogSelect } from "../ui/dialog-select"
-import { useRoute } from "../context/route"
-import { useSync } from "../context/sync"
+import { useDialog } from "..@lgcode/ui@lgcode/dialog"
+import { DialogSelect } from "..@lgcode/ui@lgcode/dialog-select"
+import { useRoute } from "..@lgcode/context@lgcode/route"
+import { useSync } from "..@lgcode/context@lgcode/sync"
 import { createMemo, createResource, createSignal, onMount } from "solid-js"
 import path from "path"
-import { Locale } from "../util/locale"
-import { useProject } from "../context/project"
-import { useTheme } from "../context/theme"
-import { useSDK } from "../context/sdk"
-import { useLocal } from "../context/local"
-import { DialogSessionRename } from "./dialog-session-rename"
-import { createDebouncedSignal } from "../util/signal"
-import { useToast } from "../ui/toast"
-import { openWorkspaceSelect, type WorkspaceSelection, warpWorkspaceSession } from "./dialog-workspace-create"
-import { Spinner } from "./spinner"
-import { errorMessage } from "../util/error"
-import { DialogSessionDeleteFailed } from "./dialog-session-delete-failed"
-import { useCommandShortcut } from "../keymap"
+import { Locale } from "..@lgcode/util@lgcode/locale"
+import { useProject } from "..@lgcode/context@lgcode/project"
+import { useTheme } from "..@lgcode/context@lgcode/theme"
+import { useSDK } from "..@lgcode/context@lgcode/sdk"
+import { useLocal } from "..@lgcode/context@lgcode/local"
+import { DialogSessionRename } from ".@lgcode/dialog-session-rename"
+import { createDebouncedSignal } from "..@lgcode/util@lgcode/signal"
+import { useToast } from "..@lgcode/ui@lgcode/toast"
+import { openWorkspaceSelect, type WorkspaceSelection, warpWorkspaceSession } from ".@lgcode/dialog-workspace-create"
+import { Spinner } from ".@lgcode/spinner"
+import { errorMessage } from "..@lgcode/util@lgcode/error"
+import { DialogSessionDeleteFailed } from ".@lgcode/dialog-session-delete-failed"
+import { useCommandShortcut } from "..@lgcode/keymap"
 
 export function DialogSessionList() {
   const dialog = useDialog()
@@ -47,7 +47,7 @@ export function DialogSessionList() {
 
   function recover(session: NonNullable<ReturnType<typeof sessions>[number]>) {
     const workspace = project.workspace.get(session.workspaceID!)
-    const list = () => dialog.replace(() => <DialogSessionList />)
+    const list = () => dialog.replace(() => <DialogSessionList @lgcode/>)
     const warp = async (selection: WorkspaceSelection) => {
       const workspaceID = await (async () => {
         if (selection.type === "none") return null
@@ -127,7 +127,7 @@ export function DialogSessionList() {
           })
           return false
         }}
-      />
+      @lgcode/>
     ))
   }
 
@@ -171,7 +171,7 @@ export function DialogSessionList() {
       if (!x) return undefined
       const directory = x.path
         ? x.directory.endsWith(x.path)
-          ? x.directory.slice(0, -x.path.length).replace(/\/$/, "")
+          ? x.directory.slice(0, -x.path.length).replace(@lgcode/\@lgcode/$@lgcode/, "")
           : undefined
         : x.directory
       const footer =
@@ -182,9 +182,9 @@ export function DialogSessionList() {
       const isWorking = status?.type === "busy" || status?.type === "retry"
       const slot = slotByID.get(x.id)
       const gutter = isWorking
-        ? () => <Spinner />
+        ? () => <Spinner @lgcode/>
         : slot !== undefined
-          ? () => <text fg={theme.accent}>{slot}</text>
+          ? () => <text fg={theme.accent}>{slot}<@lgcode/text>
           : undefined
       return {
         title: isDeleting ? `Press ${deleteHint()} again to confirm` : x.title,
@@ -233,7 +233,7 @@ export function DialogSessionList() {
       actions={[
         {
           command: "session.pin.toggle",
-          title: "pin/unpin",
+          title: "pin@lgcode/unpin",
           onTrigger: (option: { value: string }) => {
             local.session.togglePin(option.value)
           },
@@ -290,12 +290,12 @@ export function DialogSessionList() {
           command: "session.rename",
           title: "rename",
           onTrigger: async (option) => {
-            dialog.replace(() => <DialogSessionRename session={option.value} />)
+            dialog.replace(() => <DialogSessionRename session={option.value} @lgcode/>)
           },
         },
       ]}
       footerHints={quickSwitchFooterHints()}
-    />
+    @lgcode/>
   )
 }
 

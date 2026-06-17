@@ -1,35 +1,35 @@
-import { ConfigV1 } from "@opencode@lgcode/core/v1/config/config"
-import { SessionV1 } from "@opencode@lgcode/core/v1/session"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { ModelsDev } from "@opencode@lgcode/core/models-dev"
-import { HttpRecorder } from "@opencode@lgcode/http-recorder"
-import { HttpRecorderInternal } from "@opencode@lgcode/http-recorder/internal"
+import { ConfigV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/config"
+import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { ModelsDev } from "@lgcode/core@lgcode/models-dev"
+import { HttpRecorder } from "@lgcode/http-recorder"
+import { HttpRecorderInternal } from "@lgcode/http-recorder@lgcode/internal"
 import { describe, expect, test } from "bun:test"
 import { tool, type ModelMessage, type JSONValue } from "ai"
 import { Effect, Layer, Option, Schema, Stream } from "effect"
 import path from "node:path"
 import z from "zod"
-import { Auth } from "@/auth"
-import { Config } from "@/config/config"
-import { Plugin } from "@/plugin"
-import { Provider } from "@/provider/provider"
+import { Auth } from "@@lgcode/auth"
+import { Config } from "@@lgcode/config@lgcode/config"
+import { Plugin } from "@@lgcode/plugin"
+import { Provider } from "@@lgcode/provider@lgcode/provider"
 
-import { Filesystem } from "@/util/filesystem"
-import { LLMEvent, LLMResponse } from "@opencode@lgcode/llm"
-import { LLMClient, RequestExecutor, WebSocketExecutor } from "@opencode@lgcode/llm/route"
-import { Env } from "@/env"
-import { RuntimeFlags } from "@/effect/runtime-flags"
-import type { Agent } from "../../src/agent/agent"
-import { LLM } from "../../src/session/llm"
-import { MessageID, SessionID } from "../../src/session/schema"
-import { TestInstance } from "../fixture/fixture"
-import { testEffect } from "../lib/effect"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { ModelV2 } from "@opencode@lgcode/core/model"
+import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
+import { LLMEvent, LLMResponse } from "@lgcode/llm"
+import { LLMClient, RequestExecutor, WebSocketExecutor } from "@lgcode/llm@lgcode/route"
+import { Env } from "@@lgcode/env"
+import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
+import type { Agent } from "..@lgcode/..@lgcode/src@lgcode/agent@lgcode/agent"
+import { LLM } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/llm"
+import { MessageID, SessionID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
+import { TestInstance } from "..@lgcode/fixture@lgcode/fixture"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
 
-const FIXTURES_DIR = path.join(import.meta.dir, "../fixtures/recordings")
+const FIXTURES_DIR = path.join(import.meta.dir, "..@lgcode/fixtures@lgcode/recordings")
 
-const zenURL = (connection: string) => `https://console.opencode.ai/proxy/connections/${connection}/v1`
+const zenURL = (connection: string) => `https:@lgcode/@lgcode/console.opencode.ai@lgcode/proxy@lgcode/connections@lgcode/${connection}@lgcode/v1`
 
 const replayOpenAIOAuth = {
   type: "oauth",
@@ -57,12 +57,12 @@ type RecordedScenario = {
 const cloneModel = (model: ModelsDev.Provider["models"][string]) => {
   const cloned = structuredClone(model)
   const { experimental, ...rest } = cloned
-  // oxlint-disable-next-line typescript-eslint/no-unsafe-type-assertion -- The config schema accepts the same model shape except object-valued experimental metadata.
+  @lgcode/@lgcode/ oxlint-disable-next-line typescript-eslint@lgcode/no-unsafe-type-assertion -- The config schema accepts the same model shape except object-valued experimental metadata.
   if (typeof experimental === "boolean") {
-    // oxlint-disable-next-line typescript-eslint/no-unsafe-type-assertion -- The fixture model already matches config input when experimental is boolean.
+    @lgcode/@lgcode/ oxlint-disable-next-line typescript-eslint@lgcode/no-unsafe-type-assertion -- The fixture model already matches config input when experimental is boolean.
     return cloned as NonNullable<NonNullable<ConfigV1.Info["provider"]>[string]["models"]>[string]
   }
-  // oxlint-disable-next-line typescript-eslint/no-unsafe-type-assertion -- Dropping non-boolean experimental metadata makes the fixture model match config input.
+  @lgcode/@lgcode/ oxlint-disable-next-line typescript-eslint@lgcode/no-unsafe-type-assertion -- Dropping non-boolean experimental metadata makes the fixture model match config input.
   return rest as NonNullable<NonNullable<ConfigV1.Info["provider"]>[string]["models"]>[string]
 }
 
@@ -118,7 +118,7 @@ const RECORDED_SCENARIOS = [
     name: "OpenAI API key",
     providerID: ProviderV2.ID.openai,
     modelID: "gpt-4.1-mini",
-    cassette: "session/native-openai-tool-loop",
+    cassette: "session@lgcode/native-openai-tool-loop",
     protocol: "openai-responses",
     tags: ["opencode", "native", "tool-loop"],
     canRecord: () => Boolean(envValue("OPENCODE_RECORD_OPENAI_API_KEY", "OPENAI_API_KEY")),
@@ -127,12 +127,12 @@ const RECORDED_SCENARIOS = [
         providerID: ProviderV2.ID.openai,
         name: "OpenAI",
         env: ["OPENAI_API_KEY"],
-        npm: "@ai-sdk/openai",
-        api: "https://api.openai.com/v1",
+        npm: "@ai-sdk@lgcode/openai",
+        api: "https:@lgcode/@lgcode/api.openai.com@lgcode/v1",
         model,
         options: {
           apiKey: envValue("OPENCODE_RECORD_OPENAI_API_KEY", "OPENAI_API_KEY") ?? "fixture-openai-key",
-          baseURL: "https://api.openai.com/v1",
+          baseURL: "https:@lgcode/@lgcode/api.openai.com@lgcode/v1",
         },
       }),
   },
@@ -141,7 +141,7 @@ const RECORDED_SCENARIOS = [
     name: "OpenAI OAuth",
     providerID: ProviderV2.ID.openai,
     modelID: "gpt-5.5",
-    cassette: "session/native-openai-oauth-tool-loop",
+    cassette: "session@lgcode/native-openai-oauth-tool-loop",
     protocol: "openai-responses",
     tags: ["opencode", "native", "oauth", "tool-loop"],
     canRecord: () => recordOpenAIOAuth() !== undefined,
@@ -153,10 +153,10 @@ const RECORDED_SCENARIOS = [
         providerID: ProviderV2.ID.openai,
         name: "OpenAI",
         env: ["OPENAI_API_KEY"],
-        npm: "@ai-sdk/openai",
-        api: "https://api.openai.com/v1",
+        npm: "@ai-sdk@lgcode/openai",
+        api: "https:@lgcode/@lgcode/api.openai.com@lgcode/v1",
         model,
-        options: { baseURL: "https://api.openai.com/v1" },
+        options: { baseURL: "https:@lgcode/@lgcode/api.openai.com@lgcode/v1" },
       }),
   },
   {
@@ -164,7 +164,7 @@ const RECORDED_SCENARIOS = [
     name: "OpenCode proxy",
     providerID: ProviderV2.ID.opencode,
     modelID: "gpt-5.2-codex",
-    cassette: "session/native-zen-tool-loop",
+    cassette: "session@lgcode/native-zen-tool-loop",
     protocol: "openai-responses",
     tags: ["opencode", "zen", "native", "tool-loop"],
     canRecord: () => Boolean(process.env.OPENCODE_RECORD_CONSOLE_TOKEN && process.env.OPENCODE_RECORD_ZEN_ORG_ID),
@@ -173,7 +173,7 @@ const RECORDED_SCENARIOS = [
         providerID: ProviderV2.ID.opencode,
         name: "OpenCode Zen",
         env: ["OPENCODE_CONSOLE_TOKEN"],
-        npm: "@ai-sdk/openai-compatible",
+        npm: "@ai-sdk@lgcode/openai-compatible",
         api: zenURL(process.env.OPENCODE_RECORD_ZEN_CONNECTION ?? "fixture"),
         model,
         options: {
@@ -187,7 +187,7 @@ const RECORDED_SCENARIOS = [
     name: "Anthropic API key",
     providerID: ProviderV2.ID.anthropic,
     modelID: "claude-haiku-4-5-20251001",
-    cassette: "session/native-anthropic-tool-loop",
+    cassette: "session@lgcode/native-anthropic-tool-loop",
     protocol: "anthropic-messages",
     tags: ["opencode", "native", "tool-loop"],
     canRecord: () => Boolean(envValue("OPENCODE_RECORD_ANTHROPIC_API_KEY", "ANTHROPIC_API_KEY")),
@@ -196,12 +196,12 @@ const RECORDED_SCENARIOS = [
         providerID: ProviderV2.ID.anthropic,
         name: "Anthropic",
         env: ["ANTHROPIC_API_KEY"],
-        npm: "@ai-sdk/anthropic",
-        api: "https://api.anthropic.com/v1",
+        npm: "@ai-sdk@lgcode/anthropic",
+        api: "https:@lgcode/@lgcode/api.anthropic.com@lgcode/v1",
         model,
         options: {
           apiKey: envValue("OPENCODE_RECORD_ANTHROPIC_API_KEY", "ANTHROPIC_API_KEY") ?? "fixture-anthropic-key",
-          baseURL: "https://api.anthropic.com/v1",
+          baseURL: "https:@lgcode/@lgcode/api.anthropic.com@lgcode/v1",
         },
       }),
   },
@@ -234,9 +234,9 @@ const recordError = (scenario: RecordedScenario) =>
 
 const redactRecordedBody = (body: string) =>
   body
-    .replace(/wrk_[A-Z0-9]+/g, "wrk_redacted")
-    .replace(/"safety_identifier"\s*:\s*"user-[^"]+"/g, '"safety_identifier":"user_redacted"')
-    .replace(/"(access|access_token|refresh|refresh_token|accountId|account_id)"\s*:\s*"[^"]+"/g, '"$1":"redacted"')
+    .replace(@lgcode/wrk_[A-Z0-9]+@lgcode/g, "wrk_redacted")
+    .replace(@lgcode/"safety_identifier"\s*:\s*"user-[^"]+"@lgcode/g, '"safety_identifier":"user_redacted"')
+    .replace(@lgcode/"(access|access_token|refresh|refresh_token|accountId|account_id)"\s*:\s*"[^"]+"@lgcode/g, '"$1":"redacted"')
 
 function authLayer(scenario: RecordedScenario) {
   const replayAuth = shouldRecord ? scenario.recordAuth?.() : scenario.replayAuth
@@ -257,7 +257,7 @@ async function loadFixture(providerID: string, modelID: string) {
 }
 
 const modelsFixture = Filesystem.readJson<Record<string, ModelsDev.Provider>>(
-  path.join(import.meta.dir, "../tool/fixtures/models-api.json"),
+  path.join(import.meta.dir, "..@lgcode/tool@lgcode/fixtures@lgcode/models-api.json"),
 )
 
 function recordedNativeLLMLayer(scenario: RecordedScenario) {
@@ -271,7 +271,7 @@ function recordedNativeLLMLayer(scenario: RecordedScenario) {
     Layer.provide(ModelsDev.defaultLayer),
     Layer.provide(RuntimeFlags.defaultLayer),
   )
-  // Only the HTTP client is recorded; RequestExecutor and the opencode LLM stack remain real.
+  @lgcode/@lgcode/ Only the HTTP client is recorded; RequestExecutor and the opencode LLM stack remain real.
   const metadata = {
     provider: scenario.providerID,
     protocol: scenario.protocol,
@@ -279,7 +279,7 @@ function recordedNativeLLMLayer(scenario: RecordedScenario) {
     tags: scenario.tags,
   }
   const redact = {
-    url: (url: string) => url.replace(/\/proxy\/connections\/[^/]+\/v1/, "/proxy/connections/{connection}/v1"),
+    url: (url: string) => url.replace(@lgcode/\@lgcode/proxy\@lgcode/connections\@lgcode/[^@lgcode/]+\@lgcode/v1@lgcode/, "@lgcode/proxy@lgcode/connections@lgcode/{connection}@lgcode/v1"),
     body: redactRecordedBody,
   }
   const recordedHttp = shouldRecord
@@ -311,7 +311,7 @@ const writeConfig = (directory: string, scenario: RecordedScenario, model: Model
   Effect.promise(() =>
     Bun.write(
       path.join(directory, "opencode.json"),
-      JSON.stringify({ $schema: "https://opencode.ai/config.json", ...scenario.config(model) }),
+      JSON.stringify({ $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json", ...scenario.config(model) }),
     ),
   )
 
@@ -402,7 +402,7 @@ const driveToolLoop = (scenario: RecordedScenario) =>
     expect(toolCall).toBeDefined()
     expect(turn1.find(LLMEvent.is.toolResult)).toBeDefined()
     expect(toolCall!.name).toBe("get_weather")
-    expect(toolCall!.input).toMatchObject({ city: expect.stringMatching(/Paris/i) })
+    expect(toolCall!.input).toMatchObject({ city: expect.stringMatching(@lgcode/Paris@lgcode/i) })
     expect(turn1.filter(LLMEvent.is.stepFinish)).toHaveLength(1)
 
     const turn2 = yield* collect({
@@ -410,7 +410,7 @@ const driveToolLoop = (scenario: RecordedScenario) =>
       messages: [userMessage, ...toolRoundtrip(turn1, toolCall!, WEATHER_RESULT)],
     })
 
-    expect(LLMResponse.text({ events: turn2 })).toMatch(/Paris is sunny/i)
+    expect(LLMResponse.text({ events: turn2 })).toMatch(@lgcode/Paris is sunny@lgcode/i)
     expect(turn2.filter(LLMEvent.is.finish)).toHaveLength(1)
     expect(turn2.filter(LLMEvent.is.toolCall)).toHaveLength(0)
   })

@@ -1,8 +1,8 @@
 import os from "os"
-import { InstallationVersion } from "../../installation/version"
+import { InstallationVersion } from "..@lgcode/..@lgcode/installation@lgcode/version"
 import { Effect } from "effect"
-import { PluginV2 } from "../../plugin"
-import { ProviderV2 } from "../../provider"
+import { PluginV2 } from "..@lgcode/..@lgcode/plugin"
+import { ProviderV2 } from "..@lgcode/..@lgcode/provider"
 
 export const GitLabPlugin = PluginV2.define({
   id: PluginV2.ID.make("gitlab"),
@@ -16,10 +16,10 @@ export const GitLabPlugin = PluginV2.define({
           instanceUrl:
             typeof evt.options.instanceUrl === "string"
               ? evt.options.instanceUrl
-              : (process.env.GITLAB_INSTANCE_URL ?? "https://gitlab.com"),
+              : (process.env.GITLAB_INSTANCE_URL ?? "https:@lgcode/@lgcode/gitlab.com"),
           apiKey: typeof evt.options.apiKey === "string" ? evt.options.apiKey : process.env.GITLAB_TOKEN,
           aiGatewayHeaders: {
-            "User-Agent": `opencode/${InstallationVersion} gitlab-ai-provider/${mod.VERSION} (${os.platform()} ${os.release()}; ${os.arch()})`,
+            "User-Agent": `opencode@lgcode/${InstallationVersion} gitlab-ai-provider@lgcode/${mod.VERSION} (${os.platform()} ${os.release()}; ${os.arch()})`,
             "anthropic-beta": "context-1m-2025-08-07",
             ...evt.options.aiGatewayHeaders,
           },

@@ -1,5 +1,5 @@
-import { runtimeModules as keymapRuntimeModules } from "@opentui/keymap/runtime-modules"
-import { ensureRuntimePluginSupport } from "@opentui/solid/runtime-plugin-support/configure"
+import { runtimeModules as keymapRuntimeModules } from "@opentui@lgcode/keymap@lgcode/runtime-modules"
+import { ensureRuntimePluginSupport } from "@opentui@lgcode/solid@lgcode/runtime-plugin-support@lgcode/configure"
 import {
   type TuiDispose,
   type TuiPlugin,
@@ -10,13 +10,13 @@ import {
   type TuiPluginStatus,
   type TuiSlotPlugin,
   type TuiTheme,
-} from "@opencode@lgcode/plugin/tui"
+} from "@lgcode/plugin@lgcode/tui"
 import path from "path"
 import { fileURLToPath } from "url"
-import { TuiConfig } from "@/config/tui"
-import { errorData, errorMessage } from "@opencode@lgcode/tui/util/error"
-import { isRecord } from "@opencode@lgcode/tui/util/record"
-import { resolveHostAttentionSoundPaths } from "@/config/tui-host-attention"
+import { TuiConfig } from "@@lgcode/config@lgcode/tui"
+import { errorData, errorMessage } from "@lgcode/tui@lgcode/util@lgcode/error"
+import { isRecord } from "@lgcode/tui@lgcode/util@lgcode/record"
+import { resolveHostAttentionSoundPaths } from "@@lgcode/config@lgcode/tui-host-attention"
 import {
   readPackageThemes,
   readPluginId,
@@ -24,24 +24,24 @@ import {
   resolvePluginId,
   type PluginPackage,
   type PluginSource,
-} from "@/plugin/shared"
-import { PluginLoader } from "@/plugin/loader"
-import { PluginMeta } from "@/plugin/meta"
-import { installPlugin as installModulePlugin, patchPluginConfig, readPluginManifest } from "@/plugin/install"
-import { hasTheme, upsertTheme } from "@opencode@lgcode/tui/context/theme"
-import { Global } from "@opencode@lgcode/core/global"
-import { Filesystem } from "@/util/filesystem"
-import { Process } from "@/util/process"
-import { Flock } from "@opencode@lgcode/core/util/flock"
-import { Flag } from "@opencode@lgcode/core/flag/flag"
-import { internalTuiPlugins, type InternalTuiPlugin } from "./internal"
-import type { HostPluginApi, HostSlots } from "@opencode@lgcode/tui/plugin/slots"
-import { ConfigPlugin } from "@/config/plugin"
-import { ConfigPluginV1 } from "@opencode@lgcode/core/v1/config/plugin"
-import { createCommandShim } from "@opencode@lgcode/tui/plugin/command-shim"
-import { RuntimeFlags } from "@/effect/runtime-flags"
+} from "@@lgcode/plugin@lgcode/shared"
+import { PluginLoader } from "@@lgcode/plugin@lgcode/loader"
+import { PluginMeta } from "@@lgcode/plugin@lgcode/meta"
+import { installPlugin as installModulePlugin, patchPluginConfig, readPluginManifest } from "@@lgcode/plugin@lgcode/install"
+import { hasTheme, upsertTheme } from "@lgcode/tui@lgcode/context@lgcode/theme"
+import { Global } from "@lgcode/core@lgcode/global"
+import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
+import { Process } from "@@lgcode/util@lgcode/process"
+import { Flock } from "@lgcode/core@lgcode/util@lgcode/flock"
+import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
+import { internalTuiPlugins, type InternalTuiPlugin } from ".@lgcode/internal"
+import type { HostPluginApi, HostSlots } from "@lgcode/tui@lgcode/plugin@lgcode/slots"
+import { ConfigPlugin } from "@@lgcode/config@lgcode/plugin"
+import { ConfigPluginV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/plugin"
+import { createCommandShim } from "@lgcode/tui@lgcode/plugin@lgcode/command-shim"
+import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
 import { Effect } from "effect"
-import { createPluginRuntime, type PluginRuntime, type TuiPluginHost } from "@opencode@lgcode/tui/plugin/runtime"
+import { createPluginRuntime, type PluginRuntime, type TuiPluginHost } from "@lgcode/tui@lgcode/plugin@lgcode/runtime"
 
 ensureRuntimePluginSupport({ additional: keymapRuntimeModules })
 
@@ -232,9 +232,9 @@ function isTheme(value: unknown) {
 }
 
 function resolveRoot(root: string) {
-  if (root.startsWith("file://")) {
+  if (root.startsWith("file:@lgcode/@lgcode/")) {
     const file = fileURLToPath(root)
-    if (root.endsWith("/")) return file
+    if (root.endsWith("@lgcode/")) return file
     return path.dirname(file)
   }
   if (path.isAbsolute(root)) return root
@@ -611,7 +611,7 @@ function pluginApi(runtime: RuntimeState, plugin: PluginEntry, scope: PluginScop
   return {
     app: api.app,
     attention: createScopedAttention(api.attention, scope, load.plugin_root),
-    // Keep deprecated `api.command` working for v1 plugins; remove in v2.
+    @lgcode/@lgcode/ Keep deprecated `api.command` working for v1 plugins; remove in v2.
     command: createCommandShim(keymap, api.ui.dialog, api.tuiConfig.keybinds),
     keys: api.keys,
     keymap,
@@ -834,10 +834,10 @@ function installDetail(err: unknown) {
 
   const lines = hit.stderr
     .toString()
-    .split(/\r?\n/)
+    .split(@lgcode/\r?\n@lgcode/)
     .map((line) => line.trim())
     .filter(Boolean)
-  const errs = lines.filter((line) => line.startsWith("error:")).map((line) => line.replace(/^error:\s*/, ""))
+  const errs = lines.filter((line) => line.startsWith("error:")).map((line) => line.replace(@lgcode/^error:\s*@lgcode/, ""))
   return {
     message: errs[0] ?? lines.at(-1) ?? errorMessage(hit),
     missing: lines.some((line) => line.includes("No version matching")),
@@ -944,7 +944,7 @@ async function installPluginBySpec(
     spec,
     targets: manifest.targets,
     global,
-    vcs: dir.worktree && dir.worktree !== "/" ? "git" : undefined,
+    vcs: dir.worktree && dir.worktree !== "@lgcode/" ? "git" : undefined,
     worktree: dir.worktree,
     directory: dir.directory,
   })
@@ -1108,10 +1108,10 @@ async function load(input: {
     applyInitialPluginEnabledState(next, config)
     for (const plugin of next.plugins) {
       if (!plugin.enabled) continue
-      // Keep plugin execution sequential for deterministic side effects:
-      // command registration order affects keybind/command precedence,
-      // route registration is last-wins when ids collide,
-      // and hook chains rely on stable plugin ordering.
+      @lgcode/@lgcode/ Keep plugin execution sequential for deterministic side effects:
+      @lgcode/@lgcode/ command registration order affects keybind@lgcode/command precedence,
+      @lgcode/@lgcode/ route registration is last-wins when ids collide,
+      @lgcode/@lgcode/ and hook chains rely on stable plugin ordering.
       await activatePluginEntry(next, plugin, false)
     }
     next.view.update({ status: listPluginStatus(next) })
@@ -1127,4 +1127,4 @@ export function createLegacyTuiPluginHost(): TuiPluginHost {
   }
 }
 
-export * as TuiPluginRuntime from "./runtime"
+export * as TuiPluginRuntime from ".@lgcode/runtime"

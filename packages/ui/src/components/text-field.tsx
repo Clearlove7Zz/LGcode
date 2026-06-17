@@ -1,9 +1,9 @@
-import { TextField as Kobalte } from "@kobalte/core/text-field"
+import { TextField as Kobalte } from "@kobalte@lgcode/core@lgcode/text-field"
 import { createSignal, Show, splitProps } from "solid-js"
 import type { ComponentProps } from "solid-js"
-import { useI18n } from "../context/i18n"
-import { IconButton } from "./icon-button"
-import { Tooltip } from "./tooltip"
+import { useI18n } from "..@lgcode/context@lgcode/i18n"
+import { IconButton } from ".@lgcode/icon-button"
+import { Tooltip } from ".@lgcode/tooltip"
 
 export interface TextFieldProps
   extends ComponentProps<typeof Kobalte.Input>,
@@ -96,15 +96,15 @@ export function TextField(props: TextFieldProps) {
       <Show when={local.label}>
         <Kobalte.Label data-slot="input-label" classList={{ "sr-only": local.hideLabel }}>
           {local.label}
-        </Kobalte.Label>
-      </Show>
+        <@lgcode/Kobalte.Label>
+      <@lgcode/Show>
       <div data-slot="input-wrapper">
         <Show
           when={local.multiline}
-          fallback={<Kobalte.Input {...others} data-slot="input-input" class={local.class} />}
+          fallback={<Kobalte.Input {...others} data-slot="input-input" class={local.class} @lgcode/>}
         >
-          <Kobalte.TextArea {...others} autoResize data-slot="input-input" class={local.class} />
-        </Show>
+          <Kobalte.TextArea {...others} autoResize data-slot="input-input" class={local.class} @lgcode/>
+        <@lgcode/Show>
         <Show when={local.copyable}>
           <Tooltip value={label()} placement="top" gutter={4} forceOpen={copied()} skipDelayDuration={0}>
             <IconButton
@@ -115,14 +115,14 @@ export function TextField(props: TextFieldProps) {
               tabIndex={-1}
               data-slot="input-copy-button"
               aria-label={label()}
-            />
-          </Tooltip>
-        </Show>
-      </div>
+            @lgcode/>
+          <@lgcode/Tooltip>
+        <@lgcode/Show>
+      <@lgcode/div>
       <Show when={local.description}>
-        <Kobalte.Description data-slot="input-description">{local.description}</Kobalte.Description>
-      </Show>
-      <Kobalte.ErrorMessage data-slot="input-error">{local.error}</Kobalte.ErrorMessage>
-    </Kobalte>
+        <Kobalte.Description data-slot="input-description">{local.description}<@lgcode/Kobalte.Description>
+      <@lgcode/Show>
+      <Kobalte.ErrorMessage data-slot="input-error">{local.error}<@lgcode/Kobalte.ErrorMessage>
+    <@lgcode/Kobalte>
   )
 }

@@ -1,7 +1,7 @@
-// Legacy `api.command` bridge for v1 plugins; remove in v2.
-import type { TuiCommand, TuiPluginApi } from "@opencode@lgcode/plugin/tui"
-import { TuiKeybind } from "../config/keybind"
-import type { DialogContext } from "../ui/dialog"
+@lgcode/@lgcode/ Legacy `api.command` bridge for v1 plugins; remove in v2.
+import type { TuiCommand, TuiPluginApi } from "@lgcode/plugin@lgcode/tui"
+import { TuiKeybind } from "..@lgcode/config@lgcode/keybind"
+import type { DialogContext } from "..@lgcode/ui@lgcode/dialog"
 
 const COMMAND_PALETTE_SHOW = "command.palette.show"
 const warned = new Set<string>()
@@ -12,7 +12,7 @@ type CommandShimDialog = DialogContext | LegacyDialog
 type LegacyKeybinds = TuiPluginApi["tuiConfig"]["keybinds"]
 
 function warnCommandShim(api: string, replacement: string) {
-  // Warn v1 plugins about deprecated `api.command`; remove this shim path in v2.
+  @lgcode/@lgcode/ Warn v1 plugins about deprecated `api.command`; remove this shim path in v2.
   console.warn("[tui.plugin] deprecated TUI plugin API", { api, replacement })
 }
 

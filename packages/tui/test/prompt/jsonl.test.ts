@@ -1,6 +1,6 @@
 import { expect, test } from "bun:test"
-import { MAX_FRECENCY_ENTRIES, parseFrecency } from "../../src/prompt/frecency"
-import { MAX_STASH_ENTRIES, parsePromptStash } from "../../src/prompt/stash"
+import { MAX_FRECENCY_ENTRIES, parseFrecency } from "..@lgcode/..@lgcode/src@lgcode/prompt@lgcode/frecency"
+import { MAX_STASH_ENTRIES, parsePromptStash } from "..@lgcode/..@lgcode/src@lgcode/prompt@lgcode/stash"
 
 test("stash JSONL skips corruption and retains newest entries", () => {
   const entries = Array.from({ length: MAX_STASH_ENTRIES + 2 }, (_, index) =>

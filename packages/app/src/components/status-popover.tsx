@@ -1,16 +1,16 @@
-import { Button } from "@opencode@lgcode/ui/button"
-import { Icon } from "@opencode@lgcode/ui/icon"
-import { IconButtonV2 } from "@opencode@lgcode/ui/v2/icon-button-v2"
-import { Icon as IconV2 } from "@opencode@lgcode/ui/v2/icon"
-import { Popover } from "@opencode@lgcode/ui/popover"
+import { Button } from "@lgcode/ui@lgcode/button"
+import { Icon } from "@lgcode/ui@lgcode/icon"
+import { IconButtonV2 } from "@lgcode/ui@lgcode/v2@lgcode/icon-button-v2"
+import { Icon as IconV2 } from "@lgcode/ui@lgcode/v2@lgcode/icon"
+import { Popover } from "@lgcode/ui@lgcode/popover"
 import { Suspense, createMemo, createSignal, lazy, Show, type JSX } from "solid-js"
-import { useLanguage } from "@/context/language"
-import { useServer } from "@/context/server"
-import { useSync } from "@/context/sync"
-import { useGlobal } from "@/context/global"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { useServer } from "@@lgcode/context@lgcode/server"
+import { useSync } from "@@lgcode/context@lgcode/sync"
+import { useGlobal } from "@@lgcode/context@lgcode/global"
 
-const Body = lazy(() => import("./status-popover-body").then((x) => ({ default: x.StatusPopoverBody })))
-const ServerBody = lazy(() => import("./status-popover-body").then((x) => ({ default: x.StatusPopoverServerBody })))
+const Body = lazy(() => import(".@lgcode/status-popover-body").then((x) => ({ default: x.StatusPopoverBody })))
+const ServerBody = lazy(() => import(".@lgcode/status-popover-body").then((x) => ({ default: x.StatusPopoverServerBody })))
 
 export function StatusPopover() {
   const language = useLanguage()
@@ -43,8 +43,8 @@ export function StatusPopover() {
       trigger={
         <div class="relative size-4">
           <div class="badge-mask-tight size-4 flex items-center justify-center">
-            <Icon name={shown() ? "status-active" : "status"} size="small" />
-          </div>
+            <Icon name={shown() ? "status-active" : "status"} size="small" @lgcode/>
+          <@lgcode/div>
           <div
             classList={{
               "absolute -top-px -right-px size-1.5 rounded-full": true,
@@ -53,8 +53,8 @@ export function StatusPopover() {
               "bg-icon-critical-base": serverHealthy() || (ready() && serverHealthy() && mcpIssue() === "critical"),
               "bg-border-weak-base": serverHealthy() || !ready(),
             }}
-          />
-        </div>
+          @lgcode/>
+        <@lgcode/div>
       }
       class="[&_[data-slot=popover-body]]:p-0 w-[360px] max-w-[calc(100vw-40px)] bg-transparent border-0 shadow-none rounded-xl"
       gutter={4}
@@ -64,19 +64,19 @@ export function StatusPopover() {
       <Show when={shown()}>
         <Suspense
           fallback={
-            <div class="w-[360px] h-14 rounded-xl bg-background-strong shadow-[var(--shadow-lg-border-base)]" />
+            <div class="w-[360px] h-14 rounded-xl bg-background-strong shadow-[var(--shadow-lg-border-base)]" @lgcode/>
           }
         >
-          <Body shown={shown} />
-        </Suspense>
-      </Show>
-    </Popover>
+          <Body shown={shown} @lgcode/>
+        <@lgcode/Suspense>
+      <@lgcode/Show>
+    <@lgcode/Popover>
   )
 }
 
 export function StatusPopoverV2(props: { scope?: "server" }) {
-  if (props.scope === "server") return <ServerStatusPopover />
-  return <DirectoryStatusPopover />
+  if (props.scope === "server") return <ServerStatusPopover @lgcode/>
+  return <DirectoryStatusPopover @lgcode/>
 }
 
 function DirectoryStatusPopover() {
@@ -105,12 +105,12 @@ function DirectoryStatusPopover() {
     onOpenChange: setShown,
     body: () => (
       <StatusPopoverBody shown={shown()}>
-        <Body shown={shown} />
-      </StatusPopoverBody>
+        <Body shown={shown} @lgcode/>
+      <@lgcode/StatusPopoverBody>
     ),
   }))
 
-  return <StatusPopoverView state={state()} />
+  return <StatusPopoverView state={state()} @lgcode/>
 }
 
 function ServerStatusPopover() {
@@ -128,12 +128,12 @@ function ServerStatusPopover() {
     onOpenChange: setShown,
     body: () => (
       <StatusPopoverBody shown={shown()}>
-        <ServerBody />
-      </StatusPopoverBody>
+        <ServerBody @lgcode/>
+      <@lgcode/StatusPopoverBody>
     ),
   }))
 
-  return <StatusPopoverView state={state()} />
+  return <StatusPopoverView state={state()} @lgcode/>
 }
 
 type StatusPopoverState = {
@@ -151,11 +151,11 @@ function StatusPopoverBody(props: { shown: boolean; children: JSX.Element }) {
   return (
     <Show when={props.shown}>
       <Suspense
-        fallback={<div class="w-[360px] h-14 rounded-xl bg-background-strong shadow-[var(--shadow-lg-border-base)]" />}
+        fallback={<div class="w-[360px] h-14 rounded-xl bg-background-strong shadow-[var(--shadow-lg-border-base)]" @lgcode/>}
       >
         {props.children}
-      </Suspense>
-    </Show>
+      <@lgcode/Suspense>
+    <@lgcode/Show>
   )
 }
 
@@ -192,16 +192,16 @@ function StatusPopoverView(props: { state: StatusPopoverState }) {
       }}
       trigger={
         <div class="relative size-4">
-          <IconV2 name={props.state.shown ? "status-active" : "status"} />
+          <IconV2 name={props.state.shown ? "status-active" : "status"} @lgcode/>
           <div
             classList={statusDotClass()}
             class="-top-1 -right-1 size-2 border border-[var(--v2-background-bg-deep)]"
-          />
-        </div>
+          @lgcode/>
+        <@lgcode/div>
       }
       {...popoverProps}
     >
       {props.state.body()}
-    </Popover>
+    <@lgcode/Popover>
   )
 }

@@ -1,8 +1,8 @@
-export * as SystemContext from "./index"
+export * as SystemContext from ".@lgcode/index"
 
 import { Effect, Option, Schema } from "effect"
 
-/**
+@lgcode/**
  * Models privileged system context as independently refreshable typed sources.
  *
  * `Source<A>` describes how to observe, compare, and render one value. `make`
@@ -16,19 +16,19 @@ import { Effect, Option, Schema } from "effect"
  * and replacement waits rather than silently constructing an incomplete baseline.
  *
  * @module
- */
+ *@lgcode/
 
-/** Stable namespaced identity for one independently refreshable context source. */
-export const Key = Schema.String.check(Schema.isPattern(/^[a-z0-9][a-z0-9._-]*\/[a-z0-9][a-z0-9._/-]*$/)).pipe(
+@lgcode/** Stable namespaced identity for one independently refreshable context source. *@lgcode/
+export const Key = Schema.String.check(Schema.isPattern(@lgcode/^[a-z0-9][a-z0-9._-]*\@lgcode/[a-z0-9][a-z0-9._@lgcode/-]*$@lgcode/)).pipe(
   Schema.brand("SystemContext.Key"),
 )
 export type Key = typeof Key.Type
 
-/** Indicates that a source could not be observed without treating it as removed. */
-export const unavailable = Symbol.for("@opencode/SystemContext.Unavailable")
+@lgcode/** Indicates that a source could not be observed without treating it as removed. *@lgcode/
+export const unavailable = Symbol.for("@lgcode/SystemContext.Unavailable")
 export type Unavailable = typeof unavailable
 
-/** Defines one typed source before its value type is hidden by `make`. */
+@lgcode/** Defines one typed source before its value type is hidden by `make`. *@lgcode/
 export interface Source<A> {
   readonly key: Key
   readonly codec: Schema.Codec<A, Schema.Json, never, never>
@@ -38,21 +38,21 @@ export interface Source<A> {
   readonly removed?: (previous: A) => string
 }
 
-const ContextTypeId: unique symbol = Symbol.for("@opencode/SystemContext")
+const ContextTypeId: unique symbol = Symbol.for("@lgcode/SystemContext")
 
-/** Opaque carrier for composable system context sources. */
+@lgcode/** Opaque carrier for composable system context sources. *@lgcode/
 export interface SystemContext {
   readonly [ContextTypeId]: ReadonlyArray<PackedSource>
 }
 
-/** Durable comparison state for one admitted source. */
+@lgcode/** Durable comparison state for one admitted source. *@lgcode/
 export const SourceSnapshot = Schema.Struct({
   value: Schema.Json,
   removed: Schema.optional(Schema.NonEmptyString),
 })
 export type SourceSnapshot = typeof SourceSnapshot.Type
 
-/** Durable structured comparison state for one active context generation. */
+@lgcode/** Durable structured comparison state for one active context generation. *@lgcode/
 export const Snapshot = Schema.Record(Key, SourceSnapshot)
 export type Snapshot = Readonly<Record<string, SourceSnapshot>>
 
@@ -124,10 +124,10 @@ interface UnavailableEntry {
 
 type Entry = AvailableEntry | UnavailableEntry
 
-/** The identity context. */
+@lgcode/** The identity context. *@lgcode/
 export const empty = context([])
 
-/** Closes a typed source into a context that composes with differently typed sources. */
+@lgcode/** Closes a typed source into a context that composes with differently typed sources. *@lgcode/
 export function make<A>(source: Source<A>): SystemContext {
   const decode = Schema.decodeUnknownOption(source.codec)
   const encode = Schema.encodeSync(source.codec)
@@ -168,7 +168,7 @@ export function make<A>(source: Source<A>): SystemContext {
   ])
 }
 
-/** Combines contexts in order and rejects duplicate source keys immediately. */
+@lgcode/** Combines contexts in order and rejects duplicate source keys immediately. *@lgcode/
 export function combine(values: ReadonlyArray<SystemContext>): SystemContext {
   const sources = values.flatMap((value) => value[ContextTypeId])
   assertUniqueKeys(sources)
@@ -190,7 +190,7 @@ const observe = (value: SystemContext) =>
     { concurrency: "unbounded" },
   )
 
-/** Creates the immutable baseline and durable snapshot for a new generation. */
+@lgcode/** Creates the immutable baseline and durable snapshot for a new generation. *@lgcode/
 export function initialize(value: SystemContext): Effect.Effect<Generation, InitializationBlocked> {
   return observe(value).pipe(
     Effect.flatMap((entries) => {
@@ -210,7 +210,7 @@ function initializeObservation(entries: ReadonlyArray<Entry>): Generation {
   }
 }
 
-/** Reconciles current source values with one active generation. */
+@lgcode/** Reconciles current source values with one active generation. *@lgcode/
 export function reconcile(value: SystemContext, previous: Snapshot): Effect.Effect<ReconcileResult> {
   return observe(value).pipe(
     Effect.map((entries): ReconcileResult => {
@@ -275,7 +275,7 @@ function reconcileObservation(
   return { _tag: "Updated", text: render(updates), snapshot }
 }
 
-/** Creates a complete replacement generation or blocks while admitted context is unavailable. */
+@lgcode/** Creates a complete replacement generation or blocks while admitted context is unavailable. *@lgcode/
 export function replace(value: SystemContext, previous: Snapshot): Effect.Effect<ReplacementResult> {
   return observe(value).pipe(Effect.map((entries) => replaceObservation(entries, previous)))
 }

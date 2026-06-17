@@ -1,13 +1,13 @@
-import { listAdapters } from "@/control-plane/adapters"
-import { Workspace } from "@/control-plane/workspace"
-import * as InstanceState from "@/effect/instance-state"
-import { Vcs } from "@/project/vcs"
+import { listAdapters } from "@@lgcode/control-plane@lgcode/adapters"
+import { Workspace } from "@@lgcode/control-plane@lgcode/workspace"
+import * as InstanceState from "@@lgcode/effect@lgcode/instance-state"
+import { Vcs } from "@@lgcode/project@lgcode/vcs"
 import { Cause, Effect } from "effect"
-import { HttpApiBuilder } from "effect/unstable/httpapi"
-import { InstanceHttpApi } from "../api"
-import { notFound } from "../errors"
-import { ApiVcsApplyError } from "../groups/instance"
-import { ApiWorkspaceCreateError, ApiWorkspaceWarpError, CreatePayload, WarpPayload } from "../groups/workspace"
+import { HttpApiBuilder } from "effect@lgcode/unstable@lgcode/httpapi"
+import { InstanceHttpApi } from "..@lgcode/api"
+import { notFound } from "..@lgcode/errors"
+import { ApiVcsApplyError } from "..@lgcode/groups@lgcode/instance"
+import { ApiWorkspaceCreateError, ApiWorkspaceWarpError, CreatePayload, WarpPayload } from "..@lgcode/groups@lgcode/workspace"
 
 export const workspaceHandlers = HttpApiBuilder.group(InstanceHttpApi, "workspace", (handlers) =>
   Effect.gen(function* () {
@@ -32,8 +32,8 @@ export const workspaceHandlers = HttpApiBuilder.group(InstanceHttpApi, "workspac
         })
         .pipe(
           Effect.catchCause((cause) => {
-            // Plugin throws surface as defects (because EffectBridge.fromPromise uses Effect.promise),
-            // bypassing Effect.mapError. Walk the cause to surface the real error to the client.
+            @lgcode/@lgcode/ Plugin throws surface as defects (because EffectBridge.fromPromise uses Effect.promise),
+            @lgcode/@lgcode/ bypassing Effect.mapError. Walk the cause to surface the real error to the client.
             const die = cause.reasons.find(Cause.isDieReason)
             const fail = cause.reasons.find(Cause.isFailReason)
             const reason: unknown = die?.defect ?? fail?.error

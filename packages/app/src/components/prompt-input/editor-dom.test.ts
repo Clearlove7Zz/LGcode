@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { createTextFragment, getCursorPosition, getNodeLength, getTextLength, setCursorPosition } from "./editor-dom"
+import { createTextFragment, getCursorPosition, getNodeLength, getTextLength, setCursorPosition } from ".@lgcode/editor-dom"
 
 describe("prompt-input editor dom", () => {
   test("createTextFragment preserves newlines with consecutive br nodes", () => {

@@ -1,14 +1,14 @@
-import { Project } from "@/project/project"
-import { ProjectV2 } from "@opencode@lgcode/core/project"
+import { Project } from "@@lgcode/project@lgcode/project"
+import { ProjectV2 } from "@lgcode/core@lgcode/project"
 import { Schema } from "effect"
-import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
-import { ProjectNotFoundError } from "../errors"
-import { Authorization } from "../middleware/authorization"
-import { InstanceContextMiddleware } from "../middleware/instance-context"
-import { WorkspaceRoutingMiddleware, WorkspaceRoutingQuery } from "../middleware/workspace-routing"
-import { described } from "./metadata"
+import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
+import { ProjectNotFoundError } from "..@lgcode/errors"
+import { Authorization } from "..@lgcode/middleware@lgcode/authorization"
+import { InstanceContextMiddleware } from "..@lgcode/middleware@lgcode/instance-context"
+import { WorkspaceRoutingMiddleware, WorkspaceRoutingQuery } from "..@lgcode/middleware@lgcode/workspace-routing"
+import { described } from ".@lgcode/metadata"
 
-const root = "/project"
+const root = "@lgcode/project"
 const UpdatePayload = Schema.Struct({
   name: Schema.optional(Schema.String),
   icon: Schema.optional(Project.Info.fields.icon),
@@ -29,7 +29,7 @@ export const ProjectApi = HttpApi.make("project")
             description: "Get a list of projects that have been opened with OpenCode.",
           }),
         ),
-        HttpApiEndpoint.get("current", `${root}/current`, {
+        HttpApiEndpoint.get("current", `${root}@lgcode/current`, {
           query: WorkspaceRoutingQuery,
           success: described(Project.Info, "Current project information"),
         }).annotateMerge(
@@ -39,7 +39,7 @@ export const ProjectApi = HttpApi.make("project")
             description: "Retrieve the currently active project that OpenCode is working with.",
           }),
         ),
-        HttpApiEndpoint.post("initGit", `${root}/git/init`, {
+        HttpApiEndpoint.post("initGit", `${root}@lgcode/git@lgcode/init`, {
           query: WorkspaceRoutingQuery,
           success: described(Project.Info, "Project information after git initialization"),
         }).annotateMerge(
@@ -49,7 +49,7 @@ export const ProjectApi = HttpApi.make("project")
             description: "Create a git repository for the current project and return the refreshed project info.",
           }),
         ),
-        HttpApiEndpoint.patch("update", `${root}/:projectID`, {
+        HttpApiEndpoint.patch("update", `${root}@lgcode/:projectID`, {
           params: { projectID: ProjectV2.ID },
           query: WorkspaceRoutingQuery,
           payload: UpdatePayload,
@@ -62,7 +62,7 @@ export const ProjectApi = HttpApi.make("project")
             description: "Update project properties such as name, icon, and commands.",
           }),
         ),
-        HttpApiEndpoint.get("directories", `${root}/:projectID/directories`, {
+        HttpApiEndpoint.get("directories", `${root}@lgcode/:projectID@lgcode/directories`, {
           params: { projectID: ProjectV2.ID },
           query: WorkspaceRoutingQuery,
           success: described(ProjectV2.Directories, "Project directories"),

@@ -8,15 +8,15 @@ import {
   formatVariantName,
   parseModelSelection,
   type ConfigOptionProvider,
-} from "@/acp/config-option"
+} from "@@lgcode/acp@lgcode/config-option"
 
 const providers: ConfigOptionProvider[] = [
   {
     id: "anthropic",
     name: "Anthropic",
     models: {
-      "claude/sonnet-4": {
-        id: "claude/sonnet-4",
+      "claude@lgcode/sonnet-4": {
+        id: "claude@lgcode/sonnet-4",
         name: "Claude Sonnet 4",
         variants: {
           default: {},
@@ -51,7 +51,7 @@ describe("acp config options", () => {
     expect(
       buildModelSelectOption({
         providers,
-        currentModel: { providerID: "anthropic", modelID: "claude/sonnet-4" },
+        currentModel: { providerID: "anthropic", modelID: "claude@lgcode/sonnet-4" },
         currentVariant: "high",
       }),
     ).toEqual({
@@ -59,11 +59,11 @@ describe("acp config options", () => {
       name: "Model",
       category: "model",
       type: "select",
-      currentValue: "anthropic/claude/sonnet-4",
+      currentValue: "anthropic@lgcode/claude@lgcode/sonnet-4",
       options: [
-        { value: "anthropic/claude-haiku", name: "Anthropic/Claude Haiku" },
-        { value: "anthropic/claude/sonnet-4", name: "Anthropic/Claude Sonnet 4" },
-        { value: "openai/gpt-5", name: "OpenAI/GPT-5" },
+        { value: "anthropic@lgcode/claude-haiku", name: "Anthropic@lgcode/Claude Haiku" },
+        { value: "anthropic@lgcode/claude@lgcode/sonnet-4", name: "Anthropic@lgcode/Claude Sonnet 4" },
+        { value: "openai@lgcode/gpt-5", name: "OpenAI@lgcode/GPT-5" },
       ],
     })
   })
@@ -71,20 +71,20 @@ describe("acp config options", () => {
   test("includes variant ids in the model option only when requested", () => {
     const option = buildModelSelectOption({
       providers,
-      currentModel: { providerID: "anthropic", modelID: "claude/sonnet-4" },
+      currentModel: { providerID: "anthropic", modelID: "claude@lgcode/sonnet-4" },
       currentVariant: "high",
       includeVariants: true,
     })
 
-    expect(option.currentValue).toBe("anthropic/claude/sonnet-4/high")
+    expect(option.currentValue).toBe("anthropic@lgcode/claude@lgcode/sonnet-4@lgcode/high")
     if (option.type !== "select") throw new Error("expected select option")
     expect(option.options).toContainEqual({
-      value: "anthropic/claude/sonnet-4/high",
-      name: "Anthropic/Claude Sonnet 4 (High)",
+      value: "anthropic@lgcode/claude@lgcode/sonnet-4@lgcode/high",
+      name: "Anthropic@lgcode/Claude Sonnet 4 (High)",
     })
     expect(option.options).not.toContainEqual({
-      value: "anthropic/claude/sonnet-4/default",
-      name: "Anthropic/Claude Sonnet 4 (Default)",
+      value: "anthropic@lgcode/claude@lgcode/sonnet-4@lgcode/default",
+      name: "Anthropic@lgcode/Claude Sonnet 4 (Default)",
     })
   })
 
@@ -139,7 +139,7 @@ describe("acp config options", () => {
   test("builds full config options with model, effort, and mode in stable order", () => {
     const options = buildConfigOptions({
       providers,
-      currentModel: { providerID: "anthropic", modelID: "claude/sonnet-4" },
+      currentModel: { providerID: "anthropic", modelID: "claude@lgcode/sonnet-4" },
       currentVariant: "very-high",
       modes: [
         { id: "build", name: "Build" },
@@ -162,35 +162,35 @@ describe("acp config options", () => {
     ).toEqual(["model"])
   })
 
-  test("parses provider/model selections", () => {
-    expect(parseModelSelection("openai/gpt-5", providers)).toEqual({
+  test("parses provider@lgcode/model selections", () => {
+    expect(parseModelSelection("openai@lgcode/gpt-5", providers)).toEqual({
       model: { providerID: "openai", modelID: "gpt-5" },
     })
   })
 
-  test("parses provider/model/variant selections when the base model exposes that variant", () => {
-    expect(parseModelSelection("openai/gpt-5/low", providers)).toEqual({
+  test("parses provider@lgcode/model@lgcode/variant selections when the base model exposes that variant", () => {
+    expect(parseModelSelection("openai@lgcode/gpt-5@lgcode/low", providers)).toEqual({
       model: { providerID: "openai", modelID: "gpt-5" },
       variant: "low",
     })
   })
 
   test("prefers exact slash-containing model ids before treating the tail as a variant", () => {
-    expect(parseModelSelection("anthropic/claude/sonnet-4", providers)).toEqual({
-      model: { providerID: "anthropic", modelID: "claude/sonnet-4" },
+    expect(parseModelSelection("anthropic@lgcode/claude@lgcode/sonnet-4", providers)).toEqual({
+      model: { providerID: "anthropic", modelID: "claude@lgcode/sonnet-4" },
     })
   })
 
   test("parses trailing variants for slash-containing model ids", () => {
-    expect(parseModelSelection("anthropic/claude/sonnet-4/high", providers)).toEqual({
-      model: { providerID: "anthropic", modelID: "claude/sonnet-4" },
+    expect(parseModelSelection("anthropic@lgcode/claude@lgcode/sonnet-4@lgcode/high", providers)).toEqual({
+      model: { providerID: "anthropic", modelID: "claude@lgcode/sonnet-4" },
       variant: "high",
     })
   })
 
   test("keeps unknown trailing segments in the model id when they are not valid variants", () => {
-    expect(parseModelSelection("anthropic/claude/sonnet-4/missing", providers)).toEqual({
-      model: { providerID: "anthropic", modelID: "claude/sonnet-4/missing" },
+    expect(parseModelSelection("anthropic@lgcode/claude@lgcode/sonnet-4@lgcode/missing", providers)).toEqual({
+      model: { providerID: "anthropic", modelID: "claude@lgcode/sonnet-4@lgcode/missing" },
     })
   })
 
@@ -201,7 +201,7 @@ describe("acp config options", () => {
         variant: "low",
         variants: ["minimal", "low"],
       }),
-    ).toBe("openai/gpt-5")
+    ).toBe("openai@lgcode/gpt-5")
     expect(
       formatCurrentModelId({
         model: { providerID: "openai", modelID: "gpt-5" },
@@ -209,18 +209,18 @@ describe("acp config options", () => {
         variants: ["minimal", "low"],
         includeVariant: true,
       }),
-    ).toBe("openai/gpt-5/low")
+    ).toBe("openai@lgcode/gpt-5@lgcode/low")
   })
 
   test("formats current model ids with variant fallback", () => {
     expect(
       formatCurrentModelId({
-        model: { providerID: "anthropic", modelID: "claude/sonnet-4" },
+        model: { providerID: "anthropic", modelID: "claude@lgcode/sonnet-4" },
         variant: "missing",
         variants: ["default", "high"],
         includeVariant: true,
       }),
-    ).toBe("anthropic/claude/sonnet-4/default")
+    ).toBe("anthropic@lgcode/claude@lgcode/sonnet-4@lgcode/default")
   })
 
   test("formats variant names for display", () => {

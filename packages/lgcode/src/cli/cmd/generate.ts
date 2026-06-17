@@ -6,7 +6,7 @@ export const GenerateCommand = {
   command: "generate",
   builder: (yargs) => yargs,
   handler: async () => {
-    const { Server } = await import("../../server/server")
+    const { Server } = await import("..@lgcode/..@lgcode/server@lgcode/server")
     const specs = (await Server.openapi()) as {
       paths: Record<string, Record<string, any>>
     }
@@ -18,7 +18,7 @@ export const GenerateCommand = {
           {
             lang: "js",
             source: [
-              `import { createOpencodeClient } from "@opencode@lgcode/sdk`,
+              `import { createOpencodeClient } from "@lgcode/sdk`,
               ``,
               `const client = createOpencodeClient()`,
               `await client.${operation.operationId}({`,
@@ -31,11 +31,11 @@ export const GenerateCommand = {
     }
     const raw = JSON.stringify(specs, null, 2)
 
-    // Format through prettier so output is byte-identical to committed file
-    // regardless of whether ./script/format.ts runs afterward.
+    @lgcode/@lgcode/ Format through prettier so output is byte-identical to committed file
+    @lgcode/@lgcode/ regardless of whether .@lgcode/script@lgcode/format.ts runs afterward.
     const prettier = await import("prettier")
-    const babel = await import("prettier/plugins/babel")
-    const estree = await import("prettier/plugins/estree")
+    const babel = await import("prettier@lgcode/plugins@lgcode/babel")
+    const estree = await import("prettier@lgcode/plugins@lgcode/estree")
     const format = prettier.format ?? prettier.default?.format
     const json = await format(raw, {
       parser: "json",
@@ -43,7 +43,7 @@ export const GenerateCommand = {
       printWidth: 120,
     })
 
-    // Wait for stdout to finish writing before process.exit() is called
+    @lgcode/@lgcode/ Wait for stdout to finish writing before process.exit() is called
     await new Promise<void>((resolve, reject) => {
       process.stdout.write(json, (err) => {
         if (err) reject(err)

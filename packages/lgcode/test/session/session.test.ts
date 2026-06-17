@@ -1,20 +1,20 @@
 import { describe, expect } from "bun:test"
-import { SessionV1 } from "@opencode@lgcode/core/v1/session"
-import { Database } from "@opencode@lgcode/core/database/database"
-import { EventV2 } from "@opencode@lgcode/core/event"
-import { SessionProjector } from "@opencode@lgcode/core/session/projector"
+import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { EventV2 } from "@lgcode/core@lgcode/event"
+import { SessionProjector } from "@lgcode/core@lgcode/session@lgcode/projector"
 import { Deferred, Effect, Exit, Layer } from "effect"
-import { Session as SessionNs } from "@/session/session"
-import { MessageV2 } from "../../src/session/message-v2"
-import { MessageID, PartID, type SessionID } from "../../src/session/schema"
-import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
-import { provideInstance, testInstanceStoreLayer, tmpdirScoped } from "../fixture/fixture"
-import { testEffect } from "../lib/effect"
-import { Storage } from "@/storage/storage"
-import { RuntimeFlags } from "@/effect/runtime-flags"
-import { BackgroundJob } from "@/background/job"
-import { EventV2Bridge } from "@/event-v2-bridge"
-import { GlobalBus } from "@/bus/global"
+import { Session as SessionNs } from "@@lgcode/session@lgcode/session"
+import { MessageV2 } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/message-v2"
+import { MessageID, PartID, type SessionID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
+import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
+import { provideInstance, testInstanceStoreLayer, tmpdirScoped } from "..@lgcode/fixture@lgcode/fixture"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { Storage } from "@@lgcode/storage@lgcode/storage"
+import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
+import { BackgroundJob } from "@@lgcode/background@lgcode/job"
+import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
+import { GlobalBus } from "@@lgcode/bus@lgcode/global"
 
 const it = testEffect(
   Layer.mergeAll(
@@ -91,7 +91,7 @@ describe("session.created event", () => {
 
       const info = yield* session.create({})
       yield* session.setTitle({ sessionID: info.id, title: "updated" })
-      const receivedEvents = yield* awaitDeferred(received, "timed out waiting for session created/updated events")
+      const receivedEvents = yield* awaitDeferred(received, "timed out waiting for session created@lgcode/updated events")
 
       expect(receivedEvents).toContain("created")
       expect(receivedEvents).toContain("updated")
@@ -148,9 +148,9 @@ describe("step-finish token propagation via event", () => {
           mode: "",
         } as unknown as SessionV1.Info)
 
-        // Event subscribers receive readonly Schema.Type payloads; `SessionV1.Part`
-        // is the mutable domain type. Cast bridges the two — safe because the
-        // test only reads the value afterwards.
+        @lgcode/@lgcode/ Event subscribers receive readonly Schema.Type payloads; `SessionV1.Part`
+        @lgcode/@lgcode/ is the mutable domain type. Cast bridges the two — safe because the
+        @lgcode/@lgcode/ test only reads the value afterwards.
         const received = yield* Deferred.make<SessionV1.Part>()
         const unsub = yield* events.listen((event) => {
           if (event.type === MessageV2.Event.PartUpdated.type)

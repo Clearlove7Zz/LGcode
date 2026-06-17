@@ -1,9 +1,9 @@
 import { Component, For, Show } from "solid-js"
-import { FileIcon } from "@opencode@lgcode/ui/file-icon"
-import { IconButton } from "@opencode@lgcode/ui/icon-button"
-import { Tooltip } from "@opencode@lgcode/ui/tooltip"
-import { getDirectory, getFilename, getFilenameTruncated } from "@opencode@lgcode/core/util/path"
-import type { ContextItem } from "@/context/prompt"
+import { FileIcon } from "@lgcode/ui@lgcode/file-icon"
+import { IconButton } from "@lgcode/ui@lgcode/icon-button"
+import { Tooltip } from "@lgcode/ui@lgcode/tooltip"
+import { getDirectory, getFilename, getFilenameTruncated } from "@lgcode/core@lgcode/util@lgcode/path"
+import type { ContextItem } from "@@lgcode/context@lgcode/prompt"
 
 type PromptContextItem = ContextItem & { key: string }
 
@@ -32,9 +32,9 @@ export const PromptContextItems: Component<ContextItemsProps> = (props) => {
                   <span class="flex max-w-[300px]">
                     <span class="text-text-invert-base truncate-start [unicode-bidi:plaintext] min-w-0">
                       {directory}
-                    </span>
-                    <span class="shrink-0">{filename}</span>
-                  </span>
+                    <@lgcode/span>
+                    <span class="shrink-0">{filename}<@lgcode/span>
+                  <@lgcode/span>
                 }
                 placement="top"
                 openDelay={2000}
@@ -49,19 +49,19 @@ export const PromptContextItems: Component<ContextItemsProps> = (props) => {
                   onClick={() => props.openComment(item)}
                 >
                   <div class="flex items-center gap-1.5">
-                    <FileIcon node={{ path: item.path, type: "file" }} class="shrink-0 size-3.5" />
+                    <FileIcon node={{ path: item.path, type: "file" }} class="shrink-0 size-3.5" @lgcode/>
                     <div class="flex items-center text-[12px] min-w-0 font-medium leading-5">
-                      <span class="text-text-strong whitespace-nowrap">{label}</span>
+                      <span class="text-text-strong whitespace-nowrap">{label}<@lgcode/span>
                       <Show when={item.selection}>
                         {(sel) => (
                           <span class="text-text-weak whitespace-nowrap shrink-0">
                             {sel().startLine === sel().endLine
                               ? `:${sel().startLine}`
                               : `:${sel().startLine}-${sel().endLine}`}
-                          </span>
+                          <@lgcode/span>
                         )}
-                      </Show>
-                    </div>
+                      <@lgcode/Show>
+                    <@lgcode/div>
                     <IconButton
                       type="button"
                       icon="close-small"
@@ -72,17 +72,17 @@ export const PromptContextItems: Component<ContextItemsProps> = (props) => {
                         props.remove(item)
                       }}
                       aria-label={props.t("prompt.context.removeFile")}
-                    />
-                  </div>
+                    @lgcode/>
+                  <@lgcode/div>
                   <Show when={item.comment}>
-                    {(comment) => <div class="text-12-regular text-text-strong ml-5 pr-1 truncate">{comment()}</div>}
-                  </Show>
-                </div>
-              </Tooltip>
+                    {(comment) => <div class="text-12-regular text-text-strong ml-5 pr-1 truncate">{comment()}<@lgcode/div>}
+                  <@lgcode/Show>
+                <@lgcode/div>
+              <@lgcode/Tooltip>
             )
           }}
-        </For>
-      </div>
-    </Show>
+        <@lgcode/For>
+      <@lgcode/div>
+    <@lgcode/Show>
   )
 }

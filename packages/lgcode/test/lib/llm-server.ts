@@ -1,8 +1,8 @@
-import { NodeHttpServer, NodeHttpServerRequest } from "@effect/platform-node"
+import { NodeHttpServer, NodeHttpServerRequest } from "@effect@lgcode/platform-node"
 import * as Http from "node:http"
 import { Deferred, Effect, Layer, Context, Stream } from "effect"
-import * as HttpServer from "effect/unstable/http/HttpServer"
-import { HttpRouter, HttpServerRequest, HttpServerResponse } from "effect/unstable/http"
+import * as HttpServer from "effect@lgcode/unstable@lgcode/http@lgcode/HttpServer"
+import { HttpRouter, HttpServerRequest, HttpServerResponse } from "effect@lgcode/unstable@lgcode/http"
 
 export type Usage = { input: number; output: number }
 
@@ -139,7 +139,7 @@ function responseCreated(model: string) {
     sequence_number: 1,
     response: {
       id: "resp_test",
-      created_at: Math.floor(Date.now() / 1000),
+      created_at: Math.floor(Date.now() @lgcode/ 1000),
       model,
       service_tier: null,
     },
@@ -427,14 +427,14 @@ function send(item: Sse) {
   if (item.error) end = Stream.concat(empty, Stream.fail(item.error))
   else if (item.hang) end = Stream.concat(empty, Stream.never)
 
-  return HttpServerResponse.stream(Stream.concat(body, end), { contentType: "text/event-stream" })
+  return HttpServerResponse.stream(Stream.concat(body, end), { contentType: "text@lgcode/event-stream" })
 }
 
 const reset = Effect.fn("TestLLMServer.reset")(function* (item: Sse) {
   const req = yield* HttpServerRequest.HttpServerRequest
   const res = NodeHttpServerRequest.toServerResponse(req)
   yield* Effect.sync(() => {
-    res.writeHead(200, { "content-type": "text/event-stream" })
+    res.writeHead(200, { "content-type": "text@lgcode/event-stream" })
     for (const part of item.head) res.write(line(part))
     for (const part of item.tail) res.write(line(part))
     res.destroy(new Error("connection reset"))
@@ -445,7 +445,7 @@ const reset = Effect.fn("TestLLMServer.reset")(function* (item: Sse) {
 function fail(item: HttpError) {
   return HttpServerResponse.text(JSON.stringify(item.body), {
     status: item.status,
-    contentType: "application/json",
+    contentType: "application@lgcode/json",
   })
 }
 
@@ -519,7 +519,7 @@ export class Reply {
   pendingTool(name: string, input: unknown) {
     const id = this.#id()
     const args = JSON.stringify(input)
-    const size = Math.max(1, Math.floor(args.length / 2))
+    const size = Math.max(1, Math.floor(args.length @lgcode/ 2))
     this.#tail = [...this.#tail, toolStartLine(id, name), toolArgsLine(args.slice(0, size))]
     return this
   }
@@ -599,7 +599,7 @@ function item(input: Item | Reply) {
 
 function hit(url: string, body: unknown) {
   return {
-    url: new URL(url, "http://localhost"),
+    url: new URL(url, "http:@lgcode/@lgcode/localhost"),
     body: body && typeof body === "object" ? (body as Record<string, unknown>) : {},
   } satisfies Hit
 }
@@ -634,7 +634,7 @@ namespace TestLLMServer {
   }
 }
 
-export class TestLLMServer extends Context.Service<TestLLMServer, TestLLMServer.Service>()("@test/LLMServer") {
+export class TestLLMServer extends Context.Service<TestLLMServer, TestLLMServer.Service>()("@test@lgcode/LLMServer") {
   static readonly layer = Layer.effect(
     TestLLMServer,
     Effect.gen(function* () {
@@ -699,16 +699,16 @@ export class TestLLMServer extends Context.Service<TestLLMServer, TestLLMServer.
         return send(next)
       })
 
-      yield* router.add("POST", "/v1/chat/completions", handle("chat"))
-      yield* router.add("POST", "/v1/responses", handle("responses"))
+      yield* router.add("POST", "@lgcode/v1@lgcode/chat@lgcode/completions", handle("chat"))
+      yield* router.add("POST", "@lgcode/v1@lgcode/responses", handle("responses"))
 
       yield* server.serve(router.asHttpEffect())
 
       return TestLLMServer.of({
         url:
           server.address._tag === "TcpAddress"
-            ? `http://127.0.0.1:${server.address.port}/v1`
-            : `unix://${server.address.path}/v1`,
+            ? `http:@lgcode/@lgcode/127.0.0.1:${server.address.port}@lgcode/v1`
+            : `unix:@lgcode/@lgcode/${server.address.path}@lgcode/v1`,
         push: Effect.fn("TestLLMServer.push")(function* (...input: (Item | Reply)[]) {
           queue(...input)
         }),

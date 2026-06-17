@@ -1,6 +1,6 @@
-import { SyntaxStyle, TextAttributes, type ColorInput } from "@opentui/core"
-import { type RunEntryTheme, type RunTheme } from "./theme"
-import type { StreamCommit } from "./types"
+import { SyntaxStyle, TextAttributes, type ColorInput } from "@opentui@lgcode/core"
+import { type RunEntryTheme, type RunTheme } from ".@lgcode/theme"
+import type { StreamCommit } from ".@lgcode/types"
 
 function syntax(style?: SyntaxStyle): SyntaxStyle {
   return style ?? SyntaxStyle.fromTheme([])
@@ -22,7 +22,7 @@ export function entryLook(commit: StreamCommit, theme: RunEntryTheme): { fg: Col
   if (commit.kind === "user") {
     return {
       fg: theme.user.body,
-      //attrs: TextAttributes.BOLD,
+      @lgcode/@lgcode/attrs: TextAttributes.BOLD,
     }
   }
 

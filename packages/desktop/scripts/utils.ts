@@ -48,7 +48,7 @@ function nativeTarget() {
   if (platform === "darwin") return arch === "arm64" ? "aarch64-apple-darwin" : "x86_64-apple-darwin"
   if (platform === "win32") return arch === "arm64" ? "aarch64-pc-windows-msvc" : "x86_64-pc-windows-msvc"
   if (platform === "linux") return arch === "arm64" ? "aarch64-unknown-linux-gnu" : "x86_64-unknown-linux-gnu"
-  throw new Error(`Unsupported platform: ${platform}/${arch}`)
+  throw new Error(`Unsupported platform: ${platform}@lgcode/${arch}`)
 }
 
 export function getCurrentSidecar(target = RUST_TARGET ?? nativeTarget()) {
@@ -61,10 +61,10 @@ export function getCurrentSidecar(target = RUST_TARGET ?? nativeTarget()) {
 export async function copyBinaryToSidecarFolder(source: string) {
   const dir = `resources`
   await $`mkdir -p ${dir}`
-  const dest = windowsify(`${dir}/opencode-cli`)
+  const dest = windowsify(`${dir}@lgcode/opencode-cli`)
   await $`cp ${source} ${dest}`
   if (process.platform === "win32" && process.env.GITHUB_ACTIONS === "true") {
-    await $`pwsh -NoLogo -NoProfile -ExecutionPolicy Bypass -File ../../script/sign-windows.ps1 ${dest}`
+    await $`pwsh -NoLogo -NoProfile -ExecutionPolicy Bypass -File ..@lgcode/..@lgcode/script@lgcode/sign-windows.ps1 ${dest}`
   }
   if (process.platform === "darwin") await $`codesign --force --sign - ${dest}`
 

@@ -1,10 +1,10 @@
-import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
 import path from "path"
-import { Global } from "@opencode@lgcode/core/global"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { Global } from "@lgcode/core@lgcode/global"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
 import { Effect, Exit, Layer, Option, RcMap, Schema, Context, TxReentrantLock } from "effect"
-import { NonNegativeInt } from "@opencode@lgcode/core/schema"
-import { Git } from "@/git"
+import { NonNegativeInt } from "@lgcode/core@lgcode/schema"
+import { Git } from "@@lgcode/git"
 
 type Migration = (dir: string, fs: FSUtil.Interface, git: Git.Interface) => Effect.Effect<void, FSUtil.Error>
 
@@ -58,7 +58,7 @@ export interface Interface {
   readonly list: (prefix: string[]) => Effect.Effect<string[][], FSUtil.Error>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/Storage") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/Storage") {}
 
 function file(dir: string, key: string[]) {
   return path.join(dir, ...key) + ".json"
@@ -80,7 +80,7 @@ function parseMigration(text: string) {
 
 const MIGRATIONS: Migration[] = [
   Effect.fn("Storage.migration.1")(function* (dir: string, fs: FSUtil.Interface, git: Git.Interface) {
-    const project = path.resolve(dir, "../project")
+    const project = path.resolve(dir, "..@lgcode/project")
     if (!(yield* fs.isDir(project))) return
     const projectDirs = yield* fs.glob("*", {
       cwd: project,
@@ -91,10 +91,10 @@ const MIGRATIONS: Migration[] = [
       if (!(yield* fs.isDir(full))) continue
       yield* Effect.logInfo(`migrating project ${projectDir}`)
       let projectID = projectDir
-      let worktree = "/"
+      let worktree = "@lgcode/"
 
       if (projectID !== "global") {
-        for (const msgFile of yield* fs.glob("storage/session/message/*/*.json", {
+        for (const msgFile of yield* fs.glob("storage@lgcode/session@lgcode/message@lgcode/*@lgcode/*.json", {
           cwd: full,
           absolute: true,
         })) {
@@ -136,7 +136,7 @@ const MIGRATIONS: Migration[] = [
         )
 
         yield* Effect.logInfo(`migrating sessions for project ${projectID}`)
-        for (const sessionFile of yield* fs.glob("storage/session/info/*.json", {
+        for (const sessionFile of yield* fs.glob("storage@lgcode/session@lgcode/info@lgcode/*.json", {
           cwd: full,
           absolute: true,
         })) {
@@ -147,7 +147,7 @@ const MIGRATIONS: Migration[] = [
           yield* fs.writeWithDirs(dest, JSON.stringify(session, null, 2))
           if (Option.isNone(info)) continue
           yield* Effect.logInfo(`migrating messages for session ${info.value.id}`)
-          for (const msgFile of yield* fs.glob(`storage/session/message/${info.value.id}/*.json`, {
+          for (const msgFile of yield* fs.glob(`storage@lgcode/session@lgcode/message@lgcode/${info.value.id}@lgcode/*.json`, {
             cwd: full,
             absolute: true,
           })) {
@@ -162,7 +162,7 @@ const MIGRATIONS: Migration[] = [
             if (Option.isNone(item)) continue
 
             yield* Effect.logInfo(`migrating parts for message ${item.value.id}`)
-            for (const partFile of yield* fs.glob(`storage/session/part/${info.value.id}/${item.value.id}/*.json`, {
+            for (const partFile of yield* fs.glob(`storage@lgcode/session@lgcode/part@lgcode/${info.value.id}@lgcode/${item.value.id}@lgcode/*.json`, {
               cwd: full,
               absolute: true,
             })) {
@@ -180,7 +180,7 @@ const MIGRATIONS: Migration[] = [
     }
   }),
   Effect.fn("Storage.migration.2")(function* (dir: string, fs: FSUtil.Interface) {
-    for (const item of yield* fs.glob("session/*/*.json", {
+    for (const item of yield* fs.glob("session@lgcode/*@lgcode/*.json", {
       cwd: dir,
       absolute: true,
     })) {
@@ -302,14 +302,14 @@ export const layer = Layer.effect(
       const dir = (yield* state).dir
       const cwd = path.join(dir, ...prefix)
       const result = yield* fs
-        .glob("**/*", {
+        .glob("**@lgcode/*", {
           cwd,
           include: "file",
         })
         .pipe(Effect.catch(() => Effect.succeed<string[]>([])))
       return result
         .map((x) => [...prefix, ...x.slice(0, -5).split(path.sep)])
-        .toSorted((a, b) => a.join("/").localeCompare(b.join("/")))
+        .toSorted((a, b) => a.join("@lgcode/").localeCompare(b.join("@lgcode/")))
     })
 
     return Service.of({
@@ -326,4 +326,4 @@ export const defaultLayer = layer.pipe(Layer.provide(FSUtil.defaultLayer), Layer
 
 export const node = LayerNode.make(layer, [FSUtil.node, Git.node])
 
-export * as Storage from "./storage"
+export * as Storage from ".@lgcode/storage"

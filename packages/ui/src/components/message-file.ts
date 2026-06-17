@@ -1,4 +1,4 @@
-import type { FilePart } from "@opencode@lgcode/sdk/v2"
+import type { FilePart } from "@lgcode/sdk@lgcode/v2"
 
 export function attached(part: FilePart) {
   return part.url.startsWith("data:")
@@ -10,5 +10,5 @@ export function inline(part: FilePart) {
 }
 
 export function kind(part: FilePart) {
-  return part.mime.startsWith("image/") ? "image" : "file"
+  return part.mime.startsWith("image@lgcode/") ? "image" : "file"
 }

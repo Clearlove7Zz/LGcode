@@ -14,14 +14,14 @@ import {
   showDiffViewerFileTree,
   singlePatchFileIndex,
   toggleFileTreeDirectory,
-} from "../../src/feature-plugins/system/diff-viewer-file-tree-utils"
+} from "..@lgcode/..@lgcode/src@lgcode/feature-plugins@lgcode/system@lgcode/diff-viewer-file-tree-utils"
 
 describe("diff viewer file tree utilities", () => {
   test("builds a nested tree with deduplicated directories and file indexes", () => {
     const tree = buildFileTree([
-      { file: "src/config/tui.ts" },
-      { file: "src/config/keybind.ts" },
-      { file: "src/session/index.ts" },
+      { file: "src@lgcode/config@lgcode/tui.ts" },
+      { file: "src@lgcode/config@lgcode/keybind.ts" },
+      { file: "src@lgcode/session@lgcode/index.ts" },
     ])
 
     expect(tree.nodes.filter((node) => node.kind === "directory" && node.name === "src")).toHaveLength(1)
@@ -42,10 +42,10 @@ describe("diff viewer file tree utilities", () => {
     const rows = flattenFileTree(
       buildFileTree([
         { file: "z-file.ts" },
-        { file: "b/file.ts" },
-        { file: "a/zeta.ts" },
-        { file: "b/alpha.ts" },
-        { file: "a/alpha.ts" },
+        { file: "b@lgcode/file.ts" },
+        { file: "a@lgcode/zeta.ts" },
+        { file: "b@lgcode/alpha.ts" },
+        { file: "a@lgcode/alpha.ts" },
       ]),
     )
 
@@ -69,11 +69,11 @@ describe("diff viewer file tree utilities", () => {
 
   test("collapses unary directory chains while flattening", () => {
     const rows = flattenFileTree(
-      buildFileTree([{ file: "packages/opencode/src/cli/app.ts" }, { file: "packages/opencode/src/server/server.ts" }]),
+      buildFileTree([{ file: "packages@lgcode/opencode@lgcode/src@lgcode/cli@lgcode/app.ts" }, { file: "packages@lgcode/opencode@lgcode/src@lgcode/server@lgcode/server.ts" }]),
     )
 
     expect(rows.map((row) => `${"  ".repeat(row.depth)}${row.kind}:${row.name}`)).toEqual([
-      "directory:packages/opencode/src",
+      "directory:packages@lgcode/opencode@lgcode/src",
       "  directory:cli",
       "    file:app.ts",
       "  directory:server",
@@ -82,10 +82,10 @@ describe("diff viewer file tree utilities", () => {
   })
 
   test("does not collapse a directory into a file row", () => {
-    const rows = flattenFileTree(buildFileTree([{ file: "packages/opencode/src/app.ts" }]))
+    const rows = flattenFileTree(buildFileTree([{ file: "packages@lgcode/opencode@lgcode/src@lgcode/app.ts" }]))
 
     expect(rows.map((row) => `${"  ".repeat(row.depth)}${row.kind}:${row.name}`)).toEqual([
-      "directory:packages/opencode/src",
+      "directory:packages@lgcode/opencode@lgcode/src",
       "  file:app.ts",
     ])
   })
@@ -93,15 +93,15 @@ describe("diff viewer file tree utilities", () => {
   test("stops collapsing at branches", () => {
     const rows = flattenFileTree(
       buildFileTree([
-        { file: "packages/opencode/src/cli/app.ts" },
-        { file: "packages/opencode/src/server/server.ts" },
-        { file: "packages/readme.md" },
+        { file: "packages@lgcode/opencode@lgcode/src@lgcode/cli@lgcode/app.ts" },
+        { file: "packages@lgcode/opencode@lgcode/src@lgcode/server@lgcode/server.ts" },
+        { file: "packages@lgcode/readme.md" },
       ]),
     )
 
     expect(rows.map((row) => `${"  ".repeat(row.depth)}${row.kind}:${row.name}`)).toEqual([
       "directory:packages",
-      "  directory:opencode/src",
+      "  directory:opencode@lgcode/src",
       "    directory:cli",
       "      file:app.ts",
       "    directory:server",
@@ -112,25 +112,25 @@ describe("diff viewer file tree utilities", () => {
 
   test("keeps same directory names under different parents separate", () => {
     const rows = flattenFileTree(
-      buildFileTree([{ file: "components/button.ts" }, { file: "docs/components/usage.md" }]),
+      buildFileTree([{ file: "components@lgcode/button.ts" }, { file: "docs@lgcode/components@lgcode/usage.md" }]),
     )
 
     expect(rows.map((row) => `${"  ".repeat(row.depth)}${row.kind}:${row.name}`)).toEqual([
       "directory:components",
       "  file:button.ts",
-      "directory:docs/components",
+      "directory:docs@lgcode/components",
       "  file:usage.md",
     ])
   })
 
   test("flattens all-expanded rows depth-first with depths and file references", () => {
     const rows = flattenFileTree(
-      buildFileTree([{ file: "src/config/tui.ts" }, { file: "src/config/keybind.ts" }, { file: "README.md" }]),
+      buildFileTree([{ file: "src@lgcode/config@lgcode/tui.ts" }, { file: "src@lgcode/config@lgcode/keybind.ts" }, { file: "README.md" }]),
     )
 
     expect(rows.map((row) => ({ name: row.name, kind: row.kind, depth: row.depth, fileIndex: row.fileIndex }))).toEqual(
       [
-        { name: "src/config", kind: "directory", depth: 0, fileIndex: undefined },
+        { name: "src@lgcode/config", kind: "directory", depth: 0, fileIndex: undefined },
         { name: "keybind.ts", kind: "file", depth: 1, fileIndex: 1 },
         { name: "tui.ts", kind: "file", depth: 1, fileIndex: 0 },
         { name: "README.md", kind: "file", depth: 0, fileIndex: 2 },
@@ -140,21 +140,21 @@ describe("diff viewer file tree utilities", () => {
 
   test("collapses expanded unary children under the first visible directory id", () => {
     const tree = buildFileTree([
-      { file: "packages/opencode/src/cli/app.ts" },
-      { file: "packages/opencode/src/server/server.ts" },
+      { file: "packages@lgcode/opencode@lgcode/src@lgcode/cli@lgcode/app.ts" },
+      { file: "packages@lgcode/opencode@lgcode/src@lgcode/server@lgcode/server.ts" },
     ])
     const packages = tree.nodes.find((node) => node.kind === "directory" && node.name === "packages")!
 
-    expect(flattenFileTree(tree, new Set()).map((row) => row.name)).toEqual(["packages/opencode/src"])
+    expect(flattenFileTree(tree, new Set()).map((row) => row.name)).toEqual(["packages@lgcode/opencode@lgcode/src"])
     expect(flattenFileTree(tree, new Set([packages.id])).map((row) => row.name)).toEqual([
-      "packages/opencode/src",
+      "packages@lgcode/opencode@lgcode/src",
       "cli",
       "server",
     ])
   })
 
   test("flattens only expanded directory descendants when expansion is provided", () => {
-    const tree = buildFileTree([{ file: "src/config/tui.ts" }, { file: "src/session/index.ts" }, { file: "README.md" }])
+    const tree = buildFileTree([{ file: "src@lgcode/config@lgcode/tui.ts" }, { file: "src@lgcode/session@lgcode/index.ts" }, { file: "README.md" }])
     const src = tree.nodes.find((node) => node.kind === "directory" && node.name === "src")!
     const config = tree.nodes.find((node) => node.kind === "directory" && node.name === "config")!
 
@@ -175,7 +175,7 @@ describe("diff viewer file tree utilities", () => {
   })
 
   test("moves selection across visible rows and clamps to bounds", () => {
-    const rows = flattenFileTree(buildFileTree([{ file: "src/config/tui.ts" }, { file: "README.md" }]))
+    const rows = flattenFileTree(buildFileTree([{ file: "src@lgcode/config@lgcode/tui.ts" }, { file: "README.md" }]))
 
     expect(moveFileTreeSelection(rows, undefined, 1)).toBe(rows[0]!.id)
     expect(moveFileTreeSelection(rows, rows[0]!.id, 1)).toBe(rows[1]!.id)
@@ -185,7 +185,7 @@ describe("diff viewer file tree utilities", () => {
   })
 
   test("moves directory selection to first visible child", () => {
-    const rows = flattenFileTree(buildFileTree([{ file: "src/config/tui.ts" }, { file: "src/session/index.ts" }]))
+    const rows = flattenFileTree(buildFileTree([{ file: "src@lgcode/config@lgcode/tui.ts" }, { file: "src@lgcode/session@lgcode/index.ts" }]))
     const src = rows.find((row) => row.kind === "directory" && row.name === "src")!
     const config = rows.find((row) => row.kind === "directory" && row.name === "config")!
     const tui = rows.find((row) => row.name === "tui.ts")!
@@ -197,9 +197,9 @@ describe("diff viewer file tree utilities", () => {
 
   test("moves collapsed chain selection to first visible child", () => {
     const rows = flattenFileTree(
-      buildFileTree([{ file: "packages/opencode/src/cli/app.ts" }, { file: "packages/opencode/src/server/server.ts" }]),
+      buildFileTree([{ file: "packages@lgcode/opencode@lgcode/src@lgcode/cli@lgcode/app.ts" }, { file: "packages@lgcode/opencode@lgcode/src@lgcode/server@lgcode/server.ts" }]),
     )
-    const packages = rows.find((row) => row.kind === "directory" && row.name === "packages/opencode/src")!
+    const packages = rows.find((row) => row.kind === "directory" && row.name === "packages@lgcode/opencode@lgcode/src")!
     const cli = rows.find((row) => row.kind === "directory" && row.name === "cli")!
 
     expect(moveFileTreeSelectionToFirstChild(rows, packages.id)).toBe(cli.id)
@@ -207,9 +207,9 @@ describe("diff viewer file tree utilities", () => {
 
   test("moves file and collapsed directory selection to visible parent", () => {
     const rows = flattenFileTree(
-      buildFileTree([{ file: "packages/opencode/src/cli/app.ts" }, { file: "packages/opencode/src/server/server.ts" }]),
+      buildFileTree([{ file: "packages@lgcode/opencode@lgcode/src@lgcode/cli@lgcode/app.ts" }, { file: "packages@lgcode/opencode@lgcode/src@lgcode/server@lgcode/server.ts" }]),
     )
-    const root = rows.find((row) => row.kind === "directory" && row.name === "packages/opencode/src")!
+    const root = rows.find((row) => row.kind === "directory" && row.name === "packages@lgcode/opencode@lgcode/src")!
     const cli = rows.find((row) => row.kind === "directory" && row.name === "cli")!
     const app = rows.find((row) => row.name === "app.ts")!
 
@@ -221,7 +221,7 @@ describe("diff viewer file tree utilities", () => {
 
   test("moves file selection relative to the highlighted row", () => {
     const rows = flattenFileTree(
-      buildFileTree([{ file: "src/config/tui.ts" }, { file: "src/session/index.ts" }, { file: "README.md" }]),
+      buildFileTree([{ file: "src@lgcode/config@lgcode/tui.ts" }, { file: "src@lgcode/session@lgcode/index.ts" }, { file: "README.md" }]),
     )
     const config = rows.find((row) => row.kind === "directory" && row.name === "config")!
     const session = rows.find((row) => row.kind === "directory" && row.name === "session")!
@@ -239,7 +239,7 @@ describe("diff viewer file tree utilities", () => {
   })
 
   test("selects a file tree node and expands its parents for a patch file", () => {
-    const tree = buildFileTree([{ file: "src/config/tui.ts" }, { file: "src/session/index.ts" }, { file: "README.md" }])
+    const tree = buildFileTree([{ file: "src@lgcode/config@lgcode/tui.ts" }, { file: "src@lgcode/session@lgcode/index.ts" }, { file: "README.md" }])
     const selection = fileTreeFileSelection(tree, 1)
 
     expect(selection?.highlightedNode).toBe(
@@ -259,9 +259,9 @@ describe("diff viewer file tree utilities", () => {
   test("orders patches by the flattened file tree order", () => {
     const rows = flattenFileTree(
       buildFileTree([
-        { file: "src/dir-8/juniper-4.ts" },
-        { file: "src/dir-8/harbor-94.ts" },
-        { file: "src/dir-8/cedar-16.ts" },
+        { file: "src@lgcode/dir-8@lgcode/juniper-4.ts" },
+        { file: "src@lgcode/dir-8@lgcode/harbor-94.ts" },
+        { file: "src@lgcode/dir-8@lgcode/cedar-16.ts" },
       ]),
     )
 
@@ -289,14 +289,14 @@ describe("diff viewer file tree utilities", () => {
   })
 
   test("toggles only selected directory expansion", () => {
-    const tree = buildFileTree([{ file: "src/config/tui.ts" }, { file: "README.md" }])
+    const tree = buildFileTree([{ file: "src@lgcode/config@lgcode/tui.ts" }, { file: "README.md" }])
     const src = tree.nodes.find((node) => node.kind === "directory" && node.name === "src")!
     const readme = tree.nodes.find((node) => node.kind === "file" && node.name === "README.md")!
     const expanded = allExpandedFileTreeDirectories(tree)
 
     const collapsed = toggleFileTreeDirectory(tree, expanded, src.id)
     expect(collapsed.has(src.id)).toBe(false)
-    expect(flattenFileTree(tree, collapsed).map((row) => row.name)).toEqual(["src/config", "README.md"])
+    expect(flattenFileTree(tree, collapsed).map((row) => row.name)).toEqual(["src@lgcode/config", "README.md"])
 
     const reopened = toggleFileTreeDirectory(tree, collapsed, src.id)
     expect(reopened.has(src.id)).toBe(true)
@@ -306,7 +306,7 @@ describe("diff viewer file tree utilities", () => {
   })
 
   test("sets only selected directory expansion", () => {
-    const tree = buildFileTree([{ file: "src/config/tui.ts" }, { file: "README.md" }])
+    const tree = buildFileTree([{ file: "src@lgcode/config@lgcode/tui.ts" }, { file: "README.md" }])
     const src = tree.nodes.find((node) => node.kind === "directory" && node.name === "src")!
     const readme = tree.nodes.find((node) => node.kind === "file" && node.name === "README.md")!
     const expanded = allExpandedFileTreeDirectories(tree)

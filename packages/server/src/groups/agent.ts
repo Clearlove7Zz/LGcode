@@ -1,12 +1,12 @@
-import { AgentV2 } from "@opencode@lgcode/core/agent"
-import { Location } from "@opencode@lgcode/core/location"
+import { AgentV2 } from "@lgcode/core@lgcode/agent"
+import { Location } from "@lgcode/core@lgcode/location"
 import { Schema } from "effect"
-import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
-import { LocationQuery, locationQueryOpenApi, LocationMiddleware } from "./location"
+import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
+import { LocationQuery, locationQueryOpenApi, LocationMiddleware } from ".@lgcode/location"
 
 export const AgentGroup = HttpApiGroup.make("server.agent")
   .add(
-    HttpApiEndpoint.get("agent.list", "/api/agent", {
+    HttpApiEndpoint.get("agent.list", "@lgcode/api@lgcode/agent", {
       query: LocationQuery,
       success: Location.response(Schema.Array(AgentV2.Info)),
     })

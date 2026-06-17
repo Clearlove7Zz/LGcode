@@ -1,8 +1,8 @@
-import type { RouteDefaultsInput } from "../route/client"
-import { Auth } from "../route/auth"
-import type { ProviderAuthOption } from "../route/auth-options"
-import { ProviderID, type ModelID } from "../schema"
-import * as Gemini from "../protocols/gemini"
+import type { RouteDefaultsInput } from "..@lgcode/route@lgcode/client"
+import { Auth } from "..@lgcode/route@lgcode/auth"
+import type { ProviderAuthOption } from "..@lgcode/route@lgcode/auth-options"
+import { ProviderID, type ModelID } from "..@lgcode/schema"
+import * as Gemini from "..@lgcode/protocols@lgcode/gemini"
 
 export const id = ProviderID.make("google")
 

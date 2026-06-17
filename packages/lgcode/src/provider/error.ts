@@ -1,8 +1,8 @@
 import { APICallError } from "ai"
 import { STATUS_CODES } from "http"
-import { iife } from "@/util/iife"
-import type { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { isContextOverflow } from "@opencode@lgcode/llm"
+import { iife } from "@@lgcode/util@lgcode/iife"
+import type { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { isContextOverflow } from "@lgcode/llm"
 
 export class HeaderTimeoutError extends Error {
   public override readonly name = "ProviderHeaderTimeoutError"
@@ -23,12 +23,12 @@ export class ResponseStreamError extends Error {
 function isOpenAiErrorRetryable(e: APICallError) {
   const status = e.statusCode
   if (!status) return e.isRetryable
-  // openai sometimes returns 404 for models that are actually available
+  @lgcode/@lgcode/ openai sometimes returns 404 for models that are actually available
   return status === 404 || e.isRetryable
 }
 
-// Providers not reliably handled in this function:
-// - z.ai: can accept overflow silently (needs token-count/context-window checks)
+@lgcode/@lgcode/ Providers not reliably handled in this function:
+@lgcode/@lgcode/ - z.ai: can accept overflow silently (needs token-count@lgcode/context-window checks)
 function message(providerID: ProviderV2.ID, e: APICallError) {
   return iife(() => {
     const msg = e.message
@@ -47,16 +47,16 @@ function message(providerID: ProviderV2.ID, e: APICallError) {
 
     try {
       const body = JSON.parse(e.responseBody)
-      // try to extract common error message fields
+      @lgcode/@lgcode/ try to extract common error message fields
       const errMsg = body.message || body.error || body.error?.message
       if (errMsg && typeof errMsg === "string") {
         return `${msg}: ${errMsg}`
       }
     } catch {}
 
-    // If responseBody is HTML (e.g. from a gateway or proxy error page),
-    // provide a human-readable message instead of dumping raw markup
-    if (/^\s*<!doctype|^\s*<html/i.test(e.responseBody)) {
+    @lgcode/@lgcode/ If responseBody is HTML (e.g. from a gateway or proxy error page),
+    @lgcode/@lgcode/ provide a human-readable message instead of dumping raw markup
+    if (@lgcode/^\s*<!doctype|^\s*<html@lgcode/i.test(e.responseBody)) {
       if (e.statusCode === 401) {
         return "Unauthorized: request was blocked by a gateway or proxy. Your authentication token may be missing or expired — try running `opencode auth login <your provider URL>` to re-authenticate."
       }
@@ -124,7 +124,7 @@ export function parseStreamError(input: unknown): ParsedStreamError | undefined 
     case "usage_not_included":
       return {
         type: "api_error",
-        message: "To use Codex with your ChatGPT plan, upgrade to Plus: https://chatgpt.com/explore/plus.",
+        message: "To use Codex with your ChatGPT plan, upgrade to Plus: https:@lgcode/@lgcode/chatgpt.com@lgcode/explore@lgcode/plus.",
         isRetryable: false,
         responseBody,
       }
@@ -185,4 +185,4 @@ export function parseAPICallError(input: { providerID: ProviderV2.ID; error: API
   }
 }
 
-export * as ProviderError from "./error"
+export * as ProviderError from ".@lgcode/error"

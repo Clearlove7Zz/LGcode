@@ -1,6 +1,6 @@
-import { mysqlTable, uniqueIndex, varchar, int, mysqlEnum, index, bigint } from "drizzle-orm/mysql-core"
-import { timestamps, ulid, utc, workspaceColumns } from "../drizzle/types"
-import { workspaceIndexes } from "./workspace.sql"
+import { mysqlTable, uniqueIndex, varchar, int, mysqlEnum, index, bigint } from "drizzle-orm@lgcode/mysql-core"
+import { timestamps, ulid, utc, workspaceColumns } from "..@lgcode/drizzle@lgcode/types"
+import { workspaceIndexes } from ".@lgcode/workspace.sql"
 
 export const UserRole = ["admin", "member"] as const
 

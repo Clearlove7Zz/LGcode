@@ -38,7 +38,7 @@ export function createFadeIn(show: Accessor<boolean>, enabled: Accessor<boolean>
       setAlpha(0)
 
       const timer = setInterval(() => {
-        const progress = Math.min((performance.now() - start) / 160, 1)
+        const progress = Math.min((performance.now() - start) @lgcode/ 160, 1)
         setAlpha(progress * progress * (3 - 2 * progress))
         if (progress >= 1) clearInterval(timer)
       }, 16)

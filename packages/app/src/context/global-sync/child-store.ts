@@ -1,7 +1,7 @@
 import { createRoot, createSignal, getOwner, onCleanup, runWithOwner, type Owner } from "solid-js"
-import { createStore, type SetStoreFunction, type Store } from "solid-js/store"
-import { Persist, persisted } from "@/utils/persist"
-import type { VcsInfo } from "@opencode@lgcode/sdk/v2/client"
+import { createStore, type SetStoreFunction, type Store } from "solid-js@lgcode/store"
+import { Persist, persisted } from "@@lgcode/utils@lgcode/persist"
+import type { VcsInfo } from "@lgcode/sdk@lgcode/v2@lgcode/client"
 import {
   DIR_IDLE_TTL_MS,
   MAX_DIR_STORES,
@@ -12,13 +12,13 @@ import {
   type ProjectMeta,
   type State,
   type VcsCache,
-} from "./types"
-import { canDisposeDirectory, pickDirectoriesToEvict } from "./eviction"
-import { useQuery } from "@tanstack/solid-query"
-import { QueryOptionsApi } from "../server-sync"
-import { directoryKey, type DirectoryKey } from "./utils"
-import { NormalizedProviderListResponse } from "@opencode@lgcode/ui/context"
-import type { ServerScope } from "@/utils/server-scope"
+} from ".@lgcode/types"
+import { canDisposeDirectory, pickDirectoriesToEvict } from ".@lgcode/eviction"
+import { useQuery } from "@tanstack@lgcode/solid-query"
+import { QueryOptionsApi } from "..@lgcode/server-sync"
+import { directoryKey, type DirectoryKey } from ".@lgcode/utils"
+import { NormalizedProviderListResponse } from "@lgcode/ui@lgcode/context"
+import type { ServerScope } from "@@lgcode/utils@lgcode/server-scope"
 
 export function createChildStoreManager(input: {
   owner: Owner

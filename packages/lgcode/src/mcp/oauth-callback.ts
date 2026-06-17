@@ -1,52 +1,52 @@
 import { createConnection } from "net"
 import { createServer } from "http"
-import { escapeHtml } from "@/util/html"
-import { OAUTH_CALLBACK_PORT, OAUTH_CALLBACK_PATH, parseRedirectUri } from "./oauth-provider"
+import { escapeHtml } from "@@lgcode/util@lgcode/html"
+import { OAUTH_CALLBACK_PORT, OAUTH_CALLBACK_PATH, parseRedirectUri } from ".@lgcode/oauth-provider"
 
-// Current callback server configuration (may differ from defaults if custom redirectUri is used)
+@lgcode/@lgcode/ Current callback server configuration (may differ from defaults if custom redirectUri is used)
 let currentPort = OAUTH_CALLBACK_PORT
 let currentPath = OAUTH_CALLBACK_PATH
 
 const HTML_SUCCESS = `<!DOCTYPE html>
 <html>
 <head>
-  <title>OpenCode - Authorization Successful</title>
+  <title>OpenCode - Authorization Successful<@lgcode/title>
   <style>
     body { font-family: system-ui, -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #1a1a2e; color: #eee; }
     .container { text-align: center; padding: 2rem; }
     h1 { color: #4ade80; margin-bottom: 1rem; }
     p { color: #aaa; }
-  </style>
-</head>
+  <@lgcode/style>
+<@lgcode/head>
 <body>
   <div class="container">
-    <h1>Authorization Successful</h1>
-    <p>You can close this window and return to OpenCode.</p>
-  </div>
-  <script>setTimeout(() => window.close(), 2000);</script>
-</body>
-</html>`
+    <h1>Authorization Successful<@lgcode/h1>
+    <p>You can close this window and return to OpenCode.<@lgcode/p>
+  <@lgcode/div>
+  <script>setTimeout(() => window.close(), 2000);<@lgcode/script>
+<@lgcode/body>
+<@lgcode/html>`
 
 const HTML_ERROR = (error: string) => `<!DOCTYPE html>
 <html>
 <head>
-  <title>OpenCode - Authorization Failed</title>
+  <title>OpenCode - Authorization Failed<@lgcode/title>
   <style>
     body { font-family: system-ui, -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #1a1a2e; color: #eee; }
     .container { text-align: center; padding: 2rem; }
     h1 { color: #f87171; margin-bottom: 1rem; }
     p { color: #aaa; }
     .error { color: #fca5a5; font-family: monospace; margin-top: 1rem; padding: 1rem; background: rgba(248,113,113,0.1); border-radius: 0.5rem; }
-  </style>
-</head>
+  <@lgcode/style>
+<@lgcode/head>
 <body>
   <div class="container">
-    <h1>Authorization Failed</h1>
-    <p>An error occurred during authorization.</p>
-    <div class="error">${escapeHtml(error)}</div>
-  </div>
-</body>
-</html>`
+    <h1>Authorization Failed<@lgcode/h1>
+    <p>An error occurred during authorization.<@lgcode/p>
+    <div class="error">${escapeHtml(error)}<@lgcode/div>
+  <@lgcode/div>
+<@lgcode/body>
+<@lgcode/html>`
 
 interface PendingAuth {
   resolve: (code: string) => void
@@ -56,11 +56,11 @@ interface PendingAuth {
 
 let server: ReturnType<typeof createServer> | undefined
 const pendingAuths = new Map<string, PendingAuth>()
-// Reverse index: mcpName → oauthState, so cancelPending(mcpName) can
-// find the right entry in pendingAuths (which is keyed by oauthState).
+@lgcode/@lgcode/ Reverse index: mcpName → oauthState, so cancelPending(mcpName) can
+@lgcode/@lgcode/ find the right entry in pendingAuths (which is keyed by oauthState).
 const mcpNameToState = new Map<string, string>()
 
-const CALLBACK_TIMEOUT_MS = 5 * 60 * 1000 // 5 minutes
+const CALLBACK_TIMEOUT_MS = 5 * 60 * 1000 @lgcode/@lgcode/ 5 minutes
 
 function cleanupStateIndex(oauthState: string) {
   for (const [name, state] of mcpNameToState) {
@@ -79,7 +79,7 @@ function stopIfIdle() {
 }
 
 function handleRequest(req: import("http").IncomingMessage, res: import("http").ServerResponse) {
-  const url = new URL(req.url || "/", `http://localhost:${currentPort}`)
+  const url = new URL(req.url || "@lgcode/", `http:@lgcode/@lgcode/localhost:${currentPort}`)
 
   if (url.pathname !== currentPath) {
     res.writeHead(404)
@@ -92,10 +92,10 @@ function handleRequest(req: import("http").IncomingMessage, res: import("http").
   const error = url.searchParams.get("error")
   const errorDescription = url.searchParams.get("error_description")
 
-  // Enforce state parameter presence
+  @lgcode/@lgcode/ Enforce state parameter presence
   if (!state) {
     const errorMsg = "Missing required state parameter - potential CSRF attack"
-    res.writeHead(400, { "Content-Type": "text/html; charset=utf-8" })
+    res.writeHead(400, { "Content-Type": "text@lgcode/html; charset=utf-8" })
     res.end(HTML_ERROR(errorMsg))
     return
   }
@@ -109,22 +109,22 @@ function handleRequest(req: import("http").IncomingMessage, res: import("http").
       cleanupStateIndex(state)
       pending.reject(new Error(errorMsg))
     }
-    res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" })
+    res.writeHead(200, { "Content-Type": "text@lgcode/html; charset=utf-8" })
     res.end(HTML_ERROR(errorMsg))
     stopIfIdle()
     return
   }
 
   if (!code) {
-    res.writeHead(400, { "Content-Type": "text/html; charset=utf-8" })
+    res.writeHead(400, { "Content-Type": "text@lgcode/html; charset=utf-8" })
     res.end(HTML_ERROR("No authorization code provided"))
     return
   }
 
-  // Validate state parameter
+  @lgcode/@lgcode/ Validate state parameter
   if (!pendingAuths.has(state)) {
     const errorMsg = "Invalid or expired state parameter - potential CSRF attack"
-    res.writeHead(400, { "Content-Type": "text/html; charset=utf-8" })
+    res.writeHead(400, { "Content-Type": "text@lgcode/html; charset=utf-8" })
     res.end(HTML_ERROR(errorMsg))
     return
   }
@@ -136,16 +136,16 @@ function handleRequest(req: import("http").IncomingMessage, res: import("http").
   cleanupStateIndex(state)
   pending.resolve(code)
 
-  res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" })
+  res.writeHead(200, { "Content-Type": "text@lgcode/html; charset=utf-8" })
   res.end(HTML_SUCCESS)
   stopIfIdle()
 }
 
 export async function ensureRunning(redirectUri?: string): Promise<void> {
-  // Parse the redirect URI to get port and path (uses defaults if not provided)
+  @lgcode/@lgcode/ Parse the redirect URI to get port and path (uses defaults if not provided)
   const { port, path } = parseRedirectUri(redirectUri)
 
-  // If server is running on a different port/path, stop it first
+  @lgcode/@lgcode/ If server is running on a different port@lgcode/path, stop it first
   if (server && (currentPort !== port || currentPath !== path)) {
     await stop()
   }
@@ -186,7 +186,7 @@ export function waitForCallback(oauthState: string, mcpName?: string): Promise<s
 }
 
 export function cancelPending(mcpName: string): void {
-  // Look up the oauthState for this mcpName via the reverse index
+  @lgcode/@lgcode/ Look up the oauthState for this mcpName via the reverse index
   const oauthState = mcpNameToState.get(mcpName)
   const key = oauthState ?? mcpName
   const pending = pendingAuths.get(key)
@@ -230,4 +230,4 @@ export function isRunning(): boolean {
   return server !== undefined
 }
 
-export * as McpOAuthCallback from "./oauth-callback"
+export * as McpOAuthCallback from ".@lgcode/oauth-callback"

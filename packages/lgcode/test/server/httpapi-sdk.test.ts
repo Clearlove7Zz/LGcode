@@ -1,33 +1,33 @@
 import { afterEach, describe, expect } from "bun:test"
-import { ConfigV1 } from "@opencode@lgcode/core/v1/config/config"
-import { SessionV1 } from "@opencode@lgcode/core/v1/session"
+import { ConfigV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/config"
+import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
 import { Deferred, Effect, Layer } from "effect"
-import type * as Scope from "effect/Scope"
-import { HttpServer } from "effect/unstable/http"
-import { ChildProcessSpawner } from "effect/unstable/process"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
-import { Flag } from "@opencode@lgcode/core/flag/flag"
-import { createOpencodeClient } from "@opencode@lgcode/sdk/v2"
-import { validateSession } from "../../src/cli/tui/validate-session"
-import { InstanceBootstrap } from "../../src/project/bootstrap-service"
-import { InstanceStore } from "../../src/project/instance-store"
-import { MessageID, PartID, SessionID } from "../../src/session/schema"
-import { MessageV2 } from "../../src/session/message-v2"
+import type * as Scope from "effect@lgcode/Scope"
+import { HttpServer } from "effect@lgcode/unstable@lgcode/http"
+import { ChildProcessSpawner } from "effect@lgcode/unstable@lgcode/process"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
+import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
+import { createOpencodeClient } from "@lgcode/sdk@lgcode/v2"
+import { validateSession } from "..@lgcode/..@lgcode/src@lgcode/cli@lgcode/tui@lgcode/validate-session"
+import { InstanceBootstrap } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/bootstrap-service"
+import { InstanceStore } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/instance-store"
+import { MessageID, PartID, SessionID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
+import { MessageV2 } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/message-v2"
 
-import type { Config } from "@/config/config"
-import { Session as SessionNs } from "@/session/session"
-import { errorMessage } from "../../src/util/error"
-import { TestLLMServer } from "../lib/llm-server"
+import type { Config } from "@@lgcode/config@lgcode/config"
+import { Session as SessionNs } from "@@lgcode/session@lgcode/session"
+import { errorMessage } from "..@lgcode/..@lgcode/src@lgcode/util@lgcode/error"
+import { TestLLMServer } from "..@lgcode/lib@lgcode/llm-server"
 import path from "path"
-import { resetDatabase } from "../fixture/db"
-import { disposeAllInstances, TestInstance, tmpdirScoped } from "../fixture/fixture"
-import { awaitWithTimeout, testEffect } from "../lib/effect"
-import { testProviderConfig } from "../lib/test-provider"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { ModelV2 } from "@opencode@lgcode/core/model"
-import { Database } from "@opencode@lgcode/core/database/database"
-import { httpApiLayer } from "./httpapi-layer"
+import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
+import { disposeAllInstances, TestInstance, tmpdirScoped } from "..@lgcode/fixture@lgcode/fixture"
+import { awaitWithTimeout, testEffect } from "..@lgcode/lib@lgcode/effect"
+import { testProviderConfig } from "..@lgcode/lib@lgcode/test-provider"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { httpApiLayer } from ".@lgcode/httpapi-layer"
 
 const noopBootstrap = Layer.succeed(InstanceBootstrap.Service, InstanceBootstrap.Service.of({ run: Effect.void }))
 const it = testEffect(
@@ -72,7 +72,7 @@ function client(
   return serverFetch(serverPath, input).pipe(
     Effect.map((fetch) =>
       createOpencodeClient({
-        baseUrl: "http://localhost",
+        baseUrl: "http:@lgcode/@lgcode/localhost",
         directory,
         experimental_workspaceID: input?.workspaceID,
         headers: input?.headers,
@@ -446,13 +446,13 @@ describe("HttpApi SDK", () => {
         const missing = yield* capture(() => sdk.session.get({ sessionID }))
         const thrown = yield* captureThrown(() => sdk.session.get({ sessionID }, { throwOnError: true }))
 
-        // Result-tuple path: error body is preserved as-is so existing
-        // consumers reading `result.error.name` / `JSON.stringify(error)`
-        // keep working byte-for-byte.
+        @lgcode/@lgcode/ Result-tuple path: error body is preserved as-is so existing
+        @lgcode/@lgcode/ consumers reading `result.error.name` @lgcode/ `JSON.stringify(error)`
+        @lgcode/@lgcode/ keep working byte-for-byte.
         expect(missing.error).toEqual(expected)
-        // throwOnError path: SDK wraps the body in a real Error with the
-        // server's message, with the original parsed body preserved under
-        // `.cause.body`.
+        @lgcode/@lgcode/ throwOnError path: SDK wraps the body in a real Error with the
+        @lgcode/@lgcode/ server's message, with the original parsed body preserved under
+        @lgcode/@lgcode/ `.cause.body`.
         expect(thrown).toBeInstanceOf(Error)
         expect((thrown as Error).message).toBe(expected.data.message)
         expect(((thrown as Error).cause as { body: unknown }).body).toEqual(expected)
@@ -472,7 +472,7 @@ describe("HttpApi SDK", () => {
         const fetch = yield* serverFetch(serverPath)
         const thrown = yield* captureThrown(() =>
           validateSession({
-            url: "http://localhost",
+            url: "http:@lgcode/@lgcode/localhost",
             directory,
             sessionID,
             fetch,
@@ -666,13 +666,13 @@ describe("HttpApi SDK", () => {
     ),
   )
 
-  // Regression: EventV2 must publish on the same ProjectBus the /event handler
-  // subscribes to, AND the /event stream must forward handler ALS/context into the
-  // body-pump fiber. Drives the full SDK → /event → Session.updatePart → sync.run →
-  // bus.publish → SDK subscriber path. Goes red if either the publisher uses a
-  // different bus instance (Bug 2 / pre-#27825) or the stream loses context (Bug 1 /
-  // pre-#27425).
-  serverPathParity("streams sync-backed part updates to /event subscribers", (serverPath) =>
+  @lgcode/@lgcode/ Regression: EventV2 must publish on the same ProjectBus the @lgcode/event handler
+  @lgcode/@lgcode/ subscribes to, AND the @lgcode/event stream must forward handler ALS@lgcode/context into the
+  @lgcode/@lgcode/ body-pump fiber. Drives the full SDK → @lgcode/event → Session.updatePart → sync.run →
+  @lgcode/@lgcode/ bus.publish → SDK subscriber path. Goes red if either the publisher uses a
+  @lgcode/@lgcode/ different bus instance (Bug 2 @lgcode/ pre-#27825) or the stream loses context (Bug 1 @lgcode/
+  @lgcode/@lgcode/ pre-#27425).
+  serverPathParity("streams sync-backed part updates to @lgcode/event subscribers", (serverPath) =>
     withStandardProject(serverPath, ({ sdk, directory }) =>
       Effect.gen(function* () {
         const session = yield* capture(() => sdk.session.create({ title: "sync-backed part event" }))
@@ -704,7 +704,7 @@ describe("HttpApi SDK", () => {
           }
         }).pipe(Effect.forkScoped)
 
-        yield* awaitWithTimeout(Deferred.await(ready), "timed out waiting for /event server.connected", "2 seconds")
+        yield* awaitWithTimeout(Deferred.await(ready), "timed out waiting for @lgcode/event server.connected", "2 seconds")
 
         const updated = yield* capture(() =>
           sdk.part.update({
@@ -720,7 +720,7 @@ describe("HttpApi SDK", () => {
 
         const event = yield* awaitWithTimeout(
           Deferred.await(received),
-          "timed out waiting for message.part.updated bus payload over /event",
+          "timed out waiting for message.part.updated bus payload over @lgcode/event",
           "5 seconds",
         )
         const properties = record(record(event).properties)

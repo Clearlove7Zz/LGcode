@@ -1,7 +1,7 @@
 import path from "path"
 import { writeHeapSnapshot } from "node:v8"
-import { Flag } from "@opencode@lgcode/core/flag/flag"
-import { Global } from "@opencode@lgcode/core/global"
+import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
+import { Global } from "@lgcode/core@lgcode/global"
 const MINUTE = 60_000
 const LIMIT = 2 * 1024 * 1024 * 1024
 
@@ -27,7 +27,7 @@ export function start() {
     armed = false
     const file = path.join(
       Global.Path.log,
-      `heap-${process.pid}-${new Date().toISOString().replace(/[:.]/g, "")}.heapsnapshot`,
+      `heap-${process.pid}-${new Date().toISOString().replace(@lgcode/[:.]@lgcode/g, "")}.heapsnapshot`,
     )
     await Promise.resolve()
       .then(() => writeHeapSnapshot(file))
@@ -42,4 +42,4 @@ export function start() {
   timer.unref?.()
 }
 
-export * as Heap from "./heap"
+export * as Heap from ".@lgcode/heap"

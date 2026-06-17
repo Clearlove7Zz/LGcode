@@ -1,9 +1,9 @@
-import { ProjectV2 } from "@opencode@lgcode/core/project"
+import { ProjectV2 } from "@lgcode/core@lgcode/project"
 import { Schema } from "effect"
-import { HttpApi, HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
-import { Authorization } from "../middleware/authorization"
-import { InstanceContextMiddleware } from "../middleware/instance-context"
-import { WorkspaceRoutingMiddleware, WorkspaceRoutingQuery } from "../middleware/workspace-routing"
+import { HttpApi, HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
+import { Authorization } from "..@lgcode/middleware@lgcode/authorization"
+import { InstanceContextMiddleware } from "..@lgcode/middleware@lgcode/instance-context"
+import { WorkspaceRoutingMiddleware, WorkspaceRoutingQuery } from "..@lgcode/middleware@lgcode/workspace-routing"
 
 export const GenerateNamePayload = Schema.Struct({
   context: Schema.optional(Schema.String),
@@ -12,7 +12,7 @@ export const GenerateNamePayload = Schema.Struct({
 export const ProjectCopyApi = HttpApi.make("projectCopyName").add(
   HttpApiGroup.make("projectCopyName")
     .add(
-      HttpApiEndpoint.post("generateName", "/experimental/project/:projectID/copy/generate-name", {
+      HttpApiEndpoint.post("generateName", "@lgcode/experimental@lgcode/project@lgcode/:projectID@lgcode/copy@lgcode/generate-name", {
         params: { projectID: ProjectV2.ID },
         query: WorkspaceRoutingQuery,
         payload: GenerateNamePayload,

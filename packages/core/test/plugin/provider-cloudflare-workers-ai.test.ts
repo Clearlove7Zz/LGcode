@@ -1,19 +1,19 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { Credential } from "@opencode@lgcode/core/credential"
-import { Integration } from "@opencode@lgcode/core/integration"
-import { Database } from "@opencode@lgcode/core/database/database"
-import { Catalog } from "@opencode@lgcode/core/catalog"
-import { Location } from "@opencode@lgcode/core/location"
-import { EventV2 } from "@opencode@lgcode/core/event"
-import { ModelV2 } from "@opencode@lgcode/core/model"
-import { PluginV2 } from "@opencode@lgcode/core/plugin"
-import { CloudflareWorkersAIPlugin } from "@opencode@lgcode/core/plugin/provider/cloudflare-workers-ai"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { location } from "../fixture/location"
-import { testEffect } from "../lib/effect"
-import { fakeSelectorSdk, it, model, npmLayer, withEnv } from "./provider-helper"
+import { Credential } from "@lgcode/core@lgcode/credential"
+import { Integration } from "@lgcode/core@lgcode/integration"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { Catalog } from "@lgcode/core@lgcode/catalog"
+import { Location } from "@lgcode/core@lgcode/location"
+import { EventV2 } from "@lgcode/core@lgcode/event"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { PluginV2 } from "@lgcode/core@lgcode/plugin"
+import { CloudflareWorkersAIPlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/cloudflare-workers-ai"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { location } from "..@lgcode/fixture@lgcode/location"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { fakeSelectorSdk, it, model, npmLayer, withEnv } from ".@lgcode/provider-helper"
 
 const database = Database.layerFromPath(":memory:").pipe(Layer.fresh)
 const preferences = Credential.layer.pipe(Layer.provide(database))
@@ -32,7 +32,7 @@ const itWithAccount = testEffect(
   ),
 )
 
-function cloudflareLanguage(sdk: unknown, modelID = "@cf/model") {
+function cloudflareLanguage(sdk: unknown, modelID = "@cf@lgcode/model") {
   return (sdk as { languageModel: (id: string) => { config: CloudflareConfig; provider: string } }).languageModel(
     modelID,
   )
@@ -43,11 +43,11 @@ type CloudflareConfig = {
   headers: () => Record<string, string> | Promise<Record<string, string>>
 }
 
-function cloudflareURL(sdk: unknown, modelID = "@cf/model") {
-  return cloudflareLanguage(sdk, modelID).config.url({ path: "/chat/completions", modelId: modelID })
+function cloudflareURL(sdk: unknown, modelID = "@cf@lgcode/model") {
+  return cloudflareLanguage(sdk, modelID).config.url({ path: "@lgcode/chat@lgcode/completions", modelId: modelID })
 }
 
-function cloudflareHeaders(sdk: unknown, modelID = "@cf/model") {
+function cloudflareHeaders(sdk: unknown, modelID = "@cf@lgcode/model") {
   return cloudflareLanguage(sdk, modelID).config.headers()
 }
 
@@ -68,8 +68,8 @@ describe("CloudflareWorkersAIPlugin", () => {
         const sdk = yield* plugin.trigger(
           "aisdk.sdk",
           {
-            model: model("cloudflare-workers-ai", "@cf/model", { api: provider.api }),
-            package: "@ai-sdk/openai-compatible",
+            model: model("cloudflare-workers-ai", "@cf@lgcode/model", { api: provider.api }),
+            package: "@ai-sdk@lgcode/openai-compatible",
             options: { name: "cloudflare-workers-ai", headers: { custom: "header" } },
           },
           {},
@@ -77,7 +77,7 @@ describe("CloudflareWorkersAIPlugin", () => {
         expect(provider.api).toEqual({
           type: "aisdk",
           package: "test-provider",
-          url: "https://api.cloudflare.com/client/v4/accounts/acct/ai/v1",
+          url: "https:@lgcode/@lgcode/api.cloudflare.com@lgcode/client@lgcode/v4@lgcode/accounts@lgcode/acct@lgcode/ai@lgcode/v1",
         })
         expect(sdk.sdk).toBeDefined()
       }),
@@ -93,13 +93,13 @@ describe("CloudflareWorkersAIPlugin", () => {
         const transform = yield* catalog.transform()
         yield* transform((catalog) =>
           catalog.provider.update(ProviderV2.ID.make("cloudflare-workers-ai"), (provider) => {
-            provider.api = { type: "aisdk", package: "test-provider", url: "https://proxy.example/v1" }
+            provider.api = { type: "aisdk", package: "test-provider", url: "https:@lgcode/@lgcode/proxy.example@lgcode/v1" }
           }),
         )
         expect((yield* catalog.provider.get(ProviderV2.ID.make("cloudflare-workers-ai"))).api).toEqual({
           type: "aisdk",
           package: "test-provider",
-          url: "https://proxy.example/v1",
+          url: "https:@lgcode/@lgcode/proxy.example@lgcode/v1",
         })
       }),
     ),
@@ -113,15 +113,15 @@ describe("CloudflareWorkersAIPlugin", () => {
         const result = yield* plugin.trigger(
           "aisdk.sdk",
           {
-            model: model("cloudflare-workers-ai", "@cf/model", {
-              api: { type: "aisdk", package: "@ai-sdk/openai-compatible", url: "https://proxy.example/v1" },
+            model: model("cloudflare-workers-ai", "@cf@lgcode/model", {
+              api: { type: "aisdk", package: "@ai-sdk@lgcode/openai-compatible", url: "https:@lgcode/@lgcode/proxy.example@lgcode/v1" },
             }),
-            package: "@ai-sdk/openai-compatible",
-            options: { name: "cloudflare-workers-ai", baseURL: "https://proxy.example/v1" },
+            package: "@ai-sdk@lgcode/openai-compatible",
+            options: { name: "cloudflare-workers-ai", baseURL: "https:@lgcode/@lgcode/proxy.example@lgcode/v1" },
           },
           {},
         )
-        expect(cloudflareURL(result.sdk)).toBe("https://proxy.example/v1/chat/completions")
+        expect(cloudflareURL(result.sdk)).toBe("https:@lgcode/@lgcode/proxy.example@lgcode/v1@lgcode/chat@lgcode/completions")
       }),
     ),
   )
@@ -178,7 +178,7 @@ describe("CloudflareWorkersAIPlugin", () => {
         expect((yield* catalog.provider.get(ProviderV2.ID.make("cloudflare-workers-ai"))).api).toEqual({
           type: "aisdk",
           package: "test-provider",
-          url: "https://api.cloudflare.com/client/v4/accounts/env-acct/ai/v1",
+          url: "https:@lgcode/@lgcode/api.cloudflare.com@lgcode/client@lgcode/v4@lgcode/accounts@lgcode/env-acct@lgcode/ai@lgcode/v1",
         })
       }),
     ),
@@ -192,14 +192,14 @@ describe("CloudflareWorkersAIPlugin", () => {
         const result = yield* plugin.trigger(
           "aisdk.sdk",
           {
-            model: model("cloudflare-workers-ai", "@cf/model", {
-              api: { type: "aisdk", package: "@ai-sdk/openai-compatible", url: "https://proxy.example/v1" },
+            model: model("cloudflare-workers-ai", "@cf@lgcode/model", {
+              api: { type: "aisdk", package: "@ai-sdk@lgcode/openai-compatible", url: "https:@lgcode/@lgcode/proxy.example@lgcode/v1" },
             }),
-            package: "@ai-sdk/openai-compatible",
+            package: "@ai-sdk@lgcode/openai-compatible",
             options: {
               name: "cloudflare-workers-ai",
               apiKey: "auth-key",
-              baseURL: "https://proxy.example/v1",
+              baseURL: "https:@lgcode/@lgcode/proxy.example@lgcode/v1",
               headers: { custom: "header" },
             },
           },
@@ -208,7 +208,7 @@ describe("CloudflareWorkersAIPlugin", () => {
         const headers = yield* Effect.promise(() => Promise.resolve(cloudflareHeaders(result.sdk)))
         expect(headers.authorization).toBe("Bearer env-key")
         expect(headers.custom).toBe("header")
-        expect(headers["user-agent"]).toMatch(/^opencode\/.* cloudflare-workers-ai \(.+\) ai-sdk\/openai-compatible\//)
+        expect(headers["user-agent"]).toMatch(@lgcode/^opencode\@lgcode/.* cloudflare-workers-ai \(.+\) ai-sdk\@lgcode/openai-compatible\@lgcode/@lgcode/)
       }),
     ),
   )
@@ -221,23 +221,23 @@ describe("CloudflareWorkersAIPlugin", () => {
         const result = yield* plugin.trigger(
           "aisdk.sdk",
           {
-            model: model("cloudflare-workers-ai", "@cf/model", {
+            model: model("cloudflare-workers-ai", "@cf@lgcode/model", {
               api: {
                 type: "aisdk",
-                package: "@ai-sdk/openai-compatible",
-                url: "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/ai/v1",
+                package: "@ai-sdk@lgcode/openai-compatible",
+                url: "https:@lgcode/@lgcode/api.cloudflare.com@lgcode/client@lgcode/v4@lgcode/accounts@lgcode/${CLOUDFLARE_ACCOUNT_ID}@lgcode/ai@lgcode/v1",
               },
             }),
-            package: "@ai-sdk/openai-compatible",
+            package: "@ai-sdk@lgcode/openai-compatible",
             options: {
               name: "cloudflare-workers-ai",
-              baseURL: "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/ai/v1",
+              baseURL: "https:@lgcode/@lgcode/api.cloudflare.com@lgcode/client@lgcode/v4@lgcode/accounts@lgcode/${CLOUDFLARE_ACCOUNT_ID}@lgcode/ai@lgcode/v1",
             },
           },
           {},
         )
         expect(cloudflareURL(result.sdk)).toBe(
-          "https://api.cloudflare.com/client/v4/accounts/acct/ai/v1/chat/completions",
+          "https:@lgcode/@lgcode/api.cloudflare.com@lgcode/client@lgcode/v4@lgcode/accounts@lgcode/acct@lgcode/ai@lgcode/v1@lgcode/chat@lgcode/completions",
         )
       }),
     ),
@@ -251,14 +251,14 @@ describe("CloudflareWorkersAIPlugin", () => {
       const result = yield* plugin.trigger(
         "aisdk.language",
         {
-          model: model("cloudflare-workers-ai", "alias", { api: { id: ModelV2.ID.make("@cf/api-model") } }),
+          model: model("cloudflare-workers-ai", "alias", { api: { id: ModelV2.ID.make("@cf@lgcode/api-model") } }),
           sdk: fakeSelectorSdk(calls),
           options: {},
         },
         {},
       )
       expect(result.language).toBeDefined()
-      expect(calls).toEqual(["languageModel:@cf/api-model"])
+      expect(calls).toEqual(["languageModel:@cf@lgcode/api-model"])
     }),
   )
 
@@ -270,10 +270,10 @@ describe("CloudflareWorkersAIPlugin", () => {
         const result = yield* plugin.trigger(
           "aisdk.sdk",
           {
-            model: model("cloudflare-workers-ai", "@cf/model", {
-              api: { type: "aisdk", package: "@ai-sdk/anthropic", url: "https://proxy.example/v1" },
+            model: model("cloudflare-workers-ai", "@cf@lgcode/model", {
+              api: { type: "aisdk", package: "@ai-sdk@lgcode/anthropic", url: "https:@lgcode/@lgcode/proxy.example@lgcode/v1" },
             }),
-            package: "@ai-sdk/anthropic",
+            package: "@ai-sdk@lgcode/anthropic",
             options: { name: "cloudflare-workers-ai" },
           },
           {},

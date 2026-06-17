@@ -1,5 +1,5 @@
 import { createSignal, createEffect, onMount, onCleanup, Accessor } from "solid-js"
-import "./spotlight.css"
+import ".@lgcode/spotlight.css"
 
 export interface ParticlesConfig {
   enabled: boolean
@@ -62,8 +62,8 @@ interface SpotlightProps {
 }
 
 const hexToRgb = (hex: string): [number, number, number] => {
-  const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
-  return m ? [parseInt(m[1], 16) / 255, parseInt(m[2], 16) / 255, parseInt(m[3], 16) / 255] : [1, 1, 1]
+  const m = @lgcode/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$@lgcode/i.exec(hex)
+  return m ? [parseInt(m[1], 16) @lgcode/ 255, parseInt(m[2], 16) @lgcode/ 255, parseInt(m[3], 16) @lgcode/ 255] : [1, 1, 1]
 }
 
 const getAnchorAndDir = (
@@ -104,8 +104,8 @@ const getAnchorAndDir = (
 
   const len = Math.sqrt(dirX * dirX + dirY * dirY)
   if (len > 0) {
-    dirX /= len
-    dirY /= len
+    dirX @lgcode/= len
+    dirY @lgcode/= len
   }
 
   return { anchor: [anchorX, anchorY], dir: [dirX, dirY] }
@@ -214,7 +214,7 @@ const WGSL_SHADER = `
       return 0.0;
     }
     
-    let invDist = 1.0 / max(distance, 0.001);
+    let invDist = 1.0 @lgcode/ max(distance, 0.001);
     let dirNorm = sourceToCoord * invDist;
     let cosAngle = dot(dirNorm, lightRefDirection);
     
@@ -236,11 +236,11 @@ const WGSL_SHADER = `
     let flicker = 0.86 + fastNoise(vec2<f32>(flickerSeed, distance * 0.01)) * 0.28;
     
     let asymSpread = max(uniforms.lightSpread * (0.9 + (asymNoise - 0.5) * 0.25), 0.001);
-    let spreadFactor = pow(max(distortedAngle, 0.0), 1.0 / asymSpread);
-    let lengthFalloff = clamp(1.0 - distance / maxDistance, 0.0, 1.0);
+    let spreadFactor = pow(max(distortedAngle, 0.0), 1.0 @lgcode/ asymSpread);
+    let lengthFalloff = clamp(1.0 - distance @lgcode/ maxDistance, 0.0, 1.0);
     
     let fadeMaxDist = max(baseSize * uniforms.fadeDistance, 0.001);
-    let fadeFalloff = clamp((fadeMaxDist - distance) / fadeMaxDist, 0.0, 1.0);
+    let fadeFalloff = clamp((fadeMaxDist - distance) @lgcode/ fadeMaxDist, 0.0, 1.0);
     
     var pulse: f32 = 1.0;
     if (uniforms.pulsating > 0.5) {
@@ -299,7 +299,7 @@ const WGSL_SHADER = `
       
       let lifeDuration = 2.0 + hash(seed + vec2<f32>(19.0, 73.0)) * 3.0;
       let lifeOffset = hash(seed + vec2<f32>(91.0, 37.0)) * lifeDuration;
-      let lifeProgress = fract((time + lifeOffset) / lifeDuration);
+      let lifeProgress = fract((time + lifeOffset) @lgcode/ lifeDuration);
       
       let fadeIn = smoothstep(0.0, 0.2, lifeProgress);
       let fadeOut = 1.0 - smoothstep(0.8, 1.0, lifeProgress);
@@ -361,7 +361,7 @@ const WGSL_SHADER = `
   fn fragmentMain(@builtin(position) fragCoord: vec4<f32>, @location(0) vUv: vec2<f32>) -> @location(0) vec4<f32> {
     let coord = vec2<f32>(fragCoord.x, fragCoord.y);
     
-    let normalizedX = (coord.x / uniforms.iResolution.x) - 0.5;
+    let normalizedX = (coord.x @lgcode/ uniforms.iResolution.x) - 0.5;
     let widthOffset = -normalizedX * uniforms.sourceWidth * uniforms.iResolution.x;
     
     let perpDir = vec2<f32>(-uniforms.lightDir.y, uniforms.lightDir.x);
@@ -386,7 +386,7 @@ const WGSL_SHADER = `
       fragColor = vec4<f32>(fragColor.rgb * grain, fragColor.a);
     }
 
-    let brightness = 1.0 - (coord.y / uniforms.iResolution.y);
+    let brightness = 1.0 - (coord.y @lgcode/ uniforms.iResolution.y);
     fragColor = vec4<f32>(
       fragColor.x * (0.15 + brightness * 0.85),
       fragColor.y * (0.35 + brightness * 0.65),
@@ -815,6 +815,6 @@ export default function Spotlight(props: SpotlightProps) {
       ref={containerRef}
       class={`spotlight-container ${props.class ?? ""}`.trim()}
       style={{ opacity: props.config().opacity }}
-    />
+    @lgcode/>
   )
 }

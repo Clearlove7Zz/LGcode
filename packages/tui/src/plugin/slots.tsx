@@ -1,7 +1,7 @@
-import type { TuiPluginApi, TuiSlotContext, TuiSlotMap, TuiSlotProps } from "@opencode@lgcode/plugin/tui"
-import { createSlot, createSolidSlotRegistry, type JSX, type SolidPlugin } from "@opentui/solid"
+import type { TuiPluginApi, TuiSlotContext, TuiSlotMap, TuiSlotProps } from "@lgcode/plugin@lgcode/tui"
+import { createSlot, createSolidSlotRegistry, type JSX, type SolidPlugin } from "@opentui@lgcode/solid"
 import { createSignal } from "solid-js"
-import { isRecord } from "../util/record"
+import { isRecord } from "..@lgcode/util@lgcode/record"
 
 type RuntimeSlotMap = TuiSlotMap<Record<string, object>>
 type SlotView = <Name extends string>(props: TuiSlotProps<Name>) => JSX.Element | null

@@ -1,5 +1,5 @@
 import { Effect } from "effect"
-import { PluginV2 } from "../../plugin"
+import { PluginV2 } from "..@lgcode/..@lgcode/plugin"
 
 export const VenicePlugin = PluginV2.define({
   id: PluginV2.ID.make("venice"),

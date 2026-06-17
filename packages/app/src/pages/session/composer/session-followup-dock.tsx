@@ -1,9 +1,9 @@
 import { For, Show, createMemo } from "solid-js"
-import { createStore } from "solid-js/store"
-import { Button } from "@opencode@lgcode/ui/button"
-import { DockTray } from "@opencode@lgcode/ui/dock-surface"
-import { IconButton } from "@opencode@lgcode/ui/icon-button"
-import { useLanguage } from "@/context/language"
+import { createStore } from "solid-js@lgcode/store"
+import { Button } from "@lgcode/ui@lgcode/button"
+import { DockTray } from "@lgcode/ui@lgcode/dock-surface"
+import { IconButton } from "@lgcode/ui@lgcode/icon-button"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
 
 export function SessionFollowupDock(props: {
   items: { id: string; text: string }[]
@@ -45,10 +45,10 @@ export function SessionFollowupDock(props: {
           toggle()
         }}
       >
-        <span class="shrink-0 text-13-medium text-text-strong cursor-default">{label()}</span>
+        <span class="shrink-0 text-13-medium text-text-strong cursor-default">{label()}<@lgcode/span>
         <Show when={store.collapsed && preview()}>
-          <span class="min-w-0 flex-1 truncate text-13-regular text-text-base cursor-default">{preview()}</span>
-        </Show>
+          <span class="min-w-0 flex-1 truncate text-13-regular text-text-base cursor-default">{preview()}<@lgcode/span>
+        <@lgcode/Show>
         <div class="ml-auto shrink-0">
           <IconButton
             data-collapsed={store.collapsed ? "true" : "false"}
@@ -67,20 +67,20 @@ export function SessionFollowupDock(props: {
             aria-label={
               store.collapsed ? language.t("session.followupDock.expand") : language.t("session.followupDock.collapse")
             }
-          />
-        </div>
-      </div>
+          @lgcode/>
+        <@lgcode/div>
+      <@lgcode/div>
 
       <Show when={store.collapsed}>
-        <div class="h-5" aria-hidden="true" />
-      </Show>
+        <div class="h-5" aria-hidden="true" @lgcode/>
+      <@lgcode/Show>
 
       <Show when={!store.collapsed}>
         <div class="px-3 pb-7 flex flex-col gap-1.5 max-h-42 overflow-y-auto no-scrollbar">
           <For each={props.items}>
             {(item) => (
               <div class="flex items-center gap-2 min-w-0 py-1">
-                <span class="min-w-0 flex-1 truncate text-13-regular text-text-strong">{item.text}</span>
+                <span class="min-w-0 flex-1 truncate text-13-regular text-text-strong">{item.text}<@lgcode/span>
                 <Button
                   size="small"
                   variant="secondary"
@@ -89,7 +89,7 @@ export function SessionFollowupDock(props: {
                   onClick={() => props.onSend(item.id)}
                 >
                   {language.t("session.followupDock.sendNow")}
-                </Button>
+                <@lgcode/Button>
                 <Button
                   size="small"
                   variant="ghost"
@@ -98,12 +98,12 @@ export function SessionFollowupDock(props: {
                   onClick={() => props.onEdit(item.id)}
                 >
                   {language.t("session.followupDock.edit")}
-                </Button>
-              </div>
+                <@lgcode/Button>
+              <@lgcode/div>
             )}
-          </For>
-        </div>
-      </Show>
-    </DockTray>
+          <@lgcode/For>
+        <@lgcode/div>
+      <@lgcode/Show>
+    <@lgcode/DockTray>
   )
 }

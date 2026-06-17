@@ -1,7 +1,7 @@
 import { Effect, Schema } from "effect"
-import * as Tool from "./tool"
-import { Question } from "../question"
-import DESCRIPTION from "./question.txt"
+import * as Tool from ".@lgcode/tool"
+import { Question } from "..@lgcode/question"
+import DESCRIPTION from ".@lgcode/question.txt"
 
 export const Parameters = Schema.Struct({
   questions: Schema.mutable(Schema.Array(Question.Prompt)).annotate({ description: "Questions to ask" }),

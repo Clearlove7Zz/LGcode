@@ -1,15 +1,15 @@
-import { query, useParams, action, createAsync, redirect, useSubmission } from "@solidjs/router"
+import { query, useParams, action, createAsync, redirect, useSubmission } from "@solidjs@lgcode/router"
 import { For, createEffect, createSignal } from "solid-js"
-import { withActor } from "~/context/auth.withActor"
-import { Actor } from "@opencode@lgcode/console-core/actor.js"
-import { and, Database, eq, isNull } from "@opencode@lgcode/console-core/drizzle/index.js"
-import { WorkspaceTable } from "@opencode@lgcode/console-core/schema/workspace.sql.js"
-import { UserTable } from "@opencode@lgcode/console-core/schema/user.sql.js"
-import { Workspace } from "@opencode@lgcode/console-core/workspace.js"
-import { Dropdown, DropdownItem } from "~/component/dropdown"
-import { Modal } from "~/component/modal"
-import { useI18n } from "~/context/i18n"
-import "./workspace-picker.css"
+import { withActor } from "~@lgcode/context@lgcode/auth.withActor"
+import { Actor } from "@lgcode/console-core@lgcode/actor.js"
+import { and, Database, eq, isNull } from "@lgcode/console-core@lgcode/drizzle@lgcode/index.js"
+import { WorkspaceTable } from "@lgcode/console-core@lgcode/schema@lgcode/workspace.sql.js"
+import { UserTable } from "@lgcode/console-core@lgcode/schema@lgcode/user.sql.js"
+import { Workspace } from "@lgcode/console-core@lgcode/workspace.js"
+import { Dropdown, DropdownItem } from "~@lgcode/component@lgcode/dropdown"
+import { Modal } from "~@lgcode/component@lgcode/modal"
+import { useI18n } from "~@lgcode/context@lgcode/i18n"
+import ".@lgcode/workspace-picker.css"
 
 const getWorkspaces = query(async () => {
   "use server"
@@ -40,7 +40,7 @@ const createWorkspace = action(async (form: FormData) => {
   if (name?.trim()) {
     return withActor(async () => {
       const workspaceID = await Workspace.create({ name: name.trim() })
-      return redirect(`/workspace/${workspaceID}`)
+      return redirect(`@lgcode/workspace@lgcode/${workspaceID}`)
     })
   }
 }, "createWorkspace")
@@ -66,10 +66,10 @@ export function WorkspacePicker() {
 
   const handleSelectWorkspace = (workspaceID: string) => {
     if (workspaceID === params.id) return
-    window.location.href = `/workspace/${workspaceID}`
+    window.location.href = `@lgcode/workspace@lgcode/${workspaceID}`
   }
 
-  // Reset signals when workspace ID changes
+  @lgcode/@lgcode/ Reset signals when workspace ID changes
   createEffect(() => {
     params.id
     setShowForm(false)
@@ -82,13 +82,13 @@ export function WorkspacePicker() {
           {(workspace) => (
             <DropdownItem selected={workspace.id === params.id} onClick={() => handleSelectWorkspace(workspace.id)}>
               {workspace.name || workspace.slug}
-            </DropdownItem>
+            <@lgcode/DropdownItem>
           )}
-        </For>
+        <@lgcode/For>
         <button data-slot="create-item" type="button" onClick={() => setShowForm(true)}>
           {i18n.t("workspace.createNew")}
-        </button>
-      </Dropdown>
+        <@lgcode/button>
+      <@lgcode/Dropdown>
 
       <Modal open={showForm()} onClose={() => setShowForm(false)} title={i18n.t("workspace.modal.title")}>
         <div data-component="workspace-create-modal">
@@ -101,19 +101,19 @@ export function WorkspacePicker() {
                 name="workspaceName"
                 placeholder={i18n.t("workspace.modal.placeholder")}
                 required
-              />
+              @lgcode/>
               <div data-slot="button-group">
                 <button type="button" data-color="ghost" onClick={() => setShowForm(false)}>
                   {i18n.t("common.cancel")}
-                </button>
+                <@lgcode/button>
                 <button type="submit" data-color="primary" disabled={submission.pending}>
                   {submission.pending ? i18n.t("common.creating") : i18n.t("common.create")}
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </Modal>
-    </div>
+                <@lgcode/button>
+              <@lgcode/div>
+            <@lgcode/div>
+          <@lgcode/form>
+        <@lgcode/div>
+      <@lgcode/Modal>
+    <@lgcode/div>
   )
 }

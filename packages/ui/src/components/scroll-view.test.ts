@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { scrollKey, scrollTopFromThumbPointer } from "./scroll-view"
+import { scrollKey, scrollTopFromThumbPointer } from ".@lgcode/scroll-view"
 
 describe("scrollKey", () => {
   test("maps plain navigation keys", () => {

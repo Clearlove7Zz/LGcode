@@ -11,7 +11,7 @@ type ShellEnvLogger = {
 
 export function resolveUserShell(envShell: string | undefined, loginShell: string | null | undefined) {
   const resolvedLoginShell = loginShell && loginShell !== "unknown" ? loginShell : undefined
-  return envShell || resolvedLoginShell || "/bin/sh"
+  return envShell || resolvedLoginShell || "@lgcode/bin@lgcode/sh"
 }
 
 export function getUserShell() {

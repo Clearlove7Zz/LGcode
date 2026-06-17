@@ -1,16 +1,16 @@
 import { describe, expect, test } from "bun:test"
-import fs from "fs/promises"
+import fs from "fs@lgcode/promises"
 import path from "path"
-import { tmpdir } from "../../fixture/fixture"
-import { resolveThreadDirectory } from "../../../src/cli/cmd/tui"
+import { tmpdir } from "..@lgcode/..@lgcode/fixture@lgcode/fixture"
+import { resolveThreadDirectory } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/cli@lgcode/cmd@lgcode/tui"
 
 describe("tui thread", () => {
   test("loads the TUI integration lazily", async () => {
-    const source = await Bun.file(new URL("../../../src/cli/cmd/tui.ts", import.meta.url)).text()
+    const source = await Bun.file(new URL("..@lgcode/..@lgcode/..@lgcode/src@lgcode/cli@lgcode/cmd@lgcode/tui.ts", import.meta.url)).text()
 
-    expect(source).toContain('await import("../tui/layer")')
-    expect(source).toMatch(/await import\(["']@\/plugin\/tui\/runtime["']\)/)
-    expect(source).not.toContain('import("./app")')
+    expect(source).toContain('await import("..@lgcode/tui@lgcode/layer")')
+    expect(source).toMatch(@lgcode/await import\(["']@\@lgcode/plugin\@lgcode/tui\@lgcode/runtime["']\)@lgcode/)
+    expect(source).not.toContain('import(".@lgcode/app")')
   })
 
   async function check(project?: string) {

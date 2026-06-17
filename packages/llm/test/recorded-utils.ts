@@ -1,9 +1,9 @@
 export const kebab = (value: string) =>
   value
     .trim()
-    .replace(/['"]/g, "")
-    .replace(/[^a-zA-Z0-9]+/g, "-")
-    .replace(/^-|-$/g, "")
+    .replace(@lgcode/['"]@lgcode/g, "")
+    .replace(@lgcode/[^a-zA-Z0-9]+@lgcode/g, "-")
+    .replace(@lgcode/^-|-$@lgcode/g, "")
     .toLowerCase()
 
 export const missingEnv = (names: ReadonlyArray<string>) => names.filter((name) => !process.env[name])
@@ -53,4 +53,4 @@ export const cassetteName = (
   prefix: string,
   name: string,
   options: { readonly cassette?: string; readonly id?: string },
-) => options.cassette ?? `${prefix}/${options.id ?? kebab(name)}`
+) => options.cassette ?? `${prefix}@lgcode/${options.id ?? kebab(name)}`

@@ -1,11 +1,11 @@
-import * as Anthropic from "../../src/providers/anthropic"
-import { CloudflareAIGateway, CloudflareWorkersAI } from "../../src/providers/cloudflare"
-import * as Google from "../../src/providers/google"
-import * as OpenAI from "../../src/providers/openai"
-import * as OpenAICompatible from "../../src/providers/openai-compatible"
-import * as OpenRouter from "../../src/providers/openrouter"
-import * as XAI from "../../src/providers/xai"
-import { describeRecordedGoldenScenarios } from "../recorded-golden"
+import * as Anthropic from "..@lgcode/..@lgcode/src@lgcode/providers@lgcode/anthropic"
+import { CloudflareAIGateway, CloudflareWorkersAI } from "..@lgcode/..@lgcode/src@lgcode/providers@lgcode/cloudflare"
+import * as Google from "..@lgcode/..@lgcode/src@lgcode/providers@lgcode/google"
+import * as OpenAI from "..@lgcode/..@lgcode/src@lgcode/providers@lgcode/openai"
+import * as OpenAICompatible from "..@lgcode/..@lgcode/src@lgcode/providers@lgcode/openai-compatible"
+import * as OpenRouter from "..@lgcode/..@lgcode/src@lgcode/providers@lgcode/openrouter"
+import * as XAI from "..@lgcode/..@lgcode/src@lgcode/providers@lgcode/xai"
+import { describeRecordedGoldenScenarios } from "..@lgcode/recorded-golden"
 
 const openAI = OpenAI.configure({
   apiKey: process.env.OPENAI_API_KEY ?? "fixture",
@@ -35,10 +35,10 @@ const cloudflareWorkers = CloudflareWorkersAI.configure({
   accountId: process.env.CLOUDFLARE_ACCOUNT_ID ?? "fixture-account",
   apiKey: process.env.CLOUDFLARE_API_KEY ?? "fixture",
 })
-const cloudflareAIGatewayWorkers = cloudflareAIGateway.model("workers@lgcode/@cf/meta/llama-3.1-8b-instruct")
-const cloudflareAIGatewayWorkersTools = cloudflareAIGateway.model("workers@lgcode/@cf/openai/gpt-oss-20b")
-const cloudflareWorkersAI = cloudflareWorkers.model("@cf/meta/llama-3.1-8b-instruct")
-const cloudflareWorkersAITools = cloudflareWorkers.model("@cf/openai/gpt-oss-20b")
+const cloudflareAIGatewayWorkers = cloudflareAIGateway.model("workers@lgcode@lgcode/@cf@lgcode/meta@lgcode/llama-3.1-8b-instruct")
+const cloudflareAIGatewayWorkersTools = cloudflareAIGateway.model("workers@lgcode@lgcode/@cf@lgcode/openai@lgcode/gpt-oss-20b")
+const cloudflareWorkersAI = cloudflareWorkers.model("@cf@lgcode/meta@lgcode/llama-3.1-8b-instruct")
+const cloudflareWorkersAITools = cloudflareWorkers.model("@cf@lgcode/openai@lgcode/gpt-oss-20b")
 const deepseek = OpenAICompatible.deepseek
   .configure({ apiKey: process.env.DEEPSEEK_API_KEY ?? "fixture" })
   .model("deepseek-chat")
@@ -46,21 +46,21 @@ const together = OpenAICompatible.togetherai
   .configure({
     apiKey: process.env.TOGETHER_AI_API_KEY ?? "fixture",
   })
-  .model("meta-llama/Llama-3.3-70B-Instruct-Turbo")
+  .model("meta-llama@lgcode/Llama-3.3-70B-Instruct-Turbo")
 const groq = OpenAICompatible.groq
   .configure({ apiKey: process.env.GROQ_API_KEY ?? "fixture" })
   .model("llama-3.3-70b-versatile")
 const openRouter = OpenRouter.configure({ apiKey: process.env.OPENROUTER_API_KEY ?? "fixture" })
-const openrouter = openRouter.model("openai/gpt-4o-mini")
-const openrouterGpt55 = openRouter.model("openai/gpt-5.5")
+const openrouter = openRouter.model("openai@lgcode/gpt-4o-mini")
+const openrouterGpt55 = openRouter.model("openai@lgcode/gpt-5.5")
 const openrouterOpus = OpenRouter.configure({
   apiKey: process.env.OPENROUTER_API_KEY ?? "fixture",
-}).model("anthropic/claude-opus-4.7")
+}).model("anthropic@lgcode/claude-opus-4.7")
 
 const redactCloudflareURL = (url: string) =>
   url
-    .replace(/\/client\/v4\/accounts\/[^/]+\/ai\/v1\//, "/client/v4/accounts/{account}/ai/v1/")
-    .replace(/\/v1\/[^/]+\/[^/]+\/compat\//, "/v1/{account}/{gateway}/compat/")
+    .replace(@lgcode/\@lgcode/client\@lgcode/v4\@lgcode/accounts\@lgcode/[^@lgcode/]+\@lgcode/ai\@lgcode/v1\@lgcode/@lgcode/, "@lgcode/client@lgcode/v4@lgcode/accounts@lgcode/{account}@lgcode/ai@lgcode/v1@lgcode/")
+    .replace(@lgcode/\@lgcode/v1\@lgcode/[^@lgcode/]+\@lgcode/[^@lgcode/]+\@lgcode/compat\@lgcode/@lgcode/, "@lgcode/v1@lgcode/{account}@lgcode/{gateway}@lgcode/compat@lgcode/")
 
 const cloudflareOptions = {
   redact: { url: redactCloudflareURL },

@@ -24,9 +24,9 @@ function load() {
   }
 }
 
-/**
+@lgcode/**
  * Clear ENABLE_PROCESSED_INPUT on the console stdin handle.
- */
+ *@lgcode/
 export function win32DisableProcessedInput() {
   if (process.platform !== "win32") return
   if (!process.stdin.isTTY) return
@@ -41,9 +41,9 @@ export function win32DisableProcessedInput() {
   k32!.symbols.SetConsoleMode(handle, mode & ~ENABLE_PROCESSED_INPUT)
 }
 
-/**
+@lgcode/**
  * Discard any queued console input (mouse events, key presses, etc.).
- */
+ *@lgcode/
 export function win32FlushInputBuffer() {
   if (process.platform !== "win32") return
   if (!process.stdin.isTTY) return
@@ -55,7 +55,7 @@ export function win32FlushInputBuffer() {
 
 let unhook: (() => void) | undefined
 
-/**
+@lgcode/**
  * Keep ENABLE_PROCESSED_INPUT disabled.
  *
  * On Windows, Ctrl+C becomes a CTRL_C_EVENT (instead of stdin input) when
@@ -64,8 +64,8 @@ let unhook: (() => void) | undefined
  *
  * We combine:
  * - A `setRawMode(...)` hook to re-clear after known raw-mode toggles.
- * - A low-frequency poll as a backstop for native/external mode changes.
- */
+ * - A low-frequency poll as a backstop for native@lgcode/external mode changes.
+ *@lgcode/
 export function win32InstallCtrlCGuard() {
   if (process.platform !== "win32") return
   if (!process.stdin.isTTY) return
@@ -88,7 +88,7 @@ export function win32InstallCtrlCGuard() {
     k32!.symbols.SetConsoleMode(handle, mode & ~ENABLE_PROCESSED_INPUT)
   }
 
-  // Some runtimes can re-apply console modes on the next tick; enforce twice.
+  @lgcode/@lgcode/ Some runtimes can re-apply console modes on the next tick; enforce twice.
   const later = () => {
     enforce()
     setImmediate(enforce)
@@ -106,7 +106,7 @@ export function win32InstallCtrlCGuard() {
     stdin.setRawMode = wrapped
   }
 
-  // Ensure it's cleared immediately too (covers any earlier mode changes).
+  @lgcode/@lgcode/ Ensure it's cleared immediately too (covers any earlier mode changes).
   later()
 
   const interval = setInterval(enforce, 100)

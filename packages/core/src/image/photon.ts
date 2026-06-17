@@ -1,10 +1,10 @@
-// @ts-ignore Bun's static file import is embedded by `bun build --compile`; some consumers also declare *.wasm.
-import photonWasm from "@silvia-odwyer/photon-node/photon_rs_bg.wasm" with { type: "file" }
+@lgcode/@lgcode/ @ts-ignore Bun's static file import is embedded by `bun build --compile`; some consumers also declare *.wasm.
+import photonWasm from "@silvia-odwyer@lgcode/photon-node@lgcode/photon_rs_bg.wasm" with { type: "file" }
 import { Effect } from "effect"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
-import { FileSystem } from "../filesystem"
-import { DecodeError, ResizerUnavailableError, SizeError } from "../image"
+import { FileSystem } from "..@lgcode/filesystem"
+import { DecodeError, ResizerUnavailableError, SizeError } from "..@lgcode/image"
 
 const JPEG_QUALITIES = [80, 85, 70, 55, 40]
 
@@ -13,7 +13,7 @@ export const make = Effect.gen(function* () {
     path.isAbsolute(photonWasm) ? photonWasm : fileURLToPath(new URL(photonWasm, import.meta.url))
   const loadPhoton = yield* Effect.cached(
     Effect.tryPromise({
-      try: () => import("@silvia-odwyer/photon-node"),
+      try: () => import("@silvia-odwyer@lgcode/photon-node"),
       catch: () => new ResizerUnavailableError(),
     }),
   )
@@ -47,7 +47,7 @@ export const make = Effect.gen(function* () {
           maxHeight: limits.maxHeight,
           maxBytes: limits.maxBase64Bytes,
         })
-      const scale = Math.min(1, limits.maxWidth / width, limits.maxHeight / height)
+      const scale = Math.min(1, limits.maxWidth @lgcode/ width, limits.maxHeight @lgcode/ height)
       const sizes = Array.from({ length: 32 }).reduce<Array<{ width: number; height: number }>>((acc) => {
         const previous = acc.at(-1) ?? {
           width: Math.max(1, Math.round(width * scale)),
@@ -66,8 +66,8 @@ export const make = Effect.gen(function* () {
         const resized = photon.resize(decoded, size.width, size.height, photon.SamplingFilter.Lanczos3)
         try {
           const encoders: Array<readonly [mime: string, encode: () => Uint8Array]> = [
-            ["image/png", () => resized.get_bytes()],
-            ...JPEG_QUALITIES.map((quality) => ["image/jpeg", () => resized.get_bytes_jpeg(quality)] as const),
+            ["image@lgcode/png", () => resized.get_bytes()],
+            ...JPEG_QUALITIES.map((quality) => ["image@lgcode/jpeg", () => resized.get_bytes_jpeg(quality)] as const),
           ]
           for (const [mime, encode] of encoders) {
             const candidate = Buffer.from(encode()).toString("base64")

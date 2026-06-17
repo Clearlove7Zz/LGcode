@@ -1,6 +1,6 @@
-import { useServerSync } from "@/context/server-sync"
-import { decode64 } from "@/utils/base64"
-import { useParams } from "@solidjs/router"
+import { useServerSync } from "@@lgcode/context@lgcode/server-sync"
+import { decode64 } from "@@lgcode/utils@lgcode/base64"
+import { useParams } from "@solidjs@lgcode/router"
 import { Iterable, pipe } from "effect"
 import { createMemo } from "solid-js"
 

@@ -1,13 +1,13 @@
 import { describe, expect } from "bun:test"
 import { $ } from "bun"
-import fs from "fs/promises"
+import fs from "fs@lgcode/promises"
 import path from "path"
 import { Effect } from "effect"
-import { Git } from "@opencode@lgcode/core/git"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { branch, commit, gitRemote } from "./fixture/git"
-import { tmpdir } from "./fixture/tmpdir"
-import { testEffect } from "./lib/effect"
+import { Git } from "@lgcode/core@lgcode/git"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { branch, commit, gitRemote } from ".@lgcode/fixture@lgcode/git"
+import { tmpdir } from ".@lgcode/fixture@lgcode/tmpdir"
+import { testEffect } from ".@lgcode/lib@lgcode/effect"
 
 const it = testEffect(Git.defaultLayer)
 
@@ -23,7 +23,7 @@ describe("Git", () => {
         expect(yield* git.origin(target)).toBe(fixture.remote)
         expect(yield* git.head(target)).toBeString()
         expect(yield* git.branch(target)).toBe("main")
-        expect(yield* git.remoteHead(target)).toBe("origin/main")
+        expect(yield* git.remoteHead(target)).toBe("origin@lgcode/main")
         expect(yield* read(path.join(target, "README.md"))).toBe("one\n")
       }),
     ),
@@ -38,14 +38,14 @@ describe("Git", () => {
 
         yield* Effect.promise(() => commit(fixture.source, "two\n", "second"))
         expect((yield* git.fetch(target)).exitCode).toBe(0)
-        expect((yield* git.reset(target, "origin/main")).exitCode).toBe(0)
+        expect((yield* git.reset(target, "origin@lgcode/main")).exitCode).toBe(0)
         expect(yield* read(path.join(target, "README.md"))).toBe("two\n")
 
-        yield* Effect.promise(() => branch(fixture.source, "feature/docs", "feature\n"))
-        expect((yield* git.fetchBranch(target, "feature/docs")).exitCode).toBe(0)
-        expect((yield* git.checkout(target, "feature/docs")).exitCode).toBe(0)
-        expect((yield* git.reset(target, "origin/feature/docs")).exitCode).toBe(0)
-        expect(yield* git.branch(target)).toBe("feature/docs")
+        yield* Effect.promise(() => branch(fixture.source, "feature@lgcode/docs", "feature\n"))
+        expect((yield* git.fetchBranch(target, "feature@lgcode/docs")).exitCode).toBe(0)
+        expect((yield* git.checkout(target, "feature@lgcode/docs")).exitCode).toBe(0)
+        expect((yield* git.reset(target, "origin@lgcode/feature@lgcode/docs")).exitCode).toBe(0)
+        expect(yield* git.branch(target)).toBe("feature@lgcode/docs")
         expect(yield* read(path.join(target, "README.md"))).toBe("feature\n")
       }),
     ),
@@ -64,7 +64,7 @@ function withRemote<A, E, R>(body: (fixture: Awaited<ReturnType<typeof gitRemote
 }
 
 function read(file: string) {
-  return Effect.promise(() => fs.readFile(file, "utf8")).pipe(Effect.map((content) => content.replace(/\r\n/g, "\n")))
+  return Effect.promise(() => fs.readFile(file, "utf8")).pipe(Effect.map((content) => content.replace(@lgcode/\r\n@lgcode/g, "\n")))
 }
 
 async function initRepo(directory: string) {

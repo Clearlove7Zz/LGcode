@@ -1,13 +1,13 @@
-import { Config } from "@/config/config"
-import { ConfigV1 } from "@opencode@lgcode/core/v1/config/config"
-import { Provider } from "@/provider/provider"
-import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
-import { Authorization } from "../middleware/authorization"
-import { InstanceContextMiddleware } from "../middleware/instance-context"
-import { WorkspaceRoutingMiddleware, WorkspaceRoutingQuery } from "../middleware/workspace-routing"
-import { described } from "./metadata"
+import { Config } from "@@lgcode/config@lgcode/config"
+import { ConfigV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/config"
+import { Provider } from "@@lgcode/provider@lgcode/provider"
+import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
+import { Authorization } from "..@lgcode/middleware@lgcode/authorization"
+import { InstanceContextMiddleware } from "..@lgcode/middleware@lgcode/instance-context"
+import { WorkspaceRoutingMiddleware, WorkspaceRoutingQuery } from "..@lgcode/middleware@lgcode/workspace-routing"
+import { described } from ".@lgcode/metadata"
 
-const root = "/config"
+const root = "@lgcode/config"
 
 export const ConfigApi = HttpApi.make("config")
   .add(
@@ -35,7 +35,7 @@ export const ConfigApi = HttpApi.make("config")
             description: "Update OpenCode configuration settings and preferences.",
           }),
         ),
-        HttpApiEndpoint.get("providers", `${root}/providers`, {
+        HttpApiEndpoint.get("providers", `${root}@lgcode/providers`, {
           query: WorkspaceRoutingQuery,
           success: described(Provider.ConfigProvidersResult, "List of providers"),
         }).annotateMerge(

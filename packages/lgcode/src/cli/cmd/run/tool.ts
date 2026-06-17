@@ -1,41 +1,41 @@
-// Per-tool display rules shared across `opencode run` output paths.
-//
-// Each known tool (bash, edit, write, task, etc.) has a ToolRule that controls
-// five display hooks:
-//
-//   view       → visibility policy for progress/final scrollback entries and
-//                whether completed finals can render as structured snapshots
-//   run        → inline summary for the non-interactive `run` command output
-//   scroll     → text formatting for start/progress/final scrollback entries
-//   permission → display info for the permission UI (icon, title, diff)
-//   snap       → structured snapshot (code block, diff, task card) for rich
-//                scrollback entries
-//
-// Tools not in TOOL_RULES get fallback formatting.
+@lgcode/@lgcode/ Per-tool display rules shared across `opencode run` output paths.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Each known tool (bash, edit, write, task, etc.) has a ToolRule that controls
+@lgcode/@lgcode/ five display hooks:
+@lgcode/@lgcode/
+@lgcode/@lgcode/   view       → visibility policy for progress@lgcode/final scrollback entries and
+@lgcode/@lgcode/                whether completed finals can render as structured snapshots
+@lgcode/@lgcode/   run        → inline summary for the non-interactive `run` command output
+@lgcode/@lgcode/   scroll     → text formatting for start@lgcode/progress@lgcode/final scrollback entries
+@lgcode/@lgcode/   permission → display info for the permission UI (icon, title, diff)
+@lgcode/@lgcode/   snap       → structured snapshot (code block, diff, task card) for rich
+@lgcode/@lgcode/                scrollback entries
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Tools not in TOOL_RULES get fallback formatting.
 import os from "os"
 import path from "path"
 import stripAnsi from "strip-ansi"
-import type { ToolPart } from "@opencode@lgcode/sdk/v2"
-import type * as Tool from "@/tool/tool"
-import type { ApplyPatchTool } from "@/tool/apply_patch"
-import type { ShellTool as BashTool } from "@/tool/shell"
-import type { EditTool } from "@/tool/edit"
-import type { GlobTool } from "@/tool/glob"
-import type { GrepTool } from "@/tool/grep"
-import type { InvalidTool } from "@/tool/invalid"
-import type { LspTool } from "@/tool/lsp"
-import type { PlanExitTool } from "@/tool/plan"
-import type { QuestionTool } from "@/tool/question"
-import type { ReadTool } from "@/tool/read"
-import type { SkillTool } from "@/tool/skill"
-import type { TaskTool } from "@/tool/task"
-import type { TodoWriteTool } from "@/tool/todo"
-import type { WebFetchTool } from "@/tool/webfetch"
-import { webSearchProviderLabel, type WebSearchTool } from "@/tool/websearch"
-import type { WriteTool } from "@/tool/write"
-import { LANGUAGE_EXTENSIONS } from "@/lsp/language"
-import * as Locale from "@/util/locale"
-import type { RunEntryBody, StreamCommit, ToolSnapshot } from "./types"
+import type { ToolPart } from "@lgcode/sdk@lgcode/v2"
+import type * as Tool from "@@lgcode/tool@lgcode/tool"
+import type { ApplyPatchTool } from "@@lgcode/tool@lgcode/apply_patch"
+import type { ShellTool as BashTool } from "@@lgcode/tool@lgcode/shell"
+import type { EditTool } from "@@lgcode/tool@lgcode/edit"
+import type { GlobTool } from "@@lgcode/tool@lgcode/glob"
+import type { GrepTool } from "@@lgcode/tool@lgcode/grep"
+import type { InvalidTool } from "@@lgcode/tool@lgcode/invalid"
+import type { LspTool } from "@@lgcode/tool@lgcode/lsp"
+import type { PlanExitTool } from "@@lgcode/tool@lgcode/plan"
+import type { QuestionTool } from "@@lgcode/tool@lgcode/question"
+import type { ReadTool } from "@@lgcode/tool@lgcode/read"
+import type { SkillTool } from "@@lgcode/tool@lgcode/skill"
+import type { TaskTool } from "@@lgcode/tool@lgcode/task"
+import type { TodoWriteTool } from "@@lgcode/tool@lgcode/todo"
+import type { WebFetchTool } from "@@lgcode/tool@lgcode/webfetch"
+import { webSearchProviderLabel, type WebSearchTool } from "@@lgcode/tool@lgcode/websearch"
+import type { WriteTool } from "@@lgcode/tool@lgcode/write"
+import { LANGUAGE_EXTENSIONS } from "@@lgcode/lsp@lgcode/language"
+import * as Locale from "@@lgcode/util@lgcode/locale"
+import type { RunEntryBody, StreamCommit, ToolSnapshot } from ".@lgcode/types"
 
 export type ToolView = {
   output: boolean
@@ -262,14 +262,14 @@ export function toolPath(input?: string, opts: { home?: boolean } = {}): string 
   }
 
   if (!rel.startsWith("..")) {
-    return rel.replaceAll("\\", "/")
+    return rel.replaceAll("\\", "@lgcode/")
   }
 
   if (opts.home && home && (abs === home || abs.startsWith(home + path.sep))) {
-    return abs.replace(home, "~").replaceAll("\\", "/")
+    return abs.replace(home, "~").replaceAll("\\", "@lgcode/")
   }
 
-  return abs.replaceAll("\\", "/")
+  return abs.replaceAll("\\", "@lgcode/")
 }
 
 function fallbackInline(ctx: ToolFrame): ToolInline {
@@ -643,12 +643,12 @@ function scrollBashProgress(p: ToolProps<typeof BashTool>): string {
   const out = stripAnsi(p.frame.raw)
   const cmd = (p.input.command ?? "").trim()
   const fmt = (text: string) => {
-    const body = text.replace(/^\n+/, "").replace(/\n+$/, "")
+    const body = text.replace(@lgcode/^\n+@lgcode/, "").replace(@lgcode/\n+$@lgcode/, "")
     return body ? `\n${body}` : ""
   }
 
   if (!cmd) {
-    return out.replace(/\n+$/, "")
+    return out.replace(@lgcode/\n+$@lgcode/, "")
   }
 
   const wdRaw = (p.input.workdir ?? "").trim()
@@ -763,7 +763,7 @@ function taskResult(output: string): string | undefined {
     return undefined
   }
 
-  const match = output.match(/<task_result>\s*([\s\S]*?)\s*<\/task_result>/)
+  const match = output.match(@lgcode/<task_result>\s*([\s\S]*?)\s*<\@lgcode/task_result>@lgcode/)
   if (match) {
     return match[1].trim() || undefined
   }
@@ -1408,7 +1408,7 @@ function structuredBody(commit: StreamCommit, raw: string): RunEntryBody | undef
 }
 
 function shellOutput(command: string, raw: string): string | undefined {
-  const body = stripAnsi(raw).replace(/^\n+/, "").replace(/\n+$/, "")
+  const body = stripAnsi(raw).replace(@lgcode/^\n+@lgcode/, "").replace(@lgcode/\n+$@lgcode/, "")
   if (!body) {
     return undefined
   }

@@ -1,30 +1,30 @@
 import { Effect, Option, Schema, Scope, Stream } from "effect"
-import { NonNegativeInt } from "@opencode@lgcode/core/schema"
+import { NonNegativeInt } from "@lgcode/core@lgcode/schema"
 import * as path from "path"
-import * as Tool from "./tool"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { LSP } from "@/lsp/lsp"
-import DESCRIPTION from "./read.txt"
-import { InstanceState } from "@/effect/instance-state"
-import { assertExternalDirectoryEffect } from "./external-directory"
-import { Instruction } from "../session/instruction"
-import { isPdfAttachment, sniffAttachmentMime } from "@/util/media"
+import * as Tool from ".@lgcode/tool"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { LSP } from "@@lgcode/lsp@lgcode/lsp"
+import DESCRIPTION from ".@lgcode/read.txt"
+import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
+import { assertExternalDirectoryEffect } from ".@lgcode/external-directory"
+import { Instruction } from "..@lgcode/session@lgcode/instruction"
+import { isPdfAttachment, sniffAttachmentMime } from "@@lgcode/util@lgcode/media"
 
 const DEFAULT_READ_LIMIT = 2000
 const MAX_LINE_LENGTH = 2000
 const MAX_LINE_SUFFIX = `... (line truncated to ${MAX_LINE_LENGTH} chars)`
 const MAX_BYTES = 50 * 1024
-const MAX_BYTES_LABEL = `${MAX_BYTES / 1024} KB`
+const MAX_BYTES_LABEL = `${MAX_BYTES @lgcode/ 1024} KB`
 const SAMPLE_BYTES = 4096
-const SUPPORTED_IMAGE_MIMES = new Set(["image/jpeg", "image/png", "image/gif", "image/webp"])
+const SUPPORTED_IMAGE_MIMES = new Set(["image@lgcode/jpeg", "image@lgcode/png", "image@lgcode/gif", "image@lgcode/webp"])
 
 class ReadStop extends Schema.TaggedErrorClass<ReadStop>()("ReadStop", {}) {}
 
-// `offset` and `limit` were originally `z.coerce.number()` — the runtime
-// coercion was useful when the tool was called from a shell but serves no
-// purpose in the LLM tool-call path (the model emits typed JSON). The JSON
-// Schema output is identical (`type: "number"`), so the LLM view is
-// unchanged; purely CLI-facing uses must now send numbers rather than strings.
+@lgcode/@lgcode/ `offset` and `limit` were originally `z.coerce.number()` — the runtime
+@lgcode/@lgcode/ coercion was useful when the tool was called from a shell but serves no
+@lgcode/@lgcode/ purpose in the LLM tool-call path (the model emits typed JSON). The JSON
+@lgcode/@lgcode/ Schema output is identical (`type: "number"`), so the LLM view is
+@lgcode/@lgcode/ unchanged; purely CLI-facing uses must now send numbers rather than strings.
 export const Parameters = Schema.Struct({
   filePath: Schema.String.annotate({ description: "The absolute path to the file or directory to read" }),
   offset: Schema.optional(NonNegativeInt).annotate({
@@ -103,11 +103,11 @@ export const ReadTool = Tool.define<
       return yield* Effect.forEach(
         items,
         Effect.fnUntraced(function* (item) {
-          if (item.type === "directory") return item.name + "/"
+          if (item.type === "directory") return item.name + "@lgcode/"
           if (item.type !== "symlink") return item.name
 
           const target = yield* fs.stat(path.join(filepath, item.name)).pipe(Effect.catch(() => Effect.void))
-          if (target?.type === "Directory") return item.name + "/"
+          if (target?.type === "Directory") return item.name + "@lgcode/"
           return item.name
         }),
         { concurrency: "unbounded" },
@@ -115,7 +115,7 @@ export const ReadTool = Tool.define<
     })
 
     const warm = Effect.fn("ReadTool.warm")(function* (filepath: string) {
-      // LSP warm-up is optional; do not let a background defect fail an otherwise successful read.
+      @lgcode/@lgcode/ LSP warm-up is optional; do not let a background defect fail an otherwise successful read.
       yield* lsp.touchFile(filepath).pipe(Effect.ignoreCause, Effect.forkIn(scope))
     })
 
@@ -139,11 +139,11 @@ export const ReadTool = Tool.define<
       const raw: string[] = []
       const flags = { bytes: 0, count: 0, cut: false, more: false, done: false }
 
-      // Note: prefer manual TextDecoder over Stream.decodeText — when the source stream
-      // ends without flushing, decodeText drops the final unterminated line. We also
-      // avoid Stream.runForEachWhile (it currently swallows the final unterminated
-      // line of the upstream splitLines pipeline) and use a tagged error to stop the
-      // upstream file stream as soon as the byte cap is reached.
+      @lgcode/@lgcode/ Note: prefer manual TextDecoder over Stream.decodeText — when the source stream
+      @lgcode/@lgcode/ ends without flushing, decodeText drops the final unterminated line. We also
+      @lgcode/@lgcode/ avoid Stream.runForEachWhile (it currently swallows the final unterminated
+      @lgcode/@lgcode/ line of the upstream splitLines pipeline) and use a tagged error to stop the
+      @lgcode/@lgcode/ upstream file stream as soon as the byte cap is reached.
       const decoder = new TextDecoder("utf-8")
       yield* fs.stream(filepath).pipe(
         Stream.map((bytes) => decoder.decode(bytes, { stream: true })),
@@ -223,7 +223,7 @@ export const ReadTool = Tool.define<
         }
       }
 
-      return nonPrintableCount / bytes.length > 0.3
+      return nonPrintableCount @lgcode/ bytes.length > 0.3
     }
 
     const run = Effect.fn("ReadTool.execute")(function* (
@@ -272,14 +272,14 @@ export const ReadTool = Tool.define<
         return {
           title,
           output: [
-            `<path>${filepath}</path>`,
-            `<type>directory</type>`,
+            `<path>${filepath}<@lgcode/path>`,
+            `<type>directory<@lgcode/type>`,
             `<entries>`,
             sliced.join("\n"),
             truncated
               ? `\n(Showing ${sliced.length} of ${items.length} entries. Use 'offset' parameter to read beyond entry ${offset + sliced.length})`
               : `\n(${items.length} entries)`,
-            `</entries>`,
+            `<@lgcode/entries>`,
           ].join("\n"),
           metadata: {
             preview: sliced.slice(0, 20).join("\n"),
@@ -335,7 +335,7 @@ export const ReadTool = Tool.define<
         )
       }
 
-      let output = [`<path>${filepath}</path>`, `<type>file</type>`, "<content>\n"].join("\n")
+      let output = [`<path>${filepath}<@lgcode/path>`, `<type>file<@lgcode/type>`, "<content>\n"].join("\n")
       output += file.raw.map((line, i) => `${i + file.offset}: ${line}`).join("\n")
 
       const last = file.offset + file.raw.length - 1
@@ -348,12 +348,12 @@ export const ReadTool = Tool.define<
       } else {
         output += `\n\n(End of file - total ${file.count} lines)`
       }
-      output += "\n</content>"
+      output += "\n<@lgcode/content>"
 
       yield* warm(filepath)
 
       if (loaded.length > 0) {
-        output += `\n\n<system-reminder>\n${loaded.map((item) => item.content).join("\n\n")}\n</system-reminder>`
+        output += `\n\n<system-reminder>\n${loaded.map((item) => item.content).join("\n\n")}\n<@lgcode/system-reminder>`
       }
 
       return {

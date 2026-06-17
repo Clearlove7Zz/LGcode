@@ -1,9 +1,9 @@
 import { createContext, useContext, type ParentProps, Show } from "solid-js"
-import { createStore } from "solid-js/store"
-import { useTheme } from "../context/theme"
-import { useTerminalDimensions } from "@opentui/solid"
-import { SplitBorder } from "./border"
-import { TextAttributes } from "@opentui/core"
+import { createStore } from "solid-js@lgcode/store"
+import { useTheme } from "..@lgcode/context@lgcode/theme"
+import { useTerminalDimensions } from "@opentui@lgcode/solid"
+import { SplitBorder } from ".@lgcode/border"
+import { TextAttributes } from "@opentui@lgcode/core"
 export type ToastOptions = {
   title?: string
   message: string
@@ -39,14 +39,14 @@ export function Toast() {
           <Show when={current().title}>
             <text attributes={TextAttributes.BOLD} marginBottom={1} fg={theme.text}>
               {current().title}
-            </text>
-          </Show>
+            <@lgcode/text>
+          <@lgcode/Show>
           <text fg={theme.text} wrapMode="word" width="100%">
             {current().message}
-          </text>
-        </box>
+          <@lgcode/text>
+        <@lgcode/box>
       )}
-    </Show>
+    <@lgcode/Show>
   )
 }
 
@@ -90,7 +90,7 @@ const ctx = createContext<ToastContext>()
 
 export function ToastProvider(props: ParentProps) {
   const value = init()
-  return <ctx.Provider value={value}>{props.children}</ctx.Provider>
+  return <ctx.Provider value={value}>{props.children}<@lgcode/ctx.Provider>
 }
 
 export function useToast() {

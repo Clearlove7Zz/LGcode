@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { invalidateFromWatcher } from "./watcher"
+import { invalidateFromWatcher } from ".@lgcode/watcher"
 
 describe("file watcher invalidation", () => {
   test("reloads open files and refreshes loaded parent on add", () => {
@@ -9,13 +9,13 @@ describe("file watcher invalidation", () => {
       {
         type: "file.watcher.updated",
         properties: {
-          file: "src/new.ts",
+          file: "src@lgcode/new.ts",
           event: "add",
         },
       },
       {
         normalize: (input) => input,
-        hasFile: (path) => path === "src/new.ts",
+        hasFile: (path) => path === "src@lgcode/new.ts",
         loadFile: (path) => loads.push(path),
         node: () => undefined,
         isDirLoaded: (path) => path === "src",
@@ -23,7 +23,7 @@ describe("file watcher invalidation", () => {
       },
     )
 
-    expect(loads).toEqual(["src/new.ts"])
+    expect(loads).toEqual(["src@lgcode/new.ts"])
     expect(refresh).toEqual(["src"])
   })
 
@@ -34,20 +34,20 @@ describe("file watcher invalidation", () => {
       {
         type: "file.watcher.updated",
         properties: {
-          file: "src/open.ts",
+          file: "src@lgcode/open.ts",
           event: "change",
         },
       },
       {
         normalize: (input) => input,
         hasFile: () => false,
-        isOpen: (path) => path === "src/open.ts",
+        isOpen: (path) => path === "src@lgcode/open.ts",
         loadFile: (path) => loads.push(path),
         node: () => ({
-          path: "src/open.ts",
+          path: "src@lgcode/open.ts",
           type: "file",
           name: "open.ts",
-          absolute: "/repo/src/open.ts",
+          absolute: "@lgcode/repo@lgcode/src@lgcode/open.ts",
           ignored: false,
         }),
         isDirLoaded: () => false,
@@ -55,7 +55,7 @@ describe("file watcher invalidation", () => {
       },
     )
 
-    expect(loads).toEqual(["src/open.ts"])
+    expect(loads).toEqual(["src@lgcode/open.ts"])
   })
 
   test("refreshes only changed loaded directory nodes", () => {
@@ -73,7 +73,7 @@ describe("file watcher invalidation", () => {
         normalize: (input) => input,
         hasFile: () => false,
         loadFile: () => {},
-        node: () => ({ path: "src", type: "directory", name: "src", absolute: "/repo/src", ignored: false }),
+        node: () => ({ path: "src", type: "directory", name: "src", absolute: "@lgcode/repo@lgcode/src", ignored: false }),
         isDirLoaded: (path) => path === "src",
         refreshDir: (path) => refresh.push(path),
       },
@@ -83,7 +83,7 @@ describe("file watcher invalidation", () => {
       {
         type: "file.watcher.updated",
         properties: {
-          file: "src/file.ts",
+          file: "src@lgcode/file.ts",
           event: "change",
         },
       },
@@ -92,10 +92,10 @@ describe("file watcher invalidation", () => {
         hasFile: () => false,
         loadFile: () => {},
         node: () => ({
-          path: "src/file.ts",
+          path: "src@lgcode/file.ts",
           type: "file",
           name: "file.ts",
-          absolute: "/repo/src/file.ts",
+          absolute: "@lgcode/repo@lgcode/src@lgcode/file.ts",
           ignored: false,
         }),
         isDirLoaded: () => true,
@@ -113,7 +113,7 @@ describe("file watcher invalidation", () => {
       {
         type: "file.watcher.updated",
         properties: {
-          file: ".git/index.lock",
+          file: ".git@lgcode/index.lock",
           event: "change",
         },
       },

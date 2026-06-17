@@ -1,12 +1,12 @@
 import { describe, expect } from "bun:test"
-import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
 import { Deferred, Effect, Fiber, Layer } from "effect"
-import { InstanceRef } from "../../src/effect/instance-ref"
-import { registerDisposer } from "../../src/effect/instance-registry"
-import { InstanceBootstrap } from "../../src/project/bootstrap-service"
-import { InstanceStore } from "../../src/project/instance-store"
-import { tmpdirScoped } from "../fixture/fixture"
-import { testEffect } from "../lib/effect"
+import { InstanceRef } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/instance-ref"
+import { registerDisposer } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/instance-registry"
+import { InstanceBootstrap } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/bootstrap-service"
+import { InstanceStore } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/instance-store"
+import { tmpdirScoped } from "..@lgcode/fixture@lgcode/fixture"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 let bootstrapRun: Effect.Effect<void> = Effect.void
 const noopBootstrap = Layer.succeed(

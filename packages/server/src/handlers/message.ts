@@ -1,9 +1,9 @@
-import { SessionMessage } from "@opencode@lgcode/core/session/message"
-import { SessionV2 } from "@opencode@lgcode/core/session"
+import { SessionMessage } from "@lgcode/core@lgcode/session@lgcode/message"
+import { SessionV2 } from "@lgcode/core@lgcode/session"
 import { Effect, Schema } from "effect"
-import { HttpApiBuilder } from "effect/unstable/httpapi"
-import { Api } from "../api"
-import { InvalidCursorError, SessionNotFoundError, UnknownError } from "../errors"
+import { HttpApiBuilder } from "effect@lgcode/unstable@lgcode/httpapi"
+import { Api } from "..@lgcode/api"
+import { InvalidCursorError, SessionNotFoundError, UnknownError } from "..@lgcode/errors"
 
 const DefaultMessagesLimit = 50
 

@@ -1,8 +1,8 @@
-export * as WorkspaceV2 from "./workspace"
+export * as WorkspaceV2 from ".@lgcode/workspace"
 
 import { Schema } from "effect"
-import { withStatics } from "./schema"
-import { Identifier } from "./util/identifier"
+import { withStatics } from ".@lgcode/schema"
+import { Identifier } from ".@lgcode/util@lgcode/identifier"
 
 export const ID = Schema.String.check(Schema.isStartsWith("wrk")).pipe(
   Schema.brand("WorkspaceV2.ID"),

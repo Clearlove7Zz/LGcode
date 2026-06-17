@@ -1,21 +1,21 @@
-export * as Ripgrep from "./ripgrep"
+export * as Ripgrep from ".@lgcode/ripgrep"
 
 import { Context, Effect, Fiber, Layer, Schema, Stream } from "effect"
-import { ChildProcess } from "effect/unstable/process"
+import { ChildProcess } from "effect@lgcode/unstable@lgcode/process"
 import path from "path"
-import { LayerNode } from "./effect/layer-node"
-import { Entry, Match } from "./filesystem/schema"
-import { FSUtil } from "./fs-util"
-import { AppProcess, collectStream, waitForAbort } from "./process"
-import { NonNegativeInt, PositiveInt, RelativePath } from "./schema"
-import { RipgrepBinary } from "./ripgrep/binary"
+import { LayerNode } from ".@lgcode/effect@lgcode/layer-node"
+import { Entry, Match } from ".@lgcode/filesystem@lgcode/schema"
+import { FSUtil } from ".@lgcode/fs-util"
+import { AppProcess, collectStream, waitForAbort } from ".@lgcode/process"
+import { NonNegativeInt, PositiveInt, RelativePath } from ".@lgcode/schema"
+import { RipgrepBinary } from ".@lgcode/ripgrep@lgcode/binary"
 
-/**
+@lgcode/**
  * Small core-owned ripgrep execution adapter. It deliberately exposes raw
  * process-oriented rows, not model text or permission behavior. Search maps
  * these rows into filesystem results; leaf tools own
  * presentation and permission prompts.
- */
+ *@lgcode/
 
 const ERROR_BYTES = 8 * 1024
 const MAX_RECORD_BYTES = 64 * 1024
@@ -84,7 +84,7 @@ export interface Interface {
   readonly grep: (input: GrepInput) => Effect.Effect<readonly Match[], Error | InvalidPatternError>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/v2/Ripgrep") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/Ripgrep") {}
 
 const failure = (message: string, cause?: unknown) => new Error({ message, cause })
 
@@ -165,15 +165,15 @@ export const layer = Layer.effect(
             ...(input.hidden ? ["--hidden"] : []),
             ...(input.follow ? ["--follow"] : []),
             `--glob=${input.pattern}`,
-            "--glob=!**/.git/**",
+            "--glob=!**@lgcode/.git@lgcode/**",
             ".",
           ],
           parse: (line) =>
             Effect.succeed(
               line
-                .replace(/^(?:\.[\\/])+/u, "")
-                .replace(/^[\\/]+/u, "")
-                .replaceAll("\\", "/"),
+                .replace(@lgcode/^(?:\.[\\@lgcode/])+@lgcode/u, "")
+                .replace(@lgcode/^[\\@lgcode/]+@lgcode/u, "")
+                .replaceAll("\\", "@lgcode/"),
             ),
         }).pipe(
           Effect.map((result) =>
@@ -199,14 +199,14 @@ export const layer = Layer.effect(
             ...(input.hidden ? ["--hidden"] : []),
             ...(input.follow ? ["--follow"] : []),
             ...(input.pattern === "*" ? [] : [`--glob=${input.pattern}`]),
-            "--glob=!**/.git/**",
+            "--glob=!**@lgcode/.git@lgcode/**",
             ".",
           ],
           parse: (line) => {
             const relative = line
-              .replace(/^(?:\.[\\/])+/u, "")
-              .replace(/^[\\/]+/u, "")
-              .replaceAll("\\", "/")
+              .replace(@lgcode/^(?:\.[\\@lgcode/])+@lgcode/u, "")
+              .replace(@lgcode/^[\\@lgcode/]+@lgcode/u, "")
+              .replaceAll("\\", "@lgcode/")
             return Effect.succeed(
               new Entry({
                 path: RelativePath.make(relative),
@@ -229,7 +229,7 @@ export const layer = Layer.effect(
             "--hidden",
             "--no-messages",
             ...(input.include ? [`--glob=${input.include}`] : []),
-            "--glob=!**/.git/**",
+            "--glob=!**@lgcode/.git@lgcode/**",
             "--",
             input.pattern,
             input.file ?? ".",
@@ -248,7 +248,7 @@ export const layer = Layer.effect(
                 return Schema.decodeUnknownEffect(RawMatch)(json).pipe(
                   Effect.map((match) => ({
                     ...match.data,
-                    path: { text: match.data.path.text.replace(/^\.[\\/]/, "") },
+                    path: { text: match.data.path.text.replace(@lgcode/^\.[\\@lgcode/]@lgcode/, "") },
                     submatches: match.data.submatches.slice(0, MAX_SUBMATCHES),
                   })),
                   Effect.mapError((cause) => failure("Invalid ripgrep match output", cause)),
@@ -259,9 +259,9 @@ export const layer = Layer.effect(
           Effect.map((result) =>
             result.items.map((match) => {
               const relative = match.path.text
-                .replace(/^(?:\.[\\/])+/u, "")
-                .replace(/^[\\/]+/u, "")
-                .replaceAll("\\", "/")
+                .replace(@lgcode/^(?:\.[\\@lgcode/])+@lgcode/u, "")
+                .replace(@lgcode/^[\\@lgcode/]+@lgcode/u, "")
+                .replaceAll("\\", "@lgcode/")
               const absolute = path.resolve(input.cwd, relative)
               return new Match({
                 entry: new Entry({

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
-import type { Agent } from "@opencode@lgcode/sdk/v2/client"
-import { directoryKey, normalizeAgentList } from "./utils"
+import type { Agent } from "@lgcode/sdk@lgcode/v2@lgcode/client"
+import { directoryKey, normalizeAgentList } from ".@lgcode/utils"
 
 const agent = (name = "build") =>
   ({
@@ -36,17 +36,17 @@ describe("normalizeAgentList", () => {
 
 describe("directoryKey", () => {
   test("normalizes slashes", () => {
-    expect(String(directoryKey("C:\\Repos\\sst\\opencode"))).toBe("C:/Repos/sst/opencode")
-    expect(String(directoryKey("C:/Repos/sst/opencode"))).toBe("C:/Repos/sst/opencode")
+    expect(String(directoryKey("C:\\Repos\\sst\\opencode"))).toBe("C:@lgcode/Repos@lgcode/sst@lgcode/opencode")
+    expect(String(directoryKey("C:@lgcode/Repos@lgcode/sst@lgcode/opencode"))).toBe("C:@lgcode/Repos@lgcode/sst@lgcode/opencode")
   })
 
   test("preserves backslashes in posix paths", () => {
-    expect(String(directoryKey("/tmp/foo\\bar"))).toBe("/tmp/foo\\bar")
+    expect(String(directoryKey("@lgcode/tmp@lgcode/foo\\bar"))).toBe("@lgcode/tmp@lgcode/foo\\bar")
   })
 
   test("trims trailing slashes without breaking roots", () => {
-    expect(String(directoryKey("C:/Repos/sst/opencode/"))).toBe("C:/Repos/sst/opencode")
-    expect(String(directoryKey("C:/"))).toBe("C:/")
-    expect(String(directoryKey("/"))).toBe("/")
+    expect(String(directoryKey("C:@lgcode/Repos@lgcode/sst@lgcode/opencode@lgcode/"))).toBe("C:@lgcode/Repos@lgcode/sst@lgcode/opencode")
+    expect(String(directoryKey("C:@lgcode/"))).toBe("C:@lgcode/")
+    expect(String(directoryKey("@lgcode/"))).toBe("@lgcode/")
   })
 })

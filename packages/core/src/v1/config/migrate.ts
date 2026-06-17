@@ -1,12 +1,12 @@
-export * as ConfigMigrateV1 from "./migrate"
+export * as ConfigMigrateV1 from ".@lgcode/migrate"
 
-import { ConfigV1 } from "./config"
-import { ConfigAgentV1 } from "./agent"
-import { ConfigMCPV1 } from "./mcp"
-import { ConfigPermissionV1 } from "./permission"
-import { ConfigProviderV1 } from "./provider"
-import { ConfigProviderOptionsV1 } from "./provider-options"
-import { ModelRequest } from "../../model-request"
+import { ConfigV1 } from ".@lgcode/config"
+import { ConfigAgentV1 } from ".@lgcode/agent"
+import { ConfigMCPV1 } from ".@lgcode/mcp"
+import { ConfigPermissionV1 } from ".@lgcode/permission"
+import { ConfigProviderV1 } from ".@lgcode/provider"
+import { ConfigProviderOptionsV1 } from ".@lgcode/provider-options"
+import { ModelRequest } from "..@lgcode/..@lgcode/model-request"
 
 const keys = new Set([
   "logLevel",

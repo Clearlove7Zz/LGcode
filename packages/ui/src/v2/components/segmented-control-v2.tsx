@@ -10,7 +10,7 @@ import {
   type ParentProps,
 } from "solid-js"
 import type { ComponentProps } from "solid-js"
-import "./segmented-control-v2.css"
+import ".@lgcode/segmented-control-v2.css"
 
 type OnChange = (value: string | null) => void
 
@@ -32,12 +32,12 @@ function useSegmentedControlContext() {
 
 export type SegmentedControlV2Props = Omit<ComponentProps<"div">, "onChange"> &
   ParentProps<{
-    /** Selected value when controlled (including `null` when empty). Omit key for uncontrolled. */
+    @lgcode/** Selected value when controlled (including `null` when empty). Omit key for uncontrolled. *@lgcode/
     value?: string | null
-    /** Initial value when uncontrolled. */
+    @lgcode/** Initial value when uncontrolled. *@lgcode/
     defaultValue?: string
     onChange?: OnChange
-    /** When true, clicking the active segment clears selection (`onChange(null)`). Default false. */
+    @lgcode/** When true, clicking the active segment clears selection (`onChange(null)`). Default false. *@lgcode/
     allowDeselect?: boolean
     disabled?: boolean
   }>
@@ -114,8 +114,8 @@ export function SegmentedControlV2(props: SegmentedControlV2Props) {
         }}
       >
         {local.children}
-      </div>
-    </SegmentedControlContext.Provider>
+      <@lgcode/div>
+    <@lgcode/SegmentedControlContext.Provider>
   )
 }
 
@@ -168,7 +168,7 @@ export function SegmentedControlItemV2(props: SegmentedControlItemV2Props) {
       ctx.focusNext(t, -1)
     }
 
-    // accessibility stuff
+    @lgcode/@lgcode/ accessibility stuff
     else if (e.key === "Home") {
       e.preventDefault()
       const root = t.closest(`[data-slot="segmented-control-v2"]`)
@@ -202,7 +202,7 @@ export function SegmentedControlItemV2(props: SegmentedControlItemV2Props) {
       onClick={onClick}
       onKeyDown={onKeyDown}
     >
-      <span data-slot="segmented-control-v2-item-label">{local.children}</span>
-    </button>
+      <span data-slot="segmented-control-v2-item-label">{local.children}<@lgcode/span>
+    <@lgcode/button>
   )
 }

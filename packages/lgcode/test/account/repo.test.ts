@@ -2,10 +2,10 @@ import { expect } from "bun:test"
 import { Effect, Layer, Option } from "effect"
 import { sql } from "drizzle-orm"
 
-import { AccountRepo } from "../../src/account/repo"
-import { AccessToken, AccountID, OrgID, RefreshToken } from "../../src/account/schema"
-import { Database } from "@opencode@lgcode/core/database/database"
-import { testEffect } from "../lib/effect"
+import { AccountRepo } from "..@lgcode/..@lgcode/src@lgcode/account@lgcode/repo"
+import { AccessToken, AccountID, OrgID, RefreshToken } from "..@lgcode/..@lgcode/src@lgcode/account@lgcode/schema"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const truncate = Layer.effectDiscard(
   Effect.gen(function* () {
@@ -38,7 +38,7 @@ it.live("persistAccount inserts and getRow retrieves", () =>
       r.persistAccount({
         id,
         email: "test@example.com",
-        url: "https://control.example.com",
+        url: "https:@lgcode/@lgcode/control.example.com",
         accessToken: AccessToken.make("at_123"),
         refreshToken: RefreshToken.make("rt_456"),
         expiry: Date.now() + 3600_000,
@@ -65,7 +65,7 @@ it.live("persistAccount normalizes trailing slashes in stored server URLs", () =
       r.persistAccount({
         id,
         email: "test@example.com",
-        url: "https://control.example.com/",
+        url: "https:@lgcode/@lgcode/control.example.com@lgcode/",
         accessToken: AccessToken.make("at_123"),
         refreshToken: RefreshToken.make("rt_456"),
         expiry: Date.now() + 3600_000,
@@ -77,9 +77,9 @@ it.live("persistAccount normalizes trailing slashes in stored server URLs", () =
     const active = yield* AccountRepo.use.active()
     const list = yield* AccountRepo.use.list()
 
-    expect(Option.getOrThrow(row).url).toBe("https://control.example.com")
-    expect(Option.getOrThrow(active).url).toBe("https://control.example.com")
-    expect(list[0]?.url).toBe("https://control.example.com")
+    expect(Option.getOrThrow(row).url).toBe("https:@lgcode/@lgcode/control.example.com")
+    expect(Option.getOrThrow(active).url).toBe("https:@lgcode/@lgcode/control.example.com")
+    expect(list[0]?.url).toBe("https:@lgcode/@lgcode/control.example.com")
   }),
 )
 
@@ -92,7 +92,7 @@ it.live("persistAccount sets the active account and org", () =>
       r.persistAccount({
         id: id1,
         email: "first@example.com",
-        url: "https://control.example.com",
+        url: "https:@lgcode/@lgcode/control.example.com",
         accessToken: AccessToken.make("at_1"),
         refreshToken: RefreshToken.make("rt_1"),
         expiry: Date.now() + 3600_000,
@@ -104,7 +104,7 @@ it.live("persistAccount sets the active account and org", () =>
       r.persistAccount({
         id: id2,
         email: "second@example.com",
-        url: "https://control.example.com",
+        url: "https:@lgcode/@lgcode/control.example.com",
         accessToken: AccessToken.make("at_2"),
         refreshToken: RefreshToken.make("rt_2"),
         expiry: Date.now() + 3600_000,
@@ -112,7 +112,7 @@ it.live("persistAccount sets the active account and org", () =>
       }),
     )
 
-    // Last persisted account is active with its org
+    @lgcode/@lgcode/ Last persisted account is active with its org
     const active = yield* AccountRepo.use.active()
     expect(Option.isSome(active)).toBe(true)
     expect(Option.getOrThrow(active).id).toBe(AccountID.make("user-2"))
@@ -129,7 +129,7 @@ it.live("list returns all accounts", () =>
       r.persistAccount({
         id: id1,
         email: "a@example.com",
-        url: "https://control.example.com",
+        url: "https:@lgcode/@lgcode/control.example.com",
         accessToken: AccessToken.make("at_1"),
         refreshToken: RefreshToken.make("rt_1"),
         expiry: Date.now() + 3600_000,
@@ -141,7 +141,7 @@ it.live("list returns all accounts", () =>
       r.persistAccount({
         id: id2,
         email: "b@example.com",
-        url: "https://control.example.com",
+        url: "https:@lgcode/@lgcode/control.example.com",
         accessToken: AccessToken.make("at_2"),
         refreshToken: RefreshToken.make("rt_2"),
         expiry: Date.now() + 3600_000,
@@ -163,7 +163,7 @@ it.live("remove deletes an account", () =>
       r.persistAccount({
         id,
         email: "test@example.com",
-        url: "https://control.example.com",
+        url: "https:@lgcode/@lgcode/control.example.com",
         accessToken: AccessToken.make("at_1"),
         refreshToken: RefreshToken.make("rt_1"),
         expiry: Date.now() + 3600_000,
@@ -187,7 +187,7 @@ it.live("use stores the selected org and marks the account active", () =>
       r.persistAccount({
         id: id1,
         email: "first@example.com",
-        url: "https://control.example.com",
+        url: "https:@lgcode/@lgcode/control.example.com",
         accessToken: AccessToken.make("at_1"),
         refreshToken: RefreshToken.make("rt_1"),
         expiry: Date.now() + 3600_000,
@@ -199,7 +199,7 @@ it.live("use stores the selected org and marks the account active", () =>
       r.persistAccount({
         id: id2,
         email: "second@example.com",
-        url: "https://control.example.com",
+        url: "https:@lgcode/@lgcode/control.example.com",
         accessToken: AccessToken.make("at_2"),
         refreshToken: RefreshToken.make("rt_2"),
         expiry: Date.now() + 3600_000,
@@ -226,7 +226,7 @@ it.live("persistToken updates token fields", () =>
       r.persistAccount({
         id,
         email: "test@example.com",
-        url: "https://control.example.com",
+        url: "https:@lgcode/@lgcode/control.example.com",
         accessToken: AccessToken.make("old_token"),
         refreshToken: RefreshToken.make("old_refresh"),
         expiry: 1000,
@@ -260,7 +260,7 @@ it.live("persistToken with no expiry sets token_expiry to null", () =>
       r.persistAccount({
         id,
         email: "test@example.com",
-        url: "https://control.example.com",
+        url: "https:@lgcode/@lgcode/control.example.com",
         accessToken: AccessToken.make("old_token"),
         refreshToken: RefreshToken.make("old_refresh"),
         expiry: 1000,
@@ -290,7 +290,7 @@ it.live("persistAccount upserts on conflict", () =>
       r.persistAccount({
         id,
         email: "test@example.com",
-        url: "https://control.example.com",
+        url: "https:@lgcode/@lgcode/control.example.com",
         accessToken: AccessToken.make("at_v1"),
         refreshToken: RefreshToken.make("rt_v1"),
         expiry: 1000,
@@ -302,7 +302,7 @@ it.live("persistAccount upserts on conflict", () =>
       r.persistAccount({
         id,
         email: "test@example.com",
-        url: "https://control.example.com",
+        url: "https:@lgcode/@lgcode/control.example.com",
         accessToken: AccessToken.make("at_v2"),
         refreshToken: RefreshToken.make("rt_v2"),
         expiry: 2000,
@@ -330,7 +330,7 @@ it.live("remove clears active state when deleting the active account", () =>
       r.persistAccount({
         id,
         email: "test@example.com",
-        url: "https://control.example.com",
+        url: "https:@lgcode/@lgcode/control.example.com",
         accessToken: AccessToken.make("at_1"),
         refreshToken: RefreshToken.make("rt_1"),
         expiry: Date.now() + 3600_000,

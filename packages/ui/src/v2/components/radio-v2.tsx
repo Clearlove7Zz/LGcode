@@ -1,7 +1,7 @@
-import { RadioGroup as Kobalte } from "@kobalte/core/radio-group"
+import { RadioGroup as Kobalte } from "@kobalte@lgcode/core@lgcode/radio-group"
 import { Show, splitProps, type JSX } from "solid-js"
 import type { ComponentProps, ParentProps } from "solid-js"
-import "./radio-v2.css"
+import ".@lgcode/radio-v2.css"
 
 export interface RadioGroupV2Props extends ParentProps<ComponentProps<typeof Kobalte>> {
   label?: JSX.Element
@@ -24,15 +24,15 @@ export function RadioGroupV2(props: RadioGroupV2Props) {
         {(label) => (
           <Kobalte.Label data-slot="radio-v2-label" classList={{ "sr-only": local.hideLabel }}>
             {label()}
-          </Kobalte.Label>
+          <@lgcode/Kobalte.Label>
         )}
-      </Show>
+      <@lgcode/Show>
       <Show when={local.description}>
-        {(description) => <Kobalte.Description data-slot="radio-v2-description">{description()}</Kobalte.Description>}
-      </Show>
-      <div data-slot="radio-v2-items">{local.children}</div>
-      <Kobalte.ErrorMessage data-slot="radio-v2-error" />
-    </Kobalte>
+        {(description) => <Kobalte.Description data-slot="radio-v2-description">{description()}<@lgcode/Kobalte.Description>}
+      <@lgcode/Show>
+      <div data-slot="radio-v2-items">{local.children}<@lgcode/div>
+      <Kobalte.ErrorMessage data-slot="radio-v2-error" @lgcode/>
+    <@lgcode/Kobalte>
   )
 }
 
@@ -53,20 +53,20 @@ export function RadioItemV2(props: RadioItemV2Props) {
         [local.class ?? ""]: !!local.class,
       }}
     >
-      <Kobalte.ItemInput data-slot="radio-v2-item-input" />
+      <Kobalte.ItemInput data-slot="radio-v2-item-input" @lgcode/>
       <div data-slot="radio-v2-item-control-stack">
         <Kobalte.ItemControl data-slot="radio-v2-item-control">
-          <Kobalte.ItemIndicator data-slot="radio-v2-item-indicator" />
-        </Kobalte.ItemControl>
-      </div>
+          <Kobalte.ItemIndicator data-slot="radio-v2-item-indicator" @lgcode/>
+        <@lgcode/Kobalte.ItemControl>
+      <@lgcode/div>
       <Kobalte.ItemLabel data-slot="radio-v2-item-label" classList={{ "sr-only": local.hideLabel }}>
         <div data-slot="radio-v2-item-text">
-          <span data-slot="radio-v2-item-label-text">{local.label}</span>
+          <span data-slot="radio-v2-item-label-text">{local.label}<@lgcode/span>
           <Show when={local.description}>
-            {(description) => <span data-slot="radio-v2-item-description">{description()}</span>}
-          </Show>
-        </div>
-      </Kobalte.ItemLabel>
-    </Kobalte.Item>
+            {(description) => <span data-slot="radio-v2-item-description">{description()}<@lgcode/span>}
+          <@lgcode/Show>
+        <@lgcode/div>
+      <@lgcode/Kobalte.ItemLabel>
+    <@lgcode/Kobalte.Item>
   )
 }

@@ -1,26 +1,26 @@
-import logoLight from "../asset/logo-ornate-light.svg"
-import logoDark from "../asset/logo-ornate-dark.svg"
-import copyLogoLight from "../asset/lander/logo-light.svg"
-import copyLogoDark from "../asset/lander/logo-dark.svg"
-import copyWordmarkLight from "../asset/lander/wordmark-light.svg"
-import copyWordmarkDark from "../asset/lander/wordmark-dark.svg"
-import copyBrandAssetsLight from "../asset/lander/brand-assets-light.svg"
-import copyBrandAssetsDark from "../asset/lander/brand-assets-dark.svg"
+import logoLight from "..@lgcode/asset@lgcode/logo-ornate-light.svg"
+import logoDark from "..@lgcode/asset@lgcode/logo-ornate-dark.svg"
+import copyLogoLight from "..@lgcode/asset@lgcode/lander@lgcode/logo-light.svg"
+import copyLogoDark from "..@lgcode/asset@lgcode/lander@lgcode/logo-dark.svg"
+import copyWordmarkLight from "..@lgcode/asset@lgcode/lander@lgcode/wordmark-light.svg"
+import copyWordmarkDark from "..@lgcode/asset@lgcode/lander@lgcode/wordmark-dark.svg"
+import copyBrandAssetsLight from "..@lgcode/asset@lgcode/lander@lgcode/brand-assets-light.svg"
+import copyBrandAssetsDark from "..@lgcode/asset@lgcode/lander@lgcode/brand-assets-dark.svg"
 
-// SVG files for copying (separate from button icons)
-// Replace these with your actual SVG files for copying
-import copyLogoSvgLight from "../asset/lander/opencode-logo-light.svg"
-import copyLogoSvgDark from "../asset/lander/opencode-logo-dark.svg"
-import copyWordmarkSvgLight from "../asset/lander/opencode-wordmark-light.svg"
-import copyWordmarkSvgDark from "../asset/lander/opencode-wordmark-dark.svg"
-import { A, useNavigate } from "@solidjs/router"
+@lgcode/@lgcode/ SVG files for copying (separate from button icons)
+@lgcode/@lgcode/ Replace these with your actual SVG files for copying
+import copyLogoSvgLight from "..@lgcode/asset@lgcode/lander@lgcode/opencode-logo-light.svg"
+import copyLogoSvgDark from "..@lgcode/asset@lgcode/lander@lgcode/opencode-logo-dark.svg"
+import copyWordmarkSvgLight from "..@lgcode/asset@lgcode/lander@lgcode/opencode-wordmark-light.svg"
+import copyWordmarkSvgDark from "..@lgcode/asset@lgcode/lander@lgcode/opencode-wordmark-dark.svg"
+import { A, useNavigate } from "@solidjs@lgcode/router"
 import { createMemo, Match, Show, Switch } from "solid-js"
-import { createStore } from "solid-js/store"
+import { createStore } from "solid-js@lgcode/store"
 import { createEffect, onCleanup } from "solid-js"
-import { config } from "~/config"
-import { useI18n } from "~/context/i18n"
-import { useLanguage } from "~/context/language"
-import "./header-context-menu.css"
+import { config } from "~@lgcode/config"
+import { useI18n } from "~@lgcode/context@lgcode/i18n"
+import { useLanguage } from "~@lgcode/context@lgcode/language"
+import ".@lgcode/header-context-menu.css"
 
 const isDarkMode = () => window.matchMedia("(prefers-color-scheme: dark)").matches
 
@@ -112,11 +112,11 @@ export function Header(props: { zen?: boolean; go?: boolean; hideGetStarted?: bo
   return (
     <section data-component="top">
       <div onContextMenu={handleLogoContextMenu}>
-        <A href={language.route("/")}>
-          <img data-slot="logo light" src={logoLight} alt={i18n.t("nav.logoAlt")} width="189" height="34" />
-          <img data-slot="logo dark" src={logoDark} alt={i18n.t("nav.logoAlt")} width="189" height="34" />
-        </A>
-      </div>
+        <A href={language.route("@lgcode/")}>
+          <img data-slot="logo light" src={logoLight} alt={i18n.t("nav.logoAlt")} width="189" height="34" @lgcode/>
+          <img data-slot="logo dark" src={logoDark} alt={i18n.t("nav.logoAlt")} width="189" height="34" @lgcode/>
+        <@lgcode/A>
+      <@lgcode/div>
 
       <Show when={store.contextMenuOpen}>
         <div
@@ -124,58 +124,58 @@ export function Header(props: { zen?: boolean; go?: boolean; hideGetStarted?: bo
           style={`left: ${store.contextMenuPosition.x}px; top: ${store.contextMenuPosition.y}px;`}
         >
           <button class="context-menu-item" onClick={copyLogoToClipboard}>
-            <img data-slot="copy light" src={copyLogoLight} alt="" />
-            <img data-slot="copy dark" src={copyLogoDark} alt="" />
+            <img data-slot="copy light" src={copyLogoLight} alt="" @lgcode/>
+            <img data-slot="copy dark" src={copyLogoDark} alt="" @lgcode/>
             {i18n.t("nav.context.copyLogo")}
-          </button>
+          <@lgcode/button>
           <button class="context-menu-item" onClick={copyWordmarkToClipboard}>
-            <img data-slot="copy light" src={copyWordmarkLight} alt="" />
-            <img data-slot="copy dark" src={copyWordmarkDark} alt="" />
+            <img data-slot="copy light" src={copyWordmarkLight} alt="" @lgcode/>
+            <img data-slot="copy dark" src={copyWordmarkDark} alt="" @lgcode/>
             {i18n.t("nav.context.copyWordmark")}
-          </button>
-          <button class="context-menu-item" onClick={() => navigate(language.route("/brand"))}>
-            <img data-slot="copy light" src={copyBrandAssetsLight} alt="" />
-            <img data-slot="copy dark" src={copyBrandAssetsDark} alt="" />
+          <@lgcode/button>
+          <button class="context-menu-item" onClick={() => navigate(language.route("@lgcode/brand"))}>
+            <img data-slot="copy light" src={copyBrandAssetsLight} alt="" @lgcode/>
+            <img data-slot="copy dark" src={copyBrandAssetsDark} alt="" @lgcode/>
             {i18n.t("nav.context.brandAssets")}
-          </button>
-        </div>
-      </Show>
+          <@lgcode/button>
+        <@lgcode/div>
+      <@lgcode/Show>
       <nav data-component="nav-desktop">
         <ul>
           <li>
             <a href={config.github.repoUrl} target="_blank" style="white-space: nowrap;">
               {i18n.t("nav.github")}
-            </a>
-          </li>
+            <@lgcode/a>
+          <@lgcode/li>
           <li>
-            <a href={language.route("/docs")}>{i18n.t("nav.docs")}</a>
-          </li>
+            <a href={language.route("@lgcode/docs")}>{i18n.t("nav.docs")}<@lgcode/a>
+          <@lgcode/li>
           <li>
-            <a href={language.route("/data")}>{i18n.t("nav.data")}</a>
-          </li>
+            <a href={language.route("@lgcode/data")}>{i18n.t("nav.data")}<@lgcode/a>
+          <@lgcode/li>
           <li>
-            <A href={language.route("/zen")}>{i18n.t("nav.zen")}</A>
-          </li>
+            <A href={language.route("@lgcode/zen")}>{i18n.t("nav.zen")}<@lgcode/A>
+          <@lgcode/li>
           <li>
-            <A href={language.route("/go")}>{i18n.t("nav.go")}</A>
-          </li>
+            <A href={language.route("@lgcode/go")}>{i18n.t("nav.go")}<@lgcode/A>
+          <@lgcode/li>
           <li>
-            <A href={language.route("/enterprise")}>{i18n.t("nav.enterprise")}</A>
-          </li>
+            <A href={language.route("@lgcode/enterprise")}>{i18n.t("nav.enterprise")}<@lgcode/A>
+          <@lgcode/li>
           <Show when={props.zen || props.go}>
             <li>
-              <a href="/auth">{i18n.t("nav.login")}</a>
-            </li>
-          </Show>
+              <a href="@lgcode/auth">{i18n.t("nav.login")}<@lgcode/a>
+            <@lgcode/li>
+          <@lgcode/Show>
           <Show when={!props.hideGetStarted}>
             <li>
-              <A href={language.route("/download")} data-slot="cta-button">
+              <A href={language.route("@lgcode/download")} data-slot="cta-button">
                 <svg
                   width="18"
                   height="18"
                   viewBox="0 0 18 18"
                   fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns="http:@lgcode/@lgcode/www.w3.org@lgcode/2000@lgcode/svg"
                   style="flex-shrink: 0;"
                 >
                   <path
@@ -183,14 +183,14 @@ export function Header(props: { zen?: boolean; go?: boolean; hideGetStarted?: bo
                     stroke="currentColor"
                     stroke-width="1.5"
                     stroke-linecap="square"
-                  />
-                </svg>
+                  @lgcode/>
+                <@lgcode/svg>
                 {i18n.t("nav.free")}
-              </A>
-            </li>
-          </Show>
-        </ul>
-      </nav>
+              <@lgcode/A>
+            <@lgcode/li>
+          <@lgcode/Show>
+        <@lgcode/ul>
+      <@lgcode/nav>
       <nav data-component="nav-mobile">
         <button
           type="button"
@@ -200,7 +200,7 @@ export function Header(props: { zen?: boolean; go?: boolean; hideGetStarted?: bo
           class="nav-toggle"
           onClick={() => setStore("mobileMenuOpen", !store.mobileMenuOpen)}
         >
-          <span class="sr-only">{i18n.t("nav.openMenu")}</span>
+          <span class="sr-only">{i18n.t("nav.openMenu")}<@lgcode/span>
           <Switch>
             <Match when={store.mobileMenuOpen}>
               <svg
@@ -210,14 +210,14 @@ export function Header(props: { zen?: boolean; go?: boolean; hideGetStarted?: bo
                 viewBox="0 0 24 24"
                 fill="none"
                 aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
+                xmlns="http:@lgcode/@lgcode/www.w3.org@lgcode/2000@lgcode/svg"
               >
                 <path
                   d="M12.7071 11.9993L18.0104 17.3026L17.3033 18.0097L12 12.7064L6.6967 18.0097L5.98959 17.3026L11.2929 11.9993L5.98959 6.69595L6.6967 5.98885L12 11.2921L17.3033 5.98885L18.0104 6.69595L12.7071 11.9993Z"
                   fill="currentColor"
-                />
-              </svg>
-            </Match>
+                @lgcode/>
+              <@lgcode/svg>
+            <@lgcode/Match>
             <Match when={!store.mobileMenuOpen}>
               <svg
                 class="icon icon-hamburger"
@@ -226,63 +226,63 @@ export function Header(props: { zen?: boolean; go?: boolean; hideGetStarted?: bo
                 viewBox="0 0 24 24"
                 fill="none"
                 aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
+                xmlns="http:@lgcode/@lgcode/www.w3.org@lgcode/2000@lgcode/svg"
               >
-                <path d="M19 17H5V16H19V17Z" fill="currentColor" />
-                <path d="M19 8H5V7H19V8Z" fill="currentColor" />
-              </svg>
-            </Match>
-          </Switch>
-        </button>
+                <path d="M19 17H5V16H19V17Z" fill="currentColor" @lgcode/>
+                <path d="M19 8H5V7H19V8Z" fill="currentColor" @lgcode/>
+              <@lgcode/svg>
+            <@lgcode/Match>
+          <@lgcode/Switch>
+        <@lgcode/button>
 
         <Show when={store.mobileMenuOpen}>
           <div id="nav-mobile-menu" data-component="nav-mobile">
             <nav data-component="nav-mobile-menu-list">
               <ul>
                 <li>
-                  <A href={language.route("/")}>{i18n.t("nav.home")}</A>
-                </li>
+                  <A href={language.route("@lgcode/")}>{i18n.t("nav.home")}<@lgcode/A>
+                <@lgcode/li>
                 <li>
                   <a href={config.github.repoUrl} target="_blank" style="white-space: nowrap;">
                     {i18n.t("nav.github")}
-                  </a>
-                </li>
+                  <@lgcode/a>
+                <@lgcode/li>
                 <li>
-                  <a href={language.route("/docs")}>{i18n.t("nav.docs")}</a>
-                </li>
+                  <a href={language.route("@lgcode/docs")}>{i18n.t("nav.docs")}<@lgcode/a>
+                <@lgcode/li>
                 <li>
-                  <a href={language.route("/data")}>{i18n.t("nav.data")}</a>
-                </li>
+                  <a href={language.route("@lgcode/data")}>{i18n.t("nav.data")}<@lgcode/a>
+                <@lgcode/li>
                 <Show when={!props.zen}>
                   <li>
-                    <A href={language.route("/zen")}>{i18n.t("nav.zen")}</A>
-                  </li>
-                </Show>
+                    <A href={language.route("@lgcode/zen")}>{i18n.t("nav.zen")}<@lgcode/A>
+                  <@lgcode/li>
+                <@lgcode/Show>
                 <Show when={!props.go}>
                   <li>
-                    <A href={language.route("/go")}>{i18n.t("nav.go")}</A>
-                  </li>
-                </Show>
+                    <A href={language.route("@lgcode/go")}>{i18n.t("nav.go")}<@lgcode/A>
+                  <@lgcode/li>
+                <@lgcode/Show>
                 <li>
-                  <A href={language.route("/enterprise")}>{i18n.t("nav.enterprise")}</A>
-                </li>
+                  <A href={language.route("@lgcode/enterprise")}>{i18n.t("nav.enterprise")}<@lgcode/A>
+                <@lgcode/li>
                 <Show when={props.zen || props.go}>
                   <li>
-                    <a href="/auth">{i18n.t("nav.login")}</a>
-                  </li>
-                </Show>
+                    <a href="@lgcode/auth">{i18n.t("nav.login")}<@lgcode/a>
+                  <@lgcode/li>
+                <@lgcode/Show>
                 <Show when={!props.hideGetStarted}>
                   <li>
-                    <A href={language.route("/download")} data-slot="cta-button">
+                    <A href={language.route("@lgcode/download")} data-slot="cta-button">
                       {i18n.t("nav.getStartedFree")}
-                    </A>
-                  </li>
-                </Show>
-              </ul>
-            </nav>
-          </div>
-        </Show>
-      </nav>
-    </section>
+                    <@lgcode/A>
+                  <@lgcode/li>
+                <@lgcode/Show>
+              <@lgcode/ul>
+            <@lgcode/nav>
+          <@lgcode/div>
+        <@lgcode/Show>
+      <@lgcode/nav>
+    <@lgcode/section>
   )
 }

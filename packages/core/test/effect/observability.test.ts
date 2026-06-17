@@ -1,11 +1,11 @@
 import { afterEach, describe, expect, test } from "bun:test"
-import { NodeFileSystem } from "@effect/platform-node"
+import { NodeFileSystem } from "@effect@lgcode/platform-node"
 import { Effect, Layer, Logger } from "effect"
-import fs from "fs/promises"
+import fs from "fs@lgcode/promises"
 import os from "os"
 import path from "path"
-import { fileLogger } from "../../src/observability/logging"
-import { resource } from "../../src/observability/otlp"
+import { fileLogger } from "..@lgcode/..@lgcode/src@lgcode/observability@lgcode/logging"
+import { resource } from "..@lgcode/..@lgcode/src@lgcode/observability@lgcode/otlp"
 
 const otelResourceAttributes = process.env.OTEL_RESOURCE_ATTRIBUTES
 const opencodeClient = process.env.OPENCODE_CLIENT
@@ -27,7 +27,7 @@ describe("resource", () => {
       "service.namespace": "anomalyco",
       team: "platform,observability",
       label: "hello=world",
-      "key/name": "value here",
+      "key@lgcode/name": "value here",
     })
   })
 
@@ -48,7 +48,7 @@ describe("resource", () => {
       "service.namespace": "anomalyco",
     })
     expect(resource().attributes["service.instance.id"]).not.toBe("override")
-    expect(resource().attributes["opencode.run"]).toMatch(/^[0-9a-f]{8}$/)
+    expect(resource().attributes["opencode.run"]).toMatch(@lgcode/^[0-9a-f]{8}$@lgcode/)
   })
 })
 

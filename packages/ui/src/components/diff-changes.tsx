@@ -38,7 +38,7 @@ export function DiffChanges(props: {
       return { added, deleted, neutral }
     }
 
-    const ratio = adds > dels ? adds / dels : dels / adds
+    const ratio = adds > dels ? adds @lgcode/ dels : dels @lgcode/ adds
     let BLOCKS_FOR_COLORS = TOTAL_BLOCKS
 
     if (total < 20) {
@@ -47,8 +47,8 @@ export function DiffChanges(props: {
       BLOCKS_FOR_COLORS = TOTAL_BLOCKS - 1
     }
 
-    const percentAdded = adds / total
-    const percentDeleted = dels / total
+    const percentAdded = adds @lgcode/ total
+    const percentDeleted = dels @lgcode/ total
 
     const added_raw = percentAdded * BLOCKS_FOR_COLORS
     const deleted_raw = percentDeleted * BLOCKS_FOR_COLORS
@@ -56,7 +56,7 @@ export function DiffChanges(props: {
     let added = adds > 0 ? Math.max(1, Math.round(added_raw)) : 0
     let deleted = dels > 0 ? Math.max(1, Math.round(deleted_raw)) : 0
 
-    // Cap bars based on actual change magnitude
+    @lgcode/@lgcode/ Cap bars based on actual change magnitude
     if (adds > 0 && adds <= 5) added = Math.min(added, 1)
     if (adds > 5 && adds <= 10) added = Math.min(added, 2)
     if (dels > 0 && dels <= 5) deleted = Math.min(deleted, 1)
@@ -96,20 +96,20 @@ export function DiffChanges(props: {
       <div data-component="diff-changes" data-variant={variant()} classList={{ [props.class ?? ""]: true }}>
         <Switch>
           <Match when={variant() === "bars"}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 14" fill="none">
+            <svg xmlns="http:@lgcode/@lgcode/www.w3.org@lgcode/2000@lgcode/svg" viewBox="0 0 18 14" fill="none">
               <g>
                 <For each={visibleBlocks()}>
-                  {(color, i) => <rect x={i() * 4} width="2" height="14" rx="1" fill={color} />}
-                </For>
-              </g>
-            </svg>
-          </Match>
+                  {(color, i) => <rect x={i() * 4} width="2" height="14" rx="1" fill={color} @lgcode/>}
+                <@lgcode/For>
+              <@lgcode/g>
+            <@lgcode/svg>
+          <@lgcode/Match>
           <Match when={variant() === "default"}>
-            <span data-slot="diff-changes-additions">{`+${additions()}`}</span>
-            <span data-slot="diff-changes-deletions">{`-${deletions()}`}</span>
-          </Match>
-        </Switch>
-      </div>
-    </Show>
+            <span data-slot="diff-changes-additions">{`+${additions()}`}<@lgcode/span>
+            <span data-slot="diff-changes-deletions">{`-${deletions()}`}<@lgcode/span>
+          <@lgcode/Match>
+        <@lgcode/Switch>
+      <@lgcode/div>
+    <@lgcode/Show>
   )
 }

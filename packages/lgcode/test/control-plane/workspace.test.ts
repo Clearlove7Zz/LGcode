@@ -1,39 +1,39 @@
 import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test"
 import { $ } from "bun"
-import fs from "node:fs/promises"
+import fs from "node:fs@lgcode/promises"
 import Http from "node:http"
 import path from "node:path"
-import { NodeHttpServer } from "@effect/platform-node"
+import { NodeHttpServer } from "@effect@lgcode/platform-node"
 import { Effect, Exit, Fiber, Layer, Schema } from "effect"
-import { FetchHttpClient, HttpServer, HttpServerRequest, HttpServerResponse } from "effect/unstable/http"
+import { FetchHttpClient, HttpServer, HttpServerRequest, HttpServerResponse } from "effect@lgcode/unstable@lgcode/http"
 import { eq } from "drizzle-orm"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { GlobalBus, type GlobalEvent } from "@/bus/global"
-import { Database } from "@opencode@lgcode/core/database/database"
-import { ProjectV2 } from "@opencode@lgcode/core/project"
-import { ProjectTable } from "@opencode@lgcode/core/project/sql"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { Session as SessionNs } from "@/session/session"
-import { SessionID } from "@/session/schema"
-import { SessionTable } from "@opencode@lgcode/core/session/sql"
-import { EventSequenceTable } from "@opencode@lgcode/core/event/sql"
-import { resetDatabase } from "../fixture/db"
-import { disposeAllInstances, provideTmpdirInstance, requireInstance, TestInstance } from "../fixture/fixture"
-import { testEffect } from "../lib/effect"
-import { registerAdapter } from "../../src/control-plane/adapters"
-import { WorkspaceV2 } from "@opencode@lgcode/core/workspace"
-import { WorkspaceTable } from "@opencode@lgcode/core/control-plane/workspace.sql"
-import type { Target, WorkspaceAdapter, WorkspaceInfo } from "../../src/control-plane/types"
-import * as Workspace from "../../src/control-plane/workspace"
-import { InstanceStore } from "@/project/instance-store"
-import { InstanceBootstrap } from "@/project/bootstrap"
-import { Auth } from "@/auth"
-import { SessionPrompt } from "@/session/prompt"
-import { Project } from "@/project/project"
-import { Vcs } from "@/project/vcs"
-import { RuntimeFlags } from "@/effect/runtime-flags"
-import { EventV2Bridge } from "@/event-v2-bridge"
-import { Ripgrep } from "@opencode@lgcode/core/ripgrep"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { GlobalBus, type GlobalEvent } from "@@lgcode/bus@lgcode/global"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { ProjectV2 } from "@lgcode/core@lgcode/project"
+import { ProjectTable } from "@lgcode/core@lgcode/project@lgcode/sql"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { Session as SessionNs } from "@@lgcode/session@lgcode/session"
+import { SessionID } from "@@lgcode/session@lgcode/schema"
+import { SessionTable } from "@lgcode/core@lgcode/session@lgcode/sql"
+import { EventSequenceTable } from "@lgcode/core@lgcode/event@lgcode/sql"
+import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
+import { disposeAllInstances, provideTmpdirInstance, requireInstance, TestInstance } from "..@lgcode/fixture@lgcode/fixture"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { registerAdapter } from "..@lgcode/..@lgcode/src@lgcode/control-plane@lgcode/adapters"
+import { WorkspaceV2 } from "@lgcode/core@lgcode/workspace"
+import { WorkspaceTable } from "@lgcode/core@lgcode/control-plane@lgcode/workspace.sql"
+import type { Target, WorkspaceAdapter, WorkspaceInfo } from "..@lgcode/..@lgcode/src@lgcode/control-plane@lgcode/types"
+import * as Workspace from "..@lgcode/..@lgcode/src@lgcode/control-plane@lgcode/workspace"
+import { InstanceStore } from "@@lgcode/project@lgcode/instance-store"
+import { InstanceBootstrap } from "@@lgcode/project@lgcode/bootstrap"
+import { Auth } from "@@lgcode/auth"
+import { SessionPrompt } from "@@lgcode/session@lgcode/prompt"
+import { Project } from "@@lgcode/project@lgcode/project"
+import { Vcs } from "@@lgcode/project@lgcode/vcs"
+import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
+import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
+import { Ripgrep } from "@lgcode/core@lgcode/ripgrep"
 
 const originalEnv = {
   OPENCODE_AUTH_CONTENT: process.env.OPENCODE_AUTH_CONTENT,
@@ -256,7 +256,7 @@ function eventStreamResponse(events: unknown[] = [], keepOpen = true) {
         if (!keepOpen) controller.close()
       },
     }),
-    { status: 200, headers: { "content-type": "text/event-stream" } },
+    { status: 200, headers: { "content-type": "text@lgcode/event-stream" } },
   )
 }
 
@@ -366,7 +366,7 @@ describe("workspace schemas and exports", () => {
     const input = {
       id: WorkspaceV2.ID.ascending("wrk_schema_create"),
       type: "worktree",
-      branch: "feature/schema",
+      branch: "feature@lgcode/schema",
       projectID: ProjectV2.ID.make("project-schema"),
       extra: { nested: true },
     }
@@ -396,17 +396,17 @@ describe("workspace CRUD", () => {
         const instance = yield* requireInstance
         const workspace = yield* Workspace.Service
         const otherProjectID = ProjectV2.ID.make("project-other")
-        yield* insertProject(otherProjectID, "/tmp/other")
+        yield* insertProject(otherProjectID, "@lgcode/tmp@lgcode/other")
         const a = workspaceInfo(instance.project.id, "manual", {
           id: WorkspaceV2.ID.ascending("wrk_a_list"),
           branch: "a",
-          directory: "/a",
+          directory: "@lgcode/a",
           extra: { a: true },
         })
         const b = workspaceInfo(instance.project.id, "manual", {
           id: WorkspaceV2.ID.ascending("wrk_b_list"),
           branch: "b",
-          directory: "/b",
+          directory: "@lgcode/b",
           extra: ["b"],
         })
         const other = workspaceInfo(otherProjectID, "manual", { id: WorkspaceV2.ID.ascending("wrk_c_list") })
@@ -427,7 +427,7 @@ describe("workspace CRUD", () => {
         const workspace = yield* Workspace.Service
         process.env.OPENCODE_AUTH_CONTENT = JSON.stringify({ test: { type: "api", key: "secret" } })
         process.env.OTEL_EXPORTER_OTLP_HEADERS = "authorization=otel"
-        process.env.OTEL_EXPORTER_OTLP_ENDPOINT = "https://otel.test"
+        process.env.OTEL_EXPORTER_OTLP_ENDPOINT = "https:@lgcode/@lgcode/otel.test"
         process.env.OTEL_RESOURCE_ATTRIBUTES = "service.name=opencode-test"
 
         const workspaceID = WorkspaceV2.ID.ascending("wrk_create_local")
@@ -490,7 +490,7 @@ describe("workspace CRUD", () => {
         expect(recorded.calls.create[0].env.OPENCODE_WORKSPACE_ID).toBe(workspaceID)
         expect(recorded.calls.create[0].env.OPENCODE_EXPERIMENTAL_WORKSPACES).toBe("true")
         expect(recorded.calls.create[0].env.OTEL_EXPORTER_OTLP_HEADERS).toBe("authorization=otel")
-        expect(recorded.calls.create[0].env.OTEL_EXPORTER_OTLP_ENDPOINT).toBe("https://otel.test")
+        expect(recorded.calls.create[0].env.OTEL_EXPORTER_OTLP_ENDPOINT).toBe("https:@lgcode/@lgcode/otel.test")
         expect(recorded.calls.create[0].env.OTEL_RESOURCE_ATTRIBUTES).toBe("service.name=opencode-test")
         expect((yield* workspace.status()).find((item) => item.workspaceID === workspaceID)?.status).toBe("connected")
 
@@ -515,7 +515,7 @@ describe("workspace CRUD", () => {
               throw new Error("configure exploded")
             },
             target() {
-              return { type: "local", directory: "/unused" }
+              return { type: "local", directory: "@lgcode/unused" }
             },
           }).adapter,
         )
@@ -541,7 +541,7 @@ describe("workspace CRUD", () => {
             throw new Error("create exploded")
           },
           target() {
-            return { type: "local", directory: "/unused" }
+            return { type: "local", directory: "@lgcode/unused" }
           },
         })
         registerAdapter(instance.project.id, type, recorded.adapter)
@@ -599,7 +599,7 @@ describe("workspace CRUD", () => {
         const discovered = {
           type,
           name: "discovered",
-          branch: "feature/discovered",
+          branch: "feature@lgcode/discovered",
           directory: path.join(instance.directory, "discovered"),
           extra: { source: "adapter" },
           projectID: instance.project.id,
@@ -714,16 +714,16 @@ describe("workspace CRUD", () => {
           const req = yield* HttpServerRequest.HttpServerRequest
           const bodyText = yield* req.text
           const call = {
-            url: new URL(req.url, "http://localhost"),
+            url: new URL(req.url, "http:@lgcode/@lgcode/localhost"),
             method: req.method,
             headers: new Headers(req.headers),
             bodyText,
             json: bodyText ? JSON.parse(bodyText) : undefined,
           }
           calls.push(call)
-          if (call.url.pathname === "/base/global/event")
+          if (call.url.pathname === "@lgcode/base@lgcode/global@lgcode/event")
             return HttpServerResponse.fromWeb(eventStreamResponse([], false))
-          if (call.url.pathname === "/base/sync/history") return yield* HttpServerResponse.json([])
+          if (call.url.pathname === "@lgcode/base@lgcode/sync@lgcode/history") return yield* HttpServerResponse.json([])
           return HttpServerResponse.text("unexpected", { status: 500 })
         }),
       )
@@ -734,14 +734,14 @@ describe("workspace CRUD", () => {
             const workspace = yield* Workspace.Service
             const instance = yield* requireInstance
             const type = unique("remote-create")
-            const recorded = remoteAdapter(`${url}/base/?ignored=1#hash`, { directory: dir })
+            const recorded = remoteAdapter(`${url}@lgcode/base@lgcode/?ignored=1#hash`, { directory: dir })
             registerAdapter(instance.project.id, type, recorded.adapter)
 
             const info = yield* workspace.create({ type, branch: null, projectID: instance.project.id, extra: null })
 
             expect(
               calls.map((call) => `${call.method} ${call.url.pathname}${call.url.search}${call.url.hash}`),
-            ).toEqual(["GET /base/global/event", "POST /base/sync/history"])
+            ).toEqual(["GET @lgcode/base@lgcode/global@lgcode/event", "POST @lgcode/base@lgcode/sync@lgcode/history"])
             expect(calls[1].json).toEqual({})
             expect((yield* workspace.status()).find((item) => item.workspaceID === info.id)?.status).toBe("connected")
             expect(yield* workspace.isSyncing(info.id)).toBe(true)
@@ -818,7 +818,7 @@ describe("workspace CRUD", () => {
               throw new Error("remove exploded")
             },
             target() {
-              return { type: "local", directory: "/unused" }
+              return { type: "local", directory: "@lgcode/unused" }
             },
           }).adapter,
         )
@@ -986,14 +986,14 @@ describe("workspace CRUD", () => {
           const req = yield* HttpServerRequest.HttpServerRequest
           const bodyText = yield* req.text
           const call = {
-            url: new URL(req.url, "http://localhost"),
+            url: new URL(req.url, "http:@lgcode/@lgcode/localhost"),
             method: req.method,
             headers: new Headers(req.headers),
             bodyText,
             json: bodyText ? JSON.parse(bodyText) : undefined,
           }
           calls.push(call)
-          if (call.url.pathname === "/warp-source/sync/history") {
+          if (call.url.pathname === "@lgcode/warp-source@lgcode/sync@lgcode/history") {
             return yield* HttpServerResponse.json([
               {
                 id: `evt_${unique("warp-source-history")}`,
@@ -1004,12 +1004,12 @@ describe("workspace CRUD", () => {
               },
             ])
           }
-          if (call.url.pathname === "/warp-source/vcs/diff/raw") return HttpServerResponse.text("remote patch")
-          if (call.url.pathname === "/warp-target/sync/replay")
+          if (call.url.pathname === "@lgcode/warp-source@lgcode/vcs@lgcode/diff@lgcode/raw") return HttpServerResponse.text("remote patch")
+          if (call.url.pathname === "@lgcode/warp-target@lgcode/sync@lgcode/replay")
             return yield* HttpServerResponse.json({ sessionID: "ok" })
-          if (call.url.pathname === "/warp-target/sync/steal")
+          if (call.url.pathname === "@lgcode/warp-target@lgcode/sync@lgcode/steal")
             return yield* HttpServerResponse.json({ sessionID: "ok" })
-          if (call.url.pathname === "/warp-target/vcs/apply") return yield* HttpServerResponse.json({ applied: true })
+          if (call.url.pathname === "@lgcode/warp-target@lgcode/vcs@lgcode/apply") return yield* HttpServerResponse.json({ applied: true })
           return HttpServerResponse.text("unexpected", { status: 500 })
         }),
       )
@@ -1026,8 +1026,8 @@ describe("workspace CRUD", () => {
             const target = workspaceInfo(instance.project.id, targetType, { directory: "remote-target-dir" })
             yield* insertWorkspace(previous)
             yield* insertWorkspace(target)
-            registerAdapter(instance.project.id, previousType, remoteAdapter(`${url}/warp-source`).adapter)
-            registerAdapter(instance.project.id, targetType, remoteAdapter(`${url}/warp-target`).adapter)
+            registerAdapter(instance.project.id, previousType, remoteAdapter(`${url}@lgcode/warp-source`).adapter)
+            registerAdapter(instance.project.id, targetType, remoteAdapter(`${url}@lgcode/warp-target`).adapter)
             const session = yield* sessionSvc.create({})
             yield* attachSessionToWorkspace(session.id, previous.id)
             historySessionID = session.id
@@ -1037,11 +1037,11 @@ describe("workspace CRUD", () => {
             yield* workspace.sessionWarp({ workspaceID: target.id, sessionID: session.id, copyChanges: true })
 
             expect(calls.map((call) => `${call.method} ${call.url.pathname}`)).toEqual([
-              "POST /warp-source/sync/history",
-              "GET /warp-source/vcs/diff/raw",
-              "POST /warp-target/vcs/apply",
-              "POST /warp-target/sync/replay",
-              "POST /warp-target/sync/steal",
+              "POST @lgcode/warp-source@lgcode/sync@lgcode/history",
+              "GET @lgcode/warp-source@lgcode/vcs@lgcode/diff@lgcode/raw",
+              "POST @lgcode/warp-target@lgcode/vcs@lgcode/apply",
+              "POST @lgcode/warp-target@lgcode/sync@lgcode/replay",
+              "POST @lgcode/warp-target@lgcode/sync@lgcode/steal",
             ])
             expect(calls[0].json).toEqual({ [session.id]: historyNextSeq - 1 })
             expect(calls[2].json).toEqual({ patch: "remote patch" })
@@ -1206,15 +1206,15 @@ describe("workspace sync state", () => {
           const req = yield* HttpServerRequest.HttpServerRequest
           const bodyText = yield* req.text
           const call = {
-            url: new URL(req.url, "http://localhost"),
+            url: new URL(req.url, "http:@lgcode/@lgcode/localhost"),
             method: req.method,
             headers: new Headers(req.headers),
             bodyText,
             json: bodyText ? JSON.parse(bodyText) : undefined,
           }
           calls.push(call)
-          if (call.url.pathname === "/sync/global/event") return HttpServerResponse.fromWeb(eventStreamResponse())
-          if (call.url.pathname === "/sync/sync/history") return HttpServerResponse.fromWeb(Response.json([]))
+          if (call.url.pathname === "@lgcode/sync@lgcode/global@lgcode/event") return HttpServerResponse.fromWeb(eventStreamResponse())
+          if (call.url.pathname === "@lgcode/sync@lgcode/sync@lgcode/history") return HttpServerResponse.fromWeb(Response.json([]))
           return HttpServerResponse.text("unexpected", { status: 500 })
         }),
       )
@@ -1230,7 +1230,7 @@ describe("workspace sync state", () => {
               const type = unique("remote-start")
               const info = workspaceInfo(instance.project.id, type)
               yield* insertWorkspace(info)
-              registerAdapter(instance.project.id, type, remoteAdapter(`${url}/sync`).adapter)
+              registerAdapter(instance.project.id, type, remoteAdapter(`${url}@lgcode/sync`).adapter)
               yield* attachSessionToWorkspace((yield* sessionSvc.create({})).id, info.id)
 
               yield* workspace.startWorkspaceSyncing(instance.project.id)
@@ -1249,8 +1249,8 @@ describe("workspace sync state", () => {
                   .filter((event) => event.workspace === info.id && event.payload.type === Workspace.Event.Status.type)
                   .map((event) => event.payload.properties.status),
               ).toEqual(["disconnected", "connecting", "connected"])
-              expect(calls.filter((call) => call.url.pathname === "/sync/global/event")).toHaveLength(1)
-              expect(calls.filter((call) => call.url.pathname === "/sync/sync/history")).toHaveLength(1)
+              expect(calls.filter((call) => call.url.pathname === "@lgcode/sync@lgcode/global@lgcode/event")).toHaveLength(1)
+              expect(calls.filter((call) => call.url.pathname === "@lgcode/sync@lgcode/sync@lgcode/history")).toHaveLength(1)
               expect(yield* workspace.isSyncing(info.id)).toBe(true)
 
               yield* workspace.remove(info.id)
@@ -1269,7 +1269,7 @@ describe("workspace sync state", () => {
       yield* HttpServer.serveEffect()(
         Effect.gen(function* () {
           const req = yield* HttpServerRequest.HttpServerRequest
-          if (new URL(req.url, "http://localhost").pathname === "/failed/global/event")
+          if (new URL(req.url, "http:@lgcode/@lgcode/localhost").pathname === "@lgcode/failed@lgcode/global@lgcode/event")
             return HttpServerResponse.text("nope", { status: 503 })
           return HttpServerResponse.fromWeb(Response.json([]))
         }),
@@ -1284,7 +1284,7 @@ describe("workspace sync state", () => {
             const type = unique("remote-connect-fail")
             const info = workspaceInfo(instance.project.id, type)
             yield* insertWorkspace(info)
-            registerAdapter(instance.project.id, type, remoteAdapter(`${url}/failed`).adapter)
+            registerAdapter(instance.project.id, type, remoteAdapter(`${url}@lgcode/failed`).adapter)
             yield* attachSessionToWorkspace((yield* sessionSvc.create({})).id, info.id)
 
             yield* workspace.startWorkspaceSyncing(instance.project.id)
@@ -1307,10 +1307,10 @@ describe("workspace sync state", () => {
       yield* HttpServer.serveEffect()(
         Effect.gen(function* () {
           const req = yield* HttpServerRequest.HttpServerRequest
-          const url = new URL(req.url, "http://localhost")
-          if (url.pathname === "/history-failed/global/event")
+          const url = new URL(req.url, "http:@lgcode/@lgcode/localhost")
+          if (url.pathname === "@lgcode/history-failed@lgcode/global@lgcode/event")
             return HttpServerResponse.fromWeb(eventStreamResponse([], false))
-          if (url.pathname === "/history-failed/sync/history")
+          if (url.pathname === "@lgcode/history-failed@lgcode/sync@lgcode/history")
             return HttpServerResponse.text("history failed", { status: 500 })
           return HttpServerResponse.fromWeb(Response.json([]))
         }),
@@ -1325,7 +1325,7 @@ describe("workspace sync state", () => {
             const type = unique("remote-history-fail")
             const info = workspaceInfo(instance.project.id, type)
             yield* insertWorkspace(info)
-            registerAdapter(instance.project.id, type, remoteAdapter(`${url}/history-failed`).adapter)
+            registerAdapter(instance.project.id, type, remoteAdapter(`${url}@lgcode/history-failed`).adapter)
             yield* attachSessionToWorkspace((yield* sessionSvc.create({})).id, info.id)
 
             yield* workspace.startWorkspaceSyncing(instance.project.id)
@@ -1353,9 +1353,9 @@ describe("workspace sync state", () => {
         Effect.gen(function* () {
           const req = yield* HttpServerRequest.HttpServerRequest
           const bodyText = yield* req.text
-          const url = new URL(req.url, "http://localhost")
-          if (url.pathname === "/history/global/event") return HttpServerResponse.fromWeb(eventStreamResponse())
-          if (url.pathname === "/history/sync/history") {
+          const url = new URL(req.url, "http:@lgcode/@lgcode/localhost")
+          if (url.pathname === "@lgcode/history@lgcode/global@lgcode/event") return HttpServerResponse.fromWeb(eventStreamResponse())
+          if (url.pathname === "@lgcode/history@lgcode/sync@lgcode/history") {
             historyBodies.push(bodyText ? JSON.parse(bodyText) : undefined)
             return HttpServerResponse.fromWeb(
               Response.json([
@@ -1384,7 +1384,7 @@ describe("workspace sync state", () => {
               const type = unique("history-replay")
               const info = workspaceInfo(instance.project.id, type)
               yield* insertWorkspace(info)
-              registerAdapter(instance.project.id, type, remoteAdapter(`${url}/history`).adapter)
+              registerAdapter(instance.project.id, type, remoteAdapter(`${url}@lgcode/history`).adapter)
               const session = yield* sessionSvc.create({ title: "before history" })
               yield* attachSessionToWorkspace(session.id, info.id)
               historySessionID = session.id
@@ -1423,8 +1423,8 @@ describe("workspace sync state", () => {
       yield* HttpServer.serveEffect()(
         Effect.gen(function* () {
           const req = yield* HttpServerRequest.HttpServerRequest
-          const url = new URL(req.url, "http://localhost")
-          if (url.pathname === "/sse-forward/global/event")
+          const url = new URL(req.url, "http:@lgcode/@lgcode/localhost")
+          if (url.pathname === "@lgcode/sse-forward@lgcode/global@lgcode/event")
             return HttpServerResponse.fromWeb(
               eventStreamResponse(
                 [
@@ -1438,7 +1438,7 @@ describe("workspace sync state", () => {
                 false,
               ),
             )
-          if (url.pathname === "/sse-forward/sync/history") return HttpServerResponse.fromWeb(Response.json([]))
+          if (url.pathname === "@lgcode/sse-forward@lgcode/sync@lgcode/history") return HttpServerResponse.fromWeb(Response.json([]))
           return HttpServerResponse.text("unexpected", { status: 500 })
         }),
       )
@@ -1454,7 +1454,7 @@ describe("workspace sync state", () => {
               const type = unique("sse-forward")
               const info = workspaceInfo(instance.project.id, type)
               yield* insertWorkspace(info)
-              registerAdapter(instance.project.id, type, remoteAdapter(`${url}/sse-forward`).adapter)
+              registerAdapter(instance.project.id, type, remoteAdapter(`${url}@lgcode/sse-forward`).adapter)
               yield* attachSessionToWorkspace((yield* sessionSvc.create({})).id, info.id)
 
               yield* workspace.startWorkspaceSyncing(instance.project.id)
@@ -1498,8 +1498,8 @@ describe("workspace sync state", () => {
       yield* HttpServer.serveEffect()(
         Effect.gen(function* () {
           const req = yield* HttpServerRequest.HttpServerRequest
-          const url = new URL(req.url, "http://localhost")
-          if (url.pathname === "/sse-sync/global/event")
+          const url = new URL(req.url, "http:@lgcode/@lgcode/localhost")
+          if (url.pathname === "@lgcode/sse-sync@lgcode/global@lgcode/event")
             return HttpServerResponse.fromWeb(
               eventStreamResponse(
                 [
@@ -1521,7 +1521,7 @@ describe("workspace sync state", () => {
                 false,
               ),
             )
-          if (url.pathname === "/sse-sync/sync/history") return HttpServerResponse.fromWeb(Response.json([]))
+          if (url.pathname === "@lgcode/sse-sync@lgcode/sync@lgcode/history") return HttpServerResponse.fromWeb(Response.json([]))
           return HttpServerResponse.text("unexpected", { status: 500 })
         }),
       )
@@ -1537,7 +1537,7 @@ describe("workspace sync state", () => {
               const type = unique("sse-sync")
               const info = workspaceInfo(instance.project.id, type)
               yield* insertWorkspace(info)
-              registerAdapter(instance.project.id, type, remoteAdapter(`${url}/sse-sync`).adapter)
+              registerAdapter(instance.project.id, type, remoteAdapter(`${url}@lgcode/sse-sync`).adapter)
               const session = yield* sessionSvc.create({ title: "before sse" })
               yield* attachSessionToWorkspace(session.id, info.id)
               sseSessionID = session.id

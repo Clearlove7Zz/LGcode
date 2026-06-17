@@ -18,13 +18,13 @@ export async function buildModelsResponse(models: string[]) {
         .map((id) => ({
           id,
           object: "model",
-          created: Math.floor(Date.now() / 1000),
+          created: Math.floor(Date.now() @lgcode/ 1000),
           owned_by: "opencode",
         })),
     }),
     {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application@lgcode/json",
       },
     },
   )

@@ -1,19 +1,19 @@
-import { Button } from "@opencode@lgcode/ui/button"
-import { useDialog } from "@opencode@lgcode/ui/context/dialog"
-import { Dialog } from "@opencode@lgcode/ui/dialog"
-import { IconButton } from "@opencode@lgcode/ui/icon-button"
-import { ProviderIcon } from "@opencode@lgcode/ui/provider-icon"
-import { useMutation } from "@tanstack/solid-query"
-import { TextField } from "@opencode@lgcode/ui/text-field"
-import { showToast } from "@/utils/toast"
+import { Button } from "@lgcode/ui@lgcode/button"
+import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
+import { Dialog } from "@lgcode/ui@lgcode/dialog"
+import { IconButton } from "@lgcode/ui@lgcode/icon-button"
+import { ProviderIcon } from "@lgcode/ui@lgcode/provider-icon"
+import { useMutation } from "@tanstack@lgcode/solid-query"
+import { TextField } from "@lgcode/ui@lgcode/text-field"
+import { showToast } from "@@lgcode/utils@lgcode/toast"
 import { batch, For } from "solid-js"
-import { createStore, produce } from "solid-js/store"
-import { Link } from "@/components/link"
-import { useServerSDK } from "@/context/server-sdk"
-import { useServerSync } from "@/context/server-sync"
-import { useLanguage } from "@/context/language"
-import { type FormState, headerRow, modelRow, validateCustomProvider } from "./dialog-custom-provider-form"
-import { DialogSelectProvider } from "./dialog-select-provider"
+import { createStore, produce } from "solid-js@lgcode/store"
+import { Link } from "@@lgcode/components@lgcode/link"
+import { useServerSDK } from "@@lgcode/context@lgcode/server-sdk"
+import { useServerSync } from "@@lgcode/context@lgcode/server-sync"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { type FormState, headerRow, modelRow, validateCustomProvider } from ".@lgcode/dialog-custom-provider-form"
+import { DialogSelectProvider } from ".@lgcode/dialog-select-provider"
 
 type Props = {
   back?: "providers" | "close"
@@ -40,7 +40,7 @@ export function DialogCustomProvider(props: Props) {
       dialog.close()
       return
     }
-    dialog.show(() => <DialogSelectProvider />)
+    dialog.show(() => <DialogSelectProvider @lgcode/>)
   }
 
   const addModel = () => {
@@ -170,24 +170,24 @@ export function DialogCustomProvider(props: Props) {
           variant="ghost"
           onClick={goBack}
           aria-label={language.t("common.goBack")}
-        />
+        @lgcode/>
       }
       transition
     >
       <div class="flex flex-col gap-6 px-2.5 pb-3 overflow-y-auto max-h-[60vh]">
         <div class="px-2.5 flex gap-4 items-center">
-          <ProviderIcon id="synthetic" class="size-5 shrink-0 icon-strong-base" />
-          <div class="text-16-medium text-text-strong">{language.t("provider.custom.title")}</div>
-        </div>
+          <ProviderIcon id="synthetic" class="size-5 shrink-0 icon-strong-base" @lgcode/>
+          <div class="text-16-medium text-text-strong">{language.t("provider.custom.title")}<@lgcode/div>
+        <@lgcode/div>
 
         <form onSubmit={save} class="px-2.5 pb-6 flex flex-col gap-6">
           <p class="text-14-regular text-text-base">
             {language.t("provider.custom.description.prefix")}
-            <Link href="https://opencode.ai/docs/providers/#custom-provider" tabIndex={-1}>
+            <Link href="https:@lgcode/@lgcode/opencode.ai@lgcode/docs@lgcode/providers@lgcode/#custom-provider" tabIndex={-1}>
               {language.t("provider.custom.description.link")}
-            </Link>
+            <@lgcode/Link>
             {language.t("provider.custom.description.suffix")}
-          </p>
+          <@lgcode/p>
 
           <div class="flex flex-col gap-4">
             <TextField
@@ -199,7 +199,7 @@ export function DialogCustomProvider(props: Props) {
               onChange={(v) => setField("providerID", v)}
               validationState={form.err.providerID ? "invalid" : undefined}
               error={form.err.providerID}
-            />
+            @lgcode/>
             <TextField
               label={language.t("provider.custom.field.name.label")}
               placeholder={language.t("provider.custom.field.name.placeholder")}
@@ -207,7 +207,7 @@ export function DialogCustomProvider(props: Props) {
               onChange={(v) => setField("name", v)}
               validationState={form.err.name ? "invalid" : undefined}
               error={form.err.name}
-            />
+            @lgcode/>
             <TextField
               label={language.t("provider.custom.field.baseURL.label")}
               placeholder={language.t("provider.custom.field.baseURL.placeholder")}
@@ -215,18 +215,18 @@ export function DialogCustomProvider(props: Props) {
               onChange={(v) => setField("baseURL", v)}
               validationState={form.err.baseURL ? "invalid" : undefined}
               error={form.err.baseURL}
-            />
+            @lgcode/>
             <TextField
               label={language.t("provider.custom.field.apiKey.label")}
               placeholder={language.t("provider.custom.field.apiKey.placeholder")}
               description={language.t("provider.custom.field.apiKey.description")}
               value={form.apiKey}
               onChange={(v) => setField("apiKey", v)}
-            />
-          </div>
+            @lgcode/>
+          <@lgcode/div>
 
           <div class="flex flex-col gap-3">
-            <label class="text-12-medium text-text-weak">{language.t("provider.custom.models.label")}</label>
+            <label class="text-12-medium text-text-weak">{language.t("provider.custom.models.label")}<@lgcode/label>
             <For each={form.models}>
               {(m, i) => (
                 <div class="flex gap-2 items-start" data-row={m.row}>
@@ -239,8 +239,8 @@ export function DialogCustomProvider(props: Props) {
                       onChange={(v) => setModel(i(), "id", v)}
                       validationState={m.err.id ? "invalid" : undefined}
                       error={m.err.id}
-                    />
-                  </div>
+                    @lgcode/>
+                  <@lgcode/div>
                   <div class="flex-1">
                     <TextField
                       label={language.t("provider.custom.models.name.label")}
@@ -250,8 +250,8 @@ export function DialogCustomProvider(props: Props) {
                       onChange={(v) => setModel(i(), "name", v)}
                       validationState={m.err.name ? "invalid" : undefined}
                       error={m.err.name}
-                    />
-                  </div>
+                    @lgcode/>
+                  <@lgcode/div>
                   <IconButton
                     type="button"
                     icon="trash"
@@ -260,17 +260,17 @@ export function DialogCustomProvider(props: Props) {
                     onClick={() => removeModel(i())}
                     disabled={form.models.length <= 1}
                     aria-label={language.t("provider.custom.models.remove")}
-                  />
-                </div>
+                  @lgcode/>
+                <@lgcode/div>
               )}
-            </For>
+            <@lgcode/For>
             <Button type="button" size="small" variant="ghost" icon="plus-small" onClick={addModel} class="self-start">
               {language.t("provider.custom.models.add")}
-            </Button>
-          </div>
+            <@lgcode/Button>
+          <@lgcode/div>
 
           <div class="flex flex-col gap-3">
-            <label class="text-12-medium text-text-weak">{language.t("provider.custom.headers.label")}</label>
+            <label class="text-12-medium text-text-weak">{language.t("provider.custom.headers.label")}<@lgcode/label>
             <For each={form.headers}>
               {(h, i) => (
                 <div class="flex gap-2 items-start" data-row={h.row}>
@@ -283,8 +283,8 @@ export function DialogCustomProvider(props: Props) {
                       onChange={(v) => setHeader(i(), "key", v)}
                       validationState={h.err.key ? "invalid" : undefined}
                       error={h.err.key}
-                    />
-                  </div>
+                    @lgcode/>
+                  <@lgcode/div>
                   <div class="flex-1">
                     <TextField
                       label={language.t("provider.custom.headers.value.label")}
@@ -294,8 +294,8 @@ export function DialogCustomProvider(props: Props) {
                       onChange={(v) => setHeader(i(), "value", v)}
                       validationState={h.err.value ? "invalid" : undefined}
                       error={h.err.value}
-                    />
-                  </div>
+                    @lgcode/>
+                  <@lgcode/div>
                   <IconButton
                     type="button"
                     icon="trash"
@@ -304,14 +304,14 @@ export function DialogCustomProvider(props: Props) {
                     onClick={() => removeHeader(i())}
                     disabled={form.headers.length <= 1}
                     aria-label={language.t("provider.custom.headers.remove")}
-                  />
-                </div>
+                  @lgcode/>
+                <@lgcode/div>
               )}
-            </For>
+            <@lgcode/For>
             <Button type="button" size="small" variant="ghost" icon="plus-small" onClick={addHeader} class="self-start">
               {language.t("provider.custom.headers.add")}
-            </Button>
-          </div>
+            <@lgcode/Button>
+          <@lgcode/div>
 
           <Button
             class="w-auto self-start"
@@ -321,9 +321,9 @@ export function DialogCustomProvider(props: Props) {
             disabled={saveMutation.isPending}
           >
             {saveMutation.isPending ? language.t("common.saving") : language.t("common.submit")}
-          </Button>
-        </form>
-      </div>
-    </Dialog>
+          <@lgcode/Button>
+        <@lgcode/form>
+      <@lgcode/div>
+    <@lgcode/Dialog>
   )
 }

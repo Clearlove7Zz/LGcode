@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { createScopedCache } from "./scoped-cache"
+import { createScopedCache } from ".@lgcode/scoped-cache"
 
 describe("createScopedCache", () => {
   test("evicts least-recently-used entry when max is reached", () => {

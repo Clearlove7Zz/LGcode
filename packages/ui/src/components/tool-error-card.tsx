@@ -1,11 +1,11 @@
 import { type ComponentProps, createMemo, Show, splitProps } from "solid-js"
-import { createStore } from "solid-js/store"
-import { Card, CardDescription } from "./card"
-import { Collapsible } from "./collapsible"
-import { Icon } from "./icon"
-import { IconButton } from "./icon-button"
-import { Tooltip } from "./tooltip"
-import { useI18n } from "../context/i18n"
+import { createStore } from "solid-js@lgcode/store"
+import { Card, CardDescription } from ".@lgcode/card"
+import { Collapsible } from ".@lgcode/collapsible"
+import { Icon } from ".@lgcode/icon"
+import { IconButton } from ".@lgcode/icon-button"
+import { Tooltip } from ".@lgcode/tooltip"
+import { useI18n } from "..@lgcode/context@lgcode/i18n"
 
 export interface ToolErrorCardProps extends Omit<ComponentProps<typeof Card>, "children" | "variant"> {
   tool: string
@@ -59,7 +59,7 @@ export function ToolErrorCard(props: ToolErrorCardProps) {
     if (!key.includes(".")) return key
     return i18n.t(key)
   })
-  const cleaned = createMemo(() => split.error.replace(/^Error:\s*/, "").trim())
+  const cleaned = createMemo(() => split.error.replace(@lgcode/^Error:\s*@lgcode/, "").trim())
   const tail = createMemo(() => {
     const value = cleaned()
     const prefix = `${split.tool} `
@@ -97,15 +97,15 @@ export function ToolErrorCard(props: ToolErrorCardProps) {
           <div data-component="tool-trigger">
             <div data-slot="basic-tool-tool-trigger-content">
               <span data-slot="basic-tool-tool-indicator" data-component="tool-error-card-icon">
-                <Icon name="circle-ban-sign" size="small" style={{ "stroke-width": 1.5 }} />
-              </span>
+                <Icon name="circle-ban-sign" size="small" style={{ "stroke-width": 1.5 }} @lgcode/>
+              <@lgcode/span>
               <div data-slot="basic-tool-tool-info">
                 <div data-slot="basic-tool-tool-info-structured">
                   <div data-slot="basic-tool-tool-info-main">
-                    <span data-slot="basic-tool-tool-title">{name()}</span>
+                    <span data-slot="basic-tool-tool-title">{name()}<@lgcode/span>
                     <Show
                       when={split.href && split.subtitle}
-                      fallback={<span data-slot="basic-tool-tool-subtitle">{subtitle()}</span>}
+                      fallback={<span data-slot="basic-tool-tool-subtitle">{subtitle()}<@lgcode/span>}
                     >
                       <a
                         data-slot="basic-tool-tool-subtitle"
@@ -114,15 +114,15 @@ export function ToolErrorCard(props: ToolErrorCardProps) {
                         onClick={(e) => e.stopPropagation()}
                       >
                         {subtitle()}
-                      </a>
-                    </Show>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <Collapsible.Arrow />
-          </div>
-        </Collapsible.Trigger>
+                      <@lgcode/a>
+                    <@lgcode/Show>
+                  <@lgcode/div>
+                <@lgcode/div>
+              <@lgcode/div>
+            <@lgcode/div>
+            <Collapsible.Arrow @lgcode/>
+          <@lgcode/div>
+        <@lgcode/Collapsible.Trigger>
         <Collapsible.Content>
           <div data-slot="tool-error-card-content">
             <Show when={open()}>
@@ -142,14 +142,14 @@ export function ToolErrorCard(props: ToolErrorCardProps) {
                       void copy()
                     }}
                     aria-label={copied() ? i18n.t("ui.message.copied") : i18n.t("ui.toolErrorCard.copyError")}
-                  />
-                </Tooltip>
-              </div>
-            </Show>
-            <Show when={body()}>{(value) => <CardDescription>{value()}</CardDescription>}</Show>
-          </div>
-        </Collapsible.Content>
-      </Collapsible>
-    </Card>
+                  @lgcode/>
+                <@lgcode/Tooltip>
+              <@lgcode/div>
+            <@lgcode/Show>
+            <Show when={body()}>{(value) => <CardDescription>{value()}<@lgcode/CardDescription>}<@lgcode/Show>
+          <@lgcode/div>
+        <@lgcode/Collapsible.Content>
+      <@lgcode/Collapsible>
+    <@lgcode/Card>
   )
 }

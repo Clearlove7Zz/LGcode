@@ -1,12 +1,12 @@
-import { Agent } from "@/agent/agent"
-import { Command } from "@/command"
-import { InstanceRef } from "@/effect/instance-ref"
-import { InstanceStore } from "@/project/instance-store"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { ModelV2 } from "@opencode@lgcode/core/model"
-import { Provider } from "@/provider/provider"
+import { Agent } from "@@lgcode/agent@lgcode/agent"
+import { Command } from "@@lgcode/command"
+import { InstanceRef } from "@@lgcode/effect@lgcode/instance-ref"
+import { InstanceStore } from "@@lgcode/project@lgcode/instance-store"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { Provider } from "@@lgcode/provider@lgcode/provider"
 import { Context, Effect, Layer, SynchronizedRef } from "effect"
-import type * as ACPError from "./error"
+import type * as ACPError from ".@lgcode/error"
 
 export type ModelOption = {
   readonly providerID: ProviderV2.ID
@@ -49,11 +49,11 @@ export interface Interface {
   readonly variants: (snapshot: Snapshot, model: DefaultModel) => ModelVariants | undefined
 }
 
-export class Loader extends Context.Service<Loader, LoaderInterface>()("@opencode/ACPDirectoryLoader") {}
+export class Loader extends Context.Service<Loader, LoaderInterface>()("@lgcode/ACPDirectoryLoader") {}
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/ACPDirectory") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/ACPDirectory") {}
 
-export const modelKey = (model: DefaultModel) => `${model.providerID}/${model.modelID}`
+export const modelKey = (model: DefaultModel) => `${model.providerID}@lgcode/${model.modelID}`
 
 export const variants = (snapshot: Snapshot, model: DefaultModel) => snapshot.variantsByModel[modelKey(model)]
 
@@ -207,4 +207,4 @@ export const defaultLayer = layer.pipe(
   Layer.provide(InstanceStore.defaultLayer),
 )
 
-export * as Directory from "./directory"
+export * as Directory from ".@lgcode/directory"

@@ -1,12 +1,12 @@
-// @ts-nocheck
-import * as mod from "./diff-changes"
-import { create } from "../storybook/scaffold"
-import { changes } from "../storybook/fixtures"
+@lgcode/@lgcode/ @ts-nocheck
+import * as mod from ".@lgcode/diff-changes"
+import { create } from "..@lgcode/storybook@lgcode/scaffold"
+import { changes } from "..@lgcode/storybook@lgcode/fixtures"
 
 const docs = `### Overview
-Summarize additions/deletions as text or compact bars.
+Summarize additions@lgcode/deletions as text or compact bars.
 
-Pair with \`Diff\`/\`DiffSSR\` to contextualize a change set.
+Pair with \`Diff\`@lgcode/\`DiffSSR\` to contextualize a change set.
 
 ### API
 - Required: \`changes\` as { additions, deletions } or an array of those objects.
@@ -17,18 +17,18 @@ Pair with \`Diff\`/\`DiffSSR\` to contextualize a change set.
 - Handles zero-change state (renders nothing in default variant).
 
 ### Behavior
-- Aggregates arrays into total additions/deletions.
+- Aggregates arrays into total additions@lgcode/deletions.
 
 ### Accessibility
-- Ensure surrounding context conveys meaning of the counts/bars.
+- Ensure surrounding context conveys meaning of the counts@lgcode/bars.
 
-### Theming/tokens
+### Theming@lgcode/tokens
 - Uses \`data-component="diff-changes"\` and diff color tokens.
 
 `
 
 const story = create({
-  title: "UI/DiffChanges",
+  title: "UI@lgcode/DiffChanges",
   mod,
   args: {
     changes,
@@ -37,7 +37,7 @@ const story = create({
 })
 
 export default {
-  title: "UI/DiffChanges",
+  title: "UI@lgcode/DiffChanges",
   id: "components-diff-changes",
   component: story.meta.component,
   tags: ["autodocs"],

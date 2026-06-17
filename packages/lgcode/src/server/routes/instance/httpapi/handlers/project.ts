@@ -1,11 +1,11 @@
-import * as InstanceState from "@/effect/instance-state"
-import { Project } from "@/project/project"
-import { ProjectV2 } from "@opencode@lgcode/core/project"
+import * as InstanceState from "@@lgcode/effect@lgcode/instance-state"
+import { Project } from "@@lgcode/project@lgcode/project"
+import { ProjectV2 } from "@lgcode/core@lgcode/project"
 import { Effect } from "effect"
-import { HttpApiBuilder } from "effect/unstable/httpapi"
-import { InstanceHttpApi } from "../api"
-import { ProjectNotFoundError } from "../errors"
-import { markInstanceForReload } from "../lifecycle"
+import { HttpApiBuilder } from "effect@lgcode/unstable@lgcode/httpapi"
+import { InstanceHttpApi } from "..@lgcode/api"
+import { ProjectNotFoundError } from "..@lgcode/errors"
+import { markInstanceForReload } from "..@lgcode/lifecycle"
 
 export const projectHandlers = HttpApiBuilder.group(InstanceHttpApi, "project", (handlers) =>
   Effect.gen(function* () {

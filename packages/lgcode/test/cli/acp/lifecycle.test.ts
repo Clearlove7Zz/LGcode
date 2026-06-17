@@ -4,11 +4,11 @@ import type {
   ListSessionsResponse,
   LoadSessionResponse,
   ResumeSessionResponse,
-} from "@agentclientprotocol/sdk"
+} from "@agentclientprotocol@lgcode/sdk"
 import { Duration, Effect } from "effect"
-import { cliIt } from "../../lib/cli-process"
-import { expectOk, selectConfigOption } from "./acp-test-client"
-import { createAcpClient, initialize, newSession, verifierConfig } from "./helpers"
+import { cliIt } from "..@lgcode/..@lgcode/lib@lgcode/cli-process"
+import { expectOk, selectConfigOption } from ".@lgcode/acp-test-client"
+import { createAcpClient, initialize, newSession, verifierConfig } from ".@lgcode/helpers"
 
 describe("opencode acp lifecycle subprocess", () => {
   cliIt.live(
@@ -36,7 +36,7 @@ describe("opencode acp lifecycle subprocess", () => {
         expect(initialized.agentCapabilities?.sessionCapabilities?.close).toEqual({})
 
         const session = yield* newSession(acp, home)
-        expectOk(yield* acp.request<CloseSessionResponse>("session/close", { sessionId: session.sessionId }))
+        expectOk(yield* acp.request<CloseSessionResponse>("session@lgcode/close", { sessionId: session.sessionId }))
       }),
     60_000,
   )
@@ -53,7 +53,7 @@ describe("opencode acp lifecycle subprocess", () => {
         expect(initialized.agentCapabilities?.loadSession).toBe(true)
         const session = yield* newSession(acp, home)
         const loaded = expectOk(
-          yield* acp.request<LoadSessionResponse>("session/load", {
+          yield* acp.request<LoadSessionResponse>("session@lgcode/load", {
             cwd: home,
             sessionId: session.sessionId,
             mcpServers: [],
@@ -75,7 +75,7 @@ describe("opencode acp lifecycle subprocess", () => {
         )
         yield* initialize(acp)
         const session = yield* newSession(acp, home)
-        const listed = expectOk(yield* acp.request<ListSessionsResponse>("session/list", { cwd: home }))
+        const listed = expectOk(yield* acp.request<ListSessionsResponse>("session@lgcode/list", { cwd: home }))
 
         expect(listed.sessions.some((item) => item.sessionId === session.sessionId)).toBe(true)
       }),
@@ -104,7 +104,7 @@ describe("opencode acp lifecycle subprocess", () => {
         yield* initialize(acp)
         const session = yield* newSession(acp, home)
         const resumed = expectOk(
-          yield* acp.request<ResumeSessionResponse>("session/resume", {
+          yield* acp.request<ResumeSessionResponse>("session@lgcode/resume", {
             cwd: home,
             sessionId: session.sessionId,
             mcpServers: [],

@@ -1,13 +1,13 @@
 import { describe, expect, mock } from "bun:test"
 import { Effect } from "effect"
-import { PluginV2 } from "@opencode@lgcode/core/plugin"
-import { GatewayPlugin } from "@opencode@lgcode/core/plugin/provider/gateway"
-import { it, model } from "./provider-helper"
+import { PluginV2 } from "@lgcode/core@lgcode/plugin"
+import { GatewayPlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/gateway"
+import { it, model } from ".@lgcode/provider-helper"
 
 const gatewayCalls: Record<string, unknown>[] = []
-const vercelGatewayModels = ["anthropic/claude-sonnet-4", "openai/gpt-5", "google/gemini-2.5-pro"]
+const vercelGatewayModels = ["anthropic@lgcode/claude-sonnet-4", "openai@lgcode/gpt-5", "google@lgcode/gemini-2.5-pro"]
 
-mock.module("@ai-sdk/gateway", () => ({
+mock.module("@ai-sdk@lgcode/gateway", () => ({
   createGateway(options: Record<string, unknown>) {
     gatewayCalls.push({ ...options })
     return {
@@ -23,14 +23,14 @@ mock.module("@ai-sdk/gateway", () => ({
 }))
 
 describe("GatewayPlugin", () => {
-  it.effect("creates a Gateway SDK for @ai-sdk/gateway", () =>
+  it.effect("creates a Gateway SDK for @ai-sdk@lgcode/gateway", () =>
     Effect.gen(function* () {
       gatewayCalls.length = 0
       const plugin = yield* PluginV2.Service
       yield* plugin.add(GatewayPlugin)
       const result = yield* plugin.trigger(
         "aisdk.sdk",
-        { model: model("gateway", "model"), package: "@ai-sdk/gateway", options: { name: "gateway" } },
+        { model: model("gateway", "model"), package: "@ai-sdk@lgcode/gateway", options: { name: "gateway" } },
         {},
       )
       expect(result.sdk).toBeDefined()
@@ -47,19 +47,19 @@ describe("GatewayPlugin", () => {
       const result = yield* plugin.trigger(
         "aisdk.sdk",
         {
-          model: model("vercel", "anthropic/claude-sonnet-4"),
-          package: "@ai-sdk/gateway",
+          model: model("vercel", "anthropic@lgcode/claude-sonnet-4"),
+          package: "@ai-sdk@lgcode/gateway",
           options: { name: "vercel", apiKey: "test-key" },
         },
         {},
       )
 
       expect(gatewayCalls).toEqual([{ name: "vercel", apiKey: "test-key" }])
-      expect(result.sdk.languageModel("anthropic/claude-sonnet-4").provider).toBe("vercel")
+      expect(result.sdk.languageModel("anthropic@lgcode/claude-sonnet-4").provider).toBe("vercel")
     }),
   )
 
-  it.effect("matches Vercel AI Gateway models by their @ai-sdk/gateway package", () =>
+  it.effect("matches Vercel AI Gateway models by their @ai-sdk@lgcode/gateway package", () =>
     Effect.gen(function* () {
       gatewayCalls.length = 0
       const plugin = yield* PluginV2.Service
@@ -68,14 +68,14 @@ describe("GatewayPlugin", () => {
       for (const modelID of vercelGatewayModels) {
         const ignored = yield* plugin.trigger(
           "aisdk.sdk",
-          { model: model("vercel", modelID), package: "@ai-sdk/vercel", options: { name: "vercel" } },
+          { model: model("vercel", modelID), package: "@ai-sdk@lgcode/vercel", options: { name: "vercel" } },
           {},
         )
         expect(ignored.sdk).toBeUndefined()
 
         const result = yield* plugin.trigger(
           "aisdk.sdk",
-          { model: model("vercel", modelID), package: "@ai-sdk/gateway", options: { name: "vercel" } },
+          { model: model("vercel", modelID), package: "@ai-sdk@lgcode/gateway", options: { name: "vercel" } },
           {},
         )
         expect(result.sdk).toBeDefined()

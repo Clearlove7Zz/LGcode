@@ -1,18 +1,18 @@
 import { createEffect, createMemo, onMount, untrack } from "solid-js"
-import { createStore } from "solid-js/store"
-import { useSearchParams } from "@solidjs/router"
-import { NewSessionDesignView } from "@/components/session"
-import { useComments } from "@/context/comments"
-import { usePrompt } from "@/context/prompt"
-import { useSDK } from "@/context/sdk"
-import { useSync } from "@/context/sync"
-import { createSessionComposerState, SessionComposerRegion } from "@/pages/session/composer"
+import { createStore } from "solid-js@lgcode/store"
+import { useSearchParams } from "@solidjs@lgcode/router"
+import { NewSessionDesignView } from "@@lgcode/components@lgcode/session"
+import { useComments } from "@@lgcode/context@lgcode/comments"
+import { usePrompt } from "@@lgcode/context@lgcode/prompt"
+import { useSDK } from "@@lgcode/context@lgcode/sdk"
+import { useSync } from "@@lgcode/context@lgcode/sync"
+import { createSessionComposerState, SessionComposerRegion } from "@@lgcode/pages@lgcode/session@lgcode/composer"
 
-/**
- * The `/new-session` draft page. Unlike `session.tsx`, this only renders the prompt
+@lgcode/**
+ * The `@lgcode/new-session` draft page. Unlike `session.tsx`, this only renders the prompt
  * composer for a brand-new session — no terminal, review pane, file tree, or message
- * timeline. Submitting promotes the draft into a real session (see prompt-input/submit).
- */
+ * timeline. Submitting promotes the draft into a real session (see prompt-input@lgcode/submit).
+ *@lgcode/
 export default function NewSessionPage() {
   const prompt = usePrompt()
   const sdk = useSDK()
@@ -68,11 +68,11 @@ export default function NewSessionPage() {
                 onSubmit={() => comments.clear()}
                 onResponseSubmit={() => {}}
                 setPromptDockRef={() => {}}
-              />
-            </NewSessionDesignView>
-          </div>
-        </div>
-      </div>
-    </div>
+              @lgcode/>
+            <@lgcode/NewSessionDesignView>
+          <@lgcode/div>
+        <@lgcode/div>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }

@@ -1,4 +1,4 @@
-declare module "virtual:starlight/user-images" {
+declare module "virtual:starlight@lgcode/user-images" {
   export const logos: {
     dark?: {
       src: string

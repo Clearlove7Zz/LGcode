@@ -1,15 +1,15 @@
-import "./index.css"
-import { Link, Meta, Title } from "@solidjs/meta"
-import { ProviderIcon } from "@opencode@lgcode/ui/provider-icon"
+import ".@lgcode/index.css"
+import { Link, Meta, Title } from "@solidjs@lgcode/meta"
+import { ProviderIcon } from "@lgcode/ui@lgcode/provider-icon"
 import { geoEquirectangular, geoPath } from "d3-geo"
 import { scaleSqrt } from "d3-scale"
-import countryCodesSource from "i18n-iso-countries/codes.json?raw"
+import countryCodesSource from "i18n-iso-countries@lgcode/codes.json?raw"
 import { feature, mesh } from "topojson-client"
-import countriesTopologySource from "world-atlas/countries-50m.json?raw"
-import ibmPlexMonoRegularLatin1 from "@ibm/plex/IBM-Plex-Mono/fonts/split/woff2/IBMPlexMono-Regular-Latin1.woff2?url"
-import ibmPlexMonoMediumLatin1 from "@ibm/plex/IBM-Plex-Mono/fonts/split/woff2/IBMPlexMono-Medium-Latin1.woff2?url"
-import ibmPlexMonoSemiBoldLatin1 from "@ibm/plex/IBM-Plex-Mono/fonts/split/woff2/IBMPlexMono-SemiBold-Latin1.woff2?url"
-import ibmPlexMonoBoldLatin1 from "@ibm/plex/IBM-Plex-Mono/fonts/split/woff2/IBMPlexMono-Bold-Latin1.woff2?url"
+import countriesTopologySource from "world-atlas@lgcode/countries-50m.json?raw"
+import ibmPlexMonoRegularLatin1 from "@ibm@lgcode/plex@lgcode/IBM-Plex-Mono@lgcode/fonts@lgcode/split@lgcode/woff2@lgcode/IBMPlexMono-Regular-Latin1.woff2?url"
+import ibmPlexMonoMediumLatin1 from "@ibm@lgcode/plex@lgcode/IBM-Plex-Mono@lgcode/fonts@lgcode/split@lgcode/woff2@lgcode/IBMPlexMono-Medium-Latin1.woff2?url"
+import ibmPlexMonoSemiBoldLatin1 from "@ibm@lgcode/plex@lgcode/IBM-Plex-Mono@lgcode/fonts@lgcode/split@lgcode/woff2@lgcode/IBMPlexMono-SemiBold-Latin1.woff2?url"
+import ibmPlexMonoBoldLatin1 from "@ibm@lgcode/plex@lgcode/IBM-Plex-Mono@lgcode/fonts@lgcode/split@lgcode/woff2@lgcode/IBMPlexMono-Bold-Latin1.woff2?url"
 import {
   getStatsHomeData,
   type CacheRatioEntry,
@@ -20,14 +20,14 @@ import {
   type SessionCostEntry,
   type TokenCostEntry,
   type UsagePoint,
-} from "@opencode@lgcode/stats-core/domain/home"
-import { runtime } from "@opencode@lgcode/stats-core/runtime"
-import { createAsync, query } from "@solidjs/router"
+} from "@lgcode/stats-core@lgcode/domain@lgcode/home"
+import { runtime } from "@lgcode/stats-core@lgcode/runtime"
+import { createAsync, query } from "@solidjs@lgcode/router"
 import { createEffect, createMemo, createSignal, For, onCleanup, onMount, Show, type JSX } from "solid-js"
-import { getRequestEvent } from "solid-js/web"
+import { getRequestEvent } from "solid-js@lgcode/web"
 import type { FeatureCollection, GeometryObject, GeoJsonProperties } from "geojson"
 import type { GeometryCollection, Topology } from "topojson-specification"
-import { findModelCatalogEntry, getModelCatalog, type ModelCatalog } from "./model-catalog"
+import { findModelCatalogEntry, getModelCatalog, type ModelCatalog } from ".@lgcode/model-catalog"
 import {
   applyThemePreference,
   Footer,
@@ -37,7 +37,7 @@ import {
   isThemePreference,
   themeStorageKey,
   type ThemePreference,
-} from "./stats-shell"
+} from ".@lgcode/stats-shell"
 
 const products = ["All Users", "Zen", "Go"] as const
 const tokenProducts = ["Zen", "Go"] as const
@@ -51,7 +51,7 @@ const rangeLabels: Record<UsageRange, string> = {
 }
 const statsHomeTitle = "OpenCode Data"
 const statsHomeDescription = "OpenCode usage data, market share, token cost, and session cost."
-const statsHomeFallbackUrl = "https://opencode.ai/data/"
+const statsHomeFallbackUrl = "https:@lgcode/@lgcode/opencode.ai@lgcode/data@lgcode/"
 const statsUnfurlPath = "banner.jpg"
 const statsUnfurlAlt = "OpenCode Data wordmark on a dark patterned background"
 const usageColors = [
@@ -140,55 +140,55 @@ export default function StatsHome() {
 
   return (
     <main data-page="stats" data-theme={themePreference()}>
-      <Title>{statsHomeTitle}</Title>
-      <Meta name="description" content={statsHomeDescription} />
-      <Link rel="canonical" href={statsHomeUrl} />
-      <Meta property="og:type" content="website" />
-      <Meta property="og:site_name" content="OpenCode" />
-      <Meta property="og:title" content={statsHomeTitle} />
-      <Meta property="og:description" content={statsHomeDescription} />
-      <Meta property="og:url" content={statsHomeUrl} />
-      <Meta property="og:image" content={statsUnfurlUrl} />
-      <Meta property="og:image:type" content="image/jpeg" />
-      <Meta property="og:image:width" content="1200" />
-      <Meta property="og:image:height" content="630" />
-      <Meta property="og:image:alt" content={statsUnfurlAlt} />
-      <Meta name="twitter:card" content="summary_large_image" />
-      <Meta name="twitter:title" content={statsHomeTitle} />
-      <Meta name="twitter:description" content={statsHomeDescription} />
-      <Meta name="twitter:image" content={statsUnfurlUrl} />
-      <Meta name="twitter:image:alt" content={statsUnfurlAlt} />
-      <Link rel="preload" href={ibmPlexMonoRegularLatin1} as="font" type="font/woff2" crossorigin="anonymous" />
-      <Link rel="preload" href={ibmPlexMonoMediumLatin1} as="font" type="font/woff2" crossorigin="anonymous" />
-      <Link rel="preload" href={ibmPlexMonoSemiBoldLatin1} as="font" type="font/woff2" crossorigin="anonymous" />
-      <Link rel="preload" href={ibmPlexMonoBoldLatin1} as="font" type="font/woff2" crossorigin="anonymous" />
-      <Header githubStars={githubStars() ?? githubLink.fallbackStars} />
+      <Title>{statsHomeTitle}<@lgcode/Title>
+      <Meta name="description" content={statsHomeDescription} @lgcode/>
+      <Link rel="canonical" href={statsHomeUrl} @lgcode/>
+      <Meta property="og:type" content="website" @lgcode/>
+      <Meta property="og:site_name" content="OpenCode" @lgcode/>
+      <Meta property="og:title" content={statsHomeTitle} @lgcode/>
+      <Meta property="og:description" content={statsHomeDescription} @lgcode/>
+      <Meta property="og:url" content={statsHomeUrl} @lgcode/>
+      <Meta property="og:image" content={statsUnfurlUrl} @lgcode/>
+      <Meta property="og:image:type" content="image@lgcode/jpeg" @lgcode/>
+      <Meta property="og:image:width" content="1200" @lgcode/>
+      <Meta property="og:image:height" content="630" @lgcode/>
+      <Meta property="og:image:alt" content={statsUnfurlAlt} @lgcode/>
+      <Meta name="twitter:card" content="summary_large_image" @lgcode/>
+      <Meta name="twitter:title" content={statsHomeTitle} @lgcode/>
+      <Meta name="twitter:description" content={statsHomeDescription} @lgcode/>
+      <Meta name="twitter:image" content={statsUnfurlUrl} @lgcode/>
+      <Meta name="twitter:image:alt" content={statsUnfurlAlt} @lgcode/>
+      <Link rel="preload" href={ibmPlexMonoRegularLatin1} as="font" type="font@lgcode/woff2" crossorigin="anonymous" @lgcode/>
+      <Link rel="preload" href={ibmPlexMonoMediumLatin1} as="font" type="font@lgcode/woff2" crossorigin="anonymous" @lgcode/>
+      <Link rel="preload" href={ibmPlexMonoSemiBoldLatin1} as="font" type="font@lgcode/woff2" crossorigin="anonymous" @lgcode/>
+      <Link rel="preload" href={ibmPlexMonoBoldLatin1} as="font" type="font@lgcode/woff2" crossorigin="anonymous" @lgcode/>
+      <Header githubStars={githubStars() ?? githubLink.fallbackStars} @lgcode/>
       <div data-component="container">
         <div data-component="content">
-          <Show when={data()} fallback={<StatsLoading />}>
+          <Show when={data()} fallback={<StatsLoading @lgcode/>}>
             {(stats) => (
               <>
-                <Hero updatedAt={stats().updatedAt} />
-                <TopModelsSection data={stats().usage} leaderboard={stats().leaderboard} />
-                <SessionCostSection data={stats().sessionCost} />
-                <TokenCostSection data={stats().tokenCost} catalog={catalog() ?? null} />
-                <CacheRatioSection data={stats().cacheRatio} />
-                <MarketShareSection data={stats().market} />
-                <GeoBreakdownSection data={stats().country} />
-              </>
+                <Hero updatedAt={stats().updatedAt} @lgcode/>
+                <TopModelsSection data={stats().usage} leaderboard={stats().leaderboard} @lgcode/>
+                <SessionCostSection data={stats().sessionCost} @lgcode/>
+                <TokenCostSection data={stats().tokenCost} catalog={catalog() ?? null} @lgcode/>
+                <CacheRatioSection data={stats().cacheRatio} @lgcode/>
+                <MarketShareSection data={stats().market} @lgcode/>
+                <GeoBreakdownSection data={stats().country} @lgcode/>
+              <@lgcode/>
             )}
-          </Show>
-        </div>
-        <Footer themePreference={themePreference()} onThemePreferenceChange={updateThemePreference} />
-      </div>
-    </main>
+          <@lgcode/Show>
+        <@lgcode/div>
+        <Footer themePreference={themePreference()} onThemePreferenceChange={updateThemePreference} @lgcode/>
+      <@lgcode/div>
+    <@lgcode/main>
   )
 }
 
 function getStatsHomeUrl(base: string, requestUrl: string) {
   const url = new URL(base, requestUrl)
-  if (url.hostname === "stats.opencode.ai") return "https://opencode.ai/data/"
-  if (url.hostname === "stats.dev.opencode.ai") return "https://dev.opencode.ai/data/"
+  if (url.hostname === "stats.opencode.ai") return "https:@lgcode/@lgcode/opencode.ai@lgcode/data@lgcode/"
+  if (url.hostname === "stats.dev.opencode.ai") return "https:@lgcode/@lgcode/dev.opencode.ai@lgcode/data@lgcode/"
   return url.toString()
 }
 
@@ -241,40 +241,40 @@ function Hero(props: { updatedAt: string | null }) {
             clip-rule="evenodd"
             d="M13 13H3V3H13V13ZM6.46777 6.81641V7.81641H7.5791V11.3721H8.5791V6.81641H6.46777ZM7.30078 4.62891V5.62891H8.85645V4.62891H7.30078Z"
             fill="currentColor"
-          />
-        </svg>
+          @lgcode/>
+        <@lgcode/svg>
         {props.updatedAt ? (
           <>
             <span data-slot="hero-meta-label" aria-hidden="true">
               Updated
-            </span>
+            <@lgcode/span>
             <span data-slot="hero-meta-time" aria-hidden="true">
               <HeroMetaTickerPart
                 previous={previousUpdatedAt().date}
                 current={currentUpdatedAt().date}
                 ticking={isDateTicking()}
-              />
-              <span data-slot="hero-meta-separator">,</span>
+              @lgcode/>
+              <span data-slot="hero-meta-separator">,<@lgcode/span>
               <HeroMetaTickerPart
                 previous={previousUpdatedAt().time}
                 current={currentUpdatedAt().time}
                 ticking={isTimeTicking()}
-              />
-            </span>
-          </>
+              @lgcode/>
+            <@lgcode/span>
+          <@lgcode/>
         ) : (
-          <span data-slot="hero-meta-empty">No rows yet</span>
+          <span data-slot="hero-meta-empty">No rows yet<@lgcode/span>
         )}
-      </p>
+      <@lgcode/p>
       <div data-slot="hero-canvas">
-        <div data-slot="hero-pattern" aria-hidden="true" />
-        <h1>Model Data</h1>
+        <div data-slot="hero-pattern" aria-hidden="true" @lgcode/>
+        <h1>Model Data<@lgcode/h1>
         <p data-slot="hero-copy">
-          See which models are winning real usage, how the mix <br data-slot="hero-copy-break" />
+          See which models are winning real usage, how the mix <br data-slot="hero-copy-break" @lgcode/>
           shifts over time, and where momentum is moving each week.
-        </p>
-      </div>
-    </section>
+        <@lgcode/p>
+      <@lgcode/div>
+    <@lgcode/section>
   )
 }
 
@@ -282,21 +282,21 @@ function HeroMetaTickerPart(props: { previous: string; current: string; ticking:
   return (
     <span data-slot="hero-meta-ticker" data-ticking={props.ticking}>
       <span data-slot="hero-meta-ticker-track">
-        <span data-slot="hero-meta-ticker-item">{props.previous}</span>
-        <span data-slot="hero-meta-ticker-item">{props.current}</span>
-      </span>
-    </span>
+        <span data-slot="hero-meta-ticker-item">{props.previous}<@lgcode/span>
+        <span data-slot="hero-meta-ticker-item">{props.current}<@lgcode/span>
+      <@lgcode/span>
+    <@lgcode/span>
   )
 }
 
 function StatsLoading() {
   return (
     <>
-      <Hero updatedAt={null} />
+      <Hero updatedAt={null} @lgcode/>
       <ChartSection title="Usage">
-        <EmptyState title="Loading data" description="Reading model aggregates from model_stat." />
-      </ChartSection>
-    </>
+        <EmptyState title="Loading data" description="Reading model aggregates from model_stat." @lgcode/>
+      <@lgcode/ChartSection>
+    <@lgcode/>
   )
 }
 
@@ -311,41 +311,41 @@ function ChartSection(props: {
     <section id={props.id} data-section="chart">
       <div data-slot="section-header">
         <div>
-          <h2>{props.title}</h2>
-          {props.description && <p>{props.description}</p>}
-        </div>
+          <h2>{props.title}<@lgcode/h2>
+          {props.description && <p>{props.description}<@lgcode/p>}
+        <@lgcode/div>
         {props.controls}
-      </div>
+      <@lgcode/div>
       {props.children}
-    </section>
+    <@lgcode/section>
   )
 }
 
 function SectionTitle(props: { title: string; description: string }) {
   return (
     <p data-slot="section-title">
-      <strong>{props.title}.</strong> <span>{props.description}</span>
-    </p>
+      <strong>{props.title}.<@lgcode/strong> <span>{props.description}<@lgcode/span>
+    <@lgcode/p>
   )
 }
 
 function SectionBridge(props: { label: string; href: string }) {
   return (
     <a data-component="section-bridge" href={props.href}>
-      <span>LEAN MORE</span>
-      <i />
-      <strong>{props.label}</strong>
-      <b>▸</b>
-    </a>
+      <span>LEAN MORE<@lgcode/span>
+      <i @lgcode/>
+      <strong>{props.label}<@lgcode/strong>
+      <b>▸<@lgcode/b>
+    <@lgcode/a>
   )
 }
 
 function EmptyState(props: { title: string; description: string }) {
   return (
     <div data-component="empty-state">
-      <strong>{props.title}</strong>
-      <p>{props.description}</p>
-    </div>
+      <strong>{props.title}<@lgcode/strong>
+      <p>{props.description}<@lgcode/p>
+    <@lgcode/div>
   )
 }
 
@@ -401,44 +401,44 @@ function TopModelsSection(props: { data: StatsHomeData["usage"]; leaderboard: St
   return (
     <section id="top-models" data-section="top-models">
       <h2 data-slot="top-models-title">
-        <strong>Top models.</strong> <span>Usage of models across OpenCode Go.</span>
-      </h2>
+        <strong>Top models.<@lgcode/strong> <span>Usage of models across OpenCode Go.<@lgcode/span>
+      <@lgcode/h2>
       <Show
         when={data().some((item) => usageTotal(item) > 0)}
-        fallback={<EmptyState title="No usage data" description="No model_stat rows matched this product and range." />}
+        fallback={<EmptyState title="No usage data" description="No model_stat rows matched this product and range." @lgcode/>}
       >
         <TopModelsChart
           data={data()}
           range={range()}
           activeModel={activeModel()}
           onActiveModelChange={setActiveModel}
-        />
-      </Show>
+        @lgcode/>
+      <@lgcode/Show>
       <Show
         when={leaderboard().length > 0}
         fallback={
-          <EmptyState title="No leaderboard data" description="No model_stat rows matched this product and range." />
+          <EmptyState title="No leaderboard data" description="No model_stat rows matched this product and range." @lgcode/>
         }
       >
-        <Leaderboard data={leaderboard()} activeModel={activeModel()} onActiveModelChange={setActiveModel} />
-      </Show>
+        <Leaderboard data={leaderboard()} activeModel={activeModel()} onActiveModelChange={setActiveModel} @lgcode/>
+      <@lgcode/Show>
       <div data-slot="chart-footer" hidden>
-        <StatsFilters product={product()} range={range()} onProductSelect={setProduct} onRangeSelect={setRange} />
+        <StatsFilters product={product()} range={range()} onProductSelect={setProduct} onRangeSelect={setRange} @lgcode/>
         <div data-slot="top-models-mobile-controls">
           <MobileFilterButton
             label="Product filter"
             value={product()}
             expanded={sheet() === "product"}
             onClick={() => setSheet(sheet() === "product" ? undefined : "product")}
-          />
+          @lgcode/>
           <MobileFilterButton
             label="Date range"
             value={range()}
             expanded={sheet() === "range"}
             onClick={() => setSheet(sheet() === "range" ? undefined : "range")}
-          />
-        </div>
-      </div>
+          @lgcode/>
+        <@lgcode/div>
+      <@lgcode/div>
       <Show when={sheet()}>
         {(kind) => (
           <MobileFilterSheet
@@ -454,10 +454,10 @@ function TopModelsSection(props: { data: StatsHomeData["usage"]; leaderboard: St
               setSheet(undefined)
             }}
             onClose={() => setSheet(undefined)}
-          />
+          @lgcode/>
         )}
-      </Show>
-    </section>
+      <@lgcode/Show>
+    <@lgcode/section>
   )
 }
 
@@ -470,9 +470,9 @@ function MobileFilterButton(props: { label: string; value: string; expanded: boo
       aria-expanded={props.expanded ? "true" : "false"}
       onClick={props.onClick}
     >
-      <span>{props.value}</span>
-      <ChevronDown />
-    </button>
+      <span>{props.value}<@lgcode/span>
+      <ChevronDown @lgcode/>
+    <@lgcode/button>
   )
 }
 
@@ -507,9 +507,9 @@ function MobileFilterSheet(props: {
                   }}
                 >
                   {rangeLabels[item]}
-                </button>
+                <@lgcode/button>
               )}
-            </For>
+            <@lgcode/For>
           }
         >
           <For each={products}>
@@ -525,20 +525,20 @@ function MobileFilterSheet(props: {
                 }}
               >
                 {item}
-              </button>
+              <@lgcode/button>
             )}
-          </For>
-        </Show>
-      </div>
-    </div>
+          <@lgcode/For>
+        <@lgcode/Show>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }
 
 function ChevronDown() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="none">
-      <path d="M5 7L8 10L11 7" stroke="currentColor" />
-    </svg>
+      <path d="M5 7L8 10L11 7" stroke="currentColor" @lgcode/>
+    <@lgcode/svg>
   )
 }
 
@@ -556,15 +556,15 @@ function StatsFilters(props: {
         label="Product filter"
         variant="product"
         onSelect={props.onProductSelect}
-      />
+      @lgcode/>
       <FilterPills
         items={ranges}
         selected={props.range}
         label="Date range"
         variant="range"
         onSelect={props.onRangeSelect}
-      />
-    </>
+      @lgcode/>
+    <@lgcode/>
   )
 }
 
@@ -587,10 +587,10 @@ function FilterPills<T extends string>(props: {
             onClick={() => props.onSelect(item)}
           >
             {item}
-          </button>
+          <@lgcode/button>
         )}
-      </For>
-    </div>
+      <@lgcode/For>
+    <@lgcode/div>
   )
 }
 
@@ -632,16 +632,16 @@ function TopModelsChart(props: {
               data-mobile-hidden={isTopModelsMobileAxisHidden(index(), props.data.length) ? "true" : undefined}
             >
               <span data-slot="axis-label">
-                <span data-slot="axis-total">{formatTokens(usageTotal(day))}</span>
+                <span data-slot="axis-total">{formatTokens(usageTotal(day))}<@lgcode/span>
                 <span data-slot="axis-date">
-                  <span data-slot="axis-date-full">{day.date}</span>
-                  <span data-slot="axis-date-mobile">{formatTopModelsMobileDate(day.date, props.range)}</span>
-                </span>
-              </span>
-            </div>
+                  <span data-slot="axis-date-full">{day.date}<@lgcode/span>
+                  <span data-slot="axis-date-mobile">{formatTopModelsMobileDate(day.date, props.range)}<@lgcode/span>
+                <@lgcode/span>
+              <@lgcode/span>
+            <@lgcode/div>
           )}
-        </For>
-      </div>
+        <@lgcode/For>
+      <@lgcode/div>
       <div
         data-slot="top-models-bars"
         onPointerLeave={(event) => {
@@ -727,19 +727,19 @@ function TopModelsChart(props: {
                         setActiveIndex(dayIndex())
                         props.onActiveModelChange(item.segment.model)
                       }}
-                    />
+                    @lgcode/>
                   )}
-                </For>
-              </div>
+                <@lgcode/For>
+              <@lgcode/div>
               <Show when={activeIndex() === dayIndex() && activePoint()}>
                 {(point) => (
                   <div
                     data-component="chart-tooltip"
                     data-placement={dayIndex() > props.data.length * 0.62 ? "left" : "right"}
                   >
-                    <strong>{point().date}</strong>
-                    <span>{formatTokens(usageTotal(point()))} total</span>
-                    <div data-slot="tooltip-divider" />
+                    <strong>{point().date}<@lgcode/strong>
+                    <span>{formatTokens(usageTotal(point()))} total<@lgcode/span>
+                    <div data-slot="tooltip-divider" @lgcode/>
                     <For each={visibleTopModelsSegments(point())}>
                       {(item) => (
                         <p
@@ -755,21 +755,21 @@ function TopModelsChart(props: {
                               style={{
                                 background: getRankColor(item.segment.model, item.index, segmentOrder(), usageColors),
                               }}
-                            />{" "}
+                            @lgcode/>{" "}
                             {item.segment.model}
-                          </span>
-                          <b>{formatTokens(item.segment.value)}</b>
-                        </p>
+                          <@lgcode/span>
+                          <b>{formatTokens(item.segment.value)}<@lgcode/b>
+                        <@lgcode/p>
                       )}
-                    </For>
-                  </div>
+                    <@lgcode/For>
+                  <@lgcode/div>
                 )}
-              </Show>
-            </div>
+              <@lgcode/Show>
+            <@lgcode/div>
           )}
-        </For>
-      </div>
-    </div>
+        <@lgcode/For>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }
 
@@ -781,7 +781,7 @@ function isTopModelsBlankHover(bar: HTMLElement, clientY: number) {
 
 function getTopModelsBarHeight(total: number, max: number) {
   if (total <= 0) return 0
-  return Math.max(2, Math.min(100, (total / max) * 100))
+  return Math.max(2, Math.min(100, (total @lgcode/ max) * 100))
 }
 
 function getTopModelsMaxTotal(data: UsagePoint[]) {
@@ -795,7 +795,7 @@ function getTopModelsSegmentRows(point: UsagePoint, order: Map<string, number>) 
   const total = usageTotal(point)
   if (total <= 0) return ""
   return stackedTopModelsSegments(point, order)
-    .map((item) => `${(item.segment.value / total) * 100}%`)
+    .map((item) => `${(item.segment.value @lgcode/ total) * 100}%`)
     .join(" ")
 }
 
@@ -834,7 +834,7 @@ function isTopModelsMobileAxisHidden(index: number, count: number) {
 
 function isColumnLabelHidden(index: number, count: number) {
   if (count <= 20) return false
-  const interval = Math.ceil(count / 8)
+  const interval = Math.ceil(count @lgcode/ 8)
   return index !== count - 1 && index % interval !== 0
 }
 
@@ -881,11 +881,11 @@ function Leaderboard(props: {
               size="featured"
               active={props.activeModel === entry.model}
               onActiveModelChange={props.onActiveModelChange}
-            />
+            @lgcode/>
           )}
-        </For>
-      </div>
-      <div data-slot="leaderboard-pattern" aria-hidden="true" />
+        <@lgcode/For>
+      <@lgcode/div>
+      <div data-slot="leaderboard-pattern" aria-hidden="true" @lgcode/>
       <div data-slot="leaderboard-compact">
         <For each={compact()}>
           {(entry) => (
@@ -894,10 +894,10 @@ function Leaderboard(props: {
               size="compact"
               active={props.activeModel === entry.model}
               onActiveModelChange={props.onActiveModelChange}
-            />
+            @lgcode/>
           )}
-        </For>
-      </div>
+        <@lgcode/For>
+      <@lgcode/div>
       <div data-slot="leaderboard-mobile" aria-label="Scrollable model token leaderboard">
         <For each={props.data}>
           {(entry) => (
@@ -906,11 +906,11 @@ function Leaderboard(props: {
               size="featured"
               active={props.activeModel === entry.model}
               onActiveModelChange={props.onActiveModelChange}
-            />
+            @lgcode/>
           )}
-        </For>
-      </div>
-    </div>
+        <@lgcode/For>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }
 
@@ -925,7 +925,7 @@ function LeaderboardCard(props: {
       data-component="leader-card"
       data-size={props.size}
       data-active={props.active ? "true" : undefined}
-      href={`${import.meta.env.BASE_URL}${modelSlug(props.entry.provider)}/${modelSlug(props.entry.model)}`}
+      href={`${import.meta.env.BASE_URL}${modelSlug(props.entry.provider)}@lgcode/${modelSlug(props.entry.model)}`}
       role="listitem"
       tabIndex={0}
       aria-label={`${String(props.entry.rank).padStart(2, "0")} ${props.entry.model} by ${props.entry.author}`}
@@ -938,28 +938,28 @@ function LeaderboardCard(props: {
       onBlur={() => props.onActiveModelChange(undefined)}
       onClick={() => props.onActiveModelChange(props.entry.model)}
     >
-      <span data-slot="rank">{String(props.entry.rank).padStart(2, "0")}</span>
-      <ProviderIcon data-slot="leader-watermark" aria-hidden="true" id={getProviderIconId(props.entry.author)} />
+      <span data-slot="rank">{String(props.entry.rank).padStart(2, "0")}<@lgcode/span>
+      <ProviderIcon data-slot="leader-watermark" aria-hidden="true" id={getProviderIconId(props.entry.author)} @lgcode/>
       <div data-slot="leader-body">
-        <ProviderIcon data-slot="leader-avatar" aria-hidden="true" id={getProviderIconId(props.entry.author)} />
+        <ProviderIcon data-slot="leader-avatar" aria-hidden="true" id={getProviderIconId(props.entry.author)} @lgcode/>
         <div data-slot="leader-copy">
           <div>
-            <strong>{props.entry.model}</strong>
-            <span>{formatBillions(props.entry.tokens)}</span>
-          </div>
+            <strong>{props.entry.model}<@lgcode/strong>
+            <span>{formatBillions(props.entry.tokens)}<@lgcode/span>
+          <@lgcode/div>
           <div>
-            <span>{props.entry.author}</span>
+            <span>{props.entry.author}<@lgcode/span>
             <span
               data-slot="delta"
               data-new={props.entry.change === null ? "true" : undefined}
               data-negative={props.entry.change !== null && props.entry.change < 0 ? "true" : undefined}
             >
               {formatChange(props.entry.change)}
-            </span>
-          </div>
-        </div>
-      </div>
-    </a>
+            <@lgcode/span>
+          <@lgcode/div>
+        <@lgcode/div>
+      <@lgcode/div>
+    <@lgcode/a>
   )
 }
 
@@ -971,7 +971,7 @@ function getProviderIconId(author: string) {
 }
 
 function formatBillions(value: number) {
-  if (value >= 1000) return `${(value / 1000).toFixed(value >= 10000 ? 0 : 1)}T`
+  if (value >= 1000) return `${(value @lgcode/ 1000).toFixed(value >= 10000 ? 0 : 1)}T`
   return `${value}B`
 }
 
@@ -1001,11 +1001,11 @@ function MarketShareSection(props: { data: StatsHomeData["market"] }) {
         setInspecting(false)
       }}
     >
-      <SectionBridge label="CACHE RATIO" href="#cache-ratio" />
-      <SectionTitle title="Market Share" description="Compare token share by model author." />
+      <SectionBridge label="CACHE RATIO" href="#cache-ratio" @lgcode/>
+      <SectionTitle title="Market Share" description="Compare token share by model author." @lgcode/>
       <Show
         when={activeDay()}
-        fallback={<EmptyState title="No market data" description="No model_stat rows matched this range." />}
+        fallback={<EmptyState title="No market data" description="No model_stat rows matched this range." @lgcode/>}
       >
         {(day) => (
           <>
@@ -1024,7 +1024,7 @@ function MarketShareSection(props: { data: StatsHomeData["market"] }) {
                 setActiveAuthor(author)
                 setInspecting(true)
               }}
-            />
+            @lgcode/>
             <MarketShareList
               data={day().authors}
               authorOrder={authorOrder()}
@@ -1033,15 +1033,15 @@ function MarketShareSection(props: { data: StatsHomeData["market"] }) {
                 setActiveAuthor(author)
                 setInspecting(true)
               }}
-            />
-          </>
+            @lgcode/>
+          <@lgcode/>
         )}
-      </Show>
+      <@lgcode/Show>
       <div data-slot="market-footer">
         <p>
-          <span>[*]</span>
-          <strong>{inspecting() ? formatMarketDate(activeDay()) : formatMarketRange(data())}</strong>
-        </p>
+          <span>[*]<@lgcode/span>
+          <strong>{inspecting() ? formatMarketDate(activeDay()) : formatMarketRange(data())}<@lgcode/strong>
+        <@lgcode/p>
         <div hidden>
           <FilterPills
             items={ranges}
@@ -1053,10 +1053,10 @@ function MarketShareSection(props: { data: StatsHomeData["market"] }) {
               setActiveAuthor(undefined)
               setInspecting(false)
             }}
-          />
-        </div>
-      </div>
-    </section>
+          @lgcode/>
+        <@lgcode/div>
+      <@lgcode/div>
+    <@lgcode/section>
   )
 }
 
@@ -1096,16 +1096,16 @@ function MarketShare(props: {
               onPointerEnter={() => props.onActiveIndexChange(index())}
             >
               <span data-slot="market-axis-label">
-                <span data-slot="market-total">{formatTrillions(day.total)}</span>
+                <span data-slot="market-total">{formatTrillions(day.total)}<@lgcode/span>
                 <span data-slot="market-date">
-                  <span data-slot="market-date-full">{day.date}</span>
-                  <span data-slot="market-date-mobile">{formatMarketMobileDate(day.date)}</span>
-                </span>
-              </span>
-            </button>
+                  <span data-slot="market-date-full">{day.date}<@lgcode/span>
+                  <span data-slot="market-date-mobile">{formatMarketMobileDate(day.date)}<@lgcode/span>
+                <@lgcode/span>
+              <@lgcode/span>
+            <@lgcode/button>
           )}
-        </For>
-      </div>
+        <@lgcode/For>
+      <@lgcode/div>
       <div data-slot="market-bars">
         <For each={props.data}>
           {(day, index) => (
@@ -1147,14 +1147,14 @@ function MarketShare(props: {
                       props.onActiveIndexChange(index())
                       props.onActiveAuthorChange(item.author.author)
                     }}
-                  />
+                  @lgcode/>
                 )}
-              </For>
-            </button>
+              <@lgcode/For>
+            <@lgcode/button>
           )}
-        </For>
-      </div>
-    </div>
+        <@lgcode/For>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }
 
@@ -1181,15 +1181,15 @@ function MarketShareList(props: {
               props.onActiveAuthorChange(item.author)
             }}
           >
-            <span>{String(index() + 1).padStart(2, "0")}</span>
-            <i style={{ background: getRankColor(item.author, index(), props.authorOrder, marketColors) }} />
-            <strong>{item.author}</strong>
-            <em>{formatTrillions(item.tokens)}</em>
-            <b>{item.share.toFixed(1)}%</b>
-          </li>
+            <span>{String(index() + 1).padStart(2, "0")}<@lgcode/span>
+            <i style={{ background: getRankColor(item.author, index(), props.authorOrder, marketColors) }} @lgcode/>
+            <strong>{item.author}<@lgcode/strong>
+            <em>{formatTrillions(item.tokens)}<@lgcode/em>
+            <b>{item.share.toFixed(1)}%<@lgcode/b>
+          <@lgcode/li>
         )}
-      </For>
-    </ol>
+      <@lgcode/For>
+    <@lgcode/ol>
   )
 }
 
@@ -1218,11 +1218,11 @@ function GeoBreakdownSection(props: { data: StatsHomeData["country"] }) {
         setActiveCountry(undefined)
       }}
     >
-      <SectionBridge label="MARKET SHARE" href="#market-share" />
-      <SectionTitle title="Geo Breakdown" description="Tokens used by country." />
+      <SectionBridge label="MARKET SHARE" href="#market-share" @lgcode/>
+      <SectionTitle title="Geo Breakdown" description="Tokens used by country." @lgcode/>
       <Show
         when={data().length > 0}
-        fallback={<EmptyState title="No geo data" description="No geo_stat rows matched this range." />}
+        fallback={<EmptyState title="No geo data" description="No geo_stat rows matched this range." @lgcode/>}
       >
         <div data-component="geo-breakdown">
           <div data-slot="geo-map-panel">
@@ -1231,29 +1231,29 @@ function GeoBreakdownSection(props: { data: StatsHomeData["country"] }) {
               activeCountry={activeCountry()}
               maxTokens={maxTokens()}
               onActiveCountryChange={setActiveCountry}
-            />
+            @lgcode/>
             <Show when={active()}>
               {(country) => (
                 <div data-slot="geo-active-country">
-                  <span>#{String(country().rank).padStart(2, "0")}</span>
-                  <strong>{formatCountryName(country().country)}</strong>
+                  <span>#{String(country().rank).padStart(2, "0")}<@lgcode/span>
+                  <strong>{formatCountryName(country().country)}<@lgcode/strong>
                   <p>
-                    <b>{formatGeoTokens(country().tokens)}</b>
-                    <em>{formatGeoShare(country().share)}</em>
-                  </p>
-                </div>
+                    <b>{formatGeoTokens(country().tokens)}<@lgcode/b>
+                    <em>{formatGeoShare(country().share)}<@lgcode/em>
+                  <@lgcode/p>
+                <@lgcode/div>
               )}
-            </Show>
-          </div>
+            <@lgcode/Show>
+          <@lgcode/div>
           <GeoCountryList
             data={topCountries()}
             activeCountry={activeCountry()}
             maxTokens={maxTokens()}
             onActiveCountryChange={setActiveCountry}
-          />
-        </div>
-      </Show>
-    </section>
+          @lgcode/>
+        <@lgcode/div>
+      <@lgcode/Show>
+    <@lgcode/section>
   )
 }
 
@@ -1278,7 +1278,7 @@ function GeoWorldMap(props: {
       role="img"
       aria-label="World map of token usage by country"
     >
-      <title>Geo Breakdown map</title>
+      <title>Geo Breakdown map<@lgcode/title>
       <g data-slot="geo-countries">
         <For each={worldCountryPaths}>
           {(country) => {
@@ -1301,11 +1301,11 @@ function GeoWorldMap(props: {
                   if (!item) return
                   props.onActiveCountryChange(item.country)
                 }}
-              />
+              @lgcode/>
             )
           }}
-        </For>
-      </g>
+        <@lgcode/For>
+      <@lgcode/g>
       <g data-slot="geo-country-markers">
         <For each={worldCountryPaths}>
           {(country) => {
@@ -1330,15 +1330,15 @@ function GeoWorldMap(props: {
                       if (!item) return
                       props.onActiveCountryChange(item.country)
                     }}
-                  />
+                  @lgcode/>
                 )}
-              </Show>
+              <@lgcode/Show>
             )
           }}
-        </For>
-      </g>
-      <path data-slot="geo-borders" d={worldBorderPath} aria-hidden="true" />
-    </svg>
+        <@lgcode/For>
+      <@lgcode/g>
+      <path data-slot="geo-borders" d={worldBorderPath} aria-hidden="true" @lgcode/>
+    <@lgcode/svg>
   )
 }
 
@@ -1366,16 +1366,16 @@ function GeoCountryList(props: {
               onPointerEnter={() => props.onActiveCountryChange(country.country)}
               onFocus={() => props.onActiveCountryChange(country.country)}
             >
-              <span>{String(country.rank).padStart(2, "0")}</span>
-              <i />
-              <strong>{formatCountryName(country.country)}</strong>
-              <em>{formatGeoTokens(country.tokens)}</em>
-              <b>{formatGeoShare(country.share)}</b>
-            </button>
-          </li>
+              <span>{String(country.rank).padStart(2, "0")}<@lgcode/span>
+              <i @lgcode/>
+              <strong>{formatCountryName(country.country)}<@lgcode/strong>
+              <em>{formatGeoTokens(country.tokens)}<@lgcode/em>
+              <b>{formatGeoShare(country.share)}<@lgcode/b>
+            <@lgcode/button>
+          <@lgcode/li>
         )}
-      </For>
-    </ol>
+      <@lgcode/For>
+    <@lgcode/ol>
   )
 }
 
@@ -1496,16 +1496,16 @@ function TokenCostSection(props: { data: StatsHomeData["tokenCost"]; catalog: Mo
 
   return (
     <section id="token-cost" data-section="token-cost">
-      <SectionBridge label="SESSION COST" href="#session-cost" />
-      <SectionTitle title="Token Cost" description="Price per 1M tokens." />
+      <SectionBridge label="SESSION COST" href="#session-cost" @lgcode/>
+      <SectionTitle title="Token Cost" description="Price per 1M tokens." @lgcode/>
       <Show
         when={visible().length > 0}
         fallback={
-          <EmptyState title="No token cost data" description="No cost-bearing model_stat rows matched this product." />
+          <EmptyState title="No token cost data" description="No cost-bearing model_stat rows matched this product." @lgcode/>
         }
       >
-        <TokenCostChart data={visible()} activeIndex={selectedIndex()} onActiveIndexChange={setActiveIndex} />
-      </Show>
+        <TokenCostChart data={visible()} activeIndex={selectedIndex()} onActiveIndexChange={setActiveIndex} @lgcode/>
+      <@lgcode/Show>
       <div data-slot="token-footer" hidden>
         <FilterPills
           items={tokenProducts}
@@ -1513,10 +1513,10 @@ function TokenCostSection(props: { data: StatsHomeData["tokenCost"]; catalog: Mo
           label="Product filter"
           variant="product"
           onSelect={setProduct}
-        />
-        <LiveIndicator />
-      </div>
-    </section>
+        @lgcode/>
+        <LiveIndicator @lgcode/>
+      <@lgcode/div>
+    <@lgcode/section>
   )
 }
 
@@ -1539,31 +1539,31 @@ function TokenCostChart(props: {
             onClick={() => props.onActiveIndexChange(index())}
             onPointerEnter={() => props.onActiveIndexChange(index())}
           >
-            <strong>{formatDollars(item.total)}</strong>
-            <span>{item.model}</span>
-            <MetricBar value={item.total} max={max()} active={props.activeIndex === index()} />
-          </button>
+            <strong>{formatDollars(item.total)}<@lgcode/strong>
+            <span>{item.model}<@lgcode/span>
+            <MetricBar value={item.total} max={max()} active={props.activeIndex === index()} @lgcode/>
+          <@lgcode/button>
         )}
-      </For>
+      <@lgcode/For>
       <Show when={active()}>
         {(item) => (
           <div data-component="token-tooltip" style={{ top: `${props.activeIndex * 36 + 2}px` }}>
             <p>
-              <span>Input</span>
-              <strong>{formatDollars(item().input)}</strong>
-            </p>
+              <span>Input<@lgcode/span>
+              <strong>{formatDollars(item().input)}<@lgcode/strong>
+            <@lgcode/p>
             <p>
-              <span>Output</span>
-              <strong>{formatDollars(item().output)}</strong>
-            </p>
+              <span>Output<@lgcode/span>
+              <strong>{formatDollars(item().output)}<@lgcode/strong>
+            <@lgcode/p>
             <p>
-              <span>Cached</span>
-              <strong>{formatDollars(item().cached)}</strong>
-            </p>
-          </div>
+              <span>Cached<@lgcode/span>
+              <strong>{formatDollars(item().cached)}<@lgcode/strong>
+            <@lgcode/p>
+          <@lgcode/div>
         )}
-      </Show>
-    </div>
+      <@lgcode/Show>
+    <@lgcode/div>
   )
 }
 
@@ -1576,16 +1576,16 @@ function CacheRatioSection(props: { data: StatsHomeData["cacheRatio"] }) {
 
   return (
     <section id="cache-ratio" data-section="cache-ratio">
-      <SectionBridge label="TOKEN COST" href="#token-cost" />
-      <SectionTitle title="Cache Ratio" description="Share of input tokens served from cache." />
+      <SectionBridge label="TOKEN COST" href="#token-cost" @lgcode/>
+      <SectionTitle title="Cache Ratio" description="Share of input tokens served from cache." @lgcode/>
       <Show
         when={visible().length > 0}
         fallback={
-          <EmptyState title="No cache ratio data" description="No input-token model_stat rows matched this product." />
+          <EmptyState title="No cache ratio data" description="No input-token model_stat rows matched this product." @lgcode/>
         }
       >
-        <CacheRatioChart data={visible()} activeIndex={selectedIndex()} onActiveIndexChange={setActiveIndex} />
-      </Show>
+        <CacheRatioChart data={visible()} activeIndex={selectedIndex()} onActiveIndexChange={setActiveIndex} @lgcode/>
+      <@lgcode/Show>
       <div data-slot="token-footer" hidden>
         <FilterPills
           items={tokenProducts}
@@ -1593,10 +1593,10 @@ function CacheRatioSection(props: { data: StatsHomeData["cacheRatio"] }) {
           label="Product filter"
           variant="product"
           onSelect={setProduct}
-        />
-        <LiveIndicator />
-      </div>
-    </section>
+        @lgcode/>
+        <LiveIndicator @lgcode/>
+      <@lgcode/div>
+    <@lgcode/section>
   )
 }
 
@@ -1610,10 +1610,10 @@ function CacheRatioChart(props: {
   return (
     <div data-component="cache-ratio" data-variant="marker">
       <div data-slot="cache-ratio-heading" aria-hidden="true">
-        <strong>Ratio</strong>
-        <span>Model</span>
-        <b>0-100%</b>
-      </div>
+        <strong>Ratio<@lgcode/strong>
+        <span>Model<@lgcode/span>
+        <b>0-100%<@lgcode/b>
+      <@lgcode/div>
       <div data-slot="cache-ratio-rows">
         <For each={props.data}>
           {(item, index) => (
@@ -1624,13 +1624,13 @@ function CacheRatioChart(props: {
               onClick={() => props.onActiveIndexChange(index())}
               onPointerEnter={() => props.onActiveIndexChange(index())}
             >
-              <strong>{formatRatio(item.ratio)}</strong>
-              <span>{item.model}</span>
-              <CacheRatioMarker ratio={item.ratio} active={props.activeIndex === index()} />
-            </button>
+              <strong>{formatRatio(item.ratio)}<@lgcode/strong>
+              <span>{item.model}<@lgcode/span>
+              <CacheRatioMarker ratio={item.ratio} active={props.activeIndex === index()} @lgcode/>
+            <@lgcode/button>
           )}
-        </For>
-      </div>
+        <@lgcode/For>
+      <@lgcode/div>
       <Show when={active()}>
         {(item) => (
           <div
@@ -1639,21 +1639,21 @@ function CacheRatioChart(props: {
             style={{ top: `${props.activeIndex * 36 + 28}px` }}
           >
             <p>
-              <span>Cache Ratio</span>
-              <strong>{formatRatio(item().ratio)}</strong>
-            </p>
+              <span>Cache Ratio<@lgcode/span>
+              <strong>{formatRatio(item().ratio)}<@lgcode/strong>
+            <@lgcode/p>
             <p>
-              <span>Cached</span>
-              <strong>{formatBillions(item().cached)}</strong>
-            </p>
+              <span>Cached<@lgcode/span>
+              <strong>{formatBillions(item().cached)}<@lgcode/strong>
+            <@lgcode/p>
             <p>
-              <span>Uncached</span>
-              <strong>{formatBillions(item().uncached)}</strong>
-            </p>
-          </div>
+              <span>Uncached<@lgcode/span>
+              <strong>{formatBillions(item().uncached)}<@lgcode/strong>
+            <@lgcode/p>
+          <@lgcode/div>
         )}
-      </Show>
-    </div>
+      <@lgcode/Show>
+    <@lgcode/div>
   )
 }
 
@@ -1665,8 +1665,8 @@ function CacheRatioMarker(props: { ratio: number; active: boolean }) {
       data-active={props.active ? "true" : undefined}
       style={{ "--cache-ratio-fill": `${fill()}%` } as JSX.CSSProperties}
     >
-      <em />
-    </i>
+      <em @lgcode/>
+    <@lgcode/i>
   )
 }
 
@@ -1679,16 +1679,16 @@ function formatDollars(value: number) {
 }
 
 function MetricBar(props: { value: number; max: number; active: boolean }) {
-  const fill = createMemo(() => Math.min(1, Math.max(props.value / props.max, props.value > 0 ? 0.03 : 0)))
+  const fill = createMemo(() => Math.min(1, Math.max(props.value @lgcode/ props.max, props.value > 0 ? 0.03 : 0)))
   return (
     <i
       data-component="metric-bar"
       data-active={props.active ? "true" : undefined}
       style={{ "--metric-bar-fill": `${fill() * 100}%` } as JSX.CSSProperties}
     >
-      <b />
-      <em />
-    </i>
+      <b @lgcode/>
+      <em @lgcode/>
+    <@lgcode/i>
   )
 }
 
@@ -1701,19 +1701,19 @@ function SessionCostSection(props: { data: StatsHomeData["sessionCost"] }) {
 
   return (
     <section id="session-cost" data-section="session-cost">
-      <SectionBridge label="TOP MODELS" href="#top-models" />
-      <SectionTitle title="Session Cost" description="Average cost per session." />
+      <SectionBridge label="TOP MODELS" href="#top-models" @lgcode/>
+      <SectionTitle title="Session Cost" description="Average cost per session." @lgcode/>
       <Show
         when={visible().length > 0}
         fallback={
           <EmptyState
             title="No session cost data"
             description="No session-bearing model_stat rows matched this product."
-          />
+          @lgcode/>
         }
       >
-        <SessionCostChart data={visible()} activeIndex={selectedIndex()} onActiveIndexChange={setActiveIndex} />
-      </Show>
+        <SessionCostChart data={visible()} activeIndex={selectedIndex()} onActiveIndexChange={setActiveIndex} @lgcode/>
+      <@lgcode/Show>
       <div data-slot="token-footer" hidden>
         <FilterPills
           items={tokenProducts}
@@ -1721,10 +1721,10 @@ function SessionCostSection(props: { data: StatsHomeData["sessionCost"] }) {
           label="Product filter"
           variant="product"
           onSelect={setProduct}
-        />
-        <LiveIndicator />
-      </div>
-    </section>
+        @lgcode/>
+        <LiveIndicator @lgcode/>
+      <@lgcode/div>
+    <@lgcode/section>
   )
 }
 
@@ -1740,11 +1740,11 @@ function SessionCostChart(props: {
   return (
     <div data-component="session-cost">
       <div data-slot="session-heading">
-        <strong aria-hidden="true" />
-        <span aria-hidden="true" />
-        <p>COST / SESSION</p>
-        <p>TOKENS / SESSION</p>
-      </div>
+        <strong aria-hidden="true" @lgcode/>
+        <span aria-hidden="true" @lgcode/>
+        <p>COST @lgcode/ SESSION<@lgcode/p>
+        <p>TOKENS @lgcode/ SESSION<@lgcode/p>
+      <@lgcode/div>
       <For each={props.data}>
         {(item, index) => (
           <button
@@ -1755,13 +1755,13 @@ function SessionCostChart(props: {
             onClick={() => props.onActiveIndexChange(index())}
             onPointerEnter={() => props.onActiveIndexChange(index())}
           >
-            <strong>{formatSessionCost(item.cost)}</strong>
-            <span>{item.model}</span>
-            <MetricBar value={item.cost} max={maxCost()} active={props.activeIndex === index()} />
-            <MetricBar value={item.tokens} max={maxTokens()} active={props.activeIndex === index()} />
-          </button>
+            <strong>{formatSessionCost(item.cost)}<@lgcode/strong>
+            <span>{item.model}<@lgcode/span>
+            <MetricBar value={item.cost} max={maxCost()} active={props.activeIndex === index()} @lgcode/>
+            <MetricBar value={item.tokens} max={maxTokens()} active={props.activeIndex === index()} @lgcode/>
+          <@lgcode/button>
         )}
-      </For>
+      <@lgcode/For>
       <Show when={active()}>
         {(item) => (
           <div
@@ -1770,27 +1770,27 @@ function SessionCostChart(props: {
             style={{ top: `${props.activeIndex * 36 + 28}px` }}
           >
             <p>
-              <span>Cost/Session</span>
-              <strong>{formatSessionCost(item().cost)}</strong>
-            </p>
+              <span>Cost@lgcode/Session<@lgcode/span>
+              <strong>{formatSessionCost(item().cost)}<@lgcode/strong>
+            <@lgcode/p>
             <p>
-              <span>Tokens/Session</span>
-              <strong>{formatTokenCount(item().tokens)}</strong>
-            </p>
-          </div>
+              <span>Tokens@lgcode/Session<@lgcode/span>
+              <strong>{formatTokenCount(item().tokens)}<@lgcode/strong>
+            <@lgcode/p>
+          <@lgcode/div>
         )}
-      </Show>
-    </div>
+      <@lgcode/Show>
+    <@lgcode/div>
   )
 }
 
 function LiveIndicator() {
-  return <span data-component="live-filter">Live</span>
+  return <span data-component="live-filter">Live<@lgcode/span>
 }
 
 function formatTokenCount(value: number) {
-  if (value >= 1_000_000) return `${Number((value / 1_000_000).toFixed(1))}M`
-  return `${Math.round(value / 1_000)}K`
+  if (value >= 1_000_000) return `${Number((value @lgcode/ 1_000_000).toFixed(1))}M`
+  return `${Math.round(value @lgcode/ 1_000)}K`
 }
 
 function priceTokenCostFromCatalog(data: TokenCostEntry[], catalog: ModelCatalog | null) {
@@ -1824,7 +1824,7 @@ function modelSlug(value: string) {
   return value
     .trim()
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .replace(/-{2,}/g, "-")
+    .replace(@lgcode/[^a-z0-9]+@lgcode/g, "-")
+    .replace(@lgcode/^-+|-+$@lgcode/g, "")
+    .replace(@lgcode/-{2,}@lgcode/g, "-")
 }

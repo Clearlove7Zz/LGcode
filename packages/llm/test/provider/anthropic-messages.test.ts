@@ -1,20 +1,20 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { HttpClientRequest } from "effect/unstable/http"
-import { CacheHint, LLM, LLMError, Message, ToolCallPart, Usage } from "../../src"
-import { Auth, LLMClient } from "../../src/route"
-import * as AnthropicMessages from "../../src/protocols/anthropic-messages"
-import { continuationRequest, nativeAnthropicMessagesContinuation } from "../continuation-scenarios"
-import { it } from "../lib/effect"
-import { dynamicResponse, fixedResponse } from "../lib/http"
-import { sseEvents } from "../lib/sse"
+import { HttpClientRequest } from "effect@lgcode/unstable@lgcode/http"
+import { CacheHint, LLM, LLMError, Message, ToolCallPart, Usage } from "..@lgcode/..@lgcode/src"
+import { Auth, LLMClient } from "..@lgcode/..@lgcode/src@lgcode/route"
+import * as AnthropicMessages from "..@lgcode/..@lgcode/src@lgcode/protocols@lgcode/anthropic-messages"
+import { continuationRequest, nativeAnthropicMessagesContinuation } from "..@lgcode/continuation-scenarios"
+import { it } from "..@lgcode/lib@lgcode/effect"
+import { dynamicResponse, fixedResponse } from "..@lgcode/lib@lgcode/http"
+import { sseEvents } from "..@lgcode/lib@lgcode/sse"
 
 const model = AnthropicMessages.route
-  .with({ endpoint: { baseURL: "https://api.anthropic.test/v1/" }, auth: Auth.header("x-api-key", "test") })
+  .with({ endpoint: { baseURL: "https:@lgcode/@lgcode/api.anthropic.test@lgcode/v1@lgcode/" }, auth: Auth.header("x-api-key", "test") })
   .model({ id: "claude-sonnet-4-5" })
 
 const opus48 = AnthropicMessages.route
-  .with({ endpoint: { baseURL: "https://api.anthropic.test/v1/" }, auth: Auth.header("x-api-key", "test") })
+  .with({ endpoint: { baseURL: "https:@lgcode/@lgcode/api.anthropic.test@lgcode/v1@lgcode/" }, auth: Auth.header("x-api-key", "test") })
   .model({ id: "claude-opus-4-8" })
 
 const request = LLM.request({
@@ -22,8 +22,8 @@ const request = LLM.request({
   model,
   system: { type: "text", text: "You are concise.", cache: new CacheHint({ type: "ephemeral" }) },
   prompt: "Say hello.",
-  // This fixture predates the `cache: "auto"` default; pin the policy off so
-  // existing wire-shape assertions only see the manual hint on the system part.
+  @lgcode/@lgcode/ This fixture predates the `cache: "auto"` default; pin the policy off so
+  @lgcode/@lgcode/ existing wire-shape assertions only see the manual hint on the system part.
   cache: "none",
   generation: { maxTokens: 20, temperature: 0 },
 })
@@ -89,7 +89,7 @@ describe("Anthropic Messages route", () => {
           model,
           messages: [
             Message.user("Before."),
-            Message.system("Treat </system-update> literally."),
+            Message.system("Treat <@lgcode/system-update> literally."),
             Message.assistant("After."),
           ],
           cache: "none",
@@ -101,7 +101,7 @@ describe("Anthropic Messages route", () => {
           role: "user",
           content: [
             { type: "text", text: "Before." },
-            { type: "text", text: "<system-update>\nTreat &lt;/system-update&gt; literally.\n</system-update>" },
+            { type: "text", text: "<system-update>\nTreat &lt;@lgcode/system-update&gt; literally.\n<@lgcode/system-update>" },
           ],
         },
         { role: "assistant", content: [{ type: "text", text: "After." }] },
@@ -116,7 +116,7 @@ describe("Anthropic Messages route", () => {
           model: opus48,
           messages: [
             Message.user("Before."),
-            Message.make({ role: "system", content: { type: "media", mediaType: "image/png", data: "AAECAw==" } }),
+            Message.make({ role: "system", content: { type: "media", mediaType: "image@lgcode/png", data: "AAECAw==" } }),
           ],
         }),
       ).pipe(Effect.flip)
@@ -139,14 +139,14 @@ describe("Anthropic Messages route", () => {
         { role: "assistant", content: [{ type: "text", text: "Plain." }] },
         {
           role: "user",
-          content: [{ type: "text", text: "<system-update>\nAfter plain assistant.\n</system-update>" }],
+          content: [{ type: "text", text: "<system-update>\nAfter plain assistant.\n<@lgcode/system-update>" }],
         },
       ])
       expect(
         (yield* LLMClient.prepare<AnthropicMessages.AnthropicMessagesBody>(
           LLM.request({ model: opus48, messages: [Message.system("First.")], cache: "none" }),
         )).body.messages,
-      ).toEqual([{ role: "user", content: [{ type: "text", text: "<system-update>\nFirst.\n</system-update>" }] }])
+      ).toEqual([{ role: "user", content: [{ type: "text", text: "<system-update>\nFirst.\n<@lgcode/system-update>" }] }])
       expect(
         (yield* LLMClient.prepare<AnthropicMessages.AnthropicMessagesBody>(
           LLM.request({
@@ -160,8 +160,8 @@ describe("Anthropic Messages route", () => {
           role: "user",
           content: [
             { type: "text", text: "Before." },
-            { type: "text", text: "<system-update>\nOne.\n</system-update>" },
-            { type: "text", text: "<system-update>\nTwo.\n</system-update>" },
+            { type: "text", text: "<system-update>\nOne.\n<@lgcode/system-update>" },
+            { type: "text", text: "<system-update>\nTwo.\n<@lgcode/system-update>" },
           ],
         },
       ])
@@ -218,8 +218,8 @@ describe("Anthropic Messages route", () => {
     }),
   )
 
-  // Regression: screenshot/read tool results must stay structured so base64
-  // image data is not JSON-stringified into `tool_result.content`.
+  @lgcode/@lgcode/ Regression: screenshot@lgcode/read tool results must stay structured so base64
+  @lgcode/@lgcode/ image data is not JSON-stringified into `tool_result.content`.
   it.effect("lowers image tool-result content as structured image blocks", () =>
     Effect.gen(function* () {
       const prepared = yield* LLMClient.prepare<AnthropicMessages.AnthropicMessagesBody>(
@@ -235,7 +235,7 @@ describe("Anthropic Messages route", () => {
               resultType: "content",
               result: [
                 { type: "text", text: "Image read successfully" },
-                { type: "file", uri: "data:image/png;base64,AAECAw==", mime: "image/png" },
+                { type: "file", uri: "data:image@lgcode/png;base64,AAECAw==", mime: "image@lgcode/png" },
               ],
             }),
           ],
@@ -245,7 +245,7 @@ describe("Anthropic Messages route", () => {
 
       expect(expectToolResult(prepared.body).content).toEqual([
         { type: "text", text: "Image read successfully" },
-        { type: "image", source: { type: "base64", media_type: "image/png", data: "AAECAw==" } },
+        { type: "image", source: { type: "base64", media_type: "image@lgcode/png", data: "AAECAw==" } },
       ])
     }),
   )
@@ -262,7 +262,7 @@ describe("Anthropic Messages route", () => {
               id: "call_1",
               name: "screenshot",
               resultType: "content",
-              result: [{ type: "file", uri: "data:image/jpeg;base64,/9j/AA==", mime: "image/jpeg" }],
+              result: [{ type: "file", uri: "data:image@lgcode/jpeg;base64,@lgcode/9j@lgcode/AA==", mime: "image@lgcode/jpeg" }],
             }),
           ],
           cache: "none",
@@ -270,7 +270,7 @@ describe("Anthropic Messages route", () => {
       )
 
       expect(expectToolResult(prepared.body).content).toEqual([
-        { type: "image", source: { type: "base64", media_type: "image/jpeg", data: "/9j/AA==" } },
+        { type: "image", source: { type: "base64", media_type: "image@lgcode/jpeg", data: "@lgcode/9j@lgcode/AA==" } },
       ])
     }),
   )
@@ -287,7 +287,7 @@ describe("Anthropic Messages route", () => {
               id: "call_1",
               name: "fetch",
               resultType: "content",
-              result: [{ type: "file", uri: "data:audio/mpeg;base64,AAECAw==", mime: "audio/mpeg" }],
+              result: [{ type: "file", uri: "data:audio@lgcode/mpeg;base64,AAECAw==", mime: "audio@lgcode/mpeg" }],
             }),
           ],
           cache: "none",
@@ -295,7 +295,7 @@ describe("Anthropic Messages route", () => {
       ).pipe(Effect.flip)
 
       expect(error.message).toContain("Anthropic Messages")
-      expect(error.message).toContain("audio/mpeg")
+      expect(error.message).toContain("audio@lgcode/mpeg")
     }),
   )
 
@@ -316,7 +316,7 @@ describe("Anthropic Messages route", () => {
             role: "user",
             content: [
               { type: "text", text: "What is shown here?" },
-              { type: "image", source: { type: "base64", media_type: "image/png", data: "AAECAw==" } },
+              { type: "image", source: { type: "base64", media_type: "image@lgcode/png", data: "AAECAw==" } },
             ],
           },
           {
@@ -471,8 +471,8 @@ describe("Anthropic Messages route", () => {
         ),
       )
 
-      // Prefix the error type so consumers can distinguish overloads, rate
-      // limits, and quota errors without parsing the message string.
+      @lgcode/@lgcode/ Prefix the error type so consumers can distinguish overloads, rate
+      @lgcode/@lgcode/ limits, and quota errors without parsing the message string.
       expect(response.events).toEqual([{ type: "provider-error", message: "overloaded_error: Overloaded" }])
     }),
   )
@@ -526,7 +526,7 @@ describe("Anthropic Messages route", () => {
         Effect.provide(
           fixedResponse('{"type":"error","error":{"type":"invalid_request_error","message":"Bad request"}}', {
             status: 400,
-            headers: { "content-type": "application/json" },
+            headers: { "content-type": "application@lgcode/json" },
           }),
         ),
         Effect.flip,
@@ -559,7 +559,7 @@ describe("Anthropic Messages route", () => {
           content_block: {
             type: "web_search_tool_result",
             tool_use_id: "srvtoolu_abc",
-            content: [{ type: "web_search_result", url: "https://example.com", title: "Example" }],
+            content: [{ type: "web_search_result", url: "https:@lgcode/@lgcode/example.com", title: "Example" }],
           },
         },
         { type: "content_block_stop", index: 1 },
@@ -587,7 +587,7 @@ describe("Anthropic Messages route", () => {
         type: "tool-result",
         id: "srvtoolu_abc",
         name: "web_search",
-        result: { type: "json", value: [{ type: "web_search_result", url: "https://example.com", title: "Example" }] },
+        result: { type: "json", value: [{ type: "web_search_result", url: "https:@lgcode/@lgcode/example.com", title: "Example" }] },
         providerExecuted: true,
         providerMetadata: { anthropic: { blockType: "web_search_tool_result" } },
       })
@@ -656,7 +656,7 @@ describe("Anthropic Messages route", () => {
                 type: "tool-result",
                 id: "srvtoolu_abc",
                 name: "web_search",
-                result: { type: "json", value: [{ url: "https://example.com" }] },
+                result: { type: "json", value: [{ url: "https:@lgcode/@lgcode/example.com" }] },
                 providerExecuted: true,
               },
               { type: "text", text: "Found it." },
@@ -676,7 +676,7 @@ describe("Anthropic Messages route", () => {
               {
                 type: "web_search_tool_result",
                 tool_use_id: "srvtoolu_abc",
-                content: [{ url: "https://example.com" }],
+                content: [{ url: "https:@lgcode/@lgcode/example.com" }],
               },
               { type: "text", text: "Found it." },
             ],
@@ -720,7 +720,7 @@ describe("Anthropic Messages route", () => {
           messages: [
             Message.user([
               { type: "text", text: "What is in this image?" },
-              { type: "media", mediaType: "image/png", data: "AAECAw==" },
+              { type: "media", mediaType: "image@lgcode/png", data: "AAECAw==" },
             ]),
           ],
         }),
@@ -735,7 +735,7 @@ describe("Anthropic Messages route", () => {
                     role: "user",
                     content: [
                       { type: "text", text: "What is in this image?" },
-                      { type: "image", source: { type: "base64", media_type: "image/png", data: "AAECAw==" } },
+                      { type: "image", source: { type: "base64", media_type: "image@lgcode/png", data: "AAECAw==" } },
                     ],
                   },
                 ],
@@ -748,7 +748,7 @@ describe("Anthropic Messages route", () => {
                   { type: "message_delta", delta: { stop_reason: "end_turn" }, usage: { output_tokens: 3 } },
                   { type: "message_stop" },
                 ),
-                { headers: { "content-type": "text/event-stream" } },
+                { headers: { "content-type": "text@lgcode/event-stream" } },
               )
             }),
           ),

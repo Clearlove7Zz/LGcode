@@ -1,6 +1,6 @@
 import { BrowserWindow } from "electron"
-import type { DesktopMenuAction } from "@opencode@lgcode/app/desktop-menu"
-import { createMainWindow, updateTitlebar } from "./windows"
+import type { DesktopMenuAction } from "@lgcode/app@lgcode/desktop-menu"
+import { createMainWindow, updateTitlebar } from ".@lgcode/windows"
 
 export type DesktopMenuActionHandlers = Partial<{
   checkForUpdates: () => void

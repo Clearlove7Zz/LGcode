@@ -1,18 +1,18 @@
 import { afterEach, describe, expect } from "bun:test"
 import { $ } from "bun"
-import fs from "fs/promises"
+import fs from "fs@lgcode/promises"
 import path from "path"
 import { Effect, Layer } from "effect"
-import { HttpClientResponse } from "effect/unstable/http"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { Database } from "@opencode@lgcode/core/database/database"
-import { Snapshot } from "@/snapshot"
-import { InstanceBootstrap } from "@/project/bootstrap-service"
-import { InstanceStore } from "@/project/instance-store"
-import { resetDatabase } from "../fixture/db"
-import { disposeAllInstances, TestInstance } from "../fixture/fixture"
-import { testEffect } from "../lib/effect"
-import { httpApiLayer, requestInDirectory } from "./httpapi-layer"
+import { HttpClientResponse } from "effect@lgcode/unstable@lgcode/http"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { Snapshot } from "@@lgcode/snapshot"
+import { InstanceBootstrap } from "@@lgcode/project@lgcode/bootstrap-service"
+import { InstanceStore } from "@@lgcode/project@lgcode/instance-store"
+import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
+import { disposeAllInstances, TestInstance } from "..@lgcode/fixture@lgcode/fixture"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { httpApiLayer, requestInDirectory } from ".@lgcode/httpapi-layer"
 
 afterEach(async () => {
   await disposeAllInstances()
@@ -41,23 +41,23 @@ describe("project directories and copies endpoints", () => {
     () =>
       Effect.gen(function* () {
         const test = yield* TestInstance
-        const current = yield* request(test.directory, "/project/current")
+        const current = yield* request(test.directory, "@lgcode/project@lgcode/current")
         const projectID = (yield* json<{ id: string }>(current)).id
-        const base = `/project/${projectID}`
-        const copies = `/experimental/project/${projectID}/copy?location%5Bdirectory%5D=${encodeURIComponent(test.directory)}`
+        const base = `@lgcode/project@lgcode/${projectID}`
+        const copies = `@lgcode/experimental@lgcode/project@lgcode/${projectID}@lgcode/copy?location%5Bdirectory%5D=${encodeURIComponent(test.directory)}`
         const createdParent = path.join(test.directory, "..", path.basename(test.directory) + "-http-copy")
         const createdDirectory = path.join(createdParent, "copy")
         yield* Effect.addFinalizer(() =>
           Effect.promise(() => fs.rm(createdParent, { recursive: true, force: true })).pipe(Effect.ignore),
         )
 
-        const initial = yield* request(test.directory, `${base}/directories`)
+        const initial = yield* request(test.directory, `${base}@lgcode/directories`)
         expect(initial.status).toBe(200)
         expect(yield* json<ProjectDirectory[]>(initial)).toEqual([{ directory: test.directory }])
 
-        const generated = yield* request(test.directory, `/experimental/project/${projectID}/copy/generate-name`, {
+        const generated = yield* request(test.directory, `@lgcode/experimental@lgcode/project@lgcode/${projectID}@lgcode/copy@lgcode/generate-name`, {
           method: "POST",
-          headers: { "content-type": "application/json" },
+          headers: { "content-type": "application@lgcode/json" },
           body: JSON.stringify({ context: undefined }),
         })
         expect(generated.status).toBe(200)
@@ -65,14 +65,14 @@ describe("project directories and copies endpoints", () => {
 
         const create = yield* request(test.directory, copies, {
           method: "POST",
-          headers: { "content-type": "application/json" },
+          headers: { "content-type": "application@lgcode/json" },
           body: JSON.stringify({ strategy: "git_worktree", directory: createdParent, name: "copy" }),
         })
         expect(create.status).toBe(200)
         const created = yield* json<{ directory: string }>(create)
         expect(created.directory).toBe(createdDirectory)
 
-        const listed = yield* request(test.directory, `${base}/directories`)
+        const listed = yield* request(test.directory, `${base}@lgcode/directories`)
         expect(yield* json<ProjectDirectory[]>(listed)).toContainEqual({
           directory: created.directory,
           strategy: "git_worktree",
@@ -82,7 +82,7 @@ describe("project directories and copies endpoints", () => {
 
         const remove = yield* request(test.directory, copies, {
           method: "DELETE",
-          headers: { "content-type": "application/json" },
+          headers: { "content-type": "application@lgcode/json" },
           body: JSON.stringify({ directory: created.directory, force: false }),
         })
         expect(remove.status).toBe(400)
@@ -92,7 +92,7 @@ describe("project directories and copies endpoints", () => {
 
         const forced = yield* request(test.directory, copies, {
           method: "DELETE",
-          headers: { "content-type": "application/json" },
+          headers: { "content-type": "application@lgcode/json" },
           body: JSON.stringify({ directory: created.directory, force: true }),
         })
         expect(forced.status).toBe(204)
@@ -104,13 +104,13 @@ describe("project directories and copies endpoints", () => {
         yield* Effect.promise(() => $`git worktree add --detach ${externalDirectory} HEAD`.cwd(test.directory).quiet())
         const refresh = yield* request(
           test.directory,
-          `/experimental/project/${projectID}/copy/refresh?location%5Bdirectory%5D=${encodeURIComponent(test.directory)}`,
+          `@lgcode/experimental@lgcode/project@lgcode/${projectID}@lgcode/copy@lgcode/refresh?location%5Bdirectory%5D=${encodeURIComponent(test.directory)}`,
           {
             method: "POST",
           },
         )
         expect(refresh.status).toBe(204)
-        const refreshed = yield* request(test.directory, `${base}/directories`)
+        const refreshed = yield* request(test.directory, `${base}@lgcode/directories`)
         expect(yield* json<ProjectDirectory[]>(refreshed)).toEqual([
           { directory: externalDirectory, strategy: "git_worktree" },
           { directory: test.directory },

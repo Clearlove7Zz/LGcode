@@ -1,111 +1,111 @@
 import { Config as EffectConfig, Context, Effect, Layer } from "effect"
-import { HttpApiBuilder, OpenApi } from "effect/unstable/httpapi"
-import { HttpClient, HttpMiddleware, HttpRouter, HttpServer, HttpServerResponse } from "effect/unstable/http"
-import * as Socket from "effect/unstable/socket/Socket"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import * as Observability from "@opencode@lgcode/core/observability"
-import { Account } from "@/account/account"
-import { Agent } from "@/agent/agent"
-import { Auth } from "@/auth"
-import { BackgroundJob } from "@/background/job"
-import { Command } from "@/command"
-import { Config } from "@/config/config"
-import { Workspace } from "@/control-plane/workspace"
-import { Env } from "@/env"
-import { EventV2Bridge } from "@/event-v2-bridge"
-import { Format } from "@/format"
-import { Git } from "@/git"
-import { Installation } from "@/installation"
-import { LSP } from "@/lsp/lsp"
-import { MCP } from "@/mcp"
-import { McpAuth } from "@/mcp/auth"
-import { Permission } from "@/permission"
-import { Plugin } from "@/plugin"
-import { PluginPtyEnvironment } from "@/plugin/pty-environment"
-import { InstanceStore } from "@/project/instance-store"
-import { Project } from "@/project/project"
-import { Vcs } from "@/project/vcs"
-import { ProviderAuth } from "@/provider/auth"
-import { Provider } from "@/provider/provider"
-import { Question } from "@/question"
-import { SessionCompaction } from "@/session/compaction"
-import { Instruction } from "@/session/instruction"
-import { LLM } from "@/session/llm"
-import { SessionProcessor } from "@/session/processor"
-import { SessionPrompt } from "@/session/prompt"
-import { SessionRevert } from "@/session/revert"
-import { SessionRunState } from "@/session/run-state"
-import { Session } from "@/session/session"
-import { SessionStatus } from "@/session/status"
-import { SessionSummary } from "@/session/summary"
-import { Todo } from "@/session/todo"
-import { SessionShare } from "@/share/session"
-import { ShareNext } from "@/share/share-next"
-import { Skill } from "@/skill"
-import { Discovery } from "@/skill/discovery"
-import { Snapshot } from "@/snapshot"
-import { Storage } from "@/storage/storage"
-import { ToolRegistry } from "@/tool/registry"
-import { Truncate } from "@/tool/truncate"
-import { Worktree } from "@/worktree"
-import { RuntimeFlags } from "@/effect/runtime-flags"
-import { MoveSession } from "@opencode@lgcode/core/control-plane/move-session"
-import { Database } from "@opencode@lgcode/core/database/database"
-import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
-import { httpClient } from "@opencode@lgcode/core/effect/layer-node-platform"
-import { EventV2 } from "@opencode@lgcode/core/event"
-import { ModelsDev } from "@opencode@lgcode/core/models-dev"
-import { Npm } from "@opencode@lgcode/core/npm"
-import { ProjectV2 } from "@opencode@lgcode/core/project"
-import { ProjectCopy } from "@opencode@lgcode/core/project/copy"
-import { PtyTicket } from "@opencode@lgcode/core/pty/ticket"
-import { Ripgrep } from "@opencode@lgcode/core/ripgrep"
-import { SessionProjector } from "@opencode@lgcode/core/session/projector"
-import { lazy } from "@/util/lazy"
-import { CorsConfig, isAllowedCorsOrigin, type CorsOptions } from "@opencode@lgcode/server/cors"
-import { serveUIEffect } from "@/server/shared/ui"
-import { ServerAuth } from "@/server/auth"
-import { InstanceHttpApi, RootHttpApi } from "./api"
-import { Api } from "@opencode@lgcode/server/api"
-import { PublicApi } from "./public"
+import { HttpApiBuilder, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
+import { HttpClient, HttpMiddleware, HttpRouter, HttpServer, HttpServerResponse } from "effect@lgcode/unstable@lgcode/http"
+import * as Socket from "effect@lgcode/unstable@lgcode/socket@lgcode/Socket"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import * as Observability from "@lgcode/core@lgcode/observability"
+import { Account } from "@@lgcode/account@lgcode/account"
+import { Agent } from "@@lgcode/agent@lgcode/agent"
+import { Auth } from "@@lgcode/auth"
+import { BackgroundJob } from "@@lgcode/background@lgcode/job"
+import { Command } from "@@lgcode/command"
+import { Config } from "@@lgcode/config@lgcode/config"
+import { Workspace } from "@@lgcode/control-plane@lgcode/workspace"
+import { Env } from "@@lgcode/env"
+import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
+import { Format } from "@@lgcode/format"
+import { Git } from "@@lgcode/git"
+import { Installation } from "@@lgcode/installation"
+import { LSP } from "@@lgcode/lsp@lgcode/lsp"
+import { MCP } from "@@lgcode/mcp"
+import { McpAuth } from "@@lgcode/mcp@lgcode/auth"
+import { Permission } from "@@lgcode/permission"
+import { Plugin } from "@@lgcode/plugin"
+import { PluginPtyEnvironment } from "@@lgcode/plugin@lgcode/pty-environment"
+import { InstanceStore } from "@@lgcode/project@lgcode/instance-store"
+import { Project } from "@@lgcode/project@lgcode/project"
+import { Vcs } from "@@lgcode/project@lgcode/vcs"
+import { ProviderAuth } from "@@lgcode/provider@lgcode/auth"
+import { Provider } from "@@lgcode/provider@lgcode/provider"
+import { Question } from "@@lgcode/question"
+import { SessionCompaction } from "@@lgcode/session@lgcode/compaction"
+import { Instruction } from "@@lgcode/session@lgcode/instruction"
+import { LLM } from "@@lgcode/session@lgcode/llm"
+import { SessionProcessor } from "@@lgcode/session@lgcode/processor"
+import { SessionPrompt } from "@@lgcode/session@lgcode/prompt"
+import { SessionRevert } from "@@lgcode/session@lgcode/revert"
+import { SessionRunState } from "@@lgcode/session@lgcode/run-state"
+import { Session } from "@@lgcode/session@lgcode/session"
+import { SessionStatus } from "@@lgcode/session@lgcode/status"
+import { SessionSummary } from "@@lgcode/session@lgcode/summary"
+import { Todo } from "@@lgcode/session@lgcode/todo"
+import { SessionShare } from "@@lgcode/share@lgcode/session"
+import { ShareNext } from "@@lgcode/share@lgcode/share-next"
+import { Skill } from "@@lgcode/skill"
+import { Discovery } from "@@lgcode/skill@lgcode/discovery"
+import { Snapshot } from "@@lgcode/snapshot"
+import { Storage } from "@@lgcode/storage@lgcode/storage"
+import { ToolRegistry } from "@@lgcode/tool@lgcode/registry"
+import { Truncate } from "@@lgcode/tool@lgcode/truncate"
+import { Worktree } from "@@lgcode/worktree"
+import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
+import { MoveSession } from "@lgcode/core@lgcode/control-plane@lgcode/move-session"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
+import { httpClient } from "@lgcode/core@lgcode/effect@lgcode/layer-node-platform"
+import { EventV2 } from "@lgcode/core@lgcode/event"
+import { ModelsDev } from "@lgcode/core@lgcode/models-dev"
+import { Npm } from "@lgcode/core@lgcode/npm"
+import { ProjectV2 } from "@lgcode/core@lgcode/project"
+import { ProjectCopy } from "@lgcode/core@lgcode/project@lgcode/copy"
+import { PtyTicket } from "@lgcode/core@lgcode/pty@lgcode/ticket"
+import { Ripgrep } from "@lgcode/core@lgcode/ripgrep"
+import { SessionProjector } from "@lgcode/core@lgcode/session@lgcode/projector"
+import { lazy } from "@@lgcode/util@lgcode/lazy"
+import { CorsConfig, isAllowedCorsOrigin, type CorsOptions } from "@lgcode/server@lgcode/cors"
+import { serveUIEffect } from "@@lgcode/server@lgcode/shared@lgcode/ui"
+import { ServerAuth } from "@@lgcode/server@lgcode/auth"
+import { InstanceHttpApi, RootHttpApi } from ".@lgcode/api"
+import { Api } from "@lgcode/server@lgcode/api"
+import { PublicApi } from ".@lgcode/public"
 import {
   authorizationLayer,
   authorizationRouterMiddleware,
   ptyConnectAuthorizationLayer,
   serverAuthorizationLayer,
-} from "./middleware/authorization"
-import { EventApi } from "./groups/event"
-import { PtyConnectApi } from "./groups/pty"
-import { eventHandlers } from "./handlers/event"
-import { configHandlers } from "./handlers/config"
-import { controlHandlers } from "./handlers/control"
-import { controlPlaneHandlers } from "./handlers/control-plane"
-import { experimentalHandlers } from "./handlers/experimental"
-import { fileHandlers } from "./handlers/file"
-import { globalHandlers } from "./handlers/global"
-import { instanceHandlers } from "./handlers/instance"
-import { mcpHandlers } from "./handlers/mcp"
-import { permissionHandlers } from "./handlers/permission"
-import { projectHandlers } from "./handlers/project"
-import { projectCopyHandlers } from "./handlers/project-copy"
-import { providerHandlers } from "./handlers/provider"
-import { ptyConnectHandlers, ptyHandlers } from "./handlers/pty"
-import { questionHandlers } from "./handlers/question"
-import { sessionHandlers } from "./handlers/session"
-import { syncHandlers } from "./handlers/sync"
-import { tuiHandlers } from "./handlers/tui"
-import { handlers } from "@opencode@lgcode/server/handlers"
-import { schemaErrorLayer as v2SchemaErrorLayer } from "@opencode@lgcode/server/middleware/schema-error"
-import { workspaceHandlers } from "./handlers/workspace"
-import { instanceContextLayer } from "./middleware/instance-context"
-import { workspaceRoutingLayer } from "./middleware/workspace-routing"
-import { disposeMiddleware } from "./lifecycle"
-import { memoMap } from "@opencode@lgcode/core/effect/memo-map"
-import { compressionLayer } from "./middleware/compression"
-import { corsVaryFix } from "./middleware/cors-vary"
-import { errorLayer } from "./middleware/error"
-import { fenceLayer } from "./middleware/fence"
-import { schemaErrorLayer } from "./middleware/schema-error"
+} from ".@lgcode/middleware@lgcode/authorization"
+import { EventApi } from ".@lgcode/groups@lgcode/event"
+import { PtyConnectApi } from ".@lgcode/groups@lgcode/pty"
+import { eventHandlers } from ".@lgcode/handlers@lgcode/event"
+import { configHandlers } from ".@lgcode/handlers@lgcode/config"
+import { controlHandlers } from ".@lgcode/handlers@lgcode/control"
+import { controlPlaneHandlers } from ".@lgcode/handlers@lgcode/control-plane"
+import { experimentalHandlers } from ".@lgcode/handlers@lgcode/experimental"
+import { fileHandlers } from ".@lgcode/handlers@lgcode/file"
+import { globalHandlers } from ".@lgcode/handlers@lgcode/global"
+import { instanceHandlers } from ".@lgcode/handlers@lgcode/instance"
+import { mcpHandlers } from ".@lgcode/handlers@lgcode/mcp"
+import { permissionHandlers } from ".@lgcode/handlers@lgcode/permission"
+import { projectHandlers } from ".@lgcode/handlers@lgcode/project"
+import { projectCopyHandlers } from ".@lgcode/handlers@lgcode/project-copy"
+import { providerHandlers } from ".@lgcode/handlers@lgcode/provider"
+import { ptyConnectHandlers, ptyHandlers } from ".@lgcode/handlers@lgcode/pty"
+import { questionHandlers } from ".@lgcode/handlers@lgcode/question"
+import { sessionHandlers } from ".@lgcode/handlers@lgcode/session"
+import { syncHandlers } from ".@lgcode/handlers@lgcode/sync"
+import { tuiHandlers } from ".@lgcode/handlers@lgcode/tui"
+import { handlers } from "@lgcode/server@lgcode/handlers"
+import { schemaErrorLayer as v2SchemaErrorLayer } from "@lgcode/server@lgcode/middleware@lgcode/schema-error"
+import { workspaceHandlers } from ".@lgcode/handlers@lgcode/workspace"
+import { instanceContextLayer } from ".@lgcode/middleware@lgcode/instance-context"
+import { workspaceRoutingLayer } from ".@lgcode/middleware@lgcode/workspace-routing"
+import { disposeMiddleware } from ".@lgcode/lifecycle"
+import { memoMap } from "@lgcode/core@lgcode/effect@lgcode/memo-map"
+import { compressionLayer } from ".@lgcode/middleware@lgcode/compression"
+import { corsVaryFix } from ".@lgcode/middleware@lgcode/cors-vary"
+import { errorLayer } from ".@lgcode/middleware@lgcode/error"
+import { fenceLayer } from ".@lgcode/middleware@lgcode/fence"
+import { schemaErrorLayer } from ".@lgcode/middleware@lgcode/schema-error"
 
 export const context = Context.makeUnsafe<unknown>(new Map())
 
@@ -118,12 +118,12 @@ const cors = (corsOptions?: CorsOptions) =>
     { global: true },
   )
 
-// Route tree:
-// - rootApiRoutes: typed /global/* and control routes; auth is declared by RootHttpApi.
-// - eventApiRoutes: typed SSE route with instance routing context and its existing API contract.
-// - ptyConnectApiRoutes: typed WebSocket upgrade route with ticket-aware auth.
-// - instanceApiRoutes: remaining typed instance routes.
-// - uiRoute: raw catch-all fallback; auth is router middleware so public static assets can bypass it.
+@lgcode/@lgcode/ Route tree:
+@lgcode/@lgcode/ - rootApiRoutes: typed @lgcode/global@lgcode/* and control routes; auth is declared by RootHttpApi.
+@lgcode/@lgcode/ - eventApiRoutes: typed SSE route with instance routing context and its existing API contract.
+@lgcode/@lgcode/ - ptyConnectApiRoutes: typed WebSocket upgrade route with ticket-aware auth.
+@lgcode/@lgcode/ - instanceApiRoutes: remaining typed instance routes.
+@lgcode/@lgcode/ - uiRoute: raw catch-all fallback; auth is router middleware so public static assets can bypass it.
 const authOnlyRouterLayer = authorizationRouterMiddleware.layer.pipe(Layer.provide(ServerAuth.Config.defaultLayer))
 const httpApiAuthLayer = authorizationLayer.pipe(Layer.provide(ServerAuth.Config.defaultLayer))
 const ptyConnectHttpApiAuthLayer = ptyConnectAuthorizationLayer.pipe(Layer.provide(ServerAuth.Config.defaultLayer))
@@ -171,14 +171,14 @@ const serverRoutes = HttpApiBuilder.layer(Api).pipe(
   Layer.provide([serverHttpApiAuthLayer, v2SchemaErrorLayer]),
 )
 
-// `OpenApi.fromApi` is non-trivial; defer until /doc is actually hit so
-// processes that never serve it (CLI, scripts) don't pay at module load.
-// `HttpServerResponse.jsonUnsafe` runs JSON.stringify eagerly, so caching
-// the response also caches the serialized body — every /doc request reuses
-// the same Uint8Array instead of re-stringifying the spec.
+@lgcode/@lgcode/ `OpenApi.fromApi` is non-trivial; defer until @lgcode/doc is actually hit so
+@lgcode/@lgcode/ processes that never serve it (CLI, scripts) don't pay at module load.
+@lgcode/@lgcode/ `HttpServerResponse.jsonUnsafe` runs JSON.stringify eagerly, so caching
+@lgcode/@lgcode/ the response also caches the serialized body — every @lgcode/doc request reuses
+@lgcode/@lgcode/ the same Uint8Array instead of re-stringifying the spec.
 const docResponse = lazy(() => HttpServerResponse.jsonUnsafe(OpenApi.fromApi(PublicApi)))
 
-const docRoute = HttpRouter.use((router) => router.add("GET", "/doc", () => Effect.succeed(docResponse()))).pipe(
+const docRoute = HttpRouter.use((router) => router.add("GET", "@lgcode/doc", () => Effect.succeed(docResponse()))).pipe(
   Layer.provide(authOnlyRouterLayer),
 )
 
@@ -187,7 +187,7 @@ const uiRoute = HttpRouter.use((router) =>
     const fs = yield* FSUtil.Service
     const client = yield* HttpClient.HttpClient
     const flags = yield* RuntimeFlags.Service
-    yield* router.add("*", "/*", (request) =>
+    yield* router.add("*", "@lgcode/*", (request) =>
       serveUIEffect(request, { fs, client, disableEmbeddedWebUi: flags.disableEmbeddedWebUi }),
     )
   }),
@@ -295,4 +295,4 @@ export const webHandler = lazy(() =>
   }),
 )
 
-export * as HttpApiApp from "./server"
+export * as HttpApiApp from ".@lgcode/server"

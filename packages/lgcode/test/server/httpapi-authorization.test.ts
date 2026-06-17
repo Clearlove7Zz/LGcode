@@ -1,24 +1,24 @@
-import { NodeHttpServer } from "@effect/platform-node"
+import { NodeHttpServer } from "@effect@lgcode/platform-node"
 import { describe, expect } from "bun:test"
 import { Effect, Layer, Option, Schema } from "effect"
-import { HttpClient, HttpClientRequest, HttpRouter } from "effect/unstable/http"
-import { HttpApi, HttpApiBuilder, HttpApiEndpoint, HttpApiError, HttpApiGroup } from "effect/unstable/httpapi"
-import { ServerAuth } from "../../src/server/auth"
+import { HttpClient, HttpClientRequest, HttpRouter } from "effect@lgcode/unstable@lgcode/http"
+import { HttpApi, HttpApiBuilder, HttpApiEndpoint, HttpApiError, HttpApiGroup } from "effect@lgcode/unstable@lgcode/httpapi"
+import { ServerAuth } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/auth"
 import {
   Authorization,
   authorizationLayer,
   ServerAuthorization,
   serverAuthorizationLayer,
-} from "../../src/server/routes/instance/httpapi/middleware/authorization"
-import { testEffect } from "../lib/effect"
+} from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/middleware@lgcode/authorization"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const Api = HttpApi.make("test-authorization").add(
   HttpApiGroup.make("test")
     .add(
-      HttpApiEndpoint.get("probe", "/probe", {
+      HttpApiEndpoint.get("probe", "@lgcode/probe", {
         success: Schema.String,
       }),
-      HttpApiEndpoint.get("missing", "/missing", {
+      HttpApiEndpoint.get("missing", "@lgcode/missing", {
         success: Schema.String,
         error: HttpApiError.NotFound,
       }),
@@ -29,7 +29,7 @@ const Api = HttpApi.make("test-authorization").add(
 const ServerApi = HttpApi.make("test-server-authorization").add(
   HttpApiGroup.make("test.v2")
     .add(
-      HttpApiEndpoint.get("probe", "/api/probe", {
+      HttpApiEndpoint.get("probe", "@lgcode/api@lgcode/probe", {
         success: Schema.String,
       }),
     )
@@ -70,7 +70,7 @@ const basic = (username: string, password: string) => ServerAuth.header({ userna
 const token = (username: string, password: string) => Buffer.from(`${username}:${password}`).toString("base64")
 
 const getProbe = (headers?: Record<string, string>) =>
-  HttpClientRequest.get("/probe").pipe(
+  HttpClientRequest.get("@lgcode/probe").pipe(
     headers ? HttpClientRequest.setHeaders(headers) : (request) => request,
     HttpClient.execute,
   )
@@ -118,7 +118,7 @@ describe("HttpApi authorization middleware", () => {
 
   itSecret.live("accepts auth token query credentials", () =>
     Effect.gen(function* () {
-      const response = yield* HttpClient.get(`/probe?auth_token=${encodeURIComponent(token("opencode", "secret"))}`)
+      const response = yield* HttpClient.get(`@lgcode/probe?auth_token=${encodeURIComponent(token("opencode", "secret"))}`)
 
       expect(response.status).toBe(200)
     }),
@@ -127,7 +127,7 @@ describe("HttpApi authorization middleware", () => {
   itSecret.live("prefers auth token query credentials over basic auth", () =>
     Effect.gen(function* () {
       const response = yield* HttpClientRequest.get(
-        `/probe?auth_token=${encodeURIComponent(token("opencode", "secret"))}`,
+        `@lgcode/probe?auth_token=${encodeURIComponent(token("opencode", "secret"))}`,
       ).pipe(HttpClientRequest.setHeader("authorization", basic("opencode", "wrong")), HttpClient.execute)
 
       expect(response.status).toBe(200)
@@ -136,7 +136,7 @@ describe("HttpApi authorization middleware", () => {
 
   itSecret.live("preserves handler errors when basic auth succeeds", () =>
     Effect.gen(function* () {
-      const response = yield* HttpClientRequest.get("/missing").pipe(
+      const response = yield* HttpClientRequest.get("@lgcode/missing").pipe(
         HttpClientRequest.setHeader("authorization", basic("opencode", "secret")),
         HttpClient.execute,
       )
@@ -147,7 +147,7 @@ describe("HttpApi authorization middleware", () => {
 
   itSecret.live("preserves handler errors when auth token query succeeds", () =>
     Effect.gen(function* () {
-      const response = yield* HttpClient.get(`/missing?auth_token=${encodeURIComponent(token("opencode", "secret"))}`)
+      const response = yield* HttpClient.get(`@lgcode/missing?auth_token=${encodeURIComponent(token("opencode", "secret"))}`)
 
       expect(response.status).toBe(404)
     }),
@@ -155,7 +155,7 @@ describe("HttpApi authorization middleware", () => {
 
   itSecret.live("rejects malformed auth token query credentials", () =>
     Effect.gen(function* () {
-      const response = yield* HttpClient.get("/probe?auth_token=not-base64")
+      const response = yield* HttpClient.get("@lgcode/probe?auth_token=not-base64")
 
       expect(response.status).toBe(401)
     }),
@@ -163,7 +163,7 @@ describe("HttpApi authorization middleware", () => {
 
   itV2Secret.live("returns bodyful v2 unauthorized errors", () =>
     Effect.gen(function* () {
-      const response = yield* HttpClient.get("/api/probe")
+      const response = yield* HttpClient.get("@lgcode/api@lgcode/probe")
       const body = yield* response.json
 
       expect(response.status).toBe(401)

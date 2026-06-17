@@ -13,8 +13,8 @@ import {
   startTransition,
   For,
 } from "solid-js"
-import { Dialog as Kobalte } from "@kobalte/core/dialog"
-import { makeEventListener } from "@solid-primitives/event-listener"
+import { Dialog as Kobalte } from "@kobalte@lgcode/core@lgcode/dialog"
+import { makeEventListener } from "@solid-primitives@lgcode/event-listener"
 
 type DialogElement = () => JSX.Element
 
@@ -100,7 +100,7 @@ function init() {
                 data-component="dialog-overlay"
                 style={{ "z-index": String(zIndex) }}
                 onClick={() => close(id)}
-              />
+              @lgcode/>
               <div
                 data-dialog-layer={layer}
                 style={{
@@ -114,9 +114,9 @@ function init() {
                 }}
               >
                 {element()}
-              </div>
-            </Kobalte.Portal>
-          </Kobalte>
+              <@lgcode/div>
+            <@lgcode/Kobalte.Portal>
+          <@lgcode/Kobalte>
         )
       }),
     )
@@ -161,9 +161,9 @@ export function DialogProvider(props: ParentProps) {
     <Context.Provider value={ctx}>
       {props.children}
       <div data-component="dialog-stack">
-        <For each={ctx.stack()}>{(item) => item.node}</For>
-      </div>
-    </Context.Provider>
+        <For each={ctx.stack()}>{(item) => item.node}<@lgcode/For>
+      <@lgcode/div>
+    <@lgcode/Context.Provider>
   )
 }
 

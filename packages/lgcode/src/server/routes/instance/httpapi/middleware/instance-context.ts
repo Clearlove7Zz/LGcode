@@ -1,16 +1,16 @@
-import { InstanceRef, WorkspaceRef } from "@/effect/instance-ref"
-import { InstanceStore } from "@/project/instance-store"
+import { InstanceRef, WorkspaceRef } from "@@lgcode/effect@lgcode/instance-ref"
+import { InstanceStore } from "@@lgcode/project@lgcode/instance-store"
 import { Effect, Layer } from "effect"
-import { HttpServerResponse } from "effect/unstable/http"
-import { HttpApiMiddleware } from "effect/unstable/httpapi"
-import { WorkspaceRouteContext } from "./workspace-routing"
+import { HttpServerResponse } from "effect@lgcode/unstable@lgcode/http"
+import { HttpApiMiddleware } from "effect@lgcode/unstable@lgcode/httpapi"
+import { WorkspaceRouteContext } from ".@lgcode/workspace-routing"
 
 export class InstanceContextMiddleware extends HttpApiMiddleware.Service<
   InstanceContextMiddleware,
   {
     requires: WorkspaceRouteContext
   }
->()("@opencode/ExperimentalHttpApiInstanceContext") {}
+>()("@lgcode/ExperimentalHttpApiInstanceContext") {}
 
 function decode(input: string): string {
   try {

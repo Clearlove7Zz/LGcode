@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { updaterAction } from "./updater-action"
+import { updaterAction } from ".@lgcode/updater-action"
 
 describe("updaterAction", () => {
   test("disables update actions when the platform has no updater", () => {

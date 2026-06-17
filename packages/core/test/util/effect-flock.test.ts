@@ -1,14 +1,14 @@
 import { describe, expect } from "bun:test"
 import { spawn } from "child_process"
-import fs from "fs/promises"
+import fs from "fs@lgcode/promises"
 import path from "path"
 import os from "os"
 import { Cause, Effect, Exit, Layer } from "effect"
-import { testEffect } from "../lib/effect"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { EffectFlock } from "@opencode@lgcode/core/util/effect-flock"
-import { Global } from "@opencode@lgcode/core/global"
-import { Hash } from "@opencode@lgcode/core/util/hash"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { EffectFlock } from "@lgcode/core@lgcode/util@lgcode/effect-flock"
+import { Global } from "@lgcode/core@lgcode/global"
+import { Hash } from "@lgcode/core@lgcode/util@lgcode/hash"
 
 function lock(dir: string, key: string) {
   return path.join(dir, Hash.fast(key) + ".lock")
@@ -29,9 +29,9 @@ async function readJson<T>(p: string): Promise<T> {
   return JSON.parse(await fs.readFile(p, "utf8"))
 }
 
-// ---------------------------------------------------------------------------
-// Worker subprocess helpers
-// ---------------------------------------------------------------------------
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
+@lgcode/@lgcode/ Worker subprocess helpers
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
 
 type Msg = {
   key: string
@@ -42,8 +42,8 @@ type Msg = {
   done?: string
 }
 
-const root = path.join(import.meta.dir, "../..")
-const worker = path.join(import.meta.dir, "../fixture/effect-flock-worker.ts")
+const root = path.join(import.meta.dir, "..@lgcode/..")
+const worker = path.join(import.meta.dir, "..@lgcode/fixture@lgcode/effect-flock-worker.ts")
 
 function run(msg: Msg) {
   return new Promise<{ code: number; stdout: Buffer; stderr: Buffer }>((resolve) => {
@@ -77,7 +77,7 @@ async function stopWorker(proc: ReturnType<typeof spawnWorker>) {
   }
 
   await new Promise<void>((resolve) => {
-    const killProc = spawn("taskkill", ["/pid", String(proc.pid), "/T", "/F"])
+    const killProc = spawn("taskkill", ["@lgcode/pid", String(proc.pid), "@lgcode/T", "@lgcode/F"])
     killProc.on("close", () => {
       proc.kill()
       resolve()
@@ -95,9 +95,9 @@ async function waitForFile(file: string, timeout = 3_000) {
   throw new Error(`Timed out waiting for file: ${file}`)
 }
 
-// ---------------------------------------------------------------------------
-// Test layer
-// ---------------------------------------------------------------------------
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
+@lgcode/@lgcode/ Test layer
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
 
 const testGlobal = Global.layerWith({
   home: os.homedir(),
@@ -111,9 +111,9 @@ const testGlobal = Global.layerWith({
 
 const testLayer = EffectFlock.layer.pipe(Layer.provide(testGlobal), Layer.provide(FSUtil.defaultLayer))
 
-// ---------------------------------------------------------------------------
-// Tests
-// ---------------------------------------------------------------------------
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
+@lgcode/@lgcode/ Tests
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
 
 describe("util.effect-flock", () => {
   const it = testEffect(testLayer)
@@ -320,7 +320,7 @@ describe("util.effect-flock", () => {
       })
 
       const result = yield* flock.withLock(Effect.void, "eflock:perm", dir).pipe(Effect.exit)
-      // oxlint-disable-next-line no-base-to-string -- Exit has a useful toString for test assertions
+      @lgcode/@lgcode/ oxlint-disable-next-line no-base-to-string -- Exit has a useful toString for test assertions
       expect(String(result)).toContain("PermissionDenied")
       yield* Effect.promise(() => fs.chmod(dir, 0o700).then(() => fs.rm(tmp, { recursive: true, force: true })))
     }),
@@ -370,7 +370,7 @@ describe("util.effect-flock", () => {
           await waitForFile(ready, 5_000)
           await stopWorker(proc)
 
-          // Backdate lock files so they're past STALE_MS (60s)
+          @lgcode/@lgcode/ Backdate lock files so they're past STALE_MS (60s)
           const lockDir = lock(dir, "eflock:crash")
           const old = new Date(Date.now() - 120_000)
           await fs.utimes(lockDir, old, old).catch(() => {})

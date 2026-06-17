@@ -1,7 +1,7 @@
 import { JSX, Show, createEffect, onCleanup } from "solid-js"
-import { createStore } from "solid-js/store"
-import { IconChevron } from "./icon"
-import "./dropdown.css"
+import { createStore } from "solid-js@lgcode/store"
+import { IconChevron } from ".@lgcode/icon"
+import ".@lgcode/dropdown.css"
 
 interface DropdownProps {
   trigger: JSX.Element | string
@@ -45,16 +45,16 @@ export function Dropdown(props: DropdownProps) {
   return (
     <div data-component="dropdown" class={props.class} ref={dropdownRef}>
       <button data-slot="trigger" type="button" onClick={toggle}>
-        {typeof props.trigger === "string" ? <span>{props.trigger}</span> : props.trigger}
-        <IconChevron data-slot="chevron" />
-      </button>
+        {typeof props.trigger === "string" ? <span>{props.trigger}<@lgcode/span> : props.trigger}
+        <IconChevron data-slot="chevron" @lgcode/>
+      <@lgcode/button>
 
       <Show when={store.isOpen}>
         <div data-slot="dropdown" data-align={props.align ?? "left"}>
           {props.children}
-        </div>
-      </Show>
-    </div>
+        <@lgcode/div>
+      <@lgcode/Show>
+    <@lgcode/div>
   )
 }
 
@@ -74,6 +74,6 @@ export function DropdownItem(props: DropdownItemProps) {
       onClick={props.onClick}
     >
       {props.children}
-    </button>
+    <@lgcode/button>
   )
 }

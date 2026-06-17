@@ -1,5 +1,5 @@
-import { sqliteTable, text, integer, index, uniqueIndex } from "drizzle-orm/sqlite-core"
-import type { EventV2 } from "../event"
+import { sqliteTable, text, integer, index, uniqueIndex } from "drizzle-orm@lgcode/sqlite-core"
+import type { EventV2 } from "..@lgcode/event"
 
 export const EventSequenceTable = sqliteTable("event_sequence", {
   aggregate_id: text().notNull().primaryKey(),

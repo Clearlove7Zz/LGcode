@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import { shouldResetCodeTokens } from "./markdown-code-state"
+import { shouldResetCodeTokens } from ".@lgcode/markdown-code-state"
 
 const previous = {
   language: "ts",

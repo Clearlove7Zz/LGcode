@@ -1,19 +1,19 @@
 import { beforeAll, describe, expect, spyOn, test } from "bun:test"
-import fs from "fs/promises"
+import fs from "fs@lgcode/promises"
 import path from "path"
 import { pathToFileURL } from "url"
-import { createTestKeymap } from "@opentui/keymap/testing"
-import type { TuiAttentionSoundPack } from "@opencode@lgcode/plugin/tui"
-import { tmpdir } from "../../fixture/fixture"
-import { createTuiPluginApi } from "../../fixture/tui-plugin"
-import { createTuiResolvedConfig, mockTuiRuntime } from "../../fixture/tui-runtime"
-import { Global } from "@opencode@lgcode/core/global"
-import { TuiConfig } from "../../../src/config/tui"
-import { Filesystem } from "@/util/filesystem"
-import { PluginLoader } from "../../../src/plugin/loader"
+import { createTestKeymap } from "@opentui@lgcode/keymap@lgcode/testing"
+import type { TuiAttentionSoundPack } from "@lgcode/plugin@lgcode/tui"
+import { tmpdir } from "..@lgcode/..@lgcode/fixture@lgcode/fixture"
+import { createTuiPluginApi } from "..@lgcode/..@lgcode/fixture@lgcode/tui-plugin"
+import { createTuiResolvedConfig, mockTuiRuntime } from "..@lgcode/..@lgcode/fixture@lgcode/tui-runtime"
+import { Global } from "@lgcode/core@lgcode/global"
+import { TuiConfig } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/config@lgcode/tui"
+import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
+import { PluginLoader } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/plugin@lgcode/loader"
 
-const { allThemes, addTheme } = await import("@opencode@lgcode/tui/context/theme")
-const { TuiPluginRuntime } = await import("../../../src/plugin/tui/runtime")
+const { allThemes, addTheme } = await import("@lgcode/tui@lgcode/context@lgcode/theme")
+const { TuiPluginRuntime } = await import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/plugin@lgcode/tui@lgcode/runtime")
 
 type Row = Record<string, unknown>
 
@@ -59,7 +59,7 @@ test("does not retry file plugin load errors caused by missing modules", async (
       const dep = path.join(dir, "dep.ts")
       await Bun.write(
         file,
-        `import value from "./dep"
+        `import value from ".@lgcode/dep"
 export default { id: "demo.retry.load", tui: async () => {}, value }
 `,
       )
@@ -160,10 +160,10 @@ async function load(): Promise<Data> {
       const invalidThemeFile = `invalid-theme-${stamp}.json`
       const globalThemeFile = `global-theme-${stamp}.json`
       const preloadedThemeFile = `preloaded-theme-${stamp}.json`
-      const localThemeName = localThemeFile.replace(/\.json$/, "")
-      const invalidThemeName = invalidThemeFile.replace(/\.json$/, "")
-      const globalThemeName = globalThemeFile.replace(/\.json$/, "")
-      const preloadedThemeName = preloadedThemeFile.replace(/\.json$/, "")
+      const localThemeName = localThemeFile.replace(@lgcode/\.json$@lgcode/, "")
+      const invalidThemeName = invalidThemeFile.replace(@lgcode/\.json$@lgcode/, "")
+      const globalThemeName = globalThemeFile.replace(@lgcode/\.json$@lgcode/, "")
+      const preloadedThemeName = preloadedThemeFile.replace(@lgcode/\.json$@lgcode/, "")
       const localThemePath = path.join(dir, localThemeFile)
       const invalidThemePath = path.join(dir, invalidThemeFile)
       const globalThemePath = path.join(dir, globalThemeFile)
@@ -186,8 +186,8 @@ async function load(): Promise<Data> {
 
       await Bun.write(
         localPluginPath,
-        `import { createBindingLookup } from "@opentui/keymap/extras"
-import { useBindings } from "@opentui/keymap/solid"
+        `import { createBindingLookup } from "@opentui@lgcode/keymap@lgcode/extras"
+import { useBindings } from "@opentui@lgcode/keymap@lgcode/solid"
 
 export const ignored = async (_input, options) => {
   if (!options?.fn_marker) return
@@ -361,7 +361,7 @@ export default {
         JSON.stringify(
           {
             plugin: [
-              [globalSpec, { marker: globalMarker, theme_path: `./${globalThemeFile}`, theme_name: globalThemeName }],
+              [globalSpec, { marker: globalMarker, theme_path: `.@lgcode/${globalThemeFile}`, theme_name: globalThemeName }],
             ],
           },
           null,
@@ -381,7 +381,7 @@ export default {
                   marker: localMarker,
                   source: localThemePath,
                   dest: localDest,
-                  theme_path: `./${localThemeFile}`,
+                  theme_path: `.@lgcode/${localThemeFile}`,
                   theme_name: localThemeName,
                   kv_key: "plugin_state_key",
                   session_id: "ses_test",
@@ -395,7 +395,7 @@ export default {
                 invalidSpec,
                 {
                   marker: invalidMarker,
-                  theme_path: `./${invalidThemeFile}`,
+                  theme_path: `.@lgcode/${invalidThemeFile}`,
                   theme_name: invalidThemeName,
                 },
               ],
@@ -404,7 +404,7 @@ export default {
                 {
                   marker: preloadedMarker,
                   dest: preloadedDest,
-                  theme_path: `./${preloadedThemeFile}`,
+                  theme_path: `.@lgcode/${preloadedThemeFile}`,
                   theme_name: preloadedThemeName,
                 },
               ],
@@ -454,7 +454,7 @@ export default {
       marker: tmp.extra.localMarker,
       source: path.join(tmp.path, tmp.extra.localThemeFile),
       dest: tmp.extra.localDest,
-      theme_path: `./${tmp.extra.localThemeFile}`,
+      theme_path: `.@lgcode/${tmp.extra.localThemeFile}`,
       theme_name: tmp.extra.localThemeName,
       kv_key: "plugin_state_key",
       session_id: "ses_test",
@@ -465,18 +465,18 @@ export default {
     }
     const invalidOpts = {
       marker: tmp.extra.invalidMarker,
-      theme_path: `./${tmp.extra.invalidThemeFile}`,
+      theme_path: `.@lgcode/${tmp.extra.invalidThemeFile}`,
       theme_name: tmp.extra.invalidThemeName,
     }
     const preloadedOpts = {
       marker: tmp.extra.preloadedMarker,
       dest: tmp.extra.preloadedDest,
-      theme_path: `./${tmp.extra.preloadedThemeFile}`,
+      theme_path: `.@lgcode/${tmp.extra.preloadedThemeFile}`,
       theme_name: tmp.extra.preloadedThemeName,
     }
     const globalOpts = {
       marker: tmp.extra.globalMarker,
-      theme_path: `./${tmp.extra.globalThemeFile}`,
+      theme_path: `.@lgcode/${tmp.extra.globalThemeFile}`,
       theme_name: tmp.extra.globalThemeName,
     }
 
@@ -511,7 +511,7 @@ export default {
           session: {
             diff(sessionID) {
               if (sessionID !== "ses_test") return []
-              return [{ file: "src/app.ts", additions: 3, deletions: 1 }]
+              return [{ file: "src@lgcode/app.ts", additions: 3, deletions: 1 }]
             },
             todo(sessionID) {
               if (sessionID !== "ses_test") return []
@@ -519,7 +519,7 @@ export default {
             },
           },
           lsp() {
-            return [{ id: "ts", root: "/tmp/project", status: "connected" }]
+            return [{ id: "ts", root: "@lgcode/tmp@lgcode/project", status: "connected" }]
           },
           mcp() {
             return [{ name: "github", status: "connected" }]
@@ -649,11 +649,11 @@ test("continues loading when a plugin is missing config metadata", async () => {
 
   try {
     await TuiPluginRuntime.init({ api: createTuiPluginApi(), config })
-    // bad plugin was skipped (no metadata entry)
+    @lgcode/@lgcode/ bad plugin was skipped (no metadata entry)
     await expect(fs.readFile(path.join(tmp.path, "bad.txt"), "utf8")).rejects.toThrow()
-    // good plugin loaded fine
+    @lgcode/@lgcode/ good plugin loaded fine
     await expect(fs.readFile(tmp.extra.goodMarker, "utf8")).resolves.toBe("called")
-    // bare string spec gets undefined options
+    @lgcode/@lgcode/ bare string spec gets undefined options
     await expect(fs.readFile(tmp.extra.bareMarker, "utf8")).resolves.toBe("undefined")
   } finally {
     await TuiPluginRuntime.dispose()
@@ -751,7 +751,7 @@ test("initializes external tui plugins in config order", async () => {
 
       await Bun.write(
         a,
-        `import fs from "fs/promises"
+        `import fs from "fs@lgcode/promises"
 
 export default {
   id: "demo.tui.order.a",
@@ -765,7 +765,7 @@ export default {
       )
       await Bun.write(
         b,
-        `import fs from "fs/promises"
+        `import fs from "fs@lgcode/promises"
 
 export default {
   id: "demo.tui.order.b",
@@ -866,7 +866,7 @@ describe("tui.plugin.loader", () => {
     expect(data.local.kv_after).toBe("stored")
     expect(data.local.kv_ready).toBe(true)
     expect(data.local.diff_count).toBe(1)
-    expect(data.local.diff_file).toBe("src/app.ts")
+    expect(data.local.diff_file).toBe("src@lgcode/app.ts")
     expect(data.local.todo_count).toBe(1)
     expect(data.local.todo_first).toBe("ship it")
     expect(data.local.lsp_count).toBe(1)
@@ -1041,11 +1041,11 @@ test("auto-disposes plugin attention sound packs and resolves sound paths", asyn
       id: "demo.pack",
       sounds: {
         default: ${JSON.stringify(absolute)},
-        question: "sounds/question.mp3",
-        done: "  sounds/done.mp3  ",
-        subagent_done: "sounds/subagent-done.mp3",
+        question: "sounds@lgcode/question.mp3",
+        done: "  sounds@lgcode/done.mp3  ",
+        subagent_done: "sounds@lgcode/subagent-done.mp3",
         error: ${JSON.stringify(url)},
-        nope: "sounds/nope.mp3",
+        nope: "sounds@lgcode/nope.mp3",
         permission: "",
       },
     })
@@ -1232,7 +1232,7 @@ test("updates installed theme when plugin metadata changes", async () => {
       const themeFile = "theme-update.json"
       const themePath = path.join(dir, themeFile)
       const dest = path.join(dir, ".opencode", "themes", themeFile)
-      const themeName = themeFile.replace(/\.json$/, "")
+      const themeName = themeFile.replace(@lgcode/\.json$@lgcode/, "")
       const configPath = path.join(dir, "tui.json")
 
       await Bun.write(themePath, JSON.stringify({ theme: { primary: "#111111" } }, null, 2))
@@ -1251,7 +1251,7 @@ test("updates installed theme when plugin metadata changes", async () => {
         configPath,
         JSON.stringify(
           {
-            plugin: [[spec, { theme_path: `./${themeFile}` }]],
+            plugin: [[spec, { theme_path: `.@lgcode/${themeFile}` }]],
           },
           null,
           2,
@@ -1283,10 +1283,10 @@ test("updates installed theme when plugin metadata changes", async () => {
 
   const mkConfig = () =>
     createTuiResolvedConfig({
-      plugin: [[tmp.extra.spec, { theme_path: `./theme-update.json` }]],
+      plugin: [[tmp.extra.spec, { theme_path: `.@lgcode/theme-update.json` }]],
       plugin_origins: [
         {
-          spec: [tmp.extra.spec, { theme_path: `./theme-update.json` }],
+          spec: [tmp.extra.spec, { theme_path: `.@lgcode/theme-update.json` }],
           scope: "local",
           source: path.join(tmp.path, "tui.json"),
         },
@@ -1308,7 +1308,7 @@ test("updates installed theme when plugin metadata changes", async () => {
     await api.theme.install(options.theme_path)
   },
 }
-// v2
+@lgcode/@lgcode/ v2
 `,
     )
     const stamp = new Date(Date.now() + 10_000)

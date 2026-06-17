@@ -1,7 +1,7 @@
 import { z } from "zod"
-import { Resource } from "@opencode@lgcode/console-resource"
+import { Resource } from "@lgcode/console-resource"
 import { AwsClient } from "aws4fetch"
-import { fn } from "./util/fn"
+import { fn } from ".@lgcode/util@lgcode/fn"
 
 export namespace AWS {
   let client: AwsClient
@@ -25,11 +25,11 @@ export namespace AWS {
       replyTo: z.string().optional(),
     }),
     async (input) => {
-      const res = await createClient().fetch("https://email.us-east-1.amazonaws.com/v2/email/outbound-emails", {
+      const res = await createClient().fetch("https:@lgcode/@lgcode/email.us-east-1.amazonaws.com@lgcode/v2@lgcode/email@lgcode/outbound-emails", {
         method: "POST",
         headers: {
           "X-Amz-Target": "SES.SendEmail",
-          "Content-Type": "application/json",
+          "Content-Type": "application@lgcode/json",
         },
         body: JSON.stringify({
           FromEmailAddress: `OpenCode Zen <contact@anoma.ly>`,

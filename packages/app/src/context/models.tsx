@@ -1,10 +1,10 @@
 import { createMemo } from "solid-js"
-import { createStore } from "solid-js/store"
+import { createStore } from "solid-js@lgcode/store"
 import { DateTime } from "luxon"
 import { filter, firstBy, flat, groupBy, mapValues, pipe, uniqueBy, values } from "remeda"
-import { createSimpleContext } from "@opencode@lgcode/ui/context"
-import { useProviders } from "@/hooks/use-providers"
-import { Persist, persisted } from "@/utils/persist"
+import { createSimpleContext } from "@lgcode/ui@lgcode/context"
+import { useProviders } from "@@lgcode/hooks@lgcode/use-providers"
+import { Persist, persisted } from "@@lgcode/utils@lgcode/persist"
 
 export type ModelKey = { providerID: string; modelID: string }
 
@@ -133,7 +133,7 @@ export const { use: useModels, provider: ModelsProvider } = createSimpleContext(
       setStore("recent", uniq)
     }
 
-    const variantKey = (model: ModelKey) => `${model.providerID}/${model.modelID}`
+    const variantKey = (model: ModelKey) => `${model.providerID}@lgcode/${model.modelID}`
     const getVariant = (model: ModelKey) => store.variant?.[variantKey(model)]
 
     const setVariant = (model: ModelKey, value: string | undefined) => {

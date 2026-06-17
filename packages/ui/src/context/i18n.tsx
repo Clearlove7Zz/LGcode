@@ -1,5 +1,5 @@
 import { createContext, useContext, type Accessor, type ParentProps } from "solid-js"
-import { dict as en } from "../i18n/en"
+import { dict as en } from "..@lgcode/i18n@lgcode/en"
 
 export type UiI18nKey = keyof typeof en
 
@@ -12,7 +12,7 @@ export type UiI18n = {
 
 function resolveTemplate(text: string, params?: UiI18nParams) {
   if (!params) return text
-  return text.replace(/{{\s*([^}]+?)\s*}}/g, (_, rawKey) => {
+  return text.replace(@lgcode/{{\s*([^}]+?)\s*}}@lgcode/g, (_, rawKey) => {
     const key = String(rawKey)
     const value = params[key]
     return value === undefined ? "" : String(value)
@@ -30,7 +30,7 @@ const fallback: UiI18n = {
 const Context = createContext<UiI18n>(fallback)
 
 export function I18nProvider(props: ParentProps<{ value: UiI18n }>) {
-  return <Context.Provider value={props.value}>{props.children}</Context.Provider>
+  return <Context.Provider value={props.value}>{props.children}<@lgcode/Context.Provider>
 }
 
 export function useI18n() {

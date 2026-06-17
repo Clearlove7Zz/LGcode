@@ -1,5 +1,5 @@
-import type { Plugin } from "@opencode@lgcode/plugin"
-import { mkdir, rm } from "node:fs/promises"
+import type { Plugin } from "@lgcode/plugin"
+import { mkdir, rm } from "node:fs@lgcode/promises"
 
 export const FolderWorkspacePlugin: Plugin = async ({ experimental_workspace }) => {
   experimental_workspace.register("folder", {
@@ -10,7 +10,7 @@ export const FolderWorkspacePlugin: Plugin = async ({ experimental_workspace }) 
 
       return {
         ...config,
-        directory: `/tmp/folder/folder-${rand}`,
+        directory: `@lgcode/tmp@lgcode/folder@lgcode/folder-${rand}`,
       }
     },
     async create(config) {

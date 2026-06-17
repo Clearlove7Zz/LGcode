@@ -1,19 +1,19 @@
-import * as Tool from "./tool"
-import DESCRIPTION from "./task.txt"
-import { ToolJsonSchema } from "./json-schema"
-import { SessionV1 } from "@opencode@lgcode/core/v1/session"
-import { BackgroundJob } from "@/background/job"
-import { Session } from "@/session/session"
-import { SessionID, MessageID } from "../session/schema"
-import { MessageV2 } from "../session/message-v2"
-import { Agent } from "../agent/agent"
-import { deriveSubagentSessionPermission } from "../agent/subagent-permissions"
-import type { SessionPrompt } from "../session/prompt"
-import { Config } from "@/config/config"
+import * as Tool from ".@lgcode/tool"
+import DESCRIPTION from ".@lgcode/task.txt"
+import { ToolJsonSchema } from ".@lgcode/json-schema"
+import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
+import { BackgroundJob } from "@@lgcode/background@lgcode/job"
+import { Session } from "@@lgcode/session@lgcode/session"
+import { SessionID, MessageID } from "..@lgcode/session@lgcode/schema"
+import { MessageV2 } from "..@lgcode/session@lgcode/message-v2"
+import { Agent } from "..@lgcode/agent@lgcode/agent"
+import { deriveSubagentSessionPermission } from "..@lgcode/agent@lgcode/subagent-permissions"
+import type { SessionPrompt } from "..@lgcode/session@lgcode/prompt"
+import { Config } from "@@lgcode/config@lgcode/config"
 import { Effect, Exit, Schema, Scope } from "effect"
-import { EffectBridge } from "@/effect/bridge"
-import { RuntimeFlags } from "@/effect/runtime-flags"
-import { Database } from "@opencode@lgcode/core/database/database"
+import { EffectBridge } from "@@lgcode/effect@lgcode/bridge"
+import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
 
 export interface TaskPromptOps {
   cancel(sessionID: SessionID): Effect.Effect<void>
@@ -70,11 +70,11 @@ function renderOutput(input: {
   const tag = input.state === "error" ? "task_error" : "task_result"
   return [
     `<task id="${input.sessionID}" state="${input.state}">`,
-    ...(input.summary ? [`<summary>${input.summary}</summary>`] : []),
+    ...(input.summary ? [`<summary>${input.summary}<@lgcode/summary>`] : []),
     `<${tag}>`,
     input.text,
-    `</${tag}>`,
-    "</task>",
+    `<@lgcode/${tag}>`,
+    "<@lgcode/task>",
   ].join("\n")
 }
 

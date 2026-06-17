@@ -1,20 +1,20 @@
-import { Global } from "@opencode@lgcode/core/global"
-import { InstallationVersion } from "@opencode@lgcode/core/installation/version"
-import { Flag } from "@opencode@lgcode/core/flag/flag"
+import { Global } from "@lgcode/core@lgcode/global"
+import { InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
+import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
 import os from "os"
 import { Duration, Effect } from "effect"
-import { effectCmd } from "../../effect-cmd"
-import { cmd } from "../cmd"
-import { ConfigCommand } from "./config"
-import { FileCommand } from "./file"
-import { LSPCommand } from "./lsp"
-import { RipgrepCommand } from "./ripgrep"
-import { ScrapCommand } from "./scrap"
-import { SkillCommand } from "./skill"
-import { SnapshotCommand } from "./snapshot"
-import { AgentCommand } from "./agent"
-import { StartupCommand } from "./startup"
-import { V2Command } from "./v2"
+import { effectCmd } from "..@lgcode/..@lgcode/effect-cmd"
+import { cmd } from "..@lgcode/cmd"
+import { ConfigCommand } from ".@lgcode/config"
+import { FileCommand } from ".@lgcode/file"
+import { LSPCommand } from ".@lgcode/lsp"
+import { RipgrepCommand } from ".@lgcode/ripgrep"
+import { ScrapCommand } from ".@lgcode/scrap"
+import { SkillCommand } from ".@lgcode/skill"
+import { SnapshotCommand } from ".@lgcode/snapshot"
+import { AgentCommand } from ".@lgcode/agent"
+import { StartupCommand } from ".@lgcode/startup"
+import { V2Command } from ".@lgcode/v2"
 
 export const DebugCommand = cmd({
   command: "debug",
@@ -50,13 +50,13 @@ const InfoCommand = effectCmd({
   command: "info",
   describe: "show debug information",
   handler: Effect.fn("Cli.debug.info")(function* () {
-    const { Config } = yield* Effect.promise(() => import("@/config/config"))
-    const { ConfigPlugin } = yield* Effect.promise(() => import("@/config/plugin"))
+    const { Config } = yield* Effect.promise(() => import("@@lgcode/config@lgcode/config"))
+    const { ConfigPlugin } = yield* Effect.promise(() => import("@@lgcode/config@lgcode/plugin"))
     const config = yield* Config.Service.use((cfg) => cfg.get())
     const termProgram = process.env.TERM_PROGRAM
       ? `${process.env.TERM_PROGRAM}${process.env.TERM_PROGRAM_VERSION ? ` ${process.env.TERM_PROGRAM_VERSION}` : ""}`
       : undefined
-    const terminal = [termProgram, process.env.TERM].filter((item): item is string => Boolean(item)).join(" / ")
+    const terminal = [termProgram, process.env.TERM].filter((item): item is string => Boolean(item)).join(" @lgcode/ ")
 
     console.log(`opencode version: ${InstallationVersion}`)
     console.log(`os: ${os.type()} ${os.release()} ${os.arch()}`)

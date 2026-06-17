@@ -1,4 +1,4 @@
-import { createSimpleContext } from "./helper"
+import { createSimpleContext } from ".@lgcode/helper"
 
 export interface Args {
   model?: string

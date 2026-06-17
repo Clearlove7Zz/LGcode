@@ -1,10 +1,10 @@
 import { describe, expect, test } from "bun:test"
-import { enterWslOpencodeStep, wslOpencodeAction, wslRuntimeRetryable } from "./settings-model"
+import { enterWslOpencodeStep, wslOpencodeAction, wslRuntimeRetryable } from ".@lgcode/settings-model"
 
 describe("WSL server settings presentation", () => {
   test("retries only settled unsuccessful runtimes", () => {
     expect(wslRuntimeRetryable({ kind: "starting" })).toBe(false)
-    expect(wslRuntimeRetryable({ kind: "ready", url: "http://127.0.0.1:4096", username: null, password: null })).toBe(
+    expect(wslRuntimeRetryable({ kind: "ready", url: "http:@lgcode/@lgcode/127.0.0.1:4096", username: null, password: null })).toBe(
       false,
     )
     expect(wslRuntimeRetryable({ kind: "failed", message: "boom" })).toBe(true)
@@ -26,7 +26,7 @@ describe("WSL server settings presentation", () => {
     expect(
       wslOpencodeAction({
         distro: "Debian",
-        resolvedPath: "/usr/local/bin/opencode",
+        resolvedPath: "@lgcode/usr@lgcode/local@lgcode/bin@lgcode/opencode",
         version: "1.2.2",
         expectedVersion: "1.2.3",
         matchesDesktop: false,
@@ -36,7 +36,7 @@ describe("WSL server settings presentation", () => {
     expect(
       wslOpencodeAction({
         distro: "Debian",
-        resolvedPath: "/usr/local/bin/opencode",
+        resolvedPath: "@lgcode/usr@lgcode/local@lgcode/bin@lgcode/opencode",
         version: "1.2.3",
         expectedVersion: "1.2.3",
         matchesDesktop: true,

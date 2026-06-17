@@ -1,9 +1,9 @@
-import { Auth } from "@/auth"
+import { Auth } from "@@lgcode/auth"
 
 import { Schema } from "effect"
-import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
-import { described } from "./metadata"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
+import { described } from ".@lgcode/metadata"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
 
 const AuthParams = Schema.Struct({
   providerID: ProviderV2.ID,
@@ -29,8 +29,8 @@ export const LogInput = Schema.Struct({
 })
 
 export const ControlPaths = {
-  auth: "/auth/:providerID",
-  log: "/log",
+  auth: "@lgcode/auth@lgcode/:providerID",
+  log: "@lgcode/log",
 } as const
 
 export const ControlApi = HttpApi.make("control").add(

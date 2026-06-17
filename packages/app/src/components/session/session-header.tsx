@@ -1,32 +1,32 @@
-import { AppIcon } from "@opencode@lgcode/ui/app-icon"
-import { Button } from "@opencode@lgcode/ui/button"
-import { DropdownMenu } from "@opencode@lgcode/ui/dropdown-menu"
-import { Icon } from "@opencode@lgcode/ui/icon"
-import { IconButton } from "@opencode@lgcode/ui/icon-button"
-import { Keybind } from "@opencode@lgcode/ui/keybind"
-import { Spinner } from "@opencode@lgcode/ui/spinner"
-import { showToast } from "@/utils/toast"
-import { Tooltip, TooltipKeybind } from "@opencode@lgcode/ui/tooltip"
-import { getFilename } from "@opencode@lgcode/core/util/path"
+import { AppIcon } from "@lgcode/ui@lgcode/app-icon"
+import { Button } from "@lgcode/ui@lgcode/button"
+import { DropdownMenu } from "@lgcode/ui@lgcode/dropdown-menu"
+import { Icon } from "@lgcode/ui@lgcode/icon"
+import { IconButton } from "@lgcode/ui@lgcode/icon-button"
+import { Keybind } from "@lgcode/ui@lgcode/keybind"
+import { Spinner } from "@lgcode/ui@lgcode/spinner"
+import { showToast } from "@@lgcode/utils@lgcode/toast"
+import { Tooltip, TooltipKeybind } from "@lgcode/ui@lgcode/tooltip"
+import { getFilename } from "@lgcode/core@lgcode/util@lgcode/path"
 import { createEffect, createMemo, createSignal, For, onMount, Show } from "solid-js"
-import { createStore } from "solid-js/store"
-import { Portal } from "solid-js/web"
-import { useCommand } from "@/context/command"
-import { useLanguage } from "@/context/language"
-import { useLayout } from "@/context/layout"
-import { usePlatform } from "@/context/platform"
-import { useServer } from "@/context/server"
-import { useSettings } from "@/context/settings"
-import { useSync } from "@/context/sync"
-import { useTerminal } from "@/context/terminal"
-import { focusTerminalById } from "@/pages/session/helpers"
-import { useSessionLayout } from "@/pages/session/session-layout"
-import { messageAgentColor } from "@/utils/agent"
-import { decode64 } from "@/utils/base64"
-import { Persist, persisted } from "@/utils/persist"
-import { StatusPopover, StatusPopoverV2 } from "../status-popover"
-import { IconButtonV2 } from "@opencode@lgcode/ui/v2/icon-button-v2"
-import { Icon as IconV2 } from "@opencode@lgcode/ui/v2/icon"
+import { createStore } from "solid-js@lgcode/store"
+import { Portal } from "solid-js@lgcode/web"
+import { useCommand } from "@@lgcode/context@lgcode/command"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { useLayout } from "@@lgcode/context@lgcode/layout"
+import { usePlatform } from "@@lgcode/context@lgcode/platform"
+import { useServer } from "@@lgcode/context@lgcode/server"
+import { useSettings } from "@@lgcode/context@lgcode/settings"
+import { useSync } from "@@lgcode/context@lgcode/sync"
+import { useTerminal } from "@@lgcode/context@lgcode/terminal"
+import { focusTerminalById } from "@@lgcode/pages@lgcode/session@lgcode/helpers"
+import { useSessionLayout } from "@@lgcode/pages@lgcode/session@lgcode/session-layout"
+import { messageAgentColor } from "@@lgcode/utils@lgcode/agent"
+import { decode64 } from "@@lgcode/utils@lgcode/base64"
+import { Persist, persisted } from "@@lgcode/utils@lgcode/persist"
+import { StatusPopover, StatusPopoverV2 } from "..@lgcode/status-popover"
+import { IconButtonV2 } from "@lgcode/ui@lgcode/v2@lgcode/icon-button-v2"
+import { Icon as IconV2 } from "@lgcode/ui@lgcode/v2@lgcode/icon"
 
 const OPEN_APPS = [
   "vscode",
@@ -117,9 +117,9 @@ const detectOS = (platform: ReturnType<typeof usePlatform>): OS => {
   if (platform.platform === "desktop" && platform.os) return platform.os
   if (typeof navigator !== "object") return "unknown"
   const value = navigator.platform || navigator.userAgent
-  if (/Mac/i.test(value)) return "macos"
-  if (/Win/i.test(value)) return "windows"
-  if (/Linux/i.test(value)) return "linux"
+  if (@lgcode/Mac@lgcode/i.test(value)) return "macos"
+  if (@lgcode/Win@lgcode/i.test(value)) return "windows"
+  if (@lgcode/Linux@lgcode/i.test(value)) return "linux"
   return "unknown"
 }
 
@@ -302,20 +302,20 @@ export function SessionHeader() {
                   {language.t("session.header.search.placeholder", {
                     project: name(),
                   })}
-                </span>
-              </div>
+                <@lgcode/span>
+              <@lgcode/div>
 
               <Show when={hotkey()}>
                 {(keybind) => (
                   <Keybind class="shrink-0 !border-0 !bg-transparent !shadow-none px-0 text-text-weaker">
                     {keybind()}
-                  </Keybind>
+                  <@lgcode/Keybind>
                 )}
-              </Show>
-            </Button>
-          </Portal>
+              <@lgcode/Show>
+            <@lgcode/Button>
+          <@lgcode/Portal>
         )}
-      </Show>
+      <@lgcode/Show>
       <Show when={rightMount()}>
         {(mount) => (
           <Portal mount={mount()}>
@@ -335,12 +335,12 @@ export function SessionHeader() {
                               onClick={copyPath}
                               aria-label={language.t("session.header.open.copyPath")}
                             >
-                              <Icon name="copy" size="small" class="text-icon-base" />
+                              <Icon name="copy" size="small" class="text-icon-base" @lgcode/>
                               <span class="text-12-regular text-text-strong">
                                 {language.t("session.header.open.copyPath")}
-                              </span>
-                            </Button>
-                          </div>
+                              <@lgcode/span>
+                            <@lgcode/Button>
+                          <@lgcode/div>
                         }
                       >
                         <div class="flex items-center">
@@ -356,11 +356,11 @@ export function SessionHeader() {
                               aria-label={language.t("session.header.open.ariaLabel", { app: current().label })}
                             >
                               <div class="flex size-5 shrink-0 items-center justify-center [&_[data-component=app-icon]]:size-5">
-                                <Show when={opening()} fallback={<AppIcon id={current().icon} />}>
-                                  <Spinner class="size-3.5" style={{ color: tint() ?? "var(--icon-base)" }} />
-                                </Show>
-                              </div>
-                            </Button>
+                                <Show when={opening()} fallback={<AppIcon id={current().icon} @lgcode/>}>
+                                  <Spinner class="size-3.5" style={{ color: tint() ?? "var(--icon-base)" }} @lgcode/>
+                                <@lgcode/Show>
+                              <@lgcode/div>
+                            <@lgcode/Button>
                             <DropdownMenu
                               gutter={4}
                               placement="bottom-end"
@@ -377,13 +377,13 @@ export function SessionHeader() {
                                   "bg-surface-raised-base-active": opening(),
                                 }}
                                 aria-label={language.t("session.header.open.menu")}
-                              />
+                              @lgcode/>
                               <DropdownMenu.Portal>
                                 <DropdownMenu.Content class="[&_[data-slot=dropdown-menu-item]]:pl-1 [&_[data-slot=dropdown-menu-radio-item]]:pl-1 [&_[data-slot=dropdown-menu-radio-item]+[data-slot=dropdown-menu-radio-item]]:mt-1">
                                   <DropdownMenu.Group>
                                     <DropdownMenu.GroupLabel class="!px-1 !py-1">
                                       {language.t("session.header.openIn")}
-                                    </DropdownMenu.GroupLabel>
+                                    <@lgcode/DropdownMenu.GroupLabel>
                                     <DropdownMenu.RadioGroup
                                       class="mt-1"
                                       value={current().id}
@@ -403,18 +403,18 @@ export function SessionHeader() {
                                             }}
                                           >
                                             <div class="flex size-5 shrink-0 items-center justify-center [&_[data-component=app-icon]]:size-5">
-                                              <AppIcon id={o.icon} />
-                                            </div>
-                                            <DropdownMenu.ItemLabel>{o.label}</DropdownMenu.ItemLabel>
+                                              <AppIcon id={o.icon} @lgcode/>
+                                            <@lgcode/div>
+                                            <DropdownMenu.ItemLabel>{o.label}<@lgcode/DropdownMenu.ItemLabel>
                                             <DropdownMenu.ItemIndicator>
-                                              <Icon name="check-small" size="small" class="text-icon-weak" />
-                                            </DropdownMenu.ItemIndicator>
-                                          </DropdownMenu.RadioItem>
+                                              <Icon name="check-small" size="small" class="text-icon-weak" @lgcode/>
+                                            <@lgcode/DropdownMenu.ItemIndicator>
+                                          <@lgcode/DropdownMenu.RadioItem>
                                         )}
-                                      </For>
-                                    </DropdownMenu.RadioGroup>
-                                  </DropdownMenu.Group>
-                                  <DropdownMenu.Separator />
+                                      <@lgcode/For>
+                                    <@lgcode/DropdownMenu.RadioGroup>
+                                  <@lgcode/DropdownMenu.Group>
+                                  <DropdownMenu.Separator @lgcode/>
                                   <DropdownMenu.Item
                                     onSelect={() => {
                                       setMenu("open", false)
@@ -422,41 +422,41 @@ export function SessionHeader() {
                                     }}
                                   >
                                     <div class="flex size-5 shrink-0 items-center justify-center">
-                                      <Icon name="copy" size="small" class="text-icon-weak" />
-                                    </div>
+                                      <Icon name="copy" size="small" class="text-icon-weak" @lgcode/>
+                                    <@lgcode/div>
                                     <DropdownMenu.ItemLabel>
                                       {language.t("session.header.open.copyPath")}
-                                    </DropdownMenu.ItemLabel>
-                                  </DropdownMenu.Item>
-                                </DropdownMenu.Content>
-                              </DropdownMenu.Portal>
-                            </DropdownMenu>
-                          </div>
-                        </div>
-                      </Show>
-                    </div>
-                  </Show>
+                                    <@lgcode/DropdownMenu.ItemLabel>
+                                  <@lgcode/DropdownMenu.Item>
+                                <@lgcode/DropdownMenu.Content>
+                              <@lgcode/DropdownMenu.Portal>
+                            <@lgcode/DropdownMenu>
+                          <@lgcode/div>
+                        <@lgcode/div>
+                      <@lgcode/Show>
+                    <@lgcode/div>
+                  <@lgcode/Show>
                   <div class="flex items-center gap-1">
                     <Show when={status()}>
                       <Tooltip placement="bottom" value={language.t("status.popover.trigger")}>
-                        <StatusPopover />
-                      </Tooltip>
-                    </Show>
+                        <StatusPopover @lgcode/>
+                      <@lgcode/Tooltip>
+                    <@lgcode/Show>
                     <TooltipKeybind
                       title={language.t("command.terminal.toggle")}
                       keybind={command.keybind("terminal.toggle")}
                     >
                       <Button
                         variant="ghost"
-                        class="group/terminal-toggle titlebar-icon w-8 h-6 p-0 box-border shrink-0"
+                        class="group@lgcode/terminal-toggle titlebar-icon w-8 h-6 p-0 box-border shrink-0"
                         onClick={toggleTerminal}
                         aria-label={language.t("command.terminal.toggle")}
                         aria-expanded={view().terminal.opened()}
                         aria-controls="terminal-panel"
                       >
-                        <Icon size="small" name={view().terminal.opened() ? "terminal-active" : "terminal"} />
-                      </Button>
-                    </TooltipKeybind>
+                        <Icon size="small" name={view().terminal.opened() ? "terminal-active" : "terminal"} @lgcode/>
+                      <@lgcode/Button>
+                    <@lgcode/TooltipKeybind>
 
                     <div class="hidden md:flex items-center gap-1 shrink-0">
                       <TooltipKeybind
@@ -465,15 +465,15 @@ export function SessionHeader() {
                       >
                         <Button
                           variant="ghost"
-                          class="group/review-toggle titlebar-icon w-8 h-6 p-0 box-border"
+                          class="group@lgcode/review-toggle titlebar-icon w-8 h-6 p-0 box-border"
                           onClick={() => view().reviewPanel.toggle()}
                           aria-label={language.t("command.review.toggle")}
                           aria-expanded={view().reviewPanel.opened()}
                           aria-controls="review-panel"
                         >
-                          <Icon size="small" name={view().reviewPanel.opened() ? "review-active" : "review"} />
-                        </Button>
-                      </TooltipKeybind>
+                          <Icon size="small" name={view().reviewPanel.opened() ? "review-active" : "review"} @lgcode/>
+                        <@lgcode/Button>
+                      <@lgcode/TooltipKeybind>
 
                       <TooltipKeybind
                         title={language.t("command.fileTree.toggle")}
@@ -495,21 +495,21 @@ export function SessionHeader() {
                                 "text-icon-strong": layout.fileTree.opened(),
                                 "text-icon-weak": !layout.fileTree.opened(),
                               }}
-                            />
-                          </div>
-                        </Button>
-                      </TooltipKeybind>
-                    </div>
-                  </div>
-                </div>
+                            @lgcode/>
+                          <@lgcode/div>
+                        <@lgcode/Button>
+                      <@lgcode/TooltipKeybind>
+                    <@lgcode/div>
+                  <@lgcode/div>
+                <@lgcode/div>
               }
             >
-              <SessionHeaderV2Actions state={v2ActionsState()} />
-            </Show>
-          </Portal>
+              <SessionHeaderV2Actions state={v2ActionsState()} @lgcode/>
+            <@lgcode/Show>
+          <@lgcode/Portal>
         )}
-      </Show>
-    </>
+      <@lgcode/Show>
+    <@lgcode/>
   )
 }
 
@@ -527,9 +527,9 @@ function SessionHeaderV2Actions(props: { state: SessionHeaderV2ActionsState }) {
     <div class="flex items-center gap-2">
       <Show when={props.state.statusVisible}>
         <Tooltip placement="bottom" value={props.state.statusLabel}>
-          <StatusPopoverV2 />
-        </Tooltip>
-      </Show>
+          <StatusPopoverV2 @lgcode/>
+        <@lgcode/Tooltip>
+      <@lgcode/Show>
       <TooltipKeybind title={props.state.reviewLabel} keybind={props.state.reviewKeybind}>
         <IconButtonV2
           type="button"
@@ -541,9 +541,9 @@ function SessionHeaderV2Actions(props: { state: SessionHeaderV2ActionsState }) {
           aria-label={props.state.reviewLabel}
           aria-expanded={props.state.reviewOpened}
           aria-controls="review-panel"
-          icon={<IconV2 name="sidebar-right" />}
-        />
-      </TooltipKeybind>
-    </div>
+          icon={<IconV2 name="sidebar-right" @lgcode/>}
+        @lgcode/>
+      <@lgcode/TooltipKeybind>
+    <@lgcode/div>
   )
 }

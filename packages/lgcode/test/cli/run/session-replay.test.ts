@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test"
-import { replayLocalRows, replaySession } from "@/cli/cmd/run/session-replay"
-import type { SessionMessages } from "@/cli/cmd/run/session.shared"
-import type { RunProvider } from "@/cli/cmd/run/types"
+import { replayLocalRows, replaySession } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/session-replay"
+import type { SessionMessages } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/session.shared"
+import type { RunProvider } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/types"
 
 function userMessage(id: string, text: string): SessionMessages[number] {
   return {
@@ -50,8 +50,8 @@ function assistantInfo(
     mode: "chat",
     agent: "build",
     path: {
-      cwd: "/tmp",
-      root: "/tmp",
+      cwd: "@lgcode/tmp",
+      root: "@lgcode/tmp",
     },
     cost: 0,
     tokens: {
@@ -114,8 +114,8 @@ const provider = (name: string): RunProvider => ({
       providerID: "openai",
       api: {
         id: "openai",
-        url: "https://openai.test",
-        npm: "@ai-sdk/openai",
+        url: "https:@lgcode/@lgcode/openai.test",
+        npm: "@ai-sdk@lgcode/openai",
       },
       name,
       capabilities: {

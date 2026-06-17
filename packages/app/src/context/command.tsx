@@ -1,14 +1,14 @@
-import { createSimpleContext } from "@opencode@lgcode/ui/context"
-import { useDialog } from "@opencode@lgcode/ui/context/dialog"
+import { createSimpleContext } from "@lgcode/ui@lgcode/context"
+import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
 import { type Accessor, createEffect, createMemo, onCleanup, onMount } from "solid-js"
-import { createStore } from "solid-js/store"
-import { makeEventListener } from "@solid-primitives/event-listener"
-import { useLanguage } from "@/context/language"
-import { useSettings } from "@/context/settings"
-import { dict as en } from "@/i18n/en"
-import { Persist, persisted } from "@/utils/persist"
+import { createStore } from "solid-js@lgcode/store"
+import { makeEventListener } from "@solid-primitives@lgcode/event-listener"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { useSettings } from "@@lgcode/context@lgcode/settings"
+import { dict as en } from "@@lgcode/i18n@lgcode/en"
+import { Persist, persisted } from "@@lgcode/utils@lgcode/persist"
 
-const IS_MAC = typeof navigator === "object" && /(Mac|iPod|iPhone|iPad)/.test(navigator.platform)
+const IS_MAC = typeof navigator === "object" && @lgcode/(Mac|iPod|iPhone|iPad)@lgcode/.test(navigator.platform)
 
 const PALETTE_ID = "command.palette"
 const DEFAULT_PALETTE_KEYBIND = "mod+shift+p"

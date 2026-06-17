@@ -1,18 +1,18 @@
-import { Button } from "@opencode@lgcode/ui/button"
-import { useDialog } from "@opencode@lgcode/ui/context/dialog"
-import { Dialog } from "@opencode@lgcode/ui/dialog"
-import { TextField } from "@opencode@lgcode/ui/text-field"
-import { useMutation } from "@tanstack/solid-query"
-import { Icon } from "@opencode@lgcode/ui/icon"
+import { Button } from "@lgcode/ui@lgcode/button"
+import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
+import { Dialog } from "@lgcode/ui@lgcode/dialog"
+import { TextField } from "@lgcode/ui@lgcode/text-field"
+import { useMutation } from "@tanstack@lgcode/solid-query"
+import { Icon } from "@lgcode/ui@lgcode/icon"
 import { createMemo, For, Show } from "solid-js"
-import { createStore } from "solid-js/store"
-import { type LocalProject, getAvatarColors } from "@/context/layout"
-import { getFilename } from "@opencode@lgcode/core/util/path"
-import { Avatar } from "@opencode@lgcode/ui/avatar"
-import { useLanguage } from "@/context/language"
-import { getProjectAvatarSource } from "@/pages/layout/helpers"
-import { ServerConnection } from "@/context/server"
-import { useGlobal } from "@/context/global"
+import { createStore } from "solid-js@lgcode/store"
+import { type LocalProject, getAvatarColors } from "@@lgcode/context@lgcode/layout"
+import { getFilename } from "@lgcode/core@lgcode/util@lgcode/path"
+import { Avatar } from "@lgcode/ui@lgcode/avatar"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { getProjectAvatarSource } from "@@lgcode/pages@lgcode/layout@lgcode/helpers"
+import { ServerConnection } from "@@lgcode/context@lgcode/server"
+import { useGlobal } from "@@lgcode/context@lgcode/global"
 
 const AVATAR_COLOR_KEYS = ["pink", "mint", "orange", "purple", "cyan", "lime"] as const
 
@@ -39,7 +39,7 @@ export function DialogEditProject(props: { project: LocalProject; server: Server
   let iconInput: HTMLInputElement | undefined
 
   function handleFileSelect(file: File) {
-    if (!file.type.startsWith("image/")) return
+    if (!file.type.startsWith("image@lgcode/")) return
     const reader = new FileReader()
     reader.onload = (e) => {
       setStore("iconOverride", e.target?.result as string)
@@ -118,10 +118,10 @@ export function DialogEditProject(props: { project: LocalProject; server: Server
             placeholder={folderName()}
             value={store.name}
             onChange={(v) => setStore("name", v)}
-          />
+          @lgcode/>
 
           <div class="flex flex-col gap-2">
-            <label class="text-12-medium text-text-weak">{language.t("dialog.project.edit.icon")}</label>
+            <label class="text-12-medium text-text-weak">{language.t("dialog.project.edit.icon")}<@lgcode/label>
             <div class="flex gap-3 items-start">
               <div
                 class="relative"
@@ -131,7 +131,7 @@ export function DialogEditProject(props: { project: LocalProject; server: Server
                 <div
                   class="relative size-16 rounded-md transition-colors cursor-pointer"
                   classList={{
-                    "border-text-interactive-base bg-surface-info-base/20": store.dragOver,
+                    "border-text-interactive-base bg-surface-info-base@lgcode/20": store.dragOver,
                     "border-border-base hover:border-border-strong": !store.dragOver,
                     "overflow-hidden": !!store.iconOverride,
                   }}
@@ -158,8 +158,8 @@ export function DialogEditProject(props: { project: LocalProject; server: Server
                           fallback={store.name || defaultName()}
                           {...getAvatarColors(store.color)}
                           class="size-full text-[32px]"
-                        />
-                      </div>
+                        @lgcode/>
+                      <@lgcode/div>
                     }
                   >
                     {(src) => (
@@ -167,49 +167,49 @@ export function DialogEditProject(props: { project: LocalProject; server: Server
                         src={src()}
                         alt={language.t("dialog.project.edit.icon.alt")}
                         class="size-full object-cover"
-                      />
+                      @lgcode/>
                     )}
-                  </Show>
-                </div>
+                  <@lgcode/Show>
+                <@lgcode/div>
                 <div
-                  class="absolute inset-0 size-16 bg-surface-raised-stronger-non-alpha/90 rounded-[6px] z-10 pointer-events-none flex items-center justify-center transition-opacity"
+                  class="absolute inset-0 size-16 bg-surface-raised-stronger-non-alpha@lgcode/90 rounded-[6px] z-10 pointer-events-none flex items-center justify-center transition-opacity"
                   classList={{
                     "opacity-100": store.iconHover && !store.iconOverride,
                     "opacity-0": !(store.iconHover && !store.iconOverride),
                   }}
                 >
-                  <Icon name="cloud-upload" size="large" class="text-icon-on-interactive-base drop-shadow-sm" />
-                </div>
+                  <Icon name="cloud-upload" size="large" class="text-icon-on-interactive-base drop-shadow-sm" @lgcode/>
+                <@lgcode/div>
                 <div
-                  class="absolute inset-0 size-16 bg-surface-raised-stronger-non-alpha/90 rounded-[6px] z-10 pointer-events-none flex items-center justify-center transition-opacity"
+                  class="absolute inset-0 size-16 bg-surface-raised-stronger-non-alpha@lgcode/90 rounded-[6px] z-10 pointer-events-none flex items-center justify-center transition-opacity"
                   classList={{
                     "opacity-100": store.iconHover && !!store.iconOverride,
                     "opacity-0": !(store.iconHover && !!store.iconOverride),
                   }}
                 >
-                  <Icon name="trash" size="large" class="text-icon-on-interactive-base drop-shadow-sm" />
-                </div>
-              </div>
+                  <Icon name="trash" size="large" class="text-icon-on-interactive-base drop-shadow-sm" @lgcode/>
+                <@lgcode/div>
+              <@lgcode/div>
               <input
                 id="icon-upload"
                 ref={(el) => {
                   iconInput = el
                 }}
                 type="file"
-                accept="image/*"
+                accept="image@lgcode/*"
                 class="hidden"
                 onChange={handleInputChange}
-              />
+              @lgcode/>
               <div class="flex flex-col gap-1.5 text-12-regular text-text-weak self-center">
-                <span>{language.t("dialog.project.edit.icon.hint")}</span>
-                <span>{language.t("dialog.project.edit.icon.recommended")}</span>
-              </div>
-            </div>
-          </div>
+                <span>{language.t("dialog.project.edit.icon.hint")}<@lgcode/span>
+                <span>{language.t("dialog.project.edit.icon.recommended")}<@lgcode/span>
+              <@lgcode/div>
+            <@lgcode/div>
+          <@lgcode/div>
 
           <Show when={!store.iconOverride}>
             <div class="flex flex-col gap-2">
-              <label class="text-12-medium text-text-weak">{language.t("dialog.project.edit.color")}</label>
+              <label class="text-12-medium text-text-weak">{language.t("dialog.project.edit.color")}<@lgcode/label>
               <div class="flex gap-1.5">
                 <For each={AVATAR_COLOR_KEYS}>
                   {(color) => (
@@ -233,13 +233,13 @@ export function DialogEditProject(props: { project: LocalProject; server: Server
                         fallback={store.name || defaultName()}
                         {...getAvatarColors(color)}
                         class="size-full rounded"
-                      />
-                    </button>
+                      @lgcode/>
+                    <@lgcode/button>
                   )}
-                </For>
-              </div>
-            </div>
-          </Show>
+                <@lgcode/For>
+              <@lgcode/div>
+            <@lgcode/div>
+          <@lgcode/Show>
 
           <TextField
             multiline
@@ -250,18 +250,18 @@ export function DialogEditProject(props: { project: LocalProject; server: Server
             onChange={(v) => setStore("startup", v)}
             spellcheck={false}
             class="max-h-14 w-full overflow-y-auto font-mono text-xs"
-          />
-        </div>
+          @lgcode/>
+        <@lgcode/div>
 
         <div class="flex justify-end gap-2">
           <Button type="button" variant="ghost" size="large" onClick={() => dialog.close()}>
             {language.t("common.cancel")}
-          </Button>
+          <@lgcode/Button>
           <Button type="submit" variant="primary" size="large" disabled={saveMutation.isPending}>
             {saveMutation.isPending ? language.t("common.saving") : language.t("common.save")}
-          </Button>
-        </div>
-      </form>
-    </Dialog>
+          <@lgcode/Button>
+        <@lgcode/div>
+      <@lgcode/form>
+    <@lgcode/Dialog>
   )
 }

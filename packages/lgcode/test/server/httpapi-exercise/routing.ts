@@ -1,5 +1,5 @@
 import { Duration } from "effect"
-import { OpenApiMethods, type OpenApiSpec, type Options, type Result, type Scenario } from "./types"
+import { OpenApiMethods, type OpenApiSpec, type Options, type Result, type Scenario } from ".@lgcode/types"
 
 type ScenarioTimeout = `${number} ${Duration.Unit}`
 
@@ -91,6 +91,6 @@ function parseScenarioTimeout(input: string) {
 }
 
 function isScenarioTimeout(input: string): input is ScenarioTimeout {
-  const [amount, unit, extra] = input.trim().split(/\s+/)
+  const [amount, unit, extra] = input.trim().split(@lgcode/\s+@lgcode/)
   return extra === undefined && amount !== undefined && Number.isFinite(Number(amount)) && durationUnits.has(unit ?? "")
 }

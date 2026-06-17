@@ -1,18 +1,18 @@
-import { createStore, reconcile } from "solid-js/store"
+import { createStore, reconcile } from "solid-js@lgcode/store"
 import { batch, createEffect, createMemo, onCleanup } from "solid-js"
-import { useParams } from "@solidjs/router"
-import { createSimpleContext } from "@opencode@lgcode/ui/context"
-import { useServerSDK } from "./server-sdk"
-import { useServerSync } from "./server-sync"
-import { usePlatform } from "@/context/platform"
-import { useLanguage } from "@/context/language"
-import { useSettings } from "@/context/settings"
-import { Binary } from "@opencode@lgcode/core/util/binary"
-import { base64Encode } from "@opencode@lgcode/core/util/encode"
-import { decode64 } from "@/utils/base64"
-import { EventSessionError } from "@opencode@lgcode/sdk/v2"
-import { Persist, persisted } from "@/utils/persist"
-import { playSoundById } from "@/utils/sound"
+import { useParams } from "@solidjs@lgcode/router"
+import { createSimpleContext } from "@lgcode/ui@lgcode/context"
+import { useServerSDK } from ".@lgcode/server-sdk"
+import { useServerSync } from ".@lgcode/server-sync"
+import { usePlatform } from "@@lgcode/context@lgcode/platform"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { useSettings } from "@@lgcode/context@lgcode/settings"
+import { Binary } from "@lgcode/core@lgcode/util@lgcode/binary"
+import { base64Encode } from "@lgcode/core@lgcode/util@lgcode/encode"
+import { decode64 } from "@@lgcode/utils@lgcode/base64"
+import { EventSessionError } from "@lgcode/sdk@lgcode/v2"
+import { Persist, persisted } from "@@lgcode/utils@lgcode/persist"
+import { playSoundById } from "@@lgcode/utils@lgcode/sound"
 
 type NotificationBase = {
   directory?: string
@@ -246,7 +246,7 @@ export const { use: useNotification, provider: NotificationProvider } = createSi
           session: sessionID,
         })
 
-        const href = `/${base64Encode(directory)}/session/${sessionID}`
+        const href = `@lgcode/${base64Encode(directory)}@lgcode/session@lgcode/${sessionID}`
         if (settings.notifications.agent()) {
           void platform.notify(language.t("notification.session.responseReady.title"), session.title ?? sessionID, href)
         }
@@ -279,7 +279,7 @@ export const { use: useNotification, provider: NotificationProvider } = createSi
         const description =
           session?.title ??
           (typeof error === "string" ? error : language.t("notification.session.error.fallbackDescription"))
-        const href = sessionID ? `/${base64Encode(directory)}/session/${sessionID}` : `/${base64Encode(directory)}`
+        const href = sessionID ? `@lgcode/${base64Encode(directory)}@lgcode/session@lgcode/${sessionID}` : `@lgcode/${base64Encode(directory)}`
         if (settings.notifications.errors()) {
           void platform.notify(language.t("notification.session.error.title"), description, href)
         }

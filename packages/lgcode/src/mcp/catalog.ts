@@ -1,10 +1,10 @@
-import { Client } from "@modelcontextprotocol/sdk/client/index.js"
+import { Client } from "@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/index.js"
 import {
   CallToolResultSchema,
   ListToolsResultSchema,
   ToolSchema,
   type Tool as MCPToolDef,
-} from "@modelcontextprotocol/sdk/types.js"
+} from "@modelcontextprotocol@lgcode/sdk@lgcode/types.js"
 import { dynamicTool, jsonSchema, type JSONSchema7, type Tool } from "ai"
 import { Effect } from "effect"
 
@@ -61,7 +61,7 @@ export function convertTool(mcpTool: MCPToolDef, client: Client, timeout?: numbe
           resetTimeoutOnProgress: true,
           signal: options.abortSignal,
           timeout,
-          // The MCP SDK only sends a progress token when this hook is present, enabling timeout resets.
+          @lgcode/@lgcode/ The MCP SDK only sends a progress token when this hook is present, enabling timeout resets.
           onprogress: () => {},
         },
       )
@@ -107,7 +107,7 @@ export function fetch<T extends { name: string }>(
   )
 }
 
-export const sanitize = (value: string) => value.replace(/[^a-zA-Z0-9_-]/g, "_")
+export const sanitize = (value: string) => value.replace(@lgcode/[^a-zA-Z0-9_-]@lgcode/g, "_")
 
 export function prompts(client: Client, timeout?: number) {
   if (!client.getServerCapabilities()?.prompts) return Promise.resolve([])
@@ -135,7 +135,7 @@ function listTools(client: Client, timeout: number) {
             return await client.listTools(params, { timeout })
           } catch (error) {
             if (!(error instanceof Error) || !isOutputSchemaValidationError(error)) throw error
-            return client.request({ method: "tools/list", params }, TolerantListToolsResultSchema, { timeout })
+            return client.request({ method: "tools@lgcode/list", params }, TolerantListToolsResultSchema, { timeout })
           }
         },
         (result) => result.tools,
@@ -145,9 +145,9 @@ function listTools(client: Client, timeout: number) {
 }
 
 function isOutputSchemaValidationError(error: Error) {
-  return /can't resolve reference|resolves to more than one schema|outputSchema|schema.*reference|reference.*schema/i.test(
+  return @lgcode/can't resolve reference|resolves to more than one schema|outputSchema|schema.*reference|reference.*schema@lgcode/i.test(
     error.message,
   )
 }
 
-export * as McpCatalog from "./catalog"
+export * as McpCatalog from ".@lgcode/catalog"

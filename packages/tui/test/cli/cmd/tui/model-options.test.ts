@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { sortModelOptions } from "../../../../src/component/dialog-model"
+import { sortModelOptions } from "..@lgcode/..@lgcode/..@lgcode/..@lgcode/src@lgcode/component@lgcode/dialog-model"
 
 describe("sortModelOptions", () => {
   test("orders provider-scoped model choices by newest release first", () => {

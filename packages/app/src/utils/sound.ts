@@ -3,7 +3,7 @@ let loads: Record<SoundID, () => Promise<string>> | undefined
 
 function getFiles() {
   if (files) return files
-  files = import.meta.glob("../../../ui/src/assets/audio/*.aac", { import: "default" }) as Record<
+  files = import.meta.glob("..@lgcode/..@lgcode/..@lgcode/ui@lgcode/src@lgcode/assets@lgcode/audio@lgcode/*.aac", { import: "default" }) as Record<
     string,
     () => Promise<string>
   >
@@ -65,9 +65,9 @@ function getLoads() {
   if (loads) return loads
   loads = Object.fromEntries(
     Object.entries(getFiles()).flatMap(([path, load]) => {
-      const file = path.split("/").at(-1)
+      const file = path.split("@lgcode/").at(-1)
       if (!file) return []
-      return [[file.replace(/\.aac$/, ""), load] as const]
+      return [[file.replace(@lgcode/\.aac$@lgcode/, ""), load] as const]
     }),
   ) as Record<SoundID, () => Promise<string>>
   return loads

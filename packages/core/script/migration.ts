@@ -1,17 +1,17 @@
-#!/usr/bin/env bun
+#!@lgcode/usr@lgcode/bin@lgcode/env bun
 
 import { $ } from "bun"
-import fs from "fs/promises"
+import fs from "fs@lgcode/promises"
 import os from "os"
 import path from "path"
 import { pathToFileURL } from "url"
 import { parseArgs } from "util"
 
-const root = path.resolve(import.meta.dirname, "../../..")
-const snapshot = path.join(root, "packages/core/schema.json")
-const tsDir = path.join(root, "packages/core/src/database/migration")
-const registry = path.join(root, "packages/core/src/database/migration.gen.ts")
-const schema = path.join(root, "packages/core/src/database/schema.gen.ts")
+const root = path.resolve(import.meta.dirname, "..@lgcode/..@lgcode/..")
+const snapshot = path.join(root, "packages@lgcode/core@lgcode/schema.json")
+const tsDir = path.join(root, "packages@lgcode/core@lgcode/src@lgcode/database@lgcode/migration")
+const registry = path.join(root, "packages@lgcode/core@lgcode/src@lgcode/database@lgcode/migration.gen.ts")
+const schema = path.join(root, "packages@lgcode/core@lgcode/src@lgcode/database@lgcode/schema.gen.ts")
 const args = parseArgs({
   args: process.argv.slice(2),
   options: {
@@ -34,7 +34,7 @@ async function generate() {
   try {
     await fs.mkdir(incremental)
     await fs.mkdir(path.join(incremental, "baseline"))
-    await fs.copyFile(snapshot, path.join(incremental, "baseline/snapshot.json"))
+    await fs.copyFile(snapshot, path.join(incremental, "baseline@lgcode/snapshot.json"))
     await drizzle(temporary, incremental, args.values.name)
 
     const generated = await generatedMigrations(incremental)
@@ -66,23 +66,23 @@ async function check() {
   try {
     await fs.mkdir(incremental)
     await fs.mkdir(path.join(incremental, "baseline"))
-    await fs.copyFile(snapshot, path.join(incremental, "baseline/snapshot.json"))
+    await fs.copyFile(snapshot, path.join(incremental, "baseline@lgcode/snapshot.json"))
     await drizzle(temporary, incremental)
     if ((await generatedMigrations(incremental)).length > 0) {
       throw new Error(
-        "Core schema has ungenerated database migrations. Run `bun script/migration.ts` from packages/core.",
+        "Core schema has ungenerated database migrations. Run `bun script@lgcode/migration.ts` from packages@lgcode/core.",
       )
     }
 
     await fs.mkdir(full)
     await drizzle(temporary, full, "schema")
     if ((await Bun.file(schema).text()) !== renderSchema(await generatedSql(full))) {
-      throw new Error("Current database schema is stale. Run `bun script/migration.ts` from packages/core.")
+      throw new Error("Current database schema is stale. Run `bun script@lgcode/migration.ts` from packages@lgcode/core.")
     }
 
     const migrations = await typescriptMigrations()
     if ((await Bun.file(registry).text()) !== renderRegistry(migrations)) {
-      throw new Error("Database migration registry is stale. Run `bun script/migration.ts` from packages/core.")
+      throw new Error("Database migration registry is stale. Run `bun script@lgcode/migration.ts` from packages@lgcode/core.")
     }
   } finally {
     await fs.rm(temporary, { recursive: true, force: true })
@@ -93,19 +93,19 @@ async function drizzle(temporary: string, output: string, name?: string) {
   const config = path.join(temporary, `${path.basename(output)}.config.ts`)
   await Bun.write(
     config,
-    `import config from ${JSON.stringify(pathToFileURL(path.join(root, "packages/core/drizzle.config.ts")).href)}
+    `import config from ${JSON.stringify(pathToFileURL(path.join(root, "packages@lgcode/core@lgcode/drizzle.config.ts")).href)}
 
 export default { ...config, out: ${JSON.stringify(output)} }
 `,
   )
   await $`bun drizzle-kit generate --config ${config} ${name ? ["--name", name] : []}`.cwd(
-    path.join(root, "packages/core"),
+    path.join(root, "packages@lgcode/core"),
   )
 }
 
 async function generatedMigrations(directory: string) {
-  return (await Array.fromAsync(new Bun.Glob("*/migration.sql").scan({ cwd: directory })))
-    .map((file) => file.split("/")[0])
+  return (await Array.fromAsync(new Bun.Glob("*@lgcode/migration.sql").scan({ cwd: directory })))
+    .map((file) => file.split("@lgcode/")[0])
     .filter((name): name is string => name !== undefined)
     .sort()
 }
@@ -124,7 +124,7 @@ async function typescriptMigrations() {
 
 function renderMigration(name: string, sql: string) {
   return `import { Effect } from "effect"
-import type { DatabaseMigration } from "../migration"
+import type { DatabaseMigration } from "..@lgcode/migration"
 
 export default {
   id: ${JSON.stringify(name)},
@@ -139,7 +139,7 @@ ${renderStatements(sql)}
 
 function renderSchema(sql: string) {
   return `import { Effect } from "effect"
-import type { DatabaseMigration } from "./migration"
+import type { DatabaseMigration } from ".@lgcode/migration"
 
 export default {
   up(tx) {
@@ -171,11 +171,11 @@ function escapeTemplate(line: string) {
 }
 
 function renderRegistry(names: string[]) {
-  return `import type { DatabaseMigration } from "./migration"
+  return `import type { DatabaseMigration } from ".@lgcode/migration"
 
 export const migrations = (
   await Promise.all([
-${names.map((name) => `    import("./migration/${name}"),`).join("\n")}
+${names.map((name) => `    import(".@lgcode/migration@lgcode/${name}"),`).join("\n")}
   ])
 ).map((module) => module.default) satisfies DatabaseMigration.Migration[]
 `

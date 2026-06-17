@@ -1,6 +1,6 @@
-import { DiffLineAnnotation, FileContents, FileDiffOptions, type SelectedLineRange } from "@pierre/diffs"
+import { DiffLineAnnotation, FileContents, FileDiffOptions, type SelectedLineRange } from "@pierre@lgcode/diffs"
 import { ComponentProps } from "solid-js"
-import { lineCommentStyles } from "../components/line-comment-styles"
+import { lineCommentStyles } from "..@lgcode/components@lgcode/line-comment-styles"
 
 export type DiffProps<T = {}> = FileDiffOptions<T> & {
   before: FileContents
@@ -17,7 +17,7 @@ export type DiffProps<T = {}> = FileDiffOptions<T> & {
 const unsafeCSS = `
 [data-diff],
 [data-file] {
-  /* Pierre 1.2 mixes these override targets at 12% in light mode and 20% in dark mode. */
+  @lgcode/* Pierre 1.2 mixes these override targets at 12% in light mode and 20% in dark mode. *@lgcode/
   --diffs-bg-deletion-override: light-dark(
     color-mix(in lab, var(--diffs-bg) 33.333%, var(--diffs-deletion-base)),
     color-mix(in lab, var(--diffs-bg) 60%, var(--diffs-deletion-base))
@@ -29,22 +29,22 @@ const unsafeCSS = `
   --diffs-selection-base: var(--surface-warning-strong);
   --diffs-selection-border: var(--border-warning-base);
   --diffs-selection-number-fg: #1c1917;
-  /* Use explicit alpha instead of color-mix(..., transparent) to avoid Safari's non-premultiplied interpolation bugs. */
-  --diffs-bg-selection: var(--diffs-bg-selection-override, rgb(from var(--surface-warning-base) r g b / 0.65));
+  @lgcode/* Use explicit alpha instead of color-mix(..., transparent) to avoid Safari's non-premultiplied interpolation bugs. *@lgcode/
+  --diffs-bg-selection: var(--diffs-bg-selection-override, rgb(from var(--surface-warning-base) r g b @lgcode/ 0.65));
   --diffs-bg-selection-number: var(
     --diffs-bg-selection-number-override,
-    rgb(from var(--surface-warning-base) r g b / 0.85)
+    rgb(from var(--surface-warning-base) r g b @lgcode/ 0.85)
   );
-  --diffs-bg-selection-text: rgb(from var(--surface-warning-strong) r g b / 0.2);
+  --diffs-bg-selection-text: rgb(from var(--surface-warning-strong) r g b @lgcode/ 0.2);
 }
 
 :host([data-color-scheme='dark']) [data-diff],
 :host([data-color-scheme='dark']) [data-file] {
   --diffs-selection-number-fg: #fdfbfb;
-  --diffs-bg-selection: var(--diffs-bg-selection-override, rgb(from var(--solaris-dark-6) r g b / 0.65));
+  --diffs-bg-selection: var(--diffs-bg-selection-override, rgb(from var(--solaris-dark-6) r g b @lgcode/ 0.65));
   --diffs-bg-selection-number: var(
     --diffs-bg-selection-number-override,
-    rgb(from var(--solaris-dark-6) r g b / 0.85)
+    rgb(from var(--solaris-dark-6) r g b @lgcode/ 0.85)
   );
 }
 
@@ -54,11 +54,11 @@ const unsafeCSS = `
 }
 
 ::highlight(opencode-find) {
-  background-color: rgb(from var(--surface-warning-base) r g b / 0.35);
+  background-color: rgb(from var(--surface-warning-base) r g b @lgcode/ 0.35);
 }
 
 ::highlight(opencode-find-current) {
-  background-color: rgb(from var(--surface-warning-strong) r g b / 0.55);
+  background-color: rgb(from var(--surface-warning-strong) r g b @lgcode/ 0.55);
 }
 
 [data-diff] [data-line][data-comment-selected]:not([data-selected-line]) {
@@ -114,11 +114,11 @@ const unsafeCSS = `
   color: var(--diffs-selection-number-fg);
 }
 
-/* The deletion word-diff emphasis is stronger than additions; soften it while selected so the selection highlight reads consistently. */
+@lgcode/* The deletion word-diff emphasis is stronger than additions; soften it while selected so the selection highlight reads consistently. *@lgcode/
 [data-diff] [data-line][data-line-type='change-deletion'][data-selected-line] {
   --diffs-bg-deletion-emphasis: light-dark(
-    rgb(from var(--diffs-deletion-base) r g b / 0.07),
-    rgb(from var(--diffs-deletion-base) r g b / 0.1)
+    rgb(from var(--diffs-deletion-base) r g b @lgcode/ 0.07),
+    rgb(from var(--diffs-deletion-base) r g b @lgcode/ 0.1)
   );
 }
 

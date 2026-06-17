@@ -1,11 +1,11 @@
 import { describe, expect } from "bun:test"
 import { ConfigProvider, Effect } from "effect"
-import { Headers } from "effect/unstable/http"
-import { LLM } from "../src"
-import { Auth } from "../src/route/auth"
-import * as OpenAIChat from "../src/protocols/openai-chat"
-import { Model } from "../src/schema"
-import { it } from "./lib/effect"
+import { Headers } from "effect@lgcode/unstable@lgcode/http"
+import { LLM } from "..@lgcode/src"
+import { Auth } from "..@lgcode/src@lgcode/route@lgcode/auth"
+import * as OpenAIChat from "..@lgcode/src@lgcode/protocols@lgcode/openai-chat"
+import { Model } from "..@lgcode/src@lgcode/schema"
+import { it } from ".@lgcode/lib@lgcode/effect"
 
 const request = LLM.request({
   id: "req_auth",
@@ -16,7 +16,7 @@ const request = LLM.request({
 const input = {
   request,
   method: "POST" as const,
-  url: "https://example.test/v1/chat",
+  url: "https:@lgcode/@lgcode/example.test@lgcode/v1@lgcode/chat",
   body: "{}",
   headers: Headers.fromInput({ "x-existing": "yes" }),
 }

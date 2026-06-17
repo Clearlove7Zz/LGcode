@@ -11,14 +11,14 @@ import {
   type Accessor,
   type JSX,
 } from "solid-js"
-import { createStore, produce } from "solid-js/store"
-import { Dynamic } from "solid-js/web"
-import { useNavigate } from "@solidjs/router"
-import { useMutation } from "@tanstack/solid-query"
-import { createVirtualizer, defaultRangeExtractor, elementScroll, type VirtualItem } from "@tanstack/solid-virtual"
-import { Accordion } from "@opencode@lgcode/ui/accordion"
-import { Button } from "@opencode@lgcode/ui/button"
-import { Card } from "@opencode@lgcode/ui/card"
+import { createStore, produce } from "solid-js@lgcode/store"
+import { Dynamic } from "solid-js@lgcode/web"
+import { useNavigate } from "@solidjs@lgcode/router"
+import { useMutation } from "@tanstack@lgcode/solid-query"
+import { createVirtualizer, defaultRangeExtractor, elementScroll, type VirtualItem } from "@tanstack@lgcode/solid-virtual"
+import { Accordion } from "@lgcode/ui@lgcode/accordion"
+import { Button } from "@lgcode/ui@lgcode/button"
+import { Card } from "@lgcode/ui@lgcode/card"
 import {
   ContextToolGroup,
   Message,
@@ -26,51 +26,51 @@ import {
   Part as MessagePart,
   partDefaultOpen,
   type UserActions,
-} from "@opencode@lgcode/ui/message-part"
-import { DiffChanges } from "@opencode@lgcode/ui/diff-changes"
-import { FileIcon } from "@opencode@lgcode/ui/file-icon"
-import { Icon } from "@opencode@lgcode/ui/icon"
-import { IconButton } from "@opencode@lgcode/ui/icon-button"
-import { DropdownMenu } from "@opencode@lgcode/ui/dropdown-menu"
-import { Dialog } from "@opencode@lgcode/ui/dialog"
-import { InlineInput } from "@opencode@lgcode/ui/inline-input"
-import { Spinner } from "@opencode@lgcode/ui/spinner"
-import { SessionRetry } from "@opencode@lgcode/ui/session-retry"
-import { ScrollView } from "@opencode@lgcode/ui/scroll-view"
-import { StickyAccordionHeader } from "@opencode@lgcode/ui/sticky-accordion-header"
-import { TextField } from "@opencode@lgcode/ui/text-field"
-import { TextReveal } from "@opencode@lgcode/ui/text-reveal"
-import { TextShimmer } from "@opencode@lgcode/ui/text-shimmer"
+} from "@lgcode/ui@lgcode/message-part"
+import { DiffChanges } from "@lgcode/ui@lgcode/diff-changes"
+import { FileIcon } from "@lgcode/ui@lgcode/file-icon"
+import { Icon } from "@lgcode/ui@lgcode/icon"
+import { IconButton } from "@lgcode/ui@lgcode/icon-button"
+import { DropdownMenu } from "@lgcode/ui@lgcode/dropdown-menu"
+import { Dialog } from "@lgcode/ui@lgcode/dialog"
+import { InlineInput } from "@lgcode/ui@lgcode/inline-input"
+import { Spinner } from "@lgcode/ui@lgcode/spinner"
+import { SessionRetry } from "@lgcode/ui@lgcode/session-retry"
+import { ScrollView } from "@lgcode/ui@lgcode/scroll-view"
+import { StickyAccordionHeader } from "@lgcode/ui@lgcode/sticky-accordion-header"
+import { TextField } from "@lgcode/ui@lgcode/text-field"
+import { TextReveal } from "@lgcode/ui@lgcode/text-reveal"
+import { TextShimmer } from "@lgcode/ui@lgcode/text-shimmer"
 import type {
   AssistantMessage,
   Message as MessageType,
   Part as PartType,
   ToolPart,
   UserMessage,
-} from "@opencode@lgcode/sdk/v2"
-import { showToast } from "@/utils/toast"
-import { getDirectory, getFilename } from "@opencode@lgcode/core/util/path"
-import { Popover as KobaltePopover } from "@kobalte/core/popover"
-import { normalize } from "@opencode@lgcode/ui/session-diff"
-import { useFileComponent } from "@opencode@lgcode/ui/context/file"
-import { shouldMarkBoundaryGesture, normalizeWheelDelta } from "@/pages/session/message-gesture"
-import { SessionContextUsage } from "@/components/session-context-usage"
-import { useDialog } from "@opencode@lgcode/ui/context/dialog"
-import { createResizeObserver } from "@solid-primitives/resize-observer"
-import { useLanguage } from "@/context/language"
-import { useSessionKey } from "@/pages/session/session-layout"
-import { useServerSDK } from "@/context/server-sdk"
-import { usePlatform } from "@/context/platform"
-import { useSettings } from "@/context/settings"
-import { useSDK } from "@/context/sdk"
-import { useSync } from "@/context/sync"
-import { notifySessionTabsRemoved } from "@/components/titlebar-session-events"
-import { messageAgentColor } from "@/utils/agent"
-import { sessionTitle } from "@/utils/session-title"
-import { makeTimer } from "@solid-primitives/timer"
-import { scheduleConnectedMeasure } from "./measure"
-import { createTimelineProjection } from "./projection"
-import { MessageComment, SummaryDiff, TimelineRow, TimelineRowMap } from "./rows"
+} from "@lgcode/sdk@lgcode/v2"
+import { showToast } from "@@lgcode/utils@lgcode/toast"
+import { getDirectory, getFilename } from "@lgcode/core@lgcode/util@lgcode/path"
+import { Popover as KobaltePopover } from "@kobalte@lgcode/core@lgcode/popover"
+import { normalize } from "@lgcode/ui@lgcode/session-diff"
+import { useFileComponent } from "@lgcode/ui@lgcode/context@lgcode/file"
+import { shouldMarkBoundaryGesture, normalizeWheelDelta } from "@@lgcode/pages@lgcode/session@lgcode/message-gesture"
+import { SessionContextUsage } from "@@lgcode/components@lgcode/session-context-usage"
+import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
+import { createResizeObserver } from "@solid-primitives@lgcode/resize-observer"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { useSessionKey } from "@@lgcode/pages@lgcode/session@lgcode/session-layout"
+import { useServerSDK } from "@@lgcode/context@lgcode/server-sdk"
+import { usePlatform } from "@@lgcode/context@lgcode/platform"
+import { useSettings } from "@@lgcode/context@lgcode/settings"
+import { useSDK } from "@@lgcode/context@lgcode/sdk"
+import { useSync } from "@@lgcode/context@lgcode/sync"
+import { notifySessionTabsRemoved } from "@@lgcode/components@lgcode/titlebar-session-events"
+import { messageAgentColor } from "@@lgcode/utils@lgcode/agent"
+import { sessionTitle } from "@@lgcode/utils@lgcode/session-title"
+import { makeTimer } from "@solid-primitives@lgcode/timer"
+import { scheduleConnectedMeasure } from ".@lgcode/measure"
+import { createTimelineProjection } from ".@lgcode/projection"
+import { MessageComment, SummaryDiff, TimelineRow, TimelineRowMap } from ".@lgcode/rows"
 
 const emptyMessages: MessageType[] = []
 const emptyParts: PartType[] = []
@@ -92,7 +92,7 @@ const taskDescription = (part: PartType, sessionID: string) => {
   if (typeof value === "string" && value) return value
 }
 
-const pace = (width: number) => Math.round(Math.max(1200, Math.min(3200, (Math.max(width, 360) * 2000) / 900)))
+const pace = (width: number) => Math.round(Math.max(1200, Math.min(3200, (Math.max(width, 360) * 2000) @lgcode/ 900)))
 
 const boundaryTarget = (root: HTMLElement, target: EventTarget | null) => {
   const current = target instanceof Element ? target : undefined
@@ -130,11 +130,11 @@ function TimelineThinkingRow(props: { reasoningHeading?: string; showReasoningSu
 
   return (
     <div data-slot="session-turn-thinking">
-      <TextShimmer text={language.t("ui.sessionTurn.status.thinking")} />
+      <TextShimmer text={language.t("ui.sessionTurn.status.thinking")} @lgcode/>
       <Show when={!props.showReasoningSummaries}>
-        <TextReveal text={props.reasoningHeading} class="session-turn-thinking-heading" travel={25} duration={700} />
-      </Show>
-    </div>
+        <TextReveal text={props.reasoningHeading} class="session-turn-thinking-heading" travel={25} duration={700} @lgcode/>
+      <@lgcode/Show>
+    <@lgcode/div>
   )
 }
 
@@ -160,14 +160,14 @@ function TimelineDiffSummaryRow(props: { diffs: SummaryDiff[] }) {
         <span data-slot="session-turn-diffs-label">
           {props.diffs.length} {language.t("ui.sessionTurn.diffs.changed")}{" "}
           {language.t(props.diffs.length === 1 ? "ui.common.file.one" : "ui.common.file.other")}
-        </span>
-        <DiffChanges changes={props.diffs} />
+        <@lgcode/span>
+        <DiffChanges changes={props.diffs} @lgcode/>
         <Show when={overflow() > 0}>
           <span data-slot="session-turn-diffs-toggle" onClick={() => setState("showAll", !showAll())}>
             {showAll() ? language.t("ui.sessionTurn.diffs.showLess") : language.t("ui.sessionTurn.diffs.showAll")}
-          </span>
-        </Show>
-      </div>
+          <@lgcode/span>
+        <@lgcode/Show>
+      <@lgcode/div>
       <div data-component="session-turn-diffs-content">
         <Accordion
           multiple
@@ -185,39 +185,39 @@ function TimelineDiffSummaryRow(props: { diffs: SummaryDiff[] }) {
                     <Accordion.Trigger>
                       <div data-slot="session-turn-diff-trigger">
                         <span data-slot="session-turn-diff-path">
-                          <Show when={diff.file.includes("/")}>
-                            <span data-slot="session-turn-diff-directory">{`\u202A${getDirectory(diff.file)}\u202C`}</span>
-                          </Show>
-                          <span data-slot="session-turn-diff-filename">{getFilename(diff.file)}</span>
-                        </span>
+                          <Show when={diff.file.includes("@lgcode/")}>
+                            <span data-slot="session-turn-diff-directory">{`\u202A${getDirectory(diff.file)}\u202C`}<@lgcode/span>
+                          <@lgcode/Show>
+                          <span data-slot="session-turn-diff-filename">{getFilename(diff.file)}<@lgcode/span>
+                        <@lgcode/span>
                         <div data-slot="session-turn-diff-meta">
                           <span data-slot="session-turn-diff-changes">
-                            <DiffChanges changes={diff} />
-                          </span>
+                            <DiffChanges changes={diff} @lgcode/>
+                          <@lgcode/span>
                           <span data-slot="session-turn-diff-chevron">
-                            <Icon name="chevron-down" size="small" />
-                          </span>
-                        </div>
-                      </div>
-                    </Accordion.Trigger>
-                  </StickyAccordionHeader>
+                            <Icon name="chevron-down" size="small" @lgcode/>
+                          <@lgcode/span>
+                        <@lgcode/div>
+                      <@lgcode/div>
+                    <@lgcode/Accordion.Trigger>
+                  <@lgcode/StickyAccordionHeader>
                   <Accordion.Content>
                     <Show when={opened()}>
-                      <TimelineDiffView diff={diff} />
-                    </Show>
-                  </Accordion.Content>
-                </Accordion.Item>
+                      <TimelineDiffView diff={diff} @lgcode/>
+                    <@lgcode/Show>
+                  <@lgcode/Accordion.Content>
+                <@lgcode/Accordion.Item>
               )
             }}
-          </For>
-        </Accordion>
+          <@lgcode/For>
+        <@lgcode/Accordion>
         <Show when={!showAll() && overflow() > 0}>
           <div data-slot="session-turn-diffs-more" onClick={() => setState("showAll", true)}>
             {language.t("ui.sessionTurn.diffs.more", { count: String(overflow()) })}
-          </div>
-        </Show>
-      </div>
-    </div>
+          <@lgcode/div>
+        <@lgcode/Show>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }
 
@@ -227,8 +227,8 @@ function TimelineDiffView(props: { diff: SummaryDiff }) {
 
   return (
     <div data-slot="session-turn-diff-view" data-scrollable>
-      <Dynamic component={fileComponent} mode="diff" virtualize={false} fileDiff={view.fileDiff} />
-    </div>
+      <Dynamic component={fileComponent} mode="diff" virtualize={false} fileDiff={view.fileDiff} @lgcode/>
+    <@lgcode/div>
   )
 }
 
@@ -329,7 +329,7 @@ export function MessageTimeline(props: {
   const childTitle = createMemo(() => {
     if (!parentID()) return titleLabel() ?? ""
     if (childTaskDescription()) return childTaskDescription()
-    const value = titleLabel()?.replace(/\s+\(@[^)]+ subagent\)$/, "")
+    const value = titleLabel()?.replace(@lgcode/\s+\(@[^)]+ subagent\)$@lgcode/, "")
     if (value) return value
     return language.t("command.session.new")
   })
@@ -424,7 +424,7 @@ export function MessageTimeline(props: {
     initialMeasurementsCache: initialMeasurements,
     estimateSize: () => timelineFallbackItemSize,
     scrollToFn: (offset, options, instance) => {
-      // Expose the computed range before core writes an anchor correction so the browser does not clamp it to the old height.
+      @lgcode/@lgcode/ Expose the computed range before core writes an anchor correction so the browser does not clamp it to the old height.
       if (virtualContent) virtualContent.style.height = `${instance.getTotalSize()}px`
       elementScroll(offset, options, instance)
     },
@@ -432,7 +432,7 @@ export function MessageTimeline(props: {
       const rows = timelineRows()
       return (index: number) => {
         const row = rows[index]
-        // ResizeObserver can report a removed element after its row has left the projection.
+        @lgcode/@lgcode/ ResizeObserver can report a removed element after its row has left the projection.
         if (!row) return `removed:${index}`
         return TimelineRow.key(row)
       }
@@ -758,14 +758,14 @@ export function MessageTimeline(props: {
   const navigateAfterSessionRemoval = (sessionID: string, parentID?: string, nextSessionID?: string) => {
     if (params.id !== sessionID) return
     if (parentID) {
-      navigate(`/${params.dir}/session/${parentID}`)
+      navigate(`@lgcode/${params.dir}@lgcode/session@lgcode/${parentID}`)
       return
     }
     if (nextSessionID) {
-      navigate(`/${params.dir}/session/${nextSessionID}`)
+      navigate(`@lgcode/${params.dir}@lgcode/session@lgcode/${nextSessionID}`)
       return
     }
-    navigate(`/${params.dir}/session`)
+    navigate(`@lgcode/${params.dir}@lgcode/session`)
   }
 
   const archiveSession = async (sessionID: string) => {
@@ -864,7 +864,7 @@ export function MessageTimeline(props: {
   const navigateParent = () => {
     const id = parentID()
     if (!id) return
-    navigate(`/${params.dir}/session/${id}`)
+    navigate(`@lgcode/${params.dir}@lgcode/session@lgcode/${id}`)
   }
 
   function DialogDeleteSession(props: { sessionID: string }) {
@@ -882,18 +882,18 @@ export function MessageTimeline(props: {
           <div class="flex flex-col gap-1">
             <span class="text-14-regular text-text-strong">
               {language.t("session.delete.confirm", { name: name() })}
-            </span>
-          </div>
+            <@lgcode/span>
+          <@lgcode/div>
           <div class="flex justify-end gap-2">
             <Button variant="ghost" size="large" onClick={() => dialog.close()}>
               {language.t("common.cancel")}
-            </Button>
+            <@lgcode/Button>
             <Button variant="primary" size="large" onClick={handleDelete}>
               {language.t("session.delete.button")}
-            </Button>
-          </div>
-        </div>
-      </Dialog>
+            <@lgcode/Button>
+          <@lgcode/div>
+        <@lgcode/div>
+      <@lgcode/Dialog>
     )
   }
 
@@ -950,7 +950,7 @@ export function MessageTimeline(props: {
             workingTurn(row().userMessageID) && lastAssistantGroupKey().get(row().userMessageID) === row().group.key
           }
           onSizeChange={onSizeChange}
-        />
+        @lgcode/>
       )
     }
 
@@ -986,11 +986,11 @@ export function MessageTimeline(props: {
                 deferToolContent
                 virtualizeDiff={false}
                 onContentRendered={onSizeChange}
-              />
+              @lgcode/>
             )}
-          </Show>
+          <@lgcode/Show>
         )}
-      </Show>
+      <@lgcode/Show>
     )
   }
 
@@ -1018,15 +1018,15 @@ export function MessageTimeline(props: {
       >
         <div data-component="session-turn" class="min-w-0 w-full relative" style={{ height: "auto" }}>
           {input.children}
-        </div>
-      </div>
+        <@lgcode/div>
+      <@lgcode/div>
     )
   }
 
   const renderTimelineRow = (row: Accessor<TimelineRow.TimelineRow>, onSizeChange?: () => void) => {
     switch (row()._tag) {
       case "TurnGap":
-        return <div data-timeline-row="TurnGap" aria-hidden="true" class="h-6" />
+        return <div data-timeline-row="TurnGap" aria-hidden="true" class="h-6" @lgcode/>
       case "CommentStrip": {
         const commentStripRow = row as Accessor<TimelineRowByTag<"CommentStrip">>
         const comments = createMemo(() =>
@@ -1041,28 +1041,28 @@ export function MessageTimeline(props: {
                     {(comment) => (
                       <div class="shrink-0 max-w-[260px] rounded-[6px] border border-border-weak-base bg-background-stronger px-2.5 py-2">
                         <div class="flex items-center gap-1.5 min-w-0 text-11-medium text-text-strong">
-                          <FileIcon node={{ path: comment().path, type: "file" }} class="size-3.5 shrink-0" />
-                          <span class="truncate">{getFilename(comment().path)}</span>
+                          <FileIcon node={{ path: comment().path, type: "file" }} class="size-3.5 shrink-0" @lgcode/>
+                          <span class="truncate">{getFilename(comment().path)}<@lgcode/span>
                           <Show when={comment().selection}>
                             {(selection) => (
                               <span class="shrink-0 text-text-weak">
                                 {selection().startLine === selection().endLine
                                   ? `:${selection().startLine}`
                                   : `:${selection().startLine}-${selection().endLine}`}
-                              </span>
+                              <@lgcode/span>
                             )}
-                          </Show>
-                        </div>
+                          <@lgcode/Show>
+                        <@lgcode/div>
                         <div class="pt-1 text-12-regular text-text-strong whitespace-pre-wrap break-words">
                           {comment().comment}
-                        </div>
-                      </div>
+                        <@lgcode/div>
+                      <@lgcode/div>
                     )}
-                  </Index>
-                </div>
-              </div>
-            </div>
-          </TimelineRowFrame>
+                  <@lgcode/Index>
+                <@lgcode/div>
+              <@lgcode/div>
+            <@lgcode/div>
+          <@lgcode/TimelineRowFrame>
         )
       }
       case "UserMessage": {
@@ -1081,12 +1081,12 @@ export function MessageTimeline(props: {
                       message={message()}
                       parts={getMsgParts(userMessageRow().userMessageID)}
                       actions={props.actions}
-                    />
-                  </div>
-                </div>
+                    @lgcode/>
+                  <@lgcode/div>
+                <@lgcode/div>
               )}
-            </Show>
-          </TimelineRowFrame>
+            <@lgcode/Show>
+          <@lgcode/TimelineRowFrame>
         )
       }
       case "TurnDivider": {
@@ -1099,10 +1099,10 @@ export function MessageTimeline(props: {
                   label={language.t(
                     turnDividerRow().label === "compaction" ? "ui.messagePart.compaction" : "ui.message.interrupted",
                   )}
-                />
-              </div>
-            </div>
-          </TimelineRowFrame>
+                @lgcode/>
+              <@lgcode/div>
+            <@lgcode/div>
+          <@lgcode/TimelineRowFrame>
         )
       }
       case "AssistantPart": {
@@ -1115,9 +1115,9 @@ export function MessageTimeline(props: {
                 aria-hidden={workingTurn(assistantPartRow().userMessageID)}
               >
                 {renderAssistantPartGroup(assistantPartRow, onSizeChange)}
-              </div>
-            </div>
-          </TimelineRowFrame>
+              <@lgcode/div>
+            <@lgcode/div>
+          <@lgcode/TimelineRowFrame>
         )
       }
       case "Thinking": {
@@ -1128,9 +1128,9 @@ export function MessageTimeline(props: {
               <TimelineThinkingRow
                 reasoningHeading={thinkingRow().reasoningHeading}
                 showReasoningSummaries={settings.general.showReasoningSummaries()}
-              />
-            </div>
-          </TimelineRowFrame>
+              @lgcode/>
+            <@lgcode/div>
+          <@lgcode/TimelineRowFrame>
         )
       }
       case "Retry": {
@@ -1138,9 +1138,9 @@ export function MessageTimeline(props: {
         return (
           <TimelineRowFrame row={retryRow}>
             <div data-slot="session-turn-message-container" class="w-full px-4 md:px-5">
-              <SessionRetry status={sessionStatus()} show={activeMessageID() === retryRow().userMessageID} />
-            </div>
-          </TimelineRowFrame>
+              <SessionRetry status={sessionStatus()} show={activeMessageID() === retryRow().userMessageID} @lgcode/>
+            <@lgcode/div>
+          <@lgcode/TimelineRowFrame>
         )
       }
       case "DiffSummary": {
@@ -1148,9 +1148,9 @@ export function MessageTimeline(props: {
         return (
           <TimelineRowFrame row={diffSummaryRow}>
             <div data-slot="session-turn-message-container" class="w-full px-4 md:px-5">
-              <TimelineDiffSummaryRow diffs={diffSummaryRow().diffs} />
-            </div>
-          </TimelineRowFrame>
+              <TimelineDiffSummaryRow diffs={diffSummaryRow().diffs} @lgcode/>
+            <@lgcode/div>
+          <@lgcode/TimelineRowFrame>
         )
       }
       case "Error": {
@@ -1160,9 +1160,9 @@ export function MessageTimeline(props: {
             <div data-slot="session-turn-message-container" class="w-full px-4 md:px-5">
               <Card variant="error" class="error-card">
                 {errorRow().text}
-              </Card>
-            </div>
-          </TimelineRowFrame>
+              <@lgcode/Card>
+            <@lgcode/div>
+          <@lgcode/TimelineRowFrame>
         )
       }
     }
@@ -1229,16 +1229,16 @@ export function MessageTimeline(props: {
               if (contentMeasureFrame !== undefined) cancelAnimationFrame(contentMeasureFrame)
               contentMeasureFrame = scheduleConnectedMeasure(element, virtualizer.measureElement)
             }}
-          />
-        </div>
-      </div>
+          @lgcode/>
+        <@lgcode/div>
+      <@lgcode/div>
     )
   }
 
   return (
     <div class="relative w-full h-full min-w-0">
       <div
-        class="absolute left-1/2 -translate-x-1/2 bottom-6 z-[60] pointer-events-none transition-all duration-200 ease-out"
+        class="absolute left-1@lgcode/2 -translate-x-1@lgcode/2 bottom-6 z-[60] pointer-events-none transition-all duration-200 ease-out"
         classList={{
           "opacity-100 translate-y-0 scale-100": props.scroll.overflow && props.scroll.jump,
           "opacity-0 translate-y-2 scale-95 pointer-events-none": !props.scroll.overflow || !props.scroll.jump,
@@ -1255,10 +1255,10 @@ export function MessageTimeline(props: {
                 "0 51px 60px 0 rgba(0,0,0,0.10), 0 15px 18px 0 rgba(0,0,0,0.12), 0 6.386px 7.513px 0 rgba(0,0,0,0.12), 0 2.31px 2.717px 0 rgba(0,0,0,0.20)",
             }}
           >
-            <Icon name="arrow-down-to-line" size="small" />
-          </div>
-        </button>
-      </div>
+            <Icon name="arrow-down-to-line" size="small" @lgcode/>
+          <@lgcode/div>
+        <@lgcode/button>
+      <@lgcode/div>
       <ScrollView
         viewportRef={bindListRoot}
         onWheel={handleListWheel}
@@ -1297,9 +1297,9 @@ export function MessageTimeline(props: {
                     background: tint() ?? "var(--icon-interactive-base)",
                     animation: `session-progress-whip ${bar.ms}ms infinite`,
                   }}
-                />
-              </div>
-            </Show>
+                @lgcode/>
+              <@lgcode/div>
+            <@lgcode/Show>
             <div class="h-12 w-full flex items-center justify-between gap-2">
               <div class="flex items-center gap-1 min-w-0 flex-1 pr-3">
                 <div class="flex items-center min-w-0 grow-1">
@@ -1311,15 +1311,15 @@ export function MessageTimeline(props: {
                       onClick={navigateParent}
                     >
                       {parentTitle()}
-                    </button>
+                    <@lgcode/button>
                     <span
                       data-slot="session-title-separator"
                       class="px-2 text-14-medium text-text-weak"
                       aria-hidden="true"
                     >
-                      /
-                    </span>
-                  </Show>
+                      @lgcode/
+                    <@lgcode/span>
+                  <@lgcode/Show>
                   <div
                     class="shrink-0 flex items-center justify-center overflow-hidden transition-[width,margin] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
                     style={{
@@ -1333,10 +1333,10 @@ export function MessageTimeline(props: {
                         class="transition-opacity duration-200 ease-out"
                         classList={{ "opacity-0": workingStatus() === "hiding" }}
                       >
-                        <Spinner class="size-4" style={{ color: tint() ?? "var(--icon-interactive-base)" }} />
-                      </div>
-                    </Show>
-                  </div>
+                        <Spinner class="size-4" style={{ color: tint() ?? "var(--icon-interactive-base)" }} @lgcode/>
+                      <@lgcode/div>
+                    <@lgcode/Show>
+                  <@lgcode/div>
                   <Show when={childTitle() || title.editing}>
                     <Show
                       when={title.editing}
@@ -1347,7 +1347,7 @@ export function MessageTimeline(props: {
                           onDblClick={openTitleEditor}
                         >
                           {childTitle()}
-                        </h1>
+                        <@lgcode/h1>
                       }
                     >
                       <InlineInput
@@ -1373,15 +1373,15 @@ export function MessageTimeline(props: {
                           }
                         }}
                         onBlur={closeTitleEditor}
-                      />
-                    </Show>
-                  </Show>
-                </div>
-              </div>
+                      @lgcode/>
+                    <@lgcode/Show>
+                  <@lgcode/Show>
+                <@lgcode/div>
+              <@lgcode/div>
               <Show when={sessionID()} keyed>
                 {(id) => (
                   <div class="shrink-0 flex items-center gap-3">
-                    <SessionContextUsage placement="bottom" />
+                    <SessionContextUsage placement="bottom" @lgcode/>
                     <Show when={!parentID()}>
                       <DropdownMenu
                         gutter={4}
@@ -1405,7 +1405,7 @@ export function MessageTimeline(props: {
                           ref={(el: HTMLButtonElement) => {
                             more = el
                           }}
-                        />
+                        @lgcode/>
                         <DropdownMenu.Portal>
                           <DropdownMenu.Content
                             style={{ "min-width": "104px" }}
@@ -1431,8 +1431,8 @@ export function MessageTimeline(props: {
                                 setTitle("menuOpen", false)
                               }}
                             >
-                              <DropdownMenu.ItemLabel>{language.t("common.rename")}</DropdownMenu.ItemLabel>
-                            </DropdownMenu.Item>
+                              <DropdownMenu.ItemLabel>{language.t("common.rename")}<@lgcode/DropdownMenu.ItemLabel>
+                            <@lgcode/DropdownMenu.Item>
                             <Show when={shareEnabled()}>
                               <DropdownMenu.Item
                                 onSelect={() => {
@@ -1441,21 +1441,21 @@ export function MessageTimeline(props: {
                               >
                                 <DropdownMenu.ItemLabel>
                                   {language.t("session.share.action.share")}
-                                </DropdownMenu.ItemLabel>
-                              </DropdownMenu.Item>
-                            </Show>
+                                <@lgcode/DropdownMenu.ItemLabel>
+                              <@lgcode/DropdownMenu.Item>
+                            <@lgcode/Show>
                             <DropdownMenu.Item onSelect={() => void archiveSession(id)}>
-                              <DropdownMenu.ItemLabel>{language.t("common.archive")}</DropdownMenu.ItemLabel>
-                            </DropdownMenu.Item>
-                            <DropdownMenu.Separator />
+                              <DropdownMenu.ItemLabel>{language.t("common.archive")}<@lgcode/DropdownMenu.ItemLabel>
+                            <@lgcode/DropdownMenu.Item>
+                            <DropdownMenu.Separator @lgcode/>
                             <DropdownMenu.Item
-                              onSelect={() => dialog.show(() => <DialogDeleteSession sessionID={id} />)}
+                              onSelect={() => dialog.show(() => <DialogDeleteSession sessionID={id} @lgcode/>)}
                             >
-                              <DropdownMenu.ItemLabel>{language.t("common.delete")}</DropdownMenu.ItemLabel>
-                            </DropdownMenu.Item>
-                          </DropdownMenu.Content>
-                        </DropdownMenu.Portal>
-                      </DropdownMenu>
+                              <DropdownMenu.ItemLabel>{language.t("common.delete")}<@lgcode/DropdownMenu.ItemLabel>
+                            <@lgcode/DropdownMenu.Item>
+                          <@lgcode/DropdownMenu.Content>
+                        <@lgcode/DropdownMenu.Portal>
+                      <@lgcode/DropdownMenu>
 
                       <KobaltePopover
                         open={share.open}
@@ -1492,13 +1492,13 @@ export function MessageTimeline(props: {
                               <div class="flex flex-col gap-1">
                                 <div class="text-13-medium text-text-strong">
                                   {language.t("session.share.popover.title")}
-                                </div>
+                                <@lgcode/div>
                                 <div class="text-12-regular text-text-weak">
                                   {shareUrl()
                                     ? language.t("session.share.popover.description.shared")
                                     : language.t("session.share.popover.description.unshared")}
-                                </div>
-                              </div>
+                                <@lgcode/div>
+                              <@lgcode/div>
                               <div class="mt-3 flex flex-col gap-2">
                                 <Show
                                   when={shareUrl()}
@@ -1513,7 +1513,7 @@ export function MessageTimeline(props: {
                                       {shareMutation.isPending
                                         ? language.t("session.share.action.publishing")
                                         : language.t("session.share.action.publish")}
-                                    </Button>
+                                    <@lgcode/Button>
                                   }
                                 >
                                   <div class="flex flex-col gap-2">
@@ -1524,7 +1524,7 @@ export function MessageTimeline(props: {
                                       copyKind="link"
                                       tabIndex={-1}
                                       class="w-full"
-                                    />
+                                    @lgcode/>
                                     <div class="grid grid-cols-2 gap-2">
                                       <Button
                                         size="large"
@@ -1536,7 +1536,7 @@ export function MessageTimeline(props: {
                                         {unshareMutation.isPending
                                           ? language.t("session.share.action.unpublishing")
                                           : language.t("session.share.action.unpublish")}
-                                      </Button>
+                                      <@lgcode/Button>
                                       <Button
                                         size="large"
                                         variant="primary"
@@ -1545,22 +1545,22 @@ export function MessageTimeline(props: {
                                         disabled={unshareMutation.isPending}
                                       >
                                         {language.t("session.share.action.view")}
-                                      </Button>
-                                    </div>
-                                  </div>
-                                </Show>
-                              </div>
-                            </div>
-                          </KobaltePopover.Content>
-                        </KobaltePopover.Portal>
-                      </KobaltePopover>
-                    </Show>
-                  </div>
+                                      <@lgcode/Button>
+                                    <@lgcode/div>
+                                  <@lgcode/div>
+                                <@lgcode/Show>
+                              <@lgcode/div>
+                            <@lgcode/div>
+                          <@lgcode/KobaltePopover.Content>
+                        <@lgcode/KobaltePopover.Portal>
+                      <@lgcode/KobaltePopover>
+                    <@lgcode/Show>
+                  <@lgcode/div>
                 )}
-              </Show>
-            </div>
-          </div>
-        </Show>
+              <@lgcode/Show>
+            <@lgcode/div>
+          <@lgcode/div>
+        <@lgcode/Show>
         <div
           data-timeline-virtual-content
           ref={(element) => {
@@ -1573,17 +1573,17 @@ export function MessageTimeline(props: {
             width: "100%",
           }}
         >
-          <For each={virtualRowKeys()}>{(rowKey) => <VirtualTimelineRow rowKey={rowKey} />}</For>
+          <For each={virtualRowKeys()}>{(rowKey) => <VirtualTimelineRow rowKey={rowKey} @lgcode/>}<@lgcode/For>
           <Show when={timelineRows().length > 0}>
             <div
               data-timeline-row="bottom-spacer"
               aria-hidden="true"
               class="h-16 absolute top-0 left-0 w-full"
               style={{ transform: `translateY(${virtualizer.getTotalSize() - 64}px)` }}
-            />
-          </Show>
-        </div>
-      </ScrollView>
-    </div>
+            @lgcode/>
+          <@lgcode/Show>
+        <@lgcode/div>
+      <@lgcode/ScrollView>
+    <@lgcode/div>
   )
 }

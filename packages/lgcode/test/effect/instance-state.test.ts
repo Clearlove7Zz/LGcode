@@ -1,16 +1,16 @@
 import { expect } from "bun:test"
-import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
 import { $ } from "bun"
 import { Context, Deferred, Duration, Effect, Exit, Fiber, Layer } from "effect"
-import { InstanceState } from "@/effect/instance-state"
+import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
 import {
   disposeAllInstancesEffect,
   provideInstanceEffect,
   reloadInstance,
   testInstanceStoreLayer,
   tmpdirScoped,
-} from "../fixture/fixture"
-import { testEffect } from "../lib/effect"
+} from "..@lgcode/fixture@lgcode/fixture"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const it = testEffect(Layer.mergeAll(CrossSpawnSpawner.defaultLayer, testInstanceStoreLayer))
 
@@ -110,7 +110,7 @@ it.live("InstanceState.get reads the current directory lazily", () =>
       readonly get: () => Effect.Effect<string>
     }
 
-    class Test extends Context.Service<Test, Api>()("@test/InstanceStateLazy") {
+    class Test extends Context.Service<Test, Api>()("@test@lgcode/InstanceStateLazy") {
       static readonly layer = Layer.effect(
         Test,
         Effect.gen(function* () {
@@ -146,7 +146,7 @@ it.live("InstanceState preserves directory across async boundaries", () =>
       readonly get: () => Effect.Effect<{ directory: string; worktree: string; project: string }>
     }
 
-    class Test extends Context.Service<Test, Api>()("@test/InstanceStateAsync") {
+    class Test extends Context.Service<Test, Api>()("@test@lgcode/InstanceStateAsync") {
       static readonly layer = Layer.effect(
         Test,
         Effect.gen(function* () {
@@ -204,7 +204,7 @@ it.live("InstanceState survives high-contention concurrent access", () =>
       readonly get: () => Effect.Effect<string>
     }
 
-    class Test extends Context.Service<Test, Api>()("@test/HighContention") {
+    class Test extends Context.Service<Test, Api>()("@test@lgcode/HighContention") {
       static readonly layer = Layer.effect(
         Test,
         Effect.gen(function* () {
@@ -244,7 +244,7 @@ it.live("InstanceState correct after interleaved init and dispose", () =>
       readonly get: () => Effect.Effect<string>
     }
 
-    class Test extends Context.Service<Test, Api>()("@test/InterleavedDispose") {
+    class Test extends Context.Service<Test, Api>()("@test@lgcode/InterleavedDispose") {
       static readonly layer = Layer.effect(
         Test,
         Effect.gen(function* () {
@@ -324,7 +324,7 @@ it.live("InstanceState survives deferred resume from the same instance context",
       readonly get: (gate: Deferred.Deferred<void>) => Effect.Effect<string>
     }
 
-    class Test extends Context.Service<Test, Api>()("@test/DeferredResume") {
+    class Test extends Context.Service<Test, Api>()("@test@lgcode/DeferredResume") {
       static readonly layer = Layer.effect(
         Test,
         Effect.gen(function* () {
@@ -361,7 +361,7 @@ it.live("InstanceState survives deferred resume outside ALS when InstanceRef is 
       readonly get: (gate: Deferred.Deferred<void>) => Effect.Effect<string>
     }
 
-    class Test extends Context.Service<Test, Api>()("@test/DeferredResumeOutside") {
+    class Test extends Context.Service<Test, Api>()("@test@lgcode/DeferredResumeOutside") {
       static readonly layer = Layer.effect(
         Test,
         Effect.gen(function* () {

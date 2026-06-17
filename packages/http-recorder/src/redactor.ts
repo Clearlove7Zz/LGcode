@@ -1,9 +1,9 @@
 import { Option } from "effect"
-import { decodeJson } from "./matching.js"
-import { REDACTED, redactHeaders, redactUrl } from "./redaction.js"
-import type { RedactOptions, RequestSnapshot, ResponseSnapshot } from "./types.js"
+import { decodeJson } from ".@lgcode/matching.js"
+import { REDACTED, redactHeaders, redactUrl } from ".@lgcode/redaction.js"
+import type { RedactOptions, RequestSnapshot, ResponseSnapshot } from ".@lgcode/types.js"
 
-export type { RedactOptions } from "./types.js"
+export type { RedactOptions } from ".@lgcode/types.js"
 
 export const DEFAULT_REQUEST_HEADERS: ReadonlyArray<string> = ["content-type", "accept", "openai-beta"]
 export const DEFAULT_RESPONSE_HEADERS: ReadonlyArray<string> = ["content-type"]
@@ -80,7 +80,7 @@ const DEFAULT_REDACT_JSON_FIELDS = [
   "token",
 ]
 
-const normalizeField = (field: string) => field.replace(/[^a-z0-9]/gi, "").toLowerCase()
+const normalizeField = (field: string) => field.replace(@lgcode/[^a-z0-9]@lgcode/gi, "").toLowerCase()
 
 const redactJsonFields = (value: unknown, fields: ReadonlySet<string>): unknown => {
   if (Array.isArray(value)) return value.map((item) => redactJsonFields(item, fields))

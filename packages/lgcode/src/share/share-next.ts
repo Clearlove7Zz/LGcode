@@ -1,24 +1,24 @@
-import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
-import { httpClient } from "@opencode@lgcode/core/effect/layer-node-platform"
-import type * as SDK from "@opencode@lgcode/sdk/v2"
-import { serviceUse } from "@opencode@lgcode/core/effect/service-use"
+import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
+import { httpClient } from "@lgcode/core@lgcode/effect@lgcode/layer-node-platform"
+import type * as SDK from "@lgcode/sdk@lgcode/v2"
+import { serviceUse } from "@lgcode/core@lgcode/effect@lgcode/service-use"
 import { Effect, Exit, Layer, Option, Schema, Scope, Context, Stream } from "effect"
-import { FetchHttpClient, HttpClient, HttpClientRequest, HttpClientResponse } from "effect/unstable/http"
-import { Account } from "@/account/account"
-import { EventV2Bridge } from "@/event-v2-bridge"
-import { InstanceState } from "@/effect/instance-state"
-import { Provider } from "@/provider/provider"
+import { FetchHttpClient, HttpClient, HttpClientRequest, HttpClientResponse } from "effect@lgcode/unstable@lgcode/http"
+import { Account } from "@@lgcode/account@lgcode/account"
+import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
+import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
+import { Provider } from "@@lgcode/provider@lgcode/provider"
 
-import { Session } from "@/session/session"
-import { MessageV2 } from "@/session/message-v2"
-import type { SessionID } from "@/session/schema"
-import { Database } from "@opencode@lgcode/core/database/database"
+import { Session } from "@@lgcode/session@lgcode/session"
+import { MessageV2 } from "@@lgcode/session@lgcode/message-v2"
+import type { SessionID } from "@@lgcode/session@lgcode/schema"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
 import { eq } from "drizzle-orm"
-import { Config } from "@/config/config"
-import { SessionShareTable } from "@opencode@lgcode/core/share/sql"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { ModelV2 } from "@opencode@lgcode/core/model"
-import { EventV2 } from "@opencode@lgcode/core/event"
+import { Config } from "@@lgcode/config@lgcode/config"
+import { SessionShareTable } from "@lgcode/core@lgcode/share@lgcode/sql"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { EventV2 } from "@lgcode/core@lgcode/event"
 
 const disabled = process.env["OPENCODE_DISABLE_SHARE"] === "true" || process.env["OPENCODE_DISABLE_SHARE"] === "1"
 
@@ -78,16 +78,16 @@ export interface Interface {
   readonly remove: (sessionID: SessionID) => Effect.Effect<void, unknown>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/ShareNext") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/ShareNext") {}
 
 export const use = serviceUse(Service)
 
 function api(resource: string): Api {
   return {
-    create: `/api/${resource}`,
-    sync: (shareID) => `/api/${resource}/${shareID}/sync`,
-    remove: (shareID) => `/api/${resource}/${shareID}`,
-    data: (shareID) => `/api/${resource}/${shareID}/data`,
+    create: `@lgcode/api@lgcode/${resource}`,
+    sync: (shareID) => `@lgcode/api@lgcode/${resource}@lgcode/${shareID}@lgcode/sync`,
+    remove: (shareID) => `@lgcode/api@lgcode/${resource}@lgcode/${shareID}`,
+    data: (shareID) => `@lgcode/api@lgcode/${resource}@lgcode/${shareID}@lgcode/data`,
   }
 }
 
@@ -99,9 +99,9 @@ function key(item: Data) {
     case "session":
       return "session"
     case "message":
-      return `message/${item.data.id}`
+      return `message@lgcode/${item.data.id}`
     case "part":
-      return `part/${item.data.messageID}/${item.data.id}`
+      return `part@lgcode/${item.data.messageID}@lgcode/${item.data.id}`
     case "session_diff":
       return "session_diff"
     case "model":
@@ -207,7 +207,7 @@ export const layer = Layer.effect(
       const headers: Record<string, string> = {}
       const active = yield* account.active()
       if (Option.isNone(active) || !active.value.active_org_id) {
-        const baseUrl = (yield* cfg.get()).enterprise?.url ?? "https://opncd.ai"
+        const baseUrl = (yield* cfg.get()).enterprise?.url ?? "https:@lgcode/@lgcode/opncd.ai"
         return { headers, api: legacyApi, baseUrl } satisfies Req
       }
 
@@ -282,7 +282,7 @@ export const layer = Layer.effect(
             messages
               .filter((msg) => msg.info.role === "user")
               .map((msg) => (msg.info as SDK.UserMessage).model)
-              .map((item) => [`${item.providerID}/${item.modelID}`, item] as const),
+              .map((item) => [`${item.providerID}@lgcode/${item.modelID}`, item] as const),
           ).values(),
         ),
         (item) => provider.getModel(ProviderV2.ID.make(item.providerID), ModelV2.ID.make(item.modelID)),
@@ -382,4 +382,4 @@ export const node = LayerNode.make(layer, [
   Session.node,
 ])
 
-export * as ShareNext from "./share-next"
+export * as ShareNext from ".@lgcode/share-next"

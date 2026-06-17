@@ -1,5 +1,5 @@
-import type { Dict } from "./en"
-import { dict as en } from "./en"
+import type { Dict } from ".@lgcode/en"
+import { dict as en } from ".@lgcode/en"
 
 export const dict = {
   ...en,
@@ -123,7 +123,7 @@ export const dict = {
   "home.what.shareLinks.body": "شارك رابطًا لأي جلسة للرجوع إليها أو لتصحيح الأخطاء",
   "home.what.copilot.title": "GitHub Copilot",
   "home.what.copilot.body": "سجّل الدخول بـ GitHub لاستخدام حسابك في Copilot",
-  "home.what.chatgptPlus.title": "ChatGPT Plus/Pro",
+  "home.what.chatgptPlus.title": "ChatGPT Plus@lgcode/Pro",
   "home.what.chatgptPlus.body": "سجّل الدخول بـ OpenAI لاستخدام حسابك في ChatGPT Plus أو Pro",
   "home.what.anyModel.title": "أي نموذج",
   "home.what.anyModel.body": "75+ مزوّد LLM عبر Models.dev، بما في ذلك النماذج المحلية",
@@ -133,7 +133,7 @@ export const dict = {
 
   "home.growth.title": "وكيل برمجة بالذكاء الاصطناعي مفتوح المصدر",
   "home.growth.body":
-    "مع أكثر من <strong>{{stars}}</strong> نجمة على GitHub، و<strong>{{contributors}}</strong> مساهمًا، وأكثر من <strong>{{commits}}</strong> Commit، يستخدم OpenCode ويثق به أكثر من <strong>{{monthlyUsers}}</strong> مطوّر كل شهر.",
+    "مع أكثر من <strong>{{stars}}<@lgcode/strong> نجمة على GitHub، و<strong>{{contributors}}<@lgcode/strong> مساهمًا، وأكثر من <strong>{{commits}}<@lgcode/strong> Commit، يستخدم OpenCode ويثق به أكثر من <strong>{{monthlyUsers}}<@lgcode/strong> مطوّر كل شهر.",
   "home.growth.githubStars": "نجوم GitHub",
   "home.growth.contributors": "المساهمون",
   "home.growth.monthlyDevs": "مطورون شهريًا",
@@ -160,7 +160,7 @@ export const dict = {
   "home.faq.a3.p4.localLink": "النماذج المحلية",
   "home.faq.q4": "هل يمكنني استخدام اشتراكاتي الحالية مع OpenCode؟",
   "home.faq.a4.p1":
-    "نعم، يدعم OpenCode خطط الاشتراك من كل المزودين الرئيسيين. يمكنك استخدام اشتراكات Claude Pro/Max، ChatGPT Plus/Pro، أو GitHub Copilot.",
+    "نعم، يدعم OpenCode خطط الاشتراك من كل المزودين الرئيسيين. يمكنك استخدام اشتراكات Claude Pro@lgcode/Max، ChatGPT Plus@lgcode/Pro، أو GitHub Copilot.",
   "home.faq.q5": "هل يمكنني استخدام OpenCode في الطرفية فقط؟",
   "home.faq.a5.beforeDesktop": "ليس بعد الآن! OpenCode متاح الآن كتطبيق لـ",
   "home.faq.a5.desktop": "سطح المكتب",
@@ -250,7 +250,7 @@ export const dict = {
   "go.title": "OpenCode Go | نماذج برمجة منخفضة التكلفة للجميع",
   "go.banner.text": "MiniMax M3: حد استخدام أكبر 3 مرات لفترة محدودة",
   "go.meta.description":
-    "يبدأ Go من $5 للشهر الأول، ثم $10/شهر، مع حدود طلب سخية لمدة 5 ساعات لـ GLM-5.1 وGLM-5 وKimi K2.7 Code وKimi K2.6 وMiMo-V2.5-Pro وMiMo-V2.5 وQwen3.7 Max وQwen3.7 Plus وQwen3.6 Plus وMiniMax M2.7 وMiniMax M3 وDeepSeek V4 Pro وDeepSeek V4 Flash.",
+    "يبدأ Go من $5 للشهر الأول، ثم $10@lgcode/شهر، مع حدود طلب سخية لمدة 5 ساعات لـ GLM-5.1 وGLM-5 وKimi K2.7 Code وKimi K2.6 وMiMo-V2.5-Pro وMiMo-V2.5 وQwen3.7 Max وQwen3.7 Plus وQwen3.6 Plus وMiniMax M2.7 وMiniMax M3 وDeepSeek V4 Pro وDeepSeek V4 Flash.",
   "go.hero.title": "نماذج برمجة منخفضة التكلفة للجميع",
   "go.hero.body":
     "يجلب Go البرمجة الوكيلة للمبرمجين حول العالم. يوفر حدودًا سخية ووصولًا موثوقًا إلى أقوى النماذج مفتوحة المصدر، حتى تتمكن من البناء باستخدام وكلاء أقوياء دون القلق بشأن التكلفة أو التوفر.",
@@ -258,10 +258,10 @@ export const dict = {
   "go.cta.start": "اشترك في Go",
   "go.cta.template": "{{text}} {{price}}",
   "go.cta.text": "اشترك في Go",
-  "go.cta.price": "$10/شهر",
+  "go.cta.price": "$10@lgcode/شهر",
   "go.cta.promo": "$5 للشهر الأول",
   "go.pricing.body":
-    "استخدمه مع أي وكيل. $5 للشهر الأول، ثم $10/شهر. قم بزيادة الرصيد إذا لزم الأمر. الإلغاء في أي وقت.",
+    "استخدمه مع أي وكيل. $5 للشهر الأول، ثم $10@lgcode/شهر. قم بزيادة الرصيد إذا لزم الأمر. الإلغاء في أي وقت.",
   "go.graph.free": "مجاني",
   "go.graph.freePill": "Big Pickle ونماذج مجانية",
   "go.graph.go": "Go",
@@ -293,7 +293,7 @@ export const dict = {
   "go.testimonials.frank.quote": "أتمنى لو كنت لا أزال في Nvidia.",
   "go.problem.title": "ما المشكلة التي يحلها Go؟",
   "go.problem.body":
-    "نحن نركز على تقديم تجربة OpenCode لأكبر عدد ممكن من الناس. OpenCode Go هو اشتراك منخفض التكلفة: $5 للشهر الأول، ثم $10/شهر. يوفر حدودا سخية ووصولا موثوقا إلى نماذج المصدر المفتوح الأكثر قدرة.",
+    "نحن نركز على تقديم تجربة OpenCode لأكبر عدد ممكن من الناس. OpenCode Go هو اشتراك منخفض التكلفة: $5 للشهر الأول، ثم $10@lgcode/شهر. يوفر حدودا سخية ووصولا موثوقا إلى نماذج المصدر المفتوح الأكثر قدرة.",
   "go.problem.subtitle": " ",
   "go.problem.item1": "أسعار اشتراك منخفضة التكلفة",
   "go.problem.item2": "حدود سخية ووصول موثوق",
@@ -301,13 +301,13 @@ export const dict = {
   "go.problem.item4":
     "يتضمن GLM-5.1 وGLM-5 وKimi K2.7 Code وKimi K2.6 وMiMo-V2.5-Pro وMiMo-V2.5 وQwen3.7 Max وQwen3.7 Plus وQwen3.6 Plus وMiniMax M2.7 وMiniMax M3 وDeepSeek V4 Pro وDeepSeek V4 Flash",
   "go.how.title": "كيف يعمل Go",
-  "go.how.body": "يبدأ Go من $5 للشهر الأول، ثم $10/شهر. يمكنك استخدامه مع OpenCode أو أي وكيل.",
+  "go.how.body": "يبدأ Go من $5 للشهر الأول، ثم $10@lgcode/شهر. يمكنك استخدامه مع OpenCode أو أي وكيل.",
   "go.how.step1.title": "أنشئ حسابًا",
   "go.how.step1.beforeLink": "اتبع",
   "go.how.step1.link": "تعليمات الإعداد",
   "go.how.step2.title": "اشترك في Go",
   "go.how.step2.link": "$5 للشهر الأول",
-  "go.how.step2.afterLink": "ثم $10/شهر مع حدود سخية",
+  "go.how.step2.afterLink": "ثم $10@lgcode/شهر مع حدود سخية",
   "go.how.step3.title": "ابدأ البرمجة",
   "go.how.step3.body": "مع وصول موثوق لنماذج مفتوحة المصدر",
   "go.privacy.title": "خصوصيتك مهمة بالنسبة لنا",
@@ -323,11 +323,11 @@ export const dict = {
   "go.faq.a2": "يتضمن Go النماذج المدرجة أدناه، مع حدود سخية وإتاحة موثوقة.",
   "go.faq.q3": "هل Go هو نفسه Zen؟",
   "go.faq.a3":
-    "لا. Zen هو الدفع حسب الاستخدام، بينما يبدأ Go من $5 للشهر الأول، ثم $10/شهر، مع حدود سخية ووصول موثوق إلى نماذج المصدر المفتوح GLM-5.1 وGLM-5 وKimi K2.7 Code وKimi K2.6 وMiMo-V2.5-Pro وMiMo-V2.5 وQwen3.7 Max وQwen3.7 Plus وQwen3.6 Plus وMiniMax M2.7 وMiniMax M3 وDeepSeek V4 Pro وDeepSeek V4 Flash.",
+    "لا. Zen هو الدفع حسب الاستخدام، بينما يبدأ Go من $5 للشهر الأول، ثم $10@lgcode/شهر، مع حدود سخية ووصول موثوق إلى نماذج المصدر المفتوح GLM-5.1 وGLM-5 وKimi K2.7 Code وKimi K2.6 وMiMo-V2.5-Pro وMiMo-V2.5 وQwen3.7 Max وQwen3.7 Plus وQwen3.6 Plus وMiniMax M2.7 وMiniMax M3 وDeepSeek V4 Pro وDeepSeek V4 Flash.",
   "go.faq.q4": "كم تكلفة Go؟",
   "go.faq.a4.p1.beforePricing": "تكلفة Go",
   "go.faq.a4.p1.pricingLink": "$5 للشهر الأول",
-  "go.faq.a4.p1.afterPricing": "ثم $10/شهر مع حدود سخية.",
+  "go.faq.a4.p1.afterPricing": "ثم $10@lgcode/شهر مع حدود سخية.",
   "go.faq.a4.p2.beforeAccount": "يمكنك إدارة اشتراكك في",
   "go.faq.a4.p2.accountLink": "حسابك",
   "go.faq.a4.p3": "ألغِ في أي وقت.",
@@ -346,7 +346,7 @@ export const dict = {
 
   "go.faq.q9": "ما الفرق بين النماذج المجانية وGo؟",
   "go.faq.a9":
-    "تشمل النماذج المجانية Big Pickle بالإضافة إلى النماذج الترويجية المتاحة في ذلك الوقت، مع حصة 200 طلب/يوم. يتضمن Go نماذج GLM-5.1 وGLM-5 وKimi K2.7 Code وKimi K2.6 وMiMo-V2.5-Pro وMiMo-V2.5 وQwen3.7 Max وQwen3.7 Plus وQwen3.6 Plus وMiniMax M2.7 وMiniMax M3 وDeepSeek V4 Pro وDeepSeek V4 Flash مع حصص طلبات أعلى مطبقة عبر نوافذ متجددة (5 ساعات، أسبوعيًا، وشهريًا)، تعادل تقريبًا 12 دولارًا كل 5 ساعات، و30 دولارًا في الأسبوع، و60 دولارًا في الشهر (تختلف أعداد الطلبات الفعلية حسب النموذج والاستخدام).",
+    "تشمل النماذج المجانية Big Pickle بالإضافة إلى النماذج الترويجية المتاحة في ذلك الوقت، مع حصة 200 طلب@lgcode/يوم. يتضمن Go نماذج GLM-5.1 وGLM-5 وKimi K2.7 Code وKimi K2.6 وMiMo-V2.5-Pro وMiMo-V2.5 وQwen3.7 Max وQwen3.7 Plus وQwen3.6 Plus وMiniMax M2.7 وMiniMax M3 وDeepSeek V4 Pro وDeepSeek V4 Flash مع حصص طلبات أعلى مطبقة عبر نوافذ متجددة (5 ساعات، أسبوعيًا، وشهريًا)، تعادل تقريبًا 12 دولارًا كل 5 ساعات، و30 دولارًا في الأسبوع، و60 دولارًا في الشهر (تختلف أعداد الطلبات الفعلية حسب النموذج والاستخدام).",
 
   "zen.api.error.rateLimitExceeded": "تم تجاوز حد الطلبات. يرجى المحاولة مرة أخرى لاحقًا.",
   "zen.api.error.modelNotSupported": "النموذج {{model}} غير مدعوم",
@@ -651,7 +651,7 @@ export const dict = {
   "workspace.lite.other.message":
     "عضو آخر في مساحة العمل هذه مشترك بالفعل في OpenCode Go. يمكن لعضو واحد فقط لكل مساحة عمل الاشتراك.",
   "workspace.lite.promo.description":
-    "يبدأ OpenCode Go بسعر {{price}}، ثم $10/شهر، ويوفر وصولا موثوقا لنماذج البرمجة المفتوحة الشهيرة مع حدود استخدام سخية.",
+    "يبدأ OpenCode Go بسعر {{price}}، ثم $10@lgcode/شهر، ويوفر وصولا موثوقا لنماذج البرمجة المفتوحة الشهيرة مع حدود استخدام سخية.",
   "workspace.lite.promo.price": "$5 للشهر الأول",
   "workspace.lite.promo.modelsTitle": "ما يتضمنه",
   "workspace.lite.promo.footer":
@@ -670,7 +670,7 @@ export const dict = {
   "workspace.referral.instructions.claim": "تحصلان كلاكما على رصيد استخدام بقيمة $5 لتطبيقه على حدود استخدام Go",
   "workspace.referral.rewards.title": "مكافآت الإحالة",
   "workspace.referral.rewards.description": "طبّق أرصدة الإحالة المتاحة على استخدامك لـ Go.",
-  "workspace.referral.rewards.subtitle": "تم تطبيق {{applied}} / {{total}} من المكافآت.",
+  "workspace.referral.rewards.subtitle": "تم تطبيق {{applied}} @lgcode/ {{total}} من المكافآت.",
   "workspace.referral.rewards.empty": "لا توجد مكافآت إحالة بعد.",
   "workspace.referral.table.reward": "المكافأة",
   "workspace.referral.table.referral": "الوصف",

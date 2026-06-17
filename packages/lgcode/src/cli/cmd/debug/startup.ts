@@ -1,5 +1,5 @@
 import { EOL } from "os"
-import { cmd } from "../cmd"
+import { cmd } from "..@lgcode/cmd"
 
 export const StartupCommand = cmd({
   command: "startup",

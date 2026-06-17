@@ -1,10 +1,10 @@
 import { Effect } from "effect"
-import { effectCmd } from "../effect-cmd"
-import { AgentSideConnection, ndJsonStream } from "@agentclientprotocol/sdk"
-import { ServerAuth } from "@/server/auth"
-import { createOpencodeClient } from "@opencode@lgcode/sdk/v2"
-import { withNetworkOptions, resolveNetworkOptions } from "../network"
-import { ACPProfile } from "@/acp/profile"
+import { effectCmd } from "..@lgcode/effect-cmd"
+import { AgentSideConnection, ndJsonStream } from "@agentclientprotocol@lgcode/sdk"
+import { ServerAuth } from "@@lgcode/server@lgcode/auth"
+import { createOpencodeClient } from "@lgcode/sdk@lgcode/v2"
+import { withNetworkOptions, resolveNetworkOptions } from "..@lgcode/network"
+import { ACPProfile } from "@@lgcode/acp@lgcode/profile"
 
 export const AcpCommand = effectCmd({
   command: "acp",
@@ -17,15 +17,15 @@ export const AcpCommand = effectCmd({
     })
   },
   handler: Effect.fn("Cli.acp")(function* (args) {
-    const { Server } = yield* Effect.promise(() => import("@/server/server"))
-    const { ACP } = yield* Effect.promise(() => import("@/acp/agent"))
+    const { Server } = yield* Effect.promise(() => import("@@lgcode/server@lgcode/server"))
+    const { ACP } = yield* Effect.promise(() => import("@@lgcode/acp@lgcode/agent"))
     ACPProfile.mark("cli.acp.handler")
     process.env.OPENCODE_CLIENT = "acp"
     const opts = yield* resolveNetworkOptions(args)
     const server = yield* Effect.promise(() => ACPProfile.measure("cli.acp.server.listen", () => Server.listen(opts)))
 
     const sdk = createOpencodeClient({
-      baseUrl: `http://${server.hostname}:${server.port}`,
+      baseUrl: `http:@lgcode/@lgcode/${server.hostname}:${server.port}`,
       headers: ServerAuth.headers(),
     })
 

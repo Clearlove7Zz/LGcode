@@ -1,4 +1,4 @@
-import { Tabs as Kobalte } from "@kobalte/core/tabs"
+import { Tabs as Kobalte } from "@kobalte@lgcode/core@lgcode/tabs"
 import { Show, splitProps, type JSX } from "solid-js"
 import type { ComponentProps, ParentProps, Component } from "solid-js"
 
@@ -30,7 +30,7 @@ function TabsRoot(props: TabsProps) {
         ...split.classList,
         [split.class ?? ""]: !!split.class,
       }}
-    />
+    @lgcode/>
   )
 }
 
@@ -44,7 +44,7 @@ function TabsList(props: TabsListProps) {
         ...split.classList,
         [split.class ?? ""]: !!split.class,
       }}
-    />
+    @lgcode/>
   )
 }
 
@@ -85,15 +85,15 @@ function TabsTrigger(props: ParentProps<TabsTriggerProps>) {
         classList={{ [split.classes?.button ?? ""]: split.classes?.button }}
       >
         {split.children}
-      </Kobalte.Trigger>
+      <@lgcode/Kobalte.Trigger>
       <Show when={split.closeButton}>
         {(closeButton) => (
           <div data-slot="tabs-trigger-close-button" data-hidden={split.hideCloseButton}>
             {closeButton()}
-          </div>
+          <@lgcode/div>
         )}
-      </Show>
-    </div>
+      <@lgcode/Show>
+    <@lgcode/div>
   )
 }
 
@@ -109,12 +109,12 @@ function TabsContent(props: ParentProps<TabsContentProps>) {
       }}
     >
       {split.children}
-    </Kobalte.Content>
+    <@lgcode/Kobalte.Content>
   )
 }
 
 const TabsSectionTitle: Component<ParentProps> = (props) => {
-  return <div data-slot="tabs-section-title">{props.children}</div>
+  return <div data-slot="tabs-section-title">{props.children}<@lgcode/div>
 }
 
 export const Tabs = Object.assign(TabsRoot, {

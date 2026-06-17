@@ -1,30 +1,30 @@
 import path from "path"
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { AgentV2 } from "@opencode@lgcode/core/agent"
-import { PluginBoot } from "@opencode@lgcode/core/plugin/boot"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { SkillV2 } from "@opencode@lgcode/core/skill"
-import { SystemContext } from "@opencode@lgcode/core/system-context"
-import { SkillGuidance } from "@opencode@lgcode/core/skill/guidance"
-import { it } from "../lib/effect"
+import { AgentV2 } from "@lgcode/core@lgcode/agent"
+import { PluginBoot } from "@lgcode/core@lgcode/plugin@lgcode/boot"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { SkillV2 } from "@lgcode/core@lgcode/skill"
+import { SystemContext } from "@lgcode/core@lgcode/system-context"
+import { SkillGuidance } from "@lgcode/core@lgcode/skill@lgcode/guidance"
+import { it } from "..@lgcode/lib@lgcode/effect"
 
 const build = AgentV2.ID.make("build")
 const effect = new SkillV2.Info({
   name: "effect",
   description: "Build applications with Effect",
-  location: AbsolutePath.make(path.resolve("/skills/effect/SKILL.md")),
+  location: AbsolutePath.make(path.resolve("@lgcode/skills@lgcode/effect@lgcode/SKILL.md")),
   content: "Effect guidance",
 })
 const hidden = new SkillV2.Info({
   name: "hidden",
-  location: AbsolutePath.make(path.resolve("/skills/hidden/SKILL.md")),
+  location: AbsolutePath.make(path.resolve("@lgcode/skills@lgcode/hidden@lgcode/SKILL.md")),
   content: "Undescribed guidance",
 })
 const denied = new SkillV2.Info({
   name: "denied",
   description: "Must not be advertised",
-  location: AbsolutePath.make(path.resolve("/skills/denied/SKILL.md")),
+  location: AbsolutePath.make(path.resolve("@lgcode/skills@lgcode/denied@lgcode/SKILL.md")),
   content: "Denied guidance",
 })
 
@@ -55,10 +55,10 @@ describe("SkillGuidance", () => {
           "Use the skill tool to load a skill when a task matches its description.",
           "<available_skills>",
           "  <skill>",
-          "    <name>effect</name>",
-          "    <description>Build applications with Effect</description>",
-          "  </skill>",
-          "</available_skills>",
+          "    <name>effect<@lgcode/name>",
+          "    <description>Build applications with Effect<@lgcode/description>",
+          "  <@lgcode/skill>",
+          "<@lgcode/available_skills>",
         ].join("\n"),
       )
 
@@ -128,7 +128,7 @@ describe("SkillGuidance", () => {
       const guidance = yield* SkillGuidance.Service
       expect(
         (yield* guidance.load({ id: agent.id, info: agent }).pipe(Effect.flatMap(SystemContext.initialize))).baseline,
-      ).toContain("<name>effect</name>")
+      ).toContain("<name>effect<@lgcode/name>")
     }).pipe(Effect.provide(layer(() => [effect])))
   })
 

@@ -1,10 +1,10 @@
 import { describe, expect } from "bun:test"
-import type { SessionNotification } from "@agentclientprotocol/sdk"
+import type { SessionNotification } from "@agentclientprotocol@lgcode/sdk"
 import { Effect } from "effect"
-import { mkdir } from "node:fs/promises"
+import { mkdir } from "node:fs@lgcode/promises"
 import path from "node:path"
-import { cliIt } from "../../lib/cli-process"
-import { createAcpClient, initialize, newSession, verifierConfig, verifierSkill } from "./helpers"
+import { cliIt } from "..@lgcode/..@lgcode/lib@lgcode/cli-process"
+import { createAcpClient, initialize, newSession, verifierConfig, verifierSkill } from ".@lgcode/helpers"
 
 describe("opencode acp skills subprocess", () => {
   cliIt.live(
@@ -22,7 +22,7 @@ describe("opencode acp skills subprocess", () => {
         const session = yield* newSession(acp, home)
 
         const update = yield* acp.waitForNotification<SessionNotification>(
-          "session/update",
+          "session@lgcode/update",
           (params) =>
             params.sessionId === session.sessionId &&
             params.update.sessionUpdate === "available_commands_update" &&

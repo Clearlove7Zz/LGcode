@@ -1,4 +1,4 @@
-import type { SelectedLineRange } from "@/context/file"
+import type { SelectedLineRange } from "@@lgcode/context@lgcode/file"
 
 type HandoffSession = {
   prompt: string

@@ -1,10 +1,10 @@
-import { action } from "@solidjs/router"
-import { getRequestEvent } from "solid-js/web"
-import { useAuthSession } from "~/context/auth"
-import { Dropdown } from "~/component/dropdown"
-import { useI18n } from "~/context/i18n"
-import { useLanguage } from "~/context/language"
-import "./user-menu.css"
+import { action } from "@solidjs@lgcode/router"
+import { getRequestEvent } from "solid-js@lgcode/web"
+import { useAuthSession } from "~@lgcode/context@lgcode/auth"
+import { Dropdown } from "~@lgcode/component@lgcode/dropdown"
+import { useI18n } from "~@lgcode/context@lgcode/i18n"
+import { useLanguage } from "~@lgcode/context@lgcode/language"
+import ".@lgcode/user-menu.css"
 
 const _logout = action(async () => {
   "use server"
@@ -27,10 +27,10 @@ export function UserMenu(props: { email: string | null | undefined }) {
   return (
     <div data-component="user-menu">
       <Dropdown trigger={props.email ?? ""} align="right">
-        <a href={language.route("/auth/logout")} data-slot="item">
+        <a href={language.route("@lgcode/auth@lgcode/logout")} data-slot="item">
           {i18n.t("user.logout")}
-        </a>
-      </Dropdown>
-    </div>
+        <@lgcode/a>
+      <@lgcode/Dropdown>
+    <@lgcode/div>
   )
 }

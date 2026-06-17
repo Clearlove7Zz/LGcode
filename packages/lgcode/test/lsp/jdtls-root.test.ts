@@ -1,18 +1,18 @@
 import { describe, test, expect, afterAll } from "bun:test"
 import path from "path"
-import fs from "fs/promises"
+import fs from "fs@lgcode/promises"
 import os from "os"
-import * as LSPServer from "@/lsp/server"
-import type { InstanceContext } from "@/project/instance-context"
+import * as LSPServer from "@@lgcode/lsp@lgcode/server"
+import type { InstanceContext } from "@@lgcode/project@lgcode/instance-context"
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
+@lgcode/@lgcode/ Helpers
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
 
 const tmpBase = path.join(os.tmpdir(), "opencode-jdtls-test")
 
 function makeCtx(directory: string): InstanceContext {
-  return { directory, worktree: "/", project: {} as any }
+  return { directory, worktree: "@lgcode/", project: {} as any }
 }
 
 async function mkdirp(p: string) {
@@ -24,22 +24,22 @@ async function touch(p: string) {
   await fs.writeFile(p, "", "utf-8")
 }
 
-// ---------------------------------------------------------------------------
-// Cleanup
-// ---------------------------------------------------------------------------
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
+@lgcode/@lgcode/ Cleanup
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
 
 afterAll(async () => {
   await fs.rm(tmpBase, { recursive: true, force: true }).catch(() => {})
 })
 
-// ---------------------------------------------------------------------------
-// Tests
-// ---------------------------------------------------------------------------
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
+@lgcode/@lgcode/ Tests
+@lgcode/@lgcode/ ---------------------------------------------------------------------------
 
 describe("JDTLS.root", () => {
-  // -------------------------------------------------------------------------
-  // Maven
-  // -------------------------------------------------------------------------
+  @lgcode/@lgcode/ -------------------------------------------------------------------------
+  @lgcode/@lgcode/ Maven
+  @lgcode/@lgcode/ -------------------------------------------------------------------------
   describe("Maven", () => {
     test("single-module Maven project returns pom.xml directory", async () => {
       const root = path.join(tmpBase, "single-maven")
@@ -57,9 +57,9 @@ describe("JDTLS.root", () => {
     test("multi-module Maven project follows <module> chain to top-level pom.xml", async () => {
       const root = path.join(tmpBase, "multi-maven")
       await mkdirp(root)
-      // Parent pom with <module>module-a</module>
-      await Bun.write(path.join(root, "pom.xml"), "<project><modules><module>module-a</module></modules></project>")
-      // Child module with its own pom.xml
+      @lgcode/@lgcode/ Parent pom with <module>module-a<@lgcode/module>
+      await Bun.write(path.join(root, "pom.xml"), "<project><modules><module>module-a<@lgcode/module><@lgcode/modules><@lgcode/project>")
+      @lgcode/@lgcode/ Child module with its own pom.xml
       const childDir = path.join(root, "module-a")
       await mkdirp(childDir)
       await touch(path.join(childDir, "pom.xml"))
@@ -69,12 +69,12 @@ describe("JDTLS.root", () => {
 
       const file = path.join(srcDir, "App.java")
       const result = await LSPServer.JDTLS.root(file, makeCtx(root))
-      // Parent declares module-a as module → root is parent directory
+      @lgcode/@lgcode/ Parent declares module-a as module → root is parent directory
       expect(result).toBe(root)
     })
 
     test("Maven project inside a nested directory (ctx.directory is workspace root)", async () => {
-      // Workspace root = ctx.directory, Maven project in a subdirectory
+      @lgcode/@lgcode/ Workspace root = ctx.directory, Maven project in a subdirectory
       const workspace = path.join(tmpBase, "maven-workspace")
       await mkdirp(workspace)
       const projectDir = path.join(workspace, "my-maven-app")
@@ -85,19 +85,19 @@ describe("JDTLS.root", () => {
 
       const file = path.join(srcDir, "App.java")
       const result = await LSPServer.JDTLS.root(file, makeCtx(workspace))
-      // findUp finds projectDir's pom.xml (only one), returns projectDir
+      @lgcode/@lgcode/ findUp finds projectDir's pom.xml (only one), returns projectDir
       expect(result).toBe(projectDir)
     })
 
     test("nested independent Maven project stops at its own pom.xml", async () => {
       const workspace = path.join(tmpBase, "nested-independent")
       await mkdirp(workspace)
-      // Parent pom WITHOUT <module>tools/sample</module>
+      @lgcode/@lgcode/ Parent pom WITHOUT <module>tools@lgcode/sample<@lgcode/module>
       await Bun.write(
         path.join(workspace, "pom.xml"),
-        "<project><modules><module>module-a</module></modules></project>",
+        "<project><modules><module>module-a<@lgcode/module><@lgcode/modules><@lgcode/project>",
       )
-      // Independent project nested inside
+      @lgcode/@lgcode/ Independent project nested inside
       const projectDir = path.join(workspace, "tools", "sample")
       await mkdirp(projectDir)
       await touch(path.join(projectDir, "pom.xml"))
@@ -107,17 +107,17 @@ describe("JDTLS.root", () => {
 
       const file = path.join(srcDir, "App.java")
       const result = await LSPServer.JDTLS.root(file, makeCtx(workspace))
-      // workspace/pom.xml does NOT declare tools/sample as module → stop at tools/sample
+      @lgcode/@lgcode/ workspace@lgcode/pom.xml does NOT declare tools@lgcode/sample as module → stop at tools@lgcode/sample
       expect(result).toBe(projectDir)
     })
 
     test("three-level Maven module chain resolves to top-level", async () => {
       const root = path.join(tmpBase, "three-level")
       await mkdirp(root)
-      await Bun.write(path.join(root, "pom.xml"), "<project><modules><module>apps</module></modules></project>")
+      await Bun.write(path.join(root, "pom.xml"), "<project><modules><module>apps<@lgcode/module><@lgcode/modules><@lgcode/project>")
       const appsDir = path.join(root, "apps")
       await mkdirp(appsDir)
-      await Bun.write(path.join(appsDir, "pom.xml"), "<project><modules><module>my-app</module></modules></project>")
+      await Bun.write(path.join(appsDir, "pom.xml"), "<project><modules><module>my-app<@lgcode/module><@lgcode/modules><@lgcode/project>")
       const appDir = path.join(appsDir, "my-app")
       await mkdirp(appDir)
       await touch(path.join(appDir, "pom.xml"))
@@ -133,10 +133,10 @@ describe("JDTLS.root", () => {
     test("three-level Maven chain stops when <module> link is broken", async () => {
       const root = path.join(tmpBase, "broken-chain")
       await mkdirp(root)
-      await Bun.write(path.join(root, "pom.xml"), "<project><modules><module>apps</module></modules></project>")
+      await Bun.write(path.join(root, "pom.xml"), "<project><modules><module>apps<@lgcode/module><@lgcode/modules><@lgcode/project>")
       const appsDir = path.join(root, "apps")
       await mkdirp(appsDir)
-      await touch(path.join(appsDir, "pom.xml")) // Empty pom, no <module> declaration
+      await touch(path.join(appsDir, "pom.xml")) @lgcode/@lgcode/ Empty pom, no <module> declaration
       const appDir = path.join(appsDir, "my-app")
       await mkdirp(appDir)
       await touch(path.join(appDir, "pom.xml"))
@@ -146,14 +146,14 @@ describe("JDTLS.root", () => {
 
       const file = path.join(srcDir, "App.java")
       const result = await LSPServer.JDTLS.root(file, makeCtx(root))
-      // apps/pom.xml has no <module>my-app</module> → stop at my-app
+      @lgcode/@lgcode/ apps@lgcode/pom.xml has no <module>my-app<@lgcode/module> → stop at my-app
       expect(result).toBe(appDir)
     })
 
-    test("<module> with ./ prefix is normalized correctly", async () => {
+    test("<module> with .@lgcode/ prefix is normalized correctly", async () => {
       const root = path.join(tmpBase, "dot-slash-module")
       await mkdirp(root)
-      await Bun.write(path.join(root, "pom.xml"), "<project><modules><module>./module-a</module></modules></project>")
+      await Bun.write(path.join(root, "pom.xml"), "<project><modules><module>.@lgcode/module-a<@lgcode/module><@lgcode/modules><@lgcode/project>")
       const childDir = path.join(root, "module-a")
       await mkdirp(childDir)
       await touch(path.join(childDir, "pom.xml"))
@@ -169,7 +169,7 @@ describe("JDTLS.root", () => {
     test("<module> with trailing slash is normalized correctly", async () => {
       const root = path.join(tmpBase, "trailing-slash-module")
       await mkdirp(root)
-      await Bun.write(path.join(root, "pom.xml"), "<project><modules><module>module-a/</module></modules></project>")
+      await Bun.write(path.join(root, "pom.xml"), "<project><modules><module>module-a@lgcode/<@lgcode/module><@lgcode/modules><@lgcode/project>")
       const childDir = path.join(root, "module-a")
       await mkdirp(childDir)
       await touch(path.join(childDir, "pom.xml"))
@@ -183,12 +183,12 @@ describe("JDTLS.root", () => {
     })
   })
 
-  // -------------------------------------------------------------------------
-  // Gradle
-  // -------------------------------------------------------------------------
+  @lgcode/@lgcode/ -------------------------------------------------------------------------
+  @lgcode/@lgcode/ Gradle
+  @lgcode/@lgcode/ -------------------------------------------------------------------------
   describe("Gradle", () => {
     test("Gradle project with settings.gradle in a subdirectory of ctx.directory", async () => {
-      // Workspace root = ctx.directory, Gradle project in a subdirectory
+      @lgcode/@lgcode/ Workspace root = ctx.directory, Gradle project in a subdirectory
       const workspace = path.join(tmpBase, "gradle-sub")
       await mkdirp(workspace)
       const projectDir = path.join(workspace, "gradle-app")
@@ -223,7 +223,7 @@ describe("JDTLS.root", () => {
       const gradleRoot = path.join(workspace, "gradle-project")
       await touch(path.join(gradleRoot, "settings.gradle"))
       await touch(path.join(gradleRoot, "gradlew"))
-      // Submodule has pom.xml too
+      @lgcode/@lgcode/ Submodule has pom.xml too
       const subDir = path.join(gradleRoot, "module-a")
       await mkdirp(subDir)
       await touch(path.join(subDir, "pom.xml"))
@@ -233,7 +233,7 @@ describe("JDTLS.root", () => {
 
       const file = path.join(srcDir, "App.java")
       const result = await LSPServer.JDTLS.root(file, makeCtx(workspace))
-      // Gradle markers found at gradleRoot level
+      @lgcode/@lgcode/ Gradle markers found at gradleRoot level
       expect(result).toBe(gradleRoot)
     })
 
@@ -283,7 +283,7 @@ describe("JDTLS.root", () => {
       const workspace = path.join(tmpBase, "gradle-excludes-maven")
       await mkdirp(workspace)
       const projectDir = path.join(workspace, "mixed-project")
-      // Both pom.xml and gradlew exist
+      @lgcode/@lgcode/ Both pom.xml and gradlew exist
       await touch(path.join(projectDir, "pom.xml"))
       await touch(path.join(projectDir, "gradlew"))
       const srcDir = path.join(projectDir, "src", "main", "java", "com", "example")
@@ -292,14 +292,14 @@ describe("JDTLS.root", () => {
 
       const file = path.join(srcDir, "App.java")
       const result = await LSPServer.JDTLS.root(file, makeCtx(workspace))
-      // Gradle wrapper takes precedence
+      @lgcode/@lgcode/ Gradle wrapper takes precedence
       expect(result).toBe(projectDir)
     })
   })
 
-  // -------------------------------------------------------------------------
-  // Eclipse
-  // -------------------------------------------------------------------------
+  @lgcode/@lgcode/ -------------------------------------------------------------------------
+  @lgcode/@lgcode/ Eclipse
+  @lgcode/@lgcode/ -------------------------------------------------------------------------
   describe("Eclipse", () => {
     test("Eclipse project with .project in a subdirectory", async () => {
       const workspace = path.join(tmpBase, "eclipse-sub")
@@ -317,9 +317,9 @@ describe("JDTLS.root", () => {
     })
   })
 
-  // -------------------------------------------------------------------------
-  // No markers
-  // -------------------------------------------------------------------------
+  @lgcode/@lgcode/ -------------------------------------------------------------------------
+  @lgcode/@lgcode/ No markers
+  @lgcode/@lgcode/ -------------------------------------------------------------------------
   describe("No build markers", () => {
     test("Java file with no build markers returns undefined", async () => {
       const root = path.join(tmpBase, "no-build")
@@ -334,15 +334,15 @@ describe("JDTLS.root", () => {
     })
   })
 
-  // -------------------------------------------------------------------------
-  // Additional validation scenarios
-  // -------------------------------------------------------------------------
+  @lgcode/@lgcode/ -------------------------------------------------------------------------
+  @lgcode/@lgcode/ Additional validation scenarios
+  @lgcode/@lgcode/ -------------------------------------------------------------------------
   describe("Additional Maven module-chain validation", () => {
-    // Scenario 1: <module> with multi-segment path (e.g. <module>tools/sample</module>)
+    @lgcode/@lgcode/ Scenario 1: <module> with multi-segment path (e.g. <module>tools@lgcode/sample<@lgcode/module>)
     test("<module> multi-segment path matches nested directory", async () => {
       const root = path.join(tmpBase, "multi-seg-module")
       await mkdirp(root)
-      await Bun.write(path.join(root, "pom.xml"), "<project><modules><module>tools/sample</module></modules></project>")
+      await Bun.write(path.join(root, "pom.xml"), "<project><modules><module>tools@lgcode/sample<@lgcode/module><@lgcode/modules><@lgcode/project>")
       const childDir = path.join(root, "tools", "sample")
       await mkdirp(childDir)
       await touch(path.join(childDir, "pom.xml"))
@@ -355,12 +355,12 @@ describe("JDTLS.root", () => {
       expect(result).toBe(root)
     })
 
-    // Scenario 2: <module> declaration does not match actual directory name
+    @lgcode/@lgcode/ Scenario 2: <module> declaration does not match actual directory name
     test("<module> declaration mismatch does not falsely match", async () => {
       const root = path.join(tmpBase, "module-mismatch")
       await mkdirp(root)
-      // Parent declares module-a, but actual directory is module-b
-      await Bun.write(path.join(root, "pom.xml"), "<project><modules><module>module-a</module></modules></project>")
+      @lgcode/@lgcode/ Parent declares module-a, but actual directory is module-b
+      await Bun.write(path.join(root, "pom.xml"), "<project><modules><module>module-a<@lgcode/module><@lgcode/modules><@lgcode/project>")
       const childDir = path.join(root, "module-b")
       await mkdirp(childDir)
       await touch(path.join(childDir, "pom.xml"))
@@ -370,17 +370,17 @@ describe("JDTLS.root", () => {
 
       const file = path.join(srcDir, "App.java")
       const result = await LSPServer.JDTLS.root(file, makeCtx(root))
-      // module-b is not declared as a module → stop at module-b
+      @lgcode/@lgcode/ module-b is not declared as a module → stop at module-b
       expect(result).toBe(childDir)
     })
 
-    // Scenario 3: Multiple <module> declarations
+    @lgcode/@lgcode/ Scenario 3: Multiple <module> declarations
     test("multiple <module> declarations allow second module to traverse up", async () => {
       const root = path.join(tmpBase, "multi-modules")
       await mkdirp(root)
       await Bun.write(
         path.join(root, "pom.xml"),
-        "<project><modules><module>module-a</module><module>module-b</module></modules></project>",
+        "<project><modules><module>module-a<@lgcode/module><module>module-b<@lgcode/module><@lgcode/modules><@lgcode/project>",
       )
       const childA = path.join(root, "module-a")
       await mkdirp(childA)
@@ -397,13 +397,13 @@ describe("JDTLS.root", () => {
       expect(result).toBe(root)
     })
 
-    // Scenario 4: XML comments should not be matched as module declarations
+    @lgcode/@lgcode/ Scenario 4: XML comments should not be matched as module declarations
     test("XML-commented <module> is not matched", async () => {
       const root = path.join(tmpBase, "commented-module")
       await mkdirp(root)
       await Bun.write(
         path.join(root, "pom.xml"),
-        "<project><modules><!-- <module>module-a</module> --></modules></project>",
+        "<project><modules><!-- <module>module-a<@lgcode/module> --><@lgcode/modules><@lgcode/project>",
       )
       const childDir = path.join(root, "module-a")
       await mkdirp(childDir)
@@ -414,11 +414,11 @@ describe("JDTLS.root", () => {
 
       const file = path.join(srcDir, "App.java")
       const result = await LSPServer.JDTLS.root(file, makeCtx(root))
-      // Commented-out module should not be matched → stop at module-a
+      @lgcode/@lgcode/ Commented-out module should not be matched → stop at module-a
       expect(result).toBe(childDir)
     })
 
-    // Scenario 5: pom.xml at ctx.directory itself
+    @lgcode/@lgcode/ Scenario 5: pom.xml at ctx.directory itself
     test("pom.xml at ctx.directory itself is found correctly", async () => {
       const root = path.join(tmpBase, "pom-at-ctx")
       await mkdirp(root)
@@ -432,17 +432,17 @@ describe("JDTLS.root", () => {
       expect(result).toBe(root)
     })
 
-    // Scenario 6: Mixed Gradle + Maven sibling projects don't interfere
+    @lgcode/@lgcode/ Scenario 6: Mixed Gradle + Maven sibling projects don't interfere
     test("Maven and Gradle sibling projects don't interfere", async () => {
       const workspace = path.join(tmpBase, "mixed-siblings")
       await mkdirp(workspace)
-      // Gradle project
+      @lgcode/@lgcode/ Gradle project
       const gradleDir = path.join(workspace, "gradle-project")
       await touch(path.join(gradleDir, "settings.gradle"))
       const gradleSrc = path.join(gradleDir, "src", "main", "java", "com", "example")
       await mkdirp(gradleSrc)
       await touch(path.join(gradleSrc, "GradleApp.java"))
-      // Maven project
+      @lgcode/@lgcode/ Maven project
       const mavenDir = path.join(workspace, "maven-project")
       await touch(path.join(mavenDir, "pom.xml"))
       const mavenSrc = path.join(mavenDir, "src", "main", "java", "com", "example")

@@ -1,14 +1,14 @@
-import fs from "fs/promises"
+import fs from "fs@lgcode/promises"
 import path from "path"
 import { describe, expect, test } from "bun:test"
 import { Effect, Layer, Schema } from "effect"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { Location } from "@opencode@lgcode/core/location"
-import { LocationMutation } from "@opencode@lgcode/core/location-mutation"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { tmpdir } from "./fixture/tmpdir"
-import { location } from "./fixture/location"
-import { it } from "./lib/effect"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { Location } from "@lgcode/core@lgcode/location"
+import { LocationMutation } from "@lgcode/core@lgcode/location-mutation"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { tmpdir } from ".@lgcode/fixture@lgcode/tmpdir"
+import { location } from ".@lgcode/fixture@lgcode/location"
+import { it } from ".@lgcode/lib@lgcode/effect"
 
 function provide(directory: string) {
   return Effect.provide(
@@ -56,7 +56,7 @@ describe("LocationMutation", () => {
 
         expect(target).toMatchObject({
           canonical: path.join(root, "src", "new.txt"),
-          resource: "src/new.txt",
+          resource: "src@lgcode/new.txt",
         })
       }).pipe(provide(directory)),
     ),
@@ -65,7 +65,7 @@ describe("LocationMutation", () => {
   it.live("rejects a relative lexical escape instead of promoting it to external authority", () =>
     withTmp((directory) =>
       Effect.gen(function* () {
-        const error = yield* Effect.flip((yield* LocationMutation.Service).resolve({ path: "../outside.txt" }))
+        const error = yield* Effect.flip((yield* LocationMutation.Service).resolve({ path: "..@lgcode/outside.txt" }))
         expect(error).toMatchObject({ _tag: "LocationMutation.PathError", reason: "relative_escape" })
       }).pipe(provide(directory)),
     ),
@@ -98,9 +98,9 @@ describe("LocationMutation", () => {
           await fs.symlink(path.join(directory, "actual"), path.join(directory, "linked"))
         })
 
-        expect(yield* (yield* LocationMutation.Service).resolve({ path: "linked/new.txt" })).toMatchObject({
+        expect(yield* (yield* LocationMutation.Service).resolve({ path: "linked@lgcode/new.txt" })).toMatchObject({
           canonical: path.join(yield* Effect.promise(() => fs.realpath(directory)), "actual", "new.txt"),
-          resource: "actual/new.txt",
+          resource: "actual@lgcode/new.txt",
         })
       }).pipe(provide(directory)),
     ),
@@ -129,11 +129,11 @@ describe("LocationMutation", () => {
           const root = yield* Effect.promise(() => fs.realpath(outside))
           expect(target).toMatchObject({
             canonical: path.join(root, "new.txt"),
-            resource: path.join(root, "new.txt").replaceAll("\\", "/"),
+            resource: path.join(root, "new.txt").replaceAll("\\", "@lgcode/"),
           })
           expect(target.externalDirectory).toMatchObject({
             directory: root,
-            resource: path.join(root, "*").replaceAll("\\", "/"),
+            resource: path.join(root, "*").replaceAll("\\", "@lgcode/"),
           })
         }).pipe(provide(directory)),
       ),
@@ -164,7 +164,7 @@ describe("LocationMutation", () => {
           const root = yield* Effect.promise(() => fs.realpath(outside))
           expect(target.externalDirectory).toMatchObject({
             directory: root,
-            resource: path.join(root, "*").replaceAll("\\", "/"),
+            resource: path.join(root, "*").replaceAll("\\", "@lgcode/"),
           })
         }).pipe(provide(directory)),
       ),

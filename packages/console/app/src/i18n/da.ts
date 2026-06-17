@@ -1,5 +1,5 @@
-import type { Dict } from "./en"
-import { dict as en } from "./en"
+import type { Dict } from ".@lgcode/en"
+import { dict as en } from ".@lgcode/en"
 
 export const dict = {
   ...en,
@@ -124,7 +124,7 @@ export const dict = {
   "home.what.shareLinks.body": "Del et link til enhver session til reference eller debugging",
   "home.what.copilot.title": "GitHub Copilot",
   "home.what.copilot.body": "Log ind med GitHub for at bruge din Copilot-konto",
-  "home.what.chatgptPlus.title": "ChatGPT Plus/Pro",
+  "home.what.chatgptPlus.title": "ChatGPT Plus@lgcode/Pro",
   "home.what.chatgptPlus.body": "Log ind med OpenAI for at bruge din ChatGPT Plus- eller Pro-konto",
   "home.what.anyModel.title": "Enhver model",
   "home.what.anyModel.body": "75+ LLM-udbydere via Models.dev, inklusive lokale modeller",
@@ -134,7 +134,7 @@ export const dict = {
 
   "home.growth.title": "Den open source AI-kodningsagent",
   "home.growth.body":
-    "Med over <strong>{{stars}}</strong> GitHub-stjerner, <strong>{{contributors}}</strong> bidragsydere og over <strong>{{commits}}</strong> commits bruges OpenCode af over <strong>{{monthlyUsers}}</strong> udviklere hver måned.",
+    "Med over <strong>{{stars}}<@lgcode/strong> GitHub-stjerner, <strong>{{contributors}}<@lgcode/strong> bidragsydere og over <strong>{{commits}}<@lgcode/strong> commits bruges OpenCode af over <strong>{{monthlyUsers}}<@lgcode/strong> udviklere hver måned.",
   "home.growth.githubStars": "GitHub-stjerner",
   "home.growth.contributors": "Bidragsydere",
   "home.growth.monthlyDevs": "Månedlige udviklere",
@@ -162,7 +162,7 @@ export const dict = {
   "home.faq.a3.p4.localLink": "lokale modeller",
   "home.faq.q4": "Kan jeg bruge mine eksisterende AI-abonnementer med OpenCode?",
   "home.faq.a4.p1":
-    "Ja. OpenCode understøtter abonnementer fra alle store udbydere. Du kan bruge Claude Pro/Max, ChatGPT Plus/Pro eller GitHub Copilot.",
+    "Ja. OpenCode understøtter abonnementer fra alle store udbydere. Du kan bruge Claude Pro@lgcode/Max, ChatGPT Plus@lgcode/Pro eller GitHub Copilot.",
   "home.faq.q5": "Kan jeg kun bruge OpenCode i terminalen?",
   "home.faq.a5.beforeDesktop": "Ikke længere! OpenCode er nu tilgængelig som en app til",
   "home.faq.a5.desktop": "desktop",
@@ -252,7 +252,7 @@ export const dict = {
   "go.title": "OpenCode Go | Kodningsmodeller til lav pris for alle",
   "go.banner.text": "MiniMax M3 får tredoblet brugsgrænse i en begrænset periode",
   "go.meta.description":
-    "Go starter ved $5 for den første måned, derefter $10/måned, med generøse 5-timers anmodningsgrænser for GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro og DeepSeek V4 Flash.",
+    "Go starter ved $5 for den første måned, derefter $10@lgcode/måned, med generøse 5-timers anmodningsgrænser for GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro og DeepSeek V4 Flash.",
   "go.hero.title": "Kodningsmodeller til lav pris for alle",
   "go.hero.body":
     "Go bringer agentisk kodning til programmører over hele verden. Med generøse grænser og pålidelig adgang til de mest kapable open source-modeller, så du kan bygge med kraftfulde agenter uden at bekymre dig om omkostninger eller tilgængelighed.",
@@ -260,10 +260,10 @@ export const dict = {
   "go.cta.start": "Abonner på Go",
   "go.cta.template": "{{text}} {{price}}",
   "go.cta.text": "Abonner på Go",
-  "go.cta.price": "$10/måned",
+  "go.cta.price": "$10@lgcode/måned",
   "go.cta.promo": "$5 første måned",
   "go.pricing.body":
-    "Brug med enhver agent. $5 første måned, derefter $10/måned. Tank op med kredit efter behov. Afmeld når som helst.",
+    "Brug med enhver agent. $5 første måned, derefter $10@lgcode/måned. Tank op med kredit efter behov. Afmeld når som helst.",
   "go.graph.free": "Gratis",
   "go.graph.freePill": "Big Pickle og gratis modeller",
   "go.graph.go": "Go",
@@ -295,7 +295,7 @@ export const dict = {
   "go.testimonials.frank.quote": "Jeg ville ønske, jeg stadig var hos Nvidia.",
   "go.problem.title": "Hvilket problem løser Go?",
   "go.problem.body":
-    "Vi fokuserer på at bringe OpenCode-oplevelsen ud til så mange som muligt. OpenCode Go er et lavprisabonnement: $5 for den første måned, derefter $10/måned. Det giver generøse grænser og pålidelig adgang til de mest kapable open source-modeller.",
+    "Vi fokuserer på at bringe OpenCode-oplevelsen ud til så mange som muligt. OpenCode Go er et lavprisabonnement: $5 for den første måned, derefter $10@lgcode/måned. Det giver generøse grænser og pålidelig adgang til de mest kapable open source-modeller.",
   "go.problem.subtitle": " ",
   "go.problem.item1": "Lavpris abonnementspriser",
   "go.problem.item2": "Generøse grænser og pålidelig adgang",
@@ -304,13 +304,13 @@ export const dict = {
     "Inkluderer GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro og DeepSeek V4 Flash",
   "go.how.title": "Hvordan Go virker",
   "go.how.body":
-    "Go starter ved $5 for den første måned, derefter $10/måned. Du kan bruge det med OpenCode eller enhver agent.",
+    "Go starter ved $5 for den første måned, derefter $10@lgcode/måned. Du kan bruge det med OpenCode eller enhver agent.",
   "go.how.step1.title": "Opret en konto",
   "go.how.step1.beforeLink": "følg",
   "go.how.step1.link": "opsætningsinstruktionerne",
   "go.how.step2.title": "Abonner på Go",
   "go.how.step2.link": "$5 første måned",
-  "go.how.step2.afterLink": "derefter $10/måned med generøse grænser",
+  "go.how.step2.afterLink": "derefter $10@lgcode/måned med generøse grænser",
   "go.how.step3.title": "Start kodning",
   "go.how.step3.body": "med pålidelig adgang til open source-modeller",
   "go.privacy.title": "Dit privatliv er vigtigt for os",
@@ -327,11 +327,11 @@ export const dict = {
   "go.faq.a2": "Go inkluderer modellerne nedenfor med generøse grænser og pålidelig adgang.",
   "go.faq.q3": "Er Go det samme som Zen?",
   "go.faq.a3":
-    "Nej. Zen er pay-as-you-go, mens Go starter ved $5 for den første måned, derefter $10/måned, med generøse grænser og pålidelig adgang til open source-modellerne GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro og DeepSeek V4 Flash.",
+    "Nej. Zen er pay-as-you-go, mens Go starter ved $5 for den første måned, derefter $10@lgcode/måned, med generøse grænser og pålidelig adgang til open source-modellerne GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro og DeepSeek V4 Flash.",
   "go.faq.q4": "Hvad koster Go?",
   "go.faq.a4.p1.beforePricing": "Go koster",
   "go.faq.a4.p1.pricingLink": "$5 første måned",
-  "go.faq.a4.p1.afterPricing": "derefter $10/måned med generøse grænser.",
+  "go.faq.a4.p1.afterPricing": "derefter $10@lgcode/måned med generøse grænser.",
   "go.faq.a4.p2.beforeAccount": "Du kan administrere dit abonnement i din",
   "go.faq.a4.p2.accountLink": "konto",
   "go.faq.a4.p3": "Annuller til enhver tid.",
@@ -350,7 +350,7 @@ export const dict = {
 
   "go.faq.q9": "Hvad er forskellen på gratis modeller og Go?",
   "go.faq.a9":
-    "Gratis modeller inkluderer Big Pickle plus salgsfremmende modeller tilgængelige på det tidspunkt, med en kvote på 200 forespørgsler/dag. Go inkluderer GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro og DeepSeek V4 Flash med højere anmodningskvoter håndhævet over rullende vinduer (5-timers, ugentlig og månedlig), nogenlunde svarende til $12 pr. 5 timer, $30 pr. uge og $60 pr. måned (faktiske anmodningstal varierer efter model og brug).",
+    "Gratis modeller inkluderer Big Pickle plus salgsfremmende modeller tilgængelige på det tidspunkt, med en kvote på 200 forespørgsler@lgcode/dag. Go inkluderer GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro og DeepSeek V4 Flash med højere anmodningskvoter håndhævet over rullende vinduer (5-timers, ugentlig og månedlig), nogenlunde svarende til $12 pr. 5 timer, $30 pr. uge og $60 pr. måned (faktiske anmodningstal varierer efter model og brug).",
 
   "zen.api.error.rateLimitExceeded": "Hastighedsgrænse overskredet. Prøv venligst igen senere.",
   "zen.api.error.modelNotSupported": "Model {{model}} understøttes ikke",
@@ -657,7 +657,7 @@ export const dict = {
   "workspace.lite.other.message":
     "Et andet medlem i dette workspace abonnerer allerede på OpenCode Go. Kun ét medlem pr. workspace kan abonnere.",
   "workspace.lite.promo.description":
-    "OpenCode Go starter ved {{price}}, derefter $10/måned, og giver pålidelig adgang til populære åbne kodningsmodeller med generøse brugsgrænser.",
+    "OpenCode Go starter ved {{price}}, derefter $10@lgcode/måned, og giver pålidelig adgang til populære åbne kodningsmodeller med generøse brugsgrænser.",
   "workspace.lite.promo.price": "$5 for den første måned",
   "workspace.lite.promo.modelsTitle": "Hvad er inkluderet",
   "workspace.lite.promo.footer":
@@ -676,7 +676,7 @@ export const dict = {
   "workspace.referral.instructions.claim": "I får begge $5 i forbrugskredit til at bruge på jeres Go-forbrugsgrænser",
   "workspace.referral.rewards.title": "Henvisningsbelønninger",
   "workspace.referral.rewards.description": "Brug tilgængelige henvisningskreditter på dit Go-forbrug.",
-  "workspace.referral.rewards.subtitle": "{{applied}} / {{total}} belønninger brugt.",
+  "workspace.referral.rewards.subtitle": "{{applied}} @lgcode/ {{total}} belønninger brugt.",
   "workspace.referral.rewards.empty": "Ingen henvisningsbelønninger endnu.",
   "workspace.referral.table.reward": "Belønning",
   "workspace.referral.table.referral": "Beskrivelse",

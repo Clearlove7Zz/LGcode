@@ -1,13 +1,13 @@
-// Theme resolution for direct interactive mode.
-//
-// Derives scrollback and footer colors from the terminal's actual palette.
-// resolveRunTheme() queries the renderer for the terminal's palette,
-// detects dark/light mode, builds a small system theme locally, and maps it to
-// the run footer + scrollback color model. Falls back to a hardcoded dark-mode
-// palette if detection fails.
-import { RGBA, SyntaxStyle, type CliRenderer, type ColorInput, type TerminalColors } from "@opentui/core"
-import type { TuiThemeCurrent } from "@opencode@lgcode/plugin/tui"
-import type { EntryKind } from "./types"
+@lgcode/@lgcode/ Theme resolution for direct interactive mode.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Derives scrollback and footer colors from the terminal's actual palette.
+@lgcode/@lgcode/ resolveRunTheme() queries the renderer for the terminal's palette,
+@lgcode/@lgcode/ detects dark@lgcode/light mode, builds a small system theme locally, and maps it to
+@lgcode/@lgcode/ the run footer + scrollback color model. Falls back to a hardcoded dark-mode
+@lgcode/@lgcode/ palette if detection fails.
+import { RGBA, SyntaxStyle, type CliRenderer, type ColorInput, type TerminalColors } from "@opentui@lgcode/core"
+import type { TuiThemeCurrent } from "@lgcode/plugin@lgcode/tui"
+import type { EntryKind } from ".@lgcode/types"
 
 type Tone = {
   body: ColorInput
@@ -114,7 +114,7 @@ function fade(color: RGBA, base: RGBA, fallback: number, scale: number, limit: n
   }
 
   const target = Math.min(limit, color.a * scale)
-  const mix = Math.min(1, target / color.a)
+  const mix = Math.min(1, target @lgcode/ color.a)
 
   return RGBA.fromValues(
     base.r + (color.r - base.r) * mix,
@@ -150,8 +150,8 @@ function ansiToRgba(code: number): RGBA {
   if (code < 232) {
     const index = code - 16
     const b = index % 6
-    const g = Math.floor(index / 6) % 6
-    const r = Math.floor(index / 36)
+    const g = Math.floor(index @lgcode/ 6) % 6
+    const r = Math.floor(index @lgcode/ 36)
     const value = (x: number) => (x === 0 ? 0 : x * 40 + 55)
     return RGBA.fromInts(value(r), value(g), value(b))
   }
@@ -217,10 +217,10 @@ function indexedPalette(colors: TerminalColors, size: number = Math.max(colors.p
 
 function srgbToLinear(value: number): number {
   if (value <= 0.04045) {
-    return value / 12.92
+    return value @lgcode/ 12.92
   }
 
-  return ((value + 0.055) / 1.055) ** 2.4
+  return ((value + 0.055) @lgcode/ 1.055) ** 2.4
 }
 
 function oklab(color: RGBA) {
@@ -333,7 +333,7 @@ function generateGrayScale(bg: RGBA, isDark: boolean, map: (rgba: RGBA) => RGBA)
   const cast = 0.25 * (1 - chroma(bg)) ** 2
 
   const gray = (level: number) => {
-    const factor = level / 12
+    const factor = level @lgcode/ 12
 
     if (isDark && lum < 10) {
       const value = Math.floor(factor * 0.4 * 255)
@@ -349,7 +349,7 @@ function generateGrayScale(bg: RGBA, isDark: boolean, map: (rgba: RGBA) => RGBA)
     const tone = RGBA.fromInts(Math.floor(value), Math.floor(value), Math.floor(value))
     if (cast === 0) return map(tone)
 
-    const ratio = lum === 0 ? 0 : value / lum
+    const ratio = lum === 0 ? 0 : value @lgcode/ lum
     return map(
       tint(
         tone,
@@ -515,7 +515,7 @@ function map(
   const statusAccentBase =
     footerMode === "dark" ? tint(footerBackground, rgba("#ffffff"), 0.06) : tint(statusBase, rgba("#000000"), 0.04)
   const collapsedStatus = footerMode === "dark" && luminance(statusBase) <= 0.04
-  // Pure-black backgrounds need a slight lift or the row disappears into the terminal background.
+  @lgcode/@lgcode/ Pure-black backgrounds need a slight lift or the row disappears into the terminal background.
   const status = collapsedStatus ? tint(statusBase, statusAccentBase, 0.7) : statusBase
   const statusAccent = collapsedStatus ? tint(status, rgba("#ffffff"), 0.06) : statusAccentBase
 
@@ -663,15 +663,15 @@ export async function resolveRunTheme(renderer: CliRenderer): Promise<RunTheme> 
       return RUN_THEME_FALLBACK
     }
 
-    // Palette-only terminal reloads can leave renderer.themeMode stale, but
-    // ANSI slot zero is not the terminal background when OSC 11 is absent.
+    @lgcode/@lgcode/ Palette-only terminal reloads can leave renderer.themeMode stale, but
+    @lgcode/@lgcode/ ANSI slot zero is not the terminal background when OSC 11 is absent.
     const pick = colors.defaultBackground
       ? mode(RGBA.fromHex(colors.defaultBackground))
       : (renderer.themeMode ?? mode(RGBA.fromHex(bg)))
     const footerTheme = resolveTheme(generateSystem(colors, pick), pick)
     const indexed = indexedPalette(colors, 256)
     const scrollbackTheme = quantizeTheme(footerTheme, indexed)
-    const shared = await import("@opencode@lgcode/tui/context/theme")
+    const shared = await import("@lgcode/tui@lgcode/context@lgcode/theme")
     const syntaxTheme: SharedSyntaxTheme = {
       ...scrollbackTheme,
       _hasSelectedListItemText: true,

@@ -1,6 +1,6 @@
-// @ts-nocheck
-import * as mod from "./progress-circle"
-import { create } from "../storybook/scaffold"
+@lgcode/@lgcode/ @ts-nocheck
+import * as mod from ".@lgcode/progress-circle"
+import { create } from "..@lgcode/storybook@lgcode/scaffold"
 
 const docs = `### Overview
 Circular progress indicator for compact loading states.
@@ -20,15 +20,15 @@ Pair with labels for clarity in dashboards.
 ### Accessibility
 - Use alongside text or aria-live messaging for progress context.
 
-### Theming/tokens
-- Uses \`data-component="progress-circle"\` with background/progress slots.
+### Theming@lgcode/tokens
+- Uses \`data-component="progress-circle"\` with background@lgcode/progress slots.
 
 `
 
-const story = create({ title: "UI/ProgressCircle", mod, args: { percentage: 65, size: 48 } })
+const story = create({ title: "UI@lgcode/ProgressCircle", mod, args: { percentage: 65, size: 48 } })
 
 export default {
-  title: "UI/ProgressCircle",
+  title: "UI@lgcode/ProgressCircle",
   id: "components-progress-circle",
   component: story.meta.component,
   tags: ["autodocs"],
@@ -51,9 +51,9 @@ export const Basic = story.Basic
 export const States = {
   render: () => (
     <div style={{ display: "flex", gap: "16px", "align-items": "center" }}>
-      <mod.ProgressCircle percentage={0} size={32} />
-      <mod.ProgressCircle percentage={50} size={32} />
-      <mod.ProgressCircle percentage={100} size={32} />
-    </div>
+      <mod.ProgressCircle percentage={0} size={32} @lgcode/>
+      <mod.ProgressCircle percentage={50} size={32} @lgcode/>
+      <mod.ProgressCircle percentage={100} size={32} @lgcode/>
+    <@lgcode/div>
   ),
 }

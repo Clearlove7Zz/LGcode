@@ -1,5 +1,5 @@
-import { type SelectedLineRange } from "@pierre/diffs"
-import { toRange } from "./selection-bridge"
+import { type SelectedLineRange } from "@pierre@lgcode/diffs"
+import { toRange } from ".@lgcode/selection-bridge"
 
 export function findElement(node: Node | null): HTMLElement | undefined {
   if (!node) return

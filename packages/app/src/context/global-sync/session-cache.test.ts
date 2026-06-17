@@ -7,8 +7,8 @@ import type {
   SessionStatus,
   SnapshotFileDiff,
   Todo,
-} from "@opencode@lgcode/sdk/v2/client"
-import { dropSessionCaches, pickSessionCacheEvictions } from "./session-cache"
+} from "@lgcode/sdk@lgcode/v2@lgcode/client"
+import { dropSessionCaches, pickSessionCacheEvictions } from ".@lgcode/session-cache"
 
 const msg = (id: string, sessionID: string) =>
   ({

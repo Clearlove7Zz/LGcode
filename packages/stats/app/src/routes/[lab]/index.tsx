@@ -1,22 +1,22 @@
-import "../index.css"
-import { Link, Meta, Title } from "@solidjs/meta"
+import "..@lgcode/index.css"
+import { Link, Meta, Title } from "@solidjs@lgcode/meta"
 import {
   getStatsLabData,
   type LabUsageModelEntry,
   type ModelUsagePoint,
   type StatsLabData,
-} from "@opencode@lgcode/stats-core/domain/home"
-import { runtime } from "@opencode@lgcode/stats-core/runtime"
-import { createAsync, query, useParams } from "@solidjs/router"
+} from "@lgcode/stats-core@lgcode/domain@lgcode/home"
+import { runtime } from "@lgcode/stats-core@lgcode/runtime"
+import { createAsync, query, useParams } from "@solidjs@lgcode/router"
 import { createMemo, createSignal, For, onMount, Show, type JSX } from "solid-js"
-import { getRequestEvent } from "solid-js/web"
+import { getRequestEvent } from "solid-js@lgcode/web"
 import {
   findModelCatalogLab,
   formatCatalogLabName,
   getModelCatalog,
   type ModelCatalogEntry,
   type ModelCatalogLab,
-} from "../model-catalog"
+} from "..@lgcode/model-catalog"
 import {
   applyThemePreference,
   Footer,
@@ -26,9 +26,9 @@ import {
   themeStorageKey,
   type HeaderLink,
   type ThemePreference,
-} from "../stats-shell"
+} from "..@lgcode/stats-shell"
 
-const statsCanonicalBaseUrl = "https://opencode.ai/data/"
+const statsCanonicalBaseUrl = "https:@lgcode/@lgcode/opencode.ai@lgcode/data@lgcode/"
 const statsUnfurlPath = "banner.png"
 const statsUnfurlAlt = "OpenCode Data wordmark on a dark patterned background"
 const statsUnfurlUrl = new URL(statsUnfurlPath, statsCanonicalBaseUrl).toString()
@@ -92,46 +92,46 @@ export default function StatsLab() {
 
   return (
     <main data-page="stats" data-theme={themePreference()}>
-      <Title>{labTitle()}</Title>
-      <Meta name="description" content={labDescription()} />
-      <Link rel="canonical" href={labUrl()} />
-      <Meta property="og:type" content="website" />
-      <Meta property="og:site_name" content="OpenCode" />
-      <Meta property="og:title" content={labTitle()} />
-      <Meta property="og:description" content={labDescription()} />
-      <Meta property="og:url" content={labUrl()} />
-      <Meta property="og:image" content={statsUnfurlUrl} />
-      <Meta property="og:image:type" content="image/png" />
-      <Meta property="og:image:width" content="1200" />
-      <Meta property="og:image:height" content="630" />
-      <Meta property="og:image:alt" content={statsUnfurlAlt} />
-      <Meta name="twitter:card" content="summary_large_image" />
-      <Meta name="twitter:title" content={labTitle()} />
-      <Meta name="twitter:description" content={labDescription()} />
-      <Meta name="twitter:image" content={statsUnfurlUrl} />
-      <Meta name="twitter:image:alt" content={statsUnfurlAlt} />
-      <Header githubStars={githubStars() ?? "150K"} links={labHeaderLinks} brandHref={import.meta.env.BASE_URL} />
+      <Title>{labTitle()}<@lgcode/Title>
+      <Meta name="description" content={labDescription()} @lgcode/>
+      <Link rel="canonical" href={labUrl()} @lgcode/>
+      <Meta property="og:type" content="website" @lgcode/>
+      <Meta property="og:site_name" content="OpenCode" @lgcode/>
+      <Meta property="og:title" content={labTitle()} @lgcode/>
+      <Meta property="og:description" content={labDescription()} @lgcode/>
+      <Meta property="og:url" content={labUrl()} @lgcode/>
+      <Meta property="og:image" content={statsUnfurlUrl} @lgcode/>
+      <Meta property="og:image:type" content="image@lgcode/png" @lgcode/>
+      <Meta property="og:image:width" content="1200" @lgcode/>
+      <Meta property="og:image:height" content="630" @lgcode/>
+      <Meta property="og:image:alt" content={statsUnfurlAlt} @lgcode/>
+      <Meta name="twitter:card" content="summary_large_image" @lgcode/>
+      <Meta name="twitter:title" content={labTitle()} @lgcode/>
+      <Meta name="twitter:description" content={labDescription()} @lgcode/>
+      <Meta name="twitter:image" content={statsUnfurlUrl} @lgcode/>
+      <Meta name="twitter:image:alt" content={statsUnfurlAlt} @lgcode/>
+      <Header githubStars={githubStars() ?? "150K"} links={labHeaderLinks} brandHref={import.meta.env.BASE_URL} @lgcode/>
       <div data-component="container">
         <div data-component="content">
-          <Show when={catalog() !== undefined} fallback={<LabLoading />}>
-            <Show when={lab()} fallback={<LabNotFound lab={labParam()} />}>
+          <Show when={catalog() !== undefined} fallback={<LabLoading @lgcode/>}>
+            <Show when={lab()} fallback={<LabNotFound lab={labParam()} @lgcode/>}>
               {(data) => (
                 <>
-                  <LabHero lab={data()} stats={stats() ?? null} />
-                  <LabUsageSection lab={data()} data={stats() ?? null} />
-                  <LabModelsSection lab={data()} usage={stats()?.models ?? []} />
-                </>
+                  <LabHero lab={data()} stats={stats() ?? null} @lgcode/>
+                  <LabUsageSection lab={data()} data={stats() ?? null} @lgcode/>
+                  <LabModelsSection lab={data()} usage={stats()?.models ?? []} @lgcode/>
+                <@lgcode/>
               )}
-            </Show>
-          </Show>
-        </div>
+            <@lgcode/Show>
+          <@lgcode/Show>
+        <@lgcode/div>
         <Footer
           themePreference={themePreference()}
           onThemePreferenceChange={updateThemePreference}
           links={labFooterLinks}
-        />
-      </div>
-    </main>
+        @lgcode/>
+      <@lgcode/div>
+    <@lgcode/main>
   )
 }
 
@@ -142,12 +142,12 @@ function LabLoading() {
         <div data-slot="model-hero-copy">
           <a data-slot="model-back-link" href={import.meta.env.BASE_URL}>
             Data
-          </a>
-          <h1>Model Lab</h1>
-          <p>Reading model availability and recent OpenCode usage.</p>
-        </div>
-      </div>
-    </section>
+          <@lgcode/a>
+          <h1>Model Lab<@lgcode/h1>
+          <p>Reading model availability and recent OpenCode usage.<@lgcode/p>
+        <@lgcode/div>
+      <@lgcode/div>
+    <@lgcode/section>
   )
 }
 
@@ -158,12 +158,12 @@ function LabNotFound(props: { lab: string }) {
         <div data-slot="model-hero-copy">
           <a data-slot="model-back-link" href={import.meta.env.BASE_URL}>
             Data
-          </a>
-          <h1>{formatCatalogLabName(props.lab)}</h1>
-          <p>No models matched this lab.</p>
-        </div>
-      </div>
-    </section>
+          <@lgcode/a>
+          <h1>{formatCatalogLabName(props.lab)}<@lgcode/h1>
+          <p>No models matched this lab.<@lgcode/p>
+        <@lgcode/div>
+      <@lgcode/div>
+    <@lgcode/section>
   )
 }
 
@@ -181,30 +181,30 @@ function LabHero(props: { lab: ModelCatalogLab; stats: StatsLabData | null }) {
     <section id="overview" data-section="lab-hero">
       <a data-slot="model-back-link" href={import.meta.env.BASE_URL}>
         Data
-      </a>
+      <@lgcode/a>
       <div data-slot="model-hero-grid">
         <div data-slot="model-hero-copy">
-          <h1>{props.lab.name}</h1>
-          <div data-slot="model-hero-pattern" aria-hidden="true" />
+          <h1>{props.lab.name}<@lgcode/h1>
+          <div data-slot="model-hero-pattern" aria-hidden="true" @lgcode/>
           <p>
             Explore {props.lab.models.length} {props.lab.name} models used in OpenCode
-            <Show when={featuredModels().length > 0}> including {formatList(featuredModels())}</Show>. Compare recent
+            <Show when={featuredModels().length > 0}> including {formatList(featuredModels())}<@lgcode/Show>. Compare recent
             token usage, context windows, release dates, and model-specific data.
-          </p>
-        </div>
+          <@lgcode/p>
+        <@lgcode/div>
         <div data-component="model-rank-panel">
-          <span>Tokens Processed</span>
-          <strong>{props.stats ? formatTokens(props.stats.totals.tokens) : "Pending"}</strong>
+          <span>Tokens Processed<@lgcode/span>
+          <strong>{props.stats ? formatTokens(props.stats.totals.tokens) : "Pending"}<@lgcode/strong>
           <p>
             {props.stats
               ? `${formatPercent(props.stats.tokenShare)} of recent OpenCode usage`
               : latest()
                 ? `Latest release ${formatCatalogDate(latest())}`
                 : "Usage appears after model activity lands"}
-          </p>
-        </div>
-      </div>
-    </section>
+          <@lgcode/p>
+        <@lgcode/div>
+      <@lgcode/div>
+    <@lgcode/section>
   )
 }
 
@@ -221,16 +221,16 @@ function LabUsageSection(props: { lab: ModelCatalogLab; data: StatsLabData | nul
   return (
     <section id="usage" data-section="model-panel">
       <p data-slot="section-title">
-        <strong>{props.lab.name} token usage.</strong>{" "}
-        <span>Daily OpenCode token volume over the last two months.</span>
-      </p>
+        <strong>{props.lab.name} token usage.<@lgcode/strong>{" "}
+        <span>Daily OpenCode token volume over the last two months.<@lgcode/span>
+      <@lgcode/p>
       <Show
         when={usage().some((item) => item.tokens > 0)}
         fallback={
           <LabEmptyState
             title="No usage yet"
             description="Recent token usage appears here once this lab has activity."
-          />
+          @lgcode/>
         }
       >
         <div
@@ -252,13 +252,13 @@ function LabUsageSection(props: { lab: ModelCatalogLab; data: StatsLabData | nul
                   data-label-hidden={isLabUsageLabelHidden(index(), usage().length) ? "true" : undefined}
                 >
                   <span data-slot="model-usage-label">
-                    <span data-slot="model-usage-total">{formatTokens(point.tokens)}</span>
-                    <span data-slot="model-usage-date">{point.date}</span>
-                  </span>
-                </div>
+                    <span data-slot="model-usage-total">{formatTokens(point.tokens)}<@lgcode/span>
+                    <span data-slot="model-usage-date">{point.date}<@lgcode/span>
+                  <@lgcode/span>
+                <@lgcode/div>
               )}
-            </For>
-          </div>
+            <@lgcode/For>
+          <@lgcode/div>
           <div data-slot="model-usage-bars">
             <For each={usage()}>
               {(point, index) => (
@@ -290,32 +290,32 @@ function LabUsageSection(props: { lab: ModelCatalogLab; data: StatsLabData | nul
                   <div
                     data-slot="model-usage-bar"
                     style={{ "--model-usage-fill": `${usageHeight(point.tokens, max())}%` } as JSX.CSSProperties}
-                  />
+                  @lgcode/>
                   <Show when={activeIndex() === index() && activePoint()}>
                     {(active) => (
                       <div
                         data-component="chart-tooltip"
                         data-placement={index() > usage().length * 0.62 ? "left" : "right"}
                       >
-                        <strong>{active().date}</strong>
-                        <span>{formatTokens(active().tokens)} tokens</span>
-                        <div data-slot="tooltip-divider" />
+                        <strong>{active().date}<@lgcode/strong>
+                        <span>{formatTokens(active().tokens)} tokens<@lgcode/span>
+                        <div data-slot="tooltip-divider" @lgcode/>
                         <p>
                           <span data-slot="tooltip-label">
-                            <i /> Daily tokens
-                          </span>
-                          <b>{formatTokens(active().tokens)}</b>
-                        </p>
-                      </div>
+                            <i @lgcode/> Daily tokens
+                          <@lgcode/span>
+                          <b>{formatTokens(active().tokens)}<@lgcode/b>
+                        <@lgcode/p>
+                      <@lgcode/div>
                     )}
-                  </Show>
-                </div>
+                  <@lgcode/Show>
+                <@lgcode/div>
               )}
-            </For>
-          </div>
-        </div>
-      </Show>
-    </section>
+            <@lgcode/For>
+          <@lgcode/div>
+        <@lgcode/div>
+      <@lgcode/Show>
+    <@lgcode/section>
   )
 }
 
@@ -324,53 +324,53 @@ function LabModelsSection(props: { lab: ModelCatalogLab; usage: LabUsageModelEnt
   return (
     <section id="models" data-section="model-panel">
       <p data-slot="section-title">
-        <strong>{props.lab.name} models.</strong> <span>Recent usage and limits.</span>
-      </p>
+        <strong>{props.lab.name} models.<@lgcode/strong> <span>Recent usage and limits.<@lgcode/span>
+      <@lgcode/p>
       <div data-component="lab-model-grid">
         <For each={props.lab.models}>
-          {(model) => <LabModelCard model={model} usage={usageBySlug().get(model.slug)} />}
-        </For>
-      </div>
-    </section>
+          {(model) => <LabModelCard model={model} usage={usageBySlug().get(model.slug)} @lgcode/>}
+        <@lgcode/For>
+      <@lgcode/div>
+    <@lgcode/section>
   )
 }
 
 function LabModelCard(props: { model: ModelCatalogEntry; usage: LabUsageModelEntry | undefined }) {
   return (
     <a data-component="lab-model-card" href={`${import.meta.env.BASE_URL}${props.model.id}`}>
-      <strong>{props.model.name}</strong>
+      <strong>{props.model.name}<@lgcode/strong>
       <div data-slot="lab-model-card-meta">
         <p>
-          <b>Usage</b>
-          <em>{props.usage ? formatTokens(props.usage.tokens) : "—"}</em>
-        </p>
+          <b>Usage<@lgcode/b>
+          <em>{props.usage ? formatTokens(props.usage.tokens) : "—"}<@lgcode/em>
+        <@lgcode/p>
         <p>
-          <b>Share</b>
-          <em>{props.usage ? formatPercent(props.usage.share) : "—"}</em>
-        </p>
+          <b>Share<@lgcode/b>
+          <em>{props.usage ? formatPercent(props.usage.share) : "—"}<@lgcode/em>
+        <@lgcode/p>
         <p>
-          <b>Context</b>
-          <em>{formatCatalogLimit(props.model.limit?.context)}</em>
-        </p>
+          <b>Context<@lgcode/b>
+          <em>{formatCatalogLimit(props.model.limit?.context)}<@lgcode/em>
+        <@lgcode/p>
         <p>
-          <b>Output</b>
-          <em>{formatCatalogLimit(props.model.limit?.output)}</em>
-        </p>
+          <b>Output<@lgcode/b>
+          <em>{formatCatalogLimit(props.model.limit?.output)}<@lgcode/em>
+        <@lgcode/p>
         <p>
-          <b>Release</b>
-          <em>{formatCatalogDate(props.model.releaseDate)}</em>
-        </p>
-      </div>
-    </a>
+          <b>Release<@lgcode/b>
+          <em>{formatCatalogDate(props.model.releaseDate)}<@lgcode/em>
+        <@lgcode/p>
+      <@lgcode/div>
+    <@lgcode/a>
   )
 }
 
 function LabEmptyState(props: { title: string; description: string }) {
   return (
     <div data-component="empty-state" data-compact="true">
-      <strong>{props.title}</strong>
-      <p>{props.description}</p>
-    </div>
+      <strong>{props.title}<@lgcode/strong>
+      <p>{props.description}<@lgcode/p>
+    <@lgcode/div>
   )
 }
 
@@ -380,7 +380,7 @@ function formatCatalogLimit(value: number | undefined) {
 
 function formatCatalogDate(value: string | undefined) {
   if (!value) return "Unknown"
-  const match = /^(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?$/.exec(value)
+  const match = @lgcode/^(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?$@lgcode/.exec(value)
   if (!match) return value
   const year = Number(match[1])
   const month = match[2] ? Number(match[2]) - 1 : 0
@@ -405,10 +405,10 @@ function formatPercent(value: number) {
 
 function formatTokens(value: number) {
   if (value >= 1_000_000_000_000)
-    return `${trimNumber(value / 1_000_000_000_000, value >= 10_000_000_000_000 ? 0 : 1)}T`
-  if (value >= 1_000_000_000) return `${trimNumber(value / 1_000_000_000, value >= 10_000_000_000 ? 0 : 1)}B`
-  if (value >= 1_000_000) return `${trimNumber(value / 1_000_000, value >= 10_000_000 ? 0 : 1)}M`
-  if (value >= 1_000) return `${trimNumber(value / 1_000, value >= 10_000 ? 0 : 1)}K`
+    return `${trimNumber(value @lgcode/ 1_000_000_000_000, value >= 10_000_000_000_000 ? 0 : 1)}T`
+  if (value >= 1_000_000_000) return `${trimNumber(value @lgcode/ 1_000_000_000, value >= 10_000_000_000 ? 0 : 1)}B`
+  if (value >= 1_000_000) return `${trimNumber(value @lgcode/ 1_000_000, value >= 10_000_000 ? 0 : 1)}M`
+  if (value >= 1_000) return `${trimNumber(value @lgcode/ 1_000, value >= 10_000 ? 0 : 1)}K`
   return String(Math.round(value))
 }
 
@@ -418,7 +418,7 @@ function trimNumber(value: number, digits: number) {
 
 function usageHeight(value: number, max: number) {
   if (value <= 0 || max <= 0) return 0
-  return Math.max(4, (value / max) * 100)
+  return Math.max(4, (value @lgcode/ max) * 100)
 }
 
 function isLabUsageDense(count: number) {

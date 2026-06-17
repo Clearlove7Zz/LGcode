@@ -1,13 +1,13 @@
-import { TextField } from "@opencode@lgcode/ui/text-field"
-import * as Sentry from "@sentry/solid"
-import { Logo } from "@opencode@lgcode/ui/logo"
-import { Button } from "@opencode@lgcode/ui/button"
+import { TextField } from "@lgcode/ui@lgcode/text-field"
+import * as Sentry from "@sentry@lgcode/solid"
+import { Logo } from "@lgcode/ui@lgcode/logo"
+import { Button } from "@lgcode/ui@lgcode/button"
 import { Component, createSignal, onMount, Show } from "solid-js"
-import { createStore } from "solid-js/store"
-import { usePlatform } from "@/context/platform"
-import { useLanguage } from "@/context/language"
-import { Icon } from "@opencode@lgcode/ui/icon"
-import { errorDescriptionKey } from "./error-description"
+import { createStore } from "solid-js@lgcode/store"
+import { usePlatform } from "@@lgcode/context@lgcode/platform"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { Icon } from "@lgcode/ui@lgcode/icon"
+import { errorDescriptionKey } from ".@lgcode/error-description"
 
 export type InitError = {
   name: string
@@ -277,12 +277,12 @@ export const ErrorPage: Component<ErrorPageProps> = (props) => {
 
   return (
     <div class="relative flex-1 h-screen w-screen min-h-0 flex flex-col items-center justify-center bg-background-base font-sans">
-      <div class="w-2/3 max-w-3xl flex flex-col items-center justify-center gap-8">
-        <Logo class="w-58.5 opacity-12 shrink-0" />
+      <div class="w-2@lgcode/3 max-w-3xl flex flex-col items-center justify-center gap-8">
+        <Logo class="w-58.5 opacity-12 shrink-0" @lgcode/>
         <div class="flex flex-col items-center gap-2 text-center">
-          <h1 class="text-lg font-medium text-text-strong">{language.t("error.page.title")}</h1>
-          <p class="text-sm text-text-weak">{language.t(errorDescriptionKey(props.error))}</p>
-        </div>
+          <h1 class="text-lg font-medium text-text-strong">{language.t("error.page.title")}<@lgcode/h1>
+          <p class="text-sm text-text-weak">{language.t(errorDescriptionKey(props.error))}<@lgcode/p>
+        <@lgcode/div>
         <TextField
           value={formattedError()}
           readOnly
@@ -291,16 +291,16 @@ export const ErrorPage: Component<ErrorPageProps> = (props) => {
           class="max-h-96 w-full font-mono text-xs no-scrollbar"
           label={language.t("error.page.details.label")}
           hideLabel
-        />
+        @lgcode/>
         <div class="flex flex-row items-center justify-center gap-3 flex-wrap max-w-64">
           <Button size="large" onClick={platform.restart}>
             {language.t("error.page.action.restart")}
-          </Button>
+          <@lgcode/Button>
           <Show when={platform.platform === "desktop" && platform.exportDebugLogs}>
             <Button size="large" variant="ghost" onClick={exportDebugLogs}>
               {language.t("error.page.action.exportLogs")}
-            </Button>
-          </Show>
+            <@lgcode/Button>
+          <@lgcode/Show>
           <Show when={Sentry.isEnabled}>
             {(_) => {
               const [reported, setReported] = createSignal(false)
@@ -314,10 +314,10 @@ export const ErrorPage: Component<ErrorPageProps> = (props) => {
                   }}
                 >
                   {language.t(reported() ? "error.page.action.reported" : "error.page.action.report")}
-                </Button>
+                <@lgcode/Button>
               )
             }}
-          </Show>
+          <@lgcode/Show>
           <Show when={platform.updater}>
             <Show
               when={updateVersion()}
@@ -331,39 +331,39 @@ export const ErrorPage: Component<ErrorPageProps> = (props) => {
                   {platform.updater?.state().status === "checking"
                     ? language.t("error.page.action.checking")
                     : language.t("error.page.action.checkUpdates")}
-                </Button>
+                <@lgcode/Button>
               }
             >
               {(version) => (
                 <Button size="large" onClick={installUpdate}>
                   {language.t("error.page.action.updateTo", { version: version() })}
-                </Button>
+                <@lgcode/Button>
               )}
-            </Show>
-          </Show>
-        </div>
+            <@lgcode/Show>
+          <@lgcode/Show>
+        <@lgcode/div>
         <Show when={store.actionError}>
-          {(message) => <p class="text-xs text-text-danger-base text-center max-w-2xl">{message()}</p>}
-        </Show>
+          {(message) => <p class="text-xs text-text-danger-base text-center max-w-2xl">{message()}<@lgcode/p>}
+        <@lgcode/Show>
         <div class="flex flex-col items-center gap-2">
           <div class="flex items-center justify-center gap-1">
             {language.t("error.page.report.prefix")}
             <button
               type="button"
               class="flex items-center text-text-interactive-base gap-1"
-              onClick={() => platform.openLink("https://opencode.ai/desktop-feedback")}
+              onClick={() => platform.openLink("https:@lgcode/@lgcode/opencode.ai@lgcode/desktop-feedback")}
             >
-              <div>{language.t("error.page.report.discord")}</div>
-              <Icon name="discord" class="text-text-interactive-base" />
-            </button>
-          </div>
+              <div>{language.t("error.page.report.discord")}<@lgcode/div>
+              <Icon name="discord" class="text-text-interactive-base" @lgcode/>
+            <@lgcode/button>
+          <@lgcode/div>
           <Show when={platform.version}>
             {(version) => (
-              <p class="text-xs text-text-weak">{language.t("error.page.version", { version: version() })}</p>
+              <p class="text-xs text-text-weak">{language.t("error.page.version", { version: version() })}<@lgcode/p>
             )}
-          </Show>
-        </div>
-      </div>
-    </div>
+          <@lgcode/Show>
+        <@lgcode/div>
+      <@lgcode/div>
+    <@lgcode/div>
   )
 }

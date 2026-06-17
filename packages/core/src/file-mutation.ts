@@ -1,9 +1,9 @@
-export * as FileMutation from "./file-mutation"
+export * as FileMutation from ".@lgcode/file-mutation"
 
 import { Context, Effect, Layer, Schema } from "effect"
 import { dirname } from "path"
-import { KeyedMutex } from "./effect/keyed-mutex"
-import { FSUtil } from "./fs-util"
+import { KeyedMutex } from ".@lgcode/effect@lgcode/keyed-mutex"
+import { FSUtil } from ".@lgcode/fs-util"
 
 export interface Target {
   readonly canonical: string
@@ -51,25 +51,25 @@ export interface RemoveResult {
 }
 
 export interface Interface {
-  /** Create without replacing an existing target. */
+  @lgcode/** Create without replacing an existing target. *@lgcode/
   readonly create: (input: WriteInput) => Effect.Effect<WriteResult, TargetExistsError | FSUtil.Error>
   readonly write: (input: WriteInput) => Effect.Effect<WriteResult, FSUtil.Error>
-  /** Write text while retaining an existing UTF-8 BOM and emitting at most one BOM. */
+  @lgcode/** Write text while retaining an existing UTF-8 BOM and emitting at most one BOM. *@lgcode/
   readonly writeTextPreservingBom: (input: TextWriteInput) => Effect.Effect<WriteResult, FSUtil.Error>
-  /** Commit only if an existing target still has the expected bytes. */
+  @lgcode/** Commit only if an existing target still has the expected bytes. *@lgcode/
   readonly writeIfUnchanged: (
     input: ConditionalWriteInput,
   ) => Effect.Effect<WriteResult, StaleContentError | FSUtil.Error>
   readonly remove: (input: RemoveInput) => Effect.Effect<RemoveResult, FSUtil.Error>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/v2/FileMutation") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/FileMutation") {}
 
-/**
+@lgcode/**
  * Serialize file changes by canonical target. Conditional writes compare and
  * write under the same process-local lock so cooperating OpenCode mutations do
  * not overwrite changes made from the same stale content.
- */
+ *@lgcode/
 export const layer = Layer.effect(
   Service,
   Effect.gen(function* () {
@@ -172,7 +172,7 @@ export const layer = Layer.effect(
 )
 
 function splitBom(text: string) {
-  const stripped = text.replace(/^\uFEFF+/, "")
+  const stripped = text.replace(@lgcode/^\uFEFF+@lgcode/, "")
   return { bom: stripped.length !== text.length, text: stripped }
 }
 
@@ -192,13 +192,13 @@ function sameBytes(left: Uint8Array, right: Uint8Array) {
 
 export const locationLayer = layer
 
-/**
+@lgcode/**
  * Deferred until the corresponding V2 integrations exist.
- */
-// TODO: Add formatter integration after V2 formatter runtime exists.
-// TODO: Publish watcher/file-edit events after V2 watcher integration exists.
-// TODO: Add snapshots / undo after V2 snapshot design exists.
-// TODO: Notify LSP and collect diagnostics after V2 LSP runtime exists.
-// TODO: Design multi-file transactions / rollback if apply_patch needs atomic edits.
-// Until then, edits are sequential and report partial application.
-// TODO: Define crash recovery and idempotency for side effects between Tool.Called and durable settlement.
+ *@lgcode/
+@lgcode/@lgcode/ TODO: Add formatter integration after V2 formatter runtime exists.
+@lgcode/@lgcode/ TODO: Publish watcher@lgcode/file-edit events after V2 watcher integration exists.
+@lgcode/@lgcode/ TODO: Add snapshots @lgcode/ undo after V2 snapshot design exists.
+@lgcode/@lgcode/ TODO: Notify LSP and collect diagnostics after V2 LSP runtime exists.
+@lgcode/@lgcode/ TODO: Design multi-file transactions @lgcode/ rollback if apply_patch needs atomic edits.
+@lgcode/@lgcode/ Until then, edits are sequential and report partial application.
+@lgcode/@lgcode/ TODO: Define crash recovery and idempotency for side effects between Tool.Called and durable settlement.

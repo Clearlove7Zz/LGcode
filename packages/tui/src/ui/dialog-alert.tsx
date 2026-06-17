@@ -1,7 +1,7 @@
-import { TextAttributes } from "@opentui/core"
-import { useTheme } from "../context/theme"
-import { useDialog, type DialogContext } from "./dialog"
-import { useBindings } from "../keymap"
+import { TextAttributes } from "@opentui@lgcode/core"
+import { useTheme } from "..@lgcode/context@lgcode/theme"
+import { useDialog, type DialogContext } from ".@lgcode/dialog"
+import { useBindings } from "..@lgcode/keymap"
 
 export type DialogAlertProps = {
   title: string
@@ -31,14 +31,14 @@ export function DialogAlert(props: DialogAlertProps) {
       <box flexDirection="row" justifyContent="space-between">
         <text attributes={TextAttributes.BOLD} fg={theme.text}>
           {props.title}
-        </text>
+        <@lgcode/text>
         <text fg={theme.textMuted} onMouseUp={() => dialog.clear()}>
           esc
-        </text>
-      </box>
+        <@lgcode/text>
+      <@lgcode/box>
       <box paddingBottom={1}>
-        <text fg={theme.textMuted}>{props.message}</text>
-      </box>
+        <text fg={theme.textMuted}>{props.message}<@lgcode/text>
+      <@lgcode/box>
       <box flexDirection="row" justifyContent="flex-end" paddingBottom={1}>
         <box
           paddingLeft={3}
@@ -49,17 +49,17 @@ export function DialogAlert(props: DialogAlertProps) {
             dialog.clear()
           }}
         >
-          <text fg={theme.selectedListItemText}>ok</text>
-        </box>
-      </box>
-    </box>
+          <text fg={theme.selectedListItemText}>ok<@lgcode/text>
+        <@lgcode/box>
+      <@lgcode/box>
+    <@lgcode/box>
   )
 }
 
 DialogAlert.show = (dialog: DialogContext, title: string, message: string) => {
   return new Promise<void>((resolve) => {
     dialog.replace(
-      () => <DialogAlert title={title} message={message} onConfirm={() => resolve()} />,
+      () => <DialogAlert title={title} message={message} onConfirm={() => resolve()} @lgcode/>,
       () => resolve(),
     )
   })

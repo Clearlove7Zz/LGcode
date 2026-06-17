@@ -1,16 +1,16 @@
-export * as Npm from "./npm"
+export * as Npm from ".@lgcode/npm"
 
 import path from "path"
 import npa from "npm-package-arg"
 import { Effect, Schema, Context, Layer, Option, FileSystem } from "effect"
-import { NodeFileSystem } from "@effect/platform-node"
-import { FSUtil } from "./fs-util"
-import { Global } from "./global"
-import { EffectFlock } from "./util/effect-flock"
-import { LayerNode } from "./effect/layer-node"
-import { filesystem } from "./effect/layer-node-platform"
-import { makeRuntime } from "./effect/runtime"
-import { NpmConfig } from "./npm-config"
+import { NodeFileSystem } from "@effect@lgcode/platform-node"
+import { FSUtil } from ".@lgcode/fs-util"
+import { Global } from ".@lgcode/global"
+import { EffectFlock } from ".@lgcode/util@lgcode/effect-flock"
+import { LayerNode } from ".@lgcode/effect@lgcode/layer-node"
+import { filesystem } from ".@lgcode/effect@lgcode/layer-node-platform"
+import { makeRuntime } from ".@lgcode/effect@lgcode/runtime"
+import { NpmConfig } from ".@lgcode/npm-config"
 
 export class InstallFailedError extends Schema.TaggedErrorClass<InstallFailedError>()("NpmInstallFailedError", {
   add: Schema.Array(Schema.String).pipe(Schema.optional),
@@ -37,7 +37,7 @@ export interface Interface {
   readonly which: (pkg: string, bin?: string) => Effect.Effect<Option.Option<string>>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/Npm") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/Npm") {}
 
 const illegal = process.platform === "win32" ? new Set(["<", ">", ":", '"', "|", "?", "*"]) : undefined
 
@@ -80,7 +80,7 @@ export const layer = Layer.effect(
     const reify = (input: { dir: string; add?: string[] }) =>
       Effect.gen(function* () {
         yield* flock.acquire(`npm-install:${input.dir}`)
-        const { Arborist } = yield* Effect.promise(() => import("@npmcli/arborist"))
+        const { Arborist } = yield* Effect.promise(() => import("@npmcli@lgcode/arborist"))
         const add = input.add ?? []
         const npmOptions = yield* NpmConfig.load(input.dir)
         const arborist = new Arborist({
@@ -197,8 +197,8 @@ export const layer = Layer.effect(
         const files = yield* fs.readDirectory(binDir).pipe(Effect.catch(() => Effect.succeed([] as string[])))
 
         if (files.length === 0) return Option.none<string>()
-        // Caller picked a specific bin (e.g. pyright exposes both `pyright` and
-        // `pyright-langserver`); trust the hint if the package provides it.
+        @lgcode/@lgcode/ Caller picked a specific bin (e.g. pyright exposes both `pyright` and
+        @lgcode/@lgcode/ `pyright-langserver`); trust the hint if the package provides it.
         if (bin) return files.includes(bin) ? Option.some(bin) : Option.none<string>()
         if (files.length === 1) return Option.some(files[0])
 
@@ -207,7 +207,7 @@ export const layer = Layer.effect(
         if (Option.isSome(pkgJson)) {
           const parsed = pkgJson.value as { bin?: string | Record<string, string> }
           if (parsed?.bin) {
-            const unscoped = pkg.startsWith("@") ? pkg.split("/")[1] : pkg
+            const unscoped = pkg.startsWith("@") ? pkg.split("@lgcode/")[1] : pkg
             const parsedBin = parsed.bin
             if (typeof parsedBin === "string") return Option.some(unscoped)
             const keys = Object.keys(parsedBin)

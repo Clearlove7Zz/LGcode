@@ -1,18 +1,18 @@
-// Shared type vocabulary for the direct interactive mode (`run --interactive`).
-//
-// Direct mode uses a split-footer terminal layout: immutable scrollback for the
-// session transcript, and a mutable footer for prompt input, status, and
-// permission/question UI. Every module in run/* shares these types to stay
-// aligned on that two-lane model.
-//
-// Data flow through the system:
-//
-//   SDK events → session-data reducer → StreamCommit[] + FooterOutput
-//     → stream.ts bridges to footer API
-//       → footer.ts queues commits and patches the footer view
-//         → OpenTUI split-footer renderer writes to terminal
-import type { OpencodeClient, PermissionRequest, QuestionRequest, ToolPart } from "@opencode@lgcode/sdk/v2"
-import type { TuiConfig } from "@opencode@lgcode/tui/config"
+@lgcode/@lgcode/ Shared type vocabulary for the direct interactive mode (`run --interactive`).
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Direct mode uses a split-footer terminal layout: immutable scrollback for the
+@lgcode/@lgcode/ session transcript, and a mutable footer for prompt input, status, and
+@lgcode/@lgcode/ permission@lgcode/question UI. Every module in run@lgcode/* shares these types to stay
+@lgcode/@lgcode/ aligned on that two-lane model.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Data flow through the system:
+@lgcode/@lgcode/
+@lgcode/@lgcode/   SDK events → session-data reducer → StreamCommit[] + FooterOutput
+@lgcode/@lgcode/     → stream.ts bridges to footer API
+@lgcode/@lgcode/       → footer.ts queues commits and patches the footer view
+@lgcode/@lgcode/         → OpenTUI split-footer renderer writes to terminal
+import type { OpencodeClient, PermissionRequest, QuestionRequest, ToolPart } from "@lgcode/sdk@lgcode/v2"
+import type { TuiConfig } from "@lgcode/tui@lgcode/config"
 
 export type RunFilePart = {
   type: "file"
@@ -72,14 +72,14 @@ export type RunInput = {
   demo?: boolean
 }
 
-// The semantic role of a scrollback entry. Maps 1:1 to theme colors.
+@lgcode/@lgcode/ The semantic role of a scrollback entry. Maps 1:1 to theme colors.
 export type EntryKind = "system" | "user" | "assistant" | "reasoning" | "tool" | "error"
 
-// Whether the assistant is actively processing a turn.
+@lgcode/@lgcode/ Whether the assistant is actively processing a turn.
 export type FooterPhase = "idle" | "running"
 
-// Full snapshot of footer status bar state. Every update replaces the whole
-// object in the SolidJS signal so the view re-renders atomically.
+@lgcode/@lgcode/ Full snapshot of footer status bar state. Every update replaces the whole
+@lgcode/@lgcode/ object in the SolidJS signal so the view re-renders atomically.
 export type FooterState = {
   phase: FooterPhase
   status: string
@@ -92,7 +92,7 @@ export type FooterState = {
   exit: number
 }
 
-// A partial update to FooterState. The footer merges this onto the current state.
+@lgcode/@lgcode/ A partial update to FooterState. The footer merges this onto the current state.
 export type FooterPatch = Partial<FooterState>
 
 export type RunDiffStyle = "auto" | "stacked"
@@ -166,10 +166,10 @@ export type RunEntryBody =
   | { type: "markdown"; content: string }
   | { type: "structured"; snapshot: ToolSnapshot }
 
-// Which interactive surface the footer is showing. Only one view is active at
-// a time. The reducer drives transitions: when a permission arrives the view
-// switches to "permission", and when the permission resolves it falls back to
-// "prompt".
+@lgcode/@lgcode/ Which interactive surface the footer is showing. Only one view is active at
+@lgcode/@lgcode/ a time. The reducer drives transitions: when a permission arrives the view
+@lgcode/@lgcode/ switches to "permission", and when the permission resolves it falls back to
+@lgcode/@lgcode/ "prompt".
 export type FooterView =
   | { type: "prompt" }
   | { type: "permission"; request: PermissionRequest }
@@ -210,16 +210,16 @@ export type FooterSubagentState = {
   questions: QuestionRequest[]
 }
 
-// The reducer emits this alongside scrollback commits so the footer can update in the same frame.
+@lgcode/@lgcode/ The reducer emits this alongside scrollback commits so the footer can update in the same frame.
 export type FooterOutput = {
   patch?: FooterPatch
   view?: FooterView
   subagent?: FooterSubagentState
 }
 
-// Typed messages sent to RunFooter.event(). The prompt queue and stream
-// transport both emit these to update footer state without reaching into
-// internal signals directly.
+@lgcode/@lgcode/ Typed messages sent to RunFooter.event(). The prompt queue and stream
+@lgcode/@lgcode/ transport both emit these to update footer state without reaching into
+@lgcode/@lgcode/ internal signals directly.
 export type FooterEvent =
   | {
       type: "catalog"
@@ -288,18 +288,18 @@ export type QuestionReject = Parameters<OpencodeClient["question"]["reject"]>[0]
 
 export type RunTuiConfig = Pick<TuiConfig.Resolved, "keybinds" | "leader_timeout" | "diff_style">
 
-// Lifecycle phase of a scrollback entry. "start" opens the entry, "progress"
-// appends content (coalesced in the footer queue), "final" closes it.
+@lgcode/@lgcode/ Lifecycle phase of a scrollback entry. "start" opens the entry, "progress"
+@lgcode/@lgcode/ appends content (coalesced in the footer queue), "final" closes it.
 export type StreamPhase = "start" | "progress" | "final"
 
 export type StreamSource = "assistant" | "reasoning" | "tool" | "system"
 
 export type StreamToolState = "running" | "completed" | "error"
 
-// A single append-only commit to scrollback. The session-data reducer produces
-// these from SDK events, and RunFooter.append() queues them for the next
-// microtask flush. Once flushed, they become immutable terminal scrollback
-// rows -- they cannot be rewritten.
+@lgcode/@lgcode/ A single append-only commit to scrollback. The session-data reducer produces
+@lgcode/@lgcode/ these from SDK events, and RunFooter.append() queues them for the next
+@lgcode/@lgcode/ microtask flush. Once flushed, they become immutable terminal scrollback
+@lgcode/@lgcode/ rows -- they cannot be rewritten.
 export type StreamCommit = {
   kind: EntryKind
   text: string
@@ -334,9 +334,9 @@ export type LocalReplayRow = {
   after?: LocalReplayAnchor
 }
 
-// The public contract between the stream transport / prompt queue and
-// the footer. RunFooter implements this. The transport and queue never
-// touch the renderer directly -- they go through this interface.
+@lgcode/@lgcode/ The public contract between the stream transport @lgcode/ prompt queue and
+@lgcode/@lgcode/ the footer. RunFooter implements this. The transport and queue never
+@lgcode/@lgcode/ touch the renderer directly -- they go through this interface.
 export type FooterApi = {
   readonly isClosed: boolean
   onPrompt(fn: (input: RunPrompt) => void): () => void

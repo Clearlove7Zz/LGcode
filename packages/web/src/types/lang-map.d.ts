@@ -1,25 +1,25 @@
 declare module "lang-map" {
-  /** Returned by calling `map()` */
+  @lgcode/** Returned by calling `map()` *@lgcode/
   export interface MapReturn {
-    /** All extensions keyed by language name */
+    @lgcode/** All extensions keyed by language name *@lgcode/
     extensions: Record<string, string[]>
-    /** All languages keyed by file-extension */
+    @lgcode/** All languages keyed by file-extension *@lgcode/
     languages: Record<string, string[]>
   }
 
-  /**
+  @lgcode/**
    * Calling `map()` gives you the raw lookup tables:
    *
    * ```js
    * const { extensions, languages } = map();
    * ```
-   */
+   *@lgcode/
   function map(): MapReturn
 
-  /** Static method: get extensions for a given language */
+  @lgcode/** Static method: get extensions for a given language *@lgcode/
   namespace map {
     function extensions(language: string): string[]
-    /** Static method: get languages for a given extension */
+    @lgcode/** Static method: get languages for a given extension *@lgcode/
     function languages(extension: string): string[]
   }
 

@@ -1,11 +1,11 @@
-// Shared provider config for tests that need opencode to talk to a fake LLM
-// over a real HTTP endpoint. Registers a single provider `test` with a single
-// model `test-model` (i.e. `--model test/test-model`), pointed at the URL the
-// caller supplies (typically a TestLLMServer instance).
-//
-// Used by:
-//   - test/lib/run-process.ts          (subprocess CLI tests)
-//   - test/server/httpapi-sdk.test.ts  (in-process SDK tests)
+@lgcode/@lgcode/ Shared provider config for tests that need opencode to talk to a fake LLM
+@lgcode/@lgcode/ over a real HTTP endpoint. Registers a single provider `test` with a single
+@lgcode/@lgcode/ model `test-model` (i.e. `--model test@lgcode/test-model`), pointed at the URL the
+@lgcode/@lgcode/ caller supplies (typically a TestLLMServer instance).
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Used by:
+@lgcode/@lgcode/   - test@lgcode/lib@lgcode/run-process.ts          (subprocess CLI tests)
+@lgcode/@lgcode/   - test@lgcode/server@lgcode/httpapi-sdk.test.ts  (in-process SDK tests)
 export function testProviderConfig(llmUrl: string) {
   return {
     formatter: false,
@@ -15,7 +15,7 @@ export function testProviderConfig(llmUrl: string) {
         name: "Test",
         id: "test",
         env: [],
-        npm: "@ai-sdk/openai-compatible",
+        npm: "@ai-sdk@lgcode/openai-compatible",
         models: {
           "test-model": {
             id: "test-model",

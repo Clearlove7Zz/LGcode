@@ -1,14 +1,14 @@
-import fs from "fs/promises"
+import fs from "fs@lgcode/promises"
 import path from "path"
 import { describe, expect, test } from "bun:test"
 import { Effect, Layer } from "effect"
-import { HttpClient, HttpClientResponse } from "effect/unstable/http"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { Global } from "@opencode@lgcode/core/global"
-import { SkillDiscovery } from "@opencode@lgcode/core/skill/discovery"
-import { tmpdir } from "./fixture/tmpdir"
+import { HttpClient, HttpClientResponse } from "effect@lgcode/unstable@lgcode/http"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { Global } from "@lgcode/core@lgcode/global"
+import { SkillDiscovery } from "@lgcode/core@lgcode/skill@lgcode/discovery"
+import { tmpdir } from ".@lgcode/fixture@lgcode/tmpdir"
 
-const base = "https://skills.example.test/catalog/"
+const base = "https:@lgcode/@lgcode/skills.example.test@lgcode/catalog@lgcode/"
 
 async function pull(skills: unknown[], files: Record<string, string> = {}) {
   const tmp = await tmpdir()
@@ -42,7 +42,7 @@ async function pull(skills: unknown[], files: Record<string, string> = {}) {
 
 describe("SkillDiscovery.pull", () => {
   test("rejects skill name traversal without fetching files", async () => {
-    const result = await pull([{ name: "../outside", files: ["SKILL.md"] }])
+    const result = await pull([{ name: "..@lgcode/outside", files: ["SKILL.md"] }])
     try {
       expect(result.directories).toEqual([])
       expect(result.requests).toEqual([`${base}index.json`])
@@ -53,7 +53,7 @@ describe("SkillDiscovery.pull", () => {
   })
 
   test("rejects file traversal without fetching files", async () => {
-    const result = await pull([{ name: "deploy", files: ["SKILL.md", "../outside.md"] }])
+    const result = await pull([{ name: "deploy", files: ["SKILL.md", "..@lgcode/outside.md"] }])
     try {
       expect(result.directories).toEqual([])
       expect(result.requests).toEqual([`${base}index.json`])
@@ -64,7 +64,7 @@ describe("SkillDiscovery.pull", () => {
   })
 
   test("rejects absolute file paths without fetching files", async () => {
-    const result = await pull([{ name: "deploy", files: ["SKILL.md", "/tmp/outside.md"] }])
+    const result = await pull([{ name: "deploy", files: ["SKILL.md", "@lgcode/tmp@lgcode/outside.md"] }])
     try {
       expect(result.directories).toEqual([])
       expect(result.requests).toEqual([`${base}index.json`])
@@ -75,7 +75,7 @@ describe("SkillDiscovery.pull", () => {
   })
 
   test("rejects cross-origin file URLs without fetching files", async () => {
-    const result = await pull([{ name: "deploy", files: ["SKILL.md", "https://evil.example.test/outside.md"] }])
+    const result = await pull([{ name: "deploy", files: ["SKILL.md", "https:@lgcode/@lgcode/evil.example.test@lgcode/outside.md"] }])
     try {
       expect(result.directories).toEqual([])
       expect(result.requests).toEqual([`${base}index.json`])
@@ -86,14 +86,14 @@ describe("SkillDiscovery.pull", () => {
   })
 
   test("downloads safe nested files under the skill root", async () => {
-    const result = await pull([{ name: "deploy", files: ["SKILL.md", "references/guide.md"] }], {
-      [`${base}deploy/SKILL.md`]: "# Deploy",
-      [`${base}deploy/references/guide.md`]: "# Guide",
+    const result = await pull([{ name: "deploy", files: ["SKILL.md", "references@lgcode/guide.md"] }], {
+      [`${base}deploy@lgcode/SKILL.md`]: "# Deploy",
+      [`${base}deploy@lgcode/references@lgcode/guide.md`]: "# Guide",
     })
     try {
       expect(result.directories).toHaveLength(1)
       expect(result.requests.toSorted()).toEqual(
-        [`${base}index.json`, `${base}deploy/SKILL.md`, `${base}deploy/references/guide.md`].toSorted(),
+        [`${base}index.json`, `${base}deploy@lgcode/SKILL.md`, `${base}deploy@lgcode/references@lgcode/guide.md`].toSorted(),
       )
       expect(await fs.readFile(path.join(result.directories[0], "SKILL.md"), "utf8")).toBe("# Deploy")
       expect(await fs.readFile(path.join(result.directories[0], "references", "guide.md"), "utf8")).toBe("# Guide")

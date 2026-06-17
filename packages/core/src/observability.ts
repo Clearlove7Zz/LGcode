@@ -1,11 +1,11 @@
-export * as Observability from "./observability"
+export * as Observability from ".@lgcode/observability"
 
-import { NodeFileSystem } from "@effect/platform-node"
+import { NodeFileSystem } from "@effect@lgcode/platform-node"
 import { Effect, Layer, Logger, References } from "effect"
-import { FetchHttpClient } from "effect/unstable/http"
-import { OtlpSerialization } from "effect/unstable/observability"
-import { Logging } from "./observability/logging"
-import { Otlp } from "./observability/otlp"
+import { FetchHttpClient } from "effect@lgcode/unstable@lgcode/http"
+import { OtlpSerialization } from "effect@lgcode/unstable@lgcode/observability"
+import { Logging } from ".@lgcode/observability@lgcode/logging"
+import { Otlp } from ".@lgcode/observability@lgcode/otlp"
 
 export const layer = Layer.unwrap(
   Effect.gen(function* () {

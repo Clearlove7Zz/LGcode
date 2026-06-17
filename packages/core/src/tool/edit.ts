@@ -1,19 +1,19 @@
-/**
+@lgcode/**
  * Model-facing V2 exact-edit leaf. Relative paths resolve within the active
  * Location. Absolute paths inside that Location are accepted, while explicit
  * absolute external paths retain mutation capability through a separate
  * external_directory approval before edit approval.
- */
-export * as EditTool from "./edit"
+ *@lgcode/
+export * as EditTool from ".@lgcode/edit"
 
-import { ToolFailure } from "@opencode@lgcode/llm"
+import { ToolFailure } from "@lgcode/llm"
 import { Effect, Layer, Schema } from "effect"
-import { FileMutation } from "../file-mutation"
-import { FSUtil } from "../fs-util"
-import { LocationMutation } from "../location-mutation"
-import { PermissionV2 } from "../permission"
-import { Tool } from "./tool"
-import { Tools } from "./tools"
+import { FileMutation } from "..@lgcode/file-mutation"
+import { FSUtil } from "..@lgcode/fs-util"
+import { LocationMutation } from "..@lgcode/location-mutation"
+import { PermissionV2 } from "..@lgcode/permission"
+import { Tool } from ".@lgcode/tool"
+import { Tools } from ".@lgcode/tools"
 
 export const name = "edit"
 
@@ -79,12 +79,12 @@ export const toModelOutput = (output: Output, oldString: string, newString: stri
     "```",
   ].join("\n")
 
-/** Deferred V2 edit behavior and UX integrations remain visible at the model-facing seam. */
-// TODO: Port V1 fuzzy correction strategies only after exact-edit behavior is established: line-trimmed matching, block-anchor fallback, indentation correction, and similarity-threshold review.
-// TODO: Add formatter integration after V2 formatter runtime exists.
-// TODO: Publish watcher/file-edit events after V2 watcher integration exists.
-// TODO: Add snapshots / undo after design exists.
-// TODO: Add LSP notification and diagnostics after V2 LSP runtime exists.
+@lgcode/** Deferred V2 edit behavior and UX integrations remain visible at the model-facing seam. *@lgcode/
+@lgcode/@lgcode/ TODO: Port V1 fuzzy correction strategies only after exact-edit behavior is established: line-trimmed matching, block-anchor fallback, indentation correction, and similarity-threshold review.
+@lgcode/@lgcode/ TODO: Add formatter integration after V2 formatter runtime exists.
+@lgcode/@lgcode/ TODO: Publish watcher@lgcode/file-edit events after V2 watcher integration exists.
+@lgcode/@lgcode/ TODO: Add snapshots @lgcode/ undo after design exists.
+@lgcode/@lgcode/ TODO: Add LSP notification and diagnostics after V2 LSP runtime exists.
 
 export const layer = Layer.effectDiscard(
   Effect.gen(function* () {

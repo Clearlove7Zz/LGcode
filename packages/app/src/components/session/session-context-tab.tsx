@@ -1,22 +1,22 @@
 import { createMemo, createEffect, on, onCleanup, For, Show } from "solid-js"
 import type { JSX } from "solid-js"
-import { useSync } from "@/context/sync"
-import { checksum } from "@opencode@lgcode/core/util/encode"
-import { findLast } from "@opencode@lgcode/core/util/array"
-import { same } from "@/utils/same"
-import { Icon } from "@opencode@lgcode/ui/icon"
-import { Accordion } from "@opencode@lgcode/ui/accordion"
-import { StickyAccordionHeader } from "@opencode@lgcode/ui/sticky-accordion-header"
-import { File } from "@opencode@lgcode/ui/file"
-import { Markdown } from "@opencode@lgcode/ui/markdown"
-import { ScrollView } from "@opencode@lgcode/ui/scroll-view"
-import type { Message, Part, UserMessage } from "@opencode@lgcode/sdk/v2/client"
-import { useLanguage } from "@/context/language"
-import { useProviders } from "@/hooks/use-providers"
-import { useSessionLayout } from "@/pages/session/session-layout"
-import { getSessionContextMetrics } from "./session-context-metrics"
-import { estimateSessionContextBreakdown, type SessionContextBreakdownKey } from "./session-context-breakdown"
-import { createSessionContextFormatter } from "./session-context-format"
+import { useSync } from "@@lgcode/context@lgcode/sync"
+import { checksum } from "@lgcode/core@lgcode/util@lgcode/encode"
+import { findLast } from "@lgcode/core@lgcode/util@lgcode/array"
+import { same } from "@@lgcode/utils@lgcode/same"
+import { Icon } from "@lgcode/ui@lgcode/icon"
+import { Accordion } from "@lgcode/ui@lgcode/accordion"
+import { StickyAccordionHeader } from "@lgcode/ui@lgcode/sticky-accordion-header"
+import { File } from "@lgcode/ui@lgcode/file"
+import { Markdown } from "@lgcode/ui@lgcode/markdown"
+import { ScrollView } from "@lgcode/ui@lgcode/scroll-view"
+import type { Message, Part, UserMessage } from "@lgcode/sdk@lgcode/v2@lgcode/client"
+import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { useProviders } from "@@lgcode/hooks@lgcode/use-providers"
+import { useSessionLayout } from "@@lgcode/pages@lgcode/session@lgcode/session-layout"
+import { getSessionContextMetrics } from ".@lgcode/session-context-metrics"
+import { estimateSessionContextBreakdown, type SessionContextBreakdownKey } from ".@lgcode/session-context-breakdown"
+import { createSessionContextFormatter } from ".@lgcode/session-context-format"
 
 const BREAKDOWN_COLOR: Record<SessionContextBreakdownKey, string> = {
   system: "var(--syntax-info)",
@@ -29,9 +29,9 @@ const BREAKDOWN_COLOR: Record<SessionContextBreakdownKey, string> = {
 function Stat(props: { label: string; value: JSX.Element }) {
   return (
     <div class="flex flex-col gap-1">
-      <div class="text-12-regular text-text-weak">{props.label}</div>
-      <div class="text-12-medium text-text-strong">{props.value}</div>
-    </div>
+      <div class="text-12-regular text-text-weak">{props.label}<@lgcode/div>
+      <div class="text-12-medium text-text-strong">{props.value}<@lgcode/div>
+    <@lgcode/div>
   )
 }
 
@@ -53,7 +53,7 @@ function RawMessageContent(props: { message: Message; getParts: (id: string) => 
       overflow="wrap"
       class="select-text"
       onRendered={() => requestAnimationFrame(props.onRendered)}
-    />
+    @lgcode/>
   )
 }
 
@@ -69,21 +69,21 @@ function RawMessage(props: {
         <Accordion.Trigger>
           <div class="flex items-center justify-between gap-2 w-full">
             <div class="min-w-0 truncate">
-              {props.message.role} <span class="text-text-base">• {props.message.id}</span>
-            </div>
+              {props.message.role} <span class="text-text-base">• {props.message.id}<@lgcode/span>
+            <@lgcode/div>
             <div class="flex items-center gap-3">
-              <div class="shrink-0 text-12-regular text-text-weak">{props.time(props.message.time.created)}</div>
-              <Icon name="chevron-grabber-vertical" size="small" class="shrink-0 text-text-weak" />
-            </div>
-          </div>
-        </Accordion.Trigger>
-      </StickyAccordionHeader>
+              <div class="shrink-0 text-12-regular text-text-weak">{props.time(props.message.time.created)}<@lgcode/div>
+              <Icon name="chevron-grabber-vertical" size="small" class="shrink-0 text-text-weak" @lgcode/>
+            <@lgcode/div>
+          <@lgcode/div>
+        <@lgcode/Accordion.Trigger>
+      <@lgcode/StickyAccordionHeader>
       <Accordion.Content class="bg-background-base">
         <div class="p-3">
-          <RawMessageContent message={props.message} getParts={props.getParts} onRendered={props.onRendered} />
-        </div>
-      </Accordion.Content>
-    </Accordion.Item>
+          <RawMessageContent message={props.message} getParts={props.getParts} onRendered={props.onRendered} @lgcode/>
+        <@lgcode/div>
+      <@lgcode/Accordion.Content>
+    <@lgcode/Accordion.Item>
   )
 }
 
@@ -209,7 +209,7 @@ export function SessionContextTab() {
     { label: "context.stats.reasoningTokens", value: () => formatter().number(ctx()?.reasoning) },
     {
       label: "context.stats.cacheTokens",
-      value: () => `${formatter().number(ctx()?.cacheRead)} / ${formatter().number(ctx()?.cacheWrite)}`,
+      value: () => `${formatter().number(ctx()?.cacheRead)} @lgcode/ ${formatter().number(ctx()?.cacheWrite)}`,
     },
     { label: "context.stats.userMessages", value: () => counts().user.toLocaleString(language.intl()) },
     { label: "context.stats.assistantMessages", value: () => counts().assistant.toLocaleString(language.intl()) },
@@ -279,13 +279,13 @@ export function SessionContextTab() {
       <div class="px-6 pt-4 pb-10 flex flex-col gap-10">
         <div class="grid grid-cols-1 @[32rem]:grid-cols-2 gap-4">
           <For each={stats}>
-            {(stat) => <Stat label={language.t(stat.label as Parameters<typeof language.t>[0])} value={stat.value()} />}
-          </For>
-        </div>
+            {(stat) => <Stat label={language.t(stat.label as Parameters<typeof language.t>[0])} value={stat.value()} @lgcode/>}
+          <@lgcode/For>
+        <@lgcode/div>
 
         <Show when={breakdown().length > 0}>
           <div class="flex flex-col gap-2">
-            <div class="text-12-regular text-text-weak">{language.t("context.breakdown.title")}</div>
+            <div class="text-12-regular text-text-weak">{language.t("context.breakdown.title")}<@lgcode/div>
             <div class="h-2 w-full rounded-full bg-surface-base overflow-hidden flex">
               <For each={breakdown()}>
                 {(segment) => (
@@ -295,47 +295,47 @@ export function SessionContextTab() {
                       width: `${segment.width}%`,
                       "background-color": BREAKDOWN_COLOR[segment.key],
                     }}
-                  />
+                  @lgcode/>
                 )}
-              </For>
-            </div>
+              <@lgcode/For>
+            <@lgcode/div>
             <div class="flex flex-wrap gap-x-3 gap-y-1">
               <For each={breakdown()}>
                 {(segment) => (
                   <div class="flex items-center gap-1 text-11-regular text-text-weak">
-                    <div class="size-2 rounded-sm" style={{ "background-color": BREAKDOWN_COLOR[segment.key] }} />
-                    <div>{breakdownLabel(segment.key)}</div>
-                    <div class="text-text-weaker">{segment.percent.toLocaleString(language.intl())}%</div>
-                  </div>
+                    <div class="size-2 rounded-sm" style={{ "background-color": BREAKDOWN_COLOR[segment.key] }} @lgcode/>
+                    <div>{breakdownLabel(segment.key)}<@lgcode/div>
+                    <div class="text-text-weaker">{segment.percent.toLocaleString(language.intl())}%<@lgcode/div>
+                  <@lgcode/div>
                 )}
-              </For>
-            </div>
-            <div class="hidden text-11-regular text-text-weaker">{language.t("context.breakdown.note")}</div>
-          </div>
-        </Show>
+              <@lgcode/For>
+            <@lgcode/div>
+            <div class="hidden text-11-regular text-text-weaker">{language.t("context.breakdown.note")}<@lgcode/div>
+          <@lgcode/div>
+        <@lgcode/Show>
 
         <Show when={systemPrompt()}>
           {(prompt) => (
             <div class="flex flex-col gap-2">
-              <div class="text-12-regular text-text-weak">{language.t("context.systemPrompt.title")}</div>
+              <div class="text-12-regular text-text-weak">{language.t("context.systemPrompt.title")}<@lgcode/div>
               <div class="border border-border-base rounded-md bg-surface-base px-3 py-2">
-                <Markdown text={prompt()} class="text-12-regular" />
-              </div>
-            </div>
+                <Markdown text={prompt()} class="text-12-regular" @lgcode/>
+              <@lgcode/div>
+            <@lgcode/div>
           )}
-        </Show>
+        <@lgcode/Show>
 
         <div class="flex flex-col gap-2">
-          <div class="text-12-regular text-text-weak">{language.t("context.rawMessages.title")}</div>
+          <div class="text-12-regular text-text-weak">{language.t("context.rawMessages.title")}<@lgcode/div>
           <Accordion multiple>
             <For each={messages()}>
               {(message) => (
-                <RawMessage message={message} getParts={getParts} onRendered={restoreScroll} time={formatter().time} />
+                <RawMessage message={message} getParts={getParts} onRendered={restoreScroll} time={formatter().time} @lgcode/>
               )}
-            </For>
-          </Accordion>
-        </div>
-      </div>
-    </ScrollView>
+            <@lgcode/For>
+          <@lgcode/Accordion>
+        <@lgcode/div>
+      <@lgcode/div>
+    <@lgcode/ScrollView>
   )
 }

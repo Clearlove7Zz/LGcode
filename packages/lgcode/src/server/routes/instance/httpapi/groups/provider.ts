@@ -1,15 +1,15 @@
-import { ProviderAuth } from "@/provider/auth"
-import { Provider } from "@/provider/provider"
+import { ProviderAuth } from "@@lgcode/provider@lgcode/auth"
+import { Provider } from "@@lgcode/provider@lgcode/provider"
 
 import { Schema } from "effect"
-import { HttpApi, HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
-import { Authorization } from "../middleware/authorization"
-import { InstanceContextMiddleware } from "../middleware/instance-context"
-import { WorkspaceRoutingMiddleware, WorkspaceRoutingQuery } from "../middleware/workspace-routing"
-import { described } from "./metadata"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { HttpApi, HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
+import { Authorization } from "..@lgcode/middleware@lgcode/authorization"
+import { InstanceContextMiddleware } from "..@lgcode/middleware@lgcode/instance-context"
+import { WorkspaceRoutingMiddleware, WorkspaceRoutingQuery } from "..@lgcode/middleware@lgcode/workspace-routing"
+import { described } from ".@lgcode/metadata"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
 
-const root = "/provider"
+const root = "@lgcode/provider"
 
 const ProviderAuthErrorName = Schema.Union([
   Schema.Literal("BadRequest"),
@@ -45,7 +45,7 @@ export const ProviderApi = HttpApi.make("provider")
             description: "Get a list of all available AI providers, including both available and connected ones.",
           }),
         ),
-        HttpApiEndpoint.get("auth", `${root}/auth`, {
+        HttpApiEndpoint.get("auth", `${root}@lgcode/auth`, {
           query: WorkspaceRoutingQuery,
           success: described(ProviderAuth.Methods, "Provider auth methods"),
         }).annotateMerge(
@@ -55,7 +55,7 @@ export const ProviderApi = HttpApi.make("provider")
             description: "Retrieve available authentication methods for all AI providers.",
           }),
         ),
-        HttpApiEndpoint.post("authorize", `${root}/:providerID/oauth/authorize`, {
+        HttpApiEndpoint.post("authorize", `${root}@lgcode/:providerID@lgcode/oauth@lgcode/authorize`, {
           params: { providerID: ProviderV2.ID },
           query: WorkspaceRoutingQuery,
           payload: ProviderAuth.AuthorizeInput,
@@ -68,7 +68,7 @@ export const ProviderApi = HttpApi.make("provider")
             description: "Start the OAuth authorization flow for a provider.",
           }),
         ),
-        HttpApiEndpoint.post("callback", `${root}/:providerID/oauth/callback`, {
+        HttpApiEndpoint.post("callback", `${root}@lgcode/:providerID@lgcode/oauth@lgcode/callback`, {
           params: { providerID: ProviderV2.ID },
           query: WorkspaceRoutingQuery,
           payload: ProviderAuth.CallbackInput,

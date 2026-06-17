@@ -1,14 +1,14 @@
 import { Schema } from "effect"
-import type { LLMRequest, ReasoningEffort, TextVerbosity as TextVerbosityValue } from "../../schema"
-import { ReasoningEfforts, TextVerbosity } from "../../schema"
+import type { LLMRequest, ReasoningEffort, TextVerbosity as TextVerbosityValue } from "..@lgcode/..@lgcode/schema"
+import { ReasoningEfforts, TextVerbosity } from "..@lgcode/..@lgcode/schema"
 
 export const OpenAIReasoningEfforts = ReasoningEfforts.filter(
   (effort): effort is Exclude<ReasoningEffort, "max"> => effort !== "max",
 )
 export type OpenAIReasoningEffort = (typeof OpenAIReasoningEfforts)[number]
 
-// Mirrors OpenAI's `ResponseIncludable` union from the official SDK. Keep this
-// in lockstep with `openai-node/src/resources/responses/responses.ts`.
+@lgcode/@lgcode/ Mirrors OpenAI's `ResponseIncludable` union from the official SDK. Keep this
+@lgcode/@lgcode/ in lockstep with `openai-node@lgcode/src@lgcode/resources@lgcode/responses@lgcode/responses.ts`.
 export const OpenAIResponseIncludables = [
   "file_search_call.results",
   "web_search_call.results",
@@ -58,11 +58,11 @@ export const reasoningEffort = (request: LLMRequest): ReasoningEffort | undefine
 export const reasoningSummary = (request: LLMRequest): "auto" | undefined =>
   options(request)?.reasoningSummary === "auto" ? "auto" : undefined
 
-// Resolve the OpenAI Responses `include` field. Filters out unknown
-// includable values defensively so a typo in upstream config drops the
-// invalid entry instead of poisoning the wire body. An empty array (either
-// passed directly or produced by filtering) is treated as "no include" and
-// returns undefined so the request body omits the field entirely.
+@lgcode/@lgcode/ Resolve the OpenAI Responses `include` field. Filters out unknown
+@lgcode/@lgcode/ includable values defensively so a typo in upstream config drops the
+@lgcode/@lgcode/ invalid entry instead of poisoning the wire body. An empty array (either
+@lgcode/@lgcode/ passed directly or produced by filtering) is treated as "no include" and
+@lgcode/@lgcode/ returns undefined so the request body omits the field entirely.
 export const include = (request: LLMRequest): ReadonlyArray<OpenAIResponseIncludable> | undefined => {
   const value = options(request)?.include
   if (!Array.isArray(value)) return undefined
@@ -90,4 +90,4 @@ export const instructions = (request: LLMRequest) => {
   return typeof value === "string" ? value : undefined
 }
 
-export * as OpenAIOptions from "./openai-options"
+export * as OpenAIOptions from ".@lgcode/openai-options"

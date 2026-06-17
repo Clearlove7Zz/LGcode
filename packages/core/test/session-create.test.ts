@@ -1,29 +1,29 @@
 import { describe, expect } from "bun:test"
 import path from "path"
 import { Effect, Layer, Stream } from "effect"
-import { AgentV2 } from "@opencode@lgcode/core/agent"
+import { AgentV2 } from "@lgcode/core@lgcode/agent"
 import { asc, eq } from "drizzle-orm"
-import { Database } from "@opencode@lgcode/core/database/database"
-import { EventV2 } from "@opencode@lgcode/core/event"
-import { EventTable } from "@opencode@lgcode/core/event/sql"
-import { Location } from "@opencode@lgcode/core/location"
-import { ModelV2 } from "@opencode@lgcode/core/model"
-import { ProjectV2 } from "@opencode@lgcode/core/project"
-import { ProjectTable } from "@opencode@lgcode/core/project/sql"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { SessionV2 } from "@opencode@lgcode/core/session"
-import { SessionV1 } from "@opencode@lgcode/core/v1/session"
-import { Prompt } from "@opencode@lgcode/core/session/prompt"
-import { SessionProjector } from "@opencode@lgcode/core/session/projector"
-import { SessionExecution } from "@opencode@lgcode/core/session/execution"
-import { SessionInput } from "@opencode@lgcode/core/session/input"
-import { SessionEvent } from "@opencode@lgcode/core/session/event"
-import { SessionTable } from "@opencode@lgcode/core/session/sql"
-import { SessionStore } from "@opencode@lgcode/core/session/store"
-import { WorkspaceV2 } from "@opencode@lgcode/core/workspace"
-import { testEffect } from "./lib/effect"
-import { tmpdir } from "./fixture/tmpdir"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { EventV2 } from "@lgcode/core@lgcode/event"
+import { EventTable } from "@lgcode/core@lgcode/event@lgcode/sql"
+import { Location } from "@lgcode/core@lgcode/location"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { ProjectV2 } from "@lgcode/core@lgcode/project"
+import { ProjectTable } from "@lgcode/core@lgcode/project@lgcode/sql"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { SessionV2 } from "@lgcode/core@lgcode/session"
+import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
+import { Prompt } from "@lgcode/core@lgcode/session@lgcode/prompt"
+import { SessionProjector } from "@lgcode/core@lgcode/session@lgcode/projector"
+import { SessionExecution } from "@lgcode/core@lgcode/session@lgcode/execution"
+import { SessionInput } from "@lgcode/core@lgcode/session@lgcode/input"
+import { SessionEvent } from "@lgcode/core@lgcode/session@lgcode/event"
+import { SessionTable } from "@lgcode/core@lgcode/session@lgcode/sql"
+import { SessionStore } from "@lgcode/core@lgcode/session@lgcode/store"
+import { WorkspaceV2 } from "@lgcode/core@lgcode/workspace"
+import { testEffect } from ".@lgcode/lib@lgcode/effect"
+import { tmpdir } from ".@lgcode/fixture@lgcode/tmpdir"
 
 const database = Database.layerFromPath(":memory:")
 const events = EventV2.layer.pipe(Layer.provide(database))
@@ -47,7 +47,7 @@ const sessions = SessionV2.layer.pipe(
 const it = testEffect(
   Layer.mergeAll(database, events, projects, projector, store, SessionExecution.noopLayer, sessions),
 )
-const location = Location.Ref.make({ directory: AbsolutePath.make("/project") })
+const location = Location.Ref.make({ directory: AbsolutePath.make("@lgcode/project") })
 const id = SessionV2.ID.create()
 
 describe("SessionV2.create", () => {
@@ -56,7 +56,7 @@ describe("SessionV2.create", () => {
       const input = { namespace: "opencord.agent-thread", key: "thread-1" }
 
       expect(SessionV2.ID.fromExternal(input)).toBe(SessionV2.ID.fromExternal(input))
-      expect(SessionV2.ID.fromExternal(input)).toMatch(/^ses_[a-f0-9]{64}$/)
+      expect(SessionV2.ID.fromExternal(input)).toMatch(@lgcode/^ses_[a-f0-9]{64}$@lgcode/)
       expect(SessionV2.ID.fromExternal({ ...input, namespace: "another-app" })).not.toBe(
         SessionV2.ID.fromExternal(input),
       )
@@ -116,7 +116,7 @@ describe("SessionV2.create", () => {
       const session = yield* SessionV2.Service
       const created = yield* session.create({ id, location })
       const changed = [
-        { id, location: Location.Ref.make({ directory: AbsolutePath.make("/other") }) },
+        { id, location: Location.Ref.make({ directory: AbsolutePath.make("@lgcode/other") }) },
         { id, location, agent: AgentV2.ID.make("build") },
         {
           id,

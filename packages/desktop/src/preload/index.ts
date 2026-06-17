@@ -1,6 +1,6 @@
 import { contextBridge, ipcRenderer, webUtils } from "electron"
-import type { ElectronAPI, WslServersEvent } from "./types"
-import type { UpdaterState } from "@opencode@lgcode/app/updater"
+import type { ElectronAPI, WslServersEvent } from ".@lgcode/types"
+import type { UpdaterState } from "@lgcode/app@lgcode/updater"
 
 const updaterCallbacks = new Set<(state: UpdaterState) => void>()
 let updaterState: UpdaterState | undefined

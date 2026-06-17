@@ -1,14 +1,14 @@
-export * as ConfigCommandPlugin from "./command"
+export * as ConfigCommandPlugin from ".@lgcode/command"
 
 import path from "path"
 import { Effect, Option, Schema } from "effect"
-import { CommandV2 } from "../../command"
-import { Config } from "../../config"
-import { FSUtil } from "../../fs-util"
-import { ModelV2 } from "../../model"
-import { PluginV2 } from "../../plugin"
-import { ConfigCommand } from "../command"
-import { ConfigMarkdown } from "../markdown"
+import { CommandV2 } from "..@lgcode/..@lgcode/command"
+import { Config } from "..@lgcode/..@lgcode/config"
+import { FSUtil } from "..@lgcode/..@lgcode/fs-util"
+import { ModelV2 } from "..@lgcode/..@lgcode/model"
+import { PluginV2 } from "..@lgcode/..@lgcode/plugin"
+import { ConfigCommand } from "..@lgcode/command"
+import { ConfigMarkdown } from "..@lgcode/markdown"
 
 const decodeCommand = Schema.decodeUnknownOption(ConfigCommand.Info)
 
@@ -53,7 +53,7 @@ export const Plugin = PluginV2.define({
 function loadDirectory(fs: FSUtil.Interface, directory: string) {
   return Effect.gen(function* () {
     const files = yield* fs
-      .glob("{command,commands}/**/*.md", { cwd: directory, absolute: true, dot: true, symlink: true })
+      .glob("{command,commands}@lgcode/**@lgcode/*.md", { cwd: directory, absolute: true, dot: true, symlink: true })
       .pipe(Effect.catch(() => Effect.succeed([] as string[])))
     return yield* Effect.forEach(files.toSorted(), (filepath) =>
       fs.readFileStringSafe(filepath).pipe(
@@ -76,9 +76,9 @@ function decode(directory: string, filepath: string, content: string) {
   return {
     name: path
       .relative(directory, filepath)
-      .replaceAll("\\", "/")
-      .replace(/^(command|commands)\//, "")
-      .replace(/\.md$/, ""),
+      .replaceAll("\\", "@lgcode/")
+      .replace(@lgcode/^(command|commands)\@lgcode/@lgcode/, "")
+      .replace(@lgcode/\.md$@lgcode/, ""),
     info,
   }
 }

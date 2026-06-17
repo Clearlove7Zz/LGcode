@@ -1,6 +1,6 @@
-#!/usr/bin/env bun
+#!@lgcode/usr@lgcode/bin@lgcode/env bun
 
-import { Script } from "@opencode@lgcode/script"
+import { Script } from "@lgcode/script"
 import { $ } from "bun"
 import { fileURLToPath } from "url"
 
@@ -21,7 +21,7 @@ function transformExports(exports: Record<string, unknown>) {
   return Object.fromEntries(
     Object.entries(exports).map(([key, value]) => {
       if (typeof value === "string") {
-        const file = value.replace("./src/", "./dist/").replace(".ts", "")
+        const file = value.replace(".@lgcode/src@lgcode/", ".@lgcode/dist@lgcode/").replace(".ts", "")
         return [key, { import: file + ".js", types: file + ".d.ts" }]
       }
       if (typeof value === "object" && value !== null && !Array.isArray(value)) {

@@ -1,37 +1,37 @@
-import type { Hooks, PluginInput } from "@opencode@lgcode/plugin"
-import type { Model } from "@opencode@lgcode/sdk/v2"
-import { InstallationVersion } from "@opencode@lgcode/core/installation/version"
-import { iife } from "@/util/iife"
-import { setTimeout as sleep } from "node:timers/promises"
-import { CopilotModels } from "./models"
-import { MessageV2 } from "@/session/message-v2"
+import type { Hooks, PluginInput } from "@lgcode/plugin"
+import type { Model } from "@lgcode/sdk@lgcode/v2"
+import { InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
+import { iife } from "@@lgcode/util@lgcode/iife"
+import { setTimeout as sleep } from "node:timers@lgcode/promises"
+import { CopilotModels } from ".@lgcode/models"
+import { MessageV2 } from "@@lgcode/session@lgcode/message-v2"
 
 const CLIENT_ID = "Ov23li8tweQw6odWQebz"
 const API_VERSION = "2026-06-01"
 const UTILITY_MODELS = ["gpt-5.4-nano", "gpt-4.1", "gpt-4o", "gpt-4o-mini"]
-// Add a small safety buffer when polling to avoid hitting the server
-// slightly too early due to clock skew / timer drift.
-const OAUTH_POLLING_SAFETY_MARGIN_MS = 3000 // 3 seconds
+@lgcode/@lgcode/ Add a small safety buffer when polling to avoid hitting the server
+@lgcode/@lgcode/ slightly too early due to clock skew @lgcode/ timer drift.
+const OAUTH_POLLING_SAFETY_MARGIN_MS = 3000 @lgcode/@lgcode/ 3 seconds
 function normalizeDomain(url: string) {
-  return url.replace(/^https?:\/\//, "").replace(/\/$/, "")
+  return url.replace(@lgcode/^https?:\@lgcode/\@lgcode/@lgcode/, "").replace(@lgcode/\@lgcode/$@lgcode/, "")
 }
 
 function getUrls(domain: string) {
   return {
-    DEVICE_CODE_URL: `https://${domain}/login/device/code`,
-    ACCESS_TOKEN_URL: `https://${domain}/login/oauth/access_token`,
+    DEVICE_CODE_URL: `https:@lgcode/@lgcode/${domain}@lgcode/login@lgcode/device@lgcode/code`,
+    ACCESS_TOKEN_URL: `https:@lgcode/@lgcode/${domain}@lgcode/login@lgcode/oauth@lgcode/access_token`,
   }
 }
 
 function base(enterpriseUrl?: string) {
-  return enterpriseUrl ? `https://copilot-api.${normalizeDomain(enterpriseUrl)}` : "https://api.githubcopilot.com"
+  return enterpriseUrl ? `https:@lgcode/@lgcode/copilot-api.${normalizeDomain(enterpriseUrl)}` : "https:@lgcode/@lgcode/api.githubcopilot.com"
 }
 
-// Check if a message is a synthetic user msg used to attach an image from a tool call
+@lgcode/@lgcode/ Check if a message is a synthetic user msg used to attach an image from a tool call
 function imgMsg(msg: any): boolean {
   if (msg?.role !== "user") return false
 
-  // Handle the 3 api formats
+  @lgcode/@lgcode/ Handle the 3 api formats
 
   const content = msg.content
   if (typeof content === "string") return content === MessageV2.SYNTHETIC_ATTACHMENT_PROMPT
@@ -48,7 +48,7 @@ function fix(model: Model, url: string): Model {
     api: {
       ...model.api,
       url,
-      npm: "@ai-sdk/github-copilot",
+      npm: "@ai-sdk@lgcode/github-copilot",
     },
   }
 }
@@ -71,7 +71,7 @@ export async function CopilotAuthPlugin(input: PluginInput): Promise<Hooks> {
           base(auth.enterpriseUrl),
           {
             Authorization: `Bearer ${auth.refresh}`,
-            "User-Agent": `opencode/${InstallationVersion}`,
+            "User-Agent": `opencode@lgcode/${InstallationVersion}`,
             "X-GitHub-Api-Version": API_VERSION,
           },
           provider.models,
@@ -107,7 +107,7 @@ export async function CopilotAuthPlugin(input: PluginInput): Promise<Hooks> {
               try {
                 const body = typeof init?.body === "string" ? JSON.parse(init.body) : init?.body
 
-                // Completions API
+                @lgcode/@lgcode/ Completions API
                 if (body?.messages && url.includes("completions")) {
                   const last = body.messages[body.messages.length - 1]
                   return {
@@ -119,7 +119,7 @@ export async function CopilotAuthPlugin(input: PluginInput): Promise<Hooks> {
                   }
                 }
 
-                // Responses API
+                @lgcode/@lgcode/ Responses API
                 if (body?.input) {
                   const last = body.input[body.input.length - 1]
                   return {
@@ -131,7 +131,7 @@ export async function CopilotAuthPlugin(input: PluginInput): Promise<Hooks> {
                   }
                 }
 
-                // Messages API
+                @lgcode/@lgcode/ Messages API
                 if (body?.messages) {
                   const last = body.messages[body.messages.length - 1]
                   const hasNonToolCalls =
@@ -143,7 +143,7 @@ export async function CopilotAuthPlugin(input: PluginInput): Promise<Hooks> {
                         item.content.some(
                           (part: any) =>
                             part?.type === "image" ||
-                            // images can be nested inside tool_result content
+                            @lgcode/@lgcode/ images can be nested inside tool_result content
                             (part?.type === "tool_result" &&
                               Array.isArray(part?.content) &&
                               part.content.some((nested: any) => nested?.type === "image")),
@@ -159,7 +159,7 @@ export async function CopilotAuthPlugin(input: PluginInput): Promise<Hooks> {
             const headers: Record<string, string> = {
               "x-initiator": isAgent ? "agent" : "user",
               ...(init?.headers as Record<string, string>),
-              "User-Agent": `opencode/${InstallationVersion}`,
+              "User-Agent": `opencode@lgcode/${InstallationVersion}`,
               Authorization: `Bearer ${info.refresh}`,
               "Openai-Intent": "conversation-edits",
             }
@@ -204,16 +204,16 @@ export async function CopilotAuthPlugin(input: PluginInput): Promise<Hooks> {
               type: "text",
               key: "enterpriseUrl",
               message: "Enter your GitHub Enterprise URL or domain",
-              placeholder: "company.ghe.com or https://company.ghe.com",
+              placeholder: "company.ghe.com or https:@lgcode/@lgcode/company.ghe.com",
               when: { key: "deploymentType", op: "eq", value: "enterprise" },
               validate: (value) => {
                 if (!value) return "URL or domain is required"
                 try {
-                  const url = value.includes("://") ? new URL(value) : new URL(`https://${value}`)
+                  const url = value.includes(":@lgcode/@lgcode/") ? new URL(value) : new URL(`https:@lgcode/@lgcode/${value}`)
                   if (!url.hostname) return "Please enter a valid URL or domain"
                   return undefined
                 } catch {
-                  return "Please enter a valid URL (e.g., company.ghe.com or https://company.ghe.com)"
+                  return "Please enter a valid URL (e.g., company.ghe.com or https:@lgcode/@lgcode/company.ghe.com)"
                 }
               },
             },
@@ -233,9 +233,9 @@ export async function CopilotAuthPlugin(input: PluginInput): Promise<Hooks> {
             const deviceResponse = await fetch(urls.DEVICE_CODE_URL, {
               method: "POST",
               headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "User-Agent": `opencode/${InstallationVersion}`,
+                Accept: "application@lgcode/json",
+                "Content-Type": "application@lgcode/json",
+                "User-Agent": `opencode@lgcode/${InstallationVersion}`,
               },
               body: JSON.stringify({
                 client_id: CLIENT_ID,
@@ -263,9 +263,9 @@ export async function CopilotAuthPlugin(input: PluginInput): Promise<Hooks> {
                   const response = await fetch(urls.ACCESS_TOKEN_URL, {
                     method: "POST",
                     headers: {
-                      Accept: "application/json",
-                      "Content-Type": "application/json",
-                      "User-Agent": `opencode/${InstallationVersion}`,
+                      Accept: "application@lgcode/json",
+                      "Content-Type": "application@lgcode/json",
+                      "User-Agent": `opencode@lgcode/${InstallationVersion}`,
                     },
                     body: JSON.stringify({
                       client_id: CLIENT_ID,
@@ -310,12 +310,12 @@ export async function CopilotAuthPlugin(input: PluginInput): Promise<Hooks> {
                   }
 
                   if (data.error === "slow_down") {
-                    // Based on the RFC spec, we must add 5 seconds to our current polling interval.
-                    // (See https://www.rfc-editor.org/rfc/rfc8628#section-3.5)
+                    @lgcode/@lgcode/ Based on the RFC spec, we must add 5 seconds to our current polling interval.
+                    @lgcode/@lgcode/ (See https:@lgcode/@lgcode/www.rfc-editor.org@lgcode/rfc@lgcode/rfc8628#section-3.5)
                     let newInterval = (deviceData.interval + 5) * 1000
 
-                    // GitHub OAuth API may return the new interval in seconds in the response.
-                    // We should try to use that if provided with safety margin.
+                    @lgcode/@lgcode/ GitHub OAuth API may return the new interval in seconds in the response.
+                    @lgcode/@lgcode/ We should try to use that if provided with safety margin.
                     const serverInterval = data.interval
                     if (serverInterval && typeof serverInterval === "number" && serverInterval > 0) {
                       newInterval = serverInterval * 1000
@@ -339,21 +339,21 @@ export async function CopilotAuthPlugin(input: PluginInput): Promise<Hooks> {
     "chat.params": async (incoming, output) => {
       if (!incoming.model.providerID.includes("github-copilot")) return
 
-      // Match github copilot cli, omit maxOutputTokens for gpt models
+      @lgcode/@lgcode/ Match github copilot cli, omit maxOutputTokens for gpt models
       if (incoming.model.api.id.includes("gpt")) {
         output.maxOutputTokens = undefined
       }
 
-      // GitHub Copilot's /v1/messages shim rejects the GA `eager_input_streaming`
-      // field on tool definitions ("Extra inputs are not permitted"). Opt out of
-      // the @ai-sdk/anthropic default so it stops injecting the field.
-      if (incoming.model.api.npm === "@ai-sdk/anthropic") {
+      @lgcode/@lgcode/ GitHub Copilot's @lgcode/v1@lgcode/messages shim rejects the GA `eager_input_streaming`
+      @lgcode/@lgcode/ field on tool definitions ("Extra inputs are not permitted"). Opt out of
+      @lgcode/@lgcode/ the @ai-sdk@lgcode/anthropic default so it stops injecting the field.
+      if (incoming.model.api.npm === "@ai-sdk@lgcode/anthropic") {
         output.options.toolStreaming = false
       }
     },
     "experimental.provider.small_model": async (incoming, output) => {
       if (incoming.provider.id !== "github-copilot") return
-      // GitHub exposes utility models for title generation without including them in the picker.
+      @lgcode/@lgcode/ GitHub exposes utility models for title generation without including them in the picker.
       output.model = UTILITY_MODELS.map((id) => models[id]).find((model) => model !== undefined)
     },
     "chat.headers": async (incoming, output) => {
@@ -364,7 +364,7 @@ export async function CopilotAuthPlugin(input: PluginInput): Promise<Hooks> {
         output.headers["X-Interaction-Type"] = "agent-session-name-generation"
       }
 
-      if (incoming.model.api.npm === "@ai-sdk/anthropic") {
+      if (incoming.model.api.npm === "@ai-sdk@lgcode/anthropic") {
         output.headers["anthropic-beta"] = "interleaved-thinking-2025-05-14"
       }
 
@@ -385,8 +385,8 @@ export async function CopilotAuthPlugin(input: PluginInput): Promise<Hooks> {
         parts?.data.parts?.some(
           (part) =>
             part.type === "compaction" ||
-            // Auto-compaction resumes via a synthetic user text part. Treat only
-            // that marked followup as agent-initiated so manual prompts stay user-initiated.
+            @lgcode/@lgcode/ Auto-compaction resumes via a synthetic user text part. Treat only
+            @lgcode/@lgcode/ that marked followup as agent-initiated so manual prompts stay user-initiated.
             (part.type === "text" && part.synthetic && part.metadata?.compaction_continue === true),
         )
       ) {
@@ -406,7 +406,7 @@ export async function CopilotAuthPlugin(input: PluginInput): Promise<Hooks> {
         })
         .catch(() => undefined)
       if (!session || !session.data.parentID) return
-      // mark subagent sessions as agent initiated matching standard that other copilot tools have
+      @lgcode/@lgcode/ mark subagent sessions as agent initiated matching standard that other copilot tools have
       output.headers["x-initiator"] = "agent"
     },
   }

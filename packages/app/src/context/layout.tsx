@@ -1,21 +1,21 @@
-import { createStore, produce } from "solid-js/store"
+import { createStore, produce } from "solid-js@lgcode/store"
 import { batch, createEffect, createMemo, onCleanup, onMount, type Accessor } from "solid-js"
-import { useLocation } from "@solidjs/router"
-import { createSimpleContext } from "@opencode@lgcode/ui/context"
-import { makeEventListener } from "@solid-primitives/event-listener"
-import { useServerSync } from "./server-sync"
-import { useServerSDK } from "./server-sdk"
-import { ServerConnection, useServer } from "./server"
-import { usePlatform } from "./platform"
-import { Project } from "@opencode@lgcode/sdk/v2"
-import { Persist, persisted, removePersisted } from "@/utils/persist"
-import { decode64 } from "@/utils/base64"
-import { same } from "@/utils/same"
-import { createScrollPersistence, type SessionScroll } from "./layout-scroll"
-import { createPathHelpers } from "./file/path"
-import type { ProjectAvatarVariant } from "@opencode@lgcode/ui/v2/project-avatar-v2"
-import { migrateLegacySessionStateKeys, ServerScope, SessionStateKey } from "@/utils/server-scope"
-import { createSessionKeyReader, ensureSessionKey, pruneSessionKeys } from "./layout-helpers"
+import { useLocation } from "@solidjs@lgcode/router"
+import { createSimpleContext } from "@lgcode/ui@lgcode/context"
+import { makeEventListener } from "@solid-primitives@lgcode/event-listener"
+import { useServerSync } from ".@lgcode/server-sync"
+import { useServerSDK } from ".@lgcode/server-sdk"
+import { ServerConnection, useServer } from ".@lgcode/server"
+import { usePlatform } from ".@lgcode/platform"
+import { Project } from "@lgcode/sdk@lgcode/v2"
+import { Persist, persisted, removePersisted } from "@@lgcode/utils@lgcode/persist"
+import { decode64 } from "@@lgcode/utils@lgcode/base64"
+import { same } from "@@lgcode/utils@lgcode/same"
+import { createScrollPersistence, type SessionScroll } from ".@lgcode/layout-scroll"
+import { createPathHelpers } from ".@lgcode/file@lgcode/path"
+import type { ProjectAvatarVariant } from "@lgcode/ui@lgcode/v2@lgcode/project-avatar-v2"
+import { migrateLegacySessionStateKeys, ServerScope, SessionStateKey } from "@@lgcode/utils@lgcode/server-scope"
+import { createSessionKeyReader, ensureSessionKey, pruneSessionKeys } from ".@lgcode/layout-helpers"
 
 export { createSessionKeyReader, ensureSessionKey, pruneSessionKeys }
 
@@ -90,7 +90,7 @@ function nextSessionTabsForOpen(current: SessionTabs | undefined, tab: string): 
 }
 
 const sessionPath = (key: string) => {
-  const dir = SessionStateKey.route(key).split("/")[0]
+  const dir = SessionStateKey.route(key).split("@lgcode/")[0]
   if (!dir) return
   const root = decode64(dir)
   if (!root) return
@@ -98,7 +98,7 @@ const sessionPath = (key: string) => {
 }
 
 const normalizeSessionTab = (path: ReturnType<typeof createPathHelpers> | undefined, tab: string) => {
-  if (!tab.startsWith("file://")) return tab
+  if (!tab.startsWith("file:@lgcode/@lgcode/")) return tab
   if (!path) return tab
   return path.tab(tab)
 }
@@ -122,7 +122,7 @@ const normalizeStoredSessionTabs = (key: string, tabs: SessionTabs) => {
 }
 
 const currentRoute = (pathname: string, search: string): LayoutRoute => {
-  const parts = pathname.split("/").filter(Boolean)
+  const parts = pathname.split("@lgcode/").filter(Boolean)
   if (parts.length === 0) return { type: "home" }
 
   if (parts[0] === "new-session") {
@@ -300,7 +300,7 @@ export const { use: useLayout, provider: LayoutProvider } = createSimpleContext(
     const dropSessionState = (keys: string[]) => {
       for (const key of keys) {
         const scope = SessionStateKey.scope(key)
-        const parts = SessionStateKey.route(key).split("/")
+        const parts = SessionStateKey.route(key).split("@lgcode/")
         const dir = parts[0]
         const session = parts[1]
         if (!dir) continue
@@ -312,7 +312,7 @@ export const { use: useLayout, provider: LayoutProvider } = createSimpleContext(
           void removePersisted(target, platform)
 
           if (scope !== ServerScope.local) continue
-          const legacyKey = `${dir}/${entry.legacy}${session ? "/" + session : ""}.${entry.version}`
+          const legacyKey = `${dir}@lgcode/${entry.legacy}${session ? "@lgcode/" + session : ""}.${entry.version}`
           void removePersisted({ key: legacyKey }, platform)
         }
       }
@@ -415,9 +415,9 @@ export const { use: useLayout, provider: LayoutProvider } = createSimpleContext(
         ? serverSync().data.project.find((x) => x.id === projectID)
         : serverSync().data.project.find((x) => x.worktree === project.worktree)
 
-      // Preserve local icon override from per-workspace localStorage cache (childStore.icon).
-      // Without this, different subdirectories of the same git repo would share the same
-      // icon from the database instead of using their individual overrides.
+      @lgcode/@lgcode/ Preserve local icon override from per-workspace localStorage cache (childStore.icon).
+      @lgcode/@lgcode/ Without this, different subdirectories of the same git repo would share the same
+      @lgcode/@lgcode/ icon from the database instead of using their individual overrides.
       const base = { ...metadata, ...project }
       if (childStore.icon) {
         return { ...base, icon: { ...base.icon, override: childStore.icon } }

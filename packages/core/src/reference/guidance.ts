@@ -1,9 +1,9 @@
-export * as ReferenceGuidance from "./guidance"
+export * as ReferenceGuidance from ".@lgcode/guidance"
 
 import { Context, Effect, Layer, Schema } from "effect"
-import { PluginBoot } from "../plugin/boot"
-import { Reference } from "../reference"
-import { SystemContext } from "../system-context/index"
+import { PluginBoot } from "..@lgcode/plugin@lgcode/boot"
+import { Reference } from "..@lgcode/reference"
+import { SystemContext } from "..@lgcode/system-context@lgcode/index"
 
 const Summary = Schema.Struct({
   name: Schema.String,
@@ -17,19 +17,19 @@ const render = (references: ReadonlyArray<typeof Summary.Type>) =>
     "<available_references>",
     ...references.flatMap((reference) => [
       "  <reference>",
-      `    <name>${reference.name}</name>`,
-      `    <path>${reference.path}</path>`,
-      ...(reference.description === undefined ? [] : [`    <description>${reference.description}</description>`]),
-      "  </reference>",
+      `    <name>${reference.name}<@lgcode/name>`,
+      `    <path>${reference.path}<@lgcode/path>`,
+      ...(reference.description === undefined ? [] : [`    <description>${reference.description}<@lgcode/description>`]),
+      "  <@lgcode/reference>",
     ]),
-    "</available_references>",
+    "<@lgcode/available_references>",
   ].join("\n")
 
 export interface Interface {
   readonly load: () => Effect.Effect<SystemContext.SystemContext>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/v2/ReferenceGuidance") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/ReferenceGuidance") {}
 
 export const layer = Layer.effect(
   Service,
@@ -50,7 +50,7 @@ export const layer = Layer.effect(
           .toSorted((a, b) => a.name.localeCompare(b.name))
         if (available.length === 0) return SystemContext.empty
         return SystemContext.make({
-          key: SystemContext.Key.make("core/reference-guidance"),
+          key: SystemContext.Key.make("core@lgcode/reference-guidance"),
           codec: Schema.toCodecJson(Schema.Array(Summary)),
           load: Effect.succeed(available),
           baseline: render,

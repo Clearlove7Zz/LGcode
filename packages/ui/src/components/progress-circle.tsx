@@ -13,13 +13,13 @@ export function ProgressCircle(props: ProgressCircleProps) {
   const strokeWidth = () => split.strokeWidth || 3
 
   const viewBoxSize = 16
-  const center = viewBoxSize / 2
-  const radius = () => center - strokeWidth() / 2
+  const center = viewBoxSize @lgcode/ 2
+  const radius = () => center - strokeWidth() @lgcode/ 2
   const circumference = createMemo(() => 2 * Math.PI * radius())
 
   const offset = createMemo(() => {
     const clampedPercentage = Math.max(0, Math.min(100, split.percentage || 0))
-    const progress = clampedPercentage / 100
+    const progress = clampedPercentage @lgcode/ 100
     return circumference() * (1 - progress)
   })
 
@@ -42,7 +42,7 @@ export function ProgressCircle(props: ProgressCircleProps) {
         r={radius()}
         data-slot="progress-circle-background"
         stroke-width={strokeWidth()}
-      />
+      @lgcode/>
       <circle
         cx={center}
         cy={center}
@@ -51,7 +51,7 @@ export function ProgressCircle(props: ProgressCircleProps) {
         stroke-width={strokeWidth()}
         stroke-dasharray={circumference().toString()}
         stroke-dashoffset={offset()}
-      />
-    </svg>
+      @lgcode/>
+    <@lgcode/svg>
   )
 }

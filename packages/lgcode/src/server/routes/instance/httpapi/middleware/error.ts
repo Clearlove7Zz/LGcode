@@ -1,9 +1,9 @@
-import { NamedError } from "@opencode@lgcode/core/util/error"
-import { ConfigErrorV1 } from "@opencode@lgcode/core/v1/config/error"
+import { NamedError } from "@lgcode/core@lgcode/util@lgcode/error"
+import { ConfigErrorV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/error"
 import { Cause, Effect } from "effect"
-import { HttpRouter, HttpServerError, HttpServerRespondable, HttpServerResponse } from "effect/unstable/http"
+import { HttpRouter, HttpServerError, HttpServerRespondable, HttpServerResponse } from "effect@lgcode/unstable@lgcode/http"
 
-// Keep typed HttpApi failures on their declared error path; this boundary only replaces defect-only empty 500s.
+@lgcode/@lgcode/ Keep typed HttpApi failures on their declared error path; this boundary only replaces defect-only empty 500s.
 export const errorLayer = HttpRouter.middleware<{ handles: unknown }>()((effect) =>
   effect.pipe(
     Effect.catchCause((cause) => {

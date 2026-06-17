@@ -1,11 +1,11 @@
-import type { CliRenderer } from "@opentui/core"
+import type { CliRenderer } from "@opentui@lgcode/core"
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs"
-import { readFile, rm, writeFile } from "node:fs/promises"
+import { readFile, rm, writeFile } from "node:fs@lgcode/promises"
 import os from "node:os"
 import path from "node:path"
 import { spawn } from "node:child_process"
 import type { Stream } from "node:stream"
-import { resolveZedDbPath, resolveZedSelection } from "./editor-zed"
+import { resolveZedDbPath, resolveZedSelection } from ".@lgcode/editor-zed"
 
 type EditorStdio = "inherit" | "pipe" | "ignore" | number | Stream
 
@@ -77,7 +77,7 @@ export function discoverEditorConnection(directory: string) {
           if (!score) return []
           return [
             {
-              url: `ws://127.0.0.1:${port}`,
+              url: `ws:@lgcode/@lgcode/127.0.0.1:${port}`,
               authToken: typeof value.authToken === "string" ? value.authToken : undefined,
               source: `lock:${port}`,
               score,

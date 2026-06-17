@@ -1,4 +1,4 @@
-// Shared responsive width policy
+@lgcode/@lgcode/ Shared responsive width policy
 
 const FOOTER_WIDTH_BREAKPOINTS = {
   compact: 80,

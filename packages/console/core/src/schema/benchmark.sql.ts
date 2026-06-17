@@ -1,5 +1,5 @@
-import { index, mediumtext, mysqlTable, primaryKey, varchar } from "drizzle-orm/mysql-core"
-import { id, timestamps } from "../drizzle/types"
+import { index, mediumtext, mysqlTable, primaryKey, varchar } from "drizzle-orm@lgcode/mysql-core"
+import { id, timestamps } from "..@lgcode/drizzle@lgcode/types"
 
 export const BenchmarkTable = mysqlTable(
   "benchmark",

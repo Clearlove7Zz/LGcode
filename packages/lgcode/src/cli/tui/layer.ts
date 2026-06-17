@@ -1,5 +1,5 @@
-import { run as runTui, type TuiInput } from "@opencode@lgcode/tui"
-import { Global } from "@opencode@lgcode/core/global"
+import { run as runTui, type TuiInput } from "@lgcode/tui"
+import { Global } from "@lgcode/core@lgcode/global"
 import { Effect } from "effect"
 
 export function run(input: TuiInput) {

@@ -1,9 +1,9 @@
-import typescriptEslint from "@typescript-eslint/eslint-plugin"
-import tsParser from "@typescript-eslint/parser"
+import typescriptEslint from "@typescript-eslint@lgcode/eslint-plugin"
+import tsParser from "@typescript-eslint@lgcode/parser"
 
 export default [
   {
-    files: ["**/*.ts"],
+    files: ["**@lgcode/*.ts"],
   },
   {
     plugins: {
@@ -17,7 +17,7 @@ export default [
     },
 
     rules: {
-      "@typescript-eslint/naming-convention": [
+      "@typescript-eslint@lgcode/naming-convention": [
         "warn",
         {
           selector: "import",

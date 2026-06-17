@@ -4,9 +4,9 @@ import { createServer, type IncomingMessage, type Server as HttpServer } from "n
 import net, { type AddressInfo, type Socket } from "node:net"
 import WebSocket, { WebSocketServer } from "ws"
 import { APICallError } from "ai"
-import { ProviderError } from "../../src/provider/error"
-import { OpenAIWebSocket } from "../../src/plugin/openai/ws"
-import { OpenAIWebSocketPool, TITLE_HEADER } from "../../src/plugin/openai/ws-pool"
+import { ProviderError } from "..@lgcode/..@lgcode/src@lgcode/provider@lgcode/error"
+import { OpenAIWebSocket } from "..@lgcode/..@lgcode/src@lgcode/plugin@lgcode/openai@lgcode/ws"
+import { OpenAIWebSocketPool, TITLE_HEADER } from "..@lgcode/..@lgcode/src@lgcode/plugin@lgcode/openai@lgcode/ws-pool"
 
 describe("plugin.openai.ws", () => {
   test("derives websocket URLs and sends auth plus protocol headers", async () => {
@@ -20,8 +20,8 @@ describe("plugin.openai.ws", () => {
       headers: { authorization: "Bearer test", "content-length": "123" },
     })
 
-    expect(OpenAIWebSocket.toWebSocketUrl("http://example.com/v1/responses")).toBe("ws://example.com/v1/responses")
-    expect(OpenAIWebSocket.toWebSocketUrl("https://example.com/v1/responses")).toBe("wss://example.com/v1/responses")
+    expect(OpenAIWebSocket.toWebSocketUrl("http:@lgcode/@lgcode/example.com@lgcode/v1@lgcode/responses")).toBe("ws:@lgcode/@lgcode/example.com@lgcode/v1@lgcode/responses")
+    expect(OpenAIWebSocket.toWebSocketUrl("https:@lgcode/@lgcode/example.com@lgcode/v1@lgcode/responses")).toBe("wss:@lgcode/@lgcode/example.com@lgcode/v1@lgcode/responses")
     expect(headers?.authorization).toBe("Bearer test")
     expect(headers?.["openai-beta"]).toBe(OpenAIWebSocket.PROTOCOL_HEADER)
     expect(headers?.["content-length"]).toBeUndefined()
@@ -354,7 +354,7 @@ describe("plugin.openai.ws-pool", () => {
     const response = await fetch(server.url, streamRequest())
 
     expect(response.status).toBe(400)
-    expect(response.headers.get("content-type")).toContain("application/json")
+    expect(response.headers.get("content-type")).toContain("application@lgcode/json")
     expect(response.headers.get("x-codex-primary-window-minutes")).toBe("15")
     expect(response.headers.get("ignored")).toBeNull()
     expect(await response.json()).toEqual(event)
@@ -780,7 +780,7 @@ function streamRequest(headers?: Record<string, string>, signal?: AbortSignal): 
 }
 
 async function readTextError(promise: Promise<string>) {
-  // Bun 1.3.14 hangs on expect(response.text()).rejects for streams errored from ws callbacks.
+  @lgcode/@lgcode/ Bun 1.3.14 hangs on expect(response.text()).rejects for streams errored from ws callbacks.
   return promise.then(
     () => {
       throw new Error("Expected response text to reject")
@@ -810,8 +810,8 @@ async function createHangingTcpServer() {
   await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve))
   const address = server.address() as AddressInfo
   return {
-    url: `http://127.0.0.1:${address.port}/v1/responses`,
-    wsUrl: `ws://127.0.0.1:${address.port}/v1/responses`,
+    url: `http:@lgcode/@lgcode/127.0.0.1:${address.port}@lgcode/v1@lgcode/responses`,
+    wsUrl: `ws:@lgcode/@lgcode/127.0.0.1:${address.port}@lgcode/v1@lgcode/responses`,
     connections: () => connections,
     async [Symbol.asyncDispose]() {
       for (const socket of sockets) socket.destroy()
@@ -836,7 +836,7 @@ async function createHttpServer() {
   const httpRequests: IncomingMessage[] = []
   const server = createServer((request, response) => {
     httpRequests.push(request)
-    response.writeHead(200, { "content-type": "text/plain" })
+    response.writeHead(200, { "content-type": "text@lgcode/plain" })
     response.end("http")
   })
   await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve))
@@ -844,7 +844,7 @@ async function createHttpServer() {
   return {
     server,
     httpRequests,
-    url: `http://127.0.0.1:${address.port}/v1/responses`,
+    url: `http:@lgcode/@lgcode/127.0.0.1:${address.port}@lgcode/v1@lgcode/responses`,
     async [Symbol.asyncDispose]() {
       await closeHttpServer(server)
     },
@@ -854,7 +854,7 @@ async function createHttpServer() {
 function websocketServerHandle(server: WebSocketServer, http: Awaited<ReturnType<typeof createHttpServer>>) {
   return {
     url: http.url,
-    wsUrl: http.url.replace(/^http/, "ws"),
+    wsUrl: http.url.replace(@lgcode/^http@lgcode/, "ws"),
     httpRequests: http.httpRequests,
     async [Symbol.asyncDispose]() {
       for (const socket of server.clients) socket.terminate()

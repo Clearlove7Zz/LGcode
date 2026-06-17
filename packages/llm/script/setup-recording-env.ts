@@ -1,13 +1,13 @@
-#!/usr/bin/env bun
+#!@lgcode/usr@lgcode/bin@lgcode/env bun
 
-import { NodeFileSystem } from "@effect/platform-node"
+import { NodeFileSystem } from "@effect@lgcode/platform-node"
 import * as path from "node:path"
-import * as prompts from "@clack/prompts"
+import * as prompts from "@clack@lgcode/prompts"
 import { AwsV4Signer } from "aws4fetch"
 import { Config, ConfigProvider, Effect, FileSystem, PlatformError, Redacted } from "effect"
-import { FetchHttpClient, HttpClient, HttpClientRequest, type HttpClientResponse } from "effect/unstable/http"
-import * as ProviderShared from "../src/protocols/shared"
-import * as Cloudflare from "../src/providers/cloudflare"
+import { FetchHttpClient, HttpClient, HttpClientRequest, type HttpClientResponse } from "effect@lgcode/unstable@lgcode/http"
+import * as ProviderShared from "..@lgcode/src@lgcode/protocols@lgcode/shared"
+import * as Cloudflare from "..@lgcode/src@lgcode/providers@lgcode/cloudflare"
 
 type Provider = {
   readonly id: string
@@ -30,9 +30,9 @@ const PROVIDERS: ReadonlyArray<Provider> = [
     id: "openai",
     label: "OpenAI",
     tier: "core",
-    note: "Native OpenAI Chat / Responses recorded tests",
+    note: "Native OpenAI Chat @lgcode/ Responses recorded tests",
     vars: [{ name: "OPENAI_API_KEY" }],
-    validate: (env) => validateBearer("https://api.openai.com/v1/models", Redacted.make(env.OPENAI_API_KEY)),
+    validate: (env) => validateBearer("https:@lgcode/@lgcode/api.openai.com@lgcode/v1@lgcode/models", Redacted.make(env.OPENAI_API_KEY)),
   },
   {
     id: "anthropic",
@@ -41,7 +41,7 @@ const PROVIDERS: ReadonlyArray<Provider> = [
     note: "Native Anthropic Messages recorded tests",
     vars: [{ name: "ANTHROPIC_API_KEY" }],
     validate: (env) =>
-      HttpClientRequest.get("https://api.anthropic.com/v1/models").pipe(
+      HttpClientRequest.get("https:@lgcode/@lgcode/api.anthropic.com@lgcode/v1@lgcode/models").pipe(
         HttpClientRequest.setHeaders({
           "anthropic-version": "2023-06-01",
           "x-api-key": Redacted.value(Redacted.make(env.ANTHROPIC_API_KEY)),
@@ -57,7 +57,7 @@ const PROVIDERS: ReadonlyArray<Provider> = [
     vars: [{ name: "GOOGLE_GENERATIVE_AI_API_KEY" }],
     validate: (env) =>
       HttpClientRequest.get(
-        `https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(env.GOOGLE_GENERATIVE_AI_API_KEY)}`,
+        `https:@lgcode/@lgcode/generativelanguage.googleapis.com@lgcode/v1beta@lgcode/models?key=${encodeURIComponent(env.GOOGLE_GENERATIVE_AI_API_KEY)}`,
       ).pipe(executeRequest),
   },
   {
@@ -78,21 +78,21 @@ const PROVIDERS: ReadonlyArray<Provider> = [
     id: "groq",
     label: "Groq",
     tier: "canary",
-    note: "Fast OpenAI-compatible canary for text/tool streaming",
+    note: "Fast OpenAI-compatible canary for text@lgcode/tool streaming",
     vars: [{ name: "GROQ_API_KEY" }],
-    validate: (env) => validateBearer("https://api.groq.com/openai/v1/models", Redacted.make(env.GROQ_API_KEY)),
+    validate: (env) => validateBearer("https:@lgcode/@lgcode/api.groq.com@lgcode/openai@lgcode/v1@lgcode/models", Redacted.make(env.GROQ_API_KEY)),
   },
   {
     id: "openrouter",
     label: "OpenRouter",
     tier: "canary",
-    note: "Router canary for OpenAI-compatible text/tool streaming",
+    note: "Router canary for OpenAI-compatible text@lgcode/tool streaming",
     vars: [{ name: "OPENROUTER_API_KEY" }],
     validate: (env) =>
       validateChat({
-        url: "https://openrouter.ai/api/v1/chat/completions",
+        url: "https:@lgcode/@lgcode/openrouter.ai@lgcode/api@lgcode/v1@lgcode/chat@lgcode/completions",
         token: Redacted.make(env.OPENROUTER_API_KEY),
-        model: "openai/gpt-4o-mini",
+        model: "openai@lgcode/gpt-4o-mini",
       }),
   },
   {
@@ -101,13 +101,13 @@ const PROVIDERS: ReadonlyArray<Provider> = [
     tier: "canary",
     note: "OpenAI-compatible xAI chat endpoint",
     vars: [{ name: "XAI_API_KEY" }],
-    validate: (env) => validateBearer("https://api.x.ai/v1/models", Redacted.make(env.XAI_API_KEY)),
+    validate: (env) => validateBearer("https:@lgcode/@lgcode/api.x.ai@lgcode/v1@lgcode/models", Redacted.make(env.XAI_API_KEY)),
   },
   {
     id: "cloudflare-ai-gateway",
     label: "Cloudflare AI Gateway",
     tier: "canary",
-    note: "Cloudflare Unified/OpenAI-compatible gateway; supports provider/model ids like workers@lgcode/@cf/...",
+    note: "Cloudflare Unified@lgcode/OpenAI-compatible gateway; supports provider@lgcode/model ids like workers@lgcode@lgcode/@cf@lgcode/...",
     vars: [
       { name: "CLOUDFLARE_ACCOUNT_ID", label: "Cloudflare account ID", secret: false },
       {
@@ -123,26 +123,26 @@ const PROVIDERS: ReadonlyArray<Provider> = [
         url: `${Cloudflare.aiGatewayBaseURL({
           accountId: env.CLOUDFLARE_ACCOUNT_ID,
           gatewayId: env.CLOUDFLARE_GATEWAY_ID || undefined,
-        })}/chat/completions`,
+        })}@lgcode/chat@lgcode/completions`,
         token: Redacted.make(envValue(env, Cloudflare.aiGatewayAuthEnvVars)),
         tokenHeader: "cf-aig-authorization",
-        model: "workers@lgcode/@cf/meta/llama-3.1-8b-instruct",
+        model: "workers@lgcode@lgcode/@cf@lgcode/meta@lgcode/llama-3.1-8b-instruct",
       }),
   },
   {
     id: "cloudflare-workers-ai",
     label: "Cloudflare Workers AI",
     tier: "canary",
-    note: "Direct Workers AI OpenAI-compatible endpoint; supports model ids like @cf/meta/...",
+    note: "Direct Workers AI OpenAI-compatible endpoint; supports model ids like @cf@lgcode/meta@lgcode/...",
     vars: [
       { name: "CLOUDFLARE_ACCOUNT_ID", label: "Cloudflare account ID", secret: false },
       { name: "CLOUDFLARE_API_KEY", label: "Cloudflare Workers AI API token" },
     ],
     validate: (env) =>
       validateChat({
-        url: `${Cloudflare.workersAIBaseURL({ accountId: env.CLOUDFLARE_ACCOUNT_ID })}/chat/completions`,
+        url: `${Cloudflare.workersAIBaseURL({ accountId: env.CLOUDFLARE_ACCOUNT_ID })}@lgcode/chat@lgcode/completions`,
         token: Redacted.make(envValue(env, Cloudflare.workersAIAuthEnvVars)),
-        model: "@cf/meta/llama-3.1-8b-instruct",
+        model: "@cf@lgcode/meta@lgcode/llama-3.1-8b-instruct",
       }),
   },
   {
@@ -151,15 +151,15 @@ const PROVIDERS: ReadonlyArray<Provider> = [
     tier: "compatible",
     note: "Existing OpenAI-compatible recorded tests",
     vars: [{ name: "DEEPSEEK_API_KEY" }],
-    validate: (env) => validateBearer("https://api.deepseek.com/models", Redacted.make(env.DEEPSEEK_API_KEY)),
+    validate: (env) => validateBearer("https:@lgcode/@lgcode/api.deepseek.com@lgcode/models", Redacted.make(env.DEEPSEEK_API_KEY)),
   },
   {
     id: "togetherai",
     label: "TogetherAI",
     tier: "compatible",
-    note: "Existing OpenAI-compatible text/tool recorded tests",
+    note: "Existing OpenAI-compatible text@lgcode/tool recorded tests",
     vars: [{ name: "TOGETHER_AI_API_KEY" }],
-    validate: (env) => validateBearer("https://api.together.xyz/v1/models", Redacted.make(env.TOGETHER_AI_API_KEY)),
+    validate: (env) => validateBearer("https:@lgcode/@lgcode/api.together.xyz@lgcode/v1@lgcode/models", Redacted.make(env.TOGETHER_AI_API_KEY)),
   },
   {
     id: "mistral",
@@ -167,15 +167,15 @@ const PROVIDERS: ReadonlyArray<Provider> = [
     tier: "optional",
     note: "OpenAI-compatible bridge; native reasoning parity is follow-up work",
     vars: [{ name: "MISTRAL_API_KEY" }],
-    validate: (env) => validateBearer("https://api.mistral.ai/v1/models", Redacted.make(env.MISTRAL_API_KEY)),
+    validate: (env) => validateBearer("https:@lgcode/@lgcode/api.mistral.ai@lgcode/v1@lgcode/models", Redacted.make(env.MISTRAL_API_KEY)),
   },
   {
     id: "perplexity",
     label: "Perplexity",
     tier: "optional",
-    note: "OpenAI-compatible bridge; citations/search metadata are follow-up work",
+    note: "OpenAI-compatible bridge; citations@lgcode/search metadata are follow-up work",
     vars: [{ name: "PERPLEXITY_API_KEY" }],
-    validate: (env) => validateBearer("https://api.perplexity.ai/models", Redacted.make(env.PERPLEXITY_API_KEY)),
+    validate: (env) => validateBearer("https:@lgcode/@lgcode/api.perplexity.ai@lgcode/models", Redacted.make(env.PERPLEXITY_API_KEY)),
   },
   {
     id: "venice",
@@ -183,7 +183,7 @@ const PROVIDERS: ReadonlyArray<Provider> = [
     tier: "optional",
     note: "OpenAI-compatible bridge",
     vars: [{ name: "VENICE_API_KEY" }],
-    validate: (env) => validateBearer("https://api.venice.ai/api/v1/models", Redacted.make(env.VENICE_API_KEY)),
+    validate: (env) => validateBearer("https:@lgcode/@lgcode/api.venice.ai@lgcode/api@lgcode/v1@lgcode/models", Redacted.make(env.VENICE_API_KEY)),
   },
   {
     id: "cerebras",
@@ -191,7 +191,7 @@ const PROVIDERS: ReadonlyArray<Provider> = [
     tier: "optional",
     note: "OpenAI-compatible bridge",
     vars: [{ name: "CEREBRAS_API_KEY" }],
-    validate: (env) => validateBearer("https://api.cerebras.ai/v1/models", Redacted.make(env.CEREBRAS_API_KEY)),
+    validate: (env) => validateBearer("https:@lgcode/@lgcode/api.cerebras.ai@lgcode/v1@lgcode/models", Redacted.make(env.CEREBRAS_API_KEY)),
   },
   {
     id: "deepinfra",
@@ -200,7 +200,7 @@ const PROVIDERS: ReadonlyArray<Provider> = [
     note: "OpenAI-compatible bridge",
     vars: [{ name: "DEEPINFRA_API_KEY" }],
     validate: (env) =>
-      validateBearer("https://api.deepinfra.com/v1/openai/models", Redacted.make(env.DEEPINFRA_API_KEY)),
+      validateBearer("https:@lgcode/@lgcode/api.deepinfra.com@lgcode/v1@lgcode/openai@lgcode/models", Redacted.make(env.DEEPINFRA_API_KEY)),
   },
   {
     id: "fireworks",
@@ -209,7 +209,7 @@ const PROVIDERS: ReadonlyArray<Provider> = [
     note: "OpenAI-compatible bridge",
     vars: [{ name: "FIREWORKS_API_KEY" }],
     validate: (env) =>
-      validateBearer("https://api.fireworks.ai/inference/v1/models", Redacted.make(env.FIREWORKS_API_KEY)),
+      validateBearer("https:@lgcode/@lgcode/api.fireworks.ai@lgcode/inference@lgcode/v1@lgcode/models", Redacted.make(env.FIREWORKS_API_KEY)),
   },
   {
     id: "baseten",
@@ -315,14 +315,14 @@ const exitIfCancel = <A>(value: A | symbol): A => {
 const upsertEnv = (contents: string, values: Env) => {
   const names = Object.keys(values)
   const seen = new Set<string>()
-  const lines = contents.split(/\r?\n/).map((line) => {
-    const match = line.match(/^\s*(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*=/)
+  const lines = contents.split(@lgcode/\r?\n@lgcode/).map((line) => {
+    const match = line.match(@lgcode/^\s*(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*=@lgcode/)
     if (!match || !names.includes(match[1])) return line
     seen.add(match[1])
     return `${match[1]}=${quote(values[match[1]])}`
   })
   const missing = names.filter((name) => !seen.has(name))
-  if (missing.length === 0) return lines.join("\n").replace(/\n*$/, "\n")
+  if (missing.length === 0) return lines.join("\n").replace(@lgcode/\n*$@lgcode/, "\n")
   const prefix = lines.join("\n").trimEnd()
   const block = [
     "",
@@ -397,7 +397,7 @@ const validateBedrock = (env: Env) =>
   Effect.gen(function* () {
     const request = yield* Effect.promise(() =>
       new AwsV4Signer({
-        url: `https://bedrock.${env.BEDROCK_RECORDING_REGION || "us-east-1"}.amazonaws.com/foundation-models`,
+        url: `https:@lgcode/@lgcode/bedrock.${env.BEDROCK_RECORDING_REGION || "us-east-1"}.amazonaws.com@lgcode/foundation-models`,
         method: "GET",
         service: "bedrock",
         region: env.BEDROCK_RECORDING_REGION || "us-east-1",
@@ -481,7 +481,7 @@ const promptEnvVar = (item: Provider["vars"][number]) =>
       message: item.label ?? item.name,
       validate: (input: string | undefined) => {
         if (item.optional) return undefined
-        return !input || input.length === 0 ? "Leave blank by pressing Esc/cancel, or paste a value" : undefined
+        return !input || input.length === 0 ? "Leave blank by pressing Esc@lgcode/cancel, or paste a value" : undefined
       },
     }
     return item.secret === false ? prompts.text(input) : prompts.password(input)

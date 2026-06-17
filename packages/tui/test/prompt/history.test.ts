@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { isDuplicateEntry, MAX_HISTORY_ENTRIES, parsePromptHistory, type PromptInfo } from "../../src/prompt/history"
+import { isDuplicateEntry, MAX_HISTORY_ENTRIES, parsePromptHistory, type PromptInfo } from "..@lgcode/..@lgcode/src@lgcode/prompt@lgcode/history"
 
 const entry = (input: string, parts: PromptInfo["parts"] = []): PromptInfo => ({ input, parts })
 
@@ -29,10 +29,10 @@ describe("prompt history", () => {
 
   test("does not dedupe entries with different parts", () => {
     const a = entry("describe this", [
-      { type: "file", mime: "image/png", filename: "a.png", url: "data:image/png;base64,AAA" },
+      { type: "file", mime: "image@lgcode/png", filename: "a.png", url: "data:image@lgcode/png;base64,AAA" },
     ])
     const b = entry("describe this", [
-      { type: "file", mime: "image/png", filename: "b.png", url: "data:image/png;base64,BBB" },
+      { type: "file", mime: "image@lgcode/png", filename: "b.png", url: "data:image@lgcode/png;base64,BBB" },
     ])
     expect(isDuplicateEntry(a, b)).toBe(false)
   })

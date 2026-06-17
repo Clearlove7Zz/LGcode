@@ -1,20 +1,20 @@
-// Permission UI body for the direct-mode footer.
-//
-// Renders inside the footer when the reducer pushes a FooterView of type
-// "permission". Uses a three-stage state machine (permission.shared.ts):
-//
-//   permission → shows the request with Allow once / Always / Reject buttons
-//   always     → confirmation step before granting permanent access
-//   reject     → text field for the rejection message
-//
-// Keyboard: left/right to select, enter to confirm, esc to reject.
-// The diff view (when available) uses the same diff component as scrollback
-// tool snapshots.
-/** @jsxImportSource @opentui/solid */
-import type { TextareaRenderable } from "@opentui/core"
-import { useKeyboard, useTerminalDimensions } from "@opentui/solid"
+@lgcode/@lgcode/ Permission UI body for the direct-mode footer.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Renders inside the footer when the reducer pushes a FooterView of type
+@lgcode/@lgcode/ "permission". Uses a three-stage state machine (permission.shared.ts):
+@lgcode/@lgcode/
+@lgcode/@lgcode/   permission → shows the request with Allow once @lgcode/ Always @lgcode/ Reject buttons
+@lgcode/@lgcode/   always     → confirmation step before granting permanent access
+@lgcode/@lgcode/   reject     → text field for the rejection message
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Keyboard: left@lgcode/right to select, enter to confirm, esc to reject.
+@lgcode/@lgcode/ The diff view (when available) uses the same diff component as scrollback
+@lgcode/@lgcode/ tool snapshots.
+@lgcode/** @jsxImportSource @opentui@lgcode/solid *@lgcode/
+import type { TextareaRenderable } from "@opentui@lgcode/core"
+import { useKeyboard, useTerminalDimensions } from "@opentui@lgcode/solid"
 import { For, Match, Show, Switch, createEffect, createMemo, createSignal } from "solid-js"
-import type { PermissionRequest } from "@opencode@lgcode/sdk/v2"
+import type { PermissionRequest } from "@lgcode/sdk@lgcode/v2"
 import {
   createPermissionBodyState,
   permissionAlwaysLines,
@@ -28,11 +28,11 @@ import {
   permissionRun,
   permissionShift,
   type PermissionOption,
-} from "./permission.shared"
-import { footerWidthPolicy } from "./footer.width"
-import { toolFiletype } from "./tool"
-import { transparent, type RunBlockTheme, type RunFooterTheme } from "./theme"
-import type { PermissionReply, RunDiffStyle } from "./types"
+} from ".@lgcode/permission.shared"
+import { footerWidthPolicy } from ".@lgcode/footer.width"
+import { toolFiletype } from ".@lgcode/tool"
+import { transparent, type RunBlockTheme, type RunFooterTheme } from ".@lgcode/theme"
+import type { PermissionReply, RunDiffStyle } from ".@lgcode/types"
 
 function buttons(
   list: PermissionOption[],
@@ -57,15 +57,15 @@ function buttons(
               if (!disabled) onSelect(option)
             }}
           >
-            <text fg={option === selected ? theme.surface : theme.muted}>{permissionLabel(option)}</text>
-          </box>
+            <text fg={option === selected ? theme.surface : theme.muted}>{permissionLabel(option)}<@lgcode/text>
+          <@lgcode/box>
         )}
-      </For>
-    </box>
+      <@lgcode/For>
+    <@lgcode/box>
   )
 }
 
-/** @internal Exported to test managed textarea submission without permission navigation. */
+@lgcode/** @internal Exported to test managed textarea submission without permission navigation. *@lgcode/
 export function RejectField(props: {
   theme: RunFooterTheme
   text: string
@@ -125,7 +125,7 @@ export function RejectField(props: {
       ref={(item) => {
         area = item
       }}
-    />
+    @lgcode/>
   )
 }
 
@@ -268,27 +268,27 @@ export function RunPermissionBody(props: {
         flexShrink={0}
       >
         <box flexDirection="row" gap={1} paddingLeft={1}>
-          <text fg={state().stage === "reject" ? props.theme.error : props.theme.warning}>△</text>
-          <text fg={props.theme.text}>{title()}</text>
-        </box>
+          <text fg={state().stage === "reject" ? props.theme.error : props.theme.warning}>△<@lgcode/text>
+          <text fg={props.theme.text}>{title()}<@lgcode/text>
+        <@lgcode/box>
         <Switch>
           <Match when={state().stage === "permission"}>
             <box flexDirection="row" gap={1} paddingLeft={2}>
               <text fg={props.theme.muted} flexShrink={0}>
                 {info().icon}
-              </text>
+              <@lgcode/text>
               <text fg={props.theme.text} wrapMode="word">
                 {info().title}
-              </text>
-            </box>
-          </Match>
+              <@lgcode/text>
+            <@lgcode/box>
+          <@lgcode/Match>
           <Match when={state().stage === "reject"}>
             <box paddingLeft={1}>
-              <text fg={props.theme.muted}>Tell OpenCode what to do differently</text>
-            </box>
-          </Match>
-        </Switch>
-      </box>
+              <text fg={props.theme.muted}>Tell OpenCode what to do differently<@lgcode/text>
+            <@lgcode/box>
+          <@lgcode/Match>
+        <@lgcode/Switch>
+      <@lgcode/box>
 
       <Show
         when={state().stage !== "reject"}
@@ -319,27 +319,27 @@ export function RunPermissionBody(props: {
                   }}
                   onConfirm={reject}
                   onCancel={cancelReject}
-                />
-              </box>
+                @lgcode/>
+              <@lgcode/box>
               <Show
                 when={!busy()}
                 fallback={
                   <text fg={props.theme.muted} wrapMode="word" flexShrink={0}>
                     Waiting for permission event...
-                  </text>
+                  <@lgcode/text>
                 }
               >
                 <box flexDirection="row" gap={2} flexShrink={0}>
                   <text fg={props.theme.text}>
-                    enter <span style={{ fg: props.theme.muted }}>confirm</span>
-                  </text>
+                    enter <span style={{ fg: props.theme.muted }}>confirm<@lgcode/span>
+                  <@lgcode/text>
                   <text fg={props.theme.text}>
-                    esc <span style={{ fg: props.theme.muted }}>cancel</span>
-                  </text>
-                </box>
-              </Show>
-            </box>
-          </box>
+                    esc <span style={{ fg: props.theme.muted }}>cancel<@lgcode/span>
+                  <@lgcode/text>
+                <@lgcode/box>
+              <@lgcode/Show>
+            <@lgcode/box>
+          <@lgcode/box>
         }
       >
         <box width="100%" flexGrow={1} flexShrink={1} paddingLeft={1} paddingRight={3} paddingBottom={1}>
@@ -364,10 +364,10 @@ export function RunPermissionBody(props: {
                           {(line) => (
                             <text fg={props.theme.text} wrapMode="word">
                               {line}
-                            </text>
+                            <@lgcode/text>
                           )}
-                        </For>
-                      </box>
+                        <@lgcode/For>
+                      <@lgcode/box>
                     }
                   >
                     <diff
@@ -388,16 +388,16 @@ export function RunPermissionBody(props: {
                       lineNumberBg={props.block.diffContextBg}
                       addedLineNumberBg={props.block.diffAddedLineNumberBg}
                       removedLineNumberBg={props.block.diffRemovedLineNumberBg}
-                    />
-                  </Show>
+                    @lgcode/>
+                  <@lgcode/Show>
                   <Show when={!info().diff && info().lines.length === 0}>
                     <box paddingLeft={1}>
-                      <text fg={props.theme.muted}>No diff provided</text>
-                    </box>
-                  </Show>
-                </box>
-              </scrollbox>
-            </Match>
+                      <text fg={props.theme.muted}>No diff provided<@lgcode/text>
+                    <@lgcode/box>
+                  <@lgcode/Show>
+                <@lgcode/box>
+              <@lgcode/scrollbox>
+            <@lgcode/Match>
             <Match when={true}>
               <scrollbox
                 width="100%"
@@ -414,14 +414,14 @@ export function RunPermissionBody(props: {
                     {(line) => (
                       <text fg={props.theme.text} wrapMode="word">
                         {line}
-                      </text>
+                      <@lgcode/text>
                     )}
-                  </For>
-                </box>
-              </scrollbox>
-            </Match>
-          </Switch>
-        </box>
+                  <@lgcode/For>
+                <@lgcode/box>
+              <@lgcode/scrollbox>
+            <@lgcode/Match>
+          <@lgcode/Switch>
+        <@lgcode/box>
 
         <box
           flexDirection={narrow() ? "column" : "row"}
@@ -450,23 +450,23 @@ export function RunPermissionBody(props: {
             fallback={
               <text fg={props.theme.muted} wrapMode="word" flexShrink={0}>
                 Waiting for permission event...
-              </text>
+              <@lgcode/text>
             }
           >
             <box flexDirection="row" gap={2} flexShrink={0}>
               <text fg={props.theme.text}>
-                {"⇆"} <span style={{ fg: props.theme.muted }}>select</span>
-              </text>
+                {"⇆"} <span style={{ fg: props.theme.muted }}>select<@lgcode/span>
+              <@lgcode/text>
               <text fg={props.theme.text}>
-                enter <span style={{ fg: props.theme.muted }}>confirm</span>
-              </text>
+                enter <span style={{ fg: props.theme.muted }}>confirm<@lgcode/span>
+              <@lgcode/text>
               <text fg={props.theme.text}>
-                esc <span style={{ fg: props.theme.muted }}>{state().stage === "always" ? "cancel" : "reject"}</span>
-              </text>
-            </box>
-          </Show>
-        </box>
-      </Show>
-    </box>
+                esc <span style={{ fg: props.theme.muted }}>{state().stage === "always" ? "cancel" : "reject"}<@lgcode/span>
+              <@lgcode/text>
+            <@lgcode/box>
+          <@lgcode/Show>
+        <@lgcode/box>
+      <@lgcode/Show>
+    <@lgcode/box>
   )
 }

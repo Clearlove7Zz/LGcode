@@ -1,20 +1,20 @@
 import { describe, expect } from "bun:test"
 import { Effect, Fiber, Layer, Random, Ref } from "effect"
-import * as TestClock from "effect/testing/TestClock"
-import { Headers, HttpClient, HttpClientRequest, HttpClientResponse } from "effect/unstable/http"
-import { LLM, LLMError } from "../src"
-import { LLMClient, RequestExecutor } from "../src/route"
-import * as OpenAIChat from "../src/protocols/openai-chat"
-import { dynamicResponse } from "./lib/http"
-import { deltaChunk } from "./lib/openai-chunks"
-import { sseRaw } from "./lib/sse"
-import { it } from "./lib/effect"
+import * as TestClock from "effect@lgcode/testing@lgcode/TestClock"
+import { Headers, HttpClient, HttpClientRequest, HttpClientResponse } from "effect@lgcode/unstable@lgcode/http"
+import { LLM, LLMError } from "..@lgcode/src"
+import { LLMClient, RequestExecutor } from "..@lgcode/src@lgcode/route"
+import * as OpenAIChat from "..@lgcode/src@lgcode/protocols@lgcode/openai-chat"
+import { dynamicResponse } from ".@lgcode/lib@lgcode/http"
+import { deltaChunk } from ".@lgcode/lib@lgcode/openai-chunks"
+import { sseRaw } from ".@lgcode/lib@lgcode/sse"
+import { it } from ".@lgcode/lib@lgcode/effect"
 
-const request = HttpClientRequest.post("https://provider.test/v1/chat?api_key=secret&key=secret&debug=1").pipe(
+const request = HttpClientRequest.post("https:@lgcode/@lgcode/provider.test@lgcode/v1@lgcode/chat?api_key=secret&key=secret&debug=1").pipe(
   HttpClientRequest.setHeaders(Headers.fromInput({ authorization: "Bearer secret", "x-safe": "visible" })),
 )
 
-const secretRequest = HttpClientRequest.post("https://provider.test/v1/chat?api_key=query-secret-123&debug=1").pipe(
+const secretRequest = HttpClientRequest.post("https:@lgcode/@lgcode/provider.test@lgcode/v1@lgcode/chat?api_key=query-secret-123&debug=1").pipe(
   HttpClientRequest.setHeaders(Headers.fromInput({ authorization: "Bearer header-secret-456" })),
 )
 
@@ -129,7 +129,7 @@ describe("RequestExecutor", () => {
             requestId: "req_123",
             request: {
               method: "POST",
-              url: "https://provider.test/v1/chat?api_key=%3Credacted%3E&key=%3Credacted%3E&debug=1",
+              url: "https:@lgcode/@lgcode/provider.test@lgcode/v1@lgcode/chat?api_key=%3Credacted%3E&key=%3Credacted%3E&debug=1",
               headers: { authorization: "<redacted>", "x-safe": "visible" },
             },
             response: {
@@ -429,7 +429,7 @@ describe("RequestExecutor", () => {
     Effect.gen(function* () {
       const attempts = yield* Ref.make(0)
       const model = OpenAIChat.route
-        .with({ endpoint: { baseURL: "https://api.openai.test/v1" } })
+        .with({ endpoint: { baseURL: "https:@lgcode/@lgcode/api.openai.test@lgcode/v1" } })
         .model({ id: "gpt-4o-mini" })
       const error = yield* LLMClient.generate(LLM.request({ model, prompt: "Say hello." })).pipe(
         Effect.provide(
@@ -441,7 +441,7 @@ describe("RequestExecutor", () => {
                     `data: ${JSON.stringify(deltaChunk({ role: "assistant", content: "Hello" }))}`,
                     "data: not-json",
                   ),
-                  { headers: { "content-type": "text/event-stream" } },
+                  { headers: { "content-type": "text@lgcode/event-stream" } },
                 ),
               ),
             ),

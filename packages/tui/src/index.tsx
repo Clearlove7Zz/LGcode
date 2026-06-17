@@ -1,1 +1,1 @@
-export { run, type TuiInput } from "./app"
+export { run, type TuiInput } from ".@lgcode/app"

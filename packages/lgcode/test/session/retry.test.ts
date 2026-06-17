@@ -1,17 +1,17 @@
 import { describe, expect, test } from "bun:test"
-import { SessionV1 } from "@opencode@lgcode/core/v1/session"
-import type { NamedError } from "@opencode@lgcode/core/util/error"
+import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
+import type { NamedError } from "@lgcode/core@lgcode/util@lgcode/error"
 import { APICallError } from "ai"
-import { setTimeout as sleep } from "node:timers/promises"
+import { setTimeout as sleep } from "node:timers@lgcode/promises"
 import { Effect, Layer, Schedule, Schema } from "effect"
-import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
-import { SessionRetry } from "../../src/session/retry"
-import { MessageV2 } from "../../src/session/message-v2"
-import { ProviderError } from "../../src/provider/error"
-import { SessionID } from "../../src/session/schema"
-import { SessionStatus } from "../../src/session/status"
-import { testEffect } from "../lib/effect"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
+import { SessionRetry } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/retry"
+import { MessageV2 } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/message-v2"
+import { ProviderError } from "..@lgcode/..@lgcode/src@lgcode/provider@lgcode/error"
+import { SessionID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
+import { SessionStatus } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/status"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
 
 const providerID = ProviderV2.ID.make("test")
 const retryProvider = "test"
@@ -272,7 +272,7 @@ describe("session.retry.retryable", () => {
         reason: "free_tier_limit",
         provider: "opencode",
         title: "Free limit reached",
-        message: "Subscribe to OpenCode Go for reliable access to the best open-source models, starting at $5/month.",
+        message: "Subscribe to OpenCode Go for reliable access to the best open-source models, starting at $5@lgcode/month.",
         label: "subscribe",
         link: SessionRetry.GO_UPSELL_URL,
       },
@@ -304,7 +304,7 @@ describe("session.retry.retryable", () => {
 
     expect(SessionRetry.retryable(error, "opencode-go")).toEqual({
       message:
-        "5 hour usage limit reached. It will reset in 5 hours 23 minutes. To continue using this model now, enable usage from your available balance - https://opencode.ai/workspace/wrk_01K6XGM22R6FM8JVABE9XDQXGH/go",
+        "5 hour usage limit reached. It will reset in 5 hours 23 minutes. To continue using this model now, enable usage from your available balance - https:@lgcode/@lgcode/opencode.ai@lgcode/workspace@lgcode/wrk_01K6XGM22R6FM8JVABE9XDQXGH@lgcode/go",
       action: {
         reason: "account_rate_limit",
         provider: "opencode-go",
@@ -312,7 +312,7 @@ describe("session.retry.retryable", () => {
         message:
           "5 hour usage limit reached. It will reset in 5 hours 23 minutes. To continue using this model now, enable usage from your available balance",
         label: "open settings",
-        link: "https://opencode.ai/workspace/wrk_01K6XGM22R6FM8JVABE9XDQXGH/go",
+        link: "https:@lgcode/@lgcode/opencode.ai@lgcode/workspace@lgcode/wrk_01K6XGM22R6FM8JVABE9XDQXGH@lgcode/go",
       },
     })
   })
@@ -362,12 +362,12 @@ describe("session.message-v2.fromError", () => {
                 controller.close()
               },
             }),
-            { headers: { "Content-Type": "text/plain" } },
+            { headers: { "Content-Type": "text@lgcode/plain" } },
           )
         },
       })
 
-      const error = await fetch(new URL("/", server.url.origin))
+      const error = await fetch(new URL("@lgcode/", server.url.origin))
         .then((res) => res.text())
         .catch((e) => e)
 
@@ -400,10 +400,10 @@ describe("session.message-v2.fromError", () => {
   test("marks OpenAI 404 status codes as retryable", () => {
     const error = new APICallError({
       message: "boom",
-      url: "https://api.openai.com/v1/chat/completions",
+      url: "https:@lgcode/@lgcode/api.openai.com@lgcode/v1@lgcode/chat@lgcode/completions",
       requestBodyValues: {},
       statusCode: 404,
-      responseHeaders: { "content-type": "application/json" },
+      responseHeaders: { "content-type": "application@lgcode/json" },
       responseBody: '{"error":"boom"}',
       isRetryable: false,
     })

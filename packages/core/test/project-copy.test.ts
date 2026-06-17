@@ -1,20 +1,20 @@
 import { describe, expect } from "bun:test"
 import { $ } from "bun"
-import fs from "fs/promises"
+import fs from "fs@lgcode/promises"
 import path from "path"
 import { eq } from "drizzle-orm"
 import { Effect, Fiber, Layer, Stream } from "effect"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { Git } from "@opencode@lgcode/core/git"
-import { Database } from "@opencode@lgcode/core/database/database"
-import { EventV2 } from "@opencode@lgcode/core/event"
-import { Project } from "@opencode@lgcode/core/project"
-import { ProjectDirectoryTable, ProjectTable } from "@opencode@lgcode/core/project/sql"
-import { ProjectCopy } from "@opencode@lgcode/core/project/copy"
-import { ProjectDirectories } from "@opencode@lgcode/core/project/directories"
-import { tmpdir } from "./fixture/tmpdir"
-import { testEffect } from "./lib/effect"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { Git } from "@lgcode/core@lgcode/git"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { EventV2 } from "@lgcode/core@lgcode/event"
+import { Project } from "@lgcode/core@lgcode/project"
+import { ProjectDirectoryTable, ProjectTable } from "@lgcode/core@lgcode/project@lgcode/sql"
+import { ProjectCopy } from "@lgcode/core@lgcode/project@lgcode/copy"
+import { ProjectDirectories } from "@lgcode/core@lgcode/project@lgcode/directories"
+import { tmpdir } from ".@lgcode/fixture@lgcode/tmpdir"
+import { testEffect } from ".@lgcode/lib@lgcode/effect"
 
 const databaseLayer = Database.layerFromPath(":memory:")
 const eventLayer = EventV2.layer.pipe(Layer.provide(databaseLayer))
@@ -84,8 +84,8 @@ function stored(projectID: Project.ID) {
 describe("ProjectCopy", () => {
   it.effect("accepts arbitrary non-empty strategy ids", () =>
     Effect.sync(() => {
-      expect(String(ProjectCopy.StrategyID.make("acme/snapshot"))).toBe("acme/snapshot")
-      expect(() => ProjectCopy.StrategyID.make("  acme/snapshot  ")).toThrow()
+      expect(String(ProjectCopy.StrategyID.make("acme@lgcode/snapshot"))).toBe("acme@lgcode/snapshot")
+      expect(() => ProjectCopy.StrategyID.make("  acme@lgcode/snapshot  ")).toThrow()
       expect(() => ProjectCopy.StrategyID.make("   ")).toThrow()
     }),
   )
@@ -95,7 +95,7 @@ describe("ProjectCopy", () => {
       const input = yield* setup()
       const copy = yield* ProjectCopy.Service
       const strategy: ProjectCopy.Strategy = {
-        id: ProjectCopy.StrategyID.make("test/duplicate"),
+        id: ProjectCopy.StrategyID.make("test@lgcode/duplicate"),
         create: () => Effect.die("unused"),
         remove: () => Effect.die("unused"),
         list: () => Effect.succeed([]),
@@ -104,7 +104,7 @@ describe("ProjectCopy", () => {
       yield* copy.register(strategy)
       expect(yield* copy.register(strategy).pipe(Effect.flip)).toBeInstanceOf(ProjectCopy.DuplicateStrategyError)
 
-      const unavailable = ProjectCopy.StrategyID.make("acme/missing")
+      const unavailable = ProjectCopy.StrategyID.make("acme@lgcode/missing")
       const error = yield* copy
         .create({
           projectID: input.projectID,
@@ -202,7 +202,7 @@ describe("ProjectCopy", () => {
       yield* Effect.addFinalizer(() => Effect.promise(() => fs.rm(unavailable, { recursive: true, force: true })))
       yield* input.db
         .insert(ProjectDirectoryTable)
-        .values({ project_id: input.projectID, directory: unavailable, strategy: "acme/missing" })
+        .values({ project_id: input.projectID, directory: unavailable, strategy: "acme@lgcode/missing" })
         .run()
         .pipe(Effect.orDie)
 
@@ -211,7 +211,7 @@ describe("ProjectCopy", () => {
         .pipe(Effect.flip)
 
       expect(error).toBeInstanceOf(ProjectCopy.StrategyUnavailableError)
-      expect(yield* stored(input.projectID)).toContainEqual({ directory: unavailable, strategy: "acme/missing" })
+      expect(yield* stored(input.projectID)).toContainEqual({ directory: unavailable, strategy: "acme@lgcode/missing" })
     }),
   )
 

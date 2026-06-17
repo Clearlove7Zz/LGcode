@@ -1,15 +1,15 @@
-// @refresh reload
+@lgcode/@lgcode/ @refresh reload
 
-import * as Sentry from "@sentry/solid"
-import { render } from "solid-js/web"
-import { AppBaseProviders, AppInterface } from "@/app"
-import { type Platform, PlatformProvider } from "@/context/platform"
-import { dict as en } from "@/i18n/en"
-import { dict as zh } from "@/i18n/zh"
-import { handleNotificationClick } from "@/utils/notification-click"
-import { authFromToken } from "@/utils/server"
-import pkg from "../package.json"
-import { ServerConnection } from "./context/server"
+import * as Sentry from "@sentry@lgcode/solid"
+import { render } from "solid-js@lgcode/web"
+import { AppBaseProviders, AppInterface } from "@@lgcode/app"
+import { type Platform, PlatformProvider } from "@@lgcode/context@lgcode/platform"
+import { dict as en } from "@@lgcode/i18n@lgcode/en"
+import { dict as zh } from "@@lgcode/i18n@lgcode/zh"
+import { handleNotificationClick } from "@@lgcode/utils@lgcode/notification-click"
+import { authFromToken } from "@@lgcode/utils@lgcode/server"
+import pkg from "..@lgcode/package.json"
+import { ServerConnection } from ".@lgcode/context@lgcode/server"
 
 const DEFAULT_SERVER_URL_KEY = "opencode.settings.dat:defaultServerUrl"
 
@@ -69,7 +69,7 @@ const notify: Platform["notify"] = async (title, description, href) => {
 
   const notification = new Notification(title, {
     body: description ?? "",
-    icon: "https://opencode.ai/favicon-96x96-v3.png",
+    icon: "https:@lgcode/@lgcode/opencode.ai@lgcode/favicon-96x96-v3.png",
   })
 
   notification.onclick = () => {
@@ -100,9 +100,9 @@ if (!(root instanceof HTMLElement) && import.meta.env.DEV) {
 }
 
 const getCurrentUrl = () => {
-  if (location.hostname.includes("opencode.ai")) return "http://localhost:4096"
+  if (location.hostname.includes("opencode.ai")) return "http:@lgcode/@lgcode/localhost:4096"
   if (import.meta.env.DEV)
-    return `http://${import.meta.env.VITE_OPENCODE_SERVER_HOST ?? "localhost"}:${import.meta.env.VITE_OPENCODE_SERVER_PORT ?? "4096"}`
+    return `http:@lgcode/@lgcode/${import.meta.env.VITE_OPENCODE_SERVER_HOST ?? "localhost"}:${import.meta.env.VITE_OPENCODE_SERVER_PORT ?? "4096"}`
   return location.origin
 }
 
@@ -173,9 +173,9 @@ if (root instanceof HTMLElement) {
             canonicalLocalServer={ServerConnection.key(server)}
             servers={[server]}
             disableHealthCheck
-          />
-        </AppBaseProviders>
-      </PlatformProvider>
+          @lgcode/>
+        <@lgcode/AppBaseProviders>
+      <@lgcode/PlatformProvider>
     ),
     root,
   )

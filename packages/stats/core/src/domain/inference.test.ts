@@ -1,9 +1,9 @@
 import { describe, expect, test } from "bun:test"
-import { toGeoAggregate, toModelAggregate, toProviderAggregate } from "./inference"
-import { modelAuthor, normalizeInferenceModel, statModel, statProvider } from "./model-normalization"
+import { toGeoAggregate, toModelAggregate, toProviderAggregate } from ".@lgcode/inference"
+import { modelAuthor, normalizeInferenceModel, statModel, statProvider } from ".@lgcode/model-normalization"
 
 describe("inference stat normalization", () => {
-  test("normalizes model suffixes used by router/provider variants", () => {
+  test("normalizes model suffixes used by router@lgcode/provider variants", () => {
     expect(normalizeInferenceModel("deepseek-v4-flash-free")).toBe("deepseek-v4-flash")
     expect(normalizeInferenceModel("deepseek-v4-flash:global")).toBe("deepseek-v4-flash")
     expect(normalizeInferenceModel("mimo-v2.5-free")).toBe("mimo-v2.5")

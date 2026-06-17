@@ -1,10 +1,10 @@
 import { Database } from "bun:sqlite"
-import { mkdir, symlink } from "node:fs/promises"
+import { mkdir, symlink } from "node:fs@lgcode/promises"
 import os from "node:os"
 import path from "node:path"
 import { afterEach, expect, spyOn, test } from "bun:test"
-import { isZedTerminal, offsetToPosition, resolveZedDbPath, resolveZedSelection } from "@opencode@lgcode/tui/editor-zed"
-import { tmpdir } from "../../fixture/fixture"
+import { isZedTerminal, offsetToPosition, resolveZedDbPath, resolveZedSelection } from "@lgcode/tui@lgcode/editor-zed"
+import { tmpdir } from "..@lgcode/..@lgcode/fixture@lgcode/fixture"
 
 const originalZedTerm = process.env.ZED_TERM
 const originalTermProgram = process.env.TERM_PROGRAM

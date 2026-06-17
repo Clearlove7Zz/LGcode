@@ -1,18 +1,18 @@
 import { $ } from "bun"
 import { describe, expect } from "bun:test"
-import fs from "fs/promises"
+import fs from "fs@lgcode/promises"
 import path from "path"
 import { ConfigProvider, Deferred, Duration, Effect, Fiber, Layer, Option, Stream } from "effect"
-import { Config } from "@opencode@lgcode/core/config"
-import { EventV2 } from "@opencode@lgcode/core/event"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { Watcher } from "@opencode@lgcode/core/filesystem/watcher"
-import { Git } from "@opencode@lgcode/core/git"
-import { Location } from "@opencode@lgcode/core/location"
-import { AbsolutePath } from "@opencode@lgcode/core/schema"
-import { location } from "../fixture/location"
-import { tmpdir } from "../fixture/tmpdir"
-import { testEffect } from "../lib/effect"
+import { Config } from "@lgcode/core@lgcode/config"
+import { EventV2 } from "@lgcode/core@lgcode/event"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { Watcher } from "@lgcode/core@lgcode/filesystem@lgcode/watcher"
+import { Git } from "@lgcode/core@lgcode/git"
+import { Location } from "@lgcode/core@lgcode/location"
+import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+import { location } from "..@lgcode/fixture@lgcode/location"
+import { tmpdir } from "..@lgcode/fixture@lgcode/tmpdir"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const describeWatcher = Watcher.hasNativeBinding() && !process.env.CI ? describe : describe.skip
 
@@ -199,7 +199,7 @@ describeWatcher("Watcher", () => {
     }).pipe(Effect.provide(Layer.mergeAll(FSUtil.defaultLayer, EventV2.defaultLayer))),
   )
 
-  it.live("ignores .git/index changes", () =>
+  it.live("ignores .git@lgcode/index changes", () =>
     withTmp(
       (directory) =>
         Effect.gen(function* () {
@@ -217,7 +217,7 @@ describeWatcher("Watcher", () => {
     ),
   )
 
-  it.live("publishes .git/HEAD events", () =>
+  it.live("publishes .git@lgcode/HEAD events", () =>
     withTmp(
       (directory) =>
         Effect.gen(function* () {
@@ -227,7 +227,7 @@ describeWatcher("Watcher", () => {
           yield* ready(directory)
           yield* Effect.promise(() => $`git branch ${branch}`.cwd(directory).quiet())
           expect(
-            yield* nextUpdate((event) => event.file === head, fs.writeFileString(head, `ref: refs/heads/${branch}\n`)),
+            yield* nextUpdate((event) => event.file === head, fs.writeFileString(head, `ref: refs@lgcode/heads@lgcode/${branch}\n`)),
           ).toEqual({
             file: head,
             event: "change",
@@ -239,7 +239,7 @@ describeWatcher("Watcher", () => {
 
   const describeSymlink = process.platform !== "win32" ? describe : describe.skip
   describeSymlink("symlinked .git", () => {
-    it.live("publishes .git/HEAD events through a symlinked .git directory", () =>
+    it.live("publishes .git@lgcode/HEAD events through a symlinked .git directory", () =>
       withTmp(
         (directory) =>
           Effect.gen(function* () {
@@ -253,7 +253,7 @@ describeWatcher("Watcher", () => {
             expect(
               yield* nextUpdate(
                 (event) => event.file === path.join(actual, "HEAD"),
-                afs.writeFileString(head, `ref: refs/heads/${branch}\n`),
+                afs.writeFileString(head, `ref: refs@lgcode/heads@lgcode/${branch}\n`),
               ),
             ).toEqual({ file: path.join(actual, "HEAD"), event: "change" })
           }),

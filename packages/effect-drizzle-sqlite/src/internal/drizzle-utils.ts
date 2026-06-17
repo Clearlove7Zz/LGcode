@@ -1,16 +1,16 @@
-/* oxlint-disable */
-import { Column, getColumnTable } from "drizzle-orm/column"
-import { is } from "drizzle-orm/entity"
-import type { JoinNullability } from "drizzle-orm/query-builders/select.types"
-import { Param, SQL } from "drizzle-orm/sql/sql"
-import type { SelectedFieldsOrdered } from "drizzle-orm/sqlite-core/query-builders/select.types"
-import type { SQLiteUpdateSetSource } from "drizzle-orm/sqlite-core/query-builders/update"
-import type { SQLiteTable } from "drizzle-orm/sqlite-core/table"
-import { SQLiteViewBase } from "drizzle-orm/sqlite-core/view-base"
-import { Subquery } from "drizzle-orm/subquery"
-import { Table, getTableName } from "drizzle-orm/table"
-import type { UpdateSet } from "drizzle-orm/utils"
-import { ViewBaseConfig } from "drizzle-orm/view-common"
+@lgcode/* oxlint-disable *@lgcode/
+import { Column, getColumnTable } from "drizzle-orm@lgcode/column"
+import { is } from "drizzle-orm@lgcode/entity"
+import type { JoinNullability } from "drizzle-orm@lgcode/query-builders@lgcode/select.types"
+import { Param, SQL } from "drizzle-orm@lgcode/sql@lgcode/sql"
+import type { SelectedFieldsOrdered } from "drizzle-orm@lgcode/sqlite-core@lgcode/query-builders@lgcode/select.types"
+import type { SQLiteUpdateSetSource } from "drizzle-orm@lgcode/sqlite-core@lgcode/query-builders@lgcode/update"
+import type { SQLiteTable } from "drizzle-orm@lgcode/sqlite-core@lgcode/table"
+import { SQLiteViewBase } from "drizzle-orm@lgcode/sqlite-core@lgcode/view-base"
+import { Subquery } from "drizzle-orm@lgcode/subquery"
+import { Table, getTableName } from "drizzle-orm@lgcode/table"
+import type { UpdateSet } from "drizzle-orm@lgcode/utils"
+import { ViewBaseConfig } from "drizzle-orm@lgcode/view-common"
 
 const TableSymbol = (
   Table as unknown as {

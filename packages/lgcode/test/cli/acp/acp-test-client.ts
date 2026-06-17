@@ -1,7 +1,7 @@
 import { expect } from "bun:test"
-import type { SessionConfigOption, SessionConfigSelectOption } from "@agentclientprotocol/sdk"
+import type { SessionConfigOption, SessionConfigSelectOption } from "@agentclientprotocol@lgcode/sdk"
 import { Duration, Effect } from "effect"
-import type { AcpHandle } from "../../lib/cli-process"
+import type { AcpHandle } from "..@lgcode/..@lgcode/lib@lgcode/cli-process"
 
 type JsonRpcRequest = {
   readonly jsonrpc: "2.0"

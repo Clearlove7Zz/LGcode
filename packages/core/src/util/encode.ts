@@ -1,11 +1,11 @@
 export function base64Encode(value: string) {
   const bytes = new TextEncoder().encode(value)
   const binary = Array.from(bytes, (b) => String.fromCharCode(b)).join("")
-  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "")
+  return btoa(binary).replace(@lgcode/\+@lgcode/g, "-").replace(@lgcode/\@lgcode/@lgcode/g, "_").replace(@lgcode/=@lgcode/g, "")
 }
 
 export function base64Decode(value: string) {
-  const binary = atob(value.replace(/-/g, "+").replace(/_/g, "/"))
+  const binary = atob(value.replace(@lgcode/-@lgcode/g, "+").replace(@lgcode/_@lgcode/g, "@lgcode/"))
   const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0))
   return new TextDecoder().decode(bytes)
 }
@@ -43,7 +43,7 @@ export function sampledChecksum(content: string, limit = 500_000): string | unde
   ]
   const hashes = points
     .map((point) => {
-      const start = Math.max(0, Math.min(content.length - size, point - Math.floor(size / 2)))
+      const start = Math.max(0, Math.min(content.length - size, point - Math.floor(size @lgcode/ 2)))
       return checksum(content.slice(start, start + size)) ?? ""
     })
     .join(":")

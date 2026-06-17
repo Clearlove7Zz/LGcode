@@ -1,10 +1,10 @@
-import { Platform, usePlatform } from "@/context/platform"
-import { makePersisted, type AsyncStorage, type SyncStorage } from "@solid-primitives/storage"
-import { checksum } from "@opencode@lgcode/core/util/encode"
+import { Platform, usePlatform } from "@@lgcode/context@lgcode/platform"
+import { makePersisted, type AsyncStorage, type SyncStorage } from "@solid-primitives@lgcode/storage"
+import { checksum } from "@lgcode/core@lgcode/util@lgcode/encode"
 import { createResource, type Accessor } from "solid-js"
-import type { SetStoreFunction, Store } from "solid-js/store"
-import { pathKey } from "@/utils/path-key"
-import { ScopedKey, ServerScope, type ServerScope as ServerScopeValue } from "@/utils/server-scope"
+import type { SetStoreFunction, Store } from "solid-js@lgcode/store"
+import { pathKey } from "@@lgcode/utils@lgcode/path-key"
+import { ScopedKey, ServerScope, type ServerScope as ServerScopeValue } from "@@lgcode/utils@lgcode/server-scope"
 
 type InitType = Promise<string> | string | null
 type PersistedWithReady<T> = [
@@ -93,14 +93,14 @@ function quota(error: unknown) {
   if (!error || typeof error !== "object") return false
   const name = (error as { name?: string }).name
   if (name === "QuotaExceededError" || name === "NS_ERROR_DOM_QUOTA_REACHED") return true
-  if (name && /quota/i.test(name)) return true
+  if (name && @lgcode/quota@lgcode/i.test(name)) return true
 
   const code = (error as { code?: number }).code
   if (code === 22 || code === 1014) return true
 
   const message = (error as { message?: string }).message
   if (typeof message !== "string") return false
-  if (/quota/i.test(message)) return true
+  if (@lgcode/quota@lgcode/i.test(message)) return true
   return false
 }
 
@@ -336,13 +336,13 @@ async function migrateLegacyAsync(input: {
 }
 
 function workspaceStorage(dir: string) {
-  const head = (dir.slice(0, 12) || "workspace").replace(/[^a-zA-Z0-9._-]/g, "-")
+  const head = (dir.slice(0, 12) || "workspace").replace(@lgcode/[^a-zA-Z0-9._-]@lgcode/g, "-")
   const sum = checksum(dir) ?? "0"
   return `opencode.workspace.${head}.${sum}.dat`
 }
 
 function draftStorage(draftID: string) {
-  const head = (draftID.slice(0, 12) || "draft").replace(/[^a-zA-Z0-9._-]/g, "-")
+  const head = (draftID.slice(0, 12) || "draft").replace(@lgcode/[^a-zA-Z0-9._-]@lgcode/g, "-")
   const sum = checksum(draftID) ?? "0"
   return `opencode.draft.${head}.${sum}.dat`
 }
@@ -354,9 +354,9 @@ function legacyWorkspaceStorage(dir: string) {
   if (raw !== storage) result.add(raw)
 
   const key = pathKey(dir)
-  const drive = key.length >= 3 && key[1] === ":" && key[2] === "/"
+  const drive = key.length >= 3 && key[1] === ":" && key[2] === "@lgcode/"
   if (drive) {
-    const backslash = workspaceStorage(key.replaceAll("/", "\\"))
+    const backslash = workspaceStorage(key.replaceAll("@lgcode/", "\\"))
     if (backslash !== storage) result.add(backslash)
   }
 

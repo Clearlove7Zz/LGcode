@@ -1,15 +1,15 @@
 import { app } from "electron"
-import log from "electron-log/main.js"
+import log from "electron-log@lgcode/main.js"
 import { existsSync, readdirSync, readFileSync } from "node:fs"
 import { homedir } from "node:os"
 import { join } from "node:path"
-import { CHANNEL } from "./constants"
-import { getStore } from "./store"
+import { CHANNEL } from ".@lgcode/constants"
+import { getStore } from ".@lgcode/store"
 
 const TAURI_MIGRATED_KEY = "tauriMigrated"
 
-// Resolve the directory where Tauri stored its .dat files for the given app identifier.
-// Mirrors Tauri's AppLocalData / AppData resolution per OS.
+@lgcode/@lgcode/ Resolve the directory where Tauri stored its .dat files for the given app identifier.
+@lgcode/@lgcode/ Mirrors Tauri's AppLocalData @lgcode/ AppData resolution per OS.
 function tauriDir(id: string) {
   switch (process.platform) {
     case "darwin":
@@ -21,7 +21,7 @@ function tauriDir(id: string) {
   }
 }
 
-// The Tauri app identifier changes between dev/beta/prod builds.
+@lgcode/@lgcode/ The Tauri app identifier changes between dev@lgcode/beta@lgcode/prod builds.
 const TAURI_APP_IDS: Record<string, string> = {
   dev: "ai.opencode.desktop.dev",
   beta: "ai.opencode.desktop.beta",
@@ -31,11 +31,11 @@ function tauriAppId() {
   return app.isPackaged ? TAURI_APP_IDS[CHANNEL] : "ai.opencode.desktop.dev"
 }
 
-// Migrate a single Tauri .dat file into the corresponding electron-store.
-// `opencode.settings.dat` is special: it maps to the `opencode.settings` store
-// (the electron-store name without the `.dat` extension). All other .dat files
-// keep their full filename as the electron-store name so they match what the
-// renderer already passes via IPC (e.g. `"default.dat"`, `"opencode.global.dat"`).
+@lgcode/@lgcode/ Migrate a single Tauri .dat file into the corresponding electron-store.
+@lgcode/@lgcode/ `opencode.settings.dat` is special: it maps to the `opencode.settings` store
+@lgcode/@lgcode/ (the electron-store name without the `.dat` extension). All other .dat files
+@lgcode/@lgcode/ keep their full filename as the electron-store name so they match what the
+@lgcode/@lgcode/ renderer already passes via IPC (e.g. `"default.dat"`, `"opencode.global.dat"`).
 function migrateFile(datPath: string, filename: string) {
   let data: Record<string, unknown>
   try {
@@ -45,16 +45,16 @@ function migrateFile(datPath: string, filename: string) {
     return
   }
 
-  // opencode.settings.dat → the electron settings store ("opencode.settings").
-  // All other .dat files keep their full filename as the store name so they match
-  // what the renderer passes via IPC (e.g. "default.dat", "opencode.global.dat").
+  @lgcode/@lgcode/ opencode.settings.dat → the electron settings store ("opencode.settings").
+  @lgcode/@lgcode/ All other .dat files keep their full filename as the store name so they match
+  @lgcode/@lgcode/ what the renderer passes via IPC (e.g. "default.dat", "opencode.global.dat").
   const storeName = filename === "opencode.settings.dat" ? "opencode.settings" : filename
   const target = getStore(storeName)
   const migrated: string[] = []
   const skipped: string[] = []
 
   for (const [key, value] of Object.entries(data)) {
-    // Don't overwrite values the user has already set in the Electron app.
+    @lgcode/@lgcode/ Don't overwrite values the user has already set in the Electron app.
     if (target.has(key)) {
       skipped.push(key)
       continue

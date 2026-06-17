@@ -1,5 +1,5 @@
-import type { TuiPlugin, TuiPluginApi } from "@opencode@lgcode/plugin/tui"
-import type { BuiltinTuiPlugin } from "../builtins"
+import type { TuiPlugin, TuiPluginApi } from "@lgcode/plugin@lgcode/tui"
+import type { BuiltinTuiPlugin } from "..@lgcode/builtins"
 import { createMemo, For, Show, createSignal } from "solid-js"
 
 const id = "internal:sidebar-lsp"
@@ -14,16 +14,16 @@ function View(props: { api: TuiPluginApi }) {
     <box>
       <box flexDirection="row" gap={1} onMouseDown={() => list().length > 2 && setOpen((x) => !x)}>
         <Show when={list().length > 2}>
-          <text fg={theme().text}>{open() ? "▼" : "▶"}</text>
-        </Show>
+          <text fg={theme().text}>{open() ? "▼" : "▶"}<@lgcode/text>
+        <@lgcode/Show>
         <text fg={theme().text}>
-          <b>LSP</b>
-        </text>
-      </box>
+          <b>LSP<@lgcode/b>
+        <@lgcode/text>
+      <@lgcode/box>
       <Show when={list().length <= 2 || open()}>
         <Show when={list().length === 0}>
-          <text fg={theme().textMuted}>{off() ? "LSPs are disabled" : "LSPs will activate as files are read"}</text>
-        </Show>
+          <text fg={theme().textMuted}>{off() ? "LSPs are disabled" : "LSPs will activate as files are read"}<@lgcode/text>
+        <@lgcode/Show>
         <For each={list()}>
           {(item) => (
             <box flexDirection="row" gap={1}>
@@ -34,15 +34,15 @@ function View(props: { api: TuiPluginApi }) {
                 }}
               >
                 •
-              </text>
+              <@lgcode/text>
               <text fg={theme().textMuted}>
                 {item.id} {item.root}
-              </text>
-            </box>
+              <@lgcode/text>
+            <@lgcode/box>
           )}
-        </For>
-      </Show>
-    </box>
+        <@lgcode/For>
+      <@lgcode/Show>
+    <@lgcode/box>
   )
 }
 
@@ -51,7 +51,7 @@ const tui: TuiPlugin = async (api) => {
     order: 300,
     slots: {
       sidebar_content() {
-        return <View api={api} />
+        return <View api={api} @lgcode/>
       },
     },
   })

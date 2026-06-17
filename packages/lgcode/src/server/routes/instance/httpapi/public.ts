@@ -1,6 +1,6 @@
-import { OpenApi } from "effect/unstable/httpapi"
-import { OpenCodeHttpApi } from "./api"
-import { QueryBooleanOpenApi } from "./groups/query"
+import { OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
+import { OpenCodeHttpApi } from ".@lgcode/api"
+import { QueryBooleanOpenApi } from ".@lgcode/groups@lgcode/query"
 
 type OpenApiParameter = {
   name: string
@@ -52,25 +52,25 @@ type OpenApiResponse = {
   content?: Record<string, { schema?: OpenApiSchema }>
 }
 
-// Query schemas describe decoded Effect values, but the generated SDK needs the
-// public call shape. These keep SDK callers passing numbers/booleans while the
-// server still decodes string query params at runtime.
+@lgcode/@lgcode/ Query schemas describe decoded Effect values, but the generated SDK needs the
+@lgcode/@lgcode/ public call shape. These keep SDK callers passing numbers@lgcode/booleans while the
+@lgcode/@lgcode/ server still decodes string query params at runtime.
 const QueryParameterSchemas: Record<string, OpenApiSchema> = {
-  "GET /experimental/session start": { type: "number" },
-  "GET /experimental/session roots": QueryBooleanOpenApi,
-  "GET /experimental/session archived": QueryBooleanOpenApi,
-  "GET /find/file limit": { type: "integer", minimum: 1, maximum: 200 },
-  "GET /experimental/session cursor": { type: "number" },
-  "GET /experimental/session limit": { type: "number" },
-  "GET /session start": { type: "number" },
-  "GET /session roots": QueryBooleanOpenApi,
-  "GET /session limit": { type: "number" },
-  "GET /session/{sessionID}/message limit": { type: "integer", minimum: 0, maximum: Number.MAX_SAFE_INTEGER },
-  "GET /vcs/diff context": { type: "integer", minimum: 0 },
-  "GET /api/session limit": { type: "number" },
-  "GET /api/session start": { type: "number" },
-  "GET /api/session roots": QueryBooleanOpenApi,
-  "GET /api/session/{sessionID}/message limit": { type: "number" },
+  "GET @lgcode/experimental@lgcode/session start": { type: "number" },
+  "GET @lgcode/experimental@lgcode/session roots": QueryBooleanOpenApi,
+  "GET @lgcode/experimental@lgcode/session archived": QueryBooleanOpenApi,
+  "GET @lgcode/find@lgcode/file limit": { type: "integer", minimum: 1, maximum: 200 },
+  "GET @lgcode/experimental@lgcode/session cursor": { type: "number" },
+  "GET @lgcode/experimental@lgcode/session limit": { type: "number" },
+  "GET @lgcode/session start": { type: "number" },
+  "GET @lgcode/session roots": QueryBooleanOpenApi,
+  "GET @lgcode/session limit": { type: "number" },
+  "GET @lgcode/session@lgcode/{sessionID}@lgcode/message limit": { type: "integer", minimum: 0, maximum: Number.MAX_SAFE_INTEGER },
+  "GET @lgcode/vcs@lgcode/diff context": { type: "integer", minimum: 0 },
+  "GET @lgcode/api@lgcode/session limit": { type: "number" },
+  "GET @lgcode/api@lgcode/session start": { type: "number" },
+  "GET @lgcode/api@lgcode/session roots": QueryBooleanOpenApi,
+  "GET @lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/message limit": { type: "number" },
 }
 
 const LegacyComponentDescriptions: Record<string, string> = {
@@ -82,16 +82,16 @@ const LegacyComponentDescriptions: Record<string, string> = {
 function matchLegacyOpenApi(input: Record<string, unknown>) {
   const spec = input as OpenApiSpec
 
-  // Effect's multi-document JSON Schema deduplicator can produce self-referencing
-  // component schemas (e.g. `{"$ref":"#/components/schemas/X"}` as the definition
-  // of X itself) when the same AST node appears both as a standalone endpoint
-  // payload and inside an annotated union arm. Resolve these by inlining the
-  // actual schema from any parent union that references them.
+  @lgcode/@lgcode/ Effect's multi-document JSON Schema deduplicator can produce self-referencing
+  @lgcode/@lgcode/ component schemas (e.g. `{"$ref":"#@lgcode/components@lgcode/schemas@lgcode/X"}` as the definition
+  @lgcode/@lgcode/ of X itself) when the same AST node appears both as a standalone endpoint
+  @lgcode/@lgcode/ payload and inside an annotated union arm. Resolve these by inlining the
+  @lgcode/@lgcode/ actual schema from any parent union that references them.
   fixSelfReferencingComponents(spec)
 
-  // Effect's Schema.optional emits `anyOf: [T, {type:"null"}]` in OpenAPI,
-  // but the legacy SDK expected plain `T` for optional fields. Strip null
-  // from all component schemas so both request and response types match.
+  @lgcode/@lgcode/ Effect's Schema.optional emits `anyOf: [T, {type:"null"}]` in OpenAPI,
+  @lgcode/@lgcode/ but the legacy SDK expected plain `T` for optional fields. Strip null
+  @lgcode/@lgcode/ from all component schemas so both request and response types match.
   for (const [name, schema] of Object.entries(spec.components?.schemas ?? {})) {
     spec.components!.schemas![name] = stripOptionalNull(structuredClone(schema))
   }
@@ -108,33 +108,33 @@ function matchLegacyOpenApi(input: Record<string, unknown>) {
       if (!operation) continue
       const isV2Api = isV2ApiPath(path)
       if (operation.requestBody) {
-        // The legacy OpenAPI surface never marked request bodies as required.
-        // Keep that SDK surface stable while the HttpApi spec is tightened.
+        @lgcode/@lgcode/ The legacy OpenAPI surface never marked request bodies as required.
+        @lgcode/@lgcode/ Keep that SDK surface stable while the HttpApi spec is tightened.
         if (!isV2Api) delete operation.requestBody.required
-        const body = operation.requestBody.content?.["application/json"]
+        const body = operation.requestBody.content?.["application@lgcode/json"]
         if (body?.schema) body.schema = stripOptionalNull(structuredClone(body.schema))
-        if (path === "/experimental/workspace" && method === "post") {
-          // Workspace creation fields `branch` and `extra` are Schema.NullOr —
-          // genuinely nullable, not just optional. Re-add the null that the
-          // component-level strip above removed.
-          const ref = operation.requestBody.content?.["application/json"]?.schema?.$ref?.replace(
-            "#/components/schemas/",
+        if (path === "@lgcode/experimental@lgcode/workspace" && method === "post") {
+          @lgcode/@lgcode/ Workspace creation fields `branch` and `extra` are Schema.NullOr —
+          @lgcode/@lgcode/ genuinely nullable, not just optional. Re-add the null that the
+          @lgcode/@lgcode/ component-level strip above removed.
+          const ref = operation.requestBody.content?.["application@lgcode/json"]?.schema?.$ref?.replace(
+            "#@lgcode/components@lgcode/schemas@lgcode/",
             "",
           )
           const properties = ref
             ? spec.components?.schemas?.[ref]?.properties
-            : operation.requestBody.content?.["application/json"]?.schema?.properties
+            : operation.requestBody.content?.["application@lgcode/json"]?.schema?.properties
           if (properties?.branch) properties.branch = { anyOf: [properties.branch, { type: "null" }] }
           if (properties?.extra) properties.extra = { anyOf: [properties.extra, { type: "null" }] }
         }
-        if (path === "/experimental/workspace/warp" && method === "post") {
-          const ref = operation.requestBody.content?.["application/json"]?.schema?.$ref?.replace(
-            "#/components/schemas/",
+        if (path === "@lgcode/experimental@lgcode/workspace@lgcode/warp" && method === "post") {
+          const ref = operation.requestBody.content?.["application@lgcode/json"]?.schema?.$ref?.replace(
+            "#@lgcode/components@lgcode/schemas@lgcode/",
             "",
           )
           const properties = ref
             ? spec.components?.schemas?.[ref]?.properties
-            : operation.requestBody.content?.["application/json"]?.schema?.properties
+            : operation.requestBody.content?.["application@lgcode/json"]?.schema?.properties
           if (properties?.id) properties.id = { anyOf: [properties.id, { type: "null" }] }
         }
       }
@@ -144,25 +144,25 @@ function matchLegacyOpenApi(input: Record<string, unknown>) {
         }
       }
       if (!isV2Api) {
-        // Auth is still runtime middleware outside the legacy public OpenAPI
-        // metadata, so the legacy SDK should not expose auth schemes or
-        // generated 401 error unions.
+        @lgcode/@lgcode/ Auth is still runtime middleware outside the legacy public OpenAPI
+        @lgcode/@lgcode/ metadata, so the legacy SDK should not expose auth schemes or
+        @lgcode/@lgcode/ generated 401 error unions.
         delete operation.security
         delete operation.responses?.["401"]
         normalizeLegacyErrorResponses(operation)
       }
       normalizeLegacyOperation(operation, path, method)
-      if ((path === "/event" || path === "/global/event") && method === "get") {
-        // HttpApi has no first-class SSE response schema, and these handlers are
-        // raw/streaming routes. Document the actual wire protocol explicitly.
+      if ((path === "@lgcode/event" || path === "@lgcode/global@lgcode/event") && method === "get") {
+        @lgcode/@lgcode/ HttpApi has no first-class SSE response schema, and these handlers are
+        @lgcode/@lgcode/ raw@lgcode/streaming routes. Document the actual wire protocol explicitly.
         operation.responses!["200"] = {
           description: "Event stream",
           content: {
-            "text/event-stream": {
+            "text@lgcode/event-stream": {
               schema:
-                path === "/event"
-                  ? { $ref: "#/components/schemas/Event" }
-                  : { $ref: "#/components/schemas/GlobalEvent" },
+                path === "@lgcode/event"
+                  ? { $ref: "#@lgcode/components@lgcode/schemas@lgcode/Event" }
+                  : { $ref: "#@lgcode/components@lgcode/schemas@lgcode/GlobalEvent" },
             },
           },
         }
@@ -176,7 +176,7 @@ function matchLegacyOpenApi(input: Record<string, unknown>) {
 }
 
 function isV2ApiPath(path: string) {
-  return path === "/api" || path.startsWith("/api/")
+  return path === "@lgcode/api" || path.startsWith("@lgcode/api@lgcode/")
 }
 
 function addLegacyErrorSchemas(spec: OpenApiSpec) {
@@ -219,7 +219,7 @@ function collapseDuplicateComponents(spec: OpenApiSpec) {
   const schemas = spec.components?.schemas
   if (!schemas) return
   for (const name of Object.keys(schemas)) {
-    const base = name.replace(/\d+$/, "")
+    const base = name.replace(@lgcode/\d+$@lgcode/, "")
     if (base === name || !schemas[base]) continue
     if (stableSchema(schemas[name], schemas) !== stableSchema(schemas[base], schemas)) continue
     rewriteRefs(spec, name, base)
@@ -250,7 +250,7 @@ function componentTypeName(name: string) {
   if (!name.includes(".")) return name
   return name
     .split(".")
-    .filter((part) => !/^\d+$/.test(part))
+    .filter((part) => !@lgcode/^\d+$@lgcode/.test(part))
     .map((part) => part.slice(0, 1).toUpperCase() + part.slice(1))
     .join("")
 }
@@ -324,9 +324,9 @@ function canonicalizeSchema(input: unknown, schemas: Record<string, OpenApiSchem
 }
 
 function canonicalRef(ref: string, schemas: Record<string, OpenApiSchema>) {
-  const name = ref.replace("#/components/schemas/", "")
-  const base = name.replace(/\d+$/, "")
-  if (base !== name && schemas[base]) return `#/components/schemas/${base}`
+  const name = ref.replace("#@lgcode/components@lgcode/schemas@lgcode/", "")
+  const base = name.replace(@lgcode/\d+$@lgcode/, "")
+  if (base !== name && schemas[base]) return `#@lgcode/components@lgcode/schemas@lgcode/${base}`
   return ref
 }
 
@@ -337,7 +337,7 @@ function rewriteRefs(input: unknown, from: string, to: string): void {
   }
   if (!input || typeof input !== "object") return
   const schema = input as OpenApiSchema
-  if (schema.$ref === `#/components/schemas/${from}`) schema.$ref = `#/components/schemas/${to}`
+  if (schema.$ref === `#@lgcode/components@lgcode/schemas@lgcode/${from}`) schema.$ref = `#@lgcode/components@lgcode/schemas@lgcode/${to}`
   for (const value of Object.values(input)) rewriteRefs(value, from, to)
 }
 
@@ -366,30 +366,30 @@ function deleteUnusedLegacyErrorComponents(spec: OpenApiSpec) {
 function referencesComponent(input: unknown, name: string): boolean {
   if (Array.isArray(input)) return input.some((item) => referencesComponent(item, name))
   if (!input || typeof input !== "object") return false
-  if ((input as OpenApiSchema).$ref === `#/components/schemas/${name}`) return true
+  if ((input as OpenApiSchema).$ref === `#@lgcode/components@lgcode/schemas@lgcode/${name}`) return true
   return Object.values(input).some((value) => referencesComponent(value, name))
 }
 
 function normalizeLegacyOperation(operation: OpenApiOperation, path: string, method: string) {
-  if (path === "/experimental/console/switch" && method === "post") delete operation.responses?.["400"]
-  if ((path !== "/session/{sessionID}/message" && path !== "/session/{sessionID}/command") || method !== "post") return
-  const response = operation.responses?.["200"]?.content?.["application/json"]
+  if (path === "@lgcode/experimental@lgcode/console@lgcode/switch" && method === "post") delete operation.responses?.["400"]
+  if ((path !== "@lgcode/session@lgcode/{sessionID}@lgcode/message" && path !== "@lgcode/session@lgcode/{sessionID}@lgcode/command") || method !== "post") return
+  const response = operation.responses?.["200"]?.content?.["application@lgcode/json"]
   if (!response) return
   response.schema = {
     type: "object",
     required: ["info", "parts"],
     properties: {
-      info: { $ref: "#/components/schemas/AssistantMessage" },
+      info: { $ref: "#@lgcode/components@lgcode/schemas@lgcode/AssistantMessage" },
       parts: {
         type: "array",
-        items: { $ref: "#/components/schemas/Part" },
+        items: { $ref: "#@lgcode/components@lgcode/schemas@lgcode/Part" },
       },
     },
   }
 }
 
 function isRefResponse(response: OpenApiResponse, name: string) {
-  return response.content?.["application/json"]?.schema?.$ref === `#/components/schemas/${name}`
+  return response.content?.["application@lgcode/json"]?.schema?.$ref === `#@lgcode/components@lgcode/schemas@lgcode/${name}`
 }
 
 function isBuiltInErrorResponse(response: OpenApiResponse, name: "BadRequest" | "NotFound") {
@@ -404,49 +404,49 @@ function legacyErrorResponse(description: string, name: "BadRequestError" | "Not
   return {
     description,
     content: {
-      "application/json": {
-        schema: { $ref: `#/components/schemas/${name}` },
+      "application@lgcode/json": {
+        schema: { $ref: `#@lgcode/components@lgcode/schemas@lgcode/${name}` },
       },
     },
   }
 }
 
-/**
+@lgcode/**
  * Fix component schemas that are self-referencing `$ref`s — an Effect OpenAPI
  * generation bug where annotated union arms that share AST nodes with other
- * endpoints produce `{"$ref":"#/components/schemas/X"}` as the definition of X.
+ * endpoints produce `{"$ref":"#@lgcode/components@lgcode/schemas@lgcode/X"}` as the definition of X.
  *
- * Resolves by finding the actual schema from a parent union's `anyOf`/`oneOf`
+ * Resolves by finding the actual schema from a parent union's `anyOf`@lgcode/`oneOf`
  * that references the broken component, then inlining that schema.
- */
+ *@lgcode/
 function fixSelfReferencingComponents(spec: OpenApiSpec) {
   const schemas = spec.components?.schemas
   if (!schemas) return
   const selfRefs = new Set<string>()
   for (const [name, schema] of Object.entries(schemas)) {
-    if (schema.$ref === `#/components/schemas/${name}`) selfRefs.add(name)
+    if (schema.$ref === `#@lgcode/components@lgcode/schemas@lgcode/${name}`) selfRefs.add(name)
   }
   if (selfRefs.size === 0) return
-  // Find a parent union component whose anyOf/oneOf contains a $ref to the
-  // broken component — that parent was generated correctly and holds the inline
-  // schema we need.
+  @lgcode/@lgcode/ Find a parent union component whose anyOf@lgcode/oneOf contains a $ref to the
+  @lgcode/@lgcode/ broken component — that parent was generated correctly and holds the inline
+  @lgcode/@lgcode/ schema we need.
   for (const [, schema] of Object.entries(schemas)) {
     for (const member of schema.anyOf ?? schema.oneOf ?? []) {
-      const ref = member.$ref?.replace("#/components/schemas/", "")
+      const ref = member.$ref?.replace("#@lgcode/components@lgcode/schemas@lgcode/", "")
       if (!ref || !selfRefs.has(ref)) continue
-      // This member's $ref points to a self-referencing component. The member
-      // itself is just {$ref:...}, so the actual schema must be resolved from
-      // the union. Since the union component was generated before the
-      // deduplicator broke things, the inline version lives elsewhere. Generate
-      // a fresh spec without the transform to get the correct schema.
-      // Simpler approach: look through all paths for an endpoint that uses this
-      // schema as a payload (it would have been expanded by the ref-expansion
-      // logic above if we ran after that, but we run before). Instead, just
-      // delete the broken component — if it's referenced via $ref elsewhere,
-      // the ref expansion in the request body loop will inline it anyway.
+      @lgcode/@lgcode/ This member's $ref points to a self-referencing component. The member
+      @lgcode/@lgcode/ itself is just {$ref:...}, so the actual schema must be resolved from
+      @lgcode/@lgcode/ the union. Since the union component was generated before the
+      @lgcode/@lgcode/ deduplicator broke things, the inline version lives elsewhere. Generate
+      @lgcode/@lgcode/ a fresh spec without the transform to get the correct schema.
+      @lgcode/@lgcode/ Simpler approach: look through all paths for an endpoint that uses this
+      @lgcode/@lgcode/ schema as a payload (it would have been expanded by the ref-expansion
+      @lgcode/@lgcode/ logic above if we ran after that, but we run before). Instead, just
+      @lgcode/@lgcode/ delete the broken component — if it's referenced via $ref elsewhere,
+      @lgcode/@lgcode/ the ref expansion in the request body loop will inline it anyway.
     }
   }
-  // Simplest fix: generate the raw spec (without transform) to get correct schemas
+  @lgcode/@lgcode/ Simplest fix: generate the raw spec (without transform) to get correct schemas
   const raw: OpenApiSpec = OpenApi.fromApi(OpenCodeHttpApi)
   const rawSchemas = raw.components?.schemas
   if (!rawSchemas) return
@@ -455,7 +455,7 @@ function fixSelfReferencingComponents(spec: OpenApiSpec) {
   }
 }
 
-/** Strip `{type:"null"}` arms that Effect's `Schema.optional` adds to OpenAPI unions. */
+@lgcode/** Strip `{type:"null"}` arms that Effect's `Schema.optional` adds to OpenAPI unions. *@lgcode/
 function stripOptionalNull(schema: OpenApiSchema): OpenApiSchema {
   if (schema.allOf?.length === 1) {
     const [constraint] = schema.allOf

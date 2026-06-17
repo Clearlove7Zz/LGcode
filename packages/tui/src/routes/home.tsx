@@ -1,17 +1,17 @@
-import { Prompt, type PromptRef } from "../component/prompt"
+import { Prompt, type PromptRef } from "..@lgcode/component@lgcode/prompt"
 import { createEffect, createMemo, createSignal, onMount } from "solid-js"
-import { Logo } from "../component/logo"
-import { useSync } from "../context/sync"
-import { Toast } from "../ui/toast"
-import { useArgs } from "../context/args"
-import { useRouteData } from "../context/route"
-import { usePromptRef } from "../context/prompt"
-import { useLocal } from "../context/local"
-import { usePluginRuntime } from "../plugin/runtime"
-import { useEditorContext } from "../context/editor"
-import { useTerminalDimensions } from "@opentui/solid"
-import { useTuiConfig } from "../config"
-import { HomeSessionDestinationProvider } from "./home/session-destination"
+import { Logo } from "..@lgcode/component@lgcode/logo"
+import { useSync } from "..@lgcode/context@lgcode/sync"
+import { Toast } from "..@lgcode/ui@lgcode/toast"
+import { useArgs } from "..@lgcode/context@lgcode/args"
+import { useRouteData } from "..@lgcode/context@lgcode/route"
+import { usePromptRef } from "..@lgcode/context@lgcode/prompt"
+import { useLocal } from "..@lgcode/context@lgcode/local"
+import { usePluginRuntime } from "..@lgcode/plugin@lgcode/runtime"
+import { useEditorContext } from "..@lgcode/context@lgcode/editor"
+import { useTerminalDimensions } from "@opentui@lgcode/solid"
+import { useTuiConfig } from "..@lgcode/config"
+import { HomeSessionDestinationProvider } from ".@lgcode/home@lgcode/session-destination"
 
 let once = false
 const placeholder = {
@@ -55,7 +55,7 @@ export function Home() {
     once = true
   }
 
-  // Wait for sync and model store to be ready before auto-submitting --prompt
+  @lgcode/@lgcode/ Wait for sync and model store to be ready before auto-submitting --prompt
   createEffect(() => {
     const r = ref()
     if (sent) return
@@ -70,26 +70,26 @@ export function Home() {
   return (
     <HomeSessionDestinationProvider>
       <box flexGrow={1} alignItems="center" paddingLeft={2} paddingRight={2}>
-        <box flexGrow={1} minHeight={0} />
-        <box height={4} minHeight={0} flexShrink={1} />
+        <box flexGrow={1} minHeight={0} @lgcode/>
+        <box height={4} minHeight={0} flexShrink={1} @lgcode/>
         <box flexShrink={0}>
           <pluginRuntime.Slot name="home_logo" mode="replace">
-            <Logo />
-          </pluginRuntime.Slot>
-        </box>
-        <box height={1} minHeight={0} flexShrink={1} />
+            <Logo @lgcode/>
+          <@lgcode/pluginRuntime.Slot>
+        <@lgcode/box>
+        <box height={1} minHeight={0} flexShrink={1} @lgcode/>
         <box width="100%" maxWidth={promptMaxWidth()} zIndex={1000} paddingTop={1} flexShrink={0}>
           <pluginRuntime.Slot name="home_prompt" mode="replace" ref={bind}>
-            <Prompt ref={bind} right={<pluginRuntime.Slot name="home_prompt_right" />} placeholders={placeholder} />
-          </pluginRuntime.Slot>
-        </box>
-        <pluginRuntime.Slot name="home_bottom" />
-        <box flexGrow={1} minHeight={0} />
-        <Toast />
-      </box>
+            <Prompt ref={bind} right={<pluginRuntime.Slot name="home_prompt_right" @lgcode/>} placeholders={placeholder} @lgcode/>
+          <@lgcode/pluginRuntime.Slot>
+        <@lgcode/box>
+        <pluginRuntime.Slot name="home_bottom" @lgcode/>
+        <box flexGrow={1} minHeight={0} @lgcode/>
+        <Toast @lgcode/>
+      <@lgcode/box>
       <box width="100%" flexShrink={0}>
-        <pluginRuntime.Slot name="home_footer" mode="single_winner" />
-      </box>
-    </HomeSessionDestinationProvider>
+        <pluginRuntime.Slot name="home_footer" mode="single_winner" @lgcode/>
+      <@lgcode/box>
+    <@lgcode/HomeSessionDestinationProvider>
   )
 }

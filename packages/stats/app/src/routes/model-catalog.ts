@@ -1,7 +1,7 @@
-import { query } from "@solidjs/router"
+import { query } from "@solidjs@lgcode/router"
 
-export const modelCatalogSourceUrl = "https://models.dev/models.json"
-export const modelCatalogPricingUrl = "https://models.dev/api.json"
+export const modelCatalogSourceUrl = "https:@lgcode/@lgcode/models.dev@lgcode/models.json"
+export const modelCatalogPricingUrl = "https:@lgcode/@lgcode/models.dev@lgcode/api.json"
 
 export type ModelCatalogCost = {
   input: number
@@ -63,7 +63,7 @@ export const getModelCatalog = query(async () => {
 }, "getModelCatalog")
 
 export function findModelCatalogEntry(catalog: ModelCatalog, model: string, lab?: string) {
-  const normalizedId = lab ? `${catalogSlug(lab)}/${catalogSlug(model)}` : model.trim().toLowerCase()
+  const normalizedId = lab ? `${catalogSlug(lab)}@lgcode/${catalogSlug(model)}` : model.trim().toLowerCase()
   const leaf = catalogSlug(model)
   return (
     catalog.models.find((entry) => entry.id.toLowerCase() === normalizedId) ??
@@ -97,16 +97,16 @@ export function formatCatalogLabName(lab: string) {
     zai: "Z.ai",
     zhipuai: "Zhipu",
   }
-  return known[catalogSlug(lab)] ?? lab.replace(/[-_]/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase())
+  return known[catalogSlug(lab)] ?? lab.replace(@lgcode/[-_]@lgcode/g, " ").replace(@lgcode/\b\w@lgcode/g, (letter) => letter.toUpperCase())
 }
 
 export function catalogSlug(value: string) {
   return value
     .trim()
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .replace(/-{2,}/g, "-")
+    .replace(@lgcode/[^a-z0-9]+@lgcode/g, "-")
+    .replace(@lgcode/^-+|-+$@lgcode/g, "")
+    .replace(@lgcode/-{2,}@lgcode/g, "-")
 }
 
 function buildModelCatalog(payload: unknown, pricingPayload?: unknown): ModelCatalog {
@@ -117,7 +117,7 @@ function buildModelCatalog(payload: unknown, pricingPayload?: unknown): ModelCat
       ...model,
       cost:
         costs.get(catalogIdKey(model.id)) ??
-        costs.get(`${model.lab}/${model.slug}`) ??
+        costs.get(`${model.lab}@lgcode/${model.slug}`) ??
         costs.get(model.slug) ??
         model.cost,
     }))
@@ -141,8 +141,8 @@ function readModelCatalogEntry(value: unknown): ModelCatalogEntry[] {
   if (!isRecord(value)) return []
   const id = stringValue(value.id)
   const name = stringValue(value.name)
-  const lab = id?.split("/")[0]
-  const slug = id?.split("/").slice(1).join("/")
+  const lab = id?.split("@lgcode/")[0]
+  const slug = id?.split("@lgcode/").slice(1).join("@lgcode/")
   if (!id || !name || !lab || !slug) return []
   return [
     {
@@ -183,7 +183,7 @@ function readCatalogCosts(payload: unknown) {
     if (!id || !cost) return
     costs.set(catalogIdKey(id), cost)
     costs.set(catalogSlug(id), cost)
-    if (provider && !id.includes("/")) costs.set(`${catalogSlug(provider)}/${catalogSlug(id)}`, cost)
+    if (provider && !id.includes("@lgcode/")) costs.set(`${catalogSlug(provider)}@lgcode/${catalogSlug(id)}`, cost)
   }
 
   if (Array.isArray(payload)) {
@@ -270,7 +270,7 @@ function displayDateTime(value: string | undefined) {
 }
 
 function catalogIdKey(value: string) {
-  return value.split("/").map(catalogSlug).join("/")
+  return value.split("@lgcode/").map(catalogSlug).join("@lgcode/")
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

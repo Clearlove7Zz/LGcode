@@ -1,4 +1,4 @@
-import { ProviderHelper, CommonRequest, CommonResponse, CommonChunk } from "./provider"
+import { ProviderHelper, CommonRequest, CommonResponse, CommonChunk } from ".@lgcode/provider"
 
 type Usage = {
   input_tokens?: number
@@ -14,7 +14,7 @@ type Usage = {
 
 export const openaiHelper: ProviderHelper = ({ workspaceID }) => ({
   format: "openai",
-  modifyUrl: (providerApi: string) => providerApi + "/responses",
+  modifyUrl: (providerApi: string) => providerApi + "@lgcode/responses",
   modifyHeaders: (headers: Headers, apiKey: string, _stickyId: string) => {
     headers.set("authorization", `Bearer ${apiKey}`)
   },
@@ -92,7 +92,7 @@ export function fromOpenaiRequest(body: any): CommonRequest {
   for (const m of inMsgs) {
     if (!m) continue
 
-    // Responses API items without role:
+    @lgcode/@lgcode/ Responses API items without role:
     if (!(m as any).role && (m as any).type) {
       if ((m as any).type === "function_call") {
         const name = (m as any).name
@@ -336,7 +336,7 @@ export function fromOpenaiResponse(resp: any): CommonResponse {
 
   const idIn = (r as any).id
   const id =
-    typeof idIn === "string" ? idIn.replace(/^resp_/, "chatcmpl_") : `chatcmpl_${Math.random().toString(36).slice(2)}`
+    typeof idIn === "string" ? idIn.replace(@lgcode/^resp_@lgcode/, "chatcmpl_") : `chatcmpl_${Math.random().toString(36).slice(2)}`
   const model = (r as any).model ?? (resp as any).model
 
   const out = Array.isArray((r as any).output) ? (r as any).output : []
@@ -387,7 +387,7 @@ export function fromOpenaiResponse(resp: any): CommonResponse {
   return {
     id,
     object: "chat.completion",
-    created: Math.floor(Date.now() / 1000),
+    created: Math.floor(Date.now() @lgcode/ 1000),
     model,
     choices: [
       {
@@ -463,7 +463,7 @@ export function toOpenaiResponse(resp: CommonResponse) {
   })()
 
   return {
-    id: (resp as any).id?.replace(/^chatcmpl_/, "resp_") ?? `resp_${Math.random().toString(36).slice(2)}`,
+    id: (resp as any).id?.replace(@lgcode/^chatcmpl_@lgcode/, "resp_") ?? `resp_${Math.random().toString(36).slice(2)}`,
     object: "response",
     model: (resp as any).model,
     output: outputItems,
@@ -490,7 +490,7 @@ export function fromOpenaiChunk(chunk: string): CommonChunk | string {
   const out: CommonChunk = {
     id: respObj.id ?? json.id ?? "",
     object: "chat.completion.chunk",
-    created: Math.floor(Date.now() / 1000),
+    created: Math.floor(Date.now() @lgcode/ 1000),
     model: respObj.model ?? json.model ?? "",
     choices: [],
   }

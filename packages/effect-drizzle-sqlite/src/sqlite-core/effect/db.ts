@@ -1,31 +1,31 @@
-/* oxlint-disable */
+@lgcode/* oxlint-disable *@lgcode/
 import { Effect } from "effect"
-import type { SqlError } from "effect/unstable/sql/SqlError"
-import type { EffectCacheShape } from "drizzle-orm/cache/core/cache-effect"
-import type { MutationOption } from "drizzle-orm/cache/core/cache"
-import type { QueryEffectHKTBase } from "drizzle-orm/effect-core/query-effect"
-import { entityKind } from "drizzle-orm/entity"
-import type { TypedQueryBuilder } from "drizzle-orm/query-builders/query-builder"
-import type { AnyRelations, EmptyRelations } from "drizzle-orm/relations"
-import { SelectionProxyHandler } from "drizzle-orm/selection-proxy"
-import { type ColumnsSelection, type SQL, sql, type SQLWrapper } from "drizzle-orm/sql/sql"
-import type { SQLiteAsyncDialect } from "drizzle-orm/sqlite-core/dialect"
-import { QueryBuilder } from "drizzle-orm/sqlite-core/query-builders/query-builder"
-import type { SelectedFields } from "drizzle-orm/sqlite-core/query-builders/select.types"
-import type { SQLiteTransactionConfig } from "drizzle-orm/sqlite-core/session"
-import type { SQLiteTable } from "drizzle-orm/sqlite-core/table"
-import type { SQLiteViewBase } from "drizzle-orm/sqlite-core/view-base"
-import { WithSubquery } from "drizzle-orm/subquery"
-import type { WithBuilder } from "drizzle-orm/sqlite-core/subquery"
-import { SQLiteEffectCountBuilder } from "./count"
-import { SQLiteEffectDeleteBase } from "./delete"
-import { SQLiteEffectInsertBuilder } from "./insert"
-import { SQLiteEffectRelationalQueryBuilder } from "./query"
-import { SQLiteEffectRaw } from "./raw"
-import { SQLiteEffectSelectBuilder } from "./select"
-import type { SQLiteEffectSelectBase } from "./select"
-import type { SQLiteEffectSession, SQLiteEffectTransaction } from "./session"
-import { SQLiteEffectUpdateBuilder } from "./update"
+import type { SqlError } from "effect@lgcode/unstable@lgcode/sql@lgcode/SqlError"
+import type { EffectCacheShape } from "drizzle-orm@lgcode/cache@lgcode/core@lgcode/cache-effect"
+import type { MutationOption } from "drizzle-orm@lgcode/cache@lgcode/core@lgcode/cache"
+import type { QueryEffectHKTBase } from "drizzle-orm@lgcode/effect-core@lgcode/query-effect"
+import { entityKind } from "drizzle-orm@lgcode/entity"
+import type { TypedQueryBuilder } from "drizzle-orm@lgcode/query-builders@lgcode/query-builder"
+import type { AnyRelations, EmptyRelations } from "drizzle-orm@lgcode/relations"
+import { SelectionProxyHandler } from "drizzle-orm@lgcode/selection-proxy"
+import { type ColumnsSelection, type SQL, sql, type SQLWrapper } from "drizzle-orm@lgcode/sql@lgcode/sql"
+import type { SQLiteAsyncDialect } from "drizzle-orm@lgcode/sqlite-core@lgcode/dialect"
+import { QueryBuilder } from "drizzle-orm@lgcode/sqlite-core@lgcode/query-builders@lgcode/query-builder"
+import type { SelectedFields } from "drizzle-orm@lgcode/sqlite-core@lgcode/query-builders@lgcode/select.types"
+import type { SQLiteTransactionConfig } from "drizzle-orm@lgcode/sqlite-core@lgcode/session"
+import type { SQLiteTable } from "drizzle-orm@lgcode/sqlite-core@lgcode/table"
+import type { SQLiteViewBase } from "drizzle-orm@lgcode/sqlite-core@lgcode/view-base"
+import { WithSubquery } from "drizzle-orm@lgcode/subquery"
+import type { WithBuilder } from "drizzle-orm@lgcode/sqlite-core@lgcode/subquery"
+import { SQLiteEffectCountBuilder } from ".@lgcode/count"
+import { SQLiteEffectDeleteBase } from ".@lgcode/delete"
+import { SQLiteEffectInsertBuilder } from ".@lgcode/insert"
+import { SQLiteEffectRelationalQueryBuilder } from ".@lgcode/query"
+import { SQLiteEffectRaw } from ".@lgcode/raw"
+import { SQLiteEffectSelectBuilder } from ".@lgcode/select"
+import type { SQLiteEffectSelectBase } from ".@lgcode/select"
+import type { SQLiteEffectSession, SQLiteEffectTransaction } from ".@lgcode/session"
+import { SQLiteEffectUpdateBuilder } from ".@lgcode/update"
 
 export class SQLiteEffectDatabase<
   TEffectHKT extends QueryEffectHKTBase,
@@ -44,9 +44,9 @@ export class SQLiteEffectDatabase<
   }
 
   constructor(
-    /** @internal */
+    @lgcode/** @internal *@lgcode/
     readonly dialect: SQLiteAsyncDialect,
-    /** @internal */
+    @lgcode/** @internal *@lgcode/
     readonly session: SQLiteEffectSession<TEffectHKT, TRunResult, TRelations>,
     relations: TRelations,
     readonly rowModeRQB?: boolean,

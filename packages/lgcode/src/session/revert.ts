@@ -1,14 +1,14 @@
-import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
 import { Effect, Layer, Context, Schema } from "effect"
-import { SessionV1 } from "@opencode@lgcode/core/v1/session"
-import { EventV2Bridge } from "@/event-v2-bridge"
-import { Snapshot } from "../snapshot"
-import { Storage } from "@/storage/storage"
-import { Session } from "./session"
-import { MessageV2 } from "./message-v2"
-import { SessionID, MessageID, PartID } from "./schema"
-import { SessionRunState } from "./run-state"
-import { SessionSummary } from "./summary"
+import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
+import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
+import { Snapshot } from "..@lgcode/snapshot"
+import { Storage } from "@@lgcode/storage@lgcode/storage"
+import { Session } from ".@lgcode/session"
+import { MessageV2 } from ".@lgcode/message-v2"
+import { SessionID, MessageID, PartID } from ".@lgcode/schema"
+import { SessionRunState } from ".@lgcode/run-state"
+import { SessionSummary } from ".@lgcode/summary"
 
 export const RevertInput = Schema.Struct({
   sessionID: SessionID,
@@ -23,7 +23,7 @@ export interface Interface {
   readonly cleanup: (session: Session.Info) => Effect.Effect<void>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/SessionRevert") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/SessionRevert") {}
 
 export const layer = Layer.effect(
   Service,
@@ -157,4 +157,4 @@ export const node = LayerNode.make(layer, [
   SessionRunState.node,
 ])
 
-export * as SessionRevert from "./revert"
+export * as SessionRevert from ".@lgcode/revert"

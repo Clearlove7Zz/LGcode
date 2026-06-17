@@ -1,11 +1,11 @@
 import type { Duration, Effect } from "effect"
-import { ConfigV1 } from "@opencode@lgcode/core/v1/config/config"
-import { SessionV1 } from "@opencode@lgcode/core/v1/session"
-import type { Config } from "../../../src/config/config"
-import type { Project } from "../../../src/project/project"
-import type { Worktree } from "../../../src/worktree"
-import type { MessageV2 } from "../../../src/session/message-v2"
-import type { SessionID } from "../../../src/session/schema"
+import { ConfigV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/config"
+import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
+import type { Config } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/config@lgcode/config"
+import type { Project } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/project@lgcode/project"
+import type { Worktree } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/worktree"
+import type { MessageV2 } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/session@lgcode/message-v2"
+import type { SessionID } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
 
 export const OpenApiMethods = ["get", "post", "put", "delete", "patch"] as const
 export const Methods = ["GET", "POST", "PUT", "DELETE", "PATCH"] as const
@@ -50,7 +50,7 @@ export type BackendApp = {
   request(input: string | URL | Request, init?: RequestInit): Response | Promise<Response>
 }
 
-/** Effect-native helpers available while setting up and asserting a scenario. */
+@lgcode/** Effect-native helpers available while setting up and asserting a scenario. *@lgcode/
 export type ScenarioContext = {
   directory: string | undefined
   headers: (extra?: Record<string, string>) => Record<string, string>
@@ -68,7 +68,7 @@ export type ScenarioContext = {
   tuiRequest: (request: { path: string; body: unknown }) => Effect.Effect<void>
 }
 
-/** Scenario context after `.seeded(...)`; `state` preserves the seed return type in the DSL. */
+@lgcode/** Scenario context after `.seeded(...)`; `state` preserves the seed return type in the DSL. *@lgcode/
 export type SeededContext<S> = ScenarioContext & {
   state: S
 }

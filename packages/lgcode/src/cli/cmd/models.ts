@@ -1,9 +1,9 @@
 import { EOL } from "os"
 import { Effect } from "effect"
-import { ModelsDev } from "@opencode@lgcode/core/models-dev"
-import { effectCmd, fail } from "../effect-cmd"
-import { UI } from "../ui"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelsDev } from "@lgcode/core@lgcode/models-dev"
+import { effectCmd, fail } from "..@lgcode/effect-cmd"
+import { UI } from "..@lgcode/ui"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
 
 export const ModelsCommand = effectCmd({
   command: "models [provider]",
@@ -24,7 +24,7 @@ export const ModelsCommand = effectCmd({
         type: "boolean",
       }),
   handler: Effect.fn("Cli.models")(function* (args) {
-    const { Provider } = yield* Effect.promise(() => import("@/provider/provider"))
+    const { Provider } = yield* Effect.promise(() => import("@@lgcode/provider@lgcode/provider"))
     if (args.refresh) {
       yield* ModelsDev.Service.use((s) => s.refresh(true))
       UI.println(UI.Style.TEXT_SUCCESS_BOLD + "Models cache refreshed" + UI.Style.TEXT_NORMAL)
@@ -37,7 +37,7 @@ export const ModelsCommand = effectCmd({
       const p = providers[providerID]
       const sorted = Object.entries(p.models).sort(([a], [b]) => a.localeCompare(b))
       for (const [modelID, model] of sorted) {
-        process.stdout.write(`${providerID}/${modelID}`)
+        process.stdout.write(`${providerID}@lgcode/${modelID}`)
         process.stdout.write(EOL)
         if (verbose) {
           process.stdout.write(JSON.stringify(model, null, 2))

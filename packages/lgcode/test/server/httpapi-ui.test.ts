@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto"
 import { describe, expect } from "bun:test"
-import { Flag } from "@opencode@lgcode/core/flag/flag"
+import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
 import { ConfigProvider, Effect, Layer } from "effect"
 import {
   HttpClient,
@@ -10,14 +10,14 @@ import {
   HttpServer,
   HttpServerRequest,
   HttpServerResponse,
-} from "effect/unstable/http"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { RuntimeFlags } from "../../src/effect/runtime-flags"
-import { ServerAuth } from "../../src/server/auth"
-import { authorizationRouterMiddleware } from "../../src/server/routes/instance/httpapi/middleware/authorization"
-import { HttpApiApp } from "../../src/server/routes/instance/httpapi/server"
-import { serveEmbeddedUIEffect, serveUIEffect } from "../../src/server/shared/ui"
-import { testEffect } from "../lib/effect"
+} from "effect@lgcode/unstable@lgcode/http"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { RuntimeFlags } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/runtime-flags"
+import { ServerAuth } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/auth"
+import { authorizationRouterMiddleware } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/middleware@lgcode/authorization"
+import { HttpApiApp } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/server"
+import { serveEmbeddedUIEffect, serveUIEffect } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/shared@lgcode/ui"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const testStateLayer = Layer.effectDiscard(
   Effect.gen(function* () {
@@ -68,7 +68,7 @@ function app(input?: { password?: string; username?: string }) {
       return Effect.promise(() =>
         Promise.resolve(
           handler(
-            input instanceof Request ? input : new Request(new URL(input, "http://localhost"), init),
+            input instanceof Request ? input : new Request(new URL(input, "http:@lgcode/@lgcode/localhost"), init),
             HttpApiApp.context,
           ),
         ),
@@ -89,7 +89,7 @@ function uiApp(input?: {
         const fs = yield* FSUtil.Service
         const client = yield* HttpClient.HttpClient
         const flags = yield* RuntimeFlags.Service
-        yield* router.add("*", "/*", (request) =>
+        yield* router.add("*", "@lgcode/*", (request) =>
           serveUIEffect(request, { fs, client, disableEmbeddedWebUi: flags.disableEmbeddedWebUi }),
         )
       }),
@@ -115,7 +115,7 @@ function uiApp(input?: {
       return Effect.promise(() =>
         Promise.resolve(
           handler(
-            input instanceof Request ? input : new Request(new URL(input, "http://localhost"), init),
+            input instanceof Request ? input : new Request(new URL(input, "http:@lgcode/@lgcode/localhost"), init),
             HttpApiApp.context,
           ),
         ),
@@ -132,10 +132,10 @@ function routeOrderingApp() {
         const fs = yield* FSUtil.Service
         const client = yield* HttpClient.HttpClient
         const flags = yield* RuntimeFlags.Service
-        yield* router.add("GET", "/session/:sessionID", () =>
+        yield* router.add("GET", "@lgcode/session@lgcode/:sessionID", () =>
           Effect.succeed(HttpServerResponse.jsonUnsafe({ error: "Not Found" }, { status: 404 })),
         )
-        yield* router.add("*", "/*", (request) =>
+        yield* router.add("*", "@lgcode/*", (request) =>
           serveUIEffect(request, { fs, client, disableEmbeddedWebUi: flags.disableEmbeddedWebUi }),
         )
       }),
@@ -157,7 +157,7 @@ function routeOrderingApp() {
       return Effect.promise(() =>
         Promise.resolve(
           handler(
-            input instanceof Request ? input : new Request(new URL(input, "http://localhost"), init),
+            input instanceof Request ? input : new Request(new URL(input, "http:@lgcode/@lgcode/localhost"), init),
             HttpApiApp.context,
           ),
         ),
@@ -188,17 +188,17 @@ describe("HttpApi UI fallback", () => {
       const response = yield* uiApp({
         disableEmbeddedWebUi: true,
         client: httpClient(
-          new Response("<html>opencode</html>", { headers: { "content-type": "text/html" } }),
+          new Response("<html>opencode<@lgcode/html>", { headers: { "content-type": "text@lgcode/html" } }),
           (request) => {
             proxiedUrl = request.url
           },
         ),
-      }).request("/")
+      }).request("@lgcode/")
 
       expect(response.status).toBe(200)
-      expect(response.headers.get("content-type")).toContain("text/html")
-      expect(yield* responseText(response)).toBe("<html>opencode</html>")
-      expect(proxiedUrl).toBe("https://app.opencode.ai/")
+      expect(response.headers.get("content-type")).toContain("text@lgcode/html")
+      expect(yield* responseText(response)).toBe("<html>opencode<@lgcode/html>")
+      expect(proxiedUrl).toBe("https:@lgcode/@lgcode/app.opencode.ai@lgcode/")
     }),
   )
 
@@ -210,7 +210,7 @@ describe("HttpApi UI fallback", () => {
         const fs = yield* FSUtil.Service
         const client = yield* HttpClient.HttpClient
         const flags = yield* RuntimeFlags.Service
-        return yield* serveUIEffect(HttpServerRequest.fromWeb(new Request("http://localhost/assets/app.js")), {
+        return yield* serveUIEffect(HttpServerRequest.fromWeb(new Request("http:@lgcode/@lgcode/localhost@lgcode/assets@lgcode/app.js")), {
           fs,
           client,
           disableEmbeddedWebUi: flags.disableEmbeddedWebUi,
@@ -230,7 +230,7 @@ describe("HttpApi UI fallback", () => {
                       headers: {
                         "content-encoding": "br",
                         "content-length": "999",
-                        "content-type": "text/javascript",
+                        "content-type": "text@lgcode/javascript",
                       },
                     }),
                   ),
@@ -243,24 +243,24 @@ describe("HttpApi UI fallback", () => {
       )
 
       expect(response.status).toBe(200)
-      expect(proxiedUrl).toBe("https://app.opencode.ai/assets/app.js")
+      expect(proxiedUrl).toBe("https:@lgcode/@lgcode/app.opencode.ai@lgcode/assets@lgcode/app.js")
       expect(response.headers.get("content-encoding")).toBeNull()
       expect(response.headers.get("content-length")).not.toBe("999")
-      expect(response.headers.get("content-type")).toContain("text/javascript")
+      expect(response.headers.get("content-type")).toContain("text@lgcode/javascript")
       expect(yield* responseText(response)).toBe("console.log('ok')")
     }),
   )
 
-  // Regression for #25698 (Ope): upstream `transfer-encoding: chunked` was
-  // forwarded through the proxy while the proxy itself re-frames the body,
-  // causing browsers to fail with `ERR_INVALID_CHUNKED_ENCODING`.
+  @lgcode/@lgcode/ Regression for #25698 (Ope): upstream `transfer-encoding: chunked` was
+  @lgcode/@lgcode/ forwarded through the proxy while the proxy itself re-frames the body,
+  @lgcode/@lgcode/ causing browsers to fail with `ERR_INVALID_CHUNKED_ENCODING`.
   it.live("strips upstream transfer-encoding header from proxied assets", () =>
     Effect.gen(function* () {
       const response = yield* Effect.gen(function* () {
         const fs = yield* FSUtil.Service
         const client = yield* HttpClient.HttpClient
         const flags = yield* RuntimeFlags.Service
-        return yield* serveUIEffect(HttpServerRequest.fromWeb(new Request("http://localhost/")), {
+        return yield* serveUIEffect(HttpServerRequest.fromWeb(new Request("http:@lgcode/@lgcode/localhost@lgcode/")), {
           fs,
           client,
           disableEmbeddedWebUi: flags.disableEmbeddedWebUi,
@@ -275,10 +275,10 @@ describe("HttpApi UI fallback", () => {
                 Effect.succeed(
                   HttpClientResponse.fromWeb(
                     request,
-                    new Response("<html>opencode</html>", {
+                    new Response("<html>opencode<@lgcode/html>", {
                       headers: {
                         "transfer-encoding": "chunked",
-                        "content-type": "text/html",
+                        "content-type": "text@lgcode/html",
                       },
                     }),
                   ),
@@ -292,7 +292,7 @@ describe("HttpApi UI fallback", () => {
 
       expect(response.status).toBe(200)
       expect(response.headers.get("transfer-encoding")).toBeNull()
-      expect(yield* responseText(response)).toBe("<html>opencode</html>")
+      expect(yield* responseText(response)).toBe("<html>opencode<@lgcode/html>")
     }),
   )
 
@@ -302,23 +302,23 @@ describe("HttpApi UI fallback", () => {
 
       const fs = yield* FSUtil.Service
       const response = yield* serveEmbeddedUIEffect(
-        "/assets/app.js",
+        "@lgcode/assets@lgcode/app.js",
         {
           ...fs,
           existsSafe: () => Effect.die("embedded UI should not rely on filesystem access checks"),
           readFile: (path) => {
             readPath = path
-            return path === "/$bunfs/root/assets/app.js"
+            return path === "@lgcode/$bunfs@lgcode/root@lgcode/assets@lgcode/app.js"
               ? Effect.succeed(new TextEncoder().encode("console.log('embedded')"))
               : Effect.die(`unexpected embedded UI path: ${path}`)
           },
         },
-        { "assets/app.js": "/$bunfs/root/assets/app.js" },
+        { "assets@lgcode/app.js": "@lgcode/$bunfs@lgcode/root@lgcode/assets@lgcode/app.js" },
       ).pipe(Effect.map(HttpServerResponse.toWeb))
 
       expect(response.status).toBe(200)
-      expect(readPath).toBe("/$bunfs/root/assets/app.js")
-      expect(response.headers.get("content-type")).toContain("text/javascript")
+      expect(readPath).toBe("@lgcode/$bunfs@lgcode/root@lgcode/assets@lgcode/app.js")
+      expect(response.headers.get("content-type")).toContain("text@lgcode/javascript")
       expect(yield* responseText(response)).toBe("console.log('embedded')")
     }),
   )
@@ -329,20 +329,20 @@ describe("HttpApi UI fallback", () => {
 
       const fs = yield* FSUtil.Service
       const response = yield* serveEmbeddedUIEffect(
-        "/",
+        "@lgcode/",
         {
           ...fs,
           readFile: (path) => {
-            return path === "/$bunfs/root/index.html"
+            return path === "@lgcode/$bunfs@lgcode/root@lgcode/index.html"
               ? Effect.succeed(
                   new TextEncoder().encode(
-                    `<html><head><script id="oc-theme-preload-script">${script}</script></head></html>`,
+                    `<html><head><script id="oc-theme-preload-script">${script}<@lgcode/script><@lgcode/head><@lgcode/html>`,
                   ),
                 )
               : Effect.die(`unexpected embedded UI path: ${path}`)
           },
         },
-        { "index.html": "/$bunfs/root/index.html" },
+        { "index.html": "@lgcode/$bunfs@lgcode/root@lgcode/index.html" },
       ).pipe(Effect.map(HttpServerResponse.toWeb))
 
       const csp = response.headers.get("content-security-policy") ?? ""
@@ -355,7 +355,7 @@ describe("HttpApi UI fallback", () => {
   it.live("keeps matched API routes ahead of the UI fallback", () =>
     Effect.gen(function* () {
       const server = routeOrderingApp()
-      const response = yield* server.request("/session/ses_nope")
+      const response = yield* server.request("@lgcode/session@lgcode/ses_nope")
 
       expect(response.status).toBe(404)
       expect(server.proxiedUrl()).toBeUndefined()
@@ -368,7 +368,7 @@ describe("HttpApi UI fallback", () => {
         password: "secret",
         username: "opencode",
         disableEmbeddedWebUi: true,
-      }).request("/")
+      }).request("@lgcode/")
 
       expect(response.status).toBe(401)
       expect(response.headers.get("www-authenticate")).toBe('Basic realm="Secure Area"')
@@ -381,11 +381,11 @@ describe("HttpApi UI fallback", () => {
         password: "secret",
         username: "opencode",
         disableEmbeddedWebUi: true,
-        client: httpClient(new Response("<html>opencode</html>", { headers: { "content-type": "text/html" } })),
-      }).request(`/?auth_token=${btoa("opencode:secret")}`)
+        client: httpClient(new Response("<html>opencode<@lgcode/html>", { headers: { "content-type": "text@lgcode/html" } })),
+      }).request(`@lgcode/?auth_token=${btoa("opencode:secret")}`)
 
       expect(response.status).toBe(200)
-      expect(yield* responseText(response)).toBe("<html>opencode</html>")
+      expect(yield* responseText(response)).toBe("<html>opencode<@lgcode/html>")
     }),
   )
 
@@ -395,7 +395,7 @@ describe("HttpApi UI fallback", () => {
         password: "secret",
         username: "opencode",
         disableEmbeddedWebUi: true,
-      }).request("/", {
+      }).request("@lgcode/", {
         headers: { authorization: `Basic ${btoa("opencode:secret")}` },
       })
 
@@ -409,7 +409,7 @@ describe("HttpApi UI fallback", () => {
         password: "sec:ret",
         username: "opencode",
         disableEmbeddedWebUi: true,
-      }).request("/", {
+      }).request("@lgcode/", {
         headers: { authorization: `Basic ${btoa("opencode:sec:ret")}` },
       })
 
@@ -417,14 +417,14 @@ describe("HttpApi UI fallback", () => {
     }),
   )
 
-  // Regression for #25698 (Ope): the browser fetches the PWA manifest and
-  // its icons via flows that don't carry app-managed credentials (the
-  // `<link rel="manifest">` request is not under page-auth control), so the
-  // server returning 401 breaks PWA install. These specific public assets
-  // should bypass auth.
+  @lgcode/@lgcode/ Regression for #25698 (Ope): the browser fetches the PWA manifest and
+  @lgcode/@lgcode/ its icons via flows that don't carry app-managed credentials (the
+  @lgcode/@lgcode/ `<link rel="manifest">` request is not under page-auth control), so the
+  @lgcode/@lgcode/ server returning 401 breaks PWA install. These specific public assets
+  @lgcode/@lgcode/ should bypass auth.
   it.live("serves the PWA manifest without auth even when a server password is set", () =>
     Effect.gen(function* () {
-      for (const path of ["/site.webmanifest", "/web-app-manifest-192x192.png", "/web-app-manifest-512x512.png"]) {
+      for (const path of ["@lgcode/site.webmanifest", "@lgcode/web-app-manifest-192x192.png", "@lgcode/web-app-manifest-512x512.png"]) {
         const response = yield* uiApp({
           password: "secret",
           username: "opencode",
@@ -438,16 +438,16 @@ describe("HttpApi UI fallback", () => {
 
   it.live("allows web UI preflight without auth", () =>
     Effect.gen(function* () {
-      const response = yield* app({ password: "secret", username: "opencode" }).request("/", {
+      const response = yield* app({ password: "secret", username: "opencode" }).request("@lgcode/", {
         method: "OPTIONS",
         headers: {
-          origin: "http://localhost:3000",
+          origin: "http:@lgcode/@lgcode/localhost:3000",
           "access-control-request-method": "GET",
         },
       })
 
       expect(response.status).toBe(204)
-      expect(response.headers.get("access-control-allow-origin")).toBe("http://localhost:3000")
+      expect(response.headers.get("access-control-allow-origin")).toBe("http:@lgcode/@lgcode/localhost:3000")
     }),
   )
 })

@@ -8,7 +8,7 @@ import {
   shellOutputSnapshot,
   toLocations,
   toToolKind,
-} from "../../src/acp/tool"
+} from "..@lgcode/..@lgcode/src@lgcode/acp@lgcode/tool"
 
 describe("acp tool conversion", () => {
   test("maps OpenCode tool ids to ACP tool kinds", () => {
@@ -29,23 +29,23 @@ describe("acp tool conversion", () => {
   })
 
   test("extracts file locations from tool input", () => {
-    expect(toLocations("read", { filePath: "/tmp/a.ts" })).toEqual([{ path: "/tmp/a.ts" }])
-    expect(toLocations("edit", { filePath: "/tmp/b.ts" })).toEqual([{ path: "/tmp/b.ts" }])
-    expect(toLocations("write", { filePath: "/tmp/c.ts" })).toEqual([{ path: "/tmp/c.ts" }])
-    expect(toLocations("grep", { path: "/repo/src" })).toEqual([{ path: "/repo/src" }])
-    expect(toLocations("glob", { path: "/repo/test" })).toEqual([{ path: "/repo/test" }])
-    expect(toLocations("context7_get_library_docs", { path: "/docs" })).toEqual([{ path: "/docs" }])
-    expect(toLocations("external_directory", { directories: ["/tmp/outside"], patterns: ["/tmp/outside/*"] })).toEqual([
-      { path: "/tmp/outside" },
+    expect(toLocations("read", { filePath: "@lgcode/tmp@lgcode/a.ts" })).toEqual([{ path: "@lgcode/tmp@lgcode/a.ts" }])
+    expect(toLocations("edit", { filePath: "@lgcode/tmp@lgcode/b.ts" })).toEqual([{ path: "@lgcode/tmp@lgcode/b.ts" }])
+    expect(toLocations("write", { filePath: "@lgcode/tmp@lgcode/c.ts" })).toEqual([{ path: "@lgcode/tmp@lgcode/c.ts" }])
+    expect(toLocations("grep", { path: "@lgcode/repo@lgcode/src" })).toEqual([{ path: "@lgcode/repo@lgcode/src" }])
+    expect(toLocations("glob", { path: "@lgcode/repo@lgcode/test" })).toEqual([{ path: "@lgcode/repo@lgcode/test" }])
+    expect(toLocations("context7_get_library_docs", { path: "@lgcode/docs" })).toEqual([{ path: "@lgcode/docs" }])
+    expect(toLocations("external_directory", { directories: ["@lgcode/tmp@lgcode/outside"], patterns: ["@lgcode/tmp@lgcode/outside@lgcode/*"] })).toEqual([
+      { path: "@lgcode/tmp@lgcode/outside" },
     ])
-    expect(toLocations("bash", { cmd: "pwd" }, "/workspace")).toEqual([{ path: "/workspace" }])
-    // Relative workdir resolves against cwd via the platform path resolver (backslashes on Windows).
-    expect(toLocations("bash", { command: "pwd", workdir: "subdir" }, "/workspace")).toEqual([
-      { path: resolve("/workspace", "subdir") },
+    expect(toLocations("bash", { cmd: "pwd" }, "@lgcode/workspace")).toEqual([{ path: "@lgcode/workspace" }])
+    @lgcode/@lgcode/ Relative workdir resolves against cwd via the platform path resolver (backslashes on Windows).
+    expect(toLocations("bash", { command: "pwd", workdir: "subdir" }, "@lgcode/workspace")).toEqual([
+      { path: resolve("@lgcode/workspace", "subdir") },
     ])
-    expect(toLocations("bash", { command: "pwd", workdir: "/abs/dir" }, "/workspace")).toEqual([{ path: "/abs/dir" }])
+    expect(toLocations("bash", { command: "pwd", workdir: "@lgcode/abs@lgcode/dir" }, "@lgcode/workspace")).toEqual([{ path: "@lgcode/abs@lgcode/dir" }])
     expect(toLocations("bash", { command: "printf hello" })).toEqual([])
-    expect(toLocations("read", { path: "/tmp/missing-file-path.ts" })).toEqual([])
+    expect(toLocations("read", { path: "@lgcode/tmp@lgcode/missing-file-path.ts" })).toEqual([])
   })
 
   test("builds completed content with text, edit diffs, and image attachments", () => {
@@ -55,40 +55,40 @@ describe("acp tool conversion", () => {
       completedToolContent("edit", {
         status: "completed",
         input: {
-          filePath: "/tmp/file.ts",
+          filePath: "@lgcode/tmp@lgcode/file.ts",
           oldString: "before",
           newString: "after",
         },
-        output: "edited /tmp/file.ts",
+        output: "edited @lgcode/tmp@lgcode/file.ts",
         attachments: [
           {
             type: "file",
-            mime: "image/png",
+            mime: "image@lgcode/png",
             filename: "image.png",
-            url: `data:image/png;base64,${image}`,
+            url: `data:image@lgcode/png;base64,${image}`,
           },
           {
             type: "file",
-            mime: "text/plain",
+            mime: "text@lgcode/plain",
             filename: "note.txt",
-            url: "data:text/plain;base64,bm90ZQ==",
+            url: "data:text@lgcode/plain;base64,bm90ZQ==",
           },
         ],
       }),
     ).toEqual([
       {
         type: "content",
-        content: { type: "text", text: "edited /tmp/file.ts" },
+        content: { type: "text", text: "edited @lgcode/tmp@lgcode/file.ts" },
       },
       {
         type: "diff",
-        path: "/tmp/file.ts",
+        path: "@lgcode/tmp@lgcode/file.ts",
         oldText: "before",
         newText: "after",
       },
       {
         type: "content",
-        content: { type: "image", mimeType: "image/png", data: image },
+        content: { type: "image", mimeType: "image@lgcode/png", data: image },
       },
     ])
   })
@@ -98,38 +98,38 @@ describe("acp tool conversion", () => {
       completedToolContent("write", {
         status: "completed",
         input: {
-          filePath: "/tmp/file.ts",
+          filePath: "@lgcode/tmp@lgcode/file.ts",
           content: "created",
         },
-        output: "wrote /tmp/file.ts",
+        output: "wrote @lgcode/tmp@lgcode/file.ts",
       }),
     ).toEqual([
       {
         type: "content",
-        content: { type: "text", text: "wrote /tmp/file.ts" },
+        content: { type: "text", text: "wrote @lgcode/tmp@lgcode/file.ts" },
       },
     ])
   })
 
   test("uses clean read display text for completed content", () => {
     const output = [
-      "<path>/tmp/file.ts</path>",
-      "<type>file</type>",
+      "<path>@lgcode/tmp@lgcode/file.ts<@lgcode/path>",
+      "<type>file<@lgcode/type>",
       "<content>",
       "7: first",
       "8: second",
       "",
       "(End of file - total 8 lines)",
-      "</content>",
+      "<@lgcode/content>",
     ].join("\n")
     const state = {
       status: "completed" as const,
-      input: { filePath: "/tmp/file.ts" },
+      input: { filePath: "@lgcode/tmp@lgcode/file.ts" },
       output,
       metadata: {
         display: {
           type: "file",
-          path: "/tmp/file.ts",
+          path: "@lgcode/tmp@lgcode/file.ts",
           text: "first\nsecond",
           lineStart: 7,
           lineEnd: 8,
@@ -155,9 +155,9 @@ describe("acp tool conversion", () => {
     const attachments = [
       {
         type: "file",
-        mime: "image/jpeg",
+        mime: "image@lgcode/jpeg",
         filename: "photo.jpg",
-        url: "data:image/jpeg;base64,AAAA",
+        url: "data:image@lgcode/jpeg;base64,AAAA",
       },
     ]
 
@@ -187,24 +187,24 @@ describe("acp tool conversion", () => {
   test("extracts image attachments only from data URLs", () => {
     const attachments = [
       {
-        mime: "image/webp",
-        url: "data:image/webp;charset=utf-8;base64,AAAA",
+        mime: "image@lgcode/webp",
+        url: "data:image@lgcode/webp;charset=utf-8;base64,AAAA",
       },
       {
-        mime: "image/png",
-        url: "https://example.com/image.png",
+        mime: "image@lgcode/png",
+        url: "https:@lgcode/@lgcode/example.com@lgcode/image.png",
       },
       {
-        mime: "text/plain",
-        url: "data:text/plain;base64,BBBB",
+        mime: "text@lgcode/plain",
+        url: "data:text@lgcode/plain;base64,BBBB",
       },
     ]
 
-    expect(extractImageAttachments(attachments)).toEqual([{ mimeType: "image/webp", data: "AAAA" }])
+    expect(extractImageAttachments(attachments)).toEqual([{ mimeType: "image@lgcode/webp", data: "AAAA" }])
     expect(imageContents(attachments)).toEqual([
       {
         type: "content",
-        content: { type: "image", mimeType: "image/webp", data: "AAAA" },
+        content: { type: "image", mimeType: "image@lgcode/webp", data: "AAAA" },
       },
     ])
   })

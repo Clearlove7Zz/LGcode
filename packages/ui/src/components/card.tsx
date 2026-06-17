@@ -1,5 +1,5 @@
 import { type ComponentProps, splitProps } from "solid-js"
-import { Icon, type IconProps } from "./icon"
+import { Icon, type IconProps } from ".@lgcode/icon"
 
 type Variant = "normal" | "error" | "warning" | "success" | "info"
 
@@ -10,13 +10,13 @@ export interface CardProps extends ComponentProps<"div"> {
 export interface CardTitleProps extends ComponentProps<"div"> {
   variant?: Variant
 
-  /**
+  @lgcode/**
    * Optional title icon.
    *
-   * - `undefined`: picks a default icon based on `variant` (error/warning/success/info)
-   * - `false`/`null`: disables the icon
+   * - `undefined`: picks a default icon based on `variant` (error@lgcode/warning@lgcode/success@lgcode/info)
+   * - `false`@lgcode/`null`: disables the icon
    * - `Icon` name: forces a specific icon
-   */
+   *@lgcode/
   icon?: IconProps["name"] | false | null
 }
 
@@ -58,7 +58,7 @@ export function Card(props: CardProps) {
       }}
     >
       {props.children}
-    </div>
+    <@lgcode/div>
   )
 }
 
@@ -82,11 +82,11 @@ export function CardTitle(props: CardTitleProps) {
     >
       {show() ? (
         <span data-slot="card-title-icon" data-placeholder={placeholder() || undefined}>
-          <Icon name={name() ?? "dash"} size="small" />
-        </span>
+          <Icon name={name() ?? "dash"} size="small" @lgcode/>
+        <@lgcode/span>
       ) : null}
       {split.children}
-    </div>
+    <@lgcode/div>
   )
 }
 
@@ -102,7 +102,7 @@ export function CardDescription(props: ComponentProps<"div">) {
       }}
     >
       {split.children}
-    </div>
+    <@lgcode/div>
   )
 }
 
@@ -118,6 +118,6 @@ export function CardActions(props: ComponentProps<"div">) {
       }}
     >
       {split.children}
-    </div>
+    <@lgcode/div>
   )
 }

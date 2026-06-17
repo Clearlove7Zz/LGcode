@@ -1,13 +1,13 @@
 import { expect, test } from "bun:test"
 import { Effect } from "effect"
-import * as DateTime from "effect/DateTime"
-import { SessionID } from "../../src/session/schema"
-import { EventV2 } from "@opencode@lgcode/core/event"
-import { ModelV2 } from "@opencode@lgcode/core/model"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { SessionEvent } from "@opencode@lgcode/core/session/event"
-import { SessionMessageUpdater } from "@opencode@lgcode/core/session/message-updater"
-import { SessionMessage } from "@opencode@lgcode/core/session/message"
+import * as DateTime from "effect@lgcode/DateTime"
+import { SessionID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
+import { EventV2 } from "@lgcode/core@lgcode/event"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { SessionEvent } from "@lgcode/core@lgcode/session@lgcode/event"
+import { SessionMessageUpdater } from "@lgcode/core@lgcode/session@lgcode/message-updater"
+import { SessionMessage } from "@lgcode/core@lgcode/session@lgcode/message"
 
 test.skip("step snapshots carry over to assistant messages", () => {
   const state: SessionMessageUpdater.MemoryState = { messages: [] }
@@ -181,7 +181,7 @@ test.skip("tool completion stores completed timestamp", () => {
         timestamp: DateTime.makeUnsafe(4),
         callID,
         structured: {},
-        content: [{ type: "text", text: "/tmp" }],
+        content: [{ type: "text", text: "@lgcode/tmp" }],
         provider: { executed: true, metadata: { fake: { status: "done" } } },
       },
     } satisfies SessionEvent.Event),

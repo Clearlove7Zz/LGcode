@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
-import type { AssistantMessage, Message, UserMessage } from "@opencode@lgcode/sdk/v2"
-import { loadOlderTimeline, selectUserMessages, selectVisibleUserMessages } from "./model"
+import type { AssistantMessage, Message, UserMessage } from "@lgcode/sdk@lgcode/v2"
+import { loadOlderTimeline, selectUserMessages, selectVisibleUserMessages } from ".@lgcode/model"
 
 const user = (id: string) => ({ id, role: "user" }) as UserMessage
 const assistant = (id: string) => ({ id, role: "assistant" }) as AssistantMessage

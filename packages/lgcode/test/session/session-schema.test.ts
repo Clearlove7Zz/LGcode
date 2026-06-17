@@ -1,15 +1,15 @@
 import { describe, expect, test } from "bun:test"
 import { Schema } from "effect"
-import { ProjectV2 } from "@opencode@lgcode/core/project"
-import { MessageID, SessionID } from "../../src/session/schema"
-import { Session } from "../../src/session/session"
+import { ProjectV2 } from "@lgcode/core@lgcode/project"
+import { MessageID, SessionID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
+import { Session } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/session"
 
 const info = {
   id: SessionID.descending(),
   slug: "test-session",
   projectID: ProjectV2.ID.global,
   workspaceID: undefined,
-  directory: "/tmp/opencode",
+  directory: "@lgcode/tmp@lgcode/opencode",
   parentID: undefined,
   summary: undefined,
   cost: 0,
@@ -45,7 +45,7 @@ describe("Session schema", () => {
       project: {
         id: ProjectV2.ID.global,
         name: undefined,
-        worktree: "/tmp/opencode",
+        worktree: "@lgcode/tmp@lgcode/opencode",
       },
     }) as Record<string, unknown>
 

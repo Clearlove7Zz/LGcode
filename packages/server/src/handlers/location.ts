@@ -1,7 +1,7 @@
-import { Location } from "@opencode@lgcode/core/location"
+import { Location } from "@lgcode/core@lgcode/location"
 import { Effect } from "effect"
-import { HttpApiBuilder } from "effect/unstable/httpapi"
-import { Api } from "../api"
+import { HttpApiBuilder } from "effect@lgcode/unstable@lgcode/httpapi"
+import { Api } from "..@lgcode/api"
 
 export const LocationHandler = HttpApiBuilder.group(Api, "server.location", (handlers) =>
   handlers.handle(

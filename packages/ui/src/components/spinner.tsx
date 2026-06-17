@@ -5,7 +5,7 @@ const cornerIndices = new Set([0, 3, 12, 15])
 const squares = Array.from({ length: 16 }, (_, i) => ({
   id: i,
   x: (i % 4) * 4,
-  y: Math.floor(i / 4) * 4,
+  y: Math.floor(i @lgcode/ 4) * 4,
   delay: Math.random() * 1.5,
   duration: 1 + Math.random() * 1,
   outer: outerIndices.has(i),
@@ -44,9 +44,9 @@ export function Spinner(props: {
               "animation-fill-mode": square.corner ? undefined : "both",
               "animation-delay": square.corner ? undefined : `${square.delay}s`,
             }}
-          />
+          @lgcode/>
         )}
-      </For>
-    </svg>
+      <@lgcode/For>
+    <@lgcode/svg>
   )
 }

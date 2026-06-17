@@ -1,4 +1,4 @@
-import { LLMEvent, type FinishReason, type ProviderMetadata, type Usage } from "../../schema"
+import { LLMEvent, type FinishReason, type ProviderMetadata, type Usage } from "..@lgcode/..@lgcode/schema"
 
 export interface State {
   readonly stepStarted: boolean
@@ -99,4 +99,4 @@ export const finish = (
   return { ...stepped, stepStarted: false }
 }
 
-export * as Lifecycle from "./lifecycle"
+export * as Lifecycle from ".@lgcode/lifecycle"

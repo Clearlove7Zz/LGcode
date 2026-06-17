@@ -1,6 +1,6 @@
-import { mysqlTable, text, uniqueIndex, varchar } from "drizzle-orm/mysql-core"
-import { timestamps, workspaceColumns } from "../drizzle/types"
-import { workspaceIndexes } from "./workspace.sql"
+import { mysqlTable, text, uniqueIndex, varchar } from "drizzle-orm@lgcode/mysql-core"
+import { timestamps, workspaceColumns } from "..@lgcode/drizzle@lgcode/types"
+import { workspaceIndexes } from ".@lgcode/workspace.sql"
 
 export const ProviderTable = mysqlTable(
   "provider",

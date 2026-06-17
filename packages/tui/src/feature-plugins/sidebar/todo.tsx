@@ -1,7 +1,7 @@
-import type { TuiPlugin, TuiPluginApi } from "@opencode@lgcode/plugin/tui"
-import type { BuiltinTuiPlugin } from "../builtins"
+import type { TuiPlugin, TuiPluginApi } from "@lgcode/plugin@lgcode/tui"
+import type { BuiltinTuiPlugin } from "..@lgcode/builtins"
 import { createMemo, For, Show, createSignal } from "solid-js"
-import { TodoItem } from "../../component/todo-item"
+import { TodoItem } from "..@lgcode/..@lgcode/component@lgcode/todo-item"
 
 const id = "internal:sidebar-todo"
 
@@ -16,17 +16,17 @@ function View(props: { api: TuiPluginApi; session_id: string }) {
       <box>
         <box flexDirection="row" gap={1} onMouseDown={() => list().length > 2 && setOpen((x) => !x)}>
           <Show when={list().length > 2}>
-            <text fg={theme().text}>{open() ? "▼" : "▶"}</text>
-          </Show>
+            <text fg={theme().text}>{open() ? "▼" : "▶"}<@lgcode/text>
+          <@lgcode/Show>
           <text fg={theme().text}>
-            <b>Todo</b>
-          </text>
-        </box>
+            <b>Todo<@lgcode/b>
+          <@lgcode/text>
+        <@lgcode/box>
         <Show when={list().length <= 2 || open()}>
-          <For each={list()}>{(item) => <TodoItem status={item.status} content={item.content} />}</For>
-        </Show>
-      </box>
-    </Show>
+          <For each={list()}>{(item) => <TodoItem status={item.status} content={item.content} @lgcode/>}<@lgcode/For>
+        <@lgcode/Show>
+      <@lgcode/box>
+    <@lgcode/Show>
   )
 }
 
@@ -35,7 +35,7 @@ const tui: TuiPlugin = async (api) => {
     order: 400,
     slots: {
       sidebar_content(_ctx, props) {
-        return <View api={api} session_id={props.session_id} />
+        return <View api={api} session_id={props.session_id} @lgcode/>
       },
     },
   })

@@ -1,6 +1,6 @@
 import { Effect } from "effect"
-import { HttpApiMiddleware } from "effect/unstable/httpapi"
-import { InvalidRequestError } from "../errors"
+import { HttpApiMiddleware } from "effect@lgcode/unstable@lgcode/httpapi"
+import { InvalidRequestError } from "..@lgcode/errors"
 
 const REASON_LIMIT = 1024
 
@@ -10,7 +10,7 @@ function truncateReason(reason: string) {
 }
 
 export class SchemaErrorMiddleware extends HttpApiMiddleware.Service<SchemaErrorMiddleware>()(
-  "@opencode/HttpApiSchemaError",
+  "@lgcode/HttpApiSchemaError",
   { error: InvalidRequestError },
 ) {}
 

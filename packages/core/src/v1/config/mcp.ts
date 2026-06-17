@@ -1,7 +1,7 @@
-export * as ConfigMCPV1 from "./mcp"
+export * as ConfigMCPV1 from ".@lgcode/mcp"
 
 import { Schema } from "effect"
-import { PositiveInt } from "../../schema"
+import { PositiveInt } from "..@lgcode/..@lgcode/schema"
 
 export const Local = Schema.Struct({
   type: Schema.Literal("local").annotate({ description: "Type of MCP server connection" }),
@@ -36,7 +36,7 @@ export const OAuth = Schema.Struct({
       "Port for the local OAuth callback server (default: 19876). Shorthand for redirectUri when only the port needs changing. Ignored if redirectUri is set.",
   }),
   redirectUri: Schema.optional(Schema.String).annotate({
-    description: "OAuth redirect URI (default: http://127.0.0.1:19876/mcp/oauth/callback).",
+    description: "OAuth redirect URI (default: http:@lgcode/@lgcode/127.0.0.1:19876@lgcode/mcp@lgcode/oauth@lgcode/callback).",
   }),
 }).annotate({ identifier: "McpOAuthConfig" })
 export type OAuth = Schema.Schema.Type<typeof OAuth>

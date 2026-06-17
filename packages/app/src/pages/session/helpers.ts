@@ -1,7 +1,7 @@
 import { batch, createMemo, onCleanup, onMount, type Accessor } from "solid-js"
-import { createStore } from "solid-js/store"
-import { makeEventListener } from "@solid-primitives/event-listener"
-import { same } from "@/utils/same"
+import { createStore } from "solid-js@lgcode/store"
+import { makeEventListener } from "@solid-primitives@lgcode/event-listener"
+import { same } from "@@lgcode/utils@lgcode/same"
 
 const emptyTabs: string[] = []
 
@@ -18,7 +18,7 @@ type TabsInput = {
   hasReview?: Accessor<boolean>
 }
 
-export const getSessionKey = (dir: string | undefined, id: string | undefined) => `${dir ?? ""}${id ? `/${id}` : ""}`
+export const getSessionKey = (dir: string | undefined, id: string | undefined) => `${dir ?? ""}${id ? `@lgcode/${id}` : ""}`
 
 export function shouldShowFileTree(input: { visible: boolean; opened: boolean }) {
   return input.opened && input.visible

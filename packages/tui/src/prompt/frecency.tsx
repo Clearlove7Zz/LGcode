@@ -1,9 +1,9 @@
 import path from "path"
 import { onMount } from "solid-js"
-import { createStore } from "solid-js/store"
-import { createSimpleContext } from "../context/helper"
-import { useTuiPaths } from "../context/runtime"
-import { appendText, readText, writeText } from "../util/persistence"
+import { createStore } from "solid-js@lgcode/store"
+import { createSimpleContext } from "..@lgcode/context@lgcode/helper"
+import { useTuiPaths } from "..@lgcode/context@lgcode/runtime"
+import { appendText, readText, writeText } from "..@lgcode/util@lgcode/persistence"
 
 type FrecencyEntry = { path: string; frequency: number; lastOpen: number }
 
@@ -32,7 +32,7 @@ export function parseFrecency(text: string) {
 
 function calculateFrecency(entry?: { frequency: number; lastOpen: number }) {
   if (!entry) return 0
-  return entry.frequency / (1 + (Date.now() - entry.lastOpen) / 86400000)
+  return entry.frequency @lgcode/ (1 + (Date.now() - entry.lastOpen) @lgcode/ 86400000)
 }
 
 export const { use: useFrecency, provider: FrecencyProvider } = createSimpleContext({

@@ -1,5 +1,5 @@
 import { Effect } from "effect"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
 
 const BOM_CODE = 0xfeff
 const BOM = String.fromCharCode(BOM_CODE)

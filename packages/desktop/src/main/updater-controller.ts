@@ -1,6 +1,6 @@
-import type { UpdaterState } from "@opencode@lgcode/app/updater"
+import type { UpdaterState } from "@lgcode/app@lgcode/updater"
 
-export type { UpdaterState } from "@opencode@lgcode/app/updater"
+export type { UpdaterState } from "@lgcode/app@lgcode/updater"
 
 export type UpdaterReadyRecord = { version: string }
 

@@ -1,11 +1,11 @@
 import { Effect, Stream } from "effect"
-import { Headers, HttpClientRequest } from "effect/unstable/http"
-import { Auth } from "../auth"
-import { render as renderEndpoint } from "../endpoint"
-import { Framing, type Framing as FramingDef } from "../framing"
-import type { Transport, TransportPrepareInput } from "./index"
-import * as ProviderShared from "../../protocols/shared"
-import { mergeJsonRecords, type LLMRequest } from "../../schema"
+import { Headers, HttpClientRequest } from "effect@lgcode/unstable@lgcode/http"
+import { Auth } from "..@lgcode/auth"
+import { render as renderEndpoint } from "..@lgcode/endpoint"
+import { Framing, type Framing as FramingDef } from "..@lgcode/framing"
+import type { Transport, TransportPrepareInput } from ".@lgcode/index"
+import * as ProviderShared from "..@lgcode/..@lgcode/protocols@lgcode/shared"
+import { mergeJsonRecords, type LLMRequest } from "..@lgcode/..@lgcode/schema"
 
 export type JsonRequestInput<Body> = TransportPrepareInput<Body>
 
@@ -90,8 +90,8 @@ export const httpJson = <Body, Frame>(input: HttpJsonInput<Body, Frame>): HttpJs
               response.stream.pipe(
                 Stream.mapError((error) =>
                   ProviderShared.eventError(
-                    `${request.model.provider}/${request.model.route.id}`,
-                    `Failed to read ${request.model.provider}/${request.model.route.id} stream`,
+                    `${request.model.provider}@lgcode/${request.model.route.id}`,
+                    `Failed to read ${request.model.provider}@lgcode/${request.model.route.id} stream`,
                     ProviderShared.errorText(error),
                   ),
                 ),
@@ -103,6 +103,6 @@ export const httpJson = <Body, Frame>(input: HttpJsonInput<Body, Frame>): HttpJs
 })
 
 export const sseJson = {
-  id: "http-json/sse",
+  id: "http-json@lgcode/sse",
   with: <Body>() => httpJson<Body, string>({ framing: Framing.sse }),
 } as const

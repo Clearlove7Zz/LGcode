@@ -1,43 +1,43 @@
-import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
-import { httpClient } from "@opencode@lgcode/core/effect/layer-node-platform"
-import { serviceUse } from "@opencode@lgcode/core/effect/service-use"
+import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
+import { httpClient } from "@lgcode/core@lgcode/effect@lgcode/layer-node-platform"
+import { serviceUse } from "@lgcode/core@lgcode/effect@lgcode/service-use"
 import path from "path"
 import { pathToFileURL } from "url"
 import os from "os"
 import { mergeDeep } from "remeda"
-import { Global } from "@opencode@lgcode/core/global"
-import fsNode from "fs/promises"
-import { Flag } from "@opencode@lgcode/core/flag/flag"
-import { Auth } from "../auth"
-import { Env } from "../env"
+import { Global } from "@lgcode/core@lgcode/global"
+import fsNode from "fs@lgcode/promises"
+import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
+import { Auth } from "..@lgcode/auth"
+import { Env } from "..@lgcode/env"
 import { applyEdits, modify } from "jsonc-parser"
-import { InstallationLocal, InstallationVersion } from "@opencode@lgcode/core/installation/version"
+import { InstallationLocal, InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
 import { existsSync } from "fs"
-import { Account } from "@/account/account"
-import { isRecord } from "@/util/record"
-import type { ConsoleState } from "@opencode@lgcode/core/v1/config/console-state"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { InstanceState } from "@/effect/instance-state"
+import { Account } from "@@lgcode/account@lgcode/account"
+import { isRecord } from "@@lgcode/util@lgcode/record"
+import type { ConsoleState } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/console-state"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
 import { Context, Duration, Effect, Exit, Fiber, Layer, Option, Schema } from "effect"
-import { FetchHttpClient, HttpClient, HttpClientRequest } from "effect/unstable/http"
-import { EffectFlock } from "@opencode@lgcode/core/util/effect-flock"
-import { containsPath, type InstanceContext } from "../project/instance-context"
-import { ConfigV1 } from "@opencode@lgcode/core/v1/config/config"
-import { RemoteAuthError } from "@opencode@lgcode/core/v1/config/error"
-import { ConfigPermissionV1 } from "@opencode@lgcode/core/v1/config/permission"
-import { ConfigPluginV1 } from "@opencode@lgcode/core/v1/config/plugin"
-import { ConfigAgent } from "./agent"
-import { ConfigCommand } from "./command"
-import { ConfigManaged } from "./managed"
-import { ConfigParse } from "./parse"
-import { ConfigPaths } from "./paths"
-import { ConfigPlugin } from "./plugin"
-import { ConfigVariable } from "./variable"
-import { Npm } from "@opencode@lgcode/core/npm"
-import { withTransientReadRetry } from "@/util/effect-http-client"
+import { FetchHttpClient, HttpClient, HttpClientRequest } from "effect@lgcode/unstable@lgcode/http"
+import { EffectFlock } from "@lgcode/core@lgcode/util@lgcode/effect-flock"
+import { containsPath, type InstanceContext } from "..@lgcode/project@lgcode/instance-context"
+import { ConfigV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/config"
+import { RemoteAuthError } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/error"
+import { ConfigPermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/permission"
+import { ConfigPluginV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/plugin"
+import { ConfigAgent } from ".@lgcode/agent"
+import { ConfigCommand } from ".@lgcode/command"
+import { ConfigManaged } from ".@lgcode/managed"
+import { ConfigParse } from ".@lgcode/parse"
+import { ConfigPaths } from ".@lgcode/paths"
+import { ConfigPlugin } from ".@lgcode/plugin"
+import { ConfigVariable } from ".@lgcode/variable"
+import { Npm } from "@lgcode/core@lgcode/npm"
+import { withTransientReadRetry } from "@@lgcode/util@lgcode/effect-http-client"
 
-// Custom merge function that concatenates array fields instead of replacing them
-// Keep remeda's deep conditional merge type out of hot config-loading paths; TS profiling showed it dominates here.
+@lgcode/@lgcode/ Custom merge function that concatenates array fields instead of replacing them
+@lgcode/@lgcode/ Keep remeda's deep conditional merge type out of hot config-loading paths; TS profiling showed it dominates here.
 function mergeConfig(target: Info, source: Info): Info {
   return mergeDeep(target, source) as Info
 }
@@ -101,16 +101,16 @@ async function substituteWellKnownRemoteConfig(input: {
 async function resolveLoadedPlugins<T extends { plugin?: ConfigPluginV1.Spec[] }>(config: T, filepath: string) {
   if (!config.plugin) return config
   for (let i = 0; i < config.plugin.length; i++) {
-    // Normalize path-like plugin specs while we still know which config file declared them.
-    // This prevents `./plugin.ts` from being reinterpreted relative to some later merge location.
+    @lgcode/@lgcode/ Normalize path-like plugin specs while we still know which config file declared them.
+    @lgcode/@lgcode/ This prevents `.@lgcode/plugin.ts` from being reinterpreted relative to some later merge location.
     config.plugin[i] = await ConfigPlugin.resolvePluginSpec(config.plugin[i], filepath)
   }
   return config
 }
 
 type Info = ConfigV1.Info & {
-  // plugin_origins is derived state, not a persisted config field. It keeps each winning plugin spec together
-  // with the file and scope it came from so later runtime code can make location-sensitive decisions.
+  @lgcode/@lgcode/ plugin_origins is derived state, not a persisted config field. It keeps each winning plugin spec together
+  @lgcode/@lgcode/ with the file and scope it came from so later runtime code can make location-sensitive decisions.
   plugin_origins?: ConfigPlugin.Origin[]
 }
 
@@ -132,7 +132,7 @@ export interface Interface {
   readonly waitForDependencies: () => Effect.Effect<void>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/Config") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/Config") {}
 
 export const use = serviceUse(Service)
 
@@ -167,7 +167,7 @@ function writable(info: Info) {
 
 function writableGlobal(info: Info) {
   const next = writable(info)
-  // When a user changes config from a value back to default in the Desktop app, we don't want to leave a blank `"shell": "",` key
+  @lgcode/@lgcode/ When a user changes config from a value back to default in the Desktop app, we don't want to leave a blank `"shell": "",` key
   if ("shell" in next && next.shell === "") return { ...next, shell: undefined }
   return next
 }
@@ -200,9 +200,9 @@ export const layer = Layer.effect(
       const body = yield* response.text.pipe(
         Effect.catch((error) => Effect.die(new Error(`failed to read remote config from ${url}: ${String(error)}`))),
       )
-      // An auth proxy can answer with an HTML login page at HTTP 200 (passes filterStatusOk); treat it as a re-auth error, not a decode failure.
+      @lgcode/@lgcode/ An auth proxy can answer with an HTML login page at HTTP 200 (passes filterStatusOk); treat it as a re-auth error, not a decode failure.
       const contentType = (response.headers["content-type"] ?? "").toLowerCase()
-      if (contentType.includes("html") || /^\s*<!doctype|^\s*<html/i.test(body)) {
+      if (contentType.includes("html") || @lgcode/^\s*<!doctype|^\s*<html@lgcode/i.test(body)) {
         return yield* Effect.die(new RemoteAuthError({ url: loginOrigin, remote: url }))
       }
       return yield* Schema.decodeEffect(Schema.fromJsonString(schema))(body).pipe(
@@ -229,8 +229,8 @@ export const layer = Layer.effect(
 
       yield* Effect.promise(() => resolveLoadedPlugins(data, options.path))
       if (!data.$schema) {
-        data.$schema = "https://opencode.ai/config.json"
-        const updated = text.replace(/^\s*\{/, '{\n  "$schema": "https://opencode.ai/config.json",')
+        data.$schema = "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json"
+        const updated = text.replace(@lgcode/^\s*\{@lgcode/, '{\n  "$schema": "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",')
         yield* fs.writeFileString(options.path, updated).pipe(Effect.catch(() => Effect.void))
       }
       return data
@@ -245,13 +245,13 @@ export const layer = Layer.effect(
 
     const loadGlobal = Effect.fnUntraced(function* (env?: Record<string, string>) {
       let result: Info = {}
-      // Seed the default global config with the schema for editor completion, but avoid writing when the user
-      // explicitly routes config through env-provided paths or content.
+      @lgcode/@lgcode/ Seed the default global config with the schema for editor completion, but avoid writing when the user
+      @lgcode/@lgcode/ explicitly routes config through env-provided paths or content.
       if (!Flag.OPENCODE_CONFIG && !Flag.OPENCODE_CONFIG_DIR && !Flag.OPENCODE_CONFIG_CONTENT) {
         const file = globalConfigFile()
         if (!existsSync(file)) {
           yield* fs
-            .writeWithDirs(file, JSON.stringify({ $schema: "https://opencode.ai/config.json" }, null, 2))
+            .writeWithDirs(file, JSON.stringify({ $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json" }, null, 2))
             .pipe(Effect.catch(() => Effect.void))
         }
       }
@@ -265,8 +265,8 @@ export const layer = Layer.effect(
           import(pathToFileURL(legacy).href, { with: { type: "toml" } })
             .then(async (mod) => {
               const { provider, model, ...rest } = mod.default
-              if (provider && model) result.model = `${provider}/${model}`
-              result["$schema"] = "https://opencode.ai/config.json"
+              if (provider && model) result.model = `${provider}@lgcode/${model}`
+              result["$schema"] = "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json"
               result = mergeConfig(result, rest)
               await fsNode.writeFile(path.join(Global.Path.config, "config.json"), JSON.stringify(result, null, 2))
               await fsNode.unlink(legacy)
@@ -320,7 +320,7 @@ export const layer = Layer.effect(
         let activeOrgName: string | undefined
 
         const pluginScopeForSource = Effect.fnUntraced(function* (source: string) {
-          if (source.startsWith("http://") || source.startsWith("https://")) return "global"
+          if (source.startsWith("http:@lgcode/@lgcode/") || source.startsWith("https:@lgcode/@lgcode/")) return "global"
           if (source === "OPENCODE_CONFIG_CONTENT") return "local"
           if (containsPath(source, ctx)) return "local"
           return "global"
@@ -328,17 +328,17 @@ export const layer = Layer.effect(
 
         const mergePluginOrigins = Effect.fnUntraced(function* (
           source: string,
-          // mergePluginOrigins receives raw Specs from one config source, before provenance for this merge step
-          // is attached.
+          @lgcode/@lgcode/ mergePluginOrigins receives raw Specs from one config source, before provenance for this merge step
+          @lgcode/@lgcode/ is attached.
           list: ConfigPluginV1.Spec[] | undefined,
-          // Scope can be inferred from the source path, but some callers already know whether the config should
-          // behave as global or local and can pass that explicitly.
+          @lgcode/@lgcode/ Scope can be inferred from the source path, but some callers already know whether the config should
+          @lgcode/@lgcode/ behave as global or local and can pass that explicitly.
           kind?: ConfigPlugin.Scope,
         ) {
           if (!list?.length) return
           const hit = kind ?? (yield* pluginScopeForSource(source))
-          // Merge newly seen plugin origins with previously collected ones, then dedupe by plugin identity while
-          // keeping the winning source/scope metadata for downstream installs, writes, and diagnostics.
+          @lgcode/@lgcode/ Merge newly seen plugin origins with previously collected ones, then dedupe by plugin identity while
+          @lgcode/@lgcode/ keeping the winning source@lgcode/scope metadata for downstream installs, writes, and diagnostics.
           const plugins = ConfigPlugin.deduplicatePluginOrigins([
             ...(result.plugin_origins ?? []),
             ...list.map((spec) => ({ spec, source, scope: hit })),
@@ -354,9 +354,9 @@ export const layer = Layer.effect(
 
         for (const [key, value] of Object.entries(auth)) {
           if (value.type === "wellknown") {
-            const url = key.replace(/\/+$/, "")
+            const url = key.replace(@lgcode/\@lgcode/+$@lgcode/, "")
             authEnv[value.key] = value.token
-            const wellknownURL = `${url}/.well-known/opencode`
+            const wellknownURL = `${url}@lgcode/.well-known@lgcode/opencode`
             yield* Effect.logDebug("fetching remote config", { url: wellknownURL })
             const wellknown = yield* fetchRemoteJson(wellknownURL, undefined, ConfigV1.WellKnown, url)
             const remote = yield* Effect.promise(() =>
@@ -379,7 +379,7 @@ export const layer = Layer.effect(
                 })
               : {}
             const remoteConfig = mergeConfig(isRecord(wellknown.config) ? wellknown.config : {}, fetchedConfig)
-            if (!remoteConfig.$schema) remoteConfig.$schema = "https://opencode.ai/config.json"
+            if (!remoteConfig.$schema) remoteConfig.$schema = "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json"
             const source = wellknownURL
             const next = yield* loadConfig(
               JSON.stringify(remoteConfig),
@@ -438,7 +438,7 @@ export const layer = Layer.effect(
             .install(dir, {
               add: [
                 {
-                  name: "@opencode@lgcode/plugin",
+                  name: "@lgcode/plugin",
                   version: InstallationLocal ? undefined : InstallationVersion,
                 },
               ],
@@ -458,8 +458,8 @@ export const layer = Layer.effect(
           result.command = mergeDeep(result.command ?? {}, yield* Effect.promise(() => ConfigCommand.load(dir)))
           result.agent = mergeDeep(result.agent ?? {}, yield* Effect.promise(() => ConfigAgent.load(dir)))
           result.agent = mergeDeep(result.agent ?? {}, yield* Effect.promise(() => ConfigAgent.loadMode(dir)))
-          // Auto-discovered plugins under `.opencode/plugin(s)` are already local files, so ConfigPlugin.load
-          // returns normalized Specs and we only need to attach origin metadata here.
+          @lgcode/@lgcode/ Auto-discovered plugins under `.opencode@lgcode/plugin(s)` are already local files, so ConfigPlugin.load
+          @lgcode/@lgcode/ returns normalized Specs and we only need to attach origin metadata here.
           const list = yield* Effect.promise(() => ConfigPlugin.load(dir))
           yield* mergePluginOrigins(dir, list)
         }
@@ -492,7 +492,7 @@ export const layer = Layer.effect(
             }
 
             if (Option.isSome(configOpt)) {
-              const source = `${url}/api/config`
+              const source = `${url}@lgcode/api@lgcode/config`
               const next = yield* loadConfig(JSON.stringify(configOpt.value), {
                 dir: path.dirname(source),
                 source,
@@ -520,7 +520,7 @@ export const layer = Layer.effect(
           }
         }
 
-        // macOS managed preferences (.mobileconfig deployed via MDM) override everything
+        @lgcode/@lgcode/ macOS managed preferences (.mobileconfig deployed via MDM) override everything
         const managed = yield* Effect.promise(() => ConfigManaged.readManagedPreferences())
         if (managed) {
           result = mergeConfigConcatArrays(
@@ -683,4 +683,4 @@ export const defaultLayer = layer.pipe(
 
 export const node = LayerNode.make(layer, [FSUtil.node, Auth.node, Account.node, Env.node, Npm.node, httpClient])
 
-export * as Config from "./config"
+export * as Config from ".@lgcode/config"

@@ -1,37 +1,37 @@
-import type { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
-// CLI entry point for `opencode run`.
-//
-// Handles three modes:
-//   1. Non-interactive (default): sends a single prompt, streams events to
-//      stdout, and exits when the session goes idle.
-//   2. Interactive local (`--interactive`): boots the split-footer direct mode
-//      with an in-process server (no external HTTP).
-//   3. Interactive attach (`--interactive --attach`): connects to a running
-//      opencode server and runs interactive mode against it.
-//
-// Also supports `--command` for slash-command execution, `--format json` for
-// raw event streaming, `--continue` / `--session` for session resumption,
-// and `--fork` for forking before continuing.
+import type { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
+@lgcode/@lgcode/ CLI entry point for `opencode run`.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Handles three modes:
+@lgcode/@lgcode/   1. Non-interactive (default): sends a single prompt, streams events to
+@lgcode/@lgcode/      stdout, and exits when the session goes idle.
+@lgcode/@lgcode/   2. Interactive local (`--interactive`): boots the split-footer direct mode
+@lgcode/@lgcode/      with an in-process server (no external HTTP).
+@lgcode/@lgcode/   3. Interactive attach (`--interactive --attach`): connects to a running
+@lgcode/@lgcode/      opencode server and runs interactive mode against it.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Also supports `--command` for slash-command execution, `--format json` for
+@lgcode/@lgcode/ raw event streaming, `--continue` @lgcode/ `--session` for session resumption,
+@lgcode/@lgcode/ and `--fork` for forking before continuing.
 import type { Argv } from "yargs"
 import path from "path"
 import { pathToFileURL } from "url"
 import { Effect } from "effect"
-import { UI } from "../ui"
-import { effectCmd } from "../effect-cmd"
+import { UI } from "..@lgcode/ui"
+import { effectCmd } from "..@lgcode/effect-cmd"
 import { EOL } from "os"
-import { Filesystem } from "@/util/filesystem"
-import { createOpencodeClient, type OpencodeClient, type ToolPart } from "@opencode@lgcode/sdk/v2"
-import { FormatError, FormatUnknownError } from "../error"
-import { INTERACTIVE_INPUT_ERROR, resolveInteractiveStdin } from "./run/runtime.stdin"
+import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
+import { createOpencodeClient, type OpencodeClient, type ToolPart } from "@lgcode/sdk@lgcode/v2"
+import { FormatError, FormatUnknownError } from "..@lgcode/error"
+import { INTERACTIVE_INPUT_ERROR, resolveInteractiveStdin } from ".@lgcode/run@lgcode/runtime.stdin"
 
 type ModelInput = Parameters<OpencodeClient["session"]["prompt"]>[0]["model"]
 
 function pick(value: string | undefined): ModelInput | undefined {
   if (!value) return undefined
-  const [providerID, ...rest] = value.split("/")
+  const [providerID, ...rest] = value.split("@lgcode/")
   return {
     providerID,
-    modelID: rest.join("/"),
+    modelID: rest.join("@lgcode/"),
   } as ModelInput
 }
 
@@ -85,7 +85,7 @@ function formatRunError(error: unknown) {
 
 async function tool(part: ToolPart) {
   try {
-    const { toolInlineInfo } = await import("./run/tool")
+    const { toolInlineInfo } = await import(".@lgcode/run@lgcode/tool")
     const next = toolInlineInfo(part)
     if (next.mode === "block") {
       block(next, next.body)
@@ -103,7 +103,7 @@ async function tool(part: ToolPart) {
 
 async function toolError(part: ToolPart) {
   try {
-    const { toolInlineInfo } = await import("./run/tool")
+    const { toolInlineInfo } = await import(".@lgcode/run@lgcode/tool")
     const next = toolInlineInfo(part)
     inline({
       icon: "✗",
@@ -122,11 +122,11 @@ async function toolError(part: ToolPart) {
 export const RunCommand = effectCmd({
   command: "run [message..]",
   describe: "run opencode with a message",
-  // --attach connects to a remote server (no local instance needed); the
-  // default path runs an in-process server and needs the project instance.
+  @lgcode/@lgcode/ --attach connects to a remote server (no local instance needed); the
+  @lgcode/@lgcode/ default path runs an in-process server and needs the project instance.
   instance: (args) => !args.attach,
-  // For --dir without --attach, load instance for the resolved target dir.
-  // The handler also chdirs (preserving the legacy order: chdir → file resolution).
+  @lgcode/@lgcode/ For --dir without --attach, load instance for the resolved target dir.
+  @lgcode/@lgcode/ The handler also chdirs (preserving the legacy order: chdir → file resolution).
   directory: (args) => (args.dir && !args.attach ? path.resolve(process.cwd(), args.dir) : process.cwd()),
   builder: (yargs: Argv) =>
     yargs
@@ -161,7 +161,7 @@ export const RunCommand = effectCmd({
       .option("model", {
         type: "string",
         alias: ["m"],
-        describe: "model to use in the format of provider/model",
+        describe: "model to use in the format of provider@lgcode/model",
       })
       .option("agent", {
         type: "string",
@@ -185,7 +185,7 @@ export const RunCommand = effectCmd({
       })
       .option("attach", {
         type: "string",
-        describe: "attach to a running opencode server (e.g., http://localhost:4096)",
+        describe: "attach to a running opencode server (e.g., http:@lgcode/@lgcode/localhost:4096)",
       })
       .option("password", {
         alias: ["p"],
@@ -239,10 +239,10 @@ export const RunCommand = effectCmd({
         describe: "enable direct interactive demo slash commands; pass one as the message to run it immediately",
       }),
   handler: Effect.fn("Cli.run")(function* (args) {
-    const { Agent } = yield* Effect.promise(() => import("@/agent/agent"))
-    const { RuntimeFlags } = yield* Effect.promise(() => import("@/effect/runtime-flags"))
-    const { InstanceRef } = yield* Effect.promise(() => import("@/effect/instance-ref"))
-    const { ServerAuth } = yield* Effect.promise(() => import("@/server/auth"))
+    const { Agent } = yield* Effect.promise(() => import("@@lgcode/agent@lgcode/agent"))
+    const { RuntimeFlags } = yield* Effect.promise(() => import("@@lgcode/effect@lgcode/runtime-flags"))
+    const { InstanceRef } = yield* Effect.promise(() => import("@@lgcode/effect@lgcode/instance-ref"))
+    const { ServerAuth } = yield* Effect.promise(() => import("@@lgcode/server@lgcode/auth"))
     const agentSvc = yield* Agent.Service
     const flags = yield* RuntimeFlags.Service
     const localInstance = yield* InstanceRef
@@ -262,7 +262,7 @@ export const RunCommand = effectCmd({
       }
 
       let message = [...args.message, ...(args["--"] || [])]
-        .map((arg) => (arg.includes(" ") ? `"${arg.replace(/"/g, '\\"')}"` : arg))
+        .map((arg) => (arg.includes(" ") ? `"${arg.replace(@lgcode/"@lgcode/g, '\\"')}"` : arg))
         .join(" ")
 
       if (args.interactive && args.command) {
@@ -337,7 +337,7 @@ export const RunCommand = effectCmd({
             process.exit(1)
           }
 
-          const mime = (await Filesystem.isDir(resolvedPath)) ? "application/x-directory" : "text/plain"
+          const mime = (await Filesystem.isDir(resolvedPath)) ? "application@lgcode/x-directory" : "text@lgcode/plain"
 
           files.push({
             type: "file",
@@ -625,10 +625,10 @@ export const RunCommand = effectCmd({
           return false
         }
 
-        // Consume one subscribed event stream for the active session and mirror it
-        // to stdout/UI. `client` is passed explicitly because attach mode may
-        // rebind the SDK to the session's directory after the subscription is
-        // created, and replies issued from inside the loop must use that client.
+        @lgcode/@lgcode/ Consume one subscribed event stream for the active session and mirror it
+        @lgcode/@lgcode/ to stdout@lgcode/UI. `client` is passed explicitly because attach mode may
+        @lgcode/@lgcode/ rebind the SDK to the session's directory after the subscription is
+        @lgcode/@lgcode/ created, and replies issued from inside the loop must use that client.
         async function loop(client: OpencodeClient, events: Awaited<ReturnType<typeof sdk.event.subscribe>>) {
           const toggles = new Map<string, boolean>()
           let error: string | undefined
@@ -755,7 +755,7 @@ export const RunCommand = effectCmd({
         const cwd = args.attach ? (directory ?? sess.directory ?? (await current(sdk))) : (directory ?? root)
         const client = args.attach ? attachSDK(cwd) : sdk
 
-        // Validate agent if specified
+        @lgcode/@lgcode/ Validate agent if specified
         const agent = await pickAgent(client)
 
         await share(client, sessionID)
@@ -808,7 +808,7 @@ export const RunCommand = effectCmd({
         }
 
         const model = pick(args.model)
-        const { runInteractiveMode } = await import("./run/runtime")
+        const { runInteractiveMode } = await import(".@lgcode/run@lgcode/runtime")
         try {
           await runInteractiveMode({
             sdk: client,
@@ -836,9 +836,9 @@ export const RunCommand = effectCmd({
 
       if (args.interactive && !args.attach && !args.session && !args.continue) {
         const model = pick(args.model)
-        const { runInteractiveLocalMode } = await import("./run/runtime")
+        const { runInteractiveLocalMode } = await import(".@lgcode/run@lgcode/runtime")
         const fetchFn = (async (input: RequestInfo | URL, init?: RequestInit) => {
-          const { Server } = await import("@/server/server")
+          const { Server } = await import("@@lgcode/server@lgcode/server")
           const request = new Request(input, init)
           const headers = new Headers(request.headers)
           const auth = ServerAuth.header()
@@ -876,7 +876,7 @@ export const RunCommand = effectCmd({
       }
 
       const fetchFn = (async (input: RequestInfo | URL, init?: RequestInit) => {
-        const { Server } = await import("@/server/server")
+        const { Server } = await import("@@lgcode/server@lgcode/server")
         const request = new Request(input, init)
         const headers = new Headers(request.headers)
         const auth = ServerAuth.header()
@@ -884,7 +884,7 @@ export const RunCommand = effectCmd({
         return Server.Default().app.fetch(new Request(request, { headers }))
       }) as typeof globalThis.fetch
       const sdk = createOpencodeClient({
-        baseUrl: "http://opencode.internal",
+        baseUrl: "http:@lgcode/@lgcode/opencode.internal",
         fetch: fetchFn,
         directory,
       })

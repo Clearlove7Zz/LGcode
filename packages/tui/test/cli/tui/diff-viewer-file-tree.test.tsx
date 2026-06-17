@@ -1,18 +1,18 @@
-/** @jsxImportSource @opentui/solid */
+@lgcode/** @jsxImportSource @opentui@lgcode/solid *@lgcode/
 import { describe, expect, test } from "bun:test"
-import { RGBA } from "@opentui/core"
-import { testRender } from "@opentui/solid"
+import { RGBA } from "@opentui@lgcode/core"
+import { testRender } from "@opentui@lgcode/solid"
 import type { JSX } from "solid-js"
-import { createTuiResolvedConfig } from "../../fixture/tui-runtime"
-import { KVProvider } from "../../../src/context/kv"
-import { ThemeProvider } from "../../../src/context/theme"
-import { TuiConfigProvider } from "../../../src/config"
-import { DiffViewerFileTree } from "../../../src/feature-plugins/system/diff-viewer-file-tree"
-import { TestTuiContexts } from "../../fixture/tui-environment"
+import { createTuiResolvedConfig } from "..@lgcode/..@lgcode/fixture@lgcode/tui-runtime"
+import { KVProvider } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/context@lgcode/kv"
+import { ThemeProvider } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/context@lgcode/theme"
+import { TuiConfigProvider } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/config"
+import { DiffViewerFileTree } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/feature-plugins@lgcode/system@lgcode/diff-viewer-file-tree"
+import { TestTuiContexts } from "..@lgcode/..@lgcode/fixture@lgcode/tui-environment"
 import {
   allExpandedFileTreeDirectories,
   buildFileTree,
-} from "../../../src/feature-plugins/system/diff-viewer-file-tree-utils"
+} from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/feature-plugins@lgcode/system@lgcode/diff-viewer-file-tree-utils"
 
 const theme = {
   background: RGBA.fromHex("#000000"),
@@ -35,16 +35,16 @@ describe("DiffViewerFileTree", () => {
             width={32}
             files={[
               { file: "z-file.ts" },
-              { file: "b/file.ts" },
-              { file: "a/zeta.ts" },
-              { file: "b/alpha.ts" },
-              { file: "a/alpha.ts" },
+              { file: "b@lgcode/file.ts" },
+              { file: "a@lgcode/zeta.ts" },
+              { file: "b@lgcode/alpha.ts" },
+              { file: "a@lgcode/alpha.ts" },
             ]}
             loading={false}
             error={undefined}
             theme={theme}
             focused={true}
-          />
+          @lgcode/>
         )),
       { width: 40, height: 20 },
     )
@@ -68,13 +68,13 @@ describe("DiffViewerFileTree", () => {
 
   test("keeps loading and error quiet while rendering an empty settled state", async () => {
     const loading = await renderFrame(() => (
-      <DiffViewerFileTree width={32} files={[]} loading={true} error={undefined} theme={theme} />
+      <DiffViewerFileTree width={32} files={[]} loading={true} error={undefined} theme={theme} @lgcode/>
     ))
     const failed = await renderFrame(() => (
-      <DiffViewerFileTree width={32} files={[]} loading={false} error={new Error("nope")} theme={theme} />
+      <DiffViewerFileTree width={32} files={[]} loading={false} error={new Error("nope")} theme={theme} @lgcode/>
     ))
     const empty = await renderFrame(() => (
-      <DiffViewerFileTree width={32} files={[]} loading={false} error={undefined} theme={theme} />
+      <DiffViewerFileTree width={32} files={[]} loading={false} error={undefined} theme={theme} @lgcode/>
     ))
 
     expect(loading).not.toContain("Loading diff...")
@@ -85,7 +85,7 @@ describe("DiffViewerFileTree", () => {
   })
 
   test("does not render text markers for highlighted rows", async () => {
-    const files = [{ file: "src/config/tui.ts" }, { file: "README.md" }]
+    const files = [{ file: "src@lgcode/config@lgcode/tui.ts" }, { file: "README.md" }]
     const src = buildFileTree(files).nodes.find((node) => node.kind === "directory" && node.name === "src")!
 
     const focused = visibleLines(
@@ -98,23 +98,23 @@ describe("DiffViewerFileTree", () => {
           theme={theme}
           focused
           highlightedNode={src.id}
-        />
+        @lgcode/>
       )),
     )
     const unfocused = visibleLines(
       await renderFrame(() => (
-        <DiffViewerFileTree width={32} files={files} loading={false} error={undefined} theme={theme} />
+        <DiffViewerFileTree width={32} files={files} loading={false} error={undefined} theme={theme} @lgcode/>
       )),
     )
 
-    expect(focused).toContain("▾ src/config")
-    expect(unfocused).toContain("▾ src/config")
+    expect(focused).toContain("▾ src@lgcode/config")
+    expect(unfocused).toContain("▾ src@lgcode/config")
     expect(focused.some((line) => line.includes("*"))).toBe(false)
     expect(unfocused.some((line) => line.includes("*"))).toBe(false)
   })
 
   test("renders collapsed and expanded directory rows", async () => {
-    const files = [{ file: "src/config/tui.ts" }, { file: "README.md" }]
+    const files = [{ file: "src@lgcode/config@lgcode/tui.ts" }, { file: "README.md" }]
     const tree = buildFileTree(files)
     const src = tree.nodes.find((node) => node.kind === "directory" && node.name === "src")!
     const collapsed = allExpandedFileTreeDirectories(tree)
@@ -130,10 +130,10 @@ describe("DiffViewerFileTree", () => {
             error={undefined}
             theme={theme}
             expandedNodes={collapsed}
-          />
+          @lgcode/>
         )),
       ),
-    ).toEqual(["▸ src/config"])
+    ).toEqual(["▸ src@lgcode/config"])
 
     expect(
       visibleLines(
@@ -145,10 +145,10 @@ describe("DiffViewerFileTree", () => {
             error={undefined}
             theme={theme}
             expandedNodes={allExpandedFileTreeDirectories(tree)}
-          />
+          @lgcode/>
         )),
       ),
-    ).toEqual(["▾ src/config", "│  └─ tui.ts                 ?"])
+    ).toEqual(["▾ src@lgcode/config", "│  └─ tui.ts                 ?"])
   })
 })
 
@@ -183,10 +183,10 @@ function withTheme(component: () => JSX.Element) {
     <TestTuiContexts>
       <TuiConfigProvider config={createTuiResolvedConfig()}>
         <KVProvider>
-          <ThemeProvider mode="dark">{component()}</ThemeProvider>
-        </KVProvider>
-      </TuiConfigProvider>
-    </TestTuiContexts>
+          <ThemeProvider mode="dark">{component()}<@lgcode/ThemeProvider>
+        <@lgcode/KVProvider>
+      <@lgcode/TuiConfigProvider>
+    <@lgcode/TestTuiContexts>
   )
 }
 
@@ -194,7 +194,7 @@ function visibleLines(frame: string) {
   return frame
     .split("\n")
     .map((line) => line.trimEnd())
-    .map((line) => line.replace(/^ ?│ ?/, "").replace(/[ │]*$/, ""))
+    .map((line) => line.replace(@lgcode/^ ?│ ?@lgcode/, "").replace(@lgcode/[ │]*$@lgcode/, ""))
     .map((line) => (line.startsWith(" ") ? line.slice(1) : line))
-    .filter((line) => line.length > 0 && !/^┌|^└|^─+$/.test(line))
+    .filter((line) => line.length > 0 && !@lgcode/^┌|^└|^─+$@lgcode/.test(line))
 }

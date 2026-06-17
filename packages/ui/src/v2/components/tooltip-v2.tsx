@@ -1,8 +1,8 @@
-import { Tooltip as KobalteTooltip } from "@kobalte/core/tooltip"
+import { Tooltip as KobalteTooltip } from "@kobalte@lgcode/core@lgcode/tooltip"
 import { createEffect, Match, onCleanup, splitProps, Switch, type JSX } from "solid-js"
 import type { ComponentProps } from "solid-js"
-import { createStore } from "solid-js/store"
-import "./tooltip-v2.css"
+import { createStore } from "solid-js@lgcode/store"
+import ".@lgcode/tooltip-v2.css"
 
 export interface TooltipV2Props extends ComponentProps<typeof KobalteTooltip> {
   value: JSX.Element
@@ -84,7 +84,7 @@ export function TooltipV2(props: TooltipV2Props) {
 
   return (
     <Switch>
-      <Match when={local.inactive}>{local.children}</Match>
+      <Match when={local.inactive}>{local.children}<@lgcode/Match>
       <Match when={true}>
         <KobalteTooltip
           gutter={4}
@@ -117,7 +117,7 @@ export function TooltipV2(props: TooltipV2Props) {
             onFocusOut={() => requestAnimationFrame(() => drop())}
           >
             {local.children}
-          </KobalteTooltip.Trigger>
+          <@lgcode/KobalteTooltip.Trigger>
           <KobalteTooltip.Portal>
             <KobalteTooltip.Content
               ref={(el) => {
@@ -137,10 +137,10 @@ export function TooltipV2(props: TooltipV2Props) {
               }}
             >
               {local.value}
-            </KobalteTooltip.Content>
-          </KobalteTooltip.Portal>
-        </KobalteTooltip>
-      </Match>
-    </Switch>
+            <@lgcode/KobalteTooltip.Content>
+          <@lgcode/KobalteTooltip.Portal>
+        <@lgcode/KobalteTooltip>
+      <@lgcode/Match>
+    <@lgcode/Switch>
   )
 }

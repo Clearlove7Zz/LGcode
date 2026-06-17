@@ -1,18 +1,18 @@
-import type { APIEvent } from "@solidjs/start/server"
+import type { APIEvent } from "@solidjs@lgcode/start@lgcode/server"
 import { Hono } from "hono"
 import { describeRoute, openAPIRouteHandler, resolver } from "hono-openapi"
 import { validator } from "hono-openapi"
 import z from "zod"
-import { cors } from "hono/cors"
-import { Share } from "~/core/share"
+import { cors } from "hono@lgcode/cors"
+import { Share } from "~@lgcode/core@lgcode/share"
 
 const app = new Hono()
 
 app
-  .basePath("/api")
+  .basePath("@lgcode/api")
   .use(cors())
   .get(
-    "/doc",
+    "@lgcode/doc",
     openAPIRouteHandler(app, {
       documentation: {
         info: {
@@ -25,7 +25,7 @@ app
     }),
   )
   .post(
-    "/share",
+    "@lgcode/share",
     describeRoute({
       description: "Create a share",
       operationId: "share.create",
@@ -33,7 +33,7 @@ app
         200: {
           description: "Success",
           content: {
-            "application/json": {
+            "application@lgcode/json": {
               schema: resolver(
                 z
                   .object({
@@ -57,12 +57,12 @@ app
       return c.json({
         id: share.id,
         secret: share.secret,
-        url: `${protocol}://${host}/share/${share.id}`,
+        url: `${protocol}:@lgcode/@lgcode/${host}@lgcode/share@lgcode/${share.id}`,
       })
     },
   )
   .post(
-    "/share/:shareID/sync",
+    "@lgcode/share@lgcode/:shareID@lgcode/sync",
     describeRoute({
       description: "Sync share data",
       operationId: "share.sync",
@@ -70,7 +70,7 @@ app
         200: {
           description: "Success",
           content: {
-            "application/json": {
+            "application@lgcode/json": {
               schema: resolver(z.object({})),
             },
           },
@@ -90,7 +90,7 @@ app
     },
   )
   .get(
-    "/share/:shareID/data",
+    "@lgcode/share@lgcode/:shareID@lgcode/data",
     describeRoute({
       description: "Get share data",
       operationId: "share.data",
@@ -98,7 +98,7 @@ app
         200: {
           description: "Success",
           content: {
-            "application/json": {
+            "application@lgcode/json": {
               schema: resolver(z.array(Share.Data)),
             },
           },
@@ -113,7 +113,7 @@ app
     },
   )
   .delete(
-    "/share/:shareID",
+    "@lgcode/share@lgcode/:shareID",
     describeRoute({
       description: "Remove a share",
       operationId: "share.remove",
@@ -121,7 +121,7 @@ app
         200: {
           description: "Success",
           content: {
-            "application/json": {
+            "application@lgcode/json": {
               schema: resolver(z.object({})),
             },
           },

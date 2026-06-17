@@ -1,8 +1,8 @@
 import { describe, test, expect } from "bun:test"
 import path from "path"
-import fs from "fs/promises"
-import { Glob } from "@opencode@lgcode/core/util/glob"
-import { tmpdir } from "../fixture/fixture"
+import fs from "fs@lgcode/promises"
+import { Glob } from "@lgcode/core@lgcode/util@lgcode/glob"
+import { tmpdir } from "..@lgcode/fixture@lgcode/fixture"
 
 describe("Glob", () => {
   describe("scan()", () => {
@@ -61,7 +61,7 @@ describe("Glob", () => {
       await fs.mkdir(path.join(tmp.path, "nested"), { recursive: true })
       await fs.writeFile(path.join(tmp.path, "nested", "deep.txt"), "", "utf-8")
 
-      const results = await Glob.scan("**/*.txt", { cwd: tmp.path })
+      const results = await Glob.scan("**@lgcode/*.txt", { cwd: tmp.path })
 
       expect(results).toEqual([path.join("nested", "deep.txt")])
     })
@@ -80,7 +80,7 @@ describe("Glob", () => {
       await fs.writeFile(path.join(tmp.path, "realdir", "file.txt"), "", "utf-8")
       await fs.symlink(path.join(tmp.path, "realdir"), path.join(tmp.path, "linkdir"))
 
-      const results = await Glob.scan("**/*.txt", { cwd: tmp.path })
+      const results = await Glob.scan("**@lgcode/*.txt", { cwd: tmp.path })
 
       expect(results).toEqual([path.join("realdir", "file.txt")])
     })
@@ -91,7 +91,7 @@ describe("Glob", () => {
       await fs.writeFile(path.join(tmp.path, "realdir", "file.txt"), "", "utf-8")
       await fs.symlink(path.join(tmp.path, "realdir"), path.join(tmp.path, "linkdir"))
 
-      const results = await Glob.scan("**/*.txt", { cwd: tmp.path, symlink: true })
+      const results = await Glob.scan("**@lgcode/*.txt", { cwd: tmp.path, symlink: true })
 
       expect(results.sort()).toEqual([path.join("linkdir", "file.txt"), path.join("realdir", "file.txt")])
     })
@@ -146,13 +146,13 @@ describe("Glob", () => {
     })
 
     test("matches directory patterns", () => {
-      expect(Glob.match("**/*.js", "src/index.js")).toBe(true)
-      expect(Glob.match("**/*.js", "src/index.ts")).toBe(false)
+      expect(Glob.match("**@lgcode/*.js", "src@lgcode/index.js")).toBe(true)
+      expect(Glob.match("**@lgcode/*.js", "src@lgcode/index.ts")).toBe(false)
     })
 
     test("matches dot files", () => {
       expect(Glob.match(".*", ".gitignore")).toBe(true)
-      expect(Glob.match("**/*.md", ".github/README.md")).toBe(true)
+      expect(Glob.match("**@lgcode/*.md", ".github@lgcode/README.md")).toBe(true)
     })
 
     test("matches brace expansion", () => {

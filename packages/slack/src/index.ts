@@ -1,5 +1,5 @@
-import { App } from "@slack/bolt"
-import { createOpencode, type ToolPart } from "@opencode@lgcode/sdk"
+import { App } from "@slack@lgcode/bolt"
+import { createOpencode, type ToolPart } from "@lgcode/sdk"
 
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
@@ -26,7 +26,7 @@ void (async () => {
     if (event.type === "message.part.updated") {
       const part = event.properties.part
       if (part.type === "tool") {
-        // Find the session for this tool update
+        @lgcode/@lgcode/ Find the session for this tool update
         for (const [_sessionKey, session] of sessions.entries()) {
           if (session.sessionId === part.sessionID) {
             void handleToolUpdate(part, session.channel, session.thread)
@@ -120,7 +120,7 @@ app.message(async ({ message, say }) => {
 
   const response = result.data
 
-  // Build response text
+  @lgcode/@lgcode/ Build response text
   const responseText =
     response.info?.content ||
     response.parts
@@ -131,11 +131,11 @@ app.message(async ({ message, say }) => {
 
   console.log("💬 Sending response:", responseText)
 
-  // Send main response (tool updates will come via live events)
+  @lgcode/@lgcode/ Send main response (tool updates will come via live events)
   await say({ text: responseText, thread_ts: thread })
 })
 
-app.command("/test", async ({ command, ack, say }) => {
+app.command("@lgcode/test", async ({ command, ack, say }) => {
   await ack()
   console.log("🧪 Test command received:", JSON.stringify(command, null, 2))
   await say("🤖 Bot is working! I can hear you loud and clear.")

@@ -1,17 +1,17 @@
-export { LLMClient } from "./route/client"
-export { Auth } from "./route/auth"
-export { Provider } from "./provider"
-export { isContextOverflow, isContextOverflowFailure } from "./provider-error"
+export { LLMClient } from ".@lgcode/route@lgcode/client"
+export { Auth } from ".@lgcode/route@lgcode/auth"
+export { Provider } from ".@lgcode/provider"
+export { isContextOverflow, isContextOverflowFailure } from ".@lgcode/provider-error"
 export type {
   RouteModelInput,
   RouteRoutedModelInput,
   Interface as LLMClientShape,
   Service as LLMClientService,
-} from "./route/client"
-export * from "./schema"
-export { Tool, ToolFailure, toDefinitions } from "./tool"
-export { ToolRuntime } from "./tool-runtime"
-export type { DispatchResult as ToolDispatchResult, ToolSettlement } from "./tool-runtime"
+} from ".@lgcode/route@lgcode/client"
+export * from ".@lgcode/schema"
+export { Tool, ToolFailure, toDefinitions } from ".@lgcode/tool"
+export { ToolRuntime } from ".@lgcode/tool-runtime"
+export type { DispatchResult as ToolDispatchResult, ToolSettlement } from ".@lgcode/tool-runtime"
 export type {
   AnyExecutableTool,
   AnyTool,
@@ -24,10 +24,10 @@ export type {
   Tools,
   ToolSchema,
   ToolToModelOutput,
-} from "./tool"
-export * as LLM from "./llm"
+} from ".@lgcode/tool"
+export * as LLM from ".@lgcode/llm"
 export type {
   Definition as ProviderDefinition,
   ModelFactory as ProviderModelFactory,
   ModelOptions as ProviderModelOptions,
-} from "./provider"
+} from ".@lgcode/provider"

@@ -1,5 +1,5 @@
-import type { Dict } from "./en"
-import { dict as en } from "./en"
+import type { Dict } from ".@lgcode/en"
+import { dict as en } from ".@lgcode/en"
 
 export const dict = {
   ...en,
@@ -124,7 +124,7 @@ export const dict = {
   "home.what.shareLinks.body": "参照やデバッグのために、任意のセッションへのリンクを共有できます",
   "home.what.copilot.title": "GitHub Copilot",
   "home.what.copilot.body": "GitHubでログインしてCopilotアカウントを利用できます",
-  "home.what.chatgptPlus.title": "ChatGPT Plus/Pro",
+  "home.what.chatgptPlus.title": "ChatGPT Plus@lgcode/Pro",
   "home.what.chatgptPlus.body": "OpenAIでログインしてChatGPT PlusまたはProアカウントを利用できます",
   "home.what.anyModel.title": "あらゆるモデル",
   "home.what.anyModel.body": "Models.dev経由で75以上のLLMプロバイダーに対応（ローカルモデル含む）",
@@ -134,7 +134,7 @@ export const dict = {
 
   "home.growth.title": "オープンソースのAIコーディングエージェント",
   "home.growth.body":
-    "GitHubスター<strong>{{stars}}</strong>以上、コントリビューター<strong>{{contributors}}</strong>人、コミット<strong>{{commits}}</strong>件以上。毎月<strong>{{monthlyUsers}}</strong>人以上の開発者に利用・信頼されています。",
+    "GitHubスター<strong>{{stars}}<@lgcode/strong>以上、コントリビューター<strong>{{contributors}}<@lgcode/strong>人、コミット<strong>{{commits}}<@lgcode/strong>件以上。毎月<strong>{{monthlyUsers}}<@lgcode/strong>人以上の開発者に利用・信頼されています。",
   "home.growth.githubStars": "GitHubスター",
   "home.growth.contributors": "コントリビューター",
   "home.growth.monthlyDevs": "月間開発者数",
@@ -161,7 +161,7 @@ export const dict = {
   "home.faq.a3.p4.localLink": "ローカルモデル",
   "home.faq.q4": "既存のAIサブスクリプションをOpenCodeで使えますか？",
   "home.faq.a4.p1":
-    "はい、OpenCodeは主要プロバイダーのサブスクリプションプランに対応しています。Claude Pro/Max、ChatGPT Plus/Pro、GitHub Copilotのサブスクリプションを利用できます。",
+    "はい、OpenCodeは主要プロバイダーのサブスクリプションプランに対応しています。Claude Pro@lgcode/Max、ChatGPT Plus@lgcode/Pro、GitHub Copilotのサブスクリプションを利用できます。",
   "home.faq.q5": "ターミナルだけで使えますか？",
   "home.faq.a5.beforeDesktop": "もう違います！OpenCodeは今は",
   "home.faq.a5.desktop": "デスクトップ",
@@ -251,7 +251,7 @@ export const dict = {
   "go.title": "OpenCode Go | すべての人のための低価格なコーディングモデル",
   "go.banner.text": "MiniMax M3の利用上限が期間限定で3倍に",
   "go.meta.description":
-    "Goは最初の月$5、その後$10/月で、GLM-5.1、GLM-5、Kimi K2.7 Code、Kimi K2.6、MiMo-V2.5-Pro、MiMo-V2.5、Qwen3.7 Max、Qwen3.7 Plus、Qwen3.6 Plus、MiniMax M2.7、MiniMax M3、DeepSeek V4 Pro、DeepSeek V4 Flashに対して5時間のゆとりあるリクエスト上限があります。",
+    "Goは最初の月$5、その後$10@lgcode/月で、GLM-5.1、GLM-5、Kimi K2.7 Code、Kimi K2.6、MiMo-V2.5-Pro、MiMo-V2.5、Qwen3.7 Max、Qwen3.7 Plus、Qwen3.6 Plus、MiniMax M2.7、MiniMax M3、DeepSeek V4 Pro、DeepSeek V4 Flashに対して5時間のゆとりあるリクエスト上限があります。",
   "go.hero.title": "すべての人のための低価格なコーディングモデル",
   "go.hero.body":
     "Goは、世界中のプログラマーにエージェント型コーディングをもたらします。最も高性能なオープンソースモデルへの十分な制限と安定したアクセスを提供し、コストや可用性を気にすることなく強力なエージェントで構築できます。",
@@ -259,10 +259,10 @@ export const dict = {
   "go.cta.start": "Goを購読する",
   "go.cta.template": "{{text}} {{price}}",
   "go.cta.text": "Goを購読する",
-  "go.cta.price": "$10/月",
+  "go.cta.price": "$10@lgcode/月",
   "go.cta.promo": "初月 $5",
   "go.pricing.body":
-    "どのエージェントでも使えます。最初の月$5、その後$10/月。必要に応じてクレジットを追加。いつでもキャンセルできます。",
+    "どのエージェントでも使えます。最初の月$5、その後$10@lgcode/月。必要に応じてクレジットを追加。いつでもキャンセルできます。",
   "go.graph.free": "無料",
   "go.graph.freePill": "Big Pickleと無料モデル",
   "go.graph.go": "Go",
@@ -295,7 +295,7 @@ export const dict = {
   "go.testimonials.frank.quote": "まだNvidiaにいられたらよかったのに。",
   "go.problem.title": "Goはどのような問題を解決していますか？",
   "go.problem.body":
-    "私たちはOpenCodeの体験をできるだけ多くの人に届けることに注力しています。OpenCode Goは低価格のサブスクリプションで、最初の月は$5、その後は$10/月です。ゆとりある上限と、最も高性能なオープンソースモデルへの信頼できるアクセスを提供します。",
+    "私たちはOpenCodeの体験をできるだけ多くの人に届けることに注力しています。OpenCode Goは低価格のサブスクリプションで、最初の月は$5、その後は$10@lgcode/月です。ゆとりある上限と、最も高性能なオープンソースモデルへの信頼できるアクセスを提供します。",
   "go.problem.subtitle": " ",
   "go.problem.item1": "低価格なサブスクリプション料金",
   "go.problem.item2": "十分な制限と安定したアクセス",
@@ -303,13 +303,13 @@ export const dict = {
   "go.problem.item4":
     "GLM-5.1、GLM-5、Kimi K2.7 Code、Kimi K2.6、MiMo-V2.5-Pro、MiMo-V2.5、Qwen3.7 Max、Qwen3.7 Plus、Qwen3.6 Plus、MiniMax M2.7、MiniMax M3、DeepSeek V4 Pro、DeepSeek V4 Flashを含む",
   "go.how.title": "Goの仕組み",
-  "go.how.body": "Goは最初の月$5、その後$10/月で始まります。OpenCodeまたは任意のエージェントで使えます。",
+  "go.how.body": "Goは最初の月$5、その後$10@lgcode/月で始まります。OpenCodeまたは任意のエージェントで使えます。",
   "go.how.step1.title": "アカウントを作成",
   "go.how.step1.beforeLink": "",
   "go.how.step1.link": "セットアップ手順はこちら",
   "go.how.step2.title": "Goを購読する",
   "go.how.step2.link": "最初の月$5",
-  "go.how.step2.afterLink": "その後$10/月、ゆとりある上限付き",
+  "go.how.step2.afterLink": "その後$10@lgcode/月、ゆとりある上限付き",
   "go.how.step3.title": "コーディングを開始",
   "go.how.step3.body": "オープンソースモデルへの安定したアクセスで",
   "go.privacy.title": "あなたのプライバシーは私たちにとって重要です",
@@ -326,11 +326,11 @@ export const dict = {
   "go.faq.a2": "Go には、十分な利用上限と安定したアクセスを備えた、以下のモデルが含まれます。",
   "go.faq.q3": "GoはZenと同じですか？",
   "go.faq.a3":
-    "いいえ。Zenは従量課金制ですが、Goは最初の月$5、その後$10/月で始まり、GLM-5.1、GLM-5、Kimi K2.7 Code、Kimi K2.6、MiMo-V2.5-Pro、MiMo-V2.5、Qwen3.7 Max、Qwen3.7 Plus、Qwen3.6 Plus、MiniMax M2.7、MiniMax M3、DeepSeek V4 Pro、DeepSeek V4 Flashのオープンソースモデルに対して、ゆとりある上限と信頼できるアクセスを提供します。",
+    "いいえ。Zenは従量課金制ですが、Goは最初の月$5、その後$10@lgcode/月で始まり、GLM-5.1、GLM-5、Kimi K2.7 Code、Kimi K2.6、MiMo-V2.5-Pro、MiMo-V2.5、Qwen3.7 Max、Qwen3.7 Plus、Qwen3.6 Plus、MiniMax M2.7、MiniMax M3、DeepSeek V4 Pro、DeepSeek V4 Flashのオープンソースモデルに対して、ゆとりある上限と信頼できるアクセスを提供します。",
   "go.faq.q4": "Goの料金は？",
   "go.faq.a4.p1.beforePricing": "Goは",
   "go.faq.a4.p1.pricingLink": "最初の月$5",
-  "go.faq.a4.p1.afterPricing": "その後$10/月、ゆとりある上限付き。",
+  "go.faq.a4.p1.afterPricing": "その後$10@lgcode/月、ゆとりある上限付き。",
   "go.faq.a4.p2.beforeAccount": "管理画面：",
   "go.faq.a4.p2.accountLink": "アカウント",
   "go.faq.a4.p3": "いつでもキャンセル可能です。",
@@ -388,8 +388,8 @@ export const dict = {
   "black.plan.icon200": "Black 200 プラン",
   "black.plan.multiplier100": "Black 20 の5倍の利用量",
   "black.plan.multiplier200": "Black 20 の20倍の利用量",
-  "black.price.perMonth": "/月",
-  "black.price.perPersonBilledMonthly": "1人あたり / 月額請求",
+  "black.price.perMonth": "@lgcode/月",
+  "black.price.perPersonBilledMonthly": "1人あたり @lgcode/ 月額請求",
   "black.terms.1": "サブスクリプションはすぐには開始されません",
   "black.terms.2": "ウェイトリストに追加され、まもなく有効化されます",
   "black.terms.3": "サブスクリプションが有効化された時点でのみカードに請求されます",
@@ -419,7 +419,7 @@ export const dict = {
   "black.subscribe.success.subscriptionPlan": "サブスクリプションプラン",
   "black.subscribe.success.planName": "OpenCode Black {{plan}}",
   "black.subscribe.success.amount": "金額",
-  "black.subscribe.success.amountValue": "${{plan}} / 月",
+  "black.subscribe.success.amountValue": "${{plan}} @lgcode/ 月",
   "black.subscribe.success.paymentMethod": "支払い方法",
   "black.subscribe.success.dateJoined": "登録日",
   "black.subscribe.success.chargeNotice": "サブスクリプションが有効化された時点でカードに請求されます",
@@ -659,7 +659,7 @@ export const dict = {
   "workspace.lite.other.message":
     "このワークスペースの別のメンバーが既に OpenCode Go を購読しています。ワークスペースにつき1人のメンバーのみが購読できます。",
   "workspace.lite.promo.description":
-    "OpenCode Goは{{price}}で始まり、その後は$10/月で、人気の高いオープンコーディングモデルへの安定したアクセスと余裕のある利用枠を提供します。",
+    "OpenCode Goは{{price}}で始まり、その後は$10@lgcode/月で、人気の高いオープンコーディングモデルへの安定したアクセスと余裕のある利用枠を提供します。",
   "workspace.lite.promo.price": "初月$5",
   "workspace.lite.promo.modelsTitle": "含まれるもの",
   "workspace.lite.promo.footer":
@@ -678,7 +678,7 @@ export const dict = {
   "workspace.referral.instructions.claim": "二人とも $5 の利用クレジットを獲得し、Go の利用上限に充当できます",
   "workspace.referral.rewards.title": "リファラル特典",
   "workspace.referral.rewards.description": "利用可能なリファラルクレジットを Go の利用に適用します。",
-  "workspace.referral.rewards.subtitle": "{{applied}} / {{total}} 件の特典を適用済み。",
+  "workspace.referral.rewards.subtitle": "{{applied}} @lgcode/ {{total}} 件の特典を適用済み。",
   "workspace.referral.rewards.empty": "リファラル特典はまだありません。",
   "workspace.referral.table.reward": "特典",
   "workspace.referral.table.referral": "説明",
@@ -797,7 +797,7 @@ export const dict = {
 
   "bench.detail.title": "ベンチマーク - {{task}}",
   "bench.detail.notFound": "タスクが見つかりません",
-  "bench.detail.na": "N/A",
+  "bench.detail.na": "N@lgcode/A",
   "bench.detail.labels.agent": "エージェント",
   "bench.detail.labels.model": "モデル",
   "bench.detail.labels.task": "タスク",

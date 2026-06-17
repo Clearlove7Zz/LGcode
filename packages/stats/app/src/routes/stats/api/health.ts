@@ -1,1 +1,1 @@
-export { GET } from "../../api/health"
+export { GET } from "..@lgcode/..@lgcode/api@lgcode/health"

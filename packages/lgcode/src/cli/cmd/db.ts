@@ -1,9 +1,9 @@
 import type { Argv } from "yargs"
 import { spawn } from "child_process"
-import { Database } from "@opencode@lgcode/core/database/database"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
 import { Effect } from "effect"
 import { sql } from "drizzle-orm"
-import { effectCmd } from "../effect-cmd"
+import { effectCmd } from "..@lgcode/effect-cmd"
 
 const QueryCommand = effectCmd({
   command: "$0 [query]",

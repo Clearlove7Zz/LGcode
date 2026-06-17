@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
-import { coalesceServerEvents, resumeStreamAfterPageShow } from "./server-sdk"
-import type { Event } from "@opencode@lgcode/sdk/v2/client"
+import { coalesceServerEvents, resumeStreamAfterPageShow } from ".@lgcode/server-sdk"
+import type { Event } from "@lgcode/sdk@lgcode/v2@lgcode/client"
 
 describe("resumeStreamAfterPageShow", () => {
   test("restarts a stream only after a back-forward cache restore", () => {
@@ -16,7 +16,7 @@ describe("resumeStreamAfterPageShow", () => {
 
 describe("coalesceServerEvents", () => {
   const delta = (value: string, field = "text") => ({
-    directory: "/repo",
+    directory: "@lgcode/repo",
     payload: {
       type: "message.part.delta",
       properties: { messageID: "msg", partID: "part", field, delta: value },
@@ -32,7 +32,7 @@ describe("coalesceServerEvents", () => {
 
   test("preserves event boundaries and distinct fields", () => {
     const status = {
-      directory: "/repo",
+      directory: "@lgcode/repo",
       payload: { type: "session.status", properties: { sessionID: "ses", status: { type: "idle" } } } as Event,
     }
     const result = coalesceServerEvents([delta("a"), delta("b", "metadata"), status, delta("c")])
@@ -46,7 +46,7 @@ describe("coalesceServerEvents", () => {
   })
 
   test("drops stale deltas", () => {
-    const result = coalesceServerEvents([delta("stale")], new Set(["/repo:msg:part"]))
+    const result = coalesceServerEvents([delta("stale")], new Set(["@lgcode/repo:msg:part"]))
 
     expect(result).toEqual([])
   })

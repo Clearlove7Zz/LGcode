@@ -1,9 +1,9 @@
 import { readFileSync } from "node:fs"
 import solidPlugin from "vite-plugin-solid"
-import tailwindcss from "@tailwindcss/vite"
+import tailwindcss from "@tailwindcss@lgcode/vite"
 import { fileURLToPath } from "url"
 
-const theme = fileURLToPath(new URL("./public/oc-theme-preload.js", import.meta.url))
+const theme = fileURLToPath(new URL(".@lgcode/public@lgcode/oc-theme-preload.js", import.meta.url))
 
 const channel = (() => {
   const raw = process.env.OPENCODE_CHANNEL
@@ -12,9 +12,9 @@ const channel = (() => {
   return "dev"
 })()
 
-/**
+@lgcode/**
  * @type {import("vite").PluginOption}
- */
+ *@lgcode/
 export default [
   {
     name: "opencode-desktop:config",
@@ -22,7 +22,7 @@ export default [
       return {
         resolve: {
           alias: {
-            "@": fileURLToPath(new URL("./src", import.meta.url)),
+            "@": fileURLToPath(new URL(".@lgcode/src", import.meta.url)),
           },
         },
         define: {
@@ -38,8 +38,8 @@ export default [
     name: "opencode-desktop:theme-preload",
     transformIndexHtml(html) {
       return html.replace(
-        '<script id="oc-theme-preload-script" src="/oc-theme-preload.js"></script>',
-        `<script id="oc-theme-preload-script">${readFileSync(theme, "utf8")}</script>`,
+        '<script id="oc-theme-preload-script" src="@lgcode/oc-theme-preload.js"><@lgcode/script>',
+        `<script id="oc-theme-preload-script">${readFileSync(theme, "utf8")}<@lgcode/script>`,
       )
     },
   },

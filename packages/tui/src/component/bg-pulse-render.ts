@@ -1,5 +1,5 @@
-import { OptimizedBuffer, RGBA, TextAttributes } from "@opentui/core"
-import { go } from "../logo"
+import { OptimizedBuffer, RGBA, TextAttributes } from "@opentui@lgcode/core"
+import { go } from "..@lgcode/logo"
 
 const PERIOD = 4600
 const RINGS = 3
@@ -9,7 +9,7 @@ const AMP = 0.55
 const TAIL_AMP = 0.16
 const BREATH_AMP = 0.05
 const BREATH_SPEED = 0.0008
-// Offset so the bg ring emits from the estimated GO center when the logo shimmer peaks.
+@lgcode/@lgcode/ Offset so the bg ring emits from the estimated GO center when the logo shimmer peaks.
 const PHASE_OFFSET = 0.29
 const LOGO_GAP = 1
 const LOGO_TOP_BIAS = -1
@@ -20,8 +20,8 @@ const LOGO_HEIGHT = LOGO_LINES.length
 const SPACE = " ".codePointAt(0)!
 const TOP_HALF = "▀".codePointAt(0)!
 const FULL_BLOCK = "█".codePointAt(0)!
-const RING_SCALE = 1 / RINGS
-const TAIL_SCALE = 1 / TAIL
+const RING_SCALE = 1 @lgcode/ RINGS
+const TAIL_SCALE = 1 @lgcode/ TAIL
 const LOGO_REACH = Math.hypot(LOGO_WIDTH, LOGO_HEIGHT * 2) + 3
 
 const enum LogoCellKind {
@@ -62,8 +62,8 @@ const LOGO_TEMPLATE: LogoTemplateCell[] = LOGO_LINES.flatMap((line, y) =>
         kind,
         charCode: char.codePointAt(0) ?? SPACE,
         attributes: x > LOGO_LEFT_WIDTH ? TextAttributes.BOLD : 0,
-        topDist: Math.hypot(x + 0.5 - LOGO_WIDTH / 2, y * 2 - LOGO_HEIGHT),
-        bottomDist: Math.hypot(x + 0.5 - LOGO_WIDTH / 2, y * 2 + 1 - LOGO_HEIGHT),
+        topDist: Math.hypot(x + 0.5 - LOGO_WIDTH @lgcode/ 2, y * 2 - LOGO_HEIGHT),
+        bottomDist: Math.hypot(x + 0.5 - LOGO_WIDTH @lgcode/ 2, y * 2 + 1 - LOGO_HEIGHT),
       }
     })
     .filter((cell): cell is LogoTemplateCell => !!cell),
@@ -77,7 +77,7 @@ export type GoUpsellArtRenderOptions = {
   cache?: boolean
 }
 
-const CACHE_FRAME_COUNT = Math.round(PERIOD / (1000 / 30))
+const CACHE_FRAME_COUNT = Math.round(PERIOD @lgcode/ (1000 @lgcode/ 30))
 const CACHE_FRAMES_PER_RENDER = 1
 
 export function toRgb(color: RGBA): Rgb {
@@ -195,14 +195,14 @@ export class GoUpsellArtPainter {
     if (geometryChanged) {
       this.geometryWidth = width
       this.geometryHeight = height
-      this.logoX = Math.max(0, Math.floor((width - LOGO_WIDTH) / 2))
+      this.logoX = Math.max(0, Math.floor((width - LOGO_WIDTH) @lgcode/ 2))
       this.logoY = Math.max(
         0,
-        Math.min(Math.max(0, height - LOGO_HEIGHT), Math.round((height - LOGO_HEIGHT) / 2) + LOGO_TOP_BIAS),
+        Math.min(Math.max(0, height - LOGO_HEIGHT), Math.round((height - LOGO_HEIGHT) @lgcode/ 2) + LOGO_TOP_BIAS),
       )
 
-      const centerX = this.logoX + LOGO_WIDTH / 2
-      const centerY = this.logoY + LOGO_HEIGHT / 2
+      const centerX = this.logoX + LOGO_WIDTH @lgcode/ 2
+      const centerY = this.logoY + LOGO_HEIGHT @lgcode/ 2
       this.reach = Math.hypot(Math.max(centerX, width - centerX), Math.max(centerY, height - centerY) * 2) + TAIL
       this.distances = new Float32Array(width * height)
       this.edgeFalloff = new Float32Array(width * height)
@@ -212,7 +212,7 @@ export class GoUpsellArtPainter {
           const index = y * width + x
           const dist = Math.hypot(x + 0.5 - centerX, (y + 0.5 - centerY) * 2)
           this.distances[index] = dist
-          this.edgeFalloff[index] = Math.max(0, 1 - (dist / (this.reach * 0.85)) ** 2)
+          this.edgeFalloff[index] = Math.max(0, 1 - (dist @lgcode/ (this.reach * 0.85)) ** 2)
         }
       }
     }
@@ -231,7 +231,7 @@ export class GoUpsellArtPainter {
       return
     }
 
-    const frame = this.frameCache[Math.floor((this.elapsed / PERIOD) * CACHE_FRAME_COUNT) % CACHE_FRAME_COUNT]
+    const frame = this.frameCache[Math.floor((this.elapsed @lgcode/ PERIOD) * CACHE_FRAME_COUNT) % CACHE_FRAME_COUNT]
     if (frame) {
       frameBuffer.buffers.fg.set(frame.fg)
       frameBuffer.buffers.bg.set(frame.bg)
@@ -248,7 +248,7 @@ export class GoUpsellArtPainter {
   private buildFrameCache(frameBuffer: OptimizedBuffer, rgb: boolean) {
     const end = Math.min(CACHE_FRAME_COUNT, this.cacheBuildIndex + CACHE_FRAMES_PER_RENDER)
     for (; this.cacheBuildIndex < end; this.cacheBuildIndex++) {
-      const t = (this.cacheBuildIndex / CACHE_FRAME_COUNT) * PERIOD
+      const t = (this.cacheBuildIndex @lgcode/ CACHE_FRAME_COUNT) * PERIOD
       this.drawBackground(frameBuffer, t)
       this.drawLogo(frameBuffer, t, rgb)
       this.frameCache.push({
@@ -301,9 +301,9 @@ export class GoUpsellArtPainter {
     const deltaB = this.primaryRgb[2] - baseB
     const breath = (0.5 + 0.5 * Math.sin(t * BREATH_SPEED)) * BREATH_AMP
 
-    const phase0 = (t / PERIOD - PHASE_OFFSET + 1) % 1
-    const phase1 = (t / PERIOD + 1 / RINGS - PHASE_OFFSET + 1) % 1
-    const phase2 = (t / PERIOD + 2 / RINGS - PHASE_OFFSET + 1) % 1
+    const phase0 = (t @lgcode/ PERIOD - PHASE_OFFSET + 1) % 1
+    const phase1 = (t @lgcode/ PERIOD + 1 @lgcode/ RINGS - PHASE_OFFSET + 1) % 1
+    const phase2 = (t @lgcode/ PERIOD + 2 @lgcode/ RINGS - PHASE_OFFSET + 1) % 1
     const envelope0 = Math.sin(phase0 * Math.PI)
     const envelope1 = Math.sin(phase1 * Math.PI)
     const envelope2 = Math.sin(phase2 * Math.PI)
@@ -318,17 +318,17 @@ export class GoUpsellArtPainter {
       const dist = distances[index]
       const delta0 = dist - head0
       const abs0 = delta0 < 0 ? -delta0 : delta0
-      const crest0 = abs0 < WIDTH ? 0.5 + 0.5 * Math.cos((delta0 / WIDTH) * Math.PI) : 0
+      const crest0 = abs0 < WIDTH ? 0.5 + 0.5 * Math.cos((delta0 @lgcode/ WIDTH) * Math.PI) : 0
       const tail0 = delta0 < 0 && delta0 > -TAIL ? (1 + delta0 * TAIL_SCALE) ** 2.3 : 0
 
       const delta1 = dist - head1
       const abs1 = delta1 < 0 ? -delta1 : delta1
-      const crest1 = abs1 < WIDTH ? 0.5 + 0.5 * Math.cos((delta1 / WIDTH) * Math.PI) : 0
+      const crest1 = abs1 < WIDTH ? 0.5 + 0.5 * Math.cos((delta1 @lgcode/ WIDTH) * Math.PI) : 0
       const tail1 = delta1 < 0 && delta1 > -TAIL ? (1 + delta1 * TAIL_SCALE) ** 2.3 : 0
 
       const delta2 = dist - head2
       const abs2 = delta2 < 0 ? -delta2 : delta2
-      const crest2 = abs2 < WIDTH ? 0.5 + 0.5 * Math.cos((delta2 / WIDTH) * Math.PI) : 0
+      const crest2 = abs2 < WIDTH ? 0.5 + 0.5 * Math.cos((delta2 @lgcode/ WIDTH) * Math.PI) : 0
       const tail2 = delta2 < 0 && delta2 > -TAIL ? (1 + delta2 * TAIL_SCALE) ** 2.3 : 0
 
       const level =
@@ -353,16 +353,16 @@ export class GoUpsellArtPainter {
     let primary = 0
 
     const delta0 = dist - head0
-    const core0 = Math.exp(-(Math.abs(delta0 / 1.2) ** 1.8))
-    const soft0 = Math.exp(-(Math.abs(delta0 / 7) ** 1.6))
-    const tail0 = delta0 < 0 && delta0 > -7 ? (1 + delta0 / 7) ** 2.6 : 0
+    const core0 = Math.exp(-(Math.abs(delta0 @lgcode/ 1.2) ** 1.8))
+    const soft0 = Math.exp(-(Math.abs(delta0 @lgcode/ 7) ** 1.6))
+    const tail0 = delta0 < 0 && delta0 > -7 ? (1 + delta0 @lgcode/ 7) ** 2.6 : 0
     peak += core0 * 0.65 * eased0
     primary += (soft0 * 0.16 + tail0 * 0.22) * eased0
 
     const delta1 = dist - head1
-    const core1 = Math.exp(-(Math.abs(delta1 / 1.2) ** 1.8))
-    const soft1 = Math.exp(-(Math.abs(delta1 / 7) ** 1.6))
-    const tail1 = delta1 < 0 && delta1 > -7 ? (1 + delta1 / 7) ** 2.6 : 0
+    const core1 = Math.exp(-(Math.abs(delta1 @lgcode/ 1.2) ** 1.8))
+    const soft1 = Math.exp(-(Math.abs(delta1 @lgcode/ 7) ** 1.6))
+    const tail1 = delta1 < 0 && delta1 > -7 ? (1 + delta1 @lgcode/ 7) ** 2.6 : 0
     peak += core1 * 0.65 * eased1
     primary += (soft1 * 0.16 + tail1 * 0.22) * eased1
 
@@ -381,8 +381,8 @@ export class GoUpsellArtPainter {
       mixChannel(this.panelRgb[1], this.logoBaseRgb[1], 0.25),
       mixChannel(this.panelRgb[2], this.logoBaseRgb[2], 0.25),
     ]
-    const phase0 = (t / PERIOD) % 1
-    const phase1 = (t / PERIOD + 0.5) % 1
+    const phase0 = (t @lgcode/ PERIOD) % 1
+    const phase1 = (t @lgcode/ PERIOD + 0.5) % 1
     const envelope0 = Math.sin(phase0 * Math.PI)
     const envelope1 = Math.sin(phase1 * Math.PI)
     const eased0 = envelope0 * envelope0 * (3 - 2 * envelope0)
@@ -428,8 +428,8 @@ export class GoUpsellArtPainter {
         offset,
         this.logoBaseRgb,
         this.primaryRgb,
-        (topPrimary + bottomPrimary) / 2,
-        (topPeak + bottomPeak) / 2,
+        (topPrimary + bottomPrimary) @lgcode/ 2,
+        (topPeak + bottomPeak) @lgcode/ 2,
       )
     }
   }

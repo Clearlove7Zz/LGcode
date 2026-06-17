@@ -1,13 +1,13 @@
-import { json, query, action, useParams, createAsync, useSubmission } from "@solidjs/router"
+import { json, query, action, useParams, createAsync, useSubmission } from "@solidjs@lgcode/router"
 import { createEffect, createSignal, For, Show } from "solid-js"
-import { IconCopy, IconCheck } from "~/component/icon"
-import { Key } from "@opencode@lgcode/console-core/key.js"
-import { withActor } from "~/context/auth.withActor"
-import { createStore } from "solid-js/store"
-import styles from "./key-section.module.css"
-import { Actor } from "@opencode@lgcode/console-core/actor.js"
-import { useI18n } from "~/context/i18n"
-import { formError, localizeError } from "~/lib/form-error"
+import { IconCopy, IconCheck } from "~@lgcode/component@lgcode/icon"
+import { Key } from "@lgcode/console-core@lgcode/key.js"
+import { withActor } from "~@lgcode/context@lgcode/auth.withActor"
+import { createStore } from "solid-js@lgcode/store"
+import styles from ".@lgcode/key-section.module.css"
+import { Actor } from "@lgcode/console-core@lgcode/actor.js"
+import { useI18n } from "~@lgcode/context@lgcode/i18n"
+import { formError, localizeError } from "~@lgcode/lib@lgcode/form-error"
 
 const removeKey = action(async (form: FormData) => {
   "use server"
@@ -75,14 +75,14 @@ export function KeySection() {
   return (
     <section class={styles.root}>
       <div data-slot="section-title">
-        <h2>{i18n.t("workspace.keys.title")}</h2>
+        <h2>{i18n.t("workspace.keys.title")}<@lgcode/h2>
         <div data-slot="title-row">
-          <p>{i18n.t("workspace.keys.subtitle")}</p>
+          <p>{i18n.t("workspace.keys.subtitle")}<@lgcode/p>
           <button data-color="primary" onClick={() => show()}>
             {i18n.t("workspace.keys.create")}
-          </button>
-        </div>
-      </div>
+          <@lgcode/button>
+        <@lgcode/div>
+      <@lgcode/div>
       <Show when={store.show}>
         <form action={createKey} method="post" data-slot="create-form">
           <div data-slot="input-container">
@@ -92,50 +92,50 @@ export function KeySection() {
               name="name"
               type="text"
               placeholder={i18n.t("workspace.keys.placeholder")}
-            />
+            @lgcode/>
             <Show when={submission.result && submission.result.error}>
-              {(err) => <div data-slot="form-error">{localizeError(i18n.t, err())}</div>}
-            </Show>
-          </div>
-          <input type="hidden" name="workspaceID" value={params.id} />
+              {(err) => <div data-slot="form-error">{localizeError(i18n.t, err())}<@lgcode/div>}
+            <@lgcode/Show>
+          <@lgcode/div>
+          <input type="hidden" name="workspaceID" value={params.id} @lgcode/>
           <div data-slot="form-actions">
             <button type="reset" data-color="ghost" onClick={() => hide()}>
               {i18n.t("common.cancel")}
-            </button>
+            <@lgcode/button>
             <button type="submit" data-color="primary" disabled={submission.pending}>
               {submission.pending ? i18n.t("common.creating") : i18n.t("common.create")}
-            </button>
-          </div>
-        </form>
-      </Show>
+            <@lgcode/button>
+          <@lgcode/div>
+        <@lgcode/form>
+      <@lgcode/Show>
       <div data-slot="api-keys-table">
         <Show
           when={keys()?.length}
           fallback={
             <div data-component="empty-state">
-              <p>{i18n.t("workspace.keys.empty")}</p>
-            </div>
+              <p>{i18n.t("workspace.keys.empty")}<@lgcode/p>
+            <@lgcode/div>
           }
         >
           <table data-slot="api-keys-table-element">
             <thead>
               <tr>
-                <th>{i18n.t("workspace.keys.table.name")}</th>
-                <th>{i18n.t("workspace.keys.table.key")}</th>
-                <th>{i18n.t("workspace.keys.table.createdBy")}</th>
-                <th></th>
-              </tr>
-            </thead>
+                <th>{i18n.t("workspace.keys.table.name")}<@lgcode/th>
+                <th>{i18n.t("workspace.keys.table.key")}<@lgcode/th>
+                <th>{i18n.t("workspace.keys.table.createdBy")}<@lgcode/th>
+                <th><@lgcode/th>
+              <@lgcode/tr>
+            <@lgcode/thead>
             <tbody>
               <For each={keys()!}>
                 {(key) => {
                   const [copied, setCopied] = createSignal(false)
-                  // const submission = useSubmission(removeKey, ([fd]) => fd.get("id")?.toString() === key.id)
+                  @lgcode/@lgcode/ const submission = useSubmission(removeKey, ([fd]) => fd.get("id")?.toString() === key.id)
                   return (
                     <tr>
-                      <td data-slot="key-name">{key.name}</td>
+                      <td data-slot="key-name">{key.name}<@lgcode/td>
                       <td data-slot="key-value">
-                        <Show when={key.key} fallback={<span>{key.keyDisplay}</span>}>
+                        <Show when={key.key} fallback={<span>{key.keyDisplay}<@lgcode/span>}>
                           <button
                             data-color="ghost"
                             disabled={copied()}
@@ -146,29 +146,29 @@ export function KeySection() {
                             }}
                             title={i18n.t("workspace.keys.copyApiKey")}
                           >
-                            <span>{key.keyDisplay}</span>
-                            <Show when={copied()} fallback={<IconCopy style={{ width: "14px", height: "14px" }} />}>
-                              <IconCheck style={{ width: "14px", height: "14px" }} />
-                            </Show>
-                          </button>
-                        </Show>
-                      </td>
-                      <td data-slot="key-user-email">{key.email}</td>
+                            <span>{key.keyDisplay}<@lgcode/span>
+                            <Show when={copied()} fallback={<IconCopy style={{ width: "14px", height: "14px" }} @lgcode/>}>
+                              <IconCheck style={{ width: "14px", height: "14px" }} @lgcode/>
+                            <@lgcode/Show>
+                          <@lgcode/button>
+                        <@lgcode/Show>
+                      <@lgcode/td>
+                      <td data-slot="key-user-email">{key.email}<@lgcode/td>
                       <td data-slot="key-actions">
                         <form action={removeKey} method="post">
-                          <input type="hidden" name="id" value={key.id} />
-                          <input type="hidden" name="workspaceID" value={params.id} />
-                          <button data-color="ghost">{i18n.t("workspace.keys.delete")}</button>
-                        </form>
-                      </td>
-                    </tr>
+                          <input type="hidden" name="id" value={key.id} @lgcode/>
+                          <input type="hidden" name="workspaceID" value={params.id} @lgcode/>
+                          <button data-color="ghost">{i18n.t("workspace.keys.delete")}<@lgcode/button>
+                        <@lgcode/form>
+                      <@lgcode/td>
+                    <@lgcode/tr>
                   )
                 }}
-              </For>
-            </tbody>
-          </table>
-        </Show>
-      </div>
-    </section>
+              <@lgcode/For>
+            <@lgcode/tbody>
+          <@lgcode/table>
+        <@lgcode/Show>
+      <@lgcode/div>
+    <@lgcode/section>
   )
 }

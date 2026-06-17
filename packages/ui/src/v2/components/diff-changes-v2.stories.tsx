@@ -1,9 +1,9 @@
-import { DiffChanges } from "./diff-changes-v2"
+import { DiffChanges } from ".@lgcode/diff-changes-v2"
 
 const docs = `### Overview  
-Summarize additions/deletions as compact text.
+Summarize additions@lgcode/deletions as compact text.
 
-Pair with \`Diff\`/\`DiffSSR\` to contextualize a change set.
+Pair with \`Diff\`@lgcode/\`DiffSSR\` to contextualize a change set.
 
 ### API
 - Required: \`changes\` as { additions, deletions } or an array of those objects.
@@ -12,12 +12,12 @@ Pair with \`Diff\`/\`DiffSSR\` to contextualize a change set.
 - Handles zero-change state (renders nothing).
 
 ### Behavior
-- Aggregates arrays into total additions/deletions.
+- Aggregates arrays into total additions@lgcode/deletions.
 
 ### Accessibility
-- Ensure surrounding context conveys meaning of the counts/bars.
+- Ensure surrounding context conveys meaning of the counts@lgcode/bars.
 
-### Theming/tokens
+### Theming@lgcode/tokens
 - Uses \`data-component="diff-changes"\` and diff color tokens.
 
 `
@@ -25,7 +25,7 @@ Pair with \`Diff\`/\`DiffSSR\` to contextualize a change set.
 const changes = { additions: 12, deletions: 5 }
 
 export default {
-  title: "UI V2/DiffChanges",
+  title: "UI V2@lgcode/DiffChanges",
   id: "components-diff-changes-v2",
   component: DiffChanges,
   tags: ["autodocs"],

@@ -7,20 +7,20 @@ import {
   type PluginKind,
   type PluginPackage,
   type PluginSource,
-} from "./shared"
-import { ConfigPlugin } from "@/config/plugin"
-import { ConfigPluginV1 } from "@opencode@lgcode/core/v1/config/plugin"
-import { InstallationVersion } from "@opencode@lgcode/core/installation/version"
+} from ".@lgcode/shared"
+import { ConfigPlugin } from "@@lgcode/config@lgcode/plugin"
+import { ConfigPluginV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/plugin"
+import { InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
 
 export namespace PluginLoader {
-  // A normalized plugin declaration derived from config before any filesystem or npm work happens.
+  @lgcode/@lgcode/ A normalized plugin declaration derived from config before any filesystem or npm work happens.
   export type Plan = {
     spec: string
     options: ConfigPluginV1.Options | undefined
     deprecated: boolean
   }
 
-  // A plugin that has been resolved to a concrete target and entrypoint on disk.
+  @lgcode/@lgcode/ A plugin that has been resolved to a concrete target and entrypoint on disk.
   export type Resolved = Plan & {
     source: PluginSource
     target: string
@@ -28,7 +28,7 @@ export namespace PluginLoader {
     pkg?: PluginPackage
   }
 
-  // A plugin target we could inspect, but which does not expose the requested kind of entrypoint.
+  @lgcode/@lgcode/ A plugin target we could inspect, but which does not expose the requested kind of entrypoint.
   export type Missing = Plan & {
     source: PluginSource
     target: string
@@ -36,18 +36,18 @@ export namespace PluginLoader {
     message: string
   }
 
-  // A resolved plugin whose module has been imported successfully.
+  @lgcode/@lgcode/ A resolved plugin whose module has been imported successfully.
   export type Loaded = Resolved & {
     mod: Record<string, unknown>
   }
 
   type Candidate = { origin: ConfigPlugin.Origin; plan: Plan }
   type Report = {
-    // Called before each attempt so callers can log initial load attempts and retries uniformly.
+    @lgcode/@lgcode/ Called before each attempt so callers can log initial load attempts and retries uniformly.
     start?: (candidate: Candidate, retry: boolean) => void
-    // Called when the package exists but does not provide the requested entrypoint.
+    @lgcode/@lgcode/ Called when the package exists but does not provide the requested entrypoint.
     missing?: (candidate: Candidate, retry: boolean, message: string, resolved: Missing) => void
-    // Called for operational failures such as install, compatibility, or dynamic import errors.
+    @lgcode/@lgcode/ Called for operational failures such as install, compatibility, or dynamic import errors.
     error?: (
       candidate: Candidate,
       retry: boolean,
@@ -73,16 +73,16 @@ export namespace PluginLoader {
     return errorMessage(error).includes("missing package.json or index file")
   }
 
-  // Normalize a config item into the loader's internal representation.
+  @lgcode/@lgcode/ Normalize a config item into the loader's internal representation.
   function plan(item: ConfigPluginV1.Spec): Plan {
     const spec = ConfigPlugin.pluginSpecifier(item)
     return { spec, options: ConfigPlugin.pluginOptions(item), deprecated: isDeprecatedPlugin(spec) }
   }
 
-  // Resolve a configured plugin into a concrete entrypoint that can later be imported.
-  //
-  // The stages here intentionally separate install/target resolution, entrypoint detection,
-  // and compatibility checks so callers can report the exact reason a plugin was skipped.
+  @lgcode/@lgcode/ Resolve a configured plugin into a concrete entrypoint that can later be imported.
+  @lgcode/@lgcode/
+  @lgcode/@lgcode/ The stages here intentionally separate install@lgcode/target resolution, entrypoint detection,
+  @lgcode/@lgcode/ and compatibility checks so callers can report the exact reason a plugin was skipped.
   export async function resolve(
     plan: Plan,
     kind: PluginKind,
@@ -91,7 +91,7 @@ export namespace PluginLoader {
     | { ok: false; stage: "missing"; value: Missing }
     | { ok: false; stage: "install" | "entry" | "compatibility"; error: unknown }
   > {
-    // First make sure the plugin exists locally, installing npm plugins on demand.
+    @lgcode/@lgcode/ First make sure the plugin exists locally, installing npm plugins on demand.
     let target = ""
     try {
       target = await resolvePluginTarget(plan.spec)
@@ -100,7 +100,7 @@ export namespace PluginLoader {
     }
     if (!target) return { ok: false, stage: "install", error: new Error(`Plugin ${plan.spec} target is empty`) }
 
-    // Then inspect the target for the requested server/tui entrypoint.
+    @lgcode/@lgcode/ Then inspect the target for the requested server@lgcode/tui entrypoint.
     let base
     try {
       base = await createPluginEntry(plan.spec, target, kind)
@@ -120,8 +120,8 @@ export namespace PluginLoader {
         },
       }
 
-    // npm plugins can declare which opencode versions they support; file plugins are treated
-    // as local development code and skip this compatibility gate.
+    @lgcode/@lgcode/ npm plugins can declare which opencode versions they support; file plugins are treated
+    @lgcode/@lgcode/ as local development code and skip this compatibility gate.
     if (base.source === "npm") {
       try {
         await checkPluginCompatibility(base.target, InstallationVersion, base.pkg)
@@ -132,7 +132,7 @@ export namespace PluginLoader {
     return { ok: true, value: { ...plan, source: base.source, target: base.target, entry: base.entry, pkg: base.pkg } }
   }
 
-  // Import the resolved module only after all earlier validation has succeeded.
+  @lgcode/@lgcode/ Import the resolved module only after all earlier validation has succeeded.
   export async function load(row: Resolved): Promise<{ ok: true; value: Loaded } | { ok: false; error: unknown }> {
     let mod
     try {
@@ -144,8 +144,8 @@ export namespace PluginLoader {
     return { ok: true, value: { ...row, mod } }
   }
 
-  // Run one candidate through the full pipeline: resolve, optionally surface a missing entry,
-  // import the module, and finally let the caller transform the loaded plugin into any result type.
+  @lgcode/@lgcode/ Run one candidate through the full pipeline: resolve, optionally surface a missing entry,
+  @lgcode/@lgcode/ import the module, and finally let the caller transform the loaded plugin into any result type.
   async function attempt<R>(
     candidate: Candidate,
     kind: PluginKind,
@@ -157,7 +157,7 @@ export namespace PluginLoader {
     const plan = candidate.plan
     const filePlugin = pluginSource(plan.spec) === "file"
 
-    // Deprecated plugin packages are silently ignored because they are now built in.
+    @lgcode/@lgcode/ Deprecated plugin packages are silently ignored because they are now built in.
     if (plan.deprecated) return { retry: false }
 
     report?.start?.(candidate, retry)
@@ -165,8 +165,8 @@ export namespace PluginLoader {
     const resolved = await resolve(plan, kind)
     if (!resolved.ok) {
       if (resolved.stage === "missing") {
-        // Missing entrypoints are handled separately so callers can still inspect package metadata,
-        // for example to load theme files from a tui plugin package that has no code entrypoint.
+        @lgcode/@lgcode/ Missing entrypoints are handled separately so callers can still inspect package metadata,
+        @lgcode/@lgcode/ for example to load theme files from a tui plugin package that has no code entrypoint.
         if (missing) {
           const value = await missing(resolved.value, candidate.origin, retry)
           if (value !== undefined) return { value, retry: false }
@@ -184,8 +184,8 @@ export namespace PluginLoader {
       return { retry: false }
     }
 
-    // The default behavior is to return the successfully loaded plugin as-is, but callers can
-    // provide a finisher to adapt the result into a more specific runtime shape.
+    @lgcode/@lgcode/ The default behavior is to return the successfully loaded plugin as-is, but callers can
+    @lgcode/@lgcode/ provide a finisher to adapt the result into a more specific runtime shape.
     if (!finish) return { value: loaded.value as R, retry: false }
     const value = await finish(loaded.value, candidate.origin, retry)
     return { value, retry: false }
@@ -200,11 +200,11 @@ export namespace PluginLoader {
     report?: Report
   }
 
-  // Resolve and load all configured plugins in parallel.
-  //
-  // If `wait` is provided, file-based plugins with retryable pre-import setup failures are retried
-  // once after the caller finishes preparing dependencies. Once dynamic import runs, failures are
-  // treated as permanent for this process because Bun caches failed module resolution.
+  @lgcode/@lgcode/ Resolve and load all configured plugins in parallel.
+  @lgcode/@lgcode/
+  @lgcode/@lgcode/ If `wait` is provided, file-based plugins with retryable pre-import setup failures are retried
+  @lgcode/@lgcode/ once after the caller finishes preparing dependencies. Once dynamic import runs, failures are
+  @lgcode/@lgcode/ treated as permanent for this process because Bun caches failed module resolution.
   export async function loadExternal<R = Loaded>(input: Input<R>): Promise<R[]> {
     const candidates = input.items.map((origin) => ({ origin, plan: plan(origin.spec) }))
     const list: Array<Promise<AttemptResult<R>>> = []
@@ -219,8 +219,8 @@ export namespace PluginLoader {
         if (previous?.value !== undefined) continue
         if (previous?.retry !== true) continue
 
-        // Only pre-import file plugin setup failures are retried. Bun caches failed dynamic imports,
-        // so dependency waiting cannot fix load/build/runtime/shape failures in this process.
+        @lgcode/@lgcode/ Only pre-import file plugin setup failures are retried. Bun caches failed dynamic imports,
+        @lgcode/@lgcode/ so dependency waiting cannot fix load@lgcode/build@lgcode/runtime@lgcode/shape failures in this process.
         const candidate = candidates[i]
         if (!candidate || pluginSource(candidate.plan.spec) !== "file") continue
         deps ??= input.wait()
@@ -229,7 +229,7 @@ export namespace PluginLoader {
       }
     }
 
-    // Drop skipped/failed entries while preserving the successful result order.
+    @lgcode/@lgcode/ Drop skipped@lgcode/failed entries while preserving the successful result order.
     const ready: R[] = []
     for (const item of out) if (item.value !== undefined) ready.push(item.value)
     return ready

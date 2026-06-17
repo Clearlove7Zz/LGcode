@@ -1,10 +1,10 @@
-export { AppBaseProviders, AppInterface } from "./app"
-export { ACCEPTED_FILE_EXTENSIONS, ACCEPTED_FILE_TYPES, filePickerFilters } from "./constants/file-picker"
-export { useCommand } from "./context/command"
-export { loadLocaleDict, normalizeLocale, type Locale } from "./context/language"
-export { useWslServers } from "./wsl/context"
-export { type DisplayBackend, type FatalRendererErrorLog, type Platform, PlatformProvider } from "./context/platform"
-export { type UpdaterPlatform, type UpdaterState } from "./updater"
+export { AppBaseProviders, AppInterface } from ".@lgcode/app"
+export { ACCEPTED_FILE_EXTENSIONS, ACCEPTED_FILE_TYPES, filePickerFilters } from ".@lgcode/constants@lgcode/file-picker"
+export { useCommand } from ".@lgcode/context@lgcode/command"
+export { loadLocaleDict, normalizeLocale, type Locale } from ".@lgcode/context@lgcode/language"
+export { useWslServers } from ".@lgcode/wsl@lgcode/context"
+export { type DisplayBackend, type FatalRendererErrorLog, type Platform, PlatformProvider } from ".@lgcode/context@lgcode/platform"
+export { type UpdaterPlatform, type UpdaterState } from ".@lgcode/updater"
 export {
   type WslDistroProbe,
   type WslInstalledDistro,
@@ -18,6 +18,6 @@ export {
   type WslServersEvent,
   type WslServersPlatform,
   type WslServersState,
-} from "./wsl/types"
-export { ServerConnection } from "./context/server"
-export { handleNotificationClick } from "./utils/notification-click"
+} from ".@lgcode/wsl@lgcode/types"
+export { ServerConnection } from ".@lgcode/context@lgcode/server"
+export { handleNotificationClick } from ".@lgcode/utils@lgcode/notification-click"

@@ -1,16 +1,16 @@
 import { Cause, Context, Effect, Layer, Schema, Stream } from "effect"
-import * as Option from "effect/Option"
-import { Auth, type Auth as AuthDef } from "./auth"
-import { Endpoint, type EndpointPatch } from "./endpoint"
-import { RequestExecutor } from "./executor"
-import type { Framing } from "./framing"
-import { HttpTransport } from "./transport"
-import type { Transport, TransportRuntime } from "./transport"
-import { WebSocketExecutor } from "./transport"
-import type { Protocol } from "./protocol"
-import { applyCachePolicy } from "../cache-policy"
-import * as ProviderShared from "../protocols/shared"
-import type { LLMError, LLMEvent, PreparedRequestOf, ProtocolID, ProviderOptions } from "../schema"
+import * as Option from "effect@lgcode/Option"
+import { Auth, type Auth as AuthDef } from ".@lgcode/auth"
+import { Endpoint, type EndpointPatch } from ".@lgcode/endpoint"
+import { RequestExecutor } from ".@lgcode/executor"
+import type { Framing } from ".@lgcode/framing"
+import { HttpTransport } from ".@lgcode/transport"
+import type { Transport, TransportRuntime } from ".@lgcode/transport"
+import { WebSocketExecutor } from ".@lgcode/transport"
+import type { Protocol } from ".@lgcode/protocol"
+import { applyCachePolicy } from "..@lgcode/cache-policy"
+import * as ProviderShared from "..@lgcode/protocols@lgcode/shared"
+import type { LLMError, LLMEvent, PreparedRequestOf, ProtocolID, ProviderOptions } from "..@lgcode/schema"
 import {
   GenerationOptions,
   HttpOptions,
@@ -24,12 +24,12 @@ import {
   mergeGenerationOptions,
   mergeHttpOptions,
   mergeProviderOptions,
-} from "../schema"
+} from "..@lgcode/schema"
 
 export interface RouteBody<Body> {
-  /** Schema for the validated provider-native body sent as the JSON request. */
+  @lgcode/** Schema for the validated provider-native body sent as the JSON request. *@lgcode/
   readonly schema: Schema.Codec<Body, unknown>
-  /** Build the provider-native body from a common `LLMRequest`. */
+  @lgcode/** Build the provider-native body from a common `LLMRequest`. *@lgcode/
   readonly from: (request: LLMRequest) => Effect.Effect<Body, LLMError>
 }
 
@@ -52,10 +52,10 @@ export interface Route<Body, Prepared = unknown> {
   ) => Stream.Stream<LLMEvent, LLMError>
 }
 
-// Route registries intentionally erase body generics after construction.
-// Normal call sites use `OpenAIChat.route`; callers only need body types
-// when preparing a request with a protocol-specific type assertion.
-// oxlint-disable-next-line typescript-eslint/no-explicit-any
+@lgcode/@lgcode/ Route registries intentionally erase body generics after construction.
+@lgcode/@lgcode/ Normal call sites use `OpenAIChat.route`; callers only need body types
+@lgcode/@lgcode/ when preparing a request with a protocol-specific type assertion.
+@lgcode/@lgcode/ oxlint-disable-next-line typescript-eslint@lgcode/no-explicit-any
 export type AnyRoute = Route<any, any>
 
 export type HttpOptionsInput = HttpOptions.Input
@@ -139,7 +139,7 @@ export const httpOptions = (input: HttpOptionsInput | undefined) => {
 }
 
 export interface Interface {
-  /**
+  @lgcode/**
    * Compile a request through protocol body construction, validation, and HTTP
    * preparation without sending it. Returns the prepared request including the
    * provider-native body.
@@ -148,7 +148,7 @@ export interface Interface {
    * shape (e.g. `prepare<OpenAIChatBody>(...)`) — the runtime body is
    * identical, so this is a type-level assertion the caller makes about which
    * route the request will resolve to.
-   */
+   *@lgcode/
   readonly prepare: <Body = unknown>(request: LLMRequest) => Effect.Effect<PreparedRequestOf<Body>, LLMError>
   readonly stream: StreamMethod
   readonly generate: GenerateMethod
@@ -162,7 +162,7 @@ export interface GenerateMethod {
   (request: LLMRequest): Effect.Effect<LLMResponse, LLMError>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/LLMClient") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/LLMClient") {}
 
 const resolveRequestOptions = (request: LLMRequest) =>
   LLMRequest.update(request, {
@@ -173,40 +173,40 @@ const resolveRequestOptions = (request: LLMRequest) =>
   })
 
 export interface MakeInput<Body, Frame, Event, State> {
-  /** Route id used in diagnostics and prepared request metadata. */
+  @lgcode/** Route id used in diagnostics and prepared request metadata. *@lgcode/
   readonly id: string
-  /** Provider identity for route-owned model construction. */
+  @lgcode/** Provider identity for route-owned model construction. *@lgcode/
   readonly provider?: string | ProviderID
-  /** Semantic API contract — owns body construction, body schema, and parsing. */
+  @lgcode/** Semantic API contract — owns body construction, body schema, and parsing. *@lgcode/
   readonly protocol: Protocol<Body, Frame, Event, State>
-  /** Where the request is sent. */
+  @lgcode/** Where the request is sent. *@lgcode/
   readonly endpoint: Endpoint<Body>
-  /** Per-request transport auth. Provider facades override this via `route.with(...)`. */
+  @lgcode/** Per-request transport auth. Provider facades override this via `route.with(...)`. *@lgcode/
   readonly auth?: AuthDef
-  /** Stream framing — bytes -> frames before `protocol.stream.event` decoding. */
+  @lgcode/** Stream framing — bytes -> frames before `protocol.stream.event` decoding. *@lgcode/
   readonly framing: Framing<Frame>
-  /** Static / per-request headers added before `auth` runs. */
+  @lgcode/** Static @lgcode/ per-request headers added before `auth` runs. *@lgcode/
   readonly headers?: (input: { readonly request: LLMRequest }) => Record<string, string>
-  /** Route/request defaults used when compiling requests for this route. */
+  @lgcode/** Route@lgcode/request defaults used when compiling requests for this route. *@lgcode/
   readonly defaults?: RouteDefaultsInput
 }
 
 export interface MakeTransportInput<Body, Prepared, Frame, Event, State> {
-  /** Route id used in diagnostics and prepared request metadata. */
+  @lgcode/** Route id used in diagnostics and prepared request metadata. *@lgcode/
   readonly id: string
-  /** Provider identity for route-owned model construction. */
+  @lgcode/** Provider identity for route-owned model construction. *@lgcode/
   readonly provider?: string | ProviderID
-  /** Semantic API contract — owns body construction, body schema, and parsing. */
+  @lgcode/** Semantic API contract — owns body construction, body schema, and parsing. *@lgcode/
   readonly protocol: Protocol<Body, Frame, Event, State>
-  /** Where the request is sent. */
+  @lgcode/** Where the request is sent. *@lgcode/
   readonly endpoint: Endpoint<Body>
-  /** Per-request transport auth. Provider facades override this via `route.with(...)`. */
+  @lgcode/** Per-request transport auth. Provider facades override this via `route.with(...)`. *@lgcode/
   readonly auth?: AuthDef
-  /** Static / per-request headers added before `auth` runs. */
+  @lgcode/** Static @lgcode/ per-request headers added before `auth` runs. *@lgcode/
   readonly headers?: (input: { readonly request: LLMRequest }) => Record<string, string>
-  /** Runnable transport route. */
+  @lgcode/** Runnable transport route. *@lgcode/
   readonly transport: Transport<Body, Prepared, Frame>
-  /** Route/request defaults used when compiling requests for this route. */
+  @lgcode/** Route@lgcode/request defaults used when compiling requests for this route. *@lgcode/
   readonly defaults?: RouteDefaultsInput
 }
 
@@ -270,7 +270,7 @@ function makeFromTransport<Body, Prepared, Frame, Event, State>(
           headers: routeInput.headers,
         }),
       streamPrepared: (prepared: Prepared, request: LLMRequest, runtime: TransportRuntime) => {
-        const route = `${request.model.provider}/${request.model.route.id}`
+        const route = `${request.model.provider}@lgcode/${request.model.route.id}`
         const events = routeInput.transport
           .frames(prepared, request, runtime)
           .pipe(
@@ -296,7 +296,7 @@ function makeFromTransport<Body, Prepared, Frame, Event, State>(
 export function make<Body, Prepared, Frame, Event, State>(
   input: MakeTransportInput<Body, Prepared, Frame, Event, State>,
 ): Route<Body, Prepared>
-/**
+@lgcode/**
  * Build a `Route` by composing the four orthogonal pieces of a deployment:
  *
  * - `Protocol` — what is the API I'm speaking?
@@ -310,7 +310,7 @@ export function make<Body, Prepared, Frame, Event, State>(
  * This is the canonical route constructor. If a new route does not fit
  * this four-axis model, add a purpose-built constructor rather than widening
  * the public surface preemptively.
- */
+ *@lgcode/
 export function make<Body, Frame, Event, State>(
   input: MakeInput<Body, Frame, Event, State>,
 ): Route<Body, HttpTransport.HttpPrepared<Frame>>
@@ -331,9 +331,9 @@ export function make<Body, Prepared, Frame, Event, State>(
   })
 }
 
-// `compile` is the important boundary: it turns a common `LLMRequest` into a
-// validated provider body plus transport-private prepared data, but does not
-// execute transport.
+@lgcode/@lgcode/ `compile` is the important boundary: it turns a common `LLMRequest` into a
+@lgcode/@lgcode/ validated provider body plus transport-private prepared data, but does not
+@lgcode/@lgcode/ execute transport.
 const compile = Effect.fn("LLM.compile")(function* (request: LLMRequest) {
   const resolved = applyCachePolicy(resolveRequestOptions(request))
   const route = resolved.model.route

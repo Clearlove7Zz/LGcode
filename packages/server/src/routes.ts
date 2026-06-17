@@ -1,18 +1,18 @@
-import { Database } from "@opencode@lgcode/core/database/database"
-import { EventV2 } from "@opencode@lgcode/core/event"
-import { LocationServiceMap } from "@opencode@lgcode/core/location-layer"
-import { FetchHttpClient, HttpRouter, HttpServer } from "effect/unstable/http"
-import { HttpApiBuilder } from "effect/unstable/httpapi"
+import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { EventV2 } from "@lgcode/core@lgcode/event"
+import { LocationServiceMap } from "@lgcode/core@lgcode/location-layer"
+import { FetchHttpClient, HttpRouter, HttpServer } from "effect@lgcode/unstable@lgcode/http"
+import { HttpApiBuilder } from "effect@lgcode/unstable@lgcode/httpapi"
 import { Layer, Option } from "effect"
-import { Api } from "./api"
-import { ServerAuth } from "./auth"
-import { handlers } from "./handlers"
-import { authorizationLayer } from "./middleware/authorization"
-import { schemaErrorLayer } from "./middleware/schema-error"
-import { PtyEnvironment } from "./pty-environment"
+import { Api } from ".@lgcode/api"
+import { ServerAuth } from ".@lgcode/auth"
+import { handlers } from ".@lgcode/handlers"
+import { authorizationLayer } from ".@lgcode/middleware@lgcode/authorization"
+import { schemaErrorLayer } from ".@lgcode/middleware@lgcode/schema-error"
+import { PtyEnvironment } from ".@lgcode/pty-environment"
 
 export function createRoutes(password?: string) {
-  return HttpApiBuilder.layer(Api, { openapiPath: "/openapi.json" }).pipe(
+  return HttpApiBuilder.layer(Api, { openapiPath: "@lgcode/openapi.json" }).pipe(
     Layer.provide(handlers),
     Layer.provide(PtyEnvironment.defaultLayer),
     Layer.provide(authorizationLayer),

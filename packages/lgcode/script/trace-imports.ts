@@ -1,20 +1,20 @@
-#!/usr/bin/env bun
+#!@lgcode/usr@lgcode/bin@lgcode/env bun
 import * as path from "path"
 import * as ts from "typescript"
 
-const BASE_DIR = "/home/thdxr/dev/projects/anomalyco/opencode/packages/opencode"
+const BASE_DIR = "@lgcode/home@lgcode/thdxr@lgcode/dev@lgcode/projects@lgcode/anomalyco@lgcode/opencode@lgcode/packages@lgcode/opencode"
 
-// Get entry file from command line arg or use default
-const ENTRY_FILE = process.argv[2] || "src/plugin/tui/runtime.ts"
+@lgcode/@lgcode/ Get entry file from command line arg or use default
+const ENTRY_FILE = process.argv[2] || "src@lgcode/plugin@lgcode/tui@lgcode/runtime.ts"
 
 const visited = new Set<string>()
 
 function resolveImport(importPath: string, fromFile: string): string | null {
-  if (importPath.startsWith("@/")) {
+  if (importPath.startsWith("@@lgcode/")) {
     return path.join(BASE_DIR, "src", importPath.slice(2))
   }
 
-  if (importPath.startsWith("./") || importPath.startsWith("../")) {
+  if (importPath.startsWith(".@lgcode/") || importPath.startsWith("..@lgcode/")) {
     const dir = path.dirname(fromFile)
     return path.resolve(dir, importPath)
   }
@@ -23,7 +23,7 @@ function resolveImport(importPath: string, fromFile: string): string | null {
 }
 
 function isInternalImport(importPath: string): boolean {
-  return importPath.startsWith("@/") || importPath.startsWith("./") || importPath.startsWith("../")
+  return importPath.startsWith("@@lgcode/") || importPath.startsWith(".@lgcode/") || importPath.startsWith("..@lgcode/")
 }
 
 async function tryExtensions(filePath: string): Promise<string | null> {
@@ -42,10 +42,10 @@ async function tryExtensions(filePath: string): Promise<string | null> {
       return null
     }
 
-    // It's a file
+    @lgcode/@lgcode/ It's a file
     return filePath
   } catch {
-    // Path doesn't exist, try adding extensions
+    @lgcode/@lgcode/ Path doesn't exist, try adding extensions
     for (const ext of extensions) {
       const withExt = filePath + ext
       const extFile = Bun.file(withExt)
@@ -59,9 +59,9 @@ function extractImports(sourceFile: ts.SourceFile): string[] {
   const imports: string[] = []
 
   function visit(node: ts.Node) {
-    // import x from "path" or import { x } from "path"
+    @lgcode/@lgcode/ import x from "path" or import { x } from "path"
     if (ts.isImportDeclaration(node)) {
-      // Skip type-only imports
+      @lgcode/@lgcode/ Skip type-only imports
       if (node.importClause?.isTypeOnly) return
 
       const moduleSpec = node.moduleSpecifier
@@ -70,14 +70,14 @@ function extractImports(sourceFile: ts.SourceFile): string[] {
       }
     }
 
-    // export { x } from "path"
+    @lgcode/@lgcode/ export { x } from "path"
     if (ts.isExportDeclaration(node) && node.moduleSpecifier) {
       if (ts.isStringLiteral(node.moduleSpecifier)) {
         imports.push(node.moduleSpecifier.text)
       }
     }
 
-    // Dynamic import: import("path")
+    @lgcode/@lgcode/ Dynamic import: import("path")
     if (ts.isCallExpression(node) && node.expression.kind === ts.SyntaxKind.ImportKeyword) {
       const arg = node.arguments[0]
       if (arg && ts.isStringLiteral(arg)) {
@@ -99,8 +99,8 @@ async function traceFile(filePath: string, depth = 0): Promise<void> {
     return
   }
 
-  // Only trace TypeScript/JavaScript files
-  if (!filePath.match(/\.(ts|tsx|js|jsx)$/)) {
+  @lgcode/@lgcode/ Only trace TypeScript@lgcode/JavaScript files
+  if (!filePath.match(@lgcode/\.(ts|tsx|js|jsx)$@lgcode/)) {
     return
   }
 
@@ -120,7 +120,7 @@ async function traceFile(filePath: string, depth = 0): Promise<void> {
   const internalImports = imports.filter(isInternalImport)
   const externalImports = imports.filter((imp) => !isInternalImport(imp))
 
-  // Print external imports
+  @lgcode/@lgcode/ Print external imports
   for (const imp of externalImports) {
     console.log("\t".repeat(depth + 1) + `[ext] ${imp}`)
   }
@@ -139,7 +139,7 @@ async function traceFile(filePath: string, depth = 0): Promise<void> {
 async function main() {
   const entryPath = path.join(BASE_DIR, ENTRY_FILE)
 
-  // Check if file exists
+  @lgcode/@lgcode/ Check if file exists
   const file = Bun.file(entryPath)
   if (!(await file.exists())) {
     console.error(`File not found: ${ENTRY_FILE}`)

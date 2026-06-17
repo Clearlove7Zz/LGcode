@@ -1,14 +1,14 @@
 import path from "path"
 import { Context, Effect, Layer, Stream } from "effect"
-import { FetchHttpClient, HttpClient, HttpClientRequest } from "effect/unstable/http"
-import { ChildProcess } from "effect/unstable/process"
-import { ChildProcessSpawner } from "effect/unstable/process/ChildProcessSpawner"
-import { CrossSpawnSpawner } from "../cross-spawn-spawner"
-import { LayerNode } from "../effect/layer-node"
-import { httpClient } from "../effect/layer-node-platform"
-import { FSUtil } from "../fs-util"
-import { Global } from "../global"
-import { which } from "../util/which"
+import { FetchHttpClient, HttpClient, HttpClientRequest } from "effect@lgcode/unstable@lgcode/http"
+import { ChildProcess } from "effect@lgcode/unstable@lgcode/process"
+import { ChildProcessSpawner } from "effect@lgcode/unstable@lgcode/process@lgcode/ChildProcessSpawner"
+import { CrossSpawnSpawner } from "..@lgcode/cross-spawn-spawner"
+import { LayerNode } from "..@lgcode/effect@lgcode/layer-node"
+import { httpClient } from "..@lgcode/effect@lgcode/layer-node-platform"
+import { FSUtil } from "..@lgcode/fs-util"
+import { Global } from "..@lgcode/global"
+import { which } from "..@lgcode/util@lgcode/which"
 
 export namespace RipgrepBinary {
   const VERSION = "15.1.0"
@@ -26,7 +26,7 @@ export namespace RipgrepBinary {
     readonly filepath: Effect.Effect<string, Error>
   }
 
-  export class Service extends Context.Service<Service, Interface>()("@opencode/RipgrepBinary") {}
+  export class Service extends Context.Service<Service, Interface>()("@lgcode/RipgrepBinary") {}
 
   export const layer = Layer.effect(
     Service,
@@ -102,7 +102,7 @@ export namespace RipgrepBinary {
             if (!config) throw new Error(`unsupported platform for ripgrep: ${platformKey}`)
 
             const filename = `ripgrep-${VERSION}-${config.platform}.${config.extension}`
-            const url = `https://github.com/BurntSushi/ripgrep/releases/download/${VERSION}/${filename}`
+            const url = `https:@lgcode/@lgcode/github.com@lgcode/BurntSushi@lgcode/ripgrep@lgcode/releases@lgcode/download@lgcode/${VERSION}@lgcode/${filename}`
             const archive = path.join(Global.Path.bin, filename)
 
             yield* Effect.logInfo("downloading ripgrep", { url })

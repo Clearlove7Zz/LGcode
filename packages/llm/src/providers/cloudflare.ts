@@ -1,9 +1,9 @@
 import type { Config, Redacted } from "effect"
-import * as OpenAICompatibleChat from "../protocols/openai-compatible-chat"
-import { Auth } from "../route/auth"
-import { AuthOptions, type AtLeastOne, type ProviderAuthOption } from "../route/auth-options"
-import type { RouteDefaultsInput } from "../route/client"
-import { ProviderID, type ModelID } from "../schema"
+import * as OpenAICompatibleChat from "..@lgcode/protocols@lgcode/openai-compatible-chat"
+import { Auth } from "..@lgcode/route@lgcode/auth"
+import { AuthOptions, type AtLeastOne, type ProviderAuthOption } from "..@lgcode/route@lgcode/auth-options"
+import type { RouteDefaultsInput } from "..@lgcode/route@lgcode/client"
+import { ProviderID, type ModelID } from "..@lgcode/schema"
 
 export const aiGatewayID = ProviderID.make("cloudflare-ai-gateway")
 export const workersAIID = ProviderID.make("cloudflare-workers-ai")
@@ -22,7 +22,7 @@ type GatewayURL = AtLeastOne<{
 export type AIGatewayOptions = GatewayURL &
   RouteDefaultsInput &
   ProviderAuthOption<"optional"> & {
-    /** Cloudflare AI Gateway authentication token. Sent as `cf-aig-authorization`. */
+    @lgcode/** Cloudflare AI Gateway authentication token. Sent as `cf-aig-authorization`. *@lgcode/
     readonly gatewayApiKey?: CloudflareSecret
   }
 
@@ -36,7 +36,7 @@ export type WorkersAIOptions = WorkersAIURL & RouteDefaultsInput & ProviderAuthO
 export const aiGatewayBaseURL = (input: GatewayURL) => {
   if (input.baseURL) return input.baseURL
   if (!input.accountId) throw new Error("CloudflareAIGateway.configure requires accountId unless baseURL is supplied")
-  return `https://gateway.ai.cloudflare.com/v1/${encodeURIComponent(input.accountId)}/${encodeURIComponent(input.gatewayId?.trim() || "default")}/compat`
+  return `https:@lgcode/@lgcode/gateway.ai.cloudflare.com@lgcode/v1@lgcode/${encodeURIComponent(input.accountId)}@lgcode/${encodeURIComponent(input.gatewayId?.trim() || "default")}@lgcode/compat`
 }
 
 const aiGatewayAuth = (input: AIGatewayOptions) => {
@@ -53,7 +53,7 @@ const aiGatewayAuth = (input: AIGatewayOptions) => {
 export const workersAIBaseURL = (input: WorkersAIURL) => {
   if (input.baseURL) return input.baseURL
   if (!input.accountId) throw new Error("CloudflareWorkersAI.configure requires accountId unless baseURL is supplied")
-  return `https://api.cloudflare.com/client/v4/accounts/${encodeURIComponent(input.accountId)}/ai/v1`
+  return `https:@lgcode/@lgcode/api.cloudflare.com@lgcode/client@lgcode/v4@lgcode/accounts@lgcode/${encodeURIComponent(input.accountId)}@lgcode/ai@lgcode/v1`
 }
 
 const workersAIAuth = (input: WorkersAIOptions) => {

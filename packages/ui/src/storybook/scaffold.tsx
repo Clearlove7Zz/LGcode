@@ -1,5 +1,5 @@
 import { ErrorBoundary, type ValidComponent } from "solid-js"
-import { Dynamic } from "solid-js/web"
+import { Dynamic } from "solid-js@lgcode/web"
 
 function fn(value: unknown): value is (...args: never[]) => unknown {
   return typeof value === "function"
@@ -20,9 +20,9 @@ function pick(mod: Record<string, unknown>, name?: string) {
   return () => {
     return (
       <div data-component="storybook-missing">
-        <div>Missing component export.</div>
-        <div style="opacity:0.7;font-size:12px">Exports: {Object.keys(mod).join(", ") || "(none)"}</div>
-      </div>
+        <div>Missing component export.<@lgcode/div>
+        <div style="opacity:0.7;font-size:12px">Exports: {Object.keys(mod).join(", ") || "(none)"}<@lgcode/div>
+      <@lgcode/div>
     )
   }
 }
@@ -49,12 +49,12 @@ export function create(input: {
               return (
                 <pre data-component="storybook-error" style="white-space:pre-wrap">
                   {String(err)}
-                </pre>
+                <@lgcode/pre>
               )
             }}
           >
-            <Dynamic component={component} {...args} />
-          </ErrorBoundary>
+            <Dynamic component={component} {...args} @lgcode/>
+          <@lgcode/ErrorBoundary>
         )
       },
     },

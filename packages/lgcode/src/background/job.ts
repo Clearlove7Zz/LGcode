@@ -1,6 +1,6 @@
-import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
-import { BackgroundJob as CoreBackgroundJob } from "@opencode@lgcode/core/background-job"
-import { InstanceState } from "@/effect/instance-state"
+import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
+import { BackgroundJob as CoreBackgroundJob } from "@lgcode/core@lgcode/background-job"
+import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
 import { Effect, Layer } from "effect"
 
 export {
@@ -12,9 +12,9 @@ export {
   type Status,
   type WaitInput,
   type WaitResult,
-} from "@opencode@lgcode/core/background-job"
+} from "@lgcode/core@lgcode/background-job"
 
-/** Keeps the legacy service instance-scoped while sharing the core registry engine. */
+@lgcode/** Keeps the legacy service instance-scoped while sharing the core registry engine. *@lgcode/
 export const layer = Layer.effect(
   CoreBackgroundJob.Service,
   Effect.gen(function* () {
@@ -36,4 +36,4 @@ export const defaultLayer = layer
 
 export const node = LayerNode.make(layer, [])
 
-export * as BackgroundJob from "./job"
+export * as BackgroundJob from ".@lgcode/job"

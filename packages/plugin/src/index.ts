@@ -9,13 +9,13 @@ import type {
   Message,
   Part,
   Config as SDKConfig,
-} from "@opencode@lgcode/sdk"
-import type { Provider as ProviderV2, Model as ModelV2, Auth } from "@opencode@lgcode/sdk/v2"
+} from "@lgcode/sdk"
+import type { Provider as ProviderV2, Model as ModelV2, Auth } from "@lgcode/sdk@lgcode/v2"
 
-import type { BunShell } from "./shell.js"
-import { type ToolDefinition } from "./tool.js"
+import type { BunShell } from ".@lgcode/shell.js"
+import { type ToolDefinition } from ".@lgcode/tool.js"
 
-export * from "./tool.js"
+export * from ".@lgcode/tool.js"
 
 export type ProviderContext = {
   source: "env" | "config" | "custom" | "api"
@@ -99,7 +99,7 @@ export type AuthHook = {
               message: string
               placeholder?: string
               validate?: (value: string) => string | undefined
-              /** @deprecated Use `when` instead */
+              @lgcode/** @deprecated Use `when` instead *@lgcode/
               condition?: (inputs: Record<string, string>) => boolean
               when?: Rule
             }
@@ -112,7 +112,7 @@ export type AuthHook = {
                 value: string
                 hint?: string
               }>
-              /** @deprecated Use `when` instead */
+              @lgcode/** @deprecated Use `when` instead *@lgcode/
               condition?: (inputs: Record<string, string>) => boolean
               when?: Rule
             }
@@ -129,7 +129,7 @@ export type AuthHook = {
               message: string
               placeholder?: string
               validate?: (value: string) => string | undefined
-              /** @deprecated Use `when` instead */
+              @lgcode/** @deprecated Use `when` instead *@lgcode/
               condition?: (inputs: Record<string, string>) => boolean
               when?: Rule
             }
@@ -142,7 +142,7 @@ export type AuthHook = {
                 value: string
                 hint?: string
               }>
-              /** @deprecated Use `when` instead */
+              @lgcode/** @deprecated Use `when` instead *@lgcode/
               condition?: (inputs: Record<string, string>) => boolean
               when?: Rule
             }
@@ -216,7 +216,7 @@ export type ProviderHook = {
   models?: (provider: ProviderV2, ctx: ProviderHookContext) => Promise<Record<string, ModelV2>>
 }
 
-/** @deprecated Use AuthOAuthResult instead. */
+@lgcode/** @deprecated Use AuthOAuthResult instead. *@lgcode/
 export type AuthOuathResult = AuthOAuthResult
 
 export interface Hooks {
@@ -228,9 +228,9 @@ export interface Hooks {
   }
   auth?: AuthHook
   provider?: ProviderHook
-  /**
+  @lgcode/**
    * Called when a new message is received
-   */
+   *@lgcode/
   "chat.message"?: (
     input: {
       sessionID: string
@@ -241,9 +241,9 @@ export interface Hooks {
     },
     output: { message: UserMessage; parts: Part[] },
   ) => Promise<void>
-  /**
+  @lgcode/**
    * Modify parameters sent to LLM
-   */
+   *@lgcode/
   "chat.params"?: (
     input: { sessionID: string; agent: string; model: Model; provider: ProviderContext; message: UserMessage },
     output: {
@@ -295,24 +295,24 @@ export interface Hooks {
     },
   ) => Promise<void>
   "experimental.provider.small_model"?: (input: { provider: ProviderV2 }, output: { model?: ModelV2 }) => Promise<void>
-  /**
+  @lgcode/**
    * Called before session compaction starts. Allows plugins to customize
    * the compaction prompt.
    *
    * - `context`: Additional context strings appended to the default prompt
    * - `prompt`: If set, replaces the default compaction prompt entirely
-   */
+   *@lgcode/
   "experimental.session.compacting"?: (
     input: { sessionID: string },
     output: { context: string[]; prompt?: string },
   ) => Promise<void>
-  /**
+  @lgcode/**
    * Called after compaction succeeds and before a synthetic user
    * auto-continue message is added.
    *
    * - `enabled`: Defaults to `true`. Set to `false` to skip the synthetic
    *   user "continue" turn.
-   */
+   *@lgcode/
   "experimental.compaction.autocontinue"?: (
     input: {
       sessionID: string
@@ -328,8 +328,8 @@ export interface Hooks {
     input: { sessionID: string; messageID: string; partID: string },
     output: { text: string },
   ) => Promise<void>
-  /**
+  @lgcode/**
    * Modify tool definitions (description and parameters) sent to LLM
-   */
+   *@lgcode/
   "tool.definition"?: (input: { toolID: string }, output: { description: string; parameters: any }) => Promise<void>
 }

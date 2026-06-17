@@ -1,4 +1,4 @@
-import type { FileNode } from "@opencode@lgcode/sdk/v2"
+import type { FileNode } from "@lgcode/sdk@lgcode/v2"
 
 type WatcherEvent = {
   type: string
@@ -26,7 +26,7 @@ export function invalidateFromWatcher(event: WatcherEvent, ops: WatcherOps) {
 
   const path = ops.normalize(rawPath)
   if (!path) return
-  if (path.startsWith(".git/")) return
+  if (path.startsWith(".git@lgcode/")) return
 
   if (ops.hasFile(path) || ops.isOpen?.(path)) {
     ops.loadFile(path)
@@ -46,7 +46,7 @@ export function invalidateFromWatcher(event: WatcherEvent, ops: WatcherOps) {
   }
   if (kind !== "add" && kind !== "unlink") return
 
-  const parent = path.split("/").slice(0, -1).join("/")
+  const parent = path.split("@lgcode/").slice(0, -1).join("@lgcode/")
   if (!ops.isDirLoaded(parent)) return
 
   ops.refreshDir(parent)

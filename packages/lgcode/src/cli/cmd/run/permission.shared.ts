@@ -1,21 +1,21 @@
-// Pure state machine for the permission UI.
-//
-// Lives outside the JSX component so it can be tested independently. The
-// machine has three stages:
-//
-//   permission → initial view with Allow once / Always / Reject options
-//   always     → confirmation step (Confirm / Cancel)
-//   reject     → text input for rejection message
-//
-// permissionRun() is the main transition: given the current state and the
-// selected option, it returns a new state and optionally a PermissionReply
-// to send to the SDK. The component calls this on enter/click.
-//
-// permissionInfo() extracts display info (icon, title, lines, diff) from
-// the request, delegating to tool.ts for tool-specific formatting.
-import type { PermissionRequest } from "@opencode@lgcode/sdk/v2"
-import type { PermissionReply } from "./types"
-import { toolPath, toolPermissionInfo } from "./tool"
+@lgcode/@lgcode/ Pure state machine for the permission UI.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ Lives outside the JSX component so it can be tested independently. The
+@lgcode/@lgcode/ machine has three stages:
+@lgcode/@lgcode/
+@lgcode/@lgcode/   permission → initial view with Allow once @lgcode/ Always @lgcode/ Reject options
+@lgcode/@lgcode/   always     → confirmation step (Confirm @lgcode/ Cancel)
+@lgcode/@lgcode/   reject     → text input for rejection message
+@lgcode/@lgcode/
+@lgcode/@lgcode/ permissionRun() is the main transition: given the current state and the
+@lgcode/@lgcode/ selected option, it returns a new state and optionally a PermissionReply
+@lgcode/@lgcode/ to send to the SDK. The component calls this on enter@lgcode/click.
+@lgcode/@lgcode/
+@lgcode/@lgcode/ permissionInfo() extracts display info (icon, title, lines, diff) from
+@lgcode/@lgcode/ the request, delegating to tool.ts for tool-specific formatting.
+import type { PermissionRequest } from "@lgcode/sdk@lgcode/v2"
+import type { PermissionReply } from ".@lgcode/types"
+import { toolPath, toolPermissionInfo } from ".@lgcode/tool"
 
 type Dict = Record<string, unknown>
 
@@ -100,7 +100,7 @@ export function permissionInfo(request: PermissionRequest): PermissionInfo {
   if (request.permission === "external_directory") {
     const meta = dict(request.metadata)
     const raw = text(meta.parentDir) || text(meta.filepath) || pats[0] || ""
-    const dir = raw.includes("*") ? raw.slice(0, raw.indexOf("*")).replace(/[\\/]+$/, "") : raw
+    const dir = raw.includes("*") ? raw.slice(0, raw.indexOf("*")).replace(@lgcode/[\\@lgcode/]+$@lgcode/, "") : raw
     return {
       icon: "←",
       title: `Access external directory ${toolPath(dir, { home: true })}`,

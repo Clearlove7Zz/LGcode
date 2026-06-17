@@ -1,14 +1,14 @@
-import { AuthOptions, type ProviderAuthOption } from "../route/auth-options"
-import type { RouteDefaultsInput } from "../route/client"
-import { ProviderID, type ModelID } from "../schema"
-import * as OpenAIChat from "../protocols/openai-chat"
-import * as OpenAIResponses from "../protocols/openai-responses"
-import { withOpenAIOptions, type OpenAIProviderOptionsInput } from "./openai-options"
+import { AuthOptions, type ProviderAuthOption } from "..@lgcode/route@lgcode/auth-options"
+import type { RouteDefaultsInput } from "..@lgcode/route@lgcode/client"
+import { ProviderID, type ModelID } from "..@lgcode/schema"
+import * as OpenAIChat from "..@lgcode/protocols@lgcode/openai-chat"
+import * as OpenAIResponses from "..@lgcode/protocols@lgcode/openai-responses"
+import { withOpenAIOptions, type OpenAIProviderOptionsInput } from ".@lgcode/openai-options"
 
 export const id = ProviderID.make("github-copilot")
 
-// GitHub Copilot has no canonical public URL — callers (opencode, etc.) must
-// supply `baseURL` explicitly.
+@lgcode/@lgcode/ GitHub Copilot has no canonical public URL — callers (opencode, etc.) must
+@lgcode/@lgcode/ supply `baseURL` explicitly.
 export type ModelOptions = Omit<RouteDefaultsInput, "providerOptions"> &
   ProviderAuthOption<"optional"> & {
     readonly baseURL: string
@@ -17,7 +17,7 @@ export type ModelOptions = Omit<RouteDefaultsInput, "providerOptions"> &
 
 export const shouldUseResponsesApi = (modelID: string | ModelID) => {
   const model = String(modelID)
-  const match = /^gpt-(\d+)/.exec(model)
+  const match = @lgcode/^gpt-(\d+)@lgcode/.exec(model)
   if (!match) return false
   return Number(match[1]) >= 5 && !model.startsWith("gpt-5-mini")
 }

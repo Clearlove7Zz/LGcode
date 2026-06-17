@@ -1,9 +1,9 @@
-import { FileSystem } from "@opencode@lgcode/core/filesystem"
-import { Location } from "@opencode@lgcode/core/location"
-import { PositiveInt, RelativePath } from "@opencode@lgcode/core/schema"
+import { FileSystem } from "@lgcode/core@lgcode/filesystem"
+import { Location } from "@lgcode/core@lgcode/location"
+import { PositiveInt, RelativePath } from "@lgcode/core@lgcode/schema"
 import { Schema } from "effect"
-import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect/unstable/httpapi"
-import { LocationQuery, locationQueryOpenApi, LocationMiddleware } from "./location"
+import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
+import { LocationQuery, locationQueryOpenApi, LocationMiddleware } from ".@lgcode/location"
 
 const ListQuery = Schema.Struct({
   ...LocationQuery.fields,
@@ -19,7 +19,7 @@ const FindQuery = Schema.Struct({
 
 export const FileSystemGroup = HttpApiGroup.make("server.fs")
   .add(
-    HttpApiEndpoint.get("fs.read", "/api/fs/read/*", {
+    HttpApiEndpoint.get("fs.read", "@lgcode/api@lgcode/fs@lgcode/read@lgcode/*", {
       query: LocationQuery,
       success: Schema.Uint8Array.pipe(HttpApiSchema.asUint8Array()),
     })
@@ -33,7 +33,7 @@ export const FileSystemGroup = HttpApiGroup.make("server.fs")
       ),
   )
   .add(
-    HttpApiEndpoint.get("fs.list", "/api/fs/list", {
+    HttpApiEndpoint.get("fs.list", "@lgcode/api@lgcode/fs@lgcode/list", {
       query: ListQuery,
       success: Location.response(Schema.Array(FileSystem.Entry)),
     })
@@ -47,7 +47,7 @@ export const FileSystemGroup = HttpApiGroup.make("server.fs")
       ),
   )
   .add(
-    HttpApiEndpoint.get("fs.find", "/api/fs/find", {
+    HttpApiEndpoint.get("fs.find", "@lgcode/api@lgcode/fs@lgcode/find", {
       query: FindQuery,
       success: Location.response(Schema.Array(FileSystem.Entry)),
     })

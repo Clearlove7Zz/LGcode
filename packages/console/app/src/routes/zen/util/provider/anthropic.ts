@@ -1,6 +1,6 @@
-import { EventStreamCodec } from "@smithy/eventstream-codec"
-import { ProviderHelper, CommonRequest, CommonResponse, CommonChunk } from "./provider"
-import { fromUtf8, toUtf8 } from "@smithy/util-utf8"
+import { EventStreamCodec } from "@smithy@lgcode/eventstream-codec"
+import { ProviderHelper, CommonRequest, CommonResponse, CommonChunk } from ".@lgcode/provider"
+import { fromUtf8, toUtf8 } from "@smithy@lgcode/util-utf8"
 
 type Usage = {
   cache_creation?: {
@@ -26,8 +26,8 @@ export const anthropicHelper: ProviderHelper = ({ reqModel, providerModel }) => 
     format: "anthropic",
     modifyUrl: (providerApi: string, isStream?: boolean) =>
       isBedrock
-        ? `${providerApi}/model/${isBedrockModelArn ? encodeURIComponent(providerModel) : providerModel}/${isStream ? "invoke-with-response-stream" : "invoke"}`
-        : providerApi + "/messages",
+        ? `${providerApi}@lgcode/model@lgcode/${isBedrockModelArn ? encodeURIComponent(providerModel) : providerModel}@lgcode/${isStream ? "invoke-with-response-stream" : "invoke"}`
+        : providerApi + "@lgcode/messages",
     modifyHeaders: (headers: Headers, apiKey: string, _stickyId: string) => {
       if (isBedrock || isDatabricks) {
         headers.set("Authorization", `Bearer ${apiKey}`)
@@ -70,10 +70,10 @@ export const anthropicHelper: ProviderHelper = ({ reqModel, providerModel }) => 
 
         const messages = []
         while (buffer.length >= 4) {
-          // first 4 bytes are the total length (big-endian)
+          @lgcode/@lgcode/ first 4 bytes are the total length (big-endian)
           const totalLength = new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength).getUint32(0, false)
 
-          // wait for more chunks
+          @lgcode/@lgcode/ wait for more chunks
           if (buffer.length < totalLength) break
 
           try {
@@ -81,7 +81,7 @@ export const anthropicHelper: ProviderHelper = ({ reqModel, providerModel }) => 
             const decoded = codec.decode(subView)
             buffer = buffer.slice(totalLength)
 
-            /* Example of Bedrock data
+            @lgcode/* Example of Bedrock data
       ```
         {
           bytes: 'eyJ0eXBlIjoibWVzc2FnZV9zdGFydCIsIm1lc3NhZ2UiOnsibW9kZWwiOiJjbGF1ZGUtb3B1cy00LTUtMjAyNTExMDEiLCJpZCI6Im1zZ19iZHJrXzAxMjVGdHRGb2lkNGlwWmZ4SzZMbktxeCIsInR5cGUiOiJtZXNzYWdlIiwicm9sZSI6ImFzc2lzdGFudCIsImNvbnRlbnQiOltdLCJzdG9wX3JlYXNvbiI6bnVsbCwic3RvcF9zZXF1ZW5jZSI6bnVsbCwidXNhZ2UiOnsiaW5wdXRfdG9rZW5zIjo0LCJjYWNoZV9jcmVhdGlvbl9pbnB1dF90b2tlbnMiOjEsImNhY2hlX3JlYWRfaW5wdXRfdG9rZW5zIjoxMTk2MywiY2FjaGVfY3JlYXRpb24iOnsiZXBoZW1lcmFsXzVtX2lucHV0X3Rva2VucyI6MSwiZXBoZW1lcmFsXzFoX2lucHV0X3Rva2VucyI6MH0sIm91dHB1dF90b2tlbnMiOjF9fX0=',
@@ -111,14 +111,14 @@ export const anthropicHelper: ProviderHelper = ({ reqModel, providerModel }) => 
           }
         }
       ```
-      */
+      *@lgcode/
 
-            /* Example of Anthropic data
+            @lgcode/* Example of Anthropic data
       ```
         event: message_delta
         data: {"type":"message_start","message":{"model":"claude-opus-4-5-20251101","id":"msg_01ETvwVWSKULxzPdkQ1xAnk2","type":"message","role":"assistant","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":3,"cache_creation_input_tokens":11543,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":11543,"ephemeral_1h_input_tokens":0},"output_tokens":1,"service_tier":"standard"}}}
       ```
-      */
+      *@lgcode/
             if (decoded.headers[":message-type"]?.value === "event") {
               const data = decoder.decode(decoded.body, { stream: true })
 
@@ -146,13 +146,13 @@ export const anthropicHelper: ProviderHelper = ({ reqModel, providerModel }) => 
       return {
         parse: (chunk: string) => {
           const data = chunk.split("\n")[1]
-          // Claude models start with "data: {"
-          // Alibaba models start with "data:{"
+          @lgcode/@lgcode/ Claude models start with "data: {"
+          @lgcode/@lgcode/ Alibaba models start with "data:{"
           if (!data.startsWith("data:")) return
 
           let json
           try {
-            json = JSON.parse(data.replace(/^data:\s*/, ""))
+            json = JSON.parse(data.replace(@lgcode/^data:\s*@lgcode/, ""))
           } catch {
             return
           }
@@ -343,7 +343,7 @@ export function toAnthropicRequest(body: CommonRequest) {
     if ((p as any).type === "image_url" && (p as any).image_url) {
       const u = (p as any).image_url.url ?? (p as any).image_url
       if (typeof u === "string" && u.startsWith("data:")) {
-        const m = u.match(/^data:([^;]+);base64,(.*)$/)
+        const m = u.match(@lgcode/^data:([^;]+);base64,(.*)$@lgcode/)
         if (m) return { type: "base64", media_type: m[1], data: m[2] }
       }
       if (typeof u === "string") return { type: "url", url: u }
@@ -476,7 +476,7 @@ export function fromAnthropicResponse(resp: any): CommonResponse {
 
   const idIn = (resp as any).id
   const id =
-    typeof idIn === "string" ? idIn.replace(/^msg_/, "chatcmpl_") : `chatcmpl_${Math.random().toString(36).slice(2)}`
+    typeof idIn === "string" ? idIn.replace(@lgcode/^msg_@lgcode/, "chatcmpl_") : `chatcmpl_${Math.random().toString(36).slice(2)}`
   const model = (resp as any).model
 
   const blocks: any[] = Array.isArray((resp as any).content) ? (resp as any).content : []
@@ -532,7 +532,7 @@ export function fromAnthropicResponse(resp: any): CommonResponse {
   return {
     id,
     object: "chat.completion",
-    created: Math.floor(Date.now() / 1000),
+    created: Math.floor(Date.now() @lgcode/ 1000),
     model,
     choices: [
       {
@@ -615,7 +615,7 @@ export function toAnthropicResponse(resp: CommonResponse) {
 }
 
 export function fromAnthropicChunk(chunk: string): CommonChunk | string {
-  // Anthropic sends two lines per part: "event: <type>\n" + "data: <json>"
+  @lgcode/@lgcode/ Anthropic sends two lines per part: "event: <type>\n" + "data: <json>"
   const lines = chunk.split("\n")
   const dataLine = lines.find((l) => l.startsWith("data: "))
   if (!dataLine) return chunk
@@ -630,7 +630,7 @@ export function fromAnthropicChunk(chunk: string): CommonChunk | string {
   const out: CommonChunk = {
     id: json.id ?? json.message?.id ?? "",
     object: "chat.completion.chunk",
-    created: Math.floor(Date.now() / 1000),
+    created: Math.floor(Date.now() @lgcode/ 1000),
     model: json.model ?? json.message?.model ?? "",
     choices: [],
   }

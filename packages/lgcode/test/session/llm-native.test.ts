@@ -1,24 +1,24 @@
 import { describe, expect, test } from "bun:test"
-import { LLMEvent, ToolFailure } from "@opencode@lgcode/llm"
-import { LLMClient, RequestExecutor, WebSocketExecutor, type LLMClientShape } from "@opencode@lgcode/llm/route"
+import { LLMEvent, ToolFailure } from "@lgcode/llm"
+import { LLMClient, RequestExecutor, WebSocketExecutor, type LLMClientShape } from "@lgcode/llm@lgcode/route"
 import { jsonSchema, tool, type ModelMessage, type Tool } from "ai"
 import { Effect, Fiber, Layer, Stream } from "effect"
-import { LLMNative } from "@/session/llm/native-request"
-import { LLMNativeRuntime } from "@/session/llm/native-runtime"
-import type { Provider } from "@/provider/provider"
+import { LLMNative } from "@@lgcode/session@lgcode/llm@lgcode/native-request"
+import { LLMNativeRuntime } from "@@lgcode/session@lgcode/llm@lgcode/native-runtime"
+import type { Provider } from "@@lgcode/provider@lgcode/provider"
 
-import { OAUTH_DUMMY_KEY } from "@/auth"
-import { testEffect } from "../lib/effect"
-import { ProviderV2 } from "@opencode@lgcode/core/provider"
-import { ModelV2 } from "@opencode@lgcode/core/model"
+import { OAUTH_DUMMY_KEY } from "@@lgcode/auth"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { ModelV2 } from "@lgcode/core@lgcode/model"
 
 const baseModel: Provider.Model = {
   id: ModelV2.ID.make("gpt-5-mini"),
   providerID: ProviderV2.ID.make("openai"),
   api: {
     id: "gpt-5-mini",
-    url: "https://api.openai.com/v1",
-    npm: "@ai-sdk/openai",
+    url: "https:@lgcode/@lgcode/api.openai.com@lgcode/v1",
+    npm: "@ai-sdk@lgcode/openai",
   },
   name: "GPT-5 Mini",
   capabilities: {
@@ -79,7 +79,7 @@ const it = testEffect(
 function responsesStream(chunks: unknown[]) {
   return new Response(chunks.map((chunk) => `data: ${JSON.stringify(chunk)}`).join("\n\n") + "\n\n", {
     status: 200,
-    headers: { "Content-Type": "text/event-stream" },
+    headers: { "Content-Type": "text@lgcode/event-stream" },
   })
 }
 
@@ -160,7 +160,7 @@ describe("session.llm-native.request", () => {
         role: "user",
         content: [
           { type: "text", text: "hello", providerOptions: { openai: { cacheControl: { type: "ephemeral" } } } },
-          { type: "file", mediaType: "image/png", filename: "img.png", data: "data:image/png;base64,Zm9v" },
+          { type: "file", mediaType: "image@lgcode/png", filename: "img.png", data: "data:image@lgcode/png;base64,Zm9v" },
         ],
       },
       {
@@ -221,7 +221,7 @@ describe("session.llm-native.request", () => {
       provider: "openai",
       route: { id: "openai-responses" },
     })
-    expect(request.model.route.endpoint.baseURL).toBe("https://api.openai.com/v1")
+    expect(request.model.route.endpoint.baseURL).toBe("https:@lgcode/@lgcode/api.openai.com@lgcode/v1")
     expect(request.model.route.defaults.headers).toEqual({
       "x-model": "model-header",
       "x-request": "request-header",
@@ -260,7 +260,7 @@ describe("session.llm-native.request", () => {
         role: "user",
         content: [
           { type: "text", text: "hello", providerMetadata: { openai: { cacheControl: { type: "ephemeral" } } } },
-          { type: "media", mediaType: "image/png", filename: "img.png", data: "data:image/png;base64,Zm9v" },
+          { type: "media", mediaType: "image@lgcode/png", filename: "img.png", data: "data:image@lgcode/png;base64,Zm9v" },
         ],
       },
       {
@@ -330,48 +330,48 @@ describe("session.llm-native.request", () => {
 
   test("selects native request routes for provider packages", () => {
     const openai = LLMNative.model({
-      model: { ...baseModel, api: { ...baseModel.api, url: "", npm: "@ai-sdk/openai" } },
+      model: { ...baseModel, api: { ...baseModel.api, url: "", npm: "@ai-sdk@lgcode/openai" } },
       apiKey: "test-key",
       messages: [],
     })
     expect(openai.route.id).toBe("openai-responses")
-    expect(openai.route.endpoint.baseURL).toBe("https://api.openai.com/v1")
+    expect(openai.route.endpoint.baseURL).toBe("https:@lgcode/@lgcode/api.openai.com@lgcode/v1")
 
     const anthropic = LLMNative.model({
-      model: { ...baseModel, api: { ...baseModel.api, url: "", npm: "@ai-sdk/anthropic" } },
+      model: { ...baseModel, api: { ...baseModel.api, url: "", npm: "@ai-sdk@lgcode/anthropic" } },
       apiKey: "test-key",
       messages: [],
     })
     expect(anthropic.route.id).toBe("anthropic-messages")
-    expect(anthropic.route.endpoint.baseURL).toBe("https://api.anthropic.com/v1")
+    expect(anthropic.route.endpoint.baseURL).toBe("https:@lgcode/@lgcode/api.anthropic.com@lgcode/v1")
 
     const google = LLMNative.model({
-      model: { ...baseModel, api: { ...baseModel.api, url: "", npm: "@ai-sdk/google" } },
+      model: { ...baseModel, api: { ...baseModel.api, url: "", npm: "@ai-sdk@lgcode/google" } },
       apiKey: "test-key",
       messages: [],
     })
     expect(google.route.id).toBe("gemini")
-    expect(google.route.endpoint.baseURL).toBe("https://generativelanguage.googleapis.com/v1beta")
+    expect(google.route.endpoint.baseURL).toBe("https:@lgcode/@lgcode/generativelanguage.googleapis.com@lgcode/v1beta")
 
     const compatible = LLMNative.model({
       model: {
         ...baseModel,
         providerID: ProviderV2.ID.make("opencode"),
-        api: { ...baseModel.api, url: "https://ai.example.test/v1", npm: "@ai-sdk/openai-compatible" },
+        api: { ...baseModel.api, url: "https:@lgcode/@lgcode/ai.example.test@lgcode/v1", npm: "@ai-sdk@lgcode/openai-compatible" },
       },
       apiKey: "test-key",
       messages: [],
     })
     expect(compatible.route.id).toBe("openai-compatible-chat")
-    expect(compatible.route.endpoint.baseURL).toBe("https://ai.example.test/v1")
+    expect(compatible.route.endpoint.baseURL).toBe("https:@lgcode/@lgcode/ai.example.test@lgcode/v1")
 
     const openrouter = LLMNative.model({
-      model: { ...baseModel, api: { ...baseModel.api, url: "", npm: "@openrouter/ai-sdk-provider" } },
+      model: { ...baseModel, api: { ...baseModel.api, url: "", npm: "@openrouter@lgcode/ai-sdk-provider" } },
       apiKey: "test-key",
       messages: [],
     })
     expect(openrouter.route.id).toBe("openrouter")
-    expect(openrouter.route.endpoint.baseURL).toBe("https://openrouter.ai/api/v1")
+    expect(openrouter.route.endpoint.baseURL).toBe("https:@lgcode/@lgcode/openrouter.ai@lgcode/api@lgcode/v1")
   })
 
   test("fails fast for unsupported provider packages", () => {
@@ -403,7 +403,7 @@ describe("session.llm-native.request", () => {
         model: {
           ...baseModel,
           providerID: ProviderV2.ID.make("opencode"),
-          api: { ...baseModel.api, npm: "@ai-sdk/openai-compatible" },
+          api: { ...baseModel.api, npm: "@ai-sdk@lgcode/openai-compatible" },
         },
         provider: { ...providerInfo, id: ProviderV2.ID.make("opencode") },
         auth: undefined,
@@ -436,7 +436,7 @@ describe("session.llm-native.request", () => {
 
     expect(
       LLMNativeRuntime.status({
-        model: { ...baseModel, api: { ...baseModel.api, npm: "@ai-sdk/google" } },
+        model: { ...baseModel, api: { ...baseModel.api, npm: "@ai-sdk@lgcode/google" } },
         provider: providerInfo,
         auth: undefined,
       }),
@@ -457,7 +457,7 @@ describe("session.llm-native.request", () => {
         model: {
           ...baseModel,
           providerID: ProviderV2.ID.make("anthropic"),
-          api: { ...baseModel.api, npm: "@ai-sdk/anthropic", url: "https://api.anthropic.com/v1" },
+          api: { ...baseModel.api, npm: "@ai-sdk@lgcode/anthropic", url: "https:@lgcode/@lgcode/api.anthropic.com@lgcode/v1" },
         },
         provider: {
           ...providerInfo,
@@ -522,9 +522,9 @@ describe("session.llm-native.request", () => {
 
   it.effect("native tool wrapper raises ToolFailure when the source tool has no execute handler", () =>
     Effect.gen(function* () {
-      // The AI SDK Tool shape allows execute to be omitted (e.g., client-side / MCP tools).
-      // The native runtime owns execution, so encountering such a tool here means upstream
-      // wiring is wrong; we want a typed failure, not a silent skip or unhandled exception.
+      @lgcode/@lgcode/ The AI SDK Tool shape allows execute to be omitted (e.g., client-side @lgcode/ MCP tools).
+      @lgcode/@lgcode/ The native runtime owns execution, so encountering such a tool here means upstream
+      @lgcode/@lgcode/ wiring is wrong; we want a typed failure, not a silent skip or unhandled exception.
       const wrapped = LLMNativeRuntime.nativeTools(
         { incomplete: { description: "no execute", inputSchema: jsonSchema({ type: "object" }) } satisfies Tool },
         { messages: [] as ModelMessage[], abort: new AbortController().signal },
@@ -742,7 +742,7 @@ describe("session.llm-native.request", () => {
 
       expect(captures).toHaveLength(1)
       expect(captures[0]).toMatchObject({
-        url: "https://api.openai.com/v1/responses",
+        url: "https:@lgcode/@lgcode/api.openai.com@lgcode/v1@lgcode/responses",
         body: {
           model: "gpt-5-mini",
           instructions: "You are concise.",

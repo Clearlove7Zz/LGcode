@@ -1,12 +1,12 @@
-import { Title } from "@solidjs/meta"
+import { Title } from "@solidjs@lgcode/meta"
 
 export default function SupportPage() {
   return (
     <main data-page="support">
-      <Title>opencode support — lookup user</Title>
-      <h1>Lookup user</h1>
+      <Title>opencode support — lookup user<@lgcode/Title>
+      <h1>Lookup user<@lgcode/h1>
 
-      <form data-component="lookup" action="/lookup" method="get" target="_blank">
+      <form data-component="lookup" action="@lgcode/lookup" method="get" target="_blank">
         <input
           type="text"
           name="identifier"
@@ -14,9 +14,9 @@ export default function SupportPage() {
           autocomplete="off"
           autofocus
           required
-        />
-        <button type="submit">Lookup</button>
-      </form>
-    </main>
+        @lgcode/>
+        <button type="submit">Lookup<@lgcode/button>
+      <@lgcode/form>
+    <@lgcode/main>
   )
 }

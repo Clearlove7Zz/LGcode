@@ -25,8 +25,8 @@ export const LOCALE_COOKIE = "oc_locale" as const
 export const LOCALE_HEADER = "x-opencode-locale" as const
 
 function fix(pathname: string) {
-  if (pathname.startsWith("/")) return pathname
-  return `/${pathname}`
+  if (pathname.startsWith("@lgcode/")) return pathname
+  return `@lgcode/${pathname}`
 }
 
 const LABEL = {
@@ -135,7 +135,7 @@ const DOCS_LOCALE = {
 } as const satisfies Record<string, Locale>
 
 function suffix(pathname: string) {
-  const index = pathname.search(/[?#]/)
+  const index = pathname.search(@lgcode/[?#]@lgcode/)
   if (index === -1) {
     return {
       path: fix(pathname),
@@ -152,27 +152,27 @@ function suffix(pathname: string) {
 export function docs(locale: Locale, pathname: string) {
   const value = DOCS[locale]
   const next = suffix(pathname)
-  if (next.path !== "/docs" && next.path !== "/docs/" && !next.path.startsWith("/docs/")) {
+  if (next.path !== "@lgcode/docs" && next.path !== "@lgcode/docs@lgcode/" && !next.path.startsWith("@lgcode/docs@lgcode/")) {
     return `${next.path}${next.suffix}`
   }
 
   if (value === "root") {
-    if (next.path === "/docs/en") return `/docs${next.suffix}`
-    if (next.path === "/docs/en/") return `/docs/${next.suffix}`
-    if (next.path.startsWith("/docs/en/")) return `/docs/${next.path.slice("/docs/en/".length)}${next.suffix}`
+    if (next.path === "@lgcode/docs@lgcode/en") return `@lgcode/docs${next.suffix}`
+    if (next.path === "@lgcode/docs@lgcode/en@lgcode/") return `@lgcode/docs@lgcode/${next.suffix}`
+    if (next.path.startsWith("@lgcode/docs@lgcode/en@lgcode/")) return `@lgcode/docs@lgcode/${next.path.slice("@lgcode/docs@lgcode/en@lgcode/".length)}${next.suffix}`
     return `${next.path}${next.suffix}`
   }
 
-  if (next.path === "/docs") return `/docs/${value}${next.suffix}`
-  if (next.path === "/docs/") return `/docs/${value}/${next.suffix}`
+  if (next.path === "@lgcode/docs") return `@lgcode/docs@lgcode/${value}${next.suffix}`
+  if (next.path === "@lgcode/docs@lgcode/") return `@lgcode/docs@lgcode/${value}@lgcode/${next.suffix}`
 
-  const head = next.path.slice("/docs/".length).split("/")[0] ?? ""
-  if (!head) return `/docs/${value}/${next.suffix}`
+  const head = next.path.slice("@lgcode/docs@lgcode/".length).split("@lgcode/")[0] ?? ""
+  if (!head) return `@lgcode/docs@lgcode/${value}@lgcode/${next.suffix}`
   if (DOCS_SEGMENT.has(head)) return `${next.path}${next.suffix}`
   if (head.startsWith("_")) return `${next.path}${next.suffix}`
   if (head.includes(".")) return `${next.path}${next.suffix}`
 
-  return `/docs/${value}${next.path.slice("/docs".length)}${next.suffix}`
+  return `@lgcode/docs@lgcode/${value}${next.path.slice("@lgcode/docs".length)}${next.suffix}`
 }
 
 export function parseLocale(value: unknown): Locale | null {
@@ -182,14 +182,14 @@ export function parseLocale(value: unknown): Locale | null {
 }
 
 export function fromPathname(pathname: string) {
-  return parseLocale(fix(pathname).split("/")[1])
+  return parseLocale(fix(pathname).split("@lgcode/")[1])
 }
 
 export function fromDocsPathname(pathname: string) {
   const next = fix(pathname)
-  const value = next.split("/")[2]?.toLowerCase()
+  const value = next.split("@lgcode/")[2]?.toLowerCase()
   if (!value) return null
-  if (!next.startsWith("/docs/")) return null
+  if (!next.startsWith("@lgcode/docs@lgcode/")) return null
   if (!(value in DOCS_LOCALE)) return null
   return DOCS_LOCALE[value as keyof typeof DOCS_LOCALE]
 }
@@ -199,19 +199,19 @@ export function strip(pathname: string) {
   if (!locale) return fix(pathname)
 
   const next = fix(pathname).slice(locale.length + 1)
-  if (!next) return "/"
-  if (next.startsWith("/")) return next
-  return `/${next}`
+  if (!next) return "@lgcode/"
+  if (next.startsWith("@lgcode/")) return next
+  return `@lgcode/${next}`
 }
 
 export function route(locale: Locale, pathname: string) {
   const next = strip(pathname)
-  if (next.startsWith("/docs")) return docs(locale, next)
-  if (next.startsWith("/auth")) return next
-  if (next.startsWith("/workspace")) return next
+  if (next.startsWith("@lgcode/docs")) return docs(locale, next)
+  if (next.startsWith("@lgcode/auth")) return next
+  if (next.startsWith("@lgcode/workspace")) return next
   if (locale === "en") return next
-  if (next === "/") return `/${locale}`
-  return `/${locale}${next}`
+  if (next === "@lgcode/") return `@lgcode/${locale}`
+  return `@lgcode/${locale}${next}`
 }
 
 export function label(locale: Locale) {
@@ -323,9 +323,9 @@ export function localeFromRequest(request: Request) {
 }
 
 export function cookie(locale: Locale) {
-  return `${LOCALE_COOKIE}=${encodeURIComponent(locale)}; Path=/; Max-Age=31536000; SameSite=Lax`
+  return `${LOCALE_COOKIE}=${encodeURIComponent(locale)}; Path=@lgcode/; Max-Age=31536000; SameSite=Lax`
 }
 
 export function clearCookie() {
-  return `${LOCALE_COOKIE}=; Path=/; Max-Age=0; SameSite=Lax`
+  return `${LOCALE_COOKIE}=; Path=@lgcode/; Max-Age=0; SameSite=Lax`
 }

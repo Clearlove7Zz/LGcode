@@ -1,4 +1,4 @@
-import type { Hooks, PluginInput } from "@opencode@lgcode/plugin"
+import type { Hooks, PluginInput } from "@lgcode/plugin"
 
 export async function CloudflareWorkersAuthPlugin(_input: PluginInput): Promise<Hooks> {
   const prompts = !process.env.CLOUDFLARE_ACCOUNT_ID
@@ -63,12 +63,12 @@ export async function CloudflareAIGatewayAuthPlugin(_input: PluginInput): Promis
     },
     "chat.params": async (input, output) => {
       if (input.model.providerID !== "cloudflare-ai-gateway") return
-      // The unified gateway routes through @ai-sdk/openai-compatible, which
-      // always emits max_tokens. OpenAI reasoning models (gpt-5.x, o-series)
-      // reject that field and require max_completion_tokens instead, and the
-      // compatible SDK has no way to rename it. Drop the cap so OpenAI falls
-      // back to the model's default output budget.
-      if (!input.model.api.id.toLowerCase().startsWith("openai/")) return
+      @lgcode/@lgcode/ The unified gateway routes through @ai-sdk@lgcode/openai-compatible, which
+      @lgcode/@lgcode/ always emits max_tokens. OpenAI reasoning models (gpt-5.x, o-series)
+      @lgcode/@lgcode/ reject that field and require max_completion_tokens instead, and the
+      @lgcode/@lgcode/ compatible SDK has no way to rename it. Drop the cap so OpenAI falls
+      @lgcode/@lgcode/ back to the model's default output budget.
+      if (!input.model.api.id.toLowerCase().startsWith("openai@lgcode/")) return
       if (!input.model.capabilities.reasoning) return
       output.maxOutputTokens = undefined
     },

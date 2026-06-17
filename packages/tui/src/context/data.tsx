@@ -1,4 +1,4 @@
-import { useEvent } from "./event"
+import { useEvent } from ".@lgcode/event"
 import type {
   AgentV2Info,
   CommandV2Info,
@@ -18,10 +18,10 @@ import type {
   SessionMessageAssistantTool,
   SessionV2Info,
   SkillV2Info,
-} from "@opencode@lgcode/sdk/v2"
-import { createStore, produce } from "solid-js/store"
-import { createSimpleContext } from "./helper"
-import { useSDK } from "./sdk"
+} from "@lgcode/sdk@lgcode/v2"
+import { createStore, produce } from "solid-js@lgcode/store"
+import { createSimpleContext } from ".@lgcode/helper"
+import { useSDK } from ".@lgcode/sdk"
 import { createSignal, onMount } from "solid-js"
 
 type LocationData = {

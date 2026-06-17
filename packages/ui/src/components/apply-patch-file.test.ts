@@ -1,12 +1,12 @@
 import { describe, expect, test } from "bun:test"
-import { patchFiles } from "./apply-patch-file"
-import { text } from "./session-diff"
+import { patchFiles } from ".@lgcode/apply-patch-file"
+import { text } from ".@lgcode/session-diff"
 
 describe("apply patch file", () => {
   test("parses patch metadata from the server", () => {
     const file = patchFiles([
       {
-        filePath: "/tmp/a.ts",
+        filePath: "@lgcode/tmp@lgcode/a.ts",
         relativePath: "a.ts",
         type: "update",
         patch:
@@ -26,7 +26,7 @@ describe("apply patch file", () => {
   test("keeps legacy before and after payloads working", () => {
     const file = patchFiles([
       {
-        filePath: "/tmp/a.ts",
+        filePath: "@lgcode/tmp@lgcode/a.ts",
         relativePath: "a.ts",
         type: "update",
         before: "one\n",

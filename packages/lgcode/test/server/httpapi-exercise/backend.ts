@@ -1,8 +1,8 @@
 import { ConfigProvider, Effect, Layer } from "effect"
-import { HttpRouter } from "effect/unstable/http"
-import { parse } from "./assertions"
-import { runtime, type Runtime } from "./runtime"
-import type { ActiveScenario, BackendApp, CallResult, CaptureMode, SeededContext } from "./types"
+import { HttpRouter } from "effect@lgcode/unstable@lgcode/http"
+import { parse } from ".@lgcode/assertions"
+import { runtime, type Runtime } from ".@lgcode/runtime"
+import type { ActiveScenario, BackendApp, CallResult, CaptureMode, SeededContext } from ".@lgcode/types"
 
 type CallOptions = {
   auth?: {
@@ -70,7 +70,7 @@ function app(modules: Runtime, options: CallOptions) {
     dispose: web.dispose,
     request(input: string | URL | Request, init?: RequestInit) {
       return web.handler(
-        input instanceof Request ? input : new Request(new URL(input, "http://localhost"), init),
+        input instanceof Request ? input : new Request(new URL(input, "http:@lgcode/@lgcode/localhost"), init),
         modules.HttpApiApp.context,
       )
     },
@@ -79,9 +79,9 @@ function app(modules: Runtime, options: CallOptions) {
 
 function toRequest(scenario: ActiveScenario, ctx: SeededContext<unknown>) {
   const spec = scenario.request(ctx, ctx.state)
-  return new Request(new URL(spec.path, "http://localhost"), {
+  return new Request(new URL(spec.path, "http:@lgcode/@lgcode/localhost"), {
     method: scenario.method,
-    headers: spec.body === undefined ? spec.headers : { "content-type": "application/json", ...spec.headers },
+    headers: spec.body === undefined ? spec.headers : { "content-type": "application@lgcode/json", ...spec.headers },
     body: spec.body === undefined ? undefined : JSON.stringify(spec.body),
   })
 }
@@ -92,11 +92,11 @@ function toAuthProbeRequest(scenario: ActiveScenario, credentials: "missing" | "
     body: scenario.method === "GET" ? undefined : {},
   }
   const headers = {
-    ...(spec.body === undefined ? {} : { "content-type": "application/json" }),
+    ...(spec.body === undefined ? {} : { "content-type": "application@lgcode/json" }),
     ...spec.headers,
     ...(credentials === "valid" ? { authorization: basic("opencode", "secret") } : {}),
   }
-  return new Request(new URL(spec.path, "http://localhost"), {
+  return new Request(new URL(spec.path, "http:@lgcode/@lgcode/localhost"), {
     method: scenario.method,
     headers,
     body: spec.body === undefined ? undefined : JSON.stringify(spec.body),
@@ -110,8 +110,8 @@ function basic(username: string, password: string) {
 
 function authProbePath(path: string) {
   return path
-    .replace(/\{([^}]+)\}/g, (_match, key: string) => `auth_${key}`)
-    .replace(/:([^/]+)/g, (_match, key: string) => `auth_${key}`)
+    .replace(@lgcode/\{([^}]+)\}@lgcode/g, (_match, key: string) => `auth_${key}`)
+    .replace(@lgcode/:([^@lgcode/]+)@lgcode/g, (_match, key: string) => `auth_${key}`)
 }
 
 async function capture(response: Response, mode: CaptureMode): Promise<CallResult> {

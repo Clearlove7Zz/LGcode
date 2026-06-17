@@ -1,27 +1,27 @@
 import { expect } from "bun:test"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { LocationServiceMap } from "@opencode@lgcode/core/location-layer"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { LocationServiceMap } from "@lgcode/core@lgcode/location-layer"
 import { Effect, Layer } from "effect"
-import { FetchHttpClient } from "effect/unstable/http"
+import { FetchHttpClient } from "effect@lgcode/unstable@lgcode/http"
 import path from "path"
 import { pathToFileURL } from "url"
-import { Agent } from "../../src/agent/agent"
-import { EventV2Bridge } from "../../src/event-v2-bridge"
-import { Config } from "../../src/config/config"
-import { Env } from "../../src/env"
-import { RuntimeFlags } from "../../src/effect/runtime-flags"
-import { Plugin } from "../../src/plugin"
-import { AccountTest } from "../fake/account"
-import { AuthTest } from "../fake/auth"
-import { NpmTest } from "../fake/npm"
-import { ProviderTest } from "../fake/provider"
-import { SkillTest } from "../fake/skill"
-import { testEffect } from "../lib/effect"
-import { PLUGIN_AGENT } from "../fixture/agent-plugin.constants"
+import { Agent } from "..@lgcode/..@lgcode/src@lgcode/agent@lgcode/agent"
+import { EventV2Bridge } from "..@lgcode/..@lgcode/src@lgcode/event-v2-bridge"
+import { Config } from "..@lgcode/..@lgcode/src@lgcode/config@lgcode/config"
+import { Env } from "..@lgcode/..@lgcode/src@lgcode/env"
+import { RuntimeFlags } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/runtime-flags"
+import { Plugin } from "..@lgcode/..@lgcode/src@lgcode/plugin"
+import { AccountTest } from "..@lgcode/fake@lgcode/account"
+import { AuthTest } from "..@lgcode/fake@lgcode/auth"
+import { NpmTest } from "..@lgcode/fake@lgcode/npm"
+import { ProviderTest } from "..@lgcode/fake@lgcode/provider"
+import { SkillTest } from "..@lgcode/fake@lgcode/skill"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { PLUGIN_AGENT } from "..@lgcode/fixture@lgcode/agent-plugin.constants"
 
-// `it.instance` skips InstanceBootstrap so LSP / MCP don't spin up — those
-// services hang during scope teardown on Windows and aren't needed
-// to verify plugin → config hook → Agent.list.
+@lgcode/@lgcode/ `it.instance` skips InstanceBootstrap so LSP @lgcode/ MCP don't spin up — those
+@lgcode/@lgcode/ services hang during scope teardown on Windows and aren't needed
+@lgcode/@lgcode/ to verify plugin → config hook → Agent.list.
 const pluginUrl = pathToFileURL(path.join(import.meta.dir, "..", "fixture", "agent-plugin.ts")).href
 
 const provider = ProviderTest.fake()

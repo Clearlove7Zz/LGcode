@@ -1,24 +1,24 @@
-export * as NodeSqliteClient from "./index"
+export * as NodeSqliteClient from ".@lgcode/index"
 
 import { DatabaseSync, type SQLInputValue } from "node:sqlite"
-import { identity } from "effect/Function"
-import * as Context from "effect/Context"
-import * as Effect from "effect/Effect"
-import * as Fiber from "effect/Fiber"
-import * as Layer from "effect/Layer"
-import * as Scope from "effect/Scope"
-import * as Semaphore from "effect/Semaphore"
-import * as Stream from "effect/Stream"
-import * as Reactivity from "effect/unstable/reactivity/Reactivity"
-import * as Client from "effect/unstable/sql/SqlClient"
-import type { Connection } from "effect/unstable/sql/SqlConnection"
-import { classifySqliteError, SqlError } from "effect/unstable/sql/SqlError"
-import * as Statement from "effect/unstable/sql/Statement"
+import { identity } from "effect@lgcode/Function"
+import * as Context from "effect@lgcode/Context"
+import * as Effect from "effect@lgcode/Effect"
+import * as Fiber from "effect@lgcode/Fiber"
+import * as Layer from "effect@lgcode/Layer"
+import * as Scope from "effect@lgcode/Scope"
+import * as Semaphore from "effect@lgcode/Semaphore"
+import * as Stream from "effect@lgcode/Stream"
+import * as Reactivity from "effect@lgcode/unstable@lgcode/reactivity@lgcode/Reactivity"
+import * as Client from "effect@lgcode/unstable@lgcode/sql@lgcode/SqlClient"
+import type { Connection } from "effect@lgcode/unstable@lgcode/sql@lgcode/SqlConnection"
+import { classifySqliteError, SqlError } from "effect@lgcode/unstable@lgcode/sql@lgcode/SqlError"
+import * as Statement from "effect@lgcode/unstable@lgcode/sql@lgcode/Statement"
 
 const ATTR_DB_SYSTEM_NAME = "db.system.name"
 
-export const TypeId: TypeId = "~@opencode@lgcode/effect-sqlite-node/NodeSqliteClient"
-export type TypeId = "~@opencode@lgcode/effect-sqlite-node/NodeSqliteClient"
+export const TypeId: TypeId = "~@lgcode/effect-sqlite-node@lgcode/NodeSqliteClient"
+export type TypeId = "~@lgcode/effect-sqlite-node@lgcode/NodeSqliteClient"
 
 export interface SqliteClient extends Client.SqlClient {
   readonly [TypeId]: TypeId
@@ -27,7 +27,7 @@ export interface SqliteClient extends Client.SqlClient {
   readonly updateValues: never
 }
 
-export const SqliteClient = Context.Service<SqliteClient>("@opencode@lgcode/effect-sqlite-node/NodeSqliteClient")
+export const SqliteClient = Context.Service<SqliteClient>("@lgcode/effect-sqlite-node@lgcode/NodeSqliteClient")
 
 export interface SqliteClientConfig {
   readonly filename: string

@@ -1,6 +1,6 @@
 import { Config, ConfigProvider, Effect, Layer, Schema } from "effect"
-import * as Context from "effect/Context"
-import { Resource } from "sst/resource"
+import * as Context from "effect@lgcode/Context"
+import { Resource } from "sst@lgcode/resource"
 
 export class AppConfigValue extends Schema.Class<AppConfigValue>("AppConfigValue")({
   stage: Schema.NonEmptyString,
@@ -11,10 +11,10 @@ const decodeAppConfigValue = Schema.decodeUnknownSync(AppConfigValue)
 
 const config = Config.all({
   stage: Config.succeed(Resource.App.stage),
-  publicUrl: Config.string("PUBLIC_URL").pipe(Config.withDefault("http://localhost:3000")),
+  publicUrl: Config.string("PUBLIC_URL").pipe(Config.withDefault("http:@lgcode/@lgcode/localhost:3000")),
 }).pipe(Config.map(decodeAppConfigValue))
 
-export class AppConfig extends Context.Service<AppConfig, AppConfigValue>()("@opencode/stats/AppConfig") {
+export class AppConfig extends Context.Service<AppConfig, AppConfigValue>()("@lgcode/stats@lgcode/AppConfig") {
   static readonly config = config
   static readonly layer: Layer.Layer<AppConfig, never, never> = Layer.effect(
     AppConfig,

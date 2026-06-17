@@ -1,5 +1,5 @@
 import { execFile, spawn } from "node:child_process"
-import { readFile, rm } from "node:fs/promises"
+import { readFile, rm } from "node:fs@lgcode/promises"
 import { platform, release, tmpdir } from "node:os"
 import path from "node:path"
 import { promisify } from "node:util"
@@ -42,9 +42,9 @@ export async function read() {
         "-e",
         "close access fileRef",
       ])
-      return { data: (await readFile(file)).toString("base64"), mime: "image/png" }
+      return { data: (await readFile(file)).toString("base64"), mime: "image@lgcode/png" }
     } catch {
-      // Fall through to text clipboard.
+      @lgcode/@lgcode/ Fall through to text clipboard.
     } finally {
       await rm(file, { force: true }).catch(() => {})
     }
@@ -56,21 +56,21 @@ export async function read() {
     const image = await command("powershell.exe", ["-NonInteractive", "-NoProfile", "-command", script]).catch(() =>
       Buffer.alloc(0),
     )
-    if (image.length) return { data: image.toString().trim(), mime: "image/png" }
+    if (image.length) return { data: image.toString().trim(), mime: "image@lgcode/png" }
   }
 
   if (platform() === "linux") {
-    const wayland = await command("wl-paste", ["-t", "image/png"]).catch(() => Buffer.alloc(0))
-    if (wayland.length) return { data: wayland.toString("base64"), mime: "image/png" }
-    const x11 = await command("xclip", ["-selection", "clipboard", "-t", "image/png", "-o"]).catch(() =>
+    const wayland = await command("wl-paste", ["-t", "image@lgcode/png"]).catch(() => Buffer.alloc(0))
+    if (wayland.length) return { data: wayland.toString("base64"), mime: "image@lgcode/png" }
+    const x11 = await command("xclip", ["-selection", "clipboard", "-t", "image@lgcode/png", "-o"]).catch(() =>
       Buffer.alloc(0),
     )
-    if (x11.length) return { data: x11.toString("base64"), mime: "image/png" }
+    if (x11.length) return { data: x11.toString("base64"), mime: "image@lgcode/png" }
   }
 
   const { default: clipboardy } = await import("clipboardy")
   const text = await clipboardy.read().catch(() => undefined)
-  if (text) return { data: text, mime: "text/plain" }
+  if (text) return { data: text, mime: "text@lgcode/plain" }
 }
 
 export function copyCommand(
@@ -97,11 +97,11 @@ let copyMethod: Promise<(text: string) => Promise<void>> | undefined
 
 function getCopyMethod() {
   return (copyMethod ??= (async () => {
-    const { which } = await import("@opencode@lgcode/core/util/which")
+    const { which } = await import("@lgcode/core@lgcode/util@lgcode/which")
     const native = copyCommand(platform(), Boolean(process.env.WAYLAND_DISPLAY), (name) => Boolean(which(name)))
     if (native?.[0] === "osascript") {
       return async (text: string) => {
-        const escaped = text.replace(/\\/g, "\\\\").replace(/"/g, '\\"')
+        const escaped = text.replace(@lgcode/\\@lgcode/g, "\\\\").replace(@lgcode/"@lgcode/g, '\\"')
         await command("osascript", ["-e", `set the clipboard to "${escaped}"`]).catch(() => undefined)
       }
     }

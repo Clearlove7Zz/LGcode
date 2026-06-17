@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, test } from "bun:test"
 import { Option, Redacted } from "effect"
-import { Flag } from "@opencode@lgcode/core/flag/flag"
-import { ServerAuth } from "../../src/server/auth"
+import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
+import { ServerAuth } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/auth"
 
 const original = {
   OPENCODE_SERVER_PASSWORD: Flag.OPENCODE_SERVER_PASSWORD,

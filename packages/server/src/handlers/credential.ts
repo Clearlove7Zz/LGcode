@@ -1,7 +1,7 @@
-import { Integration } from "@opencode@lgcode/core/integration"
+import { Integration } from "@lgcode/core@lgcode/integration"
 import { Effect } from "effect"
-import { HttpApiBuilder, HttpApiSchema } from "effect/unstable/httpapi"
-import { Api } from "../api"
+import { HttpApiBuilder, HttpApiSchema } from "effect@lgcode/unstable@lgcode/httpapi"
+import { Api } from "..@lgcode/api"
 
 export const CredentialHandler = HttpApiBuilder.group(Api, "server.credential", (handlers) =>
   handlers

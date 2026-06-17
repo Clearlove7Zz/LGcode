@@ -1,30 +1,30 @@
-import { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
+import { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
 import { afterEach, describe, expect } from "bun:test"
 import { Cause, Effect, Exit, Layer, Stream } from "effect"
 import path from "path"
-import { Agent } from "../../src/agent/agent"
-import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
-import { FSUtil } from "@opencode@lgcode/core/fs-util"
-import { Global } from "@opencode@lgcode/core/global"
-import { Config } from "@/config/config"
-import { RuntimeFlags } from "@/effect/runtime-flags"
-import { Ripgrep } from "@opencode@lgcode/core/ripgrep"
-import { LSP } from "@/lsp/lsp"
-import { Permission } from "../../src/permission"
-import { SessionID, MessageID } from "../../src/session/schema"
-import { Instruction } from "../../src/session/instruction"
-import { ReadTool } from "../../src/tool/read"
-import { Truncate } from "@/tool/truncate"
-import { Tool } from "@/tool/tool"
-import { Filesystem } from "@/util/filesystem"
+import { Agent } from "..@lgcode/..@lgcode/src@lgcode/agent@lgcode/agent"
+import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
+import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { Global } from "@lgcode/core@lgcode/global"
+import { Config } from "@@lgcode/config@lgcode/config"
+import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
+import { Ripgrep } from "@lgcode/core@lgcode/ripgrep"
+import { LSP } from "@@lgcode/lsp@lgcode/lsp"
+import { Permission } from "..@lgcode/..@lgcode/src@lgcode/permission"
+import { SessionID, MessageID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
+import { Instruction } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/instruction"
+import { ReadTool } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/read"
+import { Truncate } from "@@lgcode/tool@lgcode/truncate"
+import { Tool } from "@@lgcode/tool@lgcode/tool"
+import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
 import {
   disposeAllInstances,
   provideInstance,
   testInstanceStoreLayer,
   TestInstance,
   tmpdirScoped,
-} from "../fixture/fixture"
-import { testEffect } from "../lib/effect"
+} from "..@lgcode/fixture@lgcode/fixture"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
 
 const FIXTURES_DIR = path.join(import.meta.dir, "fixtures")
 
@@ -92,7 +92,7 @@ const fail = Effect.fn("ReadToolTest.fail")(function* (
 
 const full = (p: string) => (process.platform === "win32" ? Filesystem.normalizePath(p) : p)
 const glob = (p: string) =>
-  process.platform === "win32" ? Filesystem.normalizePathPattern(p) : p.replaceAll("\\", "/")
+  process.platform === "win32" ? Filesystem.normalizePathPattern(p) : p.replaceAll("\\", "@lgcode/")
 const githubBase = <A, E, R>(url: string, self: Effect.Effect<A, E, R>) =>
   Effect.acquireUseRelease(
     Effect.sync(() => {
@@ -190,8 +190,8 @@ describe("tool.read external_directory permission", () => {
         const { items, next } = asks()
         const target = path.join(dir, "test.txt")
         const alt = target
-          .replace(/^[A-Za-z]:/, "")
-          .replaceAll("\\", "/")
+          .replace(@lgcode/^[A-Za-z]:@lgcode/, "")
+          .replaceAll("\\", "@lgcode/")
           .toLowerCase()
 
         yield* exec(dir, { filePath: alt }, next)
@@ -202,7 +202,7 @@ describe("tool.read external_directory permission", () => {
     )
   }
 
-  it.live("uses worktree-relative path for read permission so user rules match like edit/write", () =>
+  it.live("uses worktree-relative path for read permission so user rules match like edit@lgcode/write", () =>
     Effect.gen(function* () {
       const dir = yield* tmpdirScoped({ git: true })
       yield* put(path.join(dir, "src", "secret.ts"), "shh")
@@ -236,7 +236,7 @@ describe("tool.read external_directory permission", () => {
 
       const { items, next } = asks()
 
-      yield* fail(dir, { filePath: "../outside.txt" }, next)
+      yield* fail(dir, { filePath: "..@lgcode/outside.txt" }, next)
       const ext = items.find((item) => item.permission === "external_directory")
       expect(ext).toBeDefined()
     }),
@@ -315,7 +315,7 @@ describe("tool.read truncation", () => {
       const test = yield* TestInstance
       const base = yield* load(path.join(FIXTURES_DIR, "models-api.json"))
       const target = 60 * 1024
-      const content = base.length >= target ? base : base.repeat(Math.ceil(target / base.length))
+      const content = base.length >= target ? base : base.repeat(Math.ceil(target @lgcode/ base.length))
       yield* put(path.join(test.directory, "large.json"), content)
 
       const result = yield* run({ filePath: path.join(test.directory, "large.json") })
@@ -353,7 +353,7 @@ describe("tool.read truncation", () => {
 
       expect(result.metadata.truncated).toBe(true)
       expect(result.output).toContain("Output capped at")
-      expect(counter.bytes).toBeLessThan(Buffer.byteLength(content, "utf-8") / 2)
+      expect(counter.bytes).toBeLessThan(Buffer.byteLength(content, "utf-8") @lgcode/ 2)
     }),
   )
 
@@ -506,8 +506,8 @@ describe("tool.read truncation", () => {
 
       const result = yield* exec(dir, { filePath: path.join(dir, "image.bin") })
       expect(result.output).toBe("Image read successfully")
-      expect(result.attachments?.[0].mime).toBe("image/jpeg")
-      expect(result.attachments?.[0].url.startsWith("data:image/jpeg;base64,")).toBe(true)
+      expect(result.attachments?.[0].mime).toBe("image@lgcode/jpeg")
+      expect(result.attachments?.[0].url.startsWith("data:image@lgcode/jpeg;base64,")).toBe(true)
     }),
   )
 

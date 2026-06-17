@@ -1,10 +1,10 @@
 import { test, expect, describe } from "bun:test"
-import { SessionV1 } from "@opencode@lgcode/core/v1/session"
-import { extractResponseText, formatPromptTooLargeError } from "../../src/cli/cmd/github"
-import type { MessageV2 } from "../../src/session/message-v2"
-import { SessionID, MessageID, PartID } from "../../src/session/schema"
+import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
+import { extractResponseText, formatPromptTooLargeError } from "..@lgcode/..@lgcode/src@lgcode/cli@lgcode/cmd@lgcode/github"
+import type { MessageV2 } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/message-v2"
+import { SessionID, MessageID, PartID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
 
-// Helper to create minimal valid parts
+@lgcode/@lgcode/ Helper to create minimal valid parts
 function createTextPart(text: string): SessionV1.Part {
   return {
     id: PartID.ascending(),
@@ -103,15 +103,15 @@ describe("extractResponseText", () => {
   })
 
   test("returns null for tool-only response (signals summary needed)", () => {
-    // This is the exact scenario from the bug report - todowrite with no text
+    @lgcode/@lgcode/ This is the exact scenario from the bug report - todowrite with no text
     const parts = [createToolPart("todowrite", "8 todos")]
     expect(extractResponseText(parts)).toBeNull()
   })
 
   test("returns null for multiple completed tools", () => {
     const parts = [
-      createToolPart("read", "src/file.ts"),
-      createToolPart("edit", "src/file.ts"),
+      createToolPart("read", "src@lgcode/file.ts"),
+      createToolPart("edit", "src@lgcode/file.ts"),
       createToolPart("bash", "bun test"),
     ]
     expect(extractResponseText(parts)).toBeNull()
@@ -144,7 +144,7 @@ describe("extractResponseText", () => {
   test("returns text from multi-step response", () => {
     const parts = [
       createStepStartPart(),
-      createToolPart("read", "src/file.ts"),
+      createToolPart("read", "src@lgcode/file.ts"),
       createTextPart("Done"),
       createStepFinishPart(),
     ]
@@ -157,7 +157,7 @@ describe("extractResponseText", () => {
   })
 
   test("prefers text over tools when both present", () => {
-    const parts = [createToolPart("read", "src/file.ts"), createTextPart("Here's what I found")]
+    const parts = [createToolPart("read", "src@lgcode/file.ts"), createTextPart("Here's what I found")]
     expect(extractResponseText(parts)).toBe("Here's what I found")
   })
 })
@@ -169,8 +169,8 @@ describe("formatPromptTooLargeError", () => {
   })
 
   test("formats error with files (base64 content)", () => {
-    // Base64 is ~33% larger than original, so we multiply by 0.75 to get original size
-    // 400 KB base64 = 300 KB original, 200 KB base64 = 150 KB original
+    @lgcode/@lgcode/ Base64 is ~33% larger than original, so we multiply by 0.75 to get original size
+    @lgcode/@lgcode/ 400 KB base64 = 300 KB original, 200 KB base64 = 150 KB original
     const files = [
       { filename: "screenshot.png", content: "a".repeat(400 * 1024) },
       { filename: "diagram.png", content: "b".repeat(200 * 1024) },
@@ -184,7 +184,7 @@ describe("formatPromptTooLargeError", () => {
   })
 
   test("lists all files when multiple present", () => {
-    // Base64 sizes: 4KB -> 3KB, 8KB -> 6KB, 12KB -> 9KB
+    @lgcode/@lgcode/ Base64 sizes: 4KB -> 3KB, 8KB -> 6KB, 12KB -> 9KB
     const files = [
       { filename: "img1.png", content: "x".repeat(4 * 1024) },
       { filename: "img2.jpg", content: "y".repeat(8 * 1024) },

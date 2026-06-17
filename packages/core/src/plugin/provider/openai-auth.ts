@@ -1,11 +1,11 @@
 import { createServer } from "node:http"
 import { Deferred, Effect } from "effect"
-import { Integration } from "../../integration"
-import { Credential } from "../../credential"
-import { InstallationVersion } from "../../installation/version"
+import { Integration } from "..@lgcode/..@lgcode/integration"
+import { Credential } from "..@lgcode/..@lgcode/credential"
+import { InstallationVersion } from "..@lgcode/..@lgcode/installation@lgcode/version"
 
 const clientID = "app_EMoamEEZ73f0CkXaXp7hrann"
-const issuer = "https://auth.openai.com"
+const issuer = "https:@lgcode/@lgcode/auth.openai.com"
 const callbackPort = 1455
 const pollingSafetyMargin = 3000
 
@@ -24,7 +24,7 @@ type TokenResponse = {
 type Claims = {
   chatgpt_account_id?: string
   organizations?: Array<{ id: string }>
-  "https://api.openai.com/auth"?: { chatgpt_account_id?: string }
+  "https:@lgcode/@lgcode/api.openai.com@lgcode/auth"?: { chatgpt_account_id?: string }
 }
 
 const browserMethodID = Integration.MethodID.make("chatgpt-browser")
@@ -35,17 +35,17 @@ export const browser = {
   method: {
     id: browserMethodID,
     type: "oauth",
-    label: "ChatGPT Pro/Plus (browser)",
+    label: "ChatGPT Pro@lgcode/Plus (browser)",
   },
   authorize: () =>
     Effect.gen(function* () {
       const pkce = yield* Effect.promise(generatePKCE)
       const state = base64UrlEncode(crypto.getRandomValues(new Uint8Array(32)).buffer)
       const code = yield* Deferred.make<string, Error>()
-      const redirect = `http://localhost:${callbackPort}/auth/callback`
+      const redirect = `http:@lgcode/@lgcode/localhost:${callbackPort}@lgcode/auth@lgcode/callback`
       const server = createServer((request, response) => {
-        const url = new URL(request.url ?? "/", `http://localhost:${callbackPort}`)
-        if (url.pathname !== "/auth/callback") {
+        const url = new URL(request.url ?? "@lgcode/", `http:@lgcode/@lgcode/localhost:${callbackPort}`)
+        if (url.pathname !== "@lgcode/auth@lgcode/callback") {
           response.writeHead(404).end("Not found")
           return
         }
@@ -53,17 +53,17 @@ export const browser = {
         const value = url.searchParams.get("code")
         if (error) {
           Effect.runFork(Deferred.fail(code, new Error(error)))
-          response.writeHead(400, { "Content-Type": "text/html" }).end(errorPage(error))
+          response.writeHead(400, { "Content-Type": "text@lgcode/html" }).end(errorPage(error))
           return
         }
         if (!value || url.searchParams.get("state") !== state) {
           const message = value ? "Invalid OAuth state" : "Missing authorization code"
           Effect.runFork(Deferred.fail(code, new Error(message)))
-          response.writeHead(400, { "Content-Type": "text/html" }).end(errorPage(message))
+          response.writeHead(400, { "Content-Type": "text@lgcode/html" }).end(errorPage(message))
           return
         }
         Effect.runFork(Deferred.succeed(code, value))
-        response.writeHead(200, { "Content-Type": "text/html" }).end(successPage)
+        response.writeHead(200, { "Content-Type": "text@lgcode/html" }).end(successPage)
       })
       yield* Effect.callback<void, Error>((resume) => {
         server.once("error", (error) => resume(Effect.fail(error)))
@@ -92,30 +92,30 @@ export const headless = {
   method: {
     id: headlessMethodID,
     type: "oauth",
-    label: "ChatGPT Pro/Plus (headless)",
+    label: "ChatGPT Pro@lgcode/Plus (headless)",
   },
   authorize: () =>
     Effect.gen(function* () {
       const device = yield* request<{ device_auth_id: string; user_code: string; interval: string }>(
-        `${issuer}/api/accounts/deviceauth/usercode`,
+        `${issuer}@lgcode/api@lgcode/accounts@lgcode/deviceauth@lgcode/usercode`,
         {
           method: "POST",
-          headers: headers("application/json"),
+          headers: headers("application@lgcode/json"),
           body: JSON.stringify({ client_id: clientID }),
         },
       )
       const interval = Math.max(Number.parseInt(device.interval) || 5, 1) * 1000
       return {
         mode: "auto" as const,
-        url: `${issuer}/codex/device`,
+        url: `${issuer}@lgcode/codex@lgcode/device`,
         instructions: `Enter code: ${device.user_code}`,
         callback: Effect.gen(function* () {
           while (true) {
             const response = yield* Effect.tryPromise({
               try: (signal) =>
-                fetch(`${issuer}/api/accounts/deviceauth/token`, {
+                fetch(`${issuer}@lgcode/api@lgcode/accounts@lgcode/deviceauth@lgcode/token`, {
                   method: "POST",
-                  headers: headers("application/json"),
+                  headers: headers("application@lgcode/json"),
                   body: JSON.stringify({ device_auth_id: device.device_auth_id, user_code: device.user_code }),
                   signal,
                 }),
@@ -128,7 +128,7 @@ export const headless = {
               }
               return credential(
                 headlessMethodID,
-                yield* exchange(data.authorization_code, `${issuer}/deviceauth/callback`, {
+                yield* exchange(data.authorization_code, `${issuer}@lgcode/deviceauth@lgcode/callback`, {
                   verifier: data.code_verifier,
                   challenge: "",
                 }),
@@ -146,13 +146,13 @@ export const headless = {
 } satisfies Integration.OAuthImplementation
 
 function headers(contentType: string) {
-  return { "Content-Type": contentType, "User-Agent": `opencode/${InstallationVersion}` }
+  return { "Content-Type": contentType, "User-Agent": `opencode@lgcode/${InstallationVersion}` }
 }
 
 function exchange(code: string, redirect: string, pkce: Pkce) {
-  return request<TokenResponse>(`${issuer}/oauth/token`, {
+  return request<TokenResponse>(`${issuer}@lgcode/oauth@lgcode/token`, {
     method: "POST",
-    headers: headers("application/x-www-form-urlencoded"),
+    headers: headers("application@lgcode/x-www-form-urlencoded"),
     body: new URLSearchParams({
       grant_type: "authorization_code",
       code,
@@ -164,9 +164,9 @@ function exchange(code: string, redirect: string, pkce: Pkce) {
 }
 
 function refresh(value: Credential.OAuth) {
-  return request<TokenResponse>(`${issuer}/oauth/token`, {
+  return request<TokenResponse>(`${issuer}@lgcode/oauth@lgcode/token`, {
     method: "POST",
-    headers: headers("application/x-www-form-urlencoded"),
+    headers: headers("application@lgcode/x-www-form-urlencoded"),
     body: new URLSearchParams({
       grant_type: "refresh_token",
       refresh_token: value.refresh,
@@ -218,7 +218,7 @@ function base64UrlEncode(buffer: ArrayBuffer) {
 }
 
 function authorizeURL(redirect: string, pkce: Pkce, state: string) {
-  return `${issuer}/oauth/authorize?${new URLSearchParams({
+  return `${issuer}@lgcode/oauth@lgcode/authorize?${new URLSearchParams({
     response_type: "code",
     client_id: clientID,
     redirect_uri: redirect,
@@ -243,7 +243,7 @@ function claim(token: string) {
     const claims = JSON.parse(Buffer.from(part, "base64url").toString()) as Claims
     return (
       claims.chatgpt_account_id ??
-      claims["https://api.openai.com/auth"]?.chatgpt_account_id ??
+      claims["https:@lgcode/@lgcode/api.openai.com@lgcode/auth"]?.chatgpt_account_id ??
       claims.organizations?.[0]?.id
     )
   } catch {
@@ -252,6 +252,6 @@ function claim(token: string) {
 }
 
 const successPage =
-  "<!doctype html><title>OpenCode</title><h1>Authorization successful</h1><p>You can close this window.</p>"
+  "<!doctype html><title>OpenCode<@lgcode/title><h1>Authorization successful<@lgcode/h1><p>You can close this window.<@lgcode/p>"
 const errorPage = (message: string) =>
-  `<!doctype html><title>OpenCode</title><h1>Authorization failed</h1><p>${message.replace(/[&<>"']/g, "")}</p>`
+  `<!doctype html><title>OpenCode<@lgcode/title><h1>Authorization failed<@lgcode/h1><p>${message.replace(@lgcode/[&<>"']@lgcode/g, "")}<@lgcode/p>`

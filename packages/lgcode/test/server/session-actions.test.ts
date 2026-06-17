@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, mock } from "bun:test"
 import { Effect, Layer } from "effect"
-import { Session as SessionNs } from "@/session/session"
-import { disposeAllInstances, TestInstance } from "../fixture/fixture"
-import { testEffect } from "../lib/effect"
-import { httpApiLayer, requestInDirectory } from "./httpapi-layer"
+import { Session as SessionNs } from "@@lgcode/session@lgcode/session"
+import { disposeAllInstances, TestInstance } from "..@lgcode/fixture@lgcode/fixture"
+import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { httpApiLayer, requestInDirectory } from ".@lgcode/httpapi-layer"
 
 const it = testEffect(Layer.mergeAll(SessionNs.defaultLayer, httpApiLayer))
 
@@ -18,9 +18,9 @@ describe("session action routes", () => {
     () =>
       Effect.gen(function* () {
         const test = yield* TestInstance
-        const headers = { "Content-Type": "application/json" }
+        const headers = { "Content-Type": "application@lgcode/json" }
 
-        const created = yield* requestInDirectory("/session", test.directory, {
+        const created = yield* requestInDirectory("@lgcode/session", test.directory, {
           method: "POST",
           headers,
           body: JSON.stringify({
@@ -33,7 +33,7 @@ describe("session action routes", () => {
         const session = (yield* created.json) as SessionNs.Info
         expect(session.metadata).toEqual({ source: "sdk", trace: { id: "abc" } })
 
-        const updated = yield* requestInDirectory(`/session/${session.id}`, test.directory, {
+        const updated = yield* requestInDirectory(`@lgcode/session@lgcode/${session.id}`, test.directory, {
           method: "PATCH",
           headers,
           body: JSON.stringify({ metadata: { source: "sdk", trace: { id: "def" }, tags: ["one"] } }),
@@ -43,11 +43,11 @@ describe("session action routes", () => {
         const next = (yield* updated.json) as SessionNs.Info
         expect(next.metadata).toEqual({ source: "sdk", trace: { id: "def" }, tags: ["one"] })
 
-        const fetched = yield* requestInDirectory(`/session/${session.id}`, test.directory)
+        const fetched = yield* requestInDirectory(`@lgcode/session@lgcode/${session.id}`, test.directory)
         expect(fetched.status).toBe(200)
         expect(((yield* fetched.json) as SessionNs.Info).metadata).toEqual(next.metadata)
 
-        const forked = yield* requestInDirectory(`/session/${session.id}/fork`, test.directory, {
+        const forked = yield* requestInDirectory(`@lgcode/session@lgcode/${session.id}@lgcode/fork`, test.directory, {
           method: "POST",
           headers,
           body: JSON.stringify({}),
@@ -57,7 +57,7 @@ describe("session action routes", () => {
         const fork = (yield* forked.json) as SessionNs.Info
         expect(fork.metadata).toEqual(next.metadata)
 
-        const reset = yield* requestInDirectory(`/session/${session.id}`, test.directory, {
+        const reset = yield* requestInDirectory(`@lgcode/session@lgcode/${session.id}`, test.directory, {
           method: "PATCH",
           headers,
           body: JSON.stringify({ metadata: {} }),
@@ -80,7 +80,7 @@ describe("session action routes", () => {
           SessionNs.use.remove(created.id).pipe(Effect.ignore),
         )
 
-        const res = yield* requestInDirectory(`/session/${session.id}/abort`, test.directory, { method: "POST" })
+        const res = yield* requestInDirectory(`@lgcode/session@lgcode/${session.id}@lgcode/abort`, test.directory, { method: "POST" })
 
         expect(res.status).toBe(200)
         expect(yield* res.json).toBe(true)
@@ -97,7 +97,7 @@ describe("session action routes", () => {
           SessionNs.use.remove(created.id).pipe(Effect.ignore),
         )
 
-        const res = yield* requestInDirectory(`/experimental/session/${session.id}/background`, test.directory, {
+        const res = yield* requestInDirectory(`@lgcode/experimental@lgcode/session@lgcode/${session.id}@lgcode/background`, test.directory, {
           method: "POST",
         })
 

@@ -1,7 +1,7 @@
 import { Effect } from "effect"
-import { Snapshot } from "../../../snapshot"
-import { effectCmd } from "../../effect-cmd"
-import { cmd } from "../cmd"
+import { Snapshot } from "..@lgcode/..@lgcode/..@lgcode/snapshot"
+import { effectCmd } from "..@lgcode/..@lgcode/effect-cmd"
+import { cmd } from "..@lgcode/cmd"
 
 export const SnapshotCommand = cmd({
   command: "snapshot",

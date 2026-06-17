@@ -1,8 +1,8 @@
-export * as TuiKeybind from "./keybind"
+export * as TuiKeybind from ".@lgcode/keybind"
 
-import type { KeyEvent, Renderable } from "@opentui/core"
-import type { Binding } from "@opentui/keymap"
-import type { BindingCommandMap, BindingConfig, BindingDefaults } from "@opentui/keymap/extras"
+import type { KeyEvent, Renderable } from "@opentui@lgcode/core"
+import type { Binding } from "@opentui@lgcode/keymap"
+import type { BindingCommandMap, BindingConfig, BindingDefaults } from "@opentui@lgcode/keymap@lgcode/extras"
 import { Schema } from "effect"
 
 const KeyStroke = Schema.Struct({

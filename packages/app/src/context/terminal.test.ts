@@ -1,24 +1,24 @@
 import { beforeAll, describe, expect, mock, test } from "bun:test"
-import { ServerScope } from "@/utils/server-scope"
+import { ServerScope } from "@@lgcode/utils@lgcode/server-scope"
 
-let getWorkspaceTerminalCacheKey: typeof import("./terminal").getWorkspaceTerminalCacheKey
+let getWorkspaceTerminalCacheKey: typeof import(".@lgcode/terminal").getWorkspaceTerminalCacheKey
 let getLegacyTerminalStorageKeys: (dir: string, legacySessionID?: string) => string[]
 let migrateTerminalState: (value: unknown) => unknown
 
 beforeAll(async () => {
-  mock.module("@solidjs/router", () => ({
+  mock.module("@solidjs@lgcode/router", () => ({
     useNavigate: () => () => undefined,
     useParams: () => ({}),
     useLocation: () => ({}),
     useSearchParams: () => [{}, () => undefined],
   }))
-  mock.module("@opencode@lgcode/ui/context", () => ({
+  mock.module("@lgcode/ui@lgcode/context", () => ({
     createSimpleContext: () => ({
       use: () => undefined,
       provider: () => undefined,
     }),
   }))
-  const mod = await import("./terminal")
+  const mod = await import(".@lgcode/terminal")
   getWorkspaceTerminalCacheKey = mod.getWorkspaceTerminalCacheKey
   getLegacyTerminalStorageKeys = mod.getLegacyTerminalStorageKeys
   migrateTerminalState = mod.migrateTerminalState
@@ -26,25 +26,25 @@ beforeAll(async () => {
 
 describe("getWorkspaceTerminalCacheKey", () => {
   test("uses workspace-only directory cache key", () => {
-    expect(String(getWorkspaceTerminalCacheKey("/repo"))).toBe("local\u0000/repo\u0000__workspace__")
+    expect(String(getWorkspaceTerminalCacheKey("@lgcode/repo"))).toBe("local\u0000@lgcode/repo\u0000__workspace__")
   })
 
   test("can include a server scope", () => {
-    expect(String(getWorkspaceTerminalCacheKey("/repo", "ssh:debian" as ServerScope))).toBe(
-      "ssh:debian\u0000/repo\u0000__workspace__",
+    expect(String(getWorkspaceTerminalCacheKey("@lgcode/repo", "ssh:debian" as ServerScope))).toBe(
+      "ssh:debian\u0000@lgcode/repo\u0000__workspace__",
     )
   })
 })
 
 describe("getLegacyTerminalStorageKeys", () => {
   test("keeps workspace storage path when no legacy session id", () => {
-    expect(getLegacyTerminalStorageKeys("/repo")).toEqual(["/repo/terminal.v1"])
+    expect(getLegacyTerminalStorageKeys("@lgcode/repo")).toEqual(["@lgcode/repo@lgcode/terminal.v1"])
   })
 
   test("includes legacy session path before workspace path", () => {
-    expect(getLegacyTerminalStorageKeys("/repo", "session-123")).toEqual([
-      "/repo/terminal/session-123.v1",
-      "/repo/terminal.v1",
+    expect(getLegacyTerminalStorageKeys("@lgcode/repo", "session-123")).toEqual([
+      "@lgcode/repo@lgcode/terminal@lgcode/session-123.v1",
+      "@lgcode/repo@lgcode/terminal.v1",
     ])
   })
 })

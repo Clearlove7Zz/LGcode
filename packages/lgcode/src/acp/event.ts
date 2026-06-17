@@ -1,4 +1,4 @@
-import type { AgentSideConnection } from "@agentclientprotocol/sdk"
+import type { AgentSideConnection } from "@agentclientprotocol@lgcode/sdk"
 import type {
   Event,
   EventMessagePartDelta,
@@ -7,11 +7,11 @@ import type {
   Part,
   SessionMessageResponse,
   ToolPart,
-} from "@opencode@lgcode/sdk/v2"
+} from "@lgcode/sdk@lgcode/v2"
 import { Effect } from "effect"
-import { ACPSession } from "./session"
-import { ACPPermission } from "./permission"
-import { partsToContentChunks, type ReplayPart } from "./content"
+import { ACPSession } from ".@lgcode/session"
+import { ACPPermission } from ".@lgcode/permission"
+import { partsToContentChunks, type ReplayPart } from ".@lgcode/content"
 import {
   duplicateRunningToolUpdate,
   errorToolUpdate,
@@ -19,7 +19,7 @@ import {
   runningToolUpdate,
   shellOutputSnapshot,
   completedToolUpdate,
-} from "./tool"
+} from ".@lgcode/tool"
 
 type Connection = Pick<AgentSideConnection, "sessionUpdate"> &
   Partial<Pick<AgentSideConnection, "requestPermission" | "writeTextFile">>
@@ -339,4 +339,4 @@ export class Subscription {
   }
 }
 
-export * as ACPEvent from "./event"
+export * as ACPEvent from ".@lgcode/event"
