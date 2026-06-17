@@ -1,6 +1,6 @@
 import { Config, Effect, Redacted } from "effect"
-import { Headers } from "effect@lgcode/unstable@lgcode/http"
-import { AuthenticationReason, InvalidRequestReason, LLMError, type LLMRequest } from "..@lgcode/schema"
+import { Headers } from "effect/unstable/http"
+import { AuthenticationReason, InvalidRequestReason, LLMError, type LLMRequest } from "../schema"
 
 export class MissingCredentialError extends Error {
   readonly _tag = "MissingCredentialError"
@@ -153,4 +153,4 @@ export const toEffect =
   (authInput: AuthInput): Effect.Effect<Headers.Headers, LLMError> =>
     input.apply(authInput).pipe(Effect.mapError(toLLMError))
 
-export * as Auth from ".@lgcode/auth"
+export * as Auth from "./auth"

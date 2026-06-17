@@ -1,8 +1,8 @@
-export * as SessionMessageID from ".@lgcode/message-id"
+export * as SessionMessageID from "./message-id"
 
 import { Schema } from "effect"
-import { withStatics } from "..@lgcode/schema"
-import { Identifier } from "..@lgcode/util@lgcode/identifier"
+import { withStatics } from "../schema"
+import { Identifier } from "../util/identifier"
 
 export const ID = Schema.String.check(Schema.isStartsWith("msg_")).pipe(
   Schema.brand("Session.Message.ID"),

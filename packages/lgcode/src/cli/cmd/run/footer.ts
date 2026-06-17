@@ -1,42 +1,42 @@
-@lgcode/@lgcode/ RunFooter -- the mutable control surface for direct interactive mode.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ In the split-footer architecture, scrollback is immutable (append-only)
-@lgcode/@lgcode/ and the footer is the only region that can repaint. RunFooter owns both
-@lgcode/@lgcode/ sides of that boundary:
-@lgcode/@lgcode/
-@lgcode/@lgcode/   Scrollback: append() queues StreamCommit entries and flush() drains them
-@lgcode/@lgcode/   through retained scrollback surfaces. Commits coalesce in a microtask
-@lgcode/@lgcode/   queue so direct-mode transcript updates still preserve ordering without
-@lgcode/@lgcode/   rebuilding the session model.
-@lgcode/@lgcode/
-@lgcode/@lgcode/   Footer: event() updates the SolidJS signal-backed FooterState, which
-@lgcode/@lgcode/   drives the reactive footer view (prompt, status, permission, question).
-@lgcode/@lgcode/   present() swaps the active footer view and resizes the footer region.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Lifecycle:
-@lgcode/@lgcode/   - close() flushes pending commits and notifies listeners (the prompt
-@lgcode/@lgcode/     queue uses this to know when to stop).
-@lgcode/@lgcode/   - destroy() does the same plus tears down event listeners and clears
-@lgcode/@lgcode/     internal state.
-@lgcode/@lgcode/   - The renderer's DESTROY event triggers destroy() so the footer
-@lgcode/@lgcode/     doesn't outlive the renderer.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Ctrl-c clears a live prompt draft first; otherwise interrupt and exit use a
-@lgcode/@lgcode/ two-press pattern where the first press shows a hint and the second press
-@lgcode/@lgcode/ within 5 seconds actually fires the action.
-import { CliRenderEvents, type CliRenderer, type KeyEvent, type Renderable, type TreeSitterClient } from "@opentui@lgcode/core"
-import type { Keymap } from "@opentui@lgcode/keymap"
-import { render } from "@opentui@lgcode/solid"
+// RunFooter -- the mutable control surface for direct interactive mode.
+//
+// In the split-footer architecture, scrollback is immutable (append-only)
+// and the footer is the only region that can repaint. RunFooter owns both
+// sides of that boundary:
+//
+//   Scrollback: append() queues StreamCommit entries and flush() drains them
+//   through retained scrollback surfaces. Commits coalesce in a microtask
+//   queue so direct-mode transcript updates still preserve ordering without
+//   rebuilding the session model.
+//
+//   Footer: event() updates the SolidJS signal-backed FooterState, which
+//   drives the reactive footer view (prompt, status, permission, question).
+//   present() swaps the active footer view and resizes the footer region.
+//
+// Lifecycle:
+//   - close() flushes pending commits and notifies listeners (the prompt
+//     queue uses this to know when to stop).
+//   - destroy() does the same plus tears down event listeners and clears
+//     internal state.
+//   - The renderer's DESTROY event triggers destroy() so the footer
+//     doesn't outlive the renderer.
+//
+// Ctrl-c clears a live prompt draft first; otherwise interrupt and exit use a
+// two-press pattern where the first press shows a hint and the second press
+// within 5 seconds actually fires the action.
+import { CliRenderEvents, type CliRenderer, type KeyEvent, type Renderable, type TreeSitterClient } from "@opentui/core"
+import type { Keymap } from "@opentui/keymap"
+import { render } from "@opentui/solid"
 import { createComponent, createSignal, type Accessor, type Setter } from "solid-js"
-import { createStore, reconcile } from "solid-js@lgcode/store"
-import { OpencodeKeymapProvider } from "@lgcode/tui@lgcode/keymap"
-import { RUN_COMMAND_PANEL_ROWS, RUN_SUBAGENT_PANEL_ROWS } from ".@lgcode/footer.command"
-import { SUBAGENT_INSPECTOR_ROWS } from ".@lgcode/footer.subagent"
-import { PROMPT_MAX_ROWS, TEXTAREA_MIN_ROWS } from ".@lgcode/footer.prompt"
-import { RunFooterView } from ".@lgcode/footer.view"
-import { RunScrollbackStream } from ".@lgcode/scrollback.surface"
-import { RUN_THEME_FALLBACK, resolveRunTheme, type RunTheme } from ".@lgcode/theme"
-import { modelInfo } from ".@lgcode/variant.shared"
+import { createStore, reconcile } from "solid-js/store"
+import { OpencodeKeymapProvider } from "@opencode@lgcode/tui/keymap"
+import { RUN_COMMAND_PANEL_ROWS, RUN_SUBAGENT_PANEL_ROWS } from "./footer.command"
+import { SUBAGENT_INSPECTOR_ROWS } from "./footer.subagent"
+import { PROMPT_MAX_ROWS, TEXTAREA_MIN_ROWS } from "./footer.prompt"
+import { RunFooterView } from "./footer.view"
+import { RunScrollbackStream } from "./scrollback.surface"
+import { RUN_THEME_FALLBACK, resolveRunTheme, type RunTheme } from "./theme"
+import { modelInfo } from "./variant.shared"
 import type {
   FooterApi,
   FooterEvent,
@@ -58,7 +58,7 @@ import type {
   RunResource,
   RunTuiConfig,
   StreamCommit,
-} from ".@lgcode/types"
+} from "./types"
 
 type CycleResult = {
   modelLabel?: string
@@ -170,12 +170,12 @@ export class RunFooter implements FooterApi {
   private prompts = new Set<(input: RunPrompt) => void>()
   private queuedRemoves = new Set<(messageID: string) => boolean | Promise<boolean>>()
   private closes = new Set<() => void>()
-  @lgcode/@lgcode/ Microtask-coalesced commit queue. Flushed on next microtask or on close@lgcode/destroy.
+  // Microtask-coalesced commit queue. Flushed on next microtask or on close/destroy.
   private queue: StreamCommit[] = []
   private pending = false
   private flushing: Promise<void> = Promise.resolve()
   private flushError: unknown
-  @lgcode/@lgcode/ Fixed portion of footer height above the textarea.
+  // Fixed portion of footer height above the textarea.
   private base: number
   private rows = TEXTAREA_MIN_ROWS
   private agents: Accessor<RunAgent[]>
@@ -528,10 +528,10 @@ export class RunFooter implements FooterApi {
     this.applyHeight()
   }
 
-  @lgcode/@lgcode/ Queues a scrollback commit. Consecutive progress chunks for the same
-  @lgcode/@lgcode/ part coalesce by appending text, reducing the number of retained-surface
-  @lgcode/@lgcode/ updates. Actual flush happens on the next microtask, so a burst of events
-  @lgcode/@lgcode/ from one reducer pass becomes a single ordered drain.
+  // Queues a scrollback commit. Consecutive progress chunks for the same
+  // part coalesce by appending text, reducing the number of retained-surface
+  // updates. Actual flush happens on the next microtask, so a burst of events
+  // from one reducer pass becomes a single ordered drain.
   public append(commit: StreamCommit): void {
     if (this.isGone) {
       return
@@ -691,8 +691,8 @@ export class RunFooter implements FooterApi {
     this.patch({ interrupt: 0, exit: 0 })
   }
 
-  @lgcode/@lgcode/ Resizes the footer to fit the current view. Permission and question views
-  @lgcode/@lgcode/ get fixed extra rows; the prompt view scales with textarea line count.
+  // Resizes the footer to fit the current view. Permission and question views
+  // get fixed extra rows; the prompt view scales with textarea line count.
   private applyHeight(): void {
     const type = this.view().type
     const height =
@@ -961,9 +961,9 @@ export class RunFooter implements FooterApi {
     }, 5000)
   }
 
-  @lgcode/@lgcode/ Two-press interrupt: first press shows a hint ("esc again to interrupt"),
-  @lgcode/@lgcode/ second press within 5 seconds fires onInterrupt. The timer resets the
-  @lgcode/@lgcode/ counter if the user doesn't follow through.
+  // Two-press interrupt: first press shows a hint ("esc again to interrupt"),
+  // second press within 5 seconds fires onInterrupt. The timer resets the
+  // counter if the user doesn't follow through.
   private handleInterrupt = (): boolean => {
     if (this.isClosed || this.state().phase !== "running") {
       return false
@@ -1013,7 +1013,7 @@ export class RunFooter implements FooterApi {
         return
       }
 
-      @lgcode/@lgcode/ Keep the last known good theme when a runtime OSC probe times out.
+      // Keep the last known good theme when a runtime OSC probe times out.
       if (theme === RUN_THEME_FALLBACK) {
         return
       }
@@ -1034,8 +1034,8 @@ export class RunFooter implements FooterApi {
       return false
     }
 
-    @lgcode/@lgcode/ OpenTUI clears its palette cache only when dark@lgcode/light mode changes.
-    @lgcode/@lgcode/ Refresh for same-mode terminal theme swaps too.
+    // OpenTUI clears its palette cache only when dark/light mode changes.
+    // Refresh for same-mode terminal theme swaps too.
     queueMicrotask(this.handleThemeRefresh)
     return false
   }
@@ -1072,7 +1072,7 @@ export class RunFooter implements FooterApi {
   }
 
   private handleThemeSignal = (): void => {
-    @lgcode/@lgcode/ Omarchy signals immediately after requesting a terminal config reload.
+    // Omarchy signals immediately after requesting a terminal config reload.
     for (const timeout of this.themeRefreshTimeouts) clearTimeout(timeout)
     this.themeRefreshTimeouts = THEME_REFRESH_DELAYS.map((delay) =>
       setTimeout(() => {
@@ -1106,9 +1106,9 @@ export class RunFooter implements FooterApi {
     for (const theme of [...this.themes]) this.destroyTheme(theme)
   }
 
-  @lgcode/@lgcode/ Drains the commit queue to scrollback. The surface manager owns grouping,
-  @lgcode/@lgcode/ spacing, and progressive markdown@lgcode/code settling so direct mode can append
-  @lgcode/@lgcode/ immutable transcript rows without rewriting history.
+  // Drains the commit queue to scrollback. The surface manager owns grouping,
+  // spacing, and progressive markdown/code settling so direct mode can append
+  // immutable transcript rows without rewriting history.
   private flush(): void {
     if (this.isGone || this.queue.length === 0) {
       this.queue.length = 0

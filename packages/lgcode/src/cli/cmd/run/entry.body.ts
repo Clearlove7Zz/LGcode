@@ -1,5 +1,5 @@
-import { toolEntryBody } from ".@lgcode/tool"
-import type { RunEntryBody, StreamCommit } from ".@lgcode/types"
+import { toolEntryBody } from "./tool"
+import type { RunEntryBody, StreamCommit } from "./types"
 
 export type EntryFlags = {
   startOnNewLine: boolean
@@ -11,7 +11,7 @@ export const RUN_ENTRY_NONE: RunEntryBody = {
 }
 
 export function cleanRunText(text: string): string {
-  return text.replace(@lgcode/\r\n@lgcode/g, "\n").replace(@lgcode/\r@lgcode/g, "\n")
+  return text.replace(/\r\n/g, "\n").replace(/\r/g, "\n")
 }
 
 function textBody(content: string): RunEntryBody {
@@ -53,18 +53,18 @@ function userBody(raw: string): RunEntryBody {
     return RUN_ENTRY_NONE
   }
 
-  const lead = raw.match(@lgcode/^\n+@lgcode/)?.[0] ?? ""
+  const lead = raw.match(/^\n+/)?.[0] ?? ""
   const body = lead ? raw.slice(lead.length) : raw
   return textBody(`${lead}› ${body}`)
 }
 
 function reasoningBody(raw: string): RunEntryBody {
-  const clean = raw.replace(@lgcode/\[REDACTED\]@lgcode/g, "")
+  const clean = raw.replace(/\[REDACTED\]/g, "")
   if (!clean) {
     return RUN_ENTRY_NONE
   }
 
-  const lead = clean.match(@lgcode/^\n+@lgcode/)?.[0] ?? ""
+  const lead = clean.match(/^\n+/)?.[0] ?? ""
   const body = lead ? clean.slice(lead.length) : clean
   const mark = "Thinking:"
   if (body.startsWith(mark)) {

@@ -1,12 +1,12 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
-import { PluginV2 } from "@lgcode/core@lgcode/plugin"
-import { XAIPlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/xai"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
-import { fakeSelectorSdk } from ".@lgcode/provider-helper"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import { ModelV2 } from "@opencode@lgcode/core/model"
+import { PluginV2 } from "@opencode@lgcode/core/plugin"
+import { XAIPlugin } from "@opencode@lgcode/core/plugin/provider/xai"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { testEffect } from "../lib/effect"
+import { fakeSelectorSdk } from "./provider-helper"
 
 const it = testEffect(PluginV2.locationLayer.pipe(Layer.provide(EventV2.defaultLayer)))
 
@@ -15,23 +15,23 @@ const model = new ModelV2.Info({
   api: {
     id: ModelV2.ID.make("grok-4"),
     type: "aisdk",
-    package: "@ai-sdk@lgcode/xai",
+    package: "@ai-sdk/xai",
   },
 })
 
 describe("XAIPlugin", () => {
-  it.effect("creates an xAI SDK only for @ai-sdk@lgcode/xai", () =>
+  it.effect("creates an xAI SDK only for @ai-sdk/xai", () =>
     Effect.gen(function* () {
       const plugin = yield* PluginV2.Service
       yield* plugin.add(XAIPlugin)
 
       const ignored = yield* plugin.trigger(
         "aisdk.sdk",
-        { model, package: "@ai-sdk@lgcode/openai-compatible", options: {} },
+        { model, package: "@ai-sdk/openai-compatible", options: {} },
         {},
       )
 
-      const result = yield* plugin.trigger("aisdk.sdk", { model, package: "@ai-sdk@lgcode/xai", options: {} }, {})
+      const result = yield* plugin.trigger("aisdk.sdk", { model, package: "@ai-sdk/xai", options: {} }, {})
 
       expect(ignored.sdk).toBeUndefined()
       expect(typeof result.sdk?.responses).toBe("function")
@@ -62,7 +62,7 @@ describe("XAIPlugin", () => {
         "aisdk.sdk",
         {
           model: new ModelV2.Info({ ...model, providerID: ProviderV2.ID.make("custom-xai") }),
-          package: "@ai-sdk@lgcode/xai",
+          package: "@ai-sdk/xai",
           options: {},
         },
         {},

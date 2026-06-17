@@ -1,13 +1,13 @@
 import { batch, createMemo, createRoot, onCleanup } from "solid-js"
-import { createStore, reconcile, type SetStoreFunction, type Store } from "solid-js@lgcode/store"
-import { createSimpleContext } from "@lgcode/ui@lgcode/context"
-import { useParams } from "@solidjs@lgcode/router"
-import { Persist, persisted } from "@@lgcode/utils@lgcode/persist"
-import { useServerSDK } from ".@lgcode/server-sdk"
-import type { ServerScope } from "@@lgcode/utils@lgcode/server-scope"
-import { createScopedCache } from "@@lgcode/utils@lgcode/scoped-cache"
-import { uuid } from "@@lgcode/utils@lgcode/uuid"
-import type { SelectedLineRange } from "@@lgcode/context@lgcode/file"
+import { createStore, reconcile, type SetStoreFunction, type Store } from "solid-js/store"
+import { createSimpleContext } from "@opencode@lgcode/ui/context"
+import { useParams } from "@solidjs/router"
+import { Persist, persisted } from "@/utils/persist"
+import { useServerSDK } from "./server-sdk"
+import type { ServerScope } from "@/utils/server-scope"
+import { createScopedCache } from "@/utils/scoped-cache"
+import { uuid } from "@/utils/uuid"
+import type { SelectedLineRange } from "@/context/file"
 
 export type LineComment = {
   id: string
@@ -169,7 +169,7 @@ export function createCommentSessionForTest(comments: Record<string, LineComment
 }
 
 function createCommentSession(scope: ServerScope, dir: string, id: string | undefined) {
-  const legacy = `${dir}@lgcode/comments${id ? "@lgcode/" + id : ""}.v1`
+  const legacy = `${dir}/comments${id ? "/" + id : ""}.v1`
 
   const [store, setStore, _, ready] = persisted(
     Persist.serverScoped(scope, dir, id, "comments", [legacy]),

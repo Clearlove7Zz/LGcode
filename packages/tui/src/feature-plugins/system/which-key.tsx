@@ -1,11 +1,11 @@
-@lgcode/** @jsxImportSource @opentui@lgcode/solid *@lgcode/
-import { RGBA, TextAttributes, type KeyEvent, type Renderable } from "@opentui@lgcode/core"
-import { useTerminalDimensions } from "@opentui@lgcode/solid"
+/** @jsxImportSource @opentui/solid */
+import { RGBA, TextAttributes, type KeyEvent, type Renderable } from "@opentui/core"
+import { useTerminalDimensions } from "@opentui/solid"
 import { createEffect, createMemo, createSignal, For, Show } from "solid-js"
-import { useBindings, useKeymapSelector } from "..@lgcode/..@lgcode/keymap"
-import type { ActiveKey } from "@opentui@lgcode/keymap"
-import type { TuiPlugin, TuiPluginApi } from "@lgcode/plugin@lgcode/tui"
-import type { BuiltinTuiPlugin } from "..@lgcode/builtins"
+import { useBindings, useKeymapSelector } from "../../keymap"
+import type { ActiveKey } from "@opentui/keymap"
+import type { TuiPlugin, TuiPluginApi } from "@opencode@lgcode/plugin/tui"
+import type { BuiltinTuiPlugin } from "../builtins"
 
 const command = {
   toggle: "which-key.toggle",
@@ -175,9 +175,9 @@ function HomeHint(props: { api: TuiPluginApi }) {
   return (
     <box width="100%" maxWidth={75} alignItems="center" paddingTop={1} flexShrink={0}>
       <text fg={look().muted} wrapMode="none">
-        Show keyboard shortcuts with <span style={{ fg: look().subtle }}>{trigger() || command.toggle}<@lgcode/span>
-      <@lgcode/text>
-    <@lgcode/box>
+        Show keyboard shortcuts with <span style={{ fg: look().subtle }}>{trigger() || command.toggle}</span>
+      </text>
+    </box>
   )
 }
 
@@ -204,7 +204,7 @@ function WhichKeyPanel(props: {
   )
   const contentWidth = createMemo(() => Math.max(1, width() - 2))
   const columns = createMemo(() =>
-    Math.max(1, Math.min(3, Math.floor((contentWidth() + COLUMN_GAP) @lgcode/ (MAX_COLUMN_WIDTH + COLUMN_GAP)) || 1)),
+    Math.max(1, Math.min(3, Math.floor((contentWidth() + COLUMN_GAP) / (MAX_COLUMN_WIDTH + COLUMN_GAP)) || 1)),
   )
   const entries = createMemo(() => active().map((item) => activeKeyEntry(props.api, item)))
   const groups = createMemo(() => grouped(entries()))
@@ -262,12 +262,12 @@ function WhichKeyPanel(props: {
       (sum, item) => sum + (item.type === "tab" ? item.group.label.length + 2 : 3),
       0,
     )
-    return Math.max(MIN_TAB_GAP, Math.min(TAB_GAP, Math.floor((contentWidth() - itemWidth) @lgcode/ (itemCount - 1))))
+    return Math.max(MIN_TAB_GAP, Math.min(TAB_GAP, Math.floor((contentWidth() - itemWidth) / (itemCount - 1))))
   })
   const nextMode = createMemo(() => (props.mode() === "dock" ? "overlay" : "dock"))
   const look = createMemo(() => skin(props.api))
   const columnWidth = createMemo(() =>
-    Math.max(1, Math.min(MAX_COLUMN_WIDTH, Math.floor((contentWidth() - (columns() - 1) * COLUMN_GAP) @lgcode/ columns()))),
+    Math.max(1, Math.min(MAX_COLUMN_WIDTH, Math.floor((contentWidth() - (columns() - 1) * COLUMN_GAP) / columns()))),
   )
   const clamp = (value: number) => Math.max(0, Math.min(maxOffset(), value))
   const scroll = (delta: number) => setOffset((value) => clamp(value + delta))
@@ -416,11 +416,11 @@ function WhichKeyPanel(props: {
                   fallback={
                     <box flexShrink={0}>
                       <text wrapMode="none">
-                        <span style={{ fg: upActive() ? look().text : look().muted }}>↑<@lgcode/span>
-                        <span style={{ fg: look().muted }}> <@lgcode/span>
-                        <span style={{ fg: downActive() ? look().text : look().muted }}>↓<@lgcode/span>
-                      <@lgcode/text>
-                    <@lgcode/box>
+                        <span style={{ fg: upActive() ? look().text : look().muted }}>↑</span>
+                        <span style={{ fg: look().muted }}> </span>
+                        <span style={{ fg: downActive() ? look().text : look().muted }}>↓</span>
+                      </text>
+                    </box>
                   }
                 >
                   {(group) => {
@@ -442,20 +442,20 @@ function WhichKeyPanel(props: {
                           wrapMode="none"
                         >
                           {group().label}
-                        <@lgcode/text>
-                      <@lgcode/box>
+                        </text>
+                      </box>
                     )
                   }}
-                <@lgcode/Show>
+                </Show>
               )}
-            <@lgcode/For>
-          <@lgcode/box>
-        <@lgcode/Show>
+            </For>
+          </box>
+        </Show>
         <Show when={tabsVisible()}>
-          <box height={TAB_CONTENT_GAP} flexShrink={0} @lgcode/>
-        <@lgcode/Show>
+          <box height={TAB_CONTENT_GAP} flexShrink={0} />
+        </Show>
         <box height={rows()} flexShrink={0} flexDirection="column">
-          <Show when={shown().length > 0} fallback={<text fg={look().muted}>No reachable bindings<@lgcode/text>}>
+          <Show when={shown().length > 0} fallback={<text fg={look().muted}>No reachable bindings</text>}>
             <For each={rowIndexes()}>
               {(row) => (
                 <box width="100%" flexDirection="row" justifyContent="center" gap={COLUMN_GAP}>
@@ -476,7 +476,7 @@ function WhichKeyPanel(props: {
                                 fallback={
                                   <text fg={look().accent} attributes={TextAttributes.BOLD} wrapMode="none" truncate>
                                     {value().label}
-                                  <@lgcode/text>
+                                  </text>
                                 }
                               >
                                 {(binding) => (
@@ -488,44 +488,44 @@ function WhichKeyPanel(props: {
                                         truncate
                                       >
                                         {binding().label}
-                                      <@lgcode/text>
-                                    <@lgcode/box>
+                                      </text>
+                                    </box>
                                     <box flexShrink={0}>
                                       <text fg={look().text} attributes={TextAttributes.BOLD} wrapMode="none" truncate>
                                         {binding().key}
-                                      <@lgcode/text>
-                                    <@lgcode/box>
-                                  <@lgcode/>
+                                      </text>
+                                    </box>
+                                  </>
                                 )}
-                              <@lgcode/Show>
+                              </Show>
                             )}
-                          <@lgcode/Show>
-                        <@lgcode/box>
+                          </Show>
+                        </box>
                       )
                     }}
-                  <@lgcode/For>
-                <@lgcode/box>
+                  </For>
+                </box>
               )}
-            <@lgcode/For>
-          <@lgcode/Show>
-        <@lgcode/box>
+            </For>
+          </Show>
+        </box>
         <Show when={footerVisible()}>
-          <box height={FOOTER_MARGIN} flexShrink={0} @lgcode/>
+          <box height={FOOTER_MARGIN} flexShrink={0} />
           <box width="100%" flexDirection="row" justifyContent="space-between" flexShrink={0}>
             <box>
               <text fg={look().text} wrapMode="none">
-                toggle <span style={{ fg: look().subtle }}>{trigger() || command.toggle}<@lgcode/span>
-              <@lgcode/text>
-            <@lgcode/box>
+                toggle <span style={{ fg: look().subtle }}>{trigger() || command.toggle}</span>
+              </text>
+            </box>
             <box>
               <text fg={look().text} wrapMode="none">
-                {nextMode()} <span style={{ fg: look().subtle }}>{modeTrigger() || command.toggleLayout}<@lgcode/span>
-              <@lgcode/text>
-            <@lgcode/box>
-          <@lgcode/box>
-        <@lgcode/Show>
-      <@lgcode/box>
-    <@lgcode/Show>
+                {nextMode()} <span style={{ fg: look().subtle }}>{modeTrigger() || command.toggleLayout}</span>
+              </text>
+            </box>
+          </box>
+        </Show>
+      </box>
+    </Show>
   )
 }
 
@@ -579,20 +579,20 @@ const tui: TuiPlugin = async (api) => {
     order: 200,
     slots: {
       home_bottom() {
-        return <HomeHint api={api} @lgcode/>
+        return <HomeHint api={api} />
       },
       app() {
         return (
           <Show when={mode() === "overlay"}>
-            <WhichKeyPanel api={api} layout="overlay" mode={mode} pendingPreview={pendingPreview} pinned={pinned} @lgcode/>
-          <@lgcode/Show>
+            <WhichKeyPanel api={api} layout="overlay" mode={mode} pendingPreview={pendingPreview} pinned={pinned} />
+          </Show>
         )
       },
       app_bottom() {
         return (
           <Show when={mode() === "dock"}>
-            <WhichKeyPanel api={api} layout="dock" mode={mode} pendingPreview={pendingPreview} pinned={pinned} @lgcode/>
-          <@lgcode/Show>
+            <WhichKeyPanel api={api} layout="dock" mode={mode} pendingPreview={pendingPreview} pinned={pinned} />
+          </Show>
         )
       },
     },

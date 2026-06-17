@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import { createLatestWorkerQueue } from ".@lgcode/markdown-worker-queue"
+import { createLatestWorkerQueue } from "./markdown-worker-queue"
 
 test("keeps only the latest queued request for each key", async () => {
   const processed: number[] = []

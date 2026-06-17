@@ -1,7 +1,7 @@
 import { describe, expect } from "bun:test"
 import { ConfigProvider, Effect, Layer } from "effect"
-import { RuntimeFlags } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/runtime-flags"
-import { it } from "..@lgcode/lib@lgcode/effect"
+import { RuntimeFlags } from "../../src/effect/runtime-flags"
+import { it } from "../lib/effect"
 
 const fromConfig = (input: Record<string, unknown>) =>
   RuntimeFlags.defaultLayer.pipe(Layer.provide(ConfigProvider.layer(ConfigProvider.fromUnknown(input))))

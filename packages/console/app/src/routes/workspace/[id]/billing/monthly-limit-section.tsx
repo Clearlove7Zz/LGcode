@@ -1,12 +1,12 @@
-import { json, action, useParams, createAsync, useSubmission } from "@solidjs@lgcode/router"
+import { json, action, useParams, createAsync, useSubmission } from "@solidjs/router"
 import { createEffect, Show } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import { withActor } from "~@lgcode/context@lgcode/auth.withActor"
-import { Billing } from "@lgcode/console-core@lgcode/billing.js"
-import styles from ".@lgcode/monthly-limit-section.module.css"
-import { queryBillingInfo } from "..@lgcode/..@lgcode/common"
-import { useI18n } from "~@lgcode/context@lgcode/i18n"
-import { formError, localizeError } from "~@lgcode/lib@lgcode/form-error"
+import { createStore } from "solid-js/store"
+import { withActor } from "~/context/auth.withActor"
+import { Billing } from "@opencode@lgcode/console-core/billing.js"
+import styles from "./monthly-limit-section.module.css"
+import { queryBillingInfo } from "../../common"
+import { useI18n } from "~/context/i18n"
+import { formError, localizeError } from "~/lib/form-error"
 
 const setMonthlyLimit = action(async (form: FormData) => {
   "use server"
@@ -44,11 +44,11 @@ export function MonthlyLimitSection() {
   })
 
   function show() {
-    @lgcode/@lgcode/ submission.clear() does not clear the result in some cases, ie.
-    @lgcode/@lgcode/  1. Create key with empty name => error shows
-    @lgcode/@lgcode/  2. Put in a key name and creates the key => form hides
-    @lgcode/@lgcode/  3. Click add key button again => form shows with the same error if
-    @lgcode/@lgcode/     submission.clear() is called only once
+    // submission.clear() does not clear the result in some cases, ie.
+    //  1. Create key with empty name => error shows
+    //  2. Put in a key name and creates the key => form hides
+    //  3. Click add key button again => form shows with the same error if
+    //     submission.clear() is called only once
     while (true) {
       submission.clear()
       if (!submission.result) break
@@ -64,15 +64,15 @@ export function MonthlyLimitSection() {
   return (
     <section class={styles.root}>
       <div data-slot="section-title">
-        <h2>{i18n.t("workspace.monthlyLimit.title")}<@lgcode/h2>
-        <p>{i18n.t("workspace.monthlyLimit.subtitle")}<@lgcode/p>
-      <@lgcode/div>
+        <h2>{i18n.t("workspace.monthlyLimit.title")}</h2>
+        <p>{i18n.t("workspace.monthlyLimit.subtitle")}</p>
+      </div>
       <div data-slot="section-content">
         <div data-slot="balance">
           <div data-slot="amount">
-            {billingInfo()?.monthlyLimit ? <span data-slot="currency">$<@lgcode/span> : null}
-            <span data-slot="value">{billingInfo()?.monthlyLimit ?? "-"}<@lgcode/span>
-          <@lgcode/div>
+            {billingInfo()?.monthlyLimit ? <span data-slot="currency">$</span> : null}
+            <span data-slot="value">{billingInfo()?.monthlyLimit ?? "-"}</span>
+          </div>
           <Show
             when={!store.show}
             fallback={
@@ -85,35 +85,35 @@ export function MonthlyLimitSection() {
                     name="limit"
                     type="number"
                     placeholder={i18n.t("workspace.monthlyLimit.placeholder")}
-                  @lgcode/>
+                  />
                   <Show when={submission.result && submission.result.error}>
-                    {(err) => <div data-slot="form-error">{localizeError(i18n.t, err())}<@lgcode/div>}
-                  <@lgcode/Show>
-                <@lgcode/div>
-                <input type="hidden" name="workspaceID" value={params.id} @lgcode/>
+                    {(err) => <div data-slot="form-error">{localizeError(i18n.t, err())}</div>}
+                  </Show>
+                </div>
+                <input type="hidden" name="workspaceID" value={params.id} />
                 <div data-slot="form-actions">
                   <button type="reset" data-color="ghost" onClick={() => hide()}>
                     {i18n.t("common.cancel")}
-                  <@lgcode/button>
+                  </button>
                   <button type="submit" data-color="primary" disabled={submission.pending}>
                     {submission.pending
                       ? i18n.t("workspace.monthlyLimit.setting")
                       : i18n.t("workspace.monthlyLimit.set")}
-                  <@lgcode/button>
-                <@lgcode/div>
-              <@lgcode/form>
+                  </button>
+                </div>
+              </form>
             }
           >
             <button data-color="primary" onClick={() => show()}>
               {billingInfo()?.monthlyLimit
                 ? i18n.t("workspace.monthlyLimit.edit")
                 : i18n.t("workspace.monthlyLimit.set")}
-            <@lgcode/button>
-          <@lgcode/Show>
-        <@lgcode/div>
+            </button>
+          </Show>
+        </div>
         <Show
           when={billingInfo()?.monthlyLimit}
-          fallback={<p data-slot="usage-status">{i18n.t("workspace.monthlyLimit.noLimit")}<@lgcode/p>}
+          fallback={<p data-slot="usage-status">{i18n.t("workspace.monthlyLimit.noLimit")}</p>}
         >
           <p data-slot="usage-status">
             {i18n.t("workspace.monthlyLimit.currentUsage.beforeMonth")}{" "}
@@ -134,12 +134,12 @@ export function MonthlyLimitSection() {
                 timeZone: "UTC",
               })
               if (current !== lastUsed) return "0"
-              return ((billingInfo()?.monthlyUsage ?? 0) @lgcode/ 100000000).toFixed(2)
+              return ((billingInfo()?.monthlyUsage ?? 0) / 100000000).toFixed(2)
             })()}
             .
-          <@lgcode/p>
-        <@lgcode/Show>
-      <@lgcode/div>
-    <@lgcode/section>
+          </p>
+        </Show>
+      </div>
+    </section>
   )
 }

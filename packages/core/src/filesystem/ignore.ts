@@ -1,4 +1,4 @@
-import { Glob } from "..@lgcode/util@lgcode/glob"
+import { Glob } from "../util/glob"
 
 const FOLDERS = new Set([
   "node_modules",
@@ -32,17 +32,17 @@ const FOLDERS = new Set([
 ])
 
 const FILES = [
-  "**@lgcode/*.swp",
-  "**@lgcode/*.swo",
-  "**@lgcode/*.pyc",
-  "**@lgcode/.DS_Store",
-  "**@lgcode/Thumbs.db",
-  "**@lgcode/logs@lgcode/**",
-  "**@lgcode/tmp@lgcode/**",
-  "**@lgcode/temp@lgcode/**",
-  "**@lgcode/*.log",
-  "**@lgcode/coverage@lgcode/**",
-  "**@lgcode/.nyc_output@lgcode/**",
+  "**/*.swp",
+  "**/*.swo",
+  "**/*.pyc",
+  "**/.DS_Store",
+  "**/Thumbs.db",
+  "**/logs/**",
+  "**/tmp/**",
+  "**/temp/**",
+  "**/*.log",
+  "**/coverage/**",
+  "**/.nyc_output/**",
 ]
 
 export const PATTERNS = [...FILES, ...FOLDERS]
@@ -52,7 +52,7 @@ export function match(filepath: string, opts?: { extra?: string[]; whitelist?: s
     if (Glob.match(pattern, filepath)) return false
   }
 
-  const parts = filepath.split(@lgcode/[@lgcode/\\]@lgcode/)
+  const parts = filepath.split(/[/\\]/)
   for (const part of parts) {
     if (FOLDERS.has(part)) return true
   }
@@ -64,4 +64,4 @@ export function match(filepath: string, opts?: { extra?: string[]; whitelist?: s
   return false
 }
 
-export * as Ignore from ".@lgcode/ignore"
+export * as Ignore from "./ignore"

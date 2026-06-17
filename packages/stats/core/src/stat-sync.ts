@@ -1,12 +1,12 @@
 import { DateTime, Effect } from "effect"
-import { Resource } from "sst@lgcode/resource"
-import { Athena, AthenaQueryError, AthenaQueryTimeoutError } from ".@lgcode/athena"
-import { DatabaseError } from ".@lgcode/database"
-import { GeoStatRepo, rowsFromAggregates as geoRowsFromAggregates } from ".@lgcode/domain@lgcode/geo"
-import { buildStatsQuery, toGeoAggregate, toModelAggregate, toProviderAggregate } from ".@lgcode/domain@lgcode/inference"
-import { ModelStatRepo, rowsFromAggregates as modelRowsFromAggregates } from ".@lgcode/domain@lgcode/model"
-import { ProviderStatRepo, rowsFromAggregates as providerRowsFromAggregates } from ".@lgcode/domain@lgcode/provider"
-import { startOfIsoWeek } from ".@lgcode/domain@lgcode/stat"
+import { Resource } from "sst/resource"
+import { Athena, AthenaQueryError, AthenaQueryTimeoutError } from "./athena"
+import { DatabaseError } from "./database"
+import { GeoStatRepo, rowsFromAggregates as geoRowsFromAggregates } from "./domain/geo"
+import { buildStatsQuery, toGeoAggregate, toModelAggregate, toProviderAggregate } from "./domain/inference"
+import { ModelStatRepo, rowsFromAggregates as modelRowsFromAggregates } from "./domain/model"
+import { ProviderStatRepo, rowsFromAggregates as providerRowsFromAggregates } from "./domain/provider"
+import { startOfIsoWeek } from "./domain/stat"
 
 const DATALAKE_INGESTION_LAG_MS = 5 * 60_000
 const STATS_DATA_START_MS = new Date("2026-05-28T00:00:00.000Z").getTime()
@@ -21,8 +21,8 @@ export const syncStats: () => Effect.Effect<
   Athena | ModelStatRepo | ProviderStatRepo | GeoStatRepo
 > = Effect.fn("StatSync.sync")(function* () {
   const startedAt = yield* DateTime.nowAsDate
-  const periodEnd = new Date(Math.floor((startedAt.getTime() - DATALAKE_INGESTION_LAG_MS) @lgcode/ 60_000) * 60_000)
-  @lgcode/@lgcode/ May 27 was partial, so keep Athena stats anchored at the first complete day.
+  const periodEnd = new Date(Math.floor((startedAt.getTime() - DATALAKE_INGESTION_LAG_MS) / 60_000) * 60_000)
+  // May 27 was partial, so keep Athena stats anchored at the first complete day.
   const periodStart = new Date(Math.max(startOfIsoWeek(periodEnd).getTime() - WEEK_MS, STATS_DATA_START_MS))
   const athena = yield* Athena
   const modelStats = yield* ModelStatRepo

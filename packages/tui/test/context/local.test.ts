@@ -1,10 +1,10 @@
 import { expect, test } from "bun:test"
-import { parseModel, recentModels } from "..@lgcode/..@lgcode/src@lgcode/context@lgcode/local"
+import { parseModel, recentModels } from "../../src/context/local"
 
 test("parses model IDs containing slashes", () => {
-  expect(parseModel("provider@lgcode/family@lgcode/model")).toEqual({
+  expect(parseModel("provider/family/model")).toEqual({
     providerID: "provider",
-    modelID: "family@lgcode/model",
+    modelID: "family/model",
   })
 })
 

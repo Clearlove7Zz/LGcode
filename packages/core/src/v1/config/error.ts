@@ -1,7 +1,7 @@
-export * as ConfigErrorV1 from ".@lgcode/error"
+export * as ConfigErrorV1 from "./error"
 
 import { Schema } from "effect"
-import { NamedError } from "..@lgcode/..@lgcode/util@lgcode/error"
+import { NamedError } from "../../util/error"
 
 const Issue = Schema.StructWithRest(
   Schema.Struct({

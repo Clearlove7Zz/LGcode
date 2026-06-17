@@ -1,1 +1,1 @@
-export * from "@lgcode/tui@lgcode/logo"
+export * from "@opencode@lgcode/tui/logo"

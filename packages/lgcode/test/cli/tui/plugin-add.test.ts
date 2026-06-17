@@ -1,13 +1,13 @@
 import { expect, spyOn, test } from "bun:test"
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import path from "path"
 import { pathToFileURL } from "url"
-import { tmpdir } from "..@lgcode/..@lgcode/fixture@lgcode/fixture"
-import { createTuiPluginApi } from "..@lgcode/..@lgcode/fixture@lgcode/tui-plugin"
-import { createTuiResolvedConfig } from "..@lgcode/..@lgcode/fixture@lgcode/tui-runtime"
-import { TuiConfig } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/config@lgcode/tui"
+import { tmpdir } from "../../fixture/fixture"
+import { createTuiPluginApi } from "../../fixture/tui-plugin"
+import { createTuiResolvedConfig } from "../../fixture/tui-runtime"
+import { TuiConfig } from "../../../src/config/tui"
 
-const { TuiPluginRuntime } = await import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/plugin@lgcode/tui@lgcode/runtime")
+const { TuiPluginRuntime } = await import("../../../src/plugin/tui/runtime")
 
 test("adds tui plugin at runtime from spec", async () => {
   await using tmp = await tmpdir({

@@ -1,8 +1,8 @@
-import { ProxyUtil } from "@@lgcode/server@lgcode/proxy-util"
+import { ProxyUtil } from "@/server/proxy-util"
 import { Effect, Stream } from "effect"
-import { HttpBody, HttpClient, HttpClientRequest, HttpServerRequest, HttpServerResponse } from "effect@lgcode/unstable@lgcode/http"
-import * as Socket from "effect@lgcode/unstable@lgcode/socket@lgcode/Socket"
-import { WebSocketTracker } from "..@lgcode/websocket-tracker"
+import { HttpBody, HttpClient, HttpClientRequest, HttpServerRequest, HttpServerResponse } from "effect/unstable/http"
+import * as Socket from "effect/unstable/socket/Socket"
+import { WebSocketTracker } from "../websocket-tracker"
 
 function requestBody(request: HttpServerRequest.HttpServerRequest) {
   if (request.method === "GET" || request.method === "HEAD") return HttpBody.empty
@@ -105,4 +105,4 @@ export function http(
   }).pipe(Effect.catch(() => Effect.succeed(HttpServerResponse.empty({ status: 500 }))))
 }
 
-export * as HttpApiProxy from ".@lgcode/proxy"
+export * as HttpApiProxy from "./proxy"

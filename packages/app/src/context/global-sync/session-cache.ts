@@ -6,7 +6,7 @@ import type {
   SessionStatus,
   SnapshotFileDiff,
   Todo,
-} from "@lgcode/sdk@lgcode/v2@lgcode/client"
+} from "@opencode@lgcode/sdk/v2/client"
 
 export const SESSION_CACHE_LIMIT = 40
 

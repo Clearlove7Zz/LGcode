@@ -1,11 +1,11 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { AgentV2 } from "@lgcode/core@lgcode/agent"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { SkillPlugin } from "@lgcode/core@lgcode/plugin@lgcode/skill"
-import { SkillV2 } from "@lgcode/core@lgcode/skill"
-import { SkillDiscovery } from "@lgcode/core@lgcode/skill@lgcode/discovery"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { AgentV2 } from "@opencode@lgcode/core/agent"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { SkillPlugin } from "@opencode@lgcode/core/plugin/skill"
+import { SkillV2 } from "@opencode@lgcode/core/skill"
+import { SkillDiscovery } from "@opencode@lgcode/core/skill/discovery"
+import { testEffect } from "../lib/effect"
 
 const it = testEffect(
   SkillV2.layer.pipe(

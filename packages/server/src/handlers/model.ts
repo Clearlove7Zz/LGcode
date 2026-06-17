@@ -1,10 +1,10 @@
-import { Catalog } from "@lgcode/core@lgcode/catalog"
-import { PluginBoot } from "@lgcode/core@lgcode/plugin@lgcode/boot"
+import { Catalog } from "@opencode@lgcode/core/catalog"
+import { PluginBoot } from "@opencode@lgcode/core/plugin/boot"
 import { Effect } from "effect"
-import { HttpApiBuilder } from "effect@lgcode/unstable@lgcode/httpapi"
-import { Api } from "..@lgcode/api"
-import { ServiceUnavailableError } from "..@lgcode/errors"
-import { response } from "..@lgcode/groups@lgcode/location"
+import { HttpApiBuilder } from "effect/unstable/httpapi"
+import { Api } from "../api"
+import { ServiceUnavailableError } from "../errors"
+import { response } from "../groups/location"
 
 const catalogUnavailable = new ServiceUnavailableError({
   message: "Model catalog is unavailable",

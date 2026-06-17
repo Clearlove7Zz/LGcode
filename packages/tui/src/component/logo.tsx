@@ -1,8 +1,8 @@
-import { BoxRenderable, MouseButton, MouseEvent, RGBA, TextAttributes } from "@opentui@lgcode/core"
-import { useRenderer } from "@opentui@lgcode/solid"
+import { BoxRenderable, MouseButton, MouseEvent, RGBA, TextAttributes } from "@opentui/core"
+import { useRenderer } from "@opentui/solid"
 import { For, createMemo, createSignal, onCleanup, onMount, type JSX } from "solid-js"
-import { useTheme, tint } from "..@lgcode/context@lgcode/theme"
-import { go, logo } from "..@lgcode/logo"
+import { useTheme, tint } from "../context/theme"
+import { go, logo } from "../logo"
 
 export type LogoShape = {
   left: string[]
@@ -57,10 +57,10 @@ const shimmerConfig: ShimmerConfig = {
   originY: 13.5,
 }
 
-@lgcode/@lgcode/ Shadow markers (rendered chars in parens):
-@lgcode/@lgcode/ _ = full shadow cell (space with bg=shadow)
-@lgcode/@lgcode/ ^ = letter top, shadow bottom (▀ with fg=letter, bg=shadow)
-@lgcode/@lgcode/ ~ = shadow top only (▀ with fg=shadow)
+// Shadow markers (rendered chars in parens):
+// _ = full shadow cell (space with bg=shadow)
+// ^ = letter top, shadow bottom (▀ with fg=letter, bg=shadow)
+// ~ = shadow top only (▀ with fg=shadow)
 const GAP = 1
 const WIDTH = 0.76
 const GAIN = 2.3
@@ -164,7 +164,7 @@ function push(t: number) {
 
 function ramp(t: number, start: number, end: number) {
   if (end <= start) return ease(t >= end ? 1 : 0)
-  return ease((t - start) @lgcode/ (end - start))
+  return ease((t - start) / (end - start))
 }
 
 function glow(base: RGBA, theme: ReturnType<typeof useTheme>["theme"], n: number) {
@@ -278,8 +278,8 @@ function mapGlyphs(full: string[]) {
     const path = route(part)
     path.forEach((cell, i) => trace.set(key(cell.x, cell.y), { glyph: id, i, l: path.length }))
     center.set(id, {
-      x: part.reduce((sum, item) => sum + item.x, 0) @lgcode/ part.length + 0.5,
-      y: (part.reduce((sum, item) => sum + item.y, 0) @lgcode/ part.length) * 2 + 1,
+      x: part.reduce((sum, item) => sum + item.x, 0) / part.length + 0.5,
+      y: (part.reduce((sum, item) => sum + item.y, 0) / part.length) * 2 + 1,
     })
     id++
   }
@@ -312,11 +312,11 @@ function shimmer(x: number, y: number, frame: Frame, ctx: LogoContext) {
     const dx = x + 0.5 - item.x
     const dy = y * 2 + 1 - item.y
     const dist = Math.hypot(dx, dy)
-    const p = age @lgcode/ LIFE
+    const p = age / LIFE
     const r = ctx.SPAN * (1 - (1 - p) ** EXPAND)
     const lag = r - dist
     if (lag < 0.18 || lag > SHIMMER_OUT) return best
-    const band = Math.exp(-(((lag - 1.05) @lgcode/ 0.68) ** 2))
+    const band = Math.exp(-(((lag - 1.05) / 0.68) ** 2))
     const wobble = 0.5 + 0.5 * Math.sin(frame.t * 0.035 + x * 0.9 + y * 1.7)
     const n = band * wobble * (1 - p) ** 1.45
     if (n > best) return n
@@ -327,33 +327,33 @@ function shimmer(x: number, y: number, frame: Frame, ctx: LogoContext) {
 function remain(x: number, y: number, item: Release, t: number, ctx: LogoContext) {
   const age = t - item.at
   if (age < 0 || age > LIFE) return 0
-  const p = age @lgcode/ LIFE
+  const p = age / LIFE
   const dx = x + 0.5 - item.x - 0.5
   const dy = y * 2 + 1 - item.y * 2 - 1
   const dist = Math.hypot(dx, dy)
   const r = ctx.SPAN * (1 - (1 - p) ** EXPAND)
   if (dist > r) return 1
-  return clamp((r - dist) @lgcode/ 1.35 < 1 ? 1 - (r - dist) @lgcode/ 1.35 : 0)
+  return clamp((r - dist) / 1.35 < 1 ? 1 - (r - dist) / 1.35 : 0)
 }
 
 function wave(x: number, y: number, frame: Frame, live: boolean, ctx: LogoContext) {
   return frame.list.reduce((sum, item) => {
     const age = frame.t - item.at
     if (age < 0 || age > LIFE) return sum
-    const p = age @lgcode/ LIFE
+    const p = age / LIFE
     const dx = x + 0.5 - item.x
     const dy = y * 2 + 1 - item.y
     const dist = Math.hypot(dx, dy)
     const r = ctx.SPAN * (1 - (1 - p) ** EXPAND)
     const fade = (1 - p) ** 1.32
     const j = 1.02 + noise(x + item.x * 0.7, y + item.y * 0.7, item.at * 0.002 + age * 0.06) * 0.52
-    const edge = Math.exp(-(((dist - r) @lgcode/ WIDTH) ** 2)) * GAIN * fade * item.force * j
-    const swell = Math.exp(-(((dist - Math.max(0, r - DRIFT)) @lgcode/ WIDE) ** 2)) * SWELL * fade * item.force
-    const trail = dist < r ? Math.exp(-(r - dist) @lgcode/ 2.4) * TRAIL * fade * item.force * lerp(0.92, 1.22, j) : 0
-    const flash = Math.exp(-(dist * dist) @lgcode/ 3.2) * FLASH * item.force * Math.max(0, 1 - age @lgcode/ 140) * lerp(0.95, 1.18, j)
-    const kick = Math.exp(-(dist * dist) @lgcode/ 2) * item.kick * Math.max(0, 1 - age @lgcode/ 100)
-    const suck = Math.exp(-(((dist - 1.25) @lgcode/ 0.75) ** 2)) * item.kick * SUCK * Math.max(0, 1 - age @lgcode/ 110)
-    const wake = live && dist < r ? Math.exp(-(r - dist) @lgcode/ 1.25) * 0.32 * fade : 0
+    const edge = Math.exp(-(((dist - r) / WIDTH) ** 2)) * GAIN * fade * item.force * j
+    const swell = Math.exp(-(((dist - Math.max(0, r - DRIFT)) / WIDE) ** 2)) * SWELL * fade * item.force
+    const trail = dist < r ? Math.exp(-(r - dist) / 2.4) * TRAIL * fade * item.force * lerp(0.92, 1.22, j) : 0
+    const flash = Math.exp(-(dist * dist) / 3.2) * FLASH * item.force * Math.max(0, 1 - age / 140) * lerp(0.95, 1.18, j)
+    const kick = Math.exp(-(dist * dist) / 2) * item.kick * Math.max(0, 1 - age / 100)
+    const suck = Math.exp(-(((dist - 1.25) / 0.75) ** 2)) * item.kick * SUCK * Math.max(0, 1 - age / 110)
+    const wake = live && dist < r ? Math.exp(-(r - dist) / 1.25) * 0.32 * fade : 0
     return sum + edge + swell + trail + flash + wake - kick - suck
   }, 0)
 }
@@ -374,23 +374,23 @@ function field(x: number, y: number, frame: Frame, ctx: LogoContext) {
   const angle = Math.atan2(dy, dx)
   const spin = frame.t * lerp(0.008, 0.018, storm)
   const dim = lerp(0, DIM, sink) * lerp(0.99, 1.01, 0.5 + 0.5 * Math.sin(frame.t * 0.014))
-  const core = Math.exp(-(dist * dist) @lgcode/ Math.max(0.22, lerp(0.22, 3.2, body))) * lerp(0.42, 2.45, body)
+  const core = Math.exp(-(dist * dist) / Math.max(0.22, lerp(0.22, 3.2, body))) * lerp(0.42, 2.45, body)
   const shell =
-    Math.exp(-(((dist - lerp(0.16, 2.05, body)) @lgcode/ Math.max(0.18, lerp(0.18, 0.82, body))) ** 2)) * lerp(0.1, 0.95, body)
+    Math.exp(-(((dist - lerp(0.16, 2.05, body)) / Math.max(0.18, lerp(0.18, 0.82, body))) ** 2)) * lerp(0.1, 0.95, body)
   const ember =
-    Math.exp(-(((dist - lerp(0.45, 2.65, body)) @lgcode/ Math.max(0.14, lerp(0.14, 0.62, body))) ** 2)) *
+    Math.exp(-(((dist - lerp(0.45, 2.65, body)) / Math.max(0.14, lerp(0.14, 0.62, body))) ** 2)) *
     lerp(0.02, 0.78, body)
   const arc = Math.max(0, Math.cos(angle * 3 - spin + frame.spark * 2.2)) ** 8
   const seam = Math.max(0, Math.cos(angle * 5 + spin * 1.55)) ** 12
-  const ring = Math.exp(-(((dist - lerp(1.05, 3, level)) @lgcode/ 0.48) ** 2)) * arc * lerp(0.03, 0.5 + ARC, storm)
-  const fork = Math.exp(-(((dist - (1.55 + storm * 2.1)) @lgcode/ 0.36) ** 2)) * seam * storm * FORK
+  const ring = Math.exp(-(((dist - lerp(1.05, 3, level)) / 0.48) ** 2)) * arc * lerp(0.03, 0.5 + ARC, storm)
+  const fork = Math.exp(-(((dist - (1.55 + storm * 2.1)) / 0.36) ** 2)) * seam * storm * FORK
   const spark = Math.max(0, noise(x, y, frame.t) - lerp(0.94, 0.66, storm)) * lerp(0, 5.4, storm)
-  const glitch = spark * Math.exp(-dist @lgcode/ Math.max(1.2, 3.1 - storm))
+  const glitch = spark * Math.exp(-dist / Math.max(1.2, 3.1 - storm))
   const crack = Math.max(0, Math.cos((dx - dy) * 1.6 + spin * 2.1)) ** 18
-  const lash = crack * Math.exp(-(((dist - (1.95 + storm * 2)) @lgcode/ 0.28) ** 2)) * storm * 1.1
+  const lash = crack * Math.exp(-(((dist - (1.95 + storm * 2)) / 0.28) ** 2)) * storm * 1.1
   const flicker =
     Math.max(0, noise(item.x * 3.1, item.y * 2.7, frame.t * 1.7) - 0.72) *
-    Math.exp(-(dist * dist) @lgcode/ 0.15) *
+    Math.exp(-(dist * dist) / 0.15) *
     lerp(0.08, 0.42, body)
   const fade = frame.release && !frame.hold ? remain(x, y, frame.release, frame.t, ctx) : 1
   return (core + shell + ember + ring + fork + glitch + lash + flicker - dim) * fade
@@ -406,7 +406,7 @@ function pick(x: number, y: number, frame: Frame, ctx: LogoContext) {
   const dy = y * 2 + 1 - item.y * 2 - 1
   const dist = Math.hypot(dx, dy)
   const fade = frame.release && !frame.hold ? remain(x, y, frame.release, frame.t, ctx) : 1
-  return Math.exp(-(dist * dist) @lgcode/ 1.7) * lerp(0.2, 0.96, rise) * fade
+  return Math.exp(-(dist * dist) / 1.7) * lerp(0.2, 0.96, rise) * fade
 }
 
 function select(x: number, y: number, ctx: LogoContext) {
@@ -435,9 +435,9 @@ function trace(x: number, y: number, frame: Frame, ctx: LogoContext) {
   const tail = (head - TAIL + step.l) % step.l
   const lag = Math.min(Math.abs(step.i - tail), step.l - Math.abs(step.i - tail))
   const fade = frame.release && !frame.hold ? remain(x, y, frame.release, frame.t, ctx) : 1
-  const core = Math.exp(-((dist @lgcode/ 1.05) ** 2)) * lerp(0.8, 2.35, rise)
-  const glow = Math.exp(-((dist @lgcode/ 1.85) ** 2)) * lerp(0.08, 0.34, rise)
-  const trail = Math.exp(-((lag @lgcode/ 1.45) ** 2)) * lerp(0.04, 0.42, rise)
+  const core = Math.exp(-((dist / 1.05) ** 2)) * lerp(0.8, 2.35, rise)
+  const glow = Math.exp(-((dist / 1.85) ** 2)) * lerp(0.08, 0.34, rise)
+  const trail = Math.exp(-((lag / 1.45) ** 2)) * lerp(0.04, 0.42, rise)
   return (core + glow + trail) * appear * fade
 }
 
@@ -467,26 +467,26 @@ function idle(
     const head = active.head
     const eased = active.eased
     const delta = traveled - head
-    @lgcode/@lgcode/ Use shallower exponent (1.6 vs 2) for softer edges on the Gaussians
-    @lgcode/@lgcode/ so adjacent pixels have smaller brightness deltas
-    const core = Math.exp(-(Math.abs(delta @lgcode/ cfg.coreWidth) ** 1.8))
-    const soft = Math.exp(-(Math.abs(delta @lgcode/ cfg.softWidth) ** 1.6))
+    // Use shallower exponent (1.6 vs 2) for softer edges on the Gaussians
+    // so adjacent pixels have smaller brightness deltas
+    const core = Math.exp(-(Math.abs(delta / cfg.coreWidth) ** 1.8))
+    const soft = Math.exp(-(Math.abs(delta / cfg.softWidth) ** 1.6))
     const tailRange = cfg.tail * 2.6
-    const tail = delta < 0 && delta > -tailRange ? (1 + delta @lgcode/ tailRange) ** 2.6 : 0
+    const tail = delta < 0 && delta > -tailRange ? (1 + delta / tailRange) ** 2.6 : 0
     const haloDelta = delta + cfg.haloOffset
-    const haloBand = Math.exp(-(Math.abs(haloDelta @lgcode/ cfg.haloWidth) ** 1.6))
+    const haloBand = Math.exp(-(Math.abs(haloDelta / cfg.haloWidth) ** 1.6))
     glow += (soft * cfg.softAmp + tail * cfg.tailAmp) * eased
     peak += core * cfg.coreAmp * eased
     halo += haloBand * cfg.haloAmp * eased
-    @lgcode/@lgcode/ Primary-tinted fringe follows the halo (which trails behind the core) and the tail
+    // Primary-tinted fringe follows the halo (which trails behind the core) and the tail
     primary += (haloBand + tail * 0.6) * eased
     ambient += active.ambient
   }
-  ambient @lgcode/= state.rings
+  ambient /= state.rings
   return {
-    glow: glow @lgcode/ state.rings,
-    peak: cfg.breathBase + ambient + (peak + halo) @lgcode/ state.rings,
-    primary: (primary @lgcode/ state.rings) * cfg.primaryMix,
+    glow: glow / state.rings,
+    peak: cfg.breathBase + ambient + (peak + halo) / state.rings,
+    primary: (primary / state.rings) * cfg.primaryMix,
   }
 }
 
@@ -497,11 +497,11 @@ function bloom(x: number, y: number, frame: Frame, ctx: LogoContext) {
   if (glyph !== item.glyph) return 0
   const age = frame.t - item.at
   if (age < 0 || age > GLOW_OUT) return 0
-  const p = age @lgcode/ GLOW_OUT
+  const p = age / GLOW_OUT
   const flash = (1 - p) ** 2
   const dx = x + 0.5 - ctx.MAP.center.get(item.glyph)!.x
   const dy = y * 2 + 1 - ctx.MAP.center.get(item.glyph)!.y
-  const bias = Math.exp(-((Math.hypot(dx, dy) @lgcode/ 2.8) ** 2))
+  const bias = Math.exp(-((Math.hypot(dx, dy) / 2.8) ** 2))
   return lerp(item.force, item.force * 0.18, p) * lerp(0.72, 1.1, bias) * flash
 }
 
@@ -535,13 +535,13 @@ function buildIdleState(t: number, ctx: LogoContext): IdleState {
   const rings = Math.max(1, Math.floor(cfg.rings))
   const active = [] as IdleState["active"]
   for (let i = 0; i < rings; i++) {
-    const offset = i @lgcode/ rings
-    const cyclePhase = (t @lgcode/ cfg.period + offset) % 1
+    const offset = i / rings
+    const cyclePhase = (t / cfg.period + offset) % 1
     if (cyclePhase >= cfg.sweepFraction) continue
-    const phase = cyclePhase @lgcode/ cfg.sweepFraction
+    const phase = cyclePhase / cfg.sweepFraction
     const envelope = Math.sin(phase * Math.PI)
     const eased = envelope * envelope * (3 - 2 * envelope)
-    const d = (phase - cfg.ambientCenter) @lgcode/ cfg.ambientWidth
+    const d = (phase - cfg.ambientCenter) / cfg.ambientWidth
     active.push({
       head: phase * reach,
       eased,
@@ -695,30 +695,30 @@ export function Logo(props: { shape?: LogoShape; ink?: RGBA; idle?: boolean } = 
         return (
           <text fg={ink} attributes={attrs} selectable={false}>
             {char}
-          <@lgcode/text>
+          </text>
         )
       }
 
       const h = field(off + i, y, frame, ctx)
       const charLit = lit(char)
-      @lgcode/@lgcode/ Sub-pixel sampling: cells are 2 pixels tall. Sample at top (y*2) and bottom (y*2+1) pixel rows.
+      // Sub-pixel sampling: cells are 2 pixels tall. Sample at top (y*2) and bottom (y*2+1) pixel rows.
       const pulseTop = state ? idle(off + i, y * 2, frame, ctx, state) : { glow: 0, peak: 0, primary: 0 }
       const pulseBot = state ? idle(off + i, y * 2 + 1, frame, ctx, state) : { glow: 0, peak: 0, primary: 0 }
       const peakMixTop = charLit ? Math.min(1, pulseTop.peak) : 0
       const peakMixBot = charLit ? Math.min(1, pulseBot.peak) : 0
       const primaryMixTop = charLit ? Math.min(1, pulseTop.primary) : 0
       const primaryMixBot = charLit ? Math.min(1, pulseBot.primary) : 0
-      @lgcode/@lgcode/ Layer primary tint first, then white peak on top — so the halo@lgcode/tail pulls toward primary,
-      @lgcode/@lgcode/ while the bright core stays pure white
+      // Layer primary tint first, then white peak on top — so the halo/tail pulls toward primary,
+      // while the bright core stays pure white
       const inkTopTint = primaryMixTop > 0 ? tint(ink, theme.primary, primaryMixTop) : ink
       const inkBotTint = primaryMixBot > 0 ? tint(ink, theme.primary, primaryMixBot) : ink
       const inkTop = peakMixTop > 0 ? tint(inkTopTint, PEAK, peakMixTop) : inkTopTint
       const inkBot = peakMixBot > 0 ? tint(inkBotTint, PEAK, peakMixBot) : inkBotTint
-      @lgcode/@lgcode/ For the non-peak-aware brightness channels, use the average of top@lgcode/bot
+      // For the non-peak-aware brightness channels, use the average of top/bot
       const pulse = {
-        glow: (pulseTop.glow + pulseBot.glow) @lgcode/ 2,
-        peak: (pulseTop.peak + pulseBot.peak) @lgcode/ 2,
-        primary: (pulseTop.primary + pulseBot.primary) @lgcode/ 2,
+        glow: (pulseTop.glow + pulseBot.glow) / 2,
+        peak: (pulseTop.peak + pulseBot.peak) / 2,
+        primary: (pulseTop.primary + pulseBot.primary) / 2,
       }
       const peakMix = charLit ? Math.min(1, pulse.peak) : 0
       const primaryMix = charLit ? Math.min(1, pulse.primary) : 0
@@ -747,7 +747,7 @@ export function Logo(props: { shape?: LogoShape; ink?: RGBA; idle?: boolean } = 
             selectable={false}
           >
             {" "}
-          <@lgcode/text>
+          </text>
         )
       }
 
@@ -760,7 +760,7 @@ export function Logo(props: { shape?: LogoShape; ink?: RGBA; idle?: boolean } = 
             selectable={false}
           >
             ▀
-          <@lgcode/text>
+          </text>
         )
       }
 
@@ -768,7 +768,7 @@ export function Logo(props: { shape?: LogoShape; ink?: RGBA; idle?: boolean } = 
         return (
           <text fg={shade(shadowTop, theme, ghost(s, 0.22) + ghost(q, 0.05))} attributes={attrs} selectable={false}>
             ▀
-          <@lgcode/text>
+          </text>
         )
       }
 
@@ -776,11 +776,11 @@ export function Logo(props: { shape?: LogoShape; ink?: RGBA; idle?: boolean } = 
         return (
           <text fg={shade(shadowBot, theme, ghost(s, 0.22) + ghost(q, 0.05))} attributes={attrs} selectable={false}>
             ▄
-          <@lgcode/text>
+          </text>
         )
       }
 
-      @lgcode/@lgcode/ Solid █: render as ▀ so the top pixel (fg) and bottom pixel (bg) can carry independent shimmer values
+      // Solid █: render as ▀ so the top pixel (fg) and bottom pixel (bg) can carry independent shimmer values
       if (char === "█" && useSubpixelBlocks()) {
         return (
           <text
@@ -790,32 +790,32 @@ export function Logo(props: { shape?: LogoShape; ink?: RGBA; idle?: boolean } = 
             selectable={false}
           >
             ▀
-          <@lgcode/text>
+          </text>
         )
       }
 
-      @lgcode/@lgcode/ ▀ top-half-lit: fg uses top-pixel sample, bg stays transparent@lgcode/panel
+      // ▀ top-half-lit: fg uses top-pixel sample, bg stays transparent/panel
       if (char === "▀") {
         return (
           <text fg={shade(inkTop, theme, n + p + e + b)} attributes={attrs} selectable={false}>
             ▀
-          <@lgcode/text>
+          </text>
         )
       }
 
-      @lgcode/@lgcode/ ▄ bottom-half-lit: fg uses bottom-pixel sample
+      // ▄ bottom-half-lit: fg uses bottom-pixel sample
       if (char === "▄") {
         return (
           <text fg={shade(inkBot, theme, n + p + e + b)} attributes={attrs} selectable={false}>
             ▄
-          <@lgcode/text>
+          </text>
         )
       }
 
       return (
         <text fg={shade(inkTinted, theme, n + p + e + b)} attributes={attrs} selectable={false}>
           {char}
-        <@lgcode/text>
+        </text>
       )
     })
   }
@@ -852,13 +852,13 @@ export function Logo(props: { shape?: LogoShape; ink?: RGBA; idle?: boolean } = 
         height={ctx.FULL.length}
         zIndex={1}
         onMouse={mouse}
-      @lgcode/>
+      />
       <For each={ctx.shape.left}>
         {(line, index) => (
           <box flexDirection="row" gap={1}>
             <box flexDirection="row">
               {renderLine(line, index(), props.ink ?? theme.textMuted, !!props.ink, 0, frame(), dusk(), idleState())}
-            <@lgcode/box>
+            </box>
             <box flexDirection="row">
               {renderLine(
                 ctx.shape.right[index()],
@@ -870,16 +870,16 @@ export function Logo(props: { shape?: LogoShape; ink?: RGBA; idle?: boolean } = 
                 dusk(),
                 idleState(),
               )}
-            <@lgcode/box>
-          <@lgcode/box>
+            </box>
+          </box>
         )}
-      <@lgcode/For>
-    <@lgcode/box>
+      </For>
+    </box>
   )
 }
 
 export function GoLogo() {
   const { theme } = useTheme()
   const base = tint(theme.background, theme.text, 0.62)
-  return <Logo shape={go} ink={base} idle @lgcode/>
+  return <Logo shape={go} ink={base} idle />
 }

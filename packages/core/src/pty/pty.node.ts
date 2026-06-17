@@ -1,7 +1,7 @@
-import * as pty from "@lydell@lgcode/node-pty"
-import type { Opts, Proc } from ".@lgcode/pty"
+import * as pty from "@lydell/node-pty"
+import type { Opts, Proc } from "./pty"
 
-export type { Disp, Exit, Opts, Proc } from ".@lgcode/pty"
+export type { Disp, Exit, Opts, Proc } from "./pty"
 
 export function spawn(file: string, args: string[], opts: Opts): Proc {
   const proc = pty.spawn(file, args, opts)

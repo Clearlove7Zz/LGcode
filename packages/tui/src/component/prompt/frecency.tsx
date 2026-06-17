@@ -1,1 +1,1 @@
-export * from "..@lgcode/..@lgcode/prompt@lgcode/frecency"
+export * from "../../prompt/frecency"

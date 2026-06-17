@@ -1,8 +1,8 @@
 "use server"
 
-import { Database, and, eq, isNull, sql } from "@lgcode/console-core@lgcode/drizzle@lgcode/index.js"
-import { AuthTable } from "@lgcode/console-core@lgcode/schema@lgcode/auth.sql.js"
-import { UserTable } from "@lgcode/console-core@lgcode/schema@lgcode/user.sql.js"
+import { Database, and, eq, isNull, sql } from "@opencode@lgcode/console-core/drizzle/index.js"
+import { AuthTable } from "@opencode@lgcode/console-core/schema/auth.sql.js"
+import { UserTable } from "@opencode@lgcode/console-core/schema/user.sql.js"
 import {
   BillingTable,
   PaymentTable,
@@ -10,15 +10,15 @@ import {
   BlackPlans,
   UsageTable,
   LiteTable,
-} from "@lgcode/console-core@lgcode/schema@lgcode/billing.sql.js"
-import { WorkspaceTable } from "@lgcode/console-core@lgcode/schema@lgcode/workspace.sql.js"
-import { KeyTable } from "@lgcode/console-core@lgcode/schema@lgcode/key.sql.js"
-import { ModelTable } from "@lgcode/console-core@lgcode/schema@lgcode/model.sql.js"
-import { BlackData } from "@lgcode/console-core@lgcode/black.js"
-import { LiteData } from "@lgcode/console-core@lgcode/lite.js"
-import { Subscription } from "@lgcode/console-core@lgcode/subscription.js"
-import { centsToMicroCents } from "@lgcode/console-core@lgcode/util@lgcode/price.js"
-import { getWeekBounds } from "@lgcode/console-core@lgcode/util@lgcode/date.js"
+} from "@opencode@lgcode/console-core/schema/billing.sql.js"
+import { WorkspaceTable } from "@opencode@lgcode/console-core/schema/workspace.sql.js"
+import { KeyTable } from "@opencode@lgcode/console-core/schema/key.sql.js"
+import { ModelTable } from "@opencode@lgcode/console-core/schema/model.sql.js"
+import { BlackData } from "@opencode@lgcode/console-core/black.js"
+import { LiteData } from "@opencode@lgcode/console-core/lite.js"
+import { Subscription } from "@opencode@lgcode/console-core/subscription.js"
+import { centsToMicroCents } from "@opencode@lgcode/console-core/util/price.js"
+import { getWeekBounds } from "@opencode@lgcode/console-core/util/date.js"
 
 export type LookupResult = {
   identifier: string
@@ -72,7 +72,7 @@ export async function lookup(identifier: string): Promise<LookupResult> {
     return { identifier, workspaces: [workspace] }
   }
 
-  @lgcode/@lgcode/ Treat as email
+  // Treat as email
   const authData = await Database.use((tx) => tx.select().from(AuthTable).where(eq(AuthTable.subject, identifier)))
   if (authData.length === 0) throw new Error("Email not found")
 
@@ -199,7 +199,7 @@ async function loadWorkspace(workspaceID: string): Promise<WorkspaceSection> {
       .then(
         (rows) =>
           rows.map((row) => ({
-            balance: `$${(row.balance @lgcode/ 100000000).toFixed(2)}`,
+            balance: `$${(row.balance / 100000000).toFixed(2)}`,
             reload: row.reload ? "yes" : "no",
             customerID: row.customerID,
             GO: row.liteSubscriptionID,
@@ -289,9 +289,9 @@ async function loadWorkspace(workspaceID: string): Promise<WorkspaceSection> {
       .limit(100)
       .then((rows) =>
         rows.map((row) => ({
-          amount: `$${(row.amount @lgcode/ 100000000).toFixed(2)}`,
+          amount: `$${(row.amount / 100000000).toFixed(2)}`,
           paymentID: row.paymentID
-            ? `https:@lgcode/@lgcode/dashboard.stripe.com@lgcode/acct_1RszBH2StuRr0lbX@lgcode/payments@lgcode/${row.paymentID}`
+            ? `https://dashboard.stripe.com/acct_1RszBH2StuRr0lbX/payments/${row.paymentID}`
             : null,
           invoiceID: row.invoiceID,
           customerID: row.customerID,
@@ -396,20 +396,20 @@ function formatLiteUsage(usage: { status: "ok" | "rate-limited"; usagePercent: n
 
 function formatResetTime(seconds: number) {
   if (seconds <= 0) return "now"
-  const days = Math.floor(seconds @lgcode/ 86400)
+  const days = Math.floor(seconds / 86400)
   if (days >= 1) return `${days}d`
-  const hours = Math.floor(seconds @lgcode/ 3600)
+  const hours = Math.floor(seconds / 3600)
   if (hours >= 1) {
-    const minutes = Math.floor((seconds % 3600) @lgcode/ 60)
+    const minutes = Math.floor((seconds % 3600) / 60)
     return minutes > 0 ? `${hours}h ${minutes}m` : `${hours}h`
   }
-  const minutes = Math.max(1, Math.ceil(seconds @lgcode/ 60))
+  const minutes = Math.max(1, Math.ceil(seconds / 60))
   return `${minutes}m`
 }
 
 function formatMicroCents(value: number | null | undefined) {
   if (value === null || value === undefined) return null
-  return `$${(value @lgcode/ 100000000).toFixed(2)}`
+  return `$${(value / 100000000).toFixed(2)}`
 }
 
 function formatDate(value: Date | null | undefined) {
@@ -419,15 +419,15 @@ function formatDate(value: Date | null | undefined) {
 
 function formatMonthlyUsage(usage: number | null | undefined, limit: number | null | undefined) {
   const usageText = formatMicroCents(usage) ?? "$0.00"
-  if (limit === null || limit === undefined) return `${usageText} @lgcode/ no limit`
-  return `${usageText} @lgcode/ $${limit.toFixed(2)}`
+  if (limit === null || limit === undefined) return `${usageText} / no limit`
+  return `${usageText} / $${limit.toFixed(2)}`
 }
 
 function formatRetryTime(seconds: number) {
-  const days = Math.floor(seconds @lgcode/ 86400)
+  const days = Math.floor(seconds / 86400)
   if (days >= 1) return `${days} day${days > 1 ? "s" : ""}`
-  const hours = Math.floor(seconds @lgcode/ 3600)
-  const minutes = Math.ceil((seconds % 3600) @lgcode/ 60)
+  const hours = Math.floor(seconds / 3600)
+  const minutes = Math.ceil((seconds % 3600) / 60)
   if (hours >= 1) return `${hours}hr ${minutes}min`
   return `${minutes}min`
 }
@@ -465,14 +465,14 @@ function getSubscriptionStatus(row: {
   const isRollingLimited = rollingLimit !== null && currentRolling >= rollingLimit
 
   const retryIn = isWeeklyLimited
-    ? formatRetryTime(Math.ceil((week.end.getTime() - now.getTime()) @lgcode/ 1000))
+    ? formatRetryTime(Math.ceil((week.end.getTime() - now.getTime()) / 1000))
     : isRollingLimited && row.timeRollingUpdated
-      ? formatRetryTime(Math.ceil((row.timeRollingUpdated.getTime() + rollingWindowMs - now.getTime()) @lgcode/ 1000))
+      ? formatRetryTime(Math.ceil((row.timeRollingUpdated.getTime() + rollingWindowMs - now.getTime()) / 1000))
       : null
 
   return {
-    weekly: fixedLimit !== null ? `${formatMicroCents(currentWeekly)} @lgcode/ $${black.fixedLimit}` : null,
-    rolling: rollingLimit !== null ? `${formatMicroCents(currentRolling)} @lgcode/ $${black.rollingLimit}` : null,
+    weekly: fixedLimit !== null ? `${formatMicroCents(currentWeekly)} / $${black.fixedLimit}` : null,
+    rolling: rollingLimit !== null ? `${formatMicroCents(currentRolling)} / $${black.rollingLimit}` : null,
     rateLimited: isWeeklyLimited || isRollingLimited ? "yes" : "no",
     retryIn,
   }

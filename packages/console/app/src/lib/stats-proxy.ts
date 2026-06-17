@@ -1,7 +1,7 @@
-import type { APIEvent } from "@solidjs@lgcode/start@lgcode/server"
-import { Resource } from "@lgcode/console-resource"
+import type { APIEvent } from "@solidjs/start/server"
+import { Resource } from "@opencode@lgcode/console-resource"
 
-const dataPath = "@lgcode/data"
+const dataPath = "/data"
 
 export async function statsProxy(evt: APIEvent) {
   const req = evt.request.clone()
@@ -11,9 +11,9 @@ export async function statsProxy(evt: APIEvent) {
   targetUrl.port = ""
 
   if (
-    targetUrl.pathname.startsWith(`${dataPath}@lgcode/_build@lgcode/`) ||
-    targetUrl.pathname === `${dataPath}@lgcode/banner.jpg` ||
-    targetUrl.pathname === `${dataPath}@lgcode/banner.png`
+    targetUrl.pathname.startsWith(`${dataPath}/_build/`) ||
+    targetUrl.pathname === `${dataPath}/banner.jpg` ||
+    targetUrl.pathname === `${dataPath}/banner.png`
   ) {
     targetUrl.pathname = targetUrl.pathname.slice(dataPath.length)
   }
@@ -24,7 +24,7 @@ export async function statsProxy(evt: APIEvent) {
     body: req.body,
   })
 
-  if (!response.headers.get("content-type")?.includes("text@lgcode/html")) return response
+  if (!response.headers.get("content-type")?.includes("text/html")) return response
 
   const headers = new Headers(response.headers)
   headers.delete("content-encoding")
@@ -40,7 +40,7 @@ export async function statsProxy(evt: APIEvent) {
 
 export function statsRedirect(evt: APIEvent) {
   const url = new URL(evt.request.url)
-  url.pathname = `${dataPath}${url.pathname.slice("@lgcode/stats".length)}`
+  url.pathname = `${dataPath}${url.pathname.slice("/stats".length)}`
   return new Response(null, {
     status: 308,
     headers: {
@@ -50,5 +50,5 @@ export function statsRedirect(evt: APIEvent) {
 }
 
 function rewriteStatsHtml(html: string) {
-  return html.replaceAll('"@lgcode/_build@lgcode/', `"${dataPath}@lgcode/_build@lgcode/`).replaceAll("'@lgcode/_build@lgcode/", `'${dataPath}@lgcode/_build@lgcode/`)
+  return html.replaceAll('"/_build/', `"${dataPath}/_build/`).replaceAll("'/_build/", `'${dataPath}/_build/`)
 }

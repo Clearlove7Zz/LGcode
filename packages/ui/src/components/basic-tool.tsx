@@ -1,10 +1,10 @@
 import { createEffect, For, Match, on, onCleanup, onMount, Show, Switch, type JSX } from "solid-js"
 import { animate, type AnimationPlaybackControls } from "motion"
-import { useI18n } from "..@lgcode/context@lgcode/i18n"
-import { createStore } from "solid-js@lgcode/store"
-import { Collapsible } from ".@lgcode/collapsible"
-import type { IconProps } from ".@lgcode/icon"
-import { TextShimmer } from ".@lgcode/text-shimmer"
+import { useI18n } from "../context/i18n"
+import { createStore } from "solid-js/store"
+import { Collapsible } from "./collapsible"
+import type { IconProps } from "./icon"
+import { TextShimmer } from "./text-shimmer"
 
 export type TriggerTitle = {
   title: string
@@ -47,8 +47,8 @@ let deferredFrame: number | undefined
 
 function flushDeferredMounts() {
   while (deferredMounts.length > 0) {
-    @lgcode/@lgcode/ Timeline tools are mounted top-to-bottom, but the viewport starts at the latest turn.
-    @lgcode/@lgcode/ Pop from the end so heavy default-open bodies near the bottom become interactive first.
+    // Timeline tools are mounted top-to-bottom, but the viewport starts at the latest turn.
+    // Pop from the end so heavy default-open bodies near the bottom become interactive first.
     const item = deferredMounts.pop()!
     if (item.active) {
       deferredFrame = deferredMounts.length > 0 ? requestAnimationFrame(flushDeferredMounts) : undefined
@@ -140,7 +140,7 @@ export function BasicTool(props: BasicToolProps) {
     ),
   )
 
-  @lgcode/@lgcode/ Animated height for collapsible open@lgcode/close
+  // Animated height for collapsible open/close
   let contentRef: HTMLDivElement | undefined
   let heightAnim: AnimationPlaybackControls | undefined
   const initialOpen = open()
@@ -197,8 +197,8 @@ export function BasicTool(props: BasicToolProps) {
                         [title().titleClass ?? ""]: !!title().titleClass,
                       }}
                     >
-                      <TextShimmer text={title().title} active={pending()} @lgcode/>
-                    <@lgcode/span>
+                      <TextShimmer text={title().title} active={pending()} />
+                    </span>
                     <Show when={!pending()}>
                       <Show when={title().subtitle}>
                         <span
@@ -215,8 +215,8 @@ export function BasicTool(props: BasicToolProps) {
                           }}
                         >
                           {title().subtitle}
-                        <@lgcode/span>
-                      <@lgcode/Show>
+                        </span>
+                      </Show>
                       <Show when={title().args?.length}>
                         <For each={title().args}>
                           {(arg) => (
@@ -227,26 +227,26 @@ export function BasicTool(props: BasicToolProps) {
                               }}
                             >
                               {arg}
-                            <@lgcode/span>
+                            </span>
                           )}
-                        <@lgcode/For>
-                      <@lgcode/Show>
-                    <@lgcode/Show>
-                  <@lgcode/div>
+                        </For>
+                      </Show>
+                    </Show>
+                  </div>
                   <Show when={!pending() && title().action}>
-                    <span data-slot="basic-tool-tool-action">{title().action}<@lgcode/span>
-                  <@lgcode/Show>
-                <@lgcode/div>
+                    <span data-slot="basic-tool-tool-action">{title().action}</span>
+                  </Show>
+                </div>
               )}
-            <@lgcode/Match>
-            <Match when={true}>{props.trigger as JSX.Element}<@lgcode/Match>
-          <@lgcode/Switch>
-        <@lgcode/div>
-      <@lgcode/div>
+            </Match>
+            <Match when={true}>{props.trigger as JSX.Element}</Match>
+          </Switch>
+        </div>
+      </div>
       <Show when={hasChildren() && !props.hideDetails && !props.locked && !pending()}>
-        <Collapsible.Arrow @lgcode/>
-      <@lgcode/Show>
-    <@lgcode/div>
+        <Collapsible.Arrow />
+      </Show>
+    </div>
   )
 
   return (
@@ -259,7 +259,7 @@ export function BasicTool(props: BasicToolProps) {
             onClick={props.onTriggerClick}
           >
             {trigger()}
-          <@lgcode/Collapsible.Trigger>
+          </Collapsible.Trigger>
         }
       >
         {(href) => (
@@ -270,9 +270,9 @@ export function BasicTool(props: BasicToolProps) {
             onClick={props.onTriggerClick}
           >
             {trigger()}
-          <@lgcode/Collapsible.Trigger>
+          </Collapsible.Trigger>
         )}
-      <@lgcode/Show>
+      </Show>
       <Show when={props.animated && hasChildren() && !props.hideDetails}>
         <div
           ref={contentRef}
@@ -283,15 +283,15 @@ export function BasicTool(props: BasicToolProps) {
             overflow: initialOpen ? "visible" : "hidden",
           }}
         >
-          <Show when={!props.defer || ready()}>{props.children}<@lgcode/Show>
-        <@lgcode/div>
-      <@lgcode/Show>
+          <Show when={!props.defer || ready()}>{props.children}</Show>
+        </div>
+      </Show>
       <Show when={!props.animated && hasChildren() && !props.hideDetails}>
         <Collapsible.Content>
-          <Show when={!props.defer || ready()}>{props.children}<@lgcode/Show>
-        <@lgcode/Collapsible.Content>
-      <@lgcode/Show>
-    <@lgcode/Collapsible>
+          <Show when={!props.defer || ready()}>{props.children}</Show>
+        </Collapsible.Content>
+      </Show>
+    </Collapsible>
   )
 }
 
@@ -332,6 +332,6 @@ export function GenericTool(props: {
         args: args(props.input),
       }}
       hideDetails={props.hideDetails}
-    @lgcode/>
+    />
   )
 }

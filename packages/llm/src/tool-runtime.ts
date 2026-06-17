@@ -7,8 +7,8 @@ import {
   ToolResultValue,
   type ToolOutput as ToolOutputType,
   type ToolResultValue as ToolResultValueType,
-} from ".@lgcode/schema"
-import { type AnyTool, type Tools } from ".@lgcode/tool"
+} from "./schema"
+import { type AnyTool, type Tools } from "./tool"
 
 export interface ToolSettlement {
   readonly result: ToolResultValueType
@@ -19,7 +19,7 @@ export interface DispatchResult extends ToolSettlement {
   readonly events: ReadonlyArray<LLMEvent>
 }
 
-@lgcode/** Execute one canonical tool call without owning provider IO or continuation. *@lgcode/
+/** Execute one canonical tool call without owning provider IO or continuation. */
 export const dispatch = (tools: Tools, call: ToolCallPart): Effect.Effect<DispatchResult> => {
   const tool = tools[call.name]
   if (!tool) return Effect.succeed(result(call, { type: "error", value: `Unknown tool: ${call.name}` }))

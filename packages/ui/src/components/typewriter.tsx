@@ -1,6 +1,6 @@
 import { createEffect, onCleanup, Show, type ValidComponent } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import { Dynamic } from "solid-js@lgcode/web"
+import { createStore } from "solid-js/store"
+import { Dynamic } from "solid-js/web"
 
 export const Typewriter = <T extends ValidComponent = "p">(props: { text?: string; class?: string; as?: T }) => {
   const [store, setStore] = createStore({
@@ -48,8 +48,8 @@ export const Typewriter = <T extends ValidComponent = "p">(props: { text?: strin
     <Dynamic component={props.as || "p"} class={props.class}>
       {store.displayed}
       <Show when={store.cursor}>
-        <span classList={{ "blinking-cursor": !store.typing }}>│<@lgcode/span>
-      <@lgcode/Show>
-    <@lgcode/Dynamic>
+        <span classList={{ "blinking-cursor": !store.typing }}>│</span>
+      </Show>
+    </Dynamic>
   )
 }

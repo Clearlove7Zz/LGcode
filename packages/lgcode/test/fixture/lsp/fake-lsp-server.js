@@ -1,4 +1,4 @@
-@lgcode/@lgcode/ Simple JSON-RPC 2.0 LSP-like fake server over stdio
+// Simple JSON-RPC 2.0 LSP-like fake server over stdio
 
 let nextId = 1
 let readBuffer = Buffer.alloc(0)
@@ -30,7 +30,7 @@ function decodeFrames(buffer) {
   let idx
   while ((idx = buffer.indexOf("\r\n\r\n")) !== -1) {
     const header = buffer.slice(0, idx).toString("utf8")
-    const match = @lgcode/Content-Length:\s*(\d+)@lgcode/i.exec(header)
+    const match = /Content-Length:\s*(\d+)/i.exec(header)
     const length = match ? parseInt(match[1], 10) : 0
     const bodyStart = idx + 4
     const bodyEnd = bodyStart + length
@@ -62,10 +62,10 @@ function sendNotification(method, params) {
 function maybeRegister(method) {
   if (pullConfig.registerOn !== method || registeredCapability) return
   registeredCapability = true
-  sendRequest("client@lgcode/registerCapability", {
+  sendRequest("client/registerCapability", {
     registrations: pullConfig.registrations.map((registration, index) => ({
       id: registration.id ?? `pull-${index}`,
-      method: registration.method ?? "textDocument@lgcode/diagnostic",
+      method: registration.method ?? "textDocument/diagnostic",
       registerOptions: registration.registerOptions ?? registration,
     })),
   })
@@ -123,49 +123,49 @@ function handle(raw) {
     return
   }
 
-  if (data.method === "test@lgcode/get-initialize-params") {
+  if (data.method === "test/get-initialize-params") {
     sendResponse(data.id, initializeParams)
     return
   }
 
-  if (data.method === "test@lgcode/request-configuration") {
-    const id = sendRequest("workspace@lgcode/configuration", data.params)
+  if (data.method === "test/request-configuration") {
+    const id = sendRequest("workspace/configuration", data.params)
     pendingClientRequests.set(id, data.id)
     return
   }
 
-  if (data.method === "initialized" || data.method === "workspace@lgcode/didChangeConfiguration") {
+  if (data.method === "initialized" || data.method === "workspace/didChangeConfiguration") {
     return
   }
 
-  if (data.method === "textDocument@lgcode/didOpen") {
+  if (data.method === "textDocument/didOpen") {
     maybeRegister("didOpen")
     return
   }
 
-  if (data.method === "textDocument@lgcode/didChange") {
+  if (data.method === "textDocument/didChange") {
     lastChange = data.params
     maybeRegister("didChange")
     return
   }
 
-  if (data.method === "test@lgcode/trigger") {
+  if (data.method === "test/trigger") {
     const method = data.params && data.params.method
-    if (method === "client@lgcode/registerCapability") {
+    if (method === "client/registerCapability") {
       sendRequest(method, {
         registrations: [
           {
             id: "test-diagnostic-registration",
-            method: "textDocument@lgcode/diagnostic",
+            method: "textDocument/diagnostic",
             registerOptions: { identifier: "syntax" },
           },
         ],
       })
       return
     }
-    if (method === "client@lgcode/unregisterCapability") {
+    if (method === "client/unregisterCapability") {
       sendRequest(method, {
-        unregisterations: [{ id: "test-diagnostic-registration", method: "textDocument@lgcode/diagnostic" }],
+        unregisterations: [{ id: "test-diagnostic-registration", method: "textDocument/diagnostic" }],
       })
       return
     }
@@ -173,7 +173,7 @@ function handle(raw) {
     return
   }
 
-  if (data.method === "test@lgcode/configure-pull-diagnostics") {
+  if (data.method === "test/configure-pull-diagnostics") {
     pullConfig = {
       delayMs: data.params?.delayMs ?? 0,
       registerOn: data.params?.registerOn,
@@ -190,28 +190,28 @@ function handle(raw) {
     return
   }
 
-  if (data.method === "test@lgcode/register-configured-pull-diagnostics") {
+  if (data.method === "test/register-configured-pull-diagnostics") {
     maybeRegister(undefined)
     sendResponse(data.id, null)
     return
   }
 
-  if (data.method === "test@lgcode/publish-diagnostics") {
-    sendNotification("textDocument@lgcode/publishDiagnostics", data.params)
+  if (data.method === "test/publish-diagnostics") {
+    sendNotification("textDocument/publishDiagnostics", data.params)
     return
   }
 
-  if (data.method === "test@lgcode/get-last-change") {
+  if (data.method === "test/get-last-change") {
     sendResponse(data.id, lastChange)
     return
   }
 
-  if (data.method === "test@lgcode/get-diagnostic-request-count") {
+  if (data.method === "test/get-diagnostic-request-count") {
     sendResponse(data.id, diagnosticRequestCount)
     return
   }
 
-  if (data.method === "textDocument@lgcode/diagnostic") {
+  if (data.method === "textDocument/diagnostic") {
     diagnosticRequestCount += 1
     delayed(
       data.id,
@@ -224,7 +224,7 @@ function handle(raw) {
     return
   }
 
-  if (data.method === "workspace@lgcode/diagnostic") {
+  if (data.method === "workspace/diagnostic") {
     diagnosticRequestCount += 1
     delayed(
       data.id,

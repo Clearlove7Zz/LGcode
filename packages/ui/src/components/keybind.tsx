@@ -15,6 +15,6 @@ export function Keybind(props: KeybindProps) {
       }}
     >
       {props.children}
-    <@lgcode/span>
+    </span>
   )
 }

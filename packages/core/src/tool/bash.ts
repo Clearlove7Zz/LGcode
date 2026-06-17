@@ -1,17 +1,17 @@
-export * as BashTool from ".@lgcode/bash"
+export * as BashTool from "./bash"
 
 import path from "path"
-import { ToolFailure } from "@lgcode/llm"
+import { ToolFailure } from "@opencode@lgcode/llm"
 import { Duration, Effect, Layer, Schema } from "effect"
-import { ChildProcess } from "effect@lgcode/unstable@lgcode/process"
-import { Config } from "..@lgcode/config"
-import { FSUtil } from "..@lgcode/fs-util"
-import { LocationMutation } from "..@lgcode/location-mutation"
-import { AppProcess } from "..@lgcode/process"
-import { PermissionV2 } from "..@lgcode/permission"
-import { PositiveInt } from "..@lgcode/schema"
-import { Tool } from ".@lgcode/tool"
-import { Tools } from ".@lgcode/tools"
+import { ChildProcess } from "effect/unstable/process"
+import { Config } from "../config"
+import { FSUtil } from "../fs-util"
+import { LocationMutation } from "../location-mutation"
+import { AppProcess } from "../process"
+import { PermissionV2 } from "../permission"
+import { PositiveInt } from "../schema"
+import { Tool } from "./tool"
+import { Tools } from "./tools"
 
 export const name = "bash"
 export const DEFAULT_TIMEOUT_MS = 2 * 60 * 1_000
@@ -37,7 +37,7 @@ const Output = Schema.Struct({
   command: Schema.String,
   cwd: Schema.String,
   exitCode: Schema.Number.pipe(Schema.optional),
-  @lgcode/** Bounded compact equivalent of stdout@lgcode/stderr: stderr is labeled when present. *@lgcode/
+  /** Bounded compact equivalent of stdout/stderr: stderr is labeled when present. */
   output: Schema.String,
   truncated: Schema.Boolean,
   stdoutTruncated: Schema.Boolean.pipe(Schema.optional),
@@ -48,7 +48,7 @@ const Output = Schema.Struct({
 
 type Output = typeof Output.Type
 
-const defaultShell = () => (process.platform === "win32" ? (process.env.COMSPEC ?? "cmd.exe") : "@lgcode/bin@lgcode/sh")
+const defaultShell = () => (process.platform === "win32" ? (process.env.COMSPEC ?? "cmd.exe") : "/bin/sh")
 
 const compactOutput = (stdout: string, stderr: string) => {
   const output = stdout && stderr ? `${stdout}\n\nstderr:\n${stderr}` : stderr ? `stderr:\n${stderr}` : stdout
@@ -73,29 +73,29 @@ const modelOutput = (output: Output) => {
 const isTimeout = (error: AppProcess.AppProcessError) =>
   error.cause instanceof Error && error.cause.message === "Timed out"
 
-@lgcode/**
+/**
  * Minimal V2 core shell boundary. Keep parity debt visible without pulling the
  * legacy shell runtime into core.
- *@lgcode/
-@lgcode/@lgcode/ TODO: Port tree-sitter bash @lgcode/ PowerShell parser-based approval reduction.
-@lgcode/@lgcode/ TODO: Port BashArity reusable command-prefix approvals.
-@lgcode/@lgcode/ TODO: Replace token-based command-argument external-directory advisories with parser-based detection.
-@lgcode/@lgcode/ TODO: Restore PowerShell and cmd-specific invocation@lgcode/path handling on Windows.
-@lgcode/@lgcode/ TODO: Add plugin shell.env environment augmentation once V2 plugin hooks exist.
-@lgcode/@lgcode/ TODO: Add durable@lgcode/live progress metadata streaming for long-running commands once V2 tool invocation progress context is wired.
-@lgcode/@lgcode/ TODO: Persist background job status and define restart recovery before exposing remote observation.
-@lgcode/@lgcode/ TODO: Re-add model-facing background launch only with owner-bound get@lgcode/wait@lgcode/cancel tools and completion delivery.
-@lgcode/@lgcode/ TODO: Add HTTP background-job observation only after durable status, restart recovery, and authorization are defined.
-@lgcode/@lgcode/ TODO: Revisit process-group cleanup and platform coverage with shell-specific tests if current AppProcess semantics do not fully cover it.
-@lgcode/@lgcode/ TODO: Revisit binary output handling if stdout@lgcode/stderr decoding is text-only.
-@lgcode/@lgcode/ TODO: Stream full shell output into managed storage while retaining only a bounded in-memory preview.
+ */
+// TODO: Port tree-sitter bash / PowerShell parser-based approval reduction.
+// TODO: Port BashArity reusable command-prefix approvals.
+// TODO: Replace token-based command-argument external-directory advisories with parser-based detection.
+// TODO: Restore PowerShell and cmd-specific invocation/path handling on Windows.
+// TODO: Add plugin shell.env environment augmentation once V2 plugin hooks exist.
+// TODO: Add durable/live progress metadata streaming for long-running commands once V2 tool invocation progress context is wired.
+// TODO: Persist background job status and define restart recovery before exposing remote observation.
+// TODO: Re-add model-facing background launch only with owner-bound get/wait/cancel tools and completion delivery.
+// TODO: Add HTTP background-job observation only after durable status, restart recovery, and authorization are defined.
+// TODO: Revisit process-group cleanup and platform coverage with shell-specific tests if current AppProcess semantics do not fully cover it.
+// TODO: Revisit binary output handling if stdout/stderr decoding is text-only.
+// TODO: Stream full shell output into managed storage while retaining only a bounded in-memory preview.
 
-const shellTokens = (command: string) => command.match(@lgcode/(?:[^\s"']+|"[^"]*"|'[^']*')+@lgcode/g) ?? []
-const unquote = (value: string) => value.replace(@lgcode/^(['"])(.*)\1$@lgcode/, "$2")
+const shellTokens = (command: string) => command.match(/(?:[^\s"']+|"[^"]*"|'[^']*')+/g) ?? []
+const unquote = (value: string) => value.replace(/^(['"])(.*)\1$/, "$2")
 const externalCommandDirectories = (command: string, cwd: string) => {
   const directories = new Set<string>()
   for (const token of shellTokens(command)) {
-    const value = unquote(token).replace(@lgcode/[;,|&]+$@lgcode/, "")
+    const value = unquote(token).replace(/[;,|&]+$/, "")
     if (!path.isAbsolute(value)) continue
     const resolved = FSUtil.resolve(value)
     if (FSUtil.contains(cwd, resolved)) continue
@@ -116,7 +116,7 @@ export const layer = Layer.effectDiscard(
     yield* tools
       .register({
         [name]: Tool.make({
-          description: `Execute one shell command string with the host user's filesystem, process, and network authority. The active Location is the default working directory. Relative workdir values resolve from that Location. External workdir values require external_directory approval; best-effort command-argument path warnings are advisory only. Timeout values are milliseconds (default: ${DEFAULT_TIMEOUT_MS}; maximum: ${MAX_TIMEOUT_MS}). Uses the configured shell when set; otherwise uses @lgcode/bin@lgcode/sh on POSIX and COMSPEC or cmd.exe on Windows.`,
+          description: `Execute one shell command string with the host user's filesystem, process, and network authority. The active Location is the default working directory. Relative workdir values resolve from that Location. External workdir values require external_directory approval; best-effort command-argument path warnings are advisory only. Timeout values are milliseconds (default: ${DEFAULT_TIMEOUT_MS}; maximum: ${MAX_TIMEOUT_MS}). Uses the configured shell when set; otherwise uses /bin/sh on POSIX and COMSPEC or cmd.exe on Windows.`,
           input: Input,
           output: Output,
           toModelOutput: ({ output }) => [{ type: "text", text: modelOutput(output) }],
@@ -138,7 +138,7 @@ export const layer = Layer.effectDiscard(
                 })
               const warnings = externalCommandDirectories(input.command, target.canonical).map(
                 (directory) =>
-                  `Command argument references external directory ${path.join(directory, "*").replaceAll("\\", "@lgcode/")}. Bash runs with host-user filesystem, process, and network authority; this scan is advisory only.`,
+                  `Command argument references external directory ${path.join(directory, "*").replaceAll("\\", "/")}. Bash runs with host-user filesystem, process, and network authority; this scan is advisory only.`,
               )
               yield* permission.assert({
                 action: name,

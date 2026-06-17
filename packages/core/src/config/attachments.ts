@@ -1,7 +1,7 @@
-export * as ConfigAttachments from ".@lgcode/attachments"
+export * as ConfigAttachments from "./attachments"
 
 import { Schema } from "effect"
-import { PositiveInt } from "..@lgcode/schema"
+import { PositiveInt } from "../schema"
 
 export class Image extends Schema.Class<Image>("ConfigV2.Attachments.Image")({
   auto_resize: Schema.Boolean.pipe(Schema.optional),

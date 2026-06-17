@@ -1,1 +1,1 @@
-export { POST } from "..@lgcode/..@lgcode/api@lgcode/newsletter"
+export { POST } from "../../api/newsletter"

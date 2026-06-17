@@ -1,7 +1,7 @@
 import { describe, expect } from "bun:test"
 import { Cause, Effect, Exit, Schema } from "effect"
-import { SystemContext } from "@lgcode/core@lgcode/system-context"
-import { it } from "..@lgcode/lib@lgcode/effect"
+import { SystemContext } from "@opencode@lgcode/core/system-context"
+import { it } from "../lib/effect"
 
 const key = SystemContext.Key.make
 const stringContext = (input: {
@@ -24,7 +24,7 @@ describe("SystemContext", () => {
   it.effect("stores the canonical JSON encoding of the loaded value", () =>
     Effect.gen(function* () {
       const context = SystemContext.make({
-        key: key("core@lgcode/date"),
+        key: key("core/date"),
         codec: Schema.toCodecJson(Schema.DateFromString),
         load: Effect.succeed(new Date("2026-06-03T12:00:00.000Z")),
         baseline: (date) => date.toISOString(),
@@ -32,7 +32,7 @@ describe("SystemContext", () => {
         removed: () => "Date removed",
       })
 
-      expect((yield* SystemContext.initialize(context)).snapshot["core@lgcode/date"].value).toBe("2026-06-03T12:00:00.000Z")
+      expect((yield* SystemContext.initialize(context)).snapshot["core/date"].value).toBe("2026-06-03T12:00:00.000Z")
     }),
   )
 
@@ -41,7 +41,7 @@ describe("SystemContext", () => {
       let loads = 0
       const context = SystemContext.combine([
         SystemContext.make({
-          key: key("core@lgcode/date"),
+          key: key("core/date"),
           codec: Schema.toCodecJson(Schema.String),
           load: Effect.sync(() => {
             loads++
@@ -51,14 +51,14 @@ describe("SystemContext", () => {
           update: (previous, current) => `The date changed from ${previous} to ${current}.`,
           removed: () => "The date was removed.",
         }),
-        stringContext({ key: "core@lgcode/location", value: "@lgcode/repo", baseline: (value) => `Directory: ${value}` }),
+        stringContext({ key: "core/location", value: "/repo", baseline: (value) => `Directory: ${value}` }),
       ])
 
       expect(yield* SystemContext.initialize(context)).toEqual({
-        baseline: "Today's date is 2026-06-03.\n\nDirectory: @lgcode/repo",
+        baseline: "Today's date is 2026-06-03.\n\nDirectory: /repo",
         snapshot: {
-          "core@lgcode/date": { value: "2026-06-03", removed: "The date was removed." },
-          "core@lgcode/location": { value: "@lgcode/repo" },
+          "core/date": { value: "2026-06-03", removed: "The date was removed." },
+          "core/location": { value: "/repo" },
         },
       })
       expect(loads).toBe(1)
@@ -68,33 +68,33 @@ describe("SystemContext", () => {
   it.effect("renders updates only after a structured value changes", () =>
     Effect.gen(function* () {
       const previous = {
-        "core@lgcode/date": { value: "2026-06-03", removed: "The date was removed." },
-        "core@lgcode/location": { value: "@lgcode/repo", removed: "Removed: @lgcode/repo" },
+        "core/date": { value: "2026-06-03", removed: "The date was removed." },
+        "core/location": { value: "/repo", removed: "Removed: /repo" },
       }
       const changed = SystemContext.combine([
         stringContext({
-          key: "core@lgcode/date",
+          key: "core/date",
           value: "2026-06-04",
           update: (before, current) => `The date changed from ${before} to ${current}.`,
           removed: () => "The date was removed.",
         }),
-        stringContext({ key: "core@lgcode/location", value: "@lgcode/repo" }),
+        stringContext({ key: "core/location", value: "/repo" }),
       ])
 
       expect(yield* SystemContext.reconcile(changed, previous)).toEqual({
         _tag: "Updated",
         text: "The date changed from 2026-06-03 to 2026-06-04.",
         snapshot: {
-          "core@lgcode/date": { value: "2026-06-04", removed: "The date was removed." },
-          "core@lgcode/location": { value: "@lgcode/repo", removed: "Removed: @lgcode/repo" },
+          "core/date": { value: "2026-06-04", removed: "The date was removed." },
+          "core/location": { value: "/repo", removed: "Removed: /repo" },
         },
       })
 
       expect(
         yield* SystemContext.reconcile(
           SystemContext.combine([
-            stringContext({ key: "core@lgcode/date", value: "2026-06-03", removed: () => "The date was removed." }),
-            stringContext({ key: "core@lgcode/location", value: "@lgcode/repo" }),
+            stringContext({ key: "core/date", value: "2026-06-03", removed: () => "The date was removed." }),
+            stringContext({ key: "core/location", value: "/repo" }),
           ]),
           previous,
         ),
@@ -105,7 +105,7 @@ describe("SystemContext", () => {
   it.effect("uses the baseline for a newly added source", () =>
     Effect.gen(function* () {
       const context = stringContext({
-        key: "core@lgcode/skills",
+        key: "core/skills",
         value: "effect",
         baseline: (skill) => `Available skill: ${skill}`,
       })
@@ -113,15 +113,15 @@ describe("SystemContext", () => {
       expect(yield* SystemContext.reconcile(context, {})).toEqual({
         _tag: "Updated",
         text: "Available skill: effect",
-        snapshot: { "core@lgcode/skills": { value: "effect" } },
+        snapshot: { "core/skills": { value: "effect" } },
       })
     }),
   )
 
   it.effect("retains admitted snapshots while a source is temporarily unavailable", () =>
     Effect.gen(function* () {
-      const previous = { "core@lgcode/remote": { value: "instructions", removed: "Instructions removed" } }
-      const context = stringContext({ key: "core@lgcode/remote", value: SystemContext.unavailable })
+      const previous = { "core/remote": { value: "instructions", removed: "Instructions removed" } }
+      const context = stringContext({ key: "core/remote", value: SystemContext.unavailable })
 
       expect(yield* SystemContext.reconcile(context, previous)).toEqual({ _tag: "Unchanged" })
       expect(yield* SystemContext.replace(context, previous)).toEqual({ _tag: "ReplacementBlocked" })
@@ -132,13 +132,13 @@ describe("SystemContext", () => {
   it.effect("blocks initialization while a source is unavailable", () =>
     Effect.gen(function* () {
       const exit = yield* SystemContext.initialize(
-        stringContext({ key: "core@lgcode/remote", value: SystemContext.unavailable }),
+        stringContext({ key: "core/remote", value: SystemContext.unavailable }),
       ).pipe(Effect.exit)
 
       expect(Exit.isFailure(exit)).toBe(true)
       if (Exit.isFailure(exit))
         expect(Cause.squash(exit.cause)).toEqual(
-          new SystemContext.InitializationBlocked({ keys: [key("core@lgcode/remote")] }),
+          new SystemContext.InitializationBlocked({ keys: [key("core/remote")] }),
         )
     }),
   )
@@ -147,7 +147,7 @@ describe("SystemContext", () => {
     Effect.gen(function* () {
       expect(
         yield* SystemContext.reconcile(SystemContext.empty, {
-          "core@lgcode/instructions": { value: "contents", removed: "Instructions removed; stop applying them." },
+          "core/instructions": { value: "contents", removed: "Instructions removed; stop applying them." },
         }),
       ).toEqual({
         _tag: "Updated",
@@ -160,7 +160,7 @@ describe("SystemContext", () => {
   it.effect("requests replacement when a source without removal text disappears", () =>
     Effect.gen(function* () {
       expect(
-        yield* SystemContext.reconcile(SystemContext.empty, { "core@lgcode/date": { value: "2026-06-04" } }),
+        yield* SystemContext.reconcile(SystemContext.empty, { "core/date": { value: "2026-06-04" } }),
       ).toMatchObject({
         _tag: "ReplacementReady",
       })
@@ -171,8 +171,8 @@ describe("SystemContext", () => {
     Effect.gen(function* () {
       expect(
         yield* SystemContext.reconcile(SystemContext.empty, {
-          "core@lgcode/z": { value: "z", removed: "Removed z" },
-          "core@lgcode/a": { value: "a", removed: "Removed a" },
+          "core/z": { value: "z", removed: "Removed z" },
+          "core/a": { value: "a", removed: "Removed a" },
         }),
       ).toMatchObject({ _tag: "Updated", text: "Removed a\n\nRemoved z" })
     }),
@@ -181,7 +181,7 @@ describe("SystemContext", () => {
   it.effect("rejects empty model-visible renderings", () =>
     Effect.gen(function* () {
       const exit = yield* SystemContext.initialize(
-        stringContext({ key: "core@lgcode/empty", value: "value", baseline: () => "" }),
+        stringContext({ key: "core/empty", value: "value", baseline: () => "" }),
       ).pipe(Effect.exit)
 
       expect(Exit.isFailure(exit)).toBe(true)
@@ -192,8 +192,8 @@ describe("SystemContext", () => {
   it.effect("requests replacement when a stored value no longer decodes", () =>
     Effect.gen(function* () {
       expect(
-        yield* SystemContext.reconcile(stringContext({ key: "core@lgcode/date", value: "2026-06-04" }), {
-          "core@lgcode/date": { value: 42, removed: "Date removed" },
+        yield* SystemContext.reconcile(stringContext({ key: "core/date", value: "2026-06-04" }), {
+          "core/date": { value: 42, removed: "Date removed" },
         }),
       ).toMatchObject({ _tag: "ReplacementReady" })
     }),
@@ -203,7 +203,7 @@ describe("SystemContext", () => {
     Effect.gen(function* () {
       let loads = 0
       const context = SystemContext.make({
-        key: key("core@lgcode/date"),
+        key: key("core/date"),
         codec: Schema.toCodecJson(Schema.String),
         load: Effect.sync(() => {
           loads++
@@ -213,7 +213,7 @@ describe("SystemContext", () => {
         update: (_previous, current) => current,
       })
 
-      expect(yield* SystemContext.reconcile(context, { "core@lgcode/date": { value: 42 } })).toMatchObject({
+      expect(yield* SystemContext.reconcile(context, { "core/date": { value: 42 } })).toMatchObject({
         _tag: "ReplacementReady",
         generation: { baseline: "2026-06-04" },
       })
@@ -226,20 +226,20 @@ describe("SystemContext", () => {
       let updates = 0
       const context = SystemContext.combine([
         stringContext({
-          key: "core@lgcode/date",
+          key: "core/date",
           value: "2026-06-04",
           update: () => {
             updates++
             return "updated"
           },
         }),
-        stringContext({ key: "core@lgcode/location", value: "@lgcode/repo" }),
+        stringContext({ key: "core/location", value: "/repo" }),
       ])
 
       expect(
         yield* SystemContext.reconcile(context, {
-          "core@lgcode/date": { value: "2026-06-03" },
-          "core@lgcode/location": { value: 42 },
+          "core/date": { value: "2026-06-03" },
+          "core/location": { value: 42 },
         }),
       ).toMatchObject({ _tag: "ReplacementReady" })
       expect(updates).toBe(0)
@@ -249,12 +249,12 @@ describe("SystemContext", () => {
   it.effect("blocks an incompatible replacement while another admitted source is unavailable", () =>
     Effect.gen(function* () {
       const previous = {
-        "core@lgcode/date": { value: 42, removed: "Date removed" },
-        "core@lgcode/remote": { value: "instructions", removed: "Instructions removed" },
+        "core/date": { value: 42, removed: "Date removed" },
+        "core/remote": { value: "instructions", removed: "Instructions removed" },
       }
       const context = SystemContext.combine([
-        stringContext({ key: "core@lgcode/date", value: "2026-06-04" }),
-        stringContext({ key: "core@lgcode/remote", value: SystemContext.unavailable }),
+        stringContext({ key: "core/date", value: "2026-06-04" }),
+        stringContext({ key: "core/remote", value: SystemContext.unavailable }),
       ])
 
       expect(yield* SystemContext.reconcile(context, previous)).toEqual({ _tag: "ReplacementBlocked" })
@@ -266,10 +266,10 @@ describe("SystemContext", () => {
     Effect.sync(() => {
       expect(() =>
         SystemContext.combine([
-          stringContext({ key: "core@lgcode/date", value: "one" }),
-          stringContext({ key: "core@lgcode/date", value: "two" }),
+          stringContext({ key: "core/date", value: "one" }),
+          stringContext({ key: "core/date", value: "two" }),
         ]),
-      ).toThrow(new SystemContext.DuplicateKeyError({ key: key("core@lgcode/date") }))
+      ).toThrow(new SystemContext.DuplicateKeyError({ key: key("core/date") }))
     }),
   )
 
@@ -278,8 +278,8 @@ describe("SystemContext", () => {
       expect(
         (yield* SystemContext.initialize(
           SystemContext.combine([
-            stringContext({ key: "core@lgcode/date", value: "date" }),
-            stringContext({ key: "core@lgcode/location", value: "location" }),
+            stringContext({ key: "core/date", value: "date" }),
+            stringContext({ key: "core/location", value: "location" }),
           ]),
         )).baseline,
       ).toBe("date\n\nlocation")
@@ -290,7 +290,7 @@ describe("SystemContext", () => {
     Effect.sync(() => {
       const decodeKey = Schema.decodeUnknownSync(SystemContext.Key)
 
-      expect(decodeKey("core@lgcode/date")).toBe(key("core@lgcode/date"))
+      expect(decodeKey("core/date")).toBe(key("core/date"))
       expect(() => decodeKey("date")).toThrow()
     }),
   )
@@ -299,9 +299,9 @@ describe("SystemContext", () => {
     Effect.sync(() => {
       const decodeSnapshot = Schema.decodeUnknownSync(SystemContext.Snapshot)
 
-      expect(Object.keys(decodeSnapshot({ "core@lgcode/date": { value: "date" } }))).toEqual(["core@lgcode/date"])
+      expect(Object.keys(decodeSnapshot({ "core/date": { value: "date" } }))).toEqual(["core/date"])
       expect(() => decodeSnapshot({ date: { value: "date" } })).toThrow()
-      expect(() => decodeSnapshot({ "core@lgcode/date": { value: "date", removed: "" } })).toThrow()
+      expect(() => decodeSnapshot({ "core/date": { value: "date", removed: "" } })).toThrow()
     }),
   )
 })

@@ -1,16 +1,16 @@
 import { afterEach, describe, expect, test } from "bun:test"
 import { Effect, Layer } from "effect"
 import path from "path"
-import { unlink } from "fs@lgcode/promises"
-import { Global } from "@lgcode/core@lgcode/global"
-import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
-import { Env } from "..@lgcode/..@lgcode/src@lgcode/env"
-import { Provider } from "@@lgcode/provider@lgcode/provider"
+import { unlink } from "fs/promises"
+import { Global } from "@opencode@lgcode/core/global"
+import { Filesystem } from "@/util/filesystem"
+import { Env } from "../../src/env"
+import { Provider } from "@/provider/provider"
 
-import { disposeAllInstances } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { disposeAllInstances } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelV2 } from "@opencode@lgcode/core/model"
 
 const it = testEffect(Layer.mergeAll(Provider.defaultLayer, Env.defaultLayer))
 
@@ -35,7 +35,7 @@ afterEach(async () => {
 const list = Provider.use.list()
 
 const mantleModelConfig = {
-  provider: { npm: "@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle" },
+  provider: { npm: "@ai-sdk/amazon-bedrock/mantle" },
   limit: { context: 272_000, output: 32_000 },
   modalities: {
     input: ["text", "image", "pdf"] as Array<"text" | "image" | "pdf">,
@@ -118,10 +118,10 @@ it.instance(
       expect((language as { modelId: string }).modelId).toBe("openai.gpt-5.5")
       expect(
         (language as unknown as { config: { url: (input: { path: string; modelId: string }) => string } }).config.url({
-          path: "@lgcode/responses",
+          path: "/responses",
           modelId: "openai.gpt-5.5",
         }),
-      ).toBe("https:@lgcode/@lgcode/bedrock-mantle.us-east-2.api.aws@lgcode/openai@lgcode/v1@lgcode/responses")
+      ).toBe("https://bedrock-mantle.us-east-2.api.aws/openai/v1/responses")
     }),
   {
     config: {
@@ -132,8 +132,8 @@ it.instance(
             "openai.gpt-5.5": {
               ...mantleModelConfig,
               provider: {
-                npm: "@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle",
-                api: "https:@lgcode/@lgcode/bedrock-mantle.${AWS_REGION}.api.aws@lgcode/openai@lgcode/v1",
+                npm: "@ai-sdk/amazon-bedrock/mantle",
+                api: "https://bedrock-mantle.${AWS_REGION}.api.aws/openai/v1",
               },
             },
           },
@@ -157,10 +157,10 @@ it.instance(
       expect((language as { modelId: string }).modelId).toBe("openai.gpt-oss-safeguard-120b")
       expect(
         (language as unknown as { config: { url: (input: { path: string; modelId: string }) => string } }).config.url({
-          path: "@lgcode/chat@lgcode/completions",
+          path: "/chat/completions",
           modelId: "openai.gpt-oss-safeguard-120b",
         }),
-      ).toBe("https:@lgcode/@lgcode/bedrock-mantle.us-east-1.api.aws@lgcode/v1@lgcode/chat@lgcode/completions")
+      ).toBe("https://bedrock-mantle.us-east-1.api.aws/v1/chat/completions")
     }),
   {
     config: {
@@ -199,14 +199,14 @@ it.instance(
       const providers = yield* list
       expect(providers[ProviderV2.ID.amazonBedrock]).toBeDefined()
       expect(providers[ProviderV2.ID.amazonBedrock].options?.endpoint).toBe(
-        "https:@lgcode/@lgcode/bedrock-runtime.us-east-1.vpce-xxxxx.amazonaws.com",
+        "https://bedrock-runtime.us-east-1.vpce-xxxxx.amazonaws.com",
       )
     }),
   {
     config: {
       provider: {
         "amazon-bedrock": {
-          options: { endpoint: "https:@lgcode/@lgcode/bedrock-runtime.us-east-1.vpce-xxxxx.amazonaws.com" },
+          options: { endpoint: "https://bedrock-runtime.us-east-1.vpce-xxxxx.amazonaws.com" },
         },
       },
     },
@@ -217,8 +217,8 @@ it.instance(
   "Bedrock: autoloads when AWS_WEB_IDENTITY_TOKEN_FILE is present",
   () =>
     Effect.gen(function* () {
-      yield* set("AWS_WEB_IDENTITY_TOKEN_FILE", "@lgcode/var@lgcode/run@lgcode/secrets@lgcode/eks.amazonaws.com@lgcode/serviceaccount@lgcode/token")
-      yield* set("AWS_ROLE_ARN", "arn:aws:iam::123456789012:role@lgcode/my-eks-role")
+      yield* set("AWS_WEB_IDENTITY_TOKEN_FILE", "/var/run/secrets/eks.amazonaws.com/serviceaccount/token")
+      yield* set("AWS_ROLE_ARN", "arn:aws:iam::123456789012:role/my-eks-role")
       yield* set("AWS_PROFILE", "")
       yield* set("AWS_ACCESS_KEY_ID", "")
       const providers = yield* list
@@ -228,9 +228,9 @@ it.instance(
   { config: { provider: { "amazon-bedrock": { options: { region: "us-east-1" } } } } },
 )
 
-@lgcode/@lgcode/ Cross-region inference profile prefix handling.
-@lgcode/@lgcode/ Models from models.dev may come with prefixes already (e.g. us., eu., global.).
-@lgcode/@lgcode/ These should NOT be double-prefixed when passed to the SDK.
+// Cross-region inference profile prefix handling.
+// Models from models.dev may come with prefixes already (e.g. us., eu., global.).
+// These should NOT be double-prefixed when passed to the SDK.
 
 it.instance(
   "Bedrock: model with us. prefix should not be double-prefixed",
@@ -318,7 +318,7 @@ it.instance(
   },
 )
 
-@lgcode/@lgcode/ Direct unit tests for cross-region inference profile prefix detection.
+// Direct unit tests for cross-region inference profile prefix detection.
 describe("Bedrock cross-region prefix detection", () => {
   const crossRegionPrefixes = ["global.", "us.", "eu.", "jp.", "apac.", "au."]
 

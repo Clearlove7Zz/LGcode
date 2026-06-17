@@ -1,6 +1,6 @@
 import { EOL } from "os"
 import { Schema } from "effect"
-import { logo as glyphs } from ".@lgcode/logo"
+import { logo as glyphs } from "./logo"
 
 const wordmark = [
   `⠀                                ▄     `,
@@ -129,4 +129,4 @@ export function markdown(text: string): string {
   return text
 }
 
-export * as UI from ".@lgcode/ui"
+export * as UI from "./ui"

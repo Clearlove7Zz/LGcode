@@ -1,43 +1,43 @@
-export * as SessionV2 from ".@lgcode/session"
-export * from ".@lgcode/session@lgcode/schema"
+export * as SessionV2 from "./session"
+export * from "./session/schema"
 
 import { Cause, DateTime, Effect, Layer, Schema, Context, Stream } from "effect"
 import { and, asc, desc, eq, gt, like, lt, or, type SQL } from "drizzle-orm"
-import { ProjectV2 } from ".@lgcode/project"
-import { WorkspaceV2 } from ".@lgcode/workspace"
-import { ModelV2 } from ".@lgcode/model"
-import { Location } from ".@lgcode/location"
-import { SessionMessage } from ".@lgcode/session@lgcode/message"
-import { Prompt } from ".@lgcode/session@lgcode/prompt"
-import { EventV2 } from ".@lgcode/event"
-import { Database } from ".@lgcode/database@lgcode/database"
-import { SessionProjector } from ".@lgcode/session@lgcode/projector"
-import { SessionMessageTable, SessionTable } from ".@lgcode/session@lgcode/sql"
-import { SessionSchema } from ".@lgcode/session@lgcode/schema"
-import { AbsolutePath, PositiveInt, RelativePath } from ".@lgcode/schema"
-import { AgentV2 } from ".@lgcode/agent"
-import { SessionV1 } from ".@lgcode/v1@lgcode/session"
-import { InstallationVersion } from ".@lgcode/installation@lgcode/version"
-import { Slug } from ".@lgcode/util@lgcode/slug"
-import { ProjectTable } from ".@lgcode/project@lgcode/sql"
+import { ProjectV2 } from "./project"
+import { WorkspaceV2 } from "./workspace"
+import { ModelV2 } from "./model"
+import { Location } from "./location"
+import { SessionMessage } from "./session/message"
+import { Prompt } from "./session/prompt"
+import { EventV2 } from "./event"
+import { Database } from "./database/database"
+import { SessionProjector } from "./session/projector"
+import { SessionMessageTable, SessionTable } from "./session/sql"
+import { SessionSchema } from "./session/schema"
+import { AbsolutePath, PositiveInt, RelativePath } from "./schema"
+import { AgentV2 } from "./agent"
+import { SessionV1 } from "./v1/session"
+import { InstallationVersion } from "./installation/version"
+import { Slug } from "./util/slug"
+import { ProjectTable } from "./project/sql"
 import path from "path"
-import { fromRow } from ".@lgcode/session@lgcode/info"
-import { SessionRunner } from ".@lgcode/session@lgcode/runner@lgcode/index"
-import { SessionStore } from ".@lgcode/session@lgcode/store"
-import { SessionExecution } from ".@lgcode/session@lgcode/execution"
-import { logFailure } from ".@lgcode/session@lgcode/logging"
-import { MessageDecodeError } from ".@lgcode/session@lgcode/error"
-import { SessionEvent } from ".@lgcode/session@lgcode/event"
-import { SessionInput } from ".@lgcode/session@lgcode/input"
+import { fromRow } from "./session/info"
+import { SessionRunner } from "./session/runner/index"
+import { SessionStore } from "./session/store"
+import { SessionExecution } from "./session/execution"
+import { logFailure } from "./session/logging"
+import { MessageDecodeError } from "./session/error"
+import { SessionEvent } from "./session/event"
+import { SessionInput } from "./session/input"
 
-@lgcode/@lgcode/ get project -> project.locations
-@lgcode/@lgcode/
-@lgcode/@lgcode/ get all sessions
-@lgcode/@lgcode/
+// get project -> project.locations
+//
+// get all sessions
+//
 
-@lgcode/@lgcode/ - by project
-@lgcode/@lgcode/   - by subpath
-@lgcode/@lgcode/ - by workspace (home is special)
+// - by project
+//   - by subpath
+// - by workspace (home is special)
 
 export const ListAnchor = Schema.Struct({
   id: SessionSchema.ID,
@@ -93,7 +93,7 @@ export class OperationUnavailableError extends Schema.TaggedErrorClass<Operation
   },
 ) {}
 
-export { ContextSnapshotDecodeError, MessageDecodeError } from ".@lgcode/session@lgcode/error"
+export { ContextSnapshotDecodeError, MessageDecodeError } from "./session/error"
 
 export class PromptConflictError extends Schema.TaggedErrorClass<PromptConflictError>()("Session.PromptConflictError", {
   sessionID: SessionSchema.ID,
@@ -159,7 +159,7 @@ export interface Interface {
   readonly interrupt: (sessionID: SessionSchema.ID) => Effect.Effect<void>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/Session") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/v2/Session") {}
 
 export const layer = Layer.effect(
   Service,
@@ -215,7 +215,7 @@ export const layer = Layer.effect(
           version: InstallationVersion,
           projectID: project.id,
           directory: input.location.directory,
-          path: path.relative(project.directory, input.location.directory).replaceAll("\\", "@lgcode/"),
+          path: path.relative(project.directory, input.location.directory).replaceAll("\\", "/"),
           workspaceID: input.location.workspaceID ? WorkspaceV2.ID.make(input.location.workspaceID) : undefined,
           title: `New session - ${new Date(now).toISOString()}`,
           agent: input.agent,
@@ -238,7 +238,7 @@ export const layer = Layer.effect(
               if (!(defect instanceof SessionProjector.SessionAlreadyProjected)) {
                 return Effect.die(defect)
               }
-              @lgcode/@lgcode/ Concurrent creation lost the projection race. The existing Session identity wins.
+              // Concurrent creation lost the projection race. The existing Session identity wins.
               return store
                 .get(sessionID)
                 .pipe(
@@ -249,7 +249,7 @@ export const layer = Layer.effect(
             }),
           )
         if (projected.type === "existing") return projected.session
-        @lgcode/@lgcode/ TODO: Restore recorded sessions onto replacement synchronized workspaces in a future API slice.
+        // TODO: Restore recorded sessions onto replacement synchronized workspaces in a future API slice.
         return yield* result.get(sessionID).pipe(Effect.orDie)
       }),
       get: Effect.fn("V2Session.get")(function* (sessionID) {

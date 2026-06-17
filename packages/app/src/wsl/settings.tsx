@@ -1,22 +1,22 @@
-import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
-import { Tag } from "@lgcode/ui@lgcode/v2@lgcode/badge-v2"
-import { ButtonV2 } from "@lgcode/ui@lgcode/v2@lgcode/button-v2"
-import { Dialog } from "@lgcode/ui@lgcode/v2@lgcode/dialog-v2"
-import { Icon as IconV2 } from "@lgcode/ui@lgcode/v2@lgcode/icon"
-import { IconButtonV2 } from "@lgcode/ui@lgcode/v2@lgcode/icon-button-v2"
-import { MenuV2 } from "@lgcode/ui@lgcode/v2@lgcode/menu-v2"
-import { useMutation } from "@tanstack@lgcode/solid-query"
+import { useDialog } from "@opencode@lgcode/ui/context/dialog"
+import { Tag } from "@opencode@lgcode/ui/v2/badge-v2"
+import { ButtonV2 } from "@opencode@lgcode/ui/v2/button-v2"
+import { Dialog } from "@opencode@lgcode/ui/v2/dialog-v2"
+import { Icon as IconV2 } from "@opencode@lgcode/ui/v2/icon"
+import { IconButtonV2 } from "@opencode@lgcode/ui/v2/icon-button-v2"
+import { MenuV2 } from "@opencode@lgcode/ui/v2/menu-v2"
+import { useMutation } from "@tanstack/solid-query"
 import fuzzysort from "fuzzysort"
 import { type Accessor, For, Show, createMemo } from "solid-js"
-import type { useServerManagementController } from "@@lgcode/components@lgcode/dialog-select-server"
-import { ServerHealthIndicator } from "@@lgcode/components@lgcode/server@lgcode/server-row"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
-import { usePlatform } from "@@lgcode/context@lgcode/platform"
-import { ServerConnection } from "@@lgcode/context@lgcode/server"
-import { showToast } from "@@lgcode/utils@lgcode/toast"
-import { DialogAddWslServer } from ".@lgcode/dialog-add-server"
-import { useWslServers } from ".@lgcode/context"
-import { wslOpencodeAction, wslRuntimeRetryable } from ".@lgcode/settings-model"
+import type { useServerManagementController } from "@/components/dialog-select-server"
+import { ServerHealthIndicator } from "@/components/server/server-row"
+import { useLanguage } from "@/context/language"
+import { usePlatform } from "@/context/platform"
+import { ServerConnection } from "@/context/server"
+import { showToast } from "@/utils/toast"
+import { DialogAddWslServer } from "./dialog-add-server"
+import { useWslServers } from "./context"
+import { wslOpencodeAction, wslRuntimeRetryable } from "./settings-model"
 
 type Controller = ReturnType<typeof useServerManagementController>
 
@@ -31,16 +31,16 @@ export function WslAddServerButton() {
   const openAdd = () => {
     dialog.push(() => (
       <Dialog title={language.t("wsl.server.add")} size="large" fit class="settings-v2-wsl-dialog">
-        <DialogAddWslServer @lgcode/>
-      <@lgcode/Dialog>
+        <DialogAddWslServer />
+      </Dialog>
     ))
   }
   return (
     <Show when={platform.wslServers}>
       <ButtonV2 variant="ghost-muted" icon="plus" onClick={openAdd}>
         {language.t("wsl.server.addShort")}
-      <@lgcode/ButtonV2>
-    <@lgcode/Show>
+      </ButtonV2>
+    </Show>
   )
 }
 
@@ -90,23 +90,23 @@ export function WslServerSettings(props: {
           return (
             <div class="settings-v2-servers-row">
               <div class="settings-v2-servers-lead">
-                <ServerHealthIndicator health={props.controller.status()[key]} @lgcode/>
+                <ServerHealthIndicator health={props.controller.status()[key]} />
                 <div class="settings-v2-servers-copy">
                   <span class="flex min-w-0 items-center gap-1">
-                    <span class="settings-v2-servers-name">{item.config.distro}<@lgcode/span>
+                    <span class="settings-v2-servers-name">{item.config.distro}</span>
                     <span class="shrink-0 rounded-[3px] border border-v2-border-border-base px-1 py-0.5 text-[9px] leading-none text-v2-text-text-muted">
                       {language.t("wsl.server.label")}
-                    <@lgcode/span>
-                  <@lgcode/span>
+                    </span>
+                  </span>
                   <span class="settings-v2-servers-meta">
-                    <Show when={check()?.version}>{(version) => `v${version()}`}<@lgcode/Show>
-                  <@lgcode/span>
-                <@lgcode/div>
-              <@lgcode/div>
+                    <Show when={check()?.version}>{(version) => `v${version()}`}</Show>
+                  </span>
+                </div>
+              </div>
               <div class="settings-v2-servers-actions">
                 <Show when={props.controller.canDefault() && props.controller.defaultKey() === key}>
-                  <Tag>{language.t("dialog.server.status.default")}<@lgcode/Tag>
-                <@lgcode/Show>
+                  <Tag>{language.t("dialog.server.status.default")}</Tag>
+                </Show>
                 <Show when={opencodeAction()}>
                   {(label) => (
                     <ButtonV2
@@ -115,49 +115,49 @@ export function WslServerSettings(props: {
                       onClick={() => api && request.mutate(() => api.installOpencode(item.config.distro))}
                     >
                       {busy() ? language.t("wsl.server.updating") : label()}
-                    <@lgcode/ButtonV2>
+                    </ButtonV2>
                   )}
-                <@lgcode/Show>
+                </Show>
                 <MenuV2 gutter={4} modal={false} placement="bottom-end">
                   <MenuV2.Trigger
                     as={IconButtonV2}
                     variant="ghost-muted"
                     size="small"
-                    icon={<IconV2 name="outline-dots" @lgcode/>}
+                    icon={<IconV2 name="outline-dots" />}
                     aria-label={language.t("common.moreOptions")}
-                  @lgcode/>
+                  />
                   <MenuV2.Portal>
                     <MenuV2.Content>
                       <MenuV2.Group>
-                        <MenuV2.GroupLabel>{language.t("wsl.server.menu.label")}<@lgcode/MenuV2.GroupLabel>
+                        <MenuV2.GroupLabel>{language.t("wsl.server.menu.label")}</MenuV2.GroupLabel>
                         <Show when={wslRuntimeRetryable(item.runtime)}>
                           <MenuV2.Item onSelect={() => api && request.mutate(() => api.startServer(key))}>
                             {language.t("wsl.server.retryStart")}
-                          <@lgcode/MenuV2.Item>
-                        <@lgcode/Show>
+                          </MenuV2.Item>
+                        </Show>
                         <Show when={props.controller.canDefault() && props.controller.defaultKey() !== key}>
                           <MenuV2.Item onSelect={() => props.controller.setDefault(key)}>
                             {language.t("dialog.server.menu.default")}
-                          <@lgcode/MenuV2.Item>
-                        <@lgcode/Show>
+                          </MenuV2.Item>
+                        </Show>
                         <Show when={props.controller.canDefault() && props.controller.defaultKey() === key}>
                           <MenuV2.Item onSelect={() => props.controller.setDefault(null)}>
                             {language.t("dialog.server.menu.defaultRemove")}
-                          <@lgcode/MenuV2.Item>
-                        <@lgcode/Show>
-                        <MenuV2.Separator @lgcode/>
+                          </MenuV2.Item>
+                        </Show>
+                        <MenuV2.Separator />
                         <MenuV2.Item onSelect={() => remove(key)}>
                           {language.t("dialog.server.menu.delete")}
-                        <@lgcode/MenuV2.Item>
-                      <@lgcode/MenuV2.Group>
-                    <@lgcode/MenuV2.Content>
-                  <@lgcode/MenuV2.Portal>
-                <@lgcode/MenuV2>
-              <@lgcode/div>
-            <@lgcode/div>
+                        </MenuV2.Item>
+                      </MenuV2.Group>
+                    </MenuV2.Content>
+                  </MenuV2.Portal>
+                </MenuV2>
+              </div>
+            </div>
           )
         }}
-      <@lgcode/For>
-    <@lgcode/Show>
+      </For>
+    </Show>
   )
 }

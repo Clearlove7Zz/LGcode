@@ -1,7 +1,7 @@
 import path from "path"
 import { createContext, useContext, type ParentProps } from "solid-js"
-import { abbreviateHome } from "..@lgcode/runtime"
-import { useTuiPaths } from ".@lgcode/runtime"
+import { abbreviateHome } from "../runtime"
+import { useTuiPaths } from "./runtime"
 
 const context = createContext<{
   path: () => string
@@ -18,7 +18,7 @@ export function PathFormatterProvider(props: ParentProps<{ path: string | undefi
       }}
     >
       {props.children}
-    <@lgcode/context.Provider>
+    </context.Provider>
   )
 }
 

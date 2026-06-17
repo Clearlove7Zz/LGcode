@@ -7,7 +7,7 @@ import {
   type LanguageModelV3StreamPart,
   type SharedV3ProviderMetadata,
   type SharedV3Warning,
-} from "@ai-sdk@lgcode/provider"
+} from "@ai-sdk/provider"
 import {
   combineHeaders,
   createEventSourceResponseHandler,
@@ -20,15 +20,15 @@ import {
   type ParseResult,
   postJsonToApi,
   type ResponseHandler,
-} from "@ai-sdk@lgcode/provider-utils"
-import { z } from "zod@lgcode/v4"
-import { convertToOpenAICompatibleChatMessages } from ".@lgcode/convert-to-openai-compatible-chat-messages"
-import { getResponseMetadata } from ".@lgcode/get-response-metadata"
-import { mapOpenAICompatibleFinishReason } from ".@lgcode/map-openai-compatible-finish-reason"
-import { type OpenAICompatibleChatModelId, openaiCompatibleProviderOptions } from ".@lgcode/openai-compatible-chat-options"
-import { defaultOpenAICompatibleErrorStructure, type ProviderErrorStructure } from "..@lgcode/openai-compatible-error"
-import type { MetadataExtractor } from ".@lgcode/openai-compatible-metadata-extractor"
-import { prepareTools } from ".@lgcode/openai-compatible-prepare-tools"
+} from "@ai-sdk/provider-utils"
+import { z } from "zod/v4"
+import { convertToOpenAICompatibleChatMessages } from "./convert-to-openai-compatible-chat-messages"
+import { getResponseMetadata } from "./get-response-metadata"
+import { mapOpenAICompatibleFinishReason } from "./map-openai-compatible-finish-reason"
+import { type OpenAICompatibleChatModelId, openaiCompatibleProviderOptions } from "./openai-compatible-chat-options"
+import { defaultOpenAICompatibleErrorStructure, type ProviderErrorStructure } from "../openai-compatible-error"
+import type { MetadataExtractor } from "./openai-compatible-metadata-extractor"
+import { prepareTools } from "./openai-compatible-prepare-tools"
 
 export type OpenAICompatibleChatConfig = {
   provider: string
@@ -39,14 +39,14 @@ export type OpenAICompatibleChatConfig = {
   errorStructure?: ProviderErrorStructure<any>
   metadataExtractor?: MetadataExtractor
 
-  @lgcode/**
+  /**
    * Whether the model supports structured outputs.
-   *@lgcode/
+   */
   supportsStructuredOutputs?: boolean
 
-  @lgcode/**
+  /**
    * The supported URLs for the model.
-   *@lgcode/
+   */
   supportedUrls?: () => LanguageModelV3["supportedUrls"]
 }
 
@@ -58,13 +58,13 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV3 {
   readonly modelId: OpenAICompatibleChatModelId
   private readonly config: OpenAICompatibleChatConfig
   private readonly failedResponseHandler: ResponseHandler<APICallError>
-  private readonly chunkSchema @lgcode/@lgcode/ type inferred via constructor
+  private readonly chunkSchema // type inferred via constructor
 
   constructor(modelId: OpenAICompatibleChatModelId, config: OpenAICompatibleChatConfig) {
     this.modelId = modelId
     this.config = config
 
-    @lgcode/@lgcode/ initialize error handling:
+    // initialize error handling:
     const errorStructure = config.errorStructure ?? defaultOpenAICompatibleErrorStructure
     this.chunkSchema = createOpenAICompatibleChatChunkSchema(errorStructure.errorSchema)
     this.failedResponseHandler = createJsonErrorResponseHandler(errorStructure)
@@ -101,7 +101,7 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV3 {
   }: LanguageModelV3CallOptions) {
     const warnings: SharedV3Warning[] = []
 
-    @lgcode/@lgcode/ Parse provider options
+    // Parse provider options
     const compatibleOptions = Object.assign(
       (await parseProviderOptions({
         provider: "copilot",
@@ -138,13 +138,13 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV3 {
 
     return {
       args: {
-        @lgcode/@lgcode/ model id:
+        // model id:
         model: this.modelId,
 
-        @lgcode/@lgcode/ model specific settings:
+        // model specific settings:
         user: compatibleOptions.user,
 
-        @lgcode/@lgcode/ standardized settings:
+        // standardized settings:
         max_tokens: maxOutputTokens,
         temperature,
         top_p: topP,
@@ -175,14 +175,14 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV3 {
         reasoning_effort: compatibleOptions.reasoningEffort,
         verbosity: compatibleOptions.textVerbosity,
 
-        @lgcode/@lgcode/ messages:
+        // messages:
         messages: convertToOpenAICompatibleChatMessages(prompt),
 
-        @lgcode/@lgcode/ tools:
+        // tools:
         tools: openaiTools,
         tool_choice: openaiToolChoice,
 
-        @lgcode/@lgcode/ thinking_budget
+        // thinking_budget
         thinking_budget: compatibleOptions.thinking_budget,
       },
       warnings: [...warnings, ...toolWarnings],
@@ -200,7 +200,7 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV3 {
       rawValue: rawResponse,
     } = await postJsonToApi({
       url: this.config.url({
-        path: "@lgcode/chat@lgcode/completions",
+        path: "/chat/completions",
         modelId: this.modelId,
       }),
       headers: combineHeaders(this.config.headers(), options.headers),
@@ -214,7 +214,7 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV3 {
     const choice = responseBody.choices[0]
     const content: Array<LanguageModelV3Content> = []
 
-    @lgcode/@lgcode/ text content:
+    // text content:
     const text = choice.message.content
     if (text != null && text.length > 0) {
       content.push({
@@ -226,20 +226,20 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV3 {
       })
     }
 
-    @lgcode/@lgcode/ reasoning content (Copilot uses reasoning_text):
+    // reasoning content (Copilot uses reasoning_text):
     const reasoning = choice.message.reasoning_text
     if (reasoning != null && reasoning.length > 0) {
       content.push({
         type: "reasoning",
         text: reasoning,
-        @lgcode/@lgcode/ Include reasoning_opaque for Copilot multi-turn reasoning
+        // Include reasoning_opaque for Copilot multi-turn reasoning
         providerMetadata: choice.message.reasoning_opaque
           ? { copilot: { reasoningOpaque: choice.message.reasoning_opaque } }
           : undefined,
       })
     }
 
-    @lgcode/@lgcode/ tool calls:
+    // tool calls:
     if (choice.message.tool_calls != null) {
       for (const toolCall of choice.message.tool_calls) {
         content.push({
@@ -254,7 +254,7 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV3 {
       }
     }
 
-    @lgcode/@lgcode/ provider metadata:
+    // provider metadata:
     const providerMetadata: SharedV3ProviderMetadata = {
       [this.providerOptionsName]: {},
       ...(await this.config.metadataExtractor?.extractMetadata?.({
@@ -309,7 +309,7 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV3 {
       ...args,
       stream: true,
 
-      @lgcode/@lgcode/ only include stream_options when in strict compatibility mode:
+      // only include stream_options when in strict compatibility mode:
       stream_options: this.config.includeUsage ? { include_usage: true } : undefined,
     }
 
@@ -317,7 +317,7 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV3 {
 
     const { responseHeaders, value: response } = await postJsonToApi({
       url: this.config.url({
-        path: "@lgcode/chat@lgcode/completions",
+        path: "/chat/completions",
         modelId: this.modelId,
       }),
       headers: combineHeaders(this.config.headers(), options.headers),
@@ -383,14 +383,14 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV3 {
             controller.enqueue({ type: "stream-start", warnings })
           },
 
-          @lgcode/@lgcode/ TODO we lost type safety on Chunk, most likely due to the error schema. MUST FIX
+          // TODO we lost type safety on Chunk, most likely due to the error schema. MUST FIX
           transform(chunk, controller) {
-            @lgcode/@lgcode/ Emit raw chunk if requested (before anything else)
+            // Emit raw chunk if requested (before anything else)
             if (options.includeRawChunks) {
               controller.enqueue({ type: "raw", rawValue: chunk.rawValue })
             }
 
-            @lgcode/@lgcode/ handle failed chunk parsing @lgcode/ validation:
+            // handle failed chunk parsing / validation:
             if (!chunk.success) {
               finishReason = {
                 unified: "error",
@@ -403,7 +403,7 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV3 {
 
             metadataExtractor?.processChunk(chunk.rawValue)
 
-            @lgcode/@lgcode/ handle error chunks:
+            // handle error chunks:
             if ("error" in value) {
               finishReason = {
                 unified: "error",
@@ -465,7 +465,7 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV3 {
 
             const delta = choice.delta
 
-            @lgcode/@lgcode/ Capture reasoning_opaque for Copilot multi-turn reasoning
+            // Capture reasoning_opaque for Copilot multi-turn reasoning
             if (delta.reasoning_opaque) {
               if (reasoningOpaque != null) {
                 throw new InvalidResponseDataError({
@@ -477,7 +477,7 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV3 {
               reasoningOpaque = delta.reasoning_opaque
             }
 
-            @lgcode/@lgcode/ enqueue reasoning before text deltas (Copilot uses reasoning_text):
+            // enqueue reasoning before text deltas (Copilot uses reasoning_text):
             const reasoningContent = delta.reasoning_text
             if (reasoningContent) {
               if (!isActiveReasoning) {
@@ -496,8 +496,8 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV3 {
             }
 
             if (delta.content) {
-              @lgcode/@lgcode/ If reasoning was active and we're starting text, end reasoning first
-              @lgcode/@lgcode/ This handles the case where reasoning_opaque and content come in the same chunk
+              // If reasoning was active and we're starting text, end reasoning first
+              // This handles the case where reasoning_opaque and content come in the same chunk
               if (isActiveReasoning && !isActiveText) {
                 controller.enqueue({
                   type: "reasoning-end",
@@ -524,8 +524,8 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV3 {
             }
 
             if (delta.tool_calls != null) {
-              @lgcode/@lgcode/ If reasoning was active and we're starting tool calls, end reasoning first
-              @lgcode/@lgcode/ This handles the case where reasoning goes directly to tool calls with no content
+              // If reasoning was active and we're starting tool calls, end reasoning first
+              // This handles the case where reasoning goes directly to tool calls with no content
               if (isActiveReasoning) {
                 controller.enqueue({
                   type: "reasoning-end",
@@ -571,7 +571,7 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV3 {
                   const toolCall = toolCalls[index]
 
                   if (toolCall.function?.name != null && toolCall.function?.arguments != null) {
-                    @lgcode/@lgcode/ send delta if the argument text has already started:
+                    // send delta if the argument text has already started:
                     if (toolCall.function.arguments.length > 0) {
                       controller.enqueue({
                         type: "tool-input-delta",
@@ -580,8 +580,8 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV3 {
                       })
                     }
 
-                    @lgcode/@lgcode/ check if tool call is complete
-                    @lgcode/@lgcode/ (some providers send the full tool call in one chunk):
+                    // check if tool call is complete
+                    // (some providers send the full tool call in one chunk):
                     if (isParsableJson(toolCall.function.arguments)) {
                       controller.enqueue({
                         type: "tool-input-end",
@@ -602,7 +602,7 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV3 {
                   continue
                 }
 
-                @lgcode/@lgcode/ existing tool call, merge if not finished
+                // existing tool call, merge if not finished
                 const toolCall = toolCalls[index]
 
                 if (toolCall.hasFinished) {
@@ -613,14 +613,14 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV3 {
                   toolCall.function!.arguments += toolCallDelta.function?.arguments ?? ""
                 }
 
-                @lgcode/@lgcode/ send delta
+                // send delta
                 controller.enqueue({
                   type: "tool-input-delta",
                   id: toolCall.id,
                   delta: toolCallDelta.function.arguments ?? "",
                 })
 
-                @lgcode/@lgcode/ check if tool call is complete
+                // check if tool call is complete
                 if (
                   toolCall.function?.name != null &&
                   toolCall.function?.arguments != null &&
@@ -649,7 +649,7 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV3 {
               controller.enqueue({
                 type: "reasoning-end",
                 id: "reasoning-0",
-                @lgcode/@lgcode/ Include reasoning_opaque for Copilot multi-turn reasoning
+                // Include reasoning_opaque for Copilot multi-turn reasoning
                 providerMetadata: reasoningOpaque ? { copilot: { reasoningOpaque } } : undefined,
               })
             }
@@ -658,7 +658,7 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV3 {
               controller.enqueue({ type: "text-end", id: "txt-0" })
             }
 
-            @lgcode/@lgcode/ go through all tool calls and send the ones that are not finished
+            // go through all tool calls and send the ones that are not finished
             for (const toolCall of toolCalls.filter((toolCall) => !toolCall.hasFinished)) {
               controller.enqueue({
                 type: "tool-input-end",
@@ -675,7 +675,7 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV3 {
 
             const providerMetadata: SharedV3ProviderMetadata = {
               [providerOptionsName]: {},
-              @lgcode/@lgcode/ Include reasoning_opaque for Copilot multi-turn reasoning
+              // Include reasoning_opaque for Copilot multi-turn reasoning
               ...(reasoningOpaque ? { copilot: { reasoningOpaque } } : {}),
               ...metadataExtractor?.buildMetadata(),
             }
@@ -743,8 +743,8 @@ const openaiCompatibleTokenUsageSchema = z
   })
   .nullish()
 
-@lgcode/@lgcode/ limited version of the schema, focussed on what is needed for the implementation
-@lgcode/@lgcode/ this approach limits breakages when the API changes and increases efficiency
+// limited version of the schema, focussed on what is needed for the implementation
+// this approach limits breakages when the API changes and increases efficiency
 const OpenAICompatibleChatResponseSchema = z.object({
   id: z.string().nullish(),
   created: z.number().nullish(),
@@ -754,7 +754,7 @@ const OpenAICompatibleChatResponseSchema = z.object({
       message: z.object({
         role: z.literal("assistant").nullish(),
         content: z.string().nullish(),
-        @lgcode/@lgcode/ Copilot-specific reasoning fields
+        // Copilot-specific reasoning fields
         reasoning_text: z.string().nullish(),
         reasoning_opaque: z.string().nullish(),
         tool_calls: z
@@ -775,8 +775,8 @@ const OpenAICompatibleChatResponseSchema = z.object({
   usage: openaiCompatibleTokenUsageSchema,
 })
 
-@lgcode/@lgcode/ limited version of the schema, focussed on what is needed for the implementation
-@lgcode/@lgcode/ this approach limits breakages when the API changes and increases efficiency
+// limited version of the schema, focussed on what is needed for the implementation
+// this approach limits breakages when the API changes and increases efficiency
 const createOpenAICompatibleChatChunkSchema = <ERROR_SCHEMA extends z.core.$ZodType>(errorSchema: ERROR_SCHEMA) =>
   z.union([
     z.object({
@@ -789,7 +789,7 @@ const createOpenAICompatibleChatChunkSchema = <ERROR_SCHEMA extends z.core.$ZodT
             .object({
               role: z.enum(["assistant"]).nullish(),
               content: z.string().nullish(),
-              @lgcode/@lgcode/ Copilot-specific reasoning fields
+              // Copilot-specific reasoning fields
               reasoning_text: z.string().nullish(),
               reasoning_opaque: z.string().nullish(),
               tool_calls: z

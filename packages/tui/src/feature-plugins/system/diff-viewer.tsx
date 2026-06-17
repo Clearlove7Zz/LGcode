@@ -1,23 +1,23 @@
-@lgcode/** @jsxImportSource @opentui@lgcode/solid *@lgcode/
-import type { TuiPlugin, TuiPluginApi, TuiRouteCurrent } from "@lgcode/plugin@lgcode/tui"
-import type { SnapshotFileDiff, VcsFileDiff } from "@lgcode/sdk@lgcode/v2"
+/** @jsxImportSource @opentui/solid */
+import type { TuiPlugin, TuiPluginApi, TuiRouteCurrent } from "@opencode@lgcode/plugin/tui"
+import type { SnapshotFileDiff, VcsFileDiff } from "@opencode@lgcode/sdk/v2"
 import {
   TextAttributes,
   type BorderSides,
   type BoxRenderable,
   type DiffRenderable,
   type ScrollBoxRenderable,
-} from "@opentui@lgcode/core"
-import { LANGUAGE_EXTENSIONS } from "..@lgcode/..@lgcode/util@lgcode/filetype"
-import { useBindings, useCommandShortcut } from "..@lgcode/..@lgcode/keymap"
-import { useTheme } from "..@lgcode/..@lgcode/context@lgcode/theme"
-import { useTerminalDimensions } from "@opentui@lgcode/solid"
+} from "@opentui/core"
+import { LANGUAGE_EXTENSIONS } from "../../util/filetype"
+import { useBindings, useCommandShortcut } from "../../keymap"
+import { useTheme } from "../../context/theme"
+import { useTerminalDimensions } from "@opentui/solid"
 import path from "path"
 import { createEffect, createMemo, createResource, createSignal, For, Match, onCleanup, Show, Switch } from "solid-js"
-import { DiffViewerFileTree } from ".@lgcode/diff-viewer-file-tree"
-import { Panel, PanelGroup, Separator } from ".@lgcode/diff-viewer-ui"
-import { DialogSelect } from "..@lgcode/..@lgcode/ui@lgcode/dialog-select"
-import { getScrollAcceleration } from "..@lgcode/..@lgcode/util@lgcode/scroll"
+import { DiffViewerFileTree } from "./diff-viewer-file-tree"
+import { Panel, PanelGroup, Separator } from "./diff-viewer-ui"
+import { DialogSelect } from "../../ui/dialog-select"
+import { getScrollAcceleration } from "../../util/scroll"
 import {
   allExpandedFileTreeDirectories,
   buildFileTree,
@@ -33,7 +33,7 @@ import {
   showDiffViewerFileTree,
   singlePatchFileIndex,
   toggleFileTreeDirectory,
-} from ".@lgcode/diff-viewer-file-tree-utils"
+} from "./diff-viewer-file-tree-utils"
 
 const ROUTE = "diff"
 const MIN_SPLIT_WIDTH = 100
@@ -707,12 +707,12 @@ function DiffViewer(props: { api: TuiPluginApi }) {
             })
           },
         }))}
-      @lgcode/>
+      />
     ))
   }
 
   const openHelpDialog = () => {
-    props.api.ui.dialog.replace(() => <DiffViewerHelpDialog @lgcode/>)
+    props.api.ui.dialog.replace(() => <DiffViewerHelpDialog />)
     props.api.ui.dialog.setSize("large")
   }
 
@@ -735,34 +735,34 @@ function DiffViewer(props: { api: TuiPluginApi }) {
     <box position="absolute" zIndex={2500} left={0} top={0} width={dimensions().width} height={dimensions().height}>
       <PanelGroup axis="y" width="100%" height="100%">
         <Panel border="none" flexShrink={0} padding={0} paddingLeft={1}>
-          <text fg={theme().text}>Diff <@lgcode/text>
-          <text fg={theme().textMuted}>{mode() === "last-turn" ? "last turn" : "working tree"}<@lgcode/text>
-          <box flexGrow={1} @lgcode/>
+          <text fg={theme().text}>Diff </text>
+          <text fg={theme().textMuted}>{mode() === "last-turn" ? "last turn" : "working tree"}</text>
+          <box flexGrow={1} />
           <text fg={theme().textMuted}>
             {files().length} {files().length === 1 ? "file" : "files"}
-          <@lgcode/text>
-        <@lgcode/Panel>
+          </text>
+        </Panel>
 
         <box flexGrow={1} minHeight={0}>
           <Switch>
             <Match when={diff.loading}>
-              <Separator axis="x" @lgcode/>
+              <Separator axis="x" />
               <box flexGrow={1} paddingLeft={1}>
-                <text fg={theme().textMuted}>Loading diff...<@lgcode/text>
-              <@lgcode/box>
-            <@lgcode/Match>
+                <text fg={theme().textMuted}>Loading diff...</text>
+              </box>
+            </Match>
             <Match when={!diff.loading && files().length === 0}>
-              <Separator axis="x" @lgcode/>
+              <Separator axis="x" />
               <box flexGrow={1} paddingLeft={1}>
-                <text fg={theme().textMuted}>No diff!<@lgcode/text>
-              <@lgcode/box>
-            <@lgcode/Match>
+                <text fg={theme().textMuted}>No diff!</text>
+              </box>
+            </Match>
             <Match when={!diff.loading && diff.error}>
-              <Separator axis="x" @lgcode/>
+              <Separator axis="x" />
               <box flexGrow={1} paddingLeft={1}>
-                <text fg={theme().error}>Failed to load diff<@lgcode/text>
-              <@lgcode/box>
-            <@lgcode/Match>
+                <text fg={theme().error}>Failed to load diff</text>
+              </box>
+            </Match>
             <Match when={!diff.loading}>
               <PanelGroup axis="x">
                 <Show when={showFileTree()}>
@@ -778,11 +778,11 @@ function DiffViewer(props: { api: TuiPluginApi }) {
                     reviewedFileNames={reviewedFileNames()}
                     expandedNodes={expandedFileNodes()}
                     onRowClick={clickFileTreeRow}
-                  @lgcode/>
-                <@lgcode/Show>
+                  />
+                </Show>
 
                 <Panel flexGrow={1} minHeight={0} border="none">
-                  <Separator axis="x" start={showFileTree() ? "edge-out" : undefined} @lgcode/>
+                  <Separator axis="x" start={showFileTree() ? "edge-out" : undefined} />
                   <scrollbox
                     ref={(element: ScrollBoxRenderable) => (scroll = element)}
                     flexGrow={1}
@@ -796,7 +796,7 @@ function DiffViewer(props: { api: TuiPluginApi }) {
                         const reviewed = () => reviewedFileNames().has(entry.file.file)
                         return (
                           <box ref={(element: BoxRenderable) => registerPatchNode(entry.fileIndex, element)}>
-                            {index() !== 0 ? <Separator axis="x" start={showFileTree() ? "edge" : undefined} @lgcode/> : null}
+                            {index() !== 0 ? <Separator axis="x" start={showFileTree() ? "edge" : undefined} /> : null}
                             <box
                               flexDirection="row"
                               gap={1}
@@ -806,19 +806,19 @@ function DiffViewer(props: { api: TuiPluginApi }) {
                               border={patchLeftBorder()}
                               borderColor={theme().border}
                             >
-                              <text fg={reviewed() ? theme().textMuted : theme().text}>{entry.file.file}<@lgcode/text>
-                              <box flexGrow={1} @lgcode/>
+                              <text fg={reviewed() ? theme().textMuted : theme().text}>{entry.file.file}</text>
+                              <box flexGrow={1} />
                               <text fg={reviewed() ? theme().textMuted : theme().diffAdded}>
                                 +{entry.file.additions}
-                              <@lgcode/text>
+                              </text>
                               <text fg={reviewed() ? theme().textMuted : theme().diffRemoved}>
                                 -{entry.file.deletions}
-                              <@lgcode/text>
-                            <@lgcode/box>
-                            <Separator axis="x" start={showFileTree() ? "edge" : undefined} @lgcode/>
+                              </text>
+                            </box>
+                            <Separator axis="x" start={showFileTree() ? "edge" : undefined} />
                             <Show
                               when={entry.file.patch}
-                              fallback={<text fg={theme().textMuted}>No patch available for this file.<@lgcode/text>}
+                              fallback={<text fg={theme().textMuted}>No patch available for this file.</text>}
                             >
                               {(patch) => (
                                 <box border={patchLeftBorder()} borderColor={theme().border}>
@@ -843,85 +843,85 @@ function DiffViewer(props: { api: TuiPluginApi }) {
                                     removedLineNumberBg={
                                       reviewed() ? theme().backgroundElement : theme().diffRemovedLineNumberBg
                                     }
-                                  @lgcode/>
-                                <@lgcode/box>
+                                  />
+                                </box>
                               )}
-                            <@lgcode/Show>
-                          <@lgcode/box>
+                            </Show>
+                          </box>
                         )
                       }}
-                    <@lgcode/For>
+                    </For>
                     <Show when={patchFillerHeight() > 0}>
-                      <box height={patchFillerHeight()} border={patchLeftBorder()} borderColor={theme().border} @lgcode/>
-                    <@lgcode/Show>
-                  <@lgcode/scrollbox>
-                  <Separator axis="x" start={showFileTree() ? "edge-in" : undefined} @lgcode/>
-                <@lgcode/Panel>
-              <@lgcode/PanelGroup>
-            <@lgcode/Match>
-          <@lgcode/Switch>
-        <@lgcode/box>
+                      <box height={patchFillerHeight()} border={patchLeftBorder()} borderColor={theme().border} />
+                    </Show>
+                  </scrollbox>
+                  <Separator axis="x" start={showFileTree() ? "edge-in" : undefined} />
+                </Panel>
+              </PanelGroup>
+            </Match>
+          </Switch>
+        </box>
 
         <Panel flexShrink={0} gap={2} paddingLeft={1} border="none">
           <Show when={switchFocusShortcut()}>
             {(shortcut) => (
               <text fg={theme().text}>
-                {shortcut()} <span style={{ fg: theme().textMuted }}>focus file tree<@lgcode/span>
-              <@lgcode/text>
+                {shortcut()} <span style={{ fg: theme().textMuted }}>focus file tree</span>
+              </text>
             )}
-          <@lgcode/Show>
+          </Show>
           <Show when={nextFileShortcut()}>
             {(shortcut) => (
               <text fg={theme().text}>
-                {shortcut()} <span style={{ fg: theme().textMuted }}>next file<@lgcode/span>
-              <@lgcode/text>
+                {shortcut()} <span style={{ fg: theme().textMuted }}>next file</span>
+              </text>
             )}
-          <@lgcode/Show>
+          </Show>
           <Show when={nextHunkShortcut()}>
             {(shortcut) => (
               <text fg={theme().text}>
-                {shortcut()} <span style={{ fg: theme().textMuted }}>next hunk<@lgcode/span>
-              <@lgcode/text>
+                {shortcut()} <span style={{ fg: theme().textMuted }}>next hunk</span>
+              </text>
             )}
-          <@lgcode/Show>
+          </Show>
           <Show when={previousHunkShortcut()}>
             {(shortcut) => (
               <text fg={theme().text}>
-                {shortcut()} <span style={{ fg: theme().textMuted }}>previous hunk<@lgcode/span>
-              <@lgcode/text>
+                {shortcut()} <span style={{ fg: theme().textMuted }}>previous hunk</span>
+              </text>
             )}
-          <@lgcode/Show>
+          </Show>
           <Show when={previousFileShortcut()}>
             {(shortcut) => (
               <text fg={theme().text}>
-                {shortcut()} <span style={{ fg: theme().textMuted }}>previous file<@lgcode/span>
-              <@lgcode/text>
+                {shortcut()} <span style={{ fg: theme().textMuted }}>previous file</span>
+              </text>
             )}
-          <@lgcode/Show>
+          </Show>
           <Show when={switchSourceShortcut()}>
             {(shortcut) => (
               <text fg={theme().text}>
-                {shortcut()} <span style={{ fg: theme().textMuted }}>switch source<@lgcode/span>
-              <@lgcode/text>
+                {shortcut()} <span style={{ fg: theme().textMuted }}>switch source</span>
+              </text>
             )}
-          <@lgcode/Show>
+          </Show>
           <Show when={markReviewedShortcut()}>
             {(shortcut) => (
               <text fg={theme().text}>
-                {shortcut()} <span style={{ fg: theme().textMuted }}>mark reviewed<@lgcode/span>
-              <@lgcode/text>
+                {shortcut()} <span style={{ fg: theme().textMuted }}>mark reviewed</span>
+              </text>
             )}
-          <@lgcode/Show>
+          </Show>
           <Show when={helpShortcut()}>
             {(shortcut) => (
               <text fg={theme().text}>
-                {shortcut()} <span style={{ fg: theme().textMuted }}>all<@lgcode/span>
-              <@lgcode/text>
+                {shortcut()} <span style={{ fg: theme().textMuted }}>all</span>
+              </text>
             )}
-          <@lgcode/Show>
-        <@lgcode/Panel>
-      <@lgcode/PanelGroup>
-    <@lgcode/box>
+          </Show>
+        </Panel>
+      </PanelGroup>
+    </box>
   )
 }
 
@@ -995,32 +995,32 @@ function DiffViewerHelpDialog() {
       <box flexDirection="row" justifyContent="space-between">
         <text attributes={TextAttributes.BOLD} fg={theme.text}>
           Diff shortcuts
-        <@lgcode/text>
-        <text fg={theme.textMuted}>esc<@lgcode/text>
-      <@lgcode/box>
+        </text>
+        <text fg={theme.textMuted}>esc</text>
+      </box>
       <box flexDirection="row">
         <text fg={theme.textMuted} width={5} wrapMode="none">
           Key
-        <@lgcode/text>
+        </text>
         <text fg={theme.textMuted} width={22} wrapMode="none">
           Action
-        <@lgcode/text>
-        <text fg={theme.textMuted}>Description<@lgcode/text>
-      <@lgcode/box>
+        </text>
+        <text fg={theme.textMuted}>Description</text>
+      </box>
       <For each={rows}>
         {(row) => (
           <box flexDirection="row">
             <text fg={theme.text} width={5} wrapMode="none">
               {row.shortcut() || "-"}
-            <@lgcode/text>
+            </text>
             <text fg={theme.text} width={22} wrapMode="none">
               {row.action}
-            <@lgcode/text>
-            <text fg={theme.textMuted}>{row.description}<@lgcode/text>
-          <@lgcode/box>
+            </text>
+            <text fg={theme.textMuted}>{row.description}</text>
+          </box>
         )}
-      <@lgcode/For>
-    <@lgcode/box>
+      </For>
+    </box>
   )
 }
 
@@ -1028,7 +1028,7 @@ const tui: TuiPlugin = async (api) => {
   api.route.register([
     {
       name: ROUTE,
-      render: () => <DiffViewer api={api} @lgcode/>,
+      render: () => <DiffViewer api={api} />,
     },
   ])
 

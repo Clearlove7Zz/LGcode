@@ -1,15 +1,15 @@
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
 import { Deferred, Effect, Layer, Schema, Context } from "effect"
-import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
-import { SessionID, MessageID } from "@@lgcode/session@lgcode/schema"
-import { QuestionID } from ".@lgcode/schema"
-import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
-import { EventV2 } from "@lgcode/core@lgcode/event"
+import { InstanceState } from "@/effect/instance-state"
+import { SessionID, MessageID } from "@/session/schema"
+import { QuestionID } from "./schema"
+import { EventV2Bridge } from "@/event-v2-bridge"
+import { EventV2 } from "@opencode@lgcode/core/event"
 
-@lgcode/@lgcode/ Schemas — these are pure data; nothing checks class identity (see PR
-@lgcode/@lgcode/ description) so they're plain `Schema.Struct` + type alias. That lets
-@lgcode/@lgcode/ `Question.ask` and other internal sites trust the type contract without a
-@lgcode/@lgcode/ re-decode to coerce nested class instances.
+// Schemas — these are pure data; nothing checks class identity (see PR
+// description) so they're plain `Schema.Struct` + type alias. That lets
+// `Question.ask` and other internal sites trust the type contract without a
+// re-decode to coerce nested class instances.
 
 export const Option = Schema.Struct({
   label: Schema.String.annotate({
@@ -109,7 +109,7 @@ interface State {
   pending: Map<QuestionID, PendingEntry>
 }
 
-@lgcode/@lgcode/ Service
+// Service
 
 export interface Interface {
   readonly ask: (input: {
@@ -125,7 +125,7 @@ export interface Interface {
   readonly list: () => Effect.Effect<ReadonlyArray<Request>>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Question") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/Question") {}
 
 export const layer = Layer.effect(
   Service,

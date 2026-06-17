@@ -1,4 +1,4 @@
-import type { WslDistroProbe, WslOpencodeCheck, WslServerItem } from "..@lgcode/..@lgcode/preload@lgcode/types"
+import type { WslDistroProbe, WslOpencodeCheck, WslServerItem } from "../../preload/types"
 
 export function wslServerIdToRestart(servers: WslServerItem[], distro: string) {
   return servers.find((item) => item.config.distro === distro)?.config.id
@@ -17,7 +17,7 @@ export function clearWslDistroState(
 }
 
 export function wslTerminalArgs(distro?: string | null) {
-  return ["@lgcode/c", "start", "", "wsl", ...(distro ? ["-d", distro] : [])]
+  return ["/c", "start", "", "wsl", ...(distro ? ["-d", distro] : [])]
 }
 
 export function requireWslIpcString(name: string, value: unknown) {

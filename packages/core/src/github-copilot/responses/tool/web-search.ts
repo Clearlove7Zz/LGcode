@@ -1,5 +1,5 @@
-import { createProviderToolFactory } from "@ai-sdk@lgcode/provider-utils"
-import { z } from "zod@lgcode/v4"
+import { createProviderToolFactory } from "@ai-sdk/provider-utils"
+import { z } from "zod/v4"
 
 export const webSearchArgsSchema = z.object({
   filters: z
@@ -23,52 +23,52 @@ export const webSearchArgsSchema = z.object({
 
 export const webSearchToolFactory = createProviderToolFactory<
   {
-    @lgcode/@lgcode/ Web search doesn't take input parameters - it's controlled by the prompt
+    // Web search doesn't take input parameters - it's controlled by the prompt
   },
   {
-    @lgcode/**
+    /**
      * Filters for the search.
-     *@lgcode/
+     */
     filters?: {
-      @lgcode/**
+      /**
        * Allowed domains for the search.
        * If not provided, all domains are allowed.
        * Subdomains of the provided domains are allowed as well.
-       *@lgcode/
+       */
       allowedDomains?: string[]
     }
 
-    @lgcode/**
+    /**
      * Search context size to use for the web search.
      * - high: Most comprehensive context, highest cost, slower response
      * - medium: Balanced context, cost, and latency (default)
      * - low: Least context, lowest cost, fastest response
-     *@lgcode/
+     */
     searchContextSize?: "low" | "medium" | "high"
 
-    @lgcode/**
+    /**
      * User location information to provide geographically relevant search results.
-     *@lgcode/
+     */
     userLocation?: {
-      @lgcode/**
+      /**
        * Type of location (always 'approximate')
-       *@lgcode/
+       */
       type: "approximate"
-      @lgcode/**
+      /**
        * Two-letter ISO country code (e.g., 'US', 'GB')
-       *@lgcode/
+       */
       country?: string
-      @lgcode/**
+      /**
        * City name (free text, e.g., 'Minneapolis')
-       *@lgcode/
+       */
       city?: string
-      @lgcode/**
+      /**
        * Region name (free text, e.g., 'Minnesota')
-       *@lgcode/
+       */
       region?: string
-      @lgcode/**
-       * IANA timezone (e.g., 'America@lgcode/Chicago')
-       *@lgcode/
+      /**
+       * IANA timezone (e.g., 'America/Chicago')
+       */
       timezone?: string
     }
   }
@@ -96,7 +96,7 @@ export const webSearchToolFactory = createProviderToolFactory<
 })
 
 export const webSearch = (
-  args: Parameters<typeof webSearchToolFactory>[0] = {}, @lgcode/@lgcode/ default
+  args: Parameters<typeof webSearchToolFactory>[0] = {}, // default
 ) => {
   return webSearchToolFactory(args)
 }

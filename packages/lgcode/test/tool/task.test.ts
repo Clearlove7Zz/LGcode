@@ -1,27 +1,27 @@
 import { afterEach, describe, expect } from "bun:test"
-import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { SessionV1 } from "@opencode@lgcode/core/v1/session"
+import { Database } from "@opencode@lgcode/core/database/database"
 import { Deferred, Effect, Exit, Fiber, Layer } from "effect"
-import { Agent } from "..@lgcode/..@lgcode/src@lgcode/agent@lgcode/agent"
-import { BackgroundJob } from "@@lgcode/background@lgcode/job"
-import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
-import { Config } from "@@lgcode/config@lgcode/config"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import { Ripgrep } from "@lgcode/core@lgcode/ripgrep"
-import { Session } from "@@lgcode/session@lgcode/session"
-import type { SessionPrompt } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/prompt"
-import { MessageID, PartID, SessionID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
-import { SessionRunState } from "@@lgcode/session@lgcode/run-state"
-import { SessionStatus } from "@@lgcode/session@lgcode/status"
+import { Agent } from "../../src/agent/agent"
+import { BackgroundJob } from "@/background/job"
+import { EventV2Bridge } from "@/event-v2-bridge"
+import { Config } from "@/config/config"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { Ripgrep } from "@opencode@lgcode/core/ripgrep"
+import { Session } from "@/session/session"
+import type { SessionPrompt } from "../../src/session/prompt"
+import { MessageID, PartID, SessionID } from "../../src/session/schema"
+import { SessionRunState } from "@/session/run-state"
+import { SessionStatus } from "@/session/status"
 
-import { TaskTool, type TaskPromptOps } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/task"
-import { Truncate } from "@@lgcode/tool@lgcode/truncate"
-import { ToolRegistry } from "@@lgcode/tool@lgcode/registry"
-import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
-import { disposeAllInstances } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { TaskTool, type TaskPromptOps } from "../../src/tool/task"
+import { Truncate } from "@/tool/truncate"
+import { ToolRegistry } from "@/tool/registry"
+import { RuntimeFlags } from "@/effect/runtime-flags"
+import { disposeAllInstances } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelV2 } from "@opencode@lgcode/core/model"
 
 afterEach(async () => {
   await disposeAllInstances()
@@ -78,7 +78,7 @@ const seed = Effect.fn("TaskToolTest.seed")(function* (title = "Pinned") {
     mode: "build",
     agent: "build",
     cost: 0,
-    path: { cwd: "@lgcode/tmp", root: "@lgcode/tmp" },
+    path: { cwd: "/tmp", root: "/tmp" },
     tokens: { input: 0, output: 0, reasoning: 0, cache: { read: 0, write: 0 } },
     modelID: ref.modelID,
     providerID: ref.providerID,
@@ -112,7 +112,7 @@ function reply(input: SessionPrompt.PromptInput, text: string): SessionV1.WithPa
       mode: input.agent ?? "general",
       agent: input.agent ?? "general",
       cost: 0,
-      path: { cwd: "@lgcode/tmp", root: "@lgcode/tmp" },
+      path: { cwd: "/tmp", root: "/tmp" },
       tokens: { input: 0, output: 0, reasoning: 0, cache: { read: 0, write: 0 } },
       modelID: input.model?.modelID ?? ref.modelID,
       providerID: input.model?.providerID ?? ref.providerID,

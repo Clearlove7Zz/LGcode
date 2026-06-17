@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { computePromptTraits } from "..@lgcode/..@lgcode/src@lgcode/prompt@lgcode/traits"
+import { computePromptTraits } from "../../src/prompt/traits"
 
 describe("computePromptTraits", () => {
   test("normal mode without autocomplete only captures tab", () => {

@@ -1,4 +1,4 @@
-export * as ConfigLSP from ".@lgcode/lsp"
+export * as ConfigLSP from "./lsp"
 
 import { Schema } from "effect"
 

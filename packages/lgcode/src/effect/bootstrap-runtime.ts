@@ -1,14 +1,14 @@
 import { Layer, ManagedRuntime } from "effect"
 
-import { Plugin } from "@@lgcode/plugin"
-import { LSP } from "@@lgcode/lsp@lgcode/lsp"
-import { Format } from "@@lgcode/format"
-import { ShareNext } from "@@lgcode/share@lgcode/share-next"
-import { Vcs } from "@@lgcode/project@lgcode/vcs"
-import { Snapshot } from "@@lgcode/snapshot"
-import { Config } from "@@lgcode/config@lgcode/config"
-import * as Observability from "@lgcode/core@lgcode/observability"
-import { memoMap } from "@lgcode/core@lgcode/effect@lgcode/memo-map"
+import { Plugin } from "@/plugin"
+import { LSP } from "@/lsp/lsp"
+import { Format } from "@/format"
+import { ShareNext } from "@/share/share-next"
+import { Vcs } from "@/project/vcs"
+import { Snapshot } from "@/snapshot"
+import { Config } from "@/config/config"
+import * as Observability from "@opencode@lgcode/core/observability"
+import { memoMap } from "@opencode@lgcode/core/effect/memo-map"
 
 export const BootstrapLayer = Layer.mergeAll(
   Config.defaultLayer,

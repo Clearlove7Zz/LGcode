@@ -1,11 +1,11 @@
 import { expect, test, describe } from "bun:test"
-import { ConfigMarkdown } from "@@lgcode/config@lgcode/markdown"
+import { ConfigMarkdown } from "@/config/markdown"
 
 describe("ConfigMarkdown: normal template", () => {
-  const template = `This is a @valid@lgcode/path@lgcode/to@lgcode/a@lgcode/file and it should also match at
+  const template = `This is a @valid/path/to/a/file and it should also match at
   the beginning of a line:
 
-  @another-valid@lgcode/path@lgcode/to@lgcode/a@lgcode/file
+  @another-valid/path/to/a/file
 
   but this is not:
 
@@ -15,13 +15,13 @@ describe("ConfigMarkdown: normal template", () => {
 
   We also need to deal with files followed by @commas, ones
   with @file-extensions.md, even @multiple.extensions.bak,
-  hidden directories like @.config@lgcode/ or files like @.bashrc
+  hidden directories like @.config/ or files like @.bashrc
   and ones at the end of a sentence like @foo.md.
 
-  Also shouldn't forget @@lgcode/absolute@lgcode/paths.txt with and @@lgcode/without@lgcode/extensions,
-  as well as @~@lgcode/home-files and @~@lgcode/paths@lgcode/under@lgcode/home.txt.
+  Also shouldn't forget @/absolute/paths.txt with and @/without/extensions,
+  as well as @~/home-files and @~/paths/under/home.txt.
 
-  If the reference is \`@quoted@lgcode/in@lgcode/backticks\` then it shouldn't match at all.`
+  If the reference is \`@quoted/in/backticks\` then it shouldn't match at all.`
 
   const matches = ConfigMarkdown.files(template)
 
@@ -29,12 +29,12 @@ describe("ConfigMarkdown: normal template", () => {
     expect(matches.length).toBe(12)
   })
 
-  test("should extract valid@lgcode/path@lgcode/to@lgcode/a@lgcode/file", () => {
-    expect(matches[0][1]).toBe("valid@lgcode/path@lgcode/to@lgcode/a@lgcode/file")
+  test("should extract valid/path/to/a/file", () => {
+    expect(matches[0][1]).toBe("valid/path/to/a/file")
   })
 
-  test("should extract another-valid@lgcode/path@lgcode/to@lgcode/a@lgcode/file", () => {
-    expect(matches[1][1]).toBe("another-valid@lgcode/path@lgcode/to@lgcode/a@lgcode/file")
+  test("should extract another-valid/path/to/a/file", () => {
+    expect(matches[1][1]).toBe("another-valid/path/to/a/file")
   })
 
   test("should extract paths ignoring comma after", () => {
@@ -50,7 +50,7 @@ describe("ConfigMarkdown: normal template", () => {
   })
 
   test("should extract hidden directory", () => {
-    expect(matches[5][1]).toBe(".config@lgcode/")
+    expect(matches[5][1]).toBe(".config/")
   })
 
   test("should extract hidden file", () => {
@@ -62,23 +62,23 @@ describe("ConfigMarkdown: normal template", () => {
   })
 
   test("should extract an absolute path with an extension", () => {
-    expect(matches[8][1]).toBe("@lgcode/absolute@lgcode/paths.txt")
+    expect(matches[8][1]).toBe("/absolute/paths.txt")
   })
 
   test("should extract an absolute path without an extension", () => {
-    expect(matches[9][1]).toBe("@lgcode/without@lgcode/extensions")
+    expect(matches[9][1]).toBe("/without/extensions")
   })
 
   test("should extract an absolute path in home directory", () => {
-    expect(matches[10][1]).toBe("~@lgcode/home-files")
+    expect(matches[10][1]).toBe("~/home-files")
   })
 
   test("should extract an absolute path under home directory", () => {
-    expect(matches[11][1]).toBe("~@lgcode/paths@lgcode/under@lgcode/home.txt")
+    expect(matches[11][1]).toBe("~/paths/under/home.txt")
   })
 
   test("should not match when preceded by backtick", () => {
-    const backtickTest = "This `@should@lgcode/not@lgcode/match` should be ignored"
+    const backtickTest = "This `@should/not/match` should be ignored"
     const backtickMatches = ConfigMarkdown.files(backtickTest)
     expect(backtickMatches.length).toBe(0)
   })
@@ -91,7 +91,7 @@ describe("ConfigMarkdown: normal template", () => {
 })
 
 describe("ConfigMarkdown: frontmatter parsing", async () => {
-  const parsed = await ConfigMarkdown.parse(import.meta.dir + "@lgcode/fixtures@lgcode/frontmatter.md")
+  const parsed = await ConfigMarkdown.parse(import.meta.dir + "/fixtures/frontmatter.md")
 
   test("should parse without throwing", () => {
     expect(parsed).toBeDefined()
@@ -128,7 +128,7 @@ describe("ConfigMarkdown: frontmatter parsing", async () => {
   })
 
   test("should extract URL with port", () => {
-    expect(parsed.data.url).toBe("https:@lgcode/@lgcode/example.com:8080@lgcode/path?query=value")
+    expect(parsed.data.url).toBe("https://example.com:8080/path?query=value")
   })
 
   test("should extract time with colons", () => {
@@ -167,12 +167,12 @@ describe("ConfigMarkdown: frontmatter parsing", async () => {
   test("should extract content after frontmatter without modification", () => {
     expect(parsed.content).toContain("Content that should not be parsed:")
     expect(parsed.content).toContain("fake_field: this is not yaml")
-    expect(parsed.content).toContain("url: https:@lgcode/@lgcode/should-not-be-parsed.com:3000")
+    expect(parsed.content).toContain("url: https://should-not-be-parsed.com:3000")
   })
 })
 
-describe("ConfigMarkdown: frontmatter parsing w@lgcode/ empty frontmatter", async () => {
-  const result = await ConfigMarkdown.parse(import.meta.dir + "@lgcode/fixtures@lgcode/empty-frontmatter.md")
+describe("ConfigMarkdown: frontmatter parsing w/ empty frontmatter", async () => {
+  const result = await ConfigMarkdown.parse(import.meta.dir + "/fixtures/empty-frontmatter.md")
 
   test("should parse without throwing", () => {
     expect(result).toBeDefined()
@@ -181,8 +181,8 @@ describe("ConfigMarkdown: frontmatter parsing w@lgcode/ empty frontmatter", asyn
   })
 })
 
-describe("ConfigMarkdown: frontmatter parsing w@lgcode/ no frontmatter", async () => {
-  const result = await ConfigMarkdown.parse(import.meta.dir + "@lgcode/fixtures@lgcode/no-frontmatter.md")
+describe("ConfigMarkdown: frontmatter parsing w/ no frontmatter", async () => {
+  const result = await ConfigMarkdown.parse(import.meta.dir + "/fixtures/no-frontmatter.md")
 
   test("should parse without throwing", () => {
     expect(result).toBeDefined()
@@ -191,13 +191,13 @@ describe("ConfigMarkdown: frontmatter parsing w@lgcode/ no frontmatter", async (
   })
 })
 
-describe("ConfigMarkdown: frontmatter parsing w@lgcode/ Markdown header", async () => {
-  const result = await ConfigMarkdown.parse(import.meta.dir + "@lgcode/fixtures@lgcode/markdown-header.md")
+describe("ConfigMarkdown: frontmatter parsing w/ Markdown header", async () => {
+  const result = await ConfigMarkdown.parse(import.meta.dir + "/fixtures/markdown-header.md")
 
   test("should parse and match", () => {
     expect(result).toBeDefined()
     expect(result.data).toEqual({})
-    expect(result.content.trim().replace(@lgcode/\r\n@lgcode/g, "\n")).toBe(`# Response Formatting Requirements
+    expect(result.content.trim().replace(/\r\n/g, "\n")).toBe(`# Response Formatting Requirements
 
 Always structure your responses using clear markdown formatting:
 
@@ -212,13 +212,13 @@ Always structure your responses using clear markdown formatting:
 })
 
 describe("ConfigMarkdown: frontmatter has weird model id", async () => {
-  const result = await ConfigMarkdown.parse(import.meta.dir + "@lgcode/fixtures@lgcode/weird-model-id.md")
+  const result = await ConfigMarkdown.parse(import.meta.dir + "/fixtures/weird-model-id.md")
 
   test("should parse and match", () => {
     expect(result).toBeDefined()
     expect(result.data["description"]).toEqual("General coding and planning agent")
     expect(result.data["mode"]).toEqual("subagent")
-    expect(result.data["model"]).toEqual("synthetic@lgcode/hf:zai-org@lgcode/GLM-4.7")
+    expect(result.data["model"]).toEqual("synthetic/hf:zai-org/GLM-4.7")
     expect(result.data["tools"]["write"]).toBeTrue()
     expect(result.data["tools"]["read"]).toBeTrue()
     expect(result.data["stuff"]).toBe("This is some stuff\n")

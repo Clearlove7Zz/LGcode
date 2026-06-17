@@ -4,7 +4,7 @@ const renderer = new marked.Renderer()
 
 renderer.link = ({ href, title, text }: Tokens.Link) => {
   const titleAttr = title ? ` title="${title}"` : ""
-  return `<a href="${href}"${titleAttr} class="external-link" target="_blank" rel="noopener noreferrer">${text}<@lgcode/a>`
+  return `<a href="${href}"${titleAttr} class="external-link" target="_blank" rel="noopener noreferrer">${text}</a>`
 }
 
 export function parseMarkdown(input: string) {

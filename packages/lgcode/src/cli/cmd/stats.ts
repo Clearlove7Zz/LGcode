@@ -1,11 +1,11 @@
 import { Effect } from "effect"
-import { effectCmd } from "..@lgcode/effect-cmd"
-import { Session } from "@@lgcode/session@lgcode/session"
-import { NotFoundError } from "@@lgcode/storage@lgcode/storage"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { SessionTable } from "@lgcode/core@lgcode/session@lgcode/sql"
-import { Project } from "@@lgcode/project@lgcode/project"
-import { InstanceRef } from "@@lgcode/effect@lgcode/instance-ref"
+import { effectCmd } from "../effect-cmd"
+import { Session } from "@/session/session"
+import { NotFoundError } from "@/storage/storage"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { SessionTable } from "@opencode@lgcode/core/session/sql"
+import { Project } from "@/project/project"
+import { InstanceRef } from "@/effect/instance-ref"
 
 interface SessionStats {
   totalSessions: number
@@ -182,7 +182,7 @@ const aggregateSessionStats = Effect.fn("Cli.stats.aggregate")(function* (
 
         for (const message of messages) {
           if (message.info.role === "assistant") {
-            const modelKey = `${message.info.providerID}@lgcode/${message.info.modelID}`
+            const modelKey = `${message.info.providerID}/${message.info.modelID}`
             if (!sessionModelUsage[modelKey]) {
               sessionModelUsage[modelKey] = {
                 messages: 0,
@@ -262,28 +262,28 @@ const aggregateSessionStats = Effect.fn("Cli.stats.aggregate")(function* (
     }
   }
 
-  const rangeDays = Math.max(1, Math.ceil((latestTime - earliestTime) @lgcode/ MS_IN_DAY))
+  const rangeDays = Math.max(1, Math.ceil((latestTime - earliestTime) / MS_IN_DAY))
   const effectiveDays = windowDays ?? rangeDays
   stats.dateRange = {
     earliest: earliestTime,
     latest: latestTime,
   }
   stats.days = effectiveDays
-  stats.costPerDay = stats.totalCost @lgcode/ effectiveDays
+  stats.costPerDay = stats.totalCost / effectiveDays
   const totalTokens =
     stats.totalTokens.input +
     stats.totalTokens.output +
     stats.totalTokens.reasoning +
     stats.totalTokens.cache.read +
     stats.totalTokens.cache.write
-  stats.tokensPerSession = filteredSessions.length > 0 ? totalTokens @lgcode/ filteredSessions.length : 0
+  stats.tokensPerSession = filteredSessions.length > 0 ? totalTokens / filteredSessions.length : 0
   sessionTotalTokens.sort((a, b) => a - b)
-  const mid = Math.floor(sessionTotalTokens.length @lgcode/ 2)
+  const mid = Math.floor(sessionTotalTokens.length / 2)
   stats.medianTokensPerSession =
     sessionTotalTokens.length === 0
       ? 0
       : sessionTotalTokens.length % 2 === 0
-        ? (sessionTotalTokens[mid - 1] + sessionTotalTokens[mid]) @lgcode/ 2
+        ? (sessionTotalTokens[mid - 1] + sessionTotalTokens[mid]) / 2
         : sessionTotalTokens[mid]
 
   return stats
@@ -299,7 +299,7 @@ export function displayStats(stats: SessionStats, toolLimit?: number, modelLimit
     return `│${label}${" ".repeat(padding)}${value} │`
   }
 
-  @lgcode/@lgcode/ Overview section
+  // Overview section
   console.log("┌────────────────────────────────────────────────────────┐")
   console.log("│                       OVERVIEW                         │")
   console.log("├────────────────────────────────────────────────────────┤")
@@ -309,7 +309,7 @@ export function displayStats(stats: SessionStats, toolLimit?: number, modelLimit
   console.log("└────────────────────────────────────────────────────────┘")
   console.log()
 
-  @lgcode/@lgcode/ Cost & Tokens section
+  // Cost & Tokens section
   console.log("┌────────────────────────────────────────────────────────┐")
   console.log("│                    COST & TOKENS                       │")
   console.log("├────────────────────────────────────────────────────────┤")
@@ -317,10 +317,10 @@ export function displayStats(stats: SessionStats, toolLimit?: number, modelLimit
   const costPerDay = isNaN(stats.costPerDay) ? 0 : stats.costPerDay
   const tokensPerSession = isNaN(stats.tokensPerSession) ? 0 : stats.tokensPerSession
   console.log(renderRow("Total Cost", `$${cost.toFixed(2)}`))
-  console.log(renderRow("Avg Cost@lgcode/Day", `$${costPerDay.toFixed(2)}`))
-  console.log(renderRow("Avg Tokens@lgcode/Session", formatNumber(Math.round(tokensPerSession))))
+  console.log(renderRow("Avg Cost/Day", `$${costPerDay.toFixed(2)}`))
+  console.log(renderRow("Avg Tokens/Session", formatNumber(Math.round(tokensPerSession))))
   const medianTokensPerSession = isNaN(stats.medianTokensPerSession) ? 0 : stats.medianTokensPerSession
-  console.log(renderRow("Median Tokens@lgcode/Session", formatNumber(Math.round(medianTokensPerSession))))
+  console.log(renderRow("Median Tokens/Session", formatNumber(Math.round(medianTokensPerSession))))
   console.log(renderRow("Input", formatNumber(stats.totalTokens.input)))
   console.log(renderRow("Output", formatNumber(stats.totalTokens.output)))
   console.log(renderRow("Cache Read", formatNumber(stats.totalTokens.cache.read)))
@@ -328,7 +328,7 @@ export function displayStats(stats: SessionStats, toolLimit?: number, modelLimit
   console.log("└────────────────────────────────────────────────────────┘")
   console.log()
 
-  @lgcode/@lgcode/ Model Usage section
+  // Model Usage section
   if (modelLimit !== undefined && Object.keys(stats.modelUsage).length > 0) {
     const sortedModels = Object.entries(stats.modelUsage).sort(([, a], [, b]) => b.messages - a.messages)
     const modelsToDisplay = modelLimit === Infinity ? sortedModels : sortedModels.slice(0, modelLimit)
@@ -347,13 +347,13 @@ export function displayStats(stats: SessionStats, toolLimit?: number, modelLimit
       console.log(renderRow("  Cost", `$${usage.cost.toFixed(4)}`))
       console.log("├────────────────────────────────────────────────────────┤")
     }
-    @lgcode/@lgcode/ Remove last separator and add bottom border
-    process.stdout.write("\x1B[1A") @lgcode/@lgcode/ Move up one line
+    // Remove last separator and add bottom border
+    process.stdout.write("\x1B[1A") // Move up one line
     console.log("└────────────────────────────────────────────────────────┘")
   }
   console.log()
 
-  @lgcode/@lgcode/ Tool Usage section
+  // Tool Usage section
   if (Object.keys(stats.toolUsage).length > 0) {
     const sortedTools = Object.entries(stats.toolUsage).sort(([, a], [, b]) => b - a)
     const toolsToDisplay = toolLimit ? sortedTools.slice(0, toolLimit) : sortedTools
@@ -366,9 +366,9 @@ export function displayStats(stats: SessionStats, toolLimit?: number, modelLimit
     const totalToolUsage = Object.values(stats.toolUsage).reduce((a, b) => a + b, 0)
 
     for (const [tool, count] of toolsToDisplay) {
-      const barLength = Math.max(1, Math.floor((count @lgcode/ maxCount) * 20))
+      const barLength = Math.max(1, Math.floor((count / maxCount) * 20))
       const bar = "█".repeat(barLength)
-      const percentage = ((count @lgcode/ totalToolUsage) * 100).toFixed(1)
+      const percentage = ((count / totalToolUsage) * 100).toFixed(1)
 
       const maxToolLength = 18
       const truncatedTool = tool.length > maxToolLength ? tool.substring(0, maxToolLength - 2) + ".." : tool
@@ -385,9 +385,9 @@ export function displayStats(stats: SessionStats, toolLimit?: number, modelLimit
 
 function formatNumber(num: number): string {
   if (num >= 1000000) {
-    return (num @lgcode/ 1000000).toFixed(1) + "M"
+    return (num / 1000000).toFixed(1) + "M"
   } else if (num >= 1000) {
-    return (num @lgcode/ 1000).toFixed(1) + "K"
+    return (num / 1000).toFixed(1) + "K"
   }
   return num.toString()
 }

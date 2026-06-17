@@ -1,21 +1,21 @@
 import path from "path"
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import { describe, expect } from "bun:test"
 import { Effect, Layer, Schema } from "effect"
-import { FastCheck } from "effect@lgcode/testing"
-import { Config } from "@lgcode/core@lgcode/config"
-import { ConfigProvider } from "@lgcode/core@lgcode/config@lgcode/provider"
-import { ConfigMigrateV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/migrate"
-import { ConfigV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/config"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { Global } from "@lgcode/core@lgcode/global"
-import { Location } from "@lgcode/core@lgcode/location"
-import { Policy } from "@lgcode/core@lgcode/policy"
-import { Project } from "@lgcode/core@lgcode/project"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import { location } from "..@lgcode/fixture@lgcode/location"
-import { tmpdir } from "..@lgcode/fixture@lgcode/tmpdir"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { FastCheck } from "effect/testing"
+import { Config } from "@opencode@lgcode/core/config"
+import { ConfigProvider } from "@opencode@lgcode/core/config/provider"
+import { ConfigMigrateV1 } from "@opencode@lgcode/core/v1/config/migrate"
+import { ConfigV1 } from "@opencode@lgcode/core/v1/config/config"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { Global } from "@opencode@lgcode/core/global"
+import { Location } from "@opencode@lgcode/core/location"
+import { Policy } from "@opencode@lgcode/core/policy"
+import { Project } from "@opencode@lgcode/core/project"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import { location } from "../fixture/location"
+import { tmpdir } from "../fixture/tmpdir"
+import { testEffect } from "../lib/effect"
 
 const it = testEffect(Layer.empty)
 
@@ -55,13 +55,13 @@ describe("Config", () => {
   it.effect("returns the latest defined scalar from priority-ordered documents", () =>
     Effect.sync(() => {
       const entries = [
-        new Config.Document({ type: "document", info: new Config.Info({ model: "openrouter@lgcode/openai@lgcode/gpt-5" }) }),
-        new Config.Directory({ type: "directory", path: AbsolutePath.make("@lgcode/skills") }),
+        new Config.Document({ type: "document", info: new Config.Info({ model: "openrouter/openai/gpt-5" }) }),
+        new Config.Directory({ type: "directory", path: AbsolutePath.make("/skills") }),
         new Config.Document({ type: "document", info: new Config.Info({}) }),
-        new Config.Document({ type: "document", info: new Config.Info({ model: "openrouter@lgcode/openai@lgcode/gpt-5.5" }) }),
+        new Config.Document({ type: "document", info: new Config.Info({ model: "openrouter/openai/gpt-5.5" }) }),
       ]
 
-      expect(Config.latest(entries, "model")).toBe("openrouter@lgcode/openai@lgcode/gpt-5.5")
+      expect(Config.latest(entries, "model")).toBe("openrouter/openai/gpt-5.5")
       expect(Config.latest(entries, "default_agent")).toBeUndefined()
     }),
   )
@@ -71,7 +71,7 @@ describe("Config", () => {
       expect(ConfigMigrateV1.isV1({ snapshot: false })).toBe(true)
       expect(ConfigMigrateV1.isV1({ snapshot: false, agents: {} })).toBe(true)
       expect(ConfigMigrateV1.isV1({ reference: {} })).toBe(true)
-      expect(ConfigMigrateV1.isV1({ shell: "@lgcode/bin@lgcode/zsh", model: "anthropic@lgcode/claude" })).toBe(false)
+      expect(ConfigMigrateV1.isV1({ shell: "/bin/zsh", model: "anthropic/claude" })).toBe(false)
       expect(ConfigMigrateV1.isV1({ references: {} })).toBe(false)
     }),
   )
@@ -92,7 +92,7 @@ describe("Config", () => {
       const migrated = ConfigMigrateV1.migrate({
         provider: {
           bedrock: {
-            npm: "@ai-sdk@lgcode/amazon-bedrock",
+            npm: "@ai-sdk/amazon-bedrock",
             options: {
               headers: { "x-test": "1" },
               body: { trace: true },
@@ -105,7 +105,7 @@ describe("Config", () => {
 
       expect(migrated.providers?.bedrock?.api).toEqual({
         type: "aisdk",
-        package: "@ai-sdk@lgcode/amazon-bedrock",
+        package: "@ai-sdk/amazon-bedrock",
         url: undefined,
         settings: { region: "us-east-1", profile: "dev" },
       })
@@ -125,7 +125,7 @@ describe("Config", () => {
               template: "Review changes",
               description: "Review code",
               agent: "reviewer",
-              model: "anthropic@lgcode/claude",
+              model: "anthropic/claude",
               variant: "high",
               subtask: true,
             },
@@ -136,7 +136,7 @@ describe("Config", () => {
           template: "Review changes",
           description: "Review code",
           agent: "reviewer",
-          model: "anthropic@lgcode/claude",
+          model: "anthropic/claude",
           variant: "high",
           subtask: true,
         },
@@ -182,7 +182,7 @@ describe("Config", () => {
               fs.writeFile(
                 path.join(tmp.path, "opencode.jsonc"),
                 `{
-                  @lgcode/@lgcode/ Later global files override scalar fields while retaining providers.
+                  // Later global files override scalar fields while retaining providers.
                   "$schema": "last",
                   "providers": { "last": ${JSON.stringify(provider)} },
                 }`,
@@ -223,7 +223,7 @@ describe("Config", () => {
         Effect.gen(function* () {
           const file = path.join(tmp.path, "opencode.json")
           const contents = JSON.stringify({
-            shell: "@lgcode/bin@lgcode/zsh",
+            shell: "/bin/zsh",
             experimental: { policies: [{ effect: "deny", action: "provider.use", resource: "openai" }] },
             providers: { local: provider },
           })
@@ -234,7 +234,7 @@ describe("Config", () => {
             const documents = (yield* config.entries()).filter((entry) => entry.type === "document")
 
             expect(documents[0]?.info.$schema).toBeUndefined()
-            expect(documents[0]?.info.shell).toBe("@lgcode/bin@lgcode/zsh")
+            expect(documents[0]?.info.shell).toBe("/bin/zsh")
             expect(documents[0]?.info.experimental?.policies?.[0]).toEqual({
               effect: "deny",
               action: "provider.use",
@@ -258,12 +258,12 @@ describe("Config", () => {
             fs.writeFile(
               path.join(tmp.path, "opencode.json"),
               JSON.stringify({
-                shell: "@lgcode/bin@lgcode/bash",
-                model: "anthropic@lgcode/claude",
+                shell: "/bin/bash",
+                model: "anthropic/claude",
                 default_agent: "reviewer",
                 autoupdate: "notify",
                 share: "disabled",
-                enterprise: { url: "https:@lgcode/@lgcode/share.example.com" },
+                enterprise: { url: "https://share.example.com" },
                 username: "test-user",
                 permissions: [
                   { action: "bash", resource: "*", effect: "ask" },
@@ -271,7 +271,7 @@ describe("Config", () => {
                 ],
                 agents: {
                   reviewer: {
-                    model: "openrouter@lgcode/openai@lgcode/gpt-5",
+                    model: "openrouter/openai/gpt-5",
                     variant: "high",
                     request: {
                       headers: { "x-agent": "reviewer" },
@@ -288,7 +288,7 @@ describe("Config", () => {
                   },
                 },
                 snapshots: false,
-                watcher: { ignore: ["node_modules@lgcode/**", "dist@lgcode/**", ".git"] },
+                watcher: { ignore: ["node_modules/**", "dist/**", ".git"] },
                 formatter: {
                   prettier: { disabled: true },
                   custom: { command: ["custom-fmt", "$FILE"], extensions: [".foo"] },
@@ -303,14 +303,14 @@ describe("Config", () => {
                   servers: {
                     local: {
                       type: "local",
-                      command: ["node", ".@lgcode/mcp@lgcode/server.js"],
+                      command: ["node", "./mcp/server.js"],
                       environment: { API_KEY: "secret" },
                       disabled: false,
                       timeout: 10000,
                     },
                     remote: {
                       type: "remote",
-                      url: "https:@lgcode/@lgcode/mcp.example.com@lgcode/mcp",
+                      url: "https://mcp.example.com/mcp",
                       headers: { Authorization: "Bearer token" },
                       oauth: { client_id: "client", scope: "read write", callback_port: 19876 },
                       disabled: true,
@@ -323,16 +323,16 @@ describe("Config", () => {
                   keep: { tokens: 2000 },
                   buffer: 10000,
                 },
-                skills: [".@lgcode/skills", "~@lgcode/shared-skills", "https:@lgcode/@lgcode/example.com@lgcode/.well-known@lgcode/skills@lgcode/"],
-                instructions: ["CONTRIBUTING.md", ".cursor@lgcode/rules@lgcode/*.md", "https:@lgcode/@lgcode/example.com@lgcode/shared-rules.md"],
+                skills: ["./skills", "~/shared-skills", "https://example.com/.well-known/skills/"],
+                instructions: ["CONTRIBUTING.md", ".cursor/rules/*.md", "https://example.com/shared-rules.md"],
                 references: {
-                  local: { path: "..@lgcode/library" },
-                  sdk: { repository: "github.com@lgcode/example@lgcode/sdk", branch: "main" },
-                  shorthand: "github.com@lgcode/example@lgcode/docs",
+                  local: { path: "../library" },
+                  sdk: { repository: "github.com/example/sdk", branch: "main" },
+                  shorthand: "github.com/example/docs",
                 },
                 plugins: [
                   "opencode-helicone-session",
-                  { package: "@my-org@lgcode/audit-plugin", options: { endpoint: "https:@lgcode/@lgcode/audit.example.com" } },
+                  { package: "@my-org/audit-plugin", options: { endpoint: "https://audit.example.com" } },
                 ],
               }),
             ),
@@ -343,19 +343,19 @@ describe("Config", () => {
             const documents = (yield* config.entries()).filter((entry) => entry.type === "document")
 
             expect(documents).toHaveLength(1)
-            expect(documents[0]?.info.shell).toBe("@lgcode/bin@lgcode/bash")
-            expect(documents[0]?.info.model).toBe("anthropic@lgcode/claude")
+            expect(documents[0]?.info.shell).toBe("/bin/bash")
+            expect(documents[0]?.info.model).toBe("anthropic/claude")
             expect(documents[0]?.info.default_agent).toBe("reviewer")
             expect(documents[0]?.info.autoupdate).toBe("notify")
             expect(documents[0]?.info.share).toBe("disabled")
-            expect(documents[0]?.info.enterprise).toEqual({ url: "https:@lgcode/@lgcode/share.example.com" })
+            expect(documents[0]?.info.enterprise).toEqual({ url: "https://share.example.com" })
             expect(documents[0]?.info.username).toBe("test-user")
             expect(documents[0]?.info.permissions).toEqual([
               { action: "bash", resource: "*", effect: "ask" },
               { action: "bash", resource: "git status", effect: "allow" },
             ])
             const reviewer = documents[0]?.info.agents?.reviewer
-            expect(reviewer?.model).toBe("openrouter@lgcode/openai@lgcode/gpt-5")
+            expect(reviewer?.model).toBe("openrouter/openai/gpt-5")
             expect(reviewer?.variant).toBe("high")
             expect(reviewer?.request).toEqual({
               headers: { "x-agent": "reviewer" },
@@ -370,7 +370,7 @@ describe("Config", () => {
             expect(reviewer?.disabled).toBe(false)
             expect(reviewer?.permissions).toEqual([{ action: "edit", resource: "*", effect: "deny" }])
             expect(documents[0]?.info.snapshots).toBe(false)
-            expect(documents[0]?.info.watcher).toEqual({ ignore: ["node_modules@lgcode/**", "dist@lgcode/**", ".git"] })
+            expect(documents[0]?.info.watcher).toEqual({ ignore: ["node_modules/**", "dist/**", ".git"] })
             expect(documents[0]?.info.formatter).toEqual({
               prettier: { disabled: true },
               custom: { command: ["custom-fmt", "$FILE"], extensions: [".foo"] },
@@ -388,14 +388,14 @@ describe("Config", () => {
               servers: {
                 local: {
                   type: "local",
-                  command: ["node", ".@lgcode/mcp@lgcode/server.js"],
+                  command: ["node", "./mcp/server.js"],
                   environment: { API_KEY: "secret" },
                   disabled: false,
                   timeout: 10000,
                 },
                 remote: {
                   type: "remote",
-                  url: "https:@lgcode/@lgcode/mcp.example.com@lgcode/mcp",
+                  url: "https://mcp.example.com/mcp",
                   headers: { Authorization: "Bearer token" },
                   oauth: { client_id: "client", scope: "read write", callback_port: 19876 },
                   disabled: true,
@@ -409,23 +409,23 @@ describe("Config", () => {
               buffer: 10000,
             })
             expect(documents[0]?.info.skills).toEqual([
-              ".@lgcode/skills",
-              "~@lgcode/shared-skills",
-              "https:@lgcode/@lgcode/example.com@lgcode/.well-known@lgcode/skills@lgcode/",
+              "./skills",
+              "~/shared-skills",
+              "https://example.com/.well-known/skills/",
             ])
             expect(documents[0]?.info.instructions).toEqual([
               "CONTRIBUTING.md",
-              ".cursor@lgcode/rules@lgcode/*.md",
-              "https:@lgcode/@lgcode/example.com@lgcode/shared-rules.md",
+              ".cursor/rules/*.md",
+              "https://example.com/shared-rules.md",
             ])
             expect(documents[0]?.info.references).toEqual({
-              local: { path: "..@lgcode/library" },
-              sdk: { repository: "github.com@lgcode/example@lgcode/sdk", branch: "main" },
-              shorthand: "github.com@lgcode/example@lgcode/docs",
+              local: { path: "../library" },
+              sdk: { repository: "github.com/example/sdk", branch: "main" },
+              shorthand: "github.com/example/docs",
             })
             expect(documents[0]?.info.plugins).toEqual([
               "opencode-helicone-session",
-              { package: "@my-org@lgcode/audit-plugin", options: { endpoint: "https:@lgcode/@lgcode/audit.example.com" } },
+              { package: "@my-org/audit-plugin", options: { endpoint: "https://audit.example.com" } },
             ])
           }).pipe(Effect.provide(testLayer(tmp.path)))
         }),
@@ -445,9 +445,9 @@ describe("Config", () => {
               path.join(tmp.path, "opencode.json"),
               JSON.stringify({
                 reference: {
-                  local: { path: "..@lgcode/library" },
-                  sdk: { repository: "github.com@lgcode/example@lgcode/sdk", branch: "main" },
-                  shorthand: "github.com@lgcode/example@lgcode/docs",
+                  local: { path: "../library" },
+                  sdk: { repository: "github.com/example/sdk", branch: "main" },
+                  shorthand: "github.com/example/docs",
                 },
               }),
             ),
@@ -459,9 +459,9 @@ describe("Config", () => {
 
             expect(documents).toHaveLength(1)
             expect(documents[0]?.info.references).toEqual({
-              local: { path: "..@lgcode/library" },
-              sdk: { repository: "github.com@lgcode/example@lgcode/sdk", branch: "main" },
-              shorthand: "github.com@lgcode/example@lgcode/docs",
+              local: { path: "../library" },
+              sdk: { repository: "github.com/example/sdk", branch: "main" },
+              shorthand: "github.com/example/docs",
             })
           }).pipe(Effect.provide(testLayer(tmp.path)))
         }),
@@ -480,7 +480,7 @@ describe("Config", () => {
             fs.writeFile(
               path.join(tmp.path, "opencode.json"),
               JSON.stringify({
-                shell: "@lgcode/bin@lgcode/zsh",
+                shell: "/bin/zsh",
                 default_agent: "reviewer",
                 snapshot: false,
                 autoshare: true,
@@ -499,11 +499,11 @@ describe("Config", () => {
                 },
                 plugin: [
                   "opencode-helicone-session",
-                  ["@my-org@lgcode/audit-plugin", { endpoint: "https:@lgcode/@lgcode/audit.example.com" }],
+                  ["@my-org/audit-plugin", { endpoint: "https://audit.example.com" }],
                 ],
-                skills: { paths: [".@lgcode/skills"], urls: ["https:@lgcode/@lgcode/example.com@lgcode/.well-known@lgcode/skills@lgcode/"] },
+                skills: { paths: ["./skills"], urls: ["https://example.com/.well-known/skills/"] },
                 references: {
-                  docs: { path: "..@lgcode/docs", description: "Use for product documentation", hidden: true },
+                  docs: { path: "../docs", description: "Use for product documentation", hidden: true },
                 },
                 attachment: { image: { auto_resize: false, max_width: 1200 } },
                 provider: {
@@ -517,7 +517,7 @@ describe("Config", () => {
                     },
                   },
                   openai: {
-                    npm: "@ai-sdk@lgcode/openai",
+                    npm: "@ai-sdk/openai",
                     options: { apiKey: "secret", organization: "org" },
                     models: {
                       model: {
@@ -527,7 +527,7 @@ describe("Config", () => {
                     },
                   },
                   anthropic: {
-                    npm: "@ai-sdk@lgcode/anthropic",
+                    npm: "@ai-sdk/anthropic",
                     models: {
                       model: {
                         options: {
@@ -545,7 +545,7 @@ describe("Config", () => {
                   local: { type: "local", command: ["node", "server.js"], enabled: false },
                   remote: {
                     type: "remote",
-                    url: "https:@lgcode/@lgcode/mcp.example.com",
+                    url: "https://mcp.example.com",
                     oauth: { clientId: "client", callbackPort: 19876 },
                   },
                 },
@@ -559,7 +559,7 @@ describe("Config", () => {
 
             expect(documents).toHaveLength(1)
             expect(documents[0]?.info).toBeInstanceOf(Config.Info)
-            expect(documents[0]?.info.shell).toBe("@lgcode/bin@lgcode/zsh")
+            expect(documents[0]?.info.shell).toBe("/bin/zsh")
             expect(documents[0]?.info.default_agent).toBe("reviewer")
             expect(documents[0]?.info.snapshots).toBe(false)
             expect(documents[0]?.info.share).toBe("auto")
@@ -577,11 +577,11 @@ describe("Config", () => {
             })
             expect(documents[0]?.info.plugins).toEqual([
               "opencode-helicone-session",
-              { package: "@my-org@lgcode/audit-plugin", options: { endpoint: "https:@lgcode/@lgcode/audit.example.com" } },
+              { package: "@my-org/audit-plugin", options: { endpoint: "https://audit.example.com" } },
             ])
-            expect(documents[0]?.info.skills).toEqual([".@lgcode/skills", "https:@lgcode/@lgcode/example.com@lgcode/.well-known@lgcode/skills@lgcode/"])
+            expect(documents[0]?.info.skills).toEqual(["./skills", "https://example.com/.well-known/skills/"])
             expect(documents[0]?.info.references).toEqual({
-              docs: { path: "..@lgcode/docs", description: "Use for product documentation", hidden: true },
+              docs: { path: "../docs", description: "Use for product documentation", hidden: true },
             })
             expect(documents[0]?.info.attachments).toEqual({ image: { auto_resize: false, max_width: 1200 } })
             expect(documents[0]?.info.providers?.custom).toMatchObject({
@@ -629,7 +629,7 @@ describe("Config", () => {
                 local: { type: "local", command: ["node", "server.js"], disabled: true },
                 remote: {
                   type: "remote",
-                  url: "https:@lgcode/@lgcode/mcp.example.com",
+                  url: "https://mcp.example.com",
                   oauth: { client_id: "client", callback_port: 19876 },
                 },
               },

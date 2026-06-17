@@ -1,15 +1,15 @@
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
-import { GlobalBus } from "@@lgcode/bus@lgcode/global"
-import { serviceUse } from "@lgcode/core@lgcode/effect@lgcode/service-use"
-import { WorkspaceContext } from "@@lgcode/control-plane@lgcode/workspace-context"
-import { InstanceRef } from "@@lgcode/effect@lgcode/instance-ref"
-import { disposeInstance as runDisposers } from "@@lgcode/effect@lgcode/instance-registry"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { GlobalBus } from "@/bus/global"
+import { serviceUse } from "@opencode@lgcode/core/effect/service-use"
+import { WorkspaceContext } from "@/control-plane/workspace-context"
+import { InstanceRef } from "@/effect/instance-ref"
+import { disposeInstance as runDisposers } from "@/effect/instance-registry"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
 import { Context, Deferred, Duration, Effect, Exit, Layer, Scope } from "effect"
-import { type InstanceContext } from ".@lgcode/instance-context"
-import { InstanceBootstrap } from ".@lgcode/bootstrap-service"
-import { InstanceBootstrap as InstanceBootstrapGraph } from ".@lgcode/bootstrap"
-import * as Project from ".@lgcode/project"
+import { type InstanceContext } from "./instance-context"
+import { InstanceBootstrap } from "./bootstrap-service"
+import { InstanceBootstrap as InstanceBootstrapGraph } from "./bootstrap"
+import * as Project from "./project"
 
 export interface LoadInput {
   directory: string
@@ -26,7 +26,7 @@ export interface Interface {
   readonly provide: <A, E, R>(input: LoadInput, effect: Effect.Effect<A, E, R>) => Effect.Effect<A, E, R>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/InstanceStore") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/InstanceStore") {}
 
 export const use = serviceUse(Service)
 
@@ -206,4 +206,4 @@ export const defaultLayer = layer.pipe(Layer.provide(Project.defaultLayer))
 
 export const node = LayerNode.make(layer, [Project.node, InstanceBootstrapGraph.node])
 
-export * as InstanceStore from ".@lgcode/instance-store"
+export * as InstanceStore from "./instance-store"

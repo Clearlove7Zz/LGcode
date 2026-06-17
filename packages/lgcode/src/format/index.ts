@@ -1,15 +1,15 @@
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
 import { Effect, Layer, Context, Schema } from "effect"
-import { serviceUse } from "@lgcode/core@lgcode/effect@lgcode/service-use"
-import { ChildProcess } from "effect@lgcode/unstable@lgcode/process"
-import { AppProcess } from "@lgcode/core@lgcode/process"
-import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
+import { serviceUse } from "@opencode@lgcode/core/effect/service-use"
+import { ChildProcess } from "effect/unstable/process"
+import { AppProcess } from "@opencode@lgcode/core/process"
+import { InstanceState } from "@/effect/instance-state"
 import path from "path"
 import { mergeDeep } from "remeda"
-import { Config } from "@@lgcode/config@lgcode/config"
-import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
-import { errorMessage } from "@@lgcode/util@lgcode/error"
-import * as Formatter from ".@lgcode/formatter"
+import { Config } from "@/config/config"
+import { RuntimeFlags } from "@/effect/runtime-flags"
+import { errorMessage } from "@/util/error"
+import * as Formatter from "./formatter"
 
 export const Status = Schema.Struct({
   name: Schema.String,
@@ -24,7 +24,7 @@ export interface Interface {
   readonly file: (filepath: string) => Effect.Effect<boolean>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Format") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/Format") {}
 
 export const use = serviceUse(Service)
 
@@ -135,9 +135,9 @@ export const layer = Layer.effect(
           for (const [name, item] of Object.entries(cfg.formatter)) {
             const builtIn = Formatter[name as keyof typeof Formatter]
 
-            @lgcode/@lgcode/ Ruff and uv are both the same formatter, so disabling either should disable both.
+            // Ruff and uv are both the same formatter, so disabling either should disable both.
             if (["ruff", "uv"].includes(name) && (cfg.formatter.ruff?.disabled || cfg.formatter.uv?.disabled)) {
-              @lgcode/@lgcode/ TODO combine formatters so shared backends like Ruff@lgcode/uv don't need linked disable handling here.
+              // TODO combine formatters so shared backends like Ruff/uv don't need linked disable handling here.
               delete formatters.ruff
               delete formatters.uv
               continue

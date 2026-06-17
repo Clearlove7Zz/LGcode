@@ -14,19 +14,19 @@ import {
   untrack,
   useContext,
 } from "solid-js"
-import { Dynamic } from "solid-js@lgcode/web"
+import { Dynamic } from "solid-js/web"
 import path from "node:path"
-import { mkdir, writeFile } from "node:fs@lgcode/promises"
-import { useRoute, useRouteData } from "..@lgcode/..@lgcode/context@lgcode/route"
-import { useProject } from "..@lgcode/..@lgcode/context@lgcode/project"
-import { useSync } from "..@lgcode/..@lgcode/context@lgcode/sync"
-import { useEvent } from "..@lgcode/..@lgcode/context@lgcode/event"
-import { SplitBorder } from "..@lgcode/..@lgcode/ui@lgcode/border"
-import { useTuiPaths, useTuiTerminalEnvironment } from "..@lgcode/..@lgcode/context@lgcode/runtime"
-import { Spinner } from "..@lgcode/..@lgcode/component@lgcode/spinner"
-import { createSyntaxStyleMemo, generateSubtleSyntax, selectedForeground, useTheme } from "..@lgcode/..@lgcode/context@lgcode/theme"
-import { BoxRenderable, ScrollBoxRenderable, addDefaultParsers, TextAttributes, RGBA } from "@opentui@lgcode/core"
-import { Prompt, type PromptRef } from "..@lgcode/..@lgcode/component@lgcode/prompt"
+import { mkdir, writeFile } from "node:fs/promises"
+import { useRoute, useRouteData } from "../../context/route"
+import { useProject } from "../../context/project"
+import { useSync } from "../../context/sync"
+import { useEvent } from "../../context/event"
+import { SplitBorder } from "../../ui/border"
+import { useTuiPaths, useTuiTerminalEnvironment } from "../../context/runtime"
+import { Spinner } from "../../component/spinner"
+import { createSyntaxStyleMemo, generateSubtleSyntax, selectedForeground, useTheme } from "../../context/theme"
+import { BoxRenderable, ScrollBoxRenderable, addDefaultParsers, TextAttributes, RGBA } from "@opentui/core"
+import { Prompt, type PromptRef } from "../../component/prompt"
 import type {
   AssistantMessage,
   Part,
@@ -36,51 +36,51 @@ import type {
   TextPart,
   ReasoningPart,
   SessionStatus,
-} from "@lgcode/sdk@lgcode/v2"
-import { useLocal } from "..@lgcode/..@lgcode/context@lgcode/local"
-import { Locale } from "..@lgcode/..@lgcode/util@lgcode/locale"
-import { webSearchProviderLabel } from "..@lgcode/..@lgcode/util@lgcode/tool-display"
-import { useRenderer, useTerminalDimensions, type JSX } from "@opentui@lgcode/solid"
-import { useSDK } from "..@lgcode/..@lgcode/context@lgcode/sdk"
-import { useEditorContext } from "..@lgcode/..@lgcode/context@lgcode/editor"
-import { openEditor } from "..@lgcode/..@lgcode/editor"
-import { useDialog } from "..@lgcode/..@lgcode/ui@lgcode/dialog"
-import { DialogAlert } from "..@lgcode/..@lgcode/ui@lgcode/dialog-alert"
-import { TodoItem } from "..@lgcode/..@lgcode/component@lgcode/todo-item"
-import { DialogMessage } from ".@lgcode/dialog-message"
-import type { PromptInfo } from "..@lgcode/..@lgcode/component@lgcode/prompt@lgcode/history"
-import { DialogConfirm } from "..@lgcode/..@lgcode/ui@lgcode/dialog-confirm"
-import { DialogTimeline } from ".@lgcode/dialog-timeline"
-import { DialogForkFromTimeline } from ".@lgcode/dialog-fork-from-timeline"
-import { DialogSessionRename } from "..@lgcode/..@lgcode/component@lgcode/dialog-session-rename"
-import { Sidebar } from ".@lgcode/sidebar"
-import { SubagentFooter } from ".@lgcode/subagent-footer.tsx"
-import { filetype } from "..@lgcode/..@lgcode/util@lgcode/filetype"
-import parsers from "..@lgcode/..@lgcode/parsers-config"
-import { errorMessage } from "..@lgcode/..@lgcode/util@lgcode/error"
-import { Toast, useToast } from "..@lgcode/..@lgcode/ui@lgcode/toast"
-import { useKV } from "..@lgcode/..@lgcode/context@lgcode/kv.tsx"
+} from "@opencode@lgcode/sdk/v2"
+import { useLocal } from "../../context/local"
+import { Locale } from "../../util/locale"
+import { webSearchProviderLabel } from "../../util/tool-display"
+import { useRenderer, useTerminalDimensions, type JSX } from "@opentui/solid"
+import { useSDK } from "../../context/sdk"
+import { useEditorContext } from "../../context/editor"
+import { openEditor } from "../../editor"
+import { useDialog } from "../../ui/dialog"
+import { DialogAlert } from "../../ui/dialog-alert"
+import { TodoItem } from "../../component/todo-item"
+import { DialogMessage } from "./dialog-message"
+import type { PromptInfo } from "../../component/prompt/history"
+import { DialogConfirm } from "../../ui/dialog-confirm"
+import { DialogTimeline } from "./dialog-timeline"
+import { DialogForkFromTimeline } from "./dialog-fork-from-timeline"
+import { DialogSessionRename } from "../../component/dialog-session-rename"
+import { Sidebar } from "./sidebar"
+import { SubagentFooter } from "./subagent-footer.tsx"
+import { filetype } from "../../util/filetype"
+import parsers from "../../parsers-config"
+import { errorMessage } from "../../util/error"
+import { Toast, useToast } from "../../ui/toast"
+import { useKV } from "../../context/kv.tsx"
 import stripAnsi from "strip-ansi"
-import { usePromptRef } from "..@lgcode/..@lgcode/context@lgcode/prompt"
-import { useEpilogue } from "..@lgcode/..@lgcode/context@lgcode/epilogue"
-import { normalizePath } from "..@lgcode/..@lgcode/util@lgcode/path"
-import { PermissionPrompt } from ".@lgcode/permission"
-import { QuestionPrompt } from ".@lgcode/question"
-import { DialogExportOptions } from "..@lgcode/..@lgcode/ui@lgcode/dialog-export-options"
-import * as Model from "..@lgcode/..@lgcode/util@lgcode/model"
-import { formatTranscript } from "..@lgcode/..@lgcode/util@lgcode/transcript"
-import { sessionEpilogue } from "..@lgcode/..@lgcode/util@lgcode/presentation"
-import { setPreLayoutSiblingMargin } from "..@lgcode/..@lgcode/util@lgcode/layout"
-import { useTuiConfig } from "..@lgcode/..@lgcode/config"
-import { useClipboard } from "..@lgcode/..@lgcode/context@lgcode/clipboard"
-import { nextThinkingMode, reasoningSummary, useThinkingMode, type ThinkingMode } from "..@lgcode/..@lgcode/context@lgcode/thinking"
-import { getScrollAcceleration } from "..@lgcode/..@lgcode/util@lgcode/scroll"
-import { collapseToolOutput } from "..@lgcode/..@lgcode/util@lgcode/collapse-tool-output"
-import { usePluginRuntime } from "..@lgcode/..@lgcode/plugin@lgcode/runtime"
-import { DialogRetryAction } from "..@lgcode/..@lgcode/component@lgcode/dialog-retry-action"
-import { getRevertDiffFiles } from "..@lgcode/..@lgcode/util@lgcode/revert-diff"
-import { OPENCODE_BASE_MODE, useBindings, useCommandShortcut, useOpencodeKeymap } from "..@lgcode/..@lgcode/keymap"
-import { PathFormatterProvider, usePathFormatter } from "..@lgcode/..@lgcode/context@lgcode/path-format"
+import { usePromptRef } from "../../context/prompt"
+import { useEpilogue } from "../../context/epilogue"
+import { normalizePath } from "../../util/path"
+import { PermissionPrompt } from "./permission"
+import { QuestionPrompt } from "./question"
+import { DialogExportOptions } from "../../ui/dialog-export-options"
+import * as Model from "../../util/model"
+import { formatTranscript } from "../../util/transcript"
+import { sessionEpilogue } from "../../util/presentation"
+import { setPreLayoutSiblingMargin } from "../../util/layout"
+import { useTuiConfig } from "../../config"
+import { useClipboard } from "../../context/clipboard"
+import { nextThinkingMode, reasoningSummary, useThinkingMode, type ThinkingMode } from "../../context/thinking"
+import { getScrollAcceleration } from "../../util/scroll"
+import { collapseToolOutput } from "../../util/collapse-tool-output"
+import { usePluginRuntime } from "../../plugin/runtime"
+import { DialogRetryAction } from "../../component/dialog-retry-action"
+import { getRevertDiffFiles } from "../../util/revert-diff"
+import { OPENCODE_BASE_MODE, useBindings, useCommandShortcut, useOpencodeKeymap } from "../../keymap"
+import { PathFormatterProvider, usePathFormatter } from "../../context/path-format"
 
 addDefaultParsers(parsers.parsers)
 
@@ -88,7 +88,7 @@ const GO_UPSELL_FREE_TIER_LAST_SEEN_AT = "go_upsell_last_seen_at"
 const GO_UPSELL_FREE_TIER_DONT_SHOW = "go_upsell_dont_show"
 const GO_UPSELL_ACCOUNT_RATE_LIMIT_LAST_SEEN_AT = "go_upsell_account_rate_limit_last_seen_at"
 const GO_UPSELL_ACCOUNT_RATE_LIMIT_DONT_SHOW = "go_upsell_account_rate_limit_dont_show"
-const GO_UPSELL_WINDOW = 86_400_000 @lgcode/@lgcode/ 24 hrs
+const GO_UPSELL_WINDOW = 86_400_000 // 24 hrs
 const GO_UPSELL_PROVIDERS = new Set(["opencode", "opencode-go"])
 
 type RetryAction = Extract<SessionStatus, { type: "retry" }>["action"]
@@ -294,10 +294,10 @@ export function Session() {
       if (result.data.workspaceID !== previousWorkspace) {
         project.workspace.set(result.data.workspaceID)
 
-        @lgcode/@lgcode/ Sync all the data for this workspace. Note that this
-        @lgcode/@lgcode/ workspace may not exist anymore which is why this is not
-        @lgcode/@lgcode/ fatal. If it doesn't we still want to show the session
-        @lgcode/@lgcode/ (which will be non-interactive)
+        // Sync all the data for this workspace. Note that this
+        // workspace may not exist anymore which is why this is not
+        // fatal. If it doesn't we still want to show the session
+        // (which will be non-interactive)
         try {
           await sync.bootstrap({ fatal: false })
         } catch {}
@@ -367,20 +367,20 @@ export function Session() {
     })
   })
 
-  @lgcode/@lgcode/ Helper: Find next visible message boundary in direction
+  // Helper: Find next visible message boundary in direction
   const findNextVisibleMessage = (direction: "next" | "prev"): string | null => {
     const children = scroll.getChildren()
     const messagesList = messages()
     const scrollTop = scroll.y
 
-    @lgcode/@lgcode/ Get visible messages sorted by position, filtering for valid non-synthetic, non-ignored content
+    // Get visible messages sorted by position, filtering for valid non-synthetic, non-ignored content
     const visibleMessages = children
       .filter((c) => {
         if (!c.id) return false
         const message = messagesList.find((m) => m.id === c.id)
         if (!message) return false
 
-        @lgcode/@lgcode/ Check if message has valid non-synthetic, non-ignored text parts
+        // Check if message has valid non-synthetic, non-ignored text parts
         const parts = sync.data.part[message.id]
         if (!parts || !Array.isArray(parts)) return false
 
@@ -391,14 +391,14 @@ export function Session() {
     if (visibleMessages.length === 0) return null
 
     if (direction === "next") {
-      @lgcode/@lgcode/ Find first message below current position
+      // Find first message below current position
       return visibleMessages.find((c) => c.y > scrollTop + 10)?.id ?? null
     }
-    @lgcode/@lgcode/ Find last message above current position
+    // Find last message above current position
     return [...visibleMessages].reverse().find((c) => c.y < scrollTop - 10)?.id ?? null
   }
 
-  @lgcode/@lgcode/ Helper: Scroll to message in direction or fallback to page scroll
+  // Helper: Scroll to message in direction or fallback to page scroll
   const scrollToMessage = (direction: "next" | "prev", dialog: ReturnType<typeof useDialog>) => {
     const targetID = findNextVisibleMessage(direction)
 
@@ -504,7 +504,7 @@ export function Session() {
         name: "rename",
       },
       run: () => {
-        dialog.replace(() => <DialogSessionRename session={route.sessionID} @lgcode/>)
+        dialog.replace(() => <DialogSessionRename session={route.sessionID} />)
       },
     },
     {
@@ -525,7 +525,7 @@ export function Session() {
             }}
             sessionID={route.sessionID}
             setPrompt={(promptInfo) => prompt?.set(promptInfo)}
-          @lgcode/>
+          />
         ))
       },
     },
@@ -547,7 +547,7 @@ export function Session() {
               if (child) scroll.scrollBy(child.y - scroll.y - 1)
             }}
             sessionID={route.sessionID}
-          @lgcode/>
+          />
         ))
       },
     },
@@ -748,7 +748,7 @@ export function Session() {
       category: "Session",
       hidden: true,
       run: () => {
-        scroll.scrollBy(-scroll.height @lgcode/ 2)
+        scroll.scrollBy(-scroll.height / 2)
         dialog.clear()
       },
     },
@@ -758,7 +758,7 @@ export function Session() {
       category: "Session",
       hidden: true,
       run: () => {
-        scroll.scrollBy(scroll.height @lgcode/ 2)
+        scroll.scrollBy(scroll.height / 2)
         dialog.clear()
       },
     },
@@ -788,7 +788,7 @@ export function Session() {
       category: "Session",
       hidden: true,
       run: () => {
-        scroll.scrollBy(-scroll.height @lgcode/ 4)
+        scroll.scrollBy(-scroll.height / 4)
         dialog.clear()
       },
     },
@@ -798,7 +798,7 @@ export function Session() {
       category: "Session",
       hidden: true,
       run: () => {
-        scroll.scrollBy(scroll.height @lgcode/ 4)
+        scroll.scrollBy(scroll.height / 4)
         dialog.clear()
       },
     },
@@ -831,7 +831,7 @@ export function Session() {
         const messages = sync.data.message[route.sessionID]
         if (!messages || !messages.length) return
 
-        @lgcode/@lgcode/ Find the most recent user message with non-ignored, non-synthetic text parts
+        // Find the most recent user message with non-ignored, non-synthetic text parts
         for (let i = messages.length - 1; i >= 0; i--) {
           const message = messages[i]
           if (!message || message.role !== "user") continue
@@ -978,12 +978,12 @@ export function Session() {
           )
 
           if (options.openWithoutSaving) {
-            @lgcode/@lgcode/ Just open in editor without saving
+            // Just open in editor without saving
             await openEditor({
               renderer,
               value: transcript,
               cwd:
-                (project.instance.path().worktree === "@lgcode/" ? undefined : project.instance.path().worktree) ||
+                (project.instance.path().worktree === "/" ? undefined : project.instance.path().worktree) ||
                 project.instance.directory() ||
                 paths.cwd,
             })
@@ -994,12 +994,12 @@ export function Session() {
 
             await writeExport(filepath, transcript)
 
-            @lgcode/@lgcode/ Open with EDITOR if available
+            // Open with EDITOR if available
             const result = await openEditor({
               renderer,
               value: transcript,
               cwd:
-                (project.instance.path().worktree === "@lgcode/" ? undefined : project.instance.path().worktree) ||
+                (project.instance.path().worktree === "/" ? undefined : project.instance.path().worktree) ||
                 project.instance.directory() ||
                 paths.cwd,
             })
@@ -1139,7 +1139,7 @@ export function Session() {
     }
   })
 
-  @lgcode/@lgcode/ snap to bottom when session changes
+  // snap to bottom when session changes
   createEffect(on(() => route.sessionID, toBottom))
 
   return (
@@ -1184,7 +1184,7 @@ export function Session() {
                 flexGrow={1}
                 scrollAcceleration={scrollAcceleration()}
               >
-                <box height={1} @lgcode/>
+                <box height={1} />
                 <For each={messages()}>
                   {(message, index) => (
                     <Switch>
@@ -1222,10 +1222,10 @@ export function Session() {
                                 paddingLeft={2}
                                 backgroundColor={hover() ? theme.backgroundElement : theme.backgroundPanel}
                               >
-                                <text fg={theme.textMuted}>{revert()!.reverted.length} message reverted<@lgcode/text>
+                                <text fg={theme.textMuted}>{revert()!.reverted.length} message reverted</text>
                                 <text fg={theme.textMuted}>
-                                  <span style={{ fg: theme.text }}>{redoShortcut()}<@lgcode/span> or @lgcode/redo to restore
-                                <@lgcode/text>
+                                  <span style={{ fg: theme.text }}>{redoShortcut()}</span> or /redo to restore
+                                </text>
                                 <Show when={revert()!.diffFiles?.length}>
                                   <box marginTop={1}>
                                     <For each={revert()!.diffFiles}>
@@ -1233,24 +1233,24 @@ export function Session() {
                                         <text fg={theme.text}>
                                           {file.filename}
                                           <Show when={file.additions > 0}>
-                                            <span style={{ fg: theme.diffAdded }}> +{file.additions}<@lgcode/span>
-                                          <@lgcode/Show>
+                                            <span style={{ fg: theme.diffAdded }}> +{file.additions}</span>
+                                          </Show>
                                           <Show when={file.deletions > 0}>
-                                            <span style={{ fg: theme.diffRemoved }}> -{file.deletions}<@lgcode/span>
-                                          <@lgcode/Show>
-                                        <@lgcode/text>
+                                            <span style={{ fg: theme.diffRemoved }}> -{file.deletions}</span>
+                                          </Show>
+                                        </text>
                                       )}
-                                    <@lgcode/For>
-                                  <@lgcode/box>
-                                <@lgcode/Show>
-                              <@lgcode/box>
-                            <@lgcode/box>
+                                    </For>
+                                  </box>
+                                </Show>
+                              </box>
+                            </box>
                           )
                         })()}
-                      <@lgcode/Match>
+                      </Match>
                       <Match when={revert()?.messageID && message.id >= revert()!.messageID}>
-                        <><@lgcode/>
-                      <@lgcode/Match>
+                        <></>
+                      </Match>
                       <Match when={message.role === "user"}>
                         <UserMessage
                           index={index()}
@@ -1261,41 +1261,41 @@ export function Session() {
                                 messageID={message.id}
                                 sessionID={route.sessionID}
                                 setPrompt={(promptInfo) => prompt?.set(promptInfo)}
-                              @lgcode/>
+                              />
                             ))
                           }}
                           message={message as UserMessage}
                           parts={sync.data.part[message.id] ?? []}
                           pending={pending()}
-                        @lgcode/>
-                      <@lgcode/Match>
+                        />
+                      </Match>
                       <Match when={message.role === "assistant"}>
                         <AssistantMessage
                           last={lastAssistant()?.id === message.id}
                           message={message as AssistantMessage}
                           parts={sync.data.part[message.id] ?? []}
-                        @lgcode/>
-                      <@lgcode/Match>
-                    <@lgcode/Switch>
+                        />
+                      </Match>
+                    </Switch>
                   )}
-                <@lgcode/For>
-              <@lgcode/scrollbox>
+                </For>
+              </scrollbox>
               <box flexShrink={0}>
                 <Show when={permissions().length > 0}>
                   <PermissionPrompt
                     request={permissions()[0]}
                     directory={sync.session.get(permissions()[0].sessionID)?.directory}
-                  @lgcode/>
-                <@lgcode/Show>
+                  />
+                </Show>
                 <Show when={permissions().length === 0 && questions().length > 0}>
                   <QuestionPrompt
                     request={questions()[0]}
                     directory={sync.session.get(questions()[0].sessionID)?.directory}
-                  @lgcode/>
-                <@lgcode/Show>
+                  />
+                </Show>
                 <Show when={session()?.parentID}>
-                  <SubagentFooter @lgcode/>
-                <@lgcode/Show>
+                  <SubagentFooter />
+                </Show>
                 <Show when={visible()}>
                   <pluginRuntime.Slot
                     name="session_prompt"
@@ -1314,19 +1314,19 @@ export function Session() {
                         toBottom()
                       }}
                       sessionID={route.sessionID}
-                      right={<pluginRuntime.Slot name="session_prompt_right" session_id={route.sessionID} @lgcode/>}
-                    @lgcode/>
-                  <@lgcode/pluginRuntime.Slot>
-                <@lgcode/Show>
-              <@lgcode/box>
-            <@lgcode/Show>
-            <Toast @lgcode/>
-          <@lgcode/box>
+                      right={<pluginRuntime.Slot name="session_prompt_right" session_id={route.sessionID} />}
+                    />
+                  </pluginRuntime.Slot>
+                </Show>
+              </box>
+            </Show>
+            <Toast />
+          </box>
           <Show when={sidebarVisible()}>
             <Switch>
               <Match when={wide()}>
-                <Sidebar sessionID={route.sessionID} @lgcode/>
-              <@lgcode/Match>
+                <Sidebar sessionID={route.sessionID} />
+              </Match>
               <Match when={!wide()}>
                 <box
                   position="absolute"
@@ -1337,25 +1337,25 @@ export function Session() {
                   alignItems="flex-end"
                   backgroundColor={RGBA.fromInts(0, 0, 0, 70)}
                 >
-                  <Sidebar sessionID={route.sessionID} @lgcode/>
-                <@lgcode/box>
-              <@lgcode/Match>
-            <@lgcode/Switch>
-          <@lgcode/Show>
-        <@lgcode/box>
-      <@lgcode/context.Provider>
-    <@lgcode/PathFormatterProvider>
+                  <Sidebar sessionID={route.sessionID} />
+                </box>
+              </Match>
+            </Switch>
+          </Show>
+        </box>
+      </context.Provider>
+    </PathFormatterProvider>
   )
 }
 
 const MIME_BADGE: Record<string, string> = {
-  "text@lgcode/plain": "txt",
-  "image@lgcode/png": "img",
-  "image@lgcode/jpeg": "img",
-  "image@lgcode/gif": "img",
-  "image@lgcode/webp": "img",
-  "application@lgcode/pdf": "pdf",
-  "application@lgcode/x-directory": "dir",
+  "text/plain": "txt",
+  "image/png": "img",
+  "image/jpeg": "img",
+  "image/gif": "img",
+  "image/webp": "img",
+  "application/pdf": "pdf",
+  "application/x-directory": "dir",
 }
 
 function UserMessage(props: {
@@ -1412,26 +1412,26 @@ function UserMessage(props: {
             backgroundColor={hover() ? theme.backgroundElement : theme.backgroundPanel}
             flexShrink={0}
           >
-            <text fg={theme.text}>{text()}<@lgcode/text>
+            <text fg={theme.text}>{text()}</text>
             <Show when={files().length}>
               <box flexDirection="row" paddingBottom={metadataVisible() ? 1 : 0} paddingTop={1} gap={1} flexWrap="wrap">
                 <For each={files()}>
                   {(file) => {
                     const bg = createMemo(() => {
-                      if (file.mime.startsWith("image@lgcode/")) return theme.accent
-                      if (file.mime === "application@lgcode/pdf") return theme.primary
+                      if (file.mime.startsWith("image/")) return theme.accent
+                      if (file.mime === "application/pdf") return theme.primary
                       return theme.secondary
                     })
                     return (
                       <text fg={theme.text}>
-                        <span style={{ bg: bg(), fg: theme.background }}> {MIME_BADGE[file.mime] ?? file.mime} <@lgcode/span>
-                        <span style={{ bg: theme.backgroundElement, fg: theme.textMuted }}> {file.filename} <@lgcode/span>
-                      <@lgcode/text>
+                        <span style={{ bg: bg(), fg: theme.background }}> {MIME_BADGE[file.mime] ?? file.mime} </span>
+                        <span style={{ bg: theme.backgroundElement, fg: theme.textMuted }}> {file.filename} </span>
+                      </text>
                     )
                   }}
-                <@lgcode/For>
-              <@lgcode/box>
-            <@lgcode/Show>
+                </For>
+              </box>
+            </Show>
             <Show
               when={queued()}
               fallback={
@@ -1439,18 +1439,18 @@ function UserMessage(props: {
                   <text fg={theme.textMuted}>
                     <span style={{ fg: theme.textMuted }}>
                       {Locale.todayTimeOrDateTime(props.message.time.created)}
-                    <@lgcode/span>
-                  <@lgcode/text>
-                <@lgcode/Show>
+                    </span>
+                  </text>
+                </Show>
               }
             >
               <text fg={theme.textMuted}>
-                <span style={{ bg: color(), fg: queuedFg(), bold: true }}> QUEUED <@lgcode/span>
-              <@lgcode/text>
-            <@lgcode/Show>
-          <@lgcode/box>
-        <@lgcode/box>
-      <@lgcode/Show>
+                <span style={{ bg: color(), fg: queuedFg(), bold: true }}> QUEUED </span>
+              </text>
+            </Show>
+          </box>
+        </box>
+      </Show>
       <Show when={compaction()}>
         <box
           marginTop={1}
@@ -1458,9 +1458,9 @@ function UserMessage(props: {
           title=" Compaction "
           titleAlignment="center"
           borderColor={theme.borderActive}
-        @lgcode/>
-      <@lgcode/Show>
-    <@lgcode/>
+        />
+      </Show>
+    </>
   )
 }
 
@@ -1499,16 +1499,16 @@ function AssistantMessage(props: { message: AssistantMessage; parts: Part[]; las
                 component={component()}
                 part={part as any}
                 message={props.message}
-              @lgcode/>
-            <@lgcode/Show>
+              />
+            </Show>
           )
         }}
-      <@lgcode/For>
+      </For>
       <Show when={props.parts.some((x) => x.type === "tool" && x.tool === "task")}>
         <box paddingTop={1} paddingLeft={3}>
           <text fg={theme.text}>
             {childShortcut()}
-            <span style={{ fg: theme.textMuted }}> view subagents<@lgcode/span>
+            <span style={{ fg: theme.textMuted }}> view subagents</span>
             <Show
               when={props.parts.some(
                 (x) =>
@@ -1518,13 +1518,13 @@ function AssistantMessage(props: { message: AssistantMessage; parts: Part[]; las
                   x.state.metadata?.background !== true,
               )}
             >
-              <span style={{ fg: theme.textMuted }}> · <@lgcode/span>
+              <span style={{ fg: theme.textMuted }}> · </span>
               {backgroundShortcut()}
-              <span style={{ fg: theme.textMuted }}> background<@lgcode/span>
-            <@lgcode/Show>
-          <@lgcode/text>
-        <@lgcode/box>
-      <@lgcode/Show>
+              <span style={{ fg: theme.textMuted }}> background</span>
+            </Show>
+          </text>
+        </box>
+      </Show>
       <Show when={props.message.error && props.message.error.name !== "MessageAbortedError"}>
         <box
           id={`assistant-error-${props.message.id}`}
@@ -1537,9 +1537,9 @@ function AssistantMessage(props: { message: AssistantMessage; parts: Part[]; las
           customBorderChars={SplitBorder.customBorderChars}
           borderColor={theme.error}
         >
-          <text fg={theme.textMuted}>{props.message.error?.data.message}<@lgcode/text>
-        <@lgcode/box>
-      <@lgcode/Show>
+          <text fg={theme.textMuted}>{props.message.error?.data.message}</text>
+        </box>
+      </Show>
       <Switch>
         <Match when={props.last || final() || props.message.error?.name === "MessageAbortedError"}>
           <box id={`assistant-summary-${props.message.id}`} paddingLeft={3}>
@@ -1553,20 +1553,20 @@ function AssistantMessage(props: { message: AssistantMessage; parts: Part[]; las
                 }}
               >
                 ▣{" "}
-              <@lgcode/span>{" "}
-              <span style={{ fg: theme.text }}>{Locale.titlecase(props.message.mode)}<@lgcode/span>
-              <span style={{ fg: theme.textMuted }}> · {model()}<@lgcode/span>
+              </span>{" "}
+              <span style={{ fg: theme.text }}>{Locale.titlecase(props.message.mode)}</span>
+              <span style={{ fg: theme.textMuted }}> · {model()}</span>
               <Show when={duration()}>
-                <span style={{ fg: theme.textMuted }}> · {Locale.duration(duration())}<@lgcode/span>
-              <@lgcode/Show>
+                <span style={{ fg: theme.textMuted }}> · {Locale.duration(duration())}</span>
+              </Show>
               <Show when={props.message.error?.name === "MessageAbortedError"}>
-                <span style={{ fg: theme.textMuted }}> · interrupted<@lgcode/span>
-              <@lgcode/Show>
-            <@lgcode/text>
-          <@lgcode/box>
-        <@lgcode/Match>
-      <@lgcode/Switch>
-    <@lgcode/>
+                <span style={{ fg: theme.textMuted }}> · interrupted</span>
+              </Show>
+            </text>
+          </box>
+        </Match>
+      </Switch>
+    </>
   )
 }
 
@@ -1581,16 +1581,16 @@ const INLINE_TOOL_ICON_WIDTH = 2
 function ReasoningPart(props: { last: boolean; part: ReasoningPart; message: AssistantMessage }) {
   const { theme } = useTheme()
   const ctx = use()
-  @lgcode/@lgcode/ Collapsed by default in hide mode: a single line throughout, so the
-  @lgcode/@lgcode/ layout never shifts. Click to open the full markdown block, click to close.
+  // Collapsed by default in hide mode: a single line throughout, so the
+  // layout never shifts. Click to open the full markdown block, click to close.
   const [expanded, setExpanded] = createSignal(false)
 
   const content = createMemo(() => {
-    @lgcode/@lgcode/ OpenRouter encrypts some reasoning blocks; drop the placeholder.
+    // OpenRouter encrypts some reasoning blocks; drop the placeholder.
     return props.part.text.replace("[REDACTED]", "").trim()
   })
-  @lgcode/@lgcode/ Reasoning is finalized when the server sets `time.end` (see processor.ts).
-  @lgcode/@lgcode/ Flips independently of the parent message completing.
+  // Reasoning is finalized when the server sets `time.end` (see processor.ts).
+  // Flips independently of the parent message completing.
   const isDone = createMemo(() => props.part.time.end !== undefined)
   const inMinimal = createMemo(() => ctx.thinkingMode() === "hide")
   const duration = createMemo(() => {
@@ -1621,8 +1621,8 @@ function ReasoningPart(props: { last: boolean; part: ReasoningPart; message: Ass
             done={isDone()}
             title={summary().title}
             duration={isDone() ? Locale.duration(duration()) : undefined}
-          @lgcode/>
-        <@lgcode/box>
+          />
+        </box>
         <Show when={(!inMinimal() || expanded()) && summary().body}>
           <box paddingLeft={inMinimal() ? 2 : 0} marginTop={1}>
             <code
@@ -1633,11 +1633,11 @@ function ReasoningPart(props: { last: boolean; part: ReasoningPart; message: Ass
               content={summary().body}
               conceal={ctx.conceal()}
               fg={theme.textMuted}
-            @lgcode/>
-          <@lgcode/box>
-        <@lgcode/Show>
-      <@lgcode/box>
-    <@lgcode/Show>
+            />
+          </box>
+        </Show>
+      </box>
+    </Show>
   )
 }
 
@@ -1658,30 +1658,30 @@ function ReasoningHeader(props: {
     <Switch>
       <Match when={!props.done}>
         <box flexDirection="row">
-          <Spinner color={fg()}>{props.title ? "Thinking: " + props.title : "Thinking"}<@lgcode/Spinner>
-        <@lgcode/box>
-      <@lgcode/Match>
+          <Spinner color={fg()}>{props.title ? "Thinking: " + props.title : "Thinking"}</Spinner>
+        </box>
+      </Match>
       <Match when={true}>
         <text fg={fg()} wrapMode="none">
           <Show when={props.toggleable}>
-            <span>{props.open ? "- " : "+ "}<@lgcode/span>
-          <@lgcode/Show>
-          <span>Thought<@lgcode/span>
+            <span>{props.open ? "- " : "+ "}</span>
+          </Show>
+          <span>Thought</span>
           <Show when={props.title || props.duration}>
-            <span>: <@lgcode/span>
-          <@lgcode/Show>
+            <span>: </span>
+          </Show>
           <Show when={props.title}>
-            <span>{props.title}<@lgcode/span>
-          <@lgcode/Show>
+            <span>{props.title}</span>
+          </Show>
           <Show when={props.duration}>
             <span>
               {props.title ? " · " : ""}
               {props.duration}
-            <@lgcode/span>
-          <@lgcode/Show>
-        <@lgcode/text>
-      <@lgcode/Match>
-    <@lgcode/Switch>
+            </span>
+          </Show>
+        </text>
+      </Match>
+    </Switch>
   )
 }
 
@@ -1700,19 +1700,19 @@ function TextPart(props: { last: boolean; part: TextPart; message: AssistantMess
           conceal={ctx.conceal()}
           fg={theme.markdownText}
           bg={theme.background}
-        @lgcode/>
-      <@lgcode/box>
-    <@lgcode/Show>
+        />
+      </box>
+    </Show>
   )
 }
 
-@lgcode/@lgcode/ Pending messages moved to individual tool pending functions
+// Pending messages moved to individual tool pending functions
 
 function ToolPart(props: { last: boolean; part: ToolPart; message: AssistantMessage }) {
   const ctx = use()
   const display = createMemo(() => toolDisplay(props.part.tool))
 
-  @lgcode/@lgcode/ Hide tool if showDetails is false and tool completed successfully
+  // Hide tool if showDetails is false and tool completed successfully
   const shouldHide = createMemo(() => {
     if (ctx.showDetails()) return false
     if (props.part.state.status !== "completed") return false
@@ -1741,49 +1741,49 @@ function ToolPart(props: { last: boolean; part: ToolPart; message: AssistantMess
     <Show when={!shouldHide()}>
       <Switch>
         <Match when={display() === "bash"}>
-          <Shell {...toolprops} @lgcode/>
-        <@lgcode/Match>
+          <Shell {...toolprops} />
+        </Match>
         <Match when={display() === "glob"}>
-          <Glob {...toolprops} @lgcode/>
-        <@lgcode/Match>
+          <Glob {...toolprops} />
+        </Match>
         <Match when={display() === "read"}>
-          <Read {...toolprops} @lgcode/>
-        <@lgcode/Match>
+          <Read {...toolprops} />
+        </Match>
         <Match when={display() === "grep"}>
-          <Grep {...toolprops} @lgcode/>
-        <@lgcode/Match>
+          <Grep {...toolprops} />
+        </Match>
         <Match when={display() === "webfetch"}>
-          <WebFetch {...toolprops} @lgcode/>
-        <@lgcode/Match>
+          <WebFetch {...toolprops} />
+        </Match>
         <Match when={display() === "websearch"}>
-          <WebSearch {...toolprops} @lgcode/>
-        <@lgcode/Match>
+          <WebSearch {...toolprops} />
+        </Match>
         <Match when={display() === "write"}>
-          <Write {...toolprops} @lgcode/>
-        <@lgcode/Match>
+          <Write {...toolprops} />
+        </Match>
         <Match when={display() === "edit"}>
-          <Edit {...toolprops} @lgcode/>
-        <@lgcode/Match>
+          <Edit {...toolprops} />
+        </Match>
         <Match when={display() === "task"}>
-          <Task {...toolprops} @lgcode/>
-        <@lgcode/Match>
+          <Task {...toolprops} />
+        </Match>
         <Match when={display() === "apply_patch"}>
-          <ApplyPatch {...toolprops} @lgcode/>
-        <@lgcode/Match>
+          <ApplyPatch {...toolprops} />
+        </Match>
         <Match when={display() === "todowrite"}>
-          <TodoWrite {...toolprops} @lgcode/>
-        <@lgcode/Match>
+          <TodoWrite {...toolprops} />
+        </Match>
         <Match when={display() === "question"}>
-          <Question {...toolprops} @lgcode/>
-        <@lgcode/Match>
+          <Question {...toolprops} />
+        </Match>
         <Match when={display() === "skill"}>
-          <Skill {...toolprops} @lgcode/>
-        <@lgcode/Match>
+          <Skill {...toolprops} />
+        </Match>
         <Match when={true}>
-          <GenericTool {...toolprops} @lgcode/>
-        <@lgcode/Match>
-      <@lgcode/Switch>
-    <@lgcode/Show>
+          <GenericTool {...toolprops} />
+        </Match>
+      </Switch>
+    </Show>
   )
 }
 
@@ -1813,7 +1813,7 @@ function GenericTool(props: ToolProps) {
       fallback={
         <InlineTool icon="⚙" pending="Writing command..." complete={true} part={props.part}>
           {props.tool} {input(props.input)}
-        <@lgcode/InlineTool>
+        </InlineTool>
       }
     >
       <BlockTool
@@ -1822,13 +1822,13 @@ function GenericTool(props: ToolProps) {
         onClick={collapsed().overflow ? () => setExpanded((prev) => !prev) : undefined}
       >
         <box gap={1}>
-          <text fg={theme.text}>{limited()}<@lgcode/text>
+          <text fg={theme.text}>{limited()}</text>
           <Show when={collapsed().overflow}>
-            <text fg={theme.textMuted}>{expanded() ? "Click to collapse" : "Click to expand"}<@lgcode/text>
-          <@lgcode/Show>
-        <@lgcode/box>
-      <@lgcode/BlockTool>
-    <@lgcode/Show>
+            <text fg={theme.textMuted}>{expanded() ? "Click to collapse" : "Click to expand"}</text>
+          </Show>
+        </box>
+      </BlockTool>
+    </Show>
   )
 }
 
@@ -1908,7 +1908,7 @@ function InlineTool(props: {
       }}
     >
       {props.children}
-    <@lgcode/InlineToolRow>
+    </InlineToolRow>
   )
 }
 
@@ -1957,8 +1957,8 @@ export function InlineToolRow(props: {
     >
       <Switch>
         <Match when={props.spinner}>
-          <Spinner color={props.color} children={props.children} @lgcode/>
-        <@lgcode/Match>
+          <Spinner color={props.color} children={props.children} />
+        </Match>
         <Match when={true}>
           <Show
             fallback={
@@ -1968,7 +1968,7 @@ export function InlineToolRow(props: {
                 attributes={props.denied ? TextAttributes.STRIKETHROUGH : undefined}
               >
                 ~ {props.pending}
-              <@lgcode/text>
+              </text>
             }
             when={props.complete || props.failed}
           >
@@ -1979,24 +1979,24 @@ export function InlineToolRow(props: {
                 attributes={props.denied ? TextAttributes.STRIKETHROUGH : undefined}
               >
                 {props.icon}
-              <@lgcode/text>
+              </text>
               <text
                 flexGrow={1}
                 fg={props.failed ? props.errorColor : props.color}
                 attributes={props.denied ? TextAttributes.STRIKETHROUGH : undefined}
               >
                 {props.failed && !props.complete ? (props.failure ?? props.children) : props.children}
-              <@lgcode/text>
-            <@lgcode/box>
-          <@lgcode/Show>
-        <@lgcode/Match>
-      <@lgcode/Switch>
+              </text>
+            </box>
+          </Show>
+        </Match>
+      </Switch>
       <Show when={props.failed && props.errorExpanded}>
         <box paddingLeft={INLINE_TOOL_ICON_WIDTH}>
-          <text fg={props.errorColor}>{props.error}<@lgcode/text>
-        <@lgcode/box>
-      <@lgcode/Show>
-    <@lgcode/box>
+          <text fg={props.errorColor}>{props.error}</text>
+        </box>
+      </Show>
+    </box>
   )
 }
 
@@ -2035,16 +2035,16 @@ function BlockTool(props: {
         fallback={
           <text paddingLeft={3} fg={theme.textMuted}>
             {props.title}
-          <@lgcode/text>
+          </text>
         }
       >
-        <Spinner color={theme.textMuted}>{props.title.replace(@lgcode/^# @lgcode/, "")}<@lgcode/Spinner>
-      <@lgcode/Show>
+        <Spinner color={theme.textMuted}>{props.title.replace(/^# /, "")}</Spinner>
+      </Show>
       {props.children}
       <Show when={error()}>
-        <text fg={theme.error}>{error()}<@lgcode/text>
-      <@lgcode/Show>
-    <@lgcode/box>
+        <text fg={theme.error}>{error()}</text>
+      </Show>
+    </box>
   )
 }
 
@@ -2087,22 +2087,22 @@ function Shell(props: ToolProps) {
           onClick={collapsed().overflow ? () => setExpanded((prev) => !prev) : undefined}
         >
           <box gap={1}>
-            <text fg={theme.text}>$ {stringValue(props.input.command)}<@lgcode/text>
+            <text fg={theme.text}>$ {stringValue(props.input.command)}</text>
             <Show when={output()}>
-              <text fg={theme.text}>{limited()}<@lgcode/text>
-            <@lgcode/Show>
+              <text fg={theme.text}>{limited()}</text>
+            </Show>
             <Show when={collapsed().overflow}>
-              <text fg={theme.textMuted}>{expanded() ? "Click to collapse" : "Click to expand"}<@lgcode/text>
-            <@lgcode/Show>
-          <@lgcode/box>
-        <@lgcode/BlockTool>
-      <@lgcode/Match>
+              <text fg={theme.textMuted}>{expanded() ? "Click to collapse" : "Click to expand"}</text>
+            </Show>
+          </box>
+        </BlockTool>
+      </Match>
       <Match when={true}>
         <InlineTool icon="$" pending="Writing command..." complete={stringValue(props.input.command)} part={props.part}>
           {stringValue(props.input.command)}
-        <@lgcode/InlineTool>
-      <@lgcode/Match>
-    <@lgcode/Switch>
+        </InlineTool>
+      </Match>
+    </Switch>
   )
 }
 
@@ -2124,11 +2124,11 @@ function Write(props: ToolProps) {
               filetype={filetype(stringValue(props.input.filePath))}
               syntaxStyle={syntax()}
               content={code()}
-            @lgcode/>
-          <@lgcode/line_number>
-          <Diagnostics diagnostics={props.metadata.diagnostics} filePath={stringValue(props.input.filePath) ?? ""} @lgcode/>
-        <@lgcode/BlockTool>
-      <@lgcode/Match>
+            />
+          </line_number>
+          <Diagnostics diagnostics={props.metadata.diagnostics} filePath={stringValue(props.input.filePath) ?? ""} />
+        </BlockTool>
+      </Match>
       <Match when={true}>
         <InlineTool
           icon="←"
@@ -2137,9 +2137,9 @@ function Write(props: ToolProps) {
           part={props.part}
         >
           Write {pathFormatter.format(stringValue(props.input.filePath))}
-        <@lgcode/InlineTool>
-      <@lgcode/Match>
-    <@lgcode/Switch>
+        </InlineTool>
+      </Match>
+    </Switch>
   )
 }
 
@@ -2148,11 +2148,11 @@ function Glob(props: ToolProps) {
   return (
     <InlineTool icon="✱" pending="Finding files..." complete={stringValue(props.input.pattern)} part={props.part}>
       Glob "{stringValue(props.input.pattern)}"{" "}
-      <Show when={stringValue(props.input.path)}>in {pathFormatter.format(stringValue(props.input.path))} <@lgcode/Show>
+      <Show when={stringValue(props.input.path)}>in {pathFormatter.format(stringValue(props.input.path))} </Show>
       <Show when={numberValue(props.metadata.count)}>
         ({numberValue(props.metadata.count)} {numberValue(props.metadata.count) === 1 ? "match" : "matches"})
-      <@lgcode/Show>
-    <@lgcode/InlineTool>
+      </Show>
+    </InlineTool>
   )
 }
 
@@ -2177,17 +2177,17 @@ function Read(props: ToolProps) {
         part={props.part}
       >
         Read {pathFormatter.format(stringValue(props.input.filePath))} {input(props.input, ["filePath"])}
-      <@lgcode/InlineTool>
+      </InlineTool>
       <For each={loaded()}>
         {(filepath, index) => (
           <box id={`tool-inline-loaded-${props.part.messageID}-${props.part.id}-${index()}`} paddingLeft={3}>
             <text paddingLeft={3} fg={theme.textMuted}>
               ↳ Loaded {pathFormatter.format(filepath)}
-            <@lgcode/text>
-          <@lgcode/box>
+            </text>
+          </box>
         )}
-      <@lgcode/For>
-    <@lgcode/>
+      </For>
+    </>
   )
 }
 
@@ -2196,11 +2196,11 @@ function Grep(props: ToolProps) {
   return (
     <InlineTool icon="✱" pending="Searching content..." complete={stringValue(props.input.pattern)} part={props.part}>
       Grep "{stringValue(props.input.pattern)}"{" "}
-      <Show when={stringValue(props.input.path)}>in {pathFormatter.format(stringValue(props.input.path))} <@lgcode/Show>
+      <Show when={stringValue(props.input.path)}>in {pathFormatter.format(stringValue(props.input.path))} </Show>
       <Show when={numberValue(props.metadata.matches)}>
         ({numberValue(props.metadata.matches)} {numberValue(props.metadata.matches) === 1 ? "match" : "matches"})
-      <@lgcode/Show>
-    <@lgcode/InlineTool>
+      </Show>
+    </InlineTool>
   )
 }
 
@@ -2208,7 +2208,7 @@ function WebFetch(props: ToolProps) {
   return (
     <InlineTool icon="%" pending="Fetching from the web..." complete={stringValue(props.input.url)} part={props.part}>
       WebFetch {stringValue(props.input.url)}
-    <@lgcode/InlineTool>
+    </InlineTool>
   )
 }
 
@@ -2216,8 +2216,8 @@ function WebSearch(props: ToolProps) {
   return (
     <InlineTool icon="◈" pending="Searching web..." complete={stringValue(props.input.query)} part={props.part}>
       {webSearchProviderLabel(props.metadata.provider)} "{stringValue(props.input.query)}"{" "}
-      <Show when={numberValue(props.metadata.numResults)}>({numberValue(props.metadata.numResults)} results)<@lgcode/Show>
-    <@lgcode/InlineTool>
+      <Show when={numberValue(props.metadata.numResults)}>({numberValue(props.metadata.numResults)} results)</Show>
+    </InlineTool>
   )
 }
 
@@ -2315,7 +2315,7 @@ function Task(props: ToolProps) {
       }}
     >
       {content()}
-    <@lgcode/InlineTool>
+    </InlineTool>
   )
 }
 
@@ -2344,7 +2344,7 @@ function Edit(props: ToolProps) {
   const view = createMemo(() => {
     const diffStyle = ctx.tui.diff_style
     if (diffStyle === "stacked") return "unified"
-    @lgcode/@lgcode/ Default to "auto" behavior
+    // Default to "auto" behavior
     return ctx.width > 120 ? "split" : "unified"
   })
 
@@ -2375,17 +2375,17 @@ function Edit(props: ToolProps) {
               lineNumberBg={theme.diffContextBg}
               addedLineNumberBg={theme.diffAddedLineNumberBg}
               removedLineNumberBg={theme.diffRemovedLineNumberBg}
-            @lgcode/>
-          <@lgcode/box>
-          <Diagnostics diagnostics={props.metadata.diagnostics} filePath={stringValue(props.input.filePath) ?? ""} @lgcode/>
-        <@lgcode/BlockTool>
-      <@lgcode/Match>
+            />
+          </box>
+          <Diagnostics diagnostics={props.metadata.diagnostics} filePath={stringValue(props.input.filePath) ?? ""} />
+        </BlockTool>
+      </Match>
       <Match when={true}>
         <InlineTool icon="←" pending="Preparing edit..." complete={stringValue(props.input.filePath)} part={props.part}>
           Edit {pathFormatter.format(stringValue(props.input.filePath))} {input({ replaceAll: props.input.replaceAll })}
-        <@lgcode/InlineTool>
-      <@lgcode/Match>
-    <@lgcode/Switch>
+        </InlineTool>
+      </Match>
+    </Switch>
   )
 }
 
@@ -2423,8 +2423,8 @@ function ApplyPatch(props: ToolProps) {
           lineNumberBg={theme.diffContextBg}
           addedLineNumberBg={theme.diffAddedLineNumberBg}
           removedLineNumberBg={theme.diffRemovedLineNumberBg}
-        @lgcode/>
-      <@lgcode/box>
+        />
+      </box>
     )
   }
 
@@ -2446,22 +2446,22 @@ function ApplyPatch(props: ToolProps) {
                 fallback={
                   <text fg={theme.diffRemoved}>
                     -{file.deletions} line{file.deletions !== 1 ? "s" : ""}
-                  <@lgcode/text>
+                  </text>
                 }
               >
-                <Diff diff={file.patch} filePath={file.filePath} @lgcode/>
-                <Diagnostics diagnostics={props.metadata.diagnostics} filePath={file.movePath ?? file.filePath} @lgcode/>
-              <@lgcode/Show>
-            <@lgcode/BlockTool>
+                <Diff diff={file.patch} filePath={file.filePath} />
+                <Diagnostics diagnostics={props.metadata.diagnostics} filePath={file.movePath ?? file.filePath} />
+              </Show>
+            </BlockTool>
           )}
-        <@lgcode/For>
-      <@lgcode/Match>
+        </For>
+      </Match>
       <Match when={true}>
         <InlineTool icon="%" pending="Preparing patch..." failure="Patch failed" complete={false} part={props.part}>
           Patch
-        <@lgcode/InlineTool>
-      <@lgcode/Match>
-    <@lgcode/Switch>
+        </InlineTool>
+      </Match>
+    </Switch>
   )
 }
 
@@ -2472,10 +2472,10 @@ function TodoWrite(props: ToolProps) {
       <Match when={parseTodos(props.metadata.todos).length}>
         <BlockTool title="# Todos" part={props.part}>
           <box>
-            <For each={todos()}>{(todo) => <TodoItem status={todo.status} content={todo.content} @lgcode/>}<@lgcode/For>
-          <@lgcode/box>
-        <@lgcode/BlockTool>
-      <@lgcode/Match>
+            <For each={todos()}>{(todo) => <TodoItem status={todo.status} content={todo.content} />}</For>
+          </box>
+        </BlockTool>
+      </Match>
       <Match when={true}>
         <InlineTool
           icon="⚙"
@@ -2485,9 +2485,9 @@ function TodoWrite(props: ToolProps) {
           part={props.part}
         >
           Updating todos...
-        <@lgcode/InlineTool>
-      <@lgcode/Match>
-    <@lgcode/Switch>
+        </InlineTool>
+      </Match>
+    </Switch>
   )
 }
 
@@ -2510,20 +2510,20 @@ function Question(props: ToolProps) {
             <For each={questions()}>
               {(q, i) => (
                 <box flexDirection="column">
-                  <text fg={theme.textMuted}>{q.question}<@lgcode/text>
-                  <text fg={theme.text}>{format(answers()?.[i()])}<@lgcode/text>
-                <@lgcode/box>
+                  <text fg={theme.textMuted}>{q.question}</text>
+                  <text fg={theme.text}>{format(answers()?.[i()])}</text>
+                </box>
               )}
-            <@lgcode/For>
-          <@lgcode/box>
-        <@lgcode/BlockTool>
-      <@lgcode/Match>
+            </For>
+          </box>
+        </BlockTool>
+      </Match>
       <Match when={true}>
         <InlineTool icon="→" pending="Asking questions..." complete={count()} part={props.part}>
           Asked {count()} question{count() !== 1 ? "s" : ""}
-        <@lgcode/InlineTool>
-      <@lgcode/Match>
-    <@lgcode/Switch>
+        </InlineTool>
+      </Match>
+    </Switch>
   )
 }
 
@@ -2531,7 +2531,7 @@ function Skill(props: ToolProps) {
   return (
     <InlineTool icon="→" pending="Loading skill..." complete={stringValue(props.input.name)} part={props.part}>
       Skill "{stringValue(props.input.name)}"
-    <@lgcode/InlineTool>
+    </InlineTool>
   )
 }
 
@@ -2553,11 +2553,11 @@ function Diagnostics(props: { diagnostics: unknown; filePath: string }) {
           {(diagnostic) => (
             <text fg={theme.error}>
               Error [{diagnostic.range.start.line + 1}:{diagnostic.range.start.character + 1}] {diagnostic.message}
-            <@lgcode/text>
+            </text>
           )}
-        <@lgcode/For>
-      <@lgcode/box>
-    <@lgcode/Show>
+        </For>
+      </box>
+    </Show>
   )
 }
 

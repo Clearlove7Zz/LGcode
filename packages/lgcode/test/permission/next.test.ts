@@ -1,16 +1,16 @@
-import { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
+import { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
 import { test, expect } from "bun:test"
 import os from "os"
 import { Cause, Deferred, Effect, Exit, Fiber, Layer } from "effect"
-import { EventV2Bridge } from "..@lgcode/..@lgcode/src@lgcode/event-v2-bridge"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { Permission } from "..@lgcode/..@lgcode/src@lgcode/permission"
-import { InstanceBootstrap } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/bootstrap-service"
-import { InstanceStore } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/instance-store"
-import { TestInstance, tmpdirScoped } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
-import { MessageID, SessionID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
+import { EventV2Bridge } from "../../src/event-v2-bridge"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { Permission } from "../../src/permission"
+import { InstanceBootstrap } from "../../src/project/bootstrap-service"
+import { InstanceStore } from "../../src/project/instance-store"
+import { TestInstance, tmpdirScoped } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
+import { MessageID, SessionID } from "../../src/session/schema"
 
 const events = EventV2Bridge.defaultLayer
 const noopBootstrap = Layer.succeed(InstanceBootstrap.Service, InstanceBootstrap.Service.of({ run: Effect.void }))
@@ -76,7 +76,7 @@ const list = () =>
     return yield* permission.list()
   })
 
-@lgcode/@lgcode/ fromConfig tests
+// fromConfig tests
 
 test("fromConfig - string value becomes wildcard rule", () => {
   const result = Permission.fromConfig({ bash: "allow" })
@@ -111,13 +111,13 @@ test("fromConfig - empty object", () => {
 })
 
 test("fromConfig - expands tilde to home directory", () => {
-  const result = Permission.fromConfig({ external_directory: { "~@lgcode/projects@lgcode/*": "allow" } })
-  expect(result).toEqual([{ permission: "external_directory", pattern: `${os.homedir()}@lgcode/projects@lgcode/*`, action: "allow" }])
+  const result = Permission.fromConfig({ external_directory: { "~/projects/*": "allow" } })
+  expect(result).toEqual([{ permission: "external_directory", pattern: `${os.homedir()}/projects/*`, action: "allow" }])
 })
 
 test("fromConfig - expands $HOME to home directory", () => {
-  const result = Permission.fromConfig({ external_directory: { "$HOME@lgcode/projects@lgcode/*": "allow" } })
-  expect(result).toEqual([{ permission: "external_directory", pattern: `${os.homedir()}@lgcode/projects@lgcode/*`, action: "allow" }])
+  const result = Permission.fromConfig({ external_directory: { "$HOME/projects/*": "allow" } })
+  expect(result).toEqual([{ permission: "external_directory", pattern: `${os.homedir()}/projects/*`, action: "allow" }])
 })
 
 test("fromConfig - expands $HOME without trailing slash", () => {
@@ -126,13 +126,13 @@ test("fromConfig - expands $HOME without trailing slash", () => {
 })
 
 test("fromConfig - does not expand tilde in middle of path", () => {
-  const result = Permission.fromConfig({ external_directory: { "@lgcode/some@lgcode/~@lgcode/path": "allow" } })
-  expect(result).toEqual([{ permission: "external_directory", pattern: "@lgcode/some@lgcode/~@lgcode/path", action: "allow" }])
+  const result = Permission.fromConfig({ external_directory: { "/some/~/path": "allow" } })
+  expect(result).toEqual([{ permission: "external_directory", pattern: "/some/~/path", action: "allow" }])
 })
 
-@lgcode/@lgcode/ Permission precedence follows config insertion order. `evaluate()` uses the
-@lgcode/@lgcode/ last matching rule, so later config entries intentionally override earlier
-@lgcode/@lgcode/ entries even when a wildcard appears after a specific permission.
+// Permission precedence follows config insertion order. `evaluate()` uses the
+// last matching rule, so later config entries intentionally override earlier
+// entries even when a wildcard appears after a specific permission.
 
 test("fromConfig - preserves top-level config key order", () => {
   const wildcardFirst = Permission.fromConfig({ "*": "deny", bash: "allow" })
@@ -181,18 +181,18 @@ test("fromConfig - expands exact tilde to home directory", () => {
 })
 
 test("evaluate - matches expanded tilde pattern", () => {
-  const ruleset = Permission.fromConfig({ external_directory: { "~@lgcode/projects@lgcode/*": "allow" } })
-  const result = Permission.evaluate("external_directory", `${os.homedir()}@lgcode/projects@lgcode/file.txt`, ruleset)
+  const ruleset = Permission.fromConfig({ external_directory: { "~/projects/*": "allow" } })
+  const result = Permission.evaluate("external_directory", `${os.homedir()}/projects/file.txt`, ruleset)
   expect(result.action).toBe("allow")
 })
 
 test("evaluate - matches expanded $HOME pattern", () => {
-  const ruleset = Permission.fromConfig({ external_directory: { "$HOME@lgcode/projects@lgcode/*": "allow" } })
-  const result = Permission.evaluate("external_directory", `${os.homedir()}@lgcode/projects@lgcode/file.txt`, ruleset)
+  const ruleset = Permission.fromConfig({ external_directory: { "$HOME/projects/*": "allow" } })
+  const result = Permission.evaluate("external_directory", `${os.homedir()}/projects/file.txt`, ruleset)
   expect(result.action).toBe("allow")
 })
 
-@lgcode/@lgcode/ merge tests
+// merge tests
 
 test("merge - simple concatenation", () => {
   const result = Permission.merge(
@@ -248,15 +248,15 @@ test("merge - empty ruleset does nothing", () => {
 test("merge - preserves rule order", () => {
   const result = Permission.merge(
     [
-      { permission: "edit", pattern: "src@lgcode/*", action: "allow" },
-      { permission: "edit", pattern: "src@lgcode/secret@lgcode/*", action: "deny" },
+      { permission: "edit", pattern: "src/*", action: "allow" },
+      { permission: "edit", pattern: "src/secret/*", action: "deny" },
     ],
-    [{ permission: "edit", pattern: "src@lgcode/secret@lgcode/ok.ts", action: "allow" }],
+    [{ permission: "edit", pattern: "src/secret/ok.ts", action: "allow" }],
   )
   expect(result).toEqual([
-    { permission: "edit", pattern: "src@lgcode/*", action: "allow" },
-    { permission: "edit", pattern: "src@lgcode/secret@lgcode/*", action: "deny" },
-    { permission: "edit", pattern: "src@lgcode/secret@lgcode/ok.ts", action: "allow" },
+    { permission: "edit", pattern: "src/*", action: "allow" },
+    { permission: "edit", pattern: "src/secret/*", action: "deny" },
+    { permission: "edit", pattern: "src/secret/ok.ts", action: "allow" },
   ])
 })
 
@@ -277,7 +277,7 @@ test("merge - config ask overrides default allow", () => {
   expect(Permission.evaluate("bash", "ls", merged).action).toBe("ask")
 })
 
-@lgcode/@lgcode/ evaluate tests
+// evaluate tests
 
 test("evaluate - exact pattern match", () => {
   const result = Permission.evaluate("bash", "rm", [{ permission: "bash", pattern: "rm", action: "deny" }])
@@ -306,22 +306,22 @@ test("evaluate - last matching rule wins (wildcard after specific)", () => {
 })
 
 test("evaluate - glob pattern match", () => {
-  const result = Permission.evaluate("edit", "src@lgcode/foo.ts", [{ permission: "edit", pattern: "src@lgcode/*", action: "allow" }])
+  const result = Permission.evaluate("edit", "src/foo.ts", [{ permission: "edit", pattern: "src/*", action: "allow" }])
   expect(result.action).toBe("allow")
 })
 
 test("evaluate - last matching glob wins", () => {
-  const result = Permission.evaluate("edit", "src@lgcode/components@lgcode/Button.tsx", [
-    { permission: "edit", pattern: "src@lgcode/*", action: "deny" },
-    { permission: "edit", pattern: "src@lgcode/components@lgcode/*", action: "allow" },
+  const result = Permission.evaluate("edit", "src/components/Button.tsx", [
+    { permission: "edit", pattern: "src/*", action: "deny" },
+    { permission: "edit", pattern: "src/components/*", action: "allow" },
   ])
   expect(result.action).toBe("allow")
 })
 
 test("evaluate - order matters for specificity", () => {
-  const result = Permission.evaluate("edit", "src@lgcode/components@lgcode/Button.tsx", [
-    { permission: "edit", pattern: "src@lgcode/components@lgcode/*", action: "allow" },
-    { permission: "edit", pattern: "src@lgcode/*", action: "deny" },
+  const result = Permission.evaluate("edit", "src/components/Button.tsx", [
+    { permission: "edit", pattern: "src/components/*", action: "allow" },
+    { permission: "edit", pattern: "src/*", action: "deny" },
   ])
   expect(result.action).toBe("deny")
 })
@@ -339,7 +339,7 @@ test("evaluate - empty ruleset returns ask", () => {
 })
 
 test("evaluate - no matching pattern returns ask", () => {
-  const result = Permission.evaluate("edit", "etc@lgcode/passwd", [{ permission: "edit", pattern: "src@lgcode/*", action: "allow" }])
+  const result = Permission.evaluate("edit", "etc/passwd", [{ permission: "edit", pattern: "src/*", action: "allow" }])
   expect(result.action).toBe("ask")
 })
 
@@ -349,40 +349,40 @@ test("evaluate - empty rules array returns ask", () => {
 })
 
 test("evaluate - multiple matching patterns, last wins", () => {
-  const result = Permission.evaluate("edit", "src@lgcode/secret.ts", [
+  const result = Permission.evaluate("edit", "src/secret.ts", [
     { permission: "edit", pattern: "*", action: "ask" },
-    { permission: "edit", pattern: "src@lgcode/*", action: "allow" },
-    { permission: "edit", pattern: "src@lgcode/secret.ts", action: "deny" },
+    { permission: "edit", pattern: "src/*", action: "allow" },
+    { permission: "edit", pattern: "src/secret.ts", action: "deny" },
   ])
   expect(result.action).toBe("deny")
 })
 
 test("evaluate - non-matching patterns are skipped", () => {
-  const result = Permission.evaluate("edit", "src@lgcode/foo.ts", [
+  const result = Permission.evaluate("edit", "src/foo.ts", [
     { permission: "edit", pattern: "*", action: "ask" },
-    { permission: "edit", pattern: "test@lgcode/*", action: "deny" },
-    { permission: "edit", pattern: "src@lgcode/*", action: "allow" },
+    { permission: "edit", pattern: "test/*", action: "deny" },
+    { permission: "edit", pattern: "src/*", action: "allow" },
   ])
   expect(result.action).toBe("allow")
 })
 
 test("evaluate - exact match at end wins over earlier wildcard", () => {
-  const result = Permission.evaluate("bash", "@lgcode/bin@lgcode/rm", [
+  const result = Permission.evaluate("bash", "/bin/rm", [
     { permission: "bash", pattern: "*", action: "allow" },
-    { permission: "bash", pattern: "@lgcode/bin@lgcode/rm", action: "deny" },
+    { permission: "bash", pattern: "/bin/rm", action: "deny" },
   ])
   expect(result.action).toBe("deny")
 })
 
 test("evaluate - wildcard at end overrides earlier exact match", () => {
-  const result = Permission.evaluate("bash", "@lgcode/bin@lgcode/rm", [
-    { permission: "bash", pattern: "@lgcode/bin@lgcode/rm", action: "deny" },
+  const result = Permission.evaluate("bash", "/bin/rm", [
+    { permission: "bash", pattern: "/bin/rm", action: "deny" },
     { permission: "bash", pattern: "*", action: "allow" },
   ])
   expect(result.action).toBe("allow")
 })
 
-@lgcode/@lgcode/ wildcard permission tests
+// wildcard permission tests
 
 test("evaluate - wildcard permission matches any permission", () => {
   const result = Permission.evaluate("bash", "rm", [{ permission: "*", pattern: "*", action: "deny" }])
@@ -410,9 +410,9 @@ test("evaluate - specific permission and wildcard permission combined", () => {
 })
 
 test("evaluate - wildcard permission does not match when specific exists", () => {
-  const result = Permission.evaluate("edit", "src@lgcode/foo.ts", [
+  const result = Permission.evaluate("edit", "src/foo.ts", [
     { permission: "*", pattern: "*", action: "deny" },
-    { permission: "edit", pattern: "src@lgcode/*", action: "allow" },
+    { permission: "edit", pattern: "src/*", action: "allow" },
   ])
   expect(result.action).toBe("allow")
 })
@@ -449,7 +449,7 @@ test("evaluate - merges multiple rulesets", () => {
   expect(result.action).toBe("deny")
 })
 
-@lgcode/@lgcode/ disabled tests
+// disabled tests
 
 test("disabled - returns empty set when all tools allowed", () => {
   const result = Permission.disabled(["bash", "edit", "read"], [{ permission: "*", pattern: "*", action: "allow" }])
@@ -469,7 +469,7 @@ test("disabled - disables tool when denied", () => {
   expect(result.has("read")).toBe(false)
 })
 
-test("disabled - disables edit@lgcode/write@lgcode/apply_patch when edit denied", () => {
+test("disabled - disables edit/write/apply_patch when edit denied", () => {
   const result = Permission.disabled(
     ["edit", "write", "apply_patch", "bash"],
     [
@@ -555,7 +555,7 @@ test("disabled - specific allow overrides wildcard deny", () => {
   expect(result.has("read")).toBe(true)
 })
 
-@lgcode/@lgcode/ ask tests
+// ask tests
 
 it.instance(
   "ask - resolves immediately when action is allow",
@@ -582,7 +582,7 @@ it.instance(
         ask({
           sessionID: SessionID.make("session_test"),
           permission: "bash",
-          patterns: ["rm -rf @lgcode/"],
+          patterns: ["rm -rf /"],
           metadata: {},
           always: [],
           ruleset: [{ permission: "bash", pattern: "*", action: "deny" }],
@@ -696,7 +696,7 @@ it.instance(
   { git: true },
 )
 
-@lgcode/@lgcode/ reply tests
+// reply tests
 
 it.instance(
   "reply - once resolves the pending ask",
@@ -1092,7 +1092,7 @@ it.instance(
         ask({
           sessionID: SessionID.make("session_test"),
           permission: "bash",
-          patterns: ["echo hello", "rm -rf @lgcode/"],
+          patterns: ["echo hello", "rm -rf /"],
           metadata: {},
           always: [],
           ruleset: [
@@ -1131,7 +1131,7 @@ it.instance(
         ask({
           sessionID: SessionID.make("session_test"),
           permission: "bash",
-          patterns: ["echo hello", "rm -rf @lgcode/"],
+          patterns: ["echo hello", "rm -rf /"],
           metadata: {},
           always: [],
           ruleset: [

@@ -1,8 +1,8 @@
 import { Schema } from "effect"
-import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
+import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
 
 export const HealthGroup = HttpApiGroup.make("server.health").add(
-  HttpApiEndpoint.get("health.get", "@lgcode/api@lgcode/health", {
+  HttpApiEndpoint.get("health.get", "/api/health", {
     success: Schema.Struct({ healthy: Schema.Literal(true) }),
   }).annotateMerge(
     OpenApi.annotations({

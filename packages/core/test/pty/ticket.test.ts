@@ -1,9 +1,9 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { PtyID } from "@lgcode/core@lgcode/pty@lgcode/schema"
-import { PtyTicket } from "@lgcode/core@lgcode/pty@lgcode/ticket"
-import { WorkspaceV2 } from "@lgcode/core@lgcode/workspace"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { PtyID } from "@opencode@lgcode/core/pty/schema"
+import { PtyTicket } from "@opencode@lgcode/core/pty/ticket"
+import { WorkspaceV2 } from "@opencode@lgcode/core/workspace"
+import { testEffect } from "../lib/effect"
 
 const it = testEffect(PtyTicket.layer)
 const itExpiring = testEffect(Layer.effect(PtyTicket.Service, PtyTicket.make(5)))
@@ -12,7 +12,7 @@ describe("PTY websocket tickets", () => {
   it.live("consumes tickets once", () =>
     Effect.gen(function* () {
       const tickets = yield* PtyTicket.Service
-      const scope = { ptyID: PtyID.ascending(), directory: "@lgcode/tmp@lgcode/a" }
+      const scope = { ptyID: PtyID.ascending(), directory: "/tmp/a" }
       const issued = yield* tickets.issue(scope)
 
       expect(yield* tickets.consume({ ...scope, ticket: issued.ticket })).toBe(true)
@@ -24,10 +24,10 @@ describe("PTY websocket tickets", () => {
     Effect.gen(function* () {
       const tickets = yield* PtyTicket.Service
       const ptyID = PtyID.ascending()
-      const issued = yield* tickets.issue({ ptyID, directory: "@lgcode/tmp@lgcode/a" })
+      const issued = yield* tickets.issue({ ptyID, directory: "/tmp/a" })
 
-      expect(yield* tickets.consume({ ptyID, directory: "@lgcode/tmp@lgcode/b", ticket: issued.ticket })).toBe(false)
-      expect(yield* tickets.consume({ ptyID, directory: "@lgcode/tmp@lgcode/a", ticket: issued.ticket })).toBe(true)
+      expect(yield* tickets.consume({ ptyID, directory: "/tmp/b", ticket: issued.ticket })).toBe(false)
+      expect(yield* tickets.consume({ ptyID, directory: "/tmp/a", ticket: issued.ticket })).toBe(true)
     }),
   )
 

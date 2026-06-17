@@ -1,13 +1,13 @@
 import { expect } from "bun:test"
 import { Context, Deferred, Effect, Fiber, Layer, Logger } from "effect"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import { AppLayer } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/app-runtime"
-import { EffectBridge } from "@@lgcode/effect@lgcode/bridge"
-import { InstanceRef } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/instance-ref"
-import * as Observability from "@lgcode/core@lgcode/observability"
-import { attach } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/run-service"
-import { TestInstance } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { AppLayer } from "../../src/effect/app-runtime"
+import { EffectBridge } from "@/effect/bridge"
+import { InstanceRef } from "../../src/effect/instance-ref"
+import * as Observability from "@opencode@lgcode/core/observability"
+import { attach } from "../../src/effect/run-service"
+import { TestInstance } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
 
 const it = testEffect(CrossSpawnSpawner.defaultLayer)
 
@@ -21,7 +21,7 @@ function check(loggers: ReadonlySet<Logger.Logger<unknown, any>>) {
 it.live("makeRuntime installs the observability logger", () =>
   Effect.gen(function* () {
     class Dummy extends Context.Service<Dummy, { readonly current: () => Effect.Effect<ReturnType<typeof check>> }>()(
-      "@test@lgcode/Dummy",
+      "@test/Dummy",
     ) {}
 
     const layer = Layer.effect(

@@ -1,19 +1,19 @@
-@lgcode/@lgcode/ Dev-only JSONL event trace for direct interactive mode.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Enable with OPENCODE_DIRECT_TRACE=1. Writes one JSON line per event to
-@lgcode/@lgcode/ ~@lgcode/.local@lgcode/share@lgcode/opencode@lgcode/log@lgcode/direct@lgcode/<timestamp>-<pid>.jsonl. Also writes
-@lgcode/@lgcode/ a latest.json pointer so you can quickly find the most recent trace.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ The trace captures the full closed loop: outbound prompts, inbound SDK
-@lgcode/@lgcode/ events, reducer output, footer commits, and turn lifecycle markers.
-@lgcode/@lgcode/ Useful for debugging stream ordering, permission behavior, and
-@lgcode/@lgcode/ footer@lgcode/transcript mismatches.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Lazy-initialized: the first call to trace() decides whether tracing is
-@lgcode/@lgcode/ active based on the env var, and subsequent calls return the cached result.
+// Dev-only JSONL event trace for direct interactive mode.
+//
+// Enable with OPENCODE_DIRECT_TRACE=1. Writes one JSON line per event to
+// ~/.local/share/opencode/log/direct/<timestamp>-<pid>.jsonl. Also writes
+// a latest.json pointer so you can quickly find the most recent trace.
+//
+// The trace captures the full closed loop: outbound prompts, inbound SDK
+// events, reducer output, footer commits, and turn lifecycle markers.
+// Useful for debugging stream ordering, permission behavior, and
+// footer/transcript mismatches.
+//
+// Lazy-initialized: the first call to trace() decides whether tracing is
+// active based on the env var, and subsequent calls return the cached result.
 import fs from "fs"
 import path from "path"
-import { Global } from "@lgcode/core@lgcode/global"
+import { Global } from "@opencode@lgcode/core/global"
 
 export type Trace = {
   write(type: string, data?: unknown): void
@@ -24,8 +24,8 @@ let state: Trace | false | undefined
 function stamp() {
   return new Date()
     .toISOString()
-    .replace(@lgcode/[-:]@lgcode/g, "")
-    .replace(@lgcode/\.\d+Z$@lgcode/, "Z")
+    .replace(/[-:]/g, "")
+    .replace(/\.\d+Z$/, "Z")
 }
 
 function file() {

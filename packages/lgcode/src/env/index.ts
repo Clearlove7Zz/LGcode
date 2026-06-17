@@ -1,7 +1,7 @@
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
 import { Context, Effect, Layer } from "effect"
-import { serviceUse } from "@lgcode/core@lgcode/effect@lgcode/service-use"
-import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
+import { serviceUse } from "@opencode@lgcode/core/effect/service-use"
+import { InstanceState } from "@/effect/instance-state"
 
 type State = Record<string, string | undefined>
 
@@ -12,7 +12,7 @@ export interface Interface {
   readonly remove: (key: string) => Effect.Effect<void>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Env") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/Env") {}
 
 export const use = serviceUse(Service)
 

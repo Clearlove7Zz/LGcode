@@ -1,22 +1,22 @@
-export * as SessionExecution from ".@lgcode/execution"
+export * as SessionExecution from "./execution"
 
 import { Context, Effect, Layer } from "effect"
-import { SessionRunner } from ".@lgcode/runner@lgcode/index"
-import { SessionSchema } from ".@lgcode/schema"
+import { SessionRunner } from "./runner/index"
+import { SessionSchema } from "./schema"
 
 export interface Interface {
-  @lgcode/** Explicitly drain one Session, making at least one provider attempt. *@lgcode/
+  /** Explicitly drain one Session, making at least one provider attempt. */
   readonly resume: (sessionID: SessionSchema.ID) => Effect.Effect<void, SessionRunner.RunError>
-  @lgcode/** Schedule a drain after durable work is recorded. Repeated wakeups may coalesce. *@lgcode/
+  /** Schedule a drain after durable work is recorded. Repeated wakeups may coalesce. */
   readonly wake: (sessionID: SessionSchema.ID, seq?: number) => Effect.Effect<void, SessionRunner.RunError>
-  @lgcode/** Interrupt active work owned by this process. Idle interruption is a no-op. *@lgcode/
+  /** Interrupt active work owned by this process. Idle interruption is a no-op. */
   readonly interrupt: (sessionID: SessionSchema.ID, seq?: number) => Effect.Effect<void>
 }
 
-@lgcode/** Routes execution from a Session ID to the runner owned by that Session's Location. *@lgcode/
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/SessionExecution") {}
+/** Routes execution from a Session ID to the runner owned by that Session's Location. */
+export class Service extends Context.Service<Service, Interface>()("@opencode/v2/SessionExecution") {}
 
-@lgcode/** Low-level compatibility layer for callers that only need durable Session recording. *@lgcode/
+/** Low-level compatibility layer for callers that only need durable Session recording. */
 export const noopLayer = Layer.succeed(
   Service,
   Service.of({ resume: () => Effect.void, wake: () => Effect.void, interrupt: () => Effect.void }),

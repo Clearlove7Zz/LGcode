@@ -1,7 +1,7 @@
-@lgcode/@lgcode/ @ts-nocheck
-import { Icon } from ".@lgcode/icon"
-import * as mod from ".@lgcode/checkbox"
-import { create } from "..@lgcode/storybook@lgcode/scaffold"
+// @ts-nocheck
+import { Icon } from "./icon"
+import * as mod from "./checkbox"
+import { create } from "../storybook/scaffold"
 
 const docs = `### Overview
 Checkbox control for multi-select or agreement inputs.
@@ -14,7 +14,7 @@ Use in forms and multi-select lists.
 - Children render as the label.
 
 ### Variants and states
-- Checked@lgcode/unchecked, indeterminate, disabled (via Kobalte).
+- Checked/unchecked, indeterminate, disabled (via Kobalte).
 
 ### Behavior
 - Controlled or uncontrolled usage.
@@ -22,14 +22,14 @@ Use in forms and multi-select lists.
 ### Accessibility
 - TODO: confirm aria attributes from Kobalte.
 
-### Theming@lgcode/tokens
+### Theming/tokens
 - Uses \`data-component="checkbox"\` and related slots.
 
 `
 
-const story = create({ title: "UI@lgcode/Checkbox", mod, args: { children: "Checkbox", defaultChecked: true } })
+const story = create({ title: "UI/Checkbox", mod, args: { children: "Checkbox", defaultChecked: true } })
 export default {
-  title: "UI@lgcode/Checkbox",
+  title: "UI/Checkbox",
   id: "components-checkbox",
   component: story.meta.component,
   tags: ["autodocs"],
@@ -47,19 +47,19 @@ export const Basic = story.Basic
 export const States = {
   render: () => (
     <div style={{ display: "grid", gap: "12px" }}>
-      <mod.Checkbox defaultChecked>Checked<@lgcode/mod.Checkbox>
-      <mod.Checkbox>Unchecked<@lgcode/mod.Checkbox>
-      <mod.Checkbox disabled>Disabled<@lgcode/mod.Checkbox>
-      <mod.Checkbox description="Helper text">With description<@lgcode/mod.Checkbox>
-    <@lgcode/div>
+      <mod.Checkbox defaultChecked>Checked</mod.Checkbox>
+      <mod.Checkbox>Unchecked</mod.Checkbox>
+      <mod.Checkbox disabled>Disabled</mod.Checkbox>
+      <mod.Checkbox description="Helper text">With description</mod.Checkbox>
+    </div>
   ),
 }
 
 export const CustomIcon = {
   render: () => (
-    <mod.Checkbox icon={<Icon name="check" size="small" @lgcode/>} defaultChecked>
+    <mod.Checkbox icon={<Icon name="check" size="small" />} defaultChecked>
       Custom icon
-    <@lgcode/mod.Checkbox>
+    </mod.Checkbox>
   ),
 }
 

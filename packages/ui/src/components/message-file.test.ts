@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
-import type { FilePart } from "@lgcode/sdk@lgcode/v2"
-import { attached, inline, kind } from ".@lgcode/message-file"
+import type { FilePart } from "@opencode@lgcode/sdk/v2"
+import { attached, inline, kind } from "./message-file"
 
 function file(part: Partial<FilePart> = {}): FilePart {
   return {
@@ -8,8 +8,8 @@ function file(part: Partial<FilePart> = {}): FilePart {
     sessionID: "ses_1",
     messageID: "msg_1",
     type: "file",
-    mime: "text@lgcode/plain",
-    url: "file:@lgcode/@lgcode/@lgcode/repo@lgcode/README.txt",
+    mime: "text/plain",
+    url: "file:///repo/README.txt",
     filename: "README.txt",
     ...part,
   }
@@ -17,7 +17,7 @@ function file(part: Partial<FilePart> = {}): FilePart {
 
 describe("message-file", () => {
   test("treats data URLs as attachments", () => {
-    expect(attached(file({ url: "data:text@lgcode/plain;base64,SGVsbG8=" }))).toBe(true)
+    expect(attached(file({ url: "data:text/plain;base64,SGVsbG8=" }))).toBe(true)
     expect(attached(file())).toBe(false)
   })
 
@@ -27,7 +27,7 @@ describe("message-file", () => {
         file({
           source: {
             type: "file",
-            path: "@lgcode/repo@lgcode/README.txt",
+            path: "/repo/README.txt",
             text: { value: "@README.txt", start: 0, end: 11 },
           },
         }),
@@ -37,10 +37,10 @@ describe("message-file", () => {
     expect(
       inline(
         file({
-          url: "data:text@lgcode/plain;base64,SGVsbG8=",
+          url: "data:text/plain;base64,SGVsbG8=",
           source: {
             type: "file",
-            path: "@lgcode/repo@lgcode/README.txt",
+            path: "/repo/README.txt",
             text: { value: "@README.txt", start: 0, end: 11 },
           },
         }),
@@ -49,7 +49,7 @@ describe("message-file", () => {
   })
 
   test("separates image and file attachment kinds", () => {
-    expect(kind(file({ mime: "image@lgcode/png" }))).toBe("image")
-    expect(kind(file({ mime: "application@lgcode/pdf" }))).toBe("file")
+    expect(kind(file({ mime: "image/png" }))).toBe("image")
+    expect(kind(file({ mime: "application/pdf" }))).toBe("file")
   })
 })

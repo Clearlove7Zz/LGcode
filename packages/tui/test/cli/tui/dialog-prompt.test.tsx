@@ -1,15 +1,15 @@
-@lgcode/** @jsxImportSource @opentui@lgcode/solid *@lgcode/
-import { TextareaRenderable } from "@opentui@lgcode/core"
-import { createDefaultOpenTuiKeymap } from "@opentui@lgcode/keymap@lgcode/opentui"
-import { testRender, useRenderer } from "@opentui@lgcode/solid"
+/** @jsxImportSource @opentui/solid */
+import { TextareaRenderable } from "@opentui/core"
+import { createDefaultOpenTuiKeymap } from "@opentui/keymap/opentui"
+import { testRender, useRenderer } from "@opentui/solid"
 import { expect, test } from "bun:test"
-import { mkdir } from "node:fs@lgcode/promises"
+import { mkdir } from "node:fs/promises"
 import path from "node:path"
 import { onCleanup } from "solid-js"
-import { tmpdir } from "..@lgcode/..@lgcode/fixture@lgcode/fixture"
-import { createTuiResolvedConfig } from "..@lgcode/..@lgcode/fixture@lgcode/tui-runtime"
-import type { TuiKeybind } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/config@lgcode/keybind"
-import { TestTuiContexts } from "..@lgcode/..@lgcode/fixture@lgcode/tui-environment"
+import { tmpdir } from "../../fixture/fixture"
+import { createTuiResolvedConfig } from "../../fixture/tui-runtime"
+import type { TuiKeybind } from "../../../src/config/keybind"
+import { TestTuiContexts } from "../../fixture/tui-environment"
 
 async function wait(fn: () => boolean, timeout = 2000) {
   const start = Date.now()
@@ -37,13 +37,13 @@ async function mountPrompt(input: {
     { ToastProvider },
     { OpencodeKeymapProvider, registerOpencodeKeymap },
   ] = await Promise.all([
-    import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/ui@lgcode/dialog"),
-    import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/ui@lgcode/dialog-prompt"),
-    import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/context@lgcode/kv"),
-    import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/context@lgcode/theme"),
-    import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/config"),
-    import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/ui@lgcode/toast"),
-    import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/keymap"),
+    import("../../../src/ui/dialog"),
+    import("../../../src/ui/dialog-prompt"),
+    import("../../../src/context/kv"),
+    import("../../../src/context/theme"),
+    import("../../../src/config"),
+    import("../../../src/ui/toast"),
+    import("../../../src/keymap"),
   ])
 
   function Harness() {
@@ -71,18 +71,18 @@ async function mountPrompt(input: {
               <ThemeProvider mode="dark">
                 <ToastProvider>
                   <DialogProvider>
-                    <DialogPrompt title="Rename Session" value="draft" onConfirm={input.onConfirm} @lgcode/>
-                  <@lgcode/DialogProvider>
-                <@lgcode/ToastProvider>
-              <@lgcode/ThemeProvider>
-            <@lgcode/KVProvider>
-          <@lgcode/TuiConfigProvider>
-        <@lgcode/OpencodeKeymapProvider>
-      <@lgcode/TestTuiContexts>
+                    <DialogPrompt title="Rename Session" value="draft" onConfirm={input.onConfirm} />
+                  </DialogProvider>
+                </ToastProvider>
+              </ThemeProvider>
+            </KVProvider>
+          </TuiConfigProvider>
+        </OpencodeKeymapProvider>
+      </TestTuiContexts>
     )
   }
 
-  const app = await testRender(() => <Harness @lgcode/>, { kittyKeyboard: true })
+  const app = await testRender(() => <Harness />, { kittyKeyboard: true })
   return {
     app,
     async cleanup() {

@@ -1,5 +1,5 @@
-import { defineConfig } from "@vscode@lgcode/test-cli"
+import { defineConfig } from "@vscode/test-cli"
 
 export default defineConfig({
-  files: "out@lgcode/test@lgcode/**@lgcode/*.test.js",
+  files: "out/test/**/*.test.js",
 })

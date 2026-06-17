@@ -1,7 +1,7 @@
-export * as BackgroundJob from ".@lgcode/background-job"
+export * as BackgroundJob from "./background-job"
 
 import { Cause, Clock, Context, Deferred, Effect, Exit, Layer, Scope, SynchronizedRef } from "effect"
-import { Identifier } from ".@lgcode/id@lgcode/id"
+import { Identifier } from "./id/id"
 
 export type Status = "running" | "completed" | "error" | "cancelled"
 
@@ -95,7 +95,7 @@ export interface Interface {
   readonly cancel: (id: string) => Effect.Effect<Info | undefined>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/BackgroundJob") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/BackgroundJob") {}
 
 function snapshot(job: Active): Info {
   return {
@@ -109,13 +109,13 @@ function errorText(error: unknown) {
   return String(error)
 }
 
-@lgcode/**
+/**
  * Makes one scoped, process-local registry. Entries are intentionally not
  * durable: process restart or owner-scope closure loses status and interrupts
  * live work. Persisted observation, restart recovery, and remote workers need a
  * separate durable ownership slice rather than pretending this registry has
  * those semantics.
- *@lgcode/
+ */
 export const make = Effect.gen(function* () {
   const state: State = {
     jobs: yield* SynchronizedRef.make(new Map()),

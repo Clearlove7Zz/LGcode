@@ -1,9 +1,9 @@
 import { describe, expect, it as bun_it } from "bun:test"
 import { Effect } from "effect"
-import { PluginV2 } from "@lgcode/core@lgcode/plugin"
-import { SnowflakeCortexPlugin, cortexFetch } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/snowflake-cortex"
-import { ProviderPlugins } from "@lgcode/core@lgcode/plugin@lgcode/provider"
-import { expectPluginRegistered, it, model, withEnv } from ".@lgcode/provider-helper"
+import { PluginV2 } from "@opencode@lgcode/core/plugin"
+import { SnowflakeCortexPlugin, cortexFetch } from "@opencode@lgcode/core/plugin/provider/snowflake-cortex"
+import { ProviderPlugins } from "@opencode@lgcode/core/plugin/provider"
+import { expectPluginRegistered, it, model, withEnv } from "./provider-helper"
 
 describe("SnowflakeCortexPlugin", () => {
   it.effect("is registered in ProviderPlugins before OpenAICompatiblePlugin", () =>
@@ -23,7 +23,7 @@ describe("SnowflakeCortexPlugin", () => {
       yield* plugin.add(SnowflakeCortexPlugin)
       const result = yield* plugin.trigger(
         "aisdk.sdk",
-        { model: model("openai", "gpt-4"), package: "@ai-sdk@lgcode/openai", options: { name: "openai" } },
+        { model: model("openai", "gpt-4"), package: "@ai-sdk/openai", options: { name: "openai" } },
         {},
       )
       expect(result.sdk).toBeUndefined()
@@ -39,8 +39,8 @@ describe("SnowflakeCortexPlugin", () => {
           "aisdk.sdk",
           {
             model: model("snowflake-cortex", "claude-sonnet-4-6"),
-            package: "@ai-sdk@lgcode/openai-compatible",
-            options: { name: "snowflake-cortex", baseURL: "https:@lgcode/@lgcode/test.snowflakecomputing.com@lgcode/api@lgcode/v2@lgcode/cortex@lgcode/v1" },
+            package: "@ai-sdk/openai-compatible",
+            options: { name: "snowflake-cortex", baseURL: "https://test.snowflakecomputing.com/api/v2/cortex/v1" },
           },
           {},
         )
@@ -58,10 +58,10 @@ describe("SnowflakeCortexPlugin", () => {
           "aisdk.sdk",
           {
             model: model("snowflake-cortex", "claude-sonnet-4-6"),
-            package: "@ai-sdk@lgcode/openai-compatible",
+            package: "@ai-sdk/openai-compatible",
             options: {
               name: "snowflake-cortex",
-              baseURL: "https:@lgcode/@lgcode/test.snowflakecomputing.com@lgcode/api@lgcode/v2@lgcode/cortex@lgcode/v1",
+              baseURL: "https://test.snowflakecomputing.com/api/v2/cortex/v1",
               apiKey: "options-pat",
             },
           },
@@ -81,8 +81,8 @@ describe("SnowflakeCortexPlugin", () => {
           "aisdk.sdk",
           {
             model: model("snowflake-cortex", "claude-sonnet-4-6"),
-            package: "@ai-sdk@lgcode/openai-compatible",
-            options: { name: "snowflake-cortex", baseURL: "https:@lgcode/@lgcode/test.snowflakecomputing.com@lgcode/api@lgcode/v2@lgcode/cortex@lgcode/v1" },
+            package: "@ai-sdk/openai-compatible",
+            options: { name: "snowflake-cortex", baseURL: "https://test.snowflakecomputing.com/api/v2/cortex/v1" },
           },
           {},
         )
@@ -100,10 +100,10 @@ describe("SnowflakeCortexPlugin", () => {
           "aisdk.sdk",
           {
             model: model("snowflake-cortex", "claude-sonnet-4-6"),
-            package: "@ai-sdk@lgcode/openai-compatible",
+            package: "@ai-sdk/openai-compatible",
             options: {
               name: "snowflake-cortex",
-              baseURL: "https:@lgcode/@lgcode/test.snowflakecomputing.com@lgcode/api@lgcode/v2@lgcode/cortex@lgcode/v1",
+              baseURL: "https://test.snowflakecomputing.com/api/v2/cortex/v1",
               token: "options-token",
             },
           },
@@ -133,8 +133,8 @@ describe("SnowflakeCortexPlugin", () => {
           "aisdk.sdk",
           {
             model: model("snowflake-cortex", "claude-sonnet-4-6"),
-            package: "@ai-sdk@lgcode/openai-compatible",
-            options: { name: "snowflake-cortex", baseURL: "https:@lgcode/@lgcode/test.snowflakecomputing.com@lgcode/api@lgcode/v2@lgcode/cortex@lgcode/v1" },
+            package: "@ai-sdk/openai-compatible",
+            options: { name: "snowflake-cortex", baseURL: "https://test.snowflakecomputing.com/api/v2/cortex/v1" },
           },
           {},
         )
@@ -153,7 +153,7 @@ describe("cortexFetch", () => {
       captured.push(init ?? {})
       return new Response("{}", { status: 200 })
     }
-    await cortexFetch(upstream)("https:@lgcode/@lgcode/test", {
+    await cortexFetch(upstream)("https://test", {
       method: "POST",
       body: JSON.stringify({ model: "claude-sonnet-4-6", max_tokens: 1024 }),
     })
@@ -169,7 +169,7 @@ describe("cortexFetch", () => {
       return new Response("{}", { status: 200 })
     }
     const original = JSON.stringify({ model: "claude-sonnet-4-6", temperature: 0.7 })
-    await cortexFetch(upstream)("https:@lgcode/@lgcode/test", { method: "POST", body: original })
+    await cortexFetch(upstream)("https://test", { method: "POST", body: original })
     expect(captured[0].body).toBe(original)
   })
 
@@ -177,9 +177,9 @@ describe("cortexFetch", () => {
     const upstream: FetchLike = async () =>
       new Response(JSON.stringify({ message: "Conversation complete" }), {
         status: 400,
-        headers: { "content-type": "application@lgcode/json" },
+        headers: { "content-type": "application/json" },
       })
-    const response = await cortexFetch(upstream)("https:@lgcode/@lgcode/test", {})
+    const response = await cortexFetch(upstream)("https://test", {})
     expect(response.status).toBe(200)
     const data = (await response.json()) as { choices: { finish_reason: string }[] }
     expect(data.choices[0].finish_reason).toBe("stop")
@@ -189,15 +189,15 @@ describe("cortexFetch", () => {
     const upstream: FetchLike = async () =>
       new Response(JSON.stringify({ message: "Invalid model" }), {
         status: 400,
-        headers: { "content-type": "application@lgcode/json" },
+        headers: { "content-type": "application/json" },
       })
-    const response = await cortexFetch(upstream)("https:@lgcode/@lgcode/test", {})
+    const response = await cortexFetch(upstream)("https://test", {})
     expect(response.status).toBe(400)
   })
 
   bun_it("passes through non-400 errors unchanged", async () => {
     const upstream: FetchLike = async () => new Response("Unauthorized", { status: 401 })
-    const response = await cortexFetch(upstream)("https:@lgcode/@lgcode/test", {})
+    const response = await cortexFetch(upstream)("https://test", {})
     expect(response.status).toBe(401)
   })
 
@@ -208,7 +208,7 @@ describe("cortexFetch", () => {
       return new Response("{}", { status: 200 })
     }
     const invalidBody = "{ not json }"
-    await cortexFetch(upstream)("https:@lgcode/@lgcode/test", { method: "POST", body: invalidBody })
+    await cortexFetch(upstream)("https://test", { method: "POST", body: invalidBody })
     expect(captured[0].body).toBe(invalidBody)
   })
 
@@ -224,10 +224,10 @@ describe("cortexFetch", () => {
         }),
         {
           status: 200,
-          headers: { "content-type": "text@lgcode/event-stream" },
+          headers: { "content-type": "text/event-stream" },
         },
       )
-    const response = await cortexFetch(upstream)("https:@lgcode/@lgcode/test", {})
+    const response = await cortexFetch(upstream)("https://test", {})
     const text = await response.text()
     expect(text).toContain('"role":"assistant"')
     expect(text).not.toContain('"role":""')

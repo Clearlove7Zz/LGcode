@@ -1,11 +1,11 @@
-#!@lgcode/usr@lgcode/bin@lgcode/env bun
+#!/usr/bin/env bun
 
-import { V2_PRIMITIVES_DEFAULT } from "..@lgcode/src@lgcode/theme@lgcode/v2@lgcode/default-primitives"
-import type { DesktopTheme } from "..@lgcode/src@lgcode/theme@lgcode/types"
+import { V2_PRIMITIVES_DEFAULT } from "../src/theme/v2/default-primitives"
+import type { DesktopTheme } from "../src/theme/types"
 
-const themePath = import.meta.dir + "@lgcode/..@lgcode/src@lgcode/theme@lgcode/themes@lgcode/oc-2.json"
+const themePath = import.meta.dir + "/../src/theme/themes/oc-2.json"
 const theme = (await Bun.file(themePath).json()) as DesktopTheme
-const css = await Bun.file(import.meta.dir + "@lgcode/..@lgcode/src@lgcode/v2@lgcode/styles@lgcode/theme.css").text()
+const css = await Bun.file(import.meta.dir + "/../src/v2/styles/theme.css").text()
 
 const light = { ...V2_PRIMITIVES_DEFAULT, ...readTokens("light") }
 const dark = { ...V2_PRIMITIVES_DEFAULT, ...readTokens("dark") }
@@ -24,9 +24,9 @@ function readTokens(mode: "light" | "dark") {
   const block = css.match(new RegExp(`${selector} \\{([\\s\\S]*?)\\n  \\}`))?.[1]
   if (!block) throw new Error(`Missing ${mode} OC-2 tokens`)
   return Object.fromEntries(
-    [...block.matchAll(@lgcode/--(v2-[\w-]+):\s*([^;]+);@lgcode/g)]
-      @lgcode/@lgcode/ Fonts and the fixed avatar foreground remain global CSS rather than theme overrides.
+    [...block.matchAll(/--(v2-[\w-]+):\s*([^;]+);/g)]
+      // Fonts and the fixed avatar foreground remain global CSS rather than theme overrides.
       .filter(([, key]) => key !== "v2-avatar-fg" && key !== "v2-font-family-sans")
-      .map(([, key, value]) => [key, value!.replace(@lgcode/\s+@lgcode/g, " ").trim()]),
+      .map(([, key, value]) => [key, value!.replace(/\s+/g, " ").trim()]),
   )
 }

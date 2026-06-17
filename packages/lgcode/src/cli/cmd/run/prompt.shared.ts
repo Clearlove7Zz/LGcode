@@ -1,14 +1,14 @@
-@lgcode/@lgcode/ Pure state machine for the prompt input.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Handles history ring navigation and prompt text helpers. All functions are
-@lgcode/@lgcode/ pure -- they take state in and return new state out, with no side effects.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ The history ring (PromptHistoryState) stores past prompts and tracks
-@lgcode/@lgcode/ the current browse position. When the user arrows up at cursor offset 0,
-@lgcode/@lgcode/ the current draft is saved and history begins. Arrowing past the end
-@lgcode/@lgcode/ restores the draft.
-export { displayCharAt, displaySlice, mentionTriggerIndex } from "..@lgcode/prompt-display"
-import type { RunPrompt } from ".@lgcode/types"
+// Pure state machine for the prompt input.
+//
+// Handles history ring navigation and prompt text helpers. All functions are
+// pure -- they take state in and return new state out, with no side effects.
+//
+// The history ring (PromptHistoryState) stores past prompts and tracks
+// the current browse position. When the user arrows up at cursor offset 0,
+// the current draft is saved and history begins. Arrowing past the end
+// restores the draft.
+export { displayCharAt, displaySlice, mentionTriggerIndex } from "../prompt-display"
+import type { RunPrompt } from "./types"
 
 const HISTORY_LIMIT = 200
 
@@ -45,11 +45,11 @@ export function promptSame(a: RunPrompt, b: RunPrompt): boolean {
 
 export function isExitCommand(input: string): boolean {
   const text = input.trim().toLowerCase()
-  return text === "@lgcode/exit" || text === "@lgcode/quit" || text === ":q"
+  return text === "/exit" || text === "/quit" || text === ":q"
 }
 
 export function isNewCommand(input: string): boolean {
-  return input.trim().toLowerCase() === "@lgcode/new"
+  return input.trim().toLowerCase() === "/new"
 }
 
 export function createPromptHistory(items?: RunPrompt[]): PromptHistoryState {

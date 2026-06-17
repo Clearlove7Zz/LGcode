@@ -1,9 +1,9 @@
 import { Context, Duration, Effect, Fiber, Layer, Schema, Stream } from "effect"
-import type { PlatformError } from "effect@lgcode/PlatformError"
-import { ChildProcess } from "effect@lgcode/unstable@lgcode/process"
-import { ChildProcessSpawner } from "effect@lgcode/unstable@lgcode/process@lgcode/ChildProcessSpawner"
-import { CrossSpawnSpawner } from ".@lgcode/cross-spawn-spawner"
-import { LayerNode } from ".@lgcode/effect@lgcode/layer-node"
+import type { PlatformError } from "effect/PlatformError"
+import { ChildProcess } from "effect/unstable/process"
+import { ChildProcessSpawner } from "effect/unstable/process/ChildProcessSpawner"
+import { CrossSpawnSpawner } from "./cross-spawn-spawner"
+import { LayerNode } from "./effect/layer-node"
 
 export class AppProcessError extends Schema.TaggedErrorClass<AppProcessError>()("AppProcessError", {
   command: Schema.String,
@@ -44,7 +44,7 @@ export type Interface = ChildProcessSpawner["Service"] & {
   ) => Stream.Stream<string, AppProcessError>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/AppProcess") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/AppProcess") {}
 
 export const requireSuccess = (result: RunResult): Effect.Effect<RunResult, AppProcessError> =>
   result.exitCode === 0
@@ -233,4 +233,4 @@ export const layer = Layer.effect(
 export const defaultLayer = layer.pipe(Layer.provide(CrossSpawnSpawner.defaultLayer))
 export const node = LayerNode.make(layer, [CrossSpawnSpawner.node])
 
-export * as AppProcess from ".@lgcode/process"
+export * as AppProcess from "./process"

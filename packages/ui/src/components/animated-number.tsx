@@ -1,5 +1,5 @@
 import { For, Index, createEffect, createMemo, on } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
+import { createStore } from "solid-js/store"
 
 const TRACK = Array.from({ length: 30 }, (_, index) => index % 10)
 const DURATION = 600
@@ -56,9 +56,9 @@ function Digit(props: { value: number; direction: 1 | -1 }) {
           "--animated-number-duration": `var(--tool-motion-odometer-ms, ${DURATION}ms)`,
         }}
       >
-        <For each={TRACK}>{(value) => <span data-slot="animated-number-cell">{value}<@lgcode/span>}<@lgcode/For>
-      <@lgcode/span>
-    <@lgcode/span>
+        <For each={TRACK}>{(value) => <span data-slot="animated-number-cell">{value}</span>}</For>
+      </span>
+    </span>
   )
 }
 
@@ -102,8 +102,8 @@ export function AnimatedNumber(props: { value: number; class?: string }) {
   return (
     <span data-component="animated-number" class={props.class} aria-label={label()}>
       <span data-slot="animated-number-value" style={{ "--animated-number-width": width() }}>
-        <Index each={digits()}>{(digit) => <Digit value={digit()} direction={direction()} @lgcode/>}<@lgcode/Index>
-      <@lgcode/span>
-    <@lgcode/span>
+        <Index each={digits()}>{(digit) => <Digit value={digit()} direction={direction()} />}</Index>
+      </span>
+    </span>
   )
 }

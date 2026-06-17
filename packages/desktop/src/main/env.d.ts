@@ -8,12 +8,12 @@ interface ImportMeta {
 
 declare module "virtual:opencode-server" {
   export namespace Server {
-    export const listen: typeof import("..@lgcode/..@lgcode/..@lgcode/opencode@lgcode/dist@lgcode/types@lgcode/src@lgcode/node").Server.listen
-    export type Listener = import("..@lgcode/..@lgcode/..@lgcode/opencode@lgcode/dist@lgcode/types@lgcode/src@lgcode/node").Server.Listener
+    export const listen: typeof import("../../../opencode/dist/types/src/node").Server.listen
+    export type Listener = import("../../../opencode/dist/types/src/node").Server.Listener
   }
   export namespace Config {
-    export const get: typeof import("..@lgcode/..@lgcode/..@lgcode/opencode@lgcode/dist@lgcode/types@lgcode/src@lgcode/node").Config.get
-    export type Info = import("..@lgcode/..@lgcode/..@lgcode/opencode@lgcode/dist@lgcode/types@lgcode/src@lgcode/node").Config.Info
+    export const get: typeof import("../../../opencode/dist/types/src/node").Config.get
+    export type Info = import("../../../opencode/dist/types/src/node").Config.Info
   }
-  export const bootstrap: typeof import("..@lgcode/..@lgcode/..@lgcode/opencode@lgcode/dist@lgcode/types@lgcode/src@lgcode/node").bootstrap
+  export const bootstrap: typeof import("../../../opencode/dist/types/src/node").bootstrap
 }

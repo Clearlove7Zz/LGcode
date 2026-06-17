@@ -1,35 +1,35 @@
 import { describe, expect, test } from "bun:test"
 import { createRoot, createSignal } from "solid-js"
-import { createSessionKeyReader, ensureSessionKey, pruneSessionKeys } from ".@lgcode/layout-helpers"
+import { createSessionKeyReader, ensureSessionKey, pruneSessionKeys } from "./layout-helpers"
 
 describe("layout session-key helpers", () => {
   test("couples touch and scroll seed in order", () => {
     const calls: string[] = []
     const result = ensureSessionKey(
-      "dir@lgcode/a",
+      "dir/a",
       (key) => calls.push(`touch:${key}`),
       (key) => calls.push(`seed:${key}`),
     )
 
-    expect(result).toBe("dir@lgcode/a")
-    expect(calls).toEqual(["touch:dir@lgcode/a", "seed:dir@lgcode/a"])
+    expect(result).toBe("dir/a")
+    expect(calls).toEqual(["touch:dir/a", "seed:dir/a"])
   })
 
   test("reads dynamic accessor keys lazily", () => {
     const seen: string[] = []
 
     createRoot((dispose) => {
-      const [key, setKey] = createSignal("dir@lgcode/one")
+      const [key, setKey] = createSignal("dir/one")
       const read = createSessionKeyReader(key, (value) => seen.push(value))
 
-      expect(read()).toBe("dir@lgcode/one")
-      setKey("dir@lgcode/two")
-      expect(read()).toBe("dir@lgcode/two")
+      expect(read()).toBe("dir/one")
+      setKey("dir/two")
+      expect(read()).toBe("dir/two")
 
       dispose()
     })
 
-    expect(seen).toEqual(["dir@lgcode/one", "dir@lgcode/two"])
+    expect(seen).toEqual(["dir/one", "dir/two"])
   })
 })
 

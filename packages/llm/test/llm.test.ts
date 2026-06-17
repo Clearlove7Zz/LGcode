@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test"
-import { CacheHint, LLM, LLMResponse } from "..@lgcode/src"
-import * as OpenAIChat from "..@lgcode/src@lgcode/protocols@lgcode/openai-chat"
-import * as OpenAIResponses from "..@lgcode/src@lgcode/protocols@lgcode/openai-responses"
-import { LLMRequest, Message, Model, ToolCallPart, ToolChoice, ToolDefinition, ToolResultPart } from "..@lgcode/src@lgcode/schema"
+import { CacheHint, LLM, LLMResponse } from "../src"
+import * as OpenAIChat from "../src/protocols/openai-chat"
+import * as OpenAIResponses from "../src/protocols/openai-responses"
+import { LLMRequest, Message, Model, ToolCallPart, ToolChoice, ToolDefinition, ToolResultPart } from "../src/schema"
 
 const chatRoute = OpenAIChat.route
 const responsesRoute = OpenAIResponses.route

@@ -1,21 +1,21 @@
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import path from "path"
 import { fileURLToPath } from "url"
 import { describe, expect, test } from "bun:test"
 import { Effect, Layer } from "effect"
-import { FileMutation } from "@lgcode/core@lgcode/file-mutation"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { Location } from "@lgcode/core@lgcode/location"
-import { LocationMutation } from "@lgcode/core@lgcode/location-mutation"
-import { PermissionV2 } from "@lgcode/core@lgcode/permission"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import { SessionV2 } from "@lgcode/core@lgcode/session"
-import { ToolRegistry } from "@lgcode/core@lgcode/tool@lgcode/registry"
-import { WriteTool } from "@lgcode/core@lgcode/tool@lgcode/write"
-import { location } from ".@lgcode/fixture@lgcode/location"
-import { tmpdir } from ".@lgcode/fixture@lgcode/tmpdir"
-import { testEffect } from ".@lgcode/lib@lgcode/effect"
-import { toolIdentity, executeTool, settleTool, toolDefinitions } from ".@lgcode/lib@lgcode/tool"
+import { FileMutation } from "@opencode@lgcode/core/file-mutation"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { Location } from "@opencode@lgcode/core/location"
+import { LocationMutation } from "@opencode@lgcode/core/location-mutation"
+import { PermissionV2 } from "@opencode@lgcode/core/permission"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import { SessionV2 } from "@opencode@lgcode/core/session"
+import { ToolRegistry } from "@opencode@lgcode/core/tool/registry"
+import { WriteTool } from "@opencode@lgcode/core/tool/write"
+import { location } from "./fixture/location"
+import { tmpdir } from "./fixture/tmpdir"
+import { testEffect } from "./lib/effect"
+import { toolIdentity, executeTool, settleTool, toolDefinitions } from "./lib/tool"
 
 const sessionID = SessionV2.ID.make("ses_write_tool_test")
 const assertions: PermissionV2.AssertInput[] = []
@@ -93,23 +93,23 @@ describe("WriteTool", () => {
         return withTool(tmp.path, (registry) =>
           Effect.gen(function* () {
             expect((yield* toolDefinitions(registry)).map((tool) => tool.name)).toEqual(["write"])
-            const settled = yield* settleTool(registry, call({ path: "src@lgcode/new.txt", content: "created" }))
+            const settled = yield* settleTool(registry, call({ path: "src/new.txt", content: "created" }))
             expect(settled).toEqual({
-              result: { type: "text", value: "Created file successfully: src@lgcode/new.txt" },
+              result: { type: "text", value: "Created file successfully: src/new.txt" },
               output: {
                 structured: {
                   operation: "write",
                   target: path.join(yield* Effect.promise(() => fs.realpath(tmp.path)), "src", "new.txt"),
-                  resource: "src@lgcode/new.txt",
+                  resource: "src/new.txt",
                   existed: false,
                 },
-                content: [{ type: "text", text: "Created file successfully: src@lgcode/new.txt" }],
+                content: [{ type: "text", text: "Created file successfully: src/new.txt" }],
               },
             })
             expect(yield* Effect.promise(() => fs.readFile(path.join(tmp.path, "src", "new.txt"), "utf8"))).toBe(
               "created",
             )
-            expect(assertions).toMatchObject([{ sessionID, action: "edit", resources: ["src@lgcode/new.txt"], save: ["*"] }])
+            expect(assertions).toMatchObject([{ sessionID, action: "edit", resources: ["src/new.txt"], save: ["*"] }])
             expect(writes).toEqual([path.join(yield* Effect.promise(() => fs.realpath(tmp.path)), "src", "new.txt")])
           }),
         )
@@ -208,13 +208,13 @@ describe("WriteTool", () => {
               expect(assertions.map((input) => input.action)).toEqual(["external_directory", "edit"])
               expect(assertions[0]).toMatchObject({
                 resources: [
-                  path.join(yield* Effect.promise(() => fs.realpath(outside.path)), "*").replaceAll("\\", "@lgcode/"),
+                  path.join(yield* Effect.promise(() => fs.realpath(outside.path)), "*").replaceAll("\\", "/"),
                 ],
               })
-              expect(assertions[1]).toMatchObject({ resources: [canonicalTarget.replaceAll("\\", "@lgcode/")], save: ["*"] })
+              expect(assertions[1]).toMatchObject({ resources: [canonicalTarget.replaceAll("\\", "/")], save: ["*"] })
               expect(settled.output?.structured).toMatchObject({
                 target: canonicalTarget,
-                resource: canonicalTarget.replaceAll("\\", "@lgcode/"),
+                resource: canonicalTarget.replaceAll("\\", "/"),
                 existed: false,
               })
               expect(yield* Effect.promise(() => fs.readFile(target, "utf8"))).toBe("external")
@@ -271,7 +271,7 @@ describe("WriteTool", () => {
 })
 
 test("keeps the locked write schema, semantics docstring, and deferred UX TODOs visible", async () => {
-  const source = (await fs.readFile(new URL("..@lgcode/src@lgcode/tool@lgcode/write.ts", import.meta.url), "utf8")).replaceAll("\r\n", "\n")
+  const source = (await fs.readFile(new URL("../src/tool/write.ts", import.meta.url), "utf8")).replaceAll("\r\n", "\n")
   const definition = await Effect.runPromise(
     withTool(path.dirname(fileURLToPath(import.meta.url)), (registry) => toolDefinitions(registry)),
   )
@@ -284,8 +284,8 @@ test("keeps the locked write schema, semantics docstring, and deferred UX TODOs 
   for (const todo of [
     "Revisit whether model-facing mutation schemas should prefer absolute `filePath` naming for trained-in compatibility after evaluating model behavior.",
     "Add formatter integration after V2 formatter runtime exists.",
-    "Publish watcher@lgcode/file-edit events after V2 watcher integration exists.",
-    "Add snapshots @lgcode/ undo after design exists.",
+    "Publish watcher/file-edit events after V2 watcher integration exists.",
+    "Add snapshots / undo after design exists.",
     "Add LSP notification and diagnostics after V2 LSP runtime exists.",
   ]) {
     expect(source).toContain(`TODO: ${todo}`)

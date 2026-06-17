@@ -1,14 +1,14 @@
-@lgcode/**
+/**
  * Vite plugin that exposes a POST endpoint for the timeline playground
  * to write CSS changes back to source files on disk.
  *
- * POST @lgcode/__playground@lgcode/apply-css
+ * POST /__playground/apply-css
  * Body: { edits: Array<{ file: string; anchor: string; prop: string; value: string }> }
  *
  * For each edit the plugin finds `anchor` in the file, then locates the
  * next `prop: <anything>;` after it and replaces the value portion.
- * `file` is a basename resolved relative to packages@lgcode/ui@lgcode/src@lgcode/components@lgcode/.
- *@lgcode/
+ * `file` is a basename resolved relative to packages/ui/src/components/.
+ */
 import type { Plugin } from "vite"
 import type { IncomingMessage, ServerResponse } from "node:http"
 import fs from "node:fs"
@@ -16,9 +16,9 @@ import path from "node:path"
 import { fileURLToPath } from "node:url"
 
 const here = path.dirname(fileURLToPath(import.meta.url))
-const root = path.resolve(here, "..@lgcode/..@lgcode/ui@lgcode/src@lgcode/components")
+const root = path.resolve(here, "../../ui/src/components")
 
-const ENDPOINT = "@lgcode/__playground@lgcode/apply-css"
+const ENDPOINT = "/__playground/apply-css"
 
 type Edit = { file: string; anchor: string; prop: string; value: string }
 type Result = { file: string; prop: string; ok: boolean; error?: string }
@@ -35,8 +35,8 @@ function applyEdits(content: string, edits: Edit[]): { content: string; results:
       continue
     }
 
-    @lgcode/@lgcode/ From the anchor position, find the next occurrence of `prop: <value>`
-    @lgcode/@lgcode/ We match `prop:` followed by any value up to `;`
+    // From the anchor position, find the next occurrence of `prop: <value>`
+    // We match `prop:` followed by any value up to `;`
     const after = out.slice(idx)
     const re = new RegExp(`(${escapeRegex(edit.prop)}\\s*:\\s*)([^;]+)(;)`)
     const match = re.exec(after)
@@ -55,7 +55,7 @@ function applyEdits(content: string, edits: Edit[]): { content: string; results:
 }
 
 function escapeRegex(s: string) {
-  return s.replace(@lgcode/[.*+?^${}()|[\]\\]@lgcode/g, "\\$&")
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
 }
 
 export function playgroundCss(): Plugin {
@@ -66,7 +66,7 @@ export function playgroundCss(): Plugin {
         if (req.url !== ENDPOINT) return next()
         if (req.method !== "POST") {
           res.statusCode = 405
-          res.setHeader("Content-Type", "application@lgcode/json")
+          res.setHeader("Content-Type", "application/json")
           res.end(JSON.stringify({ error: "Method not allowed" }))
           return
         }
@@ -81,19 +81,19 @@ export function playgroundCss(): Plugin {
             payload = JSON.parse(data)
           } catch {
             res.statusCode = 400
-            res.setHeader("Content-Type", "application@lgcode/json")
+            res.setHeader("Content-Type", "application/json")
             res.end(JSON.stringify({ error: "Invalid JSON" }))
             return
           }
 
           if (!Array.isArray(payload.edits)) {
             res.statusCode = 400
-            res.setHeader("Content-Type", "application@lgcode/json")
+            res.setHeader("Content-Type", "application/json")
             res.end(JSON.stringify({ error: "Missing edits array" }))
             return
           }
 
-          @lgcode/@lgcode/ Group by file
+          // Group by file
           const grouped = new Map<string, Edit[]>()
           for (const edit of payload.edits) {
             if (!edit.file || !edit.anchor || !edit.prop || edit.value === undefined) continue
@@ -127,7 +127,7 @@ export function playgroundCss(): Plugin {
           }
 
           res.statusCode = 200
-          res.setHeader("Content-Type", "application@lgcode/json")
+          res.setHeader("Content-Type", "application/json")
           res.end(JSON.stringify({ results }))
         })
       })

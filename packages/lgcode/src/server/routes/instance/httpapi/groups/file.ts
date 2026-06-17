@@ -1,16 +1,16 @@
-import { FileSystem } from "@lgcode/core@lgcode/filesystem"
-import { NonNegativeInt } from "@lgcode/core@lgcode/schema"
-import { LSP } from "@@lgcode/lsp@lgcode/lsp"
+import { FileSystem } from "@opencode@lgcode/core/filesystem"
+import { NonNegativeInt } from "@opencode@lgcode/core/schema"
+import { LSP } from "@/lsp/lsp"
 import { Schema } from "effect"
-import { HttpApi, HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
-import { Authorization } from "..@lgcode/middleware@lgcode/authorization"
-import { InstanceContextMiddleware } from "..@lgcode/middleware@lgcode/instance-context"
+import { HttpApi, HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
+import { Authorization } from "../middleware/authorization"
+import { InstanceContextMiddleware } from "../middleware/instance-context"
 import {
   WorkspaceRoutingMiddleware,
   WorkspaceRoutingQuery,
   WorkspaceRoutingQueryFields,
-} from "..@lgcode/middleware@lgcode/workspace-routing"
-import { described } from ".@lgcode/metadata"
+} from "../middleware/workspace-routing"
+import { described } from "./metadata"
 
 export const FileQuery = Schema.Struct({
   ...WorkspaceRoutingQueryFields,
@@ -93,12 +93,12 @@ export const LegacyStatus = Schema.Struct({
 }).annotate({ identifier: "File" })
 
 export const FilePaths = {
-  findText: "@lgcode/find",
-  findFile: "@lgcode/find@lgcode/file",
-  findSymbol: "@lgcode/find@lgcode/symbol",
-  list: "@lgcode/file",
-  content: "@lgcode/file@lgcode/content",
-  status: "@lgcode/file@lgcode/status",
+  findText: "/find",
+  findFile: "/find/file",
+  findSymbol: "/find/symbol",
+  list: "/file",
+  content: "/file/content",
+  status: "/file/status",
 } as const
 
 export const FileApi = HttpApi.make("file")

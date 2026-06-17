@@ -1,8 +1,8 @@
-import { expect, test, type Locator, type Page } from "@playwright@lgcode/test"
-import { mockOpenCodeServer } from "..@lgcode/utils@lgcode/mock-server"
-import { expectAppVisible, expectSessionTitle } from "..@lgcode/utils@lgcode/waits"
+import { expect, test, type Locator, type Page } from "@playwright/test"
+import { mockOpenCodeServer } from "../utils/mock-server"
+import { expectAppVisible, expectSessionTitle } from "../utils/waits"
 
-const directory = "C:@lgcode/OpenCode@lgcode/TimelineStateRegression"
+const directory = "C:/OpenCode/TimelineStateRegression"
 const projectID = "proj_timeline_state_regression"
 const sessionID = "ses_timeline_state_regression"
 const userMessageID = "msg_user_regression"
@@ -56,18 +56,18 @@ const editPart = {
   tool: "edit",
   state: {
     status: "completed",
-    input: { filePath: "src@lgcode/regression.ts" },
-    output: "Edited src@lgcode/regression.ts",
-    title: "src@lgcode/regression.ts",
+    input: { filePath: "src/regression.ts" },
+    output: "Edited src/regression.ts",
+    title: "src/regression.ts",
     metadata: {
       filediff: {
-        file: "src@lgcode/regression.ts",
+        file: "src/regression.ts",
         additions: 1,
         deletions: 1,
         before: "export const value = 'before'\n",
         after: "export const value = 'after'\n",
       },
-      diff: "diff --git a@lgcode/src@lgcode/regression.ts b@lgcode/src@lgcode/regression.ts\n-export const value = 'before'\n+export const value = 'after'\n",
+      diff: "diff --git a/src/regression.ts b/src/regression.ts\n-export const value = 'before'\n+export const value = 'after'\n",
     },
     time: { start: 1700000001000, end: 1700000002000 },
   },
@@ -106,7 +106,7 @@ test.describe("regression: session timeline local row state", () => {
     await mockServer(page, events)
     await configurePage(page)
 
-    await page.goto(`@lgcode/${base64Encode(directory)}@lgcode/session@lgcode/${sessionID}`)
+    await page.goto(`/${base64Encode(directory)}/session/${sessionID}`)
     await expectSessionTitle(page, title)
 
     const wrapper = page.locator(`[data-timeline-part-id="${editPartID}"]`).first()
@@ -142,7 +142,7 @@ test.describe("regression: session timeline local row state", () => {
     await mockServer(page, events)
     await configurePage(page)
 
-    await page.goto(`@lgcode/${base64Encode(directory)}@lgcode/session@lgcode/${sessionID}`)
+    await page.goto(`/${base64Encode(directory)}/session/${sessionID}`)
     await expectSessionTitle(page, title)
 
     const wrapper = page.locator(`[data-timeline-part-id="${editPartID}"]`).first()
@@ -207,7 +207,7 @@ test.describe("regression: session timeline local row state", () => {
         metadata: {
           ...editPart.state.metadata,
           filediff: {
-            file: "src@lgcode/regression.ts",
+            file: "src/regression.ts",
             additions: 1,
             deletions: 1,
             before: lines,
@@ -219,7 +219,7 @@ test.describe("regression: session timeline local row state", () => {
     await mockServer(page, events, [userMessage, { ...assistantMessage, parts: [part] }])
     await configurePage(page)
 
-    await page.goto(`@lgcode/${base64Encode(directory)}@lgcode/session@lgcode/${sessionID}`)
+    await page.goto(`/${base64Encode(directory)}/session/${sessionID}`)
     await expectSessionTitle(page, title)
 
     const wrapper = page.locator(`[data-timeline-part-id="${editPartID}"]`).first()
@@ -436,5 +436,5 @@ function provider() {
 }
 
 function base64Encode(value: string) {
-  return Buffer.from(value, "utf8").toString("base64").replace(@lgcode/\+@lgcode/g, "-").replace(@lgcode/\@lgcode/@lgcode/g, "_").replace(@lgcode/=@lgcode/g, "")
+  return Buffer.from(value, "utf8").toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "")
 }

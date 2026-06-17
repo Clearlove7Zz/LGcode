@@ -1,7 +1,7 @@
-export * as IntegrationConnection from ".@lgcode/connection"
+export * as IntegrationConnection from "./connection"
 
 import { Schema } from "effect"
-import { Credential } from "..@lgcode/credential"
+import { Credential } from "../credential"
 
 export const CredentialInfo = Schema.Struct({
   type: Schema.Literal("credential"),

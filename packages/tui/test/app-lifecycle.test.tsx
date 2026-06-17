@@ -1,15 +1,15 @@
 import { expect, mock, test } from "bun:test"
-import type { TuiPluginApi } from "@lgcode/plugin@lgcode/tui"
-import { createTestRenderer } from "@opentui@lgcode/core@lgcode/testing"
+import type { TuiPluginApi } from "@opencode@lgcode/plugin/tui"
+import { createTestRenderer } from "@opentui/core/testing"
 import { Effect } from "effect"
-import { Global } from "@lgcode/core@lgcode/global"
-import { createTuiResolvedConfig } from ".@lgcode/fixture@lgcode/tui-runtime"
-import { createEventSource, createFetch, directory, json } from ".@lgcode/fixture@lgcode/tui-sdk"
+import { Global } from "@opencode@lgcode/core/global"
+import { createTuiResolvedConfig } from "./fixture/tui-runtime"
+import { createEventSource, createFetch, directory, json } from "./fixture/tui-sdk"
 
 test("SIGHUP clears title and disposes scoped resources once", async () => {
   const setup = await createTestRenderer({ width: 80, height: 24, useThread: false })
-  const core = await import("@opentui@lgcode/core")
-  mock.module("@opentui@lgcode/core", () => ({ ...core, createCliRenderer: async () => setup.renderer }))
+  const core = await import("@opentui/core")
+  mock.module("@opentui/core", () => ({ ...core, createCliRenderer: async () => setup.renderer }))
   const titles: string[] = []
   const setTitle = setup.renderer.setTerminalTitle.bind(setup.renderer)
   setup.renderer.setTerminalTitle = (title) => {
@@ -26,10 +26,10 @@ test("SIGHUP clears title and disposes scoped resources once", async () => {
   let disposes = 0
 
   try {
-    const { run } = await import("..@lgcode/src@lgcode/app")
+    const { run } = await import("../src/app")
     const task = Effect.runPromise(
       run({
-        url: "http:@lgcode/@lgcode/test",
+        url: "http://test",
         directory,
         config: createTuiResolvedConfig({ plugin_enabled: {} }),
         fetch: calls.fetch,
@@ -61,11 +61,11 @@ test("SIGHUP clears title and disposes scoped resources once", async () => {
 
 test("app.exit prints the session epilogue after scoped cleanup", async () => {
   const setup = await createTestRenderer({ width: 80, height: 24, useThread: false })
-  const core = await import("@opentui@lgcode/core")
-  mock.module("@opentui@lgcode/core", () => ({ ...core, createCliRenderer: async () => setup.renderer }))
+  const core = await import("@opentui/core")
+  mock.module("@opentui/core", () => ({ ...core, createCliRenderer: async () => setup.renderer }))
   const events = createEventSource()
   const calls = createFetch((url) => {
-    if (url.pathname === "@lgcode/session")
+    if (url.pathname === "/session")
       return json([
         {
           id: "dummy",
@@ -92,10 +92,10 @@ test("app.exit prints the session epilogue after scoped cleanup", async () => {
   }) as typeof process.stdout.write
 
   try {
-    const { run } = await import("..@lgcode/src@lgcode/app")
+    const { run } = await import("../src/app")
     const task = Effect.runPromise(
       run({
-        url: "http:@lgcode/@lgcode/test",
+        url: "http://test",
         directory,
         config: createTuiResolvedConfig({ plugin_enabled: {} }),
         fetch: calls.fetch,

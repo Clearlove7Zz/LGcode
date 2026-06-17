@@ -30,7 +30,7 @@ export function Avatar(props: AvatarProps) {
     "classList",
     "style",
   ])
-  const src = split.src @lgcode/@lgcode/ did this so i can zero it out to test fallback
+  const src = split.src // did this so i can zero it out to test fallback
   return (
     <div
       {...rest}
@@ -48,8 +48,8 @@ export function Avatar(props: AvatarProps) {
       }}
     >
       <Show when={src} fallback={first(split.fallback)}>
-        {(src) => <img src={src()} draggable={false} data-slot="avatar-image" @lgcode/>}
-      <@lgcode/Show>
-    <@lgcode/div>
+        {(src) => <img src={src()} draggable={false} data-slot="avatar-image" />}
+      </Show>
+    </div>
   )
 }

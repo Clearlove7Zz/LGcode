@@ -1,38 +1,38 @@
-@lgcode/** Additional JSON metadata stored with a cassette. *@lgcode/
+/** Additional JSON metadata stored with a cassette. */
 export type CassetteMetadata = Record<string, unknown>
 
-@lgcode/** The normalized HTTP request representation used for matching. *@lgcode/
+/** The normalized HTTP request representation used for matching. */
 export interface RequestSnapshot {
-  @lgcode/** HTTP method. *@lgcode/
+  /** HTTP method. */
   readonly method: string
-  @lgcode/** Fully qualified URL after redaction. *@lgcode/
+  /** Fully qualified URL after redaction. */
   readonly url: string
-  @lgcode/** Allowed and redacted request headers. *@lgcode/
+  /** Allowed and redacted request headers. */
   readonly headers: Record<string, string>
-  @lgcode/** Request body after redaction. *@lgcode/
+  /** Request body after redaction. */
   readonly body: string
 }
 
-@lgcode/** @internal *@lgcode/
+/** @internal */
 export interface ResponseSnapshot {
-  @lgcode/** HTTP status code. *@lgcode/
+  /** HTTP status code. */
   readonly status: number
-  @lgcode/** Allowed and redacted response headers. *@lgcode/
+  /** Allowed and redacted response headers. */
   readonly headers: Record<string, string>
-  @lgcode/** Text body or base64-encoded binary body. *@lgcode/
+  /** Text body or base64-encoded binary body. */
   readonly body: string
-  @lgcode/** Encoding used by `body`; omitted for ordinary text. *@lgcode/
+  /** Encoding used by `body`; omitted for ordinary text. */
   readonly bodyEncoding?: "text" | "base64"
 }
 
-@lgcode/** @internal *@lgcode/
+/** @internal */
 export interface HttpInteraction {
   readonly transport: "http"
   readonly request: RequestSnapshot
   readonly response: ResponseSnapshot
 }
 
-@lgcode/** @internal *@lgcode/
+/** @internal */
 export type WebSocketEvent =
   | { readonly direction: "client" | "server"; readonly kind: "text"; readonly body: string }
   | {
@@ -42,7 +42,7 @@ export type WebSocketEvent =
       readonly bodyEncoding: "base64"
     }
 
-@lgcode/** @internal *@lgcode/
+/** @internal */
 export interface WebSocketInteraction {
   readonly transport: "websocket"
   readonly open: {
@@ -52,57 +52,57 @@ export interface WebSocketInteraction {
   readonly events: ReadonlyArray<WebSocketEvent>
 }
 
-@lgcode/** Returns whether an incoming HTTP request matches a recorded request. *@lgcode/
+/** Returns whether an incoming HTTP request matches a recorded request. */
 export type RequestMatcher = (incoming: RequestSnapshot, recorded: RequestSnapshot) => boolean
 
-@lgcode/** Additive redaction and header-preservation policy. *@lgcode/
+/** Additive redaction and header-preservation policy. */
 export interface RedactOptions {
-  @lgcode/** Additional sensitive headers to retain as `[REDACTED]`. *@lgcode/
+  /** Additional sensitive headers to retain as `[REDACTED]`. */
   readonly headers?: ReadonlyArray<string>
-  @lgcode/** Additional non-sensitive request headers to preserve for matching. *@lgcode/
+  /** Additional non-sensitive request headers to preserve for matching. */
   readonly allowRequestHeaders?: ReadonlyArray<string>
-  @lgcode/** Additional non-sensitive response headers to preserve for replay. *@lgcode/
+  /** Additional non-sensitive response headers to preserve for replay. */
   readonly allowResponseHeaders?: ReadonlyArray<string>
-  @lgcode/** Additional sensitive URL query parameter names. *@lgcode/
+  /** Additional sensitive URL query parameter names. */
   readonly queryParameters?: ReadonlyArray<string>
-  @lgcode/** Additional JSON field names to redact recursively. *@lgcode/
+  /** Additional JSON field names to redact recursively. */
   readonly jsonFields?: ReadonlyArray<string>
-  @lgcode/** Stabilizes a URL after built-in redaction. *@lgcode/
+  /** Stabilizes a URL after built-in redaction. */
   readonly url?: (url: string) => string
-  @lgcode/** Stabilizes a request, response, or text-frame body after built-in redaction. *@lgcode/
+  /** Stabilizes a request, response, or text-frame body after built-in redaction. */
   readonly body?: (body: string) => string
 }
 
-@lgcode/** Options shared by HTTP recorder layers. *@lgcode/
+/** Options shared by HTTP recorder layers. */
 export interface RecorderOptions {
-  @lgcode/** Cassette directory. Defaults to `<cwd>@lgcode/test@lgcode/fixtures@lgcode/recordings`. *@lgcode/
+  /** Cassette directory. Defaults to `<cwd>/test/fixtures/recordings`. */
   readonly directory?: string
-  @lgcode/** Additional metadata stored in the cassette. *@lgcode/
+  /** Additional metadata stored in the cassette. */
   readonly metadata?: CassetteMetadata
-  @lgcode/** Additive redaction and header-preservation policy. *@lgcode/
+  /** Additive redaction and header-preservation policy. */
   readonly redact?: RedactOptions
-  @lgcode/** Custom HTTP request equivalence. *@lgcode/
+  /** Custom HTTP request equivalence. */
   readonly match?: RequestMatcher
 }
 
-@lgcode/** @internal *@lgcode/
+/** @internal */
 export interface WebSocketRequest {
-  @lgcode/** WebSocket URL. *@lgcode/
+  /** WebSocket URL. */
   readonly url: string
-  @lgcode/** Headers used for redacted matching; the recorder does not send them. *@lgcode/
+  /** Headers used for redacted matching; the recorder does not send them. */
   readonly headers?: Record<string, string>
 }
 
-@lgcode/** @internal *@lgcode/
+/** @internal */
 export interface WebSocketRecorderOptions {
-  @lgcode/** Cassette directory. Defaults to `<cwd>@lgcode/test@lgcode/fixtures@lgcode/recordings`. *@lgcode/
+  /** Cassette directory. Defaults to `<cwd>/test/fixtures/recordings`. */
   readonly directory?: string
-  @lgcode/** Additional metadata stored in the cassette. *@lgcode/
+  /** Additional metadata stored in the cassette. */
   readonly metadata?: CassetteMetadata
-  @lgcode/** Additive handshake and text-frame redaction policy. *@lgcode/
+  /** Additive handshake and text-frame redaction policy. */
   readonly redact?: RedactOptions
-  @lgcode/** Compare text client frames as canonical JSON instead of exact strings. *@lgcode/
+  /** Compare text client frames as canonical JSON instead of exact strings. */
   readonly compareClientMessagesAsJson?: boolean
-  @lgcode/** WebSocket subprotocols used by `layerWebSocket`. *@lgcode/
+  /** WebSocket subprotocols used by `layerWebSocket`. */
   readonly protocols?: string | Array<string>
 }

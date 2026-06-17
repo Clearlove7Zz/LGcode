@@ -1,13 +1,13 @@
 import { Effect, Schema } from "effect"
-import { Route, type RouteDefaultsInput } from "..@lgcode/route@lgcode/client"
-import { Endpoint } from "..@lgcode/route@lgcode/endpoint"
-import { Framing } from "..@lgcode/route@lgcode/framing"
-import { Protocol } from "..@lgcode/route@lgcode/protocol"
-import { AuthOptions, type ProviderAuthOption } from "..@lgcode/route@lgcode/auth-options"
-import { ProviderID, type ModelID, type ProviderOptions } from "..@lgcode/schema"
-import * as OpenAICompatibleProfiles from ".@lgcode/openai-compatible-profile"
-import * as OpenAIChat from "..@lgcode/protocols@lgcode/openai-chat"
-import { isRecord } from "..@lgcode/protocols@lgcode/shared"
+import { Route, type RouteDefaultsInput } from "../route/client"
+import { Endpoint } from "../route/endpoint"
+import { Framing } from "../route/framing"
+import { Protocol } from "../route/protocol"
+import { AuthOptions, type ProviderAuthOption } from "../route/auth-options"
+import { ProviderID, type ModelID, type ProviderOptions } from "../schema"
+import * as OpenAICompatibleProfiles from "./openai-compatible-profile"
+import * as OpenAIChat from "../protocols/openai-chat"
+import { isRecord } from "../protocols/shared"
 
 export const profile = OpenAICompatibleProfiles.profiles.openrouter
 export const id = ProviderID.make(profile.provider)
@@ -70,7 +70,7 @@ export const route = Route.make({
   id: ADAPTER,
   provider: profile.provider,
   protocol,
-  endpoint: Endpoint.path("@lgcode/chat@lgcode/completions", { baseURL: profile.baseURL }),
+  endpoint: Endpoint.path("/chat/completions", { baseURL: profile.baseURL }),
   framing: Framing.sse,
 })
 

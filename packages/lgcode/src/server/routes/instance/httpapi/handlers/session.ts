@@ -1,26 +1,26 @@
-import { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
-import { Agent } from "@@lgcode/agent@lgcode/agent"
-import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
-import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
-import { Command } from "@@lgcode/command"
-import { Permission } from "@@lgcode/permission"
-import { SessionShare } from "@@lgcode/share@lgcode/session"
-import { Session } from "@@lgcode/session@lgcode/session"
-import { SessionCompaction } from "@@lgcode/session@lgcode/compaction"
-import { MessageV2 } from "@@lgcode/session@lgcode/message-v2"
-import { SessionPrompt } from "@@lgcode/session@lgcode/prompt"
-import { SessionRevert } from "@@lgcode/session@lgcode/revert"
-import { SessionRunState } from "@@lgcode/session@lgcode/run-state"
-import { SessionStatus } from "@@lgcode/session@lgcode/status"
-import { SessionSummary } from "@@lgcode/session@lgcode/summary"
-import { Todo } from "@@lgcode/session@lgcode/todo"
-import { MessageID, PartID, SessionID } from "@@lgcode/session@lgcode/schema"
-import { NamedError } from "@lgcode/core@lgcode/util@lgcode/error"
+import { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
+import { Agent } from "@/agent/agent"
+import { SessionV1 } from "@opencode@lgcode/core/v1/session"
+import { EventV2Bridge } from "@/event-v2-bridge"
+import { Command } from "@/command"
+import { Permission } from "@/permission"
+import { SessionShare } from "@/share/session"
+import { Session } from "@/session/session"
+import { SessionCompaction } from "@/session/compaction"
+import { MessageV2 } from "@/session/message-v2"
+import { SessionPrompt } from "@/session/prompt"
+import { SessionRevert } from "@/session/revert"
+import { SessionRunState } from "@/session/run-state"
+import { SessionStatus } from "@/session/status"
+import { SessionSummary } from "@/session/summary"
+import { Todo } from "@/session/todo"
+import { MessageID, PartID, SessionID } from "@/session/schema"
+import { NamedError } from "@opencode@lgcode/core/util/error"
 import { Cause, Effect, Option, Schema, Scope } from "effect"
-import * as Stream from "effect@lgcode/Stream"
-import { HttpServerRequest, HttpServerResponse } from "effect@lgcode/unstable@lgcode/http"
-import { HttpApiBuilder, HttpApiError, HttpApiSchema } from "effect@lgcode/unstable@lgcode/httpapi"
-import { InstanceHttpApi } from "..@lgcode/api"
+import * as Stream from "effect/Stream"
+import { HttpServerRequest, HttpServerResponse } from "effect/unstable/http"
+import { HttpApiBuilder, HttpApiError, HttpApiSchema } from "effect/unstable/httpapi"
+import { InstanceHttpApi } from "../api"
 import {
   CommandPayload,
   DiffQuery,
@@ -34,9 +34,9 @@ import {
   ShellPayload,
   SummarizePayload,
   UpdatePayload,
-} from "..@lgcode/groups@lgcode/session"
-import { PermissionNotFoundError } from "..@lgcode/errors"
-import * as SessionError from ".@lgcode/session-errors"
+} from "../groups/session"
+import { PermissionNotFoundError } from "../errors"
+import * as SessionError from "./session-errors"
 
 const tryParseJson = (text: string) =>
   Effect.try({
@@ -128,9 +128,9 @@ export const sessionHandlers = HttpApiBuilder.group(InstanceHttpApi, "session", 
       if (!page.cursor) return page.items
 
       const request = yield* HttpServerRequest.HttpServerRequest
-      @lgcode/@lgcode/ toURL() honors the Host + x-forwarded-proto headers, so the Link
-      @lgcode/@lgcode/ header echoes the real origin instead of a hard-coded localhost.
-      const url = Option.getOrElse(HttpServerRequest.toURL(request), () => new URL(request.url, "http:@lgcode/@lgcode/localhost"))
+      // toURL() honors the Host + x-forwarded-proto headers, so the Link
+      // header echoes the real origin instead of a hard-coded localhost.
+      const url = Option.getOrElse(HttpServerRequest.toURL(request), () => new URL(request.url, "http://localhost"))
       url.searchParams.set("limit", ctx.query.limit.toString())
       url.searchParams.set("before", page.cursor)
       return HttpServerResponse.jsonUnsafe(page.items, {
@@ -241,7 +241,7 @@ export const sessionHandlers = HttpApiBuilder.group(InstanceHttpApi, "session", 
         .command({
           sessionID: ctx.params.sessionID,
           messageID: ctx.payload.messageID,
-          model: `${ctx.payload.providerID}@lgcode/${ctx.payload.modelID}`,
+          model: `${ctx.payload.providerID}/${ctx.payload.modelID}`,
           command: Command.Default.INIT,
           arguments: "",
         })
@@ -249,11 +249,11 @@ export const sessionHandlers = HttpApiBuilder.group(InstanceHttpApi, "session", 
       return true
     })
 
-    @lgcode/@lgcode/ share@lgcode/unshare errors aren't all client-induced — storage and network
-    @lgcode/@lgcode/ failures from SessionShare are real possibilities. Map to a typed 500
-    @lgcode/@lgcode/ (matches the legacy route behavior which routed any failure through
-    @lgcode/@lgcode/ ErrorMiddleware → NamedError.Unknown 500) instead of blanket-mapping
-    @lgcode/@lgcode/ every failure to a 400 BadRequest.
+    // share/unshare errors aren't all client-induced — storage and network
+    // failures from SessionShare are real possibilities. Map to a typed 500
+    // (matches the legacy route behavior which routed any failure through
+    // ErrorMiddleware → NamedError.Unknown 500) instead of blanket-mapping
+    // every failure to a 400 BadRequest.
     const share = Effect.fn("SessionHttpApi.share")(function* (ctx: { params: { sessionID: SessionID } }) {
       yield* requireSession(ctx.params.sessionID)
       yield* shareSvc.share(ctx.params.sessionID).pipe(Effect.mapError(() => new HttpApiError.InternalServerError({})))
@@ -302,7 +302,7 @@ export const sessionHandlers = HttpApiBuilder.group(InstanceHttpApi, "session", 
         })
         .pipe(Effect.mapError(() => new HttpApiError.BadRequest({})))
       return HttpServerResponse.stream(Stream.make(JSON.stringify(message)).pipe(Stream.encodeText), {
-        contentType: "application@lgcode/json",
+        contentType: "application/json",
       })
     })
 

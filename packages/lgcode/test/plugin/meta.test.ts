@@ -1,15 +1,15 @@
 import { afterEach, describe, expect, test } from "bun:test"
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import path from "path"
 import { pathToFileURL } from "url"
 
-import { tmpdir } from "..@lgcode/fixture@lgcode/fixture"
-import { Process } from "@@lgcode/util@lgcode/process"
-import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
+import { tmpdir } from "../fixture/fixture"
+import { Process } from "@/util/process"
+import { Filesystem } from "@/util/filesystem"
 
-const { PluginMeta } = await import("..@lgcode/..@lgcode/src@lgcode/plugin@lgcode/meta")
-const root = path.join(import.meta.dir, "..@lgcode/..")
-const worker = path.join(import.meta.dir, "..@lgcode/fixture@lgcode/plugin-meta-worker.ts")
+const { PluginMeta } = await import("../../src/plugin/meta")
+const root = path.join(import.meta.dir, "../..")
+const worker = path.join(import.meta.dir, "../fixture/plugin-meta-worker.ts")
 
 function run(input: { file: string; spec: string; target: string; id: string }) {
   return Process.run([process.execPath, worker, JSON.stringify(input)], {

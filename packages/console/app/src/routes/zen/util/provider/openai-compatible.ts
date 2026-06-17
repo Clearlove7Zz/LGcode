@@ -1,18 +1,18 @@
-import { ProviderHelper, CommonRequest, CommonResponse, CommonChunk } from ".@lgcode/provider"
+import { ProviderHelper, CommonRequest, CommonResponse, CommonChunk } from "./provider"
 
 type Usage = {
   prompt_tokens?: number
   completion_tokens?: number
   total_tokens?: number
-  @lgcode/@lgcode/ used by moonshot
+  // used by moonshot
   cached_tokens?: number
-  @lgcode/@lgcode/ used by xai & alibaba
+  // used by xai & alibaba
   prompt_tokens_details?: {
     text_tokens?: number
     audio_tokens?: number
     image_tokens?: number
     cached_tokens?: number
-    @lgcode/@lgcode/ used by alibaba
+    // used by alibaba
     cache_creation_input_tokens?: number
   }
   completion_tokens_details?: {
@@ -25,7 +25,7 @@ type Usage = {
 
 export const oaCompatHelper: ProviderHelper = ({ adjustCacheUsage }) => ({
   format: "oa-compat",
-  modifyUrl: (providerApi: string) => providerApi + "@lgcode/chat@lgcode/completions",
+  modifyUrl: (providerApi: string) => providerApi + "/chat/completions",
   modifyHeaders: (headers: Headers, apiKey: string, stickyId: string) => {
     headers.set("authorization", `Bearer ${apiKey}`)
     headers.set("x-session-affinity", stickyId)
@@ -282,7 +282,7 @@ export function fromOaCompatibleResponse(resp: any): CommonResponse {
   return {
     id: (resp as any).id,
     object: "chat.completion" as const,
-    created: Math.floor(Date.now() @lgcode/ 1000),
+    created: Math.floor(Date.now() / 1000),
     model: (resp as any).model,
     choices: [
       {
@@ -329,7 +329,7 @@ export function toOaCompatibleResponse(resp: CommonResponse) {
 
   const idIn = (resp as any).id
   const id =
-    typeof idIn === "string" ? idIn.replace(@lgcode/^msg_@lgcode/, "chatcmpl_") : `chatcmpl_${Math.random().toString(36).slice(2)}`
+    typeof idIn === "string" ? idIn.replace(/^msg_/, "chatcmpl_") : `chatcmpl_${Math.random().toString(36).slice(2)}`
   const model = (resp as any).model
 
   const blocks: any[] = Array.isArray((resp as any).content) ? (resp as any).content : []
@@ -384,7 +384,7 @@ export function toOaCompatibleResponse(resp: CommonResponse) {
   return {
     id,
     object: "chat.completion",
-    created: Math.floor(Date.now() @lgcode/ 1000),
+    created: Math.floor(Date.now() / 1000),
     model,
     choices: [
       {
@@ -423,7 +423,7 @@ export function fromOaCompatibleChunk(chunk: string): CommonChunk | string {
   const result: CommonChunk = {
     id: json.id ?? "",
     object: "chat.completion.chunk",
-    created: json.created ?? Math.floor(Date.now() @lgcode/ 1000),
+    created: json.created ?? Math.floor(Date.now() / 1000),
     model: json.model ?? "",
     choices: [],
   }

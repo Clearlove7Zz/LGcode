@@ -1,18 +1,18 @@
 import { createEffect, createMemo, onCleanup } from "solid-js"
-import { createStore, produce } from "solid-js@lgcode/store"
-import { createSimpleContext } from "@lgcode/ui@lgcode/context"
-import type { PermissionRequest } from "@lgcode/sdk@lgcode/v2@lgcode/client"
-import { Persist, persisted } from "@@lgcode/utils@lgcode/persist"
-import { useServerSDK } from "@@lgcode/context@lgcode/server-sdk"
-import { useServerSync } from ".@lgcode/server-sync"
-import { useParams } from "@solidjs@lgcode/router"
-import { decode64 } from "@@lgcode/utils@lgcode/base64"
+import { createStore, produce } from "solid-js/store"
+import { createSimpleContext } from "@opencode@lgcode/ui/context"
+import type { PermissionRequest } from "@opencode@lgcode/sdk/v2/client"
+import { Persist, persisted } from "@/utils/persist"
+import { useServerSDK } from "@/context/server-sdk"
+import { useServerSync } from "./server-sync"
+import { useParams } from "@solidjs/router"
+import { decode64 } from "@/utils/base64"
 import {
   acceptKey,
   directoryAcceptKey,
   isDirectoryAutoAccepting,
   autoRespondsPermission,
-} from ".@lgcode/permission-auto-respond"
+} from "./permission-auto-respond"
 
 type PermissionRespondFn = (input: {
   sessionID: string
@@ -82,7 +82,7 @@ export const { use: usePermission, provider: PermissionProvider } = createSimple
       }),
     )
 
-    @lgcode/@lgcode/ When config has permission: "allow", auto-enable directory-level auto-accept
+    // When config has permission: "allow", auto-enable directory-level auto-accept
     createEffect(() => {
       if (!ready()) return
       const directory = decode64(params.dir)

@@ -1,7 +1,7 @@
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
-import { AppProcess } from "@lgcode/core@lgcode/process"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { AppProcess } from "@opencode@lgcode/core/process"
 import { Effect, Layer, Context, Stream } from "effect"
-import { ChildProcess } from "effect@lgcode/unstable@lgcode/process"
+import { ChildProcess } from "effect/unstable/process"
 
 const cfg = [
   "--no-optional-locks",
@@ -98,7 +98,7 @@ const kind = (code: string): Kind => {
   return "modified"
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Git") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/Git") {}
 
 export const layer = Layer.effect(
   Service,
@@ -137,13 +137,13 @@ export const layer = Layer.effect(
 
     const lines = Effect.fn("Git.lines")(function* (args: string[], opts: Options) {
       return (yield* text(args, opts))
-        .split(@lgcode/\r?\n@lgcode/)
+        .split(/\r?\n/)
         .map((item) => item.trim())
         .filter(Boolean)
     })
 
     const refs = Effect.fnUntraced(function* (cwd: string) {
-      return yield* lines(["for-each-ref", "--format=%(refname:short)", "refs@lgcode/heads"], { cwd })
+      return yield* lines(["for-each-ref", "--format=%(refname:short)", "refs/heads"], { cwd })
     })
 
     const configured = Effect.fnUntraced(function* (cwd: string, list: string[]) {
@@ -177,10 +177,10 @@ export const layer = Layer.effect(
     const defaultBranch = Effect.fn("Git.defaultBranch")(function* (cwd: string) {
       const remote = yield* primary(cwd)
       if (remote) {
-        const head = yield* run(["symbolic-ref", `refs@lgcode/remotes@lgcode/${remote}@lgcode/HEAD`], { cwd })
+        const head = yield* run(["symbolic-ref", `refs/remotes/${remote}/HEAD`], { cwd })
         if (head.exitCode === 0) {
-          const ref = out(head).replace(@lgcode/^refs\@lgcode/remotes\@lgcode/@lgcode/, "")
-          const name = ref.startsWith(`${remote}@lgcode/`) ? ref.slice(`${remote}@lgcode/`.length) : ""
+          const ref = out(head).replace(/^refs\/remotes\//, "")
+          const name = ref.startsWith(`${remote}/`) ? ref.slice(`${remote}/`.length) : ""
           if (name) return { name, ref } satisfies Base
         }
       }
@@ -290,7 +290,7 @@ export const layer = Layer.effect(
           "--no-renames",
           `--unified=${options?.context ?? 3}`,
           "--",
-          "@lgcode/dev@lgcode/null",
+          "/dev/null",
           file,
         ],
         { cwd, maxOutputBytes: options?.maxOutputBytes },
@@ -299,7 +299,7 @@ export const layer = Layer.effect(
     })
 
     const statUntracked = Effect.fn("Git.statUntracked")(function* (cwd: string, file: string) {
-      const result = yield* run(["diff", "--no-index", "--numstat", "--", "@lgcode/dev@lgcode/null", file], {
+      const result = yield* run(["diff", "--no-index", "--numstat", "--", "/dev/null", file], {
         cwd,
         maxOutputBytes: 4096,
       })

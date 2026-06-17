@@ -1,12 +1,12 @@
 import { Effect } from "effect"
-import { ModelV2 } from "..@lgcode/..@lgcode/model"
-import { PluginV2 } from "..@lgcode/..@lgcode/plugin"
-import { ProviderV2 } from "..@lgcode/..@lgcode/provider"
+import { ModelV2 } from "../../model"
+import { PluginV2 } from "../../plugin"
+import { ProviderV2 } from "../../provider"
 
 function shouldUseResponses(modelID: string) {
-  @lgcode/@lgcode/ Copilot supports Responses for GPT-5 class models, except mini variants
-  @lgcode/@lgcode/ which still need the chat-completions endpoint.
-  const match = @lgcode/^gpt-(\d+)@lgcode/.exec(modelID)
+  // Copilot supports Responses for GPT-5 class models, except mini variants
+  // which still need the chat-completions endpoint.
+  const match = /^gpt-(\d+)/.exec(modelID)
   if (!match) return false
   return Number(match[1]) >= 5 && !modelID.startsWith("gpt-5-mini")
 }
@@ -16,8 +16,8 @@ export const GithubCopilotPlugin = PluginV2.define({
   effect: Effect.gen(function* () {
     return {
       "aisdk.sdk": Effect.fn(function* (evt) {
-        if (evt.package !== "@ai-sdk@lgcode/github-copilot") return
-        const mod = yield* Effect.promise(() => import("..@lgcode/..@lgcode/github-copilot@lgcode/copilot-provider"))
+        if (evt.package !== "@ai-sdk/github-copilot") return
+        const mod = yield* Effect.promise(() => import("../../github-copilot/copilot-provider"))
         evt.sdk = mod.createOpenaiCompatible(evt.options)
       }),
       "aisdk.language": Effect.fn(function* (evt) {
@@ -34,8 +34,8 @@ export const GithubCopilotPlugin = PluginV2.define({
         const item = evt.provider.get(ProviderV2.ID.githubCopilot)
         if (!item || !item.models.has(ModelV2.ID.make("gpt-5-chat-latest"))) return
         evt.model.update(item.provider.id, ModelV2.ID.make("gpt-5-chat-latest"), (model) => {
-          @lgcode/@lgcode/ This chat-only alias conflicts with the Copilot GPT-5 Responses route,
-          @lgcode/@lgcode/ so hide it only for Copilot rather than for every provider catalog.
+          // This chat-only alias conflicts with the Copilot GPT-5 Responses route,
+          // so hide it only for Copilot rather than for every provider catalog.
           model.enabled = false
         })
       }),

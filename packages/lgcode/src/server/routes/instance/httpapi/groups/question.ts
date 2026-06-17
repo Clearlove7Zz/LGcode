@@ -1,14 +1,14 @@
-import { Question } from "@@lgcode/question"
-import { QuestionID } from "@@lgcode/question@lgcode/schema"
+import { Question } from "@/question"
+import { QuestionID } from "@/question/schema"
 import { Schema } from "effect"
-import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
-import { QuestionNotFoundError } from "..@lgcode/errors"
-import { Authorization } from "..@lgcode/middleware@lgcode/authorization"
-import { InstanceContextMiddleware } from "..@lgcode/middleware@lgcode/instance-context"
-import { WorkspaceRoutingMiddleware, WorkspaceRoutingQuery } from "..@lgcode/middleware@lgcode/workspace-routing"
-import { described } from ".@lgcode/metadata"
+import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
+import { QuestionNotFoundError } from "../errors"
+import { Authorization } from "../middleware/authorization"
+import { InstanceContextMiddleware } from "../middleware/instance-context"
+import { WorkspaceRoutingMiddleware, WorkspaceRoutingQuery } from "../middleware/workspace-routing"
+import { described } from "./metadata"
 
-const root = "@lgcode/question"
+const root = "/question"
 const ReplyPayload = Schema.Struct({
   answers: Schema.Array(Question.Answer).annotate({
     description: "User answers in order of questions (each answer is an array of selected labels)",
@@ -29,7 +29,7 @@ export const QuestionApi = HttpApi.make("question")
             description: "Get all pending question requests across all sessions.",
           }),
         ),
-        HttpApiEndpoint.post("reply", `${root}@lgcode/:requestID@lgcode/reply`, {
+        HttpApiEndpoint.post("reply", `${root}/:requestID/reply`, {
           params: { requestID: QuestionID },
           query: WorkspaceRoutingQuery,
           payload: ReplyPayload,
@@ -42,7 +42,7 @@ export const QuestionApi = HttpApi.make("question")
             description: "Provide answers to a question request from the AI assistant.",
           }),
         ),
-        HttpApiEndpoint.post("reject", `${root}@lgcode/:requestID@lgcode/reject`, {
+        HttpApiEndpoint.post("reject", `${root}/:requestID/reject`, {
           params: { requestID: QuestionID },
           query: WorkspaceRoutingQuery,
           success: described(Schema.Boolean, "Question rejected successfully"),

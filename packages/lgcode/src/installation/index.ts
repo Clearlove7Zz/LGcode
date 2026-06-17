@@ -1,18 +1,18 @@
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
-import { httpClient } from "@lgcode/core@lgcode/effect@lgcode/layer-node-platform"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { httpClient } from "@opencode@lgcode/core/effect/layer-node-platform"
 import { Effect, Layer, Schema, Context, Stream } from "effect"
-import { serviceUse } from "@lgcode/core@lgcode/effect@lgcode/service-use"
-import { FetchHttpClient, HttpClient, HttpClientRequest, HttpClientResponse } from "effect@lgcode/unstable@lgcode/http"
-import { withTransientReadRetry } from "@@lgcode/util@lgcode/effect-http-client"
-import { errorMessage } from "@@lgcode/util@lgcode/error"
-import { ChildProcess } from "effect@lgcode/unstable@lgcode/process"
-import { AppProcess } from "@lgcode/core@lgcode/process"
+import { serviceUse } from "@opencode@lgcode/core/effect/service-use"
+import { FetchHttpClient, HttpClient, HttpClientRequest, HttpClientResponse } from "effect/unstable/http"
+import { withTransientReadRetry } from "@/util/effect-http-client"
+import { errorMessage } from "@/util/error"
+import { ChildProcess } from "effect/unstable/process"
+import { AppProcess } from "@opencode@lgcode/core/process"
 import path from "path"
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import { makeRuntime } from "@lgcode/core@lgcode/effect@lgcode/runtime"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import { makeRuntime } from "@opencode@lgcode/core/effect/runtime"
 import semver from "semver"
-import { InstallationChannel, InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
-import { NpmConfig } from "@lgcode/core@lgcode/npm-config"
+import { InstallationChannel, InstallationVersion } from "@opencode@lgcode/core/installation/version"
+import { NpmConfig } from "@opencode@lgcode/core/npm-config"
 
 export type Method = "curl" | "npm" | "yarn" | "pnpm" | "bun" | "brew" | "scoop" | "choco" | "unknown"
 
@@ -51,7 +51,7 @@ export const Info = Schema.Struct({
 export type Info = Schema.Schema.Type<typeof Info>
 
 export function userAgent(client = "cli") {
-  return `opencode@lgcode/${InstallationChannel}@lgcode/${InstallationVersion}@lgcode/${client}`
+  return `opencode/${InstallationChannel}/${InstallationVersion}/${client}`
 }
 
 export const USER_AGENT = userAgent()
@@ -72,7 +72,7 @@ export class UpgradeFailedError extends Schema.TaggedErrorClass<UpgradeFailedErr
   }
 }
 
-@lgcode/@lgcode/ Response schemas for external version APIs
+// Response schemas for external version APIs
 const GitHubRelease = Schema.Struct({ tag_name: Schema.String })
 const NpmPackage = Schema.Struct({ version: Schema.String })
 const BrewFormula = Schema.Struct({ versions: Schema.Struct({ stable: Schema.String }) })
@@ -91,7 +91,7 @@ export interface Interface {
   readonly upgrade: (method: Method, target: string) => Effect.Effect<void, UpgradeFailedError>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Installation") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/Installation") {}
 
 export const use = serviceUse(Service)
 
@@ -135,8 +135,8 @@ export const layer: Layer.Layer<Service, never, HttpClient.HttpClient | AppProce
     )
 
     const getBrewFormula = Effect.fnUntraced(function* () {
-      const tapFormula = yield* text(["brew", "list", "--formula", "anomalyco@lgcode/tap@lgcode/opencode"])
-      if (tapFormula.includes("opencode")) return "anomalyco@lgcode/tap@lgcode/opencode"
+      const tapFormula = yield* text(["brew", "list", "--formula", "anomalyco/tap/opencode"])
+      if (tapFormula.includes("opencode")) return "anomalyco/tap/opencode"
       const coreFormula = yield* text(["brew", "list", "--formula", "opencode"])
       if (coreFormula.includes("opencode")) return "opencode"
       return "opencode"
@@ -156,7 +156,7 @@ export const layer: Layer.Layer<Service, never, HttpClient.HttpClient | AppProce
 
     const upgradeCurl = Effect.fnUntraced(
       function* (target: string) {
-        const response = yield* httpOk.execute(HttpClientRequest.get("https:@lgcode/@lgcode/opencode.ai@lgcode/install"))
+        const response = yield* httpOk.execute(HttpClientRequest.get("https://opencode.ai/install"))
         const body = yield* response.text
         const bodyBytes = new TextEncoder().encode(body)
         const shell = yield* upgradeScriptShell()
@@ -222,13 +222,13 @@ export const layer: Layer.Layer<Service, never, HttpClient.HttpClient | AppProce
 
         if (detectedMethod === "brew") {
           const formula = yield* getBrewFormula()
-          if (formula.includes("@lgcode/")) {
+          if (formula.includes("/")) {
             const infoJson = yield* text(["brew", "info", "--json=v2", formula])
             const info = yield* Schema.decodeUnknownEffect(Schema.fromJsonString(BrewInfoV2))(infoJson)
             return info.formulae[0].versions.stable
           }
           const response = yield* httpOk.execute(
-            HttpClientRequest.get("https:@lgcode/@lgcode/formulae.brew.sh@lgcode/api@lgcode/formula@lgcode/opencode.json").pipe(
+            HttpClientRequest.get("https://formulae.brew.sh/api/formula/opencode.json").pipe(
               HttpClientRequest.acceptJson,
             ),
           )
@@ -239,7 +239,7 @@ export const layer: Layer.Layer<Service, never, HttpClient.HttpClient | AppProce
         if (detectedMethod === "npm" || detectedMethod === "bun" || detectedMethod === "pnpm") {
           const response = yield* httpOk.execute(
             HttpClientRequest.get(
-              `${yield* NpmConfig.registry(process.cwd())}opencode-ai/${InstallationChannel}`,
+              `${yield* NpmConfig.registry(process.cwd())}/opencode@lgcode/${InstallationChannel}`,
             ).pipe(HttpClientRequest.acceptJson),
           )
           const data = yield* HttpClientResponse.schemaBodyJson(NpmPackage)(response)
@@ -249,8 +249,8 @@ export const layer: Layer.Layer<Service, never, HttpClient.HttpClient | AppProce
         if (detectedMethod === "choco") {
           const response = yield* httpOk.execute(
             HttpClientRequest.get(
-              "https:@lgcode/@lgcode/community.chocolatey.org@lgcode/api@lgcode/v2@lgcode/Packages?$filter=Id%20eq%20%27opencode%27%20and%20IsLatestVersion&$select=Version",
-            ).pipe(HttpClientRequest.setHeaders({ Accept: "application@lgcode/json;odata=verbose" })),
+              "https://community.chocolatey.org/api/v2/Packages?$filter=Id%20eq%20%27opencode%27%20and%20IsLatestVersion&$select=Version",
+            ).pipe(HttpClientRequest.setHeaders({ Accept: "application/json;odata=verbose" })),
           )
           const data = yield* HttpClientResponse.schemaBodyJson(ChocoPackage)(response)
           return data.d.results[0].Version
@@ -259,20 +259,20 @@ export const layer: Layer.Layer<Service, never, HttpClient.HttpClient | AppProce
         if (detectedMethod === "scoop") {
           const response = yield* httpOk.execute(
             HttpClientRequest.get(
-              "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/ScoopInstaller@lgcode/Main@lgcode/master@lgcode/bucket@lgcode/opencode.json",
-            ).pipe(HttpClientRequest.setHeaders({ Accept: "application@lgcode/json" })),
+              "https://raw.githubusercontent.com/ScoopInstaller/Main/master/bucket/opencode.json",
+            ).pipe(HttpClientRequest.setHeaders({ Accept: "application/json" })),
           )
           const data = yield* HttpClientResponse.schemaBodyJson(ScoopManifest)(response)
           return data.version
         }
 
         const response = yield* httpOk.execute(
-          HttpClientRequest.get("https:@lgcode/@lgcode/api.github.com@lgcode/repos@lgcode/anomalyco@lgcode/opencode@lgcode/releases@lgcode/latest").pipe(
+          HttpClientRequest.get("https://api.github.com/repos/anomalyco/opencode/releases/latest").pipe(
             HttpClientRequest.acceptJson,
           ),
         )
         const data = yield* HttpClientResponse.schemaBodyJson(GitHubRelease)(response)
-        return data.tag_name.replace(@lgcode/^v@lgcode/, "")
+        return data.tag_name.replace(/^v/, "")
       }, Effect.orDie),
       upgrade: Effect.fn("Installation.upgrade")(function* (m: Method, target: string) {
         let upgradeResult: { code: number; stdout: string; stderr: string } | undefined
@@ -292,13 +292,13 @@ export const layer: Layer.Layer<Service, never, HttpClient.HttpClient | AppProce
           case "brew": {
             const formula = yield* getBrewFormula()
             const env = { HOMEBREW_NO_AUTO_UPDATE: "1" }
-            if (formula.includes("@lgcode/")) {
-              const tap = yield* run(["brew", "tap", "anomalyco@lgcode/tap"], { env })
+            if (formula.includes("/")) {
+              const tap = yield* run(["brew", "tap", "anomalyco/tap"], { env })
               if (tap.code !== 0) {
                 upgradeResult = tap
                 break
               }
-              const repo = yield* text(["brew", "--repo", "anomalyco@lgcode/tap"])
+              const repo = yield* text(["brew", "--repo", "anomalyco/tap"])
               const dir = repo.trim()
               if (dir) {
                 const pull = yield* run(["git", "pull", "--ff-only"], { cwd: dir, env })

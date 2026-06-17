@@ -1,12 +1,12 @@
-import type { Auth } from "@@lgcode/auth"
-import type { Provider } from "@@lgcode/provider@lgcode/provider"
-import { ProviderTransform } from "@@lgcode/provider@lgcode/transform"
-import { errorMessage } from "@@lgcode/util@lgcode/error"
-import { isRecord } from "@@lgcode/util@lgcode/record"
+import type { Auth } from "@/auth"
+import type { Provider } from "@/provider/provider"
+import { ProviderTransform } from "@/provider/transform"
+import { errorMessage } from "@/util/error"
+import { isRecord } from "@/util/record"
 import { asSchema, type ModelMessage, type Tool } from "ai"
 import { Cause, Effect, FiberSet, Queue } from "effect"
-import * as Stream from "effect@lgcode/Stream"
-import { FetchHttpClient } from "effect@lgcode/unstable@lgcode/http"
+import * as Stream from "effect/Stream"
+import { FetchHttpClient } from "effect/unstable/http"
 import {
   LLMRequest,
   Tool as NativeTool,
@@ -15,9 +15,9 @@ import {
   toDefinitions,
   type JsonSchema,
   type LLMEvent,
-} from "@lgcode/llm"
-import type { LLMClientShape } from "@lgcode/llm@lgcode/route"
-import { LLMNative } from ".@lgcode/native-request"
+} from "@opencode@lgcode/llm"
+import type { LLMClientShape } from "@opencode@lgcode/llm/route"
+import { LLMNative } from "./native-request"
 
 export type RuntimeStatus =
   | { readonly type: "supported"; readonly apiKey: string; readonly baseURL?: string }
@@ -55,7 +55,7 @@ function statusWithFetch(
   if (providerID !== "openai" && providerID !== "anthropic" && !providerID.startsWith("opencode"))
     return { type: "unsupported", reason: "provider is not openai, opencode, or anthropic" }
   const npm = input.model.api.npm
-  if (npm !== "@ai-sdk@lgcode/openai" && npm !== "@ai-sdk@lgcode/openai-compatible" && npm !== "@ai-sdk@lgcode/anthropic")
+  if (npm !== "@ai-sdk/openai" && npm !== "@ai-sdk/openai-compatible" && npm !== "@ai-sdk/anthropic")
     return { type: "unsupported", reason: "provider package is not OpenAI, OpenAI-compatible, or Anthropic" }
   if (input.auth?.type === "oauth" && !(input.provider.id === "openai" && fetch)) {
     return { type: "unsupported", reason: "OAuth auth requires a provider fetch override" }
@@ -76,16 +76,16 @@ export function stream(input: StreamInput): StreamResult {
   const current = statusWithFetch(input, fetch)
   if (current.type === "unsupported") return current
 
-  @lgcode/@lgcode/ Integration point with @lgcode/llm: native-request lowers session data
-  @lgcode/@lgcode/ into an LLMRequest, then LLMClient handles route selection and transport.
-  @lgcode/@lgcode/
-  @lgcode/@lgcode/ ProviderTransform.providerOptions builds AI-SDK-shaped options for the
-  @lgcode/@lgcode/ selected SDK key (e.g. "openai") and the native LLM SDK reads the same
-  @lgcode/@lgcode/ keys via OpenAIOptions.* (store, reasoningEffort, reasoningSummary,
-  @lgcode/@lgcode/ include, textVerbosity, promptCacheKey). Both sides intentionally use
-  @lgcode/@lgcode/ OpenAI's official wire field names, so this is identity, not translation
-  @lgcode/@lgcode/ — if a field ever needs to differ between the two surfaces, the
-  @lgcode/@lgcode/ translation belongs here, not split across both packages.
+  // Integration point with @opencode@lgcode/llm: native-request lowers session data
+  // into an LLMRequest, then LLMClient handles route selection and transport.
+  //
+  // ProviderTransform.providerOptions builds AI-SDK-shaped options for the
+  // selected SDK key (e.g. "openai") and the native LLM SDK reads the same
+  // keys via OpenAIOptions.* (store, reasoningEffort, reasoningSummary,
+  // include, textVerbosity, promptCacheKey). Both sides intentionally use
+  // OpenAI's official wire field names, so this is identity, not translation
+  // — if a field ever needs to differ between the two surfaces, the
+  // translation belongs here, not split across both packages.
   const tools = nativeTools(input.tools, input)
   const request = LLMNative.request({
     model: input.model,
@@ -170,8 +170,8 @@ export function nativeTools(tools: Record<string, Tool>, input: Pick<StreamInput
   return Object.fromEntries(
     Object.entries(tools).map(([name, item]) => [
       name,
-      @lgcode/@lgcode/ Tool execution remains opencode-owned. The native runtime only adapts
-      @lgcode/@lgcode/ the @lgcode/llm tool call back into the AI SDK Tool.execute shape.
+      // Tool execution remains opencode-owned. The native runtime only adapts
+      // the @opencode@lgcode/llm tool call back into the AI SDK Tool.execute shape.
       NativeTool.make({
         description: item.description ?? "",
         jsonSchema: nativeSchema(item.inputSchema),
@@ -192,4 +192,4 @@ export function nativeTools(tools: Record<string, Tool>, input: Pick<StreamInput
   )
 }
 
-export * as LLMNativeRuntime from ".@lgcode/native-runtime"
+export * as LLMNativeRuntime from "./native-runtime"

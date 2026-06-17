@@ -1,19 +1,19 @@
-import { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
+import { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
 import { EOL } from "os"
-import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
+import { SessionV1 } from "@opencode@lgcode/core/v1/session"
 import { basename } from "path"
 import { Cause, Effect } from "effect"
-import { Agent } from "..@lgcode/..@lgcode/..@lgcode/agent@lgcode/agent"
-import { Provider } from "@@lgcode/provider@lgcode/provider"
-import { Session } from "@@lgcode/session@lgcode/session"
-import type { MessageV2 } from "..@lgcode/..@lgcode/..@lgcode/session@lgcode/message-v2"
-import { MessageID, PartID } from "..@lgcode/..@lgcode/..@lgcode/session@lgcode/schema"
-import { ToolRegistry } from "@@lgcode/tool@lgcode/registry"
-import { Permission } from "..@lgcode/..@lgcode/..@lgcode/permission"
-import { iife } from "..@lgcode/..@lgcode/..@lgcode/util@lgcode/iife"
-import { fail } from "..@lgcode/..@lgcode/effect-cmd"
-import { InstanceRef } from "@@lgcode/effect@lgcode/instance-ref"
-import type { InstanceContext } from "@@lgcode/project@lgcode/instance-context"
+import { Agent } from "../../../agent/agent"
+import { Provider } from "@/provider/provider"
+import { Session } from "@/session/session"
+import type { MessageV2 } from "../../../session/message-v2"
+import { MessageID, PartID } from "../../../session/schema"
+import { ToolRegistry } from "@/tool/registry"
+import { Permission } from "../../../permission"
+import { iife } from "../../../util/iife"
+import { fail } from "../../effect-cmd"
+import { InstanceRef } from "@/effect/instance-ref"
+import type { InstanceContext } from "@/project/instance-context"
 
 export const debugAgent = Effect.fn("Cli.debug.agent")(function* (args: {
   name: string
@@ -75,7 +75,7 @@ const getAvailableTools = Effect.fn("Cli.debug.agent.getAvailableTools")(functio
         onFailure: (cause) => {
           const error = Cause.squash(cause) as Provider.DefaultModelError
           if (error instanceof Provider.ModelNotFoundError) {
-            return fail(`Model not found: ${error.providerID}@lgcode/${error.modelID}`)
+            return fail(`Model not found: ${error.providerID}/${error.modelID}`)
           }
           if (error instanceof Provider.NoModelsError) return fail(`No models found for provider ${error.providerID}`)
           return fail("No providers found")
@@ -140,7 +140,7 @@ const createToolContext = Effect.fn("Cli.debug.agent.createToolContext")(functio
             onFailure: (cause) => {
               const error = Cause.squash(cause) as Provider.DefaultModelError
               if (error instanceof Provider.ModelNotFoundError) {
-                return fail(`Model not found: ${error.providerID}@lgcode/${error.modelID}`)
+                return fail(`Model not found: ${error.providerID}/${error.modelID}`)
               }
               if (error instanceof Provider.NoModelsError)
                 return fail(`No models found for provider ${error.providerID}`)

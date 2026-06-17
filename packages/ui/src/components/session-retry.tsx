@@ -1,9 +1,9 @@
 import { createEffect, createMemo, createSignal, on, onCleanup, Show } from "solid-js"
-import type { SessionStatus } from "@lgcode/sdk@lgcode/v2@lgcode/client"
-import { useI18n } from "..@lgcode/context@lgcode/i18n"
-import { Card } from ".@lgcode/card"
-import { Tooltip } from ".@lgcode/tooltip"
-import { Spinner } from ".@lgcode/spinner"
+import type { SessionStatus } from "@opencode@lgcode/sdk/v2/client"
+import { useI18n } from "../context/i18n"
+import { Card } from "./card"
+import { Tooltip } from "./tooltip"
+import { Spinner } from "./spinner"
 
 export function SessionRetry(props: { status: SessionStatus; show?: boolean }) {
   const i18n = useI18n()
@@ -18,7 +18,7 @@ export function SessionRetry(props: { status: SessionStatus; show?: boolean }) {
       const update = () => {
         const next = retry()?.next
         if (!next) return
-        setSeconds(Math.round((next - Date.now()) @lgcode/ 1000))
+        setSeconds(Math.round((next - Date.now()) / 1000))
       }
       update()
       const timer = setInterval(update, 1000)
@@ -55,20 +55,20 @@ export function SessionRetry(props: { status: SessionStatus; show?: boolean }) {
       <div data-slot="session-turn-retry">
         <Card variant="error" class="error-card">
           <div class="flex items-start gap-2">
-            <Spinner class="size-4 mt-0.5" @lgcode/>
+            <Spinner class="size-4 mt-0.5" />
             <div class="min-w-0">
-              <Show when={truncated()} fallback={<div data-slot="session-turn-retry-message">{message()}<@lgcode/div>}>
+              <Show when={truncated()} fallback={<div data-slot="session-turn-retry-message">{message()}</div>}>
                 <Tooltip value={retry()?.message ?? ""} placement="top">
                   <div data-slot="session-turn-retry-message" class="cursor-help truncate">
                     {message()}
-                  <@lgcode/div>
-                <@lgcode/Tooltip>
-              <@lgcode/Show>
-              <Show when={info()}>{(line) => <div data-slot="session-turn-retry-info">{line()}<@lgcode/div>}<@lgcode/Show>
-            <@lgcode/div>
-          <@lgcode/div>
-        <@lgcode/Card>
-      <@lgcode/div>
-    <@lgcode/Show>
+                  </div>
+                </Tooltip>
+              </Show>
+              <Show when={info()}>{(line) => <div data-slot="session-turn-retry-info">{line()}</div>}</Show>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </Show>
   )
 }

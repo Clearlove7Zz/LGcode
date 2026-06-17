@@ -1,4 +1,4 @@
-export * as ConfigProviderOptionsV1 from ".@lgcode/provider-options"
+export * as ConfigProviderOptionsV1 from "./provider-options"
 
 type Options = Readonly<Record<string, unknown>>
 
@@ -124,21 +124,21 @@ const openaiCompatible: Lowerer = {
 }
 
 const lowerers: Readonly<Record<string, Lowerer>> = {
-  "@ai-sdk@lgcode/openai": openai,
-  "@ai-sdk@lgcode/anthropic": anthropic,
-  "@ai-sdk@lgcode/google-vertex@lgcode/anthropic": anthropic,
-  "@ai-sdk@lgcode/google": google,
-  "@ai-sdk@lgcode/google-vertex": google,
-  "@ai-sdk@lgcode/azure": azure,
-  "@ai-sdk@lgcode/amazon-bedrock": bedrock,
-  "@ai-sdk@lgcode/openai-compatible": openaiCompatible,
-  "@ai-sdk@lgcode/cerebras": openaiCompatible,
-  "@ai-sdk@lgcode/deepinfra": openaiCompatible,
-  "@ai-sdk@lgcode/groq": openaiCompatible,
-  "@ai-sdk@lgcode/mistral": openaiCompatible,
-  "@ai-sdk@lgcode/togetherai": openaiCompatible,
-  "@ai-sdk@lgcode/xai": openaiCompatible,
-  "@openrouter@lgcode/ai-sdk-provider": openaiCompatible,
+  "@ai-sdk/openai": openai,
+  "@ai-sdk/anthropic": anthropic,
+  "@ai-sdk/google-vertex/anthropic": anthropic,
+  "@ai-sdk/google": google,
+  "@ai-sdk/google-vertex": google,
+  "@ai-sdk/azure": azure,
+  "@ai-sdk/amazon-bedrock": bedrock,
+  "@ai-sdk/openai-compatible": openaiCompatible,
+  "@ai-sdk/cerebras": openaiCompatible,
+  "@ai-sdk/deepinfra": openaiCompatible,
+  "@ai-sdk/groq": openaiCompatible,
+  "@ai-sdk/mistral": openaiCompatible,
+  "@ai-sdk/togetherai": openaiCompatible,
+  "@ai-sdk/xai": openaiCompatible,
+  "@openrouter/ai-sdk-provider": openaiCompatible,
   "ai-gateway-provider": openaiCompatible,
   "venice-ai-sdk-provider": openaiCompatible,
 }
@@ -167,7 +167,7 @@ function snakeValue(value: unknown): unknown {
 }
 
 function snakeKey(key: string) {
-  return key.replace(@lgcode/[A-Z]@lgcode/g, (match) => "_" + match.toLowerCase())
+  return key.replace(/[A-Z]/g, (match) => "_" + match.toLowerCase())
 }
 
 function clone(options: Options) {

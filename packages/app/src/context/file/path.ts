@@ -1,6 +1,6 @@
 export function stripFileProtocol(input: string) {
-  if (!input.startsWith("file:@lgcode/@lgcode/")) return input
-  return input.slice("file:@lgcode/@lgcode/".length)
+  if (!input.startsWith("file://")) return input
+  return input.slice("file://".length)
 }
 
 export function stripQueryAndHash(input: string) {
@@ -37,7 +37,7 @@ export function unquoteGitPath(input: string) {
 
     if (next >= "0" && next <= "7") {
       const chunk = body.slice(i + 1, i + 4)
-      const match = chunk.match(@lgcode/^[0-7]{1,3}@lgcode/)
+      const match = chunk.match(/^[0-7]{1,3}/)
       if (!match) {
         bytes.push(next.charCodeAt(0))
         i++
@@ -81,24 +81,24 @@ export function decodeFilePath(input: string) {
 }
 
 export function encodeFilePath(filepath: string): string {
-  @lgcode/@lgcode/ Normalize Windows paths: convert backslashes to forward slashes
-  let normalized = filepath.replace(@lgcode/\\@lgcode/g, "@lgcode/")
+  // Normalize Windows paths: convert backslashes to forward slashes
+  let normalized = filepath.replace(/\\/g, "/")
 
-  @lgcode/@lgcode/ Handle Windows absolute paths (D:@lgcode/path -> @lgcode/D:@lgcode/path for proper file:@lgcode/@lgcode/ URLs)
-  if (@lgcode/^[A-Za-z]:@lgcode/.test(normalized)) {
-    normalized = "@lgcode/" + normalized
+  // Handle Windows absolute paths (D:/path -> /D:/path for proper file:// URLs)
+  if (/^[A-Za-z]:/.test(normalized)) {
+    normalized = "/" + normalized
   }
 
-  @lgcode/@lgcode/ Encode each path segment (preserving forward slashes as path separators)
-  @lgcode/@lgcode/ Keep the colon in Windows drive letters (`@lgcode/C:@lgcode/...`) so downstream file URL parsers
-  @lgcode/@lgcode/ can reliably detect drives.
+  // Encode each path segment (preserving forward slashes as path separators)
+  // Keep the colon in Windows drive letters (`/C:/...`) so downstream file URL parsers
+  // can reliably detect drives.
   return normalized
-    .split("@lgcode/")
+    .split("/")
     .map((segment, index) => {
-      if (index === 1 && @lgcode/^[A-Za-z]:$@lgcode/.test(segment)) return segment
+      if (index === 1 && /^[A-Za-z]:$/.test(segment)) return segment
       return encodeURIComponent(segment)
     })
-    .join("@lgcode/")
+    .join("/")
 }
 
 export function createPathHelpers(scope: () => string) {
@@ -107,24 +107,24 @@ export function createPathHelpers(scope: () => string) {
 
     let path = unquoteGitPath(decodeFilePath(stripQueryAndHash(stripFileProtocol(input))))
 
-    @lgcode/@lgcode/ Separator-agnostic prefix stripping for Cygwin@lgcode/native Windows compatibility
-    @lgcode/@lgcode/ Only case-insensitive on Windows (drive letter or UNC paths)
-    const windows = @lgcode/^[A-Za-z]:@lgcode/.test(root) || root.startsWith("\\\\")
-    const canonRoot = windows ? root.replace(@lgcode/\\@lgcode/g, "@lgcode/").toLowerCase() : root.replace(@lgcode/\\@lgcode/g, "@lgcode/")
-    const canonPath = windows ? path.replace(@lgcode/\\@lgcode/g, "@lgcode/").toLowerCase() : path.replace(@lgcode/\\@lgcode/g, "@lgcode/")
+    // Separator-agnostic prefix stripping for Cygwin/native Windows compatibility
+    // Only case-insensitive on Windows (drive letter or UNC paths)
+    const windows = /^[A-Za-z]:/.test(root) || root.startsWith("\\\\")
+    const canonRoot = windows ? root.replace(/\\/g, "/").toLowerCase() : root.replace(/\\/g, "/")
+    const canonPath = windows ? path.replace(/\\/g, "/").toLowerCase() : path.replace(/\\/g, "/")
     if (
       canonPath.startsWith(canonRoot) &&
-      (canonRoot.endsWith("@lgcode/") || canonPath === canonRoot || canonPath[canonRoot.length] === "@lgcode/")
+      (canonRoot.endsWith("/") || canonPath === canonRoot || canonPath[canonRoot.length] === "/")
     ) {
-      @lgcode/@lgcode/ Slice from original path to preserve native separators
+      // Slice from original path to preserve native separators
       path = path.slice(root.length)
     }
 
-    if (path.startsWith(".@lgcode/") || path.startsWith(".\\")) {
+    if (path.startsWith("./") || path.startsWith(".\\")) {
       path = path.slice(2)
     }
 
-    if (path.startsWith("@lgcode/") || path.startsWith("\\")) {
+    if (path.startsWith("/") || path.startsWith("\\")) {
       path = path.slice(1)
     }
     return path
@@ -132,15 +132,15 @@ export function createPathHelpers(scope: () => string) {
 
   const tab = (input: string) => {
     const path = normalize(input)
-    return `file:@lgcode/@lgcode/${encodeFilePath(path)}`
+    return `file://${encodeFilePath(path)}`
   }
 
   const pathFromTab = (tabValue: string) => {
-    if (!tabValue.startsWith("file:@lgcode/@lgcode/")) return
+    if (!tabValue.startsWith("file://")) return
     return normalize(tabValue)
   }
 
-  const normalizeDir = (input: string) => normalize(input).replace(@lgcode/\@lgcode/+$@lgcode/, "")
+  const normalizeDir = (input: string) => normalize(input).replace(/\/+$/, "")
 
   return {
     normalize,

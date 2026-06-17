@@ -1,6 +1,6 @@
-import { Collapsible as Kobalte, CollapsibleRootProps } from "@kobalte@lgcode/core@lgcode/collapsible"
+import { Collapsible as Kobalte, CollapsibleRootProps } from "@kobalte/core/collapsible"
 import { ComponentProps, ParentProps, splitProps } from "solid-js"
-import { Icon } from ".@lgcode/icon"
+import { Icon } from "./icon"
 
 export interface CollapsibleProps extends ParentProps<CollapsibleRootProps> {
   class?: string
@@ -19,25 +19,25 @@ function CollapsibleRoot(props: CollapsibleProps) {
         [local.class ?? ""]: !!local.class,
       }}
       {...others}
-    @lgcode/>
+    />
   )
 }
 
 function CollapsibleTrigger(props: ComponentProps<typeof Kobalte.Trigger>) {
-  return <Kobalte.Trigger data-slot="collapsible-trigger" {...props} @lgcode/>
+  return <Kobalte.Trigger data-slot="collapsible-trigger" {...props} />
 }
 
 function CollapsibleContent(props: ComponentProps<typeof Kobalte.Content>) {
-  return <Kobalte.Content data-slot="collapsible-content" {...props} @lgcode/>
+  return <Kobalte.Content data-slot="collapsible-content" {...props} />
 }
 
 function CollapsibleArrow(props?: ComponentProps<"div">) {
   return (
     <div data-slot="collapsible-arrow" {...(props || {})}>
       <span data-slot="collapsible-arrow-icon">
-        <Icon name="chevron-down" size="small" @lgcode/>
-      <@lgcode/span>
-    <@lgcode/div>
+        <Icon name="chevron-down" size="small" />
+      </span>
+    </div>
   )
 }
 

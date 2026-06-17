@@ -1,6 +1,6 @@
-import type { AssistantMessage, Part, Provider, UserMessage } from "@lgcode/sdk@lgcode/v2"
-import { Locale } from ".@lgcode/locale"
-import * as Model from ".@lgcode/model"
+import type { AssistantMessage, Part, Provider, UserMessage } from "@opencode@lgcode/sdk/v2"
+import { Locale } from "./locale"
+import * as Model from "./model"
 
 export type TranscriptOptions = {
   thinking: boolean
@@ -74,7 +74,7 @@ export function formatAssistantHeader(
   }
 
   const duration =
-    msg.time.completed && msg.time.created ? ((msg.time.completed - msg.time.created) @lgcode/ 1000).toFixed(1) + "s" : ""
+    msg.time.completed && msg.time.created ? ((msg.time.completed - msg.time.created) / 1000).toFixed(1) + "s" : ""
 
   const modelName = Model.name(providers, msg.providerID, msg.modelID)
 

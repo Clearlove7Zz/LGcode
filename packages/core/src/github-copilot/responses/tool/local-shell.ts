@@ -1,5 +1,5 @@
-import { createProviderToolFactoryWithOutputSchema } from "@ai-sdk@lgcode/provider-utils"
-import { z } from "zod@lgcode/v4"
+import { createProviderToolFactoryWithOutputSchema } from "@ai-sdk/provider-utils"
+import { z } from "zod/v4"
 
 export const localShellInputSchema = z.object({
   action: z.object({
@@ -18,42 +18,42 @@ export const localShellOutputSchema = z.object({
 
 export const localShell = createProviderToolFactoryWithOutputSchema<
   {
-    @lgcode/**
+    /**
      * Execute a shell command on the server.
-     *@lgcode/
+     */
     action: {
       type: "exec"
 
-      @lgcode/**
+      /**
        * The command to run.
-       *@lgcode/
+       */
       command: string[]
 
-      @lgcode/**
+      /**
        * Optional timeout in milliseconds for the command.
-       *@lgcode/
+       */
       timeoutMs?: number
 
-      @lgcode/**
+      /**
        * Optional user to run the command as.
-       *@lgcode/
+       */
       user?: string
 
-      @lgcode/**
+      /**
        * Optional working directory to run the command in.
-       *@lgcode/
+       */
       workingDirectory?: string
 
-      @lgcode/**
+      /**
        * Environment variables to set for the command.
-       *@lgcode/
+       */
       env?: Record<string, string>
     }
   },
   {
-    @lgcode/**
+    /**
      * The output of local shell tool call.
-     *@lgcode/
+     */
     output: string
   },
   {}

@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import { scheduleConnectedMeasure } from ".@lgcode/measure"
+import { scheduleConnectedMeasure } from "./measure"
 
 test("does not measure an element detached before the frame", async () => {
   const element = document.createElement("div")

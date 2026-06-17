@@ -1,9 +1,9 @@
-import { MCP } from "@@lgcode/mcp"
+import { MCP } from "@/mcp"
 import { Effect, Schema } from "effect"
-import { HttpApiBuilder, HttpApiError } from "effect@lgcode/unstable@lgcode/httpapi"
-import { InstanceHttpApi } from "..@lgcode/api"
-import { McpServerNotFoundError } from "..@lgcode/errors"
-import { AddPayload, AuthCallbackPayload, StatusMap, UnsupportedOAuthError } from "..@lgcode/groups@lgcode/mcp"
+import { HttpApiBuilder, HttpApiError } from "effect/unstable/httpapi"
+import { InstanceHttpApi } from "../api"
+import { McpServerNotFoundError } from "../errors"
+import { AddPayload, AuthCallbackPayload, StatusMap, UnsupportedOAuthError } from "../groups/mcp"
 
 export const mcpHandlers = HttpApiBuilder.group(InstanceHttpApi, "mcp", (handlers) =>
   Effect.gen(function* () {

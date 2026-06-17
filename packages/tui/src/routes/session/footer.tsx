@@ -1,10 +1,10 @@
 import { createMemo, Match, onCleanup, onMount, Show, Switch } from "solid-js"
-import { useTheme } from "..@lgcode/..@lgcode/context@lgcode/theme"
-import { useSync } from "..@lgcode/..@lgcode/context@lgcode/sync"
-import { useDirectory } from "..@lgcode/..@lgcode/context@lgcode/directory"
-import { useConnected } from "..@lgcode/..@lgcode/component@lgcode/use-connected"
-import { createStore } from "solid-js@lgcode/store"
-import { useRoute } from "..@lgcode/..@lgcode/context@lgcode/route"
+import { useTheme } from "../../context/theme"
+import { useSync } from "../../context/sync"
+import { useDirectory } from "../../context/directory"
+import { useConnected } from "../../component/use-connected"
+import { createStore } from "solid-js/store"
+import { useRoute } from "../../context/route"
 
 export function Footer() {
   const { theme } = useTheme()
@@ -25,7 +25,7 @@ export function Footer() {
   })
 
   onMount(() => {
-    @lgcode/@lgcode/ Track all timeouts to ensure proper cleanup
+    // Track all timeouts to ensure proper cleanup
     const timeouts: ReturnType<typeof setTimeout>[] = []
 
     function tick() {
@@ -51,41 +51,41 @@ export function Footer() {
 
   return (
     <box flexDirection="row" justifyContent="space-between" gap={1} flexShrink={0}>
-      <text fg={theme.textMuted}>{directory()}<@lgcode/text>
+      <text fg={theme.textMuted}>{directory()}</text>
       <box gap={2} flexDirection="row" flexShrink={0}>
         <Switch>
           <Match when={store.welcome}>
             <text fg={theme.text}>
-              Get started <span style={{ fg: theme.textMuted }}>@lgcode/connect<@lgcode/span>
-            <@lgcode/text>
-          <@lgcode/Match>
+              Get started <span style={{ fg: theme.textMuted }}>/connect</span>
+            </text>
+          </Match>
           <Match when={connected()}>
             <Show when={permissions().length > 0}>
               <text fg={theme.warning}>
-                <span style={{ fg: theme.warning }}>△<@lgcode/span> {permissions().length} Permission
+                <span style={{ fg: theme.warning }}>△</span> {permissions().length} Permission
                 {permissions().length > 1 ? "s" : ""}
-              <@lgcode/text>
-            <@lgcode/Show>
+              </text>
+            </Show>
             <text fg={theme.text}>
-              <span style={{ fg: lsp().length > 0 ? theme.success : theme.textMuted }}>•<@lgcode/span> {lsp().length} LSP
-            <@lgcode/text>
+              <span style={{ fg: lsp().length > 0 ? theme.success : theme.textMuted }}>•</span> {lsp().length} LSP
+            </text>
             <Show when={mcp()}>
               <text fg={theme.text}>
                 <Switch>
                   <Match when={mcpError()}>
-                    <span style={{ fg: theme.error }}>⊙ <@lgcode/span>
-                  <@lgcode/Match>
+                    <span style={{ fg: theme.error }}>⊙ </span>
+                  </Match>
                   <Match when={true}>
-                    <span style={{ fg: theme.success }}>⊙ <@lgcode/span>
-                  <@lgcode/Match>
-                <@lgcode/Switch>
+                    <span style={{ fg: theme.success }}>⊙ </span>
+                  </Match>
+                </Switch>
                 {mcp()} MCP
-              <@lgcode/text>
-            <@lgcode/Show>
-            <text fg={theme.textMuted}>@lgcode/status<@lgcode/text>
-          <@lgcode/Match>
-        <@lgcode/Switch>
-      <@lgcode/box>
-    <@lgcode/box>
+              </text>
+            </Show>
+            <text fg={theme.textMuted}>/status</text>
+          </Match>
+        </Switch>
+      </box>
+    </box>
   )
 }

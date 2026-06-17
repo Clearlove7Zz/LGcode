@@ -1,4 +1,4 @@
-import type { AssistantMessage, Message } from "@lgcode/sdk@lgcode/v2@lgcode/client"
+import type { AssistantMessage, Message } from "@opencode@lgcode/sdk/v2/client"
 
 type Provider = {
   id: string
@@ -72,7 +72,7 @@ const build = (messages: Message[] = [], providers: Provider[] = []): Metrics =>
       cacheRead: message.tokens.cache.read,
       cacheWrite: message.tokens.cache.write,
       total,
-      usage: limit ? Math.round((total @lgcode/ limit) * 100) : null,
+      usage: limit ? Math.round((total / limit) * 100) : null,
     },
   }
 }

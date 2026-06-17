@@ -1,5 +1,5 @@
 import type { JSX } from "solid-js"
-import type { RGBA } from "@opentui@lgcode/core"
+import type { RGBA } from "@opentui/core"
 import open from "open"
 
 export interface LinkProps {
@@ -11,10 +11,10 @@ export interface LinkProps {
   wrapMode?: "word" | "none"
 }
 
-@lgcode/**
+/**
  * Link component that renders clickable hyperlinks.
  * Clicking anywhere on the link text opens the URL in the default browser.
- *@lgcode/
+ */
 export function Link(props: LinkProps) {
   const displayText = props.children ?? props.href
 
@@ -29,6 +29,6 @@ export function Link(props: LinkProps) {
       }}
     >
       {displayText}
-    <@lgcode/text>
+    </text>
   )
 }

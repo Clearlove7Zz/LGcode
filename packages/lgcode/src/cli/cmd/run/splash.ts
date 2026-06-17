@@ -1,13 +1,13 @@
-@lgcode/@lgcode/ Entry and exit splash banners for direct interactive mode scrollback.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Renders the full opencode entry logo and a compact [O] exit badge, plus
-@lgcode/@lgcode/ session metadata and the resume command. These are scrollback snapshots, so
-@lgcode/@lgcode/ they become immutable terminal history once committed.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Both variants use a cell-based renderer. cells() classifies each character
-@lgcode/@lgcode/ in the source template as text, full-block, half-block-mix, or
-@lgcode/@lgcode/ half-block-top, and draw() renders it with foreground@lgcode/background shadow
-@lgcode/@lgcode/ colors from the theme.
+// Entry and exit splash banners for direct interactive mode scrollback.
+//
+// Renders the full opencode entry logo and a compact [O] exit badge, plus
+// session metadata and the resume command. These are scrollback snapshots, so
+// they become immutable terminal history once committed.
+//
+// Both variants use a cell-based renderer. cells() classifies each character
+// in the source template as text, full-block, half-block-mix, or
+// half-block-top, and draw() renders it with foreground/background shadow
+// colors from the theme.
 import {
   BoxRenderable,
   type ColorInput,
@@ -16,10 +16,10 @@ import {
   type ScrollbackRenderContext,
   type ScrollbackSnapshot,
   type ScrollbackWriter,
-} from "@opentui@lgcode/core"
-import * as Locale from "@@lgcode/util@lgcode/locale"
-import { go } from "@@lgcode/cli@lgcode/logo"
-import type { RunSplashTheme } from ".@lgcode/theme"
+} from "@opentui/core"
+import * as Locale from "@/util/locale"
+import { go } from "@/cli/logo"
+import type { RunSplashTheme } from "./theme"
 
 export const SPLASH_TITLE_LIMIT = 50
 export const SPLASH_TITLE_FALLBACK = "Untitled session"

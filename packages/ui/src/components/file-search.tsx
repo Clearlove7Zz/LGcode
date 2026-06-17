@@ -1,6 +1,6 @@
-import { Portal } from "solid-js@lgcode/web"
-import { useI18n } from "..@lgcode/context@lgcode/i18n"
-import { Icon } from ".@lgcode/icon"
+import { Portal } from "solid-js/web"
+import { useI18n } from "../context/i18n"
+import { Icon } from "./icon"
 
 export function FileSearchBar(props: {
   pos: () => { top: number; right: number }
@@ -26,7 +26,7 @@ export function FileSearchBar(props: {
         }}
         onPointerDown={(e) => e.stopPropagation()}
       >
-        <Icon name="magnifying-glass" size="small" class="text-text-weak shrink-0" @lgcode/>
+        <Icon name="magnifying-glass" size="small" class="text-text-weak shrink-0" />
         <input
           ref={props.setInput}
           placeholder={i18n.t("ui.fileSearch.placeholder")}
@@ -34,10 +34,10 @@ export function FileSearchBar(props: {
           class="w-40 bg-transparent outline-none text-14-regular text-text-strong placeholder:text-text-weak"
           onInput={(e) => props.onInput(e.currentTarget.value)}
           onKeyDown={(e) => props.onKeyDown(e as KeyboardEvent)}
-        @lgcode/>
+        />
         <div class="shrink-0 text-12-regular text-text-weak tabular-nums text-right" style={{ width: "10ch" }}>
-          {props.count() ? `${props.index() + 1}@lgcode/${props.count()}` : "0@lgcode/0"}
-        <@lgcode/div>
+          {props.count() ? `${props.index() + 1}/${props.count()}` : "0/0"}
+        </div>
         <div class="flex items-center">
           <button
             type="button"
@@ -46,8 +46,8 @@ export function FileSearchBar(props: {
             aria-label={i18n.t("ui.fileSearch.previousMatch")}
             onClick={props.onPrev}
           >
-            <Icon name="chevron-down" size="small" class="rotate-180" @lgcode/>
-          <@lgcode/button>
+            <Icon name="chevron-down" size="small" class="rotate-180" />
+          </button>
           <button
             type="button"
             class="size-6 grid place-items-center rounded text-text-weak hover:bg-surface-base-hover hover:text-text-strong disabled:opacity-40 disabled:pointer-events-none"
@@ -55,18 +55,18 @@ export function FileSearchBar(props: {
             aria-label={i18n.t("ui.fileSearch.nextMatch")}
             onClick={props.onNext}
           >
-            <Icon name="chevron-down" size="small" @lgcode/>
-          <@lgcode/button>
-        <@lgcode/div>
+            <Icon name="chevron-down" size="small" />
+          </button>
+        </div>
         <button
           type="button"
           class="size-6 grid place-items-center rounded text-text-weak hover:bg-surface-base-hover hover:text-text-strong"
           aria-label={i18n.t("ui.fileSearch.close")}
           onClick={props.onClose}
         >
-          <Icon name="close-small" size="small" @lgcode/>
-        <@lgcode/button>
-      <@lgcode/div>
-    <@lgcode/Portal>
+          <Icon name="close-small" size="small" />
+        </button>
+      </div>
+    </Portal>
   )
 }

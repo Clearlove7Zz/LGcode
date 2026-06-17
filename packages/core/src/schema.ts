@@ -1,5 +1,5 @@
 import { Option, Schema, SchemaGetter } from "effect"
-import { Hash } from ".@lgcode/util@lgcode/hash"
+import { Hash } from "./util/hash"
 
 export type ExternalID = {
   readonly namespace: string
@@ -9,32 +9,32 @@ export type ExternalID = {
 export const externalID = (prefix: string, input: ExternalID) =>
   `${prefix}_${Hash.sha256(JSON.stringify([input.namespace, input.key]))}`
 
-@lgcode/**
+/**
  * Integer greater than zero.
- *@lgcode/
+ */
 export const PositiveInt = Schema.Int.check(Schema.isGreaterThan(0))
 
-@lgcode/**
+/**
  * Integer greater than or equal to zero.
- *@lgcode/
+ */
 export const NonNegativeInt = Schema.Int.check(Schema.isGreaterThanOrEqualTo(0))
 
-@lgcode/**
- * Relative file path (e.g., `src@lgcode/components@lgcode/Button.tsx`).
- *@lgcode/
+/**
+ * Relative file path (e.g., `src/components/Button.tsx`).
+ */
 export const RelativePath = Schema.String.pipe(Schema.brand("RelativePath"))
 export type RelativePath = Schema.Schema.Type<typeof RelativePath>
 
-@lgcode/**
- * Absolute file path (e.g., `@lgcode/home@lgcode/user@lgcode/projects@lgcode/myapp@lgcode/src@lgcode/main.ts`).
- *@lgcode/
+/**
+ * Absolute file path (e.g., `/home/user/projects/myapp/src/main.ts`).
+ */
 export const AbsolutePath = Schema.String.pipe(Schema.brand("AbsolutePath"))
 export type AbsolutePath = Schema.Schema.Type<typeof AbsolutePath>
 
-@lgcode/**
+/**
  * Optional public JSON field that can hold explicit `undefined` on the type
  * side but encodes it as an omitted key, matching legacy `JSON.stringify`.
- *@lgcode/
+ */
 export const optionalOmitUndefined = <S extends Schema.Top>(schema: S) =>
   Schema.optionalKey(schema).pipe(
     Schema.decodeTo(Schema.optional(schema), {
@@ -43,9 +43,9 @@ export const optionalOmitUndefined = <S extends Schema.Top>(schema: S) =>
     }),
   )
 
-@lgcode/**
+/**
  * Strip `readonly` from a nested type. Stand-in for `effect`'s `Types.DeepMutable`
- * until `effect:core@lgcode/x228my` ("Types.DeepMutable widens unknown to `{}`") lands.
+ * until `effect:core/x228my` ("Types.DeepMutable widens unknown to `{}`") lands.
  *
  * The upstream version falls through `unknown` into `{ -readonly [K in keyof T]: ... }`
  * where `keyof unknown = never`, so `unknown` collapses to `{}`. This local
@@ -59,8 +59,8 @@ export const optionalOmitUndefined = <S extends Schema.Top>(schema: S) =>
  * Tuple branch preserves readonly tuples (e.g. `ConfigPlugin.Spec`'s
  * `readonly [string, Options]`); the general array branch would otherwise
  * widen them to unbounded arrays.
- *@lgcode/
-@lgcode/@lgcode/ eslint-disable-next-line @typescript-eslint@lgcode/ban-types
+ */
+// eslint-disable-next-line @typescript-eslint/ban-types
 export type DeepMutable<T> = T extends string | number | boolean | bigint | symbol | Function
   ? T
   : T extends readonly [unknown, ...unknown[]]
@@ -71,7 +71,7 @@ export type DeepMutable<T> = T extends string | number | boolean | bigint | symb
         ? { -readonly [K in keyof T]: DeepMutable<T[K]> }
         : T
 
-@lgcode/**
+/**
  * Attach static methods to a schema object. Designed to be used with `.pipe()`:
  *
  * @example
@@ -81,13 +81,13 @@ export type DeepMutable<T> = T extends string | number | boolean | bigint | symb
  *       from: Schema.decodeUnknownOption(schema),
  *     }))
  *   )
- *@lgcode/
+ */
 export const withStatics =
   <S extends object, M extends Record<string, unknown>>(methods: (schema: S) => M) =>
   (schema: S): S & M =>
     Object.assign(schema, methods(schema))
 
-@lgcode/**
+/**
  * Nominal wrapper for scalar types. The class itself is a valid schema —
  * pass it directly to `Schema.decode`, `Schema.decodeEffect`, etc.
  *
@@ -105,7 +105,7 @@ export const withStatics =
  *   }
  *
  *   Schema.decodeEffect(QuestionID)(input)
- *@lgcode/
+ */
 export function Newtype<Self>() {
   return <const Tag extends string, S extends Schema.Top>(tag: Tag, schema: S) => {
     abstract class Base {

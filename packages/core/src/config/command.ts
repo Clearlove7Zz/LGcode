@@ -1,4 +1,4 @@
-export * as ConfigCommand from ".@lgcode/command"
+export * as ConfigCommand from "./command"
 
 import { Schema } from "effect"
 

@@ -1,9 +1,9 @@
 import { Effect, Schema } from "effect"
-import { Route } from "..@lgcode/route@lgcode/client"
-import { Auth } from "..@lgcode/route@lgcode/auth"
-import { Endpoint } from "..@lgcode/route@lgcode/endpoint"
-import { Framing } from "..@lgcode/route@lgcode/framing"
-import { Protocol } from "..@lgcode/route@lgcode/protocol"
+import { Route } from "../route/client"
+import { Auth } from "../route/auth"
+import { Endpoint } from "../route/endpoint"
+import { Framing } from "../route/framing"
+import { Protocol } from "../route/protocol"
 import {
   LLMEvent,
   Usage,
@@ -16,20 +16,20 @@ import {
   type ToolDefinition,
   type ToolContent,
   type ToolResultPart,
-} from "..@lgcode/schema"
-import { JsonObject, optionalArray, optionalNull, ProviderShared } from ".@lgcode/shared"
-import { isContextOverflow } from "..@lgcode/provider-error"
-import * as Cache from ".@lgcode/utils@lgcode/cache"
-import { Lifecycle } from ".@lgcode/utils@lgcode/lifecycle"
-import { ToolStream } from ".@lgcode/utils@lgcode/tool-stream"
+} from "../schema"
+import { JsonObject, optionalArray, optionalNull, ProviderShared } from "./shared"
+import { isContextOverflow } from "../provider-error"
+import * as Cache from "./utils/cache"
+import { Lifecycle } from "./utils/lifecycle"
+import { ToolStream } from "./utils/tool-stream"
 
 const ADAPTER = "anthropic-messages"
-export const DEFAULT_BASE_URL = "https:@lgcode/@lgcode/api.anthropic.com@lgcode/v1"
-export const PATH = "@lgcode/messages"
+export const DEFAULT_BASE_URL = "https://api.anthropic.com/v1"
+export const PATH = "/messages"
 
-@lgcode/@lgcode/ =============================================================================
-@lgcode/@lgcode/ Request Body Schema
-@lgcode/@lgcode/ =============================================================================
+// =============================================================================
+// Request Body Schema
+// =============================================================================
 const AnthropicCacheControl = Schema.Struct({
   type: Schema.tag("ephemeral"),
   ttl: Schema.optional(Schema.Literals(["5m", "1h"])),
@@ -78,11 +78,11 @@ const AnthropicServerToolUseBlock = Schema.Struct({
 })
 type AnthropicServerToolUseBlock = Schema.Schema.Type<typeof AnthropicServerToolUseBlock>
 
-@lgcode/@lgcode/ Server tool result blocks: web_search_tool_result, code_execution_tool_result,
-@lgcode/@lgcode/ and web_fetch_tool_result. The provider executes the tool and inlines the
-@lgcode/@lgcode/ structured result into the assistant turn — there is no client tool_result
-@lgcode/@lgcode/ round-trip. We round-trip the structured `content` payload as opaque JSON so
-@lgcode/@lgcode/ the next request can echo it back when continuing the conversation.
+// Server tool result blocks: web_search_tool_result, code_execution_tool_result,
+// and web_fetch_tool_result. The provider executes the tool and inlines the
+// structured result into the assistant turn — there is no client tool_result
+// round-trip. We round-trip the structured `content` payload as opaque JSON so
+// the next request can echo it back when continuing the conversation.
 const AnthropicServerToolResultType = Schema.Literals([
   "web_search_tool_result",
   "code_execution_tool_result",
@@ -98,12 +98,12 @@ const AnthropicServerToolResultBlock = Schema.Struct({
 })
 type AnthropicServerToolResultBlock = Schema.Schema.Type<typeof AnthropicServerToolResultBlock>
 
-@lgcode/@lgcode/ Anthropic accepts either a plain string or an ordered array of text@lgcode/image
-@lgcode/@lgcode/ blocks inside `tool_result.content`. The array form is required when a tool
-@lgcode/@lgcode/ returns image bytes (screenshot, image search, etc.) so they can be passed
-@lgcode/@lgcode/ to the model as proper image inputs instead of being JSON-stringified into
-@lgcode/@lgcode/ the prompt — which silently inflates context by megabytes and can push the
-@lgcode/@lgcode/ conversation over the model's token limit.
+// Anthropic accepts either a plain string or an ordered array of text/image
+// blocks inside `tool_result.content`. The array form is required when a tool
+// returns image bytes (screenshot, image search, etc.) so they can be passed
+// to the model as proper image inputs instead of being JSON-stringified into
+// the prompt — which silently inflates context by megabytes and can push the
+// conversation over the model's token limit.
 const AnthropicToolResultContent = Schema.Union([AnthropicTextBlock, AnthropicImageBlock])
 
 const AnthropicToolResultBlock = Schema.Struct({
@@ -184,9 +184,9 @@ const AnthropicStreamBlock = Schema.Struct({
   thinking: Schema.optional(Schema.String),
   signature: Schema.optional(Schema.String),
   input: Schema.optional(Schema.Unknown),
-  @lgcode/@lgcode/ *_tool_result blocks arrive whole as content_block_start (no streaming
-  @lgcode/@lgcode/ delta) with the structured payload in `content` and the originating
-  @lgcode/@lgcode/ server_tool_use id in `tool_use_id`.
+  // *_tool_result blocks arrive whole as content_block_start (no streaming
+  // delta) with the structured payload in `content` and the originating
+  // server_tool_use id in `tool_use_id`.
   tool_use_id: Schema.optional(Schema.String),
   content: Schema.optional(Schema.Unknown),
 })
@@ -208,10 +208,10 @@ const AnthropicEvent = Schema.Struct({
   content_block: Schema.optional(AnthropicStreamBlock),
   delta: Schema.optional(AnthropicStreamDelta),
   usage: Schema.optional(AnthropicUsage),
-  @lgcode/@lgcode/ `type` and `message` are both required per Anthropic's spec, but
-  @lgcode/@lgcode/ OpenAI-compatible proxies and gateway translations occasionally drop one
-  @lgcode/@lgcode/ or the other; mark them optional so a partial payload still parses and
-  @lgcode/@lgcode/ the parser can fall back to whichever field is populated.
+  // `type` and `message` are both required per Anthropic's spec, but
+  // OpenAI-compatible proxies and gateway translations occasionally drop one
+  // or the other; mark them optional so a partial payload still parses and
+  // the parser can fall back to whichever field is populated.
   error: Schema.optional(
     Schema.Struct({ type: Schema.optional(Schema.String), message: Schema.optional(Schema.String) }),
   ),
@@ -226,13 +226,13 @@ interface ParserState {
 
 const invalid = ProviderShared.invalidRequest
 
-@lgcode/@lgcode/ =============================================================================
-@lgcode/@lgcode/ Request Lowering
-@lgcode/@lgcode/ =============================================================================
-@lgcode/@lgcode/ Anthropic accepts at most 4 explicit cache_control breakpoints per request,
-@lgcode/@lgcode/ across `tools`, `system`, and `messages`. Beyond the cap the API returns a
-@lgcode/@lgcode/ 400 — so the lowering layer counts emitted markers and silently drops any
-@lgcode/@lgcode/ that exceed it.
+// =============================================================================
+// Request Lowering
+// =============================================================================
+// Anthropic accepts at most 4 explicit cache_control breakpoints per request,
+// across `tools`, `system`, and `messages`. Beyond the cap the API returns a
+// 400 — so the lowering layer counts emitted markers and silently drops any
+// that exceed it.
 const ANTHROPIC_BREAKPOINT_CAP = 4
 
 const EPHEMERAL_5M = { type: "ephemeral" as const }
@@ -285,9 +285,9 @@ const lowerServerToolCall = (part: ToolCallPart): AnthropicServerToolUseBlock =>
   input: part.input,
 })
 
-@lgcode/@lgcode/ Server tool result blocks are typed by name. Anthropic ships three today;
-@lgcode/@lgcode/ extend this list when new server tools land. The block content is the
-@lgcode/@lgcode/ structured payload returned by the provider, which we round-trip as-is.
+// Server tool result blocks are typed by name. Anthropic ships three today;
+// extend this list when new server tools land. The block content is the
+// structured payload returned by the provider, which we round-trip as-is.
 const serverToolResultType = (name: string): AnthropicServerToolResultType | undefined => {
   if (name === "web_search") return "web_search_tool_result"
   if (name === "code_execution") return "code_execution_tool_result"
@@ -318,8 +318,8 @@ const lowerImage = Effect.fn("AnthropicMessages.lowerImage")(function* (part: Me
   } satisfies AnthropicImageBlock
 })
 
-@lgcode/@lgcode/ Tool results may carry structured text@lgcode/images. Keep media as provider-native
-@lgcode/@lgcode/ content instead of JSON-stringifying base64 into a prompt string.
+// Tool results may carry structured text/images. Keep media as provider-native
+// content instead of JSON-stringifying base64 into a prompt string.
 const lowerToolResultContentItem = Effect.fn("AnthropicMessages.lowerToolResultContentItem")(function* (
   item: ToolContent,
 ) {
@@ -340,17 +340,17 @@ const lowerToolResultContentItem = Effect.fn("AnthropicMessages.lowerToolResultC
 })
 
 const lowerToolResultContent = Effect.fn("AnthropicMessages.lowerToolResultContent")(function* (part: ToolResultPart) {
-  @lgcode/@lgcode/ Text @lgcode/ json @lgcode/ error results stay as a string for backward compatibility
-  @lgcode/@lgcode/ with existing cassettes and provider expectations.
+  // Text / json / error results stay as a string for backward compatibility
+  // with existing cassettes and provider expectations.
   if (part.result.type !== "content") return ProviderShared.toolResultText(part)
-  @lgcode/@lgcode/ Preserve the narrowed array element type when compiled through a consumer package.
+  // Preserve the narrowed array element type when compiled through a consumer package.
   const content: ReadonlyArray<ToolContent> = part.result.value
   return yield* Effect.forEach(content, lowerToolResultContentItem)
 })
 
-@lgcode/@lgcode/ Mid-conversation system messages are a native Claude API feature only for
-@lgcode/@lgcode/ Opus 4.8. Other Anthropic models intentionally use the same visible wrapped-
-@lgcode/@lgcode/ user fallback as non-Anthropic routes rather than sending a role they reject.
+// Mid-conversation system messages are a native Claude API feature only for
+// Opus 4.8. Other Anthropic models intentionally use the same visible wrapped-
+// user fallback as non-Anthropic routes rather than sending a role they reject.
 const supportsNativeSystemUpdates = (request: LLMRequest) => String(request.model.id) === "claude-opus-4-8"
 
 const endsInServerToolUse = (message: LLMRequest["messages"][number]) => {
@@ -504,9 +504,9 @@ const lowerThinking = Effect.fn("AnthropicMessages.lowerThinking")(function* (re
 const fromRequest = Effect.fn("AnthropicMessages.fromRequest")(function* (request: LLMRequest) {
   const toolChoice = request.toolChoice ? yield* lowerToolChoice(request.toolChoice) : undefined
   const generation = request.generation
-  @lgcode/@lgcode/ Allocate the 4-breakpoint budget in invalidation order: tools → system →
-  @lgcode/@lgcode/ messages. Tools live highest in the cache hierarchy, so when callers
-  @lgcode/@lgcode/ over-mark we keep their tool hints and shed the message-tail ones first.
+  // Allocate the 4-breakpoint budget in invalidation order: tools → system →
+  // messages. Tools live highest in the cache hierarchy, so when callers
+  // over-mark we keep their tool hints and shed the message-tail ones first.
   const breakpoints = Cache.newBreakpoints(ANTHROPIC_BREAKPOINT_CAP)
   const tools =
     request.tools.length === 0 || request.toolChoice?.type === "none"
@@ -542,9 +542,9 @@ const fromRequest = Effect.fn("AnthropicMessages.fromRequest")(function* (reques
   }
 })
 
-@lgcode/@lgcode/ =============================================================================
-@lgcode/@lgcode/ Stream Parsing
-@lgcode/@lgcode/ =============================================================================
+// =============================================================================
+// Stream Parsing
+// =============================================================================
 const mapFinishReason = (reason: string | null | undefined): FinishReason => {
   if (reason === "end_turn" || reason === "stop_sequence" || reason === "pause_turn") return "stop"
   if (reason === "max_tokens") return "length"
@@ -553,13 +553,13 @@ const mapFinishReason = (reason: string | null | undefined): FinishReason => {
   return "unknown"
 }
 
-@lgcode/@lgcode/ Anthropic reports the non-overlapping breakdown natively — its
-@lgcode/@lgcode/ `input_tokens` is the *non-cached* count per the Messages API docs, with
-@lgcode/@lgcode/ cache reads and writes as separate fields. We sum them to derive the
-@lgcode/@lgcode/ inclusive `inputTokens` the rest of the contract expects. Extended
-@lgcode/@lgcode/ thinking tokens are *not* broken out by Anthropic — they're billed as
-@lgcode/@lgcode/ part of `output_tokens`, so `reasoningTokens` stays `undefined` and
-@lgcode/@lgcode/ `outputTokens` carries the combined total.
+// Anthropic reports the non-overlapping breakdown natively — its
+// `input_tokens` is the *non-cached* count per the Messages API docs, with
+// cache reads and writes as separate fields. We sum them to derive the
+// inclusive `inputTokens` the rest of the contract expects. Extended
+// thinking tokens are *not* broken out by Anthropic — they're billed as
+// part of `output_tokens`, so `reasoningTokens` stays `undefined` and
+// `outputTokens` carries the combined total.
 const mapUsage = (usage: AnthropicUsage | undefined): Usage | undefined => {
   if (!usage) return undefined
   const nonCached = usage.input_tokens
@@ -577,11 +577,11 @@ const mapUsage = (usage: AnthropicUsage | undefined): Usage | undefined => {
   })
 }
 
-@lgcode/@lgcode/ Anthropic emits usage on `message_start` and again on `message_delta` — the
-@lgcode/@lgcode/ final delta carries the authoritative totals. Right-biased merge: each
-@lgcode/@lgcode/ field prefers `right` when defined, falls back to `left`. `inputTokens` is
-@lgcode/@lgcode/ recomputed from the merged breakdown so the inclusive total stays
-@lgcode/@lgcode/ consistent with `nonCached + cacheRead + cacheWrite`.
+// Anthropic emits usage on `message_start` and again on `message_delta` — the
+// final delta carries the authoritative totals. Right-biased merge: each
+// field prefers `right` when defined, falls back to `left`. `inputTokens` is
+// recomputed from the merged breakdown so the inclusive total stays
+// consistent with `nonCached + cacheRead + cacheWrite`.
 const mergeUsage = (left: Usage | undefined, right: Usage | undefined) => {
   if (!left) return right
   if (!right) return left
@@ -606,11 +606,11 @@ const mergeUsage = (left: Usage | undefined, right: Usage | undefined) => {
   })
 }
 
-@lgcode/@lgcode/ Server tool result blocks come whole in `content_block_start` (no streaming
-@lgcode/@lgcode/ delta sequence). We convert the payload to a `tool-result` event with
-@lgcode/@lgcode/ `providerExecuted: true`. The runtime appends it to the assistant message
-@lgcode/@lgcode/ for round-trip; downstream consumers can inspect `result.value` for the
-@lgcode/@lgcode/ structured payload.
+// Server tool result blocks come whole in `content_block_start` (no streaming
+// delta sequence). We convert the payload to a `tool-result` event with
+// `providerExecuted: true`. The runtime appends it to the assistant message
+// for round-trip; downstream consumers can inspect `result.value` for the
+// structured payload.
 const SERVER_TOOL_RESULT_NAMES: Record<AnthropicServerToolResultType, string> = {
   web_search_tool_result: "web_search",
   code_execution_tool_result: "code_execution",
@@ -782,8 +782,8 @@ const onMessageDelta = (state: ParserState, event: AnthropicEvent): StepResult =
   return [{ ...state, lifecycle, usage }, events]
 }
 
-@lgcode/@lgcode/ Prefix `error.type` so overloads, rate limits, and quota errors are visible
-@lgcode/@lgcode/ even when the provider message is generic or empty.
+// Prefix `error.type` so overloads, rate limits, and quota errors are visible
+// even when the provider message is generic or empty.
 const providerErrorMessage = (event: AnthropicEvent): string => {
   const type = event.error?.type
   const message = event.error?.message
@@ -811,14 +811,14 @@ const step = (state: ParserState, event: AnthropicEvent) => {
   return Effect.succeed<StepResult>([state, NO_EVENTS])
 }
 
-@lgcode/@lgcode/ =============================================================================
-@lgcode/@lgcode/ Protocol And Anthropic Route
-@lgcode/@lgcode/ =============================================================================
-@lgcode/**
+// =============================================================================
+// Protocol And Anthropic Route
+// =============================================================================
+/**
  * The Anthropic Messages protocol — request body construction, body schema,
  * and the streaming-event state machine. Used by native Anthropic Cloud and
- * (once registered) Vertex Anthropic @lgcode/ Bedrock-hosted Anthropic passthrough.
- *@lgcode/
+ * (once registered) Vertex Anthropic / Bedrock-hosted Anthropic passthrough.
+ */
 export const protocol = Protocol.make({
   id: ADAPTER,
   body: {
@@ -842,4 +842,4 @@ export const route = Route.make({
   headers: () => ({ "anthropic-version": "2023-06-01" }),
 })
 
-export * as AnthropicMessages from ".@lgcode/anthropic-messages"
+export * as AnthropicMessages from "./anthropic-messages"

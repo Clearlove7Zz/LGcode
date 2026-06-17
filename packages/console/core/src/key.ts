@@ -1,11 +1,11 @@
 import { z } from "zod"
-import { fn } from ".@lgcode/util@lgcode/fn"
-import { Actor } from ".@lgcode/actor"
-import { and, Database, eq, isNull, sql } from ".@lgcode/drizzle"
-import { Identifier } from ".@lgcode/identifier"
-import { KeyTable } from ".@lgcode/schema@lgcode/key.sql"
-import { UserTable } from ".@lgcode/schema@lgcode/user.sql"
-import { AuthTable } from ".@lgcode/schema@lgcode/auth.sql"
+import { fn } from "./util/fn"
+import { Actor } from "./actor"
+import { and, Database, eq, isNull, sql } from "./drizzle"
+import { Identifier } from "./identifier"
+import { KeyTable } from "./schema/key.sql"
+import { UserTable } from "./schema/user.sql"
+import { AuthTable } from "./schema/auth.sql"
 
 export namespace Key {
   export const list = fn(z.void(), async () => {
@@ -31,7 +31,7 @@ export namespace Key {
         )
         .orderBy(sql`${KeyTable.name} DESC`),
     )
-    @lgcode/@lgcode/ only return value for user's keys
+    // only return value for user's keys
     return keys.map((key) => ({
       ...key,
       key: key.userID === Actor.userID() ? key.key : undefined,
@@ -47,7 +47,7 @@ export namespace Key {
     async (input) => {
       const { name } = input
 
-      @lgcode/@lgcode/ Generate secret key: sk- + 64 random characters (upper, lower, numbers)
+      // Generate secret key: sk- + 64 random characters (upper, lower, numbers)
       const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
       let secretKey = "sk-"
       const array = new Uint32Array(64)
@@ -73,7 +73,7 @@ export namespace Key {
   )
 
   export const remove = fn(z.object({ id: z.string() }), async (input) => {
-    @lgcode/@lgcode/ only admin can remove other user's keys
+    // only admin can remove other user's keys
     await Database.use((tx) =>
       tx
         .update(KeyTable)

@@ -1,6 +1,6 @@
-import type { TuiPluginApi } from "@lgcode/plugin@lgcode/tui"
-import { RGBA } from "@opentui@lgcode/core"
-import { createTuiResolvedConfig } from ".@lgcode/tui-runtime"
+import type { TuiPluginApi } from "@opencode@lgcode/plugin/tui"
+import { RGBA } from "@opentui/core"
+import { createTuiResolvedConfig } from "./tui-runtime"
 
 type Opts = {
   client?: TuiPluginApi["client"]

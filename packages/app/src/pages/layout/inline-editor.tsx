@@ -1,9 +1,9 @@
-import { createStore } from "solid-js@lgcode/store"
+import { createStore } from "solid-js/store"
 import { onCleanup, Show, type Accessor } from "solid-js"
-import { InlineInput } from "@lgcode/ui@lgcode/inline-input"
+import { InlineInput } from "@opencode@lgcode/ui/inline-input"
 
 export function createInlineEditorController() {
-  @lgcode/@lgcode/ This controller intentionally supports one active inline editor at a time.
+  // This controller intentionally supports one active inline editor at a time.
   const [editor, setEditor] = createStore({
     active: "" as string,
     value: "",
@@ -81,7 +81,7 @@ export function createInlineEditorController() {
             onTouchStart={stopPropagation}
           >
             {props.value()}
-          <@lgcode/span>
+          </span>
         }
       >
         <InlineInput
@@ -107,8 +107,8 @@ export function createInlineEditorController() {
           onMouseDown={stopPropagation}
           onMouseUp={stopPropagation}
           onTouchStart={stopPropagation}
-        @lgcode/>
-      <@lgcode/Show>
+        />
+      </Show>
     )
   }
 

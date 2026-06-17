@@ -1,22 +1,22 @@
-@lgcode/* oxlint-disable *@lgcode/
-import type * as Effect from "effect@lgcode/Effect"
-import { applyEffectWrapper, type QueryEffectHKTBase } from "drizzle-orm@lgcode/effect-core@lgcode/query-effect"
-import { entityKind } from "drizzle-orm@lgcode/entity"
-import type { SelectResultFields } from "drizzle-orm@lgcode/query-builders@lgcode/select.types"
-import type { RunnableQuery } from "drizzle-orm@lgcode/runnable-query"
-import { SelectionProxyHandler } from "drizzle-orm@lgcode/selection-proxy"
-import type { Placeholder, Query, SQL, SQLWrapper } from "drizzle-orm@lgcode/sql@lgcode/sql"
-import type { SQLiteDialect } from "drizzle-orm@lgcode/sqlite-core@lgcode/dialect"
-import type { SQLiteDeleteConfig } from "drizzle-orm@lgcode/sqlite-core@lgcode/query-builders@lgcode/delete"
-import type { SelectedFieldsFlat } from "drizzle-orm@lgcode/sqlite-core@lgcode/query-builders@lgcode/select.types"
-import type { PreparedQueryConfig } from "drizzle-orm@lgcode/sqlite-core@lgcode/session"
-import { SQLiteTable } from "drizzle-orm@lgcode/sqlite-core@lgcode/table"
-import { extractUsedTable } from "drizzle-orm@lgcode/sqlite-core@lgcode/utils"
-import type { Subquery } from "drizzle-orm@lgcode/subquery"
-import { type DrizzleTypeError, type ValueOrArray } from "drizzle-orm@lgcode/utils"
-import type { SQLiteColumn } from "drizzle-orm@lgcode/sqlite-core@lgcode/columns@lgcode/common"
-import { getTableColumnsRuntime, orderSelectedFields } from "..@lgcode/..@lgcode/internal@lgcode/drizzle-utils"
-import type { SQLiteEffectPreparedQuery, SQLiteEffectSession } from ".@lgcode/session"
+/* oxlint-disable */
+import type * as Effect from "effect/Effect"
+import { applyEffectWrapper, type QueryEffectHKTBase } from "drizzle-orm/effect-core/query-effect"
+import { entityKind } from "drizzle-orm/entity"
+import type { SelectResultFields } from "drizzle-orm/query-builders/select.types"
+import type { RunnableQuery } from "drizzle-orm/runnable-query"
+import { SelectionProxyHandler } from "drizzle-orm/selection-proxy"
+import type { Placeholder, Query, SQL, SQLWrapper } from "drizzle-orm/sql/sql"
+import type { SQLiteDialect } from "drizzle-orm/sqlite-core/dialect"
+import type { SQLiteDeleteConfig } from "drizzle-orm/sqlite-core/query-builders/delete"
+import type { SelectedFieldsFlat } from "drizzle-orm/sqlite-core/query-builders/select.types"
+import type { PreparedQueryConfig } from "drizzle-orm/sqlite-core/session"
+import { SQLiteTable } from "drizzle-orm/sqlite-core/table"
+import { extractUsedTable } from "drizzle-orm/sqlite-core/utils"
+import type { Subquery } from "drizzle-orm/subquery"
+import { type DrizzleTypeError, type ValueOrArray } from "drizzle-orm/utils"
+import type { SQLiteColumn } from "drizzle-orm/sqlite-core/columns/common"
+import { getTableColumnsRuntime, orderSelectedFields } from "../../internal/drizzle-utils"
+import type { SQLiteEffectPreparedQuery, SQLiteEffectSession } from "./session"
 
 export type SQLiteEffectDeleteWithout<
   T extends AnySQLiteEffectDelete,
@@ -148,7 +148,7 @@ export class SQLiteEffectDeleteBase<
 {
   static readonly [entityKind]: string = "SQLiteEffectDelete"
 
-  @lgcode/** @internal *@lgcode/
+  /** @internal */
   config: SQLiteDeleteConfig
 
   constructor(
@@ -206,7 +206,7 @@ export class SQLiteEffectDeleteBase<
     return this as any
   }
 
-  @lgcode/** @internal *@lgcode/
+  /** @internal */
   getSQL(): SQL {
     return this.effectDialect.buildDeleteQuery(this.config)
   }
@@ -215,7 +215,7 @@ export class SQLiteEffectDeleteBase<
     return this.effectDialect.sqlToQuery(this.getSQL())
   }
 
-  @lgcode/** @internal *@lgcode/
+  /** @internal */
   _prepare(isOneTimeQuery = true): SQLiteEffectDeletePrepare<this, TEffectHKT> {
     return this.effectSession[isOneTimeQuery ? "prepareOneTimeQuery" : "prepareQuery"](
       this.effectDialect.sqlToQuery(this.getSQL()),

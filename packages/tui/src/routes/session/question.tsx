@@ -1,13 +1,13 @@
-import { createStore } from "solid-js@lgcode/store"
+import { createStore } from "solid-js/store"
 import { createMemo, createSignal, For, onCleanup, onMount, Show } from "solid-js"
-import { useRenderer } from "@opentui@lgcode/solid"
-import type { TextareaRenderable } from "@opentui@lgcode/core"
-import { selectedForeground, tint, useTheme } from "..@lgcode/..@lgcode/context@lgcode/theme"
-import type { QuestionAnswer, QuestionRequest } from "@lgcode/sdk@lgcode/v2"
-import { useSDK } from "..@lgcode/..@lgcode/context@lgcode/sdk"
-import { SplitBorder } from "..@lgcode/..@lgcode/ui@lgcode/border"
-import { useTuiConfig } from "..@lgcode/..@lgcode/config"
-import { useBindings, useOpencodeModeStack } from "..@lgcode/..@lgcode/keymap"
+import { useRenderer } from "@opentui/solid"
+import type { TextareaRenderable } from "@opentui/core"
+import { selectedForeground, tint, useTheme } from "../../context/theme"
+import type { QuestionAnswer, QuestionRequest } from "@opencode@lgcode/sdk/v2"
+import { useSDK } from "../../context/sdk"
+import { SplitBorder } from "../../ui/border"
+import { useTuiConfig } from "../../config"
+import { useBindings, useOpencodeModeStack } from "../../keymap"
 
 const QUESTION_MODE = "question"
 
@@ -20,7 +20,7 @@ export function QuestionPrompt(props: { request: QuestionRequest; directory?: st
 
   const questions = createMemo(() => props.request.questions)
   const single = createMemo(() => questions().length === 1 && questions()[0]?.multiple !== true)
-  const tabs = createMemo(() => (single() ? 1 : questions().length + 1)) @lgcode/@lgcode/ questions + confirm tab (no confirm for single select)
+  const tabs = createMemo(() => (single() ? 1 : questions().length + 1)) // questions + confirm tab (no confirm for single select)
   const [tabHover, setTabHover] = createSignal<number | "confirm" | null>(null)
   const [store, setStore] = createStore({
     tab: 0,
@@ -329,11 +329,11 @@ export function QuestionPrompt(props: { request: QuestionRequest; directory?: st
                       }
                     >
                       {q.header}
-                    <@lgcode/text>
-                  <@lgcode/box>
+                    </text>
+                  </box>
                 )
               }}
-            <@lgcode/For>
+            </For>
             <box
               paddingLeft={1}
               paddingRight={1}
@@ -347,10 +347,10 @@ export function QuestionPrompt(props: { request: QuestionRequest; directory?: st
                 selectTab(questions().length)
               }}
             >
-              <text fg={confirm() ? selectedForeground(theme, theme.accent) : theme.textMuted}>Confirm<@lgcode/text>
-            <@lgcode/box>
-          <@lgcode/box>
-        <@lgcode/Show>
+              <text fg={confirm() ? selectedForeground(theme, theme.accent) : theme.textMuted}>Confirm</text>
+            </box>
+          </box>
+        </Show>
 
         <Show when={!confirm()}>
           <box paddingLeft={1} gap={1}>
@@ -358,8 +358,8 @@ export function QuestionPrompt(props: { request: QuestionRequest; directory?: st
               <text fg={theme.text}>
                 {question()?.question}
                 {multi() ? " (select all that apply)" : ""}
-              <@lgcode/text>
-            <@lgcode/box>
+              </text>
+            </box>
             <box>
               <For each={options()}>
                 {(opt, i) => {
@@ -378,25 +378,25 @@ export function QuestionPrompt(props: { request: QuestionRequest; directory?: st
                         <box backgroundColor={active() ? theme.backgroundElement : undefined} paddingRight={1}>
                           <text fg={active() ? tint(theme.textMuted, theme.secondary, 0.6) : theme.textMuted}>
                             {`${i() + 1}.`}
-                          <@lgcode/text>
-                        <@lgcode/box>
+                          </text>
+                        </box>
                         <box backgroundColor={active() ? theme.backgroundElement : undefined}>
                           <text fg={active() ? theme.secondary : picked() ? theme.success : theme.text}>
                             {multi() ? `[${picked() ? "✓" : " "}] ${opt.label}` : opt.label}
-                          <@lgcode/text>
-                        <@lgcode/box>
+                          </text>
+                        </box>
                         <Show when={!multi()}>
-                          <text fg={theme.success}>{picked() ? " ✓" : ""}<@lgcode/text>
-                        <@lgcode/Show>
-                      <@lgcode/box>
+                          <text fg={theme.success}>{picked() ? " ✓" : ""}</text>
+                        </Show>
+                      </box>
 
                       <box paddingLeft={3}>
-                        <text fg={theme.textMuted}>{opt.description}<@lgcode/text>
-                      <@lgcode/box>
-                    <@lgcode/box>
+                        <text fg={theme.textMuted}>{opt.description}</text>
+                      </box>
+                    </box>
                   )
                 }}
-              <@lgcode/For>
+              </For>
               <Show when={custom()}>
                 <box
                   onMouseOver={() => moveTo(options().length)}
@@ -410,18 +410,18 @@ export function QuestionPrompt(props: { request: QuestionRequest; directory?: st
                     <box backgroundColor={other() ? theme.backgroundElement : undefined} paddingRight={1}>
                       <text fg={other() ? tint(theme.textMuted, theme.secondary, 0.6) : theme.textMuted}>
                         {`${options().length + 1}.`}
-                      <@lgcode/text>
-                    <@lgcode/box>
+                      </text>
+                    </box>
                     <box backgroundColor={other() ? theme.backgroundElement : undefined}>
                       <text fg={other() ? theme.secondary : customPicked() ? theme.success : theme.text}>
                         {multi() ? `[${customPicked() ? "✓" : " "}] Type your own answer` : "Type your own answer"}
-                      <@lgcode/text>
-                    <@lgcode/box>
+                      </text>
+                    </box>
 
                     <Show when={!multi()}>
-                      <text fg={theme.success}>{customPicked() ? " ✓" : ""}<@lgcode/text>
-                    <@lgcode/Show>
-                  <@lgcode/box>
+                      <text fg={theme.success}>{customPicked() ? " ✓" : ""}</text>
+                    </Show>
+                  </box>
                   <Show when={store.editing}>
                     <box paddingLeft={3}>
                       <textarea
@@ -441,24 +441,24 @@ export function QuestionPrompt(props: { request: QuestionRequest; directory?: st
                         textColor={theme.text}
                         focusedTextColor={theme.text}
                         cursorColor={theme.primary}
-                      @lgcode/>
-                    <@lgcode/box>
-                  <@lgcode/Show>
+                      />
+                    </box>
+                  </Show>
                   <Show when={!store.editing && input()}>
                     <box paddingLeft={3}>
-                      <text fg={theme.textMuted}>{input()}<@lgcode/text>
-                    <@lgcode/box>
-                  <@lgcode/Show>
-                <@lgcode/box>
-              <@lgcode/Show>
-            <@lgcode/box>
-          <@lgcode/box>
-        <@lgcode/Show>
+                      <text fg={theme.textMuted}>{input()}</text>
+                    </box>
+                  </Show>
+                </box>
+              </Show>
+            </box>
+          </box>
+        </Show>
 
         <Show when={confirm() && !single()}>
           <box paddingLeft={1}>
-            <text fg={theme.text}>Review<@lgcode/text>
-          <@lgcode/box>
+            <text fg={theme.text}>Review</text>
+          </box>
           <For each={questions()}>
             {(q, index) => {
               const value = () => store.answers[index()]?.join(", ") ?? ""
@@ -466,17 +466,17 @@ export function QuestionPrompt(props: { request: QuestionRequest; directory?: st
               return (
                 <box paddingLeft={1}>
                   <text>
-                    <span style={{ fg: theme.textMuted }}>{q.header}:<@lgcode/span>{" "}
+                    <span style={{ fg: theme.textMuted }}>{q.header}:</span>{" "}
                     <span style={{ fg: answered() ? theme.text : theme.error }}>
                       {answered() ? value() : "(not answered)"}
-                    <@lgcode/span>
-                  <@lgcode/text>
-                <@lgcode/box>
+                    </span>
+                  </text>
+                </box>
               )
             }}
-          <@lgcode/For>
-        <@lgcode/Show>
-      <@lgcode/box>
+          </For>
+        </Show>
+      </box>
       <box
         flexDirection="row"
         flexShrink={0}
@@ -489,26 +489,26 @@ export function QuestionPrompt(props: { request: QuestionRequest; directory?: st
         <box flexDirection="row" gap={2}>
           <Show when={!single()}>
             <text fg={theme.text}>
-              {"⇆"} <span style={{ fg: theme.textMuted }}>tab<@lgcode/span>
-            <@lgcode/text>
-          <@lgcode/Show>
+              {"⇆"} <span style={{ fg: theme.textMuted }}>tab</span>
+            </text>
+          </Show>
           <Show when={!confirm()}>
             <text fg={theme.text}>
-              {"↑↓"} <span style={{ fg: theme.textMuted }}>select<@lgcode/span>
-            <@lgcode/text>
-          <@lgcode/Show>
+              {"↑↓"} <span style={{ fg: theme.textMuted }}>select</span>
+            </text>
+          </Show>
           <text fg={theme.text}>
             enter{" "}
             <span style={{ fg: theme.textMuted }}>
               {confirm() ? "submit" : multi() ? "toggle" : single() ? "submit" : "confirm"}
-            <@lgcode/span>
-          <@lgcode/text>
+            </span>
+          </text>
 
           <text fg={theme.text}>
-            esc <span style={{ fg: theme.textMuted }}>dismiss<@lgcode/span>
-          <@lgcode/text>
-        <@lgcode/box>
-      <@lgcode/box>
-    <@lgcode/box>
+            esc <span style={{ fg: theme.textMuted }}>dismiss</span>
+          </text>
+        </box>
+      </box>
+    </box>
   )
 }

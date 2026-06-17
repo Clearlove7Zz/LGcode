@@ -1,14 +1,14 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer, Queue } from "effect"
-import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
-import { GlobalBus, type GlobalEvent } from "@@lgcode/bus@lgcode/global"
-import { Worktree } from "@@lgcode/worktree"
-import { Server } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/server"
-import { ExperimentalPaths } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/experimental"
-import { WorkspacePaths } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/workspace"
-import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
-import { disposeAllInstances, TestInstance } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { Flag } from "@opencode@lgcode/core/flag/flag"
+import { GlobalBus, type GlobalEvent } from "@/bus/global"
+import { Worktree } from "@/worktree"
+import { Server } from "../../src/server/server"
+import { ExperimentalPaths } from "../../src/server/routes/instance/httpapi/groups/experimental"
+import { WorkspacePaths } from "../../src/server/routes/instance/httpapi/groups/workspace"
+import { resetDatabase } from "../fixture/db"
+import { disposeAllInstances, TestInstance } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
 
 const stateLayer = Layer.effectDiscard(
   Effect.gen(function* () {
@@ -94,7 +94,7 @@ function removeCreatedWorktree(input: {
       `${ExperimentalPaths.worktree}?directory=${encodeURIComponent(input.rootDirectory)}`,
       {
         method: "DELETE",
-        headers: { "content-type": "application@lgcode/json" },
+        headers: { "content-type": "application/json" },
         body: JSON.stringify({ directory: input.worktreeDirectory }),
       },
     )
@@ -143,15 +143,15 @@ function createWorktreeScoped(input: {
 
 function setProjectStartCommand(input: { server: TestServer; directory: string; command: string }) {
   return Effect.gen(function* () {
-    const current = yield* request(input.server, `@lgcode/project@lgcode/current?directory=${encodeURIComponent(input.directory)}`)
+    const current = yield* request(input.server, `/project/current?directory=${encodeURIComponent(input.directory)}`)
     expect(current.status).toBe(200)
     const project = yield* json<{ id: string }>(current)
     const updated = yield* request(
       input.server,
-      `@lgcode/project@lgcode/${project.id}?directory=${encodeURIComponent(input.directory)}`,
+      `/project/${project.id}?directory=${encodeURIComponent(input.directory)}`,
       {
         method: "PATCH",
-        headers: { "content-type": "application@lgcode/json" },
+        headers: { "content-type": "application/json" },
         body: JSON.stringify({ commands: { start: input.command } }),
       },
     )
@@ -173,7 +173,7 @@ describe("worktree endpoint reproduction", () => {
           path: `${ExperimentalPaths.worktree}?directory=${encodeURIComponent(test.directory)}`,
           init: {
             method: "POST",
-            headers: { "content-type": "application@lgcode/json" },
+            headers: { "content-type": "application/json" },
             body: JSON.stringify({}),
           },
           timeoutLabel: "direct worktree create",
@@ -195,7 +195,7 @@ describe("worktree endpoint reproduction", () => {
           server,
           directory: test.directory,
           path: `${ExperimentalPaths.worktree}?directory=${encodeURIComponent(test.directory)}`,
-          init: { method: "POST", headers: { "content-type": "application@lgcode/json" } },
+          init: { method: "POST", headers: { "content-type": "application/json" } },
           timeoutLabel: "direct worktree create without body",
         })
 
@@ -236,7 +236,7 @@ describe("worktree endpoint reproduction", () => {
           `${ExperimentalPaths.worktree}?directory=${encodeURIComponent(test.directory)}`,
           {
             method: "POST",
-            headers: { "content-type": "application@lgcode/json" },
+            headers: { "content-type": "application/json" },
             body: "null",
           },
         )
@@ -259,7 +259,7 @@ describe("worktree endpoint reproduction", () => {
           path: `${WorkspacePaths.list}?directory=${encodeURIComponent(test.directory)}`,
           init: {
             method: "POST",
-            headers: { "content-type": "application@lgcode/json" },
+            headers: { "content-type": "application/json" },
             body: JSON.stringify({ type: "worktree", branch: null }),
           },
           timeoutLabel: "workspace worktree create",
@@ -293,7 +293,7 @@ describe("worktree endpoint reproduction", () => {
           path: `${WorkspacePaths.list}?directory=${encodeURIComponent(test.directory)}`,
           init: {
             method: "POST",
-            headers: { "content-type": "application@lgcode/json" },
+            headers: { "content-type": "application/json" },
             body: JSON.stringify({ type: "worktree", branch: null }),
           },
           timeoutLabel: "workspace worktree create with project start command",

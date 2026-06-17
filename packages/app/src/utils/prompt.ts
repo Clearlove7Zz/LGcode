@@ -1,5 +1,5 @@
-import type { AgentPart as MessageAgentPart, FilePart, Part, TextPart } from "@lgcode/sdk@lgcode/v2"
-import type { AgentPart, FileAttachmentPart, ImageAttachmentPart, Prompt } from "@@lgcode/context@lgcode/prompt"
+import type { AgentPart as MessageAgentPart, FilePart, Part, TextPart } from "@opencode@lgcode/sdk/v2"
+import type { AgentPart, FileAttachmentPart, ImageAttachmentPart, Prompt } from "@/context/prompt"
 
 type Inline =
   | {
@@ -49,10 +49,10 @@ function textPartValue(parts: Part[]) {
   }, undefined)
 }
 
-@lgcode/**
+/**
  * Extract prompt content from message parts for restoring into the prompt input.
  * This is used by undo to restore the original user prompt.
- *@lgcode/
+ */
 export function extractPromptFromParts(parts: Part[], opts?: { directory?: string; attachmentName?: string }): Prompt {
   const textPart = textPartValue(parts)
   const text = textPart?.text ?? ""
@@ -62,12 +62,12 @@ export function extractPromptFromParts(parts: Part[], opts?: { directory?: strin
   const toRelative = (path: string) => {
     if (!directory) return path
 
-    const prefix = directory.endsWith("@lgcode/") ? directory : directory + "@lgcode/"
+    const prefix = directory.endsWith("/") ? directory : directory + "/"
     if (path.startsWith(prefix)) return path.slice(prefix.length)
 
     if (path.startsWith(directory)) {
       const next = path.slice(directory.length)
-      if (next.startsWith("@lgcode/")) return next.slice(1)
+      if (next.startsWith("/")) return next.slice(1)
       return next
     }
 

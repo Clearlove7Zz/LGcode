@@ -1,20 +1,20 @@
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import path from "path"
 import { describe, expect } from "bun:test"
 import { Deferred, Effect, Exit, Fiber, Layer } from "effect"
-import { FileMutation } from "@lgcode/core@lgcode/file-mutation"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { Location } from "@lgcode/core@lgcode/location"
-import { LocationMutation } from "@lgcode/core@lgcode/location-mutation"
-import { PermissionV2 } from "@lgcode/core@lgcode/permission"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import { SessionV2 } from "@lgcode/core@lgcode/session"
-import { ToolRegistry } from "@lgcode/core@lgcode/tool@lgcode/registry"
-import { ApplyPatchTool } from "@lgcode/core@lgcode/tool@lgcode/apply-patch"
-import { location } from ".@lgcode/fixture@lgcode/location"
-import { tmpdir } from ".@lgcode/fixture@lgcode/tmpdir"
-import { testEffect } from ".@lgcode/lib@lgcode/effect"
-import { toolIdentity, executeTool, settleTool, toolDefinitions } from ".@lgcode/lib@lgcode/tool"
+import { FileMutation } from "@opencode@lgcode/core/file-mutation"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { Location } from "@opencode@lgcode/core/location"
+import { LocationMutation } from "@opencode@lgcode/core/location-mutation"
+import { PermissionV2 } from "@opencode@lgcode/core/permission"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import { SessionV2 } from "@opencode@lgcode/core/session"
+import { ToolRegistry } from "@opencode@lgcode/core/tool/registry"
+import { ApplyPatchTool } from "@opencode@lgcode/core/tool/apply-patch"
+import { location } from "./fixture/location"
+import { tmpdir } from "./fixture/tmpdir"
+import { testEffect } from "./lib/effect"
+import { toolIdentity, executeTool, settleTool, toolDefinitions } from "./lib/tool"
 
 const sessionID = SessionV2.ID.make("ses_apply_patch_tool_test")
 const assertions: PermissionV2.AssertInput[] = []
@@ -136,25 +136,25 @@ describe("ApplyPatchTool", () => {
                 const settled = yield* settleTool(
                   registry,
                   call(
-                    "*** Begin Patch\n*** Add File: nested@lgcode/new.txt\n+created\n*** Update File: update.txt\n@@\n-before\n+after\n*** Delete File: remove.txt\n*** End Patch",
+                    "*** Begin Patch\n*** Add File: nested/new.txt\n+created\n*** Update File: update.txt\n@@\n-before\n+after\n*** Delete File: remove.txt\n*** End Patch",
                   ),
                 )
                 expect(settled.result).toEqual({
                   type: "text",
-                  value: "Applied patch sequentially:\nA nested@lgcode/new.txt\nM update.txt\nD remove.txt",
+                  value: "Applied patch sequentially:\nA nested/new.txt\nM update.txt\nD remove.txt",
                 })
                 expect(settled.output?.structured).toMatchObject({
                   applied: [
-                    { type: "add", resource: "nested@lgcode/new.txt" },
+                    { type: "add", resource: "nested/new.txt" },
                     { type: "update", resource: "update.txt" },
                     { type: "delete", resource: "remove.txt" },
                   ],
                 })
                 expect(assertions).toMatchObject([
-                  { sessionID, action: "edit", resources: ["nested@lgcode/new.txt", "update.txt", "remove.txt"], save: ["*"] },
+                  { sessionID, action: "edit", resources: ["nested/new.txt", "update.txt", "remove.txt"], save: ["*"] },
                 ])
                 expect(readsBeforeEditApproval).toBe(0)
-                expect(yield* Effect.promise(() => fs.readFile(path.join(tmp.path, "nested@lgcode/new.txt"), "utf8"))).toBe(
+                expect(yield* Effect.promise(() => fs.readFile(path.join(tmp.path, "nested/new.txt"), "utf8"))).toBe(
                   "created\n",
                 )
                 expect(yield* Effect.promise(() => fs.readFile(update, "utf8"))).toBe("after\n")
@@ -251,7 +251,7 @@ describe("ApplyPatchTool", () => {
                 ).toMatchObject({ type: "text" })
                 expect(assertions.map((input) => input.action)).toEqual(["external_directory", "edit"])
                 expect(assertions[0]?.resources).toEqual([
-                  path.join(yield* Effect.promise(() => fs.realpath(outside.path)), "*").replaceAll("\\", "@lgcode/"),
+                  path.join(yield* Effect.promise(() => fs.realpath(outside.path)), "*").replaceAll("\\", "/"),
                 ])
               }),
             ),

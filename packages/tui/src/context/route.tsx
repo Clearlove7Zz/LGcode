@@ -1,7 +1,7 @@
-import { createStore, reconcile } from "solid-js@lgcode/store"
-import { createSimpleContext } from ".@lgcode/helper"
-import type { PromptInfo } from "..@lgcode/prompt@lgcode/history"
-import { useTuiStartup } from ".@lgcode/runtime"
+import { createStore, reconcile } from "solid-js/store"
+import { createSimpleContext } from "./helper"
+import type { PromptInfo } from "../prompt/history"
+import { useTuiStartup } from "./runtime"
 
 export type HomeRoute = {
   type: "home"

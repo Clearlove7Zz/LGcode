@@ -1,10 +1,10 @@
-import { type LanguageModelV3CallOptions, type SharedV3Warning, UnsupportedFunctionalityError } from "@ai-sdk@lgcode/provider"
-import { codeInterpreterArgsSchema } from ".@lgcode/tool@lgcode/code-interpreter"
-import { fileSearchArgsSchema } from ".@lgcode/tool@lgcode/file-search"
-import { webSearchArgsSchema } from ".@lgcode/tool@lgcode/web-search"
-import { webSearchPreviewArgsSchema } from ".@lgcode/tool@lgcode/web-search-preview"
-import { imageGenerationArgsSchema } from ".@lgcode/tool@lgcode/image-generation"
-import type { OpenAIResponsesTool } from ".@lgcode/openai-responses-api-types"
+import { type LanguageModelV3CallOptions, type SharedV3Warning, UnsupportedFunctionalityError } from "@ai-sdk/provider"
+import { codeInterpreterArgsSchema } from "./tool/code-interpreter"
+import { fileSearchArgsSchema } from "./tool/file-search"
+import { webSearchArgsSchema } from "./tool/web-search"
+import { webSearchPreviewArgsSchema } from "./tool/web-search-preview"
+import { imageGenerationArgsSchema } from "./tool/image-generation"
+import type { OpenAIResponsesTool } from "./openai-responses-api-types"
 
 export function prepareResponsesTools({
   tools,
@@ -28,7 +28,7 @@ export function prepareResponsesTools({
     | { type: "image_generation" }
   toolWarnings: SharedV3Warning[]
 } {
-  @lgcode/@lgcode/ when the tools array is empty, change it to undefined to prevent errors:
+  // when the tools array is empty, change it to undefined to prevent errors:
   tools = tools?.length ? tools : undefined
 
   const toolWarnings: SharedV3Warning[] = []

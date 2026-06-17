@@ -1,9 +1,9 @@
 import { expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import { Config } from "@@lgcode/config@lgcode/config"
-import { Agent as AgentSvc } from "..@lgcode/..@lgcode/src@lgcode/agent@lgcode/agent"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { Config } from "@/config/config"
+import { Agent as AgentSvc } from "../../src/agent/agent"
+import { testEffect } from "../lib/effect"
 
 const it = testEffect(Layer.mergeAll(Config.defaultLayer, AgentSvc.defaultLayer, CrossSpawnSpawner.defaultLayer))
 

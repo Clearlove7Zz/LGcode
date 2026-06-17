@@ -1,21 +1,21 @@
-import { Button } from "@lgcode/ui@lgcode/button"
-import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
-import { Icon } from "@lgcode/ui@lgcode/icon"
-import { Switch } from "@lgcode/ui@lgcode/switch"
-import { Tabs } from "@lgcode/ui@lgcode/tabs"
-import { showToast } from "@@lgcode/utils@lgcode/toast"
-import { useNavigate } from "@solidjs@lgcode/router"
+import { Button } from "@opencode@lgcode/ui/button"
+import { useDialog } from "@opencode@lgcode/ui/context/dialog"
+import { Icon } from "@opencode@lgcode/ui/icon"
+import { Switch } from "@opencode@lgcode/ui/switch"
+import { Tabs } from "@opencode@lgcode/ui/tabs"
+import { showToast } from "@/utils/toast"
+import { useNavigate } from "@solidjs/router"
 import { type Accessor, createEffect, createMemo, For, type JSXElement, onCleanup, Show } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import { ServerHealthIndicator, ServerRow } from "@@lgcode/components@lgcode/server@lgcode/server-row"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
-import { usePlatform } from "@@lgcode/context@lgcode/platform"
-import { ServerConnection, useServer } from "@@lgcode/context@lgcode/server"
-import { useSync } from "@@lgcode/context@lgcode/sync"
-import { type ServerHealth } from "@@lgcode/utils@lgcode/server-health"
-import { useGlobal } from "@@lgcode/context@lgcode/global"
-import { useSettings } from "@@lgcode/context@lgcode/settings"
-import { useMcpToggle } from "@@lgcode/context@lgcode/mcp"
+import { createStore } from "solid-js/store"
+import { ServerHealthIndicator, ServerRow } from "@/components/server/server-row"
+import { useLanguage } from "@/context/language"
+import { usePlatform } from "@/context/platform"
+import { ServerConnection, useServer } from "@/context/server"
+import { useSync } from "@/context/sync"
+import { type ServerHealth } from "@/utils/server-health"
+import { useGlobal } from "@/context/global"
+import { useSettings } from "@/context/settings"
+import { useMcpToggle } from "@/context/mcp"
 
 const pluginEmptyMessage = (value: string, file: string): JSXElement => {
   const parts = value.split(file)
@@ -23,9 +23,9 @@ const pluginEmptyMessage = (value: string, file: string): JSXElement => {
   return (
     <>
       {parts[0]}
-      <code class="bg-surface-raised-base px-1.5 py-0.5 rounded-sm text-text-base">{file}<@lgcode/code>
+      <code class="bg-surface-raised-base px-1.5 py-0.5 rounded-sm text-text-base">{file}</code>
       {parts.slice(1).join(file)}
-    <@lgcode/>
+    </>
   )
 }
 
@@ -141,7 +141,7 @@ export function StatusPopoverServerBody() {
         blocked: global.servers.health[key]?.healthy === false,
         active: !!server.current && key === ServerConnection.key(server.current),
         onSelect: () => {
-          navigate("@lgcode/")
+          navigate("/")
           queueMicrotask(() => server.setActive(key))
         },
       }
@@ -159,13 +159,13 @@ export function StatusPopoverServerBody() {
         manageLabel: language.t("status.popover.action.manageServers"),
         onManage: () => {
           const run = ++dialogRun
-          void import(".@lgcode/dialog-select-server").then((x) => {
+          void import("./dialog-select-server").then((x) => {
             if (dialogDead || dialogRun !== run) return
-            dialog.show(() => <x.DialogSelectServer @lgcode/>, defaultServer.refresh)
+            dialog.show(() => <x.DialogSelectServer />, defaultServer.refresh)
           })
         },
       }}
-    @lgcode/>
+    />
   )
 }
 
@@ -184,13 +184,13 @@ function ServerStatusPopoverView(props: { state: ServerStatusState }) {
           <Tabs.Trigger value="servers" data-slot="tab" class="text-12-regular">
             {props.state.servers().length > 0 ? `${props.state.servers().length} ` : ""}
             {props.state.serversLabel}
-          <@lgcode/Tabs.Trigger>
-        <@lgcode/Tabs.List>
+          </Tabs.Trigger>
+        </Tabs.List>
         <Tabs.Content value="servers">
-          <ServerStatusList state={props.state} @lgcode/>
-        <@lgcode/Tabs.Content>
-      <@lgcode/Tabs>
-    <@lgcode/div>
+          <ServerStatusList state={props.state} />
+        </Tabs.Content>
+      </Tabs>
+    </div>
   )
 }
 
@@ -214,7 +214,7 @@ function ServerStatusList(props: { state: ServerStatusState }) {
                   item.onSelect()
                 }}
               >
-                <ServerHealthIndicator health={item.health} @lgcode/>
+                <ServerHealthIndicator health={item.health} />
                 <ServerRow
                   conn={item.conn}
                   dimmed={item.blocked}
@@ -226,25 +226,25 @@ function ServerStatusList(props: { state: ServerStatusState }) {
                     <Show when={item.key === props.state.defaultKey()}>
                       <span class="text-11-regular text-text-base bg-surface-base px-1.5 py-0.5 rounded-md">
                         {props.state.defaultLabel}
-                      <@lgcode/span>
-                    <@lgcode/Show>
+                      </span>
+                    </Show>
                   }
                 >
-                  <div class="flex-1" @lgcode/>
+                  <div class="flex-1" />
                   <Show when={item.active}>
-                    <Icon name="check" size="small" class="text-icon-weak shrink-0" @lgcode/>
-                  <@lgcode/Show>
-                <@lgcode/ServerRow>
-              <@lgcode/button>
+                    <Icon name="check" size="small" class="text-icon-weak shrink-0" />
+                  </Show>
+                </ServerRow>
+              </button>
             )
           }}
-        <@lgcode/For>
+        </For>
 
         <Button variant="secondary" class="mt-3 self-start h-8 px-3 py-1.5" onClick={props.state.onManage}>
           {props.state.manageLabel}
-        <@lgcode/Button>
-      <@lgcode/div>
-    <@lgcode/div>
+        </Button>
+      </div>
+    </div>
   )
 }
 
@@ -305,21 +305,21 @@ export function StatusPopoverBody(props: { shown: Accessor<boolean> }) {
             <Tabs.Trigger value="servers" data-slot="tab" class="text-12-regular">
               {global.servers.list().length > 0 ? `${global.servers.list().length} ` : ""}
               {language.t("status.popover.tab.servers")}
-            <@lgcode/Tabs.Trigger>
+            </Tabs.Trigger>
           )}
           <Tabs.Trigger value="mcp" data-slot="tab" class="text-12-regular">
             {mcpConnected() > 0 ? `${mcpConnected()} ` : ""}
             {language.t("status.popover.tab.mcp")}
-          <@lgcode/Tabs.Trigger>
+          </Tabs.Trigger>
           <Tabs.Trigger value="lsp" data-slot="tab" class="text-12-regular">
             {lspCount() > 0 ? `${lspCount()} ` : ""}
             {language.t("status.popover.tab.lsp")}
-          <@lgcode/Tabs.Trigger>
+          </Tabs.Trigger>
           <Tabs.Trigger value="plugins" data-slot="tab" class="text-12-regular">
             {pluginCount() > 0 ? `${pluginCount()} ` : ""}
             {language.t("status.popover.tab.plugins")}
-          <@lgcode/Tabs.Trigger>
-        <@lgcode/Tabs.List>
+          </Tabs.Trigger>
+        </Tabs.List>
 
         {!settings.general.newLayoutDesigns() && (
           <Tabs.Content value="servers">
@@ -340,11 +340,11 @@ export function StatusPopoverBody(props: { shown: Accessor<boolean> }) {
                         aria-disabled={blocked()}
                         onClick={() => {
                           if (blocked()) return
-                          navigate("@lgcode/")
+                          navigate("/")
                           queueMicrotask(() => server.setActive(key))
                         }}
                       >
-                        <ServerHealthIndicator health={global.servers.health[key]} @lgcode/>
+                        <ServerHealthIndicator health={global.servers.health[key]} />
                         <ServerRow
                           conn={s}
                           dimmed={blocked()}
@@ -356,36 +356,36 @@ export function StatusPopoverBody(props: { shown: Accessor<boolean> }) {
                             <Show when={key === defaultServer.key()}>
                               <span class="text-11-regular text-text-base bg-surface-base px-1.5 py-0.5 rounded-md">
                                 {language.t("common.default")}
-                              <@lgcode/span>
-                            <@lgcode/Show>
+                              </span>
+                            </Show>
                           }
                         >
-                          <div class="flex-1" @lgcode/>
+                          <div class="flex-1" />
                           <Show when={server.current && key === ServerConnection.key(server.current)}>
-                            <Icon name="check" size="small" class="text-icon-weak shrink-0" @lgcode/>
-                          <@lgcode/Show>
-                        <@lgcode/ServerRow>
-                      <@lgcode/button>
+                            <Icon name="check" size="small" class="text-icon-weak shrink-0" />
+                          </Show>
+                        </ServerRow>
+                      </button>
                     )
                   }}
-                <@lgcode/For>
+                </For>
 
                 <Button
                   variant="secondary"
                   class="mt-3 self-start h-8 px-3 py-1.5"
                   onClick={() => {
                     const run = ++dialogRun
-                    void import(".@lgcode/dialog-select-server").then((x) => {
+                    void import("./dialog-select-server").then((x) => {
                       if (dialogDead || dialogRun !== run) return
-                      dialog.show(() => <x.DialogSelectServer @lgcode/>, defaultServer.refresh)
+                      dialog.show(() => <x.DialogSelectServer />, defaultServer.refresh)
                     })
                   }}
                 >
                   {language.t("status.popover.action.manageServers")}
-                <@lgcode/Button>
-              <@lgcode/div>
-            <@lgcode/div>
-          <@lgcode/Tabs.Content>
+                </Button>
+              </div>
+            </div>
+          </Tabs.Content>
         )}
 
         <Tabs.Content value="mcp">
@@ -394,7 +394,7 @@ export function StatusPopoverBody(props: { shown: Accessor<boolean> }) {
               <Show
                 when={mcpNames().length > 0}
                 fallback={
-                  <div class="text-14-regular text-text-base text-center my-auto">{language.t("dialog.mcp.empty")}<@lgcode/div>
+                  <div class="text-14-regular text-text-base text-center my-auto">{language.t("dialog.mcp.empty")}</div>
                 }
               >
                 <For each={mcpNames()}>
@@ -420,17 +420,17 @@ export function StatusPopoverBody(props: { shown: Accessor<boolean> }) {
                             "bg-icon-warning-base":
                               status() === "needs_auth" || status() === "needs_client_registration",
                           }}
-                        @lgcode/>
+                        />
                         <span class="flex flex-col min-w-0 flex-1">
                           <span class="flex items-center gap-2 min-w-0">
-                            <span class="text-14-regular text-text-base truncate">{name}<@lgcode/span>
-                          <@lgcode/span>
+                            <span class="text-14-regular text-text-base truncate">{name}</span>
+                          </span>
                           <Show when={status() === "needs_auth"}>
                             <span class="text-11-regular text-text-weaker truncate">
                               {language.t("mcp.auth.clickToAuthenticate")}
-                            <@lgcode/span>
-                          <@lgcode/Show>
-                        <@lgcode/span>
+                            </span>
+                          </Show>
+                        </span>
                         <div onClick={(event) => event.stopPropagation()}>
                           <Switch
                             checked={enabled()}
@@ -439,16 +439,16 @@ export function StatusPopoverBody(props: { shown: Accessor<boolean> }) {
                               if (toggleMcp.isPending) return
                               toggleMcp.mutate(name)
                             }}
-                          @lgcode/>
-                        <@lgcode/div>
-                      <@lgcode/button>
+                          />
+                        </div>
+                      </button>
                     )
                   }}
-                <@lgcode/For>
-              <@lgcode/Show>
-            <@lgcode/div>
-          <@lgcode/div>
-        <@lgcode/Tabs.Content>
+                </For>
+              </Show>
+            </div>
+          </div>
+        </Tabs.Content>
 
         <Tabs.Content value="lsp">
           <div class="flex flex-col px-2 pb-2">
@@ -456,7 +456,7 @@ export function StatusPopoverBody(props: { shown: Accessor<boolean> }) {
               <Show
                 when={lspItems().length > 0}
                 fallback={
-                  <div class="text-14-regular text-text-base text-center my-auto">{language.t("dialog.lsp.empty")}<@lgcode/div>
+                  <div class="text-14-regular text-text-base text-center my-auto">{language.t("dialog.lsp.empty")}</div>
                 }
               >
                 <For each={lspItems()}>
@@ -468,36 +468,36 @@ export function StatusPopoverBody(props: { shown: Accessor<boolean> }) {
                           "bg-icon-success-base": item.status === "connected",
                           "bg-icon-critical-base": item.status === "error",
                         }}
-                      @lgcode/>
-                      <span class="text-14-regular text-text-base truncate">{item.name || item.id}<@lgcode/span>
-                    <@lgcode/div>
+                      />
+                      <span class="text-14-regular text-text-base truncate">{item.name || item.id}</span>
+                    </div>
                   )}
-                <@lgcode/For>
-              <@lgcode/Show>
-            <@lgcode/div>
-          <@lgcode/div>
-        <@lgcode/Tabs.Content>
+                </For>
+              </Show>
+            </div>
+          </div>
+        </Tabs.Content>
 
         <Tabs.Content value="plugins">
           <div class="flex flex-col px-2 pb-2">
             <div class="flex flex-col p-3 bg-background-base rounded-sm min-h-14">
               <Show
                 when={plugins().length > 0}
-                fallback={<div class="text-14-regular text-text-base text-center my-auto">{pluginEmpty()}<@lgcode/div>}
+                fallback={<div class="text-14-regular text-text-base text-center my-auto">{pluginEmpty()}</div>}
               >
                 <For each={plugins()}>
                   {(plugin) => (
                     <div class="flex items-center gap-2 w-full px-2 py-1">
-                      <div class="size-1.5 rounded-full shrink-0 bg-icon-success-base" @lgcode/>
-                      <span class="text-14-regular text-text-base truncate">{plugin}<@lgcode/span>
-                    <@lgcode/div>
+                      <div class="size-1.5 rounded-full shrink-0 bg-icon-success-base" />
+                      <span class="text-14-regular text-text-base truncate">{plugin}</span>
+                    </div>
                   )}
-                <@lgcode/For>
-              <@lgcode/Show>
-            <@lgcode/div>
-          <@lgcode/div>
-        <@lgcode/Tabs.Content>
-      <@lgcode/Tabs>
-    <@lgcode/div>
+                </For>
+              </Show>
+            </div>
+          </div>
+        </Tabs.Content>
+      </Tabs>
+    </div>
   )
 }

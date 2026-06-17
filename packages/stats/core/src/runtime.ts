@@ -1,9 +1,9 @@
 import { Layer, ManagedRuntime } from "effect"
-import { AppConfig } from ".@lgcode/config"
-import { layer as databaseLayer } from ".@lgcode/database"
-import { GeoStatRepo } from ".@lgcode/domain@lgcode/geo"
-import { ModelStatRepo } from ".@lgcode/domain@lgcode/model"
-import { ProviderStatRepo } from ".@lgcode/domain@lgcode/provider"
+import { AppConfig } from "./config"
+import { layer as databaseLayer } from "./database"
+import { GeoStatRepo } from "./domain/geo"
+import { ModelStatRepo } from "./domain/model"
+import { ProviderStatRepo } from "./domain/provider"
 
 const repoLayer = Layer.mergeAll(ModelStatRepo.layer, ProviderStatRepo.layer, GeoStatRepo.layer).pipe(
   Layer.provide(databaseLayer),

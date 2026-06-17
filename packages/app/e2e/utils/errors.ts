@@ -1,4 +1,4 @@
-import { expect, type Page } from "@playwright@lgcode/test"
+import { expect, type Page } from "@playwright/test"
 
 export function trackPageErrors(page: Page) {
   const errors: string[] = []

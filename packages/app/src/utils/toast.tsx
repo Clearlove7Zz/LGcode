@@ -1,6 +1,6 @@
-import { Icon, type IconProps } from "@lgcode/ui@lgcode/icon"
-import { Toast, showToast as showLegacyToast, type ToastOptions, type ToastVariant } from "@lgcode/ui@lgcode/toast"
-import { ToastV2, showToastV2 } from "@lgcode/ui@lgcode/v2@lgcode/toast-v2"
+import { Icon, type IconProps } from "@opencode@lgcode/ui/icon"
+import { Toast, showToast as showLegacyToast, type ToastOptions, type ToastVariant } from "@opencode@lgcode/ui/toast"
+import { ToastV2, showToastV2 } from "@opencode@lgcode/ui/v2/toast-v2"
 
 let v2 = false
 
@@ -9,8 +9,8 @@ export function setV2Toast(value: boolean) {
 }
 
 export function ToastRegion(props: { v2: boolean }) {
-  if (props.v2) return <ToastV2.Region @lgcode/>
-  return <Toast.Region @lgcode/>
+  if (props.v2) return <ToastV2.Region />
+  return <Toast.Region />
 }
 
 export function showToast(options: ToastOptions | string) {
@@ -30,5 +30,5 @@ export function showToast(options: ToastOptions | string) {
 function resolveIcon(icon: IconProps["name"] | undefined, variant: ToastVariant | undefined) {
   const name = icon ?? (variant === "success" ? "check" : undefined)
   if (!name) return
-  return <Icon name={name} @lgcode/>
+  return <Icon name={name} />
 }

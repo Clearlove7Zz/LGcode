@@ -1,8 +1,8 @@
 import { expect, test } from "bun:test"
 import path from "path"
-import { mkdtemp, rm } from "fs@lgcode/promises"
+import { mkdtemp, rm } from "fs/promises"
 import { tmpdir } from "os"
-import { appendText, readJson, readText, writeJsonAtomic, writeText } from "..@lgcode/..@lgcode/src@lgcode/util@lgcode/persistence"
+import { appendText, readJson, readText, writeJsonAtomic, writeText } from "../../src/util/persistence"
 
 test("persistence creates parent directories and supports text, append, and JSON", async () => {
   const root = await mkdtemp(path.join(tmpdir(), "opencode-tui-persistence-"))

@@ -1,7 +1,7 @@
-@lgcode/@lgcode/ @ts-nocheck
-import { createStore } from "solid-js@lgcode/store"
-import { createPromptState } from "@@lgcode/context@lgcode/prompt"
-import { createPromptInputHistory, PromptInput } from ".@lgcode/prompt-input"
+// @ts-nocheck
+import { createStore } from "solid-js/store"
+import { createPromptState } from "@/context/prompt"
+import { createPromptInputHistory, PromptInput } from "./prompt-input"
 
 function PromptInputExample() {
   const state = createPromptState()
@@ -46,8 +46,8 @@ function PromptInputExample() {
       loading: false,
     },
     projects: {
-      available: [{ name: "Story project", worktree: "@lgcode/tmp@lgcode/story", sandboxes: [] }],
-      directory: "@lgcode/tmp@lgcode/story",
+      available: [{ name: "Story project", worktree: "/tmp/story", sandboxes: [] }],
+      directory: "/tmp/story",
       select() {},
       add() {},
     },
@@ -71,7 +71,7 @@ function PromptInputExample() {
     setControls("comments", comment)
     state.context.add({
       type: "file",
-      path: "src@lgcode/components@lgcode/prompt-input.tsx",
+      path: "src/components/prompt-input.tsx",
       selection: {
         startLine: 84 + comment,
         startChar: 0,
@@ -87,7 +87,7 @@ function PromptInputExample() {
 
   return (
     <div class="flex flex-col gap-3">
-      <PromptInput controls={inputControls} state={state} history={history} submission={submission} @lgcode/>
+      <PromptInput controls={inputControls} state={state} history={history} submission={submission} />
       <div>
         <button
           type="button"
@@ -95,14 +95,14 @@ function PromptInputExample() {
           onClick={addReviewComment}
         >
           Add review comment
-        <@lgcode/button>
-      <@lgcode/div>
-    <@lgcode/div>
+        </button>
+      </div>
+    </div>
   )
 }
 
 export default {
-  title: "App@lgcode/PromptInput",
+  title: "App/PromptInput",
   id: "app-prompt-input",
   component: PromptInput,
 }
@@ -110,8 +110,8 @@ export default {
 export const Basic = {
   render: () => (
     <div class="pt-10">
-      <h1 class="mb-4">Prompt Input<@lgcode/h1>
-      <PromptInputExample @lgcode/>
-    <@lgcode/div>
+      <h1 class="mb-4">Prompt Input</h1>
+      <PromptInputExample />
+    </div>
   ),
 }

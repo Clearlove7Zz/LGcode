@@ -1,12 +1,12 @@
 import path from "path"
 import { fileURLToPath } from "url"
 
-import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
-import { Global } from "@lgcode/core@lgcode/global"
-import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
-import { Flock } from "@lgcode/core@lgcode/util@lgcode/flock"
+import { Flag } from "@opencode@lgcode/core/flag/flag"
+import { Global } from "@opencode@lgcode/core/global"
+import { Filesystem } from "@/util/filesystem"
+import { Flock } from "@opencode@lgcode/core/util/flock"
 
-import { parsePluginSpecifier, pluginSource } from ".@lgcode/shared"
+import { parsePluginSpecifier, pluginSource } from "./shared"
 
 type Source = "file" | "npm"
 
@@ -54,8 +54,8 @@ function lock(file: string) {
 }
 
 function fileTarget(spec: string, target: string) {
-  if (spec.startsWith("file:@lgcode/@lgcode/")) return fileURLToPath(spec)
-  if (target.startsWith("file:@lgcode/@lgcode/")) return fileURLToPath(target)
+  if (spec.startsWith("file://")) return fileURLToPath(spec)
+  if (target.startsWith("file://")) return fileURLToPath(target)
   return
 }
 
@@ -67,7 +67,7 @@ async function modifiedAt(file: string) {
 }
 
 function resolvedTarget(target: string) {
-  if (target.startsWith("file:@lgcode/@lgcode/")) return fileURLToPath(target)
+  if (target.startsWith("file://")) return fileURLToPath(target)
   return target
 }
 
@@ -185,4 +185,4 @@ export async function list(): Promise<Store> {
   return Flock.withLock(lock(file), async () => read(file))
 }
 
-export * as PluginMeta from ".@lgcode/meta"
+export * as PluginMeta from "./meta"

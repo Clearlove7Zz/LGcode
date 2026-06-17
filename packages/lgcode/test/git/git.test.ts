@@ -1,11 +1,11 @@
 import { $ } from "bun"
 import { describe, expect } from "bun:test"
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import path from "path"
 import { Effect } from "effect"
-import { Git } from "..@lgcode/..@lgcode/src@lgcode/git"
-import { tmpdir } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { Git } from "../../src/git"
+import { tmpdir } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
 
 const weird = process.platform === "win32" ? "space file.txt" : "tab\tfile.txt"
 const it = testEffect(Git.defaultLayer)
@@ -83,7 +83,7 @@ describe("Git", () => {
       yield* Effect.promise(() => fs.writeFile(path.join(tmp.path, weird), "before\n", "utf-8"))
       yield* Effect.promise(() => $`git add .`.cwd(tmp.path).quiet())
       yield* Effect.promise(() => $`git commit --no-gpg-sign -m "add file"`.cwd(tmp.path).quiet())
-      yield* Effect.promise(() => $`git checkout -b feature@lgcode/test`.cwd(tmp.path).quiet())
+      yield* Effect.promise(() => $`git checkout -b feature/test`.cwd(tmp.path).quiet())
       yield* Effect.promise(() => fs.writeFile(path.join(tmp.path, weird), "after\n", "utf-8"))
 
       const git = yield* Git.Service

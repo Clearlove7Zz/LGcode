@@ -1,26 +1,26 @@
-@lgcode/**
+/**
  * Application-wide constants and configuration
- *@lgcode/
+ */
 export const config = {
-  @lgcode/@lgcode/ Base URL
-  baseUrl: "https:@lgcode/@lgcode/opencode.ai",
+  // Base URL
+  baseUrl: "https://opencode.ai",
 
-  @lgcode/@lgcode/ GitHub
+  // GitHub
   github: {
-    repoUrl: "https:@lgcode/@lgcode/github.com@lgcode/anomalyco@lgcode/opencode",
+    repoUrl: "https://github.com/anomalyco/opencode",
     starsFormatted: {
       compact: "160K",
       full: "160,000",
     },
   },
 
-  @lgcode/@lgcode/ Social links
+  // Social links
   social: {
-    twitter: "https:@lgcode/@lgcode/x.com@lgcode/opencode",
-    discord: "https:@lgcode/@lgcode/discord.gg@lgcode/opencode",
+    twitter: "https://x.com/opencode",
+    discord: "https://discord.gg/opencode",
   },
 
-  @lgcode/@lgcode/ Static stats (used on landing page)
+  // Static stats (used on landing page)
   stats: {
     contributors: "900",
     commits: "13,000",

@@ -1,6 +1,6 @@
-@lgcode/@lgcode/ @ts-nocheck
-import * as mod from ".@lgcode/text-field"
-import { create } from "..@lgcode/storybook@lgcode/scaffold"
+// @ts-nocheck
+import * as mod from "./text-field"
+import { create } from "../storybook/scaffold"
 
 const docs = `### Overview
 Text input with label, description, and optional copy-to-clipboard action.
@@ -21,13 +21,13 @@ Pair with \`Tooltip\` and \`IconButton\` for copy affordance (built in).
 ### Accessibility
 - Label is hidden when \`hideLabel\` is true (sr-only).
 
-### Theming@lgcode/tokens
+### Theming/tokens
 - Uses \`data-component="input"\` with slot attributes for styling.
 
 `
 
 const story = create({
-  title: "UI@lgcode/TextField",
+  title: "UI/TextField",
   mod,
   args: {
     label: "Label",
@@ -37,7 +37,7 @@ const story = create({
 })
 
 export default {
-  title: "UI@lgcode/TextField",
+  title: "UI/TextField",
   id: "components-text-field",
   component: story.meta.component,
   tags: ["autodocs"],
@@ -55,9 +55,9 @@ export const Basic = story.Basic
 export const Variants = {
   render: () => (
     <div style={{ display: "grid", gap: "12px", width: "320px" }}>
-      <mod.TextField label="Normal" placeholder="Type here..." defaultValue="Value" @lgcode/>
-      <mod.TextField label="Ghost" variant="ghost" placeholder="Type here..." defaultValue="Value" @lgcode/>
-    <@lgcode/div>
+      <mod.TextField label="Normal" placeholder="Type here..." defaultValue="Value" />
+      <mod.TextField label="Ghost" variant="ghost" placeholder="Type here..." defaultValue="Value" />
+    </div>
   ),
 }
 
@@ -72,7 +72,7 @@ export const Multiline = {
 export const Copyable = {
   args: {
     label: "Invite link",
-    defaultValue: "https:@lgcode/@lgcode/example.com@lgcode/invite@lgcode/abc",
+    defaultValue: "https://example.com/invite/abc",
     copyable: true,
     copyKind: "link",
   },

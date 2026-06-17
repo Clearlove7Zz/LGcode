@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
-import type { Message } from "@lgcode/sdk@lgcode/v2@lgcode/client"
-import { getSessionContextMetrics } from ".@lgcode/session-context-metrics"
+import type { Message } from "@opencode@lgcode/sdk/v2/client"
+import { getSessionContextMetrics } from "./session-context-metrics"
 
 const assistant = (
   id: string,

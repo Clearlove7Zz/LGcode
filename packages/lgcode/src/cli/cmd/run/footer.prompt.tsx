@@ -1,18 +1,18 @@
-@lgcode/@lgcode/ Prompt composer and its state machine for direct interactive mode.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ createPromptState() wires keymap command layers, history navigation, and
-@lgcode/@lgcode/ `@` autocomplete for files, subagents, and MCP resources.
-@lgcode/@lgcode/ It produces a PromptState that RunPromptBody renders as a slim single-line
-@lgcode/@lgcode/ composer while the footer view renders any active menus below it.
-@lgcode/** @jsxImportSource @opentui@lgcode/solid *@lgcode/
+// Prompt composer and its state machine for direct interactive mode.
+//
+// createPromptState() wires keymap command layers, history navigation, and
+// `@` autocomplete for files, subagents, and MCP resources.
+// It produces a PromptState that RunPromptBody renders as a slim single-line
+// composer while the footer view renders any active menus below it.
+/** @jsxImportSource @opentui/solid */
 import { pathToFileURL } from "bun"
-import { StyledText, fg, type ColorInput, type KeyEvent, type TextareaRenderable } from "@opentui@lgcode/core"
-import { useRenderer } from "@opentui@lgcode/solid"
-import { normalizePromptContent } from "@lgcode/tui@lgcode/editor"
+import { StyledText, fg, type ColorInput, type KeyEvent, type TextareaRenderable } from "@opentui/core"
+import { useRenderer } from "@opentui/solid"
+import { normalizePromptContent } from "@opencode@lgcode/tui/editor"
 import fuzzysort from "fuzzysort"
 import path from "path"
 import { createEffect, createMemo, createResource, createSignal, onCleanup, onMount, type Accessor } from "solid-js"
-import * as Locale from "@@lgcode/util@lgcode/locale"
+import * as Locale from "@/util/locale"
 import {
   createPromptHistory,
   displayCharAt,
@@ -22,12 +22,12 @@ import {
   isNewCommand,
   movePromptHistory,
   pushPromptHistory,
-} from ".@lgcode/prompt.shared"
-import { OPENCODE_BASE_MODE, useBindings } from "@lgcode/tui@lgcode/keymap"
-import { realignEditorPromptParts, resolveEditorSlashValue } from ".@lgcode/prompt.editor"
-import { FOOTER_MENU_ROWS, createFooterMenuState, type RunFooterMenuItem } from ".@lgcode/footer.menu"
-import type { RunFooterTheme } from ".@lgcode/theme"
-import type { FooterState, RunAgent, RunCommand, RunPrompt, RunPromptPart, RunResource, RunTuiConfig } from ".@lgcode/types"
+} from "./prompt.shared"
+import { OPENCODE_BASE_MODE, useBindings } from "@opencode@lgcode/tui/keymap"
+import { realignEditorPromptParts, resolveEditorSlashValue } from "./prompt.editor"
+import { FOOTER_MENU_ROWS, createFooterMenuState, type RunFooterMenuItem } from "./footer.menu"
+import type { RunFooterTheme } from "./theme"
+import type { FooterState, RunAgent, RunCommand, RunPrompt, RunPromptPart, RunResource, RunTuiConfig } from "./types"
 
 const AUTOCOMPLETE_ROWS = FOOTER_MENU_ROWS
 const AUTOCOMPLETE_BOTTOM_ROWS = 1
@@ -129,7 +129,7 @@ function extractLineRange(input: string) {
 
   const base = input.slice(0, hash)
   const line = input.slice(hash + 1)
-  const match = line.match(@lgcode/^(\d+)(?:-(\d*))?$@lgcode/)
+  const match = line.match(/^(\d+)(?:-(\d*))?$/)
   if (!match) {
     return { base }
   }
@@ -140,7 +140,7 @@ function extractLineRange(input: string) {
 }
 
 function slashHead(text: string) {
-  if (!text.startsWith("@lgcode/")) {
+  if (!text.startsWith("/")) {
     return
   }
 
@@ -222,7 +222,7 @@ export function RunPromptBody(props: {
         return
       }
 
-      @lgcode/@lgcode/ Paste can leave the textarea layout stale until the next edit.
+      // Paste can leave the textarea layout stale until the next edit.
       area.getLayoutNode().markDirty()
       renderer.requestRender()
       void renderer
@@ -273,9 +273,9 @@ export function RunPromptBody(props: {
           ref={(next) => {
             area = next
           }}
-        @lgcode/>
-      <@lgcode/box>
-    <@lgcode/box>
+        />
+      </box>
+    </box>
   )
 }
 
@@ -341,7 +341,7 @@ export function createPromptState(input: PromptInput): PromptState {
       description: item.description,
       part: {
         type: "file",
-        mime: item.mimeType ?? "text@lgcode/plain",
+        mime: item.mimeType ?? "text/plain",
         filename: item.name,
         url: item.uri,
         source: {
@@ -369,7 +369,7 @@ export function createPromptState(input: PromptInput): PromptState {
       return list.map((item): Auto => {
         const url = pathToFileURL(path.resolve(input.directory, item))
         let filename = item
-        if (next.line && !item.endsWith("@lgcode/")) {
+        if (next.line && !item.endsWith("/")) {
           filename = `${item}#${next.line.start}${next.line.end ? `-${next.line.end}` : ""}`
           url.searchParams.set("start", String(next.line.start))
           if (next.line.end !== undefined) {
@@ -381,10 +381,10 @@ export function createPromptState(input: PromptInput): PromptState {
           kind: "mention",
           display: Locale.truncateMiddle("@" + filename, width()),
           value: filename,
-          directory: item.endsWith("@lgcode/"),
+          directory: item.endsWith("/"),
           part: {
             type: "file",
-            mime: item.endsWith("@lgcode/") ? "application@lgcode/x-directory" : "text@lgcode/plain",
+            mime: item.endsWith("/") ? "application/x-directory" : "text/plain",
             filename,
             url: url.href,
             source: {
@@ -413,11 +413,11 @@ export function createPromptState(input: PromptInput): PromptState {
         kind: "slash",
         action: "editor" as const,
         name: "editor",
-        display: "@lgcode/editor",
+        display: "/editor",
         description: "compose in your external editor",
       } satisfies SlashOption,
-      { kind: "slash", name: "new", display: "@lgcode/new", description: "start a new session" } satisfies SlashOption,
-      { kind: "slash", name: "exit", display: "@lgcode/exit", description: "close OpenCode" } satisfies SlashOption,
+      { kind: "slash", name: "new", display: "/new", description: "start a new session" } satisfies SlashOption,
+      { kind: "slash", name: "exit", display: "/exit", description: "close OpenCode" } satisfies SlashOption,
     ]
     const hidden = new Set(builtins.map((item) => item.name))
     const showSkillMenu = !shell() && skillCommands().length > 0 && !hasSkillsCommand()
@@ -432,7 +432,7 @@ export function createPromptState(input: PromptInput): PromptState {
               kind: "slash",
               action: "skill-menu" as const,
               name: "skills",
-              display: "@lgcode/skills",
+              display: "/skills",
               description: "browse available skills",
             } satisfies SlashOption,
           ]
@@ -444,7 +444,7 @@ export function createPromptState(input: PromptInput): PromptState {
             ({
               kind: "slash",
               name: item.name,
-              display: `@lgcode/${item.name}${item.source === "mcp" ? ":mcp" : ""}`,
+              display: `/${item.name}${item.source === "mcp" ? ":mcp" : ""}`,
               description: item.description,
             }) satisfies SlashOption,
         ),
@@ -666,7 +666,7 @@ export function createPromptState(input: PromptInput): PromptState {
 
     if (visible() && mode() === "mention") {
       const query = displaySlice(text, at(), cursor)
-      if (cursor <= at() || @lgcode/\s@lgcode/.test(query)) {
+      if (cursor <= at() || /\s/.test(query)) {
         hide()
         return
       }
@@ -862,8 +862,8 @@ export function createPromptState(input: PromptInput): PromptState {
       const cursor = area.cursorOffset
       const head = slashHead(area.plainText)
       const local = !shell() && (next.name === "new" || next.name === "exit")
-      const separator = !shell() && !local && head && @lgcode/\s@lgcode/.test(area.plainText[head.end] ?? "") ? "" : " "
-      const text = `@lgcode/${next.name}${separator}`
+      const separator = !shell() && !local && head && /\s/.test(area.plainText[head.end] ?? "") ? "" : " "
+      const text = `/${next.name}${separator}`
 
       area.cursorOffset = 0
       const start = area.logicalCursor

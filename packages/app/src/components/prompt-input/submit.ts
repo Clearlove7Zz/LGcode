@@ -1,26 +1,26 @@
-import type { Message, Session } from "@lgcode/sdk@lgcode/v2@lgcode/client"
-import { showToast } from "@@lgcode/utils@lgcode/toast"
-import { base64Encode } from "@lgcode/core@lgcode/util@lgcode/encode"
-import { Binary } from "@lgcode/core@lgcode/util@lgcode/binary"
-import { useNavigate, useParams, useSearchParams } from "@solidjs@lgcode/router"
+import type { Message, Session } from "@opencode@lgcode/sdk/v2/client"
+import { showToast } from "@/utils/toast"
+import { base64Encode } from "@opencode@lgcode/core/util/encode"
+import { Binary } from "@opencode@lgcode/core/util/binary"
+import { useNavigate, useParams, useSearchParams } from "@solidjs/router"
 import { batch, type Accessor } from "solid-js"
-import type { FileSelection } from "@@lgcode/context@lgcode/file"
-import { useServer } from "@@lgcode/context@lgcode/server"
-import { useTabs } from "@@lgcode/context@lgcode/tabs"
-import { useServerSync, type ServerSync } from "@@lgcode/context@lgcode/server-sync"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
-import { useLayout } from "@@lgcode/context@lgcode/layout"
-import { useLocal } from "@@lgcode/context@lgcode/local"
-import { usePermission } from "@@lgcode/context@lgcode/permission"
-import { type ContextItem, type ImageAttachmentPart, type Prompt, type usePrompt } from "@@lgcode/context@lgcode/prompt"
-import { useSDK, type DirectorySDK } from "@@lgcode/context@lgcode/sdk"
-import { useSync, type DirectorySync } from "@@lgcode/context@lgcode/sync"
-import { Identifier } from "@@lgcode/utils@lgcode/id"
-import { Worktree as WorktreeState } from "@@lgcode/utils@lgcode/worktree"
-import { buildRequestParts } from ".@lgcode/build-request-parts"
-import { setCursorPosition } from ".@lgcode/editor-dom"
-import { formatServerError } from "@@lgcode/utils@lgcode/server-errors"
-import { ScopedKey } from "@@lgcode/utils@lgcode/server-scope"
+import type { FileSelection } from "@/context/file"
+import { useServer } from "@/context/server"
+import { useTabs } from "@/context/tabs"
+import { useServerSync, type ServerSync } from "@/context/server-sync"
+import { useLanguage } from "@/context/language"
+import { useLayout } from "@/context/layout"
+import { useLocal } from "@/context/local"
+import { usePermission } from "@/context/permission"
+import { type ContextItem, type ImageAttachmentPart, type Prompt, type usePrompt } from "@/context/prompt"
+import { useSDK, type DirectorySDK } from "@/context/sdk"
+import { useSync, type DirectorySync } from "@/context/sync"
+import { Identifier } from "@/utils/id"
+import { Worktree as WorktreeState } from "@/utils/worktree"
+import { buildRequestParts } from "./build-request-parts"
+import { setCursorPosition } from "./editor-dom"
+import { formatServerError } from "@/utils/server-errors"
+import { ScopedKey } from "@/utils/server-scope"
 
 type PendingPrompt = {
   abort: AbortController
@@ -75,7 +75,7 @@ export async function sendFollowupDraft(input: FollowupSendInput) {
   }
 
   const [head, ...tail] = text.split(" ")
-  const cmd = head?.startsWith("@lgcode/") ? head.slice(1) : undefined
+  const cmd = head?.startsWith("/") ? head.slice(1) : undefined
   if (cmd && input.sync.data.command.find((item) => item.name === cmd)) {
     setBusy()
     try {
@@ -89,7 +89,7 @@ export async function sendFollowupDraft(input: FollowupSendInput) {
         command: cmd,
         arguments: tail.join(" "),
         agent: input.draft.agent,
-        model: `${input.draft.model.providerID}@lgcode/${input.draft.model.modelID}`,
+        model: `${input.draft.model.providerID}/${input.draft.model.modelID}`,
         variant: input.draft.variant,
         parts: images.map((attachment) => ({
           id: Identifier.ascending("part"),
@@ -394,7 +394,7 @@ export function createPromptSubmit(input: PromptSubmitInput) {
             dirBase64: base64Encode(sessionDirectory),
             sessionId: session.id,
           })
-        else navigate(`@lgcode/${base64Encode(sessionDirectory)}@lgcode/session@lgcode/${session.id}`)
+        else navigate(`/${base64Encode(sessionDirectory)}/session/${session.id}`)
       }
     }
     if (!session) {
@@ -468,7 +468,7 @@ export function createPromptSubmit(input: PromptSubmitInput) {
       return
     }
 
-    if (text.startsWith("@lgcode/")) {
+    if (text.startsWith("/")) {
       const [cmdName, ...args] = text.split(" ")
       const commandName = cmdName.slice(1)
       const customCommand = sync().data.command.find((c) => c.name === commandName)
@@ -480,7 +480,7 @@ export function createPromptSubmit(input: PromptSubmitInput) {
             command: commandName,
             arguments: args.join(" "),
             agent,
-            model: `${model.providerID}@lgcode/${model.modelID}`,
+            model: `${model.providerID}/${model.modelID}`,
             variant,
             parts: images.map((attachment) => ({
               id: Identifier.ascending("part"),

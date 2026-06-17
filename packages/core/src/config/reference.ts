@@ -1,4 +1,4 @@
-export * as ConfigReference from ".@lgcode/reference"
+export * as ConfigReference from "./reference"
 
 import { Schema } from "effect"
 

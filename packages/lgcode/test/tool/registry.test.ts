@@ -1,32 +1,32 @@
 import { afterEach, describe, expect } from "bun:test"
 import path from "path"
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import { fileURLToPath, pathToFileURL } from "url"
 import { Effect, Layer, Result, Schema } from "effect"
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
-import { ToolRegistry } from "@@lgcode/tool@lgcode/registry"
-import { Tool } from "@@lgcode/tool@lgcode/tool"
-import { disposeAllInstances, TestInstance } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
-import { TestConfig } from "..@lgcode/fixture@lgcode/config"
-import { Config } from "@@lgcode/config@lgcode/config"
-import { Plugin } from "@@lgcode/plugin"
-import { Agent } from "@@lgcode/agent@lgcode/agent"
-import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { ToolRegistry } from "@/tool/registry"
+import { Tool } from "@/tool/tool"
+import { disposeAllInstances, TestInstance } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
+import { TestConfig } from "../fixture/config"
+import { Config } from "@/config/config"
+import { Plugin } from "@/plugin"
+import { Agent } from "@/agent/agent"
+import { InstanceState } from "@/effect/instance-state"
 
-import { ToolJsonSchema } from "@@lgcode/tool@lgcode/json-schema"
-import { MessageID, SessionID } from "@@lgcode/session@lgcode/schema"
-import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { ToolJsonSchema } from "@/tool/json-schema"
+import { MessageID, SessionID } from "@/session/schema"
+import { RuntimeFlags } from "@/effect/runtime-flags"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelV2 } from "@opencode@lgcode/core/model"
 
 const configLayer = TestConfig.layer({
   directories: () => InstanceState.directory.pipe(Effect.map((dir) => [path.join(dir, ".opencode")])),
 })
 
-@lgcode/@lgcode/ Fake Plugin.Service that returns a single plugin whose `tool` map contains
-@lgcode/@lgcode/ one definition with `args: undefined`. Used to exercise the plugin entry
-@lgcode/@lgcode/ point of `fromPlugin` for the #27451 @lgcode/ #27630 regression.
+// Fake Plugin.Service that returns a single plugin whose `tool` map contains
+// one definition with `args: undefined`. Used to exercise the plugin entry
+// point of `fromPlugin` for the #27451 / #27630 regression.
 const brokenPluginLayer = Layer.succeed(
   Plugin.Service,
   Plugin.Service.of({
@@ -92,7 +92,7 @@ describe("tool.registry", () => {
     }),
   )
 
-  it.instance("loads tools from .opencode@lgcode/tool (singular)", () =>
+  it.instance("loads tools from .opencode/tool (singular)", () =>
     Effect.gen(function* () {
       const test = yield* TestInstance
       const opencode = path.join(test.directory, ".opencode")
@@ -119,7 +119,7 @@ describe("tool.registry", () => {
     }),
   )
 
-  it.instance("ignores non-tool exports in .opencode@lgcode/tool files", () =>
+  it.instance("ignores non-tool exports in .opencode/tool files", () =>
     Effect.gen(function* () {
       const test = yield* TestInstance
       const tool = path.join(test.directory, ".opencode", "tool")
@@ -146,13 +146,13 @@ describe("tool.registry", () => {
     }),
   )
 
-  @lgcode/@lgcode/ Regression for #27451 @lgcode/ #27630: a custom tool that omits `args` must not
-  @lgcode/@lgcode/ crash registry initialization with
-  @lgcode/@lgcode/ `Object.entries requires that input parameter not be null or undefined`.
-  @lgcode/@lgcode/ Pre-1.14.49 the code path was `z.object(def.args)`, and `z.object(undefined)`
-  @lgcode/@lgcode/ silently produced an empty schema — so the tool registered as no-args.
-  @lgcode/@lgcode/ Preserve that tolerance.
-  it.instance("tolerates a custom tool exporting null@lgcode/undefined args (no-args fallback)", () =>
+  // Regression for #27451 / #27630: a custom tool that omits `args` must not
+  // crash registry initialization with
+  // `Object.entries requires that input parameter not be null or undefined`.
+  // Pre-1.14.49 the code path was `z.object(def.args)`, and `z.object(undefined)`
+  // silently produced an empty schema — so the tool registered as no-args.
+  // Preserve that tolerance.
+  it.instance("tolerates a custom tool exporting null/undefined args (no-args fallback)", () =>
     Effect.gen(function* () {
       const test = yield* TestInstance
       const tool = path.join(test.directory, ".opencode", "tool")
@@ -173,8 +173,8 @@ describe("tool.registry", () => {
 
       const registry = yield* ToolRegistry.Service
       const ids = yield* registry.ids()
-      @lgcode/@lgcode/ Built-in tools must still load — a single malformed custom tool must
-      @lgcode/@lgcode/ not poison the whole registry.
+      // Built-in tools must still load — a single malformed custom tool must
+      // not poison the whole registry.
       expect(ids).toContain("read")
       const loaded = (yield* registry.all()).find((t) => t.id === "noargs")
       if (!loaded) throw new Error("noargs tool was not loaded")
@@ -182,13 +182,13 @@ describe("tool.registry", () => {
     }),
   )
 
-  @lgcode/@lgcode/ Same regression, plugin entry point. The original reports (#27451, #27630)
-  @lgcode/@lgcode/ came in through `plugin.list()` — `oh-my-opencode` was registering a tool
-  @lgcode/@lgcode/ with `args: undefined` and crashing every message submit. The file-scan
-  @lgcode/@lgcode/ and plugin-list loops both funnel through `fromPlugin`, but covering both
-  @lgcode/@lgcode/ entry points means a future refactor that splits them won't silently lose
-  @lgcode/@lgcode/ protection.
-  withBrokenPlugin.instance("tolerates a plugin tool registered with null@lgcode/undefined args", () =>
+  // Same regression, plugin entry point. The original reports (#27451, #27630)
+  // came in through `plugin.list()` — `oh-my-opencode` was registering a tool
+  // with `args: undefined` and crashing every message submit. The file-scan
+  // and plugin-list loops both funnel through `fromPlugin`, but covering both
+  // entry points means a future refactor that splits them won't silently lose
+  // protection.
+  withBrokenPlugin.instance("tolerates a plugin tool registered with null/undefined args", () =>
     Effect.gen(function* () {
       const registry = yield* ToolRegistry.Service
       const ids = yield* registry.ids()
@@ -197,7 +197,7 @@ describe("tool.registry", () => {
     }),
   )
 
-  it.instance("loads tools from .opencode@lgcode/tools (plural)", () =>
+  it.instance("loads tools from .opencode/tools (plural)", () =>
     Effect.gen(function* () {
       const test = yield* TestInstance
       const opencode = path.join(test.directory, ".opencode")
@@ -228,7 +228,7 @@ describe("tool.registry", () => {
     Effect.gen(function* () {
       const test = yield* TestInstance
       const customTools = path.join(test.directory, ".opencode", "tools")
-      const pluginTool = pathToFileURL(path.resolve(import.meta.dir, "..@lgcode/..@lgcode/..@lgcode/plugin@lgcode/src@lgcode/tool.ts")).href
+      const pluginTool = pathToFileURL(path.resolve(import.meta.dir, "../../../plugin/src/tool.ts")).href
       yield* Effect.promise(() => fs.mkdir(customTools, { recursive: true }))
       yield* Effect.promise(() =>
         Bun.write(
@@ -294,7 +294,7 @@ describe("tool.registry", () => {
         yield* Effect.promise(() =>
           Bun.write(
             path.join(plugin, "package.json"),
-            JSON.stringify({ name: "@lgcode/plugin", type: "module", exports: { ".": ".@lgcode/dist@lgcode/index.js" } }),
+            JSON.stringify({ name: "@opencode@lgcode/plugin", type: "module", exports: { ".": "./dist/index.js" } }),
           ),
         )
         yield* Effect.promise(() =>
@@ -314,7 +314,7 @@ describe("tool.registry", () => {
           Bun.write(
             path.join(customTools, "addition.ts"),
             [
-              'import { tool } from "@lgcode/plugin"',
+              'import { tool } from "@opencode@lgcode/plugin"',
               "export default tool({",
               "  description: 'Use this tool to add two numbers and return their sum.',",
               "  args: {",
@@ -346,7 +346,7 @@ describe("tool.registry", () => {
     Effect.gen(function* () {
       const test = yield* TestInstance
       const customTools = path.join(test.directory, ".opencode", "tools")
-      const pluginTool = pathToFileURL(path.resolve(import.meta.dir, "..@lgcode/..@lgcode/..@lgcode/plugin@lgcode/src@lgcode/tool.ts")).href
+      const pluginTool = pathToFileURL(path.resolve(import.meta.dir, "../../../plugin/src/tool.ts")).href
       yield* Effect.promise(() => fs.mkdir(customTools, { recursive: true }))
       yield* Effect.promise(() =>
         Bun.write(
@@ -358,7 +358,7 @@ describe("tool.registry", () => {
             "  args: {},",
             "  execute: async () => ({",
             "    output: 'here is an image',",
-            "    attachments: [{ type: 'file', mime: 'image@lgcode/png', filename: 'picture.png', url: 'data:image@lgcode/png;base64,AAAA' }],",
+            "    attachments: [{ type: 'file', mime: 'image/png', filename: 'picture.png', url: 'data:image/png;base64,AAAA' }],",
             "  }),",
             "})",
             "",
@@ -382,7 +382,7 @@ describe("tool.registry", () => {
 
       expect(result.output).toBe("here is an image")
       expect(result.attachments).toEqual([
-        { type: "file", mime: "image@lgcode/png", filename: "picture.png", url: "data:image@lgcode/png;base64,AAAA" },
+        { type: "file", mime: "image/png", filename: "picture.png", url: "data:image/png;base64,AAAA" },
       ])
     }),
   )
@@ -431,7 +431,7 @@ describe("tool.registry", () => {
           JSON.stringify({
             name: "custom-tools",
             dependencies: {
-              "@lgcode/plugin": "^0.0.0",
+              "@opencode@lgcode/plugin": "^0.0.0",
               cowsay: "^1.6.0",
             },
           }),
@@ -446,7 +446,7 @@ describe("tool.registry", () => {
             packages: {
               "": {
                 dependencies: {
-                  "@lgcode/plugin": "^0.0.0",
+                  "@opencode@lgcode/plugin": "^0.0.0",
                   cowsay: "^1.6.0",
                 },
               },
@@ -463,7 +463,7 @@ describe("tool.registry", () => {
           JSON.stringify({
             name: "cowsay",
             type: "module",
-            exports: ".@lgcode/index.js",
+            exports: "./index.js",
           }),
         ),
       )

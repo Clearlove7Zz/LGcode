@@ -10,7 +10,7 @@ import {
   type MixedItem,
   type MixedSearchResult,
   type SearchResult,
-} from "@ff-labs@lgcode/fff-bun"
+} from "@ff-labs/fff-bun"
 
 declare global {
   const FFF_LIBC: "gnu" | "musl"
@@ -137,4 +137,4 @@ export function create(opts: Init): Result<Picker> {
   }
 }
 
-export * as Fff from ".@lgcode/fff.bun"
+export * as Fff from "./fff.bun"

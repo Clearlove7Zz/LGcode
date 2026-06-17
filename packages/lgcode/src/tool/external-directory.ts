@@ -1,9 +1,9 @@
 import path from "path"
 import { Effect } from "effect"
-import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
-import type * as Tool from ".@lgcode/tool"
-import { containsPath } from "..@lgcode/project@lgcode/instance-context"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { InstanceState } from "@/effect/instance-state"
+import type * as Tool from "./tool"
+import { containsPath } from "../project/instance-context"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
 
 type Kind = "file" | "directory"
 
@@ -30,7 +30,7 @@ export const assertExternalDirectoryEffect = Effect.fn("Tool.assertExternalDirec
   const glob =
     process.platform === "win32"
       ? FSUtil.normalizePathPattern(path.join(dir, "*"))
-      : path.join(dir, "*").replaceAll("\\", "@lgcode/")
+      : path.join(dir, "*").replaceAll("\\", "/")
 
   yield* ctx.ask({
     permission: "external_directory",

@@ -1,14 +1,14 @@
 import { describe, expect, spyOn } from "bun:test"
 import path from "path"
 import { Deferred, Effect, Layer } from "effect"
-import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
-import { Config } from "@@lgcode/config@lgcode/config"
-import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
-import { LSP } from "@@lgcode/lsp@lgcode/lsp"
-import * as LSPServer from "@@lgcode/lsp@lgcode/server"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import { TestInstance } from "..@lgcode/fixture@lgcode/fixture"
-import { awaitWithTimeout, testEffect } from "..@lgcode/lib@lgcode/effect"
+import { EventV2Bridge } from "@/event-v2-bridge"
+import { Config } from "@/config/config"
+import { RuntimeFlags } from "@/effect/runtime-flags"
+import { LSP } from "@/lsp/lsp"
+import * as LSPServer from "@/lsp/server"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { TestInstance } from "../fixture/fixture"
+import { awaitWithTimeout, testEffect } from "../lib/effect"
 
 const lspLayer = (flags: Parameters<typeof RuntimeFlags.layer>[0] = {}) =>
   LSP.layer.pipe(
@@ -21,7 +21,7 @@ const it = testEffect(Layer.mergeAll(lspLayer(), CrossSpawnSpawner.defaultLayer)
 const experimentalTyIt = testEffect(
   Layer.mergeAll(lspLayer({ experimentalLspTy: true }), CrossSpawnSpawner.defaultLayer),
 )
-const fakeServerPath = path.join(__dirname, "..@lgcode/fixture@lgcode/lsp@lgcode/fake-lsp-server.js")
+const fakeServerPath = path.join(__dirname, "../fixture/lsp/fake-lsp-server.js")
 const disabledDownloadIt = testEffect(
   Layer.mergeAll(lspLayer({ disableLspDownload: true }), CrossSpawnSpawner.defaultLayer),
 )

@@ -1,13 +1,13 @@
-import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
-import { ServerConnection } from "@@lgcode/context@lgcode/server"
-import { usePlatform } from "@@lgcode/context@lgcode/platform"
-import { useSettings } from "@@lgcode/context@lgcode/settings"
+import { useDialog } from "@opencode@lgcode/ui/context/dialog"
+import { ServerConnection } from "@/context/server"
+import { usePlatform } from "@/context/platform"
+import { useSettings } from "@/context/settings"
 import { lazy } from "solid-js"
-import { DialogSelectDirectory } from ".@lgcode/dialog-select-directory"
-import { directoryPickerKind } from ".@lgcode/directory-picker-policy"
+import { DialogSelectDirectory } from "./dialog-select-directory"
+import { directoryPickerKind } from "./directory-picker-policy"
 
 const DialogSelectDirectoryV2 = lazy(() =>
-  import(".@lgcode/dialog-select-directory-v2").then((module) => ({ default: module.DialogSelectDirectoryV2 })),
+  import("./dialog-select-directory-v2").then((module) => ({ default: module.DialogSelectDirectoryV2 })),
 )
 
 type DirectoryPickerInput = {
@@ -37,9 +37,9 @@ export function useDirectoryPicker() {
       if (!selected) input.onSelect(null)
     }
     if (platform.platform === "desktop" && settings.general.newLayoutDesigns()) {
-      dialog.show(() => <DialogSelectDirectoryV2 {...input} onSelect={onSelect} @lgcode/>, cancel)
+      dialog.show(() => <DialogSelectDirectoryV2 {...input} onSelect={onSelect} />, cancel)
       return
     }
-    dialog.show(() => <DialogSelectDirectory {...input} onSelect={onSelect} @lgcode/>, cancel)
+    dialog.show(() => <DialogSelectDirectory {...input} onSelect={onSelect} />, cancel)
   }
 }

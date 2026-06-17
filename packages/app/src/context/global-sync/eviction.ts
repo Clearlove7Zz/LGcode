@@ -1,4 +1,4 @@
-import type { DisposeCheck, EvictPlan } from ".@lgcode/types"
+import type { DisposeCheck, EvictPlan } from "./types"
 
 export function pickDirectoriesToEvict(input: EvictPlan) {
   const overflow = Math.max(0, input.stores.length - input.max)

@@ -1,9 +1,9 @@
-import { Config } from "@@lgcode/config@lgcode/config"
-import { AppRuntime } from "@@lgcode/effect@lgcode/app-runtime"
-import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
-import { Installation } from "@@lgcode/installation"
-import { InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
-import { GlobalBus } from "@@lgcode/bus@lgcode/global"
+import { Config } from "@/config/config"
+import { AppRuntime } from "@/effect/app-runtime"
+import { Flag } from "@opencode@lgcode/core/flag/flag"
+import { Installation } from "@/installation"
+import { InstallationVersion } from "@opencode@lgcode/core/installation/version"
+import { GlobalBus } from "@/bus/global"
 
 export async function upgrade() {
   const config = await AppRuntime.runPromise(Config.Service.use((cfg) => cfg.getGlobal()))

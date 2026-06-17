@@ -1,10 +1,10 @@
-import { AppRuntime } from "@@lgcode/effect@lgcode/app-runtime"
-import { type InstanceContext } from ".@lgcode/instance-context"
-import { InstanceStore, type LoadInput } from ".@lgcode/instance-store"
+import { AppRuntime } from "@/effect/app-runtime"
+import { type InstanceContext } from "./instance-context"
+import { InstanceStore, type LoadInput } from "./instance-store"
 
-@lgcode/@lgcode/ Bridge for Promise@lgcode/ALS callers that cannot yet yield InstanceStore.Service.
-@lgcode/@lgcode/ Delete this module once those callers are migrated to Effect boundaries that
-@lgcode/@lgcode/ provide InstanceStore directly.
+// Bridge for Promise/ALS callers that cannot yet yield InstanceStore.Service.
+// Delete this module once those callers are migrated to Effect boundaries that
+// provide InstanceStore directly.
 
 export const load = (input: LoadInput) => AppRuntime.runPromise(InstanceStore.Service.use((store) => store.load(input)))
 export const disposeInstance = (ctx: InstanceContext) =>
@@ -13,4 +13,4 @@ export const disposeAllInstances = () => AppRuntime.runPromise(InstanceStore.Ser
 export const reloadInstance = (input: LoadInput) =>
   AppRuntime.runPromise(InstanceStore.Service.use((store) => store.reload(input)))
 
-export * as InstanceRuntime from ".@lgcode/instance-runtime"
+export * as InstanceRuntime from "./instance-runtime"

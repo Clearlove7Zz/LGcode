@@ -1,15 +1,15 @@
-import type { OAuthClientProvider } from "@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/auth.js"
+import type { OAuthClientProvider } from "@modelcontextprotocol/sdk/client/auth.js"
 import type {
   OAuthClientMetadata,
   OAuthTokens,
   OAuthClientInformation,
   OAuthClientInformationFull,
-} from "@modelcontextprotocol@lgcode/sdk@lgcode/shared@lgcode/auth.js"
+} from "@modelcontextprotocol/sdk/shared/auth.js"
 import { Effect } from "effect"
-import { McpAuth } from ".@lgcode/auth"
+import { McpAuth } from "./auth"
 
 const OAUTH_CALLBACK_PORT = 19876
-const OAUTH_CALLBACK_PATH = "@lgcode/mcp@lgcode/oauth@lgcode/callback"
+const OAUTH_CALLBACK_PATH = "/mcp/oauth/callback"
 
 export interface McpOAuthConfig {
   clientId?: string
@@ -37,14 +37,14 @@ export class McpOAuthProvider implements OAuthClientProvider {
       return this.config.redirectUri
     }
     const port = this.config.callbackPort ?? OAUTH_CALLBACK_PORT
-    return `http:@lgcode/@lgcode/127.0.0.1:${port}${OAUTH_CALLBACK_PATH}`
+    return `http://127.0.0.1:${port}${OAUTH_CALLBACK_PATH}`
   }
 
   get clientMetadata(): OAuthClientMetadata {
     return {
       redirect_uris: [this.redirectUrl],
       client_name: "OpenCode",
-      client_uri: "https:@lgcode/@lgcode/opencode.ai",
+      client_uri: "https://opencode.ai",
       grant_types: ["authorization_code", "refresh_token"],
       response_types: ["code"],
       token_endpoint_auth_method: this.config.clientSecret ? "client_secret_post" : "none",
@@ -53,7 +53,7 @@ export class McpOAuthProvider implements OAuthClientProvider {
   }
 
   async clientInformation(): Promise<OAuthClientInformation | undefined> {
-    @lgcode/@lgcode/ Check config first (pre-registered client)
+    // Check config first (pre-registered client)
     if (this.config.clientId) {
       return {
         client_id: this.config.clientId,
@@ -61,12 +61,12 @@ export class McpOAuthProvider implements OAuthClientProvider {
       }
     }
 
-    @lgcode/@lgcode/ Check stored client info (from dynamic registration)
-    @lgcode/@lgcode/ Use getForUrl to validate credentials are for the current server URL
+    // Check stored client info (from dynamic registration)
+    // Use getForUrl to validate credentials are for the current server URL
     const entry = await Effect.runPromise(this.auth.getForUrl(this.mcpName, this.serverUrl))
     if (entry?.clientInfo) {
-      @lgcode/@lgcode/ Check if client secret has expired
-      if (entry.clientInfo.clientSecretExpiresAt && entry.clientInfo.clientSecretExpiresAt < Date.now() @lgcode/ 1000) {
+      // Check if client secret has expired
+      if (entry.clientInfo.clientSecretExpiresAt && entry.clientInfo.clientSecretExpiresAt < Date.now() / 1000) {
         return undefined
       }
       return {
@@ -75,7 +75,7 @@ export class McpOAuthProvider implements OAuthClientProvider {
       }
     }
 
-    @lgcode/@lgcode/ No client info or URL changed - will trigger dynamic registration
+    // No client info or URL changed - will trigger dynamic registration
     return undefined
   }
 
@@ -95,7 +95,7 @@ export class McpOAuthProvider implements OAuthClientProvider {
   }
 
   async tokens(): Promise<OAuthTokens | undefined> {
-    @lgcode/@lgcode/ Use getForUrl to validate tokens are for the current server URL
+    // Use getForUrl to validate tokens are for the current server URL
     const entry = await Effect.runPromise(this.auth.getForUrl(this.mcpName, this.serverUrl))
     if (!entry?.tokens) return undefined
 
@@ -104,7 +104,7 @@ export class McpOAuthProvider implements OAuthClientProvider {
       token_type: "Bearer",
       refresh_token: entry.tokens.refreshToken,
       expires_in: entry.tokens.expiresAt
-        ? Math.max(0, Math.floor(entry.tokens.expiresAt - Date.now() @lgcode/ 1000))
+        ? Math.max(0, Math.floor(entry.tokens.expiresAt - Date.now() / 1000))
         : undefined,
       scope: entry.tokens.scope,
     }
@@ -117,7 +117,7 @@ export class McpOAuthProvider implements OAuthClientProvider {
         {
           accessToken: tokens.access_token,
           refreshToken: tokens.refresh_token,
-          expiresAt: tokens.expires_in ? Date.now() @lgcode/ 1000 + tokens.expires_in : undefined,
+          expiresAt: tokens.expires_in ? Date.now() / 1000 + tokens.expires_in : undefined,
           scope: tokens.scope,
         },
         this.serverUrl,
@@ -151,10 +151,10 @@ export class McpOAuthProvider implements OAuthClientProvider {
       return entry.oauthState
     }
 
-    @lgcode/@lgcode/ Generate a new state if none exists — the SDK calls state() as a
-    @lgcode/@lgcode/ generator, not just a reader, so we need to produce a value even when
-    @lgcode/@lgcode/ startAuth() hasn't pre-saved one (e.g. during automatic auth on first
-    @lgcode/@lgcode/ connect).
+    // Generate a new state if none exists — the SDK calls state() as a
+    // generator, not just a reader, so we need to produce a value even when
+    // startAuth() hasn't pre-saved one (e.g. during automatic auth on first
+    // connect).
     const newState = Array.from(crypto.getRandomValues(new Uint8Array(32)))
       .map((b) => b.toString(16).padStart(2, "0"))
       .join("")
@@ -186,10 +186,10 @@ export class McpOAuthProvider implements OAuthClientProvider {
 
 export { OAUTH_CALLBACK_PORT, OAUTH_CALLBACK_PATH }
 
-@lgcode/**
+/**
  * Parse a redirect URI to extract port and path for the callback server.
  * Returns defaults if the URI can't be parsed.
- *@lgcode/
+ */
 export function parseRedirectUri(redirectUri?: string): { port: number; path: string } {
   if (!redirectUri) {
     return { port: OAUTH_CALLBACK_PORT, path: OAUTH_CALLBACK_PATH }

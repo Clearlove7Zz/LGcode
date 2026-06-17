@@ -1,11 +1,11 @@
-export * as SkillDiscovery from ".@lgcode/discovery"
+export * as SkillDiscovery from "./discovery"
 
 import path from "path"
 import { Context, Effect, Layer, Schedule, Schema } from "effect"
-import { FetchHttpClient, HttpClient, HttpClientRequest, HttpClientResponse } from "effect@lgcode/unstable@lgcode/http"
-import { FSUtil } from "..@lgcode/fs-util"
-import { Global } from "..@lgcode/global"
-import { AbsolutePath } from "..@lgcode/schema"
+import { FetchHttpClient, HttpClient, HttpClientRequest, HttpClientResponse } from "effect/unstable/http"
+import { FSUtil } from "../fs-util"
+import { Global } from "../global"
+import { AbsolutePath } from "../schema"
 
 const skillConcurrency = 4
 const fileConcurrency = 8
@@ -15,14 +15,14 @@ function isSafeSegment(value: string) {
     value.length > 0 &&
     value !== "." &&
     value !== ".." &&
-    !value.includes("@lgcode/") &&
+    !value.includes("/") &&
     !value.includes("\\") &&
     !value.includes("\0")
   )
 }
 
 function isSafeRelativePath(value: string) {
-  const segments = value.split("@lgcode/")
+  const segments = value.split("/")
   return (
     value.length > 0 &&
     !value.includes("\\") &&
@@ -39,7 +39,7 @@ function isSafeRelativePath(value: string) {
           decoded.length > 0 &&
           decoded !== "." &&
           decoded !== ".." &&
-          !decoded.includes("@lgcode/") &&
+          !decoded.includes("/") &&
           !decoded.includes("\\") &&
           !decoded.includes("\0")
         )
@@ -63,7 +63,7 @@ export interface Interface {
   readonly pull: (url: string) => Effect.Effect<AbsolutePath[]>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/SkillDiscovery") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/v2/SkillDiscovery") {}
 
 export const layer = Layer.effect(
   Service,
@@ -91,7 +91,7 @@ export const layer = Layer.effect(
 
     return Service.of({
       pull: Effect.fn("SkillDiscovery.pull")(function* (url) {
-        const base = url.endsWith("@lgcode/") ? url : `${url}@lgcode/`
+        const base = url.endsWith("/") ? url : `${url}/`
         const source = new URL(base)
         const index = new URL("index.json", source).href
         const data = yield* HttpClientRequest.get(index).pipe(
@@ -119,7 +119,7 @@ export const layer = Layer.effect(
               return []
             }
 
-            const skillUrl = new URL(`${encodeURIComponent(skill.name)}@lgcode/`, source)
+            const skillUrl = new URL(`${encodeURIComponent(skill.name)}/`, source)
             const files = skill.files.map((file) => {
               if (!isSafeRelativePath(file)) return undefined
               let resource: URL

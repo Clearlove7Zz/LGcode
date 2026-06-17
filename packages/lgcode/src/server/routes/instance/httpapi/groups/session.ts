@@ -1,32 +1,32 @@
-import { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
-import { Permission } from "@@lgcode/permission"
-import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
+import { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
+import { Permission } from "@/permission"
+import { SessionV1 } from "@opencode@lgcode/core/v1/session"
 
-import { Session } from "@@lgcode/session@lgcode/session"
-import { MessageV2 } from "@@lgcode/session@lgcode/message-v2"
-import { SessionPrompt } from "@@lgcode/session@lgcode/prompt"
-import { SessionRevert } from "@@lgcode/session@lgcode/revert"
-import { SessionStatus } from "@@lgcode/session@lgcode/status"
-import { SessionSummary } from "@@lgcode/session@lgcode/summary"
-import { Todo } from "@@lgcode/session@lgcode/todo"
-import { MessageID, PartID, SessionID } from "@@lgcode/session@lgcode/schema"
-import { Snapshot } from "@@lgcode/snapshot"
+import { Session } from "@/session/session"
+import { MessageV2 } from "@/session/message-v2"
+import { SessionPrompt } from "@/session/prompt"
+import { SessionRevert } from "@/session/revert"
+import { SessionStatus } from "@/session/status"
+import { SessionSummary } from "@/session/summary"
+import { Todo } from "@/session/todo"
+import { MessageID, PartID, SessionID } from "@/session/schema"
+import { Snapshot } from "@/snapshot"
 import { Schema, Struct } from "effect"
-import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, HttpApiSchema, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
-import { Authorization } from "..@lgcode/middleware@lgcode/authorization"
-import { InstanceContextMiddleware } from "..@lgcode/middleware@lgcode/instance-context"
+import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, HttpApiSchema, OpenApi } from "effect/unstable/httpapi"
+import { Authorization } from "../middleware/authorization"
+import { InstanceContextMiddleware } from "../middleware/instance-context"
 import {
   WorkspaceRoutingMiddleware,
   WorkspaceRoutingQuery,
   WorkspaceRoutingQueryFields,
-} from "..@lgcode/middleware@lgcode/workspace-routing"
-import { ApiNotFoundError, PermissionNotFoundError, SessionBusyError } from "..@lgcode/errors"
-import { described } from ".@lgcode/metadata"
-import { QueryBoolean } from ".@lgcode/query"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
+} from "../middleware/workspace-routing"
+import { ApiNotFoundError, PermissionNotFoundError, SessionBusyError } from "../errors"
+import { described } from "./metadata"
+import { QueryBoolean } from "./query"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelV2 } from "@opencode@lgcode/core/model"
 
-const root = "@lgcode/session"
+const root = "/session"
 export const ListQuery = Schema.Struct({
   ...WorkspaceRoutingQueryFields,
   scope: Schema.optional(Schema.Literals(["project"])),
@@ -77,31 +77,31 @@ export const PermissionResponsePayload = Schema.Struct({
 
 export const SessionPaths = {
   list: root,
-  status: `${root}@lgcode/status`,
-  get: `${root}@lgcode/:sessionID`,
-  children: `${root}@lgcode/:sessionID@lgcode/children`,
-  todo: `${root}@lgcode/:sessionID@lgcode/todo`,
-  diff: `${root}@lgcode/:sessionID@lgcode/diff`,
-  messages: `${root}@lgcode/:sessionID@lgcode/message`,
-  message: `${root}@lgcode/:sessionID@lgcode/message@lgcode/:messageID`,
+  status: `${root}/status`,
+  get: `${root}/:sessionID`,
+  children: `${root}/:sessionID/children`,
+  todo: `${root}/:sessionID/todo`,
+  diff: `${root}/:sessionID/diff`,
+  messages: `${root}/:sessionID/message`,
+  message: `${root}/:sessionID/message/:messageID`,
   create: root,
-  remove: `${root}@lgcode/:sessionID`,
-  update: `${root}@lgcode/:sessionID`,
-  fork: `${root}@lgcode/:sessionID@lgcode/fork`,
-  abort: `${root}@lgcode/:sessionID@lgcode/abort`,
-  share: `${root}@lgcode/:sessionID@lgcode/share`,
-  init: `${root}@lgcode/:sessionID@lgcode/init`,
-  summarize: `${root}@lgcode/:sessionID@lgcode/summarize`,
-  prompt: `${root}@lgcode/:sessionID@lgcode/message`,
-  promptAsync: `${root}@lgcode/:sessionID@lgcode/prompt_async`,
-  command: `${root}@lgcode/:sessionID@lgcode/command`,
-  shell: `${root}@lgcode/:sessionID@lgcode/shell`,
-  revert: `${root}@lgcode/:sessionID@lgcode/revert`,
-  unrevert: `${root}@lgcode/:sessionID@lgcode/unrevert`,
-  permissions: `${root}@lgcode/:sessionID@lgcode/permissions@lgcode/:permissionID`,
-  deleteMessage: `${root}@lgcode/:sessionID@lgcode/message@lgcode/:messageID`,
-  deletePart: `${root}@lgcode/:sessionID@lgcode/message@lgcode/:messageID@lgcode/part@lgcode/:partID`,
-  updatePart: `${root}@lgcode/:sessionID@lgcode/message@lgcode/:messageID@lgcode/part@lgcode/:partID`,
+  remove: `${root}/:sessionID`,
+  update: `${root}/:sessionID`,
+  fork: `${root}/:sessionID/fork`,
+  abort: `${root}/:sessionID/abort`,
+  share: `${root}/:sessionID/share`,
+  init: `${root}/:sessionID/init`,
+  summarize: `${root}/:sessionID/summarize`,
+  prompt: `${root}/:sessionID/message`,
+  promptAsync: `${root}/:sessionID/prompt_async`,
+  command: `${root}/:sessionID/command`,
+  shell: `${root}/:sessionID/shell`,
+  revert: `${root}/:sessionID/revert`,
+  unrevert: `${root}/:sessionID/unrevert`,
+  permissions: `${root}/:sessionID/permissions/:permissionID`,
+  deleteMessage: `${root}/:sessionID/message/:messageID`,
+  deletePart: `${root}/:sessionID/message/:messageID/part/:partID`,
+  updatePart: `${root}/:sessionID/message/:messageID/part/:partID`,
 } as const
 
 export const SessionApi = HttpApi.make("session")

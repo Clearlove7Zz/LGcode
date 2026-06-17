@@ -1,7 +1,7 @@
 import { z } from "zod"
-import { fn } from ".@lgcode/util@lgcode/fn"
-import { Resource } from "@lgcode/console-resource"
-import { Subscription } from ".@lgcode/subscription"
+import { fn } from "./util/fn"
+import { Resource } from "@opencode@lgcode/console-resource"
+import { Subscription } from "./subscription"
 
 export namespace LiteData {
   export const getLimits = fn(z.void(), () => {

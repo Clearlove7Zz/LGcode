@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test } from "bun:test"
-import { uuid } from ".@lgcode/uuid"
+import { uuid } from "./uuid"
 
 const cryptoDescriptor = Object.getOwnPropertyDescriptor(globalThis, "crypto")
 const secureDescriptor = Object.getOwnPropertyDescriptor(globalThis, "isSecureContext")

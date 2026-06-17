@@ -1,6 +1,6 @@
 import { describe, expect, test, setSystemTime, afterEach } from "bun:test"
-import { Subscription } from "..@lgcode/src@lgcode/subscription"
-import { centsToMicroCents } from "..@lgcode/src@lgcode/util@lgcode/price"
+import { Subscription } from "../src/subscription"
+import { centsToMicroCents } from "../src/util/price"
 
 afterEach(() => {
   setSystemTime()
@@ -20,17 +20,17 @@ describe("Subscription.analyzeMonthlyUsage", () => {
 
     expect(result.status).toBe("ok")
     expect(result.usagePercent).toBe(0)
-    @lgcode/@lgcode/ reset should be seconds until 2026-04-15T08:00:00Z
+    // reset should be seconds until 2026-04-15T08:00:00Z
     const expected = Math.ceil(
-      (new Date("2026-04-15T08:00:00Z").getTime() - new Date("2026-03-20T10:00:00Z").getTime()) @lgcode/ 1000,
+      (new Date("2026-04-15T08:00:00Z").getTime() - new Date("2026-03-20T10:00:00Z").getTime()) / 1000,
     )
     expect(result.resetInSec).toBe(expected)
   })
 
   test("returns ok with usage percent when under limit", () => {
     setSystemTime(new Date("2026-03-20T10:00:00Z"))
-    const limit = 10 @lgcode/@lgcode/ $10
-    const half = centsToMicroCents(10 * 100) @lgcode/ 2
+    const limit = 10 // $10
+    const half = centsToMicroCents(10 * 100) / 2
     const result = Subscription.analyzeMonthlyUsage({
       limit,
       usage: half,
@@ -57,8 +57,8 @@ describe("Subscription.analyzeMonthlyUsage", () => {
   })
 
   test("resets usage when crossing monthly boundary", () => {
-    @lgcode/@lgcode/ subscribed on 15th, now is April 16th — period is Apr 15 to May 15
-    @lgcode/@lgcode/ timeUpdated is March 20 (previous period)
+    // subscribed on 15th, now is April 16th — period is Apr 15 to May 15
+    // timeUpdated is March 20 (previous period)
     setSystemTime(new Date("2026-04-16T10:00:00Z"))
     const result = Subscription.analyzeMonthlyUsage({
       limit: 10,
@@ -87,7 +87,7 @@ describe("Subscription.analyzeMonthlyUsage", () => {
 
   test("handles subscription day 31 in short month", () => {
     const sub31 = new Date("2026-01-31T12:00:00Z")
-    @lgcode/@lgcode/ now is March 1 — period should be Feb 28 to Mar 31
+    // now is March 1 — period should be Feb 28 to Mar 31
     setSystemTime(new Date("2026-03-01T10:00:00Z"))
     const result = Subscription.analyzeMonthlyUsage({
       limit: 10,
@@ -99,7 +99,7 @@ describe("Subscription.analyzeMonthlyUsage", () => {
     expect(result.status).toBe("ok")
     expect(result.usagePercent).toBe(0)
     const expected = Math.ceil(
-      (new Date("2026-03-31T12:00:00Z").getTime() - new Date("2026-03-01T10:00:00Z").getTime()) @lgcode/ 1000,
+      (new Date("2026-03-31T12:00:00Z").getTime() - new Date("2026-03-01T10:00:00Z").getTime()) / 1000,
     )
     expect(result.resetInSec).toBe(expected)
   })

@@ -1,20 +1,20 @@
-export * as ConfigAgentPlugin from ".@lgcode/agent"
+export * as ConfigAgentPlugin from "./agent"
 
 import path from "path"
 import { Effect, Option, Schema } from "effect"
-import { AgentV2 } from "..@lgcode/..@lgcode/agent"
-import { Config } from "..@lgcode/..@lgcode/config"
-import { ConfigAgent } from "..@lgcode/agent"
-import { ConfigMarkdown } from "..@lgcode/markdown"
-import { FSUtil } from "..@lgcode/..@lgcode/fs-util"
-import { ModelV2 } from "..@lgcode/..@lgcode/model"
-import { PluginV2 } from "..@lgcode/..@lgcode/plugin"
-import { ConfigAgentV1 } from "..@lgcode/..@lgcode/v1@lgcode/config@lgcode/agent"
-import { ConfigMigrateV1 } from "..@lgcode/..@lgcode/v1@lgcode/config@lgcode/migrate"
+import { AgentV2 } from "../../agent"
+import { Config } from "../../config"
+import { ConfigAgent } from "../agent"
+import { ConfigMarkdown } from "../markdown"
+import { FSUtil } from "../../fs-util"
+import { ModelV2 } from "../../model"
+import { PluginV2 } from "../../plugin"
+import { ConfigAgentV1 } from "../../v1/config/agent"
+import { ConfigMigrateV1 } from "../../v1/config/migrate"
 
 const legacySources = [
-  { pattern: "{agent,agents}@lgcode/**@lgcode/*.md", primary: false },
-  { pattern: "{mode,modes}@lgcode/*.md", primary: true },
+  { pattern: "{agent,agents}/**/*.md", primary: false },
+  { pattern: "{mode,modes}/*.md", primary: true },
 ] as const
 const decodeAgent = Schema.decodeUnknownOption(ConfigAgent.Info)
 const decodeLegacyAgent = Schema.decodeUnknownOption(ConfigAgentV1.Info)
@@ -118,9 +118,9 @@ function decode(file: { directory: string; filepath: string; primary: boolean },
   if (!markdown) return
   const name = path
     .relative(file.directory, file.filepath)
-    .replaceAll("\\", "@lgcode/")
-    .replace(@lgcode/^(agent|agents|mode|modes)\@lgcode/@lgcode/, "")
-    .replace(@lgcode/\.md$@lgcode/, "")
+    .replaceAll("\\", "/")
+    .replace(/^(agent|agents|mode|modes)\//, "")
+    .replace(/\.md$/, "")
   const body = markdown.content.trim()
   const legacy = Object.keys(markdown.data).some((key) => !agentKeys.has(key))
   const agent = Option.getOrUndefined(

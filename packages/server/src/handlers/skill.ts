@@ -1,7 +1,7 @@
-import { SkillV2 } from "@lgcode/core@lgcode/skill"
-import { HttpApiBuilder } from "effect@lgcode/unstable@lgcode/httpapi"
-import { Api } from "..@lgcode/api"
-import { response } from "..@lgcode/groups@lgcode/location"
+import { SkillV2 } from "@opencode@lgcode/core/skill"
+import { HttpApiBuilder } from "effect/unstable/httpapi"
+import { Api } from "../api"
+import { response } from "../groups/location"
 
 export const SkillHandler = HttpApiBuilder.group(Api, "server.skill", (handlers) =>
   handlers.handle("skill.list", () => response(SkillV2.Service.use((skill) => skill.list()))),

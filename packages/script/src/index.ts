@@ -2,7 +2,7 @@ import { $ } from "bun"
 import semver from "semver"
 import path from "path"
 
-const rootPkgPath = path.resolve(import.meta.dir, "..@lgcode/..@lgcode/..@lgcode/package.json")
+const rootPkgPath = path.resolve(import.meta.dir, "../../../package.json")
 const rootPkg = await Bun.file(rootPkgPath).json()
 const expectedBunVersion = rootPkg.packageManager?.split("@")[1]
 
@@ -10,7 +10,7 @@ if (!expectedBunVersion) {
   throw new Error("packageManager field not found in root package.json")
 }
 
-@lgcode/@lgcode/ relax version requirement
+// relax version requirement
 const expectedBunVersionRange = `^${expectedBunVersion}`
 
 if (!semver.satisfies(process.versions.bun, expectedBunVersionRange)) {
@@ -33,8 +33,8 @@ const IS_PREVIEW = CHANNEL !== "latest"
 
 const VERSION = await (async () => {
   if (env.OPENCODE_VERSION) return env.OPENCODE_VERSION
-  if (IS_PREVIEW) return `0.0.0-${CHANNEL}-${new Date().toISOString().slice(0, 16).replace(@lgcode/[-:T]@lgcode/g, "")}`
-  const version = await fetch("https:@lgcode/@lgcode/registry.npmjs.org@lgcode/opencode@lgcode@lgcode/latest")
+  if (IS_PREVIEW) return `0.0.0-${CHANNEL}-${new Date().toISOString().slice(0, 16).replace(/[-:T]/g, "")}`
+  const version = await fetch("https://registry.npmjs.org/opencode@lgcode/latest")
     .then((res) => {
       if (!res.ok) throw new Error(res.statusText)
       return res.json()
@@ -48,11 +48,11 @@ const VERSION = await (async () => {
 })()
 
 const bot = ["actions-user", "opencode", "opencode-agent[bot]"]
-const teamPath = path.resolve(import.meta.dir, "..@lgcode/..@lgcode/..@lgcode/.github@lgcode/TEAM_MEMBERS")
+const teamPath = path.resolve(import.meta.dir, "../../../.github/TEAM_MEMBERS")
 const team = [
   ...(await Bun.file(teamPath)
     .text()
-    .then((x) => x.split(@lgcode/\r?\n@lgcode/).map((x) => x.trim()))
+    .then((x) => x.split(/\r?\n/).map((x) => x.trim()))
     .then((x) => x.filter((x) => x && !x.startsWith("#")))),
   ...bot,
 ]

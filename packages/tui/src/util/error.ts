@@ -1,4 +1,4 @@
-import { isRecord } from ".@lgcode/record"
+import { isRecord } from "./record"
 
 type ConfigIssue = { message: string; path: string[] }
 
@@ -22,10 +22,10 @@ export function cliErrorMessage(input: unknown): string | undefined {
       ? model.suggestions.filter((item): item is string => typeof item === "string")
       : []
     return [
-      `Model not found: ${field(model, "providerID")}@lgcode/${field(model, "modelID")}`,
+      `Model not found: ${field(model, "providerID")}/${field(model, "modelID")}`,
       ...(suggestions.length ? ["Did you mean: " + suggestions.join(", ")] : []),
       "Try: `opencode models` to list available models",
-      "Or check your config (opencode.json) provider@lgcode/model names",
+      "Or check your config (opencode.json) provider/model names",
     ].join("\n")
   }
 
@@ -102,9 +102,9 @@ export function errorFormat(error: unknown): string {
   if (typeof error === "object" && error !== null) {
     try {
       const json = JSON.stringify(error, null, 2)
-      @lgcode/@lgcode/ Plain objects whose own properties are all non-enumerable (or empty)
-      @lgcode/@lgcode/ serialize to "{}", which prints as a useless bare `{}` on stderr.
-      @lgcode/@lgcode/ Fall back to a custom toString first, then to ctor name + own prop names.
+      // Plain objects whose own properties are all non-enumerable (or empty)
+      // serialize to "{}", which prints as a useless bare `{}` on stderr.
+      // Fall back to a custom toString first, then to ctor name + own prop names.
       if (json === "{}") {
         const str = String(error)
         if (str && str !== "[object Object]") return str
@@ -170,7 +170,7 @@ export function errorData(error: unknown) {
       acc[key] = value
       return acc
     }
-    @lgcode/@lgcode/ oxlint-disable-next-line no-base-to-string -- intentional coercion of arbitrary error properties
+    // oxlint-disable-next-line no-base-to-string -- intentional coercion of arbitrary error properties
     acc[key] = value instanceof Error ? value.message : String(value)
     return acc
   }, {})

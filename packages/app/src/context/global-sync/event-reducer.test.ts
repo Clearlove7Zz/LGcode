@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test"
-import type { Message, Part, PermissionRequest, Project, QuestionRequest, Session } from "@lgcode/sdk@lgcode/v2@lgcode/client"
-import { createStore } from "solid-js@lgcode/store"
-import type { State } from ".@lgcode/types"
-import { applyDirectoryEvent, applyGlobalEvent, cleanupDroppedSessionCaches } from ".@lgcode/event-reducer"
+import type { Message, Part, PermissionRequest, Project, QuestionRequest, Session } from "@opencode@lgcode/sdk/v2/client"
+import { createStore } from "solid-js/store"
+import type { State } from "./types"
+import { applyDirectoryEvent, applyGlobalEvent, cleanupDroppedSessionCaches } from "./event-reducer"
 
 const rootSession = (input: { id: string; parentID?: string; archived?: number }) =>
   ({
@@ -67,7 +67,7 @@ const baseState = (input: Partial<State> = {}) =>
     icon: undefined,
     provider: {} as State["provider"],
     config: {} as State["config"],
-    path: { directory: "@lgcode/tmp" } as State["path"],
+    path: { directory: "/tmp" } as State["path"],
     session: [],
     sessionTotal: 0,
     session_status: {},
@@ -146,7 +146,7 @@ describe("applyDirectoryEvent", () => {
       store,
       setStore,
       push() {},
-      directory: "@lgcode/tmp",
+      directory: "/tmp",
       loadLsp() {},
     })
 
@@ -167,7 +167,7 @@ describe("applyDirectoryEvent", () => {
       store,
       setStore,
       push() {},
-      directory: "@lgcode/tmp",
+      directory: "/tmp",
       loadLsp() {},
       retainedLimit: 3,
     })
@@ -188,7 +188,7 @@ describe("applyDirectoryEvent", () => {
       store,
       setStore,
       push() {},
-      directory: "@lgcode/tmp",
+      directory: "/tmp",
       loadLsp() {},
     })
 
@@ -200,7 +200,7 @@ describe("applyDirectoryEvent", () => {
       store,
       setStore,
       push() {},
-      directory: "@lgcode/tmp",
+      directory: "/tmp",
       loadLsp() {},
     })
 
@@ -228,7 +228,7 @@ describe("applyDirectoryEvent", () => {
       store,
       setStore,
       push() {},
-      directory: "@lgcode/tmp",
+      directory: "/tmp",
       loadLsp() {},
     })
 
@@ -274,7 +274,7 @@ describe("applyDirectoryEvent", () => {
         store,
         setStore,
         push() {},
-        directory: "@lgcode/tmp",
+        directory: "/tmp",
         loadLsp() {},
       })
 
@@ -314,7 +314,7 @@ describe("applyDirectoryEvent", () => {
       store,
       setStore,
       push() {},
-      directory: "@lgcode/tmp",
+      directory: "/tmp",
       loadLsp() {},
       setSessionTodo(sessionID, value) {
         if (value !== undefined) return
@@ -360,7 +360,7 @@ describe("applyDirectoryEvent", () => {
       store,
       setStore,
       push() {},
-      directory: "@lgcode/tmp",
+      directory: "/tmp",
       loadLsp() {},
     })
 
@@ -379,7 +379,7 @@ describe("applyDirectoryEvent", () => {
       store,
       setStore,
       push() {},
-      directory: "@lgcode/tmp",
+      directory: "/tmp",
       loadLsp() {},
     })
 
@@ -390,7 +390,7 @@ describe("applyDirectoryEvent", () => {
       store,
       setStore,
       push() {},
-      directory: "@lgcode/tmp",
+      directory: "/tmp",
       loadLsp() {},
     })
 
@@ -412,7 +412,7 @@ describe("applyDirectoryEvent", () => {
       store,
       setStore,
       push() {},
-      directory: "@lgcode/tmp",
+      directory: "/tmp",
       loadLsp() {},
     })
     expect(store.part[messageID]?.map((x) => x.id)).toEqual(["prt_1", "prt_2", "prt_3"])
@@ -430,7 +430,7 @@ describe("applyDirectoryEvent", () => {
       store,
       setStore,
       push() {},
-      directory: "@lgcode/tmp",
+      directory: "/tmp",
       loadLsp() {},
     })
     const updated = store.part[messageID]?.find((x) => x.id === "prt_2")
@@ -442,7 +442,7 @@ describe("applyDirectoryEvent", () => {
       store,
       setStore,
       push() {},
-      directory: "@lgcode/tmp",
+      directory: "/tmp",
       loadLsp() {},
     })
     applyDirectoryEvent({
@@ -450,7 +450,7 @@ describe("applyDirectoryEvent", () => {
       store,
       setStore,
       push() {},
-      directory: "@lgcode/tmp",
+      directory: "/tmp",
       loadLsp() {},
     })
     applyDirectoryEvent({
@@ -458,7 +458,7 @@ describe("applyDirectoryEvent", () => {
       store,
       setStore,
       push() {},
-      directory: "@lgcode/tmp",
+      directory: "/tmp",
       loadLsp() {},
     })
 
@@ -479,7 +479,7 @@ describe("applyDirectoryEvent", () => {
       store,
       setStore,
       push() {},
-      directory: "@lgcode/tmp",
+      directory: "/tmp",
       loadLsp() {},
     })
     expect(store.permission[sessionID]?.map((x) => x.id)).toEqual(["perm_1", "perm_2", "perm_3"])
@@ -489,7 +489,7 @@ describe("applyDirectoryEvent", () => {
       store,
       setStore,
       push() {},
-      directory: "@lgcode/tmp",
+      directory: "/tmp",
       loadLsp() {},
     })
     expect(store.permission[sessionID]?.find((x) => x.id === "perm_2")?.permission).toBe("updated")
@@ -499,7 +499,7 @@ describe("applyDirectoryEvent", () => {
       store,
       setStore,
       push() {},
-      directory: "@lgcode/tmp",
+      directory: "/tmp",
       loadLsp() {},
     })
     expect(store.permission[sessionID]?.map((x) => x.id)).toEqual(["perm_1", "perm_3"])
@@ -509,7 +509,7 @@ describe("applyDirectoryEvent", () => {
       store,
       setStore,
       push() {},
-      directory: "@lgcode/tmp",
+      directory: "/tmp",
       loadLsp() {},
     })
     expect(store.question[sessionID]?.map((x) => x.id)).toEqual(["q_1", "q_2", "q_3"])
@@ -519,7 +519,7 @@ describe("applyDirectoryEvent", () => {
       store,
       setStore,
       push() {},
-      directory: "@lgcode/tmp",
+      directory: "/tmp",
       loadLsp() {},
     })
     expect(store.question[sessionID]?.find((x) => x.id === "q_2")?.questions[0]?.header).toBe("updated")
@@ -529,7 +529,7 @@ describe("applyDirectoryEvent", () => {
       store,
       setStore,
       push() {},
-      directory: "@lgcode/tmp",
+      directory: "/tmp",
       loadLsp() {},
     })
     expect(store.question[sessionID]?.map((x) => x.id)).toEqual(["q_1", "q_3"])
@@ -542,11 +542,11 @@ describe("applyDirectoryEvent", () => {
     })
 
     applyDirectoryEvent({
-      event: { type: "vcs.branch.updated", properties: { branch: "feature@lgcode/test" } },
+      event: { type: "vcs.branch.updated", properties: { branch: "feature/test" } },
       store,
       setStore,
       push() {},
-      directory: "@lgcode/tmp",
+      directory: "/tmp",
       loadLsp() {},
       vcsCache: {
         store: cacheStore,
@@ -555,8 +555,8 @@ describe("applyDirectoryEvent", () => {
       },
     })
 
-    expect(store.vcs).toEqual({ branch: "feature@lgcode/test", default_branch: "main" })
-    expect(cacheStore.value).toEqual({ branch: "feature@lgcode/test", default_branch: "main" })
+    expect(store.vcs).toEqual({ branch: "feature/test", default_branch: "main" })
+    expect(cacheStore.value).toEqual({ branch: "feature/test", default_branch: "main" })
   })
 
   test("routes disposal and lsp events to side-effect handlers", () => {
@@ -571,7 +571,7 @@ describe("applyDirectoryEvent", () => {
       push(directory) {
         pushes.push(directory)
       },
-      directory: "@lgcode/tmp",
+      directory: "/tmp",
       loadLsp() {
         lspLoads += 1
       },
@@ -584,13 +584,13 @@ describe("applyDirectoryEvent", () => {
       push(directory) {
         pushes.push(directory)
       },
-      directory: "@lgcode/tmp",
+      directory: "/tmp",
       loadLsp() {
         lspLoads += 1
       },
     })
 
-    expect(pushes).toEqual(["@lgcode/tmp"])
+    expect(pushes).toEqual(["/tmp"])
     expect(lspLoads).toBe(1)
   })
 })

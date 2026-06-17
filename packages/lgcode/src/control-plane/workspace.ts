@@ -1,38 +1,38 @@
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
-import { httpClient } from "@lgcode/core@lgcode/effect@lgcode/layer-node-platform"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { httpClient } from "@opencode@lgcode/core/effect/layer-node-platform"
 import { Context, Effect, FiberMap, Iterable, Layer, Schema, Stream } from "effect"
-import { serviceUse } from "@lgcode/core@lgcode/effect@lgcode/service-use"
-import { FetchHttpClient, HttpBody, HttpClient, HttpClientError, HttpClientRequest } from "effect@lgcode/unstable@lgcode/http"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { serviceUse } from "@opencode@lgcode/core/effect/service-use"
+import { FetchHttpClient, HttpBody, HttpClient, HttpClientError, HttpClientRequest } from "effect/unstable/http"
+import { Database } from "@opencode@lgcode/core/database/database"
 import { asc } from "drizzle-orm"
 import { eq } from "drizzle-orm"
 import { inArray } from "drizzle-orm"
-import { Project } from "@@lgcode/project@lgcode/project"
-import { GlobalBus } from "@@lgcode/bus@lgcode/global"
-import { Auth } from "@@lgcode/auth"
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
-import { EventSequenceTable, EventTable } from "@lgcode/core@lgcode/event@lgcode/sql"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
-import { ProjectV2 } from "@lgcode/core@lgcode/project"
-import { Slug } from "@lgcode/core@lgcode/util@lgcode/slug"
-import { WorkspaceTable } from "@lgcode/core@lgcode/control-plane@lgcode/workspace.sql"
-import { getAdapter, registeredAdapters } from ".@lgcode/adapters"
-import { type Target, type WorkspaceInfo, WorkspaceInfo as WorkspaceInfoSchema } from ".@lgcode/types"
-import { WorkspaceV2 } from "@lgcode/core@lgcode/workspace"
-import { Session } from "@@lgcode/session@lgcode/session"
-import { SessionPrompt } from "@@lgcode/session@lgcode/prompt"
-import { SessionTable } from "@lgcode/core@lgcode/session@lgcode/sql"
-import { SessionID } from "@@lgcode/session@lgcode/schema"
-import { NotFoundError } from "@@lgcode/storage@lgcode/storage"
-import { errorData } from "@@lgcode/util@lgcode/error"
-import { waitEvent } from ".@lgcode/util"
-import { WorkspaceRef } from "@@lgcode/effect@lgcode/instance-ref"
-import { Vcs } from "@@lgcode/project@lgcode/vcs"
-import { InstanceStore } from "@@lgcode/project@lgcode/instance-store"
-import { InstanceBootstrap } from "@@lgcode/project@lgcode/bootstrap"
-import { WorkspaceAdapterRuntime } from ".@lgcode/workspace-adapter-runtime"
+import { Project } from "@/project/project"
+import { GlobalBus } from "@/bus/global"
+import { Auth } from "@/auth"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import { EventV2Bridge } from "@/event-v2-bridge"
+import { EventSequenceTable, EventTable } from "@opencode@lgcode/core/event/sql"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { RuntimeFlags } from "@/effect/runtime-flags"
+import { ProjectV2 } from "@opencode@lgcode/core/project"
+import { Slug } from "@opencode@lgcode/core/util/slug"
+import { WorkspaceTable } from "@opencode@lgcode/core/control-plane/workspace.sql"
+import { getAdapter, registeredAdapters } from "./adapters"
+import { type Target, type WorkspaceInfo, WorkspaceInfo as WorkspaceInfoSchema } from "./types"
+import { WorkspaceV2 } from "@opencode@lgcode/core/workspace"
+import { Session } from "@/session/session"
+import { SessionPrompt } from "@/session/prompt"
+import { SessionTable } from "@opencode@lgcode/core/session/sql"
+import { SessionID } from "@/session/schema"
+import { NotFoundError } from "@/storage/storage"
+import { errorData } from "@/util/error"
+import { waitEvent } from "./util"
+import { WorkspaceRef } from "@/effect/instance-ref"
+import { Vcs } from "@/project/vcs"
+import { InstanceStore } from "@/project/instance-store"
+import { InstanceBootstrap } from "@/project/bootstrap"
+import { WorkspaceAdapterRuntime } from "./workspace-adapter-runtime"
 
 export const Info = Schema.Struct({
   ...WorkspaceInfoSchema.fields,
@@ -162,7 +162,7 @@ export interface Interface {
   readonly startWorkspaceSyncing: (projectID: ProjectV2.ID) => Effect.Effect<void>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Workspace") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/Workspace") {}
 
 export const use = serviceUse(Service)
 
@@ -202,9 +202,9 @@ export const layer = Layer.effect(
       headers: HeadersInit | undefined,
     ) {
       const response = yield* http.execute(
-        HttpClientRequest.get(route(url, "@lgcode/global@lgcode/event"), {
+        HttpClientRequest.get(route(url, "/global/event"), {
           headers: new Headers(headers),
-          accept: "text@lgcode/event-stream",
+          accept: "text/event-stream",
         }),
       )
       if (response.status < 200 || response.status >= 300) {
@@ -343,7 +343,7 @@ export const layer = Layer.effect(
         : {}
 
       const response = yield* http.execute(
-        HttpClientRequest.post(route(url, "@lgcode/sync@lgcode/history"), {
+        HttpClientRequest.post(route(url, "/sync/history"), {
           headers: new Headers(headers),
           body: HttpBody.jsonUnsafe(state),
         }),
@@ -447,8 +447,8 @@ export const layer = Layer.effect(
           setStatus(space.id, "disconnected")
         }
 
-        @lgcode/@lgcode/ Back off reconnect attempts up to 2 minutes while the workspace
-        @lgcode/@lgcode/ stays unavailable.
+        // Back off reconnect attempts up to 2 minutes while the workspace
+        // stays unavailable.
         yield* Effect.sleep(`${Math.min(120_000, 1_000 * 2 ** attempt)} millis`)
         attempt += 1
       }
@@ -484,8 +484,8 @@ export const layer = Layer.effect(
       yield* FiberMap.run(
         syncFibers,
         space.id,
-        @lgcode/@lgcode/ TODO: look into `tapError` to set the status but still
-        @lgcode/@lgcode/ allow the fiber to fail and automatically get removed
+        // TODO: look into `tapError` to set the status but still
+        // allow the fiber to fail and automatically get removed
         syncWorkspaceLoop(space).pipe(
           Effect.catch((error) =>
             Effect.gen(function* () {
@@ -600,8 +600,8 @@ export const layer = Layer.effect(
               yield* prompt.cancel(input.sessionID)
             }
 
-            @lgcode/@lgcode/ "claim" this session so any future events coming from
-            @lgcode/@lgcode/ the old workspace are ignored
+            // "claim" this session so any future events coming from
+            // the old workspace are ignored
             yield* events.claim(input.sessionID, input.workspaceID ?? previous.projectID)
           }
         }
@@ -612,7 +612,7 @@ export const layer = Layer.effect(
                 workspaceID: current?.workspaceID ?? undefined,
                 local: () => vcs.diffRaw(),
                 remote: ({ target }) =>
-                  HttpClientRequest.get(route(target.url, "@lgcode/vcs@lgcode/diff@lgcode/raw"), {
+                  HttpClientRequest.get(route(target.url, "/vcs/diff/raw"), {
                     headers: new Headers(target.headers),
                   }),
                 fallback: "",
@@ -621,14 +621,14 @@ export const layer = Layer.effect(
             : ""
 
         if (sourcePatch) {
-          @lgcode/@lgcode/ Attempt to apply the file changes to the new workspace.
-          @lgcode/@lgcode/ We intentionally do first so if it fails we don't warp
-          @lgcode/@lgcode/ the session.
+          // Attempt to apply the file changes to the new workspace.
+          // We intentionally do first so if it fails we don't warp
+          // the session.
           yield* runInWorkspace({
             workspaceID: input.workspaceID ?? undefined,
             local: () => vcs.apply({ patch: sourcePatch }),
             remote: ({ target }) =>
-              HttpClientRequest.post(route(target.url, "@lgcode/vcs@lgcode/apply"), {
+              HttpClientRequest.post(route(target.url, "/vcs/apply"), {
                 headers: new Headers(target.headers),
                 body: HttpBody.jsonUnsafe({ patch: sourcePatch }),
               }),
@@ -685,7 +685,7 @@ export const layer = Layer.effect(
           (events, i) =>
             Effect.gen(function* () {
               const response = yield* http.execute(
-                HttpClientRequest.post(route(target.url, "@lgcode/sync@lgcode/replay"), {
+                HttpClientRequest.post(route(target.url, "/sync/replay"), {
                   headers: new Headers(target.headers),
                   body: HttpBody.jsonUnsafe({
                     directory: space.directory ?? "",
@@ -709,7 +709,7 @@ export const layer = Layer.effect(
         )
 
         const response = yield* http.execute(
-          HttpClientRequest.post(route(target.url, "@lgcode/sync@lgcode/steal"), {
+          HttpClientRequest.post(route(target.url, "/sync/steal"), {
             headers: new Headers(target.headers),
             body: HttpBody.jsonUnsafe({ sessionID: input.sessionID }),
           }),
@@ -968,7 +968,7 @@ function synced(db: Database.Interface["db"], state: Record<string, number>): Ef
 
 function route(url: string | URL, path: string) {
   const next = new URL(url)
-  next.pathname = `${next.pathname.replace(@lgcode/\@lgcode/$@lgcode/, "")}${path}`
+  next.pathname = `${next.pathname.replace(/\/$/, "")}${path}`
   next.search = ""
   next.hash = ""
   return next
@@ -986,4 +986,4 @@ export const node = LayerNode.make(layer, [
   Database.node,
 ])
 
-export * as Workspace from ".@lgcode/workspace"
+export * as Workspace from "./workspace"

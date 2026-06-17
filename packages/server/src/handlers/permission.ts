@@ -1,11 +1,11 @@
-import { Location } from "@lgcode/core@lgcode/location"
-import { PermissionV2 } from "@lgcode/core@lgcode/permission"
-import { PermissionSaved } from "@lgcode/core@lgcode/permission@lgcode/saved"
+import { Location } from "@opencode@lgcode/core/location"
+import { PermissionV2 } from "@opencode@lgcode/core/permission"
+import { PermissionSaved } from "@opencode@lgcode/core/permission/saved"
 import { Effect } from "effect"
-import { HttpApiBuilder, HttpApiSchema } from "effect@lgcode/unstable@lgcode/httpapi"
-import { Api } from "..@lgcode/api"
-import { PermissionNotFoundError } from "..@lgcode/errors"
-import { response } from "..@lgcode/groups@lgcode/location"
+import { HttpApiBuilder, HttpApiSchema } from "effect/unstable/httpapi"
+import { Api } from "../api"
+import { PermissionNotFoundError } from "../errors"
+import { response } from "../groups/location"
 
 function missingRequest(id: PermissionV2.ID) {
   return new PermissionNotFoundError({ requestID: id, message: `Permission request not found: ${id}` })

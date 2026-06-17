@@ -1,12 +1,12 @@
-import { createSimpleContext } from "@lgcode/ui@lgcode/context"
-import { checksum } from "@lgcode/core@lgcode/util@lgcode/encode"
-import { useParams, useSearchParams } from "@solidjs@lgcode/router"
+import { createSimpleContext } from "@opencode@lgcode/ui/context"
+import { checksum } from "@opencode@lgcode/core/util/encode"
+import { useParams, useSearchParams } from "@solidjs/router"
 import { batch, createMemo, createRoot, getOwner, onCleanup } from "solid-js"
-import { createStore, type SetStoreFunction } from "solid-js@lgcode/store"
-import type { FileSelection } from "@@lgcode/context@lgcode/file"
-import { Persist, persisted } from "@@lgcode/utils@lgcode/persist"
-import { useServerSDK } from ".@lgcode/server-sdk"
-import type { ServerScope } from "@@lgcode/utils@lgcode/server-scope"
+import { createStore, type SetStoreFunction } from "solid-js/store"
+import type { FileSelection } from "@/context/file"
+import { Persist, persisted } from "@/utils/persist"
+import { useServerSDK } from "./server-sdk"
+import type { ServerScope } from "@/utils/server-scope"
 
 interface PartBase {
   content: string
@@ -176,7 +176,7 @@ type PromptCacheEntry = {
 
 function promptTarget(serverScope: ServerScope, scope: Scope) {
   if ("draftID" in scope) return Persist.draft(scope.draftID, "prompt")
-  const legacy = `${scope.dir}@lgcode/prompt${scope.id ? "@lgcode/" + scope.id : ""}.v2`
+  const legacy = `${scope.dir}/prompt${scope.id ? "/" + scope.id : ""}.v2`
   return Persist.serverScoped(serverScope, scope.dir, scope.id, "prompt", [legacy])
 }
 

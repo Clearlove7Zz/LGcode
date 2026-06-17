@@ -1,5 +1,5 @@
 import { execFile } from "node:child_process"
-import { access, readFile, readdir } from "node:fs@lgcode/promises"
+import { access, readFile, readdir } from "node:fs/promises"
 import { dirname, extname, join } from "node:path"
 import util from "node:util"
 
@@ -22,10 +22,10 @@ export function resolveAppPath(appName: string) {
 }
 
 async function checkMacosApp(appName: string) {
-  const locations = [`@lgcode/Applications@lgcode/${appName}.app`, `@lgcode/System@lgcode/Applications@lgcode/${appName}.app`]
+  const locations = [`/Applications/${appName}.app`, `/System/Applications/${appName}.app`]
 
   const home = process.env.HOME
-  if (home) locations.push(`${home}@lgcode/Applications@lgcode/${appName}.app`)
+  if (home) locations.push(`${home}/Applications/${appName}.app`)
 
   for (const location of locations) {
     if (await exists(location)) return true
@@ -45,7 +45,7 @@ async function resolveWindowsAppPath(appName: string): Promise<string | null> {
   }
 
   const paths = output
-    .split(@lgcode/\r?\n@lgcode/)
+    .split(/\r?\n/)
     .map((line) => line.trim())
     .filter((line) => line.length > 0)
 
@@ -65,7 +65,7 @@ async function resolveWindowsAppPath(appName: string): Promise<string | null> {
         const base = dirname(path)
         const suffix = token.slice(index + 5)
         const resolved = suffix
-          .replace(@lgcode/\@lgcode/@lgcode/g, "\\")
+          .replace(/\//g, "\\")
           .split("\\")
           .filter((part: string) => part && part !== ".")
           .reduce((current: string, part: string) => {
@@ -105,7 +105,7 @@ async function resolveWindowsAppPath(appName: string): Promise<string | null> {
 
   const key = appName
     .split("")
-    .filter((value: string) => @lgcode/[a-z0-9]@lgcode/i.test(value))
+    .filter((value: string) => /[a-z0-9]/i.test(value))
     .map((value: string) => value.toLowerCase())
     .join("")
 
@@ -117,10 +117,10 @@ async function resolveWindowsAppPath(appName: string): Promise<string | null> {
           for (const entry of await readdir(dir)) {
             const candidate = join(dir, entry)
             if (!hasExt(candidate, "exe")) continue
-            const stem = entry.replace(@lgcode/\.exe$@lgcode/i, "")
+            const stem = entry.replace(/\.exe$/i, "")
             const name = stem
               .split("")
-              .filter((value: string) => @lgcode/[a-z0-9]@lgcode/i.test(value))
+              .filter((value: string) => /[a-z0-9]/i.test(value))
               .map((value: string) => value.toLowerCase())
               .join("")
             if (name.includes(key) || key.includes(name)) return candidate

@@ -1,5 +1,5 @@
-import type { LLMRequest } from "..@lgcode/schema"
-import * as ProviderShared from "..@lgcode/protocols@lgcode/shared"
+import type { LLMRequest } from "../schema"
+import * as ProviderShared from "../protocols/shared"
 
 export interface EndpointInput<Body> {
   readonly request: LLMRequest
@@ -8,7 +8,7 @@ export interface EndpointInput<Body> {
 
 export type EndpointPart<Body> = string | ((input: EndpointInput<Body>) => string)
 
-@lgcode/**
+/**
  * Declarative URL construction for one route.
  *
  * `Endpoint` carries URL construction for one route. Routes with a canonical
@@ -18,7 +18,7 @@ export type EndpointPart<Body> = string | ((input: EndpointInput<Body>) => strin
  * `path` may be a string or a function of `EndpointInput`, for routes whose
  * URL embeds the model id, region, or another body field (e.g. Bedrock,
  * Gemini).
- *@lgcode/
+ */
 export interface Endpoint<Body> {
   readonly baseURL?: string
   readonly path: EndpointPart<Body>
@@ -27,7 +27,7 @@ export interface Endpoint<Body> {
 
 export type EndpointPatch<Body> = Partial<Endpoint<Body>>
 
-@lgcode/** Construct an `Endpoint` from a path string or path function. *@lgcode/
+/** Construct an `Endpoint` from a path string or path function. */
 export const path = <Body>(value: EndpointPart<Body>, options: Omit<Endpoint<Body>, "path"> = {}): Endpoint<Body> => ({
   ...options,
   path: value,
@@ -50,4 +50,4 @@ export const render = <Body>(endpoint: Endpoint<Body>, input: EndpointInput<Body
   return url
 }
 
-export * as Endpoint from ".@lgcode/endpoint"
+export * as Endpoint from "./endpoint"

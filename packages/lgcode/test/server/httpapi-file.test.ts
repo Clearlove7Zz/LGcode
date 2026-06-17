@@ -1,15 +1,15 @@
 import { afterEach, describe, expect, test } from "bun:test"
 import { Context } from "effect"
 import path from "path"
-import { HttpApiApp } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/server"
-import { FilePaths } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/file"
-import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
-import { disposeAllInstances, tmpdir } from "..@lgcode/fixture@lgcode/fixture"
+import { HttpApiApp } from "../../src/server/routes/instance/httpapi/server"
+import { FilePaths } from "../../src/server/routes/instance/httpapi/groups/file"
+import { resetDatabase } from "../fixture/db"
+import { disposeAllInstances, tmpdir } from "../fixture/fixture"
 
 const context = Context.empty() as Context.Context<unknown>
 
 function request(route: string, directory: string, query?: Record<string, string>) {
-  const url = new URL(`http:@lgcode/@lgcode/localhost${route}`)
+  const url = new URL(`http://localhost${route}`)
   for (const [key, value] of Object.entries(query ?? {})) {
     url.searchParams.set(key, value)
   }

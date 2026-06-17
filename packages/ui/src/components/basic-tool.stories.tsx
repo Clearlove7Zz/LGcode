@@ -1,7 +1,7 @@
-@lgcode/@lgcode/ @ts-nocheck
+// @ts-nocheck
 import { createSignal } from "solid-js"
-import * as mod from ".@lgcode/basic-tool"
-import { create } from "..@lgcode/storybook@lgcode/scaffold"
+import * as mod from "./basic-tool"
+import { create } from "../storybook/scaffold"
 
 const docs = `### Overview
 Expandable tool panel with a structured trigger and optional details.
@@ -13,7 +13,7 @@ Use structured triggers for consistent layout; custom triggers allowed.
 - Optional: \`status\`, \`defaultOpen\`, \`forceOpen\`, \`defer\`, \`locked\`.
 
 ### Variants and states
-- Pending@lgcode/running status animates the title via TextShimmer.
+- Pending/running status animates the title via TextShimmer.
 
 ### Behavior
 - Uses Collapsible; can defer content rendering until open.
@@ -22,13 +22,13 @@ Use structured triggers for consistent layout; custom triggers allowed.
 ### Accessibility
 - TODO: confirm trigger semantics and aria labeling.
 
-### Theming@lgcode/tokens
+### Theming/tokens
 - Uses \`data-component="tool-trigger"\` and related slots.
 
 `
 
 const story = create({
-  title: "UI@lgcode/Basic Tool",
+  title: "UI/Basic Tool",
   mod,
   args: {
     icon: "mcp",
@@ -43,7 +43,7 @@ const story = create({
 })
 
 export default {
-  title: "UI@lgcode/Basic Tool",
+  title: "UI/Basic Tool",
   id: "components-basic-tool",
   component: story.meta.component,
   tags: ["autodocs"],
@@ -119,15 +119,15 @@ export const SubtitleAction = {
     const [message, setMessage] = createSignal("Subtitle not clicked")
     return (
       <div style={{ display: "grid", gap: "8px" }}>
-        <div style={{ "font-size": "12px", color: "var(--text-weak)" }}>{message()}<@lgcode/div>
+        <div style={{ "font-size": "12px", color: "var(--text-weak)" }}>{message()}</div>
         <mod.BasicTool
           icon="mcp"
           trigger={{ title: "Clickable subtitle", subtitle: "Click me" }}
           onSubtitleClick={() => setMessage("Subtitle clicked")}
         >
           Subtitle action details
-        <@lgcode/mod.BasicTool>
-      <@lgcode/div>
+        </mod.BasicTool>
+      </div>
     )
   },
 }

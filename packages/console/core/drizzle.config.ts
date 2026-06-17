@@ -2,9 +2,9 @@ import { Resource } from "sst"
 import { defineConfig } from "drizzle-kit"
 
 export default defineConfig({
-  out: ".@lgcode/migrations@lgcode/",
+  out: "./migrations/",
   strict: true,
-  schema: [".@lgcode/src@lgcode/**@lgcode/*.sql.ts"],
+  schema: ["./src/**/*.sql.ts"],
   verbose: true,
   dialect: "mysql",
   dbCredentials: {

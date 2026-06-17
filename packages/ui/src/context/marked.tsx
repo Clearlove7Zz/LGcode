@@ -3,8 +3,8 @@ import markedKatex from "marked-katex-extension"
 import markedShiki from "marked-shiki"
 import katex from "katex"
 import { bundledLanguages, type BundledLanguage } from "shiki"
-import { createSimpleContext } from ".@lgcode/helper"
-import { getSharedHighlighter, registerCustomTheme, ThemeRegistrationResolved } from "@pierre@lgcode/diffs"
+import { createSimpleContext } from "./helper"
+import { getSharedHighlighter, registerCustomTheme, ThemeRegistrationResolved } from "@pierre/diffs"
 
 export const OpenCodeTheme = {
   name: "OpenCode",
@@ -16,30 +16,30 @@ export const OpenCodeTheme = {
     "gitDecoration.addedResourceForeground": "var(--syntax-diff-add)",
     "gitDecoration.deletedResourceForeground": "var(--syntax-diff-delete)",
     "gitDecoration.modifiedResourceForeground": "var(--syntax-diff-unknown)",
-    @lgcode/@lgcode/ "gitDecoration.conflictingResourceForeground": "#ffca00",
-    @lgcode/@lgcode/ "gitDecoration.modifiedResourceForeground": "#1a76d4",
-    @lgcode/@lgcode/ "gitDecoration.untrackedResourceForeground": "#00cab1",
-    @lgcode/@lgcode/ "gitDecoration.ignoredResourceForeground": "#84848A",
-    @lgcode/@lgcode/ "terminal.titleForeground": "#adadb1",
-    @lgcode/@lgcode/ "terminal.titleInactiveForeground": "#84848A",
-    @lgcode/@lgcode/ "terminal.background": "#141415",
-    @lgcode/@lgcode/ "terminal.foreground": "#adadb1",
-    @lgcode/@lgcode/ "terminal.ansiBlack": "#141415",
-    @lgcode/@lgcode/ "terminal.ansiRed": "#ff2e3f",
-    @lgcode/@lgcode/ "terminal.ansiGreen": "#0dbe4e",
-    @lgcode/@lgcode/ "terminal.ansiYellow": "#ffca00",
-    @lgcode/@lgcode/ "terminal.ansiBlue": "#008cff",
-    @lgcode/@lgcode/ "terminal.ansiMagenta": "#c635e4",
-    @lgcode/@lgcode/ "terminal.ansiCyan": "#08c0ef",
-    @lgcode/@lgcode/ "terminal.ansiWhite": "#c6c6c8",
-    @lgcode/@lgcode/ "terminal.ansiBrightBlack": "#141415",
-    @lgcode/@lgcode/ "terminal.ansiBrightRed": "#ff2e3f",
-    @lgcode/@lgcode/ "terminal.ansiBrightGreen": "#0dbe4e",
-    @lgcode/@lgcode/ "terminal.ansiBrightYellow": "#ffca00",
-    @lgcode/@lgcode/ "terminal.ansiBrightBlue": "#008cff",
-    @lgcode/@lgcode/ "terminal.ansiBrightMagenta": "#c635e4",
-    @lgcode/@lgcode/ "terminal.ansiBrightCyan": "#08c0ef",
-    @lgcode/@lgcode/ "terminal.ansiBrightWhite": "#c6c6c8",
+    // "gitDecoration.conflictingResourceForeground": "#ffca00",
+    // "gitDecoration.modifiedResourceForeground": "#1a76d4",
+    // "gitDecoration.untrackedResourceForeground": "#00cab1",
+    // "gitDecoration.ignoredResourceForeground": "#84848A",
+    // "terminal.titleForeground": "#adadb1",
+    // "terminal.titleInactiveForeground": "#84848A",
+    // "terminal.background": "#141415",
+    // "terminal.foreground": "#adadb1",
+    // "terminal.ansiBlack": "#141415",
+    // "terminal.ansiRed": "#ff2e3f",
+    // "terminal.ansiGreen": "#0dbe4e",
+    // "terminal.ansiYellow": "#ffca00",
+    // "terminal.ansiBlue": "#008cff",
+    // "terminal.ansiMagenta": "#c635e4",
+    // "terminal.ansiCyan": "#08c0ef",
+    // "terminal.ansiWhite": "#c6c6c8",
+    // "terminal.ansiBrightBlack": "#141415",
+    // "terminal.ansiBrightRed": "#ff2e3f",
+    // "terminal.ansiBrightGreen": "#0dbe4e",
+    // "terminal.ansiBrightYellow": "#ffca00",
+    // "terminal.ansiBrightBlue": "#008cff",
+    // "terminal.ansiBrightMagenta": "#c635e4",
+    // "terminal.ansiBrightCyan": "#08c0ef",
+    // "terminal.ansiBrightWhite": "#c6c6c8",
   },
   tokenColors: [
     {
@@ -51,7 +51,7 @@ export const OpenCodeTheme = {
     {
       scope: ["entity.other.attribute-name"],
       settings: {
-        foreground: "var(--syntax-property)", @lgcode/@lgcode/ maybe attribute
+        foreground: "var(--syntax-property)", // maybe attribute
       },
     },
     {
@@ -261,7 +261,7 @@ export const OpenCodeTheme = {
       scope: "markup.italic",
       settings: {
         fontStyle: "italic",
-        @lgcode/@lgcode/ foreground: "",
+        // foreground: "",
       },
     },
     {
@@ -382,8 +382,8 @@ registerCustomTheme("OpenCode", () => Promise.resolve(OpenCodeTheme))
 function renderMathInText(text: string): string {
   let result = text
 
-  @lgcode/@lgcode/ Display math: $$...$$
-  const displayMathRegex = @lgcode/\$\$([\s\S]*?)\$\$@lgcode/g
+  // Display math: $$...$$
+  const displayMathRegex = /\$\$([\s\S]*?)\$\$/g
   result = result.replace(displayMathRegex, (_, math) => {
     try {
       return katex.renderToString(math, {
@@ -395,8 +395,8 @@ function renderMathInText(text: string): string {
     }
   })
 
-  @lgcode/@lgcode/ Inline math: $...$
-  const inlineMathRegex = @lgcode/(?<!\$)\$(?!\$)((?:[^$\\]|\\.)+?)\$(?!\$)@lgcode/g
+  // Inline math: $...$
+  const inlineMathRegex = /(?<!\$)\$(?!\$)((?:[^$\\]|\\.)+?)\$(?!\$)/g
   result = result.replace(inlineMathRegex, (_, math) => {
     try {
       return katex.renderToString(math, {
@@ -412,22 +412,22 @@ function renderMathInText(text: string): string {
 }
 
 function renderMathExpressions(html: string): string {
-  @lgcode/@lgcode/ Split on code@lgcode/pre@lgcode/kbd tags to avoid processing their contents
-  const codeBlockPattern = @lgcode/(<(?:pre|code|kbd)[^>]*>[\s\S]*?<\@lgcode/(?:pre|code|kbd)>)@lgcode/gi
+  // Split on code/pre/kbd tags to avoid processing their contents
+  const codeBlockPattern = /(<(?:pre|code|kbd)[^>]*>[\s\S]*?<\/(?:pre|code|kbd)>)/gi
   const parts = html.split(codeBlockPattern)
 
   return parts
     .map((part, i) => {
-      @lgcode/@lgcode/ Odd indices are the captured code blocks - leave them alone
+      // Odd indices are the captured code blocks - leave them alone
       if (i % 2 === 1) return part
-      @lgcode/@lgcode/ Process math only in non-code parts
+      // Process math only in non-code parts
       return renderMathInText(part)
     })
     .join("")
 }
 
 async function highlightCodeBlocks(html: string): Promise<string> {
-  const codeBlockRegex = @lgcode/<pre><code(?:\s+class="language-([^"]*)")?>([\s\S]*?)<\@lgcode/code><\@lgcode/pre>@lgcode/g
+  const codeBlockRegex = /<pre><code(?:\s+class="language-([^"]*)")?>([\s\S]*?)<\/code><\/pre>/g
   const matches = [...html.matchAll(codeBlockRegex)]
   if (matches.length === 0) return html
 
@@ -441,11 +441,11 @@ async function highlightCodeBlocks(html: string): Promise<string> {
   for (const match of matches) {
     const [fullMatch, lang, escapedCode] = match
     const code = escapedCode
-      .replace(@lgcode/&lt;@lgcode/g, "<")
-      .replace(@lgcode/&gt;@lgcode/g, ">")
-      .replace(@lgcode/&amp;@lgcode/g, "&")
-      .replace(@lgcode/&quot;@lgcode/g, '"')
-      .replace(@lgcode/&#39;@lgcode/g, "'")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&amp;/g, "&")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
 
     let language = lang || "text"
     if (!(language in bundledLanguages)) {
@@ -476,7 +476,7 @@ export const { use: useMarked, provider: MarkedProvider } = createSimpleContext(
         renderer: {
           link({ href, title, text }) {
             const titleAttr = title ? ` title="${title}"` : ""
-            return `<a href="${href}"${titleAttr} class="external-link" target="_blank" rel="noopener noreferrer">${text}<@lgcode/a>`
+            return `<a href="${href}"${titleAttr} class="external-link" target="_blank" rel="noopener noreferrer">${text}</a>`
           },
         },
       },

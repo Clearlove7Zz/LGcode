@@ -1,4 +1,4 @@
-import * as LSPClient from ".@lgcode/client"
+import * as LSPClient from "./client"
 
 const MAX_PER_FILE = 20
 
@@ -23,7 +23,7 @@ export function report(file: string, issues: LSPClient.Diagnostic[]) {
   const limited = errors.slice(0, MAX_PER_FILE)
   const more = errors.length - MAX_PER_FILE
   const suffix = more > 0 ? `\n... and ${more} more` : ""
-  return `<diagnostics file="${file}">\n${limited.map(pretty).join("\n")}${suffix}\n<@lgcode/diagnostics>`
+  return `<diagnostics file="${file}">\n${limited.map(pretty).join("\n")}${suffix}\n</diagnostics>`
 }
 
-export * as Diagnostic from ".@lgcode/diagnostic"
+export * as Diagnostic from "./diagnostic"

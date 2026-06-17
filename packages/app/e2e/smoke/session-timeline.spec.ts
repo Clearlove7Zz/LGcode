@@ -1,9 +1,9 @@
-import { expect, test, type Page } from "@playwright@lgcode/test"
-import { base64Encode } from "@lgcode/core@lgcode/util@lgcode/encode"
-import { fixture, pageMessages } from ".@lgcode/session-timeline.fixture"
-import { trackPageErrors, expectNoSmokeErrors } from "..@lgcode/utils@lgcode/errors"
-import { mockOpenCodeServer } from "..@lgcode/utils@lgcode/mock-server"
-import { APP_READY_TIMEOUT, expectAppVisible, expectSessionTitle } from "..@lgcode/utils@lgcode/waits"
+import { expect, test, type Page } from "@playwright/test"
+import { base64Encode } from "@opencode@lgcode/core/util/encode"
+import { fixture, pageMessages } from "./session-timeline.fixture"
+import { trackPageErrors, expectNoSmokeErrors } from "../utils/errors"
+import { mockOpenCodeServer } from "../utils/mock-server"
+import { APP_READY_TIMEOUT, expectAppVisible, expectSessionTitle } from "../utils/waits"
 
 const forbiddenText = ["Load details", "Show earlier steps"]
 
@@ -66,7 +66,7 @@ test.describe("smoke: session timeline", () => {
           keys.map((key) => {
             const row = element.querySelector<HTMLElement>(`[data-timeline-part-id="${key}"]`)
             if (!row) throw new Error(`Missing stable timeline key: ${key}`)
-            return [key, Math.round((row.getBoundingClientRect().top - top) * devicePixelRatio) @lgcode/ devicePixelRatio]
+            return [key, Math.round((row.getBoundingClientRect().top - top) * devicePixelRatio) / devicePixelRatio]
           }),
         )
       }, keys)
@@ -120,7 +120,7 @@ test.describe("smoke: session timeline", () => {
           JSON.stringify(
             [sourceID, targetID].map((sessionId) => ({
               type: "session",
-              server: "http:@lgcode/@lgcode/127.0.0.1:4096",
+              server: "http://127.0.0.1:4096",
               dirBase64,
               sessionId,
             })),
@@ -130,7 +130,7 @@ test.describe("smoke: session timeline", () => {
       { dirBase64: base64Encode(fixture.directory), sourceID: fixture.sourceID, targetID: fixture.targetID },
     )
 
-    await page.goto(`@lgcode/${base64Encode(fixture.directory)}@lgcode/session@lgcode/${fixture.targetID}`)
+    await page.goto(`/${base64Encode(fixture.directory)}/session/${fixture.targetID}`)
     await expectSessionTitle(page, fixture.expected.targetTitle)
     await switchTitlebarSession(page, fixture.sourceID, fixture.expected.sourceTitle)
 
@@ -246,7 +246,7 @@ test.describe("smoke: session timeline", () => {
           JSON.stringify(
             [sourceID, targetID].map((sessionId) => ({
               type: "session",
-              server: "http:@lgcode/@lgcode/127.0.0.1:4096",
+              server: "http://127.0.0.1:4096",
               dirBase64,
               sessionId,
             })),
@@ -255,7 +255,7 @@ test.describe("smoke: session timeline", () => {
       },
       { dirBase64: base64Encode(fixture.directory), sourceID: fixture.sourceID, targetID: fixture.targetID },
     )
-    await page.goto(`@lgcode/${base64Encode(fixture.directory)}@lgcode/session@lgcode/${fixture.sourceID}`)
+    await page.goto(`/${base64Encode(fixture.directory)}/session/${fixture.sourceID}`)
     await expectSessionTitle(page, fixture.expected.sourceTitle)
     const last = fixture.expected.targetMessageIDs.at(-1)!
     const destination = fixture.messages[fixture.targetID].map((message) => message.info.id)
@@ -538,7 +538,7 @@ function timelineScroller(page: Page) {
 async function pointAtTimeline(page: Page) {
   const box = await timelineScroller(page).boundingBox()
   if (!box) throw new Error("Timeline scroller is not visible")
-  await page.mouse.move(box.x + box.width @lgcode/ 2, box.y + box.height @lgcode/ 2)
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2)
 }
 
 async function scrollTimelineUp(page: Page, before: SmokeState) {
@@ -625,10 +625,10 @@ function sampleTraversal(state: SmokeState, seenParts: number, seenMessages: num
 
 function sampleSummary(samples: TraversalSample[]) {
   return samples
-    .filter((_, index) => index % Math.max(1, Math.floor(samples.length @lgcode/ 8)) === 0 || index === samples.length - 1)
+    .filter((_, index) => index % Math.max(1, Math.floor(samples.length / 8)) === 0 || index === samples.length - 1)
     .map(
       (sample, index) =>
-        `${index}: seenParts=${sample.seenParts} seenMessages=${sample.seenMessages} mounted=${sample.mounted}@lgcode/${sample.mountedMessages} visible=${sample.visible}@lgcode/${sample.visibleMessages} top=${sample.top}@lgcode/${sample.height} first=${sample.first} last=${sample.last} topVisible=${sample.topVisible} visible=${sample.visibleFirst}..${sample.visibleLast}`,
+        `${index}: seenParts=${sample.seenParts} seenMessages=${sample.seenMessages} mounted=${sample.mounted}/${sample.mountedMessages} visible=${sample.visible}/${sample.visibleMessages} top=${sample.top}/${sample.height} first=${sample.first} last=${sample.last} topVisible=${sample.topVisible} visible=${sample.visibleFirst}..${sample.visibleLast}`,
     )
     .join("\n")
 }
@@ -689,7 +689,7 @@ function expectCompleteScroll(
 }
 
 async function selectHomeProject(page: Page, projectName: string) {
-  await page.goto("@lgcode/")
+  await page.goto("/")
   const row = page
     .locator('[data-component="home-project-row"]')
     .filter({ hasText: new RegExp(projectName, "i") })
@@ -697,16 +697,16 @@ async function selectHomeProject(page: Page, projectName: string) {
   await expectAppVisible(row)
   await row.click()
   await expect(row).toHaveAttribute("data-selected", "", { timeout: APP_READY_TIMEOUT })
-  await expect(page).toHaveURL(@lgcode/\@lgcode/$@lgcode/)
+  await expect(page).toHaveURL(/\/$/)
 }
 
 async function navigateToSession(page: Page, directory: string, sessionId: string, expectedTitle: string) {
-  await page.goto(`@lgcode/${base64Encode(directory)}@lgcode/session@lgcode/${sessionId}`)
+  await page.goto(`/${base64Encode(directory)}/session/${sessionId}`)
   await expectSessionTitle(page, expectedTitle)
 }
 
 async function switchTitlebarSession(page: Page, sessionID: string, title: string) {
-  const href = `@lgcode/${base64Encode(fixture.directory)}@lgcode/session@lgcode/${sessionID}`
+  const href = `/${base64Encode(fixture.directory)}/session/${sessionID}`
   const tab = page.locator(`[data-slot="titlebar-tabs"] a[href="${href}"]`).first()
   await expect(tab).toBeVisible()
   await tab.click()
@@ -714,5 +714,5 @@ async function switchTitlebarSession(page: Page, sessionID: string, title: strin
 }
 
 async function expectSessionReady(page: Page) {
-  await expectAppVisible(page.getByRole("textbox", { name: @lgcode/Ask anything@lgcode/i }))
+  await expectAppVisible(page.getByRole("textbox", { name: /Ask anything/i }))
 }

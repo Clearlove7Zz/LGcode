@@ -1,7 +1,7 @@
 import { createEffect } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import { getRequestEvent } from "solid-js@lgcode/web"
-import { createSimpleContext } from "@lgcode/ui@lgcode/context"
+import { createStore } from "solid-js/store"
+import { getRequestEvent } from "solid-js/web"
+import { createSimpleContext } from "@opencode@lgcode/ui/context"
 import {
   LOCALES,
   type Locale,
@@ -15,7 +15,7 @@ import {
   parseLocale,
   route as localeRoute,
   tag as localeTag,
-} from "~@lgcode/lib@lgcode/language"
+} from "~/lib/language"
 
 function initial() {
   const evt = getRequestEvent()

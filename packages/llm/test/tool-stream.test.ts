@@ -1,8 +1,8 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { LLMError } from "..@lgcode/src@lgcode/schema"
-import { ToolStream } from "..@lgcode/src@lgcode/protocols@lgcode/utils@lgcode/tool-stream"
-import { it } from ".@lgcode/lib@lgcode/effect"
+import { LLMError } from "../src/schema"
+import { ToolStream } from "../src/protocols/utils/tool-stream"
+import { it } from "./lib/effect"
 
 const ADAPTER = "test-route"
 

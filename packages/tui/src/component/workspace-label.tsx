@@ -1,4 +1,4 @@
-import { useTheme } from "..@lgcode/context@lgcode/theme"
+import { useTheme } from "../context/theme"
 
 export type WorkspaceStatus = "connected" | "connecting" | "disconnected" | "error"
 
@@ -12,8 +12,8 @@ export function WorkspaceLabel(props: { type: string; name: string; status?: Wor
 
   return (
     <>
-      {props.icon ? <span style={{ fg: color() }}>● <@lgcode/span> : undefined}
-      <span style={{ fg: theme.text }}>{props.name}<@lgcode/span> <span style={{ fg: theme.textMuted }}>({props.type})<@lgcode/span>
-    <@lgcode/>
+      {props.icon ? <span style={{ fg: color() }}>● </span> : undefined}
+      <span style={{ fg: theme.text }}>{props.name}</span> <span style={{ fg: theme.textMuted }}>({props.type})</span>
+    </>
   )
 }

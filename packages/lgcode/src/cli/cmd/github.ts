@@ -1,15 +1,15 @@
 import { Effect } from "effect"
-import { cmd } from ".@lgcode/cmd"
-import { effectCmd } from "..@lgcode/effect-cmd"
+import { cmd } from "./cmd"
+import { effectCmd } from "../effect-cmd"
 
-export { extractResponseText, formatPromptTooLargeError, parseGitHubRemote } from ".@lgcode/github.shared"
+export { extractResponseText, formatPromptTooLargeError, parseGitHubRemote } from "./github.shared"
 
 export const GithubInstallCommand = effectCmd({
   command: "install",
   describe: "install the GitHub agent",
   handler: () =>
     Effect.gen(function* () {
-      const { githubInstall } = yield* Effect.promise(() => import(".@lgcode/github.handler"))
+      const { githubInstall } = yield* Effect.promise(() => import("./github.handler"))
       return yield* githubInstall()
     }),
 })
@@ -29,7 +29,7 @@ export const GithubRunCommand = effectCmd({
       }),
   handler: (args) =>
     Effect.gen(function* () {
-      const { githubRun } = yield* Effect.promise(() => import(".@lgcode/github.handler"))
+      const { githubRun } = yield* Effect.promise(() => import("./github.handler"))
       return yield* githubRun(args)
     }),
 })

@@ -1,11 +1,11 @@
-export * as ReadToolFileSystem from ".@lgcode/read-filesystem"
+export * as ReadToolFileSystem from "./read-filesystem"
 
 import path from "path"
 import { pathToFileURL } from "url"
 import { Context, Effect, Layer, Option, Schema } from "effect"
-import { FileSystem } from "..@lgcode/filesystem"
-import { FSUtil } from "..@lgcode/fs-util"
-import { AbsolutePath, PositiveInt, RelativePath } from "..@lgcode/schema"
+import { FileSystem } from "../filesystem"
+import { FSUtil } from "../fs-util"
+import { AbsolutePath, PositiveInt, RelativePath } from "../schema"
 
 export const MAX_READ_LINES = 2_000
 export const MAX_READ_BYTES = 50 * 1024
@@ -61,7 +61,7 @@ export interface Interface {
   readonly list: (path: AbsolutePath, page?: PageInput) => Effect.Effect<ListPage>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/ReadToolFileSystem") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/ReadToolFileSystem") {}
 
 const extensions = new Set([
   ".zip",
@@ -95,11 +95,11 @@ const extensions = new Set([
 ])
 const startsWith = (bytes: Uint8Array, prefix: number[]) => prefix.every((value, index) => bytes[index] === value)
 const imageMime = (bytes: Uint8Array) => {
-  if (startsWith(bytes, [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])) return "image@lgcode/png"
-  if (startsWith(bytes, [0xff, 0xd8, 0xff])) return "image@lgcode/jpeg"
-  if (startsWith(bytes, [0x47, 0x49, 0x46, 0x38])) return "image@lgcode/gif"
+  if (startsWith(bytes, [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])) return "image/png"
+  if (startsWith(bytes, [0xff, 0xd8, 0xff])) return "image/jpeg"
+  if (startsWith(bytes, [0x47, 0x49, 0x46, 0x38])) return "image/gif"
   if (startsWith(bytes, [0x52, 0x49, 0x46, 0x46]) && startsWith(bytes.subarray(8), [0x57, 0x45, 0x42, 0x50]))
-    return "image@lgcode/webp"
+    return "image/webp"
 }
 const binary = (resource: string, bytes: Uint8Array) => {
   if (extensions.has(path.extname(resource).toLowerCase())) return true
@@ -109,7 +109,7 @@ const binary = (resource: string, bytes: Uint8Array) => {
     if (byte === 0) return true
     if (byte < 9 || (byte > 13 && byte < 32)) nonPrintable++
   }
-  return nonPrintable @lgcode/ bytes.length > 0.3
+  return nonPrintable / bytes.length > 0.3
 }
 
 export const inspect = Effect.fn("ReadTool.inspect")(function* (fs: FSUtil.Interface, input: string) {
@@ -278,7 +278,7 @@ export const list = Effect.fn("ReadTool.list")(function* (fs: FSUtil.Interface, 
         return new FileSystem.Entry({
           path: RelativePath.make(item.name + (type === "directory" ? path.sep : "")),
           type,
-          mime: type === "directory" ? "application@lgcode/x-directory" : FSUtil.mimeType(target),
+          mime: type === "directory" ? "application/x-directory" : FSUtil.mimeType(target),
         })
       }),
     { concurrency: 16 },

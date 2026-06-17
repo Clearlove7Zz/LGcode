@@ -1,7 +1,7 @@
-import style from ".@lgcode/content-text.module.css"
+import style from "./content-text.module.css"
 import { createSignal } from "solid-js"
-import { createOverflow, useShareMessages } from ".@lgcode/common"
-import { CopyButton } from ".@lgcode/copy-button"
+import { createOverflow, useShareMessages } from "./common"
+import { CopyButton } from "./copy-button"
 
 interface Props {
   text: string
@@ -21,7 +21,7 @@ export function ContentText(props: Props) {
     >
       <pre data-slot="text" ref={overflow.ref}>
         {props.text}
-      <@lgcode/pre>
+      </pre>
       {((!props.expand && overflow.status) || expanded()) && (
         <button
           type="button"
@@ -30,9 +30,9 @@ export function ContentText(props: Props) {
           onClick={() => setExpanded((e) => !e)}
         >
           {expanded() ? messages.show_less : messages.show_more}
-        <@lgcode/button>
+        </button>
       )}
-      <CopyButton text={props.text} @lgcode/>
-    <@lgcode/div>
+      <CopyButton text={props.text} />
+    </div>
   )
 }

@@ -1,5 +1,5 @@
-import { Share } from ".@lgcode/src@lgcode/core@lgcode/share"
-import { Storage } from ".@lgcode/src@lgcode/core@lgcode/storage"
+import { Share } from "./src/core/share"
+import { Storage } from "./src/core/storage"
 
 async function test() {
   const shareInfo = await Share.create({ sessionID: "test-debug-" + Date.now() })

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { mkdtemp, rm, truncate, writeFile } from "node:fs@lgcode/promises"
+import { mkdtemp, rm, truncate, writeFile } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import {
@@ -7,12 +7,12 @@ import {
   createPickedFileAuthorizations,
   MAX_ATTACHMENT_BYTES,
   readAttachment,
-} from ".@lgcode/attachment-picker"
+} from "./attachment-picker"
 
 describe("assertAttachmentBudget", () => {
   test("accepts selections within the media ingest limit", () => {
     expect(() =>
-      assertAttachmentBudget([{ size: MAX_ATTACHMENT_BYTES @lgcode/ 2 }, { size: MAX_ATTACHMENT_BYTES @lgcode/ 2 }]),
+      assertAttachmentBudget([{ size: MAX_ATTACHMENT_BYTES / 2 }, { size: MAX_ATTACHMENT_BYTES / 2 }]),
     ).not.toThrow()
   })
 

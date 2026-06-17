@@ -1,6 +1,6 @@
-import { NamedError } from "@lgcode/core@lgcode/util@lgcode/error"
-import { errorFormat } from "@@lgcode/util@lgcode/error"
-import { isRecord } from "@@lgcode/util@lgcode/record"
+import { NamedError } from "@opencode@lgcode/core/util/error"
+import { errorFormat } from "@/util/error"
+import { isRecord } from "@/util/record"
 
 type ConfigIssue = { message: string; path: string[] }
 
@@ -38,63 +38,63 @@ export function FormatError(input: unknown): string | undefined {
     if (formatted) return formatted
   }
 
-  @lgcode/@lgcode/ CliError: domain failure surfaced from an effectCmd handler via fail("...")
+  // CliError: domain failure surfaced from an effectCmd handler via fail("...")
   if (isTaggedError(input, "CliError")) {
     if (typeof input.exitCode === "number") process.exitCode = input.exitCode
     return stringField(input, "message") ?? ""
   }
 
-  @lgcode/@lgcode/ MCPFailed: { name: string }
+  // MCPFailed: { name: string }
   if (NamedError.hasName(input, "MCPFailed")) {
     const data = isRecord(input) && isRecord(input.data) ? stringField(input.data, "name") : undefined
     return `MCP server "${data}" failed. Note, opencode does not support MCP authentication yet.`
   }
 
-  @lgcode/@lgcode/ AccountServiceError, AccountTransportError: TaggedErrorClass
+  // AccountServiceError, AccountTransportError: TaggedErrorClass
   if (isTaggedError(input, "AccountServiceError") || isTaggedError(input, "AccountTransportError")) {
     return stringField(input, "message") ?? ""
   }
 
-  @lgcode/@lgcode/ ProviderModelNotFoundError: { providerID: string, modelID: string, suggestions?: string[] }
+  // ProviderModelNotFoundError: { providerID: string, modelID: string, suggestions?: string[] }
   const providerModelNotFound = configData(input, "ProviderModelNotFoundError")
   if (providerModelNotFound) {
     const suggestions = Array.isArray(providerModelNotFound.suggestions)
       ? providerModelNotFound.suggestions.filter((x) => typeof x === "string")
       : []
     return [
-      `Model not found: ${stringField(providerModelNotFound, "providerID")}@lgcode/${stringField(providerModelNotFound, "modelID")}`,
+      `Model not found: ${stringField(providerModelNotFound, "providerID")}/${stringField(providerModelNotFound, "modelID")}`,
       ...(suggestions.length ? ["Did you mean: " + suggestions.join(", ")] : []),
       `Try: \`opencode models\` to list available models`,
-      `Or check your config (opencode.json) provider@lgcode/model names`,
+      `Or check your config (opencode.json) provider/model names`,
     ].join("\n")
   }
 
-  @lgcode/@lgcode/ ProviderInitError: { providerID: string }
+  // ProviderInitError: { providerID: string }
   const providerInit = configData(input, "ProviderInitError")
   if (providerInit) {
     return `Failed to initialize provider "${stringField(providerInit, "providerID")}". Check credentials and configuration.`
   }
 
-  @lgcode/@lgcode/ ConfigJsonError: { path: string, message?: string }
+  // ConfigJsonError: { path: string, message?: string }
   const configJson = configData(input, "ConfigJsonError")
   if (configJson) {
     const message = stringField(configJson, "message")
     return `Config file at ${stringField(configJson, "path")} is not valid JSON(C)` + (message ? `: ${message}` : "")
   }
 
-  @lgcode/@lgcode/ ConfigDirectoryTypoError: { dir: string, path: string, suggestion: string }
+  // ConfigDirectoryTypoError: { dir: string, path: string, suggestion: string }
   const configDirectoryTypo = configData(input, "ConfigDirectoryTypoError")
   if (configDirectoryTypo) {
     return `Directory "${stringField(configDirectoryTypo, "dir")}" in ${stringField(configDirectoryTypo, "path")} is not valid. Rename the directory to "${stringField(configDirectoryTypo, "suggestion")}" or remove it. This is a common typo.`
   }
 
-  @lgcode/@lgcode/ ConfigFrontmatterError: { message: string }
+  // ConfigFrontmatterError: { message: string }
   const configFrontmatter = configData(input, "ConfigFrontmatterError")
   if (configFrontmatter) {
     return stringField(configFrontmatter, "message") ?? ""
   }
 
-  @lgcode/@lgcode/ ConfigRemoteAuthError: { url: string, remote: string }
+  // ConfigRemoteAuthError: { url: string, remote: string }
   const remoteAuth = configData(input, "ConfigRemoteAuthError")
   if (remoteAuth) {
     const url = stringField(remoteAuth, "url")
@@ -106,7 +106,7 @@ export function FormatError(input: unknown): string | undefined {
     ].join("\n")
   }
 
-  @lgcode/@lgcode/ ConfigInvalidError: { path?: string, message?: string, issues?: Array<{ message: string, path: string[] }> }
+  // ConfigInvalidError: { path?: string, message?: string, issues?: Array<{ message: string, path: string[] }> }
   const configInvalid = configData(input, "ConfigInvalidError")
   if (configInvalid) {
     const path = stringField(configInvalid, "path")
@@ -118,7 +118,7 @@ export function FormatError(input: unknown): string | undefined {
     ].join("\n")
   }
 
-  @lgcode/@lgcode/ UICancelledError: user cancelled an interactive CLI prompt
+  // UICancelledError: user cancelled an interactive CLI prompt
   if (isTaggedError(input, "UICancelledError") || NamedError.hasName(input, "UICancelledError")) {
     return ""
   }

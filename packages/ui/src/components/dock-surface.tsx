@@ -16,7 +16,7 @@ export function DockShell(props: ComponentProps<"div">) {
       }}
     >
       {split.children}
-    <@lgcode/div>
+    </div>
   )
 }
 
@@ -32,7 +32,7 @@ export function DockShellForm(props: ComponentProps<"form">) {
       }}
     >
       {split.children}
-    <@lgcode/form>
+    </form>
   )
 }
 
@@ -49,6 +49,6 @@ export function DockTray(props: DockTrayProps) {
       }}
     >
       {split.children}
-    <@lgcode/div>
+    </div>
   )
 }

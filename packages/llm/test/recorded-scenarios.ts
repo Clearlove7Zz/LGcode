@@ -13,21 +13,21 @@ import {
   type FinishReason,
   type LLMRequest,
   type Model,
-} from "..@lgcode/src"
-import { LLMClient } from "..@lgcode/src@lgcode/route"
-import { Tool } from "..@lgcode/src@lgcode/tool"
+} from "../src"
+import { LLMClient } from "../src/route"
+import { Tool } from "../src/tool"
 
 export const weatherToolName = "get_weather"
 
-@lgcode/@lgcode/ A deterministic system prompt long enough to clear every supported provider's
-@lgcode/@lgcode/ minimum cacheable-prefix threshold (Anthropic Haiku 3.5: 2048 tokens; Anthropic
-@lgcode/@lgcode/ Opus@lgcode/Haiku 4.5: 4096 tokens; OpenAI@lgcode/Gemini@lgcode/Bedrock: lower). Built by repeating
-@lgcode/@lgcode/ a fixed sentence — the cassette replays bit-for-bit, so the exact text matters
-@lgcode/@lgcode/ only when re-recording with `RECORD=true`.
+// A deterministic system prompt long enough to clear every supported provider's
+// minimum cacheable-prefix threshold (Anthropic Haiku 3.5: 2048 tokens; Anthropic
+// Opus/Haiku 4.5: 4096 tokens; OpenAI/Gemini/Bedrock: lower). Built by repeating
+// a fixed sentence — the cassette replays bit-for-bit, so the exact text matters
+// only when re-recording with `RECORD=true`.
 export const LARGE_CACHEABLE_SYSTEM = (() => {
   const sentence = "You are a concise, factual assistant. Answer precisely and avoid filler. Cite numbers when known. "
-  @lgcode/@lgcode/ ~100 chars per sentence × 250 repeats ≈ 25,000 chars ≈ 5k+ tokens, safely
-  @lgcode/@lgcode/ above every provider's threshold.
+  // ~100 chars per sentence × 250 repeats ≈ 25,000 chars ≈ 5k+ tokens, safely
+  // above every provider's threshold.
   return sentence.repeat(250)
 })()
 
@@ -84,7 +84,7 @@ export const goldenWeatherToolLoopRequest = (input: {
 
 const RESTROOM_IMAGE_TEXT = "jiggling restroom prison"
 const restroomImage = () =>
-  Effect.promise(() => Bun.file(new URL(".@lgcode/fixtures@lgcode/media@lgcode/restroom.png", import.meta.url)).bytes()).pipe(
+  Effect.promise(() => Bun.file(new URL("./fixtures/media/restroom.png", import.meta.url)).bytes()).pipe(
     Effect.map((bytes) => Buffer.from(bytes).toString("base64")),
   )
 
@@ -181,7 +181,7 @@ export const expectWeatherToolLoop = (events: ReadonlyArray<LLMEvent>) => {
 
 export const expectGoldenWeatherToolLoop = (events: ReadonlyArray<LLMEvent>) => {
   expectWeatherToolLoop(events)
-  expect(LLMResponse.text({ events }).trim()).toMatch(@lgcode/^Paris is sunny\.?$@lgcode/)
+  expect(LLMResponse.text({ events }).trim()).toMatch(/^Paris is sunny\.?$/)
 }
 
 export interface GoldenScenarioContext {
@@ -199,8 +199,8 @@ const generation = (context: GoldenScenarioContext, maxTokens: number) =>
 const normalizeImageText = (value: string) =>
   value
     .toLowerCase()
-    .replace(@lgcode/[^a-z\s]@lgcode/g, "")
-    .replace(@lgcode/\s+@lgcode/g, " ")
+    .replace(/[^a-z\s]/g, "")
+    .replace(/\s+/g, " ")
     .trim()
 
 const encryptedReasoningOptions = {
@@ -269,9 +269,9 @@ const assertAssistantToolCall = (response: LLMResponse, expected: NonNullable<As
   ])
 }
 
-@lgcode/@lgcode/ The generated golden scenarios only model one assistant shape at a time:
-@lgcode/@lgcode/ encrypted reasoning + text, text, or tool call. Keep mixed interleavings in
-@lgcode/@lgcode/ focused protocol tests where event order can be asserted directly.
+// The generated golden scenarios only model one assistant shape at a time:
+// encrypted reasoning + text, text, or tool call. Keep mixed interleavings in
+// focused protocol tests where event order can be asserted directly.
 const assistantMessageFromResponse = (response: LLMResponse, step: AssistantStep) => {
   const content: ContentPart[] = []
   if (step.reasoning === "openai-encrypted") {
@@ -324,7 +324,7 @@ const runGeneratedConversation = (context: GoldenScenarioContext, steps: Readonl
 const runTextScenario = (context: GoldenScenarioContext) =>
   runGeneratedConversation(context, [
     user("Reply exactly with: Hello!"),
-    assistant.expectText(@lgcode/^Hello!?$@lgcode/, {
+    assistant.expectText(/^Hello!?$/, {
       system: "You are concise.",
       maxTokens: context.maxTokens ?? 40,
       providerOptions:
@@ -355,9 +355,9 @@ const runImageScenario = (context: GoldenScenarioContext) =>
           type: "text",
           text: "The image contains exactly three lowercase English words. Read them left to right and reply with only those words.",
         },
-        { type: "media", mediaType: "image@lgcode/png", data: yield* restroomImage() },
+        { type: "media", mediaType: "image/png", data: yield* restroomImage() },
       ]),
-      assistant.expectText(@lgcode/.+@lgcode/, {
+      assistant.expectText(/.+/, {
         system: "Read images carefully. Reply only with the visible text.",
         maxTokens: context.maxTokens ?? 20,
         assert: (response) => expect(normalizeImageText(response.text)).toBe(RESTROOM_IMAGE_TEXT),
@@ -365,9 +365,9 @@ const runImageScenario = (context: GoldenScenarioContext) =>
     ])
   })
 
-@lgcode/@lgcode/ Reproduces a tool-result image round trip: a tool returns image bytes, and
-@lgcode/@lgcode/ the next model turn must receive provider-native image content instead of a
-@lgcode/@lgcode/ JSON-stringified base64 blob.
+// Reproduces a tool-result image round trip: a tool returns image bytes, and
+// the next model turn must receive provider-native image content instead of a
+// JSON-stringified base64 blob.
 const screenshotToolName = "read_screenshot"
 const runImageToolResultScenario = (context: GoldenScenarioContext) =>
   Effect.gen(function* () {
@@ -388,7 +388,7 @@ const runImageToolResultScenario = (context: GoldenScenarioContext) =>
             resultType: "content",
             result: [
               { type: "text", text: "Image read successfully" },
-              { type: "file", uri: `data:image@lgcode/png;base64,${image}`, mime: "image@lgcode/png" },
+              { type: "file", uri: `data:image/png;base64,${image}`, mime: "image/png" },
             ],
           }),
         ],
@@ -409,7 +409,7 @@ const runImageToolResultScenario = (context: GoldenScenarioContext) =>
 const runReasoningScenario = (context: GoldenScenarioContext) =>
   runGeneratedConversation(context, [
     user("Think briefly, then reply exactly with: Hello!"),
-    assistant.expectText(@lgcode/^Hello!?$@lgcode/, {
+    assistant.expectText(/^Hello!?$/, {
       system: "Show concise reasoning when the provider supports visible reasoning summaries.",
       providerOptions: { openai: { reasoningEffort: "low", reasoningSummary: "auto" } },
       maxTokens: context.maxTokens ?? 120,
@@ -420,13 +420,13 @@ const runReasoningScenario = (context: GoldenScenarioContext) =>
 const runReasoningContinuationScenario = (context: GoldenScenarioContext) =>
   runGeneratedConversation(context, [
     user("Think briefly, then reply exactly with: Hello!"),
-    assistant.expectEncryptedReasoningText(@lgcode/^Hello!?$@lgcode/, {
+    assistant.expectEncryptedReasoningText(/^Hello!?$/, {
       id: "first",
       system: "Show concise reasoning when the provider supports visible reasoning summaries.",
       maxTokens: context.maxTokens ?? 120,
     }),
     user("Now reply exactly with: Done."),
-    assistant.expectText(@lgcode/^Done\.?$@lgcode/, { id: "second", maxTokens: 40, providerOptions: encryptedReasoningOptions }),
+    assistant.expectText(/^Done\.?$/, { id: "second", maxTokens: 40, providerOptions: encryptedReasoningOptions }),
   ])
 
 const runToolLoopScenario = (context: GoldenScenarioContext) =>

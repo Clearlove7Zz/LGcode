@@ -1,32 +1,32 @@
 import { afterEach, describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { FetchHttpClient } from "effect@lgcode/unstable@lgcode/http"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { Ripgrep } from "@lgcode/core@lgcode/ripgrep"
-import { EffectFlock } from "@lgcode/core@lgcode/util@lgcode/effect-flock"
+import { FetchHttpClient } from "effect/unstable/http"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { Ripgrep } from "@opencode@lgcode/core/ripgrep"
+import { EffectFlock } from "@opencode@lgcode/core/util/effect-flock"
 import path from "path"
 import { pathToFileURL } from "url"
-import { Auth } from "..@lgcode/..@lgcode/src@lgcode/auth"
-import { EventV2Bridge } from "..@lgcode/..@lgcode/src@lgcode/event-v2-bridge"
-import { Config } from "..@lgcode/..@lgcode/src@lgcode/config@lgcode/config"
-import { Env } from "..@lgcode/..@lgcode/src@lgcode/env"
-import { RuntimeFlags } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/runtime-flags"
-import { Workspace } from "..@lgcode/..@lgcode/src@lgcode/control-plane@lgcode/workspace"
-import { Plugin } from "..@lgcode/..@lgcode/src@lgcode/plugin@lgcode/index"
-import { InstanceBootstrap } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/bootstrap-service"
-import { InstanceStore } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/instance-store"
-import { Project } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/project"
-import { Vcs } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/vcs"
-import { InstanceState } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/instance-state"
-import { Session } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/session"
-import { SessionPrompt } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/prompt"
-import { disposeAllInstances, TestInstance } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
-import { AccountTest } from "..@lgcode/fake@lgcode/account"
-import { AuthTest } from "..@lgcode/fake@lgcode/auth"
-import { NpmTest } from "..@lgcode/fake@lgcode/npm"
+import { Auth } from "../../src/auth"
+import { EventV2Bridge } from "../../src/event-v2-bridge"
+import { Config } from "../../src/config/config"
+import { Env } from "../../src/env"
+import { RuntimeFlags } from "../../src/effect/runtime-flags"
+import { Workspace } from "../../src/control-plane/workspace"
+import { Plugin } from "../../src/plugin/index"
+import { InstanceBootstrap } from "../../src/project/bootstrap-service"
+import { InstanceStore } from "../../src/project/instance-store"
+import { Project } from "../../src/project/project"
+import { Vcs } from "../../src/project/vcs"
+import { InstanceState } from "../../src/effect/instance-state"
+import { Session } from "../../src/session/session"
+import { SessionPrompt } from "../../src/session/prompt"
+import { disposeAllInstances, TestInstance } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
+import { AccountTest } from "../fake/account"
+import { AuthTest } from "../fake/auth"
+import { NpmTest } from "../fake/npm"
 
 const configLayer = Config.layer.pipe(
   Layer.provide(EffectFlock.defaultLayer),
@@ -81,7 +81,7 @@ describe("plugin.workspace", () => {
             '    name: "plug",',
             '    description: "plugin workspace adapter",',
             "    configure(input) {",
-            `      return { ...input, name: "plug", branch: "plug@lgcode/main", directory: ${JSON.stringify(space)} }`,
+            `      return { ...input, name: "plug", branch: "plug/main", directory: ${JSON.stringify(space)} }`,
             "    },",
             "    async create(input) {",
             `      await Bun.write(${JSON.stringify(mark)}, JSON.stringify(input))`,
@@ -103,7 +103,7 @@ describe("plugin.workspace", () => {
           path.join(dir, "opencode.json"),
           JSON.stringify(
             {
-              $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+              $schema: "https://opencode.ai/config.json",
               plugin: [pathToFileURL(file).href],
             },
             null,
@@ -125,13 +125,13 @@ describe("plugin.workspace", () => {
 
       expect(info.type).toBe(type)
       expect(info.name).toBe("plug")
-      expect(info.branch).toBe("plug@lgcode/main")
+      expect(info.branch).toBe("plug/main")
       expect(info.directory).toBe(space)
       expect(info.extra).toEqual({ key: "value" })
       expect(JSON.parse(yield* Effect.promise(() => Bun.file(mark).text()))).toMatchObject({
         type,
         name: "plug",
-        branch: "plug@lgcode/main",
+        branch: "plug/main",
         directory: space,
         extra: { key: "value" },
       })

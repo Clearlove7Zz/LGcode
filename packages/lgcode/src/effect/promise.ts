@@ -14,4 +14,4 @@ export function refineRejection<A, E>(
   )
 }
 
-export * as EffectPromise from ".@lgcode/promise"
+export * as EffectPromise from "./promise"

@@ -1,9 +1,9 @@
 import { createSignal } from "solid-js"
-import { Dialog } from "@lgcode/ui@lgcode/dialog"
-import { Button } from "@lgcode/ui@lgcode/button"
-import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
-import { useSettings } from "@@lgcode/context@lgcode/settings"
+import { Dialog } from "@opencode@lgcode/ui/dialog"
+import { Button } from "@opencode@lgcode/ui/button"
+import { useDialog } from "@opencode@lgcode/ui/context/dialog"
+import { useLanguage } from "@/context/language"
+import { useSettings } from "@/context/settings"
 
 export type Highlight = {
   title: string
@@ -67,36 +67,36 @@ export function DialogReleaseNotes(props: { highlights: Highlight[] }) {
       class="w-[min(calc(100vw-40px),720px)] h-[min(calc(100vh-40px),400px)] -mt-20 min-h-0 overflow-hidden"
     >
       <div class="flex flex-1 min-w-0 min-h-0" tabIndex={0} autofocus onKeyDown={handleKeyDown}>
-        {@lgcode/* Left side - Text content *@lgcode/}
+        {/* Left side - Text content */}
         <div class="flex flex-col flex-1 min-w-0 p-8">
-          {@lgcode/* Top section - feature content (fixed position from top) *@lgcode/}
+          {/* Top section - feature content (fixed position from top) */}
           <div class="flex flex-col gap-2 pt-22">
             <div class="flex items-center gap-2">
-              <h1 class="text-16-medium text-text-strong">{feature()?.title ?? ""}<@lgcode/h1>
-            <@lgcode/div>
-            <p class="text-14-regular text-text-base">{feature()?.description ?? ""}<@lgcode/p>
-          <@lgcode/div>
+              <h1 class="text-16-medium text-text-strong">{feature()?.title ?? ""}</h1>
+            </div>
+            <p class="text-14-regular text-text-base">{feature()?.description ?? ""}</p>
+          </div>
 
-          {@lgcode/* Spacer to push buttons to bottom *@lgcode/}
-          <div class="flex-1" @lgcode/>
+          {/* Spacer to push buttons to bottom */}
+          <div class="flex-1" />
 
-          {@lgcode/* Bottom section - buttons and indicators (fixed position) *@lgcode/}
+          {/* Bottom section - buttons and indicators (fixed position) */}
           <div class="flex flex-col gap-12">
             <div class="flex flex-col items-start gap-3">
               {isLast() ? (
                 <Button variant="primary" size="large" onClick={handleClose}>
                   {language.t("dialog.releaseNotes.action.getStarted")}
-                <@lgcode/Button>
+                </Button>
               ) : (
                 <Button variant="secondary" size="large" onClick={handleNext}>
                   {language.t("dialog.releaseNotes.action.next")}
-                <@lgcode/Button>
+                </Button>
               )}
 
               <Button variant="ghost" size="small" onClick={handleDisable}>
                 {language.t("dialog.releaseNotes.action.hideFuture")}
-              <@lgcode/Button>
-            <@lgcode/div>
+              </Button>
+            </div>
 
             {paged() && (
               <div class="flex items-center gap-1.5 -my-2.5">
@@ -116,15 +116,15 @@ export function DialogReleaseNotes(props: { highlights: Highlight[] }) {
                         "bg-icon-strong-base": i === index(),
                         "bg-icon-weak-base": i !== index(),
                       }}
-                    @lgcode/>
-                  <@lgcode/button>
+                    />
+                  </button>
                 ))}
-              <@lgcode/div>
+              </div>
             )}
-          <@lgcode/div>
-        <@lgcode/div>
+          </div>
+        </div>
 
-        {@lgcode/* Right side - Media content (edge to edge) *@lgcode/}
+        {/* Right side - Media content (edge to edge) */}
         {feature()?.media && (
           <div class="flex-1 min-w-0 bg-surface-base overflow-hidden rounded-r-xl">
             {feature()!.media!.type === "image" ? (
@@ -132,13 +132,13 @@ export function DialogReleaseNotes(props: { highlights: Highlight[] }) {
                 src={feature()!.media!.src}
                 alt={feature()!.media!.alt ?? feature()?.title ?? language.t("dialog.releaseNotes.media.alt")}
                 class="w-full h-full object-cover"
-              @lgcode/>
+              />
             ) : (
-              <video src={feature()!.media!.src} autoplay loop muted playsinline class="w-full h-full object-cover" @lgcode/>
+              <video src={feature()!.media!.src} autoplay loop muted playsinline class="w-full h-full object-cover" />
             )}
-          <@lgcode/div>
+          </div>
         )}
-      <@lgcode/div>
-    <@lgcode/Dialog>
+      </div>
+    </Dialog>
   )
 }

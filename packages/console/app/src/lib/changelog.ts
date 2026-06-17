@@ -1,4 +1,4 @@
-import { query } from "@solidjs@lgcode/router"
+import { query } from "@solidjs/router"
 
 type Release = {
   tag_name: string
@@ -39,13 +39,13 @@ export type ChangelogData = {
 }
 
 export async function loadChangelog(): Promise<ChangelogData> {
-  const response = await fetch("https:@lgcode/@lgcode/api.github.com@lgcode/repos@lgcode/anomalyco@lgcode/opencode@lgcode/releases?per_page=20", {
+  const response = await fetch("https://api.github.com/repos/anomalyco/opencode/releases?per_page=20", {
     headers: {
-      Accept: "application@lgcode/vnd.github.v3+json",
+      Accept: "application/vnd.github.v3+json",
       "User-Agent": "OpenCode-Console",
     },
     cf: {
-      @lgcode/@lgcode/ best-effort edge caching (ignored outside Cloudflare)
+      // best-effort edge caching (ignored outside Cloudflare)
       cacheTtl: 60 * 5,
       cacheEverything: true,
     },
@@ -79,17 +79,17 @@ export const changelog = query(async () => {
 
 function parseHighlights(body: string): HighlightGroup[] {
   const groups = new Map<string, HighlightItem[]>()
-  const regex = @lgcode/<highlight\s+source="([^"]+)">([\s\S]*?)<\@lgcode/highlight>@lgcode/g
+  const regex = /<highlight\s+source="([^"]+)">([\s\S]*?)<\/highlight>/g
   let match
 
   while ((match = regex.exec(body)) !== null) {
     const source = match[1]
     const content = match[2]
 
-    const titleMatch = content.match(@lgcode/<h2>([^<]+)<\@lgcode/h2>@lgcode/)
-    const pMatch = content.match(@lgcode/<p(?:\s+short="([^"]*)")?>([^<]+)<\@lgcode/p>@lgcode/)
-    const imgMatch = content.match(@lgcode/<img\s+width="([^"]+)"\s+height="([^"]+)"\s+alt="[^"]*"\s+src="([^"]+)"@lgcode/)
-    const videoMatch = content.match(@lgcode/^\s*(https:\@lgcode/\@lgcode/github\.com\@lgcode/user-attachments\@lgcode/assets\@lgcode/[a-f0-9-]+)\s*$@lgcode/m)
+    const titleMatch = content.match(/<h2>([^<]+)<\/h2>/)
+    const pMatch = content.match(/<p(?:\s+short="([^"]*)")?>([^<]+)<\/p>/)
+    const imgMatch = content.match(/<img\s+width="([^"]+)"\s+height="([^"]+)"\s+alt="[^"]*"\s+src="([^"]+)"/)
+    const videoMatch = content.match(/^\s*(https:\/\/github\.com\/user-attachments\/assets\/[a-f0-9-]+)\s*$/m)
 
     const media = (() => {
       if (videoMatch) return { type: "video", src: videoMatch[1] } satisfies HighlightMedia

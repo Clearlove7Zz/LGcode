@@ -1,9 +1,9 @@
-export * from ".@lgcode/gen@lgcode/types.gen.js"
+export * from "./gen/types.gen.js"
 
-import { createClient } from ".@lgcode/gen@lgcode/client@lgcode/client.gen.js"
-import { type Config } from ".@lgcode/gen@lgcode/client@lgcode/types.gen.js"
-import { OpencodeClient } from ".@lgcode/gen@lgcode/sdk.gen.js"
-import { wrapClientError } from ".@lgcode/error-interceptor.js"
+import { createClient } from "./gen/client/client.gen.js"
+import { type Config } from "./gen/client/types.gen.js"
+import { OpencodeClient } from "./gen/sdk.gen.js"
+import { wrapClientError } from "./error-interceptor.js"
 export { type Config as OpencodeClientConfig, OpencodeClient }
 
 function pick(value: string | null, fallback?: string) {
@@ -33,7 +33,7 @@ function rewrite(request: Request, directory?: string) {
 export function createOpencodeClient(config?: Config & { directory?: string }) {
   if (!config?.fetch) {
     const customFetch: any = (req: any) => {
-      @lgcode/@lgcode/ @ts-ignore
+      // @ts-ignore
       req.timeout = false
       return fetch(req)
     }

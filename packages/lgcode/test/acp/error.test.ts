@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
-import { RequestError } from "@agentclientprotocol@lgcode/sdk"
-import * as ACPError from "..@lgcode/..@lgcode/src@lgcode/acp@lgcode/error"
+import { RequestError } from "@agentclientprotocol/sdk"
+import * as ACPError from "../../src/acp/error"
 
 describe("acp.error", () => {
   test("maps validation failures to invalid params", () => {
@@ -36,10 +36,10 @@ describe("acp.error", () => {
   })
 
   test("maps unsupported operations to method not found", () => {
-    const requestError = ACPError.toRequestError(new ACPError.UnsupportedOperationError({ method: "session@lgcode/new" }))
+    const requestError = ACPError.toRequestError(new ACPError.UnsupportedOperationError({ method: "session/new" }))
 
     expect(requestError.code).toBe(-32601)
-    expect(requestError.data).toEqual({ method: "session@lgcode/new" })
+    expect(requestError.data).toEqual({ method: "session/new" })
   })
 
   test("maps service failures to safe internal errors", () => {

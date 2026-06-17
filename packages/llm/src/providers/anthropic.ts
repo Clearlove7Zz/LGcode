@@ -1,8 +1,8 @@
-import type { RouteDefaultsInput } from "..@lgcode/route@lgcode/client"
-import { Auth } from "..@lgcode/route@lgcode/auth"
-import type { ProviderAuthOption } from "..@lgcode/route@lgcode/auth-options"
-import { ProviderID, type ModelID } from "..@lgcode/schema"
-import * as AnthropicMessages from "..@lgcode/protocols@lgcode/anthropic-messages"
+import type { RouteDefaultsInput } from "../route/client"
+import { Auth } from "../route/auth"
+import type { ProviderAuthOption } from "../route/auth-options"
+import { ProviderID, type ModelID } from "../schema"
+import * as AnthropicMessages from "../protocols/anthropic-messages"
 
 export const id = ProviderID.make("anthropic")
 

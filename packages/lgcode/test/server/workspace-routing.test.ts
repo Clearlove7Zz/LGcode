@@ -3,92 +3,92 @@ import {
   isLocalWorkspaceRoute,
   getWorkspaceRouteSessionID,
   workspaceProxyURL,
-} from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/shared@lgcode/workspace-routing"
-import { SessionID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
+} from "../../src/server/shared/workspace-routing"
+import { SessionID } from "../../src/session/schema"
 
 describe("isLocalWorkspaceRoute", () => {
-  test("GET @lgcode/session is local", () => {
-    expect(isLocalWorkspaceRoute("GET", "@lgcode/session")).toBe(true)
+  test("GET /session is local", () => {
+    expect(isLocalWorkspaceRoute("GET", "/session")).toBe(true)
   })
 
-  test("GET @lgcode/session@lgcode/ses_abc is local (prefix match)", () => {
-    expect(isLocalWorkspaceRoute("GET", "@lgcode/session@lgcode/ses_abc")).toBe(true)
+  test("GET /session/ses_abc is local (prefix match)", () => {
+    expect(isLocalWorkspaceRoute("GET", "/session/ses_abc")).toBe(true)
   })
 
-  test("POST @lgcode/session is not local (method mismatch)", () => {
-    expect(isLocalWorkspaceRoute("POST", "@lgcode/session")).toBe(false)
+  test("POST /session is not local (method mismatch)", () => {
+    expect(isLocalWorkspaceRoute("POST", "/session")).toBe(false)
   })
 
-  test("@lgcode/session@lgcode/status is forwarded regardless of method", () => {
-    expect(isLocalWorkspaceRoute("GET", "@lgcode/session@lgcode/status")).toBe(false)
-    expect(isLocalWorkspaceRoute("POST", "@lgcode/session@lgcode/status")).toBe(false)
+  test("/session/status is forwarded regardless of method", () => {
+    expect(isLocalWorkspaceRoute("GET", "/session/status")).toBe(false)
+    expect(isLocalWorkspaceRoute("POST", "/session/status")).toBe(false)
   })
 
   test("unrecognized paths are not local", () => {
-    expect(isLocalWorkspaceRoute("GET", "@lgcode/config")).toBe(false)
-    expect(isLocalWorkspaceRoute("POST", "@lgcode/session@lgcode/ses_abc@lgcode/message")).toBe(false)
+    expect(isLocalWorkspaceRoute("GET", "/config")).toBe(false)
+    expect(isLocalWorkspaceRoute("POST", "/session/ses_abc/message")).toBe(false)
   })
 })
 
 describe("getWorkspaceRouteSessionID", () => {
   test("extracts session ID from path", () => {
-    const url = new URL("http:@lgcode/@lgcode/localhost@lgcode/session@lgcode/ses_abc123@lgcode/message")
+    const url = new URL("http://localhost/session/ses_abc123/message")
     expect(getWorkspaceRouteSessionID(url)).toBe(SessionID.make("ses_abc123"))
   })
 
   test("extracts session ID without trailing path", () => {
-    const url = new URL("http:@lgcode/@lgcode/localhost@lgcode/session@lgcode/ses_xyz")
+    const url = new URL("http://localhost/session/ses_xyz")
     expect(getWorkspaceRouteSessionID(url)).toBe(SessionID.make("ses_xyz"))
   })
 
   test("extracts session ID from experimental background path", () => {
-    const url = new URL("http:@lgcode/@lgcode/localhost@lgcode/experimental@lgcode/session@lgcode/ses_bg@lgcode/background")
+    const url = new URL("http://localhost/experimental/session/ses_bg/background")
     expect(getWorkspaceRouteSessionID(url)).toBe(SessionID.make("ses_bg"))
   })
 
-  test("returns null for @lgcode/session@lgcode/status", () => {
-    const url = new URL("http:@lgcode/@lgcode/localhost@lgcode/session@lgcode/status")
+  test("returns null for /session/status", () => {
+    const url = new URL("http://localhost/session/status")
     expect(getWorkspaceRouteSessionID(url)).toBeNull()
   })
 
   test("returns null for non-session paths", () => {
-    const url = new URL("http:@lgcode/@lgcode/localhost@lgcode/config")
+    const url = new URL("http://localhost/config")
     expect(getWorkspaceRouteSessionID(url)).toBeNull()
   })
 
-  test("returns null for bare @lgcode/session path", () => {
-    const url = new URL("http:@lgcode/@lgcode/localhost@lgcode/session")
+  test("returns null for bare /session path", () => {
+    const url = new URL("http://localhost/session")
     expect(getWorkspaceRouteSessionID(url)).toBeNull()
   })
 })
 
 describe("workspaceProxyURL", () => {
   test("appends request path to target", () => {
-    const result = workspaceProxyURL("http:@lgcode/@lgcode/remote:8080@lgcode/base", new URL("http:@lgcode/@lgcode/localhost@lgcode/config"))
-    expect(result.toString()).toBe("http:@lgcode/@lgcode/remote:8080@lgcode/base@lgcode/config")
+    const result = workspaceProxyURL("http://remote:8080/base", new URL("http://localhost/config"))
+    expect(result.toString()).toBe("http://remote:8080/base/config")
   })
 
   test("strips trailing slash on target before appending", () => {
-    const result = workspaceProxyURL("http:@lgcode/@lgcode/remote:8080@lgcode/base@lgcode/", new URL("http:@lgcode/@lgcode/localhost@lgcode/session@lgcode/abc"))
-    expect(result.pathname).toBe("@lgcode/base@lgcode/session@lgcode/abc")
+    const result = workspaceProxyURL("http://remote:8080/base/", new URL("http://localhost/session/abc"))
+    expect(result.pathname).toBe("/base/session/abc")
   })
 
   test("preserves query params from request but removes workspace", () => {
-    const url = new URL("http:@lgcode/@lgcode/localhost@lgcode/config?workspace=ws_123&keep=yes")
-    const result = workspaceProxyURL("http:@lgcode/@lgcode/remote:8080@lgcode/base", url)
+    const url = new URL("http://localhost/config?workspace=ws_123&keep=yes")
+    const result = workspaceProxyURL("http://remote:8080/base", url)
     expect(result.searchParams.get("workspace")).toBeNull()
     expect(result.searchParams.get("keep")).toBe("yes")
   })
 
   test("preserves hash from request", () => {
-    const url = new URL("http:@lgcode/@lgcode/localhost@lgcode/page#section")
-    const result = workspaceProxyURL("http:@lgcode/@lgcode/remote:8080", url)
+    const url = new URL("http://localhost/page#section")
+    const result = workspaceProxyURL("http://remote:8080", url)
     expect(result.hash).toBe("#section")
   })
 
   test("works with URL object as target", () => {
-    const target = new URL("http:@lgcode/@lgcode/remote:3000@lgcode/api")
-    const result = workspaceProxyURL(target, new URL("http:@lgcode/@lgcode/localhost@lgcode/users"))
-    expect(result.toString()).toBe("http:@lgcode/@lgcode/remote:3000@lgcode/api@lgcode/users")
+    const target = new URL("http://remote:3000/api")
+    const result = workspaceProxyURL(target, new URL("http://localhost/users"))
+    expect(result.toString()).toBe("http://remote:3000/api/users")
   })
 })

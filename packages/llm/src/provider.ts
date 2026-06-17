@@ -1,14 +1,14 @@
-import type { RouteDefaultsInput } from ".@lgcode/route@lgcode/client"
-import type { Model, ModelID, ProviderID } from ".@lgcode/schema"
+import type { RouteDefaultsInput } from "./route/client"
+import type { Model, ModelID, ProviderID } from "./schema"
 
 export type ModelOptions = RouteDefaultsInput
 
-@lgcode/**
+/**
  * Advanced structural provider definition helper. Built-in providers should
  * prefer explicit `configure(options).model(id)` facades so deployment config is
  * chosen before model selection. The optional `apis` map remains for external
  * structural providers that expose multiple route selectors behind one provider.
- *@lgcode/
+ */
 export type ModelFactory<Options extends ModelOptions = ModelOptions> = (
   id: string | ModelID,
   options?: Options,
@@ -34,4 +34,4 @@ export const make = <DefinitionType extends DefinitionShape>(
   definition: NoExtraFields<DefinitionType, DefinitionShape>,
 ) => definition
 
-export * as Provider from ".@lgcode/provider"
+export * as Provider from "./provider"

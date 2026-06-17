@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test"
 import path from "path"
 import { pathToFileURL } from "url"
-import { Global } from "@lgcode/core@lgcode/global"
+import { Global } from "@opencode@lgcode/core/global"
 import {
   InvalidRepositoryBranchError,
   InvalidRepositoryReferenceError,
@@ -14,39 +14,39 @@ import {
   repositoryCachePath,
   sameRepositoryReference,
   validateRepositoryBranch,
-} from "..@lgcode/..@lgcode/src@lgcode/util@lgcode/repository"
+} from "../../src/util/repository"
 
 describe("util.repository", () => {
   test("parses github shorthand and preserves cache path", () => {
-    const reference = parseRemoteRepositoryReference("owner@lgcode/repo")
+    const reference = parseRemoteRepositoryReference("owner/repo")
 
     expect(reference).toMatchObject({
       host: "github.com",
-      path: "owner@lgcode/repo",
+      path: "owner/repo",
       segments: ["owner", "repo"],
       owner: "owner",
       repo: "repo",
-      label: "owner@lgcode/repo",
+      label: "owner/repo",
     })
     expect(repositoryCachePath(reference)).toBe(path.join(Global.Path.repos, "github.com", "owner", "repo"))
-    expect(repositoryCacheIdentity(reference)).toBe("github.com@lgcode/owner@lgcode/repo")
+    expect(repositoryCacheIdentity(reference)).toBe("github.com/owner/repo")
   })
 
   test("parses host path and scp remote references", () => {
-    const hostPath = parseRemoteRepositoryReference("gitlab.com@lgcode/group@lgcode/repo")
-    const scp = parseRemoteRepositoryReference("git@github.com:owner@lgcode/repo.git")
+    const hostPath = parseRemoteRepositoryReference("gitlab.com/group/repo")
+    const scp = parseRemoteRepositoryReference("git@github.com:owner/repo.git")
 
     expect(hostPath).toMatchObject({
       host: "gitlab.com",
-      path: "group@lgcode/repo",
-      remote: "https:@lgcode/@lgcode/gitlab.com@lgcode/group@lgcode/repo.git",
-      label: "gitlab.com@lgcode/group@lgcode/repo",
+      path: "group/repo",
+      remote: "https://gitlab.com/group/repo.git",
+      label: "gitlab.com/group/repo",
     })
     expect(scp).toMatchObject({
       host: "github.com",
-      path: "owner@lgcode/repo",
-      remote: "git@github.com:owner@lgcode/repo.git",
-      label: "owner@lgcode/repo",
+      path: "owner/repo",
+      remote: "git@github.com:owner/repo.git",
+      label: "owner/repo",
     })
   })
 
@@ -69,22 +69,22 @@ describe("util.repository", () => {
 
   test("rejects invalid remote repository references with typed errors", () => {
     expect(() => parseRemoteRepositoryReference("not-a-repo")).toThrow(InvalidRepositoryReferenceError)
-    expect(() => parseRemoteRepositoryReference("git@github.com:..@lgcode/..@lgcode/..@lgcode/etc@lgcode/passwd")).toThrow(
+    expect(() => parseRemoteRepositoryReference("git@github.com:../../../etc/passwd")).toThrow(
       InvalidRepositoryReferenceError,
     )
   })
 
   test("compares cache identity independent of input spelling", () => {
-    const shorthand = parseRemoteRepositoryReference("owner@lgcode/repo")
-    const url = parseRemoteRepositoryReference("https:@lgcode/@lgcode/github.com@lgcode/owner@lgcode/repo.git")
-    const hostPath = parseRemoteRepositoryReference("github.com@lgcode/owner@lgcode/repo")
+    const shorthand = parseRemoteRepositoryReference("owner/repo")
+    const url = parseRemoteRepositoryReference("https://github.com/owner/repo.git")
+    const hostPath = parseRemoteRepositoryReference("github.com/owner/repo")
 
     expect(sameRepositoryReference(shorthand, url)).toBe(true)
     expect(sameRepositoryReference(shorthand, hostPath)).toBe(true)
   })
 
   test("validates repository branch names", () => {
-    expect(() => validateRepositoryBranch("feature@lgcode/docs.v1")).not.toThrow()
+    expect(() => validateRepositoryBranch("feature/docs.v1")).not.toThrow()
     expect(() => validateRepositoryBranch("-bad")).toThrow("Branch must contain only alphanumeric characters")
     expect(() => validateRepositoryBranch("bad..branch")).toThrow("Branch must contain only alphanumeric characters")
     expect(() => validateRepositoryBranch("bad branch")).toThrow("Branch must contain only alphanumeric characters")

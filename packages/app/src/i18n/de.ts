@@ -1,4 +1,4 @@
-import { dict as en } from ".@lgcode/en"
+import { dict as en } from "./en"
 
 type Keys = keyof typeof en
 
@@ -97,9 +97,9 @@ export const dict = {
   "dialog.provider.opencode.note": "Kuratierte Modelle inklusive Claude, GPT, Gemini und mehr",
   "dialog.provider.opencode.tagline": "Zuverlässige, optimierte Modelle",
   "dialog.provider.opencodeGo.tagline": "Kostengünstiges Abo für alle",
-  "dialog.provider.anthropic.note": "Mit Claude Pro@lgcode/Max oder API-Schlüssel verbinden",
+  "dialog.provider.anthropic.note": "Mit Claude Pro/Max oder API-Schlüssel verbinden",
   "dialog.provider.copilot.note": "Mit Copilot oder API-Schlüssel verbinden",
-  "dialog.provider.openai.note": "Mit ChatGPT Pro@lgcode/Plus oder API-Schlüssel verbinden",
+  "dialog.provider.openai.note": "Mit ChatGPT Pro/Plus oder API-Schlüssel verbinden",
   "dialog.provider.google.note": "Gemini-Modelle für schnelle, strukturierte Antworten",
   "dialog.provider.openrouter.note": "Zugriff auf alle unterstützten Modelle über einen Anbieter",
   "dialog.provider.vercel.note": "Einheitlicher Zugriff auf KI-Modelle mit intelligentem Routing",
@@ -113,7 +113,7 @@ export const dict = {
   "dialog.model.unpaid.addMore.title": "Weitere Modelle von beliebten Anbietern hinzufügen",
   "dialog.provider.viewAll": "Mehr Anbieter anzeigen",
   "provider.connect.title": "{{provider}} verbinden",
-  "provider.connect.title.anthropicProMax": "Mit Claude Pro@lgcode/Max anmelden",
+  "provider.connect.title.anthropicProMax": "Mit Claude Pro/Max anmelden",
   "provider.connect.selectMethod": "Anmeldemethode für {{provider}} auswählen.",
   "provider.connect.method.apiKey": "API-Schlüssel",
   "provider.connect.status.inProgress": "Autorisierung läuft...",
@@ -129,7 +129,7 @@ export const dict = {
   "provider.connect.opencodeZen.line2":
     "Mit einem einzigen API-Schlüssel erhalten Sie Zugriff auf Modelle wie Claude, GPT, Gemini, GLM und mehr.",
   "provider.connect.opencodeZen.visit.prefix": "Besuchen Sie ",
-  "provider.connect.opencodeZen.visit.link": "opencode.ai@lgcode/zen",
+  "provider.connect.opencodeZen.visit.link": "opencode.ai/zen",
   "provider.connect.opencodeZen.visit.suffix": ", um Ihren API-Schlüssel zu erhalten.",
   "provider.connect.oauth.code.visit.prefix": "Besuchen Sie ",
   "provider.connect.oauth.code.visit.link": "diesen Link",
@@ -156,7 +156,7 @@ export const dict = {
   "provider.custom.field.name.label": "Anzeigename",
   "provider.custom.field.name.placeholder": "Mein KI-Anbieter",
   "provider.custom.field.baseURL.label": "Basis-URL",
-  "provider.custom.field.baseURL.placeholder": "https:@lgcode/@lgcode/api.myprovider.com@lgcode/v1",
+  "provider.custom.field.baseURL.placeholder": "https://api.myprovider.com/v1",
   "provider.custom.field.apiKey.label": "API-Schlüssel",
   "provider.custom.field.apiKey.placeholder": "API-Schlüssel",
   "provider.custom.field.apiKey.description":
@@ -180,7 +180,7 @@ export const dict = {
   "provider.custom.error.providerID.exists": "Diese Anbieter-ID existiert bereits",
   "provider.custom.error.name.required": "Anzeigename ist erforderlich",
   "provider.custom.error.baseURL.required": "Basis-URL ist erforderlich",
-  "provider.custom.error.baseURL.format": "Muss mit http:@lgcode/@lgcode/ oder https:@lgcode/@lgcode/ beginnen",
+  "provider.custom.error.baseURL.format": "Muss mit http:// oder https:// beginnen",
   "provider.custom.error.required": "Erforderlich",
   "provider.custom.error.duplicate": "Duplikat",
   "provider.disconnect.toast.disconnected.title": "{{provider}} getrennt",
@@ -298,7 +298,7 @@ export const dict = {
   "dialog.server.empty": "Noch keine Server",
   "dialog.server.add.title": "Server hinzufügen",
   "dialog.server.add.url": "Server-URL",
-  "dialog.server.add.placeholder": "http:@lgcode/@lgcode/localhost:4096",
+  "dialog.server.add.placeholder": "http://localhost:4096",
   "dialog.server.add.error": "Verbindung zum Server fehlgeschlagen",
   "dialog.server.add.checking": "Prüfen...",
   "dialog.server.add.button": "Server hinzufügen",
@@ -352,7 +352,7 @@ export const dict = {
   "context.stats.inputTokens": "Eingabe-Token",
   "context.stats.outputTokens": "Ausgabe-Token",
   "context.stats.reasoningTokens": "Reasoning-Token",
-  "context.stats.cacheTokens": "Cache-Token (lesen@lgcode/schreiben)",
+  "context.stats.cacheTokens": "Cache-Token (lesen/schreiben)",
   "context.stats.userMessages": "Benutzernachrichten",
   "context.stats.assistantMessages": "Assistentennachrichten",
   "context.stats.totalCost": "Gesamtkosten",
@@ -435,8 +435,8 @@ export const dict = {
   "error.chain.retryable": "Wiederholbar: {{retryable}}",
   "error.chain.responseBody": "Antwort-Body:\n{{body}}",
   "error.chain.didYouMean": "Meinten Sie: {{suggestions}}",
-  "error.chain.modelNotFound": "Modell nicht gefunden: {{provider}}@lgcode/{{model}}",
-  "error.chain.checkConfig": "Überprüfen Sie Ihre Konfiguration (opencode.json) auf Anbieter-@lgcode/Modellnamen",
+  "error.chain.modelNotFound": "Modell nicht gefunden: {{provider}}/{{model}}",
+  "error.chain.checkConfig": "Überprüfen Sie Ihre Konfiguration (opencode.json) auf Anbieter-/Modellnamen",
   "error.chain.mcpFailed":
     'MCP-Server "{{name}}" fehlgeschlagen. Hinweis: OpenCode unterstützt noch keine MCP-Authentifizierung.',
   "error.chain.providerAuthFailed": "Anbieter-Authentifizierung fehlgeschlagen ({{provider}}): {{message}}",

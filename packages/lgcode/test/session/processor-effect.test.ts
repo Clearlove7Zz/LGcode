@@ -1,32 +1,32 @@
-import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
-import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
+import { SessionV1 } from "@opencode@lgcode/core/v1/session"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { EventV2Bridge } from "@/event-v2-bridge"
 import { expect } from "bun:test"
 import { tool } from "ai"
 import { Cause, Effect, Exit, Fiber, Layer, Stream } from "effect"
 import path from "path"
 import z from "zod"
-import type { Agent } from "..@lgcode/..@lgcode/src@lgcode/agent@lgcode/agent"
-import { Provider } from "@@lgcode/provider@lgcode/provider"
+import type { Agent } from "../../src/agent/agent"
+import { Provider } from "@/provider/provider"
 
-import { Session } from "@@lgcode/session@lgcode/session"
-import { LLM } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/llm"
-import { MessageV2 } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/message-v2"
-import { SessionProcessor } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/processor"
-import { MessageID, PartID, SessionID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
-import { SessionStatus } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/status"
-import { SessionSummary } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/summary"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import { provideTmpdirInstance, provideTmpdirServer } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
-import { raw, reply, TestLLMServer } from "..@lgcode/lib@lgcode/llm-server"
-import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
-import { SessionEvent } from "@lgcode/core@lgcode/session@lgcode/event"
-import { SessionProjector } from "@lgcode/core@lgcode/session@lgcode/projector"
-import { LLMEvent } from "@lgcode/llm"
+import { Session } from "@/session/session"
+import { LLM } from "../../src/session/llm"
+import { MessageV2 } from "../../src/session/message-v2"
+import { SessionProcessor } from "../../src/session/processor"
+import { MessageID, PartID, SessionID } from "../../src/session/schema"
+import { SessionStatus } from "../../src/session/status"
+import { SessionSummary } from "../../src/session/summary"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { provideTmpdirInstance, provideTmpdirServer } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
+import { raw, reply, TestLLMServer } from "../lib/llm-server"
+import { RuntimeFlags } from "@/effect/runtime-flags"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelV2 } from "@opencode@lgcode/core/model"
+import { SessionEvent } from "@opencode@lgcode/core/session/event"
+import { SessionProjector } from "@opencode@lgcode/core/session/projector"
+import { LLMEvent } from "@opencode@lgcode/llm"
 
 const summary = Layer.succeed(
   SessionSummary.Service,
@@ -48,7 +48,7 @@ const cfg = {
       name: "Test",
       id: "test",
       env: [],
-      npm: "@ai-sdk@lgcode/openai-compatible",
+      npm: "@ai-sdk/openai-compatible",
       models: {
         "test-model": {
           id: "test-model",
@@ -65,7 +65,7 @@ const cfg = {
       },
       options: {
         apiKey: "test-key",
-        baseURL: "http:@lgcode/@lgcode/localhost:1@lgcode/v1",
+        baseURL: "http://localhost:1/v1",
       },
     },
   },
@@ -235,9 +235,9 @@ const boot = Effect.fn("test.boot")(function* () {
   return { processors, session, provider }
 })
 
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
-@lgcode/@lgcode/ Tests
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Tests
+// ---------------------------------------------------------------------------
 
 it.live("session.processor effect tests capture llm input cleanly", () =>
   provideTmpdirServer(

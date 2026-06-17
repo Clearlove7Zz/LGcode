@@ -1,16 +1,16 @@
-import { intro, log, outro, spinner } from "@clack@lgcode/prompts"
+import { intro, log, outro, spinner } from "@clack/prompts"
 import { Effect } from "effect"
 
-import { ConfigPaths } from "@@lgcode/config@lgcode/paths"
-import { Global } from "@lgcode/core@lgcode/global"
-import { installPlugin, patchPluginConfig, readPluginManifest } from "..@lgcode/..@lgcode/plugin@lgcode/install"
-import { resolvePluginTarget } from "..@lgcode/..@lgcode/plugin@lgcode/shared"
-import { errorMessage } from "..@lgcode/..@lgcode/util@lgcode/error"
-import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
-import { Process } from "@@lgcode/util@lgcode/process"
-import { UI } from "..@lgcode/ui"
-import { effectCmd } from "..@lgcode/effect-cmd"
-import { InstanceRef } from "@@lgcode/effect@lgcode/instance-ref"
+import { ConfigPaths } from "@/config/paths"
+import { Global } from "@opencode@lgcode/core/global"
+import { installPlugin, patchPluginConfig, readPluginManifest } from "../../plugin/install"
+import { resolvePluginTarget } from "../../plugin/shared"
+import { errorMessage } from "../../util/error"
+import { Filesystem } from "@/util/filesystem"
+import { Process } from "@/util/process"
+import { UI } from "../ui"
+import { effectCmd } from "../effect-cmd"
+import { InstanceRef } from "@/effect/instance-ref"
 
 type Spin = {
   start: (msg: string) => void
@@ -83,15 +83,15 @@ export function createPlugTask(input: PlugInput, dep: PlugDeps = defaultPlugDeps
       if (hit instanceof Process.RunFailedError) {
         const lines = hit.stderr
           .toString()
-          .split(@lgcode/\r?\n@lgcode/)
+          .split(/\r?\n/)
           .map((line) => line.trim())
           .filter(Boolean)
-        const errs = lines.filter((line) => line.startsWith("error:")).map((line) => line.replace(@lgcode/^error:\s*@lgcode/, ""))
+        const errs = lines.filter((line) => line.startsWith("error:")).map((line) => line.replace(/^error:\s*/, ""))
         const detail = errs[0] ?? lines.at(-1)
         if (detail) dep.log.error(detail)
         if (lines.some((line) => line.includes("No version matching"))) {
           dep.log.info("This package depends on a version that is not available in your npm registry.")
-          dep.log.info("Check npm registry@lgcode/auth settings and try again.")
+          dep.log.info("Check npm registry/auth settings and try again.")
         }
       }
       if (!(hit instanceof Process.RunFailedError)) {
@@ -116,7 +116,7 @@ export function createPlugTask(input: PlugInput, dep: PlugDeps = defaultPlugDeps
         inspect.stop("No plugin targets found", 1)
         dep.log.error(`"${mod}" does not expose plugin entrypoints in package.json`)
         dep.log.info(
-          'Expected one of: exports[".@lgcode/tui"], exports[".@lgcode/server"], package.json main for server, or package.json["oc-themes"] for tui themes.',
+          'Expected one of: exports["./tui"], exports["./server"], package.json main for server, or package.json["oc-themes"] for tui themes.',
         )
         return false
       }

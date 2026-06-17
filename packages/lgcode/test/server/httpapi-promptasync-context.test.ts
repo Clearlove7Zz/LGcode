@@ -1,41 +1,41 @@
-@lgcode/@lgcode/ Regression coverage for issue #26526's claim that promptAsync's
-@lgcode/@lgcode/ Effect.forkIn loses the request's InstanceRef@lgcode/WorkspaceRef. It does not —
-@lgcode/@lgcode/ forkIn preserves Context.Reference values via standard fiber inheritance.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ The companion claim that the streaming prompt handler "captures and
-@lgcode/@lgcode/ provides" those services is true and load-bearing: Stream.fromEffect's
-@lgcode/@lgcode/ body runs detached from the request fiber's context, so the explicit
-@lgcode/@lgcode/ Effect.provideService calls there are required, not defensive duplication.
+// Regression coverage for issue #26526's claim that promptAsync's
+// Effect.forkIn loses the request's InstanceRef/WorkspaceRef. It does not —
+// forkIn preserves Context.Reference values via standard fiber inheritance.
+//
+// The companion claim that the streaming prompt handler "captures and
+// provides" those services is true and load-bearing: Stream.fromEffect's
+// body runs detached from the request fiber's context, so the explicit
+// Effect.provideService calls there are required, not defensive duplication.
 
-import { NodeHttpServer, NodeServices } from "@effect@lgcode/platform-node"
+import { NodeHttpServer, NodeServices } from "@effect/platform-node"
 import { describe, expect } from "bun:test"
 import { Deferred, Effect, Layer, Schema, Scope } from "effect"
-import * as Stream from "effect@lgcode/Stream"
-import { HttpClient, HttpRouter, HttpServerResponse } from "effect@lgcode/unstable@lgcode/http"
-import * as Socket from "effect@lgcode/unstable@lgcode/socket@lgcode/Socket"
-import { HttpApi, HttpApiBuilder, HttpApiEndpoint, HttpApiGroup, HttpApiSchema } from "effect@lgcode/unstable@lgcode/httpapi"
-import { mkdir } from "node:fs@lgcode/promises"
-import { registerAdapter } from "..@lgcode/..@lgcode/src@lgcode/control-plane@lgcode/adapters"
-import { Ripgrep } from "@lgcode/core@lgcode/ripgrep"
-import type { WorkspaceAdapter } from "..@lgcode/..@lgcode/src@lgcode/control-plane@lgcode/types"
-import { Workspace } from "..@lgcode/..@lgcode/src@lgcode/control-plane@lgcode/workspace"
-import { InstanceRef, WorkspaceRef } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/instance-ref"
-import { InstanceLayer } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/instance-layer"
-import { Project } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/project"
-import { Session } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/session"
+import * as Stream from "effect/Stream"
+import { HttpClient, HttpRouter, HttpServerResponse } from "effect/unstable/http"
+import * as Socket from "effect/unstable/socket/Socket"
+import { HttpApi, HttpApiBuilder, HttpApiEndpoint, HttpApiGroup, HttpApiSchema } from "effect/unstable/httpapi"
+import { mkdir } from "node:fs/promises"
+import { registerAdapter } from "../../src/control-plane/adapters"
+import { Ripgrep } from "@opencode@lgcode/core/ripgrep"
+import type { WorkspaceAdapter } from "../../src/control-plane/types"
+import { Workspace } from "../../src/control-plane/workspace"
+import { InstanceRef, WorkspaceRef } from "../../src/effect/instance-ref"
+import { InstanceLayer } from "../../src/project/instance-layer"
+import { Project } from "../../src/project/project"
+import { Session } from "../../src/session/session"
 import {
   InstanceContextMiddleware,
   instanceContextLayer,
-} from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/middleware@lgcode/instance-context"
+} from "../../src/server/routes/instance/httpapi/middleware/instance-context"
 import {
   WorkspaceRoutingMiddleware,
   WorkspaceRoutingQuery,
   workspaceRoutingLayer,
-} from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/middleware@lgcode/workspace-routing"
-import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
-import { disposeAllInstances, tmpdirScoped } from "..@lgcode/fixture@lgcode/fixture"
-import { workspaceLayerWithRuntimeFlags } from "..@lgcode/fixture@lgcode/workspace"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+} from "../../src/server/routes/instance/httpapi/middleware/workspace-routing"
+import { resetDatabase } from "../fixture/db"
+import { disposeAllInstances, tmpdirScoped } from "../fixture/fixture"
+import { workspaceLayerWithRuntimeFlags } from "../fixture/workspace"
+import { testEffect } from "../lib/effect"
 
 const testStateLayer = Layer.effectDiscard(
   Effect.gen(function* () {
@@ -101,14 +101,14 @@ const captureInstance = Effect.gen(function* () {
 const ProbeApi = HttpApi.make("handler-context-probe").add(
   HttpApiGroup.make("probe")
     .add(
-      HttpApiEndpoint.post("fork", "@lgcode/fork-probe", { query: WorkspaceRoutingQuery, success: Schema.Boolean }),
-      HttpApiEndpoint.post("streamWithout", "@lgcode/stream-probe-without", {
+      HttpApiEndpoint.post("fork", "/fork-probe", { query: WorkspaceRoutingQuery, success: Schema.Boolean }),
+      HttpApiEndpoint.post("streamWithout", "/stream-probe-without", {
         query: WorkspaceRoutingQuery,
-        success: Schema.String.pipe(HttpApiSchema.asText({ contentType: "application@lgcode/json" })),
+        success: Schema.String.pipe(HttpApiSchema.asText({ contentType: "application/json" })),
       }),
-      HttpApiEndpoint.post("streamWith", "@lgcode/stream-probe-with", {
+      HttpApiEndpoint.post("streamWith", "/stream-probe-with", {
         query: WorkspaceRoutingQuery,
-        success: Schema.String.pipe(HttpApiSchema.asText({ contentType: "application@lgcode/json" })),
+        success: Schema.String.pipe(HttpApiSchema.asText({ contentType: "application/json" })),
       }),
     )
     .middleware(InstanceContextMiddleware)
@@ -139,10 +139,10 @@ const serveProbes = (input: {
   )
 
 describe("HttpApi handler context inheritance", () => {
-  @lgcode/@lgcode/ Mirrors handlers@lgcode/session.ts:281 promptAsync. The forked fiber inherits
-  @lgcode/@lgcode/ the request's Context — including InstanceRef and WorkspaceRef provided
-  @lgcode/@lgcode/ by InstanceContextMiddleware — without any explicit re-provide.
-  it.live("Effect.forkIn preserves InstanceRef@lgcode/WorkspaceRef across the fork", () =>
+  // Mirrors handlers/session.ts:281 promptAsync. The forked fiber inherits
+  // the request's Context — including InstanceRef and WorkspaceRef provided
+  // by InstanceContextMiddleware — without any explicit re-provide.
+  it.live("Effect.forkIn preserves InstanceRef/WorkspaceRef across the fork", () =>
     Effect.gen(function* () {
       const { dir, workspace } = yield* setupWorkspace("local-fork")
       const capture = yield* Deferred.make<Capture>()
@@ -158,7 +158,7 @@ describe("HttpApi handler context inheritance", () => {
       })
 
       const response = yield* HttpClient.post(
-        `@lgcode/fork-probe?directory=${encodeURIComponent(dir)}&workspace=${encodeURIComponent(workspace.id)}`,
+        `/fork-probe?directory=${encodeURIComponent(dir)}&workspace=${encodeURIComponent(workspace.id)}`,
       )
       expect(response.status).toBe(200)
 
@@ -168,10 +168,10 @@ describe("HttpApi handler context inheritance", () => {
     }),
   )
 
-  @lgcode/@lgcode/ Mirrors handlers@lgcode/session.ts:255 prompt — the streaming handler reads
-  @lgcode/@lgcode/ InstanceRef@lgcode/WorkspaceRef in the request fiber and re-provides them to
-  @lgcode/@lgcode/ the Stream.fromEffect body. This test locks in why the explicit
-  @lgcode/@lgcode/ provides are required: without them the stream body sees undefined.
+  // Mirrors handlers/session.ts:255 prompt — the streaming handler reads
+  // InstanceRef/WorkspaceRef in the request fiber and re-provides them to
+  // the Stream.fromEffect body. This test locks in why the explicit
+  // provides are required: without them the stream body sees undefined.
   it.live("Stream.fromEffect body needs explicit provides — inheritance does not carry through", () =>
     Effect.gen(function* () {
       const { dir, workspace } = yield* setupWorkspace("local-stream")
@@ -187,7 +187,7 @@ describe("HttpApi handler context inheritance", () => {
                 return ""
               }),
             ).pipe(Stream.encodeText),
-            { contentType: "application@lgcode/json" },
+            { contentType: "application/json" },
           )
         }),
         streamWith: Effect.gen(function* () {
@@ -200,15 +200,15 @@ describe("HttpApi handler context inheritance", () => {
                 return ""
               }).pipe(Effect.provideService(InstanceRef, instance), Effect.provideService(WorkspaceRef, workspaceID)),
             ).pipe(Stream.encodeText),
-            { contentType: "application@lgcode/json" },
+            { contentType: "application/json" },
           )
         }),
       })
 
       const queryString = `directory=${encodeURIComponent(dir)}&workspace=${encodeURIComponent(workspace.id)}`
-      const responseWithout = yield* HttpClient.post(`@lgcode/stream-probe-without?${queryString}`)
+      const responseWithout = yield* HttpClient.post(`/stream-probe-without?${queryString}`)
       yield* responseWithout.text
-      const responseWith = yield* HttpClient.post(`@lgcode/stream-probe-with?${queryString}`)
+      const responseWith = yield* HttpClient.post(`/stream-probe-with?${queryString}`)
       yield* responseWith.text
 
       const without = yield* Deferred.await(withoutCapture).pipe(Effect.timeout("2 seconds"))

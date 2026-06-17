@@ -1,4 +1,4 @@
-import { Accordion } from ".@lgcode/accordion"
+import { Accordion } from "./accordion"
 import { ParentProps } from "solid-js"
 
 export function StickyAccordionHeader(
@@ -13,6 +13,6 @@ export function StickyAccordionHeader(
       }}
     >
       {props.children}
-    <@lgcode/Accordion.Header>
+    </Accordion.Header>
   )
 }

@@ -1,11 +1,11 @@
-export * as QuestionTool from ".@lgcode/question"
+export * as QuestionTool from "./question"
 
-import { ToolFailure } from "@lgcode/llm"
+import { ToolFailure } from "@opencode@lgcode/llm"
 import { Effect, Layer, Schema } from "effect"
-import { PermissionV2 } from "..@lgcode/permission"
-import { QuestionV2 } from "..@lgcode/question"
-import { Tool } from ".@lgcode/tool"
-import { Tools } from ".@lgcode/tools"
+import { PermissionV2 } from "../permission"
+import { QuestionV2 } from "../question"
+import { Tool } from "./tool"
+import { Tools } from "./tools"
 
 export const name = "question"
 

@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import { destroyRenderer } from "..@lgcode/..@lgcode/src@lgcode/util@lgcode/renderer"
+import { destroyRenderer } from "../../src/util/renderer"
 
 test("clears the terminal title before destroying the renderer", () => {
   const calls: string[] = []

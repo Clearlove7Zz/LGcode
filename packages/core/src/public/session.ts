@@ -1,17 +1,17 @@
-export * as Session from ".@lgcode/session"
+export * as Session from "./session"
 
 import { Effect, Schema, Stream } from "effect"
-import { EventV2 } from "..@lgcode/event"
-import { ModelV2 } from "..@lgcode/model"
-import { SessionV2 } from "..@lgcode/session"
-import { MessageDecodeError } from "..@lgcode/session@lgcode/error"
-import { SessionEvent } from "..@lgcode/session@lgcode/event"
-import { SessionInput } from "..@lgcode/session@lgcode/input"
-import { SessionMessage } from "..@lgcode/session@lgcode/message"
-import { Prompt } from "..@lgcode/session@lgcode/prompt"
-import { Agent } from ".@lgcode/agent"
-import { Location } from ".@lgcode/location"
-import { Model } from ".@lgcode/model"
+import { EventV2 } from "../event"
+import { ModelV2 } from "../model"
+import { SessionV2 } from "../session"
+import { MessageDecodeError } from "../session/error"
+import { SessionEvent } from "../session/event"
+import { SessionInput } from "../session/input"
+import { SessionMessage } from "../session/message"
+import { Prompt } from "../session/prompt"
+import { Agent } from "./agent"
+import { Location } from "./location"
+import { Model } from "./model"
 
 export const ID = SessionV2.ID
 export type ID = SessionV2.ID
@@ -110,7 +110,7 @@ export interface Interface {
   readonly switchModel: (
     input: SwitchModelInput,
   ) => Effect.Effect<void, NotFoundError | ModelUnavailableError | VariantUnavailableError>
-  @lgcode/** Interrupt the active V2 execution chain for one Session on this process. Interrupting an idle or missing Session is a no-op. *@lgcode/
+  /** Interrupt the active V2 execution chain for one Session on this process. Interrupting an idle or missing Session is a no-op. */
   readonly interrupt: (sessionID: ID) => Effect.Effect<void>
   readonly messages: (input: MessagesInput) => Effect.Effect<Message[], NotFoundError | MessageDecodeError>
   readonly message: (input: MessageInput) => Effect.Effect<Message | undefined>

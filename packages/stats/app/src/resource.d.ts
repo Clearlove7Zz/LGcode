@@ -1,6 +1,6 @@
-import "sst@lgcode/resource"
+import "sst/resource"
 
-declare module "sst@lgcode/resource" {
+declare module "sst/resource" {
   export interface Resource {
     EMAILOCTOPUS_API_KEY: {
       type: "sst.sst.Secret"

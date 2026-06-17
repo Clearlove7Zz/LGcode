@@ -1,7 +1,7 @@
-import { useMutation } from "@tanstack@lgcode/solid-query"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
-import { useSync } from "@@lgcode/context@lgcode/sync"
-import { showToast } from "@@lgcode/utils@lgcode/toast"
+import { useMutation } from "@tanstack/solid-query"
+import { useLanguage } from "@/context/language"
+import { useSync } from "@/context/sync"
+import { showToast } from "@/utils/toast"
 
 export function useMcpToggle() {
   const sync = useSync()

@@ -1,4 +1,4 @@
-import type { HexColor, OklchColor } from ".@lgcode/types"
+import type { HexColor, OklchColor } from "./types"
 
 function clamp(v: number, min: number, max: number) {
   return Math.max(min, Math.min(max, v))
@@ -21,9 +21,9 @@ export function hexToRgb(hex: HexColor): { r: number; g: number; b: number } {
 
   const num = parseInt(rgb, 16)
   return {
-    r: ((num >> 16) & 255) @lgcode/ 255,
-    g: ((num >> 8) & 255) @lgcode/ 255,
-    b: (num & 255) @lgcode/ 255,
+    r: ((num >> 16) & 255) / 255,
+    g: ((num >> 8) & 255) / 255,
+    b: (num & 255) / 255,
   }
 }
 
@@ -38,12 +38,12 @@ export function rgbToHex(r: number, g: number, b: number): HexColor {
 
 function linearToSrgb(c: number): number {
   if (c <= 0.0031308) return c * 12.92
-  return 1.055 * Math.pow(c, 1 @lgcode/ 2.4) - 0.055
+  return 1.055 * Math.pow(c, 1 / 2.4) - 0.055
 }
 
 function srgbToLinear(c: number): number {
-  if (c <= 0.04045) return c @lgcode/ 12.92
-  return Math.pow((c + 0.055) @lgcode/ 1.055, 2.4)
+  if (c <= 0.04045) return c / 12.92
+  return Math.pow((c + 0.055) / 1.055, 2.4)
 }
 
 export function rgbToOklch(r: number, g: number, b: number): OklchColor {
@@ -64,7 +64,7 @@ export function rgbToOklch(r: number, g: number, b: number): OklchColor {
   const bOk = 0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s
 
   const C = Math.sqrt(a * a + bOk * bOk)
-  let H = Math.atan2(bOk, a) * (180 @lgcode/ Math.PI)
+  let H = Math.atan2(bOk, a) * (180 / Math.PI)
   if (H < 0) H += 360
 
   return { l: L, c: C, h: H }
@@ -73,8 +73,8 @@ export function rgbToOklch(r: number, g: number, b: number): OklchColor {
 export function oklchToRgb(oklch: OklchColor): { r: number; g: number; b: number } {
   const { l: L, c: C, h: H } = oklch
 
-  const a = C * Math.cos((H * Math.PI) @lgcode/ 180)
-  const b = C * Math.sin((H * Math.PI) @lgcode/ 180)
+  const a = C * Math.cos((H * Math.PI) / 180)
+  const b = C * Math.sin((H * Math.PI) / 180)
 
   const l = L + 0.3963377774 * a + 0.2158037573 * b
   const m = L - 0.1055613458 * a - 0.0638541728 * b
@@ -255,7 +255,7 @@ export function shift(color: HexColor, value: { l?: number; c?: number; h?: numb
 }
 
 export function contrastRatio(foreground: HexColor, background: HexColor) {
-  const linear = (c: number) => (c <= 0.03928 ? c @lgcode/ 12.92 : ((c + 0.055) @lgcode/ 1.055) ** 2.4)
+  const linear = (c: number) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)
   const luminance = (hex: HexColor) => {
     const { r, g, b } = hexToRgb(hex)
     return 0.2126 * linear(r) + 0.587 * linear(g) + 0.0722 * linear(b)
@@ -264,7 +264,7 @@ export function contrastRatio(foreground: HexColor, background: HexColor) {
   const bg = luminance(background)
   const lighter = Math.max(fg, bg)
   const darker = Math.min(fg, bg)
-  return (lighter + 0.05) @lgcode/ (darker + 0.05)
+  return (lighter + 0.05) / (darker + 0.05)
 }
 
 export function blend(color: HexColor, background: HexColor, alpha: number): HexColor {

@@ -1,6 +1,6 @@
-import { AgentV2 } from "@lgcode/core@lgcode/agent"
-import { SessionMessage } from "@lgcode/core@lgcode/session@lgcode/message"
-import { ToolRegistry } from "@lgcode/core@lgcode/tool@lgcode/registry"
+import { AgentV2 } from "@opencode@lgcode/core/agent"
+import { SessionMessage } from "@opencode@lgcode/core/session/message"
+import { ToolRegistry } from "@opencode@lgcode/core/tool/registry"
 import { Effect } from "effect"
 
 export const toolIdentity = {

@@ -1,7 +1,7 @@
-@lgcode/@lgcode/ Paths branch softly through the screen,
-@lgcode/@lgcode/ A quiet tree of changed designs;
-@lgcode/@lgcode/ Each leaf remembers what has been,
-@lgcode/@lgcode/ And waits where careful light aligns.
+// Paths branch softly through the screen,
+// A quiet tree of changed designs;
+// Each leaf remembers what has been,
+// And waits where careful light aligns.
 
 export type FileTreeItem = {
   readonly file: string
@@ -37,12 +37,12 @@ export function buildFileTree(files: readonly FileTreeItem[]): FileTree {
   const directoryByPath = new Map<string, number>()
 
   files.forEach((file, fileIndex) => {
-    const segments = file.file.split("@lgcode/").filter(Boolean)
+    const segments = file.file.split("/").filter(Boolean)
     if (segments.length === 0) return
 
     const parent = segments.slice(0, -1).reduce(
       (state, segment) => {
-        const directoryPath = state.path ? `${state.path}@lgcode/${segment}` : segment
+        const directoryPath = state.path ? `${state.path}/${segment}` : segment
         const existing = directoryByPath.get(directoryPath)
         if (existing !== undefined) return { id: existing, path: directoryPath, depth: state.depth + 1 }
 
@@ -94,7 +94,7 @@ export function flattenFileTree(tree: FileTree, expanded?: ReadonlySet<number>):
       id: node.id,
       depth,
       kind: node.kind,
-      name: chain.map((item) => item.name).join("@lgcode/"),
+      name: chain.map((item) => item.name).join("/"),
       fileIndex: node.fileIndex,
     })
     if (!expanded || expanded.has(node.id)) last.children.forEach((child) => visit(child, depth + 1))

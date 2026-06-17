@@ -1,15 +1,15 @@
-export * as SkillV2 from ".@lgcode/skill"
+export * as SkillV2 from "./skill"
 
 import path from "path"
 import { Context, Effect, Layer, Schema } from "effect"
 import { castDraft } from "immer"
-import { AgentV2 } from ".@lgcode/agent"
-import { ConfigMarkdown } from ".@lgcode/config@lgcode/markdown"
-import { FSUtil } from ".@lgcode/fs-util"
-import { PermissionV2 } from ".@lgcode/permission"
-import { AbsolutePath, withStatics } from ".@lgcode/schema"
-import { SkillDiscovery } from ".@lgcode/skill@lgcode/discovery"
-import { State } from ".@lgcode/state"
+import { AgentV2 } from "./agent"
+import { ConfigMarkdown } from "./config/markdown"
+import { FSUtil } from "./fs-util"
+import { PermissionV2 } from "./permission"
+import { AbsolutePath, withStatics } from "./schema"
+import { SkillDiscovery } from "./skill/discovery"
+import { State } from "./state"
 
 export class DirectorySource extends Schema.Class<DirectorySource>("SkillV2.DirectorySource")({
   type: Schema.Literal("directory"),
@@ -79,7 +79,7 @@ export interface Interface {
   readonly list: () => Effect.Effect<Info[]>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/Skill") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/v2/Skill") {}
 
 export const layer = Layer.effect(
   Service,
@@ -104,7 +104,7 @@ export const layer = Layer.effect(
       const directories = source.type === "directory" ? [source.path] : yield* discovery.pull(source.url)
       for (const directory of directories) {
         const files = yield* fs
-          .glob("{*.md,**@lgcode/SKILL.md}", { cwd: directory, absolute: true, include: "file", symlink: true, dot: true })
+          .glob("{*.md,**/SKILL.md}", { cwd: directory, absolute: true, include: "file", symlink: true, dot: true })
           .pipe(Effect.catch(() => Effect.succeed([] as string[])))
         for (const filepath of files.toSorted()) {
           const content = yield* fs.readFileStringSafe(filepath).pipe(Effect.catch(() => Effect.succeed(undefined)))
@@ -134,8 +134,8 @@ export const layer = Layer.effect(
       return skills
     })
 
-    @lgcode/@lgcode/ QUESTION(Dax): Should local skill sources invalidate on filesystem watch
-    @lgcode/@lgcode/ events, following the reload policy chosen for other context sources?
+    // QUESTION(Dax): Should local skill sources invalidate on filesystem watch
+    // events, following the reload policy chosen for other context sources?
     const cache = new Map<string, Info[]>()
     const list = Effect.fn("SkillV2.list")(function* () {
       const skills = new Map<string, Info>()

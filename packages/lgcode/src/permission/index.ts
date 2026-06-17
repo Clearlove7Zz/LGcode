@@ -1,12 +1,12 @@
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
-import { ConfigPermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/permission"
-import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
-import { Wildcard } from "@lgcode/core@lgcode/util@lgcode/wildcard"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { ConfigPermissionV1 } from "@opencode@lgcode/core/v1/config/permission"
+import { InstanceState } from "@/effect/instance-state"
+import { Wildcard } from "@opencode@lgcode/core/util/wildcard"
 import { Deferred, Effect, Layer, Context } from "effect"
 import os from "os"
-import { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
-import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
-import { EventV2 } from "@lgcode/core@lgcode/event"
+import { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
+import { EventV2Bridge } from "@/event-v2-bridge"
+import { EventV2 } from "@opencode@lgcode/core/event"
 
 export const Event = {
   Asked: EventV2.define({ type: "permission.asked", schema: PermissionV1.Request.fields }),
@@ -48,7 +48,7 @@ export function evaluate(permission: string, pattern: string, ...rulesets: Permi
   )
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Permission") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/Permission") {}
 
 export const layer = Layer.effect(
   Service,
@@ -187,9 +187,9 @@ export const layer = Layer.effect(
 )
 
 function expand(pattern: string): string {
-  if (pattern.startsWith("~@lgcode/")) return os.homedir() + pattern.slice(1)
+  if (pattern.startsWith("~/")) return os.homedir() + pattern.slice(1)
   if (pattern === "~") return os.homedir()
-  if (pattern.startsWith("$HOME@lgcode/")) return os.homedir() + pattern.slice(5)
+  if (pattern.startsWith("$HOME/")) return os.homedir() + pattern.slice(5)
   if (pattern.startsWith("$HOME")) return os.homedir() + pattern.slice(5)
   return pattern
 }

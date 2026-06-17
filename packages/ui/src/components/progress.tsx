@@ -1,4 +1,4 @@
-import { Progress as Kobalte } from "@kobalte@lgcode/core@lgcode/progress"
+import { Progress as Kobalte } from "@kobalte/core/progress"
 import { Show, splitProps } from "solid-js"
 import type { ComponentProps, ParentProps } from "solid-js"
 
@@ -24,16 +24,16 @@ export function Progress(props: ProgressProps) {
           <Show when={local.children}>
             <Kobalte.Label data-slot="progress-label" classList={{ "sr-only": local.hideLabel }}>
               {local.children}
-            <@lgcode/Kobalte.Label>
-          <@lgcode/Show>
+            </Kobalte.Label>
+          </Show>
           <Show when={local.showValueLabel}>
-            <Kobalte.ValueLabel data-slot="progress-value-label" @lgcode/>
-          <@lgcode/Show>
-        <@lgcode/div>
-      <@lgcode/Show>
+            <Kobalte.ValueLabel data-slot="progress-value-label" />
+          </Show>
+        </div>
+      </Show>
       <Kobalte.Track data-slot="progress-track">
-        <Kobalte.Fill data-slot="progress-fill" @lgcode/>
-      <@lgcode/Kobalte.Track>
-    <@lgcode/Kobalte>
+        <Kobalte.Fill data-slot="progress-fill" />
+      </Kobalte.Track>
+    </Kobalte>
   )
 }

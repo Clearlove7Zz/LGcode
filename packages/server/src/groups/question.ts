@@ -1,15 +1,15 @@
-import { QuestionV2 } from "@lgcode/core@lgcode/question"
-import { Location } from "@lgcode/core@lgcode/location"
-import { SessionV2 } from "@lgcode/core@lgcode/session"
+import { QuestionV2 } from "@opencode@lgcode/core/question"
+import { Location } from "@opencode@lgcode/core/location"
+import { SessionV2 } from "@opencode@lgcode/core/session"
 import { Schema } from "effect"
-import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
-import { QuestionNotFoundError, SessionNotFoundError } from "..@lgcode/errors"
-import { SessionLocationMiddleware } from "..@lgcode/middleware@lgcode/session-location"
-import { LocationQuery, locationQueryOpenApi, LocationMiddleware } from ".@lgcode/location"
+import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect/unstable/httpapi"
+import { QuestionNotFoundError, SessionNotFoundError } from "../errors"
+import { SessionLocationMiddleware } from "../middleware/session-location"
+import { LocationQuery, locationQueryOpenApi, LocationMiddleware } from "./location"
 
 export const QuestionGroup = HttpApiGroup.make("server.question")
   .add(
-    HttpApiEndpoint.get("question.request.list", "@lgcode/api@lgcode/question@lgcode/request", {
+    HttpApiEndpoint.get("question.request.list", "/api/question/request", {
       query: LocationQuery,
       success: Location.response(Schema.Array(QuestionV2.Request)),
     })
@@ -25,7 +25,7 @@ export const QuestionGroup = HttpApiGroup.make("server.question")
   .annotateMerge(OpenApi.annotations({ title: "questions", description: "Experimental question routes." }))
   .middleware(LocationMiddleware)
   .add(
-    HttpApiEndpoint.get("session.question.list", "@lgcode/api@lgcode/session@lgcode/:sessionID@lgcode/question", {
+    HttpApiEndpoint.get("session.question.list", "/api/session/:sessionID/question", {
       params: { sessionID: SessionV2.ID },
       success: Schema.Struct({ data: Schema.Array(QuestionV2.Request) }),
       error: SessionNotFoundError,
@@ -40,7 +40,7 @@ export const QuestionGroup = HttpApiGroup.make("server.question")
       ),
   )
   .add(
-    HttpApiEndpoint.post("session.question.reply", "@lgcode/api@lgcode/session@lgcode/:sessionID@lgcode/question@lgcode/:requestID@lgcode/reply", {
+    HttpApiEndpoint.post("session.question.reply", "/api/session/:sessionID/question/:requestID/reply", {
       params: { sessionID: SessionV2.ID, requestID: QuestionV2.ID },
       payload: QuestionV2.Reply,
       success: HttpApiSchema.NoContent,
@@ -56,7 +56,7 @@ export const QuestionGroup = HttpApiGroup.make("server.question")
       ),
   )
   .add(
-    HttpApiEndpoint.post("session.question.reject", "@lgcode/api@lgcode/session@lgcode/:sessionID@lgcode/question@lgcode/:requestID@lgcode/reject", {
+    HttpApiEndpoint.post("session.question.reject", "/api/session/:sessionID/question/:requestID/reject", {
       params: { sessionID: SessionV2.ID, requestID: QuestionV2.ID },
       success: HttpApiSchema.NoContent,
       error: [SessionNotFoundError, QuestionNotFoundError],

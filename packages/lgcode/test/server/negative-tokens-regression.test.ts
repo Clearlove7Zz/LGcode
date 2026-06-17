@@ -1,25 +1,25 @@
-@lgcode/@lgcode/ Regression: a stored step-finish part with a negative token count made the
-@lgcode/@lgcode/ messages endpoint 400. Some providers reported `outputTokens` excluding
-@lgcode/@lgcode/ reasoning while also reporting `reasoningTokens` separately, so the
-@lgcode/@lgcode/ `outputTokens - reasoningTokens` math in Session.getUsage underflowed to
-@lgcode/@lgcode/ negative. The pre-fix `safe()` clamp only guarded against non-finite. The
-@lgcode/@lgcode/ strict `NonNegativeInt` schema then made every load of the message list
-@lgcode/@lgcode/ fail to encode, killing Desktop boot for every user with such a row.
+// Regression: a stored step-finish part with a negative token count made the
+// messages endpoint 400. Some providers reported `outputTokens` excluding
+// reasoning while also reporting `reasoningTokens` separately, so the
+// `outputTokens - reasoningTokens` math in Session.getUsage underflowed to
+// negative. The pre-fix `safe()` clamp only guarded against non-finite. The
+// strict `NonNegativeInt` schema then made every load of the message list
+// fail to encode, killing Desktop boot for every user with such a row.
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
 import { eq } from "drizzle-orm"
 
-import { SessionPaths } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/session"
-import { Session } from "@@lgcode/session@lgcode/session"
-import { MessageID, PartID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { PartTable } from "@lgcode/core@lgcode/session@lgcode/sql"
-import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
-import { TestInstance } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
-import { httpApiLayer, requestInDirectory } from ".@lgcode/httpapi-layer"
+import { SessionPaths } from "../../src/server/routes/instance/httpapi/groups/session"
+import { Session } from "@/session/session"
+import { MessageID, PartID } from "../../src/session/schema"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { PartTable } from "@opencode@lgcode/core/session/sql"
+import { resetDatabase } from "../fixture/db"
+import { TestInstance } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelV2 } from "@opencode@lgcode/core/model"
+import { httpApiLayer, requestInDirectory } from "./httpapi-layer"
 
 const it = testEffect(Layer.mergeAll(Session.defaultLayer, Database.defaultLayer, httpApiLayer))
 
@@ -46,8 +46,8 @@ function seedNegativeTokenSession() {
       tokens: { input: 0, output: 0, reasoning: 0, cache: { read: 0, write: 0 } },
     })
 
-    @lgcode/@lgcode/ Bypass the schema with a direct SQL update to install the
-    @lgcode/@lgcode/ negative `output` value we want to test loading.
+    // Bypass the schema with a direct SQL update to install the
+    // negative `output` value we want to test loading.
     const { db } = yield* Database.Service
     yield* db
       .update(PartTable)

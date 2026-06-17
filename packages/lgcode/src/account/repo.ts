@@ -1,12 +1,12 @@
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
 import { eq } from "drizzle-orm"
-import { serviceUse } from "@lgcode/core@lgcode/effect@lgcode/service-use"
+import { serviceUse } from "@opencode@lgcode/core/effect/service-use"
 import { Effect, Layer, Option, Schema, Context } from "effect"
 
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { AccountStateTable, AccountTable } from "@lgcode/core@lgcode/account@lgcode/sql"
-import { AccessToken, AccountID, AccountRepoError, Info, OrgID, RefreshToken } from ".@lgcode/schema"
-import { normalizeServerUrl } from ".@lgcode/url"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { AccountStateTable, AccountTable } from "@opencode@lgcode/core/account/sql"
+import { AccessToken, AccountID, AccountRepoError, Info, OrgID, RefreshToken } from "./schema"
+import { normalizeServerUrl } from "./url"
 
 export type AccountRow = (typeof AccountTable)["$inferSelect"]
 
@@ -35,7 +35,7 @@ export interface Interface {
   }) => Effect.Effect<void, AccountRepoError>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/AccountRepo") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/AccountRepo") {}
 
 export const use = serviceUse(Service)
 
@@ -170,4 +170,4 @@ export const defaultLayer = layer.pipe(Layer.provide(Database.defaultLayer))
 
 export const node = LayerNode.make(layer, [Database.node])
 
-export * as AccountRepo from ".@lgcode/repo"
+export * as AccountRepo from "./repo"

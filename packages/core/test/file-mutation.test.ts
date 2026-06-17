@@ -1,15 +1,15 @@
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import path from "path"
 import { describe, expect } from "bun:test"
 import { Deferred, Effect, Fiber, Layer } from "effect"
-import { FileMutation } from "@lgcode/core@lgcode/file-mutation"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { Location } from "@lgcode/core@lgcode/location"
-import { LocationMutation } from "@lgcode/core@lgcode/location-mutation"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import { location } from ".@lgcode/fixture@lgcode/location"
-import { tmpdir } from ".@lgcode/fixture@lgcode/tmpdir"
-import { it } from ".@lgcode/lib@lgcode/effect"
+import { FileMutation } from "@opencode@lgcode/core/file-mutation"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { Location } from "@opencode@lgcode/core/location"
+import { LocationMutation } from "@opencode@lgcode/core/location-mutation"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import { location } from "./fixture/location"
+import { tmpdir } from "./fixture/tmpdir"
+import { it } from "./lib/effect"
 
 function provide(directory: string, filesystem = FSUtil.defaultLayer) {
   const activeLocation = Layer.succeed(
@@ -58,7 +58,7 @@ describe("FileMutation", () => {
         expect(result).toEqual({
           operation: "write",
           target: target.canonical,
-          resource: "src@lgcode/nested@lgcode/hello.txt",
+          resource: "src/nested/hello.txt",
           existed: false,
         })
         expect(yield* Effect.promise(() => fs.readFile(result.target, "utf8"))).toBe("hello")

@@ -1,5 +1,5 @@
-import type { Dict } from ".@lgcode/en"
-import { dict as en } from ".@lgcode/en"
+import type { Dict } from "./en"
+import { dict as en } from "./en"
 
 export const dict = {
   ...en,
@@ -123,7 +123,7 @@ export const dict = {
   "home.what.shareLinks.body": "แชร์ลิงก์ไปยังเซสชันใดก็ได้เพื่อการอ้างอิงหรือ Debug",
   "home.what.copilot.title": "GitHub Copilot",
   "home.what.copilot.body": "เข้าสู่ระบบด้วย GitHub เพื่อใช้บัญชี Copilot ของคุณ",
-  "home.what.chatgptPlus.title": "ChatGPT Plus@lgcode/Pro",
+  "home.what.chatgptPlus.title": "ChatGPT Plus/Pro",
   "home.what.chatgptPlus.body": "เข้าสู่ระบบด้วย OpenAI เพื่อใช้บัญชี ChatGPT Plus หรือ Pro ของคุณ",
   "home.what.anyModel.title": "โมเดลใดก็ได้",
   "home.what.anyModel.body": "ผู้ให้บริการ LLM กว่า 75 รายผ่าน Models.dev รวมถึงโมเดล Local",
@@ -133,7 +133,7 @@ export const dict = {
 
   "home.growth.title": "เอเจนต์เขียนโค้ดด้วย AI แบบโอเพนซอร์ส",
   "home.growth.body":
-    "ด้วยยอดดาวบน GitHub กว่า <strong>{{stars}}<@lgcode/strong> ดวง, ผู้ร่วมพัฒนา <strong>{{contributors}}<@lgcode/strong> คน, และการคอมมิตกว่า <strong>{{commits}}<@lgcode/strong> ครั้ง, OpenCode ได้รับความไว้วางใจจากนักพัฒนากว่า <strong>{{monthlyUsers}}<@lgcode/strong> คนในทุกเดือน",
+    "ด้วยยอดดาวบน GitHub กว่า <strong>{{stars}}</strong> ดวง, ผู้ร่วมพัฒนา <strong>{{contributors}}</strong> คน, และการคอมมิตกว่า <strong>{{commits}}</strong> ครั้ง, OpenCode ได้รับความไว้วางใจจากนักพัฒนากว่า <strong>{{monthlyUsers}}</strong> คนในทุกเดือน",
   "home.growth.githubStars": "GitHub Stars",
   "home.growth.contributors": "ผู้ร่วมพัฒนา",
   "home.growth.monthlyDevs": "นักพัฒนารายเดือน",
@@ -160,7 +160,7 @@ export const dict = {
   "home.faq.a3.p4.localLink": "โมเดล Local ของคุณ",
   "home.faq.q4": "ฉันสามารถใช้การสมัครสมาชิก AI ที่มีอยู่กับ OpenCode ได้หรือไม่?",
   "home.faq.a4.p1":
-    "ได้ OpenCode รองรับแผนการสมัครสมาชิกจากผู้ให้บริการหลักทั้งหมด คุณสามารถใช้การสมัครสมาชิก Claude Pro@lgcode/Max, ChatGPT Plus@lgcode/Pro หรือ GitHub Copilot ของคุณได้",
+    "ได้ OpenCode รองรับแผนการสมัครสมาชิกจากผู้ให้บริการหลักทั้งหมด คุณสามารถใช้การสมัครสมาชิก Claude Pro/Max, ChatGPT Plus/Pro หรือ GitHub Copilot ของคุณได้",
   "home.faq.q5": "ฉันใช้ OpenCode ได้เฉพาะในเทอร์มินัลใช่หรือไม่?",
   "home.faq.a5.beforeDesktop": "ไม่อีกต่อไป! OpenCode มีแอปสำหรับ",
   "home.faq.a5.desktop": "เดสก์ท็อป",
@@ -251,7 +251,7 @@ export const dict = {
   "go.title": "OpenCode Go | โมเดลเขียนโค้ดราคาประหยัดสำหรับทุกคน",
   "go.banner.text": "MiniMax M3 เพิ่มโควตาการใช้งานเป็น 3 เท่าในช่วงเวลาจำกัด",
   "go.meta.description":
-    "Go เริ่มต้นที่ $5 สำหรับเดือนแรก จากนั้น $10@lgcode/เดือน พร้อมขีดจำกัดคำขอ 5 ชั่วโมงที่เอื้อเฟื้อสำหรับ GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro และ DeepSeek V4 Flash",
+    "Go เริ่มต้นที่ $5 สำหรับเดือนแรก จากนั้น $10/เดือน พร้อมขีดจำกัดคำขอ 5 ชั่วโมงที่เอื้อเฟื้อสำหรับ GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro และ DeepSeek V4 Flash",
   "go.hero.title": "โมเดลเขียนโค้ดราคาประหยัดสำหรับทุกคน",
   "go.hero.body":
     "Go นำการเขียนโค้ดแบบเอเจนต์มาสู่นักเขียนโปรแกรมทั่วโลก เสนอขีดจำกัดที่กว้างขวางและการเข้าถึงโมเดลโอเพนซอร์สที่มีความสามารถสูงสุดได้อย่างน่าเชื่อถือ เพื่อให้คุณสามารถสร้างสรรค์ด้วยเอเจนต์ที่ทรงพลังโดยไม่ต้องกังวลเรื่องค่าใช้จ่ายหรือความพร้อมใช้งาน",
@@ -259,9 +259,9 @@ export const dict = {
   "go.cta.start": "สมัครสมาชิก Go",
   "go.cta.template": "{{text}} {{price}}",
   "go.cta.text": "สมัครสมาชิก Go",
-  "go.cta.price": "$10@lgcode/เดือน",
+  "go.cta.price": "$10/เดือน",
   "go.cta.promo": "$5 เดือนแรก",
-  "go.pricing.body": "ใช้กับเอเจนต์ใดก็ได้ $5 ในเดือนแรก จากนั้น $10@lgcode/เดือน เติมเครดิตหากจำเป็น ยกเลิกได้ตลอดเวลา",
+  "go.pricing.body": "ใช้กับเอเจนต์ใดก็ได้ $5 ในเดือนแรก จากนั้น $10/เดือน เติมเครดิตหากจำเป็น ยกเลิกได้ตลอดเวลา",
   "go.graph.free": "ฟรี",
   "go.graph.freePill": "Big Pickle และโมเดลฟรี",
   "go.graph.go": "Go",
@@ -293,7 +293,7 @@ export const dict = {
   "go.testimonials.frank.quote": "ผมหวังว่าผมจะยังอยู่ที่ Nvidia",
   "go.problem.title": "Go แก้ปัญหาอะไร?",
   "go.problem.body":
-    "เรามุ่งมั่นที่จะนำประสบการณ์ OpenCode ไปสู่ผู้คนให้ได้มากที่สุด OpenCode Go เป็นการสมัครสมาชิกราคาประหยัด: $5 สำหรับเดือนแรก จากนั้น $10@lgcode/เดือน โดยมอบขีดจำกัดที่เอื้อเฟื้อและการเข้าถึงโมเดลโอเพนซอร์สที่มีความสามารถสูงสุดอย่างเชื่อถือได้",
+    "เรามุ่งมั่นที่จะนำประสบการณ์ OpenCode ไปสู่ผู้คนให้ได้มากที่สุด OpenCode Go เป็นการสมัครสมาชิกราคาประหยัด: $5 สำหรับเดือนแรก จากนั้น $10/เดือน โดยมอบขีดจำกัดที่เอื้อเฟื้อและการเข้าถึงโมเดลโอเพนซอร์สที่มีความสามารถสูงสุดอย่างเชื่อถือได้",
   "go.problem.subtitle": " ",
   "go.problem.item1": "ราคาการสมัครสมาชิกที่ต่ำ",
   "go.problem.item2": "ขีดจำกัดที่กว้างขวางและการเข้าถึงที่เชื่อถือได้",
@@ -301,13 +301,13 @@ export const dict = {
   "go.problem.item4":
     "รวมถึง GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro และ DeepSeek V4 Flash",
   "go.how.title": "Go ทำงานอย่างไร",
-  "go.how.body": "Go เริ่มต้นที่ $5 สำหรับเดือนแรก จากนั้น $10@lgcode/เดือน คุณสามารถใช้กับ OpenCode หรือเอเจนต์ใดก็ได้",
+  "go.how.body": "Go เริ่มต้นที่ $5 สำหรับเดือนแรก จากนั้น $10/เดือน คุณสามารถใช้กับ OpenCode หรือเอเจนต์ใดก็ได้",
   "go.how.step1.title": "สร้างบัญชี",
   "go.how.step1.beforeLink": "ทำตาม",
   "go.how.step1.link": "คำแนะนำการตั้งค่า",
   "go.how.step2.title": "สมัครสมาชิก Go",
   "go.how.step2.link": "$5 เดือนแรก",
-  "go.how.step2.afterLink": "จากนั้น $10@lgcode/เดือน พร้อมขีดจำกัดที่เอื้อเฟื้อ",
+  "go.how.step2.afterLink": "จากนั้น $10/เดือน พร้อมขีดจำกัดที่เอื้อเฟื้อ",
   "go.how.step3.title": "เริ่มเขียนโค้ด",
   "go.how.step3.body": "ด้วยการเข้าถึงโมเดลโอเพนซอร์สที่เชื่อถือได้",
   "go.privacy.title": "ความเป็นส่วนตัวของคุณสำคัญสำหรับเรา",
@@ -324,11 +324,11 @@ export const dict = {
   "go.faq.a2": "Go รวมโมเดลด้านล่างนี้ พร้อมขีดจำกัดที่มากและการเข้าถึงที่เชื่อถือได้",
   "go.faq.q3": "Go เหมือนกับ Zen หรือไม่?",
   "go.faq.a3":
-    "ไม่ Zen เป็นแบบจ่ายตามการใช้งาน ในขณะที่ Go เริ่มต้นที่ $5 สำหรับเดือนแรก จากนั้น $10@lgcode/เดือน พร้อมขีดจำกัดที่เอื้อเฟื้อและการเข้าถึงโมเดลโอเพนซอร์ส GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro และ DeepSeek V4 Flash อย่างเชื่อถือได้",
+    "ไม่ Zen เป็นแบบจ่ายตามการใช้งาน ในขณะที่ Go เริ่มต้นที่ $5 สำหรับเดือนแรก จากนั้น $10/เดือน พร้อมขีดจำกัดที่เอื้อเฟื้อและการเข้าถึงโมเดลโอเพนซอร์ส GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro และ DeepSeek V4 Flash อย่างเชื่อถือได้",
   "go.faq.q4": "Go ราคาเท่าไหร่?",
   "go.faq.a4.p1.beforePricing": "Go ราคา",
   "go.faq.a4.p1.pricingLink": "$5 เดือนแรก",
-  "go.faq.a4.p1.afterPricing": "จากนั้น $10@lgcode/เดือน พร้อมขีดจำกัดที่เอื้อเฟื้อ",
+  "go.faq.a4.p1.afterPricing": "จากนั้น $10/เดือน พร้อมขีดจำกัดที่เอื้อเฟื้อ",
   "go.faq.a4.p2.beforeAccount": "คุณสามารถจัดการการสมัครสมาชิกของคุณได้ใน",
   "go.faq.a4.p2.accountLink": "บัญชีของคุณ",
   "go.faq.a4.p3": "ยกเลิกได้ตลอดเวลา",
@@ -347,7 +347,7 @@ export const dict = {
 
   "go.faq.q9": "ความแตกต่างระหว่างโมเดลฟรีและ Go คืออะไร?",
   "go.faq.a9":
-    "โมเดลฟรีรวมถึง Big Pickle บวกกับโมเดลโปรโมชั่นที่มีให้ในขณะนั้น ด้วยโควต้า 200 คำขอ@lgcode/วัน Go รวมถึง GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro และ DeepSeek V4 Flash ที่มีโควต้าคำขอสูงกว่า ซึ่งบังคับใช้ผ่านช่วงเวลาหมุนเวียน (5 ชั่วโมง, รายสัปดาห์ และรายเดือน) เทียบเท่าประมาณ $12 ต่อ 5 ชั่วโมง, $30 ต่อสัปดาห์ และ $60 ต่อเดือน (จำนวนคำขอจริงจะแตกต่างกันไปตามโมเดลและการใช้งาน)",
+    "โมเดลฟรีรวมถึง Big Pickle บวกกับโมเดลโปรโมชั่นที่มีให้ในขณะนั้น ด้วยโควต้า 200 คำขอ/วัน Go รวมถึง GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro และ DeepSeek V4 Flash ที่มีโควต้าคำขอสูงกว่า ซึ่งบังคับใช้ผ่านช่วงเวลาหมุนเวียน (5 ชั่วโมง, รายสัปดาห์ และรายเดือน) เทียบเท่าประมาณ $12 ต่อ 5 ชั่วโมง, $30 ต่อสัปดาห์ และ $60 ต่อเดือน (จำนวนคำขอจริงจะแตกต่างกันไปตามโมเดลและการใช้งาน)",
 
   "zen.api.error.rateLimitExceeded": "เกินขีดจำกัดอัตราการใช้งาน กรุณาลองใหม่ในภายหลัง",
   "zen.api.error.modelNotSupported": "ไม่รองรับโมเดล {{model}}",
@@ -654,7 +654,7 @@ export const dict = {
   "workspace.lite.other.message":
     "สมาชิกคนอื่นใน Workspace นี้ได้สมัคร OpenCode Go แล้ว สามารถสมัครได้เพียงหนึ่งคนต่อหนึ่ง Workspace เท่านั้น",
   "workspace.lite.promo.description":
-    "OpenCode Go เริ่มต้นที่ {{price}} จากนั้น $10@lgcode/เดือน และมอบการเข้าถึงโมเดลการเขียนโค้ดแบบเปิดยอดนิยมอย่างเสถียรพร้อมขีดจำกัดการใช้งานที่ให้มาอย่างเหลือเฟือ",
+    "OpenCode Go เริ่มต้นที่ {{price}} จากนั้น $10/เดือน และมอบการเข้าถึงโมเดลการเขียนโค้ดแบบเปิดยอดนิยมอย่างเสถียรพร้อมขีดจำกัดการใช้งานที่ให้มาอย่างเหลือเฟือ",
   "workspace.lite.promo.price": "$5 สำหรับเดือนแรก",
   "workspace.lite.promo.modelsTitle": "สิ่งที่รวมอยู่ด้วย",
   "workspace.lite.promo.footer":
@@ -673,7 +673,7 @@ export const dict = {
   "workspace.referral.instructions.claim": "คุณทั้งคู่จะได้รับเครดิตการใช้งาน $5 เพื่อใช้กับขีดจำกัดการใช้งาน Go",
   "workspace.referral.rewards.title": "รางวัลการแนะนำ",
   "workspace.referral.rewards.description": "ใช้เครดิตการแนะนำที่มีอยู่กับการใช้งาน Go ของคุณ",
-  "workspace.referral.rewards.subtitle": "ใช้แล้ว {{applied}} @lgcode/ {{total}} รางวัล",
+  "workspace.referral.rewards.subtitle": "ใช้แล้ว {{applied}} / {{total}} รางวัล",
   "workspace.referral.rewards.empty": "ยังไม่มีรางวัลการแนะนำ",
   "workspace.referral.table.reward": "รางวัล",
   "workspace.referral.table.referral": "คำอธิบาย",
@@ -791,7 +791,7 @@ export const dict = {
 
   "bench.detail.title": "Benchmark - {{task}}",
   "bench.detail.notFound": "ไม่พบงาน",
-  "bench.detail.na": "N@lgcode/A",
+  "bench.detail.na": "N/A",
   "bench.detail.labels.agent": "เอเจนต์",
   "bench.detail.labels.model": "โมเดล",
   "bench.detail.labels.task": "งาน",

@@ -1,18 +1,18 @@
-export * as Pty from ".@lgcode/pty"
+export * as Pty from "./pty"
 
 import type { Disp, Proc } from "#pty"
 import { Context, Effect, Layer, Schema, Types } from "effect"
-import { Config } from ".@lgcode/config"
-import { EventV2 } from ".@lgcode/event"
-import { Location } from ".@lgcode/location"
-import { NonNegativeInt, PositiveInt } from ".@lgcode/schema"
-import { PtyID } from ".@lgcode/pty@lgcode/schema"
-import { Shell } from ".@lgcode/shell"
-import { lazy } from ".@lgcode/util@lgcode/lazy"
+import { Config } from "./config"
+import { EventV2 } from "./event"
+import { Location } from "./location"
+import { NonNegativeInt, PositiveInt } from "./schema"
+import { PtyID } from "./pty/schema"
+import { Shell } from "./shell"
+import { lazy } from "./util/lazy"
 
 const BUFFER_LIMIT = 1024 * 1024 * 2
-@lgcode/@lgcode/ Exited sessions stay observable (status, exit code, retained output) until removed explicitly.
-@lgcode/@lgcode/ Cap retention so abandoned terminals do not accumulate unbounded buffers.
+// Exited sessions stay observable (status, exit code, retained output) until removed explicitly.
+// Cap retention so abandoned terminals do not accumulate unbounded buffers.
 const EXITED_LIMIT = 25
 const pty = lazy(() => import("#pty"))
 
@@ -42,9 +42,9 @@ export const Info = Schema.Struct({
   args: Schema.Array(Schema.String),
   cwd: Schema.String,
   status: Schema.Literals(["running", "exited"]),
-  @lgcode/@lgcode/ Windows ConPTY assigns the child pid asynchronously, so 0 is valid at spawn time.
+  // Windows ConPTY assigns the child pid asynchronously, so 0 is valid at spawn time.
   pid: NonNegativeInt,
-  @lgcode/@lgcode/ Present once status is "exited".
+  // Present once status is "exited".
   exitCode: Schema.optional(NonNegativeInt),
 }).annotate({ identifier: "Pty" })
 
@@ -73,21 +73,21 @@ export const UpdateInput = Schema.Struct({
 export type UpdateInput = Types.DeepMutable<typeof UpdateInput.Type>
 
 export type AttachInput = {
-  @lgcode/@lgcode/ Absolute output cursor to replay from. -1 tails from the current end; omitted replays the full retained buffer.
+  // Absolute output cursor to replay from. -1 tails from the current end; omitted replays the full retained buffer.
   readonly cursor?: number
-  @lgcode/@lgcode/ Callbacks fire synchronously from the native PTY data path; keep them non-blocking.
+  // Callbacks fire synchronously from the native PTY data path; keep them non-blocking.
   readonly onData: (chunk: string) => void
-  @lgcode/@lgcode/ Fired once when the session stops producing output: process exit (exitCode set), removal, or service teardown.
+  // Fired once when the session stops producing output: process exit (exitCode set), removal, or service teardown.
   readonly onEnd: (event: { exitCode?: number }) => void
 }
 
 export type Attachment = {
-  @lgcode/@lgcode/ Retained output from the requested cursor to the current end.
+  // Retained output from the requested cursor to the current end.
   readonly replay: string
-  @lgcode/@lgcode/ Absolute output cursor after replay.
+  // Absolute output cursor after replay.
   readonly cursor: number
   readonly write: (data: string) => void
-  @lgcode/@lgcode/ Starts live delivery after the caller has applied replay and cursor metadata.
+  // Starts live delivery after the caller has applied replay and cursor metadata.
   readonly activate: () => void
   readonly detach: () => void
 }
@@ -117,7 +117,7 @@ export interface Interface {
   readonly attach: (id: PtyID, input: AttachInput) => Effect.Effect<Attachment, NotFoundError | ExitedError>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/Pty") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/v2/Pty") {}
 
 export const layer = Layer.effect(
   Service,

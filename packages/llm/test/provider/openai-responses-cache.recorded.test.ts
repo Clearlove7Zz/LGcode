@@ -1,19 +1,19 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { LLM } from "..@lgcode/..@lgcode/src"
-import { LLMClient } from "..@lgcode/..@lgcode/src@lgcode/route"
-import * as OpenAI from "..@lgcode/..@lgcode/src@lgcode/providers@lgcode/openai"
-import { LARGE_CACHEABLE_SYSTEM } from "..@lgcode/recorded-scenarios"
-import { recordedTests } from "..@lgcode/recorded-test"
+import { LLM } from "../../src"
+import { LLMClient } from "../../src/route"
+import * as OpenAI from "../../src/providers/openai"
+import { LARGE_CACHEABLE_SYSTEM } from "../recorded-scenarios"
+import { recordedTests } from "../recorded-test"
 
 const model = OpenAI.configure({
   apiKey: process.env.OPENAI_API_KEY ?? "fixture",
 }).responses("gpt-4.1-mini")
 
-@lgcode/@lgcode/ OpenAI caches prefixes automatically once they cross the 1024-token threshold;
-@lgcode/@lgcode/ `CacheHint` is a no-op for the wire body. The stable signal is the
-@lgcode/@lgcode/ `prompt_cache_key` routing hint, which keeps repeated calls on the same shard
-@lgcode/@lgcode/ so cache hits are observable.
+// OpenAI caches prefixes automatically once they cross the 1024-token threshold;
+// `CacheHint` is a no-op for the wire body. The stable signal is the
+// `prompt_cache_key` routing hint, which keeps repeated calls on the same shard
+// so cache hits are observable.
 const cacheRequest = LLM.request({
   id: "recorded_openai_responses_cache",
   model,
@@ -28,9 +28,9 @@ const recorded = recordedTests({
   provider: "openai",
   protocol: "openai-responses",
   requires: ["OPENAI_API_KEY"],
-  @lgcode/@lgcode/ Two identical requests in one cassette — replay walks the cassette in
-  @lgcode/@lgcode/ recording order so the second call replays the cached-hit interaction,
-  @lgcode/@lgcode/ not the cold-miss one.
+  // Two identical requests in one cassette — replay walks the cassette in
+  // recording order so the second call replays the cached-hit interaction,
+  // not the cold-miss one.
 })
 
 describe("OpenAI Responses cache recorded", () => {

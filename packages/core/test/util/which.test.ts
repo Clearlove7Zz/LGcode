@@ -1,13 +1,13 @@
 import { describe, expect, test } from "bun:test"
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import path from "path"
-import { which } from "@lgcode/core@lgcode/util@lgcode/which"
-import { tmpdir } from "..@lgcode/fixture@lgcode/tmpdir"
+import { which } from "@opencode@lgcode/core/util/which"
+import { tmpdir } from "../fixture/tmpdir"
 
 async function cmd(dir: string, name: string, exec = true) {
   const ext = process.platform === "win32" ? ".cmd" : ""
   const file = path.join(dir, name + ext)
-  const body = process.platform === "win32" ? "@echo off\r\n" : "#!@lgcode/bin@lgcode/sh\n"
+  const body = process.platform === "win32" ? "@echo off\r\n" : "#!/bin/sh\n"
   await fs.writeFile(file, body)
   if (process.platform !== "win32") {
     await fs.chmod(file, exec ? 0o755 : 0o644)

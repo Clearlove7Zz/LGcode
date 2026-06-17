@@ -1,12 +1,12 @@
 import { describe, expect } from "bun:test"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
 import { Effect, Layer } from "effect"
 import path from "path"
-import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
-import { TestInstance } from "..@lgcode/fixture@lgcode/fixture"
-import { markPluginDependenciesReady } from "..@lgcode/fixture@lgcode/plugin"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
-import { httpApiLayer, request } from ".@lgcode/httpapi-layer"
+import { resetDatabase } from "../fixture/db"
+import { TestInstance } from "../fixture/fixture"
+import { markPluginDependenciesReady } from "../fixture/plugin"
+import { testEffect } from "../lib/effect"
+import { httpApiLayer, request } from "./httpapi-layer"
 
 const testStateLayer = Layer.effectDiscard(
   Effect.acquireRelease(
@@ -18,7 +18,7 @@ const testStateLayer = Layer.effectDiscard(
 const it = testEffect(Layer.mergeAll(testStateLayer, FSUtil.defaultLayer, httpApiLayer))
 const projectOptions = { config: { formatter: false, lsp: false } }
 const providerID = "test-oauth-parity"
-const oauthURL = "https:@lgcode/@lgcode/example.com@lgcode/oauth"
+const oauthURL = "https://example.com/oauth"
 const oauthInstructions = "Finish OAuth"
 
 function providerListHasFetch(list: unknown) {
@@ -76,7 +76,7 @@ function requestAuthorize(input: {
   inputs?: Record<string, string>
 }) {
   return Effect.gen(function* () {
-    const response = yield* request(`@lgcode/provider@lgcode/${input.providerID}@lgcode/oauth@lgcode/authorize`, {
+    const response = yield* request(`/provider/${input.providerID}/oauth/authorize`, {
       method: "POST",
       headers: input.headers,
       body: JSON.stringify({ method: input.method, ...(input.inputs ? { inputs: input.inputs } : {}) }),
@@ -90,7 +90,7 @@ function requestAuthorize(input: {
 
 function requestCallback(input: { providerID: string; method: number; headers: HeadersInit; code?: string }) {
   return Effect.gen(function* () {
-    const response = yield* request(`@lgcode/provider@lgcode/${input.providerID}@lgcode/oauth@lgcode/callback`, {
+    const response = yield* request(`/provider/${input.providerID}/oauth/callback`, {
       method: "POST",
       headers: input.headers,
       body: JSON.stringify({ method: input.method, ...(input.code ? { code: input.code } : {}) }),
@@ -264,7 +264,7 @@ describe("provider HttpApi", () => {
     "returns public v2 provider not found errors",
     Effect.gen(function* () {
       const directory = (yield* TestInstance).directory
-      const response = yield* request("@lgcode/api@lgcode/provider@lgcode/missing", {
+      const response = yield* request("/api/provider/missing", {
         headers: { "x-opencode-directory": directory },
       })
 
@@ -282,16 +282,16 @@ describe("provider HttpApi", () => {
     "serves OAuth authorize response shapes",
     Effect.gen(function* () {
       const directory = (yield* TestInstance).directory
-      const headers = { "x-opencode-directory": directory, "content-type": "application@lgcode/json" }
+      const headers = { "x-opencode-directory": directory, "content-type": "application/json" }
       const api = yield* requestAuthorize({
         providerID,
         method: 0,
         headers,
       })
-      @lgcode/@lgcode/ method 0 (api-key style) — authorize() resolves with no further
-      @lgcode/@lgcode/ redirect; #26474 changed the wire format to JSON `null` so clients
-      @lgcode/@lgcode/ can `.json()` parse uniformly instead of getting an empty body
-      @lgcode/@lgcode/ that throws.
+      // method 0 (api-key style) — authorize() resolves with no further
+      // redirect; #26474 changed the wire format to JSON `null` so clients
+      // can `.json()` parse uniformly instead of getting an empty body
+      // that throws.
       expect(api).toEqual({ status: 200, body: "null" })
 
       const oauth = yield* requestAuthorize({
@@ -317,7 +317,7 @@ describe("provider HttpApi", () => {
         providerID: "test-oauth-validation",
         method: 0,
         inputs: { token: "nope" },
-        headers: { "x-opencode-directory": directory, "content-type": "application@lgcode/json" },
+        headers: { "x-opencode-directory": directory, "content-type": "application/json" },
       })
 
       expect(response.status).toBe(400)
@@ -337,7 +337,7 @@ describe("provider HttpApi", () => {
       const response = yield* requestCallback({
         providerID,
         method: 0,
-        headers: { "x-opencode-directory": directory, "content-type": "application@lgcode/json" },
+        headers: { "x-opencode-directory": directory, "content-type": "application/json" },
       })
 
       expect(response.status).toBe(400)
@@ -361,8 +361,8 @@ describe("provider HttpApi", () => {
         }),
       )
       const headers = { "x-opencode-directory": directory }
-      const providerResponse = yield* request("@lgcode/provider", { headers })
-      const configResponse = yield* request("@lgcode/config@lgcode/providers", { headers })
+      const providerResponse = yield* request("/provider", { headers })
+      const configResponse = yield* request("/config/providers", { headers })
 
       expect(providerResponse.status).toBe(200)
       expect(configResponse.status).toBe(200)
@@ -383,8 +383,8 @@ describe("provider HttpApi", () => {
       const directory = (yield* TestInstance).directory
 
       const headers = { "x-opencode-directory": directory }
-      const providerResponse = yield* request("@lgcode/provider", { headers })
-      const configResponse = yield* request("@lgcode/config@lgcode/providers", { headers })
+      const providerResponse = yield* request("/provider", { headers })
+      const configResponse = yield* request("/config/providers", { headers })
 
       expect(providerResponse.status).toBe(200)
       expect(configResponse.status).toBe(200)

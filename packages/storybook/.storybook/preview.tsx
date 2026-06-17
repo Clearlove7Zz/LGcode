@@ -1,17 +1,17 @@
-import "@lgcode/ui@lgcode/styles@lgcode/tailwind"
-import "@lgcode/ui@lgcode/v2@lgcode/styles@lgcode/tailwind.css"
+import "@opencode@lgcode/ui/styles/tailwind"
+import "@opencode@lgcode/ui/v2/styles/tailwind.css"
 
 import { createEffect, onCleanup, onMount } from "solid-js"
-import addonA11y from "@storybook@lgcode/addon-a11y"
-import addonDocs from "@storybook@lgcode/addon-docs"
-import { MetaProvider } from "@solidjs@lgcode/meta"
-import { addons } from "storybook@lgcode/preview-api"
-import { GLOBALS_UPDATED } from "storybook@lgcode/internal@lgcode/core-events"
+import addonA11y from "@storybook/addon-a11y"
+import addonDocs from "@storybook/addon-docs"
+import { MetaProvider } from "@solidjs/meta"
+import { addons } from "storybook/preview-api"
+import { GLOBALS_UPDATED } from "storybook/internal/core-events"
 import { createJSXDecorator, definePreview } from "storybook-solidjs-vite"
-import { DialogProvider } from "@lgcode/ui@lgcode/context@lgcode/dialog"
-import { MarkedProvider } from "@lgcode/ui@lgcode/context@lgcode/marked"
-import { ThemeProvider, useTheme, type ColorScheme } from "@lgcode/ui@lgcode/theme"
-import { Font } from "@lgcode/ui@lgcode/font"
+import { DialogProvider } from "@opencode@lgcode/ui/context/dialog"
+import { MarkedProvider } from "@opencode@lgcode/ui/context/marked"
+import { ThemeProvider, useTheme, type ColorScheme } from "@opencode@lgcode/ui/theme"
+import { Font } from "@opencode@lgcode/ui/font"
 
 function resolveScheme(value: unknown): ColorScheme {
   if (value === "light" || value === "dark" || value === "system") return value
@@ -50,9 +50,9 @@ const frame = createJSXDecorator((Story, context) => {
   const scheme = resolveScheme(pick)
   return (
     <MetaProvider>
-      <Font @lgcode/>
+      <Font />
       <ThemeProvider>
-        <Scheme value={scheme} @lgcode/>
+        <Scheme value={scheme} />
         <DialogProvider>
           <MarkedProvider>
             <div
@@ -63,12 +63,12 @@ const frame = createJSXDecorator((Story, context) => {
                 color: "var(--text-base)",
               }}
             >
-              <Story @lgcode/>
-            <@lgcode/div>
-          <@lgcode/MarkedProvider>
-        <@lgcode/DialogProvider>
-      <@lgcode/ThemeProvider>
-    <@lgcode/MetaProvider>
+              <Story />
+            </div>
+          </MarkedProvider>
+        </DialogProvider>
+      </ThemeProvider>
+    </MetaProvider>
   )
 })
 
@@ -88,8 +88,8 @@ export default definePreview({
     },
     controls: {
       matchers: {
-        color: @lgcode/(background|color)$@lgcode/i,
-        date: @lgcode/Date$@lgcode/i,
+        color: /(background|color)$/i,
+        date: /Date$/i,
       },
     },
     a11y: {

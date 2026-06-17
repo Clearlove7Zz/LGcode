@@ -1,18 +1,18 @@
-@lgcode/@lgcode/ @ts-nocheck
+// @ts-nocheck
 import { onCleanup } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import { AnimatedCountList, type CountItem } from ".@lgcode/tool-count-summary"
-import { ToolStatusTitle } from ".@lgcode/tool-status-title"
+import { createStore } from "solid-js/store"
+import { AnimatedCountList, type CountItem } from "./tool-count-summary"
+import { ToolStatusTitle } from "./tool-status-title"
 
 export default {
-  title: "UI@lgcode/AnimatedCountList",
+  title: "UI/AnimatedCountList",
   id: "components-animated-count-list",
   tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
         component: `### Overview
-Animated count list that smoothly transitions items in@lgcode/out as counts change.
+Animated count list that smoothly transitions items in/out as counts change.
 
 Uses \`grid-template-columns: 0fr → 1fr\` for width animations and the odometer
 digit roller for count transitions. Shown here with \`ToolStatusTitle\` exactly
@@ -132,10 +132,10 @@ export const Playground = {
               [data-reduced-motion="true"] *::after {
                 transition-duration: 0ms !important;
               }`}
-          <@lgcode/style>
+          </style>
         )}
 
-        {@lgcode/* Matches context-tool-group-trigger layout from message-part.tsx *@lgcode/}
+        {/* Matches context-tool-group-trigger layout from message-part.tsx */}
         <span
           data-reduced-motion={reducedMotion()}
           style={{
@@ -149,8 +149,8 @@ export const Playground = {
           }}
         >
           <span style={{ "flex-shrink": "0" }}>
-            <ToolStatusTitle active={active()} activeText={TEXT.active} doneText={TEXT.done} split={false} @lgcode/>
-          <@lgcode/span>
+            <ToolStatusTitle active={active()} activeText={TEXT.active} doneText={TEXT.done} split={false} />
+          </span>
           <span
             style={{
               "min-width": "0",
@@ -161,33 +161,33 @@ export const Playground = {
               color: "var(--text-base, #ccc)",
             }}
           >
-            <AnimatedCountList items={items()} fallback="" @lgcode/>
-          <@lgcode/span>
-        <@lgcode/span>
+            <AnimatedCountList items={items()} fallback="" />
+          </span>
+        </span>
 
         <div style={{ display: "flex", gap: "8px", "flex-wrap": "wrap" }}>
           <button onClick={() => (active() ? stopSim() : startSim())} style={btn(active())}>
             {active() ? "Stop" : "Simulate"}
-          <@lgcode/button>
+          </button>
           <button onClick={reset} style={btn()}>
             Reset
-          <@lgcode/button>
+          </button>
           <button onClick={() => setState("reducedMotion", (value) => !value)} style={smallBtn(reducedMotion())}>
             {reducedMotion() ? "Motion: reduced" : "Motion: normal"}
-          <@lgcode/button>
-        <@lgcode/div>
+          </button>
+        </div>
 
         <div style={{ display: "flex", gap: "8px", "flex-wrap": "wrap" }}>
           <button onClick={() => setState("reads", (value) => value + 1)} style={smallBtn()}>
             + read
-          <@lgcode/button>
+          </button>
           <button onClick={() => setState("searches", (value) => value + 1)} style={smallBtn()}>
             + search
-          <@lgcode/button>
+          </button>
           <button onClick={() => setState("lists", (value) => value + 1)} style={smallBtn()}>
             + list
-          <@lgcode/button>
-        <@lgcode/div>
+          </button>
+        </div>
 
         <div
           style={{
@@ -198,8 +198,8 @@ export const Playground = {
         >
           motion: {reducedMotion() ? "reduced" : "normal"} · active: {active() ? "true" : "false"} · reads: {reads()} ·
           searches: {searches()} · lists: {lists()}
-        <@lgcode/div>
-      <@lgcode/div>
+        </div>
+      </div>
     )
   },
 }
@@ -207,22 +207,22 @@ export const Playground = {
 export const Empty = {
   render: () => (
     <span style={{ display: "flex", "align-items": "center", gap: "8px", "font-size": "14px", "font-weight": "500" }}>
-      <ToolStatusTitle active activeText="Exploring" doneText="Explored" split={false} @lgcode/>
+      <ToolStatusTitle active activeText="Exploring" doneText="Explored" split={false} />
       <AnimatedCountList
         items={[
           { key: "read", count: 0, one: "{{count}} read", other: "{{count}} reads" },
           { key: "search", count: 0, one: "{{count}} search", other: "{{count}} searches" },
         ]}
         fallback=""
-      @lgcode/>
-    <@lgcode/span>
+      />
+    </span>
   ),
 }
 
 export const Done = {
   render: () => (
     <span style={{ display: "flex", "align-items": "center", gap: "8px", "font-size": "14px", "font-weight": "500" }}>
-      <ToolStatusTitle active={false} activeText="Exploring" doneText="Explored" split={false} @lgcode/>
+      <ToolStatusTitle active={false} activeText="Exploring" doneText="Explored" split={false} />
       <span style={{ "font-weight": "400", color: "var(--text-base, #ccc)" }}>
         <AnimatedCountList
           items={[
@@ -231,8 +231,8 @@ export const Done = {
             { key: "list", count: 1, one: "{{count}} list", other: "{{count}} lists" },
           ]}
           fallback=""
-        @lgcode/>
-      <@lgcode/span>
-    <@lgcode/span>
+        />
+      </span>
+    </span>
   ),
 }

@@ -1,6 +1,6 @@
-import { bigint, mysqlTable, primaryKey, uniqueIndex, varchar } from "drizzle-orm@lgcode/mysql-core"
-import { timestamps, ulid, utc, workspaceColumns } from "..@lgcode/drizzle@lgcode/types"
-import { workspaceIndexes } from ".@lgcode/workspace.sql"
+import { bigint, mysqlTable, primaryKey, uniqueIndex, varchar } from "drizzle-orm/mysql-core"
+import { timestamps, ulid, utc, workspaceColumns } from "../drizzle/types"
+import { workspaceIndexes } from "./workspace.sql"
 
 export const ReferralCodeTable = mysqlTable(
   "referral_code",

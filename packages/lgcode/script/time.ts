@@ -1,4 +1,4 @@
-#!@lgcode/usr@lgcode/bin@lgcode/env bun
+#!/usr/bin/env bun
 
 import path from "path"
 const toDynamicallyImport = path.join(process.cwd(), process.argv[2])

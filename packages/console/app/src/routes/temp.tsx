@@ -1,19 +1,19 @@
-import ".@lgcode/index.css"
-import { Title } from "@solidjs@lgcode/meta"
+import "./index.css"
+import { Title } from "@solidjs/meta"
 import { onCleanup, onMount } from "solid-js"
-import logoLight from "..@lgcode/asset@lgcode/logo-ornate-light.svg"
-import logoDark from "..@lgcode/asset@lgcode/logo-ornate-dark.svg"
-import IMG_SPLASH from "..@lgcode/asset@lgcode/lander@lgcode/screenshot-splash.png"
-import { IconCopy, IconCheck } from "..@lgcode/component@lgcode/icon"
-import { useI18n } from "~@lgcode/context@lgcode/i18n"
-import { useLanguage } from "~@lgcode/context@lgcode/language"
+import logoLight from "../asset/logo-ornate-light.svg"
+import logoDark from "../asset/logo-ornate-dark.svg"
+import IMG_SPLASH from "../asset/lander/screenshot-splash.png"
+import { IconCopy, IconCheck } from "../component/icon"
+import { useI18n } from "~/context/i18n"
+import { useLanguage } from "~/context/language"
 
 function CopyStatus() {
   return (
     <div data-component="copy-status">
-      <IconCopy data-slot="copy" @lgcode/>
-      <IconCheck data-slot="check" @lgcode/>
-    <@lgcode/div>
+      <IconCopy data-slot="copy" />
+      <IconCheck data-slot="check" />
+    </div>
   )
 }
 
@@ -43,137 +43,137 @@ export default function Home() {
 
   return (
     <main data-page="home">
-      <Title>{i18n.t("temp.title")}<@lgcode/Title>
+      <Title>{i18n.t("temp.title")}</Title>
 
       <div data-component="content">
         <section data-component="top">
-          <img data-slot="logo light" src={logoLight} alt={i18n.t("temp.logoLightAlt")} @lgcode/>
-          <img data-slot="logo dark" src={logoDark} alt={i18n.t("temp.logoDarkAlt")} @lgcode/>
-          <h1 data-slot="title">{i18n.t("temp.hero.title")}<@lgcode/h1>
+          <img data-slot="logo light" src={logoLight} alt={i18n.t("temp.logoLightAlt")} />
+          <img data-slot="logo dark" src={logoDark} alt={i18n.t("temp.logoDarkAlt")} />
+          <h1 data-slot="title">{i18n.t("temp.hero.title")}</h1>
           <div data-slot="login">
-            <a href="@lgcode/auth">{i18n.t("temp.zen")}<@lgcode/a>
-          <@lgcode/div>
-        <@lgcode/section>
+            <a href="/auth">{i18n.t("temp.zen")}</a>
+          </div>
+        </section>
 
         <section data-component="cta">
           <div data-slot="left">
-            <a href={language.route("@lgcode/docs")}>{i18n.t("temp.getStarted")}<@lgcode/a>
-          <@lgcode/div>
+            <a href={language.route("/docs")}>{i18n.t("temp.getStarted")}</a>
+          </div>
           <div data-slot="center">
-            <a href="@lgcode/auth">{i18n.t("temp.zen")}<@lgcode/a>
-          <@lgcode/div>
+            <a href="/auth">{i18n.t("temp.zen")}</a>
+          </div>
           <div data-slot="right">
             <button data-copy data-slot="command">
               <span>
-                <span>curl -fsSL <@lgcode/span>
-                <span data-slot="protocol">https:@lgcode/@lgcode/<@lgcode/span>
-                <span data-slot="highlight">opencode.ai@lgcode/install<@lgcode/span>
-                <span> | bash<@lgcode/span>
-              <@lgcode/span>
-              <CopyStatus @lgcode/>
-            <@lgcode/button>
-          <@lgcode/div>
-        <@lgcode/section>
+                <span>curl -fsSL </span>
+                <span data-slot="protocol">https://</span>
+                <span data-slot="highlight">opencode.ai/install</span>
+                <span> | bash</span>
+              </span>
+              <CopyStatus />
+            </button>
+          </div>
+        </section>
 
         <section data-component="features">
           <ul data-slot="list">
             <li>
-              <strong>{i18n.t("temp.feature.native.title")}<@lgcode/strong> {i18n.t("temp.feature.native.body")}
-            <@lgcode/li>
+              <strong>{i18n.t("temp.feature.native.title")}</strong> {i18n.t("temp.feature.native.body")}
+            </li>
             <li>
-              <strong>{i18n.t("home.what.lsp.title")}<@lgcode/strong> {i18n.t("home.what.lsp.body")}
-            <@lgcode/li>
+              <strong>{i18n.t("home.what.lsp.title")}</strong> {i18n.t("home.what.lsp.body")}
+            </li>
             <li>
-              <strong>{i18n.t("temp.zen")}<@lgcode/strong> {i18n.t("temp.feature.zen.beforeLink")}{" "}
-              <a href={language.route("@lgcode/docs@lgcode/zen")}>{i18n.t("temp.feature.zen.link")}<@lgcode/a>{" "}
-              {i18n.t("temp.feature.zen.afterLink")} <label>{i18n.t("home.banner.badge")}<@lgcode/label>
-            <@lgcode/li>
+              <strong>{i18n.t("temp.zen")}</strong> {i18n.t("temp.feature.zen.beforeLink")}{" "}
+              <a href={language.route("/docs/zen")}>{i18n.t("temp.feature.zen.link")}</a>{" "}
+              {i18n.t("temp.feature.zen.afterLink")} <label>{i18n.t("home.banner.badge")}</label>
+            </li>
             <li>
-              <strong>{i18n.t("home.what.multiSession.title")}<@lgcode/strong> {i18n.t("home.what.multiSession.body")}
-            <@lgcode/li>
+              <strong>{i18n.t("home.what.multiSession.title")}</strong> {i18n.t("home.what.multiSession.body")}
+            </li>
             <li>
-              <strong>{i18n.t("home.what.shareLinks.title")}<@lgcode/strong> {i18n.t("home.what.shareLinks.body")}
-            <@lgcode/li>
+              <strong>{i18n.t("home.what.shareLinks.title")}</strong> {i18n.t("home.what.shareLinks.body")}
+            </li>
             <li>
-              <strong>{i18n.t("home.what.copilot.title")}<@lgcode/strong> {i18n.t("home.what.copilot.body")}
-            <@lgcode/li>
+              <strong>{i18n.t("home.what.copilot.title")}</strong> {i18n.t("home.what.copilot.body")}
+            </li>
             <li>
-              <strong>{i18n.t("home.what.chatgptPlus.title")}<@lgcode/strong> {i18n.t("home.what.chatgptPlus.body")}
-            <@lgcode/li>
+              <strong>{i18n.t("home.what.chatgptPlus.title")}</strong> {i18n.t("home.what.chatgptPlus.body")}
+            </li>
             <li>
-              <strong>{i18n.t("home.what.anyModel.title")}<@lgcode/strong> {i18n.t("temp.feature.models.beforeLink")}{" "}
-              <a href="https:@lgcode/@lgcode/models.dev">Models.dev<@lgcode/a>
+              <strong>{i18n.t("home.what.anyModel.title")}</strong> {i18n.t("temp.feature.models.beforeLink")}{" "}
+              <a href="https://models.dev">Models.dev</a>
               {i18n.t("temp.feature.models.afterLink")}
-            <@lgcode/li>
-          <@lgcode/ul>
-        <@lgcode/section>
+            </li>
+          </ul>
+        </section>
 
         <section data-component="install">
           <div data-component="method">
-            <h3 data-component="title">npm<@lgcode/h3>
+            <h3 data-component="title">npm</h3>
             <button data-copy data-slot="button">
               <span>
-                npm install -g <strong>opencode-ai<@lgcode/strong>
-              <@lgcode/span>
-              <CopyStatus @lgcode/>
-            <@lgcode/button>
-          <@lgcode/div>
+                npm install -g <strong>opencode-ai</strong>
+              </span>
+              <CopyStatus />
+            </button>
+          </div>
           <div data-component="method">
-            <h3 data-component="title">bun<@lgcode/h3>
+            <h3 data-component="title">bun</h3>
             <button data-copy data-slot="button">
               <span>
-                bun install -g <strong>opencode-ai<@lgcode/strong>
-              <@lgcode/span>
-              <CopyStatus @lgcode/>
-            <@lgcode/button>
-          <@lgcode/div>
+                bun install -g <strong>opencode-ai</strong>
+              </span>
+              <CopyStatus />
+            </button>
+          </div>
           <div data-component="method">
-            <h3 data-component="title">homebrew<@lgcode/h3>
+            <h3 data-component="title">homebrew</h3>
             <button data-copy data-slot="button">
               <span>
-                brew install <strong>opencode<@lgcode/strong>
-              <@lgcode/span>
-              <CopyStatus @lgcode/>
-            <@lgcode/button>
-          <@lgcode/div>
+                brew install <strong>opencode</strong>
+              </span>
+              <CopyStatus />
+            </button>
+          </div>
           <div data-component="method">
-            <h3 data-component="title">paru<@lgcode/h3>
+            <h3 data-component="title">paru</h3>
             <button data-copy data-slot="button">
               <span>
-                paru -S <strong>opencode-bin<@lgcode/strong>
-              <@lgcode/span>
-              <CopyStatus @lgcode/>
-            <@lgcode/button>
-          <@lgcode/div>
-        <@lgcode/section>
+                paru -S <strong>opencode-bin</strong>
+              </span>
+              <CopyStatus />
+            </button>
+          </div>
+        </section>
 
         <section data-component="screenshots">
           <figure>
-            <figcaption>{i18n.t("temp.screenshot.caption")}<@lgcode/figcaption>
-            <a href={language.route("@lgcode/docs@lgcode/cli")}>
-              <img src={IMG_SPLASH} alt={i18n.t("temp.screenshot.alt")} @lgcode/>
-            <@lgcode/a>
-          <@lgcode/figure>
-        <@lgcode/section>
+            <figcaption>{i18n.t("temp.screenshot.caption")}</figcaption>
+            <a href={language.route("/docs/cli")}>
+              <img src={IMG_SPLASH} alt={i18n.t("temp.screenshot.alt")} />
+            </a>
+          </figure>
+        </section>
 
         <footer data-component="footer">
           <div data-slot="cell">
-            <a href="https:@lgcode/@lgcode/x.com@lgcode/opencode">{i18n.t("footer.x")}<@lgcode/a>
-          <@lgcode/div>
+            <a href="https://x.com/opencode">{i18n.t("footer.x")}</a>
+          </div>
           <div data-slot="cell">
-            <a href="https:@lgcode/@lgcode/github.com@lgcode/anomalyco@lgcode/opencode">{i18n.t("footer.github")}<@lgcode/a>
-          <@lgcode/div>
+            <a href="https://github.com/anomalyco/opencode">{i18n.t("footer.github")}</a>
+          </div>
           <div data-slot="cell">
-            <a href="https:@lgcode/@lgcode/opencode.ai@lgcode/discord">{i18n.t("footer.discord")}<@lgcode/a>
-          <@lgcode/div>
-        <@lgcode/footer>
-      <@lgcode/div>
+            <a href="https://opencode.ai/discord">{i18n.t("footer.discord")}</a>
+          </div>
+        </footer>
+      </div>
 
       <div data-component="legal">
         <span>
-          ©2025 <a href="https:@lgcode/@lgcode/anoma.ly">Anomaly<@lgcode/a>
-        <@lgcode/span>
-      <@lgcode/div>
-    <@lgcode/main>
+          ©2025 <a href="https://anoma.ly">Anomaly</a>
+        </span>
+      </div>
+    </main>
   )
 }

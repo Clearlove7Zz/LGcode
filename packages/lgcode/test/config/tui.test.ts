@@ -2,14 +2,14 @@ import { expect } from "bun:test"
 import path from "path"
 import { pathToFileURL } from "url"
 import { Effect, Layer } from "effect"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { Global } from "@lgcode/core@lgcode/global"
-import { Config } from "@@lgcode/config@lgcode/config"
-import { ConfigPlugin } from "@@lgcode/config@lgcode/plugin"
-import { CurrentWorkingDirectory } from "@@lgcode/config@lgcode/tui-cwd"
-import { TuiConfig } from "..@lgcode/..@lgcode/src@lgcode/config@lgcode/tui"
-import { TestInstance } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { Global } from "@opencode@lgcode/core/global"
+import { Config } from "@/config/config"
+import { ConfigPlugin } from "@/config/plugin"
+import { CurrentWorkingDirectory } from "@/config/tui-cwd"
+import { TuiConfig } from "../../src/config/tui"
+import { TestInstance } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
 
 const it = testEffect(Layer.mergeAll(Config.defaultLayer, FSUtil.defaultLayer))
 const winIt = process.platform === "win32" ? it.instance : it.instance.skip
@@ -160,8 +160,8 @@ it.instance("resolves attention config defaults and overrides", () =>
           sounds: {
             default: path.join(test.directory, "default.mp3"),
             question: pathToFileURL(path.join(test.directory, "question.mp3")).href,
-            error: ".@lgcode/error.mp3",
-            subagent_done: ".@lgcode/subagent-done.mp3",
+            error: "./error.mp3",
+            subagent_done: "./subagent-done.mp3",
           },
         },
       })
@@ -335,10 +335,10 @@ it.instance("migration backup preserves JSONC comments", () =>
       yield* fs.writeFileString(
         path.join(test.directory, "opencode.jsonc"),
         `{
-  @lgcode/@lgcode/ top-level comment
+  // top-level comment
   "theme": "jsonc-theme",
   "tui": {
-    @lgcode/@lgcode/ nested comment
+    // nested comment
     "scroll_speed": 1.5
   }
 }`,
@@ -346,8 +346,8 @@ it.instance("migration backup preserves JSONC comments", () =>
 
       yield* getTuiConfig(test.directory)
       const backup = yield* fs.readFileString(path.join(test.directory, "opencode.jsonc.tui-migration.bak"))
-      expect(backup).toContain("@lgcode/@lgcode/ top-level comment")
-      expect(backup).toContain("@lgcode/@lgcode/ nested comment")
+      expect(backup).toContain("// top-level comment")
+      expect(backup).toContain("// nested comment")
       expect(backup).toContain('"theme": "jsonc-theme"')
       expect(backup).toContain('"scroll_speed": 1.5')
     }),
@@ -658,7 +658,7 @@ it.instance("does not derive tui path from OPENCODE_CONFIG", () =>
       const test = yield* TestInstance
       const customDir = path.join(test.directory, "custom")
       yield* fs.makeDirectory(customDir, { recursive: true })
-      yield* fs.writeJson(path.join(customDir, "opencode.json"), { model: "test@lgcode/model" })
+      yield* fs.writeJson(path.join(customDir, "opencode.json"), { model: "test/model" })
       yield* fs.writeJson(path.join(customDir, "tui.json"), { theme: "should-not-load" })
 
       yield* withEnv(
@@ -704,7 +704,7 @@ it.instance("applies file substitutions when first identical token is in a comme
       yield* fs.writeFileString(
         path.join(test.directory, "tui.jsonc"),
         `{
-  @lgcode/@lgcode/ "theme": "{file:theme.txt}",
+  // "theme": "{file:theme.txt}",
   "theme": "{file:theme.txt}"
 }`,
       )
@@ -715,7 +715,7 @@ it.instance("applies file substitutions when first identical token is in a comme
   ),
 )
 
-it.instance("loads .opencode@lgcode/tui.json", () =>
+it.instance("loads .opencode/tui.json", () =>
   withCleanState(
     Effect.gen(function* () {
       const fs = yield* FSUtil.Service

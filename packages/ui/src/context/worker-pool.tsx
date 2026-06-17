@@ -1,5 +1,5 @@
-import type { WorkerPoolManager } from "@pierre@lgcode/diffs@lgcode/worker"
-import { createSimpleContext } from ".@lgcode/helper"
+import type { WorkerPoolManager } from "@pierre/diffs/worker"
+import { createSimpleContext } from "./helper"
 
 export type WorkerPools = {
   unified: WorkerPoolManager | undefined

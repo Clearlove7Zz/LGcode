@@ -1,13 +1,13 @@
 import { describe, expect, test } from "bun:test"
 import { Effect, Schema } from "effect"
-import { LLM } from "..@lgcode/src"
-import * as OpenAIChat from "..@lgcode/src@lgcode/protocols@lgcode/openai-chat"
-import { Auth } from "..@lgcode/src@lgcode/route"
-import { Tool, toDefinitions } from "..@lgcode/src@lgcode/tool"
-import { it } from ".@lgcode/lib@lgcode/effect"
-import { dynamicResponse } from ".@lgcode/lib@lgcode/http"
-import { finishChunk, toolCallChunk } from ".@lgcode/lib@lgcode/openai-chunks"
-import { sseEvents } from ".@lgcode/lib@lgcode/sse"
+import { LLM } from "../src"
+import * as OpenAIChat from "../src/protocols/openai-chat"
+import { Auth } from "../src/route"
+import { Tool, toDefinitions } from "../src/tool"
+import { it } from "./lib/effect"
+import { dynamicResponse } from "./lib/http"
+import { finishChunk, toolCallChunk } from "./lib/openai-chunks"
+import { sseEvents } from "./lib/sse"
 
 type OpenAIChatBody = {
   readonly tool_choice?: unknown
@@ -19,7 +19,7 @@ type OpenAIChatBody = {
 }
 
 const model = OpenAIChat.route
-  .with({ endpoint: { baseURL: "https:@lgcode/@lgcode/api.openai.test@lgcode/v1@lgcode/" }, auth: Auth.bearer("test") })
+  .with({ endpoint: { baseURL: "https://api.openai.test/v1/" }, auth: Auth.bearer("test") })
   .model({ id: "gpt-4o-mini" })
 
 const Json = Schema.fromJsonString(Schema.Unknown)
@@ -73,7 +73,7 @@ describe("LLM.generateObject", () => {
               toolCallChunk("call_1", "generate_object", '{"city":"Paris","temp":22}'),
               finishChunk("tool_calls"),
             ),
-            { headers: { "content-type": "text@lgcode/event-stream" } },
+            { headers: { "content-type": "text/event-stream" } },
           )
         }),
       )
@@ -114,7 +114,7 @@ describe("LLM.generateObject", () => {
           bodies.push(decodeBody(input.text))
           return input.respond(
             sseEvents(toolCallChunk("call_1", "generate_object", '{"name":"Ada","age":30}'), finishChunk("tool_calls")),
-            { headers: { "content-type": "text@lgcode/event-stream" } },
+            { headers: { "content-type": "text/event-stream" } },
           )
         }),
       )
@@ -143,7 +143,7 @@ describe("LLM.generateObject", () => {
       const layer = dynamicResponse((input) =>
         Effect.sync(() =>
           input.respond(sseEvents({ id: "x", choices: [{ delta: { content: "no thanks" }, finish_reason: "stop" }] }), {
-            headers: { "content-type": "text@lgcode/event-stream" },
+            headers: { "content-type": "text/event-stream" },
           }),
         ),
       )
@@ -167,7 +167,7 @@ describe("LLM.generateObject", () => {
               toolCallChunk("call_1", "generate_object", '{"value":"not-a-number"}'),
               finishChunk("tool_calls"),
             ),
-            { headers: { "content-type": "text@lgcode/event-stream" } },
+            { headers: { "content-type": "text/event-stream" } },
           ),
         ),
       )

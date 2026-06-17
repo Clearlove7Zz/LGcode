@@ -1,5 +1,5 @@
 import { Effect } from "effect"
-import type { DatabaseMigration } from "..@lgcode/migration"
+import type { DatabaseMigration } from "../migration"
 
 export default {
   id: "20260603160727_jittery_ezekiel_stane",

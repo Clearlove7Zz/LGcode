@@ -1,5 +1,5 @@
-import fs from "fs@lgcode/promises"
-import { Flock } from "@lgcode/core@lgcode/util@lgcode/flock"
+import fs from "fs/promises"
+import { Flock } from "@opencode@lgcode/core/util/flock"
 
 type Msg = {
   key: string

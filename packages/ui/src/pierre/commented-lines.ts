@@ -1,5 +1,5 @@
-import { type SelectedLineRange } from "@pierre@lgcode/diffs"
-import { diffLineIndex, diffRowIndex } from ".@lgcode/diff-selection"
+import { type SelectedLineRange } from "@pierre/diffs"
+import { diffLineIndex, diffRowIndex } from "./diff-selection"
 
 export type CommentSide = "additions" | "deletions"
 

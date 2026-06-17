@@ -1,6 +1,6 @@
-@lgcode/@lgcode/ @ts-nocheck
-import * as mod from ".@lgcode/progress"
-import { create } from "..@lgcode/storybook@lgcode/scaffold"
+// @ts-nocheck
+import * as mod from "./progress"
+import { create } from "../storybook/scaffold"
 
 const docs = `### Overview
 Linear progress indicator with optional label and value display.
@@ -21,13 +21,13 @@ Use in forms, uploads, or background tasks.
 ### Accessibility
 - TODO: confirm ARIA attributes from Kobalte.
 
-### Theming@lgcode/tokens
-- Uses \`data-component="progress"\` with track@lgcode/fill slots.
+### Theming/tokens
+- Uses \`data-component="progress"\` with track/fill slots.
 
 `
 
 const story = create({
-  title: "UI@lgcode/Progress",
+  title: "UI/Progress",
   mod,
   args: {
     value: 60,
@@ -38,7 +38,7 @@ const story = create({
 })
 
 export default {
-  title: "UI@lgcode/Progress",
+  title: "UI/Progress",
   id: "components-progress",
   component: story.meta.component,
   tags: ["autodocs"],
@@ -63,5 +63,5 @@ export const NoLabel = {
 }
 
 export const Indeterminate = {
-  render: () => <mod.Progress>Loading<@lgcode/mod.Progress>,
+  render: () => <mod.Progress>Loading</mod.Progress>,
 }

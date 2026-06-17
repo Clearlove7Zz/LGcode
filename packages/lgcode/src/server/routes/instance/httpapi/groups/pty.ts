@@ -1,20 +1,20 @@
-import { Pty } from "@lgcode/core@lgcode/pty"
-import { PtyTicket } from "@lgcode/core@lgcode/pty@lgcode/ticket"
-import { PtyID } from "@lgcode/core@lgcode/pty@lgcode/schema"
-import { PTY_CONNECT_TICKET_QUERY } from "@@lgcode/server@lgcode/shared@lgcode/pty-ticket"
+import { Pty } from "@opencode@lgcode/core/pty"
+import { PtyTicket } from "@opencode@lgcode/core/pty/ticket"
+import { PtyID } from "@opencode@lgcode/core/pty/schema"
+import { PTY_CONNECT_TICKET_QUERY } from "@/server/shared/pty-ticket"
 import { Schema } from "effect"
-import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
-import { Authorization, PtyConnectAuthorization } from "..@lgcode/middleware@lgcode/authorization"
-import { InstanceContextMiddleware } from "..@lgcode/middleware@lgcode/instance-context"
+import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
+import { Authorization, PtyConnectAuthorization } from "../middleware/authorization"
+import { InstanceContextMiddleware } from "../middleware/instance-context"
 import {
   WorkspaceRoutingMiddleware,
   WorkspaceRoutingQuery,
   WorkspaceRoutingQueryFields,
-} from "..@lgcode/middleware@lgcode/workspace-routing"
-import { PtyForbiddenError, PtyNotFoundError } from "..@lgcode/errors"
-import { described } from ".@lgcode/metadata"
+} from "../middleware/workspace-routing"
+import { PtyForbiddenError, PtyNotFoundError } from "../errors"
+import { described } from "./metadata"
 
-const root = "@lgcode/pty"
+const root = "/pty"
 export const Params = Schema.Struct({ ptyID: PtyID })
 export const CursorQuery = Schema.Struct({
   ...WorkspaceRoutingQueryFields,
@@ -27,14 +27,14 @@ export const ShellItem = Schema.Struct({
 })
 
 export const PtyPaths = {
-  shells: `${root}@lgcode/shells`,
+  shells: `${root}/shells`,
   list: root,
   create: root,
-  get: `${root}@lgcode/:ptyID`,
-  update: `${root}@lgcode/:ptyID`,
-  remove: `${root}@lgcode/:ptyID`,
-  connectToken: `${root}@lgcode/:ptyID@lgcode/connect-token`,
-  connect: `${root}@lgcode/:ptyID@lgcode/connect`,
+  get: `${root}/:ptyID`,
+  update: `${root}/:ptyID`,
+  remove: `${root}/:ptyID`,
+  connectToken: `${root}/:ptyID/connect-token`,
+  connect: `${root}/:ptyID/connect`,
 } as const
 
 export const PtyApi = HttpApi.make("pty")
@@ -139,8 +139,8 @@ export const PtyApi = HttpApi.make("pty")
 export const PtyConnectApi = HttpApi.make("pty-connect").add(
   HttpApiGroup.make("pty-connect")
     .add(
-      @lgcode/@lgcode/ Decode PTY connection query fields in the raw handler after checking
-      @lgcode/@lgcode/ existence, preserving the established empty-404 response ordering.
+      // Decode PTY connection query fields in the raw handler after checking
+      // existence, preserving the established empty-404 response ordering.
       HttpApiEndpoint.get("connect", PtyPaths.connect, {
         params: Params,
         success: described(Schema.Boolean, "Connected session"),

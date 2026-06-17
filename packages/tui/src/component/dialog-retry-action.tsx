@@ -1,13 +1,13 @@
-import { RGBA, TextAttributes } from "@opentui@lgcode/core"
+import { RGBA, TextAttributes } from "@opentui/core"
 import open from "open"
 import { createSignal } from "solid-js"
-import { selectedForeground, useTheme } from "..@lgcode/context@lgcode/theme"
-import { useDialog, type DialogContext } from "..@lgcode/ui@lgcode/dialog"
-import { Link } from "..@lgcode/ui@lgcode/link"
-import { BgPulse } from ".@lgcode/bg-pulse"
-import { useBindings } from "..@lgcode/keymap"
+import { selectedForeground, useTheme } from "../context/theme"
+import { useDialog, type DialogContext } from "../ui/dialog"
+import { Link } from "../ui/link"
+import { BgPulse } from "./bg-pulse"
+import { useBindings } from "../keymap"
 
-const GO_URL = "https:@lgcode/@lgcode/opencode.ai@lgcode/go"
+const GO_URL = "https://opencode.ai/go"
 const PAD_X = 3
 const PAD_TOP_OUTER = 1
 const FOREGROUND_ALPHA = 186
@@ -80,35 +80,35 @@ export function DialogRetryAction(props: DialogRetryActionProps) {
     <box>
       {showGoTreatment() ? (
         <box position="absolute" top={-PAD_TOP_OUTER} left={0} right={0} bottom={0} zIndex={0}>
-          <BgPulse @lgcode/>
-        <@lgcode/box>
+          <BgPulse />
+        </box>
       ) : null}
       <box zIndex={1} paddingLeft={PAD_X} paddingRight={PAD_X} paddingBottom={1} gap={1}>
         <box flexDirection="row" justifyContent="space-between">
           <text attributes={TextAttributes.BOLD} fg={theme.text} bg={textBg()}>
             {props.title}
-          <@lgcode/text>
+          </text>
           <text fg={theme.textMuted} bg={textBg()} onMouseUp={() => dialog.clear()}>
             esc
-          <@lgcode/text>
-        <@lgcode/box>
+          </text>
+        </box>
         <box gap={0}>
           <text fg={theme.textMuted} bg={textBg()}>
             {props.message}
-          <@lgcode/text>
-        <@lgcode/box>
+          </text>
+        </box>
         {props.link ? (
           showGoTreatment() ? (
             <box alignItems="center" justifyContent="flex-end" height={7} paddingBottom={1}>
-              <Link href={props.link} fg={theme.primary} bg={textBg()} wrapMode="none" @lgcode/>
-            <@lgcode/box>
+              <Link href={props.link} fg={theme.primary} bg={textBg()} wrapMode="none" />
+            </box>
           ) : (
             <box width="100%" flexDirection="row" justifyContent="center" paddingBottom={1}>
-              <Link href={props.link} fg={theme.primary} wrapMode="none" @lgcode/>
-            <@lgcode/box>
+              <Link href={props.link} fg={theme.primary} wrapMode="none" />
+            </box>
           )
         ) : (
-          <box paddingBottom={1} @lgcode/>
+          <box paddingBottom={1} />
         )}
         <box flexDirection="row" justifyContent="space-between">
           <box
@@ -124,8 +124,8 @@ export function DialogRetryAction(props: DialogRetryActionProps) {
               attributes={selected() === "dismiss" ? TextAttributes.BOLD : undefined}
             >
               don't show again
-            <@lgcode/text>
-          <@lgcode/box>
+            </text>
+          </box>
           <box
             paddingLeft={2}
             paddingRight={2}
@@ -139,11 +139,11 @@ export function DialogRetryAction(props: DialogRetryActionProps) {
               attributes={selected() === "action" ? TextAttributes.BOLD : undefined}
             >
               {props.label}
-            <@lgcode/text>
-          <@lgcode/box>
-        <@lgcode/box>
-      <@lgcode/box>
-    <@lgcode/box>
+            </text>
+          </box>
+        </box>
+      </box>
+    </box>
   )
 }
 
@@ -153,7 +153,7 @@ DialogRetryAction.show = (
 ) => {
   return new Promise<boolean>((resolve) => {
     dialog.replace(
-      () => <DialogRetryAction {...props} onClose={(dontShow) => resolve(dontShow ?? false)} @lgcode/>,
+      () => <DialogRetryAction {...props} onClose={(dontShow) => resolve(dontShow ?? false)} />,
       () => resolve(false),
     )
   })

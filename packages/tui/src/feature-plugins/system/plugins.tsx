@@ -1,27 +1,27 @@
-import type { TuiPlugin, TuiPluginApi, TuiPluginStatus } from "@lgcode/plugin@lgcode/tui"
-import type { BuiltinTuiPlugin } from "..@lgcode/builtins"
-import { useTerminalDimensions } from "@opentui@lgcode/solid"
+import type { TuiPlugin, TuiPluginApi, TuiPluginStatus } from "@opencode@lgcode/plugin/tui"
+import type { BuiltinTuiPlugin } from "../builtins"
+import { useTerminalDimensions } from "@opentui/solid"
 import { fileURLToPath } from "url"
-import { DialogSelect, type DialogSelectOption } from "..@lgcode/..@lgcode/ui@lgcode/dialog-select"
+import { DialogSelect, type DialogSelectOption } from "../../ui/dialog-select"
 import { Show, createEffect, createMemo, createSignal } from "solid-js"
-import { useBindings } from "..@lgcode/..@lgcode/keymap"
+import { useBindings } from "../../keymap"
 
 const id = "internal:plugin-manager"
 
 function state(api: TuiPluginApi, item: TuiPluginStatus) {
   if (!item.enabled) {
-    return <span style={{ fg: api.theme.current.textMuted }}>disabled<@lgcode/span>
+    return <span style={{ fg: api.theme.current.textMuted }}>disabled</span>
   }
 
   return (
     <span style={{ fg: item.active ? api.theme.current.success : api.theme.current.error }}>
       {item.active ? "active" : "inactive"}
-    <@lgcode/span>
+    </span>
   )
 }
 
 function source(spec: string) {
-  if (!spec.startsWith("file:@lgcode/@lgcode/")) return
+  if (!spec.startsWith("file://")) return
   return fileURLToPath(spec)
 }
 
@@ -52,14 +52,14 @@ function Install(props: { api: TuiPluginApi }) {
       busyText="Installing plugin..."
       description={() => (
         <box flexDirection="row" gap={1}>
-          <text fg={props.api.theme.current.textMuted}>scope:<@lgcode/text>
+          <text fg={props.api.theme.current.textMuted}>scope:</text>
           <text fg={busy() ? props.api.theme.current.textMuted : props.api.theme.current.text}>
             {global() ? "global" : "local"}
-          <@lgcode/text>
+          </text>
           <Show when={!busy()}>
-            <text fg={props.api.theme.current.textMuted}>(tab toggle)<@lgcode/text>
-          <@lgcode/Show>
-        <@lgcode/box>
+            <text fg={props.api.theme.current.textMuted}>(tab toggle)</text>
+          </Show>
+        </box>
       )}
       onConfirm={(raw) => {
         if (busy()) return
@@ -84,7 +84,7 @@ function Install(props: { api: TuiPluginApi }) {
               if (out.missing) {
                 props.api.ui.toast({
                   variant: "info",
-                  message: "Check npm registry@lgcode/auth settings and try again.",
+                  message: "Check npm registry/auth settings and try again.",
                 })
               }
               show(props.api)
@@ -108,7 +108,7 @@ function Install(props: { api: TuiPluginApi }) {
               if (!ok) {
                 props.api.ui.toast({
                   variant: "warning",
-                  message: "Installed plugin, but runtime load failed. See console@lgcode/logs; restart TUI to retry.",
+                  message: "Installed plugin, but runtime load failed. See console/logs; restart TUI to retry.",
                 })
                 show(props.api)
                 return
@@ -128,7 +128,7 @@ function Install(props: { api: TuiPluginApi }) {
       onCancel={() => {
         show(props.api)
       }}
-    @lgcode/>
+    />
   )
 }
 
@@ -144,7 +144,7 @@ function row(api: TuiPluginApi, item: TuiPluginStatus, width: number): DialogSel
 }
 
 function showInstall(api: TuiPluginApi) {
-  api.ui.dialog.replace(() => <Install api={api} @lgcode/>)
+  api.ui.dialog.replace(() => <Install api={api} />)
 }
 
 function View(props: { api: TuiPluginApi }) {
@@ -227,12 +227,12 @@ function View(props: { api: TuiPluginApi }) {
         setCur(item.value)
         flip(item.value)
       }}
-    @lgcode/>
+    />
   )
 }
 
 function show(api: TuiPluginApi) {
-  api.ui.dialog.replace(() => <View api={api} @lgcode/>)
+  api.ui.dialog.replace(() => <View api={api} />)
 }
 
 const tui: TuiPlugin = async (api) => {

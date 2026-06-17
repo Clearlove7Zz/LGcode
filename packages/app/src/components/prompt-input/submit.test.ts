@@ -1,7 +1,7 @@
 import { beforeAll, beforeEach, describe, expect, mock, test } from "bun:test"
-import type { Prompt } from "@@lgcode/context@lgcode/prompt"
+import type { Prompt } from "@/context/prompt"
 
-let createPromptSubmit: typeof import(".@lgcode/submit").createPromptSubmit
+let createPromptSubmit: typeof import("./submit").createPromptSubmit
 
 const createdClients: string[] = []
 const createdSessions: string[] = []
@@ -22,7 +22,7 @@ const sentShell: string[] = []
 const syncedDirectories: string[] = []
 
 let params: { id?: string } = {}
-let selected = "@lgcode/repo@lgcode/worktree-a"
+let selected = "/repo/worktree-a"
 let variant: string | undefined
 
 const promptValue: Prompt = [{ type: "text", content: "ls", start: 0, end: 2 }]
@@ -66,38 +66,38 @@ const clientFor = (directory: string) => {
       abort: async () => ({ data: undefined }),
     },
     worktree: {
-      create: async () => ({ data: { directory: `${directory}@lgcode/new` } }),
+      create: async () => ({ data: { directory: `${directory}/new` } }),
     },
   }
 }
 
 beforeAll(async () => {
-  const rootClient = clientFor("@lgcode/repo@lgcode/main")
+  const rootClient = clientFor("/repo/main")
 
-  mock.module("@solidjs@lgcode/router", () => ({
+  mock.module("@solidjs/router", () => ({
     useNavigate: () => () => undefined,
     useParams: () => params,
     useLocation: () => ({}),
     useSearchParams: () => [{}, () => undefined],
   }))
 
-  mock.module("@lgcode/sdk@lgcode/v2@lgcode/client", () => ({
+  mock.module("@opencode@lgcode/sdk/v2/client", () => ({
     createOpencodeClient: (input: { directory: string }) => {
       createdClients.push(input.directory)
       return clientFor(input.directory)
     },
   }))
 
-  mock.module("@lgcode/ui@lgcode/toast", () => ({
+  mock.module("@opencode@lgcode/ui/toast", () => ({
     Toast: { Region: () => null },
     showToast: () => 0,
   }))
 
-  mock.module("@lgcode/core@lgcode/util@lgcode/encode", () => ({
+  mock.module("@opencode@lgcode/core/util/encode", () => ({
     base64Encode: (value: string) => value,
   }))
 
-  mock.module("@@lgcode/context@lgcode/local", () => ({
+  mock.module("@/context/local", () => ({
     useLocal: () => ({
       model: {
         current: () => ({ id: "model", provider: { id: "provider" } }),
@@ -114,7 +114,7 @@ beforeAll(async () => {
     }),
   }))
 
-  mock.module("@@lgcode/context@lgcode/permission", () => ({
+  mock.module("@/context/permission", () => ({
     usePermission: () => ({
       enableAutoAccept(sessionID: string, directory: string) {
         enabledAutoAccept.push({ sessionID, directory })
@@ -122,21 +122,21 @@ beforeAll(async () => {
     }),
   }))
 
-  mock.module("@@lgcode/context@lgcode/server", () => ({
+  mock.module("@/context/server", () => ({
     useServer: () => ({ key: "server-key" }),
   }))
 
-  mock.module("@@lgcode/context@lgcode/tabs", () => ({
+  mock.module("@/context/tabs", () => ({
     useTabs: () => ({
       promoteDraft: () => undefined,
     }),
   }))
 
-  mock.module("@@lgcode/context@lgcode/prompt", () => ({
+  mock.module("@/context/prompt", () => ({
     usePrompt: () => prompt,
   }))
 
-  mock.module("@@lgcode/context@lgcode/layout", () => ({
+  mock.module("@/context/layout", () => ({
     useLayout: () => ({
       handoff: {
         setTabs: () => undefined,
@@ -144,13 +144,13 @@ beforeAll(async () => {
     }),
   }))
 
-  mock.module("@@lgcode/context@lgcode/sdk", () => ({
+  mock.module("@/context/sdk", () => ({
     useSDK: () => {
       const sdk = {
         scope: "local",
-        directory: "@lgcode/repo@lgcode/main",
+        directory: "/repo/main",
         client: rootClient,
-        url: "http:@lgcode/@lgcode/localhost:4096",
+        url: "http://localhost:4096",
         createClient(opts: any) {
           return clientFor(opts.directory)
         },
@@ -159,7 +159,7 @@ beforeAll(async () => {
     },
   }))
 
-  mock.module("@@lgcode/context@lgcode/sync", () => ({
+  mock.module("@/context/sync", () => ({
     useSync: () => () => ({
       data: { command: [] },
       session: {
@@ -183,7 +183,7 @@ beforeAll(async () => {
     }),
   }))
 
-  mock.module("@@lgcode/context@lgcode/server-sync", () => ({
+  mock.module("@/context/server-sync", () => ({
     useServerSync: () => () => ({
       child: (directory: string) => {
         syncedDirectories.push(directory)
@@ -206,19 +206,19 @@ beforeAll(async () => {
     }),
   }))
 
-  mock.module("@@lgcode/context@lgcode/platform", () => ({
+  mock.module("@/context/platform", () => ({
     usePlatform: () => ({
       fetch: fetch,
     }),
   }))
 
-  mock.module("@@lgcode/context@lgcode/language", () => ({
+  mock.module("@/context/language", () => ({
     useLanguage: () => ({
       t: (key: string) => key,
     }),
   }))
 
-  const mod = await import(".@lgcode/submit")
+  const mod = await import("./submit")
   createPromptSubmit = mod.createPromptSubmit
 })
 
@@ -232,7 +232,7 @@ beforeEach(() => {
   params = {}
   sentShell.length = 0
   syncedDirectories.length = 0
-  selected = "@lgcode/repo@lgcode/worktree-a"
+  selected = "/repo/worktree-a"
   variant = undefined
   for (const key of Object.keys(storedSessions)) delete storedSessions[key]
 })
@@ -262,18 +262,18 @@ describe("prompt submit worktree selection", () => {
     const event = { preventDefault: () => undefined } as unknown as Event
 
     await submit.handleSubmit(event)
-    selected = "@lgcode/repo@lgcode/worktree-b"
+    selected = "/repo/worktree-b"
     await submit.handleSubmit(event)
 
-    expect(createdClients).toEqual(["@lgcode/repo@lgcode/worktree-a", "@lgcode/repo@lgcode/worktree-b"])
-    expect(createdSessions).toEqual(["@lgcode/repo@lgcode/worktree-a", "@lgcode/repo@lgcode/worktree-b"])
-    expect(sentShell).toEqual(["@lgcode/repo@lgcode/worktree-a", "@lgcode/repo@lgcode/worktree-b"])
-    expect(syncedDirectories).toEqual(["@lgcode/repo@lgcode/worktree-a", "@lgcode/repo@lgcode/worktree-a", "@lgcode/repo@lgcode/worktree-b", "@lgcode/repo@lgcode/worktree-b"])
+    expect(createdClients).toEqual(["/repo/worktree-a", "/repo/worktree-b"])
+    expect(createdSessions).toEqual(["/repo/worktree-a", "/repo/worktree-b"])
+    expect(sentShell).toEqual(["/repo/worktree-a", "/repo/worktree-b"])
+    expect(syncedDirectories).toEqual(["/repo/worktree-a", "/repo/worktree-a", "/repo/worktree-b", "/repo/worktree-b"])
     expect(promoted).toEqual([
-      { directory: "@lgcode/repo@lgcode/worktree-a", sessionID: "session-1" },
-      { directory: "@lgcode/repo@lgcode/worktree-b", sessionID: "session-2" },
+      { directory: "/repo/worktree-a", sessionID: "session-1" },
+      { directory: "/repo/worktree-b", sessionID: "session-2" },
     ])
-    expect(syncedDirectories).toEqual(["@lgcode/repo@lgcode/worktree-a", "@lgcode/repo@lgcode/worktree-a", "@lgcode/repo@lgcode/worktree-b", "@lgcode/repo@lgcode/worktree-b"])
+    expect(syncedDirectories).toEqual(["/repo/worktree-a", "/repo/worktree-a", "/repo/worktree-b", "/repo/worktree-b"])
   })
 
   test("applies auto-accept to newly created sessions", async () => {
@@ -301,7 +301,7 @@ describe("prompt submit worktree selection", () => {
 
     await submit.handleSubmit(event)
 
-    expect(enabledAutoAccept).toEqual([{ sessionID: "session-1", directory: "@lgcode/repo@lgcode/worktree-a" }])
+    expect(enabledAutoAccept).toEqual([{ sessionID: "session-1", directory: "/repo/worktree-a" }])
   })
 
   test("includes the selected variant on optimistic prompts", async () => {
@@ -364,7 +364,7 @@ describe("prompt submit worktree selection", () => {
 
     await submit.handleSubmit(event)
 
-    expect(storedSessions["@lgcode/repo@lgcode/worktree-a"]).toEqual([{ id: "session-1", title: "New session 1" }])
+    expect(storedSessions["/repo/worktree-a"]).toEqual([{ id: "session-1", title: "New session 1" }])
     expect(optimisticSeeded).toEqual([true])
   })
 })

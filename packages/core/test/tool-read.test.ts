@@ -1,21 +1,21 @@
 import { beforeEach, describe, expect } from "bun:test"
 import { Effect, Exit, Layer } from "effect"
-import { Config } from "@lgcode/core@lgcode/config"
-import { ConfigAttachments } from "@lgcode/core@lgcode/config@lgcode/attachments"
-import { FileSystem } from "@lgcode/core@lgcode/filesystem"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { Location } from "@lgcode/core@lgcode/location"
-import { Image } from "@lgcode/core@lgcode/image"
-import { PermissionV2 } from "@lgcode/core@lgcode/permission"
-import { SessionV2 } from "@lgcode/core@lgcode/session"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import { Global } from "@lgcode/core@lgcode/global"
-import { location } from ".@lgcode/fixture@lgcode/location"
-import { ToolRegistry } from "@lgcode/core@lgcode/tool@lgcode/registry"
-import { ReadTool } from "@lgcode/core@lgcode/tool@lgcode/read"
-import { ReadToolFileSystem } from "@lgcode/core@lgcode/tool@lgcode/read-filesystem"
-import { testEffect } from ".@lgcode/lib@lgcode/effect"
-import { toolIdentity, executeTool, settleTool, toolDefinitions } from ".@lgcode/lib@lgcode/tool"
+import { Config } from "@opencode@lgcode/core/config"
+import { ConfigAttachments } from "@opencode@lgcode/core/config/attachments"
+import { FileSystem } from "@opencode@lgcode/core/filesystem"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { Location } from "@opencode@lgcode/core/location"
+import { Image } from "@opencode@lgcode/core/image"
+import { PermissionV2 } from "@opencode@lgcode/core/permission"
+import { SessionV2 } from "@opencode@lgcode/core/session"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import { Global } from "@opencode@lgcode/core/global"
+import { location } from "./fixture/location"
+import { ToolRegistry } from "@opencode@lgcode/core/tool/registry"
+import { ReadTool } from "@opencode@lgcode/core/tool/read"
+import { ReadToolFileSystem } from "@opencode@lgcode/core/tool/read-filesystem"
+import { testEffect } from "./lib/effect"
+import { toolIdentity, executeTool, settleTool, toolDefinitions } from "./lib/tool"
 
 const assertions: PermissionV2.AssertInput[] = []
 const readCalls: {
@@ -26,11 +26,11 @@ const listCalls: ReadToolFileSystem.PageInput[] = []
 let resolvedType: "file" | "directory" = "file"
 let resolveFailure: unknown
 let readResult: FileSystem.Content | ReadToolFileSystem.TextPage = {
-  uri: "file:@lgcode/@lgcode/@lgcode/README.md",
+  uri: "file:///README.md",
   name: "README.md",
   content: "hello",
   encoding: "utf8",
-  mime: "text@lgcode/plain",
+  mime: "text/plain",
 }
 let readFailure: unknown
 let configEntries: Config.Entry[] = []
@@ -112,11 +112,11 @@ describe("ReadTool", () => {
     resolvedType = "file"
     resolveFailure = undefined
     readResult = {
-      uri: "file:@lgcode/@lgcode/@lgcode/README.md",
+      uri: "file:///README.md",
       name: "README.md",
       content: "hello",
       encoding: "utf8",
-      mime: "text@lgcode/plain",
+      mime: "text/plain",
     }
     readFailure = undefined
     configEntries = []
@@ -137,15 +137,15 @@ describe("ReadTool", () => {
       ).toEqual({
         type: "json",
         value: {
-          uri: "file:@lgcode/@lgcode/@lgcode/README.md",
+          uri: "file:///README.md",
           name: "README.md",
           content: "hello",
           encoding: "utf8",
-          mime: "text@lgcode/plain",
+          mime: "text/plain",
         },
       })
       expect(assertions).toMatchObject([{ sessionID, action: "read", resources: ["README.md"], save: ["*"] }])
-      expect(readCalls).toEqual([{ input: AbsolutePath.make(`${process.cwd()}@lgcode/README.md`), page: {} }])
+      expect(readCalls).toEqual([{ input: AbsolutePath.make(`${process.cwd()}/README.md`), page: {} }])
     }),
   )
 
@@ -153,11 +153,11 @@ describe("ReadTool", () => {
     Effect.gen(function* () {
       const png = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
       readResult = {
-        uri: "file:@lgcode/@lgcode/@lgcode/pixel.png",
+        uri: "file:///pixel.png",
         name: "pixel.png",
         content: png,
         encoding: "base64",
-        mime: "image@lgcode/png",
+        mime: "image/png",
       }
       const registry = yield* ToolRegistry.Service
 
@@ -171,10 +171,10 @@ describe("ReadTool", () => {
         type: "content",
         value: [
           { type: "text", text: "Image read successfully" },
-          { type: "file", uri: `data:image@lgcode/png;base64,${png}`, mime: "image@lgcode/png", name: "pixel.png" },
+          { type: "file", uri: `data:image/png;base64,${png}`, mime: "image/png", name: "pixel.png" },
         ],
       })
-      expect(readCalls).toEqual([{ input: AbsolutePath.make(`${process.cwd()}@lgcode/pixel.png`), page: {} }])
+      expect(readCalls).toEqual([{ input: AbsolutePath.make(`${process.cwd()}/pixel.png`), page: {} }])
 
       const settled = yield* settleTool(registry, {
         sessionID,
@@ -182,32 +182,32 @@ describe("ReadTool", () => {
         call: { type: "tool-call", id: "call-image-settle", name: "read", input: { path: "pixel.png" } },
       })
       expect(settled.output?.structured).toMatchObject({
-        uri: "file:@lgcode/@lgcode/@lgcode/pixel.png",
+        uri: "file:///pixel.png",
         name: "pixel.png",
-        mime: "image@lgcode/png",
+        mime: "image/png",
         encoding: "base64",
       })
       expect(settled.output?.content).toMatchObject([
         { type: "text", text: "Image read successfully" },
-        { type: "file", mime: "image@lgcode/png", uri: `data:image@lgcode/png;base64,${png}` },
+        { type: "file", mime: "image/png", uri: `data:image/png;base64,${png}` },
       ])
     }),
   )
 
   it.effect("preserves a PNG above the generic text limit as native media", () =>
     Effect.gen(function* () {
-      const photon = yield* Effect.promise(() => import("@silvia-odwyer@lgcode/photon-node"))
+      const photon = yield* Effect.promise(() => import("@silvia-odwyer/photon-node"))
       const pixels = Uint8Array.from({ length: 256 * 256 * 4 }, (_, index) => (index * 73 + (index >> 3)) % 256)
       const source = new photon.PhotonImage(pixels, 256, 256)
       const png = Buffer.from(source.get_bytes()).toString("base64")
       source.free()
       expect(Buffer.byteLength(png)).toBeGreaterThan(50 * 1024)
       readResult = {
-        uri: "file:@lgcode/@lgcode/@lgcode/large.png",
+        uri: "file:///large.png",
         name: "large.png",
         content: png,
         encoding: "base64",
-        mime: "image@lgcode/png",
+        mime: "image/png",
       }
       const registry = yield* ToolRegistry.Service
 
@@ -219,16 +219,16 @@ describe("ReadTool", () => {
 
       expect(settled.outputPaths).toBeUndefined()
       expect(settled.output?.structured).toMatchObject({
-        uri: "file:@lgcode/@lgcode/@lgcode/large.png",
+        uri: "file:///large.png",
         name: "large.png",
-        mime: "image@lgcode/png",
+        mime: "image/png",
         encoding: "base64",
       })
       expect(settled.result).toEqual({
         type: "content",
         value: [
           { type: "text", text: "Image read successfully" },
-          { type: "file", uri: `data:image@lgcode/png;base64,${png}`, mime: "image@lgcode/png", name: "large.png" },
+          { type: "file", uri: `data:image/png;base64,${png}`, mime: "image/png", name: "large.png" },
         ],
       })
     }),
@@ -238,11 +238,11 @@ describe("ReadTool", () => {
     Effect.gen(function* () {
       const png = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
       readResult = {
-        uri: "file:@lgcode/@lgcode/@lgcode/pixel.png",
+        uri: "file:///pixel.png",
         name: "pixel.png",
         content: png,
         encoding: "base64",
-        mime: "image@lgcode/png",
+        mime: "image/png",
       }
       const registry = yield* ToolRegistry.Service
 
@@ -254,7 +254,7 @@ describe("ReadTool", () => {
         }),
       ).toMatchObject({
         type: "content",
-        value: [{ type: "text" }, { type: "file", uri: `data:image@lgcode/png;base64,${png}`, mime: "image@lgcode/png" }],
+        value: [{ type: "text" }, { type: "file", uri: `data:image/png;base64,${png}`, mime: "image/png" }],
       })
     }),
   )
@@ -262,11 +262,11 @@ describe("ReadTool", () => {
   it.effect("rejects invalid image data returned by the filesystem", () =>
     Effect.gen(function* () {
       readResult = {
-        uri: "file:@lgcode/@lgcode/@lgcode/truncated.png",
+        uri: "file:///truncated.png",
         name: "truncated.png",
         content: "iVBORw0KGgo=",
         encoding: "base64",
-        mime: "image@lgcode/png",
+        mime: "image/png",
       }
       const registry = yield* ToolRegistry.Service
 
@@ -282,16 +282,16 @@ describe("ReadTool", () => {
 
   it.effect("rejects oversized images when resizing is disabled", () =>
     Effect.gen(function* () {
-      const photon = yield* Effect.promise(() => import("@silvia-odwyer@lgcode/photon-node"))
+      const photon = yield* Effect.promise(() => import("@silvia-odwyer/photon-node"))
       const source = new photon.PhotonImage(new Uint8Array(Array.from({ length: 16 * 4 }, () => 255)), 16, 1)
       const base64 = Buffer.from(source.get_bytes()).toString("base64")
       source.free()
       readResult = {
-        uri: "file:@lgcode/@lgcode/@lgcode/wide.png",
+        uri: "file:///wide.png",
         name: "wide.png",
         content: base64,
         encoding: "base64",
-        mime: "image@lgcode/png",
+        mime: "image/png",
       }
       configEntries = [
         new Config.Document({
@@ -317,16 +317,16 @@ describe("ReadTool", () => {
 
   it.effect("resizes images to configured dimensions before returning media", () =>
     Effect.gen(function* () {
-      const photon = yield* Effect.promise(() => import("@silvia-odwyer@lgcode/photon-node"))
+      const photon = yield* Effect.promise(() => import("@silvia-odwyer/photon-node"))
       const source = new photon.PhotonImage(new Uint8Array(Array.from({ length: 16 * 4 }, () => 255)), 16, 1)
       const base64 = Buffer.from(source.get_bytes()).toString("base64")
       source.free()
       readResult = {
-        uri: "file:@lgcode/@lgcode/@lgcode/wide.png",
+        uri: "file:///wide.png",
         name: "wide.png",
         content: base64,
         encoding: "base64",
-        mime: "image@lgcode/png",
+        mime: "image/png",
       }
       configEntries = [
         new Config.Document({
@@ -359,11 +359,11 @@ describe("ReadTool", () => {
     Effect.gen(function* () {
       const png = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
       readResult = {
-        uri: "file:@lgcode/@lgcode/@lgcode/pixel.png",
+        uri: "file:///pixel.png",
         name: "pixel.png",
         content: png,
         encoding: "base64",
-        mime: "image@lgcode/png",
+        mime: "image/png",
       }
       configEntries = [
         new Config.Document({
@@ -383,7 +383,7 @@ describe("ReadTool", () => {
       })
 
       expect(result.type).toBe("error")
-      if (result.type === "error") expect(result.value).toContain("@lgcode/1 bytes")
+      if (result.type === "error") expect(result.value).toContain("/1 bytes")
     }),
   )
 
@@ -391,11 +391,11 @@ describe("ReadTool", () => {
     Effect.gen(function* () {
       const png = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
       readResult = {
-        uri: "file:@lgcode/@lgcode/@lgcode/pixel.bin",
+        uri: "file:///pixel.bin",
         name: "pixel.bin",
         content: png,
         encoding: "base64",
-        mime: "image@lgcode/png",
+        mime: "image/png",
       }
       const registry = yield* ToolRegistry.Service
 
@@ -407,7 +407,7 @@ describe("ReadTool", () => {
         }),
       ).toMatchObject({
         type: "content",
-        value: [{ type: "text" }, { type: "file", mime: "image@lgcode/png", name: "pixel.bin" }],
+        value: [{ type: "text" }, { type: "file", mime: "image/png", name: "pixel.bin" }],
       })
     }),
   )
@@ -432,7 +432,7 @@ describe("ReadTool", () => {
         ),
       ).toBe(true)
       expect(readCalls).toEqual([
-        { input: AbsolutePath.make(`${process.cwd()}@lgcode/archive.dat`), page: { offset: 2, limit: 1 } },
+        { input: AbsolutePath.make(`${process.cwd()}/archive.dat`), page: { offset: 2, limit: 1 } },
       ])
     }),
   )
@@ -516,7 +516,7 @@ describe("ReadTool", () => {
       readResult = new ReadToolFileSystem.TextPage({
         type: "text-page",
         content: "hello",
-        mime: "text@lgcode/plain",
+        mime: "text/plain",
         offset: 2,
         truncated: true,
         next: 3,
@@ -536,10 +536,10 @@ describe("ReadTool", () => {
         }),
       ).toEqual({
         type: "json",
-        value: { type: "text-page", content: "hello", mime: "text@lgcode/plain", offset: 2, truncated: true, next: 3 },
+        value: { type: "text-page", content: "hello", mime: "text/plain", offset: 2, truncated: true, next: 3 },
       })
       expect(readCalls).toEqual([
-        { input: AbsolutePath.make(`${process.cwd()}@lgcode/large.txt`), page: { offset: 2, limit: 1 } },
+        { input: AbsolutePath.make(`${process.cwd()}/large.txt`), page: { offset: 2, limit: 1 } },
       ])
     }),
   )
@@ -547,11 +547,11 @@ describe("ReadTool", () => {
   it.effect("rejects unsupported binary discovered by a direct read", () =>
     Effect.gen(function* () {
       readResult = {
-        uri: "file:@lgcode/@lgcode/@lgcode/late-binary",
+        uri: "file:///late-binary",
         name: "late-binary",
         content: "AAECAw==",
         encoding: "base64",
-        mime: "application@lgcode/octet-stream",
+        mime: "application/octet-stream",
       }
       const registry = yield* ToolRegistry.Service
 

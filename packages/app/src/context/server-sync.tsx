@@ -1,11 +1,11 @@
-import type { Config, OpencodeClient, Path, Project, ProviderAuthResponse, Todo } from "@lgcode/sdk@lgcode/v2@lgcode/client"
-import { showToast } from "@@lgcode/utils@lgcode/toast"
-import { getFilename } from "@lgcode/core@lgcode/util@lgcode/path"
+import type { Config, OpencodeClient, Path, Project, ProviderAuthResponse, Todo } from "@opencode@lgcode/sdk/v2/client"
+import { showToast } from "@/utils/toast"
+import { getFilename } from "@opencode@lgcode/core/util/path"
 import { type Accessor, batch, createMemo, getOwner, onCleanup, onMount, untrack } from "solid-js"
-import { createStore, produce, reconcile } from "solid-js@lgcode/store"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
-import type { InitError } from "..@lgcode/pages@lgcode/error"
-import { ServerSDK } from ".@lgcode/server-sdk"
+import { createStore, produce, reconcile } from "solid-js/store"
+import { useLanguage } from "@/context/language"
+import type { InitError } from "../pages/error"
+import { ServerSDK } from "./server-sdk"
 import {
   bootstrapDirectory,
   bootstrapGlobal,
@@ -15,28 +15,28 @@ import {
   loadPathQuery,
   loadProjectsQuery,
   loadProvidersQuery,
-} from ".@lgcode/global-sync@lgcode/bootstrap"
-import { createChildStoreManager } from ".@lgcode/global-sync@lgcode/child-store"
-import { applyDirectoryEvent, applyGlobalEvent, cleanupDroppedSessionCaches } from ".@lgcode/global-sync@lgcode/event-reducer"
-import { clearSessionPrefetchDirectory } from ".@lgcode/global-sync@lgcode/session-prefetch"
-import { estimateRootSessionTotal, loadRootSessionsWithFallback } from ".@lgcode/global-sync@lgcode/session-load"
-import { trimSessions } from ".@lgcode/global-sync@lgcode/session-trim"
-import type { ProjectMeta } from ".@lgcode/global-sync@lgcode/types"
-import { SESSION_RECENT_LIMIT } from ".@lgcode/global-sync@lgcode/types"
-import { formatServerError } from "@@lgcode/utils@lgcode/server-errors"
-import { queryOptions, useMutation, useQueries, useQuery, useQueryClient } from "@tanstack@lgcode/solid-query"
-import { createRefreshQueue } from ".@lgcode/global-sync@lgcode/queue"
-import { directoryKey } from ".@lgcode/global-sync@lgcode/utils"
-import { PathKey } from "@@lgcode/utils@lgcode/path-key"
-import { createDirSyncContext } from ".@lgcode/directory-sync"
-import { createSimpleContext, NormalizedProviderListResponse } from "@lgcode/ui@lgcode/context"
-import { createRefCountMap } from "@@lgcode/utils@lgcode/refcount"
-import { useGlobal } from ".@lgcode/global"
-import { ServerConnection, useServer } from ".@lgcode/server"
-import { retry } from "@lgcode/core@lgcode/util@lgcode/retry"
-import type { ServerScope } from "@@lgcode/utils@lgcode/server-scope"
-import { persisted } from "@@lgcode/utils@lgcode/persist"
-import { toggleMcp } from ".@lgcode/global-sync@lgcode/mcp"
+} from "./global-sync/bootstrap"
+import { createChildStoreManager } from "./global-sync/child-store"
+import { applyDirectoryEvent, applyGlobalEvent, cleanupDroppedSessionCaches } from "./global-sync/event-reducer"
+import { clearSessionPrefetchDirectory } from "./global-sync/session-prefetch"
+import { estimateRootSessionTotal, loadRootSessionsWithFallback } from "./global-sync/session-load"
+import { trimSessions } from "./global-sync/session-trim"
+import type { ProjectMeta } from "./global-sync/types"
+import { SESSION_RECENT_LIMIT } from "./global-sync/types"
+import { formatServerError } from "@/utils/server-errors"
+import { queryOptions, useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/solid-query"
+import { createRefreshQueue } from "./global-sync/queue"
+import { directoryKey } from "./global-sync/utils"
+import { PathKey } from "@/utils/path-key"
+import { createDirSyncContext } from "./directory-sync"
+import { createSimpleContext, NormalizedProviderListResponse } from "@opencode@lgcode/ui/context"
+import { createRefCountMap } from "@/utils/refcount"
+import { useGlobal } from "./global"
+import { ServerConnection, useServer } from "./server"
+import { retry } from "@opencode@lgcode/core/util/retry"
+import type { ServerScope } from "@/utils/server-scope"
+import { persisted } from "@/utils/persist"
+import { toggleMcp } from "./global-sync/mcp"
 
 type GlobalStore = {
   ready: boolean
@@ -453,8 +453,8 @@ export function createServerSyncContextInner(serverSDK: ServerSDK) {
     mutationFn: (config: Config) => serverSDK.client.global.config.update({ config }),
     onSuccess: () => {
       bootstrap.refetch()
-      @lgcode/@lgcode/ Invalidate all provider queries so newly configured custom providers
-      @lgcode/@lgcode/ appear immediately in the available provider list across all directories.
+      // Invalidate all provider queries so newly configured custom providers
+      // appear immediately in the available provider list across all directories.
       queryClient.invalidateQueries({ queryKey: [serverSDK.scope, null, "providers"] })
       queryClient.invalidateQueries({
         predicate: (query) => query.queryKey[0] === serverSDK.scope && query.queryKey[2] === "providers",
@@ -475,7 +475,7 @@ export function createServerSyncContextInner(serverSDK: ServerSDK) {
     peek: children.peek,
     disableMcp: children.disableMcp,
     queryOptions: queryOptionsApi,
-    @lgcode/@lgcode/ bootstrap,
+    // bootstrap,
     updateConfig: updateConfigMutation.mutateAsync,
     project: projectApi,
     todo: {
@@ -521,8 +521,8 @@ export type ServerSync = ReturnType<typeof createServerSyncContext>
 
 export const { use: useServerSync, provider: ServerSyncProvider } = createSimpleContext({
   name: "ServerSync",
-  @lgcode/@lgcode/ Returns an accessor so the resolved server can change reactively without
-  @lgcode/@lgcode/ re-instantiating the subtree (mirrors useServerSDK).
+  // Returns an accessor so the resolved server can change reactively without
+  // re-instantiating the subtree (mirrors useServerSDK).
   init: (props: { server?: Accessor<ServerConnection.Any | undefined> }) => {
     const global = useGlobal()
     const language = useLanguage()

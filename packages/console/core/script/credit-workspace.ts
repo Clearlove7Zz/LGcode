@@ -1,8 +1,8 @@
-import { Billing } from "..@lgcode/src@lgcode/billing.js"
-import { Database, eq } from "..@lgcode/src@lgcode/drizzle@lgcode/index.js"
-import { WorkspaceTable } from "..@lgcode/src@lgcode/schema@lgcode/workspace.sql.js"
+import { Billing } from "../src/billing.js"
+import { Database, eq } from "../src/drizzle/index.js"
+import { WorkspaceTable } from "../src/schema/workspace.sql.js"
 
-@lgcode/@lgcode/ get input from command line
+// get input from command line
 const workspaceID = process.argv[2]
 const dollarAmount = process.argv[3]
 
@@ -11,7 +11,7 @@ if (!workspaceID || !dollarAmount) {
   process.exit(1)
 }
 
-@lgcode/@lgcode/ check workspace exists
+// check workspace exists
 const workspace = await Database.use((tx) =>
   tx
     .select()

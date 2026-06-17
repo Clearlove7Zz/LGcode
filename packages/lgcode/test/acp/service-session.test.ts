@@ -9,15 +9,15 @@ import type {
   SessionConfigOption,
   SessionConfigSelectOption,
   SetSessionConfigOptionResponse,
-} from "@agentclientprotocol@lgcode/sdk"
-import type { OpencodeClient } from "@lgcode/sdk@lgcode/v2"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
+} from "@agentclientprotocol/sdk"
+import type { OpencodeClient } from "@opencode@lgcode/sdk/v2"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelV2 } from "@opencode@lgcode/core/model"
 import { Effect } from "effect"
-import * as ACPService from "@@lgcode/acp@lgcode/service"
-import * as ACPError from "@@lgcode/acp@lgcode/error"
-import { UsageService } from "@@lgcode/acp@lgcode/usage"
-import type { Provider } from "@@lgcode/provider@lgcode/provider"
+import * as ACPService from "@/acp/service"
+import * as ACPError from "@/acp/error"
+import { UsageService } from "@/acp/usage"
+import type { Provider } from "@/provider/provider"
 
 const providerID = ProviderV2.ID.make("test")
 const modelID = ModelV2.ID.make("test-model")
@@ -36,8 +36,8 @@ const provider: Provider.Info = {
       providerID,
       api: {
         id: modelID,
-        url: "https:@lgcode/@lgcode/example.com",
-        npm: "@ai-sdk@lgcode/openai-compatible",
+        url: "https://example.com",
+        npm: "@ai-sdk/openai-compatible",
       },
       name: "Test Model",
       family: "test",
@@ -73,8 +73,8 @@ const provider: Provider.Info = {
       providerID,
       api: {
         id: configuredModelID,
-        url: "https:@lgcode/@lgcode/example.com",
-        npm: "@ai-sdk@lgcode/openai-compatible",
+        url: "https://example.com",
+        npm: "@ai-sdk/openai-compatible",
       },
       name: "Configured Model",
       family: "test",
@@ -106,8 +106,8 @@ const provider: Provider.Info = {
       providerID,
       api: {
         id: secondModelID,
-        url: "https:@lgcode/@lgcode/example.com",
-        npm: "@ai-sdk@lgcode/openai-compatible",
+        url: "https://example.com",
+        npm: "@ai-sdk/openai-compatible",
       },
       name: "Second Model",
       family: "test",
@@ -156,7 +156,7 @@ describe("ACP service sessions", () => {
     const usageUpdates: string[] = []
     const sessions = Array.from({ length: 102 }, (_, index) => ({
       id: `ses_${index + 1}`,
-      directory: index % 2 === 0 ? "@lgcode/workspace" : "@lgcode/other",
+      directory: index % 2 === 0 ? "/workspace" : "/other",
       title: `Session ${index + 1}`,
       time: { created: index + 1, updated: index + 1 },
     }))
@@ -176,7 +176,7 @@ describe("ACP service sessions", () => {
           }),
         skills: () =>
           Promise.resolve({
-            data: [{ name: "review-skill", description: "Review", location: "@lgcode/skills@lgcode/review", content: "review" }],
+            data: [{ name: "review-skill", description: "Review", location: "/skills/review", content: "review" }],
           }),
       },
       command: {
@@ -275,7 +275,7 @@ describe("ACP service sessions", () => {
     const { service, updates, mcpAdds } = makeService()
     const result = await Effect.runPromise(
       service.newSession({
-        cwd: "@lgcode/workspace",
+        cwd: "/workspace",
         mcpServers: [
           { name: "tools", command: "node", args: ["server.js"], env: [] },
           { name: "tools", command: "node", args: ["server.js"], env: [] },
@@ -309,7 +309,7 @@ describe("ACP service sessions", () => {
       },
     ])
     const result = await Effect.runPromise(
-      service.loadSession({ cwd: "@lgcode/workspace", sessionId: "ses_loaded", mcpServers: [] }),
+      service.loadSession({ cwd: "/workspace", sessionId: "ses_loaded", mcpServers: [] }),
     )
 
     expect(result.configOptions?.find((option) => option.id === "effort")?.currentValue).toBe("high")
@@ -336,7 +336,7 @@ describe("ACP service sessions", () => {
       },
     ])
 
-    await Effect.runPromise(service.loadSession({ cwd: "@lgcode/workspace", sessionId: "ses_loaded", mcpServers: [] }))
+    await Effect.runPromise(service.loadSession({ cwd: "/workspace", sessionId: "ses_loaded", mcpServers: [] }))
 
     expect(
       updates
@@ -358,8 +358,8 @@ describe("ACP service sessions", () => {
 
   it("lists sessions sorted by updated time with cursor support", async () => {
     const { service } = makeService()
-    const first = await Effect.runPromise(service.listSessions({ cwd: "@lgcode/workspace" }))
-    const second = await Effect.runPromise(service.listSessions({ cwd: "@lgcode/workspace", cursor: first.nextCursor }))
+    const first = await Effect.runPromise(service.listSessions({ cwd: "/workspace" }))
+    const second = await Effect.runPromise(service.listSessions({ cwd: "/workspace", cursor: first.nextCursor }))
 
     expect(first.sessions).toHaveLength(51)
     expect(first.sessions[0]?.sessionId).toBe("ses_101")
@@ -370,11 +370,11 @@ describe("ACP service sessions", () => {
 
   it("includes live ACP sessions before they appear in server-backed session list", async () => {
     const { service } = makeService()
-    const created = await Effect.runPromise(service.newSession({ cwd: "@lgcode/workspace", mcpServers: [] }))
-    const listed = await Effect.runPromise(service.listSessions({ cwd: "@lgcode/workspace" }))
+    const created = await Effect.runPromise(service.newSession({ cwd: "/workspace", mcpServers: [] }))
+    const listed = await Effect.runPromise(service.listSessions({ cwd: "/workspace" }))
 
     expect(listed.sessions[0]?.sessionId).toBe(created.sessionId)
-    expect(listed.sessions[0]?.cwd).toBe("@lgcode/workspace")
+    expect(listed.sessions[0]?.cwd).toBe("/workspace")
   })
 
   it("lists all sessions with next cursor when the first page is full", async () => {
@@ -401,7 +401,7 @@ describe("ACP service sessions", () => {
       },
     ])
     const resumed = await Effect.runPromise(
-      service.resumeSession({ cwd: "@lgcode/workspace", sessionId: "ses_resume", mcpServers: [] }),
+      service.resumeSession({ cwd: "/workspace", sessionId: "ses_resume", mcpServers: [] }),
     )
     const updated = await Effect.runPromise(
       service.setSessionConfigOption({ sessionId: "ses_resume", configId: "effort", value: "default" }),
@@ -413,7 +413,7 @@ describe("ACP service sessions", () => {
 
   it("closes local ACP state and aborts the backing session best-effort", async () => {
     const { service, aborts } = makeService()
-    const created = await Effect.runPromise(service.newSession({ cwd: "@lgcode/workspace", mcpServers: [] }))
+    const created = await Effect.runPromise(service.newSession({ cwd: "/workspace", mcpServers: [] }))
 
     expect(await Effect.runPromise(service.closeSession({ sessionId: created.sessionId }))).toEqual({})
     const missing = await Effect.runPromise(
@@ -428,14 +428,14 @@ describe("ACP service sessions", () => {
 
   it("cancel aborts the backing session and keeps the ACP session", async () => {
     const { service, aborts } = makeService()
-    const created = await Effect.runPromise(service.newSession({ cwd: "@lgcode/workspace", mcpServers: [] }))
+    const created = await Effect.runPromise(service.newSession({ cwd: "/workspace", mcpServers: [] }))
 
     await Effect.runPromise(service.cancel({ sessionId: created.sessionId }))
 
-    @lgcode/@lgcode/ The running turn was aborted via the core session API.
+    // The running turn was aborted via the core session API.
     expect(aborts).toEqual([created.sessionId])
-    @lgcode/@lgcode/ Unlike closeSession, the ACP session is still present afterwards so
-    @lgcode/@lgcode/ the client can keep prompting.
+    // Unlike closeSession, the ACP session is still present afterwards so
+    // the client can keep prompting.
     const stillUsable = await Effect.runPromise(
       service.setSessionConfigOption({ sessionId: created.sessionId, configId: "effort", value: "high" }),
     )
@@ -444,7 +444,7 @@ describe("ACP service sessions", () => {
 
   it("does not fail cancel or close when the backing abort fails", async () => {
     const { service } = makeService([], { abort: () => Promise.reject(new Error("nope")) })
-    const created = await Effect.runPromise(service.newSession({ cwd: "@lgcode/workspace", mcpServers: [] }))
+    const created = await Effect.runPromise(service.newSession({ cwd: "/workspace", mcpServers: [] }))
 
     await Effect.runPromise(service.cancel({ sessionId: created.sessionId }))
     expect(await Effect.runPromise(service.closeSession({ sessionId: created.sessionId }))).toEqual({})
@@ -465,14 +465,14 @@ describe("ACP service sessions", () => {
       },
     ])
     const forked = await Effect.runPromise(
-      service.forkSession({ cwd: "@lgcode/workspace", sessionId: "ses_parent", mcpServers: [] }),
+      service.forkSession({ cwd: "/workspace", sessionId: "ses_parent", mcpServers: [] }),
     )
     const updated = await Effect.runPromise(
       service.setSessionConfigOption({ sessionId: forked.sessionId, configId: "effort", value: "low" }),
     )
 
     expect(forked.sessionId).toBe("fork_ses_parent")
-    expect(select(forked, "model")?.currentValue).toBe("test@lgcode/second-model")
+    expect(select(forked, "model")?.currentValue).toBe("test/second-model")
     expect(select(forked, "effort")?.currentValue).toBe("medium")
     expect(select(updated, "effort")?.currentValue).toBe("low")
     expect(forks).toEqual(["ses_parent"])
@@ -498,7 +498,7 @@ describe("ACP service sessions", () => {
       },
     ])
     const result = await Effect.runPromise(
-      service.loadSession({ cwd: "@lgcode/workspace", sessionId: "ses_loaded", mcpServers: [] }),
+      service.loadSession({ cwd: "/workspace", sessionId: "ses_loaded", mcpServers: [] }),
     )
 
     expect(result.configOptions?.find((option) => option.id === "effort")?.currentValue).toBe("high")
@@ -523,7 +523,7 @@ describe("ACP service sessions", () => {
     })
     const error = await Effect.runPromise(
       service
-        .newSession({ cwd: "@lgcode/workspace", mcpServers: [] })
+        .newSession({ cwd: "/workspace", mcpServers: [] })
         .pipe(Effect.mapError(ACPError.toRequestError), Effect.flip),
     )
 
@@ -562,10 +562,10 @@ describe("ACP service sessions", () => {
 
     const first = await Effect.runPromise(
       service
-        .newSession({ cwd: "@lgcode/workspace", mcpServers: [] })
+        .newSession({ cwd: "/workspace", mcpServers: [] })
         .pipe(Effect.mapError(ACPError.toRequestError), Effect.flip),
     )
-    const second = await Effect.runPromise(service.newSession({ cwd: "@lgcode/workspace", mcpServers: [] }))
+    const second = await Effect.runPromise(service.newSession({ cwd: "/workspace", mcpServers: [] }))
 
     expect(first.code).toBe(-32000)
     expect(second.sessionId).toBe("ses_retry")
@@ -605,13 +605,13 @@ describe("ACP service sessions", () => {
 
     await Effect.runPromise(
       service.newSession({
-        cwd: "@lgcode/workspace",
+        cwd: "/workspace",
         mcpServers: [{ name: "tools", command: "node", args: ["one.js"], env: [] }],
       }),
     )
     await Effect.runPromise(
       service.newSession({
-        cwd: "@lgcode/workspace",
+        cwd: "/workspace",
         mcpServers: [{ name: "tools", command: "node", args: ["two.js"], env: [] }],
       }),
     )
@@ -625,7 +625,7 @@ describe("ACP service sessions", () => {
     const sdk = {
       config: {
         providers: () => Promise.resolve({ data: { providers: [provider], default: { test: modelID } } }),
-        get: () => Promise.resolve({ data: { model: "test@lgcode/configured-model" } }),
+        get: () => Promise.resolve({ data: { model: "test/configured-model" } }),
       },
       app: {
         agents: () => Promise.resolve({ data: [{ name: "build", mode: "primary", permission: [], options: {} }] }),
@@ -644,10 +644,10 @@ describe("ACP service sessions", () => {
     } as unknown as OpencodeClient
     const service = ACPService.make({ sdk })
 
-    const result = await Effect.runPromise(service.newSession({ cwd: "@lgcode/workspace", mcpServers: [] }))
+    const result = await Effect.runPromise(service.newSession({ cwd: "/workspace", mcpServers: [] }))
 
     expect(result.sessionId).toBe("configured-model")
-    expect(result.configOptions?.find((option) => option.id === "model")?.currentValue).toBe("test@lgcode/configured-model")
+    expect(result.configOptions?.find((option) => option.id === "model")?.currentValue).toBe("test/configured-model")
   })
 
   it("does not scan last-used sessions when resolving the new session default", async () => {
@@ -683,32 +683,32 @@ describe("ACP service sessions", () => {
     } as unknown as OpencodeClient
     const service = ACPService.make({ sdk })
 
-    const result = await Effect.runPromise(service.newSession({ cwd: "@lgcode/workspace", mcpServers: [] }))
+    const result = await Effect.runPromise(service.newSession({ cwd: "/workspace", mcpServers: [] }))
 
     expect(result.sessionId).toBe("test-model")
-    expect(result.configOptions?.find((option) => option.id === "model")?.currentValue).toBe("test@lgcode/test-model")
+    expect(result.configOptions?.find((option) => option.id === "model")?.currentValue).toBe("test/test-model")
     expect(historyCalls).toEqual([])
   })
 
   it("switches model and returns updated model and effort options", async () => {
     const { service } = makeService()
-    const session = await Effect.runPromise(service.newSession({ cwd: "@lgcode/workspace", mcpServers: [] }))
+    const session = await Effect.runPromise(service.newSession({ cwd: "/workspace", mcpServers: [] }))
     const updated = await Effect.runPromise(
       service.setSessionConfigOption({
         sessionId: session.sessionId,
         configId: "model",
-        value: "test@lgcode/second-model",
+        value: "test/second-model",
       }),
     )
 
-    expect(select(updated, "model")?.currentValue).toBe("test@lgcode/second-model")
+    expect(select(updated, "model")?.currentValue).toBe("test/second-model")
     expect(select(updated, "effort")?.currentValue).toBe("low")
     expect(flattenSelectOptions(select(updated, "effort")).map((option) => option.value)).toEqual(["low", "medium"])
   })
 
   it("switches effort and returns the updated effort current value", async () => {
     const { service } = makeService()
-    const session = await Effect.runPromise(service.newSession({ cwd: "@lgcode/workspace", mcpServers: [] }))
+    const session = await Effect.runPromise(service.newSession({ cwd: "/workspace", mcpServers: [] }))
     const updated = await Effect.runPromise(
       service.setSessionConfigOption({
         sessionId: session.sessionId,
@@ -722,7 +722,7 @@ describe("ACP service sessions", () => {
 
   it("switches mode and returns the updated mode current value", async () => {
     const { service } = makeService()
-    const session = await Effect.runPromise(service.newSession({ cwd: "@lgcode/workspace", mcpServers: [] }))
+    const session = await Effect.runPromise(service.newSession({ cwd: "/workspace", mcpServers: [] }))
     const updated = await Effect.runPromise(
       service.setSessionConfigOption({
         sessionId: session.sessionId,
@@ -736,11 +736,11 @@ describe("ACP service sessions", () => {
 
   it("maps invalid model effort mode and config id to invalid params", async () => {
     const { service } = makeService()
-    const session = await Effect.runPromise(service.newSession({ cwd: "@lgcode/workspace", mcpServers: [] }))
+    const session = await Effect.runPromise(service.newSession({ cwd: "/workspace", mcpServers: [] }))
 
     const results = await Promise.all(
       [
-        { configId: "model", value: "test@lgcode/missing-model" },
+        { configId: "model", value: "test/missing-model" },
         { configId: "effort", value: "max" },
         { configId: "mode", value: "missing-mode" },
         { configId: "missing", value: "value" },
@@ -799,7 +799,7 @@ describe("ACP service sessions", () => {
       },
     } as unknown as OpencodeClient
     const service = ACPService.make({ sdk })
-    const session = await Effect.runPromise(service.newSession({ cwd: "@lgcode/workspace", mcpServers: [] }))
+    const session = await Effect.runPromise(service.newSession({ cwd: "/workspace", mcpServers: [] }))
 
     expect(calls).toEqual({ providers: 1, agents: 1, commands: 1, skills: 1, mcpAdds: 0 })
 
@@ -854,16 +854,16 @@ describe("ACP service sessions", () => {
       },
     } as unknown as OpencodeClient
     const service = ACPService.make({ sdk })
-    const session = await Effect.runPromise(service.newSession({ cwd: "@lgcode/workspace", mcpServers: [] }))
+    const session = await Effect.runPromise(service.newSession({ cwd: "/workspace", mcpServers: [] }))
     const updated = await Effect.runPromise(
       service.setSessionConfigOption({
         sessionId: session.sessionId,
         configId: "model",
-        value: "test@lgcode/second-model",
+        value: "test/second-model",
       }),
     )
 
-    expect(select(updated, "model")?.currentValue).toBe("test@lgcode/second-model")
+    expect(select(updated, "model")?.currentValue).toBe("test/second-model")
     expect(calls).toEqual({ providers: 1, agents: 1, commands: 1, skills: 1 })
   })
 
@@ -925,8 +925,8 @@ describe("ACP service sessions", () => {
     } as unknown as OpencodeClient
     const service = ACPService.make({ sdk })
 
-    const first = await Effect.runPromise(service.newSession({ cwd: "@lgcode/workspace", mcpServers: [] }))
-    const second = await Effect.runPromise(service.newSession({ cwd: "@lgcode/workspace", mcpServers: [] }))
+    const first = await Effect.runPromise(service.newSession({ cwd: "/workspace", mcpServers: [] }))
+    const second = await Effect.runPromise(service.newSession({ cwd: "/workspace", mcpServers: [] }))
 
     expect(first.sessionId).toBe("ses_warm_1")
     expect(second.sessionId).toBe("ses_warm_2")
@@ -944,7 +944,7 @@ describe("ACP service sessions", () => {
 
   it("normal text prompt sends model variant mode and converted parts", async () => {
     const { service, prompts, usageUpdates } = makeService()
-    const session = await Effect.runPromise(service.newSession({ cwd: "@lgcode/workspace", mcpServers: [] }))
+    const session = await Effect.runPromise(service.newSession({ cwd: "/workspace", mcpServers: [] }))
     await Effect.runPromise(
       service.setSessionConfigOption({
         sessionId: session.sessionId,
@@ -975,7 +975,7 @@ describe("ACP service sessions", () => {
         variant: "high",
         parts: [{ type: "text", text: "hello" }],
         agent: "plan",
-        directory: "@lgcode/workspace",
+        directory: "/workspace",
       },
     ])
     expect(result).toEqual({
@@ -996,7 +996,7 @@ describe("ACP service sessions", () => {
 
   it("prompt maps assistant and user audience annotations", async () => {
     const { service, prompts } = makeService()
-    const session = await Effect.runPromise(service.newSession({ cwd: "@lgcode/workspace", mcpServers: [] }))
+    const session = await Effect.runPromise(service.newSession({ cwd: "/workspace", mcpServers: [] }))
 
     await Effect.runPromise(
       service.prompt({
@@ -1017,24 +1017,24 @@ describe("ACP service sessions", () => {
         { type: "text", text: "user context", ignored: true },
       ],
       agent: "build",
-      directory: "@lgcode/workspace",
+      directory: "/workspace",
     })
   })
 
   it("prompt sends image and resource parts", async () => {
     const { service, prompts } = makeService()
-    const session = await Effect.runPromise(service.newSession({ cwd: "@lgcode/workspace", mcpServers: [] }))
+    const session = await Effect.runPromise(service.newSession({ cwd: "/workspace", mcpServers: [] }))
 
     await Effect.runPromise(
       service.prompt({
         sessionId: session.sessionId,
         prompt: [
-          { type: "image", data: "AAAA", mimeType: "image@lgcode/png", uri: "file:@lgcode/@lgcode/@lgcode/tmp@lgcode/screenshot.png" },
+          { type: "image", data: "AAAA", mimeType: "image/png", uri: "file:///tmp/screenshot.png" },
           {
             type: "resource",
             resource: {
-              uri: "file:@lgcode/@lgcode/@lgcode/tmp@lgcode/report.pdf",
-              mimeType: "application@lgcode/pdf",
+              uri: "file:///tmp/report.pdf",
+              mimeType: "application/pdf",
               blob: "JVBERg==",
             },
           },
@@ -1045,25 +1045,25 @@ describe("ACP service sessions", () => {
     expect((prompts[0] as { parts?: unknown }).parts).toEqual([
       {
         type: "file",
-        url: "data:image@lgcode/png;base64,AAAA",
+        url: "data:image/png;base64,AAAA",
         filename: "screenshot.png",
-        mime: "image@lgcode/png",
+        mime: "image/png",
       },
       {
         type: "file",
-        url: "data:application@lgcode/pdf;base64,JVBERg==",
+        url: "data:application/pdf;base64,JVBERg==",
         filename: "report.pdf",
-        mime: "application@lgcode/pdf",
+        mime: "application/pdf",
       },
     ])
   })
 
   it("slash command prompt calls session command", async () => {
     const { service, prompts, commands } = makeService()
-    const session = await Effect.runPromise(service.newSession({ cwd: "@lgcode/workspace", mcpServers: [] }))
+    const session = await Effect.runPromise(service.newSession({ cwd: "/workspace", mcpServers: [] }))
 
     const result = await Effect.runPromise(
-      service.prompt({ sessionId: session.sessionId, prompt: [{ type: "text", text: "@lgcode/init now" }] }),
+      service.prompt({ sessionId: session.sessionId, prompt: [{ type: "text", text: "/init now" }] }),
     )
 
     expect(prompts).toEqual([])
@@ -1072,10 +1072,10 @@ describe("ACP service sessions", () => {
         sessionID: session.sessionId,
         command: "init",
         arguments: "now",
-        model: "test@lgcode/test-model",
+        model: "test/test-model",
         variant: "default",
         agent: "build",
-        directory: "@lgcode/workspace",
+        directory: "/workspace",
       },
     ])
     expect(result.usage).toEqual({ inputTokens: 3, outputTokens: 4, totalTokens: 7 })
@@ -1083,10 +1083,10 @@ describe("ACP service sessions", () => {
 
   it("compact slash command calls summarize path", async () => {
     const { service, prompts, commands, summarizes } = makeService()
-    const session = await Effect.runPromise(service.newSession({ cwd: "@lgcode/workspace", mcpServers: [] }))
+    const session = await Effect.runPromise(service.newSession({ cwd: "/workspace", mcpServers: [] }))
 
     await Effect.runPromise(
-      service.prompt({ sessionId: session.sessionId, prompt: [{ type: "text", text: "@lgcode/compact" }] }),
+      service.prompt({ sessionId: session.sessionId, prompt: [{ type: "text", text: "/compact" }] }),
     )
 
     expect(prompts).toEqual([])
@@ -1094,7 +1094,7 @@ describe("ACP service sessions", () => {
     expect(summarizes).toEqual([
       {
         sessionID: session.sessionId,
-        directory: "@lgcode/workspace",
+        directory: "/workspace",
         providerID,
         modelID,
       },
@@ -1103,7 +1103,7 @@ describe("ACP service sessions", () => {
 
   it("maps prompt auth failures to auth-required request errors", async () => {
     const { service } = makeService()
-    const session = await Effect.runPromise(service.newSession({ cwd: "@lgcode/workspace", mcpServers: [] }))
+    const session = await Effect.runPromise(service.newSession({ cwd: "/workspace", mcpServers: [] }))
     const failing = ACPService.make({
       sdk: {
         config: {
@@ -1134,7 +1134,7 @@ describe("ACP service sessions", () => {
         sendUpdate: () => Effect.void,
       }),
     })
-    await Effect.runPromise(failing.newSession({ cwd: "@lgcode/workspace", mcpServers: [] }))
+    await Effect.runPromise(failing.newSession({ cwd: "/workspace", mcpServers: [] }))
     const error = await Effect.runPromise(
       failing
         .prompt({ sessionId: session.sessionId, prompt: [{ type: "text", text: "hello" }] })

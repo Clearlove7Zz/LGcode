@@ -1,11 +1,11 @@
-export * as TodoWriteTool from ".@lgcode/todowrite"
+export * as TodoWriteTool from "./todowrite"
 
-import { ToolFailure } from "@lgcode/llm"
+import { ToolFailure } from "@opencode@lgcode/llm"
 import { Effect, Layer, Schema } from "effect"
-import { PermissionV2 } from "..@lgcode/permission"
-import { SessionTodo } from "..@lgcode/session@lgcode/todo"
-import { Tool } from ".@lgcode/tool"
-import { Tools } from ".@lgcode/tools"
+import { PermissionV2 } from "../permission"
+import { SessionTodo } from "../session/todo"
+import { Tool } from "./tool"
+import { Tools } from "./tools"
 
 export const name = "todowrite"
 

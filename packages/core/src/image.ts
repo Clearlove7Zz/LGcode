@@ -1,8 +1,8 @@
-export * as Image from ".@lgcode/image"
+export * as Image from "./image"
 
 import { Context, Effect, Layer, Schema } from "effect"
-import { Config } from ".@lgcode/config"
-import { FileSystem } from ".@lgcode/filesystem"
+import { Config } from "./config"
+import { FileSystem } from "./filesystem"
 
 export class ResizerUnavailableError extends Schema.TaggedErrorClass<ResizerUnavailableError>()(
   "Image.ResizerUnavailableError",
@@ -27,7 +27,7 @@ export class SizeError extends Schema.TaggedErrorClass<SizeError>()("Image.SizeE
   maxBytes: Schema.Number,
 }) {
   override get message() {
-    return `Image ${this.resource} is ${this.width}x${this.height} with base64 size ${this.bytes}, exceeding configured limits ${this.maxWidth}x${this.maxHeight}@lgcode/${this.maxBytes} bytes`
+    return `Image ${this.resource} is ${this.width}x${this.height} with base64 size ${this.bytes}, exceeding configured limits ${this.maxWidth}x${this.maxHeight}/${this.maxBytes} bytes`
   }
 }
 
@@ -41,7 +41,7 @@ export interface Interface {
   >
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Image") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/Image") {}
 
 export const layer = Layer.effect(
   Service,
@@ -49,7 +49,7 @@ export const layer = Layer.effect(
     const config = yield* Config.Service
     const loadAdapter = yield* Effect.cached(
       Effect.tryPromise({
-        try: () => import(".@lgcode/image@lgcode/photon"),
+        try: () => import("./image/photon"),
         catch: () => new ResizerUnavailableError(),
       }).pipe(Effect.flatMap((adapter) => adapter.make)),
     )

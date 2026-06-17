@@ -1,3 +1,3 @@
-import { initProjectors } from ".@lgcode/projectors"
+import { initProjectors } from "./projectors"
 
 initProjectors()

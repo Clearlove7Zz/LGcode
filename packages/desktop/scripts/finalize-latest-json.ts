@@ -1,4 +1,4 @@
-#!@lgcode/usr@lgcode/bin@lgcode/env bun
+#!/usr/bin/env bun
 
 import { $ } from "bun"
 import path from "node:path"
@@ -29,10 +29,10 @@ const root = dir
 const token = process.env.GH_TOKEN ?? process.env.GITHUB_TOKEN
 if (!token) throw new Error("GH_TOKEN or GITHUB_TOKEN is required")
 
-const rel = await fetch(`https:@lgcode/@lgcode/api.github.com@lgcode/repos@lgcode/${repo}@lgcode/releases@lgcode/${releaseId}`, {
+const rel = await fetch(`https://api.github.com/repos/${repo}/releases/${releaseId}`, {
   headers: {
     Authorization: `token ${token}`,
-    Accept: "application@lgcode/vnd.github+json",
+    Accept: "application/vnd.github+json",
   },
 })
 
@@ -106,27 +106,27 @@ function pick(list: Item[], exts: string[]) {
 }
 
 function link(raw: string) {
-  if (raw.startsWith("https:@lgcode/@lgcode/") || raw.startsWith("http:@lgcode/@lgcode/")) return raw
-  return `https:@lgcode/@lgcode/github.com@lgcode/${repo}@lgcode/releases@lgcode/download@lgcode/v${version}@lgcode/${raw}`
+  if (raw.startsWith("https://") || raw.startsWith("http://")) return raw
+  return `https://github.com/${repo}/releases/download/v${version}/${raw}`
 }
 
 async function sign(url: string, key: string) {
-  const name = decodeURIComponent(new URL(url).pathname.split("@lgcode/").pop() ?? key)
+  const name = decodeURIComponent(new URL(url).pathname.split("/").pop() ?? key)
   const asset = amap.get(name)
   const res = await fetch(asset?.url ?? url, {
     headers: {
       Authorization: `token ${token}`,
-      ...(asset ? { Accept: "application@lgcode/octet-stream" } : {}),
+      ...(asset ? { Accept: "application/octet-stream" } : {}),
     },
   })
   if (!res.ok) {
     throw new Error(`Failed to fetch file ${name}: ${res.status} ${res.statusText} (${asset?.url ?? url})`)
   }
 
-  const tmp = process.env.RUNNER_TEMP ?? "@lgcode/tmp"
+  const tmp = process.env.RUNNER_TEMP ?? "/tmp"
   const file = path.join(tmp, name)
   await Bun.write(file, await res.arrayBuffer())
-  await $`bunx @tauri-apps@lgcode/cli signer sign ${file}`
+  await $`bunx @tauri-apps/cli signer sign ${file}`
   const sigFile = Bun.file(`${file}.sig`)
   if (!(await sigFile.exists())) throw new Error(`Signature file not found for ${name}`)
   return (await sigFile.text()).trim()
@@ -204,7 +204,7 @@ const data = {
   platforms,
 }
 
-const tmp = process.env.RUNNER_TEMP ?? "@lgcode/tmp"
+const tmp = process.env.RUNNER_TEMP ?? "/tmp"
 const file = path.join(tmp, "latest.json")
 await Bun.write(file, JSON.stringify(data, null, 2))
 

@@ -1,11 +1,11 @@
 import { $ } from "bun"
-import { resolveChannel } from ".@lgcode/utils"
+import { resolveChannel } from "./utils"
 
 const arg = process.argv[2]
 const channel = arg === "dev" || arg === "beta" || arg === "prod" ? arg : resolveChannel()
 
-const src = `.@lgcode/icons@lgcode/${channel}`
-const dest = "resources@lgcode/icons"
+const src = `./icons/${channel}`
+const dest = "resources/icons"
 
 await $`rm -rf ${dest}`
 await $`cp -R ${src} ${dest}`

@@ -1,26 +1,26 @@
 import { afterEach, describe, expect, mock } from "bun:test"
-import { mkdir } from "node:fs@lgcode/promises"
+import { mkdir } from "node:fs/promises"
 import path from "node:path"
 import { Effect, Layer, Stream } from "effect"
-import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
-import { registerAdapter } from "..@lgcode/..@lgcode/src@lgcode/control-plane@lgcode/adapters"
-import { WorkspaceV2 } from "@lgcode/core@lgcode/workspace"
-import type { WorkspaceAdapter } from "..@lgcode/..@lgcode/src@lgcode/control-plane@lgcode/types"
-import { Workspace } from "..@lgcode/..@lgcode/src@lgcode/control-plane@lgcode/workspace"
-import { WorkspacePaths } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/workspace"
-import { EventPaths } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/event"
-import { Session } from "@@lgcode/session@lgcode/session"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { Ripgrep } from "@lgcode/core@lgcode/ripgrep"
-import { Server } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/server"
-import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
-import { disposeAllInstances, provideInstance, tmpdirScoped } from "..@lgcode/fixture@lgcode/fixture"
-import { InstanceBootstrap } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/bootstrap"
-import { InstanceStore } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/instance-store"
-import { Project } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/project"
-import { InstancePaths } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/instance"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
-import { httpApiLayer, requestInDirectory } from ".@lgcode/httpapi-layer"
+import { Flag } from "@opencode@lgcode/core/flag/flag"
+import { registerAdapter } from "../../src/control-plane/adapters"
+import { WorkspaceV2 } from "@opencode@lgcode/core/workspace"
+import type { WorkspaceAdapter } from "../../src/control-plane/types"
+import { Workspace } from "../../src/control-plane/workspace"
+import { WorkspacePaths } from "../../src/server/routes/instance/httpapi/groups/workspace"
+import { EventPaths } from "../../src/server/routes/instance/httpapi/groups/event"
+import { Session } from "@/session/session"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { Ripgrep } from "@opencode@lgcode/core/ripgrep"
+import { Server } from "../../src/server/server"
+import { resetDatabase } from "../fixture/db"
+import { disposeAllInstances, provideInstance, tmpdirScoped } from "../fixture/fixture"
+import { InstanceBootstrap } from "../../src/project/bootstrap"
+import { InstanceStore } from "../../src/project/instance-store"
+import { Project } from "../../src/project/project"
+import { InstancePaths } from "../../src/server/routes/instance/httpapi/groups/instance"
+import { testEffect } from "../lib/effect"
+import { httpApiLayer, requestInDirectory } from "./httpapi-layer"
 
 const originalWorkspaces = Flag.OPENCODE_EXPERIMENTAL_WORKSPACES
 const workspaceLayer = Workspace.defaultLayer.pipe(
@@ -90,7 +90,7 @@ function listedAdapter(directory: string, type: string): WorkspaceAdapter {
         {
           type,
           name: "listed-test",
-          branch: "listed@lgcode/main",
+          branch: "listed/main",
           directory,
           extra: { listed: true },
           projectID: context?.instance?.project.id ?? missingAdapterContext(),
@@ -168,7 +168,7 @@ function eventStreamResponse() {
     {
       status: 200,
       headers: {
-        "content-type": "text@lgcode/event-stream",
+        "content-type": "text/event-stream",
       },
     },
   )
@@ -216,7 +216,7 @@ describe("workspace HttpApi", () => {
 
       const created = yield* request(WorkspacePaths.list, dir, {
         method: "POST",
-        headers: { "content-type": "application@lgcode/json" },
+        headers: { "content-type": "application/json" },
         body: JSON.stringify({ type: "local-test", branch: null }),
       })
       expect(created.status).toBe(200)
@@ -226,7 +226,7 @@ describe("workspace HttpApi", () => {
       const session = yield* Session.use.create({}).pipe(provideInstance(dir))
       const warped = yield* request(WorkspacePaths.warp, dir, {
         method: "POST",
-        headers: { "content-type": "application@lgcode/json" },
+        headers: { "content-type": "application/json" },
         body: JSON.stringify({ id: workspace.id, sessionID: session.id }),
       })
       expect(warped.status).toBe(204)
@@ -257,7 +257,7 @@ describe("workspace HttpApi", () => {
         {
           type,
           name: "listed-test",
-          branch: "listed@lgcode/main",
+          branch: "listed/main",
           directory: path.join(dir, ".listed"),
           extra: { listed: true },
         },
@@ -273,7 +273,7 @@ describe("workspace HttpApi", () => {
 
       const response = yield* request(WorkspacePaths.warp, dir, {
         method: "POST",
-        headers: { "content-type": "application@lgcode/json" },
+        headers: { "content-type": "application/json" },
         body: JSON.stringify({ id: workspaceID, sessionID: session.id }),
       })
 
@@ -294,7 +294,7 @@ describe("workspace HttpApi", () => {
 
       const created = yield* request(WorkspacePaths.list, dir, {
         method: "POST",
-        headers: { "content-type": "application@lgcode/json" },
+        headers: { "content-type": "application/json" },
         body: JSON.stringify({ type: "local-test", branch: null }),
       })
 
@@ -313,7 +313,7 @@ describe("workspace HttpApi", () => {
 
       const created = yield* requestServer(WorkspacePaths.list, dir, {
         method: "POST",
-        headers: { "content-type": "application@lgcode/json" },
+        headers: { "content-type": "application/json" },
         body: JSON.stringify({ type: "worktree", branch: null }),
       })
 
@@ -333,12 +333,12 @@ describe("workspace HttpApi", () => {
       registerAdapter(project.project.id, "local-target", localAdapter(workspaceDir))
       const created = yield* request(WorkspacePaths.list, dir, {
         method: "POST",
-        headers: { "content-type": "application@lgcode/json" },
+        headers: { "content-type": "application/json" },
         body: JSON.stringify({ type: "local-target", branch: null }),
       })
       const workspace = (yield* created.json) as Workspace.Info
 
-      const url = new URL(`http:@lgcode/@lgcode/localhost${InstancePaths.path}`)
+      const url = new URL(`http://localhost${InstancePaths.path}`)
       url.searchParams.set("workspace", workspace.id)
 
       const response = yield* request(url.toString(), dir)
@@ -357,9 +357,9 @@ describe("workspace HttpApi", () => {
       const remote = listenRemoteHttp((request) => {
         proxied.push(request)
         const url = new URL(request.url)
-        if (url.pathname === "@lgcode/base@lgcode/global@lgcode/event") return eventStreamResponse()
-        if (url.pathname === "@lgcode/base@lgcode/event") return eventStreamResponse()
-        if (url.pathname === "@lgcode/base@lgcode/sync@lgcode/history") return Response.json([])
+        if (url.pathname === "/base/global/event") return eventStreamResponse()
+        if (url.pathname === "/base/event") return eventStreamResponse()
+        if (url.pathname === "/base/sync/history") return Response.json([])
         return new Response(
           JSON.stringify({
             proxied: true,
@@ -372,7 +372,7 @@ describe("workspace HttpApi", () => {
             statusText: "Created",
             headers: {
               "content-length": "999",
-              "content-type": "application@lgcode/json",
+              "content-type": "application/json",
               "x-remote": "yes",
             },
           },
@@ -383,18 +383,18 @@ describe("workspace HttpApi", () => {
       registerAdapter(
         project.project.id,
         "remote-target",
-        remoteAdapter(path.join(dir, ".remote"), `http:@lgcode/@lgcode/127.0.0.1:${remote.port}@lgcode/base`, {
+        remoteAdapter(path.join(dir, ".remote"), `http://127.0.0.1:${remote.port}/base`, {
           "x-target-auth": "secret",
         }),
       )
       const created = yield* requestDefault(WorkspacePaths.list, dir, {
         method: "POST",
-        headers: { "content-type": "application@lgcode/json" },
+        headers: { "content-type": "application/json" },
         body: JSON.stringify({ type: "remote-target", branch: null }),
       })
       const workspace = (yield* created.json) as Workspace.Info
 
-      const url = new URL("http:@lgcode/@lgcode/localhost@lgcode/config")
+      const url = new URL("http://localhost/config")
       url.searchParams.set("workspace", workspace.id)
       url.searchParams.set("keep", "yes")
 
@@ -403,40 +403,40 @@ describe("workspace HttpApi", () => {
           method: "PATCH",
           headers: {
             "accept-encoding": "br",
-            "content-type": "application@lgcode/json",
+            "content-type": "application/json",
             "x-opencode-workspace": "internal",
           },
-          body: JSON.stringify({ $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json" }),
+          body: JSON.stringify({ $schema: "https://opencode.ai/config.json" }),
         })
 
         const responseBody = yield* response.text
         expect({ status: response.status, body: responseBody }).toMatchObject({ status: 201 })
         expect(response.headers["content-length"]).toBeUndefined()
         expect(response.headers["x-remote"]).toBe("yes")
-        expect(JSON.parse(responseBody)).toEqual({ proxied: true, path: "@lgcode/base@lgcode/config", keep: "yes", workspace: null })
-        const forwarded = proxied.filter((item) => new URL(item.url).pathname === "@lgcode/base@lgcode/config")
+        expect(JSON.parse(responseBody)).toEqual({ proxied: true, path: "/base/config", keep: "yes", workspace: null })
+        const forwarded = proxied.filter((item) => new URL(item.url).pathname === "/base/config")
         expect(forwarded).toEqual([
           {
-            url: `http:@lgcode/@lgcode/127.0.0.1:${remote.port}@lgcode/base@lgcode/config?keep=yes`,
+            url: `http://127.0.0.1:${remote.port}/base/config?keep=yes`,
             method: "PATCH",
             headers: expect.objectContaining({
-              "content-type": "application@lgcode/json",
+              "content-type": "application/json",
               "x-target-auth": "secret",
             }),
-            body: JSON.stringify({ $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json" }),
+            body: JSON.stringify({ $schema: "https://opencode.ai/config.json" }),
           },
         ])
         expect(forwarded[0]?.headers).not.toHaveProperty("x-opencode-directory")
         expect(forwarded[0]?.headers).not.toHaveProperty("x-opencode-workspace")
 
-        const eventURL = new URL(`http:@lgcode/@lgcode/localhost${EventPaths.event}`)
+        const eventURL = new URL(`http://localhost${EventPaths.event}`)
         eventURL.searchParams.set("workspace", workspace.id)
         const eventResponse = yield* request(eventURL.toString(), dir)
         expect(eventResponse.status).toBe(200)
-        expect(eventResponse.headers["content-type"]).toContain("text@lgcode/event-stream")
+        expect(eventResponse.headers["content-type"]).toContain("text/event-stream")
         const event = Array.from(yield* eventResponse.stream.pipe(Stream.take(1), Stream.runCollect))[0]
         expect(new TextDecoder().decode(event)).toContain("server.connected")
-        expect(proxied.some((item) => new URL(item.url).pathname === "@lgcode/base@lgcode/event")).toBe(true)
+        expect(proxied.some((item) => new URL(item.url).pathname === "/base/event")).toBe(true)
       } finally {
         void remote.stop(true)
         yield* requestDefault(WorkspacePaths.remove.replace(":id", workspace.id), dir, { method: "DELETE" })
@@ -452,8 +452,8 @@ describe("workspace HttpApi", () => {
       const remote = listenRemoteHttp((request) => {
         proxied.push(request)
         const url = new URL(request.url)
-        if (url.pathname === "@lgcode/base@lgcode/global@lgcode/event") return eventStreamResponse()
-        if (url.pathname === "@lgcode/base@lgcode/sync@lgcode/history") return Response.json([])
+        if (url.pathname === "/base/global/event") return eventStreamResponse()
+        if (url.pathname === "/base/sync/history") return Response.json([])
         return Response.json({ proxied: true, path: new URL(request.url).pathname })
       })
 
@@ -461,45 +461,45 @@ describe("workspace HttpApi", () => {
       registerAdapter(
         project.project.id,
         "remote-session-target",
-        remoteAdapter(path.join(dir, ".remote-session"), `http:@lgcode/@lgcode/127.0.0.1:${remote.port}@lgcode/base`),
+        remoteAdapter(path.join(dir, ".remote-session"), `http://127.0.0.1:${remote.port}/base`),
       )
       const created = yield* requestDefault(WorkspacePaths.list, dir, {
         method: "POST",
-        headers: { "content-type": "application@lgcode/json" },
+        headers: { "content-type": "application/json" },
         body: JSON.stringify({ type: "remote-session-target", branch: null }),
       })
       const workspace = (yield* created.json) as Workspace.Info
-      const sessionResponse = yield* requestDefault("@lgcode/session", dir, { method: "POST" })
+      const sessionResponse = yield* requestDefault("/session", dir, { method: "POST" })
       const session = (yield* sessionResponse.json) as Session.Info
       const warped = yield* requestDefault(WorkspacePaths.warp, dir, {
         method: "POST",
-        headers: { "content-type": "application@lgcode/json" },
+        headers: { "content-type": "application/json" },
         body: JSON.stringify({ id: workspace.id, sessionID: session.id }),
       })
       expect(warped.status).toBe(204)
 
       try {
-        const response = yield* requestDefault(`http:@lgcode/@lgcode/localhost@lgcode/session@lgcode/${session.id}@lgcode/message`, dir, {
+        const response = yield* requestDefault(`http://localhost/session/${session.id}/message`, dir, {
           method: "POST",
-          headers: { "content-type": "application@lgcode/json" },
+          headers: { "content-type": "application/json" },
           body: JSON.stringify({ parts: [{ type: "text", text: "hello" }] }),
         })
 
         const responseBody = yield* response.text
         expect({ status: response.status, body: responseBody }).toMatchObject({ status: 200 })
-        expect(JSON.parse(responseBody)).toEqual({ proxied: true, path: `@lgcode/base@lgcode/session@lgcode/${session.id}@lgcode/message` })
-        expect(proxied.filter((item) => new URL(item.url).pathname === `@lgcode/base@lgcode/session@lgcode/${session.id}@lgcode/message`)).toEqual([
+        expect(JSON.parse(responseBody)).toEqual({ proxied: true, path: `/base/session/${session.id}/message` })
+        expect(proxied.filter((item) => new URL(item.url).pathname === `/base/session/${session.id}/message`)).toEqual([
           expect.objectContaining({
-            url: `http:@lgcode/@lgcode/127.0.0.1:${remote.port}@lgcode/base@lgcode/session@lgcode/${session.id}@lgcode/message`,
+            url: `http://127.0.0.1:${remote.port}/base/session/${session.id}/message`,
             method: "POST",
           }),
         ])
 
-        const aborted = yield* request(`http:@lgcode/@lgcode/localhost@lgcode/session@lgcode/${session.id}@lgcode/abort`, dir, { method: "POST" })
+        const aborted = yield* request(`http://localhost/session/${session.id}/abort`, dir, { method: "POST" })
         expect(aborted.status).toBe(200)
-        expect(proxied.filter((item) => new URL(item.url).pathname === `@lgcode/base@lgcode/session@lgcode/${session.id}@lgcode/abort`)).toEqual([
+        expect(proxied.filter((item) => new URL(item.url).pathname === `/base/session/${session.id}/abort`)).toEqual([
           expect.objectContaining({
-            url: `http:@lgcode/@lgcode/127.0.0.1:${remote.port}@lgcode/base@lgcode/session@lgcode/${session.id}@lgcode/abort`,
+            url: `http://127.0.0.1:${remote.port}/base/session/${session.id}/abort`,
             method: "POST",
             body: "",
           }),

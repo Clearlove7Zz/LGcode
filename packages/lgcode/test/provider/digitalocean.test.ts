@@ -1,9 +1,9 @@
 import { expect } from "bun:test"
-import { Provider } from "..@lgcode/..@lgcode/src@lgcode/provider@lgcode/provider"
+import { Provider } from "../../src/provider/provider"
 
 import { Effect } from "effect"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { testEffect } from "../lib/effect"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
 
 const DIGITALOCEAN = ProviderV2.ID.make("digitalocean")
 const it = testEffect(Provider.defaultLayer)
@@ -50,8 +50,8 @@ it.instance(
         expect(providers[DIGITALOCEAN]).toBeDefined()
         expect(providers[DIGITALOCEAN].source).toBe("env")
         const baseModel = Object.values(providers[DIGITALOCEAN].models)[0]
-        expect(baseModel.api.url).toBe("https:@lgcode/@lgcode/inference.do-ai.run@lgcode/v1")
-        expect(baseModel.api.npm).toBe("@ai-sdk@lgcode/openai-compatible")
+        expect(baseModel.api.url).toBe("https://inference.do-ai.run/v1")
+        expect(baseModel.api.npm).toBe("@ai-sdk/openai-compatible")
         const routerEntries = Object.keys(providers[DIGITALOCEAN].models).filter((id) => id.startsWith("router:"))
         expect(routerEntries.length).toBe(0)
       }),
@@ -78,8 +78,8 @@ it.instance(
         const models = providers[DIGITALOCEAN].models
         expect(models["router:my-router"]).toBeDefined()
         expect(models["router:my-router"].api.id).toBe("router:my-router")
-        expect(models["router:my-router"].api.url).toBe("https:@lgcode/@lgcode/inference.do-ai.run@lgcode/v1")
-        expect(models["router:my-router"].api.npm).toBe("@ai-sdk@lgcode/openai-compatible")
+        expect(models["router:my-router"].api.url).toBe("https://inference.do-ai.run/v1")
+        expect(models["router:my-router"].api.npm).toBe("@ai-sdk/openai-compatible")
         expect(models["router:other-router"]).toBeDefined()
       }),
     ),

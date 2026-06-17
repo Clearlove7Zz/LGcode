@@ -1,9 +1,9 @@
 import { and, asc, eq, inArray } from "drizzle-orm"
 import { Effect, Layer } from "effect"
-import * as Context from "effect@lgcode/Context"
-import { DatabaseError, DrizzleClient } from "..@lgcode/database"
-import { providerStat } from "..@lgcode/database@lgcode/schema"
-import { RETIRED_STAT_PROVIDERS } from ".@lgcode/model-normalization"
+import * as Context from "effect/Context"
+import { DatabaseError, DrizzleClient } from "../database"
+import { providerStat } from "../database/schema"
+import { RETIRED_STAT_PROVIDERS } from "./model-normalization"
 import {
   chunks,
   collapseRows,
@@ -14,7 +14,7 @@ import {
   toStatBaseRow,
   UPSERT_CHUNK_SIZE,
   type StatBaseAggregate,
-} from ".@lgcode/stat"
+} from "./stat"
 
 export type ProviderStatRow = typeof providerStat.$inferInsert
 export type ProviderStatAggregate = StatBaseAggregate & { provider: string }
@@ -43,7 +43,7 @@ export declare namespace ProviderStatRepo {
 }
 
 export class ProviderStatRepo extends Context.Service<ProviderStatRepo, ProviderStatRepo.Service>()(
-  "@lgcode/stats@lgcode/ProviderStatRepo",
+  "@opencode/stats/ProviderStatRepo",
 ) {
   static readonly layer: Layer.Layer<ProviderStatRepo, never, DrizzleClient> = Layer.effect(
     ProviderStatRepo,

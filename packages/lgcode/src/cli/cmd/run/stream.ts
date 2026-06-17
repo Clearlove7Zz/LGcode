@@ -1,11 +1,11 @@
-@lgcode/@lgcode/ Thin bridge between reducer output and the footer API.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ The reducers produce StreamCommit[] and an optional FooterOutput (patch +
-@lgcode/@lgcode/ view + subagent state). This module forwards them to footer.append() and
-@lgcode/@lgcode/ footer.event() respectively, adding trace writes along the way. It also
-@lgcode/@lgcode/ defaults status updates to phase "running" if the caller didn't set a
-@lgcode/@lgcode/ phase -- a convenience so reducer code doesn't have to repeat that.
-import type { FooterApi, FooterOutput, FooterPatch, FooterSubagentState, StreamCommit } from ".@lgcode/types"
+// Thin bridge between reducer output and the footer API.
+//
+// The reducers produce StreamCommit[] and an optional FooterOutput (patch +
+// view + subagent state). This module forwards them to footer.append() and
+// footer.event() respectively, adding trace writes along the way. It also
+// defaults status updates to phase "running" if the caller didn't set a
+// phase -- a convenience so reducer code doesn't have to repeat that.
+import type { FooterApi, FooterOutput, FooterPatch, FooterSubagentState, StreamCommit } from "./types"
 
 type Trace = {
   write(type: string, data?: unknown): void
@@ -21,7 +21,7 @@ type StreamOutput = {
   footer?: FooterOutput
 }
 
-@lgcode/@lgcode/ Default to "running" phase when a status string arrives without an explicit phase.
+// Default to "running" phase when a status string arrives without an explicit phase.
 function patch(next: FooterPatch): FooterPatch {
   if (typeof next.status === "string" && next.phase === undefined) {
     return {
@@ -137,7 +137,7 @@ export function traceFooterOutput(footer?: FooterOutput) {
   }
 }
 
-@lgcode/@lgcode/ Forwards reducer output to the footer: commits go to scrollback, patches update the status bar.
+// Forwards reducer output to the footer: commits go to scrollback, patches update the status bar.
 export function writeSessionOutput(input: OutputInput, out: StreamOutput): void {
   for (const commit of out.commits) {
     input.trace?.write("ui.commit", commit)

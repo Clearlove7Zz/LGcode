@@ -1,33 +1,33 @@
-@lgcode/* oxlint-disable *@lgcode/
-import * as Cause from "effect@lgcode/Cause"
-import * as Effect from "effect@lgcode/Effect"
-import type { SqlError } from "effect@lgcode/unstable@lgcode/sql@lgcode/SqlError"
-import type { EffectCacheShape } from "drizzle-orm@lgcode/cache@lgcode/core@lgcode/cache-effect"
-import { NoopCache, strategyFor } from "drizzle-orm@lgcode/cache@lgcode/core@lgcode/cache"
-import type { WithCacheConfig } from "drizzle-orm@lgcode/cache@lgcode/core@lgcode/types"
-import { MigratorInitError } from "drizzle-orm@lgcode/effect-core@lgcode/errors"
-import { EffectDrizzleQueryError, EffectTransactionRollbackError } from "drizzle-orm@lgcode/effect-core@lgcode/errors"
-import type { EffectLoggerShape } from "drizzle-orm@lgcode/effect-core@lgcode/logger"
-import type { QueryEffectHKTBase, QueryEffectKind } from "drizzle-orm@lgcode/effect-core@lgcode/query-effect"
-import { entityKind, is } from "drizzle-orm@lgcode/entity"
-import type { MigrationConfig, MigrationMeta } from "drizzle-orm@lgcode/migrator"
-import { getMigrationsToRun } from "drizzle-orm@lgcode/migrator.utils"
+/* oxlint-disable */
+import * as Cause from "effect/Cause"
+import * as Effect from "effect/Effect"
+import type { SqlError } from "effect/unstable/sql/SqlError"
+import type { EffectCacheShape } from "drizzle-orm/cache/core/cache-effect"
+import { NoopCache, strategyFor } from "drizzle-orm/cache/core/cache"
+import type { WithCacheConfig } from "drizzle-orm/cache/core/types"
+import { MigratorInitError } from "drizzle-orm/effect-core/errors"
+import { EffectDrizzleQueryError, EffectTransactionRollbackError } from "drizzle-orm/effect-core/errors"
+import type { EffectLoggerShape } from "drizzle-orm/effect-core/logger"
+import type { QueryEffectHKTBase, QueryEffectKind } from "drizzle-orm/effect-core/query-effect"
+import { entityKind, is } from "drizzle-orm/entity"
+import type { MigrationConfig, MigrationMeta } from "drizzle-orm/migrator"
+import { getMigrationsToRun } from "drizzle-orm/migrator.utils"
 import type {
   AnyRelations,
   EmptyRelations,
   RelationalQueryMapperConfig,
   RelationalRowsMapper,
-} from "drizzle-orm@lgcode/relations"
-import { makeJitRqbMapper } from "drizzle-orm@lgcode/relations"
-import type { PreparedQuery } from "drizzle-orm@lgcode/session"
-import { fillPlaceholders, type Query, type SQL, sql } from "drizzle-orm@lgcode/sql@lgcode/sql"
-import type { SQLiteAsyncDialect } from "drizzle-orm@lgcode/sqlite-core@lgcode/dialect"
-import type { SelectedFieldsOrdered } from "drizzle-orm@lgcode/sqlite-core@lgcode/query-builders@lgcode/select.types"
-import type { PreparedQueryConfig, SQLiteExecuteMethod, SQLiteTransactionConfig } from "drizzle-orm@lgcode/sqlite-core@lgcode/session"
-import { upgradeIfNeeded } from "..@lgcode/..@lgcode/up-migrations@lgcode/effect-sqlite"
-import { assertUnreachable, makeJitQueryMapper, type RowsMapper } from "drizzle-orm@lgcode/utils"
-import { mapResultRow } from "..@lgcode/..@lgcode/internal@lgcode/drizzle-utils"
-import { SQLiteEffectDatabase } from ".@lgcode/db"
+} from "drizzle-orm/relations"
+import { makeJitRqbMapper } from "drizzle-orm/relations"
+import type { PreparedQuery } from "drizzle-orm/session"
+import { fillPlaceholders, type Query, type SQL, sql } from "drizzle-orm/sql/sql"
+import type { SQLiteAsyncDialect } from "drizzle-orm/sqlite-core/dialect"
+import type { SelectedFieldsOrdered } from "drizzle-orm/sqlite-core/query-builders/select.types"
+import type { PreparedQueryConfig, SQLiteExecuteMethod, SQLiteTransactionConfig } from "drizzle-orm/sqlite-core/session"
+import { upgradeIfNeeded } from "../../up-migrations/effect-sqlite"
+import { assertUnreachable, makeJitQueryMapper, type RowsMapper } from "drizzle-orm/utils"
+import { mapResultRow } from "../../internal/drizzle-utils"
+import { SQLiteEffectDatabase } from "./db"
 
 type MigrationConfigWithInit = MigrationConfig & { init?: boolean }
 
@@ -41,7 +41,7 @@ export class SQLiteEffectPreparedQuery<
 {
   static readonly [entityKind]: string = "SQLiteEffectPreparedQuery"
 
-  @lgcode/** @internal *@lgcode/
+  /** @internal */
   joinsNotNullableMap?: Record<string, boolean>
   private jitMapper?: RowsMapper<any> | RelationalRowsMapper<any>
   private cacheConfig: WithCacheConfig | undefined

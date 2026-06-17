@@ -1,14 +1,14 @@
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import path from "path"
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { AgentV2 } from "@lgcode/core@lgcode/agent"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import { SkillV2 } from "@lgcode/core@lgcode/skill"
-import { SkillDiscovery } from "@lgcode/core@lgcode/skill@lgcode/discovery"
-import { tmpdir } from ".@lgcode/fixture@lgcode/tmpdir"
-import { testEffect } from ".@lgcode/lib@lgcode/effect"
+import { AgentV2 } from "@opencode@lgcode/core/agent"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import { SkillV2 } from "@opencode@lgcode/core/skill"
+import { SkillDiscovery } from "@opencode@lgcode/core/skill/discovery"
+import { tmpdir } from "./fixture/tmpdir"
+import { testEffect } from "./lib/effect"
 
 const urls = new Map<string, AbsolutePath[]>()
 let pulls = 0
@@ -105,7 +105,7 @@ describe("SkillV2", () => {
             await write(tmp.path, "deploy", "Deploy production")
           })
           pulls = 0
-          urls.set("https:@lgcode/@lgcode/example.test@lgcode/skills@lgcode/", [AbsolutePath.make(tmp.path)])
+          urls.set("https://example.test/skills/", [AbsolutePath.make(tmp.path)])
 
           const agents = yield* AgentV2.Service
           yield* agents.update((editor) =>
@@ -116,7 +116,7 @@ describe("SkillV2", () => {
 
           const skill = yield* SkillV2.Service
           const register = yield* skill.transform()
-          yield* register((editor) => editor.source({ type: "url", url: "https:@lgcode/@lgcode/example.test@lgcode/skills@lgcode/" }))
+          yield* register((editor) => editor.source({ type: "url", url: "https://example.test/skills/" }))
 
           expect((yield* skill.list()).map((item) => item.name)).toEqual(["deploy"])
           expect((yield* skill.list()).map((item) => item.name)).toEqual(["deploy"])

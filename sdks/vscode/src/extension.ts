@@ -1,4 +1,4 @@
-@lgcode/@lgcode/ This method is called when your extension is deactivated
+// This method is called when your extension is deactivated
 export function deactivate() {}
 
 import * as vscode from "vscode"
@@ -11,7 +11,7 @@ export function activate(context: vscode.ExtensionContext) {
   })
 
   const openTerminalDisposable = vscode.commands.registerCommand("opencode.openTerminal", async () => {
-    @lgcode/@lgcode/ An opencode terminal already exists => focus it
+    // An opencode terminal already exists => focus it
     const existingTerminal = vscode.window.terminals.find((t) => t.name === TERMINAL_NAME)
     if (existingTerminal) {
       existingTerminal.show()
@@ -33,7 +33,7 @@ export function activate(context: vscode.ExtensionContext) {
     }
 
     if (terminal.name === TERMINAL_NAME) {
-      @lgcode/@lgcode/ @ts-ignore
+      // @ts-ignore
       const port = terminal.creationOptions.env?.["_EXTENSION_OPENCODE_PORT"]
       port ? await appendPrompt(parseInt(port), fileRef) : terminal.sendText(fileRef, false)
       terminal.show()
@@ -43,13 +43,13 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(openNewTerminalDisposable, openTerminalDisposable, addFilepathDisposable)
 
   async function openTerminal() {
-    @lgcode/@lgcode/ Create a new terminal in split screen
+    // Create a new terminal in split screen
     const port = Math.floor(Math.random() * (65535 - 16384 + 1)) + 16384
     const terminal = vscode.window.createTerminal({
       name: TERMINAL_NAME,
       iconPath: {
-        light: vscode.Uri.file(context.asAbsolutePath("images@lgcode/button-dark.svg")),
-        dark: vscode.Uri.file(context.asAbsolutePath("images@lgcode/button-light.svg")),
+        light: vscode.Uri.file(context.asAbsolutePath("images/button-dark.svg")),
+        dark: vscode.Uri.file(context.asAbsolutePath("images/button-light.svg")),
       },
       location: {
         viewColumn: vscode.ViewColumn.Beside,
@@ -69,13 +69,13 @@ export function activate(context: vscode.ExtensionContext) {
       return
     }
 
-    @lgcode/@lgcode/ Wait for the terminal to be ready
+    // Wait for the terminal to be ready
     let tries = 10
     let connected = false
     do {
       await new Promise((resolve) => setTimeout(resolve, 200))
       try {
-        await fetch(`http:@lgcode/@lgcode/localhost:${port}@lgcode/app`)
+        await fetch(`http://localhost:${port}/app`)
         connected = true
         break
       } catch {}
@@ -83,7 +83,7 @@ export function activate(context: vscode.ExtensionContext) {
       tries--
     } while (tries > 0)
 
-    @lgcode/@lgcode/ If connected, append the prompt to the terminal
+    // If connected, append the prompt to the terminal
     if (connected) {
       await appendPrompt(port, `In ${fileRef}`)
       terminal.show()
@@ -91,10 +91,10 @@ export function activate(context: vscode.ExtensionContext) {
   }
 
   async function appendPrompt(port: number, text: string) {
-    await fetch(`http:@lgcode/@lgcode/localhost:${port}@lgcode/tui@lgcode/append-prompt`, {
+    await fetch(`http://localhost:${port}/tui/append-prompt`, {
       method: "POST",
       headers: {
-        "Content-Type": "application@lgcode/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ text }),
     })
@@ -112,22 +112,22 @@ export function activate(context: vscode.ExtensionContext) {
       return
     }
 
-    @lgcode/@lgcode/ Get the relative path from workspace root
+    // Get the relative path from workspace root
     const relativePath = vscode.workspace.asRelativePath(document.uri)
     let filepathWithAt = `@${relativePath}`
 
-    @lgcode/@lgcode/ Check if there's a selection and add line numbers
+    // Check if there's a selection and add line numbers
     const selection = activeEditor.selection
     if (!selection.isEmpty) {
-      @lgcode/@lgcode/ Convert to 1-based line numbers
+      // Convert to 1-based line numbers
       const startLine = selection.start.line + 1
       const endLine = selection.end.line + 1
 
       if (startLine === endLine) {
-        @lgcode/@lgcode/ Single line selection
+        // Single line selection
         filepathWithAt += `#L${startLine}`
       } else {
-        @lgcode/@lgcode/ Multi-line selection
+        // Multi-line selection
         filepathWithAt += `#L${startLine}-${endLine}`
       }
     }

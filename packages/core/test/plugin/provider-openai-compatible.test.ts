@@ -1,8 +1,8 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { PluginV2 } from "@lgcode/core@lgcode/plugin"
-import { OpenAICompatiblePlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/openai-compatible"
-import { it, model } from ".@lgcode/provider-helper"
+import { PluginV2 } from "@opencode@lgcode/core/plugin"
+import { OpenAICompatiblePlugin } from "@opencode@lgcode/core/plugin/provider/openai-compatible"
+import { it, model } from "./provider-helper"
 
 describe("OpenAICompatiblePlugin", () => {
   it.effect("preserves explicit includeUsage false and defaults it to true", () =>
@@ -11,14 +11,14 @@ describe("OpenAICompatiblePlugin", () => {
       yield* plugin.add(OpenAICompatiblePlugin)
       const defaulted = yield* plugin.trigger(
         "aisdk.sdk",
-        { model: model("custom", "model"), package: "@ai-sdk@lgcode/openai-compatible", options: { name: "custom" } },
+        { model: model("custom", "model"), package: "@ai-sdk/openai-compatible", options: { name: "custom" } },
         {},
       )
       const disabled = yield* plugin.trigger(
         "aisdk.sdk",
         {
           model: model("custom", "model"),
-          package: "@ai-sdk@lgcode/openai-compatible",
+          package: "@ai-sdk/openai-compatible",
           options: { name: "custom", includeUsage: false },
         },
         {},
@@ -36,7 +36,7 @@ describe("OpenAICompatiblePlugin", () => {
         "aisdk.sdk",
         {
           model: model("custom", "model"),
-          package: "file:@lgcode/@lgcode/@lgcode/tmp@lgcode/@ai-sdk@lgcode/openai-compatible-provider.js",
+          package: "file:///tmp/@ai-sdk/openai-compatible-provider.js",
           options: { name: "custom" },
         },
         {},
@@ -63,8 +63,8 @@ describe("OpenAICompatiblePlugin", () => {
         "aisdk.sdk",
         {
           model: model("custom-provider", "model"),
-          package: "@ai-sdk@lgcode/openai-compatible",
-          options: { name: "custom-provider", baseURL: "https:@lgcode/@lgcode/example.com@lgcode/v1" },
+          package: "@ai-sdk/openai-compatible",
+          options: { name: "custom-provider", baseURL: "https://example.com/v1" },
         },
         {},
       )
@@ -90,7 +90,7 @@ describe("OpenAICompatiblePlugin", () => {
         "aisdk.sdk",
         {
           model: model("cloudflare-workers-ai", "model"),
-          package: "@ai-sdk@lgcode/openai-compatible",
+          package: "@ai-sdk/openai-compatible",
           options: { name: "cloudflare-workers-ai" },
         },
         {},

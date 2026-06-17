@@ -1,11 +1,11 @@
-export * as ConfigExperimental from ".@lgcode/experimental"
+export * as ConfigExperimental from "./experimental"
 
 import { Schema } from "effect"
-import { Catalog } from "..@lgcode/catalog"
-import { Policy as PolicyV2 } from "..@lgcode/policy"
+import { Catalog } from "../catalog"
+import { Policy as PolicyV2 } from "../policy"
 
-@lgcode/@lgcode/ Each core domain exports the policy actions it supports. Adding an action to
-@lgcode/@lgcode/ this union makes it valid in authored config while keeping Policy generic.
+// Each core domain exports the policy actions it supports. Adding an action to
+// this union makes it valid in authored config while keeping Policy generic.
 export const PolicyAction = Schema.Union([Catalog.PolicyActions])
 
 export class Policy extends Schema.Class<Policy>("ConfigV2.Experimental.Policy")({

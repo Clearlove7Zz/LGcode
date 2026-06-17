@@ -1,5 +1,5 @@
-import type { Dict } from ".@lgcode/en"
-import { dict as en } from ".@lgcode/en"
+import type { Dict } from "./en"
+import { dict as en } from "./en"
 
 export const dict = {
   ...en,
@@ -123,7 +123,7 @@ export const dict = {
   "home.what.shareLinks.body": "Condividi un link a qualsiasi sessione per riferimento o debug",
   "home.what.copilot.title": "GitHub Copilot",
   "home.what.copilot.body": "Accedi con GitHub per usare il tuo account Copilot",
-  "home.what.chatgptPlus.title": "ChatGPT Plus@lgcode/Pro",
+  "home.what.chatgptPlus.title": "ChatGPT Plus/Pro",
   "home.what.chatgptPlus.body": "Accedi con OpenAI per usare il tuo account ChatGPT Plus o Pro",
   "home.what.anyModel.title": "Qualsiasi modello",
   "home.what.anyModel.body": "75+ provider LLM tramite Models.dev, inclusi modelli locali",
@@ -133,7 +133,7 @@ export const dict = {
 
   "home.growth.title": "L'agente di coding IA open source",
   "home.growth.body":
-    "Con oltre <strong>{{stars}}<@lgcode/strong> stelle su GitHub, <strong>{{contributors}}<@lgcode/strong> contributori e oltre <strong>{{commits}}<@lgcode/strong> commit, OpenCode è usato e apprezzato da oltre <strong>{{monthlyUsers}}<@lgcode/strong> sviluppatori ogni mese.",
+    "Con oltre <strong>{{stars}}</strong> stelle su GitHub, <strong>{{contributors}}</strong> contributori e oltre <strong>{{commits}}</strong> commit, OpenCode è usato e apprezzato da oltre <strong>{{monthlyUsers}}</strong> sviluppatori ogni mese.",
   "home.growth.githubStars": "Stelle GitHub",
   "home.growth.contributors": "Contributori",
   "home.growth.monthlyDevs": "Devs mensili",
@@ -161,7 +161,7 @@ export const dict = {
   "home.faq.a3.p4.localLink": "modelli locali",
   "home.faq.q4": "Posso usare i miei abbonamenti IA esistenti con OpenCode?",
   "home.faq.a4.p1":
-    "Sì, OpenCode supporta gli abbonamenti dei principali provider. Puoi usare Claude Pro@lgcode/Max, ChatGPT Plus@lgcode/Pro o GitHub Copilot.",
+    "Sì, OpenCode supporta gli abbonamenti dei principali provider. Puoi usare Claude Pro/Max, ChatGPT Plus/Pro o GitHub Copilot.",
   "home.faq.q5": "Posso usare OpenCode solo nel terminale?",
   "home.faq.a5.beforeDesktop": "Non più! OpenCode ora è disponibile come app per",
   "home.faq.a5.desktop": "desktop",
@@ -252,7 +252,7 @@ export const dict = {
   "go.title": "OpenCode Go | Modelli di coding a basso costo per tutti",
   "go.banner.text": "MiniMax M3 offre limiti di utilizzo 3x superiori per un periodo limitato",
   "go.meta.description":
-    "Go inizia a $5 per il primo mese, poi $10@lgcode/mese, con generosi limiti di richiesta di 5 ore per GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro e DeepSeek V4 Flash.",
+    "Go inizia a $5 per il primo mese, poi $10/mese, con generosi limiti di richiesta di 5 ore per GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro e DeepSeek V4 Flash.",
   "go.hero.title": "Modelli di coding a basso costo per tutti",
   "go.hero.body":
     "Go porta il coding agentico ai programmatori di tutto il mondo. Offrendo limiti generosi e un accesso affidabile ai modelli open source più capaci, in modo da poter costruire con agenti potenti senza preoccuparsi dei costi o della disponibilità.",
@@ -260,10 +260,10 @@ export const dict = {
   "go.cta.start": "Abbonati a Go",
   "go.cta.template": "{{text}} {{price}}",
   "go.cta.text": "Abbonati a Go",
-  "go.cta.price": "$10@lgcode/mese",
+  "go.cta.price": "$10/mese",
   "go.cta.promo": "$5 il primo mese",
   "go.pricing.body":
-    "Usalo con qualsiasi agente. $5 il primo mese, poi $10@lgcode/mese. Ricarica il credito se necessario. Annulla in qualsiasi momento.",
+    "Usalo con qualsiasi agente. $5 il primo mese, poi $10/mese. Ricarica il credito se necessario. Annulla in qualsiasi momento.",
   "go.graph.free": "Gratis",
   "go.graph.freePill": "Big Pickle e modelli gratuiti",
   "go.graph.go": "Go",
@@ -295,7 +295,7 @@ export const dict = {
   "go.testimonials.frank.quote": "Vorrei essere ancora a Nvidia.",
   "go.problem.title": "Quale problema risolve Go?",
   "go.problem.body":
-    "Ci concentriamo nel portare l'esperienza OpenCode a quante più persone possibile. OpenCode Go è un abbonamento a basso costo: $5 il primo mese, poi $10@lgcode/mese. Offre limiti generosi e accesso affidabile ai modelli open source più capaci.",
+    "Ci concentriamo nel portare l'esperienza OpenCode a quante più persone possibile. OpenCode Go è un abbonamento a basso costo: $5 il primo mese, poi $10/mese. Offre limiti generosi e accesso affidabile ai modelli open source più capaci.",
   "go.problem.subtitle": " ",
   "go.problem.item1": "Prezzo di abbonamento a basso costo",
   "go.problem.item2": "Limiti generosi e accesso affidabile",
@@ -303,13 +303,13 @@ export const dict = {
   "go.problem.item4":
     "Include GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro e DeepSeek V4 Flash",
   "go.how.title": "Come funziona Go",
-  "go.how.body": "Go inizia a $5 per il primo mese, poi $10@lgcode/mese. Puoi usarlo con OpenCode o qualsiasi agente.",
+  "go.how.body": "Go inizia a $5 per il primo mese, poi $10/mese. Puoi usarlo con OpenCode o qualsiasi agente.",
   "go.how.step1.title": "Crea un account",
   "go.how.step1.beforeLink": "segui le",
   "go.how.step1.link": "istruzioni di configurazione",
   "go.how.step2.title": "Abbonati a Go",
   "go.how.step2.link": "$5 il primo mese",
-  "go.how.step2.afterLink": "poi $10@lgcode/mese con limiti generosi",
+  "go.how.step2.afterLink": "poi $10/mese con limiti generosi",
   "go.how.step3.title": "Inizia a programmare",
   "go.how.step3.body": "con accesso affidabile ai modelli open source",
   "go.privacy.title": "La tua privacy è importante per noi",
@@ -326,11 +326,11 @@ export const dict = {
   "go.faq.a2": "Go include i modelli elencati di seguito, con limiti generosi e accesso affidabile.",
   "go.faq.q3": "Go è lo stesso di Zen?",
   "go.faq.a3":
-    "No. Zen è a consumo, mentre Go inizia a $5 per il primo mese, poi $10@lgcode/mese, con limiti generosi e accesso affidabile ai modelli open source GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro e DeepSeek V4 Flash.",
+    "No. Zen è a consumo, mentre Go inizia a $5 per il primo mese, poi $10/mese, con limiti generosi e accesso affidabile ai modelli open source GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro e DeepSeek V4 Flash.",
   "go.faq.q4": "Quanto costa Go?",
   "go.faq.a4.p1.beforePricing": "Go costa",
   "go.faq.a4.p1.pricingLink": "$5 il primo mese",
-  "go.faq.a4.p1.afterPricing": "poi $10@lgcode/mese con limiti generosi.",
+  "go.faq.a4.p1.afterPricing": "poi $10/mese con limiti generosi.",
   "go.faq.a4.p2.beforeAccount": "Puoi gestire il tuo abbonamento nel tuo",
   "go.faq.a4.p2.accountLink": "account",
   "go.faq.a4.p3": "Annulla in qualsiasi momento.",
@@ -350,7 +350,7 @@ export const dict = {
 
   "go.faq.q9": "Qual è la differenza tra i modelli gratuiti e Go?",
   "go.faq.a9":
-    "I modelli gratuiti includono Big Pickle più modelli promozionali disponibili al momento, con una quota di 200 richieste@lgcode/giorno. Go include GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro e DeepSeek V4 Flash con quote di richiesta più elevate applicate su finestre mobili (5 ore, settimanale e mensile), approssimativamente equivalenti a $12 ogni 5 ore, $30 a settimana e $60 al mese (il conteggio effettivo delle richieste varia in base al modello e all'utilizzo).",
+    "I modelli gratuiti includono Big Pickle più modelli promozionali disponibili al momento, con una quota di 200 richieste/giorno. Go include GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro e DeepSeek V4 Flash con quote di richiesta più elevate applicate su finestre mobili (5 ore, settimanale e mensile), approssimativamente equivalenti a $12 ogni 5 ore, $30 a settimana e $60 al mese (il conteggio effettivo delle richieste varia in base al modello e all'utilizzo).",
 
   "zen.api.error.rateLimitExceeded": "Limite di richieste superato. Riprova più tardi.",
   "zen.api.error.modelNotSupported": "Modello {{model}} non supportato",
@@ -659,7 +659,7 @@ export const dict = {
   "workspace.lite.other.message":
     "Un altro membro in questo workspace è già abbonato a OpenCode Go. Solo un membro per workspace può abbonarsi.",
   "workspace.lite.promo.description":
-    "OpenCode Go parte da {{price}}, poi $10@lgcode/mese, e offre un accesso affidabile a popolari modelli di coding aperti con generosi limiti di utilizzo.",
+    "OpenCode Go parte da {{price}}, poi $10/mese, e offre un accesso affidabile a popolari modelli di coding aperti con generosi limiti di utilizzo.",
   "workspace.lite.promo.price": "$5 il primo mese",
   "workspace.lite.promo.modelsTitle": "Cosa è incluso",
   "workspace.lite.promo.footer":
@@ -679,7 +679,7 @@ export const dict = {
     "Entrambi ricevete un credito di utilizzo di $5 da applicare ai vostri limiti di utilizzo Go",
   "workspace.referral.rewards.title": "Premi referral",
   "workspace.referral.rewards.description": "Applica i crediti referral disponibili al tuo utilizzo di Go.",
-  "workspace.referral.rewards.subtitle": "{{applied}} @lgcode/ {{total}} premi utilizzati.",
+  "workspace.referral.rewards.subtitle": "{{applied}} / {{total}} premi utilizzati.",
   "workspace.referral.rewards.empty": "Nessun premio referral ancora.",
   "workspace.referral.table.reward": "Premio",
   "workspace.referral.table.referral": "Descrizione",
@@ -797,7 +797,7 @@ export const dict = {
 
   "bench.detail.title": "Benchmark - {{task}}",
   "bench.detail.notFound": "Task non trovato",
-  "bench.detail.na": "N@lgcode/D",
+  "bench.detail.na": "N/D",
   "bench.detail.labels.agent": "Agente",
   "bench.detail.labels.model": "Modello",
   "bench.detail.labels.task": "Task",

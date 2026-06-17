@@ -1,5 +1,5 @@
-@lgcode/@lgcode/@lgcode/ <reference types="@solidjs@lgcode/start@lgcode/env" @lgcode/>
+/// <reference types="@solidjs/start/env" />
 
-export declare module "@solidjs@lgcode/start@lgcode/server" {
+export declare module "@solidjs/start/server" {
   export type APIEvent = { request: Request }
 }

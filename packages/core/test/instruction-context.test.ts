@@ -1,17 +1,17 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import path from "path"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { Global } from "@lgcode/core@lgcode/global"
-import { InstructionContext } from "@lgcode/core@lgcode/instruction-context"
-import { Location } from "@lgcode/core@lgcode/location"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import { SystemContext } from "@lgcode/core@lgcode/system-context"
-import { SystemContextRegistry } from "@lgcode/core@lgcode/system-context@lgcode/registry"
-import { location } from ".@lgcode/fixture@lgcode/location"
-import { tmpdir } from ".@lgcode/fixture@lgcode/tmpdir"
-import { testEffect } from ".@lgcode/lib@lgcode/effect"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { Global } from "@opencode@lgcode/core/global"
+import { InstructionContext } from "@opencode@lgcode/core/instruction-context"
+import { Location } from "@opencode@lgcode/core/location"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import { SystemContext } from "@opencode@lgcode/core/system-context"
+import { SystemContextRegistry } from "@opencode@lgcode/core/system-context/registry"
+import { location } from "./fixture/location"
+import { tmpdir } from "./fixture/tmpdir"
+import { testEffect } from "./lib/effect"
 
 const it = testEffect(Layer.empty)
 
@@ -138,16 +138,16 @@ describe("InstructionContext", () => {
         Effect.flatMap((service) => service.load()),
         Effect.provide(InstructionContext.layer.pipe(Layer.provideMerge(SystemContextRegistry.layer))),
         Effect.provide(failingFS),
-        Effect.provide(Global.layerWith({ config: "@lgcode/global" })),
+        Effect.provide(Global.layerWith({ config: "/global" })),
         Effect.provide(
-          Layer.succeed(Location.Service, Location.Service.of(location({ directory: AbsolutePath.make("@lgcode/repo") }))),
+          Layer.succeed(Location.Service, Location.Service.of(location({ directory: AbsolutePath.make("/repo") }))),
         ),
       )
 
       expect(
         yield* SystemContext.reconcile(context, {
-          "core@lgcode/instructions": {
-            value: [{ path: "@lgcode/repo@lgcode/AGENTS.md", content: "old" }],
+          "core/instructions": {
+            value: [{ path: "/repo/AGENTS.md", content: "old" }],
             removed: "Previously loaded instructions no longer apply.",
           },
         }),
@@ -157,7 +157,7 @@ describe("InstructionContext", () => {
 
   it.effect("preserves admitted instructions when a discovered file disappears before read", () =>
     Effect.gen(function* () {
-      const file = AbsolutePath.make("@lgcode/repo@lgcode/AGENTS.md")
+      const file = AbsolutePath.make("/repo/AGENTS.md")
       const racingFS = Layer.effect(
         FSUtil.Service,
         FSUtil.Service.pipe(
@@ -174,15 +174,15 @@ describe("InstructionContext", () => {
         Effect.flatMap((service) => service.load()),
         Effect.provide(InstructionContext.layer.pipe(Layer.provideMerge(SystemContextRegistry.layer))),
         Effect.provide(racingFS),
-        Effect.provide(Global.layerWith({ config: "@lgcode/global" })),
+        Effect.provide(Global.layerWith({ config: "/global" })),
         Effect.provide(
-          Layer.succeed(Location.Service, Location.Service.of(location({ directory: AbsolutePath.make("@lgcode/repo") }))),
+          Layer.succeed(Location.Service, Location.Service.of(location({ directory: AbsolutePath.make("/repo") }))),
         ),
       )
 
       expect(
         yield* SystemContext.reconcile(context, {
-          "core@lgcode/instructions": {
+          "core/instructions": {
             value: [{ path: file, content: "old" }],
             removed: "Previously loaded instructions no longer apply.",
           },
@@ -214,12 +214,12 @@ describe("InstructionContext", () => {
         Effect.flatMap((service) => service.load()),
         Effect.provide(InstructionContext.layer.pipe(Layer.provideMerge(SystemContextRegistry.layer))),
         Effect.provide(observingFS),
-        Effect.provide(Global.layerWith({ config: "@lgcode/global" })),
+        Effect.provide(Global.layerWith({ config: "/global" })),
         Effect.provide(
           Layer.succeed(
             Location.Service,
             Location.Service.of(
-              location({ directory: AbsolutePath.make("@lgcode/repo@lgcode/") }, { projectDirectory: AbsolutePath.make("@lgcode/repo") }),
+              location({ directory: AbsolutePath.make("/repo/") }, { projectDirectory: AbsolutePath.make("/repo") }),
             ),
           ),
         ),
@@ -227,8 +227,8 @@ describe("InstructionContext", () => {
 
       expect(observed).toEqual({
         targets: ["AGENTS.md"],
-        start: FSUtil.resolve("@lgcode/repo"),
-        stop: FSUtil.resolve("@lgcode/repo"),
+        start: FSUtil.resolve("/repo"),
+        stop: FSUtil.resolve("/repo"),
       })
     }),
   )
@@ -250,9 +250,9 @@ describe("InstructionContext", () => {
             ),
           ).pipe(Layer.provide(FSUtil.defaultLayer)),
         ),
-        Effect.provide(Global.layerWith({ config: "@lgcode/global" })),
+        Effect.provide(Global.layerWith({ config: "/global" })),
         Effect.provide(
-          Layer.succeed(Location.Service, Location.Service.of(location({ directory: AbsolutePath.make("@lgcode/repo") }))),
+          Layer.succeed(Location.Service, Location.Service.of(location({ directory: AbsolutePath.make("/repo") }))),
         ),
         Effect.ensuring(
           Effect.sync(() => {
@@ -280,12 +280,12 @@ describe("InstructionContext", () => {
             ),
           ).pipe(Layer.provide(FSUtil.defaultLayer)),
         ),
-        Effect.provide(Global.layerWith({ config: "@lgcode/global" })),
+        Effect.provide(Global.layerWith({ config: "/global" })),
         Effect.provide(
           Layer.succeed(
             Location.Service,
             Location.Service.of(
-              location({ directory: AbsolutePath.make("@lgcode/outside") }, { projectDirectory: AbsolutePath.make("@lgcode/repo") }),
+              location({ directory: AbsolutePath.make("/outside") }, { projectDirectory: AbsolutePath.make("/repo") }),
             ),
           ),
         ),

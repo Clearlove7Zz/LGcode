@@ -1,9 +1,9 @@
 import { describe, expect } from "bun:test"
 import { Config, ConfigProvider, Context, Effect, Layer, Option } from "effect"
-import { ConfigService } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/config-service"
-import { it } from "..@lgcode/lib@lgcode/effect"
+import { ConfigService } from "../../src/effect/config-service"
+import { it } from "../lib/effect"
 
-class TestConfig extends ConfigService.Service<TestConfig>()("@test@lgcode/ConfigService", {
+class TestConfig extends ConfigService.Service<TestConfig>()("@test/ConfigService", {
   name: Config.string("NAME"),
   token: Config.string("TOKEN").pipe(Config.option),
   port: Config.number("PORT").pipe(Config.withDefault(3000)),

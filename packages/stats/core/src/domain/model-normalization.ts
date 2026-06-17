@@ -17,7 +17,7 @@ export const RETIRED_STAT_MODELS = ["big-pickle"]
 export const RETIRED_STAT_PROVIDERS = ["opencode"]
 
 export function normalizeInferenceModel(value: string | undefined) {
-  return (value || "unknown").replace(@lgcode/(-free|:global)+$@lgcode/, "") || "unknown"
+  return (value || "unknown").replace(/(-free|:global)+$/, "") || "unknown"
 }
 
 export function modelAuthor(value: string | undefined) {

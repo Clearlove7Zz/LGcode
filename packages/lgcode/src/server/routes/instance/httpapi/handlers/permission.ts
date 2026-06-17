@@ -1,9 +1,9 @@
-import { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
-import { Permission } from "@@lgcode/permission"
+import { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
+import { Permission } from "@/permission"
 import { Effect } from "effect"
-import { HttpApiBuilder } from "effect@lgcode/unstable@lgcode/httpapi"
-import { InstanceHttpApi } from "..@lgcode/api"
-import { PermissionNotFoundError } from "..@lgcode/errors"
+import { HttpApiBuilder } from "effect/unstable/httpapi"
+import { InstanceHttpApi } from "../api"
+import { PermissionNotFoundError } from "../errors"
 
 export const permissionHandlers = HttpApiBuilder.group(InstanceHttpApi, "permission", (handlers) =>
   Effect.gen(function* () {

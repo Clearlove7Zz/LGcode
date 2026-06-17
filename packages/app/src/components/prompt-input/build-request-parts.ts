@@ -1,10 +1,10 @@
-import { getFilename } from "@lgcode/core@lgcode/util@lgcode/path"
-import { type AgentPartInput, type FilePartInput, type Part, type TextPartInput } from "@lgcode/sdk@lgcode/v2@lgcode/client"
-import type { FileSelection } from "@@lgcode/context@lgcode/file"
-import { encodeFilePath } from "@@lgcode/context@lgcode/file@lgcode/path"
-import type { AgentPart, FileAttachmentPart, ImageAttachmentPart, Prompt } from "@@lgcode/context@lgcode/prompt"
-import { Identifier } from "@@lgcode/utils@lgcode/id"
-import { createCommentMetadata, formatCommentNote } from "@@lgcode/utils@lgcode/comment-note"
+import { getFilename } from "@opencode@lgcode/core/util/path"
+import { type AgentPartInput, type FilePartInput, type Part, type TextPartInput } from "@opencode@lgcode/sdk/v2/client"
+import type { FileSelection } from "@/context/file"
+import { encodeFilePath } from "@/context/file/path"
+import type { AgentPart, FileAttachmentPart, ImageAttachmentPart, Prompt } from "@/context/prompt"
+import { Identifier } from "@/utils/id"
+import { createCommentMetadata, formatCommentNote } from "@/utils/comment-note"
 
 type PromptRequestPart = (TextPartInput | FilePartInput | AgentPartInput) & { id: string }
 
@@ -30,20 +30,20 @@ type BuildRequestPartsInput = {
 }
 
 const absolute = (directory: string, path: string) => {
-  if (path.startsWith("@lgcode/")) return path
-  if (@lgcode/^[A-Za-z]:[\\@lgcode/]@lgcode/.test(path) || @lgcode/^[A-Za-z]:$@lgcode/.test(path)) return path
-  if (path.startsWith("\\\\") || path.startsWith("@lgcode/@lgcode/")) return path
-  return `${directory.replace(@lgcode/[\\@lgcode/]+$@lgcode/, "")}@lgcode/${path}`
+  if (path.startsWith("/")) return path
+  if (/^[A-Za-z]:[\\/]/.test(path) || /^[A-Za-z]:$/.test(path)) return path
+  if (path.startsWith("\\\\") || path.startsWith("//")) return path
+  return `${directory.replace(/[\\/]+$/, "")}/${path}`
 }
 
 const fileQuery = (selection: FileSelection | undefined) =>
   selection ? `?start=${selection.startLine}&end=${selection.endLine}` : ""
 
-const mention = @lgcode/(^|[\s([{"'])@(\S+)@lgcode/g
+const mention = /(^|[\s([{"'])@(\S+)/g
 
 const parseCommentMentions = (comment: string) => {
   return Array.from(comment.matchAll(mention)).flatMap((match) => {
-    const path = (match[2] ?? "").replace(@lgcode/[.,!?;:)}\]"']+$@lgcode/, "")
+    const path = (match[2] ?? "").replace(/[.,!?;:)}\]"']+$/, "")
     if (!path) return []
     return [path]
   })
@@ -102,8 +102,8 @@ export function buildRequestParts(input: BuildRequestPartsInput) {
     return {
       id: Identifier.ascending("part"),
       type: "file",
-      mime: "text@lgcode/plain",
-      url: `file:@lgcode/@lgcode/${encodeFilePath(path)}${fileQuery(attachment.selection)}`,
+      mime: "text/plain",
+      url: `file://${encodeFilePath(path)}${fileQuery(attachment.selection)}`,
       filename: getFilename(attachment.path),
       source: {
         type: "file",
@@ -133,7 +133,7 @@ export function buildRequestParts(input: BuildRequestPartsInput) {
   const used = new Set(files.map((part) => part.url))
   const context = input.context.flatMap((item) => {
     const path = absolute(input.sessionDirectory, item.path)
-    const url = `file:@lgcode/@lgcode/${encodeFilePath(path)}${fileQuery(item.selection)}`
+    const url = `file://${encodeFilePath(path)}${fileQuery(item.selection)}`
     const comment = item.comment?.trim()
     if (!comment && used.has(url)) return []
     used.add(url)
@@ -141,7 +141,7 @@ export function buildRequestParts(input: BuildRequestPartsInput) {
     const filePart = {
       id: Identifier.ascending("part"),
       type: "file",
-      mime: "text@lgcode/plain",
+      mime: "text/plain",
       url,
       filename: getFilename(item.path),
     } satisfies PromptRequestPart
@@ -149,14 +149,14 @@ export function buildRequestParts(input: BuildRequestPartsInput) {
     if (!comment) return [filePart]
 
     const mentions = parseCommentMentions(comment).flatMap((path) => {
-      const url = `file:@lgcode/@lgcode/${encodeFilePath(absolute(input.sessionDirectory, path))}`
+      const url = `file://${encodeFilePath(absolute(input.sessionDirectory, path))}`
       if (used.has(url)) return []
       used.add(url)
       return [
         {
           id: Identifier.ascending("part"),
           type: "file",
-          mime: "text@lgcode/plain",
+          mime: "text/plain",
           url,
           filename: getFilename(path),
         } satisfies PromptRequestPart,

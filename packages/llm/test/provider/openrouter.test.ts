@@ -1,27 +1,27 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { LLM } from "..@lgcode/..@lgcode/src"
-import { LLMClient } from "..@lgcode/..@lgcode/src@lgcode/route"
-import * as OpenRouter from "..@lgcode/..@lgcode/src@lgcode/providers@lgcode/openrouter"
-import { it } from "..@lgcode/lib@lgcode/effect"
+import { LLM } from "../../src"
+import { LLMClient } from "../../src/route"
+import * as OpenRouter from "../../src/providers/openrouter"
+import { it } from "../lib/effect"
 
 describe("OpenRouter", () => {
   it.effect("prepares OpenRouter models through the OpenAI-compatible Chat route", () =>
     Effect.gen(function* () {
-      const model = OpenRouter.configure({ apiKey: "test-key" }).model("openai@lgcode/gpt-4o-mini")
+      const model = OpenRouter.configure({ apiKey: "test-key" }).model("openai/gpt-4o-mini")
 
       expect(model).toMatchObject({
-        id: "openai@lgcode/gpt-4o-mini",
+        id: "openai/gpt-4o-mini",
         provider: "openrouter",
         route: { id: "openrouter" },
       })
-      expect(model.route.endpoint.baseURL).toBe("https:@lgcode/@lgcode/openrouter.ai@lgcode/api@lgcode/v1")
+      expect(model.route.endpoint.baseURL).toBe("https://openrouter.ai/api/v1")
 
       const prepared = yield* LLMClient.prepare(LLM.request({ model, prompt: "Say hello." }))
 
       expect(prepared.route).toBe("openrouter")
       expect(prepared.body).toMatchObject({
-        model: "openai@lgcode/gpt-4o-mini",
+        model: "openai/gpt-4o-mini",
         messages: [{ role: "user", content: "Say hello." }],
         stream: true,
       })
@@ -41,7 +41,7 @@ describe("OpenRouter", () => {
                 promptCacheKey: "session_123",
               },
             },
-          }).model("anthropic@lgcode/claude-3.7-sonnet:thinking"),
+          }).model("anthropic/claude-3.7-sonnet:thinking"),
           prompt: "Think briefly.",
         }),
       )

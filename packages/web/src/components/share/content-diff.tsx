@@ -1,7 +1,7 @@
 import { parsePatch } from "diff"
 import { createMemo, For } from "solid-js"
-import { ContentCode } from ".@lgcode/content-code"
-import styles from ".@lgcode/content-diff.module.css"
+import { ContentCode } from "./content-code"
+import styles from "./content-diff.module.css"
 
 type DiffRow = {
   left: string
@@ -32,45 +32,45 @@ export function ContentDiff(props: Props) {
             const prefix = line[0]
 
             if (prefix === "-") {
-              @lgcode/@lgcode/ Look ahead for consecutive additions to pair with removals
+              // Look ahead for consecutive additions to pair with removals
               const removals: string[] = [content]
               let j = i + 1
 
-              @lgcode/@lgcode/ Collect all consecutive removals
+              // Collect all consecutive removals
               while (j < lines.length && lines[j][0] === "-") {
                 removals.push(lines[j].slice(1))
                 j++
               }
 
-              @lgcode/@lgcode/ Collect all consecutive additions that follow
+              // Collect all consecutive additions that follow
               const additions: string[] = []
               while (j < lines.length && lines[j][0] === "+") {
                 additions.push(lines[j].slice(1))
                 j++
               }
 
-              @lgcode/@lgcode/ Pair removals with additions
+              // Pair removals with additions
               const maxLength = Math.max(removals.length, additions.length)
               for (let k = 0; k < maxLength; k++) {
                 const hasLeft = k < removals.length
                 const hasRight = k < additions.length
 
                 if (hasLeft && hasRight) {
-                  @lgcode/@lgcode/ Replacement - left is removed, right is added
+                  // Replacement - left is removed, right is added
                   diffRows.push({
                     left: removals[k],
                     right: additions[k],
                     type: "modified",
                   })
                 } else if (hasLeft) {
-                  @lgcode/@lgcode/ Pure removal
+                  // Pure removal
                   diffRows.push({
                     left: removals[k],
                     right: "",
                     type: "removed",
                   })
                 } else if (hasRight) {
-                  @lgcode/@lgcode/ Pure addition - only create if we actually have content
+                  // Pure addition - only create if we actually have content
                   diffRows.push({
                     left: "",
                     right: additions[k],
@@ -81,7 +81,7 @@ export function ContentDiff(props: Props) {
 
               i = j
             } else if (prefix === "+") {
-              @lgcode/@lgcode/ Standalone addition (not paired with removal)
+              // Standalone addition (not paired with removal)
               diffRows.push({
                 left: "",
                 right: content,
@@ -121,7 +121,7 @@ export function ContentDiff(props: Props) {
       const removedLines: string[] = []
       const addedLines: string[] = []
 
-      @lgcode/@lgcode/ Collect consecutive modified@lgcode/removed@lgcode/added rows
+      // Collect consecutive modified/removed/added rows
       while (
         i < currentRows.length &&
         (currentRows[i].type === "modified" || currentRows[i].type === "removed" || currentRows[i].type === "added")
@@ -136,7 +136,7 @@ export function ContentDiff(props: Props) {
         i++
       }
 
-      @lgcode/@lgcode/ Add grouped blocks
+      // Add grouped blocks
       if (removedLines.length > 0) {
         mobileBlocks.push({ type: "removed", lines: removedLines })
       }
@@ -144,7 +144,7 @@ export function ContentDiff(props: Props) {
         mobileBlocks.push({ type: "added", lines: addedLines })
       }
 
-      @lgcode/@lgcode/ Add unchanged rows as-is
+      // Add unchanged rows as-is
       if (i < currentRows.length && currentRows[i].type === "unchanged") {
         mobileBlocks.push({
           type: "unchanged",
@@ -167,15 +167,15 @@ export function ContentDiff(props: Props) {
                 data-slot="before"
                 data-diff-type={row.type === "removed" || row.type === "modified" ? "removed" : ""}
               >
-                <ContentCode code={row.left} flush lang={props.lang} @lgcode/>
-              <@lgcode/div>
+                <ContentCode code={row.left} flush lang={props.lang} />
+              </div>
               <div data-slot="after" data-diff-type={row.type === "added" || row.type === "modified" ? "added" : ""}>
-                <ContentCode code={row.right} lang={props.lang} flush @lgcode/>
-              <@lgcode/div>
-            <@lgcode/div>
+                <ContentCode code={row.right} lang={props.lang} flush />
+              </div>
+            </div>
           )}
-        <@lgcode/For>
-      <@lgcode/div>
+        </For>
+      </div>
 
       <div data-component="mobile">
         <For each={mobileRows()}>
@@ -184,57 +184,57 @@ export function ContentDiff(props: Props) {
               <For each={block.lines}>
                 {(line) => (
                   <div data-diff-type={block.type === "removed" ? "removed" : block.type === "added" ? "added" : ""}>
-                    <ContentCode code={line} lang={props.lang} flush @lgcode/>
-                  <@lgcode/div>
+                    <ContentCode code={line} lang={props.lang} flush />
+                  </div>
                 )}
-              <@lgcode/For>
-            <@lgcode/div>
+              </For>
+            </div>
           )}
-        <@lgcode/For>
-      <@lgcode/div>
-    <@lgcode/div>
+        </For>
+      </div>
+    </div>
   )
 }
 
-@lgcode/@lgcode/ const testDiff = `--- combined_before.txt	2025-06-24 16:38:08
-@lgcode/@lgcode/ +++ combined_after.txt	2025-06-24 16:38:12
-@lgcode/@lgcode/ @@ -1,21 +1,25 @@
-@lgcode/@lgcode/  unchanged line
-@lgcode/@lgcode/ -deleted line
-@lgcode/@lgcode/ -old content
-@lgcode/@lgcode/ +added line
-@lgcode/@lgcode/ +new content
-@lgcode/@lgcode/
-@lgcode/@lgcode/ -removed empty line below
-@lgcode/@lgcode/ +added empty line above
-@lgcode/@lgcode/
-@lgcode/@lgcode/ -	tab indented
-@lgcode/@lgcode/ -trailing spaces
-@lgcode/@lgcode/ -very long line that will definitely wrap in most editors and cause potential alignment issues when displayed in a two column diff view
-@lgcode/@lgcode/ -unicode content: 🚀 ✨ 中文
-@lgcode/@lgcode/ -mixed	content with	tabs and spaces
-@lgcode/@lgcode/ +    space indented
-@lgcode/@lgcode/ +no trailing spaces
-@lgcode/@lgcode/ +short line
-@lgcode/@lgcode/ +very long replacement line that will also wrap and test how the diff viewer handles long line additions after short line removals
-@lgcode/@lgcode/ +different unicode: 🎉 💻 日本語
-@lgcode/@lgcode/ +normalized content with consistent spacing
-@lgcode/@lgcode/ +newline to content
-@lgcode/@lgcode/
-@lgcode/@lgcode/ -content to remove
-@lgcode/@lgcode/ -whitespace only:
-@lgcode/@lgcode/ -multiple
-@lgcode/@lgcode/ -consecutive
-@lgcode/@lgcode/ -deletions
-@lgcode/@lgcode/ -single deletion
-@lgcode/@lgcode/ +
-@lgcode/@lgcode/ +single addition
-@lgcode/@lgcode/ +first addition
-@lgcode/@lgcode/ +second addition
-@lgcode/@lgcode/ +third addition
-@lgcode/@lgcode/  line before addition
-@lgcode/@lgcode/ +first added line
-@lgcode/@lgcode/ +
-@lgcode/@lgcode/ +third added line
-@lgcode/@lgcode/  line after addition
-@lgcode/@lgcode/  final unchanged line`
+// const testDiff = `--- combined_before.txt	2025-06-24 16:38:08
+// +++ combined_after.txt	2025-06-24 16:38:12
+// @@ -1,21 +1,25 @@
+//  unchanged line
+// -deleted line
+// -old content
+// +added line
+// +new content
+//
+// -removed empty line below
+// +added empty line above
+//
+// -	tab indented
+// -trailing spaces
+// -very long line that will definitely wrap in most editors and cause potential alignment issues when displayed in a two column diff view
+// -unicode content: 🚀 ✨ 中文
+// -mixed	content with	tabs and spaces
+// +    space indented
+// +no trailing spaces
+// +short line
+// +very long replacement line that will also wrap and test how the diff viewer handles long line additions after short line removals
+// +different unicode: 🎉 💻 日本語
+// +normalized content with consistent spacing
+// +newline to content
+//
+// -content to remove
+// -whitespace only:
+// -multiple
+// -consecutive
+// -deletions
+// -single deletion
+// +
+// +single addition
+// +first addition
+// +second addition
+// +third addition
+//  line before addition
+// +first added line
+// +
+// +third added line
+//  line after addition
+//  final unchanged line`

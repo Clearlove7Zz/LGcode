@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { createUpdaterController, type UpdaterBackend, type UpdaterReadyRecord } from ".@lgcode/updater-controller"
+import { createUpdaterController, type UpdaterBackend, type UpdaterReadyRecord } from "./updater-controller"
 
 function setup(input?: { currentVersion?: string; ready?: UpdaterReadyRecord }) {
   const calls: string[] = []

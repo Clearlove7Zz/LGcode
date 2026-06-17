@@ -1,11 +1,11 @@
 import { describe, expect, test } from "bun:test"
 import { Effect } from "effect"
-import { parseResponse } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/mcp-websearch"
-import { selectWebSearchProvider, webSearchModelName, webSearchProviderLabel } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/websearch"
+import { parseResponse } from "../../src/tool/mcp-websearch"
+import { selectWebSearchProvider, webSearchModelName, webSearchProviderLabel } from "../../src/tool/websearch"
 
-import { webSearchEnabled } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/registry"
-import { it } from "..@lgcode/lib@lgcode/effect"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { webSearchEnabled } from "../../src/tool/registry"
+import { it } from "../lib/effect"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
 
 const SESSION_ID = "ses_0196aabbccddeeff001122334455"
 

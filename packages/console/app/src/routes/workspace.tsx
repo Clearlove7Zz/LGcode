@@ -1,12 +1,12 @@
-import { query, createAsync, RouteSectionProps, useParams, A } from "@solidjs@lgcode/router"
-import ".@lgcode/workspace.css"
-import { IconWorkspaceLogo } from "..@lgcode/component@lgcode/icon"
-import { WorkspacePicker } from ".@lgcode/workspace-picker"
-import { UserMenu } from ".@lgcode/user-menu"
-import { withActor } from "~@lgcode/context@lgcode/auth.withActor"
-import { User } from "@lgcode/console-core@lgcode/user.js"
-import { Actor } from "@lgcode/console-core@lgcode/actor.js"
-import { useLanguage } from "~@lgcode/context@lgcode/language"
+import { query, createAsync, RouteSectionProps, useParams, A } from "@solidjs/router"
+import "./workspace.css"
+import { IconWorkspaceLogo } from "../component/icon"
+import { WorkspacePicker } from "./workspace-picker"
+import { UserMenu } from "./user-menu"
+import { withActor } from "~/context/auth.withActor"
+import { User } from "@opencode@lgcode/console-core/user.js"
+import { Actor } from "@opencode@lgcode/console-core/actor.js"
+import { useLanguage } from "~/context/language"
 
 const getUserEmail = query(async (workspaceID: string) => {
   "use server"
@@ -25,16 +25,16 @@ export default function WorkspaceLayout(props: RouteSectionProps) {
     <main data-page="workspace">
       <header data-component="workspace-header">
         <div data-slot="header-brand">
-          <A href={language.route("@lgcode/")} data-component="site-title">
-            <IconWorkspaceLogo @lgcode/>
-          <@lgcode/A>
-          <WorkspacePicker @lgcode/>
-        <@lgcode/div>
+          <A href={language.route("/")} data-component="site-title">
+            <IconWorkspaceLogo />
+          </A>
+          <WorkspacePicker />
+        </div>
         <div data-slot="header-actions">
-          <UserMenu email={userEmail()} @lgcode/>
-        <@lgcode/div>
-      <@lgcode/header>
-      <div>{props.children}<@lgcode/div>
-    <@lgcode/main>
+          <UserMenu email={userEmail()} />
+        </div>
+      </header>
+      <div>{props.children}</div>
+    </main>
   )
 }

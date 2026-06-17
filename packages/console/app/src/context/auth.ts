@@ -1,18 +1,18 @@
-import { getRequestEvent } from "solid-js@lgcode/web"
-import { and, Database, eq, inArray, isNull, sql } from "@lgcode/console-core@lgcode/drizzle@lgcode/index.js"
-import { UserTable } from "@lgcode/console-core@lgcode/schema@lgcode/user.sql.js"
-import { redirect } from "@solidjs@lgcode/router"
-import { Actor } from "@lgcode/console-core@lgcode/actor.js"
+import { getRequestEvent } from "solid-js/web"
+import { and, Database, eq, inArray, isNull, sql } from "@opencode@lgcode/console-core/drizzle/index.js"
+import { UserTable } from "@opencode@lgcode/console-core/schema/user.sql.js"
+import { redirect } from "@solidjs/router"
+import { Actor } from "@opencode@lgcode/console-core/actor.js"
 
-import { createClient } from "@openauthjs@lgcode/openauth@lgcode/client"
+import { createClient } from "@openauthjs/openauth/client"
 
 export const AuthClient = createClient({
   clientID: "app",
   issuer: import.meta.env.VITE_AUTH_URL,
 })
 
-import { useSession } from "@solidjs@lgcode/start@lgcode/http"
-import { Resource } from "@lgcode/console-resource"
+import { useSession } from "@solidjs/start/http"
+import { Resource } from "@opencode@lgcode/console-resource"
 
 export interface AuthSession {
   account?: Record<
@@ -110,7 +110,7 @@ export const getActor = async (workspace?: string): Promise<Actor.Info> => {
         }
       }
     }
-    throw redirect("@lgcode/auth@lgcode/authorize")
+    throw redirect("/auth/authorize")
   })()
   return evt.locals.actor
 }

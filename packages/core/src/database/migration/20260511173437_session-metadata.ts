@@ -1,11 +1,11 @@
 import { Effect } from "effect"
-import type { DatabaseMigration } from "..@lgcode/migration"
+import type { DatabaseMigration } from "../migration"
 
 export default {
   id: "20260511173437_session-metadata",
   up(tx) {
     return Effect.gen(function* () {
-      @lgcode/@lgcode/ This column briefly shipped again under 20260530232709_lovely_romulus.
+      // This column briefly shipped again under 20260530232709_lovely_romulus.
       if (
         (yield* tx.all<{ name: string }>(`PRAGMA table_info(\`session\`)`)).some((column) => column.name === "metadata")
       )

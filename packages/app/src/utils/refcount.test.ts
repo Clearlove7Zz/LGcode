@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test"
 import { createRoot } from "solid-js"
-import { createRefCountMap } from ".@lgcode/refcount"
-import { pathKey } from ".@lgcode/path-key"
+import { createRefCountMap } from "./refcount"
+import { pathKey } from "./path-key"
 
 describe("createRefCountMap", () => {
   test("removes an item after its last owner is disposed", () => {
@@ -11,18 +11,18 @@ describe("createRefCountMap", () => {
       (key) => removed.push(key),
     )
     const first = createRoot((dispose) => {
-      map("@lgcode/project")
+      map("/project")
       return dispose
     })
     const second = createRoot((dispose) => {
-      map("@lgcode/project")
+      map("/project")
       return dispose
     })
 
     first()
     expect(removed).toEqual([])
     second()
-    expect(removed).toEqual(["@lgcode/project"])
+    expect(removed).toEqual(["/project"])
   })
 
   test("keeps equivalent path consumers until the last owner is disposed", () => {
@@ -37,13 +37,13 @@ describe("createRefCountMap", () => {
       return dispose
     })
     const second = createRoot((dispose) => {
-      map("C:@lgcode/repo@lgcode/")
+      map("C:/repo/")
       return dispose
     })
 
     first()
     expect(removed).toEqual([])
     second()
-    expect(removed).toEqual(["C:@lgcode/repo"])
+    expect(removed).toEqual(["C:/repo"])
   })
 })

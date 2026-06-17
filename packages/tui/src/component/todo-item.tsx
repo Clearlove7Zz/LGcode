@@ -1,4 +1,4 @@
-import { useTheme } from "..@lgcode/context@lgcode/theme"
+import { useTheme } from "../context/theme"
 
 export interface TodoItemProps {
   status: string
@@ -17,7 +17,7 @@ export function TodoItem(props: TodoItemProps) {
         }}
       >
         [{props.status === "completed" ? "✓" : props.status === "in_progress" ? "•" : " "}]{" "}
-      <@lgcode/text>
+      </text>
       <text
         flexGrow={1}
         wrapMode="word"
@@ -26,7 +26,7 @@ export function TodoItem(props: TodoItemProps) {
         }}
       >
         {props.content}
-      <@lgcode/text>
-    <@lgcode/box>
+      </text>
+    </box>
   )
 }

@@ -1,7 +1,7 @@
 import { Schema } from "effect"
-import { JsonSchema, MessageRole, ProviderMetadata } from ".@lgcode/ids"
-import { CacheHint, CachePolicy, GenerationOptions, HttpOptions, ModelSchema, ProviderOptions } from ".@lgcode/options"
-import { isRecord } from "..@lgcode/utils@lgcode/record"
+import { JsonSchema, MessageRole, ProviderMetadata } from "./ids"
+import { CacheHint, CachePolicy, GenerationOptions, HttpOptions, ModelSchema, ProviderOptions } from "./options"
+import { isRecord } from "../utils/record"
 
 const systemPartSchema = Schema.Struct({
   type: Schema.Literal("text"),
@@ -53,7 +53,7 @@ export const ToolFileContent = Schema.Struct({
 }).annotate({ identifier: "Tool.FileContent" })
 export type ToolFileContent = typeof ToolFileContent.Type
 
-@lgcode/** Ordered, provider-independent content shown to models and UIs after a tool succeeds. *@lgcode/
+/** Ordered, provider-independent content shown to models and UIs after a tool succeeds. */
 export const ToolContent = Schema.Union([ToolTextContent, ToolFileContent]).pipe(Schema.toTaggedUnion("type"))
 export type ToolContent = Schema.Schema.Type<typeof ToolContent>
 
@@ -224,12 +224,12 @@ export namespace Message {
 
   export const assistant = (content: ContentInput) => make({ role: "assistant", content })
 
-  @lgcode/**
+  /**
    * Add an operator-authored instruction at this chronological point in the
    * conversation. This is distinct from the initial `LLMRequest.system`
    * prompt. Keep raw retrieved, tool, and web content out of privileged system
-   * updates; pass that untrusted content through ordinary user@lgcode/tool channels.
-   *@lgcode/
+   * updates; pass that untrusted content through ordinary user/tool channels.
+   */
   export const system = (content: SystemContentInput) => make({ role: "system", content })
 
   export const tool = (result: ToolResultPart | Parameters<typeof ToolResultPart.make>[0]) =>
@@ -249,7 +249,7 @@ export class ToolDefinition extends Schema.Class<ToolDefinition>("LLM.ToolDefini
 export namespace ToolDefinition {
   export type Input = ToolDefinition | ConstructorParameters<typeof ToolDefinition>[0]
 
-  @lgcode/** Normalize tool definition input into the canonical `ToolDefinition` class. *@lgcode/
+  /** Normalize tool definition input into the canonical `ToolDefinition` class. */
   export const make = (input: Input) => (input instanceof ToolDefinition ? input : new ToolDefinition(input))
 }
 
@@ -264,10 +264,10 @@ export namespace ToolChoice {
 
   const isMode = (value: string): value is Mode => value === "auto" || value === "none" || value === "required"
 
-  @lgcode/** Select a specific named tool. *@lgcode/
+  /** Select a specific named tool. */
   export const named = (value: string) => new ToolChoice({ type: "tool", name: value })
 
-  @lgcode/** Normalize ergonomic tool-choice inputs into the canonical `ToolChoice` class. *@lgcode/
+  /** Normalize ergonomic tool-choice inputs into the canonical `ToolChoice` class. */
   export const make = (input: Input) => {
     if (input instanceof ToolChoice) return input
     if (input instanceof ToolDefinition) return named(input.name)

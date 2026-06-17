@@ -1,5 +1,5 @@
-@lgcode/@lgcode/ @ts-nocheck
-import * as mod from ".@lgcode/favicon"
+// @ts-nocheck
+import * as mod from "./favicon"
 
 const docs = `### Overview
 Injects favicon and app icon meta tags for the document head.
@@ -18,13 +18,13 @@ Render once near the app root (head management).
 ### Accessibility
 - Not applicable.
 
-### Theming@lgcode/tokens
+### Theming/tokens
 - Not applicable.
 
 `
 
 export default {
-  title: "UI@lgcode/Favicon",
+  title: "UI/Favicon",
   id: "components-favicon",
   component: mod.Favicon,
   tags: ["autodocs"],
@@ -40,10 +40,10 @@ export default {
 export const Basic = {
   render: () => (
     <div style={{ display: "grid", gap: "8px" }}>
-      <mod.Favicon @lgcode/>
+      <mod.Favicon />
       <div style={{ color: "var(--text-weak)", "font-size": "12px" }}>
         Head tags are injected for favicon and app icons.
-      <@lgcode/div>
-    <@lgcode/div>
+      </div>
+    </div>
   ),
 }

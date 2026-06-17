@@ -1,12 +1,12 @@
 import { expect, spyOn, test } from "bun:test"
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import path from "path"
 import { pathToFileURL } from "url"
-import { tmpdir } from "..@lgcode/..@lgcode/fixture@lgcode/fixture"
-import { createTuiPluginApi } from "..@lgcode/..@lgcode/fixture@lgcode/tui-plugin"
-import { mockTuiRuntime } from "..@lgcode/..@lgcode/fixture@lgcode/tui-runtime"
+import { tmpdir } from "../../fixture/fixture"
+import { createTuiPluginApi } from "../../fixture/tui-plugin"
+import { mockTuiRuntime } from "../../fixture/tui-runtime"
 
-const { TuiPluginRuntime } = await import("..@lgcode/..@lgcode/..@lgcode/src@lgcode/plugin@lgcode/tui@lgcode/runtime")
+const { TuiPluginRuntime } = await import("../../../src/plugin/tui/runtime")
 
 test("runs onDispose callbacks with aborted signal and is idempotent", async () => {
   await using tmp = await tmpdir({
@@ -49,7 +49,7 @@ test("runs onDispose callbacks with aborted signal and is idempotent", async () 
     expect(marker).toContain("custom")
     expect(marker).toContain("aborted:true")
 
-    @lgcode/@lgcode/ second dispose is a no-op
+    // second dispose is a no-op
     await TuiPluginRuntime.dispose()
     const after = await fs.readFile(tmp.extra.marker, "utf8")
     expect(after).toBe(marker)
@@ -106,9 +106,9 @@ test("rolls back failed plugin and continues loading next", async () => {
 
   try {
     await TuiPluginRuntime.init({ api: createTuiPluginApi(), config })
-    @lgcode/@lgcode/ bad plugin's onDispose ran during rollback
+    // bad plugin's onDispose ran during rollback
     await expect(fs.readFile(tmp.extra.badMarker, "utf8")).resolves.toBe("cleaned")
-    @lgcode/@lgcode/ good plugin still loaded
+    // good plugin still loaded
     await expect(fs.readFile(tmp.extra.goodMarker, "utf8")).resolves.toBe("called")
   } finally {
     await TuiPluginRuntime.dispose()
@@ -167,7 +167,7 @@ export default {
     expect(marker).toContain("id:demo.slot")
     expect(marker).toContain("id:demo.slot:1")
 
-    @lgcode/@lgcode/ no initialization failures
+    // no initialization failures
     const hit = err.mock.calls.find(
       (item) => typeof item[0] === "string" && item[0].includes("failed to initialize tui plugin"),
     )

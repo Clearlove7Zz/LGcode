@@ -1,16 +1,16 @@
 import { Schema } from "effect"
-import { ContentBlockID, FinishReason, ProtocolID, ProviderMetadata, RouteID, ToolCallID } from ".@lgcode/ids"
-import { ModelSchema } from ".@lgcode/options"
-import { ToolOutput, ToolResultValue } from ".@lgcode/messages"
-import { ProviderFailureClassification } from ".@lgcode/errors"
+import { ContentBlockID, FinishReason, ProtocolID, ProviderMetadata, RouteID, ToolCallID } from "./ids"
+import { ModelSchema } from "./options"
+import { ToolOutput, ToolResultValue } from "./messages"
+import { ProviderFailureClassification } from "./errors"
 
-@lgcode/**
+/**
  * Token usage reported by an LLM provider.
  *
- * **Inclusive totals** (match AI SDK @lgcode/ OpenAI @lgcode/ LangChain convention — a
+ * **Inclusive totals** (match AI SDK / OpenAI / LangChain convention — a
  * reader from any of those ecosystems sees the number they expect):
  *
- * - `inputTokens` — total prompt tokens, *including* cached reads@lgcode/writes.
+ * - `inputTokens` — total prompt tokens, *including* cached reads/writes.
  * - `outputTokens` — total output tokens, *including* reasoning.
  * - `totalTokens` — provider-supplied total, or `inputTokens + outputTokens`.
  *
@@ -34,7 +34,7 @@ import { ProviderFailureClassification } from ".@lgcode/errors"
  *
  * **Semantics by provider**:
  *
- * - OpenAI Chat @lgcode/ Responses @lgcode/ Gemini @lgcode/ Bedrock: provider reports inclusive
+ * - OpenAI Chat / Responses / Gemini / Bedrock: provider reports inclusive
  *   `inputTokens` and an inclusive `outputTokens`; mapper subtracts to
  *   derive the breakdown.
  * - Anthropic: provider reports the breakdown natively (`input_tokens` is
@@ -47,7 +47,7 @@ import { ProviderFailureClassification } from ".@lgcode/errors"
  * keyed by provider name (`{ openai: ... }`, `{ anthropic: ... }`, etc.)
  * — for fields we don't normalize and for billing-level audit trails.
  * Matches the same escape-hatch field on `LLMEvent`.
- *@lgcode/
+ */
 export class Usage extends Schema.Class<Usage>("LLM.Usage")({
   inputTokens: Schema.optional(Schema.Number),
   outputTokens: Schema.optional(Schema.Number),
@@ -58,12 +58,12 @@ export class Usage extends Schema.Class<Usage>("LLM.Usage")({
   totalTokens: Schema.optional(Schema.Number),
   providerMetadata: Schema.optional(ProviderMetadata),
 }) {
-  @lgcode/**
+  /**
    * Visible output tokens — `outputTokens` minus `reasoningTokens`, clamped
    * to zero. The one place subtraction happens in this contract; the clamp
    * means a provider reporting `reasoningTokens > outputTokens` produces a
    * harmless zero rather than a negative that crashes downstream schemas.
-   *@lgcode/
+   */
   get visibleOutputTokens() {
     return Math.max(0, (this.outputTokens ?? 0) - (this.reasoningTokens ?? 0))
   }
@@ -233,11 +233,11 @@ type WithUsage<Event extends { readonly usage?: Usage }> = Omit<Event, "type" | 
 const contentBlockID = (value: ContentBlockID | string) => ContentBlockID.make(value)
 const toolCallID = (value: ToolCallID | string) => ToolCallID.make(value)
 
-@lgcode/**
+/**
  * camelCase aliases for `LLMEvent.guards` (provided by `Schema.toTaggedUnion`).
  * Lets consumers write `events.filter(LLMEvent.is.toolCall)` instead of
  * `events.filter(LLMEvent.guards["tool-call"])`.
- *@lgcode/
+ */
 export const LLMEvent = Object.assign(llmEventTagged, {
   stepStart: StepStart.make,
   textStart: (input: WithID<TextStart, ContentBlockID>) => TextStart.make({ ...input, id: contentBlockID(input.id) }),
@@ -303,7 +303,7 @@ export class PreparedRequest extends Schema.Class<PreparedRequest>("LLM.Prepared
   metadata: Schema.optional(Schema.Record(Schema.String, Schema.Unknown)),
 }) {}
 
-@lgcode/**
+/**
  * A `PreparedRequest` whose `body` is typed as `Body`. Use with the generic
  * on `LLMClient.prepare<Body>(...)` when the caller knows which route their
  * request will resolve to and wants its native shape statically exposed
@@ -312,7 +312,7 @@ export class PreparedRequest extends Schema.Class<PreparedRequest>("LLM.Prepared
  * The runtime body is identical — the route still emits `body: unknown` — so
  * this is a type-level assertion the caller makes about what they expect to
  * find. The prepare runtime does not validate the assertion.
- *@lgcode/
+ */
 export type PreparedRequestOf<Body> = Omit<PreparedRequest, "body"> & {
   readonly body: Body
 }
@@ -339,17 +339,17 @@ export class LLMResponse extends Schema.Class<LLMResponse>("LLM.Response")({
   events: Schema.Array(LLMEvent),
   usage: Schema.optional(Usage),
 }) {
-  @lgcode/** Concatenated assistant text assembled from streamed `text-delta` events. *@lgcode/
+  /** Concatenated assistant text assembled from streamed `text-delta` events. */
   get text() {
     return responseText(this.events)
   }
 
-  @lgcode/** Concatenated reasoning text assembled from streamed `reasoning-delta` events. *@lgcode/
+  /** Concatenated reasoning text assembled from streamed `reasoning-delta` events. */
   get reasoning() {
     return responseReasoning(this.events)
   }
 
-  @lgcode/** Completed tool calls emitted by the provider. *@lgcode/
+  /** Completed tool calls emitted by the provider. */
   get toolCalls() {
     return this.events.filter(LLMEvent.is.toolCall)
   }
@@ -358,15 +358,15 @@ export class LLMResponse extends Schema.Class<LLMResponse>("LLM.Response")({
 export namespace LLMResponse {
   export type Output = LLMResponse | { readonly events: ReadonlyArray<LLMEvent>; readonly usage?: Usage }
 
-  @lgcode/** Concatenate assistant text from a response or collected event list. *@lgcode/
+  /** Concatenate assistant text from a response or collected event list. */
   export const text = (response: Output) => responseText(response.events)
 
-  @lgcode/** Return response usage, falling back to the latest usage-bearing event. *@lgcode/
+  /** Return response usage, falling back to the latest usage-bearing event. */
   export const usage = (response: Output) => response.usage ?? responseUsage(response.events)
 
-  @lgcode/** Return completed tool calls from a response or collected event list. *@lgcode/
+  /** Return completed tool calls from a response or collected event list. */
   export const toolCalls = (response: Output) => response.events.filter(LLMEvent.is.toolCall)
 
-  @lgcode/** Concatenate reasoning text from a response or collected event list. *@lgcode/
+  /** Concatenate reasoning text from a response or collected event list. */
   export const reasoning = (response: Output) => responseReasoning(response.events)
 }

@@ -1,36 +1,36 @@
-import { NodeHttpServer, NodeServices } from "@effect@lgcode/platform-node"
+import { NodeHttpServer, NodeServices } from "@effect/platform-node"
 import { describe, expect } from "bun:test"
 import { Effect, Fiber, Layer, Schema } from "effect"
-import { HttpClient, HttpClientRequest, HttpRouter } from "effect@lgcode/unstable@lgcode/http"
-import { HttpApi, HttpApiBuilder, HttpApiEndpoint, HttpApiGroup } from "effect@lgcode/unstable@lgcode/httpapi"
-import * as Socket from "effect@lgcode/unstable@lgcode/socket@lgcode/Socket"
-import { mkdir } from "node:fs@lgcode/promises"
+import { HttpClient, HttpClientRequest, HttpRouter } from "effect/unstable/http"
+import { HttpApi, HttpApiBuilder, HttpApiEndpoint, HttpApiGroup } from "effect/unstable/httpapi"
+import * as Socket from "effect/unstable/socket/Socket"
+import { mkdir } from "node:fs/promises"
 import path from "node:path"
-import { registerAdapter } from "..@lgcode/..@lgcode/src@lgcode/control-plane@lgcode/adapters"
-import { WorkspaceV2 } from "@lgcode/core@lgcode/workspace"
-import { Ripgrep } from "@lgcode/core@lgcode/ripgrep"
-import type { WorkspaceAdapter } from "..@lgcode/..@lgcode/src@lgcode/control-plane@lgcode/types"
-import { Workspace } from "..@lgcode/..@lgcode/src@lgcode/control-plane@lgcode/workspace"
-import { InstanceRef, WorkspaceRef } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/instance-ref"
-import { InstanceLayer } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/instance-layer"
-import { Project } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/project"
-import { Session } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/session"
-import { disposeMiddleware, markInstanceForDisposal } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/lifecycle"
+import { registerAdapter } from "../../src/control-plane/adapters"
+import { WorkspaceV2 } from "@opencode@lgcode/core/workspace"
+import { Ripgrep } from "@opencode@lgcode/core/ripgrep"
+import type { WorkspaceAdapter } from "../../src/control-plane/types"
+import { Workspace } from "../../src/control-plane/workspace"
+import { InstanceRef, WorkspaceRef } from "../../src/effect/instance-ref"
+import { InstanceLayer } from "../../src/project/instance-layer"
+import { Project } from "../../src/project/project"
+import { Session } from "../../src/session/session"
+import { disposeMiddleware, markInstanceForDisposal } from "../../src/server/routes/instance/httpapi/lifecycle"
 import {
   InstanceContextMiddleware,
   instanceContextLayer,
-} from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/middleware@lgcode/instance-context"
+} from "../../src/server/routes/instance/httpapi/middleware/instance-context"
 import {
   WorkspaceRoutingMiddleware,
   WorkspaceRoutingQuery,
   workspaceRoutingLayer,
-} from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/middleware@lgcode/workspace-routing"
-import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
-import { disposeAllInstances, tmpdirScoped } from "..@lgcode/fixture@lgcode/fixture"
-import { withFixedWorkspaceID } from "..@lgcode/fixture@lgcode/flag"
-import { workspaceLayerWithRuntimeFlags } from "..@lgcode/fixture@lgcode/workspace"
-import { waitGlobalBusEvent } from ".@lgcode/global-bus"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+} from "../../src/server/routes/instance/httpapi/middleware/workspace-routing"
+import { resetDatabase } from "../fixture/db"
+import { disposeAllInstances, tmpdirScoped } from "../fixture/fixture"
+import { withFixedWorkspaceID } from "../fixture/flag"
+import { workspaceLayerWithRuntimeFlags } from "../fixture/workspace"
+import { waitGlobalBusEvent } from "./global-bus"
+import { testEffect } from "../lib/effect"
 
 const testStateLayer = Layer.effectDiscard(
   Effect.gen(function* () {
@@ -109,9 +109,9 @@ const ProbeResult = Schema.Struct({
 const ProbeApi = HttpApi.make("instance-context-probe").add(
   HttpApiGroup.make("probe")
     .add(
-      HttpApiEndpoint.get("get", "@lgcode/probe", { query: WorkspaceRoutingQuery, success: ProbeResult }),
-      HttpApiEndpoint.get("session", "@lgcode/session", { query: WorkspaceRoutingQuery, success: ProbeResult }),
-      HttpApiEndpoint.post("dispose", "@lgcode/dispose-probe", {
+      HttpApiEndpoint.get("get", "/probe", { query: WorkspaceRoutingQuery, success: ProbeResult }),
+      HttpApiEndpoint.get("session", "/session", { query: WorkspaceRoutingQuery, success: ProbeResult }),
+      HttpApiEndpoint.post("dispose", "/dispose-probe", {
         query: WorkspaceRoutingQuery,
         success: Schema.Boolean,
       }),
@@ -160,7 +160,7 @@ describe("HttpApi instance context middleware", () => {
       const project = yield* Project.use.fromDirectory(dir)
       yield* serveProbe()
 
-      const response = yield* HttpClient.get(`@lgcode/probe?directory=${encodeURIComponent(dir)}`)
+      const response = yield* HttpClient.get(`/probe?directory=${encodeURIComponent(dir)}`)
 
       expect(response.status).toBe(200)
       expect(yield* response.json).toEqual({
@@ -176,7 +176,7 @@ describe("HttpApi instance context middleware", () => {
     Effect.gen(function* () {
       yield* serveProbe()
 
-      const response = yield* HttpClient.get("@lgcode/probe?directory=%25E0%25A4%25A")
+      const response = yield* HttpClient.get("/probe?directory=%25E0%25A4%25A")
 
       expect(response.status).toBe(200)
       expect(yield* response.json).toMatchObject({
@@ -197,7 +197,7 @@ describe("HttpApi instance context middleware", () => {
       })
       yield* serveProbe()
 
-      const response = yield* HttpClientRequest.get(`@lgcode/session?workspace=${workspace.id}`).pipe(
+      const response = yield* HttpClientRequest.get(`/session?workspace=${workspace.id}`).pipe(
         HttpClientRequest.setHeader("x-opencode-directory", dir),
         HttpClient.execute,
       )
@@ -222,7 +222,7 @@ describe("HttpApi instance context middleware", () => {
       })
       yield* serveProbe()
 
-      const response = yield* HttpClientRequest.get(`@lgcode/probe?workspace=${workspace.id}`).pipe(
+      const response = yield* HttpClientRequest.get(`/probe?workspace=${workspace.id}`).pipe(
         HttpClientRequest.setHeader("x-opencode-directory", dir),
         HttpClient.execute,
       )
@@ -250,7 +250,7 @@ describe("HttpApi instance context middleware", () => {
       })
       yield* serveProbe()
 
-      const response = yield* HttpClientRequest.get(`@lgcode/probe?workspace=${workspace.id}`).pipe(
+      const response = yield* HttpClientRequest.get(`/probe?workspace=${workspace.id}`).pipe(
         HttpClientRequest.setHeader("x-opencode-directory", dir),
         HttpClient.execute,
       )
@@ -272,13 +272,13 @@ describe("HttpApi instance context middleware", () => {
       yield* Project.use.fromDirectory(dir)
       yield* serveProbe()
 
-      @lgcode/@lgcode/ Reference a workspace id that is not registered locally. Without the
-      @lgcode/@lgcode/ configured env override, this would short-circuit to a 500
-      @lgcode/@lgcode/ MissingWorkspace response. With the env set, planRequest must skip the
-      @lgcode/@lgcode/ MissingWorkspace branch and fall through to Local with the configured
-      @lgcode/@lgcode/ workspace id.
+      // Reference a workspace id that is not registered locally. Without the
+      // configured env override, this would short-circuit to a 500
+      // MissingWorkspace response. With the env set, planRequest must skip the
+      // MissingWorkspace branch and fall through to Local with the configured
+      // workspace id.
       const unknownWorkspaceID = WorkspaceV2.ID.ascending()
-      const response = yield* HttpClientRequest.get(`@lgcode/probe?workspace=${unknownWorkspaceID}`).pipe(
+      const response = yield* HttpClientRequest.get(`/probe?workspace=${unknownWorkspaceID}`).pipe(
         HttpClientRequest.setHeader("x-opencode-directory", dir),
         HttpClient.execute,
       )
@@ -304,13 +304,13 @@ describe("HttpApi instance context middleware", () => {
         type: "instance-context-fixed-workspace-control-plane",
         directory: workspaceDir,
       })
-      @lgcode/@lgcode/ @lgcode/session is matched by isLocalWorkspaceRoute, so shouldStayOnControlPlane
-      @lgcode/@lgcode/ is true. Combined with the env override, the route must stay Local with
-      @lgcode/@lgcode/ the configured workspace id (not divert to the requested workspace's
-      @lgcode/@lgcode/ local directory).
+      // /session is matched by isLocalWorkspaceRoute, so shouldStayOnControlPlane
+      // is true. Combined with the env override, the route must stay Local with
+      // the configured workspace id (not divert to the requested workspace's
+      // local directory).
       yield* serveProbe()
 
-      const response = yield* HttpClientRequest.get(`@lgcode/session?workspace=${workspace.id}`).pipe(
+      const response = yield* HttpClientRequest.get(`/session?workspace=${workspace.id}`).pipe(
         HttpClientRequest.setHeader("x-opencode-directory", dir),
         HttpClient.execute,
       )
@@ -336,7 +336,7 @@ describe("HttpApi instance context middleware", () => {
       yield* serveDisposeProbe()
       const disposed = yield* waitDisposedEvent.pipe(Effect.forkScoped({ startImmediately: true }))
 
-      const response = yield* HttpClientRequest.post(`@lgcode/dispose-probe?workspace=${workspace.id}`).pipe(
+      const response = yield* HttpClientRequest.post(`/dispose-probe?workspace=${workspace.id}`).pipe(
         HttpClient.execute,
       )
 

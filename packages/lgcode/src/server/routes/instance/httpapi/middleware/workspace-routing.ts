@@ -1,24 +1,24 @@
-import { WorkspaceV2 } from "@lgcode/core@lgcode/workspace"
-import type { Target } from "@@lgcode/control-plane@lgcode/types"
-import { Workspace } from "@@lgcode/control-plane@lgcode/workspace"
-import { WorkspaceAdapterRuntime } from "@@lgcode/control-plane@lgcode/workspace-adapter-runtime"
-import { Session } from "@@lgcode/session@lgcode/session"
-import { HttpApiProxy } from ".@lgcode/proxy"
-import * as Fence from "@@lgcode/server@lgcode/shared@lgcode/fence"
-import { getWorkspaceRouteSessionID, isLocalWorkspaceRoute, workspaceProxyURL } from "@@lgcode/server@lgcode/shared@lgcode/workspace-routing"
-import { NotFoundError } from "@@lgcode/storage@lgcode/storage"
-import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
+import { WorkspaceV2 } from "@opencode@lgcode/core/workspace"
+import type { Target } from "@/control-plane/types"
+import { Workspace } from "@/control-plane/workspace"
+import { WorkspaceAdapterRuntime } from "@/control-plane/workspace-adapter-runtime"
+import { Session } from "@/session/session"
+import { HttpApiProxy } from "./proxy"
+import * as Fence from "@/server/shared/fence"
+import { getWorkspaceRouteSessionID, isLocalWorkspaceRoute, workspaceProxyURL } from "@/server/shared/workspace-routing"
+import { NotFoundError } from "@/storage/storage"
+import { Flag } from "@opencode@lgcode/core/flag/flag"
 import { Context, Data, Effect, Layer, Option, Schema } from "effect"
-import { HttpClient, HttpServerRequest, HttpServerResponse } from "effect@lgcode/unstable@lgcode/http"
-import { HttpApiMiddleware } from "effect@lgcode/unstable@lgcode/httpapi"
-import * as Socket from "effect@lgcode/unstable@lgcode/socket@lgcode/Socket"
-import { InvalidRequestError } from "..@lgcode/errors"
+import { HttpClient, HttpServerRequest, HttpServerResponse } from "effect/unstable/http"
+import { HttpApiMiddleware } from "effect/unstable/httpapi"
+import * as Socket from "effect/unstable/socket/Socket"
+import { InvalidRequestError } from "../errors"
 
-@lgcode/@lgcode/ Query fields this middleware reads from the URL. Spread into every
-@lgcode/@lgcode/ endpoint query schema in groups that apply WorkspaceRoutingMiddleware,
-@lgcode/@lgcode/ otherwise HttpApi rejects requests carrying these params with 400.
-@lgcode/@lgcode/ HttpApiMiddleware in effect-smol cannot declare query params today —
-@lgcode/@lgcode/ remove this once upstream supports middleware-declared query schemas.
+// Query fields this middleware reads from the URL. Spread into every
+// endpoint query schema in groups that apply WorkspaceRoutingMiddleware,
+// otherwise HttpApi rejects requests carrying these params with 400.
+// HttpApiMiddleware in effect-smol cannot declare query params today —
+// remove this once upstream supports middleware-declared query schemas.
 export const WorkspaceRoutingQueryFields = {
   directory: Schema.optional(Schema.String),
   workspace: Schema.optional(Schema.String),
@@ -48,7 +48,7 @@ export class WorkspaceRouteContext extends Context.Service<
     readonly directory: string
     readonly workspaceID?: WorkspaceV2.ID
   }
->()("@lgcode/ExperimentalHttpApiWorkspaceRouteContext") {}
+>()("@opencode/ExperimentalHttpApiWorkspaceRouteContext") {}
 
 export class WorkspaceRoutingMiddleware extends HttpApiMiddleware.Service<
   WorkspaceRoutingMiddleware,
@@ -56,10 +56,10 @@ export class WorkspaceRoutingMiddleware extends HttpApiMiddleware.Service<
     provides: WorkspaceRouteContext
     requires: Session.Service
   }
->()("@lgcode/ExperimentalHttpApiWorkspaceRouting") {}
+>()("@opencode/ExperimentalHttpApiWorkspaceRouting") {}
 
 function requestURL(request: HttpServerRequest.HttpServerRequest): URL {
-  return new URL(request.url, "http:@lgcode/@lgcode/localhost")
+  return new URL(request.url, "http://localhost")
 }
 
 function configuredWorkspaceID(): WorkspaceV2.ID | undefined {
@@ -88,7 +88,7 @@ function defaultDirectory(request: HttpServerRequest.HttpServerRequest, url: URL
 }
 
 function shouldStayOnControlPlane(request: HttpServerRequest.HttpServerRequest, url: URL): boolean {
-  return isLocalWorkspaceRoute(request.method, url.pathname) || url.pathname.startsWith("@lgcode/console")
+  return isLocalWorkspaceRoute(request.method, url.pathname) || url.pathname.startsWith("/console")
 }
 
 function resolveWorkspace(
@@ -102,7 +102,7 @@ function resolveWorkspace(
 function missingWorkspaceResponse(id: WorkspaceV2.ID): HttpServerResponse.HttpServerResponse {
   return HttpServerResponse.text(`Workspace not found: ${id}`, {
     status: 500,
-    contentType: "text@lgcode/plain; charset=utf-8",
+    contentType: "text/plain; charset=utf-8",
   })
 }
 
@@ -122,7 +122,7 @@ function proxyRemote(
     if (!syncing) {
       return HttpServerResponse.text(`broken sync connection for workspace: ${workspace.id}`, {
         status: 503,
-        contentType: "text@lgcode/plain; charset=utf-8",
+        contentType: "text/plain; charset=utf-8",
       })
     }
     const proxyURL = workspaceProxyURL(target.url, url)
@@ -164,7 +164,7 @@ function planRequest(
   return Effect.gen(function* () {
     const url = requestURL(request)
     const envWorkspaceID = configuredWorkspaceID()
-    const workspaceID = url.pathname.startsWith("@lgcode/api@lgcode/")
+    const workspaceID = url.pathname.startsWith("/api/")
       ? selectedV2WorkspaceID(url, session?.workspaceID)
       : selectedWorkspaceID(url, session?.workspaceID)
     if (workspaceID === InvalidWorkspaceID) return RequestPlan.InvalidWorkspace()

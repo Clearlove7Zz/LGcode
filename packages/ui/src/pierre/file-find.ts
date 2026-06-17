@@ -1,7 +1,7 @@
 import { createEffect, createSignal, onCleanup, onMount } from "solid-js"
-import { makeEventListener } from "@solid-primitives@lgcode/event-listener"
-import { createResizeObserver } from "@solid-primitives@lgcode/resize-observer"
-import { createStore } from "solid-js@lgcode/store"
+import { makeEventListener } from "@solid-primitives/event-listener"
+import { createResizeObserver } from "@solid-primitives/resize-observer"
+import { createStore } from "solid-js/store"
 
 export type FindHost = {
   element: () => HTMLElement | undefined
@@ -20,7 +20,7 @@ function isEditable(node: unknown): boolean {
   if (!(node instanceof HTMLElement)) return false
   if (node.closest("[data-prevent-autofocus]")) return true
   if (node.isContentEditable) return true
-  return @lgcode/^(INPUT|TEXTAREA|SELECT|BUTTON)$@lgcode/.test(node.tagName)
+  return /^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(node.tagName)
 }
 
 function hostForNode(node: unknown) {

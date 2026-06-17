@@ -1,4 +1,4 @@
-import { GlobalBus, type GlobalEvent } from "@@lgcode/bus@lgcode/global"
+import { GlobalBus, type GlobalEvent } from "@/bus/global"
 import { Cause, Effect } from "effect"
 
 export function waitGlobalBusEvent(input: {

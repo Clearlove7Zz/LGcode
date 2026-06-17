@@ -1,14 +1,14 @@
 import path from "path"
 import { pathToFileURL, fileURLToPath } from "url"
-import { createMessageConnection, StreamMessageReader, StreamMessageWriter } from "vscode-jsonrpc@lgcode/node"
+import { createMessageConnection, StreamMessageReader, StreamMessageWriter } from "vscode-jsonrpc/node"
 import type { Diagnostic as VSCodeDiagnostic } from "vscode-languageserver-types"
-import { Process } from "@@lgcode/util@lgcode/process"
-import { LANGUAGE_EXTENSIONS } from ".@lgcode/language"
+import { Process } from "@/util/process"
+import { LANGUAGE_EXTENSIONS } from "./language"
 import { Effect, Schema } from "effect"
-import type * as LSPServer from ".@lgcode/server"
-import { withTimeout } from "..@lgcode/util@lgcode/timeout"
-import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
-import type { InstanceContext } from "@@lgcode/project@lgcode/instance-context"
+import type * as LSPServer from "./server"
+import { withTimeout } from "../util/timeout"
+import { Filesystem } from "@/util/filesystem"
+import type { InstanceContext } from "@/project/instance-context"
 
 const DIAGNOSTICS_DEBOUNCE_MS = 150
 const DIAGNOSTICS_DOCUMENT_WAIT_TIMEOUT_MS = 5_000
@@ -17,7 +17,7 @@ const DIAGNOSTICS_REQUEST_TIMEOUT_MS = 3_000
 
 const INITIALIZE_TIMEOUT_MS = 45_000
 
-@lgcode/@lgcode/ LSP spec constants
+// LSP spec constants
 const FILE_CHANGE_CREATED = 1
 const FILE_CHANGE_CHANGED = 2
 const TEXT_DOCUMENT_SYNC_INCREMENTAL = 2
@@ -69,7 +69,7 @@ type ServerCapabilities = {
 }
 
 function getFilePath(uri: string) {
-  if (!uri.startsWith("file:@lgcode/@lgcode/")) return
+  if (!uri.startsWith("file://")) return
   return Filesystem.normalizePath(fileURLToPath(uri))
 }
 
@@ -81,7 +81,7 @@ function getSyncKind(capabilities?: ServerCapabilities) {
 }
 
 function endPosition(text: string) {
-  const lines = text.split(@lgcode/\r\n|\r|\n@lgcode/)
+  const lines = text.split(/\r\n|\r|\n/)
   return {
     line: lines.length - 1,
     character: lines.at(-1)?.length ?? 0,
@@ -113,9 +113,9 @@ function configurationValue(settings: unknown, section?: string) {
   return result ?? null
 }
 
-@lgcode/@lgcode/ TypeScript's built-in LSP pushes diagnostics aggressively on first open.
-@lgcode/@lgcode/ We seed the push cache on the very first publish so waitForFreshPush can
-@lgcode/@lgcode/ resolve immediately instead of waiting for a second debounced push.
+// TypeScript's built-in LSP pushes diagnostics aggressively on first open.
+// We seed the push cache on the very first publish so waitForFreshPush can
+// resolve immediately instead of waiting for a second debounced push.
 function shouldSeedDiagnosticsOnFirstPush(serverID: string) {
   return serverID === "typescript"
 }
@@ -134,7 +134,7 @@ export async function create(input: {
     new StreamMessageWriter(input.server.process.stdin as any),
   )
   input.server.process.stderr?.resume()
-  @lgcode/@lgcode/ --- Connection state ---
+  // --- Connection state ---
 
   const pushDiagnostics = new Map<string, Diagnostic[]>()
   const pullDiagnostics = new Map<string, Diagnostic[]>()
@@ -155,9 +155,9 @@ export async function create(input: {
     for (const listener of [...registrationListeners]) listener()
   }
 
-  @lgcode/@lgcode/ --- LSP connection handlers ---
+  // --- LSP connection handlers ---
 
-  connection.onNotification("textDocument@lgcode/publishDiagnostics", (params) => {
+  connection.onNotification("textDocument/publishDiagnostics", (params) => {
     const filePath = getFilePath(params.uri)
     if (!filePath) return
     published.set(filePath, {
@@ -170,43 +170,43 @@ export async function create(input: {
     }
     updatePushDiagnostics(filePath, params.diagnostics)
   })
-  connection.onRequest("window@lgcode/workDoneProgress@lgcode/create", (params) => {
+  connection.onRequest("window/workDoneProgress/create", (params) => {
     return null
   })
-  connection.onRequest("workspace@lgcode/configuration", async (params) => {
+  connection.onRequest("workspace/configuration", async (params) => {
     const items = (params as { items?: { section?: string }[] }).items ?? []
     return items.map((item) => configurationValue(input.server.initialization, item.section))
   })
-  connection.onRequest("client@lgcode/registerCapability", async (params) => {
+  connection.onRequest("client/registerCapability", async (params) => {
     const registrations = (params as { registrations?: CapabilityRegistration[] }).registrations ?? []
     let changed = false
     for (const registration of registrations) {
-      if (registration.method !== "textDocument@lgcode/diagnostic") continue
+      if (registration.method !== "textDocument/diagnostic") continue
       diagnosticRegistrations.set(registration.id, registration)
       changed = true
     }
     if (changed) emitRegistrationChange()
   })
-  connection.onRequest("client@lgcode/unregisterCapability", async (params) => {
+  connection.onRequest("client/unregisterCapability", async (params) => {
     const registrations = (params as { unregisterations?: { id: string; method: string }[] }).unregisterations ?? []
     let changed = false
     for (const registration of registrations) {
-      if (registration.method !== "textDocument@lgcode/diagnostic") continue
+      if (registration.method !== "textDocument/diagnostic") continue
       diagnosticRegistrations.delete(registration.id)
       changed = true
     }
     if (changed) emitRegistrationChange()
   })
-  connection.onRequest("workspace@lgcode/workspaceFolders", async () => [
+  connection.onRequest("workspace/workspaceFolders", async () => [
     {
       name: "workspace",
       uri: pathToFileURL(input.root).href,
     },
   ])
-  connection.onRequest("workspace@lgcode/diagnostic@lgcode/refresh", async () => null)
+  connection.onRequest("workspace/diagnostic/refresh", async () => null)
   connection.listen()
 
-  @lgcode/@lgcode/ --- Initialize handshake ---
+  // --- Initialize handshake ---
 
   const initialized = await withTimeout(
     connection.sendRequest<{ capabilities?: ServerCapabilities }>("initialize", {
@@ -260,14 +260,14 @@ export async function create(input: {
   await connection.sendNotification("initialized", {})
 
   if (input.server.initialization) {
-    await connection.sendNotification("workspace@lgcode/didChangeConfiguration", {
+    await connection.sendNotification("workspace/didChangeConfiguration", {
       settings: input.server.initialization,
     })
   }
 
   const files: Record<string, { version: number; text: string }> = {}
 
-  @lgcode/@lgcode/ --- Diagnostic helpers ---
+  // --- Diagnostic helpers ---
 
   const mergeResults = (filePath: string, results: DiagnosticRequestResult[]) => {
     const handled = results.some((result) => result.handled)
@@ -292,7 +292,7 @@ export async function create(input: {
 
   async function requestDiagnosticReport(filePath: string, identifier?: string): Promise<DiagnosticRequestResult> {
     const report = await withTimeout(
-      connection.sendRequest<DocumentDiagnosticReport | null>("textDocument@lgcode/diagnostic", {
+      connection.sendRequest<DocumentDiagnosticReport | null>("textDocument/diagnostic", {
         ...(identifier ? { identifier } : {}),
         textDocument: {
           uri: pathToFileURL(filePath).href,
@@ -331,7 +331,7 @@ export async function create(input: {
     identifier?: string,
   ): Promise<DiagnosticRequestResult> {
     const report = await withTimeout(
-      connection.sendRequest<WorkspaceDiagnosticReport | null>("workspace@lgcode/diagnostic", {
+      connection.sendRequest<WorkspaceDiagnosticReport | null>("workspace/diagnostic", {
         ...(identifier ? { identifier } : {}),
         previousResultIds: [],
       }),
@@ -409,10 +409,10 @@ export async function create(input: {
     })
   }
 
-  @lgcode/@lgcode/ LATENCY-CRITICAL: dispatch identifier pulls in parallel and unblock once one
-  @lgcode/@lgcode/ batch already produced diagnostics for the current file. Let slower pulls keep
-  @lgcode/@lgcode/ merging in the background; do not sequence identifier-by-identifier, and do
-  @lgcode/@lgcode/ not add a post-match settle@lgcode/debounce delay. See PR #23771.
+  // LATENCY-CRITICAL: dispatch identifier pulls in parallel and unblock once one
+  // batch already produced diagnostics for the current file. Let slower pulls keep
+  // merging in the background; do not sequence identifier-by-identifier, and do
+  // not add a post-match settle/debounce delay. See PR #23771.
   async function requestDocumentDiagnostics(filePath: string) {
     const state = documentPullState()
     if (!state.supported) return { handled: false, matched: false }
@@ -540,7 +540,7 @@ export async function create(input: {
     }
   }
 
-  @lgcode/@lgcode/ --- Public API ---
+  // --- Public API ---
 
   const result = {
     root: input.root,
@@ -561,11 +561,11 @@ export async function create(input: {
 
         const document = files[request.path]
         if (document !== undefined) {
-          @lgcode/@lgcode/ Do not wipe diagnostics on didChange. Some servers (e.g. clangd) only
-          @lgcode/@lgcode/ re-emit diagnostics when the content actually changes, so clearing
-          @lgcode/@lgcode/ here would lose errors for no-op touchFile calls. Let the server's
-          @lgcode/@lgcode/ next push@lgcode/pull overwrite naturally.
-          await connection.sendNotification("workspace@lgcode/didChangeWatchedFiles", {
+          // Do not wipe diagnostics on didChange. Some servers (e.g. clangd) only
+          // re-emit diagnostics when the content actually changes, so clearing
+          // here would lose errors for no-op touchFile calls. Let the server's
+          // next push/pull overwrite naturally.
+          await connection.sendNotification("workspace/didChangeWatchedFiles", {
             changes: [
               {
                 uri: pathToFileURL(request.path).href,
@@ -576,7 +576,7 @@ export async function create(input: {
 
           const next = document.version + 1
           files[request.path] = { version: next, text }
-          await connection.sendNotification("textDocument@lgcode/didChange", {
+          await connection.sendNotification("textDocument/didChange", {
             textDocument: {
               uri: pathToFileURL(request.path).href,
               version: next,
@@ -597,7 +597,7 @@ export async function create(input: {
           return next
         }
 
-        await connection.sendNotification("workspace@lgcode/didChangeWatchedFiles", {
+        await connection.sendNotification("workspace/didChangeWatchedFiles", {
           changes: [
             {
               uri: pathToFileURL(request.path).href,
@@ -608,7 +608,7 @@ export async function create(input: {
 
         pushDiagnostics.delete(request.path)
         pullDiagnostics.delete(request.path)
-        await connection.sendNotification("textDocument@lgcode/didOpen", {
+        await connection.sendNotification("textDocument/didOpen", {
           textDocument: {
             uri: pathToFileURL(request.path).href,
             languageId,
@@ -647,4 +647,4 @@ export async function create(input: {
   return result
 }
 
-export * as LSPClient from ".@lgcode/client"
+export * as LSPClient from "./client"

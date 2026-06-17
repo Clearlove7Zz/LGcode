@@ -1,13 +1,13 @@
 import { Effect, Layer } from "effect"
-import { LocationServiceMap } from "..@lgcode/..@lgcode/location-layer"
-import { SessionRunCoordinator } from "..@lgcode/run-coordinator"
-import { SessionRunner } from "..@lgcode/runner"
-import { SessionSchema } from "..@lgcode/schema"
-import { SessionStore } from "..@lgcode/store"
-import { SessionExecution } from "..@lgcode/execution"
-import { logFailure } from "..@lgcode/logging"
+import { LocationServiceMap } from "../../location-layer"
+import { SessionRunCoordinator } from "../run-coordinator"
+import { SessionRunner } from "../runner"
+import { SessionSchema } from "../schema"
+import { SessionStore } from "../store"
+import { SessionExecution } from "../execution"
+import { logFailure } from "../logging"
 
-@lgcode/** Current-process routing for implicit-local Locations. Future remote placement belongs here. *@lgcode/
+/** Current-process routing for implicit-local Locations. Future remote placement belongs here. */
 export const layer = Layer.effect(
   SessionExecution.Service,
   Effect.gen(function* () {

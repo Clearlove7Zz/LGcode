@@ -1,5 +1,5 @@
 import type { Config, Redacted } from "effect"
-import { Auth } from ".@lgcode/auth"
+import { Auth } from "./auth"
 
 export type ApiKeyMode = "optional" | "required"
 
@@ -30,20 +30,20 @@ export type ModelArgs<Base, Mode extends ApiKeyMode> = Mode extends "optional"
 
 export type ModelFactory<Base, Mode extends ApiKeyMode, Model> = (id: string, ...args: ModelArgs<Base, Mode>) => Model
 
-@lgcode/**
+/**
  * Require at least one of the keys in `T`. Use for option shapes where any
  * subset of fields is acceptable but at least one must be present (e.g. Azure
  * accepts `resourceName` or `baseURL`).
- *@lgcode/
+ */
 export type AtLeastOne<T> = {
   [K in keyof T]: Required<Pick<T, K>> & Partial<Omit<T, K>>
 }[keyof T]
 
-@lgcode/**
+/**
  * Standard bearer-auth resolution for providers: honor an explicit `auth`
  * override, otherwise resolve `apiKey` (option > config var) and apply it as
  * a bearer token.
- *@lgcode/
+ */
 export const bearer = (options: ProviderAuthOption<"optional">, envVar: string | ReadonlyArray<string>): Auth => {
   if ("auth" in options && options.auth) return options.auth
   return (Array.isArray(envVar) ? envVar : [envVar])
@@ -54,4 +54,4 @@ export const bearer = (options: ProviderAuthOption<"optional">, envVar: string |
     .bearer()
 }
 
-export * as AuthOptions from ".@lgcode/auth-options"
+export * as AuthOptions from "./auth-options"

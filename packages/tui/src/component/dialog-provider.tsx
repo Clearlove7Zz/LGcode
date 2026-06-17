@@ -1,20 +1,20 @@
 import { createMemo, createSignal, onMount, Show } from "solid-js"
-import { useSync } from "..@lgcode/context@lgcode/sync"
+import { useSync } from "../context/sync"
 import { map, pipe, sortBy } from "remeda"
-import { DialogSelect } from "..@lgcode/ui@lgcode/dialog-select"
-import { useDialog } from "..@lgcode/ui@lgcode/dialog"
-import { useSDK } from "..@lgcode/context@lgcode/sdk"
-import { DialogPrompt } from "..@lgcode/ui@lgcode/dialog-prompt"
-import { Link } from "..@lgcode/ui@lgcode/link"
-import { useTheme } from "..@lgcode/context@lgcode/theme"
-import { TextAttributes } from "@opentui@lgcode/core"
-import type { ProviderAuthAuthorization, ProviderAuthMethod } from "@lgcode/sdk@lgcode/v2"
-import { DialogModel } from ".@lgcode/dialog-model"
-import { useToast } from "..@lgcode/ui@lgcode/toast"
-import { isConsoleManagedProvider } from "..@lgcode/util@lgcode/provider-origin"
-import { useConnected } from ".@lgcode/use-connected"
-import { useBindings } from "..@lgcode/keymap"
-import { useClipboard } from "..@lgcode/context@lgcode/clipboard"
+import { DialogSelect } from "../ui/dialog-select"
+import { useDialog } from "../ui/dialog"
+import { useSDK } from "../context/sdk"
+import { DialogPrompt } from "../ui/dialog-prompt"
+import { Link } from "../ui/link"
+import { useTheme } from "../context/theme"
+import { TextAttributes } from "@opentui/core"
+import type { ProviderAuthAuthorization, ProviderAuthMethod } from "@opencode@lgcode/sdk/v2"
+import { DialogModel } from "./dialog-model"
+import { useToast } from "../ui/toast"
+import { isConsoleManagedProvider } from "../util/provider-origin"
+import { useConnected } from "./use-connected"
+import { useBindings } from "../keymap"
+import { useClipboard } from "../context/clipboard"
 
 const PROVIDER_PRIORITY: Record<string, number> = {
   opencode: 0,
@@ -26,7 +26,7 @@ const PROVIDER_PRIORITY: Record<string, number> = {
 }
 
 const CUSTOM_PROVIDER_OPTION_VALUE = "__opencode_custom_provider__"
-const CUSTOM_PROVIDER_ID = @lgcode/^[a-z0-9][a-z0-9-_]*$@lgcode/
+const CUSTOM_PROVIDER_ID = /^[a-z0-9][a-z0-9-_]*$/
 
 type ProviderOptionBase = {
   title: string
@@ -61,7 +61,7 @@ export function providerOptions(list: { id: string; name: string }[]): ProviderO
         description: {
           opencode: "(Recommended)",
           anthropic: "(API key)",
-          openai: "(ChatGPT Plus@lgcode/Pro or API key)",
+          openai: "(ChatGPT Plus/Pro or API key)",
           "opencode-go": "Low cost subscription for everyone",
         }[provider.id],
         category: provider.id in PROVIDER_PRIORITY ? "Popular" : "Providers",
@@ -78,7 +78,7 @@ export function providerOptions(list: { id: string; name: string }[]): ProviderO
 }
 
 export function normalizeCustomProviderID(value: string) {
-  const providerID = value.trim().replace(@lgcode/^@ai-sdk\@lgcode/@lgcode/, "")
+  const providerID = value.trim().replace(/^@ai-sdk\//, "")
   if (!CUSTOM_PROVIDER_ID.test(providerID)) return
   return providerID
 }
@@ -97,7 +97,7 @@ export function createDialogProviderOptions() {
       description: () => (
         <text fg={theme.textMuted}>
           This only stores a credential. Configure the provider in opencode.json to use it.
-        <@lgcode/text>
+        </text>
       ),
     })
     if (value === null) return
@@ -126,7 +126,7 @@ export function createDialogProviderOptions() {
             async onSelect() {
               const providerID = await promptCustomProviderID()
               if (!providerID) return
-              return dialog.replace(() => <ApiMethod providerID={providerID} title="API key" custom @lgcode/>)
+              return dialog.replace(() => <ApiMethod providerID={providerID} title="API key" custom />)
             },
           }
         }
@@ -141,7 +141,7 @@ export function createDialogProviderOptions() {
           description: provider.description,
           footer: consoleManaged ? sync.data.console_state.activeOrgName : undefined,
           category: provider.category,
-          gutter: connected && onboarded() ? () => <text fg={theme.success}>✓<@lgcode/text> : undefined,
+          gutter: connected && onboarded() ? () => <text fg={theme.success}>✓</text> : undefined,
           async onSelect() {
             if (consoleManaged) return
 
@@ -163,7 +163,7 @@ export function createDialogProviderOptions() {
                         value: index,
                       }))}
                       onSelect={(option) => resolve(option.value)}
-                    @lgcode/>
+                    />
                   ),
                   () => resolve(null),
                 )
@@ -197,12 +197,12 @@ export function createDialogProviderOptions() {
               }
               if (result.data?.method === "code") {
                 dialog.replace(() => (
-                  <CodeMethod providerID={providerID} title={method.label} index={index} authorization={result.data!} @lgcode/>
+                  <CodeMethod providerID={providerID} title={method.label} index={index} authorization={result.data!} />
                 ))
               }
               if (result.data?.method === "auto") {
                 dialog.replace(() => (
-                  <AutoMethod providerID={providerID} title={method.label} index={index} authorization={result.data!} @lgcode/>
+                  <AutoMethod providerID={providerID} title={method.label} index={index} authorization={result.data!} />
                 ))
               }
             }
@@ -214,7 +214,7 @@ export function createDialogProviderOptions() {
                 metadata = value
               }
               return dialog.replace(() => (
-                <ApiMethod providerID={providerID} title={method.label} metadata={metadata} @lgcode/>
+                <ApiMethod providerID={providerID} title={method.label} metadata={metadata} />
               ))
             }
           },
@@ -227,7 +227,7 @@ export function createDialogProviderOptions() {
 
 export function DialogProvider() {
   const options = createDialogProviderOptions()
-  return <DialogSelect title="Connect a provider" options={options()} @lgcode/>
+  return <DialogSelect title="Connect a provider" options={options()} />
 }
 
 interface AutoMethodProps {
@@ -252,7 +252,7 @@ function AutoMethod(props: AutoMethodProps) {
         group: "Dialog",
         cmd: () => {
           const code =
-            props.authorization.instructions.match(@lgcode/[A-Z0-9]{4}-[A-Z0-9]{4,5}@lgcode/)?.[0] ?? props.authorization.url
+            props.authorization.instructions.match(/[A-Z0-9]{4}-[A-Z0-9]{4,5}/)?.[0] ?? props.authorization.url
           clipboard
             .write?.(code)
             .then(() => toast.show({ message: "Copied to clipboard", variant: "info" }))
@@ -272,7 +272,7 @@ function AutoMethod(props: AutoMethodProps) {
         variant: "error",
         message:
           "name" in result.error && result.error.name === "ProviderAuthOauthCallbackFailed"
-            ? "OAuth authorization failed. Try @lgcode/connect again."
+            ? "OAuth authorization failed. Try /connect again."
             : JSON.stringify(result.error),
       })
       dialog.clear()
@@ -280,7 +280,7 @@ function AutoMethod(props: AutoMethodProps) {
     }
     await sdk.client.instance.dispose()
     await sync.bootstrap()
-    dialog.replace(() => <DialogModel providerID={props.providerID} @lgcode/>)
+    dialog.replace(() => <DialogModel providerID={props.providerID} />)
   })
 
   return (
@@ -288,20 +288,20 @@ function AutoMethod(props: AutoMethodProps) {
       <box flexDirection="row" justifyContent="space-between">
         <text attributes={TextAttributes.BOLD} fg={theme.text}>
           {props.title}
-        <@lgcode/text>
+        </text>
         <text fg={theme.textMuted} onMouseUp={() => dialog.clear()}>
           esc
-        <@lgcode/text>
-      <@lgcode/box>
+        </text>
+      </box>
       <box gap={1}>
-        <Link href={props.authorization.url} fg={theme.primary} @lgcode/>
-        <text fg={theme.textMuted}>{props.authorization.instructions}<@lgcode/text>
-      <@lgcode/box>
-      <text fg={theme.textMuted}>Waiting for authorization...<@lgcode/text>
+        <Link href={props.authorization.url} fg={theme.primary} />
+        <text fg={theme.textMuted}>{props.authorization.instructions}</text>
+      </box>
+      <text fg={theme.textMuted}>Waiting for authorization...</text>
       <text fg={theme.text}>
-        c <span style={{ fg: theme.textMuted }}>copy<@lgcode/span>
-      <@lgcode/text>
-    <@lgcode/box>
+        c <span style={{ fg: theme.textMuted }}>copy</span>
+      </text>
+    </box>
   )
 }
 
@@ -331,21 +331,21 @@ function CodeMethod(props: CodeMethodProps) {
         if (!error) {
           await sdk.client.instance.dispose()
           await sync.bootstrap()
-          dialog.replace(() => <DialogModel providerID={props.providerID} @lgcode/>)
+          dialog.replace(() => <DialogModel providerID={props.providerID} />)
           return
         }
         setError(true)
       }}
       description={() => (
         <box gap={1}>
-          <text fg={theme.textMuted}>{props.authorization.instructions}<@lgcode/text>
-          <Link href={props.authorization.url} fg={theme.primary} @lgcode/>
+          <text fg={theme.textMuted}>{props.authorization.instructions}</text>
+          <Link href={props.authorization.url} fg={theme.primary} />
           <Show when={error()}>
-            <text fg={theme.error}>Invalid code<@lgcode/text>
-          <@lgcode/Show>
-        <@lgcode/box>
+            <text fg={theme.error}>Invalid code</text>
+          </Show>
+        </box>
       )}
-    @lgcode/>
+    />
   )
 }
 
@@ -373,22 +373,22 @@ function ApiMethod(props: ApiMethodProps) {
               <text fg={theme.textMuted}>
                 OpenCode Zen gives you access to all the best coding models at the cheapest prices with a single API
                 key.
-              <@lgcode/text>
+              </text>
               <text fg={theme.text}>
-                Go to <span style={{ fg: theme.primary }}>https:@lgcode/@lgcode/opencode.ai@lgcode/zen<@lgcode/span> to get a key
-              <@lgcode/text>
-            <@lgcode/box>
+                Go to <span style={{ fg: theme.primary }}>https://opencode.ai/zen</span> to get a key
+              </text>
+            </box>
           ),
           "opencode-go": (
             <box gap={1}>
               <text fg={theme.textMuted}>
                 OpenCode Go is a $10 per month subscription that provides reliable access to popular open coding models
                 with generous usage limits.
-              <@lgcode/text>
+              </text>
               <text fg={theme.text}>
-                Go to <span style={{ fg: theme.primary }}>https:@lgcode/@lgcode/opencode.ai@lgcode/go<@lgcode/span> and enable OpenCode Go
-              <@lgcode/text>
-            <@lgcode/box>
+                Go to <span style={{ fg: theme.primary }}>https://opencode.ai/go</span> and enable OpenCode Go
+              </text>
+            </box>
           ),
         }[props.providerID] ?? undefined
       }
@@ -412,9 +412,9 @@ function ApiMethod(props: ApiMethodProps) {
           dialog.clear()
           return
         }
-        dialog.replace(() => <DialogModel providerID={props.providerID} @lgcode/>)
+        dialog.replace(() => <DialogModel providerID={props.providerID} />)
       }}
-    @lgcode/>
+    />
   )
 }
 
@@ -444,7 +444,7 @@ async function PromptsMethod(props: PromptsMethodProps) {
                 description: x.hint,
               }))}
               onSelect={(option) => resolve(option.value)}
-            @lgcode/>
+            />
           ),
           () => resolve(null),
         )
@@ -457,7 +457,7 @@ async function PromptsMethod(props: PromptsMethodProps) {
     const value = await new Promise<string | null>((resolve) => {
       props.dialog.replace(
         () => (
-          <DialogPrompt title={prompt.message} placeholder={prompt.placeholder} onConfirm={(value) => resolve(value)} @lgcode/>
+          <DialogPrompt title={prompt.message} placeholder={prompt.placeholder} onConfirm={(value) => resolve(value)} />
         ),
         () => resolve(null),
       )

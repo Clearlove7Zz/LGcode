@@ -1,19 +1,19 @@
 import path from "path"
-import { NodeFileSystem } from "@effect@lgcode/platform-node"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { NodeFileSystem } from "@effect/platform-node"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
 import { describe, expect, test } from "bun:test"
 import { Effect, FileSystem, Layer } from "effect"
-import { Global } from "@lgcode/core@lgcode/global"
+import { Global } from "@opencode@lgcode/core/global"
 import {
   createVariantRuntime,
   cycleVariant,
   formatModelLabel,
   pickVariant,
   resolveVariant,
-} from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/variant.shared"
-import type { SessionMessages } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/session.shared"
-import type { RunProvider } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/types"
-import { testEffect } from "..@lgcode/..@lgcode/lib@lgcode/effect"
+} from "@/cli/cmd/run/variant.shared"
+import type { SessionMessages } from "@/cli/cmd/run/session.shared"
+import type { RunProvider } from "@/cli/cmd/run/types"
+import { testEffect } from "../../lib/effect"
 
 const model = {
   providerID: "openai",
@@ -33,8 +33,8 @@ const providers: RunProvider[] = [
         providerID: "openai",
         api: {
           id: "gpt-5",
-          url: "https:@lgcode/@lgcode/openai.test",
-          npm: "@ai-sdk@lgcode/openai",
+          url: "https://openai.test",
+          npm: "@ai-sdk/openai",
         },
         name: "GPT-5",
         capabilities: {
@@ -167,7 +167,7 @@ describe("run variant shared", () => {
       yield* fs.writeJson(file, {
         recent: [{ providerID: "anthropic", modelID: "sonnet" }],
         variant: {
-          "openai@lgcode/gpt-4.1": "low",
+          "openai/gpt-4.1": "low",
         },
       })
 
@@ -178,8 +178,8 @@ describe("run variant shared", () => {
       expect(yield* fs.readJson(file)).toEqual({
         recent: [{ providerID: "anthropic", modelID: "sonnet" }],
         variant: {
-          "openai@lgcode/gpt-4.1": "low",
-          "openai@lgcode/gpt-5": "high",
+          "openai/gpt-4.1": "low",
+          "openai/gpt-5": "high",
         },
       })
 
@@ -188,7 +188,7 @@ describe("run variant shared", () => {
       expect(yield* fs.readJson(file)).toEqual({
         recent: [{ providerID: "anthropic", modelID: "sonnet" }],
         variant: {
-          "openai@lgcode/gpt-4.1": "low",
+          "openai/gpt-4.1": "low",
         },
       })
     }),
@@ -209,7 +209,7 @@ describe("run variant shared", () => {
       expect(yield* Effect.promise(() => svc.resolveSavedVariant(model))).toBe("high")
       expect(yield* fs.readJson(file)).toEqual({
         variant: {
-          "openai@lgcode/gpt-5": "high",
+          "openai/gpt-5": "high",
         },
       })
     }),

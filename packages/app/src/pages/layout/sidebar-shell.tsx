@@ -6,11 +6,11 @@ import {
   SortableProvider,
   closestCenter,
   type DragEvent,
-} from "@thisbeyond@lgcode/solid-dnd"
-import { ConstrainDragXAxis } from "@@lgcode/utils@lgcode/solid-dnd"
-import { IconButton } from "@lgcode/ui@lgcode/icon-button"
-import { Tooltip, TooltipKeybind } from "@lgcode/ui@lgcode/tooltip"
-import { type LocalProject } from "@@lgcode/context@lgcode/layout"
+} from "@thisbeyond/solid-dnd"
+import { ConstrainDragXAxis } from "@/utils/solid-dnd"
+import { IconButton } from "@opencode@lgcode/ui/icon-button"
+import { Tooltip, TooltipKeybind } from "@opencode@lgcode/ui/tooltip"
+import { type LocalProject } from "@/context/layout"
 
 export const SidebarContent = (props: {
   mobile?: boolean
@@ -60,21 +60,21 @@ export const SidebarContent = (props: {
             onDragOver={props.handleDragOver}
             collisionDetector={closestCenter}
           >
-            <DragDropSensors @lgcode/>
-            <ConstrainDragXAxis @lgcode/>
+            <DragDropSensors />
+            <ConstrainDragXAxis />
             <div class="h-full w-full flex flex-col items-center gap-3 px-3 py-3 overflow-y-auto no-scrollbar">
               <SortableProvider ids={props.projects().map((p) => p.worktree)}>
-                <For each={props.projects()}>{(project) => props.renderProject(project)}<@lgcode/For>
-              <@lgcode/SortableProvider>
+                <For each={props.projects()}>{(project) => props.renderProject(project)}</For>
+              </SortableProvider>
               <Tooltip
                 placement={placement()}
                 value={
                   <div class="flex items-center gap-2">
-                    <span>{props.openProjectLabel}<@lgcode/span>
+                    <span>{props.openProjectLabel}</span>
                     <Show when={!props.mobile && !!props.openProjectKeybind()}>
-                      <span class="text-icon-base text-12-medium">{props.openProjectKeybind()}<@lgcode/span>
-                    <@lgcode/Show>
-                  <@lgcode/div>
+                      <span class="text-icon-base text-12-medium">{props.openProjectKeybind()}</span>
+                    </Show>
+                  </div>
                 }
               >
                 <IconButton
@@ -83,12 +83,12 @@ export const SidebarContent = (props: {
                   size="large"
                   onClick={props.onOpenProject}
                   aria-label={typeof props.openProjectLabel === "string" ? props.openProjectLabel : undefined}
-                @lgcode/>
-              <@lgcode/Tooltip>
-            <@lgcode/div>
-            <DragOverlay>{props.renderProjectOverlay()}<@lgcode/DragOverlay>
-          <@lgcode/DragDropProvider>
-        <@lgcode/div>
+                />
+              </Tooltip>
+            </div>
+            <DragOverlay>{props.renderProjectOverlay()}</DragOverlay>
+          </DragDropProvider>
+        </div>
         <div class="shrink-0 w-full pt-3 pb-6 flex flex-col items-center gap-2">
           <TooltipKeybind placement={placement()} title={props.settingsLabel()} keybind={props.settingsKeybind() ?? ""}>
             <IconButton
@@ -97,8 +97,8 @@ export const SidebarContent = (props: {
               size="large"
               onClick={props.onOpenSettings}
               aria-label={props.settingsLabel()}
-            @lgcode/>
-          <@lgcode/TooltipKeybind>
+            />
+          </TooltipKeybind>
           <Tooltip placement={placement()} value={props.helpLabel()}>
             <IconButton
               icon="help"
@@ -106,10 +106,10 @@ export const SidebarContent = (props: {
               size="large"
               onClick={props.onOpenHelp}
               aria-label={props.helpLabel()}
-            @lgcode/>
-          <@lgcode/Tooltip>
-        <@lgcode/div>
-      <@lgcode/div>
+            />
+          </Tooltip>
+        </div>
+      </div>
 
       <div
         ref={(el) => {
@@ -119,7 +119,7 @@ export const SidebarContent = (props: {
         aria-hidden={!expanded()}
       >
         {props.renderPanel()}
-      <@lgcode/div>
-    <@lgcode/div>
+      </div>
+    </div>
   )
 }

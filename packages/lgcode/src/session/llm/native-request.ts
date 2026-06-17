@@ -1,5 +1,5 @@
-import type { JsonSchema, LLMRequest, ProviderMetadata } from "@lgcode/llm"
-import { LLM, Message, SystemPart, ToolCallPart, ToolDefinition, ToolResultPart } from "@lgcode/llm"
+import type { JsonSchema, LLMRequest, ProviderMetadata } from "@opencode@lgcode/llm"
+import { LLM, Message, SystemPart, ToolCallPart, ToolDefinition, ToolResultPart } from "@opencode@lgcode/llm"
 import {
   AmazonBedrock,
   Anthropic,
@@ -8,10 +8,10 @@ import {
   OpenAI,
   OpenAICompatible,
   OpenRouter,
-} from "@lgcode/llm@lgcode/providers"
+} from "@opencode@lgcode/llm/providers"
 import type { ModelMessage } from "ai"
-import type { Provider } from "@@lgcode/provider@lgcode/provider"
-import { isRecord } from "@@lgcode/util@lgcode/record"
+import type { Provider } from "@/provider/provider"
+import { isRecord } from "@/util/record"
 
 type ToolInput = {
   readonly description?: string
@@ -42,8 +42,8 @@ const providerMetadata = (value: unknown): ProviderMetadata | undefined => {
   return Object.keys(result).length === 0 ? undefined : result
 }
 
-@lgcode/@lgcode/ Stored AI SDK parts historically kept provider-owned continuation metadata in
-@lgcode/@lgcode/ `providerOptions`; native parts now use `providerMetadata` directly.
+// Stored AI SDK parts historically kept provider-owned continuation metadata in
+// `providerOptions`; native parts now use `providerMetadata` directly.
 const partProviderMetadata = (part: Record<string, unknown>) =>
   providerMetadata(part.providerMetadata) ?? providerMetadata(part.providerOptions)
 
@@ -58,7 +58,7 @@ const mediaPart = (part: Record<string, unknown>) => {
     throw new Error("Native LLM request adapter only supports file parts with string or Uint8Array data")
   return {
     type: "media" as const,
-    mediaType: typeof part.mediaType === "string" ? part.mediaType : "application@lgcode/octet-stream",
+    mediaType: typeof part.mediaType === "string" ? part.mediaType : "application/octet-stream",
     data: part.data,
     filename: typeof part.filename === "string" ? part.filename : undefined,
   }
@@ -147,7 +147,7 @@ const baseURL = (input: Provider.Model | RequestInput) =>
 
 const requireBaseURL = (model: Provider.Model, url: string | undefined) => {
   if (url) return url
-  throw new Error(`Native LLM request adapter requires a base URL for ${model.providerID}@lgcode/${model.id}`)
+  throw new Error(`Native LLM request adapter requires a base URL for ${model.providerID}/${model.id}`)
 }
 
 export const model = (input: Provider.Model | RequestInput, headers?: Record<string, string>) => {
@@ -162,26 +162,26 @@ export const model = (input: Provider.Model | RequestInput, headers?: Record<str
       output: model.limit.output,
     },
   }
-  if (model.api.npm === "@ai-sdk@lgcode/openai") return OpenAI.configure(options).responses(model.api.id)
-  if (model.api.npm === "@ai-sdk@lgcode/azure")
+  if (model.api.npm === "@ai-sdk/openai") return OpenAI.configure(options).responses(model.api.id)
+  if (model.api.npm === "@ai-sdk/azure")
     return Azure.configure({ ...options, baseURL: requireBaseURL(model, url) }).responses(model.api.id)
-  if (model.api.npm === "@ai-sdk@lgcode/anthropic") return Anthropic.configure(options).model(model.api.id)
-  if (model.api.npm === "@ai-sdk@lgcode/google") return Google.configure(options).model(model.api.id)
-  if (model.api.npm === "@ai-sdk@lgcode/amazon-bedrock") return AmazonBedrock.configure(options).model(model.api.id)
-  if (model.api.npm === "@ai-sdk@lgcode/openai-compatible")
+  if (model.api.npm === "@ai-sdk/anthropic") return Anthropic.configure(options).model(model.api.id)
+  if (model.api.npm === "@ai-sdk/google") return Google.configure(options).model(model.api.id)
+  if (model.api.npm === "@ai-sdk/amazon-bedrock") return AmazonBedrock.configure(options).model(model.api.id)
+  if (model.api.npm === "@ai-sdk/openai-compatible")
     return OpenAICompatible.configure({
       ...options,
       provider: String(model.providerID),
       baseURL: requireBaseURL(model, url),
     }).model(model.api.id)
-  if (model.api.npm === "@openrouter@lgcode/ai-sdk-provider") return OpenRouter.configure(options).model(model.api.id)
+  if (model.api.npm === "@openrouter/ai-sdk-provider") return OpenRouter.configure(options).model(model.api.id)
   throw new Error(`Native LLM request adapter does not support provider package ${model.api.npm}`)
 }
 
 export const request = (input: RequestInput) => {
   const converted = messages(input.messages)
-  @lgcode/@lgcode/ This is the only native adapter boundary that should construct canonical
-  @lgcode/@lgcode/ @lgcode/llm request objects from opencode's session@lgcode/AI SDK-shaped data.
+  // This is the only native adapter boundary that should construct canonical
+  // @opencode@lgcode/llm request objects from opencode's session/AI SDK-shaped data.
   return LLM.request({
     model: model(input, input.headers),
     system: [...(input.system ?? []).map(SystemPart.make), ...converted.system],
@@ -193,4 +193,4 @@ export const request = (input: RequestInput) => {
   })
 }
 
-export * as LLMNative from ".@lgcode/native-request"
+export * as LLMNative from "./native-request"

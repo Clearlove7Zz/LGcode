@@ -1,28 +1,28 @@
 import { describe, expect } from "bun:test"
-import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
-import { Project } from "@@lgcode/project@lgcode/project"
+import { EventV2Bridge } from "@/event-v2-bridge"
+import { Project } from "@/project/project"
 import { $ } from "bun"
 import path from "path"
-import { tmpdirScoped } from "..@lgcode/fixture@lgcode/fixture"
-import { GlobalBus } from "..@lgcode/..@lgcode/src@lgcode/bus@lgcode/global"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { ProjectTable } from "@lgcode/core@lgcode/project@lgcode/sql"
-import { SessionTable } from "@lgcode/core@lgcode/session@lgcode/sql"
-import { WorkspaceTable } from "@lgcode/core@lgcode/control-plane@lgcode/workspace.sql"
+import { tmpdirScoped } from "../fixture/fixture"
+import { GlobalBus } from "../../src/bus/global"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { ProjectTable } from "@opencode@lgcode/core/project/sql"
+import { SessionTable } from "@opencode@lgcode/core/session/sql"
+import { WorkspaceTable } from "@opencode@lgcode/core/control-plane/workspace.sql"
 import { eq } from "drizzle-orm"
-import { Hash } from "@lgcode/core@lgcode/util@lgcode/hash"
-import { SessionID } from "@@lgcode/session@lgcode/schema"
-import { WorkspaceV2 } from "@lgcode/core@lgcode/workspace"
+import { Hash } from "@opencode@lgcode/core/util/hash"
+import { SessionID } from "@/session/schema"
+import { WorkspaceV2 } from "@opencode@lgcode/core/workspace"
 import { Cause, Effect, Exit, Layer, Stream } from "effect"
-import { ChildProcess, ChildProcessSpawner } from "effect@lgcode/unstable@lgcode/process"
-import { NodePath } from "@effect@lgcode/platform-node"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { AppProcess } from "@lgcode/core@lgcode/process"
-import { ProjectV2 } from "@lgcode/core@lgcode/project"
-import { ProjectDirectories } from "@lgcode/core@lgcode/project@lgcode/directories"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
-import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
+import { ChildProcess, ChildProcessSpawner } from "effect/unstable/process"
+import { NodePath } from "@effect/platform-node"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { AppProcess } from "@opencode@lgcode/core/process"
+import { ProjectV2 } from "@opencode@lgcode/core/project"
+import { ProjectDirectories } from "@opencode@lgcode/core/project/directories"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { testEffect } from "../lib/effect"
+import { RuntimeFlags } from "@/effect/runtime-flags"
 
 const encoder = new TextEncoder()
 
@@ -33,11 +33,11 @@ function remoteProjectID(remote: string) {
   return ProjectV2.ID.make(Hash.fast(`git-remote:${remote}`))
 }
 
-@lgcode/**
+/**
  * Creates a mock ChildProcessSpawner layer that intercepts git subcommands
  * matching `failArg` and returns exit code 128, while delegating everything
  * else to the real CrossSpawnSpawner.
- *@lgcode/
+ */
 function mockGitFailure(failArg: string) {
   return Layer.effect(
     ChildProcessSpawner.ChildProcessSpawner,
@@ -52,11 +52,11 @@ function mockGitFailure(failArg: string) {
               exitCode: Effect.succeed(ChildProcessSpawner.ExitCode(128)),
               isRunning: Effect.succeed(false),
               kill: () => Effect.void,
-              stdin: { [Symbol.for("effect@lgcode/Sink@lgcode/TypeId")]: Symbol.for("effect@lgcode/Sink@lgcode/TypeId") } as any,
+              stdin: { [Symbol.for("effect/Sink/TypeId")]: Symbol.for("effect/Sink/TypeId") } as any,
               stdout: Stream.empty,
               stderr: Stream.make(encoder.encode("fatal: simulated failure\n")),
               all: Stream.empty,
-              getInputFd: () => ({ [Symbol.for("effect@lgcode/Sink@lgcode/TypeId")]: Symbol.for("effect@lgcode/Sink@lgcode/TypeId") }) as any,
+              getInputFd: () => ({ [Symbol.for("effect/Sink/TypeId")]: Symbol.for("effect/Sink/TypeId") }) as any,
               getOutputFd: () => Stream.empty,
               unref: Effect.succeed(Effect.void),
             })
@@ -169,11 +169,11 @@ describe("Project.fromDirectory", () => {
     Effect.gen(function* () {
       const project = yield* Project.Service
       const tmp = yield* tmpdirScoped({ git: true })
-      yield* Effect.promise(() => $`git remote add origin git@github.com:Test-Org@lgcode/Test-Repo.git`.cwd(tmp).quiet())
+      yield* Effect.promise(() => $`git remote add origin git@github.com:Test-Org/Test-Repo.git`.cwd(tmp).quiet())
 
       const result = yield* project.fromDirectory(tmp)
 
-      expect(result.project.id).toBe(remoteProjectID("github.com@lgcode/Test-Org@lgcode/Test-Repo"))
+      expect(result.project.id).toBe(remoteProjectID("github.com/Test-Org/Test-Repo"))
     }),
   )
 
@@ -182,13 +182,13 @@ describe("Project.fromDirectory", () => {
       const project = yield* Project.Service
       const ssh = yield* tmpdirScoped({ git: true })
       const https = yield* tmpdirScoped({ git: true })
-      yield* Effect.promise(() => $`git remote add origin git@github.com:owner@lgcode/repo.git`.cwd(ssh).quiet())
-      yield* Effect.promise(() => $`git remote add origin https:@lgcode/@lgcode/github.com@lgcode/owner@lgcode/repo.git`.cwd(https).quiet())
+      yield* Effect.promise(() => $`git remote add origin git@github.com:owner/repo.git`.cwd(ssh).quiet())
+      yield* Effect.promise(() => $`git remote add origin https://github.com/owner/repo.git`.cwd(https).quiet())
 
       const result = yield* project.fromDirectory(ssh)
       const next = yield* project.fromDirectory(https)
 
-      expect(result.project.id).toBe(remoteProjectID("github.com@lgcode/owner@lgcode/repo"))
+      expect(result.project.id).toBe(remoteProjectID("github.com/owner/repo"))
       expect(next.project.id).toBe(result.project.id)
     }),
   )
@@ -200,7 +200,7 @@ describe("Project.fromDirectory", () => {
       const projects = yield* Project.Service
       const rootResult = yield* projects.fromDirectory(tmp)
       const rootProject = rootResult.project
-      const remoteID = remoteProjectID("github.com@lgcode/acme@lgcode/app")
+      const remoteID = remoteProjectID("github.com/acme/app")
       const sessionID = crypto.randomUUID() as SessionID
       const workspaceID = WorkspaceV2.ID.ascending()
 
@@ -223,7 +223,7 @@ describe("Project.fromDirectory", () => {
         .values({ id: workspaceID, type: "local", name: "test", project_id: rootProject.id })
         .run()
         .pipe(Effect.orDie)
-      yield* Effect.promise(() => $`git remote add origin git@github.com:acme@lgcode/app.git`.cwd(tmp).quiet())
+      yield* Effect.promise(() => $`git remote add origin git@github.com:acme/app.git`.cwd(tmp).quiet())
 
       const result = yield* projects.fromDirectory(tmp)
 
@@ -250,7 +250,7 @@ describe("Project.fromDirectory git failure paths", () => {
       const tmp = yield* tmpdirScoped()
       yield* Effect.promise(() => $`git init`.cwd(tmp).quiet())
 
-      @lgcode/@lgcode/ rev-list fails because HEAD doesn't exist yet: this is the natural scenario.
+      // rev-list fails because HEAD doesn't exist yet: this is the natural scenario.
       const result = yield* project.fromDirectory(tmp)
       expect(result.project.vcs).toBe("git")
       expect(result.project.id).toBe(ProjectV2.ID.global)
@@ -353,7 +353,7 @@ describe("Project.fromDirectory with worktrees", () => {
       const project = yield* Project.Service
       const tmp = yield* tmpdirScoped({ git: true })
 
-      @lgcode/@lgcode/ Create a bare remote, push, then clone into a second directory
+      // Create a bare remote, push, then clone into a second directory
       const bare = tmp + "-bare"
       const clone = tmp + "-clone"
       yield* Effect.addFinalizer(() =>
@@ -465,7 +465,7 @@ describe("Project.discover", () => {
 
       yield* project.update({
         projectID: result.project.id,
-        icon: { override: "data:image@lgcode/png;base64,override" },
+        icon: { override: "data:image/png;base64,override" },
       })
 
       const updatedProject = yield* project.get(result.project.id)
@@ -478,7 +478,7 @@ describe("Project.discover", () => {
 
       const updated = yield* project.get(result.project.id)
       expect(updated).toBeDefined()
-      expect(updated!.icon?.override).toBe("data:image@lgcode/png;base64,override")
+      expect(updated!.icon?.override).toBe("data:image/png;base64,override")
       expect(updated!.icon?.url).toBeUndefined()
     }),
   )
@@ -511,13 +511,13 @@ describe("Project.update", () => {
 
       const updated = yield* project.update({
         projectID: result.project.id,
-        icon: { url: "https:@lgcode/@lgcode/example.com@lgcode/icon.png" },
+        icon: { url: "https://example.com/icon.png" },
       })
 
-      expect(updated.icon?.url).toBe("https:@lgcode/@lgcode/example.com@lgcode/icon.png")
+      expect(updated.icon?.url).toBe("https://example.com/icon.png")
 
       const fromDb = yield* project.get(result.project.id)
-      expect(fromDb?.icon?.url).toBe("https:@lgcode/@lgcode/example.com@lgcode/icon.png")
+      expect(fromDb?.icon?.url).toBe("https://example.com/icon.png")
     }),
   )
 
@@ -547,13 +547,13 @@ describe("Project.update", () => {
 
       const updated = yield* project.update({
         projectID: result.project.id,
-        icon: { override: "data:image@lgcode/png;base64,abc123" },
+        icon: { override: "data:image/png;base64,abc123" },
       })
 
-      expect(updated.icon?.override).toBe("data:image@lgcode/png;base64,abc123")
+      expect(updated.icon?.override).toBe("data:image/png;base64,abc123")
 
       const fromDb = yield* project.get(result.project.id)
-      expect(fromDb?.icon?.override).toBe("data:image@lgcode/png;base64,abc123")
+      expect(fromDb?.icon?.override).toBe("data:image/png;base64,abc123")
     }),
   )
 
@@ -619,13 +619,13 @@ describe("Project.update", () => {
       const updated = yield* project.update({
         projectID: result.project.id,
         name: "Multi Update",
-        icon: { url: "https:@lgcode/@lgcode/example.com@lgcode/favicon.ico", override: "data:image@lgcode/png;base64,abc123", color: "#00ff00" },
+        icon: { url: "https://example.com/favicon.ico", override: "data:image/png;base64,abc123", color: "#00ff00" },
         commands: { start: "make start" },
       })
 
       expect(updated.name).toBe("Multi Update")
-      expect(updated.icon?.url).toBe("https:@lgcode/@lgcode/example.com@lgcode/favicon.ico")
-      expect(updated.icon?.override).toBe("data:image@lgcode/png;base64,abc123")
+      expect(updated.icon?.url).toBe("https://example.com/favicon.ico")
+      expect(updated.icon?.override).toBe("data:image/png;base64,abc123")
       expect(updated.icon?.color).toBe("#00ff00")
       expect(updated.commands?.start).toBe("make start")
     }),

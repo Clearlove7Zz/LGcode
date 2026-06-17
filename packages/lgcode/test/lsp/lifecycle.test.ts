@@ -1,11 +1,11 @@
 import { afterEach, beforeEach, describe, expect, spyOn, test } from "bun:test"
 import path from "path"
 import { Effect, Layer } from "effect"
-import { LSP } from "@@lgcode/lsp@lgcode/lsp"
-import * as LSPServer from "@@lgcode/lsp@lgcode/server"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import { TestInstance } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { LSP } from "@/lsp/lsp"
+import * as LSPServer from "@/lsp/server"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { TestInstance } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
 
 const it = testEffect(Layer.mergeAll(LSP.defaultLayer, CrossSpawnSpawner.defaultLayer))
 

@@ -1,4 +1,4 @@
-import type { JSONSchema7 } from "@ai-sdk@lgcode/provider"
+import type { JSONSchema7 } from "@ai-sdk/provider"
 
 export type OpenAIResponsesInput = Array<OpenAIResponsesInputItem>
 
@@ -100,38 +100,38 @@ export type OpenAIResponsesMcpApprovalResponse = {
   approve: boolean
 }
 
-@lgcode/**
+/**
  * A filter used to compare a specified attribute key to a given value using a defined comparison operation.
- *@lgcode/
+ */
 export type OpenAIResponsesFileSearchToolComparisonFilter = {
-  @lgcode/**
+  /**
    * The key to compare against the value.
-   *@lgcode/
+   */
   key: string
 
-  @lgcode/**
+  /**
    * Specifies the comparison operator: eq, ne, gt, gte, lt, lte.
-   *@lgcode/
+   */
   type: "eq" | "ne" | "gt" | "gte" | "lt" | "lte"
 
-  @lgcode/**
+  /**
    * The value to compare against the attribute key; supports string, number, or boolean types.
-   *@lgcode/
+   */
   value: string | number | boolean
 }
 
-@lgcode/**
+/**
  * Combine multiple filters using and or or.
- *@lgcode/
+ */
 export type OpenAIResponsesFileSearchToolCompoundFilter = {
-  @lgcode/**
+  /**
    * Type of operation: and or or.
-   *@lgcode/
+   */
   type: "and" | "or"
 
-  @lgcode/**
+  /**
    * Array of filters to combine. Items can be ComparisonFilter or CompoundFilter.
-   *@lgcode/
+   */
   filters: Array<OpenAIResponsesFileSearchToolComparisonFilter | OpenAIResponsesFileSearchToolCompoundFilter>
 }
 

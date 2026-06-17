@@ -1,5 +1,5 @@
-import { Database, eq } from "@lgcode/console-core@lgcode/drizzle@lgcode/index.js"
-import { ModelStickyProviderTable } from "@lgcode/console-core@lgcode/schema@lgcode/ip.sql.js"
+import { Database, eq } from "@opencode@lgcode/console-core/drizzle/index.js"
+import { ModelStickyProviderTable } from "@opencode@lgcode/console-core/schema/ip.sql.js"
 
 export function createStickyTracker(
   modelId: string,
@@ -8,7 +8,7 @@ export function createStickyTracker(
 ) {
   if (!stickyProvider) return
   if (!stickyId) return
-  const id = `${modelId}@lgcode/${stickyId}`
+  const id = `${modelId}/${stickyId}`
   let _providerId: string | undefined
 
   return {

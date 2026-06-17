@@ -1,7 +1,7 @@
-@lgcode/@lgcode/ @ts-nocheck
+// @ts-nocheck
 import { createSignal } from "solid-js"
-import * as mod from ".@lgcode/popover"
-import { create } from "..@lgcode/storybook@lgcode/scaffold"
+import * as mod from "./popover"
+import { create } from "../storybook/scaffold"
 
 const docs = `### Overview
 Composable popover with optional title, description, and close button.
@@ -21,13 +21,13 @@ Use for small contextual details; avoid long forms.
 ### Accessibility
 - TODO: confirm focus management from Kobalte.
 
-### Theming@lgcode/tokens
+### Theming/tokens
 - Uses \`data-component="popover-content"\` and related slots.
 
 `
 
 const story = create({
-  title: "UI@lgcode/Popover",
+  title: "UI/Popover",
   mod,
   args: {
     trigger: "Open popover",
@@ -39,7 +39,7 @@ const story = create({
 })
 
 export default {
-  title: "UI@lgcode/Popover",
+  title: "UI/Popover",
   id: "components-popover",
   component: story.meta.component,
   tags: ["autodocs"],
@@ -81,7 +81,7 @@ export const Controlled = {
         description="Open state is controlled"
       >
         Controlled content
-      <@lgcode/mod.Popover>
+      </mod.Popover>
     )
   },
 }

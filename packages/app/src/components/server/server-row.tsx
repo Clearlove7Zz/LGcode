@@ -1,5 +1,5 @@
-import { Tooltip } from "@lgcode/ui@lgcode/tooltip"
-import { createResizeObserver } from "@solid-primitives@lgcode/resize-observer"
+import { Tooltip } from "@opencode@lgcode/ui/tooltip"
+import { createResizeObserver } from "@solid-primitives/resize-observer"
 import {
   children,
   createEffect,
@@ -10,9 +10,9 @@ import {
   type ParentProps,
   Show,
 } from "solid-js"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
-import { type ServerConnection, serverName } from "@@lgcode/context@lgcode/server"
-import type { ServerHealth } from "@@lgcode/utils@lgcode/server-health"
+import { useLanguage } from "@/context/language"
+import { type ServerConnection, serverName } from "@/context/server"
+import type { ServerHealth } from "@/utils/server-health"
 
 interface ServerRowProps extends ParentProps {
   conn: ServerConnection.Any
@@ -53,11 +53,11 @@ export function ServerRow(props: ServerRowProps) {
 
   const tooltipValue = () => (
     <span class="flex items-center gap-2">
-      <span>{serverName(props.conn, true)}<@lgcode/span>
+      <span>{serverName(props.conn, true)}</span>
       <Show when={props.status?.version}>
-        <span class="text-text-invert-weak">v{props.status?.version}<@lgcode/span>
-      <@lgcode/Show>
-    <@lgcode/span>
+        <span class="text-text-invert-weak">v{props.status?.version}</span>
+      </Show>
+    </span>
   )
 
   const badge = children(() => props.badge)
@@ -75,7 +75,7 @@ export function ServerRow(props: ServerRowProps) {
           <div class="flex flex-row items-center gap-2 min-w-0 w-full">
             <span ref={nameRef} class={`${props.nameClass ?? "truncate"} min-w-0`}>
               {name()}
-            <@lgcode/span>
+            </span>
             <Show
               when={badge()}
               fallback={
@@ -85,31 +85,31 @@ export function ServerRow(props: ServerRowProps) {
                     class={`${props.versionClass ?? "text-text-weak text-14-regular truncate"} min-w-0`}
                   >
                     v{props.status?.version}
-                  <@lgcode/span>
-                <@lgcode/Show>
+                  </span>
+                </Show>
               }
             >
               {(badge) => badge()}
-            <@lgcode/Show>
-          <@lgcode/div>
+            </Show>
+          </div>
           <Show when={props.showCredentials && props.conn.type === "http" && props.conn}>
             {(conn) => (
               <div class="flex flex-row gap-3">
                 <span>
                   {conn().http.username ? (
-                    <span class="text-text-weak">{conn().http.username}<@lgcode/span>
+                    <span class="text-text-weak">{conn().http.username}</span>
                   ) : (
-                    <span class="text-text-weaker">{language.t("server.row.noUsername")}<@lgcode/span>
+                    <span class="text-text-weaker">{language.t("server.row.noUsername")}</span>
                   )}
-                <@lgcode/span>
-                {conn().http.password && <span class="text-text-weak">••••••••<@lgcode/span>}
-              <@lgcode/div>
+                </span>
+                {conn().http.password && <span class="text-text-weak">••••••••</span>}
+              </div>
             )}
-          <@lgcode/Show>
-        <@lgcode/div>
+          </Show>
+        </div>
         {props.children}
-      <@lgcode/div>
-    <@lgcode/Tooltip>
+      </div>
+    </Tooltip>
   )
 }
 
@@ -122,6 +122,6 @@ export function ServerHealthIndicator(props: { health?: ServerHealth }) {
         "bg-icon-critical-base": props.health?.healthy === false,
         "bg-border-weak-base": props.health === undefined,
       }}
-    @lgcode/>
+    />
   )
 }

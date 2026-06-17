@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test"
-import type { AudioPlayOptions, AudioSound } from "@opentui@lgcode/core"
-import { createTuiAttention } from "@lgcode/tui@lgcode/attention"
-import type { TuiConfig } from "@lgcode/tui@lgcode/config"
+import type { AudioPlayOptions, AudioSound } from "@opentui/core"
+import { createTuiAttention } from "@opencode@lgcode/tui/attention"
+import type { TuiConfig } from "@opencode@lgcode/tui/config"
 
 type FocusEvent = "focus" | "blur"
 
@@ -362,7 +362,7 @@ describe("createTuiAttention", () => {
       id: "acme.soft",
       name: "Soft Alerts",
       sounds: {
-        question: "@lgcode/tmp@lgcode/question.mp3",
+        question: "/tmp/question.mp3",
       },
     })
 
@@ -380,7 +380,7 @@ describe("createTuiAttention", () => {
       notification: true,
       sound: true,
     })
-    expect(audio.loadPaths).toEqual(["@lgcode/tmp@lgcode/question.mp3"])
+    expect(audio.loadPaths).toEqual(["/tmp/question.mp3"])
 
     dispose()
     expect(attention.soundboard.current()).toBe("opencode.default")
@@ -389,10 +389,10 @@ describe("createTuiAttention", () => {
   test("uses config sound overrides before active pack sounds and falls back on load failure", async () => {
     const renderer = new FakeRenderer()
     const audio = new FakeAudioEngine()
-    audio.rejectPaths.add("@lgcode/tmp@lgcode/bad-question.mp3")
+    audio.rejectPaths.add("/tmp/bad-question.mp3")
     const attention = createTuiAttention({
       renderer,
-      config: config({ sounds: { question: "@lgcode/tmp@lgcode/bad-question.mp3" } }),
+      config: config({ sounds: { question: "/tmp/bad-question.mp3" } }),
       audio,
     })
     renderer.emit("blur")
@@ -400,7 +400,7 @@ describe("createTuiAttention", () => {
     attention.soundboard.registerPack({
       id: "acme.soft",
       sounds: {
-        question: "@lgcode/tmp@lgcode/good-question.mp3",
+        question: "/tmp/good-question.mp3",
       },
     })
     attention.soundboard.activate("acme.soft")
@@ -410,7 +410,7 @@ describe("createTuiAttention", () => {
       notification: true,
       sound: true,
     })
-    expect(audio.loadPaths).toEqual(["@lgcode/tmp@lgcode/bad-question.mp3", "@lgcode/tmp@lgcode/good-question.mp3"])
+    expect(audio.loadPaths).toEqual(["/tmp/bad-question.mp3", "/tmp/good-question.mp3"])
   })
 
   test("persists activated sound pack in KV", () => {
@@ -418,7 +418,7 @@ describe("createTuiAttention", () => {
     const renderer = new FakeRenderer()
     const attention = createTuiAttention({ renderer, config: config(), kv })
 
-    attention.soundboard.registerPack({ id: "acme.soft", sounds: { done: "@lgcode/tmp@lgcode/done.mp3" } })
+    attention.soundboard.registerPack({ id: "acme.soft", sounds: { done: "/tmp/done.mp3" } })
 
     expect(attention.soundboard.activate("missing", { persist: true })).toBe(false)
     expect(kv.store.attention_sound_pack).toBeUndefined()
@@ -426,7 +426,7 @@ describe("createTuiAttention", () => {
     expect(kv.store.attention_sound_pack).toBe("acme.soft")
 
     const next = createTuiAttention({ renderer: new FakeRenderer(), config: config(), kv })
-    next.soundboard.registerPack({ id: "acme.soft", sounds: { done: "@lgcode/tmp@lgcode/done.mp3" } })
+    next.soundboard.registerPack({ id: "acme.soft", sounds: { done: "/tmp/done.mp3" } })
     expect(next.soundboard.current()).toBe("acme.soft")
   })
 

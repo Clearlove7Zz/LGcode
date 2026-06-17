@@ -1,25 +1,25 @@
-import { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
+import { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
 import { describe, expect } from "bun:test"
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import os from "os"
 import path from "path"
 import { Effect, Layer } from "effect"
-import { GrepTool } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/grep"
-import { provideInstance, testInstanceStoreLayer, TestInstance, tmpdirScoped } from "..@lgcode/fixture@lgcode/fixture"
-import { SessionID, MessageID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import { Global } from "@lgcode/core@lgcode/global"
-import { Truncate } from "@@lgcode/tool@lgcode/truncate"
-import { Agent } from "..@lgcode/..@lgcode/src@lgcode/agent@lgcode/agent"
-import { Ripgrep } from "@lgcode/core@lgcode/ripgrep"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
-import { Permission } from "..@lgcode/..@lgcode/src@lgcode/permission"
-import type * as Tool from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/tool"
-import { Config } from "@@lgcode/config@lgcode/config"
-import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
-import { Git } from "@@lgcode/git"
-import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
+import { GrepTool } from "../../src/tool/grep"
+import { provideInstance, testInstanceStoreLayer, TestInstance, tmpdirScoped } from "../fixture/fixture"
+import { SessionID, MessageID } from "../../src/session/schema"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { Global } from "@opencode@lgcode/core/global"
+import { Truncate } from "@/tool/truncate"
+import { Agent } from "../../src/agent/agent"
+import { Ripgrep } from "@opencode@lgcode/core/ripgrep"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { testEffect } from "../lib/effect"
+import { Permission } from "../../src/permission"
+import type * as Tool from "../../src/tool/tool"
+import { Config } from "@/config/config"
+import { RuntimeFlags } from "@/effect/runtime-flags"
+import { Git } from "@/git"
+import { Filesystem } from "@/util/filesystem"
 
 const toolLayer = (flags: Partial<RuntimeFlags.Info> = {}) =>
   Layer.mergeAll(
@@ -45,7 +45,7 @@ const ctx = {
   ask: () => Effect.void,
 }
 
-const root = path.join(__dirname, "..@lgcode/..")
+const root = path.join(__dirname, "../..")
 const full = (p: string) => (process.platform === "win32" ? Filesystem.normalizePath(p) : p)
 
 const githubBase = <A, E, R>(url: string, self: Effect.Effect<A, E, R>) =>
@@ -89,7 +89,7 @@ describe("tool.grep", () => {
         grep.execute(
           {
             pattern: "export",
-            path: path.join(root, "src@lgcode/tool"),
+            path: path.join(root, "src/tool"),
             include: "*.ts",
           },
           ctx,
@@ -150,7 +150,7 @@ describe("tool.grep", () => {
       const result = yield* grep.execute({ pattern: "needle", path: test.directory, include: "*.txt" }, ctx)
 
       expect(result.output).toContain("(Results truncated. Consider using a more specific path or pattern.)")
-      expect(result.output).not.toMatch(@lgcode/showing \d+ of \d+ matches@lgcode/)
+      expect(result.output).not.toMatch(/showing \d+ of \d+ matches/)
     }),
   )
 

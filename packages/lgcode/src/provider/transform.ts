@@ -1,67 +1,67 @@
 import type { ModelMessage, ToolResultPart } from "ai"
 import { mergeDeep, unique } from "remeda"
-import type { JSONSchema7 } from "@ai-sdk@lgcode/provider"
-import type * as Provider from ".@lgcode/provider"
-import type * as ModelsDev from "@lgcode/core@lgcode/models-dev"
-import { iife } from "@@lgcode/util@lgcode/iife"
+import type { JSONSchema7 } from "@ai-sdk/provider"
+import type * as Provider from "./provider"
+import type * as ModelsDev from "@opencode@lgcode/core/models-dev"
+import { iife } from "@/util/iife"
 
 type Modality = NonNullable<ModelsDev.Model["modalities"]>["input"][number]
 
 function mimeToModality(mime: string): Modality | undefined {
-  if (mime.startsWith("image@lgcode/")) return "image"
-  if (mime.startsWith("audio@lgcode/")) return "audio"
-  if (mime.startsWith("video@lgcode/")) return "video"
-  if (mime === "application@lgcode/pdf") return "pdf"
+  if (mime.startsWith("image/")) return "image"
+  if (mime.startsWith("audio/")) return "audio"
+  if (mime.startsWith("video/")) return "video"
+  if (mime === "application/pdf") return "pdf"
   return undefined
 }
 
 export const OUTPUT_TOKEN_MAX = 32_000
 
-@lgcode/@lgcode/ OpenAI Responses `include` value that returns the encrypted reasoning state
-@lgcode/@lgcode/ needed for stateless multi-turn reasoning (store: false). Hoisted so every
-@lgcode/@lgcode/ branch that requests it stays in lockstep.
+// OpenAI Responses `include` value that returns the encrypted reasoning state
+// needed for stateless multi-turn reasoning (store: false). Hoisted so every
+// branch that requests it stays in lockstep.
 const INCLUDE_ENCRYPTED_REASONING = ["reasoning.encrypted_content"] as const
 
 export function sanitizeSurrogates(content: string) {
-  return content.replace(@lgcode/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]@lgcode/g, "\uFFFD")
+  return content.replace(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g, "\uFFFD")
 }
 
-@lgcode/@lgcode/ Maps npm package to the key the AI SDK expects for providerOptions
+// Maps npm package to the key the AI SDK expects for providerOptions
 function sdkKey(npm: string): string | undefined {
   switch (npm) {
-    case "@ai-sdk@lgcode/github-copilot":
+    case "@ai-sdk/github-copilot":
       return "copilot"
-    case "@ai-sdk@lgcode/azure":
+    case "@ai-sdk/azure":
       return "azure"
-    case "@ai-sdk@lgcode/openai":
+    case "@ai-sdk/openai":
       return "openai"
-    case "@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle":
+    case "@ai-sdk/amazon-bedrock/mantle":
       return "openai"
-    case "@ai-sdk@lgcode/amazon-bedrock":
+    case "@ai-sdk/amazon-bedrock":
       return "bedrock"
-    case "@ai-sdk@lgcode/anthropic":
-    case "@ai-sdk@lgcode/google-vertex@lgcode/anthropic":
+    case "@ai-sdk/anthropic":
+    case "@ai-sdk/google-vertex/anthropic":
       return "anthropic"
-    case "@ai-sdk@lgcode/google-vertex":
+    case "@ai-sdk/google-vertex":
       return "vertex"
-    case "@ai-sdk@lgcode/google":
+    case "@ai-sdk/google":
       return "google"
-    case "@ai-sdk@lgcode/gateway":
+    case "@ai-sdk/gateway":
       return "gateway"
-    case "@openrouter@lgcode/ai-sdk-provider":
+    case "@openrouter/ai-sdk-provider":
       return "openrouter"
     case "ai-gateway-provider":
-      @lgcode/@lgcode/ ai-gateway-provider@lgcode/unified wraps createOpenAICompatible({ name: "Unified" }),
-      @lgcode/@lgcode/ and @ai-sdk@lgcode/openai-compatible parses compatibleOptions from one of
-      @lgcode/@lgcode/ "openai-compatible" @lgcode/ "openaiCompatible" @lgcode/ "Unified" @lgcode/ "unified". The
-      @lgcode/@lgcode/ "openai-compatible" key emits a deprecation warning at runtime, so we
-      @lgcode/@lgcode/ pick the camelCase form the SDK now treats as canonical.
+      // ai-gateway-provider/unified wraps createOpenAICompatible({ name: "Unified" }),
+      // and @ai-sdk/openai-compatible parses compatibleOptions from one of
+      // "openai-compatible" / "openaiCompatible" / "Unified" / "unified". The
+      // "openai-compatible" key emits a deprecation warning at runtime, so we
+      // pick the camelCase form the SDK now treats as canonical.
       return "openaiCompatible"
   }
   return undefined
 }
 
-@lgcode/@lgcode/ TODO: fix this stupid inefficient dogshit function
+// TODO: fix this stupid inefficient dogshit function
 function normalizeMessages(
   msgs: ModelMessage[],
   model: Provider.Model,
@@ -129,9 +129,9 @@ function normalizeMessages(
     }
   })
 
-  @lgcode/@lgcode/ Anthropic rejects messages with empty content - filter out empty string messages
-  @lgcode/@lgcode/ and remove empty text@lgcode/reasoning parts from array content
-  if (model.api.npm === "@ai-sdk@lgcode/anthropic") {
+  // Anthropic rejects messages with empty content - filter out empty string messages
+  // and remove empty text/reasoning parts from array content
+  if (model.api.npm === "@ai-sdk/anthropic") {
     msgs = msgs
       .map((msg) => {
         if (typeof msg.content === "string") {
@@ -158,8 +158,8 @@ function normalizeMessages(
       .filter((msg): msg is ModelMessage => msg !== undefined && msg.content !== "")
   }
 
-  @lgcode/@lgcode/ Bedrock specific transforms
-  if (model.api.npm === "@ai-sdk@lgcode/amazon-bedrock") {
+  // Bedrock specific transforms
+  if (model.api.npm === "@ai-sdk/amazon-bedrock") {
     msgs = msgs
       .map((msg) => {
         if (typeof msg.content === "string") {
@@ -187,7 +187,7 @@ function normalizeMessages(
   }
 
   if (model.api.id.includes("claude")) {
-    const scrub = (id: string) => id.replace(@lgcode/[^a-zA-Z0-9_-]@lgcode/g, "_")
+    const scrub = (id: string) => id.replace(/[^a-zA-Z0-9_-]/g, "_")
     msgs = msgs.map((msg) => {
       if (msg.role === "assistant" && Array.isArray(msg.content)) {
         return {
@@ -222,9 +222,9 @@ function normalizeMessages(
   ) {
     const scrub = (id: string) => {
       return id
-        .replace(@lgcode/[^a-zA-Z0-9]@lgcode/g, "") @lgcode/@lgcode/ Remove non-alphanumeric characters
-        .substring(0, 9) @lgcode/@lgcode/ Take first 9 characters
-        .padEnd(9, "0") @lgcode/@lgcode/ Pad with zeros if less than 9 characters
+        .replace(/[^a-zA-Z0-9]/g, "") // Remove non-alphanumeric characters
+        .substring(0, 9) // Take first 9 characters
+        .padEnd(9, "0") // Pad with zeros if less than 9 characters
     }
     const result: ModelMessage[] = []
     for (let i = 0; i < msgs.length; i++) {
@@ -249,7 +249,7 @@ function normalizeMessages(
       }
       result.push(msg)
 
-      @lgcode/@lgcode/ Fix message sequence: tool messages cannot be followed by user messages
+      // Fix message sequence: tool messages cannot be followed by user messages
       if (msg.role === "tool" && nextMsg?.role === "user") {
         result.push({
           role: "assistant",
@@ -265,7 +265,7 @@ function normalizeMessages(
     return result
   }
 
-  @lgcode/@lgcode/ Deepseek requires all assistant messages to have reasoning on them
+  // Deepseek requires all assistant messages to have reasoning on them
   if (model.api.id.toLowerCase().includes("deepseek")) {
     msgs = msgs.map((msg) => {
       if (msg.role !== "assistant") return msg
@@ -286,7 +286,7 @@ function normalizeMessages(
   if (
     typeof model.capabilities.interleaved === "object" &&
     model.capabilities.interleaved.field &&
-    model.api.npm !== "@openrouter@lgcode/ai-sdk-provider"
+    model.api.npm !== "@openrouter/ai-sdk-provider"
   ) {
     const field = model.capabilities.interleaved.field
     return msgs.map((msg) => {
@@ -294,12 +294,12 @@ function normalizeMessages(
         const reasoningParts = msg.content.filter((part: any) => part.type === "reasoning")
         const reasoningText = reasoningParts.map((part: any) => part.text).join("")
 
-        @lgcode/@lgcode/ Filter out reasoning parts from content
+        // Filter out reasoning parts from content
         const filteredContent = msg.content.filter((part: any) => part.type !== "reasoning")
 
-        @lgcode/@lgcode/ Include reasoning_content | reasoning_details directly on the message for all assistant messages.
-        @lgcode/@lgcode/ Always set the field even when empty — some providers (e.g. DeepSeek) may return empty
-        @lgcode/@lgcode/ reasoning_content which still needs to be sent back in subsequent requests.
+        // Include reasoning_content | reasoning_details directly on the message for all assistant messages.
+        // Always set the field even when empty — some providers (e.g. DeepSeek) may return empty
+        // reasoning_content which still needs to be sent back in subsequent requests.
         return {
           ...msg,
           content: filteredContent,
@@ -349,7 +349,7 @@ function applyCaching(msgs: ModelMessage[], model: Provider.Model): ModelMessage
     const useMessageLevelOptions =
       model.providerID === "anthropic" ||
       model.providerID.includes("bedrock") ||
-      model.api.npm === "@ai-sdk@lgcode/amazon-bedrock"
+      model.api.npm === "@ai-sdk/amazon-bedrock"
     const shouldUseContentOptions = !useMessageLevelOptions && Array.isArray(msg.content) && msg.content.length > 0
 
     if (shouldUseContentOptions) {
@@ -378,11 +378,11 @@ function unsupportedParts(msgs: ModelMessage[], model: Provider.Model): ModelMes
     const filtered = msg.content.map((part) => {
       if (part.type !== "file" && part.type !== "image") return part
 
-      @lgcode/@lgcode/ Check for empty base64 image data
+      // Check for empty base64 image data
       if (part.type === "image") {
         const imageStr = String(part.image)
         if (imageStr.startsWith("data:")) {
-          const match = imageStr.match(@lgcode/^data:([^;]+);base64,(.*)$@lgcode/)
+          const match = imageStr.match(/^data:([^;]+);base64,(.*)$/)
           if (match && (!match[2] || match[2].length === 0)) {
             return {
               type: "text" as const,
@@ -437,14 +437,14 @@ export function message(msgs: ModelMessage[], model: Provider.Model, options: Re
       model.api.id.includes("claude") ||
       model.id.includes("anthropic") ||
       model.id.includes("claude") ||
-      model.api.npm === "@ai-sdk@lgcode/anthropic" ||
-      model.api.npm === "@ai-sdk@lgcode/alibaba") &&
-    model.api.npm !== "@ai-sdk@lgcode/gateway"
+      model.api.npm === "@ai-sdk/anthropic" ||
+      model.api.npm === "@ai-sdk/alibaba") &&
+    model.api.npm !== "@ai-sdk/gateway"
   ) {
     msgs = applyCaching(msgs, model)
   }
 
-  @lgcode/@lgcode/ Remap providerOptions keys from stored providerID to expected SDK key
+  // Remap providerOptions keys from stored providerID to expected SDK key
   const key = sdkKey(model.api.npm)
   if (key && key !== model.providerID) {
     const remap = (opts: Record<string, any> | undefined) => {
@@ -459,11 +459,11 @@ export function message(msgs: ModelMessage[], model: Provider.Model, options: Re
     msgs = mapProviderOptions(msgs, remap)
   }
 
-  @lgcode/@lgcode/ Strip Responses item IDs before serialization, following Codex and keeping signed request bodies immutable.
+  // Strip Responses item IDs before serialization, following Codex and keeping signed request bodies immutable.
   if (
     options.store !== true &&
     key &&
-    ["@ai-sdk@lgcode/openai", "@ai-sdk@lgcode/azure", "@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle"].includes(model.api.npm)
+    ["@ai-sdk/openai", "@ai-sdk/azure", "@ai-sdk/amazon-bedrock/mantle"].includes(model.api.npm)
   ) {
     msgs = mapProviderOptions(msgs, (options) => {
       if (!options?.[key] || !("itemId" in options[key])) return options
@@ -486,7 +486,7 @@ export function temperature(model: Provider.Model) {
   if (id.includes("glm-4.7")) return 1.0
   if (id.includes("minimax-m2")) return 1.0
   if (id.includes("kimi-k2")) {
-    @lgcode/@lgcode/ kimi-k2-thinking & kimi-k2.5 && kimi-k2p5 && kimi-k2-5
+    // kimi-k2-thinking & kimi-k2.5 && kimi-k2p5 && kimi-k2-5
     if (["thinking", "k2.", "k2p", "k2-5"].some((s) => id.includes(s))) {
       return 1.0
     }
@@ -524,21 +524,21 @@ const OPENAI_GPT5_CHAT_EFFORTS = ["medium"]
 const OPENAI_GPT5_CODEX_XHIGH_EFFORTS = [...WIDELY_SUPPORTED_EFFORTS, "xhigh"]
 const OPENAI_GPT5_CODEX_3_PLUS_EFFORTS = ["none", ...OPENAI_GPT5_CODEX_XHIGH_EFFORTS]
 
-@lgcode/@lgcode/ OpenAI rolled out the `none` reasoning_effort tier on this date (Responses API).
-@lgcode/@lgcode/ Models released before it 400 on `reasoning_effort: "none"`, so we only expose
-@lgcode/@lgcode/ it as a variant for models new enough to accept it.
+// OpenAI rolled out the `none` reasoning_effort tier on this date (Responses API).
+// Models released before it 400 on `reasoning_effort: "none"`, so we only expose
+// it as a variant for models new enough to accept it.
 const OPENAI_NONE_EFFORT_RELEASE_DATE = "2025-11-13"
 
-@lgcode/@lgcode/ OpenAI rolled out the `xhigh` reasoning_effort tier on this date. Same reasoning.
+// OpenAI rolled out the `xhigh` reasoning_effort tier on this date. Same reasoning.
 const OPENAI_XHIGH_EFFORT_RELEASE_DATE = "2025-12-04"
 
-@lgcode/@lgcode/ Matches members of the gpt-5 family across the id formats we encounter:
-@lgcode/@lgcode/   "gpt-5", "gpt-5-nano", "gpt-5.4", "openai@lgcode/gpt-5.4-codex".
-@lgcode/@lgcode/ Anchored to start-of-string or "@lgcode/" so it doesn't false-match "gpt-50" or "gpt-5o".
-const GPT5_FAMILY_RE = @lgcode/(?:^|\@lgcode/)gpt-5(?:[.-]|$)@lgcode/
-const GPT5_VERSION_RE = @lgcode/(?:^|\@lgcode/)gpt-5[.-](\d+)(?:[.-]|$)@lgcode/
-const GPT5_PRO_RE = @lgcode/(?:^|\@lgcode/)gpt-5[.-]?pro(?:[.-]|$)@lgcode/
-const GPT5_VERSIONED_PRO_RE = @lgcode/(?:^|\@lgcode/)gpt-5[.-]\d+[.-]pro(?:[.-]|$)@lgcode/
+// Matches members of the gpt-5 family across the id formats we encounter:
+//   "gpt-5", "gpt-5-nano", "gpt-5.4", "openai/gpt-5.4-codex".
+// Anchored to start-of-string or "/" so it doesn't false-match "gpt-50" or "gpt-5o".
+const GPT5_FAMILY_RE = /(?:^|\/)gpt-5(?:[.-]|$)/
+const GPT5_VERSION_RE = /(?:^|\/)gpt-5[.-](\d+)(?:[.-]|$)/
+const GPT5_PRO_RE = /(?:^|\/)gpt-5[.-]?pro(?:[.-]|$)/
+const GPT5_VERSIONED_PRO_RE = /(?:^|\/)gpt-5[.-]\d+[.-]pro(?:[.-]|$)/
 
 function gpt5Version(apiId: string) {
   return Number(GPT5_VERSION_RE.exec(apiId)?.[1]) || undefined
@@ -565,9 +565,9 @@ function gpt5ChatReasoningEfforts(apiId: string) {
   return gpt5Version(apiId) === undefined ? [] : OPENAI_GPT5_CHAT_EFFORTS
 }
 
-@lgcode/@lgcode/ Computes the reasoning_effort tiers an OpenAI (or OpenAI-compatible upstream
-@lgcode/@lgcode/ routed through it, e.g. cf-ai-gateway) model exposes. Effort order: weakest
-@lgcode/@lgcode/ to strongest.
+// Computes the reasoning_effort tiers an OpenAI (or OpenAI-compatible upstream
+// routed through it, e.g. cf-ai-gateway) model exposes. Effort order: weakest
+// to strongest.
 function openaiReasoningEfforts(apiId: string, releaseDate: string) {
   const id = apiId.toLowerCase()
   if (id.includes("deep-research")) return ["medium"]
@@ -577,8 +577,8 @@ function openaiReasoningEfforts(apiId: string, releaseDate: string) {
   const codexEfforts = gpt5CodexReasoningEfforts(id)
   if (codexEfforts) return codexEfforts
   const versionedEfforts = versionedGpt5ReasoningEfforts(id)
-  @lgcode/@lgcode/ GPT-5.1 replaced GPT-5's `minimal` effort with `none`; GPT-5.2+
-  @lgcode/@lgcode/ additionally accepts `xhigh`. Model pages list the supported subset.
+  // GPT-5.1 replaced GPT-5's `minimal` effort with `none`; GPT-5.2+
+  // additionally accepts `xhigh`. Model pages list the supported subset.
   if (versionedEfforts) return versionedEfforts
   const efforts = [...WIDELY_SUPPORTED_EFFORTS]
   if (GPT5_FAMILY_RE.test(id)) efforts.unshift("minimal")
@@ -596,9 +596,9 @@ function openaiCompatibleReasoningEfforts(id: string) {
 }
 
 function anthropicOpus47OrLater(apiId: string) {
-  @lgcode/@lgcode/ Matches "opus-4.7" (Anthropic@lgcode/Bedrock@lgcode/Vertex) and "claude-4.7-opus" (SAP AI Core inverted).
-  @lgcode/@lgcode/ Greedy \d+ correctly extends to multi-digit majors (e.g. "claude-10.0-opus") for forward compatibility.
-  const version = @lgcode/opus-(\d+)[.-](\d+)(?:[.@-]|$)|claude-(\d+)[.-](\d+)-opus(?:[.@-]|$)@lgcode/i.exec(apiId)
+  // Matches "opus-4.7" (Anthropic/Bedrock/Vertex) and "claude-4.7-opus" (SAP AI Core inverted).
+  // Greedy \d+ correctly extends to multi-digit majors (e.g. "claude-10.0-opus") for forward compatibility.
+  const version = /opus-(\d+)[.-](\d+)(?:[.@-]|$)|claude-(\d+)[.-](\d+)-opus(?:[.@-]|$)/i.exec(apiId)
   if (!version) return false
   const major = Number(version[1] ?? version[3])
   const minor = Number(version[2] ?? version[4])
@@ -638,8 +638,8 @@ function googleThinkingBudgetMax(apiId: string) {
   return 24_576
 }
 
-@lgcode/@lgcode/ SAP's Zod schema drops unknown top-level keys; reasoning controls survive
-@lgcode/@lgcode/ only via `modelParams` (catchall), forwarded verbatim by the SAP SDKs.
+// SAP's Zod schema drops unknown top-level keys; reasoning controls survive
+// only via `modelParams` (catchall), forwarded verbatim by the SAP SDKs.
 function wrapInSapModelParams(variants: Record<string, Record<string, any>>): Record<string, Record<string, any>> {
   return Object.fromEntries(Object.entries(variants).map(([k, v]) => [k, { modelParams: v }]))
 }
@@ -668,7 +668,7 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
   const id = model.id.toLowerCase()
   if (
     model.api.id.toLowerCase().includes("minimax-m3") &&
-    ["@ai-sdk@lgcode/anthropic", "@ai-sdk@lgcode/openai-compatible"].includes(model.api.npm)
+    ["@ai-sdk/anthropic", "@ai-sdk/openai-compatible"].includes(model.api.npm)
   ) {
     return {
       none: { thinking: { type: "disabled" } },
@@ -691,9 +691,9 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
   )
     return {}
 
-  @lgcode/@lgcode/ see: https:@lgcode/@lgcode/docs.x.ai@lgcode/docs@lgcode/guides@lgcode/reasoning#control-how-hard-the-model-thinks
+  // see: https://docs.x.ai/docs/guides/reasoning#control-how-hard-the-model-thinks
   if (id.includes("grok") && id.includes("grok-3-mini")) {
-    if (model.api.npm === "@openrouter@lgcode/ai-sdk-provider") {
+    if (model.api.npm === "@openrouter/ai-sdk-provider") {
       return {
         low: { reasoning: { effort: "low" } },
         high: { reasoning: { effort: "high" } },
@@ -707,29 +707,29 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
   if (id.includes("grok")) return {}
 
   switch (model.api.npm) {
-    case "@openrouter@lgcode/ai-sdk-provider":
+    case "@openrouter/ai-sdk-provider":
       return Object.fromEntries(
-        (model.api.id.startsWith("openai@lgcode/") || id.includes("gpt")
+        (model.api.id.startsWith("openai/") || id.includes("gpt")
           ? openaiCompatibleReasoningEfforts(model.api.id)
           : WIDELY_SUPPORTED_EFFORTS
         ).map((effort) => [effort, { reasoning: { effort } }]),
       )
 
     case "ai-gateway-provider": {
-      @lgcode/@lgcode/ Cloudflare AI Gateway routes every upstream through its OpenAI-compatible
-      @lgcode/@lgcode/ @lgcode/v1@lgcode/compat endpoint, so the body is always OAI-shaped. The gateway
-      @lgcode/@lgcode/ translates `reasoning_effort` to the upstream provider's native control
-      @lgcode/@lgcode/ (e.g. Anthropic thinking budgets) when needed. Variants therefore stay
-      @lgcode/@lgcode/ OAI-style for all upstreams, with an extended effort set for OpenAI
-      @lgcode/@lgcode/ models that support it.
-      if (model.api.id.startsWith("openai@lgcode/")) {
+      // Cloudflare AI Gateway routes every upstream through its OpenAI-compatible
+      // /v1/compat endpoint, so the body is always OAI-shaped. The gateway
+      // translates `reasoning_effort` to the upstream provider's native control
+      // (e.g. Anthropic thinking budgets) when needed. Variants therefore stay
+      // OAI-style for all upstreams, with an extended effort set for OpenAI
+      // models that support it.
+      if (model.api.id.startsWith("openai/")) {
         const efforts = openaiReasoningEfforts(model.api.id, model.release_date)
         return Object.fromEntries(efforts.map((effort) => [effort, { reasoningEffort: effort }]))
       }
       return Object.fromEntries(WIDELY_SUPPORTED_EFFORTS.map((effort) => [effort, { reasoningEffort: effort }]))
     }
 
-    case "@ai-sdk@lgcode/gateway":
+    case "@ai-sdk/gateway":
       if (model.id.includes("anthropic")) {
         if (adaptiveEfforts) {
           return Object.fromEntries(
@@ -738,9 +738,9 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
               {
                 thinking: {
                   type: "adaptive",
-                  @lgcode/@lgcode/ Newer adaptive-only models default `display` to "omitted", which
-                  @lgcode/@lgcode/ returns empty thinking blocks. Force "summarized" so summaries
-                  @lgcode/@lgcode/ survive (4.6@lgcode/Sonnet 4.6 already default to "summarized").
+                  // Newer adaptive-only models default `display` to "omitted", which
+                  // returns empty thinking blocks. Force "summarized" so summaries
+                  // survive (4.6/Sonnet 4.6 already default to "summarized").
                   ...(adaptiveThinkingOmitted ? { display: "summarized" } : {}),
                 },
                 effort,
@@ -794,9 +794,9 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
         openaiCompatibleReasoningEfforts(model.api.id).map((effort) => [effort, { reasoningEffort: effort }]),
       )
 
-    case "@ai-sdk@lgcode/github-copilot":
+    case "@ai-sdk/github-copilot":
       if (model.id.includes("gemini")) {
-        @lgcode/@lgcode/ currently github copilot only returns thinking
+        // currently github copilot only returns thinking
         return {}
       }
       if (model.id.includes("claude")) {
@@ -820,17 +820,17 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
         ]),
       )
 
-    case "@ai-sdk@lgcode/cerebras":
-    @lgcode/@lgcode/ https:@lgcode/@lgcode/v5.ai-sdk.dev@lgcode/providers@lgcode/ai-sdk-providers@lgcode/cerebras
-    case "@ai-sdk@lgcode/togetherai":
-    @lgcode/@lgcode/ https:@lgcode/@lgcode/v5.ai-sdk.dev@lgcode/providers@lgcode/ai-sdk-providers@lgcode/togetherai
-    case "@ai-sdk@lgcode/xai":
-    @lgcode/@lgcode/ https:@lgcode/@lgcode/v5.ai-sdk.dev@lgcode/providers@lgcode/ai-sdk-providers@lgcode/xai
-    case "@ai-sdk@lgcode/deepinfra":
-    @lgcode/@lgcode/ https:@lgcode/@lgcode/v5.ai-sdk.dev@lgcode/providers@lgcode/ai-sdk-providers@lgcode/deepinfra
+    case "@ai-sdk/cerebras":
+    // https://v5.ai-sdk.dev/providers/ai-sdk-providers/cerebras
+    case "@ai-sdk/togetherai":
+    // https://v5.ai-sdk.dev/providers/ai-sdk-providers/togetherai
+    case "@ai-sdk/xai":
+    // https://v5.ai-sdk.dev/providers/ai-sdk-providers/xai
+    case "@ai-sdk/deepinfra":
+    // https://v5.ai-sdk.dev/providers/ai-sdk-providers/deepinfra
     case "venice-ai-sdk-provider":
-    @lgcode/@lgcode/ https:@lgcode/@lgcode/docs.venice.ai@lgcode/overview@lgcode/guides@lgcode/reasoning-models#reasoning-effort
-    case "@ai-sdk@lgcode/openai-compatible":
+    // https://docs.venice.ai/overview/guides/reasoning-models#reasoning-effort
+    case "@ai-sdk/openai-compatible":
       if (model.api.id.toLowerCase().includes("north-mini-code")) {
         return Object.fromEntries(["none", "high"].map((effort) => [effort, { reasoningEffort: effort }]))
       }
@@ -840,8 +840,8 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
       }
       return Object.fromEntries(efforts.map((effort) => [effort, { reasoningEffort: effort }]))
 
-    case "@ai-sdk@lgcode/azure":
-      @lgcode/@lgcode/ https:@lgcode/@lgcode/v5.ai-sdk.dev@lgcode/providers@lgcode/ai-sdk-providers@lgcode/azure
+    case "@ai-sdk/azure":
+      // https://v5.ai-sdk.dev/providers/ai-sdk-providers/azure
       if (id === "o1-mini") return {}
       return Object.fromEntries(
         openaiReasoningEfforts(id, model.release_date).map((effort) => [
@@ -853,9 +853,9 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
           },
         ]),
       )
-    case "@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle":
-    case "@ai-sdk@lgcode/openai": {
-      @lgcode/@lgcode/ https:@lgcode/@lgcode/v5.ai-sdk.dev@lgcode/providers@lgcode/ai-sdk-providers@lgcode/openai
+    case "@ai-sdk/amazon-bedrock/mantle":
+    case "@ai-sdk/openai": {
+      // https://v5.ai-sdk.dev/providers/ai-sdk-providers/openai
       const efforts = openaiReasoningEfforts(model.api.id, model.release_date)
       return Object.fromEntries(
         efforts.map((effort) => [
@@ -869,17 +869,17 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
       )
     }
 
-    case "@ai-sdk@lgcode/anthropic":
-    @lgcode/@lgcode/ https:@lgcode/@lgcode/v5.ai-sdk.dev@lgcode/providers@lgcode/ai-sdk-providers@lgcode/anthropic
-    case "@ai-sdk@lgcode/google-vertex@lgcode/anthropic":
-      @lgcode/@lgcode/ https:@lgcode/@lgcode/v5.ai-sdk.dev@lgcode/providers@lgcode/ai-sdk-providers@lgcode/google-vertex#anthropic-provider
+    case "@ai-sdk/anthropic":
+    // https://v5.ai-sdk.dev/providers/ai-sdk-providers/anthropic
+    case "@ai-sdk/google-vertex/anthropic":
+      // https://v5.ai-sdk.dev/providers/ai-sdk-providers/google-vertex#anthropic-provider
       if (adaptiveEfforts) {
         let efforts = [...adaptiveEfforts]
         if (model.providerID === "github-copilot") {
           if (model.api.id.includes("opus-4.7")) {
             efforts = ["medium"]
           }
-          @lgcode/@lgcode/ Efforts currently supported are: low, medium, high
+          // Efforts currently supported are: low, medium, high
           efforts = efforts.filter((v) => v !== "max" && v !== "xhigh")
         }
         return Object.fromEntries(
@@ -904,7 +904,7 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
         high: {
           thinking: {
             type: "enabled",
-            budgetTokens: Math.min(16_000, Math.floor(model.limit.output @lgcode/ 2 - 1)),
+            budgetTokens: Math.min(16_000, Math.floor(model.limit.output / 2 - 1)),
           },
         },
         max: {
@@ -915,8 +915,8 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
         },
       }
 
-    case "@ai-sdk@lgcode/amazon-bedrock":
-      @lgcode/@lgcode/ https:@lgcode/@lgcode/v5.ai-sdk.dev@lgcode/providers@lgcode/ai-sdk-providers@lgcode/amazon-bedrock
+    case "@ai-sdk/amazon-bedrock":
+      // https://v5.ai-sdk.dev/providers/ai-sdk-providers/amazon-bedrock
       if (adaptiveEfforts) {
         return Object.fromEntries(
           adaptiveEfforts.map((effort) => [
@@ -931,7 +931,7 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
           ]),
         )
       }
-      @lgcode/@lgcode/ For Anthropic models on Bedrock, use reasoningConfig with budgetTokens
+      // For Anthropic models on Bedrock, use reasoningConfig with budgetTokens
       if (model.api.id.includes("anthropic")) {
         return {
           high: {
@@ -949,7 +949,7 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
         }
       }
 
-      @lgcode/@lgcode/ For Amazon Nova models, use reasoningConfig with maxReasoningEffort
+      // For Amazon Nova models, use reasoningConfig with maxReasoningEffort
       return Object.fromEntries(
         WIDELY_SUPPORTED_EFFORTS.map((effort) => [
           effort,
@@ -962,17 +962,17 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
         ]),
       )
 
-    case "@ai-sdk@lgcode/google-vertex":
-    @lgcode/@lgcode/ https:@lgcode/@lgcode/v5.ai-sdk.dev@lgcode/providers@lgcode/ai-sdk-providers@lgcode/google-vertex
-    case "@ai-sdk@lgcode/google":
-      @lgcode/@lgcode/ https:@lgcode/@lgcode/v5.ai-sdk.dev@lgcode/providers@lgcode/ai-sdk-providers@lgcode/google-generative-ai
+    case "@ai-sdk/google-vertex":
+    // https://v5.ai-sdk.dev/providers/ai-sdk-providers/google-vertex
+    case "@ai-sdk/google":
+      // https://v5.ai-sdk.dev/providers/ai-sdk-providers/google-generative-ai
       return googleThinkingVariants(model)
 
-    case "@ai-sdk@lgcode/mistral":
-      @lgcode/@lgcode/ https:@lgcode/@lgcode/v5.ai-sdk.dev@lgcode/providers@lgcode/ai-sdk-providers@lgcode/mistral
-      @lgcode/@lgcode/ https:@lgcode/@lgcode/docs.mistral.ai@lgcode/capabilities@lgcode/reasoning@lgcode/adjustable
+    case "@ai-sdk/mistral":
+      // https://v5.ai-sdk.dev/providers/ai-sdk-providers/mistral
+      // https://docs.mistral.ai/capabilities/reasoning/adjustable
       if (!model.capabilities.reasoning) return {}
-      @lgcode/@lgcode/ Only Mistral Small 4 and Medium 3.5 support reasoning
+      // Only Mistral Small 4 and Medium 3.5 support reasoning
       const MISTRAL_REASONING_IDS = [
         "mistral-small-2603",
         "mistral-small-latest",
@@ -985,12 +985,12 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
         high: { reasoningEffort: "high" },
       }
 
-    case "@ai-sdk@lgcode/cohere":
-      @lgcode/@lgcode/ https:@lgcode/@lgcode/v5.ai-sdk.dev@lgcode/providers@lgcode/ai-sdk-providers@lgcode/cohere
+    case "@ai-sdk/cohere":
+      // https://v5.ai-sdk.dev/providers/ai-sdk-providers/cohere
       return {}
 
-    case "@ai-sdk@lgcode/groq":
-      @lgcode/@lgcode/ https:@lgcode/@lgcode/v5.ai-sdk.dev@lgcode/providers@lgcode/ai-sdk-providers@lgcode/groq
+    case "@ai-sdk/groq":
+      // https://v5.ai-sdk.dev/providers/ai-sdk-providers/groq
       const groqEffort = ["none", ...WIDELY_SUPPORTED_EFFORTS]
       return Object.fromEntries(
         groqEffort.map((effort) => [
@@ -1001,15 +1001,15 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
         ]),
       )
 
-    case "@ai-sdk@lgcode/perplexity":
-      @lgcode/@lgcode/ https:@lgcode/@lgcode/v5.ai-sdk.dev@lgcode/providers@lgcode/ai-sdk-providers@lgcode/perplexity
+    case "@ai-sdk/perplexity":
+      // https://v5.ai-sdk.dev/providers/ai-sdk-providers/perplexity
       return {}
 
-    case "@jerome-benoit@lgcode/sap-ai-provider-v2": {
+    case "@jerome-benoit/sap-ai-provider-v2": {
       if (id.includes("anthropic")) {
         if (adaptiveEfforts) {
-          @lgcode/@lgcode/ Bedrock adaptive splits `effort` out into `output_config` (vs Anthropic
-          @lgcode/@lgcode/ native which inlines it). Opus 4.7+ flipped `display` default to "omitted".
+          // Bedrock adaptive splits `effort` out into `output_config` (vs Anthropic
+          // native which inlines it). Opus 4.7+ flipped `display` default to "omitted".
           return wrapInSapModelParams(
             Object.fromEntries(
               adaptiveEfforts.map((effort) => [
@@ -1030,7 +1030,7 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
       if (id.includes("gemini") && id.includes("2.5")) {
         return wrapInSapModelParams(googleThinkingVariants(model))
       }
-      if (id.includes("gpt") || @lgcode/\bo[1-9]@lgcode/.test(id)) {
+      if (id.includes("gpt") || /\bo[1-9]/.test(id)) {
         const efforts = openaiReasoningEfforts(id, model.release_date)
         return wrapInSapModelParams(Object.fromEntries(efforts.map((effort) => [effort, { reasoning_effort: effort }])))
       }
@@ -1050,28 +1050,28 @@ export function options(input: {
   const result: Record<string, any> = {}
 
   if (
-    input.model.api.npm === "@ai-sdk@lgcode/google-vertex@lgcode/anthropic" ||
-    (!input.model.api.id.includes("claude") && input.model.api.npm === "@ai-sdk@lgcode/anthropic")
+    input.model.api.npm === "@ai-sdk/google-vertex/anthropic" ||
+    (!input.model.api.id.includes("claude") && input.model.api.npm === "@ai-sdk/anthropic")
   ) {
     result["toolStreaming"] = false
   }
 
-  @lgcode/@lgcode/ openai and providers using openai package should set store to false by default.
+  // openai and providers using openai package should set store to false by default.
   if (
     input.model.providerID === "openai" ||
-    input.model.api.npm === "@ai-sdk@lgcode/openai" ||
-    input.model.api.npm === "@ai-sdk@lgcode/github-copilot" ||
-    input.model.api.npm === "@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle"
+    input.model.api.npm === "@ai-sdk/openai" ||
+    input.model.api.npm === "@ai-sdk/github-copilot" ||
+    input.model.api.npm === "@ai-sdk/amazon-bedrock/mantle"
   ) {
     result["store"] = false
   }
 
-  if (input.model.api.npm === "@ai-sdk@lgcode/azure") {
+  if (input.model.api.npm === "@ai-sdk/azure") {
     result["store"] = false
     result["promptCacheKey"] = input.sessionID
   }
 
-  if (input.model.api.npm === "@openrouter@lgcode/ai-sdk-provider" || input.model.api.npm === "@llmgateway@lgcode/ai-sdk-provider") {
+  if (input.model.api.npm === "@openrouter/ai-sdk-provider" || input.model.api.npm === "@llmgateway/ai-sdk-provider") {
     result["usage"] = {
       include: true,
     }
@@ -1089,7 +1089,7 @@ export function options(input: {
 
   if (
     ["zai", "zhipuai"].some((id) => input.model.providerID.includes(id)) &&
-    input.model.api.npm === "@ai-sdk@lgcode/openai-compatible"
+    input.model.api.npm === "@ai-sdk/openai-compatible"
   ) {
     result["thinking"] = {
       type: "enabled",
@@ -1101,7 +1101,7 @@ export function options(input: {
     result["promptCacheKey"] = input.sessionID
   }
 
-  if (input.model.api.npm === "@ai-sdk@lgcode/google" || input.model.api.npm === "@ai-sdk@lgcode/google-vertex") {
+  if (input.model.api.npm === "@ai-sdk/google" || input.model.api.npm === "@ai-sdk/google-vertex") {
     if (input.model.capabilities.reasoning) {
       result["thinkingConfig"] = {
         includeThoughts: true,
@@ -1114,37 +1114,37 @@ export function options(input: {
 
   const modelId = input.model.api.id.toLowerCase()
 
-  @lgcode/@lgcode/ MiniMax's Anthropic interface defaults thinking off, unlike Chat Completions.
-  if (modelId.includes("minimax-m3") && input.model.api.npm === "@ai-sdk@lgcode/anthropic") {
+  // MiniMax's Anthropic interface defaults thinking off, unlike Chat Completions.
+  if (modelId.includes("minimax-m3") && input.model.api.npm === "@ai-sdk/anthropic") {
     result["thinking"] = { type: "adaptive" }
   }
 
-  @lgcode/@lgcode/ Enable thinking by default for kimi models using anthropic SDK
+  // Enable thinking by default for kimi models using anthropic SDK
   if (
-    (input.model.api.npm === "@ai-sdk@lgcode/anthropic" || input.model.api.npm === "@ai-sdk@lgcode/google-vertex@lgcode/anthropic") &&
+    (input.model.api.npm === "@ai-sdk/anthropic" || input.model.api.npm === "@ai-sdk/google-vertex/anthropic") &&
     (modelId.includes("k2p") || modelId.includes("kimi-k2.") || modelId.includes("kimi-k2p"))
   ) {
     result["thinking"] = {
       type: "enabled",
-      budgetTokens: Math.min(16_000, Math.floor(input.model.limit.output @lgcode/ 2 - 1)),
+      budgetTokens: Math.min(16_000, Math.floor(input.model.limit.output / 2 - 1)),
     }
   }
 
-  @lgcode/@lgcode/ Enable thinking for reasoning models on alibaba-cn (DashScope).
-  @lgcode/@lgcode/ DashScope's OpenAI-compatible API requires `enable_thinking: true` in the request body
-  @lgcode/@lgcode/ to return reasoning_content. Without it, models like kimi-k2.5, qwen-plus, qwen3, qwq,
-  @lgcode/@lgcode/ deepseek-r1, etc. never output thinking@lgcode/reasoning tokens.
-  @lgcode/@lgcode/ Note: kimi-k2-thinking is excluded as it returns reasoning_content by default.
+  // Enable thinking for reasoning models on alibaba-cn (DashScope).
+  // DashScope's OpenAI-compatible API requires `enable_thinking: true` in the request body
+  // to return reasoning_content. Without it, models like kimi-k2.5, qwen-plus, qwen3, qwq,
+  // deepseek-r1, etc. never output thinking/reasoning tokens.
+  // Note: kimi-k2-thinking is excluded as it returns reasoning_content by default.
   if (
     input.model.providerID === "alibaba-cn" &&
     input.model.capabilities.reasoning &&
-    input.model.api.npm === "@ai-sdk@lgcode/openai-compatible" &&
+    input.model.api.npm === "@ai-sdk/openai-compatible" &&
     !modelId.includes("kimi-k2-thinking")
   ) {
     result["enable_thinking"] = true
   }
 
-  if (input.model.api.npm === "@ai-sdk@lgcode/azure" && input.model.api.id.includes("gpt-5.5")) {
+  if (input.model.api.npm === "@ai-sdk/azure" && input.model.api.id.includes("gpt-5.5")) {
     result["reasoningSummary"] = "auto"
     return result
   }
@@ -1153,20 +1153,20 @@ export function options(input: {
     if (!input.model.api.id.includes("gpt-5-pro")) {
       result["reasoningEffort"] = "medium"
       if (
-        input.model.api.npm === "@ai-sdk@lgcode/openai" ||
-        input.model.api.npm === "@ai-sdk@lgcode/azure" ||
-        input.model.api.npm === "@ai-sdk@lgcode/github-copilot" ||
-        input.model.api.npm === "@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle"
+        input.model.api.npm === "@ai-sdk/openai" ||
+        input.model.api.npm === "@ai-sdk/azure" ||
+        input.model.api.npm === "@ai-sdk/github-copilot" ||
+        input.model.api.npm === "@ai-sdk/amazon-bedrock/mantle"
       ) {
         result["reasoningSummary"] = "auto"
       }
-      if (input.model.api.npm === "@ai-sdk@lgcode/openai" || input.model.api.npm === "@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle") {
+      if (input.model.api.npm === "@ai-sdk/openai" || input.model.api.npm === "@ai-sdk/amazon-bedrock/mantle") {
         result["include"] = INCLUDE_ENCRYPTED_REASONING
       }
     }
 
-    @lgcode/@lgcode/ Only set textVerbosity for non-chat gpt-5.x models
-    @lgcode/@lgcode/ Chat models (e.g. gpt-5.2-chat-latest) only support "medium" verbosity
+    // Only set textVerbosity for non-chat gpt-5.x models
+    // Chat models (e.g. gpt-5.2-chat-latest) only support "medium" verbosity
     if (
       input.model.api.id.includes("gpt-5.") &&
       !input.model.api.id.includes("codex") &&
@@ -1190,7 +1190,7 @@ export function options(input: {
   if (input.model.providerID === "openrouter") {
     result["prompt_cache_key"] = input.sessionID
   }
-  if (input.model.api.npm === "@ai-sdk@lgcode/gateway") {
+  if (input.model.api.npm === "@ai-sdk/gateway") {
     result["gateway"] = {
       caching: "auto",
     }
@@ -1203,8 +1203,8 @@ export function smallOptions(model: Provider.Model) {
   const small = Object.values(model.variants ?? {})[0] ?? {}
   if (
     model.providerID === "openai" ||
-    model.api.npm === "@ai-sdk@lgcode/openai" ||
-    model.api.npm === "@ai-sdk@lgcode/github-copilot"
+    model.api.npm === "@ai-sdk/openai" ||
+    model.api.npm === "@ai-sdk/github-copilot"
   ) {
     const base = { store: false }
     return mergeDeep(base, small)
@@ -1226,20 +1226,20 @@ export function smallOptions(model: Provider.Model) {
   return small
 }
 
-@lgcode/@lgcode/ Maps model ID prefix to provider slug used in providerOptions.
-@lgcode/@lgcode/ Example: "amazon@lgcode/nova-2-lite" → "bedrock"
+// Maps model ID prefix to provider slug used in providerOptions.
+// Example: "amazon/nova-2-lite" → "bedrock"
 const SLUG_OVERRIDES: Record<string, string> = {
   amazon: "bedrock",
 }
 
 export function providerOptions(model: Provider.Model, options: { [x: string]: any }) {
-  if (model.api.npm === "@ai-sdk@lgcode/gateway") {
-    @lgcode/@lgcode/ Gateway providerOptions are split across two namespaces:
-    @lgcode/@lgcode/ - `gateway`: gateway-native routing@lgcode/caching controls (order, only, byok, etc.)
-    @lgcode/@lgcode/ - `<upstream slug>`: provider-specific model options (anthropic@lgcode/openai@lgcode/...)
-    @lgcode/@lgcode/ We keep `gateway` as-is and route every other top-level option under the
-    @lgcode/@lgcode/ model-derived upstream slug.
-    const i = model.api.id.indexOf("@lgcode/")
+  if (model.api.npm === "@ai-sdk/gateway") {
+    // Gateway providerOptions are split across two namespaces:
+    // - `gateway`: gateway-native routing/caching controls (order, only, byok, etc.)
+    // - `<upstream slug>`: provider-specific model options (anthropic/openai/...)
+    // We keep `gateway` as-is and route every other top-level option under the
+    // model-derived upstream slug.
+    const i = model.api.id.indexOf("/")
     const rawSlug = i > 0 ? model.api.id.slice(0, i) : undefined
     const slug = rawSlug ? (SLUG_OVERRIDES[rawSlug] ?? rawSlug) : undefined
     const gateway = options.gateway
@@ -1251,7 +1251,7 @@ export function providerOptions(model: Provider.Model, options: { [x: string]: a
 
     if (has) {
       if (slug) {
-        @lgcode/@lgcode/ Route model-specific options under the provider slug
+        // Route model-specific options under the provider slug
         result[slug] = rest
       } else if (gateway && typeof gateway === "object" && !Array.isArray(gateway)) {
         result.gateway = { ...gateway, ...rest }
@@ -1263,20 +1263,20 @@ export function providerOptions(model: Provider.Model, options: { [x: string]: a
     return result
   }
 
-  @lgcode/@lgcode/ AI SDK packages that resolve providerOptionsName by splitting the
-  @lgcode/@lgcode/ provider name on "." (e.g. "wafer.ai" -> "wafer") need the same
-  @lgcode/@lgcode/ logic here so the key we write matches the key they read.
-  @lgcode/@lgcode/ Other SDKs (xai, mistral, groq, cohere, etc.) use hardcoded keys
-  @lgcode/@lgcode/ like "xai" or "cohere" - applying .split(".")[0] would break those.
+  // AI SDK packages that resolve providerOptionsName by splitting the
+  // provider name on "." (e.g. "wafer.ai" -> "wafer") need the same
+  // logic here so the key we write matches the key they read.
+  // Other SDKs (xai, mistral, groq, cohere, etc.) use hardcoded keys
+  // like "xai" or "cohere" - applying .split(".")[0] would break those.
   const usesDotSplitOptions =
-    model.api.npm === "@ai-sdk@lgcode/openai-compatible" ||
-    model.api.npm === "@ai-sdk@lgcode/openai" ||
-    model.api.npm === "@ai-sdk@lgcode/anthropic"
+    model.api.npm === "@ai-sdk/openai-compatible" ||
+    model.api.npm === "@ai-sdk/openai" ||
+    model.api.npm === "@ai-sdk/anthropic"
   const key = sdkKey(model.api.npm) ?? (usesDotSplitOptions ? model.providerID.split(".")[0] : model.providerID)
-  @lgcode/@lgcode/ @ai-sdk@lgcode/azure delegates to OpenAIChatLanguageModel which reads from
-  @lgcode/@lgcode/ providerOptions["openai"], but OpenAIResponsesLanguageModel checks
-  @lgcode/@lgcode/ "azure" first. Pass both so model options work on either code path.
-  if (model.api.npm === "@ai-sdk@lgcode/azure") {
+  // @ai-sdk/azure delegates to OpenAIChatLanguageModel which reads from
+  // providerOptions["openai"], but OpenAIResponsesLanguageModel checks
+  // "azure" first. Pass both so model options work on either code path.
+  if (model.api.npm === "@ai-sdk/azure") {
     return { openai: options, azure: options }
   }
   return { [key]: options }
@@ -1292,12 +1292,12 @@ function isPlainObject(value: unknown): value is JsonRecord {
   return typeof value === "object" && value !== null && !Array.isArray(value)
 }
 
-@lgcode/@lgcode/ Mirrors Codex's Rust JSON schema compatibility lowering for OpenAI tool schemas.
+// Mirrors Codex's Rust JSON schema compatibility lowering for OpenAI tool schemas.
 function sanitizeOpenAISchema(value: unknown): unknown {
   const types = ["string", "number", "boolean", "integer", "object", "array", "null"]
   const compositionKeys = ["anyOf", "oneOf", "allOf"]
 
-  @lgcode/@lgcode/ JSON Schema's boolean form (`true`@lgcode/`false`) is unsupported by OpenAI tool schemas.
+  // JSON Schema's boolean form (`true`/`false`) is unsupported by OpenAI tool schemas.
   if (typeof value === "boolean") return { type: "string" }
   if (Array.isArray(value)) return value.map(sanitizeOpenAISchema)
   if (!isPlainObject(value)) return value
@@ -1353,8 +1353,8 @@ function sanitizeOpenAISchema(value: unknown): unknown {
     return result
   }
 
-  @lgcode/@lgcode/ MCP schemas may omit `type` while still using keywords that imply one.
-  @lgcode/@lgcode/ Keep the schema usable after unsupported keywords are dropped.
+  // MCP schemas may omit `type` while still using keywords that imply one.
+  // Keep the schema usable after unsupported keywords are dropped.
   const inferredTypes =
     schemaTypes.length > 0
       ? schemaTypes
@@ -1377,7 +1377,7 @@ function sanitizeOpenAISchema(value: unknown): unknown {
 }
 
 export function schema(model: Provider.Model, schema: JSONSchema7): JSONSchema7 {
-  @lgcode/*
+  /*
   if (["openai", "azure"].includes(providerID)) {
     if (schema.type === "object" && schema.properties) {
       for (const [key, value] of Object.entries(schema.properties)) {
@@ -1393,21 +1393,21 @@ export function schema(model: Provider.Model, schema: JSONSchema7): JSONSchema7 
       }
     }
   }
-  *@lgcode/
+  */
 
-  if (model.api.npm === "@ai-sdk@lgcode/openai" || model.api.npm === "@ai-sdk@lgcode/azure") {
+  if (model.api.npm === "@ai-sdk/openai" || model.api.npm === "@ai-sdk/azure") {
     schema = sanitizeOpenAISchema(schema) as JSONSchema7
-    @lgcode/@lgcode/ Codex also applies lossy compaction above 4 KB; defer that until OpenCode needs the same schema budget.
+    // Codex also applies lossy compaction above 4 KB; defer that until OpenCode needs the same schema budget.
   }
 
   if (model.providerID === "moonshotai" || model.api.id.toLowerCase().includes("kimi")) {
     const sanitizeMoonshot = (obj: unknown): unknown => {
       if (obj === null || typeof obj !== "object") return obj
       if (Array.isArray(obj)) return obj.map(sanitizeMoonshot)
-      @lgcode/@lgcode/ Moonshot expands $ref before validation and rejects sibling keywords like description on the same node.
+      // Moonshot expands $ref before validation and rejects sibling keywords like description on the same node.
       if ("$ref" in obj && typeof obj.$ref === "string") return { $ref: obj.$ref }
       const result = Object.fromEntries(Object.entries(obj).map(([key, value]) => [key, sanitizeMoonshot(value)]))
-      @lgcode/@lgcode/ MFJS does not support tuple-style `items` arrays; it requires one schema object for all array items.
+      // MFJS does not support tuple-style `items` arrays; it requires one schema object for all array items.
       if (Array.isArray(result.items)) result.items = result.items[0] ?? {}
       return result
     }
@@ -1418,7 +1418,7 @@ export function schema(model: Provider.Model, schema: JSONSchema7): JSONSchema7 
     }
   }
 
-  @lgcode/@lgcode/ Convert integer enums to string enums for Google@lgcode/Gemini
+  // Convert integer enums to string enums for Google/Gemini
   if (model.providerID === "google" || model.api.id.includes("gemini")) {
     const isPlainObject = (node: unknown): node is Record<string, any> =>
       typeof node === "object" && node !== null && !Array.isArray(node)
@@ -1457,9 +1457,9 @@ export function schema(model: Provider.Model, schema: JSONSchema7): JSONSchema7 
       const result: any = {}
       for (const [key, value] of Object.entries(obj)) {
         if (key === "enum" && Array.isArray(value)) {
-          @lgcode/@lgcode/ Convert all enum values to strings
+          // Convert all enum values to strings
           result[key] = value.map((v) => String(v))
-          @lgcode/@lgcode/ If we have integer type with enum, change type to string
+          // If we have integer type with enum, change type to string
           if (result.type === "integer" || result.type === "number") {
             result.type = "string"
           }
@@ -1470,12 +1470,12 @@ export function schema(model: Provider.Model, schema: JSONSchema7): JSONSchema7 
         }
       }
 
-      @lgcode/@lgcode/ Gemini requires a single `type`, not a JSON Schema type array such as
-      @lgcode/@lgcode/ `["number","string"]` (emitted by some MCP servers). Plain `@ai-sdk@lgcode/google`
-      @lgcode/@lgcode/ rewrites these into an `anyOf` of single-type schemas, but OpenAI-compatible
-      @lgcode/@lgcode/ transports (e.g. GitHub Copilot proxying to Gemini) forward them verbatim
-      @lgcode/@lgcode/ and the backend rejects the array form. Mirror the SDK: split non-null
-      @lgcode/@lgcode/ types into `anyOf`, and lift `null` into `nullable`.
+      // Gemini requires a single `type`, not a JSON Schema type array such as
+      // `["number","string"]` (emitted by some MCP servers). Plain `@ai-sdk/google`
+      // rewrites these into an `anyOf` of single-type schemas, but OpenAI-compatible
+      // transports (e.g. GitHub Copilot proxying to Gemini) forward them verbatim
+      // and the backend rejects the array form. Mirror the SDK: split non-null
+      // types into `anyOf`, and lift `null` into `nullable`.
       if (Array.isArray(result.type)) {
         const hasNull = result.type.includes("null")
         const nonNull = result.type.filter((entry: unknown) => entry !== "null")
@@ -1488,7 +1488,7 @@ export function schema(model: Provider.Model, schema: JSONSchema7): JSONSchema7 
         }
       }
 
-      @lgcode/@lgcode/ Filter required array to only include fields that exist in properties
+      // Filter required array to only include fields that exist in properties
       if (result.type === "object" && result.properties && Array.isArray(result.required)) {
         result.required = result.required.filter((field: any) => field in result.properties)
       }
@@ -1497,13 +1497,13 @@ export function schema(model: Provider.Model, schema: JSONSchema7): JSONSchema7 
         if (result.items == null) {
           result.items = {}
         }
-        @lgcode/@lgcode/ Ensure items has a type only when it's still schema-empty.
+        // Ensure items has a type only when it's still schema-empty.
         if (isPlainObject(result.items) && !hasSchemaIntent(result.items)) {
           result.items.type = "string"
         }
       }
 
-      @lgcode/@lgcode/ Remove properties@lgcode/required from non-object types (Gemini rejects these)
+      // Remove properties/required from non-object types (Gemini rejects these)
       if (result.type && result.type !== "object" && !hasCombiner(result)) {
         delete result.properties
         delete result.required
@@ -1518,4 +1518,4 @@ export function schema(model: Provider.Model, schema: JSONSchema7): JSONSchema7 
   return schema
 }
 
-export * as ProviderTransform from ".@lgcode/transform"
+export * as ProviderTransform from "./transform"

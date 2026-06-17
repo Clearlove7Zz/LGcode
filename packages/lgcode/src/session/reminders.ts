@@ -1,16 +1,16 @@
 import path from "path"
-import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
+import { SessionV1 } from "@opencode@lgcode/core/v1/session"
 import { Effect } from "effect"
-import { Agent } from "@@lgcode/agent@lgcode/agent"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
-import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
-import { PartID } from ".@lgcode/schema"
-import { MessageV2 } from ".@lgcode/message-v2"
-import { Session } from ".@lgcode/session"
-import PROMPT_PLAN from ".@lgcode/prompt@lgcode/plan.txt"
-import BUILD_SWITCH from ".@lgcode/prompt@lgcode/build-switch.txt"
-import PLAN_MODE from ".@lgcode/prompt@lgcode/plan-mode.txt"
+import { Agent } from "@/agent/agent"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { InstanceState } from "@/effect/instance-state"
+import { RuntimeFlags } from "@/effect/runtime-flags"
+import { PartID } from "./schema"
+import { MessageV2 } from "./message-v2"
+import { Session } from "./session"
+import PROMPT_PLAN from "./prompt/plan.txt"
+import BUILD_SWITCH from "./prompt/build-switch.txt"
+import PLAN_MODE from "./prompt/plan-mode.txt"
 
 export const apply = Effect.fn("SessionReminders.apply")(function* (input: {
   messages: SessionV1.WithParts[]
@@ -89,4 +89,4 @@ export const apply = Effect.fn("SessionReminders.apply")(function* (input: {
   return input.messages
 })
 
-export * as SessionReminders from ".@lgcode/reminders"
+export * as SessionReminders from "./reminders"

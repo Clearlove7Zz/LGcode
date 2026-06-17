@@ -1,8 +1,8 @@
 import { z } from "zod"
-import { fn } from ".@lgcode/util@lgcode/fn"
-import { Resource } from "@lgcode/console-resource"
-import { BlackPlans } from ".@lgcode/schema@lgcode/billing.sql"
-import { Subscription } from ".@lgcode/subscription"
+import { fn } from "./util/fn"
+import { Resource } from "@opencode@lgcode/console-resource"
+import { BlackPlans } from "./schema/billing.sql"
+import { Subscription } from "./subscription"
 
 export namespace BlackData {
   export const getLimits = fn(

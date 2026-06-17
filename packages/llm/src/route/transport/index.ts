@@ -1,9 +1,9 @@
 import type { Effect, Stream } from "effect"
-import type { Endpoint } from "..@lgcode/endpoint"
-import type { Auth } from "..@lgcode/auth"
-import type { Interface as RequestExecutorInterface } from "..@lgcode/executor"
-import type { Interface as WebSocketExecutorInterface } from ".@lgcode/websocket"
-import type { LLMError, LLMRequest } from "..@lgcode/..@lgcode/schema"
+import type { Endpoint } from "../endpoint"
+import type { Auth } from "../auth"
+import type { Interface as RequestExecutorInterface } from "../executor"
+import type { Interface as WebSocketExecutorInterface } from "./websocket"
+import type { LLMError, LLMRequest } from "../../schema"
 
 export interface TransportRuntime {
   readonly http: RequestExecutorInterface
@@ -29,5 +29,5 @@ export interface TransportPrepareInput<Body> {
   readonly headers?: (input: { readonly request: LLMRequest }) => Record<string, string>
 }
 
-export * as HttpTransport from ".@lgcode/http"
-export { WebSocketExecutor, WebSocketTransport } from ".@lgcode/websocket"
+export * as HttpTransport from "./http"
+export { WebSocketExecutor, WebSocketTransport } from "./websocket"

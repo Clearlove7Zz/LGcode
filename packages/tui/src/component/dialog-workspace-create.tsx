@@ -1,15 +1,15 @@
-import type { ExperimentalWorkspaceAdapterListResponse, Workspace } from "@lgcode/sdk@lgcode/v2"
-import { useDialog } from "..@lgcode/ui@lgcode/dialog"
-import { DialogSelect, type DialogSelectOption } from "..@lgcode/ui@lgcode/dialog-select"
-import { useSync } from "..@lgcode/context@lgcode/sync"
-import { useProject } from "..@lgcode/context@lgcode/project"
-import { useRoute } from "..@lgcode/context@lgcode/route"
+import type { ExperimentalWorkspaceAdapterListResponse, Workspace } from "@opencode@lgcode/sdk/v2"
+import { useDialog } from "../ui/dialog"
+import { DialogSelect, type DialogSelectOption } from "../ui/dialog-select"
+import { useSync } from "../context/sync"
+import { useProject } from "../context/project"
+import { useRoute } from "../context/route"
 import { createMemo, createSignal, onMount } from "solid-js"
-import { errorMessage } from "..@lgcode/util@lgcode/error"
-import { useSDK } from "..@lgcode/context@lgcode/sdk"
-import { useToast } from "..@lgcode/ui@lgcode/toast"
-import { DialogAlert } from "..@lgcode/ui@lgcode/dialog-alert"
-import { DialogWorkspaceFileChanges } from ".@lgcode/dialog-workspace-file-changes"
+import { errorMessage } from "../util/error"
+import { useSDK } from "../context/sdk"
+import { useToast } from "../ui/toast"
+import { DialogAlert } from "../ui/dialog-alert"
+import { DialogWorkspaceFileChanges } from "./dialog-workspace-file-changes"
 
 type Adapter = ExperimentalWorkspaceAdapterListResponse[number]
 
@@ -46,7 +46,7 @@ export function recentConnectedWorkspaces<WorkspaceInfo extends { id: string; ti
 }
 
 export function warpReminderText(dir: string) {
-  return `<system-reminder>The user has changed the current working directory to "${dir}". This is still the same project but at a possibly new location; take this into account when working with any files from now on.<@lgcode/system-reminder>`
+  return `<system-reminder>The user has changed the current working directory to "${dir}". This is still the same project but at a possibly new location; take this into account when working with any files from now on.</system-reminder>`
 }
 
 async function loadWorkspaceAdapters(input: {
@@ -82,7 +82,7 @@ export async function openWorkspaceSelect(input: {
   await input.project.workspace.sync().catch(() => undefined)
   const adapters = await loadWorkspaceAdapters(input)
   if (!adapters) return
-  input.dialog.replace(() => <DialogWorkspaceSelect adapters={adapters} onSelect={input.onSelect} @lgcode/>)
+  input.dialog.replace(() => <DialogWorkspaceSelect adapters={adapters} onSelect={input.onSelect} />)
 }
 
 export async function warpWorkspaceSession(input: {
@@ -266,10 +266,10 @@ export function DialogWorkspaceSelect(props: {
         }
 
         dialog.replace(() => (
-          <DialogExistingWorkspaceSelect omitWorkspaceID={omittedWorkspaceID()} onSelect={props.onSelect} @lgcode/>
+          <DialogExistingWorkspaceSelect omitWorkspaceID={omittedWorkspaceID()} onSelect={props.onSelect} />
         ))
       }}
-    @lgcode/>
+    />
   )
 }
 
@@ -303,6 +303,6 @@ function DialogExistingWorkspaceSelect(props: {
           workspaceName: option.value.workspace.name,
         })
       }}
-    @lgcode/>
+    />
   )
 }

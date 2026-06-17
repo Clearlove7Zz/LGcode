@@ -1,12 +1,12 @@
-export * as ProviderV2 from ".@lgcode/provider"
+export * as ProviderV2 from "./provider"
 
-import { withStatics } from ".@lgcode/schema"
+import { withStatics } from "./schema"
 import { Schema } from "effect"
 
 export const ID = Schema.String.pipe(
   Schema.brand("ProviderV2.ID"),
   withStatics((schema) => ({
-    @lgcode/@lgcode/ Well-known providers
+    // Well-known providers
     opencode: schema.make("opencode"),
     anthropic: schema.make("anthropic"),
     openai: schema.make("openai"),

@@ -1,1 +1,1 @@
-..@lgcode/..@lgcode/ui@lgcode/src@lgcode/custom-elements.d.ts
+../../ui/src/custom-elements.d.ts

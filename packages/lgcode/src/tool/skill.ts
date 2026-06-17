@@ -1,10 +1,10 @@
 import path from "path"
 import { pathToFileURL } from "url"
 import { Effect, Schema } from "effect"
-import { Ripgrep } from "@lgcode/core@lgcode/ripgrep"
-import { Skill } from "..@lgcode/skill"
-import * as Tool from ".@lgcode/tool"
-import DESCRIPTION from ".@lgcode/skill.txt"
+import { Ripgrep } from "@opencode@lgcode/core/ripgrep"
+import { Skill } from "../skill"
+import * as Tool from "./tool"
+import DESCRIPTION from "./skill.txt"
 
 export const Parameters = Schema.Struct({
   name: Schema.String.annotate({ description: "The name of the skill from available_skills" }),
@@ -36,7 +36,7 @@ export const SkillTool = Tool.define(
           const base = pathToFileURL(dir).href
           const files = yield* ripgrep.find({
             cwd: dir,
-            pattern: "!**@lgcode/SKILL.md",
+            pattern: "!**/SKILL.md",
             hidden: true,
             follow: false,
             signal: ctx.abort,
@@ -52,13 +52,13 @@ export const SkillTool = Tool.define(
               info.content.trim(),
               "",
               `Base directory for this skill: ${base}`,
-              "Relative paths in this skill (e.g., scripts@lgcode/, reference@lgcode/) are relative to this base directory.",
+              "Relative paths in this skill (e.g., scripts/, reference/) are relative to this base directory.",
               "Note: file list is sampled.",
               "",
               "<skill_files>",
-              files.map((file) => `<file>${path.resolve(dir, file.path)}<@lgcode/file>`).join("\n"),
-              "<@lgcode/skill_files>",
-              "<@lgcode/skill_content>",
+              files.map((file) => `<file>${path.resolve(dir, file.path)}</file>`).join("\n"),
+              "</skill_files>",
+              "</skill_content>",
             ].join("\n"),
             metadata: {
               name: info.name,

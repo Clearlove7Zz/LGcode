@@ -1,4 +1,4 @@
-import { isDefaultTitle as isDefaultTerminalTitle } from "@@lgcode/context@lgcode/terminal-title"
+import { isDefaultTitle as isDefaultTerminalTitle } from "@/context/terminal-title"
 
 export const terminalTabLabel = (input: {
   title?: string

@@ -1,9 +1,9 @@
-import { Link } from "@solidjs@lgcode/meta"
+import { Link } from "@solidjs/meta"
 import { For } from "solid-js"
-import { getRequestEvent } from "solid-js@lgcode/web"
-import { config } from "~@lgcode/config"
-import { useLanguage } from "~@lgcode/context@lgcode/language"
-import { LOCALES, route, tag } from "~@lgcode/lib@lgcode/language"
+import { getRequestEvent } from "solid-js/web"
+import { config } from "~/config"
+import { useLanguage } from "~/context/language"
+import { LOCALES, route, tag } from "~/lib/language"
 
 function skip(path: string) {
   const evt = getRequestEvent()
@@ -24,13 +24,13 @@ export function LocaleLinks(props: { path: string }) {
 
   return (
     <>
-      <Link rel="canonical" href={`${config.baseUrl}${route(language.locale(), props.path)}`} @lgcode/>
+      <Link rel="canonical" href={`${config.baseUrl}${route(language.locale(), props.path)}`} />
       <For each={LOCALES}>
         {(locale) => (
-          <Link rel="alternate" hreflang={tag(locale)} href={`${config.baseUrl}${route(locale, props.path)}`} @lgcode/>
+          <Link rel="alternate" hreflang={tag(locale)} href={`${config.baseUrl}${route(locale, props.path)}`} />
         )}
-      <@lgcode/For>
-      <Link rel="alternate" hreflang="x-default" href={`${config.baseUrl}${props.path}`} @lgcode/>
-    <@lgcode/>
+      </For>
+      <Link rel="alternate" hreflang="x-default" href={`${config.baseUrl}${props.path}`} />
+    </>
   )
 }

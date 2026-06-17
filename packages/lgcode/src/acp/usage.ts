@@ -1,10 +1,10 @@
-import type { AgentSideConnection, Usage } from "@agentclientprotocol@lgcode/sdk"
-import type { AssistantMessage as OpenCodeAssistantMessage, Message } from "@lgcode/sdk@lgcode/v2"
-import { InstanceRef } from "@@lgcode/effect@lgcode/instance-ref"
-import { InstanceStore } from "@@lgcode/project@lgcode/instance-store"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
-import { Provider } from "@@lgcode/provider@lgcode/provider"
+import type { AgentSideConnection, Usage } from "@agentclientprotocol/sdk"
+import type { AssistantMessage as OpenCodeAssistantMessage, Message } from "@opencode@lgcode/sdk/v2"
+import { InstanceRef } from "@/effect/instance-ref"
+import { InstanceStore } from "@/project/instance-store"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelV2 } from "@opencode@lgcode/core/model"
+import { Provider } from "@/provider/provider"
 import { Context, Effect, Layer, SynchronizedRef } from "effect"
 
 export type AssistantTokenCost = Pick<OpenCodeAssistantMessage, "cost" | "tokens">
@@ -58,14 +58,14 @@ export interface Interface {
 }
 
 export class MessageLoader extends Context.Service<MessageLoader, MessageLoaderInterface>()(
-  "@lgcode/ACPUsageMessageLoader",
+  "@opencode/ACPUsageMessageLoader",
 ) {}
 
 export class ContextLimitLoader extends Context.Service<ContextLimitLoader, ContextLimitLoaderInterface>()(
-  "@lgcode/ACPUsageContextLimitLoader",
+  "@opencode/ACPUsageContextLimitLoader",
 ) {}
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/ACPUsage") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/ACPUsage") {}
 
 export function messageLoaderFromSDK(sdk: SDK): MessageLoaderInterface {
   return MessageLoader.of({
@@ -229,4 +229,4 @@ export const defaultLayer = layer.pipe(
   Layer.provide(InstanceStore.defaultLayer),
 )
 
-export * as UsageService from ".@lgcode/usage"
+export * as UsageService from "./usage"

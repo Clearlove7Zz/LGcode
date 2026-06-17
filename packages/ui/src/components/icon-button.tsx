@@ -1,6 +1,6 @@
-import { Button as Kobalte } from "@kobalte@lgcode/core@lgcode/button"
+import { Button as Kobalte } from "@kobalte/core/button"
 import { type ComponentProps, splitProps } from "solid-js"
-import { Icon, IconProps } from ".@lgcode/icon"
+import { Icon, IconProps } from "./icon"
 
 export interface IconButtonProps extends ComponentProps<typeof Kobalte> {
   icon: IconProps["name"]
@@ -23,7 +23,7 @@ export function IconButton(props: ComponentProps<"button"> & IconButtonProps) {
         [split.class ?? ""]: !!split.class,
       }}
     >
-      <Icon name={props.icon} size={split.iconSize ?? (split.size === "large" ? "normal" : "small")} @lgcode/>
-    <@lgcode/Kobalte>
+      <Icon name={props.icon} size={split.iconSize ?? (split.size === "large" ? "normal" : "small")} />
+    </Kobalte>
   )
 }

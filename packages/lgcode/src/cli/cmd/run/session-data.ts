@@ -1,33 +1,33 @@
-@lgcode/@lgcode/ Core reducer for direct interactive mode.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Takes raw SDK events and produces two outputs:
-@lgcode/@lgcode/   - StreamCommit[]: append-only scrollback entries (text, tool, error, etc.)
-@lgcode/@lgcode/   - FooterOutput:   status bar patches and view transitions (permission, question)
-@lgcode/@lgcode/
-@lgcode/@lgcode/ The reducer mutates SessionData in place for performance but has no
-@lgcode/@lgcode/ external side effects -- no IO, no footer calls. The caller
-@lgcode/@lgcode/ (stream.transport.ts) feeds events in and forwards output to the footer
-@lgcode/@lgcode/ through stream.ts.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Key design decisions:
-@lgcode/@lgcode/
-@lgcode/@lgcode/ - Text parts buffer in `data.text` until their message role is confirmed as
-@lgcode/@lgcode/   "assistant". This prevents echoing user-role text parts. The `ready()`
-@lgcode/@lgcode/   check gates output: if we see a text delta before the message.updated
-@lgcode/@lgcode/   event that tells us the role, we stash it and flush later via `replay()`.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ - Tool echo stripping: bash tools may echo their own output in the next
-@lgcode/@lgcode/   assistant text part. `stashEcho()` records completed bash output, and
-@lgcode/@lgcode/   `stripEcho()` removes it from the start of the next assistant chunk.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ - Permission and question requests queue in `data.permissions` and
-@lgcode/@lgcode/   `data.questions`. The footer shows whichever is first. When a reply
-@lgcode/@lgcode/   event arrives, the queue entry is removed and the footer falls back
-@lgcode/@lgcode/   to the next pending request or to the prompt view.
-import type { Event, Part, PermissionRequest, QuestionRequest, ToolPart } from "@lgcode/sdk@lgcode/v2"
-import * as Locale from "@@lgcode/util@lgcode/locale"
-import { toolView } from ".@lgcode/tool"
-import type { FooterOutput, FooterPatch, FooterView, StreamCommit } from ".@lgcode/types"
+// Core reducer for direct interactive mode.
+//
+// Takes raw SDK events and produces two outputs:
+//   - StreamCommit[]: append-only scrollback entries (text, tool, error, etc.)
+//   - FooterOutput:   status bar patches and view transitions (permission, question)
+//
+// The reducer mutates SessionData in place for performance but has no
+// external side effects -- no IO, no footer calls. The caller
+// (stream.transport.ts) feeds events in and forwards output to the footer
+// through stream.ts.
+//
+// Key design decisions:
+//
+// - Text parts buffer in `data.text` until their message role is confirmed as
+//   "assistant". This prevents echoing user-role text parts. The `ready()`
+//   check gates output: if we see a text delta before the message.updated
+//   event that tells us the role, we stash it and flush later via `replay()`.
+//
+// - Tool echo stripping: bash tools may echo their own output in the next
+//   assistant text part. `stashEcho()` records completed bash output, and
+//   `stripEcho()` removes it from the start of the next assistant chunk.
+//
+// - Permission and question requests queue in `data.permissions` and
+//   `data.questions`. The footer shows whichever is first. When a reply
+//   event arrives, the queue entry is removed and the footer falls back
+//   to the next pending request or to the prompt view.
+import type { Event, Part, PermissionRequest, QuestionRequest, ToolPart } from "@opencode@lgcode/sdk/v2"
+import * as Locale from "@/util/locale"
+import { toolView } from "./tool"
+import type { FooterOutput, FooterPatch, FooterView, StreamCommit } from "./types"
 
 const money = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -49,21 +49,21 @@ type MessageRole = "assistant" | "user"
 type Dict = Record<string, unknown>
 type SessionCommit = StreamCommit
 
-@lgcode/@lgcode/ Mutable accumulator for the reducer. Each field tracks a different aspect
-@lgcode/@lgcode/ of the stream so we can produce correct incremental output:
-@lgcode/@lgcode/
-@lgcode/@lgcode/ - ids:    parts and error keys we've already committed (dedup guard)
-@lgcode/@lgcode/ - tools:  tool parts we've emitted a "start" for but not yet completed
-@lgcode/@lgcode/ - call:   tool call inputs, keyed by msg:call, for enriching permission views
-@lgcode/@lgcode/ - role:   message ID → "assistant" | "user", learned from message.updated
-@lgcode/@lgcode/ - msg:    part ID → message ID
-@lgcode/@lgcode/ - part:   part ID → "assistant" | "reasoning" (text parts only)
-@lgcode/@lgcode/ - text:   part ID → full accumulated text so far
-@lgcode/@lgcode/ - sent:   part ID → byte offset of last flushed text (for incremental output)
-@lgcode/@lgcode/ - visible: part ID → rendered text for an active part after display transforms
-@lgcode/@lgcode/ - end:    part IDs whose time.end has arrived (part is finished)
-@lgcode/@lgcode/ - shell:  shell call ID → chosen transcript source for direct shell calls
-@lgcode/@lgcode/ - echo:   message ID → bash outputs to strip from the next assistant chunk
+// Mutable accumulator for the reducer. Each field tracks a different aspect
+// of the stream so we can produce correct incremental output:
+//
+// - ids:    parts and error keys we've already committed (dedup guard)
+// - tools:  tool parts we've emitted a "start" for but not yet completed
+// - call:   tool call inputs, keyed by msg:call, for enriching permission views
+// - role:   message ID → "assistant" | "user", learned from message.updated
+// - msg:    part ID → message ID
+// - part:   part ID → "assistant" | "reasoning" (text parts only)
+// - text:   part ID → full accumulated text so far
+// - sent:   part ID → byte offset of last flushed text (for incremental output)
+// - visible: part ID → rendered text for an active part after display transforms
+// - end:    part IDs whose time.end has arrived (part is finished)
+// - shell:  shell call ID → chosen transcript source for direct shell calls
+// - echo:   message ID → bash outputs to strip from the next assistant chunk
 type ShellCall = {
   source: "shell" | "tool"
   command?: string
@@ -128,7 +128,7 @@ export function createSessionData(
 }
 
 function modelKey(provider: string, model: string): string {
-  return `${provider}@lgcode/${model}`
+  return `${provider}/${model}`
 }
 
 function formatUsage(
@@ -151,7 +151,7 @@ function formatUsage(
   }
 
   const text =
-    limit && limit > 0 ? `${Locale.number(total)} (${Math.round((total @lgcode/ limit) * 100)}%)` : Locale.number(total)
+    limit && limit > 0 ? `${Locale.number(total)} (${Math.round((total / limit) * 100)}%)` : Locale.number(total)
 
   if (typeof cost === "number" && cost > 0) {
     return `${text} · ${money.format(cost)}`
@@ -335,10 +335,10 @@ function enrichPermission(data: SessionData, request: PermissionRequest): Permis
   }
 }
 
-@lgcode/@lgcode/ Updates the active permission request when the matching tool part gets
-@lgcode/@lgcode/ new input (e.g., a diff). This keeps the permission UI in sync with the
-@lgcode/@lgcode/ tool's evolving state. Only triggers a footer update if the currently
-@lgcode/@lgcode/ displayed permission was the one that changed.
+// Updates the active permission request when the matching tool part gets
+// new input (e.g., a diff). This keeps the permission UI in sync with the
+// tool's evolving state. Only triggers a footer update if the currently
+// displayed permission was the one that changed.
 function syncPermission(data: SessionData, part: ToolPart): FooterOutput | undefined {
   data.call.set(key(part.messageID, part.callID), part.state.input)
   if (data.permissions.length === 0) {
@@ -371,9 +371,9 @@ function syncPermission(data: SessionData, part: ToolPart): FooterOutput | undef
   }
 }
 
-@lgcode/@lgcode/ Question tool replies can complete without a matching question.replied event.
-@lgcode/@lgcode/ When that happens, drop the recovered pending request tied to this tool call so
-@lgcode/@lgcode/ the footer can return to the next blocker or to the prompt.
+// Question tool replies can complete without a matching question.replied event.
+// When that happens, drop the recovered pending request tied to this tool call so
+// the footer can return to the next blocker or to the prompt.
 function syncQuestion(data: SessionData, part: ToolPart): FooterOutput | undefined {
   if (part.tool !== "question") {
     return undefined
@@ -418,12 +418,12 @@ function toolStatus(part: ToolPart): string {
   return "running task"
 }
 
-@lgcode/@lgcode/ Returns true if we can flush this part's text to scrollback.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ We gate on the message role being "assistant" because user-role messages
-@lgcode/@lgcode/ also contain text parts (the user's own input) which we don't want to
-@lgcode/@lgcode/ echo. If we haven't received the message.updated event yet, we return
-@lgcode/@lgcode/ false and the text stays buffered until replay() flushes it.
+// Returns true if we can flush this part's text to scrollback.
+//
+// We gate on the message role being "assistant" because user-role messages
+// also contain text parts (the user's own input) which we don't want to
+// echo. If we haven't received the message.updated event yet, we return
+// false and the text stays buffered until replay() flushes it.
 function ready(data: SessionData, partID: string): boolean {
   const msg = data.msg.get(partID)
   if (!msg) {
@@ -456,9 +456,9 @@ function syncText(data: SessionData, partID: string, next: string) {
   return prev
 }
 
-@lgcode/@lgcode/ Records bash tool output for echo stripping. Some models echo bash output
-@lgcode/@lgcode/ verbatim at the start of their next text part. We save both the raw and
-@lgcode/@lgcode/ trimmed forms so stripEcho() can match either.
+// Records bash tool output for echo stripping. Some models echo bash output
+// verbatim at the start of their next text part. We save both the raw and
+// trimmed forms so stripEcho() can match either.
 function stashEcho(data: SessionData, part: ToolPart) {
   if (part.tool !== "bash") {
     return
@@ -473,14 +473,14 @@ function stashEcho(data: SessionData, part: ToolPart) {
     return
   }
 
-  const text = output.replace(@lgcode/^\n+@lgcode/, "")
+  const text = output.replace(/^\n+/, "")
   if (!text.trim()) {
     return
   }
 
   const set = data.echo.get(part.messageID) ?? new Set<string>()
   set.add(text)
-  const trim = text.replace(@lgcode/\n+$@lgcode/, "")
+  const trim = text.replace(/\n+$/, "")
   if (trim && trim !== text) {
     set.add(trim)
   }
@@ -504,7 +504,7 @@ function stripEcho(data: SessionData, msg: string | undefined, chunk: string): s
       continue
     }
 
-    return chunk.slice(item.length).replace(@lgcode/^\n+@lgcode/, "")
+    return chunk.slice(item.length).replace(/^\n+/, "")
   }
 
   return chunk
@@ -522,14 +522,14 @@ function flushPart(data: SessionData, commits: SessionCommit[], partID: string, 
   const msg = data.msg.get(partID)
 
   if (sent === 0) {
-    chunk = chunk.replace(@lgcode/^\n+@lgcode/, "")
-    @lgcode/@lgcode/ Some models emit a standalone whitespace token before real content.
-    @lgcode/@lgcode/ Keep buffering until we have visible text so scrollback doesn't get a blank row.
+    chunk = chunk.replace(/^\n+/, "")
+    // Some models emit a standalone whitespace token before real content.
+    // Keep buffering until we have visible text so scrollback doesn't get a blank row.
     if (!chunk.trim()) {
       return
     }
     if (kind === "reasoning" && chunk) {
-      chunk = `Thinking: ${chunk.replace(@lgcode/\[REDACTED\]@lgcode/g, "")}`
+      chunk = `Thinking: ${chunk.replace(/\[REDACTED\]/g, "")}`
     }
     if (kind === "assistant" && chunk) {
       chunk = stripEcho(data, msg, chunk)
@@ -576,9 +576,9 @@ function drop(data: SessionData, partID: string) {
   data.end.delete(partID)
 }
 
-@lgcode/@lgcode/ Called when we learn a message's role (from message.updated). Flushes any
-@lgcode/@lgcode/ buffered text parts that were waiting on role confirmation. User-role
-@lgcode/@lgcode/ parts are silently dropped.
+// Called when we learn a message's role (from message.updated). Flushes any
+// buffered text parts that were waiting on role confirmation. User-role
+// parts are silently dropped.
 function replay(data: SessionData, commits: SessionCommit[], messageID: string, role: MessageRole, thinking: boolean) {
   for (const [partID, msg] of data.msg.entries()) {
     if (msg !== messageID || data.ids.has(partID)) {
@@ -740,7 +740,7 @@ function failTool(part: ToolPart, text: string): SessionCommit {
   })
 }
 
-@lgcode/@lgcode/ Emits "interrupted" final entries for all in-flight parts. Called when a turn is aborted.
+// Emits "interrupted" final entries for all in-flight parts. Called when a turn is aborted.
 export function flushInterrupted(data: SessionData, commits: SessionCommit[]) {
   for (const partID of data.part.keys()) {
     if (data.ids.has(partID)) {
@@ -760,16 +760,16 @@ export function flushInterrupted(data: SessionData, commits: SessionCommit[]) {
   }
 }
 
-@lgcode/@lgcode/ The main reducer. Takes one SDK event and returns scrollback commits and
-@lgcode/@lgcode/ footer updates. Called once per event from the stream transport's watch loop.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Event handling follows the SDK event types:
-@lgcode/@lgcode/   message.updated      → learn role, flush buffered parts, track usage
-@lgcode/@lgcode/   message.part.delta   → accumulate text, flush if ready
-@lgcode/@lgcode/   message.part.updated → handle text@lgcode/reasoning@lgcode/tool state transitions
-@lgcode/@lgcode/   permission.*         → manage the permission queue, drive footer view
-@lgcode/@lgcode/   question.*           → manage the question queue, drive footer view
-@lgcode/@lgcode/   session.error        → emit error scrollback entry
+// The main reducer. Takes one SDK event and returns scrollback commits and
+// footer updates. Called once per event from the stream transport's watch loop.
+//
+// Event handling follows the SDK event types:
+//   message.updated      → learn role, flush buffered parts, track usage
+//   message.part.delta   → accumulate text, flush if ready
+//   message.part.updated → handle text/reasoning/tool state transitions
+//   permission.*         → manage the permission queue, drive footer view
+//   question.*           → manage the question queue, drive footer view
+//   session.error        → emit error scrollback entry
 export function reduceSessionData(input: SessionDataInput): SessionDataOutput {
   const commits: SessionCommit[] = []
   const data = input.data

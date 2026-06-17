@@ -1,8 +1,8 @@
-import { MetaProvider, Title } from "@solidjs@lgcode/meta"
-import { Router } from "@solidjs@lgcode/router"
-import { FileRoutes } from "@solidjs@lgcode/start@lgcode/router"
+import { MetaProvider, Title } from "@solidjs/meta"
+import { Router } from "@solidjs/router"
+import { FileRoutes } from "@solidjs/start/router"
 import { Suspense } from "solid-js"
-import ".@lgcode/app.css"
+import "./app.css"
 
 export default function App() {
   return (
@@ -10,12 +10,12 @@ export default function App() {
       explicitLinks={true}
       root={(props) => (
         <MetaProvider>
-          <Title>opencode support<@lgcode/Title>
-          <Suspense>{props.children}<@lgcode/Suspense>
-        <@lgcode/MetaProvider>
+          <Title>opencode support</Title>
+          <Suspense>{props.children}</Suspense>
+        </MetaProvider>
       )}
     >
-      <FileRoutes @lgcode/>
-    <@lgcode/Router>
+      <FileRoutes />
+    </Router>
   )
 }

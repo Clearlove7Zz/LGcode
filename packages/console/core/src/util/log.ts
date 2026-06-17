@@ -1,4 +1,4 @@
-import { Context } from "..@lgcode/context"
+import { Context } from "../context"
 
 export namespace Log {
   const ctx = Context.create<{

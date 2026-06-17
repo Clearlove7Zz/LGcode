@@ -1,11 +1,11 @@
 import { Buffer } from "node:buffer"
 import { timingSafeEqual } from "node:crypto"
 import { Effect, Schema } from "effect"
-import * as Semaphore from "effect@lgcode/Semaphore"
-import { HttpRouter, HttpServerRequest, HttpServerResponse } from "effect@lgcode/unstable@lgcode/http"
-import { Resource } from "sst@lgcode/resource"
-import { Ingest } from ".@lgcode/ingest"
-import { isShuttingDown } from ".@lgcode/shutdown"
+import * as Semaphore from "effect/Semaphore"
+import { HttpRouter, HttpServerRequest, HttpServerResponse } from "effect/unstable/http"
+import { Resource } from "sst/resource"
+import { Ingest } from "./ingest"
+import { isShuttingDown } from "./shutdown"
 
 const MAX_CONCURRENT_INGEST_REQUESTS = 8
 
@@ -20,9 +20,9 @@ export const Routes = HttpRouter.use((router) =>
 
     yield* Effect.all(
       [
-        router.add("GET", "@lgcode/health", () => json(200, { ok: true })),
-        router.add("GET", "@lgcode/ready", () => json(isShuttingDown() ? 503 : 200, { ok: !isShuttingDown() })),
-        router.add("POST", "@lgcode/", ingestRequests.withPermit(ingest(ingestService))),
+        router.add("GET", "/health", () => json(200, { ok: true })),
+        router.add("GET", "/ready", () => json(isShuttingDown() ? 503 : 200, { ok: !isShuttingDown() })),
+        router.add("POST", "/", ingestRequests.withPermit(ingest(ingestService))),
       ],
       { discard: true },
     )

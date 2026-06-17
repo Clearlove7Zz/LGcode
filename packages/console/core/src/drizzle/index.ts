@@ -1,12 +1,12 @@
-import { drizzle } from "drizzle-orm@lgcode/planetscale-serverless"
-import { Resource } from "@lgcode/console-resource"
+import { drizzle } from "drizzle-orm/planetscale-serverless"
+import { Resource } from "@opencode@lgcode/console-resource"
 export * from "drizzle-orm"
-import { Client } from "@planetscale@lgcode/database"
+import { Client } from "@planetscale/database"
 
-import { MySqlTransaction, type MySqlTransactionConfig } from "drizzle-orm@lgcode/mysql-core"
-import type { PlanetScalePreparedQueryHKT, PlanetscaleQueryResultHKT } from "drizzle-orm@lgcode/planetscale-serverless"
-import { Context } from "..@lgcode/context"
-import { memo } from "..@lgcode/util@lgcode/memo"
+import { MySqlTransaction, type MySqlTransactionConfig } from "drizzle-orm/mysql-core"
+import type { PlanetScalePreparedQueryHKT, PlanetscaleQueryResultHKT } from "drizzle-orm/planetscale-serverless"
+import { Context } from "../context"
+import { memo } from "../util/memo"
 
 export namespace Database {
   export type Transaction = MySqlTransaction<

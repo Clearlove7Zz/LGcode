@@ -1,10 +1,10 @@
-export * as PermissionV1 from ".@lgcode/permission"
+export * as PermissionV1 from "./permission"
 
 import { Schema } from "effect"
-import { ProjectV2 } from "..@lgcode/project"
-import { withStatics } from "..@lgcode/schema"
-import { SessionSchema } from "..@lgcode/session@lgcode/schema"
-import { Identifier } from "..@lgcode/util@lgcode/identifier"
+import { ProjectV2 } from "../project"
+import { withStatics } from "../schema"
+import { SessionSchema } from "../session/schema"
+import { Identifier } from "../util/identifier"
 
 export const ID = Schema.String.check(Schema.isStartsWith("per")).pipe(
   Schema.brand("PermissionID"),

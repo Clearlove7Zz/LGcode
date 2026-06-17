@@ -1,9 +1,9 @@
 import { and, asc, eq, inArray, or } from "drizzle-orm"
 import { Effect, Layer } from "effect"
-import * as Context from "effect@lgcode/Context"
-import { DatabaseError, DrizzleClient } from "..@lgcode/database"
-import { geoStat } from "..@lgcode/database@lgcode/schema"
-import { RETIRED_STAT_MODELS, RETIRED_STAT_PROVIDERS } from ".@lgcode/model-normalization"
+import * as Context from "effect/Context"
+import { DatabaseError, DrizzleClient } from "../database"
+import { geoStat } from "../database/schema"
+import { RETIRED_STAT_MODELS, RETIRED_STAT_PROVIDERS } from "./model-normalization"
 import {
   chunks,
   collapseRows,
@@ -15,7 +15,7 @@ import {
   toStatBaseRow,
   UPSERT_CHUNK_SIZE,
   type StatBaseAggregate,
-} from ".@lgcode/stat"
+} from "./stat"
 
 export type GeoStatRow = typeof geoStat.$inferInsert
 export type GeoStatAggregate = StatBaseAggregate & {
@@ -56,7 +56,7 @@ export declare namespace GeoStatRepo {
   }
 }
 
-export class GeoStatRepo extends Context.Service<GeoStatRepo, GeoStatRepo.Service>()("@lgcode/stats@lgcode/GeoStatRepo") {
+export class GeoStatRepo extends Context.Service<GeoStatRepo, GeoStatRepo.Service>()("@opencode/stats/GeoStatRepo") {
   static readonly layer: Layer.Layer<GeoStatRepo, never, DrizzleClient> = Layer.effect(
     GeoStatRepo,
     Effect.gen(function* () {

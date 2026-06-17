@@ -1,10 +1,10 @@
 import { describe, expect } from "bun:test"
 import { Effect, Schema, Stream } from "effect"
-import { LLM } from "..@lgcode/src"
-import { Route, Endpoint, LLMClient, Protocol, type FramingDef } from "..@lgcode/src@lgcode/route"
-import { Model } from "..@lgcode/src@lgcode/schema"
-import { testEffect } from ".@lgcode/lib@lgcode/effect"
-import { dynamicResponse } from ".@lgcode/lib@lgcode/http"
+import { LLM } from "../src"
+import { Route, Endpoint, LLMClient, Protocol, type FramingDef } from "../src/route"
+import { Model } from "../src/schema"
+import { testEffect } from "./lib/effect"
+import { dynamicResponse } from "./lib/http"
 
 const updateModel = (model: Model, patch: Partial<Model.Input>) => Model.update(model, patch)
 
@@ -38,7 +38,7 @@ const fakeFraming: FramingDef<FakeEvent> = {
     ).pipe(Stream.flatMap(Stream.fromIterable)),
 }
 
-const raiseEvent = (event: FakeEvent): import("..@lgcode/src@lgcode/schema").LLMEvent =>
+const raiseEvent = (event: FakeEvent): import("../src/schema").LLMEvent =>
   event.type === "finish"
     ? { type: "finish", reason: event.reason }
     : { type: "text-delta", id: "text-0", text: event.text }
@@ -70,18 +70,18 @@ const fakeProtocol = Protocol.make<FakeBody, FakeEvent, FakeEvent, void>({
 const fake = Route.make({
   id: "fake",
   protocol: fakeProtocol,
-  endpoint: Endpoint.path("@lgcode/chat"),
+  endpoint: Endpoint.path("/chat"),
   framing: fakeFraming,
 })
-const configuredFake = fake.with({ endpoint: { baseURL: "https:@lgcode/@lgcode/fake.local" } })
+const configuredFake = fake.with({ endpoint: { baseURL: "https://fake.local" } })
 
 const gemini = Route.make({
   id: "gemini-fake",
   protocol: fakeProtocol,
-  endpoint: Endpoint.path("@lgcode/chat"),
+  endpoint: Endpoint.path("/chat"),
   framing: fakeFraming,
 })
-const configuredGemini = gemini.with({ endpoint: { baseURL: "https:@lgcode/@lgcode/fake.local" } })
+const configuredGemini = gemini.with({ endpoint: { baseURL: "https://fake.local" } })
 
 const request = LLM.request({
   id: "req_1",
@@ -131,7 +131,7 @@ describe("llm route", () => {
 
   it.effect("builds models from configured routes", () =>
     Effect.gen(function* () {
-      const configured = fake.with({ provider: "fake-provider", endpoint: { baseURL: "https:@lgcode/@lgcode/fake.local" } })
+      const configured = fake.with({ provider: "fake-provider", endpoint: { baseURL: "https://fake.local" } })
 
       expect(configured.model({ id: "fake-model" })).toMatchObject({
         provider: "fake-provider",
@@ -150,7 +150,7 @@ describe("llm route", () => {
             from: () => Effect.succeed({ body: "late-default" }),
           },
         }),
-        endpoint: Endpoint.path("@lgcode/chat", { baseURL: "https:@lgcode/@lgcode/fake.local" }),
+        endpoint: Endpoint.path("/chat", { baseURL: "https://fake.local" }),
         framing: fakeFraming,
       })
 

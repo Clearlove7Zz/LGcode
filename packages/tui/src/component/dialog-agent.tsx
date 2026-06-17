@@ -1,7 +1,7 @@
 import { createMemo } from "solid-js"
-import { useLocal } from "..@lgcode/context@lgcode/local"
-import { DialogSelect } from "..@lgcode/ui@lgcode/dialog-select"
-import { useDialog } from "..@lgcode/ui@lgcode/dialog"
+import { useLocal } from "../context/local"
+import { DialogSelect } from "../ui/dialog-select"
+import { useDialog } from "../ui/dialog"
 
 export function DialogAgent() {
   const local = useLocal()
@@ -26,6 +26,6 @@ export function DialogAgent() {
         local.agent.set(option.value)
         dialog.clear()
       }}
-    @lgcode/>
+    />
   )
 }

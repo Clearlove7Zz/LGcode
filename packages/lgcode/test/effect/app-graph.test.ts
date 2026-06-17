@@ -1,12 +1,12 @@
 import { describe, expect, test } from "bun:test"
 import { Cause, Context, Effect, Exit, Layer } from "effect"
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
 
 const { buildLayer: build, group, replace, replaceWithNode } = LayerNode
 const node = LayerNode.make
 
-class Value extends Context.Service<Value, { readonly value: string }>()("test@lgcode/Value") {}
-class Greeting extends Context.Service<Greeting, { readonly text: string }>()("test@lgcode/Greeting") {}
+class Value extends Context.Service<Value, { readonly value: string }>()("test/Value") {}
+class Greeting extends Context.Service<Greeting, { readonly text: string }>()("test/Greeting") {}
 
 const value = LayerNode.make(Layer.succeed(Value, Value.of({ value: "production" })), [])
 const greetingImplementation = Layer.effect(
@@ -17,7 +17,7 @@ const greetingImplementation = Layer.effect(
 )
 const greeting = LayerNode.make(greetingImplementation, [value])
 
-@lgcode/@lgcode/ @ts-expect-error Greeting requires Value
+// @ts-expect-error Greeting requires Value
 LayerNode.make(greetingImplementation, [])
 
 describe("app graph", () => {
@@ -40,9 +40,9 @@ describe("app graph", () => {
   })
 
   test("acquires a shared dependency once", async () => {
-    class Shared extends Context.Service<Shared, { readonly value: string }>()("test@lgcode/Shared") {}
-    class Left extends Context.Service<Left, { readonly value: string }>()("test@lgcode/Left") {}
-    class Right extends Context.Service<Right, { readonly value: string }>()("test@lgcode/Right") {}
+    class Shared extends Context.Service<Shared, { readonly value: string }>()("test/Shared") {}
+    class Left extends Context.Service<Left, { readonly value: string }>()("test/Left") {}
+    class Right extends Context.Service<Right, { readonly value: string }>()("test/Right") {}
     let acquisitions = 0
     const shared = node(
       Layer.effect(
@@ -82,8 +82,8 @@ describe("app graph", () => {
   })
 
   test("applies a replacement to every transitive consumer", async () => {
-    class Left extends Context.Service<Left, { readonly value: string }>()("test@lgcode/ReplacementLeft") {}
-    class Right extends Context.Service<Right, { readonly value: string }>()("test@lgcode/ReplacementRight") {}
+    class Left extends Context.Service<Left, { readonly value: string }>()("test/ReplacementLeft") {}
+    class Right extends Context.Service<Right, { readonly value: string }>()("test/ReplacementRight") {}
     const left = node(
       Layer.effect(
         Left,
@@ -124,7 +124,7 @@ describe("app graph", () => {
   })
 
   test("groups expose every selected service", async () => {
-    class Count extends Context.Service<Count, { readonly value: number }>()("test@lgcode/Count") {}
+    class Count extends Context.Service<Count, { readonly value: number }>()("test/Count") {}
     const count = node(Layer.succeed(Count, Count.of({ value: 3 })), [])
     const result = Effect.gen(function* () {
       return { text: (yield* Value).value, count: (yield* Count).value }
@@ -139,7 +139,7 @@ describe("app graph", () => {
 
   test("builds replacements with their own dependencies", async () => {
     class ReplacementConfig extends Context.Service<ReplacementConfig, { readonly value: string }>()(
-      "test@lgcode/ReplacementConfig",
+      "test/ReplacementConfig",
     ) {}
     const replacementConfig = node(Layer.succeed(ReplacementConfig, ReplacementConfig.of({ value: "replacement" })), [])
     const replacement = node(

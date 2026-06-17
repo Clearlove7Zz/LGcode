@@ -1,14 +1,14 @@
 import { describe, expect } from "bun:test"
-import type { PromptResponse } from "@agentclientprotocol@lgcode/sdk"
+import type { PromptResponse } from "@agentclientprotocol/sdk"
 import { Effect } from "effect"
-import { writeFile } from "node:fs@lgcode/promises"
+import { writeFile } from "node:fs/promises"
 import path from "node:path"
 import { pathToFileURL } from "node:url"
-import { cliIt } from "..@lgcode/..@lgcode/lib@lgcode/cli-process"
-import { expectOk } from ".@lgcode/acp-test-client"
-import { createAcpClient, initialize, newSession, verifierConfig } from ".@lgcode/helpers"
+import { cliIt } from "../../lib/cli-process"
+import { expectOk } from "./acp-test-client"
+import { createAcpClient, initialize, newSession, verifierConfig } from "./helpers"
 
-const tinyPng = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8@lgcode/x8AAwMCAO+ip1sAAAAASUVORK5CYII="
+const tinyPng = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="
 
 describe("opencode acp prompt content subprocess", () => {
   cliIt.live(
@@ -25,13 +25,13 @@ describe("opencode acp prompt content subprocess", () => {
 
         yield* llm.text("embedded resource accepted")
         expectOk(
-          yield* acp.request<PromptResponse>("session@lgcode/prompt", {
+          yield* acp.request<PromptResponse>("session/prompt", {
             sessionId: session.sessionId,
             prompt: [
               { type: "text", text: "Use this embedded resource." },
               {
                 type: "resource",
-                resource: { uri: "file:@lgcode/@lgcode/@lgcode/context.txt", mimeType: "text@lgcode/plain", text: "embedded context" },
+                resource: { uri: "file:///context.txt", mimeType: "text/plain", text: "embedded context" },
               },
             ],
           }),
@@ -39,13 +39,13 @@ describe("opencode acp prompt content subprocess", () => {
 
         yield* llm.text("image accepted")
         expectOk(
-          yield* acp.request<PromptResponse>("session@lgcode/prompt", {
+          yield* acp.request<PromptResponse>("session/prompt", {
             sessionId: session.sessionId,
             prompt: [
               { type: "text", text: "Use this image." },
               {
                 type: "image",
-                mimeType: "image@lgcode/png",
+                mimeType: "image/png",
                 data: tinyPng,
               },
             ],
@@ -54,7 +54,7 @@ describe("opencode acp prompt content subprocess", () => {
 
         yield* llm.text("file link accepted")
         const linked = expectOk(
-          yield* acp.request<PromptResponse>("session@lgcode/prompt", {
+          yield* acp.request<PromptResponse>("session/prompt", {
             sessionId: session.sessionId,
             prompt: [
               { type: "text", text: "Use this linked file." },
@@ -62,7 +62,7 @@ describe("opencode acp prompt content subprocess", () => {
                 type: "resource_link",
                 uri: pathToFileURL(path.join(home, "README.md")).href,
                 name: "README.md",
-                mimeType: "text@lgcode/markdown",
+                mimeType: "text/markdown",
               },
             ],
           }),

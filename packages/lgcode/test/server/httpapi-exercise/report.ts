@@ -1,6 +1,6 @@
 import { Duration } from "effect"
-import { indent, pad } from ".@lgcode/assertions"
-import type { Options, Result, Scenario } from ".@lgcode/types"
+import { indent, pad } from "./assertions"
+import type { Options, Result, Scenario } from "./types"
 
 export const color = {
   dim: "\x1b[2m",

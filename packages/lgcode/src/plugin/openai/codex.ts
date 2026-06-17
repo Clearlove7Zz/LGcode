@@ -1,15 +1,15 @@
-import type { Hooks, PluginInput } from "@lgcode/plugin"
-import { InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
-import { OAUTH_DUMMY_KEY } from "..@lgcode/..@lgcode/auth"
+import type { Hooks, PluginInput } from "@opencode@lgcode/plugin"
+import { InstallationVersion } from "@opencode@lgcode/core/installation/version"
+import { OAUTH_DUMMY_KEY } from "../../auth"
 import os from "os"
-import { setTimeout as sleep } from "node:timers@lgcode/promises"
+import { setTimeout as sleep } from "node:timers/promises"
 import { createServer } from "http"
-import { OpenAIWebSocketPool } from ".@lgcode/ws-pool"
-import { escapeHtml } from "@@lgcode/util@lgcode/html"
+import { OpenAIWebSocketPool } from "./ws-pool"
+import { escapeHtml } from "@/util/html"
 
 const CLIENT_ID = "app_EMoamEEZ73f0CkXaXp7hrann"
-const ISSUER = "https:@lgcode/@lgcode/auth.openai.com"
-const CODEX_API_ENDPOINT = "https:@lgcode/@lgcode/chatgpt.com@lgcode/backend-api@lgcode/codex@lgcode/responses"
+const ISSUER = "https://auth.openai.com"
+const CODEX_API_ENDPOINT = "https://chatgpt.com/backend-api/codex/responses"
 const OAUTH_PORT = 1455
 const OAUTH_POLLING_SAFETY_MARGIN_MS = 3000
 const ALLOWED_MODELS = new Set(["gpt-5.5", "gpt-5.3-codex-spark", "gpt-5.4", "gpt-5.4-mini"])
@@ -31,14 +31,14 @@ async function generatePKCE(): Promise<PkceCodes> {
 function base64UrlEncode(buffer: ArrayBuffer): string {
   const bytes = new Uint8Array(buffer)
   const binary = String.fromCharCode(...bytes)
-  return btoa(binary).replace(@lgcode/\+@lgcode/g, "-").replace(@lgcode/\@lgcode/@lgcode/g, "_").replace(@lgcode/=+$@lgcode/, "")
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "")
 }
 
 export interface IdTokenClaims {
   chatgpt_account_id?: string
   organizations?: Array<{ id: string }>
   email?: string
-  "https:@lgcode/@lgcode/api.openai.com@lgcode/auth"?: {
+  "https://api.openai.com/auth"?: {
     chatgpt_account_id?: string
   }
 }
@@ -56,7 +56,7 @@ export function parseJwtClaims(token: string): IdTokenClaims | undefined {
 export function extractAccountIdFromClaims(claims: IdTokenClaims): string | undefined {
   return (
     claims.chatgpt_account_id ||
-    claims["https:@lgcode/@lgcode/api.openai.com@lgcode/auth"]?.chatgpt_account_id ||
+    claims["https://api.openai.com/auth"]?.chatgpt_account_id ||
     claims.organizations?.[0]?.id
   )
 }
@@ -87,7 +87,7 @@ function buildAuthorizeUrl(redirectUri: string, pkce: PkceCodes, state: string):
     state,
     originator: "opencode",
   })
-  return `${ISSUER}@lgcode/oauth@lgcode/authorize?${params.toString()}`
+  return `${ISSUER}/oauth/authorize?${params.toString()}`
 }
 
 interface TokenResponse {
@@ -104,9 +104,9 @@ interface CodexAuthPluginOptions {
 }
 
 async function exchangeCodeForTokens(code: string, redirectUri: string, pkce: PkceCodes): Promise<TokenResponse> {
-  const response = await fetch(`${ISSUER}@lgcode/oauth@lgcode/token`, {
+  const response = await fetch(`${ISSUER}/oauth/token`, {
     method: "POST",
-    headers: { "Content-Type": "application@lgcode/x-www-form-urlencoded" },
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({
       grant_type: "authorization_code",
       code,
@@ -122,9 +122,9 @@ async function exchangeCodeForTokens(code: string, redirectUri: string, pkce: Pk
 }
 
 async function refreshAccessToken(refreshToken: string, issuer = ISSUER): Promise<TokenResponse> {
-  const response = await fetch(`${issuer}@lgcode/oauth@lgcode/token`, {
+  const response = await fetch(`${issuer}/oauth/token`, {
     method: "POST",
-    headers: { "Content-Type": "application@lgcode/x-www-form-urlencoded" },
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({
       grant_type: "refresh_token",
       refresh_token: refreshToken,
@@ -140,7 +140,7 @@ async function refreshAccessToken(refreshToken: string, issuer = ISSUER): Promis
 const HTML_SUCCESS = `<!doctype html>
 <html>
   <head>
-    <title>OpenCode - Codex Authorization Successful<@lgcode/title>
+    <title>OpenCode - Codex Authorization Successful</title>
     <style>
       body {
         font-family:
@@ -166,23 +166,23 @@ const HTML_SUCCESS = `<!doctype html>
       p {
         color: #b7b1b1;
       }
-    <@lgcode/style>
-  <@lgcode/head>
+    </style>
+  </head>
   <body>
     <div class="container">
-      <h1>Authorization Successful<@lgcode/h1>
-      <p>You can close this window and return to OpenCode.<@lgcode/p>
-    <@lgcode/div>
+      <h1>Authorization Successful</h1>
+      <p>You can close this window and return to OpenCode.</p>
+    </div>
     <script>
       setTimeout(() => window.close(), 2000)
-    <@lgcode/script>
-  <@lgcode/body>
-<@lgcode/html>`
+    </script>
+  </body>
+</html>`
 
 export const renderOAuthError = (error: string) => `<!doctype html>
 <html>
   <head>
-    <title>OpenCode - Codex Authorization Failed<@lgcode/title>
+    <title>OpenCode - Codex Authorization Failed</title>
     <style>
       body {
         font-family:
@@ -216,16 +216,16 @@ export const renderOAuthError = (error: string) => `<!doctype html>
         background: #3c140d;
         border-radius: 0.5rem;
       }
-    <@lgcode/style>
-  <@lgcode/head>
+    </style>
+  </head>
   <body>
     <div class="container">
-      <h1>Authorization Failed<@lgcode/h1>
-      <p>An error occurred during authorization.<@lgcode/p>
-      <div class="error">${escapeHtml(error)}<@lgcode/div>
-    <@lgcode/div>
-  <@lgcode/body>
-<@lgcode/html>`
+      <h1>Authorization Failed</h1>
+      <p>An error occurred during authorization.</p>
+      <div class="error">${escapeHtml(error)}</div>
+    </div>
+  </body>
+</html>`
 
 interface PendingOAuth {
   pkce: PkceCodes
@@ -239,13 +239,13 @@ let pendingOAuth: PendingOAuth | undefined
 
 async function startOAuthServer(): Promise<{ port: number; redirectUri: string }> {
   if (oauthServer) {
-    return { port: OAUTH_PORT, redirectUri: `http:@lgcode/@lgcode/localhost:${OAUTH_PORT}@lgcode/auth@lgcode/callback` }
+    return { port: OAUTH_PORT, redirectUri: `http://localhost:${OAUTH_PORT}/auth/callback` }
   }
 
   oauthServer = createServer((req, res) => {
-    const url = new URL(req.url || "@lgcode/", `http:@lgcode/@lgcode/localhost:${OAUTH_PORT}`)
+    const url = new URL(req.url || "/", `http://localhost:${OAUTH_PORT}`)
 
-    if (url.pathname === "@lgcode/auth@lgcode/callback") {
+    if (url.pathname === "/auth/callback") {
       const code = url.searchParams.get("code")
       const state = url.searchParams.get("state")
       const error = url.searchParams.get("error")
@@ -255,7 +255,7 @@ async function startOAuthServer(): Promise<{ port: number; redirectUri: string }
         const errorMsg = errorDescription || error
         pendingOAuth?.reject(new Error(errorMsg))
         pendingOAuth = undefined
-        res.writeHead(200, { "Content-Type": "text@lgcode/html; charset=utf-8" })
+        res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" })
         res.end(renderOAuthError(errorMsg))
         return
       }
@@ -264,7 +264,7 @@ async function startOAuthServer(): Promise<{ port: number; redirectUri: string }
         const errorMsg = "Missing authorization code"
         pendingOAuth?.reject(new Error(errorMsg))
         pendingOAuth = undefined
-        res.writeHead(400, { "Content-Type": "text@lgcode/html; charset=utf-8" })
+        res.writeHead(400, { "Content-Type": "text/html; charset=utf-8" })
         res.end(renderOAuthError(errorMsg))
         return
       }
@@ -273,7 +273,7 @@ async function startOAuthServer(): Promise<{ port: number; redirectUri: string }
         const errorMsg = "Invalid state - potential CSRF attack"
         pendingOAuth?.reject(new Error(errorMsg))
         pendingOAuth = undefined
-        res.writeHead(400, { "Content-Type": "text@lgcode/html; charset=utf-8" })
+        res.writeHead(400, { "Content-Type": "text/html; charset=utf-8" })
         res.end(renderOAuthError(errorMsg))
         return
       }
@@ -281,16 +281,16 @@ async function startOAuthServer(): Promise<{ port: number; redirectUri: string }
       const current = pendingOAuth
       pendingOAuth = undefined
 
-      exchangeCodeForTokens(code, `http:@lgcode/@lgcode/localhost:${OAUTH_PORT}@lgcode/auth@lgcode/callback`, current.pkce)
+      exchangeCodeForTokens(code, `http://localhost:${OAUTH_PORT}/auth/callback`, current.pkce)
         .then((tokens) => current.resolve(tokens))
         .catch((err) => current.reject(err))
 
-      res.writeHead(200, { "Content-Type": "text@lgcode/html; charset=utf-8" })
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" })
       res.end(HTML_SUCCESS)
       return
     }
 
-    if (url.pathname === "@lgcode/cancel") {
+    if (url.pathname === "/cancel") {
       pendingOAuth?.reject(new Error("Login cancelled"))
       pendingOAuth = undefined
       res.writeHead(200)
@@ -309,7 +309,7 @@ async function startOAuthServer(): Promise<{ port: number; redirectUri: string }
     oauthServer!.on("error", reject)
   })
 
-  return { port: OAUTH_PORT, redirectUri: `http:@lgcode/@lgcode/localhost:${OAUTH_PORT}@lgcode/auth@lgcode/callback` }
+  return { port: OAUTH_PORT, redirectUri: `http://localhost:${OAUTH_PORT}/auth/callback` }
 }
 
 function stopOAuthServer() {
@@ -329,7 +329,7 @@ function waitForOAuthCallback(pkce: PkceCodes, state: string): Promise<TokenResp
         }
       },
       5 * 60 * 1000,
-    ) @lgcode/@lgcode/ 5 minute timeout
+    ) // 5 minute timeout
 
     pendingOAuth = {
       pkce,
@@ -370,7 +370,7 @@ export async function CodexAuthPlugin(input: PluginInput, options: CodexAuthPlug
           Object.entries(provider.models)
             .filter(([, model]) => {
               if (ALLOWED_MODELS.has(model.api.id)) return true
-              const match = model.api.id.match(@lgcode/^gpt-(\d+\.\d+)@lgcode/)
+              const match = model.api.id.match(/^gpt-(\d+\.\d+)/)
               return match ? parseFloat(match[1]) > 5.4 : false
             })
             .map(([modelID, model]) => [
@@ -489,7 +489,7 @@ export async function CodexAuthPlugin(input: PluginInput, options: CodexAuthPlug
                 ? requestInput
                 : new URL(typeof requestInput === "string" ? requestInput : requestInput.url)
             const url =
-              parsed.pathname.includes("@lgcode/v1@lgcode/responses") || parsed.pathname.includes("@lgcode/chat@lgcode/completions")
+              parsed.pathname.includes("/v1/responses") || parsed.pathname.includes("/chat/completions")
                 ? new URL(codexApiEndpoint)
                 : parsed
 
@@ -497,14 +497,14 @@ export async function CodexAuthPlugin(input: PluginInput, options: CodexAuthPlug
               ...init,
               headers,
             }
-            if (websocketFetch && parsed.pathname.endsWith("@lgcode/responses")) return websocketFetch(url, requestInit)
+            if (websocketFetch && parsed.pathname.endsWith("/responses")) return websocketFetch(url, requestInit)
             return fetch(url, OpenAIWebSocketPool.withoutInternalHeaders(requestInit))
           },
         }
       },
       methods: [
         {
-          label: "ChatGPT Pro@lgcode/Plus (browser)",
+          label: "ChatGPT Pro/Plus (browser)",
           type: "oauth",
           authorize: async () => {
             const { redirectUri } = await startOAuthServer()
@@ -534,14 +534,14 @@ export async function CodexAuthPlugin(input: PluginInput, options: CodexAuthPlug
           },
         },
         {
-          label: "ChatGPT Pro@lgcode/Plus (headless)",
+          label: "ChatGPT Pro/Plus (headless)",
           type: "oauth",
           authorize: async () => {
-            const deviceResponse = await fetch(`${ISSUER}@lgcode/api@lgcode/accounts@lgcode/deviceauth@lgcode/usercode`, {
+            const deviceResponse = await fetch(`${ISSUER}/api/accounts/deviceauth/usercode`, {
               method: "POST",
               headers: {
-                "Content-Type": "application@lgcode/json",
-                "User-Agent": `opencode@lgcode/${InstallationVersion}`,
+                "Content-Type": "application/json",
+                "User-Agent": `opencode/${InstallationVersion}`,
               },
               body: JSON.stringify({ client_id: CLIENT_ID }),
             })
@@ -556,16 +556,16 @@ export async function CodexAuthPlugin(input: PluginInput, options: CodexAuthPlug
             const interval = Math.max(parseInt(deviceData.interval) || 5, 1) * 1000
 
             return {
-              url: `${ISSUER}@lgcode/codex@lgcode/device`,
+              url: `${ISSUER}/codex/device`,
               instructions: `Enter code: ${deviceData.user_code}`,
               method: "auto" as const,
               async callback() {
                 while (true) {
-                  const response = await fetch(`${ISSUER}@lgcode/api@lgcode/accounts@lgcode/deviceauth@lgcode/token`, {
+                  const response = await fetch(`${ISSUER}/api/accounts/deviceauth/token`, {
                     method: "POST",
                     headers: {
-                      "Content-Type": "application@lgcode/json",
-                      "User-Agent": `opencode@lgcode/${InstallationVersion}`,
+                      "Content-Type": "application/json",
+                      "User-Agent": `opencode/${InstallationVersion}`,
                     },
                     body: JSON.stringify({
                       device_auth_id: deviceData.device_auth_id,
@@ -579,13 +579,13 @@ export async function CodexAuthPlugin(input: PluginInput, options: CodexAuthPlug
                       code_verifier: string
                     }
 
-                    const tokenResponse = await fetch(`${ISSUER}@lgcode/oauth@lgcode/token`, {
+                    const tokenResponse = await fetch(`${ISSUER}/oauth/token`, {
                       method: "POST",
-                      headers: { "Content-Type": "application@lgcode/x-www-form-urlencoded" },
+                      headers: { "Content-Type": "application/x-www-form-urlencoded" },
                       body: new URLSearchParams({
                         grant_type: "authorization_code",
                         code: data.authorization_code,
-                        redirect_uri: `${ISSUER}@lgcode/deviceauth@lgcode/callback`,
+                        redirect_uri: `${ISSUER}/deviceauth/callback`,
                         client_id: CLIENT_ID,
                         code_verifier: data.code_verifier,
                       }).toString(),
@@ -625,16 +625,16 @@ export async function CodexAuthPlugin(input: PluginInput, options: CodexAuthPlug
     "chat.headers": async (input, output) => {
       if (input.model.providerID !== "openai") return
       output.headers.originator = "opencode"
-      output.headers["User-Agent"] = `opencode@lgcode/${InstallationVersion} (${os.platform()} ${os.release()}; ${os.arch()})`
+      output.headers["User-Agent"] = `opencode/${InstallationVersion} (${os.platform()} ${os.release()}; ${os.arch()})`
       output.headers["session-id"] = input.sessionID
-      @lgcode/@lgcode/ Temporary fetch-layer hack: title generation currently shares the conversation
-      @lgcode/@lgcode/ session ID, so the OpenAI plugin marks it for HTTP fallback until transport
-      @lgcode/@lgcode/ context can be passed directly instead of smuggled through headers.
+      // Temporary fetch-layer hack: title generation currently shares the conversation
+      // session ID, so the OpenAI plugin marks it for HTTP fallback until transport
+      // context can be passed directly instead of smuggled through headers.
       if (websocketFetchInstalled && input.agent === "title") output.headers[OpenAIWebSocketPool.TITLE_HEADER] = "true"
     },
     "chat.params": async (input, output) => {
       if (input.model.providerID !== "openai") return
-      @lgcode/@lgcode/ Match codex cli
+      // Match codex cli
       output.maxOutputTokens = undefined
     },
   }

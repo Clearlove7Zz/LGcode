@@ -1,8 +1,8 @@
 import { type ComponentProps, splitProps } from "solid-js"
-import ".@lgcode/textarea-v2.css"
+import "./textarea-v2.css"
 
 export interface TextareaV2Props extends ComponentProps<"textarea"> {
-  @lgcode/** Error styling for the field and value text. *@lgcode/
+  /** Error styling for the field and value text. */
   invalid?: boolean
 }
 
@@ -25,7 +25,7 @@ export function TextareaV2(props: TextareaV2Props) {
         disabled={local.disabled}
         aria-invalid={local.invalid ? true : undefined}
         data-slot="textarea-v2-textarea"
-      @lgcode/>
-    <@lgcode/div>
+      />
+    </div>
   )
 }

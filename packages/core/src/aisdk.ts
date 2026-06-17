@@ -1,18 +1,18 @@
-export * as AISDK from ".@lgcode/aisdk"
+export * as AISDK from "./aisdk"
 
-import type { LanguageModelV3 } from "@ai-sdk@lgcode/provider"
+import type { LanguageModelV3 } from "@ai-sdk/provider"
 import { Cause, Context, Effect, Layer, Schema } from "effect"
-import { ModelV2 } from ".@lgcode/model"
-import { EventV2 } from ".@lgcode/event"
-import { PluginV2 } from ".@lgcode/plugin"
-import { ProviderV2 } from ".@lgcode/provider"
+import { ModelV2 } from "./model"
+import { EventV2 } from "./event"
+import { PluginV2 } from "./plugin"
+import { ProviderV2 } from "./provider"
 
 type SDK = any
 
 function wrapSSE(res: Response, ms: number, ctl: AbortController) {
   if (typeof ms !== "number" || ms <= 0) return res
   if (!res.body) return res
-  if (!res.headers.get("content-type")?.includes("text@lgcode/event-stream")) return res
+  if (!res.headers.get("content-type")?.includes("text/event-stream")) return res
 
   const reader = res.body.getReader()
   const body = new ReadableStream<Uint8Array>({
@@ -83,7 +83,7 @@ function prepareOptions(model: ModelV2.Info, pkg: string) {
     if (abortSignals.length > 1) opts.signal = AbortSignal.any(abortSignals)
 
     if (
-      (pkg === "@ai-sdk@lgcode/openai" || pkg === "@ai-sdk@lgcode/azure" || pkg === "@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle") &&
+      (pkg === "@ai-sdk/openai" || pkg === "@ai-sdk/azure" || pkg === "@ai-sdk/amazon-bedrock/mantle") &&
       opts.body &&
       opts.method === "POST"
     ) {
@@ -120,7 +120,7 @@ export interface Interface {
   readonly language: (model: ModelV2.Info) => Effect.Effect<LanguageModelV3, InitError>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/AISDK") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/v2/AISDK") {}
 
 export const layer = Layer.effect(
   Service,
@@ -131,7 +131,7 @@ export const layer = Layer.effect(
 
     return Service.of({
       language: Effect.fn("AISDK.language")(function* (model) {
-        const key = `${model.providerID}@lgcode/${model.id}@lgcode/${model.request.variant ?? "default"}`
+        const key = `${model.providerID}/${model.id}/${model.request.variant ?? "default"}`
         const existing = languages.get(key)
         if (existing) return existing
         if (model.api.type !== "aisdk")

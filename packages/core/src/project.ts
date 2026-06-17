@@ -1,15 +1,15 @@
-export * as ProjectV2 from ".@lgcode/project"
-export * as Project from ".@lgcode/project"
+export * as ProjectV2 from "./project"
+export * as Project from "./project"
 
 import { Context, Effect, Layer, Schema } from "effect"
 import path from "path"
-import { AbsolutePath } from ".@lgcode/schema"
-import { FSUtil } from ".@lgcode/fs-util"
-import { Git } from ".@lgcode/git"
-import { LayerNode } from ".@lgcode/effect@lgcode/layer-node"
-import { Hash } from ".@lgcode/util@lgcode/hash"
-import { ProjectDirectories } from ".@lgcode/project@lgcode/directories"
-import { ProjectSchema } from ".@lgcode/project@lgcode/schema"
+import { AbsolutePath } from "./schema"
+import { FSUtil } from "./fs-util"
+import { Git } from "./git"
+import { LayerNode } from "./effect/layer-node"
+import { Hash } from "./util/hash"
+import { ProjectDirectories } from "./project/directories"
+import { ProjectSchema } from "./project/schema"
 
 export const ID = ProjectSchema.ID
 export type ID = ProjectSchema.ID
@@ -37,7 +37,7 @@ export interface Resolved {
 export interface Interface {
   readonly directories: (input: DirectoriesInput) => Effect.Effect<Directories>
   readonly resolve: (input: AbsolutePath) => Effect.Effect<Resolved>
-  @lgcode/**
+  /**
    * Temporary bridge method for writing the resolved project ID to the repo-local cache.
    *
    * This exists while the old opencode project service and this core project
@@ -45,11 +45,11 @@ export interface Interface {
    * database migration and persistence. The old service should call this after it
    * finishes migrating from `resolve().previous` to `resolve().id`; once project
    * persistence moves into core, this separate bridge method can go away.
-   *@lgcode/
+   */
   readonly commit: (input: { store: AbsolutePath; id: ID }) => Effect.Effect<void>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/ProjectV2") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/ProjectV2") {}
 
 export const layer = Layer.effect(
   Service,
@@ -87,7 +87,7 @@ export const layer = Layer.effect(
         if (parsed.protocol === "file:") return undefined
         return parts(parsed.hostname, parsed.pathname)
       } catch {
-        const scp = value.match(@lgcode/^([^@@lgcode/:]+@)?([^@lgcode/:]+):(.+)$@lgcode/)
+        const scp = value.match(/^([^@/:]+@)?([^/:]+):(.+)$/)
         if (scp) return parts(scp[2], scp[3])
         return undefined
       }
@@ -95,11 +95,11 @@ export const layer = Layer.effect(
 
     function parts(host: string, name: string) {
       const pathname = name
-        .replace(@lgcode/^\@lgcode/+@lgcode/, "")
-        .replace(@lgcode/\.git\@lgcode/?$@lgcode/, "")
-        .replace(@lgcode/\@lgcode/+$@lgcode/, "")
+        .replace(/^\/+/, "")
+        .replace(/\.git\/?$/, "")
+        .replace(/\/+$/, "")
       if (!host || !pathname) return undefined
-      return `${host.toLowerCase()}@lgcode/${pathname}`
+      return `${host.toLowerCase()}/${pathname}`
     }
 
     const root = Effect.fnUntraced(function* (repo: Git.Repo) {

@@ -1,11 +1,11 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { Catalog } from "@lgcode/core@lgcode/catalog"
-import { PluginV2 } from "@lgcode/core@lgcode/plugin"
-import { ProviderPlugins } from "@lgcode/core@lgcode/plugin@lgcode/provider"
-import { NvidiaPlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/nvidia"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { expectPluginRegistered, it, provider } from ".@lgcode/provider-helper"
+import { Catalog } from "@opencode@lgcode/core/catalog"
+import { PluginV2 } from "@opencode@lgcode/core/plugin"
+import { ProviderPlugins } from "@opencode@lgcode/core/plugin/provider"
+import { NvidiaPlugin } from "@opencode@lgcode/core/plugin/provider/nvidia"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { expectPluginRegistered, it, provider } from "./provider-helper"
 
 describe("NvidiaPlugin", () => {
   it.effect("is registered so legacy referer headers can be applied", () =>
@@ -25,7 +25,7 @@ describe("NvidiaPlugin", () => {
       const transform = yield* catalog.transform()
       yield* transform((catalog) => {
         const nvidia = provider("nvidia", {
-          api: { type: "aisdk", package: "@ai-sdk@lgcode/openai-compatible", url: "https:@lgcode/@lgcode/integrate.api.nvidia.com@lgcode/v1" },
+          api: { type: "aisdk", package: "@ai-sdk/openai-compatible", url: "https://integrate.api.nvidia.com/v1" },
           request: { headers: { Existing: "value" }, body: {} },
         })
         catalog.provider.update(nvidia.id, (draft) => {
@@ -36,7 +36,7 @@ describe("NvidiaPlugin", () => {
       })
       expect((yield* catalog.provider.get(ProviderV2.ID.make("nvidia"))).request.headers).toEqual({
         Existing: "value",
-        "HTTP-Referer": "https:@lgcode/@lgcode/opencode.ai@lgcode/",
+        "HTTP-Referer": "https://opencode.ai/",
         "X-Title": "opencode",
         "X-BILLING-INVOKE-ORIGIN": "OpenCode",
       })
@@ -52,7 +52,7 @@ describe("NvidiaPlugin", () => {
       const transform = yield* catalog.transform()
       yield* transform((catalog) => {
         const item = provider("nvidia", {
-          api: { type: "aisdk", package: "@ai-sdk@lgcode/openai-compatible", url: "https:@lgcode/@lgcode/integrate.api.nvidia.com@lgcode/v1" },
+          api: { type: "aisdk", package: "@ai-sdk/openai-compatible", url: "https://integrate.api.nvidia.com/v1" },
           request: { headers: {}, body: {} },
         })
         catalog.provider.update(item.id, (draft) => {
@@ -62,7 +62,7 @@ describe("NvidiaPlugin", () => {
       })
 
       expect((yield* catalog.provider.get(ProviderV2.ID.make("nvidia"))).request.headers).toEqual({
-        "HTTP-Referer": "https:@lgcode/@lgcode/opencode.ai@lgcode/",
+        "HTTP-Referer": "https://opencode.ai/",
         "X-Title": "opencode",
         "X-BILLING-INVOKE-ORIGIN": "OpenCode",
       })
@@ -77,10 +77,10 @@ describe("NvidiaPlugin", () => {
       const transform = yield* catalog.transform()
       yield* transform((catalog) => {
         const item = provider("nvidia", {
-          api: { type: "aisdk", package: "@ai-sdk@lgcode/openai-compatible", url: "https:@lgcode/@lgcode/integrate.api.nvidia.com@lgcode/v1" },
+          api: { type: "aisdk", package: "@ai-sdk/openai-compatible", url: "https://integrate.api.nvidia.com/v1" },
           request: {
             headers: { "X-BILLING-INVOKE-ORIGIN": "CustomOrigin" },
-            body: { baseURL: "https:@lgcode/@lgcode/integrate.api.nvidia.com@lgcode/v1" },
+            body: { baseURL: "https://integrate.api.nvidia.com/v1" },
           },
         })
         catalog.provider.update(item.id, (draft) => {
@@ -90,7 +90,7 @@ describe("NvidiaPlugin", () => {
       })
 
       expect((yield* catalog.provider.get(ProviderV2.ID.make("nvidia"))).request.headers).toEqual({
-        "HTTP-Referer": "https:@lgcode/@lgcode/opencode.ai@lgcode/",
+        "HTTP-Referer": "https://opencode.ai/",
         "X-Title": "opencode",
         "X-BILLING-INVOKE-ORIGIN": "CustomOrigin",
       })

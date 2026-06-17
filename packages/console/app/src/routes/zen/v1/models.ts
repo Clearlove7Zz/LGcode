@@ -1,10 +1,10 @@
-import type { APIEvent } from "@solidjs@lgcode/start@lgcode/server"
-import { ZenData } from "@lgcode/console-core@lgcode/model.js"
-import { and, Database, eq, isNull } from "@lgcode/console-core@lgcode/drizzle@lgcode/index.js"
-import { KeyTable } from "@lgcode/console-core@lgcode/schema@lgcode/key.sql.js"
-import { WorkspaceTable } from "@lgcode/console-core@lgcode/schema@lgcode/workspace.sql.js"
-import { ModelTable } from "@lgcode/console-core@lgcode/schema@lgcode/model.sql.js"
-import { buildOptionsResponse, buildModelsResponse } from "~@lgcode/routes@lgcode/zen@lgcode/util@lgcode/modelsHandler"
+import type { APIEvent } from "@solidjs/start/server"
+import { ZenData } from "@opencode@lgcode/console-core/model.js"
+import { and, Database, eq, isNull } from "@opencode@lgcode/console-core/drizzle/index.js"
+import { KeyTable } from "@opencode@lgcode/console-core/schema/key.sql.js"
+import { WorkspaceTable } from "@opencode@lgcode/console-core/schema/workspace.sql.js"
+import { ModelTable } from "@opencode@lgcode/console-core/schema/model.sql.js"
+import { buildOptionsResponse, buildModelsResponse } from "~/routes/zen/util/modelsHandler"
 
 export async function OPTIONS(_input: APIEvent) {
   return buildOptionsResponse()

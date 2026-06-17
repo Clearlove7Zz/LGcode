@@ -3,9 +3,9 @@ const esbuild = require("esbuild")
 const production = process.argv.includes("--production")
 const watch = process.argv.includes("--watch")
 
-@lgcode/**
+/**
  * @type {import('esbuild').Plugin}
- *@lgcode/
+ */
 const esbuildProblemMatcherPlugin = {
   name: "esbuild-problem-matcher",
 
@@ -25,18 +25,18 @@ const esbuildProblemMatcherPlugin = {
 
 async function main() {
   const ctx = await esbuild.context({
-    entryPoints: ["src@lgcode/extension.ts"],
+    entryPoints: ["src/extension.ts"],
     bundle: true,
     format: "cjs",
     minify: production,
     sourcemap: !production,
     sourcesContent: false,
     platform: "node",
-    outfile: "dist@lgcode/extension.js",
+    outfile: "dist/extension.js",
     external: ["vscode"],
     logLevel: "silent",
     plugins: [
-      @lgcode/* add to the end of plugins array *@lgcode/
+      /* add to the end of plugins array */
       esbuildProblemMatcherPlugin,
     ],
   })

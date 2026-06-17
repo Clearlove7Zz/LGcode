@@ -1,21 +1,21 @@
-import type { Session } from "@lgcode/sdk@lgcode/v2@lgcode/client"
-import { Avatar } from "@lgcode/ui@lgcode/avatar"
-import { Icon } from "@lgcode/ui@lgcode/icon"
-import { IconButton } from "@lgcode/ui@lgcode/icon-button"
-import { Spinner } from "@lgcode/ui@lgcode/spinner"
-import { Tooltip } from "@lgcode/ui@lgcode/tooltip"
-import { getFilename } from "@lgcode/core@lgcode/util@lgcode/path"
-import { A, useParams } from "@solidjs@lgcode/router"
+import type { Session } from "@opencode@lgcode/sdk/v2/client"
+import { Avatar } from "@opencode@lgcode/ui/avatar"
+import { Icon } from "@opencode@lgcode/ui/icon"
+import { IconButton } from "@opencode@lgcode/ui/icon-button"
+import { Spinner } from "@opencode@lgcode/ui/spinner"
+import { Tooltip } from "@opencode@lgcode/ui/tooltip"
+import { getFilename } from "@opencode@lgcode/core/util/path"
+import { A, useParams } from "@solidjs/router"
 import { type Accessor, createMemo, For, type JSX, Match, Show, Switch } from "solid-js"
-import { useServerSync } from "@@lgcode/context@lgcode/server-sync"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
-import { getAvatarColors, type LocalProject, useLayout } from "@@lgcode/context@lgcode/layout"
-import { useNotification } from "@@lgcode/context@lgcode/notification"
-import { usePermission } from "@@lgcode/context@lgcode/permission"
-import { messageAgentColor } from "@@lgcode/utils@lgcode/agent"
-import { sessionTitle } from "@@lgcode/utils@lgcode/session-title"
-import { sessionPermissionRequest } from "..@lgcode/session@lgcode/composer@lgcode/session-request-tree"
-import { childSessionOnPath, getProjectAvatarSource, hasProjectPermissions } from ".@lgcode/helpers"
+import { useServerSync } from "@/context/server-sync"
+import { useLanguage } from "@/context/language"
+import { getAvatarColors, type LocalProject, useLayout } from "@/context/layout"
+import { useNotification } from "@/context/notification"
+import { usePermission } from "@/context/permission"
+import { messageAgentColor } from "@/utils/agent"
+import { sessionTitle } from "@/utils/session-title"
+import { sessionPermissionRequest } from "../session/composer/session-request-tree"
+import { childSessionOnPath, getProjectAvatarSource, hasProjectPermissions } from "./helpers"
 
 export const ProjectIcon = (props: {
   project: LocalProject
@@ -49,8 +49,8 @@ export const ProjectIcon = (props: {
           {...getAvatarColors(props.project.icon?.color)}
           class="size-full rounded"
           classList={{ "badge-mask": notify() }}
-        @lgcode/>
-      <@lgcode/div>
+        />
+      </div>
       <Show when={notify()}>
         <div
           classList={{
@@ -59,14 +59,14 @@ export const ProjectIcon = (props: {
             "bg-icon-critical-base": !hasPermissions() && hasError(),
             "bg-text-interactive-base": !hasPermissions() && !hasError(),
           }}
-        @lgcode/>
-      <@lgcode/Show>
+        />
+      </Show>
       <Show when={props.working}>
         <div class="absolute bottom-px right-px size-3 rounded-full bg-background-base z-10 flex items-center justify-center">
-          <Spinner class="size-[9px]" @lgcode/>
-        <@lgcode/div>
-      <@lgcode/Show>
-    <@lgcode/div>
+          <Spinner class="size-[9px]" />
+        </div>
+      </Show>
+    </div>
   )
 }
 
@@ -105,7 +105,7 @@ const SessionRow = (props: {
 
   return (
     <A
-      href={`@lgcode/${props.slug}@lgcode/session@lgcode/${props.session.id}`}
+      href={`/${props.slug}/session/${props.session.id}`}
       class={`flex items-center gap-2 min-w-0 w-full text-left focus:outline-none ${props.dense ? "py-0.5" : "py-1"}`}
       onPointerDown={props.warmPress}
       onFocus={props.warmFocus}
@@ -121,22 +121,22 @@ const SessionRow = (props: {
         >
           <Switch>
             <Match when={props.isWorking()}>
-              <Spinner class="size-[15px]" @lgcode/>
-            <@lgcode/Match>
+              <Spinner class="size-[15px]" />
+            </Match>
             <Match when={props.hasPermissions()}>
-              <div class="size-1.5 rounded-full bg-surface-warning-strong" @lgcode/>
-            <@lgcode/Match>
+              <div class="size-1.5 rounded-full bg-surface-warning-strong" />
+            </Match>
             <Match when={props.hasError()}>
-              <div class="size-1.5 rounded-full bg-text-diff-delete-base" @lgcode/>
-            <@lgcode/Match>
+              <div class="size-1.5 rounded-full bg-text-diff-delete-base" />
+            </Match>
             <Match when={props.unseenCount() > 0}>
-              <div class="size-1.5 rounded-full bg-text-interactive-base" @lgcode/>
-            <@lgcode/Match>
-          <@lgcode/Switch>
-        <@lgcode/div>
-      <@lgcode/Show>
-      <span class="text-14-regular text-text-strong min-w-0 flex-1 truncate">{title()}<@lgcode/span>
-    <@lgcode/A>
+              <div class="size-1.5 rounded-full bg-text-interactive-base" />
+            </Match>
+          </Switch>
+        </div>
+      </Show>
+      <span class="text-14-regular text-text-strong min-w-0 flex-1 truncate">{title()}</span>
+    </A>
   )
 }
 
@@ -202,14 +202,14 @@ export const SessionItem = (props: SessionItemProps): JSX.Element => {
       sidebarOpened={layout.sidebar.opened}
       warmPress={() => warm(2, "high")}
       warmFocus={() => warm(2, "high")}
-    @lgcode/>
+    />
   )
 
   return (
     <>
       <div
         data-session-id={props.session.id}
-        class="group@lgcode/session relative w-full min-w-0 rounded-md cursor-default pr-3 transition-colors hover:bg-surface-raised-base-hover [&:has(:focus-visible)]:bg-surface-raised-base-hover has-[[data-expanded]]:bg-surface-raised-base-hover has-[.active]:bg-surface-base-active"
+        class="group/session relative w-full min-w-0 rounded-md cursor-default pr-3 transition-colors hover:bg-surface-raised-base-hover [&:has(:focus-visible)]:bg-surface-raised-base-hover has-[[data-expanded]]:bg-surface-raised-base-hover has-[.active]:bg-surface-base-active"
         style={{ "padding-left": `${8 + (props.level ?? 0) * 16}px` }}
       >
         <div class="flex min-w-0 items-center gap-1">
@@ -224,12 +224,12 @@ export const SessionItem = (props: SessionItemProps): JSX.Element => {
                   class="min-w-0 w-full"
                 >
                   {item}
-                <@lgcode/Tooltip>
+                </Tooltip>
               }
             >
               {item}
-            <@lgcode/Show>
-          <@lgcode/div>
+            </Show>
+          </div>
 
           <Show when={!props.level}>
             <div
@@ -237,8 +237,8 @@ export const SessionItem = (props: SessionItemProps): JSX.Element => {
               classList={{
                 "w-6 opacity-100 pointer-events-auto": !!props.mobile,
                 "w-0 opacity-0 pointer-events-none": !props.mobile,
-                "group-hover@lgcode/session:w-6 group-hover@lgcode/session:opacity-100 group-hover@lgcode/session:pointer-events-auto": true,
-                "group-focus-within@lgcode/session:w-6 group-focus-within@lgcode/session:opacity-100 group-focus-within@lgcode/session:pointer-events-auto": true,
+                "group-hover/session:w-6 group-hover/session:opacity-100 group-hover/session:pointer-events-auto": true,
+                "group-focus-within/session:w-6 group-focus-within/session:opacity-100 group-focus-within/session:pointer-events-auto": true,
               }}
             >
               <Tooltip value={language.t("common.archive")} placement="top">
@@ -252,20 +252,20 @@ export const SessionItem = (props: SessionItemProps): JSX.Element => {
                     event.stopPropagation()
                     void props.archiveSession(props.session)
                   }}
-                @lgcode/>
-              <@lgcode/Tooltip>
-            <@lgcode/div>
-          <@lgcode/Show>
-        <@lgcode/div>
-      <@lgcode/div>
+                />
+              </Tooltip>
+            </div>
+          </Show>
+        </div>
+      </div>
       <Show when={currentChild()} keyed>
         {(child) => (
           <div class="w-full">
-            <SessionItem {...props} session={child} level={(props.level ?? 0) + 1} @lgcode/>
-          <@lgcode/div>
+            <SessionItem {...props} session={child} level={(props.level ?? 0) + 1} />
+          </div>
         )}
-      <@lgcode/Show>
-    <@lgcode/>
+      </Show>
+    </>
   )
 }
 
@@ -282,7 +282,7 @@ export const NewSessionItem = (props: {
   const tooltip = () => props.mobile || !props.sidebarExpanded()
   const item = (
     <A
-      href={`@lgcode/${props.slug}@lgcode/session`}
+      href={`/${props.slug}/session`}
       end
       class={`flex items-center gap-2 min-w-0 w-full text-left focus:outline-none ${props.dense ? "py-0.5" : "py-1"}`}
       onClick={() => {
@@ -291,25 +291,25 @@ export const NewSessionItem = (props: {
       }}
     >
       <div class="shrink-0 size-6 flex items-center justify-center">
-        <Icon name="new-session" size="small" class="text-icon-weak" @lgcode/>
-      <@lgcode/div>
-      <span class="text-14-regular text-text-strong min-w-0 flex-1 truncate">{label}<@lgcode/span>
-    <@lgcode/A>
+        <Icon name="new-session" size="small" class="text-icon-weak" />
+      </div>
+      <span class="text-14-regular text-text-strong min-w-0 flex-1 truncate">{label}</span>
+    </A>
   )
 
   return (
-    <div class="group@lgcode/session relative w-full min-w-0 rounded-md cursor-default transition-colors pl-2 pr-3 hover:bg-surface-raised-base-hover [&:has(:focus-visible)]:bg-surface-raised-base-hover has-[.active]:bg-surface-base-active">
+    <div class="group/session relative w-full min-w-0 rounded-md cursor-default transition-colors pl-2 pr-3 hover:bg-surface-raised-base-hover [&:has(:focus-visible)]:bg-surface-raised-base-hover has-[.active]:bg-surface-base-active">
       <Show
         when={!tooltip()}
         fallback={
           <Tooltip placement={props.mobile ? "bottom" : "right"} value={label} gutter={10} class="min-w-0 w-full">
             {item}
-          <@lgcode/Tooltip>
+          </Tooltip>
         }
       >
         {item}
-      <@lgcode/Show>
-    <@lgcode/div>
+      </Show>
+    </div>
   )
 }
 
@@ -318,8 +318,8 @@ export const SessionSkeleton = (props: { count?: number }): JSX.Element => {
   return (
     <div class="flex flex-col gap-1">
       <For each={items}>
-        {() => <div class="h-8 w-full rounded-md bg-surface-raised-base opacity-60 animate-pulse" @lgcode/>}
-      <@lgcode/For>
-    <@lgcode/div>
+        {() => <div class="h-8 w-full rounded-md bg-surface-raised-base opacity-60 animate-pulse" />}
+      </For>
+    </div>
   )
 }

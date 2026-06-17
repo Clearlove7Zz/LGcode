@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { terminalWriter } from ".@lgcode/terminal-writer"
+import { terminalWriter } from "./terminal-writer"
 
 describe("terminalWriter", () => {
   test("buffers and flushes once per schedule", () => {

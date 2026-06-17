@@ -1,4 +1,4 @@
-export * as Patch from ".@lgcode/patch"
+export * as Patch from "./patch"
 
 export type Hunk =
   | { readonly type: "add"; readonly path: string; readonly contents: string }
@@ -26,7 +26,7 @@ export function parse(patchText: string): ReadonlyArray<Hunk> {
   const lines = stripHeredoc(patchText.trim()).split("\n")
   const begin = lines.findIndex((line) => line.trim() === "*** Begin Patch")
   const end = lines.findIndex((line) => line.trim() === "*** End Patch")
-  if (begin === -1 || end === -1 || begin >= end) throw new Error("Invalid patch format: missing Begin@lgcode/End markers")
+  if (begin === -1 || end === -1 || begin >= end) throw new Error("Invalid patch format: missing Begin/End markers")
 
   const hunks: Hunk[] = []
   let index = begin + 1
@@ -186,12 +186,12 @@ const trim = (left: string, right: string) => left.trim() === right.trim()
 const normalized = (left: string, right: string) => normalize(left.trim()) === normalize(right.trim())
 const normalize = (value: string) =>
   value
-    .replace(@lgcode/[‘’‚‛]@lgcode/g, "'")
-    .replace(@lgcode/[“”„‟]@lgcode/g, '"')
-    .replace(@lgcode/[‐‑‒–—―]@lgcode/g, "-")
-    .replace(@lgcode/…@lgcode/g, "...")
-    .replace(@lgcode/ @lgcode/g, " ")
+    .replace(/[‘’‚‛]/g, "'")
+    .replace(/[“”„‟]/g, '"')
+    .replace(/[‐‑‒–—―]/g, "-")
+    .replace(/…/g, "...")
+    .replace(/ /g, " ")
 const splitBom = (text: string) =>
   text.startsWith("\uFEFF") ? { bom: true, text: text.slice(1) } : { bom: false, text }
 const stripHeredoc = (input: string) =>
-  input.match(@lgcode/^(?:cat\s+)?<<['"]?(\w+)['"]?\s*\n([\s\S]*?)\n\1\s*$@lgcode/)?.[2] ?? input
+  input.match(/^(?:cat\s+)?<<['"]?(\w+)['"]?\s*\n([\s\S]*?)\n\1\s*$/)?.[2] ?? input

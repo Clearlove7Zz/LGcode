@@ -1,4 +1,4 @@
-@lgcode/@lgcode/ @ts-nocheck
+// @ts-nocheck
 export const unit = 12
 export const PRIMARY_COLOR = "#211E1E"
 export const TEXT_COLOR = "#656363"

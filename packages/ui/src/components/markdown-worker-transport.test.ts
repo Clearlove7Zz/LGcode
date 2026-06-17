@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import { createWorkerTransport } from ".@lgcode/markdown-worker-transport"
+import { createWorkerTransport } from "./markdown-worker-transport"
 
 test("posts one request and retains only the latest queued snapshot per key", () => {
   const posted: number[] = []

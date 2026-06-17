@@ -1,21 +1,21 @@
 import { test, expect, describe, afterEach, beforeEach, spyOn } from "bun:test"
-import { ConfigV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/config"
+import { ConfigV1 } from "@opencode@lgcode/core/v1/config/config"
 import { Cause, Effect, Exit, Layer, Option } from "effect"
-import { NamedError } from "@lgcode/core@lgcode/util@lgcode/error"
-import { FetchHttpClient, HttpClient, HttpClientResponse } from "effect@lgcode/unstable@lgcode/http"
-import { NodeFileSystem, NodePath } from "@effect@lgcode/platform-node"
-import { Config } from "@@lgcode/config@lgcode/config"
-import { ConfigManaged } from "@@lgcode/config@lgcode/managed"
-import { ConfigParse } from "..@lgcode/..@lgcode/src@lgcode/config@lgcode/parse"
-import { EffectFlock } from "@lgcode/core@lgcode/util@lgcode/effect-flock"
+import { NamedError } from "@opencode@lgcode/core/util/error"
+import { FetchHttpClient, HttpClient, HttpClientResponse } from "effect/unstable/http"
+import { NodeFileSystem, NodePath } from "@effect/platform-node"
+import { Config } from "@/config/config"
+import { ConfigManaged } from "@/config/managed"
+import { ConfigParse } from "../../src/config/parse"
+import { EffectFlock } from "@opencode@lgcode/core/util/effect-flock"
 
-import { InstanceRef } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/instance-ref"
-import type { InstanceContext } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/instance-context"
-import { Auth } from "..@lgcode/..@lgcode/src@lgcode/auth"
-import { Account } from "..@lgcode/..@lgcode/src@lgcode/account@lgcode/account"
-import { AccessToken, AccountID, OrgID } from "..@lgcode/..@lgcode/src@lgcode/account@lgcode/schema"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { Env } from "..@lgcode/..@lgcode/src@lgcode/env"
+import { InstanceRef } from "../../src/effect/instance-ref"
+import type { InstanceContext } from "../../src/project/instance-context"
+import { Auth } from "../../src/auth"
+import { Account } from "../../src/account/account"
+import { AccessToken, AccountID, OrgID } from "../../src/account/schema"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { Env } from "../../src/env"
 import {
   provideTmpdirInstance,
   TestInstance,
@@ -24,24 +24,24 @@ import {
   withTestInstance,
   provideInstanceEffect,
   testInstanceStoreLayer,
-} from "..@lgcode/fixture@lgcode/fixture"
-import { InstanceRuntime } from "@@lgcode/project@lgcode/instance-runtime"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+} from "../fixture/fixture"
+import { InstanceRuntime } from "@/project/instance-runtime"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { testEffect } from "../lib/effect"
 import path from "path"
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import os from "os"
 import { pathToFileURL } from "url"
-import { Global } from "@lgcode/core@lgcode/global"
-import { ProjectV2 } from "@lgcode/core@lgcode/project"
-import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
-import { ConfigPlugin } from "@@lgcode/config@lgcode/plugin"
-import { ConfigPluginV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/plugin"
-import { AccountTest } from "..@lgcode/fake@lgcode/account"
-import { AuthTest } from "..@lgcode/fake@lgcode/auth"
-import { NpmTest } from "..@lgcode/fake@lgcode/npm"
+import { Global } from "@opencode@lgcode/core/global"
+import { ProjectV2 } from "@opencode@lgcode/core/project"
+import { Filesystem } from "@/util/filesystem"
+import { ConfigPlugin } from "@/config/plugin"
+import { ConfigPluginV1 } from "@opencode@lgcode/core/v1/config/plugin"
+import { AccountTest } from "../fake/account"
+import { AuthTest } from "../fake/auth"
+import { NpmTest } from "../fake/npm"
 
-@lgcode/** Infra layer that provides FileSystem, Path, ChildProcessSpawner for test fixtures *@lgcode/
+/** Infra layer that provides FileSystem, Path, ChildProcessSpawner for test fixtures */
 const infra = CrossSpawnSpawner.defaultLayer.pipe(
   Layer.provideMerge(Layer.mergeAll(NodeFileSystem.layer, NodePath.layer)),
 )
@@ -57,7 +57,7 @@ const json = (request: Parameters<typeof HttpClientResponse.fromWeb>[0], body: u
     request,
     new Response(JSON.stringify(body), {
       status,
-      headers: { "content-type": "application@lgcode/json" },
+      headers: { "content-type": "application/json" },
     }),
   )
 
@@ -76,7 +76,7 @@ function remoteConfigClient(input: {
   seen: { wellKnown?: string; remote?: string; authorization?: string }
 }) {
   return HttpClient.make((request) => {
-    if (request.url.includes(".well-known@lgcode/opencode")) {
+    if (request.url.includes(".well-known/opencode")) {
       input.seen.wellKnown = request.url
       return Effect.succeed(json(request, input.wellKnown))
     }
@@ -87,7 +87,7 @@ function remoteConfigClient(input: {
         return Effect.succeed(
           HttpClientResponse.fromWeb(
             request,
-            new Response(input.remoteHtml, { status: 200, headers: { "content-type": "text@lgcode/html; charset=utf-8" } }),
+            new Response(input.remoteHtml, { status: 200, headers: { "content-type": "text/html; charset=utf-8" } }),
           ),
         )
       }
@@ -120,7 +120,7 @@ const layer = configLayer()
 const it = testEffect(layer)
 const configIt = (options?: Parameters<typeof configLayer>[0]) => testEffect(configLayer(options))
 
-const schemaConfig = (config: object) => ({ $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json", ...config })
+const schemaConfig = (config: object) => ({ $schema: "https://opencode.ai/config.json", ...config })
 
 const provideCurrentInstance = <A, E, R>(effect: Effect.Effect<A, E, R>, ctx: InstanceContext) =>
   effect.pipe(Effect.provideService(InstanceRef, ctx))
@@ -138,7 +138,7 @@ const clearEffect = (wait = false) =>
       Effect.andThen(wait ? Effect.promise(() => InstanceRuntime.disposeAllInstances()) : Effect.void),
     )
 const clear = (wait = false) => Effect.runPromise(clearEffect(wait))
-@lgcode/@lgcode/ Get managed config directory from environment (set in preload.ts)
+// Get managed config directory from environment (set in preload.ts)
 const managedConfigDir = process.env.OPENCODE_TEST_MANAGED_CONFIG_DIR!
 const originalTestToken = process.env.TEST_TOKEN
 const originalConsoleToken = process.env.OPENCODE_CONSOLE_TOKEN
@@ -239,7 +239,7 @@ const wellKnown = (input: {
   })
   return {
     seen,
-    it: configIt({ auth: wellKnownAuth(input.authUrl ?? "https:@lgcode/@lgcode/example.com"), client }),
+    it: configIt({ auth: wellKnownAuth(input.authUrl ?? "https://example.com"), client }),
   }
 }
 
@@ -278,7 +278,7 @@ async function check(map: (dir: string) => string) {
   await clear()
   try {
     await writeConfig(globalTmp.path, {
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+      $schema: "https://opencode.ai/config.json",
       snapshot: false,
     })
     await withTestInstance({
@@ -324,7 +324,7 @@ it.effect("creates global jsonc config with schema when no global configs exist"
       yield* Config.use.get().pipe(provideInstanceEffect(dir))
 
       const content = yield* FSUtil.use.readFileString(path.join(dir, "opencode.jsonc"))
-      expect(content).toContain('"$schema": "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json"')
+      expect(content).toContain('"$schema": "https://opencode.ai/config.json"')
     }).pipe(Effect.provide(testInstanceStoreLayer), Effect.provide(CrossSpawnSpawner.defaultLayer)),
   ),
 )
@@ -350,10 +350,10 @@ it.instance(
   "loads JSON config file",
   Effect.gen(function* () {
     const config = yield* Config.use.get()
-    expect(config.model).toBe("test@lgcode/model")
+    expect(config.model).toBe("test/model")
     expect(config.username).toBe("testuser")
   }),
-  { config: { model: "test@lgcode/model", username: "testuser" } },
+  { config: { model: "test/model", username: "testuser" } },
 )
 
 it.instance(
@@ -370,7 +370,7 @@ it.instance("updates config and preserves empty shell sentinel", () =>
     const test = yield* TestInstance
     yield* writeConfigEffect(
       test.directory,
-      { $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json", shell: "bash" },
+      { $schema: "https://opencode.ai/config.json", shell: "bash" },
       "config.json",
     )
 
@@ -393,7 +393,7 @@ it.effect("updates global config and omits empty shell key in json", () =>
 )
 
 it.effect("updates global config and omits empty shell key in jsonc", () =>
-  withGlobalConfig({ config: { shell: "bash", model: "test@lgcode/model" }, name: "opencode.jsonc" }, ({ dir }) =>
+  withGlobalConfig({ config: { shell: "bash", model: "test/model" }, name: "opencode.jsonc" }, ({ dir }) =>
     Effect.gen(function* () {
       yield* Config.use.updateGlobal({ shell: "" })
 
@@ -402,7 +402,7 @@ it.effect("updates global config and omits empty shell key in jsonc", () =>
       const parsed = ConfigParse.schema(ConfigV1.Info, ConfigParse.jsonc(writtenConfig, file), file)
       expect(writtenConfig).not.toContain('"shell"')
       expect(parsed.shell).toBeUndefined()
-      expect(parsed.model).toBe("test@lgcode/model")
+      expect(parsed.model).toBe("test/model")
     }),
   ),
 )
@@ -426,19 +426,19 @@ it.instance(
 )
 
 test("loads project config from Git Bash and MSYS2 paths on Windows", async () => {
-  @lgcode/@lgcode/ Git Bash and MSYS2 both use @lgcode/<drive>@lgcode/... paths on Windows.
+  // Git Bash and MSYS2 both use /<drive>/... paths on Windows.
   await check((dir) => {
     const drive = dir[0].toLowerCase()
-    const rest = dir.slice(2).replaceAll("\\", "@lgcode/")
-    return `@lgcode/${drive}${rest}`
+    const rest = dir.slice(2).replaceAll("\\", "/")
+    return `/${drive}${rest}`
   })
 })
 
 test("loads project config from Cygwin paths on Windows", async () => {
   await check((dir) => {
     const drive = dir[0].toLowerCase()
-    const rest = dir.slice(2).replaceAll("\\", "@lgcode/")
-    return `@lgcode/cygdrive@lgcode/${drive}${rest}`
+    const rest = dir.slice(2).replaceAll("\\", "/")
+    return `/cygdrive/${drive}${rest}`
   })
 })
 
@@ -446,14 +446,14 @@ it.instance("ignores legacy tui keys in opencode config", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
-      model: "test@lgcode/model",
+      $schema: "https://opencode.ai/config.json",
+      model: "test/model",
       theme: "legacy",
       tui: { scroll_speed: 4 },
     })
 
     const config = yield* Config.use.get()
-    expect(config.model).toBe("test@lgcode/model")
+    expect(config.model).toBe("test/model")
     expect((config as Record<string, unknown>).theme).toBeUndefined()
     expect((config as Record<string, unknown>).tui).toBeUndefined()
   }),
@@ -465,14 +465,14 @@ it.instance("loads JSONC config file", () =>
     yield* FSUtil.use.writeWithDirs(
       path.join(test.directory, "opencode.jsonc"),
       `{
-        @lgcode/@lgcode/ This is a comment
-        "$schema": "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
-        "model": "test@lgcode/model",
+        // This is a comment
+        "$schema": "https://opencode.ai/config.json",
+        "model": "test/model",
         "username": "testuser"
       }`,
     )
     const config = yield* Config.use.get()
-    expect(config.model).toBe("test@lgcode/model")
+    expect(config.model).toBe("test/model")
     expect(config.username).toBe("testuser")
   }),
 )
@@ -483,14 +483,14 @@ it.instance("jsonc overrides json in the same directory", () =>
     yield* writeConfigEffect(
       test.directory,
       {
-        $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+        $schema: "https://opencode.ai/config.json",
         model: "base",
         username: "base",
       },
       "opencode.jsonc",
     )
     yield* writeConfigEffect(test.directory, {
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+      $schema: "https://opencode.ai/config.json",
       model: "override",
     })
     const config = yield* Config.use.get()
@@ -506,7 +506,7 @@ it.instance("handles environment variable substitution", () =>
     Effect.gen(function* () {
       const test = yield* TestInstance
       yield* writeConfigEffect(test.directory, {
-        $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+        $schema: "https://opencode.ai/config.json",
         username: "{env:TEST_VAR}",
       })
       const config = yield* Config.use.get()
@@ -521,7 +521,7 @@ it.instance("preserves env variables when adding $schema to config", () =>
     "secret_value",
     Effect.gen(function* () {
       const test = yield* TestInstance
-      @lgcode/@lgcode/ Config without $schema - should trigger auto-add
+      // Config without $schema - should trigger auto-add
       yield* FSUtil.use.writeWithDirs(
         path.join(test.directory, "opencode.json"),
         JSON.stringify({ username: "{env:PRESERVE_VAR}" }),
@@ -529,7 +529,7 @@ it.instance("preserves env variables when adding $schema to config", () =>
       const config = yield* Config.use.get()
       expect(config.username).toBe("secret_value")
 
-      @lgcode/@lgcode/ Read the file to verify the env variable was preserved
+      // Read the file to verify the env variable was preserved
       const content = yield* FSUtil.use.readFileString(path.join(test.directory, "opencode.json"))
       expect(content).toContain("{env:PRESERVE_VAR}")
       expect(content).not.toContain("secret_value")
@@ -543,7 +543,7 @@ it.instance("handles file inclusion substitution", () =>
     const test = yield* TestInstance
     yield* FSUtil.use.writeWithDirs(path.join(test.directory, "included.txt"), "test-user")
     yield* writeConfigEffect(test.directory, {
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+      $schema: "https://opencode.ai/config.json",
       username: "{file:included.txt}",
     })
     const config = yield* Config.use.get()
@@ -556,7 +556,7 @@ it.instance("handles file inclusion with replacement tokens", () =>
     const test = yield* TestInstance
     yield* FSUtil.use.writeWithDirs(path.join(test.directory, "included.md"), "const out = await Bun.$`echo hi`")
     yield* writeConfigEffect(test.directory, {
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+      $schema: "https://opencode.ai/config.json",
       username: "{file:included.md}",
     })
     const config = yield* Config.use.get()
@@ -571,7 +571,7 @@ const accountTokenIt = configIt({
         Option.some({
           id: AccountID.make("account-1"),
           email: "user@example.com",
-          url: "https:@lgcode/@lgcode/control.example.com",
+          url: "https://control.example.com",
           active_org_id: OrgID.make("org-1"),
         }),
       ),
@@ -581,7 +581,7 @@ const accountTokenIt = configIt({
           account: {
             id: AccountID.make("account-1"),
             email: "user@example.com",
-            url: "https:@lgcode/@lgcode/control.example.com",
+            url: "https://control.example.com",
             active_org_id: OrgID.make("org-1"),
           },
           org: {
@@ -611,7 +611,7 @@ it.instance("validates config schema and throws on invalid fields", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+      $schema: "https://opencode.ai/config.json",
       invalid_field: "should cause error",
     })
     const exit = yield* Config.use.get().pipe(Effect.exit)
@@ -632,10 +632,10 @@ it.instance("handles agent configuration", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+      $schema: "https://opencode.ai/config.json",
       agent: {
         test_agent: {
-          model: "test@lgcode/model",
+          model: "test/model",
           temperature: 0.7,
           description: "test agent",
         },
@@ -644,7 +644,7 @@ it.instance("handles agent configuration", () =>
     const config = yield* Config.use.get()
     expect(config.agent?.["test_agent"]).toEqual(
       expect.objectContaining({
-        model: "test@lgcode/model",
+        model: "test/model",
         temperature: 0.7,
         description: "test agent",
       }),
@@ -656,10 +656,10 @@ it.instance("treats agent variant as model-scoped setting (not provider option)"
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+      $schema: "https://opencode.ai/config.json",
       agent: {
         test_agent: {
-          model: "openai@lgcode/gpt-5.2",
+          model: "openai/gpt-5.2",
           variant: "xhigh",
           max_tokens: 123,
         },
@@ -680,7 +680,7 @@ it.instance("handles command configuration", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+      $schema: "https://opencode.ai/config.json",
       command: {
         test_command: {
           template: "test template",
@@ -702,7 +702,7 @@ it.instance("migrates autoshare to share field", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+      $schema: "https://opencode.ai/config.json",
       autoshare: true,
     })
     const config = yield* Config.use.get()
@@ -715,17 +715,17 @@ it.instance("migrates mode field to agent field", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+      $schema: "https://opencode.ai/config.json",
       mode: {
         test_mode: {
-          model: "test@lgcode/model",
+          model: "test/model",
           temperature: 0.5,
         },
       },
     })
     const config = yield* Config.use.get()
     expect(config.agent?.["test_mode"]).toEqual({
-      model: "test@lgcode/model",
+      model: "test/model",
       temperature: 0.5,
       mode: "primary",
       options: {},
@@ -738,18 +738,18 @@ it.instance("accepts the deprecated reference field", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+      $schema: "https://opencode.ai/config.json",
       reference: {
-        local: { path: "..@lgcode/library" },
-        sdk: { repository: "github.com@lgcode/example@lgcode/sdk", branch: "main" },
-        shorthand: "github.com@lgcode/example@lgcode/docs",
+        local: { path: "../library" },
+        sdk: { repository: "github.com/example/sdk", branch: "main" },
+        shorthand: "github.com/example/docs",
       },
     })
     const config = yield* Config.use.get()
     expect(config.reference).toEqual({
-      local: { path: "..@lgcode/library" },
-      sdk: { repository: "github.com@lgcode/example@lgcode/sdk", branch: "main" },
-      shorthand: "github.com@lgcode/example@lgcode/docs",
+      local: { path: "../library" },
+      sdk: { repository: "github.com/example/sdk", branch: "main" },
+      shorthand: "github.com/example/docs",
     })
   }),
 )
@@ -760,7 +760,7 @@ it.instance("loads config from .opencode directory", () =>
     yield* FSUtil.use.writeWithDirs(
       path.join(test.directory, ".opencode", "agent", "test.md"),
       `---
-model: test@lgcode/model
+model: test/model
 ---
 Test agent prompt`,
     )
@@ -769,7 +769,7 @@ Test agent prompt`,
     expect(config.agent?.["test"]).toEqual(
       expect.objectContaining({
         name: "test",
-        model: "test@lgcode/model",
+        model: "test/model",
         prompt: "Test agent prompt",
       }),
     )
@@ -795,13 +795,13 @@ Ordered permissions`,
   }),
 )
 
-it.instance("loads agents from .opencode@lgcode/agents (plural)", () =>
+it.instance("loads agents from .opencode/agents (plural)", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* FSUtil.use.writeWithDirs(
       path.join(test.directory, ".opencode", "agents", "helper.md"),
       `---
-model: test@lgcode/model
+model: test/model
 mode: subagent
 ---
 Helper agent prompt`,
@@ -810,7 +810,7 @@ Helper agent prompt`,
     yield* FSUtil.use.writeWithDirs(
       path.join(test.directory, ".opencode", "agents", "nested", "child.md"),
       `---
-model: test@lgcode/model
+model: test/model
 mode: subagent
 ---
 Nested agent prompt`,
@@ -820,21 +820,21 @@ Nested agent prompt`,
 
     expect(config.agent?.["helper"]).toMatchObject({
       name: "helper",
-      model: "test@lgcode/model",
+      model: "test/model",
       mode: "subagent",
       prompt: "Helper agent prompt",
     })
 
-    expect(config.agent?.["nested@lgcode/child"]).toMatchObject({
-      name: "nested@lgcode/child",
-      model: "test@lgcode/model",
+    expect(config.agent?.["nested/child"]).toMatchObject({
+      name: "nested/child",
+      model: "test/model",
       mode: "subagent",
       prompt: "Nested agent prompt",
     })
   }),
 )
 
-it.instance("loads commands from .opencode@lgcode/command (singular)", () =>
+it.instance("loads commands from .opencode/command (singular)", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* FSUtil.use.writeWithDirs(
@@ -860,14 +860,14 @@ Nested command template`,
       template: "Hello from singular command",
     })
 
-    expect(config.command?.["nested@lgcode/child"]).toEqual({
+    expect(config.command?.["nested/child"]).toEqual({
       description: "Nested command",
       template: "Nested command template",
     })
   }),
 )
 
-it.instance("loads commands from .opencode@lgcode/commands (plural)", () =>
+it.instance("loads commands from .opencode/commands (plural)", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* FSUtil.use.writeWithDirs(
@@ -893,7 +893,7 @@ Nested command template`,
       template: "Hello from plural commands",
     })
 
-    expect(config.command?.["nested@lgcode/child"]).toEqual({
+    expect(config.command?.["nested/child"]).toEqual({
       description: "Nested command",
       template: "Nested command template",
     })
@@ -904,11 +904,11 @@ it.instance("updates config and writes to file", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* Config.Service.use((svc) =>
-      svc.update(ConfigParse.schema(ConfigV1.Info, { model: "updated@lgcode/model" }, "test:config")),
+      svc.update(ConfigParse.schema(ConfigV1.Info, { model: "updated/model" }, "test:config")),
     )
 
     const writtenConfig = yield* FSUtil.use.readJson(path.join(test.directory, "config.json"))
-    expect(writtenConfig).toMatchObject({ model: "updated@lgcode/model" })
+    expect(writtenConfig).toMatchObject({ model: "updated/model" })
   }),
 )
 
@@ -951,9 +951,9 @@ it.effect("installs dependencies in writable OPENCODE_CONFIG_DIR", () =>
   }).pipe(Effect.provide(testInstanceStoreLayer), Effect.provide(CrossSpawnSpawner.defaultLayer)),
 )
 
-@lgcode/@lgcode/ Note: deduplication and serialization of npm installs is now handled by the
-@lgcode/@lgcode/ core Npm.Service (via EffectFlock). Those behaviors are tested in the core
-@lgcode/@lgcode/ package's npm tests, not here.
+// Note: deduplication and serialization of npm installs is now handled by the
+// core Npm.Service (via EffectFlock). Those behaviors are tested in the core
+// package's npm tests, not here.
 
 it.instance("resolves scoped npm plugins in config", () =>
   Effect.gen(function* () {
@@ -967,20 +967,20 @@ it.instance("resolves scoped npm plugins in config", () =>
       path.join(pluginDir, "package.json"),
       JSON.stringify(
         {
-          name: "@scope@lgcode/plugin",
+          name: "@scope/plugin",
           version: "1.0.0",
           type: "module",
-          main: ".@lgcode/index.js",
+          main: "./index.js",
         },
         null,
         2,
       ),
     )
     yield* FSUtil.use.writeWithDirs(path.join(pluginDir, "index.js"), "export default {}\n")
-    yield* writeConfigEffect(test.directory, { plugin: ["@scope@lgcode/plugin"] })
+    yield* writeConfigEffect(test.directory, { plugin: ["@scope/plugin"] })
 
     const config = yield* Config.use.get()
-    expect(config.plugin ?? []).toContain("@scope@lgcode/plugin")
+    expect(config.plugin ?? []).toContain("@scope/plugin")
   }),
 )
 
@@ -1006,16 +1006,16 @@ it.effect("merges plugin arrays from global and local configs", () =>
 it.effect("global config remains global when project config is disabled", () =>
   withConfigTree(
     {
-      global: { model: "global@lgcode/model", plugin: ["global-plugin"] },
-      project: { model: "project@lgcode/model" },
-      local: { model: "local@lgcode/model" },
+      global: { model: "global/model", plugin: ["global-plugin"] },
+      project: { model: "project/model" },
+      local: { model: "local/model" },
     },
     withProcessEnv(
       "OPENCODE_DISABLE_PROJECT_CONFIG",
       "true",
       Effect.gen(function* () {
         const config = yield* Config.use.get()
-        expect(config.model).toBe("global@lgcode/model")
+        expect(config.model).toBe("global/model")
         expect(config.plugin_origins?.find((item) => item.spec === "global-plugin")?.scope).toBe("global")
       }),
     ),
@@ -1028,7 +1028,7 @@ it.instance("does not error when only custom agent is a subagent", () =>
     yield* FSUtil.use.writeWithDirs(
       path.join(test.directory, ".opencode", "agent", "helper.md"),
       `---
-model: test@lgcode/model
+model: test/model
 mode: subagent
 ---
 Helper subagent prompt`,
@@ -1037,7 +1037,7 @@ Helper subagent prompt`,
     const config = yield* Config.use.get()
     expect(config.agent?.["helper"]).toMatchObject({
       name: "helper",
-      model: "test@lgcode/model",
+      model: "test/model",
       mode: "subagent",
       prompt: "Helper subagent prompt",
     })
@@ -1117,13 +1117,13 @@ it.effect("keeps plugin origins aligned with merged plugin list", () =>
   ),
 )
 
-@lgcode/@lgcode/ Legacy tools migration tests
+// Legacy tools migration tests
 
 it.instance("migrates legacy tools config to permissions - allow", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+      $schema: "https://opencode.ai/config.json",
       agent: { test: { tools: { bash: true, read: true } } },
     })
 
@@ -1139,7 +1139,7 @@ it.instance("migrates legacy tools config to permissions - deny", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+      $schema: "https://opencode.ai/config.json",
       agent: { test: { tools: { bash: false, webfetch: false } } },
     })
 
@@ -1155,7 +1155,7 @@ it.instance("migrates legacy write tool to edit permission", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+      $schema: "https://opencode.ai/config.json",
       agent: { test: { tools: { write: true } } },
     })
 
@@ -1164,31 +1164,31 @@ it.instance("migrates legacy write tool to edit permission", () =>
   }),
 )
 
-@lgcode/@lgcode/ Managed settings tests
-@lgcode/@lgcode/ Note: preload.ts sets OPENCODE_TEST_MANAGED_CONFIG which Global.Path.managedConfig uses
+// Managed settings tests
+// Note: preload.ts sets OPENCODE_TEST_MANAGED_CONFIG which Global.Path.managedConfig uses
 
 it.instance(
   "managed settings override user settings",
   Effect.gen(function* () {
     yield* writeManagedSettingsEffect({
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
-      model: "managed@lgcode/model",
+      $schema: "https://opencode.ai/config.json",
+      model: "managed/model",
       share: "disabled",
     })
 
     const config = yield* Config.use.get()
-    expect(config.model).toBe("managed@lgcode/model")
+    expect(config.model).toBe("managed/model")
     expect(config.share).toBe("disabled")
     expect(config.username).toBe("testuser")
   }),
-  { config: { model: "user@lgcode/model", share: "auto", username: "testuser" } },
+  { config: { model: "user/model", share: "auto", username: "testuser" } },
 )
 
 it.instance(
   "managed settings override project settings",
   Effect.gen(function* () {
     yield* writeManagedSettingsEffect({
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+      $schema: "https://opencode.ai/config.json",
       autoupdate: false,
       disabled_providers: ["openai"],
     })
@@ -1202,11 +1202,11 @@ it.instance(
 
 it.instance("managed jsonc settings override managed json settings", () =>
   Effect.gen(function* () {
-    yield* writeManagedSettingsEffect({ model: "managed@lgcode/json" })
-    yield* writeManagedSettingsEffect({ model: "managed@lgcode/jsonc" }, "opencode.jsonc")
+    yield* writeManagedSettingsEffect({ model: "managed/json" })
+    yield* writeManagedSettingsEffect({ model: "managed/jsonc" }, "opencode.jsonc")
 
     const config = yield* Config.use.get()
-    expect(config.model).toBe("managed@lgcode/jsonc")
+    expect(config.model).toBe("managed/jsonc")
   }),
 )
 
@@ -1214,16 +1214,16 @@ it.instance(
   "missing managed settings file is not an error",
   Effect.gen(function* () {
     const config = yield* Config.use.get()
-    expect(config.model).toBe("user@lgcode/model")
+    expect(config.model).toBe("user/model")
   }),
-  { config: { model: "user@lgcode/model" } },
+  { config: { model: "user/model" } },
 )
 
 it.instance("migrates legacy edit tool to edit permission", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+      $schema: "https://opencode.ai/config.json",
       agent: { test: { tools: { edit: false } } },
     })
 
@@ -1236,7 +1236,7 @@ it.instance("migrates legacy patch tool to edit permission", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+      $schema: "https://opencode.ai/config.json",
       agent: { test: { tools: { patch: true } } },
     })
 
@@ -1249,7 +1249,7 @@ it.instance("migrates mixed legacy tools config", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+      $schema: "https://opencode.ai/config.json",
       agent: { test: { tools: { bash: true, write: true, read: false, webfetch: true } } },
     })
 
@@ -1267,7 +1267,7 @@ it.instance("merges legacy tools with existing permission config", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+      $schema: "https://opencode.ai/config.json",
       agent: { test: { permission: { glob: "allow" }, tools: { bash: true } } },
     })
 
@@ -1280,12 +1280,12 @@ it.instance("merges legacy tools with existing permission config", () =>
 )
 
 it.instance("permission config preserves user key order", () =>
-  @lgcode/@lgcode/ Permission precedence follows the order users write in config, so parsing
-  @lgcode/@lgcode/ must not canonicalise known keys ahead of wildcard or custom keys.
+  // Permission precedence follows the order users write in config, so parsing
+  // must not canonicalise known keys ahead of wildcard or custom keys.
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+      $schema: "https://opencode.ai/config.json",
       permission: {
         "*": "deny",
         edit: "ask",
@@ -1339,36 +1339,36 @@ test("config parser preserves permission order while rejecting unknown top-level
   }
 })
 
-@lgcode/@lgcode/ MCP config merging tests
+// MCP config merging tests
 
 it.instance("project config can override MCP server enabled status", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
-    @lgcode/@lgcode/ Simulates a base config (like from remote .well-known) with disabled MCP.
+    // Simulates a base config (like from remote .well-known) with disabled MCP.
     yield* writeConfigEffect(test.directory, {
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+      $schema: "https://opencode.ai/config.json",
       mcp: {
         jira: {
           type: "remote",
-          url: "https:@lgcode/@lgcode/jira.example.com@lgcode/mcp",
+          url: "https://jira.example.com/mcp",
           enabled: false,
         },
         wiki: {
           type: "remote",
-          url: "https:@lgcode/@lgcode/wiki.example.com@lgcode/mcp",
+          url: "https://wiki.example.com/mcp",
           enabled: false,
         },
       },
     })
-    @lgcode/@lgcode/ Project config enables just jira.
+    // Project config enables just jira.
     yield* writeConfigEffect(
       test.directory,
       {
-        $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+        $schema: "https://opencode.ai/config.json",
         mcp: {
           jira: {
             type: "remote",
-            url: "https:@lgcode/@lgcode/jira.example.com@lgcode/mcp",
+            url: "https://jira.example.com/mcp",
             enabled: true,
           },
         },
@@ -1379,12 +1379,12 @@ it.instance("project config can override MCP server enabled status", () =>
     const config = yield* Config.use.get()
     expect(config.mcp?.jira).toEqual({
       type: "remote",
-      url: "https:@lgcode/@lgcode/jira.example.com@lgcode/mcp",
+      url: "https://jira.example.com/mcp",
       enabled: true,
     })
     expect(config.mcp?.wiki).toEqual({
       type: "remote",
-      url: "https:@lgcode/@lgcode/wiki.example.com@lgcode/mcp",
+      url: "https://wiki.example.com/mcp",
       enabled: false,
     })
   }),
@@ -1394,11 +1394,11 @@ it.instance("MCP config deep merges preserving base config properties", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+      $schema: "https://opencode.ai/config.json",
       mcp: {
         myserver: {
           type: "remote",
-          url: "https:@lgcode/@lgcode/myserver.example.com@lgcode/mcp",
+          url: "https://myserver.example.com/mcp",
           enabled: false,
           headers: {
             "X-Custom-Header": "value",
@@ -1409,11 +1409,11 @@ it.instance("MCP config deep merges preserving base config properties", () =>
     yield* writeConfigEffect(
       test.directory,
       {
-        $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+        $schema: "https://opencode.ai/config.json",
         mcp: {
           myserver: {
             type: "remote",
-            url: "https:@lgcode/@lgcode/myserver.example.com@lgcode/mcp",
+            url: "https://myserver.example.com/mcp",
             enabled: true,
           },
         },
@@ -1424,7 +1424,7 @@ it.instance("MCP config deep merges preserving base config properties", () =>
     const config = yield* Config.use.get()
     expect(config.mcp?.myserver).toEqual({
       type: "remote",
-      url: "https:@lgcode/@lgcode/myserver.example.com@lgcode/mcp",
+      url: "https://myserver.example.com/mcp",
       enabled: true,
       headers: {
         "X-Custom-Header": "value",
@@ -1437,11 +1437,11 @@ it.instance("local .opencode config can override MCP from project config", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
-      $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+      $schema: "https://opencode.ai/config.json",
       mcp: {
         docs: {
           type: "remote",
-          url: "https:@lgcode/@lgcode/docs.example.com@lgcode/mcp",
+          url: "https://docs.example.com/mcp",
           enabled: false,
         },
       },
@@ -1450,11 +1450,11 @@ it.instance("local .opencode config can override MCP from project config", () =>
     yield* writeConfigEffect(
       path.join(test.directory, ".opencode"),
       {
-        $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+        $schema: "https://opencode.ai/config.json",
         mcp: {
           docs: {
             type: "remote",
-            url: "https:@lgcode/@lgcode/docs.example.com@lgcode/mcp",
+            url: "https://docs.example.com/mcp",
             enabled: true,
           },
         },
@@ -1469,7 +1469,7 @@ it.instance("local .opencode config can override MCP from project config", () =>
 
 const remoteProjectOverride = wellKnown({
   config: {
-    mcp: { jira: { type: "remote", url: "https:@lgcode/@lgcode/jira.example.com@lgcode/mcp", enabled: false } },
+    mcp: { jira: { type: "remote", url: "https://jira.example.com/mcp", enabled: false } },
   },
 })
 
@@ -1478,26 +1478,26 @@ remoteProjectOverride.it.instance(
   () =>
     Effect.gen(function* () {
       const config = yield* Config.use.get()
-      expect(remoteProjectOverride.seen.wellKnown).toBe("https:@lgcode/@lgcode/example.com@lgcode/.well-known@lgcode/opencode")
+      expect(remoteProjectOverride.seen.wellKnown).toBe("https://example.com/.well-known/opencode")
       expect(config.mcp?.jira?.enabled).toBe(true)
     }),
   {
     git: true,
-    config: { mcp: { jira: { type: "remote", url: "https:@lgcode/@lgcode/jira.example.com@lgcode/mcp", enabled: true } } },
+    config: { mcp: { jira: { type: "remote", url: "https://jira.example.com/mcp", enabled: true } } },
   },
 )
 
 const trailingSlashWellKnown = wellKnown({
-  authUrl: "https:@lgcode/@lgcode/example.com@lgcode/",
+  authUrl: "https://example.com/",
   config: {
-    mcp: { slack: { type: "remote", url: "https:@lgcode/@lgcode/slack.example.com@lgcode/mcp", enabled: true } },
+    mcp: { slack: { type: "remote", url: "https://slack.example.com/mcp", enabled: true } },
   },
 })
 
 trailingSlashWellKnown.it.instance("wellknown URL with trailing slash is normalized", () =>
   Effect.gen(function* () {
     yield* Config.use.get()
-    expect(trailingSlashWellKnown.seen.wellKnown).toBe("https:@lgcode/@lgcode/example.com@lgcode/.well-known@lgcode/opencode")
+    expect(trailingSlashWellKnown.seen.wellKnown).toBe("https://example.com/.well-known/opencode")
   }),
 )
 
@@ -1510,10 +1510,10 @@ test("remote well-known config can use FetchHttpClient layer", async () => {
       return new Response(
         JSON.stringify({
           config: {
-            mcp: { jira: { type: "remote", url: "https:@lgcode/@lgcode/jira.example.com@lgcode/mcp", enabled: true } },
+            mcp: { jira: { type: "remote", url: "https://jira.example.com/mcp", enabled: true } },
           },
         }),
-        { status: 200, headers: { "content-type": "application@lgcode/json" } },
+        { status: 200, headers: { "content-type": "application/json" } },
       )
     },
   })
@@ -1524,7 +1524,7 @@ test("remote well-known config can use FetchHttpClient layer", async () => {
         Config.Service.use((svc) =>
           Effect.gen(function* () {
             const config = yield* svc.get()
-            expect(fetchedUrl).toBe(`${server.url.origin}@lgcode/.well-known@lgcode/opencode`)
+            expect(fetchedUrl).toBe(`${server.url.origin}/.well-known/opencode`)
             expect(config.mcp?.jira?.enabled).toBe(true)
           }),
         ),
@@ -1555,19 +1555,19 @@ test("remote well-known config can use FetchHttpClient layer", async () => {
 
 const templatedHeaderWellKnown = wellKnown({
   remoteConfig: {
-    url: "https:@lgcode/@lgcode/config.example.com@lgcode/opencode.json",
+    url: "https://config.example.com/opencode.json",
     headers: { Authorization: "Bearer {env:TEST_TOKEN}" },
   },
   remote: {
-    mcp: { confluence: { type: "remote", url: "https:@lgcode/@lgcode/confluence.example.com@lgcode/mcp", enabled: true } },
+    mcp: { confluence: { type: "remote", url: "https://confluence.example.com/mcp", enabled: true } },
   },
 })
 
 templatedHeaderWellKnown.it.instance("wellknown remote_config supports templated env vars in headers", () =>
   Effect.gen(function* () {
     const config = yield* Config.use.get()
-    expect(templatedHeaderWellKnown.seen.wellKnown).toBe("https:@lgcode/@lgcode/example.com@lgcode/.well-known@lgcode/opencode")
-    expect(templatedHeaderWellKnown.seen.remote).toBe("https:@lgcode/@lgcode/config.example.com@lgcode/opencode.json")
+    expect(templatedHeaderWellKnown.seen.wellKnown).toBe("https://example.com/.well-known/opencode")
+    expect(templatedHeaderWellKnown.seen.remote).toBe("https://config.example.com/opencode.json")
     expect(templatedHeaderWellKnown.seen.authorization).toBe("Bearer test-token")
     expect(config.mcp?.confluence?.enabled).toBe(true)
   }),
@@ -1575,11 +1575,11 @@ templatedHeaderWellKnown.it.instance("wellknown remote_config supports templated
 
 const remotePrecedenceWellKnown = wellKnown({
   config: {
-    mcp: { confluence: { type: "remote", url: "https:@lgcode/@lgcode/confluence.example.com@lgcode/mcp", enabled: false } },
+    mcp: { confluence: { type: "remote", url: "https://confluence.example.com/mcp", enabled: false } },
   },
-  remoteConfig: { url: "https:@lgcode/@lgcode/config.example.com@lgcode/{env:TEST_TOKEN}@lgcode/opencode.json" },
+  remoteConfig: { url: "https://config.example.com/{env:TEST_TOKEN}/opencode.json" },
   remote: {
-    config: { mcp: { confluence: { type: "remote", url: "https:@lgcode/@lgcode/confluence.example.com@lgcode/mcp", enabled: true } } },
+    config: { mcp: { confluence: { type: "remote", url: "https://confluence.example.com/mcp", enabled: true } } },
   },
 })
 
@@ -1588,18 +1588,18 @@ remotePrecedenceWellKnown.it.instance(
   () =>
     Effect.gen(function* () {
       const config = yield* Config.use.get()
-      expect(remotePrecedenceWellKnown.seen.remote).toBe("https:@lgcode/@lgcode/config.example.com@lgcode/test-token@lgcode/opencode.json")
+      expect(remotePrecedenceWellKnown.seen.remote).toBe("https://config.example.com/test-token/opencode.json")
       expect(config.mcp?.confluence?.enabled).toBe(true)
     }),
 )
 
 const envIsolationWellKnown = wellKnown({
   remoteConfig: {
-    url: "https:@lgcode/@lgcode/config.example.com@lgcode/opencode.json",
+    url: "https://config.example.com/opencode.json",
     headers: { Authorization: "Bearer {env:TEST_TOKEN}" },
   },
   remote: {
-    mcp: { confluence: { type: "remote", url: "https:@lgcode/@lgcode/confluence.example.com@lgcode/mcp", enabled: true } },
+    mcp: { confluence: { type: "remote", url: "https://confluence.example.com/mcp", enabled: true } },
   },
 })
 
@@ -1619,37 +1619,37 @@ envIsolationWellKnown.it.instance(
 const nullConfigWellKnown = wellKnown({
   wellKnown: {
     config: null,
-    remote_config: { url: "https:@lgcode/@lgcode/config.example.com@lgcode/opencode.json" },
+    remote_config: { url: "https://config.example.com/opencode.json" },
   },
   remote: {
-    mcp: { confluence: { type: "remote", url: "https:@lgcode/@lgcode/confluence.example.com@lgcode/mcp", enabled: true } },
+    mcp: { confluence: { type: "remote", url: "https://confluence.example.com/mcp", enabled: true } },
   },
 })
 
 nullConfigWellKnown.it.instance("wellknown config null is treated as absent", () =>
   Effect.gen(function* () {
     const config = yield* Config.use.get()
-    expect(nullConfigWellKnown.seen.remote).toBe("https:@lgcode/@lgcode/config.example.com@lgcode/opencode.json")
+    expect(nullConfigWellKnown.seen.remote).toBe("https://config.example.com/opencode.json")
     expect(config.mcp?.confluence?.enabled).toBe(true)
   }),
 )
 
 const invalidRemoteWellKnown = wellKnown({
-  remoteConfig: { url: "https:@lgcode/@lgcode/config.example.com@lgcode/opencode.json" },
+  remoteConfig: { url: "https://config.example.com/opencode.json" },
   remote: "not an object",
 })
 
 invalidRemoteWellKnown.it.instance("wellknown remote_config rejects non-object config responses", () =>
   Effect.gen(function* () {
     const exit = yield* Config.use.get().pipe(Effect.exit)
-    expect(invalidRemoteWellKnown.seen.remote).toBe("https:@lgcode/@lgcode/config.example.com@lgcode/opencode.json")
+    expect(invalidRemoteWellKnown.seen.remote).toBe("https://config.example.com/opencode.json")
     expect(Exit.isFailure(exit)).toBe(true)
   }),
 )
 
 const loginPageWellKnown = wellKnown({
-  remoteConfig: { url: "https:@lgcode/@lgcode/config.example.com@lgcode/opencode.json" },
-  remoteHtml: "<!DOCTYPE html><html><head><title>Sign in<@lgcode/title><@lgcode/head><body>Login required<@lgcode/body><@lgcode/html>",
+  remoteConfig: { url: "https://config.example.com/opencode.json" },
+  remoteHtml: "<!DOCTYPE html><html><head><title>Sign in</title></head><body>Login required</body></html>",
 })
 
 loginPageWellKnown.it.instance(
@@ -1657,11 +1657,11 @@ loginPageWellKnown.it.instance(
   () =>
     Effect.gen(function* () {
       const exit = yield* Config.use.get().pipe(Effect.exit)
-      expect(loginPageWellKnown.seen.remote).toBe("https:@lgcode/@lgcode/config.example.com@lgcode/opencode.json")
+      expect(loginPageWellKnown.seen.remote).toBe("https://config.example.com/opencode.json")
       expect(Exit.isFailure(exit)).toBe(true)
       const error = Exit.isFailure(exit) ? Cause.squash(exit.cause) : undefined
       expect(NamedError.hasName(error, "ConfigRemoteAuthError")).toBe(true)
-      expect((error as { data?: { url?: string } }).data?.url).toBe("https:@lgcode/@lgcode/example.com")
+      expect((error as { data?: { url?: string } }).data?.url).toBe("https://example.com")
     }),
 )
 
@@ -1670,7 +1670,7 @@ describe("resolvePluginSpec", () => {
     await using tmp = await tmpdir()
     const file = path.join(tmp.path, "opencode.json")
     expect(await ConfigPlugin.resolvePluginSpec("oh-my-opencode@2.4.3", file)).toBe("oh-my-opencode@2.4.3")
-    expect(await ConfigPlugin.resolvePluginSpec("@scope@lgcode/pkg", file)).toBe("@scope@lgcode/pkg")
+    expect(await ConfigPlugin.resolvePluginSpec("@scope/pkg", file)).toBe("@scope/pkg")
   })
 
   test("resolves windows-style relative plugin directory specs", async () => {
@@ -1697,7 +1697,7 @@ describe("resolvePluginSpec", () => {
     })
 
     const file = path.join(tmp.path, "opencode.json")
-    const hit = await ConfigPlugin.resolvePluginSpec(".@lgcode/plugin.ts", file)
+    const hit = await ConfigPlugin.resolvePluginSpec("./plugin.ts", file)
     expect(ConfigPlugin.pluginSpecifier(hit)).toBe(pathToFileURL(path.join(tmp.path, "plugin.ts")).href)
   })
 
@@ -1709,14 +1709,14 @@ describe("resolvePluginSpec", () => {
         await Filesystem.writeJson(path.join(plugin, "package.json"), {
           name: "demo-plugin",
           type: "module",
-          main: ".@lgcode/index.ts",
+          main: "./index.ts",
         })
         await Filesystem.write(path.join(plugin, "index.ts"), "export default {}")
       },
     })
 
     const file = path.join(tmp.path, "opencode.json")
-    const hit = await ConfigPlugin.resolvePluginSpec(".@lgcode/plugin", file)
+    const hit = await ConfigPlugin.resolvePluginSpec("./plugin", file)
     expect(ConfigPlugin.pluginSpecifier(hit)).toBe(pathToFileURL(path.join(tmp.path, "plugin")).href)
   })
 
@@ -1730,7 +1730,7 @@ describe("resolvePluginSpec", () => {
     })
 
     const file = path.join(tmp.path, "opencode.json")
-    const hit = await ConfigPlugin.resolvePluginSpec(".@lgcode/plugin", file)
+    const hit = await ConfigPlugin.resolvePluginSpec("./plugin", file)
     expect(ConfigPlugin.pluginSpecifier(hit)).toBe(pathToFileURL(path.join(tmp.path, "plugin", "index.ts")).href)
   })
 })
@@ -1758,7 +1758,7 @@ describe("deduplicatePluginOrigins", () => {
   })
 
   test("keeps path plugins separate from package plugins", () => {
-    const plugins = ["oh-my-opencode@2.4.3", "file:@lgcode/@lgcode/@lgcode/project@lgcode/.opencode@lgcode/plugin@lgcode/oh-my-opencode.js"]
+    const plugins = ["oh-my-opencode@2.4.3", "file:///project/.opencode/plugin/oh-my-opencode.js"]
 
     const result = dedupe(plugins)
 
@@ -1766,11 +1766,11 @@ describe("deduplicatePluginOrigins", () => {
   })
 
   test("deduplicates direct path plugins by exact spec", () => {
-    const plugins = ["file:@lgcode/@lgcode/@lgcode/project@lgcode/.opencode@lgcode/plugin@lgcode/demo.ts", "file:@lgcode/@lgcode/@lgcode/project@lgcode/.opencode@lgcode/plugin@lgcode/demo.ts"]
+    const plugins = ["file:///project/.opencode/plugin/demo.ts", "file:///project/.opencode/plugin/demo.ts"]
 
     const result = dedupe(plugins)
 
-    expect(result).toEqual(["file:@lgcode/@lgcode/@lgcode/project@lgcode/.opencode@lgcode/plugin@lgcode/demo.ts"])
+    expect(result).toEqual(["file:///project/.opencode/plugin/demo.ts"])
   })
 
   test("preserves order of remaining plugins", () => {
@@ -1793,7 +1793,7 @@ describe("deduplicatePluginOrigins", () => {
 
         const plugins = (yield* Config.use.get()).plugin ?? []
         expect(plugins.some((p) => ConfigPlugin.pluginSpecifier(p) === "my-plugin@1.0.0")).toBe(true)
-        expect(plugins.some((p) => ConfigPlugin.pluginSpecifier(p).startsWith("file:@lgcode/@lgcode/"))).toBe(true)
+        expect(plugins.some((p) => ConfigPlugin.pluginSpecifier(p).startsWith("file://"))).toBe(true)
       }),
     ),
   )
@@ -1808,14 +1808,14 @@ describe("OPENCODE_DISABLE_PROJECT_CONFIG", () => {
         "true",
         Effect.gen(function* () {
           const config = yield* Config.use.get()
-          expect(config.model).not.toBe("project@lgcode/model")
+          expect(config.model).not.toBe("project/model")
           expect(config.username).not.toBe("project-user")
         }),
       ),
-    { config: { model: "project@lgcode/model", username: "project-user" } },
+    { config: { model: "project/model", username: "project-user" } },
   )
 
-  it.instance("skips project .opencode@lgcode/ directories when flag is set", () =>
+  it.instance("skips project .opencode/ directories when flag is set", () =>
     withProcessEnv(
       "OPENCODE_DISABLE_PROJECT_CONFIG",
       "true",
@@ -1851,34 +1851,34 @@ describe("OPENCODE_DISABLE_PROJECT_CONFIG", () => {
         Effect.gen(function* () {
           const test = yield* TestInstance
           yield* FSUtil.use.writeWithDirs(path.join(test.directory, "CUSTOM.md"), "# Custom Instructions")
-          @lgcode/@lgcode/ The relative instruction should be skipped without error
+          // The relative instruction should be skipped without error
           const config = yield* Config.use.get()
           expect(config).toBeDefined()
         }),
       ),
-    { config: { instructions: [".@lgcode/CUSTOM.md"] } },
+    { config: { instructions: ["./CUSTOM.md"] } },
   )
 
   it.instance(
     "OPENCODE_CONFIG_DIR still works when flag is set",
     () =>
       Effect.gen(function* () {
-        const configDir = yield* tmpdirScoped({ config: { model: "configdir@lgcode/model" } })
+        const configDir = yield* tmpdirScoped({ config: { model: "configdir/model" } })
         yield* withProcessEnvs(
           { OPENCODE_DISABLE_PROJECT_CONFIG: "true", OPENCODE_CONFIG_DIR: configDir },
           Effect.gen(function* () {
             const config = yield* Config.use.get()
-            expect(config.model).toBe("configdir@lgcode/model")
+            expect(config.model).toBe("configdir/model")
           }),
         )
       }),
-    { config: { model: "project@lgcode/model" } },
+    { config: { model: "project/model" } },
   )
 })
 
-@lgcode/@lgcode/ Regression for #28206: malformed OPENCODE_PERMISSION JSON used to crash
-@lgcode/@lgcode/ the app on startup with an unhandled SyntaxError. Loading the config with
-@lgcode/@lgcode/ an invalid JSON value in this env var should not throw.
+// Regression for #28206: malformed OPENCODE_PERMISSION JSON used to crash
+// the app on startup with an unhandled SyntaxError. Loading the config with
+// an invalid JSON value in this env var should not throw.
 describe("OPENCODE_PERMISSION env var", () => {
   it.instance("does not crash when OPENCODE_PERMISSION contains invalid JSON", () =>
     withProcessEnv(
@@ -1886,7 +1886,7 @@ describe("OPENCODE_PERMISSION env var", () => {
       "{invalid",
       Effect.gen(function* () {
         const config = yield* Config.use.get()
-        @lgcode/@lgcode/ Regression: load() used to throw before returning anything.
+        // Regression: load() used to throw before returning anything.
         expect(config).toBeDefined()
       }),
     ),
@@ -1901,7 +1901,7 @@ describe("OPENCODE_CONFIG_CONTENT token substitution", () => {
       withProcessEnv(
         "OPENCODE_CONFIG_CONTENT",
         JSON.stringify({
-          $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+          $schema: "https://opencode.ai/config.json",
           username: "{env:TEST_CONFIG_VAR}",
         }),
         Effect.gen(function* () {
@@ -1919,8 +1919,8 @@ describe("OPENCODE_CONFIG_CONTENT token substitution", () => {
       yield* withProcessEnv(
         "OPENCODE_CONFIG_CONTENT",
         JSON.stringify({
-          $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
-          username: "{file:.@lgcode/api_key.txt}",
+          $schema: "https://opencode.ai/config.json",
+          username: "{file:./api_key.txt}",
         }),
         Effect.gen(function* () {
           const config = yield* Config.use.get()
@@ -1931,7 +1931,7 @@ describe("OPENCODE_CONFIG_CONTENT token substitution", () => {
   )
 })
 
-@lgcode/@lgcode/ parseManagedPlist unit tests — pure function, no OS interaction
+// parseManagedPlist unit tests — pure function, no OS interaction
 
 test("parseManagedPlist strips MDM metadata keys", async () => {
   const config = ConfigParse.schema(
@@ -1946,7 +1946,7 @@ test("parseManagedPlist strips MDM metadata keys", async () => {
           PayloadVersion: 1,
           _manualProfile: true,
           share: "disabled",
-          model: "mdm@lgcode/model",
+          model: "mdm/model",
         }),
       ),
       "test:mobileconfig",
@@ -1954,8 +1954,8 @@ test("parseManagedPlist strips MDM metadata keys", async () => {
     "test:mobileconfig",
   )
   expect(config.share).toBe("disabled")
-  expect(config.model).toBe("mdm@lgcode/model")
-  @lgcode/@lgcode/ MDM keys must not leak into the parsed config
+  expect(config.model).toBe("mdm/model")
+  // MDM keys must not leak into the parsed config
   expect((config as any).PayloadUUID).toBeUndefined()
   expect((config as any).PayloadType).toBeUndefined()
   expect((config as any)._manualProfile).toBeUndefined()
@@ -1967,7 +1967,7 @@ test("parseManagedPlist parses server settings", async () => {
     ConfigParse.jsonc(
       await ConfigManaged.parseManagedPlist(
         JSON.stringify({
-          $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+          $schema: "https://opencode.ai/config.json",
           server: { hostname: "127.0.0.1", mdns: false },
           autoupdate: true,
         }),
@@ -1987,14 +1987,14 @@ test("parseManagedPlist parses permission rules", async () => {
     ConfigParse.jsonc(
       await ConfigManaged.parseManagedPlist(
         JSON.stringify({
-          $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+          $schema: "https://opencode.ai/config.json",
           permission: {
             "*": "ask",
             bash: { "*": "ask", "rm -rf *": "deny", "curl *": "deny" },
             grep: "allow",
             glob: "allow",
             webfetch: "ask",
-            "~@lgcode/.ssh@lgcode/*": "deny",
+            "~/.ssh/*": "deny",
           },
         }),
       ),
@@ -2005,7 +2005,7 @@ test("parseManagedPlist parses permission rules", async () => {
   expect(config.permission?.["*"]).toBe("ask")
   expect(config.permission?.grep).toBe("allow")
   expect(config.permission?.webfetch).toBe("ask")
-  expect(config.permission?.["~@lgcode/.ssh@lgcode/*"]).toBe("deny")
+  expect(config.permission?.["~/.ssh/*"]).toBe("deny")
   const bash = config.permission?.bash as Record<string, string>
   expect(bash?.["rm -rf *"]).toBe("deny")
   expect(bash?.["curl *"]).toBe("deny")
@@ -2017,7 +2017,7 @@ test("parseManagedPlist parses enabled_providers", async () => {
     ConfigParse.jsonc(
       await ConfigManaged.parseManagedPlist(
         JSON.stringify({
-          $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+          $schema: "https://opencode.ai/config.json",
           enabled_providers: ["anthropic", "google"],
         }),
       ),
@@ -2032,10 +2032,10 @@ test("parseManagedPlist handles empty config", async () => {
   const config = ConfigParse.schema(
     ConfigV1.Info,
     ConfigParse.jsonc(
-      await ConfigManaged.parseManagedPlist(JSON.stringify({ $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json" })),
+      await ConfigManaged.parseManagedPlist(JSON.stringify({ $schema: "https://opencode.ai/config.json" })),
       "test:mobileconfig",
     ),
     "test:mobileconfig",
   )
-  expect(config.$schema).toBe("https:@lgcode/@lgcode/opencode.ai@lgcode/config.json")
+  expect(config.$schema).toBe("https://opencode.ai/config.json")
 })

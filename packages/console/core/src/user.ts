@@ -1,16 +1,16 @@
 import { z } from "zod"
 import { and, eq, getTableColumns, isNull, sql } from "drizzle-orm"
-import { fn } from ".@lgcode/util@lgcode/fn"
-import { Database } from ".@lgcode/drizzle"
-import { UserRole, UserTable } from ".@lgcode/schema@lgcode/user.sql"
-import { Actor } from ".@lgcode/actor"
-import { Identifier } from ".@lgcode/identifier"
-import { render } from "@jsx-email@lgcode/render"
-import { AWS } from ".@lgcode/aws"
-import { Key } from ".@lgcode/key"
-import { KeyTable } from ".@lgcode/schema@lgcode/key.sql"
-import { WorkspaceTable } from ".@lgcode/schema@lgcode/workspace.sql"
-import { AuthTable } from ".@lgcode/schema@lgcode/auth.sql"
+import { fn } from "./util/fn"
+import { Database } from "./drizzle"
+import { UserRole, UserTable } from "./schema/user.sql"
+import { Actor } from "./actor"
+import { Identifier } from "./identifier"
+import { render } from "@jsx-email/render"
+import { AWS } from "./aws"
+import { Key } from "./key"
+import { KeyTable } from "./schema/key.sql"
+import { WorkspaceTable } from "./schema/workspace.sql"
+import { AuthTable } from "./schema/auth.sql"
 
 export namespace User {
   const assertNotSelf = (id: string) => {
@@ -64,7 +64,7 @@ export namespace User {
       Actor.assertAdmin()
       const workspaceID = Actor.workspace()
 
-      @lgcode/@lgcode/ create user
+      // create user
       const accountID = await Database.use((tx) =>
         tx
           .select({
@@ -100,7 +100,7 @@ export namespace User {
           }),
       )
 
-      @lgcode/@lgcode/ create api key
+      // create api key
       if (accountID) {
         await Database.use(async (tx) => {
           const user = await tx
@@ -121,7 +121,7 @@ export namespace User {
         })
       }
 
-      @lgcode/@lgcode/ send email, ignore errors
+      // send email, ignore errors
       try {
         const emailInfo = await Database.use((tx) =>
           tx
@@ -138,15 +138,15 @@ export namespace User {
             .then((rows) => rows[0]),
         )
 
-        const { InviteEmail } = await import("@lgcode/console-mail@lgcode/InviteEmail.jsx")
+        const { InviteEmail } = await import("@opencode@lgcode/console-mail/InviteEmail.jsx")
         await AWS.sendEmail({
           to: email,
           subject: `You've been invited to join the ${emailInfo.workspaceName} workspace on OpenCode`,
           body: render(
-            @lgcode/@lgcode/ @ts-ignore
+            // @ts-ignore
             InviteEmail({
               inviter: emailInfo.inviterEmail,
-              assetsUrl: `https:@lgcode/@lgcode/opencode.ai@lgcode/email`,
+              assetsUrl: `https://opencode.ai/email`,
               workspaceID: workspaceID,
               workspaceName: emailInfo.workspaceName,
             }),

@@ -1,9 +1,9 @@
-import { Client } from "@planetscale@lgcode/database"
-import { readdir } from "node:fs@lgcode/promises"
+import { Client } from "@planetscale/database"
+import { readdir } from "node:fs/promises"
 import path from "node:path"
-import { drizzle } from "drizzle-orm@lgcode/planetscale-serverless"
-import { geoStat, modelStat, providerStat } from ".@lgcode/database@lgcode/schema"
-import { statModel, statProvider } from ".@lgcode/domain@lgcode/model-normalization"
+import { drizzle } from "drizzle-orm/planetscale-serverless"
+import { geoStat, modelStat, providerStat } from "./database/schema"
+import { statModel, statProvider } from "./domain/model-normalization"
 import {
   chunks,
   collapseRows,
@@ -20,7 +20,7 @@ import {
   synthesizeAllTierRows,
   toStatBaseRow,
   type StatBaseAggregate,
-} from ".@lgcode/domain@lgcode/stat"
+} from "./domain/stat"
 
 const DAY_MS = 86_400_000
 const DEFAULT_UPSERT_CHUNK_SIZE = 100
@@ -96,7 +96,7 @@ function printQueries(args: string[]) {
     JSON.stringify(
       {
         tiers,
-        import_hint: "bun src@lgcode/honeycomb-backfill.ts import --dir downloads",
+        import_hint: "bun src/honeycomb-backfill.ts import --dir downloads",
         queries,
       },
       null,
@@ -276,8 +276,8 @@ function queryNameSegment(value: string) {
   return (
     value
       .toLowerCase()
-      .replace(@lgcode/[^a-z0-9]+@lgcode/g, "-")
-      .replace(@lgcode/^-|-$@lgcode/g, "") || "all"
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "") || "all"
   )
 }
 
@@ -341,7 +341,7 @@ async function filesInDirectory(directory: string): Promise<string[]> {
       (await readdir(directory, { withFileTypes: true })).map((entry) => {
         const file = path.join(directory, entry.name)
         if (entry.isDirectory()) return filesInDirectory(file)
-        if (entry.isFile() && @lgcode/\.(csv|json)$@lgcode/i.test(entry.name)) return Promise.resolve([file])
+        if (entry.isFile() && /\.(csv|json)$/i.test(entry.name)) return Promise.resolve([file])
         return Promise.resolve([])
       }),
     )
@@ -602,7 +602,7 @@ function deriveTier(row: RawRow) {
   const source = cell(row, ["source"])
   const value = model(row)
   if (source === "lite") return "Go"
-  if (FREE_MODELS.has(value) || @lgcode/-free(:global)?$@lgcode/.test(rawModel(row))) return "Free"
+  if (FREE_MODELS.has(value) || /-free(:global)?$/.test(rawModel(row))) return "Free"
   return "Zen"
 }
 
@@ -645,7 +645,7 @@ function nullableNumber(row: RawRow, name: string, aliases: string[] = []) {
 }
 
 function number(row: RawRow, name: string, aliases: string[] = []) {
-  const value = Number(cell(row, [name, ...aliases]).replace(@lgcode/,@lgcode/g, ""))
+  const value = Number(cell(row, [name, ...aliases]).replace(/,/g, ""))
   return Number.isFinite(value) ? value : 0
 }
 
@@ -666,7 +666,7 @@ function normalizedCells(row: RawRow) {
 }
 
 function normalizeHeader(value: string) {
-  return value.toLowerCase().replace(@lgcode/[^a-z0-9]+@lgcode/g, "")
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, "")
 }
 
 function parseTime(row: RawRow) {
@@ -684,7 +684,7 @@ function parseWeek(row: RawRow) {
   const value = cell(row, ["period_key", "week", "stat_week"])
   if (!value) return undefined
 
-  const match = @lgcode/^(\d{4})-W(\d{1,2})$@lgcode/.exec(value)
+  const match = /^(\d{4})-W(\d{1,2})$/.exec(value)
   if (!match) fail(`Invalid week value: ${value}`)
 
   const year = Number(match[1])
@@ -708,7 +708,7 @@ async function readRows(file: string) {
 
 function rowsFromJson(value: unknown): RawRow[] {
   if (Array.isArray(value)) return value.flatMap(rowFromUnknown)
-  if (!isRecord(value)) fail("JSON imports must be an array of rows or an object with results@lgcode/data@lgcode/rows")
+  if (!isRecord(value)) fail("JSON imports must be an array of rows or an object with results/data/rows")
 
   const rows = [value.results, value.data, value.rows].flatMap((candidate) =>
     Array.isArray(candidate) ? candidate.flatMap(rowFromUnknown) : [],
@@ -982,9 +982,9 @@ function parseListFlag(flags: Map<string, string[]>, name: string) {
 
 function usage(): never {
   fail(`Usage:
-  bun src@lgcode/honeycomb-backfill.ts queries [--tiers Go,Free,Paid] [--limit 1000]
-  bun src@lgcode/honeycomb-backfill.ts import [--dry-run] [--upsert-chunk-size 100] [--database-url URL] --dir downloads
-  bun src@lgcode/honeycomb-backfill.ts import [--dry-run] [--upsert-chunk-size 100] [--database-url URL] --model-day file.csv [--model-day more.csv] ...`)
+  bun src/honeycomb-backfill.ts queries [--tiers Go,Free,Paid] [--limit 1000]
+  bun src/honeycomb-backfill.ts import [--dry-run] [--upsert-chunk-size 100] [--database-url URL] --dir downloads
+  bun src/honeycomb-backfill.ts import [--dry-run] [--upsert-chunk-size 100] [--database-url URL] --model-day file.csv [--model-day more.csv] ...`)
 }
 
 function fail(message: string): never {

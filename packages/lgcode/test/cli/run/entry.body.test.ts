@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test"
-import type { ToolPart } from "@lgcode/sdk@lgcode/v2"
-import { entryBody, entryCanStream, entryDone } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/entry.body"
-import type { StreamCommit, ToolSnapshot } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/types"
+import type { ToolPart } from "@opencode@lgcode/sdk/v2"
+import { entryBody, entryCanStream, entryDone } from "@/cli/cmd/run/entry.body"
+import type { StreamCommit, ToolSnapshot } from "@/cli/cmd/run/types"
 
 function commit(input: Partial<StreamCommit> & Pick<StreamCommit, "kind" | "text" | "phase" | "source">): StreamCommit {
   return input
@@ -115,7 +115,7 @@ describe("run entry body", () => {
         state: {
           status: "completed",
           input: {
-            filePath: "src@lgcode/a.ts",
+            filePath: "src/a.ts",
             content: "const x = 1\n",
           },
           output: "",
@@ -126,9 +126,9 @@ describe("run entry body", () => {
       }),
       snapshot: {
         kind: "code",
-        title: "# Wrote src@lgcode/a.ts",
+        title: "# Wrote src/a.ts",
         content: "const x = 1\n",
-        file: "src@lgcode/a.ts",
+        file: "src/a.ts",
       },
     },
     {
@@ -138,7 +138,7 @@ describe("run entry body", () => {
         state: {
           status: "completed",
           input: {
-            filePath: "src@lgcode/a.ts",
+            filePath: "src/a.ts",
           },
           output: "",
           title: "",
@@ -152,9 +152,9 @@ describe("run entry body", () => {
         kind: "diff",
         items: [
           {
-            title: "# Edited src@lgcode/a.ts",
+            title: "# Edited src/a.ts",
             diff: "@@ -1 +1 @@\n-old\n+new\n",
-            file: "src@lgcode/a.ts",
+            file: "src/a.ts",
           },
         ],
       },
@@ -172,8 +172,8 @@ describe("run entry body", () => {
             files: [
               {
                 type: "update",
-                filePath: "src@lgcode/a.ts",
-                relativePath: "src@lgcode/a.ts",
+                filePath: "src/a.ts",
+                relativePath: "src/a.ts",
                 patch: "@@ -1 +1 @@\n-old\n+new\n",
               },
             ],
@@ -185,9 +185,9 @@ describe("run entry body", () => {
         kind: "diff",
         items: [
           {
-            title: "# Patched src@lgcode/a.ts",
+            title: "# Patched src/a.ts",
             diff: "@@ -1 +1 @@\n-old\n+new\n",
-            file: "src@lgcode/a.ts",
+            file: "src/a.ts",
             deletions: 0,
           },
         ],
@@ -238,8 +238,8 @@ describe("run entry body", () => {
               '<task id="child-1" state="completed">',
               "<task_result>",
               "# Findings\n\n- Footer stays live",
-              "<@lgcode/task_result>",
-              "<@lgcode/task>",
+              "</task_result>",
+              "</task>",
             ].join("\n"),
             metadata: {
               sessionId: "child-1",
@@ -264,7 +264,7 @@ describe("run entry body", () => {
               subagent_type: "explore",
             },
             title: "",
-            output: ['<task id="child-1" state="completed">', "<task_result>", "", "<@lgcode/task_result>", "<@lgcode/task>"].join(
+            output: ['<task id="child-1" state="completed">', "<task_result>", "", "</task_result>", "</task>"].join(
               "\n",
             ),
             metadata: {
@@ -331,14 +331,14 @@ describe("run entry body", () => {
           tool: "bash",
           phase: "progress",
           toolState: "completed",
-          text: ["@lgcode/tmp@lgcode/demo", "git status", "On branch demo", "nothing to commit, working tree clean", ""].join("\n"),
+          text: ["/tmp/demo", "git status", "On branch demo", "nothing to commit, working tree clean", ""].join("\n"),
           state: {
             status: "completed",
             input: {
               command: "git status",
-              workdir: "@lgcode/tmp@lgcode/demo",
+              workdir: "/tmp/demo",
             },
-            output: ["@lgcode/tmp@lgcode/demo", "git status", "On branch demo", "nothing to commit, working tree clean", ""].join(
+            output: ["/tmp/demo", "git status", "On branch demo", "nothing to commit, working tree clean", ""].join(
               "\n",
             ),
             title: "git status",
@@ -404,7 +404,7 @@ describe("run entry body", () => {
       entryBody(
         commit({
           kind: "tool",
-          text: "@lgcode/tmp@lgcode/demo\n",
+          text: "/tmp/demo\n",
           phase: "progress",
           source: "tool",
           tool: "bash",
@@ -418,7 +418,7 @@ describe("run entry body", () => {
       ),
     ).toEqual({
       type: "text",
-      content: "\n@lgcode/tmp@lgcode/demo",
+      content: "\n/tmp/demo",
     })
   })
 
@@ -438,8 +438,8 @@ describe("run entry body", () => {
               files: [
                 {
                   type: "update",
-                  filePath: "src@lgcode/a.ts",
-                  relativePath: "src@lgcode/a.ts",
+                  filePath: "src/a.ts",
+                  relativePath: "src/a.ts",
                   diff: "@@ -1 +1 @@\n-old\n+new\n",
                 },
               ],
@@ -450,7 +450,7 @@ describe("run entry body", () => {
       ),
     ).toEqual({
       type: "text",
-      content: "~ Patched src@lgcode/a.ts",
+      content: "~ Patched src/a.ts",
     })
   })
 
@@ -470,8 +470,8 @@ describe("run entry body", () => {
               files: [
                 {
                   type: "update",
-                  filePath: "src@lgcode/a.ts",
-                  relativePath: "src@lgcode/a.ts",
+                  filePath: "src/a.ts",
+                  relativePath: "src/a.ts",
                   diff: "@@ -1 +1 @@\n-old\n+new\n",
                 },
                 {
@@ -501,10 +501,10 @@ describe("run entry body", () => {
           state: {
             status: "error",
             input: {
-              pattern: "**@lgcode/*tool*",
-              path: "@lgcode/tmp@lgcode/demo@lgcode/run",
+              pattern: "**/*tool*",
+              path: "/tmp/demo/run",
             },
-            error: "No such file or directory: '@lgcode/tmp@lgcode/demo@lgcode/run'",
+            error: "No such file or directory: '/tmp/demo/run'",
             metadata: {},
             time: { start: 1, end: 2 },
           },
@@ -512,7 +512,7 @@ describe("run entry body", () => {
       ),
     ).toEqual({
       type: "text",
-      content: "No such file or directory: '@lgcode/tmp@lgcode/demo@lgcode/run'",
+      content: "No such file or directory: '/tmp/demo/run'",
     })
   })
 

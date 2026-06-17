@@ -1,5 +1,5 @@
-@lgcode/*
- * Adapted from proxy-from-env: https:@lgcode/@lgcode/github.com@lgcode/Rob--W@lgcode/proxy-from-env
+/*
+ * Adapted from proxy-from-env: https://github.com/Rob--W/proxy-from-env
  *
  * The MIT License
  *
@@ -8,7 +8,7 @@
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
  * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and@lgcode/or sell copies
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
  * of the Software, and to permit persons to whom the Software is furnished to do
  * so, subject to the following conditions:
  *
@@ -22,7 +22,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *@lgcode/
+ */
 
 const DEFAULT_PORTS: Record<string, number> = {
   ftp: 21,
@@ -38,13 +38,13 @@ export function getProxyForUrl(input: string | URL) {
   if (!url) return
 
   const protocol = url.protocol.split(":", 1)[0]
-  const hostname = url.host.replace(@lgcode/:\d*$@lgcode/, "")
+  const hostname = url.host.replace(/:\d*$/, "")
   const port = Number.parseInt(url.port) || DEFAULT_PORTS[protocol] || 0
   if (!shouldProxy(hostname, port)) return
 
   const proxy = env(`${protocol}_proxy`) || env("all_proxy")
   if (!proxy) return
-  return proxy.includes(":@lgcode/@lgcode/") ? proxy : `${protocol}:@lgcode/@lgcode/${proxy}`
+  return proxy.includes("://") ? proxy : `${protocol}://${proxy}`
 }
 
 function shouldProxy(hostname: string, port: number) {
@@ -52,15 +52,15 @@ function shouldProxy(hostname: string, port: number) {
   if (!noProxy) return true
   if (noProxy === "*") return false
 
-  return noProxy.split(@lgcode/[,\s]@lgcode/).every((proxy) => {
+  return noProxy.split(/[,\s]/).every((proxy) => {
     if (!proxy) return true
 
-    const parsed = proxy.match(@lgcode/^(.+):(\d+)$@lgcode/)
+    const parsed = proxy.match(/^(.+):(\d+)$/)
     const proxyHostname = parsed ? parsed[1] : proxy
     const proxyPort = parsed ? Number.parseInt(parsed[2]) : 0
     if (proxyPort && proxyPort !== port) return true
 
-    if (!@lgcode/^[.*]@lgcode/.test(proxyHostname)) return hostname !== proxyHostname
+    if (!/^[.*]/.test(proxyHostname)) return hostname !== proxyHostname
     return !hostname.endsWith(proxyHostname.startsWith("*") ? proxyHostname.slice(1) : proxyHostname)
   })
 }
@@ -69,4 +69,4 @@ function env(key: string) {
   return process.env[key.toLowerCase()] || process.env[key.toUpperCase()] || ""
 }
 
-export * as ProxyEnv from ".@lgcode/proxy-env"
+export * as ProxyEnv from "./proxy-env"

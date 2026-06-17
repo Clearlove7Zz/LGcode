@@ -1,7 +1,7 @@
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import { SessionID, MessageID, PartID } from ".@lgcode/schema"
-import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import { SessionID, MessageID, PartID } from "./schema"
+import { SessionV1 } from "@opencode@lgcode/core/v1/session"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
 import {
   APIError,
   AbortedError,
@@ -17,28 +17,28 @@ import {
   User,
   WithParts,
   type ToolPart,
-} from "@lgcode/core@lgcode/v1@lgcode/session"
+} from "@opencode@lgcode/core/v1/session"
 
-import { NamedError } from "@lgcode/core@lgcode/util@lgcode/error"
+import { NamedError } from "@opencode@lgcode/core/util/error"
 import { APICallError, convertToModelMessages, LoadAPIKeyError, type ModelMessage, type UIMessage } from "ai"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { NotFoundError } from "@@lgcode/storage@lgcode/storage"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { NotFoundError } from "@/storage/storage"
 import { and } from "drizzle-orm"
 import { desc } from "drizzle-orm"
 import { eq } from "drizzle-orm"
 import { inArray } from "drizzle-orm"
 import { lt } from "drizzle-orm"
 import { or } from "drizzle-orm"
-import { MessageTable, PartTable, SessionTable } from "@lgcode/core@lgcode/session@lgcode/sql"
-import { ProviderError } from "@@lgcode/provider@lgcode/error"
-import { iife } from "@@lgcode/util@lgcode/iife"
-import { errorMessage } from "@@lgcode/util@lgcode/error"
-import { isMedia } from "@@lgcode/util@lgcode/media"
+import { MessageTable, PartTable, SessionTable } from "@opencode@lgcode/core/session/sql"
+import { ProviderError } from "@/provider/error"
+import { iife } from "@/util/iife"
+import { errorMessage } from "@/util/error"
+import { isMedia } from "@/util/media"
 import type { SystemError } from "bun"
-import type { Provider } from "@@lgcode/provider@lgcode/provider"
+import type { Provider } from "@/provider/provider"
 import { Effect, Schema } from "effect"
 
-@lgcode/** Error shape thrown by Bun's fetch() when gzip@lgcode/br decompression fails mid-stream *@lgcode/
+/** Error shape thrown by Bun's fetch() when gzip/br decompression fails mid-stream */
 interface FetchDecompressionError extends Error {
   code: "ZlibError"
   errno: number
@@ -146,23 +146,23 @@ export const toModelMessagesEffect = Effect.fnUntraced(function* (
 ) {
   const result: UIMessage[] = []
   const toolNames = new Set<string>()
-  @lgcode/@lgcode/ Track media from tool results that need to be injected as user messages
-  @lgcode/@lgcode/ for providers that don't support that media type in tool results.
-  @lgcode/@lgcode/
-  @lgcode/@lgcode/ OpenAI-compatible APIs only support string content in tool results, so we need
-  @lgcode/@lgcode/ to extract media and inject as user messages. Some SDKs only support a subset
-  @lgcode/@lgcode/ of media in tool results; e.g. Bedrock supports images but not PDFs there.
-  @lgcode/@lgcode/
-  @lgcode/@lgcode/ Only apply this workaround if the model actually supports that media input -
-  @lgcode/@lgcode/ otherwise unsupportedParts() will turn it into a user-visible error.
+  // Track media from tool results that need to be injected as user messages
+  // for providers that don't support that media type in tool results.
+  //
+  // OpenAI-compatible APIs only support string content in tool results, so we need
+  // to extract media and inject as user messages. Some SDKs only support a subset
+  // of media in tool results; e.g. Bedrock supports images but not PDFs there.
+  //
+  // Only apply this workaround if the model actually supports that media input -
+  // otherwise unsupportedParts() will turn it into a user-visible error.
   const supportsMediaInToolResult = (attachment: { mime: string }) => {
-    if (model.api.npm === "@ai-sdk@lgcode/anthropic") return true
-    if (model.api.npm === "@ai-sdk@lgcode/openai") return true
-    if (model.api.npm === "@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle") return true
-    if (model.api.npm === "@ai-sdk@lgcode/amazon-bedrock") return attachment.mime.startsWith("image@lgcode/")
-    if (model.api.npm === "@ai-sdk@lgcode/xai") return attachment.mime.startsWith("image@lgcode/")
-    if (model.api.npm === "@ai-sdk@lgcode/google-vertex@lgcode/anthropic") return true
-    if (model.api.npm === "@ai-sdk@lgcode/google") {
+    if (model.api.npm === "@ai-sdk/anthropic") return true
+    if (model.api.npm === "@ai-sdk/openai") return true
+    if (model.api.npm === "@ai-sdk/amazon-bedrock/mantle") return true
+    if (model.api.npm === "@ai-sdk/amazon-bedrock") return attachment.mime.startsWith("image/")
+    if (model.api.npm === "@ai-sdk/xai") return attachment.mime.startsWith("image/")
+    if (model.api.npm === "@ai-sdk/google-vertex/anthropic") return true
+    if (model.api.npm === "@ai-sdk/google") {
       const id = model.api.id.toLowerCase()
       return id.includes("gemini-3") && !id.includes("gemini-2")
     }
@@ -213,14 +213,14 @@ export const toModelMessagesEffect = Effect.fnUntraced(function* (
         parts: [],
       }
       for (const part of msg.parts) {
-        @lgcode/@lgcode/ User message parts should never be empty
+        // User message parts should never be empty
         if (part.type === "text" && !part.ignored && part.text !== "")
           userMessage.parts.push({
             type: "text",
             text: part.text,
           })
-        @lgcode/@lgcode/ text@lgcode/plain and directory files are converted into text parts, ignore them
-        if (part.type === "file" && part.mime !== "text@lgcode/plain" && part.mime !== "application@lgcode/x-directory") {
+        // text/plain and directory files are converted into text parts, ignore them
+        if (part.type === "file" && part.mime !== "text/plain" && part.mime !== "application/x-directory") {
           if (options?.stripMedia && isMedia(part.mime)) {
             userMessage.parts.push({
               type: "text",
@@ -253,7 +253,7 @@ export const toModelMessagesEffect = Effect.fnUntraced(function* (
     }
 
     if (msg.info.role === "assistant") {
-      const differentModel = `${model.providerID}@lgcode/${model.id}` !== `${msg.info.providerID}@lgcode/${msg.info.modelID}`
+      const differentModel = `${model.providerID}/${model.id}` !== `${msg.info.providerID}/${msg.info.modelID}`
       const media: Array<{ mime: string; url: string; filename?: string }> = []
 
       if (
@@ -270,17 +270,17 @@ export const toModelMessagesEffect = Effect.fnUntraced(function* (
         role: "assistant",
         parts: [],
       }
-      @lgcode/@lgcode/ Anthropic adaptive thinking can persist assistant turns like:
-      @lgcode/@lgcode/ step-start, reasoning(signature), text(""), step-start,
-      @lgcode/@lgcode/ reasoning(signature). The empty text part is a structural separator,
-      @lgcode/@lgcode/ but it does not carry the signature metadata itself. Dropping it shifts
-      @lgcode/@lgcode/ signed thinking positions after step-start splitting@lgcode/provider regrouping;
-      @lgcode/@lgcode/ keeping it as "" is filtered by the AI SDK and rejected by Anthropic.
-      @lgcode/@lgcode/ It is unclear whether this shape originates in our stream processing,
-      @lgcode/@lgcode/ a proxy, or a lower-level library, but preserving a non-empty separator
-      @lgcode/@lgcode/ here is the only safe replay point we have.
-      @lgcode/@lgcode/ Use a single space so the separator survives replay without changing
-      @lgcode/@lgcode/ the neighboring signed reasoning blocks.
+      // Anthropic adaptive thinking can persist assistant turns like:
+      // step-start, reasoning(signature), text(""), step-start,
+      // reasoning(signature). The empty text part is a structural separator,
+      // but it does not carry the signature metadata itself. Dropping it shifts
+      // signed thinking positions after step-start splitting/provider regrouping;
+      // keeping it as "" is filtered by the AI SDK and rejected by Anthropic.
+      // It is unclear whether this shape originates in our stream processing,
+      // a proxy, or a lower-level library, but preserving a non-empty separator
+      // here is the only safe replay point we have.
+      // Use a single space so the separator survives replay without changing
+      // the neighboring signed reasoning blocks.
       const hasSignedReasoning = msg.parts.some((part) => {
         if (part.type !== "reasoning") return false
         return part.metadata?.anthropic?.signature != null
@@ -306,8 +306,8 @@ export const toModelMessagesEffect = Effect.fnUntraced(function* (
               : truncateToolOutput(part.state.output, options?.toolOutputMaxChars)
             const attachments = part.state.time.compacted || options?.stripMedia ? [] : (part.state.attachments ?? [])
 
-            @lgcode/@lgcode/ For providers that don't support media in tool results, extract media files
-            @lgcode/@lgcode/ (images, PDFs) to be sent as a separate user message
+            // For providers that don't support media in tool results, extract media files
+            // (images, PDFs) to be sent as a separate user message
             const mediaAttachments = attachments.filter((a) => isMedia(a.mime))
             const extractedMedia = mediaAttachments.filter((a) => !supportsMediaInToolResult(a))
             if (extractedMedia.length > 0) {
@@ -357,8 +357,8 @@ export const toModelMessagesEffect = Effect.fnUntraced(function* (
               })
             }
           }
-          @lgcode/@lgcode/ Handle pending@lgcode/running tool calls to prevent dangling tool_use blocks
-          @lgcode/@lgcode/ Anthropic@lgcode/Claude APIs require every tool_use to have a corresponding tool_result
+          // Handle pending/running tool calls to prevent dangling tool_use blocks
+          // Anthropic/Claude APIs require every tool_use to have a corresponding tool_result
           if (part.state.status === "pending" || part.state.status === "running")
             assistantMessage.parts.push({
               type: ("tool-" + part.tool) as `tool-${string}`,
@@ -388,8 +388,8 @@ export const toModelMessagesEffect = Effect.fnUntraced(function* (
       }
       if (assistantMessage.parts.length > 0) {
         result.push(assistantMessage)
-        @lgcode/@lgcode/ Inject pending media as a user message for providers that don't support
-        @lgcode/@lgcode/ media (images, PDFs) in tool results
+        // Inject pending media as a user message for providers that don't support
+        // media (images, PDFs) in tool results
         if (media.length > 0) {
           result.push({
             id: MessageID.ascending(),
@@ -418,7 +418,7 @@ export const toModelMessagesEffect = Effect.fnUntraced(function* (
     convertToModelMessages(
       result.filter((msg) => msg.parts.some((part) => part.type !== "step-start")),
       {
-        @lgcode/@lgcode/@ts-expect-error (convertToModelMessages expects a ToolSet but only actually needs tools[name]?.toModelOutput)
+        //@ts-expect-error (convertToModelMessages expects a ToolSet but only actually needs tools[name]?.toModelOutput)
         tools,
       },
     ),
@@ -586,13 +586,13 @@ export const filterCompactedEffect = Effect.fnUntraced(function* (sessionID: Ses
   return filterCompacted(yield* stream(sessionID))
 })
 
-@lgcode/@lgcode/ filterCompacted reorders messages for model consumption
-@lgcode/@lgcode/ ([compaction-user, summary, ...retained tail..., continue-user]), so array
-@lgcode/@lgcode/ position is not chronological. Derive each binding by max id (MessageID
-@lgcode/@lgcode/ is monotonic via MessageID.ascending) so a pre-compaction overflowing tail
-@lgcode/@lgcode/ assistant doesn't get mistaken for the most recent turn. tasks are
-@lgcode/@lgcode/ compaction@lgcode/subtask parts attached to user messages newer than the latest
-@lgcode/@lgcode/ finished assistant — i.e. unprocessed work.
+// filterCompacted reorders messages for model consumption
+// ([compaction-user, summary, ...retained tail..., continue-user]), so array
+// position is not chronological. Derive each binding by max id (MessageID
+// is monotonic via MessageID.ascending) so a pre-compaction overflowing tail
+// assistant doesn't get mistaken for the most recent turn. tasks are
+// compaction/subtask parts attached to user messages newer than the latest
+// finished assistant — i.e. unprocessed work.
 export function latest(msgs: WithParts[]) {
   let user: User | undefined
   let assistant: Assistant | undefined
@@ -741,4 +741,4 @@ export function fromError(
   }
 }
 
-export * as MessageV2 from ".@lgcode/message-v2"
+export * as MessageV2 from "./message-v2"

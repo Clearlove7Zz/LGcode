@@ -1,9 +1,9 @@
 import { execFile } from "child_process"
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import path from "path"
 import { promisify } from "util"
 import { pathToFileURL } from "url"
-import { Repository } from "@lgcode/core@lgcode/repository"
+import { Repository } from "@opencode@lgcode/core/repository"
 
 const exec = promisify(execFile)
 
@@ -20,12 +20,12 @@ export async function gitRemote(root: string) {
   await git(source, "branch", "-M", "main")
   await git(source, "remote", "add", "origin", pathToFileURL(origin).href)
   await git(source, "push", "-u", "origin", "main")
-  await git(root, "--git-dir", origin, "symbolic-ref", "HEAD", "refs@lgcode/heads@lgcode/main")
+  await git(root, "--git-dir", origin, "symbolic-ref", "HEAD", "refs/heads/main")
   return {
     root,
     source,
     remote: pathToFileURL(origin).href,
-    reference: { ...Repository.parseRemote("owner@lgcode/repo"), remote: pathToFileURL(origin).href },
+    reference: { ...Repository.parseRemote("owner/repo"), remote: pathToFileURL(origin).href },
   }
 }
 

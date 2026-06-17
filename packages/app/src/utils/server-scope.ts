@@ -1,4 +1,4 @@
-import type { ServerConnection } from "@@lgcode/context@lgcode/server"
+import type { ServerConnection } from "@/context/server"
 
 export type ServerScope = string & { readonly __brand: "ServerScope" }
 export type SessionRouteKey = string & { readonly __brand: "SessionRouteKey" }
@@ -28,7 +28,7 @@ export const ServerScope = {
 
 export const SessionRouteKey = {
   fromRoute(dir: string | undefined, sessionID?: string) {
-    return fragment("Session route", `${dir ?? ""}${sessionID ? "@lgcode/" + sessionID : ""}`) as SessionRouteKey
+    return fragment("Session route", `${dir ?? ""}${sessionID ? "/" + sessionID : ""}`) as SessionRouteKey
   },
   fromLegacy(key: string) {
     return fragment("Legacy session route", key) as SessionRouteKey

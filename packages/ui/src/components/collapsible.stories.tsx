@@ -1,5 +1,5 @@
-@lgcode/@lgcode/ @ts-nocheck
-import * as mod from ".@lgcode/collapsible"
+// @ts-nocheck
+import * as mod from "./collapsible"
 
 const docs = `### Overview
 Toggleable content region with optional arrow indicator.
@@ -12,7 +12,7 @@ Compose \`Collapsible.Trigger\`, \`Collapsible.Content\`, and \`Collapsible.Arro
 
 ### Variants and states
 - Normal and ghost variants.
-- Open@lgcode/closed states.
+- Open/closed states.
 
 ### Behavior
 - Trigger toggles the content visibility.
@@ -20,13 +20,13 @@ Compose \`Collapsible.Trigger\`, \`Collapsible.Content\`, and \`Collapsible.Arro
 ### Accessibility
 - TODO: confirm ARIA attributes provided by Kobalte.
 
-### Theming@lgcode/tokens
-- Uses \`data-component="collapsible"\` and slots for trigger@lgcode/content@lgcode/arrow.
+### Theming/tokens
+- Uses \`data-component="collapsible"\` and slots for trigger/content/arrow.
 
 `
 
 export default {
-  title: "UI@lgcode/Collapsible",
+  title: "UI/Collapsible",
   id: "components-collapsible",
   component: mod.Collapsible,
   tags: ["autodocs"],
@@ -54,14 +54,14 @@ export const Basic = {
     <mod.Collapsible {...props}>
       <mod.Collapsible.Trigger data-slot="collapsible-trigger">
         <div style={{ display: "flex", "align-items": "center", gap: "8px" }}>
-          <span>Details<@lgcode/span>
-          <mod.Collapsible.Arrow @lgcode/>
-        <@lgcode/div>
-      <@lgcode/mod.Collapsible.Trigger>
+          <span>Details</span>
+          <mod.Collapsible.Arrow />
+        </div>
+      </mod.Collapsible.Trigger>
       <mod.Collapsible.Content data-slot="collapsible-content">
-        <div style={{ color: "var(--text-weak)", "padding-top": "8px" }}>Optional details sit here.<@lgcode/div>
-      <@lgcode/mod.Collapsible.Content>
-    <@lgcode/mod.Collapsible>
+        <div style={{ color: "var(--text-weak)", "padding-top": "8px" }}>Optional details sit here.</div>
+      </mod.Collapsible.Content>
+    </mod.Collapsible>
   ),
 }
 
@@ -74,13 +74,13 @@ export const Ghost = {
     <mod.Collapsible {...props}>
       <mod.Collapsible.Trigger data-slot="collapsible-trigger">
         <div style={{ display: "flex", "align-items": "center", gap: "8px" }}>
-          <span>Ghost trigger<@lgcode/span>
-          <mod.Collapsible.Arrow @lgcode/>
-        <@lgcode/div>
-      <@lgcode/mod.Collapsible.Trigger>
+          <span>Ghost trigger</span>
+          <mod.Collapsible.Arrow />
+        </div>
+      </mod.Collapsible.Trigger>
       <mod.Collapsible.Content data-slot="collapsible-content">
-        <div style={{ color: "var(--text-weak)", "padding-top": "8px" }}>Ghost content.<@lgcode/div>
-      <@lgcode/mod.Collapsible.Content>
-    <@lgcode/mod.Collapsible>
+        <div style={{ color: "var(--text-weak)", "padding-top": "8px" }}>Ghost content.</div>
+      </mod.Collapsible.Content>
+    </mod.Collapsible>
   ),
 }

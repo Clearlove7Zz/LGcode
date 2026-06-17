@@ -1,13 +1,13 @@
-import { action, useParams, useAction, createAsync, useSubmission, json } from "@solidjs@lgcode/router"
+import { action, useParams, useAction, createAsync, useSubmission, json } from "@solidjs/router"
 import { createMemo, Match, Show, Switch, createEffect } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import { Billing } from "@lgcode/console-core@lgcode/billing.js"
-import { withActor } from "~@lgcode/context@lgcode/auth.withActor"
-import { IconAlipay, IconCreditCard, IconStripe, IconUpi, IconWechat } from "~@lgcode/component@lgcode/icon"
-import styles from ".@lgcode/billing-section.module.css"
-import { createCheckoutUrl, formatBalance, queryBillingInfo } from "..@lgcode/..@lgcode/common"
-import { useI18n } from "~@lgcode/context@lgcode/i18n"
-import { localizeError } from "~@lgcode/lib@lgcode/form-error"
+import { createStore } from "solid-js/store"
+import { Billing } from "@opencode@lgcode/console-core/billing.js"
+import { withActor } from "~/context/auth.withActor"
+import { IconAlipay, IconCreditCard, IconStripe, IconUpi, IconWechat } from "~/component/icon"
+import styles from "./billing-section.module.css"
+import { createCheckoutUrl, formatBalance, queryBillingInfo } from "../../common"
+import { useI18n } from "~/context/i18n"
+import { localizeError } from "~/lib/form-error"
 
 const createSessionUrl = action(async (workspaceID: string, returnUrl: string) => {
   "use server"
@@ -29,7 +29,7 @@ const createSessionUrl = action(async (workspaceID: string, returnUrl: string) =
 export function BillingSection() {
   const params = useParams()
   const i18n = useI18n()
-  @lgcode/@lgcode/ ORIGINAL CODE - COMMENTED OUT FOR TESTING
+  // ORIGINAL CODE - COMMENTED OUT FOR TESTING
   const billingInfo = createAsync(() => queryBillingInfo(params.id!))
   const checkoutAction = useAction(createCheckoutUrl)
   const checkoutSubmission = useSubmission(createCheckoutUrl)
@@ -85,74 +85,74 @@ export function BillingSection() {
     checkoutSubmission.clear()
   }
 
-  @lgcode/@lgcode/ DUMMY DATA FOR TESTING - UNCOMMENT ONE OF THE SCENARIOS BELOW
+  // DUMMY DATA FOR TESTING - UNCOMMENT ONE OF THE SCENARIOS BELOW
 
-  @lgcode/@lgcode/ Scenario 1: User has not added billing details and has no balance
-  @lgcode/@lgcode/ const balanceInfo = () => ({
-  @lgcode/@lgcode/   balance: 0,
-  @lgcode/@lgcode/   paymentMethodType: null as string | null,
-  @lgcode/@lgcode/   paymentMethodLast4: null as string | null,
-  @lgcode/@lgcode/   reload: false,
-  @lgcode/@lgcode/   reloadError: null as string | null,
-  @lgcode/@lgcode/   timeReloadError: null as Date | null,
-  @lgcode/@lgcode/ })
+  // Scenario 1: User has not added billing details and has no balance
+  // const balanceInfo = () => ({
+  //   balance: 0,
+  //   paymentMethodType: null as string | null,
+  //   paymentMethodLast4: null as string | null,
+  //   reload: false,
+  //   reloadError: null as string | null,
+  //   timeReloadError: null as Date | null,
+  // })
 
-  @lgcode/@lgcode/ Scenario 2: User has not added billing details but has a balance
-  @lgcode/@lgcode/ const balanceInfo = () => ({
-  @lgcode/@lgcode/   balance: 1500000000, @lgcode/@lgcode/ $15.00
-  @lgcode/@lgcode/   paymentMethodType: null as string | null,
-  @lgcode/@lgcode/   paymentMethodLast4: null as string | null,
-  @lgcode/@lgcode/   reload: false,
-  @lgcode/@lgcode/   reloadError: null as string | null,
-  @lgcode/@lgcode/   timeReloadError: null as Date | null
-  @lgcode/@lgcode/ })
+  // Scenario 2: User has not added billing details but has a balance
+  // const balanceInfo = () => ({
+  //   balance: 1500000000, // $15.00
+  //   paymentMethodType: null as string | null,
+  //   paymentMethodLast4: null as string | null,
+  //   reload: false,
+  //   reloadError: null as string | null,
+  //   timeReloadError: null as Date | null
+  // })
 
-  @lgcode/@lgcode/ Scenario 3: User has added billing details (reload enabled)
-  @lgcode/@lgcode/ const balanceInfo = () => ({
-  @lgcode/@lgcode/   balance: 750000000, @lgcode/@lgcode/ $7.50
-  @lgcode/@lgcode/   paymentMethodType: "card",
-  @lgcode/@lgcode/   paymentMethodLast4: "4242",
-  @lgcode/@lgcode/   reload: true,
-  @lgcode/@lgcode/   reloadError: null as string | null,
-  @lgcode/@lgcode/   timeReloadError: null as Date | null
-  @lgcode/@lgcode/ })
+  // Scenario 3: User has added billing details (reload enabled)
+  // const balanceInfo = () => ({
+  //   balance: 750000000, // $7.50
+  //   paymentMethodType: "card",
+  //   paymentMethodLast4: "4242",
+  //   reload: true,
+  //   reloadError: null as string | null,
+  //   timeReloadError: null as Date | null
+  // })
 
-  @lgcode/@lgcode/ Scenario 4: User has billing details but reload failed
-  @lgcode/@lgcode/ const balanceInfo = () => ({
-  @lgcode/@lgcode/   balance: 250000000, @lgcode/@lgcode/ $2.50
-  @lgcode/@lgcode/   paymentMethodType: "card",
-  @lgcode/@lgcode/   paymentMethodLast4: "4242",
-  @lgcode/@lgcode/   reload: true,
-  @lgcode/@lgcode/   reloadError: "Your card was declined." as string,
-  @lgcode/@lgcode/   timeReloadError: new Date(Date.now() - 3600000) as Date @lgcode/@lgcode/ 1 hour ago
-  @lgcode/@lgcode/ })
+  // Scenario 4: User has billing details but reload failed
+  // const balanceInfo = () => ({
+  //   balance: 250000000, // $2.50
+  //   paymentMethodType: "card",
+  //   paymentMethodLast4: "4242",
+  //   reload: true,
+  //   reloadError: "Your card was declined." as string,
+  //   timeReloadError: new Date(Date.now() - 3600000) as Date // 1 hour ago
+  // })
 
-  @lgcode/@lgcode/ Scenario 5: User has Link payment method
-  @lgcode/@lgcode/ const balanceInfo = () => ({
-  @lgcode/@lgcode/   balance: 500000000, @lgcode/@lgcode/ $5.00
-  @lgcode/@lgcode/   paymentMethodType: "link",
-  @lgcode/@lgcode/   paymentMethodLast4: null as string | null,
-  @lgcode/@lgcode/   reload: true,
-  @lgcode/@lgcode/   reloadError: null as string | null,
-  @lgcode/@lgcode/   timeReloadError: null as Date | null
-  @lgcode/@lgcode/ })
+  // Scenario 5: User has Link payment method
+  // const balanceInfo = () => ({
+  //   balance: 500000000, // $5.00
+  //   paymentMethodType: "link",
+  //   paymentMethodLast4: null as string | null,
+  //   reload: true,
+  //   reloadError: null as string | null,
+  //   timeReloadError: null as Date | null
+  // })
 
   return (
     <section class={styles.root}>
       <div data-slot="section-title">
-        <h2>{i18n.t("workspace.billing.title")}<@lgcode/h2>
+        <h2>{i18n.t("workspace.billing.title")}</h2>
         <p>
           {i18n.t("workspace.billing.subtitle.beforeLink")}{" "}
-          <a href="mailto:help@anoma.ly">{i18n.t("workspace.billing.contactUs")}<@lgcode/a>{" "}
+          <a href="mailto:help@anoma.ly">{i18n.t("workspace.billing.contactUs")}</a>{" "}
           {i18n.t("workspace.billing.subtitle.afterLink")}
-        <@lgcode/p>
-      <@lgcode/div>
+        </p>
+      </div>
       <div data-slot="section-content">
         <div data-slot="balance-display">
           <div data-slot="balance-amount">
-            <span data-slot="balance-value">${balance()}<@lgcode/span>
-            <span data-slot="balance-label">{i18n.t("workspace.billing.currentBalance")}<@lgcode/span>
-          <@lgcode/div>
+            <span data-slot="balance-value">${balance()}</span>
+            <span data-slot="balance-label">{i18n.t("workspace.billing.currentBalance")}</span>
+          </div>
           <Show when={billingInfo()?.customerID}>
             <div data-slot="balance-right-section">
               <Show
@@ -160,7 +160,7 @@ export function BillingSection() {
                 fallback={
                   <div data-slot="add-balance-form-container">
                     <div data-slot="add-balance-form">
-                      <label>{i18n.t("workspace.billing.add")}<@lgcode/label>
+                      <label>{i18n.t("workspace.billing.add")}</label>
                       <input
                         data-component="input"
                         type="number"
@@ -172,11 +172,11 @@ export function BillingSection() {
                           checkoutSubmission.clear()
                         }}
                         placeholder={i18n.t("workspace.billing.enterAmount")}
-                      @lgcode/>
+                      />
                       <div data-slot="form-actions">
                         <button data-color="ghost" type="button" onClick={() => hideAddBalanceForm()}>
                           {i18n.t("common.cancel")}
-                        <@lgcode/button>
+                        </button>
                         <button
                           data-color="primary"
                           type="button"
@@ -186,55 +186,55 @@ export function BillingSection() {
                           {checkoutSubmission.pending || store.checkoutRedirecting
                             ? i18n.t("workspace.billing.loading")
                             : i18n.t("workspace.billing.addAction")}
-                        <@lgcode/button>
-                      <@lgcode/div>
-                    <@lgcode/div>
+                        </button>
+                      </div>
+                    </div>
                     <Show when={checkoutSubmission.result && (checkoutSubmission.result as any).error}>
-                      {(err: any) => <div data-slot="form-error">{localizeError(i18n.t, err())}<@lgcode/div>}
-                    <@lgcode/Show>
-                  <@lgcode/div>
+                      {(err: any) => <div data-slot="form-error">{localizeError(i18n.t, err())}</div>}
+                    </Show>
+                  </div>
                 }
               >
                 <button data-color="primary" onClick={() => showAddBalanceForm()}>
                   {i18n.t("workspace.billing.addBalance")}
-                <@lgcode/button>
-              <@lgcode/Show>
+                </button>
+              </Show>
               <div data-slot="credit-card">
                 <div data-slot="card-icon">
-                  <Switch fallback={<IconCreditCard style={{ width: "24px", height: "24px" }} @lgcode/>}>
+                  <Switch fallback={<IconCreditCard style={{ width: "24px", height: "24px" }} />}>
                     <Match when={billingInfo()?.paymentMethodType === "link"}>
-                      <IconStripe style={{ width: "24px", height: "24px" }} @lgcode/>
-                    <@lgcode/Match>
+                      <IconStripe style={{ width: "24px", height: "24px" }} />
+                    </Match>
                     <Match when={billingInfo()?.paymentMethodType === "alipay"}>
-                      <IconAlipay style={{ width: "24px", height: "24px" }} @lgcode/>
-                    <@lgcode/Match>
+                      <IconAlipay style={{ width: "24px", height: "24px" }} />
+                    </Match>
                     <Match when={billingInfo()?.paymentMethodType === "wechat_pay"}>
-                      <IconWechat style={{ width: "24px", height: "24px" }} @lgcode/>
-                    <@lgcode/Match>
+                      <IconWechat style={{ width: "24px", height: "24px" }} />
+                    </Match>
                     <Match when={billingInfo()?.paymentMethodType === "upi"}>
-                      <IconUpi style={{ width: "auto", height: "16px" }} @lgcode/>
-                    <@lgcode/Match>
-                  <@lgcode/Switch>
-                <@lgcode/div>
+                      <IconUpi style={{ width: "auto", height: "16px" }} />
+                    </Match>
+                  </Switch>
+                </div>
                 <div data-slot="card-details">
                   <Switch>
                     <Match when={billingInfo()?.paymentMethodType === "card"}>
-                      <Show when={billingInfo()?.paymentMethodLast4} fallback={<span data-slot="number">----<@lgcode/span>}>
-                        <span data-slot="secret">••••<@lgcode/span>
-                        <span data-slot="number">{billingInfo()?.paymentMethodLast4}<@lgcode/span>
-                      <@lgcode/Show>
-                    <@lgcode/Match>
+                      <Show when={billingInfo()?.paymentMethodLast4} fallback={<span data-slot="number">----</span>}>
+                        <span data-slot="secret">••••</span>
+                        <span data-slot="number">{billingInfo()?.paymentMethodLast4}</span>
+                      </Show>
+                    </Match>
                     <Match when={billingInfo()?.paymentMethodType === "link"}>
-                      <span data-slot="type">{i18n.t("workspace.billing.linkedToStripe")}<@lgcode/span>
-                    <@lgcode/Match>
+                      <span data-slot="type">{i18n.t("workspace.billing.linkedToStripe")}</span>
+                    </Match>
                     <Match when={billingInfo()?.paymentMethodType === "alipay"}>
-                      <span data-slot="type">{i18n.t("workspace.billing.alipay")}<@lgcode/span>
-                    <@lgcode/Match>
+                      <span data-slot="type">{i18n.t("workspace.billing.alipay")}</span>
+                    </Match>
                     <Match when={billingInfo()?.paymentMethodType === "wechat_pay"}>
-                      <span data-slot="type">{i18n.t("workspace.billing.wechat")}<@lgcode/span>
-                    <@lgcode/Match>
-                  <@lgcode/Switch>
-                <@lgcode/div>
+                      <span data-slot="type">{i18n.t("workspace.billing.wechat")}</span>
+                    </Match>
+                  </Switch>
+                </div>
                 <button
                   data-color="ghost"
                   disabled={sessionSubmission.pending || store.sessionRedirecting}
@@ -243,11 +243,11 @@ export function BillingSection() {
                   {sessionSubmission.pending || store.sessionRedirecting
                     ? i18n.t("workspace.billing.loading")
                     : i18n.t("workspace.billing.manage")}
-                <@lgcode/button>
-              <@lgcode/div>
-            <@lgcode/div>
-          <@lgcode/Show>
-        <@lgcode/div>
+                </button>
+              </div>
+            </div>
+          </Show>
+        </div>
         <Show when={!billingInfo()?.customerID}>
           <button
             data-slot="enable-billing-button"
@@ -258,9 +258,9 @@ export function BillingSection() {
             {checkoutSubmission.pending || store.checkoutRedirecting
               ? i18n.t("workspace.billing.loading")
               : i18n.t("workspace.billing.enable")}
-          <@lgcode/button>
-        <@lgcode/Show>
-      <@lgcode/div>
-    <@lgcode/section>
+          </button>
+        </Show>
+      </div>
+    </section>
   )
 }

@@ -1,11 +1,11 @@
-import { useFilteredList } from "@lgcode/ui@lgcode/hooks"
-import { getDirectory, getFilename } from "@lgcode/core@lgcode/util@lgcode/path"
+import { useFilteredList } from "@opencode@lgcode/ui/hooks"
+import { getDirectory, getFilename } from "@opencode@lgcode/core/util/path"
 import { createSignal, For, onMount, Show, splitProps, type JSX } from "solid-js"
-import { Button } from ".@lgcode/button"
-import { FileIcon } from ".@lgcode/file-icon"
-import { Icon } from ".@lgcode/icon"
-import { installLineCommentStyles } from ".@lgcode/line-comment-styles"
-import { useI18n } from "..@lgcode/context@lgcode/i18n"
+import { Button } from "./button"
+import { FileIcon } from "./file-icon"
+import { Icon } from "./icon"
+import { installLineCommentStyles } from "./line-comment-styles"
+import { useI18n } from "../context/i18n"
 
 installLineCommentStyles()
 
@@ -21,12 +21,12 @@ function InlineGlyph(props: { icon: "comment" | "plus" }) {
             d="M10 5.41699V10.0003M10 10.0003V14.5837M10 10.0003H5.4165M10 10.0003H14.5832"
             stroke="currentColor"
             stroke-linecap="square"
-          @lgcode/>
+          />
         }
       >
-        <path d="M16.25 3.75H3.75V16.25L6.875 14.4643H16.25V3.75Z" stroke="currentColor" stroke-linecap="square" @lgcode/>
-      <@lgcode/Show>
-    <@lgcode/svg>
+        <path d="M16.25 3.75H3.75V16.25L6.875 14.4643H16.25V3.75Z" stroke="currentColor" stroke-linecap="square" />
+      </Show>
+    </svg>
   )
 }
 
@@ -89,11 +89,11 @@ export const LineCommentAnchor = (props: LineCommentAnchorProps) => {
             >
               <Show
                 when={props.inline}
-                fallback={<Icon name={icon() === "plus" ? "plus-small" : "comment"} size="small" @lgcode/>}
+                fallback={<Icon name={icon() === "plus" ? "plus-small" : "comment"} size="small" />}
               >
-                <InlineGlyph icon={icon()} @lgcode/>
-              <@lgcode/Show>
-            <@lgcode/button>
+                <InlineGlyph icon={icon()} />
+              </Show>
+            </button>
             <Show when={props.open}>
               <div
                 data-slot="line-comment-popover"
@@ -104,9 +104,9 @@ export const LineCommentAnchor = (props: LineCommentAnchorProps) => {
                 on:focusout={props.onPopoverFocusOut as any}
               >
                 {props.children}
-              <@lgcode/div>
-            <@lgcode/Show>
-          <@lgcode/>
+              </div>
+            </Show>
+          </>
         }
       >
         <div
@@ -121,9 +121,9 @@ export const LineCommentAnchor = (props: LineCommentAnchorProps) => {
           on:focusout={props.onPopoverFocusOut as any}
         >
           {props.children}
-        <@lgcode/div>
-      <@lgcode/Show>
-    <@lgcode/div>
+        </div>
+      </Show>
+    </div>
   )
 }
 
@@ -141,18 +141,18 @@ export const LineComment = (props: LineCommentProps) => {
     <LineCommentAnchor {...rest} variant="default" hideButton={props.inline}>
       <div data-slot="line-comment-content">
         <div data-slot="line-comment-head">
-          <div data-slot="line-comment-text">{split.comment}<@lgcode/div>
+          <div data-slot="line-comment-text">{split.comment}</div>
           <Show when={split.actions}>
-            <div data-slot="line-comment-tools">{split.actions}<@lgcode/div>
-          <@lgcode/Show>
-        <@lgcode/div>
+            <div data-slot="line-comment-tools">{split.actions}</div>
+          </Show>
+        </div>
         <div data-slot="line-comment-label">
           {i18n.t("ui.lineComment.label.prefix")}
           {split.selection}
           {i18n.t("ui.lineComment.label.suffix")}
-        <@lgcode/div>
-      <@lgcode/div>
-    <@lgcode/LineCommentAnchor>
+        </div>
+      </div>
+    </LineCommentAnchor>
   )
 }
 
@@ -171,7 +171,7 @@ export const LineCommentAdd = (props: LineCommentAddProps) => {
       variant="add"
       icon="plus"
       buttonLabel={split.label ?? i18n.t("ui.lineComment.submit")}
-    @lgcode/>
+    />
   )
 }
 
@@ -268,7 +268,7 @@ export const LineCommentEditor = (props: LineCommentEditorProps) => {
     if (textarea.selectionStart !== textarea.selectionEnd) return
 
     const end = textarea.selectionStart
-    const match = textarea.value.slice(0, end).match(@lgcode/@(\S*)$@lgcode/)
+    const match = textarea.value.slice(0, end).match(/@(\S*)$/)
     if (!match) return
 
     return {
@@ -364,13 +364,13 @@ export const LineCommentEditor = (props: LineCommentEditorProps) => {
             event.preventDefault()
             submit()
           }}
-        @lgcode/>
+        />
         <Show when={open() && mention.flat().length > 0}>
           <div data-slot="line-comment-mention-list">
             <For each={mention.flat().slice(0, 10)}>
               {(item) => {
-                const directory = item.path.endsWith("@lgcode/") ? item.path : getDirectory(item.path)
-                const name = item.path.endsWith("@lgcode/") ? "" : getFilename(item.path)
+                const directory = item.path.endsWith("/") ? item.path : getDirectory(item.path)
+                const name = item.path.endsWith("/") ? "" : getFilename(item.path)
                 return (
                   <button
                     type="button"
@@ -380,25 +380,25 @@ export const LineCommentEditor = (props: LineCommentEditorProps) => {
                     onMouseEnter={() => mention.setActive(item.path)}
                     onClick={() => selectMention(item)}
                   >
-                    <FileIcon node={{ path: item.path, type: "file" }} class="shrink-0 size-4" @lgcode/>
+                    <FileIcon node={{ path: item.path, type: "file" }} class="shrink-0 size-4" />
                     <div data-slot="line-comment-mention-path">
-                      <span data-slot="line-comment-mention-dir">{directory}<@lgcode/span>
+                      <span data-slot="line-comment-mention-dir">{directory}</span>
                       <Show when={name}>
-                        <span data-slot="line-comment-mention-file">{name}<@lgcode/span>
-                      <@lgcode/Show>
-                    <@lgcode/div>
-                  <@lgcode/button>
+                        <span data-slot="line-comment-mention-file">{name}</span>
+                      </Show>
+                    </div>
+                  </button>
                 )
               }}
-            <@lgcode/For>
-          <@lgcode/div>
-        <@lgcode/Show>
+            </For>
+          </div>
+        </Show>
         <div data-slot="line-comment-actions">
           <div data-slot="line-comment-editor-label">
             {i18n.t("ui.lineComment.editorLabel.prefix")}
             {split.selection}
             {i18n.t("ui.lineComment.editorLabel.suffix")}
-          <@lgcode/div>
+          </div>
           <Show
             when={!props.inline}
             fallback={
@@ -411,7 +411,7 @@ export const LineCommentEditor = (props: LineCommentEditorProps) => {
                   on:click={click(split.onCancel) as any}
                 >
                   {split.cancelLabel ?? i18n.t("ui.common.cancel")}
-                <@lgcode/button>
+                </button>
                 <button
                   type="button"
                   data-slot="line-comment-action"
@@ -421,19 +421,19 @@ export const LineCommentEditor = (props: LineCommentEditorProps) => {
                   on:click={click(submit) as any}
                 >
                   {split.submitLabel ?? i18n.t("ui.lineComment.submit")}
-                <@lgcode/button>
-              <@lgcode/>
+                </button>
+              </>
             }
           >
             <Button size="small" variant="ghost" onClick={split.onCancel}>
               {split.cancelLabel ?? i18n.t("ui.common.cancel")}
-            <@lgcode/Button>
+            </Button>
             <Button size="small" variant="primary" disabled={split.value.trim().length === 0} onClick={submit}>
               {split.submitLabel ?? i18n.t("ui.lineComment.submit")}
-            <@lgcode/Button>
-          <@lgcode/Show>
-        <@lgcode/div>
-      <@lgcode/div>
-    <@lgcode/LineCommentAnchor>
+            </Button>
+          </Show>
+        </div>
+      </div>
+    </LineCommentAnchor>
   )
 }

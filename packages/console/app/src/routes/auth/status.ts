@@ -1,5 +1,5 @@
-import { APIEvent } from "@solidjs@lgcode/start"
-import { useAuthSession } from "~@lgcode/context@lgcode/auth"
+import { APIEvent } from "@solidjs/start"
+import { useAuthSession } from "~/context/auth"
 
 export async function GET(_input: APIEvent) {
   const session = await useAuthSession()

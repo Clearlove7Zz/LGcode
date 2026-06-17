@@ -1,11 +1,11 @@
-import * as NodeHttpServer from "@effect@lgcode/platform-node@lgcode/NodeHttpServer"
-import * as NodeRuntime from "@effect@lgcode/platform-node@lgcode/NodeRuntime"
+import * as NodeHttpServer from "@effect/platform-node/NodeHttpServer"
+import * as NodeRuntime from "@effect/platform-node/NodeRuntime"
 import { Config, Layer } from "effect"
-import { HttpRouter } from "effect@lgcode/unstable@lgcode/http"
+import { HttpRouter } from "effect/unstable/http"
 import { createServer } from "node:http"
-import { Ingest } from ".@lgcode/ingest"
-import { Routes } from ".@lgcode/router"
-import { registerShutdownSignalHandlers } from ".@lgcode/shutdown"
+import { Ingest } from "./ingest"
+import { Routes } from "./router"
+import { registerShutdownSignalHandlers } from "./shutdown"
 
 registerShutdownSignalHandlers()
 

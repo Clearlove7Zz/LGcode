@@ -1,25 +1,25 @@
-import { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
+import { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
 import { describe, expect } from "bun:test"
 import { Cause, Effect, Exit, Layer } from "effect"
-import type * as Scope from "effect@lgcode/Scope"
+import type * as Scope from "effect/Scope"
 import os from "os"
 import path from "path"
-import { Config } from "@@lgcode/config@lgcode/config"
-import { Shell } from "@lgcode/core@lgcode/shell"
-import { ShellTool } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/shell"
-import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
-import { provideInstance, testInstanceStoreLayer, tmpdirScoped } from "..@lgcode/fixture@lgcode/fixture"
-import type { Permission } from "..@lgcode/..@lgcode/src@lgcode/permission"
-import { Agent } from "..@lgcode/..@lgcode/src@lgcode/agent@lgcode/agent"
-import { Truncate } from "@@lgcode/tool@lgcode/truncate"
-import { SessionID, MessageID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { Plugin } from "..@lgcode/..@lgcode/src@lgcode/plugin"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
-import { Tool } from "@@lgcode/tool@lgcode/tool"
-import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
-import { InstanceStore } from "@@lgcode/project@lgcode/instance-store"
+import { Config } from "@/config/config"
+import { Shell } from "@opencode@lgcode/core/shell"
+import { ShellTool } from "../../src/tool/shell"
+import { Filesystem } from "@/util/filesystem"
+import { provideInstance, testInstanceStoreLayer, tmpdirScoped } from "../fixture/fixture"
+import type { Permission } from "../../src/permission"
+import { Agent } from "../../src/agent/agent"
+import { Truncate } from "@/tool/truncate"
+import { SessionID, MessageID } from "../../src/session/schema"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { Plugin } from "../../src/plugin"
+import { testEffect } from "../lib/effect"
+import { Tool } from "@/tool/tool"
+import { RuntimeFlags } from "@/effect/runtime-flags"
+import { InstanceStore } from "@/project/instance-store"
 
 const shellLayer = Layer.mergeAll(
   CrossSpawnSpawner.defaultLayer,
@@ -80,8 +80,8 @@ const ctx = {
 Shell.acceptable.reset()
 const quote = (text: string) => `"${text}"`
 const squote = (text: string) => `'${text}'`
-const projectRoot = path.join(__dirname, "..@lgcode/..")
-const bin = quote(process.execPath.replaceAll("\\", "@lgcode/"))
+const projectRoot = path.join(__dirname, "../..")
+const bin = quote(process.execPath.replaceAll("\\", "/"))
 const bash = (() => {
   const shell = Shell.acceptable()
   if (Shell.name(shell) === "bash") return shell
@@ -118,13 +118,13 @@ const fill = (mode: "lines" | "bytes", n: number) => {
   return text
 }
 const glob = (p: string) =>
-  process.platform === "win32" ? Filesystem.normalizePathPattern(p) : p.replaceAll("\\", "@lgcode/")
+  process.platform === "win32" ? Filesystem.normalizePathPattern(p) : p.replaceAll("\\", "/")
 
 const forms = (dir: string) => {
   if (process.platform !== "win32") return [dir]
   const full = Filesystem.normalizePath(dir)
-  const slash = full.replaceAll("\\", "@lgcode/")
-  const root = slash.replace(@lgcode/^[A-Za-z]:@lgcode/, "")
+  const slash = full.replaceAll("\\", "/")
+  const root = slash.replace(/^[A-Za-z]:/, "")
   return Array.from(new Set([full, slash, root, root.toLowerCase()]))
 }
 
@@ -325,8 +325,8 @@ describe("tool.shell permissions", () => {
       Effect.gen(function* () {
         const err = new Error("stop after permission")
         const requests: Array<Omit<PermissionV1.Request, "id" | "sessionID" | "tool">> = []
-        const file = process.platform === "win32" ? `${process.env.WINDIR!.replaceAll("\\", "@lgcode/")}@lgcode/*` : "@lgcode/etc@lgcode/*"
-        const want = process.platform === "win32" ? glob(path.join(process.env.WINDIR!, "*")) : "@lgcode/etc@lgcode/*"
+        const file = process.platform === "win32" ? `${process.env.WINDIR!.replaceAll("\\", "/")}/*` : "/etc/*"
+        const want = process.platform === "win32" ? glob(path.join(process.env.WINDIR!, "*")) : "/etc/*"
         expect(
           yield* fail(
             {
@@ -354,7 +354,7 @@ describe("tool.shell permissions", () => {
             yield* runIn(
               projectRoot,
               Effect.gen(function* () {
-                const file = path.join(outerTmp, "outside.txt").replaceAll("\\", "@lgcode/")
+                const file = path.join(outerTmp, "outside.txt").replaceAll("\\", "/")
                 const requests: Array<Omit<PermissionV1.Request, "id" | "sessionID" | "tool">> = []
                 yield* run(
                   {
@@ -388,7 +388,7 @@ describe("tool.shell permissions", () => {
               expect(
                 yield* fail(
                   {
-                    command: `Copy-Item -PassThru "${process.env.WINDIR!.replaceAll("\\", "@lgcode/")}@lgcode/win.ini" .@lgcode/out`,
+                    command: `Copy-Item -PassThru "${process.env.WINDIR!.replaceAll("\\", "/")}/win.ini" ./out`,
                     description: "Copy Windows ini",
                   },
                   capture(requests, err),
@@ -411,7 +411,7 @@ describe("tool.shell permissions", () => {
             projectRoot,
             Effect.gen(function* () {
               const requests: Array<Omit<PermissionV1.Request, "id" | "sessionID" | "tool">> = []
-              const file = `${process.env.WINDIR!.replaceAll("\\", "@lgcode/")}@lgcode/win.ini`
+              const file = `${process.env.WINDIR!.replaceAll("\\", "/")}/win.ini`
               yield* run(
                 {
                   command: `Write-Output $(Get-Content ${file})`,
@@ -445,7 +445,7 @@ describe("tool.shell permissions", () => {
                 expect(
                   yield* fail(
                     {
-                      command: 'Get-Content "C:..@lgcode/outside.txt"',
+                      command: 'Get-Content "C:../outside.txt"',
                       description: "Read drive-relative file",
                     },
                     capture(requests, err),
@@ -473,7 +473,7 @@ describe("tool.shell permissions", () => {
               expect(
                 yield* fail(
                   {
-                    command: 'Get-Content "$HOME@lgcode/.ssh@lgcode/config"',
+                    command: 'Get-Content "$HOME/.ssh/config"',
                     description: "Read home config",
                   },
                   capture(requests, err),
@@ -502,7 +502,7 @@ describe("tool.shell permissions", () => {
                 expect(
                   yield* fail(
                     {
-                      command: 'Get-Content "$PWD@lgcode/..@lgcode/outside.txt"',
+                      command: 'Get-Content "$PWD/../outside.txt"',
                       description: "Read pwd-relative file",
                     },
                     capture(requests, err),
@@ -530,7 +530,7 @@ describe("tool.shell permissions", () => {
               expect(
                 yield* fail(
                   {
-                    command: 'Get-Content "$PSHOME@lgcode/outside.txt"',
+                    command: 'Get-Content "$PSHOME/outside.txt"',
                     description: "Read pshome file",
                   },
                   capture(requests, err),
@@ -562,7 +562,7 @@ describe("tool.shell permissions", () => {
                 Effect.gen(function* () {
                   const err = new Error("stop after permission")
                   const requests: Array<Omit<PermissionV1.Request, "id" | "sessionID" | "tool">> = []
-                  const root = path.parse(process.env.WINDIR!).root.replace(@lgcode/[\\@lgcode/]+$@lgcode/, "")
+                  const root = path.parse(process.env.WINDIR!).root.replace(/[\\/]+$/, "")
                   expect(
                     yield* fail(
                       {
@@ -597,7 +597,7 @@ describe("tool.shell permissions", () => {
               const requests: Array<Omit<PermissionV1.Request, "id" | "sessionID" | "tool">> = []
               yield* run(
                 {
-                  command: "Get-Content $env:WINDIR@lgcode/win.ini",
+                  command: "Get-Content $env:WINDIR/win.ini",
                   description: "Read Windows ini from env",
                 },
                 capture(requests),
@@ -625,7 +625,7 @@ describe("tool.shell permissions", () => {
               expect(
                 yield* fail(
                   {
-                    command: `Get-Content -Path FileSystem::${process.env.WINDIR!.replaceAll("\\", "@lgcode/")}@lgcode/win.ini`,
+                    command: `Get-Content -Path FileSystem::${process.env.WINDIR!.replaceAll("\\", "/")}/win.ini`,
                     description: "Read Windows ini from FileSystem provider",
                   },
                   capture(requests, err),
@@ -654,7 +654,7 @@ describe("tool.shell permissions", () => {
               expect(
                 yield* fail(
                   {
-                    command: "Get-Content ${env:WINDIR}@lgcode/win.ini",
+                    command: "Get-Content ${env:WINDIR}/win.ini",
                     description: "Read Windows ini from braced env",
                   },
                   capture(requests, err),
@@ -681,7 +681,7 @@ describe("tool.shell permissions", () => {
               const requests: Array<Omit<PermissionV1.Request, "id" | "sessionID" | "tool">> = []
               yield* run(
                 {
-                  command: "Set-Location C:@lgcode/Windows",
+                  command: "Set-Location C:/Windows",
                   description: "Change location",
                 },
                 capture(requests),
@@ -760,7 +760,7 @@ describe("tool.shell permissions", () => {
           expect(
             yield* fail(
               {
-                command: "cd ..@lgcode/",
+                command: "cd ../",
                 description: "Change to parent directory",
               },
               capture(requests, err),
@@ -836,7 +836,7 @@ describe("tool.shell permissions", () => {
     )
 
     if (bash) {
-      it.live("uses Git Bash @lgcode/tmp semantics for external workdir", () =>
+      it.live("uses Git Bash /tmp semantics for external workdir", () =>
         withShell(
           { label: "bash", shell: bash },
           runIn(
@@ -849,7 +849,7 @@ describe("tool.shell permissions", () => {
                 yield* fail(
                   {
                     command: "echo ok",
-                    workdir: "@lgcode/tmp",
+                    workdir: "/tmp",
                     description: "Echo from Git Bash tmp",
                   },
                   capture(requests, err),
@@ -865,7 +865,7 @@ describe("tool.shell permissions", () => {
         ),
       )
 
-      it.live("uses Git Bash @lgcode/tmp semantics for external file paths", () =>
+      it.live("uses Git Bash /tmp semantics for external file paths", () =>
         withShell(
           { label: "bash", shell: bash },
           runIn(
@@ -877,7 +877,7 @@ describe("tool.shell permissions", () => {
               expect(
                 yield* fail(
                   {
-                    command: "cat @lgcode/tmp@lgcode/opencode-does-not-exist",
+                    command: "cat /tmp/opencode-does-not-exist",
                     description: "Read Git Bash tmp file",
                   },
                   capture(requests, err),
@@ -1177,8 +1177,8 @@ describe("tool.shell truncation", () => {
           description: "Generate lines exceeding limit",
         })
         mustTruncate(result)
-        expect(result.output).toMatch(@lgcode/\.\.\.output truncated\.\.\.@lgcode/)
-        expect(result.output).toMatch(@lgcode/Full output saved to:\s+\S+@lgcode/)
+        expect(result.output).toMatch(/\.\.\.output truncated\.\.\./)
+        expect(result.output).toMatch(/Full output saved to:\s+\S+/)
       }),
     ),
   )
@@ -1193,8 +1193,8 @@ describe("tool.shell truncation", () => {
           description: "Generate bytes exceeding limit",
         })
         mustTruncate(result)
-        expect(result.output).toMatch(@lgcode/\.\.\.output truncated\.\.\.@lgcode/)
-        expect(result.output).toMatch(@lgcode/Full output saved to:\s+\S+@lgcode/)
+        expect(result.output).toMatch(/\.\.\.output truncated\.\.\./)
+        expect(result.output).toMatch(/Full output saved to:\s+\S+/)
       }),
     ),
   )
@@ -1228,7 +1228,7 @@ describe("tool.shell truncation", () => {
         expect(filepath).toBeTruthy()
 
         const saved = yield* (yield* FSUtil.Service).readFileString(filepath!)
-        const lines = saved.trim().split(@lgcode/\r?\n@lgcode/)
+        const lines = saved.trim().split(/\r?\n/)
         expect(lines.length).toBe(lineCount)
         expect(lines[0]).toBe("1")
         expect(lines[lineCount - 1]).toBe(String(lineCount))

@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test"
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import path from "path"
-import { Process } from "@@lgcode/util@lgcode/process"
-import { tmpdir } from "..@lgcode/fixture@lgcode/fixture"
+import { Process } from "@/util/process"
+import { tmpdir } from "../fixture/fixture"
 
 function node(script: string) {
   return [process.execPath, "-e", script]
@@ -99,7 +99,7 @@ describe("util.process", () => {
     const file = path.join(dir, "echo cmd.cmd")
 
     await fs.mkdir(dir, { recursive: true })
-    await Bun.write(file, "@echo off\r\nif %~1==--stdio exit @lgcode/b 0\r\nexit @lgcode/b 7\r\n")
+    await Bun.write(file, "@echo off\r\nif %~1==--stdio exit /b 0\r\nexit /b 7\r\n")
 
     const proc = Process.spawn([file, "--stdio"], {
       stdin: "pipe",

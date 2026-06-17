@@ -1,6 +1,6 @@
-import { Accordion as Kobalte } from "@kobalte@lgcode/core@lgcode/accordion"
+import { Accordion as Kobalte } from "@kobalte/core/accordion"
 import { Show, splitProps, type Component, type ComponentProps, type ParentProps } from "solid-js"
-import ".@lgcode/accordion-v2.css"
+import "./accordion-v2.css"
 
 const ChevronDown: Component = () => (
   <svg
@@ -9,11 +9,11 @@ const ChevronDown: Component = () => (
     height="14"
     viewBox="0 0 14 14"
     fill="none"
-    xmlns="http:@lgcode/@lgcode/www.w3.org@lgcode/2000@lgcode/svg"
+    xmlns="http://www.w3.org/2000/svg"
     aria-hidden="true"
   >
-    <path d="M4 5.5L7 8.5L10 5.5" stroke="currentColor" @lgcode/>
-  <@lgcode/svg>
+    <path d="M4 5.5L7 8.5L10 5.5" stroke="currentColor" />
+  </svg>
 )
 
 export interface AccordionV2Props extends ComponentProps<typeof Kobalte> {}
@@ -26,7 +26,7 @@ export interface AccordionV2ContentProps extends ComponentProps<typeof Kobalte.C
 
 function AccordionV2Root(props: ParentProps<AccordionV2Props>) {
   const [s, r] = splitProps(props, ["class", "classList"])
-  return <Kobalte {...r} data-component="accordion-v2" classList={{ ...s.classList, [s.class ?? ""]: !!s.class }} @lgcode/>
+  return <Kobalte {...r} data-component="accordion-v2" classList={{ ...s.classList, [s.class ?? ""]: !!s.class }} />
 }
 
 function AccordionV2Item(props: ParentProps<AccordionV2ItemProps>) {
@@ -36,7 +36,7 @@ function AccordionV2Item(props: ParentProps<AccordionV2ItemProps>) {
       {...r}
       data-component="accordion-v2-item"
       classList={{ ...s.classList, [s.class ?? ""]: !!s.class }}
-    @lgcode/>
+    />
   )
 }
 
@@ -45,7 +45,7 @@ function AccordionV2Header(props: ParentProps<AccordionV2HeaderProps>) {
   return (
     <Kobalte.Header {...r} data-slot="accordion-v2-header" classList={{ ...s.classList, [s.class ?? ""]: !!s.class }}>
       {s.children}
-    <@lgcode/Kobalte.Header>
+    </Kobalte.Header>
   )
 }
 
@@ -57,11 +57,11 @@ function AccordionV2Trigger(props: ParentProps<AccordionV2TriggerProps>) {
       data-component="accordion-v2-trigger"
       classList={{ ...s.classList, [s.class ?? ""]: !!s.class }}
     >
-      <span data-slot="accordion-v2-trigger-content">{s.children}<@lgcode/span>
+      <span data-slot="accordion-v2-trigger-content">{s.children}</span>
       <Show when={!s.hideChevron}>
-        <ChevronDown @lgcode/>
-      <@lgcode/Show>
-    <@lgcode/Kobalte.Trigger>
+        <ChevronDown />
+      </Show>
+    </Kobalte.Trigger>
   )
 }
 
@@ -73,8 +73,8 @@ function AccordionV2Content(props: ParentProps<AccordionV2ContentProps>) {
       data-component="accordion-v2-content"
       classList={{ ...s.classList, [s.class ?? ""]: !!s.class }}
     >
-      <div data-slot="accordion-v2-content-inner">{s.children}<@lgcode/div>
-    <@lgcode/Kobalte.Content>
+      <div data-slot="accordion-v2-content-inner">{s.children}</div>
+    </Kobalte.Content>
   )
 }
 

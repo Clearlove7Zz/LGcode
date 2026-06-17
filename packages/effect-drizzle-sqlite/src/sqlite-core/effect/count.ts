@@ -1,11 +1,11 @@
-@lgcode/* oxlint-disable *@lgcode/
-import type * as Effect from "effect@lgcode/Effect"
-import { applyEffectWrapper, type QueryEffectHKTBase } from "drizzle-orm@lgcode/effect-core@lgcode/query-effect"
-import { entityKind } from "drizzle-orm@lgcode/entity"
-import { SQL, sql, type SQLWrapper } from "drizzle-orm@lgcode/sql@lgcode/sql"
-import type { SQLiteTable } from "drizzle-orm@lgcode/sqlite-core@lgcode/table"
-import type { SQLiteView } from "drizzle-orm@lgcode/sqlite-core@lgcode/view"
-import type { SQLiteEffectSession } from ".@lgcode/session"
+/* oxlint-disable */
+import type * as Effect from "effect/Effect"
+import { applyEffectWrapper, type QueryEffectHKTBase } from "drizzle-orm/effect-core/query-effect"
+import { entityKind } from "drizzle-orm/entity"
+import { SQL, sql, type SQLWrapper } from "drizzle-orm/sql/sql"
+import type { SQLiteTable } from "drizzle-orm/sqlite-core/table"
+import type { SQLiteView } from "drizzle-orm/sqlite-core/view"
+import type { SQLiteEffectSession } from "./session"
 
 function buildSQLiteEmbeddedCount(source: SQLiteTable | SQLiteView | SQL | SQLWrapper, filters?: SQL<unknown>) {
   return sql<number>`(select count(*) from ${source}${sql.raw(" where ").if(filters)}${filters})`

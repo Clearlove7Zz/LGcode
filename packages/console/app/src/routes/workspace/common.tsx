@@ -1,11 +1,11 @@
-import { Resource } from "@lgcode/console-resource"
-import { Actor } from "@lgcode/console-core@lgcode/actor.js"
-import { action, json, query } from "@solidjs@lgcode/router"
-import { withActor } from "~@lgcode/context@lgcode/auth.withActor"
-import { Billing } from "@lgcode/console-core@lgcode/billing.js"
-import { and, Database, desc, eq, isNull } from "@lgcode/console-core@lgcode/drizzle@lgcode/index.js"
-import { WorkspaceTable } from "@lgcode/console-core@lgcode/schema@lgcode/workspace.sql.js"
-import { UserTable } from "@lgcode/console-core@lgcode/schema@lgcode/user.sql.js"
+import { Resource } from "@opencode@lgcode/console-resource"
+import { Actor } from "@opencode@lgcode/console-core/actor.js"
+import { action, json, query } from "@solidjs/router"
+import { withActor } from "~/context/auth.withActor"
+import { Billing } from "@opencode@lgcode/console-core/billing.js"
+import { and, Database, desc, eq, isNull } from "@opencode@lgcode/console-core/drizzle/index.js"
+import { WorkspaceTable } from "@opencode@lgcode/console-core/schema/workspace.sql.js"
+import { UserTable } from "@opencode@lgcode/console-core/schema/user.sql.js"
 
 export function formatDateForTable(date: Date) {
   const options: Intl.DateTimeFormatOptions = {
@@ -34,7 +34,7 @@ export function formatDateUTC(date: Date) {
 }
 
 export function formatBalance(amount: number) {
-  const balance = ((amount ?? 0) @lgcode/ 100000000).toFixed(2)
+  const balance = ((amount ?? 0) / 100000000).toFixed(2)
   return balance === "-0.00" ? "0.00" : balance
 }
 

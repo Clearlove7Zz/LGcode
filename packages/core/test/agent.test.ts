@@ -1,11 +1,11 @@
 import { describe, expect } from "bun:test"
 import { Effect, Exit, Scope } from "effect"
-import { AgentV2 } from "@lgcode/core@lgcode/agent"
-import { Location } from "@lgcode/core@lgcode/location"
-import { AgentPlugin } from "@lgcode/core@lgcode/plugin@lgcode/agent"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import { location } from ".@lgcode/fixture@lgcode/location"
-import { testEffect } from ".@lgcode/lib@lgcode/effect"
+import { AgentV2 } from "@opencode@lgcode/core/agent"
+import { Location } from "@opencode@lgcode/core/location"
+import { AgentPlugin } from "@opencode@lgcode/core/plugin/agent"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import { location } from "./fixture/location"
+import { testEffect } from "./lib/effect"
 
 const it = testEffect(AgentV2.locationLayer)
 
@@ -109,7 +109,7 @@ describe("AgentV2", () => {
       yield* AgentPlugin.Plugin.effect.pipe(
         Effect.provideService(
           Location.Service,
-          Location.Service.of(location({ directory: AbsolutePath.make("@lgcode/project") })),
+          Location.Service.of(location({ directory: AbsolutePath.make("/project") })),
         ),
       )
 

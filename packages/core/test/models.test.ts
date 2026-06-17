@@ -1,20 +1,20 @@
 import { describe, expect, beforeAll, beforeEach, afterAll } from "bun:test"
 import { Effect, Layer, Ref } from "effect"
-import { HttpClient, HttpClientResponse } from "effect@lgcode/unstable@lgcode/http"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
-import { Global } from "@lgcode/core@lgcode/global"
-import { ModelsDev } from "@lgcode/core@lgcode/models-dev"
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import { it } from ".@lgcode/lib@lgcode/effect"
-import { readFile, rm, writeFile, utimes, mkdir } from "fs@lgcode/promises"
+import { HttpClient, HttpClientResponse } from "effect/unstable/http"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { Flag } from "@opencode@lgcode/core/flag/flag"
+import { Global } from "@opencode@lgcode/core/global"
+import { ModelsDev } from "@opencode@lgcode/core/models-dev"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import { it } from "./lib/effect"
+import { readFile, rm, writeFile, utimes, mkdir } from "fs/promises"
 import path from "path"
 
-@lgcode/@lgcode/ test@lgcode/preload.ts pins OPENCODE_MODELS_PATH to a fixture so other tests can
-@lgcode/@lgcode/ resolve providers without network. These tests need to drive the on-disk
-@lgcode/@lgcode/ cache themselves and silence the eager refresh fork. Save@lgcode/restore around
-@lgcode/@lgcode/ the suite — never leak the mutation to subsequent test files in the same
-@lgcode/@lgcode/ bun process.
+// test/preload.ts pins OPENCODE_MODELS_PATH to a fixture so other tests can
+// resolve providers without network. These tests need to drive the on-disk
+// cache themselves and silence the eager refresh fork. Save/restore around
+// the suite — never leak the mutation to subsequent test files in the same
+// bun process.
 const ORIGINAL_MODELS_PATH = Flag.OPENCODE_MODELS_PATH
 const ORIGINAL_DISABLE_FETCH = Flag.OPENCODE_DISABLE_MODELS_FETCH
 beforeAll(() => {
@@ -87,9 +87,9 @@ const makeMockClient = (state: Ref.Ref<MockState>) =>
   )
 
 const buildLayer = (state: Ref.Ref<MockState>) =>
-  @lgcode/@lgcode/ Layer.fresh is required: ModelsDev.layer is a module-level Layer constant,
-  @lgcode/@lgcode/ and Effect.provide uses a process-global MemoMap by default — without fresh,
-  @lgcode/@lgcode/ every test would reuse the cachedInvalidateWithTTL state from the first run.
+  // Layer.fresh is required: ModelsDev.layer is a module-level Layer constant,
+  // and Effect.provide uses a process-global MemoMap by default — without fresh,
+  // every test would reuse the cachedInvalidateWithTTL state from the first run.
   Layer.fresh(ModelsDev.layer).pipe(
     Layer.provide(Layer.succeed(HttpClient.HttpClient, makeMockClient(state))),
     Layer.provide(FSUtil.defaultLayer),
@@ -101,7 +101,7 @@ const writeCacheText = (text: string, mtimeMs?: number) =>
     await mkdir(Global.Path.cache, { recursive: true })
     await writeFile(cacheFile, text)
     if (mtimeMs !== undefined) {
-      const t = mtimeMs @lgcode/ 1000
+      const t = mtimeMs / 1000
       await utimes(cacheFile, t, t)
     }
   })
@@ -204,7 +204,7 @@ describe("ModelsDev Service", () => {
         Effect.gen(function* () {
           const svc = yield* ModelsDev.Service
           const a = yield* svc.get()
-          @lgcode/@lgcode/ mutate disk between calls — cache should mask the change
+          // mutate disk between calls — cache should mask the change
           yield* writeCache(fixture2)
           const b = yield* svc.get()
           return { a, b }
@@ -233,14 +233,14 @@ describe("ModelsDev Service", () => {
       expect(result.after).toEqual(fixture2)
       const final = yield* Ref.get(state)
       expect(final.calls.length).toBe(1)
-      expect(final.calls[0].url).toContain("@lgcode/api.json")
-      expect(final.calls[0].userAgent).toContain("@lgcode/cli")
+      expect(final.calls[0].url).toContain("/api.json")
+      expect(final.calls[0].userAgent).toContain("/cli")
     }),
   )
 
   it.live("refresh(false) skips fetch when on-disk file is fresh", () =>
     Effect.gen(function* () {
-      @lgcode/@lgcode/ Fresh: mtime within the 5-minute TTL.
+      // Fresh: mtime within the 5-minute TTL.
       yield* writeCache(fixture, Date.now() - 1000)
       const state = yield* Ref.make({ ...initialState, body: JSON.stringify(fixture2) })
       yield* provided(
@@ -254,7 +254,7 @@ describe("ModelsDev Service", () => {
 
   it.live("refresh(false) fetches when on-disk file is stale", () =>
     Effect.gen(function* () {
-      @lgcode/@lgcode/ Stale: mtime 10 minutes ago, beyond the 5-minute TTL.
+      // Stale: mtime 10 minutes ago, beyond the 5-minute TTL.
       yield* writeCache(fixture, Date.now() - 10 * 60 * 1000)
       const state = yield* Ref.make({ ...initialState, body: JSON.stringify(fixture2) })
       const after = yield* provided(
@@ -284,7 +284,7 @@ describe("ModelsDev Service", () => {
         }),
       )
       expect(result).toEqual(fixture)
-      @lgcode/@lgcode/ retryTransient retries 5xx, so calls may be > 1.
+      // retryTransient retries 5xx, so calls may be > 1.
       const final = yield* Ref.get(state)
       expect(final.calls.length).toBeGreaterThanOrEqual(1)
     }),

@@ -1,4 +1,4 @@
-export * as ConfigLSPV1 from ".@lgcode/lsp"
+export * as ConfigLSPV1 from "./lsp"
 
 import { Schema } from "effect"
 
@@ -17,8 +17,8 @@ export const Entry = Schema.Union([
   }),
 ]).pipe((schema) => schema)
 
-@lgcode/@lgcode/ Keep this list aligned with the builtin servers in opencode's LSP runtime.
-@lgcode/@lgcode/ Custom servers must declare extensions because the runtime cannot infer them.
+// Keep this list aligned with the builtin servers in opencode's LSP runtime.
+// Custom servers must declare extensions because the runtime cannot infer them.
 export const builtinServerIds = [
   "deno",
   "typescript",

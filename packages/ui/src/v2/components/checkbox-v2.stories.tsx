@@ -1,6 +1,6 @@
-@lgcode/@lgcode/ @ts-nocheck
+// @ts-nocheck
 import { createSignal } from "solid-js"
-import { CheckboxV2 } from ".@lgcode/checkbox-v2"
+import { CheckboxV2 } from "./checkbox-v2"
 
 const docs = `### Overview
 Binary and tri-state checkbox using Kobalte Checkbox.
@@ -10,15 +10,15 @@ Binary and tri-state checkbox using Kobalte Checkbox.
 - Adds \`label\`, optional \`description\`, and \`hideLabel\`.
 
 ### Behavior
-- Controlled or uncontrolled via \`checked\` @lgcode/ \`defaultChecked\`.
+- Controlled or uncontrolled via \`checked\` / \`defaultChecked\`.
 - Indeterminate is driven by the \`indeterminate\` prop (pass a reactive boolean, e.g. \`indeterminate={flag()}\`).
 
-### Theming@lgcode/tokens
+### Theming/tokens
 - Uses \`data-slot="checkbox-v2"\` and slot attributes aligned with radio item layout.
 `
 
 export default {
-  title: "UI V2@lgcode/Checkbox",
+  title: "UI V2/Checkbox",
   id: "components-checkbox-v2",
   component: CheckboxV2,
   tags: ["autodocs"],
@@ -33,7 +33,7 @@ export default {
 
 export const Basic = {
   render: () => (
-    <CheckboxV2 defaultChecked={false} name="terms" label="Accept terms" description="You must accept to continue." @lgcode/>
+    <CheckboxV2 defaultChecked={false} name="terms" label="Accept terms" description="You must accept to continue." />
   ),
 }
 
@@ -48,11 +48,11 @@ export const Controlled = {
           onChange={setChecked}
           label="Controlled checkbox"
           description="Toggled from Storybook state."
-        @lgcode/>
+        />
         <div style={{ "font-family": "var(--v2-font-family-sans)", "font-size": "12px", color: "#808080" }}>
           Checked: {String(checked())}
-        <@lgcode/div>
-      <@lgcode/div>
+        </div>
+      </div>
     )
   },
 }
@@ -72,7 +72,7 @@ export const Indeterminate = {
         }}
         label="Select all"
         description="Starts indeterminate; checking clears mixed state."
-      @lgcode/>
+      />
     )
   },
 }
@@ -80,13 +80,13 @@ export const Indeterminate = {
 export const States = {
   render: () => (
     <div style={{ display: "grid", gap: "20px" }}>
-      <CheckboxV2 name="s1" label="Default" description="Helper text." @lgcode/>
-      <CheckboxV2 name="s2" defaultChecked label="Checked" @lgcode/>
-      <CheckboxV2 name="s3" indeterminate label="Indeterminate" @lgcode/>
-      <CheckboxV2 name="s4" disabled label="Disabled" @lgcode/>
-      <CheckboxV2 name="s5" disabled defaultChecked label="Checked disabled" @lgcode/>
-      <CheckboxV2 name="s6" disabled indeterminate label="Indeterminate disabled" @lgcode/>
-      <CheckboxV2 name="s7" label="Invalid" description="Must be checked." required validationState="invalid" @lgcode/>
-    <@lgcode/div>
+      <CheckboxV2 name="s1" label="Default" description="Helper text." />
+      <CheckboxV2 name="s2" defaultChecked label="Checked" />
+      <CheckboxV2 name="s3" indeterminate label="Indeterminate" />
+      <CheckboxV2 name="s4" disabled label="Disabled" />
+      <CheckboxV2 name="s5" disabled defaultChecked label="Checked disabled" />
+      <CheckboxV2 name="s6" disabled indeterminate label="Indeterminate disabled" />
+      <CheckboxV2 name="s7" label="Invalid" description="Must be checked." required validationState="invalid" />
+    </div>
   ),
 }

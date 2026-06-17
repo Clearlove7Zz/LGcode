@@ -1,23 +1,23 @@
 import { beforeAll, describe, expect, mock, test } from "bun:test"
 import { createRoot } from "solid-js"
-import type { LineComment } from ".@lgcode/comments"
+import type { LineComment } from "./comments"
 
-let createCommentSessionForTest: typeof import(".@lgcode/comments").createCommentSessionForTest
+let createCommentSessionForTest: typeof import("./comments").createCommentSessionForTest
 
 beforeAll(async () => {
-  mock.module("@solidjs@lgcode/router", () => ({
+  mock.module("@solidjs/router", () => ({
     useNavigate: () => () => undefined,
     useParams: () => ({}),
     useLocation: () => ({}),
     useSearchParams: () => [{}, () => undefined],
   }))
-  mock.module("@lgcode/ui@lgcode/context", () => ({
+  mock.module("@opencode@lgcode/ui/context", () => ({
     createSimpleContext: () => ({
       use: () => undefined,
       provider: () => undefined,
     }),
   }))
-  const mod = await import(".@lgcode/comments")
+  const mod = await import("./comments")
   createCommentSessionForTest = mod.createCommentSessionForTest
 })
 

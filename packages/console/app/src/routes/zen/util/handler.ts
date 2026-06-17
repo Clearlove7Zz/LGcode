@@ -1,20 +1,20 @@
-import type { APIEvent } from "@solidjs@lgcode/start@lgcode/server"
-import { and, Database, eq, isNull, lt, or, sql } from "@lgcode/console-core@lgcode/drizzle@lgcode/index.js"
-import { KeyTable } from "@lgcode/console-core@lgcode/schema@lgcode/key.sql.js"
-import { BillingTable, LiteTable, SubscriptionTable, UsageTable } from "@lgcode/console-core@lgcode/schema@lgcode/billing.sql.js"
-import { centsToMicroCents } from "@lgcode/console-core@lgcode/util@lgcode/price.js"
-import { getMonthlyBounds, getWeekBounds } from "@lgcode/console-core@lgcode/util@lgcode/date.js"
-import { Identifier } from "@lgcode/console-core@lgcode/identifier.js"
-import { Billing } from "@lgcode/console-core@lgcode/billing.js"
-import { Actor } from "@lgcode/console-core@lgcode/actor.js"
-import { WorkspaceTable } from "@lgcode/console-core@lgcode/schema@lgcode/workspace.sql.js"
-import { ZenData } from "@lgcode/console-core@lgcode/model.js"
-import { Subscription } from "@lgcode/console-core@lgcode/subscription.js"
-import { BlackData } from "@lgcode/console-core@lgcode/black.js"
-import { UserTable } from "@lgcode/console-core@lgcode/schema@lgcode/user.sql.js"
-import { ModelTable } from "@lgcode/console-core@lgcode/schema@lgcode/model.sql.js"
-import { ProviderTable } from "@lgcode/console-core@lgcode/schema@lgcode/provider.sql.js"
-import { logger } from ".@lgcode/logger"
+import type { APIEvent } from "@solidjs/start/server"
+import { and, Database, eq, isNull, lt, or, sql } from "@opencode@lgcode/console-core/drizzle/index.js"
+import { KeyTable } from "@opencode@lgcode/console-core/schema/key.sql.js"
+import { BillingTable, LiteTable, SubscriptionTable, UsageTable } from "@opencode@lgcode/console-core/schema/billing.sql.js"
+import { centsToMicroCents } from "@opencode@lgcode/console-core/util/price.js"
+import { getMonthlyBounds, getWeekBounds } from "@opencode@lgcode/console-core/util/date.js"
+import { Identifier } from "@opencode@lgcode/console-core/identifier.js"
+import { Billing } from "@opencode@lgcode/console-core/billing.js"
+import { Actor } from "@opencode@lgcode/console-core/actor.js"
+import { WorkspaceTable } from "@opencode@lgcode/console-core/schema/workspace.sql.js"
+import { ZenData } from "@opencode@lgcode/console-core/model.js"
+import { Subscription } from "@opencode@lgcode/console-core/subscription.js"
+import { BlackData } from "@opencode@lgcode/console-core/black.js"
+import { UserTable } from "@opencode@lgcode/console-core/schema/user.sql.js"
+import { ModelTable } from "@opencode@lgcode/console-core/schema/model.sql.js"
+import { ProviderTable } from "@opencode@lgcode/console-core/schema/provider.sql.js"
+import { logger } from "./logger"
 import {
   AuthError,
   CreditsError,
@@ -25,30 +25,30 @@ import {
   FreeUsageLimitError,
   GoUsageLimitError,
   BlackUsageLimitError,
-} from ".@lgcode/error"
+} from "./error"
 import {
   buildCostChunk,
   createBodyConverter,
   createStreamPartConverter,
   createResponseConverter,
   UsageInfo,
-} from ".@lgcode/provider@lgcode/provider"
-import { anthropicHelper } from ".@lgcode/provider@lgcode/anthropic"
-import { googleHelper } from ".@lgcode/provider@lgcode/google"
-import { openaiHelper } from ".@lgcode/provider@lgcode/openai"
-import { oaCompatHelper } from ".@lgcode/provider@lgcode/openai-compatible"
-import { createRateLimiter as createIpRateLimiter } from ".@lgcode/ipRateLimiter"
-import { createRateLimiter as createKeyRateLimiter } from ".@lgcode/keyRateLimiter"
-import { createTrialLimiter } from ".@lgcode/trialLimiter"
-import { createStickyTracker } from ".@lgcode/stickyProviderTracker"
-import { LiteData } from "@lgcode/console-core@lgcode/lite.js"
-import { Resource } from "@lgcode/console-resource"
-import { i18n, type Key } from "~@lgcode/i18n"
-import { localeFromRequest } from "~@lgcode/lib@lgcode/language"
-import { createModelTpmLimiter } from ".@lgcode/modelTpmLimiter"
-import { createModelTpsLimiter } from ".@lgcode/modelTpsLimiter"
-import { createProviderBudgetTracker } from ".@lgcode/providerBudgetTracker"
-import { accumulateUsage, HOT_WORKSPACES } from ".@lgcode/usageBatcher"
+} from "./provider/provider"
+import { anthropicHelper } from "./provider/anthropic"
+import { googleHelper } from "./provider/google"
+import { openaiHelper } from "./provider/openai"
+import { oaCompatHelper } from "./provider/openai-compatible"
+import { createRateLimiter as createIpRateLimiter } from "./ipRateLimiter"
+import { createRateLimiter as createKeyRateLimiter } from "./keyRateLimiter"
+import { createTrialLimiter } from "./trialLimiter"
+import { createStickyTracker } from "./stickyProviderTracker"
+import { LiteData } from "@opencode@lgcode/console-core/lite.js"
+import { Resource } from "@opencode@lgcode/console-resource"
+import { i18n, type Key } from "~/i18n"
+import { localeFromRequest } from "~/lib/language"
+import { createModelTpmLimiter } from "./modelTpmLimiter"
+import { createModelTpsLimiter } from "./modelTpsLimiter"
+import { createProviderBudgetTracker } from "./providerBudgetTracker"
+import { accumulateUsage, HOT_WORKSPACES } from "./usageBatcher"
 
 type ZenData = Awaited<ReturnType<typeof ZenData.list>>
 type RetryOptions = {
@@ -59,7 +59,7 @@ type BillingSource = "anonymous" | "free" | "byok" | "subscription" | "lite" | "
 
 function resolve(text: string, params?: Record<string, string | number>) {
   if (!params) return text
-  return text.replace(@lgcode/\{\{(\w+)\}\}@lgcode/g, (raw, key) => {
+  return text.replace(/\{\{(\w+)\}\}/g, (raw, key) => {
     const value = params[key]
     if (value === undefined || value === null) return raw
     return String(value)
@@ -87,9 +87,9 @@ export async function handler(
   const dict = i18n(localeFromRequest(input.request))
   const t = (key: Key, params?: Record<string, string | number>) => resolve(dict[key], params)
   const ADMIN_WORKSPACES = [
-    "wrk_01K46JDFR0E75SG2Q8K172KF3Y", @lgcode/@lgcode/ anomaly
-    "wrk_01K6W1A3VE0KMNVSCQT43BG2SX", @lgcode/@lgcode/ benchmark
-    "wrk_01KKZDKDWCS1VTJF8QTX62DD50", @lgcode/@lgcode/ contributors
+    "wrk_01K46JDFR0E75SG2Q8K172KF3Y", // anomaly
+    "wrk_01K6W1A3VE0KMNVSCQT43BG2SX", // benchmark
+    "wrk_01KKZDKDWCS1VTJF8QTX62DD50", // contributors
   ]
 
   try {
@@ -217,14 +217,14 @@ export async function handler(
         })
       }
 
-      @lgcode/@lgcode/ Try another provider => stop retrying if using fallback provider
+      // Try another provider => stop retrying if using fallback provider
       if (
         res.status !== 200 &&
-        @lgcode/@lgcode/ ie. 400 error is usually provider error like malformed request
+        // ie. 400 error is usually provider error like malformed request
         res.status !== 400 &&
-        @lgcode/@lgcode/ ie. openai 404 error: Item with id 'msg_0ead8b004a3b165d0069436a6b6834819896da85b63b196a3f' not found.
+        // ie. openai 404 error: Item with id 'msg_0ead8b004a3b165d0069436a6b6834819896da85b63b196a3f' not found.
         !(modelInfo.id.startsWith("gpt-") && res.status === 404) &&
-        @lgcode/@lgcode/ ie. cannot change codex model providers mid-session
+        // ie. cannot change codex model providers mid-session
         modelInfo.stickyProvider !== "strict" &&
         modelInfo.fallbackProvider &&
         providerInfo.id !== modelInfo.fallbackProvider
@@ -240,13 +240,13 @@ export async function handler(
 
     const { providerInfo, reqBody, res, startTimestamp } = await retriableRequest()
 
-    @lgcode/@lgcode/ Store sticky provider
+    // Store sticky provider
     if (res.status === 200) await stickyTracker?.set(providerInfo.id)
 
-    @lgcode/@lgcode/ Temporarily change 404 to 400 status code b@lgcode/c solid start automatically override 404 response
+    // Temporarily change 404 to 400 status code b/c solid start automatically override 404 response
     const resStatus = res.status === 404 ? 400 : res.status
 
-    @lgcode/@lgcode/ Scrub response headers
+    // Scrub response headers
     const resHeaders = new Headers()
     const keepHeaders = ["content-type", "cache-control"]
     for (const [k, v] of res.headers.entries()) {
@@ -256,7 +256,7 @@ export async function handler(
     }
     logger.debug("STATUS: " + res.status + " " + res.statusText)
 
-    @lgcode/@lgcode/ Handle non-streaming response
+    // Handle non-streaming response
     if (!isStream || [400, 404, 429].includes(res.status)) {
       const json = await res.json()
       await rateLimiter?.track()
@@ -289,7 +289,7 @@ export async function handler(
       })
     }
 
-    @lgcode/@lgcode/ Handle streaming response
+    // Handle streaming response
     const streamConverter = createStreamPartConverter(providerInfo.format, opts.format)
     const usageParser = providerInfo.createUsageParser()
     const binaryDecoder = providerInfo.createBinaryStreamDecoder()
@@ -397,7 +397,7 @@ export async function handler(
       } catch {}
     }
 
-    @lgcode/@lgcode/ Note: both top level "type" and "error.type" fields are used by the @ai-sdk@lgcode/anthropic client to render the error message.
+    // Note: both top level "type" and "error.type" fields are used by the @ai-sdk/anthropic client to render the error message.
     if (
       error instanceof AuthError ||
       error instanceof CreditsError ||
@@ -474,7 +474,7 @@ export async function handler(
       throw new ModelError(
         `${t("zen.api.error.trialEnded", {
           model: modelData.name,
-          link: "https:@lgcode/@lgcode/opencode.ai@lgcode/go",
+          link: "https://opencode.ai/go",
         })}`,
       )
 
@@ -497,13 +497,13 @@ export async function handler(
     providerBudgetUsage: Record<string, number> | undefined,
   ) {
     const modelProvider = (() => {
-      @lgcode/@lgcode/ Byok is top priority b@lgcode/c if user set their own API key, we should use it
-      @lgcode/@lgcode/ instead of using the sticky provider for the same session
+      // Byok is top priority b/c if user set their own API key, we should use it
+      // instead of using the sticky provider for the same session
       if (authInfo?.provider?.credentials) {
         return modelInfo.providers.find((provider) => provider.id === modelInfo.byokProvider)
       }
 
-      @lgcode/@lgcode/ Prioritize trial providers
+      // Prioritize trial providers
       let allProviders = modelInfo.providers.filter((provider) => !provider.disabled)
       if (trialProviders) {
         allProviders = allProviders.map((provider) => ({
@@ -525,12 +525,12 @@ export async function handler(
           })
           .filter((provider) => {
             if (!provider.tpmLimit) return true
-            const usage = modelTpmLimits?.[`${provider.id}@lgcode/${provider.model}`] ?? 0
+            const usage = modelTpmLimits?.[`${provider.id}/${provider.model}`] ?? 0
             return usage < provider.tpmLimit * 1_000_000
           })
           .filter((provider) => {
             if (!provider.tpsGoal) return true
-            const tps = modelTpsLimits?.[`${provider.id}@lgcode/${provider.model}@lgcode/${provider.tpsGoal}`] ?? {
+            const tps = modelTpsLimits?.[`${provider.id}/${provider.model}/${provider.tpsGoal}`] ?? {
               qualify: 0,
               unqualify: 0,
             }
@@ -544,25 +544,25 @@ export async function handler(
           .filter((p) => p.priority <= topPriority)
           .flatMap((provider) => Array<typeof provider>(provider.weight).fill(provider))
 
-        @lgcode/@lgcode/ Use the last 4 characters of session ID to select a provider
+        // Use the last 4 characters of session ID to select a provider
         let h = 0
         const l = stickyId.length
         for (let i = l - 4; i < l; i++) {
-          h = (h * 31 + stickyId.charCodeAt(i)) | 0 @lgcode/@lgcode/ 32-bit int
+          h = (h * 31 + stickyId.charCodeAt(i)) | 0 // 32-bit int
         }
-        const index = (h >>> 0) % providers.length @lgcode/@lgcode/ make unsigned + range 0..length-1
+        const index = (h >>> 0) % providers.length // make unsigned + range 0..length-1
         const provider = providers[index || 0]
 
-        @lgcode/@lgcode/ sticky provider does not exist => use selected provider
+        // sticky provider does not exist => use selected provider
         if (!stickyProviderId) return provider
         const stickProvider = allProviders.find((provider) => provider.id === stickyProviderId)
         if (!stickProvider) return provider
 
-        @lgcode/@lgcode/ stick provider exists + selected provider is API type => use sticky provider
+        // stick provider exists + selected provider is API type => use sticky provider
         if (!provider.tpsGoal) return stickProvider
 
-        @lgcode/@lgcode/ stick provier exists + selected provider is GPU type + GPU not idle => use selected provider
-        const tps = modelTpsLimits?.[`${provider.id}@lgcode/${provider.model}@lgcode/${provider.tpsGoal}`] ?? {
+        // stick provier exists + selected provider is GPU type + GPU not idle => use selected provider
+        const tps = modelTpsLimits?.[`${provider.id}/${provider.model}/${provider.tpsGoal}`] ?? {
           qualify: 0,
           unqualify: 0,
         }
@@ -571,7 +571,7 @@ export async function handler(
         return provider
       }
 
-      @lgcode/@lgcode/ fallback provider
+      // fallback provider
       return allProviders.find((provider) => provider.id === modelInfo.fallbackProvider)
     })()
 
@@ -727,21 +727,21 @@ export async function handler(
     if (modelInfo.allowAnonymous) return "free"
 
     const formatRetryTime = (seconds: number) => {
-      const days = Math.floor(seconds @lgcode/ 86400)
+      const days = Math.floor(seconds / 86400)
       if (days >= 1) return `${days} day${days > 1 ? "s" : ""}`
-      const hours = Math.floor(seconds @lgcode/ 3600)
-      const minutes = Math.ceil((seconds % 3600) @lgcode/ 60)
+      const hours = Math.floor(seconds / 3600)
+      const minutes = Math.ceil((seconds % 3600) / 60)
       if (hours >= 1) return `${hours}hr ${minutes}min`
       return `${minutes}min`
     }
 
-    @lgcode/@lgcode/ Validate black subscription billing
+    // Validate black subscription billing
     if (authInfo.billing.subscription && authInfo.black) {
       try {
         const sub = authInfo.black
         const plan = authInfo.billing.subscription.plan
 
-        @lgcode/@lgcode/ Check weekly limit
+        // Check weekly limit
         if (sub.fixedUsage && sub.timeFixedUpdated) {
           const blackData = BlackData.getLimits({ plan })
           const result = Subscription.analyzeWeeklyUsage({
@@ -758,7 +758,7 @@ export async function handler(
             )
         }
 
-        @lgcode/@lgcode/ Check rolling limit
+        // Check rolling limit
         if (sub.rollingUsage && sub.timeRollingUpdated) {
           const blackData = BlackData.getLimits({ plan })
           const result = Subscription.analyzeRollingUsage({
@@ -782,14 +782,14 @@ export async function handler(
       }
     }
 
-    @lgcode/@lgcode/ Validate lite subscription billing
+    // Validate lite subscription billing
     if (opts.modelList === "lite" && authInfo.billing.lite && authInfo.lite) {
       try {
-        const consoleGoUrl = `https:@lgcode/@lgcode/opencode.ai@lgcode/workspace@lgcode/${authInfo.workspaceID}@lgcode/go`
+        const consoleGoUrl = `https://opencode.ai/workspace/${authInfo.workspaceID}/go`
         const sub = authInfo.lite
         const liteData = LiteData.getLimits()
 
-        @lgcode/@lgcode/ Check weekly limit
+        // Check weekly limit
         if (sub.weeklyUsage && sub.timeWeeklyUpdated) {
           const result = Subscription.analyzeWeeklyUsage({
             limit: liteData.weeklyLimit,
@@ -808,7 +808,7 @@ export async function handler(
             )
         }
 
-        @lgcode/@lgcode/ Check monthly limit
+        // Check monthly limit
         if (sub.monthlyUsage && sub.timeMonthlyUpdated) {
           const result = Subscription.analyzeMonthlyUsage({
             limit: liteData.monthlyLimit,
@@ -828,7 +828,7 @@ export async function handler(
             )
         }
 
-        @lgcode/@lgcode/ Check rolling limit
+        // Check rolling limit
         if (sub.rollingUsage && sub.timeRollingUpdated) {
           const result = Subscription.analyzeRollingUsage({
             limit: liteData.rollingLimit,
@@ -854,10 +854,10 @@ export async function handler(
       }
     }
 
-    @lgcode/@lgcode/ Validate pay as you go billing
+    // Validate pay as you go billing
     const billing = authInfo.billing
-    const billingUrl = `https:@lgcode/@lgcode/opencode.ai@lgcode/workspace@lgcode/${authInfo.workspaceID}@lgcode/billing`
-    const membersUrl = `https:@lgcode/@lgcode/opencode.ai@lgcode/workspace@lgcode/${authInfo.workspaceID}@lgcode/members`
+    const billingUrl = `https://opencode.ai/workspace/${authInfo.workspaceID}/billing`
+    const membersUrl = `https://opencode.ai/workspace/${authInfo.workspaceID}/members`
     if (!billing.paymentMethodID && billing.balance <= 0)
       throw new CreditsError(t("zen.api.error.noPaymentMethod", { billingUrl }))
     if (billing.balance <= 0) throw new CreditsError(t("zen.api.error.insufficientBalance", { billingUrl }))
@@ -958,7 +958,7 @@ export async function handler(
   }
 
   function calculateOccurredCost(billingSource: BillingSource, costInfo: CostInfo) {
-    return billingSource === "balance" ? (costInfo.totalCostInCent @lgcode/ 100).toFixed(8) : "0"
+    return billingSource === "balance" ? (costInfo.totalCostInCent / 100).toFixed(8) : "0"
   }
 
   async function trackUsage(
@@ -986,7 +986,7 @@ export async function handler(
       "cost.cache_read.microcents": cacheReadCost ? centsToMicroCents(cacheReadCost) : undefined,
       "cost.cache_write.microcents": cacheWrite5mCost ? centsToMicroCents(cacheWrite5mCost) : undefined,
       "cost.total.microcents": centsToMicroCents(totalCostInCent),
-      @lgcode/@lgcode/ deprecated - remove after May 20, 2026
+      // deprecated - remove after May 20, 2026
       "cost.input": Math.round(inputCost),
       "cost.output": Math.round(outputCost),
       "cost.cache_read": cacheReadCost ? Math.round(cacheReadCost) : undefined,
@@ -1000,9 +1000,9 @@ export async function handler(
 
     const cost = centsToMicroCents(totalCostInCent)
 
-    @lgcode/@lgcode/ For hot workspaces, batch balance@lgcode/usage updates through Redis to avoid
-    @lgcode/@lgcode/ row-level lock contention on BillingTable@lgcode/UserTable. Returns the amount
-    @lgcode/@lgcode/ to flush this request, or null to skip the DB writes entirely.
+    // For hot workspaces, batch balance/usage updates through Redis to avoid
+    // row-level lock contention on BillingTable/UserTable. Returns the amount
+    // to flush this request, or null to skip the DB writes entirely.
     const balanceFlush = await (async () => {
       if (billingSource !== "subscription" && billingSource !== "lite" && HOT_WORKSPACES.has(authInfo.workspaceID)) {
         const workspaceCost = billingSource === "free" || billingSource === "byok" ? 0 : cost
@@ -1113,7 +1113,7 @@ export async function handler(
             ]
           }
 
-          @lgcode/@lgcode/ Batched hot workspace: skip DB writes unless this request is the flush.
+          // Batched hot workspace: skip DB writes unless this request is the flush.
           if (balanceFlush.batched && !balanceFlush.flush) return []
 
           const workspaceDelta = balanceFlush.flush?.workspaceCost ?? cost

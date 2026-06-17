@@ -1,6 +1,6 @@
-import { TuiConfig } from "@lgcode/tui@lgcode/config"
-import { isRecord } from "@lgcode/tui@lgcode/util@lgcode/record"
-import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
+import { TuiConfig } from "@opencode@lgcode/tui/config"
+import { isRecord } from "@opencode@lgcode/tui/util/record"
+import { Filesystem } from "@/util/filesystem"
 import { Schema } from "effect"
 
 export function resolveHostAttentionSoundPaths(

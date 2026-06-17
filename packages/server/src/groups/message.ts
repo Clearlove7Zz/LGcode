@@ -1,9 +1,9 @@
-import { SessionV2 } from "@lgcode/core@lgcode/session"
-import { SessionMessage } from "@lgcode/core@lgcode/session@lgcode/message"
+import { SessionV2 } from "@opencode@lgcode/core/session"
+import { SessionMessage } from "@opencode@lgcode/core/session/message"
 import { Schema } from "effect"
-import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
-import { InvalidCursorError, SessionNotFoundError, UnknownError } from "..@lgcode/errors"
-import { SessionLocationMiddleware } from "..@lgcode/middleware@lgcode/session-location"
+import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
+import { InvalidCursorError, SessionNotFoundError, UnknownError } from "../errors"
+import { SessionLocationMiddleware } from "../middleware/session-location"
 
 export const SessionMessagesQuery = Schema.Struct({
   limit: Schema.optional(
@@ -24,7 +24,7 @@ export const SessionMessagesQuery = Schema.Struct({
 
 export const MessageGroup = HttpApiGroup.make("server.message")
   .add(
-    HttpApiEndpoint.get("session.messages", "@lgcode/api@lgcode/session@lgcode/:sessionID@lgcode/message", {
+    HttpApiEndpoint.get("session.messages", "/api/session/:sessionID/message", {
       params: { sessionID: SessionV2.ID },
       query: SessionMessagesQuery,
       success: Schema.Struct({

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { formatKeybind, matchKeybind, parseKeybind } from ".@lgcode/command"
+import { formatKeybind, matchKeybind, parseKeybind } from "./command"
 
 describe("command keybind helpers", () => {
   test("parseKeybind handles aliases and multiple combos", () => {

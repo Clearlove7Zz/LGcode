@@ -1,11 +1,11 @@
 import { createMemo } from "solid-js"
-import { useSync } from "..@lgcode/..@lgcode/context@lgcode/sync"
-import { DialogSelect } from "..@lgcode/..@lgcode/ui@lgcode/dialog-select"
-import { useSDK } from "..@lgcode/..@lgcode/context@lgcode/sdk"
-import { useRoute } from "..@lgcode/..@lgcode/context@lgcode/route"
-import { useClipboard } from "..@lgcode/..@lgcode/context@lgcode/clipboard"
-import type { PromptInfo } from "..@lgcode/..@lgcode/component@lgcode/prompt@lgcode/history"
-import { stripPromptPartIDs as strip } from "..@lgcode/..@lgcode/prompt@lgcode/part"
+import { useSync } from "../../context/sync"
+import { DialogSelect } from "../../ui/dialog-select"
+import { useSDK } from "../../context/sdk"
+import { useRoute } from "../../context/route"
+import { useClipboard } from "../../context/clipboard"
+import type { PromptInfo } from "../../component/prompt/history"
+import { stripPromptPartIDs as strip } from "../../prompt/part"
 
 export function DialogMessage(props: {
   messageID: string
@@ -104,6 +104,6 @@ export function DialogMessage(props: {
           },
         },
       ]}
-    @lgcode/>
+    />
   )
 }

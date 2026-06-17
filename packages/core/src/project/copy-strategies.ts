@@ -1,8 +1,8 @@
 import path from "path"
 import { Effect } from "effect"
-import { AbsolutePath } from "..@lgcode/schema"
-import { Git } from "..@lgcode/git"
-import { DirectoryUnavailableError, StrategyID, type ListEntry, type Strategy } from ".@lgcode/copy"
+import { AbsolutePath } from "../schema"
+import { Git } from "../git"
+import { DirectoryUnavailableError, StrategyID, type ListEntry, type Strategy } from "./copy"
 
 export function makeGitWorktreeStrategy(input: {
   git: Git.Interface

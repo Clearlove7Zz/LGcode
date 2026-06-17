@@ -1,7 +1,7 @@
-import { sqliteTable, text, integer, primaryKey } from "drizzle-orm@lgcode/sqlite-core"
+import { sqliteTable, text, integer, primaryKey } from "drizzle-orm/sqlite-core"
 
-import { AccountV2 } from "..@lgcode/account"
-import { Timestamps } from "..@lgcode/database@lgcode/schema.sql"
+import { AccountV2 } from "../account"
+import { Timestamps } from "../database/schema.sql"
 
 export const AccountTable = sqliteTable("account", {
   id: text().$type<AccountV2.ID>().primaryKey(),
@@ -21,7 +21,7 @@ export const AccountStateTable = sqliteTable("account_state", {
   active_org_id: text().$type<AccountV2.OrgID>(),
 })
 
-@lgcode/@lgcode/ LEGACY
+// LEGACY
 export const ControlAccountTable = sqliteTable(
   "control_account",
   {

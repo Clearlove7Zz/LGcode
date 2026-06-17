@@ -1,14 +1,14 @@
-export * as ApplyPatchTool from ".@lgcode/apply-patch"
+export * as ApplyPatchTool from "./apply-patch"
 
-import { ToolFailure } from "@lgcode/llm"
+import { ToolFailure } from "@opencode@lgcode/llm"
 import { Effect, Layer, Schema } from "effect"
-import { FileMutation } from "..@lgcode/file-mutation"
-import { FSUtil } from "..@lgcode/fs-util"
-import { LocationMutation } from "..@lgcode/location-mutation"
-import { Patch } from "..@lgcode/patch"
-import { PermissionV2 } from "..@lgcode/permission"
-import { Tool } from ".@lgcode/tool"
-import { Tools } from ".@lgcode/tools"
+import { FileMutation } from "../file-mutation"
+import { FSUtil } from "../fs-util"
+import { LocationMutation } from "../location-mutation"
+import { Patch } from "../patch"
+import { PermissionV2 } from "../permission"
+import { Tool } from "./tool"
+import { Tools } from "./tools"
 
 export const name = "apply_patch"
 

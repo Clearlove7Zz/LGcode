@@ -1,15 +1,15 @@
-import { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
+import { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
 import { describe, expect } from "bun:test"
 import path from "path"
 import { Effect } from "effect"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import type { Tool } from "@@lgcode/tool@lgcode/tool"
-import { assertExternalDirectoryEffect } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/external-directory"
-import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
-import { TestInstance, tmpdirScoped } from "..@lgcode/fixture@lgcode/fixture"
-import type { Permission } from "..@lgcode/..@lgcode/src@lgcode/permission"
-import { SessionID, MessageID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import type { Tool } from "@/tool/tool"
+import { assertExternalDirectoryEffect } from "../../src/tool/external-directory"
+import { Filesystem } from "@/util/filesystem"
+import { TestInstance, tmpdirScoped } from "../fixture/fixture"
+import type { Permission } from "../../src/permission"
+import { SessionID, MessageID } from "../../src/session/schema"
+import { testEffect } from "../lib/effect"
 
 const it = testEffect(CrossSpawnSpawner.defaultLayer)
 
@@ -24,7 +24,7 @@ const baseCtx: Omit<Tool.Context, "ask"> = {
 }
 
 const glob = (p: string) =>
-  process.platform === "win32" ? Filesystem.normalizePathPattern(p) : p.replaceAll("\\", "@lgcode/")
+  process.platform === "win32" ? Filesystem.normalizePathPattern(p) : p.replaceAll("\\", "/")
 
 function makeCtx() {
   const requests: Array<Omit<PermissionV1.Request, "id" | "sessionID" | "tool">> = []
@@ -98,7 +98,7 @@ describe("tool.assertExternalDirectory", () => {
     Effect.gen(function* () {
       const { requests, ctx } = makeCtx()
 
-      yield* assertExternalDirectoryEffect(ctx, "@lgcode/tmp@lgcode/outside@lgcode/file.txt", { bypass: true })
+      yield* assertExternalDirectoryEffect(ctx, "/tmp/outside/file.txt", { bypass: true })
 
       expect(requests.length).toBe(0)
     }),
@@ -116,8 +116,8 @@ describe("tool.assertExternalDirectory", () => {
 
           const target = path.join(outerTmp, "outside.txt")
           const alt = target
-            .replace(@lgcode/^[A-Za-z]:@lgcode/, "")
-            .replaceAll("\\", "@lgcode/")
+            .replace(/^[A-Za-z]:/, "")
+            .replaceAll("\\", "/")
             .toLowerCase()
 
           yield* assertExternalDirectoryEffect(ctx, alt)

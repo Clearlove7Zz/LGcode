@@ -1,11 +1,11 @@
-import { and, Database, inArray, sql } from "@lgcode/console-core@lgcode/drizzle@lgcode/index.js"
-import { ModelTpsRateLimitTable } from "@lgcode/console-core@lgcode/schema@lgcode/ip.sql.js"
-import { UsageInfo } from ".@lgcode/provider@lgcode/provider"
+import { and, Database, inArray, sql } from "@opencode@lgcode/console-core/drizzle/index.js"
+import { ModelTpsRateLimitTable } from "@opencode@lgcode/console-core/schema/ip.sql.js"
+import { UsageInfo } from "./provider/provider"
 
 export function createModelTpsLimiter(providers: { id: string; model: string; tpsGoal?: number }[]) {
   const tpsGoals = Object.fromEntries(
     providers.flatMap((p) => {
-      return p.tpsGoal ? [[`${p.id}@lgcode/${p.model}@lgcode/${p.tpsGoal}`, p.tpsGoal]] : []
+      return p.tpsGoal ? [[`${p.id}/${p.model}/${p.tpsGoal}`, p.tpsGoal]] : []
     }),
   )
   const ids = Object.keys(tpsGoals)
@@ -15,7 +15,7 @@ export function createModelTpsLimiter(providers: { id: string; model: string; tp
     parseInt(
       date
         .toISOString()
-        .replace(@lgcode/[^0-9]@lgcode/g, "")
+        .replace(/[^0-9]/g, "")
         .substring(0, 12),
     )
   const now = Date.now()
@@ -36,7 +36,7 @@ export function createModelTpsLimiter(providers: { id: string; model: string; tp
           ),
       )
 
-      @lgcode/@lgcode/ convert to map of model to summed count across current and previous intervals
+      // convert to map of model to summed count across current and previous intervals
       return data.reduce(
         (acc, curr) => {
           const existing = acc[curr.id] ?? { qualify: 0, unqualify: 0 }
@@ -58,13 +58,13 @@ export function createModelTpsLimiter(providers: { id: string; model: string; tp
       usageInfo: UsageInfo,
     ) => {
       if (!tpsGoal) return
-      const id = `${provider}@lgcode/${model}@lgcode/${tpsGoal}`
+      const id = `${provider}/${model}/${tpsGoal}`
       if (!ids.includes(id)) return
       if (tsFirstByte <= 0 || tsLastByte <= 0) return
       const tokens = usageInfo.outputTokens
       if (tokens <= 10) return
 
-      const tps = (tokens @lgcode/ (tsLastByte - tsFirstByte)) * 1000
+      const tps = (tokens / (tsLastByte - tsFirstByte)) * 1000
       const qualify = tps >= tpsGoal ? 1 : 0
       const unqualify = tps < tpsGoal ? 1 : 0
       await Database.use((tx) =>

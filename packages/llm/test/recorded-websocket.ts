@@ -1,7 +1,7 @@
-import { HttpRecorderInternal } from "@lgcode/http-recorder@lgcode/internal"
+import { HttpRecorderInternal } from "@opencode@lgcode/http-recorder/internal"
 import { Effect, Layer } from "effect"
-import { WebSocketExecutor } from "..@lgcode/src@lgcode/route"
-import type { Service as WebSocketExecutorService } from "..@lgcode/src@lgcode/route@lgcode/transport@lgcode/websocket"
+import { WebSocketExecutor } from "../src/route"
+import type { Service as WebSocketExecutorService } from "../src/route/transport/websocket"
 
 const liveWebSocket = WebSocketExecutor.open
 

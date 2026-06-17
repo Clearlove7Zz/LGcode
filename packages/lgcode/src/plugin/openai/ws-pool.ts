@@ -1,7 +1,7 @@
 import WebSocket from "ws"
-import { ProviderError } from "@@lgcode/provider@lgcode/error"
-import { isRecord } from "@@lgcode/util@lgcode/record"
-import { OpenAIWebSocket } from ".@lgcode/ws"
+import { ProviderError } from "@/provider/error"
+import { isRecord } from "@/util/record"
+import { OpenAIWebSocket } from "./ws"
 
 export const TITLE_HEADER = "x-opencode-title"
 
@@ -45,7 +45,7 @@ export function createWebSocketFetch(options?: CreateWebSocketFetchOptions) {
     const internalHeaders = OpenAIWebSocket.normalizeHeaders(init?.headers)
     const httpInit = withoutInternalHeaders(init)
 
-    if (init?.method !== "POST" || !new URL(url).pathname.endsWith("@lgcode/responses")) {
+    if (init?.method !== "POST" || !new URL(url).pathname.endsWith("/responses")) {
       return httpFetch(input, httpInit)
     }
 
@@ -135,7 +135,7 @@ export function createWebSocketFetch(options?: CreateWebSocketFetchOptions) {
         if (first === true || first.status < 200 || first.status > 599) return response
         return new Response(first.body, {
           status: first.status,
-          headers: { "content-type": "application@lgcode/json", ...first.headers },
+          headers: { "content-type": "application/json", ...first.headers },
         })
       }
       if (!entry.fallback) return response
@@ -162,7 +162,7 @@ export function createWebSocketFetch(options?: CreateWebSocketFetchOptions) {
 
   function recordStreamFailure(entry: PoolEntry) {
     entry.streamFailures++
-    @lgcode/@lgcode/ Codex counts retries after the initial failed WebSocket attempt.
+    // Codex counts retries after the initial failed WebSocket attempt.
     if (entry.streamFailures > streamRetries) entry.fallback = true
   }
 
@@ -208,7 +208,7 @@ function failedResponse(error: ProviderError.ResponseStreamError) {
     }),
     {
       status: 200,
-      headers: { "content-type": "text@lgcode/event-stream" },
+      headers: { "content-type": "text/event-stream" },
     },
   )
 }
@@ -267,4 +267,4 @@ export function withoutInternalHeaders<T extends { headers?: HeadersInit }>(init
   }
 }
 
-export * as OpenAIWebSocketPool from ".@lgcode/ws-pool"
+export * as OpenAIWebSocketPool from "./ws-pool"

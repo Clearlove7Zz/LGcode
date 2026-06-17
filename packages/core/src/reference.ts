@@ -1,13 +1,13 @@
-export * as Reference from ".@lgcode/reference"
+export * as Reference from "./reference"
 
 import { Context, Effect, Layer, Schema, Scope } from "effect"
 import { castDraft } from "immer"
-import { Global } from ".@lgcode/global"
-import { EventV2 } from ".@lgcode/event"
-import { Repository } from ".@lgcode/repository"
-import { RepositoryCache } from ".@lgcode/repository-cache"
-import { AbsolutePath } from ".@lgcode/schema"
-import { State } from ".@lgcode/state"
+import { Global } from "./global"
+import { EventV2 } from "./event"
+import { Repository } from "./repository"
+import { RepositoryCache } from "./repository-cache"
+import { AbsolutePath } from "./schema"
+import { State } from "./state"
 
 export class LocalSource extends Schema.Class<LocalSource>("Reference.LocalSource")({
   type: Schema.Literal("local"),
@@ -54,7 +54,7 @@ export interface Interface {
   readonly list: () => Effect.Effect<Info[]>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/Reference") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/v2/Reference") {}
 
 export const layer = Layer.effect(
   Service,

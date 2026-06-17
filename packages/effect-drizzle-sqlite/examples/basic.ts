@@ -1,11 +1,11 @@
-import { SqliteClient } from "@effect@lgcode/sql-sqlite-bun"
+import { SqliteClient } from "@effect/sql-sqlite-bun"
 import { eq } from "drizzle-orm"
-import { integer, sqliteTable, text } from "drizzle-orm@lgcode/sqlite-core"
-import * as Context from "effect@lgcode/Context"
-import * as Effect from "effect@lgcode/Effect"
-import * as Layer from "effect@lgcode/Layer"
-import * as Schema from "effect@lgcode/Schema"
-import { EffectDrizzleSqlite } from "..@lgcode/src"
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core"
+import * as Context from "effect/Context"
+import * as Effect from "effect/Effect"
+import * as Layer from "effect/Layer"
+import * as Schema from "effect/Schema"
+import { EffectDrizzleSqlite } from "../src"
 
 const users = sqliteTable("users", {
   id: integer().primaryKey({ autoIncrement: true }),
@@ -19,7 +19,7 @@ type DatabaseShape = Effect.Success<typeof makeDatabase>
 
 const sqliteLayer = SqliteClient.layer({ filename: ":memory:", disableWAL: true })
 
-class Database extends Context.Service<Database, DatabaseShape>()("@lgcode/example@lgcode/Database") {
+class Database extends Context.Service<Database, DatabaseShape>()("@opencode/example/Database") {
   static layer = Layer.effect(Database, makeDatabase).pipe(Layer.provide(sqliteLayer))
 }
 
@@ -37,7 +37,7 @@ interface UserStoreShape {
   list(): Effect.Effect<User[], UserStoreError>
 }
 
-class UserStore extends Context.Service<UserStore, UserStoreShape>()("@lgcode/example@lgcode/UserStore") {
+class UserStore extends Context.Service<UserStore, UserStoreShape>()("@opencode/example/UserStore") {
   static layer = Layer.effect(
     UserStore,
     Effect.gen(function* () {
@@ -45,7 +45,7 @@ class UserStore extends Context.Service<UserStore, UserStoreShape>()("@lgcode/ex
 
       return UserStore.of({
         migrate: Effect.fn("UserStore.migrate")(function* () {
-          yield* EffectDrizzleSqlite.migrate(db, { migrationsFolder: `${import.meta.dirname}@lgcode/migrations` }).pipe(
+          yield* EffectDrizzleSqlite.migrate(db, { migrationsFolder: `${import.meta.dirname}/migrations` }).pipe(
             Effect.mapError((cause) => new UserStoreError({ message: "Failed to migrate users", cause })),
           )
         }),

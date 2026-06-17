@@ -1,10 +1,10 @@
 import { Database } from "bun:sqlite"
 import { statSync } from "node:fs"
-import { readFile as readFileAsync } from "node:fs@lgcode/promises"
+import { readFile as readFileAsync } from "node:fs/promises"
 import os from "node:os"
 import path from "node:path"
 import { Option, Schema } from "effect"
-import type { EditorSelection } from ".@lgcode/context@lgcode/editor"
+import type { EditorSelection } from "./context/editor"
 
 const ZedEditorRowSchema = Schema.Struct({
   item_kind: Schema.String,
@@ -217,7 +217,7 @@ function zedWorkspacePaths(value: string | null) {
   if (!value) return []
   const parsed = parseJson(value)
   if (Array.isArray(parsed)) return parsed.filter((item): item is string => typeof item === "string")
-  return value.split(@lgcode/\r?\n@lgcode/).filter(Boolean)
+  return value.split(/\r?\n/).filter(Boolean)
 }
 
 export function offsetToPosition(text: string, offset: number) {

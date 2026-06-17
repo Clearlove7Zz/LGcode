@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { normalizeWheelDelta, shouldMarkBoundaryGesture } from ".@lgcode/message-gesture"
+import { normalizeWheelDelta, shouldMarkBoundaryGesture } from "./message-gesture"
 
 describe("normalizeWheelDelta", () => {
   test("converts line mode to px", () => {

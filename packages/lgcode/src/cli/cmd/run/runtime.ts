@@ -1,32 +1,32 @@
-@lgcode/@lgcode/ Top-level orchestrator for `run --interactive`.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Wires the boot sequence, lifecycle (renderer + footer), stream transport,
-@lgcode/@lgcode/ and prompt queue together into a single session loop. Two entry points:
-@lgcode/@lgcode/
-@lgcode/@lgcode/   runInteractiveMode     -- used when an SDK client already exists (attach mode)
-@lgcode/@lgcode/   runInteractiveLocalMode -- used for local in-process mode (no server)
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Both delegate to runInteractiveRuntime, which:
-@lgcode/@lgcode/   1. resolves TUI config, model info, and session history,
-@lgcode/@lgcode/   2. creates the split-footer lifecycle (renderer + RunFooter),
-@lgcode/@lgcode/   3. starts the stream transport (SDK event subscription), lazily for fresh
-@lgcode/@lgcode/      local sessions,
-@lgcode/@lgcode/   4. runs the prompt queue until the footer closes.
-import { createOpencodeClient } from "@lgcode/sdk@lgcode/v2"
-import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
-import { MessageID } from "@@lgcode/session@lgcode/schema"
-import { createRunDemo } from ".@lgcode/demo"
-import { resolveModelInfo, resolveRunTuiConfig, resolveSessionInfo } from ".@lgcode/runtime.boot"
-import { createRuntimeLifecycle } from ".@lgcode/runtime.lifecycle"
-import { trace } from ".@lgcode/trace"
-import { cycleVariant, formatModelLabel, resolveSavedVariant, resolveVariant, saveVariant } from ".@lgcode/variant.shared"
-import type { LocalReplayAnchor, LocalReplayRow, RunInput, RunPrompt, RunProvider, StreamCommit } from ".@lgcode/types"
+// Top-level orchestrator for `run --interactive`.
+//
+// Wires the boot sequence, lifecycle (renderer + footer), stream transport,
+// and prompt queue together into a single session loop. Two entry points:
+//
+//   runInteractiveMode     -- used when an SDK client already exists (attach mode)
+//   runInteractiveLocalMode -- used for local in-process mode (no server)
+//
+// Both delegate to runInteractiveRuntime, which:
+//   1. resolves TUI config, model info, and session history,
+//   2. creates the split-footer lifecycle (renderer + RunFooter),
+//   3. starts the stream transport (SDK event subscription), lazily for fresh
+//      local sessions,
+//   4. runs the prompt queue until the footer closes.
+import { createOpencodeClient } from "@opencode@lgcode/sdk/v2"
+import { Flag } from "@opencode@lgcode/core/flag/flag"
+import { MessageID } from "@/session/schema"
+import { createRunDemo } from "./demo"
+import { resolveModelInfo, resolveRunTuiConfig, resolveSessionInfo } from "./runtime.boot"
+import { createRuntimeLifecycle } from "./runtime.lifecycle"
+import { trace } from "./trace"
+import { cycleVariant, formatModelLabel, resolveSavedVariant, resolveVariant, saveVariant } from "./variant.shared"
+import type { LocalReplayAnchor, LocalReplayRow, RunInput, RunPrompt, RunProvider, StreamCommit } from "./types"
 
-@lgcode/** @internal Exported for testing *@lgcode/
-export { pickVariant, resolveVariant } from ".@lgcode/variant.shared"
+/** @internal Exported for testing */
+export { pickVariant, resolveVariant } from "./variant.shared"
 
-@lgcode/** @internal Exported for testing *@lgcode/
-export { runPromptQueue } from ".@lgcode/runtime.queue"
+/** @internal Exported for testing */
+export { runPromptQueue } from "./runtime.queue"
 
 type BootContext = Pick<
   RunInput,
@@ -77,7 +77,7 @@ type RunLocalInput = {
 }
 
 type StreamTransportModule = Pick<
-  Awaited<typeof import(".@lgcode/stream.transport")>,
+  Awaited<typeof import("./stream.transport")>,
   "createSessionTransport" | "formatUnknownError"
 >
 
@@ -172,12 +172,12 @@ async function resolveExitTitle(
     .catch(() => undefined)
 }
 
-@lgcode/@lgcode/ Core runtime loop. Boot resolves the SDK context, then we set up the
-@lgcode/@lgcode/ lifecycle (renderer + footer), wire the stream transport for SDK events,
-@lgcode/@lgcode/ and feed prompts through the queue until the user exits.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Files only attach on the first prompt turn -- after that, includeFiles
-@lgcode/@lgcode/ flips to false so subsequent turns don't re-send attachments.
+// Core runtime loop. Boot resolves the SDK context, then we set up the
+// lifecycle (renderer + footer), wire the stream transport for SDK events,
+// and feed prompts through the queue until the user exits.
+//
+// Files only attach on the first prompt turn -- after that, includeFiles
+// flips to false so subsequent turns don't re-send attachments.
 async function runInteractiveRuntime(input: RunRuntimeInput, deps: RunRuntimeDeps = {}): Promise<void> {
   const start = performance.now()
   const log = trace()
@@ -453,14 +453,14 @@ async function runInteractiveRuntime(input: RunRuntimeInput, deps: RunRuntimeDep
     })
   })
 
-  const streamTask = deps.streamTransport ?? import(".@lgcode/stream.transport")
+  const streamTask = deps.streamTransport ?? import("./stream.transport")
   const ensureStream = () => {
     if (state.stream) {
       return state.stream
     }
 
-    @lgcode/@lgcode/ Share eager prewarm and first-turn boot through one in-flight promise,
-    @lgcode/@lgcode/ but clear it if transport creation fails so a later prompt can retry.
+    // Share eager prewarm and first-turn boot through one in-flight promise,
+    // but clear it if transport creation fails so a later prompt can retry.
     const next = (async () => {
       await ensureSession()
       if (footer.isClosed) {
@@ -540,7 +540,7 @@ async function runInteractiveRuntime(input: RunRuntimeInput, deps: RunRuntimeDep
       await state.demo.start()
     }
 
-    const mod = await import(".@lgcode/runtime.queue")
+    const mod = await import("./runtime.queue")
     const createSession = input.createSession
     await mod.runPromptQueue({
       footer,
@@ -691,8 +691,8 @@ async function runInteractiveRuntime(input: RunRuntimeInput, deps: RunRuntimeDep
     const eager = eagerStream(input, ctx)
     if (eager) {
       if (input.replay && state.shown) {
-        @lgcode/@lgcode/ Replay commits immutable scrollback rows, so wait for provider names
-        @lgcode/@lgcode/ before bootstrapping existing session history.
+        // Replay commits immutable scrollback rows, so wait for provider names
+        // before bootstrapping existing session history.
         await modelTask
       }
 
@@ -730,11 +730,11 @@ async function runInteractiveRuntime(input: RunRuntimeInput, deps: RunRuntimeDep
   }
 }
 
-@lgcode/@lgcode/ Local in-process mode. Creates an SDK client backed by a direct fetch to
-@lgcode/@lgcode/ the in-process server, so no external HTTP server is needed.
+// Local in-process mode. Creates an SDK client backed by a direct fetch to
+// the in-process server, so no external HTTP server is needed.
 export async function runInteractiveLocalMode(input: RunLocalInput): Promise<void> {
   const sdk = createOpencodeClient({
-    baseUrl: "http:@lgcode/@lgcode/opencode.internal",
+    baseUrl: "http://opencode.internal",
     fetch: input.fetch,
     directory: input.directory,
   })
@@ -783,7 +783,7 @@ export async function runInteractiveLocalMode(input: RunLocalInput): Promise<voi
   })
 }
 
-@lgcode/@lgcode/ Attach mode. Uses the caller-provided SDK client directly.
+// Attach mode. Uses the caller-provided SDK client directly.
 export async function runInteractiveMode(
   input: RunInput & { createSession?: CreateSession },
   deps?: RunRuntimeDeps,

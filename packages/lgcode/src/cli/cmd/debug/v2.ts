@@ -1,11 +1,11 @@
 import { EOL } from "os"
 import { Effect, Option } from "effect"
-import { Catalog } from "@lgcode/core@lgcode/catalog"
-import { LocationServiceMap } from "@lgcode/core@lgcode/location-layer"
-import { Location } from "@lgcode/core@lgcode/location"
-import { PluginBoot } from "@lgcode/core@lgcode/plugin@lgcode/boot"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import { effectCmd } from "..@lgcode/..@lgcode/effect-cmd"
+import { Catalog } from "@opencode@lgcode/core/catalog"
+import { LocationServiceMap } from "@opencode@lgcode/core/location-layer"
+import { Location } from "@opencode@lgcode/core/location"
+import { PluginBoot } from "@opencode@lgcode/core/plugin/boot"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import { effectCmd } from "../../effect-cmd"
 
 export const V2Command = effectCmd({
   command: "v2",

@@ -1,9 +1,9 @@
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import os from "os"
 import { Effect, Layer } from "effect"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { EffectFlock } from "@lgcode/core@lgcode/util@lgcode/effect-flock"
-import { Global } from "@lgcode/core@lgcode/global"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { EffectFlock } from "@opencode@lgcode/core/util/effect-flock"
+import { Global } from "@opencode@lgcode/core/global"
 
 type Msg = {
   key: string

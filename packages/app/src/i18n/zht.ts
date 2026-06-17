@@ -1,4 +1,4 @@
-import { dict as en } from ".@lgcode/en"
+import { dict as en } from "./en"
 
 type Keys = keyof typeof en
 
@@ -105,8 +105,8 @@ export const dict = {
   "dialog.provider.opencode.note": "精選模型，包含 Claude、GPT、Gemini 等等",
   "dialog.provider.opencode.tagline": "可靠的優化模型",
   "dialog.provider.opencodeGo.tagline": "適合所有人的低成本訂閱",
-  "dialog.provider.anthropic.note": "使用 Claude Pro@lgcode/Max 或 API 金鑰連線",
-  "dialog.provider.openai.note": "使用 ChatGPT Pro@lgcode/Plus 或 API 金鑰連線",
+  "dialog.provider.anthropic.note": "使用 Claude Pro/Max 或 API 金鑰連線",
+  "dialog.provider.openai.note": "使用 ChatGPT Pro/Plus 或 API 金鑰連線",
   "dialog.provider.copilot.note": "使用 Copilot 或 API 金鑰連線",
   "dialog.provider.google.note": "Gemini 模型，提供快速且結構化的回應",
   "dialog.provider.openrouter.note": "從單一提供者存取所有支援的模型",
@@ -125,7 +125,7 @@ export const dict = {
   "dialog.provider.viewAll": "查看更多提供者",
 
   "provider.connect.title": "連線 {{provider}}",
-  "provider.connect.title.anthropicProMax": "使用 Claude Pro@lgcode/Max 登入",
+  "provider.connect.title.anthropicProMax": "使用 Claude Pro/Max 登入",
   "provider.connect.selectMethod": "選擇 {{provider}} 的登入方式。",
   "provider.connect.method.apiKey": "API 金鑰",
   "provider.connect.status.inProgress": "正在授權...",
@@ -139,7 +139,7 @@ export const dict = {
   "provider.connect.opencodeZen.line1": "OpenCode Zen 為你提供一組精選的可靠最佳化模型，用於程式碼代理程式。",
   "provider.connect.opencodeZen.line2": "只需一個 API 金鑰，你就能使用 Claude、GPT、Gemini、GLM 等模型。",
   "provider.connect.opencodeZen.visit.prefix": "造訪 ",
-  "provider.connect.opencodeZen.visit.link": "opencode.ai@lgcode/zen",
+  "provider.connect.opencodeZen.visit.link": "opencode.ai/zen",
   "provider.connect.opencodeZen.visit.suffix": " 取得你的 API 金鑰。",
   "provider.connect.oauth.code.visit.prefix": "造訪 ",
   "provider.connect.oauth.code.visit.link": "此連結",
@@ -166,7 +166,7 @@ export const dict = {
   "provider.custom.field.name.label": "顯示名稱",
   "provider.custom.field.name.placeholder": "我的 AI 提供商",
   "provider.custom.field.baseURL.label": "基礎 URL",
-  "provider.custom.field.baseURL.placeholder": "https:@lgcode/@lgcode/api.myprovider.com@lgcode/v1",
+  "provider.custom.field.baseURL.placeholder": "https://api.myprovider.com/v1",
   "provider.custom.field.apiKey.label": "API 金鑰",
   "provider.custom.field.apiKey.placeholder": "API 金鑰",
   "provider.custom.field.apiKey.description": "選填。若您透過標頭管理驗證，可留空。",
@@ -189,7 +189,7 @@ export const dict = {
   "provider.custom.error.providerID.exists": "該提供商 ID 已存在",
   "provider.custom.error.name.required": "顯示名稱為必填",
   "provider.custom.error.baseURL.required": "基礎 URL 為必填",
-  "provider.custom.error.baseURL.format": "必須以 http:@lgcode/@lgcode/ 或 https:@lgcode/@lgcode/ 開頭",
+  "provider.custom.error.baseURL.format": "必須以 http:// 或 https:// 開頭",
   "provider.custom.error.required": "必填",
   "provider.custom.error.duplicate": "重複",
 
@@ -290,7 +290,7 @@ export const dict = {
   "prompt.toast.promptSendFailed.description": "無法取得工作階段",
 
   "dialog.mcp.title": "MCP",
-  "dialog.mcp.description": "已啟用 {{enabled}} @lgcode/ {{total}}",
+  "dialog.mcp.description": "已啟用 {{enabled}} / {{total}}",
   "dialog.mcp.empty": "未設定 MCP",
 
   "dialog.lsp.empty": "已從檔案類型自動偵測到 LSPs",
@@ -318,7 +318,7 @@ export const dict = {
   "dialog.server.empty": "暫無伺服器",
   "dialog.server.add.title": "新增伺服器",
   "dialog.server.add.url": "伺服器 URL",
-  "dialog.server.add.placeholder": "http:@lgcode/@lgcode/localhost:4096",
+  "dialog.server.add.placeholder": "http://localhost:4096",
   "dialog.server.add.error": "無法連線到伺服器",
   "dialog.server.add.checking": "檢查中...",
   "dialog.server.add.button": "新增伺服器",
@@ -374,7 +374,7 @@ export const dict = {
   "context.stats.inputTokens": "輸入 token",
   "context.stats.outputTokens": "輸出 token",
   "context.stats.reasoningTokens": "推理 token",
-  "context.stats.cacheTokens": "快取 token（讀@lgcode/寫）",
+  "context.stats.cacheTokens": "快取 token（讀/寫）",
   "context.stats.userMessages": "使用者訊息",
   "context.stats.assistantMessages": "助手訊息",
   "context.stats.totalCost": "總成本",
@@ -472,8 +472,8 @@ export const dict = {
   "error.chain.retryable": "可重試: {{retryable}}",
   "error.chain.responseBody": "回應內容:\n{{body}}",
   "error.chain.didYouMean": "你是不是想輸入: {{suggestions}}",
-  "error.chain.modelNotFound": "找不到模型: {{provider}}@lgcode/{{model}}",
-  "error.chain.checkConfig": "請檢查你的設定 (opencode.json) 中的 provider@lgcode/model 名稱",
+  "error.chain.modelNotFound": "找不到模型: {{provider}}/{{model}}",
+  "error.chain.checkConfig": "請檢查你的設定 (opencode.json) 中的 provider/model 名稱",
   "error.chain.mcpFailed": 'MCP 伺服器 "{{name}}" 啟動失敗。注意: OpenCode 暫不支援 MCP 認證。',
   "error.chain.providerAuthFailed": "提供者認證失敗 ({{provider}}): {{message}}",
   "error.chain.providerInitFailed": '無法初始化提供者 "{{provider}}"。請檢查憑證和設定。',
@@ -858,7 +858,7 @@ export const dict = {
   "session.review.noVcs.createGit.actionLoading": "正在建立 Git 儲存庫...",
   "session.review.noVcs.createGit.action": "建立 Git 儲存庫",
   "session.todo.progress": "已完成 {{done}} 個待辦事項（共 {{total}} 個）",
-  "session.question.progress": "{{current}}@lgcode/{{total}} 個問題",
+  "session.question.progress": "{{current}}/{{total}} 個問題",
   "session.header.open.finder": "Finder",
   "session.header.open.fileExplorer": "檔案總管",
   "session.header.open.fileManager": "檔案管理員",
@@ -895,7 +895,7 @@ export const dict = {
   "debugBar.cls.tip": "目前應用程式生命週期的累積版面配置位移。",
   "debugBar.mem.label": "MEM",
   "debugBar.mem.tipUnavailable": "使用的 JS 堆積與堆積限制。僅限 Chromium。",
-  "debugBar.mem.tip": "使用的 JS 堆積與堆積限制。{{used}} @lgcode/ {{limit}}。",
+  "debugBar.mem.tip": "使用的 JS 堆積與堆積限制。{{used}} / {{limit}}。",
   "common.key.ctrl": "Ctrl",
   "common.key.alt": "Alt",
   "common.key.shift": "Shift",

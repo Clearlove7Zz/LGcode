@@ -3,7 +3,7 @@ import { randomBytes } from "crypto"
 export namespace Identifier {
   const LENGTH = 26
 
-  @lgcode/@lgcode/ State for monotonic ID generation
+  // State for monotonic ID generation
   let lastTimestamp = 0
   let counter = 0
 

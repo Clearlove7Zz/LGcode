@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import type { PermissionRequest } from "@lgcode/sdk@lgcode/v2"
+import type { PermissionRequest } from "@opencode@lgcode/sdk/v2"
 import {
   createPermissionBodyState,
   permissionAlwaysLines,
@@ -8,7 +8,7 @@ import {
   permissionInfo,
   permissionReject,
   permissionRun,
-} from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/permission.shared"
+} from "@/cli/cmd/run/permission.shared"
 
 function req(input: Partial<PermissionRequest> = {}): PermissionRequest {
   return {
@@ -112,12 +112,12 @@ describe("run permission shared", () => {
       permissionInfo(
         req({
           permission: "external_directory",
-          patterns: ["@lgcode/tmp@lgcode/work@lgcode/**@lgcode/*.ts", "@lgcode/tmp@lgcode/work@lgcode/**@lgcode/*.tsx"],
+          patterns: ["/tmp/work/**/*.ts", "/tmp/work/**/*.tsx"],
         }),
       ),
     ).toMatchObject({
-      title: "Access external directory @lgcode/tmp@lgcode/work",
-      lines: ["- @lgcode/tmp@lgcode/work@lgcode/**@lgcode/*.ts", "- @lgcode/tmp@lgcode/work@lgcode/**@lgcode/*.tsx"],
+      title: "Access external directory /tmp/work",
+      lines: ["- /tmp/work/**/*.ts", "- /tmp/work/**/*.tsx"],
     })
 
     expect(permissionInfo(req({ permission: "doom_loop" }))).toMatchObject({
@@ -135,10 +135,10 @@ describe("run permission shared", () => {
       "This will allow bash until OpenCode is restarted.",
     ])
 
-    expect(permissionAlwaysLines(req({ always: ["src@lgcode/**@lgcode/*.ts", "src@lgcode/**@lgcode/*.tsx"] }))).toEqual([
+    expect(permissionAlwaysLines(req({ always: ["src/**/*.ts", "src/**/*.tsx"] }))).toEqual([
       "This will allow the following patterns until OpenCode is restarted.",
-      "- src@lgcode/**@lgcode/*.ts",
-      "- src@lgcode/**@lgcode/*.tsx",
+      "- src/**/*.ts",
+      "- src/**/*.tsx",
     ])
   })
 })

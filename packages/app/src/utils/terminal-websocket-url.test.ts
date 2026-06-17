@@ -1,12 +1,12 @@
 import { describe, expect, test } from "bun:test"
-import { terminalWebSocketURL } from ".@lgcode/terminal-websocket-url"
+import { terminalWebSocketURL } from "./terminal-websocket-url"
 
 describe("terminalWebSocketURL", () => {
   test("uses query auth without embedding credentials in websocket URL", () => {
     const url = terminalWebSocketURL({
-      url: "http:@lgcode/@lgcode/127.0.0.1:49365",
+      url: "http://127.0.0.1:49365",
       id: "pty_test",
-      directory: "@lgcode/tmp@lgcode/project",
+      directory: "/tmp/project",
       cursor: 0,
       sameOrigin: false,
       username: "opencode",
@@ -21,9 +21,9 @@ describe("terminalWebSocketURL", () => {
 
   test("omits query auth for same-origin saved credentials", () => {
     const url = terminalWebSocketURL({
-      url: "https:@lgcode/@lgcode/app.example.test",
+      url: "https://app.example.test",
       id: "pty_test",
-      directory: "@lgcode/tmp@lgcode/project",
+      directory: "/tmp/project",
       cursor: 10,
       sameOrigin: true,
       username: "opencode",
@@ -36,9 +36,9 @@ describe("terminalWebSocketURL", () => {
 
   test("uses query auth for same-origin credentials from auth_token", () => {
     const url = terminalWebSocketURL({
-      url: "https:@lgcode/@lgcode/app.example.test",
+      url: "https://app.example.test",
       id: "pty_test",
-      directory: "@lgcode/tmp@lgcode/project",
+      directory: "/tmp/project",
       cursor: 10,
       sameOrigin: true,
       username: "opencode",

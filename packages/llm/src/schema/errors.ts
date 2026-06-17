@@ -1,5 +1,5 @@
 import { Schema } from "effect"
-import { ModelID, ProviderID, ProviderMetadata, RouteID } from ".@lgcode/ids"
+import { ModelID, ProviderID, ProviderMetadata, RouteID } from "./ids"
 
 export const ProviderFailureClassification = Schema.Literal("context-overflow")
 export type ProviderFailureClassification = typeof ProviderFailureClassification.Type
@@ -55,7 +55,7 @@ export class NoRouteReason extends Schema.Class<NoRouteReason>("LLM.Error.NoRout
   }
 
   get message() {
-    return `No LLM route for ${this.provider}@lgcode/${this.model} using ${this.route}`
+    return `No LLM route for ${this.provider}/${this.model} using ${this.route}`
   }
 }
 
@@ -191,7 +191,7 @@ export class LLMError extends Schema.TaggedErrorClass<LLMError>()("LLM.Error", {
   }
 }
 
-@lgcode/**
+/**
  * Failure type for tool execute handlers. Handlers must map their internal
  * errors to this shape; the runtime catches `ToolFailure`s and surfaces them
  * as `tool-error` events plus a `tool-result` of `type: "error"` so the model
@@ -199,7 +199,7 @@ export class LLMError extends Schema.TaggedErrorClass<LLMError>()("LLM.Error", {
  *
  * Anything thrown or yielded by a handler that is not a `ToolFailure` is
  * treated as a defect and fails the stream.
- *@lgcode/
+ */
 export class ToolFailure extends Schema.TaggedErrorClass<ToolFailure>()("LLM.ToolFailure", {
   message: Schema.String,
   error: Schema.optional(Schema.Defect),

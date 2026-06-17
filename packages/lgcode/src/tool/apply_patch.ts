@@ -1,19 +1,19 @@
 import * as path from "path"
 import { Effect, Schema } from "effect"
-import * as Tool from ".@lgcode/tool"
-import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
-import { Watcher } from "@lgcode/core@lgcode/filesystem@lgcode/watcher"
-import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
-import { Patch } from "..@lgcode/patch"
+import * as Tool from "./tool"
+import { EventV2Bridge } from "@/event-v2-bridge"
+import { Watcher } from "@opencode@lgcode/core/filesystem/watcher"
+import { InstanceState } from "@/effect/instance-state"
+import { Patch } from "../patch"
 import { createTwoFilesPatch, diffLines } from "diff"
-import { assertExternalDirectoryEffect } from ".@lgcode/external-directory"
-import { trimDiff } from ".@lgcode/edit"
-import { LSP } from "@@lgcode/lsp@lgcode/lsp"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import DESCRIPTION from ".@lgcode/apply_patch.txt"
-import { FileSystem } from "@lgcode/core@lgcode/filesystem"
-import { Format } from "..@lgcode/format"
-import * as Bom from "@@lgcode/util@lgcode/bom"
+import { assertExternalDirectoryEffect } from "./external-directory"
+import { trimDiff } from "./edit"
+import { LSP } from "@/lsp/lsp"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import DESCRIPTION from "./apply_patch.txt"
+import { FileSystem } from "@opencode@lgcode/core/filesystem"
+import { Format } from "../format"
+import * as Bom from "@/util/bom"
 
 export const Parameters = Schema.Struct({
   patchText: Schema.String.annotate({ description: "The full patch text that describes all changes to be made" }),
@@ -35,7 +35,7 @@ export const ApplyPatchTool = Tool.define(
         return yield* Effect.fail(new Error("patchText is required"))
       }
 
-      @lgcode/@lgcode/ Parse the patch to get hunks
+      // Parse the patch to get hunks
       let hunks: Patch.Hunk[]
       try {
         const parseResult = Patch.parsePatch(params.patchText)
@@ -45,7 +45,7 @@ export const ApplyPatchTool = Tool.define(
       }
 
       if (hunks.length === 0) {
-        const normalized = params.patchText.replace(@lgcode/\r\n@lgcode/g, "\n").replace(@lgcode/\r@lgcode/g, "\n").trim()
+        const normalized = params.patchText.replace(/\r\n/g, "\n").replace(/\r/g, "\n").trim()
         if (normalized === "*** Begin Patch\n*** End Patch") {
           return yield* Effect.fail(new Error("patch rejected: empty patch"))
         }
@@ -54,7 +54,7 @@ export const ApplyPatchTool = Tool.define(
 
       const instance = yield* InstanceState.context
 
-      @lgcode/@lgcode/ Validate file paths and check permissions
+      // Validate file paths and check permissions
       const fileChanges: Array<{
         filePath: string
         oldContent: string
@@ -104,7 +104,7 @@ export const ApplyPatchTool = Tool.define(
           }
 
           case "update": {
-            @lgcode/@lgcode/ Check if file exists for update
+            // Check if file exists for update
             const stats = yield* afs.stat(filePath).pipe(Effect.catch(() => Effect.succeed(undefined)))
             if (!stats || stats.type === "Directory") {
               return yield* Effect.fail(
@@ -117,7 +117,7 @@ export const ApplyPatchTool = Tool.define(
             let newContent = oldContent
             let bom = source.bom
 
-            @lgcode/@lgcode/ Apply the update chunks to get new content
+            // Apply the update chunks to get new content
             try {
               const fileUpdate = Patch.deriveNewContentsFromChunks(
                 filePath,
@@ -190,10 +190,10 @@ export const ApplyPatchTool = Tool.define(
         }
       }
 
-      @lgcode/@lgcode/ Build per-file metadata for UI rendering (used for both permission and result)
+      // Build per-file metadata for UI rendering (used for both permission and result)
       const files = fileChanges.map((change) => ({
         filePath: change.filePath,
-        relativePath: path.relative(instance.worktree, change.movePath ?? change.filePath).replaceAll("\\", "@lgcode/"),
+        relativePath: path.relative(instance.worktree, change.movePath ?? change.filePath).replaceAll("\\", "/"),
         type: change.type,
         patch: change.diff,
         additions: change.additions,
@@ -201,8 +201,8 @@ export const ApplyPatchTool = Tool.define(
         movePath: change.movePath,
       }))
 
-      @lgcode/@lgcode/ Check permissions if needed
-      const relativePaths = fileChanges.map((c) => path.relative(instance.worktree, c.filePath).replaceAll("\\", "@lgcode/"))
+      // Check permissions if needed
+      const relativePaths = fileChanges.map((c) => path.relative(instance.worktree, c.filePath).replaceAll("\\", "/"))
       yield* ctx.ask({
         permission: "edit",
         patterns: relativePaths,
@@ -214,14 +214,14 @@ export const ApplyPatchTool = Tool.define(
         },
       })
 
-      @lgcode/@lgcode/ Apply the changes
+      // Apply the changes
       const updates: Array<{ file: string; event: "add" | "change" | "unlink" }> = []
 
       for (const change of fileChanges) {
         const edited = change.type === "delete" ? undefined : (change.movePath ?? change.filePath)
         switch (change.type) {
           case "add":
-            @lgcode/@lgcode/ Create parent directories (recursive: true is safe on existing@lgcode/root dirs)
+            // Create parent directories (recursive: true is safe on existing/root dirs)
 
             yield* afs.writeWithDirs(change.filePath, Bom.join(change.newContent, change.bom))
             updates.push({ file: change.filePath, event: "add" })
@@ -234,7 +234,7 @@ export const ApplyPatchTool = Tool.define(
 
           case "move":
             if (change.movePath) {
-              @lgcode/@lgcode/ Create parent directories (recursive: true is safe on existing@lgcode/root dirs)
+              // Create parent directories (recursive: true is safe on existing/root dirs)
 
               yield* afs.writeWithDirs(change.movePath!, Bom.join(change.newContent, change.bom))
               yield* afs.remove(change.filePath)
@@ -257,12 +257,12 @@ export const ApplyPatchTool = Tool.define(
         }
       }
 
-      @lgcode/@lgcode/ Publish file change events
+      // Publish file change events
       for (const update of updates) {
         yield* events.publish(Watcher.Event.Updated, update)
       }
 
-      @lgcode/@lgcode/ Notify LSP of file changes and collect diagnostics
+      // Notify LSP of file changes and collect diagnostics
       for (const change of fileChanges) {
         if (change.type === "delete") continue
         const target = change.movePath ?? change.filePath
@@ -270,16 +270,16 @@ export const ApplyPatchTool = Tool.define(
       }
       const diagnostics = yield* lsp.diagnostics()
 
-      @lgcode/@lgcode/ Generate output summary
+      // Generate output summary
       const summaryLines = fileChanges.map((change) => {
         if (change.type === "add") {
-          return `A ${path.relative(instance.worktree, change.filePath).replaceAll("\\", "@lgcode/")}`
+          return `A ${path.relative(instance.worktree, change.filePath).replaceAll("\\", "/")}`
         }
         if (change.type === "delete") {
-          return `D ${path.relative(instance.worktree, change.filePath).replaceAll("\\", "@lgcode/")}`
+          return `D ${path.relative(instance.worktree, change.filePath).replaceAll("\\", "/")}`
         }
         const target = change.movePath ?? change.filePath
-        return `M ${path.relative(instance.worktree, target).replaceAll("\\", "@lgcode/")}`
+        return `M ${path.relative(instance.worktree, target).replaceAll("\\", "/")}`
       })
       let output = `Success. Updated the following files:\n${summaryLines.join("\n")}`
 
@@ -288,7 +288,7 @@ export const ApplyPatchTool = Tool.define(
         const target = change.movePath ?? change.filePath
         const block = LSP.Diagnostic.report(target, diagnostics[FSUtil.normalizePath(target)] ?? [])
         if (!block) continue
-        const rel = path.relative(instance.worktree, target).replaceAll("\\", "@lgcode/")
+        const rel = path.relative(instance.worktree, target).replaceAll("\\", "/")
         output += `\n\nLSP errors detected in ${rel}, please fix:\n${block}`
       }
 

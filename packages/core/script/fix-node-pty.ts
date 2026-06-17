@@ -1,6 +1,6 @@
-#!@lgcode/usr@lgcode/bin@lgcode/env bun
+#!/usr/bin/env bun
 
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import path from "path"
 import { fileURLToPath } from "url"
 

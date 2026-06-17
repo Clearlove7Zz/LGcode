@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, mock, spyOn, test } from "bun:test"
-import { OpencodeClient, type Provider } from "@lgcode/sdk@lgcode/v2"
-import type { Resolved } from "@lgcode/tui@lgcode/config"
-import { TuiConfig } from "@@lgcode/config@lgcode/tui"
-import { resolveDiffStyle, resolveModelInfo, resolveRunTuiConfig } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/runtime.boot"
-import { createTuiResolvedConfig } from "..@lgcode/..@lgcode/fixture@lgcode/tui-runtime"
+import { OpencodeClient, type Provider } from "@opencode@lgcode/sdk/v2"
+import type { Resolved } from "@opencode@lgcode/tui/config"
+import { TuiConfig } from "@/config/tui"
+import { resolveDiffStyle, resolveModelInfo, resolveRunTuiConfig } from "@/cli/cmd/run/runtime.boot"
+import { createTuiResolvedConfig } from "../../fixture/tui-runtime"
 
 function model(id: string, providerID: string, context: number, variants?: Record<string, Record<string, never>>) {
   return {
@@ -11,8 +11,8 @@ function model(id: string, providerID: string, context: number, variants?: Recor
     providerID,
     api: {
       id: providerID,
-      url: `https:@lgcode/@lgcode/${providerID}.test`,
-      npm: `@ai-sdk@lgcode/${providerID}`,
+      url: `https://${providerID}.test`,
+      npm: `@ai-sdk/${providerID}`,
     },
     name: id,
     capabilities: {
@@ -203,7 +203,7 @@ describe("run runtime boot", () => {
       Promise.resolve({
         data,
         error: undefined,
-        request: new Request("https:@lgcode/@lgcode/opencode.test"),
+        request: new Request("https://opencode.test"),
         response: new Response(),
       }),
     )
@@ -211,16 +211,16 @@ describe("run runtime boot", () => {
       Promise.resolve({
         data: configured,
         error: undefined,
-        request: new Request("https:@lgcode/@lgcode/opencode.test"),
+        request: new Request("https://opencode.test"),
         response: new Response(),
       }),
     )
 
-    await expect(resolveModelInfo(sdk, "@lgcode/workspace", { providerID: "openai", modelID: "gpt-5" })).resolves.toEqual({
+    await expect(resolveModelInfo(sdk, "/workspace", { providerID: "openai", modelID: "gpt-5" })).resolves.toEqual({
       providers: configured.providers,
       variants: ["high", "minimal"],
       limits: {
-        "openai@lgcode/gpt-5": 128000,
+        "openai/gpt-5": 128000,
       },
     })
     expect(list).not.toHaveBeenCalled()
@@ -266,17 +266,17 @@ describe("run runtime boot", () => {
       Promise.resolve({
         data,
         error: undefined,
-        request: new Request("https:@lgcode/@lgcode/opencode.test"),
+        request: new Request("https://opencode.test"),
         response: new Response(),
       }),
     )
 
-    await expect(resolveModelInfo(sdk, "@lgcode/workspace", { providerID: "openai", modelID: "gpt-5" })).resolves.toEqual({
+    await expect(resolveModelInfo(sdk, "/workspace", { providerID: "openai", modelID: "gpt-5" })).resolves.toEqual({
       providers: data.all,
       variants: ["high", "minimal"],
       limits: {
-        "openai@lgcode/gpt-5": 128000,
-        "anthropic@lgcode/sonnet": 200000,
+        "openai/gpt-5": 128000,
+        "anthropic/sonnet": 200000,
       },
     })
   })

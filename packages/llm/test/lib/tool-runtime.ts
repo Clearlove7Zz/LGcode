@@ -1,5 +1,5 @@
 import { Effect, Stream } from "effect"
-import { LLMClient } from "..@lgcode/..@lgcode/src@lgcode/route"
+import { LLMClient } from "../../src/route"
 import {
   LLMEvent,
   LLMRequest,
@@ -10,9 +10,9 @@ import {
   ToolResultPart,
   type ToolResultValue,
   type Usage,
-} from "..@lgcode/..@lgcode/src@lgcode/schema"
-import { type Tools, toDefinitions } from "..@lgcode/..@lgcode/src@lgcode/tool"
-import { ToolRuntime } from "..@lgcode/..@lgcode/src@lgcode/tool-runtime"
+} from "../../src/schema"
+import { type Tools, toDefinitions } from "../../src/tool"
+import { ToolRuntime } from "../../src/tool-runtime"
 
 interface RunOptions<T extends Tools> {
   readonly request: LLMRequest
@@ -20,7 +20,7 @@ interface RunOptions<T extends Tools> {
   readonly maxSteps?: number
 }
 
-@lgcode/** Test-owned continuation loop. Production callers must own durable history. *@lgcode/
+/** Test-owned continuation loop. Production callers must own durable history. */
 export const runTools = <T extends Tools>(options: RunOptions<T>) =>
   Stream.unwrap(
     Effect.gen(function* () {

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { authFromToken, authTokenFromCredentials } from ".@lgcode/server"
+import { authFromToken, authTokenFromCredentials } from "./server"
 
 describe("authFromToken", () => {
   test("decodes basic auth credentials from auth_token", () => {

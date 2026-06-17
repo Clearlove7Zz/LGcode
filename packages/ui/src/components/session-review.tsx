@@ -1,29 +1,29 @@
-import { Accordion } from ".@lgcode/accordion"
-import { Button } from ".@lgcode/button"
-import { DropdownMenu } from ".@lgcode/dropdown-menu"
-import { RadioGroup } from ".@lgcode/radio-group"
-import { DiffChanges } from ".@lgcode/diff-changes"
-import { FileIcon } from ".@lgcode/file-icon"
-import { Icon } from ".@lgcode/icon"
-import { IconButton } from ".@lgcode/icon-button"
-import { StickyAccordionHeader } from ".@lgcode/sticky-accordion-header"
-import { Tooltip } from ".@lgcode/tooltip"
-import { ScrollView } from ".@lgcode/scroll-view"
-import { useFileComponent } from "..@lgcode/context@lgcode/file"
-import { useI18n } from "..@lgcode/context@lgcode/i18n"
-import { getDirectory, getFilename } from "@lgcode/core@lgcode/util@lgcode/path"
-import { checksum } from "@lgcode/core@lgcode/util@lgcode/encode"
+import { Accordion } from "./accordion"
+import { Button } from "./button"
+import { DropdownMenu } from "./dropdown-menu"
+import { RadioGroup } from "./radio-group"
+import { DiffChanges } from "./diff-changes"
+import { FileIcon } from "./file-icon"
+import { Icon } from "./icon"
+import { IconButton } from "./icon-button"
+import { StickyAccordionHeader } from "./sticky-accordion-header"
+import { Tooltip } from "./tooltip"
+import { ScrollView } from "./scroll-view"
+import { useFileComponent } from "../context/file"
+import { useI18n } from "../context/i18n"
+import { getDirectory, getFilename } from "@opencode@lgcode/core/util/path"
+import { checksum } from "@opencode@lgcode/core/util/encode"
 import { createEffect, createMemo, For, Match, onCleanup, Show, Switch, untrack, type JSX } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import { type FileContent, type SnapshotFileDiff, type VcsFileDiff } from "@lgcode/sdk@lgcode/v2"
-import { PreloadMultiFileDiffResult } from "@pierre@lgcode/diffs@lgcode/ssr"
-import { type SelectedLineRange } from "@pierre@lgcode/diffs"
-import { Dynamic } from "solid-js@lgcode/web"
-import { mediaKindFromPath } from "..@lgcode/pierre@lgcode/media"
-import { cloneSelectedLineRange, previewSelectedLines } from "..@lgcode/pierre@lgcode/selection-bridge"
-import { createLineCommentController } from ".@lgcode/line-comment-annotations"
-import type { LineCommentEditorProps } from ".@lgcode/line-comment"
-import { normalize, text, type ViewDiff } from ".@lgcode/session-diff"
+import { createStore } from "solid-js/store"
+import { type FileContent, type SnapshotFileDiff, type VcsFileDiff } from "@opencode@lgcode/sdk/v2"
+import { PreloadMultiFileDiffResult } from "@pierre/diffs/ssr"
+import { type SelectedLineRange } from "@pierre/diffs"
+import { Dynamic } from "solid-js/web"
+import { mediaKindFromPath } from "../pierre/media"
+import { cloneSelectedLineRange, previewSelectedLines } from "../pierre/selection-bridge"
+import { createLineCommentController } from "./line-comment-annotations"
+import type { LineCommentEditorProps } from "./line-comment"
+import { normalize, text, type ViewDiff } from "./session-diff"
 
 const MAX_DIFF_CHANGED_LINES = 500
 const REVIEW_MOUNT_MARGIN = 300
@@ -134,19 +134,19 @@ function ReviewCommentMenu(props: {
           size="small"
           class="size-6 rounded-md"
           aria-label={props.labels.moreLabel}
-        @lgcode/>
+        />
         <DropdownMenu.Portal>
           <DropdownMenu.Content>
             <DropdownMenu.Item onSelect={props.onEdit}>
-              <DropdownMenu.ItemLabel>{props.labels.editLabel}<@lgcode/DropdownMenu.ItemLabel>
-            <@lgcode/DropdownMenu.Item>
+              <DropdownMenu.ItemLabel>{props.labels.editLabel}</DropdownMenu.ItemLabel>
+            </DropdownMenu.Item>
             <DropdownMenu.Item onSelect={props.onDelete}>
-              <DropdownMenu.ItemLabel>{props.labels.deleteLabel}<@lgcode/DropdownMenu.ItemLabel>
-            <@lgcode/DropdownMenu.Item>
-          <@lgcode/DropdownMenu.Content>
-        <@lgcode/DropdownMenu.Portal>
-      <@lgcode/DropdownMenu>
-    <@lgcode/div>
+              <DropdownMenu.ItemLabel>{props.labels.deleteLabel}</DropdownMenu.ItemLabel>
+            </DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Portal>
+      </DropdownMenu>
+    </div>
   )
 }
 
@@ -322,7 +322,7 @@ export const SessionReview = (props: SessionReviewProps) => {
         const rootRect = root.getBoundingClientRect()
         const targetRect = target.getBoundingClientRect()
         const offset = targetRect.top - rootRect.top
-        const next = root.scrollTop + offset - rootRect.height @lgcode/ 2 + targetRect.height @lgcode/ 2
+        const next = root.scrollTop + offset - rootRect.height / 2 + targetRect.height / 2
         root.scrollTop = Math.max(0, next)
 
         if (ready) return
@@ -341,7 +341,7 @@ export const SessionReview = (props: SessionReviewProps) => {
       <div data-slot="session-review-header" class={props.classes?.header}>
         <div data-slot="session-review-title">
           {props.title === undefined ? i18n.t("ui.sessionReview.title") : props.title}
-        <@lgcode/div>
+        </div>
         <div data-slot="session-review-actions">
           <Show when={hasDiffs() && props.onDiffStyleChange}>
             <RadioGroup
@@ -353,8 +353,8 @@ export const SessionReview = (props: SessionReviewProps) => {
                 i18n.t(style === "unified" ? "ui.sessionReview.diffStyle.unified" : "ui.sessionReview.diffStyle.split")
               }
               onSelect={(style) => style && props.onDiffStyleChange?.(style)}
-            @lgcode/>
-          <@lgcode/Show>
+            />
+          </Show>
           <Show when={hasDiffs()}>
             <Button
               size="small"
@@ -363,14 +363,14 @@ export const SessionReview = (props: SessionReviewProps) => {
               onClick={handleExpandOrCollapseAll}
             >
               <Switch>
-                <Match when={open().length > 0}>{i18n.t("ui.sessionReview.collapseAll")}<@lgcode/Match>
-                <Match when={true}>{i18n.t("ui.sessionReview.expandAll")}<@lgcode/Match>
-              <@lgcode/Switch>
-            <@lgcode/Button>
-          <@lgcode/Show>
+                <Match when={open().length > 0}>{i18n.t("ui.sessionReview.collapseAll")}</Match>
+                <Match when={true}>{i18n.t("ui.sessionReview.expandAll")}</Match>
+              </Switch>
+            </Button>
+          </Show>
           {props.actions}
-        <@lgcode/div>
-      <@lgcode/div>
+        </div>
+      </div>
 
       <ScrollView
         data-slot="session-review-scroll"
@@ -392,7 +392,7 @@ export const SessionReview = (props: SessionReviewProps) => {
                   {(file) => {
                     const diff = () => itemsMap()[file]
 
-                    @lgcode/@lgcode/ binary files have empty diffs that we can't render
+                    // binary files have empty diffs that we can't render
                     const diffCanRender = () => diff().additions !== 0 || diff().deletions !== 0
 
                     const expanded = createMemo(() => open().includes(file))
@@ -480,7 +480,7 @@ export const SessionReview = (props: SessionReviewProps) => {
                               labels={props.lineCommentActions!}
                               onEdit={controls.edit}
                               onDelete={controls.remove}
-                            @lgcode/>
+                            />
                           )
                         : undefined,
                     })
@@ -513,12 +513,12 @@ export const SessionReview = (props: SessionReviewProps) => {
                           <Accordion.Trigger disabled={!diffCanRender()} class="cursor-default">
                             <div data-slot="session-review-trigger-content">
                               <div data-slot="session-review-file-info">
-                                <FileIcon node={{ path: file, type: "file" }} @lgcode/>
+                                <FileIcon node={{ path: file, type: "file" }} />
                                 <div data-slot="session-review-file-name-container">
-                                  <Show when={file.includes("@lgcode/")}>
-                                    <span data-slot="session-review-directory">{`\u202A${getDirectory(file)}\u202C`}<@lgcode/span>
-                                  <@lgcode/Show>
-                                  <span data-slot="session-review-filename">{getFilename(file)}<@lgcode/span>
+                                  <Show when={file.includes("/")}>
+                                    <span data-slot="session-review-directory">{`\u202A${getDirectory(file)}\u202C`}</span>
+                                  </Show>
+                                  <span data-slot="session-review-filename">{getFilename(file)}</span>
                                   <Show when={props.onViewFile && diffCanRender()}>
                                     <Tooltip value={openFileLabel()} placement="top" gutter={4}>
                                       <button
@@ -530,45 +530,45 @@ export const SessionReview = (props: SessionReviewProps) => {
                                           props.onViewFile?.(file)
                                         }}
                                       >
-                                        <Icon name="open-file" size="small" @lgcode/>
-                                      <@lgcode/button>
-                                    <@lgcode/Tooltip>
-                                  <@lgcode/Show>
-                                <@lgcode/div>
-                              <@lgcode/div>
+                                        <Icon name="open-file" size="small" />
+                                      </button>
+                                    </Tooltip>
+                                  </Show>
+                                </div>
+                              </div>
                               <div data-slot="session-review-trigger-actions">
                                 <Switch>
                                   <Match when={isAdded()}>
                                     <div data-slot="session-review-change-group" data-type="added">
                                       <span data-slot="session-review-change" data-type="added">
                                         {i18n.t("ui.sessionReview.change.added")}
-                                      <@lgcode/span>
-                                      <DiffChanges changes={diff()} @lgcode/>
-                                    <@lgcode/div>
-                                  <@lgcode/Match>
+                                      </span>
+                                      <DiffChanges changes={diff()} />
+                                    </div>
+                                  </Match>
                                   <Match when={isDeleted()}>
                                     <span data-slot="session-review-change" data-type="removed">
                                       {i18n.t("ui.sessionReview.change.removed")}
-                                    <@lgcode/span>
-                                  <@lgcode/Match>
+                                    </span>
+                                  </Match>
                                   <Match when={!!mediaKind()}>
                                     <span data-slot="session-review-change" data-type="modified">
                                       {i18n.t("ui.sessionReview.change.modified")}
-                                    <@lgcode/span>
-                                  <@lgcode/Match>
+                                    </span>
+                                  </Match>
                                   <Match when={true}>
-                                    <DiffChanges changes={diff()} @lgcode/>
-                                  <@lgcode/Match>
-                                <@lgcode/Switch>
+                                    <DiffChanges changes={diff()} />
+                                  </Match>
+                                </Switch>
                                 <Show when={diffCanRender()}>
                                   <span data-slot="session-review-diff-chevron">
-                                    <Icon name="chevron-down" size="small" @lgcode/>
-                                  <@lgcode/span>
-                                <@lgcode/Show>
-                              <@lgcode/div>
-                            <@lgcode/div>
-                          <@lgcode/Accordion.Trigger>
-                        <@lgcode/StickyAccordionHeader>
+                                    <Icon name="chevron-down" size="small" />
+                                  </span>
+                                </Show>
+                              </div>
+                            </div>
+                          </Accordion.Trigger>
+                        </StickyAccordionHeader>
                         <Accordion.Content data-slot="session-review-accordion-content">
                           <div
                             data-slot="session-review-diff-wrapper"
@@ -583,21 +583,21 @@ export const SessionReview = (props: SessionReviewProps) => {
                                 <Match when={!mounted() && !tooLarge()}>
                                   <div
                                     data-slot="session-review-diff-placeholder"
-                                    class="rounded-lg border border-border-weak-base bg-background-stronger@lgcode/40"
+                                    class="rounded-lg border border-border-weak-base bg-background-stronger/40"
                                     style={{ height: "160px" }}
-                                  @lgcode/>
-                                <@lgcode/Match>
+                                  />
+                                </Match>
                                 <Match when={tooLarge()}>
                                   <div data-slot="session-review-large-diff">
                                     <div data-slot="session-review-large-diff-title">
                                       {i18n.t("ui.sessionReview.largeDiff.title")}
-                                    <@lgcode/div>
+                                    </div>
                                     <div data-slot="session-review-large-diff-meta">
                                       {i18n.t("ui.sessionReview.largeDiff.meta", {
                                         limit: MAX_DIFF_CHANGED_LINES.toLocaleString(),
                                         current: changedLines().toLocaleString(),
                                       })}
-                                    <@lgcode/div>
+                                    </div>
                                     <div data-slot="session-review-large-diff-actions">
                                       <Button
                                         size="normal"
@@ -605,10 +605,10 @@ export const SessionReview = (props: SessionReviewProps) => {
                                         onClick={() => setStore("force", file, true)}
                                       >
                                         {i18n.t("ui.sessionReview.largeDiff.renderAnyway")}
-                                      <@lgcode/Button>
-                                    <@lgcode/div>
-                                  <@lgcode/div>
-                                <@lgcode/Match>
+                                      </Button>
+                                    </div>
+                                  </div>
+                                </Match>
                                 <Match when={true}>
                                   <Dynamic
                                     component={fileComponent}
@@ -635,21 +635,21 @@ export const SessionReview = (props: SessionReviewProps) => {
                                       deleted: diff().status === "deleted",
                                       readFile: diff().status === "deleted" ? undefined : props.readFile,
                                     }}
-                                  @lgcode/>
-                                <@lgcode/Match>
-                              <@lgcode/Switch>
-                            <@lgcode/Show>
-                          <@lgcode/div>
-                        <@lgcode/Accordion.Content>
-                      <@lgcode/Accordion.Item>
+                                  />
+                                </Match>
+                              </Switch>
+                            </Show>
+                          </div>
+                        </Accordion.Content>
+                      </Accordion.Item>
                     )
                   }}
-                <@lgcode/For>
-              <@lgcode/Accordion>
-            <@lgcode/div>
-          <@lgcode/Show>
-        <@lgcode/div>
-      <@lgcode/ScrollView>
-    <@lgcode/div>
+                </For>
+              </Accordion>
+            </div>
+          </Show>
+        </div>
+      </ScrollView>
+    </div>
   )
 }

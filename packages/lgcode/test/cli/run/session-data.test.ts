@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test"
-import type { Event } from "@lgcode/sdk@lgcode/v2"
-import { createSessionData, flushInterrupted, reduceSessionData } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/session-data"
-import type { StreamCommit } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/types"
+import type { Event } from "@opencode@lgcode/sdk/v2"
+import { createSessionData, flushInterrupted, reduceSessionData } from "@/cli/cmd/run/session-data"
+import type { StreamCommit } from "@/cli/cmd/run/types"
 
 function reduce(data: ReturnType<typeof createSessionData>, event: unknown, thinking = true) {
   return reduceSessionData({
@@ -186,7 +186,7 @@ describe("run session data", () => {
         id: "perm-1",
         sessionID: "session-1",
         permission: "read",
-        patterns: ["@lgcode/tmp@lgcode/file.txt"],
+        patterns: ["/tmp/file.txt"],
         metadata: {},
         always: [],
       },
@@ -241,7 +241,7 @@ describe("run session data", () => {
         id: "perm-1",
         sessionID: "session-1",
         permission: "bash",
-        patterns: ["src@lgcode/**@lgcode/*.ts"],
+        patterns: ["src/**/*.ts"],
         metadata: {},
         always: [],
         tool: {
@@ -358,7 +358,7 @@ describe("run session data", () => {
         sessionID: "session-1",
         timestamp: 2,
         callID: "call-1",
-        output: "@lgcode/tmp@lgcode/demo\n",
+        output: "/tmp/demo\n",
       },
     })
 
@@ -368,7 +368,7 @@ describe("run session data", () => {
         phase: "progress",
         partID: "shell:call-1",
         tool: "bash",
-        text: "@lgcode/tmp@lgcode/demo\n",
+        text: "/tmp/demo\n",
         toolState: "completed",
         shell: {
           callID: "call-1",
@@ -414,7 +414,7 @@ describe("run session data", () => {
         sessionID: "session-1",
         timestamp: 2,
         callID: "call-1",
-        output: "@lgcode/tmp@lgcode/demo\n",
+        output: "/tmp/demo\n",
       },
     }).data
 
@@ -431,10 +431,10 @@ describe("run session data", () => {
             input: {
               command: "pwd",
             },
-            output: "@lgcode/tmp@lgcode/demo\n",
+            output: "/tmp/demo\n",
             title: "",
             metadata: {
-              output: "@lgcode/tmp@lgcode/demo\n",
+              output: "/tmp/demo\n",
               description: "",
             },
             time: { start: 1, end: 2 },
@@ -486,10 +486,10 @@ describe("run session data", () => {
           input: {
             command: "pwd",
           },
-          output: "@lgcode/tmp@lgcode/demo\n",
+          output: "/tmp/demo\n",
           title: "",
           metadata: {
-            output: "@lgcode/tmp@lgcode/demo\n",
+            output: "/tmp/demo\n",
             description: "",
           },
           time: { start: 1, end: 2 },
@@ -504,7 +504,7 @@ describe("run session data", () => {
           sessionID: "session-1",
           timestamp: 2,
           callID: "call-1",
-          output: "@lgcode/tmp@lgcode/demo\n",
+          output: "/tmp/demo\n",
         },
       }).commits,
     ).toEqual([])
@@ -521,10 +521,10 @@ describe("run session data", () => {
           state: {
             status: "error",
             input: {
-              pattern: "**@lgcode/*tool*",
-              path: "@lgcode/tmp@lgcode/demo@lgcode/run",
+              pattern: "**/*tool*",
+              path: "/tmp/demo/run",
             },
-            error: "No such file or directory: '@lgcode/tmp@lgcode/demo@lgcode/run'",
+            error: "No such file or directory: '/tmp/demo/run'",
           },
         }),
       ).commits,
@@ -542,9 +542,9 @@ describe("run session data", () => {
         tool: "glob",
         phase: "final",
         partID: "tool-1",
-        text: "No such file or directory: '@lgcode/tmp@lgcode/demo@lgcode/run'",
+        text: "No such file or directory: '/tmp/demo/run'",
         toolState: "error",
-        toolError: "No such file or directory: '@lgcode/tmp@lgcode/demo@lgcode/run'",
+        toolError: "No such file or directory: '/tmp/demo/run'",
       }),
     ])
   })

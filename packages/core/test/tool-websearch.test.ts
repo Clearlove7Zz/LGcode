@@ -1,12 +1,12 @@
 import { describe, expect, test } from "bun:test"
 import { Effect, Layer, Schema } from "effect"
-import { HttpClient, HttpClientResponse } from "effect@lgcode/unstable@lgcode/http"
-import { PermissionV2 } from "@lgcode/core@lgcode/permission"
-import { SessionV2 } from "@lgcode/core@lgcode/session"
-import { ToolRegistry } from "@lgcode/core@lgcode/tool@lgcode/registry"
-import { WebSearchTool } from "@lgcode/core@lgcode/tool@lgcode/websearch"
-import { testEffect } from ".@lgcode/lib@lgcode/effect"
-import { toolIdentity, executeTool, settleTool, toolDefinitions } from ".@lgcode/lib@lgcode/tool"
+import { HttpClient, HttpClientResponse } from "effect/unstable/http"
+import { PermissionV2 } from "@opencode@lgcode/core/permission"
+import { SessionV2 } from "@opencode@lgcode/core/session"
+import { ToolRegistry } from "@opencode@lgcode/core/tool/registry"
+import { WebSearchTool } from "@opencode@lgcode/core/tool/websearch"
+import { testEffect } from "./lib/effect"
+import { toolIdentity, executeTool, settleTool, toolDefinitions } from "./lib/tool"
 
 const sessionID = SessionV2.ID.make("ses_websearch_test")
 const payload = (text: string) =>
@@ -173,7 +173,7 @@ describe("WebSearchTool registration", () => {
           body: {
             jsonrpc: "2.0",
             id: 1,
-            method: "tools@lgcode/call",
+            method: "tools/call",
             params: {
               name: "web_search_exa",
               arguments: {
@@ -210,7 +210,7 @@ describe("WebSearchTool registration", () => {
         body: {
           jsonrpc: "2.0",
           id: 1,
-          method: "tools@lgcode/call",
+          method: "tools/call",
           params: {
             name: "web_search",
             arguments: { objective: "effect layers", search_queries: ["effect layers"], session_id: sessionID },

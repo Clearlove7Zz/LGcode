@@ -1,10 +1,10 @@
 import path from "path"
 import { onMount } from "solid-js"
-import { createStore, produce, unwrap } from "solid-js@lgcode/store"
-import { createSimpleContext } from "..@lgcode/context@lgcode/helper"
-import { useTuiPaths } from "..@lgcode/context@lgcode/runtime"
-import { appendText, readText, writeText } from "..@lgcode/util@lgcode/persistence"
-import type { PromptInfo } from ".@lgcode/history"
+import { createStore, produce, unwrap } from "solid-js/store"
+import { createSimpleContext } from "../context/helper"
+import { useTuiPaths } from "../context/runtime"
+import { appendText, readText, writeText } from "../util/persistence"
+import type { PromptInfo } from "./history"
 
 export type StashEntry = {
   input: string

@@ -1,14 +1,14 @@
 import { beforeAll, describe, expect, mock, test } from "bun:test"
 import { createRoot, getOwner, type Owner } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import type { NormalizedProviderListResponse } from "@lgcode/ui@lgcode/context"
-import type { State } from ".@lgcode/types"
-import type { QueryOptionsApi } from "..@lgcode/server-sync"
-import { ServerScope } from "@@lgcode/utils@lgcode/server-scope"
+import { createStore } from "solid-js/store"
+import type { NormalizedProviderListResponse } from "@opencode@lgcode/ui/context"
+import type { State } from "./types"
+import type { QueryOptionsApi } from "../server-sync"
+import { ServerScope } from "@/utils/server-scope"
 
-let createChildStoreManager: typeof import(".@lgcode/child-store").createChildStoreManager
+let createChildStoreManager: typeof import("./child-store").createChildStoreManager
 const querySingles: Array<() => { queryKey?: unknown[]; enabled?: boolean }> = []
-const persist: typeof import("@@lgcode/utils@lgcode/persist").persisted = (_target, store) => [
+const persist: typeof import("@/utils/persist").persisted = (_target, store) => [
   store[0],
   store[1],
   null,
@@ -49,7 +49,7 @@ function createOwner(callback: (owner: Owner) => void) {
 }
 
 beforeAll(async () => {
-  mock.module("@tanstack@lgcode/solid-query", () => ({
+  mock.module("@tanstack/solid-query", () => ({
     useQuery: (options: () => { queryKey?: unknown[]; enabled?: boolean }) => {
       querySingles.push(options)
       return {
@@ -67,7 +67,7 @@ beforeAll(async () => {
     },
   }))
 
-  createChildStoreManager = (await import(".@lgcode/child-store")).createChildStoreManager
+  createChildStoreManager = (await import("./child-store")).createChildStoreManager
 })
 
 describe("createChildStoreManager", () => {
@@ -93,12 +93,12 @@ describe("createChildStoreManager", () => {
       global: { provider },
     })
 
-    Array.from({ length: 30 }, (_, index) => `@lgcode/pinned-${index}`).forEach((directory) => {
+    Array.from({ length: 30 }, (_, index) => `/pinned-${index}`).forEach((directory) => {
       manager.children[directory] = child()
       manager.pin(directory)
     })
 
-    const directory = "@lgcode/active"
+    const directory = "/active"
     manager.children[directory] = child()
     manager.mark(directory)
 
@@ -130,11 +130,11 @@ describe("createChildStoreManager", () => {
     try {
       if (!manager) throw new Error("manager required")
 
-      const [store] = manager.child("@lgcode/project")
+      const [store] = manager.child("/project")
 
       expect(store.status).toBe("loading")
       expect(store.limit).toBe(5)
-      expect(bootstraps).toEqual(["@lgcode/project"])
+      expect(bootstraps).toEqual(["/project"])
     } finally {
       dispose()
     }
@@ -162,9 +162,9 @@ describe("createChildStoreManager", () => {
     try {
       if (!manager) throw new Error("manager required")
 
-      const [store] = manager.child("@lgcode/project", { bootstrap: false })
+      const [store] = manager.child("/project", { bootstrap: false })
 
-      expect(store.path.directory).toBe("@lgcode/project")
+      expect(store.path.directory).toBe("/project")
       expect(store.path.worktree).toBe("")
     } finally {
       dispose()
@@ -196,21 +196,21 @@ describe("createChildStoreManager", () => {
 
     try {
       if (!manager) throw new Error("manager required")
-      const [store, setStore] = manager.child("@lgcode/project", { bootstrap: false })
+      const [store, setStore] = manager.child("/project", { bootstrap: false })
       expect(querySingles.length - offset).toBe(4)
       const query = querySingles[offset + 1]
       if (!query) throw new Error("query required")
       expect(query().enabled).toBe(false)
 
       setStore("status", "complete")
-      manager.child("@lgcode/project", { bootstrap: false, mcp: true })
+      manager.child("/project", { bootstrap: false, mcp: true })
       expect(query().enabled).toBe(true)
       expect(store.mcp).toEqual({ demo: { status: "disabled" } })
-      expect(mcpLoads).toEqual(["@lgcode/project"])
+      expect(mcpLoads).toEqual(["/project"])
 
-      manager.disableMcp("@lgcode/project")
+      manager.disableMcp("/project")
       expect(query().enabled).toBe(false)
-      expect(manager.mcp("@lgcode/project")).toBe(false)
+      expect(manager.mcp("/project")).toBe(false)
     } finally {
       dispose()
     }

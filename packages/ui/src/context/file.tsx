@@ -1,5 +1,5 @@
 import type { ValidComponent } from "solid-js"
-import { createSimpleContext } from ".@lgcode/helper"
+import { createSimpleContext } from "./helper"
 
 const ctx = createSimpleContext<ValidComponent, { component: ValidComponent }>({
   name: "FileComponent",

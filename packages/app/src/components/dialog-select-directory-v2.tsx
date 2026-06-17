@@ -1,13 +1,13 @@
-import "@pierre@lgcode/trees@lgcode/web-components"
-import { FileTree } from "@pierre@lgcode/trees"
-import { Dialog, DialogFooter } from "@lgcode/ui@lgcode/v2@lgcode/dialog-v2"
-import { ButtonV2 } from "@lgcode/ui@lgcode/v2@lgcode/button-v2"
-import { TextInputV2 } from "@lgcode/ui@lgcode/v2@lgcode/text-input-v2"
-import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
+import "@pierre/trees/web-components"
+import { FileTree } from "@pierre/trees"
+import { Dialog, DialogFooter } from "@opencode@lgcode/ui/v2/dialog-v2"
+import { ButtonV2 } from "@opencode@lgcode/ui/v2/button-v2"
+import { TextInputV2 } from "@opencode@lgcode/ui/v2/text-input-v2"
+import { useDialog } from "@opencode@lgcode/ui/context/dialog"
 import { createEffect, createMemo, createResource, createSignal, For, onCleanup, onMount, Show } from "solid-js"
-import { useGlobal } from "@@lgcode/context@lgcode/global"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
-import { ServerConnection } from "@@lgcode/context@lgcode/server"
+import { useGlobal } from "@/context/global"
+import { useLanguage } from "@/context/language"
+import { ServerConnection } from "@/context/server"
 import {
   absoluteTreePath,
   activeTreeNavigation,
@@ -24,8 +24,8 @@ import {
   displayPickerPath,
   pickerParent,
   pickerRoot,
-} from ".@lgcode/directory-picker-domain"
-import ".@lgcode/dialog-select-directory-v2.css"
+} from "./directory-picker-domain"
+import "./dialog-select-directory-v2.css"
 
 interface DialogSelectDirectoryV2Props {
   title?: string
@@ -82,8 +82,8 @@ export function DialogSelectDirectoryV2(props: DialogSelectDirectoryV2Props) {
   )
   const search = createDirectorySearch({ sdk, home, base: () => root() || start() })
   const [suggestions] = createResource(input, async (value) => {
-    const typed = cleanPickerInput(value).replace(@lgcode/\@lgcode/+$@lgcode/, "")
-    const current = displayPickerPath(root(), value, home()).replace(@lgcode/\@lgcode/+$@lgcode/, "")
+    const typed = cleanPickerInput(value).replace(/\/+$/, "")
+    const current = displayPickerPath(root(), value, home()).replace(/\/+$/, "")
     if (!typed || typed === current) return { query: value, items: [] }
     const directories = (await search(value)).map((absolute) => ({ absolute, type: "directory" as const }))
     if (!policy.includeFiles) return { query: value, items: directories.slice(0, 5) }
@@ -103,7 +103,7 @@ export function DialogSelectDirectoryV2(props: DialogSelectDirectoryV2Props) {
   const currentSuggestions = createMemo(() => currentPickerSuggestions(suggestions(), input()))
 
   async function load(path: string, generation: number, preload = true) {
-    const key = path.replace(@lgcode/\@lgcode/+$@lgcode/, "")
+    const key = path.replace(/\/+$/, "")
     setError(false)
     const absolute = absoluteTreePath(root(), key)
     const request =
@@ -152,7 +152,7 @@ export function DialogSelectDirectoryV2(props: DialogSelectDirectoryV2Props) {
     const match = items[activeSuggestion()] ?? items[0]
     if (!match) return
     const value = displayPickerPath(match.absolute, input(), home())
-    setInput(match.type === "directory" && !value.endsWith("@lgcode/") ? value + "@lgcode/" : value)
+    setInput(match.type === "directory" && !value.endsWith("/") ? value + "/" : value)
     if (match.type === "file") {
       setSelected(policy.selection(root(), pickerFileSearchQuery(root(), match.absolute, home())) ?? "")
       setSuggestionsOpen(false)
@@ -282,18 +282,18 @@ export function DialogSelectDirectoryV2(props: DialogSelectDirectoryV2Props) {
               activeSuggestion() >= 0 ? `directory-picker-v2-suggestion-${activeSuggestion()}` : undefined
             }
             onKeyDown={handleInputKey}
-          @lgcode/>
+          />
           <div class="directory-picker-v2-actions">
             <ButtonV2 size="small" variant="ghost" onClick={() => void navigate(home())}>
               ~
-            <@lgcode/ButtonV2>
+            </ButtonV2>
             <ButtonV2 size="small" variant="ghost" onClick={() => void navigate(pickerRoot(root()) || root())}>
               {language.t("dialog.directory.root")}
-            <@lgcode/ButtonV2>
+            </ButtonV2>
             <ButtonV2 size="small" variant="ghost" onClick={() => void navigate(pickerParent(root()))}>
               {language.t("dialog.directory.parent")}
-            <@lgcode/ButtonV2>
-          <@lgcode/div>
+            </ButtonV2>
+          </div>
           <Show when={suggestionsOpen() && currentSuggestions().length > 0}>
             <div id="directory-picker-v2-suggestions" role="listbox" class="directory-picker-v2-suggestions">
               <For each={currentSuggestions()}>
@@ -307,13 +307,13 @@ export function DialogSelectDirectoryV2(props: DialogSelectDirectoryV2Props) {
                     onClick={() => chooseSuggestion(suggestion)}
                   >
                     {displayPickerPath(suggestion.absolute, input(), home())}
-                    {suggestion.type === "directory" ? "@lgcode/" : ""}
-                  <@lgcode/button>
+                    {suggestion.type === "directory" ? "/" : ""}
+                  </button>
                 )}
-              <@lgcode/For>
-            <@lgcode/div>
-          <@lgcode/Show>
-        <@lgcode/div>
+              </For>
+            </div>
+          </Show>
+        </div>
         <div
           class="directory-picker-v2-browser"
           ref={container}
@@ -335,22 +335,22 @@ export function DialogSelectDirectoryV2(props: DialogSelectDirectoryV2Props) {
           }}
         >
           <Show when={loading()}>
-            <div class="directory-picker-v2-state">{language.t("common.loading")}<@lgcode/div>
-          <@lgcode/Show>
+            <div class="directory-picker-v2-state">{language.t("common.loading")}</div>
+          </Show>
           <Show when={!loading() && error()}>
-            <div class="directory-picker-v2-state">{language.t("dialog.directory.readError")}<@lgcode/div>
-          <@lgcode/Show>
-        <@lgcode/div>
-        <div class="directory-picker-v2-selection">{policy.result(root(), selected(), rootValid())}<@lgcode/div>
-      <@lgcode/div>
+            <div class="directory-picker-v2-state">{language.t("dialog.directory.readError")}</div>
+          </Show>
+        </div>
+        <div class="directory-picker-v2-selection">{policy.result(root(), selected(), rootValid())}</div>
+      </div>
       <DialogFooter>
         <ButtonV2 variant="neutral" onClick={() => dialog.close()}>
           {language.t("common.cancel")}
-        <@lgcode/ButtonV2>
+        </ButtonV2>
         <ButtonV2 variant="contrast" disabled={!policy.result(root(), selected(), rootValid())} onClick={resolve}>
           {action[policy.action]}
-        <@lgcode/ButtonV2>
-      <@lgcode/DialogFooter>
-    <@lgcode/Dialog>
+        </ButtonV2>
+      </DialogFooter>
+    </Dialog>
   )
 }

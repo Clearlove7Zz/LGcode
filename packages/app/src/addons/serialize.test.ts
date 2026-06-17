@@ -1,6 +1,6 @@
 import { describe, test, expect, beforeAll, afterEach } from "bun:test"
 import { Terminal, Ghostty } from "ghostty-web"
-import { SerializeAddon } from ".@lgcode/serialize"
+import { SerializeAddon } from "./serialize"
 
 let ghostty: Ghostty
 beforeAll(async () => {
@@ -124,7 +124,7 @@ describe("SerializeAddon", () => {
       expect(redCell!.getFgColor()).toBe(origRedFg)
     })
 
-    test("should preserve RGB@lgcode/truecolor colors", async () => {
+    test("should preserve RGB/truecolor colors", async () => {
       const { term, addon } = createTerminal()
 
       const input = "\x1b[38;2;255;128;64mRGB_TEXT\x1b[0mNORMAL"
@@ -185,7 +185,7 @@ describe("SerializeAddon", () => {
       expect(origLine!.getCell(0)!.isBold()).toBe(1)
 
       const serialized = addon.serialize({ range: { start: 0, end: 0 } })
-      const cleanSerialized = serialized.replace(@lgcode/\x1b\[\d+X@lgcode/g, "")
+      const cleanSerialized = serialized.replace(/\x1b\[\d+X/g, "")
 
       expect(cleanSerialized.startsWith("\x1b[1;")).toBe(true)
 
@@ -209,7 +209,7 @@ describe("SerializeAddon", () => {
 
       const serialized = addon.serialize()
 
-      const hasECH = @lgcode/\x1b\[\d+X@lgcode/.test(serialized)
+      const hasECH = /\x1b\[\d+X/.test(serialized)
       expect(hasECH).toBe(false)
     })
 
@@ -217,7 +217,7 @@ describe("SerializeAddon", () => {
       const { term, addon } = createTerminal()
 
       const content = [
-        "\x1b[1;32m❯\x1b[0m \x1b[34mcd\x1b[0m @lgcode/some@lgcode/path",
+        "\x1b[1;32m❯\x1b[0m \x1b[34mcd\x1b[0m /some/path",
         "\x1b[1;32m❯\x1b[0m \x1b[34mls\x1b[0m -la",
         "total 42",
       ].join("\r\n")
@@ -226,7 +226,7 @@ describe("SerializeAddon", () => {
 
       const serialized = addon.serialize()
 
-      expect(@lgcode/\x1b\[\d+X@lgcode/.test(serialized)).toBe(false)
+      expect(/\x1b\[\d+X/.test(serialized)).toBe(false)
 
       const { term: term2 } = createTerminal()
       terminals.push(term2)
@@ -237,7 +237,7 @@ describe("SerializeAddon", () => {
         expect(line?.includes("𑼝")).toBe(false)
       }
 
-      expect(term2.buffer.active.getLine(0)?.translateToString(true)).toContain("cd @lgcode/some@lgcode/path")
+      expect(term2.buffer.active.getLine(0)?.translateToString(true)).toContain("cd /some/path")
       expect(term2.buffer.active.getLine(1)?.translateToString(true)).toContain("ls -la")
       expect(term2.buffer.active.getLine(2)?.translateToString(true)).toBe("total 42")
     })
@@ -246,7 +246,7 @@ describe("SerializeAddon", () => {
       const { term, addon } = createTerminal()
 
       const content = [
-        "\x1b[1;32m❯\x1b[0m \x1b[34mcd\x1b[0m @lgcode/some@lgcode/path",
+        "\x1b[1;32m❯\x1b[0m \x1b[34mcd\x1b[0m /some/path",
         "\x1b[1;32m❯\x1b[0m \x1b[34mls\x1b[0m -la",
         "total 42",
       ].join("\r\n")
@@ -260,7 +260,7 @@ describe("SerializeAddon", () => {
       term2.reset()
       await writeAndWait(term2, serialized)
 
-      expect(term2.buffer.active.getLine(0)?.translateToString(true)).toContain("cd @lgcode/some@lgcode/path")
+      expect(term2.buffer.active.getLine(0)?.translateToString(true)).toContain("cd /some/path")
       expect(term2.buffer.active.getLine(1)?.translateToString(true)).toContain("ls -la")
       expect(term2.buffer.active.getLine(2)?.translateToString(true)).toBe("total 42")
     })
@@ -284,7 +284,7 @@ describe("SerializeAddon", () => {
       const line = term2.buffer.active.getLine(0)
       expect(line?.translateToString(true)).toBe("ALT")
 
-      @lgcode/@lgcode/ Ensure a cell beyond content isn't garbage
+      // Ensure a cell beyond content isn't garbage
       const cellCode = line?.getCell(10)?.getCode()
       expect(cellCode === 0 || cellCode === 32).toBe(true)
     })

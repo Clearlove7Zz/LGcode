@@ -1,8 +1,8 @@
-import { sqliteTable, text, uniqueIndex } from "drizzle-orm@lgcode/sqlite-core"
-import { Timestamps } from "..@lgcode/database@lgcode/schema.sql"
-import { ProjectV2 } from "..@lgcode/project"
-import { ProjectTable } from "..@lgcode/project@lgcode/sql"
-import type { PermissionSaved } from ".@lgcode/saved"
+import { sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core"
+import { Timestamps } from "../database/schema.sql"
+import { ProjectV2 } from "../project"
+import { ProjectTable } from "../project/sql"
+import type { PermissionSaved } from "./saved"
 
 export const PermissionTable = sqliteTable(
   "permission",

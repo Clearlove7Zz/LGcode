@@ -1,15 +1,15 @@
-import { ProviderAuth } from "@@lgcode/provider@lgcode/auth"
-import { Config } from "@@lgcode/config@lgcode/config"
-import { ModelsDev } from "@lgcode/core@lgcode/models-dev"
-import { Provider } from "@@lgcode/provider@lgcode/provider"
+import { ProviderAuth } from "@/provider/auth"
+import { Config } from "@/config/config"
+import { ModelsDev } from "@opencode@lgcode/core/models-dev"
+import { Provider } from "@/provider/provider"
 
 import { mapValues } from "remeda"
 import { Effect, Schema } from "effect"
-import { HttpServerRequest, HttpServerResponse } from "effect@lgcode/unstable@lgcode/http"
-import { HttpApiBuilder } from "effect@lgcode/unstable@lgcode/httpapi"
-import { InstanceHttpApi } from "..@lgcode/api"
-import { ProviderAuthApiError } from "..@lgcode/groups@lgcode/provider"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { HttpServerRequest, HttpServerResponse } from "effect/unstable/http"
+import { HttpApiBuilder } from "effect/unstable/httpapi"
+import { InstanceHttpApi } from "../api"
+import { ProviderAuthApiError } from "../groups/provider"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
 
 function mapProviderAuthError<A, R>(self: Effect.Effect<A, ProviderAuth.Error, R>) {
   return self.pipe(
@@ -83,9 +83,9 @@ export const providerHandlers = HttpApiBuilder.group(InstanceHttpApi, "provider"
       const payload = yield* Schema.decodeUnknownEffect(Schema.fromJsonString(ProviderAuth.AuthorizeInput))(body).pipe(
         Effect.mapError(() => new ProviderAuthApiError({ name: "BadRequest", data: {} })),
       )
-      @lgcode/@lgcode/ Match legacy route behavior: when authorize() resolves without a
-      @lgcode/@lgcode/ result (e.g. no further redirect), serialize as JSON `null` instead
-      @lgcode/@lgcode/ of an empty body so clients can `.json()` parse the response.
+      // Match legacy route behavior: when authorize() resolves without a
+      // result (e.g. no further redirect), serialize as JSON `null` instead
+      // of an empty body so clients can `.json()` parse the response.
       const result = yield* authorize({ params: ctx.params, payload })
       return HttpServerResponse.jsonUnsafe(result ?? null)
     })

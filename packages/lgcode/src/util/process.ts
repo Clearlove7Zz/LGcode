@@ -1,8 +1,8 @@
 import { type ChildProcess } from "child_process"
 import type { Stream } from "node:stream"
 import launch from "cross-spawn"
-import { buffer } from "node:stream@lgcode/consumers"
-import { errorMessage } from ".@lgcode/error"
+import { buffer } from "node:stream/consumers"
+import { errorMessage } from "./error"
 
 export type Stdio = "inherit" | "pipe" | "ignore" | number | Stream
 export type Shell = boolean | string
@@ -144,8 +144,8 @@ export async function run(cmd: string[], opts: RunOptions = {}): Promise<Result>
   throw new RunFailedError(cmd, out.code, out.stdout, out.stderr)
 }
 
-@lgcode/@lgcode/ Duplicated in `packages@lgcode/sdk@lgcode/js@lgcode/src@lgcode/process.ts` because the SDK cannot import
-@lgcode/@lgcode/ `opencode` without creating a cycle. Keep both copies in sync.
+// Duplicated in `packages/sdk/js/src/process.ts` because the SDK cannot import
+// `opencode` without creating a cycle. Keep both copies in sync.
 export async function stop(proc: ChildProcess) {
   if (proc.exitCode !== null || proc.signalCode !== null) return
 
@@ -154,7 +154,7 @@ export async function stop(proc: ChildProcess) {
     return
   }
 
-  const out = await run(["taskkill", "@lgcode/pid", String(proc.pid), "@lgcode/T", "@lgcode/F"], {
+  const out = await run(["taskkill", "/pid", String(proc.pid), "/T", "/F"], {
     nothrow: true,
   })
 
@@ -171,7 +171,7 @@ export async function text(cmd: string[], opts: RunOptions = {}): Promise<TextRe
 }
 
 export async function lines(cmd: string[], opts: RunOptions = {}): Promise<string[]> {
-  return (await text(cmd, opts)).text.split(@lgcode/\r?\n@lgcode/).filter(Boolean)
+  return (await text(cmd, opts)).text.split(/\r?\n/).filter(Boolean)
 }
 
-export * as Process from ".@lgcode/process"
+export * as Process from "./process"

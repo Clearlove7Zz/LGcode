@@ -1,9 +1,9 @@
 import { describe, expect, test } from "bun:test"
-import type { ServerConnection } from "@@lgcode/context@lgcode/server"
-import { checkServerHealth } from ".@lgcode/server-health"
+import type { ServerConnection } from "@/context/server"
+import { checkServerHealth } from "./server-health"
 
 const server: ServerConnection.HttpBase = {
-  url: "http:@lgcode/@lgcode/localhost:4096",
+  url: "http://localhost:4096",
 }
 
 function abortFromInput(input: RequestInfo | URL, init?: RequestInit) {
@@ -17,7 +17,7 @@ describe("checkServerHealth", () => {
     const fetch = (async () =>
       new Response(JSON.stringify({ healthy: true, version: "1.2.3" }), {
         status: 200,
-        headers: { "content-type": "application@lgcode/json" },
+        headers: { "content-type": "application/json" },
       })) as unknown as typeof globalThis.fetch
 
     const result = await checkServerHealth(server, fetch)
@@ -39,7 +39,7 @@ describe("checkServerHealth", () => {
     const fetch = (async () =>
       new Response(JSON.stringify({ healthy: true, version: "1.2.3" }), {
         status: 200,
-        headers: { "content-type": "application@lgcode/json" },
+        headers: { "content-type": "application/json" },
       })) as unknown as typeof globalThis.fetch
 
     await checkServerHealth(server, fetch).finally(() => {
@@ -98,7 +98,7 @@ describe("checkServerHealth", () => {
       signal = abortFromInput(input, init)
       return new Response(JSON.stringify({ healthy: true, version: "1.2.3" }), {
         status: 200,
-        headers: { "content-type": "application@lgcode/json" },
+        headers: { "content-type": "application/json" },
       })
     }) as unknown as typeof globalThis.fetch
 
@@ -117,7 +117,7 @@ describe("checkServerHealth", () => {
       if (count < 3) throw new TypeError("network")
       return new Response(JSON.stringify({ healthy: true, version: "1.2.3" }), {
         status: 200,
-        headers: { "content-type": "application@lgcode/json" },
+        headers: { "content-type": "application/json" },
       })
     }) as unknown as typeof globalThis.fetch
 

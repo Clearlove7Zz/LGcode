@@ -1,10 +1,10 @@
-export * as PtyTicket from ".@lgcode/ticket"
+export * as PtyTicket from "./ticket"
 
-import { WorkspaceV2 } from "..@lgcode/workspace"
-import { PositiveInt } from "..@lgcode/schema"
-import { PtyID } from ".@lgcode/schema"
+import { WorkspaceV2 } from "../workspace"
+import { PositiveInt } from "../schema"
+import { PtyID } from "./schema"
 import { Cache, Context, Duration, Effect, Layer, Schema } from "effect"
-import { LayerNode } from "..@lgcode/effect@lgcode/layer-node"
+import { LayerNode } from "../effect/layer-node"
 
 const DEFAULT_TTL = Duration.seconds(60)
 const CAPACITY = 10_000
@@ -25,7 +25,7 @@ export interface Interface {
   consume(input: Scope & { readonly ticket: string }): Effect.Effect<boolean>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/PtyTicket") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/PtyTicket") {}
 
 function matches(record: Scope, input: Scope) {
   return (
@@ -33,11 +33,11 @@ function matches(record: Scope, input: Scope) {
   )
 }
 
-@lgcode/@lgcode/ Tickets are inserted via Cache.set and removed atomically via invalidateWhen. The lookup is
-@lgcode/@lgcode/ never invoked; it dies if it ever is, which would signal a misuse of the Service interface.
-const noLookup = () => Effect.die("PtyTicket cache must be used via set@lgcode/invalidateWhen, never get")
+// Tickets are inserted via Cache.set and removed atomically via invalidateWhen. The lookup is
+// never invoked; it dies if it ever is, which would signal a misuse of the Service interface.
+const noLookup = () => Effect.die("PtyTicket cache must be used via set/invalidateWhen, never get")
 
-@lgcode/@lgcode/ Visible for tests so the TTL can be shortened. Production uses `layer` with the default TTL.
+// Visible for tests so the TTL can be shortened. Production uses `layer` with the default TTL.
 export const make = (ttl: Duration.Input = DEFAULT_TTL) =>
   Effect.gen(function* () {
     const cache = yield* Cache.make<string, Scope>({ capacity: CAPACITY, lookup: noLookup, timeToLive: ttl })

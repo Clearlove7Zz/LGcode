@@ -1,4 +1,4 @@
-import { Accordion as Kobalte } from "@kobalte@lgcode/core@lgcode/accordion"
+import { Accordion as Kobalte } from "@kobalte/core/accordion"
 import { splitProps } from "solid-js"
 import type { ComponentProps, ParentProps } from "solid-js"
 
@@ -18,7 +18,7 @@ function AccordionRoot(props: AccordionProps) {
         ...split.classList,
         [split.class ?? ""]: !!split.class,
       }}
-    @lgcode/>
+    />
   )
 }
 
@@ -32,7 +32,7 @@ function AccordionItem(props: AccordionItemProps) {
         ...split.classList,
         [split.class ?? ""]: !!split.class,
       }}
-    @lgcode/>
+    />
   )
 }
 
@@ -48,7 +48,7 @@ function AccordionHeader(props: ParentProps<AccordionHeaderProps>) {
       }}
     >
       {split.children}
-    <@lgcode/Kobalte.Header>
+    </Kobalte.Header>
   )
 }
 
@@ -64,7 +64,7 @@ function AccordionTrigger(props: ParentProps<AccordionTriggerProps>) {
       }}
     >
       {split.children}
-    <@lgcode/Kobalte.Trigger>
+    </Kobalte.Trigger>
   )
 }
 
@@ -80,7 +80,7 @@ function AccordionContent(props: ParentProps<AccordionContentProps>) {
       }}
     >
       {split.children}
-    <@lgcode/Kobalte.Content>
+    </Kobalte.Content>
   )
 }
 

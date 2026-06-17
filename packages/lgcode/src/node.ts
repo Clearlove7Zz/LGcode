@@ -1,4 +1,4 @@
-export { Config } from "@@lgcode/config@lgcode/config"
-export { Server } from ".@lgcode/server@lgcode/server"
-export { bootstrap } from ".@lgcode/cli@lgcode/bootstrap"
-export { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+export { Config } from "@/config/config"
+export { Server } from "./server/server"
+export { bootstrap } from "./cli/bootstrap"
+export { Database } from "@opencode@lgcode/core/database/database"

@@ -1,10 +1,10 @@
-import { ToolOutput, type LLMEvent, type ProviderMetadata, type ToolResultValue, type Usage } from "@lgcode/llm"
+import { ToolOutput, type LLMEvent, type ProviderMetadata, type ToolResultValue, type Usage } from "@opencode@lgcode/llm"
 import { DateTime, Effect } from "effect"
-import { EventV2 } from "..@lgcode/..@lgcode/event"
-import { ModelV2 } from "..@lgcode/..@lgcode/model"
-import { SessionEvent } from "..@lgcode/event"
-import { SessionMessage } from "..@lgcode/message"
-import { SessionSchema } from "..@lgcode/schema"
+import { EventV2 } from "../../event"
+import { ModelV2 } from "../../model"
+import { SessionEvent } from "../event"
+import { SessionMessage } from "../message"
+import { SessionSchema } from "../schema"
 
 type Input = {
   readonly sessionID: SessionSchema.ID
@@ -49,7 +49,7 @@ const settledOutput = (value: ToolOutput | undefined, result: ToolResultValue): 
   return { structured: record(settled.structured), content: settled.content }
 }
 
-@lgcode/** Persist one provider turn without executing tools or starting a continuation turn. *@lgcode/
+/** Persist one provider turn without executing tools or starting a continuation turn. */
 export const createLLMEventPublisher = (events: EventV2.Interface, input: Input) => {
   const tools = new Map<
     string,

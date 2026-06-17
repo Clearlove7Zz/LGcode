@@ -1,17 +1,17 @@
-import { Config } from "@@lgcode/config@lgcode/config"
-import { GlobalBus, type GlobalEvent as GlobalBusEvent } from "@@lgcode/bus@lgcode/global"
-import { EffectBridge } from "@@lgcode/effect@lgcode/bridge"
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import { Installation } from "@@lgcode/installation"
-import { disposeAllInstancesAndEmitGlobalDisposed } from "@@lgcode/server@lgcode/global-lifecycle"
-import { InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
+import { Config } from "@/config/config"
+import { GlobalBus, type GlobalEvent as GlobalBusEvent } from "@/bus/global"
+import { EffectBridge } from "@/effect/bridge"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import { Installation } from "@/installation"
+import { disposeAllInstancesAndEmitGlobalDisposed } from "@/server/global-lifecycle"
+import { InstallationVersion } from "@opencode@lgcode/core/installation/version"
 import { Effect, Queue, Schema } from "effect"
-import * as Stream from "effect@lgcode/Stream"
-import { HttpServerRequest, HttpServerResponse } from "effect@lgcode/unstable@lgcode/http"
-import { HttpApiBuilder } from "effect@lgcode/unstable@lgcode/httpapi"
-import * as Sse from "effect@lgcode/unstable@lgcode/encoding@lgcode/Sse"
-import { RootHttpApi } from "..@lgcode/api"
-import { GlobalUpgradeInput } from "..@lgcode/groups@lgcode/global"
+import * as Stream from "effect/Stream"
+import { HttpServerRequest, HttpServerResponse } from "effect/unstable/http"
+import { HttpApiBuilder } from "effect/unstable/httpapi"
+import * as Sse from "effect/unstable/encoding/Sse"
+import { RootHttpApi } from "../api"
+import { GlobalUpgradeInput } from "../groups/global"
 
 function eventData(data: unknown): Sse.Event {
   return {
@@ -54,7 +54,7 @@ function eventResponse() {
         Stream.ensuring(Effect.logInfo("global event disconnected")),
       ),
       {
-        contentType: "text@lgcode/event-stream",
+        contentType: "text/event-stream",
         headers: {
           "Cache-Control": "no-cache, no-transform",
           "X-Accel-Buffering": "no",

@@ -1,28 +1,28 @@
-import { NodeHttpServer } from "@effect@lgcode/platform-node"
+import { NodeHttpServer } from "@effect/platform-node"
 import { describe, expect } from "bun:test"
 import { Context, Effect, Layer, Option } from "effect"
-import { HttpBody, HttpClient, HttpClientRequest, HttpRouter } from "effect@lgcode/unstable@lgcode/http"
-import { HttpApiBuilder } from "effect@lgcode/unstable@lgcode/httpapi"
-import { Auth } from "..@lgcode/..@lgcode/src@lgcode/auth"
-import { Config } from "..@lgcode/..@lgcode/src@lgcode/config@lgcode/config"
-import { Installation } from "..@lgcode/..@lgcode/src@lgcode/installation"
-import { MoveSession } from "@lgcode/core@lgcode/control-plane@lgcode/move-session"
-import { ServerAuth } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/auth"
-import { RootHttpApi } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/api"
-import { GlobalPaths } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/global"
-import { controlHandlers } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/handlers@lgcode/control"
-import { controlPlaneHandlers } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/handlers@lgcode/control-plane"
-import { globalHandlers } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/handlers@lgcode/global"
-import { authorizationLayer } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/middleware@lgcode/authorization"
-import { schemaErrorLayer } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/middleware@lgcode/schema-error"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { HttpBody, HttpClient, HttpClientRequest, HttpRouter } from "effect/unstable/http"
+import { HttpApiBuilder } from "effect/unstable/httpapi"
+import { Auth } from "../../src/auth"
+import { Config } from "../../src/config/config"
+import { Installation } from "../../src/installation"
+import { MoveSession } from "@opencode@lgcode/core/control-plane/move-session"
+import { ServerAuth } from "../../src/server/auth"
+import { RootHttpApi } from "../../src/server/routes/instance/httpapi/api"
+import { GlobalPaths } from "../../src/server/routes/instance/httpapi/groups/global"
+import { controlHandlers } from "../../src/server/routes/instance/httpapi/handlers/control"
+import { controlPlaneHandlers } from "../../src/server/routes/instance/httpapi/handlers/control-plane"
+import { globalHandlers } from "../../src/server/routes/instance/httpapi/handlers/global"
+import { authorizationLayer } from "../../src/server/routes/instance/httpapi/middleware/authorization"
+import { schemaErrorLayer } from "../../src/server/routes/instance/httpapi/middleware/schema-error"
+import { testEffect } from "../lib/effect"
 
 const apiLayer = HttpRouter.serve(
   HttpApiBuilder.layer(RootHttpApi).pipe(
     Layer.provide([controlHandlers, controlPlaneHandlers, globalHandlers]),
     Layer.provide([authorizationLayer, schemaErrorLayer]),
-    @lgcode/@lgcode/ Raw HttpApi routes expose an opaque handler context at the request boundary.
-    @lgcode/@lgcode/ oxlint-disable-next-line typescript-eslint@lgcode/no-unsafe-type-assertion
+    // Raw HttpApi routes expose an opaque handler context at the request boundary.
+    // oxlint-disable-next-line typescript-eslint/no-unsafe-type-assertion
     HttpRouter.provideRequest(Layer.succeedContext(Context.empty() as Context.Context<unknown>)),
   ),
   { disableListenLog: true, disableLogger: true },
@@ -55,7 +55,7 @@ describe("global HttpApi", () => {
   it.live("rejects malformed upgrade payloads", () =>
     Effect.gen(function* () {
       const response = yield* HttpClientRequest.post(GlobalPaths.upgrade).pipe(
-        HttpClientRequest.setBody(HttpBody.text("{", "application@lgcode/json")),
+        HttpClientRequest.setBody(HttpBody.text("{", "application/json")),
         HttpClient.execute,
       )
 

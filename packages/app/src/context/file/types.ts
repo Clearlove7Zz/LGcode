@@ -1,4 +1,4 @@
-import type { FileContent } from "@lgcode/sdk@lgcode/v2"
+import type { FileContent } from "@opencode@lgcode/sdk/v2"
 
 export type FileSelection = {
   startLine: number

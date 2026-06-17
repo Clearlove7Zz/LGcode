@@ -1,7 +1,7 @@
 import { Effect } from "effect"
-import { Integration } from "..@lgcode/..@lgcode/integration"
-import { PluginV2 } from "..@lgcode/..@lgcode/plugin"
-import { ProviderV2 } from "..@lgcode/..@lgcode/provider"
+import { Integration } from "../../integration"
+import { PluginV2 } from "../../plugin"
+import { ProviderV2 } from "../../provider"
 
 export const OpencodePlugin = PluginV2.define({
   id: PluginV2.ID.make("opencode"),

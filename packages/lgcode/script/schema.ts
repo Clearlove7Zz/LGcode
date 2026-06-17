@@ -1,17 +1,17 @@
-#!@lgcode/usr@lgcode/bin@lgcode/env bun
+#!/usr/bin/env bun
 
-import { Config } from "@@lgcode/config@lgcode/config"
-import { ConfigV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/config"
-import { TuiConfig } from "@lgcode/tui@lgcode/config"
+import { Config } from "@/config/config"
+import { ConfigV1 } from "@opencode@lgcode/core/v1/config/config"
+import { TuiConfig } from "@opencode@lgcode/tui/config"
 import { Schema } from "effect"
 
 type JsonSchema = Record<string, unknown>
-const MODEL_REF = "https:@lgcode/@lgcode/models.dev@lgcode/model-schema.json#@lgcode/$defs@lgcode/Model"
+const MODEL_REF = "https://models.dev/model-schema.json#/$defs/Model"
 
 function generateEffect(schema: Schema.Top) {
   const document = Schema.toJsonSchemaDocument(schema)
   const normalized = normalize({
-    $schema: "https:@lgcode/@lgcode/json-schema.org@lgcode/draft@lgcode/2020-12@lgcode/schema",
+    $schema: "https://json-schema.org/draft/2020-12/schema",
     ...document.schema,
     $defs: document.definitions,
   })

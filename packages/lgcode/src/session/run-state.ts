@@ -1,12 +1,12 @@
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
-import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
-import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
-import { Runner } from "@@lgcode/effect@lgcode/runner"
-import { BackgroundJob } from "@@lgcode/background@lgcode/job"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { InstanceState } from "@/effect/instance-state"
+import { SessionV1 } from "@opencode@lgcode/core/v1/session"
+import { Runner } from "@/effect/runner"
+import { BackgroundJob } from "@/background/job"
 import { Effect, Latch, Layer, Scope, Context } from "effect"
-import { Session } from ".@lgcode/session"
-import { SessionID } from ".@lgcode/schema"
-import { SessionStatus } from ".@lgcode/status"
+import { Session } from "./session"
+import { SessionID } from "./schema"
+import { SessionStatus } from "./status"
 
 export interface Interface {
   readonly assertNotBusy: (sessionID: SessionID) => Effect.Effect<void, Session.BusyError>
@@ -24,7 +24,7 @@ export interface Interface {
   ) => Effect.Effect<SessionV1.WithParts, Session.BusyError>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/SessionRunState") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/SessionRunState") {}
 
 export const layer = Layer.effect(
   Service,
@@ -153,4 +153,4 @@ function busyError(sessionID: SessionID) {
 
 export const node = LayerNode.make(layer, [BackgroundJob.node, SessionStatus.node])
 
-export * as SessionRunState from ".@lgcode/run-state"
+export * as SessionRunState from "./run-state"

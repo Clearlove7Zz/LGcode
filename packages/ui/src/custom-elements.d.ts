@@ -1,10 +1,10 @@
-import { DIFFS_TAG_NAME } from "@pierre@lgcode/diffs"
+import { DIFFS_TAG_NAME } from "@pierre/diffs"
 
-@lgcode/**
+/**
  * TypeScript declaration for the <diffs-container> custom element.
  * This tells TypeScript that <diffs-container> is a valid JSX element in SolidJS.
- * Required for using the @pierre@lgcode/diffs web component in .tsx files.
- *@lgcode/
+ * Required for using the @pierre/diffs web component in .tsx files.
+ */
 
 declare module "solid-js" {
   namespace JSX {

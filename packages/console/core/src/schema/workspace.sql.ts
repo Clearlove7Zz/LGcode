@@ -1,5 +1,5 @@
-import { primaryKey, mysqlTable, uniqueIndex, varchar } from "drizzle-orm@lgcode/mysql-core"
-import { timestamps, ulid } from "..@lgcode/drizzle@lgcode/types"
+import { primaryKey, mysqlTable, uniqueIndex, varchar } from "drizzle-orm/mysql-core"
+import { timestamps, ulid } from "../drizzle/types"
 
 export const WorkspaceTable = mysqlTable(
   "workspace",

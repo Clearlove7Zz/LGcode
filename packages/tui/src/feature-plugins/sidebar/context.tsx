@@ -1,6 +1,6 @@
-import type { AssistantMessage } from "@lgcode/sdk@lgcode/v2"
-import type { TuiPlugin, TuiPluginApi } from "@lgcode/plugin@lgcode/tui"
-import type { BuiltinTuiPlugin } from "..@lgcode/builtins"
+import type { AssistantMessage } from "@opencode@lgcode/sdk/v2"
+import type { TuiPlugin, TuiPluginApi } from "@opencode@lgcode/plugin/tui"
+import type { BuiltinTuiPlugin } from "../builtins"
 import { createMemo } from "solid-js"
 
 const id = "internal:sidebar-context"
@@ -30,19 +30,19 @@ function View(props: { api: TuiPluginApi; session_id: string }) {
     const model = props.api.state.provider.find((item) => item.id === last.providerID)?.models[last.modelID]
     return {
       tokens,
-      percent: model?.limit.context ? Math.round((tokens @lgcode/ model.limit.context) * 100) : null,
+      percent: model?.limit.context ? Math.round((tokens / model.limit.context) * 100) : null,
     }
   })
 
   return (
     <box>
       <text fg={theme().text}>
-        <b>Context<@lgcode/b>
-      <@lgcode/text>
-      <text fg={theme().textMuted}>{state().tokens.toLocaleString()} tokens<@lgcode/text>
-      <text fg={theme().textMuted}>{state().percent ?? 0}% used<@lgcode/text>
-      <text fg={theme().textMuted}>{money.format(cost())} spent<@lgcode/text>
-    <@lgcode/box>
+        <b>Context</b>
+      </text>
+      <text fg={theme().textMuted}>{state().tokens.toLocaleString()} tokens</text>
+      <text fg={theme().textMuted}>{state().percent ?? 0}% used</text>
+      <text fg={theme().textMuted}>{money.format(cost())} spent</text>
+    </box>
   )
 }
 
@@ -51,7 +51,7 @@ const tui: TuiPlugin = async (api) => {
     order: 100,
     slots: {
       sidebar_content(_ctx, props) {
-        return <View api={api} session_id={props.session_id} @lgcode/>
+        return <View api={api} session_id={props.session_id} />
       },
     },
   })

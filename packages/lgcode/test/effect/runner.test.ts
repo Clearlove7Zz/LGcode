@@ -1,7 +1,7 @@
 import { describe, expect } from "bun:test"
 import { Cause, Deferred, Effect, Exit, Fiber, Latch, Ref, Scope } from "effect"
-import { Runner } from "@@lgcode/effect@lgcode/runner"
-import { it } from "..@lgcode/lib@lgcode/effect"
+import { Runner } from "@/effect/runner"
+import { it } from "../lib/effect"
 
 const waitForState = <A, E>(runner: Runner.Runner<A, E>, tag: Runner.State<A, E>["_tag"]) =>
   Effect.gen(function* () {
@@ -9,7 +9,7 @@ const waitForState = <A, E>(runner: Runner.Runner<A, E>, tag: Runner.State<A, E>
   }).pipe(Effect.timeout("1 second"))
 
 describe("Runner", () => {
-  @lgcode/@lgcode/ --- ensureRunning semantics ---
+  // --- ensureRunning semantics ---
 
   it.live(
     "ensureRunning starts work and returns result",
@@ -113,7 +113,7 @@ describe("Runner", () => {
     }),
   )
 
-  @lgcode/@lgcode/ --- cancel semantics ---
+  // --- cancel semantics ---
 
   it.live(
     "cancel interrupts running work",
@@ -250,7 +250,7 @@ describe("Runner", () => {
     }),
   )
 
-  @lgcode/@lgcode/ --- shell semantics ---
+  // --- shell semantics ---
 
   it.live(
     "shell runs exclusively",
@@ -354,7 +354,7 @@ describe("Runner", () => {
     }),
   )
 
-  @lgcode/@lgcode/ --- shell→run handoff ---
+  // --- shell→run handoff ---
 
   it.live(
     "ensureRunning queues behind shell then runs after",
@@ -432,7 +432,7 @@ describe("Runner", () => {
     }),
   )
 
-  @lgcode/@lgcode/ --- lifecycle callbacks ---
+  // --- lifecycle callbacks ---
 
   it.live(
     "onIdle fires when returning to idle from running",
@@ -476,7 +476,7 @@ describe("Runner", () => {
     }),
   )
 
-  @lgcode/@lgcode/ --- busy flag ---
+  // --- busy flag ---
 
   it.live(
     "busy is true during run",

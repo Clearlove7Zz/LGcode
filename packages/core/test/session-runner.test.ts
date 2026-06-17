@@ -8,53 +8,53 @@ import {
   InvalidRequestReason,
   type LLMClientShape,
   type LLMRequest,
-} from "@lgcode/llm"
-import * as OpenAIChat from "@lgcode/llm@lgcode/protocols@lgcode/openai-chat"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import { PermissionV2 } from "@lgcode/core@lgcode/permission"
-import { EventTable } from "@lgcode/core@lgcode/event@lgcode/sql"
-import { Project } from "@lgcode/core@lgcode/project"
-import { ProjectTable } from "@lgcode/core@lgcode/project@lgcode/sql"
-import { QuestionV2 } from "@lgcode/core@lgcode/question"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import { SessionV2 } from "@lgcode/core@lgcode/session"
-import { ContextSnapshotDecodeError } from "@lgcode/core@lgcode/session@lgcode/error"
-import { SessionEvent } from "@lgcode/core@lgcode/session@lgcode/event"
-import { SessionInput } from "@lgcode/core@lgcode/session@lgcode/input"
-import { SessionMessage } from "@lgcode/core@lgcode/session@lgcode/message"
-import { Prompt } from "@lgcode/core@lgcode/session@lgcode/prompt"
-import { SessionProjector } from "@lgcode/core@lgcode/session@lgcode/projector"
-import { SessionExecution } from "@lgcode/core@lgcode/session@lgcode/execution"
-import { SessionContextEpoch } from "@lgcode/core@lgcode/session@lgcode/context-epoch"
-import { SessionRunCoordinator } from "@lgcode/core@lgcode/session@lgcode/run-coordinator"
-import { SessionRunner } from "@lgcode/core@lgcode/session@lgcode/runner"
-import * as SessionRunnerLLM from "@lgcode/core@lgcode/session@lgcode/runner@lgcode/llm"
-import { SessionRunnerModel } from "@lgcode/core@lgcode/session@lgcode/runner@lgcode/model"
-import { ToolRegistry } from "@lgcode/core@lgcode/tool@lgcode/registry"
-import { ToolOutputStore } from "@lgcode/core@lgcode/tool-output-store"
-import { ApplicationTools } from "@lgcode/core@lgcode/tool@lgcode/application-tools"
-import { AgentV2 } from "@lgcode/core@lgcode/agent"
-import { Config } from "@lgcode/core@lgcode/config"
-import { ConfigCompaction } from "@lgcode/core@lgcode/config@lgcode/compaction"
-import { Tool } from "@lgcode/core@lgcode/tool@lgcode/tool"
+} from "@opencode@lgcode/llm"
+import * as OpenAIChat from "@opencode@lgcode/llm/protocols/openai-chat"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import { PermissionV2 } from "@opencode@lgcode/core/permission"
+import { EventTable } from "@opencode@lgcode/core/event/sql"
+import { Project } from "@opencode@lgcode/core/project"
+import { ProjectTable } from "@opencode@lgcode/core/project/sql"
+import { QuestionV2 } from "@opencode@lgcode/core/question"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import { SessionV2 } from "@opencode@lgcode/core/session"
+import { ContextSnapshotDecodeError } from "@opencode@lgcode/core/session/error"
+import { SessionEvent } from "@opencode@lgcode/core/session/event"
+import { SessionInput } from "@opencode@lgcode/core/session/input"
+import { SessionMessage } from "@opencode@lgcode/core/session/message"
+import { Prompt } from "@opencode@lgcode/core/session/prompt"
+import { SessionProjector } from "@opencode@lgcode/core/session/projector"
+import { SessionExecution } from "@opencode@lgcode/core/session/execution"
+import { SessionContextEpoch } from "@opencode@lgcode/core/session/context-epoch"
+import { SessionRunCoordinator } from "@opencode@lgcode/core/session/run-coordinator"
+import { SessionRunner } from "@opencode@lgcode/core/session/runner"
+import * as SessionRunnerLLM from "@opencode@lgcode/core/session/runner/llm"
+import { SessionRunnerModel } from "@opencode@lgcode/core/session/runner/model"
+import { ToolRegistry } from "@opencode@lgcode/core/tool/registry"
+import { ToolOutputStore } from "@opencode@lgcode/core/tool-output-store"
+import { ApplicationTools } from "@opencode@lgcode/core/tool/application-tools"
+import { AgentV2 } from "@opencode@lgcode/core/agent"
+import { Config } from "@opencode@lgcode/core/config"
+import { ConfigCompaction } from "@opencode@lgcode/core/config/compaction"
+import { Tool } from "@opencode@lgcode/core/tool/tool"
 import {
   SessionContextEpochTable,
   SessionInputTable,
   SessionMessageTable,
   SessionTable,
-} from "@lgcode/core@lgcode/session@lgcode/sql"
-import { SessionStore } from "@lgcode/core@lgcode/session@lgcode/store"
-import { SystemContext } from "@lgcode/core@lgcode/system-context"
-import { SystemContextRegistry } from "@lgcode/core@lgcode/system-context@lgcode/registry"
-import { SkillGuidance } from "@lgcode/core@lgcode/skill@lgcode/guidance"
-import { ReferenceGuidance } from "@lgcode/core@lgcode/reference@lgcode/guidance"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
-import { Location } from "@lgcode/core@lgcode/location"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+} from "@opencode@lgcode/core/session/sql"
+import { SessionStore } from "@opencode@lgcode/core/session/store"
+import { SystemContext } from "@opencode@lgcode/core/system-context"
+import { SystemContextRegistry } from "@opencode@lgcode/core/system-context/registry"
+import { SkillGuidance } from "@opencode@lgcode/core/skill/guidance"
+import { ReferenceGuidance } from "@opencode@lgcode/core/reference/guidance"
+import { ModelV2 } from "@opencode@lgcode/core/model"
+import { Location } from "@opencode@lgcode/core/location"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
 import { Cause, DateTime, Deferred, Effect, Exit, Fiber, Layer, Schema, Stream } from "effect"
 import { asc, eq } from "drizzle-orm"
-import { testEffect } from ".@lgcode/lib@lgcode/effect"
+import { testEffect } from "./lib/effect"
 
 const database = Database.layerFromPath(":memory:")
 const events = EventV2.layer.pipe(Layer.provide(database))
@@ -165,7 +165,7 @@ let currentModel = model
 const models = SessionRunnerModel.layerWith((session) =>
   modelResolveHook.pipe(Effect.as(session.model?.id === "replacement" ? replacementModel : currentModel)),
 )
-const systemContextKey = SystemContext.Key.make("test@lgcode/context")
+const systemContextKey = SystemContext.Key.make("test/context")
 let systemBaseline = "Initial context"
 let systemRemoved = false
 let systemUnavailable = false
@@ -191,7 +191,7 @@ const systemContext = Layer.effectDiscard(
                     ),
                     baseline: String,
                     update: (_previous, current) => current,
-                    removed: () => "System context source removed: test@lgcode/context",
+                    removed: () => "System context source removed: test/context",
                   }),
                 ],
           ),
@@ -200,13 +200,13 @@ const systemContext = Layer.effectDiscard(
     ),
   ),
 ).pipe(Layer.provideMerge(SystemContextRegistry.layer))
-const location = Location.layer({ directory: AbsolutePath.make("@lgcode/project") }).pipe(Layer.provide(Project.defaultLayer))
+const location = Location.layer({ directory: AbsolutePath.make("/project") }).pipe(Layer.provide(Project.defaultLayer))
 const skillGuidance = Layer.mock(SkillGuidance.Service, {
   load: (agent) =>
     Effect.succeed(
       skillBaselines.has(agent.id)
         ? SystemContext.make({
-            key: SystemContext.Key.make("test@lgcode/skill-guidance"),
+            key: SystemContext.Key.make("test/skill-guidance"),
             codec: Schema.toCodecJson(Schema.String),
             load: Effect.succeed(skillBaselines.get(agent.id)!),
             baseline: String,
@@ -304,7 +304,7 @@ const insertSession = (id: SessionV2.ID) =>
         id,
         project_id: Project.ID.global,
         slug: id,
-        directory: "@lgcode/project",
+        directory: "/project",
         title: "test",
         version: "test",
       })
@@ -335,7 +335,7 @@ const setup = Effect.gen(function* () {
   maxActiveToolExecutions = 0
   yield* db
     .insert(ProjectTable)
-    .values({ id: Project.ID.global, worktree: AbsolutePath.make("@lgcode/project"), sandboxes: [] })
+    .values({ id: Project.ID.global, worktree: AbsolutePath.make("/project"), sandboxes: [] })
     .onConflictDoNothing()
     .run()
     .pipe(Effect.orDie)
@@ -593,7 +593,7 @@ describe("SessionRunnerLLM", () => {
         {
           sessionID,
           agent: AgentV2.ID.make("build"),
-          assistantMessageID: expect.stringMatching(@lgcode/^msg_@lgcode/),
+          assistantMessageID: expect.stringMatching(/^msg_/),
           toolCallID: "call-application",
         },
       ])
@@ -704,7 +704,7 @@ describe("SessionRunnerLLM", () => {
       yield* events.publish(SessionEvent.Moved, {
         sessionID,
         timestamp: DateTime.makeUnsafe(1),
-        location: { directory: AbsolutePath.make("@lgcode/moved") },
+        location: { directory: AbsolutePath.make("/moved") },
       })
       expect(
         yield* db
@@ -762,7 +762,7 @@ describe("SessionRunnerLLM", () => {
           .publish(SessionEvent.Moved, {
             sessionID,
             timestamp: DateTime.makeUnsafe(1),
-            location: { directory: AbsolutePath.make("@lgcode/moved") },
+            location: { directory: AbsolutePath.make("/moved") },
           })
           .pipe(Effect.asVoid)
       })
@@ -777,7 +777,7 @@ describe("SessionRunnerLLM", () => {
           .where(eq(SessionContextEpochTable.session_id, sessionID))
           .get(),
       ).toBeUndefined()
-      expect((yield* session.get(sessionID)).location.directory).toBe(AbsolutePath.make("@lgcode/moved"))
+      expect((yield* session.get(sessionID)).location.directory).toBe(AbsolutePath.make("/moved"))
     }),
   )
 
@@ -1205,7 +1205,7 @@ describe("SessionRunnerLLM", () => {
 
       expect(requests[1]?.messages.map((message) => message.role)).toEqual(["user", "user", "system"])
       expect(requests[1]?.messages.at(-1)?.content).toEqual([
-        { type: "text", text: "System context source removed: test@lgcode/context" },
+        { type: "text", text: "System context source removed: test/context" },
       ])
       expect(yield* session.messages({ sessionID })).toHaveLength(3)
     }),
@@ -1450,7 +1450,7 @@ describe("SessionRunnerLLM", () => {
       expect(requests).toHaveLength(2)
       expect(userTexts(requests[0])[0]).toContain("## Goal")
       expect(userTexts(requests[1])).toHaveLength(1)
-      expect(userTexts(requests[1])[0]).toContain("<summary>\n## Goal\n- Preserve the task\n<@lgcode/summary>")
+      expect(userTexts(requests[1])[0]).toContain("<summary>\n## Goal\n- Preserve the task\n</summary>")
       expect(userTexts(requests[1])[0]).toContain(`[User]: ${"Recent exact request ".repeat(180)}`)
 
       const context = yield* (yield* SessionStore.Service).context(sessionID)
@@ -1474,7 +1474,7 @@ describe("SessionRunnerLLM", () => {
 
       expect(requests).toHaveLength(2)
       expect(userTexts(requests[0])[0]).toContain(
-        "<previous-summary>\n## Goal\n- Preserve the task\n<@lgcode/previous-summary>",
+        "<previous-summary>\n## Goal\n- Preserve the task\n</previous-summary>",
       )
       expect(userTexts(requests[0])[0]).toContain("Recent exact request")
       expect((yield* (yield* SessionStore.Service).context(sessionID))[0]).toMatchObject({
@@ -1500,7 +1500,7 @@ describe("SessionRunnerLLM", () => {
 
       expect(requests).toHaveLength(3)
       expect(userTexts(requests[1])[0]).toContain("## Goal")
-      expect(userTexts(requests[2])[0]).toContain("<summary>\n## Goal\n- Recover overflow\n<@lgcode/summary>")
+      expect(userTexts(requests[2])[0]).toContain("<summary>\n## Goal\n- Recover overflow\n</summary>")
       expect(yield* session.context(sessionID)).toMatchObject([
         { type: "compaction", summary: "## Goal\n- Recover overflow" },
         { type: "assistant", finish: "stop" },
@@ -1690,7 +1690,7 @@ describe("SessionRunnerLLM", () => {
             type: "content",
             value: [
               { type: "text", text: "Hello" },
-              { type: "file", uri: "data:image@lgcode/png;base64,aGVsbG8=", mime: "image@lgcode/png", name: "hello.png" },
+              { type: "file", uri: "data:image/png;base64,aGVsbG8=", mime: "image/png", name: "hello.png" },
             ],
           },
           providerExecuted: true,
@@ -1743,7 +1743,7 @@ describe("SessionRunnerLLM", () => {
                 structured: {},
                 content: [
                   { type: "text", text: "Hello" },
-                  { type: "file", mime: "image@lgcode/png", uri: "data:image@lgcode/png;base64,aGVsbG8=", name: "hello.png" },
+                  { type: "file", mime: "image/png", uri: "data:image/png;base64,aGVsbG8=", name: "hello.png" },
                 ],
               },
             },

@@ -1,27 +1,27 @@
-import { Pty } from "@lgcode/core@lgcode/pty"
-import { PtyID } from "@lgcode/core@lgcode/pty@lgcode/schema"
-import { PtyTicket } from "@lgcode/core@lgcode/pty@lgcode/ticket"
-import { Location } from "@lgcode/core@lgcode/location"
+import { Pty } from "@opencode@lgcode/core/pty"
+import { PtyID } from "@opencode@lgcode/core/pty/schema"
+import { PtyTicket } from "@opencode@lgcode/core/pty/ticket"
+import { Location } from "@opencode@lgcode/core/location"
 import { Schema } from "effect"
-import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
-import { ForbiddenError, PtyNotFoundError } from "..@lgcode/errors"
-import { LocationQuery, locationQueryOpenApi, LocationMiddleware } from ".@lgcode/location"
+import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect/unstable/httpapi"
+import { ForbiddenError, PtyNotFoundError } from "../errors"
+import { LocationQuery, locationQueryOpenApi, LocationMiddleware } from "./location"
 
 export const PTY_CONNECT_TICKET_QUERY = "ticket"
 export const PTY_CONNECT_TOKEN_HEADER = "x-opencode-ticket"
 export const PTY_CONNECT_TOKEN_HEADER_VALUE = "1"
 
-const PTY_CONNECT_PATH = @lgcode/^\@lgcode/api\@lgcode/pty\@lgcode/[^@lgcode/]+\@lgcode/connect$@lgcode/
+const PTY_CONNECT_PATH = /^\/api\/pty\/[^/]+\/connect$/
 
-@lgcode/@lgcode/ Authorization middleware skips credential checks when this matches; the PTY connect handler
-@lgcode/@lgcode/ is then responsible for consuming and validating the ticket.
+// Authorization middleware skips credential checks when this matches; the PTY connect handler
+// is then responsible for consuming and validating the ticket.
 export function hasPtyConnectTicketURL(url: URL) {
   return PTY_CONNECT_PATH.test(url.pathname) && !!url.searchParams.get(PTY_CONNECT_TICKET_QUERY)
 }
 
 export const PtyGroup = HttpApiGroup.make("server.pty")
   .add(
-    HttpApiEndpoint.get("pty.list", "@lgcode/api@lgcode/pty", {
+    HttpApiEndpoint.get("pty.list", "/api/pty", {
       query: LocationQuery,
       success: Location.response(Schema.Array(Pty.Info)),
     })
@@ -35,7 +35,7 @@ export const PtyGroup = HttpApiGroup.make("server.pty")
       ),
   )
   .add(
-    HttpApiEndpoint.post("pty.create", "@lgcode/api@lgcode/pty", {
+    HttpApiEndpoint.post("pty.create", "/api/pty", {
       query: LocationQuery,
       payload: Pty.CreateInput,
       success: Location.response(Pty.Info),
@@ -50,7 +50,7 @@ export const PtyGroup = HttpApiGroup.make("server.pty")
       ),
   )
   .add(
-    HttpApiEndpoint.get("pty.get", "@lgcode/api@lgcode/pty@lgcode/:ptyID", {
+    HttpApiEndpoint.get("pty.get", "/api/pty/:ptyID", {
       params: { ptyID: PtyID },
       query: LocationQuery,
       success: Location.response(Pty.Info),
@@ -66,7 +66,7 @@ export const PtyGroup = HttpApiGroup.make("server.pty")
       ),
   )
   .add(
-    HttpApiEndpoint.put("pty.update", "@lgcode/api@lgcode/pty@lgcode/:ptyID", {
+    HttpApiEndpoint.put("pty.update", "/api/pty/:ptyID", {
       params: { ptyID: PtyID },
       query: LocationQuery,
       payload: Pty.UpdateInput,
@@ -83,7 +83,7 @@ export const PtyGroup = HttpApiGroup.make("server.pty")
       ),
   )
   .add(
-    HttpApiEndpoint.delete("pty.remove", "@lgcode/api@lgcode/pty@lgcode/:ptyID", {
+    HttpApiEndpoint.delete("pty.remove", "/api/pty/:ptyID", {
       params: { ptyID: PtyID },
       query: LocationQuery,
       success: HttpApiSchema.NoContent,
@@ -99,7 +99,7 @@ export const PtyGroup = HttpApiGroup.make("server.pty")
       ),
   )
   .add(
-    HttpApiEndpoint.post("pty.connectToken", "@lgcode/api@lgcode/pty@lgcode/:ptyID@lgcode/connect-token", {
+    HttpApiEndpoint.post("pty.connectToken", "/api/pty/:ptyID/connect-token", {
       params: { ptyID: PtyID },
       query: LocationQuery,
       success: Location.response(PtyTicket.ConnectToken),
@@ -115,9 +115,9 @@ export const PtyGroup = HttpApiGroup.make("server.pty")
       ),
   )
   .add(
-    @lgcode/@lgcode/ Query fields are decoded in the raw handler after the existence check so a missing
-    @lgcode/@lgcode/ session responds with an empty 404 before any upgrade work.
-    HttpApiEndpoint.get("pty.connect", "@lgcode/api@lgcode/pty@lgcode/:ptyID@lgcode/connect", {
+    // Query fields are decoded in the raw handler after the existence check so a missing
+    // session responds with an empty 404 before any upgrade work.
+    HttpApiEndpoint.get("pty.connect", "/api/pty/:ptyID/connect", {
       params: { ptyID: PtyID },
       success: Schema.Boolean,
       error: [ForbiddenError, PtyNotFoundError],

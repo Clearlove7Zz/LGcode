@@ -1,13 +1,13 @@
-@lgcode/@lgcode/ @refresh reload
+// @refresh reload
 
 import { createEffect, onMount } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import { makeEventListener } from "@solid-primitives@lgcode/event-listener"
-import { createSimpleContext } from "..@lgcode/context@lgcode/helper"
-import oc2ThemeJson from ".@lgcode/themes@lgcode/oc-2.json"
-import { resolveThemeVariant, themeToCss } from ".@lgcode/resolve"
-import { resolveThemeVariantV2, themeV2ToCss } from ".@lgcode/v2@lgcode/resolve"
-import type { DesktopTheme } from ".@lgcode/types"
+import { createStore } from "solid-js/store"
+import { makeEventListener } from "@solid-primitives/event-listener"
+import { createSimpleContext } from "../context/helper"
+import oc2ThemeJson from "./themes/oc-2.json"
+import { resolveThemeVariant, themeToCss } from "./resolve"
+import { resolveThemeVariantV2, themeV2ToCss } from "./v2/resolve"
+import type { DesktopTheme } from "./types"
 
 export type ColorScheme = "light" | "dark" | "system"
 
@@ -25,14 +25,14 @@ let known: Set<string> | undefined
 
 function getFiles() {
   if (files) return files
-  files = import.meta.glob<{ default: DesktopTheme }>(".@lgcode/themes@lgcode/*.json")
+  files = import.meta.glob<{ default: DesktopTheme }>("./themes/*.json")
   return files
 }
 
 function themeIDs() {
   if (ids) return ids
   ids = Object.keys(getFiles())
-    .map((path) => path.slice(".@lgcode/themes@lgcode/".length, -".json".length))
+    .map((path) => path.slice("./themes/".length, -".json".length))
     .sort()
   return ids
 }
@@ -153,7 +153,7 @@ function applyThemeCss(theme: DesktopTheme, themeId: string, mode: "light" | "da
   document.documentElement.dataset.theme = themeId
   document.documentElement.dataset.colorScheme = mode
 
-  @lgcode/@lgcode/ Update theme-color meta tag to match light@lgcode/dark mode
+  // Update theme-color meta tag to match light/dark mode
   const meta = document.querySelector('meta[name="theme-color"]')
   if (meta) meta.setAttribute("content", isDark ? "#131010" : "#F8F7F7")
 }
@@ -196,7 +196,7 @@ export const { use: useTheme, provider: ThemeProvider } = createSimpleContext({
       if (hit) return Promise.resolve(hit)
       const pending = loads.get(next)
       if (pending) return pending
-      const file = getFiles()[`.@lgcode/themes@lgcode/${next}.json`]
+      const file = getFiles()[`./themes/${next}.json`]
       if (!file) return Promise.resolve(undefined)
       const task = file()
         .then((mod) => {

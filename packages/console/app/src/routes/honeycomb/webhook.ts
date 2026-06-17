@@ -1,7 +1,7 @@
-import type { APIEvent } from "@solidjs@lgcode/start@lgcode/server"
+import type { APIEvent } from "@solidjs/start/server"
 import { z } from "zod"
-import { Resource } from "@lgcode/console-resource"
-import { safeEqual } from "@lgcode/console-core@lgcode/util@lgcode/crypto.js"
+import { Resource } from "@opencode@lgcode/console-resource"
+import { safeEqual } from "@opencode@lgcode/console-core/util/crypto.js"
 
 const DISCORD_ALERT_ROLE_ID = "1501447160175136838"
 
@@ -65,7 +65,7 @@ const postDiscordMessage = async (payload: z.infer<typeof honeycombWebhookPayloa
 
   return fetch(Resource.DISCORD_INCIDENT_WEBHOOK_URL.value, {
     method: "POST",
-    headers: { "Content-Type": "application@lgcode/json" },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       content,
       allowed_mentions: { roles: [DISCORD_ALERT_ROLE_ID] },

@@ -1,5 +1,5 @@
-import { and, Database, inArray } from "@lgcode/console-core@lgcode/drizzle@lgcode/index.js"
-import { ModelTpsRateLimitTable } from "@lgcode/console-core@lgcode/schema@lgcode/ip.sql.js"
+import { and, Database, inArray } from "@opencode@lgcode/console-core/drizzle/index.js"
+import { ModelTpsRateLimitTable } from "@opencode@lgcode/console-core/schema/ip.sql.js"
 
 type Result = Record<string, { interval: number; qualify: number; unqualify: number }[]>
 
@@ -15,7 +15,7 @@ export default {
       parseInt(
         date
           .toISOString()
-          .replace(@lgcode/[^0-9]@lgcode/g, "")
+          .replace(/[^0-9]/g, "")
           .substring(0, 12),
       )
     const now = Date.now()

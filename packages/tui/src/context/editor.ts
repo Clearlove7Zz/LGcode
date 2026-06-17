@@ -1,10 +1,10 @@
 import { onCleanup, onMount } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
+import { createStore } from "solid-js/store"
 import { Option, Schema, SchemaGetter } from "effect"
-import { isRecord } from "..@lgcode/util@lgcode/record"
-import { useTuiPaths } from ".@lgcode/runtime"
-import { createSimpleContext } from ".@lgcode/helper"
-import { editorIntegration } from "..@lgcode/editor"
+import { isRecord } from "../util/record"
+import { useTuiPaths } from "./runtime"
+import { createSimpleContext } from "./helper"
+import { editorIntegration } from "../editor"
 
 const MCP_PROTOCOL_VERSION = "2025-11-25"
 
@@ -201,7 +201,7 @@ export const { use: useEditorContext, provider: EditorContextProvider } = create
             }
           })
           .catch(() => {
-            @lgcode/@lgcode/ Keep the last known Zed selection for transient polling failures.
+            // Keep the last known Zed selection for transient polling failures.
           })
           .finally(() => {
             zedSelection = undefined
@@ -256,7 +256,7 @@ export const { use: useEditorContext, provider: EditorContextProvider } = create
         const initialize = method === "initialize" ? decodeEditorServerInfo(message.result) : Option.none()
         if (Option.isSome(initialize)) {
           setStore("server", initialize.value)
-          send({ method: "notifications@lgcode/initialized" })
+          send({ method: "notifications/initialized" })
           return
         }
       })
@@ -365,7 +365,7 @@ function resolveEditorConnection(
 ): EditorConnection | undefined {
   if (port) {
     return {
-      url: `ws:@lgcode/@lgcode/127.0.0.1:${port}`,
+      url: `ws://127.0.0.1:${port}`,
       source: `env:${port}`,
     }
   }

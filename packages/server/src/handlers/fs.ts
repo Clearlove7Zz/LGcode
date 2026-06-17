@@ -1,10 +1,10 @@
-import { FileSystem } from "@lgcode/core@lgcode/filesystem"
-import { RelativePath } from "@lgcode/core@lgcode/schema"
+import { FileSystem } from "@opencode@lgcode/core/filesystem"
+import { RelativePath } from "@opencode@lgcode/core/schema"
 import { Effect } from "effect"
-import { HttpServerResponse } from "effect@lgcode/unstable@lgcode/http"
-import { HttpApiBuilder } from "effect@lgcode/unstable@lgcode/httpapi"
-import { Api } from "..@lgcode/api"
-import { response } from "..@lgcode/groups@lgcode/location"
+import { HttpServerResponse } from "effect/unstable/http"
+import { HttpApiBuilder } from "effect/unstable/httpapi"
+import { Api } from "../api"
+import { response } from "../groups/location"
 
 export const FileSystemHandler = HttpApiBuilder.group(Api, "server.fs", (handlers) =>
   Effect.gen(function* () {
@@ -13,7 +13,7 @@ export const FileSystemHandler = HttpApiBuilder.group(Api, "server.fs", (handler
         Effect.gen(function* () {
           const file = yield* (yield* FileSystem.Service).read({
             path: RelativePath.make(
-              decodeURIComponent(new URL(ctx.request.url, "http:@lgcode/@lgcode/localhost").pathname.slice(13)),
+              decodeURIComponent(new URL(ctx.request.url, "http://localhost").pathname.slice(13)),
             ),
           })
           return HttpServerResponse.uint8Array(file.content, { contentType: file.mime })

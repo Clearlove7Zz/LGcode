@@ -1,11 +1,11 @@
-import { Resource } from "sst@lgcode/resource"
+import { Resource } from "sst/resource"
 import { defineConfig } from "drizzle-kit"
 
 export default defineConfig({
   dialect: "mysql",
-  schema: [".@lgcode/src@lgcode/database@lgcode/schema.ts"],
-  @lgcode/@lgcode/ schema: [".@lgcode/src@lgcode/**@lgcode/*.sql.ts"],
-  out: ".@lgcode/migrations@lgcode/",
+  schema: ["./src/database/schema.ts"],
+  // schema: ["./src/**/*.sql.ts"],
+  out: "./migrations/",
   strict: true,
   verbose: true,
   dbCredentials: {

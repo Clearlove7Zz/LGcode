@@ -1,9 +1,9 @@
-import { QuestionV2 } from "@lgcode/core@lgcode/question"
+import { QuestionV2 } from "@opencode@lgcode/core/question"
 import { Effect } from "effect"
-import { HttpApiBuilder, HttpApiSchema } from "effect@lgcode/unstable@lgcode/httpapi"
-import { Api } from "..@lgcode/api"
-import { QuestionNotFoundError } from "..@lgcode/errors"
-import { response } from "..@lgcode/groups@lgcode/location"
+import { HttpApiBuilder, HttpApiSchema } from "effect/unstable/httpapi"
+import { Api } from "../api"
+import { QuestionNotFoundError } from "../errors"
+import { response } from "../groups/location"
 
 function missingRequest(id: QuestionV2.ID) {
   return new QuestionNotFoundError({ requestID: id, message: `Question request not found: ${id}` })

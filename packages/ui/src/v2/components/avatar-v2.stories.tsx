@@ -1,5 +1,5 @@
-@lgcode/@lgcode/ @ts-nocheck
-import { Avatar } from ".@lgcode/avatar-v2"
+// @ts-nocheck
+import { Avatar } from "./avatar-v2"
 
 const docs = `### Overview
 Avatar matching OpenCode DS variants from Figma.
@@ -21,13 +21,13 @@ Use in user lists and headers.
 ### Accessibility
 - TODO: provide alt text when using images; currently image is decorative.
 
-### Theming@lgcode/tokens
+### Theming/tokens
 - Uses \`data-component="avatar"\` with size and image state attributes.
 
 `
 
 export default {
-  title: "UI V2@lgcode/Avatar",
+  title: "UI V2/Avatar",
   id: "components-avatar-v2",
   component: Avatar,
   tags: ["autodocs"],
@@ -59,7 +59,7 @@ export const Basic = {}
 
 export const WithImage = {
   args: {
-    src: "https:@lgcode/@lgcode/placehold.co@lgcode/80x80@lgcode/png",
+    src: "https://placehold.co/80x80/png",
     fallback: "WW",
   },
 }
@@ -67,19 +67,19 @@ export const WithImage = {
 export const Sizes = {
   render: () => (
     <div style={{ display: "flex", gap: "12px", "align-items": "center" }}>
-      <Avatar size="small" fallback="W" @lgcode/>
-      <Avatar size="normal" fallback="W" @lgcode/>
-      <Avatar size="large" fallback="WW" @lgcode/>
-    <@lgcode/div>
+      <Avatar size="small" fallback="W" />
+      <Avatar size="normal" fallback="W" />
+      <Avatar size="large" fallback="WW" />
+    </div>
   ),
 }
 
 export const OrgVariant = {
   render: () => (
     <div style={{ display: "flex", gap: "12px", "align-items": "center" }}>
-      <Avatar kind="org" size="small" fallback="W" @lgcode/>
-      <Avatar kind="org" size="normal" fallback="W" @lgcode/>
-      <Avatar kind="org" size="large" fallback="WW" @lgcode/>
-    <@lgcode/div>
+      <Avatar kind="org" size="small" fallback="W" />
+      <Avatar kind="org" size="normal" fallback="W" />
+      <Avatar kind="org" size="large" fallback="WW" />
+    </div>
   ),
 }

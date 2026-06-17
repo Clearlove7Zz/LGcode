@@ -1,17 +1,17 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { PluginV2 } from "@lgcode/core@lgcode/plugin"
-import { TogetherAIPlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/togetherai"
-import { fakeSelectorSdk, it, model } from ".@lgcode/provider-helper"
+import { PluginV2 } from "@opencode@lgcode/core/plugin"
+import { TogetherAIPlugin } from "@opencode@lgcode/core/plugin/provider/togetherai"
+import { fakeSelectorSdk, it, model } from "./provider-helper"
 
 describe("TogetherAIPlugin", () => {
-  it.effect("creates a TogetherAI SDK for @ai-sdk@lgcode/togetherai", () =>
+  it.effect("creates a TogetherAI SDK for @ai-sdk/togetherai", () =>
     Effect.gen(function* () {
       const plugin = yield* PluginV2.Service
       yield* plugin.add(TogetherAIPlugin)
       const result = yield* plugin.trigger(
         "aisdk.sdk",
-        { model: model("togetherai", "model"), package: "@ai-sdk@lgcode/togetherai", options: { name: "togetherai" } },
+        { model: model("togetherai", "model"), package: "@ai-sdk/togetherai", options: { name: "togetherai" } },
         {},
       )
       expect(result.sdk).toBeDefined()
@@ -27,7 +27,7 @@ describe("TogetherAIPlugin", () => {
         "aisdk.sdk",
         {
           model: model("togetherai", "model"),
-          package: "file:@lgcode/@lgcode/@lgcode/tmp@lgcode/@ai-sdk@lgcode/togetherai-provider.js",
+          package: "file:///tmp/@ai-sdk/togetherai-provider.js",
           options: { name: "togetherai" },
         },
         {},
@@ -36,7 +36,7 @@ describe("TogetherAIPlugin", () => {
 
       const result = yield* plugin.trigger(
         "aisdk.sdk",
-        { model: model("togetherai", "model"), package: "@ai-sdk@lgcode/togetherai", options: { name: "togetherai" } },
+        { model: model("togetherai", "model"), package: "@ai-sdk/togetherai", options: { name: "togetherai" } },
         {},
       )
       expect(result.sdk).toBeDefined()
@@ -62,7 +62,7 @@ describe("TogetherAIPlugin", () => {
         "aisdk.sdk",
         {
           model: model("custom-togetherai", "model"),
-          package: "@ai-sdk@lgcode/togetherai",
+          package: "@ai-sdk/togetherai",
           options: { name: "custom-togetherai" },
         },
         {},
@@ -81,7 +81,7 @@ describe("TogetherAIPlugin", () => {
       const result = yield* plugin.trigger(
         "aisdk.language",
         {
-          model: model("togetherai", "meta-llama@lgcode/Llama-3.3-70B-Instruct-Turbo"),
+          model: model("togetherai", "meta-llama/Llama-3.3-70B-Instruct-Turbo"),
           sdk: { languageModel: fakeSelectorSdk(calls).languageModel },
           options: {},
         },
@@ -91,7 +91,7 @@ describe("TogetherAIPlugin", () => {
       expect(result.language).toBeUndefined()
       expect(calls).toEqual([])
       expect(result.language ?? fakeSelectorSdk(calls).languageModel(result.model.api.id)).toBeDefined()
-      expect(calls).toEqual(["languageModel:meta-llama@lgcode/Llama-3.3-70B-Instruct-Turbo"])
+      expect(calls).toEqual(["languageModel:meta-llama/Llama-3.3-70B-Instruct-Turbo"])
     }),
   )
 })

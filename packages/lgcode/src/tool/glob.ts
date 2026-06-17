@@ -1,11 +1,11 @@
 import path from "path"
 import { Effect, Schema } from "effect"
-import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { Ripgrep } from "@lgcode/core@lgcode/ripgrep"
-import { assertExternalDirectoryEffect } from ".@lgcode/external-directory"
-import DESCRIPTION from ".@lgcode/glob.txt"
-import * as Tool from ".@lgcode/tool"
+import { InstanceState } from "@/effect/instance-state"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { Ripgrep } from "@opencode@lgcode/core/ripgrep"
+import { assertExternalDirectoryEffect } from "./external-directory"
+import DESCRIPTION from "./glob.txt"
+import * as Tool from "./tool"
 
 export const Parameters = Schema.Struct({
   pattern: Schema.String.annotate({ description: "The glob pattern to match files against" }),

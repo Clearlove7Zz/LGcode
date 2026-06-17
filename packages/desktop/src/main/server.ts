@@ -2,10 +2,10 @@ import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
 import { app, utilityProcess } from "electron"
 import type { Details } from "electron"
-import { getLogger } from ".@lgcode/logging"
-import { getUserShell, loadShellEnv } from ".@lgcode/shell-env"
-import { getStore } from ".@lgcode/store"
-import { DEFAULT_SERVER_URL_KEY } from ".@lgcode/store-keys"
+import { getLogger } from "./logging"
+import { getUserShell, loadShellEnv } from "./shell-env"
+import { getStore } from "./store"
+import { DEFAULT_SERVER_URL_KEY } from "./store-keys"
 
 export type HealthCheck = { wait: Promise<void> }
 
@@ -140,7 +140,7 @@ export async function spawnLocalServer(
   })
 
   const wait = (async () => {
-    const url = `http:@lgcode/@lgcode/${hostname}:${port}`
+    const url = `http://${hostname}:${port}`
     let healthy = false
     const gone = exit.promise.then((code) => {
       if (healthy) return
@@ -184,7 +184,7 @@ export async function spawnLocalServer(
 export async function checkHealth(url: string, password?: string | null): Promise<boolean> {
   let healthUrl: URL
   try {
-    healthUrl = new URL("@lgcode/global@lgcode/health", url)
+    healthUrl = new URL("/global/health", url)
   } catch {
     return false
   }

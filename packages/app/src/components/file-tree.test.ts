@@ -1,17 +1,17 @@
 import { beforeAll, describe, expect, mock, test } from "bun:test"
 
-let shouldListRoot: typeof import(".@lgcode/file-tree").shouldListRoot
-let shouldListExpanded: typeof import(".@lgcode/file-tree").shouldListExpanded
-let dirsToExpand: typeof import(".@lgcode/file-tree").dirsToExpand
+let shouldListRoot: typeof import("./file-tree").shouldListRoot
+let shouldListExpanded: typeof import("./file-tree").shouldListExpanded
+let dirsToExpand: typeof import("./file-tree").dirsToExpand
 
 beforeAll(async () => {
-  mock.module("@solidjs@lgcode/router", () => ({
+  mock.module("@solidjs/router", () => ({
     useNavigate: () => () => undefined,
     useParams: () => ({}),
     useLocation: () => ({}),
     useSearchParams: () => [{}, () => undefined],
   }))
-  mock.module("@@lgcode/context@lgcode/file", () => ({
+  mock.module("@/context/file", () => ({
     useFile: () => ({
       tree: {
         state: () => undefined,
@@ -22,16 +22,16 @@ beforeAll(async () => {
       },
     }),
   }))
-  mock.module("@lgcode/ui@lgcode/collapsible", () => ({
+  mock.module("@opencode@lgcode/ui/collapsible", () => ({
     Collapsible: {
       Trigger: (props: { children?: unknown }) => props.children,
       Content: (props: { children?: unknown }) => props.children,
     },
   }))
-  mock.module("@lgcode/ui@lgcode/file-icon", () => ({ FileIcon: () => null }))
-  mock.module("@lgcode/ui@lgcode/icon", () => ({ Icon: () => null }))
-  mock.module("@lgcode/ui@lgcode/tooltip", () => ({ Tooltip: (props: { children?: unknown }) => props.children }))
-  const mod = await import(".@lgcode/file-tree")
+  mock.module("@opencode@lgcode/ui/file-icon", () => ({ FileIcon: () => null }))
+  mock.module("@opencode@lgcode/ui/icon", () => ({ Icon: () => null }))
+  mock.module("@opencode@lgcode/ui/tooltip", () => ({ Tooltip: (props: { children?: unknown }) => props.children }))
+  const mod = await import("./file-tree")
   shouldListRoot = mod.shouldListRoot
   shouldListExpanded = mod.shouldListExpanded
   dirsToExpand = mod.dirsToExpand
@@ -56,7 +56,7 @@ describe("file tree fetch discipline", () => {
 
   test("allowed auto-expand picks only collapsed dirs", () => {
     const expanded = new Set<string>()
-    const filter = { dirs: new Set(["src", "src@lgcode/components"]) }
+    const filter = { dirs: new Set(["src", "src/components"]) }
 
     const first = dirsToExpand({
       level: 0,
@@ -64,7 +64,7 @@ describe("file tree fetch discipline", () => {
       expanded: (dir) => expanded.has(dir),
     })
 
-    expect(first).toEqual(["src", "src@lgcode/components"])
+    expect(first).toEqual(["src", "src/components"])
 
     for (const dir of first) expanded.add(dir)
 

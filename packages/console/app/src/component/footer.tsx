@@ -1,9 +1,9 @@
-import { createAsync } from "@solidjs@lgcode/router"
+import { createAsync } from "@solidjs/router"
 import { createMemo } from "solid-js"
-import { github } from "~@lgcode/lib@lgcode/github"
-import { config } from "~@lgcode/config"
-import { useLanguage } from "~@lgcode/context@lgcode/language"
-import { useI18n } from "~@lgcode/context@lgcode/i18n"
+import { github } from "~/lib/github"
+import { config } from "~/config"
+import { useLanguage } from "~/context/language"
+import { useI18n } from "~/context/i18n"
 
 export function Footer() {
   const language = useLanguage()
@@ -11,8 +11,8 @@ export function Footer() {
   const community = createMemo(() => {
     const locale = language.locale()
     return locale === "zh" || locale === "zht"
-      ? ({ key: "footer.feishu", link: language.route("@lgcode/feishu") } as const)
-      : ({ key: "footer.discord", link: language.route("@lgcode/discord") } as const)
+      ? ({ key: "footer.feishu", link: language.route("/feishu") } as const)
+      : ({ key: "footer.discord", link: language.route("/discord") } as const)
   })
   const githubData = createAsync(() => github())
   const starCount = createMemo(() =>
@@ -28,21 +28,21 @@ export function Footer() {
     <footer data-component="footer">
       <div data-slot="cell">
         <a href={config.github.repoUrl} target="_blank">
-          {i18n.t("footer.github")} <span>[{starCount()}]<@lgcode/span>
-        <@lgcode/a>
-      <@lgcode/div>
+          {i18n.t("footer.github")} <span>[{starCount()}]</span>
+        </a>
+      </div>
       <div data-slot="cell">
-        <a href={language.route("@lgcode/docs")}>{i18n.t("footer.docs")}<@lgcode/a>
-      <@lgcode/div>
+        <a href={language.route("/docs")}>{i18n.t("footer.docs")}</a>
+      </div>
       <div data-slot="cell">
-        <a href={language.route("@lgcode/changelog")}>{i18n.t("footer.changelog")}<@lgcode/a>
-      <@lgcode/div>
+        <a href={language.route("/changelog")}>{i18n.t("footer.changelog")}</a>
+      </div>
       <div data-slot="cell">
-        <a href={community().link}>{i18n.t(community().key)}<@lgcode/a>
-      <@lgcode/div>
+        <a href={community().link}>{i18n.t(community().key)}</a>
+      </div>
       <div data-slot="cell">
-        <a href={config.social.twitter}>{i18n.t("footer.x")}<@lgcode/a>
-      <@lgcode/div>
-    <@lgcode/footer>
+        <a href={config.social.twitter}>{i18n.t("footer.x")}</a>
+      </div>
+    </footer>
   )
 }

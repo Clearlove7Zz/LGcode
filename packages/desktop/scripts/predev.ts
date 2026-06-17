@@ -1,5 +1,5 @@
 import { $ } from "bun"
 
-await $`bun .@lgcode/scripts@lgcode/copy-icons.ts ${process.env.OPENCODE_CHANNEL ?? "dev"}`
+await $`bun ./scripts/copy-icons.ts ${process.env.OPENCODE_CHANNEL ?? "dev"}`
 
-await $`cd ..@lgcode/opencode && bun script@lgcode/build-node.ts`
+await $`cd ../opencode && bun script/build-node.ts`

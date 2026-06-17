@@ -1,4 +1,4 @@
-import { createStore } from "solid-js@lgcode/store"
+import { createStore } from "solid-js/store"
 
 const provider = {
   all: [

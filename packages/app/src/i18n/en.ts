@@ -124,7 +124,7 @@ export const dict = {
   "dialog.provider.viewAll": "Show more providers",
 
   "provider.connect.title": "Connect {{provider}}",
-  "provider.connect.title.anthropicProMax": "Login with Claude Pro@lgcode/Max",
+  "provider.connect.title.anthropicProMax": "Login with Claude Pro/Max",
   "provider.connect.selectMethod": "Select login method for {{provider}}.",
   "provider.connect.method.apiKey": "API key",
   "provider.connect.status.inProgress": "Authorization in progress...",
@@ -140,7 +140,7 @@ export const dict = {
   "provider.connect.opencodeZen.line2":
     "With a single API key you'll get access to models such as Claude, GPT, Gemini, GLM and more.",
   "provider.connect.opencodeZen.visit.prefix": "Visit ",
-  "provider.connect.opencodeZen.visit.link": "opencode.ai@lgcode/zen",
+  "provider.connect.opencodeZen.visit.link": "opencode.ai/zen",
   "provider.connect.opencodeZen.visit.suffix": " to collect your API key.",
   "provider.connect.oauth.code.visit.prefix": "Visit ",
   "provider.connect.oauth.code.visit.link": "this link",
@@ -168,7 +168,7 @@ export const dict = {
   "provider.custom.field.name.label": "Display name",
   "provider.custom.field.name.placeholder": "My AI Provider",
   "provider.custom.field.baseURL.label": "Base URL",
-  "provider.custom.field.baseURL.placeholder": "https:@lgcode/@lgcode/api.myprovider.com@lgcode/v1",
+  "provider.custom.field.baseURL.placeholder": "https://api.myprovider.com/v1",
   "provider.custom.field.apiKey.label": "API key",
   "provider.custom.field.apiKey.placeholder": "API key",
   "provider.custom.field.apiKey.description": "Optional. Leave empty if you manage auth via headers.",
@@ -191,7 +191,7 @@ export const dict = {
   "provider.custom.error.providerID.exists": "That provider ID already exists",
   "provider.custom.error.name.required": "Display name is required",
   "provider.custom.error.baseURL.required": "Base URL is required",
-  "provider.custom.error.baseURL.format": "Must start with http:@lgcode/@lgcode/ or https:@lgcode/@lgcode/",
+  "provider.custom.error.baseURL.format": "Must start with http:// or https://",
   "provider.custom.error.required": "Required",
   "provider.custom.error.duplicate": "Duplicate",
 
@@ -329,7 +329,7 @@ export const dict = {
   "dialog.server.empty": "No servers yet",
   "dialog.server.add.title": "Add server",
   "dialog.server.add.url": "Server address",
-  "dialog.server.add.placeholder": "http:@lgcode/@lgcode/localhost:4096",
+  "dialog.server.add.placeholder": "http://localhost:4096",
   "dialog.server.add.error": "Could not connect to server",
   "dialog.server.add.checking": "Checking...",
   "dialog.server.add.button": "Add server",
@@ -447,7 +447,7 @@ export const dict = {
   "context.stats.inputTokens": "Input Tokens",
   "context.stats.outputTokens": "Output Tokens",
   "context.stats.reasoningTokens": "Reasoning Tokens",
-  "context.stats.cacheTokens": "Cache Tokens (read@lgcode/write)",
+  "context.stats.cacheTokens": "Cache Tokens (read/write)",
   "context.stats.userMessages": "User Messages",
   "context.stats.assistantMessages": "Assistant Messages",
   "context.stats.totalCost": "Total Cost",
@@ -559,8 +559,8 @@ export const dict = {
   "error.chain.retryable": "Retryable: {{retryable}}",
   "error.chain.responseBody": "Response body:\n{{body}}",
   "error.chain.didYouMean": "Did you mean: {{suggestions}}",
-  "error.chain.modelNotFound": "Model not found: {{provider}}@lgcode/{{model}}",
-  "error.chain.checkConfig": "Check your config (opencode.json) provider@lgcode/model names",
+  "error.chain.modelNotFound": "Model not found: {{provider}}/{{model}}",
+  "error.chain.checkConfig": "Check your config (opencode.json) provider/model names",
   "error.chain.mcpFailed": 'MCP server "{{name}}" failed. Note, OpenCode does not support MCP authentication yet.',
   "error.chain.providerAuthFailed": "Provider authentication failed ({{provider}}): {{message}}",
   "error.chain.providerInitFailed":
@@ -765,7 +765,7 @@ export const dict = {
   "sidebar.empty.description": "Open a project to get started",
 
   "debugBar.ariaLabel": "Development performance diagnostics",
-  "debugBar.na": "n@lgcode/a",
+  "debugBar.na": "n/a",
   "debugBar.nav.label": "NAV",
   "debugBar.nav.tip":
     "Last completed route transition touching a session page, measured from router start until the first paint after it settles.",

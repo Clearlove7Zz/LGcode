@@ -1,17 +1,17 @@
-@lgcode/@lgcode/ Footer layout
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Renders the footer region as a compact vertical stack:
-@lgcode/@lgcode/   1. Single-line composer or active footer body
-@lgcode/@lgcode/   2. Optional autocomplete@lgcode/menu panels below the composer
-@lgcode/@lgcode/   3. A statusline-style footer row carrying state, hints, and model info
-@lgcode/@lgcode/
-@lgcode/@lgcode/ All state comes from the parent RunFooter through SolidJS signals.
-@lgcode/@lgcode/ The view itself is stateless except for derived memos.
-@lgcode/** @jsxImportSource @opentui@lgcode/solid *@lgcode/
-import { useTerminalDimensions } from "@opentui@lgcode/solid"
+// Footer layout
+//
+// Renders the footer region as a compact vertical stack:
+//   1. Single-line composer or active footer body
+//   2. Optional autocomplete/menu panels below the composer
+//   3. A statusline-style footer row carrying state, hints, and model info
+//
+// All state comes from the parent RunFooter through SolidJS signals.
+// The view itself is stateless except for derived memos.
+/** @jsxImportSource @opentui/solid */
+import { useTerminalDimensions } from "@opentui/solid"
 import { For, Match, Show, Switch, createEffect, createMemo, createSignal, onCleanup } from "solid-js"
-import "opentui-spinner@lgcode/solid"
-import { createColors, createFrames } from "@lgcode/tui@lgcode/ui@lgcode/spinner"
+import "opentui-spinner/solid"
+import { createColors, createFrames } from "@opencode@lgcode/tui/ui/spinner"
 import {
   RUN_SUBAGENT_PANEL_ROWS,
   RunCommandMenuBody,
@@ -20,13 +20,13 @@ import {
   RunSkillSelectBody,
   RunSubagentSelectBody,
   RunVariantSelectBody,
-} from ".@lgcode/footer.command"
-import { FOOTER_MENU_ROWS, RunFooterMenu } from ".@lgcode/footer.menu"
-import { RunFooterSubagentBody } from ".@lgcode/footer.subagent"
-import { RunPromptBody, createPromptState } from ".@lgcode/footer.prompt"
-import { RunPermissionBody } from ".@lgcode/footer.permission"
-import { RunQuestionBody } from ".@lgcode/footer.question"
-import { footerWidthPolicy } from ".@lgcode/footer.width"
+} from "./footer.command"
+import { FOOTER_MENU_ROWS, RunFooterMenu } from "./footer.menu"
+import { RunFooterSubagentBody } from "./footer.subagent"
+import { RunPromptBody, createPromptState } from "./footer.prompt"
+import { RunPermissionBody } from "./footer.permission"
+import { RunQuestionBody } from "./footer.question"
+import { footerWidthPolicy } from "./footer.width"
 import {
   OPENCODE_BASE_MODE,
   formatKeyBindings,
@@ -34,7 +34,7 @@ import {
   useBindings,
   useKeymapSelector,
   type OpenTuiKeymap,
-} from "@lgcode/tui@lgcode/keymap"
+} from "@opencode@lgcode/tui/keymap"
 import type {
   FooterPromptRoute,
   FooterQueuedPrompt,
@@ -52,9 +52,9 @@ import type {
   RunProvider,
   RunResource,
   RunTuiConfig,
-} from ".@lgcode/types"
-import type { RunTheme } from ".@lgcode/theme"
-import { modelInfo } from ".@lgcode/variant.shared"
+} from "./types"
+import type { RunTheme } from "./theme"
+import { modelInfo } from "./variant.shared"
 
 const EMPTY_BORDER = {
   topLeft: "",
@@ -111,7 +111,7 @@ type RunFooterViewProps = {
   onQueuedRemove: (messageID: string) => Promise<boolean>
 }
 
-export { TEXTAREA_MIN_ROWS, TEXTAREA_MAX_ROWS } from ".@lgcode/footer.prompt"
+export { TEXTAREA_MIN_ROWS, TEXTAREA_MAX_ROWS } from "./footer.prompt"
 
 export function RunFooterView(props: RunFooterViewProps) {
   const term = useTerminalDimensions()
@@ -431,7 +431,7 @@ export function RunFooterView(props: RunFooterViewProps) {
       model: model().model,
       variant: props.currentVariant(),
       provider: undefined,
-      @lgcode/@lgcode/ Prefer without provider, but keep it on the shared width policy if we add it back.
+      // Prefer without provider, but keep it on the shared width policy if we add it back.
     }
   })
   const statusColor = createMemo(() => {
@@ -485,7 +485,7 @@ export function RunFooterView(props: RunFooterViewProps) {
       return { key: command(), label: "cmd" }
     }
   })
-  const sectionSeparator = () => <span style={{ fg: theme().muted }}>· <@lgcode/span>
+  const sectionSeparator = () => <span style={{ fg: theme().muted }}>· </span>
 
   createEffect(() => {
     props.onRequestExit?.(composer.requestExit)
@@ -630,8 +630,8 @@ export function RunFooterView(props: RunFooterViewProps) {
       padding={0}
     >
       <Show when={panel() || inspecting()}>
-        <box width="100%" height={1} flexShrink={0} backgroundColor="transparent" @lgcode/>
-      <@lgcode/Show>
+        <box width="100%" height={1} flexShrink={0} backgroundColor="transparent" />
+      </Show>
 
       <Show
         when={inspecting()}
@@ -674,8 +674,8 @@ export function RunFooterView(props: RunFooterViewProps) {
                             onKeyDown={composer.onKeyDown}
                             onContentChange={composer.onContentChange}
                             bind={composer.bind}
-                          @lgcode/>
-                        <@lgcode/Match>
+                          />
+                        </Match>
                         <Match when={selectingSubagent()}>
                           <RunSubagentSelectBody
                             theme={theme}
@@ -684,8 +684,8 @@ export function RunFooterView(props: RunFooterViewProps) {
                             onClose={closePanel}
                             onSelect={openTab}
                             onRows={setSubagentMenuRows}
-                          @lgcode/>
-                        <@lgcode/Match>
+                          />
+                        </Match>
                         <Match when={selectingQueued()}>
                           <RunQueuedPromptSelectBody
                             theme={theme}
@@ -698,8 +698,8 @@ export function RunFooterView(props: RunFooterViewProps) {
                               queueMicrotask(() => composer.replacePrompt(item.prompt))
                             }}
                             onRows={setSubagentMenuRows}
-                          @lgcode/>
-                        <@lgcode/Match>
+                          />
+                        </Match>
                         <Match when={commanding()}>
                           <RunCommandMenuBody
                             theme={theme}
@@ -723,16 +723,16 @@ export function RunFooterView(props: RunFooterViewProps) {
                               closePanel()
                             }}
                             onCommand={(name) => {
-                              composer.submitText(`@lgcode/${name}`)
+                              composer.submitText(`/${name}`)
                               closePanel()
                             }}
                             onNew={() => {
-                              composer.submitText("@lgcode/new")
+                              composer.submitText("/new")
                               closePanel()
                             }}
                             onExit={props.onExit}
-                          @lgcode/>
-                        <@lgcode/Match>
+                          />
+                        </Match>
                         <Match when={skilling()}>
                           <RunSkillSelectBody
                             theme={theme}
@@ -740,7 +740,7 @@ export function RunFooterView(props: RunFooterViewProps) {
                             onClose={closePanel}
                             onSelect={(name) => {
                               composer.replacePrompt({
-                                text: `@lgcode/${name} `,
+                                text: `/${name} `,
                                 parts: [],
                                 command: {
                                   name,
@@ -749,8 +749,8 @@ export function RunFooterView(props: RunFooterViewProps) {
                               })
                               closePanel()
                             }}
-                          @lgcode/>
-                        <@lgcode/Match>
+                          />
+                        </Match>
                         <Match when={modeling()}>
                           <RunModelSelectBody
                             theme={theme}
@@ -761,8 +761,8 @@ export function RunFooterView(props: RunFooterViewProps) {
                               props.onModelSelect(model)
                               closePanel()
                             }}
-                          @lgcode/>
-                        <@lgcode/Match>
+                          />
+                        </Match>
                         <Match when={varianting()}>
                           <RunVariantSelectBody
                             theme={theme}
@@ -773,8 +773,8 @@ export function RunFooterView(props: RunFooterViewProps) {
                               props.onVariantSelect(variant)
                               closePanel()
                             }}
-                          @lgcode/>
-                        <@lgcode/Match>
+                          />
+                        </Match>
                         <Match when={active().type === "permission"}>
                           <RunPermissionBody
                             request={permission()!.request}
@@ -782,22 +782,22 @@ export function RunFooterView(props: RunFooterViewProps) {
                             block={block()}
                             diffStyle={props.diffStyle}
                             onReply={props.onPermissionReply}
-                          @lgcode/>
-                        <@lgcode/Match>
+                          />
+                        </Match>
                         <Match when={active().type === "question"}>
                           <RunQuestionBody
                             request={question()!.request}
                             theme={theme()}
                             onReply={props.onQuestionReply}
                             onReject={props.onQuestionReject}
-                          @lgcode/>
-                        <@lgcode/Match>
-                      <@lgcode/Switch>
-                    <@lgcode/box>
-                  <@lgcode/box>
-                <@lgcode/box>
+                          />
+                        </Match>
+                      </Switch>
+                    </box>
+                  </box>
+                </box>
               )}
-            <@lgcode/For>
+            </For>
 
             <Show when={!panel() && menu()}>
               <RunFooterMenu
@@ -809,8 +809,8 @@ export function RunFooterView(props: RunFooterViewProps) {
                 limit={FOOTER_MENU_ROWS}
                 border={false}
                 paddingLeft={0}
-              @lgcode/>
-            <@lgcode/Show>
+              />
+            </Show>
 
             <Show when={!panel() && !menu()}>
               <box
@@ -823,9 +823,9 @@ export function RunFooterView(props: RunFooterViewProps) {
               >
                 <box paddingLeft={1} paddingRight={1} backgroundColor={theme().statusAccent} flexShrink={0}>
                   <text wrapMode="none" truncate>
-                    <span style={{ fg: modeColor(), bold: true }}>{modeLabel()}<@lgcode/span>
-                  <@lgcode/text>
-                <@lgcode/box>
+                    <span style={{ fg: modeColor(), bold: true }}>{modeLabel()}</span>
+                  </text>
+                </box>
 
                 <box
                   flexDirection="row"
@@ -839,27 +839,27 @@ export function RunFooterView(props: RunFooterViewProps) {
                 >
                   <Show when={busy() && !exiting()}>
                     <box flexShrink={0}>
-                      <spinner color={spin().color} frames={spin().frames} interval={40} @lgcode/>
-                    <@lgcode/box>
-                  <@lgcode/Show>
+                      <spinner color={spin().color} frames={spin().frames} interval={40} />
+                    </box>
+                  </Show>
 
                   <text fg={statusColor()} wrapMode="none" truncate flexGrow={1} flexShrink={1}>
                     <Show when={busy() && !exiting()} fallback={statusText()}>
                       <Show when={interruptLabel()}>
-                        {(label) => <span style={{ fg: armed() ? statusColor() : theme().muted }}>{label()} <@lgcode/span>}
-                      <@lgcode/Show>
+                        {(label) => <span style={{ fg: armed() ? statusColor() : theme().muted }}>{label()} </span>}
+                      </Show>
                       {statusText()}
-                    <@lgcode/Show>
-                  <@lgcode/text>
-                <@lgcode/box>
+                    </Show>
+                  </text>
+                </box>
 
                 <Show when={activityMeta().length > 0}>
                   <box paddingRight={1} backgroundColor="transparent" flexShrink={1}>
                     <text fg={theme().muted} wrapMode="none" truncate>
                       {activityMeta()}
-                    <@lgcode/text>
-                  <@lgcode/box>
-                <@lgcode/Show>
+                    </text>
+                  </box>
+                </Show>
 
                 <Show when={responsive().statusline.showModel && modelStatus()}>
                   {(info) => (
@@ -867,19 +867,19 @@ export function RunFooterView(props: RunFooterViewProps) {
                       <text fg={theme().text} wrapMode="none">
                         {info().model}
                         <Show when={info().provider}>
-                          {(provider) => <span style={{ fg: theme().muted }}> {provider()}<@lgcode/span>}
-                        <@lgcode/Show>
+                          {(provider) => <span style={{ fg: theme().muted }}> {provider()}</span>}
+                        </Show>
                         <Show when={info().variant}>
                           {(variant) => (
                             <>
-                              <span style={{ fg: theme().warning, bold: true }}> {variant()}<@lgcode/span>
-                            <@lgcode/>
+                              <span style={{ fg: theme().warning, bold: true }}> {variant()}</span>
+                            </>
                           )}
-                        <@lgcode/Show>
-                      <@lgcode/text>
-                    <@lgcode/box>
+                        </Show>
+                      </text>
+                    </box>
                   )}
-                <@lgcode/Show>
+                </Show>
 
                 <For each={contextHints()}>
                   {(hint, index) => (
@@ -887,13 +887,13 @@ export function RunFooterView(props: RunFooterViewProps) {
                       <text fg={theme().text} wrapMode="none" truncate>
                         <Show when={index() > 0 || ((hasActivityMeta() || hasModelStatus()) && index() === 0)}>
                           {sectionSeparator()}
-                        <@lgcode/Show>
-                        <span style={{ fg: theme().text }}>{hint.key}<@lgcode/span>{" "}
-                        <span style={{ fg: theme().muted }}>{hint.label}<@lgcode/span>
-                      <@lgcode/text>
-                    <@lgcode/box>
+                        </Show>
+                        <span style={{ fg: theme().text }}>{hint.key}</span>{" "}
+                        <span style={{ fg: theme().muted }}>{hint.label}</span>
+                      </text>
+                    </box>
                   )}
-                <@lgcode/For>
+                </For>
 
                 <Show when={commandHint()}>
                   {(hint) => (
@@ -901,16 +901,16 @@ export function RunFooterView(props: RunFooterViewProps) {
                       <text fg={theme().text} wrapMode="none" truncate>
                         <Show when={hasActivityMeta() || hasModelStatus() || hasContextHints()}>
                           {sectionSeparator()}
-                        <@lgcode/Show>
-                        <span style={{ fg: theme().text }}>{hint().key}<@lgcode/span>{" "}
-                        <span style={{ fg: theme().muted }}>{hint().label}<@lgcode/span>
-                      <@lgcode/text>
-                    <@lgcode/box>
+                        </Show>
+                        <span style={{ fg: theme().text }}>{hint().key}</span>{" "}
+                        <span style={{ fg: theme().muted }}>{hint().label}</span>
+                      </text>
+                    </box>
                   )}
-                <@lgcode/Show>
-              <@lgcode/box>
-            <@lgcode/Show>
-          <@lgcode/box>
+                </Show>
+              </box>
+            </Show>
+          </box>
         }
       >
         <box
@@ -935,9 +935,9 @@ export function RunFooterView(props: RunFooterViewProps) {
             diffStyle={props.diffStyle}
             onCycle={cycleTab}
             onClose={closeTab}
-          @lgcode/>
-        <@lgcode/box>
-      <@lgcode/Show>
-    <@lgcode/box>
+          />
+        </box>
+      </Show>
+    </box>
   )
 }

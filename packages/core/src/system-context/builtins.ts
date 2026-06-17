@@ -1,10 +1,10 @@
-export * as SystemContextBuiltIns from ".@lgcode/builtins"
+export * as SystemContextBuiltIns from "./builtins"
 
 import { DateTime, Effect, Layer, Schema } from "effect"
-import { Location } from "..@lgcode/location"
-import { SystemContext } from ".@lgcode/index"
-import { InstructionContext } from "..@lgcode/instruction-context"
-import { SystemContextRegistry } from ".@lgcode/registry"
+import { Location } from "../location"
+import { SystemContext } from "./index"
+import { InstructionContext } from "../instruction-context"
+import { SystemContextRegistry } from "./registry"
 
 const builtIns = Layer.effectDiscard(
   Effect.gen(function* () {
@@ -16,11 +16,11 @@ const builtIns = Layer.effectDiscard(
       `  Workspace root folder: ${location.project.directory}`,
       `  Is directory a git repo: ${location.vcs?.type === "git" ? "yes" : "no"}`,
       `  Platform: ${process.platform}`,
-      "<@lgcode/env>",
+      "</env>",
     ].join("\n")
     const context = SystemContext.combine([
       SystemContext.make({
-        key: SystemContext.Key.make("core@lgcode/environment"),
+        key: SystemContext.Key.make("core/environment"),
         codec: Schema.toCodecJson(Schema.String),
         load: Effect.succeed(environment),
         baseline: (environment) =>
@@ -28,7 +28,7 @@ const builtIns = Layer.effectDiscard(
         update: (_previous, environment) => ["The environment you are running in is now:", environment].join("\n"),
       }),
       SystemContext.make({
-        key: SystemContext.Key.make("core@lgcode/date"),
+        key: SystemContext.Key.make("core/date"),
         codec: Schema.toCodecJson(Schema.String),
         load: DateTime.nowAsDate.pipe(Effect.map((date) => date.toDateString())),
         baseline: (date) => `Today's date: ${date}`,
@@ -36,7 +36,7 @@ const builtIns = Layer.effectDiscard(
       }),
     ])
 
-    yield* registry.register({ key: SystemContext.Key.make("core@lgcode/builtins"), load: Effect.succeed(context) })
+    yield* registry.register({ key: SystemContext.Key.make("core/builtins"), load: Effect.succeed(context) })
   }),
 )
 

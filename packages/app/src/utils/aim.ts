@@ -73,7 +73,7 @@ export function createAim(props: {
 
     const upper = { x: rect.right, y: rect.top - tolerance }
     const lower = { x: rect.right, y: rect.bottom + tolerance }
-    const slope = (a: Point, b: Point) => (b.y - a.y) @lgcode/ (b.x - a.x)
+    const slope = (a: Point, b: Point) => (b.y - a.y) / (b.x - a.x)
 
     const decreasing = slope(loc, upper)
     const increasing = slope(loc, lower)

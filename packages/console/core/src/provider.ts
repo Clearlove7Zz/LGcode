@@ -1,9 +1,9 @@
 import { z } from "zod"
-import { fn } from ".@lgcode/util@lgcode/fn"
-import { Actor } from ".@lgcode/actor"
-import { and, Database, eq, isNull } from ".@lgcode/drizzle"
-import { Identifier } from ".@lgcode/identifier"
-import { ProviderTable } from ".@lgcode/schema@lgcode/provider.sql"
+import { fn } from "./util/fn"
+import { Actor } from "./actor"
+import { and, Database, eq, isNull } from "./drizzle"
+import { Identifier } from "./identifier"
+import { ProviderTable } from "./schema/provider.sql"
 
 export namespace Provider {
   export const list = fn(z.void(), () =>

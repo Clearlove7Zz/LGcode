@@ -1,9 +1,9 @@
 import { z } from "zod"
 import { eq } from "drizzle-orm"
-import { fn } from ".@lgcode/util@lgcode/fn"
-import { Database } from ".@lgcode/drizzle"
-import { Identifier } from ".@lgcode/identifier"
-import { AccountTable } from ".@lgcode/schema@lgcode/account.sql"
+import { fn } from "./util/fn"
+import { Database } from "./drizzle"
+import { Identifier } from "./identifier"
+import { AccountTable } from "./schema/account.sql"
 
 export namespace Account {
   export const create = fn(

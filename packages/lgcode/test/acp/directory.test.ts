@@ -1,11 +1,11 @@
 import { describe, expect } from "bun:test"
-import { Directory } from "@@lgcode/acp@lgcode/directory"
-import { Command } from "@@lgcode/command"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
-import { Provider } from "@@lgcode/provider@lgcode/provider"
+import { Directory } from "@/acp/directory"
+import { Command } from "@/command"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelV2 } from "@opencode@lgcode/core/model"
+import { Provider } from "@/provider/provider"
 import { Effect, Layer } from "effect"
-import { it } from "..@lgcode/lib@lgcode/effect"
+import { it } from "../lib/effect"
 
 const command = (name: string): Command.Info => ({
   name,
@@ -19,8 +19,8 @@ const model = (providerID: ProviderV2.ID, id: string, variants?: Directory.Model
   providerID,
   api: {
     id,
-    url: "https:@lgcode/@lgcode/example.com",
-    npm: "@ai-sdk@lgcode/openai-compatible",
+    url: "https://example.com",
+    npm: "@ai-sdk/openai-compatible",
   },
   name: id,
   family: "test",

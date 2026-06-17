@@ -1,4 +1,4 @@
-import type { Platform } from "..@lgcode/..@lgcode/..@lgcode/..@lgcode/..@lgcode/app@lgcode/src@lgcode/context@lgcode/platform"
+import type { Platform } from "../../../../../app/src/context/platform"
 
 const value: Platform = {
   platform: "web",

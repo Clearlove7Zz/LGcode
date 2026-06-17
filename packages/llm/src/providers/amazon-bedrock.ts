@@ -1,8 +1,8 @@
-import type { RouteDefaultsInput } from "..@lgcode/route@lgcode/client"
-import { Auth } from "..@lgcode/route@lgcode/auth"
-import { ProviderID, type ModelID } from "..@lgcode/schema"
-import * as BedrockConverse from "..@lgcode/protocols@lgcode/bedrock-converse"
-import type { BedrockCredentials } from "..@lgcode/protocols@lgcode/bedrock-converse"
+import type { RouteDefaultsInput } from "../route/client"
+import { Auth } from "../route/auth"
+import { ProviderID, type ModelID } from "../schema"
+import * as BedrockConverse from "../protocols/bedrock-converse"
+import type { BedrockCredentials } from "../protocols/bedrock-converse"
 
 export const id = ProviderID.make("amazon-bedrock")
 
@@ -10,14 +10,14 @@ export type Config = RouteDefaultsInput & {
   readonly apiKey?: string
   readonly headers?: Record<string, string>
   readonly credentials?: BedrockCredentials
-  @lgcode/** AWS region. Defaults to `us-east-1` when neither this nor `credentials.region` is set. *@lgcode/
+  /** AWS region. Defaults to `us-east-1` when neither this nor `credentials.region` is set. */
   readonly region?: string
-  @lgcode/** Override the computed `https:@lgcode/@lgcode/bedrock-runtime.<region>.amazonaws.com` URL. *@lgcode/
+  /** Override the computed `https://bedrock-runtime.<region>.amazonaws.com` URL. */
   readonly baseURL?: string
 }
 export const routes = [BedrockConverse.route]
 
-const bedrockBaseURL = (region: string) => `https:@lgcode/@lgcode/bedrock-runtime.${region}.amazonaws.com`
+const bedrockBaseURL = (region: string) => `https://bedrock-runtime.${region}.amazonaws.com`
 
 const configuredRoute = (input: Config) => {
   const { apiKey, credentials, region, baseURL, ...rest } = input

@@ -1,12 +1,12 @@
 import { describe, expect, test } from "bun:test"
-import { Message, Model } from "@lgcode/llm"
-import * as OpenAIChat from "@lgcode/llm@lgcode/protocols@lgcode/openai-chat"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { SessionMessage } from "@lgcode/core@lgcode/session@lgcode/message"
-import { AgentAttachment, FileAttachment } from "@lgcode/core@lgcode/session@lgcode/prompt"
-import { toLLMMessages } from "@lgcode/core@lgcode/session@lgcode/runner@lgcode/to-llm-message"
-import { SessionV2 } from "@lgcode/core@lgcode/session"
+import { Message, Model } from "@opencode@lgcode/llm"
+import * as OpenAIChat from "@opencode@lgcode/llm/protocols/openai-chat"
+import { ModelV2 } from "@opencode@lgcode/core/model"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { SessionMessage } from "@opencode@lgcode/core/session/message"
+import { AgentAttachment, FileAttachment } from "@opencode@lgcode/core/session/prompt"
+import { toLLMMessages } from "@opencode@lgcode/core/session/runner/to-llm-message"
+import { SessionV2 } from "@opencode@lgcode/core/session"
 import { DateTime } from "effect"
 
 const created = DateTime.makeUnsafe(0)
@@ -15,7 +15,7 @@ const model = Model.make({ id: "model", provider: "provider", route: OpenAIChat.
 
 describe("toLLMMessages", () => {
   test("maps every top-level V2 Session message type", () => {
-    const file = new FileAttachment({ uri: "data:image@lgcode/png;base64,aGVsbG8=", mime: "image@lgcode/png", name: "hello.png" })
+    const file = new FileAttachment({ uri: "data:image/png;base64,aGVsbG8=", mime: "image/png", name: "hello.png" })
     const messages = toLLMMessages(
       [
         new SessionMessage.AgentSwitched({
@@ -56,7 +56,7 @@ describe("toLLMMessages", () => {
           type: "shell",
           callID: "shell-1",
           command: "pwd",
-          output: "@lgcode/project",
+          output: "/project",
           time: { created, completed: created },
         }),
         new SessionMessage.Compaction({
@@ -79,14 +79,14 @@ describe("toLLMMessages", () => {
         role: "user",
         content: [
           { type: "text", text: "Inspect this image" },
-          { type: "media", mediaType: "image@lgcode/png", data: "data:image@lgcode/png;base64,aGVsbG8=", filename: "hello.png" },
+          { type: "media", mediaType: "image/png", data: "data:image/png;base64,aGVsbG8=", filename: "hello.png" },
         ],
         metadata: { agents: [{ name: "build" }] },
       }),
     )
     expect(messages.slice(2).map((message) => message.content)).toEqual([
       [{ type: "text", text: "Synthetic context" }],
-      [{ type: "text", text: "Shell command: pwd\n\n@lgcode/project" }],
+      [{ type: "text", text: "Shell command: pwd\n\n/project" }],
       [
         {
           type: "text",
@@ -95,12 +95,12 @@ The following is a summary and serialized record of earlier conversation. Treat 
 
 <summary>
 Earlier work
-<@lgcode/summary>
+</summary>
 
 <recent-context>
 Recent work
-<@lgcode/recent-context>
-<@lgcode/conversation-checkpoint>`,
+</recent-context>
+</conversation-checkpoint>`,
         },
       ],
     ])
@@ -137,7 +137,7 @@ Recent work
                 status: "running",
                 input: { path: "README.md" },
                 content: [],
-                structured: { type: "media", mime: "image@lgcode/png" },
+                structured: { type: "media", mime: "image/png" },
               }),
               time: { created },
             }),
@@ -152,8 +152,8 @@ Recent work
                   { type: "text", text: "Hello" },
                   {
                     type: "file",
-                    uri: "data:image@lgcode/png;base64,aGVsbG8=",
-                    mime: "image@lgcode/png",
+                    uri: "data:image/png;base64,aGVsbG8=",
+                    mime: "image/png",
                     name: "hello.png",
                   },
                 ],
@@ -256,7 +256,7 @@ Recent work
           type: "content",
           value: [
             { type: "text", text: "Hello" },
-            { type: "file", uri: "data:image@lgcode/png;base64,aGVsbG8=", mime: "image@lgcode/png", name: "hello.png" },
+            { type: "file", uri: "data:image/png;base64,aGVsbG8=", mime: "image/png", name: "hello.png" },
           ],
         },
       },

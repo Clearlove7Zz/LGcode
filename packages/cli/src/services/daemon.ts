@@ -1,9 +1,9 @@
-import { Global } from "@lgcode/core@lgcode/global"
-import { InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
-import { createOpencodeClient } from "@lgcode/sdk@lgcode/v2@lgcode/client"
-import { ServerAuth } from "@lgcode/server@lgcode/auth"
+import { Global } from "@opencode@lgcode/core/global"
+import { InstallationVersion } from "@opencode@lgcode/core/installation/version"
+import { createOpencodeClient } from "@opencode@lgcode/sdk/v2/client"
+import { ServerAuth } from "@opencode@lgcode/server/auth"
 import { Context, Effect, FileSystem, Layer, Option, Schedule, Schema, Scope } from "effect"
-import { HttpServer } from "effect@lgcode/unstable@lgcode/http"
+import { HttpServer } from "effect/unstable/http"
 import { randomBytes, randomUUID } from "crypto"
 import { spawn } from "node:child_process"
 import path from "path"
@@ -18,7 +18,7 @@ export interface Interface {
   readonly register: (address: HttpServer.Address) => Effect.Effect<void, unknown, Scope.Scope>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/cli@lgcode/Daemon") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/cli/Daemon") {}
 
 const Registration = Schema.Struct({
   id: Schema.optional(Schema.String),
@@ -45,8 +45,8 @@ export const layer = Layer.effect(
       const existing = yield* fs.readFileString(passwordFile).pipe(Effect.catch(() => Effect.succeed(undefined)))
       if (value === undefined && existing) return existing
 
-      @lgcode/@lgcode/ Keep one private credential across server restarts so discovered clients
-      @lgcode/@lgcode/ can reconnect without exposing a password flag or environment variable.
+      // Keep one private credential across server restarts so discovered clients
+      // can reconnect without exposing a password flag or environment variable.
       const generated = value ?? randomBytes(32).toString("base64url")
       const temp = passwordFile + ".tmp"
       yield* fs.makeDirectory(directory, { recursive: true })
@@ -110,7 +110,7 @@ export const layer = Layer.effect(
     const start = Effect.fn("cli.daemon.start")(function* () {
       const existing = yield* healthy().pipe(Effect.option)
       const found = Option.getOrUndefined(existing)
-      const compiled = path.basename(process.execPath).replace(@lgcode/\.exe$@lgcode/, "") !== "bun"
+      const compiled = path.basename(process.execPath).replace(/\.exe$/, "") !== "bun"
       if (found?.version === InstallationVersion && compiled) return found.url
       if (found) yield* stopProcess(found).pipe(Effect.ignore)
 
@@ -154,8 +154,8 @@ export const layer = Layer.effect(
 
     const stop = Effect.fn("cli.daemon.stop")(function* () {
       const existing = yield* healthy().pipe(Effect.option)
-      @lgcode/@lgcode/ A stale registration may point at a PID that has since been reused by
-      @lgcode/@lgcode/ another process. Only signal the PID after authenticating the server.
+      // A stale registration may point at a PID that has since been reused by
+      // another process. Only signal the PID after authenticating the server.
       if (Option.isNone(existing)) return yield* fs.remove(file).pipe(Effect.ignore)
       yield* stopProcess(existing.value)
       yield* fs.remove(file).pipe(Effect.ignore)
@@ -191,4 +191,4 @@ export const layer = Layer.effect(
 
 export const defaultLayer = layer
 
-export * as Daemon from ".@lgcode/daemon"
+export * as Daemon from "./daemon"

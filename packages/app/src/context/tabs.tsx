@@ -1,14 +1,14 @@
-import type { Session } from "@lgcode/sdk@lgcode/v2@lgcode/client"
-import { createSimpleContext } from "@lgcode/ui@lgcode/context"
-import { base64Encode } from "@lgcode/core@lgcode/util@lgcode/encode"
-import { createStore, produce } from "solid-js@lgcode/store"
-import { Persist, persisted, removePersisted, draftPersistedKeys } from "@@lgcode/utils@lgcode/persist"
-import { ServerConnection, useServer } from ".@lgcode/server"
+import type { Session } from "@opencode@lgcode/sdk/v2/client"
+import { createSimpleContext } from "@opencode@lgcode/ui/context"
+import { base64Encode } from "@opencode@lgcode/core/util/encode"
+import { createStore, produce } from "solid-js/store"
+import { Persist, persisted, removePersisted, draftPersistedKeys } from "@/utils/persist"
+import { ServerConnection, useServer } from "./server"
 import { createEffect, startTransition } from "solid-js"
-import { useLocation, useNavigate, useParams } from "@solidjs@lgcode/router"
-import { usePlatform } from ".@lgcode/platform"
-import { uuid } from "@@lgcode/utils@lgcode/uuid"
-import { SessionTabsRemovedDetail } from "@@lgcode/components@lgcode/titlebar-session-events"
+import { useLocation, useNavigate, useParams } from "@solidjs/router"
+import { usePlatform } from "./platform"
+import { uuid } from "@/utils/uuid"
+import { SessionTabsRemovedDetail } from "@/components/titlebar-session-events"
 
 export type SessionTab = {
   type: "session"
@@ -27,10 +27,10 @@ export type DraftTab = {
 
 export type Tab = SessionTab | DraftTab
 
-export const draftHref = (draftID: string) => `@lgcode/new-session?draftId=${encodeURIComponent(draftID)}`
+export const draftHref = (draftID: string) => `/new-session?draftId=${encodeURIComponent(draftID)}`
 
 export const tabHref = (tab: Tab) =>
-  tab.type === "draft" ? draftHref(tab.draftID) : `@lgcode/${tab.dirBase64}@lgcode/session@lgcode/${tab.sessionId}`
+  tab.type === "draft" ? draftHref(tab.draftID) : `/${tab.dirBase64}/session/${tab.sessionId}`
 
 export const tabKey = (tab: Tab) => (tab.type === "draft" ? `draft:${tab.draftID}` : `${tab.server}\n${tabHref(tab)}`)
 
@@ -124,11 +124,11 @@ export const { use: useTabs, provider: TabsProvider } = createSimpleContext({
         )
       },
       promoteDraft(draftID: string, session: Omit<SessionTab, "type">) {
-        @lgcode/@lgcode/ We're viewing this draft when @lgcode/new-session?draftId=… points at it. Promoting
-        @lgcode/@lgcode/ replaces the draft tab with a session tab, so the draft route would stop resolving
-        @lgcode/@lgcode/ and fall back home. Navigate to the new session first so we leave @lgcode/new-session
-        @lgcode/@lgcode/ before the draft is removed from the store.
-        const active = location.pathname === "@lgcode/new-session" && location.query.draftId === draftID
+        // We're viewing this draft when /new-session?draftId=… points at it. Promoting
+        // replaces the draft tab with a session tab, so the draft route would stop resolving
+        // and fall back home. Navigate to the new session first so we leave /new-session
+        // before the draft is removed from the store.
+        const active = location.pathname === "/new-session" && location.query.draftId === draftID
         startTransition(() => {
           setStore(
             produce((tabs) => {
@@ -154,7 +154,7 @@ export const { use: useTabs, provider: TabsProvider } = createSimpleContext({
             }),
           )
           if (nextTab) navigateTab(nextTab)
-          else navigate("@lgcode/")
+          else navigate("/")
         }).finally(() => closing.delete(key))
         if (draftID) removeDraftPersisted(draftID)
       },
@@ -162,7 +162,7 @@ export const { use: useTabs, provider: TabsProvider } = createSimpleContext({
         const drafts = store.flatMap((tab) => (tab.type === "draft" && tab.server === key ? [tab.draftID] : []))
         setStore((tabs) => tabs.filter((tab) => tab.server !== key))
         for (const draftID of drafts) removeDraftPersisted(draftID)
-        if (server.key === key) navigate("@lgcode/")
+        if (server.key === key) navigate("/")
       },
       removeSessions: (input: SessionTabsRemovedDetail) => {
         void startTransition(() => {
@@ -204,7 +204,7 @@ export const { use: useTabs, provider: TabsProvider } = createSimpleContext({
                 tabs.slice(currentIndex).find((tab) => tab.type === "session") ??
                 tabs.slice(0, currentIndex).findLast((tab) => tab.type === "session")
               if (nextTab) navigateTab(nextTab)
-              else navigate("@lgcode/")
+              else navigate("/")
             }),
           )
         })

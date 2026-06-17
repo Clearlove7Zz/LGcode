@@ -1,21 +1,21 @@
-import { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
-import type { Auth } from "@@lgcode/auth"
-import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
-import type { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
-import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
-import { Permission } from "@@lgcode/permission"
-import type { Agent } from "@@lgcode/agent@lgcode/agent"
-import type { MessageV2 } from "..@lgcode/message-v2"
-import type { Provider } from "@@lgcode/provider@lgcode/provider"
-import { ProviderTransform } from "@@lgcode/provider@lgcode/transform"
-import { SystemPrompt } from "..@lgcode/system"
-import { InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
+import { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
+import type { Auth } from "@/auth"
+import { SessionV1 } from "@opencode@lgcode/core/v1/session"
+import type { RuntimeFlags } from "@/effect/runtime-flags"
+import { InstanceState } from "@/effect/instance-state"
+import { Permission } from "@/permission"
+import type { Agent } from "@/agent/agent"
+import type { MessageV2 } from "../message-v2"
+import type { Provider } from "@/provider/provider"
+import { ProviderTransform } from "@/provider/transform"
+import { SystemPrompt } from "../system"
+import { InstallationVersion } from "@opencode@lgcode/core/installation/version"
 import { Effect, Record } from "effect"
 import { jsonSchema, tool as aiTool, type ModelMessage, type Tool } from "ai"
-import type { Plugin } from "@@lgcode/plugin"
+import type { Plugin } from "@/plugin"
 import { mergeDeep } from "remeda"
 
-const USER_AGENT = `opencode@lgcode/${InstallationVersion}`
+const USER_AGENT = `opencode/${InstallationVersion}`
 
 type PrepareInput = {
   readonly user: SessionV1.User
@@ -90,7 +90,7 @@ export const prepare = Effect.fn("LLMRequestPrep.prepare")(function* (input: Pre
       })
   const options = mergeOptions(mergeOptions(mergeOptions(base, input.model.options), input.agent.options), variant)
   if (
-    input.model.api.npm === "@ai-sdk@lgcode/azure" &&
+    input.model.api.npm === "@ai-sdk/azure" &&
     (input.provider.options.useCompletionUrls || input.model.options.useCompletionUrls || options.useCompletionUrls)
   ) {
     delete options.reasoningSummary
@@ -151,7 +151,7 @@ export const prepare = Effect.fn("LLMRequestPrep.prepare")(function* (input: Pre
     Object.keys(tools).length === 0 &&
     hasToolCalls(input.messages)
   ) {
-    @lgcode/@lgcode/ Copilot needs a tools field when replaying prior tool calls, even if no tools are currently enabled.
+    // Copilot needs a tools field when replaying prior tool calls, even if no tools are currently enabled.
     tools["_noop"] = aiTool({
       description: "Do not call this tool. It exists only for API compatibility and must never be invoked.",
       inputSchema: jsonSchema({
@@ -213,4 +213,4 @@ export function hasToolCalls(messages: ModelMessage[]): boolean {
   return false
 }
 
-export * as LLMRequestPrep from ".@lgcode/request"
+export * as LLMRequestPrep from "./request"

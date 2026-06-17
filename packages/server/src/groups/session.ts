@@ -1,12 +1,12 @@
-import { SessionMessage } from "@lgcode/core@lgcode/session@lgcode/message"
-import { SessionInput } from "@lgcode/core@lgcode/session@lgcode/input"
-import { Prompt } from "@lgcode/core@lgcode/session@lgcode/prompt"
-import { SessionV2 } from "@lgcode/core@lgcode/session"
-import { ProjectV2 } from "@lgcode/core@lgcode/project"
-import { AbsolutePath, PositiveInt, RelativePath, withStatics } from "@lgcode/core@lgcode/schema"
-import { WorkspaceV2 } from "@lgcode/core@lgcode/workspace"
+import { SessionMessage } from "@opencode@lgcode/core/session/message"
+import { SessionInput } from "@opencode@lgcode/core/session/input"
+import { Prompt } from "@opencode@lgcode/core/session/prompt"
+import { SessionV2 } from "@opencode@lgcode/core/session"
+import { ProjectV2 } from "@opencode@lgcode/core/project"
+import { AbsolutePath, PositiveInt, RelativePath, withStatics } from "@opencode@lgcode/core/schema"
+import { WorkspaceV2 } from "@opencode@lgcode/core/workspace"
 import { Schema, Struct } from "effect"
-import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
+import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect/unstable/httpapi"
 import {
   ConflictError,
   InvalidCursorError,
@@ -14,11 +14,11 @@ import {
   ServiceUnavailableError,
   SessionNotFoundError,
   UnknownError,
-} from "..@lgcode/errors"
-import { SessionLocationMiddleware } from "..@lgcode/middleware@lgcode/session-location"
-import { AgentV2 } from "@lgcode/core@lgcode/agent"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
-import { Location } from "@lgcode/core@lgcode/location"
+} from "../errors"
+import { SessionLocationMiddleware } from "../middleware/session-location"
+import { AgentV2 } from "@opencode@lgcode/core/agent"
+import { ModelV2 } from "@opencode@lgcode/core/model"
+import { Location } from "@opencode@lgcode/core/location"
 
 const SessionsQueryFields = {
   workspace: WorkspaceV2.ID.pipe(Schema.optional),
@@ -89,7 +89,7 @@ export const SessionsQuery = Schema.Struct({
 
 export const SessionGroup = HttpApiGroup.make("server.session")
   .add(
-    HttpApiEndpoint.get("session.list", "@lgcode/api@lgcode/session", {
+    HttpApiEndpoint.get("session.list", "/api/session", {
       query: SessionsQuery,
       success: Schema.Struct({
         data: Schema.Array(SessionV2.Info),
@@ -109,7 +109,7 @@ export const SessionGroup = HttpApiGroup.make("server.session")
     ),
   )
   .add(
-    HttpApiEndpoint.post("session.create", "@lgcode/api@lgcode/session", {
+    HttpApiEndpoint.post("session.create", "/api/session", {
       payload: Schema.Struct({
         id: SessionV2.ID.pipe(Schema.optional),
         agent: AgentV2.ID.pipe(Schema.optional),
@@ -126,7 +126,7 @@ export const SessionGroup = HttpApiGroup.make("server.session")
     ),
   )
   .add(
-    HttpApiEndpoint.get("session.get", "@lgcode/api@lgcode/session@lgcode/:sessionID", {
+    HttpApiEndpoint.get("session.get", "/api/session/:sessionID", {
       params: { sessionID: SessionV2.ID },
       success: Schema.Struct({ data: SessionV2.Info }),
       error: SessionNotFoundError,
@@ -141,7 +141,7 @@ export const SessionGroup = HttpApiGroup.make("server.session")
       ),
   )
   .add(
-    HttpApiEndpoint.post("session.prompt", "@lgcode/api@lgcode/session@lgcode/:sessionID@lgcode/prompt", {
+    HttpApiEndpoint.post("session.prompt", "/api/session/:sessionID/prompt", {
       params: { sessionID: SessionV2.ID },
       payload: Schema.Struct({
         id: SessionMessage.ID.pipe(Schema.optional),
@@ -162,7 +162,7 @@ export const SessionGroup = HttpApiGroup.make("server.session")
       ),
   )
   .add(
-    HttpApiEndpoint.post("session.compact", "@lgcode/api@lgcode/session@lgcode/:sessionID@lgcode/compact", {
+    HttpApiEndpoint.post("session.compact", "/api/session/:sessionID/compact", {
       params: { sessionID: SessionV2.ID },
       success: HttpApiSchema.NoContent,
       error: [SessionNotFoundError, ServiceUnavailableError],
@@ -177,7 +177,7 @@ export const SessionGroup = HttpApiGroup.make("server.session")
       ),
   )
   .add(
-    HttpApiEndpoint.post("session.wait", "@lgcode/api@lgcode/session@lgcode/:sessionID@lgcode/wait", {
+    HttpApiEndpoint.post("session.wait", "/api/session/:sessionID/wait", {
       params: { sessionID: SessionV2.ID },
       success: HttpApiSchema.NoContent,
       error: [SessionNotFoundError, ServiceUnavailableError],
@@ -192,7 +192,7 @@ export const SessionGroup = HttpApiGroup.make("server.session")
       ),
   )
   .add(
-    HttpApiEndpoint.get("session.context", "@lgcode/api@lgcode/session@lgcode/:sessionID@lgcode/context", {
+    HttpApiEndpoint.get("session.context", "/api/session/:sessionID/context", {
       params: { sessionID: SessionV2.ID },
       success: Schema.Struct({ data: Schema.Array(SessionMessage.Message) }),
       error: [SessionNotFoundError, UnknownError],

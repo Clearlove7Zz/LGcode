@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { Patch } from "@lgcode/core@lgcode/patch"
+import { Patch } from "@opencode@lgcode/core/patch"
 
 describe("Patch", () => {
   test("parses add, update, and delete hunks", () => {

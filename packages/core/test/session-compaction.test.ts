@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import { SessionCompaction } from "@lgcode/core@lgcode/session@lgcode/compaction"
+import { SessionCompaction } from "@opencode@lgcode/core/session/compaction"
 
 test("compaction describes tool media without embedding base64", () => {
   const base64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAAB"
@@ -7,12 +7,12 @@ test("compaction describes tool media without embedding base64", () => {
     { type: "text", text: "Image read successfully" },
     {
       type: "file",
-      uri: `data:image@lgcode/png;base64,${base64}`,
-      mime: "image@lgcode/png",
+      uri: `data:image/png;base64,${base64}`,
+      mime: "image/png",
       name: "pixel.png",
     },
   ])
 
-  expect(serialized).toBe("Image read successfully\n[Attached image@lgcode/png: pixel.png]")
+  expect(serialized).toBe("Image read successfully\n[Attached image/png: pixel.png]")
   expect(serialized).not.toContain(base64)
 })

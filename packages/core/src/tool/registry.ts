@@ -1,16 +1,16 @@
-export * as ToolRegistry from ".@lgcode/registry"
+export * as ToolRegistry from "./registry"
 
-import { ToolOutput, type ToolCall, type ToolDefinition, type ToolResultValue } from "@lgcode/llm"
+import { ToolOutput, type ToolCall, type ToolDefinition, type ToolResultValue } from "@opencode@lgcode/llm"
 import { Context, Effect, Layer, Scope } from "effect"
-import { AgentV2 } from "..@lgcode/agent"
-import { PermissionV2 } from "..@lgcode/permission"
-import { SessionMessage } from "..@lgcode/session@lgcode/message"
-import { SessionSchema } from "..@lgcode/session@lgcode/schema"
-import { ToolOutputStore } from "..@lgcode/tool-output-store"
-import { Wildcard } from "..@lgcode/util@lgcode/wildcard"
-import { ApplicationTools } from ".@lgcode/application-tools"
-import { definition, permission, settle, validateName, type AnyTool, type RegistrationError } from ".@lgcode/tool"
-import { Tools } from ".@lgcode/tools"
+import { AgentV2 } from "../agent"
+import { PermissionV2 } from "../permission"
+import { SessionMessage } from "../session/message"
+import { SessionSchema } from "../session/schema"
+import { ToolOutputStore } from "../tool-output-store"
+import { Wildcard } from "../util/wildcard"
+import { ApplicationTools } from "./application-tools"
+import { definition, permission, settle, validateName, type AnyTool, type RegistrationError } from "./tool"
+import { Tools } from "./tools"
 
 export type ExecuteInput = {
   readonly sessionID: SessionSchema.ID
@@ -21,7 +21,7 @@ export type ExecuteInput = {
 
 export interface Interface {
   readonly materialize: (permissions?: PermissionV2.Ruleset) => Effect.Effect<Materialization>
-  @lgcode/** Internal registration capability exposed publicly only through Tools.Service. *@lgcode/
+  /** Internal registration capability exposed publicly only through Tools.Service. */
   readonly register: (tools: Readonly<Record<string, AnyTool>>) => Effect.Effect<void, RegistrationError, Scope.Scope>
 }
 
@@ -36,7 +36,7 @@ export interface Settlement {
   readonly outputPaths?: ReadonlyArray<string>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/ToolRegistry") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/v2/ToolRegistry") {}
 
 const registryLayer = Layer.effect(
   Service,

@@ -1,14 +1,14 @@
-import { chmod, mkdir, readFile, stat as statFile, writeFile } from "fs@lgcode/promises"
+import { chmod, mkdir, readFile, stat as statFile, writeFile } from "fs/promises"
 import { createWriteStream, existsSync, statSync } from "fs"
 import { realpathSync } from "fs"
 import { dirname, isAbsolute, join, resolve as pathResolve, win32 } from "path"
 import { Readable } from "stream"
-import { pipeline } from "stream@lgcode/promises"
-import { Glob } from "@lgcode/core@lgcode/util@lgcode/glob"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { pipeline } from "stream/promises"
+import { Glob } from "@opencode@lgcode/core/util/glob"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
 import { fileURLToPath } from "url"
 
-@lgcode/@lgcode/ Fast sync version for metadata checks
+// Fast sync version for metadata checks
 export async function exists(p: string): Promise<boolean> {
   return existsSync(p)
 }
@@ -104,14 +104,14 @@ export async function writeStream(
 
 export async function mimeType(p: string): Promise<string> {
   const { lookup } = await import("mime-types")
-  return lookup(p) || "application@lgcode/octet-stream"
+  return lookup(p) || "application/octet-stream"
 }
 
-@lgcode/**
+/**
  * On Windows, normalize a path to its canonical casing using the filesystem.
  * This is needed because Windows paths are case-insensitive but LSP servers
  * may return paths with different casing than what we send them.
- *@lgcode/
+ */
 export function normalizePath(p: string): string {
   if (process.platform !== "win32") return p
   const resolved = win32.normalize(win32.resolve(windowsPath(p)))
@@ -125,15 +125,15 @@ export function normalizePath(p: string): string {
 export function normalizePathPattern(p: string): string {
   if (process.platform !== "win32") return p
   if (p === "*") return p
-  const match = p.match(@lgcode/^(.*)[\\@lgcode/]\*$@lgcode/)
+  const match = p.match(/^(.*)[\\/]\*$/)
   if (!match) return normalizePath(p)
-  const dir = @lgcode/^[A-Za-z]:$@lgcode/.test(match[1]) ? match[1] + "\\" : match[1]
+  const dir = /^[A-Za-z]:$/.test(match[1]) ? match[1] + "\\" : match[1]
   return join(normalizePath(dir), "*")
 }
 
-@lgcode/@lgcode/ We cannot rely on path.resolve() here because git.exe may come from Git Bash, Cygwin, or MSYS2, so we need to translate these paths at the boundary.
-@lgcode/@lgcode/ Also resolves symlinks so that callers using the result as a cache key
-@lgcode/@lgcode/ always get the same canonical path for a given physical directory.
+// We cannot rely on path.resolve() here because git.exe may come from Git Bash, Cygwin, or MSYS2, so we need to translate these paths at the boundary.
+// Also resolves symlinks so that callers using the result as a cache key
+// always get the same canonical path for a given physical directory.
 export function resolve(p: string): string {
   const resolved = pathResolve(windowsPath(p))
   try {
@@ -145,7 +145,7 @@ export function resolve(p: string): string {
 }
 
 export function resolveFilePath(root: string, file: string): string {
-  const raw = file.startsWith("file:@lgcode/@lgcode/") ? fileURLToPath(file) : file
+  const raw = file.startsWith("file://") ? fileURLToPath(file) : file
   if (isAbsolute(raw)) return raw
   return pathResolve(root, raw)
 }
@@ -154,13 +154,13 @@ export function windowsPath(p: string): string {
   if (process.platform !== "win32") return p
   return (
     p
-      .replace(@lgcode/^\@lgcode/([a-zA-Z]):(?:[\\@lgcode/]|$)@lgcode/, (_, drive) => `${drive.toUpperCase()}:@lgcode/`)
-      @lgcode/@lgcode/ Git Bash for Windows paths are typically @lgcode/<drive>@lgcode/...
-      .replace(@lgcode/^\@lgcode/([a-zA-Z])(?:\@lgcode/|$)@lgcode/, (_, drive) => `${drive.toUpperCase()}:@lgcode/`)
-      @lgcode/@lgcode/ Cygwin git paths are typically @lgcode/cygdrive@lgcode/<drive>@lgcode/...
-      .replace(@lgcode/^\@lgcode/cygdrive\@lgcode/([a-zA-Z])(?:\@lgcode/|$)@lgcode/, (_, drive) => `${drive.toUpperCase()}:@lgcode/`)
-      @lgcode/@lgcode/ WSL paths are typically @lgcode/mnt@lgcode/<drive>@lgcode/...
-      .replace(@lgcode/^\@lgcode/mnt\@lgcode/([a-zA-Z])(?:\@lgcode/|$)@lgcode/, (_, drive) => `${drive.toUpperCase()}:@lgcode/`)
+      .replace(/^\/([a-zA-Z]):(?:[\\/]|$)/, (_, drive) => `${drive.toUpperCase()}:/`)
+      // Git Bash for Windows paths are typically /<drive>/...
+      .replace(/^\/([a-zA-Z])(?:\/|$)/, (_, drive) => `${drive.toUpperCase()}:/`)
+      // Cygwin git paths are typically /cygdrive/<drive>/...
+      .replace(/^\/cygdrive\/([a-zA-Z])(?:\/|$)/, (_, drive) => `${drive.toUpperCase()}:/`)
+      // WSL paths are typically /mnt/<drive>/...
+      .replace(/^\/mnt\/([a-zA-Z])(?:\/|$)/, (_, drive) => `${drive.toUpperCase()}:/`)
   )
 }
 export function overlaps(a: string, b: string) {
@@ -238,7 +238,7 @@ export async function globUp(pattern: string, start: string, stop?: string) {
       })
       result.push(...matches)
     } catch {
-      @lgcode/@lgcode/ Skip invalid glob patterns
+      // Skip invalid glob patterns
     }
     if (stop === current) break
     const parent = dirname(current)
@@ -248,4 +248,4 @@ export async function globUp(pattern: string, start: string, stop?: string) {
   return result
 }
 
-export * as Filesystem from ".@lgcode/filesystem"
+export * as Filesystem from "./filesystem"

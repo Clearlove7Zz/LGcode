@@ -1,4 +1,4 @@
-import type { ClipboardService } from "..@lgcode/context@lgcode/clipboard"
+import type { ClipboardService } from "../context/clipboard"
 
 type Toast = {
   show: (input: { message: string; variant: "info" | "success" | "warning" | "error" }) => void
@@ -76,4 +76,4 @@ export function handleSelectionKey(
   renderer.clearSelection()
 }
 
-export * as Selection from ".@lgcode/selection"
+export * as Selection from "./selection"

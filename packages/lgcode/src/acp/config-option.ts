@@ -1,4 +1,4 @@
-import type { SessionConfigOption } from "@agentclientprotocol@lgcode/sdk"
+import type { SessionConfigOption } from "@agentclientprotocol/sdk"
 
 export const DEFAULT_VARIANT_VALUE = "default"
 
@@ -113,14 +113,14 @@ export function buildConfigOptions(input: {
 }
 
 export function parseModelSelection(modelId: string, providers: readonly ConfigOptionProvider[]): ModelSelection {
-  const provider = providers.find((item) => modelId.startsWith(`${item.id}@lgcode/`))
+  const provider = providers.find((item) => modelId.startsWith(`${item.id}/`))
   if (provider) {
     const modelID = modelId.slice(provider.id.length + 1)
     if (provider.models[modelID]) {
       return { model: { providerID: provider.id, modelID } }
     }
 
-    const separator = modelID.lastIndexOf("@lgcode/")
+    const separator = modelID.lastIndexOf("/")
     if (separator > -1) {
       const baseModelID = modelID.slice(0, separator)
       const variant = modelID.slice(separator + 1)
@@ -132,7 +132,7 @@ export function parseModelSelection(modelId: string, providers: readonly ConfigO
     return { model: { providerID: provider.id, modelID } }
   }
 
-  const separator = modelId.indexOf("@lgcode/")
+  const separator = modelId.indexOf("/")
   if (separator === -1) {
     return { model: { providerID: modelId, modelID: "" } }
   }
@@ -151,14 +151,14 @@ export function formatCurrentModelId(input: {
   variants?: readonly string[]
   includeVariant?: boolean
 }) {
-  const base = `${input.model.providerID}@lgcode/${input.model.modelID}`
+  const base = `${input.model.providerID}/${input.model.modelID}`
   if (!input.includeVariant || !input.variants?.length) return base
-  return `${base}@lgcode/${selectVariant(input.variant, input.variants)}`
+  return `${base}/${selectVariant(input.variant, input.variants)}`
 }
 
 export function formatVariantName(variant: string) {
   return variant
-    .split(@lgcode/[_-]@lgcode/)
+    .split(/[_-]/)
     .map((part) => (part ? part.charAt(0).toUpperCase() + part.slice(1) : part))
     .join(" ")
 }
@@ -172,8 +172,8 @@ function buildModelSelectOptions(
       .sort((a, b) => a.name.localeCompare(b.name))
       .flatMap((model) => {
         const base = {
-          value: `${provider.id}@lgcode/${model.id}`,
-          name: `${provider.name}@lgcode/${model.name}`,
+          value: `${provider.id}/${model.id}`,
+          name: `${provider.name}/${model.name}`,
         }
         if (!options.includeVariants || !model.variants) return [base]
 
@@ -182,8 +182,8 @@ function buildModelSelectOptions(
           ...Object.keys(model.variants)
             .filter((variant) => variant !== DEFAULT_VARIANT_VALUE)
             .map((variant) => ({
-              value: `${provider.id}@lgcode/${model.id}@lgcode/${variant}`,
-              name: `${provider.name}@lgcode/${model.name} (${formatVariantName(variant)})`,
+              value: `${provider.id}/${model.id}/${variant}`,
+              name: `${provider.name}/${model.name} (${formatVariantName(variant)})`,
             })),
         ]
       }),

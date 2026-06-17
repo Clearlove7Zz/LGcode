@@ -1,14 +1,14 @@
-import { Dialog } from "@lgcode/ui@lgcode/dialog"
-import { List } from "@lgcode/ui@lgcode/list"
-import { Switch } from "@lgcode/ui@lgcode/switch"
-import { Tooltip } from "@lgcode/ui@lgcode/tooltip"
-import { Button } from "@lgcode/ui@lgcode/button"
+import { Dialog } from "@opencode@lgcode/ui/dialog"
+import { List } from "@opencode@lgcode/ui/list"
+import { Switch } from "@opencode@lgcode/ui/switch"
+import { Tooltip } from "@opencode@lgcode/ui/tooltip"
+import { Button } from "@opencode@lgcode/ui/button"
 import type { Component } from "solid-js"
-import { useLocal } from "@@lgcode/context@lgcode/local"
-import { popularProviders } from "@@lgcode/hooks@lgcode/use-providers"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
-import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
-import { DialogSelectProvider } from ".@lgcode/dialog-select-provider"
+import { useLocal } from "@/context/local"
+import { popularProviders } from "@/hooks/use-providers"
+import { useLanguage } from "@/context/language"
+import { useDialog } from "@opencode@lgcode/ui/context/dialog"
+import { DialogSelectProvider } from "./dialog-select-provider"
 
 export const DialogManageModels: Component = () => {
   const local = useLocal()
@@ -16,7 +16,7 @@ export const DialogManageModels: Component = () => {
   const dialog = useDialog()
 
   const handleConnectProvider = () => {
-    dialog.show(() => <DialogSelectProvider @lgcode/>)
+    dialog.show(() => <DialogSelectProvider />)
   }
   const providerRank = (id: string) => popularProviders.indexOf(id)
   const providerList = (providerID: string) => local.model.list().filter((x) => x.provider.id === providerID)
@@ -35,7 +35,7 @@ export const DialogManageModels: Component = () => {
       action={
         <Button class="h-7 -my-1 text-14-medium" icon="plus-small" tabIndex={-1} onClick={handleConnectProvider}>
           {language.t("command.provider.connect")}
-        <@lgcode/Button>
+        </Button>
       }
     >
       <List
@@ -51,7 +51,7 @@ export const DialogManageModels: Component = () => {
           const provider = group.items[0].provider
           return (
             <>
-              <span>{provider.name}<@lgcode/span>
+              <span>{provider.name}</span>
               <Tooltip
                 placement="top"
                 value={language.t("dialog.model.manage.provider.toggle", { provider: provider.name })}
@@ -63,9 +63,9 @@ export const DialogManageModels: Component = () => {
                   hideLabel
                 >
                   {provider.name}
-                <@lgcode/Switch>
-              <@lgcode/Tooltip>
-            <@lgcode/>
+                </Switch>
+              </Tooltip>
+            </>
           )
         }}
         sortGroupsBy={(a, b) => {
@@ -85,18 +85,18 @@ export const DialogManageModels: Component = () => {
       >
         {(i) => (
           <div class="w-full flex items-center justify-between gap-x-3">
-            <span>{i.name}<@lgcode/span>
+            <span>{i.name}</span>
             <div onClick={(e) => e.stopPropagation()}>
               <Switch
                 checked={!!local.model.visible({ modelID: i.id, providerID: i.provider.id })}
                 onChange={(checked) => {
                   local.model.setVisibility({ modelID: i.id, providerID: i.provider.id }, checked)
                 }}
-              @lgcode/>
-            <@lgcode/div>
-          <@lgcode/div>
+              />
+            </div>
+          </div>
         )}
-      <@lgcode/List>
-    <@lgcode/Dialog>
+      </List>
+    </Dialog>
   )
 }

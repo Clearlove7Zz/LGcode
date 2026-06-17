@@ -1,11 +1,11 @@
 import { defineConfig, PluginOption } from "vite"
-import { solidStart } from "@solidjs@lgcode/start@lgcode/config"
-import { nitro } from "nitro@lgcode/vite"
+import { solidStart } from "@solidjs/start/config"
+import { nitro } from "nitro/vite"
 
 export default defineConfig({
   plugins: [
     solidStart({
-      middleware: ".@lgcode/src@lgcode/middleware.ts",
+      middleware: "./src/middleware.ts",
     }) as PluginOption,
     nitro({
       compatibilityDate: "2024-09-19",

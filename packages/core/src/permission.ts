@@ -1,18 +1,18 @@
-export * as PermissionV2 from ".@lgcode/permission"
+export * as PermissionV2 from "./permission"
 
 import { Context, Deferred, Effect as EffectRuntime, Layer, Schema } from "effect"
-import { EventV2 } from ".@lgcode/event"
-import { Location } from ".@lgcode/location"
-import { AgentV2 } from ".@lgcode/agent"
-import { SessionV2 } from ".@lgcode/session"
-import { SessionStore } from ".@lgcode/session@lgcode/store"
-import { withStatics } from ".@lgcode/schema"
-import { Identifier } from ".@lgcode/util@lgcode/identifier"
-import { Wildcard } from ".@lgcode/util@lgcode/wildcard"
-import { PermissionSchema } from ".@lgcode/permission@lgcode/schema"
-import { PermissionSaved } from ".@lgcode/permission@lgcode/saved"
+import { EventV2 } from "./event"
+import { Location } from "./location"
+import { AgentV2 } from "./agent"
+import { SessionV2 } from "./session"
+import { SessionStore } from "./session/store"
+import { withStatics } from "./schema"
+import { Identifier } from "./util/identifier"
+import { Wildcard } from "./util/wildcard"
+import { PermissionSchema } from "./permission/schema"
+import { PermissionSaved } from "./permission/saved"
 
-export { Effect, Rule, Ruleset } from ".@lgcode/permission@lgcode/schema"
+export { Effect, Rule, Ruleset } from "./permission/schema"
 type Effect = PermissionSchema.Effect
 type Rule = PermissionSchema.Rule
 type Ruleset = PermissionSchema.Ruleset
@@ -124,7 +124,7 @@ export interface Interface {
   readonly list: () => EffectRuntime.Effect<ReadonlyArray<Request>>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/Permission") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/v2/Permission") {}
 
 interface Pending {
   readonly request: Request

@@ -1,15 +1,15 @@
-import { Integration } from "@lgcode/core@lgcode/integration"
-import { Location } from "@lgcode/core@lgcode/location"
+import { Integration } from "@opencode@lgcode/core/integration"
+import { Location } from "@opencode@lgcode/core/location"
 import { Schema } from "effect"
-import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
-import { InvalidRequestError } from "..@lgcode/errors"
-import { LocationMiddleware, LocationQuery, locationQueryOpenApi } from ".@lgcode/location"
+import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect/unstable/httpapi"
+import { InvalidRequestError } from "../errors"
+import { LocationMiddleware, LocationQuery, locationQueryOpenApi } from "./location"
 
 const Inputs = Schema.Record(Schema.String, Schema.String)
 
 export const IntegrationGroup = HttpApiGroup.make("server.integration")
   .add(
-    HttpApiEndpoint.get("integration.list", "@lgcode/api@lgcode/integration", {
+    HttpApiEndpoint.get("integration.list", "/api/integration", {
       query: LocationQuery,
       success: Location.response(Schema.Array(Integration.Info)),
     })
@@ -23,7 +23,7 @@ export const IntegrationGroup = HttpApiGroup.make("server.integration")
       ),
   )
   .add(
-    HttpApiEndpoint.get("integration.get", "@lgcode/api@lgcode/integration@lgcode/:integrationID", {
+    HttpApiEndpoint.get("integration.get", "/api/integration/:integrationID", {
       params: { integrationID: Integration.ID },
       query: LocationQuery,
       success: Location.response(Schema.UndefinedOr(Integration.Info)),
@@ -38,7 +38,7 @@ export const IntegrationGroup = HttpApiGroup.make("server.integration")
       ),
   )
   .add(
-    HttpApiEndpoint.post("integration.connect.key", "@lgcode/api@lgcode/integration@lgcode/:integrationID@lgcode/connect@lgcode/key", {
+    HttpApiEndpoint.post("integration.connect.key", "/api/integration/:integrationID/connect/key", {
       params: { integrationID: Integration.ID },
       query: LocationQuery,
       payload: Schema.Struct({
@@ -58,7 +58,7 @@ export const IntegrationGroup = HttpApiGroup.make("server.integration")
       ),
   )
   .add(
-    HttpApiEndpoint.post("integration.connect.oauth", "@lgcode/api@lgcode/integration@lgcode/:integrationID@lgcode/connect@lgcode/oauth", {
+    HttpApiEndpoint.post("integration.connect.oauth", "/api/integration/:integrationID/connect/oauth", {
       params: { integrationID: Integration.ID },
       query: LocationQuery,
       payload: Schema.Struct({
@@ -79,7 +79,7 @@ export const IntegrationGroup = HttpApiGroup.make("server.integration")
       ),
   )
   .add(
-    HttpApiEndpoint.get("integration.attempt.status", "@lgcode/api@lgcode/integration@lgcode/attempt@lgcode/:attemptID", {
+    HttpApiEndpoint.get("integration.attempt.status", "/api/integration/attempt/:attemptID", {
       params: { attemptID: Integration.AttemptID },
       query: LocationQuery,
       success: Location.response(Integration.AttemptStatus),
@@ -94,7 +94,7 @@ export const IntegrationGroup = HttpApiGroup.make("server.integration")
       ),
   )
   .add(
-    HttpApiEndpoint.post("integration.attempt.complete", "@lgcode/api@lgcode/integration@lgcode/attempt@lgcode/:attemptID@lgcode/complete", {
+    HttpApiEndpoint.post("integration.attempt.complete", "/api/integration/attempt/:attemptID/complete", {
       params: { attemptID: Integration.AttemptID },
       query: LocationQuery,
       payload: Schema.Struct({ code: Schema.optional(Schema.String) }),
@@ -111,7 +111,7 @@ export const IntegrationGroup = HttpApiGroup.make("server.integration")
       ),
   )
   .add(
-    HttpApiEndpoint.delete("integration.attempt.cancel", "@lgcode/api@lgcode/integration@lgcode/attempt@lgcode/:attemptID", {
+    HttpApiEndpoint.delete("integration.attempt.cancel", "/api/integration/attempt/:attemptID", {
       params: { attemptID: Integration.AttemptID },
       query: LocationQuery,
       success: HttpApiSchema.NoContent,

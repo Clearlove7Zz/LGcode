@@ -1,6 +1,6 @@
-import type { DesktopTheme, ResolvedTheme, ResolvedV2Theme } from ".@lgcode/types"
-import { resolveThemeVariant, themeToCss } from ".@lgcode/resolve"
-import { resolveThemeVariantV2, themeV2ToCss } from ".@lgcode/v2@lgcode/resolve"
+import type { DesktopTheme, ResolvedTheme, ResolvedV2Theme } from "./types"
+import { resolveThemeVariant, themeToCss } from "./resolve"
+import { resolveThemeVariantV2, themeV2ToCss } from "./v2/resolve"
 
 let activeTheme: DesktopTheme | null = null
 const THEME_STYLE_ID = "opencode-theme"

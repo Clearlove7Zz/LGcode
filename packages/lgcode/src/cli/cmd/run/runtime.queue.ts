@@ -1,17 +1,17 @@
-@lgcode/@lgcode/ Serial prompt queue for direct interactive mode.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Prompts arrive from the footer (user types and hits enter) and queue up
-@lgcode/@lgcode/ here. The queue drains one turn at a time; ordinary prompts waiting behind
-@lgcode/@lgcode/ an active ordinary turn are exposed for edit@lgcode/removal until they begin.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ The queue also handles @lgcode/exit, @lgcode/quit, and @lgcode/new commands, empty-prompt rejection,
-@lgcode/@lgcode/ and tracks per-turn wall-clock duration for the footer status line.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Resolves when the footer closes and all in-flight work finishes.
-import * as Locale from "@@lgcode/util@lgcode/locale"
-import { MessageID, PartID } from "@@lgcode/session@lgcode/schema"
-import { isExitCommand, isNewCommand } from ".@lgcode/prompt.shared"
-import type { FooterApi, FooterEvent, FooterQueuedPrompt, RunPrompt } from ".@lgcode/types"
+// Serial prompt queue for direct interactive mode.
+//
+// Prompts arrive from the footer (user types and hits enter) and queue up
+// here. The queue drains one turn at a time; ordinary prompts waiting behind
+// an active ordinary turn are exposed for edit/removal until they begin.
+//
+// The queue also handles /exit, /quit, and /new commands, empty-prompt rejection,
+// and tracks per-turn wall-clock duration for the footer status line.
+//
+// Resolves when the footer closes and all in-flight work finishes.
+import * as Locale from "@/util/locale"
+import { MessageID, PartID } from "@/session/schema"
+import { isExitCommand, isNewCommand } from "./prompt.shared"
+import type { FooterApi, FooterEvent, FooterQueuedPrompt, RunPrompt } from "./types"
 
 type Trace = {
   write(type: string, data?: unknown): void
@@ -51,11 +51,11 @@ function defer<T = void>(): Deferred<T> {
   return { promise, resolve, reject }
 }
 
-@lgcode/@lgcode/ Runs the prompt queue until the footer closes.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Subscribes to footer prompt events and drains operations through input.run().
-@lgcode/@lgcode/ Ordinary prompts submitted during an ordinary active turn remain local and
-@lgcode/@lgcode/ are exposed by the footer for edit@lgcode/removal until their turn begins.
+// Runs the prompt queue until the footer closes.
+//
+// Subscribes to footer prompt events and drains operations through input.run().
+// Ordinary prompts submitted during an ordinary active turn remain local and
+// are exposed by the footer for edit/removal until their turn begins.
 export async function runPromptQueue(input: QueueInput): Promise<void> {
   const stop = defer<{ type: "closed" }>()
   const done = defer()

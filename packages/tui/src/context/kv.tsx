@@ -1,10 +1,10 @@
 import { createSignal, type Setter } from "solid-js"
-import { createStore, unwrap } from "solid-js@lgcode/store"
-import { createSimpleContext } from ".@lgcode/helper"
-import { Flock } from "@lgcode/core@lgcode/util@lgcode/flock"
-import { Global } from "@lgcode/core@lgcode/global"
-import { readJson, writeJsonAtomic } from "..@lgcode/util@lgcode/persistence"
-import { useTuiPaths } from ".@lgcode/runtime"
+import { createStore, unwrap } from "solid-js/store"
+import { createSimpleContext } from "./helper"
+import { Flock } from "@opencode@lgcode/core/util/flock"
+import { Global } from "@opencode@lgcode/core/global"
+import { readJson, writeJsonAtomic } from "../util/persistence"
+import { useTuiPaths } from "./runtime"
 import path from "path"
 
 export const { use: useKV, provider: KVProvider } = createSimpleContext({
@@ -16,7 +16,7 @@ export const { use: useKV, provider: KVProvider } = createSimpleContext({
     const lock = `tui-kv:${file}`
     const [ready, setReady] = createSignal(false)
     const [store, setStore] = createStore<Record<string, any>>()
-    @lgcode/@lgcode/ Queue same-process writes so rapid updates persist in order.
+    // Queue same-process writes so rapid updates persist in order.
     let write = Promise.resolve()
 
     Flock.withLock(lock, () => readJson<Record<string, unknown>>(file))

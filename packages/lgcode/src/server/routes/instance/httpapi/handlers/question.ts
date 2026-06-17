@@ -1,9 +1,9 @@
-import { Question } from "@@lgcode/question"
-import { QuestionID } from "@@lgcode/question@lgcode/schema"
+import { Question } from "@/question"
+import { QuestionID } from "@/question/schema"
 import { Effect } from "effect"
-import { HttpApiBuilder } from "effect@lgcode/unstable@lgcode/httpapi"
-import { InstanceHttpApi } from "..@lgcode/api"
-import { QuestionNotFoundError } from "..@lgcode/errors"
+import { HttpApiBuilder } from "effect/unstable/httpapi"
+import { InstanceHttpApi } from "../api"
+import { QuestionNotFoundError } from "../errors"
 
 export const questionHandlers = HttpApiBuilder.group(InstanceHttpApi, "question", (handlers) =>
   Effect.gen(function* () {

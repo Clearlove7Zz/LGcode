@@ -1,27 +1,27 @@
 import { describe, expect } from "bun:test"
 import { Deferred, Effect, Fiber, Layer } from "effect"
-import { AgentV2 } from "@lgcode/core@lgcode/agent"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import { Location } from "@lgcode/core@lgcode/location"
-import { PermissionV2 } from "@lgcode/core@lgcode/permission"
-import { PermissionTable } from "@lgcode/core@lgcode/permission@lgcode/sql"
-import { PermissionSaved } from "@lgcode/core@lgcode/permission@lgcode/saved"
-import { Project } from "@lgcode/core@lgcode/project"
-import { ProjectTable } from "@lgcode/core@lgcode/project@lgcode/sql"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import { SessionV2 } from "@lgcode/core@lgcode/session"
-import { SessionTable } from "@lgcode/core@lgcode/session@lgcode/sql"
-import { SessionExecution } from "@lgcode/core@lgcode/session@lgcode/execution"
-import { SessionStore } from "@lgcode/core@lgcode/session@lgcode/store"
+import { AgentV2 } from "@opencode@lgcode/core/agent"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import { Location } from "@opencode@lgcode/core/location"
+import { PermissionV2 } from "@opencode@lgcode/core/permission"
+import { PermissionTable } from "@opencode@lgcode/core/permission/sql"
+import { PermissionSaved } from "@opencode@lgcode/core/permission/saved"
+import { Project } from "@opencode@lgcode/core/project"
+import { ProjectTable } from "@opencode@lgcode/core/project/sql"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import { SessionV2 } from "@opencode@lgcode/core/session"
+import { SessionTable } from "@opencode@lgcode/core/session/sql"
+import { SessionExecution } from "@opencode@lgcode/core/session/execution"
+import { SessionStore } from "@opencode@lgcode/core/session/store"
 import { eq } from "drizzle-orm"
-import { location } from ".@lgcode/fixture@lgcode/location"
-import { testEffect } from ".@lgcode/lib@lgcode/effect"
+import { location } from "./fixture/location"
+import { testEffect } from "./lib/effect"
 
 const database = Database.layerFromPath(":memory:")
 const current = Layer.succeed(
   Location.Service,
-  Location.Service.of(location({ directory: AbsolutePath.make("@lgcode/project") })),
+  Location.Service.of(location({ directory: AbsolutePath.make("/project") })),
 )
 const events = EventV2.layer.pipe(Layer.provide(database))
 const store = SessionStore.layer.pipe(Layer.provide(database))
@@ -49,7 +49,7 @@ function setup(rules: PermissionV2.Ruleset = []) {
     const { db } = yield* Database.Service
     yield* db
       .insert(ProjectTable)
-      .values({ id: Project.ID.global, worktree: AbsolutePath.make("@lgcode/project"), sandboxes: [] })
+      .values({ id: Project.ID.global, worktree: AbsolutePath.make("/project"), sandboxes: [] })
       .onConflictDoNothing()
       .run()
       .pipe(Effect.orDie)
@@ -59,7 +59,7 @@ function setup(rules: PermissionV2.Ruleset = []) {
         id: SessionV2.ID.make("ses_test"),
         project_id: Project.ID.global,
         slug: "test",
-        directory: "@lgcode/project",
+        directory: "/project",
         title: "test",
         version: "test",
         agent: "test",
@@ -88,7 +88,7 @@ function assertion(input: Partial<PermissionV2.AssertInput> = {}) {
     id: PermissionV2.ID.create("per_test"),
     sessionID: SessionV2.ID.make("ses_test"),
     action: "read",
-    resources: ["src@lgcode/index.ts"],
+    resources: ["src/index.ts"],
     ...input,
   } satisfies PermissionV2.AssertInput
 }
@@ -171,7 +171,7 @@ describe("PermissionV2", () => {
 
       expect(yield* service.ask(assertion({ resources: ["tool_123"] }))).toMatchObject({ effect: "allow" })
       expect(
-        yield* service.ask(assertion({ action: "external_directory", resources: ["@lgcode/tmp@lgcode/tool-output@lgcode/*"] })),
+        yield* service.ask(assertion({ action: "external_directory", resources: ["/tmp/tool-output/*"] })),
       ).toMatchObject({ effect: "deny" })
     }),
   )
@@ -286,7 +286,7 @@ describe("PermissionV2", () => {
           : Effect.void,
       )
       yield* Effect.addFinalizer(() => unsubscribe)
-      const fiber = yield* service.assert(assertion({ save: ["src@lgcode/*"] })).pipe(Effect.forkScoped)
+      const fiber = yield* service.assert(assertion({ save: ["src/*"] })).pipe(Effect.forkScoped)
       const request = yield* Deferred.await(asked)
       yield* service.reply({ requestID: request.id, reply: "always" })
       yield* Fiber.join(fiber)
@@ -294,11 +294,11 @@ describe("PermissionV2", () => {
       const { db } = yield* Database.Service
       expect(
         yield* db.select().from(PermissionTable).where(eq(PermissionTable.project_id, Project.ID.global)).all(),
-      ).toMatchObject([{ action: "read", resource: "src@lgcode/*" }])
+      ).toMatchObject([{ action: "read", resource: "src/*" }])
       const saved = yield* PermissionSaved.Service
       const id = (yield* saved.list())[0]!.id
-      expect(yield* saved.list()).toEqual([{ id, projectID: Project.ID.global, action: "read", resource: "src@lgcode/*" }])
-      yield* service.assert(assertion({ id: PermissionV2.ID.create("per_next"), resources: ["src@lgcode/next.ts"] }))
+      expect(yield* saved.list()).toEqual([{ id, projectID: Project.ID.global, action: "read", resource: "src/*" }])
+      yield* service.assert(assertion({ id: PermissionV2.ID.create("per_next"), resources: ["src/next.ts"] }))
       yield* saved.remove(id)
       expect(yield* saved.list()).toEqual([])
     }),

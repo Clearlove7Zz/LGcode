@@ -6,35 +6,35 @@ import {
   SystemPart,
   isContextOverflowFailure,
   type ProviderErrorEvent,
-} from "@lgcode/llm"
+} from "@opencode@lgcode/llm"
 import { Cause, DateTime, Effect, FiberSet, Layer, Option, Schema, Semaphore, Stream } from "effect"
-import { AgentV2 } from "..@lgcode/..@lgcode/agent"
-import { Config } from "..@lgcode/..@lgcode/config"
-import { Database } from "..@lgcode/..@lgcode/database@lgcode/database"
-import { EventV2 } from "..@lgcode/..@lgcode/event"
-import { Location } from "..@lgcode/..@lgcode/location"
-import { ModelV2 } from "..@lgcode/..@lgcode/model"
-import { ProviderV2 } from "..@lgcode/..@lgcode/provider"
-import { QuestionV2 } from "..@lgcode/..@lgcode/question"
-import { SystemContext } from "..@lgcode/..@lgcode/system-context@lgcode/index"
-import { SystemContextRegistry } from "..@lgcode/..@lgcode/system-context@lgcode/registry"
-import { SkillGuidance } from "..@lgcode/..@lgcode/skill@lgcode/guidance"
-import { ReferenceGuidance } from "..@lgcode/..@lgcode/reference@lgcode/guidance"
-import { ToolRegistry } from "..@lgcode/..@lgcode/tool@lgcode/registry"
-import { ToolOutputStore } from "..@lgcode/..@lgcode/tool-output-store"
-import { SessionContextEpoch } from "..@lgcode/context-epoch"
-import { SessionCompaction } from "..@lgcode/compaction"
-import { SessionEvent } from "..@lgcode/event"
-import { SessionHistory } from "..@lgcode/history"
-import { SessionInput } from "..@lgcode/input"
-import { SessionSchema } from "..@lgcode/schema"
-import { SessionStore } from "..@lgcode/store"
-import { type RunError, Service, StepLimitExceededError } from ".@lgcode/index"
-import { SessionRunnerModel } from ".@lgcode/model"
-import { createLLMEventPublisher } from ".@lgcode/publish-llm-event"
-import { toLLMMessages } from ".@lgcode/to-llm-message"
+import { AgentV2 } from "../../agent"
+import { Config } from "../../config"
+import { Database } from "../../database/database"
+import { EventV2 } from "../../event"
+import { Location } from "../../location"
+import { ModelV2 } from "../../model"
+import { ProviderV2 } from "../../provider"
+import { QuestionV2 } from "../../question"
+import { SystemContext } from "../../system-context/index"
+import { SystemContextRegistry } from "../../system-context/registry"
+import { SkillGuidance } from "../../skill/guidance"
+import { ReferenceGuidance } from "../../reference/guidance"
+import { ToolRegistry } from "../../tool/registry"
+import { ToolOutputStore } from "../../tool-output-store"
+import { SessionContextEpoch } from "../context-epoch"
+import { SessionCompaction } from "../compaction"
+import { SessionEvent } from "../event"
+import { SessionHistory } from "../history"
+import { SessionInput } from "../input"
+import { SessionSchema } from "../schema"
+import { SessionStore } from "../store"
+import { type RunError, Service, StepLimitExceededError } from "./index"
+import { SessionRunnerModel } from "./model"
+import { createLLMEventPublisher } from "./publish-llm-event"
+import { toLLMMessages } from "./to-llm-message"
 
-@lgcode/**
+/**
  * Runs one durable coding-agent Session until it settles.
  *
  * Keep this as orchestration over smaller collaborators rather than rebuilding the legacy
@@ -49,11 +49,11 @@ import { toLLMMessages } from ".@lgcode/to-llm-message"
  *   - [ ] Bound provider retries and repeated identical tool calls.
  *
  * - Runtime context assembly
- *   - Track V1 runtime-context parity canonically in `specs@lgcode/v2@lgcode/session.md`.
+ *   - Track V1 runtime-context parity canonically in `specs/v2/session.md`.
  *
  * - One provider turn
  *   - [x] Translate every projected V2 Session message variant into canonical
- *     `@lgcode/llm` messages.
+ *     `@opencode@lgcode/llm` messages.
  *   - [ ] Resolve policy-filtered built-in, MCP, plugin, and structured-output tool definitions.
  *   - [x] Stream exactly one `llm.stream(request)` provider turn.
  *   - [x] Persist assistant text and usage events incrementally as they arrive.
@@ -82,9 +82,9 @@ import { toLLMMessages } from ".@lgcode/to-llm-message"
  * The current slice loads V2 history, translates it, resolves a model through a core service, and persists one
  * provider turn. Registry definitions are advertised, local tool calls are settled durably, and a
  * bounded explicit loop starts the next provider turn after local settlement.
- *@lgcode/
+ */
 
-@lgcode/@lgcode/ QUESTION: Did this exist previously, or did we add this limit? Does it make sense?
+// QUESTION: Did this exist previously, or did we add this limit? Does it make sense?
 const MAX_STEPS = 25
 
 export const layer = Layer.effect(
@@ -137,14 +137,14 @@ export const layer = Layer.effect(
     const awaitToolFibers = (fibers: FiberSet.FiberSet<void, ToolOutputStore.Error>) =>
       Effect.raceFirst(FiberSet.join(fibers), FiberSet.awaitEmpty(fibers))
 
-    @lgcode/@lgcode/ Match V1: dismissing a question halts the loop instead of becoming model-facing tool output.
+    // Match V1: dismissing a question halts the loop instead of becoming model-facing tool output.
     const isQuestionRejected = (cause: Cause.Cause<unknown>) =>
       cause.reasons.some((reason) => Cause.isDieReason(reason) && reason.defect instanceof QuestionV2.RejectedError)
 
     type TurnTransition =
-      @lgcode/@lgcode/ Request preparation observed a concurrent Session change and must restart from durable state.
+      // Request preparation observed a concurrent Session change and must restart from durable state.
       | { readonly _tag: "RebuildPreparedTurn"; readonly promotion?: SessionInput.Delivery }
-      @lgcode/@lgcode/ Overflow compaction completed; rebuild once through the path without overflow recovery.
+      // Overflow compaction completed; rebuild once through the path without overflow recovery.
       | { readonly _tag: "ContinueAfterOverflowCompaction" }
 
     class TurnTransitionError extends Error {
@@ -215,7 +215,7 @@ export const layer = Layer.effect(
       const entries = yield* SessionHistory.entriesForRunner(db, session.id, system.baselineSeq)
       const context = entries.map((entry) => entry.message)
       const toolMaterialization = yield* tools.materialize(agent.info?.permissions)
-      const promptCacheKey = @lgcode/^ses_[0-9a-f]{64}$@lgcode/.test(session.id) ? session.id.slice(4) : session.id
+      const promptCacheKey = /^ses_[0-9a-f]{64}$/.test(session.id) ? session.id.slice(4) : session.id
       const request = LLM.request({
         model,
         providerOptions: { openai: { promptCacheKey } },

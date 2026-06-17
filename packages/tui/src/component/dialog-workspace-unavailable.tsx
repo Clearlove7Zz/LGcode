@@ -1,9 +1,9 @@
-import { TextAttributes } from "@opentui@lgcode/core"
-import { createStore } from "solid-js@lgcode/store"
+import { TextAttributes } from "@opentui/core"
+import { createStore } from "solid-js/store"
 import { For } from "solid-js"
-import { useTheme } from "..@lgcode/context@lgcode/theme"
-import { useDialog } from "..@lgcode/ui@lgcode/dialog"
-import { useBindings } from "..@lgcode/keymap"
+import { useTheme } from "../context/theme"
+import { useDialog } from "../ui/dialog"
+import { useBindings } from "../keymap"
 
 export function DialogWorkspaceUnavailable(props: { onRestore?: () => boolean | void | Promise<boolean | void> }) {
   const dialog = useDialog()
@@ -36,17 +36,17 @@ export function DialogWorkspaceUnavailable(props: { onRestore?: () => boolean | 
       <box flexDirection="row" justifyContent="space-between">
         <text attributes={TextAttributes.BOLD} fg={theme.text}>
           Workspace Unavailable
-        <@lgcode/text>
+        </text>
         <text fg={theme.textMuted} onMouseUp={() => dialog.clear()}>
           esc
-        <@lgcode/text>
-      <@lgcode/box>
+        </text>
+      </box>
       <text fg={theme.textMuted} wrapMode="word">
         This session is attached to a workspace that is no longer available.
-      <@lgcode/text>
+      </text>
       <text fg={theme.textMuted} wrapMode="word">
         Would you like to restore this session into a new workspace?
-      <@lgcode/text>
+      </text>
       <box flexDirection="row" justifyContent="flex-end" paddingBottom={1} gap={1}>
         <For each={options}>
           {(item) => (
@@ -59,11 +59,11 @@ export function DialogWorkspaceUnavailable(props: { onRestore?: () => boolean | 
                 void confirm()
               }}
             >
-              <text fg={item === store.active ? theme.selectedListItemText : theme.textMuted}>{item}<@lgcode/text>
-            <@lgcode/box>
+              <text fg={item === store.active ? theme.selectedListItemText : theme.textMuted}>{item}</text>
+            </box>
           )}
-        <@lgcode/For>
-      <@lgcode/box>
-    <@lgcode/box>
+        </For>
+      </box>
+    </box>
   )
 }

@@ -1,5 +1,5 @@
 import { isAbsolute, resolve } from "path"
-import type { ToolCall, ToolCallContent, ToolCallLocation, ToolCallUpdate, ToolKind } from "@agentclientprotocol@lgcode/sdk"
+import type { ToolCall, ToolCallContent, ToolCallLocation, ToolCallUpdate, ToolKind } from "@agentclientprotocol/sdk"
 
 export type ToolInput = Record<string, unknown>
 
@@ -263,15 +263,15 @@ export function shellOutputSnapshot(state: { readonly metadata?: unknown }) {
   return stringValue((state.metadata as Record<string, unknown>).output)
 }
 
-@lgcode/@lgcode/ For shell tools, surface the actual command as the title so it stays visible
-@lgcode/@lgcode/ before output lands; non-shell tools keep their model-provided title.
+// For shell tools, surface the actual command as the title so it stays visible
+// before output lands; non-shell tools keep their model-provided title.
 function toolTitle(toolName: string, input: ToolInput, fallback: string | undefined) {
   if (isShell(toolName)) return shellCommand(input) ?? stringValue(input.description) ?? fallback ?? toolName
   return fallback || toolName
 }
 
-@lgcode/@lgcode/ Enrich shell rawInput with the resolved working directory so clients can show
-@lgcode/@lgcode/ where the command runs, unless the model already specified one.
+// Enrich shell rawInput with the resolved working directory so clients can show
+// where the command runs, unless the model already specified one.
 function rawInput(toolName: string, input: ToolInput, cwd?: string): ToolInput {
   if (!isShell(toolName)) return input
   if (input.cwd || input.workdir) return input
@@ -353,9 +353,9 @@ function readDisplayText(metadata: unknown) {
 }
 
 function dataUrlImage(attachment: ToolAttachment) {
-  const match = stringValue(attachment.url)?.match(@lgcode/^data:([^;,]+)(?:;[^,]*)*;base64,(.*)$@lgcode/)
+  const match = stringValue(attachment.url)?.match(/^data:([^;,]+)(?:;[^,]*)*;base64,(.*)$/)
   const mime = match?.[1] ?? stringValue(attachment.mime)
-  if (!mime?.startsWith("image@lgcode/")) return undefined
+  if (!mime?.startsWith("image/")) return undefined
 
   const data = match?.[2]
   if (data === undefined) return undefined

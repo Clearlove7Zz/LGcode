@@ -1,19 +1,19 @@
-import { Agent } from "@@lgcode/agent@lgcode/agent"
-import { Command } from "@@lgcode/command"
-import { Format } from "@@lgcode/format"
-import { LSP } from "@@lgcode/lsp@lgcode/lsp"
-import { Vcs } from "@@lgcode/project@lgcode/vcs"
-import { Skill } from "@@lgcode/skill"
+import { Agent } from "@/agent/agent"
+import { Command } from "@/command"
+import { Format } from "@/format"
+import { LSP } from "@/lsp/lsp"
+import { Vcs } from "@/project/vcs"
+import { Skill } from "@/skill"
 import { Schema } from "effect"
-import { HttpApi, HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
-import { Authorization } from "..@lgcode/middleware@lgcode/authorization"
-import { InstanceContextMiddleware } from "..@lgcode/middleware@lgcode/instance-context"
+import { HttpApi, HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect/unstable/httpapi"
+import { Authorization } from "../middleware/authorization"
+import { InstanceContextMiddleware } from "../middleware/instance-context"
 import {
   WorkspaceRoutingMiddleware,
   WorkspaceRoutingQuery,
   WorkspaceRoutingQueryFields,
-} from "..@lgcode/middleware@lgcode/workspace-routing"
-import { described } from ".@lgcode/metadata"
+} from "../middleware/workspace-routing"
+import { described } from "./metadata"
 
 const PathInfo = Schema.Struct({
   home: Schema.String,
@@ -41,18 +41,18 @@ export class ApiVcsApplyError extends Schema.ErrorClass<ApiVcsApplyError>("VcsAp
 ) {}
 
 export const InstancePaths = {
-  dispose: "@lgcode/instance@lgcode/dispose",
-  path: "@lgcode/path",
-  vcs: "@lgcode/vcs",
-  vcsStatus: "@lgcode/vcs@lgcode/status",
-  vcsDiff: "@lgcode/vcs@lgcode/diff",
-  vcsDiffRaw: "@lgcode/vcs@lgcode/diff@lgcode/raw",
-  vcsApply: "@lgcode/vcs@lgcode/apply",
-  command: "@lgcode/command",
-  agent: "@lgcode/agent",
-  skill: "@lgcode/skill",
-  lsp: "@lgcode/lsp",
-  formatter: "@lgcode/formatter",
+  dispose: "/instance/dispose",
+  path: "/path",
+  vcs: "/vcs",
+  vcsStatus: "/vcs/status",
+  vcsDiff: "/vcs/diff",
+  vcsDiffRaw: "/vcs/diff/raw",
+  vcsApply: "/vcs/apply",
+  command: "/command",
+  agent: "/agent",
+  skill: "/skill",
+  lsp: "/lsp",
+  formatter: "/formatter",
 } as const
 
 export const InstanceApi = HttpApi.make("instance")
@@ -114,7 +114,7 @@ export const InstanceApi = HttpApi.make("instance")
         HttpApiEndpoint.get("vcsDiffRaw", InstancePaths.vcsDiffRaw, {
           query: WorkspaceRoutingQuery,
           success: described(
-            Schema.String.pipe(HttpApiSchema.asText({ contentType: "text@lgcode/x-diff; charset=utf-8" })),
+            Schema.String.pipe(HttpApiSchema.asText({ contentType: "text/x-diff; charset=utf-8" })),
             "Raw VCS diff",
           ),
         }).annotateMerge(

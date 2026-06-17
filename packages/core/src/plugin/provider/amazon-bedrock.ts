@@ -1,7 +1,7 @@
 import { Effect } from "effect"
-import type { LanguageModelV3 } from "@ai-sdk@lgcode/provider"
-import { PluginV2 } from "..@lgcode/..@lgcode/plugin"
-import { ProviderV2 } from "..@lgcode/..@lgcode/provider"
+import type { LanguageModelV3 } from "@ai-sdk/provider"
+import { PluginV2 } from "../../plugin"
+import { ProviderV2 } from "../../provider"
 
 type MantleSDK = {
   languageModel: (modelID: string) => LanguageModelV3
@@ -9,9 +9,9 @@ type MantleSDK = {
   responses: (modelID: string) => LanguageModelV3
 }
 
-@lgcode/@lgcode/ Bedrock cross-region inference profiles require regional prefixes only for
-@lgcode/@lgcode/ specific model@lgcode/region combinations. Keep the mapping narrow and avoid
-@lgcode/@lgcode/ double-prefixing model IDs that models.dev already marks as global@lgcode/us@lgcode/eu@lgcode/etc.
+// Bedrock cross-region inference profiles require regional prefixes only for
+// specific model/region combinations. Keep the mapping narrow and avoid
+// double-prefixing model IDs that models.dev already marks as global/us/eu/etc.
 function resolveModelID(modelID: string, region: string | undefined) {
   const crossRegionPrefixes = ["global.", "us.", "eu.", "jp.", "apac.", "au."]
   if (crossRegionPrefixes.some((prefix) => modelID.startsWith(prefix))) return modelID
@@ -66,19 +66,19 @@ export const AmazonBedrockPlugin = PluginV2.define({
       "catalog.transform": Effect.fn(function* (evt) {
         for (const item of evt.provider.list()) {
           if (item.provider.api.type !== "aisdk") continue
-          if (item.provider.api.package !== "@ai-sdk@lgcode/amazon-bedrock") continue
+          if (item.provider.api.package !== "@ai-sdk/amazon-bedrock") continue
           evt.provider.update(item.provider.id, (provider) => {
             if (provider.api.type !== "aisdk") return
             if (typeof provider.request.body.endpoint !== "string") return
-            @lgcode/@lgcode/ The AI SDK expects a base URL, but users configure Bedrock private@lgcode/VPC
-            @lgcode/@lgcode/ endpoints as `endpoint`; move it into the catalog endpoint URL once.
+            // The AI SDK expects a base URL, but users configure Bedrock private/VPC
+            // endpoints as `endpoint`; move it into the catalog endpoint URL once.
             provider.api.url = provider.request.body.endpoint
             delete provider.request.body.endpoint
           })
         }
       }),
       "aisdk.sdk": Effect.fn(function* (evt) {
-        if (!["@ai-sdk@lgcode/amazon-bedrock", "@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle"].includes(evt.package)) return
+        if (!["@ai-sdk/amazon-bedrock", "@ai-sdk/amazon-bedrock/mantle"].includes(evt.package)) return
         const options = { ...evt.options }
         const profile = typeof options.profile === "string" ? options.profile : process.env.AWS_PROFILE
         const region = typeof options.region === "string" ? options.region : (process.env.AWS_REGION ?? "us-east-1")
@@ -93,24 +93,24 @@ export const AmazonBedrockPlugin = PluginV2.define({
         options.region = region
         if (typeof options.endpoint === "string") options.baseURL = options.endpoint
         if (!bearerToken && options.credentialProvider === undefined) {
-          @lgcode/@lgcode/ Do not gate SDK creation on explicit AWS env vars. The default chain
-          @lgcode/@lgcode/ also handles ~@lgcode/.aws@lgcode/credentials, SSO, process creds, and instance roles.
-          const { fromNodeProviderChain } = yield* Effect.promise(() => import("@aws-sdk@lgcode/credential-providers"))
+          // Do not gate SDK creation on explicit AWS env vars. The default chain
+          // also handles ~/.aws/credentials, SSO, process creds, and instance roles.
+          const { fromNodeProviderChain } = yield* Effect.promise(() => import("@aws-sdk/credential-providers"))
           options.credentialProvider = fromNodeProviderChain(profile ? { profile } : {})
         }
 
-        if (evt.package === "@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle") {
-          const mod = yield* Effect.promise(() => import("@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle"))
+        if (evt.package === "@ai-sdk/amazon-bedrock/mantle") {
+          const mod = yield* Effect.promise(() => import("@ai-sdk/amazon-bedrock/mantle"))
           evt.sdk = mod.createBedrockMantle(options)
           return
         }
 
-        const mod = yield* Effect.promise(() => import("@ai-sdk@lgcode/amazon-bedrock"))
+        const mod = yield* Effect.promise(() => import("@ai-sdk/amazon-bedrock"))
         evt.sdk = mod.createAmazonBedrock(options)
       }),
       "aisdk.language": Effect.fn(function* (evt) {
         if (evt.model.providerID !== ProviderV2.ID.amazonBedrock) return
-        if (evt.model.api.type === "aisdk" && evt.model.api.package === "@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle") {
+        if (evt.model.api.type === "aisdk" && evt.model.api.package === "@ai-sdk/amazon-bedrock/mantle") {
           evt.language = selectMantleModel(evt.sdk, evt.model.api.id)
           return
         }

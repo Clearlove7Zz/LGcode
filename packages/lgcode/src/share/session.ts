@@ -1,10 +1,10 @@
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
-import { Session } from "@@lgcode/session@lgcode/session"
-import { SessionID } from "@@lgcode/session@lgcode/schema"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { Session } from "@/session/session"
+import { SessionID } from "@/session/schema"
 import { Effect, Layer, Scope, Context } from "effect"
-import { Config } from "@@lgcode/config@lgcode/config"
-import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
-import { ShareNext } from ".@lgcode/share-next"
+import { Config } from "@/config/config"
+import { RuntimeFlags } from "@/effect/runtime-flags"
+import { ShareNext } from "./share-next"
 
 export interface Interface {
   readonly create: (input?: Session.CreateInput) => Effect.Effect<Session.Info>
@@ -12,7 +12,7 @@ export interface Interface {
   readonly unshare: (sessionID: SessionID) => Effect.Effect<void, unknown>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/SessionShare") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/SessionShare") {}
 
 export const layer = Layer.effect(
   Service,
@@ -58,4 +58,4 @@ export const defaultLayer = layer.pipe(
 
 export const node = LayerNode.make(layer, [Config.node, Session.node, ShareNext.node, RuntimeFlags.node])
 
-export * as SessionShare from ".@lgcode/session"
+export * as SessionShare from "./session"

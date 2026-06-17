@@ -1,10 +1,10 @@
 import { expect, mock, beforeEach } from "bun:test"
 import { EventEmitter } from "events"
 import { Deferred, Effect, Layer, Option } from "effect"
-import { awaitWithTimeout, testEffect } from "..@lgcode/lib@lgcode/effect"
-import type { MCP as MCPNS } from "..@lgcode/..@lgcode/src@lgcode/mcp@lgcode/index"
+import { awaitWithTimeout, testEffect } from "../lib/effect"
+import type { MCP as MCPNS } from "../../src/mcp/index"
 
-@lgcode/@lgcode/ Track open() calls and control failure behavior
+// Track open() calls and control failure behavior
 let openShouldFail = false
 let openCalledWith: string | undefined
 let openDeferred: Deferred.Deferred<string> | undefined
@@ -14,10 +14,10 @@ void mock.module("open", () => ({
     openCalledWith = url
     if (openDeferred) Effect.runSync(Deferred.succeed(openDeferred, url).pipe(Effect.ignore))
 
-    @lgcode/@lgcode/ Return a mock subprocess that emits an error if openShouldFail is true
+    // Return a mock subprocess that emits an error if openShouldFail is true
     const subprocess = new EventEmitter()
     if (openShouldFail) {
-      @lgcode/@lgcode/ Emit error asynchronously like a real subprocess would
+      // Emit error asynchronously like a real subprocess would
       setTimeout(() => {
         subprocess.emit("error", new Error("spawn xdg-open ENOENT"))
       }, 10)
@@ -26,7 +26,7 @@ void mock.module("open", () => ({
   },
 }))
 
-@lgcode/@lgcode/ Mock UnauthorizedError
+// Mock UnauthorizedError
 class MockUnauthorizedError extends Error {
   constructor() {
     super("Unauthorized")
@@ -34,15 +34,15 @@ class MockUnauthorizedError extends Error {
   }
 }
 
-@lgcode/@lgcode/ Track what options were passed to each transport constructor
+// Track what options were passed to each transport constructor
 const transportCalls: Array<{
   type: "streamable" | "sse"
   url: string
   options: { authProvider?: unknown; requestInit?: RequestInit }
 }> = []
 
-@lgcode/@lgcode/ Mock the transport constructors
-void mock.module("@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/streamableHttp.js", () => ({
+// Mock the transport constructors
+void mock.module("@modelcontextprotocol/sdk/client/streamableHttp.js", () => ({
   StreamableHTTPClientTransport: class MockStreamableHTTP {
     url: string
     authProvider: { redirectToAuthorization?: (url: URL) => Promise<void> } | undefined
@@ -59,19 +59,19 @@ void mock.module("@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/streamab
       })
     }
     async start() {
-      @lgcode/@lgcode/ Simulate OAuth redirect by calling the authProvider's redirectToAuthorization
+      // Simulate OAuth redirect by calling the authProvider's redirectToAuthorization
       if (this.authProvider?.redirectToAuthorization) {
-        await this.authProvider.redirectToAuthorization(new URL("https:@lgcode/@lgcode/auth.example.com@lgcode/authorize?client_id=test"))
+        await this.authProvider.redirectToAuthorization(new URL("https://auth.example.com/authorize?client_id=test"))
       }
       throw new MockUnauthorizedError()
     }
     async finishAuth(_code: string) {
-      @lgcode/@lgcode/ Mock successful auth completion
+      // Mock successful auth completion
     }
   },
 }))
 
-void mock.module("@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/sse.js", () => ({
+void mock.module("@modelcontextprotocol/sdk/client/sse.js", () => ({
   SSEClientTransport: class MockSSE {
     constructor(url: URL) {
       transportCalls.push({
@@ -86,8 +86,8 @@ void mock.module("@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/sse.js",
   },
 }))
 
-@lgcode/@lgcode/ Mock the MCP SDK Client to trigger OAuth flow
-void mock.module("@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/index.js", () => ({
+// Mock the MCP SDK Client to trigger OAuth flow
+void mock.module("@modelcontextprotocol/sdk/client/index.js", () => ({
   Client: class MockClient {
     setRequestHandler() {}
 
@@ -101,8 +101,8 @@ void mock.module("@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/index.js
   },
 }))
 
-@lgcode/@lgcode/ Mock UnauthorizedError in the auth module
-void mock.module("@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/auth.js", () => ({
+// Mock UnauthorizedError in the auth module
+void mock.module("@modelcontextprotocol/sdk/client/auth.js", () => ({
   UnauthorizedError: MockUnauthorizedError,
 }))
 
@@ -113,14 +113,14 @@ beforeEach(() => {
   transportCalls.length = 0
 })
 
-@lgcode/@lgcode/ Import modules after mocking
-const { MCP } = await import("..@lgcode/..@lgcode/src@lgcode/mcp@lgcode/index")
-const { EventV2Bridge } = await import("..@lgcode/..@lgcode/src@lgcode/event-v2-bridge")
-const { Config } = await import("..@lgcode/..@lgcode/src@lgcode/config@lgcode/config")
-const { McpAuth } = await import("..@lgcode/..@lgcode/src@lgcode/mcp@lgcode/auth")
-const { McpOAuthCallback } = await import("..@lgcode/..@lgcode/src@lgcode/mcp@lgcode/oauth-callback")
-const { FSUtil } = await import("@lgcode/core@lgcode/fs-util")
-const { CrossSpawnSpawner } = await import("@lgcode/core@lgcode/cross-spawn-spawner")
+// Import modules after mocking
+const { MCP } = await import("../../src/mcp/index")
+const { EventV2Bridge } = await import("../../src/event-v2-bridge")
+const { Config } = await import("../../src/config/config")
+const { McpAuth } = await import("../../src/mcp/auth")
+const { McpOAuthCallback } = await import("../../src/mcp/oauth-callback")
+const { FSUtil } = await import("@opencode@lgcode/core/fs-util")
+const { CrossSpawnSpawner } = await import("@opencode@lgcode/core/cross-spawn-spawner")
 const mcpTest = testEffect(
   MCP.layer.pipe(
     Layer.provide(McpAuth.defaultLayer),
@@ -136,7 +136,7 @@ const config = (name: string, headers?: Record<string, string>) => ({
   mcp: {
     [name]: {
       type: "remote" as const,
-      url: "https:@lgcode/@lgcode/example.com@lgcode/mcp",
+      url: "https://example.com/mcp",
       headers,
     },
   },
@@ -190,7 +190,7 @@ mcpTest.instance(
       )
 
       expect(failure.mcpName).toBe("test-oauth-server")
-      expect(failure.url).toContain("https:@lgcode/@lgcode/")
+      expect(failure.url).toContain("https://")
     }),
   { config: config("test-oauth-server") },
 )
@@ -232,7 +232,7 @@ mcpTest.instance(
 
       expect(failure).toEqual(Option.none())
       expect(typeof url).toBe("string")
-      expect(url).toContain("https:@lgcode/@lgcode/")
+      expect(url).toContain("https://")
       expect(transportCalls.at(-1)?.options.requestInit?.headers).toEqual({ "X-Custom-Header": "custom-value" })
     }),
   { config: config("test-oauth-server-3", { "X-Custom-Header": "custom-value" }) },

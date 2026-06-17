@@ -1,8 +1,8 @@
-import type { ProviderOptions, ReasoningEffort, TextVerbosity } from "..@lgcode/schema"
-import { mergeProviderOptions } from "..@lgcode/schema"
-import type { OpenAIResponseIncludable, OpenAIServiceTier } from "..@lgcode/protocols@lgcode/utils@lgcode/openai-options"
+import type { ProviderOptions, ReasoningEffort, TextVerbosity } from "../schema"
+import { mergeProviderOptions } from "../schema"
+import type { OpenAIResponseIncludable, OpenAIServiceTier } from "../protocols/utils/openai-options"
 
-export type { OpenAIResponseIncludable, OpenAIServiceTier } from "..@lgcode/protocols@lgcode/utils@lgcode/openai-options"
+export type { OpenAIResponseIncludable, OpenAIServiceTier } from "../protocols/utils/openai-options"
 
 export interface OpenAIOptionsInput {
   readonly [key: string]: unknown
@@ -10,9 +10,9 @@ export interface OpenAIOptionsInput {
   readonly promptCacheKey?: string
   readonly reasoningEffort?: ReasoningEffort
   readonly reasoningSummary?: "auto"
-  @lgcode/@lgcode/ OpenAI Responses `include` wire field. Mirrors the official SDK's
-  @lgcode/@lgcode/ `ResponseIncludable[]` union exactly so AI SDK callers and direct
-  @lgcode/@lgcode/ native-SDK callers share one shape and no translation is required.
+  // OpenAI Responses `include` wire field. Mirrors the official SDK's
+  // `ResponseIncludable[]` union exactly so AI SDK callers and direct
+  // native-SDK callers share one shape and no translation is required.
   readonly include?: ReadonlyArray<OpenAIResponseIncludable>
   readonly textVerbosity?: TextVerbosity
   readonly serviceTier?: OpenAIServiceTier
@@ -50,11 +50,11 @@ export const gpt5DefaultOptions = (
   return openAIProviderOptions({
     reasoningEffort: "medium",
     reasoningSummary: "auto",
-    @lgcode/@lgcode/ GPT-5 reasoning models are configured stateless (`store: false`) by
-    @lgcode/@lgcode/ `openAIDefaultOptions` below, so the only way a follow-up turn can
-    @lgcode/@lgcode/ carry reasoning state is via the encrypted reasoning include. Without
-    @lgcode/@lgcode/ this, callers using the default model facade get reasoning summaries
-    @lgcode/@lgcode/ they cannot replay statelessly.
+    // GPT-5 reasoning models are configured stateless (`store: false`) by
+    // `openAIDefaultOptions` below, so the only way a follow-up turn can
+    // carry reasoning state is via the encrypted reasoning include. Without
+    // this, callers using the default model facade get reasoning summaries
+    // they cannot replay statelessly.
     include: ["reasoning.encrypted_content"],
     textVerbosity:
       options.textVerbosity === true && id.includes("gpt-5.") && !id.includes("codex") && !id.includes("-chat")
@@ -80,4 +80,4 @@ export const withOpenAIOptions = <Options extends { readonly providerOptions?: O
   }
 }
 
-export * as OpenAIProviderOptions from ".@lgcode/openai-options"
+export * as OpenAIProviderOptions from "./openai-options"

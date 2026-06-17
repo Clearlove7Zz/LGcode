@@ -1,15 +1,15 @@
-export * as GlobTool from ".@lgcode/glob"
+export * as GlobTool from "./glob"
 
-import { ToolFailure } from "@lgcode/llm"
+import { ToolFailure } from "@opencode@lgcode/llm"
 import { Effect, Layer, Schema } from "effect"
 import path from "path"
-import { FileSystem } from "..@lgcode/filesystem"
-import { Location } from "..@lgcode/location"
-import { Ripgrep } from "..@lgcode/ripgrep"
-import { RelativePath } from "..@lgcode/schema"
-import { PermissionV2 } from "..@lgcode/permission"
-import { Tool } from ".@lgcode/tool"
-import { Tools } from ".@lgcode/tools"
+import { FileSystem } from "../filesystem"
+import { Location } from "../location"
+import { Ripgrep } from "../ripgrep"
+import { RelativePath } from "../schema"
+import { PermissionV2 } from "../permission"
+import { Tool } from "./tool"
+import { Tools } from "./tools"
 
 export const name = "glob"
 
@@ -26,13 +26,13 @@ export const Input = Schema.Struct({
 export const Output = Schema.Array(FileSystem.Entry)
 type ModelOutput = typeof Output.Encoded
 
-@lgcode/** Format raw search results into the concise line-oriented output models expect. *@lgcode/
+/** Format raw search results into the concise line-oriented output models expect. */
 export const toModelOutput = (output: ModelOutput) => {
   const lines = output.length === 0 ? ["No files found"] : output.map((item) => item.path)
   return lines.join("\n")
 }
 
-@lgcode/** Glob leaf that defaults its filesystem root to the active Location. *@lgcode/
+/** Glob leaf that defaults its filesystem root to the active Location. */
 export const layer = Layer.effectDiscard(
   Effect.gen(function* () {
     const tools = yield* Tools.Service

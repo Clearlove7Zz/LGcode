@@ -1,10 +1,10 @@
-import { ProjectCopy } from "@lgcode/core@lgcode/project@lgcode/copy"
-import { ProjectV2 } from "@lgcode/core@lgcode/project"
+import { ProjectCopy } from "@opencode@lgcode/core/project/copy"
+import { ProjectV2 } from "@opencode@lgcode/core/project"
 import { Schema, Struct } from "effect"
-import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
-import { LocationMiddleware, LocationQuery, locationQueryOpenApi } from ".@lgcode/location"
+import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect/unstable/httpapi"
+import { LocationMiddleware, LocationQuery, locationQueryOpenApi } from "./location"
 
-const root = "@lgcode/experimental@lgcode/project@lgcode/:projectID@lgcode/copy"
+const root = "/experimental/project/:projectID/copy"
 
 export class ProjectCopyError extends Schema.ErrorClass<ProjectCopyError>("ProjectCopyError")(
   {
@@ -44,7 +44,7 @@ export const ProjectCopyGroup = HttpApiGroup.make("server.projectCopy")
       .annotateMerge(OpenApi.annotations({ identifier: "v2.projectCopy.remove" })),
   )
   .add(
-    HttpApiEndpoint.post("projectCopy.refresh", `${root}@lgcode/refresh`, {
+    HttpApiEndpoint.post("projectCopy.refresh", `${root}/refresh`, {
       params: { projectID: ProjectV2.ID },
       query: LocationQuery,
       success: HttpApiSchema.NoContent,

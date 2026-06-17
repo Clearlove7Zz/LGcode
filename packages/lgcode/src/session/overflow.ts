@@ -1,9 +1,9 @@
-import type { Config } from "@@lgcode/config@lgcode/config"
-import { ConfigV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/config"
-import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
-import type { Provider } from "@@lgcode/provider@lgcode/provider"
-import { ProviderTransform } from "@@lgcode/provider@lgcode/transform"
-import type { MessageV2 } from ".@lgcode/message-v2"
+import type { Config } from "@/config/config"
+import { ConfigV1 } from "@opencode@lgcode/core/v1/config/config"
+import { SessionV1 } from "@opencode@lgcode/core/v1/session"
+import type { Provider } from "@/provider/provider"
+import { ProviderTransform } from "@/provider/transform"
+import type { MessageV2 } from "./message-v2"
 
 const COMPACTION_BUFFER = 20_000
 

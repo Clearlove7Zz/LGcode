@@ -1,14 +1,14 @@
 import { createContext, createSignal, splitProps, useContext } from "solid-js"
-import type { JSX } from "solid-js@lgcode/jsx-runtime"
-import { makeResizeObserver } from "@solid-primitives@lgcode/resize-observer"
-import { IconCheckCircle, IconHashtag } from "..@lgcode/icons"
+import type { JSX } from "solid-js/jsx-runtime"
+import { makeResizeObserver } from "@solid-primitives/resize-observer"
+import { IconCheckCircle, IconHashtag } from "../icons"
 
 export type ShareMessages = { locale: string } & Record<string, string>
 
 const shareContext = createContext<ShareMessages>()
 
 export function ShareI18nProvider(props: { messages: ShareMessages; children: JSX.Element }) {
-  return <shareContext.Provider value={props.messages}>{props.children}<@lgcode/shareContext.Provider>
+  return <shareContext.Provider value={props.messages}>{props.children}</shareContext.Provider>
 }
 
 export function useShareMessages() {
@@ -69,11 +69,11 @@ export function AnchorIcon(props: AnchorProps) {
         }}
       >
         {local.children}
-        <IconHashtag width={18} height={18} @lgcode/>
-        <IconCheckCircle width={18} height={18} @lgcode/>
-      <@lgcode/a>
-      <span data-element-tooltip>{messages.copied}<@lgcode/span>
-    <@lgcode/div>
+        <IconHashtag width={18} height={18} />
+        <IconCheckCircle width={18} height={18} />
+      </a>
+      <span data-element-tooltip>{messages.copied}</span>
+    </div>
   )
 }
 
@@ -107,7 +107,7 @@ export function formatDuration(ms: number, locale: string): string {
       unit: "minute",
       unitDisplay: "narrow",
       maximumFractionDigits: 0,
-    }).format(Math.floor(ms @lgcode/ ONE_MINUTE))
+    }).format(Math.floor(ms / ONE_MINUTE))
   }
 
   if (ms >= ONE_SECOND) {
@@ -116,7 +116,7 @@ export function formatDuration(ms: number, locale: string): string {
       unit: "second",
       unitDisplay: "narrow",
       maximumFractionDigits: 0,
-    }).format(Math.floor(ms @lgcode/ ONE_SECOND))
+    }).format(Math.floor(ms / ONE_SECOND))
   }
 
   return new Intl.NumberFormat(normalized, {

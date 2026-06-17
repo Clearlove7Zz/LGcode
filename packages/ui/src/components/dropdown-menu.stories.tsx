@@ -1,11 +1,11 @@
-@lgcode/@lgcode/ @ts-nocheck
-import * as mod from ".@lgcode/dropdown-menu"
-import { Button } from ".@lgcode/button"
+// @ts-nocheck
+import * as mod from "./dropdown-menu"
+import { Button } from "./button"
 
 const docs = `### Overview
 Dropdown menu built on Kobalte with composable items, groups, and submenus.
 
-Use \`DropdownMenu.ItemLabel\`@lgcode/\`ItemDescription\` for richer rows.
+Use \`DropdownMenu.ItemLabel\`/\`ItemDescription\` for richer rows.
 
 ### API
 - Root accepts Kobalte DropdownMenu props (\`open\`, \`defaultOpen\`, \`onOpenChange\`).
@@ -20,13 +20,13 @@ Use \`DropdownMenu.ItemLabel\`@lgcode/\`ItemDescription\` for richer rows.
 ### Accessibility
 - TODO: confirm keyboard navigation from Kobalte.
 
-### Theming@lgcode/tokens
+### Theming/tokens
 - Uses \`data-component="dropdown-menu"\` and slot attributes for styling.
 
 `
 
 export default {
-  title: "UI@lgcode/DropdownMenu",
+  title: "UI/DropdownMenu",
   id: "components-dropdown-menu",
   component: mod.DropdownMenu,
   tags: ["autodocs"],
@@ -44,34 +44,34 @@ export const Basic = {
     <mod.DropdownMenu defaultOpen>
       <mod.DropdownMenu.Trigger as={Button} variant="secondary" size="small">
         Open menu
-      <@lgcode/mod.DropdownMenu.Trigger>
+      </mod.DropdownMenu.Trigger>
       <mod.DropdownMenu.Portal>
         <mod.DropdownMenu.Content>
           <mod.DropdownMenu.Group>
-            <mod.DropdownMenu.GroupLabel>Actions<@lgcode/mod.DropdownMenu.GroupLabel>
+            <mod.DropdownMenu.GroupLabel>Actions</mod.DropdownMenu.GroupLabel>
             <mod.DropdownMenu.Item>
-              <mod.DropdownMenu.ItemLabel>New file<@lgcode/mod.DropdownMenu.ItemLabel>
-            <@lgcode/mod.DropdownMenu.Item>
+              <mod.DropdownMenu.ItemLabel>New file</mod.DropdownMenu.ItemLabel>
+            </mod.DropdownMenu.Item>
             <mod.DropdownMenu.Item>
-              <mod.DropdownMenu.ItemLabel>Rename<@lgcode/mod.DropdownMenu.ItemLabel>
-              <mod.DropdownMenu.ItemDescription>Shift+R<@lgcode/mod.DropdownMenu.ItemDescription>
-            <@lgcode/mod.DropdownMenu.Item>
-          <@lgcode/mod.DropdownMenu.Group>
-          <mod.DropdownMenu.Separator @lgcode/>
+              <mod.DropdownMenu.ItemLabel>Rename</mod.DropdownMenu.ItemLabel>
+              <mod.DropdownMenu.ItemDescription>Shift+R</mod.DropdownMenu.ItemDescription>
+            </mod.DropdownMenu.Item>
+          </mod.DropdownMenu.Group>
+          <mod.DropdownMenu.Separator />
           <mod.DropdownMenu.Sub>
-            <mod.DropdownMenu.SubTrigger>More options<@lgcode/mod.DropdownMenu.SubTrigger>
+            <mod.DropdownMenu.SubTrigger>More options</mod.DropdownMenu.SubTrigger>
             <mod.DropdownMenu.SubContent>
               <mod.DropdownMenu.Item>
-                <mod.DropdownMenu.ItemLabel>Duplicate<@lgcode/mod.DropdownMenu.ItemLabel>
-              <@lgcode/mod.DropdownMenu.Item>
+                <mod.DropdownMenu.ItemLabel>Duplicate</mod.DropdownMenu.ItemLabel>
+              </mod.DropdownMenu.Item>
               <mod.DropdownMenu.Item>
-                <mod.DropdownMenu.ItemLabel>Move<@lgcode/mod.DropdownMenu.ItemLabel>
-              <@lgcode/mod.DropdownMenu.Item>
-            <@lgcode/mod.DropdownMenu.SubContent>
-          <@lgcode/mod.DropdownMenu.Sub>
-        <@lgcode/mod.DropdownMenu.Content>
-      <@lgcode/mod.DropdownMenu.Portal>
-    <@lgcode/mod.DropdownMenu>
+                <mod.DropdownMenu.ItemLabel>Move</mod.DropdownMenu.ItemLabel>
+              </mod.DropdownMenu.Item>
+            </mod.DropdownMenu.SubContent>
+          </mod.DropdownMenu.Sub>
+        </mod.DropdownMenu.Content>
+      </mod.DropdownMenu.Portal>
+    </mod.DropdownMenu>
   ),
 }
 
@@ -80,18 +80,18 @@ export const CheckboxRadio = {
     <mod.DropdownMenu defaultOpen>
       <mod.DropdownMenu.Trigger as={Button} variant="secondary" size="small">
         Open menu
-      <@lgcode/mod.DropdownMenu.Trigger>
+      </mod.DropdownMenu.Trigger>
       <mod.DropdownMenu.Portal>
         <mod.DropdownMenu.Content>
-          <mod.DropdownMenu.CheckboxItem checked>Show line numbers<@lgcode/mod.DropdownMenu.CheckboxItem>
-          <mod.DropdownMenu.CheckboxItem>Wrap lines<@lgcode/mod.DropdownMenu.CheckboxItem>
-          <mod.DropdownMenu.Separator @lgcode/>
+          <mod.DropdownMenu.CheckboxItem checked>Show line numbers</mod.DropdownMenu.CheckboxItem>
+          <mod.DropdownMenu.CheckboxItem>Wrap lines</mod.DropdownMenu.CheckboxItem>
+          <mod.DropdownMenu.Separator />
           <mod.DropdownMenu.RadioGroup value="compact">
-            <mod.DropdownMenu.RadioItem value="compact">Compact<@lgcode/mod.DropdownMenu.RadioItem>
-            <mod.DropdownMenu.RadioItem value="comfortable">Comfortable<@lgcode/mod.DropdownMenu.RadioItem>
-          <@lgcode/mod.DropdownMenu.RadioGroup>
-        <@lgcode/mod.DropdownMenu.Content>
-      <@lgcode/mod.DropdownMenu.Portal>
-    <@lgcode/mod.DropdownMenu>
+            <mod.DropdownMenu.RadioItem value="compact">Compact</mod.DropdownMenu.RadioItem>
+            <mod.DropdownMenu.RadioItem value="comfortable">Comfortable</mod.DropdownMenu.RadioItem>
+          </mod.DropdownMenu.RadioGroup>
+        </mod.DropdownMenu.Content>
+      </mod.DropdownMenu.Portal>
+    </mod.DropdownMenu>
   ),
 }

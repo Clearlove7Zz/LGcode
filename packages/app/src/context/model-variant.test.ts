@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { cycleModelVariant, getConfiguredAgentVariant, resolveModelVariant } from ".@lgcode/model-variant"
+import { cycleModelVariant, getConfiguredAgentVariant, resolveModelVariant } from "./model-variant"
 
 describe("model variant", () => {
   test("resolves configured agent variant when model matches", () => {

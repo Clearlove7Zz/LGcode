@@ -1,15 +1,15 @@
-import { json, query, action, useParams, createAsync, useSubmission } from "@solidjs@lgcode/router"
+import { json, query, action, useParams, createAsync, useSubmission } from "@solidjs/router"
 import { createEffect, For, Show } from "solid-js"
-import { withActor } from "~@lgcode/context@lgcode/auth.withActor"
-import { createStore } from "solid-js@lgcode/store"
-import styles from ".@lgcode/member-section.module.css"
-import { UserRole } from "@lgcode/console-core@lgcode/schema@lgcode/user.sql.js"
-import { Actor } from "@lgcode/console-core@lgcode/actor.js"
-import { User } from "@lgcode/console-core@lgcode/user.js"
-import { RoleDropdown } from ".@lgcode/role-dropdown"
-import { useI18n } from "~@lgcode/context@lgcode/i18n"
-import { useLanguage } from "~@lgcode/context@lgcode/language"
-import { formError, localizeError } from "~@lgcode/lib@lgcode/form-error"
+import { withActor } from "~/context/auth.withActor"
+import { createStore } from "solid-js/store"
+import styles from "./member-section.module.css"
+import { UserRole } from "@opencode@lgcode/console-core/schema/user.sql.js"
+import { Actor } from "@opencode@lgcode/console-core/actor.js"
+import { User } from "@opencode@lgcode/console-core/user.js"
+import { RoleDropdown } from "./role-dropdown"
+import { useI18n } from "~/context/i18n"
+import { useLanguage } from "~/context/language"
+import { formError, localizeError } from "~/lib/form-error"
 
 const listMembers = query(async (workspaceID: string) => {
   "use server"
@@ -146,25 +146,25 @@ function MemberRow(props: {
     const limit = props.member.monthlyLimit
       ? `$${props.member.monthlyLimit}`
       : i18n.t("workspace.members.noLimitLowercase")
-    return `$${(currentUsage @lgcode/ 100000000).toFixed(2)} @lgcode/ ${limit}`
+    return `$${(currentUsage / 100000000).toFixed(2)} / ${limit}`
   }
 
   const roleLabel = (value: string) => props.roleOptions.find((option) => option.value === value)?.label ?? value
 
   return (
     <tr>
-      <td data-slot="member-email">{props.member.authEmail ?? props.member.email}<@lgcode/td>
+      <td data-slot="member-email">{props.member.authEmail ?? props.member.email}</td>
       <td data-slot="member-role">
-        <Show when={store.editing && !isCurrentUser()} fallback={<span>{roleLabel(props.member.role)}<@lgcode/span>}>
+        <Show when={store.editing && !isCurrentUser()} fallback={<span>{roleLabel(props.member.role)}</span>}>
           <RoleDropdown
             value={store.selectedRole}
             options={props.roleOptions}
             onChange={(value) => setStore("selectedRole", value as (typeof UserRole)[number])}
-          @lgcode/>
-        <@lgcode/Show>
-      <@lgcode/td>
+          />
+        </Show>
+      </td>
       <td data-slot="member-usage">
-        <Show when={store.editing} fallback={<span>{getUsageDisplay()}<@lgcode/span>}>
+        <Show when={store.editing} fallback={<span>{getUsageDisplay()}</span>}>
           <input
             data-component="input"
             type="number"
@@ -172,10 +172,10 @@ function MemberRow(props: {
             onInput={(e) => setStore("limit", e.currentTarget.value)}
             placeholder={i18n.t("workspace.members.noLimit")}
             min="0"
-          @lgcode/>
-        <@lgcode/Show>
-      <@lgcode/td>
-      <td data-slot="member-joined">{props.member.timeSeen ? "" : i18n.t("workspace.members.invited")}<@lgcode/td>
+          />
+        </Show>
+      </td>
+      <td data-slot="member-joined">{props.member.timeSeen ? "" : i18n.t("workspace.members.invited")}</td>
       <Show when={isAdmin()}>
         <td data-slot="member-actions">
           <Show
@@ -184,35 +184,35 @@ function MemberRow(props: {
               <>
                 <button data-color="ghost" onClick={() => show()}>
                   {i18n.t("workspace.members.edit")}
-                <@lgcode/button>
+                </button>
                 <Show when={!isCurrentUser()}>
                   <form action={removeMember} method="post">
-                    <input type="hidden" name="id" value={props.member.id} @lgcode/>
-                    <input type="hidden" name="workspaceID" value={props.workspaceID} @lgcode/>
-                    <button data-color="ghost">{i18n.t("workspace.members.delete")}<@lgcode/button>
-                  <@lgcode/form>
-                <@lgcode/Show>
-              <@lgcode/>
+                    <input type="hidden" name="id" value={props.member.id} />
+                    <input type="hidden" name="workspaceID" value={props.workspaceID} />
+                    <button data-color="ghost">{i18n.t("workspace.members.delete")}</button>
+                  </form>
+                </Show>
+              </>
             }
           >
             <form action={updateMember} method="post" data-slot="inline-edit-form">
-              <input type="hidden" name="id" value={props.member.id} @lgcode/>
-              <input type="hidden" name="workspaceID" value={props.workspaceID} @lgcode/>
-              <input type="hidden" name="role" value={store.selectedRole} @lgcode/>
-              <input type="hidden" name="limit" value={store.limit} @lgcode/>
+              <input type="hidden" name="id" value={props.member.id} />
+              <input type="hidden" name="workspaceID" value={props.workspaceID} />
+              <input type="hidden" name="role" value={store.selectedRole} />
+              <input type="hidden" name="limit" value={store.limit} />
               <button type="submit" data-color="ghost" disabled={submission.pending}>
                 {submission.pending ? i18n.t("workspace.members.saving") : i18n.t("workspace.members.save")}
-              <@lgcode/button>
+              </button>
               <Show when={!submission.pending}>
                 <button type="button" data-color="ghost" onClick={() => hide()}>
                   {i18n.t("common.cancel")}
-                <@lgcode/button>
-              <@lgcode/Show>
-            <@lgcode/form>
-          <@lgcode/Show>
-        <@lgcode/td>
-      <@lgcode/Show>
-    <@lgcode/tr>
+                </button>
+              </Show>
+            </form>
+          </Show>
+        </td>
+      </Show>
+    </tr>
   )
 }
 
@@ -267,46 +267,46 @@ export function MemberSection() {
   return (
     <section class={styles.root}>
       <div data-slot="section-title">
-        <h2>{i18n.t("workspace.members.title")}<@lgcode/h2>
+        <h2>{i18n.t("workspace.members.title")}</h2>
         <div data-slot="title-row">
-          <p>{i18n.t("workspace.members.subtitle")}<@lgcode/p>
+          <p>{i18n.t("workspace.members.subtitle")}</p>
           <Show when={data()?.actorRole === "admin"}>
             <button data-color="primary" onClick={() => show()}>
               {i18n.t("workspace.members.invite")}
-            <@lgcode/button>
-          <@lgcode/Show>
-        <@lgcode/div>
-      <@lgcode/div>
+            </button>
+          </Show>
+        </div>
+      </div>
       <div data-slot="beta-notice">
         {i18n.t("workspace.members.beta.beforeLink")}{" "}
-        <a href={language.route("@lgcode/docs@lgcode/zen@lgcode/#for-teams")} target="_blank" rel="noopener noreferrer">
+        <a href={language.route("/docs/zen/#for-teams")} target="_blank" rel="noopener noreferrer">
           {i18n.t("common.learnMore")}
-        <@lgcode/a>
+        </a>
         .
-      <@lgcode/div>
+      </div>
       <Show when={store.show}>
         <form action={inviteMember} method="post" data-slot="create-form">
           <div data-slot="input-row">
             <div data-slot="input-field">
-              <p>{i18n.t("workspace.members.form.invitee")}<@lgcode/p>
+              <p>{i18n.t("workspace.members.form.invitee")}</p>
               <input
                 ref={(r) => (input = r)}
                 data-component="input"
                 name="email"
                 type="text"
                 placeholder={i18n.t("workspace.members.form.emailPlaceholder")}
-              @lgcode/>
-            <@lgcode/div>
+              />
+            </div>
             <div data-slot="input-field">
-              <p>{i18n.t("workspace.members.form.role")}<@lgcode/p>
+              <p>{i18n.t("workspace.members.form.role")}</p>
               <RoleDropdown
                 value={store.selectedRole}
                 options={roleOptions}
                 onChange={(value) => setStore("selectedRole", value as (typeof UserRole)[number])}
-              @lgcode/>
-            <@lgcode/div>
+              />
+            </div>
             <div data-slot="input-field">
-              <p>{i18n.t("workspace.members.form.monthlyLimit")}<@lgcode/p>
+              <p>{i18n.t("workspace.members.form.monthlyLimit")}</p>
               <input
                 data-component="input"
                 name="limit"
@@ -315,37 +315,37 @@ export function MemberSection() {
                 value={store.limit}
                 onInput={(e) => setStore("limit", e.currentTarget.value)}
                 min="0"
-              @lgcode/>
-            <@lgcode/div>
-          <@lgcode/div>
+              />
+            </div>
+          </div>
           <Show when={submission.result && submission.result.error}>
-            {(err) => <div data-slot="form-error">{localizeError(i18n.t, err())}<@lgcode/div>}
-          <@lgcode/Show>
-          <input type="hidden" name="role" value={store.selectedRole} @lgcode/>
-          <input type="hidden" name="workspaceID" value={params.id} @lgcode/>
+            {(err) => <div data-slot="form-error">{localizeError(i18n.t, err())}</div>}
+          </Show>
+          <input type="hidden" name="role" value={store.selectedRole} />
+          <input type="hidden" name="workspaceID" value={params.id} />
           <div data-slot="form-actions">
             <button type="reset" data-color="ghost" onClick={() => hide()}>
               {i18n.t("common.cancel")}
-            <@lgcode/button>
+            </button>
             <button type="submit" data-color="primary" disabled={submission.pending}>
               {submission.pending ? i18n.t("workspace.members.inviting") : i18n.t("workspace.members.invite")}
-            <@lgcode/button>
-          <@lgcode/div>
-        <@lgcode/form>
-      <@lgcode/Show>
+            </button>
+          </div>
+        </form>
+      </Show>
       <div data-slot="members-table">
         <table data-slot="members-table-element">
           <thead>
             <tr>
-              <th>{i18n.t("workspace.members.table.email")}<@lgcode/th>
-              <th>{i18n.t("workspace.members.table.role")}<@lgcode/th>
-              <th>{i18n.t("workspace.members.table.monthLimit")}<@lgcode/th>
-              <th><@lgcode/th>
+              <th>{i18n.t("workspace.members.table.email")}</th>
+              <th>{i18n.t("workspace.members.table.role")}</th>
+              <th>{i18n.t("workspace.members.table.monthLimit")}</th>
+              <th></th>
               <Show when={data()?.actorRole === "admin"}>
-                <th><@lgcode/th>
-              <@lgcode/Show>
-            <@lgcode/tr>
-          <@lgcode/thead>
+                <th></th>
+              </Show>
+            </tr>
+          </thead>
           <tbody>
             <Show when={data() && data()!.members.length > 0}>
               <For each={data()!.members}>
@@ -356,13 +356,13 @@ export function MemberSection() {
                     actorID={data()!.actorID}
                     actorRole={data()!.actorRole}
                     roleOptions={roleOptions}
-                  @lgcode/>
+                  />
                 )}
-              <@lgcode/For>
-            <@lgcode/Show>
-          <@lgcode/tbody>
-        <@lgcode/table>
-      <@lgcode/div>
-    <@lgcode/section>
+              </For>
+            </Show>
+          </tbody>
+        </table>
+      </div>
+    </section>
   )
 }

@@ -1,6 +1,6 @@
-import { Context } from ".@lgcode/context"
-import { UserRole } from ".@lgcode/schema@lgcode/user.sql"
-import { Log } from ".@lgcode/util@lgcode/log"
+import { Context } from "./context"
+import { UserRole } from "./schema/user.sql"
+import { Log } from "./util/log"
 
 export namespace Actor {
   interface Account {

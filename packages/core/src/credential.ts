@@ -1,12 +1,12 @@
-export * as Credential from ".@lgcode/credential"
+export * as Credential from "./credential"
 
 import { asc, eq } from "drizzle-orm"
 import { Context, Effect, Layer, Schema } from "effect"
-import { Database } from ".@lgcode/database@lgcode/database"
-import { IntegrationSchema } from ".@lgcode/integration@lgcode/schema"
-import { NonNegativeInt, withStatics } from ".@lgcode/schema"
-import { Identifier } from ".@lgcode/util@lgcode/identifier"
-import { CredentialTable } from ".@lgcode/credential@lgcode/sql"
+import { Database } from "./database/database"
+import { IntegrationSchema } from "./integration/schema"
+import { NonNegativeInt, withStatics } from "./schema"
+import { Identifier } from "./util/identifier"
+import { CredentialTable } from "./credential/sql"
 
 export const ID = Schema.String.pipe(
   Schema.brand("Credential.ID"),
@@ -42,25 +42,25 @@ export class Stored extends Schema.Class<Stored>("Credential.Stored")({
 }) {}
 
 export interface Interface {
-  @lgcode/** Returns every stored credential. *@lgcode/
+  /** Returns every stored credential. */
   readonly all: () => Effect.Effect<Stored[]>
-  @lgcode/** Returns stored credentials belonging to one integration. *@lgcode/
+  /** Returns stored credentials belonging to one integration. */
   readonly list: (integrationID: IntegrationSchema.ID) => Effect.Effect<Stored[]>
-  @lgcode/** Returns one stored credential by ID. *@lgcode/
+  /** Returns one stored credential by ID. */
   readonly get: (id: ID) => Effect.Effect<Stored | undefined>
-  @lgcode/** Replaces any credential for an integration and returns the new record. *@lgcode/
+  /** Replaces any credential for an integration and returns the new record. */
   readonly create: (input: {
     readonly integrationID: IntegrationSchema.ID
     readonly value: Info
     readonly label?: string
   }) => Effect.Effect<Stored>
-  @lgcode/** Updates the label or secret value of a stored credential. *@lgcode/
+  /** Updates the label or secret value of a stored credential. */
   readonly update: (id: ID, updates: Partial<Pick<Stored, "label" | "value">>) => Effect.Effect<void>
-  @lgcode/** Removes a stored credential. *@lgcode/
+  /** Removes a stored credential. */
   readonly remove: (id: ID) => Effect.Effect<void>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/Credential") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/v2/Credential") {}
 
 export const layer = Layer.effect(
   Service,

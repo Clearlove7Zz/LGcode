@@ -1,6 +1,6 @@
-@lgcode/**
+/**
  * Regression test for the same bug class as #26574 (sibling of #26566 and
- * #26553). The Desktop app calls GET @lgcode/session@lgcode/<id>@lgcode/diff; before #26574
+ * #26553). The Desktop app calls GET /session/<id>/diff; before #26574
  * the response was Schema-encoded against `Snapshot.FileDiff` with
  * `patch: Schema.String` (required), so any session whose stored
  * `summary_diffs` had a row without `patch` returned HTTP 400 and the
@@ -8,21 +8,21 @@
  * but the endpoint remains compatible and must still return successfully.
  *
  * This test inserts a session row with a missing-patch diff entry and
- * asserts that GET @lgcode/session@lgcode/<id>@lgcode/diff returns 200 with empty data.
- *@lgcode/
+ * asserts that GET /session/<id>/diff returns 200 with empty data.
+ */
 import { afterEach, describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { SessionPaths } from "@@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/session"
-import { Session } from "@@lgcode/session@lgcode/session"
-import { Storage } from "@@lgcode/storage@lgcode/storage"
-import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
-import { MessageID } from "@@lgcode/session@lgcode/schema"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
-import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
-import { disposeAllInstances, TestInstance } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
-import { httpApiLayer, requestInDirectory } from ".@lgcode/httpapi-layer"
+import { SessionPaths } from "@/server/routes/instance/httpapi/groups/session"
+import { Session } from "@/session/session"
+import { Storage } from "@/storage/storage"
+import { SessionV1 } from "@opencode@lgcode/core/v1/session"
+import { MessageID } from "@/session/schema"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelV2 } from "@opencode@lgcode/core/model"
+import { resetDatabase } from "../fixture/db"
+import { disposeAllInstances, TestInstance } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
+import { httpApiLayer, requestInDirectory } from "./httpapi-layer"
 
 const it = testEffect(Layer.mergeAll(Session.defaultLayer, Storage.defaultLayer, httpApiLayer))
 
@@ -40,15 +40,15 @@ const withSession = (input?: Parameters<Session.Interface["create"]>[0]) =>
 
 describe("session diff with missing patch (#26574)", () => {
   it.instance(
-    "GET @lgcode/session@lgcode/<id>@lgcode/diff ignores legacy session-level diff storage",
+    "GET /session/<id>/diff ignores legacy session-level diff storage",
     () =>
       Effect.gen(function* () {
         const test = yield* TestInstance
         const session = yield* withSession({ title: "missing-patch" })
 
-        @lgcode/@lgcode/ Mimic legacy@lgcode/imported on-disk shape: a diff entry with no
-        @lgcode/@lgcode/ `patch` text. Pre-fix the typed response encoder rejects
-        @lgcode/@lgcode/ this and returns 400.
+        // Mimic legacy/imported on-disk shape: a diff entry with no
+        // `patch` text. Pre-fix the typed response encoder rejects
+        // this and returns 400.
         yield* Storage.Service.use((storage) =>
           storage.write(["session_diff", session.id], [{ file: "legacy.txt", additions: 1, deletions: 0 }]),
         )
@@ -65,7 +65,7 @@ describe("session diff with missing patch (#26574)", () => {
   )
 
   it.instance(
-    "GET @lgcode/session@lgcode/<id>@lgcode/diff returns requested turn diffs",
+    "GET /session/<id>/diff returns requested turn diffs",
     () =>
       Effect.gen(function* () {
         const test = yield* TestInstance

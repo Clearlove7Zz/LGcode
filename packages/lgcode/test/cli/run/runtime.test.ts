@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, mock, spyOn, test } from "bun:test"
-import { OpencodeClient } from "@lgcode/sdk@lgcode/v2"
-import { runInteractiveMode } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/runtime"
-import type { FooterApi, RunProvider } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/types"
+import { OpencodeClient } from "@opencode@lgcode/sdk/v2"
+import { runInteractiveMode } from "@/cli/cmd/run/runtime"
+import type { FooterApi, RunProvider } from "@/cli/cmd/run/types"
 
 type SessionMessage = NonNullable<Awaited<ReturnType<OpencodeClient["session"]["messages"]>>["data"]>[number]
 
@@ -17,8 +17,8 @@ const provider: RunProvider = {
       providerID: "openai",
       api: {
         id: "openai",
-        url: "https:@lgcode/@lgcode/openai.test",
-        npm: "@ai-sdk@lgcode/openai",
+        url: "https://openai.test",
+        npm: "@ai-sdk/openai",
       },
       name: "Little Frank",
       capabilities: {
@@ -76,7 +76,7 @@ function ok<T>(data: T) {
   return Promise.resolve({
     data,
     error: undefined,
-    request: new Request("https:@lgcode/@lgcode/opencode.test"),
+    request: new Request("https://opencode.test"),
     response: new Response(),
   })
 }
@@ -183,7 +183,7 @@ describe("run interactive runtime", () => {
     const task = runInteractiveMode(
       {
         sdk,
-        directory: "@lgcode/tmp",
+        directory: "/tmp",
         sessionID: "ses-1",
         sessionTitle: "Session",
         resume: true,

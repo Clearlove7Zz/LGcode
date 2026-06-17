@@ -1,10 +1,10 @@
-export * as NpmConfig from ".@lgcode/npm-config"
+export * as NpmConfig from "./npm-config"
 
 import { fileURLToPath } from "url"
-@lgcode/@lgcode/ @ts-expect-error npm does not publish types for this internal config API.
-import Config from "@npmcli@lgcode/config"
-@lgcode/@lgcode/ @ts-expect-error npm does not publish types for this internal config API.
-import { definitions, flatten, nerfDarts, shorthands } from "@npmcli@lgcode/config@lgcode/lib@lgcode/definitions@lgcode/index.js"
+// @ts-expect-error npm does not publish types for this internal config API.
+import Config from "@npmcli/config"
+// @ts-expect-error npm does not publish types for this internal config API.
+import { definitions, flatten, nerfDarts, shorthands } from "@npmcli/config/lib/definitions/index.js"
 import { Effect } from "effect"
 
 const npmPath = fileURLToPath(new URL("..", import.meta.url))
@@ -34,7 +34,7 @@ export const load = (dir: string) =>
 export const registry = (dir: string) =>
   load(dir).pipe(
     Effect.map((config) => {
-      const registry = typeof config.registry === "string" ? config.registry : "https:@lgcode/@lgcode/registry.npmjs.org"
-      return registry.endsWith("@lgcode/") ? registry.slice(0, -1) : registry
+      const registry = typeof config.registry === "string" ? config.registry : "https://registry.npmjs.org"
+      return registry.endsWith("/") ? registry.slice(0, -1) : registry
     }),
   )

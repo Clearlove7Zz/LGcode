@@ -1,11 +1,11 @@
-export * as CommandPlugin from ".@lgcode/command"
+export * as CommandPlugin from "./command"
 
 import { Effect } from "effect"
-import { CommandV2 } from "..@lgcode/command"
-import { Location } from "..@lgcode/location"
-import { PluginV2 } from "..@lgcode/plugin"
-import PROMPT_INITIALIZE from ".@lgcode/command@lgcode/initialize.txt"
-import PROMPT_REVIEW from ".@lgcode/command@lgcode/review.txt"
+import { CommandV2 } from "../command"
+import { Location } from "../location"
+import { PluginV2 } from "../plugin"
+import PROMPT_INITIALIZE from "./command/initialize.txt"
+import PROMPT_REVIEW from "./command/review.txt"
 
 export const Plugin = PluginV2.define({
   id: PluginV2.ID.make("command"),

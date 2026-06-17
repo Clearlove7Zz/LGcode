@@ -2,12 +2,12 @@ import { afterEach, describe, expect, test } from "bun:test"
 import net from "node:net"
 import path from "node:path"
 import { pathToFileURL } from "node:url"
-import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
-import { Server } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/server"
-import { PtyPaths } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/pty"
-import { withTimeout } from "..@lgcode/..@lgcode/src@lgcode/util@lgcode/timeout"
-import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
-import { disposeAllInstances, tmpdir } from "..@lgcode/fixture@lgcode/fixture"
+import { Flag } from "@opencode@lgcode/core/flag/flag"
+import { Server } from "../../src/server/server"
+import { PtyPaths } from "../../src/server/routes/instance/httpapi/groups/pty"
+import { withTimeout } from "../../src/util/timeout"
+import { resetDatabase } from "../fixture/db"
+import { disposeAllInstances, tmpdir } from "../fixture/fixture"
 
 const original = {
   OPENCODE_SERVER_PASSWORD: Flag.OPENCODE_SERVER_PASSWORD,
@@ -89,9 +89,9 @@ async function createCat(listener: Awaited<ReturnType<typeof startListener>>, di
     headers: {
       authorization: authorization(),
       "x-opencode-directory": dir,
-      "content-type": "application@lgcode/json",
+      "content-type": "application/json",
     },
-    body: JSON.stringify({ command: "@lgcode/bin@lgcode/cat", title: "listen-smoke" }),
+    body: JSON.stringify({ command: "/bin/cat", title: "listen-smoke" }),
   })
   expect(response.status).toBe(200)
   return (await response.json()) as { id: string }
@@ -112,7 +112,7 @@ async function openSocket(url: URL) {
 }
 
 async function expectSocketRejected(url: URL, init?: { headers?: Record<string, string> }) {
-  @lgcode/@lgcode/ Bun's WebSocket accepts an init object with headers; standard DOM types don't reflect that.
+  // Bun's WebSocket accepts an init object with headers; standard DOM types don't reflect that.
   const Ctor = WebSocket as unknown as new (url: URL, init?: { headers?: Record<string, string> }) => WebSocket
   const ws = new Ctor(url, init)
   await withTimeout(
@@ -286,14 +286,14 @@ describe("HttpApi Server.listen", () => {
 
   test("default in-process handler does not emit Effect HTTP response logs", async () => {
     let output = ""
-    @lgcode/@lgcode/ oxlint-disable-next-line typescript-eslint@lgcode/unbound-method -- restored in finally after temporarily capturing stderr.
+    // oxlint-disable-next-line typescript-eslint/unbound-method -- restored in finally after temporarily capturing stderr.
     const original = process.stderr.write
     process.stderr.write = ((chunk) => {
       output += String(chunk)
       return true
     }) as typeof process.stderr.write
     try {
-      const response = await Server.Default().app.request("@lgcode/status")
+      const response = await Server.Default().app.request("/status")
       expect(response.status).toBe(200)
     } finally {
       process.stderr.write = original
@@ -334,7 +334,7 @@ describe("HttpApi Server.listen", () => {
     let listener: Awaited<ReturnType<typeof startListener>> | undefined
     try {
       listener = await startListener()
-      const response = await fetch(new URL("@lgcode/config", listener.url), {
+      const response = await fetch(new URL("/config", listener.url), {
         headers: { authorization: authorization(), "x-opencode-directory": tmp.path },
       })
       expect(response.status).toBe(200)
@@ -386,10 +386,10 @@ describe("HttpApi Server.listen", () => {
       const info = await createCat(listener, tmp.path)
 
       expect((await requestTicket(listener, info.id, tmp.path, { ticketHeader: false })).status).toBe(403)
-      expect((await requestTicket(listener, info.id, tmp.path, { origin: "https:@lgcode/@lgcode/evil.example" })).status).toBe(403)
+      expect((await requestTicket(listener, info.id, tmp.path, { origin: "https://evil.example" })).status).toBe(403)
 
-      @lgcode/@lgcode/ Regression for #25698: minting without a directory uses the server cwd
-      @lgcode/@lgcode/ and cannot find a PTY registered in a project directory.
+      // Regression for #25698: minting without a directory uses the server cwd
+      // and cannot find a PTY registered in a project directory.
       const ambiguous = await fetch(new URL(PtyPaths.connectToken.replace(":ptyID", info.id), listener.url), {
         method: "POST",
         headers: { authorization: authorization(), "x-opencode-ticket": "1" },
@@ -424,7 +424,7 @@ describe("HttpApi Server.listen", () => {
 
       const crossOrigin = await connectTicket(listener, info.id, tmp.path)
       await expectSocketRejected(socketURL(listener, info.id, tmp.path, crossOrigin.ticket), {
-        headers: { origin: "https:@lgcode/@lgcode/evil.example" },
+        headers: { origin: "https://evil.example" },
       })
     } finally {
       await stop(listener, "timed out cleaning up rejected ticket listener").catch(() => undefined)

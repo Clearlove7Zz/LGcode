@@ -1,7 +1,7 @@
-export * as ConfigMCP from ".@lgcode/mcp"
+export * as ConfigMCP from "./mcp"
 
 import { Schema } from "effect"
-import { PositiveInt } from "..@lgcode/schema"
+import { PositiveInt } from "../schema"
 
 export class Local extends Schema.Class<Local>("ConfigV2.MCP.Local")({
   type: Schema.Literal("local"),

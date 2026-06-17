@@ -1,5 +1,5 @@
-import { Actor } from "@lgcode/console-core@lgcode/actor.js"
-import { getActor } from ".@lgcode/auth"
+import { Actor } from "@opencode@lgcode/console-core/actor.js"
+import { getActor } from "./auth"
 
 export async function withActor<T>(fn: () => T, workspace?: string) {
   const actor = await getActor(workspace)

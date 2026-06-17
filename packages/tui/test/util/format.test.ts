@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { formatDuration } from "..@lgcode/..@lgcode/src@lgcode/util@lgcode/format"
+import { formatDuration } from "../../src/util/format"
 
 describe("util.format", () => {
   describe("formatDuration", () => {

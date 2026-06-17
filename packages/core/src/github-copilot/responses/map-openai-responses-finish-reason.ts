@@ -1,11 +1,11 @@
-import type { LanguageModelV3FinishReason } from "@ai-sdk@lgcode/provider"
+import type { LanguageModelV3FinishReason } from "@ai-sdk/provider"
 
 export function mapOpenAIResponseFinishReason({
   finishReason,
   hasFunctionCall,
 }: {
   finishReason: string | null | undefined
-  @lgcode/@lgcode/ flag that checks if there have been client-side tool calls (not executed by openai)
+  // flag that checks if there have been client-side tool calls (not executed by openai)
   hasFunctionCall: boolean
 }): LanguageModelV3FinishReason["unified"] {
   switch (finishReason) {

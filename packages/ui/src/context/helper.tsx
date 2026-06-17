@@ -14,19 +14,19 @@ export function createSimpleContext<T, Props extends Record<string, any>>(
       const gate = input.gate ?? true
 
       if (!gate) {
-        return <ctx.Provider value={init}>{props.children}<@lgcode/ctx.Provider>
+        return <ctx.Provider value={init}>{props.children}</ctx.Provider>
       }
 
-      @lgcode/@lgcode/ Access init.ready inside the memo to make it reactive for getter properties
+      // Access init.ready inside the memo to make it reactive for getter properties
       const isReady = createMemo(() => {
-        @lgcode/@lgcode/ @ts-expect-error
+        // @ts-expect-error
         const ready = init.ready as Accessor<boolean> | boolean | undefined
         return ready === undefined || (typeof ready === "function" ? ready() : ready)
       })
       return (
         <Show when={isReady()}>
-          <ctx.Provider value={init}>{props.children}<@lgcode/ctx.Provider>
-        <@lgcode/Show>
+          <ctx.Provider value={init}>{props.children}</ctx.Provider>
+        </Show>
       )
     },
     use() {

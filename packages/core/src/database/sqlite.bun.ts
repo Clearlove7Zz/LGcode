@@ -1,23 +1,23 @@
 import { Database } from "bun:sqlite"
-import { drizzle } from "drizzle-orm@lgcode/bun-sqlite"
-import * as Context from "effect@lgcode/Context"
-import * as Effect from "effect@lgcode/Effect"
-import * as Fiber from "effect@lgcode/Fiber"
-import { identity } from "effect@lgcode/Function"
-import * as Layer from "effect@lgcode/Layer"
-import * as Scope from "effect@lgcode/Scope"
-import * as Semaphore from "effect@lgcode/Semaphore"
-import * as Stream from "effect@lgcode/Stream"
-import * as Reactivity from "effect@lgcode/unstable@lgcode/reactivity@lgcode/Reactivity"
-import * as Client from "effect@lgcode/unstable@lgcode/sql@lgcode/SqlClient"
-import type { Connection } from "effect@lgcode/unstable@lgcode/sql@lgcode/SqlConnection"
-import { classifySqliteError, SqlError } from "effect@lgcode/unstable@lgcode/sql@lgcode/SqlError"
-import * as Statement from "effect@lgcode/unstable@lgcode/sql@lgcode/Statement"
-import { Sqlite } from ".@lgcode/sqlite"
+import { drizzle } from "drizzle-orm/bun-sqlite"
+import * as Context from "effect/Context"
+import * as Effect from "effect/Effect"
+import * as Fiber from "effect/Fiber"
+import { identity } from "effect/Function"
+import * as Layer from "effect/Layer"
+import * as Scope from "effect/Scope"
+import * as Semaphore from "effect/Semaphore"
+import * as Stream from "effect/Stream"
+import * as Reactivity from "effect/unstable/reactivity/Reactivity"
+import * as Client from "effect/unstable/sql/SqlClient"
+import type { Connection } from "effect/unstable/sql/SqlConnection"
+import { classifySqliteError, SqlError } from "effect/unstable/sql/SqlError"
+import * as Statement from "effect/unstable/sql/Statement"
+import { Sqlite } from "./sqlite"
 
 const ATTR_DB_SYSTEM_NAME = "db.system.name"
 
-const TypeId = "~@lgcode/core@lgcode/database@lgcode/SqliteBun" as const
+const TypeId = "~@opencode@lgcode/core/database/SqliteBun" as const
 type TypeId = typeof TypeId
 
 interface SqliteClient extends Client.SqlClient {
@@ -56,7 +56,7 @@ const make = (options: Config) =>
     const run = (query: string, params: ReadonlyArray<unknown> = []) =>
       Effect.withFiber<Array<Record<string, unknown>>, SqlError>((fiber) => {
         const statement = native.query(query)
-        @lgcode/@lgcode/ @ts-ignore bun-types missing safeIntegers method, fixed in https:@lgcode/@lgcode/github.com@lgcode/oven-sh@lgcode/bun@lgcode/pull@lgcode/26627
+        // @ts-ignore bun-types missing safeIntegers method, fixed in https://github.com/oven-sh/bun/pull/26627
         statement.safeIntegers(Context.get(fiber.context, Client.SafeIntegers))
         try {
           return Effect.succeed((statement.all(...(params as any)) ?? []) as Array<Record<string, unknown>>)
@@ -72,7 +72,7 @@ const make = (options: Config) =>
     const runValues = (query: string, params: ReadonlyArray<unknown> = []) =>
       Effect.withFiber<Array<unknown[]>, SqlError>((fiber) => {
         const statement = native.query(query)
-        @lgcode/@lgcode/ @ts-ignore bun-types missing safeIntegers method, fixed in https:@lgcode/@lgcode/github.com@lgcode/oven-sh@lgcode/bun@lgcode/pull@lgcode/26627
+        // @ts-ignore bun-types missing safeIntegers method, fixed in https://github.com/oven-sh/bun/pull/26627
         statement.safeIntegers(Context.get(fiber.context, Client.SafeIntegers))
         try {
           return Effect.succeed((statement.values(...(params as any)) ?? []) as Array<unknown[]>)

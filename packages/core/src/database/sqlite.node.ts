@@ -1,23 +1,23 @@
 import { DatabaseSync, type SQLInputValue } from "node:sqlite"
-import { drizzle } from "drizzle-orm@lgcode/node-sqlite"
-import * as Context from "effect@lgcode/Context"
-import * as Effect from "effect@lgcode/Effect"
-import * as Fiber from "effect@lgcode/Fiber"
-import { identity } from "effect@lgcode/Function"
-import * as Layer from "effect@lgcode/Layer"
-import * as Scope from "effect@lgcode/Scope"
-import * as Semaphore from "effect@lgcode/Semaphore"
-import * as Stream from "effect@lgcode/Stream"
-import * as Reactivity from "effect@lgcode/unstable@lgcode/reactivity@lgcode/Reactivity"
-import * as Client from "effect@lgcode/unstable@lgcode/sql@lgcode/SqlClient"
-import type { Connection } from "effect@lgcode/unstable@lgcode/sql@lgcode/SqlConnection"
-import { classifySqliteError, SqlError } from "effect@lgcode/unstable@lgcode/sql@lgcode/SqlError"
-import * as Statement from "effect@lgcode/unstable@lgcode/sql@lgcode/Statement"
-import { Sqlite } from ".@lgcode/sqlite"
+import { drizzle } from "drizzle-orm/node-sqlite"
+import * as Context from "effect/Context"
+import * as Effect from "effect/Effect"
+import * as Fiber from "effect/Fiber"
+import { identity } from "effect/Function"
+import * as Layer from "effect/Layer"
+import * as Scope from "effect/Scope"
+import * as Semaphore from "effect/Semaphore"
+import * as Stream from "effect/Stream"
+import * as Reactivity from "effect/unstable/reactivity/Reactivity"
+import * as Client from "effect/unstable/sql/SqlClient"
+import type { Connection } from "effect/unstable/sql/SqlConnection"
+import { classifySqliteError, SqlError } from "effect/unstable/sql/SqlError"
+import * as Statement from "effect/unstable/sql/Statement"
+import { Sqlite } from "./sqlite"
 
 const ATTR_DB_SYSTEM_NAME = "db.system.name"
 
-const TypeId = "~@lgcode/core@lgcode/database@lgcode/SqliteNode" as const
+const TypeId = "~@opencode@lgcode/core/database/SqliteNode" as const
 type TypeId = typeof TypeId
 
 interface SqliteClient extends Client.SqlClient {

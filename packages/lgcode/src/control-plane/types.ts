@@ -1,8 +1,8 @@
 import { Schema, Struct } from "effect"
-import { ProjectV2 } from "@lgcode/core@lgcode/project"
-import type { InstanceContext } from "@@lgcode/project@lgcode/instance-context"
-import { WorkspaceV2 } from "@lgcode/core@lgcode/workspace"
-import type { DeepMutable } from "@lgcode/core@lgcode/schema"
+import { ProjectV2 } from "@opencode@lgcode/core/project"
+import type { InstanceContext } from "@/project/instance-context"
+import { WorkspaceV2 } from "@opencode@lgcode/core/workspace"
+import type { DeepMutable } from "@opencode@lgcode/core/schema"
 
 export const WorkspaceInfo = Schema.Struct({
   id: WorkspaceV2.ID,

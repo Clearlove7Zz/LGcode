@@ -1,5 +1,5 @@
 import { createMemo, Show } from "solid-js"
-import ".@lgcode/diff-changes-v2.css"
+import "./diff-changes-v2.css"
 
 export function DiffChanges(props: {
   class?: string
@@ -20,9 +20,9 @@ export function DiffChanges(props: {
   return (
     <Show when={total() > 0}>
       <div data-component="diff-changes" classList={{ [props.class ?? ""]: true }}>
-        <span data-slot="diff-changes-additions">{`+${additions()}`}<@lgcode/span>
-        <span data-slot="diff-changes-deletions">{`-${deletions()}`}<@lgcode/span>
-      <@lgcode/div>
-    <@lgcode/Show>
+        <span data-slot="diff-changes-additions">{`+${additions()}`}</span>
+        <span data-slot="diff-changes-deletions">{`-${deletions()}`}</span>
+      </div>
+    </Show>
   )
 }

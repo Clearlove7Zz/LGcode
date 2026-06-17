@@ -1,13 +1,13 @@
-import type { GlobalEvent } from "@lgcode/sdk@lgcode/v2"
-import type { EventSource } from "@lgcode/tui@lgcode/context@lgcode/sdk"
+import type { GlobalEvent } from "@opencode@lgcode/sdk/v2"
+import type { EventSource } from "@opencode@lgcode/tui/context/sdk"
 
-export const worktree = "@lgcode/tmp@lgcode/opencode"
-export const directory = `${worktree}@lgcode/packages@lgcode/opencode`
+export const worktree = "/tmp/opencode"
+export const directory = `${worktree}/packages/opencode`
 
 export function json(data: unknown, init?: ResponseInit) {
   return new Response(JSON.stringify(data), {
     ...init,
-    headers: { "content-type": "application@lgcode/json", ...(init?.headers ?? {}) },
+    headers: { "content-type": "application/json", ...(init?.headers ?? {}) },
   })
 }
 
@@ -40,38 +40,38 @@ export function createFetch(override?: FetchHandler) {
   const session = [] as URL[]
   const fetch = (async (input: RequestInfo | URL) => {
     const url = new URL(input instanceof Request ? input.url : String(input))
-    if (url.pathname === "@lgcode/session") session.push(url)
+    if (url.pathname === "/session") session.push(url)
 
     const overridden = await override?.(url)
     if (overridden) return overridden
 
     switch (url.pathname) {
-      case "@lgcode/agent":
-      case "@lgcode/command":
-      case "@lgcode/experimental@lgcode/workspace":
-      case "@lgcode/experimental@lgcode/workspace@lgcode/status":
-      case "@lgcode/formatter":
-      case "@lgcode/lsp":
+      case "/agent":
+      case "/command":
+      case "/experimental/workspace":
+      case "/experimental/workspace/status":
+      case "/formatter":
+      case "/lsp":
         return json([])
-      case "@lgcode/config":
-      case "@lgcode/experimental@lgcode/resource":
-      case "@lgcode/mcp":
-      case "@lgcode/provider@lgcode/auth":
-      case "@lgcode/session@lgcode/status":
+      case "/config":
+      case "/experimental/resource":
+      case "/mcp":
+      case "/provider/auth":
+      case "/session/status":
         return json({})
-      case "@lgcode/config@lgcode/providers":
+      case "/config/providers":
         return json({ providers: {}, default: {} })
-      case "@lgcode/experimental@lgcode/console":
+      case "/experimental/console":
         return json({ consoleManagedProviders: [], switchableOrgCount: 0 })
-      case "@lgcode/path":
+      case "/path":
         return json({ home: "", state: "", config: "", worktree, directory })
-      case "@lgcode/project@lgcode/current":
+      case "/project/current":
         return json({ id: "proj_test" })
-      case "@lgcode/provider":
+      case "/provider":
         return json({ all: [], default: {}, connected: [] })
-      case "@lgcode/session":
+      case "/session":
         return json([])
-      case "@lgcode/vcs":
+      case "/vcs":
         return json({ branch: "main" })
     }
 

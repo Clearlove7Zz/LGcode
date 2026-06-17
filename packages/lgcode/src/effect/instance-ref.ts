@@ -1,11 +1,11 @@
 import { Context } from "effect"
-import type { InstanceContext } from "@@lgcode/project@lgcode/instance-context"
-import type { WorkspaceV2 } from "@lgcode/core@lgcode/workspace"
+import type { InstanceContext } from "@/project/instance-context"
+import type { WorkspaceV2 } from "@opencode@lgcode/core/workspace"
 
-export const InstanceRef = Context.Reference<InstanceContext | undefined>("~opencode@lgcode/InstanceRef", {
+export const InstanceRef = Context.Reference<InstanceContext | undefined>("~opencode/InstanceRef", {
   defaultValue: () => undefined,
 })
 
-export const WorkspaceRef = Context.Reference<WorkspaceV2.ID | undefined>("~opencode@lgcode/WorkspaceRef", {
+export const WorkspaceRef = Context.Reference<WorkspaceV2.ID | undefined>("~opencode/WorkspaceRef", {
   defaultValue: () => undefined,
 })

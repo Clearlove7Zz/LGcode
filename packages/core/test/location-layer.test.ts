@@ -1,28 +1,28 @@
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import path from "path"
 import { describe, expect } from "bun:test"
 import { Effect, Equal, Hash, Layer, Schema } from "effect"
-import { Tool } from "@lgcode/core@lgcode/public"
-import { Catalog } from "@lgcode/core@lgcode/catalog"
-import { LocationServiceMap } from "@lgcode/core@lgcode/location-layer"
-import { Location } from "@lgcode/core@lgcode/location"
-import { PluginBoot } from "@lgcode/core@lgcode/plugin@lgcode/boot"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import { tmpdir } from ".@lgcode/fixture@lgcode/tmpdir"
-import { testEffect } from ".@lgcode/lib@lgcode/effect"
-import { toolDefinitions } from ".@lgcode/lib@lgcode/tool"
-import { FSUtil } from "..@lgcode/src@lgcode/fs-util"
-import { Credential } from "..@lgcode/src@lgcode/credential"
-import { Database } from "..@lgcode/src@lgcode/database@lgcode/database"
-import { EventV2 } from "..@lgcode/src@lgcode/event"
-import { Global } from "..@lgcode/src@lgcode/global"
-import { ModelsDev } from "..@lgcode/src@lgcode/models-dev"
-import { Npm } from "..@lgcode/src@lgcode/npm"
-import { Project } from "..@lgcode/src@lgcode/project"
-import { Reference } from "..@lgcode/src@lgcode/reference"
-import { ToolRegistry } from "..@lgcode/src@lgcode/tool@lgcode/registry"
-import { ApplicationTools } from "..@lgcode/src@lgcode/tool@lgcode/application-tools"
+import { Tool } from "@opencode@lgcode/core/public"
+import { Catalog } from "@opencode@lgcode/core/catalog"
+import { LocationServiceMap } from "@opencode@lgcode/core/location-layer"
+import { Location } from "@opencode@lgcode/core/location"
+import { PluginBoot } from "@opencode@lgcode/core/plugin/boot"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import { tmpdir } from "./fixture/tmpdir"
+import { testEffect } from "./lib/effect"
+import { toolDefinitions } from "./lib/tool"
+import { FSUtil } from "../src/fs-util"
+import { Credential } from "../src/credential"
+import { Database } from "../src/database/database"
+import { EventV2 } from "../src/event"
+import { Global } from "../src/global"
+import { ModelsDev } from "../src/models-dev"
+import { Npm } from "../src/npm"
+import { Project } from "../src/project"
+import { Reference } from "../src/reference"
+import { ToolRegistry } from "../src/tool/registry"
+import { ApplicationTools } from "../src/tool/application-tools"
 
 const applicationTools = ApplicationTools.layer
 const it = testEffect(
@@ -49,7 +49,7 @@ const it = testEffect(
 describe("LocationServiceMap", () => {
   it.effect("compares equivalent location refs by value", () =>
     Effect.sync(() => {
-      const directory = AbsolutePath.make("@lgcode/project")
+      const directory = AbsolutePath.make("/project")
       expect(Equal.equals(Location.Ref.make({ directory }), Location.Ref.make({ directory }))).toBe(true)
       expect(Hash.hash(Location.Ref.make({ directory }))).toBe(
         Hash.hash(Location.Ref.make({ directory, workspaceID: undefined })),

@@ -1,10 +1,10 @@
 import { describe, expect } from "bun:test"
 import { Context, Deferred, Effect, Exit, Fiber, Layer, Scope } from "effect"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import { QuestionV2 } from "@lgcode/core@lgcode/question"
-import { SessionV2 } from "@lgcode/core@lgcode/session"
-import { testEffect } from ".@lgcode/lib@lgcode/effect"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import { QuestionV2 } from "@opencode@lgcode/core/question"
+import { SessionV2 } from "@opencode@lgcode/core/session"
+import { testEffect } from "./lib/effect"
 
 const database = Database.layerFromPath(":memory:")
 const events = EventV2.layer.pipe(Layer.provide(database))
@@ -48,7 +48,7 @@ describe("QuestionV2", () => {
       yield* Effect.addFinalizer(() => unsubscribe)
       const { fiber, request } = yield* waitForAsk(service, { sessionID, questions: [question] })
 
-      expect(request.id).toMatch(@lgcode/^que_@lgcode/)
+      expect(request.id).toMatch(/^que_/)
       expect(yield* service.list()).toEqual([request])
       yield* service.reply({ requestID: request.id, answers: [["One"]] })
 

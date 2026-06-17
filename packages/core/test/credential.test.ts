@@ -1,11 +1,11 @@
 import path from "path"
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { Credential } from "@lgcode/core@lgcode/credential"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { Integration } from "@lgcode/core@lgcode/integration"
-import { tmpdir } from ".@lgcode/fixture@lgcode/tmpdir"
-import { it } from ".@lgcode/lib@lgcode/effect"
+import { Credential } from "@opencode@lgcode/core/credential"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { Integration } from "@opencode@lgcode/core/integration"
+import { tmpdir } from "./fixture/tmpdir"
+import { it } from "./lib/effect"
 
 function layer(directory: string) {
   return Credential.layer.pipe(

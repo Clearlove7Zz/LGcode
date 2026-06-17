@@ -1,17 +1,17 @@
 import { For, Show, createMemo, onCleanup, onMount, type Component } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import { useMutation } from "@tanstack@lgcode/solid-query"
-import { Button } from "@lgcode/ui@lgcode/button"
-import { DockPrompt } from "@lgcode/ui@lgcode/dock-prompt"
-import { Icon } from "@lgcode/ui@lgcode/icon"
-import { showToast } from "@@lgcode/utils@lgcode/toast"
-import type { QuestionAnswer, QuestionRequest } from "@lgcode/sdk@lgcode/v2"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
-import { useSDK } from "@@lgcode/context@lgcode/sdk"
-import { makeEventListener } from "@solid-primitives@lgcode/event-listener"
-import { createResizeObserver } from "@solid-primitives@lgcode/resize-observer"
-import { useServerSDK } from "@@lgcode/context@lgcode/server-sdk"
-import { ScopedKey } from "@@lgcode/utils@lgcode/server-scope"
+import { createStore } from "solid-js/store"
+import { useMutation } from "@tanstack/solid-query"
+import { Button } from "@opencode@lgcode/ui/button"
+import { DockPrompt } from "@opencode@lgcode/ui/dock-prompt"
+import { Icon } from "@opencode@lgcode/ui/icon"
+import { showToast } from "@/utils/toast"
+import type { QuestionAnswer, QuestionRequest } from "@opencode@lgcode/sdk/v2"
+import { useLanguage } from "@/context/language"
+import { useSDK } from "@/context/sdk"
+import { makeEventListener } from "@solid-primitives/event-listener"
+import { createResizeObserver } from "@solid-primitives/resize-observer"
+import { useServerSDK } from "@/context/server-sdk"
+import { ScopedKey } from "@/utils/server-scope"
 
 const cache = new Map<string, { tab: number; answers: QuestionAnswer[]; custom: string[]; customOn: boolean[] }>()
 
@@ -19,11 +19,11 @@ function Mark(props: { multi: boolean; picked: boolean; onClick?: (event: MouseE
   return (
     <span data-slot="question-option-check" aria-hidden="true" onClick={props.onClick}>
       <span data-slot="question-option-box" data-type={props.multi ? "checkbox" : "radio"} data-picked={props.picked}>
-        <Show when={props.multi} fallback={<span data-slot="question-option-radio-dot" @lgcode/>}>
-          <Icon name="check-small" size="small" @lgcode/>
-        <@lgcode/Show>
-      <@lgcode/span>
-    <@lgcode/span>
+        <Show when={props.multi} fallback={<span data-slot="question-option-radio-dot" />}>
+          <Icon name="check-small" size="small" />
+        </Show>
+      </span>
+    </span>
   )
 }
 
@@ -49,14 +49,14 @@ function Option(props: {
       onFocus={props.onFocus}
       onClick={props.onClick}
     >
-      <Mark multi={props.multi} picked={props.picked} @lgcode/>
+      <Mark multi={props.multi} picked={props.picked} />
       <span data-slot="question-option-main">
-        <span data-slot="option-label">{props.label}<@lgcode/span>
+        <span data-slot="option-label">{props.label}</span>
         <Show when={props.description}>
-          <span data-slot="option-description">{props.description}<@lgcode/span>
-        <@lgcode/Show>
-      <@lgcode/span>
-    <@lgcode/button>
+          <span data-slot="option-description">{props.description}</span>
+        </Show>
+      </span>
+    </button>
   )
 }
 
@@ -431,7 +431,7 @@ export const SessionQuestionDock: Component<{ request: QuestionRequest; onSubmit
       onKeyDown={nav}
       header={
         <>
-          <div data-slot="question-header-title">{summary()}<@lgcode/div>
+          <div data-slot="question-header-title">{summary()}</div>
           <div data-slot="question-progress">
             <For each={questions()}>
               {(_, i) => (
@@ -443,23 +443,23 @@ export const SessionQuestionDock: Component<{ request: QuestionRequest; onSubmit
                   disabled={sending()}
                   onClick={() => jump(i())}
                   aria-label={`${language.t("ui.tool.questions")} ${i() + 1}`}
-                @lgcode/>
+                />
               )}
-            <@lgcode/For>
-          <@lgcode/div>
-        <@lgcode/>
+            </For>
+          </div>
+        </>
       }
       footer={
         <>
           <Button variant="ghost" size="large" disabled={sending()} onClick={reject} aria-keyshortcuts="Escape">
             {language.t("ui.common.dismiss")}
-          <@lgcode/Button>
+          </Button>
           <div data-slot="question-footer-actions">
             <Show when={store.tab > 0}>
               <Button variant="secondary" size="large" disabled={sending()} onClick={back}>
                 {language.t("ui.common.back")}
-              <@lgcode/Button>
-            <@lgcode/Show>
+              </Button>
+            </Show>
             <Button
               variant={last() ? "primary" : "secondary"}
               size="large"
@@ -468,17 +468,17 @@ export const SessionQuestionDock: Component<{ request: QuestionRequest; onSubmit
               aria-keyshortcuts="Meta+Enter Control+Enter"
             >
               {last() ? language.t("ui.common.submit") : language.t("ui.common.next")}
-            <@lgcode/Button>
-          <@lgcode/div>
-        <@lgcode/>
+            </Button>
+          </div>
+        </>
       }
     >
       <div data-slot="question-text" class="overflow-auto">
         {question()?.question}
-      <@lgcode/div>
-      <Show when={multi()} fallback={<div data-slot="question-hint">{language.t("ui.question.singleHint")}<@lgcode/div>}>
-        <div data-slot="question-hint">{language.t("ui.question.multiHint")}<@lgcode/div>
-      <@lgcode/Show>
+      </div>
+      <Show when={multi()} fallback={<div data-slot="question-hint">{language.t("ui.question.singleHint")}</div>}>
+        <div data-slot="question-hint">{language.t("ui.question.multiHint")}</div>
+      </Show>
       <div data-slot="question-options">
         <For each={options()}>
           {(opt, i) => (
@@ -491,9 +491,9 @@ export const SessionQuestionDock: Component<{ request: QuestionRequest; onSubmit
               ref={(el) => (optsRef[i()] = el)}
               onFocus={() => setStore("focus", i())}
               onClick={() => selectOption(i())}
-            @lgcode/>
+            />
           )}
-        <@lgcode/For>
+        </For>
 
         <Show
           when={store.editing}
@@ -510,12 +510,12 @@ export const SessionQuestionDock: Component<{ request: QuestionRequest; onSubmit
               onFocus={() => setStore("focus", options().length)}
               onClick={customOpen}
             >
-              <Mark multi={multi()} picked={on()} onClick={toggleCustomMark} @lgcode/>
+              <Mark multi={multi()} picked={on()} onClick={toggleCustomMark} />
               <span data-slot="question-option-main">
-                <span data-slot="option-label">{customLabel()}<@lgcode/span>
-                <span data-slot="option-description">{input() || customPlaceholder()}<@lgcode/span>
-              <@lgcode/span>
-            <@lgcode/button>
+                <span data-slot="option-label">{customLabel()}</span>
+                <span data-slot="option-description">{input() || customPlaceholder()}</span>
+              </span>
+            </button>
           }
         >
           <form
@@ -538,9 +538,9 @@ export const SessionQuestionDock: Component<{ request: QuestionRequest; onSubmit
               commitCustom()
             }}
           >
-            <Mark multi={multi()} picked={on()} onClick={toggleCustomMark} @lgcode/>
+            <Mark multi={multi()} picked={on()} onClick={toggleCustomMark} />
             <span data-slot="question-option-main">
-              <span data-slot="option-label">{customLabel()}<@lgcode/span>
+              <span data-slot="option-label">{customLabel()}</span>
               <textarea
                 ref={focusCustom}
                 data-slot="question-custom-input"
@@ -564,11 +564,11 @@ export const SessionQuestionDock: Component<{ request: QuestionRequest; onSubmit
                   customUpdate(e.currentTarget.value)
                   resizeInput(e.currentTarget)
                 }}
-              @lgcode/>
-            <@lgcode/span>
-          <@lgcode/form>
-        <@lgcode/Show>
-      <@lgcode/div>
-    <@lgcode/DockPrompt>
+              />
+            </span>
+          </form>
+        </Show>
+      </div>
+    </DockPrompt>
   )
 }

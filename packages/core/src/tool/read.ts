@@ -1,20 +1,20 @@
-export * as ReadTool from ".@lgcode/read"
+export * as ReadTool from "./read"
 
-import { ToolFailure } from "@lgcode/llm"
+import { ToolFailure } from "@opencode@lgcode/llm"
 import path from "path"
 import { Effect, Layer, Schema } from "effect"
-import { FileSystem } from "..@lgcode/filesystem"
-import { FSUtil } from "..@lgcode/fs-util"
-import { Image } from "..@lgcode/image"
-import { Location } from "..@lgcode/location"
-import { PermissionV2 } from "..@lgcode/permission"
-import { AbsolutePath } from "..@lgcode/schema"
-import { ReadToolFileSystem } from ".@lgcode/read-filesystem"
-import { Tool } from ".@lgcode/tool"
-import { Tools } from ".@lgcode/tools"
+import { FileSystem } from "../filesystem"
+import { FSUtil } from "../fs-util"
+import { Image } from "../image"
+import { Location } from "../location"
+import { PermissionV2 } from "../permission"
+import { AbsolutePath } from "../schema"
+import { ReadToolFileSystem } from "./read-filesystem"
+import { Tool } from "./tool"
+import { Tools } from "./tools"
 
 export const name = "read"
-const SUPPORTED_IMAGE_MIMES = new Set(["image@lgcode/jpeg", "image@lgcode/png", "image@lgcode/gif", "image@lgcode/webp"])
+const SUPPORTED_IMAGE_MIMES = new Set(["image/jpeg", "image/png", "image/gif", "image/webp"])
 const LocationInput = Schema.Struct({
   path: Schema.String,
   offset: ReadToolFileSystem.PageInput.fields.offset.annotate({
@@ -61,7 +61,7 @@ export const layer = Layer.effectDiscard(
               const root = yield* fs.realPath(selected).pipe(Effect.orDie)
               if (!FSUtil.contains(root, real))
                 return yield* Effect.die(new Error("Path escapes the allowed read root"))
-              const resource = path.relative(root, real).replaceAll("\\", "@lgcode/") || "."
+              const resource = path.relative(root, real).replaceAll("\\", "/") || "."
               const target = AbsolutePath.make(real)
               const type = yield* reader.inspect(target)
               yield* permission.assert({

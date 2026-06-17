@@ -1,19 +1,19 @@
 import { describe, expect } from "bun:test"
 import { Cause, Deferred, Effect, Exit, Layer, Queue } from "effect"
-import { Config } from "@lgcode/core@lgcode/config"
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import { Location } from "@lgcode/core@lgcode/location"
-import { Pty } from "@lgcode/core@lgcode/pty"
-import type { PtyID } from "@lgcode/core@lgcode/pty@lgcode/schema"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import { location } from "..@lgcode/fixture@lgcode/location"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { Config } from "@opencode@lgcode/core/config"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import { Location } from "@opencode@lgcode/core/location"
+import { Pty } from "@opencode@lgcode/core/pty"
+import type { PtyID } from "@opencode@lgcode/core/pty/schema"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import { location } from "../fixture/location"
+import { testEffect } from "../lib/effect"
 
 type PtyEvent = { type: "created" | "exited" | "deleted"; id: PtyID }
 
 const locationLayer = Layer.succeed(
   Location.Service,
-  Location.Service.of(location({ directory: AbsolutePath.make("@lgcode/tmp") })),
+  Location.Service.of(location({ directory: AbsolutePath.make("/tmp") })),
 )
 const configLayer = Layer.mock(Config.Service)({ entries: () => Effect.succeed([]) })
 const it = testEffect(
@@ -44,7 +44,7 @@ const subscribePtyEvents = Effect.fn("PtySessionTest.subscribePtyEvents")(functi
 const createPty = Effect.fn("PtySessionTest.createPty")(function* (command: string, args: string[] = []) {
   const pty = yield* Pty.Service
   return yield* Effect.acquireRelease(
-    pty.create({ command, args, cwd: "@lgcode/tmp", env: { TERM: "xterm-256color", OPENCODE_TERMINAL: "1" } }),
+    pty.create({ command, args, cwd: "/tmp", env: { TERM: "xterm-256color", OPENCODE_TERMINAL: "1" } }),
     (info) => pty.remove(info.id).pipe(Effect.ignore),
   )
 })
@@ -113,7 +113,7 @@ describe("pty", () => {
     Effect.gen(function* () {
       const pty = yield* Pty.Service
       const events = yield* subscribePtyEvents()
-      const info = yield* createPty("@lgcode/usr@lgcode/bin@lgcode/env", ["sh", "-c", "exit 3"])
+      const info = yield* createPty("/usr/bin/env", ["sh", "-c", "exit 3"])
 
       expect(yield* waitForEvents(events, info.id, 2)).toEqual(["created", "exited"])
       const exited = yield* pty.get(info.id)
@@ -139,13 +139,13 @@ describe("pty", () => {
       first.attachment.write("BBB\n")
       yield* waitForOutput(first.output, "BBB")
 
-      @lgcode/@lgcode/ A later attachment replays everything already buffered.
+      // A later attachment replays everything already buffered.
       const replayed = yield* attachCollecting(info.id)
       expect(replayed.attachment.replay).toContain("AAA")
       expect(replayed.attachment.replay).toContain("BBB")
       expect(replayed.attachment.cursor).toBeGreaterThan(0)
 
-      @lgcode/@lgcode/ Tail attachments skip the buffer and only see subsequent output.
+      // Tail attachments skip the buffer and only see subsequent output.
       const tail = yield* attachCollecting(info.id, -1)
       expect(tail.attachment.replay).toBe("")
       expect(tail.attachment.cursor).toBe(replayed.attachment.cursor)
@@ -232,7 +232,7 @@ describe("pty create defaults", () => {
       )
       expect(info.command).toBe(configuredShell)
       expect(info.args).toEqual(["-l"])
-      expect(info.cwd).toBe("@lgcode/tmp")
+      expect(info.cwd).toBe("/tmp")
       expect(info.title).toBe("configured")
     }),
   )

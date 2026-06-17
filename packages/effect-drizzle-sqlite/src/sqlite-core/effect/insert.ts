@@ -1,29 +1,29 @@
-@lgcode/* oxlint-disable *@lgcode/
-import type * as Effect from "effect@lgcode/Effect"
-import { applyEffectWrapper, type QueryEffectHKTBase } from "drizzle-orm@lgcode/effect-core@lgcode/query-effect"
-import { entityKind, is } from "drizzle-orm@lgcode/entity"
-import type { SelectResultFields } from "drizzle-orm@lgcode/query-builders@lgcode/select.types"
-import type { RunnableQuery } from "drizzle-orm@lgcode/runnable-query"
-import type { Query, SQLWrapper } from "drizzle-orm@lgcode/sql@lgcode/sql"
-import { Param, SQL, sql } from "drizzle-orm@lgcode/sql@lgcode/sql"
-import type { SQLiteDialect } from "drizzle-orm@lgcode/sqlite-core@lgcode/dialect"
-import type { IndexColumn } from "drizzle-orm@lgcode/sqlite-core@lgcode/indexes"
+/* oxlint-disable */
+import type * as Effect from "effect/Effect"
+import { applyEffectWrapper, type QueryEffectHKTBase } from "drizzle-orm/effect-core/query-effect"
+import { entityKind, is } from "drizzle-orm/entity"
+import type { SelectResultFields } from "drizzle-orm/query-builders/select.types"
+import type { RunnableQuery } from "drizzle-orm/runnable-query"
+import type { Query, SQLWrapper } from "drizzle-orm/sql/sql"
+import { Param, SQL, sql } from "drizzle-orm/sql/sql"
+import type { SQLiteDialect } from "drizzle-orm/sqlite-core/dialect"
+import type { IndexColumn } from "drizzle-orm/sqlite-core/indexes"
 import type {
   SQLiteInsertConfig,
   SQLiteInsertSelectQueryBuilder,
   SQLiteInsertValue,
-} from "drizzle-orm@lgcode/sqlite-core@lgcode/query-builders@lgcode/insert"
-import type { SelectedFieldsFlat } from "drizzle-orm@lgcode/sqlite-core@lgcode/query-builders@lgcode/select.types"
-import type { PreparedQueryConfig } from "drizzle-orm@lgcode/sqlite-core@lgcode/session"
-import { SQLiteTable } from "drizzle-orm@lgcode/sqlite-core@lgcode/table"
-import { extractUsedTable } from "drizzle-orm@lgcode/sqlite-core@lgcode/utils"
-import type { Subquery } from "drizzle-orm@lgcode/subquery"
-import { type DrizzleTypeError, haveSameKeys } from "drizzle-orm@lgcode/utils"
-import type { SQLiteColumn } from "drizzle-orm@lgcode/sqlite-core@lgcode/columns@lgcode/common"
-import { QueryBuilder } from "drizzle-orm@lgcode/sqlite-core@lgcode/query-builders@lgcode/query-builder"
-import type { SQLiteUpdateSetSource } from "drizzle-orm@lgcode/sqlite-core@lgcode/query-builders@lgcode/update"
-import { getTableColumnsRuntime, mapUpdateSet, orderSelectedFields } from "..@lgcode/..@lgcode/internal@lgcode/drizzle-utils"
-import type { SQLiteEffectPreparedQuery, SQLiteEffectSession } from ".@lgcode/session"
+} from "drizzle-orm/sqlite-core/query-builders/insert"
+import type { SelectedFieldsFlat } from "drizzle-orm/sqlite-core/query-builders/select.types"
+import type { PreparedQueryConfig } from "drizzle-orm/sqlite-core/session"
+import { SQLiteTable } from "drizzle-orm/sqlite-core/table"
+import { extractUsedTable } from "drizzle-orm/sqlite-core/utils"
+import type { Subquery } from "drizzle-orm/subquery"
+import { type DrizzleTypeError, haveSameKeys } from "drizzle-orm/utils"
+import type { SQLiteColumn } from "drizzle-orm/sqlite-core/columns/common"
+import { QueryBuilder } from "drizzle-orm/sqlite-core/query-builders/query-builder"
+import type { SQLiteUpdateSetSource } from "drizzle-orm/sqlite-core/query-builders/update"
+import { getTableColumnsRuntime, mapUpdateSet, orderSelectedFields } from "../../internal/drizzle-utils"
+import type { SQLiteEffectPreparedQuery, SQLiteEffectSession } from "./session"
 
 export type SQLiteEffectInsertWithout<
   T extends AnySQLiteEffectInsert,
@@ -85,7 +85,7 @@ export type SQLiteEffectInsertDynamic<T extends AnySQLiteEffectInsert> = SQLiteE
 
 export type SQLiteEffectInsertOnConflictDoUpdateConfig<T extends AnySQLiteEffectInsert> = {
   target: IndexColumn | IndexColumn[]
-  @lgcode/** @deprecated - use either `targetWhere` or `setWhere` *@lgcode/
+  /** @deprecated - use either `targetWhere` or `setWhere` */
   where?: SQL
   targetWhere?: SQL
   setWhere?: SQL
@@ -232,7 +232,7 @@ export class SQLiteEffectInsertBase<
 {
   static readonly [entityKind]: string = "SQLiteEffectInsert"
 
-  @lgcode/** @internal *@lgcode/
+  /** @internal */
   config: SQLiteInsertConfig<TTable>
 
   constructor(
@@ -274,7 +274,7 @@ export class SQLiteEffectInsertBase<
   onConflictDoUpdate(config: SQLiteEffectInsertOnConflictDoUpdateConfig<this>): this {
     if (config.where && (config.targetWhere || config.setWhere)) {
       throw new Error(
-        'You cannot use both "where" and "targetWhere"@lgcode/"setWhere" at the same time - "where" is deprecated, use "targetWhere" or "setWhere" instead.',
+        'You cannot use both "where" and "targetWhere"/"setWhere" at the same time - "where" is deprecated, use "targetWhere" or "setWhere" instead.',
       )
     }
 
@@ -294,7 +294,7 @@ export class SQLiteEffectInsertBase<
     return this
   }
 
-  @lgcode/** @internal *@lgcode/
+  /** @internal */
   getSQL(): SQL {
     return this.effectDialect.buildInsertQuery(this.config)
   }
@@ -303,7 +303,7 @@ export class SQLiteEffectInsertBase<
     return this.effectDialect.sqlToQuery(this.getSQL())
   }
 
-  @lgcode/** @internal *@lgcode/
+  /** @internal */
   _prepare(isOneTimeQuery = true): SQLiteEffectInsertPrepare<this, TEffectHKT> {
     return this.effectSession[isOneTimeQuery ? "prepareOneTimeQuery" : "prepareQuery"](
       this.effectDialect.sqlToQuery(this.getSQL()),

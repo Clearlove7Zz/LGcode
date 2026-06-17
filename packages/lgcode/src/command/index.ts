@@ -1,15 +1,15 @@
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
-import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
-import { EffectBridge } from "@@lgcode/effect@lgcode/bridge"
-import type { InstanceContext } from "@@lgcode/project@lgcode/instance-context"
-import { SessionID, MessageID } from "@@lgcode/session@lgcode/schema"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { InstanceState } from "@/effect/instance-state"
+import { EffectBridge } from "@/effect/bridge"
+import type { InstanceContext } from "@/project/instance-context"
+import { SessionID, MessageID } from "@/session/schema"
 import { Effect, Layer, Context, Schema } from "effect"
-import { Config } from "@@lgcode/config@lgcode/config"
-import { MCP } from "..@lgcode/mcp"
-import { Skill } from "..@lgcode/skill"
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import PROMPT_INITIALIZE from ".@lgcode/template@lgcode/initialize.txt"
-import PROMPT_REVIEW from ".@lgcode/template@lgcode/review.txt"
+import { Config } from "@/config/config"
+import { MCP } from "../mcp"
+import { Skill } from "../skill"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import PROMPT_INITIALIZE from "./template/initialize.txt"
+import PROMPT_REVIEW from "./template/review.txt"
 
 type State = {
   commands: Record<string, Info>
@@ -33,7 +33,7 @@ export const Info = Schema.Struct({
   agent: Schema.optional(Schema.String),
   model: Schema.optional(Schema.String),
   source: Schema.optional(Schema.Literals(["command", "mcp", "skill"])),
-  @lgcode/@lgcode/ Some command templates are lazy promises from MCP prompt resolution.
+  // Some command templates are lazy promises from MCP prompt resolution.
   template: Schema.Unknown,
   subtask: Schema.optional(Schema.Boolean),
   hints: Schema.Array(Schema.String),
@@ -43,7 +43,7 @@ export type Info = Omit<Schema.Schema.Type<typeof Info>, "template"> & { templat
 
 export function hints(template: string) {
   const result: string[] = []
-  const numbered = template.match(@lgcode/\$\d+@lgcode/g)
+  const numbered = template.match(/\$\d+/g)
   if (numbered) {
     for (const match of [...new Set(numbered)].sort()) result.push(match)
   }
@@ -61,7 +61,7 @@ export interface Interface {
   readonly list: () => Effect.Effect<Info[]>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Command") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/Command") {}
 
 export const layer = Layer.effect(
   Service,

@@ -1,12 +1,12 @@
-import { MonthlyLimitSection } from ".@lgcode/monthly-limit-section"
-import { BillingSection } from ".@lgcode/billing-section"
-import { ReloadSection } from ".@lgcode/reload-section"
-import { PaymentSection } from ".@lgcode/payment-section"
-import { BlackSection } from ".@lgcode/black-section"
-import { RedeemSection } from ".@lgcode/redeem-section"
+import { MonthlyLimitSection } from "./monthly-limit-section"
+import { BillingSection } from "./billing-section"
+import { ReloadSection } from "./reload-section"
+import { PaymentSection } from "./payment-section"
+import { BlackSection } from "./black-section"
+import { RedeemSection } from "./redeem-section"
 import { createMemo, Show } from "solid-js"
-import { createAsync, useParams } from "@solidjs@lgcode/router"
-import { queryBillingInfo, querySessionInfo } from "..@lgcode/..@lgcode/common"
+import { createAsync, useParams } from "@solidjs/router"
+import { queryBillingInfo, querySessionInfo } from "../../common"
 
 export default function () {
   const params = useParams()
@@ -19,17 +19,17 @@ export default function () {
       <div data-slot="sections">
         <Show when={sessionInfo()?.isAdmin}>
           <Show when={isBlack()}>
-            <BlackSection @lgcode/>
-          <@lgcode/Show>
-          <BillingSection @lgcode/>
-          <RedeemSection @lgcode/>
+            <BlackSection />
+          </Show>
+          <BillingSection />
+          <RedeemSection />
           <Show when={billingInfo()?.customerID}>
-            <ReloadSection @lgcode/>
-            <MonthlyLimitSection @lgcode/>
-            <PaymentSection @lgcode/>
-          <@lgcode/Show>
-        <@lgcode/Show>
-      <@lgcode/div>
-    <@lgcode/div>
+            <ReloadSection />
+            <MonthlyLimitSection />
+            <PaymentSection />
+          </Show>
+        </Show>
+      </div>
+    </div>
   )
 }

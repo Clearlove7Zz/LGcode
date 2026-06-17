@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { toggleMcp } from ".@lgcode/mcp"
+import { toggleMcp } from "./mcp"
 
 describe("toggleMcp", () => {
   test("runs the status action before refreshing the owning query", async () => {

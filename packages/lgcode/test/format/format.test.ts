@@ -1,11 +1,11 @@
-import { NodeFileSystem } from "@effect@lgcode/platform-node"
+import { NodeFileSystem } from "@effect/platform-node"
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { provideTmpdirInstance, testInstanceStoreLayer, TestInstance } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import { Format } from "..@lgcode/..@lgcode/src@lgcode/format"
-import * as Formatter from "..@lgcode/..@lgcode/src@lgcode/format@lgcode/formatter"
+import { provideTmpdirInstance, testInstanceStoreLayer, TestInstance } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { Format } from "../../src/format"
+import * as Formatter from "../../src/format/formatter"
 
 const it = testEffect(Layer.mergeAll(Format.defaultLayer, CrossSpawnSpawner.defaultLayer, NodeFileSystem.layer))
 
@@ -96,7 +96,7 @@ describe("Format", () => {
     () =>
       Effect.gen(function* () {
         const test = yield* TestInstance
-        const file = `${test.directory}@lgcode/test.txt`
+        const file = `${test.directory}/test.txt`
         yield* Effect.promise(() => Bun.write(file, "x"))
 
         const formatted = yield* Format.use.file(file)
@@ -128,7 +128,7 @@ describe("Format", () => {
     () =>
       Effect.gen(function* () {
         const test = yield* TestInstance
-        const file = `${test.directory}@lgcode/test.parallel`
+        const file = `${test.directory}/test.parallel`
         yield* Effect.promise(() => Bun.write(file, "x"))
 
         const one = {
@@ -188,7 +188,7 @@ describe("Format", () => {
     () =>
       Effect.gen(function* () {
         const test = yield* TestInstance
-        const file = `${test.directory}@lgcode/test.seq`
+        const file = `${test.directory}/test.seq`
         yield* Effect.promise(() => Bun.write(file, "x"))
 
         yield* Format.Service.use((fmt) =>

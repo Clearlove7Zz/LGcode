@@ -1,11 +1,11 @@
 import { z } from "zod"
 import { eq, and } from "drizzle-orm"
-import { Database } from ".@lgcode/drizzle"
-import { ModelTable } from ".@lgcode/schema@lgcode/model.sql"
-import { Identifier } from ".@lgcode/identifier"
-import { fn } from ".@lgcode/util@lgcode/fn"
-import { Actor } from ".@lgcode/actor"
-import { Resource } from "@lgcode/console-resource"
+import { Database } from "./drizzle"
+import { ModelTable } from "./schema/model.sql"
+import { Identifier } from "./identifier"
+import { fn } from "./util/fn"
+import { Actor } from "./actor"
+import { Resource } from "@opencode@lgcode/console-resource"
 
 export namespace ZenData {
   const FormatSchema = z.enum(["anthropic", "google", "openai", "oa-compat"])

@@ -1,4 +1,4 @@
-import { HoverCard as Kobalte } from "@kobalte@lgcode/core@lgcode/hover-card"
+import { HoverCard as Kobalte } from "@kobalte/core/hover-card"
 import { ComponentProps, JSXElement, ParentProps, splitProps } from "solid-js"
 
 export interface HoverCardProps extends ParentProps, Omit<ComponentProps<typeof Kobalte>, "children"> {
@@ -15,7 +15,7 @@ export function HoverCard(props: HoverCardProps) {
     <Kobalte gutter={4} {...rest}>
       <Kobalte.Trigger as="div" data-slot="hover-card-trigger" tabIndex={-1}>
         {local.trigger}
-      <@lgcode/Kobalte.Trigger>
+      </Kobalte.Trigger>
       <Kobalte.Portal mount={local.mount}>
         <Kobalte.Content
           data-component="hover-card-content"
@@ -24,9 +24,9 @@ export function HoverCard(props: HoverCardProps) {
             [local.class ?? ""]: !!local.class,
           }}
         >
-          <div data-slot="hover-card-body">{local.children}<@lgcode/div>
-        <@lgcode/Kobalte.Content>
-      <@lgcode/Kobalte.Portal>
-    <@lgcode/Kobalte>
+          <div data-slot="hover-card-body">{local.children}</div>
+        </Kobalte.Content>
+      </Kobalte.Portal>
+    </Kobalte>
   )
 }

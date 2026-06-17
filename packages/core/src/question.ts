@@ -1,10 +1,10 @@
-export * as QuestionV2 from ".@lgcode/question"
+export * as QuestionV2 from "./question"
 
 import { Context, Deferred, Effect, Layer, Schema } from "effect"
-import { EventV2 } from ".@lgcode/event"
-import { Identifier } from ".@lgcode/id@lgcode/id"
-import { withStatics } from ".@lgcode/schema"
-import { SessionSchema } from ".@lgcode/session@lgcode/schema"
+import { EventV2 } from "./event"
+import { Identifier } from "./id/id"
+import { withStatics } from "./schema"
+import { SessionSchema } from "./session/schema"
 
 export const ID = Schema.String.check(Schema.isStartsWith("que")).pipe(
   Schema.brand("QuestionV2.ID"),
@@ -107,18 +107,18 @@ export interface Interface {
   readonly list: () => Effect.Effect<ReadonlyArray<Request>>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/Question") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/v2/Question") {}
 
 interface Pending {
   readonly request: Request
   readonly deferred: Deferred.Deferred<ReadonlyArray<Answer>, RejectedError>
 }
 
-@lgcode/**
+/**
  * Location-owned pending prompts. The Location layer map must materialize this
  * layer once per embedded Location so replies cannot settle another Location's
  * deferred request.
- *@lgcode/
+ */
 export const layer = Layer.effect(
   Service,
   Effect.gen(function* () {

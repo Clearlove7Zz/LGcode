@@ -1,8 +1,8 @@
-import { cmd } from ".@lgcode/cmd"
-import { UI } from "@@lgcode/cli@lgcode/ui"
-import { errorMessage } from "@lgcode/tui@lgcode/util@lgcode/error"
-import { validateSession } from "..@lgcode/tui@lgcode/validate-session"
-import { ServerAuth } from "@@lgcode/server@lgcode/auth"
+import { cmd } from "./cmd"
+import { UI } from "@/cli/ui"
+import { errorMessage } from "@opencode@lgcode/tui/util/error"
+import { validateSession } from "../tui/validate-session"
+import { ServerAuth } from "@/server/auth"
 
 export const AttachCommand = cmd({
   command: "attach <url>",
@@ -11,7 +11,7 @@ export const AttachCommand = cmd({
     yargs
       .positional("url", {
         type: "string",
-        describe: "http:@lgcode/@lgcode/localhost:4096",
+        describe: "http://localhost:4096",
         demandOption: true,
       })
       .option("dir", {
@@ -43,7 +43,7 @@ export const AttachCommand = cmd({
         describe: "basic auth username (defaults to OPENCODE_SERVER_USERNAME or 'opencode')",
       }),
   handler: async (args) => {
-    const { TuiConfig } = await import("@@lgcode/config@lgcode/tui")
+    const { TuiConfig } = await import("@/config/tui")
     if (args.fork && !args.continue && !args.session) {
       UI.error("--fork requires --continue or --session")
       process.exitCode = 1
@@ -56,7 +56,7 @@ export const AttachCommand = cmd({
         process.chdir(args.dir)
         return process.cwd()
       } catch {
-        @lgcode/@lgcode/ If the directory doesn't exist locally (remote attach), pass it through.
+        // If the directory doesn't exist locally (remote attach), pass it through.
         return args.dir
       }
     })()
@@ -77,8 +77,8 @@ export const AttachCommand = cmd({
     }
 
     const { Effect } = await import("effect")
-    const { run } = await import("..@lgcode/tui@lgcode/layer")
-    const { createLegacyTuiPluginHost } = await import("@@lgcode/plugin@lgcode/tui@lgcode/runtime")
+    const { run } = await import("../tui/layer")
+    const { createLegacyTuiPluginHost } = await import("@/plugin/tui/runtime")
     await Effect.runPromise(
       run({
         url: args.url,

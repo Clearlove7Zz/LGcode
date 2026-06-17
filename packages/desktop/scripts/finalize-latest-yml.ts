@@ -1,4 +1,4 @@
-#!@lgcode/usr@lgcode/bin@lgcode/env bun
+#!/usr/bin/env bun
 
 import { $ } from "bun"
 import path from "path"
@@ -41,7 +41,7 @@ function parse(content: string): LatestYml {
     const indented = line.startsWith("    ") || line.startsWith("  -")
     if (line.startsWith("version:")) version = line.slice("version:".length).trim()
     else if (line.startsWith("releaseDate:"))
-      releaseDate = line.slice("releaseDate:".length).trim().replace(@lgcode/^'|'$@lgcode/g, "")
+      releaseDate = line.slice("releaseDate:".length).trim().replace(/^'|'$/g, "")
     else if (line.trim().startsWith("- url:")) {
       flush()
       current = { url: line.trim().slice("- url:".length).trim() }
@@ -78,7 +78,7 @@ async function read(subdir: string, filename: string): Promise<LatestYml | undef
 
 const output: Record<string, string> = {}
 
-@lgcode/@lgcode/ Windows: merge arm64 + x64 into single file
+// Windows: merge arm64 + x64 into single file
 const winX64 = await read("latest-yml-x86_64-pc-windows-msvc", "latest.yml")
 const winArm64 = await read("latest-yml-aarch64-pc-windows-msvc", "latest.yml")
 if (winX64 || winArm64) {
@@ -90,15 +90,15 @@ if (winX64 || winArm64) {
   })
 }
 
-@lgcode/@lgcode/ Linux x64: pass through
+// Linux x64: pass through
 const linuxX64 = await read("latest-yml-x86_64-unknown-linux-gnu", "latest-linux.yml")
 if (linuxX64) output["latest-linux.yml"] = serialize(linuxX64)
 
-@lgcode/@lgcode/ Linux arm64: pass through
+// Linux arm64: pass through
 const linuxArm64 = await read("latest-yml-aarch64-unknown-linux-gnu", "latest-linux-arm64.yml")
 if (linuxArm64) output["latest-linux-arm64.yml"] = serialize(linuxArm64)
 
-@lgcode/@lgcode/ macOS: merge arm64 + x64 into single file
+// macOS: merge arm64 + x64 into single file
 const macX64 = await read("latest-yml-x86_64-apple-darwin", "latest-mac.yml")
 const macArm64 = await read("latest-yml-aarch64-apple-darwin", "latest-mac.yml")
 if (macX64 || macArm64) {
@@ -110,9 +110,9 @@ if (macX64 || macArm64) {
   })
 }
 
-@lgcode/@lgcode/ Upload to release
+// Upload to release
 const tag = `v${version}`
-const tmp = process.env.RUNNER_TEMP ?? "@lgcode/tmp"
+const tmp = process.env.RUNNER_TEMP ?? "/tmp"
 
 for (const [filename, content] of Object.entries(output)) {
   const filepath = path.join(tmp, filename)

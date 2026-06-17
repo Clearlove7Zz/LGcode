@@ -1,12 +1,12 @@
-import { Agent } from "@@lgcode/agent@lgcode/agent"
-import { Provider } from "@@lgcode/provider@lgcode/provider"
-import { LLM } from "@@lgcode/session@lgcode/llm"
-import { MessageID, SessionID } from "@@lgcode/session@lgcode/schema"
-import { Slug } from "@lgcode/core@lgcode/util@lgcode/slug"
-import { LLMEvent } from "@lgcode/llm"
+import { Agent } from "@/agent/agent"
+import { Provider } from "@/provider/provider"
+import { LLM } from "@/session/llm"
+import { MessageID, SessionID } from "@/session/schema"
+import { Slug } from "@opencode@lgcode/core/util/slug"
+import { LLMEvent } from "@opencode@lgcode/llm"
 import { Effect, Stream } from "effect"
-import { HttpApiBuilder } from "effect@lgcode/unstable@lgcode/httpapi"
-import { InstanceHttpApi } from "..@lgcode/api"
+import { HttpApiBuilder } from "effect/unstable/httpapi"
+import { InstanceHttpApi } from "../api"
 
 const COPY_NAME_AGENT: Agent.Info = {
   name: "project-copy-name",
@@ -56,7 +56,7 @@ export const projectCopyHandlers = HttpApiBuilder.group(InstanceHttpApi, "projec
           Stream.mkString,
         )
       const output = result.trim()
-      return output ? slugify(output.split(@lgcode/\s+@lgcode/).slice(0, 3).join(" ")) : Slug.create()
+      return output ? slugify(output.split(/\s+/).slice(0, 3).join(" ")) : Slug.create()
     })
 
     return handlers.handle("generateName", (ctx) =>
@@ -77,7 +77,7 @@ function slugify(input: string) {
   return input
     .trim()
     .toLowerCase()
-    .replace(@lgcode/[^a-z0-9]+@lgcode/g, "-")
-    .replace(@lgcode/^-+@lgcode/, "")
-    .replace(@lgcode/-+$@lgcode/, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+/, "")
+    .replace(/-+$/, "")
 }

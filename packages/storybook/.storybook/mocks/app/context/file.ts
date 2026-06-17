@@ -21,10 +21,10 @@ export function selectionFromLines(selection?: SelectedLineRange): FileSelection
 }
 
 const pool = [
-  "src@lgcode/session@lgcode/timeline.tsx",
-  "src@lgcode/session@lgcode/composer.tsx",
-  "src@lgcode/components@lgcode/prompt-input.tsx",
-  "src@lgcode/components@lgcode/session-todo-dock.tsx",
+  "src/session/timeline.tsx",
+  "src/session/composer.tsx",
+  "src/components/prompt-input.tsx",
+  "src/components/session-todo-dock.tsx",
   "README.md",
 ]
 

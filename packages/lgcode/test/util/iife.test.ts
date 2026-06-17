@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { iife } from "..@lgcode/..@lgcode/src@lgcode/util@lgcode/iife"
+import { iife } from "../../src/util/iife"
 
 describe("util.iife", () => {
   test("should execute function immediately and return result", () => {

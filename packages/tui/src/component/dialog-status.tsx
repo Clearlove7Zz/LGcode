@@ -1,8 +1,8 @@
-import { TextAttributes } from "@opentui@lgcode/core"
+import { TextAttributes } from "@opentui/core"
 import { fileURLToPath } from "bun"
-import { useTheme } from "..@lgcode/context@lgcode/theme"
-import { useDialog } from "..@lgcode/ui@lgcode/dialog"
-import { useSync } from "..@lgcode/context@lgcode/sync"
+import { useTheme } from "../context/theme"
+import { useDialog } from "../ui/dialog"
+import { useSync } from "../context/sync"
 import { For, Match, Switch, Show, createMemo } from "solid-js"
 
 export type DialogStatusProps = {}
@@ -18,9 +18,9 @@ export function DialogStatus() {
     const list = sync.data.config.plugin ?? []
     const result = list.map((item) => {
       const value = typeof item === "string" ? item : item[0]
-      if (value.startsWith("file:@lgcode/@lgcode/")) {
+      if (value.startsWith("file://")) {
         const path = fileURLToPath(value)
-        const parts = path.split("@lgcode/")
+        const parts = path.split("/")
         const filename = parts.pop() || path
         if (!filename.includes(".")) return { name: filename }
         const basename = filename.split(".")[0]
@@ -45,14 +45,14 @@ export function DialogStatus() {
       <box flexDirection="row" justifyContent="space-between">
         <text fg={theme.text} attributes={TextAttributes.BOLD}>
           Status
-        <@lgcode/text>
+        </text>
         <text fg={theme.textMuted} onMouseUp={() => dialog.clear()}>
           esc
-        <@lgcode/text>
-      <@lgcode/box>
-      <Show when={Object.keys(sync.data.mcp).length > 0} fallback={<text fg={theme.text}>No MCP Servers<@lgcode/text>}>
+        </text>
+      </box>
+      <Show when={Object.keys(sync.data.mcp).length > 0} fallback={<text fg={theme.text}>No MCP Servers</text>}>
         <box>
-          <text fg={theme.text}>{Object.keys(sync.data.mcp).length} MCP Servers<@lgcode/text>
+          <text fg={theme.text}>{Object.keys(sync.data.mcp).length} MCP Servers</text>
           <For each={Object.entries(sync.data.mcp)}>
             {([key, item]) => (
               <box flexDirection="row" gap={1}>
@@ -71,31 +71,31 @@ export function DialogStatus() {
                   }}
                 >
                   •
-                <@lgcode/text>
+                </text>
                 <text fg={theme.text} wrapMode="word">
-                  <b>{key}<@lgcode/b>{" "}
+                  <b>{key}</b>{" "}
                   <span style={{ fg: theme.textMuted }}>
                     <Switch fallback={item.status}>
-                      <Match when={item.status === "connected"}>Connected<@lgcode/Match>
-                      <Match when={item.status === "failed" && item}>{(val) => val().error}<@lgcode/Match>
-                      <Match when={item.status === "disabled"}>Disabled in configuration<@lgcode/Match>
+                      <Match when={item.status === "connected"}>Connected</Match>
+                      <Match when={item.status === "failed" && item}>{(val) => val().error}</Match>
+                      <Match when={item.status === "disabled"}>Disabled in configuration</Match>
                       <Match when={(item.status as string) === "needs_auth"}>
                         Needs authentication (run: opencode mcp auth {key})
-                      <@lgcode/Match>
+                      </Match>
                       <Match when={(item.status as string) === "needs_client_registration" && item}>
                         {(val) => (val() as { error: string }).error}
-                      <@lgcode/Match>
-                    <@lgcode/Switch>
-                  <@lgcode/span>
-                <@lgcode/text>
-              <@lgcode/box>
+                      </Match>
+                    </Switch>
+                  </span>
+                </text>
+              </box>
             )}
-          <@lgcode/For>
-        <@lgcode/box>
-      <@lgcode/Show>
+          </For>
+        </box>
+      </Show>
       {sync.data.lsp.length > 0 && (
         <box>
-          <text fg={theme.text}>{sync.data.lsp.length} LSP Servers<@lgcode/text>
+          <text fg={theme.text}>{sync.data.lsp.length} LSP Servers</text>
           <For each={sync.data.lsp}>
             {(item) => (
               <box flexDirection="row" gap={1}>
@@ -109,18 +109,18 @@ export function DialogStatus() {
                   }}
                 >
                   •
-                <@lgcode/text>
+                </text>
                 <text fg={theme.text} wrapMode="word">
-                  <b>{item.id}<@lgcode/b> <span style={{ fg: theme.textMuted }}>{item.root}<@lgcode/span>
-                <@lgcode/text>
-              <@lgcode/box>
+                  <b>{item.id}</b> <span style={{ fg: theme.textMuted }}>{item.root}</span>
+                </text>
+              </box>
             )}
-          <@lgcode/For>
-        <@lgcode/box>
+          </For>
+        </box>
       )}
-      <Show when={enabledFormatters().length > 0} fallback={<text fg={theme.text}>No Formatters<@lgcode/text>}>
+      <Show when={enabledFormatters().length > 0} fallback={<text fg={theme.text}>No Formatters</text>}>
         <box>
-          <text fg={theme.text}>{enabledFormatters().length} Formatters<@lgcode/text>
+          <text fg={theme.text}>{enabledFormatters().length} Formatters</text>
           <For each={enabledFormatters()}>
             {(item) => (
               <box flexDirection="row" gap={1}>
@@ -131,18 +131,18 @@ export function DialogStatus() {
                   }}
                 >
                   •
-                <@lgcode/text>
+                </text>
                 <text wrapMode="word" fg={theme.text}>
-                  <b>{item.name}<@lgcode/b>
-                <@lgcode/text>
-              <@lgcode/box>
+                  <b>{item.name}</b>
+                </text>
+              </box>
             )}
-          <@lgcode/For>
-        <@lgcode/box>
-      <@lgcode/Show>
-      <Show when={plugins().length > 0} fallback={<text fg={theme.text}>No Plugins<@lgcode/text>}>
+          </For>
+        </box>
+      </Show>
+      <Show when={plugins().length > 0} fallback={<text fg={theme.text}>No Plugins</text>}>
         <box>
-          <text fg={theme.text}>{plugins().length} Plugins<@lgcode/text>
+          <text fg={theme.text}>{plugins().length} Plugins</text>
           <For each={plugins()}>
             {(item) => (
               <box flexDirection="row" gap={1}>
@@ -153,16 +153,16 @@ export function DialogStatus() {
                   }}
                 >
                   •
-                <@lgcode/text>
+                </text>
                 <text wrapMode="word" fg={theme.text}>
-                  <b>{item.name}<@lgcode/b>
-                  {item.version && <span style={{ fg: theme.textMuted }}> @{item.version}<@lgcode/span>}
-                <@lgcode/text>
-              <@lgcode/box>
+                  <b>{item.name}</b>
+                  {item.version && <span style={{ fg: theme.textMuted }}> @{item.version}</span>}
+                </text>
+              </box>
             )}
-          <@lgcode/For>
-        <@lgcode/box>
-      <@lgcode/Show>
-    <@lgcode/box>
+          </For>
+        </box>
+      </Show>
+    </box>
   )
 }

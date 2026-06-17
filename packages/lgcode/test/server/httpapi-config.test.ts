@@ -1,11 +1,11 @@
 import { afterEach, describe, expect } from "bun:test"
 import path from "path"
-import { Server } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/server"
+import { Server } from "../../src/server/server"
 import { Effect, Fiber } from "effect"
-import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
-import { disposeAllInstances, tmpdir } from "..@lgcode/fixture@lgcode/fixture"
-import { it } from "..@lgcode/lib@lgcode/effect"
-import { waitGlobalBusEvent } from ".@lgcode/global-bus"
+import { resetDatabase } from "../fixture/db"
+import { disposeAllInstances, tmpdir } from "../fixture/fixture"
+import { it } from "../lib/effect"
+import { waitGlobalBusEvent } from "./global-bus"
 
 function app() {
   return Server.Default().app
@@ -38,10 +38,10 @@ describe("config HttpApi", () => {
 
       const response = yield* Effect.promise(() =>
         Promise.resolve(
-          app().request("@lgcode/config", {
+          app().request("/config", {
             method: "PATCH",
             headers: {
-              "content-type": "application@lgcode/json",
+              "content-type": "application/json",
               "x-opencode-directory": tmp.path,
             },
             body: JSON.stringify({ username: "patched-user", formatter: false, lsp: false }),
@@ -85,7 +85,7 @@ describe("config HttpApi", () => {
 
       const response = yield* Effect.promise(() =>
         Promise.resolve(
-          app().request("@lgcode/config", {
+          app().request("/config", {
             headers: {
               "x-opencode-directory": tmp.path,
             },

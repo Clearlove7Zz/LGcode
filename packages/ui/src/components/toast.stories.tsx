@@ -1,11 +1,11 @@
-@lgcode/@lgcode/ @ts-nocheck
-import * as mod from ".@lgcode/toast"
-import { Button } from ".@lgcode/button"
+// @ts-nocheck
+import * as mod from "./toast"
+import { Button } from "./button"
 
 const docs = `### Overview
 Toast notifications with optional icons, actions, and progress.
 
-Use brief titles@lgcode/descriptions; limit actions to 1-2.
+Use brief titles/descriptions; limit actions to 1-2.
 
 ### API
 - Use \`showToast\` or \`showPromiseToast\` to trigger toasts.
@@ -22,13 +22,13 @@ Use brief titles@lgcode/descriptions; limit actions to 1-2.
 ### Accessibility
 - TODO: confirm aria-live behavior from Kobalte Toast.
 
-### Theming@lgcode/tokens
+### Theming/tokens
 - Uses \`data-component="toast"\` and slot data attributes.
 
 `
 
 export default {
-  title: "UI@lgcode/Toast",
+  title: "UI/Toast",
   id: "components-toast",
   component: mod.Toast,
   tags: ["autodocs"],
@@ -44,7 +44,7 @@ export default {
 export const Basic = {
   render: () => (
     <div style={{ display: "grid", gap: "12px" }}>
-      <mod.Toast.Region @lgcode/>
+      <mod.Toast.Region />
       <Button
         variant="primary"
         onClick={() =>
@@ -57,7 +57,7 @@ export const Basic = {
         }
       >
         Show success toast
-      <@lgcode/Button>
+      </Button>
       <Button
         variant="secondary"
         onClick={() =>
@@ -69,15 +69,15 @@ export const Basic = {
         }
       >
         Show error toast
-      <@lgcode/Button>
-    <@lgcode/div>
+      </Button>
+    </div>
   ),
 }
 
 export const Actions = {
   render: () => (
     <div style={{ display: "grid", gap: "12px" }}>
-      <mod.Toast.Region @lgcode/>
+      <mod.Toast.Region />
       <Button
         variant="secondary"
         onClick={() =>
@@ -92,15 +92,15 @@ export const Actions = {
         }
       >
         Show action toast
-      <@lgcode/Button>
-    <@lgcode/div>
+      </Button>
+    </div>
   ),
 }
 
 export const Promise = {
   render: () => (
     <div style={{ display: "grid", gap: "12px" }}>
-      <mod.Toast.Region @lgcode/>
+      <mod.Toast.Region />
       <Button
         variant="secondary"
         onClick={() =>
@@ -112,15 +112,15 @@ export const Promise = {
         }
       >
         Show promise toast
-      <@lgcode/Button>
-    <@lgcode/div>
+      </Button>
+    </div>
   ),
 }
 
 export const Loading = {
   render: () => (
     <div style={{ display: "grid", gap: "12px" }}>
-      <mod.Toast.Region @lgcode/>
+      <mod.Toast.Region />
       <Button
         variant="secondary"
         onClick={() =>
@@ -132,7 +132,7 @@ export const Loading = {
         }
       >
         Show loading toast
-      <@lgcode/Button>
-    <@lgcode/div>
+      </Button>
+    </div>
   ),
 }

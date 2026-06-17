@@ -1,15 +1,15 @@
 import { Effect } from "effect"
-import { HttpRouter, HttpServerResponse } from "effect@lgcode/unstable@lgcode/http"
+import { HttpRouter, HttpServerResponse } from "effect/unstable/http"
 
-@lgcode/@lgcode/ effect-smol's HttpMiddleware.cors builds OPTIONS preflight responses by
-@lgcode/@lgcode/ spreading allowOrigin() and allowHeaders() into the same record. Both set
-@lgcode/@lgcode/ the `vary` key, so allowHeaders' `Vary: Access-Control-Request-Headers`
-@lgcode/@lgcode/ overwrites allowOrigin's `Vary: Origin`. With dynamic origin echoing, the
-@lgcode/@lgcode/ missing `Vary: Origin` lets shared caches reuse a preflight cached for one
-@lgcode/@lgcode/ origin against a different origin.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ TODO: upstream a fix that merges Vary values in headersFromRequestOptions
-@lgcode/@lgcode/ (packages@lgcode/effect@lgcode/src@lgcode/unstable@lgcode/http@lgcode/HttpMiddleware.ts ~line 332).
+// effect-smol's HttpMiddleware.cors builds OPTIONS preflight responses by
+// spreading allowOrigin() and allowHeaders() into the same record. Both set
+// the `vary` key, so allowHeaders' `Vary: Access-Control-Request-Headers`
+// overwrites allowOrigin's `Vary: Origin`. With dynamic origin echoing, the
+// missing `Vary: Origin` lets shared caches reuse a preflight cached for one
+// origin against a different origin.
+//
+// TODO: upstream a fix that merges Vary values in headersFromRequestOptions
+// (packages/effect/src/unstable/http/HttpMiddleware.ts ~line 332).
 export const corsVaryFix = HttpRouter.middleware(
   (effect) =>
     Effect.gen(function* () {

@@ -1,15 +1,15 @@
 import { describe, expect } from "bun:test"
 import { asc } from "drizzle-orm"
 import { Effect, Layer } from "effect"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import { Project } from "@lgcode/core@lgcode/project"
-import { ProjectTable } from "@lgcode/core@lgcode/project@lgcode/sql"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import { SessionV2 } from "@lgcode/core@lgcode/session"
-import { SessionTable, TodoTable } from "@lgcode/core@lgcode/session@lgcode/sql"
-import { SessionTodo } from "@lgcode/core@lgcode/session@lgcode/todo"
-import { testEffect } from ".@lgcode/lib@lgcode/effect"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import { Project } from "@opencode@lgcode/core/project"
+import { ProjectTable } from "@opencode@lgcode/core/project/sql"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import { SessionV2 } from "@opencode@lgcode/core/session"
+import { SessionTable, TodoTable } from "@opencode@lgcode/core/session/sql"
+import { SessionTodo } from "@opencode@lgcode/core/session/todo"
+import { testEffect } from "./lib/effect"
 
 const database = Database.layerFromPath(":memory:")
 const events = EventV2.layer.pipe(Layer.provide(database))
@@ -21,7 +21,7 @@ const setup = Effect.gen(function* () {
   const { db } = yield* Database.Service
   yield* db
     .insert(ProjectTable)
-    .values({ id: Project.ID.global, worktree: AbsolutePath.make("@lgcode/project"), sandboxes: [] })
+    .values({ id: Project.ID.global, worktree: AbsolutePath.make("/project"), sandboxes: [] })
     .run()
     .pipe(Effect.orDie)
   yield* db
@@ -30,7 +30,7 @@ const setup = Effect.gen(function* () {
       id: sessionID,
       project_id: Project.ID.global,
       slug: "todo",
-      directory: "@lgcode/project",
+      directory: "/project",
       title: "todo",
       version: "test",
     })

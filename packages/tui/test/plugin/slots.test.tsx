@@ -1,6 +1,6 @@
-@lgcode/** @jsxImportSource @opentui@lgcode/solid *@lgcode/
+/** @jsxImportSource @opentui/solid */
 import { expect, test } from "bun:test"
-import { createSlot, createSolidSlotRegistry, testRender, useRenderer } from "@opentui@lgcode/solid"
+import { createSlot, createSolidSlotRegistry, testRender, useRenderer } from "@opentui/solid"
 import { onMount } from "solid-js"
 
 type Slots = {
@@ -14,22 +14,22 @@ test("replace slot mounts plugin content once", async () => {
     onMount(() => {
       mounts += 1
     })
-    return <box @lgcode/>
+    return <box />
   }
 
   const App = () => {
     const registry = createSolidSlotRegistry<Slots>(useRenderer(), {})
     const Slot = createSlot(registry)
-    registry.register({ id: "plugin", slots: { prompt: () => <Probe @lgcode/> } })
+    registry.register({ id: "plugin", slots: { prompt: () => <Probe /> } })
 
     return (
       <Slot name="prompt" mode="replace">
-        <box @lgcode/>
-      <@lgcode/Slot>
+        <box />
+      </Slot>
     )
   }
 
-  const app = await testRender(() => <App @lgcode/>)
+  const app = await testRender(() => <App />)
   try {
     expect(mounts).toBe(1)
   } finally {

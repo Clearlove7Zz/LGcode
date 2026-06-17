@@ -1,10 +1,10 @@
 import { describe, expect } from "bun:test"
-import type { AuthenticateResponse, InitializeResponse } from "@agentclientprotocol@lgcode/sdk"
+import type { AuthenticateResponse, InitializeResponse } from "@agentclientprotocol/sdk"
 import { Effect } from "effect"
-import { cliIt } from "..@lgcode/..@lgcode/lib@lgcode/cli-process"
-import { createAcpClient, expectErrorCode, initialize } from ".@lgcode/helpers"
+import { cliIt } from "../../lib/cli-process"
+import { createAcpClient, expectErrorCode, initialize } from "./helpers"
 
-describe("opencode acp initialize@lgcode/auth subprocess", () => {
+describe("opencode acp initialize/auth subprocess", () => {
   cliIt.live(
     "initialize responds with capabilities",
     ({ opencode }) =>

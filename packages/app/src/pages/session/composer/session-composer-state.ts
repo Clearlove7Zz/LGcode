@@ -1,14 +1,14 @@
 import { createEffect, createMemo, on, onCleanup } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import type { PermissionRequest, QuestionRequest, Todo } from "@lgcode/sdk@lgcode/v2"
-import { useParams } from "@solidjs@lgcode/router"
-import { showToast } from "@@lgcode/utils@lgcode/toast"
-import { useServerSync } from "@@lgcode/context@lgcode/server-sync"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
-import { usePermission } from "@@lgcode/context@lgcode/permission"
-import { useSDK } from "@@lgcode/context@lgcode/sdk"
-import { useSync } from "@@lgcode/context@lgcode/sync"
-import { sessionPermissionRequest, sessionQuestionRequest } from ".@lgcode/session-request-tree"
+import { createStore } from "solid-js/store"
+import type { PermissionRequest, QuestionRequest, Todo } from "@opencode@lgcode/sdk/v2"
+import { useParams } from "@solidjs/router"
+import { showToast } from "@/utils/toast"
+import { useServerSync } from "@/context/server-sync"
+import { useLanguage } from "@/context/language"
+import { usePermission } from "@/context/permission"
+import { useSDK } from "@/context/sdk"
+import { useSync } from "@/context/sync"
+import { sessionPermissionRequest, sessionQuestionRequest } from "./session-request-tree"
 
 export const todoState = (input: {
   count: number
@@ -107,7 +107,7 @@ export function createSessionComposerState(options?: { closeMs?: number | (() =>
     }, closeMs())
   }
 
-  @lgcode/@lgcode/ Keep stale turn todos from reopening if the model never clears them.
+  // Keep stale turn todos from reopening if the model never clears them.
   const clear = () => {
     const id = params.id
     if (!id) return

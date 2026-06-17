@@ -1,6 +1,6 @@
-@lgcode/@lgcode/ @ts-nocheck
-import * as mod from ".@lgcode/typewriter"
-import { create } from "..@lgcode/storybook@lgcode/scaffold"
+// @ts-nocheck
+import * as mod from "./typewriter"
+import { create } from "../storybook/scaffold"
 
 const docs = `### Overview
 Animated typewriter text effect for short inline messages.
@@ -20,15 +20,15 @@ Use for short status lines; avoid long paragraphs.
 ### Accessibility
 - TODO: confirm if cursor should be aria-hidden in all contexts.
 
-### Theming@lgcode/tokens
+### Theming/tokens
 - Uses \`blinking-cursor\` class for cursor styling.
 
 `
 
-const story = create({ title: "UI@lgcode/Typewriter", mod, args: { text: "Typewriter text" } })
+const story = create({ title: "UI/Typewriter", mod, args: { text: "Typewriter text" } })
 
 export default {
-  title: "UI@lgcode/Typewriter",
+  title: "UI/Typewriter",
   id: "components-typewriter",
   component: story.meta.component,
   tags: ["autodocs"],

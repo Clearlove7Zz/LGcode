@@ -1,15 +1,15 @@
 import { deflateSync, gzipSync } from "node:zlib"
 import { Effect } from "effect"
-import { HttpBody, HttpRouter, HttpServerRequest, HttpServerResponse } from "effect@lgcode/unstable@lgcode/http"
+import { HttpBody, HttpRouter, HttpServerRequest, HttpServerResponse } from "effect/unstable/http"
 
-@lgcode/@lgcode/ Keep the server's compressible content-type set stable across HTTP backend changes.
+// Keep the server's compressible content-type set stable across HTTP backend changes.
 const COMPRESSIBLE_CONTENT_TYPE_REGEX =
-  @lgcode/^\s*(?:text\@lgcode/(?!event-stream(?:[;\s]|$))[^;\s]+|application\@lgcode/(?:javascript|json|xml|xml-dtd|ecmascript|dart|postscript|rtf|tar|toml|vnd\.dart|vnd\.ms-fontobject|vnd\.ms-opentype|wasm|x-httpd-php|x-javascript|x-ns-proxy-autoconfig|x-sh|x-tar|x-www-form-urlencoded)|font\@lgcode/(?:otf|ttf)|image\@lgcode/(?:bmp|vnd\.adobe\.photoshop|vnd\.microsoft\.icon|vnd\.ms-dds|x-icon|x-ms-bmp)|message\@lgcode/rfc822|model\@lgcode/gltf-binary|x-shader\@lgcode/x-fragment|x-shader\@lgcode/x-vertex|[^;\s]+?\+(?:json|text|xml|yaml))(?:[;\s]|$)@lgcode/i
+  /^\s*(?:text\/(?!event-stream(?:[;\s]|$))[^;\s]+|application\/(?:javascript|json|xml|xml-dtd|ecmascript|dart|postscript|rtf|tar|toml|vnd\.dart|vnd\.ms-fontobject|vnd\.ms-opentype|wasm|x-httpd-php|x-javascript|x-ns-proxy-autoconfig|x-sh|x-tar|x-www-form-urlencoded)|font\/(?:otf|ttf)|image\/(?:bmp|vnd\.adobe\.photoshop|vnd\.microsoft\.icon|vnd\.ms-dds|x-icon|x-ms-bmp)|message\/rfc822|model\/gltf-binary|x-shader\/x-fragment|x-shader\/x-vertex|[^;\s]+?\+(?:json|text|xml|yaml))(?:[;\s]|$)/i
 
-const NO_TRANSFORM_REGEX = @lgcode/(?:^|,)\s*?no-transform\s*?(?:,|$)@lgcode/i
+const NO_TRANSFORM_REGEX = /(?:^|,)\s*?no-transform\s*?(?:,|$)/i
 
-const STREAMING_PATHS = new Set(["@lgcode/event", "@lgcode/global@lgcode/event"])
-const STREAMING_POST_REGEX = @lgcode/^\@lgcode/session\@lgcode/[^@lgcode/]+\@lgcode/(?:message|prompt_async)$@lgcode/
+const STREAMING_PATHS = new Set(["/event", "/global/event"])
+const STREAMING_POST_REGEX = /^\/session\/[^/]+\/(?:message|prompt_async)$/
 
 const THRESHOLD_BYTES = 1024
 

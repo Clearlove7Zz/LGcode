@@ -1,6 +1,6 @@
-import { createMiddleware } from "@solidjs@lgcode/start@lgcode/middleware"
-import { LOCALE_HEADER, cookie, fromPathname, strip } from "~@lgcode/lib@lgcode/language"
-import { normalizeReferralCode, referralCookie } from "~@lgcode/lib@lgcode/referral-invite"
+import { createMiddleware } from "@solidjs/start/middleware"
+import { LOCALE_HEADER, cookie, fromPathname, strip } from "~/lib/language"
+import { normalizeReferralCode, referralCookie } from "~/lib/referral-invite"
 
 export default createMiddleware({
   onRequest(event) {

@@ -1,13 +1,13 @@
-import { ModelV2 } from "@lgcode/core@lgcode/model"
-import { Location } from "@lgcode/core@lgcode/location"
+import { ModelV2 } from "@opencode@lgcode/core/model"
+import { Location } from "@opencode@lgcode/core/location"
 import { Schema } from "effect"
-import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
-import { ServiceUnavailableError } from "..@lgcode/errors"
-import { LocationQuery, locationQueryOpenApi, LocationMiddleware } from ".@lgcode/location"
+import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
+import { ServiceUnavailableError } from "../errors"
+import { LocationQuery, locationQueryOpenApi, LocationMiddleware } from "./location"
 
 export const ModelGroup = HttpApiGroup.make("server.model")
   .add(
-    HttpApiEndpoint.get("model.list", "@lgcode/api@lgcode/model", {
+    HttpApiEndpoint.get("model.list", "/api/model", {
       query: LocationQuery,
       success: Location.response(Schema.Array(ModelV2.Info)),
       error: ServiceUnavailableError,

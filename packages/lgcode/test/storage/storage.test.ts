@@ -1,13 +1,13 @@
 import { describe, expect } from "bun:test"
 import path from "path"
 import { Effect, Exit, Layer } from "effect"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import { Git } from "..@lgcode/..@lgcode/src@lgcode/git"
-import { Global } from "@lgcode/core@lgcode/global"
-import { Storage } from "@@lgcode/storage@lgcode/storage"
-import { tmpdirScoped } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { Git } from "../../src/git"
+import { Global } from "@opencode@lgcode/core/global"
+import { Storage } from "@/storage/storage"
+import { tmpdirScoped } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
 
 const dir = path.join(Global.Path.data, "storage")
 
@@ -23,11 +23,11 @@ const scope = Effect.fnUntraced(function* () {
   return { root, svc }
 })
 
-@lgcode/@lgcode/ remap(root) rewrites any path under Global.Path.data to live under `root` instead.
-@lgcode/@lgcode/ Used by remappedFs to build an FSUtil that Storage thinks is the real global
-@lgcode/@lgcode/ data dir but actually targets a tmp dir — letting migration tests stage legacy layouts.
-@lgcode/@lgcode/ NOTE: only the 6 methods below are intercepted. If Storage starts using a different
-@lgcode/@lgcode/ FSUtil method that touches Global.Path.data, add it here.
+// remap(root) rewrites any path under Global.Path.data to live under `root` instead.
+// Used by remappedFs to build an FSUtil that Storage thinks is the real global
+// data dir but actually targets a tmp dir — letting migration tests stage legacy layouts.
+// NOTE: only the 6 methods below are intercepted. If Storage starts using a different
+// FSUtil method that touches Global.Path.data, add it here.
 function remap(root: string, file: string) {
   if (file === Global.Path.data) return root
   if (file.startsWith(Global.Path.data + path.sep)) return path.join(root, path.relative(Global.Path.data, file))
@@ -53,9 +53,9 @@ function remappedFs(root: string) {
   ).pipe(Layer.provide(FSUtil.defaultLayer))
 }
 
-@lgcode/@lgcode/ Layer.fresh forces a new Storage instance — without it, Effect's in-test layer cache
-@lgcode/@lgcode/ returns the outer testEffect's Storage (which uses the real FSUtil), not a new
-@lgcode/@lgcode/ one built on top of remappedFs.
+// Layer.fresh forces a new Storage instance — without it, Effect's in-test layer cache
+// returns the outer testEffect's Storage (which uses the real FSUtil), not a new
+// one built on top of remappedFs.
 const remappedStorage = (root: string) =>
   Layer.fresh(Storage.layer.pipe(Layer.provide(remappedFs(root)), Layer.provide(Git.defaultLayer)))
 

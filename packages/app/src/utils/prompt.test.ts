@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
-import type { Part } from "@lgcode/sdk@lgcode/v2"
-import { extractPromptFromParts } from ".@lgcode/prompt"
+import type { Part } from "@opencode@lgcode/sdk/v2"
+import { extractPromptFromParts } from "./prompt"
 
 describe("extractPromptFromParts", () => {
   test("restores multiple uploaded attachments", () => {
@@ -15,8 +15,8 @@ describe("extractPromptFromParts", () => {
       {
         id: "file_1",
         type: "file",
-        mime: "image@lgcode/png",
-        url: "data:image@lgcode/png;base64,AAA",
+        mime: "image/png",
+        url: "data:image/png;base64,AAA",
         filename: "a.png",
         sessionID: "ses_1",
         messageID: "msg_1",
@@ -24,8 +24,8 @@ describe("extractPromptFromParts", () => {
       {
         id: "file_2",
         type: "file",
-        mime: "application@lgcode/pdf",
-        url: "data:application@lgcode/pdf;base64,BBB",
+        mime: "application/pdf",
+        url: "data:application/pdf;base64,BBB",
         filename: "b.pdf",
         sessionID: "ses_1",
         messageID: "msg_1",
@@ -37,8 +37,8 @@ describe("extractPromptFromParts", () => {
     expect(result).toHaveLength(3)
     expect(result[0]).toMatchObject({ type: "text", content: "check these" })
     expect(result.slice(1)).toMatchObject([
-      { type: "image", filename: "a.png", mime: "image@lgcode/png", dataUrl: "data:image@lgcode/png;base64,AAA" },
-      { type: "image", filename: "b.pdf", mime: "application@lgcode/pdf", dataUrl: "data:application@lgcode/pdf;base64,BBB" },
+      { type: "image", filename: "a.png", mime: "image/png", dataUrl: "data:image/png;base64,AAA" },
+      { type: "image", filename: "b.pdf", mime: "application/pdf", dataUrl: "data:application/pdf;base64,BBB" },
     ])
   })
 })

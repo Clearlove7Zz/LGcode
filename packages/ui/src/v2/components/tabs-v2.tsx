@@ -1,7 +1,7 @@
-import { Tabs as Kobalte } from "@kobalte@lgcode/core@lgcode/tabs"
+import { Tabs as Kobalte } from "@kobalte/core/tabs"
 import { Show, splitProps, type JSX } from "solid-js"
 import type { ComponentProps, ParentProps, Component } from "solid-js"
-import ".@lgcode/tabs-v2.css"
+import "./tabs-v2.css"
 
 export interface TabsV2Props extends ComponentProps<typeof Kobalte> {
   variant?: "normal" | "pill" | "settings"
@@ -10,7 +10,7 @@ export interface TabsV2Props extends ComponentProps<typeof Kobalte> {
 export interface TabsV2ListProps extends ComponentProps<typeof Kobalte.List> {}
 export interface TabsV2TriggerProps extends ComponentProps<typeof Kobalte.Trigger> {
   onMiddleClick?: () => void
-  @lgcode/** Optional subtext shown beside the primary content (muted style) *@lgcode/
+  /** Optional subtext shown beside the primary content (muted style) */
   subtext?: JSX.Element | string
 }
 export interface TabsV2CloseButtonProps extends ComponentProps<"div"> {}
@@ -29,7 +29,7 @@ function TabsV2Root(props: TabsV2Props) {
         ...split.classList,
         [split.class ?? ""]: !!split.class,
       }}
-    @lgcode/>
+    />
   )
 }
 
@@ -43,7 +43,7 @@ function TabsV2List(props: TabsV2ListProps) {
         ...split.classList,
         [split.class ?? ""]: !!split.class,
       }}
-    @lgcode/>
+    />
   )
 }
 
@@ -76,12 +76,12 @@ function TabsV2Trigger(props: ParentProps<TabsV2TriggerProps>) {
             {(subtext) => (
               <span data-slot="tabs-v2-subtext" class="ml-2 text-xs text-text-weak">
                 {subtext()}
-              <@lgcode/span>
+              </span>
             )}
-          <@lgcode/Show>
-        <@lgcode/span>
-      <@lgcode/Kobalte.Trigger>
-    <@lgcode/div>
+          </Show>
+        </span>
+      </Kobalte.Trigger>
+    </div>
   )
 }
 
@@ -110,11 +110,11 @@ function TabsV2CloseButton(props: TabsV2CloseButtonProps) {
         e.stopPropagation()
       }}
     >
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http:@lgcode/@lgcode/www.w3.org@lgcode/2000@lgcode/svg">
-        <path d="M10.8889 3.11108L3.11108 10.8889" stroke="currentColor" stroke-linejoin="round" @lgcode/>
-        <path d="M3.11108 3.11108L10.8889 10.8889" stroke="currentColor" stroke-linejoin="round" @lgcode/>
-      <@lgcode/svg>
-    <@lgcode/div>
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10.8889 3.11108L3.11108 10.8889" stroke="currentColor" stroke-linejoin="round" />
+        <path d="M3.11108 3.11108L10.8889 10.8889" stroke="currentColor" stroke-linejoin="round" />
+      </svg>
+    </div>
   )
 }
 
@@ -130,12 +130,12 @@ function TabsV2Content(props: ParentProps<TabsV2ContentProps>) {
       }}
     >
       {split.children}
-    <@lgcode/Kobalte.Content>
+    </Kobalte.Content>
   )
 }
 
 const TabsV2SectionTitle: Component<ParentProps> = (props) => {
-  return <div data-slot="tabs-v2-section-title">{props.children}<@lgcode/div>
+  return <div data-slot="tabs-v2-section-title">{props.children}</div>
 }
 
 export const TabsV2 = Object.assign(TabsV2Root, {

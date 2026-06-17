@@ -1,14 +1,14 @@
-import { NodeHttpServer } from "@effect@lgcode/platform-node"
-import { Credential } from "@lgcode/core@lgcode/credential"
-import { PermissionSaved } from "@lgcode/core@lgcode/permission@lgcode/saved"
+import { NodeHttpServer } from "@effect/platform-node"
+import { Credential } from "@opencode@lgcode/core/credential"
+import { PermissionSaved } from "@opencode@lgcode/core/permission/saved"
 import { Context, Layer, Option } from "effect"
-import * as Effect from "effect@lgcode/Effect"
-import { HttpRouter, HttpServer } from "effect@lgcode/unstable@lgcode/http"
+import * as Effect from "effect/Effect"
+import { HttpRouter, HttpServer } from "effect/unstable/http"
 import { createServer } from "node:http"
-import { createRoutes } from "@lgcode/server@lgcode/routes"
-import { Commands } from "..@lgcode/commands"
-import { Runtime } from "..@lgcode/..@lgcode/framework@lgcode/runtime"
-import { Daemon } from "..@lgcode/..@lgcode/services@lgcode/daemon"
+import { createRoutes } from "@opencode@lgcode/server/routes"
+import { Commands } from "../commands"
+import { Runtime } from "../../framework/runtime"
+import { Daemon } from "../../services/daemon"
 
 export default Runtime.handler(
   Commands.commands.serve,
@@ -27,8 +27,8 @@ export default Runtime.handler(
 
 function listen(hostname: string, port: Option.Option<number>, password: string) {
   if (Option.isSome(port)) return bind(hostname, port.value, password)
-  @lgcode/@lgcode/ Preserve the familiar default when available, but let the OS choose a free
-  @lgcode/@lgcode/ port when another local server already owns 4096.
+  // Preserve the familiar default when available, but let the OS choose a free
+  // port when another local server already owns 4096.
   return bind(hostname, 4096, password).pipe(Effect.catch(() => bind(hostname, 0, password)))
 }
 

@@ -1,11 +1,11 @@
 import { Effect, Schema } from "effect"
-import * as Tool from ".@lgcode/tool"
-import DESCRIPTION_WRITE from ".@lgcode/todowrite.txt"
-import { Todo } from "..@lgcode/session@lgcode/todo"
+import * as Tool from "./tool"
+import DESCRIPTION_WRITE from "./todowrite.txt"
+import { Todo } from "../session/todo"
 
-@lgcode/@lgcode/ Todo.Info is still a zod schema (session@lgcode/todo.ts). Inline the field shape
-@lgcode/@lgcode/ here rather than referencing its `.shape` — the LLM-visible JSON Schema is
-@lgcode/@lgcode/ identical, and it removes the last zod dependency from this tool.
+// Todo.Info is still a zod schema (session/todo.ts). Inline the field shape
+// here rather than referencing its `.shape` — the LLM-visible JSON Schema is
+// identical, and it removes the last zod dependency from this tool.
 const TodoItem = Schema.Struct({
   content: Schema.String.annotate({ description: "Brief description of the task" }),
   status: Schema.String.annotate({

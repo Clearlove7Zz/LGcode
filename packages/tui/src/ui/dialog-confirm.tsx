@@ -1,10 +1,10 @@
-import { TextAttributes } from "@opentui@lgcode/core"
-import { useTheme } from "..@lgcode/context@lgcode/theme"
-import { useDialog, type DialogContext } from ".@lgcode/dialog"
-import { createStore } from "solid-js@lgcode/store"
+import { TextAttributes } from "@opentui/core"
+import { useTheme } from "../context/theme"
+import { useDialog, type DialogContext } from "./dialog"
+import { createStore } from "solid-js/store"
 import { For } from "solid-js"
-import { Locale } from "..@lgcode/util@lgcode/locale"
-import { useBindings } from "..@lgcode/keymap"
+import { Locale } from "../util/locale"
+import { useBindings } from "../keymap"
 
 export type DialogConfirmProps = {
   title: string
@@ -58,14 +58,14 @@ export function DialogConfirm(props: DialogConfirmProps) {
       <box flexDirection="row" justifyContent="space-between">
         <text attributes={TextAttributes.BOLD} fg={theme.text}>
           {props.title}
-        <@lgcode/text>
+        </text>
         <text fg={theme.textMuted} onMouseUp={() => dialog.clear()}>
           esc
-        <@lgcode/text>
-      <@lgcode/box>
+        </text>
+      </box>
       <box paddingBottom={1}>
-        <text fg={theme.textMuted}>{props.message}<@lgcode/text>
-      <@lgcode/box>
+        <text fg={theme.textMuted}>{props.message}</text>
+      </box>
       <box flexDirection="row" justifyContent="flex-end" paddingBottom={1}>
         <For each={["cancel", "confirm"] as const}>
           {(key) => (
@@ -81,12 +81,12 @@ export function DialogConfirm(props: DialogConfirmProps) {
             >
               <text fg={key === store.active ? theme.selectedListItemText : theme.textMuted}>
                 {Locale.titlecase(key === "cancel" ? (props.label ?? key) : key)}
-              <@lgcode/text>
-            <@lgcode/box>
+              </text>
+            </box>
           )}
-        <@lgcode/For>
-      <@lgcode/box>
-    <@lgcode/box>
+        </For>
+      </box>
+    </box>
   )
 }
 
@@ -100,7 +100,7 @@ DialogConfirm.show = (dialog: DialogContext, title: string, message: string, lab
           onConfirm={() => resolve(true)}
           onCancel={() => resolve(false)}
           label={label}
-        @lgcode/>
+        />
       ),
       () => resolve(undefined),
     )

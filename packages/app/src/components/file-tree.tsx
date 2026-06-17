@@ -1,8 +1,8 @@
-import { useFile } from "@@lgcode/context@lgcode/file"
-import { encodeFilePath } from "@@lgcode/context@lgcode/file@lgcode/path"
-import { Collapsible } from "@lgcode/ui@lgcode/collapsible"
-import { FileIcon } from "@lgcode/ui@lgcode/file-icon"
-import { Icon } from "@lgcode/ui@lgcode/icon"
+import { useFile } from "@/context/file"
+import { encodeFilePath } from "@/context/file/path"
+import { Collapsible } from "@opencode@lgcode/ui/collapsible"
+import { FileIcon } from "@opencode@lgcode/ui/file-icon"
+import { Icon } from "@opencode@lgcode/ui/icon"
 import {
   createEffect,
   createMemo,
@@ -16,13 +16,13 @@ import {
   type ComponentProps,
   type ParentProps,
 } from "solid-js"
-import { Dynamic } from "solid-js@lgcode/web"
-import type { FileNode } from "@lgcode/sdk@lgcode/v2"
+import { Dynamic } from "solid-js/web"
+import type { FileNode } from "@opencode@lgcode/sdk/v2"
 
 const MAX_DEPTH = 128
 
 function pathToFileUrl(filepath: string): string {
-  return `file:@lgcode/@lgcode/${encodeFilePath(filepath)}`
+  return `file://${encodeFilePath(filepath)}`
 }
 
 type Kind = "add" | "del" | "mix"
@@ -156,8 +156,8 @@ const FileTreeNode = (
       draggable={local.draggable}
       onDragStart={(event: DragEvent) => {
         if (!local.draggable) return
-        event.dataTransfer?.setData("text@lgcode/plain", `file:${local.node.path}`)
-        event.dataTransfer?.setData("text@lgcode/uri-list", pathToFileUrl(local.node.path))
+        event.dataTransfer?.setData("text/plain", `file:${local.node.path}`)
+        event.dataTransfer?.setData("text/uri-list", pathToFileUrl(local.node.path))
         if (event.dataTransfer) event.dataTransfer.effectAllowed = "copy"
         withFileDragImage(event)
       }}
@@ -173,7 +173,7 @@ const FileTreeNode = (
         style={active() ? color() : undefined}
       >
         {local.node.name}
-      <@lgcode/span>
+      </span>
       {(() => {
         const value = kind()
         if (!value) return null
@@ -181,12 +181,12 @@ const FileTreeNode = (
           return (
             <span class="shrink-0 w-4 text-center text-12-medium" style={kindTextColor(value)}>
               {kindLabel(value)}
-            <@lgcode/span>
+            </span>
           )
         }
-        return <div class="shrink-0 size-1.5 mr-1.5 rounded-full" style={kindDotColor(value)} @lgcode/>
+        return <div class="shrink-0 size-1.5 mr-1.5 rounded-full" style={kindDotColor(value)} />
       })()}
-    <@lgcode/Dynamic>
+    </Dynamic>
   )
 }
 
@@ -215,8 +215,8 @@ export default function FileTree(props: {
   const key = (p: string) =>
     file
       .normalize(p)
-      .replace(@lgcode/[\\@lgcode/]+$@lgcode/, "")
-      .replaceAll("\\", "@lgcode/")
+      .replace(/[\\/]+$/, "")
+      .replaceAll("\\", "/")
   const chain = props._chain ? [...props._chain, key(props.path)] : [key(props.path)]
 
   const filter = createMemo(() => {
@@ -229,10 +229,10 @@ export default function FileTree(props: {
     const dirs = new Set<string>()
 
     for (const item of allowed) {
-      const parts = item.split("@lgcode/")
+      const parts = item.split("/")
       const parents = parts.slice(0, -1)
       for (const [idx] of parents.entries()) {
-        const dir = parents.slice(0, idx + 1).join("@lgcode/")
+        const dir = parents.slice(0, idx + 1).join("/")
         if (dir) dirs.add(dir)
       }
     }
@@ -330,13 +330,13 @@ export default function FileTree(props: {
     if (!current) return nodes
 
     const parent = (path: string) => {
-      const idx = path.lastIndexOf("@lgcode/")
+      const idx = path.lastIndexOf("/")
       if (idx === -1) return ""
       return path.slice(0, idx)
     }
 
     const leaf = (path: string) => {
-      const idx = path.lastIndexOf("@lgcode/")
+      const idx = path.lastIndexOf("/")
       return idx === -1 ? path : path.slice(idx + 1)
     }
 
@@ -414,22 +414,22 @@ export default function FileTree(props: {
                       marks={marks()}
                     >
                       <div class="size-4 flex items-center justify-center text-icon-weak">
-                        <Icon name={expanded() ? "chevron-down" : "chevron-right"} size="small" @lgcode/>
-                      <@lgcode/div>
-                    <@lgcode/FileTreeNode>
-                  <@lgcode/Collapsible.Trigger>
+                        <Icon name={expanded() ? "chevron-down" : "chevron-right"} size="small" />
+                      </div>
+                    </FileTreeNode>
+                  </Collapsible.Trigger>
                   <Collapsible.Content class="relative pt-0.5">
                     <div
                       classList={{
                         "absolute top-0 bottom-0 w-px pointer-events-none bg-border-weak-base opacity-0 transition-opacity duration-150 ease-out motion-reduce:transition-none": true,
-                        "group-hover@lgcode/filetree:opacity-100": expanded() && deep() === level,
-                        "group-hover@lgcode/filetree:opacity-50": !(expanded() && deep() === level),
+                        "group-hover/filetree:opacity-100": expanded() && deep() === level,
+                        "group-hover/filetree:opacity-50": !(expanded() && deep() === level),
                       }}
                       style={`left: ${Math.max(0, 8 + level * 12 - 4) + 8}px`}
-                    @lgcode/>
+                    />
                     <Show
                       when={level < MAX_DEPTH && !chain.includes(key(node.path))}
-                      fallback={<div class="px-2 py-1 text-12-regular text-text-weak">...<@lgcode/div>}
+                      fallback={<div class="px-2 py-1 text-12-regular text-text-weak">...</div>}
                     >
                       <FileTree
                         path={node.path}
@@ -445,11 +445,11 @@ export default function FileTree(props: {
                         _deeps={deeps()}
                         _kinds={kinds()}
                         _chain={chain}
-                      @lgcode/>
-                    <@lgcode/Show>
-                  <@lgcode/Collapsible.Content>
-                <@lgcode/Collapsible>
-              <@lgcode/Match>
+                      />
+                    </Show>
+                  </Collapsible.Content>
+                </Collapsible>
+              </Match>
               <Match when={node.type === "file"}>
                 <FileTreeNode
                   node={node}
@@ -463,7 +463,7 @@ export default function FileTree(props: {
                   type="button"
                   onClick={() => props.onFileClick?.(node)}
                 >
-                  <div class="w-4 shrink-0" @lgcode/>
+                  <div class="w-4 shrink-0" />
                   <Switch>
                     <Match when={node.ignored}>
                       <FileIcon
@@ -471,36 +471,36 @@ export default function FileTree(props: {
                         class="size-4 filetree-icon filetree-icon--mono"
                         style="color: var(--icon-weak-base)"
                         mono
-                      @lgcode/>
-                    <@lgcode/Match>
+                      />
+                    </Match>
                     <Match when={active()}>
                       <FileIcon
                         node={node}
                         class="size-4 filetree-icon filetree-icon--mono"
                         style={kindTextColor(kind()!)}
                         mono
-                      @lgcode/>
-                    <@lgcode/Match>
+                      />
+                    </Match>
                     <Match when={!node.ignored}>
                       <span class="filetree-iconpair size-4">
                         <FileIcon
                           node={node}
-                          class="size-4 filetree-icon filetree-icon--color opacity-0 group-hover@lgcode/filetree:opacity-100"
-                        @lgcode/>
+                          class="size-4 filetree-icon filetree-icon--color opacity-0 group-hover/filetree:opacity-100"
+                        />
                         <FileIcon
                           node={node}
-                          class="size-4 filetree-icon filetree-icon--mono group-hover@lgcode/filetree:opacity-0"
+                          class="size-4 filetree-icon filetree-icon--mono group-hover/filetree:opacity-0"
                           mono
-                        @lgcode/>
-                      <@lgcode/span>
-                    <@lgcode/Match>
-                  <@lgcode/Switch>
-                <@lgcode/FileTreeNode>
-              <@lgcode/Match>
-            <@lgcode/Switch>
+                        />
+                      </span>
+                    </Match>
+                  </Switch>
+                </FileTreeNode>
+              </Match>
+            </Switch>
           )
         }}
-      <@lgcode/For>
-    <@lgcode/div>
+      </For>
+    </div>
   )
 }

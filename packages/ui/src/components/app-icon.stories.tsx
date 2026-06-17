@@ -1,10 +1,10 @@
-@lgcode/@lgcode/ @ts-nocheck
-import { iconNames } from ".@lgcode/app-icons@lgcode/types"
-import * as mod from ".@lgcode/app-icon"
-import { create } from "..@lgcode/storybook@lgcode/scaffold"
+// @ts-nocheck
+import { iconNames } from "./app-icons/types"
+import * as mod from "./app-icon"
+import { create } from "../storybook/scaffold"
 
 const docs = `### Overview
-Application icon renderer for known editor@lgcode/terminal apps.
+Application icon renderer for known editor/terminal apps.
 
 Use in provider or app selection lists.
 
@@ -21,14 +21,14 @@ Use in provider or app selection lists.
 ### Accessibility
 - Provide \`alt\` text when the icon conveys meaning.
 
-### Theming@lgcode/tokens
+### Theming/tokens
 - Uses \`data-component="app-icon"\`.
 
 `
 
-const story = create({ title: "UI@lgcode/AppIcon", mod, args: { id: "vscode" } })
+const story = create({ title: "UI/AppIcon", mod, args: { id: "vscode" } })
 export default {
-  title: "UI@lgcode/AppIcon",
+  title: "UI/AppIcon",
   id: "components-app-icon",
   component: story.meta.component,
   tags: ["autodocs"],
@@ -60,10 +60,10 @@ export const AllIcons = {
     >
       {iconNames.map((id) => (
         <div style={{ display: "grid", gap: "6px", "justify-items": "center" }}>
-          <mod.AppIcon id={id} alt={id} @lgcode/>
-          <div style={{ "font-size": "10px", color: "var(--text-weak)", "text-align": "center" }}>{id}<@lgcode/div>
-        <@lgcode/div>
+          <mod.AppIcon id={id} alt={id} />
+          <div style={{ "font-size": "10px", color: "var(--text-weak)", "text-align": "center" }}>{id}</div>
+        </div>
       ))}
-    <@lgcode/div>
+    </div>
   ),
 }

@@ -1,27 +1,27 @@
-import { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
-import { NodeHttpServer, NodeServices } from "@effect@lgcode/platform-node"
-import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
+import { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
+import { NodeHttpServer, NodeServices } from "@effect/platform-node"
+import { Flag } from "@opencode@lgcode/core/flag/flag"
 import { describe, expect } from "bun:test"
 import { Config, Context, Effect, FileSystem, Layer, Path } from "effect"
-import { HttpClient, HttpClientRequest, HttpRouter, HttpServer } from "effect@lgcode/unstable@lgcode/http"
-import * as Socket from "effect@lgcode/unstable@lgcode/socket@lgcode/Socket"
-import { WorkspaceV2 } from "@lgcode/core@lgcode/workspace"
-import { ControlPaths } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/control"
-import { InstancePaths } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/instance"
-import { SessionPaths } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/session"
-import { ProjectV2 } from "@lgcode/core@lgcode/project"
-import { QuestionID } from "..@lgcode/..@lgcode/src@lgcode/question@lgcode/schema"
-import { HttpApiApp } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/server"
-import { HEADER as FenceHeader } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/shared@lgcode/fence"
-import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
-import { tmpdirScoped } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { HttpClient, HttpClientRequest, HttpRouter, HttpServer } from "effect/unstable/http"
+import * as Socket from "effect/unstable/socket/Socket"
+import { WorkspaceV2 } from "@opencode@lgcode/core/workspace"
+import { ControlPaths } from "../../src/server/routes/instance/httpapi/groups/control"
+import { InstancePaths } from "../../src/server/routes/instance/httpapi/groups/instance"
+import { SessionPaths } from "../../src/server/routes/instance/httpapi/groups/session"
+import { ProjectV2 } from "@opencode@lgcode/core/project"
+import { QuestionID } from "../../src/question/schema"
+import { HttpApiApp } from "../../src/server/routes/instance/httpapi/server"
+import { HEADER as FenceHeader } from "../../src/server/shared/fence"
+import { resetDatabase } from "../fixture/db"
+import { tmpdirScoped } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
 
-@lgcode/@lgcode/ Flip the experimental workspaces flag so EventV2.run actually writes to
-@lgcode/@lgcode/ EventSequenceTable (the source of truth the fence middleware reads). Reset
-@lgcode/@lgcode/ the database around the test so per-instance state does not leak between
-@lgcode/@lgcode/ runs. resetDatabase() already calls disposeAllInstances(), so we don't
-@lgcode/@lgcode/ repeat it.
+// Flip the experimental workspaces flag so EventV2.run actually writes to
+// EventSequenceTable (the source of truth the fence middleware reads). Reset
+// the database around the test so per-instance state does not leak between
+// runs. resetDatabase() already calls disposeAllInstances(), so we don't
+// repeat it.
 const testStateLayer = Layer.effectDiscard(
   Effect.gen(function* () {
     const originalWorkspaces = Flag.OPENCODE_EXPERIMENTAL_WORKSPACES
@@ -36,9 +36,9 @@ const testStateLayer = Layer.effectDiscard(
   }),
 )
 
-@lgcode/@lgcode/ Mount the production HttpApi route tree on a real Node HTTP server bound to
-@lgcode/@lgcode/ 127.0.0.1:0 and a fetch-based HttpClient that prepends the server URL. This
-@lgcode/@lgcode/ keeps the test wired directly through the same route layer production uses.
+// Mount the production HttpApi route tree on a real Node HTTP server bound to
+// 127.0.0.1:0 and a fetch-based HttpClient that prepends the server URL. This
+// keeps the test wired directly through the same route layer production uses.
 const servedRoutes: Layer.Layer<never, Config.ConfigError, HttpServer.HttpServer> = HttpRouter.serve(
   HttpApiApp.routes,
   { disableListenLog: true, disableLogger: true },
@@ -58,16 +58,16 @@ const directoryHeader = (dir: string) => HttpClientRequest.setHeader("x-opencode
 describe("instance HttpApi", () => {
   it.live("serves the OpenAPI document", () =>
     Effect.gen(function* () {
-      const response = yield* HttpClient.get("@lgcode/doc")
+      const response = yield* HttpClient.get("/doc")
 
       expect(response.status).toBe(200)
-      expect(response.headers["content-type"]).toContain("application@lgcode/json")
+      expect(response.headers["content-type"]).toContain("application/json")
       expect(yield* response.json).toMatchObject({
         openapi: expect.any(String),
         info: expect.any(Object),
         paths: expect.objectContaining({
-          "@lgcode/global@lgcode/health": expect.any(Object),
-          "@lgcode/session": expect.any(Object),
+          "/global/health": expect.any(Object),
+          "/session": expect.any(Object),
         }),
       })
     }),
@@ -126,24 +126,24 @@ describe("instance HttpApi", () => {
       const request = (path: string, init?: RequestInit) =>
         Effect.promise(() =>
           HttpApiApp.webHandler().handler(
-            new Request(`http:@lgcode/@lgcode/localhost${path}`, {
+            new Request(`http://localhost${path}`, {
               ...init,
-              headers: { "x-opencode-directory": dir, "content-type": "application@lgcode/json", ...init?.headers },
+              headers: { "x-opencode-directory": dir, "content-type": "application/json", ...init?.headers },
             }),
             handlerContext,
           ),
         )
       const [permission, questionReply, questionReject] = yield* Effect.all(
         [
-          request("@lgcode/permission@lgcode/invalid-permission-id@lgcode/reply", {
+          request("/permission/invalid-permission-id/reply", {
             method: "POST",
             body: JSON.stringify({ reply: "once" }),
           }),
-          request("@lgcode/question@lgcode/invalid-question-id@lgcode/reply", {
+          request("/question/invalid-question-id/reply", {
             method: "POST",
             body: JSON.stringify({ answers: [["Yes"]] }),
           }),
-          request("@lgcode/question@lgcode/invalid-question-id@lgcode/reject", { method: "POST" }),
+          request("/question/invalid-question-id/reject", { method: "POST" }),
         ],
         { concurrency: "unbounded" },
       )
@@ -160,9 +160,9 @@ describe("instance HttpApi", () => {
       const request = (path: string, init?: RequestInit) =>
         Effect.promise(() =>
           HttpApiApp.webHandler().handler(
-            new Request(`http:@lgcode/@lgcode/localhost${path}`, {
+            new Request(`http://localhost${path}`, {
               ...init,
-              headers: { "x-opencode-directory": dir, "content-type": "application@lgcode/json", ...init?.headers },
+              headers: { "x-opencode-directory": dir, "content-type": "application/json", ...init?.headers },
             }),
             handlerContext,
           ),
@@ -172,15 +172,15 @@ describe("instance HttpApi", () => {
       const questionRejectID = QuestionID.ascending()
       const [permission, questionReply, questionReject] = yield* Effect.all(
         [
-          request(`@lgcode/permission@lgcode/${permissionID}@lgcode/reply`, {
+          request(`/permission/${permissionID}/reply`, {
             method: "POST",
             body: JSON.stringify({ reply: "once" }),
           }),
-          request(`@lgcode/question@lgcode/${questionReplyID}@lgcode/reply`, {
+          request(`/question/${questionReplyID}/reply`, {
             method: "POST",
             body: JSON.stringify({ answers: [["Yes"]] }),
           }),
-          request(`@lgcode/question@lgcode/${questionRejectID}@lgcode/reject`, { method: "POST" }),
+          request(`/question/${questionRejectID}/reject`, { method: "POST" }),
         ],
         { concurrency: "unbounded" },
       )
@@ -212,9 +212,9 @@ describe("instance HttpApi", () => {
       const projectID = ProjectV2.ID.make("project_missing")
       const response = yield* Effect.promise(() =>
         HttpApiApp.webHandler().handler(
-          new Request(`http:@lgcode/@lgcode/localhost@lgcode/project@lgcode/${projectID}`, {
+          new Request(`http://localhost/project/${projectID}`, {
             method: "PATCH",
-            headers: { "x-opencode-directory": dir, "content-type": "application@lgcode/json" },
+            headers: { "x-opencode-directory": dir, "content-type": "application/json" },
             body: JSON.stringify({ name: "Missing" }),
           }),
           handlerContext,

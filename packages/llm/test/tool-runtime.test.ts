@@ -10,21 +10,21 @@ import {
   ToolContent,
   ToolOutput,
   toDefinitions,
-} from "..@lgcode/src"
-import { Auth, LLMClient } from "..@lgcode/src@lgcode/route"
-import * as AnthropicMessages from "..@lgcode/src@lgcode/protocols@lgcode/anthropic-messages"
-import * as OpenAIChat from "..@lgcode/src@lgcode/protocols@lgcode/openai-chat"
-import * as OpenAIResponses from "..@lgcode/src@lgcode/protocols@lgcode/openai-responses"
-import { Tool, ToolFailure, type ToolExecuteContext } from "..@lgcode/src@lgcode/tool"
-import { ToolRuntime } from "..@lgcode/src@lgcode/tool-runtime"
-import { it } from ".@lgcode/lib@lgcode/effect"
-import * as TestToolRuntime from ".@lgcode/lib@lgcode/tool-runtime"
-import { dynamicResponse, scriptedResponses } from ".@lgcode/lib@lgcode/http"
-import { deltaChunk, finishChunk, toolCallChunk } from ".@lgcode/lib@lgcode/openai-chunks"
-import { sseEvents } from ".@lgcode/lib@lgcode/sse"
+} from "../src"
+import { Auth, LLMClient } from "../src/route"
+import * as AnthropicMessages from "../src/protocols/anthropic-messages"
+import * as OpenAIChat from "../src/protocols/openai-chat"
+import * as OpenAIResponses from "../src/protocols/openai-responses"
+import { Tool, ToolFailure, type ToolExecuteContext } from "../src/tool"
+import { ToolRuntime } from "../src/tool-runtime"
+import { it } from "./lib/effect"
+import * as TestToolRuntime from "./lib/tool-runtime"
+import { dynamicResponse, scriptedResponses } from "./lib/http"
+import { deltaChunk, finishChunk, toolCallChunk } from "./lib/openai-chunks"
+import { sseEvents } from "./lib/sse"
 
 const model = OpenAIChat.route
-  .with({ endpoint: { baseURL: "https:@lgcode/@lgcode/api.openai.test@lgcode/v1@lgcode/" }, auth: Auth.bearer("test") })
+  .with({ endpoint: { baseURL: "https://api.openai.test/v1/" }, auth: Auth.bearer("test") })
   .model({ id: "gpt-4o-mini" })
 const Json = Schema.fromJsonString(Schema.Unknown)
 const decodeJson = Schema.decodeUnknownSync(Json)
@@ -83,7 +83,7 @@ describe("LLMClient tools", () => {
         Effect.sync(() => {
           bodies.push(decodeJson(input.text))
           return input.respond(responses[bodies.length - 1] ?? responses[responses.length - 1], {
-            headers: { "content-type": "text@lgcode/event-stream" },
+            headers: { "content-type": "text/event-stream" },
           })
         }),
       )
@@ -213,7 +213,7 @@ describe("LLMClient tools", () => {
         description: "Return an image.",
         parameters: Schema.Struct({}),
         success: Schema.Struct({ mime: Schema.String, data: Schema.String }),
-        execute: () => Effect.succeed({ mime: "image@lgcode/png", data: "AAECAw==" }),
+        execute: () => Effect.succeed({ mime: "image/png", data: "AAECAw==" }),
         toStructuredOutput: (output) => ({ mime: output.mime }),
         toModelOutput: ({ output }) => [
           { type: "file", uri: `data:${output.mime};base64,${output.data}`, mime: output.mime },
@@ -226,8 +226,8 @@ describe("LLMClient tools", () => {
       )
 
       expect(dispatched.output).toEqual({
-        structured: { mime: "image@lgcode/png" },
-        content: [{ type: "file", uri: "data:image@lgcode/png;base64,AAECAw==", mime: "image@lgcode/png" }],
+        structured: { mime: "image/png" },
+        content: [{ type: "file", uri: "data:image/png;base64,AAECAw==", mime: "image/png" }],
       })
     }),
   )
@@ -236,20 +236,20 @@ describe("LLMClient tools", () => {
     Effect.sync(() => {
       const decode = Schema.decodeUnknownSync(ToolContent)
 
-      expect(decode({ type: "file", uri: "data:image@lgcode/png;base64,AAAA", mime: "image@lgcode/png" })).toEqual({
+      expect(decode({ type: "file", uri: "data:image/png;base64,AAAA", mime: "image/png" })).toEqual({
         type: "file",
-        uri: "data:image@lgcode/png;base64,AAAA",
-        mime: "image@lgcode/png",
+        uri: "data:image/png;base64,AAAA",
+        mime: "image/png",
       })
-      expect(decode({ type: "file", uri: "https:@lgcode/@lgcode/example.test@lgcode/image.png", mime: "image@lgcode/png" })).toEqual({
+      expect(decode({ type: "file", uri: "https://example.test/image.png", mime: "image/png" })).toEqual({
         type: "file",
-        uri: "https:@lgcode/@lgcode/example.test@lgcode/image.png",
-        mime: "image@lgcode/png",
+        uri: "https://example.test/image.png",
+        mime: "image/png",
       })
-      expect(decode({ type: "file", uri: "file:@lgcode/@lgcode/@lgcode/tmp@lgcode/image.png", mime: "image@lgcode/png" })).toEqual({
+      expect(decode({ type: "file", uri: "file:///tmp/image.png", mime: "image/png" })).toEqual({
         type: "file",
-        uri: "file:@lgcode/@lgcode/@lgcode/tmp@lgcode/image.png",
-        mime: "image@lgcode/png",
+        uri: "file:///tmp/image.png",
+        mime: "image/png",
       })
     }),
   )
@@ -258,36 +258,36 @@ describe("LLMClient tools", () => {
     Effect.sync(() => {
       expect(
         ToolOutput.toResultValue(
-          ToolOutput.make({}, [{ type: "file", uri: "data:image@lgcode/png;base64,AAAA", mime: "image@lgcode/png" }]),
+          ToolOutput.make({}, [{ type: "file", uri: "data:image/png;base64,AAAA", mime: "image/png" }]),
         ),
       ).toEqual({
         type: "content",
-        value: [{ type: "file", uri: "data:image@lgcode/png;base64,AAAA", mime: "image@lgcode/png" }],
+        value: [{ type: "file", uri: "data:image/png;base64,AAAA", mime: "image/png" }],
       })
       expect(
         ToolOutput.toResultValue(
-          ToolOutput.make({}, [{ type: "file", uri: "https:@lgcode/@lgcode/example.test@lgcode/image.png", mime: "image@lgcode/png" }]),
+          ToolOutput.make({}, [{ type: "file", uri: "https://example.test/image.png", mime: "image/png" }]),
         ),
       ).toEqual({
         type: "content",
-        value: [{ type: "file", uri: "https:@lgcode/@lgcode/example.test@lgcode/image.png", mime: "image@lgcode/png" }],
+        value: [{ type: "file", uri: "https://example.test/image.png", mime: "image/png" }],
       })
       expect(
         ToolOutput.toResultValue(
-          ToolOutput.make({}, [{ type: "file", uri: "file:@lgcode/@lgcode/@lgcode/tmp@lgcode/image.png", mime: "image@lgcode/png" }]),
+          ToolOutput.make({}, [{ type: "file", uri: "file:///tmp/image.png", mime: "image/png" }]),
         ),
       ).toEqual({
         type: "content",
-        value: [{ type: "file", uri: "file:@lgcode/@lgcode/@lgcode/tmp@lgcode/image.png", mime: "image@lgcode/png" }],
+        value: [{ type: "file", uri: "file:///tmp/image.png", mime: "image/png" }],
       })
       expect(
         ToolOutput.fromResultValue({
           type: "content",
-          value: [{ type: "file", uri: "https:@lgcode/@lgcode/example.test@lgcode/image.png", mime: "image@lgcode/png" }],
+          value: [{ type: "file", uri: "https://example.test/image.png", mime: "image/png" }],
         }),
       ).toEqual({
         structured: {},
-        content: [{ type: "file", uri: "https:@lgcode/@lgcode/example.test@lgcode/image.png", mime: "image@lgcode/png" }],
+        content: [{ type: "file", uri: "https://example.test/image.png", mime: "image/png" }],
       })
     }),
   )
@@ -299,7 +299,7 @@ describe("LLMClient tools", () => {
         parameters: Schema.Struct({}),
         success: Schema.Struct({ ok: Schema.Boolean }),
         execute: () => Effect.succeed({ ok: true }),
-        toModelOutput: () => [{ type: "file", uri: "https:@lgcode/@lgcode/example.test@lgcode/image.png", mime: "image@lgcode/png" }],
+        toModelOutput: () => [{ type: "file", uri: "https://example.test/image.png", mime: "image/png" }],
       })
 
       const dispatched = yield* ToolRuntime.dispatch(
@@ -309,11 +309,11 @@ describe("LLMClient tools", () => {
 
       expect(dispatched.output).toEqual({
         structured: { ok: true },
-        content: [{ type: "file", uri: "https:@lgcode/@lgcode/example.test@lgcode/image.png", mime: "image@lgcode/png" }],
+        content: [{ type: "file", uri: "https://example.test/image.png", mime: "image/png" }],
       })
       expect(dispatched.result).toEqual({
         type: "content",
-        value: [{ type: "file", uri: "https:@lgcode/@lgcode/example.test@lgcode/image.png", mime: "image@lgcode/png" }],
+        value: [{ type: "file", uri: "https://example.test/image.png", mime: "image/png" }],
       })
       expect(dispatched.events.map((event) => event.type)).toEqual(["tool-result"])
     }),
@@ -348,7 +348,7 @@ describe("LLMClient tools", () => {
             type: "content" as const,
             value: [
               { type: "text" as const, text: "Screenshot captured." },
-              { type: "file" as const, uri: "data:image@lgcode/png;base64,AAAA", mime: "image@lgcode/png" },
+              { type: "file" as const, uri: "data:image/png;base64,AAAA", mime: "image/png" },
             ],
           }),
       })
@@ -370,7 +370,7 @@ describe("LLMClient tools", () => {
           type: "content",
           value: [
             { type: "text", text: "Screenshot captured." },
-            { type: "file", uri: "data:image@lgcode/png;base64,AAAA", mime: "image@lgcode/png" },
+            { type: "file", uri: "data:image/png;base64,AAAA", mime: "image/png" },
           ],
         },
       })
@@ -502,7 +502,7 @@ describe("LLMClient tools", () => {
                   { type: "content_block_stop", index: 0 },
                   { type: "message_delta", delta: { stop_reason: "end_turn" }, usage: { output_tokens: 1 } },
                 ),
-            { headers: { "content-type": "text@lgcode/event-stream" } },
+            { headers: { "content-type": "text/event-stream" } },
           )
         }),
       )
@@ -578,7 +578,7 @@ describe("LLMClient tools", () => {
                   { type: "response.output_text.delta", item_id: "msg_1", delta: "Done." },
                   { type: "response.completed", response: {} },
                 ),
-            { headers: { "content-type": "text@lgcode/event-stream" } },
+            { headers: { "content-type": "text/event-stream" } },
           )
         }),
       )
@@ -586,7 +586,7 @@ describe("LLMClient tools", () => {
       yield* TestToolRuntime.runTools({
         request: LLM.request({
           model: OpenAIResponses.route
-            .with({ endpoint: { baseURL: "https:@lgcode/@lgcode/api.openai.test@lgcode/v1@lgcode/" }, auth: Auth.bearer("test") })
+            .with({ endpoint: { baseURL: "https://api.openai.test/v1/" }, auth: Auth.bearer("test") })
             .model({ id: "gpt-5.5" }),
           prompt: "Use the tool.",
           providerOptions: { openai: { store: false, include: ["reasoning.encrypted_content"] } },
@@ -700,9 +700,9 @@ describe("LLMClient tools", () => {
 
   it.effect("respects maxSteps and stops the loop", () =>
     Effect.gen(function* () {
-      @lgcode/@lgcode/ Every script entry asks for another tool call. With maxSteps: 2 the
-      @lgcode/@lgcode/ runtime should run at most two model rounds and then exit even though
-      @lgcode/@lgcode/ the model still wants to keep going.
+      // Every script entry asks for another tool call. With maxSteps: 2 the
+      // runtime should run at most two model rounds and then exit even though
+      // the model still wants to keep going.
       const toolCallStep = sseEvents(
         toolCallChunk("call_x", "get_weather", '{"city":"Paris"}'),
         finishChunk("tool_calls"),
@@ -748,7 +748,7 @@ describe("LLMClient tools", () => {
                 content_block: {
                   type: "web_search_tool_result",
                   tool_use_id: "srvtoolu_abc",
-                  content: [{ type: "web_search_result", url: "https:@lgcode/@lgcode/example.com", title: "Example" }],
+                  content: [{ type: "web_search_result", url: "https://example.com", title: "Example" }],
                 },
               },
               { type: "content_block_stop", index: 1 },
@@ -757,7 +757,7 @@ describe("LLMClient tools", () => {
               { type: "content_block_stop", index: 2 },
               { type: "message_delta", delta: { stop_reason: "end_turn" }, usage: { output_tokens: 8 } },
             ),
-            { headers: { "content-type": "text@lgcode/event-stream" } },
+            { headers: { "content-type": "text/event-stream" } },
           )
         }),
       )

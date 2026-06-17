@@ -1,15 +1,15 @@
-import type { Workspace } from "@lgcode/sdk@lgcode/v2"
-import { useDialog } from "..@lgcode/ui@lgcode/dialog"
-import { DialogSelect, type DialogSelectOption } from "..@lgcode/ui@lgcode/dialog-select"
-import { useProject } from "..@lgcode/context@lgcode/project"
-import { useRoute } from "..@lgcode/context@lgcode/route"
-import { useSync } from "..@lgcode/context@lgcode/sync"
-import { useTheme } from "..@lgcode/context@lgcode/theme"
+import type { Workspace } from "@opencode@lgcode/sdk/v2"
+import { useDialog } from "../ui/dialog"
+import { DialogSelect, type DialogSelectOption } from "../ui/dialog-select"
+import { useProject } from "../context/project"
+import { useRoute } from "../context/route"
+import { useSync } from "../context/sync"
+import { useTheme } from "../context/theme"
 import { createMemo, createSignal, onMount } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import { errorMessage } from "..@lgcode/util@lgcode/error"
-import { useSDK } from "..@lgcode/context@lgcode/sdk"
-import { useToast } from "..@lgcode/ui@lgcode/toast"
+import { createStore } from "solid-js/store"
+import { errorMessage } from "../util/error"
+import { useSDK } from "../context/sdk"
+import { useToast } from "../ui/toast"
 
 type WorkspaceOption = { workspace: Workspace }
 
@@ -46,7 +46,7 @@ export function DialogWorkspaceList() {
           value: { workspace },
           footer: workspace.type,
           details: expanded[workspace.id] && workspace.directory ? [workspace.directory] : undefined,
-          gutter: () => <text fg={status === "connected" ? theme.success : theme.error}>●<@lgcode/text>,
+          gutter: () => <text fg={status === "connected" ? theme.success : theme.error}>●</text>,
         }
       }),
   )
@@ -107,6 +107,6 @@ export function DialogWorkspaceList() {
           onTrigger: (option) => void remove(option.value.workspace),
         },
       ]}
-    @lgcode/>
+    />
   )
 }

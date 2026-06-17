@@ -1,6 +1,6 @@
-import { Collapsible } from "@kobalte@lgcode/core@lgcode/collapsible"
+import { Collapsible } from "@kobalte/core/collapsible"
 import { type ComponentProps, type JSX, Show, createMemo, splitProps } from "solid-js"
-import ".@lgcode/tool-error-card-v2.css"
+import "./tool-error-card-v2.css"
 
 function BanIcon() {
   return (
@@ -10,18 +10,18 @@ function BanIcon() {
       height="16"
       viewBox="0 0 16 16"
       fill="none"
-      xmlns="http:@lgcode/@lgcode/www.w3.org@lgcode/2000@lgcode/svg"
+      xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
     >
       <path
         d="M3.44283 12.5575L12.5495 3.45081M14.4446 8.00011C14.4446 11.5593 11.5593 14.4446 8.00011 14.4446C4.44094 14.4446 1.55566 11.5593 1.55566 8.00011C1.55566 4.44094 4.44094 1.55566 8.00011 1.55566C11.5593 1.55566 14.4446 4.44094 14.4446 8.00011Z"
         stroke="currentColor"
-      @lgcode/>
-    <@lgcode/svg>
+      />
+    </svg>
   )
 }
 
-@lgcode/** duo-progress-25: faint track ring + ~25% solid arc (Figma OpenCode DS) *@lgcode/
+/** duo-progress-25: faint track ring + ~25% solid arc (Figma OpenCode DS) */
 function LoaderIcon() {
   const r = 5.9
   return (
@@ -31,7 +31,7 @@ function LoaderIcon() {
       height="16"
       viewBox="0 0 16 16"
       fill="none"
-      xmlns="http:@lgcode/@lgcode/www.w3.org@lgcode/2000@lgcode/svg"
+      xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
     >
       <g transform="translate(8 8)">
@@ -42,7 +42,7 @@ function LoaderIcon() {
           stroke-width="1"
           stroke-opacity="0.3"
           transform="rotate(-90)"
-        @lgcode/>
+        />
         <circle
           r={r}
           fill="none"
@@ -51,9 +51,9 @@ function LoaderIcon() {
           pathLength="100"
           stroke-dasharray="25 75"
           transform="rotate(-90)"
-        @lgcode/>
-      <@lgcode/g>
-    <@lgcode/svg>
+        />
+      </g>
+    </svg>
   )
 }
 
@@ -65,14 +65,14 @@ function ChevronIcon() {
       height="14"
       viewBox="0 0 14 14"
       fill="none"
-      xmlns="http:@lgcode/@lgcode/www.w3.org@lgcode/2000@lgcode/svg"
+      xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
     >
       <path
         d="M5.90795 9.62425C5.61628 9.81865 5.25 9.57825 5.25 9.19235V4.80837C5.25 4.42247 5.61628 4.18204 5.90795 4.37648L9.1959 6.56846C9.48535 6.7614 9.48535 7.2393 9.1959 7.43224L5.90795 9.62425Z"
         fill="currentColor"
-      @lgcode/>
-    <@lgcode/svg>
+      />
+    </svg>
   )
 }
 
@@ -84,7 +84,7 @@ export interface ToolErrorCardV2Props extends Omit<ComponentProps<"div">, "child
   open?: boolean
   defaultOpen?: boolean
   onOpenChange?: (open: boolean) => void
-  @lgcode/** When set, subtitle renders as a link (clicks do not toggle expand). *@lgcode/
+  /** When set, subtitle renders as a link (clicks do not toggle expand). */
   subtitleHref?: string
 }
 
@@ -125,19 +125,19 @@ export function ToolErrorCardV2(props: ToolErrorCardV2Props) {
     >
       <Collapsible.Trigger as="div" role="button" data-slot="tool-error-card-trigger">
         <span data-slot="tool-error-card-icon-wrap">
-          <Show when={local.loading} fallback={<BanIcon @lgcode/>}>
-            <LoaderIcon @lgcode/>
-          <@lgcode/Show>
-        <@lgcode/span>
+          <Show when={local.loading} fallback={<BanIcon />}>
+            <LoaderIcon />
+          </Show>
+        </span>
         <div data-slot="tool-error-card-main">
           <div data-slot="tool-error-card-labels">
-            <span data-slot="tool-error-card-title">{local.title}<@lgcode/span>
+            <span data-slot="tool-error-card-title">{local.title}</span>
             <span data-slot="tool-error-card-sep" aria-hidden="true">
               ·
-            <@lgcode/span>
+            </span>
             <Show
               when={local.subtitleHref}
-              fallback={<span data-slot="tool-error-card-subtitle">{local.subtitle}<@lgcode/span>}
+              fallback={<span data-slot="tool-error-card-subtitle">{local.subtitle}</span>}
             >
               <a
                 data-slot="tool-error-card-subtitle"
@@ -146,21 +146,21 @@ export function ToolErrorCardV2(props: ToolErrorCardV2Props) {
                 onPointerDown={(e) => e.stopPropagation()}
               >
                 {local.subtitle}
-              <@lgcode/a>
-            <@lgcode/Show>
+              </a>
+            </Show>
             <Show when={hasSuffix()}>
               <span data-slot="tool-error-card-chevron-wrap">
-                <ChevronIcon @lgcode/>
-              <@lgcode/span>
-            <@lgcode/Show>
-          <@lgcode/div>
-        <@lgcode/div>
-      <@lgcode/Collapsible.Trigger>
+                <ChevronIcon />
+              </span>
+            </Show>
+          </div>
+        </div>
+      </Collapsible.Trigger>
       <Show when={hasSuffix()}>
         <Collapsible.Content data-slot="tool-error-card-content">
-          <div data-slot="tool-error-card-suffix">{local.suffix}<@lgcode/div>
-        <@lgcode/Collapsible.Content>
-      <@lgcode/Show>
-    <@lgcode/Collapsible>
+          <div data-slot="tool-error-card-suffix">{local.suffix}</div>
+        </Collapsible.Content>
+      </Show>
+    </Collapsible>
   )
 }

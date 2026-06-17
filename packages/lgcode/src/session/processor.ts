@@ -1,36 +1,36 @@
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
-import { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
-import { Image } from "@@lgcode/image@lgcode/image"
-import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
+import { Image } from "@/image/image"
+import { SessionV1 } from "@opencode@lgcode/core/v1/session"
 import { Cause, Deferred, Effect, Exit, Layer, Context, Scope, Schema } from "effect"
-import * as Stream from "effect@lgcode/Stream"
-import { Agent } from "@@lgcode/agent@lgcode/agent"
-import { Config } from "@@lgcode/config@lgcode/config"
-import { Permission } from "@@lgcode/permission"
-import { Plugin } from "@@lgcode/plugin"
-import { Snapshot } from "@@lgcode/snapshot"
-import { Session } from ".@lgcode/session"
-import { LLM } from ".@lgcode/llm"
-import { MessageV2 } from ".@lgcode/message-v2"
-import { isOverflow } from ".@lgcode/overflow"
-import { PartID } from ".@lgcode/schema"
-import type { SessionID } from ".@lgcode/schema"
-import { SessionRetry } from ".@lgcode/retry"
-import { SessionStatus } from ".@lgcode/status"
-import { SessionSummary } from ".@lgcode/summary"
-import type { Provider } from "@@lgcode/provider@lgcode/provider"
-import { Question } from "@@lgcode/question"
-import { errorMessage } from "@@lgcode/util@lgcode/error"
-import { isRecord } from "@@lgcode/util@lgcode/record"
-import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { SessionEvent } from "@lgcode/core@lgcode/session@lgcode/event"
-import { SessionMessage } from "@lgcode/core@lgcode/session@lgcode/message"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import * as DateTime from "effect@lgcode/DateTime"
-import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
-import { ToolOutput, Usage, type LLMEvent } from "@lgcode/llm"
+import * as Stream from "effect/Stream"
+import { Agent } from "@/agent/agent"
+import { Config } from "@/config/config"
+import { Permission } from "@/permission"
+import { Plugin } from "@/plugin"
+import { Snapshot } from "@/snapshot"
+import { Session } from "./session"
+import { LLM } from "./llm"
+import { MessageV2 } from "./message-v2"
+import { isOverflow } from "./overflow"
+import { PartID } from "./schema"
+import type { SessionID } from "./schema"
+import { SessionRetry } from "./retry"
+import { SessionStatus } from "./status"
+import { SessionSummary } from "./summary"
+import type { Provider } from "@/provider/provider"
+import { Question } from "@/question"
+import { errorMessage } from "@/util/error"
+import { isRecord } from "@/util/record"
+import { EventV2Bridge } from "@/event-v2-bridge"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { SessionEvent } from "@opencode@lgcode/core/session/event"
+import { SessionMessage } from "@opencode@lgcode/core/session/message"
+import { ModelV2 } from "@opencode@lgcode/core/model"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import * as DateTime from "effect/DateTime"
+import { RuntimeFlags } from "@/effect/runtime-flags"
+import { ToolOutput, Usage, type LLMEvent } from "@opencode@lgcode/llm"
 
 const DOOM_LOOP_THRESHOLD = 3
 export type Result = "compact" | "stop" | "continue"
@@ -87,7 +87,7 @@ interface ProcessorContext extends Input {
 
 type StreamEvent = LLMEvent
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/SessionProcessor") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/SessionProcessor") {}
 
 export const layer = Layer.effect(
   Service,
@@ -108,9 +108,9 @@ export const layer = Layer.effect(
     const database = yield* Database.Service
 
     const create = Effect.fn("SessionProcessor.create")(function* (input: Input) {
-      @lgcode/@lgcode/ Pre-capture snapshot before the LLM stream starts. The AI SDK
-      @lgcode/@lgcode/ may execute tools internally before emitting start-step events,
-      @lgcode/@lgcode/ so capturing inside the event handler can be too late.
+      // Pre-capture snapshot before the LLM stream starts. The AI SDK
+      // may execute tools internally before emitting start-step events,
+      // so capturing inside the event handler can be too late.
       const initialSnapshot = yield* snapshot.track()
       const ctx: ProcessorContext = {
         assistantMessage: input.assistantMessage,
@@ -247,7 +247,7 @@ export const layer = Layer.effect(
 
       const finishReasoning = Effect.fn("SessionProcessor.finishReasoning")(function* (reasoningID: string) {
         if (!(reasoningID in ctx.reasoningMap)) return
-        @lgcode/@lgcode/ TODO(v2): Temporary dual-write while migrating session messages to v2 events.
+        // TODO(v2): Temporary dual-write while migrating session messages to v2 events.
         if (mirrorAssistant) {
           yield* events.publish(SessionEvent.Reasoning.Ended, {
             sessionID: ctx.sessionID,
@@ -258,7 +258,7 @@ export const layer = Layer.effect(
             timestamp: DateTime.makeUnsafe(Date.now()),
           })
         }
-        @lgcode/@lgcode/ oxlint-disable-next-line no-self-assign -- reactivity trigger
+        // oxlint-disable-next-line no-self-assign -- reactivity trigger
         ctx.reasoningMap[reasoningID].text = ctx.reasoningMap[reasoningID].text
         ctx.reasoningMap[reasoningID].time = { ...ctx.reasoningMap[reasoningID].time, end: Date.now() }
         yield* session.updatePart(ctx.reasoningMap[reasoningID])
@@ -312,7 +312,7 @@ export const layer = Layer.effect(
           }
           return { call: ctx.toolcalls[input.id], part }
         }
-        @lgcode/@lgcode/ TODO(v2): Temporary dual-write while migrating session messages to v2 events.
+        // TODO(v2): Temporary dual-write while migrating session messages to v2 events.
         const assistantMessageID = mirrorAssistant ? yield* ensureV2AssistantMessage() : undefined
         if (assistantMessageID) {
           yield* events.publish(SessionEvent.Tool.Input.Started, {
@@ -372,7 +372,7 @@ export const layer = Layer.effect(
         switch (value.type) {
           case "reasoning-start":
             if (value.id in ctx.reasoningMap) return
-            @lgcode/@lgcode/ TODO(v2): Temporary dual-write while migrating session messages to v2 events.
+            // TODO(v2): Temporary dual-write while migrating session messages to v2 events.
             if (mirrorAssistant) {
               yield* events.publish(SessionEvent.Reasoning.Started, {
                 sessionID: ctx.sessionID,
@@ -395,7 +395,7 @@ export const layer = Layer.effect(
             return
 
           case "reasoning-delta":
-            @lgcode/@lgcode/ Match dev: silently drop orphan deltas (no preceding reasoning-start).
+            // Match dev: silently drop orphan deltas (no preceding reasoning-start).
             if (!(value.id in ctx.reasoningMap)) return
             ctx.reasoningMap[value.id].text += value.text
             if (value.providerMetadata) ctx.reasoningMap[value.id].metadata = value.providerMetadata
@@ -450,7 +450,7 @@ export const layer = Layer.effect(
 
           case "tool-input-end": {
             const toolCall = yield* ensureToolCall(value)
-            @lgcode/@lgcode/ TODO(v2): Temporary dual-write while migrating session messages to v2 events.
+            // TODO(v2): Temporary dual-write while migrating session messages to v2 events.
             if (mirrorAssistant) {
               const assistantMessageID = yield* requireV2AssistantMessage(toolCall.call)
               yield* events.publish(SessionEvent.Tool.Input.Ended, {
@@ -472,7 +472,7 @@ export const layer = Layer.effect(
             const toolCall = yield* ensureToolCall(value)
             const input = isRecord(value.input) ? value.input : { value: value.input }
             if (!toolCall.call.inputEnded) {
-              @lgcode/@lgcode/ TODO(v2): Temporary dual-write while migrating session messages to v2 events.
+              // TODO(v2): Temporary dual-write while migrating session messages to v2 events.
               if (mirrorAssistant) {
                 const assistantMessageID = yield* requireV2AssistantMessage(toolCall.call)
                 yield* events.publish(SessionEvent.Tool.Input.Ended, {
@@ -484,7 +484,7 @@ export const layer = Layer.effect(
                 })
               }
             }
-            @lgcode/@lgcode/ TODO(v2): Temporary dual-write while migrating session messages to v2 events.
+            // TODO(v2): Temporary dual-write while migrating session messages to v2 events.
             if (mirrorAssistant) {
               const assistantMessageID = yield* requireV2AssistantMessage(toolCall.call)
               yield* events.publish(SessionEvent.Tool.Called, {
@@ -550,7 +550,7 @@ export const layer = Layer.effect(
             const toolCall = yield* readToolCall(value.id)
             if (!toolCall && value.result.type === "error") return
             if (value.result.type === "error") {
-              @lgcode/@lgcode/ TODO(v2): Temporary dual-write while migrating session messages to v2 events.
+              // TODO(v2): Temporary dual-write while migrating session messages to v2 events.
               if (mirrorAssistant) {
                 const assistantMessageID = yield* requireV2AssistantMessage(toolCall?.call)
                 yield* events.publish(SessionEvent.Tool.Failed, {
@@ -571,7 +571,7 @@ export const layer = Layer.effect(
             }
             const rawOutput = toolResultOutput(value)
             const normalized = yield* Effect.forEach(rawOutput.attachments ?? [], (attachment) =>
-              attachment.mime.startsWith("image@lgcode/")
+              attachment.mime.startsWith("image/")
                 ? image.normalize(attachment).pipe(
                     Effect.catchIf(
                       (error) => error instanceof Image.ResizerUnavailableError,
@@ -591,7 +591,7 @@ export const layer = Layer.effect(
                   : `${rawOutput.output}\n\n[${omitted} image${omitted === 1 ? "" : "s"} omitted: could not be resized below the image size limit.]`,
               attachments: attachments.length ? attachments : undefined,
             }
-            @lgcode/@lgcode/ TODO(v2): Temporary dual-write while migrating session messages to v2 events.
+            // TODO(v2): Temporary dual-write while migrating session messages to v2 events.
             if (mirrorAssistant) {
               const assistantMessageID = yield* requireV2AssistantMessage(toolCall?.call)
               const content = [
@@ -648,7 +648,7 @@ export const layer = Layer.effect(
 
           case "tool-error": {
             const toolCall = yield* readToolCall(value.id)
-            @lgcode/@lgcode/ TODO(v2): Temporary dual-write while migrating session messages to v2 events.
+            // TODO(v2): Temporary dual-write while migrating session messages to v2 events.
             if (mirrorAssistant) {
               const assistantMessageID = yield* requireV2AssistantMessage(toolCall?.call)
               yield* events.publish(SessionEvent.Tool.Failed, {
@@ -676,7 +676,7 @@ export const layer = Layer.effect(
           case "step-start":
             if (!ctx.snapshot) ctx.snapshot = yield* snapshot.track()
             if (!ctx.assistantMessage.summary) {
-              @lgcode/@lgcode/ TODO(v2): Temporary dual-write while migrating session messages to v2 events.
+              // TODO(v2): Temporary dual-write while migrating session messages to v2 events.
               if (mirrorAssistant) {
                 yield* ensureV2AssistantMessage()
               }
@@ -699,7 +699,7 @@ export const layer = Layer.effect(
               metadata: value.providerMetadata,
             })
             if (!ctx.assistantMessage.summary) {
-              @lgcode/@lgcode/ TODO(v2): Temporary dual-write while migrating session messages to v2 events.
+              // TODO(v2): Temporary dual-write while migrating session messages to v2 events.
               if (mirrorAssistant) {
                 yield* events.publish(SessionEvent.Step.Ended, {
                   sessionID: ctx.sessionID,
@@ -758,7 +758,7 @@ export const layer = Layer.effect(
 
           case "text-start":
             if (!ctx.assistantMessage.summary) {
-              @lgcode/@lgcode/ TODO(v2): Temporary dual-write while migrating session messages to v2 events.
+              // TODO(v2): Temporary dual-write while migrating session messages to v2 events.
               if (mirrorAssistant) {
                 yield* events.publish(SessionEvent.Text.Started, {
                   sessionID: ctx.sessionID,
@@ -805,7 +805,7 @@ export const layer = Layer.effect(
 
           case "text-end":
             if (!ctx.currentText) return
-            @lgcode/@lgcode/ oxlint-disable-next-line no-self-assign -- reactivity trigger
+            // oxlint-disable-next-line no-self-assign -- reactivity trigger
             ctx.currentText.text = ctx.currentText.text
             ctx.currentText.text = (yield* plugin.trigger(
               "experimental.text.complete",
@@ -817,7 +817,7 @@ export const layer = Layer.effect(
               { text: ctx.currentText.text },
             )).text
             if (!ctx.assistantMessage.summary) {
-              @lgcode/@lgcode/ TODO(v2): Temporary dual-write while migrating session messages to v2 events.
+              // TODO(v2): Temporary dual-write while migrating session messages to v2 events.
               if (mirrorAssistant) {
                 yield* events.publish(SessionEvent.Text.Ended, {
                   sessionID: ctx.sessionID,
@@ -936,7 +936,7 @@ export const layer = Layer.effect(
           return
         }
         if (!ctx.assistantMessage.summary) {
-          @lgcode/@lgcode/ TODO(v2): Temporary dual-write while migrating session messages to v2 events.
+          // TODO(v2): Temporary dual-write while migrating session messages to v2 events.
           if (mirrorAssistant) {
             yield* events.publish(SessionEvent.Step.Failed, {
               sessionID: ctx.sessionID,
@@ -996,7 +996,7 @@ export const layer = Layer.effect(
                 provider: input.model.providerID,
                 parse,
                 set: (info) => {
-                  @lgcode/@lgcode/ TODO(v2): Temporary dual-write while migrating session messages to v2 events.
+                  // TODO(v2): Temporary dual-write while migrating session messages to v2 events.
                   const event = mirrorAssistant
                     ? events.publish(SessionEvent.Retried, {
                         sessionID: ctx.sessionID,
@@ -1081,4 +1081,4 @@ export const node = LayerNode.make(layer, [
   Database.node,
 ])
 
-export * as SessionProcessor from ".@lgcode/processor"
+export * as SessionProcessor from "./processor"

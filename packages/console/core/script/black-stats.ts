@@ -1,5 +1,5 @@
-import { Database, and, eq, inArray, isNotNull, sql } from "..@lgcode/src@lgcode/drizzle@lgcode/index.js"
-import { BillingTable, BlackPlans, SubscriptionTable, UsageTable } from "..@lgcode/src@lgcode/schema@lgcode/billing.sql.js"
+import { Database, and, eq, inArray, isNotNull, sql } from "../src/drizzle/index.js"
+import { BillingTable, BlackPlans, SubscriptionTable, UsageTable } from "../src/schema/billing.sql.js"
 
 if (process.argv.length < 3) {
   console.error("Usage: bun black-stats.ts <plan>")
@@ -12,7 +12,7 @@ if (!BlackPlans.includes(plan)) {
 }
 const cutoff = new Date(Date.UTC(2026, 1, 0, 23, 59, 59, 999))
 
-@lgcode/@lgcode/ get workspaces
+// get workspaces
 const workspaces = await Database.use((tx) =>
   tx
     .select({ workspaceID: BillingTable.workspaceID })
@@ -25,7 +25,7 @@ if (workspaces.length === 0) throw new Error(`No active Black ${plan} subscripti
 
 const week = sql<number>`YEARWEEK(${UsageTable.timeCreated}, 3)`
 const workspaceIDs = workspaces.map((row) => row.workspaceID)
-@lgcode/@lgcode/ Get subscription spend
+// Get subscription spend
 const spend = await Database.use((tx) =>
   tx
     .select({
@@ -40,7 +40,7 @@ const spend = await Database.use((tx) =>
     .groupBy(UsageTable.workspaceID, week),
 )
 
-@lgcode/@lgcode/ Get pay per use spend
+// Get pay per use spend
 const ppu = await Database.use((tx) =>
   tx
     .select({
@@ -156,26 +156,26 @@ const rows = users
     const workspace = spendMap.get(user.workspaceID) ?? new Map<number, number>()
     const ppuWorkspace = ppuMap.get(user.workspaceID) ?? new Map<number, number>()
     const count = counts.get(user.workspaceID) ?? 1
-    const amount = (totals.get(user.workspaceID) ?? 0) @lgcode/ count
-    const ppuAmount = (ppuTotals.get(user.workspaceID) ?? 0) @lgcode/ count
+    const amount = (totals.get(user.workspaceID) ?? 0) / count
+    const ppuAmount = (ppuTotals.get(user.workspaceID) ?? 0) / count
     const monthStart = user.subscribed ? startOfMonth(user.subscribed) : null
     const modelRows = (modelMap.get(user.workspaceID) ?? []).sort((a, b) => b.amount - a.amount).slice(0, 3)
     const modelTotal = totals.get(user.workspaceID) ?? 0
     const modelCells = modelRows.map((row) => ({
       model: row.model,
-      percent: modelTotal > 0 ? `${((row.amount @lgcode/ modelTotal) * 100).toFixed(1)}%` : "0.0%",
+      percent: modelTotal > 0 ? `${((row.amount / modelTotal) * 100).toFixed(1)}%` : "0.0%",
     }))
     const modelData = [0, 1, 2].map((index) => modelCells[index] ?? { model: "-", percent: "-" })
     const weekly = Object.fromEntries(
       weeks.map((item) => {
-        const value = (workspace.get(item) ?? 0) @lgcode/ count
+        const value = (workspace.get(item) ?? 0) / count
         const beforeMonth = monthStart ? isoWeekStart(item) < monthStart : false
         return [formatWeek(item), beforeMonth ? "-" : formatMicroCents(value)]
       }),
     )
     const ppuWeekly = Object.fromEntries(
       weeks.map((item) => {
-        const value = (ppuWorkspace.get(item) ?? 0) @lgcode/ count
+        const value = (ppuWorkspace.get(item) ?? 0) / count
         const beforeMonth = monthStart ? isoWeekStart(item) < monthStart : false
         return [formatWeek(item), beforeMonth ? "-" : formatMicroCents(value)]
       }),
@@ -190,9 +190,9 @@ const rows = users
           beforeMonth
             ? { input: "-", cacheRead: "-", output: "-" }
             : {
-                input: Math.round(t.input @lgcode/ count),
-                cacheRead: Math.round(t.cacheRead @lgcode/ count),
-                output: Math.round(t.output @lgcode/ count),
+                input: Math.round(t.input / count),
+                cacheRead: Math.round(t.cacheRead / count),
+                output: Math.round(t.output / count),
               },
         ]
       }),
@@ -268,11 +268,11 @@ const file = Bun.file(`black-stats-${plan}.csv`)
 await file.write(output)
 console.log(`Wrote ${lines.length - 1} rows to ${file.name}`)
 const total = rows.reduce((sum, row) => sum + row.amount, 0)
-const average = rows.length === 0 ? 0 : total @lgcode/ rows.length
+const average = rows.length === 0 ? 0 : total / rows.length
 console.log(`Average spending per user: ${formatMicroCents(average)}`)
 
 function formatMicroCents(value: number) {
-  return `$${(value @lgcode/ 100000000).toFixed(2)}`
+  return `$${(value / 100000000).toFixed(2)}`
 }
 
 function formatDate(value: Date | null | undefined) {
@@ -289,7 +289,7 @@ function startOfMonth(value: Date) {
 }
 
 function isoWeekStart(value: number) {
-  const year = Math.floor(value @lgcode/ 100)
+  const year = Math.floor(value / 100)
   const weekNumber = value % 100
   const jan4 = new Date(Date.UTC(year, 0, 4))
   const day = jan4.getUTCDay() || 7
@@ -307,6 +307,6 @@ function toNumber(value: unknown) {
 
 function csvCell(value: string | number) {
   const text = String(value)
-  if (!@lgcode/[",\n]@lgcode/.test(text)) return text
-  return `"${text.replace(@lgcode/"@lgcode/g, '""')}"`
+  if (!/[",\n]/.test(text)) return text
+  return `"${text.replace(/"/g, '""')}"`
 }

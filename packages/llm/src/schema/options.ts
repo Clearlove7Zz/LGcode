@@ -1,7 +1,7 @@
 import { Schema } from "effect"
-import { JsonSchema, ModelID, ProviderID } from ".@lgcode/ids"
-import type { AnyRoute } from "..@lgcode/route@lgcode/client"
-import { isRecord } from "..@lgcode/utils@lgcode/record"
+import { JsonSchema, ModelID, ProviderID } from "./ids"
+import type { AnyRoute } from "../route/client"
+import { isRecord } from "../utils/record"
 
 export const mergeJsonRecords = (
   ...items: ReadonlyArray<Record<string, unknown> | undefined>
@@ -59,7 +59,7 @@ export class HttpOptions extends Schema.Class<HttpOptions>("LLM.HttpOptions")({
 export namespace HttpOptions {
   export type Input = HttpOptions | ConstructorParameters<typeof HttpOptions>[0]
 
-  @lgcode/** Normalize HTTP option input into the canonical `HttpOptions` class. *@lgcode/
+  /** Normalize HTTP option input into the canonical `HttpOptions` class. */
   export const make = (input: Input) => (input instanceof HttpOptions ? input : new HttpOptions(input))
 }
 
@@ -85,7 +85,7 @@ export class GenerationOptions extends Schema.Class<GenerationOptions>("LLM.Gene
 export namespace GenerationOptions {
   export type Input = GenerationOptions | ConstructorParameters<typeof GenerationOptions>[0]
 
-  @lgcode/** Normalize generation option input into the canonical `GenerationOptions` class. *@lgcode/
+  /** Normalize generation option input into the canonical `GenerationOptions` class. */
   export const make = (input: Input = {}) => (input instanceof GenerationOptions ? input : new GenerationOptions(input))
 }
 
@@ -129,7 +129,7 @@ export class ModelLimits extends Schema.Class<ModelLimits>("LLM.ModelLimits")({
 export namespace ModelLimits {
   export type Input = ModelLimits | ConstructorParameters<typeof ModelLimits>[0]
 
-  @lgcode/** Normalize model limit input into the canonical `ModelLimits` class. *@lgcode/
+  /** Normalize model limit input into the canonical `ModelLimits` class. */
   export const make = (input: Input | undefined) =>
     input instanceof ModelLimits ? input : new ModelLimits(input ?? {})
 }
@@ -192,17 +192,17 @@ export class CacheHint extends Schema.Class<CacheHint>("LLM.CacheHint")({
   ttlSeconds: Schema.optional(Schema.Number),
 }) {}
 
-@lgcode/@lgcode/ Auto-placement policy for prompt caching. The protocol-neutral lowering step
-@lgcode/@lgcode/ reads this and injects `CacheHint`s at the configured boundaries; the
-@lgcode/@lgcode/ per-protocol body builders then translate those hints into wire markers as
-@lgcode/@lgcode/ usual. `"auto"` is the recommended default for agent loops — it places one
-@lgcode/@lgcode/ breakpoint at the last tool definition, one at the last system part, and one
-@lgcode/@lgcode/ at the latest user message. The combination of provider invalidation
-@lgcode/@lgcode/ hierarchy (tools → system → messages) and Anthropic@lgcode/Bedrock's 20-block
-@lgcode/@lgcode/ lookback means three trailing breakpoints reliably cover the static prefix.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Pass `"none"` to opt out entirely (the legacy behavior). Pass the granular
-@lgcode/@lgcode/ object form to override individual choices.
+// Auto-placement policy for prompt caching. The protocol-neutral lowering step
+// reads this and injects `CacheHint`s at the configured boundaries; the
+// per-protocol body builders then translate those hints into wire markers as
+// usual. `"auto"` is the recommended default for agent loops — it places one
+// breakpoint at the last tool definition, one at the last system part, and one
+// at the latest user message. The combination of provider invalidation
+// hierarchy (tools → system → messages) and Anthropic/Bedrock's 20-block
+// lookback means three trailing breakpoints reliably cover the static prefix.
+//
+// Pass `"none"` to opt out entirely (the legacy behavior). Pass the granular
+// object form to override individual choices.
 export const CachePolicyObject = Schema.Struct({
   tools: Schema.optional(Schema.Boolean),
   system: Schema.optional(Schema.Boolean),

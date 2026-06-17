@@ -1,4 +1,4 @@
-import { authTokenFromCredentials } from "@@lgcode/utils@lgcode/server"
+import { authTokenFromCredentials } from "@/utils/server"
 
 export function terminalWebSocketURL(input: {
   url: string
@@ -11,7 +11,7 @@ export function terminalWebSocketURL(input: {
   password?: string
   authToken?: boolean
 }) {
-  const next = new URL(`${input.url}@lgcode/pty@lgcode/${input.id}@lgcode/connect`)
+  const next = new URL(`${input.url}/pty/${input.id}/connect`)
   next.searchParams.set("directory", input.directory)
   next.searchParams.set("cursor", String(input.cursor))
   next.protocol = next.protocol === "https:" ? "wss:" : "ws:"

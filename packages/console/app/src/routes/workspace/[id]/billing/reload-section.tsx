@@ -1,14 +1,14 @@
-import { json, action, useParams, createAsync, useSubmission } from "@solidjs@lgcode/router"
+import { json, action, useParams, createAsync, useSubmission } from "@solidjs/router"
 import { createEffect, Show, createMemo } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import { withActor } from "~@lgcode/context@lgcode/auth.withActor"
-import { Billing } from "@lgcode/console-core@lgcode/billing.js"
-import { Database, eq } from "@lgcode/console-core@lgcode/drizzle@lgcode/index.js"
-import { BillingTable } from "@lgcode/console-core@lgcode/schema@lgcode/billing.sql.js"
-import styles from ".@lgcode/reload-section.module.css"
-import { queryBillingInfo } from "..@lgcode/..@lgcode/common"
-import { useI18n } from "~@lgcode/context@lgcode/i18n"
-import { formError, formErrorReloadAmountMin, formErrorReloadTriggerMin, localizeError } from "~@lgcode/lib@lgcode/form-error"
+import { createStore } from "solid-js/store"
+import { withActor } from "~/context/auth.withActor"
+import { Billing } from "@opencode@lgcode/console-core/billing.js"
+import { Database, eq } from "@opencode@lgcode/console-core/drizzle/index.js"
+import { BillingTable } from "@opencode@lgcode/console-core/schema/billing.sql.js"
+import styles from "./reload-section.module.css"
+import { queryBillingInfo } from "../../common"
+import { useI18n } from "~/context/i18n"
+import { formError, formErrorReloadAmountMin, formErrorReloadTriggerMin, localizeError } from "~/lib/form-error"
 
 const reload = action(async (form: FormData) => {
   "use server"
@@ -74,7 +74,7 @@ export function ReloadSection() {
   const processingFee = createMemo(() => {
     const reloadAmount = billingInfo()?.reloadAmount
     if (!reloadAmount) return "0.00"
-    return (((reloadAmount + 0.3) @lgcode/ 0.956) * 0.044 + 0.3).toFixed(2)
+    return (((reloadAmount + 0.3) / 0.956) * 0.044 + 0.3).toFixed(2)
   })
 
   createEffect(() => {
@@ -102,34 +102,34 @@ export function ReloadSection() {
   return (
     <section class={styles.root}>
       <div data-slot="section-title">
-        <h2>{i18n.t("workspace.reload.title")}<@lgcode/h2>
+        <h2>{i18n.t("workspace.reload.title")}</h2>
         <div data-slot="title-row">
           <Show
             when={billingInfo()?.reload}
             fallback={
               <p>
-                {i18n.t("workspace.reload.disabled.before")} <b>{i18n.t("workspace.reload.disabled.state")}<@lgcode/b>.{" "}
+                {i18n.t("workspace.reload.disabled.before")} <b>{i18n.t("workspace.reload.disabled.state")}</b>.{" "}
                 {i18n.t("workspace.reload.disabled.after")}
-              <@lgcode/p>
+              </p>
             }
           >
             <p>
-              {i18n.t("workspace.reload.enabled.before")} <b>{i18n.t("workspace.reload.enabled.state")}<@lgcode/b>.{" "}
-              {i18n.t("workspace.reload.enabled.middle")} <b>${billingInfo()?.reloadAmount}<@lgcode/b> (+${processingFee()}{" "}
+              {i18n.t("workspace.reload.enabled.before")} <b>{i18n.t("workspace.reload.enabled.state")}</b>.{" "}
+              {i18n.t("workspace.reload.enabled.middle")} <b>${billingInfo()?.reloadAmount}</b> (+${processingFee()}{" "}
               {i18n.t("workspace.reload.processingFee")}) {i18n.t("workspace.reload.enabled.after")}{" "}
-              <b>${billingInfo()?.reloadTrigger}<@lgcode/b>.
-            <@lgcode/p>
-          <@lgcode/Show>
+              <b>${billingInfo()?.reloadTrigger}</b>.
+            </p>
+          </Show>
           <button data-color="primary" type="button" onClick={() => show()}>
             {billingInfo()?.reload ? i18n.t("workspace.reload.edit") : i18n.t("workspace.reload.enable")}
-          <@lgcode/button>
-        <@lgcode/div>
-      <@lgcode/div>
+          </button>
+        </div>
+      </div>
       <Show when={store.show}>
         <form action={setReload} method="post" data-slot="create-form">
           <div data-slot="form-field">
             <label>
-              <span data-slot="field-label">{i18n.t("workspace.reload.enableAutoReload")}<@lgcode/span>
+              <span data-slot="field-label">{i18n.t("workspace.reload.enableAutoReload")}</span>
               <div data-slot="toggle-container">
                 <label data-slot="model-toggle-label">
                   <input
@@ -138,16 +138,16 @@ export function ReloadSection() {
                     value="true"
                     checked={store.reload}
                     onChange={(e) => setStore("reload", e.currentTarget.checked)}
-                  @lgcode/>
-                  <span><@lgcode/span>
-                <@lgcode/label>
-              <@lgcode/div>
-            <@lgcode/label>
-          <@lgcode/div>
+                  />
+                  <span></span>
+                </label>
+              </div>
+            </label>
+          </div>
 
           <div data-slot="input-row">
             <div data-slot="input-field">
-              <p>{i18n.t("workspace.reload.reloadAmount")}<@lgcode/p>
+              <p>{i18n.t("workspace.reload.reloadAmount")}</p>
               <input
                 data-component="input"
                 name="reloadAmount"
@@ -158,10 +158,10 @@ export function ReloadSection() {
                 onInput={(e) => setStore("reloadAmount", e.currentTarget.value)}
                 placeholder={String(billingInfo()?.reloadAmount ?? "")}
                 disabled={!store.reload}
-              @lgcode/>
-            <@lgcode/div>
+              />
+            </div>
             <div data-slot="input-field">
-              <p>{i18n.t("workspace.reload.whenBalanceReaches")}<@lgcode/p>
+              <p>{i18n.t("workspace.reload.whenBalanceReaches")}</p>
               <input
                 data-component="input"
                 name="reloadTrigger"
@@ -172,24 +172,24 @@ export function ReloadSection() {
                 onInput={(e) => setStore("reloadTrigger", e.currentTarget.value)}
                 placeholder={String(billingInfo()?.reloadTrigger ?? "")}
                 disabled={!store.reload}
-              @lgcode/>
-            <@lgcode/div>
-          <@lgcode/div>
+              />
+            </div>
+          </div>
 
           <Show when={setReloadSubmission.result && (setReloadSubmission.result as any).error}>
-            {(err: any) => <div data-slot="form-error">{localizeError(i18n.t, err())}<@lgcode/div>}
-          <@lgcode/Show>
-          <input type="hidden" name="workspaceID" value={params.id} @lgcode/>
+            {(err: any) => <div data-slot="form-error">{localizeError(i18n.t, err())}</div>}
+          </Show>
+          <input type="hidden" name="workspaceID" value={params.id} />
           <div data-slot="form-actions">
             <button type="button" data-color="ghost" onClick={() => hide()}>
               {i18n.t("common.cancel")}
-            <@lgcode/button>
+            </button>
             <button type="submit" data-color="primary" disabled={setReloadSubmission.pending}>
               {setReloadSubmission.pending ? i18n.t("workspace.reload.saving") : i18n.t("workspace.reload.save")}
-            <@lgcode/button>
-          <@lgcode/div>
-        <@lgcode/form>
-      <@lgcode/Show>
+            </button>
+          </div>
+        </form>
+      </Show>
       <Show when={billingInfo()?.reloadError}>
         <div data-slot="section-content">
           <div data-slot="reload-error">
@@ -203,18 +203,18 @@ export function ReloadSection() {
                 second: "2-digit",
               })}
               . {i18n.t("workspace.reload.reason")}{" "}
-              {localizeError(i18n.t, billingInfo()?.reloadError ?? undefined).replace(@lgcode/\.$@lgcode/, "")}.{" "}
+              {localizeError(i18n.t, billingInfo()?.reloadError ?? undefined).replace(/\.$/, "")}.{" "}
               {i18n.t("workspace.reload.updatePaymentMethod")}
-            <@lgcode/p>
+            </p>
             <form action={reload} method="post" data-slot="create-form">
-              <input type="hidden" name="workspaceID" value={params.id} @lgcode/>
+              <input type="hidden" name="workspaceID" value={params.id} />
               <button data-color="ghost" type="submit" disabled={reloadSubmission.pending}>
                 {reloadSubmission.pending ? i18n.t("workspace.reload.retrying") : i18n.t("workspace.reload.retry")}
-              <@lgcode/button>
-            <@lgcode/form>
-          <@lgcode/div>
-        <@lgcode/div>
-      <@lgcode/Show>
-    <@lgcode/section>
+              </button>
+            </form>
+          </div>
+        </div>
+      </Show>
+    </section>
   )
 }

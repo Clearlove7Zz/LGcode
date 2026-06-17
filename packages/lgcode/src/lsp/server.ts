@@ -1,18 +1,18 @@
 import type { ChildProcessWithoutNullStreams } from "child_process"
 import path from "path"
 import os from "os"
-import { Global } from "@lgcode/core@lgcode/global"
-import { text } from "node:stream@lgcode/consumers"
-import fs from "fs@lgcode/promises"
-import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
-import type { InstanceContext } from "..@lgcode/project@lgcode/instance-context"
-import { Archive } from "@@lgcode/util@lgcode/archive"
-import { Process } from "@@lgcode/util@lgcode/process"
-import { which } from "@lgcode/core@lgcode/util@lgcode/which"
-import { Module } from "@lgcode/core@lgcode/util@lgcode/module"
-import { spawn } from ".@lgcode/launch"
-import { Npm } from "@lgcode/core@lgcode/npm"
-import type { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
+import { Global } from "@opencode@lgcode/core/global"
+import { text } from "node:stream/consumers"
+import fs from "fs/promises"
+import { Filesystem } from "@/util/filesystem"
+import type { InstanceContext } from "../project/instance-context"
+import { Archive } from "@/util/archive"
+import { Process } from "@/util/process"
+import { which } from "@opencode@lgcode/core/util/which"
+import { Module } from "@opencode@lgcode/core/util/module"
+import { spawn } from "./launch"
+import { Npm } from "@opencode@lgcode/core/npm"
+import type { RuntimeFlags } from "@/effect/runtime-flags"
 
 const pathExists = async (p: string) =>
   fs
@@ -120,7 +120,7 @@ export const Typescript: Info = {
   ),
   extensions: [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".mts", ".cts"],
   async spawn(root, ctx) {
-    const tsserver = Module.resolve("typescript@lgcode/lib@lgcode/tsserver.js", ctx.directory)
+    const tsserver = Module.resolve("typescript/lib/tsserver.js", ctx.directory)
     if (!tsserver) return
     const bin = await Npm.which("typescript-language-server")
     if (!bin) return
@@ -150,7 +150,7 @@ export const Vue: Info = {
     const args: string[] = []
     if (!binary) {
       if (flags.disableLspDownload) return
-      const resolved = await Npm.which("@vue@lgcode/language-server")
+      const resolved = await Npm.which("@vue/language-server")
       if (!resolved) return
       binary = resolved
     }
@@ -164,7 +164,7 @@ export const Vue: Info = {
     return {
       process: proc,
       initialization: {
-        @lgcode/@lgcode/ Leave empty; the server will auto-detect workspace TypeScript.
+        // Leave empty; the server will auto-detect workspace TypeScript.
       },
     }
   },
@@ -180,7 +180,7 @@ export const ESLint: Info = {
     const serverPath = path.join(Global.Path.bin, "vscode-eslint", "server", "out", "eslintServer.js")
     if (!(await Filesystem.exists(serverPath))) {
       if (flags.disableLspDownload) return
-      const response = await fetch("https:@lgcode/@lgcode/github.com@lgcode/microsoft@lgcode/vscode-eslint@lgcode/archive@lgcode/refs@lgcode/heads@lgcode/main.zip")
+      const response = await fetch("https://github.com/microsoft/vscode-eslint/archive/refs/heads/main.zip")
       if (!response.ok) return
 
       const zipPath = path.join(Global.Path.bin, "vscode-eslint.zip")
@@ -369,7 +369,7 @@ export const Gopls: Info = {
       if (!which("go")) return
       if (flags.disableLspDownload) return
 
-      const proc = Process.spawn(["go", "install", "golang.org@lgcode/x@lgcode/tools@lgcode/gopls@latest"], {
+      const proc = Process.spawn(["go", "install", "golang.org/x/tools/gopls@latest"], {
         env: { ...process.env, GOBIN: Global.Path.bin },
         stdout: "pipe",
         stderr: "pipe",
@@ -549,7 +549,7 @@ export const ElixirLS: Info = {
 
         if (flags.disableLspDownload) return
 
-        const response = await fetch("https:@lgcode/@lgcode/github.com@lgcode/elixir-lsp@lgcode/elixir-ls@lgcode/archive@lgcode/refs@lgcode/heads@lgcode/master.zip")
+        const response = await fetch("https://github.com/elixir-lsp/elixir-ls/archive/refs/heads/master.zip")
         if (!response.ok) return
         const zipPath = path.join(Global.Path.bin, "elixir-ls.zip")
         if (response.body) await Filesystem.writeStream(zipPath, response.body)
@@ -597,7 +597,7 @@ export const Zls: Info = {
 
       if (flags.disableLspDownload) return
 
-      const releaseResponse = await fetch("https:@lgcode/@lgcode/api.github.com@lgcode/repos@lgcode/zigtools@lgcode/zls@lgcode/releases@lgcode/latest")
+      const releaseResponse = await fetch("https://api.github.com/repos/zigtools/zls/releases/latest")
       if (!releaseResponse.ok) {
         return
       }
@@ -858,8 +858,8 @@ export const SourceKit: Info = {
   extensions: [".swift", ".objc", "objcpp"],
   root: NearestRoot(["Package.swift", "*.xcodeproj", "*.xcworkspace"]),
   async spawn(root) {
-    @lgcode/@lgcode/ Check if sourcekit-lsp is available in the PATH
-    @lgcode/@lgcode/ This is installed with the Swift toolchain
+    // Check if sourcekit-lsp is available in the PATH
+    // This is installed with the Swift toolchain
     const sourcekit = which("sourcekit-lsp")
     if (sourcekit) {
       return {
@@ -869,8 +869,8 @@ export const SourceKit: Info = {
       }
     }
 
-    @lgcode/@lgcode/ If sourcekit-lsp not found, check if xcrun is available
-    @lgcode/@lgcode/ This is specific to macOS where sourcekit-lsp is typically installed with Xcode
+    // If sourcekit-lsp not found, check if xcrun is available
+    // This is specific to macOS where sourcekit-lsp is typically installed with Xcode
     if (!which("xcrun")) return
 
     const lspLoc = await output(["xcrun", "--find", "sourcekit-lsp"])
@@ -897,7 +897,7 @@ export const RustAnalyzer: Info = {
     let currentDir = crateRoot
 
     while (currentDir !== path.dirname(currentDir)) {
-      @lgcode/@lgcode/ Stop at filesystem root
+      // Stop at filesystem root
       const cargoTomlPath = path.join(currentDir, "Cargo.toml")
       try {
         const cargoTomlContent = await Filesystem.readText(cargoTomlPath)
@@ -905,14 +905,14 @@ export const RustAnalyzer: Info = {
           return currentDir
         }
       } catch {
-        @lgcode/@lgcode/ File doesn't exist or can't be read, continue searching up
+        // File doesn't exist or can't be read, continue searching up
       }
 
       const parentDir = path.dirname(currentDir)
-      if (parentDir === currentDir) break @lgcode/@lgcode/ Reached filesystem root
+      if (parentDir === currentDir) break // Reached filesystem root
       currentDir = parentDir
 
-      @lgcode/@lgcode/ Stop if we've gone above the app root
+      // Stop if we've gone above the app root
       if (!currentDir.startsWith(ctx.worktree)) break
     }
 
@@ -973,7 +973,7 @@ export const Clangd: Info = {
 
     if (flags.disableLspDownload) return
 
-    const releaseResponse = await fetch("https:@lgcode/@lgcode/api.github.com@lgcode/repos@lgcode/clangd@lgcode/clangd@lgcode/releases@lgcode/latest")
+    const releaseResponse = await fetch("https://api.github.com/repos/clangd/clangd/releases/latest")
     if (!releaseResponse.ok) {
       return
     }
@@ -1098,7 +1098,7 @@ export const Astro: Info = {
   extensions: [".astro"],
   root: NearestRoot(["package-lock.json", "bun.lockb", "bun.lock", "pnpm-lock.yaml", "yarn.lock"]),
   async spawn(root, ctx, flags) {
-    const tsserver = Module.resolve("typescript@lgcode/lib@lgcode/tsserver.js", ctx.directory)
+    const tsserver = Module.resolve("typescript/lib/tsserver.js", ctx.directory)
     if (!tsserver) {
       return
     }
@@ -1108,7 +1108,7 @@ export const Astro: Info = {
     const args: string[] = []
     if (!binary) {
       if (flags.disableLspDownload) return
-      const resolved = await Npm.which("@astrojs@lgcode/language-server")
+      const resolved = await Npm.which("@astrojs/language-server")
       if (!resolved) return
       binary = resolved
     }
@@ -1131,13 +1131,13 @@ export const Astro: Info = {
 }
 
 function isModuleOf(pomContent: string, modulePath: string): boolean {
-  const normalized = modulePath.replace(@lgcode/\\@lgcode/g, "@lgcode/").replace(@lgcode/\@lgcode/$@lgcode/, "")
+  const normalized = modulePath.replace(/\\/g, "/").replace(/\/$/, "")
   if (!normalized) return false
-  const modulesBlocks = pomContent.match(@lgcode/<modules>([\s\S]*?)<\@lgcode/modules>@lgcode/g) ?? []
+  const modulesBlocks = pomContent.match(/<modules>([\s\S]*?)<\/modules>/g) ?? []
   for (const block of modulesBlocks) {
-    const stripped = block.replace(@lgcode/<!--[\s\S]*?-->@lgcode/g, "")
-    for (const m of stripped.matchAll(@lgcode/<module>\s*([^<]+?)\s*<\@lgcode/module>@lgcode/g)) {
-      const decl = m[1].replace(@lgcode/\\@lgcode/g, "@lgcode/").replace(@lgcode/^\.\@lgcode/@lgcode/, "").replace(@lgcode/\@lgcode/$@lgcode/, "")
+    const stripped = block.replace(/<!--[\s\S]*?-->/g, "")
+    for (const m of stripped.matchAll(/<module>\s*([^<]+?)\s*<\/module>/g)) {
+      const decl = m[1].replace(/\\/g, "/").replace(/^\.\//, "").replace(/\/$/, "")
       if (decl === normalized) return true
     }
   }
@@ -1149,7 +1149,7 @@ export const JDTLS: Info = {
   root: async (file, ctx) => {
     const settingsMarkers = ["settings.gradle", "settings.gradle.kts"]
     const gradleMarkers = ["gradlew", "gradlew.bat"]
-    @lgcode/@lgcode/ 1. Gradle (unchanged from original logic)
+    // 1. Gradle (unchanged from original logic)
     const [wrapperRoot, settingsRoot] = await Promise.all([
       StrictNearestRoot(gradleMarkers, settingsMarkers)(file, ctx),
       StrictNearestRoot(settingsMarkers)(file, ctx),
@@ -1157,11 +1157,11 @@ export const JDTLS: Info = {
     if (wrapperRoot) return wrapperRoot
     if (settingsRoot) return settingsRoot
 
-    @lgcode/@lgcode/ 2. Gradle single-project fallback (build.gradle without settings.gradle)
+    // 2. Gradle single-project fallback (build.gradle without settings.gradle)
     const buildRoot = await StrictNearestRoot(["build.gradle", "build.gradle.kts"])(file, ctx)
     if (buildRoot) return buildRoot
 
-    @lgcode/@lgcode/ 3. Maven: walk up pom.xml chain verifying <module> relationships
+    // 3. Maven: walk up pom.xml chain verifying <module> relationships
     const pomFiles = await Filesystem.findUp("pom.xml", path.dirname(file), ctx.directory)
     if (pomFiles.length > 0) {
       let root = path.dirname(pomFiles[0])
@@ -1178,7 +1178,7 @@ export const JDTLS: Info = {
       return root
     }
 
-    @lgcode/@lgcode/ 4. Eclipse native project fallback
+    // 4. Eclipse native project fallback
     const eclipseRoot = await StrictNearestRoot([".project", ".classpath"])(file, ctx)
     if (eclipseRoot) return eclipseRoot
 
@@ -1191,7 +1191,7 @@ export const JDTLS: Info = {
       return
     }
     const javaMajorVersion = await run(["java", "-version"]).then((result) => {
-      const m = @lgcode/"(\d+)\.\d+\.\d+"@lgcode/.exec(result.stderr.toString())
+      const m = /"(\d+)\.\d+\.\d+"/.exec(result.stderr.toString())
       return !m ? undefined : parseInt(m[1])
     })
     if (javaMajorVersion == null || javaMajorVersion < 21) {
@@ -1204,7 +1204,7 @@ export const JDTLS: Info = {
       if (flags.disableLspDownload) return
       await fs.mkdir(distPath, { recursive: true })
       const releaseURL =
-        "https:@lgcode/@lgcode/www.eclipse.org@lgcode/downloads@lgcode/download.php?file=@lgcode/jdtls@lgcode/snapshots@lgcode/jdt-language-server-latest.tar.gz"
+        "https://www.eclipse.org/downloads/download.php?file=/jdtls/snapshots/jdt-language-server-latest.tar.gz"
       const archiveName = "release.tar.gz"
 
       const download = await fetch(releaseURL)
@@ -1222,7 +1222,7 @@ export const JDTLS: Info = {
     }
     const jarFileName =
       (await fs.readdir(launcherDir).catch(() => []))
-        .find((item) => @lgcode/^org\.eclipse\.equinox\.launcher_.*\.jar$@lgcode/.test(item))
+        .find((item) => /^org\.eclipse\.equinox\.launcher_.*\.jar$/.test(item))
         ?.trim() ?? ""
     const launcherJar = path.join(launcherDir, jarFileName)
     if (!(await pathExists(launcherJar))) {
@@ -1259,8 +1259,8 @@ export const JDTLS: Info = {
           "-Declipse.product=org.eclipse.jdt.ls.core.product",
           "-Dlog.level=ALL",
           "--add-modules=ALL-SYSTEM",
-          "--add-opens java.base@lgcode/java.util=ALL-UNNAMED",
-          "--add-opens java.base@lgcode/java.lang=ALL-UNNAMED",
+          "--add-opens java.base/java.util=ALL-UNNAMED",
+          "--add-opens java.base/java.lang=ALL-UNNAMED",
         ],
         {
           cwd: root,
@@ -1274,16 +1274,16 @@ export const KotlinLS: Info = {
   id: "kotlin-ls",
   extensions: [".kt", ".kts"],
   root: async (file, ctx) => {
-    @lgcode/@lgcode/ 1) Nearest Gradle root (multi-project or included build)
+    // 1) Nearest Gradle root (multi-project or included build)
     const settingsRoot = await NearestRoot(["settings.gradle.kts", "settings.gradle"])(file, ctx)
     if (settingsRoot) return settingsRoot
-    @lgcode/@lgcode/ 2) Gradle wrapper (strong root signal)
+    // 2) Gradle wrapper (strong root signal)
     const wrapperRoot = await NearestRoot(["gradlew", "gradlew.bat"])(file, ctx)
     if (wrapperRoot) return wrapperRoot
-    @lgcode/@lgcode/ 3) Single-project or module-level build
+    // 3) Single-project or module-level build
     const buildRoot = await NearestRoot(["build.gradle.kts", "build.gradle"])(file, ctx)
     if (buildRoot) return buildRoot
-    @lgcode/@lgcode/ 4) Maven fallback
+    // 4) Maven fallback
     return NearestRoot(["pom.xml"])(file, ctx)
   },
   async spawn(root, _ctx, flags) {
@@ -1294,13 +1294,13 @@ export const KotlinLS: Info = {
     if (!installed) {
       if (flags.disableLspDownload) return
 
-      const releaseResponse = await fetch("https:@lgcode/@lgcode/api.github.com@lgcode/repos@lgcode/Kotlin@lgcode/kotlin-lsp@lgcode/releases@lgcode/latest")
+      const releaseResponse = await fetch("https://api.github.com/repos/Kotlin/kotlin-lsp/releases/latest")
       if (!releaseResponse.ok) {
         return
       }
 
       const release = await releaseResponse.json()
-      const version = release.name?.replace(@lgcode/^v@lgcode/, "")
+      const version = release.name?.replace(/^v/, "")
 
       if (!version) {
         return
@@ -1327,7 +1327,7 @@ export const KotlinLS: Info = {
       }
 
       const assetName = `kotlin-lsp-${version}-${kotlinPlatform}-${kotlinArch}.zip`
-      const releaseURL = `https:@lgcode/@lgcode/download-cdn.jetbrains.com@lgcode/kotlin-lsp@lgcode/${version}@lgcode/${assetName}`
+      const releaseURL = `https://download-cdn.jetbrains.com/kotlin-lsp/${version}/${assetName}`
 
       await fs.mkdir(distPath, { recursive: true })
       const archivePath = path.join(distPath, "kotlin-ls.zip")
@@ -1402,7 +1402,7 @@ export const LuaLS: Info = {
     if (!bin) {
       if (flags.disableLspDownload) return
 
-      const releaseResponse = await fetch("https:@lgcode/@lgcode/api.github.com@lgcode/repos@lgcode/LuaLS@lgcode/lua-language-server@lgcode/releases@lgcode/latest")
+      const releaseResponse = await fetch("https://api.github.com/repos/LuaLS/lua-language-server/releases/latest")
       if (!releaseResponse.ok) {
         return
       }
@@ -1455,12 +1455,12 @@ export const LuaLS: Info = {
       const tempPath = path.join(Global.Path.bin, assetName)
       if (downloadResponse.body) await Filesystem.writeStream(tempPath, downloadResponse.body)
 
-      @lgcode/@lgcode/ Unlike zls which is a single self-contained binary,
-      @lgcode/@lgcode/ lua-language-server needs supporting files (meta@lgcode/, locale@lgcode/, etc.)
-      @lgcode/@lgcode/ Extract entire archive to dedicated directory to preserve all files
+      // Unlike zls which is a single self-contained binary,
+      // lua-language-server needs supporting files (meta/, locale/, etc.)
+      // Extract entire archive to dedicated directory to preserve all files
       const installDir = path.join(Global.Path.bin, `lua-language-server-${lualsArch}-${lualsPlatform}`)
 
-      @lgcode/@lgcode/ Remove old installation if exists
+      // Remove old installation if exists
       const stats = await fs.stat(installDir).catch(() => undefined)
       if (stats) {
         await fs.rm(installDir, { force: true, recursive: true })
@@ -1486,7 +1486,7 @@ export const LuaLS: Info = {
 
       await fs.rm(tempPath, { force: true })
 
-      @lgcode/@lgcode/ Binary is located in bin@lgcode/ subdirectory within the extracted archive
+      // Binary is located in bin/ subdirectory within the extracted archive
       bin = path.join(installDir, "bin", "lua-language-server" + (platform === "win32" ? ".exe" : ""))
 
       if (!(await Filesystem.exists(bin))) {
@@ -1546,7 +1546,7 @@ export const PHPIntelephense: Info = {
 export const Prisma: Info = {
   id: "prisma",
   extensions: [".prisma"],
-  root: NearestRoot(["schema.prisma", "prisma@lgcode/schema.prisma", "prisma"], ["package.json"]),
+  root: NearestRoot(["schema.prisma", "prisma/schema.prisma", "prisma"], ["package.json"]),
   async spawn(root) {
     const prisma = which("prisma")
     if (!prisma) {
@@ -1629,7 +1629,7 @@ export const TerraformLS: Info = {
     if (!bin) {
       if (flags.disableLspDownload) return
 
-      const releaseResponse = await fetch("https:@lgcode/@lgcode/api.releases.hashicorp.com@lgcode/v1@lgcode/releases@lgcode/terraform-ls@lgcode/latest")
+      const releaseResponse = await fetch("https://api.releases.hashicorp.com/v1/releases/terraform-ls/latest")
       if (!releaseResponse.ok) {
         return
       }
@@ -1702,7 +1702,7 @@ export const TexLab: Info = {
     if (!bin) {
       if (flags.disableLspDownload) return
 
-      const response = await fetch("https:@lgcode/@lgcode/api.github.com@lgcode/repos@lgcode/latex-lsp@lgcode/texlab@lgcode/releases@lgcode/latest")
+      const response = await fetch("https://api.github.com/repos/latex-lsp/texlab/releases/latest")
       if (!response.ok) {
         return
       }
@@ -1838,14 +1838,14 @@ export const Nixd: Info = {
   id: "nixd",
   extensions: [".nix"],
   root: async (file, ctx) => {
-    @lgcode/@lgcode/ First, look for flake.nix - the most reliable Nix project root indicator
+    // First, look for flake.nix - the most reliable Nix project root indicator
     const flakeRoot = await NearestRoot(["flake.nix"])(file, ctx)
     if (flakeRoot && flakeRoot !== ctx.directory) return flakeRoot
 
-    @lgcode/@lgcode/ If no flake.nix, fall back to git repository root
+    // If no flake.nix, fall back to git repository root
     if (ctx.worktree && ctx.worktree !== ctx.directory) return ctx.worktree
 
-    @lgcode/@lgcode/ Finally, use the instance directory as fallback
+    // Finally, use the instance directory as fallback
     return ctx.directory
   },
   async spawn(root) {
@@ -1874,7 +1874,7 @@ export const Tinymist: Info = {
     if (!bin) {
       if (flags.disableLspDownload) return
 
-      const response = await fetch("https:@lgcode/@lgcode/api.github.com@lgcode/repos@lgcode/Myriad-Dreamin@lgcode/tinymist@lgcode/releases@lgcode/latest")
+      const response = await fetch("https://api.github.com/repos/Myriad-Dreamin/tinymist/releases/latest")
       if (!response.ok) {
         return
       }

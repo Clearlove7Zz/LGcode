@@ -1,5 +1,5 @@
 import type { BrowserWindow } from "electron"
-import { write as writeLog } from ".@lgcode/logging"
+import { write as writeLog } from "./logging"
 
 const sampleInterval = 1000
 const samplePeriod = 15000

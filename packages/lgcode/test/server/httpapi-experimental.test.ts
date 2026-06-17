@@ -1,19 +1,19 @@
 import { afterEach, describe, expect } from "bun:test"
 import { Deferred, Effect, Fiber, Layer } from "effect"
-import { HttpClient, HttpClientResponse } from "effect@lgcode/unstable@lgcode/http"
+import { HttpClient, HttpClientResponse } from "effect/unstable/http"
 import { eq } from "drizzle-orm"
-import { GlobalBus, type GlobalEvent } from "@@lgcode/bus@lgcode/global"
-import { ExperimentalPaths } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/experimental"
-import { Session } from "@@lgcode/session@lgcode/session"
-import { SessionTable } from "@lgcode/core@lgcode/session@lgcode/sql"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { AccountV2 } from "@lgcode/core@lgcode/account"
-import { AccountTable } from "@lgcode/core@lgcode/account@lgcode/sql"
-import { Worktree } from "..@lgcode/..@lgcode/src@lgcode/worktree"
-import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
-import { disposeAllInstances, TestInstance } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
-import { httpApiLayer, requestInDirectory } from ".@lgcode/httpapi-layer"
+import { GlobalBus, type GlobalEvent } from "@/bus/global"
+import { ExperimentalPaths } from "../../src/server/routes/instance/httpapi/groups/experimental"
+import { Session } from "@/session/session"
+import { SessionTable } from "@opencode@lgcode/core/session/sql"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { AccountV2 } from "@opencode@lgcode/core/account"
+import { AccountTable } from "@opencode@lgcode/core/account/sql"
+import { Worktree } from "../../src/worktree"
+import { resetDatabase } from "../fixture/db"
+import { disposeAllInstances, TestInstance } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
+import { httpApiLayer, requestInDirectory } from "./httpapi-layer"
 
 const it = testEffect(Layer.mergeAll(Session.defaultLayer, Database.defaultLayer, httpApiLayer))
 const testWorktreeMutations = process.platform === "win32" ? it.instance.skip : it.instance
@@ -61,7 +61,7 @@ function insertAccount() {
         .values({
           id: AccountV2.ID.make("account-test"),
           email: "test@example.com",
-          url: "https:@lgcode/@lgcode/console.example.com",
+          url: "https://console.example.com",
           access_token: AccountV2.AccessToken.make("access"),
           refresh_token: AccountV2.RefreshToken.make("refresh"),
           time_created: Date.now(),
@@ -99,7 +99,7 @@ function withCreatedWorktree(
   use: (info: Worktree.Info) => Effect.Effect<void, unknown, HttpClient.HttpClient>,
 ) {
   const name = "api-test"
-  const headers = { "content-type": "application@lgcode/json" }
+  const headers = { "content-type": "application/json" }
   return Effect.acquireUseRelease(
     Effect.gen(function* () {
       const ready = yield* waitReady({ name }).pipe(Effect.forkScoped)
@@ -111,7 +111,7 @@ function withCreatedWorktree(
 
       expect(created.status).toBe(200)
       const info = yield* json<Worktree.Info>(created)
-      expect(info).toMatchObject({ name, branch: "opencode@lgcode/api-test" })
+      expect(info).toMatchObject({ name, branch: "opencode/api-test" })
       yield* Fiber.join(ready)
       return info
     }),
@@ -201,7 +201,7 @@ describe("experimental HttpApi", () => {
       const tmp = yield* TestInstance
       const response = yield* request(ExperimentalPaths.worktree, tmp.directory, {
         method: "POST",
-        headers: { "content-type": "application@lgcode/json" },
+        headers: { "content-type": "application/json" },
         body: JSON.stringify({}),
       })
 
@@ -221,7 +221,7 @@ describe("experimental HttpApi", () => {
         const accountID = yield* insertAccount()
         const switched = yield* request(ExperimentalPaths.consoleSwitch, tmp.directory, {
           method: "POST",
-          headers: { "content-type": "application@lgcode/json" },
+          headers: { "content-type": "application/json" },
           body: JSON.stringify({ accountID, orgID: "org-test" }),
         })
 
@@ -279,7 +279,7 @@ describe("experimental HttpApi", () => {
 
             const reset = yield* request(ExperimentalPaths.worktreeReset, tmp.directory, {
               method: "POST",
-              headers: { "content-type": "application@lgcode/json" },
+              headers: { "content-type": "application/json" },
               body: JSON.stringify({ directory: info.directory }),
             })
 

@@ -1,5 +1,5 @@
-@lgcode/@lgcode/ @ts-nocheck
-import { ToolErrorCard } from ".@lgcode/tool-error-card"
+// @ts-nocheck
+import { ToolErrorCard } from "./tool-error-card"
 
 const docs = `### Overview
 Tool call failure summary styled like a tool trigger.
@@ -9,14 +9,14 @@ Tool call failure summary styled like a tool trigger.
 - Required: \`error\` (error string)
 
 ### Behavior
-- Collapsible; click header to expand@lgcode/collapse.
+- Collapsible; click header to expand/collapse.
 `
 
 const samples = [
   {
     tool: "apply_patch",
     error:
-      "apply_patch verification failed: Failed to find expected lines in @lgcode/Users@lgcode/davidhill@lgcode/Documents@lgcode/Local@lgcode/opencode@lgcode/packages@lgcode/ui@lgcode/src@lgcode/components@lgcode/session-turn.tsx",
+      "apply_patch verification failed: Failed to find expected lines in /Users/davidhill/Documents/Local/opencode/packages/ui/src/components/session-turn.tsx",
   },
   {
     tool: "bash",
@@ -25,11 +25,11 @@ const samples = [
   {
     tool: "read",
     error:
-      "read File not found: @lgcode/Users@lgcode/davidhill@lgcode/Documents@lgcode/Local@lgcode/opencode@lgcode/packages@lgcode/ui@lgcode/src@lgcode/components@lgcode/does-not-exist.tsx",
+      "read File not found: /Users/davidhill/Documents/Local/opencode/packages/ui/src/components/does-not-exist.tsx",
   },
   {
     tool: "glob",
-    error: "glob Pattern error: Invalid glob pattern: **@lgcode/*[",
+    error: "glob Pattern error: Invalid glob pattern: **/*[",
   },
   {
     tool: "grep",
@@ -50,7 +50,7 @@ const samples = [
 ]
 
 export default {
-  title: "UI@lgcode/ToolErrorCard",
+  title: "UI/ToolErrorCard",
   id: "components-tool-error-card",
   component: ToolErrorCard,
   tags: ["autodocs"],
@@ -75,7 +75,7 @@ export default {
     },
   },
   render: (props: { tool: string; error: string }) => {
-    return <ToolErrorCard tool={props.tool} error={props.error} @lgcode/>
+    return <ToolErrorCard tool={props.tool} error={props.error} />
   },
 }
 
@@ -84,9 +84,9 @@ export const All = {
     return (
       <div style="display: flex; flex-direction: column; gap: 12px; max-width: 720px;">
         {samples.map((item) => (
-          <ToolErrorCard tool={item.tool} error={item.error} @lgcode/>
+          <ToolErrorCard tool={item.tool} error={item.error} />
         ))}
-      <@lgcode/div>
+      </div>
     )
   },
 }

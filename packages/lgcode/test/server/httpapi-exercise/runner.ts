@@ -1,18 +1,18 @@
-import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
-import { ConfigV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/config"
-import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
+import { Flag } from "@opencode@lgcode/core/flag/flag"
+import { ConfigV1 } from "@opencode@lgcode/core/v1/config/config"
+import { SessionV1 } from "@opencode@lgcode/core/v1/session"
 import { Cause, Duration, Effect, Layer, Scope } from "effect"
-import { TestLLMServer } from "..@lgcode/..@lgcode/lib@lgcode/llm-server"
-import type { Config } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/config@lgcode/config"
+import { TestLLMServer } from "../../lib/llm-server"
+import type { Config } from "../../../src/config/config"
 
-import type { MessageV2 } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/session@lgcode/message-v2"
-import { MessageID, PartID } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
-import { call, callAuthProbe, disposeApps } from ".@lgcode/backend"
-import { original } from ".@lgcode/environment"
-import { runtime } from ".@lgcode/runtime"
-import type { ActiveScenario, Options, ProjectOptions, Result, Scenario, ScenarioContext, SeededContext } from ".@lgcode/types"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
+import type { MessageV2 } from "../../../src/session/message-v2"
+import { MessageID, PartID } from "../../../src/session/schema"
+import { call, callAuthProbe, disposeApps } from "./backend"
+import { original } from "./environment"
+import { runtime } from "./runtime"
+import type { ActiveScenario, Options, ProjectOptions, Result, Scenario, ScenarioContext, SeededContext } from "./types"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelV2 } from "@opencode@lgcode/core/model"
 
 export function runScenario(options: Options) {
   return (scenario: Scenario) => {
@@ -131,7 +131,7 @@ function withContext<A, E>(
           }),
           file: (name, content) =>
             Effect.promise(() => {
-              return Bun.write(`${directory()}@lgcode/${name}`, content)
+              return Bun.write(`${directory()}/${name}`, content)
             }).pipe(Effect.asVoid),
           session: (input) =>
             run(modules.Session.Service.use((svc) => svc.create({ title: input?.title, parentID: input?.parentID }))),
@@ -225,14 +225,14 @@ function projectOptions(
 
 function fakeLlmConfig(url: string): Partial<ConfigV1.Info> {
   return {
-    model: "test@lgcode/test-model",
-    small_model: "test@lgcode/test-model",
+    model: "test/test-model",
+    small_model: "test/test-model",
     provider: {
       test: {
         name: "Test",
         id: "test",
         env: [],
-        npm: "@ai-sdk@lgcode/openai-compatible",
+        npm: "@ai-sdk/openai-compatible",
         models: {
           "test-model": {
             id: "test-model",

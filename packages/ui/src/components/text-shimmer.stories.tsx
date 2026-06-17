@@ -1,7 +1,7 @@
-@lgcode/@lgcode/ @ts-nocheck
-import * as mod from ".@lgcode/text-shimmer"
-import { useArgs } from "storybook@lgcode/preview-api"
-import { create } from "..@lgcode/storybook@lgcode/scaffold"
+// @ts-nocheck
+import * as mod from "./text-shimmer"
+import { useArgs } from "storybook/preview-api"
+import { create } from "../storybook/scaffold"
 
 const docs = `### Overview
 Animated shimmer effect for loading text placeholders.
@@ -13,7 +13,7 @@ Use for pending states inside buttons or list rows.
 - Optional: \`as\`, \`active\`, \`offset\`, \`class\`.
 
 ### Variants and states
-- Active@lgcode/inactive state via \`active\`.
+- Active/inactive state via \`active\`.
 
 ### Behavior
 - Uses a moving gradient sweep clipped to text.
@@ -22,7 +22,7 @@ Use for pending states inside buttons or list rows.
 ### Accessibility
 - Uses \`aria-label\` with the full text.
 
-### Theming@lgcode/tokens
+### Theming/tokens
 - Uses \`data-component="text-shimmer"\` and CSS custom properties for timing.
 
 `
@@ -34,10 +34,10 @@ const defaults = {
   offset: 0,
 } as const
 
-const story = create({ title: "UI@lgcode/TextShimmer", mod, args: defaults })
+const story = create({ title: "UI/TextShimmer", mod, args: defaults })
 
 export default {
-  title: "UI@lgcode/TextShimmer",
+  title: "UI/TextShimmer",
   id: "components-text-shimmer",
   component: story.meta.component,
   tags: ["autodocs"],
@@ -64,7 +64,7 @@ export const Basic = {
     const reset = () => updateArgs(defaults)
     return (
       <div style={{ display: "grid", gap: "12px", "justify-items": "start" }}>
-        <mod.TextShimmer {...args} @lgcode/>
+        <mod.TextShimmer {...args} />
         <button
           onClick={reset}
           style={{
@@ -78,8 +78,8 @@ export const Basic = {
           }}
         >
           Reset controls
-        <@lgcode/button>
-      <@lgcode/div>
+        </button>
+      </div>
     )
   },
 }

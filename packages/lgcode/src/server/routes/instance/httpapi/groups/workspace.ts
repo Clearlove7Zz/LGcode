@@ -1,15 +1,15 @@
-import { Workspace } from "@@lgcode/control-plane@lgcode/workspace"
-import { WorkspaceAdapterEntry } from "@@lgcode/control-plane@lgcode/types"
+import { Workspace } from "@/control-plane/workspace"
+import { WorkspaceAdapterEntry } from "@/control-plane/types"
 import { Schema, Struct } from "effect"
-import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, HttpApiSchema, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
-import { ApiVcsApplyError } from ".@lgcode/instance"
-import { ApiNotFoundError } from "..@lgcode/errors"
-import { Authorization } from "..@lgcode/middleware@lgcode/authorization"
-import { InstanceContextMiddleware } from "..@lgcode/middleware@lgcode/instance-context"
-import { WorkspaceRoutingMiddleware, WorkspaceRoutingQuery } from "..@lgcode/middleware@lgcode/workspace-routing"
-import { described } from ".@lgcode/metadata"
+import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, HttpApiSchema, OpenApi } from "effect/unstable/httpapi"
+import { ApiVcsApplyError } from "./instance"
+import { ApiNotFoundError } from "../errors"
+import { Authorization } from "../middleware/authorization"
+import { InstanceContextMiddleware } from "../middleware/instance-context"
+import { WorkspaceRoutingMiddleware, WorkspaceRoutingQuery } from "../middleware/workspace-routing"
+import { described } from "./metadata"
 
-const root = "@lgcode/experimental@lgcode/workspace"
+const root = "/experimental/workspace"
 export const CreatePayload = Schema.Struct(Struct.omit(Workspace.CreateInput.fields, ["projectID"]))
 export const WarpPayload = Schema.Struct({
   id: Schema.NullOr(Workspace.Info.fields.id),
@@ -38,12 +38,12 @@ export class ApiWorkspaceCreateError extends Schema.ErrorClass<ApiWorkspaceCreat
 ) {}
 
 export const WorkspacePaths = {
-  adapters: `${root}@lgcode/adapter`,
+  adapters: `${root}/adapter`,
   list: root,
-  syncList: `${root}@lgcode/sync-list`,
-  status: `${root}@lgcode/status`,
-  remove: `${root}@lgcode/:id`,
-  warp: `${root}@lgcode/warp`,
+  syncList: `${root}/sync-list`,
+  status: `${root}/status`,
+  remove: `${root}/:id`,
+  warp: `${root}/warp`,
 } as const
 
 export const WorkspaceApi = HttpApi.make("workspace")

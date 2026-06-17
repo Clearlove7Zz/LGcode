@@ -1,5 +1,5 @@
-import type { Event } from "@lgcode/sdk@lgcode/v2"
-import { useSDK } from ".@lgcode/sdk"
+import type { Event } from "@opencode@lgcode/sdk/v2"
+import { useSDK } from "./sdk"
 
 type EventMetadata = {
   directory: string

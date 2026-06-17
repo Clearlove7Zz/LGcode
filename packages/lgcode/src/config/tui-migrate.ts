@@ -2,13 +2,13 @@ import path from "path"
 import { type ParseError as JsoncParseError, applyEdits, modify, parse as parseJsonc } from "jsonc-parser"
 import { unique } from "remeda"
 import { Option, Schema } from "effect"
-import { TuiConfig } from "@lgcode/tui@lgcode/config"
-import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
-import { Global } from "@lgcode/core@lgcode/global"
-import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
-import * as ConfigPaths from "@@lgcode/config@lgcode/paths"
+import { TuiConfig } from "@opencode@lgcode/tui/config"
+import { Flag } from "@opencode@lgcode/core/flag/flag"
+import { Global } from "@opencode@lgcode/core/global"
+import { Filesystem } from "@/util/filesystem"
+import * as ConfigPaths from "@/config/paths"
 
-const TUI_SCHEMA_URL = "https:@lgcode/@lgcode/opencode.ai@lgcode/tui.json"
+const TUI_SCHEMA_URL = "https://opencode.ai/tui.json"
 
 const decodeTheme = Schema.decodeUnknownOption(Schema.String)
 const decodeRecord = Schema.decodeUnknownOption(Schema.Record(Schema.String, Schema.Unknown))
@@ -21,11 +21,11 @@ interface MigrateInput {
   directories: string[]
 }
 
-@lgcode/**
+/**
  * Migrates tui-specific keys (theme, keybinds, tui) from opencode.json files
  * into dedicated tui.json files. Migration is performed per-directory and
  * skips only locations where a tui.json already exists.
- *@lgcode/
+ */
 export async function migrateTuiConfig(input: MigrateInput) {
   const opencode = await opencodeFiles(input)
   for (const file of opencode) {

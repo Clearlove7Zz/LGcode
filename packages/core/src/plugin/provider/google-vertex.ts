@@ -1,10 +1,10 @@
 import { Effect } from "effect"
-import { PluginV2 } from "..@lgcode/..@lgcode/plugin"
-import { ProviderV2 } from "..@lgcode/..@lgcode/provider"
+import { PluginV2 } from "../../plugin"
+import { ProviderV2 } from "../../provider"
 
 function resolveProject(options: Record<string, any>) {
-  @lgcode/@lgcode/ models.dev advertises GOOGLE_VERTEX_PROJECT for Vertex, while Google SDKs
-  @lgcode/@lgcode/ and ADC examples commonly use the broader Google Cloud project aliases.
+  // models.dev advertises GOOGLE_VERTEX_PROJECT for Vertex, while Google SDKs
+  // and ADC examples commonly use the broader Google Cloud project aliases.
   return (
     options.project ??
     process.env.GOOGLE_VERTEX_PROJECT ??
@@ -30,8 +30,8 @@ function vertexEndpoint(location: string) {
 }
 
 function replaceVertexVars(value: string, project: string | undefined, location: string) {
-  @lgcode/@lgcode/ Vertex OpenAI-compatible endpoints are stored as templates in the catalog;
-  @lgcode/@lgcode/ expand them after provider config@lgcode/env project and location have been resolved.
+  // Vertex OpenAI-compatible endpoints are stored as templates in the catalog;
+  // expand them after provider config/env project and location have been resolved.
   return value
     .replaceAll("${GOOGLE_VERTEX_PROJECT}", project ?? "${GOOGLE_VERTEX_PROJECT}")
     .replaceAll("${GOOGLE_VERTEX_LOCATION}", location)
@@ -39,11 +39,11 @@ function replaceVertexVars(value: string, project: string | undefined, location:
 }
 
 function authFetch(fetchWithRuntimeOptions?: unknown) {
-  @lgcode/@lgcode/ Native Vertex SDKs handle ADC internally. OpenAI-compatible Vertex endpoints
-  @lgcode/@lgcode/ do not, so inject a Google access token into their fetch path.
+  // Native Vertex SDKs handle ADC internally. OpenAI-compatible Vertex endpoints
+  // do not, so inject a Google access token into their fetch path.
   return async (input: Parameters<typeof fetch>[0], init?: RequestInit) => {
     const { GoogleAuth } = await import("google-auth-library")
-    const auth = new GoogleAuth({ scopes: ["https:@lgcode/@lgcode/www.googleapis.com@lgcode/auth@lgcode/cloud-platform"] })
+    const auth = new GoogleAuth({ scopes: ["https://www.googleapis.com/auth/cloud-platform"] })
     const client = await auth.getClient()
     const token = await client.getAccessToken()
     const headers = new Headers(init?.headers)
@@ -62,10 +62,10 @@ export const GoogleVertexPlugin = PluginV2.define({
         for (const item of evt.provider.list()) {
           if (item.provider.api.type !== "aisdk") continue
           if (
-            item.provider.api.package !== "@ai-sdk@lgcode/google-vertex" &&
+            item.provider.api.package !== "@ai-sdk/google-vertex" &&
             !(
               item.provider.id === ProviderV2.ID.googleVertex &&
-              item.provider.api.package.includes("@ai-sdk@lgcode/openai-compatible")
+              item.provider.api.package.includes("@ai-sdk/openai-compatible")
             )
           )
             continue
@@ -77,19 +77,19 @@ export const GoogleVertexPlugin = PluginV2.define({
             if (provider.api.type === "aisdk" && provider.api.url) {
               provider.api.url = replaceVertexVars(provider.api.url, project, location)
             }
-            if (provider.api.type === "aisdk" && provider.api.package.includes("@ai-sdk@lgcode/openai-compatible")) {
+            if (provider.api.type === "aisdk" && provider.api.package.includes("@ai-sdk/openai-compatible")) {
               provider.request.body.fetch = authFetch(provider.request.body.fetch)
             }
           })
         }
       }),
       "aisdk.sdk": Effect.fn(function* (evt) {
-        if (evt.model.providerID === ProviderV2.ID.googleVertex && evt.package.includes("@ai-sdk@lgcode/openai-compatible")) {
+        if (evt.model.providerID === ProviderV2.ID.googleVertex && evt.package.includes("@ai-sdk/openai-compatible")) {
           evt.options.fetch = authFetch(evt.options.fetch)
           return
         }
-        if (evt.package !== "@ai-sdk@lgcode/google-vertex") return
-        const mod = yield* Effect.promise(() => import("@ai-sdk@lgcode/google-vertex"))
+        if (evt.package !== "@ai-sdk/google-vertex") return
+        const mod = yield* Effect.promise(() => import("@ai-sdk/google-vertex"))
         const project = resolveProject(evt.options)
         const location = resolveLocation(evt.options)
         const options = { ...evt.options }
@@ -115,7 +115,7 @@ export const GoogleVertexAnthropicPlugin = PluginV2.define({
       "catalog.transform": Effect.fn(function* (evt) {
         for (const item of evt.provider.list()) {
           if (item.provider.api.type !== "aisdk") continue
-          if (item.provider.api.package !== "@ai-sdk@lgcode/google-vertex@lgcode/anthropic") continue
+          if (item.provider.api.package !== "@ai-sdk/google-vertex/anthropic") continue
           const project =
             item.provider.request.body.project ??
             process.env.GOOGLE_CLOUD_PROJECT ??
@@ -133,8 +133,8 @@ export const GoogleVertexAnthropicPlugin = PluginV2.define({
         }
       }),
       "aisdk.sdk": Effect.fn(function* (evt) {
-        if (evt.package !== "@ai-sdk@lgcode/google-vertex@lgcode/anthropic") return
-        const mod = yield* Effect.promise(() => import("@ai-sdk@lgcode/google-vertex@lgcode/anthropic"))
+        if (evt.package !== "@ai-sdk/google-vertex/anthropic") return
+        const mod = yield* Effect.promise(() => import("@ai-sdk/google-vertex/anthropic"))
         const project =
           typeof evt.options.project === "string"
             ? evt.options.project
@@ -147,11 +147,11 @@ export const GoogleVertexAnthropicPlugin = PluginV2.define({
           ...evt.options,
           project,
           location,
-          @lgcode/@lgcode/ Continental multi-regions (eu, us) require Regional Endpoint Platform
-          @lgcode/@lgcode/ domains; the default {region}-aiplatform.googleapis.com does not resolve.
+          // Continental multi-regions (eu, us) require Regional Endpoint Platform
+          // domains; the default {region}-aiplatform.googleapis.com does not resolve.
           ...((location === "eu" || location === "us") && project && !evt.options.baseURL
             ? {
-                baseURL: `https:@lgcode/@lgcode/aiplatform.${location}.rep.googleapis.com@lgcode/v1@lgcode/projects@lgcode/${project}@lgcode/locations@lgcode/${location}@lgcode/publishers@lgcode/anthropic@lgcode/models`,
+                baseURL: `https://aiplatform.${location}.rep.googleapis.com/v1/projects/${project}/locations/${location}/publishers/anthropic/models`,
               }
             : {}),
         })

@@ -1,12 +1,12 @@
-import { Location } from "@lgcode/core@lgcode/location"
-import { Reference } from "@lgcode/core@lgcode/reference"
+import { Location } from "@opencode@lgcode/core/location"
+import { Reference } from "@opencode@lgcode/core/reference"
 import { Schema } from "effect"
-import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
-import { LocationMiddleware, LocationQuery, locationQueryOpenApi } from ".@lgcode/location"
+import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
+import { LocationMiddleware, LocationQuery, locationQueryOpenApi } from "./location"
 
 export const ReferenceGroup = HttpApiGroup.make("server.reference")
   .add(
-    HttpApiEndpoint.get("reference.list", "@lgcode/api@lgcode/reference", {
+    HttpApiEndpoint.get("reference.list", "/api/reference", {
       query: LocationQuery,
       success: Location.response(Schema.Array(Reference.Info)),
     })

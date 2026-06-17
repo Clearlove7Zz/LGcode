@@ -1,19 +1,19 @@
 import { describe, expect } from "bun:test"
-import { createAlibaba } from "@ai-sdk@lgcode/alibaba"
+import { createAlibaba } from "@ai-sdk/alibaba"
 import { Effect } from "effect"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
-import { PluginV2 } from "@lgcode/core@lgcode/plugin"
-import { AlibabaPlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/alibaba"
-import { it, model } from ".@lgcode/provider-helper"
+import { ModelV2 } from "@opencode@lgcode/core/model"
+import { PluginV2 } from "@opencode@lgcode/core/plugin"
+import { AlibabaPlugin } from "@opencode@lgcode/core/plugin/provider/alibaba"
+import { it, model } from "./provider-helper"
 
 describe("AlibabaPlugin", () => {
-  it.effect("creates an Alibaba SDK for @ai-sdk@lgcode/alibaba", () =>
+  it.effect("creates an Alibaba SDK for @ai-sdk/alibaba", () =>
     Effect.gen(function* () {
       const plugin = yield* PluginV2.Service
       yield* plugin.add(AlibabaPlugin)
       const result = yield* plugin.trigger(
         "aisdk.sdk",
-        { model: model("alibaba", "qwen"), package: "@ai-sdk@lgcode/alibaba", options: { name: "alibaba" } },
+        { model: model("alibaba", "qwen"), package: "@ai-sdk/alibaba", options: { name: "alibaba" } },
         {},
       )
       expect(result.sdk).toBeDefined()
@@ -26,7 +26,7 @@ describe("AlibabaPlugin", () => {
       yield* plugin.add(AlibabaPlugin)
       const result = yield* plugin.trigger(
         "aisdk.sdk",
-        { model: model("alibaba", "qwen"), package: "@ai-sdk@lgcode/openai-compatible", options: { name: "alibaba" } },
+        { model: model("alibaba", "qwen"), package: "@ai-sdk/openai-compatible", options: { name: "alibaba" } },
         {},
       )
       expect(result.sdk).toBeUndefined()
@@ -41,7 +41,7 @@ describe("AlibabaPlugin", () => {
         "aisdk.sdk",
         {
           model: model("custom-alibaba", "qwen"),
-          package: "@ai-sdk@lgcode/alibaba",
+          package: "@ai-sdk/alibaba",
           options: { name: "custom-alibaba", apiKey: "test" },
         },
         {},
@@ -58,7 +58,7 @@ describe("AlibabaPlugin", () => {
       const plugin = yield* PluginV2.Service
       yield* plugin.add(AlibabaPlugin)
       const item = model("alibaba", "alias", { api: { id: ModelV2.ID.make("qwen-plus") } })
-      const result = yield* plugin.trigger("aisdk.sdk", { model: item, package: "@ai-sdk@lgcode/alibaba", options: {} }, {})
+      const result = yield* plugin.trigger("aisdk.sdk", { model: item, package: "@ai-sdk/alibaba", options: {} }, {})
       const language = result.sdk?.languageModel(item.api.id)
       expect(language?.modelId).toBe("qwen-plus")
       expect(language?.provider).toBe("alibaba.chat")

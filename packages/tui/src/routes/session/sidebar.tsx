@@ -1,13 +1,13 @@
-import { useProject } from "..@lgcode/..@lgcode/context@lgcode/project"
-import { useSync } from "..@lgcode/..@lgcode/context@lgcode/sync"
+import { useProject } from "../../context/project"
+import { useSync } from "../../context/sync"
 import { createMemo, Show } from "solid-js"
-import { useTheme } from "..@lgcode/..@lgcode/context@lgcode/theme"
-import { useTuiConfig } from "..@lgcode/..@lgcode/config"
-import { InstallationChannel, InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
-import { usePluginRuntime } from "..@lgcode/..@lgcode/plugin@lgcode/runtime"
+import { useTheme } from "../../context/theme"
+import { useTuiConfig } from "../../config"
+import { InstallationChannel, InstallationVersion } from "@opencode@lgcode/core/installation/version"
+import { usePluginRuntime } from "../../plugin/runtime"
 
-import { getScrollAcceleration } from "..@lgcode/..@lgcode/util@lgcode/scroll"
-import { WorkspaceLabel } from "..@lgcode/..@lgcode/component@lgcode/workspace-label"
+import { getScrollAcceleration } from "../../util/scroll"
+import { WorkspaceLabel } from "../../component/workspace-label"
 
 export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
   const pluginRuntime = usePluginRuntime()
@@ -55,16 +55,16 @@ export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
             >
               <box paddingRight={1}>
                 <text fg={theme.text}>
-                  <b>{session()!.title}<@lgcode/b>
-                <@lgcode/text>
+                  <b>{session()!.title}</b>
+                </text>
                 <Show when={InstallationChannel !== "latest"}>
-                  <text fg={theme.textMuted}>{props.sessionID}<@lgcode/text>
-                <@lgcode/Show>
+                  <text fg={theme.textMuted}>{props.sessionID}</text>
+                </Show>
                 <Show when={session()!.workspaceID}>
                   <text fg={theme.textMuted}>
                     <Show
                       when={workspace()}
-                      fallback={<WorkspaceLabel type="unknown" name={session()!.workspaceID!} status="error" icon @lgcode/>}
+                      fallback={<WorkspaceLabel type="unknown" name={session()!.workspaceID!} status="error" icon />}
                     >
                       {(item) => (
                         <WorkspaceLabel
@@ -72,32 +72,32 @@ export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
                           name={item().name}
                           status={project.workspace.status(item().id) ?? "error"}
                           icon
-                        @lgcode/>
+                        />
                       )}
-                    <@lgcode/Show>
-                  <@lgcode/text>
-                <@lgcode/Show>
+                    </Show>
+                  </text>
+                </Show>
                 <Show when={session()!.share?.url}>
-                  <text fg={theme.textMuted}>{session()!.share!.url}<@lgcode/text>
-                <@lgcode/Show>
-              <@lgcode/box>
-            <@lgcode/pluginRuntime.Slot>
-            <pluginRuntime.Slot name="sidebar_content" session_id={props.sessionID} @lgcode/>
-          <@lgcode/box>
-        <@lgcode/scrollbox>
+                  <text fg={theme.textMuted}>{session()!.share!.url}</text>
+                </Show>
+              </box>
+            </pluginRuntime.Slot>
+            <pluginRuntime.Slot name="sidebar_content" session_id={props.sessionID} />
+          </box>
+        </scrollbox>
 
         <box flexShrink={0} gap={1} paddingTop={1}>
           <pluginRuntime.Slot name="sidebar_footer" mode="single_winner" session_id={props.sessionID}>
             <text fg={theme.textMuted}>
-              <span style={{ fg: theme.success }}>•<@lgcode/span> <b>Open<@lgcode/b>
+              <span style={{ fg: theme.success }}>•</span> <b>Open</b>
               <span style={{ fg: theme.text }}>
-                <b>Code<@lgcode/b>
-              <@lgcode/span>{" "}
-              <span>{InstallationVersion}<@lgcode/span>
-            <@lgcode/text>
-          <@lgcode/pluginRuntime.Slot>
-        <@lgcode/box>
-      <@lgcode/box>
-    <@lgcode/Show>
+                <b>Code</b>
+              </span>{" "}
+              <span>{InstallationVersion}</span>
+            </text>
+          </pluginRuntime.Slot>
+        </box>
+      </box>
+    </Show>
   )
 }

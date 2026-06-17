@@ -1,6 +1,6 @@
 import { Effect, Schema } from "effect"
-import { InstanceRef, WorkspaceRef } from "@@lgcode/effect@lgcode/instance-ref"
-import { type WorkspaceAdapter, type WorkspaceAdapterContext, WorkspaceInfo } from "..@lgcode/types"
+import { InstanceRef, WorkspaceRef } from "@/effect/instance-ref"
+import { type WorkspaceAdapter, type WorkspaceAdapterContext, WorkspaceInfo } from "../types"
 
 const WorktreeConfig = Schema.Struct({
   name: WorkspaceInfo.fields.name,
@@ -10,7 +10,7 @@ const WorktreeConfig = Schema.Struct({
 const decodeWorktreeConfig = Schema.decodeUnknownSync(WorktreeConfig)
 
 async function loadWorktree() {
-  const [{ AppRuntime }, { Worktree }] = await Promise.all([import("@@lgcode/effect@lgcode/app-runtime"), import("@@lgcode/worktree")])
+  const [{ AppRuntime }, { Worktree }] = await Promise.all([import("@/effect/app-runtime"), import("@/worktree")])
   return { AppRuntime, Worktree }
 }
 

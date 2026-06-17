@@ -1,7 +1,7 @@
 import { describe, expect } from "bun:test"
 import { Cause, Deferred, Effect, Exit, Fiber, Layer, Scope } from "effect"
-import { SessionRunCoordinator } from "@lgcode/core@lgcode/session@lgcode/run-coordinator"
-import { testEffect } from ".@lgcode/lib@lgcode/effect"
+import { SessionRunCoordinator } from "@opencode@lgcode/core/session/run-coordinator"
+import { testEffect } from "./lib/effect"
 
 const it = testEffect(Layer.empty)
 

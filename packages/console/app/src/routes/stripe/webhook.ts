@@ -1,15 +1,15 @@
 import type { Stripe } from "stripe"
-import { Billing } from "@lgcode/console-core@lgcode/billing.js"
-import type { APIEvent } from "@solidjs@lgcode/start@lgcode/server"
-import { and, Database, eq, sql } from "@lgcode/console-core@lgcode/drizzle@lgcode/index.js"
-import { BillingTable, LiteTable, PaymentTable } from "@lgcode/console-core@lgcode/schema@lgcode/billing.sql.js"
-import { Identifier } from "@lgcode/console-core@lgcode/identifier.js"
-import { centsToMicroCents } from "@lgcode/console-core@lgcode/util@lgcode/price.js"
-import { Actor } from "@lgcode/console-core@lgcode/actor.js"
-import { Resource } from "@lgcode/console-resource"
-import { LiteData } from "@lgcode/console-core@lgcode/lite.js"
-import { BlackData } from "@lgcode/console-core@lgcode/black.js"
-import { Referral } from "@lgcode/console-core@lgcode/referral.js"
+import { Billing } from "@opencode@lgcode/console-core/billing.js"
+import type { APIEvent } from "@solidjs/start/server"
+import { and, Database, eq, sql } from "@opencode@lgcode/console-core/drizzle/index.js"
+import { BillingTable, LiteTable, PaymentTable } from "@opencode@lgcode/console-core/schema/billing.sql.js"
+import { Identifier } from "@opencode@lgcode/console-core/identifier.js"
+import { centsToMicroCents } from "@opencode@lgcode/console-core/util/price.js"
+import { Actor } from "@opencode@lgcode/console-core/actor.js"
+import { Resource } from "@opencode@lgcode/console-resource"
+import { LiteData } from "@opencode@lgcode/console-core/lite.js"
+import { BlackData } from "@opencode@lgcode/console-core/black.js"
+import { Referral } from "@opencode@lgcode/console-core/referral.js"
 
 export async function POST(input: APIEvent) {
   const body = await Billing.stripe().webhooks.constructEventAsync(
@@ -21,7 +21,7 @@ export async function POST(input: APIEvent) {
 
   return (async () => {
     if (body.type === "customer.updated") {
-      @lgcode/@lgcode/ check default payment method changed
+      // check default payment method changed
       const prevInvoiceSettings = body.data.previous_attributes?.invoice_settings ?? {}
       if (!("default_payment_method" in prevInvoiceSettings)) return "ignored"
 
@@ -60,7 +60,7 @@ export async function POST(input: APIEvent) {
         const customer = await Billing.get()
         if (customer?.customerID && customer.customerID !== customerID) throw new Error("Customer ID mismatch")
 
-        @lgcode/@lgcode/ set customer metadata
+        // set customer metadata
         if (!customer?.customerID) {
           await Billing.stripe().customers.update(customerID, {
             metadata: {
@@ -69,7 +69,7 @@ export async function POST(input: APIEvent) {
           })
         }
 
-        @lgcode/@lgcode/ get payment method for the payment intent
+        // get payment method for the payment intent
         const paymentIntent = await Billing.stripe().paymentIntents.retrieve(paymentID, {
           expand: ["payment_method"],
         })
@@ -85,7 +85,7 @@ export async function POST(input: APIEvent) {
               paymentMethodID: paymentMethod.id,
               paymentMethodLast4: paymentMethod.card?.last4 ?? null,
               paymentMethodType: paymentMethod.type,
-              @lgcode/@lgcode/ enable reload if first time enabling billing
+              // enable reload if first time enabling billing
               ...(customer?.customerID
                 ? {}
                 : {
@@ -124,15 +124,15 @@ export async function POST(input: APIEvent) {
         if (!subscriptionID) throw new Error("Subscription ID not found")
         if (!paymentMethodID) throw new Error("Payment method ID not found")
 
-        @lgcode/@lgcode/ get payment method for the payment intent
+        // get payment method for the payment intent
         const paymentMethod = await Billing.stripe().paymentMethods.retrieve(paymentMethodID)
         await Actor.provide("system", { workspaceID }, async () => {
-          @lgcode/@lgcode/ look up current billing
+          // look up current billing
           const billing = await Billing.get()
           if (!billing) throw new Error(`Workspace with ID ${workspaceID} not found`)
           if (billing.customerID && billing.customerID !== customerID) throw new Error("Customer ID mismatch")
 
-          @lgcode/@lgcode/ set customer metadata
+          // set customer metadata
           if (!billing?.customerID) {
             await Billing.stripe().customers.update(customerID, {
               metadata: {
@@ -221,14 +221,14 @@ export async function POST(input: APIEvent) {
         if (!invoiceID) throw new Error("Invoice ID not found")
         if (!subscriptionID) throw new Error("Subscription ID not found")
 
-        @lgcode/@lgcode/ get coupon id from subscription
+        // get coupon id from subscription
         const invoice = await Billing.stripe().invoices.retrieve(invoiceID, {
           expand: ["discounts", "payments"],
         })
         const paymentID = invoice.payments?.data[0]?.payment.payment_intent as string
         const couponID = (invoice.discounts[0] as Stripe.Discount)?.coupon?.id as string
         if (!paymentID) {
-          @lgcode/@lgcode/ payment id can be undefined when using coupon
+          // payment id can be undefined when using coupon
           if (!couponID) throw new Error("Payment ID not found")
         }
 
@@ -268,7 +268,7 @@ export async function POST(input: APIEvent) {
         if (!invoiceID) throw new Error("Invoice ID not found")
 
         await Actor.provide("system", { workspaceID }, async () => {
-          @lgcode/@lgcode/ get payment id from invoice
+          // get payment id from invoice
           const invoice = await Billing.stripe().invoices.retrieve(invoiceID, {
             expand: ["payments"],
           })
@@ -359,7 +359,7 @@ export async function POST(input: APIEvent) {
           })
           .where(and(eq(PaymentTable.paymentID, paymentIntentID), eq(PaymentTable.workspaceID, workspaceID)))
 
-        @lgcode/@lgcode/ deduct balance only for top up
+        // deduct balance only for top up
         if (!payment.enrichment?.type) {
           await tx
             .update(BillingTable)

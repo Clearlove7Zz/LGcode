@@ -1,6 +1,6 @@
-import type { Event } from "@lgcode/sdk@lgcode/v2"
-import type { TuiAttentionSoundName, TuiPlugin, TuiPluginApi } from "@lgcode/plugin@lgcode/tui"
-import type { BuiltinTuiPlugin } from "..@lgcode/builtins"
+import type { Event } from "@opencode@lgcode/sdk/v2"
+import type { TuiAttentionSoundName, TuiPlugin, TuiPluginApi } from "@opencode@lgcode/plugin/tui"
+import type { BuiltinTuiPlugin } from "../builtins"
 
 const id = "internal:notifications"
 

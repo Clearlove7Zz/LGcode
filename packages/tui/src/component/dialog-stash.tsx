@@ -1,18 +1,18 @@
-import { useDialog } from "..@lgcode/ui@lgcode/dialog"
-import { DialogSelect } from "..@lgcode/ui@lgcode/dialog-select"
+import { useDialog } from "../ui/dialog"
+import { DialogSelect } from "../ui/dialog-select"
 import { createMemo, createSignal } from "solid-js"
-import { Locale } from "..@lgcode/util@lgcode/locale"
-import { useTheme } from "..@lgcode/context@lgcode/theme"
-import { usePromptStash, type StashEntry } from ".@lgcode/prompt@lgcode/stash"
-import { useCommandShortcut } from "..@lgcode/keymap"
+import { Locale } from "../util/locale"
+import { useTheme } from "../context/theme"
+import { usePromptStash, type StashEntry } from "./prompt/stash"
+import { useCommandShortcut } from "../keymap"
 
 function getRelativeTime(timestamp: number): string {
   const now = Date.now()
   const diff = now - timestamp
-  const seconds = Math.floor(diff @lgcode/ 1000)
-  const minutes = Math.floor(seconds @lgcode/ 60)
-  const hours = Math.floor(minutes @lgcode/ 60)
-  const days = Math.floor(hours @lgcode/ 24)
+  const seconds = Math.floor(diff / 1000)
+  const minutes = Math.floor(seconds / 60)
+  const hours = Math.floor(minutes / 60)
+  const days = Math.floor(hours / 24)
 
   if (seconds < 60) return "just now"
   if (minutes < 60) return `${minutes}m ago`
@@ -36,11 +36,11 @@ export function DialogStash(props: { onSelect: (entry: StashEntry) => void }) {
 
   const options = createMemo(() => {
     const entries = stash.list()
-    @lgcode/@lgcode/ Show most recent first
+    // Show most recent first
     return entries
       .map((entry, index) => {
         const isDeleting = toDelete() === index
-        const lineCount = (entry.input.match(@lgcode/\n@lgcode/g)?.length ?? 0) + 1
+        const lineCount = (entry.input.match(/\n/g)?.length ?? 0) + 1
         return {
           title: isDeleting ? `Press ${deleteHint()} again to confirm` : getStashPreview(entry.input),
           bg: isDeleting ? theme.error : undefined,
@@ -82,6 +82,6 @@ export function DialogStash(props: { onSelect: (entry: StashEntry) => void }) {
           },
         },
       ]}
-    @lgcode/>
+    />
   )
 }

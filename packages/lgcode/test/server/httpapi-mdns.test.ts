@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, mock, test } from "bun:test"
-import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
-import { withTimeout } from "..@lgcode/..@lgcode/src@lgcode/util@lgcode/timeout"
-import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
-import { disposeAllInstances } from "..@lgcode/fixture@lgcode/fixture"
+import { Flag } from "@opencode@lgcode/core/flag/flag"
+import { withTimeout } from "../../src/util/timeout"
+import { resetDatabase } from "../fixture/db"
+import { disposeAllInstances } from "../fixture/fixture"
 
 type Event = { kind: "publish"; port: number; name: string } | { kind: "unpublishAll" } | { kind: "destroy" }
 const events: Event[] = []
@@ -22,8 +22,8 @@ void mock.module("bonjour-service", () => ({
   },
 }))
 
-@lgcode/@lgcode/ Import Server AFTER the mock so the MDNS module picks up the stub.
-const { Server } = await import("..@lgcode/..@lgcode/src@lgcode/server@lgcode/server")
+// Import Server AFTER the mock so the MDNS module picks up the stub.
+const { Server } = await import("../../src/server/server")
 
 const original = {
   OPENCODE_SERVER_PASSWORD: Flag.OPENCODE_SERVER_PASSWORD,
@@ -72,7 +72,7 @@ describe("HttpApi Server.listen mDNS", () => {
     Flag.OPENCODE_SERVER_USERNAME = "opencode"
     const listener = await Server.listen({ hostname: "0.0.0.0", port: 0, mdns: true })
     expect(events.filter((e) => e.kind === "publish").length).toBe(1)
-    @lgcode/@lgcode/ Plain (graceful) stop without close=true should still unpublish.
+    // Plain (graceful) stop without close=true should still unpublish.
     await withTimeout(listener.stop(), 10_000, "timed out stopping graceful mdns listener")
     expect(events.some((e) => e.kind === "unpublishAll")).toBe(true)
   })

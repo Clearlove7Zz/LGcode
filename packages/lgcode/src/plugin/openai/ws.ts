@@ -1,12 +1,12 @@
-@lgcode/@lgcode/ Low-level OpenAI Responses WebSocket protocol helpers. Session pooling,
-@lgcode/@lgcode/ fallback, and continuation state intentionally live above this file.
+// Low-level OpenAI Responses WebSocket protocol helpers. Session pooling,
+// fallback, and continuation state intentionally live above this file.
 
 import WebSocket from "ws"
 import { APICallError } from "ai"
-import { ProviderError } from "@@lgcode/provider@lgcode/error"
-import { errorMessage } from "@@lgcode/util@lgcode/error"
-import { ProxyEnv } from "@@lgcode/util@lgcode/proxy-env"
-import { isRecord } from "@@lgcode/util@lgcode/record"
+import { ProviderError } from "@/provider/error"
+import { errorMessage } from "@/util/error"
+import { ProxyEnv } from "@/util/proxy-env"
+import { isRecord } from "@/util/record"
 
 export const PROTOCOL_HEADER = "responses_websockets=2026-02-06"
 
@@ -37,7 +37,7 @@ export interface WrappedError {
 }
 
 export function toWebSocketUrl(url: string) {
-  return url.replace(@lgcode/^http@lgcode/, "ws")
+  return url.replace(/^http/, "ws")
 }
 
 export function normalizeHeaders(headers: HeadersInit | undefined): Record<string, string> {
@@ -81,11 +81,11 @@ export function connectResponsesWebSocket(options: ConnectResponsesWebSocketOpti
     }
     delete headers["content-length"]
 
-    @lgcode/@lgcode/ Bun does not apply HTTP(S)_PROXY to WebSockets unless the proxy is supplied explicitly.
+    // Bun does not apply HTTP(S)_PROXY to WebSockets unless the proxy is supplied explicitly.
     const proxy =
       typeof Bun === "undefined"
         ? undefined
-        : ProxyEnv.getProxyForUrl(options.url.replace(@lgcode/^wss:@lgcode/, "https:").replace(@lgcode/^ws:@lgcode/, "http:"))
+        : ProxyEnv.getProxyForUrl(options.url.replace(/^wss:/, "https:").replace(/^ws:/, "http:"))
     const connect = { headers, ...(proxy ? { proxy } : {}) }
     const socket = new WebSocket(options.url, connect)
     const timeout = options.timeout
@@ -241,7 +241,7 @@ export function streamResponsesWebSocket(options: StreamResponsesWebSocketOption
     controller?.enqueue(
       encoder.encode(
         `${text
-          .split(@lgcode/\r?\n@lgcode/)
+          .split(/\r?\n/)
           .map((line) => `data: ${line}`)
           .join("\n")}\n\n`,
       ),
@@ -334,7 +334,7 @@ export function streamResponsesWebSocket(options: StreamResponsesWebSocketOption
     }),
     {
       status: 200,
-      headers: { "content-type": "text@lgcode/event-stream" },
+      headers: { "content-type": "text/event-stream" },
     },
   )
 }
@@ -378,4 +378,4 @@ function closeMessage(message: string, code: number, reason: Buffer) {
   return `${message} (${details.join(": ")})`
 }
 
-export * as OpenAIWebSocket from ".@lgcode/ws"
+export * as OpenAIWebSocket from "./ws"

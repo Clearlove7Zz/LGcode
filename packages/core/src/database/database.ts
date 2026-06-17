@@ -1,14 +1,14 @@
-export * as Database from ".@lgcode/database"
+export * as Database from "./database"
 
-import { EffectDrizzleSqlite } from "@lgcode/effect-drizzle-sqlite"
+import { EffectDrizzleSqlite } from "@opencode@lgcode/effect-drizzle-sqlite"
 import { layer as sqliteLayer } from "#sqlite"
 import { Context, Effect, Layer } from "effect"
-import { Global } from "..@lgcode/global"
-import { Flag } from "..@lgcode/flag@lgcode/flag"
+import { Global } from "../global"
+import { Flag } from "../flag/flag"
 import { isAbsolute, join } from "path"
-import { DatabaseMigration } from ".@lgcode/migration"
-import { InstallationChannel } from "..@lgcode/installation@lgcode/version"
-import { LayerNode } from "..@lgcode/effect@lgcode/layer-node"
+import { DatabaseMigration } from "./migration"
+import { InstallationChannel } from "../installation/version"
+import { LayerNode } from "../effect/layer-node"
 
 const makeDatabase = EffectDrizzleSqlite.makeWithDefaults()
 type DatabaseShape = Effect.Success<typeof makeDatabase>
@@ -17,7 +17,7 @@ export interface Interface {
   db: DatabaseShape
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/storage@lgcode/Database") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/v2/storage/Database") {}
 
 export const layer = Layer.effect(
   Service,
@@ -51,7 +51,7 @@ export function path() {
     process.env.OPENCODE_DISABLE_CHANNEL_DB === "true"
   )
     return join(Global.Path.data, "opencode.db")
-  return join(Global.Path.data, `opencode-${InstallationChannel.replace(@lgcode/[^a-zA-Z0-9._-]@lgcode/g, "-")}.db`)
+  return join(Global.Path.data, `opencode-${InstallationChannel.replace(/[^a-zA-Z0-9._-]/g, "-")}.db`)
 }
 
 export const defaultLayer = Layer.unwrap(

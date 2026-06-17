@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
-import { runPromptQueue } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/runtime.queue"
-import type { FooterApi, FooterEvent, RunPrompt, StreamCommit } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/types"
+import { runPromptQueue } from "@/cli/cmd/run/runtime.queue"
+import type { FooterApi, FooterEvent, RunPrompt, StreamCommit } from "@/cli/cmd/run/types"
 
 function footer() {
   const prompts = new Set<(input: RunPrompt) => void>()
@@ -98,7 +98,7 @@ describe("run runtime queue", () => {
     expect(calls).toBe(0)
   })
 
-  test("treats @lgcode/exit as a close command", async () => {
+  test("treats /exit as a close command", async () => {
     const ui = footer()
     let calls = 0
 
@@ -109,13 +109,13 @@ describe("run runtime queue", () => {
       },
     })
 
-    ui.submit("@lgcode/exit")
+    ui.submit("/exit")
     await task
 
     expect(calls).toBe(0)
   })
 
-  test("treats @lgcode/new as a local session command", async () => {
+  test("treats /new as a local session command", async () => {
     const ui = footer()
     const seen: string[] = []
     let created = 0
@@ -131,7 +131,7 @@ describe("run runtime queue", () => {
       },
     })
 
-    ui.submit("@lgcode/new")
+    ui.submit("/new")
     ui.submit("hello")
     await task
 
@@ -148,7 +148,7 @@ describe("run runtime queue", () => {
     ])
   })
 
-  test("shell mode submits @lgcode/exit as a shell command", async () => {
+  test("shell mode submits /exit as a shell command", async () => {
     const ui = footer()
     const seen: RunPrompt[] = []
 
@@ -160,14 +160,14 @@ describe("run runtime queue", () => {
       },
     })
 
-    ui.submit("@lgcode/exit", "shell")
+    ui.submit("/exit", "shell")
     await task
 
-    expect(seen).toEqual([{ text: "@lgcode/exit", parts: [], mode: "shell" }])
+    expect(seen).toEqual([{ text: "/exit", parts: [], mode: "shell" }])
     expect(ui.commits).toEqual([])
   })
 
-  test("shell mode submits @lgcode/new instead of creating a session", async () => {
+  test("shell mode submits /new instead of creating a session", async () => {
     const ui = footer()
     const seen: RunPrompt[] = []
     let created = 0
@@ -183,11 +183,11 @@ describe("run runtime queue", () => {
       },
     })
 
-    ui.submit("@lgcode/new", "shell")
+    ui.submit("/new", "shell")
     await task
 
     expect(created).toBe(0)
-    expect(seen).toEqual([{ text: "@lgcode/new", parts: [], mode: "shell" }])
+    expect(seen).toEqual([{ text: "/new", parts: [], mode: "shell" }])
     expect(ui.commits).toEqual([])
   })
 
@@ -270,12 +270,12 @@ describe("run runtime queue", () => {
 
     await runPromptQueue({
       footer: ui.api,
-      initialInput: "@lgcode/fmt bash",
+      initialInput: "/fmt bash",
       run: async () => {
         expect(ui.commits).toEqual([
           {
             kind: "user",
-            text: "@lgcode/fmt bash",
+            text: "/fmt bash",
             phase: "start",
             source: "system",
             messageID: expect.any(String),

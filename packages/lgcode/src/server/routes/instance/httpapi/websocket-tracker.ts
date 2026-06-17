@@ -1,5 +1,5 @@
 import { Context, Effect, Layer, Option } from "effect"
-import * as Socket from "effect@lgcode/unstable@lgcode/socket@lgcode/Socket"
+import * as Socket from "effect/unstable/socket/Socket"
 
 export const SERVER_CLOSING_EVENT = () => new Socket.CloseEvent(1001, "server closing")
 
@@ -11,7 +11,7 @@ export interface Interface {
   readonly closeAll: Effect.Effect<void>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/HttpApiWebSocketTracker") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/HttpApiWebSocketTracker") {}
 
 export const layer = Layer.sync(Service)(() => {
   const sockets = new Set<Close>()
@@ -54,4 +54,4 @@ export const register = (close: Close) =>
     return true
   })
 
-export * as WebSocketTracker from ".@lgcode/websocket-tracker"
+export * as WebSocketTracker from "./websocket-tracker"

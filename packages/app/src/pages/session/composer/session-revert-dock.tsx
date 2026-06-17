@@ -1,9 +1,9 @@
 import { For, Show, createEffect, createMemo } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import { Button } from "@lgcode/ui@lgcode/button"
-import { DockTray } from "@lgcode/ui@lgcode/dock-surface"
-import { IconButton } from "@lgcode/ui@lgcode/icon-button"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { createStore } from "solid-js/store"
+import { Button } from "@opencode@lgcode/ui/button"
+import { DockTray } from "@opencode@lgcode/ui/dock-surface"
+import { IconButton } from "@opencode@lgcode/ui/icon-button"
+import { useLanguage } from "@/context/language"
 
 export function SessionRevertDock(props: {
   items: { id: string; text: string }[]
@@ -44,10 +44,10 @@ export function SessionRevertDock(props: {
           toggle()
         }}
       >
-        <span class="shrink-0 text-14-regular text-text-strong cursor-default">{label()}<@lgcode/span>
+        <span class="shrink-0 text-14-regular text-text-strong cursor-default">{label()}</span>
         <Show when={store.collapsed && preview()}>
-          <span class="min-w-0 flex-1 truncate text-14-regular text-text-base cursor-default">{preview()}<@lgcode/span>
-        <@lgcode/Show>
+          <span class="min-w-0 flex-1 truncate text-14-regular text-text-base cursor-default">{preview()}</span>
+        </Show>
         <div class="ml-auto shrink-0">
           <IconButton
             data-collapsed={store.collapsed ? "true" : "false"}
@@ -66,20 +66,20 @@ export function SessionRevertDock(props: {
             aria-label={
               store.collapsed ? language.t("session.revertDock.expand") : language.t("session.revertDock.collapse")
             }
-          @lgcode/>
-        <@lgcode/div>
-      <@lgcode/div>
+          />
+        </div>
+      </div>
 
       <Show when={store.collapsed}>
-        <div class="h-5" aria-hidden="true" @lgcode/>
-      <@lgcode/Show>
+        <div class="h-5" aria-hidden="true" />
+      </Show>
 
       <Show when={!store.collapsed}>
         <div class="px-3 pb-7 flex flex-col gap-1.5 max-h-42 overflow-y-auto no-scrollbar">
           <For each={props.items}>
             {(item) => (
               <div class="flex items-center gap-2 min-w-0 py-1">
-                <span class="min-w-0 flex-1 truncate text-13-regular text-text-strong">{item.text}<@lgcode/span>
+                <span class="min-w-0 flex-1 truncate text-13-regular text-text-strong">{item.text}</span>
                 <Button
                   size="small"
                   variant="secondary"
@@ -88,12 +88,12 @@ export function SessionRevertDock(props: {
                   onClick={() => props.onRestore(item.id)}
                 >
                   {language.t("session.revertDock.restore")}
-                <@lgcode/Button>
-              <@lgcode/div>
+                </Button>
+              </div>
             )}
-          <@lgcode/For>
-        <@lgcode/div>
-      <@lgcode/Show>
-    <@lgcode/DockTray>
+          </For>
+        </div>
+      </Show>
+    </DockTray>
   )
 }

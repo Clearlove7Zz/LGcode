@@ -1,18 +1,18 @@
-@lgcode/@lgcode/ Opencode publish boundary for core events. Attach routed instance location
-@lgcode/@lgcode/ so direct EventV2 consumers can isolate directory@lgcode/workspace streams.
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
-import { InstanceRef, WorkspaceRef } from "@@lgcode/effect@lgcode/instance-ref"
-import { GlobalBus } from "@@lgcode/bus@lgcode/global"
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import { Location } from "@lgcode/core@lgcode/location"
-import { Project } from "@lgcode/core@lgcode/project"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import "@lgcode/core@lgcode/account"
-import "@lgcode/core@lgcode/catalog"
-import "@lgcode/core@lgcode/session@lgcode/event"
+// Opencode publish boundary for core events. Attach routed instance location
+// so direct EventV2 consumers can isolate directory/workspace streams.
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { InstanceRef, WorkspaceRef } from "@/effect/instance-ref"
+import { GlobalBus } from "@/bus/global"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import { Location } from "@opencode@lgcode/core/location"
+import { Project } from "@opencode@lgcode/core/project"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import "@opencode@lgcode/core/account"
+import "@opencode@lgcode/core/catalog"
+import "@opencode@lgcode/core/session/event"
 import { Context, Effect, Layer } from "effect"
 
-export class Service extends Context.Service<Service, EventV2.Interface>()("@lgcode/EventV2Bridge") {}
+export class Service extends Context.Service<Service, EventV2.Interface>()("@opencode/EventV2Bridge") {}
 
 export const layer = Layer.effect(
   Service,
@@ -76,4 +76,4 @@ export const defaultLayer = layer.pipe(Layer.provide(EventV2.defaultLayer))
 
 export const node = LayerNode.make(layer, [EventV2.node])
 
-export * as EventV2Bridge from ".@lgcode/event-v2-bridge"
+export * as EventV2Bridge from "./event-v2-bridge"

@@ -1,5 +1,5 @@
-@lgcode/@lgcode/ @refresh reload
-import { createHandler, StartServer } from "@solidjs@lgcode/start@lgcode/server"
+// @refresh reload
+import { createHandler, StartServer } from "@solidjs/start/server"
 
 const statsThemePreloadScript = `;(function () {
   var preference = "system"
@@ -18,18 +18,18 @@ export default createHandler(
       document={({ assets, children, scripts }) => (
         <html lang="en">
           <head>
-            <meta charset="utf-8" @lgcode/>
-            <meta name="viewport" content="width=device-width, initial-scale=1" @lgcode/>
-            <script id="stats-theme-preload-script">{statsThemePreloadScript}<@lgcode/script>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <script id="stats-theme-preload-script">{statsThemePreloadScript}</script>
             {assets}
-          <@lgcode/head>
+          </head>
           <body>
-            <div id="app">{children}<@lgcode/div>
+            <div id="app">{children}</div>
             {scripts}
-          <@lgcode/body>
-        <@lgcode/html>
+          </body>
+        </html>
       )}
-    @lgcode/>
+    />
   ),
   {
     mode: "async",

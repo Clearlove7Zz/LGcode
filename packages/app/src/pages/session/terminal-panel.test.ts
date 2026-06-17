@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { terminalTabLabel } from ".@lgcode/terminal-label"
+import { terminalTabLabel } from "./terminal-label"
 
 const t = (key: string, vars?: Record<string, string | number | boolean>) => {
   if (key === "terminal.title.numbered") return `Terminal ${vars?.number}`

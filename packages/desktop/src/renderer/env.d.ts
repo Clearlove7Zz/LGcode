@@ -1,4 +1,4 @@
-import type { ElectronAPI } from "..@lgcode/preload@lgcode/types"
+import type { ElectronAPI } from "../preload/types"
 
 declare global {
   interface Window {

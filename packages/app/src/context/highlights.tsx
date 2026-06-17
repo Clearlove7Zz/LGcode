@@ -1,13 +1,13 @@
 import { createEffect, onCleanup } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import { createSimpleContext } from "@lgcode/ui@lgcode/context"
-import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
-import { usePlatform } from "@@lgcode/context@lgcode/platform"
-import { useSettings } from "@@lgcode/context@lgcode/settings"
-import { persisted } from "@@lgcode/utils@lgcode/persist"
-import { DialogReleaseNotes, type Highlight } from "@@lgcode/components@lgcode/dialog-release-notes"
+import { createStore } from "solid-js/store"
+import { createSimpleContext } from "@opencode@lgcode/ui/context"
+import { useDialog } from "@opencode@lgcode/ui/context/dialog"
+import { usePlatform } from "@/context/platform"
+import { useSettings } from "@/context/settings"
+import { persisted } from "@/utils/persist"
+import { DialogReleaseNotes, type Highlight } from "@/components/dialog-release-notes"
 
-const CHANGELOG_URL = "https:@lgcode/@lgcode/opencode.ai@lgcode/changelog.json"
+const CHANGELOG_URL = "https://opencode.ai/changelog.json"
 
 type Store = {
   version?: string
@@ -179,7 +179,7 @@ export const { use: useHighlights, provider: HighlightsProvider } = createSimple
 
       fetcher(CHANGELOG_URL, {
         signal: controller.signal,
-        headers: { Accept: "application@lgcode/json" },
+        headers: { Accept: "application/json" },
       })
         .then((response) => (response.ok ? (response.json() as Promise<unknown>) : undefined))
         .then((json) => {
@@ -195,7 +195,7 @@ export const { use: useHighlights, provider: HighlightsProvider } = createSimple
           timer = setTimeout(() => {
             timer = undefined
             markSeen()
-            dialog.show(() => <DialogReleaseNotes highlights={highlights} @lgcode/>)
+            dialog.show(() => <DialogReleaseNotes highlights={highlights} />)
           }, 500)
         })
         .catch(() => undefined)

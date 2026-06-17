@@ -1,23 +1,23 @@
-import { AccountID, OrgID } from "@@lgcode/account@lgcode/schema"
-import { MCP } from "@@lgcode/mcp"
+import { AccountID, OrgID } from "@/account/schema"
+import { MCP } from "@/mcp"
 
-import { Session } from "@@lgcode/session@lgcode/session"
-import { SessionID } from "@@lgcode/session@lgcode/schema"
-import { Worktree } from "@@lgcode/worktree"
-import { NonNegativeInt } from "@lgcode/core@lgcode/schema"
+import { Session } from "@/session/session"
+import { SessionID } from "@/session/schema"
+import { Worktree } from "@/worktree"
+import { NonNegativeInt } from "@opencode@lgcode/core/schema"
 import { Schema } from "effect"
-import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, HttpApiSchema, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
-import { Authorization } from "..@lgcode/middleware@lgcode/authorization"
-import { InstanceContextMiddleware } from "..@lgcode/middleware@lgcode/instance-context"
+import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, HttpApiSchema, OpenApi } from "effect/unstable/httpapi"
+import { Authorization } from "../middleware/authorization"
+import { InstanceContextMiddleware } from "../middleware/instance-context"
 import {
   WorkspaceRoutingMiddleware,
   WorkspaceRoutingQuery,
   WorkspaceRoutingQueryFields,
-} from "..@lgcode/middleware@lgcode/workspace-routing"
-import { described } from ".@lgcode/metadata"
-import { QueryBoolean } from ".@lgcode/query"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
+} from "../middleware/workspace-routing"
+import { described } from "./metadata"
+import { QueryBoolean } from "./query"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelV2 } from "@opencode@lgcode/core/model"
 
 const ConsoleStateResponse = Schema.Struct({
   consoleManagedProviders: Schema.mutable(Schema.Array(Schema.String)),
@@ -84,16 +84,16 @@ export const SessionListQuery = Schema.Struct({
 })
 
 export const ExperimentalPaths = {
-  console: "@lgcode/experimental@lgcode/console",
-  consoleOrgs: "@lgcode/experimental@lgcode/console@lgcode/orgs",
-  consoleSwitch: "@lgcode/experimental@lgcode/console@lgcode/switch",
-  tool: "@lgcode/experimental@lgcode/tool",
-  toolIDs: "@lgcode/experimental@lgcode/tool@lgcode/ids",
-  worktree: "@lgcode/experimental@lgcode/worktree",
-  worktreeReset: "@lgcode/experimental@lgcode/worktree@lgcode/reset",
-  session: "@lgcode/experimental@lgcode/session",
-  sessionBackground: "@lgcode/experimental@lgcode/session@lgcode/:sessionID@lgcode/background",
-  resource: "@lgcode/experimental@lgcode/resource",
+  console: "/experimental/console",
+  consoleOrgs: "/experimental/console/orgs",
+  consoleSwitch: "/experimental/console/switch",
+  tool: "/experimental/tool",
+  toolIDs: "/experimental/tool/ids",
+  worktree: "/experimental/worktree",
+  worktreeReset: "/experimental/worktree/reset",
+  session: "/experimental/session",
+  sessionBackground: "/experimental/session/:sessionID/background",
+  resource: "/experimental/resource",
 } as const
 
 export const ExperimentalApi = HttpApi.make("experimental")
@@ -131,7 +131,7 @@ export const ExperimentalApi = HttpApi.make("experimental")
           OpenApi.annotations({
             identifier: "experimental.console.switchOrg",
             summary: "Switch active Console org",
-            description: "Persist a new active Console account@lgcode/org selection for the current local OpenCode state.",
+            description: "Persist a new active Console account/org selection for the current local OpenCode state.",
           }),
         ),
         HttpApiEndpoint.get("tool", ExperimentalPaths.tool, {

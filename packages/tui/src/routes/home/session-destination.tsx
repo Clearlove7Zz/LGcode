@@ -7,8 +7,8 @@ import {
   type ParentProps,
   type Setter,
 } from "solid-js"
-import { useSync } from "..@lgcode/..@lgcode/context@lgcode/sync"
-import { useTuiPaths } from "..@lgcode/..@lgcode/context@lgcode/runtime"
+import { useSync } from "../../context/sync"
+import { useTuiPaths } from "../../context/runtime"
 
 export type HomeSessionDestination = { type: "directory"; directory: string; subdirectory: boolean } | { type: "new" }
 
@@ -32,7 +32,7 @@ export function HomeSessionDestinationProvider(props: ParentProps) {
       value={{ destination, setDestination, clear: () => setDestination(undefined) }}
     >
       {props.children}
-    <@lgcode/HomeSessionDestinationContext.Provider>
+    </HomeSessionDestinationContext.Provider>
   )
 }
 

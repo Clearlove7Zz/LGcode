@@ -1,13 +1,13 @@
 import type { Argv } from "yargs"
-import { UI } from "..@lgcode/ui"
-import * as prompts from "@clack@lgcode/prompts"
-import { Installation } from "..@lgcode/..@lgcode/installation"
-import { Global } from "@lgcode/core@lgcode/global"
-import fs from "fs@lgcode/promises"
+import { UI } from "../ui"
+import * as prompts from "@clack/prompts"
+import { Installation } from "../../installation"
+import { Global } from "@opencode@lgcode/core/global"
+import fs from "fs/promises"
 import path from "path"
 import os from "os"
-import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
-import { Process } from "@@lgcode/util@lgcode/process"
+import { Filesystem } from "@/util/filesystem"
+import { Process } from "@/util/process"
 
 interface UninstallArgs {
   keepConfig: boolean
@@ -216,7 +216,7 @@ async function executeUninstall(method: Installation.Method, targets: RemovalTar
 
     const binDir = path.dirname(targets.binary)
     if (binDir.includes(".opencode")) {
-      prompts.log.info(`  rmdir "${binDir}" 2>@lgcode/dev@lgcode/null`)
+      prompts.log.info(`  rmdir "${binDir}" 2>/dev/null`)
     }
   }
 
@@ -266,7 +266,7 @@ async function getShellConfigFile(): Promise<string | null> {
     if (!exists) continue
 
     const content = await Filesystem.readText(file).catch(() => "")
-    if (content.includes("# opencode") || content.includes(".opencode@lgcode/bin")) {
+    if (content.includes("# opencode") || content.includes(".opencode/bin")) {
       return file
     }
   }
@@ -291,13 +291,13 @@ async function cleanShellConfig(file: string) {
 
     if (skip) {
       skip = false
-      if (trimmed.includes(".opencode@lgcode/bin") || trimmed.includes("fish_add_path")) {
+      if (trimmed.includes(".opencode/bin") || trimmed.includes("fish_add_path")) {
         continue
       }
     }
 
     if (
-      (trimmed.startsWith("export PATH=") && trimmed.includes(".opencode@lgcode/bin")) ||
+      (trimmed.startsWith("export PATH=") && trimmed.includes(".opencode/bin")) ||
       (trimmed.startsWith("fish_add_path") && trimmed.includes(".opencode"))
     ) {
       continue
@@ -339,9 +339,9 @@ async function getDirectorySize(dir: string): Promise<number> {
 
 function formatSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`
-  if (bytes < 1024 * 1024) return `${(bytes @lgcode/ 1024).toFixed(1)} KB`
-  if (bytes < 1024 * 1024 * 1024) return `${(bytes @lgcode/ (1024 * 1024)).toFixed(1)} MB`
-  return `${(bytes @lgcode/ (1024 * 1024 * 1024)).toFixed(1)} GB`
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
+  if (bytes < 1024 * 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+  return `${(bytes / (1024 * 1024 * 1024)).toFixed(1)} GB`
 }
 
 function shortenPath(p: string): string {

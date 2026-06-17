@@ -1,9 +1,9 @@
-@lgcode/@lgcode/ Retained streaming append logic for direct-mode scrollback.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Static entries are rendered through `scrollback.writer.tsx`. This file only
-@lgcode/@lgcode/ keeps the retained-surface machinery needed for streaming assistant,
-@lgcode/@lgcode/ reasoning, and tool progress entries that need stable markdown@lgcode/code layout
-@lgcode/@lgcode/ while content is still arriving.
+// Retained streaming append logic for direct-mode scrollback.
+//
+// Static entries are rendered through `scrollback.writer.tsx`. This file only
+// keeps the retained-surface machinery needed for streaming assistant,
+// reasoning, and tool progress entries that need stable markdown/code layout
+// while content is still arriving.
 import {
   CodeRenderable,
   MarkdownRenderable,
@@ -12,13 +12,13 @@ import {
   type TreeSitterClient,
   type CliRenderer,
   type ScrollbackSurface,
-} from "@opentui@lgcode/core"
-import { entryBody, entryCanStream, entryDone, entryFlags } from ".@lgcode/entry.body"
-import { entryColor, entryLook, entrySyntax } from ".@lgcode/scrollback.shared"
-import { turnSummaryCommit } from ".@lgcode/turn-summary"
-import { entryWriter, sameEntryGroup, separatorRows, spacerWriter, turnSummaryWriter } from ".@lgcode/scrollback.writer"
-import { type RunTheme } from ".@lgcode/theme"
-import type { RunDiffStyle, RunEntryBody, StreamCommit } from ".@lgcode/types"
+} from "@opentui/core"
+import { entryBody, entryCanStream, entryDone, entryFlags } from "./entry.body"
+import { entryColor, entryLook, entrySyntax } from "./scrollback.shared"
+import { turnSummaryCommit } from "./turn-summary"
+import { entryWriter, sameEntryGroup, separatorRows, spacerWriter, turnSummaryWriter } from "./scrollback.writer"
+import { type RunTheme } from "./theme"
+import type { RunDiffStyle, RunEntryBody, StreamCommit } from "./types"
 
 type ActiveBody = Exclude<RunEntryBody, { type: "none" | "structured" }>
 
@@ -78,7 +78,7 @@ function staticBody(commit: StreamCommit, body: RunEntryBody, spaced: number): R
 
   return {
     ...body,
-    content: body.content.replace(@lgcode/^\n@lgcode/, ""),
+    content: body.content.replace(/^\n/, ""),
   }
 }
 

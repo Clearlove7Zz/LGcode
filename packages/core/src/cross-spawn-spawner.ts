@@ -1,31 +1,31 @@
-import type * as Arr from "effect@lgcode/Array"
-import { NodeFileSystem, NodeSink, NodeStream } from "@effect@lgcode/platform-node"
-import * as NodePath from "@effect@lgcode/platform-node@lgcode/NodePath"
-import * as Deferred from "effect@lgcode/Deferred"
-import * as Effect from "effect@lgcode/Effect"
-import * as Exit from "effect@lgcode/Exit"
-import * as FileSystem from "effect@lgcode/FileSystem"
-import * as Layer from "effect@lgcode/Layer"
-import * as Path from "effect@lgcode/Path"
-import * as PlatformError from "effect@lgcode/PlatformError"
-import * as Predicate from "effect@lgcode/Predicate"
-import type * as Scope from "effect@lgcode/Scope"
-import * as Sink from "effect@lgcode/Sink"
-import * as Stream from "effect@lgcode/Stream"
-import * as ChildProcess from "effect@lgcode/unstable@lgcode/process@lgcode/ChildProcess"
-import type { ChildProcessHandle } from "effect@lgcode/unstable@lgcode/process@lgcode/ChildProcessSpawner"
+import type * as Arr from "effect/Array"
+import { NodeFileSystem, NodeSink, NodeStream } from "@effect/platform-node"
+import * as NodePath from "@effect/platform-node/NodePath"
+import * as Deferred from "effect/Deferred"
+import * as Effect from "effect/Effect"
+import * as Exit from "effect/Exit"
+import * as FileSystem from "effect/FileSystem"
+import * as Layer from "effect/Layer"
+import * as Path from "effect/Path"
+import * as PlatformError from "effect/PlatformError"
+import * as Predicate from "effect/Predicate"
+import type * as Scope from "effect/Scope"
+import * as Sink from "effect/Sink"
+import * as Stream from "effect/Stream"
+import * as ChildProcess from "effect/unstable/process/ChildProcess"
+import type { ChildProcessHandle } from "effect/unstable/process/ChildProcessSpawner"
 import {
   ChildProcessSpawner,
   ExitCode,
   make as makeSpawner,
   makeHandle,
   ProcessId,
-} from "effect@lgcode/unstable@lgcode/process@lgcode/ChildProcessSpawner"
+} from "effect/unstable/process/ChildProcessSpawner"
 import * as NodeChildProcess from "node:child_process"
 import { PassThrough } from "node:stream"
 import launch from "cross-spawn"
-import { LayerNode } from ".@lgcode/effect@lgcode/layer-node"
-import { filesystem, path } from ".@lgcode/effect@lgcode/layer-node-platform"
+import { LayerNode } from "./effect/layer-node"
+import { filesystem, path } from "./effect/layer-node-platform"
 
 const toError = (err: unknown): Error => (err instanceof globalThis.Error ? err : new globalThis.Error(String(err)))
 
@@ -296,7 +296,7 @@ export const make = Effect.gen(function* () {
   ) => {
     if (globalThis.process.platform === "win32") {
       return Effect.callback<void, PlatformError.PlatformError>((resume) => {
-        NodeChildProcess.exec(`taskkill @lgcode/pid ${proc.pid} @lgcode/T @lgcode/F`, { windowsHide: true }, (err) => {
+        NodeChildProcess.exec(`taskkill /pid ${proc.pid} /T /F`, { windowsHide: true }, (err) => {
           if (err) return resume(Effect.fail(toPlatformError("kill", toError(err), command)))
           resume(Effect.void)
         })
@@ -505,4 +505,4 @@ export const layer: Layer.Layer<ChildProcessSpawner, never, FileSystem.FileSyste
 export const defaultLayer = layer.pipe(Layer.provide(NodeFileSystem.layer), Layer.provide(NodePath.layer))
 export const node = LayerNode.make(layer, [filesystem, path])
 
-export * as CrossSpawnSpawner from ".@lgcode/cross-spawn-spawner"
+export * as CrossSpawnSpawner from "./cross-spawn-spawner"

@@ -5,8 +5,8 @@ import {
   isNewCommand,
   movePromptHistory,
   pushPromptHistory,
-} from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/prompt.shared"
-import type { RunPrompt } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/types"
+} from "@/cli/cmd/run/prompt.shared"
+import type { RunPrompt } from "@/cli/cmd/run/types"
 
 function prompt(text: string, parts: RunPrompt["parts"] = []): RunPrompt {
   return { text, parts }
@@ -88,14 +88,14 @@ describe("run prompt shared", () => {
   })
 
   test("recognizes exit commands", () => {
-    expect(isExitCommand("@lgcode/exit")).toBe(true)
-    expect(isExitCommand(" @lgcode/Quit ")).toBe(true)
-    expect(isExitCommand("@lgcode/quit now")).toBe(false)
+    expect(isExitCommand("/exit")).toBe(true)
+    expect(isExitCommand(" /Quit ")).toBe(true)
+    expect(isExitCommand("/quit now")).toBe(false)
   })
 
   test("recognizes the new-session command", () => {
-    expect(isNewCommand("@lgcode/new")).toBe(true)
-    expect(isNewCommand(" @lgcode/NEW ")).toBe(true)
-    expect(isNewCommand("@lgcode/new now")).toBe(false)
+    expect(isNewCommand("/new")).toBe(true)
+    expect(isNewCommand(" /NEW ")).toBe(true)
+    expect(isNewCommand("/new now")).toBe(false)
   })
 })

@@ -1,20 +1,20 @@
 import { $ } from "bun"
-import { ConfigV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/config"
-import * as fs from "fs@lgcode/promises"
+import { ConfigV1 } from "@opencode@lgcode/core/v1/config/config"
+import * as fs from "fs/promises"
 import os from "os"
 import path from "path"
 import { Effect, Context, Layer } from "effect"
-import type * as PlatformError from "effect@lgcode/PlatformError"
-import type * as Scope from "effect@lgcode/Scope"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import { ChildProcess, ChildProcessSpawner } from "effect@lgcode/unstable@lgcode/process"
-import type { Config } from "@@lgcode/config@lgcode/config"
-import { InstanceRef } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/instance-ref"
-import { InstanceBootstrap } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/bootstrap-service"
-import type { InstanceContext } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/instance-context"
-import { InstanceRuntime } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/instance-runtime"
-import { InstanceStore } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/instance-store"
-import { TestLLMServer } from "..@lgcode/lib@lgcode/llm-server"
+import type * as PlatformError from "effect/PlatformError"
+import type * as Scope from "effect/Scope"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { ChildProcess, ChildProcessSpawner } from "effect/unstable/process"
+import type { Config } from "@/config/config"
+import { InstanceRef } from "../../src/effect/instance-ref"
+import { InstanceBootstrap } from "../../src/project/bootstrap-service"
+import type { InstanceContext } from "../../src/project/instance-context"
+import { InstanceRuntime } from "../../src/project/instance-runtime"
+import { InstanceStore } from "../../src/project/instance-store"
+import { TestLLMServer } from "../lib/llm-server"
 
 const noopBootstrap = Layer.succeed(InstanceBootstrap.Service, InstanceBootstrap.Service.of({ run: Effect.void }))
 export const testInstanceStoreLayer = InstanceStore.defaultLayer.pipe(Layer.provide(noopBootstrap))
@@ -45,9 +45,9 @@ export async function disposeAllInstances() {
   await InstanceRuntime.disposeAllInstances()
 }
 
-@lgcode/@lgcode/ Strip null bytes from paths (defensive fix for CI environment issues)
+// Strip null bytes from paths (defensive fix for CI environment issues)
 function sanitizePath(p: string): string {
-  return p.replace(@lgcode/\0@lgcode/g, "")
+  return p.replace(/\0/g, "")
 }
 
 function exists(dir: string) {
@@ -92,7 +92,7 @@ export async function tmpdir<T>(options?: TmpDirOptions<T>) {
     await Bun.write(
       path.join(dirpath, "opencode.json"),
       JSON.stringify({
-        $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json",
+        $schema: "https://opencode.ai/config.json",
         ...options.config,
       }),
     )
@@ -114,7 +114,7 @@ export async function tmpdir<T>(options?: TmpDirOptions<T>) {
   return result
 }
 
-@lgcode/** Effectful scoped tmpdir. Cleaned up when the scope closes. Make sure these stay in sync *@lgcode/
+/** Effectful scoped tmpdir. Cleaned up when the scope closes. Make sure these stay in sync */
 export function tmpdirScoped<E = never, R = never>(options?: {
   git?: boolean
   config?: Partial<ConfigV1.Info> | (() => Partial<ConfigV1.Info>)
@@ -150,7 +150,7 @@ export function tmpdirScoped<E = never, R = never>(options?: {
       yield* Effect.promise(() =>
         fs.writeFile(
           path.join(dir, "opencode.json"),
-          JSON.stringify({ $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json", ...resolved }),
+          JSON.stringify({ $schema: "https://opencode.ai/config.json", ...resolved }),
         ),
       )
     }
@@ -186,7 +186,7 @@ export function provideTmpdirInstance<A, E, R>(
   }).pipe(Effect.provide(testInstanceStoreLayer))
 }
 
-export class TestInstance extends Context.Service<TestInstance, { readonly directory: string }>()("@test@lgcode/Instance") {}
+export class TestInstance extends Context.Service<TestInstance, { readonly directory: string }>()("@test/Instance") {}
 
 export const requireInstance = Effect.gen(function* () {
   const instance = yield* InstanceRef

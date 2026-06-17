@@ -1,9 +1,9 @@
 import { app, dialog } from "electron"
 import pkg from "electron-updater"
-import { UPDATER_ENABLED } from ".@lgcode/constants"
-import { createUpdaterController, type UpdaterReadyRecord } from ".@lgcode/updater-controller"
-import { getLogger } from ".@lgcode/logging"
-import { getStore } from ".@lgcode/store"
+import { UPDATER_ENABLED } from "./constants"
+import { createUpdaterController, type UpdaterReadyRecord } from "./updater-controller"
+import { getLogger } from "./logging"
+import { getStore } from "./store"
 
 const { autoUpdater } = pkg
 const key = "ready"

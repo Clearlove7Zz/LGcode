@@ -1,5 +1,5 @@
-import { Audio, type AudioErrorContext, type AudioPlayOptions, type AudioSound, type AudioVoice } from "@opentui@lgcode/core"
-import { readFile } from "node:fs@lgcode/promises"
+import { Audio, type AudioErrorContext, type AudioPlayOptions, type AudioSound, type AudioVoice } from "@opentui/core"
+import { readFile } from "node:fs/promises"
 
 let audio: Audio | null | undefined
 const sounds = new Map<string, Promise<AudioSound | null>>()

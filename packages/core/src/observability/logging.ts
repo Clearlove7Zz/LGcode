@@ -1,7 +1,7 @@
 import { Formatter, Logger, type LogLevel } from "effect"
 import path from "path"
-import { Global } from "..@lgcode/global"
-import { runID } from ".@lgcode/shared"
+import { Global } from "../global"
+import { runID } from "./shared"
 
 function formatter(id: string = runID) {
   return Logger.map(Logger.formatStructured, (output) => {
@@ -43,11 +43,11 @@ function plain(input: unknown): input is Record<string, unknown> {
 
 function format(input: unknown) {
   const value = typeof input === "string" ? input : Formatter.format(input)
-  return @lgcode/^[^\s="\\]+$@lgcode/.test(value) ? value : JSON.stringify(value)
+  return /^[^\s="\\]+$/.test(value) ? value : JSON.stringify(value)
 }
 
 export function fileLogger(file = path.join(Global.Path.log, "opencode.log"), id: string = runID) {
-  @lgcode/@lgcode/ Do not set batchWindow to 0; it causes high idle CPU usage.
+  // Do not set batchWindow to 0; it causes high idle CPU usage.
   return Logger.toFile(formatter(id), file, { flag: "a" })
 }
 
@@ -68,4 +68,4 @@ export function loggers() {
   return process.env.OPENCODE_PRINT_LOGS === "1" ? [fileLogger(), stderrLogger] : [fileLogger()]
 }
 
-export * as Logging from ".@lgcode/logging"
+export * as Logging from "./logging"

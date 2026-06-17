@@ -1,8 +1,8 @@
 import os from "os"
-import { InstallationVersion } from "..@lgcode/..@lgcode/installation@lgcode/version"
+import { InstallationVersion } from "../../installation/version"
 import { Effect } from "effect"
-import { PluginV2 } from "..@lgcode/..@lgcode/plugin"
-import { ProviderV2 } from "..@lgcode/..@lgcode/provider"
+import { PluginV2 } from "../../plugin"
+import { ProviderV2 } from "../../provider"
 
 const providerID = ProviderV2.ID.make("cloudflare-workers-ai")
 
@@ -22,11 +22,11 @@ export const CloudflareWorkersAIPlugin = PluginV2.define({
       }),
       "aisdk.sdk": Effect.fn(function* (evt) {
         if (evt.model.providerID !== providerID) return
-        if (evt.package !== "@ai-sdk@lgcode/openai-compatible") return
+        if (evt.package !== "@ai-sdk/openai-compatible") return
 
         const accountId = resolveAccountId(evt.options)
         if (!hasWorkersEndpoint(evt.model.api) && !accountId) return
-        const mod = yield* Effect.promise(() => import("@ai-sdk@lgcode/openai-compatible"))
+        const mod = yield* Effect.promise(() => import("@ai-sdk/openai-compatible"))
         evt.sdk = mod.createOpenAICompatible(
           sdkOptions({
             ...evt.options,
@@ -47,7 +47,7 @@ function resolveAccountId(options: Record<string, unknown>) {
 }
 
 function workersEndpoint(accountId: string) {
-  return `https:@lgcode/@lgcode/api.cloudflare.com@lgcode/client@lgcode/v4@lgcode/accounts@lgcode/${accountId}@lgcode/ai@lgcode/v1`
+  return `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/v1`
 }
 
 function hasWorkersEndpoint(api: ProviderV2.Api) {
@@ -60,7 +60,7 @@ function sdkOptions(options: Record<string, any>) {
     baseURL: expandAccountId(options.baseURL),
     apiKey: process.env.CLOUDFLARE_API_KEY ?? options.apiKey,
     headers: {
-      "User-Agent": `opencode@lgcode/${InstallationVersion} cloudflare-workers-ai (${os.platform()} ${os.release()}; ${os.arch()})`,
+      "User-Agent": `opencode/${InstallationVersion} cloudflare-workers-ai (${os.platform()} ${os.release()}; ${os.arch()})`,
       ...options.headers,
     },
     name: providerID,

@@ -1,8 +1,8 @@
-import type { TuiPlugin, TuiPluginApi } from "@lgcode/plugin@lgcode/tui"
-import type { BuiltinTuiPlugin } from "..@lgcode/builtins"
+import type { TuiPlugin, TuiPluginApi } from "@opencode@lgcode/plugin/tui"
+import type { BuiltinTuiPlugin } from "../builtins"
 import { createMemo, Show } from "solid-js"
-import { Tips } from ".@lgcode/tips-view"
-import { useBindings } from "..@lgcode/..@lgcode/keymap"
+import { Tips } from "./tips-view"
+import { useBindings } from "../../keymap"
 
 const id = "internal:home-tips"
 
@@ -26,9 +26,9 @@ function View(props: { api: TuiPluginApi; hidden: boolean; show: boolean; connec
   return (
     <box width="100%" maxWidth={75} alignItems="center" paddingTop={3} flexShrink={1}>
       <Show when={props.show}>
-        <Tips api={props.api} connected={props.connected} @lgcode/>
-      <@lgcode/Show>
-    <@lgcode/box>
+        <Tips api={props.api} connected={props.connected} />
+      </Show>
+    </box>
   )
 }
 
@@ -45,7 +45,7 @@ const tui: TuiPlugin = async (api) => {
           ),
         )
         const show = createMemo(() => (!first() || !connected()) && !hidden())
-        return <View api={api} hidden={hidden()} show={show()} connected={connected()} @lgcode/>
+        return <View api={api} hidden={hidden()} show={show()} connected={connected()} />
       },
     },
   })

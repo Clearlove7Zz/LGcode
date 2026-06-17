@@ -1,10 +1,10 @@
 import { Effect, ScopedCache, Scope } from "effect"
-import type { InstanceContext } from "@@lgcode/project@lgcode/instance-context"
-import { InstanceRef, WorkspaceRef } from ".@lgcode/instance-ref"
-import { registerDisposer } from ".@lgcode/instance-registry"
-import { WorkspaceContext } from "@@lgcode/control-plane@lgcode/workspace-context"
+import type { InstanceContext } from "@/project/instance-context"
+import { InstanceRef, WorkspaceRef } from "./instance-ref"
+import { registerDisposer } from "./instance-registry"
+import { WorkspaceContext } from "@/control-plane/workspace-context"
 
-const TypeId = "~opencode@lgcode/InstanceState"
+const TypeId = "~opencode/InstanceState"
 
 export interface InstanceState<A, E = never, R = never> {
   readonly [TypeId]: typeof TypeId
@@ -66,4 +66,4 @@ export const invalidate = <A, E, R>(self: InstanceState<A, E, R>) =>
     return yield* ScopedCache.invalidate(self.cache, yield* directory)
   })
 
-export * as InstanceState from ".@lgcode/instance-state"
+export * as InstanceState from "./instance-state"

@@ -1,13 +1,13 @@
 import { describe, expect } from "bun:test"
 import { Effect, Option, Schema } from "effect"
-import { Catalog } from "@lgcode/core@lgcode/catalog"
-import { Config } from "@lgcode/core@lgcode/config"
-import { ConfigProviderPlugin } from "@lgcode/core@lgcode/config@lgcode/plugin@lgcode/provider"
-import { Integration } from "@lgcode/core@lgcode/integration"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
-import { PluginV2 } from "@lgcode/core@lgcode/plugin"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { it, withEnv } from "..@lgcode/plugin@lgcode/provider-helper"
+import { Catalog } from "@opencode@lgcode/core/catalog"
+import { Config } from "@opencode@lgcode/core/config"
+import { ConfigProviderPlugin } from "@opencode@lgcode/core/config/plugin/provider"
+import { Integration } from "@opencode@lgcode/core/integration"
+import { ModelV2 } from "@opencode@lgcode/core/model"
+import { PluginV2 } from "@opencode@lgcode/core/plugin"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { it, withEnv } from "../plugin/provider-helper"
 
 function request(headers: Record<string, string>, variant?: string) {
   return {
@@ -34,7 +34,7 @@ describe("ConfigProviderPlugin.Plugin", () => {
               info: decode({
                 providers: {
                   opencode: {
-                    api: { type: "aisdk", package: "@ai-sdk@lgcode/openai", url: "https:@lgcode/@lgcode/opencode.test@lgcode/v1" },
+                    api: { type: "aisdk", package: "@ai-sdk/openai", url: "https://opencode.test/v1" },
                     models: {
                       "alpha-gpt-next": {
                         variants: [
@@ -95,7 +95,7 @@ describe("ConfigProviderPlugin.Plugin", () => {
               info: decode({
                 providers: {
                   opencode: {
-                    api: { type: "aisdk", package: "@ai-sdk@lgcode/openai", url: "https:@lgcode/@lgcode/opencode.test@lgcode/v1" },
+                    api: { type: "aisdk", package: "@ai-sdk/openai", url: "https://opencode.test/v1" },
                   },
                 },
               }),
@@ -149,7 +149,7 @@ describe("ConfigProviderPlugin.Plugin", () => {
               new Config.Document({
                 type: "document",
                 info: decode({
-                  model: "custom@lgcode/first",
+                  model: "custom/first",
                   providers: {
                     custom: {
                       name: "Configured",
@@ -179,10 +179,10 @@ describe("ConfigProviderPlugin.Plugin", () => {
               new Config.Document({
                 type: "document",
                 info: decode({
-                  model: "custom@lgcode/default",
+                  model: "custom/default",
                   providers: {
                     custom: {
-                      api: { type: "aisdk", package: "custom-sdk", url: "https:@lgcode/@lgcode/example.test" },
+                      api: { type: "aisdk", package: "custom-sdk", url: "https://example.test" },
                       request: request({ last: "last", shared: "last" }),
                       models: {
                         default: {
@@ -239,7 +239,7 @@ describe("ConfigProviderPlugin.Plugin", () => {
         })
         expect((yield* integrations.get(Integration.ID.make("custom")))?.name).toBe("Renamed")
         expect(provider.disabled).toBeUndefined()
-        expect(provider.api).toEqual({ type: "aisdk", package: "custom-sdk", url: "https:@lgcode/@lgcode/example.test" })
+        expect(provider.api).toEqual({ type: "aisdk", package: "custom-sdk", url: "https://example.test" })
         expect(provider.request.headers).toEqual({ first: "first", shared: "last", last: "last" })
         expect(model.api.id).toBe(ModelV2.ID.make("api-chat"))
         expect(model.name).toBe("Last")

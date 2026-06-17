@@ -3,16 +3,16 @@ import {
   type LanguageModelV3ToolCallPart,
   type SharedV3Warning,
   UnsupportedFunctionalityError,
-} from "@ai-sdk@lgcode/provider"
-import { convertToBase64, parseProviderOptions } from "@ai-sdk@lgcode/provider-utils"
-import { z } from "zod@lgcode/v4"
-import type { OpenAIResponsesInput, OpenAIResponsesReasoning } from ".@lgcode/openai-responses-api-types"
-import { localShellInputSchema, localShellOutputSchema } from ".@lgcode/tool@lgcode/local-shell"
+} from "@ai-sdk/provider"
+import { convertToBase64, parseProviderOptions } from "@ai-sdk/provider-utils"
+import { z } from "zod/v4"
+import type { OpenAIResponsesInput, OpenAIResponsesReasoning } from "./openai-responses-api-types"
+import { localShellInputSchema, localShellOutputSchema } from "./tool/local-shell"
 
-@lgcode/**
+/**
  * Check if a string is a file ID based on the given prefixes
  * Returns false if prefixes is undefined (disables file ID detection)
- *@lgcode/
+ */
 function isFileId(data: string, prefixes?: readonly string[]): boolean {
   if (!prefixes) return false
   return prefixes.some((prefix) => data.startsWith(prefix))
@@ -74,8 +74,8 @@ export async function convertToOpenAIResponsesInput({
                 return { type: "input_text", text: part.text }
               }
               case "file": {
-                if (part.mediaType.startsWith("image@lgcode/")) {
-                  const mediaType = part.mediaType === "image@lgcode/*" ? "image@lgcode/jpeg" : part.mediaType
+                if (part.mediaType.startsWith("image/")) {
+                  const mediaType = part.mediaType === "image/*" ? "image/jpeg" : part.mediaType
 
                   return {
                     type: "input_image",
@@ -88,7 +88,7 @@ export async function convertToOpenAIResponsesInput({
                           }),
                     detail: part.providerOptions?.openai?.imageDetail,
                   }
-                } else if (part.mediaType === "application@lgcode/pdf") {
+                } else if (part.mediaType === "application/pdf") {
                   if (part.data instanceof URL) {
                     return {
                       type: "input_file",
@@ -101,7 +101,7 @@ export async function convertToOpenAIResponsesInput({
                       ? { file_id: part.data }
                       : {
                           filename: part.filename ?? `part-${index}.pdf`,
-                          file_data: `data:application@lgcode/pdf;base64,${convertToBase64(part.data)}`,
+                          file_data: `data:application/pdf;base64,${convertToBase64(part.data)}`,
                         }),
                   }
                 } else {
@@ -167,10 +167,10 @@ export async function convertToOpenAIResponsesInput({
               break
             }
 
-            @lgcode/@lgcode/ assistant tool result parts are from provider-executed tools:
+            // assistant tool result parts are from provider-executed tools:
             case "tool-result": {
               if (store) {
-                @lgcode/@lgcode/ use item references to refer to tool results from built-in tools
+                // use item references to refer to tool results from built-in tools
                 input.push({ type: "item_reference", id: part.toolCallId })
               } else {
                 warnings.push({
@@ -196,10 +196,10 @@ export async function convertToOpenAIResponsesInput({
 
                 if (store) {
                   if (reasoningMessage === undefined) {
-                    @lgcode/@lgcode/ use item references to refer to reasoning (single reference)
+                    // use item references to refer to reasoning (single reference)
                     input.push({ type: "item_reference", id: reasoningId })
 
-                    @lgcode/@lgcode/ store unused reasoning message to mark id as used
+                    // store unused reasoning message to mark id as used
                     reasoningMessages[reasoningId] = {
                       type: "reasoning",
                       id: reasoningId,

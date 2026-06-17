@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { getRetryAfterDay } from "..@lgcode/src@lgcode/routes@lgcode/zen@lgcode/util@lgcode/ipRateLimiter"
+import { getRetryAfterDay } from "../src/routes/zen/util/ipRateLimiter"
 
 describe("getRetryAfterDay", () => {
   test("returns full day at midnight UTC", () => {

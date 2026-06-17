@@ -1,5 +1,5 @@
 import { createMemo } from "solid-js"
-import { useSync } from "..@lgcode/context@lgcode/sync"
+import { useSync } from "../context/sync"
 
 export function useConnected() {
   const sync = useSync()

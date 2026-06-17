@@ -1,10 +1,10 @@
-export * as Tool from ".@lgcode/tool"
+export * as Tool from "./tool"
 
-import { ToolDefinition, ToolFailure, ToolOutput, type ToolCall } from "@lgcode/llm"
+import { ToolDefinition, ToolFailure, ToolOutput, type ToolCall } from "@opencode@lgcode/llm"
 import { Effect, JsonSchema, Schema } from "effect"
-import type { AgentV2 } from "..@lgcode/agent"
-import type { SessionMessage } from "..@lgcode/session@lgcode/message"
-import type { SessionSchema } from "..@lgcode/session@lgcode/schema"
+import type { AgentV2 } from "../agent"
+import type { SessionMessage } from "../session/message"
+import type { SessionSchema } from "../session/schema"
 
 export interface Context {
   readonly sessionID: SessionSchema.ID
@@ -114,7 +114,7 @@ export function make<Input extends SchemaType<any>, Output extends SchemaType<an
 }
 
 export const validateName = (name: string) =>
-  @lgcode/^[A-Za-z][A-Za-z0-9_-]{0,63}$@lgcode/.test(name)
+  /^[A-Za-z][A-Za-z0-9_-]{0,63}$/.test(name)
     ? Effect.void
     : Effect.fail(new RegistrationError({ name, message: `Invalid tool name: ${name}` }))
 

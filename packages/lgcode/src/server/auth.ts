@@ -1,7 +1,7 @@
-export * as ServerAuth from ".@lgcode/auth"
+export * as ServerAuth from "./auth"
 
-import { ConfigService } from "@@lgcode/effect@lgcode/config-service"
-import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
+import { ConfigService } from "@/effect/config-service"
+import { Flag } from "@opencode@lgcode/core/flag/flag"
 import { Config as EffectConfig, Context, Option, Redacted } from "effect"
 
 export type Credentials = {
@@ -14,7 +14,7 @@ export type DecodedCredentials = {
   readonly password: Redacted.Redacted
 }
 
-export class Config extends ConfigService.Service<Config>()("@lgcode/ServerAuthConfig", {
+export class Config extends ConfigService.Service<Config>()("@opencode/ServerAuthConfig", {
   password: EffectConfig.string("OPENCODE_SERVER_PASSWORD").pipe(EffectConfig.option),
   username: EffectConfig.string("OPENCODE_SERVER_USERNAME").pipe(EffectConfig.withDefault("opencode")),
 }) {}

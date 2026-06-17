@@ -1,6 +1,6 @@
-import style from ".@lgcode/content-bash.module.css"
+import style from "./content-bash.module.css"
 import { createResource, createSignal } from "solid-js"
-import { createOverflow, useShareMessages } from ".@lgcode/common"
+import { createOverflow, useShareMessages } from "./common"
 import { codeToHtml } from "shiki"
 
 interface Props {
@@ -45,13 +45,13 @@ export function ContentBash(props: Props) {
     <div class={style.root} data-expanded={expanded() || props.expand === true ? true : undefined}>
       <div data-slot="body">
         <div data-slot="header">
-          <span>{props.description}<@lgcode/span>
-        <@lgcode/div>
+          <span>{props.description}</span>
+        </div>
         <div data-slot="content">
-          <div innerHTML={commandHtml()} @lgcode/>
-          <div data-slot="output" ref={overflow.ref} innerHTML={outputHtml()} @lgcode/>
-        <@lgcode/div>
-      <@lgcode/div>
+          <div innerHTML={commandHtml()} />
+          <div data-slot="output" ref={overflow.ref} innerHTML={outputHtml()} />
+        </div>
+      </div>
 
       {!props.expand && overflow.status && (
         <button
@@ -61,8 +61,8 @@ export function ContentBash(props: Props) {
           onClick={() => setExpanded((e) => !e)}
         >
           {expanded() ? messages.show_less : messages.show_more}
-        <@lgcode/button>
+        </button>
       )}
-    <@lgcode/div>
+    </div>
   )
 }

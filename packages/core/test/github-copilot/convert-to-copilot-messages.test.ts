@@ -1,4 +1,4 @@
-import { convertToOpenAICompatibleChatMessages as convertToCopilotMessages } from "@lgcode/core@lgcode/github-copilot@lgcode/chat@lgcode/convert-to-openai-compatible-chat-messages"
+import { convertToOpenAICompatibleChatMessages as convertToCopilotMessages } from "@opencode@lgcode/core/github-copilot/chat/convert-to-openai-compatible-chat-messages"
 import { describe, test, expect } from "bun:test"
 
 describe("system messages", () => {
@@ -40,7 +40,7 @@ describe("user messages", () => {
           {
             type: "file",
             data: Buffer.from([0, 1, 2, 3]).toString("base64"),
-            mediaType: "image@lgcode/png",
+            mediaType: "image/png",
           },
         ],
       },
@@ -53,7 +53,7 @@ describe("user messages", () => {
           { type: "text", text: "Hello" },
           {
             type: "image_url",
-            image_url: { url: "data:image@lgcode/png;base64,AAECAw==" },
+            image_url: { url: "data:image/png;base64,AAECAw==" },
           },
         ],
       },
@@ -69,7 +69,7 @@ describe("user messages", () => {
           {
             type: "file",
             data: new Uint8Array([0, 1, 2, 3]),
-            mediaType: "image@lgcode/png",
+            mediaType: "image/png",
           },
         ],
       },
@@ -82,7 +82,7 @@ describe("user messages", () => {
           { type: "text", text: "Hi" },
           {
             type: "image_url",
-            image_url: { url: "data:image@lgcode/png;base64,AAECAw==" },
+            image_url: { url: "data:image/png;base64,AAECAw==" },
           },
         ],
       },
@@ -96,8 +96,8 @@ describe("user messages", () => {
         content: [
           {
             type: "file",
-            data: new URL("https:@lgcode/@lgcode/example.com@lgcode/image.jpg"),
-            mediaType: "image@lgcode/*",
+            data: new URL("https://example.com/image.jpg"),
+            mediaType: "image/*",
           },
         ],
       },
@@ -109,7 +109,7 @@ describe("user messages", () => {
         content: [
           {
             type: "image_url",
-            image_url: { url: "https:@lgcode/@lgcode/example.com@lgcode/image.jpg" },
+            image_url: { url: "https://example.com/image.jpg" },
           },
         ],
       },
@@ -512,7 +512,7 @@ describe("full conversation", () => {
     const systemMsg = result[0]
     expect(systemMsg.role).toBe("system")
 
-    @lgcode/@lgcode/ Assistant message should have reasoning fields
+    // Assistant message should have reasoning fields
     const assistantMsg = result[2] as {
       reasoning_text?: string
       reasoning_opaque?: string

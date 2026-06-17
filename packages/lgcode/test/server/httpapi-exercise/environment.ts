@@ -1,11 +1,11 @@
-import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
+import { Flag } from "@opencode@lgcode/core/flag/flag"
 import { Effect } from "effect"
 import path from "path"
 
 const preserveExerciseGlobalRoot = !!process.env.OPENCODE_HTTPAPI_EXERCISE_GLOBAL
 export const exerciseGlobalRoot =
   process.env.OPENCODE_HTTPAPI_EXERCISE_GLOBAL ??
-  path.join(process.env.TMPDIR ?? "@lgcode/tmp", `opencode-httpapi-global-${process.pid}`)
+  path.join(process.env.TMPDIR ?? "/tmp", `opencode-httpapi-global-${process.pid}`)
 process.env.XDG_DATA_HOME = path.join(exerciseGlobalRoot, "data")
 process.env.XDG_CONFIG_HOME = path.join(exerciseGlobalRoot, "config")
 process.env.XDG_STATE_HOME = path.join(exerciseGlobalRoot, "state")
@@ -17,7 +17,7 @@ export const exerciseDataDirectory = path.join(exerciseGlobalRoot, "data", "open
 const preserveExerciseDatabase = !!process.env.OPENCODE_HTTPAPI_EXERCISE_DB
 export const exerciseDatabasePath =
   process.env.OPENCODE_HTTPAPI_EXERCISE_DB ??
-  path.join(process.env.TMPDIR ?? "@lgcode/tmp", `opencode-httpapi-exercise-${process.pid}.db`)
+  path.join(process.env.TMPDIR ?? "/tmp", `opencode-httpapi-exercise-${process.pid}.db`)
 process.env.OPENCODE_DB = exerciseDatabasePath
 Flag.OPENCODE_DB = exerciseDatabasePath
 
@@ -27,7 +27,7 @@ export const original = {
 }
 
 export const cleanupExercisePaths = Effect.promise(async () => {
-  const fs = await import("fs@lgcode/promises")
+  const fs = await import("fs/promises")
   if (!preserveExerciseDatabase) {
     await Promise.all(
       [exerciseDatabasePath, `${exerciseDatabasePath}-wal`, `${exerciseDatabasePath}-shm`].map((file) =>

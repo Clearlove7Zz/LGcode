@@ -1,4 +1,4 @@
-export * as ConfigFormatterV1 from ".@lgcode/formatter"
+export * as ConfigFormatterV1 from "./formatter"
 
 import { Schema } from "effect"
 

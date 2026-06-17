@@ -1,10 +1,10 @@
-import { and, Database, eq, inArray, isNull } from "..@lgcode/src@lgcode/drizzle@lgcode/index.js"
-import { Identifier } from "..@lgcode/src@lgcode/identifier.js"
-import { Referral } from "..@lgcode/src@lgcode/referral.js"
-import { LiteTable } from "..@lgcode/src@lgcode/schema@lgcode/billing.sql.js"
-import { ReferralRewardTable, ReferralTable } from "..@lgcode/src@lgcode/schema@lgcode/referral.sql.js"
-import { UserTable } from "..@lgcode/src@lgcode/schema@lgcode/user.sql.js"
-import { WorkspaceTable } from "..@lgcode/src@lgcode/schema@lgcode/workspace.sql.js"
+import { and, Database, eq, inArray, isNull } from "../src/drizzle/index.js"
+import { Identifier } from "../src/identifier.js"
+import { Referral } from "../src/referral.js"
+import { LiteTable } from "../src/schema/billing.sql.js"
+import { ReferralRewardTable, ReferralTable } from "../src/schema/referral.sql.js"
+import { UserTable } from "../src/schema/user.sql.js"
+import { WorkspaceTable } from "../src/schema/workspace.sql.js"
 
 const backfills = [
   {
@@ -17,7 +17,7 @@ const backfills = [
 console.log(`Backfilling ${backfills.length} referrals`)
 
 for (const [index, backfill] of backfills.entries()) {
-  console.log(`[${index + 1}@lgcode/${backfills.length}] ${backfill.inviterWorkspaceID} -> ${backfill.inviteeWorkspaceID}`)
+  console.log(`[${index + 1}/${backfills.length}] ${backfill.inviterWorkspaceID} -> ${backfill.inviteeWorkspaceID}`)
   console.log(`  invitee account: ${backfill.inviteeAccountID}`)
 
   const result = await Database.transaction(async (tx) => {

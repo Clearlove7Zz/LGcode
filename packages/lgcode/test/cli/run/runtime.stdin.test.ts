@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
 import { Readable } from "node:stream"
-import { INTERACTIVE_INPUT_ERROR, resolveInteractiveStdin } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/runtime.stdin"
+import { INTERACTIVE_INPUT_ERROR, resolveInteractiveStdin } from "@/cli/cmd/run/runtime.stdin"
 
 function stream(isTTY: boolean) {
   return Object.assign(new Readable({ read() {} }), { isTTY }) as NodeJS.ReadStream
@@ -37,7 +37,7 @@ describe("run interactive stdin", () => {
     )
 
     expect(result.stdin).toBe(tty)
-    expect(seen).toEqual(["@lgcode/dev@lgcode/tty"])
+    expect(seen).toEqual(["/dev/tty"])
 
     result.cleanup?.()
     expect(tty.destroyed).toBe(true)

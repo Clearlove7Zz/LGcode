@@ -1,17 +1,17 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { Skill } from "..@lgcode/..@lgcode/src@lgcode/skill"
-import { Discovery } from "..@lgcode/..@lgcode/src@lgcode/skill@lgcode/discovery"
-import { RuntimeFlags } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/runtime-flags"
-import { EventV2Bridge } from "..@lgcode/..@lgcode/src@lgcode/event-v2-bridge"
-import { Config } from "..@lgcode/..@lgcode/src@lgcode/config@lgcode/config"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { Global } from "@lgcode/core@lgcode/global"
-import { provideInstance, provideTmpdirInstance, testInstanceStoreLayer, tmpdir } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { Skill } from "../../src/skill"
+import { Discovery } from "../../src/skill/discovery"
+import { RuntimeFlags } from "../../src/effect/runtime-flags"
+import { EventV2Bridge } from "../../src/event-v2-bridge"
+import { Config } from "../../src/config/config"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { Global } from "@opencode@lgcode/core/global"
+import { provideInstance, provideTmpdirInstance, testInstanceStoreLayer, tmpdir } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
 import path from "path"
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 
 const node = CrossSpawnSpawner.defaultLayer
 
@@ -52,7 +52,7 @@ async function createGlobalSkill(homeDir: string) {
     path.join(skillDir, "SKILL.md"),
     `---
 name: global-test-skill
-description: A global skill from ~@lgcode/.claude@lgcode/skills for testing.
+description: A global skill from ~/.claude/skills for testing.
 ---
 
 # Global Test Skill
@@ -77,7 +77,7 @@ const withHome = <A, E, R>(home: string, self: Effect.Effect<A, E, R>) =>
   )
 
 describe("skill", () => {
-  it.live("discovers skills from .opencode@lgcode/skill@lgcode/ directory", () =>
+  it.live("discovers skills from .opencode/skill/ directory", () =>
     provideTmpdirInstance(
       (dir) =>
         Effect.gen(function* () {
@@ -137,7 +137,7 @@ description: Skill for dirs test.
     ),
   )
 
-  it.live("discovers multiple skills from .opencode@lgcode/skill@lgcode/ directory", () =>
+  it.live("discovers multiple skills from .opencode/skill/ directory", () =>
     provideTmpdirInstance(
       (dir) =>
         Effect.gen(function* () {
@@ -228,7 +228,7 @@ Instructions here.
     ),
   )
 
-  it.live("discovers skills from .claude@lgcode/skills@lgcode/ directory", () =>
+  it.live("discovers skills from .claude/skills/ directory", () =>
     provideTmpdirInstance(
       (dir) =>
         Effect.gen(function* () {
@@ -237,7 +237,7 @@ Instructions here.
               path.join(dir, ".claude", "skills", "claude-skill", "SKILL.md"),
               `---
 name: claude-skill
-description: A skill in the .claude@lgcode/skills directory.
+description: A skill in the .claude/skills directory.
 ---
 
 # Claude Skill
@@ -256,7 +256,7 @@ description: A skill in the .claude@lgcode/skills directory.
     ),
   )
 
-  it.live("discovers global skills from ~@lgcode/.claude@lgcode/skills@lgcode/ directory", () =>
+  it.live("discovers global skills from ~/.claude/skills/ directory", () =>
     Effect.gen(function* () {
       const tmp = yield* Effect.acquireRelease(
         Effect.promise(() => tmpdir({ git: true })),
@@ -272,7 +272,7 @@ description: A skill in the .claude@lgcode/skills directory.
             const list = (yield* skill.all()).filter((s) => s.location !== "<built-in>")
             expect(list.length).toBe(1)
             expect(list[0].name).toBe("global-test-skill")
-            expect(list[0].description).toBe("A global skill from ~@lgcode/.claude@lgcode/skills for testing.")
+            expect(list[0].description).toBe("A global skill from ~/.claude/skills for testing.")
             expect(list[0].location).toContain(path.join(".claude", "skills", "global-test-skill", "SKILL.md"))
           }).pipe(provideInstance(tmp.path))
         }),
@@ -308,9 +308,9 @@ description: A skill in the .claude@lgcode/skills directory.
 
   it.effect("exposes tagged expected skill failure classes", () =>
     Effect.sync(() => {
-      const invalid = new Skill.InvalidError({ path: "@lgcode/tmp@lgcode/SKILL.md", message: "Invalid skill frontmatter" })
+      const invalid = new Skill.InvalidError({ path: "/tmp/SKILL.md", message: "Invalid skill frontmatter" })
       const mismatch = new Skill.NameMismatchError({
-        path: "@lgcode/tmp@lgcode/SKILL.md",
+        path: "/tmp/SKILL.md",
         expected: "expected-skill",
         actual: "actual-skill",
       })
@@ -322,7 +322,7 @@ description: A skill in the .claude@lgcode/skills directory.
     }),
   )
 
-  it.live("discovers skills from .agents@lgcode/skills@lgcode/ directory", () =>
+  it.live("discovers skills from .agents/skills/ directory", () =>
     provideTmpdirInstance(
       (dir) =>
         Effect.gen(function* () {
@@ -331,7 +331,7 @@ description: A skill in the .claude@lgcode/skills directory.
               path.join(dir, ".agents", "skills", "agent-skill", "SKILL.md"),
               `---
 name: agent-skill
-description: A skill in the .agents@lgcode/skills directory.
+description: A skill in the .agents/skills directory.
 ---
 
 # Agent Skill
@@ -350,7 +350,7 @@ description: A skill in the .agents@lgcode/skills directory.
     ),
   )
 
-  it.live("discovers global skills from ~@lgcode/.agents@lgcode/skills@lgcode/ directory", () =>
+  it.live("discovers global skills from ~/.agents/skills/ directory", () =>
     Effect.gen(function* () {
       const tmp = yield* Effect.acquireRelease(
         Effect.promise(() => tmpdir({ git: true })),
@@ -367,7 +367,7 @@ description: A skill in the .agents@lgcode/skills directory.
               path.join(skillDir, "SKILL.md"),
               `---
 name: global-agent-skill
-description: A global skill from ~@lgcode/.agents@lgcode/skills for testing.
+description: A global skill from ~/.agents/skills for testing.
 ---
 
 # Global Agent Skill
@@ -382,7 +382,7 @@ This skill is loaded from the global home directory.
             const list = (yield* skill.all()).filter((s) => s.location !== "<built-in>")
             expect(list.length).toBe(1)
             expect(list[0].name).toBe("global-agent-skill")
-            expect(list[0].description).toBe("A global skill from ~@lgcode/.agents@lgcode/skills for testing.")
+            expect(list[0].description).toBe("A global skill from ~/.agents/skills for testing.")
             expect(list[0].location).toContain(path.join(".agents", "skills", "global-agent-skill", "SKILL.md"))
           }).pipe(provideInstance(tmp.path))
         }),
@@ -390,7 +390,7 @@ This skill is loaded from the global home directory.
     }),
   )
 
-  it.live("discovers skills from both .claude@lgcode/skills@lgcode/ and .agents@lgcode/skills@lgcode/", () =>
+  it.live("discovers skills from both .claude/skills/ and .agents/skills/", () =>
     provideTmpdirInstance(
       (dir) =>
         Effect.gen(function* () {
@@ -400,7 +400,7 @@ This skill is loaded from the global home directory.
                 path.join(dir, ".claude", "skills", "claude-skill", "SKILL.md"),
                 `---
 name: claude-skill
-description: A skill in the .claude@lgcode/skills directory.
+description: A skill in the .claude/skills directory.
 ---
 
 # Claude Skill
@@ -410,7 +410,7 @@ description: A skill in the .claude@lgcode/skills directory.
                 path.join(dir, ".agents", "skills", "agent-skill", "SKILL.md"),
                 `---
 name: agent-skill
-description: A skill in the .agents@lgcode/skills directory.
+description: A skill in the .agents/skills directory.
 ---
 
 # Agent Skill
@@ -439,7 +439,7 @@ description: A skill in the .agents@lgcode/skills directory.
                 path.join(dir, ".claude", "skills", "claude-skill", "SKILL.md"),
                 `---
 name: claude-skill
-description: A skill in the .claude@lgcode/skills directory.
+description: A skill in the .claude/skills directory.
 ---
 
 # Claude Skill
@@ -449,7 +449,7 @@ description: A skill in the .claude@lgcode/skills directory.
                 path.join(dir, ".agents", "skills", "agent-skill", "SKILL.md"),
                 `---
 name: agent-skill
-description: A skill in the .agents@lgcode/skills directory.
+description: A skill in the .agents/skills directory.
 ---
 
 # Agent Skill
@@ -476,7 +476,7 @@ description: A skill in the .agents@lgcode/skills directory.
                 path.join(dir, ".claude", "skills", "claude-skill", "SKILL.md"),
                 `---
 name: claude-skill
-description: A skill in the .claude@lgcode/skills directory.
+description: A skill in the .claude/skills directory.
 ---
 
 # Claude Skill
@@ -486,7 +486,7 @@ description: A skill in the .claude@lgcode/skills directory.
                 path.join(dir, ".agents", "skills", "agent-skill", "SKILL.md"),
                 `---
 name: agent-skill
-description: A skill in the .agents@lgcode/skills directory.
+description: A skill in the .agents/skills directory.
 ---
 
 # Agent Skill
@@ -496,7 +496,7 @@ description: A skill in the .agents@lgcode/skills directory.
                 path.join(dir, ".opencode", "skill", "opencode-skill", "SKILL.md"),
                 `---
 name: opencode-skill
-description: A skill in the .opencode@lgcode/skill directory.
+description: A skill in the .opencode/skill directory.
 ---
 
 # OpenCode Skill
@@ -523,7 +523,7 @@ description: A skill in the .opencode@lgcode/skill directory.
                 path.join(dir, ".claude", "skills", "claude-skill", "SKILL.md"),
                 `---
 name: claude-skill
-description: A skill in the .claude@lgcode/skills directory.
+description: A skill in the .claude/skills directory.
 ---
 
 # Claude Skill
@@ -533,7 +533,7 @@ description: A skill in the .claude@lgcode/skills directory.
                 path.join(dir, ".agents", "skills", "agent-skill", "SKILL.md"),
                 `---
 name: agent-skill
-description: A skill in the .agents@lgcode/skills directory.
+description: A skill in the .agents/skills directory.
 ---
 
 # Agent Skill
@@ -543,7 +543,7 @@ description: A skill in the .agents@lgcode/skills directory.
                 path.join(dir, ".opencode", "skill", "agent-skill", "SKILL.md"),
                 `---
 name: opencode-skill
-description: A skill in the .opencode@lgcode/skill directory.
+description: A skill in the .opencode/skill directory.
 ---
 
 # OpenCode Skill
@@ -553,7 +553,7 @@ description: A skill in the .opencode@lgcode/skill directory.
                 path.join(dir, ".opencode", "skills", "agent-skill", "SKILL.md"),
                 `---
 name: opencode-skill
-description: A skill in the .opencode@lgcode/skills directory.
+description: A skill in the .opencode/skills directory.
 ---
 
 # OpenCode Skill

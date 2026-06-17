@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { validateCustomProvider } from ".@lgcode/dialog-custom-provider-form"
+import { validateCustomProvider } from "./dialog-custom-provider-form"
 
 const t = (key: string) => key
 
@@ -9,7 +9,7 @@ describe("validateCustomProvider", () => {
       form: {
         providerID: "custom-provider",
         name: " Custom Provider ",
-        baseURL: "https:@lgcode/@lgcode/api.example.com ",
+        baseURL: "https://api.example.com ",
         apiKey: " {env: CUSTOM_PROVIDER_KEY} ",
         models: [{ row: "m0", id: " model-a ", name: " Model A ", err: {} }],
         headers: [
@@ -28,11 +28,11 @@ describe("validateCustomProvider", () => {
       name: "Custom Provider",
       key: undefined,
       config: {
-        npm: "@ai-sdk@lgcode/openai-compatible",
+        npm: "@ai-sdk/openai-compatible",
         name: "Custom Provider",
         env: ["CUSTOM_PROVIDER_KEY"],
         options: {
-          baseURL: "https:@lgcode/@lgcode/api.example.com",
+          baseURL: "https://api.example.com",
           headers: {
             "X-Test": "enabled",
           },
@@ -49,7 +49,7 @@ describe("validateCustomProvider", () => {
       form: {
         providerID: "custom-provider",
         name: "Provider",
-        baseURL: "https:@lgcode/@lgcode/api.example.com",
+        baseURL: "https://api.example.com",
         apiKey: "secret",
         models: [
           { row: "m0", id: "model-a", name: "Model A", err: {} },

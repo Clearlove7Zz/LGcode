@@ -1,30 +1,30 @@
-import { ServerAuth } from "@@lgcode/server@lgcode/auth"
+import { ServerAuth } from "@/server/auth"
 import { Effect, Encoding, Layer, Redacted } from "effect"
-import { HttpEffect, HttpRouter, HttpServerRequest, HttpServerResponse } from "effect@lgcode/unstable@lgcode/http"
-import { HttpApiError, HttpApiMiddleware } from "effect@lgcode/unstable@lgcode/httpapi"
-import { hasPtyConnectTicketURL } from "@@lgcode/server@lgcode/shared@lgcode/pty-ticket"
-import { isPublicUIPath } from "@@lgcode/server@lgcode/shared@lgcode/public-ui"
+import { HttpEffect, HttpRouter, HttpServerRequest, HttpServerResponse } from "effect/unstable/http"
+import { HttpApiError, HttpApiMiddleware } from "effect/unstable/httpapi"
+import { hasPtyConnectTicketURL } from "@/server/shared/pty-ticket"
+import { isPublicUIPath } from "@/server/shared/public-ui"
 export {
   Authorization as ServerAuthorization,
   authorizationLayer as serverAuthorizationLayer,
-} from "@lgcode/server@lgcode/middleware@lgcode/authorization"
+} from "@opencode@lgcode/server/middleware/authorization"
 
 const AUTH_TOKEN_QUERY = "auth_token"
 const UNAUTHORIZED = 401
 const WWW_AUTHENTICATE = 'Basic realm="Secure Area"'
 
-@lgcode/@lgcode/ Avoid HttpApiSecurity alternatives here: Effect security middleware wraps the
-@lgcode/@lgcode/ full handler, so a downstream failure can make the next auth alternative run
-@lgcode/@lgcode/ and remap an authorized NotFound into Unauthorized.
+// Avoid HttpApiSecurity alternatives here: Effect security middleware wraps the
+// full handler, so a downstream failure can make the next auth alternative run
+// and remap an authorized NotFound into Unauthorized.
 export class Authorization extends HttpApiMiddleware.Service<Authorization>()(
-  "@lgcode/ExperimentalHttpApiAuthorization",
+  "@opencode/ExperimentalHttpApiAuthorization",
   {
     error: HttpApiError.UnauthorizedNoContent,
   },
 ) {}
 
 export class PtyConnectAuthorization extends HttpApiMiddleware.Service<PtyConnectAuthorization>()(
-  "@lgcode/ExperimentalHttpApiPtyConnectAuthorization",
+  "@opencode/ExperimentalHttpApiPtyConnectAuthorization",
   {
     error: HttpApiError.UnauthorizedNoContent,
   },
@@ -71,13 +71,13 @@ function decodeCredential(input: string) {
 }
 
 function credentialFromRequest(request: HttpServerRequest.HttpServerRequest) {
-  return credentialFromURL(new URL(request.url, "http:@lgcode/@lgcode/localhost"), request)
+  return credentialFromURL(new URL(request.url, "http://localhost"), request)
 }
 
 function credentialFromURL(url: URL, request: HttpServerRequest.HttpServerRequest) {
   const token = url.searchParams.get(AUTH_TOKEN_QUERY)
   if (token) return decodeCredential(token)
-  const match = @lgcode/^Basic\s+(.+)$@lgcode/i.exec(request.headers.authorization ?? "")
+  const match = /^Basic\s+(.+)$/i.exec(request.headers.authorization ?? "")
   if (match) return decodeCredential(match[1])
   return Effect.succeed(emptyCredential())
 }
@@ -106,7 +106,7 @@ export const authorizationRouterMiddleware = HttpRouter.middleware()(
     return (effect) =>
       Effect.gen(function* () {
         const request = yield* HttpServerRequest.HttpServerRequest
-        const url = new URL(request.url, "http:@lgcode/@lgcode/localhost")
+        const url = new URL(request.url, "http://localhost")
         if (isPublicUIPath(request.method, url.pathname)) return yield* effect
         return yield* credentialFromURL(url, request).pipe(
           Effect.flatMap((credential) => validateRawCredential(effect, credential, config)),
@@ -139,7 +139,7 @@ export const ptyConnectAuthorizationLayer = Layer.effect(
     return PtyConnectAuthorization.of((effect) =>
       Effect.gen(function* () {
         const request = yield* HttpServerRequest.HttpServerRequest
-        const url = new URL(request.url, "http:@lgcode/@lgcode/localhost")
+        const url = new URL(request.url, "http://localhost")
         if (hasPtyConnectTicketURL(url)) return yield* effect
         return yield* credentialFromURL(url, request).pipe(
           Effect.flatMap((credential) => validateCredential(effect, credential, config)),

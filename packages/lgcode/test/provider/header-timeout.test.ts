@@ -2,16 +2,16 @@ import { afterEach, expect } from "bun:test"
 import { createServer, type Server } from "node:http"
 import { streamText } from "ai"
 import { Effect, Layer } from "effect"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
-import { disposeAllInstances, provideTmpdirInstance } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
-import { testProviderConfig } from "..@lgcode/lib@lgcode/test-provider"
-import { Env } from "@@lgcode/env"
-import { Plugin } from "@@lgcode/plugin"
-import { Provider } from "@@lgcode/provider@lgcode/provider"
-import { ProviderError } from "@@lgcode/provider@lgcode/error"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelV2 } from "@opencode@lgcode/core/model"
+import { disposeAllInstances, provideTmpdirInstance } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
+import { testProviderConfig } from "../lib/test-provider"
+import { Env } from "@/env"
+import { Plugin } from "@/plugin"
+import { Provider } from "@/provider/provider"
+import { ProviderError } from "@/provider/error"
 
 afterEach(async () => {
   await disposeAllInstances()
@@ -186,19 +186,19 @@ function providerConfig(url: string, options: Record<string, unknown> = {}) {
 async function delayedHeaderServer(delay: number): Promise<{ server: Server; url: string }> {
   const server = createServer((_, res) => {
     setTimeout(() => {
-      res.writeHead(200, { "content-type": "text@lgcode/event-stream" })
+      res.writeHead(200, { "content-type": "text/event-stream" })
       res.end('data: {"choices":[{"delta":{"content":"ok"}}]}\n\ndata: [DONE]\n\n')
     }, delay)
   })
   await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve))
   const address = server.address()
   if (!address || typeof address === "string") throw new Error("server did not bind to a TCP port")
-  return { server, url: `http:@lgcode/@lgcode/127.0.0.1:${address.port}` }
+  return { server, url: `http://127.0.0.1:${address.port}` }
 }
 
 async function delayedBodyServer(delay: number): Promise<{ server: Server; url: string }> {
   const server = createServer((_, res) => {
-    res.writeHead(200, { "content-type": "text@lgcode/event-stream" })
+    res.writeHead(200, { "content-type": "text/event-stream" })
     res.flushHeaders()
     setTimeout(() => {
       res.end('data: {"choices":[{"delta":{"content":"late"}}]}\n\ndata: [DONE]\n\n')
@@ -207,7 +207,7 @@ async function delayedBodyServer(delay: number): Promise<{ server: Server; url: 
   await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve))
   const address = server.address()
   if (!address || typeof address === "string") throw new Error("server did not bind to a TCP port")
-  return { server, url: `http:@lgcode/@lgcode/127.0.0.1:${address.port}` }
+  return { server, url: `http://127.0.0.1:${address.port}` }
 }
 
 function withAuthContent<A, E, R>(self: Effect.Effect<A, E, R>, value: Record<string, unknown> = defaultAuthContent()) {

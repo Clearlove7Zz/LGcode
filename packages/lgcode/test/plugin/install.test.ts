@@ -1,10 +1,10 @@
 import { describe, expect, test } from "bun:test"
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import path from "path"
 import { parse as parseJsonc } from "jsonc-parser"
-import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
-import { createPlugTask, type PlugCtx, type PlugDeps } from "..@lgcode/..@lgcode/src@lgcode/cli@lgcode/cmd@lgcode/plug"
-import { tmpdir } from "..@lgcode/fixture@lgcode/fixture"
+import { Filesystem } from "@/util/filesystem"
+import { createPlugTask, type PlugCtx, type PlugDeps } from "../../src/cli/cmd/plug"
+import { tmpdir } from "../fixture/fixture"
 
 function deps(global: string, target: string | Error): PlugDeps {
   return {
@@ -50,7 +50,7 @@ function ctxDir(dir: string, worktree: string): PlugCtx {
 function ctxRoot(dir: string): PlugCtx {
   return {
     vcs: "git",
-    worktree: "@lgcode/",
+    worktree: "/",
     directory: dir,
   }
 }
@@ -69,20 +69,20 @@ async function plugin(
   const tui = kinds?.includes("tui") ?? false
   const exports: Record<string, unknown> = {}
   if (server) {
-    exports[".@lgcode/server"] = opts?.server
+    exports["./server"] = opts?.server
       ? {
-          import: ".@lgcode/server.js",
+          import: "./server.js",
           config: opts.server,
         }
-      : ".@lgcode/server.js"
+      : "./server.js"
   }
   if (tui) {
-    exports[".@lgcode/tui"] = opts?.tui
+    exports["./tui"] = opts?.tui
       ? {
-          import: ".@lgcode/tui.js",
+          import: "./tui.js",
           config: opts.tui,
         }
-      : ".@lgcode/tui.js"
+      : "./tui.js"
   }
   await fs.mkdir(p, { recursive: true })
   await Bun.write(
@@ -91,7 +91,7 @@ async function plugin(
       {
         name: "acme",
         version: "1.0.0",
-        ...(server ? { main: ".@lgcode/server.js" } : {}),
+        ...(server ? { main: "./server.js" } : {}),
         ...(Object.keys(exports).length ? { exports } : {}),
         ...(themes?.length ? { "oc-themes": themes } : {}),
       },
@@ -160,12 +160,12 @@ describe("plugin.install.task", () => {
     await Bun.write(
       server,
       `{
-  @lgcode/@lgcode/ server head
+  // server head
   "plugin": [
-    @lgcode/@lgcode/ server keep
+    // server keep
     "seed@1.0.0"
   ],
-  @lgcode/@lgcode/ server tail
+  // server tail
   "model": "x"
 }
 `,
@@ -173,12 +173,12 @@ describe("plugin.install.task", () => {
     await Bun.write(
       tui,
       `{
-  @lgcode/@lgcode/ tui head
+  // tui head
   "plugin": [
-    @lgcode/@lgcode/ tui keep
+    // tui keep
     "seed@1.0.0"
   ],
-  @lgcode/@lgcode/ tui tail
+  // tui tail
   "theme": "opencode"
 }
 `,
@@ -196,12 +196,12 @@ describe("plugin.install.task", () => {
 
     const serverText = await fs.readFile(server, "utf8")
     const tuiText = await fs.readFile(tui, "utf8")
-    expect(serverText).toContain("@lgcode/@lgcode/ server head")
-    expect(serverText).toContain("@lgcode/@lgcode/ server keep")
-    expect(serverText).toContain("@lgcode/@lgcode/ server tail")
-    expect(tuiText).toContain("@lgcode/@lgcode/ tui head")
-    expect(tuiText).toContain("@lgcode/@lgcode/ tui keep")
-    expect(tuiText).toContain("@lgcode/@lgcode/ tui tail")
+    expect(serverText).toContain("// server head")
+    expect(serverText).toContain("// server keep")
+    expect(serverText).toContain("// server tail")
+    expect(tuiText).toContain("// tui head")
+    expect(tuiText).toContain("// tui keep")
+    expect(tuiText).toContain("// tui tail")
 
     const serverJson = parseJsonc(serverText) as { plugin?: unknown[] }
     const tuiJson = parseJsonc(tuiText) as { plugin?: unknown[] }
@@ -218,7 +218,7 @@ describe("plugin.install.task", () => {
       cfg,
       `{
   "plugin": [
-    @lgcode/@lgcode/ keep this note
+    // keep this note
     "acme@1.0.0"
   ]
 }
@@ -237,7 +237,7 @@ describe("plugin.install.task", () => {
     expect(ok).toBe(true)
 
     const text = await fs.readFile(cfg, "utf8")
-    expect(text).toContain("@lgcode/@lgcode/ keep this note")
+    expect(text).toContain("// keep this note")
 
     const json = parseJsonc(text) as { plugin?: unknown[] }
     expect(json.plugin).toEqual(["acme@2.0.0"])
@@ -286,11 +286,11 @@ describe("plugin.install.task", () => {
     const target = await plugin(tmp.path, ["server"])
     const cfg = path.join(tmp.path, ".opencode", "opencode.json")
     await fs.mkdir(path.dirname(cfg), { recursive: true })
-    await Bun.write(cfg, JSON.stringify({ plugin: ["@scope@lgcode/acme@1.0.0"] }, null, 2))
+    await Bun.write(cfg, JSON.stringify({ plugin: ["@scope/acme@1.0.0"] }, null, 2))
 
     const run = createPlugTask(
       {
-        mod: "@scope@lgcode/acme@2.0.0",
+        mod: "@scope/acme@2.0.0",
       },
       deps(path.join(tmp.path, "global"), target),
     )
@@ -298,7 +298,7 @@ describe("plugin.install.task", () => {
     const ok = await run(ctx(tmp.path))
     expect(ok).toBe(true)
     const json = await read(cfg)
-    expect(json.plugin).toEqual(["@scope@lgcode/acme@1.0.0"])
+    expect(json.plugin).toEqual(["@scope/acme@1.0.0"])
   })
 
   test("keeps file plugin entries and still adds npm plugin", async () => {
@@ -306,7 +306,7 @@ describe("plugin.install.task", () => {
     const target = await plugin(tmp.path, ["server"])
     const cfg = path.join(tmp.path, ".opencode", "opencode.json")
     await fs.mkdir(path.dirname(cfg), { recursive: true })
-    await Bun.write(cfg, JSON.stringify({ plugin: ["file:@lgcode/@lgcode/@lgcode/tmp@lgcode/acme.ts"] }, null, 2))
+    await Bun.write(cfg, JSON.stringify({ plugin: ["file:///tmp/acme.ts"] }, null, 2))
 
     const run = createPlugTask(
       {
@@ -318,7 +318,7 @@ describe("plugin.install.task", () => {
     const ok = await run(ctx(tmp.path))
     expect(ok).toBe(true)
     const json = await read(cfg)
-    expect(json.plugin).toEqual(["file:@lgcode/@lgcode/@lgcode/tmp@lgcode/acme.ts", "acme@1.2.3"])
+    expect(json.plugin).toEqual(["file:///tmp/acme.ts", "acme@1.2.3"])
   })
 
   test("force replaces configured package version and keeps tuple options", async () => {
@@ -442,7 +442,7 @@ describe("plugin.install.task", () => {
 
   test("writes tui config for oc-themes-only packages", async () => {
     await using tmp = await tmpdir()
-    const target = await plugin(tmp.path, undefined, undefined, ["themes@lgcode/forest.json"])
+    const target = await plugin(tmp.path, undefined, undefined, ["themes/forest.json"])
     await fs.mkdir(path.join(target, "themes"), { recursive: true })
     await Bun.write(path.join(target, "themes", "forest.json"), JSON.stringify({ theme: { text: "#fff" } }, null, 2))
     const run = createPlugTask(
@@ -463,7 +463,7 @@ describe("plugin.install.task", () => {
 
   test("returns false for oc-themes outside plugin directory", async () => {
     await using tmp = await tmpdir()
-    const target = await plugin(tmp.path, undefined, undefined, ["..@lgcode/outside.json"])
+    const target = await plugin(tmp.path, undefined, undefined, ["../outside.json"])
     const run = createPlugTask(
       {
         mod: "acme@1.2.3",

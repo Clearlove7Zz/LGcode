@@ -1,9 +1,9 @@
-import { TextAttributes } from "@opentui@lgcode/core"
-import { useTheme } from "..@lgcode/context@lgcode/theme"
-import { useDialog } from "..@lgcode/ui@lgcode/dialog"
-import { createStore } from "solid-js@lgcode/store"
+import { TextAttributes } from "@opentui/core"
+import { useTheme } from "../context/theme"
+import { useDialog } from "../ui/dialog"
+import { createStore } from "solid-js/store"
 import { For } from "solid-js"
-import { useBindings } from "..@lgcode/keymap"
+import { useBindings } from "../keymap"
 
 export function DialogSessionDeleteFailed(props: {
   session: string
@@ -55,17 +55,17 @@ export function DialogSessionDeleteFailed(props: {
       <box flexDirection="row" justifyContent="space-between">
         <text attributes={TextAttributes.BOLD} fg={theme.text}>
           Failed to Delete Session
-        <@lgcode/text>
+        </text>
         <text fg={theme.textMuted} onMouseUp={() => dialog.clear()}>
           esc
-        <@lgcode/text>
-      <@lgcode/box>
+        </text>
+      </box>
       <text fg={theme.textMuted} wrapMode="word">
         {`The session "${props.session}" could not be deleted because the workspace "${props.workspace}" is not available.`}
-      <@lgcode/text>
+      </text>
       <text fg={theme.textMuted} wrapMode="word">
         Choose how you want to recover this broken workspace session.
-      <@lgcode/text>
+      </text>
       <box flexDirection="column" paddingBottom={1} gap={1}>
         <For each={options}>
           {(item) => (
@@ -86,14 +86,14 @@ export function DialogSessionDeleteFailed(props: {
                 fg={item.id === store.active ? theme.selectedListItemText : theme.text}
               >
                 {item.title}
-              <@lgcode/text>
+              </text>
               <text fg={item.id === store.active ? theme.selectedListItemText : theme.textMuted} wrapMode="word">
                 {item.description}
-              <@lgcode/text>
-            <@lgcode/box>
+              </text>
+            </box>
           )}
-        <@lgcode/For>
-      <@lgcode/box>
-    <@lgcode/box>
+        </For>
+      </box>
+    </box>
   )
 }

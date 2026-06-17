@@ -12,32 +12,32 @@ import {
   untrack,
   type Accessor,
 } from "solid-js"
-import { makeEventListener } from "@solid-primitives@lgcode/event-listener"
-import { useLocation, useNavigate, useParams } from "@solidjs@lgcode/router"
-import { useLayout, LocalProject } from "@@lgcode/context@lgcode/layout"
-import { useServerSync } from "@@lgcode/context@lgcode/server-sync"
-import { Persist, persisted } from "@@lgcode/utils@lgcode/persist"
-import { base64Encode } from "@lgcode/core@lgcode/util@lgcode/encode"
-import { decode64 } from "@@lgcode/utils@lgcode/base64"
-import { ResizeHandle } from "@lgcode/ui@lgcode/resize-handle"
-import { Button } from "@lgcode/ui@lgcode/button"
-import { IconButton } from "@lgcode/ui@lgcode/icon-button"
-import { Tooltip } from "@lgcode/ui@lgcode/tooltip"
-import { DropdownMenu } from "@lgcode/ui@lgcode/dropdown-menu"
-import { Dialog } from "@lgcode/ui@lgcode/dialog"
-import { getFilename } from "@lgcode/core@lgcode/util@lgcode/path"
-import { Session, type Message } from "@lgcode/sdk@lgcode/v2@lgcode/client"
-import { usePlatform } from "@@lgcode/context@lgcode/platform"
-import { useSettings } from "@@lgcode/context@lgcode/settings"
-import { createStore, produce, reconcile } from "solid-js@lgcode/store"
-import { DragDropProvider, DragDropSensors, DragOverlay, SortableProvider, closestCenter } from "@thisbeyond@lgcode/solid-dnd"
-import type { DragEvent } from "@thisbeyond@lgcode/solid-dnd"
-import { useProviders } from "@@lgcode/hooks@lgcode/use-providers"
-import { toaster } from "@lgcode/ui@lgcode/toast"
-import { setV2Toast, showToast, ToastRegion } from "@@lgcode/utils@lgcode/toast"
-import { useServerSDK } from "@@lgcode/context@lgcode/server-sdk"
-import { clearWorkspaceTerminals } from "@@lgcode/context@lgcode/terminal"
-import { dropSessionCaches, pickSessionCacheEvictions } from "@@lgcode/context@lgcode/global-sync@lgcode/session-cache"
+import { makeEventListener } from "@solid-primitives/event-listener"
+import { useLocation, useNavigate, useParams } from "@solidjs/router"
+import { useLayout, LocalProject } from "@/context/layout"
+import { useServerSync } from "@/context/server-sync"
+import { Persist, persisted } from "@/utils/persist"
+import { base64Encode } from "@opencode@lgcode/core/util/encode"
+import { decode64 } from "@/utils/base64"
+import { ResizeHandle } from "@opencode@lgcode/ui/resize-handle"
+import { Button } from "@opencode@lgcode/ui/button"
+import { IconButton } from "@opencode@lgcode/ui/icon-button"
+import { Tooltip } from "@opencode@lgcode/ui/tooltip"
+import { DropdownMenu } from "@opencode@lgcode/ui/dropdown-menu"
+import { Dialog } from "@opencode@lgcode/ui/dialog"
+import { getFilename } from "@opencode@lgcode/core/util/path"
+import { Session, type Message } from "@opencode@lgcode/sdk/v2/client"
+import { usePlatform } from "@/context/platform"
+import { useSettings } from "@/context/settings"
+import { createStore, produce, reconcile } from "solid-js/store"
+import { DragDropProvider, DragDropSensors, DragOverlay, SortableProvider, closestCenter } from "@thisbeyond/solid-dnd"
+import type { DragEvent } from "@thisbeyond/solid-dnd"
+import { useProviders } from "@/hooks/use-providers"
+import { toaster } from "@opencode@lgcode/ui/toast"
+import { setV2Toast, showToast, ToastRegion } from "@/utils/toast"
+import { useServerSDK } from "@/context/server-sdk"
+import { clearWorkspaceTerminals } from "@/context/terminal"
+import { dropSessionCaches, pickSessionCacheEvictions } from "@/context/global-sync/session-cache"
 import {
   clearSessionPrefetchInflight,
   clearSessionPrefetch,
@@ -46,51 +46,51 @@ import {
   runSessionPrefetch,
   setSessionPrefetch,
   shouldSkipSessionPrefetch,
-} from "@@lgcode/context@lgcode/global-sync@lgcode/session-prefetch"
-import { useNotification } from "@@lgcode/context@lgcode/notification"
-import { usePermission } from "@@lgcode/context@lgcode/permission"
-import { Binary } from "@lgcode/core@lgcode/util@lgcode/binary"
-import { retry } from "@lgcode/core@lgcode/util@lgcode/retry"
-import { playSoundById } from "@@lgcode/utils@lgcode/sound"
-import { createAim } from "@@lgcode/utils@lgcode/aim"
-import { setNavigate } from "@@lgcode/utils@lgcode/notification-click"
-import { Worktree as WorktreeState } from "@@lgcode/utils@lgcode/worktree"
-import { setSessionHandoff } from "@@lgcode/pages@lgcode/session@lgcode/handoff"
-import { SessionRouteKey, SessionStateKey } from "@@lgcode/utils@lgcode/server-scope"
+} from "@/context/global-sync/session-prefetch"
+import { useNotification } from "@/context/notification"
+import { usePermission } from "@/context/permission"
+import { Binary } from "@opencode@lgcode/core/util/binary"
+import { retry } from "@opencode@lgcode/core/util/retry"
+import { playSoundById } from "@/utils/sound"
+import { createAim } from "@/utils/aim"
+import { setNavigate } from "@/utils/notification-click"
+import { Worktree as WorktreeState } from "@/utils/worktree"
+import { setSessionHandoff } from "@/pages/session/handoff"
+import { SessionRouteKey, SessionStateKey } from "@/utils/server-scope"
 
-import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
-import { useTheme, type ColorScheme } from "@lgcode/ui@lgcode/theme@lgcode/context"
-import { useCommand, type CommandOption } from "@@lgcode/context@lgcode/command"
-import { ConstrainDragXAxis, getDraggableId } from "@@lgcode/utils@lgcode/solid-dnd"
-import { DebugBar } from "@@lgcode/components@lgcode/debug-bar"
-import { HelpButton } from "@@lgcode/components@lgcode/help-button"
-import { Titlebar, type TitlebarUpdate } from "@@lgcode/components@lgcode/titlebar"
-import { useDirectoryPicker } from "@@lgcode/components@lgcode/directory-picker"
-import { ServerConnection, useServer } from "@@lgcode/context@lgcode/server"
-import { useLanguage, type Locale } from "@@lgcode/context@lgcode/language"
-import { pathKey } from "@@lgcode/utils@lgcode/path-key"
+import { useDialog } from "@opencode@lgcode/ui/context/dialog"
+import { useTheme, type ColorScheme } from "@opencode@lgcode/ui/theme/context"
+import { useCommand, type CommandOption } from "@/context/command"
+import { ConstrainDragXAxis, getDraggableId } from "@/utils/solid-dnd"
+import { DebugBar } from "@/components/debug-bar"
+import { HelpButton } from "@/components/help-button"
+import { Titlebar, type TitlebarUpdate } from "@/components/titlebar"
+import { useDirectoryPicker } from "@/components/directory-picker"
+import { ServerConnection, useServer } from "@/context/server"
+import { useLanguage, type Locale } from "@/context/language"
+import { pathKey } from "@/utils/path-key"
 import {
   displayName,
   effectiveWorkspaceOrder,
   errorMessage,
   latestRootSession,
   sortedRootSessions,
-} from ".@lgcode/layout@lgcode/helpers"
+} from "./layout/helpers"
 import {
   collectNewSessionDeepLinks,
   collectOpenProjectDeepLinks,
   deepLinkEvent,
   drainPendingDeepLinks,
-} from ".@lgcode/layout@lgcode/deep-links"
-import { createInlineEditorController } from ".@lgcode/layout@lgcode/inline-editor"
+} from "./layout/deep-links"
+import { createInlineEditorController } from "./layout/inline-editor"
 import {
   LocalWorkspace,
   SortableWorkspace,
   WorkspaceDragOverlay,
   type WorkspaceSidebarContext,
-} from ".@lgcode/layout@lgcode/sidebar-workspace"
-import { ProjectDragOverlay, SortableProject, type ProjectSidebarContext } from ".@lgcode/layout@lgcode/sidebar-project"
-import { SidebarContent } from ".@lgcode/layout@lgcode/sidebar-shell"
+} from "./layout/sidebar-workspace"
+import { ProjectDragOverlay, SortableProject, type ProjectSidebarContext } from "./layout/sidebar-project"
+import { SidebarContent } from "./layout/sidebar-shell"
 
 export default function Layout(props: ParentProps) {
   const serverSDK = useServerSDK()
@@ -445,7 +445,7 @@ export default function Layout(props: ParentProps) {
           e.details.type === "permission.asked"
             ? language.t("notification.permission.description", { sessionTitle, projectName })
             : language.t("notification.question.description", { sessionTitle, projectName })
-        const href = `@lgcode/${base64Encode(directory)}@lgcode/session@lgcode/${props.sessionID}`
+        const href = `/${base64Encode(directory)}/session/${props.sessionID}`
 
         const now = Date.now()
         const lastAlerted = alertedAtBySession.get(sessionKey) ?? 0
@@ -926,7 +926,7 @@ export default function Layout(props: ParentProps) {
         : projects[(index + offset + projects.length) % projects.length]
     if (!target) return
 
-    @lgcode/@lgcode/ warm up child store to prevent flicker
+    // warm up child store to prevent flicker
     serverSync().child(target.worktree)
     void openProject(target.worktree)
   }
@@ -983,9 +983,9 @@ export default function Layout(props: ParentProps) {
     )
     if (session.id === params.id) {
       if (nextSession) {
-        navigate(`@lgcode/${params.dir}@lgcode/session@lgcode/${nextSession.id}`)
+        navigate(`/${params.dir}/session/${nextSession.id}`)
       } else {
-        navigate(`@lgcode/${params.dir}@lgcode/session`)
+        navigate(`/${params.dir}/session`)
       }
     }
   }
@@ -1204,28 +1204,28 @@ export default function Layout(props: ParentProps) {
 
   function connectProvider() {
     const run = ++dialogRun
-    void import("@@lgcode/components@lgcode/dialog-select-provider").then((x) => {
+    void import("@/components/dialog-select-provider").then((x) => {
       if (dialogDead || dialogRun !== run) return
-      dialog.show(() => <x.DialogSelectProvider @lgcode/>)
+      dialog.show(() => <x.DialogSelectProvider />)
     })
   }
 
   function openServer() {
     const run = ++dialogRun
-    void import("@@lgcode/components@lgcode/dialog-select-server").then((x) => {
+    void import("@/components/dialog-select-server").then((x) => {
       if (dialogDead || dialogRun !== run) return
-      dialog.show(() => <x.DialogSelectServer @lgcode/>)
+      dialog.show(() => <x.DialogSelectServer />)
     })
   }
 
   function openSettings() {
     const run = ++dialogRun
     const module = settings.general.newLayoutDesigns()
-      ? import("@@lgcode/components@lgcode/settings-v2")
-      : import("@@lgcode/components@lgcode/dialog-settings")
+      ? import("@/components/settings-v2")
+      : import("@/components/dialog-settings")
     void module.then((x) => {
       if (dialogDead || dialogRun !== run) return
-      dialog.show(() => <x.DialogSettings @lgcode/>)
+      dialog.show(() => <x.DialogSettings />)
     })
   }
 
@@ -1305,7 +1305,7 @@ export default function Layout(props: ParentProps) {
       const [data] = serverSync().child(target.directory, { bootstrap: false })
       if (data.session.some((item) => item.id === target.id)) {
         setStore("lastProjectSession", root, { directory: target.directory, id: target.id, at: Date.now() })
-        navigateWithSidebarReset(`@lgcode/${base64Encode(target.directory)}@lgcode/session@lgcode/${target.id}`)
+        navigateWithSidebarReset(`/${base64Encode(target.directory)}/session/${target.id}`)
         return true
       }
       const resolved = await serverSDK()
@@ -1315,7 +1315,7 @@ export default function Layout(props: ParentProps) {
       if (!resolved?.directory) return false
       if (!canOpen(resolved.directory)) return false
       setStore("lastProjectSession", root, { directory: resolved.directory, id: resolved.id, at: Date.now() })
-      navigateWithSidebarReset(`@lgcode/${base64Encode(resolved.directory)}@lgcode/session@lgcode/${resolved.id}`)
+      navigateWithSidebarReset(`/${base64Encode(resolved.directory)}/session/${resolved.id}`)
       return true
     }
 
@@ -1351,12 +1351,12 @@ export default function Layout(props: ParentProps) {
       return
     }
 
-    navigateWithSidebarReset(`@lgcode/${base64Encode(root)}@lgcode/session`)
+    navigateWithSidebarReset(`/${base64Encode(root)}/session`)
   }
 
   function navigateToSession(session: Session | undefined) {
     if (!session) return
-    navigateWithSidebarReset(`@lgcode/${base64Encode(session.directory)}@lgcode/session@lgcode/${session.id}`)
+    navigateWithSidebarReset(`/${base64Encode(session.directory)}/session/${session.id}`)
   }
 
   function openProject(directory: string, navigate = true) {
@@ -1379,7 +1379,7 @@ export default function Layout(props: ParentProps) {
           prompt: link.prompt,
         })
       }
-      const href = link.prompt ? `@lgcode/${slug}@lgcode/session?prompt=${encodeURIComponent(link.prompt)}` : `@lgcode/${slug}@lgcode/session`
+      const href = link.prompt ? `/${slug}/session?prompt=${encodeURIComponent(link.prompt)}` : `/${slug}/session`
       navigateWithSidebarReset(href)
     }
   }
@@ -1429,13 +1429,13 @@ export default function Layout(props: ParentProps) {
 
     if (list.length === 1) {
       layout.projects.close(directory)
-      navigate("@lgcode/")
+      navigate("/")
       return
     }
 
     const next = list[index + 1] ?? list[index - 1]
 
-    navigateWithSidebarReset(`@lgcode/${base64Encode(next.worktree)}@lgcode/session`)
+    navigateWithSidebarReset(`/${base64Encode(next.worktree)}/session`)
     layout.projects.close(directory)
     queueMicrotask(() => {
       void navigateToProject(next.worktree)
@@ -1454,9 +1454,9 @@ export default function Layout(props: ParentProps) {
 
   const showEditProjectDialog = (conn: ServerConnection.Any, project: LocalProject) => {
     const run = ++dialogRun
-    void import("@@lgcode/components@lgcode/dialog-edit-project").then((x) => {
+    void import("@/components/dialog-edit-project").then((x) => {
       if (dialogDead || dialogRun !== run) return
-      dialog.show(() => <x.DialogEditProject server={conn} project={project} @lgcode/>)
+      dialog.show(() => <x.DialogEditProject server={conn} project={project} />)
     })
   }
 
@@ -1490,7 +1490,7 @@ export default function Layout(props: ParentProps) {
     const deletedKey = pathKey(directory)
     const shouldLeave = leaveDeletedWorkspace || (!!params.dir && currentKey === deletedKey)
     if (!leaveDeletedWorkspace && shouldLeave) {
-      navigateWithSidebarReset(`@lgcode/${base64Encode(root)}@lgcode/session`)
+      navigateWithSidebarReset(`/${base64Encode(root)}/session`)
     }
 
     setBusy(directory, true)
@@ -1538,7 +1538,7 @@ export default function Layout(props: ParentProps) {
     const valid = dirs.some((item) => pathKey(item) === nextKey)
 
     if (params.dir && projectRoot(nextCurrent) === root && !valid) {
-      navigateWithSidebarReset(`@lgcode/${base64Encode(root)}@lgcode/session`)
+      navigateWithSidebarReset(`/${base64Encode(root)}/session`)
     }
   }
 
@@ -1610,7 +1610,7 @@ export default function Layout(props: ParentProps) {
         {
           label: language.t("command.session.new"),
           onClick: () => {
-            const href = `@lgcode/${base64Encode(directory)}@lgcode/session`
+            const href = `/${base64Encode(directory)}/session`
             navigate(href)
             layout.mobileSidebar.hide()
           },
@@ -1646,7 +1646,7 @@ export default function Layout(props: ParentProps) {
     const handleDelete = () => {
       const leaveDeletedWorkspace = !!params.dir && pathKey(currentDir()) === pathKey(props.directory)
       if (leaveDeletedWorkspace) {
-        navigateWithSidebarReset(`@lgcode/${base64Encode(props.root)}@lgcode/session`)
+        navigateWithSidebarReset(`/${base64Encode(props.root)}/session`)
       }
       dialog.close()
       void deleteWorkspace(props.root, props.directory, leaveDeletedWorkspace)
@@ -1665,19 +1665,19 @@ export default function Layout(props: ParentProps) {
           <div class="flex flex-col gap-1">
             <span class="text-14-regular text-text-strong">
               {language.t("workspace.delete.confirm", { name: name() })}
-            <@lgcode/span>
-            <span class="text-12-regular text-text-weak">{description()}<@lgcode/span>
-          <@lgcode/div>
+            </span>
+            <span class="text-12-regular text-text-weak">{description()}</span>
+          </div>
           <div class="flex justify-end gap-2">
             <Button variant="ghost" size="large" onClick={() => dialog.close()}>
               {language.t("common.cancel")}
-            <@lgcode/Button>
+            </Button>
             <Button variant="primary" size="large" disabled={data.status === "loading"} onClick={handleDelete}>
               {language.t("workspace.delete.button")}
-            <@lgcode/Button>
-          <@lgcode/div>
-        <@lgcode/div>
-      <@lgcode/Dialog>
+            </Button>
+          </div>
+        </div>
+      </Dialog>
     )
   }
 
@@ -1739,21 +1739,21 @@ export default function Layout(props: ParentProps) {
           <div class="flex flex-col gap-1">
             <span class="text-14-regular text-text-strong">
               {language.t("workspace.reset.confirm", { name: name() })}
-            <@lgcode/span>
+            </span>
             <span class="text-12-regular text-text-weak">
               {description()} {archivedLabel()} {language.t("workspace.reset.note")}
-            <@lgcode/span>
-          <@lgcode/div>
+            </span>
+          </div>
           <div class="flex justify-end gap-2">
             <Button variant="ghost" size="large" onClick={() => dialog.close()}>
               {language.t("common.cancel")}
-            <@lgcode/Button>
+            </Button>
             <Button variant="primary" size="large" disabled={state.status === "loading"} onClick={handleReset}>
               {language.t("workspace.reset.button")}
-            <@lgcode/Button>
-          <@lgcode/div>
-        <@lgcode/div>
-      <@lgcode/Dialog>
+            </Button>
+          </div>
+        </div>
+      </Dialog>
     )
   }
 
@@ -1783,7 +1783,7 @@ export default function Layout(props: ParentProps) {
           return
         }
 
-        const session = `${slug}@lgcode/${id}`
+        const session = `${slug}/${id}`
 
         if (!root) {
           activeRoute.session = session
@@ -1965,7 +1965,7 @@ export default function Layout(props: ParentProps) {
     })
 
     serverSync().child(created.directory)
-    navigateWithSidebarReset(`@lgcode/${base64Encode(created.directory)}@lgcode/session`)
+    navigateWithSidebarReset(`/${base64Encode(created.directory)}/session`)
   }
 
   const workspaceSidebarCtx: WorkspaceSidebarContext = {
@@ -1987,9 +1987,9 @@ export default function Layout(props: ParentProps) {
     workspaceExpanded: (directory, local) => store.workspaceExpanded[directory] ?? local,
     setWorkspaceExpanded: (directory, value) => setStore("workspaceExpanded", directory, value),
     showResetWorkspaceDialog: (root, directory) =>
-      dialog.show(() => <DialogResetWorkspace root={root} directory={directory} @lgcode/>),
+      dialog.show(() => <DialogResetWorkspace root={root} directory={directory} />),
     showDeleteWorkspaceDialog: (root, directory) =>
-      dialog.show(() => <DialogDeleteWorkspace root={root} directory={directory} @lgcode/>),
+      dialog.show(() => <DialogDeleteWorkspace root={root} directory={directory} />),
     setScrollContainerRef: (el, mobile) => {
       if (!mobile) scrollContainerRef = el
     },
@@ -2093,24 +2093,24 @@ export default function Layout(props: ParentProps) {
               <div class="flex-1 min-h-0 -mt-4 flex items-center justify-center px-6 pb-64 text-center">
                 <div class="mt-8 flex max-w-60 flex-col items-center gap-6 text-center">
                   <div class="flex flex-col gap-3">
-                    <div class="text-14-medium text-text-strong">{language.t("sidebar.empty.title")}<@lgcode/div>
+                    <div class="text-14-medium text-text-strong">{language.t("sidebar.empty.title")}</div>
                     <div class="text-14-regular text-text-base" style={{ "line-height": "var(--line-height-normal)" }}>
                       {language.t("sidebar.empty.description")}
-                    <@lgcode/div>
-                  <@lgcode/div>
+                    </div>
+                  </div>
                   <Button size="large" icon="folder-add-left" onClick={chooseProject}>
                     {language.t("command.project.open")}
-                  <@lgcode/Button>
-                <@lgcode/div>
-              <@lgcode/div>
-            <@lgcode/Show>
+                  </Button>
+                </div>
+              </div>
+            </Show>
           }
           keyed
         >
           {(project) => (
             <>
               <div class="shrink-0 pl-1 py-1">
-                <div class="group@lgcode/project flex items-start justify-between gap-2 py-2 pl-2 pr-0">
+                <div class="group/project flex items-start justify-between gap-2 py-2 pl-2 pr-0">
                   <div class="flex flex-col min-w-0">
                     <InlineEditor
                       id={`project:${projectId()}`}
@@ -2121,7 +2121,7 @@ export default function Layout(props: ParentProps) {
                       class="text-14-medium text-text-strong truncate"
                       displayClass="text-14-medium text-text-strong truncate"
                       stopPropagation
-                    @lgcode/>
+                    />
 
                     <Tooltip
                       placement="bottom"
@@ -2135,9 +2135,9 @@ export default function Layout(props: ParentProps) {
                     >
                       <span class="text-12-regular text-text-base truncate select-text">
                         {worktree().replace(homedir(), "~")}
-                      <@lgcode/span>
-                    <@lgcode/Tooltip>
-                  <@lgcode/div>
+                      </span>
+                    </Tooltip>
+                  </div>
 
                   <DropdownMenu modal={!sidebarHovering()}>
                     <DropdownMenu.Trigger
@@ -2149,11 +2149,11 @@ export default function Layout(props: ParentProps) {
                       class="shrink-0 size-6 rounded-md transition-opacity data-[expanded]:bg-surface-base-active"
                       classList={{
                         "opacity-100": panelProps.mobile || merged(),
-                        "opacity-0 group-hover@lgcode/project:opacity-100 group-focus-within@lgcode/project:opacity-100 data-[expanded]:opacity-100":
+                        "opacity-0 group-hover/project:opacity-100 group-focus-within/project:opacity-100 data-[expanded]:opacity-100":
                           !panelProps.mobile && !merged(),
                       }}
                       aria-label={language.t("common.moreOptions")}
-                    @lgcode/>
+                    />
                     <DropdownMenu.Portal>
                       <DropdownMenu.Content class="mt-1">
                         <DropdownMenu.Item
@@ -2161,8 +2161,8 @@ export default function Layout(props: ParentProps) {
                             showEditProjectDialog(server.current!, project)
                           }}
                         >
-                          <DropdownMenu.ItemLabel>{language.t("common.edit")}<@lgcode/DropdownMenu.ItemLabel>
-                        <@lgcode/DropdownMenu.Item>
+                          <DropdownMenu.ItemLabel>{language.t("common.edit")}</DropdownMenu.ItemLabel>
+                        </DropdownMenu.Item>
                         <DropdownMenu.Item
                           data-action="project-workspaces-toggle"
                           data-project={slug()}
@@ -2175,8 +2175,8 @@ export default function Layout(props: ParentProps) {
                             {workspacesEnabled()
                               ? language.t("sidebar.workspaces.disable")
                               : language.t("sidebar.workspaces.enable")}
-                          <@lgcode/DropdownMenu.ItemLabel>
-                        <@lgcode/DropdownMenu.Item>
+                          </DropdownMenu.ItemLabel>
+                        </DropdownMenu.Item>
                         <DropdownMenu.Item
                           data-action="project-clear-notifications"
                           data-project={slug()}
@@ -2185,9 +2185,9 @@ export default function Layout(props: ParentProps) {
                         >
                           <DropdownMenu.ItemLabel>
                             {language.t("sidebar.project.clearNotifications")}
-                          <@lgcode/DropdownMenu.ItemLabel>
-                        <@lgcode/DropdownMenu.Item>
-                        <DropdownMenu.Separator @lgcode/>
+                          </DropdownMenu.ItemLabel>
+                        </DropdownMenu.Item>
+                        <DropdownMenu.Separator />
                         <DropdownMenu.Item
                           data-action="project-close-menu"
                           data-project={slug()}
@@ -2197,13 +2197,13 @@ export default function Layout(props: ParentProps) {
                             closeProject(dir)
                           }}
                         >
-                          <DropdownMenu.ItemLabel>{language.t("common.close")}<@lgcode/DropdownMenu.ItemLabel>
-                        <@lgcode/DropdownMenu.Item>
-                      <@lgcode/DropdownMenu.Content>
-                    <@lgcode/DropdownMenu.Portal>
-                  <@lgcode/DropdownMenu>
-                <@lgcode/div>
-              <@lgcode/div>
+                          <DropdownMenu.ItemLabel>{language.t("common.close")}</DropdownMenu.ItemLabel>
+                        </DropdownMenu.Item>
+                      </DropdownMenu.Content>
+                    </DropdownMenu.Portal>
+                  </DropdownMenu>
+                </div>
+              </div>
 
               <div class="flex-1 min-h-0 flex flex-col">
                 <Show
@@ -2218,21 +2218,21 @@ export default function Layout(props: ParentProps) {
                           onClick={() => {
                             const dir = worktree()
                             if (!dir) return
-                            navigateWithSidebarReset(`@lgcode/${base64Encode(dir)}@lgcode/session`)
+                            navigateWithSidebarReset(`/${base64Encode(dir)}/session`)
                           }}
                         >
                           {language.t("command.session.new")}
-                        <@lgcode/Button>
-                      <@lgcode/div>
+                        </Button>
+                      </div>
                       <div class="flex-1 min-h-0">
                         <LocalWorkspace
                           ctx={workspaceSidebarCtx}
                           project={project}
                           sortNow={sortNow}
                           mobile={panelProps.mobile}
-                        @lgcode/>
-                      <@lgcode/div>
-                    <@lgcode/>
+                        />
+                      </div>
+                    </>
                   }
                 >
                   <>
@@ -2246,8 +2246,8 @@ export default function Layout(props: ParentProps) {
                         }}
                       >
                         {language.t("workspace.new")}
-                      <@lgcode/Button>
-                    <@lgcode/div>
+                      </Button>
+                    </div>
                     <div class="relative flex-1 min-h-0">
                       <DragDropProvider
                         onDragStart={handleWorkspaceDragStart}
@@ -2255,8 +2255,8 @@ export default function Layout(props: ParentProps) {
                         onDragOver={handleWorkspaceDragOver}
                         collisionDetector={closestCenter}
                       >
-                        <DragDropSensors @lgcode/>
-                        <ConstrainDragXAxis @lgcode/>
+                        <DragDropSensors />
+                        <ConstrainDragXAxis />
                         <div
                           ref={(el) => {
                             if (!panelProps.mobile) scrollContainerRef = el
@@ -2272,26 +2272,26 @@ export default function Layout(props: ParentProps) {
                                   project={project}
                                   sortNow={sortNow}
                                   mobile={panelProps.mobile}
-                                @lgcode/>
+                                />
                               )}
-                            <@lgcode/For>
-                          <@lgcode/SortableProvider>
-                        <@lgcode/div>
+                            </For>
+                          </SortableProvider>
+                        </div>
                         <DragOverlay>
                           <WorkspaceDragOverlay
                             sidebarProject={sidebarProject}
                             activeWorkspace={() => store.activeWorkspace}
                             workspaceLabel={workspaceLabel}
-                          @lgcode/>
-                        <@lgcode/DragOverlay>
-                      <@lgcode/DragDropProvider>
-                    <@lgcode/div>
-                  <@lgcode/>
-                <@lgcode/Show>
-              <@lgcode/div>
-            <@lgcode/>
+                          />
+                        </DragOverlay>
+                      </DragDropProvider>
+                    </div>
+                  </>
+                </Show>
+              </div>
+            </>
           )}
-        <@lgcode/Show>
+        </Show>
 
         <div
           class="shrink-0 px-3 py-3"
@@ -2302,31 +2302,31 @@ export default function Layout(props: ParentProps) {
           <div class="rounded-xl bg-background-base shadow-xs-border-base" data-component="getting-started">
             <div class="p-3 flex flex-col gap-6">
               <div class="flex flex-col gap-2">
-                <div class="text-14-medium text-text-strong">{language.t("sidebar.gettingStarted.title")}<@lgcode/div>
+                <div class="text-14-medium text-text-strong">{language.t("sidebar.gettingStarted.title")}</div>
                 <div class="text-14-regular text-text-base" style={{ "line-height": "var(--line-height-normal)" }}>
                   {language.t("sidebar.gettingStarted.line1")}
-                <@lgcode/div>
+                </div>
                 <div class="text-14-regular text-text-base" style={{ "line-height": "var(--line-height-normal)" }}>
                   {language.t("sidebar.gettingStarted.line2")}
-                <@lgcode/div>
-              <@lgcode/div>
+                </div>
+              </div>
               <div data-component="getting-started-actions">
                 <Button size="large" icon="plus-small" onClick={connectProvider}>
                   {language.t("command.provider.connect")}
-                <@lgcode/Button>
+                </Button>
                 <Button size="large" variant="ghost" onClick={() => setStore("gettingStartedDismissed", true)}>
                   {language.t("toast.update.action.notYet")}
-                <@lgcode/Button>
-              <@lgcode/div>
-            <@lgcode/div>
-          <@lgcode/div>
-        <@lgcode/div>
-      <@lgcode/div>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     )
   }
 
   const projects = () => layout.projects.list()
-  const projectOverlay = () => <ProjectDragOverlay projects={projects} activeProject={() => store.activeProject} @lgcode/>
+  const projectOverlay = () => <ProjectDragOverlay projects={projects} activeProject={() => store.activeProject} />
   const sidebarContent = (mobile?: boolean) => (
     <SidebarContent
       mobile={mobile}
@@ -2334,7 +2334,7 @@ export default function Layout(props: ParentProps) {
       aimMove={aim.move}
       projects={projects}
       renderProject={(project) => (
-        <SortableProject ctx={projectSidebarCtx} project={project} sortNow={sortNow} mobile={mobile} @lgcode/>
+        <SortableProject ctx={projectSidebarCtx} project={project} sortNow={sortNow} mobile={mobile} />
       )}
       handleDragStart={handleDragStart}
       handleDragEnd={handleDragEnd}
@@ -2347,11 +2347,11 @@ export default function Layout(props: ParentProps) {
       settingsKeybind={() => command.keybind("settings.open")}
       onOpenSettings={openSettings}
       helpLabel={() => language.t("sidebar.help")}
-      onOpenHelp={() => platform.openLink("https:@lgcode/@lgcode/opencode.ai@lgcode/desktop-feedback")}
+      onOpenHelp={() => platform.openLink("https://opencode.ai/desktop-feedback")}
       renderPanel={() =>
-        mobile ? <SidebarPanel project={currentProject} mobile @lgcode/> : <SidebarPanel project={currentProject} merged @lgcode/>
+        mobile ? <SidebarPanel project={currentProject} mobile /> : <SidebarPanel project={currentProject} merged />
       }
-    @lgcode/>
+    />
   )
 
   return (
@@ -2360,24 +2360,24 @@ export default function Layout(props: ParentProps) {
       fallback={
         <div class="relative bg-v2-background-bg-deep flex-1 min-h-0 min-w-0 flex flex-col select-none [&_input]:select-text [&_textarea]:select-text [&_[contenteditable]]:select-text">
           {autoselecting() ?? ""}
-          <Titlebar update={titlebarUpdate} @lgcode/>
+          <Titlebar update={titlebarUpdate} />
           <main class="flex-1 min-h-0 min-w-0 overflow-x-hidden flex flex-col items-start contain-strict">
-            <Show when={!autoselecting.loading} fallback={<div class="size-full" @lgcode/>}>
+            <Show when={!autoselecting.loading} fallback={<div class="size-full" />}>
               {props.children}
-            <@lgcode/Show>
-          <@lgcode/main>
-          {import.meta.env.DEV && import.meta.env.VITE_DISABLE_DEBUG_BAR !== "1" && <DebugBar @lgcode/>}
-          <HelpButton @lgcode/>
-          <ToastRegion v2={newDesign()} @lgcode/>
-        <@lgcode/div>
+            </Show>
+          </main>
+          {import.meta.env.DEV && import.meta.env.VITE_DISABLE_DEBUG_BAR !== "1" && <DebugBar />}
+          <HelpButton />
+          <ToastRegion v2={newDesign()} />
+        </div>
       }
     >
       <div class="relative bg-background-base flex-1 min-h-0 min-w-0 flex flex-col select-none [&_input]:select-text [&_textarea]:select-text [&_[contenteditable]]:select-text">
         {autoselecting() ?? ""}
-        <Titlebar update={titlebarUpdate} @lgcode/>
+        <Titlebar update={titlebarUpdate} />
         <Show when={updateVersion() !== undefined}>
-          <UpdateAvailableToast version={updateVersion() ?? ""} install={installUpdate} language={language} @lgcode/>
-        <@lgcode/Show>
+          <UpdateAvailableToast version={updateVersion() ?? ""} install={installUpdate} language={language} />
+        </Show>
         <div class="flex-1 min-h-0 min-w-0 flex">
           <div class="flex-1 min-h-0 relative">
             <div class="size-full relative overflow-x-hidden">
@@ -2403,8 +2403,8 @@ export default function Layout(props: ParentProps) {
                   arm()
                 }}
               >
-                <div class="@container w-full h-full contain-strict">{sidebarContent()}<@lgcode/div>
-              <@lgcode/nav>
+                <div class="@container w-full h-full contain-strict">{sidebarContent()}</div>
+              </nav>
 
               <Show when={layout.sidebar.opened()}>
                 <div
@@ -2423,14 +2423,14 @@ export default function Layout(props: ParentProps) {
                       sizet = window.setTimeout(() => setState("sizing", false), 120)
                       layout.sidebar.resize(w)
                     }}
-                  @lgcode/>
-                <@lgcode/div>
-              <@lgcode/Show>
+                  />
+                </div>
+              </Show>
 
               <div
                 class="hidden xl:block pointer-events-none absolute top-0 right-0 z-0 border-t border-border-weaker-base"
                 style={{ left: "calc(4rem + 12px)" }}
-              @lgcode/>
+              />
 
               <div class="xl:hidden">
                 <div
@@ -2442,7 +2442,7 @@ export default function Layout(props: ParentProps) {
                   onClick={(e) => {
                     if (e.target === e.currentTarget) layout.mobileSidebar.hide()
                   }}
-                @lgcode/>
+                />
                 <nav
                   aria-label={language.t("sidebar.nav.projectsAndSessions")}
                   data-component="sidebar-nav-mobile"
@@ -2454,8 +2454,8 @@ export default function Layout(props: ParentProps) {
                   onClick={(e) => e.stopPropagation()}
                 >
                   {sidebarContent(true)}
-                <@lgcode/nav>
-              <@lgcode/div>
+                </nav>
+              </div>
 
               <div
                 classList={{
@@ -2474,11 +2474,11 @@ export default function Layout(props: ParentProps) {
                     "size-full overflow-x-hidden flex flex-col items-start contain-strict border-t border-border-weak-base bg-background-base xl:border-l xl:rounded-tl-[12px]": true,
                   }}
                 >
-                  <Show when={!autoselecting.loading} fallback={<div class="size-full" @lgcode/>}>
+                  <Show when={!autoselecting.loading} fallback={<div class="size-full" />}>
                     {props.children}
-                  <@lgcode/Show>
-                <@lgcode/main>
-              <@lgcode/div>
+                  </Show>
+                </main>
+              </div>
 
               <div
                 classList={{
@@ -2500,9 +2500,9 @@ export default function Layout(props: ParentProps) {
                 }}
               >
                 <Show when={peekProject()}>
-                  <SidebarPanel project={peekProject} merged={false} @lgcode/>
-                <@lgcode/Show>
-              <@lgcode/div>
+                  <SidebarPanel project={peekProject} merged={false} />
+                </Show>
+              </div>
 
               <div
                 classList={{
@@ -2515,16 +2515,16 @@ export default function Layout(props: ParentProps) {
                 }}
                 style={{ left: `calc(4rem + ${panel()}px)` }}
               >
-                <div class="h-full w-px" style={{ "box-shadow": "var(--shadow-sidebar-overlay)" }} @lgcode/>
-              <@lgcode/div>
-            <@lgcode/div>
-          <@lgcode/div>
-          {import.meta.env.DEV && import.meta.env.VITE_DISABLE_DEBUG_BAR !== "1" && <DebugBar @lgcode/>}
-        <@lgcode/div>
-        <HelpButton @lgcode/>
-        <ToastRegion v2={newDesign()} @lgcode/>
-      <@lgcode/div>
-    <@lgcode/Show>
+                <div class="h-full w-px" style={{ "box-shadow": "var(--shadow-sidebar-overlay)" }} />
+              </div>
+            </div>
+          </div>
+          {import.meta.env.DEV && import.meta.env.VITE_DISABLE_DEBUG_BAR !== "1" && <DebugBar />}
+        </div>
+        <HelpButton />
+        <ToastRegion v2={newDesign()} />
+      </div>
+    </Show>
   )
 }
 

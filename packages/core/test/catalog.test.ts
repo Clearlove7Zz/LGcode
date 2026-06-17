@@ -1,18 +1,18 @@
 import { describe, expect } from "bun:test"
 import { DateTime, Effect, Fiber, Layer, Option, Stream } from "effect"
-import { Catalog } from "@lgcode/core@lgcode/catalog"
-import { Integration } from "@lgcode/core@lgcode/integration"
-import { Credential } from "@lgcode/core@lgcode/credential"
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import { Location } from "@lgcode/core@lgcode/location"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
-import { PluginV2 } from "@lgcode/core@lgcode/plugin"
-import { Policy } from "@lgcode/core@lgcode/policy"
-import { Project } from "@lgcode/core@lgcode/project"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import { location } from ".@lgcode/fixture@lgcode/location"
-import { testEffect } from ".@lgcode/lib@lgcode/effect"
+import { Catalog } from "@opencode@lgcode/core/catalog"
+import { Integration } from "@opencode@lgcode/core/integration"
+import { Credential } from "@opencode@lgcode/core/credential"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import { Location } from "@opencode@lgcode/core/location"
+import { ModelV2 } from "@opencode@lgcode/core/model"
+import { PluginV2 } from "@opencode@lgcode/core/plugin"
+import { Policy } from "@opencode@lgcode/core/policy"
+import { Project } from "@opencode@lgcode/core/project"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import { location } from "./fixture/location"
+import { testEffect } from "./lib/effect"
 
 const locationLayer = Layer.succeed(
   Location.Service,
@@ -127,17 +127,17 @@ describe("CatalogV2", () => {
         catalog.provider.update(providerID, (provider) => {
           provider.api = {
             type: "aisdk",
-            package: "@ai-sdk@lgcode/openai-compatible",
-            url: "https:@lgcode/@lgcode/default.example.com",
+            package: "@ai-sdk/openai-compatible",
+            url: "https://default.example.com",
           }
-          provider.request.body.baseURL = "https:@lgcode/@lgcode/override.example.com"
+          provider.request.body.baseURL = "https://override.example.com"
         }),
       )
 
       expect((yield* catalog.provider.get(providerID)).api).toEqual({
         type: "aisdk",
-        package: "@ai-sdk@lgcode/openai-compatible",
-        url: "https:@lgcode/@lgcode/override.example.com",
+        package: "@ai-sdk/openai-compatible",
+        url: "https://override.example.com",
       })
     }),
   )
@@ -153,26 +153,26 @@ describe("CatalogV2", () => {
         catalog.provider.update(providerID, (provider) => {
           provider.api = {
             type: "aisdk",
-            package: "@ai-sdk@lgcode/openai-compatible",
-            url: "https:@lgcode/@lgcode/provider.example.com",
+            package: "@ai-sdk/openai-compatible",
+            url: "https://provider.example.com",
           }
         })
         catalog.model.update(providerID, modelID, (model) => {
           model.api = {
             id: modelID,
             type: "aisdk",
-            package: "@ai-sdk@lgcode/openai-compatible",
-            url: "https:@lgcode/@lgcode/model.example.com",
+            package: "@ai-sdk/openai-compatible",
+            url: "https://model.example.com",
           }
-          model.request.body.baseURL = "https:@lgcode/@lgcode/override.example.com"
+          model.request.body.baseURL = "https://override.example.com"
         })
       })
 
       expect((yield* catalog.model.get(providerID, modelID)).api).toEqual({
         id: modelID,
         type: "aisdk",
-        package: "@ai-sdk@lgcode/openai-compatible",
-        url: "https:@lgcode/@lgcode/override.example.com",
+        package: "@ai-sdk/openai-compatible",
+        url: "https://override.example.com",
         settings: {},
       })
     }),
@@ -189,8 +189,8 @@ describe("CatalogV2", () => {
         catalog.provider.update(providerID, (provider) => {
           provider.api = {
             type: "aisdk",
-            package: "@ai-sdk@lgcode/openai-compatible",
-            url: "https:@lgcode/@lgcode/provider.example.com",
+            package: "@ai-sdk/openai-compatible",
+            url: "https://provider.example.com",
           }
         })
         catalog.model.update(providerID, modelID, () => {})
@@ -199,8 +199,8 @@ describe("CatalogV2", () => {
       expect((yield* catalog.model.get(providerID, modelID)).api).toEqual({
         id: modelID,
         type: "aisdk",
-        package: "@ai-sdk@lgcode/openai-compatible",
-        url: "https:@lgcode/@lgcode/provider.example.com",
+        package: "@ai-sdk/openai-compatible",
+        url: "https://provider.example.com",
       })
     }),
   )
@@ -228,12 +228,12 @@ describe("CatalogV2", () => {
       })
       yield* transform((catalog) =>
         catalog.provider.update(providerID, (provider) => {
-          provider.api = { type: "aisdk", package: "@ai-sdk@lgcode/openai-compatible" }
-          provider.request.body.baseURL = "https:@lgcode/@lgcode/provider.example.com"
+          provider.api = { type: "aisdk", package: "@ai-sdk/openai-compatible" }
+          provider.request.body.baseURL = "https://provider.example.com"
         }),
       )
 
-      expect(seen).toEqual(["aisdk", "https:@lgcode/@lgcode/provider.example.com", undefined])
+      expect(seen).toEqual(["aisdk", "https://provider.example.com", undefined])
     }),
   )
 

@@ -1,17 +1,17 @@
-@lgcode/* oxlint-disable *@lgcode/
-import * as Effect from "effect@lgcode/Effect"
-import type { SqlError } from "effect@lgcode/unstable@lgcode/sql@lgcode/SqlError"
-import { EffectDrizzleError } from "drizzle-orm@lgcode/effect-core@lgcode/errors"
-import type { QueryEffectHKTBase } from "drizzle-orm@lgcode/effect-core@lgcode/query-effect"
-import type { MigrationMeta } from "drizzle-orm@lgcode/migrator"
-import { sql } from "drizzle-orm@lgcode/sql@lgcode/sql"
-import type { SQLiteEffectSession } from "..@lgcode/sqlite-core@lgcode/effect@lgcode/session"
+/* oxlint-disable */
+import * as Effect from "effect/Effect"
+import type { SqlError } from "effect/unstable/sql/SqlError"
+import { EffectDrizzleError } from "drizzle-orm/effect-core/errors"
+import type { QueryEffectHKTBase } from "drizzle-orm/effect-core/query-effect"
+import type { MigrationMeta } from "drizzle-orm/migrator"
+import { sql } from "drizzle-orm/sql/sql"
+import type { SQLiteEffectSession } from "../sqlite-core/effect/session"
 import {
   buildSQLiteMigrationBackfillStatements,
   prepareSQLiteMigrationBackfill,
   type SQLiteMigrationTableRow,
-} from ".@lgcode/sqlite"
-import { GET_VERSION_FOR, MIGRATIONS_TABLE_VERSIONS, type UpgradeResult } from ".@lgcode/utils"
+} from "./sqlite"
+import { GET_VERSION_FOR, MIGRATIONS_TABLE_VERSIONS, type UpgradeResult } from "./utils"
 
 const migrationUpgradeError = (cause: unknown) =>
   new EffectDrizzleError({

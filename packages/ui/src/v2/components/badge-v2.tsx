@@ -1,5 +1,5 @@
 import { type ComponentProps, splitProps } from "solid-js"
-import ".@lgcode/badge-v2.css"
+import "./badge-v2.css"
 
 export interface TagProps extends ComponentProps<"span"> {}
 
@@ -15,6 +15,6 @@ export function Tag(props: TagProps) {
       }}
     >
       {split.children}
-    <@lgcode/span>
+    </span>
   )
 }

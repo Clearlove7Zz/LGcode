@@ -99,4 +99,4 @@ export function buildLayer<A, E>(node: Node<A, E>, options?: { readonly replacem
   return visit(node) as unknown as Layer.Layer<A, E, never>
 }
 
-export * as LayerNode from ".@lgcode/layer-node"
+export * as LayerNode from "./layer-node"

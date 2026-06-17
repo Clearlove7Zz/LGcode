@@ -1,6 +1,6 @@
 import { afterEach, expect, mock, test } from "bun:test"
-import { CopilotModels } from "@@lgcode/plugin@lgcode/github-copilot@lgcode/models"
-import { CopilotAuthPlugin } from "@@lgcode/plugin@lgcode/github-copilot@lgcode/copilot"
+import { CopilotModels } from "@/plugin/github-copilot/models"
+import { CopilotAuthPlugin } from "@/plugin/github-copilot/copilot"
 
 const originalFetch = globalThis.fetch
 
@@ -58,7 +58,7 @@ test("preserves temperature support from existing provider models", async () => 
   ) as unknown as typeof fetch
 
   const result = await CopilotModels.get(
-    "https:@lgcode/@lgcode/api.githubcopilot.com",
+    "https://api.githubcopilot.com",
     {},
     {
       "gpt-4o": {
@@ -66,8 +66,8 @@ test("preserves temperature support from existing provider models", async () => 
         providerID: "github-copilot",
         api: {
           id: "gpt-4o",
-          url: "https:@lgcode/@lgcode/api.githubcopilot.com",
-          npm: "@ai-sdk@lgcode/openai-compatible",
+          url: "https://api.githubcopilot.com",
+          npm: "@ai-sdk/openai-compatible",
         },
         name: "GPT-4o",
         family: "gpt",
@@ -173,7 +173,7 @@ test("converts Copilot AIC token prices to USD per million tokens", async () => 
     ),
   ) as unknown as typeof fetch
 
-  const models = (await CopilotModels.get("https:@lgcode/@lgcode/api.githubcopilot.com")).models
+  const models = (await CopilotModels.get("https://api.githubcopilot.com")).models
 
   expect(models["gpt-5"].cost).toEqual({
     input: 10,
@@ -198,7 +198,7 @@ test("clears existing variants so refreshed models calculate provider-specific v
               id: "claude-opus-4.7",
               name: "Claude Opus 4.7",
               version: "claude-opus-4.7-2026-04-16",
-              supported_endpoints: ["@lgcode/v1@lgcode/messages"],
+              supported_endpoints: ["/v1/messages"],
               capabilities: {
                 family: "claude-opus",
                 limits: {
@@ -221,7 +221,7 @@ test("clears existing variants so refreshed models calculate provider-specific v
   ) as unknown as typeof fetch
 
   const result = await CopilotModels.get(
-    "https:@lgcode/@lgcode/api.githubcopilot.com",
+    "https://api.githubcopilot.com",
     {},
     {
       "claude-opus-4.7": {
@@ -229,8 +229,8 @@ test("clears existing variants so refreshed models calculate provider-specific v
         providerID: "github-copilot",
         api: {
           id: "claude-opus-4.7",
-          url: "https:@lgcode/@lgcode/api.githubcopilot.com",
-          npm: "@ai-sdk@lgcode/github-copilot",
+          url: "https://api.githubcopilot.com",
+          npm: "@ai-sdk/github-copilot",
         },
         name: "Claude Opus 4.7",
         family: "claude-opus",
@@ -282,7 +282,7 @@ test("clears existing variants so refreshed models calculate provider-specific v
   )
   const models = result.models
 
-  expect(models["claude-opus-4.7"].api.npm).toBe("@ai-sdk@lgcode/anthropic")
+  expect(models["claude-opus-4.7"].api.npm).toBe("@ai-sdk/anthropic")
   expect(models["claude-opus-4.7"].variants).toBeUndefined()
 })
 
@@ -297,7 +297,7 @@ test("remaps fallback oauth model urls to the enterprise host", async () => {
     experimental_workspace: {
       register() {},
     },
-    serverUrl: new URL("https:@lgcode/@lgcode/example.com"),
+    serverUrl: new URL("https://example.com"),
     $: {} as never,
   })
 
@@ -310,8 +310,8 @@ test("remaps fallback oauth model urls to the enterprise host", async () => {
           providerID: "github-copilot",
           api: {
             id: "claude-sonnet-4.5",
-            url: "https:@lgcode/@lgcode/api.githubcopilot.com@lgcode/v1",
-            npm: "@ai-sdk@lgcode/anthropic",
+            url: "https://api.githubcopilot.com/v1",
+            npm: "@ai-sdk/anthropic",
           },
         },
       },
@@ -327,6 +327,6 @@ test("remaps fallback oauth model urls to the enterprise host", async () => {
     },
   )
 
-  expect(models.claude.api.url).toBe("https:@lgcode/@lgcode/copilot-api.ghe.example.com")
-  expect(models.claude.api.npm).toBe("@ai-sdk@lgcode/github-copilot")
+  expect(models.claude.api.url).toBe("https://copilot-api.ghe.example.com")
+  expect(models.claude.api.npm).toBe("@ai-sdk/github-copilot")
 })

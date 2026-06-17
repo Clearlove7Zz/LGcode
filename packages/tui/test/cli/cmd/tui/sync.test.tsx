@@ -1,12 +1,12 @@
-@lgcode/** @jsxImportSource @opentui@lgcode/solid *@lgcode/
+/** @jsxImportSource @opentui/solid */
 import { describe, expect, test } from "bun:test"
-import { tmpdir } from "..@lgcode/..@lgcode/..@lgcode/fixture@lgcode/fixture"
-import { mount, wait } from ".@lgcode/sync-fixture"
-import type { GlobalEvent } from "@lgcode/sdk@lgcode/v2"
+import { tmpdir } from "../../../fixture/fixture"
+import { mount, wait } from "./sync-fixture"
+import type { GlobalEvent } from "@opencode@lgcode/sdk/v2"
 
 function branchEvent(branch: string, workspace?: string): GlobalEvent {
   return {
-    directory: "@lgcode/tmp@lgcode/other",
+    directory: "/tmp/other",
     project: "proj_test",
     workspace,
     payload: {
@@ -20,13 +20,13 @@ function branchEvent(branch: string, workspace?: string): GlobalEvent {
 describe("tui sync", () => {
   test("refresh scopes sessions by default and lists project sessions when disabled", async () => {
     await using tmp = await tmpdir()
-    await Bun.write(`${tmp.path}@lgcode/kv.json`, "{}")
+    await Bun.write(`${tmp.path}/kv.json`, "{}")
     const { app, kv, sync, session } = await mount(undefined, tmp.path)
 
     try {
       expect(kv.get("session_directory_filter_enabled", true)).toBe(true)
       expect(session.at(-1)?.searchParams.get("scope")).toBeNull()
-      expect(session.at(-1)?.searchParams.get("path")).toBe("packages@lgcode/tui")
+      expect(session.at(-1)?.searchParams.get("path")).toBe("packages/tui")
 
       kv.set("session_directory_filter_enabled", false)
       await sync.session.refresh()
@@ -40,7 +40,7 @@ describe("tui sync", () => {
 
   test("vcs branch updates only apply for the active workspace", async () => {
     await using tmp = await tmpdir()
-    await Bun.write(`${tmp.path}@lgcode/kv.json`, "{}")
+    await Bun.write(`${tmp.path}/kv.json`, "{}")
     const { app, emit, project, sync } = await mount(undefined, tmp.path)
 
     try {

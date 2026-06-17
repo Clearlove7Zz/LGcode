@@ -1,29 +1,29 @@
 import { describe, expect, test } from "bun:test"
 import path from "path"
-import { Module } from "@lgcode/core@lgcode/util@lgcode/module"
-import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
-import { tmpdir } from "..@lgcode/fixture@lgcode/fixture"
+import { Module } from "@opencode@lgcode/core/util/module"
+import { Filesystem } from "@/util/filesystem"
+import { tmpdir } from "../fixture/fixture"
 
 describe("util.module", () => {
   test("resolves package subpaths from the provided dir", async () => {
     await using tmp = await tmpdir()
     const root = path.join(tmp.path, "proj")
-    const file = path.join(root, "node_modules@lgcode/typescript@lgcode/lib@lgcode/tsserver.js")
+    const file = path.join(root, "node_modules/typescript/lib/tsserver.js")
     await Filesystem.write(file, "export {}\n")
-    await Filesystem.writeJson(path.join(root, "node_modules@lgcode/typescript@lgcode/package.json"), { name: "typescript" })
+    await Filesystem.writeJson(path.join(root, "node_modules/typescript/package.json"), { name: "typescript" })
 
-    expect(Module.resolve("typescript@lgcode/lib@lgcode/tsserver.js", root)).toBe(file)
+    expect(Module.resolve("typescript/lib/tsserver.js", root)).toBe(file)
   })
 
   test("resolves packages through ancestor node_modules", async () => {
     await using tmp = await tmpdir()
     const root = path.join(tmp.path, "proj")
-    const cwd = path.join(root, "apps@lgcode/web")
-    const file = path.join(root, "node_modules@lgcode/eslint@lgcode/lib@lgcode/api.js")
+    const cwd = path.join(root, "apps/web")
+    const file = path.join(root, "node_modules/eslint/lib/api.js")
     await Filesystem.write(file, "export {}\n")
-    await Filesystem.writeJson(path.join(root, "node_modules@lgcode/eslint@lgcode/package.json"), {
+    await Filesystem.writeJson(path.join(root, "node_modules/eslint/package.json"), {
       name: "eslint",
-      main: "lib@lgcode/api.js",
+      main: "lib/api.js",
     })
     await Filesystem.write(path.join(cwd, ".keep"), "")
 
@@ -34,15 +34,15 @@ describe("util.module", () => {
     await using tmp = await tmpdir()
     const a = path.join(tmp.path, "a")
     const b = path.join(tmp.path, "b")
-    const left = path.join(a, "node_modules@lgcode/biome@lgcode/index.js")
-    const right = path.join(b, "node_modules@lgcode/biome@lgcode/index.js")
+    const left = path.join(a, "node_modules/biome/index.js")
+    const right = path.join(b, "node_modules/biome/index.js")
     await Filesystem.write(left, "export {}\n")
     await Filesystem.write(right, "export {}\n")
-    await Filesystem.writeJson(path.join(a, "node_modules@lgcode/biome@lgcode/package.json"), {
+    await Filesystem.writeJson(path.join(a, "node_modules/biome/package.json"), {
       name: "biome",
       main: "index.js",
     })
-    await Filesystem.writeJson(path.join(b, "node_modules@lgcode/biome@lgcode/package.json"), {
+    await Filesystem.writeJson(path.join(b, "node_modules/biome/package.json"), {
       name: "biome",
       main: "index.js",
     })

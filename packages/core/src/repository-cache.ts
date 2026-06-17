@@ -1,10 +1,10 @@
 import path from "path"
 import { Context, Effect, Layer, Schema } from "effect"
-import { FSUtil } from ".@lgcode/fs-util"
-import { Git } from ".@lgcode/git"
-import { Global } from ".@lgcode/global"
-import { Repository } from ".@lgcode/repository"
-import { EffectFlock } from ".@lgcode/util@lgcode/effect-flock"
+import { FSUtil } from "./fs-util"
+import { Git } from "./git"
+import { Global } from "./global"
+import { Repository } from "./repository"
+import { EffectFlock } from "./util/effect-flock"
 
 export type Result = {
   readonly repository: string
@@ -90,7 +90,7 @@ export interface Interface {
   readonly ensure: (input: EnsureInput) => Effect.Effect<Result, Error>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/RepositoryCache") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/RepositoryCache") {}
 
 export function isError(error: unknown): error is Error {
   return (
@@ -276,11 +276,11 @@ function cacheOperation<A, E, R>(effect: Effect.Effect<A, E, R>, operation: stri
 }
 
 const resetTarget = Effect.fnUntraced(function* (git: Git.Interface, cwd: string, requestedBranch?: string) {
-  if (requestedBranch) return `origin@lgcode/${requestedBranch}`
+  if (requestedBranch) return `origin/${requestedBranch}`
   const remoteHead = yield* git.remoteHead(cwd)
   if (remoteHead) return remoteHead
   const currentBranch = yield* git.branch(cwd)
-  if (currentBranch) return `origin@lgcode/${currentBranch}`
+  if (currentBranch) return `origin/${currentBranch}`
   return "HEAD"
 })
 
@@ -288,4 +288,4 @@ function resultMessage(result: Git.Result, fallback: string) {
   return result.stderr.trim() || result.text.trim() || fallback
 }
 
-export * as RepositoryCache from ".@lgcode/repository-cache"
+export * as RepositoryCache from "./repository-cache"

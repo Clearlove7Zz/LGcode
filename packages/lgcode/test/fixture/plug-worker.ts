@@ -1,7 +1,7 @@
 import path from "path"
 
-import { createPlugTask, type PlugCtx, type PlugDeps } from "..@lgcode/..@lgcode/src@lgcode/cli@lgcode/cmd@lgcode/plug"
-import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
+import { createPlugTask, type PlugCtx, type PlugDeps } from "../../src/cli/cmd/plug"
+import { Filesystem } from "@/util/filesystem"
 
 type Msg = {
   dir: string

@@ -1,5 +1,5 @@
-import type { Dict } from ".@lgcode/en"
-import { dict as en } from ".@lgcode/en"
+import type { Dict } from "./en"
+import { dict as en } from "./en"
 
 export const dict = {
   ...en,
@@ -124,7 +124,7 @@ export const dict = {
   "home.what.shareLinks.body": "將任意階段的連結分享給他人供參考或除錯",
   "home.what.copilot.title": "GitHub Copilot",
   "home.what.copilot.body": "使用 GitHub 登入以使用你的 Copilot 帳號",
-  "home.what.chatgptPlus.title": "ChatGPT Plus@lgcode/Pro",
+  "home.what.chatgptPlus.title": "ChatGPT Plus/Pro",
   "home.what.chatgptPlus.body": "使用 OpenAI 登入以使用你的 ChatGPT Plus 或 Pro 帳號",
   "home.what.anyModel.title": "任意模型",
   "home.what.anyModel.body": "透過 Models.dev 連接 75+ 家 LLM 供應商，包括本地模型",
@@ -134,7 +134,7 @@ export const dict = {
 
   "home.growth.title": "開源 AI 編碼代理",
   "home.growth.body":
-    "擁有超過 <strong>{{stars}}<@lgcode/strong> 個 GitHub Star、<strong>{{contributors}}<@lgcode/strong> 位貢獻者以及超過 <strong>{{commits}}<@lgcode/strong> 次提交，OpenCode 每月被超過 <strong>{{monthlyUsers}}<@lgcode/strong> 名開發者使用並信賴。",
+    "擁有超過 <strong>{{stars}}</strong> 個 GitHub Star、<strong>{{contributors}}</strong> 位貢獻者以及超過 <strong>{{commits}}</strong> 次提交，OpenCode 每月被超過 <strong>{{monthlyUsers}}</strong> 名開發者使用並信賴。",
   "home.growth.githubStars": "GitHub Star",
   "home.growth.contributors": "貢獻者",
   "home.growth.monthlyDevs": "每月活躍開發者",
@@ -159,7 +159,7 @@ export const dict = {
   "home.faq.a3.p4.localLink": "本地模型",
   "home.faq.q4": "可以使用我現有的 AI 訂閱嗎？",
   "home.faq.a4.p1":
-    "可以。OpenCode 支援主流供應商的訂閱方案，包括 Claude Pro@lgcode/Max、ChatGPT Plus@lgcode/Pro 與 GitHub Copilot。",
+    "可以。OpenCode 支援主流供應商的訂閱方案，包括 Claude Pro/Max、ChatGPT Plus/Pro 與 GitHub Copilot。",
   "home.faq.q5": "OpenCode 只能在終端中使用嗎？",
   "home.faq.a5.beforeDesktop": "不再是了！OpenCode 現在也提供",
   "home.faq.a5.desktop": "桌面端",
@@ -242,7 +242,7 @@ export const dict = {
   "go.title": "OpenCode Go | 低成本全民編碼模型",
   "go.banner.text": "MiniMax M3 限時享有 3 倍使用額度",
   "go.meta.description":
-    "Go 首月 $5，之後 $10@lgcode/月，提供對 GLM-5.1、GLM-5、Kimi K2.7 Code、Kimi K2.6、MiMo-V2.5-Pro、MiMo-V2.5、Qwen3.7 Max、Qwen3.7 Plus、Qwen3.6 Plus、MiniMax M2.7、MiniMax M3、DeepSeek V4 Pro 和 DeepSeek V4 Flash 的 5 小時充裕請求額度。",
+    "Go 首月 $5，之後 $10/月，提供對 GLM-5.1、GLM-5、Kimi K2.7 Code、Kimi K2.6、MiMo-V2.5-Pro、MiMo-V2.5、Qwen3.7 Max、Qwen3.7 Plus、Qwen3.6 Plus、MiniMax M2.7、MiniMax M3、DeepSeek V4 Pro 和 DeepSeek V4 Flash 的 5 小時充裕請求額度。",
   "go.hero.title": "低成本全民編碼模型",
   "go.hero.body":
     "Go 將代理編碼帶給全世界的程式設計師。提供寬裕的限額以及對最強大開源模型的穩定存取，讓你可以使用強大的代理進行構建，而無需擔心成本或可用性。",
@@ -250,9 +250,9 @@ export const dict = {
   "go.cta.start": "訂閱 Go",
   "go.cta.template": "{{text}} {{price}}",
   "go.cta.text": "訂閱 Go",
-  "go.cta.price": "$10@lgcode/月",
+  "go.cta.price": "$10/月",
   "go.cta.promo": "首月 $5",
-  "go.pricing.body": "可搭配任何代理使用。首月 $5，之後 $10@lgcode/月。如有需要可儲值。隨時取消。",
+  "go.pricing.body": "可搭配任何代理使用。首月 $5，之後 $10/月。如有需要可儲值。隨時取消。",
   "go.graph.free": "免費",
   "go.graph.freePill": "Big Pickle 與免費模型",
   "go.graph.go": "Go",
@@ -284,7 +284,7 @@ export const dict = {
   "go.testimonials.frank.quote": "我希望我還在 Nvidia。",
   "go.problem.title": "Go 正在解決什麼問題？",
   "go.problem.body":
-    "我們致力於將 OpenCode 體驗帶給盡可能多的人。OpenCode Go 是一款低成本訂閱服務：首月 $5，之後 $10@lgcode/月。它提供充裕的額度，並讓您能可靠地使用最強大的開源模型。",
+    "我們致力於將 OpenCode 體驗帶給盡可能多的人。OpenCode Go 是一款低成本訂閱服務：首月 $5，之後 $10/月。它提供充裕的額度，並讓您能可靠地使用最強大的開源模型。",
   "go.problem.subtitle": " ",
   "go.problem.item1": "低成本訂閱定價",
   "go.problem.item2": "寬裕的限額與穩定存取",
@@ -292,13 +292,13 @@ export const dict = {
   "go.problem.item4":
     "包含 GLM-5.1、GLM-5、Kimi K2.7 Code、Kimi K2.6、MiMo-V2.5-Pro、MiMo-V2.5、Qwen3.7 Max、Qwen3.7 Plus、Qwen3.6 Plus、MiniMax M2.7、MiniMax M3、DeepSeek V4 Pro 與 DeepSeek V4 Flash",
   "go.how.title": "Go 如何運作",
-  "go.how.body": "Go 起價為首月 $5，之後 $10@lgcode/月。您可以將其與 OpenCode 或任何代理搭配使用。",
+  "go.how.body": "Go 起價為首月 $5，之後 $10/月。您可以將其與 OpenCode 或任何代理搭配使用。",
   "go.how.step1.title": "建立帳號",
   "go.how.step1.beforeLink": "遵循",
   "go.how.step1.link": "設定說明",
   "go.how.step2.title": "訂閱 Go",
   "go.how.step2.link": "首月 $5",
-  "go.how.step2.afterLink": "之後 $10@lgcode/月，額度充裕",
+  "go.how.step2.afterLink": "之後 $10/月，額度充裕",
   "go.how.step3.title": "開始編碼",
   "go.how.step3.body": "穩定存取開源模型",
   "go.privacy.title": "你的隱私對我們很重要",
@@ -312,11 +312,11 @@ export const dict = {
   "go.faq.a2": "Go 包含下方列出的模型，提供充足的額度與穩定的存取。",
   "go.faq.q3": "Go 與 Zen 一樣嗎？",
   "go.faq.a3":
-    "不。Zen 是按量付費，而 Go 首月 $5，之後 $10@lgcode/月，提供充裕的額度，並可可靠地存取 GLM-5.1、GLM-5、Kimi K2.7 Code、Kimi K2.6、MiMo-V2.5-Pro、MiMo-V2.5、Qwen3.7 Max、Qwen3.7 Plus、Qwen3.6 Plus、MiniMax M2.7、MiniMax M3、DeepSeek V4 Pro 和 DeepSeek V4 Flash 等開源模型。",
+    "不。Zen 是按量付費，而 Go 首月 $5，之後 $10/月，提供充裕的額度，並可可靠地存取 GLM-5.1、GLM-5、Kimi K2.7 Code、Kimi K2.6、MiMo-V2.5-Pro、MiMo-V2.5、Qwen3.7 Max、Qwen3.7 Plus、Qwen3.6 Plus、MiniMax M2.7、MiniMax M3、DeepSeek V4 Pro 和 DeepSeek V4 Flash 等開源模型。",
   "go.faq.q4": "Go 費用是多少？",
   "go.faq.a4.p1.beforePricing": "Go 費用為",
   "go.faq.a4.p1.pricingLink": "首月 $5",
-  "go.faq.a4.p1.afterPricing": "之後 $10@lgcode/月，額度充裕。",
+  "go.faq.a4.p1.afterPricing": "之後 $10/月，額度充裕。",
   "go.faq.a4.p2.beforeAccount": "你可以在你的",
   "go.faq.a4.p2.accountLink": "帳戶",
   "go.faq.a4.p3": "中管理訂閱。隨時取消。",
@@ -334,7 +334,7 @@ export const dict = {
 
   "go.faq.q9": "免費模型與 Go 有什麼區別？",
   "go.faq.a9":
-    "免費模型包括 Big Pickle 以及當時可用的促銷模型，配額為 200 次請求@lgcode/天。Go 包括 GLM-5.1、GLM-5、Kimi K2.7 Code、Kimi K2.6、MiMo-V2.5-Pro、MiMo-V2.5、Qwen3.7 Max、Qwen3.7 Plus、Qwen3.6 Plus、MiniMax M2.7、MiniMax M3、DeepSeek V4 Pro 與 DeepSeek V4 Flash，並在滾動視窗（5 小時、每週和每月）內執行更高的請求配額，大約相當於每 5 小時 $12、每週 $30 和每月 $60（實際請求數因模型和使用情況而異）。",
+    "免費模型包括 Big Pickle 以及當時可用的促銷模型，配額為 200 次請求/天。Go 包括 GLM-5.1、GLM-5、Kimi K2.7 Code、Kimi K2.6、MiMo-V2.5-Pro、MiMo-V2.5、Qwen3.7 Max、Qwen3.7 Plus、Qwen3.6 Plus、MiniMax M2.7、MiniMax M3、DeepSeek V4 Pro 與 DeepSeek V4 Flash，並在滾動視窗（5 小時、每週和每月）內執行更高的請求配額，大約相當於每 5 小時 $12、每週 $30 和每月 $60（實際請求數因模型和使用情況而異）。",
 
   "zen.api.error.rateLimitExceeded": "超出頻率限制。請稍後再試。",
   "zen.api.error.modelNotSupported": "不支援模型 {{model}}",
@@ -634,7 +634,7 @@ export const dict = {
   "workspace.lite.black.message": "您目前已訂閱 OpenCode Black 或在候補名單中。若要切換至 Go，請先取消訂閱。",
   "workspace.lite.other.message": "此工作區中的另一位成員已訂閱 OpenCode Go。每個工作區只能有一位成員訂閱。",
   "workspace.lite.promo.description":
-    "OpenCode Go 起價為 {{price}}，之後 $10@lgcode/月，並提供對熱門開放編碼模型的可靠存取，同時享有充裕的使用額度。",
+    "OpenCode Go 起價為 {{price}}，之後 $10/月，並提供對熱門開放編碼模型的可靠存取，同時享有充裕的使用額度。",
   "workspace.lite.promo.price": "首月 $5",
   "workspace.lite.promo.modelsTitle": "包含模型",
   "workspace.lite.promo.footer":
@@ -653,7 +653,7 @@ export const dict = {
   "workspace.referral.instructions.claim": "你們都將獲得 $5 使用額度，可用於您的 Go 使用限額。",
   "workspace.referral.rewards.title": "邀請獎勵",
   "workspace.referral.rewards.description": "將可用的邀請點數套用至您的 Go 使用量。",
-  "workspace.referral.rewards.subtitle": "已使用 {{applied}} @lgcode/ {{total}} 個獎勵。",
+  "workspace.referral.rewards.subtitle": "已使用 {{applied}} / {{total}} 個獎勵。",
   "workspace.referral.rewards.empty": "暫無邀請獎勵。",
   "workspace.referral.table.reward": "獎勵",
   "workspace.referral.table.referral": "描述",
@@ -770,7 +770,7 @@ export const dict = {
 
   "bench.detail.title": "評測 - {{task}}",
   "bench.detail.notFound": "找不到任務",
-  "bench.detail.na": "N@lgcode/A",
+  "bench.detail.na": "N/A",
   "bench.detail.labels.agent": "代理",
   "bench.detail.labels.model": "模型",
   "bench.detail.labels.task": "任務",

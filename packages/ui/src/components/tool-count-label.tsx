@@ -1,8 +1,8 @@
 import { createMemo } from "solid-js"
-import { AnimatedNumber } from ".@lgcode/animated-number"
+import { AnimatedNumber } from "./animated-number"
 
 function split(text: string) {
-  const match = @lgcode/{{\s*count\s*}}@lgcode/.exec(text)
+  const match = /{{\s*count\s*}}/.exec(text)
   if (!match) return { before: "", after: text }
   if (match.index === undefined) return { before: "", after: text }
   return {
@@ -45,14 +45,14 @@ export function AnimatedCountLabel(props: { count: number; one: string; other: s
 
   return (
     <span data-component="tool-count-label" class={props.class}>
-      <span data-slot="tool-count-label-before">{before()}<@lgcode/span>
-      <AnimatedNumber value={props.count} @lgcode/>
+      <span data-slot="tool-count-label-before">{before()}</span>
+      <AnimatedNumber value={props.count} />
       <span data-slot="tool-count-label-word">
-        <span data-slot="tool-count-label-stem">{stem()}<@lgcode/span>
+        <span data-slot="tool-count-label-stem">{stem()}</span>
         <span data-slot="tool-count-label-suffix" data-active={showTail() ? "true" : "false"}>
-          <span data-slot="tool-count-label-suffix-inner">{tail()}<@lgcode/span>
-        <@lgcode/span>
-      <@lgcode/span>
-    <@lgcode/span>
+          <span data-slot="tool-count-label-suffix-inner">{tail()}</span>
+        </span>
+      </span>
+    </span>
   )
 }

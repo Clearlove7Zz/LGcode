@@ -1,4 +1,4 @@
-import { createSimpleContext } from ".@lgcode/helper"
+import { createSimpleContext } from "./helper"
 
 export const { use: useEpilogue, provider: EpilogueProvider } = createSimpleContext({
   name: "Epilogue",

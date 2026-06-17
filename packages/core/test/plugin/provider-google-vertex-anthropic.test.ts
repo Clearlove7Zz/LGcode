@@ -1,10 +1,10 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { Catalog } from "@lgcode/core@lgcode/catalog"
-import { PluginV2 } from "@lgcode/core@lgcode/plugin"
-import { GoogleVertexAnthropicPlugin, GoogleVertexPlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/google-vertex"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { fakeSelectorSdk, it, model, withEnv } from ".@lgcode/provider-helper"
+import { Catalog } from "@opencode@lgcode/core/catalog"
+import { PluginV2 } from "@opencode@lgcode/core/plugin"
+import { GoogleVertexAnthropicPlugin, GoogleVertexPlugin } from "@opencode@lgcode/core/plugin/provider/google-vertex"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { fakeSelectorSdk, it, model, withEnv } from "./provider-helper"
 
 describe("GoogleVertexAnthropicPlugin", () => {
   it.effect("resolves legacy project and location env on provider update", () =>
@@ -25,7 +25,7 @@ describe("GoogleVertexAnthropicPlugin", () => {
           const transform = yield* catalog.transform()
           yield* transform((catalog) =>
             catalog.provider.update(ProviderV2.ID.make("google-vertex-anthropic"), (provider) => {
-              provider.api = { type: "aisdk", package: "@ai-sdk@lgcode/google-vertex@lgcode/anthropic" }
+              provider.api = { type: "aisdk", package: "@ai-sdk/google-vertex/anthropic" }
             }),
           )
           const provider = yield* catalog.provider.get(ProviderV2.ID.make("google-vertex-anthropic"))
@@ -44,7 +44,7 @@ describe("GoogleVertexAnthropicPlugin", () => {
         const transform = yield* catalog.transform()
         yield* transform((catalog) =>
           catalog.provider.update(ProviderV2.ID.make("google-vertex-anthropic"), (provider) => {
-            provider.api = { type: "aisdk", package: "@ai-sdk@lgcode/google-vertex@lgcode/anthropic" }
+            provider.api = { type: "aisdk", package: "@ai-sdk/google-vertex/anthropic" }
             provider.request.body.project = "configured-project"
             provider.request.body.location = "configured-location"
           }),
@@ -74,13 +74,13 @@ describe("GoogleVertexAnthropicPlugin", () => {
             "aisdk.sdk",
             {
               model: model("google-vertex-anthropic", "claude-sonnet-4-5"),
-              package: "@ai-sdk@lgcode/google-vertex@lgcode/anthropic",
+              package: "@ai-sdk/google-vertex/anthropic",
               options: { name: "google-vertex-anthropic" },
             },
             {},
           )
           expect(result.sdk.languageModel("claude-sonnet-4-5").config.baseURL).toBe(
-            "https:@lgcode/@lgcode/aiplatform.googleapis.com@lgcode/v1@lgcode/projects@lgcode/gcp-project@lgcode/locations@lgcode/global@lgcode/publishers@lgcode/anthropic@lgcode/models",
+            "https://aiplatform.googleapis.com/v1/projects/gcp-project/locations/global/publishers/anthropic/models",
           )
         }),
     ),
@@ -97,13 +97,13 @@ describe("GoogleVertexAnthropicPlugin", () => {
             "aisdk.sdk",
             {
               model: model("google-vertex-anthropic", "claude-sonnet-4-5"),
-              package: "@ai-sdk@lgcode/google-vertex@lgcode/anthropic",
+              package: "@ai-sdk/google-vertex/anthropic",
               options: { name: "google-vertex-anthropic" },
             },
             {},
           )
           expect(result.sdk.languageModel("claude-sonnet-4-5").config.baseURL).toBe(
-            "https:@lgcode/@lgcode/cloud-location-aiplatform.googleapis.com@lgcode/v1@lgcode/projects@lgcode/project@lgcode/locations@lgcode/cloud-location@lgcode/publishers@lgcode/anthropic@lgcode/models",
+            "https://cloud-location-aiplatform.googleapis.com/v1/projects/project/locations/cloud-location/publishers/anthropic/models",
           )
         }),
     ),
@@ -117,13 +117,13 @@ describe("GoogleVertexAnthropicPlugin", () => {
         "aisdk.sdk",
         {
           model: model("google-vertex", "claude-sonnet-4-5"),
-          package: "@ai-sdk@lgcode/google-vertex@lgcode/anthropic",
+          package: "@ai-sdk/google-vertex/anthropic",
           options: { name: "google-vertex", project: "project", location: "eu" },
         },
         {},
       )
       expect(result.sdk.languageModel("claude-sonnet-4-5").config.baseURL).toBe(
-        "https:@lgcode/@lgcode/aiplatform.eu.rep.googleapis.com@lgcode/v1@lgcode/projects@lgcode/project@lgcode/locations@lgcode/eu@lgcode/publishers@lgcode/anthropic@lgcode/models",
+        "https://aiplatform.eu.rep.googleapis.com/v1/projects/project/locations/eu/publishers/anthropic/models",
       )
     }),
   )
@@ -136,12 +136,12 @@ describe("GoogleVertexAnthropicPlugin", () => {
         "aisdk.sdk",
         {
           model: model("google-vertex", "claude-sonnet-4-5"),
-          package: "@ai-sdk@lgcode/google-vertex@lgcode/anthropic",
-          options: { name: "google-vertex", project: "project", location: "eu", baseURL: "https:@lgcode/@lgcode/proxy.example@lgcode/v1" },
+          package: "@ai-sdk/google-vertex/anthropic",
+          options: { name: "google-vertex", project: "project", location: "eu", baseURL: "https://proxy.example/v1" },
         },
         {},
       )
-      expect(result.sdk.languageModel("claude-sonnet-4-5").config.baseURL).toBe("https:@lgcode/@lgcode/proxy.example@lgcode/v1")
+      expect(result.sdk.languageModel("claude-sonnet-4-5").config.baseURL).toBe("https://proxy.example/v1")
     }),
   )
 
@@ -154,7 +154,7 @@ describe("GoogleVertexAnthropicPlugin", () => {
         "aisdk.sdk",
         {
           model: model("google-vertex", " claude-sonnet-4-5 "),
-          package: "@ai-sdk@lgcode/google-vertex@lgcode/anthropic",
+          package: "@ai-sdk/google-vertex/anthropic",
           options: { name: "google-vertex", project: "project", location: "us" },
         },
         {},
@@ -170,7 +170,7 @@ describe("GoogleVertexAnthropicPlugin", () => {
       )
       const language = languageResult.language as unknown as { config: { baseURL: string }; modelId: string }
       expect(language.config.baseURL).toBe(
-        "https:@lgcode/@lgcode/aiplatform.us.rep.googleapis.com@lgcode/v1@lgcode/projects@lgcode/project@lgcode/locations@lgcode/us@lgcode/publishers@lgcode/anthropic@lgcode/models",
+        "https://aiplatform.us.rep.googleapis.com/v1/projects/project/locations/us/publishers/anthropic/models",
       )
       expect(language.modelId).toBe("claude-sonnet-4-5")
     }),

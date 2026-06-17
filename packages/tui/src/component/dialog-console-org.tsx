@@ -1,10 +1,10 @@
 import { createResource, createMemo } from "solid-js"
-import { DialogSelect } from "..@lgcode/ui@lgcode/dialog-select"
-import { useSDK } from "..@lgcode/context@lgcode/sdk"
-import { useDialog } from "..@lgcode/ui@lgcode/dialog"
-import { useToast } from "..@lgcode/ui@lgcode/toast"
-import { useTheme } from "..@lgcode/context@lgcode/theme"
-import type { ExperimentalConsoleListOrgsResponse } from "@lgcode/sdk@lgcode/v2"
+import { DialogSelect } from "../ui/dialog-select"
+import { useSDK } from "../context/sdk"
+import { useDialog } from "../ui/dialog"
+import { useToast } from "../ui/toast"
+import { useTheme } from "../context/theme"
+import type { ExperimentalConsoleListOrgsResponse } from "@opencode@lgcode/sdk/v2"
 
 type OrgOption = ExperimentalConsoleListOrgsResponse["orgs"][number]
 
@@ -71,9 +71,9 @@ export function DialogConsoleOrg() {
         category: accountLabel(item),
         categoryView: (
           <box flexDirection="row" gap={2}>
-            <text fg={theme.accent}>{item.accountEmail}<@lgcode/text>
-            <text fg={theme.textMuted}>{accountHost(item.accountUrl)}<@lgcode/text>
-          <@lgcode/box>
+            <text fg={theme.accent}>{item.accountEmail}</text>
+            <text fg={theme.textMuted}>{accountHost(item.accountUrl)}</text>
+          </box>
         ),
         onSelect: async () => {
           if (item.active) {
@@ -99,5 +99,5 @@ export function DialogConsoleOrg() {
       }))
   })
 
-  return <DialogSelect<string | OrgOption> title="Switch org" options={options()} current={current()} @lgcode/>
+  return <DialogSelect<string | OrgOption> title="Switch org" options={options()} current={current()} />
 }

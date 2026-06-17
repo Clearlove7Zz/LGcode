@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
-import type { Prompt } from "@@lgcode/context@lgcode/prompt"
-import { buildRequestParts } from ".@lgcode/build-request-parts"
+import type { Prompt } from "@/context/prompt"
+import { buildRequestParts } from "./build-request-parts"
 
 describe("buildRequestParts", () => {
   test("builds typed request and optimistic parts without cast path", () => {
@@ -8,8 +8,8 @@ describe("buildRequestParts", () => {
       { type: "text", content: "hello", start: 0, end: 5 },
       {
         type: "file",
-        path: "src@lgcode/foo.ts",
-        content: "@src@lgcode/foo.ts",
+        path: "src/foo.ts",
+        content: "@src/foo.ts",
         start: 5,
         end: 16,
         selection: { startLine: 4, startChar: 1, endLine: 6, endChar: 1 },
@@ -19,20 +19,20 @@ describe("buildRequestParts", () => {
 
     const result = buildRequestParts({
       prompt,
-      context: [{ key: "ctx:1", type: "file", path: "src@lgcode/bar.ts", comment: "check this" }],
+      context: [{ key: "ctx:1", type: "file", path: "src/bar.ts", comment: "check this" }],
       images: [
-        { type: "image", id: "img_1", filename: "a.png", mime: "image@lgcode/png", dataUrl: "data:image@lgcode/png;base64,AAA" },
+        { type: "image", id: "img_1", filename: "a.png", mime: "image/png", dataUrl: "data:image/png;base64,AAA" },
       ],
-      text: "hello @src@lgcode/foo.ts @planner",
+      text: "hello @src/foo.ts @planner",
       messageID: "msg_1",
       sessionID: "ses_1",
-      sessionDirectory: "@lgcode/repo",
+      sessionDirectory: "/repo",
     })
 
     expect(result.requestParts[0]?.type).toBe("text")
     expect(result.requestParts.some((part) => part.type === "agent")).toBe(true)
     expect(
-      result.requestParts.some((part) => part.type === "file" && part.url.startsWith("file:@lgcode/@lgcode/@lgcode/repo@lgcode/src@lgcode/foo.ts")),
+      result.requestParts.some((part) => part.type === "file" && part.url.startsWith("file:///repo/src/foo.ts")),
     ).toBe(true)
     expect(result.requestParts.some((part) => part.type === "text" && part.synthetic)).toBe(true)
     expect(
@@ -54,19 +54,19 @@ describe("buildRequestParts", () => {
       prompt: [{ type: "text", content: "check these", start: 0, end: 11 }],
       context: [],
       images: [
-        { type: "image", id: "img_1", filename: "a.png", mime: "image@lgcode/png", dataUrl: "data:image@lgcode/png;base64,AAA" },
+        { type: "image", id: "img_1", filename: "a.png", mime: "image/png", dataUrl: "data:image/png;base64,AAA" },
         {
           type: "image",
           id: "img_2",
           filename: "b.pdf",
-          mime: "application@lgcode/pdf",
-          dataUrl: "data:application@lgcode/pdf;base64,BBB",
+          mime: "application/pdf",
+          dataUrl: "data:application/pdf;base64,BBB",
         },
       ],
       text: "check these",
       messageID: "msg_multi",
       sessionID: "ses_multi",
-      sessionDirectory: "@lgcode/repo",
+      sessionDirectory: "/repo",
     })
 
     const files = result.requestParts.filter((part) => part.type === "file" && part.url.startsWith("data:"))
@@ -85,8 +85,8 @@ describe("buildRequestParts", () => {
           id: "img_external",
           filename: "opencode.global.dat",
           sourcePath: "C:\\Users\\Luke\\AppData\\Roaming\\ai.opencode.desktop.beta\\opencode.global.dat",
-          mime: "text@lgcode/plain",
-          dataUrl: "data:text@lgcode/plain;base64,AAA",
+          mime: "text/plain",
+          dataUrl: "data:text/plain;base64,AAA",
         },
       ],
       text: "inspect this",
@@ -101,23 +101,23 @@ describe("buildRequestParts", () => {
   })
 
   test("deduplicates context files when prompt already includes same path", () => {
-    const prompt: Prompt = [{ type: "file", path: "src@lgcode/foo.ts", content: "@src@lgcode/foo.ts", start: 0, end: 11 }]
+    const prompt: Prompt = [{ type: "file", path: "src/foo.ts", content: "@src/foo.ts", start: 0, end: 11 }]
 
     const result = buildRequestParts({
       prompt,
       context: [
-        { key: "ctx:dup", type: "file", path: "src@lgcode/foo.ts" },
-        { key: "ctx:comment", type: "file", path: "src@lgcode/foo.ts", comment: "focus here" },
+        { key: "ctx:dup", type: "file", path: "src/foo.ts" },
+        { key: "ctx:comment", type: "file", path: "src/foo.ts", comment: "focus here" },
       ],
       images: [],
-      text: "@src@lgcode/foo.ts",
+      text: "@src/foo.ts",
       messageID: "msg_2",
       sessionID: "ses_2",
-      sessionDirectory: "@lgcode/repo",
+      sessionDirectory: "/repo",
     })
 
     const fooFiles = result.requestParts.filter(
-      (part) => part.type === "file" && part.url.startsWith("file:@lgcode/@lgcode/@lgcode/repo@lgcode/src@lgcode/foo.ts"),
+      (part) => part.type === "file" && part.url.startsWith("file:///repo/src/foo.ts"),
     )
     const synthetic = result.requestParts.filter((part) => part.type === "text" && part.synthetic)
 
@@ -132,21 +132,21 @@ describe("buildRequestParts", () => {
         {
           key: "ctx:comment-mention",
           type: "file",
-          path: "src@lgcode/review.ts",
-          comment: "Compare with @src@lgcode/shared.ts and @src@lgcode/review.ts.",
+          path: "src/review.ts",
+          comment: "Compare with @src/shared.ts and @src/review.ts.",
         },
       ],
       images: [],
       text: "look",
       messageID: "msg_comment_mentions",
       sessionID: "ses_comment_mentions",
-      sessionDirectory: "@lgcode/repo",
+      sessionDirectory: "/repo",
     })
 
     const files = result.requestParts.filter((part) => part.type === "file")
     expect(files).toHaveLength(2)
-    expect(files.some((part) => part.type === "file" && part.url === "file:@lgcode/@lgcode/@lgcode/repo@lgcode/src@lgcode/review.ts")).toBe(true)
-    expect(files.some((part) => part.type === "file" && part.url === "file:@lgcode/@lgcode/@lgcode/repo@lgcode/src@lgcode/shared.ts")).toBe(true)
+    expect(files.some((part) => part.type === "file" && part.url === "file:///repo/src/review.ts")).toBe(true)
+    expect(files.some((part) => part.type === "file" && part.url === "file:///repo/src/shared.ts")).toBe(true)
   })
 
   test("handles Windows paths correctly (simulated on macOS)", () => {
@@ -159,19 +159,19 @@ describe("buildRequestParts", () => {
       text: "@src\\foo.ts",
       messageID: "msg_win_1",
       sessionID: "ses_win_1",
-      sessionDirectory: "D:\\projects\\myapp", @lgcode/@lgcode/ Windows path
+      sessionDirectory: "D:\\projects\\myapp", // Windows path
     })
 
-    @lgcode/@lgcode/ Should create valid file URLs
+    // Should create valid file URLs
     const filePart = result.requestParts.find((part) => part.type === "file")
     expect(filePart).toBeDefined()
     if (filePart?.type === "file") {
-      @lgcode/@lgcode/ URL should be parseable
+      // URL should be parseable
       expect(() => new URL(filePart.url)).not.toThrow()
-      @lgcode/@lgcode/ Should not have encoded backslashes in wrong place
+      // Should not have encoded backslashes in wrong place
       expect(filePart.url).not.toContain("%5C")
-      @lgcode/@lgcode/ Should have normalized to forward slashes
-      expect(filePart.url).toContain("@lgcode/src@lgcode/foo.ts")
+      // Should have normalized to forward slashes
+      expect(filePart.url).toContain("/src/foo.ts")
     }
   })
 
@@ -185,41 +185,41 @@ describe("buildRequestParts", () => {
       text: "@file#name.txt",
       messageID: "msg_win_2",
       sessionID: "ses_win_2",
-      sessionDirectory: "C:\\Users\\test\\Documents", @lgcode/@lgcode/ Windows path
+      sessionDirectory: "C:\\Users\\test\\Documents", // Windows path
     })
 
     const filePart = result.requestParts.find((part) => part.type === "file")
     expect(filePart).toBeDefined()
     if (filePart?.type === "file") {
-      @lgcode/@lgcode/ URL should be parseable
+      // URL should be parseable
       expect(() => new URL(filePart.url)).not.toThrow()
-      @lgcode/@lgcode/ Special chars should be encoded
+      // Special chars should be encoded
       expect(filePart.url).toContain("file%23name.txt")
-      @lgcode/@lgcode/ Should have Windows drive letter properly encoded
-      expect(filePart.url).toMatch(@lgcode/file:\@lgcode/\@lgcode/\@lgcode/[A-Z]:@lgcode/)
+      // Should have Windows drive letter properly encoded
+      expect(filePart.url).toMatch(/file:\/\/\/[A-Z]:/)
     }
   })
 
   test("handles Linux absolute paths correctly", () => {
-    const prompt: Prompt = [{ type: "file", path: "src@lgcode/app.ts", content: "@src@lgcode/app.ts", start: 0, end: 10 }]
+    const prompt: Prompt = [{ type: "file", path: "src/app.ts", content: "@src/app.ts", start: 0, end: 10 }]
 
     const result = buildRequestParts({
       prompt,
       context: [],
       images: [],
-      text: "@src@lgcode/app.ts",
+      text: "@src/app.ts",
       messageID: "msg_linux_1",
       sessionID: "ses_linux_1",
-      sessionDirectory: "@lgcode/home@lgcode/user@lgcode/project",
+      sessionDirectory: "/home/user/project",
     })
 
     const filePart = result.requestParts.find((part) => part.type === "file")
     expect(filePart).toBeDefined()
     if (filePart?.type === "file") {
-      @lgcode/@lgcode/ URL should be parseable
+      // URL should be parseable
       expect(() => new URL(filePart.url)).not.toThrow()
-      @lgcode/@lgcode/ Should be a normal Unix path
-      expect(filePart.url).toBe("file:@lgcode/@lgcode/@lgcode/home@lgcode/user@lgcode/project@lgcode/src@lgcode/app.ts")
+      // Should be a normal Unix path
+      expect(filePart.url).toBe("file:///home/user/project/src/app.ts")
     }
   })
 
@@ -233,16 +233,16 @@ describe("buildRequestParts", () => {
       text: "@README.md",
       messageID: "msg_mac_1",
       sessionID: "ses_mac_1",
-      sessionDirectory: "@lgcode/Users@lgcode/kelvin@lgcode/Projects@lgcode/opencode",
+      sessionDirectory: "/Users/kelvin/Projects/opencode",
     })
 
     const filePart = result.requestParts.find((part) => part.type === "file")
     expect(filePart).toBeDefined()
     if (filePart?.type === "file") {
-      @lgcode/@lgcode/ URL should be parseable
+      // URL should be parseable
       expect(() => new URL(filePart.url)).not.toThrow()
-      @lgcode/@lgcode/ Should be a normal Unix path
-      expect(filePart.url).toBe("file:@lgcode/@lgcode/@lgcode/Users@lgcode/kelvin@lgcode/Projects@lgcode/opencode@lgcode/README.md")
+      // Should be a normal Unix path
+      expect(filePart.url).toBe("file:///Users/kelvin/Projects/opencode/README.md")
     }
   })
 
@@ -265,11 +265,11 @@ describe("buildRequestParts", () => {
     const fileParts = result.requestParts.filter((part) => part.type === "file")
     expect(fileParts).toHaveLength(2)
 
-    @lgcode/@lgcode/ All file URLs should be valid
+    // All file URLs should be valid
     fileParts.forEach((part) => {
       if (part.type === "file") {
         expect(() => new URL(part.url)).not.toThrow()
-        expect(part.url).not.toContain("%5C") @lgcode/@lgcode/ No encoded backslashes
+        expect(part.url).not.toContain("%5C") // No encoded backslashes
       }
     })
   })
@@ -292,9 +292,9 @@ describe("buildRequestParts", () => {
     const filePart = result.requestParts.find((part) => part.type === "file")
     expect(filePart).toBeDefined()
     if (filePart?.type === "file") {
-      @lgcode/@lgcode/ Should handle absolute path that differs from sessionDirectory
+      // Should handle absolute path that differs from sessionDirectory
       expect(() => new URL(filePart.url)).not.toThrow()
-      expect(filePart.url).toContain("@lgcode/D:@lgcode/other@lgcode/project@lgcode/file.ts")
+      expect(filePart.url).toContain("/D:/other/project/file.ts")
     }
   })
 
@@ -323,11 +323,11 @@ describe("buildRequestParts", () => {
     const filePart = result.requestParts.find((part) => part.type === "file")
     expect(filePart).toBeDefined()
     if (filePart?.type === "file") {
-      @lgcode/@lgcode/ Should have query parameters
+      // Should have query parameters
       expect(filePart.url).toContain("?start=10&end=20")
-      @lgcode/@lgcode/ Should be valid URL
+      // Should be valid URL
       expect(() => new URL(filePart.url)).not.toThrow()
-      @lgcode/@lgcode/ Query params should parse correctly
+      // Query params should parse correctly
       const url = new URL(filePart.url)
       expect(url.searchParams.get("start")).toBe("10")
       expect(url.searchParams.get("end")).toBe("20")
@@ -352,10 +352,10 @@ describe("buildRequestParts", () => {
     const filePart = result.requestParts.find((part) => part.type === "file")
     expect(filePart).toBeDefined()
     if (filePart?.type === "file") {
-      @lgcode/@lgcode/ Should be valid URL
+      // Should be valid URL
       expect(() => new URL(filePart.url)).not.toThrow()
-      @lgcode/@lgcode/ Should preserve .. segments (backend normalizes)
-      expect(filePart.url).toContain("@lgcode/..")
+      // Should preserve .. segments (backend normalizes)
+      expect(filePart.url).toContain("/..")
     }
   })
 })

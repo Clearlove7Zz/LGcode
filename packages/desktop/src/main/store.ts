@@ -1,14 +1,14 @@
 import Store from "electron-store"
 import electron from "electron"
 
-import { SETTINGS_STORE } from ".@lgcode/store-keys"
+import { SETTINGS_STORE } from "./store-keys"
 
 const cache = new Map<string, Store>()
 
-@lgcode/@lgcode/ We cannot instantiate the electron-store at module load time because
-@lgcode/@lgcode/ module import hoisting causes this to run before app.setPath("userData", ...)
-@lgcode/@lgcode/ in index.ts has executed, which would result in files being written to the default directory
-@lgcode/@lgcode/ (e.g. bad: %APPDATA%\@opencode-ai\desktop\opencode.settings vs good: %APPDATA%\ai.opencode.desktop.dev\opencode.settings).
+// We cannot instantiate the electron-store at module load time because
+// module import hoisting causes this to run before app.setPath("userData", ...)
+// in index.ts has executed, which would result in files being written to the default directory
+// (e.g. bad: %APPDATA%\@opencode-ai\desktop\opencode.settings vs good: %APPDATA%\ai.opencode.desktop.dev\opencode.settings).
 export function getStore(name = SETTINGS_STORE) {
   const cached = cache.get(name)
   if (cached) return cached

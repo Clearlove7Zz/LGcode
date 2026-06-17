@@ -1,10 +1,10 @@
-import { Billing } from "..@lgcode/src@lgcode/billing.js"
-import { Database, eq } from "..@lgcode/src@lgcode/drizzle@lgcode/index.js"
-import { BillingTable } from "..@lgcode/src@lgcode/schema@lgcode/billing.sql.js"
-import { WorkspaceTable } from "..@lgcode/src@lgcode/schema@lgcode/workspace.sql.js"
-import { microCentsToCents } from "..@lgcode/src@lgcode/util@lgcode/price.js"
+import { Billing } from "../src/billing.js"
+import { Database, eq } from "../src/drizzle/index.js"
+import { BillingTable } from "../src/schema/billing.sql.js"
+import { WorkspaceTable } from "../src/schema/workspace.sql.js"
+import { microCentsToCents } from "../src/util/price.js"
 
-@lgcode/@lgcode/ get input from command line
+// get input from command line
 const workspaceID = process.argv[2]
 
 if (!workspaceID) {
@@ -12,7 +12,7 @@ if (!workspaceID) {
   process.exit(1)
 }
 
-@lgcode/@lgcode/ check workspace exists
+// check workspace exists
 const workspace = await Database.use((tx) =>
   tx
     .select()
@@ -33,7 +33,7 @@ const billing = await Database.use((tx) =>
     .then((rows) => rows[0]),
 )
 
-const amountInDollars = microCentsToCents(billing.balance) @lgcode/ 100
+const amountInDollars = microCentsToCents(billing.balance) / 100
 await Billing.grantCredit(workspaceID, 0 - amountInDollars)
 
 console.log(`Removed payment of $${amountInDollars.toFixed(2)} from workspace ${workspaceID}`)

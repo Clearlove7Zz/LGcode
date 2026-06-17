@@ -1,12 +1,12 @@
-import { MCP } from "@@lgcode/mcp"
-import { ConfigMCPV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/mcp"
+import { MCP } from "@/mcp"
+import { ConfigMCPV1 } from "@opencode@lgcode/core/v1/config/mcp"
 import { Schema } from "effect"
-import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
-import { McpServerNotFoundError } from "..@lgcode/errors"
-import { Authorization } from "..@lgcode/middleware@lgcode/authorization"
-import { InstanceContextMiddleware } from "..@lgcode/middleware@lgcode/instance-context"
-import { WorkspaceRoutingMiddleware, WorkspaceRoutingQuery } from "..@lgcode/middleware@lgcode/workspace-routing"
-import { described } from ".@lgcode/metadata"
+import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
+import { McpServerNotFoundError } from "../errors"
+import { Authorization } from "../middleware/authorization"
+import { InstanceContextMiddleware } from "../middleware/instance-context"
+import { WorkspaceRoutingMiddleware, WorkspaceRoutingQuery } from "../middleware/workspace-routing"
+import { described } from "./metadata"
 
 export const AddPayload = Schema.Struct({
   name: Schema.String,
@@ -30,12 +30,12 @@ export class UnsupportedOAuthError extends Schema.ErrorClass<UnsupportedOAuthErr
 ) {}
 
 export const McpPaths = {
-  status: "@lgcode/mcp",
-  auth: "@lgcode/mcp@lgcode/:name@lgcode/auth",
-  authCallback: "@lgcode/mcp@lgcode/:name@lgcode/auth@lgcode/callback",
-  authAuthenticate: "@lgcode/mcp@lgcode/:name@lgcode/auth@lgcode/authenticate",
-  connect: "@lgcode/mcp@lgcode/:name@lgcode/connect",
-  disconnect: "@lgcode/mcp@lgcode/:name@lgcode/disconnect",
+  status: "/mcp",
+  auth: "/mcp/:name/auth",
+  authCallback: "/mcp/:name/auth/callback",
+  authAuthenticate: "/mcp/:name/auth/authenticate",
+  connect: "/mcp/:name/connect",
+  disconnect: "/mcp/:name/disconnect",
 } as const
 
 export const McpApi = HttpApi.make("mcp")

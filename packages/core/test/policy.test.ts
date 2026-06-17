@@ -1,10 +1,10 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { Location } from "@lgcode/core@lgcode/location"
-import { Policy } from "@lgcode/core@lgcode/policy"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import { location } from ".@lgcode/fixture@lgcode/location"
-import { testEffect } from ".@lgcode/lib@lgcode/effect"
+import { Location } from "@opencode@lgcode/core/location"
+import { Policy } from "@opencode@lgcode/core/policy"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import { location } from "./fixture/location"
+import { testEffect } from "./lib/effect"
 
 const it = testEffect(
   Policy.locationLayer.pipe(

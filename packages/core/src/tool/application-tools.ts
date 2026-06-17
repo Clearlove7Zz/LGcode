@@ -1,9 +1,9 @@
-export * as ApplicationTools from ".@lgcode/application-tools"
+export * as ApplicationTools from "./application-tools"
 
 import { Context, Effect, Layer, Scope } from "effect"
 import { enableMapSet } from "immer"
-import { State } from "..@lgcode/state"
-import { Tool } from ".@lgcode/tool"
+import { State } from "../state"
+import { Tool } from "./tool"
 
 type Data = {
   readonly entries: Map<string, Entry>
@@ -25,7 +25,7 @@ export interface Interface {
   readonly entries: () => ReadonlyMap<string, Entry>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/ApplicationTools") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/ApplicationTools") {}
 
 enableMapSet()
 

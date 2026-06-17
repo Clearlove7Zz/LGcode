@@ -121,7 +121,7 @@ export const dict = {
   "dialog.provider.viewAll": "Показать больше провайдеров",
 
   "provider.connect.title": "Подключить {{provider}}",
-  "provider.connect.title.anthropicProMax": "Войти с помощью Claude Pro@lgcode/Max",
+  "provider.connect.title.anthropicProMax": "Войти с помощью Claude Pro/Max",
   "provider.connect.selectMethod": "Выберите способ входа для {{provider}}.",
   "provider.connect.method.apiKey": "API ключ",
   "provider.connect.status.inProgress": "Авторизация...",
@@ -137,7 +137,7 @@ export const dict = {
   "provider.connect.opencodeZen.line2":
     "С одним API ключом вы получите доступ к таким моделям как Claude, GPT, Gemini, GLM и другим.",
   "provider.connect.opencodeZen.visit.prefix": "Посетите ",
-  "provider.connect.opencodeZen.visit.link": "opencode.ai@lgcode/zen",
+  "provider.connect.opencodeZen.visit.link": "opencode.ai/zen",
   "provider.connect.opencodeZen.visit.suffix": " чтобы получить ваш API ключ.",
   "provider.connect.oauth.code.visit.prefix": "Посетите ",
   "provider.connect.oauth.code.visit.link": "эту ссылку",
@@ -165,7 +165,7 @@ export const dict = {
   "provider.custom.field.name.label": "Отображаемое имя",
   "provider.custom.field.name.placeholder": "Мой AI провайдер",
   "provider.custom.field.baseURL.label": "Базовый URL",
-  "provider.custom.field.baseURL.placeholder": "https:@lgcode/@lgcode/api.myprovider.com@lgcode/v1",
+  "provider.custom.field.baseURL.placeholder": "https://api.myprovider.com/v1",
   "provider.custom.field.apiKey.label": "API ключ",
   "provider.custom.field.apiKey.placeholder": "API ключ",
   "provider.custom.field.apiKey.description":
@@ -189,7 +189,7 @@ export const dict = {
   "provider.custom.error.providerID.exists": "Такой ID провайдера уже существует",
   "provider.custom.error.name.required": "Требуется отображаемое имя",
   "provider.custom.error.baseURL.required": "Требуется базовый URL",
-  "provider.custom.error.baseURL.format": "Должен начинаться с http:@lgcode/@lgcode/ или https:@lgcode/@lgcode/",
+  "provider.custom.error.baseURL.format": "Должен начинаться с http:// или https://",
   "provider.custom.error.required": "Обязательно",
   "provider.custom.error.duplicate": "Дубликат",
 
@@ -318,7 +318,7 @@ export const dict = {
   "dialog.server.empty": "Серверов пока нет",
   "dialog.server.add.title": "Добавить сервер",
   "dialog.server.add.url": "URL сервера",
-  "dialog.server.add.placeholder": "http:@lgcode/@lgcode/localhost:4096",
+  "dialog.server.add.placeholder": "http://localhost:4096",
   "dialog.server.add.error": "Не удалось подключиться к серверу",
   "dialog.server.add.checking": "Проверка...",
   "dialog.server.add.button": "Добавить сервер",
@@ -377,7 +377,7 @@ export const dict = {
   "context.stats.inputTokens": "Входные токены",
   "context.stats.outputTokens": "Выходные токены",
   "context.stats.reasoningTokens": "Токены рассуждения",
-  "context.stats.cacheTokens": "Токены кэша (чтение@lgcode/запись)",
+  "context.stats.cacheTokens": "Токены кэша (чтение/запись)",
   "context.stats.userMessages": "Сообщения пользователя",
   "context.stats.assistantMessages": "Сообщения ассистента",
   "context.stats.totalCost": "Общая стоимость",
@@ -476,8 +476,8 @@ export const dict = {
   "error.chain.retryable": "Повторная попытка: {{retryable}}",
   "error.chain.responseBody": "Тело ответа:\n{{body}}",
   "error.chain.didYouMean": "Возможно, вы имели в виду: {{suggestions}}",
-  "error.chain.modelNotFound": "Модель не найдена: {{provider}}@lgcode/{{model}}",
-  "error.chain.checkConfig": "Проверьте названия провайдера@lgcode/модели в конфиге (opencode.json)",
+  "error.chain.modelNotFound": "Модель не найдена: {{provider}}/{{model}}",
+  "error.chain.checkConfig": "Проверьте названия провайдера/модели в конфиге (opencode.json)",
   "error.chain.mcpFailed":
     'MCP сервер "{{name}}" завершился с ошибкой. Обратите внимание, что OpenCode пока не поддерживает MCP авторизацию.',
   "error.chain.providerAuthFailed": "Ошибка аутентификации провайдера ({{provider}}): {{message}}",
@@ -896,7 +896,7 @@ export const dict = {
   "session.header.open.app.powershell": "PowerShell",
   "session.header.open.app.sublimeText": "Sublime Text",
   "debugBar.ariaLabel": "Диагностика производительности разработки",
-  "debugBar.na": "н@lgcode/д",
+  "debugBar.na": "н/д",
   "debugBar.nav.label": "NAV",
   "debugBar.nav.tip":
     "Последний завершенный переход маршрута, затрагивающий страницу сеанса, измеренный от запуска маршрутизатора до первой отрисовки после стабилизации.",

@@ -1,8 +1,8 @@
 import { describe, test, expect } from "bun:test"
 import { Effect, Layer, FileSystem } from "effect"
-import { NodeFileSystem } from "@effect@lgcode/platform-node"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { NodeFileSystem } from "@effect/platform-node"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { testEffect } from "../lib/effect"
 import path from "path"
 
 const live = FSUtil.layer.pipe(Layer.provideMerge(NodeFileSystem.layer))
@@ -36,7 +36,7 @@ describe("FSUtil", () => {
       "returns false for non-existent paths",
       Effect.gen(function* () {
         const fs = yield* FSUtil.Service
-        expect(yield* fs.isDir("@lgcode/tmp@lgcode/nonexistent-" + Math.random())).toBe(false)
+        expect(yield* fs.isDir("/tmp/nonexistent-" + Math.random())).toBe(false)
       }),
     )
   })
@@ -93,7 +93,7 @@ describe("FSUtil", () => {
     )
   })
 
-  describe("readJson @lgcode/ writeJson", () => {
+  describe("readJson / writeJson", () => {
     it(
       "round-trips JSON data",
       Effect.gen(function* () {
@@ -305,7 +305,7 @@ describe("FSUtil", () => {
         const fs = yield* FSUtil.Service
         expect(fs.globMatch("*.ts", "foo.ts")).toBe(true)
         expect(fs.globMatch("*.ts", "foo.json")).toBe(false)
-        expect(fs.globMatch("src@lgcode/**", "src@lgcode/a@lgcode/b.ts")).toBe(true)
+        expect(fs.globMatch("src/**", "src/a/b.ts")).toBe(true)
       }),
     )
   })
@@ -362,24 +362,24 @@ describe("FSUtil", () => {
 
   describe("pure helpers", () => {
     test("mimeType returns correct types", () => {
-      expect(FSUtil.mimeType("file.json")).toBe("application@lgcode/json")
-      expect(FSUtil.mimeType("image.png")).toBe("image@lgcode/png")
-      expect(FSUtil.mimeType("unknown.qzx")).toBe("application@lgcode/octet-stream")
+      expect(FSUtil.mimeType("file.json")).toBe("application/json")
+      expect(FSUtil.mimeType("image.png")).toBe("image/png")
+      expect(FSUtil.mimeType("unknown.qzx")).toBe("application/octet-stream")
     })
 
     test("contains checks path containment", () => {
-      expect(FSUtil.contains("@lgcode/a@lgcode/b", "@lgcode/a@lgcode/b@lgcode/c")).toBe(true)
-      expect(FSUtil.contains("@lgcode/a@lgcode/b", "@lgcode/a@lgcode/b")).toBe(true)
-      expect(FSUtil.contains("@lgcode/a@lgcode/b", "@lgcode/a@lgcode/c")).toBe(false)
-      expect(FSUtil.contains("@lgcode/a@lgcode/b", "@lgcode/a@lgcode/bad")).toBe(false)
+      expect(FSUtil.contains("/a/b", "/a/b/c")).toBe(true)
+      expect(FSUtil.contains("/a/b", "/a/b")).toBe(true)
+      expect(FSUtil.contains("/a/b", "/a/c")).toBe(false)
+      expect(FSUtil.contains("/a/b", "/a/bad")).toBe(false)
       if (process.platform === "win32") expect(FSUtil.contains("C:\\a", "D:\\b")).toBe(false)
     })
 
     test("overlaps detects overlapping paths", () => {
-      expect(FSUtil.overlaps("@lgcode/a@lgcode/b", "@lgcode/a@lgcode/b@lgcode/c")).toBe(true)
-      expect(FSUtil.overlaps("@lgcode/a@lgcode/b@lgcode/c", "@lgcode/a@lgcode/b")).toBe(true)
-      expect(FSUtil.overlaps("@lgcode/a", "@lgcode/b")).toBe(false)
-      expect(FSUtil.overlaps("@lgcode/a@lgcode/b", "@lgcode/a@lgcode/bad")).toBe(false)
+      expect(FSUtil.overlaps("/a/b", "/a/b/c")).toBe(true)
+      expect(FSUtil.overlaps("/a/b/c", "/a/b")).toBe(true)
+      expect(FSUtil.overlaps("/a", "/b")).toBe(false)
+      expect(FSUtil.overlaps("/a/b", "/a/bad")).toBe(false)
       if (process.platform === "win32") expect(FSUtil.overlaps("C:\\a", "D:\\b")).toBe(false)
     })
   })

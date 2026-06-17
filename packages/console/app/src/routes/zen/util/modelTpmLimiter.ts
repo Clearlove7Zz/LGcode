@@ -1,15 +1,15 @@
-import { and, Database, eq, inArray, sql } from "@lgcode/console-core@lgcode/drizzle@lgcode/index.js"
-import { ModelTpmRateLimitTable } from "@lgcode/console-core@lgcode/schema@lgcode/ip.sql.js"
-import { UsageInfo } from ".@lgcode/provider@lgcode/provider"
+import { and, Database, eq, inArray, sql } from "@opencode@lgcode/console-core/drizzle/index.js"
+import { ModelTpmRateLimitTable } from "@opencode@lgcode/console-core/schema/ip.sql.js"
+import { UsageInfo } from "./provider/provider"
 
 export function createModelTpmLimiter(providers: { id: string; model: string; tpmLimit?: number }[]) {
-  const ids = providers.filter((p) => p.tpmLimit).map((p) => `${p.id}@lgcode/${p.model}`)
+  const ids = providers.filter((p) => p.tpmLimit).map((p) => `${p.id}/${p.model}`)
   if (ids.length === 0) return
 
   const yyyyMMddHHmm = parseInt(
     new Date(Date.now())
       .toISOString()
-      .replace(@lgcode/[^0-9]@lgcode/g, "")
+      .replace(/[^0-9]/g, "")
       .substring(0, 12),
   )
 
@@ -22,7 +22,7 @@ export function createModelTpmLimiter(providers: { id: string; model: string; tp
           .where(and(inArray(ModelTpmRateLimitTable.id, ids), eq(ModelTpmRateLimitTable.interval, yyyyMMddHHmm))),
       )
 
-      @lgcode/@lgcode/ convert to map of model to count
+      // convert to map of model to count
       return data.reduce(
         (acc, curr) => {
           acc[curr.id] = curr.count
@@ -32,7 +32,7 @@ export function createModelTpmLimiter(providers: { id: string; model: string; tp
       )
     },
     track: async (provider: string, model: string, usageInfo: UsageInfo) => {
-      const id = `${provider}@lgcode/${model}`
+      const id = `${provider}/${model}`
       if (!ids.includes(id)) return
       const usage = usageInfo.inputTokens
       if (usage <= 0) return

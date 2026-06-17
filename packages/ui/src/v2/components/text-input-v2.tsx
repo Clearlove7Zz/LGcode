@@ -1,18 +1,18 @@
 import { type ComponentProps, Show, splitProps } from "solid-js"
-import { Icon } from ".@lgcode/icon"
-import ".@lgcode/text-input-v2.css"
+import { Icon } from "./icon"
+import "./text-input-v2.css"
 
 export interface TextInputV2Props extends Omit<ComponentProps<"input">, "type"> {
-  @lgcode/** Show the trailing copy action. *@lgcode/
+  /** Show the trailing copy action. */
   showCopyButton?: boolean
-  @lgcode/** Accessible label for the copy button. *@lgcode/
+  /** Accessible label for the copy button. */
   copyLabel?: string
   onCopyClick?: (event: MouseEvent) => void
-  @lgcode/** Apply tabular numerals to the field value. *@lgcode/
+  /** Apply tabular numerals to the field value. */
   numeric?: boolean
-  @lgcode/** Error styling for the field and value text. *@lgcode/
+  /** Error styling for the field and value text. */
   invalid?: boolean
-  @lgcode/** `base` is 28px tall; `large` is 32px tall. *@lgcode/
+  /** `base` is 28px tall; `large` is 32px tall. */
   appearance?: "base" | "large"
   type?: ComponentProps<"input">["type"]
 }
@@ -49,8 +49,8 @@ export function TextInputV2(props: TextInputV2Props) {
           disabled={local.disabled}
           aria-invalid={local.invalid ? true : undefined}
           data-slot="text-input-v2-input"
-        @lgcode/>
-      <@lgcode/div>
+        />
+      </div>
       <Show when={local.showCopyButton}>
         <button
           type="button"
@@ -59,9 +59,9 @@ export function TextInputV2(props: TextInputV2Props) {
           disabled={local.disabled}
           onClick={local.onCopyClick}
         >
-          <Icon name="copy" @lgcode/>
-        <@lgcode/button>
-      <@lgcode/Show>
-    <@lgcode/div>
+          <Icon name="copy" />
+        </button>
+      </Show>
+    </div>
   )
 }

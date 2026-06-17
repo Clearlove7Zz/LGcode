@@ -1,16 +1,16 @@
 import { createEffect, onCleanup, type JSX } from "solid-js"
-import { makeEventListener } from "@solid-primitives@lgcode/event-listener"
-import type { SnapshotFileDiff, VcsFileDiff } from "@lgcode/sdk@lgcode/v2"
-import { SessionReview } from "@lgcode/ui@lgcode/session-review"
+import { makeEventListener } from "@solid-primitives/event-listener"
+import type { SnapshotFileDiff, VcsFileDiff } from "@opencode@lgcode/sdk/v2"
+import { SessionReview } from "@opencode@lgcode/ui/session-review"
 import type {
   SessionReviewCommentActions,
   SessionReviewCommentDelete,
   SessionReviewCommentUpdate,
-} from "@lgcode/ui@lgcode/session-review"
-import type { SelectedLineRange } from "@@lgcode/context@lgcode/file"
-import { useSDK } from "@@lgcode/context@lgcode/sdk"
-import { useLayout } from "@@lgcode/context@lgcode/layout"
-import type { LineComment } from "@@lgcode/context@lgcode/comments"
+} from "@opencode@lgcode/ui/session-review"
+import type { SelectedLineRange } from "@/context/file"
+import { useSDK } from "@/context/sdk"
+import { useLayout } from "@/context/layout"
+import type { LineComment } from "@/context/comments"
 
 export type DiffStyle = "unified" | "split"
 
@@ -166,6 +166,6 @@ export function SessionReviewTab(props: SessionReviewTabProps) {
       comments={props.comments}
       focusedComment={props.focusedComment}
       onFocusedCommentChange={props.onFocusedCommentChange}
-    @lgcode/>
+    />
   )
 }

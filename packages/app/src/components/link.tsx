@@ -1,5 +1,5 @@
 import { ComponentProps, splitProps } from "solid-js"
-import { usePlatform } from "@@lgcode/context@lgcode/platform"
+import { usePlatform } from "@/context/platform"
 
 export interface LinkProps extends Omit<ComponentProps<"a">, "href"> {
   href: string
@@ -21,6 +21,6 @@ export function Link(props: LinkProps) {
       {...rest}
     >
       {local.children}
-    <@lgcode/a>
+    </a>
   )
 }

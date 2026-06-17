@@ -1,9 +1,9 @@
-import { TextareaRenderable, TextAttributes } from "@opentui@lgcode/core"
-import { useTheme } from "..@lgcode/context@lgcode/theme"
-import { useDialog, type DialogContext } from ".@lgcode/dialog"
-import { createStore } from "solid-js@lgcode/store"
+import { TextareaRenderable, TextAttributes } from "@opentui/core"
+import { useTheme } from "../context/theme"
+import { useDialog, type DialogContext } from "./dialog"
+import { createStore } from "solid-js/store"
 import { onMount, Show } from "solid-js"
-import { useBindings } from "..@lgcode/keymap"
+import { useBindings } from "../keymap"
 
 export type DialogExportOptionsProps = {
   defaultFilename: string
@@ -86,15 +86,15 @@ export function DialogExportOptions(props: DialogExportOptionsProps) {
       <box flexDirection="row" justifyContent="space-between">
         <text attributes={TextAttributes.BOLD} fg={theme.text}>
           Export Options
-        <@lgcode/text>
+        </text>
         <text fg={theme.textMuted} onMouseUp={() => dialog.clear()}>
           esc
-        <@lgcode/text>
-      <@lgcode/box>
+        </text>
+      </box>
       <box gap={1}>
         <box>
-          <text fg={theme.text}>Filename:<@lgcode/text>
-        <@lgcode/box>
+          <text fg={theme.text}>Filename:</text>
+        </box>
         <textarea
           onSubmit={() => {
             props.onConfirm?.({
@@ -116,8 +116,8 @@ export function DialogExportOptions(props: DialogExportOptionsProps) {
           textColor={theme.text}
           focusedTextColor={theme.text}
           cursorColor={theme.text}
-        @lgcode/>
-      <@lgcode/box>
+        />
+      </box>
       <box flexDirection="column">
         <box
           flexDirection="row"
@@ -128,9 +128,9 @@ export function DialogExportOptions(props: DialogExportOptionsProps) {
         >
           <text fg={store.active === "thinking" ? theme.primary : theme.textMuted}>
             {store.thinking ? "[x]" : "[ ]"}
-          <@lgcode/text>
-          <text fg={store.active === "thinking" ? theme.primary : theme.text}>Include thinking<@lgcode/text>
-        <@lgcode/box>
+          </text>
+          <text fg={store.active === "thinking" ? theme.primary : theme.text}>Include thinking</text>
+        </box>
         <box
           flexDirection="row"
           gap={2}
@@ -140,9 +140,9 @@ export function DialogExportOptions(props: DialogExportOptionsProps) {
         >
           <text fg={store.active === "toolDetails" ? theme.primary : theme.textMuted}>
             {store.toolDetails ? "[x]" : "[ ]"}
-          <@lgcode/text>
-          <text fg={store.active === "toolDetails" ? theme.primary : theme.text}>Include tool details<@lgcode/text>
-        <@lgcode/box>
+          </text>
+          <text fg={store.active === "toolDetails" ? theme.primary : theme.text}>Include tool details</text>
+        </box>
         <box
           flexDirection="row"
           gap={2}
@@ -152,9 +152,9 @@ export function DialogExportOptions(props: DialogExportOptionsProps) {
         >
           <text fg={store.active === "assistantMetadata" ? theme.primary : theme.textMuted}>
             {store.assistantMetadata ? "[x]" : "[ ]"}
-          <@lgcode/text>
-          <text fg={store.active === "assistantMetadata" ? theme.primary : theme.text}>Include assistant metadata<@lgcode/text>
-        <@lgcode/box>
+          </text>
+          <text fg={store.active === "assistantMetadata" ? theme.primary : theme.text}>Include assistant metadata</text>
+        </box>
         <box
           flexDirection="row"
           gap={2}
@@ -164,23 +164,23 @@ export function DialogExportOptions(props: DialogExportOptionsProps) {
         >
           <text fg={store.active === "openWithoutSaving" ? theme.primary : theme.textMuted}>
             {store.openWithoutSaving ? "[x]" : "[ ]"}
-          <@lgcode/text>
-          <text fg={store.active === "openWithoutSaving" ? theme.primary : theme.text}>Open without saving<@lgcode/text>
-        <@lgcode/box>
-      <@lgcode/box>
+          </text>
+          <text fg={store.active === "openWithoutSaving" ? theme.primary : theme.text}>Open without saving</text>
+        </box>
+      </box>
       <Show when={store.active !== "filename"}>
         <text fg={theme.textMuted} paddingBottom={1}>
-          Press <span style={{ fg: theme.text }}>space<@lgcode/span> to toggle, <span style={{ fg: theme.text }}>return<@lgcode/span>{" "}
+          Press <span style={{ fg: theme.text }}>space</span> to toggle, <span style={{ fg: theme.text }}>return</span>{" "}
           to confirm
-        <@lgcode/text>
-      <@lgcode/Show>
+        </text>
+      </Show>
       <Show when={store.active === "filename"}>
         <text fg={theme.textMuted} paddingBottom={1}>
-          Press <span style={{ fg: theme.text }}>return<@lgcode/span> to confirm, <span style={{ fg: theme.text }}>tab<@lgcode/span>{" "}
+          Press <span style={{ fg: theme.text }}>return</span> to confirm, <span style={{ fg: theme.text }}>tab</span>{" "}
           for options
-        <@lgcode/text>
-      <@lgcode/Show>
-    <@lgcode/box>
+        </text>
+      </Show>
+    </box>
   )
 }
 
@@ -209,7 +209,7 @@ DialogExportOptions.show = (
           defaultOpenWithoutSaving={defaultOpenWithoutSaving}
           onConfirm={(options) => resolve(options)}
           onCancel={() => resolve(null)}
-        @lgcode/>
+        />
       ),
       () => resolve(null),
     )

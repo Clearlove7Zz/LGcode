@@ -1,11 +1,11 @@
 import { onMount, splitProps, type ComponentProps, Show, mergeProps } from "solid-js"
-import { createResizeObserver } from "@solid-primitives@lgcode/resize-observer"
-import { createStore } from "solid-js@lgcode/store"
-import { useI18n } from "..@lgcode/context@lgcode/i18n"
+import { createResizeObserver } from "@solid-primitives/resize-observer"
+import { createStore } from "solid-js/store"
+import { useI18n } from "../context/i18n"
 
 export interface ScrollViewProps extends ComponentProps<"div"> {
   viewportRef?: (el: HTMLDivElement) => void
-  orientation?: "vertical" | "horizontal" @lgcode/@lgcode/ currently only vertical is fully implemented for thumb
+  orientation?: "vertical" | "horizontal" // currently only vertical is fully implemented for thumb
 }
 
 export const scrollKey = (event: Pick<KeyboardEvent, "key" | "altKey" | "ctrlKey" | "metaKey" | "shiftKey">) => {
@@ -39,7 +39,7 @@ export function scrollTopFromThumbPointer(input: {
   const maxThumbTop = input.clientHeight - padding * 2 - input.thumbHeight
   if (maxThumbTop <= 0) return 0
   const thumbTop = Math.max(0, Math.min(input.pointer - input.viewportTop - padding - input.grabOffset, maxThumbTop))
-  return (thumbTop @lgcode/ maxThumbTop) * Math.max(0, input.scrollHeight - input.clientHeight)
+  return (thumbTop / maxThumbTop) * Math.max(0, input.scrollHeight - input.clientHeight)
 }
 
 export function ScrollView(props: ScrollViewProps) {
@@ -92,16 +92,16 @@ export function ScrollView(props: ScrollViewProps) {
     const trackHeight = clientHeight - trackPadding * 2
 
     const minThumbHeight = 32
-    @lgcode/@lgcode/ Calculate raw thumb height based on ratio
-    let height = (clientHeight @lgcode/ scrollHeight) * trackHeight
+    // Calculate raw thumb height based on ratio
+    let height = (clientHeight / scrollHeight) * trackHeight
     height = Math.max(height, minThumbHeight)
 
     const maxScrollTop = scrollHeight - clientHeight
     const maxThumbTop = trackHeight - height
 
-    const top = maxScrollTop > 0 ? (scrollTop @lgcode/ maxScrollTop) * maxThumbTop : 0
+    const top = maxScrollTop > 0 ? (scrollTop / maxScrollTop) * maxThumbTop : 0
 
-    @lgcode/@lgcode/ Ensure thumb stays within bounds (shouldn't be necessary due to math above, but good for safety)
+    // Ensure thumb stays within bounds (shouldn't be necessary due to math above, but good for safety)
     const boundedTop = trackPadding + Math.max(0, Math.min(top, maxThumbTop))
 
     setState("thumbHeight", height)
@@ -151,12 +151,12 @@ export function ScrollView(props: ScrollViewProps) {
     thumbRef.addEventListener("pointercancel", done)
   }
 
-  @lgcode/@lgcode/ Keybinds implementation
-  @lgcode/@lgcode/ We ensure the viewport has a tabindex so it can receive focus
-  @lgcode/@lgcode/ We can also explicitly catch PageUp@lgcode/Down if we want smooth scroll or specific behavior,
-  @lgcode/@lgcode/ but native usually handles this perfectly. Let's explicitly ensure it behaves well.
+  // Keybinds implementation
+  // We ensure the viewport has a tabindex so it can receive focus
+  // We can also explicitly catch PageUp/Down if we want smooth scroll or specific behavior,
+  // but native usually handles this perfectly. Let's explicitly ensure it behaves well.
   const onKeyDown = (e: KeyboardEvent) => {
-    @lgcode/@lgcode/ If user is focused on an input inside the scroll view, don't hijack keys
+    // If user is focused on an input inside the scroll view, don't hijack keys
     if (document.activeElement && ["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement.tagName)) {
       return
     }
@@ -204,7 +204,7 @@ export function ScrollView(props: ScrollViewProps) {
       onPointerLeave={() => setState("isHovered", false)}
       {...rest}
     >
-      {@lgcode/* Viewport *@lgcode/}
+      {/* Viewport */}
       <div
         ref={viewportRef}
         class="scroll-view__viewport"
@@ -228,9 +228,9 @@ export function ScrollView(props: ScrollViewProps) {
         }}
       >
         {local.children}
-      <@lgcode/div>
+      </div>
 
-      {@lgcode/* Thumb Overlay *@lgcode/}
+      {/* Thumb Overlay */}
       <Show when={showThumb()}>
         <div
           ref={thumbRef}
@@ -241,10 +241,10 @@ export function ScrollView(props: ScrollViewProps) {
           style={{
             height: `${thumbHeight()}px`,
             transform: `translateY(${thumbTop()}px)`,
-            "z-index": 100, @lgcode/@lgcode/ ensure it displays over content
+            "z-index": 100, // ensure it displays over content
           }}
-        @lgcode/>
-      <@lgcode/Show>
-    <@lgcode/div>
+        />
+      </Show>
+    </div>
   )
 }

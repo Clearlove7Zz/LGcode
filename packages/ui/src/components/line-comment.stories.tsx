@@ -1,6 +1,6 @@
-@lgcode/@lgcode/ @ts-nocheck
+// @ts-nocheck
 import { createSignal } from "solid-js"
-import * as mod from ".@lgcode/line-comment"
+import * as mod from "./line-comment"
 
 const docs = `### Overview
 Inline comment anchor and editor for code review or annotation flows.
@@ -10,7 +10,7 @@ Pair with \`Diff\` or \`Code\` to align comments to lines.
 ### API
 - \`LineCommentAnchor\`: position with \`top\`, control \`open\`, render custom children.
 - \`LineComment\`: convenience wrapper for displaying comment + selection label.
-- \`LineCommentEditor\`: controlled textarea with submit@lgcode/cancel handlers.
+- \`LineCommentEditor\`: controlled textarea with submit/cancel handlers.
 
 ### Variants and states
 - Default display and editor display variants.
@@ -22,13 +22,13 @@ Pair with \`Diff\` or \`Code\` to align comments to lines.
 ### Accessibility
 - TODO: confirm ARIA labeling for comment button and editor textarea.
 
-### Theming@lgcode/tokens
+### Theming/tokens
 - Uses \`data-component="line-comment"\` and related slots.
 
 `
 
 export default {
-  title: "UI@lgcode/LineComment",
+  title: "UI/LineComment",
   id: "components-line-comment",
   component: mod.LineComment,
   tags: ["autodocs"],
@@ -55,10 +55,10 @@ export const Default = {
         color: "var(--text-weak)",
       }}
     >
-      <div>12 | const total = sum(values)<@lgcode/div>
-      <div>13 | return total @lgcode/ values.length<@lgcode/div>
-      <mod.LineComment open top={18} comment="Consider guarding against empty arrays." selection="L12-L13" @lgcode/>
-    <@lgcode/div>
+      <div>12 | const total = sum(values)</div>
+      <div>13 | return total / values.length</div>
+      <mod.LineComment open top={18} comment="Consider guarding against empty arrays." selection="L12-L13" />
+    </div>
   ),
 }
 
@@ -78,7 +78,7 @@ export const Editor = {
           color: "var(--text-weak)",
         }}
       >
-        <div>40 | if (values.length === 0) return 0<@lgcode/div>
+        <div>40 | if (values.length === 0) return 0</div>
         <mod.LineCommentEditor
           top={24}
           value={value()}
@@ -86,8 +86,8 @@ export const Editor = {
           onInput={setValue}
           onCancel={() => setValue("")}
           onSubmit={(next) => setValue(next)}
-        @lgcode/>
-      <@lgcode/div>
+        />
+      </div>
     )
   },
 }
@@ -106,10 +106,10 @@ export const AnchorOnly = {
         color: "var(--text-weak)",
       }}
     >
-      <div>20 | const ready = true<@lgcode/div>
+      <div>20 | const ready = true</div>
       <mod.LineCommentAnchor top={18} open={false}>
-        <div data-slot="line-comment-content">Anchor content<@lgcode/div>
-      <@lgcode/mod.LineCommentAnchor>
-    <@lgcode/div>
+        <div data-slot="line-comment-content">Anchor content</div>
+      </mod.LineCommentAnchor>
+    </div>
   ),
 }

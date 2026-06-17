@@ -1,1 +1,1 @@
-export * from "..@lgcode/..@lgcode/prompt@lgcode/history"
+export * from "../../prompt/history"

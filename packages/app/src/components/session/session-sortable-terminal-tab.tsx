@@ -1,15 +1,15 @@
 import type { JSX } from "solid-js"
 import { Show, createEffect, onCleanup } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import { createSortable } from "@thisbeyond@lgcode/solid-dnd"
-import { IconButton } from "@lgcode/ui@lgcode/icon-button"
-import { Tabs } from "@lgcode/ui@lgcode/tabs"
-import { DropdownMenu } from "@lgcode/ui@lgcode/dropdown-menu"
-import { Icon } from "@lgcode/ui@lgcode/icon"
-import { isDefaultTitle as isDefaultTerminalTitle } from "@@lgcode/context@lgcode/terminal-title"
-import { useTerminal, type LocalPTY } from "@@lgcode/context@lgcode/terminal"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
-import { focusTerminalById } from "@@lgcode/pages@lgcode/session@lgcode/helpers"
+import { createStore } from "solid-js/store"
+import { createSortable } from "@thisbeyond/solid-dnd"
+import { IconButton } from "@opencode@lgcode/ui/icon-button"
+import { Tabs } from "@opencode@lgcode/ui/tabs"
+import { DropdownMenu } from "@opencode@lgcode/ui/dropdown-menu"
+import { Icon } from "@opencode@lgcode/ui/icon"
+import { isDefaultTitle as isDefaultTerminalTitle } from "@/context/terminal-title"
+import { useTerminal, type LocalPTY } from "@/context/terminal"
+import { useLanguage } from "@/context/language"
+import { focusTerminalById } from "@/pages/session/helpers"
 
 export function SortableTerminalTab(props: { terminal: LocalPTY; onClose?: () => void }): JSX.Element {
   const terminal = useTerminal()
@@ -140,13 +140,13 @@ export function SortableTerminalTab(props: { terminal: LocalPTY; onClose?: () =>
                 close()
               }}
               aria-label={language.t("terminal.close")}
-            @lgcode/>
+            />
           }
         >
           <span onDblClick={edit} classList={{ invisible: store.editing }}>
             {label()}
-          <@lgcode/span>
-        <@lgcode/Tabs.Trigger>
+          </span>
+        </Tabs.Trigger>
         <Show when={store.editing}>
           <div class="absolute inset-0 flex items-center px-3 bg-muted z-10 pointer-events-auto">
             <input
@@ -158,9 +158,9 @@ export function SortableTerminalTab(props: { terminal: LocalPTY; onClose?: () =>
               onKeyDown={keydown}
               onMouseDown={(e) => e.stopPropagation()}
               class="bg-transparent border-none outline-none text-sm min-w-0 flex-1"
-            @lgcode/>
-          <@lgcode/div>
-        <@lgcode/Show>
+            />
+          </div>
+        </Show>
         <DropdownMenu open={store.menuOpen} onOpenChange={(open) => setStore("menuOpen", open)}>
           <DropdownMenu.Portal>
             <DropdownMenu.Content
@@ -177,17 +177,17 @@ export function SortableTerminalTab(props: { terminal: LocalPTY; onClose?: () =>
               }}
             >
               <DropdownMenu.Item onSelect={() => (editRequested = true)}>
-                <Icon name="edit" class="w-4 h-4 mr-2" @lgcode/>
+                <Icon name="edit" class="w-4 h-4 mr-2" />
                 {language.t("common.rename")}
-              <@lgcode/DropdownMenu.Item>
+              </DropdownMenu.Item>
               <DropdownMenu.Item onSelect={close}>
-                <Icon name="close" class="w-4 h-4 mr-2" @lgcode/>
+                <Icon name="close" class="w-4 h-4 mr-2" />
                 {language.t("common.close")}
-              <@lgcode/DropdownMenu.Item>
-            <@lgcode/DropdownMenu.Content>
-          <@lgcode/DropdownMenu.Portal>
-        <@lgcode/DropdownMenu>
-      <@lgcode/div>
-    <@lgcode/div>
+              </DropdownMenu.Item>
+            </DropdownMenu.Content>
+          </DropdownMenu.Portal>
+        </DropdownMenu>
+      </div>
+    </div>
   )
 }

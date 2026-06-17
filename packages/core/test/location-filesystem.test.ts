@@ -1,15 +1,15 @@
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import path from "path"
 import { describe, expect } from "bun:test"
 import { Effect, Exit, Layer } from "effect"
-import { FileSystem } from "@lgcode/core@lgcode/filesystem"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { Location } from "@lgcode/core@lgcode/location"
-import { Ripgrep } from "@lgcode/core@lgcode/ripgrep"
-import { AbsolutePath, RelativePath } from "@lgcode/core@lgcode/schema"
-import { location } from ".@lgcode/fixture@lgcode/location"
-import { tmpdir } from ".@lgcode/fixture@lgcode/tmpdir"
-import { it } from ".@lgcode/lib@lgcode/effect"
+import { FileSystem } from "@opencode@lgcode/core/filesystem"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { Location } from "@opencode@lgcode/core/location"
+import { Ripgrep } from "@opencode@lgcode/core/ripgrep"
+import { AbsolutePath, RelativePath } from "@opencode@lgcode/core/schema"
+import { location } from "./fixture/location"
+import { tmpdir } from "./fixture/tmpdir"
+import { it } from "./lib/effect"
 
 const provide = (directory: string) =>
   Effect.provide(
@@ -40,7 +40,7 @@ describe("FileSystem", () => {
         const text = yield* service.read({ path: RelativePath.make("text.txt") })
         const binary = yield* service.read({ path: RelativePath.make("data.bin") })
         expect(new TextDecoder().decode(text.content)).toBe("hello")
-        expect(text.mime).toBe("text@lgcode/plain")
+        expect(text.mime).toBe("text/plain")
         expect(binary.content).toEqual(new Uint8Array([0, 1, 2]))
       }).pipe(provide(directory)),
     ),
@@ -64,7 +64,7 @@ describe("FileSystem", () => {
     withTmp((directory) =>
       Effect.gen(function* () {
         const result = yield* (yield* FileSystem.Service)
-          .read({ path: RelativePath.make("..@lgcode/outside.txt") })
+          .read({ path: RelativePath.make("../outside.txt") })
           .pipe(Effect.exit)
         expect(Exit.isFailure(result)).toBe(true)
       }).pipe(provide(directory)),

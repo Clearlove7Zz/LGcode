@@ -1,17 +1,17 @@
 import { describe, expect } from "bun:test"
 import { $ } from "bun"
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import path from "path"
 import { Effect, Layer, Schema } from "effect"
-import { ProjectV2 } from "@lgcode/core@lgcode/project"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { Git } from "@lgcode/core@lgcode/git"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import { Hash } from "@lgcode/core@lgcode/util@lgcode/hash"
-import { ProjectDirectories } from "@lgcode/core@lgcode/project@lgcode/directories"
-import { tmpdir } from ".@lgcode/fixture@lgcode/tmpdir"
-import { testEffect } from ".@lgcode/lib@lgcode/effect"
+import { ProjectV2 } from "@opencode@lgcode/core/project"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { Git } from "@opencode@lgcode/core/git"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import { Hash } from "@opencode@lgcode/core/util/hash"
+import { ProjectDirectories } from "@opencode@lgcode/core/project/directories"
+import { tmpdir } from "./fixture/tmpdir"
+import { testEffect } from "./lib/effect"
 
 const databaseLayer = Database.layerFromPath(":memory:")
 const directoriesLayer = ProjectDirectories.layer.pipe(Layer.provide(databaseLayer))
@@ -114,12 +114,12 @@ describe("ProjectV2.resolve", () => {
         Effect.promise(() => tmpdir()),
         (tmp) => Effect.promise(() => tmp[Symbol.asyncDispose]()),
       )
-      yield* Effect.promise(() => initRepo(tmp.path, { commit: true, remote: "git@github.com:Acme@lgcode/App.git" }))
+      yield* Effect.promise(() => initRepo(tmp.path, { commit: true, remote: "git@github.com:Acme/App.git" }))
       const project = yield* ProjectV2.Service
 
       const result = yield* project.resolve(abs(tmp.path))
 
-      expect(result.id).toBe(remoteID("github.com@lgcode/Acme@lgcode/App"))
+      expect(result.id).toBe(remoteID("github.com/Acme/App"))
       expect(result.id).not.toBe(ProjectV2.ID.make(yield* Effect.promise(() => rootCommit(tmp.path))))
       expect(result.directory).toBe(yield* real(tmp.path))
       expect(result.vcs?.type).toBe("git")
@@ -136,14 +136,14 @@ describe("ProjectV2.resolve", () => {
         Effect.promise(() => tmpdir()),
         (tmp) => Effect.promise(() => tmp[Symbol.asyncDispose]()),
       )
-      yield* Effect.promise(() => initRepo(ssh.path, { commit: true, remote: "git@github.com:owner@lgcode/repo.git" }))
-      yield* Effect.promise(() => initRepo(https.path, { commit: true, remote: "https:@lgcode/@lgcode/github.com@lgcode/owner@lgcode/repo.git" }))
+      yield* Effect.promise(() => initRepo(ssh.path, { commit: true, remote: "git@github.com:owner/repo.git" }))
+      yield* Effect.promise(() => initRepo(https.path, { commit: true, remote: "https://github.com/owner/repo.git" }))
       const project = yield* ProjectV2.Service
 
       const a = yield* project.resolve(abs(ssh.path))
       const b = yield* project.resolve(abs(https.path))
 
-      expect(a.id).toBe(remoteID("github.com@lgcode/owner@lgcode/repo"))
+      expect(a.id).toBe(remoteID("github.com/owner/repo"))
       expect(b.id).toBe(a.id)
     }),
   )
@@ -154,7 +154,7 @@ describe("ProjectV2.resolve", () => {
         Effect.promise(() => tmpdir()),
         (tmp) => Effect.promise(() => tmp[Symbol.asyncDispose]()),
       )
-      yield* Effect.promise(() => initRepo(tmp.path, { commit: true, remote: `file:@lgcode/@lgcode/${tmp.path}` }))
+      yield* Effect.promise(() => initRepo(tmp.path, { commit: true, remote: `file://${tmp.path}` }))
       const project = yield* ProjectV2.Service
 
       const result = yield* project.resolve(abs(tmp.path))
@@ -169,14 +169,14 @@ describe("ProjectV2.resolve", () => {
         Effect.promise(() => tmpdir()),
         (tmp) => Effect.promise(() => tmp[Symbol.asyncDispose]()),
       )
-      yield* Effect.promise(() => initRepo(tmp.path, { commit: true, remote: "git@github.com:owner@lgcode/repo.git" }))
+      yield* Effect.promise(() => initRepo(tmp.path, { commit: true, remote: "git@github.com:owner/repo.git" }))
       yield* Effect.promise(() => Bun.write(path.join(tmp.path, ".git", "opencode"), "old-id"))
       const project = yield* ProjectV2.Service
 
       const result = yield* project.resolve(abs(tmp.path))
 
       expect(result.previous).toBe(ProjectV2.ID.make("old-id"))
-      expect(result.id).toBe(remoteID("github.com@lgcode/owner@lgcode/repo"))
+      expect(result.id).toBe(remoteID("github.com/owner/repo"))
     }),
   )
 
@@ -186,7 +186,7 @@ describe("ProjectV2.resolve", () => {
         Effect.promise(() => tmpdir()),
         (tmp) => Effect.promise(() => tmp[Symbol.asyncDispose]()),
       )
-      yield* Effect.promise(() => initRepo(tmp.path, { commit: true, remote: "git@github.com:owner@lgcode/repo.git" }))
+      yield* Effect.promise(() => initRepo(tmp.path, { commit: true, remote: "git@github.com:owner/repo.git" }))
       const project = yield* ProjectV2.Service
 
       yield* project.resolve(abs(tmp.path))
@@ -221,7 +221,7 @@ describe("ProjectV2.resolve", () => {
       yield* Effect.addFinalizer(() =>
         Effect.promise(() => $`rm -rf ${worktree}`.quiet().nothrow()).pipe(Effect.ignore),
       )
-      yield* Effect.promise(() => initRepo(tmp.path, { commit: true, remote: "git@github.com:owner@lgcode/repo.git" }))
+      yield* Effect.promise(() => initRepo(tmp.path, { commit: true, remote: "git@github.com:owner/repo.git" }))
       yield* Effect.promise(() => Bun.write(path.join(tmp.path, ".git", "opencode"), "old-id"))
       yield* Effect.promise(() => $`git worktree add ${worktree} -b test-${Date.now()}`.cwd(tmp.path).quiet())
       const project = yield* ProjectV2.Service
@@ -230,7 +230,7 @@ describe("ProjectV2.resolve", () => {
 
       expect(result.directory).toBe(yield* real(worktree))
       expect(result.previous).toBe(ProjectV2.ID.make("old-id"))
-      expect(result.id).toBe(remoteID("github.com@lgcode/owner@lgcode/repo"))
+      expect(result.id).toBe(remoteID("github.com/owner/repo"))
       expect(result.vcs?.type).toBe("git")
     }),
   )

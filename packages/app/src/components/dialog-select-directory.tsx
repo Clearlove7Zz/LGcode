@@ -1,14 +1,14 @@
-import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
-import { Dialog } from "@lgcode/ui@lgcode/dialog"
-import { FileIcon } from "@lgcode/ui@lgcode/file-icon"
-import { List } from "@lgcode/ui@lgcode/list"
-import type { ListRef } from "@lgcode/ui@lgcode/list"
-import { getDirectory, getFilename } from "@lgcode/core@lgcode/util@lgcode/path"
+import { useDialog } from "@opencode@lgcode/ui/context/dialog"
+import { Dialog } from "@opencode@lgcode/ui/dialog"
+import { FileIcon } from "@opencode@lgcode/ui/file-icon"
+import { List } from "@opencode@lgcode/ui/list"
+import type { ListRef } from "@opencode@lgcode/ui/list"
+import { getDirectory, getFilename } from "@opencode@lgcode/core/util/path"
 import { createMemo, createResource, createSignal } from "solid-js"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
-import { ServerConnection } from "@@lgcode/context@lgcode/server"
-import { useGlobal } from "@@lgcode/context@lgcode/global"
-import { cleanPickerInput, createDirectorySearch, displayPickerPath } from ".@lgcode/directory-picker-domain"
+import { useLanguage } from "@/context/language"
+import { ServerConnection } from "@/context/server"
+import { useGlobal } from "@/context/global"
+import { cleanPickerInput, createDirectorySearch, displayPickerPath } from "./directory-picker-domain"
 
 interface DialogSelectDirectoryProps {
   title?: string
@@ -28,8 +28,8 @@ function toRow(absolute: string, home: string, group: Row["group"]): Row {
   const tilde = displayPickerPath(full, "~", home)
   const withSlash = (value: string) => {
     if (!value) return ""
-    if (value.endsWith("@lgcode/")) return value
-    return value + "@lgcode/"
+    if (value.endsWith("/")) return value
+    return value + "/"
   }
 
   const search = Array.from(
@@ -151,7 +151,7 @@ export function DialogSelectDirectory(props: DialogSelectDirectoryProps) {
           e.stopPropagation()
 
           const value = displayPickerPath(item.absolute, filter(), home())
-          list?.setFilter(value.endsWith("@lgcode/") ? value : value + "@lgcode/")
+          list?.setFilter(value.endsWith("/") ? value : value + "/")
         }}
         onSelect={(path) => {
           if (!path) return
@@ -164,31 +164,31 @@ export function DialogSelectDirectory(props: DialogSelectDirectoryProps) {
             return (
               <div class="w-full flex items-center justify-between rounded-md">
                 <div class="flex items-center gap-x-3 grow min-w-0">
-                  <FileIcon node={{ path: item.absolute, type: "directory" }} class="shrink-0 size-4" @lgcode/>
+                  <FileIcon node={{ path: item.absolute, type: "directory" }} class="shrink-0 size-4" />
                   <div class="flex items-center text-14-regular min-w-0">
-                    <span class="text-text-strong whitespace-nowrap">~<@lgcode/span>
-                    <span class="text-text-weak whitespace-nowrap">@lgcode/<@lgcode/span>
-                  <@lgcode/div>
-                <@lgcode/div>
-              <@lgcode/div>
+                    <span class="text-text-strong whitespace-nowrap">~</span>
+                    <span class="text-text-weak whitespace-nowrap">/</span>
+                  </div>
+                </div>
+              </div>
             )
           }
           return (
             <div class="w-full flex items-center justify-between rounded-md">
               <div class="flex items-center gap-x-3 grow min-w-0">
-                <FileIcon node={{ path: item.absolute, type: "directory" }} class="shrink-0 size-4" @lgcode/>
+                <FileIcon node={{ path: item.absolute, type: "directory" }} class="shrink-0 size-4" />
                 <div class="flex items-center text-14-regular min-w-0">
                   <span class="text-text-weak whitespace-nowrap overflow-hidden overflow-ellipsis truncate min-w-0">
                     {getDirectory(path)}
-                  <@lgcode/span>
-                  <span class="text-text-strong whitespace-nowrap">{getFilename(path)}<@lgcode/span>
-                  <span class="text-text-weak whitespace-nowrap">@lgcode/<@lgcode/span>
-                <@lgcode/div>
-              <@lgcode/div>
-            <@lgcode/div>
+                  </span>
+                  <span class="text-text-strong whitespace-nowrap">{getFilename(path)}</span>
+                  <span class="text-text-weak whitespace-nowrap">/</span>
+                </div>
+              </div>
+            </div>
           )
         }}
-      <@lgcode/List>
-    <@lgcode/Dialog>
+      </List>
+    </Dialog>
   )
 }

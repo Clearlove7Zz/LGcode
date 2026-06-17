@@ -1,10 +1,10 @@
 import { expect } from "bun:test"
 import { Duration, Effect, Layer, Option, Schema } from "effect"
 import { sql } from "drizzle-orm"
-import { HttpClient, HttpClientError, HttpClientResponse } from "effect@lgcode/unstable@lgcode/http"
+import { HttpClient, HttpClientError, HttpClientResponse } from "effect/unstable/http"
 
-import { AccountRepo } from "..@lgcode/..@lgcode/src@lgcode/account@lgcode/repo"
-import { Account } from "..@lgcode/..@lgcode/src@lgcode/account@lgcode/account"
+import { AccountRepo } from "../../src/account/repo"
+import { Account } from "../../src/account/account"
 import {
   AccessToken,
   AccountID,
@@ -15,9 +15,9 @@ import {
   OrgID,
   RefreshToken,
   UserCode,
-} from "..@lgcode/..@lgcode/src@lgcode/account@lgcode/schema"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+} from "../../src/account/schema"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { testEffect } from "../lib/effect"
 
 const truncate = Layer.effectDiscard(
   Effect.gen(function* () {
@@ -40,7 +40,7 @@ const json = (req: Parameters<typeof HttpClientResponse.fromWeb>[0], body: unkno
     req,
     new Response(JSON.stringify(body), {
       status,
-      headers: { "content-type": "application@lgcode/json" },
+      headers: { "content-type": "application/json" },
     }),
   )
 
@@ -52,8 +52,8 @@ const login = () =>
   new Login({
     code: DeviceCode.make("device-code"),
     user: UserCode.make("user-code"),
-    url: "https:@lgcode/@lgcode/one.example.com@lgcode/verify",
-    server: "https:@lgcode/@lgcode/one.example.com",
+    url: "https://one.example.com/verify",
+    server: "https://one.example.com",
     expiry: Duration.seconds(600),
     interval: Duration.seconds(5),
   })
@@ -61,7 +61,7 @@ const login = () =>
 const deviceTokenClient = (body: unknown, status = 400) =>
   HttpClient.make((req) =>
     Effect.succeed(
-      req.url === "https:@lgcode/@lgcode/one.example.com@lgcode/auth@lgcode/device@lgcode/token" ? json(req, body, status) : json(req, {}, 404),
+      req.url === "https://one.example.com/auth/device/token" ? json(req, body, status) : json(req, {}, 404),
     ),
   )
 
@@ -75,11 +75,11 @@ it.live("login normalizes trailing slashes in the provided server URL", () =>
       Effect.gen(function* () {
         seen.push(`${req.method} ${req.url}`)
 
-        if (req.url === "https:@lgcode/@lgcode/one.example.com@lgcode/auth@lgcode/device@lgcode/code") {
+        if (req.url === "https://one.example.com/auth/device/code") {
           return json(req, {
             device_code: "device-code",
             user_code: "user-code",
-            verification_uri_complete: "@lgcode/device?user_code=user-code",
+            verification_uri_complete: "/device?user_code=user-code",
             expires_in: 600,
             interval: 5,
           })
@@ -89,11 +89,11 @@ it.live("login normalizes trailing slashes in the provided server URL", () =>
       }),
     )
 
-    const result = yield* Account.use.login("https:@lgcode/@lgcode/one.example.com@lgcode/").pipe(Effect.provide(live(client)))
+    const result = yield* Account.use.login("https://one.example.com/").pipe(Effect.provide(live(client)))
 
-    expect(seen).toEqual(["POST https:@lgcode/@lgcode/one.example.com@lgcode/auth@lgcode/device@lgcode/code"])
-    expect(result.server).toBe("https:@lgcode/@lgcode/one.example.com")
-    expect(result.url).toBe("https:@lgcode/@lgcode/one.example.com@lgcode/device?user_code=user-code")
+    expect(seen).toEqual(["POST https://one.example.com/auth/device/code"])
+    expect(result.server).toBe("https://one.example.com")
+    expect(result.url).toBe("https://one.example.com/device?user_code=user-code")
   }),
 )
 
@@ -107,12 +107,12 @@ it.live("login maps transport failures to account transport errors", () =>
       ),
     )
 
-    const error = yield* Effect.flip(Account.use.login("https:@lgcode/@lgcode/one.example.com").pipe(Effect.provide(live(client))))
+    const error = yield* Effect.flip(Account.use.login("https://one.example.com").pipe(Effect.provide(live(client))))
 
     expect(error).toBeInstanceOf(AccountTransportError)
     if (error instanceof AccountTransportError) {
       expect(error.method).toBe("POST")
-      expect(error.url).toBe("https:@lgcode/@lgcode/one.example.com@lgcode/auth@lgcode/device@lgcode/code")
+      expect(error.url).toBe("https://one.example.com/auth/device/code")
     }
   }),
 )
@@ -123,7 +123,7 @@ it.live("orgsByAccount groups orgs per account", () =>
       r.persistAccount({
         id: AccountID.make("user-1"),
         email: "one@example.com",
-        url: "https:@lgcode/@lgcode/one.example.com",
+        url: "https://one.example.com",
         accessToken: AccessToken.make("at_1"),
         refreshToken: RefreshToken.make("rt_1"),
         expiry: Date.now() + outsideEagerRefreshWindow,
@@ -135,7 +135,7 @@ it.live("orgsByAccount groups orgs per account", () =>
       r.persistAccount({
         id: AccountID.make("user-2"),
         email: "two@example.com",
-        url: "https:@lgcode/@lgcode/two.example.com",
+        url: "https://two.example.com",
         accessToken: AccessToken.make("at_2"),
         refreshToken: RefreshToken.make("rt_2"),
         expiry: Date.now() + outsideEagerRefreshWindow,
@@ -148,11 +148,11 @@ it.live("orgsByAccount groups orgs per account", () =>
       Effect.gen(function* () {
         seen.push(`${req.method} ${req.url}`)
 
-        if (req.url === "https:@lgcode/@lgcode/one.example.com@lgcode/api@lgcode/orgs") {
+        if (req.url === "https://one.example.com/api/orgs") {
           return json(req, [org("org-1", "One")])
         }
 
-        if (req.url === "https:@lgcode/@lgcode/two.example.com@lgcode/api@lgcode/orgs") {
+        if (req.url === "https://two.example.com/api/orgs") {
           return json(req, [org("org-2", "Two A"), org("org-3", "Two B")])
         }
 
@@ -166,7 +166,7 @@ it.live("orgsByAccount groups orgs per account", () =>
       [AccountID.make("user-1"), [OrgID.make("org-1")]],
       [AccountID.make("user-2"), [OrgID.make("org-2"), OrgID.make("org-3")]],
     ])
-    expect(seen).toEqual(["GET https:@lgcode/@lgcode/one.example.com@lgcode/api@lgcode/orgs", "GET https:@lgcode/@lgcode/two.example.com@lgcode/api@lgcode/orgs"])
+    expect(seen).toEqual(["GET https://one.example.com/api/orgs", "GET https://two.example.com/api/orgs"])
   }),
 )
 
@@ -178,7 +178,7 @@ it.live("token refresh persists the new token", () =>
       r.persistAccount({
         id,
         email: "user@example.com",
-        url: "https:@lgcode/@lgcode/one.example.com",
+        url: "https://one.example.com",
         accessToken: AccessToken.make("at_old"),
         refreshToken: RefreshToken.make("rt_old"),
         expiry: Date.now() - 1_000,
@@ -188,7 +188,7 @@ it.live("token refresh persists the new token", () =>
 
     const client = HttpClient.make((req) =>
       Effect.succeed(
-        req.url === "https:@lgcode/@lgcode/one.example.com@lgcode/auth@lgcode/device@lgcode/token"
+        req.url === "https://one.example.com/auth/device/token"
           ? json(req, {
               access_token: "at_new",
               refresh_token: "rt_new",
@@ -219,7 +219,7 @@ it.live("token refreshes before expiry when inside the eager refresh window", ()
       r.persistAccount({
         id,
         email: "user@example.com",
-        url: "https:@lgcode/@lgcode/one.example.com",
+        url: "https://one.example.com",
         accessToken: AccessToken.make("at_old"),
         refreshToken: RefreshToken.make("rt_old"),
         expiry: Date.now() + insideEagerRefreshWindow,
@@ -230,7 +230,7 @@ it.live("token refreshes before expiry when inside the eager refresh window", ()
     let refreshCalls = 0
     const client = HttpClient.make((req) =>
       Effect.promise(async () => {
-        if (req.url === "https:@lgcode/@lgcode/one.example.com@lgcode/auth@lgcode/device@lgcode/token") {
+        if (req.url === "https://one.example.com/auth/device/token") {
           refreshCalls += 1
           return json(req, {
             access_token: "at_new",
@@ -263,7 +263,7 @@ it.live("concurrent config and token requests coalesce token refresh", () =>
       r.persistAccount({
         id,
         email: "user@example.com",
-        url: "https:@lgcode/@lgcode/one.example.com",
+        url: "https://one.example.com",
         accessToken: AccessToken.make("at_old"),
         refreshToken: RefreshToken.make("rt_old"),
         expiry: Date.now() - 1_000,
@@ -274,7 +274,7 @@ it.live("concurrent config and token requests coalesce token refresh", () =>
     let refreshCalls = 0
     const client = HttpClient.make((req) =>
       Effect.promise(async () => {
-        if (req.url === "https:@lgcode/@lgcode/one.example.com@lgcode/auth@lgcode/device@lgcode/token") {
+        if (req.url === "https://one.example.com/auth/device/token") {
           refreshCalls += 1
 
           if (refreshCalls === 1) {
@@ -296,7 +296,7 @@ it.live("concurrent config and token requests coalesce token refresh", () =>
           )
         }
 
-        if (req.url === "https:@lgcode/@lgcode/one.example.com@lgcode/api@lgcode/config") {
+        if (req.url === "https://one.example.com/api/config") {
           return json(req, { config: { theme: "light", seats: 5 } })
         }
 
@@ -327,7 +327,7 @@ it.live("config sends the selected org header", () =>
       r.persistAccount({
         id,
         email: "user@example.com",
-        url: "https:@lgcode/@lgcode/one.example.com",
+        url: "https://one.example.com",
         accessToken: AccessToken.make("at_1"),
         refreshToken: RefreshToken.make("rt_1"),
         expiry: Date.now() + outsideEagerRefreshWindow,
@@ -341,7 +341,7 @@ it.live("config sends the selected org header", () =>
         seen.auth = req.headers.authorization
         seen.org = req.headers["x-org-id"]
 
-        if (req.url === "https:@lgcode/@lgcode/one.example.com@lgcode/api@lgcode/config") {
+        if (req.url === "https://one.example.com/api/config") {
           return json(req, { config: { theme: "light", seats: 5 } })
         }
 
@@ -363,16 +363,16 @@ it.live("poll stores the account and first org on success", () =>
   Effect.gen(function* () {
     const client = HttpClient.make((req) =>
       Effect.succeed(
-        req.url === "https:@lgcode/@lgcode/one.example.com@lgcode/auth@lgcode/device@lgcode/token"
+        req.url === "https://one.example.com/auth/device/token"
           ? json(req, {
               access_token: "at_1",
               refresh_token: "rt_1",
               token_type: "Bearer",
               expires_in: 60,
             })
-          : req.url === "https:@lgcode/@lgcode/one.example.com@lgcode/api@lgcode/user"
+          : req.url === "https://one.example.com/api/user"
             ? json(req, { id: "user-1", email: "user@example.com" })
-            : req.url === "https:@lgcode/@lgcode/one.example.com@lgcode/api@lgcode/orgs"
+            : req.url === "https://one.example.com/api/orgs"
               ? json(req, [org("org-1", "One")])
               : json(req, {}, 404),
       ),

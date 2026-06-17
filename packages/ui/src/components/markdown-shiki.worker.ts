@@ -1,6 +1,6 @@
-@lgcode/@lgcode/@lgcode/ <reference lib="webworker" @lgcode/>
+/// <reference lib="webworker" />
 
-import { ShikiStreamTokenizer } from "@shikijs@lgcode/stream"
+import { ShikiStreamTokenizer } from "@shikijs/stream"
 import {
   bundledLanguages,
   createHighlighter,
@@ -9,8 +9,8 @@ import {
   type BundledLanguage,
   type ThemedToken,
 } from "shiki"
-import type { MarkdownToken, MarkdownWorkerRequest, MarkdownWorkerResponse } from ".@lgcode/markdown-worker-protocol"
-import { createLatestWorkerQueue } from ".@lgcode/markdown-worker-queue"
+import type { MarkdownToken, MarkdownWorkerRequest, MarkdownWorkerResponse } from "./markdown-worker-protocol"
+import { createLatestWorkerQueue } from "./markdown-worker-queue"
 
 type Stream = {
   language: string

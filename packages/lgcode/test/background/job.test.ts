@@ -1,7 +1,7 @@
 import { describe, expect } from "bun:test"
 import { Deferred, Effect } from "effect"
-import { BackgroundJob } from "@@lgcode/background@lgcode/job"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { BackgroundJob } from "@/background/job"
+import { testEffect } from "../lib/effect"
 
 const it = testEffect(BackgroundJob.defaultLayer)
 

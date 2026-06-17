@@ -1,4 +1,4 @@
-import { dict as en } from ".@lgcode/en"
+import { dict as en } from "./en"
 
 export const dict = {
   ...en,
@@ -123,7 +123,7 @@ export const dict = {
   "home.what.shareLinks.body": "Діліться посиланням на будь-яку сесію для обговорення або налагодження",
   "home.what.copilot.title": "GitHub Copilot",
   "home.what.copilot.body": "Увійдіть через GitHub, щоб використовувати свій обліковий запис Copilot",
-  "home.what.chatgptPlus.title": "ChatGPT Plus@lgcode/Pro",
+  "home.what.chatgptPlus.title": "ChatGPT Plus/Pro",
   "home.what.chatgptPlus.body": "Увійдіть через OpenAI, щоб використовувати ChatGPT Plus або Pro",
   "home.what.anyModel.title": "Будь-яка модель",
   "home.what.anyModel.body": "75+ LLM-провайдерів через Models.dev, включаючи локальні моделі",
@@ -133,7 +133,7 @@ export const dict = {
 
   "home.growth.title": "Відкритий AI-агент для кодування",
   "home.growth.body":
-    "З понад <strong>{{stars}}<@lgcode/strong> зірками на GitHub, <strong>{{contributors}}<@lgcode/strong> учасниками та понад <strong>{{commits}}<@lgcode/strong> комітами, OpenCode використовують понад <strong>{{monthlyUsers}}<@lgcode/strong> розробників щомісяця.",
+    "З понад <strong>{{stars}}</strong> зірками на GitHub, <strong>{{contributors}}</strong> учасниками та понад <strong>{{commits}}</strong> комітами, OpenCode використовують понад <strong>{{monthlyUsers}}</strong> розробників щомісяця.",
   "home.growth.githubStars": "Зірки GitHub",
   "home.growth.contributors": "Учасники",
   "home.growth.monthlyDevs": "Розробників на місяць",
@@ -162,7 +162,7 @@ export const dict = {
   "home.faq.a3.p4.localLink": "локальні моделі",
   "home.faq.q4": "Чи можу я використовувати свої наявні AI-підписки з OpenCode?",
   "home.faq.a4.p1":
-    "Так, OpenCode підтримує підписки всіх основних провайдерів. Ви можете використовувати Claude Pro@lgcode/Max, ChatGPT Plus@lgcode/Pro або GitHub Copilot.",
+    "Так, OpenCode підтримує підписки всіх основних провайдерів. Ви можете використовувати Claude Pro/Max, ChatGPT Plus/Pro або GitHub Copilot.",
   "home.faq.q5": "Чи можна використовувати OpenCode лише в терміналі?",
   "home.faq.a5.beforeDesktop": "Вже ні! OpenCode тепер доступний як застосунок для",
   "home.faq.a5.desktop": "десктопа",
@@ -253,7 +253,7 @@ export const dict = {
   "go.title": "OpenCode Go | Недорогі моделі кодування для всіх",
   "go.banner.text": "MiniMax M3 отримує 3x ліміти використання протягом обмеженого часу",
   "go.meta.description":
-    "Go починається від $5 за перший місяць, потім $10@lgcode/місяць, з generous 5-годинними лімітами запитів для GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro та DeepSeek V4 Flash.",
+    "Go починається від $5 за перший місяць, потім $10/місяць, з generous 5-годинними лімітами запитів для GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro та DeepSeek V4 Flash.",
   "go.hero.title": "Недорогі моделі кодування для всіх",
   "go.hero.body":
     "Go надає агентне програмування програмістам у всьому світі, пропонуючи щедрі ліміти та надійний доступ до найкращих моделей з відкритим кодом.",
@@ -261,10 +261,10 @@ export const dict = {
   "go.cta.start": "Підписатися на Go",
   "go.cta.template": "{{text}} {{price}}",
   "go.cta.text": "Підписатися на Go",
-  "go.cta.price": "$10@lgcode/місяць",
+  "go.cta.price": "$10/місяць",
   "go.cta.promo": "$5 перший місяць",
   "go.pricing.body":
-    "Використовуйте з будь-яким агентом. $5 перший місяць, потім $10@lgcode/місяць. Поповнюйте за потреби. Скасуйте в будь-який час.",
+    "Використовуйте з будь-яким агентом. $5 перший місяць, потім $10/місяць. Поповнюйте за потреби. Скасуйте в будь-який час.",
   "go.graph.free": "Безкоштовно",
   "go.graph.freePill": "Big Pickle та безкоштовні моделі",
   "go.graph.go": "Go",
@@ -296,7 +296,7 @@ export const dict = {
   "go.testimonials.frank.quote": "Хотів би я досі бути в Nvidia.",
   "go.problem.title": "Яку проблему вирішує Go?",
   "go.problem.body":
-    "Ми зосереджені на тому, щоб зробити досвід OpenCode доступним для якомога більшої кількості людей. OpenCode Go — це недорога підписка: $5 за перший місяць, потім $10@lgcode/місяць. Вона надає щедрі ліміти та надійний доступ до найкращих моделей з відкритим кодом.",
+    "Ми зосереджені на тому, щоб зробити досвід OpenCode доступним для якомога більшої кількості людей. OpenCode Go — це недорога підписка: $5 за перший місяць, потім $10/місяць. Вона надає щедрі ліміти та надійний доступ до найкращих моделей з відкритим кодом.",
   "go.problem.subtitle": " ",
   "go.problem.item1": "Недорога підписка",
   "go.problem.item2": "Щедрі ліміти та надійний доступ",
@@ -305,13 +305,13 @@ export const dict = {
     "Включає GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro та DeepSeek V4 Flash",
   "go.how.title": "Як працює Go",
   "go.how.body":
-    "Go починається від $5 за перший місяць, потім $10@lgcode/місяць. Використовуйте з OpenCode або будь-яким агентом.",
+    "Go починається від $5 за перший місяць, потім $10/місяць. Використовуйте з OpenCode або будь-яким агентом.",
   "go.how.step1.title": "Створіть обліковий запис",
   "go.how.step1.beforeLink": "дотримуйтесь",
   "go.how.step1.link": "інструкцій з налаштування",
   "go.how.step2.title": "Підпишіться на Go",
   "go.how.step2.link": "$5 перший місяць",
-  "go.how.step2.afterLink": "потім $10@lgcode/місяць із щедрими лімітами",
+  "go.how.step2.afterLink": "потім $10/місяць із щедрими лімітами",
   "go.how.step3.title": "Почніть кодувати",
   "go.how.step3.body": "з надійним доступом до моделей з відкритим кодом",
   "go.privacy.title": "Ваша конфіденційність важлива для нас",
@@ -328,11 +328,11 @@ export const dict = {
   "go.faq.a2": "Go включає моделі, перелічені нижче, із щедрими лімітами та надійним доступом.",
   "go.faq.q3": "Чи Go те саме, що Zen?",
   "go.faq.a3":
-    "Ні. Zen — це плата за використання, тоді як Go починається від $5 за перший місяць, потім $10@lgcode/місяць, із щедрими лімітами та надійним доступом до моделей з відкритим кодом GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro та DeepSeek V4 Flash.",
+    "Ні. Zen — це плата за використання, тоді як Go починається від $5 за перший місяць, потім $10/місяць, із щедрими лімітами та надійним доступом до моделей з відкритим кодом GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro та DeepSeek V4 Flash.",
   "go.faq.q4": "Скільки коштує Go?",
   "go.faq.a4.p1.beforePricing": "Go коштує",
   "go.faq.a4.p1.pricingLink": "$5 за перший місяць",
-  "go.faq.a4.p1.afterPricing": "потім $10@lgcode/місяць із щедрими лімітами.",
+  "go.faq.a4.p1.afterPricing": "потім $10/місяць із щедрими лімітами.",
   "go.faq.a4.p2.beforeAccount": "Ви можете керувати підпискою в",
   "go.faq.a4.p2.accountLink": "обліковому записі",
   "go.faq.a4.p3": "Скасуйте в будь-який час.",
@@ -351,7 +351,7 @@ export const dict = {
 
   "go.faq.q9": "Яка різниця між безкоштовними моделями та Go?",
   "go.faq.a9":
-    "Безкоштовні моделі включають Big Pickle та акційні моделі з лімітом 200 запитів@lgcode/день. Go включає GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro та DeepSeek V4 Flash із вищими лімітами.",
+    "Безкоштовні моделі включають Big Pickle та акційні моделі з лімітом 200 запитів/день. Go включає GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro та DeepSeek V4 Flash із вищими лімітами.",
 
   "zen.api.error.rateLimitExceeded": "Перевищено ліміт запитів. Спробуйте пізніше.",
   "zen.api.error.modelNotSupported": "Модель {{model}} не підтримується",
@@ -655,7 +655,7 @@ export const dict = {
   "workspace.lite.black.message":
     "Ви вже підписані на OpenCode Black або в списку очікування. Спочатку скасуйте підписку, якщо хочете перейти на Go.",
   "workspace.lite.other.message": "Інший учасник цього робочого простору вже підписаний на OpenCode Go.",
-  "workspace.lite.promo.description": "OpenCode Go починається від {{price}}, потім $10@lgcode/місяць, із щедрими лімітами.",
+  "workspace.lite.promo.description": "OpenCode Go починається від {{price}}, потім $10/місяць, із щедрими лімітами.",
   "workspace.lite.promo.price": "$5 за перший місяць",
   "workspace.lite.promo.modelsTitle": "Що включено",
   "workspace.lite.promo.footer": "План призначений для міжнародних користувачів. Ціни можуть змінюватися.",
@@ -759,7 +759,7 @@ export const dict = {
 
   "bench.detail.title": "Бенчмарк — {{task}}",
   "bench.detail.notFound": "Завдання не знайдено",
-  "bench.detail.na": "Н@lgcode/Д",
+  "bench.detail.na": "Н/Д",
   "bench.detail.labels.agent": "Агент",
   "bench.detail.labels.model": "Модель",
   "bench.detail.labels.task": "Завдання",

@@ -1,16 +1,16 @@
 import { describe, expect } from "bun:test"
-import { Tool } from "@lgcode/core@lgcode/public"
-import { ApplicationTools } from "@lgcode/core@lgcode/tool@lgcode/application-tools"
-import { PermissionV2 } from "@lgcode/core@lgcode/permission"
-import { SessionV2 } from "@lgcode/core@lgcode/session"
-import { SessionMessage } from "@lgcode/core@lgcode/session@lgcode/message"
-import { AgentV2 } from "@lgcode/core@lgcode/agent"
-import { ToolRegistry } from "@lgcode/core@lgcode/tool@lgcode/registry"
-import { executeTool, settleTool, toolDefinitions } from ".@lgcode/lib@lgcode/tool"
-import { ToolOutputStore } from "@lgcode/core@lgcode/tool-output-store"
-import { Tools } from "@lgcode/core@lgcode/tool@lgcode/tools"
+import { Tool } from "@opencode@lgcode/core/public"
+import { ApplicationTools } from "@opencode@lgcode/core/tool/application-tools"
+import { PermissionV2 } from "@opencode@lgcode/core/permission"
+import { SessionV2 } from "@opencode@lgcode/core/session"
+import { SessionMessage } from "@opencode@lgcode/core/session/message"
+import { AgentV2 } from "@opencode@lgcode/core/agent"
+import { ToolRegistry } from "@opencode@lgcode/core/tool/registry"
+import { executeTool, settleTool, toolDefinitions } from "./lib/tool"
+import { ToolOutputStore } from "@opencode@lgcode/core/tool-output-store"
+import { Tools } from "@opencode@lgcode/core/tool/tools"
 import { Deferred, Effect, Exit, Fiber, Layer, Schema, Scope } from "effect"
-import { testEffect } from ".@lgcode/lib@lgcode/effect"
+import { testEffect } from "./lib/effect"
 
 const permission = Layer.mock(PermissionV2.Service, {
   assert: () => Effect.void,
@@ -38,7 +38,7 @@ const contextual = (contexts: Tool.Context[]) =>
       }),
     toModelOutput: ({ output }) => [
       { type: "text", text: output.answer },
-      { type: "file", data: "aGVsbG8=", mime: "image@lgcode/png", name: "result.png" },
+      { type: "file", data: "aGVsbG8=", mime: "image/png", name: "result.png" },
     ],
   })
 
@@ -63,7 +63,7 @@ describe("ApplicationTools", () => {
         type: "content",
         value: [
           { type: "text", text: "ONCE" },
-          { type: "file", uri: "data:image@lgcode/png;base64,aGVsbG8=", mime: "image@lgcode/png", name: "result.png" },
+          { type: "file", uri: "data:image/png;base64,aGVsbG8=", mime: "image/png", name: "result.png" },
         ],
       })
       expect(contexts).toEqual([{ sessionID, agent, assistantMessageID, toolCallID: "call-opaque" }])
@@ -132,14 +132,14 @@ describe("ApplicationTools", () => {
           type: "content",
           value: [
             { type: "text", text: "HELLO" },
-            { type: "file", uri: "data:image@lgcode/png;base64,aGVsbG8=", mime: "image@lgcode/png", name: "result.png" },
+            { type: "file", uri: "data:image/png;base64,aGVsbG8=", mime: "image/png", name: "result.png" },
           ],
         },
         output: {
           structured: { answer: "HELLO" },
           content: [
             { type: "text", text: "HELLO" },
-            { type: "file", uri: "data:image@lgcode/png;base64,aGVsbG8=", mime: "image@lgcode/png", name: "result.png" },
+            { type: "file", uri: "data:image/png;base64,aGVsbG8=", mime: "image/png", name: "result.png" },
           ],
         },
       })

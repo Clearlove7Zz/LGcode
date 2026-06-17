@@ -1,6 +1,6 @@
 import { Effect } from "effect"
-import { PluginV2 } from "..@lgcode/..@lgcode/plugin"
-import { ProviderV2 } from "..@lgcode/..@lgcode/provider"
+import { PluginV2 } from "../../plugin"
+import { ProviderV2 } from "../../provider"
 
 function selectLanguage(sdk: any, modelID: string, useChat: boolean) {
   if (useChat && sdk.chat) return sdk.chat(modelID)
@@ -17,7 +17,7 @@ export const AzurePlugin = PluginV2.define({
       "catalog.transform": Effect.fn(function* (evt) {
         for (const item of evt.provider.list()) {
           if (item.provider.api.type !== "aisdk") continue
-          if (item.provider.api.package !== "@ai-sdk@lgcode/azure") continue
+          if (item.provider.api.package !== "@ai-sdk/azure") continue
           const configured = item.provider.request.body.resourceName
           const resourceName =
             typeof configured === "string" && configured.trim() !== "" ? configured : process.env.AZURE_RESOURCE_NAME
@@ -28,7 +28,7 @@ export const AzurePlugin = PluginV2.define({
         }
       }),
       "aisdk.sdk": Effect.fn(function* (evt) {
-        if (evt.package !== "@ai-sdk@lgcode/azure") return
+        if (evt.package !== "@ai-sdk/azure") return
         if (evt.model.providerID === ProviderV2.ID.azure) {
           if (
             !evt.options.resourceName &&
@@ -40,7 +40,7 @@ export const AzurePlugin = PluginV2.define({
             )
           }
         }
-        const mod = yield* Effect.promise(() => import("@ai-sdk@lgcode/azure"))
+        const mod = yield* Effect.promise(() => import("@ai-sdk/azure"))
         evt.sdk = mod.createAzure(evt.options)
       }),
       "aisdk.language": Effect.fn(function* (evt) {
@@ -60,10 +60,10 @@ export const AzureCognitiveServicesPlugin = PluginV2.define({
         if (!resourceName) return
         for (const item of evt.provider.list()) {
           if (item.provider.api.type !== "aisdk") continue
-          if (item.provider.api.package !== "@ai-sdk@lgcode/openai-compatible") continue
+          if (item.provider.api.package !== "@ai-sdk/openai-compatible") continue
           if (!item.provider.id.includes("azure-cognitive-services")) continue
           evt.provider.update(item.provider.id, (provider) => {
-            provider.request.body.baseURL = `https:@lgcode/@lgcode/${resourceName}.cognitiveservices.azure.com@lgcode/openai`
+            provider.request.body.baseURL = `https://${resourceName}.cognitiveservices.azure.com/openai`
           })
         }
       }),

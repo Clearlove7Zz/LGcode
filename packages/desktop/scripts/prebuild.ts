@@ -1,10 +1,10 @@
-#!@lgcode/usr@lgcode/bin@lgcode/env bun
+#!/usr/bin/env bun
 import { $ } from "bun"
 
-import { resolveChannel } from ".@lgcode/utils"
+import { resolveChannel } from "./utils"
 
 const channel = resolveChannel()
-await $`bun .@lgcode/scripts@lgcode/copy-icons.ts ${channel}`
-await $`bun .@lgcode/scripts@lgcode/copy-metainfo.ts ${channel}`
+await $`bun ./scripts/copy-icons.ts ${channel}`
+await $`bun ./scripts/copy-metainfo.ts ${channel}`
 
-await $`cd ..@lgcode/opencode && bun script@lgcode/build-node.ts`
+await $`cd ../opencode && bun script/build-node.ts`

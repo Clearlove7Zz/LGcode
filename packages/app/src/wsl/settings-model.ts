@@ -1,4 +1,4 @@
-import type { WslOpencodeCheck, WslServerRuntime } from ".@lgcode/types"
+import type { WslOpencodeCheck, WslServerRuntime } from "./types"
 
 export const wslRuntimeRetryable = (runtime: WslServerRuntime) =>
   runtime.kind === "failed" || runtime.kind === "stopped"

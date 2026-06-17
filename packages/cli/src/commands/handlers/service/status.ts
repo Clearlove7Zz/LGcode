@@ -1,8 +1,8 @@
 import { EOL } from "os"
-import * as Effect from "effect@lgcode/Effect"
-import { Commands } from "..@lgcode/..@lgcode/commands"
-import { Runtime } from "..@lgcode/..@lgcode/..@lgcode/framework@lgcode/runtime"
-import { Daemon } from "..@lgcode/..@lgcode/..@lgcode/services@lgcode/daemon"
+import * as Effect from "effect/Effect"
+import { Commands } from "../../commands"
+import { Runtime } from "../../../framework/runtime"
+import { Daemon } from "../../../services/daemon"
 
 export default Runtime.handler(
   Commands.commands.service.commands.status,

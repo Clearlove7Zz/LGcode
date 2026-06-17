@@ -1,13 +1,13 @@
 import { afterEach, describe, expect, mock } from "bun:test"
 import { Context, Effect, Layer } from "effect"
-import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
-import { SyncPaths } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/sync"
-import { HttpApiApp } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/server"
-import { Session } from "@@lgcode/session@lgcode/session"
-import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
-import { disposeAllInstances, TestInstance } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
-import { httpApiLayer, requestInDirectory } from ".@lgcode/httpapi-layer"
+import { Flag } from "@opencode@lgcode/core/flag/flag"
+import { SyncPaths } from "../../src/server/routes/instance/httpapi/groups/sync"
+import { HttpApiApp } from "../../src/server/routes/instance/httpapi/server"
+import { Session } from "@/session/session"
+import { resetDatabase } from "../fixture/db"
+import { disposeAllInstances, TestInstance } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
+import { httpApiLayer, requestInDirectory } from "./httpapi-layer"
 
 const originalWorkspaces = Flag.OPENCODE_EXPERIMENTAL_WORKSPACES
 const context = Context.empty() as Context.Context<unknown>
@@ -27,7 +27,7 @@ describe("sync HttpApi", () => {
       Effect.gen(function* () {
         Flag.OPENCODE_EXPERIMENTAL_WORKSPACES = true
         const tmp = yield* TestInstance
-        const headers = { "x-opencode-directory": tmp.directory, "content-type": "application@lgcode/json" }
+        const headers = { "x-opencode-directory": tmp.directory, "content-type": "application/json" }
         const session = yield* Session.use.create({ title: "sync" })
 
         const started = yield* requestInDirectory(SyncPaths.start, tmp.directory, { method: "POST", headers })
@@ -76,7 +76,7 @@ describe("sync HttpApi", () => {
     () =>
       Effect.gen(function* () {
         const tmp = yield* TestInstance
-        const headers = { "x-opencode-directory": tmp.directory, "content-type": "application@lgcode/json" }
+        const headers = { "x-opencode-directory": tmp.directory, "content-type": "application/json" }
         const cases = [
           {
             path: SyncPaths.history,
@@ -128,9 +128,9 @@ describe("sync HttpApi", () => {
         const tmp = yield* TestInstance
         const response = yield* Effect.promise(() =>
           HttpApiApp.webHandler().handler(
-            new Request(`http:@lgcode/@lgcode/localhost${SyncPaths.history}`, {
+            new Request(`http://localhost${SyncPaths.history}`, {
               method: "POST",
-              headers: { "x-opencode-directory": tmp.directory, "content-type": "application@lgcode/json" },
+              headers: { "x-opencode-directory": tmp.directory, "content-type": "application/json" },
               body: JSON.stringify({ aggregate: -1 }),
             }),
             context,
@@ -138,7 +138,7 @@ describe("sync HttpApi", () => {
         )
 
         expect(response.status).toBe(400)
-        expect(response.headers.get("content-type") ?? "").toContain("application@lgcode/json")
+        expect(response.headers.get("content-type") ?? "").toContain("application/json")
         const body = (yield* Effect.promise(() => response.json())) as Record<string, unknown>
         expect(body.success).toBe(false)
         expect(Array.isArray(body.error) || Array.isArray(body.errors)).toBe(true)

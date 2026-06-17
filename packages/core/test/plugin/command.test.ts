@@ -1,14 +1,14 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { CommandV2 } from "@lgcode/core@lgcode/command"
-import { Location } from "@lgcode/core@lgcode/location"
-import { CommandPlugin } from "@lgcode/core@lgcode/plugin@lgcode/command"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import { location } from "..@lgcode/fixture@lgcode/location"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { CommandV2 } from "@opencode@lgcode/core/command"
+import { Location } from "@opencode@lgcode/core/location"
+import { CommandPlugin } from "@opencode@lgcode/core/plugin/command"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import { location } from "../fixture/location"
+import { testEffect } from "../lib/effect"
 
-const directory = AbsolutePath.make("@lgcode/repo@lgcode/packages@lgcode/app")
-const project = AbsolutePath.make("@lgcode/repo")
+const directory = AbsolutePath.make("/repo/packages/app")
+const project = AbsolutePath.make("/repo")
 const it = testEffect(
   CommandV2.locationLayer.pipe(
     Layer.provide(
@@ -33,7 +33,7 @@ describe("CommandPlugin.Plugin", () => {
         name: "init",
         description: "guided AGENTS.md setup",
       })
-      expect((yield* command.get("init"))?.template).toContain("`@lgcode/repo`")
+      expect((yield* command.get("init"))?.template).toContain("`/repo`")
       expect(yield* command.get("review")).toMatchObject({
         name: "review",
         description: "review changes [commit|branch|pr], defaults to uncommitted",

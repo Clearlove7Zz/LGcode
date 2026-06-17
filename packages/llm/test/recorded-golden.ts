@@ -1,10 +1,10 @@
-import type { HttpRecorder } from "@lgcode/http-recorder"
+import type { HttpRecorder } from "@opencode@lgcode/http-recorder"
 import { describe } from "bun:test"
 import { Effect } from "effect"
-import type { Model } from "..@lgcode/src"
-import { goldenScenarioTags, goldenScenarioTitle, runGoldenScenario, type GoldenScenarioID } from ".@lgcode/recorded-scenarios"
-import { recordedTests } from ".@lgcode/recorded-test"
-import { kebab } from ".@lgcode/recorded-utils"
+import type { Model } from "../src"
+import { goldenScenarioTags, goldenScenarioTitle, runGoldenScenario, type GoldenScenarioID } from "./recorded-scenarios"
+import { recordedTests } from "./recorded-test"
+import { kebab } from "./recorded-utils"
 
 type Transport = "http" | "websocket"
 

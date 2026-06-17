@@ -1,17 +1,17 @@
 import { describe, expect } from "bun:test"
-import { LLM } from "@lgcode/llm"
-import { LLMClient } from "@lgcode/llm@lgcode/route"
+import { LLM } from "@opencode@lgcode/llm"
+import { LLMClient } from "@opencode@lgcode/llm/route"
 import { ConfigProvider, DateTime, Effect } from "effect"
-import { Headers } from "effect@lgcode/unstable@lgcode/http"
-import { Credential } from "@lgcode/core@lgcode/credential"
-import { Integration } from "@lgcode/core@lgcode/integration"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ProjectV2 } from "@lgcode/core@lgcode/project"
-import { SessionRunnerModel } from "@lgcode/core@lgcode/session@lgcode/runner@lgcode/model"
-import { SessionV2 } from "@lgcode/core@lgcode/session"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import { it } from ".@lgcode/lib@lgcode/effect"
+import { Headers } from "effect/unstable/http"
+import { Credential } from "@opencode@lgcode/core/credential"
+import { Integration } from "@opencode@lgcode/core/integration"
+import { ModelV2 } from "@opencode@lgcode/core/model"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ProjectV2 } from "@opencode@lgcode/core/project"
+import { SessionRunnerModel } from "@opencode@lgcode/core/session/runner/model"
+import { SessionV2 } from "@opencode@lgcode/core/session"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import { it } from "./lib/effect"
 
 type Api =
   | {
@@ -55,13 +55,13 @@ describe("SessionRunnerModel", () => {
   it.effect("maps catalog OpenAI AI SDK models into native Responses routes", () =>
     Effect.gen(function* () {
       const resolved = yield* SessionRunnerModel.fromCatalogModel(
-        model({ type: "aisdk", package: "@ai-sdk@lgcode/openai", url: "https:@lgcode/@lgcode/openai.example@lgcode/v1" }),
+        model({ type: "aisdk", package: "@ai-sdk/openai", url: "https://openai.example/v1" }),
       )
 
       expect(resolved).toMatchObject({ id: "api-test-model", provider: "test-provider" })
       expect(resolved.route).toMatchObject({
         id: "openai-responses",
-        endpoint: { baseURL: "https:@lgcode/@lgcode/openai.example@lgcode/v1" },
+        endpoint: { baseURL: "https://openai.example/v1" },
         defaults: {
           headers: { "x-test": "header" },
           limits: { context: 100, output: 20 },
@@ -76,7 +76,7 @@ describe("SessionRunnerModel", () => {
   it.effect("keeps catalog apiKey credentials out of provider JSON", () =>
     Effect.gen(function* () {
       const resolved = yield* SessionRunnerModel.fromCatalogModel(
-        model({ type: "aisdk", package: "@ai-sdk@lgcode/openai", url: "https:@lgcode/@lgcode/openai.example@lgcode/v1" }),
+        model({ type: "aisdk", package: "@ai-sdk/openai", url: "https://openai.example/v1" }),
       )
       const prepared = yield* LLMClient.prepare(LLM.request({ model: resolved, prompt: "Hello" }))
 
@@ -91,8 +91,8 @@ describe("SessionRunnerModel", () => {
         new ModelV2.Info({
           ...model({
             type: "aisdk",
-            package: "@ai-sdk@lgcode/openai-compatible",
-            url: "https:@lgcode/@lgcode/compatible.example@lgcode/v1",
+            package: "@ai-sdk/openai-compatible",
+            url: "https://compatible.example/v1",
             settings: { apiKey: "settings-secret", compatibility: "strict" },
           }),
           request: { headers: {}, body: {}, generation: {}, options: {} },
@@ -102,7 +102,7 @@ describe("SessionRunnerModel", () => {
       const headers = yield* resolved.route.auth.apply({
         request,
         method: "POST",
-        url: "https:@lgcode/@lgcode/compatible.example@lgcode/v1@lgcode/chat@lgcode/completions",
+        url: "https://compatible.example/v1/chat/completions",
         body: "{}",
         headers: Headers.empty,
       })
@@ -114,7 +114,7 @@ describe("SessionRunnerModel", () => {
 
   it.effect("lowers selected OpenAI Session variants into Responses options", () =>
     Effect.gen(function* () {
-      const base = model({ type: "aisdk", package: "@ai-sdk@lgcode/openai", url: "https:@lgcode/@lgcode/openai.example@lgcode/v1" }, [
+      const base = model({ type: "aisdk", package: "@ai-sdk/openai", url: "https://openai.example/v1" }, [
         {
           id: ModelV2.VariantID.make("high"),
           headers: { "x-variant": "high" },
@@ -139,7 +139,7 @@ describe("SessionRunnerModel", () => {
         cost: 0,
         tokens: { input: 0, output: 0, reasoning: 0, cache: { read: 0, write: 0 } },
         time: { created: DateTime.makeUnsafe(0), updated: DateTime.makeUnsafe(0) },
-        location: { directory: AbsolutePath.make("@lgcode/project") },
+        location: { directory: AbsolutePath.make("/project") },
       })
 
       const resolved = yield* SessionRunnerModel.resolve(session, catalog)
@@ -160,7 +160,7 @@ describe("SessionRunnerModel", () => {
   it.effect("lowers selected OpenAI-compatible Session variants into Chat options", () =>
     Effect.gen(function* () {
       const catalog = model(
-        { type: "aisdk", package: "@ai-sdk@lgcode/openai-compatible", url: "https:@lgcode/@lgcode/compatible.example@lgcode/v1" },
+        { type: "aisdk", package: "@ai-sdk/openai-compatible", url: "https://compatible.example/v1" },
         [
           {
             id: ModelV2.VariantID.make("high"),
@@ -179,7 +179,7 @@ describe("SessionRunnerModel", () => {
         cost: 0,
         tokens: { input: 0, output: 0, reasoning: 0, cache: { read: 0, write: 0 } },
         time: { created: DateTime.makeUnsafe(0), updated: DateTime.makeUnsafe(0) },
-        location: { directory: AbsolutePath.make("@lgcode/project") },
+        location: { directory: AbsolutePath.make("/project") },
       })
 
       const resolved = yield* SessionRunnerModel.resolve(session, catalog)
@@ -196,7 +196,7 @@ describe("SessionRunnerModel", () => {
 
   it.effect("lowers selected Anthropic Session variants into Messages options", () =>
     Effect.gen(function* () {
-      const catalog = model({ type: "aisdk", package: "@ai-sdk@lgcode/anthropic", url: "https:@lgcode/@lgcode/anthropic.example@lgcode/v1" }, [
+      const catalog = model({ type: "aisdk", package: "@ai-sdk/anthropic", url: "https://anthropic.example/v1" }, [
         {
           id: ModelV2.VariantID.make("high"),
           headers: {},
@@ -213,7 +213,7 @@ describe("SessionRunnerModel", () => {
         cost: 0,
         tokens: { input: 0, output: 0, reasoning: 0, cache: { read: 0, write: 0 } },
         time: { created: DateTime.makeUnsafe(0), updated: DateTime.makeUnsafe(0) },
-        location: { directory: AbsolutePath.make("@lgcode/project") },
+        location: { directory: AbsolutePath.make("/project") },
       })
 
       const resolved = yield* SessionRunnerModel.resolve(session, catalog)
@@ -230,12 +230,12 @@ describe("SessionRunnerModel", () => {
   it.effect("maps catalog Anthropic AI SDK models into native routes", () =>
     Effect.gen(function* () {
       const resolved = yield* SessionRunnerModel.fromCatalogModel(
-        model({ type: "aisdk", package: "@ai-sdk@lgcode/anthropic", url: "https:@lgcode/@lgcode/anthropic.example@lgcode/v1" }),
+        model({ type: "aisdk", package: "@ai-sdk/anthropic", url: "https://anthropic.example/v1" }),
       )
 
       expect(resolved.route).toMatchObject({
         id: "anthropic-messages",
-        endpoint: { baseURL: "https:@lgcode/@lgcode/anthropic.example@lgcode/v1" },
+        endpoint: { baseURL: "https://anthropic.example/v1" },
       })
     }),
   )
@@ -244,7 +244,7 @@ describe("SessionRunnerModel", () => {
     Effect.gen(function* () {
       const resolved = yield* SessionRunnerModel.fromCatalogModel(
         new ModelV2.Info({
-          ...model({ type: "aisdk", package: "@ai-sdk@lgcode/openai", url: "https:@lgcode/@lgcode/openai.example@lgcode/v1" }),
+          ...model({ type: "aisdk", package: "@ai-sdk/openai", url: "https://openai.example/v1" }),
           request: { headers: {}, body: {}, generation: {}, options: {} },
         }),
         { type: "env", name: "TEST_PROVIDER_API_KEY" },
@@ -254,7 +254,7 @@ describe("SessionRunnerModel", () => {
         .apply({
           request,
           method: "POST",
-          url: "https:@lgcode/@lgcode/openai.example@lgcode/v1@lgcode/responses",
+          url: "https://openai.example/v1/responses",
           body: "{}",
           headers: Headers.empty,
         })
@@ -276,7 +276,7 @@ describe("SessionRunnerModel", () => {
       })
       const resolved = yield* SessionRunnerModel.fromCatalogModel(
         new ModelV2.Info({
-          ...model({ type: "aisdk", package: "@ai-sdk@lgcode/openai", url: "https:@lgcode/@lgcode/openai.example@lgcode/v1" }),
+          ...model({ type: "aisdk", package: "@ai-sdk/openai", url: "https://openai.example/v1" }),
           request: { headers: {}, body: { apiKey: "configured-secret" }, generation: {}, options: {} },
         }),
         { type: "credential", id: credential.id, label: credential.label },
@@ -285,7 +285,7 @@ describe("SessionRunnerModel", () => {
       const headers = yield* resolved.route.auth.apply({
         request: LLM.request({ model: resolved, prompt: "Hello" }),
         method: "POST",
-        url: "https:@lgcode/@lgcode/openai.example@lgcode/v1@lgcode/responses",
+        url: "https://openai.example/v1/responses",
         body: "{}",
         headers: Headers.empty,
       })
@@ -298,14 +298,14 @@ describe("SessionRunnerModel", () => {
   it.effect("rejects catalog APIs without a native route", () =>
     Effect.gen(function* () {
       const failure = yield* SessionRunnerModel.fromCatalogModel(
-        model({ type: "aisdk", package: "@ai-sdk@lgcode/google", url: "https:@lgcode/@lgcode/google.example@lgcode/v1" }),
+        model({ type: "aisdk", package: "@ai-sdk/google", url: "https://google.example/v1" }),
       ).pipe(Effect.flip)
 
       expect(failure).toMatchObject({
         _tag: "SessionRunnerModel.UnsupportedApiError",
         providerID: "test-provider",
         modelID: "test-model",
-        api: "aisdk:@ai-sdk@lgcode/google",
+        api: "aisdk:@ai-sdk/google",
       })
     }),
   )
@@ -314,12 +314,12 @@ describe("SessionRunnerModel", () => {
     Effect.sync(() => {
       expect(
         SessionRunnerModel.supported(
-          model({ type: "aisdk", package: "@ai-sdk@lgcode/openai", url: "https:@lgcode/@lgcode/openai.example@lgcode/v1" }),
+          model({ type: "aisdk", package: "@ai-sdk/openai", url: "https://openai.example/v1" }),
         ),
       ).toBe(true)
       expect(
         SessionRunnerModel.supported(
-          model({ type: "aisdk", package: "@ai-sdk@lgcode/google", url: "https:@lgcode/@lgcode/google.example@lgcode/v1" }),
+          model({ type: "aisdk", package: "@ai-sdk/google", url: "https://google.example/v1" }),
         ),
       ).toBe(false)
       expect(SessionRunnerModel.supported(model({ type: "native", settings: {} }))).toBe(false)

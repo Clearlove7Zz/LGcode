@@ -1,9 +1,9 @@
-import type { McpServer } from "@agentclientprotocol@lgcode/sdk"
-import type { Message, Part } from "@lgcode/sdk@lgcode/v2"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
+import type { McpServer } from "@agentclientprotocol/sdk"
+import type { Message, Part } from "@opencode@lgcode/sdk/v2"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelV2 } from "@opencode@lgcode/core/model"
 import { Context, Effect, Layer, Ref } from "effect"
-import * as ACPError from ".@lgcode/error"
+import * as ACPError from "./error"
 
 export type SelectedModel = {
   providerID: ProviderV2.ID
@@ -89,7 +89,7 @@ export type Interface = {
   readonly tryGetPartMetadata: (input: PartMetadataLookupInput) => Effect.Effect<KnownMessagePartMetadata | undefined>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/ACP@lgcode/Session") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/ACP/Session") {}
 
 type State = Map<string, Info>
 
@@ -228,4 +228,4 @@ function partMetadataKey(input: { messageId: string; partId: string }) {
   return `${input.messageId}:${input.partId}`
 }
 
-export * as ACPSession from ".@lgcode/session"
+export * as ACPSession from "./session"

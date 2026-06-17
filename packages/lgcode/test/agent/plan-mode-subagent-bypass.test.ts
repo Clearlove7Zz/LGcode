@@ -1,10 +1,10 @@
-import { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
+import { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
 import { expect } from "bun:test"
 import { Effect } from "effect"
-import { Agent } from "..@lgcode/..@lgcode/src@lgcode/agent@lgcode/agent"
-import { deriveSubagentSessionPermission } from "..@lgcode/..@lgcode/src@lgcode/agent@lgcode/subagent-permissions"
-import { Permission } from "..@lgcode/..@lgcode/src@lgcode/permission"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { Agent } from "../../src/agent/agent"
+import { deriveSubagentSessionPermission } from "../../src/agent/subagent-permissions"
+import { Permission } from "../../src/permission"
+import { testEffect } from "../lib/effect"
 
 const it = testEffect(Agent.defaultLayer)
 
@@ -21,9 +21,9 @@ function testAgent(input: {
   } satisfies Agent.Info
 }
 
-@lgcode/@lgcode/ `deriveSubagentSessionPermission` is imported from production. The test
-@lgcode/@lgcode/ exercises the actual helper that task.ts uses to build the subagent's
-@lgcode/@lgcode/ session permission, so any regression in that helper trips this test.
+// `deriveSubagentSessionPermission` is imported from production. The test
+// exercises the actual helper that task.ts uses to build the subagent's
+// session permission, so any regression in that helper trips this test.
 
 it.instance("subagent permissions take precedence over parent agent restrictions", () =>
   Effect.gen(function* () {
@@ -32,10 +32,10 @@ it.instance("subagent permissions take precedence over parent agent restrictions
 
     expect(planAgent).toBeDefined()
     expect(generalAgent).toBeDefined()
-    @lgcode/@lgcode/ Sanity: the plan agent itself blocks edit. (Note: `write` and
-    @lgcode/@lgcode/ `apply_patch` route through the `edit` permission at the runtime
-    @lgcode/@lgcode/ tool layer — see Permission.disabled @lgcode/ EDIT_TOOLS.)
-    expect(Permission.evaluate("edit", "@lgcode/some@lgcode/file.ts", planAgent!.permission).action).toBe("deny")
+    // Sanity: the plan agent itself blocks edit. (Note: `write` and
+    // `apply_patch` route through the `edit` permission at the runtime
+    // tool layer — see Permission.disabled / EDIT_TOOLS.)
+    expect(Permission.evaluate("edit", "/some/file.ts", planAgent!.permission).action).toBe("deny")
 
     const parentSessionPermission: PermissionV1.Ruleset = []
 
@@ -44,11 +44,11 @@ it.instance("subagent permissions take precedence over parent agent restrictions
       subagent: generalAgent!,
     })
 
-    @lgcode/@lgcode/ Mirror the runtime evaluation in session@lgcode/prompt.ts (~line 410, 639):
-    @lgcode/@lgcode/   ruleset: Permission.merge(agent.permission, session.permission ?? [])
+    // Mirror the runtime evaluation in session/prompt.ts (~line 410, 639):
+    //   ruleset: Permission.merge(agent.permission, session.permission ?? [])
     const effective = Permission.merge(generalAgent!.permission, subagentSessionPermission)
 
-    expect(Permission.evaluate("edit", "@lgcode/some@lgcode/file.ts", effective).action).not.toBe("deny")
+    expect(Permission.evaluate("edit", "/some/file.ts", effective).action).not.toBe("deny")
     expect(Permission.disabled(["edit", "write", "apply_patch"], effective)).toEqual(new Set())
   }),
 )
@@ -65,7 +65,7 @@ it.instance("subagent's own read-only restriction remains effective", () =>
     })
     const effective = Permission.merge(explore!.permission, subagentSessionPermission)
 
-    expect(Permission.evaluate("edit", "@lgcode/x.ts", effective).action).toBe("deny")
+    expect(Permission.evaluate("edit", "/x.ts", effective).action).toBe("deny")
   }),
 )
 
@@ -85,8 +85,8 @@ it.instance(
       })
       const effective = Permission.merge(my!.permission, subagentSessionPermission)
 
-      expect(Permission.evaluate("edit", "@lgcode/some@lgcode/file.ts", planAgent!.permission).action).toBe("deny")
-      expect(Permission.evaluate("edit", "@lgcode/some@lgcode/file.ts", effective).action).toBe("allow")
+      expect(Permission.evaluate("edit", "/some/file.ts", planAgent!.permission).action).toBe("deny")
+      expect(Permission.evaluate("edit", "/some/file.ts", effective).action).toBe("allow")
       expect(Permission.disabled(["edit", "write", "apply_patch"], effective)).toEqual(new Set())
     }),
   {

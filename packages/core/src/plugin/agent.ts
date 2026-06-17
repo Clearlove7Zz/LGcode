@@ -1,12 +1,12 @@
-export * as AgentPlugin from ".@lgcode/agent"
+export * as AgentPlugin from "./agent"
 
 import path from "path"
 import { Effect } from "effect"
-import { AgentV2 } from "..@lgcode/agent"
-import { Global } from "..@lgcode/global"
-import { Location } from "..@lgcode/location"
-import { PermissionV2 } from "..@lgcode/permission"
-import { PluginV2 } from "..@lgcode/plugin"
+import { AgentV2 } from "../agent"
+import { Global } from "../global"
+import { Location } from "../location"
+import { PermissionV2 } from "../permission"
+import { PluginV2 } from "../plugin"
 
 const TRUNCATION_GLOB = path.join(Global.Path.data, "tool-output", "*")
 const BUILD_SYSTEM =
@@ -51,7 +51,7 @@ Your output must be:
 - A single line
 - <=50 characters
 - No explanations
-<@lgcode/task>
+</task>
 
 <rules>
 - you MUST use the same language as the user message you are summarizing
@@ -70,7 +70,7 @@ Your output must be:
 - Always output something meaningful, even if the input is minimal.
 - If the user message is short or conversational (e.g. "hello", "lol", "what's up", "hey"):
   -> create a title that reflects the user's tone or intent (such as Greeting, Quick check-in, Light chat, Intro message, etc.)
-<@lgcode/rules>
+</rules>
 
 <examples>
 "debug 500 errors in production" -> Debugging production 500 errors
@@ -79,11 +79,11 @@ Your output must be:
 "implement rate limiting" -> Rate limiting implementation
 "how do I connect postgres to my API" -> Postgres API connection
 "best practices for React hooks" -> React hooks best practices
-"@src@lgcode/credential.ts can you add refresh token support" -> Credential refresh token support
-"@utils@lgcode/parser.ts this is broken" -> Parser bug fix
+"@src/credential.ts can you add refresh token support" -> Credential refresh token support
+"@utils/parser.ts this is broken" -> Parser bug fix
 "look at @config.json" -> Config review
 "@App.tsx add dark mode toggle" -> Dark mode toggle in App
-<@lgcode/examples>`
+</examples>`
 
 const PROMPT_SUMMARY = `Summarize what was done in this conversation. Write like a pull request description.
 
@@ -163,7 +163,7 @@ export const Plugin = PluginV2.define({
 
       editor.update(AgentV2.ID.make("explore"), (item) => {
         item.description =
-          'Fast agent specialized for exploring codebases. Use this when you need to quickly find files by patterns (eg. "src@lgcode/components@lgcode/**@lgcode/*.tsx"), search code for keywords (eg. "API endpoints"), or answer questions about the codebase (eg. "how do API endpoints work?"). When calling this agent, specify the desired thoroughness level: "quick" for basic searches, "medium" for moderate exploration, or "very thorough" for comprehensive analysis across multiple locations and naming conventions.'
+          'Fast agent specialized for exploring codebases. Use this when you need to quickly find files by patterns (eg. "src/components/**/*.tsx"), search code for keywords (eg. "API endpoints"), or answer questions about the codebase (eg. "how do API endpoints work?"). When calling this agent, specify the desired thoroughness level: "quick" for basic searches, "medium" for moderate exploration, or "very thorough" for comprehensive analysis across multiple locations and naming conventions.'
         item.system = PROMPT_EXPLORE
         item.mode = "subagent"
         item.permissions.push(

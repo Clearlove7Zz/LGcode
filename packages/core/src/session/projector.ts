@@ -1,20 +1,20 @@
-export * as SessionProjector from ".@lgcode/projector"
+export * as SessionProjector from "./projector"
 
 import { and, desc, eq, sql } from "drizzle-orm"
 import { DateTime, Effect, Layer, Schema } from "effect"
-import { Database } from "..@lgcode/database@lgcode/database"
-import { EventV2 } from "..@lgcode/event"
-import { LayerNode } from "..@lgcode/effect@lgcode/layer-node"
-import { SessionEvent } from ".@lgcode/event"
-import { SessionV1 } from "..@lgcode/v1@lgcode/session"
-import { WorkspaceTable } from "..@lgcode/control-plane@lgcode/workspace.sql"
-import { SessionMessage } from ".@lgcode/message"
-import { SessionMessageUpdater } from ".@lgcode/message-updater"
-import { SessionInput } from ".@lgcode/input"
-import { WorkspaceV2 } from "..@lgcode/workspace"
-import { SessionContextEpoch } from ".@lgcode/context-epoch"
-import { MessageTable, PartTable, SessionMessageTable, SessionTable } from ".@lgcode/sql"
-import type { DeepMutable } from "..@lgcode/schema"
+import { Database } from "../database/database"
+import { EventV2 } from "../event"
+import { LayerNode } from "../effect/layer-node"
+import { SessionEvent } from "./event"
+import { SessionV1 } from "../v1/session"
+import { WorkspaceTable } from "../control-plane/workspace.sql"
+import { SessionMessage } from "./message"
+import { SessionMessageUpdater } from "./message-updater"
+import { SessionInput } from "./input"
+import { WorkspaceV2 } from "../workspace"
+import { SessionContextEpoch } from "./context-epoch"
+import { MessageTable, PartTable, SessionMessageTable, SessionTable } from "./sql"
+import type { DeepMutable } from "../schema"
 
 type DatabaseService = Database.Interface["db"]
 
@@ -134,7 +134,7 @@ function run(db: DatabaseService, event: SessionEvent.Event) {
     const adapter: SessionMessageUpdater.Adapter = {
       getCurrentAssistant() {
         return Effect.gen(function* () {
-          @lgcode/@lgcode/ A newer turn supersedes stale incomplete rows; never resume an older assistant projection.
+          // A newer turn supersedes stale incomplete rows; never resume an older assistant projection.
           const row = yield* db
             .select()
             .from(SessionMessageTable)
@@ -434,7 +434,7 @@ export const layer = Layer.effectDiscard(
     yield* events.project(SessionEvent.Tool.Failed, (event) => run(db, event))
     yield* events.project(SessionEvent.Reasoning.Started, (event) => run(db, event))
     yield* events.project(SessionEvent.Reasoning.Ended, (event) => run(db, event))
-    @lgcode/@lgcode/ yield* events.project(SessionEvent.Retried, (event) => run(db, event))
+    // yield* events.project(SessionEvent.Retried, (event) => run(db, event))
     yield* events.project(SessionEvent.Compaction.Ended, (event) => {
       if (event.version === 1) return Effect.void
       const seq = event.seq

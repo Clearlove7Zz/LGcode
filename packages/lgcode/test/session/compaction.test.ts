@@ -1,39 +1,39 @@
 import { afterEach, describe, expect, mock, test } from "bun:test"
-import { ConfigV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/config"
-import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
+import { ConfigV1 } from "@opencode@lgcode/core/v1/config/config"
+import { SessionV1 } from "@opencode@lgcode/core/v1/session"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { EventV2Bridge } from "@/event-v2-bridge"
 import { APICallError } from "ai"
 import { Cause, Deferred, Effect, Exit, Fiber, Layer, Schema } from "effect"
-import * as Stream from "effect@lgcode/Stream"
-import { Config } from "@@lgcode/config@lgcode/config"
-import { Image } from "@@lgcode/image@lgcode/image"
-import { Agent } from "..@lgcode/..@lgcode/src@lgcode/agent@lgcode/agent"
-import { LLM } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/llm"
-import { SessionCompaction } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/compaction"
-import { Token } from "@@lgcode/util@lgcode/token"
-import { Permission } from "..@lgcode/..@lgcode/src@lgcode/permission"
-import { Plugin } from "..@lgcode/..@lgcode/src@lgcode/plugin"
-import { provideTmpdirInstance, TestInstance } from "..@lgcode/fixture@lgcode/fixture"
-import { Session as SessionNs } from "@@lgcode/session@lgcode/session"
-import { MessageV2 } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/message-v2"
-import { MessageID, PartID, SessionID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
-import { SessionStatus } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/status"
-import { SessionSummary } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/summary"
-import { SessionV2 } from "@lgcode/core@lgcode/session"
-import { SessionExecution } from "@lgcode/core@lgcode/session@lgcode/execution"
+import * as Stream from "effect/Stream"
+import { Config } from "@/config/config"
+import { Image } from "@/image/image"
+import { Agent } from "../../src/agent/agent"
+import { LLM } from "../../src/session/llm"
+import { SessionCompaction } from "../../src/session/compaction"
+import { Token } from "@/util/token"
+import { Permission } from "../../src/permission"
+import { Plugin } from "../../src/plugin"
+import { provideTmpdirInstance, TestInstance } from "../fixture/fixture"
+import { Session as SessionNs } from "@/session/session"
+import { MessageV2 } from "../../src/session/message-v2"
+import { MessageID, PartID, SessionID } from "../../src/session/schema"
+import { SessionStatus } from "../../src/session/status"
+import { SessionSummary } from "../../src/session/summary"
+import { SessionV2 } from "@opencode@lgcode/core/session"
+import { SessionExecution } from "@opencode@lgcode/core/session/execution"
 
-import type { Provider } from "@@lgcode/provider@lgcode/provider"
-import * as SessionProcessorModule from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/processor"
-import { Snapshot } from "..@lgcode/..@lgcode/src@lgcode/snapshot"
-import { ProviderTest } from "..@lgcode/fake@lgcode/provider"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import { TestConfig } from "..@lgcode/fixture@lgcode/config"
-import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
-import { LLMEvent, Usage } from "@lgcode/llm"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
+import type { Provider } from "@/provider/provider"
+import * as SessionProcessorModule from "../../src/session/processor"
+import { Snapshot } from "../../src/snapshot"
+import { ProviderTest } from "../fake/provider"
+import { testEffect } from "../lib/effect"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { TestConfig } from "../fixture/config"
+import { RuntimeFlags } from "@/effect/runtime-flags"
+import { LLMEvent, Usage } from "@opencode@lgcode/llm"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelV2 } from "@opencode@lgcode/core/model"
 
 const summary = Layer.succeed(
   SessionSummary.Service,
@@ -82,7 +82,7 @@ function createModel(opts: {
       input: { text: true, image: false, audio: false, video: false },
       output: { text: true, image: false, audio: false, video: false },
     },
-    api: { npm: opts.npm ?? "@ai-sdk@lgcode/anthropic" },
+    api: { npm: opts.npm ?? "@ai-sdk/anthropic" },
     options: {},
   } as Provider.Model
 }
@@ -431,7 +431,7 @@ describe("session.compaction.isOverflow", () => {
   )
 
   it.live(
-    "returns false when input@lgcode/output are within input caps",
+    "returns false when input/output are within input caps",
     provideTmpdirInstance(() =>
       Effect.gen(function* () {
         const compact = yield* SessionCompaction.Service
@@ -454,39 +454,39 @@ describe("session.compaction.isOverflow", () => {
     ),
   )
 
-  @lgcode/@lgcode/ ─── Bug reproduction tests ───────────────────────────────────────────
-  @lgcode/@lgcode/ These tests demonstrate that when limit.input is set, isOverflow()
-  @lgcode/@lgcode/ does not subtract any headroom for the next model response. This means
-  @lgcode/@lgcode/ compaction only triggers AFTER we've already consumed the full input
-  @lgcode/@lgcode/ budget, leaving zero room for the next API call's output tokens.
-  @lgcode/@lgcode/
-  @lgcode/@lgcode/ Compare: without limit.input, usable = context - output (reserves space).
-  @lgcode/@lgcode/ With limit.input, usable = limit.input (reserves nothing).
-  @lgcode/@lgcode/
-  @lgcode/@lgcode/ Related issues: #10634, #8089, #11086, #12621
-  @lgcode/@lgcode/ Open PRs: #6875, #12924
+  // ─── Bug reproduction tests ───────────────────────────────────────────
+  // These tests demonstrate that when limit.input is set, isOverflow()
+  // does not subtract any headroom for the next model response. This means
+  // compaction only triggers AFTER we've already consumed the full input
+  // budget, leaving zero room for the next API call's output tokens.
+  //
+  // Compare: without limit.input, usable = context - output (reserves space).
+  // With limit.input, usable = limit.input (reserves nothing).
+  //
+  // Related issues: #10634, #8089, #11086, #12621
+  // Open PRs: #6875, #12924
 
   it.live(
     "BUG: no headroom when limit.input is set — compaction should trigger near boundary but does not",
     provideTmpdirInstance(() =>
       Effect.gen(function* () {
         const compact = yield* SessionCompaction.Service
-        @lgcode/@lgcode/ Simulate Claude with prompt caching: input limit = 200K, output limit = 32K
+        // Simulate Claude with prompt caching: input limit = 200K, output limit = 32K
         const model = createModel({ context: 200_000, input: 200_000, output: 32_000 })
 
-        @lgcode/@lgcode/ We've used 198K tokens total. Only 2K under the input limit.
-        @lgcode/@lgcode/ On the next turn, the full conversation (198K) becomes input,
-        @lgcode/@lgcode/ plus the model needs room to generate output — this WILL overflow.
+        // We've used 198K tokens total. Only 2K under the input limit.
+        // On the next turn, the full conversation (198K) becomes input,
+        // plus the model needs room to generate output — this WILL overflow.
         const tokens = { input: 180_000, output: 15_000, reasoning: 0, cache: { read: 3_000, write: 0 } }
-        @lgcode/@lgcode/ count = 180K + 3K + 15K = 198K
-        @lgcode/@lgcode/ usable = limit.input = 200K (no output subtracted!)
-        @lgcode/@lgcode/ 198K > 200K = false → no compaction triggered
+        // count = 180K + 3K + 15K = 198K
+        // usable = limit.input = 200K (no output subtracted!)
+        // 198K > 200K = false → no compaction triggered
 
-        @lgcode/@lgcode/ WITHOUT limit.input: usable = 200K - 32K = 168K, and 198K > 168K = true ✓
-        @lgcode/@lgcode/ WITH limit.input: usable = 200K, and 198K > 200K = false ✗
+        // WITHOUT limit.input: usable = 200K - 32K = 168K, and 198K > 168K = true ✓
+        // WITH limit.input: usable = 200K, and 198K > 200K = false ✗
 
-        @lgcode/@lgcode/ With 198K used and only 2K headroom, the next turn will overflow.
-        @lgcode/@lgcode/ Compaction MUST trigger here.
+        // With 198K used and only 2K headroom, the next turn will overflow.
+        // Compaction MUST trigger here.
         expect(yield* compact.isOverflow({ tokens, model })).toBe(true)
       }),
     ),
@@ -497,17 +497,17 @@ describe("session.compaction.isOverflow", () => {
     provideTmpdirInstance(() =>
       Effect.gen(function* () {
         const compact = yield* SessionCompaction.Service
-        @lgcode/@lgcode/ Same model but without limit.input — uses context - output instead
+        // Same model but without limit.input — uses context - output instead
         const model = createModel({ context: 200_000, output: 32_000 })
 
-        @lgcode/@lgcode/ Same token usage as above
+        // Same token usage as above
         const tokens = { input: 180_000, output: 15_000, reasoning: 0, cache: { read: 3_000, write: 0 } }
-        @lgcode/@lgcode/ count = 198K
-        @lgcode/@lgcode/ usable = context - output = 200K - 32K = 168K
-        @lgcode/@lgcode/ 198K > 168K = true → compaction correctly triggered
+        // count = 198K
+        // usable = context - output = 200K - 32K = 168K
+        // 198K > 168K = true → compaction correctly triggered
 
         const result = yield* compact.isOverflow({ tokens, model })
-        expect(result).toBe(true) @lgcode/@lgcode/ ← Correct: headroom is reserved
+        expect(result).toBe(true) // ← Correct: headroom is reserved
       }),
     ),
   )
@@ -517,19 +517,19 @@ describe("session.compaction.isOverflow", () => {
     provideTmpdirInstance(() =>
       Effect.gen(function* () {
         const compact = yield* SessionCompaction.Service
-        @lgcode/@lgcode/ Two models with identical context@lgcode/output limits, differing only in limit.input
+        // Two models with identical context/output limits, differing only in limit.input
         const withInputLimit = createModel({ context: 200_000, input: 200_000, output: 32_000 })
         const withoutInputLimit = createModel({ context: 200_000, output: 32_000 })
 
-        @lgcode/@lgcode/ 170K total tokens — well above context-output (168K) but below input limit (200K)
+        // 170K total tokens — well above context-output (168K) but below input limit (200K)
         const tokens = { input: 166_000, output: 10_000, reasoning: 0, cache: { read: 5_000, write: 0 } }
 
         const withLimit = yield* compact.isOverflow({ tokens, model: withInputLimit })
         const withoutLimit = yield* compact.isOverflow({ tokens, model: withoutInputLimit })
 
-        @lgcode/@lgcode/ Both models have identical real capacity — they should agree:
-        expect(withLimit).toBe(true) @lgcode/@lgcode/ should compact (170K leaves no room for 32K output)
-        expect(withoutLimit).toBe(true) @lgcode/@lgcode/ correctly compacts (170K > 168K)
+        // Both models have identical real capacity — they should agree:
+        expect(withLimit).toBe(true) // should compact (170K leaves no room for 32K output)
+        expect(withoutLimit).toBe(true) // correctly compacts (170K > 168K)
       }),
     ),
   )
@@ -1032,9 +1032,9 @@ describe("session.compaction.process", () => {
           messageID: recent.id,
           sessionID: session.id,
           type: "file",
-          mime: "image@lgcode/png",
+          mime: "image/png",
           filename: "big.png",
-          url: `data:image@lgcode/png;base64,${"a".repeat(4_000)}`,
+          url: `data:image/png;base64,${"a".repeat(4_000)}`,
         })
         yield* createSummaryCompaction(session.id)
 
@@ -1047,7 +1047,7 @@ describe("session.compaction.process", () => {
         expect(part?.type).toBe("compaction")
         expect(part?.tail_start_id).toBeUndefined()
         expect(captured).toContain("recent image turn")
-        expect(captured).toContain("Attached image@lgcode/png: big.png")
+        expect(captured).toContain("Attached image/png: big.png")
       }).pipe(withCompaction({ llm: stub.layer, config: cfg({ tail_turns: 1, preserve_recent_tokens: 100 }) }))
     },
     { git: true },
@@ -1148,9 +1148,9 @@ describe("session.compaction.process", () => {
         messageID: replay.id,
         sessionID: session.id,
         type: "file",
-        mime: "image@lgcode/png",
+        mime: "image/png",
         filename: "cat.png",
-        url: "https:@lgcode/@lgcode/example.com@lgcode/cat.png",
+        url: "https://example.com/cat.png",
       })
       const msg = yield* createUserMessage(session.id, "current")
       const msgs = yield* ssn.messages({ sessionID: session.id })
@@ -1169,7 +1169,7 @@ describe("session.compaction.process", () => {
       expect(last?.info.role).toBe("user")
       expect(last?.parts.some((part) => part.type === "file")).toBe(false)
       expect(
-        last?.parts.some((part) => part.type === "text" && part.text.includes("Attached image@lgcode/png: cat.png")),
+        last?.parts.some((part) => part.type === "text" && part.text.includes("Attached image/png: cat.png")),
       ).toBe(true)
     }),
   )
@@ -1212,7 +1212,7 @@ describe("session.compaction.process", () => {
               yield LLMEvent.stepStart({ index: 0 })
               throw new APICallError({
                 message: "boom",
-                url: "https:@lgcode/@lgcode/example.com@lgcode/v1@lgcode/chat@lgcode/completions",
+                url: "https://example.com/v1/chat/completions",
                 requestBodyValues: {},
                 statusCode: 503,
                 responseHeaders: { "retry-after-ms": "10000" },
@@ -1300,9 +1300,9 @@ describe("session.compaction.process", () => {
   itCompaction.instance(
     "silently drops reasoning-delta arriving without prior reasoning-start",
     () => {
-      @lgcode/@lgcode/ Regression: PR initially auto-created a reasoning Part for orphan deltas (no preceding
-      @lgcode/@lgcode/ reasoning-start). Reverted to match dev — drop silently. Pinned here so any future
-      @lgcode/@lgcode/ change to processor.ts reasoning-delta handling triggers this test.
+      // Regression: PR initially auto-created a reasoning Part for orphan deltas (no preceding
+      // reasoning-start). Reverted to match dev — drop silently. Pinned here so any future
+      // change to processor.ts reasoning-delta handling triggers this test.
       const stub = llm()
       stub.push(
         Stream.make(
@@ -1330,7 +1330,7 @@ describe("session.compaction.process", () => {
           (item) => item.info.role === "assistant" && item.info.summary,
         )
         expect(summary?.parts.some((part) => part.type === "reasoning")).toBe(false)
-        @lgcode/@lgcode/ Sanity: the text part still got through.
+        // Sanity: the text part still got through.
         expect(summary?.parts.some((part) => part.type === "text" && part.text === "summary")).toBe(true)
       }).pipe(withCompaction({ llm: stub.layer }))
     },
@@ -1444,7 +1444,7 @@ describe("session.compaction.process", () => {
 
         expect(captured).toContain("<previous-summary>")
         expect(captured).toContain("summary one")
-        expect(captured.match(@lgcode/summary one@lgcode/g)?.length).toBe(1)
+        expect(captured.match(/summary one/g)?.length).toBe(1)
         expect(captured).toContain("## Constraints & Preferences")
         expect(captured).toContain("## Progress")
       }).pipe(withCompaction({ llm: stub.layer }))
@@ -1596,7 +1596,7 @@ describe("SessionNs.getUsage", () => {
 
   test("subtracts cached tokens for anthropic provider", () => {
     const model = createModel({ context: 100_000, output: 32_000 })
-    @lgcode/@lgcode/ AI SDK v6 normalizes inputTokens to include cached tokens for all providers
+    // AI SDK v6 normalizes inputTokens to include cached tokens for all providers
     const result = SessionNs.getUsage({
       model,
       usage: usage({ inputTokens: 1000, outputTokens: 500, totalTokens: 1500, cacheReadInputTokens: 200 }),
@@ -1763,18 +1763,18 @@ describe("SessionNs.getUsage", () => {
     expect(result.cost).toBe(0.9 + 0.4)
   })
 
-  test.each(["@ai-sdk@lgcode/anthropic", "@ai-sdk@lgcode/amazon-bedrock", "@ai-sdk@lgcode/google-vertex@lgcode/anthropic"])(
+  test.each(["@ai-sdk/anthropic", "@ai-sdk/amazon-bedrock", "@ai-sdk/google-vertex/anthropic"])(
     "computes total from components for %s models",
     (npm) => {
       const model = createModel({ context: 100_000, output: 32_000, npm })
-      @lgcode/@lgcode/ AI SDK v6: inputTokens includes cached tokens for all providers
+      // AI SDK v6: inputTokens includes cached tokens for all providers
       const item = usage({
         inputTokens: 1000,
         outputTokens: 500,
         totalTokens: 1500,
         cacheReadInputTokens: 200,
       })
-      if (npm === "@ai-sdk@lgcode/amazon-bedrock") {
+      if (npm === "@ai-sdk/amazon-bedrock") {
         const result = SessionNs.getUsage({
           model,
           usage: item,
@@ -1787,11 +1787,11 @@ describe("SessionNs.getUsage", () => {
           },
         })
 
-        @lgcode/@lgcode/ inputTokens (1000) includes cache, so adjusted = 1000 - 200 - 300 = 500
+        // inputTokens (1000) includes cache, so adjusted = 1000 - 200 - 300 = 500
         expect(result.tokens.input).toBe(500)
         expect(result.tokens.cache.read).toBe(200)
         expect(result.tokens.cache.write).toBe(300)
-        @lgcode/@lgcode/ total = adjusted (500) + output (500) + cacheRead (200) + cacheWrite (300)
+        // total = adjusted (500) + output (500) + cacheRead (200) + cacheWrite (300)
         expect(result.tokens.total).toBe(1500)
         return
       }
@@ -1806,17 +1806,17 @@ describe("SessionNs.getUsage", () => {
         },
       })
 
-      @lgcode/@lgcode/ inputTokens (1000) includes cache, so adjusted = 1000 - 200 - 300 = 500
+      // inputTokens (1000) includes cache, so adjusted = 1000 - 200 - 300 = 500
       expect(result.tokens.input).toBe(500)
       expect(result.tokens.cache.read).toBe(200)
       expect(result.tokens.cache.write).toBe(300)
-      @lgcode/@lgcode/ total = adjusted (500) + output (500) + cacheRead (200) + cacheWrite (300)
+      // total = adjusted (500) + output (500) + cacheRead (200) + cacheWrite (300)
       expect(result.tokens.total).toBe(1500)
     },
   )
 
   test("extracts cache write tokens from vertex metadata key", () => {
-    const model = createModel({ context: 100_000, output: 32_000, npm: "@ai-sdk@lgcode/google-vertex@lgcode/anthropic" })
+    const model = createModel({ context: 100_000, output: 32_000, npm: "@ai-sdk/google-vertex/anthropic" })
     const result = SessionNs.getUsage({
       model,
       usage: usage({ inputTokens: 1000, outputTokens: 500, totalTokens: 1500, cacheReadInputTokens: 200 }),

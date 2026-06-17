@@ -1,5 +1,5 @@
-import { Config } from "@@lgcode/config@lgcode/config"
-import { emptyConsoleState } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/console-state"
+import { Config } from "@/config/config"
+import { emptyConsoleState } from "@opencode@lgcode/core/v1/config/console-state"
 import { Effect, Layer } from "effect"
 
 export function make(overrides: Partial<Config.Interface> = {}) {
@@ -20,4 +20,4 @@ export function layer(overrides?: Partial<Config.Interface>) {
   return Layer.succeed(Config.Service, make(overrides))
 }
 
-export * as TestConfig from ".@lgcode/config"
+export * as TestConfig from "./config"

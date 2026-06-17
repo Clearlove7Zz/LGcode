@@ -1,8 +1,8 @@
-#!@lgcode/usr@lgcode/bin@lgcode/env bun
-import { mkdtemp, rm, writeFile } from "node:fs@lgcode/promises"
+#!/usr/bin/env bun
+import { mkdtemp, rm, writeFile } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import path from "node:path"
-import { pack } from ".@lgcode/pack.js"
+import { pack } from "./pack.js"
 
 const run = async (command: ReadonlyArray<string>, cwd: string) => {
   const process = Bun.spawn(command, { cwd, env: globalThis.process.env, stdout: "inherit", stderr: "inherit" })
@@ -19,16 +19,16 @@ export const verifyPackage = async (archive: string) => {
     )
     await writeFile(
       path.join(directory, "consumer.ts"),
-      `import { HttpRecorder } from "@lgcode/http-recorder"
-import { NodeSocket } from "@effect@lgcode/platform-node"
+      `import { HttpRecorder } from "@opencode@lgcode/http-recorder"
+import { NodeSocket } from "@effect/platform-node"
 import { Layer } from "effect"
-import { HttpClient } from "effect@lgcode/unstable@lgcode/http"
-import { Socket } from "effect@lgcode/unstable@lgcode/socket"
+import { HttpClient } from "effect/unstable/http"
+import { Socket } from "effect/unstable/socket"
 
 const options: HttpRecorder.RecorderOptions = { redact: { jsonFields: ["access_token"] } }
 HttpRecorder.http("consumer", options) satisfies Layer.Layer<HttpClient.HttpClient>
-HttpRecorder.socket("consumer@lgcode/socket", options).pipe(
-  Layer.provide(NodeSocket.layerWebSocket("wss:@lgcode/@lgcode/example.test")),
+HttpRecorder.socket("consumer/socket", options).pipe(
+  Layer.provide(NodeSocket.layerWebSocket("wss://example.test")),
 ) satisfies Layer.Layer<Socket.Socket>
 `,
     )
@@ -41,7 +41,7 @@ HttpRecorder.socket("consumer@lgcode/socket", options).pipe(
           moduleResolution: "NodeNext",
           strict: true,
           noEmit: true,
-          @lgcode/@lgcode/ Required by effect@4.0.0-beta.74: its schema.d.ts references an undeclared SchemaErrorTypeId.
+          // Required by effect@4.0.0-beta.74: its schema.d.ts references an undeclared SchemaErrorTypeId.
           skipLibCheck: true,
           lib: ["ES2022", "DOM", "ESNext.Disposable"],
         },
@@ -55,7 +55,7 @@ HttpRecorder.socket("consumer@lgcode/socket", options).pipe(
         "node",
         "--input-type=module",
         "-e",
-        'import("@lgcode/http-recorder").then((module) => { const root = Object.keys(module).sort(); const namespace = Object.keys(module.HttpRecorder).sort(); if (JSON.stringify(root) !== JSON.stringify(["HttpRecorder"])) throw new Error(`Unexpected root exports: ${root}`); if (JSON.stringify(namespace) !== JSON.stringify(["http", "socket"])) throw new Error(`Unexpected namespace exports: ${namespace}`) })',
+        'import("@opencode@lgcode/http-recorder").then((module) => { const root = Object.keys(module).sort(); const namespace = Object.keys(module.HttpRecorder).sort(); if (JSON.stringify(root) !== JSON.stringify(["HttpRecorder"])) throw new Error(`Unexpected root exports: ${root}`); if (JSON.stringify(namespace) !== JSON.stringify(["http", "socket"])) throw new Error(`Unexpected namespace exports: ${namespace}`) })',
       ],
       directory,
     )

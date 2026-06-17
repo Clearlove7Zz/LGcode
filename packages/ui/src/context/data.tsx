@@ -1,6 +1,6 @@
-import type { Message, Session, Part, SnapshotFileDiff, SessionStatus, Provider } from "@lgcode/sdk@lgcode/v2"
-import { createSimpleContext } from ".@lgcode/helper"
-import { PreloadMultiFileDiffResult } from "@pierre@lgcode/diffs@lgcode/ssr"
+import type { Message, Session, Part, SnapshotFileDiff, SessionStatus, Provider } from "@opencode@lgcode/sdk/v2"
+import { createSimpleContext } from "./helper"
+import { PreloadMultiFileDiffResult } from "@pierre/diffs/ssr"
 
 export type NormalizedProviderListResponse = {
   all: Map<string, Provider>

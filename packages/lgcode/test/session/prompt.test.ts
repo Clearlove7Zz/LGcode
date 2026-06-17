@@ -1,61 +1,61 @@
-import { NodeFileSystem } from "@effect@lgcode/platform-node"
-import { ConfigV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/config"
-import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { NodeFileSystem } from "@effect/platform-node"
+import { ConfigV1 } from "@opencode@lgcode/core/v1/config/config"
+import { SessionV1 } from "@opencode@lgcode/core/v1/session"
+import { Database } from "@opencode@lgcode/core/database/database"
 import { eq } from "drizzle-orm"
-import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
-import { FetchHttpClient } from "effect@lgcode/unstable@lgcode/http"
+import { EventV2Bridge } from "@/event-v2-bridge"
+import { FetchHttpClient } from "effect/unstable/http"
 import { expect } from "bun:test"
 import { Cause, Deferred, Duration, Effect, Exit, Fiber, Layer } from "effect"
 import path from "path"
 import { fileURLToPath, pathToFileURL } from "url"
-import { NamedError } from "@lgcode/core@lgcode/util@lgcode/error"
-import { Agent as AgentSvc } from "..@lgcode/..@lgcode/src@lgcode/agent@lgcode/agent"
-import { BackgroundJob } from "@@lgcode/background@lgcode/job"
-import { Command } from "..@lgcode/..@lgcode/src@lgcode/command"
-import { Config } from "@@lgcode/config@lgcode/config"
-import { LSP } from "@@lgcode/lsp@lgcode/lsp"
-import { MCP } from "..@lgcode/..@lgcode/src@lgcode/mcp"
-import { Permission } from "..@lgcode/..@lgcode/src@lgcode/permission"
-import { Plugin } from "..@lgcode/..@lgcode/src@lgcode/plugin"
-import { Provider as ProviderSvc } from "@@lgcode/provider@lgcode/provider"
-import { Env } from "..@lgcode/..@lgcode/src@lgcode/env"
-import { Git } from "..@lgcode/..@lgcode/src@lgcode/git"
-import { Image } from "..@lgcode/..@lgcode/src@lgcode/image@lgcode/image"
+import { NamedError } from "@opencode@lgcode/core/util/error"
+import { Agent as AgentSvc } from "../../src/agent/agent"
+import { BackgroundJob } from "@/background/job"
+import { Command } from "../../src/command"
+import { Config } from "@/config/config"
+import { LSP } from "@/lsp/lsp"
+import { MCP } from "../../src/mcp"
+import { Permission } from "../../src/permission"
+import { Plugin } from "../../src/plugin"
+import { Provider as ProviderSvc } from "@/provider/provider"
+import { Env } from "../../src/env"
+import { Git } from "../../src/git"
+import { Image } from "../../src/image/image"
 
-import { Question } from "..@lgcode/..@lgcode/src@lgcode/question"
-import { Todo } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/todo"
-import { Session } from "@@lgcode/session@lgcode/session"
-import { SessionMessageTable } from "@lgcode/core@lgcode/session@lgcode/sql"
-import { LLM } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/llm"
-import { MessageV2 } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/message-v2"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { SessionCompaction } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/compaction"
-import { SessionSummary } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/summary"
-import { Instruction } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/instruction"
-import { SessionProcessor } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/processor"
-import { SessionPrompt } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/prompt"
-import { SessionRevert } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/revert"
-import { SessionRunState } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/run-state"
-import { MessageID, PartID, SessionID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
-import { SessionStatus } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/status"
-import { SessionV2 } from "@lgcode/core@lgcode/session"
-import { SessionExecution } from "@lgcode/core@lgcode/session@lgcode/execution"
-import { Skill } from "..@lgcode/..@lgcode/src@lgcode/skill"
-import { SystemPrompt } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/system"
-import { Shell } from "@lgcode/core@lgcode/shell"
-import { Snapshot } from "..@lgcode/..@lgcode/src@lgcode/snapshot"
-import { ToolRegistry } from "@@lgcode/tool@lgcode/registry"
-import { Truncate } from "@@lgcode/tool@lgcode/truncate"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import { Ripgrep } from "@lgcode/core@lgcode/ripgrep"
-import { Format } from "..@lgcode/..@lgcode/src@lgcode/format"
-import { TestInstance } from "..@lgcode/fixture@lgcode/fixture"
-import { awaitWithTimeout, pollWithTimeout, testEffect } from "..@lgcode/lib@lgcode/effect"
-import { reply, TestLLMServer } from "..@lgcode/lib@lgcode/llm-server"
-import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { Question } from "../../src/question"
+import { Todo } from "../../src/session/todo"
+import { Session } from "@/session/session"
+import { SessionMessageTable } from "@opencode@lgcode/core/session/sql"
+import { LLM } from "../../src/session/llm"
+import { MessageV2 } from "../../src/session/message-v2"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { SessionCompaction } from "../../src/session/compaction"
+import { SessionSummary } from "../../src/session/summary"
+import { Instruction } from "../../src/session/instruction"
+import { SessionProcessor } from "../../src/session/processor"
+import { SessionPrompt } from "../../src/session/prompt"
+import { SessionRevert } from "../../src/session/revert"
+import { SessionRunState } from "../../src/session/run-state"
+import { MessageID, PartID, SessionID } from "../../src/session/schema"
+import { SessionStatus } from "../../src/session/status"
+import { SessionV2 } from "@opencode@lgcode/core/session"
+import { SessionExecution } from "@opencode@lgcode/core/session/execution"
+import { Skill } from "../../src/skill"
+import { SystemPrompt } from "../../src/session/system"
+import { Shell } from "@opencode@lgcode/core/shell"
+import { Snapshot } from "../../src/snapshot"
+import { ToolRegistry } from "@/tool/registry"
+import { Truncate } from "@/tool/truncate"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { Ripgrep } from "@opencode@lgcode/core/ripgrep"
+import { Format } from "../../src/format"
+import { TestInstance } from "../fixture/fixture"
+import { awaitWithTimeout, pollWithTimeout, testEffect } from "../lib/effect"
+import { reply, TestLLMServer } from "../lib/llm-server"
+import { RuntimeFlags } from "@/effect/runtime-flags"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelV2 } from "@opencode@lgcode/core/model"
 
 const summary = Layer.succeed(
   SessionSummary.Service,
@@ -75,7 +75,7 @@ function withSh<A, E, R>(fx: () => Effect.Effect<A, E, R>) {
   return Effect.acquireUseRelease(
     Effect.sync(() => {
       const prev = process.env.SHELL
-      process.env.SHELL = "@lgcode/bin@lgcode/sh"
+      process.env.SHELL = "/bin/sh"
       Shell.preferred.reset()
       return prev
     }),
@@ -243,15 +243,15 @@ const raceNoLLMServer = testEffect(makeHttpNoLLMServer({ processor: "blocking" }
 const unix = process.platform !== "win32" ? it.instance : it.instance.skip
 const unixNoLLMServer = process.platform !== "win32" ? noLLMServer.instance : noLLMServer.instance.skip
 
-@lgcode/@lgcode/ Config that registers a custom "test" provider with a "test-model" model
-@lgcode/@lgcode/ so provider model lookup succeeds inside the loop.
+// Config that registers a custom "test" provider with a "test-model" model
+// so provider model lookup succeeds inside the loop.
 const cfg = {
   provider: {
     test: {
       name: "Test",
       id: "test",
       env: [],
-      npm: "@ai-sdk@lgcode/openai-compatible",
+      npm: "@ai-sdk/openai-compatible",
       models: {
         "test-model": {
           id: "test-model",
@@ -268,7 +268,7 @@ const cfg = {
       },
       options: {
         apiKey: "test-key",
-        baseURL: "http:@lgcode/@lgcode/localhost:1@lgcode/v1",
+        baseURL: "http://localhost:1/v1",
       },
     },
   },
@@ -303,7 +303,7 @@ const ensureDir = Effect.fn("test.ensureDir")(function* (dir: string) {
 const writeConfig = Effect.fn("test.writeConfig")(function* (dir: string, config: Partial<ConfigV1.Info>) {
   yield* writeText(
     path.join(dir, "opencode.json"),
-    JSON.stringify({ $schema: "https:@lgcode/@lgcode/opencode.ai@lgcode/config.json", ...config }),
+    JSON.stringify({ $schema: "https://opencode.ai/config.json", ...config }),
   )
 })
 
@@ -314,9 +314,9 @@ const useServerConfig = Effect.fn("test.useServerConfig")(function* (config: (ur
   return { dir, llm }
 })
 
-@lgcode/@lgcode/ Wait for a session's runner to enter a busy state. SessionStatus is flipped
-@lgcode/@lgcode/ inside Runner.startShell's serialized transition, so cancel can't no-op once
-@lgcode/@lgcode/ we observe it.
+// Wait for a session's runner to enter a busy state. SessionStatus is flipped
+// inside Runner.startShell's serialized transition, so cancel can't no-op once
+// we observe it.
 const waitForBusy = (sessionID: SessionID, duration: Duration.Input = "2 seconds") =>
   pollWithTimeout(
     Effect.gen(function* () {
@@ -391,7 +391,7 @@ const seed = Effect.fn("test.seed")(function* (sessionID: SessionID, opts?: { fi
     mode: "build",
     agent: "build",
     cost: 0,
-    path: { cwd: "@lgcode/tmp", root: "@lgcode/tmp" },
+    path: { cwd: "/tmp", root: "/tmp" },
     tokens: { input: 0, output: 0, reasoning: 0, cache: { read: 0, write: 0 } },
     modelID: ref.modelID,
     providerID: ref.providerID,
@@ -434,7 +434,7 @@ const boot = Effect.fn("test.boot")(function* (input?: { title?: string }) {
   return { prompt, run, sessions, chat }
 })
 
-@lgcode/@lgcode/ Loop semantics
+// Loop semantics
 
 noLLMServer.instance(
   "loop exits immediately when last assistant has stop finish",
@@ -598,9 +598,9 @@ noLLMServer.instance.skip(
           { type: "text", text: "hello v2" },
           {
             type: "file",
-            mime: "text@lgcode/plain",
+            mime: "text/plain",
             filename: "note.txt",
-            url: "data:text@lgcode/plain;base64,bm90ZSBjb250ZW50",
+            url: "data:text/plain;base64,bm90ZSBjb250ZW50",
           },
         ],
       })
@@ -742,7 +742,7 @@ it.instance("glob tool keeps instance context during prompt runs", () =>
       noReply: true,
       parts: [{ type: "text", text: "find text files" }],
     })
-    yield* llm.tool("glob", { pattern: "**@lgcode/*.txt" })
+    yield* llm.tool("glob", { pattern: "**/*.txt" })
     yield* llm.text("done")
 
     const result = yield* prompt.loop({ sessionID: session.id })
@@ -797,7 +797,7 @@ it.instance("failed subtask preserves metadata on error tool state", () =>
       ...providerCfg(url),
       agent: {
         general: {
-          model: "test@lgcode/missing-model",
+          model: "test/missing-model",
         },
       },
     }))
@@ -842,7 +842,7 @@ it.instance("subtask child inherits parent session external_directory allow", ()
     const sessions = yield* Session.Service
     const chat = yield* sessions.create({
       title: "Parent",
-      permission: [{ permission: "external_directory", pattern: "@lgcode/tmp@lgcode/allowed@lgcode/*", action: "allow" }],
+      permission: [{ permission: "external_directory", pattern: "/tmp/allowed/*", action: "allow" }],
     })
     yield* llm.text("done")
     const msg = yield* user(chat.id, "hello")
@@ -855,9 +855,9 @@ it.instance("subtask child inherits parent session external_directory allow", ()
     const child = kids[0]!
     const rules = child.permission ?? []
     expect(rules).toEqual(
-      expect.arrayContaining([{ permission: "external_directory", pattern: "@lgcode/tmp@lgcode/allowed@lgcode/*", action: "allow" }]),
+      expect.arrayContaining([{ permission: "external_directory", pattern: "/tmp/allowed/*", action: "allow" }]),
     )
-    expect(Permission.evaluate("external_directory", "@lgcode/tmp@lgcode/allowed@lgcode/file", rules).action).toBe("allow")
+    expect(Permission.evaluate("external_directory", "/tmp/allowed/file", rules).action).toBe("allow")
     expect(Permission.evaluate("task", "anything", rules).action).toBe("deny")
   }),
 )
@@ -992,7 +992,7 @@ it.instance(
   3_000,
 )
 
-@lgcode/@lgcode/ Cancel semantics
+// Cancel semantics
 
 it.instance(
   "cancel interrupts loop and resolves with an assistant message",
@@ -1245,7 +1245,7 @@ it.instance(
   3_000,
 )
 
-@lgcode/@lgcode/ Queue semantics
+// Queue semantics
 
 noLLMServer.instance("concurrent loop callers get same result", () =>
   Effect.gen(function* () {
@@ -1391,7 +1391,7 @@ noLLMServer.instance("assertNotBusy succeeds when idle", () =>
   }),
 )
 
-@lgcode/@lgcode/ Shell semantics
+// Shell semantics
 
 it.instance(
   "shell rejects with BusyError when loop running",
@@ -1751,9 +1751,9 @@ unixNoLLMServer(
           .shell({
             sessionID: chat.id,
             agent: "build",
-            @lgcode/@lgcode/ Touch marker AFTER trap installs so the test waits for the actual
-            @lgcode/@lgcode/ ignore-TERM state before cancelling; otherwise SIGTERM can arrive
-            @lgcode/@lgcode/ before `trap` runs and the escalation path is never exercised.
+            // Touch marker AFTER trap installs so the test waits for the actual
+            // ignore-TERM state before cancelling; otherwise SIGTERM can arrive
+            // before `trap` runs and the escalation path is never exercised.
             command: `trap '' TERM; touch "${ready}"; sleep 30`,
           })
           .pipe(Effect.forkChild)
@@ -1830,8 +1830,8 @@ unix(
 
       expect(tool.state.metadata.truncated).toBe(true)
       expect(typeof tool.state.metadata.outputPath).toBe("string")
-      expect(tool.state.output).toMatch(@lgcode/\.\.\.output truncated\.\.\.@lgcode/)
-      expect(tool.state.output).toMatch(@lgcode/Full output saved to:\s+\S+@lgcode/)
+      expect(tool.state.output).toMatch(/\.\.\.output truncated\.\.\./)
+      expect(tool.state.output).toMatch(/Full output saved to:\s+\S+/)
       expect(tool.state.output).not.toContain("Tool execution aborted")
     }),
   { git: true },
@@ -1891,7 +1891,7 @@ unixNoLLMServer(
   30_000,
 )
 
-@lgcode/@lgcode/ Abort signal propagation tests for inline tool execution
+// Abort signal propagation tests for inline tool execution
 
 function hangUntilAborted(tool: { execute: (...args: any[]) => any }) {
   return Effect.gen(function* () {
@@ -1910,7 +1910,7 @@ function hangUntilAborted(tool: { execute: (...args: any[]) => any }) {
 }
 
 noLLMServer.instance(
-  "interrupt propagates abort signal to read tool via file part (text@lgcode/plain)",
+  "interrupt propagates abort signal to read tool via file part (text/plain)",
   () =>
     Effect.gen(function* () {
       const { directory: dir } = yield* TestInstance
@@ -1932,7 +1932,7 @@ noLLMServer.instance(
           agent: "build",
           parts: [
             { type: "text", text: "read this" },
-            { type: "file", url: `file:@lgcode/@lgcode/${testFile}`, filename: "test.txt", mime: "text@lgcode/plain" },
+            { type: "file", url: `file://${testFile}`, filename: "test.txt", mime: "text/plain" },
           ],
         })
         .pipe(Effect.forkChild)
@@ -1967,7 +1967,7 @@ noLLMServer.instance(
           agent: "build",
           parts: [
             { type: "text", text: "read this" },
-            { type: "file", url: `file:@lgcode/@lgcode/${dir}`, filename: "dir", mime: "application@lgcode/x-directory" },
+            { type: "file", url: `file://${dir}`, filename: "dir", mime: "application/x-directory" },
           ],
         })
         .pipe(Effect.forkChild)
@@ -1982,7 +1982,7 @@ noLLMServer.instance(
   30_000,
 )
 
-@lgcode/@lgcode/ Missing file handling
+// Missing file handling
 
 noLLMServer.instance(
   "does not fail the prompt when a file part is missing",
@@ -2002,8 +2002,8 @@ noLLMServer.instance(
           { type: "text", text: "please review @does-not-exist.ts" },
           {
             type: "file",
-            mime: "text@lgcode/plain",
-            url: `file:@lgcode/@lgcode/${missing}`,
+            mime: "text/plain",
+            url: `file://${missing}`,
             filename: "does-not-exist.ts",
           },
         ],
@@ -2037,8 +2037,8 @@ noLLMServer.instance(
         parts: [
           {
             type: "file",
-            mime: "text@lgcode/plain",
-            url: `file:@lgcode/@lgcode/${missing}`,
+            mime: "text/plain",
+            url: `file://${missing}`,
             filename: "still-missing.ts",
           },
           { type: "text", text: "after-file" },
@@ -2062,7 +2062,7 @@ noLLMServer.instance(
   { config: cfg },
 )
 
-@lgcode/@lgcode/ Special characters in filenames
+// Special characters in filenames
 
 noLLMServer.instance(
   "handles filenames with # character",
@@ -2099,7 +2099,7 @@ noLLMServer.instance(
   { git: true, config: cfg },
 )
 
-@lgcode/@lgcode/ Regression: empty assistant turn loop
+// Regression: empty assistant turn loop
 
 it.instance("does not loop empty assistant turns for a simple reply", () =>
   Effect.gen(function* () {
@@ -2108,7 +2108,7 @@ it.instance("does not loop empty assistant turns for a simple reply", () =>
     const sessions = yield* Session.Service
     const session = yield* sessions.create({ title: "Prompt regression" })
 
-    yield* llm.text("packages@lgcode/opencode@lgcode/src@lgcode/session@lgcode/processor.ts")
+    yield* llm.text("packages/opencode/src/session/processor.ts")
 
     const result = yield* prompt.prompt({
       sessionID: session.id,
@@ -2166,7 +2166,7 @@ it.instance(
   3_000,
 )
 
-@lgcode/@lgcode/ Agent variant
+// Agent variant
 
 noLLMServer.instance(
   "applies agent variant only when using agent model",
@@ -2229,7 +2229,7 @@ noLLMServer.instance(
       },
       agent: {
         build: {
-          model: "test@lgcode/test-model",
+          model: "test/test-model",
           variant: "xhigh",
         },
       },
@@ -2237,7 +2237,7 @@ noLLMServer.instance(
   },
 )
 
-@lgcode/@lgcode/ Agent @lgcode/ command resolution errors
+// Agent / command resolution errors
 
 noLLMServer.instance(
   "unknown agent throws typed error",

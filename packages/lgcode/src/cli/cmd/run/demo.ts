@@ -1,24 +1,24 @@
-@lgcode/@lgcode/ Demo mode for testing direct interactive mode without a real SDK.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Enabled with `--demo`. Intercepts prompt submissions and generates synthetic
-@lgcode/@lgcode/ SDK events that feed through the real reducer and footer pipeline. This
-@lgcode/@lgcode/ lets you test scrollback formatting, permission UI, question UI, and tool
-@lgcode/@lgcode/ snapshots without making actual model calls. Pass a demo slash command as
-@lgcode/@lgcode/ the initial interactive message to trigger a preview immediately.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Slash commands:
-@lgcode/@lgcode/   @lgcode/permission [kind] → triggers a permission request variant
-@lgcode/@lgcode/   @lgcode/question [kind]   → triggers a question request variant
-@lgcode/@lgcode/   @lgcode/fmt <kind>   → emits a specific tool@lgcode/text type (text, reasoning, bash,
-@lgcode/@lgcode/                   write, edit, patch, task, todo, question, error, mix)
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Demo mode also handles permission and question replies locally, completing
-@lgcode/@lgcode/ or failing the synthetic tool parts as appropriate.
+// Demo mode for testing direct interactive mode without a real SDK.
+//
+// Enabled with `--demo`. Intercepts prompt submissions and generates synthetic
+// SDK events that feed through the real reducer and footer pipeline. This
+// lets you test scrollback formatting, permission UI, question UI, and tool
+// snapshots without making actual model calls. Pass a demo slash command as
+// the initial interactive message to trigger a preview immediately.
+//
+// Slash commands:
+//   /permission [kind] → triggers a permission request variant
+//   /question [kind]   → triggers a question request variant
+//   /fmt <kind>   → emits a specific tool/text type (text, reasoning, bash,
+//                   write, edit, patch, task, todo, question, error, mix)
+//
+// Demo mode also handles permission and question replies locally, completing
+// or failing the synthetic tool parts as appropriate.
 import path from "path"
-import type { Event, ToolPart } from "@lgcode/sdk@lgcode/v2"
-import { createSessionData, reduceSessionData, type SessionData } from ".@lgcode/session-data"
-import { writeSessionOutput } from ".@lgcode/stream"
-import type { FooterApi, PermissionReply, QuestionReject, QuestionReply, RunPrompt, StreamCommit } from ".@lgcode/types"
+import type { Event, ToolPart } from "@opencode@lgcode/sdk/v2"
+import { createSessionData, reduceSessionData, type SessionData } from "./session-data"
+import { writeSessionOutput } from "./stream"
+import type { FooterApi, PermissionReply, QuestionReject, QuestionReply, RunPrompt, StreamCommit } from "./types"
 
 const KINDS = [
   "markdown",
@@ -85,7 +85,7 @@ const SAMPLE_MARKDOWN = [
   "| `footer.ts` | Keep active surfaces across footer-height-only resizes |",
   "| `footer.test.ts` | Capture real split-footer markdown payloads during idle completion |",
   "",
-  "Next step: run `@lgcode/fmt table` if you want a tighter table-only sample.",
+  "Next step: run `/fmt table` if you want a tighter table-only sample.",
 ].join("\n")
 
 const SAMPLE_TABLE = [
@@ -247,7 +247,7 @@ function split(text: string): string[] {
     return [text]
   }
 
-  const size = Math.ceil(text.length @lgcode/ 3)
+  const size = Math.ceil(text.length / 3)
   return [text.slice(0, size), text.slice(size, size * 2), text.slice(size * 2)]
 }
 
@@ -639,7 +639,7 @@ function emitPatch(state: State): void {
         {
           type: "update",
           filePath: file,
-          relativePath: "src@lgcode/demo-format.ts",
+          relativePath: "src/demo-format.ts",
           diff: "@@ -1 +1 @@\n-export const demo = 1\n+export const demo = 42\n",
           deletions: 1,
         },
@@ -657,7 +657,7 @@ function emitPatch(state: State): void {
 
 function emitTask(state: State): void {
   const ref = make(state, "task", {
-    description: "Scan run@lgcode/* for reducer touchpoints",
+    description: "Scan run/* for reducer touchpoints",
     subagent_type: "explore",
   })
   doneTool(state, ref, {
@@ -678,7 +678,7 @@ function emitTask(state: State): void {
     state: {
       status: "running",
       input: {
-        filePath: "packages@lgcode/opencode@lgcode/src@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/stream.ts",
+        filePath: "packages/opencode/src/cli/cmd/run/stream.ts",
         offset: 1,
         limit: 200,
       },
@@ -692,14 +692,14 @@ function emitTask(state: State): void {
     partID: ref.part,
     callID: ref.call,
     label: "Explore",
-    description: "Scan run@lgcode/* for reducer touchpoints",
+    description: "Scan run/* for reducer touchpoints",
     status: "completed",
     title: "Reducer touchpoints found",
     toolCalls: 4,
     commits: [
       {
         kind: "user",
-        text: "Scan run@lgcode/* for reducer touchpoints",
+        text: "Scan run/* for reducer touchpoints",
         phase: "start",
         source: "system",
       },
@@ -808,7 +808,7 @@ function emitPermission(state: State, kind: PermissionKind = "edit"): void {
       always: ["*"],
       done: {
         title: "git status --short",
-        output: `${root}\ngit status --short\n M src@lgcode/demo-format.ts\n?? src@lgcode/demo-permission.ts\n`,
+        output: `${root}\ngit status --short\n M src/demo-format.ts\n?? src/demo-permission.ts\n`,
         metadata: {
           exitCode: 0,
         },
@@ -871,12 +871,12 @@ function emitPermission(state: State, kind: PermissionKind = "edit"): void {
     askPermission(state, {
       ref,
       permission: "external_directory",
-      patterns: [`${dir}@lgcode/**`],
+      patterns: [`${dir}/**`],
       metadata: {
         parentDir: dir,
         filepath: target,
       },
-      always: [`${dir}@lgcode/**`],
+      always: [`${dir}/**`],
       done: {
         title: "read",
         output: `1: # External demo\n2: Shared preview file\nPath: ${target}`,
@@ -1105,15 +1105,15 @@ function intro(state: State): void {
     state.footer,
     [
       "Demo slash commands enabled for interactive mode.",
-      `- @lgcode/permission [kind] (${PERMISSIONS.join(", ")})`,
-      `- @lgcode/question [kind] (${QUESTIONS.join(", ")})`,
-      `- @lgcode/fmt <kind> (${KINDS.join(", ")})`,
+      `- /permission [kind] (${PERMISSIONS.join(", ")})`,
+      `- /question [kind] (${QUESTIONS.join(", ")})`,
+      `- /fmt <kind> (${KINDS.join(", ")})`,
       "Examples:",
-      "- @lgcode/permission bash",
-      "- @lgcode/question custom",
-      "- @lgcode/fmt markdown",
-      "- @lgcode/fmt table",
-      "- @lgcode/fmt text your custom text",
+      "- /permission bash",
+      "- /question custom",
+      "- /fmt markdown",
+      "- /fmt table",
+      "- /fmt text your custom text",
     ].join("\n"),
   )
 }
@@ -1140,17 +1140,17 @@ export function createRunDemo(input: Input) {
 
   const prompt = async (line: RunPrompt, signal?: AbortSignal): Promise<boolean> => {
     const text = line.text.trim()
-    const list = text.split(@lgcode/\s+@lgcode/)
+    const list = text.split(/\s+/)
     const cmd = list[0] || ""
 
     clearSubagent(state.footer)
 
-    if (cmd === "@lgcode/help") {
+    if (cmd === "/help") {
       intro(state)
       return true
     }
 
-    if (cmd === "@lgcode/permission") {
+    if (cmd === "/permission") {
       const kind = permissionKind(list[1])
       if (!kind) {
         note(state.footer, `Pick a permission kind: ${PERMISSIONS.join(", ")}`)
@@ -1161,7 +1161,7 @@ export function createRunDemo(input: Input) {
       return true
     }
 
-    if (cmd === "@lgcode/question") {
+    if (cmd === "/question") {
       const kind = questionKind(list[1])
       if (!kind) {
         note(state.footer, `Pick a question kind: ${QUESTIONS.join(", ")}`)
@@ -1172,7 +1172,7 @@ export function createRunDemo(input: Input) {
       return true
     }
 
-    if (cmd === "@lgcode/fmt") {
+    if (cmd === "/fmt") {
       const kind = (list[1] || "").toLowerCase()
       const body = list.slice(2).join(" ")
       if (!kind) {

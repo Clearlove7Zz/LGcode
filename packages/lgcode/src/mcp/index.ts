@@ -1,52 +1,52 @@
 import path from "node:path"
 import { pathToFileURL } from "node:url"
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
 import { type Tool } from "ai"
-import { ConfigV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/config"
-import { serviceUse } from "@lgcode/core@lgcode/effect@lgcode/service-use"
-import { Client, type ClientOptions } from "@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/index.js"
-import { StreamableHTTPClientTransport } from "@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/streamableHttp.js"
-import { SSEClientTransport } from "@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/sse.js"
-import { StdioClientTransport } from "@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/stdio.js"
-import { UnauthorizedError } from "@modelcontextprotocol@lgcode/sdk@lgcode/client@lgcode/auth.js"
+import { ConfigV1 } from "@opencode@lgcode/core/v1/config/config"
+import { serviceUse } from "@opencode@lgcode/core/effect/service-use"
+import { Client, type ClientOptions } from "@modelcontextprotocol/sdk/client/index.js"
+import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js"
+import { SSEClientTransport } from "@modelcontextprotocol/sdk/client/sse.js"
+import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
+import { UnauthorizedError } from "@modelcontextprotocol/sdk/client/auth.js"
 import {
   ListRootsRequestSchema,
   type LoggingMessageNotification,
   LoggingMessageNotificationSchema,
   type Tool as MCPToolDef,
   ToolListChangedNotificationSchema,
-} from "@modelcontextprotocol@lgcode/sdk@lgcode/types.js"
-import { Config } from "@@lgcode/config@lgcode/config"
-import { ConfigMCPV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/mcp"
-import { NamedError } from "@lgcode/core@lgcode/util@lgcode/error"
-import { InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
-import { withTimeout } from "@@lgcode/util@lgcode/timeout"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { McpOAuthProvider, OAUTH_CALLBACK_PATH } from ".@lgcode/oauth-provider"
-import { McpOAuthCallback } from ".@lgcode/oauth-callback"
-import { McpAuth } from ".@lgcode/auth"
-import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import { TuiEvent } from "@@lgcode/server@lgcode/tui-event"
+} from "@modelcontextprotocol/sdk/types.js"
+import { Config } from "@/config/config"
+import { ConfigMCPV1 } from "@opencode@lgcode/core/v1/config/mcp"
+import { NamedError } from "@opencode@lgcode/core/util/error"
+import { InstallationVersion } from "@opencode@lgcode/core/installation/version"
+import { withTimeout } from "@/util/timeout"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { McpOAuthProvider, OAUTH_CALLBACK_PATH } from "./oauth-provider"
+import { McpOAuthCallback } from "./oauth-callback"
+import { McpAuth } from "./auth"
+import { EventV2Bridge } from "@/event-v2-bridge"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import { TuiEvent } from "@/server/tui-event"
 import open from "open"
 import { Cause, Effect, Exit, Layer, Option, Context, Schema, Stream } from "effect"
-import { EffectBridge } from "@@lgcode/effect@lgcode/bridge"
-import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
-import { ChildProcess, ChildProcessSpawner } from "effect@lgcode/unstable@lgcode/process"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import { McpCatalog } from ".@lgcode/catalog"
+import { EffectBridge } from "@/effect/bridge"
+import { InstanceState } from "@/effect/instance-state"
+import { ChildProcess, ChildProcessSpawner } from "effect/unstable/process"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { McpCatalog } from "./catalog"
 
 const DEFAULT_TIMEOUT = 30_000
 const CLIENT_OPTIONS = {
   capabilities: {
-    @lgcode/@lgcode/ https:@lgcode/@lgcode/github.com@lgcode/anomalyco@lgcode/opencode@lgcode/issues@lgcode/11948
-    @lgcode/@lgcode/ sampling: {},
-    @lgcode/@lgcode/ https:@lgcode/@lgcode/github.com@lgcode/anomalyco@lgcode/opencode@lgcode/issues@lgcode/23066
-    @lgcode/@lgcode/ elicitation: {},
-    @lgcode/@lgcode/ https:@lgcode/@lgcode/github.com@lgcode/anomalyco@lgcode/opencode@lgcode/issues@lgcode/2308
+    // https://github.com/anomalyco/opencode/issues/11948
+    // sampling: {},
+    // https://github.com/anomalyco/opencode/issues/23066
+    // elicitation: {},
+    // https://github.com/anomalyco/opencode/issues/2308
     roots: {},
-    @lgcode/@lgcode/ https:@lgcode/@lgcode/github.com@lgcode/anomalyco@lgcode/opencode@lgcode/issues@lgcode/28567
-    @lgcode/@lgcode/ tasks: {},
+    // https://github.com/anomalyco/opencode/issues/28567
+    // tasks: {},
   },
 } satisfies ClientOptions
 
@@ -118,11 +118,11 @@ export const Status = Schema.Union([
 ]).annotate({ identifier: "MCPStatus", discriminator: "status" })
 export type Status = Schema.Schema.Type<typeof Status>
 
-@lgcode/@lgcode/ Store transports for OAuth servers to allow finishing auth
+// Store transports for OAuth servers to allow finishing auth
 type TransportWithAuth = StreamableHTTPClientTransport | SSEClientTransport
 const pendingOAuthTransports = new Map<string, TransportWithAuth>()
 
-@lgcode/@lgcode/ Prompt cache types
+// Prompt cache types
 type PromptInfo = Awaited<ReturnType<MCPClient["listPrompts"]>>["prompts"][number]
 type ResourceInfo = Awaited<ReturnType<MCPClient["listResources"]>>["resources"][number]
 type McpEntry = NonNullable<ConfigV1.Info["mcp"]>[string]
@@ -147,7 +147,7 @@ interface AuthResult {
   client?: MCPClient
 }
 
-@lgcode/@lgcode/ --- Effect Service ---
+// --- Effect Service ---
 
 interface State {
   config: Record<string, ConfigMCPV1.Info>
@@ -185,7 +185,7 @@ export interface Interface {
   readonly getAuthStatus: (mcpName: string) => Effect.Effect<AuthStatus>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/MCP") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/MCP") {}
 
 export const use = serviceUse(Service)
 
@@ -198,10 +198,10 @@ export const layer = Layer.effect(
 
     type Transport = StdioClientTransport | StreamableHTTPClientTransport | SSEClientTransport
 
-    @lgcode/**
+    /**
      * Connect a client via the given transport with resource safety:
      * on failure the transport is closed; on success the caller owns it.
-     *@lgcode/
+     */
     const connectTransport = Effect.fn("MCP.connectTransport")(function* (transport: Transport, timeout: number) {
       const directory = yield* InstanceState.directory
       return yield* Effect.acquireUseRelease(
@@ -314,7 +314,7 @@ export const layer = Layer.effect(
           }),
         )
         if (result) return { client: result.client, status: { status: "connected" } as Status }
-        @lgcode/@lgcode/ If this was an auth error, stop trying other transports
+        // If this was an auth error, stop trying other transports
         if (lastStatus?.status === "needs_auth" || lastStatus?.status === "needs_client_registration") break
       }
 
@@ -752,15 +752,15 @@ export const layer = Layer.effect(
       const url = remoteURL(mcpConfig.url)
       if (!url) throw new Error(`Invalid MCP URL for "${mcpName}"`)
 
-      @lgcode/@lgcode/ OAuth config is optional - if not provided, we'll use auto-discovery
+      // OAuth config is optional - if not provided, we'll use auto-discovery
       const oauthConfig = typeof mcpConfig.oauth === "object" ? mcpConfig.oauth : undefined
 
-      @lgcode/@lgcode/ Resolve effective redirect URI: explicit redirectUri > callbackPort shorthand > default
+      // Resolve effective redirect URI: explicit redirectUri > callbackPort shorthand > default
       const effectiveRedirectUri =
         oauthConfig?.redirectUri ??
-        (oauthConfig?.callbackPort ? `http:@lgcode/@lgcode/127.0.0.1:${oauthConfig.callbackPort}${OAUTH_CALLBACK_PATH}` : undefined)
+        (oauthConfig?.callbackPort ? `http://127.0.0.1:${oauthConfig.callbackPort}${OAUTH_CALLBACK_PATH}` : undefined)
 
-      @lgcode/@lgcode/ Start the callback server with custom redirectUri if configured
+      // Start the callback server with custom redirectUri if configured
       yield* Effect.promise(() => McpOAuthCallback.ensureRunning(effectiveRedirectUri))
 
       const oauthState = Array.from(crypto.getRandomValues(new Uint8Array(32)))
@@ -938,7 +938,7 @@ export const layer = Layer.effect(
 
 export type AuthStatus = "authenticated" | "expired" | "not_authenticated"
 
-@lgcode/@lgcode/ --- Per-service runtime ---
+// --- Per-service runtime ---
 
 export const defaultLayer = layer.pipe(
   Layer.provide(McpAuth.defaultLayer),

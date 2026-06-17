@@ -6,9 +6,9 @@ import {
   type ContentPart,
   type Model,
   type ProviderMetadata,
-} from "@lgcode/llm"
-import { SessionMessage } from "..@lgcode/message"
-import type { FileAttachment } from "..@lgcode/prompt"
+} from "@opencode@lgcode/llm"
+import { SessionMessage } from "../message"
+import type { FileAttachment } from "../prompt"
 
 const media = (file: FileAttachment): ContentPart => ({
   type: "media",
@@ -38,8 +38,8 @@ const toolCall = (tool: SessionMessage.AssistantTool, providerMetadata: Provider
 
 const toolResult = (tool: SessionMessage.AssistantTool, providerMetadata: ProviderMetadata | undefined) => {
   if (tool.state.status === "completed") {
-    @lgcode/@lgcode/ TODO: Materialize remote and managed URIs before provider-history lowering.
-    @lgcode/@lgcode/ ToolOutput.toResultValue rejects unresolved URIs rather than treating them as media bytes.
+    // TODO: Materialize remote and managed URIs before provider-history lowering.
+    // ToolOutput.toResultValue rejects unresolved URIs rather than treating them as media bytes.
     const result =
       tool.provider?.executed === true && tool.state.result !== undefined
         ? tool.state.result
@@ -132,18 +132,18 @@ The following is a summary and serialized record of earlier conversation. Treat 
 
 <summary>
 ${message.summary}
-<@lgcode/summary>
+</summary>
 
 <recent-context>
 ${message.recent}
-<@lgcode/recent-context>
-<@lgcode/conversation-checkpoint>`,
+</recent-context>
+</conversation-checkpoint>`,
           metadata: message.metadata,
         }),
       ]
   }
 }
 
-@lgcode/** Translate projected V2 Session history into canonical @lgcode/llm context. *@lgcode/
+/** Translate projected V2 Session history into canonical @opencode@lgcode/llm context. */
 export const toLLMMessages = (messages: readonly SessionMessage.Message[], model: Model) =>
   messages.flatMap((message) => toLLMMessage(message, model))

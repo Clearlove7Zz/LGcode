@@ -1,17 +1,17 @@
 import { createMemo, For, Show, type Accessor, type JSX } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import { base64Encode } from "@lgcode/core@lgcode/util@lgcode/encode"
-import { Button } from "@lgcode/ui@lgcode/button"
-import { ContextMenu } from "@lgcode/ui@lgcode/context-menu"
-import { HoverCard } from "@lgcode/ui@lgcode/hover-card"
-import { Icon } from "@lgcode/ui@lgcode/icon"
-import { createSortable } from "@thisbeyond@lgcode/solid-dnd"
-import { useLayout, type LocalProject } from "@@lgcode/context@lgcode/layout"
-import { useServerSync } from "@@lgcode/context@lgcode/server-sync"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
-import { useNotification } from "@@lgcode/context@lgcode/notification"
-import { ProjectIcon, SessionItem, type SessionItemProps } from ".@lgcode/sidebar-items"
-import { displayName, sortedRootSessions } from ".@lgcode/helpers"
+import { createStore } from "solid-js/store"
+import { base64Encode } from "@opencode@lgcode/core/util/encode"
+import { Button } from "@opencode@lgcode/ui/button"
+import { ContextMenu } from "@opencode@lgcode/ui/context-menu"
+import { HoverCard } from "@opencode@lgcode/ui/hover-card"
+import { Icon } from "@opencode@lgcode/ui/icon"
+import { createSortable } from "@thisbeyond/solid-dnd"
+import { useLayout, type LocalProject } from "@/context/layout"
+import { useServerSync } from "@/context/server-sync"
+import { useLanguage } from "@/context/language"
+import { useNotification } from "@/context/notification"
+import { ProjectIcon, SessionItem, type SessionItemProps } from "./sidebar-items"
+import { displayName, sortedRootSessions } from "./helpers"
 
 export type ProjectSidebarContext = {
   currentDir: Accessor<string>
@@ -43,10 +43,10 @@ export const ProjectDragOverlay = (props: {
     <Show when={project()}>
       {(p) => (
         <div class="bg-background-base rounded-xl p-1">
-          <ProjectIcon project={p()} @lgcode/>
-        <@lgcode/div>
+          <ProjectIcon project={p()} />
+        </div>
       )}
-    <@lgcode/Show>
+    </Show>
   )
 }
 
@@ -144,13 +144,13 @@ const ProjectTile = (props: {
         }}
         onBlur={() => props.setOpen(false)}
       >
-        <ProjectIcon project={props.project} notify working={props.isWorking()} @lgcode/>
-      <@lgcode/ContextMenu.Trigger>
+        <ProjectIcon project={props.project} notify working={props.isWorking()} />
+      </ContextMenu.Trigger>
       <ContextMenu.Portal>
         <ContextMenu.Content>
           <ContextMenu.Item onSelect={() => props.showEditProjectDialog(props.project)}>
-            <ContextMenu.ItemLabel>{props.language.t("common.edit")}<@lgcode/ContextMenu.ItemLabel>
-          <@lgcode/ContextMenu.Item>
+            <ContextMenu.ItemLabel>{props.language.t("common.edit")}</ContextMenu.ItemLabel>
+          </ContextMenu.Item>
           <ContextMenu.Item
             data-action="project-workspaces-toggle"
             data-project={base64Encode(props.project.worktree)}
@@ -161,27 +161,27 @@ const ProjectTile = (props: {
               {props.workspacesEnabled(props.project)
                 ? props.language.t("sidebar.workspaces.disable")
                 : props.language.t("sidebar.workspaces.enable")}
-            <@lgcode/ContextMenu.ItemLabel>
-          <@lgcode/ContextMenu.Item>
+            </ContextMenu.ItemLabel>
+          </ContextMenu.Item>
           <ContextMenu.Item
             data-action="project-clear-notifications"
             data-project={base64Encode(props.project.worktree)}
             disabled={unseenCount() === 0}
             onSelect={clear}
           >
-            <ContextMenu.ItemLabel>{props.language.t("sidebar.project.clearNotifications")}<@lgcode/ContextMenu.ItemLabel>
-          <@lgcode/ContextMenu.Item>
-          <ContextMenu.Separator @lgcode/>
+            <ContextMenu.ItemLabel>{props.language.t("sidebar.project.clearNotifications")}</ContextMenu.ItemLabel>
+          </ContextMenu.Item>
+          <ContextMenu.Separator />
           <ContextMenu.Item
             data-action="project-close-menu"
             data-project={base64Encode(props.project.worktree)}
             onSelect={() => props.closeProject(props.project.worktree)}
           >
-            <ContextMenu.ItemLabel>{props.language.t("common.close")}<@lgcode/ContextMenu.ItemLabel>
-          <@lgcode/ContextMenu.Item>
-        <@lgcode/ContextMenu.Content>
-      <@lgcode/ContextMenu.Portal>
-    <@lgcode/ContextMenu>
+            <ContextMenu.ItemLabel>{props.language.t("common.close")}</ContextMenu.ItemLabel>
+          </ContextMenu.Item>
+        </ContextMenu.Content>
+      </ContextMenu.Portal>
+    </ContextMenu>
   )
 }
 
@@ -199,9 +199,9 @@ const ProjectPreviewPanel = (props: {
 }): JSX.Element => (
   <div class="-m-3 p-2 flex flex-col w-72">
     <div class="px-4 pt-2 pb-1 flex items-center gap-2">
-      <div class="text-14-medium text-text-strong truncate grow">{displayName(props.project)}<@lgcode/div>
-    <@lgcode/div>
-    <div class="px-4 pb-2 text-12-medium text-text-weak">{props.language.t("sidebar.project.recentSessions")}<@lgcode/div>
+      <div class="text-14-medium text-text-strong truncate grow">{displayName(props.project)}</div>
+    </div>
+    <div class="px-4 pb-2 text-12-medium text-text-weak">{props.language.t("sidebar.project.recentSessions")}</div>
     <div class="px-2 pb-2 flex flex-col gap-2">
       <Show
         when={props.workspaceEnabled()}
@@ -216,9 +216,9 @@ const ProjectPreviewPanel = (props: {
                 dense
                 showTooltip
                 mobile={props.mobile}
-              @lgcode/>
+              />
             )}
-          <@lgcode/For>
+          </For>
         }
       >
         <For each={props.workspaces()}>
@@ -228,10 +228,10 @@ const ProjectPreviewPanel = (props: {
               <div class="flex flex-col gap-1">
                 <div class="px-2 py-0.5 flex items-center gap-1 min-w-0">
                   <div class="shrink-0 size-6 flex items-center justify-center">
-                    <Icon name="branch" size="small" class="text-icon-base" @lgcode/>
-                  <@lgcode/div>
-                  <span class="truncate text-14-medium text-text-base">{props.label(directory)}<@lgcode/span>
-                <@lgcode/div>
+                    <Icon name="branch" size="small" class="text-icon-base" />
+                  </div>
+                  <span class="truncate text-14-medium text-text-base">{props.label(directory)}</span>
+                </div>
                 <For each={sessions().slice(0, 2)}>
                   {(session) => (
                     <SessionItem
@@ -242,15 +242,15 @@ const ProjectPreviewPanel = (props: {
                       dense
                       showTooltip
                       mobile={props.mobile}
-                    @lgcode/>
+                    />
                   )}
-                <@lgcode/For>
-              <@lgcode/div>
+                </For>
+              </div>
             )
           }}
-        <@lgcode/For>
-      <@lgcode/Show>
-    <@lgcode/div>
+        </For>
+      </Show>
+    </div>
     <div class="px-2 py-2 border-t border-border-weak-base">
       <Button
         variant="ghost"
@@ -263,9 +263,9 @@ const ProjectPreviewPanel = (props: {
         }}
       >
         {props.language.t("sidebar.project.viewAllSessions")}
-      <@lgcode/Button>
-    <@lgcode/div>
-  <@lgcode/div>
+      </Button>
+    </div>
+  </div>
 )
 
 export const SortableProject = (props: {
@@ -336,11 +336,11 @@ export const SortableProject = (props: {
       setOpen={(value) => props.ctx.onHoverOpenChanged(props.project.worktree, value)}
       setSuppressHover={(value) => setState("suppressHover", value)}
       language={language}
-    @lgcode/>
+    />
   )
 
   return (
-    @lgcode/@lgcode/ @ts-ignore
+    // @ts-ignore
     <div use:sortable classList={{ "opacity-30": sortable.isActiveDraggable }}>
       <Show when={preview() && !selected()} fallback={tile()}>
         <HoverCard
@@ -367,9 +367,9 @@ export const SortableProject = (props: {
             workspaceSessions={workspaceSessions}
             ctx={props.ctx}
             language={language}
-          @lgcode/>
-        <@lgcode/HoverCard>
-      <@lgcode/Show>
-    <@lgcode/div>
+          />
+        </HoverCard>
+      </Show>
+    </div>
   )
 }

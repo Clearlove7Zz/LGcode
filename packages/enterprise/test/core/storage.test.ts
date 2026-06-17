@@ -1,5 +1,5 @@
 import { describe, expect, test, afterAll } from "bun:test"
-import { Storage } from "..@lgcode/..@lgcode/src@lgcode/core@lgcode/storage"
+import { Storage } from "../../src/core/storage"
 
 describe("core.storage", () => {
   test("should list files with after and before range", async () => {

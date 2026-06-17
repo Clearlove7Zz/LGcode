@@ -1,4 +1,4 @@
-import type { RootLoadArgs } from ".@lgcode/types"
+import type { RootLoadArgs } from "./types"
 
 export async function loadRootSessionsWithFallback(input: RootLoadArgs) {
   try {

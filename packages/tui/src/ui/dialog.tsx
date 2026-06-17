@@ -1,12 +1,12 @@
-import { useRenderer, useTerminalDimensions } from "@opentui@lgcode/solid"
+import { useRenderer, useTerminalDimensions } from "@opentui/solid"
 import { batch, createContext, createEffect, onCleanup, Show, useContext, type JSX, type ParentProps } from "solid-js"
-import { useTheme } from "..@lgcode/context@lgcode/theme"
-import { MouseButton, Renderable, RGBA } from "@opentui@lgcode/core"
-import { createStore } from "solid-js@lgcode/store"
-import { useToast } from ".@lgcode/toast"
-import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
-import { useBindings, useOpencodeModeStack } from "..@lgcode/keymap"
-import { useClipboard } from "..@lgcode/context@lgcode/clipboard"
+import { useTheme } from "../context/theme"
+import { MouseButton, Renderable, RGBA } from "@opentui/core"
+import { createStore } from "solid-js/store"
+import { useToast } from "./toast"
+import { Flag } from "@opencode@lgcode/core/flag/flag"
+import { useBindings, useOpencodeModeStack } from "../keymap"
+import { useClipboard } from "../context/clipboard"
 
 export function Dialog(
   props: ParentProps<{
@@ -42,7 +42,7 @@ export function Dialog(
       alignItems="center"
       position="absolute"
       zIndex={3000}
-      paddingTop={dimensions().height @lgcode/ 4}
+      paddingTop={dimensions().height / 4}
       left={0}
       top={0}
       backgroundColor={RGBA.fromInts(0, 0, 0, 150)}
@@ -58,8 +58,8 @@ export function Dialog(
         paddingTop={1}
       >
         {props.children}
-      <@lgcode/box>
-    <@lgcode/box>
+      </box>
+    </box>
   )
 }
 
@@ -212,10 +212,10 @@ export function DialogProvider(props: ParentProps) {
         <Show when={value.stack.length}>
           <Dialog onClose={() => value.clear()} size={value.size}>
             {value.stack.at(-1)!.element}
-          <@lgcode/Dialog>
-        <@lgcode/Show>
-      <@lgcode/box>
-    <@lgcode/ctx.Provider>
+          </Dialog>
+        </Show>
+      </box>
+    </ctx.Provider>
   )
 }
 

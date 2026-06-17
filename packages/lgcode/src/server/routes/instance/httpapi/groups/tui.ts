@@ -1,14 +1,14 @@
-import { TuiEvent } from "@@lgcode/server@lgcode/tui-event"
-import { TuiRequest as TuiRequestPayload } from "@@lgcode/server@lgcode/shared@lgcode/tui-control"
+import { TuiEvent } from "@/server/tui-event"
+import { TuiRequest as TuiRequestPayload } from "@/server/shared/tui-control"
 import { Schema } from "effect"
-import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
-import { Authorization } from "..@lgcode/middleware@lgcode/authorization"
-import { InstanceContextMiddleware } from "..@lgcode/middleware@lgcode/instance-context"
-import { WorkspaceRoutingMiddleware, WorkspaceRoutingQuery } from "..@lgcode/middleware@lgcode/workspace-routing"
-import { ApiNotFoundError } from "..@lgcode/errors"
-import { described } from ".@lgcode/metadata"
+import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
+import { Authorization } from "../middleware/authorization"
+import { InstanceContextMiddleware } from "../middleware/instance-context"
+import { WorkspaceRoutingMiddleware, WorkspaceRoutingQuery } from "../middleware/workspace-routing"
+import { ApiNotFoundError } from "../errors"
+import { described } from "./metadata"
 
-const root = "@lgcode/tui"
+const root = "/tui"
 export const CommandPayload = Schema.Struct({ command: Schema.String })
 const EventTuiPromptAppend = Schema.Struct({
   type: Schema.Literal(TuiEvent.PromptAppend.type),
@@ -34,19 +34,19 @@ export const TuiPublishPayload = Schema.Union([
 ])
 
 export const TuiPaths = {
-  appendPrompt: `${root}@lgcode/append-prompt`,
-  openHelp: `${root}@lgcode/open-help`,
-  openSessions: `${root}@lgcode/open-sessions`,
-  openThemes: `${root}@lgcode/open-themes`,
-  openModels: `${root}@lgcode/open-models`,
-  submitPrompt: `${root}@lgcode/submit-prompt`,
-  clearPrompt: `${root}@lgcode/clear-prompt`,
-  executeCommand: `${root}@lgcode/execute-command`,
-  showToast: `${root}@lgcode/show-toast`,
-  publish: `${root}@lgcode/publish`,
-  selectSession: `${root}@lgcode/select-session`,
-  controlNext: `${root}@lgcode/control@lgcode/next`,
-  controlResponse: `${root}@lgcode/control@lgcode/response`,
+  appendPrompt: `${root}/append-prompt`,
+  openHelp: `${root}/open-help`,
+  openSessions: `${root}/open-sessions`,
+  openThemes: `${root}/open-themes`,
+  openModels: `${root}/open-models`,
+  submitPrompt: `${root}/submit-prompt`,
+  clearPrompt: `${root}/clear-prompt`,
+  executeCommand: `${root}/execute-command`,
+  showToast: `${root}/show-toast`,
+  publish: `${root}/publish`,
+  selectSession: `${root}/select-session`,
+  controlNext: `${root}/control/next`,
+  controlResponse: `${root}/control/response`,
 } as const
 
 export const TuiApi = HttpApi.make("tui")

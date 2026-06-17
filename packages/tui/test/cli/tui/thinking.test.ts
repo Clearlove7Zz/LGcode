@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { reasoningSummary } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/context@lgcode/thinking"
+import { reasoningSummary } from "../../../src/context/thinking"
 
 describe("reasoningSummary", () => {
   test("extracts a leading summary title and leaves markdown body", () => {

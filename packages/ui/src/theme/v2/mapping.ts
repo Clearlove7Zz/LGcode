@@ -1,5 +1,5 @@
-import type { V2ColorValue } from "..@lgcode/types"
-import { V2_AVATAR_DARK, V2_AVATAR_LIGHT } from ".@lgcode/avatar"
+import type { V2ColorValue } from "../types"
+import { V2_AVATAR_DARK, V2_AVATAR_LIGHT } from "./avatar"
 
 const ref = (name: string): V2ColorValue => `var(--${name})`
 

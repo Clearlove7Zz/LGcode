@@ -1,8 +1,8 @@
-export * as PluginPtyEnvironment from ".@lgcode/pty-environment"
+export * as PluginPtyEnvironment from "./pty-environment"
 
-import { PtyEnvironment } from "@lgcode/server@lgcode/pty-environment"
+import { PtyEnvironment } from "@opencode@lgcode/server/pty-environment"
 import { Effect, Layer } from "effect"
-import { InstanceStore } from "@@lgcode/project@lgcode/instance-store"
+import { InstanceStore } from "@/project/instance-store"
 import { Plugin } from "."
 
 export const layer = Layer.effect(

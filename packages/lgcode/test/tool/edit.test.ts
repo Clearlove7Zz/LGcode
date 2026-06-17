@@ -1,19 +1,19 @@
 import { afterEach, describe, expect } from "bun:test"
 import path from "path"
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import { Cause, Deferred, Effect, Exit, Fiber, Layer } from "effect"
-import { EditTool } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/edit"
-import { disposeAllInstances, TestInstance } from "..@lgcode/fixture@lgcode/fixture"
-import { LSP } from "@@lgcode/lsp@lgcode/lsp"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { Format } from "..@lgcode/..@lgcode/src@lgcode/format"
-import { Agent } from "..@lgcode/..@lgcode/src@lgcode/agent@lgcode/agent"
-import { EventV2Bridge } from "..@lgcode/..@lgcode/src@lgcode/event-v2-bridge"
-import { Truncate } from "@@lgcode/tool@lgcode/truncate"
-import { SessionID, MessageID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
-import * as Tool from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/tool"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
-import { Watcher } from "@lgcode/core@lgcode/filesystem@lgcode/watcher"
+import { EditTool } from "../../src/tool/edit"
+import { disposeAllInstances, TestInstance } from "../fixture/fixture"
+import { LSP } from "@/lsp/lsp"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { Format } from "../../src/format"
+import { Agent } from "../../src/agent/agent"
+import { EventV2Bridge } from "../../src/event-v2-bridge"
+import { Truncate } from "@/tool/truncate"
+import { SessionID, MessageID } from "../../src/session/schema"
+import * as Tool from "../../src/tool/tool"
+import { testEffect } from "../lib/effect"
+import { Watcher } from "@opencode@lgcode/core/filesystem/watcher"
 
 const ctx = {
   sessionID: SessionID.make("ses_test-edit-session"),
@@ -352,8 +352,8 @@ describe("tool.edit", () => {
     }
 
     const count = (content: string) => {
-      const crlf = content.match(@lgcode/\r\n@lgcode/g)?.length ?? 0
-      const lf = content.match(@lgcode/\n@lgcode/g)?.length ?? 0
+      const crlf = content.match(/\r\n/g)?.length ?? 0
+      const lf = content.match(/\n/g)?.length ?? 0
       return {
         crlf,
         lf: lf - crlf,
@@ -418,7 +418,7 @@ describe("tool.edit", () => {
       }),
     )
 
-    it.instance("preserves LF when old@lgcode/new use CRLF", () =>
+    it.instance("preserves LF when old/new use CRLF", () =>
       Effect.gen(function* () {
         const content = normalize(old + "\n", "\n")
         const output = yield* apply({
@@ -431,7 +431,7 @@ describe("tool.edit", () => {
       }),
     )
 
-    it.instance("preserves CRLF when old@lgcode/new use LF", () =>
+    it.instance("preserves CRLF when old/new use LF", () =>
       Effect.gen(function* () {
         const content = normalize(old + "\n", "\r\n")
         const output = yield* apply({
@@ -470,7 +470,7 @@ describe("tool.edit", () => {
       }),
     )
 
-    it.instance("preserves LF with mixed old@lgcode/new line endings", () =>
+    it.instance("preserves LF with mixed old/new line endings", () =>
       Effect.gen(function* () {
         const content = normalize(old + "\n", "\n")
         const output = yield* apply({
@@ -483,7 +483,7 @@ describe("tool.edit", () => {
       }),
     )
 
-    it.instance("preserves CRLF with mixed old@lgcode/new line endings", () =>
+    it.instance("preserves CRLF with mixed old/new line endings", () =>
       Effect.gen(function* () {
         const content = normalize(old + "\n", "\r\n")
         const output = yield* apply({

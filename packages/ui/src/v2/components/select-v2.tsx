@@ -1,6 +1,6 @@
-import { Select as Kobalte } from "@kobalte@lgcode/core@lgcode/select"
+import { Select as Kobalte } from "@kobalte/core/select"
 import { Show, createMemo, onCleanup, splitProps, type ComponentProps, type JSX } from "solid-js"
-import ".@lgcode/select-v2.css"
+import "./select-v2.css"
 
 function groupOptions<T>(options: T[], groupBy?: (x: T) => string): { category: string; options: T[] }[] {
   if (!groupBy) {
@@ -17,27 +17,27 @@ function groupOptions<T>(options: T[], groupBy?: (x: T) => string): { category: 
 }
 
 const ChevronDown = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http:@lgcode/@lgcode/www.w3.org@lgcode/2000@lgcode/svg" aria-hidden="true">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path
       d="M11 9.5L8 6.5L5 9.5"
       stroke="currentColor"
       stroke-width="1"
       stroke-linecap="round"
       stroke-linejoin="round"
-    @lgcode/>
-  <@lgcode/svg>
+    />
+  </svg>
 )
 
 const CheckSmall = () => (
-  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http:@lgcode/@lgcode/www.w3.org@lgcode/2000@lgcode/svg" aria-hidden="true">
+  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path
       d="M3.53564 8.17857L6.39279 11.75L12.4642 4.25"
       stroke="currentColor"
       stroke-width="1"
       stroke-linecap="round"
       stroke-linejoin="round"
-    @lgcode/>
-  <@lgcode/svg>
+    />
+  </svg>
 )
 
 export type SelectV2Props<T> = Omit<
@@ -46,14 +46,14 @@ export type SelectV2Props<T> = Omit<
 > & {
   placeholder?: string
   options: T[]
-  @lgcode/** Selected option (single selection). *@lgcode/
+  /** Selected option (single selection). */
   current?: T
   value?: (x: T) => string
   label?: (x: T) => string
   groupBy?: (x: T) => string
   onSelect?: (value: T | null) => void
   onHighlight?: (value: T | undefined) => void | (() => void)
-  @lgcode/** `base` @lgcode/ `large` match text-input-v2; `inline` is a compact settings-row trigger. *@lgcode/
+  /** `base` / `large` match text-input-v2; `inline` is a compact settings-row trigger. */
   appearance?: "base" | "large" | "inline"
   invalid?: boolean
   numeric?: boolean
@@ -138,9 +138,9 @@ export function SelectV2<T>(props: SelectV2Props<T>) {
       sectionComponent={(sectionProps) => (
         <Kobalte.Section>
           <Show when={sectionProps.section.rawValue.category}>
-            <div data-slot="menu-v2-group-label">{sectionProps.section.rawValue.category}<@lgcode/div>
-          <@lgcode/Show>
-        <@lgcode/Kobalte.Section>
+            <div data-slot="menu-v2-group-label">{sectionProps.section.rawValue.category}</div>
+          </Show>
+        </Kobalte.Section>
       )}
       itemComponent={(itemProps) => (
         <Kobalte.Item
@@ -156,11 +156,11 @@ export function SelectV2<T>(props: SelectV2Props<T>) {
               : local.label
                 ? local.label(itemProps.item.rawValue)
                 : String(itemProps.item.rawValue as string)}
-          <@lgcode/Kobalte.ItemLabel>
+          </Kobalte.ItemLabel>
           <Kobalte.ItemIndicator data-slot="menu-v2-item-indicator" forceMount>
-            <CheckSmall @lgcode/>
-          <@lgcode/Kobalte.ItemIndicator>
-        <@lgcode/Kobalte.Item>
+            <CheckSmall />
+          </Kobalte.ItemIndicator>
+        </Kobalte.Item>
       )}
       onChange={(next) => {
         const v = next == null ? null : Array.isArray(next) ? ((next[0] as T) ?? null) : (next as T)
@@ -192,17 +192,17 @@ export function SelectV2<T>(props: SelectV2Props<T>) {
               if (local.label && selected != null) return local.label(selected)
               return selected != null ? (selected as string) : ""
             }}
-          <@lgcode/Kobalte.Value>
-        <@lgcode/div>
+          </Kobalte.Value>
+        </div>
         <span data-slot="select-v2-chevron" aria-hidden="true">
-          <ChevronDown @lgcode/>
-        <@lgcode/span>
-      <@lgcode/Kobalte.Trigger>
+          <ChevronDown />
+        </span>
+      </Kobalte.Trigger>
       <Kobalte.Portal>
         <Kobalte.Content data-component="menu-v2-content" data-slot="select-v2-content">
-          <Kobalte.Listbox data-slot="select-v2-listbox" @lgcode/>
-        <@lgcode/Kobalte.Content>
-      <@lgcode/Kobalte.Portal>
-    <@lgcode/Kobalte>
+          <Kobalte.Listbox data-slot="select-v2-listbox" />
+        </Kobalte.Content>
+      </Kobalte.Portal>
+    </Kobalte>
   )
 }

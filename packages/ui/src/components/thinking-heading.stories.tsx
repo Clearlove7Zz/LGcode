@@ -1,11 +1,11 @@
-@lgcode/@lgcode/ @ts-nocheck
+// @ts-nocheck
 import { createEffect, on, onMount, onCleanup } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import { TextShimmer } from ".@lgcode/text-shimmer"
-import { TextReveal } from ".@lgcode/text-reveal"
+import { createStore } from "solid-js/store"
+import { TextShimmer } from "./text-shimmer"
+import { TextReveal } from "./text-reveal"
 
 export default {
-  title: "UI@lgcode/ThinkingHeading",
+  title: "UI/ThinkingHeading",
   id: "components-thinking-heading",
   tags: ["autodocs"],
   parameters: {
@@ -35,24 +35,24 @@ const HEADINGS = [
   "Outlining test strategy",
 ]
 
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
-@lgcode/@lgcode/ CSS
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Custom properties driven by sliders:
-@lgcode/@lgcode/   --h-duration       transition duration (e.g. "600ms")
-@lgcode/@lgcode/   --h-duration-raw   unitless number for calc (e.g. "600")
-@lgcode/@lgcode/   --h-blur           blur radius (e.g. "4px")
-@lgcode/@lgcode/   --h-travel         vertical travel distance (e.g. "18px")
-@lgcode/@lgcode/   --h-spring         full cubic-bezier for movement (set from bounce slider)
-@lgcode/@lgcode/   --h-spring-soft    softer version for width transitions
-@lgcode/@lgcode/   --h-mask-size      fade depth at top@lgcode/bottom of odometer mask
-@lgcode/@lgcode/   --h-mask-pad       base padding-block on odometer track
-@lgcode/@lgcode/   --h-mask-height    extra vertical mask area per side
-@lgcode/@lgcode/   --h-mask-bg        background color for fade overlays
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// CSS
+//
+// Custom properties driven by sliders:
+//   --h-duration       transition duration (e.g. "600ms")
+//   --h-duration-raw   unitless number for calc (e.g. "600")
+//   --h-blur           blur radius (e.g. "4px")
+//   --h-travel         vertical travel distance (e.g. "18px")
+//   --h-spring         full cubic-bezier for movement (set from bounce slider)
+//   --h-spring-soft    softer version for width transitions
+//   --h-mask-size      fade depth at top/bottom of odometer mask
+//   --h-mask-pad       base padding-block on odometer track
+//   --h-mask-height    extra vertical mask area per side
+//   --h-mask-bg        background color for fade overlays
+// ---------------------------------------------------------------------------
 
 const STYLES = `
-@lgcode/* ── shared base ────────────────────────────────────────────────── *@lgcode/
+/* ── shared base ────────────────────────────────────────────────── */
 [data-variant] {
   display: inline-flex;
   align-items: center;
@@ -69,13 +69,13 @@ const STYLES = `
 
 [data-variant] [data-slot="entering"],
 [data-variant] [data-slot="leaving"] {
-  grid-area: 1 @lgcode/ 1;
+  grid-area: 1 / 1;
   line-height: 20px;
   white-space: nowrap;
   justify-self: start;
 }
 
-@lgcode/* kill transitions before fonts are ready *@lgcode/
+/* kill transitions before fonts are ready */
 [data-variant][data-ready="false"] [data-slot="track"],
 [data-variant][data-ready="false"] [data-slot="entering"],
 [data-variant][data-ready="false"] [data-slot="leaving"] {
@@ -83,8 +83,8 @@ const STYLES = `
 }
 
 
-@lgcode/* ── 1. spring-up ───────────────────────────────────────────────── *
- * New text rises from below, old text exits upward.               *@lgcode/
+/* ── 1. spring-up ───────────────────────────────────────────────── *
+ * New text rises from below, old text exits upward.               */
 
 [data-variant="spring-up"] [data-slot="entering"],
 [data-variant="spring-up"] [data-slot="leaving"] {
@@ -119,8 +119,8 @@ const STYLES = `
 }
 
 
-@lgcode/* ── 2. spring-down ─────────────────────────────────────────────── *
- * New text drops from above, old text exits downward.             *@lgcode/
+/* ── 2. spring-down ─────────────────────────────────────────────── *
+ * New text drops from above, old text exits downward.             */
 
 [data-variant="spring-down"] [data-slot="entering"],
 [data-variant="spring-down"] [data-slot="leaving"] {
@@ -155,8 +155,8 @@ const STYLES = `
 }
 
 
-@lgcode/* ── 3. spring-pop ──────────────────────────────────────────────── *
- * Scale + slight vertical shift + blur. Playful, bouncy.          *@lgcode/
+/* ── 3. spring-pop ──────────────────────────────────────────────── *
+ * Scale + slight vertical shift + blur. Playful, bouncy.          */
 
 [data-variant="spring-pop"] [data-slot="entering"],
 [data-variant="spring-pop"] [data-slot="leaving"] {
@@ -192,9 +192,9 @@ const STYLES = `
 }
 
 
-@lgcode/* ── 4. spring-blur ─────────────────────────────────────────────── *
+/* ── 4. spring-blur ─────────────────────────────────────────────── *
  * Pure crossfade with heavy blur. No vertical movement.           *
- * Width still animates with spring.                               *@lgcode/
+ * Width still animates with spring.                               */
 
 [data-variant="spring-blur"] [data-slot="entering"],
 [data-variant="spring-blur"] [data-slot="leaving"] {
@@ -224,7 +224,7 @@ const STYLES = `
 }
 
 
-@lgcode/* ── 5. odometer ──────────────────────────────────────────────── *
+/* ── 5. odometer ──────────────────────────────────────────────── *
  * Both texts scroll vertically through a clipped track.           *
  *                                                                 *
  * overflow:hidden clips at the padding-box edge.                  *
@@ -234,7 +234,7 @@ const STYLES = `
  * so text has room to travel through the gradient fade zone.       *
  *                                                                 *
  * Uses transparent→white which works in both alpha & luminance    *
- * mask modes (transparent=hidden, white=visible in both).         *@lgcode/
+ * mask modes (transparent=hidden, white=visible in both).         */
 
 [data-variant="odometer"] [data-slot="track"] {
   --h-mask-stop: min(var(--h-mask-size, 20px), calc(50% - 0.5px));
@@ -263,7 +263,7 @@ const STYLES = `
   transition: width var(--h-duration, 600ms) var(--h-spring-soft, cubic-bezier(0.34, 1.1, 0.64, 1));
 }
 
-@lgcode/* on swap, jump width instantly to the max of both texts *@lgcode/
+/* on swap, jump width instantly to the max of both texts */
 [data-variant="odometer"][data-swapping="true"] [data-slot="track"] {
   transition-duration: 0ms !important;
 }
@@ -275,14 +275,14 @@ const STYLES = `
   transition-timing-function: var(--h-spring);
   opacity: 1;
 }
-@lgcode/* settled: entering in view, leaving pushed below *@lgcode/
+/* settled: entering in view, leaving pushed below */
 [data-variant="odometer"] [data-slot="entering"] {
   transform: translateY(0);
 }
 [data-variant="odometer"] [data-slot="leaving"] {
   transform: translateY(var(--h-odo-shift));
 }
-@lgcode/* swapping: snap entering above, leaving in-place *@lgcode/
+/* swapping: snap entering above, leaving in-place */
 [data-variant="odometer"][data-swapping="true"] [data-slot="entering"] {
   transform: translateY(calc(var(--h-odo-shift) * -1));
   transition-duration: 0ms !important;
@@ -292,9 +292,9 @@ const STYLES = `
   transition-duration: 0ms !important;
 }
 
-@lgcode/* ── odometer + blur ──────────────────────────────────────────── *
+/* ── odometer + blur ──────────────────────────────────────────── *
  * Optional: adds opacity + blur transitions on top of the         *
- * positional odometer movement.                                   *@lgcode/
+ * positional odometer movement.                                   */
 
 [data-variant="odometer"][data-odo-blur="true"] [data-slot="entering"],
 [data-variant="odometer"][data-odo-blur="true"] [data-slot="leaving"] {
@@ -321,7 +321,7 @@ const STYLES = `
   filter: blur(0);
 }
 
-@lgcode/* ── debug: show fade zones ───────────────────────────────────── *@lgcode/
+/* ── debug: show fade zones ───────────────────────────────────── */
 [data-variant="odometer"][data-debug="true"] [data-slot="track"] {
   outline: 1px dashed rgba(255, 0, 0, 0.6);
 }
@@ -344,7 +344,7 @@ const STYLES = `
 }
 
 
-@lgcode/* ── slider styling ─────────────────────────────────────────────── *@lgcode/
+/* ── slider styling ─────────────────────────────────────────────── */
 input[type="range"].heading-slider {
   -webkit-appearance: none;
   appearance: none;
@@ -366,14 +366,14 @@ input[type="range"].heading-slider::-webkit-slider-thumb {
 }
 `
 
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
-@lgcode/@lgcode/ Animated heading component
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Width is measured via scrollWidth (NOT Range.getBoundingClientRect) because
-@lgcode/@lgcode/ getBoundingClientRect includes CSS transforms — so scale(0.92) during the
-@lgcode/@lgcode/ swap phase would measure 92% of the real width and permanently clip text.
-@lgcode/@lgcode/ scrollWidth returns the layout@lgcode/intrinsic width, unaffected by transforms.
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Animated heading component
+//
+// Width is measured via scrollWidth (NOT Range.getBoundingClientRect) because
+// getBoundingClientRect includes CSS transforms — so scale(0.92) during the
+// swap phase would measure 92% of the real width and permanently clip text.
+// scrollWidth returns the layout/intrinsic width, unaffected by transforms.
+// ---------------------------------------------------------------------------
 
 function AnimatedHeading(props) {
   const [state, setState] = createStore({
@@ -422,12 +422,12 @@ function AnimatedHeading(props) {
 
         if (frame) cancelAnimationFrame(frame)
         frame = requestAnimationFrame(() => {
-          @lgcode/@lgcode/ For odometer keep width as a grow-only max so heading never shrinks.
+          // For odometer keep width as a grow-only max so heading never shrinks.
           if (props.variant === "odometer") {
             const enterW = measureEnter()
             const leaveW = measureLeave()
             widen(Math.max(enterW, leaveW))
-            containerRef?.offsetHeight @lgcode/@lgcode/ reflow with max width + swap positions
+            containerRef?.offsetHeight // reflow with max width + swap positions
             setState("swapping", false)
           } else {
             containerRef?.offsetHeight
@@ -464,18 +464,18 @@ function AnimatedHeading(props) {
       <span data-slot="track" style={{ width: width() }}>
         <span data-slot="entering" ref={enterRef}>
           {current() ?? "\u00A0"}
-        <@lgcode/span>
+        </span>
         <span data-slot="leaving" ref={leaveRef}>
           {leaving() ?? "\u00A0"}
-        <@lgcode/span>
-      <@lgcode/span>
-    <@lgcode/span>
+        </span>
+      </span>
+    </span>
   )
 }
 
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
-@lgcode/@lgcode/ Button @lgcode/ layout styles
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Button / layout styles
+// ---------------------------------------------------------------------------
 
 const btn = (accent) => ({
   padding: "6px 14px",
@@ -548,15 +548,15 @@ const cardStyle = {
   gap: "8px",
 }
 
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
-@lgcode/@lgcode/ Variants
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Variants
+// ---------------------------------------------------------------------------
 
 const VARIANTS: { key: string; label: string }[] = []
 
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
-@lgcode/@lgcode/ Story
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Story
+// ---------------------------------------------------------------------------
 
 export const Playground = {
   render: () => {
@@ -646,14 +646,14 @@ export const Playground = {
 
     return (
       <div style={{ display: "grid", gap: "24px", padding: "20px", "max-width": "820px", ...vars() }}>
-        <style>{STYLES}<@lgcode/style>
+        <style>{STYLES}</style>
 
-        {@lgcode/* ── Variant cards ─────────────────────────────────── *@lgcode/}
+        {/* ── Variant cards ─────────────────────────────────── */}
         <div style={{ display: "grid", "grid-template-columns": "1fr", gap: "16px" }}>
           <div style={cardStyle}>
-            <span style={cardLabel}>TextReveal (production)<@lgcode/span>
+            <span style={cardLabel}>TextReveal (production)</span>
             <span style={thinkingRow}>
-              <TextShimmer text="Thinking" active={active()} @lgcode/>
+              <TextShimmer text="Thinking" active={active()} />
               <span style={headingSlot}>
                 <TextReveal
                   text={heading()}
@@ -663,29 +663,29 @@ export const Playground = {
                   spring={`cubic-bezier(0.34, ${bounce()}, 0.64, 1)`}
                   springSoft={`cubic-bezier(0.34, ${Math.max(bounce() * 0.7, 1)}, 0.64, 1)`}
                   growOnly
-                @lgcode/>
-              <@lgcode/span>
-            <@lgcode/span>
-          <@lgcode/div>
+                />
+              </span>
+            </span>
+          </div>
           {VARIANTS.map((v) => (
             <div style={cardStyle}>
-              <span style={cardLabel}>{v.label}<@lgcode/span>
+              <span style={cardLabel}>{v.label}</span>
               <span style={thinkingRow}>
-                <TextShimmer text="Thinking" active={active()} @lgcode/>
+                <TextShimmer text="Thinking" active={active()} />
                 <span style={headingSlot}>
                   <AnimatedHeading
                     text={heading()}
                     variant={v.key}
                     debug={v.key === "odometer" && debug()}
                     odoBlur={v.key === "odometer" && odoBlur()}
-                  @lgcode/>
-                <@lgcode/span>
-              <@lgcode/span>
-            <@lgcode/div>
+                  />
+                </span>
+              </span>
+            </div>
           ))}
-        <@lgcode/div>
+        </div>
 
-        {@lgcode/* ── Sliders ──────────────────────────────────────── *@lgcode/}
+        {/* ── Sliders ──────────────────────────────────────── */}
         <div
           style={{
             "border-top": "1px solid var(--color-divider, #333)",
@@ -695,7 +695,7 @@ export const Playground = {
           }}
         >
           <div style={{ display: "flex", "align-items": "center", gap: "12px" }}>
-            <span style={sliderLabel}>duration<@lgcode/span>
+            <span style={sliderLabel}>duration</span>
             <input
               type="range"
               class="heading-slider"
@@ -704,12 +704,12 @@ export const Playground = {
               step={50}
               value={duration()}
               onInput={(e) => setState("duration", Number(e.currentTarget.value))}
-            @lgcode/>
-            <span style={sliderValue}>{duration()}ms<@lgcode/span>
-          <@lgcode/div>
+            />
+            <span style={sliderValue}>{duration()}ms</span>
+          </div>
 
           <div style={{ display: "flex", "align-items": "center", gap: "12px" }}>
-            <span style={sliderLabel}>blur<@lgcode/span>
+            <span style={sliderLabel}>blur</span>
             <input
               type="range"
               class="heading-slider"
@@ -718,12 +718,12 @@ export const Playground = {
               step={0.5}
               value={blur()}
               onInput={(e) => setState("blur", Number(e.currentTarget.value))}
-            @lgcode/>
-            <span style={sliderValue}>{blur()}px<@lgcode/span>
-          <@lgcode/div>
+            />
+            <span style={sliderValue}>{blur()}px</span>
+          </div>
 
           <div style={{ display: "flex", "align-items": "center", gap: "12px" }}>
-            <span style={sliderLabel}>travel<@lgcode/span>
+            <span style={sliderLabel}>travel</span>
             <input
               type="range"
               class="heading-slider"
@@ -732,12 +732,12 @@ export const Playground = {
               step={1}
               value={travel()}
               onInput={(e) => setState("travel", Number(e.currentTarget.value))}
-            @lgcode/>
-            <span style={sliderValue}>{travel()}px<@lgcode/span>
-          <@lgcode/div>
+            />
+            <span style={sliderValue}>{travel()}px</span>
+          </div>
 
           <div style={{ display: "flex", "align-items": "center", gap: "12px" }}>
-            <span style={sliderLabel}>bounce<@lgcode/span>
+            <span style={sliderLabel}>bounce</span>
             <input
               type="range"
               class="heading-slider"
@@ -746,14 +746,14 @@ export const Playground = {
               step={0.05}
               value={bounce()}
               onInput={(e) => setState("bounce", Number(e.currentTarget.value))}
-            @lgcode/>
+            />
             <span style={sliderValue}>
               {bounce().toFixed(2)} {bounce() <= 1.05 ? "(none)" : bounce() >= 1.9 ? "(heavy)" : ""}
-            <@lgcode/span>
-          <@lgcode/div>
+            </span>
+          </div>
 
           <div style={{ display: "flex", "align-items": "center", gap: "12px" }}>
-            <span style={sliderLabel}>mask<@lgcode/span>
+            <span style={sliderLabel}>mask</span>
             <input
               type="range"
               class="heading-slider"
@@ -762,14 +762,14 @@ export const Playground = {
               step={1}
               value={maskSize()}
               onInput={(e) => setState("maskSize", Number(e.currentTarget.value))}
-            @lgcode/>
+            />
             <span style={sliderValue}>
               {maskSize()}px {maskSize() === 0 ? "(hard)" : ""}
-            <@lgcode/span>
-          <@lgcode/div>
+            </span>
+          </div>
 
           <div style={{ display: "flex", "align-items": "center", gap: "12px" }}>
-            <span style={sliderLabel}>mask pad<@lgcode/span>
+            <span style={sliderLabel}>mask pad</span>
             <input
               type="range"
               class="heading-slider"
@@ -778,12 +778,12 @@ export const Playground = {
               step={1}
               value={maskPad()}
               onInput={(e) => setState("maskPad", Number(e.currentTarget.value))}
-            @lgcode/>
-            <span style={sliderValue}>{maskPad()}px<@lgcode/span>
-          <@lgcode/div>
+            />
+            <span style={sliderValue}>{maskPad()}px</span>
+          </div>
 
           <div style={{ display: "flex", "align-items": "center", gap: "12px" }}>
-            <span style={sliderLabel}>mask height<@lgcode/span>
+            <span style={sliderLabel}>mask height</span>
             <input
               type="range"
               class="heading-slider"
@@ -792,36 +792,36 @@ export const Playground = {
               step={1}
               value={maskHeight()}
               onInput={(e) => setState("maskHeight", Number(e.currentTarget.value))}
-            @lgcode/>
-            <span style={sliderValue}>{maskHeight()}px<@lgcode/span>
-          <@lgcode/div>
-        <@lgcode/div>
+            />
+            <span style={sliderValue}>{maskHeight()}px</span>
+          </div>
+        </div>
 
-        {@lgcode/* ── Controls ─────────────────────────────────────── *@lgcode/}
+        {/* ── Controls ─────────────────────────────────────── */}
         <div style={{ display: "grid", gap: "12px" }}>
           <div style={{ display: "flex", gap: "8px", "flex-wrap": "wrap" }}>
             <button onClick={toggleCycling} style={btn(cycling())}>
               {cycling() ? "Stop sim" : "Simulate jitter"}
-            <@lgcode/button>
+            </button>
             <button onClick={prevHeading} style={btn()}>
               Prev
-            <@lgcode/button>
+            </button>
             <button onClick={nextHeading} style={btn()}>
               Next
-            <@lgcode/button>
+            </button>
             <button onClick={clearHeading} style={btn()}>
               Clear
-            <@lgcode/button>
+            </button>
             <button onClick={() => setState("active", (value) => !value)} style={smallBtn(active())}>
               {active() ? "Shimmer: on" : "Shimmer: off"}
-            <@lgcode/button>
+            </button>
             <button onClick={() => setState("debug", (value) => !value)} style={smallBtn(debug())}>
               {debug() ? "Debug mask: on" : "Debug mask"}
-            <@lgcode/button>
+            </button>
             <button onClick={() => setState("odoBlur", (value) => !value)} style={smallBtn(odoBlur())}>
               {odoBlur() ? "Odo blur: on" : "Odo blur"}
-            <@lgcode/button>
-          <@lgcode/div>
+            </button>
+          </div>
 
           <div style={{ display: "flex", gap: "6px", "flex-wrap": "wrap" }}>
             {HEADINGS.map((h, i) => (
@@ -833,9 +833,9 @@ export const Playground = {
                 style={smallBtn(headingIndex() === i)}
               >
                 {h ?? "(no submessage)"}
-              <@lgcode/button>
+              </button>
             ))}
-          <@lgcode/div>
+          </div>
 
           <div
             style={{
@@ -846,9 +846,9 @@ export const Playground = {
           >
             heading: {heading() ?? "(none)"} · sim: {cycling() ? "on" : "off"} · bounce: {bounce().toFixed(2)} ·
             odo-blur: {odoBlur() ? "on" : "off"}
-          <@lgcode/div>
-        <@lgcode/div>
-      <@lgcode/div>
+          </div>
+        </div>
+      </div>
     )
   },
 }

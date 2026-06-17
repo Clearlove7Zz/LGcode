@@ -1,7 +1,7 @@
-import { Database, eq, and, sql, inArray, isNull } from "..@lgcode/src@lgcode/drizzle@lgcode/index.js"
-import { BillingTable, BlackPlans } from "..@lgcode/src@lgcode/schema@lgcode/billing.sql.js"
-import { UserTable } from "..@lgcode/src@lgcode/schema@lgcode/user.sql.js"
-import { AuthTable } from "..@lgcode/src@lgcode/schema@lgcode/auth.sql.js"
+import { Database, eq, and, sql, inArray, isNull } from "../src/drizzle/index.js"
+import { BillingTable, BlackPlans } from "../src/schema/billing.sql.js"
+import { UserTable } from "../src/schema/user.sql.js"
+import { AuthTable } from "../src/schema/auth.sql.js"
 
 const plan = process.argv[2] as (typeof BlackPlans)[number]
 if (!BlackPlans.includes(plan)) {

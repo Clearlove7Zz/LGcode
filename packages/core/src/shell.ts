@@ -1,13 +1,13 @@
-export * as Shell from ".@lgcode/shell"
+export * as Shell from "./shell"
 
 import path from "path"
 import { spawn, type ChildProcess } from "child_process"
-import { readFile } from "fs@lgcode/promises"
+import { readFile } from "fs/promises"
 import { statSync } from "fs"
-import { setTimeout as sleep } from "node:timers@lgcode/promises"
-import { Flag } from ".@lgcode/flag@lgcode/flag"
-import { FSUtil } from ".@lgcode/fs-util"
-import { which } from ".@lgcode/util@lgcode/which"
+import { setTimeout as sleep } from "node:timers/promises"
+import { Flag } from "./flag/flag"
+import { FSUtil } from "./fs-util"
+import { which } from "./util/which"
 
 const SIGKILL_TIMEOUT_MS = 200
 const META: Record<string, { deny?: boolean; login?: boolean; posix?: boolean; ps?: boolean }> = {
@@ -34,7 +34,7 @@ export async function killTree(proc: ChildProcess, opts?: { exited?: () => boole
 
   if (process.platform === "win32") {
     await new Promise<void>((resolve) => {
-      const killer = spawn("taskkill", ["@lgcode/pid", String(pid), "@lgcode/f", "@lgcode/t"], {
+      const killer = spawn("taskkill", ["/pid", String(pid), "/f", "/t"], {
         stdio: "ignore",
         windowsHide: true,
       })
@@ -67,7 +67,7 @@ function full(file: string) {
   if (process.platform !== "win32") return file
   const shell = FSUtil.windowsPath(file)
   if (path.win32.dirname(shell) !== ".") {
-    if (shell.startsWith("@lgcode/") && name(shell) === "bash") return gitbash() || shell
+    if (shell.startsWith("/") && name(shell) === "bash") return gitbash() || shell
     return shell
   }
   if (name(shell) === "bash") return gitbash() || which(shell) || shell
@@ -106,9 +106,9 @@ function win() {
 }
 
 async function unix() {
-  const text = await readFile("@lgcode/etc@lgcode/shells", "utf8").catch(() => "")
+  const text = await readFile("/etc/shells", "utf8").catch(() => "")
   if (text) return Array.from(new Set(text.split("\n").filter((line) => line.trim() && !line.startsWith("#"))))
-  return ["@lgcode/bin@lgcode/bash", "@lgcode/bin@lgcode/zsh", "@lgcode/bin@lgcode/sh"]
+  return ["/bin/bash", "/bin/zsh", "/bin/sh"]
 }
 
 function select(file: string | undefined, opts?: { acceptable?: boolean }) {
@@ -130,10 +130,10 @@ export function gitbash() {
 }
 
 function fallback() {
-  if (process.platform === "darwin") return "@lgcode/bin@lgcode/zsh"
+  if (process.platform === "darwin") return "/bin/zsh"
   const bash = which("bash")
   if (bash) return bash
-  return "@lgcode/bin@lgcode/sh"
+  return "/bin/sh"
 }
 
 export function name(file: string) {
@@ -171,8 +171,8 @@ export function args(file: string, command: string, cwd: string) {
       "-l",
       "-c",
       `
-        [[ -f ~@lgcode/.zshenv ]] && source ~@lgcode/.zshenv >@lgcode/dev@lgcode/null 2>&1 || true
-        [[ -f "\${ZDOTDIR:-$HOME}@lgcode/.zshrc" ]] && source "\${ZDOTDIR:-$HOME}@lgcode/.zshrc" >@lgcode/dev@lgcode/null 2>&1 || true
+        [[ -f ~/.zshenv ]] && source ~/.zshenv >/dev/null 2>&1 || true
+        [[ -f "\${ZDOTDIR:-$HOME}/.zshrc" ]] && source "\${ZDOTDIR:-$HOME}/.zshrc" >/dev/null 2>&1 || true
         cd -- "$1"
         eval ${JSON.stringify(command)}
       `,
@@ -186,7 +186,7 @@ export function args(file: string, command: string, cwd: string) {
       "-c",
       `
         shopt -s expand_aliases
-        [[ -f ~@lgcode/.bashrc ]] && source ~@lgcode/.bashrc >@lgcode/dev@lgcode/null 2>&1 || true
+        [[ -f ~/.bashrc ]] && source ~/.bashrc >/dev/null 2>&1 || true
         cd -- "$1"
         eval ${JSON.stringify(command)}
       `,
@@ -194,7 +194,7 @@ export function args(file: string, command: string, cwd: string) {
       cwd,
     ]
   }
-  if (n === "cmd") return ["@lgcode/c", command]
+  if (n === "cmd") return ["/c", command]
   if (ps(file)) return ["-NoProfile", "-Command", command]
   return ["-c", command]
 }

@@ -1,5 +1,5 @@
-import type { APIEvent } from "@solidjs@lgcode/start"
-import type { DownloadPlatform } from "..@lgcode/types"
+import type { APIEvent } from "@solidjs/start"
+import type { DownloadPlatform } from "../types"
 
 const prodAssetNames: Record<string, string> = {
   "darwin-aarch64-dmg": "opencode-desktop-mac-arm64.dmg",
@@ -19,7 +19,7 @@ const betaAssetNames: Record<string, string> = {
   "linux-x64-rpm": "opencode-desktop-linux-x86_64.rpm",
 } satisfies Record<DownloadPlatform, string>
 
-@lgcode/@lgcode/ Doing this on the server lets us preserve the original name for platforms we don't care to rename for
+// Doing this on the server lets us preserve the original name for platforms we don't care to rename for
 const downloadNames: Record<string, string> = {
   "darwin-aarch64-dmg": "OpenCode Desktop.dmg",
   "darwin-x64-dmg": "OpenCode Desktop.dmg",
@@ -31,7 +31,7 @@ export async function GET({ params: { platform, channel } }: APIEvent) {
   if (!assetName) return new Response(null, { status: 404 })
 
   const resp = await fetch(
-    `https:@lgcode/@lgcode/github.com@lgcode/anomalyco@lgcode/${channel === "stable" ? "opencode" : "opencode-beta"}@lgcode/releases@lgcode/latest@lgcode/download@lgcode/${assetName}`,
+    `https://github.com/anomalyco/${channel === "stable" ? "opencode" : "opencode-beta"}/releases/latest/download/${assetName}`,
   )
 
   const downloadName = downloadNames[platform]

@@ -1,16 +1,16 @@
 import { Match, Show, Switch, createMemo } from "solid-js"
-import { Tooltip, type TooltipProps } from "@lgcode/ui@lgcode/tooltip"
-import { ProgressCircle } from "@lgcode/ui@lgcode/progress-circle"
-import { Button } from "@lgcode/ui@lgcode/button"
+import { Tooltip, type TooltipProps } from "@opencode@lgcode/ui/tooltip"
+import { ProgressCircle } from "@opencode@lgcode/ui/progress-circle"
+import { Button } from "@opencode@lgcode/ui/button"
 
-import { useFile } from "@@lgcode/context@lgcode/file"
-import { useLayout } from "@@lgcode/context@lgcode/layout"
-import { useSync } from "@@lgcode/context@lgcode/sync"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
-import { useProviders } from "@@lgcode/hooks@lgcode/use-providers"
-import { getSessionContextMetrics } from "@@lgcode/components@lgcode/session@lgcode/session-context-metrics"
-import { useSessionLayout } from "@@lgcode/pages@lgcode/session@lgcode/session-layout"
-import { createSessionTabs } from "@@lgcode/pages@lgcode/session@lgcode/helpers"
+import { useFile } from "@/context/file"
+import { useLayout } from "@/context/layout"
+import { useSync } from "@/context/sync"
+import { useLanguage } from "@/context/language"
+import { useProviders } from "@/hooks/use-providers"
+import { getSessionContextMetrics } from "@/components/session/session-context-metrics"
+import { useSessionLayout } from "@/pages/session/session-layout"
+import { createSessionTabs } from "@/pages/session/helpers"
 
 interface SessionContextUsageProps {
   variant?: "button" | "indicator"
@@ -40,7 +40,7 @@ export function SessionContextUsage(props: SessionContextUsageProps) {
   const tabState = createSessionTabs({
     tabs,
     pathFromTab: file.pathFromTab,
-    normalizeTab: (tab) => (tab.startsWith("file:@lgcode/@lgcode/") ? file.tab(tab) : tab),
+    normalizeTab: (tab) => (tab.startsWith("file://") ? file.tab(tab) : tab),
   })
   const messages = createMemo(() => (params.id ? (sync().data.message[params.id] ?? []) : []))
 
@@ -74,8 +74,8 @@ export function SessionContextUsage(props: SessionContextUsageProps) {
 
   const circle = () => (
     <div class="flex items-center justify-center">
-      <ProgressCircle size={16} strokeWidth={2} percentage={context()?.usage ?? 0} @lgcode/>
-    <@lgcode/div>
+      <ProgressCircle size={16} strokeWidth={2} percentage={context()?.usage ?? 0} />
+    </div>
   )
 
   const tooltipValue = () => (
@@ -84,28 +84,28 @@ export function SessionContextUsage(props: SessionContextUsageProps) {
         {(ctx) => (
           <>
             <div class="flex items-center gap-2">
-              <span class="text-text-invert-strong">{ctx().total.toLocaleString(language.intl())}<@lgcode/span>
-              <span class="text-text-invert-base">{language.t("context.usage.tokens")}<@lgcode/span>
-            <@lgcode/div>
+              <span class="text-text-invert-strong">{ctx().total.toLocaleString(language.intl())}</span>
+              <span class="text-text-invert-base">{language.t("context.usage.tokens")}</span>
+            </div>
             <div class="flex items-center gap-2">
-              <span class="text-text-invert-strong">{ctx().usage ?? 0}%<@lgcode/span>
-              <span class="text-text-invert-base">{language.t("context.usage.usage")}<@lgcode/span>
-            <@lgcode/div>
-          <@lgcode/>
+              <span class="text-text-invert-strong">{ctx().usage ?? 0}%</span>
+              <span class="text-text-invert-base">{language.t("context.usage.usage")}</span>
+            </div>
+          </>
         )}
-      <@lgcode/Show>
+      </Show>
       <div class="flex items-center gap-2">
-        <span class="text-text-invert-strong">{cost()}<@lgcode/span>
-        <span class="text-text-invert-base">{language.t("context.usage.cost")}<@lgcode/span>
-      <@lgcode/div>
-    <@lgcode/div>
+        <span class="text-text-invert-strong">{cost()}</span>
+        <span class="text-text-invert-base">{language.t("context.usage.cost")}</span>
+      </div>
+    </div>
   )
 
   return (
     <Show when={params.id}>
       <Tooltip value={tooltipValue()} placement={props.placement ?? "top"}>
         <Switch>
-          <Match when={variant() === "indicator"}>{circle()}<@lgcode/Match>
+          <Match when={variant() === "indicator"}>{circle()}</Match>
           <Match when={true}>
             <Button
               type="button"
@@ -115,10 +115,10 @@ export function SessionContextUsage(props: SessionContextUsageProps) {
               aria-label={language.t("context.usage.view")}
             >
               {circle()}
-            <@lgcode/Button>
-          <@lgcode/Match>
-        <@lgcode/Switch>
-      <@lgcode/Tooltip>
-    <@lgcode/Show>
+            </Button>
+          </Match>
+        </Switch>
+      </Tooltip>
+    </Show>
   )
 }

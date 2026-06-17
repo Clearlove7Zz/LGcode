@@ -2,8 +2,8 @@ import { Hono } from "hono"
 import { DurableObject } from "cloudflare:workers"
 import { randomUUID } from "node:crypto"
 import { jwtVerify, createRemoteJWKSet } from "jose"
-import { createAppAuth } from "@octokit@lgcode/auth-app"
-import { Octokit } from "@octokit@lgcode/rest"
+import { createAppAuth } from "@octokit/auth-app"
+import { Octokit } from "@octokit/rest"
 import { Resource } from "sst"
 
 type Env = {
@@ -13,7 +13,7 @@ type Env = {
 }
 
 export class SyncServer extends DurableObject<Env> {
-  @lgcode/@lgcode/ oxlint-disable-next-line no-useless-constructor
+  // oxlint-disable-next-line no-useless-constructor
   constructor(ctx: DurableObjectState, env: Env) {
     super(ctx, env)
   }
@@ -27,7 +27,7 @@ export class SyncServer extends DurableObject<Env> {
 
     const data = await this.ctx.storage.list()
     Array.from(data.entries())
-      .filter(([key, _]) => key.startsWith("session@lgcode/"))
+      .filter(([key, _]) => key.startsWith("session/"))
       .map(([key, content]) => server.send(JSON.stringify({ key, content })))
 
     return new Response(null, {
@@ -45,16 +45,16 @@ export class SyncServer extends DurableObject<Env> {
   async publish(key: string, content: any) {
     const sessionID = await this.getSessionID()
     if (
-      !key.startsWith(`session@lgcode/info@lgcode/${sessionID}`) &&
-      !key.startsWith(`session@lgcode/message@lgcode/${sessionID}@lgcode/`) &&
-      !key.startsWith(`session@lgcode/part@lgcode/${sessionID}@lgcode/`)
+      !key.startsWith(`session/info/${sessionID}`) &&
+      !key.startsWith(`session/message/${sessionID}/`) &&
+      !key.startsWith(`session/part/${sessionID}/`)
     )
       return new Response("Error: Invalid key", { status: 400 })
 
-    @lgcode/@lgcode/ store message
-    await this.env.Bucket.put(`share@lgcode/${key}.json`, JSON.stringify(content), {
+    // store message
+    await this.env.Bucket.put(`share/${key}.json`, JSON.stringify(content), {
       httpMetadata: {
-        contentType: "application@lgcode/json",
+        contentType: "application/json",
       },
     })
     await this.ctx.storage.put(key, content)
@@ -79,7 +79,7 @@ export class SyncServer extends DurableObject<Env> {
   public async getData() {
     const data = (await this.ctx.storage.list()) as Map<string, any>
     return Array.from(data.entries())
-      .filter(([key, _]) => key.startsWith("session@lgcode/"))
+      .filter(([key, _]) => key.startsWith("session/"))
       .map(([key, content]) => ({ key, content }))
   }
 
@@ -98,13 +98,13 @@ export class SyncServer extends DurableObject<Env> {
   async clear() {
     const sessionID = await this.getSessionID()
     const list = await this.env.Bucket.list({
-      prefix: `session@lgcode/message@lgcode/${sessionID}@lgcode/`,
+      prefix: `session/message/${sessionID}/`,
       limit: 1000,
     })
     for (const item of list.objects) {
       await this.env.Bucket.delete(item.key)
     }
-    await this.env.Bucket.delete(`session@lgcode/info@lgcode/${sessionID}`)
+    await this.env.Bucket.delete(`session/info/${sessionID}`)
     await this.ctx.storage.deleteAll()
   }
 
@@ -114,8 +114,8 @@ export class SyncServer extends DurableObject<Env> {
 }
 
 export default new Hono<{ Bindings: Env }>()
-  .get("@lgcode/", (c) => c.text("Hello, world!"))
-  .post("@lgcode/share_create", async (c) => {
+  .get("/", (c) => c.text("Hello, world!"))
+  .post("/share_create", async (c) => {
     const body = await c.req.json<{ sessionID: string }>()
     const sessionID = body.sessionID
     const short = SyncServer.shortName(sessionID)
@@ -124,10 +124,10 @@ export default new Hono<{ Bindings: Env }>()
     const secret = await stub.share(sessionID)
     return c.json({
       secret,
-      url: `https:@lgcode/@lgcode/${c.env.WEB_DOMAIN}@lgcode/s@lgcode/${short}`,
+      url: `https://${c.env.WEB_DOMAIN}/s/${short}`,
     })
   })
-  .post("@lgcode/share_delete", async (c) => {
+  .post("/share_delete", async (c) => {
     const body = await c.req.json<{ sessionID: string; secret: string }>()
     const sessionID = body.sessionID
     const secret = body.secret
@@ -137,7 +137,7 @@ export default new Hono<{ Bindings: Env }>()
     await stub.clear()
     return c.json({})
   })
-  .post("@lgcode/share_delete_admin", async (c) => {
+  .post("/share_delete_admin", async (c) => {
     const body = await c.req.json<{ sessionShortName: string; adminSecret: string }>()
     const sessionShortName = body.sessionShortName
     const adminSecret = body.adminSecret
@@ -147,7 +147,7 @@ export default new Hono<{ Bindings: Env }>()
     await stub.clear()
     return c.json({})
   })
-  .post("@lgcode/share_sync", async (c) => {
+  .post("/share_sync", async (c) => {
     const body = await c.req.json<{
       sessionID: string
       secret: string
@@ -161,7 +161,7 @@ export default new Hono<{ Bindings: Env }>()
     await stub.publish(body.key, body.content)
     return c.json({})
   })
-  .get("@lgcode/share_poll", async (c) => {
+  .get("/share_poll", async (c) => {
     const upgradeHeader = c.req.header("Upgrade")
     if (!upgradeHeader || upgradeHeader !== "websocket") {
       return c.text("Error: Upgrade header is required", { status: 426 })
@@ -172,7 +172,7 @@ export default new Hono<{ Bindings: Env }>()
     const stub = c.env.SYNC_SERVER.get(c.env.SYNC_SERVER.idFromName(id))
     return stub.fetch(c.req.raw)
   })
-  .get("@lgcode/share_data", async (c) => {
+  .get("/share_data", async (c) => {
     const id = c.req.query("id")
     console.log("share_data", id)
     if (!id) return c.text("Error: Share ID is required", { status: 400 })
@@ -182,7 +182,7 @@ export default new Hono<{ Bindings: Env }>()
     let info
     const messages: Record<string, any> = {}
     data.forEach((d) => {
-      const [root, type] = d.key.split("@lgcode/")
+      const [root, type] = d.key.split("/")
       if (root !== "session") return
       if (type === "info") {
         info = d.content
@@ -201,7 +201,7 @@ export default new Hono<{ Bindings: Env }>()
 
     return c.json({ info, messages })
   })
-  .post("@lgcode/feishu", async (c) => {
+  .post("/feishu", async (c) => {
     const body = (await c.req.json()) as {
       challenge?: string
       event?: {
@@ -227,19 +227,19 @@ export default new Hono<{ Bindings: Env }>()
         : undefined
     const text = typeof parsed?.text === "string" ? parsed.text : typeof content === "string" ? content : ""
 
-    let message = text.trim().replace(@lgcode/^@_user_\d+\s*@lgcode/, "")
-    message = message.replace(@lgcode/^aiden,?\s*@lgcode/i, "<@759257817772851260> ")
+    let message = text.trim().replace(/^@_user_\d+\s*/, "")
+    message = message.replace(/^aiden,?\s*/i, "<@759257817772851260> ")
     if (!message) return c.json({ ok: true })
 
     const threadId = body.event?.message?.root_id || body.event?.message?.message_id
     if (threadId) message = `${message} [${threadId}]`
 
     const response = await fetch(
-      `https:@lgcode/@lgcode/discord.com@lgcode/api@lgcode/v10@lgcode/channels@lgcode/${Resource.DISCORD_SUPPORT_CHANNEL_ID.value}@lgcode/messages`,
+      `https://discord.com/api/v10/channels/${Resource.DISCORD_SUPPORT_CHANNEL_ID.value}/messages`,
       {
         method: "POST",
         headers: {
-          "Content-Type": "application@lgcode/json",
+          "Content-Type": "application/json",
           Authorization: `Bot ${Resource.DISCORD_SUPPORT_BOT_TOKEN.value}`,
         },
         body: JSON.stringify({
@@ -255,19 +255,19 @@ export default new Hono<{ Bindings: Env }>()
 
     return c.json({ ok: true })
   })
-  @lgcode/**
+  /**
    * Used by the GitHub action to get GitHub installation access token given the OIDC token
-   *@lgcode/
-  .post("@lgcode/exchange_github_app_token", async (c) => {
+   */
+  .post("/exchange_github_app_token", async (c) => {
     const EXPECTED_AUDIENCE = "opencode-github-action"
-    const GITHUB_ISSUER = "https:@lgcode/@lgcode/token.actions.githubusercontent.com"
-    const JWKS_URL = `${GITHUB_ISSUER}@lgcode/.well-known@lgcode/jwks`
+    const GITHUB_ISSUER = "https://token.actions.githubusercontent.com"
+    const JWKS_URL = `${GITHUB_ISSUER}/.well-known/jwks`
 
-    @lgcode/@lgcode/ get Authorization header
-    const token = c.req.header("Authorization")?.replace(@lgcode/^Bearer @lgcode/, "")
+    // get Authorization header
+    const token = c.req.header("Authorization")?.replace(/^Bearer /, "")
     if (!token) return c.json({ error: "Authorization header is required" }, { status: 401 })
 
-    @lgcode/@lgcode/ verify token
+    // verify token
     const JWKS = createRemoteJWKSet(new URL(JWKS_URL))
     let owner, repo
     try {
@@ -275,8 +275,8 @@ export default new Hono<{ Bindings: Env }>()
         issuer: GITHUB_ISSUER,
         audience: EXPECTED_AUDIENCE,
       })
-      const sub = payload.sub @lgcode/@lgcode/ e.g. 'repo:my-org@lgcode/my-repo:ref:refs@lgcode/heads@lgcode/main'
-      const parts = sub.split(":")[1].split("@lgcode/")
+      const sub = payload.sub // e.g. 'repo:my-org/my-repo:ref:refs/heads/main'
+      const parts = sub.split(":")[1].split("/")
       owner = parts[0]
       repo = parts[1]
     } catch (err) {
@@ -284,21 +284,21 @@ export default new Hono<{ Bindings: Env }>()
       return c.json({ error: "Invalid or expired token" }, { status: 403 })
     }
 
-    @lgcode/@lgcode/ Create app JWT token
+    // Create app JWT token
     const auth = createAppAuth({
       appId: Resource.GITHUB_APP_ID.value,
       privateKey: Resource.GITHUB_APP_PRIVATE_KEY.value,
     })
     const appAuth = await auth({ type: "app" })
 
-    @lgcode/@lgcode/ Lookup installation
+    // Lookup installation
     const octokit = new Octokit({ auth: appAuth.token })
     const { data: installation } = await octokit.apps.getRepoInstallation({
       owner,
       repo,
     })
 
-    @lgcode/@lgcode/ Get installation token
+    // Get installation token
     const installationAuth = await auth({
       type: "installation",
       installationId: installation.id,
@@ -306,41 +306,41 @@ export default new Hono<{ Bindings: Env }>()
 
     return c.json({ token: installationAuth.token })
   })
-  @lgcode/**
+  /**
    * Used by the GitHub action to get GitHub installation access token given user PAT token (used when testing `opencode github run` locally)
-   *@lgcode/
-  .post("@lgcode/exchange_github_app_token_with_pat", async (c) => {
+   */
+  .post("/exchange_github_app_token_with_pat", async (c) => {
     const body = await c.req.json<{ owner: string; repo: string }>()
     const owner = body.owner
     const repo = body.repo
 
     try {
-      @lgcode/@lgcode/ get Authorization header
+      // get Authorization header
       const authHeader = c.req.header("Authorization")
-      const token = authHeader?.replace(@lgcode/^Bearer @lgcode/, "")
+      const token = authHeader?.replace(/^Bearer /, "")
       if (!token) throw new Error("Authorization header is required")
 
-      @lgcode/@lgcode/ Verify permissions
+      // Verify permissions
       const userClient = new Octokit({ auth: token })
       const { data: repoData } = await userClient.repos.get({ owner, repo })
       if (!repoData.permissions.admin && !repoData.permissions.push && !repoData.permissions.maintain)
         throw new Error("User does not have write permissions")
 
-      @lgcode/@lgcode/ Get installation token
+      // Get installation token
       const auth = createAppAuth({
         appId: Resource.GITHUB_APP_ID.value,
         privateKey: Resource.GITHUB_APP_PRIVATE_KEY.value,
       })
       const appAuth = await auth({ type: "app" })
 
-      @lgcode/@lgcode/ Lookup installation
+      // Lookup installation
       const appClient = new Octokit({ auth: appAuth.token })
       const { data: installation } = await appClient.apps.getRepoInstallation({
         owner,
         repo,
       })
 
-      @lgcode/@lgcode/ Get installation token
+      // Get installation token
       const installationAuth = await auth({
         type: "installation",
         installationId: installation.id,
@@ -356,10 +356,10 @@ export default new Hono<{ Bindings: Env }>()
       return c.json({ error }, { status: 401 })
     }
   })
-  @lgcode/**
+  /**
    * Used by the opencode CLI to check if the GitHub app is installed
-   *@lgcode/
-  .get("@lgcode/get_github_app_installation", async (c) => {
+   */
+  .get("/get_github_app_installation", async (c) => {
     const owner = c.req.query("owner")
     const repo = c.req.query("repo")
 
@@ -369,7 +369,7 @@ export default new Hono<{ Bindings: Env }>()
     })
     const appAuth = await auth({ type: "app" })
 
-    @lgcode/@lgcode/ Lookup installation
+    // Lookup installation
     const octokit = new Octokit({ auth: appAuth.token })
     let installation
     try {
@@ -377,7 +377,7 @@ export default new Hono<{ Bindings: Env }>()
       installation = ret.data
     } catch (err) {
       if (err instanceof Error && err.message.includes("Not Found")) {
-        @lgcode/@lgcode/ not installed
+        // not installed
       } else {
         throw err
       }

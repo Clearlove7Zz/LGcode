@@ -1,11 +1,11 @@
 import { Effect, Schema } from "effect"
-import { HttpClient } from "effect@lgcode/unstable@lgcode/http"
-import * as Tool from ".@lgcode/tool"
-import * as McpWebSearch from ".@lgcode/mcp-websearch"
-import DESCRIPTION from ".@lgcode/websearch.txt"
-import { checksum } from "@lgcode/core@lgcode/util@lgcode/encode"
-import { InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
-import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
+import { HttpClient } from "effect/unstable/http"
+import * as Tool from "./tool"
+import * as McpWebSearch from "./mcp-websearch"
+import DESCRIPTION from "./websearch.txt"
+import { checksum } from "@opencode@lgcode/core/util/encode"
+import { InstallationVersion } from "@opencode@lgcode/core/installation/version"
+import { RuntimeFlags } from "@/effect/runtime-flags"
 
 export const Parameters = Schema.Struct({
   query: Schema.String.annotate({ description: "Websearch query" }),
@@ -52,7 +52,7 @@ export function webSearchModelName(extra: Tool.Context["extra"]) {
 }
 
 function parallelAuthHeaders() {
-  const headers = { "User-Agent": `opencode@lgcode/${InstallationVersion}` }
+  const headers = { "User-Agent": `opencode/${InstallationVersion}` }
   if (!process.env.PARALLEL_API_KEY) return headers
   return { ...headers, Authorization: `Bearer ${process.env.PARALLEL_API_KEY}` }
 }

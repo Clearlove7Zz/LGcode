@@ -1,4 +1,4 @@
-import { NodeFileSystem } from "@effect@lgcode/platform-node"
+import { NodeFileSystem } from "@effect/platform-node"
 import { Deferred, Effect, Layer, Option, Ref } from "effect"
 import {
   FetchHttpClient,
@@ -9,14 +9,14 @@ import {
   HttpClientRequest,
   HttpClientResponse,
   UrlParams,
-} from "effect@lgcode/unstable@lgcode/http"
-import * as CassetteService from ".@lgcode/cassette.js"
-import { defaultMatcher, selectSequential } from ".@lgcode/matching.js"
-import { makeReplayState, resolveAutoMode } from ".@lgcode/recorder.js"
-import { make, type Redactor } from ".@lgcode/redactor.js"
-import { redactUrl } from ".@lgcode/redaction.js"
-import { httpInteractions } from ".@lgcode/schema.js"
-import type { CassetteMetadata, HttpInteraction, RequestMatcher, ResponseSnapshot } from ".@lgcode/types.js"
+} from "effect/unstable/http"
+import * as CassetteService from "./cassette.js"
+import { defaultMatcher, selectSequential } from "./matching.js"
+import { makeReplayState, resolveAutoMode } from "./recorder.js"
+import { make, type Redactor } from "./redactor.js"
+import { redactUrl } from "./redaction.js"
+import { httpInteractions } from "./schema.js"
+import type { CassetteMetadata, HttpInteraction, RequestMatcher, ResponseSnapshot } from "./types.js"
 
 export { defaultMatcher }
 
@@ -31,21 +31,21 @@ export interface RecordReplayOptions {
 }
 
 const TEXT_CONTENT_TYPES = new Set([
-  "application@lgcode/graphql",
-  "application@lgcode/javascript",
-  "application@lgcode/json",
-  "application@lgcode/sql",
-  "application@lgcode/x-www-form-urlencoded",
-  "application@lgcode/xml",
-  "application@lgcode/yaml",
-  "image@lgcode/svg+xml",
+  "application/graphql",
+  "application/javascript",
+  "application/json",
+  "application/sql",
+  "application/x-www-form-urlencoded",
+  "application/xml",
+  "application/yaml",
+  "image/svg+xml",
 ])
 
 const isTextContentType = (contentType: string | undefined) => {
   const mediaType = contentType?.split(";", 1)[0]?.trim().toLowerCase()
   if (!mediaType) return false
   return (
-    mediaType.startsWith("text@lgcode/") ||
+    mediaType.startsWith("text/") ||
     mediaType.endsWith("+json") ||
     mediaType.endsWith("+xml") ||
     TEXT_CONTENT_TYPES.has(mediaType)

@@ -1,8 +1,8 @@
 import { batch } from "solid-js"
-import type { Path, Workspace } from "@lgcode/sdk@lgcode/v2"
-import { createStore, reconcile } from "solid-js@lgcode/store"
-import { createSimpleContext } from ".@lgcode/helper"
-import { useSDK } from ".@lgcode/sdk"
+import type { Path, Workspace } from "@opencode@lgcode/sdk/v2"
+import { createStore, reconcile } from "solid-js/store"
+import { createSimpleContext } from "./helper"
+import { useSDK } from "./sdk"
 
 type WorkspaceStatus = "connected" | "connecting" | "disconnected" | "error"
 

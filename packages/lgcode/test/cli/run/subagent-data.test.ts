@@ -1,13 +1,13 @@
 import { describe, expect, test } from "bun:test"
-import type { Event } from "@lgcode/sdk@lgcode/v2"
-import { entryBody } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/entry.body"
+import type { Event } from "@opencode@lgcode/sdk/v2"
+import { entryBody } from "@/cli/cmd/run/entry.body"
 import {
   bootstrapSubagentCalls,
   bootstrapSubagentData,
   createSubagentData,
   reduceSubagentData,
   snapshotSubagentData,
-} from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/subagent-data"
+} from "@/cli/cmd/run/subagent-data"
 
 type SessionMessage = Parameters<typeof bootstrapSubagentData>[0]["messages"][number]
 type ChildMessage = Parameters<typeof bootstrapSubagentCalls>[0]["messages"][number]
@@ -190,8 +190,8 @@ function childMessage(input: {
       mode: "default",
       agent: "explore",
       path: {
-        cwd: "@lgcode/tmp",
-        root: "@lgcode/tmp",
+        cwd: "/tmp",
+        root: "/tmp",
       },
       cost: 0,
       tokens: {
@@ -223,7 +223,7 @@ describe("run subagent data", () => {
             id: "perm-1",
             sessionID: "child-1",
             permission: "read",
-            patterns: ["src@lgcode/**@lgcode/*.ts"],
+            patterns: ["src/**/*.ts"],
             metadata: {},
             always: [],
           },
@@ -231,7 +231,7 @@ describe("run subagent data", () => {
             id: "perm-2",
             sessionID: "other",
             permission: "read",
-            patterns: ["src@lgcode/**@lgcode/*.ts"],
+            patterns: ["src/**/*.ts"],
             metadata: {},
             always: [],
           },
@@ -519,8 +519,8 @@ describe("run subagent data", () => {
           mode: "default",
           agent: "explore",
           path: {
-            cwd: "@lgcode/tmp",
-            root: "@lgcode/tmp",
+            cwd: "/tmp",
+            root: "/tmp",
           },
           cost: 0,
           tokens: {

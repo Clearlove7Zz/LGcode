@@ -1,4 +1,4 @@
-import type { JSONValue } from "@ai-sdk@lgcode/provider"
+import type { JSONValue } from "@ai-sdk/provider"
 
 export type OpenAICompatibleChatPrompt = Array<OpenAICompatibleMessage>
 
@@ -8,8 +8,8 @@ export type OpenAICompatibleMessage =
   | OpenAICompatibleAssistantMessage
   | OpenAICompatibleToolMessage
 
-@lgcode/@lgcode/ Allow for arbitrary additional properties for general purpose
-@lgcode/@lgcode/ provider-metadata-specific extensibility.
+// Allow for arbitrary additional properties for general purpose
+// provider-metadata-specific extensibility.
 type JsonRecord<T = never> = Record<string, JSONValue | JSONValue[] | T | T[] | undefined>
 
 export interface OpenAICompatibleSystemMessage extends JsonRecord<OpenAICompatibleSystemContentPart> {
@@ -43,7 +43,7 @@ export interface OpenAICompatibleAssistantMessage extends JsonRecord<OpenAICompa
   role: "assistant"
   content?: string | null
   tool_calls?: Array<OpenAICompatibleMessageToolCall>
-  @lgcode/@lgcode/ Copilot-specific reasoning fields
+  // Copilot-specific reasoning fields
   reasoning_text?: string
   reasoning_opaque?: string
 }

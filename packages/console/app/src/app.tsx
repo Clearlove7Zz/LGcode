@@ -1,24 +1,24 @@
-import { MetaProvider, Title, Meta } from "@solidjs@lgcode/meta"
-import { Router } from "@solidjs@lgcode/router"
-import { FileRoutes } from "@solidjs@lgcode/start@lgcode/router"
+import { MetaProvider, Title, Meta } from "@solidjs/meta"
+import { Router } from "@solidjs/router"
+import { FileRoutes } from "@solidjs/start/router"
 import { Suspense } from "solid-js"
-import { Favicon } from "@lgcode/ui@lgcode/favicon"
-import { Font } from "@lgcode/ui@lgcode/font"
-import "@ibm@lgcode/plex@lgcode/css@lgcode/ibm-plex.css"
-import ".@lgcode/app.css"
-import { LanguageProvider } from "~@lgcode/context@lgcode/language"
-import { I18nProvider, useI18n } from "~@lgcode/context@lgcode/i18n"
-import { strip } from "~@lgcode/lib@lgcode/language"
+import { Favicon } from "@opencode@lgcode/ui/favicon"
+import { Font } from "@opencode@lgcode/ui/font"
+import "@ibm/plex/css/ibm-plex.css"
+import "./app.css"
+import { LanguageProvider } from "~/context/language"
+import { I18nProvider, useI18n } from "~/context/i18n"
+import { strip } from "~/lib/language"
 
 function AppMeta() {
   const i18n = useI18n()
   return (
     <>
-      <Title>opencode<@lgcode/Title>
-      <Meta name="description" content={i18n.t("app.meta.description")} @lgcode/>
-      <Favicon @lgcode/>
-      <Font @lgcode/>
-    <@lgcode/>
+      <Title>opencode</Title>
+      <Meta name="description" content={i18n.t("app.meta.description")} />
+      <Favicon />
+      <Font />
+    </>
   )
 }
 
@@ -31,14 +31,14 @@ export default function App() {
         <LanguageProvider>
           <I18nProvider>
             <MetaProvider>
-              <AppMeta @lgcode/>
-              <Suspense>{props.children}<@lgcode/Suspense>
-            <@lgcode/MetaProvider>
-          <@lgcode/I18nProvider>
-        <@lgcode/LanguageProvider>
+              <AppMeta />
+              <Suspense>{props.children}</Suspense>
+            </MetaProvider>
+          </I18nProvider>
+        </LanguageProvider>
       )}
     >
-      <FileRoutes @lgcode/>
-    <@lgcode/Router>
+      <FileRoutes />
+    </Router>
   )
 }

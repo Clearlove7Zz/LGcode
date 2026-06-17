@@ -1,16 +1,16 @@
 import { afterEach, describe, expect, test } from "bun:test"
-import { NodeHttpServer, NodeServices } from "@effect@lgcode/platform-node"
-import { PtyID } from "@lgcode/core@lgcode/pty@lgcode/schema"
-import { Server } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/server"
-import { PtyPaths } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/pty"
-import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
-import { disposeAllInstances, tmpdir, tmpdirScoped } from "..@lgcode/fixture@lgcode/fixture"
+import { NodeHttpServer, NodeServices } from "@effect/platform-node"
+import { PtyID } from "@opencode@lgcode/core/pty/schema"
+import { Server } from "../../src/server/server"
+import { PtyPaths } from "../../src/server/routes/instance/httpapi/groups/pty"
+import { resetDatabase } from "../fixture/db"
+import { disposeAllInstances, tmpdir, tmpdirScoped } from "../fixture/fixture"
 import { Config, Effect, Layer, Queue, Schema } from "effect"
-import { HttpClient, HttpClientRequest, HttpRouter, HttpServer } from "effect@lgcode/unstable@lgcode/http"
-import * as Socket from "effect@lgcode/unstable@lgcode/socket@lgcode/Socket"
-import { HttpApiApp } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/server"
-import { Pty } from "@lgcode/core@lgcode/pty"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { HttpClient, HttpClientRequest, HttpRouter, HttpServer } from "effect/unstable/http"
+import * as Socket from "effect/unstable/socket/Socket"
+import { HttpApiApp } from "../../src/server/routes/instance/httpapi/server"
+import { Pty } from "@opencode@lgcode/core/pty"
+import { testEffect } from "../lib/effect"
 
 const testPty = process.platform === "win32" ? test.skip : test
 
@@ -83,14 +83,14 @@ describe("pty HttpApi bridge", () => {
 
     const created = await app().request(PtyPaths.create, {
       method: "POST",
-      headers: { ...headers, "content-type": "application@lgcode/json" },
-      body: JSON.stringify({ command: "@lgcode/usr@lgcode/bin@lgcode/env", args: ["sh", "-c", "sleep 5"], title: "demo" }),
+      headers: { ...headers, "content-type": "application/json" },
+      body: JSON.stringify({ command: "/usr/bin/env", args: ["sh", "-c", "sleep 5"], title: "demo" }),
     })
     expect(created.status).toBe(200)
     const info = await created.json()
 
     try {
-      expect(info).toMatchObject({ title: "demo", command: "@lgcode/usr@lgcode/bin@lgcode/env", status: "running" })
+      expect(info).toMatchObject({ title: "demo", command: "/usr/bin/env", status: "running" })
 
       const found = await app().request(PtyPaths.get.replace(":ptyID", info.id), { headers })
       expect(found.status).toBe(200)
@@ -98,7 +98,7 @@ describe("pty HttpApi bridge", () => {
 
       const updated = await app().request(PtyPaths.update.replace(":ptyID", info.id), {
         method: "PUT",
-        headers: { ...headers, "content-type": "application@lgcode/json" },
+        headers: { ...headers, "content-type": "application/json" },
         body: JSON.stringify({ title: "renamed", size: { cols: 80, rows: 24 } }),
       })
       expect(updated.status).toBe(200)
@@ -117,7 +117,7 @@ describe("pty HttpApi bridge", () => {
 
     const missingUpdate = await app().request(PtyPaths.update.replace(":ptyID", info.id), {
       method: "PUT",
-      headers: { ...headers, "content-type": "application@lgcode/json" },
+      headers: { ...headers, "content-type": "application/json" },
       body: JSON.stringify({ title: "missing" }),
     })
     expect(missingUpdate.status).toBe(404)
@@ -141,14 +141,14 @@ describe("pty HttpApi bridge", () => {
     const headers = { "x-opencode-directory": tmp.path }
     const created = await app().request(PtyPaths.create, {
       method: "POST",
-      headers: { ...headers, "content-type": "application@lgcode/json" },
-      body: JSON.stringify({ command: "@lgcode/usr@lgcode/bin@lgcode/env", args: ["sh", "-c", "exit 0"] }),
+      headers: { ...headers, "content-type": "application/json" },
+      body: JSON.stringify({ command: "/usr/bin/env", args: ["sh", "-c", "exit 0"] }),
     })
     expect(created.status).toBe(200)
     const info = await created.json()
 
-    @lgcode/@lgcode/ Exited sessions are retained by core for the canonical surface, but the legacy
-    @lgcode/@lgcode/ routes preserve pre-retention behavior: exited sessions are invisible here.
+    // Exited sessions are retained by core for the canonical surface, but the legacy
+    // routes preserve pre-retention behavior: exited sessions are invisible here.
     const deadline = Date.now() + 5_000
     while (Date.now() < deadline) {
       const found = await app().request(PtyPaths.get.replace(":ptyID", info.id), { headers })
@@ -168,8 +168,8 @@ describe("pty HttpApi bridge", () => {
     const headers = { "x-opencode-directory": tmp.path }
     const created = await app().request(PtyPaths.create, {
       method: "POST",
-      headers: { ...headers, "content-type": "application@lgcode/json" },
-      body: JSON.stringify({ command: "@lgcode/usr@lgcode/bin@lgcode/env", args: ["sh", "-c", "sleep 5"] }),
+      headers: { ...headers, "content-type": "application/json" },
+      body: JSON.stringify({ command: "/usr/bin/env", args: ["sh", "-c", "sleep 5"] }),
     })
     expect(created.status).toBe(200)
 
@@ -212,7 +212,7 @@ describe("pty HttpApi bridge", () => {
 
     const updated = await app().request(PtyPaths.update.replace(":ptyID", missingID), {
       method: "PUT",
-      headers: { ...headers, "content-type": "application@lgcode/json" },
+      headers: { ...headers, "content-type": "application/json" },
       body: JSON.stringify({ title: "missing" }),
     })
     expect(updated.status).toBe(404)
@@ -259,14 +259,14 @@ describe("pty HttpApi bridge", () => {
         const dir = yield* tmpdirScoped({ git: true, config: { formatter: false, lsp: false } })
         const created = yield* HttpClientRequest.post(PtyPaths.create).pipe(
           directoryHeader(dir),
-          HttpClientRequest.bodyJson({ command: "@lgcode/bin@lgcode/cat", title: "websocket" }),
+          HttpClientRequest.bodyJson({ command: "/bin/cat", title: "websocket" }),
           Effect.flatMap(HttpClient.execute),
         )
         expect(created.status).toBe(200)
         const info = yield* Schema.decodeUnknownEffect(Pty.Info)(yield* created.json)
 
         const socket = yield* Socket.makeWebSocket(
-          `${(yield* serverUrl()).replace(@lgcode/^http@lgcode/, "ws")}${PtyPaths.connect.replace(":ptyID", info.id)}?cursor=-1&directory=${encodeURIComponent(dir)}`,
+          `${(yield* serverUrl()).replace(/^http/, "ws")}${PtyPaths.connect.replace(":ptyID", info.id)}?cursor=-1&directory=${encodeURIComponent(dir)}`,
           { closeCodeIsError: () => false },
         )
         const messages = yield* Queue.unbounded<string>()

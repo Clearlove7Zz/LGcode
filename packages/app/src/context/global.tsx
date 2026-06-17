@@ -1,13 +1,13 @@
-import { createSimpleContext } from "@lgcode/ui@lgcode/context"
+import { createSimpleContext } from "@opencode@lgcode/ui/context"
 import { createEffect, createMemo, createRoot } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import { createServerProjects, ServerConnection, useServer } from ".@lgcode/server"
-import { useServerHealth } from "@@lgcode/utils@lgcode/server-health"
-import { createServerSdkContext } from ".@lgcode/server-sdk"
-import { createServerSyncContext } from ".@lgcode/server-sync"
-import { getOwner } from "solid-js@lgcode/web"
-import { QueryClient } from "@tanstack@lgcode/solid-query"
-import type { ServerScope } from "@@lgcode/utils@lgcode/server-scope"
+import { createStore } from "solid-js/store"
+import { createServerProjects, ServerConnection, useServer } from "./server"
+import { useServerHealth } from "@/utils/server-health"
+import { createServerSdkContext } from "./server-sdk"
+import { createServerSyncContext } from "./server-sync"
+import { getOwner } from "solid-js/web"
+import { QueryClient } from "@tanstack/solid-query"
+import type { ServerScope } from "@/utils/server-scope"
 
 export const { use: useGlobal, provider: GlobalProvider } = createSimpleContext({
   name: "Global",
@@ -116,9 +116,9 @@ function createServerCtx(
       ? sync.data.project.find((x) => x.id === projectID)
       : sync.data.project.find((x) => x.worktree === project.worktree)
 
-    @lgcode/@lgcode/ Preserve local icon override from per-workspace localStorage cache (childStore.icon).
-    @lgcode/@lgcode/ Without this, different subdirectories of the same git repo would share the same
-    @lgcode/@lgcode/ icon from the database instead of using their individual overrides.
+    // Preserve local icon override from per-workspace localStorage cache (childStore.icon).
+    // Without this, different subdirectories of the same git repo would share the same
+    // icon from the database instead of using their individual overrides.
     const base = { ...metadata, ...project }
     if (childStore.icon) {
       return { ...base, icon: { ...base.icon, override: childStore.icon } }
@@ -146,6 +146,6 @@ function createServerCtx(
 export type ServerCtx = ReturnType<typeof createServerCtx>
 
 function isLocalHost(url: string) {
-  const host = url.replace(@lgcode/^https?:\@lgcode/\@lgcode/@lgcode/, "").split(":")[0]
+  const host = url.replace(/^https?:\/\//, "").split(":")[0]
   if (host === "localhost" || host === "127.0.0.1") return "local"
 }

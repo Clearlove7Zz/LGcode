@@ -1,34 +1,34 @@
 import { Show, createEffect, createMemo, onCleanup } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import { useNavigate, useSearchParams } from "@solidjs@lgcode/router"
-import { useSpring } from "@lgcode/ui@lgcode/motion-spring"
-import { useLayout } from "@@lgcode/context@lgcode/layout"
-import { PromptInput } from "@@lgcode/components@lgcode/prompt-input"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
-import { usePrompt } from "@@lgcode/context@lgcode/prompt"
-import { useSync } from "@@lgcode/context@lgcode/sync"
-import { getSessionHandoff, setSessionHandoff } from "@@lgcode/pages@lgcode/session@lgcode/handoff"
-import { useSessionKey } from "@@lgcode/pages@lgcode/session@lgcode/session-layout"
-import { SessionPermissionDock } from "@@lgcode/pages@lgcode/session@lgcode/composer@lgcode/session-permission-dock"
-import { SessionQuestionDock } from "@@lgcode/pages@lgcode/session@lgcode/composer@lgcode/session-question-dock"
-import { SessionFollowupDock } from "@@lgcode/pages@lgcode/session@lgcode/composer@lgcode/session-followup-dock"
-import { SessionRevertDock } from "@@lgcode/pages@lgcode/session@lgcode/composer@lgcode/session-revert-dock"
-import type { SessionComposerState } from "@@lgcode/pages@lgcode/session@lgcode/composer@lgcode/session-composer-state"
-import { SessionTodoDock } from "@@lgcode/pages@lgcode/session@lgcode/composer@lgcode/session-todo-dock"
-import type { FollowupDraft } from "@@lgcode/components@lgcode/prompt-input@lgcode/submit"
-import { createResizeObserver } from "@solid-primitives@lgcode/resize-observer"
-import { NEW_SESSION_CONTENT_WIDTH } from "@@lgcode/pages@lgcode/session@lgcode/new-session-layout"
-import { createQuery } from "@tanstack@lgcode/solid-query"
-import { useQueryOptions } from "@@lgcode/context@lgcode/server-sync"
-import { useSDK } from "@@lgcode/context@lgcode/sdk"
-import { pathKey } from "@@lgcode/utils@lgcode/path-key"
-import { useLocal } from "@@lgcode/context@lgcode/local"
-import { useProviders } from "@@lgcode/hooks@lgcode/use-providers"
-import { useSettings } from "@@lgcode/context@lgcode/settings"
-import { useServer } from "@@lgcode/context@lgcode/server"
-import { useTabs } from "@@lgcode/context@lgcode/tabs"
-import { useDirectoryPicker } from "@@lgcode/components@lgcode/directory-picker"
-import { base64Encode } from "@lgcode/core@lgcode/util@lgcode/encode"
+import { createStore } from "solid-js/store"
+import { useNavigate, useSearchParams } from "@solidjs/router"
+import { useSpring } from "@opencode@lgcode/ui/motion-spring"
+import { useLayout } from "@/context/layout"
+import { PromptInput } from "@/components/prompt-input"
+import { useLanguage } from "@/context/language"
+import { usePrompt } from "@/context/prompt"
+import { useSync } from "@/context/sync"
+import { getSessionHandoff, setSessionHandoff } from "@/pages/session/handoff"
+import { useSessionKey } from "@/pages/session/session-layout"
+import { SessionPermissionDock } from "@/pages/session/composer/session-permission-dock"
+import { SessionQuestionDock } from "@/pages/session/composer/session-question-dock"
+import { SessionFollowupDock } from "@/pages/session/composer/session-followup-dock"
+import { SessionRevertDock } from "@/pages/session/composer/session-revert-dock"
+import type { SessionComposerState } from "@/pages/session/composer/session-composer-state"
+import { SessionTodoDock } from "@/pages/session/composer/session-todo-dock"
+import type { FollowupDraft } from "@/components/prompt-input/submit"
+import { createResizeObserver } from "@solid-primitives/resize-observer"
+import { NEW_SESSION_CONTENT_WIDTH } from "@/pages/session/new-session-layout"
+import { createQuery } from "@tanstack/solid-query"
+import { useQueryOptions } from "@/context/server-sync"
+import { useSDK } from "@/context/sdk"
+import { pathKey } from "@/utils/path-key"
+import { useLocal } from "@/context/local"
+import { useProviders } from "@/hooks/use-providers"
+import { useSettings } from "@/context/settings"
+import { useServer } from "@/context/server"
+import { useTabs } from "@/context/tabs"
+import { useDirectoryPicker } from "@/components/directory-picker"
+import { base64Encode } from "@opencode@lgcode/core/util/encode"
 
 export function SessionComposerRegion(props: {
   state: SessionComposerState
@@ -86,7 +86,7 @@ export function SessionComposerRegion(props: {
       tabs.updateDraft(search.draftId, { server: server.key, directory: worktree })
       return
     }
-    navigate(`@lgcode/${base64Encode(worktree)}@lgcode/session`)
+    navigate(`/${base64Encode(worktree)}/session`)
   }
   const addProject = (title: string) => {
     if (!server.current) return
@@ -200,7 +200,7 @@ export function SessionComposerRegion(props: {
   const openParent = () => {
     const id = parentID()
     if (!id) return
-    navigate(`@lgcode/${route.params.dir}@lgcode/session@lgcode/${id}`)
+    navigate(`/${route.params.dir}/session/${id}`)
   }
 
   createEffect(() => {
@@ -231,10 +231,10 @@ export function SessionComposerRegion(props: {
         <Show when={props.state.questionRequest()} keyed>
           {(request) => (
             <div>
-              <SessionQuestionDock request={request} onSubmit={props.onResponseSubmit} @lgcode/>
-            <@lgcode/div>
+              <SessionQuestionDock request={request} onSubmit={props.onResponseSubmit} />
+            </div>
           )}
-        <@lgcode/Show>
+        </Show>
 
         <Show when={props.state.permissionRequest()} keyed>
           {(request) => (
@@ -246,10 +246,10 @@ export function SessionComposerRegion(props: {
                   props.onResponseSubmit()
                   props.state.decide(response)
                 }}
-              @lgcode/>
-            <@lgcode/div>
+              />
+            </div>
           )}
-        <@lgcode/Show>
+        </Show>
 
         <Show when={showComposer()}>
           <Show
@@ -264,14 +264,14 @@ export function SessionComposerRegion(props: {
                         restoring={revert.restoring}
                         disabled={revert.disabled}
                         onRestore={revert.onRestore}
-                      @lgcode/>
-                    <@lgcode/div>
+                      />
+                    </div>
                   )}
-                <@lgcode/Show>
-                <div class="w-full min-h-32 md:min-h-40 rounded-md border border-border-weak-base bg-background-base@lgcode/50 px-4 py-3 text-text-weak whitespace-pre-wrap pointer-events-none">
+                </Show>
+                <div class="w-full min-h-32 md:min-h-40 rounded-md border border-border-weak-base bg-background-base/50 px-4 py-3 text-text-weak whitespace-pre-wrap pointer-events-none">
                   {handoffPrompt() || language.t("prompt.loading")}
-                <@lgcode/div>
-              <@lgcode/>
+                </div>
+              </>
             }
           >
             <Show when={dock()}>
@@ -293,10 +293,10 @@ export function SessionComposerRegion(props: {
                     collapseLabel={language.t("session.todo.collapse")}
                     expandLabel={language.t("session.todo.expand")}
                     dockProgress={value()}
-                  @lgcode/>
-                <@lgcode/div>
-              <@lgcode/div>
-            <@lgcode/Show>
+                  />
+                </div>
+              </div>
+            </Show>
             <Show when={rolled()} keyed>
               {(revert) => (
                 <div
@@ -309,10 +309,10 @@ export function SessionComposerRegion(props: {
                     restoring={revert.restoring}
                     disabled={revert.disabled}
                     onRestore={revert.onRestore}
-                  @lgcode/>
-                <@lgcode/div>
+                  />
+                </div>
               )}
-            <@lgcode/Show>
+            </Show>
             <div
               classList={{
                 "relative z-10": true,
@@ -327,8 +327,8 @@ export function SessionComposerRegion(props: {
                   sending={props.followup!.sending}
                   onSend={props.followup!.onSend}
                   onEdit={props.followup!.onEdit}
-                @lgcode/>
-              <@lgcode/Show>
+                />
+              </Show>
               <Show
                 when={child()}
                 fallback={
@@ -345,15 +345,15 @@ export function SessionComposerRegion(props: {
                       onQueue={props.followup?.onQueue}
                       onAbort={props.followup?.onAbort}
                       onSubmit={props.onSubmit}
-                    @lgcode/>
-                  <@lgcode/Show>
+                    />
+                  </Show>
                 }
               >
                 <div
                   ref={props.inputRef}
                   class="w-full rounded-[12px] border border-border-weak-base bg-background-base p-3 text-16-regular text-text-weak"
                 >
-                  <span>{language.t("session.child.promptDisabled")} <@lgcode/span>
+                  <span>{language.t("session.child.promptDisabled")} </span>
                   <Show when={parentID()}>
                     <button
                       type="button"
@@ -361,14 +361,14 @@ export function SessionComposerRegion(props: {
                       onClick={openParent}
                     >
                       {language.t("session.child.backToParent")}
-                    <@lgcode/button>
-                  <@lgcode/Show>
-                <@lgcode/div>
-              <@lgcode/Show>
-            <@lgcode/div>
-          <@lgcode/Show>
-        <@lgcode/Show>
-      <@lgcode/div>
-    <@lgcode/div>
+                    </button>
+                  </Show>
+                </div>
+              </Show>
+            </div>
+          </Show>
+        </Show>
+      </div>
+    </div>
   )
 }

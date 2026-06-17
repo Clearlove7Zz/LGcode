@@ -1,13 +1,13 @@
-@lgcode/@lgcode/ @ts-nocheck
+// @ts-nocheck
 import { onMount } from "solid-js"
-import * as mod from ".@lgcode/dialog"
-import { Button } from ".@lgcode/button"
-import { useDialog } from "..@lgcode/context@lgcode/dialog"
+import * as mod from "./dialog"
+import { Button } from "./button"
+import { useDialog } from "../context/dialog"
 
 const docs = `### Overview
 Dialog content wrapper used with the DialogProvider for modal flows.
 
-Provide concise title@lgcode/description and keep body focused.
+Provide concise title/description and keep body focused.
 
 ### API
 - Optional: \`title\`, \`description\`, \`action\`.
@@ -15,7 +15,7 @@ Provide concise title@lgcode/description and keep body focused.
 - \`fit\` and \`transition\` control layout and animation.
 
 ### Variants and states
-- Sizes and optional header@lgcode/action controls.
+- Sizes and optional header/action controls.
 
 ### Behavior
 - Intended to be rendered via \`useDialog().show\`.
@@ -23,13 +23,13 @@ Provide concise title@lgcode/description and keep body focused.
 ### Accessibility
 - TODO: confirm focus trapping and aria attributes from Kobalte Dialog.
 
-### Theming@lgcode/tokens
+### Theming/tokens
 - Uses \`data-component="dialog"\` and slot attributes.
 
 `
 
 export default {
-  title: "UI@lgcode/Dialog",
+  title: "UI/Dialog",
   id: "components-dialog",
   component: mod.Dialog,
   tags: ["autodocs"],
@@ -49,7 +49,7 @@ export const Basic = {
       dialog.show(() => (
         <mod.Dialog title="Dialog" description="Description">
           Dialog body content.
-        <@lgcode/mod.Dialog>
+        </mod.Dialog>
       ))
 
     onMount(open)
@@ -57,7 +57,7 @@ export const Basic = {
     return (
       <Button variant="secondary" onClick={open}>
         Open dialog
-      <@lgcode/Button>
+      </Button>
     )
   },
 }
@@ -73,37 +73,37 @@ export const Sizes = {
             dialog.show(() => (
               <mod.Dialog title="Normal" description="Normal size">
                 Normal dialog content.
-              <@lgcode/mod.Dialog>
+              </mod.Dialog>
             ))
           }
         >
           Normal
-        <@lgcode/Button>
+        </Button>
         <Button
           variant="secondary"
           onClick={() =>
             dialog.show(() => (
               <mod.Dialog size="large" title="Large" description="Large size">
                 Large dialog content.
-              <@lgcode/mod.Dialog>
+              </mod.Dialog>
             ))
           }
         >
           Large
-        <@lgcode/Button>
+        </Button>
         <Button
           variant="secondary"
           onClick={() =>
             dialog.show(() => (
               <mod.Dialog size="x-large" title="Extra large" description="X-large size">
                 X-large dialog content.
-              <@lgcode/mod.Dialog>
+              </mod.Dialog>
             ))
           }
         >
           X-Large
-        <@lgcode/Button>
-      <@lgcode/div>
+        </Button>
+      </div>
     )
   },
 }
@@ -118,12 +118,12 @@ export const Transition = {
           dialog.show(() => (
             <mod.Dialog title="Transition" description="Animated" transition>
               Transition enabled.
-            <@lgcode/mod.Dialog>
+            </mod.Dialog>
           ))
         }
       >
         Open transition dialog
-      <@lgcode/Button>
+      </Button>
     )
   },
 }
@@ -139,15 +139,15 @@ export const CustomAction = {
             <mod.Dialog
               title="Custom action"
               description="Dialog with a custom header action"
-              action={<Button variant="ghost">Help<@lgcode/Button>}
+              action={<Button variant="ghost">Help</Button>}
             >
               Dialog body content.
-            <@lgcode/mod.Dialog>
+            </mod.Dialog>
           ))
         }
       >
         Open action dialog
-      <@lgcode/Button>
+      </Button>
     )
   },
 }
@@ -162,12 +162,12 @@ export const Fit = {
           dialog.show(() => (
             <mod.Dialog title="Fit content" fit>
               Dialog fits its content.
-            <@lgcode/mod.Dialog>
+            </mod.Dialog>
           ))
         }
       >
         Open fit dialog
-      <@lgcode/Button>
+      </Button>
     )
   },
 }

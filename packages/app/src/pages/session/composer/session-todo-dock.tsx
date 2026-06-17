@@ -1,15 +1,15 @@
-import type { Todo } from "@lgcode/sdk@lgcode/v2"
-import { AnimatedNumber } from "@lgcode/ui@lgcode/animated-number"
-import { Checkbox } from "@lgcode/ui@lgcode/checkbox"
-import { DockTray } from "@lgcode/ui@lgcode/dock-surface"
-import { IconButton } from "@lgcode/ui@lgcode/icon-button"
-import { useSpring } from "@lgcode/ui@lgcode/motion-spring"
-import { TextReveal } from "@lgcode/ui@lgcode/text-reveal"
-import { TextStrikethrough } from "@lgcode/ui@lgcode/text-strikethrough"
-import { createResizeObserver } from "@solid-primitives@lgcode/resize-observer"
+import type { Todo } from "@opencode@lgcode/sdk/v2"
+import { AnimatedNumber } from "@opencode@lgcode/ui/animated-number"
+import { Checkbox } from "@opencode@lgcode/ui/checkbox"
+import { DockTray } from "@opencode@lgcode/ui/dock-surface"
+import { IconButton } from "@opencode@lgcode/ui/icon-button"
+import { useSpring } from "@opencode@lgcode/ui/motion-spring"
+import { TextReveal } from "@opencode@lgcode/ui/text-reveal"
+import { TextStrikethrough } from "@opencode@lgcode/ui/text-strikethrough"
+import { createResizeObserver } from "@solid-primitives/resize-observer"
 import { Index, createEffect, createMemo } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { createStore } from "solid-js/store"
+import { useLanguage } from "@/context/language"
 
 const doneToken = "\u0000done\u0000"
 const totalToken = "\u0000total\u0000"
@@ -22,7 +22,7 @@ function dot(status: Todo["status"]) {
       width="12"
       height="12"
       fill="currentColor"
-      xmlns="http:@lgcode/@lgcode/www.w3.org@lgcode/2000@lgcode/svg"
+      xmlns="http://www.w3.org/2000/svg"
       class="block"
     >
       <circle
@@ -34,8 +34,8 @@ function dot(status: Todo["status"]) {
           "transform-origin": "center",
           "transform-box": "fill-box",
         }}
-      @lgcode/>
-    <@lgcode/svg>
+      />
+    </svg>
   )
 }
 
@@ -59,7 +59,7 @@ export function SessionTodoDock(props: {
   const progress = createMemo(() =>
     language
       .t("session.todo.progress", { done: doneToken, total: totalToken })
-      .split(@lgcode/(\u0000done\u0000|\u0000total\u0000)@lgcode/),
+      .split(/(\u0000done\u0000|\u0000total\u0000)/),
   )
 
   const active = createMemo(
@@ -128,15 +128,15 @@ export function SessionTodoDock(props: {
             <Index each={progress()}>
               {(item) =>
                 item() === doneToken ? (
-                  <AnimatedNumber value={done()} @lgcode/>
+                  <AnimatedNumber value={done()} />
                 ) : item() === totalToken ? (
-                  <AnimatedNumber value={total()} @lgcode/>
+                  <AnimatedNumber value={total()} />
                 ) : (
-                  <span>{item()}<@lgcode/span>
+                  <span>{item()}</span>
                 )
               }
-            <@lgcode/Index>
-          <@lgcode/span>
+            </Index>
+          </span>
           <div
             data-slot="session-todo-preview"
             class="ml-1 min-w-0 overflow-hidden"
@@ -155,8 +155,8 @@ export function SessionTodoDock(props: {
               springSoft="cubic-bezier(0.34, 1, 0.64, 1)"
               growOnly
               truncate
-            @lgcode/>
-          <@lgcode/div>
+            />
+          </div>
           <div class="ml-auto">
             <IconButton
               data-action="session-todo-toggle-button"
@@ -174,9 +174,9 @@ export function SessionTodoDock(props: {
                 props.onToggle()
               }}
               aria-label={props.collapsed ? props.expandLabel : props.collapseLabel}
-            @lgcode/>
-          <@lgcode/div>
-        <@lgcode/div>
+            />
+          </div>
+        </div>
 
         <div
           data-slot="session-todo-list"
@@ -189,10 +189,10 @@ export function SessionTodoDock(props: {
             opacity: `${Math.max(0, Math.min(1, 1 - hide()))}`,
           }}
         >
-          <TodoList todos={props.todos} @lgcode/>
-        <@lgcode/div>
-      <@lgcode/div>
-    <@lgcode/DockTray>
+          <TodoList todos={props.todos} />
+        </div>
+      </div>
+    </DockTray>
   )
 }
 
@@ -240,18 +240,18 @@ function TodoList(props: { todos: Todo[] }) {
                       : "var(--text-strong)",
                   opacity: todo().status === "pending" ? "0.92" : "1",
                 }}
-              @lgcode/>
-            <@lgcode/Checkbox>
+              />
+            </Checkbox>
           )}
-        <@lgcode/Index>
-      <@lgcode/div>
+        </Index>
+      </div>
       <div
         class="pointer-events-none absolute top-0 left-0 right-0 h-4 transition-opacity duration-150"
         style={{
           background: "linear-gradient(to bottom, var(--background-base), transparent)",
           opacity: store.stuck ? 1 : 0,
         }}
-      @lgcode/>
-    <@lgcode/div>
+      />
+    </div>
   )
 }

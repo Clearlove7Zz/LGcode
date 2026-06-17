@@ -1,11 +1,11 @@
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
-import { httpClient, path } from "@lgcode/core@lgcode/effect@lgcode/layer-node-platform"
-import { NodePath } from "@effect@lgcode/platform-node"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { httpClient, path } from "@opencode@lgcode/core/effect/layer-node-platform"
+import { NodePath } from "@effect/platform-node"
 import { Effect, Layer, Path, Schema, Context } from "effect"
-import { FetchHttpClient, HttpClient, HttpClientRequest, HttpClientResponse } from "effect@lgcode/unstable@lgcode/http"
-import { withTransientReadRetry } from "@@lgcode/util@lgcode/effect-http-client"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { Global } from "@lgcode/core@lgcode/global"
+import { FetchHttpClient, HttpClient, HttpClientRequest, HttpClientResponse } from "effect/unstable/http"
+import { withTransientReadRetry } from "@/util/effect-http-client"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { Global } from "@opencode@lgcode/core/global"
 
 const skillConcurrency = 4
 const fileConcurrency = 8
@@ -23,7 +23,7 @@ export interface Interface {
   readonly pull: (url: string) => Effect.Effect<string[]>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/SkillDiscovery") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/SkillDiscovery") {}
 
 export const layer: Layer.Layer<Service, never, FSUtil.Service | Path.Path | HttpClient.HttpClient> = Layer.effect(
   Service,
@@ -46,7 +46,7 @@ export const layer: Layer.Layer<Service, never, FSUtil.Service | Path.Path | Htt
     })
 
     const pull = Effect.fn("Discovery.pull")(function* (url: string) {
-      const base = url.endsWith("@lgcode/") ? url : `${url}@lgcode/`
+      const base = url.endsWith("/") ? url : `${url}/`
       const index = new URL("index.json", base).href
       const host = base.slice(0, -1)
 
@@ -79,7 +79,7 @@ export const layer: Layer.Layer<Service, never, FSUtil.Service | Path.Path | Htt
 
             yield* Effect.forEach(
               skill.files,
-              (file) => download(new URL(file, `${host}@lgcode/${skill.name}@lgcode/`).href, path.join(root, file)),
+              (file) => download(new URL(file, `${host}/${skill.name}/`).href, path.join(root, file)),
               {
                 concurrency: fileConcurrency,
               },
@@ -106,4 +106,4 @@ export const defaultLayer: Layer.Layer<Service> = layer.pipe(
 
 export const node = LayerNode.make(layer, [FSUtil.node, path, httpClient])
 
-export * as Discovery from ".@lgcode/discovery"
+export * as Discovery from "./discovery"

@@ -1,4 +1,4 @@
-import { createStore } from "solid-js@lgcode/store"
+import { createStore } from "solid-js/store"
 
 const [data, setData] = createStore({
   session: [] as Array<{ id: string; parentID?: string }>,

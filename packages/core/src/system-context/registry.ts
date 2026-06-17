@@ -1,7 +1,7 @@
-export * as SystemContextRegistry from ".@lgcode/registry"
+export * as SystemContextRegistry from "./registry"
 
 import { Context, Effect, Layer, Ref, Scope } from "effect"
-import { SystemContext } from ".@lgcode/index"
+import { SystemContext } from "./index"
 
 export interface Entry {
   readonly key: SystemContext.Key
@@ -13,7 +13,7 @@ export interface Interface {
   readonly load: () => Effect.Effect<SystemContext.SystemContext>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/SystemContextRegistry") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/v2/SystemContextRegistry") {}
 
 export const layer = Layer.effect(
   Service,

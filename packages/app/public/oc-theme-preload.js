@@ -16,7 +16,7 @@
   document.documentElement.dataset.theme = themeId
   document.documentElement.dataset.colorScheme = mode
 
-  @lgcode/@lgcode/ Update theme-color meta tag to match app color scheme
+  // Update theme-color meta tag to match app color scheme
   var metas = document.querySelectorAll("meta[name='theme-color']")
   if (metas.length > 0) metas[0].setAttribute("content", isDark ? "#131010" : "#F8F7F7")
 

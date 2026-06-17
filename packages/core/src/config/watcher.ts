@@ -1,4 +1,4 @@
-export * as ConfigWatcher from ".@lgcode/watcher"
+export * as ConfigWatcher from "./watcher"
 
 import { Schema } from "effect"
 

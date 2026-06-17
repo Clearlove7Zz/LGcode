@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test"
-import { Tool } from "@lgcode/core@lgcode/public"
+import { Tool } from "@opencode@lgcode/core/public"
 import { Effect } from "effect"
 
 describe("public Tool API", () => {

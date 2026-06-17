@@ -1,4 +1,4 @@
-export * as ConfigPlugin from ".@lgcode/plugin"
+export * as ConfigPlugin from "./plugin"
 
 import { Schema } from "effect"
 

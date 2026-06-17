@@ -1,21 +1,21 @@
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
-import { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
-import { Slug } from "@lgcode/core@lgcode/util@lgcode/slug"
-import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
-import { serviceUse } from "@lgcode/core@lgcode/effect@lgcode/service-use"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
+import { Slug } from "@opencode@lgcode/core/util/slug"
+import { SessionV1 } from "@opencode@lgcode/core/v1/session"
+import { serviceUse } from "@opencode@lgcode/core/effect/service-use"
 import path from "path"
-import { BackgroundJob } from "@@lgcode/background@lgcode/job"
+import { BackgroundJob } from "@/background/job"
 import { Decimal } from "decimal.js"
-import type { ProviderMetadata, Usage } from "@lgcode/llm"
-import { InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { makeRuntime } from "@lgcode/core@lgcode/effect@lgcode/runtime"
-import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import { SessionV2 } from "@lgcode/core@lgcode/session"
-import { SessionExecution } from "@lgcode/core@lgcode/session@lgcode/execution"
+import type { ProviderMetadata, Usage } from "@opencode@lgcode/llm"
+import { InstallationVersion } from "@opencode@lgcode/core/installation/version"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { makeRuntime } from "@opencode@lgcode/core/effect/runtime"
+import { EventV2Bridge } from "@/event-v2-bridge"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import { SessionV2 } from "@opencode@lgcode/core/session"
+import { SessionExecution } from "@opencode@lgcode/core/session/execution"
 
-import { NotFoundError } from "@@lgcode/storage@lgcode/storage"
+import { NotFoundError } from "@/storage/storage"
 import { eq } from "drizzle-orm"
 import { and } from "drizzle-orm"
 import { gte } from "drizzle-orm"
@@ -27,24 +27,24 @@ import { inArray } from "drizzle-orm"
 import { lt } from "drizzle-orm"
 import { or } from "drizzle-orm"
 import type { SQL } from "drizzle-orm"
-import { PartTable, SessionTable } from "@lgcode/core@lgcode/session@lgcode/sql"
-import { ProjectTable } from "@lgcode/core@lgcode/project@lgcode/sql"
-import { MessageV2 } from ".@lgcode/message-v2"
-import type { InstanceContext } from "..@lgcode/project@lgcode/instance-context"
-import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
-import { Snapshot } from "@@lgcode/snapshot"
-import { ProjectV2 } from "@lgcode/core@lgcode/project"
-import { WorkspaceV2 } from "@lgcode/core@lgcode/workspace"
-import { SessionID, MessageID, PartID } from ".@lgcode/schema"
+import { PartTable, SessionTable } from "@opencode@lgcode/core/session/sql"
+import { ProjectTable } from "@opencode@lgcode/core/project/sql"
+import { MessageV2 } from "./message-v2"
+import type { InstanceContext } from "../project/instance-context"
+import { InstanceState } from "@/effect/instance-state"
+import { Snapshot } from "@/snapshot"
+import { ProjectV2 } from "@opencode@lgcode/core/project"
+import { WorkspaceV2 } from "@opencode@lgcode/core/workspace"
+import { SessionID, MessageID, PartID } from "./schema"
 
-import type { Provider } from "@@lgcode/provider@lgcode/provider"
-import { Permission } from "@@lgcode/permission"
-import { Global } from "@lgcode/core@lgcode/global"
+import type { Provider } from "@/provider/provider"
+import { Permission } from "@/permission"
+import { Global } from "@opencode@lgcode/core/global"
 import { Effect, Layer, Option, Context, Schema, Types } from "effect"
-import { NonNegativeInt, optionalOmitUndefined } from "@lgcode/core@lgcode/schema"
-import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { NonNegativeInt, optionalOmitUndefined } from "@opencode@lgcode/core/schema"
+import { RuntimeFlags } from "@/effect/runtime-flags"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelV2 } from "@opencode@lgcode/core/model"
 
 const runtime = makeRuntime(Database.Service, Database.defaultLayer)
 
@@ -148,7 +148,7 @@ export function toRow(info: Info) {
 }
 
 function getForkedTitle(title: string): string {
-  const match = title.match(@lgcode/^(.+) \(fork #(\d+)\)$@lgcode/)
+  const match = title.match(/^(.+) \(fork #(\d+)\)$/)
   if (match) {
     const base = match[1]
     const num = parseInt(match[2], 10)
@@ -158,7 +158,7 @@ function getForkedTitle(title: string): string {
 }
 
 function sessionPath(worktree: string, cwd: string) {
-  return path.relative(path.resolve(worktree), cwd).replaceAll("\\", "@lgcode/")
+  return path.relative(path.resolve(worktree), cwd).replaceAll("\\", "/")
 }
 
 const Summary = Schema.Struct({
@@ -184,8 +184,8 @@ const Share = Schema.Struct({
   url: Schema.String,
 })
 
-@lgcode/@lgcode/ Legacy HTTP accepted negative values here. Keep archive timestamps permissive
-@lgcode/@lgcode/ while excluding non-finite values that cannot round-trip through JSON.
+// Legacy HTTP accepted negative values here. Keep archive timestamps permissive
+// while excluding non-finite values that cannot round-trip through JSON.
 export const ArchivedTimestamp = Schema.Finite
 
 const Time = Schema.Struct({
@@ -367,8 +367,8 @@ export const Event = {
     type: "session.error",
     schema: {
       sessionID: Schema.optional(SessionID),
-      @lgcode/@lgcode/ Reuses SessionV1.Assistant.fields.error (already Schema.optional) so
-      @lgcode/@lgcode/ the derived schema keeps the same discriminated-union shape on the event stream.
+      // Reuses SessionV1.Assistant.fields.error (already Schema.optional) so
+      // the derived schema keeps the same discriminated-union shape on the event stream.
       error: SessionV1.Assistant.fields.error,
     },
   }),
@@ -395,20 +395,20 @@ export const getUsage = (input: { model: Provider.Model; usage: Usage; metadata?
     Number(
       input.usage.cacheWriteInputTokens ??
         input.metadata?.["anthropic"]?.["cacheCreationInputTokens"] ??
-        @lgcode/@lgcode/ google-vertex-anthropic returns metadata under "vertex" key
-        @lgcode/@lgcode/ (AnthropicMessagesLanguageModel custom provider key from 'vertex.anthropic.messages')
+        // google-vertex-anthropic returns metadata under "vertex" key
+        // (AnthropicMessagesLanguageModel custom provider key from 'vertex.anthropic.messages')
         input.metadata?.["vertex"]?.["cacheCreationInputTokens"] ??
-        @lgcode/@lgcode/ @ts-expect-error
+        // @ts-expect-error
         input.metadata?.["bedrock"]?.["usage"]?.["cacheWriteInputTokens"] ??
-        @lgcode/@lgcode/ @ts-expect-error
+        // @ts-expect-error
         input.metadata?.["venice"]?.["usage"]?.["cacheCreationInputTokens"] ??
         0,
     ),
   )
 
-  @lgcode/@lgcode/ AI SDK v6 normalized inputTokens to include cached tokens across all providers
-  @lgcode/@lgcode/ (including Anthropic@lgcode/Bedrock which previously excluded them). Always subtract cache
-  @lgcode/@lgcode/ tokens to get the non-cached input count for separate cost calculation.
+  // AI SDK v6 normalized inputTokens to include cached tokens across all providers
+  // (including Anthropic/Bedrock which previously excluded them). Always subtract cache
+  // tokens to get the non-cached input count for separate cost calculation.
   const adjustedInputTokens = safe(inputTokens - cacheReadInputTokens - cacheWriteInputTokens)
 
   const total = input.usage.totalTokens
@@ -443,8 +443,8 @@ export const getUsage = (input: { model: Provider.Model; usage: Usage; metadata?
               .add(new Decimal(tokens.output).mul(costInfo?.output ?? 0).div(1_000_000))
               .add(new Decimal(tokens.cache.read).mul(costInfo?.cache?.read ?? 0).div(1_000_000))
               .add(new Decimal(tokens.cache.write).mul(costInfo?.cache?.write ?? 0).div(1_000_000))
-              @lgcode/@lgcode/ TODO: update models.dev to have better pricing model, for now:
-              @lgcode/@lgcode/ charge reasoning tokens at the same rate as output tokens
+              // TODO: update models.dev to have better pricing model, for now:
+              // charge reasoning tokens at the same rate as output tokens
               .add(new Decimal(tokens.reasoning).mul(costInfo?.output ?? 0).div(1_000_000))
               .toNumber(),
           ),
@@ -506,14 +506,14 @@ export interface Interface {
     field: string
     delta: string
   }) => Effect.Effect<void>
-  @lgcode/** Finds the first message matching the predicate, searching newest-first. *@lgcode/
+  /** Finds the first message matching the predicate, searching newest-first. */
   readonly findMessage: (
     sessionID: SessionID,
     predicate: (msg: SessionV1.WithParts) => boolean,
   ) => Effect.Effect<Option.Option<SessionV1.WithParts>, NotFound>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Session") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/Session") {}
 
 export const use = serviceUse(Service)
 
@@ -648,8 +648,8 @@ export const layer: Layer.Layer<
     const remove: Interface["remove"] = Effect.fnUntraced(function* (sessionID: SessionID) {
       const session = yield* get(sessionID)
       try {
-        @lgcode/@lgcode/ `remove` needs to work in all cases, such as broken sessions that
-        @lgcode/@lgcode/ run cleanup without instance state.
+        // `remove` needs to work in all cases, such as broken sessions that
+        // run cleanup without instance state.
         const hasInstance = yield* InstanceState.directory.pipe(
           Effect.as(true),
           Effect.catchCause(() => Effect.succeed(false)),
@@ -913,7 +913,7 @@ export const layer: Layer.Layer<
       yield* events.publish(MessageV2.Event.PartDelta, input)
     })
 
-    @lgcode/** Finds the first message matching the predicate, searching newest-first. *@lgcode/
+    /** Finds the first message matching the predicate, searching newest-first. */
     const findMessage: Interface["findMessage"] = Effect.fn("Session.findMessage")(function* (sessionID, predicate) {
       const size = 50
       let before: string | undefined
@@ -1005,7 +1005,7 @@ function listByProject(
     if (input.path) {
       const conds = [
         eq(SessionTable.path, input.path),
-        like(SessionTable.path, sql.param(`${input.path}@lgcode/%`, SessionTable.path)),
+        like(SessionTable.path, sql.param(`${input.path}/%`, SessionTable.path)),
       ]
 
       conditions.push(
@@ -1116,4 +1116,4 @@ export function* listGlobal(input?: {
 
 export const node = LayerNode.make(layer, [BackgroundJob.node, RuntimeFlags.node, Database.node, EventV2Bridge.node])
 
-export * as Session from ".@lgcode/session"
+export * as Session from "./session"

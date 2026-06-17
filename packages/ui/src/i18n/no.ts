@@ -1,4 +1,4 @@
-import { dict as en } from ".@lgcode/en"
+import { dict as en } from "./en"
 type Keys = keyof typeof en
 
 export const dict: Record<Keys, string> = {
@@ -51,7 +51,7 @@ export const dict: Record<Keys, string> = {
 
   "dialog.usageExceeded.freeTier.title": "Gratis grense nådd",
   "dialog.usageExceeded.freeTier.description":
-    "Abonner på OpenCode Go for pålitelig tilgang til de beste åpen kildekode-modellene, fra $5@lgcode/måned.",
+    "Abonner på OpenCode Go for pålitelig tilgang til de beste åpen kildekode-modellene, fra $5/måned.",
   "dialog.usageExceeded.freeTier.actionLabel": "Abonner",
   "dialog.usageExceeded.accountRateLimit.title": "Go-grense nådd",
   "dialog.usageExceeded.accountRateLimit.description":

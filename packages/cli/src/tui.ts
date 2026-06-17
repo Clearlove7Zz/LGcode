@@ -1,7 +1,7 @@
-import { run } from "@lgcode/tui"
-import { TuiConfig } from "@lgcode/tui@lgcode/config"
+import { run } from "@opencode@lgcode/tui"
+import { TuiConfig } from "@opencode@lgcode/tui/config"
 import { Effect } from "effect"
-import { Global } from "@lgcode/core@lgcode/global"
+import { Global } from "@opencode@lgcode/core/global"
 
 export function runTui(transport: { url: string; headers: RequestInit["headers"] }) {
   const config = TuiConfig.resolve({}, { terminalSuspend: false })
@@ -18,10 +18,10 @@ export function runTui(transport: { url: string; headers: RequestInit["headers"]
 }
 
 const legacyDefaults: Record<string, unknown> = {
-  "@lgcode/config@lgcode/providers": { providers: [], default: {} },
-  "@lgcode/provider": { all: [], default: {}, connected: [] },
-  "@lgcode/agent": [],
-  "@lgcode/config": {},
+  "/config/providers": { providers: [], default: {} },
+  "/provider": { all: [], default: {}, connected: [] },
+  "/agent": [],
+  "/config": {},
 }
 
 const gracefulFetch = Object.assign(

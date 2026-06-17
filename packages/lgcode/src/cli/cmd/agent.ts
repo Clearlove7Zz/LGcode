@@ -1,21 +1,21 @@
-import { cmd } from ".@lgcode/cmd"
-import * as prompts from "@clack@lgcode/prompts"
-import { UI } from "..@lgcode/ui"
-import { Global } from "@lgcode/core@lgcode/global"
+import { cmd } from "./cmd"
+import * as prompts from "@clack/prompts"
+import { UI } from "../ui"
+import { Global } from "@opencode@lgcode/core/global"
 import path from "path"
-import fs from "fs@lgcode/promises"
-import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
+import fs from "fs/promises"
+import { Filesystem } from "@/util/filesystem"
 import matter from "gray-matter"
 import { EOL } from "os"
 import type { Argv } from "yargs"
 import { Effect } from "effect"
-import { effectCmd } from "..@lgcode/effect-cmd"
+import { effectCmd } from "../effect-cmd"
 
 type AgentMode = "all" | "primary" | "subagent"
 
-@lgcode/@lgcode/ Permission keys (not raw tool names). Multiple tools can map to a single
-@lgcode/@lgcode/ permission — e.g. write@lgcode/edit@lgcode/apply_patch all gate on `edit` — so we configure
-@lgcode/@lgcode/ agents at the permission level to match how the runtime actually enforces it.
+// Permission keys (not raw tool names). Multiple tools can map to a single
+// permission — e.g. write/edit/apply_patch all gate on `edit` — so we configure
+// agents at the permission level to match how the runtime actually enforces it.
 const AVAILABLE_PERMISSIONS = [
   "bash",
   "read",
@@ -56,12 +56,12 @@ const AgentCreateCommand = effectCmd({
       .option("model", {
         type: "string",
         alias: ["m"],
-        describe: "model to use in the format of provider@lgcode/model",
+        describe: "model to use in the format of provider/model",
       }),
   handler: Effect.fn("Cli.agent.create")(function* (args) {
-    const { InstanceRef } = yield* Effect.promise(() => import("@@lgcode/effect@lgcode/instance-ref"))
-    const { Agent } = yield* Effect.promise(() => import("..@lgcode/..@lgcode/agent@lgcode/agent"))
-    const { Provider } = yield* Effect.promise(() => import("@@lgcode/provider@lgcode/provider"))
+    const { InstanceRef } = yield* Effect.promise(() => import("@/effect/instance-ref"))
+    const { Agent } = yield* Effect.promise(() => import("../../agent/agent"))
+    const { Provider } = yield* Effect.promise(() => import("@/provider/provider"))
     const maybeCtx = yield* InstanceRef
     if (!maybeCtx) return yield* Effect.die("InstanceRef not provided")
     const ctx = maybeCtx
@@ -83,7 +83,7 @@ const AgentCreateCommand = effectCmd({
 
       const project = ctx.project
 
-      @lgcode/@lgcode/ Determine scope@lgcode/path
+      // Determine scope/path
       let targetPath: string
       if (cliPath) {
         targetPath = path.join(cliPath, "agents")
@@ -111,7 +111,7 @@ const AgentCreateCommand = effectCmd({
         targetPath = path.join(scope === "global" ? Global.Path.config : path.join(ctx.worktree, ".opencode"), "agents")
       }
 
-      @lgcode/@lgcode/ Get description
+      // Get description
       let description: string
       if (cliDescription) {
         description = cliDescription
@@ -125,7 +125,7 @@ const AgentCreateCommand = effectCmd({
         description = query
       }
 
-      @lgcode/@lgcode/ Generate agent
+      // Generate agent
       const spinner = prompts.spinner()
       spinner.start("Generating agent configuration...")
       const model = args.model ? Provider.parseModel(args.model) : undefined
@@ -136,7 +136,7 @@ const AgentCreateCommand = effectCmd({
       })
       spinner.stop(`Agent ${generated.identifier} generated`)
 
-      @lgcode/@lgcode/ Select permissions to allow
+      // Select permissions to allow
       let selected: string[]
       if (perms !== undefined) {
         selected = perms ? perms.split(",").map((t) => t.trim()) : AVAILABLE_PERMISSIONS
@@ -153,7 +153,7 @@ const AgentCreateCommand = effectCmd({
         selected = result
       }
 
-      @lgcode/@lgcode/ Get mode
+      // Get mode
       let mode: AgentMode
       if (cliMode) {
         mode = cliMode
@@ -169,7 +169,7 @@ const AgentCreateCommand = effectCmd({
             {
               label: "Primary",
               value: "primary" as const,
-              hint: "Acts as a primary@lgcode/main agent",
+              hint: "Acts as a primary/main agent",
             },
             {
               label: "Subagent",
@@ -183,7 +183,7 @@ const AgentCreateCommand = effectCmd({
         mode = modeResult
       }
 
-      @lgcode/@lgcode/ Build permissions config — deny anything not explicitly selected.
+      // Build permissions config — deny anything not explicitly selected.
       const permissions: Record<string, "deny"> = {}
       for (const permission of AVAILABLE_PERMISSIONS) {
         if (!selected.includes(permission)) {
@@ -191,7 +191,7 @@ const AgentCreateCommand = effectCmd({
         }
       }
 
-      @lgcode/@lgcode/ Build frontmatter
+      // Build frontmatter
       const frontmatter: {
         description: string
         mode: AgentMode
@@ -204,7 +204,7 @@ const AgentCreateCommand = effectCmd({
         frontmatter.permission = permissions
       }
 
-      @lgcode/@lgcode/ Write file
+      // Write file
       const content = matter.stringify(generated.systemPrompt, frontmatter)
       const filePath = path.join(targetPath, `${generated.identifier}.md`)
 
@@ -235,7 +235,7 @@ const AgentListCommand = effectCmd({
   command: "list",
   describe: "list all available agents",
   handler: Effect.fn("Cli.agent.list")(function* () {
-    const { Agent } = yield* Effect.promise(() => import("..@lgcode/..@lgcode/agent@lgcode/agent"))
+    const { Agent } = yield* Effect.promise(() => import("../../agent/agent"))
     const agents = yield* Agent.Service.use((svc) => svc.list())
     const sortedAgents = agents.sort((a, b) => {
       if (a.native !== b.native) {

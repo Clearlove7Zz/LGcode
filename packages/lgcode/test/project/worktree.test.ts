@@ -1,13 +1,13 @@
 import { afterEach, describe, expect } from "bun:test"
 import path from "path"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
 import { Cause, Deferred, Effect, Exit, Fiber, Layer } from "effect"
-import { GlobalBus, type GlobalEvent } from "..@lgcode/..@lgcode/src@lgcode/bus@lgcode/global"
-import { Git } from "..@lgcode/..@lgcode/src@lgcode/git"
-import { Worktree } from "..@lgcode/..@lgcode/src@lgcode/worktree"
-import { disposeAllInstances, provideInstance, TestInstance } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { GlobalBus, type GlobalEvent } from "../../src/bus/global"
+import { Git } from "../../src/git"
+import { Worktree } from "../../src/worktree"
+import { disposeAllInstances, provideInstance, TestInstance } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
 
 const it = testEffect(
   Layer.mergeAll(Worktree.defaultLayer, FSUtil.defaultLayer, CrossSpawnSpawner.defaultLayer, Git.defaultLayer),
@@ -15,7 +15,7 @@ const it = testEffect(
 const wintest = process.platform !== "win32" ? it.instance : it.instance.skip
 
 function normalize(input: string) {
-  return input.replace(@lgcode/\\@lgcode/g, "@lgcode/").toLowerCase()
+  return input.replace(/\\/g, "/").toLowerCase()
 }
 
 const waitReady = Effect.fn("WorktreeTest.waitReady")(function* () {
@@ -84,7 +84,7 @@ describe("Worktree", () => {
 
           expect(info.name).toBeDefined()
           expect(typeof info.name).toBe("string")
-          expect(info.branch).toBe(`opencode@lgcode/${info.name}`)
+          expect(info.branch).toBe(`opencode/${info.name}`)
           expect(info.directory).toContain(info.name)
         }),
       { git: true },
@@ -98,7 +98,7 @@ describe("Worktree", () => {
           const info = yield* svc.makeWorktreeInfo({ name: "my-feature" })
 
           expect(info.name).toBe("my-feature")
-          expect(info.branch).toBe("opencode@lgcode/my-feature")
+          expect(info.branch).toBe("opencode/my-feature")
         }),
       { git: true },
     )
@@ -121,7 +121,7 @@ describe("Worktree", () => {
         Effect.gen(function* () {
           const test = yield* TestInstance
           const svc = yield* Worktree.Service
-          yield* git(test.directory, ["branch", "opencode@lgcode/my-feature"])
+          yield* git(test.directory, ["branch", "opencode/my-feature"])
 
           const info = yield* svc.makeWorktreeInfo({ name: "my-feature", detached: true })
 
@@ -180,7 +180,7 @@ describe("Worktree", () => {
         withCreatedWorktree(undefined, ({ info }) =>
           Effect.gen(function* () {
             expect(info.name).toBeDefined()
-            expect(info.branch ?? "").toStartWith("opencode@lgcode/")
+            expect(info.branch ?? "").toStartWith("opencode/")
             expect(info.directory).toBeDefined()
           }),
         ),
@@ -195,7 +195,7 @@ describe("Worktree", () => {
             const svc = yield* Worktree.Service
 
             expect(info.name).toBeDefined()
-            expect(info.branch ?? "").toStartWith("opencode@lgcode/")
+            expect(info.branch ?? "").toStartWith("opencode/")
 
             expect(ready.name).toBe(info.name)
             expect(ready.branch).toBe(info.branch)
@@ -229,7 +229,7 @@ describe("Worktree", () => {
         withCreatedWorktree({ name: "test-workspace" }, ({ info }) =>
           Effect.gen(function* () {
             expect(info.name).toBe("test-workspace")
-            expect(info.branch).toBe("opencode@lgcode/test-workspace")
+            expect(info.branch).toBe("opencode/test-workspace")
           }),
         ),
       { git: true },
@@ -248,8 +248,8 @@ describe("Worktree", () => {
           yield* svc.createFromInfo(info)
 
           const list = yield* git(test.directory, ["worktree", "list", "--porcelain"])
-          const normalizedList = list.replace(@lgcode/\\@lgcode/g, "@lgcode/")
-          const normalizedDir = info.directory.replace(@lgcode/\\@lgcode/g, "@lgcode/")
+          const normalizedList = list.replace(/\\/g, "/")
+          const normalizedDir = info.directory.replace(/\\/g, "/")
           expect(normalizedList).toContain(normalizedDir)
 
           yield* Fiber.join(ready)

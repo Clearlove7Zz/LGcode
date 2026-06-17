@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
-import * as OpenAIChat from "..@lgcode/src@lgcode/protocols@lgcode/openai-chat"
-import { Auth } from "..@lgcode/src@lgcode/route"
+import * as OpenAIChat from "../src/protocols/openai-chat"
+import { Auth } from "../src/route"
 
 describe("Route.with", () => {
   test("merges endpoint query and header defaults while replacing auth and id", () => {
@@ -9,7 +9,7 @@ describe("Route.with", () => {
       .with({
         id: "base-chat",
         endpoint: {
-          baseURL: "https:@lgcode/@lgcode/api.example.test@lgcode/v1",
+          baseURL: "https://api.example.test/v1",
           query: { keep: "base", base: "1" },
         },
         headers: { "x-base": "base", "x-override": "base" },
@@ -25,8 +25,8 @@ describe("Route.with", () => {
     expect(route.id).toBe("patched-chat")
     expect(route.auth).toBe(auth)
     expect(route.endpoint).toMatchObject({
-      baseURL: "https:@lgcode/@lgcode/api.example.test@lgcode/v1",
-      path: "@lgcode/chat@lgcode/completions",
+      baseURL: "https://api.example.test/v1",
+      path: "/chat/completions",
       query: { keep: "patch", base: "1", patch: "1" },
     })
     expect(route.defaults.headers).toEqual({

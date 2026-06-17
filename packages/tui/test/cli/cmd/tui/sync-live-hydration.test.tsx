@@ -1,8 +1,8 @@
-@lgcode/** @jsxImportSource @opentui@lgcode/solid *@lgcode/
+/** @jsxImportSource @opentui/solid */
 import { expect, test } from "bun:test"
-import type { GlobalEvent } from "@lgcode/sdk@lgcode/v2"
-import { tmpdir } from "..@lgcode/..@lgcode/..@lgcode/fixture@lgcode/fixture"
-import { json, mount, wait } from ".@lgcode/sync-fixture"
+import type { GlobalEvent } from "@opencode@lgcode/sdk/v2"
+import { tmpdir } from "../../../fixture/fixture"
+import { json, mount, wait } from "./sync-fixture"
 
 const sessionID = "ses_hydration_race"
 const messageID = "msg_hydration_race"
@@ -12,7 +12,7 @@ const session = {
   title: "race",
   time: { created: 0, updated: 0 },
   version: "1.15.13",
-  directory: "@lgcode/tmp@lgcode/opencode@lgcode/packages@lgcode/opencode",
+  directory: "/tmp/opencode/packages/opencode",
 }
 const assistant = {
   id: messageID,
@@ -30,12 +30,12 @@ const assistant = {
 }
 
 function global(payload: GlobalEvent["payload"]): GlobalEvent {
-  return { directory: "@lgcode/tmp@lgcode/other", project: "proj_test", payload }
+  return { directory: "/tmp/other", project: "proj_test", payload }
 }
 
 test("stale session hydration does not overwrite live message parts", async () => {
   await using tmp = await tmpdir()
-  await Bun.write(`${tmp.path}@lgcode/kv.json`, "{}")
+  await Bun.write(`${tmp.path}/kv.json`, "{}")
 
   let resolveMessages!: (response: Response) => void
   const messages = new Promise<Response>((resolve) => {
@@ -43,12 +43,12 @@ test("stale session hydration does not overwrite live message parts", async () =
   })
   let requested = false
   const { app, emit, sync } = await mount((url) => {
-    if (url.pathname === `@lgcode/session@lgcode/${sessionID}`) return json(session)
-    if (url.pathname === `@lgcode/session@lgcode/${sessionID}@lgcode/message`) {
+    if (url.pathname === `/session/${sessionID}`) return json(session)
+    if (url.pathname === `/session/${sessionID}/message`) {
       requested = true
       return messages
     }
-    if (url.pathname === `@lgcode/session@lgcode/${sessionID}@lgcode/todo` || url.pathname === `@lgcode/session@lgcode/${sessionID}@lgcode/diff`) return json([])
+    if (url.pathname === `/session/${sessionID}/todo` || url.pathname === `/session/${sessionID}/diff`) return json([])
     return undefined
   }, tmp.path)
 
@@ -87,7 +87,7 @@ test("stale session hydration does not overwrite live message parts", async () =
 
 test("orphan live deltas do not suppress hydrated parts", async () => {
   await using tmp = await tmpdir()
-  await Bun.write(`${tmp.path}@lgcode/kv.json`, "{}")
+  await Bun.write(`${tmp.path}/kv.json`, "{}")
 
   let resolveMessages!: (response: Response) => void
   const messages = new Promise<Response>((resolve) => {
@@ -95,12 +95,12 @@ test("orphan live deltas do not suppress hydrated parts", async () => {
   })
   let requested = false
   const { app, emit, sync } = await mount((url) => {
-    if (url.pathname === `@lgcode/session@lgcode/${sessionID}`) return json(session)
-    if (url.pathname === `@lgcode/session@lgcode/${sessionID}@lgcode/message`) {
+    if (url.pathname === `/session/${sessionID}`) return json(session)
+    if (url.pathname === `/session/${sessionID}/message`) {
       requested = true
       return messages
     }
-    if (url.pathname === `@lgcode/session@lgcode/${sessionID}@lgcode/todo` || url.pathname === `@lgcode/session@lgcode/${sessionID}@lgcode/diff`) return json([])
+    if (url.pathname === `/session/${sessionID}/todo` || url.pathname === `/session/${sessionID}/diff`) return json([])
     return undefined
   }, tmp.path)
 
@@ -127,7 +127,7 @@ test("orphan live deltas do not suppress hydrated parts", async () => {
 
 test("hydration does not clear text streamed before it starts", async () => {
   await using tmp = await tmpdir()
-  await Bun.write(`${tmp.path}@lgcode/kv.json`, "{}")
+  await Bun.write(`${tmp.path}/kv.json`, "{}")
 
   let resolveMessages!: (response: Response) => void
   const messages = new Promise<Response>((resolve) => {
@@ -135,12 +135,12 @@ test("hydration does not clear text streamed before it starts", async () => {
   })
   let requested = false
   const { app, emit, sync } = await mount((url) => {
-    if (url.pathname === `@lgcode/session@lgcode/${sessionID}`) return json(session)
-    if (url.pathname === `@lgcode/session@lgcode/${sessionID}@lgcode/message`) {
+    if (url.pathname === `/session/${sessionID}`) return json(session)
+    if (url.pathname === `/session/${sessionID}/message`) {
       requested = true
       return messages
     }
-    if (url.pathname === `@lgcode/session@lgcode/${sessionID}@lgcode/todo` || url.pathname === `@lgcode/session@lgcode/${sessionID}@lgcode/diff`) return json([])
+    if (url.pathname === `/session/${sessionID}/todo` || url.pathname === `/session/${sessionID}/diff`) return json([])
     return undefined
   }, tmp.path)
 
@@ -178,7 +178,7 @@ test("hydration does not clear text streamed before it starts", async () => {
 
 test("live messages merged during hydration retain the 100 message window", async () => {
   await using tmp = await tmpdir()
-  await Bun.write(`${tmp.path}@lgcode/kv.json`, "{}")
+  await Bun.write(`${tmp.path}/kv.json`, "{}")
 
   let resolveMessages!: (response: Response) => void
   const messages = new Promise<Response>((resolve) => {
@@ -186,12 +186,12 @@ test("live messages merged during hydration retain the 100 message window", asyn
   })
   let requested = false
   const { app, emit, sync } = await mount((url) => {
-    if (url.pathname === `@lgcode/session@lgcode/${sessionID}`) return json(session)
-    if (url.pathname === `@lgcode/session@lgcode/${sessionID}@lgcode/message`) {
+    if (url.pathname === `/session/${sessionID}`) return json(session)
+    if (url.pathname === `/session/${sessionID}/message`) {
       requested = true
       return messages
     }
-    if (url.pathname === `@lgcode/session@lgcode/${sessionID}@lgcode/todo` || url.pathname === `@lgcode/session@lgcode/${sessionID}@lgcode/diff`) return json([])
+    if (url.pathname === `/session/${sessionID}/todo` || url.pathname === `/session/${sessionID}/diff`) return json([])
     return undefined
   }, tmp.path)
 
@@ -225,7 +225,7 @@ test("live messages merged during hydration retain the 100 message window", asyn
 
 test("a message removed during hydration does not regain stale parts", async () => {
   await using tmp = await tmpdir()
-  await Bun.write(`${tmp.path}@lgcode/kv.json`, "{}")
+  await Bun.write(`${tmp.path}/kv.json`, "{}")
 
   let resolveMessages!: (response: Response) => void
   const messages = new Promise<Response>((resolve) => {
@@ -233,12 +233,12 @@ test("a message removed during hydration does not regain stale parts", async () 
   })
   let requested = false
   const { app, emit, sync } = await mount((url) => {
-    if (url.pathname === `@lgcode/session@lgcode/${sessionID}`) return json(session)
-    if (url.pathname === `@lgcode/session@lgcode/${sessionID}@lgcode/message`) {
+    if (url.pathname === `/session/${sessionID}`) return json(session)
+    if (url.pathname === `/session/${sessionID}/message`) {
       requested = true
       return messages
     }
-    if (url.pathname === `@lgcode/session@lgcode/${sessionID}@lgcode/todo` || url.pathname === `@lgcode/session@lgcode/${sessionID}@lgcode/diff`) return json([])
+    if (url.pathname === `/session/${sessionID}/todo` || url.pathname === `/session/${sessionID}/diff`) return json([])
     return undefined
   }, tmp.path)
 

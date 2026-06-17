@@ -1,7 +1,7 @@
-@lgcode/@lgcode/ @ts-nocheck
+// @ts-nocheck
 import { createSignal } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import * as mod from ".@lgcode/resize-handle"
+import { createStore } from "solid-js/store"
+import * as mod from "./resize-handle"
 
 const docs = `### Overview
 Drag handle for resizing panels or split views.
@@ -21,13 +21,13 @@ Use alongside resizable panels and split layouts.
 ### Accessibility
 - TODO: provide keyboard resizing guidance if needed.
 
-### Theming@lgcode/tokens
-- Uses \`data-component="resize-handle"\` with direction@lgcode/edge data attributes.
+### Theming/tokens
+- Uses \`data-component="resize-handle"\` with direction/edge data attributes.
 
 `
 
 export default {
-  title: "UI@lgcode/ResizeHandle",
+  title: "UI/ResizeHandle",
   id: "components-resize-handle",
   component: mod.ResizeHandle,
   tags: ["autodocs"],
@@ -45,7 +45,7 @@ export const Basic = {
     const [size, setSize] = createSignal(240)
     return (
       <div style={{ display: "grid", gap: "8px" }}>
-        <div style={{ color: "var(--text-weak)", "font-size": "12px" }}>Size: {size()}px<@lgcode/div>
+        <div style={{ color: "var(--text-weak)", "font-size": "12px" }}>Size: {size()}px</div>
         <div
           style={{
             width: `${size()}px`,
@@ -53,7 +53,7 @@ export const Basic = {
             "background-color": "var(--background-stronger)",
             "border-radius": "6px",
           }}
-        @lgcode/>
+        />
         <mod.ResizeHandle
           direction="horizontal"
           size={size()}
@@ -61,8 +61,8 @@ export const Basic = {
           max={480}
           onResize={setSize}
           style="height:24px;border:1px dashed color-mix(in oklab, var(--text-base) 20%, transparent)"
-        @lgcode/>
-      <@lgcode/div>
+        />
+      </div>
     )
   },
 }
@@ -72,14 +72,14 @@ export const Vertical = {
     const [size, setSize] = createSignal(180)
     return (
       <div style={{ display: "grid", gap: "8px", width: "220px" }}>
-        <div style={{ color: "var(--text-weak)", "font-size": "12px" }}>Size: {size()}px<@lgcode/div>
+        <div style={{ color: "var(--text-weak)", "font-size": "12px" }}>Size: {size()}px</div>
         <div
           style={{
             height: `${size()}px`,
             "background-color": "var(--background-stronger)",
             "border-radius": "6px",
           }}
-        @lgcode/>
+        />
         <mod.ResizeHandle
           direction="vertical"
           size={size()}
@@ -87,8 +87,8 @@ export const Vertical = {
           max={320}
           onResize={setSize}
           style="width:24px;border:1px dashed color-mix(in oklab, var(--text-base) 20%, transparent)"
-        @lgcode/>
-      <@lgcode/div>
+        />
+      </div>
     )
   },
 }
@@ -105,7 +105,7 @@ export const Collapse = {
       <div style={{ display: "grid", gap: "8px" }}>
         <div style={{ color: "var(--text-weak)", "font-size": "12px" }}>
           {collapsed() ? "Collapsed" : `Size: ${size()}px`}
-        <@lgcode/div>
+        </div>
         <div
           style={{
             width: `${collapsed() ? 0 : size()}px`,
@@ -113,7 +113,7 @@ export const Collapse = {
             "background-color": "var(--background-stronger)",
             "border-radius": "6px",
           }}
-        @lgcode/>
+        />
         <mod.ResizeHandle
           direction="horizontal"
           size={size()}
@@ -126,8 +126,8 @@ export const Collapse = {
           }}
           onCollapse={() => setState("collapsed", true)}
           style="height:24px;border:1px dashed color-mix(in oklab, var(--text-base) 20%, transparent)"
-        @lgcode/>
-      <@lgcode/div>
+        />
+      </div>
     )
   },
 }
@@ -137,7 +137,7 @@ export const EdgeStart = {
     const [size, setSize] = createSignal(240)
     return (
       <div style={{ display: "grid", gap: "8px" }}>
-        <div style={{ color: "var(--text-weak)", "font-size": "12px" }}>Size: {size()}px<@lgcode/div>
+        <div style={{ color: "var(--text-weak)", "font-size": "12px" }}>Size: {size()}px</div>
         <div
           style={{
             width: `${size()}px`,
@@ -145,7 +145,7 @@ export const EdgeStart = {
             "background-color": "var(--background-stronger)",
             "border-radius": "6px",
           }}
-        @lgcode/>
+        />
         <mod.ResizeHandle
           direction="horizontal"
           edge="start"
@@ -154,8 +154,8 @@ export const EdgeStart = {
           max={480}
           onResize={setSize}
           style="height:24px;border:1px dashed color-mix(in oklab, var(--text-base) 20%, transparent)"
-        @lgcode/>
-      <@lgcode/div>
+        />
+      </div>
     )
   },
 }

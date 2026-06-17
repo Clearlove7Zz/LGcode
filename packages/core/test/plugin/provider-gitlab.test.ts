@@ -1,18 +1,18 @@
 import { describe, expect, mock } from "bun:test"
 import { Effect, Layer } from "effect"
-import { Credential } from "@lgcode/core@lgcode/credential"
-import { Integration } from "@lgcode/core@lgcode/integration"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { Catalog } from "@lgcode/core@lgcode/catalog"
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import { Location } from "@lgcode/core@lgcode/location"
-import { PluginV2 } from "@lgcode/core@lgcode/plugin"
-import { GitLabPlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/gitlab"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import { location } from "..@lgcode/fixture@lgcode/location"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
-import { it, model, npmLayer, withEnv } from ".@lgcode/provider-helper"
+import { Credential } from "@opencode@lgcode/core/credential"
+import { Integration } from "@opencode@lgcode/core/integration"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { Catalog } from "@opencode@lgcode/core/catalog"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import { Location } from "@opencode@lgcode/core/location"
+import { PluginV2 } from "@opencode@lgcode/core/plugin"
+import { GitLabPlugin } from "@opencode@lgcode/core/plugin/provider/gitlab"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import { location } from "../fixture/location"
+import { testEffect } from "../lib/effect"
+import { it, model, npmLayer, withEnv } from "./provider-helper"
 
 const gitlabSDKOptions: Record<string, unknown>[] = []
 const database = Database.layerFromPath(":memory:").pipe(Layer.fresh)
@@ -40,7 +40,7 @@ const itWithAccount = testEffect(
     Layer.provideMerge(accounts),
     Layer.provideMerge(EventV2.defaultLayer),
     Layer.provideMerge(
-      Layer.succeed(Location.Service, Location.Service.of(location({ directory: AbsolutePath.make("@lgcode/") }))),
+      Layer.succeed(Location.Service, Location.Service.of(location({ directory: AbsolutePath.make("/") }))),
     ),
     Layer.provideMerge(npmLayer),
   ),
@@ -64,13 +64,13 @@ describe("GitLabPlugin", () => {
             {},
           )
           expect(gitlabSDKOptions).toHaveLength(1)
-          expect(gitlabSDKOptions[0].instanceUrl).toBe("https:@lgcode/@lgcode/gitlab.com")
+          expect(gitlabSDKOptions[0].instanceUrl).toBe("https://gitlab.com")
           expect(gitlabSDKOptions[0].apiKey).toBe("env-token")
           expect(gitlabSDKOptions[0].aiGatewayHeaders).toMatchObject({
             "anthropic-beta": "context-1m-2025-08-07",
           })
           expect(String((gitlabSDKOptions[0].aiGatewayHeaders as Record<string, string>)["User-Agent"])).toContain(
-            "gitlab-ai-provider@lgcode/test-version",
+            "gitlab-ai-provider/test-version",
           )
           expect(gitlabSDKOptions[0].featureFlags).toEqual({
             duo_agent_platform_agentic_chat: true,
@@ -83,7 +83,7 @@ describe("GitLabPlugin", () => {
   it.effect("uses GITLAB_INSTANCE_URL when instanceUrl is not configured", () =>
     withEnv(
       {
-        GITLAB_INSTANCE_URL: "https:@lgcode/@lgcode/env.gitlab.example",
+        GITLAB_INSTANCE_URL: "https://env.gitlab.example",
         GITLAB_TOKEN: undefined,
       },
       () =>
@@ -96,15 +96,15 @@ describe("GitLabPlugin", () => {
             { model: model("gitlab", "claude"), package: "gitlab-ai-provider", options: { name: "gitlab" } },
             {},
           )
-          expect(gitlabSDKOptions[0].instanceUrl).toBe("https:@lgcode/@lgcode/env.gitlab.example")
+          expect(gitlabSDKOptions[0].instanceUrl).toBe("https://env.gitlab.example")
         }),
     ),
   )
 
-  it.effect("keeps configured instance URL, apiKey, aiGatewayHeaders, and featureFlags over env@lgcode/defaults", () =>
+  it.effect("keeps configured instance URL, apiKey, aiGatewayHeaders, and featureFlags over env/defaults", () =>
     withEnv(
       {
-        GITLAB_INSTANCE_URL: "https:@lgcode/@lgcode/env.gitlab.example",
+        GITLAB_INSTANCE_URL: "https://env.gitlab.example",
         GITLAB_TOKEN: "env-token",
       },
       () =>
@@ -119,7 +119,7 @@ describe("GitLabPlugin", () => {
               package: "gitlab-ai-provider",
               options: {
                 name: "gitlab",
-                instanceUrl: "https:@lgcode/@lgcode/configured.gitlab.example",
+                instanceUrl: "https://configured.gitlab.example",
                 apiKey: "configured-token",
                 aiGatewayHeaders: {
                   "anthropic-beta": "configured-beta",
@@ -133,7 +133,7 @@ describe("GitLabPlugin", () => {
             },
             {},
           )
-          expect(gitlabSDKOptions[0].instanceUrl).toBe("https:@lgcode/@lgcode/configured.gitlab.example")
+          expect(gitlabSDKOptions[0].instanceUrl).toBe("https://configured.gitlab.example")
           expect(gitlabSDKOptions[0].apiKey).toBe("configured-token")
           expect(gitlabSDKOptions[0].aiGatewayHeaders).toMatchObject({
             "anthropic-beta": "configured-beta",
@@ -155,7 +155,7 @@ describe("GitLabPlugin", () => {
       yield* plugin.add(GitLabPlugin)
       const result = yield* plugin.trigger(
         "aisdk.sdk",
-        { model: model("gitlab", "claude"), package: "@ai-sdk@lgcode/openai", options: { name: "gitlab" } },
+        { model: model("gitlab", "claude"), package: "@ai-sdk/openai", options: { name: "gitlab" } },
         {},
       )
       expect(result.sdk).toBeUndefined()

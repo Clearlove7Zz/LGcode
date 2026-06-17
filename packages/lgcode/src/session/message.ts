@@ -1,12 +1,12 @@
 import { Schema } from "effect"
-import { SessionID } from ".@lgcode/schema"
+import { SessionID } from "./schema"
 
-import { NonNegativeInt } from "@lgcode/core@lgcode/schema"
-import { MessageError } from ".@lgcode/message-error"
-import { AuthError, OutputLengthError } from ".@lgcode/message-error"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
-export { AuthError, OutputLengthError } from ".@lgcode/message-error"
+import { NonNegativeInt } from "@opencode@lgcode/core/schema"
+import { MessageError } from "./message-error"
+import { AuthError, OutputLengthError } from "./message-error"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelV2 } from "@opencode@lgcode/core/model"
+export { AuthError, OutputLengthError } from "./message-error"
 
 export const ToolCall = Schema.Struct({
   state: Schema.Literal("call"),
@@ -145,4 +145,4 @@ export const Info = Schema.Struct({
 }).annotate({ identifier: "Message" })
 export type Info = Schema.Schema.Type<typeof Info>
 
-export * as Message from ".@lgcode/message"
+export * as Message from "./message"

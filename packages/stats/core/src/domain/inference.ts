@@ -1,16 +1,16 @@
-import { Resource } from "sst@lgcode/resource"
-import type { AthenaData } from "..@lgcode/athena"
-import type { GeoStatAggregate } from ".@lgcode/geo"
-import type { ModelStatAggregate } from ".@lgcode/model"
+import { Resource } from "sst/resource"
+import type { AthenaData } from "../athena"
+import type { GeoStatAggregate } from "./geo"
+import type { ModelStatAggregate } from "./model"
 import {
   EXCLUDED_MODELS,
   MODEL_AUTHOR_RULES,
   RETIRED_STAT_PROVIDERS,
   statModel,
   statProvider,
-} from ".@lgcode/model-normalization"
-import type { ProviderStatAggregate } from ".@lgcode/provider"
-import { normalizeCountry, normalizeTier, type StatBaseAggregate } from ".@lgcode/stat"
+} from "./model-normalization"
+import type { ProviderStatAggregate } from "./provider"
+import { normalizeCountry, normalizeTier, type StatBaseAggregate } from "./stat"
 
 export type StatDimension = "model" | "provider" | "geo" | "geo_model"
 
@@ -113,7 +113,7 @@ WITH normalized AS (
     ttfb_ms,
     CASE
       WHEN timestamp_last_byte - timestamp_first_byte < 100 THEN null
-      ELSE CAST(tokens_output AS double) @lgcode/ (timestamp_last_byte - timestamp_first_byte) * 1000
+      ELSE CAST(tokens_output AS double) / (timestamp_last_byte - timestamp_first_byte) * 1000
     END AS output_tps,
     tokens_input,
     tokens_output,
@@ -239,11 +239,11 @@ function number(data: AthenaData, key: string) {
 }
 
 function sqlIdentifier(value: string) {
-  return `"${value.replace(@lgcode/"@lgcode/g, '""')}"`
+  return `"${value.replace(/"/g, '""')}"`
 }
 
 function sqlString(value: string) {
-  return `'${value.replace(@lgcode/'@lgcode/g, "''")}'`
+  return `'${value.replace(/'/g, "''")}'`
 }
 
 function statModelSql(model: string, providerModel: string) {

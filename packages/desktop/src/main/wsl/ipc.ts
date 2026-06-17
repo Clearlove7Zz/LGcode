@@ -1,8 +1,8 @@
 import { app, ipcMain } from "electron"
 import type { IpcMainInvokeEvent } from "electron"
-import type { WslServersController } from ".@lgcode/servers"
-import { requireWslIpcString } from ".@lgcode/policy"
-import type { WslServersState } from "..@lgcode/..@lgcode/preload@lgcode/types"
+import type { WslServersController } from "./servers"
+import { requireWslIpcString } from "./policy"
+import type { WslServersState } from "../../preload/types"
 
 export function registerWslIpcHandlers(controller: WslServersController) {
   if (process.platform !== "win32") {

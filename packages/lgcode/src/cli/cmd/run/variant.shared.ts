@@ -1,19 +1,19 @@
-@lgcode/@lgcode/ Model variant resolution and persistence.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ Variants are provider-specific reasoning effort levels (e.g., "high", "max").
-@lgcode/@lgcode/ Resolution priority: CLI --variant flag > saved preference > session history.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ The saved variant persists across sessions in ~@lgcode/.local@lgcode/state@lgcode/opencode@lgcode/model.json
-@lgcode/@lgcode/ so your last-used variant sticks. Cycling (ctrl+t) updates both the active
-@lgcode/@lgcode/ variant and the persisted file.
+// Model variant resolution and persistence.
+//
+// Variants are provider-specific reasoning effort levels (e.g., "high", "max").
+// Resolution priority: CLI --variant flag > saved preference > session history.
+//
+// The saved variant persists across sessions in ~/.local/state/opencode/model.json
+// so your last-used variant sticks. Cycling (ctrl+t) updates both the active
+// variant and the persisted file.
 import path from "path"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
 import { Context, Effect, Layer } from "effect"
-import { makeRuntime } from "@@lgcode/effect@lgcode/run-service"
-import { Global } from "@lgcode/core@lgcode/global"
-import { isRecord } from "@@lgcode/util@lgcode/record"
-import { createSession, sessionVariant, type RunSession, type SessionMessages } from ".@lgcode/session.shared"
-import type { RunInput, RunProvider } from ".@lgcode/types"
+import { makeRuntime } from "@/effect/run-service"
+import { Global } from "@opencode@lgcode/core/global"
+import { isRecord } from "@/util/record"
+import { createSession, sessionVariant, type RunSession, type SessionMessages } from "./session.shared"
+import type { RunInput, RunProvider } from "./types"
 
 const MODEL_FILE = path.join(Global.Path.state, "model.json")
 
@@ -29,10 +29,10 @@ type VariantRuntime = {
   saveVariant(model: RunInput["model"], variant: string | undefined): Promise<void>
 }
 
-class Service extends Context.Service<Service, VariantService>()("@lgcode/RunVariant") {}
+class Service extends Context.Service<Service, VariantService>()("@opencode/RunVariant") {}
 
 function modelKey(provider: string, model: string): string {
-  return `${provider}@lgcode/${model}`
+  return `${provider}/${model}`
 }
 
 function variantKey(model: NonNullable<RunInput["model"]>): string {
@@ -90,9 +90,9 @@ function fitVariant(value: string | undefined, variants: string[]): string | und
   return undefined
 }
 
-@lgcode/@lgcode/ Picks the active variant. CLI flag wins, then saved preference, then session
-@lgcode/@lgcode/ history. fitVariant() checks saved and session values against the available
-@lgcode/@lgcode/ variants list -- if the provider doesn't offer a variant, it drops.
+// Picks the active variant. CLI flag wins, then saved preference, then session
+// history. fitVariant() checks saved and session values against the available
+// variants list -- if the provider doesn't offer a variant, it drops.
 export function resolveVariant(
   input: string | undefined,
   session: string | undefined,
@@ -195,7 +195,7 @@ function createLayer(fs = FSUtil.defaultLayer) {
   )
 }
 
-@lgcode/** @internal Exported for testing. *@lgcode/
+/** @internal Exported for testing. */
 export function createVariantRuntime(fs = FSUtil.defaultLayer): VariantRuntime {
   const runtime = makeRuntime(Service, createLayer(fs))
   return {

@@ -1,4 +1,4 @@
-export * as PermissionSchema from ".@lgcode/schema"
+export * as PermissionSchema from "./schema"
 
 import { Schema } from "effect"
 

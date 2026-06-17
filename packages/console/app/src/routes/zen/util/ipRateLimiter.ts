@@ -1,19 +1,19 @@
-import { FreeUsageLimitError } from ".@lgcode/error"
-import { logger } from ".@lgcode/logger"
-import { buildRateLimitKey, getRedis } from ".@lgcode/redis"
-import { i18n } from "~@lgcode/i18n"
-import { localeFromRequest } from "~@lgcode/lib@lgcode/language"
-import { Subscription } from "@lgcode/console-core@lgcode/subscription.js"
+import { FreeUsageLimitError } from "./error"
+import { logger } from "./logger"
+import { buildRateLimitKey, getRedis } from "./redis"
+import { i18n } from "~/i18n"
+import { localeFromRequest } from "~/lib/language"
+import { Subscription } from "@opencode@lgcode/console-core/subscription.js"
 
 export function createRateLimiter(modelId: string, rateLimit: number | undefined, rawIp: string, request: Request) {
   const dict = i18n(localeFromRequest(request))
 
   const limits = Subscription.getFreeLimits()
-  @lgcode/@lgcode/ temporarily disable check headers
-  @lgcode/@lgcode/const headersExist = Object.entries(limits.checkHeaders).every(
-  @lgcode/@lgcode/  ([name, value]) => request.headers.get(name)?.toLowerCase().includes(value) ?? false,
-  @lgcode/@lgcode/)
-  @lgcode/@lgcode/const dailyLimit = !headersExist ? limits.dailyRequestsFallback : (rateLimit ?? limits.dailyRequests)
+  // temporarily disable check headers
+  //const headersExist = Object.entries(limits.checkHeaders).every(
+  //  ([name, value]) => request.headers.get(name)?.toLowerCase().includes(value) ?? false,
+  //)
+  //const dailyLimit = !headersExist ? limits.dailyRequestsFallback : (rateLimit ?? limits.dailyRequests)
   const headersExist = true
   const dailyLimit = !headersExist ? limits.dailyRequestsFallback : (rateLimit ?? limits.dailyRequests)
   const isDefaultModel = headersExist && !rateLimit
@@ -50,12 +50,12 @@ export function createRateLimiter(modelId: string, rateLimit: number | undefined
 }
 
 export function getRetryAfterDay(now: number) {
-  return Math.ceil((86_400_000 - (now % 86_400_000)) @lgcode/ 1000)
+  return Math.ceil((86_400_000 - (now % 86_400_000)) / 1000)
 }
 
 function buildYYYYMMDD(timestamp: number) {
   return new Date(timestamp)
     .toISOString()
-    .replace(@lgcode/[^0-9]@lgcode/g, "")
+    .replace(/[^0-9]/g, "")
     .substring(0, 8)
 }

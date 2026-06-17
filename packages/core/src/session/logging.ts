@@ -1,5 +1,5 @@
 import { Cause, Effect } from "effect"
-import { SessionSchema } from ".@lgcode/schema"
+import { SessionSchema } from "./schema"
 
 export const logFailure = (
   message: "Failed to drain Session" | "Failed to wake Session",

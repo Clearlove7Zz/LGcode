@@ -1,18 +1,18 @@
-import { http } from ".@lgcode/effect.js"
-import { socket } from ".@lgcode/socket.js"
+import { http } from "./effect.js"
+import { socket } from "./socket.js"
 
-@lgcode/** HTTP and WebSocket cassette recording. *@lgcode/
+/** HTTP and WebSocket cassette recording. */
 export const HttpRecorder = { http, socket } as const
 
 export namespace HttpRecorder {
-  @lgcode/** Additional JSON metadata stored with a cassette. *@lgcode/
-  export type CassetteMetadata = import(".@lgcode/types.js").CassetteMetadata
-  @lgcode/** Recorder configuration. *@lgcode/
-  export type RecorderOptions = import(".@lgcode/types.js").RecorderOptions
-  @lgcode/** Additive redaction and header-preservation policy. *@lgcode/
-  export type RedactOptions = import(".@lgcode/types.js").RedactOptions
-  @lgcode/** Returns whether an incoming HTTP request matches a recorded request. *@lgcode/
-  export type RequestMatcher = import(".@lgcode/types.js").RequestMatcher
-  @lgcode/** The normalized HTTP request representation used for matching. *@lgcode/
-  export type RequestSnapshot = import(".@lgcode/types.js").RequestSnapshot
+  /** Additional JSON metadata stored with a cassette. */
+  export type CassetteMetadata = import("./types.js").CassetteMetadata
+  /** Recorder configuration. */
+  export type RecorderOptions = import("./types.js").RecorderOptions
+  /** Additive redaction and header-preservation policy. */
+  export type RedactOptions = import("./types.js").RedactOptions
+  /** Returns whether an incoming HTTP request matches a recorded request. */
+  export type RequestMatcher = import("./types.js").RequestMatcher
+  /** The normalized HTTP request representation used for matching. */
+  export type RequestSnapshot = import("./types.js").RequestSnapshot
 }

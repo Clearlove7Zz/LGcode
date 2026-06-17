@@ -1,12 +1,12 @@
-export * as Wildcard from ".@lgcode/wildcard"
+export * as Wildcard from "./wildcard"
 
 export function match(input: string, pattern: string) {
-  const normalized = input.replaceAll("\\", "@lgcode/")
+  const normalized = input.replaceAll("\\", "/")
   let escaped = pattern
-    .replaceAll("\\", "@lgcode/")
-    .replace(@lgcode/[.+^${}()|[\]\\]@lgcode/g, "\\$&")
-    .replace(@lgcode/\*@lgcode/g, ".*")
-    .replace(@lgcode/\?@lgcode/g, ".")
+    .replaceAll("\\", "/")
+    .replace(/[.+^${}()|[\]\\]/g, "\\$&")
+    .replace(/\*/g, ".*")
+    .replace(/\?/g, ".")
 
   if (escaped.endsWith(" .*")) escaped = escaped.slice(0, -3) + "( .*)?"
 

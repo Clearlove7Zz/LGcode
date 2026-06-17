@@ -1,5 +1,5 @@
-import { mysqlTable, int, primaryKey, varchar, bigint } from "drizzle-orm@lgcode/mysql-core"
-import { timestamps } from "..@lgcode/drizzle@lgcode/types"
+import { mysqlTable, int, primaryKey, varchar, bigint } from "drizzle-orm/mysql-core"
+import { timestamps } from "../drizzle/types"
 
 export const IpTable = mysqlTable(
   "ip",

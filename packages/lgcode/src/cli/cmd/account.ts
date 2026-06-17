@@ -1,10 +1,10 @@
-import { cmd } from ".@lgcode/cmd"
+import { cmd } from "./cmd"
 import { Duration, Effect, Match, Option } from "effect"
-import { UI } from "..@lgcode/ui"
-import { Account } from "@@lgcode/account@lgcode/account"
-import { AccountID, OrgID, PollExpired, type PollResult, type AccountError } from "@@lgcode/account@lgcode/schema"
-import { effectCmd } from "..@lgcode/effect-cmd"
-import * as Prompt from "..@lgcode/effect@lgcode/prompt"
+import { UI } from "../ui"
+import { Account } from "@/account/account"
+import { AccountID, OrgID, PollExpired, type PollResult, type AccountError } from "@/account/schema"
+import { effectCmd } from "../effect-cmd"
+import * as Prompt from "../effect/prompt"
 import open from "open"
 
 const openBrowser = (url: string) => Effect.promise(() => open(url).catch(() => undefined))
@@ -15,7 +15,7 @@ const dim = (value: string) => UI.Style.TEXT_DIM + value + UI.Style.TEXT_NORMAL
 
 const activeSuffix = (isActive: boolean) => (isActive ? dim(" (active)") : "")
 
-export const defaultConsoleUrl = "https:@lgcode/@lgcode/console.opencode.ai"
+export const defaultConsoleUrl = "https://console.opencode.ai"
 
 export const formatAccountLabel = (account: { email: string; url: string }, isActive: boolean) =>
   `${account.email} ${dim(account.url)}${activeSuffix(isActive)}`

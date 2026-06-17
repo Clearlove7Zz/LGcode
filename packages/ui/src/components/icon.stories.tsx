@@ -1,6 +1,6 @@
-@lgcode/@lgcode/ @ts-nocheck
-import * as mod from ".@lgcode/icon"
-import { create } from "..@lgcode/storybook@lgcode/scaffold"
+// @ts-nocheck
+import * as mod from "./icon"
+import { create } from "../storybook/scaffold"
 
 const docs = `### Overview
 Inline icon renderer using the built-in OpenCode icon set.
@@ -21,7 +21,7 @@ Use with \`Button\`, \`IconButton\`, and menu items.
 ### Accessibility
 - Icons are aria-hidden by default; wrap with accessible text when needed.
 
-### Theming@lgcode/tokens
+### Theming/tokens
 - Uses \`data-component="icon"\` with size data attributes.
 
 `
@@ -111,10 +111,10 @@ const names = [
   "models",
 ]
 
-const story = create({ title: "UI@lgcode/Icon", mod, args: { name: "check" } })
+const story = create({ title: "UI/Icon", mod, args: { name: "check" } })
 
 export default {
-  title: "UI@lgcode/Icon",
+  title: "UI/Icon",
   id: "components-icon",
   component: story.meta.component,
   tags: ["autodocs"],
@@ -142,11 +142,11 @@ export const Basic = story.Basic
 export const Sizes = {
   render: () => (
     <div style={{ display: "flex", gap: "12px", "align-items": "center" }}>
-      <mod.Icon name="check" size="small" @lgcode/>
-      <mod.Icon name="check" size="normal" @lgcode/>
-      <mod.Icon name="check" size="medium" @lgcode/>
-      <mod.Icon name="check" size="large" @lgcode/>
-    <@lgcode/div>
+      <mod.Icon name="check" size="small" />
+      <mod.Icon name="check" size="normal" />
+      <mod.Icon name="check" size="medium" />
+      <mod.Icon name="check" size="large" />
+    </div>
   ),
 }
 
@@ -161,10 +161,10 @@ export const Gallery = {
     >
       {names.map((name) => (
         <div style={{ display: "grid", gap: "6px", "justify-items": "center" }}>
-          <mod.Icon name={name} @lgcode/>
-          <div style={{ "font-size": "10px", color: "var(--text-weak)", "text-align": "center" }}>{name}<@lgcode/div>
-        <@lgcode/div>
+          <mod.Icon name={name} />
+          <div style={{ "font-size": "10px", color: "var(--text-weak)", "text-align": "center" }}>{name}</div>
+        </div>
       ))}
-    <@lgcode/div>
+    </div>
   ),
 }

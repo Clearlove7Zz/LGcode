@@ -1,25 +1,25 @@
 import { describe, expect } from "bun:test"
 import { $ } from "bun"
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import path from "path"
 import { eq } from "drizzle-orm"
 import { Effect, Layer } from "effect"
-import { MoveSession } from "@lgcode/core@lgcode/control-plane@lgcode/move-session"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { Git } from "@lgcode/core@lgcode/git"
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import { Project } from "@lgcode/core@lgcode/project"
-import { ProjectTable } from "@lgcode/core@lgcode/project@lgcode/sql"
-import { ProjectDirectories } from "@lgcode/core@lgcode/project@lgcode/directories"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import { SessionV2 } from "@lgcode/core@lgcode/session"
-import { SessionExecution } from "@lgcode/core@lgcode/session@lgcode/execution"
-import { SessionProjector } from "@lgcode/core@lgcode/session@lgcode/projector"
-import { SessionTable } from "@lgcode/core@lgcode/session@lgcode/sql"
-import { SessionStore } from "@lgcode/core@lgcode/session@lgcode/store"
-import { tmpdir } from ".@lgcode/fixture@lgcode/tmpdir"
-import { testEffect } from ".@lgcode/lib@lgcode/effect"
+import { MoveSession } from "@opencode@lgcode/core/control-plane/move-session"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { Git } from "@opencode@lgcode/core/git"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import { Project } from "@opencode@lgcode/core/project"
+import { ProjectTable } from "@opencode@lgcode/core/project/sql"
+import { ProjectDirectories } from "@opencode@lgcode/core/project/directories"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import { SessionV2 } from "@opencode@lgcode/core/session"
+import { SessionExecution } from "@opencode@lgcode/core/session/execution"
+import { SessionProjector } from "@opencode@lgcode/core/session/projector"
+import { SessionTable } from "@opencode@lgcode/core/session/sql"
+import { SessionStore } from "@opencode@lgcode/core/session/store"
+import { tmpdir } from "./fixture/tmpdir"
+import { testEffect } from "./lib/effect"
 
 const database = Database.layerFromPath(":memory:")
 const events = EventV2.layer.pipe(Layer.provide(database))
@@ -190,7 +190,7 @@ describe("MoveSession", () => {
       yield* Effect.promise(() => fs.mkdir(sourceDirectory))
       yield* Effect.promise(() => fs.writeFile(path.join(sourceDirectory, "tracked.txt"), "initial\n"))
       yield* Effect.promise(() => fs.writeFile(path.join(sourceDirectory, "staged.txt"), "initial\n"))
-      yield* Effect.promise(() => $`git add packages@lgcode/tracked.txt packages@lgcode/staged.txt`.cwd(source).quiet())
+      yield* Effect.promise(() => $`git add packages/tracked.txt packages/staged.txt`.cwd(source).quiet())
       yield* Effect.promise(() => $`git commit -m packages`.cwd(source).quiet())
       const destination = abs(`${root.path}-move-nested-destination`)
       yield* Effect.addFinalizer(() =>
@@ -200,7 +200,7 @@ describe("MoveSession", () => {
       const moved = abs(path.join(yield* Effect.promise(() => fs.realpath(destination)), "packages"))
       yield* Effect.promise(() => fs.writeFile(path.join(sourceDirectory, "tracked.txt"), "changed\n"))
       yield* Effect.promise(() => fs.writeFile(path.join(sourceDirectory, "staged.txt"), "staged\n"))
-      yield* Effect.promise(() => $`git add packages@lgcode/staged.txt`.cwd(source).quiet())
+      yield* Effect.promise(() => $`git add packages/staged.txt`.cwd(source).quiet())
       yield* Effect.promise(() => fs.writeFile(path.join(sourceDirectory, "untracked.txt"), "new\n"))
       yield* Effect.promise(() => fs.writeFile(path.join(source, "tracked.txt"), "unrelated\n"))
       yield* Effect.promise(() => fs.writeFile(path.join(source, "untracked.txt"), "unrelated\n"))
@@ -242,8 +242,8 @@ describe("MoveSession", () => {
       expect(yield* Effect.promise(() => fs.readFile(path.join(sourceDirectory, "staged.txt"), "utf8"))).toBe(
         "staged\n",
       )
-      expect(yield* Effect.promise(() => $`git status --porcelain -- packages@lgcode/staged.txt`.cwd(source).text())).toBe(
-        "M  packages@lgcode/staged.txt\n",
+      expect(yield* Effect.promise(() => $`git status --porcelain -- packages/staged.txt`.cwd(source).text())).toBe(
+        "M  packages/staged.txt\n",
       )
       expect(yield* Effect.promise(() => fs.readFile(path.join(source, "tracked.txt"), "utf8"))).toBe("unrelated\n")
       expect(yield* Effect.promise(() => fs.readFile(path.join(source, "untracked.txt"), "utf8"))).toBe("unrelated\n")

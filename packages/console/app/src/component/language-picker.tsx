@@ -1,9 +1,9 @@
 import { For, createSignal } from "solid-js"
-import { useLocation, useNavigate } from "@solidjs@lgcode/router"
-import { Dropdown, DropdownItem } from "~@lgcode/component@lgcode/dropdown"
-import { useLanguage } from "~@lgcode/context@lgcode/language"
-import { route, strip } from "~@lgcode/lib@lgcode/language"
-import ".@lgcode/language-picker.css"
+import { useLocation, useNavigate } from "@solidjs/router"
+import { Dropdown, DropdownItem } from "~/component/dropdown"
+import { useLanguage } from "~/context/language"
+import { route, strip } from "~/lib/language"
+import "./language-picker.css"
 
 export function LanguagePicker(props: { align?: "left" | "right" } = {}) {
   const language = useLanguage()
@@ -31,10 +31,10 @@ export function LanguagePicker(props: { align?: "left" | "right" } = {}) {
               }}
             >
               {language.label(locale)}
-            <@lgcode/DropdownItem>
+            </DropdownItem>
           )}
-        <@lgcode/For>
-      <@lgcode/Dropdown>
-    <@lgcode/div>
+        </For>
+      </Dropdown>
+    </div>
   )
 }

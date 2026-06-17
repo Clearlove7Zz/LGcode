@@ -58,11 +58,11 @@ export function parse(input: string): Reference | undefined {
   const cleaned = normalizeInput(input)
   if (!cleaned) return
 
-  const githubPrefixed = cleaned.match(@lgcode/^github:([^@lgcode/\s]+)\@lgcode/([^@lgcode/\s]+)$@lgcode/)
+  const githubPrefixed = cleaned.match(/^github:([^/\s]+)\/([^/\s]+)$/)
   if (githubPrefixed) return buildRemote({ host: "github.com", segments: [githubPrefixed[1], githubPrefixed[2]] })
 
-  if (!cleaned.includes(":@lgcode/@lgcode/")) {
-    const scp = cleaned.match(@lgcode/^(?:[^@@lgcode/\s]+@)?([^:@lgcode/\s]+):(.+)$@lgcode/)
+  if (!cleaned.includes("://")) {
+    const scp = cleaned.match(/^(?:[^@/\s]+@)?([^:/\s]+):(.+)$/)
     if (scp) return buildRemote({ host: scp[1], segments: parts(scp[2]), remote: cleaned })
 
     const direct = parts(cleaned)
@@ -77,7 +77,7 @@ export function parse(input: string): Reference | undefined {
     return buildRemote({
       host: url.host,
       segments,
-      remote: url.host === "github.com" ? githubRemote(segments.join("@lgcode/")) : cleaned,
+      remote: url.host === "github.com" ? githubRemote(segments.join("/")) : cleaned,
       protocol: url.protocol,
     })
   } catch {
@@ -90,7 +90,7 @@ export function parseRemote(input: string): RemoteReference {
   if (!reference) {
     throw new InvalidReferenceError({
       repository: input,
-      message: "Repository must be a git URL, host@lgcode/path reference, or GitHub owner@lgcode/repo shorthand",
+      message: "Repository must be a git URL, host/path reference, or GitHub owner/repo shorthand",
     })
   }
   if (!isRemote(reference)) {
@@ -103,10 +103,10 @@ export function parseRemote(input: string): RemoteReference {
 }
 
 export function validateBranch(branch: string): void {
-  if (@lgcode/^[A-Za-z0-9@lgcode/_.-]+$@lgcode/.test(branch) && !branch.startsWith("-") && !branch.includes("..")) return
+  if (/^[A-Za-z0-9/_.-]+$/.test(branch) && !branch.startsWith("-") && !branch.includes("..")) return
   throw new InvalidBranchError({
     branch,
-    message: "Branch must contain only alphanumeric characters, @lgcode/, _, ., and -, and cannot start with - or contain ..",
+    message: "Branch must contain only alphanumeric characters, /, _, ., and -, and cannot start with - or contain ..",
   })
 }
 
@@ -123,7 +123,7 @@ export function cachePath(root: string, reference: Reference): string {
 }
 
 export function cacheIdentity(reference: Reference): string {
-  return `${reference.host}@lgcode/${reference.path}`
+  return `${reference.host}/${reference.path}`
 }
 
 export function same(left: Reference, right: Reference): boolean {
@@ -133,28 +133,28 @@ export function same(left: Reference, right: Reference): boolean {
 function normalizeInput(input: string) {
   return input
     .trim()
-    .replace(@lgcode/^git\+@lgcode/, "")
-    .replace(@lgcode/#.*$@lgcode/, "")
-    .replace(@lgcode/\@lgcode/+$@lgcode/, "")
+    .replace(/^git\+/, "")
+    .replace(/#.*$/, "")
+    .replace(/\/+$/, "")
 }
 
 function trimGitSuffix(input: string) {
-  return input.replace(@lgcode/\.git$@lgcode/, "")
+  return input.replace(/\.git$/, "")
 }
 
 function parts(input: string) {
   return input
-    .split("@lgcode/")
+    .split("/")
     .map((item) => trimGitSuffix(item.trim()))
     .filter(Boolean)
 }
 
 function safeHost(input: string) {
-  return Boolean(input) && !input.startsWith("-") && !@lgcode/[\s@lgcode/\\]@lgcode/.test(input)
+  return Boolean(input) && !input.startsWith("-") && !/[\s/\\]/.test(input)
 }
 
 function safeSegment(input: string) {
-  return input !== "." && input !== ".." && !input.includes(":") && !@lgcode/[\s@lgcode/\\]@lgcode/.test(input)
+  return input !== "." && input !== ".." && !input.includes(":") && !/[\s/\\]/.test(input)
 }
 
 function hostLike(input: string) {
@@ -162,19 +162,19 @@ function hostLike(input: string) {
 }
 
 function withSlash(input: string) {
-  return input.endsWith("@lgcode/") ? input : `${input}@lgcode/`
+  return input.endsWith("/") ? input : `${input}/`
 }
 
 function githubRemote(pathname: string) {
   const base = process.env.OPENCODE_REPO_CLONE_GITHUB_BASE_URL
-  if (!base) return `https:@lgcode/@lgcode/github.com@lgcode/${pathname}.git`
+  if (!base) return `https://github.com/${pathname}.git`
   return new URL(`${pathname}.git`, withSlash(base)).href
 }
 
 function buildRemote(input: { host: string; segments: string[]; remote?: string; protocol?: string }) {
   const segments = input.segments.map(trimGitSuffix).filter(Boolean)
   if (!safeHost(input.host) || !segments.length || segments.some((segment) => !safeSegment(segment))) return
-  const repositoryPath = segments.join("@lgcode/")
+  const repositoryPath = segments.join("/")
   const host = input.host.toLowerCase()
   return {
     host,
@@ -183,20 +183,20 @@ function buildRemote(input: { host: string; segments: string[]; remote?: string;
     owner: segments.length === 2 ? segments[0] : undefined,
     repo: segments[segments.length - 1],
     remote:
-      input.remote ?? (host === "github.com" ? githubRemote(repositoryPath) : `https:@lgcode/@lgcode/${host}@lgcode/${repositoryPath}.git`),
-    label: host === "github.com" && segments.length === 2 ? repositoryPath : `${host}@lgcode/${repositoryPath}`,
+      input.remote ?? (host === "github.com" ? githubRemote(repositoryPath) : `https://${host}/${repositoryPath}.git`),
+    label: host === "github.com" && segments.length === 2 ? repositoryPath : `${host}/${repositoryPath}`,
     protocol: input.protocol,
   } satisfies RemoteReference
 }
 
 function buildFile(input: { url: URL; remote: string }) {
   const filePath = path.normalize(fileURLToPath(input.url))
-  const segments = filePath.split(@lgcode/[\\@lgcode/]+@lgcode/).filter(Boolean)
+  const segments = filePath.split(/[\\/]+/).filter(Boolean)
   if (!segments.length) return
   return {
     host: "file",
     path: filePath,
-    segments: segments.map((segment) => segment.replace(@lgcode/:$@lgcode/, "")),
+    segments: segments.map((segment) => segment.replace(/:$/, "")),
     owner: undefined,
     repo: trimGitSuffix(segments[segments.length - 1]),
     remote: input.remote,
@@ -205,4 +205,4 @@ function buildFile(input: { url: URL; remote: string }) {
   } satisfies FileReference
 }
 
-export * as Repository from ".@lgcode/repository"
+export * as Repository from "./repository"

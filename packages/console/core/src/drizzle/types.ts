@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm"
-import { bigint, timestamp, varchar } from "drizzle-orm@lgcode/mysql-core"
+import { bigint, timestamp, varchar } from "drizzle-orm/mysql-core"
 
 export const ulid = (name: string) => varchar(name, { length: 30 })
 

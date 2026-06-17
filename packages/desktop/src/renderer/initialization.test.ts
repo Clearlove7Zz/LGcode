@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { initializationData, initializationReady } from ".@lgcode/initialization"
+import { initializationData, initializationReady } from "./initialization"
 
 describe("desktop renderer initialization", () => {
   test("throws the original initialization error before rendering server providers", () => {
@@ -29,7 +29,7 @@ describe("desktop renderer initialization", () => {
   })
 
   test("returns initialized sidecar data", () => {
-    const sidecar = { url: "http:@lgcode/@lgcode/127.0.0.1:1234", username: "opencode", password: "secret" }
+    const sidecar = { url: "http://127.0.0.1:1234", username: "opencode", password: "secret" }
 
     expect(initializationData(Object.assign(() => sidecar, { error: undefined }))).toBe(sidecar)
   })

@@ -1,26 +1,26 @@
-import { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
+import { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
 import { Effect, Schema } from "effect"
-import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
-import type { JSONSchema7 } from "@ai-sdk@lgcode/provider"
-import type { MessageV2 } from "..@lgcode/session@lgcode/message-v2"
-import type { Permission } from "..@lgcode/permission"
-import type { SessionID, MessageID } from "..@lgcode/session@lgcode/schema"
-import * as Truncate from ".@lgcode/truncate"
-import { Agent } from "@@lgcode/agent@lgcode/agent"
+import { SessionV1 } from "@opencode@lgcode/core/v1/session"
+import type { JSONSchema7 } from "@ai-sdk/provider"
+import type { MessageV2 } from "../session/message-v2"
+import type { Permission } from "../permission"
+import type { SessionID, MessageID } from "../session/schema"
+import * as Truncate from "./truncate"
+import { Agent } from "@/agent/agent"
 
 interface Metadata {
   [key: string]: any
 }
 
-@lgcode/@lgcode/ TODO: remove this hack
+// TODO: remove this hack
 export type DynamicDescription = (agent: Agent.Info) => Effect.Effect<string>
 
-@lgcode/**
+/**
  * Raised when the LLM calls a tool with arguments that fail the parameter
  * schema. This is the canonical "rewrite the input" tool error: the typed
  * error class makes it matchable upstream, and its `message` getter produces
  * the model-facing prose that the AI SDK feeds back as the tool result.
- *@lgcode/
+ */
 export class InvalidArgumentsError extends Schema.TaggedErrorClass<InvalidArgumentsError>()(
   "ToolInvalidArgumentsError",
   {
@@ -105,9 +105,9 @@ function wrap<Parameters extends Schema.Decoder<unknown>, Result extends Metadat
   return () =>
     Effect.gen(function* () {
       const toolInfo = typeof init === "function" ? { ...(yield* init()) } : { ...init }
-      @lgcode/@lgcode/ Compile the parser closure once per tool init; `decodeUnknownEffect`
-      @lgcode/@lgcode/ allocates a new closure per call, so hoisting avoids re-closing it for
-      @lgcode/@lgcode/ every LLM tool invocation.
+      // Compile the parser closure once per tool init; `decodeUnknownEffect`
+      // allocates a new closure per call, so hoisting avoids re-closing it for
+      // every LLM tool invocation.
       const decode = Schema.decodeUnknownEffect(toolInfo.parameters)
       const execute = toolInfo.execute
       toolInfo.execute = (args, ctx) => {
@@ -180,4 +180,4 @@ export function init<P extends Schema.Decoder<unknown>, M extends Metadata>(
   })
 }
 
-export * as Tool from ".@lgcode/tool"
+export * as Tool from "./tool"

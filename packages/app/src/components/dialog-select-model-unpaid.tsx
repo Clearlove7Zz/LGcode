@@ -1,15 +1,15 @@
-import { Button } from "@lgcode/ui@lgcode/button"
-import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
-import { Dialog } from "@lgcode/ui@lgcode/dialog"
-import { List, type ListRef } from "@lgcode/ui@lgcode/list"
-import { ProviderIcon } from "@lgcode/ui@lgcode/provider-icon"
-import { Tag } from "@lgcode/ui@lgcode/tag"
-import { Tooltip } from "@lgcode/ui@lgcode/tooltip"
+import { Button } from "@opencode@lgcode/ui/button"
+import { useDialog } from "@opencode@lgcode/ui/context/dialog"
+import { Dialog } from "@opencode@lgcode/ui/dialog"
+import { List, type ListRef } from "@opencode@lgcode/ui/list"
+import { ProviderIcon } from "@opencode@lgcode/ui/provider-icon"
+import { Tag } from "@opencode@lgcode/ui/tag"
+import { Tooltip } from "@opencode@lgcode/ui/tooltip"
 import { type Component, Show } from "solid-js"
-import { useLocal } from "@@lgcode/context@lgcode/local"
-import { popularProviders, useProviders } from "@@lgcode/hooks@lgcode/use-providers"
-import { ModelTooltip } from ".@lgcode/model-tooltip"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { useLocal } from "@/context/local"
+import { popularProviders, useProviders } from "@/hooks/use-providers"
+import { ModelTooltip } from "./model-tooltip"
+import { useLanguage } from "@/context/language"
 
 type ModelState = ReturnType<typeof useLocal>["model"]
 
@@ -20,14 +20,14 @@ export const DialogSelectModelUnpaid: Component<{ model?: ModelState }> = (props
   const language = useLanguage()
 
   const connect = (provider: string) => {
-    void import(".@lgcode/dialog-connect-provider").then((x) => {
-      dialog.show(() => <x.DialogConnectProvider provider={provider} @lgcode/>)
+    void import("./dialog-connect-provider").then((x) => {
+      dialog.show(() => <x.DialogConnectProvider provider={provider} />)
     })
   }
 
   const all = () => {
-    void import(".@lgcode/dialog-select-provider").then((x) => {
-      dialog.show(() => <x.DialogSelectProvider @lgcode/>)
+    void import("./dialog-select-provider").then((x) => {
+      dialog.show(() => <x.DialogSelectProvider />)
     })
   }
 
@@ -43,7 +43,7 @@ export const DialogSelectModelUnpaid: Component<{ model?: ModelState }> = (props
       class="overflow-y-auto [&_[data-slot=dialog-body]]:overflow-visible [&_[data-slot=dialog-body]]:flex-none"
     >
       <div class="flex flex-col gap-3 px-2.5" onKeyDown={handleKeyDown}>
-        <div class="text-14-medium text-text-base px-2.5">{language.t("dialog.model.unpaid.freeModels.title")}<@lgcode/div>
+        <div class="text-14-medium text-text-base px-2.5">{language.t("dialog.model.unpaid.freeModels.title")}</div>
         <List
           class="px-3 [&_[data-slot=list-scroll]]:overflow-visible"
           ref={(ref) => (listRef = ref)}
@@ -60,11 +60,11 @@ export const DialogSelectModelUnpaid: Component<{ model?: ModelState }> = (props
                   model={item}
                   latest={item.latest}
                   free={item.provider.id === "opencode" && (!item.cost || item.cost.input === 0)}
-                @lgcode/>
+                />
               }
             >
               {node}
-            <@lgcode/Tooltip>
+            </Tooltip>
           )}
           onSelect={(x) => {
             model.set(x ? { modelID: x.id, providerID: x.provider.id } : undefined, {
@@ -75,19 +75,19 @@ export const DialogSelectModelUnpaid: Component<{ model?: ModelState }> = (props
         >
           {(i) => (
             <div class="w-full flex items-center gap-x-2.5">
-              <span>{i.name}<@lgcode/span>
-              <Tag>{language.t("model.tag.free")}<@lgcode/Tag>
+              <span>{i.name}</span>
+              <Tag>{language.t("model.tag.free")}</Tag>
               <Show when={i.latest}>
-                <Tag>{language.t("model.tag.latest")}<@lgcode/Tag>
-              <@lgcode/Show>
-            <@lgcode/div>
+                <Tag>{language.t("model.tag.latest")}</Tag>
+              </Show>
+            </div>
           )}
-        <@lgcode/List>
-      <@lgcode/div>
+        </List>
+      </div>
       <div class="px-1.5 pb-1.5">
         <div class="w-full rounded-sm border border-border-weak-base bg-surface-raised-base">
           <div class="w-full flex flex-col items-start gap-4 px-1.5 pt-4 pb-4">
-            <div class="px-2 text-14-medium text-text-base">{language.t("dialog.model.unpaid.addMore.title")}<@lgcode/div>
+            <div class="px-2 text-14-medium text-text-base">{language.t("dialog.model.unpaid.addMore.title")}</div>
             <div class="w-full">
               <List
                 class="w-full px-3"
@@ -106,28 +106,28 @@ export const DialogSelectModelUnpaid: Component<{ model?: ModelState }> = (props
               >
                 {(i) => (
                   <div class="w-full flex items-center gap-x-3">
-                    <ProviderIcon data-slot="list-item-extra-icon" id={i.id} @lgcode/>
-                    <span>{i.name}<@lgcode/span>
+                    <ProviderIcon data-slot="list-item-extra-icon" id={i.id} />
+                    <span>{i.name}</span>
                     <Show when={i.id === "opencode"}>
-                      <div class="text-14-regular text-text-weak">{language.t("dialog.provider.opencode.tagline")}<@lgcode/div>
-                    <@lgcode/Show>
+                      <div class="text-14-regular text-text-weak">{language.t("dialog.provider.opencode.tagline")}</div>
+                    </Show>
                     <Show when={i.id === "opencode"}>
-                      <Tag>{language.t("dialog.provider.tag.recommended")}<@lgcode/Tag>
-                    <@lgcode/Show>
+                      <Tag>{language.t("dialog.provider.tag.recommended")}</Tag>
+                    </Show>
                     <Show when={i.id === "opencode-go"}>
                       <>
                         <div class="text-14-regular text-text-weak">
                           {language.t("dialog.provider.opencodeGo.tagline")}
-                        <@lgcode/div>
-                        <Tag>{language.t("dialog.provider.tag.recommended")}<@lgcode/Tag>
-                      <@lgcode/>
-                    <@lgcode/Show>
+                        </div>
+                        <Tag>{language.t("dialog.provider.tag.recommended")}</Tag>
+                      </>
+                    </Show>
                     <Show when={i.id === "anthropic"}>
-                      <div class="text-14-regular text-text-weak">{language.t("dialog.provider.anthropic.note")}<@lgcode/div>
-                    <@lgcode/Show>
-                  <@lgcode/div>
+                      <div class="text-14-regular text-text-weak">{language.t("dialog.provider.anthropic.note")}</div>
+                    </Show>
+                  </div>
                 )}
-              <@lgcode/List>
+              </List>
               <Button
                 variant="ghost"
                 class="w-full justify-start px-[11px] py-3.5 gap-4.5 text-14-medium"
@@ -135,11 +135,11 @@ export const DialogSelectModelUnpaid: Component<{ model?: ModelState }> = (props
                 onClick={all}
               >
                 {language.t("dialog.provider.viewAll")}
-              <@lgcode/Button>
-            <@lgcode/div>
-          <@lgcode/div>
-        <@lgcode/div>
-      <@lgcode/div>
-    <@lgcode/Dialog>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Dialog>
   )
 }

@@ -1,4 +1,4 @@
-import type { MarkdownToken } from ".@lgcode/markdown-worker-protocol"
+import type { MarkdownToken } from "./markdown-worker-protocol"
 
 export type RenderedCodeState = {
   language: string

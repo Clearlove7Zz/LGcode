@@ -1,30 +1,30 @@
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
-import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
-import { ConfigV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/config"
-import { Session } from ".@lgcode/session"
-import { SessionID, MessageID, PartID } from ".@lgcode/schema"
-import { Provider } from "@@lgcode/provider@lgcode/provider"
-import { MessageV2 } from ".@lgcode/message-v2"
-import { Token } from "@@lgcode/util@lgcode/token"
-import { SessionProcessor } from ".@lgcode/processor"
-import { Agent } from "@@lgcode/agent@lgcode/agent"
-import { Plugin } from "@@lgcode/plugin"
-import { Config } from "@@lgcode/config@lgcode/config"
-import { NotFoundError } from "@@lgcode/storage@lgcode/storage"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { SessionV1 } from "@opencode@lgcode/core/v1/session"
+import { ConfigV1 } from "@opencode@lgcode/core/v1/config/config"
+import { Session } from "./session"
+import { SessionID, MessageID, PartID } from "./schema"
+import { Provider } from "@/provider/provider"
+import { MessageV2 } from "./message-v2"
+import { Token } from "@/util/token"
+import { SessionProcessor } from "./processor"
+import { Agent } from "@/agent/agent"
+import { Plugin } from "@/plugin"
+import { Config } from "@/config/config"
+import { NotFoundError } from "@/storage/storage"
 
 import { Effect, Layer, Context } from "effect"
-import * as DateTime from "effect@lgcode/DateTime"
-import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
-import { isOverflow as overflow, usable } from ".@lgcode/overflow"
-import { serviceUse } from "@lgcode/core@lgcode/effect@lgcode/service-use"
-import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
-import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
-import { SessionEvent } from "@lgcode/core@lgcode/session@lgcode/event"
-import { SessionMessage } from "@lgcode/core@lgcode/session@lgcode/message"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import { buildPrompt } from "@lgcode/core@lgcode/session@lgcode/compaction"
+import * as DateTime from "effect/DateTime"
+import { InstanceState } from "@/effect/instance-state"
+import { isOverflow as overflow, usable } from "./overflow"
+import { serviceUse } from "@opencode@lgcode/core/effect/service-use"
+import { RuntimeFlags } from "@/effect/runtime-flags"
+import { EventV2Bridge } from "@/event-v2-bridge"
+import { SessionEvent } from "@opencode@lgcode/core/session/event"
+import { SessionMessage } from "@opencode@lgcode/core/session/message"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelV2 } from "@opencode@lgcode/core/model"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import { buildPrompt } from "@opencode@lgcode/core/session/compaction"
 
 export const Event = {
   Compacted: EventV2.define({
@@ -159,7 +159,7 @@ export interface Interface {
   }) => Effect.Effect<void>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/SessionCompaction") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/SessionCompaction") {}
 
 export const use = serviceUse(Service)
 
@@ -248,8 +248,8 @@ export const layer = Layer.effect(
       }
     })
 
-    @lgcode/@lgcode/ goes backwards through parts until there are PRUNE_PROTECT tokens worth of tool
-    @lgcode/@lgcode/ calls, then erases output of older tool calls to free context space
+    // goes backwards through parts until there are PRUNE_PROTECT tokens worth of tool
+    // calls, then erases output of older tool calls to free context space
     const prune = Effect.fn("SessionCompaction.prune")(function* (input: { sessionID: SessionID }) {
       const cfg = yield* config.get()
       if (!cfg.compaction?.prune) return
@@ -349,7 +349,7 @@ export const layer = Layer.effect(
         cfg,
         model,
       })
-      @lgcode/@lgcode/ Allow plugins to inject context or replace compaction prompt.
+      // Allow plugins to inject context or replace compaction prompt.
       const compacting = yield* plugin.trigger(
         "experimental.session.compacting",
         { sessionID: input.sessionID },
@@ -510,9 +510,9 @@ export const layer = Layer.effect(
               messageID: continueMsg.id,
               sessionID: input.sessionID,
               type: "text",
-              @lgcode/@lgcode/ Internal marker for auto-compaction followups so provider plugins
-              @lgcode/@lgcode/ can distinguish them from manual post-compaction user prompts.
-              @lgcode/@lgcode/ This is not a stable plugin contract and may change or disappear.
+              // Internal marker for auto-compaction followups so provider plugins
+              // can distinguish them from manual post-compaction user prompts.
+              // This is not a stable plugin contract and may change or disappear.
               metadata: { compaction_continue: true },
               synthetic: true,
               text,
@@ -617,4 +617,4 @@ export const node = LayerNode.make(layer, [
   RuntimeFlags.node,
 ])
 
-export * as SessionCompaction from ".@lgcode/compaction"
+export * as SessionCompaction from "./compaction"

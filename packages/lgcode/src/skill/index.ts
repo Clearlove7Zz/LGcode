@@ -1,37 +1,37 @@
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
 import path from "path"
 import { pathToFileURL } from "url"
 import { Effect, Layer, Context, Schema } from "effect"
-import { NamedError } from "@lgcode/core@lgcode/util@lgcode/error"
-import type { Agent } from "@@lgcode/agent@lgcode/agent"
-import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
-import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
-import { Global } from "@lgcode/core@lgcode/global"
-import { SkillPlugin } from "@lgcode/core@lgcode/plugin@lgcode/skill"
-import { Permission } from "@@lgcode/permission"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { Config } from "@@lgcode/config@lgcode/config"
-import { FrontmatterError } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/error"
-import { ConfigMarkdown } from "@@lgcode/config@lgcode/markdown"
-import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
-import { Glob } from "@lgcode/core@lgcode/util@lgcode/glob"
-import { Discovery } from ".@lgcode/discovery"
-import { isRecord } from "@@lgcode/util@lgcode/record"
+import { NamedError } from "@opencode@lgcode/core/util/error"
+import type { Agent } from "@/agent/agent"
+import { EventV2Bridge } from "@/event-v2-bridge"
+import { InstanceState } from "@/effect/instance-state"
+import { Global } from "@opencode@lgcode/core/global"
+import { SkillPlugin } from "@opencode@lgcode/core/plugin/skill"
+import { Permission } from "@/permission"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { Config } from "@/config/config"
+import { FrontmatterError } from "@opencode@lgcode/core/v1/config/error"
+import { ConfigMarkdown } from "@/config/markdown"
+import { RuntimeFlags } from "@/effect/runtime-flags"
+import { Glob } from "@opencode@lgcode/core/util/glob"
+import { Discovery } from "./discovery"
+import { isRecord } from "@/util/record"
 
 const CLAUDE_EXTERNAL_DIR = ".claude"
 const AGENTS_EXTERNAL_DIR = ".agents"
-const EXTERNAL_SKILL_PATTERN = "skills@lgcode/**@lgcode/SKILL.md"
-const OPENCODE_SKILL_PATTERN = "{skill,skills}@lgcode/**@lgcode/SKILL.md"
-const SKILL_PATTERN = "**@lgcode/SKILL.md"
+const EXTERNAL_SKILL_PATTERN = "skills/**/SKILL.md"
+const OPENCODE_SKILL_PATTERN = "{skill,skills}/**/SKILL.md"
+const SKILL_PATTERN = "**/SKILL.md"
 
-@lgcode/@lgcode/ Built-in skill that ships with opencode. The model's intuition for what an
-@lgcode/@lgcode/ opencode.json should look like is often wrong, and opencode hard-fails on
-@lgcode/@lgcode/ invalid config, so users hit cryptic startup errors. Loading this skill
-@lgcode/@lgcode/ when the model is asked to touch opencode's own config files gives it the
-@lgcode/@lgcode/ actual schemas instead of guesses.
+// Built-in skill that ships with opencode. The model's intuition for what an
+// opencode.json should look like is often wrong, and opencode hard-fails on
+// invalid config, so users hit cryptic startup errors. Loading this skill
+// when the model is asked to touch opencode's own config files gives it the
+// actual schemas instead of guesses.
 const CUSTOMIZE_OPENCODE_SKILL_NAME = "customize-opencode"
 const CUSTOMIZE_OPENCODE_SKILL_DESCRIPTION =
-  "Use ONLY when the user is editing or creating opencode's own configuration: opencode.json, opencode.jsonc, files under .opencode@lgcode/, or files under ~@lgcode/.config@lgcode/opencode@lgcode/. Also use when creating or fixing opencode agents, subagents, skills, plugins, MCP servers, or permission rules. Do not use for the user's own application code, or for any project that is not configuring opencode itself."
+  "Use ONLY when the user is editing or creating opencode's own configuration: opencode.json, opencode.jsonc, files under .opencode/, or files under ~/.config/opencode/. Also use when creating or fixing opencode agents, subagents, skills, plugins, MCP servers, or permission rules. Do not use for the user's own application code, or for any project that is not configuring opencode itself."
 const CUSTOMIZE_OPENCODE_SKILL_BODY = SkillPlugin.CustomizeOpencodeContent
 
 export const Info = Schema.Struct({
@@ -110,7 +110,7 @@ const add = Effect.fnUntraced(function* (state: State, match: string, events: Ev
     Effect.catch(
       Effect.fnUntraced(function* (err) {
         const message = FrontmatterError.isInstance(err) ? err.data.message : `Failed to parse skill ${match}`
-        const { Session } = yield* Effect.promise(() => import("@@lgcode/session@lgcode/session"))
+        const { Session } = yield* Effect.promise(() => import("@/session/session"))
         yield* events.publish(Session.Event.Error, { error: new NamedError.Unknown({ message }).toObject() })
         yield* Effect.logError("failed to load skill", { skill: match, error: err })
         return undefined
@@ -209,7 +209,7 @@ const discoverSkills = Effect.fnUntraced(function* (
 
   const cfg = yield* config.get()
   for (const item of cfg.skills?.paths ?? []) {
-    const expanded = item.startsWith("~@lgcode/") ? path.join(global.home, item.slice(2)) : item
+    const expanded = item.startsWith("~/") ? path.join(global.home, item.slice(2)) : item
     const dir = path.isAbsolute(expanded) ? expanded : path.join(directory, expanded)
     if (!(yield* fsys.isDir(dir))) {
       yield* Effect.logWarning("skill path not found", { path: dir })
@@ -245,7 +245,7 @@ const loadSkills = Effect.fnUntraced(function* (
   yield* Effect.logInfo("init", { count: Object.keys(state.skills).length })
 })
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Skill") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/Skill") {}
 
 export const layer = Layer.effect(
   Service,
@@ -273,8 +273,8 @@ export const layer = Layer.effect(
     const state = yield* InstanceState.make(
       Effect.fn("Skill.state")(function* () {
         const s: State = { skills: {}, dirs: new Set() }
-        @lgcode/@lgcode/ Register the built-in skill BEFORE disk discovery so a user-disk
-        @lgcode/@lgcode/ skill with the same name can override it.
+        // Register the built-in skill BEFORE disk discovery so a user-disk
+        // skill with the same name can override it.
         s.skills[CUSTOMIZE_OPENCODE_SKILL_NAME] = {
           name: CUSTOMIZE_OPENCODE_SKILL_NAME,
           description: CUSTOMIZE_OPENCODE_SKILL_DESCRIPTION,
@@ -337,12 +337,12 @@ export function fmt(list: Info[], opts: { verbose: boolean }) {
         .toSorted((a, b) => a.name.localeCompare(b.name))
         .flatMap((skill) => [
           "  <skill>",
-          `    <name>${skill.name}<@lgcode/name>`,
-          `    <description>${skill.description}<@lgcode/description>`,
-          `    <location>${pathToFileURL(skill.location).href}<@lgcode/location>`,
-          "  <@lgcode/skill>",
+          `    <name>${skill.name}</name>`,
+          `    <description>${skill.description}</description>`,
+          `    <location>${pathToFileURL(skill.location).href}</location>`,
+          "  </skill>",
         ]),
-      "<@lgcode/available_skills>",
+      "</available_skills>",
     ].join("\n")
   }
 

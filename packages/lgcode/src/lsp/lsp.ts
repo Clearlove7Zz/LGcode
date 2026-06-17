@@ -1,19 +1,19 @@
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import * as LSPClient from ".@lgcode/client"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { EventV2Bridge } from "@/event-v2-bridge"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import * as LSPClient from "./client"
 import path from "path"
 import { pathToFileURL, fileURLToPath } from "url"
-import * as LSPServer from ".@lgcode/server"
-import { Config } from "@@lgcode/config@lgcode/config"
-import { Process } from "@@lgcode/util@lgcode/process"
-import { spawn as lspspawn } from ".@lgcode/launch"
+import * as LSPServer from "./server"
+import { Config } from "@/config/config"
+import { Process } from "@/util/process"
+import { spawn as lspspawn } from "./launch"
 import { Effect, Layer, Context, Schema } from "effect"
-import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
-import { containsPath } from "@@lgcode/project@lgcode/instance-context"
-import { NonNegativeInt } from "@lgcode/core@lgcode/schema"
-import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
+import { InstanceState } from "@/effect/instance-state"
+import { containsPath } from "@/project/instance-context"
+import { NonNegativeInt } from "@opencode@lgcode/core/schema"
+import { RuntimeFlags } from "@/effect/runtime-flags"
 
 export const Event = {
   Updated: EventV2.define({ type: "lsp.updated", schema: {} }),
@@ -135,7 +135,7 @@ export interface Interface {
   readonly outgoingCalls: (input: LocInput) => Effect.Effect<any[]>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/LSP") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/LSP") {}
 
 export const layer = Layer.effect(
   Service,
@@ -379,7 +379,7 @@ export const layer = Layer.effect(
     const hover = Effect.fn("LSP.hover")(function* (input: LocInput) {
       return yield* run(input.file, (client) =>
         client.connection
-          .sendRequest("textDocument@lgcode/hover", {
+          .sendRequest("textDocument/hover", {
             textDocument: { uri: pathToFileURL(input.file).href },
             position: { line: input.line, character: input.character },
           })
@@ -390,7 +390,7 @@ export const layer = Layer.effect(
     const definition = Effect.fn("LSP.definition")(function* (input: LocInput) {
       const results = yield* run(input.file, (client) =>
         client.connection
-          .sendRequest("textDocument@lgcode/definition", {
+          .sendRequest("textDocument/definition", {
             textDocument: { uri: pathToFileURL(input.file).href },
             position: { line: input.line, character: input.character },
           })
@@ -402,7 +402,7 @@ export const layer = Layer.effect(
     const references = Effect.fn("LSP.references")(function* (input: LocInput) {
       const results = yield* run(input.file, (client) =>
         client.connection
-          .sendRequest("textDocument@lgcode/references", {
+          .sendRequest("textDocument/references", {
             textDocument: { uri: pathToFileURL(input.file).href },
             position: { line: input.line, character: input.character },
             context: { includeDeclaration: true },
@@ -415,7 +415,7 @@ export const layer = Layer.effect(
     const implementation = Effect.fn("LSP.implementation")(function* (input: LocInput) {
       const results = yield* run(input.file, (client) =>
         client.connection
-          .sendRequest("textDocument@lgcode/implementation", {
+          .sendRequest("textDocument/implementation", {
             textDocument: { uri: pathToFileURL(input.file).href },
             position: { line: input.line, character: input.character },
           })
@@ -427,7 +427,7 @@ export const layer = Layer.effect(
     const documentSymbol = Effect.fn("LSP.documentSymbol")(function* (uri: string) {
       const file = fileURLToPath(uri)
       const results = yield* run(file, (client) =>
-        client.connection.sendRequest("textDocument@lgcode/documentSymbol", { textDocument: { uri } }).catch(() => []),
+        client.connection.sendRequest("textDocument/documentSymbol", { textDocument: { uri } }).catch(() => []),
       )
       return (results.flat() as (DocumentSymbol | Symbol)[]).filter(Boolean)
     })
@@ -435,7 +435,7 @@ export const layer = Layer.effect(
     const workspaceSymbol = Effect.fn("LSP.workspaceSymbol")(function* (query: string) {
       const results = yield* runAll((client) =>
         client.connection
-          .sendRequest<Symbol[]>("workspace@lgcode/symbol", { query })
+          .sendRequest<Symbol[]>("workspace/symbol", { query })
           .then((result) => result.filter((x) => kinds.includes(x.kind)).slice(0, 10))
           .catch(() => [] as Symbol[]),
       )
@@ -445,7 +445,7 @@ export const layer = Layer.effect(
     const prepareCallHierarchy = Effect.fn("LSP.prepareCallHierarchy")(function* (input: LocInput) {
       const results = yield* run(input.file, (client) =>
         client.connection
-          .sendRequest("textDocument@lgcode/prepareCallHierarchy", {
+          .sendRequest("textDocument/prepareCallHierarchy", {
             textDocument: { uri: pathToFileURL(input.file).href },
             position: { line: input.line, character: input.character },
           })
@@ -456,11 +456,11 @@ export const layer = Layer.effect(
 
     const callHierarchyRequest = Effect.fnUntraced(function* (
       input: LocInput,
-      direction: "callHierarchy@lgcode/incomingCalls" | "callHierarchy@lgcode/outgoingCalls",
+      direction: "callHierarchy/incomingCalls" | "callHierarchy/outgoingCalls",
     ) {
       const results = yield* run(input.file, async (client) => {
         const items = await client.connection
-          .sendRequest<unknown[] | null>("textDocument@lgcode/prepareCallHierarchy", {
+          .sendRequest<unknown[] | null>("textDocument/prepareCallHierarchy", {
             textDocument: { uri: pathToFileURL(input.file).href },
             position: { line: input.line, character: input.character },
           })
@@ -472,11 +472,11 @@ export const layer = Layer.effect(
     })
 
     const incomingCalls = Effect.fn("LSP.incomingCalls")(function* (input: LocInput) {
-      return yield* callHierarchyRequest(input, "callHierarchy@lgcode/incomingCalls")
+      return yield* callHierarchyRequest(input, "callHierarchy/incomingCalls")
     })
 
     const outgoingCalls = Effect.fn("LSP.outgoingCalls")(function* (input: LocInput) {
-      return yield* callHierarchyRequest(input, "callHierarchy@lgcode/outgoingCalls")
+      return yield* callHierarchyRequest(input, "callHierarchy/outgoingCalls")
     })
 
     return Service.of({
@@ -504,8 +504,8 @@ export const defaultLayer = layer.pipe(
   Layer.provide(EventV2Bridge.defaultLayer),
 )
 
-export * as Diagnostic from ".@lgcode/diagnostic"
+export * as Diagnostic from "./diagnostic"
 
 export const node = LayerNode.make(layer, [Config.node, RuntimeFlags.node, FSUtil.node, EventV2Bridge.node])
 
-export * as LSP from ".@lgcode/lsp"
+export * as LSP from "./lsp"

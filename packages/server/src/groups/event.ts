@@ -1,8 +1,8 @@
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import { Location } from "@lgcode/core@lgcode/location"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import { Location } from "@opencode@lgcode/core/location"
 import { Schema } from "effect"
-import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
-import { LocationQuery, locationQueryOpenApi, LocationMiddleware } from ".@lgcode/location"
+import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect/unstable/httpapi"
+import { LocationQuery, locationQueryOpenApi, LocationMiddleware } from "./location"
 
 const Event = Schema.Struct({
   id: EventV2.ID,
@@ -15,9 +15,9 @@ const Event = Schema.Struct({
 
 export const EventGroup = HttpApiGroup.make("server.event")
   .add(
-    HttpApiEndpoint.get("event.subscribe", "@lgcode/api@lgcode/event", {
+    HttpApiEndpoint.get("event.subscribe", "/api/event", {
       query: LocationQuery,
-      success: Schema.String.pipe(HttpApiSchema.asText({ contentType: "text@lgcode/event-stream" })),
+      success: Schema.String.pipe(HttpApiSchema.asText({ contentType: "text/event-stream" })),
     })
       .annotateMerge(locationQueryOpenApi)
       .annotateMerge(

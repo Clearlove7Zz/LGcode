@@ -28,16 +28,16 @@ const DEFAULT_REDACT_QUERY = [
 ]
 
 const SECRET_PATTERNS: ReadonlyArray<{ readonly label: string; readonly pattern: RegExp }> = [
-  { label: "bearer token", pattern: @lgcode/\bBearer\s+[A-Za-z0-9._~+@lgcode/=-]{16,}\b@lgcode/i },
-  { label: "API key", pattern: @lgcode/\bsk-[A-Za-z0-9][A-Za-z0-9_-]{20,}\b@lgcode/ },
-  { label: "Anthropic API key", pattern: @lgcode/\bsk-ant-[A-Za-z0-9_-]{20,}\b@lgcode/ },
-  { label: "Google API key", pattern: @lgcode/\bAIza[0-9A-Za-z_-]{20,}\b@lgcode/ },
-  { label: "AWS access key", pattern: @lgcode/\b(?:AKIA|ASIA)[0-9A-Z]{16}\b@lgcode/ },
-  { label: "GitHub token", pattern: @lgcode/\bgh[pousr]_[A-Za-z0-9_]{20,}\b@lgcode/ },
-  { label: "private key", pattern: @lgcode/-----BEGIN [A-Z ]*PRIVATE KEY-----@lgcode/ },
+  { label: "bearer token", pattern: /\bBearer\s+[A-Za-z0-9._~+/=-]{16,}\b/i },
+  { label: "API key", pattern: /\bsk-[A-Za-z0-9][A-Za-z0-9_-]{20,}\b/ },
+  { label: "Anthropic API key", pattern: /\bsk-ant-[A-Za-z0-9_-]{20,}\b/ },
+  { label: "Google API key", pattern: /\bAIza[0-9A-Za-z_-]{20,}\b/ },
+  { label: "AWS access key", pattern: /\b(?:AKIA|ASIA)[0-9A-Z]{16}\b/ },
+  { label: "GitHub token", pattern: /\bgh[pousr]_[A-Za-z0-9_]{20,}\b/ },
+  { label: "private key", pattern: /-----BEGIN [A-Z ]*PRIVATE KEY-----/ },
 ]
 
-const ENV_SECRET_NAMES = @lgcode/(?:API|AUTH|BEARER|CREDENTIAL|KEY|PASSWORD|SECRET|TOKEN)@lgcode/i
+const ENV_SECRET_NAMES = /(?:API|AUTH|BEARER|CREDENTIAL|KEY|PASSWORD|SECRET|TOKEN)/i
 const SAFE_ENV_VALUES = new Set(["fixture", "test", "test-key"])
 
 const envSecrets = () =>

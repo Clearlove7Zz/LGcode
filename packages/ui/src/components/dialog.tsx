@@ -1,7 +1,7 @@
-import { Dialog as Kobalte } from "@kobalte@lgcode/core@lgcode/dialog"
+import { Dialog as Kobalte } from "@kobalte/core/dialog"
 import { ComponentProps, JSXElement, Match, ParentProps, Show, Switch } from "solid-js"
-import { useI18n } from "..@lgcode/context@lgcode/i18n"
-import { IconButton } from ".@lgcode/icon-button"
+import { useI18n } from "../context/i18n"
+import { IconButton } from "./icon-button"
 
 export interface DialogProps extends ParentProps {
   title?: JSXElement
@@ -43,10 +43,10 @@ export function Dialog(props: DialogProps) {
           <Show when={props.title || props.action}>
             <div data-slot="dialog-header">
               <Show when={props.title}>
-                <Kobalte.Title data-slot="dialog-title">{props.title}<@lgcode/Kobalte.Title>
-              <@lgcode/Show>
+                <Kobalte.Title data-slot="dialog-title">{props.title}</Kobalte.Title>
+              </Show>
               <Switch>
-                <Match when={props.action}>{props.action}<@lgcode/Match>
+                <Match when={props.action}>{props.action}</Match>
                 <Match when={true}>
                   <Kobalte.CloseButton
                     data-slot="dialog-close-button"
@@ -54,19 +54,19 @@ export function Dialog(props: DialogProps) {
                     icon="close"
                     variant="ghost"
                     aria-label={i18n.t("ui.common.close")}
-                  @lgcode/>
-                <@lgcode/Match>
-              <@lgcode/Switch>
-            <@lgcode/div>
-          <@lgcode/Show>
+                  />
+                </Match>
+              </Switch>
+            </div>
+          </Show>
           <Show when={props.description}>
             <Kobalte.Description data-slot="dialog-description" style={{ "margin-left": "-4px" }}>
               {props.description}
-            <@lgcode/Kobalte.Description>
-          <@lgcode/Show>
-          <div data-slot="dialog-body">{props.children}<@lgcode/div>
-        <@lgcode/Kobalte.Content>
-      <@lgcode/div>
-    <@lgcode/div>
+            </Kobalte.Description>
+          </Show>
+          <div data-slot="dialog-body">{props.children}</div>
+        </Kobalte.Content>
+      </div>
+    </div>
   )
 }

@@ -1,6 +1,6 @@
-import { Billing } from "..@lgcode/src@lgcode/billing.js"
-import { and, Database, desc, eq, isNotNull, lt, sql } from "..@lgcode/src@lgcode/drizzle@lgcode/index.js"
-import { BillingTable, PaymentTable, SubscriptionTable } from "..@lgcode/src@lgcode/schema@lgcode/billing.sql.js"
+import { Billing } from "../src/billing.js"
+import { and, Database, desc, eq, isNotNull, lt, sql } from "../src/drizzle/index.js"
+import { BillingTable, PaymentTable, SubscriptionTable } from "../src/schema/billing.sql.js"
 
 const fromWrkID = process.argv[2]
 const toWrkID = process.argv[3]
@@ -12,7 +12,7 @@ if (!fromWrkID || !toWrkID) {
 
 console.log(`Transferring subscription from ${fromWrkID} to ${toWrkID}`)
 
-@lgcode/@lgcode/ Look up the FROM workspace billing
+// Look up the FROM workspace billing
 const fromBilling = await Database.use((tx) =>
   tx
     .select({
@@ -40,7 +40,7 @@ const fromSubscription = await Database.use((tx) =>
 )
 if (!fromSubscription) throw new Error(`Error: FROM workspace has no subscription`)
 
-@lgcode/@lgcode/ Look up the previous customer ID in FROM workspace
+// Look up the previous customer ID in FROM workspace
 const subscriptionPayment = await Database.use((tx) =>
   tx
     .select({
@@ -80,7 +80,7 @@ const fromPrevPaymentMethods = await Billing.stripe().customers.listPaymentMetho
 if (fromPrevPaymentMethods.data.length === 0)
   throw new Error(`Error: FROM workspace has no previous Stripe payment methods`)
 
-@lgcode/@lgcode/ Look up the TO workspace billing
+// Look up the TO workspace billing
 const toBilling = await Database.use((tx) =>
   tx
     .select({
@@ -101,7 +101,7 @@ console.log(`TO:`)
 console.log(`  Old Customer ID: ${toBilling.customerID}`)
 console.log(`  New Customer ID: ${fromBilling.customerID}`)
 
-@lgcode/@lgcode/ Clear workspaceID from Stripe customer metadata
+// Clear workspaceID from Stripe customer metadata
 await Billing.stripe().customers.update(fromPrevPayment.customerID, {
   metadata: {
     workspaceID: fromWrkID,

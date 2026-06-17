@@ -1,24 +1,24 @@
-import { Button } from "@lgcode/ui@lgcode/button"
-import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
-import { Dialog } from "@lgcode/ui@lgcode/dialog"
-import { DropdownMenu } from "@lgcode/ui@lgcode/dropdown-menu"
-import { Icon } from "@lgcode/ui@lgcode/icon"
-import { IconButton } from "@lgcode/ui@lgcode/icon-button"
-import { List } from "@lgcode/ui@lgcode/list"
-import { TextField } from "@lgcode/ui@lgcode/text-field"
-import { useMutation } from "@tanstack@lgcode/solid-query"
-import { showToast } from "@@lgcode/utils@lgcode/toast"
-import { useNavigate } from "@solidjs@lgcode/router"
+import { Button } from "@opencode@lgcode/ui/button"
+import { useDialog } from "@opencode@lgcode/ui/context/dialog"
+import { Dialog } from "@opencode@lgcode/ui/dialog"
+import { DropdownMenu } from "@opencode@lgcode/ui/dropdown-menu"
+import { Icon } from "@opencode@lgcode/ui/icon"
+import { IconButton } from "@opencode@lgcode/ui/icon-button"
+import { List } from "@opencode@lgcode/ui/list"
+import { TextField } from "@opencode@lgcode/ui/text-field"
+import { useMutation } from "@tanstack/solid-query"
+import { showToast } from "@/utils/toast"
+import { useNavigate } from "@solidjs/router"
 import { createEffect, createMemo, createResource, Show } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import { ServerHealthIndicator, ServerRow } from "@@lgcode/components@lgcode/server@lgcode/server-row"
-import { useGlobal } from "@@lgcode/context@lgcode/global"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
-import { usePlatform } from "@@lgcode/context@lgcode/platform"
-import { normalizeServerUrl, ServerConnection, useServer } from "@@lgcode/context@lgcode/server"
-import { type ServerHealth, useCheckServerHealth } from "@@lgcode/utils@lgcode/server-health"
-import { useSettings } from "@@lgcode/context@lgcode/settings"
-import { useTabs } from "@@lgcode/context@lgcode/tabs"
+import { createStore } from "solid-js/store"
+import { ServerHealthIndicator, ServerRow } from "@/components/server/server-row"
+import { useGlobal } from "@/context/global"
+import { useLanguage } from "@/context/language"
+import { usePlatform } from "@/context/platform"
+import { normalizeServerUrl, ServerConnection, useServer } from "@/context/server"
+import { type ServerHealth, useCheckServerHealth } from "@/utils/server-health"
+import { useSettings } from "@/context/settings"
+import { useTabs } from "@/context/tabs"
 
 const DEFAULT_USERNAME = "opencode"
 
@@ -83,7 +83,7 @@ function useServerPreview() {
   const looksComplete = (value: string) => {
     const normalized = normalizeServerUrl(value)
     if (!normalized) return false
-    const host = normalized.replace(@lgcode/^https?:\@lgcode/\@lgcode/@lgcode/, "").split("@lgcode/")[0]
+    const host = normalized.replace(/^https?:\/\//, "").split("/")[0]
     if (!host) return false
     if (host.includes("localhost") || host.startsWith("127.0.0.1")) return true
     return host.includes(".") || host.includes(":")
@@ -138,8 +138,8 @@ function ServerForm(props: ServerFormProps) {
             disabled={props.busy}
             onChange={props.onChange}
             onKeyDown={keyDown}
-          @lgcode/>
-        <@lgcode/div>
+          />
+        </div>
         <TextField
           type="text"
           label={language.t("dialog.server.add.name")}
@@ -148,7 +148,7 @@ function ServerForm(props: ServerFormProps) {
           disabled={props.busy}
           onChange={props.onNameChange}
           onKeyDown={keyDown}
-        @lgcode/>
+        />
         <div class="grid grid-cols-2 gap-2 min-w-0">
           <TextField
             type="text"
@@ -158,7 +158,7 @@ function ServerForm(props: ServerFormProps) {
             disabled={props.busy}
             onChange={props.onUsernameChange}
             onKeyDown={keyDown}
-          @lgcode/>
+          />
           <TextField
             type="password"
             label={language.t("dialog.server.add.password")}
@@ -167,10 +167,10 @@ function ServerForm(props: ServerFormProps) {
             disabled={props.busy}
             onChange={props.onPasswordChange}
             onKeyDown={keyDown}
-          @lgcode/>
-        <@lgcode/div>
-      <@lgcode/div>
-    <@lgcode/div>
+          />
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -181,11 +181,11 @@ export function DialogSelectServer() {
   return (
     <Dialog title={controller.formTitle()}>
       <div class="flex flex-1 min-h-0 flex-col px-5">
-        <Show when={controller.isFormMode()} fallback={<ServerConnectionList controller={controller} @lgcode/>}>
-          <ServerConnectionForm controller={controller} @lgcode/>
-        <@lgcode/Show>
-      <@lgcode/div>
-    <@lgcode/Dialog>
+        <Show when={controller.isFormMode()} fallback={<ServerConnectionList controller={controller} />}>
+          <ServerConnectionForm controller={controller} />
+        </Show>
+      </div>
+    </Dialog>
   )
 }
 
@@ -368,10 +368,10 @@ export function useServerManagementController(options: { onSelect?: () => void; 
     options.onSelect?.()
     if (persist && conn.type === "http") {
       server.add(conn)
-      navigate("@lgcode/")
+      navigate("/")
       return
     }
-    navigate("@lgcode/")
+    navigate("/")
     queueMicrotask(() => server.setActive(ServerConnection.key(conn)))
   }
 
@@ -497,9 +497,9 @@ export function useServerManagementController(options: { onSelect?: () => void; 
     if (!isFormMode()) return language.t("dialog.server.title")
     return (
       <div class="flex items-center gap-2 -ml-2">
-        <IconButton icon="arrow-left" variant="ghost" onClick={resetForm} aria-label={language.t("common.goBack")} @lgcode/>
-        <span>{isAddMode() ? language.t("dialog.server.add.title") : language.t("dialog.server.edit.title")}<@lgcode/span>
-      <@lgcode/div>
+        <IconButton icon="arrow-left" variant="ghost" onClick={resetForm} aria-label={language.t("common.goBack")} />
+        <span>{isAddMode() ? language.t("dialog.server.add.title") : language.t("dialog.server.edit.title")}</span>
+      </div>
     )
   })
 
@@ -576,10 +576,10 @@ export function ServerConnectionList(props: { controller: ReturnType<typeof useS
         {(i) => {
           const key = ServerConnection.key(i)
           return (
-            <div class="flex items-center gap-3 min-w-0 flex-1 w-full group@lgcode/item">
+            <div class="flex items-center gap-3 min-w-0 flex-1 w-full group/item">
               <div class="flex flex-col h-full items-center w-5">
-                <ServerHealthIndicator health={props.controller.status()[key]} @lgcode/>
-              <@lgcode/div>
+                <ServerHealthIndicator health={props.controller.status()[key]} />
+              </div>
               <ServerRow
                 conn={i}
                 dimmed={props.controller.status()[key]?.healthy === false}
@@ -589,15 +589,15 @@ export function ServerConnectionList(props: { controller: ReturnType<typeof useS
                   <Show when={props.controller.defaultKey() === ServerConnection.key(i)}>
                     <span class="text-text-base bg-surface-base text-14-regular px-1.5 rounded-xs">
                       {language.t("dialog.server.status.default")}
-                    <@lgcode/span>
-                  <@lgcode/Show>
+                    </span>
+                  </Show>
                 }
                 showCredentials
-              @lgcode/>
+              />
               <div class="flex items-center justify-center gap-4 pl-4">
                 <Show when={props.controller.current() && ServerConnection.key(props.controller.current()!) === key}>
-                  <Icon name="check" class="h-6" @lgcode/>
-                <@lgcode/Show>
+                  <Icon name="check" class="h-6" />
+                </Show>
 
                 <Show when={i.type === "http"}>
                   <DropdownMenu>
@@ -608,7 +608,7 @@ export function ServerConnectionList(props: { controller: ReturnType<typeof useS
                       class="shrink-0 size-8 hover:bg-surface-base-hover data-[expanded]:bg-surface-base-active"
                       onClick={(e: MouseEvent) => e.stopPropagation()}
                       onPointerDown={(e: PointerEvent) => e.stopPropagation()}
-                    @lgcode/>
+                    />
                     <DropdownMenu.Portal>
                       <DropdownMenu.Content class="mt-1">
                         <DropdownMenu.Item
@@ -617,36 +617,36 @@ export function ServerConnectionList(props: { controller: ReturnType<typeof useS
                             props.controller.startEdit(i)
                           }}
                         >
-                          <DropdownMenu.ItemLabel>{language.t("dialog.server.menu.edit")}<@lgcode/DropdownMenu.ItemLabel>
-                        <@lgcode/DropdownMenu.Item>
+                          <DropdownMenu.ItemLabel>{language.t("dialog.server.menu.edit")}</DropdownMenu.ItemLabel>
+                        </DropdownMenu.Item>
                         <Show when={props.controller.canDefault() && props.controller.defaultKey() !== key}>
                           <DropdownMenu.Item onSelect={() => props.controller.setDefault(key)}>
-                            <DropdownMenu.ItemLabel>{language.t("dialog.server.menu.default")}<@lgcode/DropdownMenu.ItemLabel>
-                          <@lgcode/DropdownMenu.Item>
-                        <@lgcode/Show>
+                            <DropdownMenu.ItemLabel>{language.t("dialog.server.menu.default")}</DropdownMenu.ItemLabel>
+                          </DropdownMenu.Item>
+                        </Show>
                         <Show when={props.controller.canDefault() && props.controller.defaultKey() === key}>
                           <DropdownMenu.Item onSelect={() => props.controller.setDefault(null)}>
                             <DropdownMenu.ItemLabel>
                               {language.t("dialog.server.menu.defaultRemove")}
-                            <@lgcode/DropdownMenu.ItemLabel>
-                          <@lgcode/DropdownMenu.Item>
-                        <@lgcode/Show>
-                        <DropdownMenu.Separator @lgcode/>
+                            </DropdownMenu.ItemLabel>
+                          </DropdownMenu.Item>
+                        </Show>
+                        <DropdownMenu.Separator />
                         <DropdownMenu.Item
                           onSelect={() => props.controller.handleRemove(ServerConnection.key(i))}
                           class="text-text-on-critical-base hover:bg-surface-critical-weak"
                         >
-                          <DropdownMenu.ItemLabel>{language.t("dialog.server.menu.delete")}<@lgcode/DropdownMenu.ItemLabel>
-                        <@lgcode/DropdownMenu.Item>
-                      <@lgcode/DropdownMenu.Content>
-                    <@lgcode/DropdownMenu.Portal>
-                  <@lgcode/DropdownMenu>
-                <@lgcode/Show>
-              <@lgcode/div>
-            <@lgcode/div>
+                          <DropdownMenu.ItemLabel>{language.t("dialog.server.menu.delete")}</DropdownMenu.ItemLabel>
+                        </DropdownMenu.Item>
+                      </DropdownMenu.Content>
+                    </DropdownMenu.Portal>
+                  </DropdownMenu>
+                </Show>
+              </div>
+            </div>
           )
         }}
-      <@lgcode/List>
+      </List>
 
       <div class="shrink-0 pb-5">
         <Button
@@ -657,9 +657,9 @@ export function ServerConnectionList(props: { controller: ReturnType<typeof useS
           class="py-1.5 pl-1.5 pr-3 flex items-center gap-1.5"
         >
           {language.t("dialog.server.add.button")}
-        <@lgcode/Button>
-      <@lgcode/div>
-    <@lgcode/div>
+        </Button>
+      </div>
+    </div>
   )
 }
 
@@ -683,7 +683,7 @@ export function ServerConnectionForm(props: { controller: ReturnType<typeof useS
         onPasswordChange={props.controller.handleFormPasswordChange()}
         onSubmit={props.controller.submitForm}
         onBack={props.controller.resetForm}
-      @lgcode/>
+      />
       <div class="shrink-0 pb-5">
         <Button
           variant="primary"
@@ -697,8 +697,8 @@ export function ServerConnectionForm(props: { controller: ReturnType<typeof useS
             : props.controller.isAddMode()
               ? language.t("dialog.server.add.button")
               : language.t("common.save")}
-        <@lgcode/Button>
-      <@lgcode/div>
-    <@lgcode/div>
+        </Button>
+      </div>
+    </div>
   )
 }

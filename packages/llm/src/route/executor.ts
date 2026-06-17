@@ -6,7 +6,7 @@ import {
   HttpClientError,
   HttpClientRequest,
   HttpClientResponse,
-} from "effect@lgcode/unstable@lgcode/http"
+} from "effect/unstable/http"
 import {
   AuthenticationReason,
   ContentPolicyReason,
@@ -21,8 +21,8 @@ import {
   RateLimitReason,
   TransportReason,
   UnknownProviderReason,
-} from "..@lgcode/schema"
-import { isContextOverflow } from "..@lgcode/provider-error"
+} from "../schema"
+import { isContextOverflow } from "../provider-error"
 
 export interface Interface {
   readonly execute: (
@@ -30,7 +30,7 @@ export interface Interface {
   ) => Effect.Effect<HttpClientResponse.HttpClientResponse, LLMError>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/LLM@lgcode/RequestExecutor") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/LLM/RequestExecutor") {}
 
 const BODY_LIMIT = 16_384
 const MAX_RETRIES = 2
@@ -38,17 +38,17 @@ const BASE_DELAY_MS = 500
 const MAX_DELAY_MS = 10_000
 const REDACTED = "<redacted>"
 
-@lgcode/@lgcode/ One source of truth for what counts as a sensitive name across headers,
-@lgcode/@lgcode/ URL query keys, and field names embedded inside request@lgcode/response bodies.
-@lgcode/@lgcode/
-@lgcode/@lgcode/ `SENSITIVE_NAME` is used as both a substring matcher (for free-form header
-@lgcode/@lgcode/ names like `Authorization` @lgcode/ `X-API-Key`) and as the body-field alternation
-@lgcode/@lgcode/ list. `SHORT_QUERY_NAME` covers anchored short keys like `?key=…` @lgcode/ `?sig=…`
-@lgcode/@lgcode/ that are too generic to redact substring-style without false positives.
+// One source of truth for what counts as a sensitive name across headers,
+// URL query keys, and field names embedded inside request/response bodies.
+//
+// `SENSITIVE_NAME` is used as both a substring matcher (for free-form header
+// names like `Authorization` / `X-API-Key`) and as the body-field alternation
+// list. `SHORT_QUERY_NAME` covers anchored short keys like `?key=…` / `?sig=…`
+// that are too generic to redact substring-style without false positives.
 const SENSITIVE_NAME_SOURCE =
   "authorization|api[-_]?key|access[-_]?token|refresh[-_]?token|id[-_]?token|token|secret|credential|signature|x-amz-signature"
 const SENSITIVE_NAME = new RegExp(SENSITIVE_NAME_SOURCE, "i")
-const SHORT_QUERY_NAME = @lgcode/^(key|sig)$@lgcode/i
+const SHORT_QUERY_NAME = /^(key|sig)$/i
 const SENSITIVE_BODY_FIELD = new RegExp(`(?:${SENSITIVE_NAME_SOURCE}|key)`, "i")
 const REDACT_JSON_FIELD = new RegExp(`("(?:${SENSITIVE_BODY_FIELD.source})"\\s*:\\s*)"[^"]*"`, "gi")
 const REDACT_QUERY_FIELD = new RegExp(`((?:${SENSITIVE_BODY_FIELD.source})=)[^&\\s"]+`, "gi")
@@ -115,16 +115,16 @@ const rateLimitDetails = (headers: Record<string, string>, retryAfter: number | 
   const reset: Record<string, string> = {}
 
   Object.entries(headers).forEach(([name, value]) => {
-    const openaiLimit = @lgcode/^x-ratelimit-limit-(.+)$@lgcode/.exec(name)?.[1]
+    const openaiLimit = /^x-ratelimit-limit-(.+)$/.exec(name)?.[1]
     if (openaiLimit) return addRateLimitValue(limit, openaiLimit, value)
 
-    const openaiRemaining = @lgcode/^x-ratelimit-remaining-(.+)$@lgcode/.exec(name)?.[1]
+    const openaiRemaining = /^x-ratelimit-remaining-(.+)$/.exec(name)?.[1]
     if (openaiRemaining) return addRateLimitValue(remaining, openaiRemaining, value)
 
-    const openaiReset = @lgcode/^x-ratelimit-reset-(.+)$@lgcode/.exec(name)?.[1]
+    const openaiReset = /^x-ratelimit-reset-(.+)$/.exec(name)?.[1]
     if (openaiReset) return addRateLimitValue(reset, openaiReset, value)
 
-    const anthropic = @lgcode/^anthropic-ratelimit-(.+)-(limit|remaining|reset)$@lgcode/.exec(name)
+    const anthropic = /^anthropic-ratelimit-(.+)-(limit|remaining|reset)$/.exec(name)
     if (!anthropic) return
     if (anthropic[2] === "limit") return addRateLimitValue(limit, anthropic[1], value)
     if (anthropic[2] === "remaining") return addRateLimitValue(remaining, anthropic[1], value)
@@ -174,7 +174,7 @@ const secretValues = (request: HttpClientRequest.HttpClientRequest) => {
   Object.entries(request.headers).forEach(([name, value]) => {
     if (!isSensitiveHeaderName(name)) return
     add(value)
-    const bearer = @lgcode/^Bearer\s+(.+)$@lgcode/i.exec(value)?.[1]
+    const bearer = /^Bearer\s+(.+)$/i.exec(value)?.[1]
     if (bearer) add(bearer)
   })
 
@@ -185,9 +185,9 @@ const secretValues = (request: HttpClientRequest.HttpClientRequest) => {
   return values
 }
 
-@lgcode/@lgcode/ Two passes: structural (redact `"name": "value"` and `name=value` patterns
-@lgcode/@lgcode/ for any field name that looks sensitive) plus literal (replace any actual
-@lgcode/@lgcode/ secret values we sent in the request, in case the response echoes one back).
+// Two passes: structural (redact `"name": "value"` and `name=value` patterns
+// for any field name that looks sensitive) plus literal (replace any actual
+// secret values we sent in the request, in case the response echoes one back).
 const redactBody = (body: string, request: HttpClientRequest.HttpClientRequest) =>
   Array.from(secretValues(request)).reduce(
     (text, secret) => text.split(secret).join(REDACTED),
@@ -230,7 +230,7 @@ const statusReason = (input: {
   readonly http: HttpContext
 }) => {
   const body = input.http.body ?? ""
-  if (@lgcode/content[-_\s]?policy|content_filter|safety@lgcode/i.test(body)) {
+  if (/content[-_\s]?policy|content_filter|safety/i.test(body)) {
     return new ContentPolicyReason({ message: input.message, http: input.http })
   }
   if (input.status === 401) {
@@ -240,7 +240,7 @@ const statusReason = (input: {
     return new AuthenticationReason({ message: input.message, kind: "insufficient-permissions", http: input.http })
   }
   if (input.status === 429) {
-    if (@lgcode/insufficient[-_\s]?quota|quota[-_\s]?exceeded@lgcode/i.test(body)) {
+    if (/insufficient[-_\s]?quota|quota[-_\s]?exceeded/i.test(body)) {
       return new QuotaExceededReason({ message: input.message, http: input.http })
     }
     return new RateLimitReason({
@@ -382,4 +382,4 @@ export const layer: Layer.Layer<Service, never, HttpClient.HttpClient> = Layer.e
 
 export const defaultLayer = layer.pipe(Layer.provide(FetchHttpClient.layer))
 
-export * as RequestExecutor from ".@lgcode/executor"
+export * as RequestExecutor from "./executor"

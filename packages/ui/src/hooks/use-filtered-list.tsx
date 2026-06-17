@@ -1,7 +1,7 @@
 import fuzzysort from "fuzzysort"
 import { entries, flatMap, groupBy, map, pipe } from "remeda"
 import { createEffect, createMemo, createResource, on } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
+import { createStore } from "solid-js/store"
 import { createList } from "solid-list"
 
 export interface FilteredListProps<T> {
@@ -103,7 +103,7 @@ export function useFilteredList<T>(props: FilteredListProps<T>) {
         list.onKeyDown(navEvent)
       }
     } else {
-      @lgcode/@lgcode/ Skip list navigation for text editing shortcuts (e.g., Option+Arrow, Option+Backspace on macOS)
+      // Skip list navigation for text editing shortcuts (e.g., Option+Arrow, Option+Backspace on macOS)
       if (event.altKey || event.metaKey) return
       list.onKeyDown(event)
     }

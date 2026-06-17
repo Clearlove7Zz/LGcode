@@ -1,5 +1,5 @@
-@lgcode/@lgcode/ @ts-nocheck
-import * as mod from ".@lgcode/logo"
+// @ts-nocheck
+import * as mod from "./logo"
 
 const docs = `### Overview
 OpenCode logo assets: mark, splash, and wordmark.
@@ -16,15 +16,15 @@ Use Mark for compact spaces, Logo for headers, Splash for hero sections.
 - Pure SVG rendering.
 
 ### Accessibility
-- Provide title@lgcode/aria-label when logos convey meaning.
+- Provide title/aria-label when logos convey meaning.
 
-### Theming@lgcode/tokens
+### Theming/tokens
 - Uses theme color tokens via CSS variables.
 
 `
 
 export default {
-  title: "UI@lgcode/Logo",
+  title: "UI/Logo",
   id: "components-logo",
   component: mod.Logo,
   tags: ["autodocs"],
@@ -41,17 +41,17 @@ export const Basic = {
   render: () => (
     <div style={{ display: "grid", gap: "16px", "align-items": "start" }}>
       <div>
-        <div style={{ color: "var(--text-weak)", "font-size": "12px" }}>Mark<@lgcode/div>
-        <mod.Mark @lgcode/>
-      <@lgcode/div>
+        <div style={{ color: "var(--text-weak)", "font-size": "12px" }}>Mark</div>
+        <mod.Mark />
+      </div>
       <div>
-        <div style={{ color: "var(--text-weak)", "font-size": "12px" }}>Splash<@lgcode/div>
-        <mod.Splash style={{ width: "80px", height: "100px" }} @lgcode/>
-      <@lgcode/div>
+        <div style={{ color: "var(--text-weak)", "font-size": "12px" }}>Splash</div>
+        <mod.Splash style={{ width: "80px", height: "100px" }} />
+      </div>
       <div>
-        <div style={{ color: "var(--text-weak)", "font-size": "12px" }}>Logo<@lgcode/div>
-        <mod.Logo style={{ width: "200px" }} @lgcode/>
-      <@lgcode/div>
-    <@lgcode/div>
+        <div style={{ color: "var(--text-weak)", "font-size": "12px" }}>Logo</div>
+        <mod.Logo style={{ width: "200px" }} />
+      </div>
+    </div>
   ),
 }

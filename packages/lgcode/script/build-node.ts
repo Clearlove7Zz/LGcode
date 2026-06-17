@@ -1,6 +1,6 @@
-#!@lgcode/usr@lgcode/bin@lgcode/env bun
+#!/usr/bin/env bun
 
-import { Script } from "@lgcode/script"
+import { Script } from "@opencode@lgcode/script"
 import path from "path"
 import { fileURLToPath } from "url"
 
@@ -10,15 +10,15 @@ const dir = path.resolve(__dirname, "..")
 
 process.chdir(dir)
 
-const generated = await import(".@lgcode/generate.ts")
+const generated = await import("./generate.ts")
 
 await Bun.build({
   target: "node",
-  entrypoints: [".@lgcode/src@lgcode/node.ts"],
-  outdir: ".@lgcode/dist@lgcode/node",
+  entrypoints: ["./src/node.ts"],
+  outdir: "./dist/node",
   format: "esm",
   sourcemap: "linked",
-  external: ["jsonc-parser", "@lydell@lgcode/node-pty"],
+  external: ["jsonc-parser", "@lydell/node-pty"],
   define: {
     OPENCODE_MODELS_DEV: generated.modelsData,
     OPENCODE_CHANNEL: `'${Script.channel}'`,

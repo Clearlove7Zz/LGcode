@@ -1,10 +1,10 @@
-import { Auth } from "@@lgcode/auth"
+import { Auth } from "@/auth"
 
 import { Effect } from "effect"
-import { HttpApiBuilder } from "effect@lgcode/unstable@lgcode/httpapi"
-import { RootHttpApi } from "..@lgcode/api"
-import { LogInput } from "..@lgcode/groups@lgcode/control"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { HttpApiBuilder } from "effect/unstable/httpapi"
+import { RootHttpApi } from "../api"
+import { LogInput } from "../groups/control"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
 
 export const controlHandlers = HttpApiBuilder.group(RootHttpApi, "control", (handlers) =>
   Effect.gen(function* () {

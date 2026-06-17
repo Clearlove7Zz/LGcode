@@ -4,11 +4,11 @@ import {
   type OptimizedBuffer,
   type RenderContext,
   type RenderableOptions,
-} from "@opentui@lgcode/core"
-import { extend, useRenderer } from "@opentui@lgcode/solid"
+} from "@opentui/core"
+import { extend, useRenderer } from "@opentui/solid"
 import { onCleanup, onMount } from "solid-js"
-import { tint, useTheme } from "..@lgcode/context@lgcode/theme"
-import { GoUpsellArtPainter } from ".@lgcode/bg-pulse-render"
+import { tint, useTheme } from "../context/theme"
+import { GoUpsellArtPainter } from "./bg-pulse-render"
 
 type GoUpsellArtOptions = RenderableOptions<FrameBufferRenderable> & {
   backgroundPanel?: RGBA
@@ -60,7 +60,7 @@ class GoUpsellArtRenderable extends FrameBufferRenderable {
   }
 }
 
-declare module "@opentui@lgcode/solid" {
+declare module "@opentui/solid" {
   interface OpenTUIComponents {
     go_upsell_art: typeof GoUpsellArtRenderable
   }
@@ -94,6 +94,6 @@ export function BgPulse() {
       primary={theme.primary}
       logoBase={tint(theme.background, theme.text, 0.62)}
       live
-    @lgcode/>
+    />
   )
 }

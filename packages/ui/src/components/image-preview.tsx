@@ -1,6 +1,6 @@
-import { Dialog as Kobalte } from "@kobalte@lgcode/core@lgcode/dialog"
-import { useI18n } from "..@lgcode/context@lgcode/i18n"
-import { IconButton } from ".@lgcode/icon-button"
+import { Dialog as Kobalte } from "@kobalte/core/dialog"
+import { useI18n } from "../context/i18n"
+import { IconButton } from "./icon-button"
 
 export interface ImagePreviewProps {
   src: string
@@ -20,13 +20,13 @@ export function ImagePreview(props: ImagePreviewProps) {
               icon="close"
               variant="ghost"
               aria-label={i18n.t("ui.common.close")}
-            @lgcode/>
-          <@lgcode/div>
+            />
+          </div>
           <div data-slot="image-preview-body">
-            <img src={props.src} alt={props.alt ?? i18n.t("ui.imagePreview.alt")} data-slot="image-preview-image" @lgcode/>
-          <@lgcode/div>
-        <@lgcode/Kobalte.Content>
-      <@lgcode/div>
-    <@lgcode/div>
+            <img src={props.src} alt={props.alt ?? i18n.t("ui.imagePreview.alt")} data-slot="image-preview-image" />
+          </div>
+        </Kobalte.Content>
+      </div>
+    </div>
   )
 }

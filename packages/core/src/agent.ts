@@ -1,19 +1,19 @@
-export * as AgentV2 from ".@lgcode/agent"
+export * as AgentV2 from "./agent"
 
 import { Array, Context, Effect, Layer, Schema, Scope } from "effect"
 import { castDraft, enableMapSet, type Draft } from "immer"
-import { ModelV2 } from ".@lgcode/model"
-import { PermissionSchema } from ".@lgcode/permission@lgcode/schema"
-import { ProviderV2 } from ".@lgcode/provider"
-import { PositiveInt } from ".@lgcode/schema"
-import { State } from ".@lgcode/state"
+import { ModelV2 } from "./model"
+import { PermissionSchema } from "./permission/schema"
+import { ProviderV2 } from "./provider"
+import { PositiveInt } from "./schema"
+import { State } from "./state"
 
 export const ID = Schema.String.pipe(Schema.brand("AgentV2.ID"))
 export type ID = typeof ID.Type
 export const defaultID = ID.make("build")
 
 export const Color = Schema.Union([
-  Schema.String.check(Schema.isPattern(@lgcode/^#[0-9a-fA-F]{6}$@lgcode/)),
+  Schema.String.check(Schema.isPattern(/^#[0-9a-fA-F]{6}$/)),
   Schema.Literals(["primary", "secondary", "accent", "success", "warning", "error", "info"]),
 ])
 
@@ -71,7 +71,7 @@ export interface Interface {
   readonly all: () => Effect.Effect<Info[]>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/Agent") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/v2/Agent") {}
 
 enableMapSet()
 

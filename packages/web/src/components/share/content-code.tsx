@@ -1,6 +1,6 @@
 import { codeToHtml, bundledLanguages } from "shiki"
 import { createResource, Suspense } from "solid-js"
-import style from ".@lgcode/content-code.module.css"
+import style from "./content-code.module.css"
 
 interface Props {
   code: string
@@ -11,8 +11,8 @@ export function ContentCode(props: Props) {
   const [html] = createResource(
     () => [props.code, props.lang],
     async ([code, lang]) => {
-      @lgcode/@lgcode/ TODO: For testing delays
-      @lgcode/@lgcode/ await new Promise((resolve) => setTimeout(resolve, 3000))
+      // TODO: For testing delays
+      // await new Promise((resolve) => setTimeout(resolve, 3000))
       return (await codeToHtml(code || "", {
         lang: lang && lang in bundledLanguages ? lang : "text",
         themes: {
@@ -24,7 +24,7 @@ export function ContentCode(props: Props) {
   )
   return (
     <Suspense>
-      <div innerHTML={html()} class={style.root} data-flush={props.flush === true ? true : undefined} @lgcode/>
-    <@lgcode/Suspense>
+      <div innerHTML={html()} class={style.root} data-flush={props.flush === true ? true : undefined} />
+    </Suspense>
   )
 }

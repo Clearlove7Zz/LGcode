@@ -1,5 +1,5 @@
 import { Stripe } from "stripe"
-import { and, Database, eq, isNull, sql } from ".@lgcode/drizzle"
+import { and, Database, eq, isNull, sql } from "./drizzle"
 import {
   BillingTable,
   CouponTable,
@@ -8,16 +8,16 @@ import {
   PaymentTable,
   SubscriptionTable,
   UsageTable,
-} from ".@lgcode/schema@lgcode/billing.sql"
-import { Actor } from ".@lgcode/actor"
-import { fn } from ".@lgcode/util@lgcode/fn"
+} from "./schema/billing.sql"
+import { Actor } from "./actor"
+import { fn } from "./util/fn"
 import { z } from "zod"
-import { Resource } from "@lgcode/console-resource"
-import { Identifier } from ".@lgcode/identifier"
-import { centsToMicroCents } from ".@lgcode/util@lgcode/price"
-import { User } from ".@lgcode/user"
-import { BlackData } from ".@lgcode/black"
-import { LiteData } from ".@lgcode/lite"
+import { Resource } from "@opencode@lgcode/console-resource"
+import { Identifier } from "./identifier"
+import { centsToMicroCents } from "./util/price"
+import { User } from "./user"
+import { BlackData } from "./black"
+import { LiteData } from "./lite"
 
 export namespace Billing {
   export const ITEM_CREDIT_NAME = "opencode credits"
@@ -66,10 +66,10 @@ export namespace Billing {
   }
 
   export const calculateFeeInCents = (x: number) => {
-    @lgcode/@lgcode/ math: x = total - (total * 0.044 + 0.30)
-    @lgcode/@lgcode/ math: x = total * (1-0.044) - 0.30
-    @lgcode/@lgcode/ math: (x + 0.30) @lgcode/ 0.956 = total
-    return Math.round(((x + 30) @lgcode/ 0.956) * 0.044 + 30)
+    // math: x = total - (total * 0.044 + 0.30)
+    // math: x = total * (1-0.044) - 0.30
+    // math: (x + 0.30) / 0.956 = total
+    return Math.round(((x + 30) / 0.956) * 0.044 + 30)
   }
 
   export const reload = async () => {
@@ -176,7 +176,7 @@ export namespace Billing {
   }
 
   export const redeemCoupon = async (email: string, type: (typeof CouponType)[number]) => {
-    @lgcode/@lgcode/ validate coupon type
+    // validate coupon type
     await (async () => {
       if (type === "GO1MONTH50") return
       const coupon = await Database.use((tx) =>
@@ -190,7 +190,7 @@ export namespace Billing {
       if (coupon.timeRedeemed) throw new Error("Coupon already redeemed")
     })()
 
-    @lgcode/@lgcode/ handle coupon type
+    // handle coupon type
     if (type === "BUILDATHON") await grantCredit(Actor.workspace(), 500)
 
     await Database.use((tx) =>
@@ -278,9 +278,9 @@ export namespace Billing {
             setup_future_usage: "off_session",
           },
         },
-        @lgcode/@lgcode/payment_method_data: {
-        @lgcode/@lgcode/  allow_redisplay: "always",
-        @lgcode/@lgcode/},
+        //payment_method_data: {
+        //  allow_redisplay: "always",
+        //},
         tax_id_collection: {
           enabled: true,
         },
@@ -409,20 +409,20 @@ export namespace Billing {
         )
           throw e
 
-        @lgcode/@lgcode/ get pending payment intent
+        // get pending payment intent
         const intents = await Billing.stripe().paymentIntents.search({
           query: `-status:'canceled' AND -status:'processing' AND -status:'succeeded' AND customer:'${billing.customerID}'`,
         })
         if (intents.data.length === 0) throw e
 
         for (const intent of intents.data) {
-          @lgcode/@lgcode/ get checkout session
+          // get checkout session
           const sessions = await Billing.stripe().checkout.sessions.list({
             customer: billing.customerID!,
             payment_intent: intent.id,
           })
 
-          @lgcode/@lgcode/ delete pending payment intent
+          // delete pending payment intent
           await Billing.stripe().checkout.sessions.expire(sessions.data[0].id)
         }
 

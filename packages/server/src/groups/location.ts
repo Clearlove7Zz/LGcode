@@ -1,11 +1,11 @@
-import { Location } from "@lgcode/core@lgcode/location"
-import { LocationServiceMap } from "@lgcode/core@lgcode/location-layer"
-import { FileSystem } from "@lgcode/core@lgcode/filesystem"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import { WorkspaceV2 } from "@lgcode/core@lgcode/workspace"
+import { Location } from "@opencode@lgcode/core/location"
+import { LocationServiceMap } from "@opencode@lgcode/core/location-layer"
+import { FileSystem } from "@opencode@lgcode/core/filesystem"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import { WorkspaceV2 } from "@opencode@lgcode/core/workspace"
 import { Effect, Layer, Schema } from "effect"
-import { HttpServerRequest } from "effect@lgcode/unstable@lgcode/http"
-import { HttpApiEndpoint, HttpApiGroup, HttpApiMiddleware, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
+import { HttpServerRequest } from "effect/unstable/http"
+import { HttpApiEndpoint, HttpApiGroup, HttpApiMiddleware, OpenApi } from "effect/unstable/httpapi"
 
 export const LocationQuery = Schema.Struct({
   location: Schema.optional(
@@ -52,11 +52,11 @@ export class LocationMiddleware extends HttpApiMiddleware.Service<
   {
     provides: LocationServices
   }
->()("@lgcode/HttpApiLocation") {}
+>()("@opencode/HttpApiLocation") {}
 
 export const LocationGroup = HttpApiGroup.make("server.location")
   .add(
-    HttpApiEndpoint.get("location.get", "@lgcode/api@lgcode/location", {
+    HttpApiEndpoint.get("location.get", "/api/location", {
       query: LocationQuery,
       success: Location.Info,
     })
@@ -72,7 +72,7 @@ export const LocationGroup = HttpApiGroup.make("server.location")
   .middleware(LocationMiddleware)
 
 function ref(request: HttpServerRequest.HttpServerRequest): Location.Ref {
-  const query = new URL(request.url, "http:@lgcode/@lgcode/localhost").searchParams
+  const query = new URL(request.url, "http://localhost").searchParams
   const workspaceID = query.get("location[workspace]") || request.headers["x-opencode-workspace"]
   const directory =
     query.get("location[directory]") ||

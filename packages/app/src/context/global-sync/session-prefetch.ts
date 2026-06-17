@@ -1,4 +1,4 @@
-import { ScopedKey, type ServerScope } from "@@lgcode/utils@lgcode/server-scope"
+import { ScopedKey, type ServerScope } from "@/utils/server-scope"
 
 const key = (scope: ServerScope, directory: string, sessionID: string) => ScopedKey.from(scope, directory, sessionID)
 

@@ -1,10 +1,10 @@
 import { describe, expect } from "bun:test"
 import { Duration, Effect, Exit, Fiber, Layer, Scope, Stream } from "effect"
-import * as TestClock from "effect@lgcode/testing@lgcode/TestClock"
-import { Integration } from "@lgcode/core@lgcode/integration"
-import { Credential } from "@lgcode/core@lgcode/credential"
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import { it } from ".@lgcode/lib@lgcode/effect"
+import * as TestClock from "effect/testing/TestClock"
+import { Integration } from "@opencode@lgcode/core/integration"
+import { Credential } from "@opencode@lgcode/core/credential"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import { it } from "./lib/effect"
 
 const layer = Integration.locationLayer.pipe(
   Layer.provide(EventV2.defaultLayer),
@@ -93,7 +93,7 @@ describe("Integration", () => {
       const authorize = () =>
         Effect.succeed({
           mode: "auto" as const,
-          url: "https:@lgcode/@lgcode/example.com@lgcode/authorize",
+          url: "https://example.com/authorize",
           instructions: "Sign in",
           callback: Effect.never,
         })
@@ -186,7 +186,7 @@ describe("Integration", () => {
           authorize: () =>
             Effect.succeed({
               mode: "code" as const,
-              url: "https:@lgcode/@lgcode/example.com@lgcode/authorize",
+              url: "https://example.com/authorize",
               instructions: "Paste the code",
               callback: (code: string) =>
                 Effect.succeed(
@@ -246,7 +246,7 @@ describe("Integration", () => {
             Effect.addFinalizer(() => Effect.sync(() => (closed = true))).pipe(
               Effect.as({
                 mode: "code" as const,
-                url: "https:@lgcode/@lgcode/example.com@lgcode/authorize",
+                url: "https://example.com/authorize",
                 instructions: "Paste the code",
                 callback: () => Effect.die("unexpected callback"),
               }),
@@ -282,7 +282,7 @@ describe("Integration", () => {
           authorize: () =>
             Effect.succeed({
               mode: "auto" as const,
-              url: "https:@lgcode/@lgcode/example.com@lgcode/authorize",
+              url: "https://example.com/authorize",
               instructions: "Sign in",
               callback: Effect.succeed(
                 new Credential.OAuth({ type: "oauth", methodID, access: "access", refresh: "refresh", expires: 1 }),
@@ -320,7 +320,7 @@ describe("Integration", () => {
             Effect.addFinalizer(() => Effect.sync(() => (closed = true))).pipe(
               Effect.as({
                 mode: "auto" as const,
-                url: "https:@lgcode/@lgcode/example.com@lgcode/authorize",
+                url: "https://example.com/authorize",
                 instructions: "Sign in",
                 callback: Effect.never,
               }),
@@ -385,7 +385,7 @@ describe("Integration", () => {
             }),
           )
 
-          @lgcode/@lgcode/ Stored credentials and detected env vars appear as connections.
+          // Stored credentials and detected env vars appear as connections.
           expect((yield* integrations.get(integrationID))?.connections).toEqual([
             { type: "credential", id: rows[0]!.id, label: "Work" },
             {

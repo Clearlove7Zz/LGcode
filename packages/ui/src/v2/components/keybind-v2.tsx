@@ -1,5 +1,5 @@
 import { type ComponentProps, For, splitProps } from "solid-js"
-import ".@lgcode/keybind-v2.css"
+import "./keybind-v2.css"
 
 export interface KeybindV2Props extends ComponentProps<"div"> {
   keys: string[]
@@ -21,10 +21,10 @@ export function KeybindV2(props: KeybindV2Props) {
       <For each={local.keys}>
         {(key) => (
           <div data-slot="keybind-v2-key">
-            <span data-slot="keybind-v2-label">{key}<@lgcode/span>
-          <@lgcode/div>
+            <span data-slot="keybind-v2-label">{key}</span>
+          </div>
         )}
-      <@lgcode/For>
-    <@lgcode/div>
+      </For>
+    </div>
   )
 }

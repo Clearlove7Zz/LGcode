@@ -1,4 +1,4 @@
-import { dict as en } from ".@lgcode/en"
+import { dict as en } from "./en"
 
 type Keys = keyof typeof en
 

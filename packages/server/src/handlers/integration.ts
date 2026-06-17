@@ -1,9 +1,9 @@
-import { Integration } from "@lgcode/core@lgcode/integration"
+import { Integration } from "@opencode@lgcode/core/integration"
 import { Effect } from "effect"
-import { HttpApiBuilder, HttpApiSchema } from "effect@lgcode/unstable@lgcode/httpapi"
-import { Api } from "..@lgcode/api"
-import { InvalidRequestError } from "..@lgcode/errors"
-import { response } from "..@lgcode/groups@lgcode/location"
+import { HttpApiBuilder, HttpApiSchema } from "effect/unstable/httpapi"
+import { Api } from "../api"
+import { InvalidRequestError } from "../errors"
+import { response } from "../groups/location"
 
 const authorize = <A, R>(effect: Effect.Effect<A, Integration.AuthorizationError, R>) =>
   effect.pipe(

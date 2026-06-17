@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import { createVirtualizer } from "@tanstack@lgcode/solid-virtual"
+import { createVirtualizer } from "@tanstack/solid-virtual"
 import { createRoot, createSignal } from "solid-js"
 
 test("reactive count updates preserve measured row sizes", () => {

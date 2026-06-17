@@ -1,14 +1,14 @@
 import { describe, expect } from "bun:test"
 import path from "path"
 import { Cause, Effect, Exit, Fiber, Layer, Option } from "effect"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { Global } from "@lgcode/core@lgcode/global"
-import { Config } from "@lgcode/core@lgcode/config"
-import { ConfigToolOutput } from "@lgcode/core@lgcode/config@lgcode/tool-output"
-import { SessionV2 } from "@lgcode/core@lgcode/session"
-import { ToolOutputStore } from "@lgcode/core@lgcode/tool-output-store"
-import { testEffect } from ".@lgcode/lib@lgcode/effect"
-import { tmpdir } from ".@lgcode/fixture@lgcode/tmpdir"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { Global } from "@opencode@lgcode/core/global"
+import { Config } from "@opencode@lgcode/core/config"
+import { ConfigToolOutput } from "@opencode@lgcode/core/config/tool-output"
+import { SessionV2 } from "@opencode@lgcode/core/session"
+import { ToolOutputStore } from "@opencode@lgcode/core/tool-output-store"
+import { testEffect } from "./lib/effect"
+import { tmpdir } from "./fixture/tmpdir"
 
 const sessionID = SessionV2.ID.make("ses_tool_output_store")
 
@@ -90,7 +90,7 @@ describe("ToolOutputStore", () => {
           toolCallID: "call-file",
           output: {
             structured: { caption: "pixel" },
-            content: [{ type: "file", uri: `data:image@lgcode/png;base64,${data}`, mime: "image@lgcode/png", name: "pixel.png" }],
+            content: [{ type: "file", uri: `data:image/png;base64,${data}`, mime: "image/png", name: "pixel.png" }],
           },
         })
         expect(result.outputPaths).toEqual([])
@@ -98,8 +98,8 @@ describe("ToolOutputStore", () => {
         expect(result.output.content).toHaveLength(1)
         expect(result.output.content[0]).toEqual({
           type: "file",
-          uri: `data:image@lgcode/png;base64,${data}`,
-          mime: "image@lgcode/png",
+          uri: `data:image/png;base64,${data}`,
+          mime: "image/png",
           name: "pixel.png",
         })
       }),
@@ -112,8 +112,8 @@ describe("ToolOutputStore", () => {
         const text = "x".repeat(ToolOutputStore.MAX_BYTES + 1)
         const media = {
           type: "file" as const,
-          uri: "data:image@lgcode/png;base64,aGVsbG8=",
-          mime: "image@lgcode/png",
+          uri: "data:image/png;base64,aGVsbG8=",
+          mime: "image/png",
           name: "pixel.png",
         }
         const result = yield* store.bound({

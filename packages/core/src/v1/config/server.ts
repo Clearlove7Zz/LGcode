@@ -1,7 +1,7 @@
-export * as ConfigServerV1 from ".@lgcode/server"
+export * as ConfigServerV1 from "./server"
 
 import { Schema } from "effect"
-import { PositiveInt } from "..@lgcode/..@lgcode/schema"
+import { PositiveInt } from "../../schema"
 
 export const Server = Schema.Struct({
   port: Schema.optional(PositiveInt).annotate({

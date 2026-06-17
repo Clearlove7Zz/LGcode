@@ -1,4 +1,4 @@
-import { dict as en } from ".@lgcode/en"
+import { dict as en } from "./en"
 type Keys = keyof typeof en
 
 export const dict = {
@@ -124,7 +124,7 @@ export const dict = {
   "dialog.provider.viewAll": "Vis flere leverandører",
 
   "provider.connect.title": "Koble til {{provider}}",
-  "provider.connect.title.anthropicProMax": "Logg inn med Claude Pro@lgcode/Max",
+  "provider.connect.title.anthropicProMax": "Logg inn med Claude Pro/Max",
   "provider.connect.selectMethod": "Velg innloggingsmetode for {{provider}}.",
   "provider.connect.method.apiKey": "API-nøkkel",
   "provider.connect.status.inProgress": "Autorisering pågår...",
@@ -140,7 +140,7 @@ export const dict = {
   "provider.connect.opencodeZen.line2":
     "Med én enkelt API-nøkkel får du tilgang til modeller som Claude, GPT, Gemini, GLM og flere.",
   "provider.connect.opencodeZen.visit.prefix": "Besøk ",
-  "provider.connect.opencodeZen.visit.link": "opencode.ai@lgcode/zen",
+  "provider.connect.opencodeZen.visit.link": "opencode.ai/zen",
   "provider.connect.opencodeZen.visit.suffix": " for å hente API-nøkkelen din.",
   "provider.connect.oauth.code.visit.prefix": "Besøk ",
   "provider.connect.oauth.code.visit.link": "denne lenken",
@@ -168,7 +168,7 @@ export const dict = {
   "provider.custom.field.name.label": "Visningsnavn",
   "provider.custom.field.name.placeholder": "Min AI-leverandør",
   "provider.custom.field.baseURL.label": "Base-URL",
-  "provider.custom.field.baseURL.placeholder": "https:@lgcode/@lgcode/api.myprovider.com@lgcode/v1",
+  "provider.custom.field.baseURL.placeholder": "https://api.myprovider.com/v1",
   "provider.custom.field.apiKey.label": "API-nøkkel",
   "provider.custom.field.apiKey.placeholder": "API-nøkkel",
   "provider.custom.field.apiKey.description": "Valgfritt. La stå tomt hvis du administrerer autentisering via headers.",
@@ -191,7 +191,7 @@ export const dict = {
   "provider.custom.error.providerID.exists": "Den leverandør-IDen finnes allerede",
   "provider.custom.error.name.required": "Visningsnavn er påkrevd",
   "provider.custom.error.baseURL.required": "Base-URL er påkrevd",
-  "provider.custom.error.baseURL.format": "Må starte med http:@lgcode/@lgcode/ eller https:@lgcode/@lgcode/",
+  "provider.custom.error.baseURL.format": "Må starte med http:// eller https://",
   "provider.custom.error.required": "Påkrevd",
   "provider.custom.error.duplicate": "Duplikat",
 
@@ -321,7 +321,7 @@ export const dict = {
   "dialog.server.empty": "Ingen servere ennå",
   "dialog.server.add.title": "Legg til en server",
   "dialog.server.add.url": "Server-URL",
-  "dialog.server.add.placeholder": "http:@lgcode/@lgcode/localhost:4096",
+  "dialog.server.add.placeholder": "http://localhost:4096",
   "dialog.server.add.error": "Kunne ikke koble til server",
   "dialog.server.add.checking": "Sjekker...",
   "dialog.server.add.button": "Legg til server",
@@ -378,7 +378,7 @@ export const dict = {
   "context.stats.inputTokens": "Input-tokens",
   "context.stats.outputTokens": "Output-tokens",
   "context.stats.reasoningTokens": "Resonnerings-tokens",
-  "context.stats.cacheTokens": "Cache-tokens (les@lgcode/skriv)",
+  "context.stats.cacheTokens": "Cache-tokens (les/skriv)",
   "context.stats.userMessages": "Brukermeldinger",
   "context.stats.assistantMessages": "Assistentmeldinger",
   "context.stats.totalCost": "Total kostnad",
@@ -478,8 +478,8 @@ export const dict = {
   "error.chain.retryable": "Kan prøves på nytt: {{retryable}}",
   "error.chain.responseBody": "Responsinnhold:\n{{body}}",
   "error.chain.didYouMean": "Mente du: {{suggestions}}",
-  "error.chain.modelNotFound": "Modell ikke funnet: {{provider}}@lgcode/{{model}}",
-  "error.chain.checkConfig": "Sjekk leverandør-@lgcode/modellnavnene i konfigurasjonen din (opencode.json)",
+  "error.chain.modelNotFound": "Modell ikke funnet: {{provider}}/{{model}}",
+  "error.chain.checkConfig": "Sjekk leverandør-/modellnavnene i konfigurasjonen din (opencode.json)",
   "error.chain.mcpFailed": 'MCP-server "{{name}}" mislyktes. Merk at OpenCode ikke støtter MCP-autentisering ennå.',
   "error.chain.providerAuthFailed": "Leverandørautentisering mislyktes ({{provider}}): {{message}}",
   "error.chain.providerInitFailed":
@@ -894,7 +894,7 @@ export const dict = {
   "session.header.open.app.powershell": "PowerShell",
   "session.header.open.app.sublimeText": "Sublime Text",
   "debugBar.ariaLabel": "Utviklingsytelsesdiagnostikk",
-  "debugBar.na": "i@lgcode/t",
+  "debugBar.na": "i/t",
   "debugBar.nav.label": "NAV",
   "debugBar.nav.tip":
     "Siste fullførte ruteovergang som berører en sesjonsside, målt fra ruterstart til første opptegning etter at den har roet seg.",

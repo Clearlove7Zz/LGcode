@@ -1,4 +1,4 @@
-import { type VirtualFileMetrics, Virtualizer } from "@pierre@lgcode/diffs"
+import { type VirtualFileMetrics, Virtualizer } from "@pierre/diffs"
 
 type Target = {
   key: Document | HTMLElement

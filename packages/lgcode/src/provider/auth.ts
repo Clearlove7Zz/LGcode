@@ -1,11 +1,11 @@
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
-import type { AuthOAuthResult, Hooks } from "@lgcode/plugin"
-import { serviceUse } from "@lgcode/core@lgcode/effect@lgcode/service-use"
-import { Auth } from "@@lgcode/auth"
-import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
-import { optionalOmitUndefined } from "@lgcode/core@lgcode/schema"
-import { Plugin } from "..@lgcode/plugin"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import type { AuthOAuthResult, Hooks } from "@opencode@lgcode/plugin"
+import { serviceUse } from "@opencode@lgcode/core/effect/service-use"
+import { Auth } from "@/auth"
+import { InstanceState } from "@/effect/instance-state"
+import { optionalOmitUndefined } from "@opencode@lgcode/core/schema"
+import { Plugin } from "../plugin"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
 import { Array as Arr, Effect, Layer, Record, Result, Context, Schema } from "effect"
 
 const When = Schema.Struct({
@@ -102,7 +102,7 @@ interface State {
   pending: Map<ProviderV2.ID, AuthOAuthResult>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/ProviderAuth") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/ProviderAuth") {}
 
 export const use = serviceUse(Service)
 
@@ -230,4 +230,4 @@ export const defaultLayer = Layer.suspend(() =>
 
 export const node = LayerNode.make(layer, [Auth.node, Plugin.node])
 
-export * as ProviderAuth from ".@lgcode/auth"
+export * as ProviderAuth from "./auth"

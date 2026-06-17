@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test"
-import { Share } from "..@lgcode/..@lgcode/src@lgcode/core@lgcode/share"
-import { Storage } from "..@lgcode/..@lgcode/src@lgcode/core@lgcode/storage"
-import { Identifier } from "@lgcode/core@lgcode/util@lgcode/identifier"
+import { Share } from "../../src/core/share"
+import { Storage } from "../../src/core/storage"
+import { Identifier } from "@opencode@lgcode/core/util/identifier"
 
 describe.concurrent("core.share", () => {
   test("should create a share", async () => {

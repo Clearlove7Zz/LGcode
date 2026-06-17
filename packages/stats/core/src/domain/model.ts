@@ -1,9 +1,9 @@
 import { and, asc, eq, inArray, or } from "drizzle-orm"
 import { Effect, Layer } from "effect"
-import * as Context from "effect@lgcode/Context"
-import { DatabaseError, DrizzleClient } from "..@lgcode/database"
-import { modelStat } from "..@lgcode/database@lgcode/schema"
-import { RETIRED_STAT_MODELS, RETIRED_STAT_PROVIDERS } from ".@lgcode/model-normalization"
+import * as Context from "effect/Context"
+import { DatabaseError, DrizzleClient } from "../database"
+import { modelStat } from "../database/schema"
+import { RETIRED_STAT_MODELS, RETIRED_STAT_PROVIDERS } from "./model-normalization"
 import {
   chunks,
   collapseRows,
@@ -15,7 +15,7 @@ import {
   toStatBaseRow,
   UPSERT_CHUNK_SIZE,
   type StatBaseAggregate,
-} from ".@lgcode/stat"
+} from "./stat"
 
 export type ModelStatRow = typeof modelStat.$inferInsert
 export type ModelStatAggregate = StatBaseAggregate & { provider: string; model: string; provider_model: string }
@@ -46,7 +46,7 @@ export declare namespace ModelStatRepo {
 }
 
 export class ModelStatRepo extends Context.Service<ModelStatRepo, ModelStatRepo.Service>()(
-  "@lgcode/stats@lgcode/ModelStatRepo",
+  "@opencode/stats/ModelStatRepo",
 ) {
   static readonly layer: Layer.Layer<ModelStatRepo, never, DrizzleClient> = Layer.effect(
     ModelStatRepo,

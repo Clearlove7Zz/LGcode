@@ -1,5 +1,5 @@
-@lgcode/** @jsxImportSource @opentui@lgcode/solid *@lgcode/
-import { testRender } from "@opentui@lgcode/solid"
+/** @jsxImportSource @opentui/solid */
+import { testRender } from "@opentui/solid"
 import { expect, test } from "bun:test"
 import { Schema } from "effect"
 import {
@@ -11,7 +11,7 @@ import {
   TuiConfigProvider,
   type Info as TuiConfigInfo,
   useTuiConfig,
-} from "..@lgcode/src@lgcode/config"
+} from "../src/config"
 
 const decodeInfo = Schema.decodeUnknownSync(Info)
 const decodePlugin = Schema.decodeUnknownSync(PluginSpec)
@@ -69,7 +69,7 @@ test("resolves overrides without mutating input", () => {
       sound: false,
       volume: 0.8,
       sound_pack: "custom.pack",
-      sounds: { question: "@lgcode/sounds@lgcode/question.wav" },
+      sounds: { question: "/sounds/question.wav" },
     },
     keybinds: { session_list: "ctrl+l" },
   }
@@ -100,13 +100,13 @@ test("provides resolved config through Solid context", async () => {
 
   function Consumer() {
     const value = useTuiConfig()
-    return <text>{`${value.theme} ${value.mouse} ${value.leader_timeout}`}<@lgcode/text>
+    return <text>{`${value.theme} ${value.mouse} ${value.leader_timeout}`}</text>
   }
 
   const app = await testRender(() => (
     <TuiConfigProvider config={config}>
-      <Consumer @lgcode/>
-    <@lgcode/TuiConfigProvider>
+      <Consumer />
+    </TuiConfigProvider>
   ))
   try {
     await app.renderOnce()

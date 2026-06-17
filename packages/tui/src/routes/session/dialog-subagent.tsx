@@ -1,5 +1,5 @@
-import { DialogSelect } from "..@lgcode/..@lgcode/ui@lgcode/dialog-select"
-import { useRoute } from "..@lgcode/..@lgcode/context@lgcode/route"
+import { DialogSelect } from "../../ui/dialog-select"
+import { useRoute } from "../../context/route"
 
 export function DialogSubagent(props: { sessionID: string }) {
   const route = useRoute()
@@ -21,6 +21,6 @@ export function DialogSubagent(props: { sessionID: string }) {
           },
         },
       ]}
-    @lgcode/>
+    />
   )
 }

@@ -1,8 +1,8 @@
-import { ProviderID, type ModelID } from "..@lgcode/schema"
-import * as OpenAICompatibleChat from "..@lgcode/protocols@lgcode/openai-compatible-chat"
-import type { RouteDefaultsInput } from "..@lgcode/route@lgcode/client"
-import { AuthOptions, type ProviderAuthOption } from "..@lgcode/route@lgcode/auth-options"
-import { profiles, type OpenAICompatibleProfile } from ".@lgcode/openai-compatible-profile"
+import { ProviderID, type ModelID } from "../schema"
+import * as OpenAICompatibleChat from "../protocols/openai-compatible-chat"
+import type { RouteDefaultsInput } from "../route/client"
+import { AuthOptions, type ProviderAuthOption } from "../route/auth-options"
+import { profiles, type OpenAICompatibleProfile } from "./openai-compatible-profile"
 
 export const id = ProviderID.make("openai-compatible")
 

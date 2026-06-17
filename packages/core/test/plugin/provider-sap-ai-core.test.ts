@@ -1,8 +1,8 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { PluginV2 } from "@lgcode/core@lgcode/plugin"
-import { SapAICorePlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/sap-ai-core"
-import { fixtureProvider, it, model, npmLayer, withEnv } from ".@lgcode/provider-helper"
+import { PluginV2 } from "@opencode@lgcode/core/plugin"
+import { SapAICorePlugin } from "@opencode@lgcode/core/plugin/provider/sap-ai-core"
+import { fixtureProvider, it, model, npmLayer, withEnv } from "./provider-helper"
 
 const pluginWithNpm = { id: SapAICorePlugin.id, effect: SapAICorePlugin.effect.pipe(Effect.provide(npmLayer)) }
 

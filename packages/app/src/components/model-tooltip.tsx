@@ -1,5 +1,5 @@
 import { Show, type Component } from "solid-js"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { useLanguage } from "@/context/language"
 
 type InputKey = "text" | "image" | "audio" | "video" | "pdf"
 type InputMap = Record<InputKey, boolean>
@@ -28,11 +28,11 @@ export const ModelTooltip: Component<{ model: ModelInfo; latest?: boolean; free?
   const sourceName = (model: ModelInfo) => {
     const value = `${model.id} ${model.name}`.toLowerCase()
 
-    if (@lgcode/claude|anthropic@lgcode/.test(value)) return language.t("model.provider.anthropic")
-    if (@lgcode/gpt|o[1-4]|codex|openai@lgcode/.test(value)) return language.t("model.provider.openai")
-    if (@lgcode/gemini|palm|bard|google@lgcode/.test(value)) return language.t("model.provider.google")
-    if (@lgcode/grok|xai@lgcode/.test(value)) return language.t("model.provider.xai")
-    if (@lgcode/llama|meta@lgcode/.test(value)) return language.t("model.provider.meta")
+    if (/claude|anthropic/.test(value)) return language.t("model.provider.anthropic")
+    if (/gpt|o[1-4]|codex|openai/.test(value)) return language.t("model.provider.openai")
+    if (/gemini|palm|bard|google/.test(value)) return language.t("model.provider.google")
+    if (/grok|xai/.test(value)) return language.t("model.provider.xai")
+    if (/llama|meta/.test(value)) return language.t("model.provider.meta")
 
     return model.provider.name
   }
@@ -76,16 +76,16 @@ export const ModelTooltip: Component<{ model: ModelInfo; latest?: boolean; free?
 
   return (
     <div class="flex flex-col gap-1 py-1">
-      <div class="text-13-medium">{title()}<@lgcode/div>
+      <div class="text-13-medium">{title()}</div>
       <Show when={inputs()}>
         {(value) => (
           <div class="text-12-regular text-text-invert-base">
             {language.t("model.tooltip.allows", { inputs: value() })}
-          <@lgcode/div>
+          </div>
         )}
-      <@lgcode/Show>
-      <div class="text-12-regular text-text-invert-base">{reasoning()}<@lgcode/div>
-      <div class="text-12-regular text-text-invert-base">{context()}<@lgcode/div>
-    <@lgcode/div>
+      </Show>
+      <div class="text-12-regular text-text-invert-base">{reasoning()}</div>
+      <div class="text-12-regular text-text-invert-base">{context()}</div>
+    </div>
   )
 }

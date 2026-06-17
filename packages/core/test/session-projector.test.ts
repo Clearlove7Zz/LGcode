@@ -1,25 +1,25 @@
 import { describe, expect } from "bun:test"
 import { DateTime, Effect, Layer, Schema } from "effect"
 import { asc, eq } from "drizzle-orm"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import { EventTable } from "@lgcode/core@lgcode/event@lgcode/sql"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
-import { Project } from "@lgcode/core@lgcode/project"
-import { ProjectTable } from "@lgcode/core@lgcode/project@lgcode/sql"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import { SessionV2 } from "@lgcode/core@lgcode/session"
-import { SessionEvent } from "@lgcode/core@lgcode/session@lgcode/event"
-import { SessionMessage } from "@lgcode/core@lgcode/session@lgcode/message"
-import { Prompt } from "@lgcode/core@lgcode/session@lgcode/prompt"
-import { SessionMessageUpdater } from "@lgcode/core@lgcode/session@lgcode/message-updater"
-import { SessionProjector } from "@lgcode/core@lgcode/session@lgcode/projector"
-import { SessionExecution } from "@lgcode/core@lgcode/session@lgcode/execution"
-import { SessionInput } from "@lgcode/core@lgcode/session@lgcode/input"
-import { SessionStore } from "@lgcode/core@lgcode/session@lgcode/store"
-import { SessionInputTable, SessionMessageTable, SessionTable } from "@lgcode/core@lgcode/session@lgcode/sql"
-import { testEffect } from ".@lgcode/lib@lgcode/effect"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import { EventTable } from "@opencode@lgcode/core/event/sql"
+import { ModelV2 } from "@opencode@lgcode/core/model"
+import { Project } from "@opencode@lgcode/core/project"
+import { ProjectTable } from "@opencode@lgcode/core/project/sql"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import { SessionV2 } from "@opencode@lgcode/core/session"
+import { SessionEvent } from "@opencode@lgcode/core/session/event"
+import { SessionMessage } from "@opencode@lgcode/core/session/message"
+import { Prompt } from "@opencode@lgcode/core/session/prompt"
+import { SessionMessageUpdater } from "@opencode@lgcode/core/session/message-updater"
+import { SessionProjector } from "@opencode@lgcode/core/session/projector"
+import { SessionExecution } from "@opencode@lgcode/core/session/execution"
+import { SessionInput } from "@opencode@lgcode/core/session/input"
+import { SessionStore } from "@opencode@lgcode/core/session/store"
+import { SessionInputTable, SessionMessageTable, SessionTable } from "@opencode@lgcode/core/session/sql"
+import { testEffect } from "./lib/effect"
 
 const database = Database.layerFromPath(":memory:")
 const events = EventV2.layer.pipe(Layer.provide(database))
@@ -49,7 +49,7 @@ describe("SessionProjector", () => {
       const { db } = yield* Database.Service
       yield* db
         .insert(ProjectTable)
-        .values({ id: Project.ID.global, worktree: AbsolutePath.make("@lgcode/project"), sandboxes: [] })
+        .values({ id: Project.ID.global, worktree: AbsolutePath.make("/project"), sandboxes: [] })
         .run()
         .pipe(Effect.orDie)
       yield* db
@@ -58,7 +58,7 @@ describe("SessionProjector", () => {
           id: sessionID,
           project_id: Project.ID.global,
           slug: "test",
-          directory: "@lgcode/project",
+          directory: "/project",
           title: "test",
           version: "test",
         })
@@ -128,7 +128,7 @@ describe("SessionProjector", () => {
       const { db } = yield* Database.Service
       yield* db
         .insert(ProjectTable)
-        .values({ id: Project.ID.global, worktree: AbsolutePath.make("@lgcode/project"), sandboxes: [] })
+        .values({ id: Project.ID.global, worktree: AbsolutePath.make("/project"), sandboxes: [] })
         .run()
         .pipe(Effect.orDie)
       yield* db
@@ -137,7 +137,7 @@ describe("SessionProjector", () => {
           id: sessionID,
           project_id: Project.ID.global,
           slug: "test",
-          directory: "@lgcode/project",
+          directory: "/project",
           title: "test",
           version: "test",
         })
@@ -171,7 +171,7 @@ describe("SessionProjector", () => {
       const { db } = yield* Database.Service
       yield* db
         .insert(ProjectTable)
-        .values({ id: Project.ID.global, worktree: AbsolutePath.make("@lgcode/project"), sandboxes: [] })
+        .values({ id: Project.ID.global, worktree: AbsolutePath.make("/project"), sandboxes: [] })
         .run()
         .pipe(Effect.orDie)
       yield* db
@@ -180,7 +180,7 @@ describe("SessionProjector", () => {
           id: sessionID,
           project_id: Project.ID.global,
           slug: "test",
-          directory: "@lgcode/project",
+          directory: "/project",
           title: "test",
           version: "test",
         })
@@ -217,7 +217,7 @@ describe("SessionProjector", () => {
         sessionID,
         timestamp: DateTime.makeUnsafe(1),
         callID: "shell-1",
-        output: "@lgcode/project",
+        output: "/project",
       })
       const compactionID = SessionMessage.ID.create()
       yield* events.publish(SessionEvent.Compaction.Started, {
@@ -276,7 +276,7 @@ describe("SessionProjector", () => {
         "compaction",
       ])
       expect(messages.find((message) => message.type === "shell")).toMatchObject({
-        output: "@lgcode/project",
+        output: "/project",
         time: { completed: DateTime.makeUnsafe(1) },
       })
       expect(messages.find((message) => message.type === "compaction")).toMatchObject({
@@ -298,7 +298,7 @@ describe("SessionProjector", () => {
       const { db } = yield* Database.Service
       yield* db
         .insert(ProjectTable)
-        .values({ id: Project.ID.global, worktree: AbsolutePath.make("@lgcode/project"), sandboxes: [] })
+        .values({ id: Project.ID.global, worktree: AbsolutePath.make("/project"), sandboxes: [] })
         .run()
         .pipe(Effect.orDie)
       yield* db
@@ -307,7 +307,7 @@ describe("SessionProjector", () => {
           id: sessionID,
           project_id: Project.ID.global,
           slug: "test",
-          directory: "@lgcode/project",
+          directory: "/project",
           title: "test",
           version: "test",
         })
@@ -339,7 +339,7 @@ describe("SessionProjector", () => {
       const { db } = yield* Database.Service
       yield* db
         .insert(ProjectTable)
-        .values({ id: Project.ID.global, worktree: AbsolutePath.make("@lgcode/project"), sandboxes: [] })
+        .values({ id: Project.ID.global, worktree: AbsolutePath.make("/project"), sandboxes: [] })
         .run()
         .pipe(Effect.orDie)
       yield* db
@@ -348,7 +348,7 @@ describe("SessionProjector", () => {
           id: sessionID,
           project_id: Project.ID.global,
           slug: "test",
-          directory: "@lgcode/project",
+          directory: "/project",
           title: "test",
           version: "test",
         })
@@ -385,7 +385,7 @@ describe("SessionProjector", () => {
       const { db } = yield* Database.Service
       yield* db
         .insert(ProjectTable)
-        .values({ id: Project.ID.global, worktree: AbsolutePath.make("@lgcode/project"), sandboxes: [] })
+        .values({ id: Project.ID.global, worktree: AbsolutePath.make("/project"), sandboxes: [] })
         .run()
         .pipe(Effect.orDie)
       yield* db
@@ -394,7 +394,7 @@ describe("SessionProjector", () => {
           id: sessionID,
           project_id: Project.ID.global,
           slug: "test",
-          directory: "@lgcode/project",
+          directory: "/project",
           title: "test",
           version: "test",
         })
@@ -431,7 +431,7 @@ describe("SessionProjector", () => {
       const { db } = yield* Database.Service
       yield* db
         .insert(ProjectTable)
-        .values({ id: Project.ID.global, worktree: AbsolutePath.make("@lgcode/project"), sandboxes: [] })
+        .values({ id: Project.ID.global, worktree: AbsolutePath.make("/project"), sandboxes: [] })
         .run()
         .pipe(Effect.orDie)
       yield* db
@@ -440,7 +440,7 @@ describe("SessionProjector", () => {
           id: sessionID,
           project_id: Project.ID.global,
           slug: "test",
-          directory: "@lgcode/project",
+          directory: "/project",
           title: "test",
           version: "test",
         })
@@ -492,7 +492,7 @@ describe("SessionProjector", () => {
       const { db } = yield* Database.Service
       yield* db
         .insert(ProjectTable)
-        .values({ id: Project.ID.global, worktree: AbsolutePath.make("@lgcode/project"), sandboxes: [] })
+        .values({ id: Project.ID.global, worktree: AbsolutePath.make("/project"), sandboxes: [] })
         .run()
         .pipe(Effect.orDie)
       yield* db
@@ -501,7 +501,7 @@ describe("SessionProjector", () => {
           id: sessionID,
           project_id: Project.ID.global,
           slug: "test",
-          directory: "@lgcode/project",
+          directory: "/project",
           title: "test",
           version: "test",
         })
@@ -550,7 +550,7 @@ describe("SessionProjector", () => {
       const { db } = yield* Database.Service
       yield* db
         .insert(ProjectTable)
-        .values({ id: Project.ID.global, worktree: AbsolutePath.make("@lgcode/project"), sandboxes: [] })
+        .values({ id: Project.ID.global, worktree: AbsolutePath.make("/project"), sandboxes: [] })
         .run()
         .pipe(Effect.orDie)
       yield* db
@@ -559,7 +559,7 @@ describe("SessionProjector", () => {
           id: sessionID,
           project_id: Project.ID.global,
           slug: "test",
-          directory: "@lgcode/project",
+          directory: "/project",
           title: "test",
           version: "test",
         })

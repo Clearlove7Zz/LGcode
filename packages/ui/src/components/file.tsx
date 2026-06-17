@@ -1,4 +1,4 @@
-import { sampledChecksum } from "@lgcode/core@lgcode/util@lgcode/encode"
+import { sampledChecksum } from "@opencode@lgcode/core/util/encode"
 import {
   areFilesEqual,
   areOptionsEqual,
@@ -16,15 +16,15 @@ import {
   VirtualizedFile,
   VirtualizedFileDiff,
   Virtualizer,
-} from "@pierre@lgcode/diffs"
-import { type PreloadFileDiffResult, type PreloadMultiFileDiffResult } from "@pierre@lgcode/diffs@lgcode/ssr"
-import { createMediaQuery } from "@solid-primitives@lgcode/media"
-import { makeEventListener } from "@solid-primitives@lgcode/event-listener"
+} from "@pierre/diffs"
+import { type PreloadFileDiffResult, type PreloadMultiFileDiffResult } from "@pierre/diffs/ssr"
+import { createMediaQuery } from "@solid-primitives/media"
+import { makeEventListener } from "@solid-primitives/event-listener"
 import { ComponentProps, createEffect, createMemo, createSignal, onCleanup, onMount, Show, splitProps } from "solid-js"
-import { createDefaultOptions, styleVariables } from "..@lgcode/pierre"
-import { markCommentedDiffLines, markCommentedFileLines } from "..@lgcode/pierre@lgcode/commented-lines"
-import { fixDiffSelection, findDiffSide, type DiffSelectionSide } from "..@lgcode/pierre@lgcode/diff-selection"
-import { createFileFind } from "..@lgcode/pierre@lgcode/file-find"
+import { createDefaultOptions, styleVariables } from "../pierre"
+import { markCommentedDiffLines, markCommentedFileLines } from "../pierre/commented-lines"
+import { fixDiffSelection, findDiffSide, type DiffSelectionSide } from "../pierre/diff-selection"
+import { createFileFind } from "../pierre/file-find"
 import {
   applyViewerScheme,
   clearReadyWatcher,
@@ -33,19 +33,19 @@ import {
   getViewerRoot,
   notifyShadowReady,
   observeViewerScheme,
-} from "..@lgcode/pierre@lgcode/file-runtime"
+} from "../pierre/file-runtime"
 import {
   findCodeSelectionSide,
   findDiffLineNumber,
   findElement,
   findFileLineNumber,
   readShadowLineSelection,
-} from "..@lgcode/pierre@lgcode/file-selection"
-import { createLineNumberSelectionBridge, restoreShadowTextSelection } from "..@lgcode/pierre@lgcode/selection-bridge"
-import { acquireVirtualizer, virtualMetrics } from "..@lgcode/pierre@lgcode/virtualizer"
-import { getWorkerPool } from "..@lgcode/pierre@lgcode/worker"
-import { FileMedia, type FileMediaOptions } from ".@lgcode/file-media"
-import { FileSearchBar } from ".@lgcode/file-search"
+} from "../pierre/file-selection"
+import { createLineNumberSelectionBridge, restoreShadowTextSelection } from "../pierre/selection-bridge"
+import { acquireVirtualizer, virtualMetrics } from "../pierre/virtualizer"
+import { getWorkerPool } from "../pierre/worker"
+import { FileMedia, type FileMediaOptions } from "./file-media"
+import { FileSearchBar } from "./file-search"
 
 const VIRTUALIZE_BYTES = 500_000
 
@@ -128,9 +128,9 @@ const sharedKeys = [
 const textKeys = ["file", ...sharedKeys] as const
 const diffKeys = ["fileDiff", "before", "after", "virtualize", ...sharedKeys] as const
 
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
-@lgcode/@lgcode/ Shared viewer hook
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Shared viewer hook
+// ---------------------------------------------------------------------------
 
 type MouseHit = {
   line: number | undefined
@@ -144,7 +144,7 @@ type ViewerConfig = {
   commentedLines: () => SelectedLineRange[]
   onLineSelectionEnd: (range: SelectedLineRange | null) => void
 
-  @lgcode/@lgcode/ mode-specific callbacks
+  // mode-specific callbacks
   lineFromMouseEvent: (event: MouseEvent) => MouseHit
   setSelectedLines: (range: SelectedLineRange | null, preserve?: { root: ShadowRoot; text: Range }) => void
   updateSelection: (preserveTextSelection: boolean) => void
@@ -181,7 +181,7 @@ function useFileViewer(config: ViewerConfig) {
     getRoot,
   })
 
-  @lgcode/@lgcode/ -- selection scheduling --
+  // -- selection scheduling --
 
   const scheduleSelectionUpdate = () => {
     if (selectionFrame !== undefined) return
@@ -204,7 +204,7 @@ function useFileViewer(config: ViewerConfig) {
     })
   }
 
-  @lgcode/@lgcode/ -- mouse handlers --
+  // -- mouse handlers --
 
   const handleMouseDown = (event: MouseEvent) => {
     if (!config.enableLineSelection()) return
@@ -282,7 +282,7 @@ function useFileViewer(config: ViewerConfig) {
     scheduleSelectionUpdate()
   }
 
-  @lgcode/@lgcode/ -- shared effects --
+  // -- shared effects --
 
   onMount(() => {
     onCleanup(observeViewerScheme(getHost))
@@ -652,9 +652,9 @@ function diffSelectionSide(node: Node | null) {
   return findDiffSide(el)
 }
 
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
-@lgcode/@lgcode/ Shared JSX shell
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Shared JSX shell
+// ---------------------------------------------------------------------------
 
 function ViewerShell(props: {
   mode: "text" | "diff"
@@ -689,17 +689,17 @@ function ViewerShell(props: {
           onClose={props.viewer.find.close}
           onPrev={() => props.viewer.find.next(-1)}
           onNext={() => props.viewer.find.next(1)}
-        @lgcode/>
-      <@lgcode/Show>
-      <div ref={(el) => (props.viewer.container = el)} @lgcode/>
-      <div ref={(el) => (props.viewer.overlay = el)} class="pointer-events-none absolute inset-0 z-0" @lgcode/>
-    <@lgcode/div>
+        />
+      </Show>
+      <div ref={(el) => (props.viewer.container = el)} />
+      <div ref={(el) => (props.viewer.overlay = el)} class="pointer-events-none absolute inset-0 z-0" />
+    </div>
   )
 }
 
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
-@lgcode/@lgcode/ TextViewer
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// TextViewer
+// ---------------------------------------------------------------------------
 
 function TextViewer<T>(props: TextFileProps<T>) {
   let instance: PierreFile<T> | VirtualizedFile<T> | undefined
@@ -712,7 +712,7 @@ function TextViewer<T>(props: TextFileProps<T>) {
     if (typeof value === "string") return value
     if (Array.isArray(value)) return value.join("\n")
     if (value == null) return ""
-    @lgcode/@lgcode/ oxlint-disable-next-line no-base-to-string -- file contents cast to unknown, coercion is intentional
+    // oxlint-disable-next-line no-base-to-string -- file contents cast to unknown, coercion is intentional
     return String(value)
   }
 
@@ -727,13 +727,13 @@ function TextViewer<T>(props: TextFileProps<T>) {
     if (typeof value === "string") return value.length
     if (Array.isArray(value)) {
       return value.reduce(
-        @lgcode/@lgcode/ oxlint-disable-next-line no-base-to-string -- array parts coerced intentionally
+        // oxlint-disable-next-line no-base-to-string -- array parts coerced intentionally
         (sum, part) => sum + (typeof part === "string" ? part.length + 1 : String(part).length + 1),
         0,
       )
     }
     if (value == null) return 0
-    @lgcode/@lgcode/ oxlint-disable-next-line no-base-to-string -- file contents cast to unknown, coercion is intentional
+    // oxlint-disable-next-line no-base-to-string -- file contents cast to unknown, coercion is intentional
     return String(value).length
   })
 
@@ -867,7 +867,7 @@ function TextViewer<T>(props: TextFileProps<T>) {
     find: viewer.find,
   })
 
-  @lgcode/@lgcode/ -- render instance --
+  // -- render instance --
 
   createEffect(() => {
     const opts = options()
@@ -903,7 +903,7 @@ function TextViewer<T>(props: TextFileProps<T>) {
     annotations: () => (local.annotations as LineAnnotation<T>[] | undefined) ?? [],
   })
 
-  @lgcode/@lgcode/ -- cleanup --
+  // -- cleanup --
 
   onCleanup(() => {
     instance?.cleanUp()
@@ -911,12 +911,12 @@ function TextViewer<T>(props: TextFileProps<T>) {
     virtuals.cleanup()
   })
 
-  return <ViewerShell mode="text" viewer={viewer} class={local.class} classList={local.classList} @lgcode/>
+  return <ViewerShell mode="text" viewer={viewer} class={local.class} classList={local.classList} />
 }
 
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
-@lgcode/@lgcode/ DiffViewer
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// DiffViewer
+// ---------------------------------------------------------------------------
 
 function DiffViewer<T>(props: DiffFileProps<T>) {
   let instance: FileDiff<T> | undefined
@@ -1072,7 +1072,7 @@ function DiffViewer<T>(props: DiffFileProps<T>) {
     find: viewer.find,
   })
 
-  @lgcode/@lgcode/ -- render instance --
+  // -- render instance --
 
   createEffect(() => {
     const opts = options()
@@ -1105,8 +1105,8 @@ function DiffViewer<T>(props: DiffFileProps<T>) {
           instanceAfter === undefined ||
           !areFilesEqual(instanceBefore, before) ||
           !areFilesEqual(instanceAfter, after)
-    @lgcode/@lgcode/ Pierre beta virtualized instances retain their first diff target and resolve separator metrics at construction.
-    @lgcode/@lgcode/ Plain timeline diffs can retain the instance as content streams; virtualized viewers reset only when that is unsafe.
+    // Pierre beta virtualized instances retain their first diff target and resolve separator metrics at construction.
+    // Plain timeline diffs can retain the instance as content streams; virtualized viewers reset only when that is unsafe.
     const reset =
       instance !== undefined &&
       (instanceVirtualizer !== virtualizer ||
@@ -1163,7 +1163,7 @@ function DiffViewer<T>(props: DiffFileProps<T>) {
     annotations: () => (local.annotations as DiffLineAnnotation<T>[] | undefined) ?? [],
   })
 
-  @lgcode/@lgcode/ -- cleanup --
+  // -- cleanup --
 
   onCleanup(() => {
     instance?.cleanUp()
@@ -1179,17 +1179,17 @@ function DiffViewer<T>(props: DiffFileProps<T>) {
     dragEndSide = undefined
   })
 
-  return <ViewerShell mode="diff" viewer={viewer} class={local.class} classList={local.classList} @lgcode/>
+  return <ViewerShell mode="diff" viewer={viewer} class={local.class} classList={local.classList} />
 }
 
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
-@lgcode/@lgcode/ Public API
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Public API
+// ---------------------------------------------------------------------------
 
 export function File<T>(props: FileProps<T>) {
   if (props.mode === "text") {
-    return <FileMedia media={props.media} fallback={() => TextViewer(props)} @lgcode/>
+    return <FileMedia media={props.media} fallback={() => TextViewer(props)} />
   }
 
-  return <FileMedia media={props.media} fallback={() => DiffViewer(props)} @lgcode/>
+  return <FileMedia media={props.media} fallback={() => DiffViewer(props)} />
 }

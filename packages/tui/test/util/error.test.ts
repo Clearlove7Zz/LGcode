@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { errorData, errorFormat, errorMessage } from "..@lgcode/..@lgcode/src@lgcode/util@lgcode/error"
+import { errorData, errorFormat, errorMessage } from "../../src/util/error"
 
 describe("util.error", () => {
   test("formats native Error instances", () => {

@@ -1,6 +1,6 @@
-@lgcode/@lgcode/ @refresh reload
-import { createHandler, StartServer } from "@solidjs@lgcode/start@lgcode/server"
-import { getRequestEvent } from "solid-js@lgcode/web"
+// @refresh reload
+import { createHandler, StartServer } from "@solidjs/start/server"
+import { getRequestEvent } from "solid-js/web"
 
 export default createHandler(() => (
   <StartServer
@@ -21,18 +21,18 @@ export default createHandler(() => (
       return (
         <html lang={lang}>
           <head>
-            <meta charset="utf-8" @lgcode/>
-            <meta name="viewport" content="width=device-width, initial-scale=1" @lgcode/>
-            <title>OpenCode<@lgcode/title>
-            <meta name="theme-color" content="#F8F7F7" @lgcode/>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <title>OpenCode</title>
+            <meta name="theme-color" content="#F8F7F7" />
             {assets}
-          <@lgcode/head>
+          </head>
           <body class="antialiased overscroll-none text-12-regular">
-            <div id="app">{children}<@lgcode/div>
+            <div id="app">{children}</div>
             {scripts}
-          <@lgcode/body>
-        <@lgcode/html>
+          </body>
+        </html>
       )
     }}
-  @lgcode/>
+  />
 ))

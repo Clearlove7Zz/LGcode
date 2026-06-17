@@ -1,19 +1,19 @@
 import { Context } from "effect"
 
-const opencodeOrigin = @lgcode/^https:\@lgcode/\@lgcode/([a-z0-9-]+\.)*opencode\.ai$@lgcode/
+const opencodeOrigin = /^https:\/\/([a-z0-9-]+\.)*opencode\.ai$/
 
 export type CorsOptions = { readonly cors?: ReadonlyArray<string> }
 
-export const CorsConfig = Context.Reference<CorsOptions | undefined>("@lgcode/ServerCorsConfig", {
+export const CorsConfig = Context.Reference<CorsOptions | undefined>("@opencode/ServerCorsConfig", {
   defaultValue: () => undefined,
 })
 
 export function isAllowedCorsOrigin(input: string | undefined, opts?: CorsOptions) {
   if (!input) return true
-  if (input.startsWith("http:@lgcode/@lgcode/localhost:")) return true
-  if (input.startsWith("http:@lgcode/@lgcode/127.0.0.1:")) return true
-  if (input.startsWith("oc:@lgcode/@lgcode/renderer")) return true
-  if (input === "tauri:@lgcode/@lgcode/localhost" || input === "http:@lgcode/@lgcode/tauri.localhost" || input === "https:@lgcode/@lgcode/tauri.localhost")
+  if (input.startsWith("http://localhost:")) return true
+  if (input.startsWith("http://127.0.0.1:")) return true
+  if (input.startsWith("oc://renderer")) return true
+  if (input === "tauri://localhost" || input === "http://tauri.localhost" || input === "https://tauri.localhost")
     return true
   if (opencodeOrigin.test(input)) return true
   return opts?.cors?.includes(input) ?? false

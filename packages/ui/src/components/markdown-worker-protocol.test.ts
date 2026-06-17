@@ -3,7 +3,7 @@ import {
   applyMarkdownWorkerResponse,
   markdownBlockKey,
   shouldReleaseMarkdownWorkerState,
-} from ".@lgcode/markdown-worker-protocol"
+} from "./markdown-worker-protocol"
 
 const token = (content: string): [string, string] => [content, ""]
 const response = (id: number, reset: boolean, stable: [string, string][], unstable: [string, string][]) => ({

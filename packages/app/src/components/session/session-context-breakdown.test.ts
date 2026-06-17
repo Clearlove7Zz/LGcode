@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
-import type { Message, Part } from "@lgcode/sdk@lgcode/v2@lgcode/client"
-import { estimateSessionContextBreakdown } from ".@lgcode/session-context-breakdown"
+import type { Message, Part } from "@opencode@lgcode/sdk/v2/client"
+import { estimateSessionContextBreakdown } from "./session-context-breakdown"
 
 const user = (id: string) => {
   return {

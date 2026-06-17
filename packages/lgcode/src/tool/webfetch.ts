@@ -1,14 +1,14 @@
 import { Effect, Schema } from "effect"
-import { HttpClient, HttpClientRequest } from "effect@lgcode/unstable@lgcode/http"
+import { HttpClient, HttpClientRequest } from "effect/unstable/http"
 import { Parser } from "htmlparser2"
-import * as Tool from ".@lgcode/tool"
+import * as Tool from "./tool"
 import TurndownService from "turndown"
-import DESCRIPTION from ".@lgcode/webfetch.txt"
-import { isImageAttachment } from "@@lgcode/util@lgcode/media"
+import DESCRIPTION from "./webfetch.txt"
+import { isImageAttachment } from "@/util/media"
 
-const MAX_RESPONSE_SIZE = 5 * 1024 * 1024 @lgcode/@lgcode/ 5MB
-const DEFAULT_TIMEOUT = 30 * 1000 @lgcode/@lgcode/ 30 seconds
-const MAX_TIMEOUT = 120 * 1000 @lgcode/@lgcode/ 2 minutes
+const MAX_RESPONSE_SIZE = 5 * 1024 * 1024 // 5MB
+const DEFAULT_TIMEOUT = 30 * 1000 // 30 seconds
+const MAX_TIMEOUT = 120 * 1000 // 2 minutes
 
 export const Parameters = Schema.Struct({
   url: Schema.String.annotate({ description: "The URL to fetch content from" }),
@@ -32,8 +32,8 @@ export const WebFetchTool = Tool.define(
       parameters: Parameters,
       execute: (params: Schema.Schema.Type<typeof Parameters>, ctx: Tool.Context) =>
         Effect.gen(function* () {
-          if (!params.url.startsWith("http:@lgcode/@lgcode/") && !params.url.startsWith("https:@lgcode/@lgcode/")) {
-            throw new Error("URL must start with http:@lgcode/@lgcode/ or https:@lgcode/@lgcode/")
+          if (!params.url.startsWith("http://") && !params.url.startsWith("https://")) {
+            throw new Error("URL must start with http:// or https://")
           }
 
           yield* ctx.ask({
@@ -47,35 +47,35 @@ export const WebFetchTool = Tool.define(
             },
           })
 
-          const timeout = Math.min((params.timeout ?? DEFAULT_TIMEOUT @lgcode/ 1000) * 1000, MAX_TIMEOUT)
+          const timeout = Math.min((params.timeout ?? DEFAULT_TIMEOUT / 1000) * 1000, MAX_TIMEOUT)
 
-          @lgcode/@lgcode/ Build Accept header based on requested format with q parameters for fallbacks
-          let acceptHeader = "*@lgcode/*"
+          // Build Accept header based on requested format with q parameters for fallbacks
+          let acceptHeader = "*/*"
           switch (params.format) {
             case "markdown":
-              acceptHeader = "text@lgcode/markdown;q=1.0, text@lgcode/x-markdown;q=0.9, text@lgcode/plain;q=0.8, text@lgcode/html;q=0.7, *@lgcode/*;q=0.1"
+              acceptHeader = "text/markdown;q=1.0, text/x-markdown;q=0.9, text/plain;q=0.8, text/html;q=0.7, */*;q=0.1"
               break
             case "text":
-              acceptHeader = "text@lgcode/plain;q=1.0, text@lgcode/markdown;q=0.9, text@lgcode/html;q=0.8, *@lgcode/*;q=0.1"
+              acceptHeader = "text/plain;q=1.0, text/markdown;q=0.9, text/html;q=0.8, */*;q=0.1"
               break
             case "html":
               acceptHeader =
-                "text@lgcode/html;q=1.0, application@lgcode/xhtml+xml;q=0.9, text@lgcode/plain;q=0.8, text@lgcode/markdown;q=0.7, *@lgcode/*;q=0.1"
+                "text/html;q=1.0, application/xhtml+xml;q=0.9, text/plain;q=0.8, text/markdown;q=0.7, */*;q=0.1"
               break
             default:
               acceptHeader =
-                "text@lgcode/html,application@lgcode/xhtml+xml,application@lgcode/xml;q=0.9,image@lgcode/avif,image@lgcode/webp,image@lgcode/apng,*@lgcode/*;q=0.8"
+                "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8"
           }
           const headers = {
             "User-Agent":
-              "Mozilla@lgcode/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit@lgcode/537.36 (KHTML, like Gecko) Chrome@lgcode/143.0.0.0 Safari@lgcode/537.36",
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",
             Accept: acceptHeader,
             "Accept-Language": "en-US,en;q=0.9",
           }
 
           const request = HttpClientRequest.get(params.url).pipe(HttpClientRequest.setHeaders(headers))
 
-          @lgcode/@lgcode/ Retry with honest UA if blocked by Cloudflare bot detection (TLS fingerprint mismatch)
+          // Retry with honest UA if blocked by Cloudflare bot detection (TLS fingerprint mismatch)
           const response = yield* httpOk.execute(request).pipe(
             Effect.catchIf(
               (err) =>
@@ -92,7 +92,7 @@ export const WebFetchTool = Tool.define(
             Effect.timeoutOrElse({ duration: timeout, orElse: () => Effect.die(new Error("Request timed out")) }),
           )
 
-          @lgcode/@lgcode/ Check content length
+          // Check content length
           const contentLength = response.headers["content-length"]
           if (contentLength && parseInt(contentLength) > MAX_RESPONSE_SIZE) {
             throw new Error("Response too large (exceeds 5MB limit)")
@@ -125,10 +125,10 @@ export const WebFetchTool = Tool.define(
 
           const content = new TextDecoder().decode(arrayBuffer)
 
-          @lgcode/@lgcode/ Handle content based on requested format and actual content type
+          // Handle content based on requested format and actual content type
           switch (params.format) {
             case "markdown":
-              if (contentType.includes("text@lgcode/html")) {
+              if (contentType.includes("text/html")) {
                 const markdown = convertHTMLToMarkdown(content)
                 return {
                   output: markdown,
@@ -139,7 +139,7 @@ export const WebFetchTool = Tool.define(
               return { output: content, title, metadata: {} }
 
             case "text":
-              if (contentType.includes("text@lgcode/html")) {
+              if (contentType.includes("text/html")) {
                 return { output: extractTextFromHTML(content), title, metadata: {} }
               }
               return { output: content, title, metadata: {} }

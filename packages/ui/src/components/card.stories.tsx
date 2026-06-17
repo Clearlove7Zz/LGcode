@@ -1,6 +1,6 @@
-@lgcode/@lgcode/ @ts-nocheck
-import { Card, CardActions, CardDescription, CardTitle } from ".@lgcode/card"
-import { Button } from ".@lgcode/button"
+// @ts-nocheck
+import { Card, CardActions, CardDescription, CardTitle } from "./card"
+import { Button } from "./button"
 
 const docs = `### Overview
 Surface container for grouping related content and actions.
@@ -20,13 +20,13 @@ Pair with \`Button\` or \`Tag\` for quick actions.
 ### Accessibility
 - Provide headings or aria labels when used in isolation.
 
-### Theming@lgcode/tokens
+### Theming/tokens
 - Uses \`data-component="card"\` with variant data attributes.
 
 `
 
 export default {
-  title: "UI@lgcode/Card",
+  title: "UI/Card",
   id: "components-card",
   component: Card,
   tags: ["autodocs"],
@@ -49,14 +49,14 @@ export default {
   render: (props: { variant?: "normal" | "error" | "warning" | "success" | "info" }) => {
     return (
       <Card variant={props.variant}>
-        <CardTitle variant={props.variant}>Card title<@lgcode/CardTitle>
-        <CardDescription>Small supporting text.<@lgcode/CardDescription>
+        <CardTitle variant={props.variant}>Card title</CardTitle>
+        <CardDescription>Small supporting text.</CardDescription>
         <CardActions>
           <Button size="small" variant="secondary">
             Action
-          <@lgcode/Button>
-        <@lgcode/CardActions>
-      <@lgcode/Card>
+          </Button>
+        </CardActions>
+      </Card>
     )
   },
 }

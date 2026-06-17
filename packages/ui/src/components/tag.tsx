@@ -17,6 +17,6 @@ export function Tag(props: TagProps) {
       }}
     >
       {split.children}
-    <@lgcode/span>
+    </span>
   )
 }

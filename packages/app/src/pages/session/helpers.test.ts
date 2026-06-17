@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
 import { createMemo, createRoot } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
+import { createStore } from "solid-js/store"
 import {
   createOpenReviewFile,
   createOpenSessionFileTab,
@@ -9,7 +9,7 @@ import {
   getTabReorderIndex,
   shouldFocusTerminalOnKeyDown,
   shouldShowFileTree,
-} from ".@lgcode/helpers"
+} from "./helpers"
 
 describe("shouldShowFileTree", () => {
   test("does not reserve space for a disabled file tree", () => {
@@ -25,16 +25,16 @@ describe("createOpenReviewFile", () => {
       showAllFiles: () => calls.push("show"),
       tabForPath: (path) => {
         calls.push(`tab:${path}`)
-        return `file:@lgcode/@lgcode/${path}`
+        return `file://${path}`
       },
       openTab: (tab) => calls.push(`open:${tab}`),
       setActive: (tab) => calls.push(`active:${tab}`),
       loadFile: (path) => calls.push(`load:${path}`),
     })
 
-    openReviewFile("src@lgcode/a.ts")
+    openReviewFile("src/a.ts")
 
-    expect(calls).toEqual(["show", "load:src@lgcode/a.ts", "tab:src@lgcode/a.ts", "open:file:@lgcode/@lgcode/src@lgcode/a.ts", "active:file:@lgcode/@lgcode/src@lgcode/a.ts"])
+    expect(calls).toEqual(["show", "load:src/a.ts", "tab:src/a.ts", "open:file://src/a.ts", "active:file://src/a.ts"])
   })
 })
 
@@ -44,34 +44,34 @@ describe("createOpenSessionFileTab", () => {
     const openTab = createOpenSessionFileTab({
       normalizeTab: (value) => {
         calls.push(`normalize:${value}`)
-        return `file:@lgcode/@lgcode/${value}`
+        return `file://${value}`
       },
       openTab: (tab) => calls.push(`open:${tab}`),
       pathFromTab: (tab) => {
         calls.push(`path:${tab}`)
-        return tab.slice("file:@lgcode/@lgcode/".length)
+        return tab.slice("file://".length)
       },
       loadFile: (path) => calls.push(`load:${path}`),
       openReviewPanel: () => calls.push("review"),
       setActive: (tab) => calls.push(`active:${tab}`),
     })
 
-    openTab("src@lgcode/a.ts")
+    openTab("src/a.ts")
 
     expect(calls).toEqual([
-      "normalize:src@lgcode/a.ts",
-      "open:file:@lgcode/@lgcode/src@lgcode/a.ts",
-      "path:file:@lgcode/@lgcode/src@lgcode/a.ts",
-      "load:src@lgcode/a.ts",
+      "normalize:src/a.ts",
+      "open:file://src/a.ts",
+      "path:file://src/a.ts",
+      "load:src/a.ts",
       "review",
-      "active:file:@lgcode/@lgcode/src@lgcode/a.ts",
+      "active:file://src/a.ts",
     ])
   })
 })
 
 describe("focusTerminalById", () => {
   test("focuses textarea when present", () => {
-    document.body.innerHTML = `<div id="terminal-wrapper-one"><div data-component="terminal"><textarea><@lgcode/textarea><@lgcode/div><@lgcode/div>`
+    document.body.innerHTML = `<div id="terminal-wrapper-one"><div data-component="terminal"><textarea></textarea></div></div>`
 
     const focused = focusTerminalById("one")
 
@@ -80,7 +80,7 @@ describe("focusTerminalById", () => {
   })
 
   test("falls back to terminal element focus", () => {
-    document.body.innerHTML = `<div id="terminal-wrapper-two"><div data-component="terminal" tabindex="0"><@lgcode/div><@lgcode/div>`
+    document.body.innerHTML = `<div id="terminal-wrapper-two"><div data-component="terminal" tabindex="0"></div></div>`
     const terminal = document.querySelector('[data-component="terminal"]') as HTMLElement
     let pointerDown = false
     terminal.addEventListener("pointerdown", () => {
@@ -130,18 +130,18 @@ describe("createSessionTabs", () => {
     createRoot((dispose) => {
       const [state] = createStore({
         active: undefined as string | undefined,
-        all: ["file:@lgcode/@lgcode/src@lgcode/a.ts", "context"],
+        all: ["file://src/a.ts", "context"],
       })
       const tabs = createMemo(() => ({ active: () => state.active, all: () => state.all }))
       const result = createSessionTabs({
         tabs,
-        pathFromTab: (tab) => (tab.startsWith("file:@lgcode/@lgcode/") ? tab.slice("file:@lgcode/@lgcode/".length) : undefined),
-        normalizeTab: (tab) => (tab.startsWith("file:@lgcode/@lgcode/") ? `norm:${tab.slice("file:@lgcode/@lgcode/".length)}` : tab),
+        pathFromTab: (tab) => (tab.startsWith("file://") ? tab.slice("file://".length) : undefined),
+        normalizeTab: (tab) => (tab.startsWith("file://") ? `norm:${tab.slice("file://".length)}` : tab),
       })
 
-      expect(result.activeTab()).toBe("norm:src@lgcode/a.ts")
-      expect(result.activeFileTab()).toBe("norm:src@lgcode/a.ts")
-      expect(result.closableTab()).toBe("norm:src@lgcode/a.ts")
+      expect(result.activeTab()).toBe("norm:src/a.ts")
+      expect(result.activeFileTab()).toBe("norm:src/a.ts")
+      expect(result.closableTab()).toBe("norm:src/a.ts")
       dispose()
     })
   })

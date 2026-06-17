@@ -1,37 +1,37 @@
 import { For, Match, Show, Switch, createEffect, createMemo, onCleanup, type JSX } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import { createMediaQuery } from "@solid-primitives@lgcode/media"
-import { Tabs } from "@lgcode/ui@lgcode/tabs"
-import { IconButton } from "@lgcode/ui@lgcode/icon-button"
-import { TooltipKeybind } from "@lgcode/ui@lgcode/tooltip"
-import { ResizeHandle } from "@lgcode/ui@lgcode/resize-handle"
-import { Mark } from "@lgcode/ui@lgcode/logo"
-import { DragDropProvider, DragDropSensors, DragOverlay, SortableProvider, closestCenter } from "@thisbeyond@lgcode/solid-dnd"
-import type { DragEvent } from "@thisbeyond@lgcode/solid-dnd"
-import type { SnapshotFileDiff, VcsFileDiff } from "@lgcode/sdk@lgcode/v2"
-import { ConstrainDragYAxis, getDraggableId } from "@@lgcode/utils@lgcode/solid-dnd"
-import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
+import { createStore } from "solid-js/store"
+import { createMediaQuery } from "@solid-primitives/media"
+import { Tabs } from "@opencode@lgcode/ui/tabs"
+import { IconButton } from "@opencode@lgcode/ui/icon-button"
+import { TooltipKeybind } from "@opencode@lgcode/ui/tooltip"
+import { ResizeHandle } from "@opencode@lgcode/ui/resize-handle"
+import { Mark } from "@opencode@lgcode/ui/logo"
+import { DragDropProvider, DragDropSensors, DragOverlay, SortableProvider, closestCenter } from "@thisbeyond/solid-dnd"
+import type { DragEvent } from "@thisbeyond/solid-dnd"
+import type { SnapshotFileDiff, VcsFileDiff } from "@opencode@lgcode/sdk/v2"
+import { ConstrainDragYAxis, getDraggableId } from "@/utils/solid-dnd"
+import { useDialog } from "@opencode@lgcode/ui/context/dialog"
 
-import FileTree from "@@lgcode/components@lgcode/file-tree"
-import { SessionContextUsage } from "@@lgcode/components@lgcode/session-context-usage"
-import { SessionContextTab, SortableTab, FileVisual } from "@@lgcode/components@lgcode/session"
-import { useCommand } from "@@lgcode/context@lgcode/command"
-import { useFile, type SelectedLineRange } from "@@lgcode/context@lgcode/file"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
-import { useLayout } from "@@lgcode/context@lgcode/layout"
-import { useSettings } from "@@lgcode/context@lgcode/settings"
-import { useSync } from "@@lgcode/context@lgcode/sync"
-import { createFileTabListSync } from "@@lgcode/pages@lgcode/session@lgcode/file-tab-scroll"
-import { FileTabContent } from "@@lgcode/pages@lgcode/session@lgcode/file-tabs"
+import FileTree from "@/components/file-tree"
+import { SessionContextUsage } from "@/components/session-context-usage"
+import { SessionContextTab, SortableTab, FileVisual } from "@/components/session"
+import { useCommand } from "@/context/command"
+import { useFile, type SelectedLineRange } from "@/context/file"
+import { useLanguage } from "@/context/language"
+import { useLayout } from "@/context/layout"
+import { useSettings } from "@/context/settings"
+import { useSync } from "@/context/sync"
+import { createFileTabListSync } from "@/pages/session/file-tab-scroll"
+import { FileTabContent } from "@/pages/session/file-tabs"
 import {
   createOpenSessionFileTab,
   createSessionTabs,
   getTabReorderIndex,
   shouldShowFileTree,
   type Sizing,
-} from "@@lgcode/pages@lgcode/session@lgcode/helpers"
-import { setSessionHandoff } from "@@lgcode/pages@lgcode/session@lgcode/handoff"
-import { useSessionLayout } from "@@lgcode/pages@lgcode/session@lgcode/session-layout"
+} from "@/pages/session/helpers"
+import { setSessionHandoff } from "@/pages/session/handoff"
+import { useSessionLayout } from "@/pages/session/session-layout"
 
 type RenderDiff = (SnapshotFileDiff & { file: string }) | VcsFileDiff
 
@@ -91,7 +91,7 @@ export function SessionSidePanel(props: {
       return "mix" as const
     }
 
-    const normalize = (p: string) => p.replaceAll("\\\\", "@lgcode/").replace(@lgcode/\@lgcode/+$@lgcode/, "")
+    const normalize = (p: string) => p.replaceAll("\\\\", "/").replace(/\/+$/, "")
 
     const out = new Map<string, "add" | "del" | "mix">()
     for (const diff of diffs()) {
@@ -100,9 +100,9 @@ export function SessionSidePanel(props: {
 
       out.set(file, kind)
 
-      const parts = file.split("@lgcode/")
+      const parts = file.split("/")
       for (const [idx] of parts.slice(0, -1).entries()) {
-        const dir = parts.slice(0, idx + 1).join("@lgcode/")
+        const dir = parts.slice(0, idx + 1).join("/")
         if (!dir) continue
         out.set(dir, merge(out.get(dir), kind))
       }
@@ -112,11 +112,11 @@ export function SessionSidePanel(props: {
 
   const empty = (msg: string) => (
     <div class="h-full flex flex-col">
-      <div class="h-6 shrink-0" aria-hidden @lgcode/>
+      <div class="h-6 shrink-0" aria-hidden />
       <div class="flex-1 pb-64 flex items-center justify-center text-center">
-        <div class="text-12-regular text-text-weak">{msg}<@lgcode/div>
-      <@lgcode/div>
-    <@lgcode/div>
+        <div class="text-12-regular text-text-weak">{msg}</div>
+      </div>
+    </div>
   )
 
   const nofiles = createMemo(() => {
@@ -126,7 +126,7 @@ export function SessionSidePanel(props: {
   })
 
   const normalizeTab = (tab: string) => {
-    if (!tab.startsWith("file:@lgcode/@lgcode/")) return tab
+    if (!tab.startsWith("file://")) return tab
     return file.tab(tab)
   }
 
@@ -251,8 +251,8 @@ export function SessionSidePanel(props: {
                   onDragOver={handleDragOver}
                   collisionDetector={closestCenter}
                 >
-                  <DragDropSensors @lgcode/>
-                  <ConstrainDragYAxis @lgcode/>
+                  <DragDropSensors />
+                  <ConstrainDragYAxis />
                   <Tabs value={activeTab()} onChange={openTab}>
                     <div class="sticky top-0 shrink-0 flex">
                       <Tabs.List
@@ -264,13 +264,13 @@ export function SessionSidePanel(props: {
                         <Show when={reviewTab() && props.canReview()}>
                           <Tabs.Trigger value="review">
                             <div class="flex items-center gap-1.5">
-                              <div>{language.t("session.tab.review")}<@lgcode/div>
+                              <div>{language.t("session.tab.review")}</div>
                               <Show when={props.hasReview()}>
-                                <div>{props.reviewCount()}<@lgcode/div>
-                              <@lgcode/Show>
-                            <@lgcode/div>
-                          <@lgcode/Tabs.Trigger>
-                        <@lgcode/Show>
+                                <div>{props.reviewCount()}</div>
+                              </Show>
+                            </div>
+                          </Tabs.Trigger>
+                        </Show>
                         <Show when={contextOpen()}>
                           <Tabs.Trigger
                             value="context"
@@ -287,21 +287,21 @@ export function SessionSidePanel(props: {
                                   class="h-5 w-5"
                                   onClick={() => tabs().close("context")}
                                   aria-label={language.t("common.closeTab")}
-                                @lgcode/>
-                              <@lgcode/TooltipKeybind>
+                                />
+                              </TooltipKeybind>
                             }
                             hideCloseButton
                             onMiddleClick={() => tabs().close("context")}
                           >
                             <div class="flex items-center gap-2">
-                              <SessionContextUsage variant="indicator" @lgcode/>
-                              <div>{language.t("session.tab.context")}<@lgcode/div>
-                            <@lgcode/div>
-                          <@lgcode/Tabs.Trigger>
-                        <@lgcode/Show>
+                              <SessionContextUsage variant="indicator" />
+                              <div>{language.t("session.tab.context")}</div>
+                            </div>
+                          </Tabs.Trigger>
+                        </Show>
                         <SortableProvider ids={openedTabs()}>
-                          <For each={openedTabs()}>{(tab) => <SortableTab tab={tab} onTabClose={tabs().close} @lgcode/>}<@lgcode/For>
-                        <@lgcode/SortableProvider>
+                          <For each={openedTabs()}>{(tab) => <SortableTab tab={tab} onTabClose={tabs().close} />}</For>
+                        </SortableProvider>
                         <div class="bg-background-stronger h-full shrink-0 sticky right-0 z-10 flex items-center justify-center pr-3">
                           <TooltipKeybind
                             title={language.t("command.file.open")}
@@ -314,65 +314,65 @@ export function SessionSidePanel(props: {
                               iconSize="large"
                               class="!rounded-md"
                               onClick={() => {
-                                void import("@@lgcode/components@lgcode/dialog-select-file").then((x) => {
-                                  dialog.show(() => <x.DialogSelectFile mode="files" onOpenFile={showAllFiles} @lgcode/>)
+                                void import("@/components/dialog-select-file").then((x) => {
+                                  dialog.show(() => <x.DialogSelectFile mode="files" onOpenFile={showAllFiles} />)
                                 })
                               }}
                               aria-label={language.t("command.file.open")}
-                            @lgcode/>
-                          <@lgcode/TooltipKeybind>
-                        <@lgcode/div>
-                      <@lgcode/Tabs.List>
-                    <@lgcode/div>
+                            />
+                          </TooltipKeybind>
+                        </div>
+                      </Tabs.List>
+                    </div>
 
                     <Show when={reviewTab() && props.canReview()}>
                       <Tabs.Content value="review" class="flex flex-col h-full overflow-hidden contain-strict">
-                        <Show when={reviewOpen() && activeTab() === "review"}>{props.reviewPanel()}<@lgcode/Show>
-                      <@lgcode/Tabs.Content>
-                    <@lgcode/Show>
+                        <Show when={reviewOpen() && activeTab() === "review"}>{props.reviewPanel()}</Show>
+                      </Tabs.Content>
+                    </Show>
 
                     <Tabs.Content value="empty" class="flex flex-col h-full overflow-hidden contain-strict">
                       <Show when={activeTab() === "empty"}>
                         <div class="relative pt-2 flex-1 min-h-0 overflow-hidden">
                           <div class="h-full px-6 pb-42 -mt-4 flex flex-col items-center justify-center text-center gap-6">
-                            <Mark class="w-14 opacity-10" @lgcode/>
+                            <Mark class="w-14 opacity-10" />
                             <div class="text-14-regular text-text-weak max-w-56">
                               {language.t("session.files.selectToOpen")}
-                            <@lgcode/div>
-                          <@lgcode/div>
-                        <@lgcode/div>
-                      <@lgcode/Show>
-                    <@lgcode/Tabs.Content>
+                            </div>
+                          </div>
+                        </div>
+                      </Show>
+                    </Tabs.Content>
 
                     <Show when={contextOpen()}>
                       <Tabs.Content value="context" class="flex flex-col h-full overflow-hidden contain-strict">
                         <Show when={activeTab() === "context"}>
                           <div class="relative pt-2 flex-1 min-h-0 overflow-hidden">
-                            <SessionContextTab @lgcode/>
-                          <@lgcode/div>
-                        <@lgcode/Show>
-                      <@lgcode/Tabs.Content>
-                    <@lgcode/Show>
+                            <SessionContextTab />
+                          </div>
+                        </Show>
+                      </Tabs.Content>
+                    </Show>
 
                     <Show when={activeFileTab()} keyed>
-                      {(tab) => <FileTabContent tab={tab} @lgcode/>}
-                    <@lgcode/Show>
-                  <@lgcode/Tabs>
+                      {(tab) => <FileTabContent tab={tab} />}
+                    </Show>
+                  </Tabs>
                   <DragOverlay>
                     <Show when={store.activeDraggable} keyed>
                       {(tab) => {
                         const path = file.pathFromTab(tab)
                         return (
                           <div data-component="tabs-drag-preview">
-                            <Show when={path}>{(p) => <FileVisual active path={p()} @lgcode/>}<@lgcode/Show>
-                          <@lgcode/div>
+                            <Show when={path}>{(p) => <FileVisual active path={p()} />}</Show>
+                          </div>
                         )
                       }}
-                    <@lgcode/Show>
-                  <@lgcode/DragOverlay>
-                <@lgcode/DragDropProvider>
-              <@lgcode/div>
-            <@lgcode/div>
+                    </Show>
+                  </DragOverlay>
+                </DragDropProvider>
+              </div>
+            </div>
 
             <Show when={shown()}>
               <div
@@ -388,7 +388,7 @@ export function SessionSidePanel(props: {
                 style={{ width: treeWidth() }}
               >
                 <div
-                  class="h-full flex flex-col overflow-hidden group@lgcode/filetree"
+                  class="h-full flex flex-col overflow-hidden group/filetree"
                   classList={{ "border-l border-border-weaker-base": reviewOpen() }}
                 >
                   <Tabs
@@ -404,11 +404,11 @@ export function SessionSidePanel(props: {
                         {language.t(
                           props.reviewCount() === 1 ? "session.review.change.one" : "session.review.change.other",
                         )}
-                      <@lgcode/Tabs.Trigger>
+                      </Tabs.Trigger>
                       <Tabs.Trigger value="all" class="flex-1" classes={{ button: "w-full" }}>
                         {language.t("session.files.all")}
-                      <@lgcode/Tabs.Trigger>
-                    <@lgcode/Tabs.List>
+                      </Tabs.Trigger>
+                    </Tabs.List>
                     <Tabs.Content value="changes" class="bg-background-stronger px-3 py-0">
                       <Switch>
                         <Match when={props.hasReview() || !props.diffsReady()}>
@@ -418,7 +418,7 @@ export function SessionSidePanel(props: {
                               <div class="px-2 py-2 text-12-regular text-text-weak">
                                 {language.t("common.loading")}
                                 {language.t("common.loading.ellipsis")}
-                              <@lgcode/div>
+                              </div>
                             }
                           >
                             <FileTree
@@ -429,14 +429,14 @@ export function SessionSidePanel(props: {
                               draggable={false}
                               active={props.activeDiff}
                               onFileClick={(node) => props.focusReviewDiff(node.path)}
-                            @lgcode/>
-                          <@lgcode/Show>
-                        <@lgcode/Match>
-                      <@lgcode/Switch>
-                    <@lgcode/Tabs.Content>
+                            />
+                          </Show>
+                        </Match>
+                      </Switch>
+                    </Tabs.Content>
                     <Tabs.Content value="all" class="bg-background-stronger px-3 py-0">
                       <Switch>
-                        <Match when={nofiles()}>{empty(language.t("session.files.empty"))}<@lgcode/Match>
+                        <Match when={nofiles()}>{empty(language.t("session.files.empty"))}</Match>
                         <Match when={true}>
                           <FileTree
                             path=""
@@ -444,12 +444,12 @@ export function SessionSidePanel(props: {
                             modified={diffFiles()}
                             kinds={kinds()}
                             onFileClick={(node) => openTab(file.tab(node.path))}
-                          @lgcode/>
-                        <@lgcode/Match>
-                      <@lgcode/Switch>
-                    <@lgcode/Tabs.Content>
-                  <@lgcode/Tabs>
-                <@lgcode/div>
+                          />
+                        </Match>
+                      </Switch>
+                    </Tabs.Content>
+                  </Tabs>
+                </div>
                 <Show when={fileOpen()}>
                   <div onPointerDown={() => props.size.start()}>
                     <ResizeHandle
@@ -462,14 +462,14 @@ export function SessionSidePanel(props: {
                         props.size.touch()
                         layout.fileTree.resize(width)
                       }}
-                    @lgcode/>
-                  <@lgcode/div>
-                <@lgcode/Show>
-              <@lgcode/div>
-            <@lgcode/Show>
-          <@lgcode/div>
-        <@lgcode/Show>
-      <@lgcode/aside>
-    <@lgcode/Show>
+                    />
+                  </div>
+                </Show>
+              </div>
+            </Show>
+          </div>
+        </Show>
+      </aside>
+    </Show>
   )
 }

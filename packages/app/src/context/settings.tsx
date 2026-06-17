@@ -1,7 +1,7 @@
-import { createStore, reconcile } from "solid-js@lgcode/store"
+import { createStore, reconcile } from "solid-js/store"
 import { createEffect, createMemo } from "solid-js"
-import { createSimpleContext } from "@lgcode/ui@lgcode/context"
-import { persisted } from "@@lgcode/utils@lgcode/persist"
+import { createSimpleContext } from "@opencode@lgcode/ui/context"
+import { persisted } from "@/utils/persist"
 
 export interface NotificationSettings {
   agent: boolean
@@ -69,7 +69,7 @@ function input(font: string | undefined) {
 }
 
 function family(font: string) {
-  if (@lgcode/^[\w-]+$@lgcode/.test(font)) return font
+  if (/^[\w-]+$/.test(font)) return font
   return `"${font.replaceAll("\\", "\\\\").replaceAll('"', '\\"')}"`
 }
 

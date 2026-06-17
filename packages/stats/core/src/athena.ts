@@ -4,10 +4,10 @@ import {
   GetQueryResultsCommand,
   StartQueryExecutionCommand,
   type Row,
-} from "@aws-sdk@lgcode/client-athena"
+} from "@aws-sdk/client-athena"
 import { Effect, Layer, Schema } from "effect"
-import * as Context from "effect@lgcode/Context"
-import { Resource } from "sst@lgcode/resource"
+import * as Context from "effect/Context"
+import { Resource } from "sst/resource"
 
 const ATHENA_MAX_POLL_ATTEMPTS = 60
 const ATHENA_PAGE_SIZE = 1000
@@ -34,7 +34,7 @@ export declare namespace Athena {
   }
 }
 
-export class Athena extends Context.Service<Athena, Athena.Service>()("@lgcode/stats@lgcode/Athena") {
+export class Athena extends Context.Service<Athena, Athena.Service>()("@opencode/stats/Athena") {
   static readonly layer: Layer.Layer<Athena> = Layer.effect(
     Athena,
     Effect.sync(() => {

@@ -1,20 +1,20 @@
-import { Router } from "@solidjs@lgcode/router"
-import { FileRoutes } from "@solidjs@lgcode/start@lgcode/router"
-import { Font } from "@lgcode/ui@lgcode/font"
-import { MetaProvider } from "@solidjs@lgcode/meta"
-import { MarkedProvider } from "@lgcode/ui@lgcode/context@lgcode/marked"
-import { DialogProvider } from "@lgcode/ui@lgcode/context@lgcode/dialog"
-import { I18nProvider, type UiI18nParams } from "@lgcode/ui@lgcode/context"
-import { dict as uiEn } from "@lgcode/ui@lgcode/i18n@lgcode/en"
-import { dict as uiZh } from "@lgcode/ui@lgcode/i18n@lgcode/zh"
+import { Router } from "@solidjs/router"
+import { FileRoutes } from "@solidjs/start/router"
+import { Font } from "@opencode@lgcode/ui/font"
+import { MetaProvider } from "@solidjs/meta"
+import { MarkedProvider } from "@opencode@lgcode/ui/context/marked"
+import { DialogProvider } from "@opencode@lgcode/ui/context/dialog"
+import { I18nProvider, type UiI18nParams } from "@opencode@lgcode/ui/context"
+import { dict as uiEn } from "@opencode@lgcode/ui/i18n/en"
+import { dict as uiZh } from "@opencode@lgcode/ui/i18n/zh"
 import { createEffect, createMemo, Suspense, type ParentProps } from "solid-js"
-import { getRequestEvent } from "solid-js@lgcode/web"
-import ".@lgcode/app.css"
-import { Favicon } from "@lgcode/ui@lgcode/favicon"
+import { getRequestEvent } from "solid-js/web"
+import "./app.css"
+import { Favicon } from "@opencode@lgcode/ui/favicon"
 
 function resolveTemplate(text: string, params?: UiI18nParams) {
   if (!params) return text
-  return text.replace(@lgcode/{{\s*([^}]+?)\s*}}@lgcode/g, (_, rawKey) => {
+  return text.replace(/{{\s*([^}]+?)\s*}}/g, (_, rawKey) => {
     const key = String(rawKey)
     const value = params[key]
     return value === undefined ? "" : String(value)
@@ -68,7 +68,7 @@ function UiI18nBridge(props: ParentProps) {
     document.documentElement.lang = locale()
   })
 
-  return <I18nProvider value={{ locale, t }}>{props.children}<@lgcode/I18nProvider>
+  return <I18nProvider value={{ locale, t }}>{props.children}</I18nProvider>
 }
 
 export default function App() {
@@ -78,17 +78,17 @@ export default function App() {
         <MetaProvider>
           <DialogProvider>
             <MarkedProvider>
-              <Favicon @lgcode/>
-              <Font @lgcode/>
+              <Favicon />
+              <Font />
               <UiI18nBridge>
-                <Suspense>{props.children}<@lgcode/Suspense>
-              <@lgcode/UiI18nBridge>
-            <@lgcode/MarkedProvider>
-          <@lgcode/DialogProvider>
-        <@lgcode/MetaProvider>
+                <Suspense>{props.children}</Suspense>
+              </UiI18nBridge>
+            </MarkedProvider>
+          </DialogProvider>
+        </MetaProvider>
       )}
     >
-      <FileRoutes @lgcode/>
-    <@lgcode/Router>
+      <FileRoutes />
+    </Router>
   )
 }

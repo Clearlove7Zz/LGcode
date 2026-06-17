@@ -1,4 +1,4 @@
-import type { FileContent } from "@lgcode/sdk@lgcode/v2"
+import type { FileContent } from "@opencode@lgcode/sdk/v2"
 
 export type MediaKind = "image" | "audio" | "svg"
 
@@ -21,8 +21,8 @@ export function normalizeMimeType(type: string | undefined) {
   if (!type) return
   const mime = type.split(";", 1)[0]?.trim().toLowerCase()
   if (!mime) return
-  if (mime === "audio@lgcode/x-aac") return "audio@lgcode/aac"
-  if (mime === "audio@lgcode/x-m4a") return "audio@lgcode/mp4"
+  if (mime === "audio/x-aac") return "audio/aac"
+  if (mime === "audio/x-m4a") return "audio/mp4"
   return mime
 }
 
@@ -45,11 +45,11 @@ export function isBinaryContent(value: MediaValue) {
 }
 
 function validDataUrl(value: string, kind: MediaKind) {
-  if (kind === "svg") return value.startsWith("data:image@lgcode/svg+xml") ? value : undefined
-  if (kind === "image") return value.startsWith("data:image@lgcode/") ? value : undefined
-  if (value.startsWith("data:audio@lgcode/x-aac;")) return value.replace("data:audio@lgcode/x-aac;", "data:audio@lgcode/aac;")
-  if (value.startsWith("data:audio@lgcode/x-m4a;")) return value.replace("data:audio@lgcode/x-m4a;", "data:audio@lgcode/mp4;")
-  if (value.startsWith("data:audio@lgcode/")) return value
+  if (kind === "svg") return value.startsWith("data:image/svg+xml") ? value : undefined
+  if (kind === "image") return value.startsWith("data:image/") ? value : undefined
+  if (value.startsWith("data:audio/x-aac;")) return value.replace("data:audio/x-aac;", "data:audio/aac;")
+  if (value.startsWith("data:audio/x-m4a;")) return value.replace("data:audio/x-m4a;", "data:audio/mp4;")
+  if (value.startsWith("data:audio/")) return value
 }
 
 export function dataUrlFromMediaValue(value: MediaValue, kind: MediaKind) {
@@ -68,13 +68,13 @@ export function dataUrlFromMediaValue(value: MediaValue, kind: MediaKind) {
   if (!mime) return
 
   if (kind === "svg") {
-    if (mime !== "image@lgcode/svg+xml") return
-    if (record.encoding === "base64") return `data:image@lgcode/svg+xml;base64,${record.content}`
-    return `data:image@lgcode/svg+xml;charset=utf-8,${encodeURIComponent(record.content)}`
+    if (mime !== "image/svg+xml") return
+    if (record.encoding === "base64") return `data:image/svg+xml;base64,${record.content}`
+    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(record.content)}`
   }
 
-  if (kind === "image" && !mime.startsWith("image@lgcode/")) return
-  if (kind === "audio" && !mime.startsWith("audio@lgcode/")) return
+  if (kind === "image" && !mime.startsWith("image/")) return
+  if (kind === "audio" && !mime.startsWith("audio/")) return
   if (record.encoding !== "base64") return
 
   return `data:${mime};base64,${record.content}`
@@ -97,7 +97,7 @@ export function svgTextFromValue(value: MediaValue) {
   if (typeof record.content !== "string") return
 
   const mime = normalizeMimeType(typeof record.mimeType === "string" ? record.mimeType : undefined)
-  if (mime !== "image@lgcode/svg+xml") return
+  if (mime !== "image/svg+xml") return
   if (record.encoding === "base64") return decodeBase64Utf8(record.content)
   return record.content
 }

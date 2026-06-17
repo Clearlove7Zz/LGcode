@@ -1,7 +1,7 @@
-export * as ConfigAttachmentV1 from ".@lgcode/attachment"
+export * as ConfigAttachmentV1 from "./attachment"
 
 import { Schema } from "effect"
-import { PositiveInt } from "..@lgcode/..@lgcode/schema"
+import { PositiveInt } from "../../schema"
 
 export const Image = Schema.Struct({
   auto_resize: Schema.optional(Schema.Boolean).annotate({

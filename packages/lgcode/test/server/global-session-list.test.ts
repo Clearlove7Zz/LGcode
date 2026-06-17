@@ -1,10 +1,10 @@
 import { describe, expect } from "bun:test"
 import { Deferred, Effect, Layer } from "effect"
-import { Project } from "@@lgcode/project@lgcode/project"
-import { Session as SessionNs } from "@@lgcode/session@lgcode/session"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import { provideInstance, TestInstance, tmpdirScoped } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { Project } from "@/project/project"
+import { Session as SessionNs } from "@/session/session"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { provideInstance, TestInstance, tmpdirScoped } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
 
 const it = testEffect(Layer.mergeAll(SessionNs.defaultLayer, Project.defaultLayer, CrossSpawnSpawner.defaultLayer))
 

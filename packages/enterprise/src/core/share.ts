@@ -1,7 +1,7 @@
-import { Message, Model, Part, Session, SnapshotFileDiff } from "@lgcode/sdk@lgcode/v2"
-import { iife } from "@lgcode/core@lgcode/util@lgcode/iife"
+import { Message, Model, Part, Session, SnapshotFileDiff } from "@opencode@lgcode/sdk/v2"
+import { iife } from "@opencode@lgcode/core/util/iife"
 import z from "zod"
-import { Storage } from ".@lgcode/storage"
+import { Storage } from "./storage"
 
 function fn<T extends z.ZodType, Result>(schema: T, cb: (input: z.infer<T>) => Result) {
   return (input: z.infer<T>) => cb(schema.parse(input))
@@ -53,9 +53,9 @@ export namespace Share {
       case "session":
         return "session"
       case "message":
-        return `message@lgcode/${item.data.id}`
+        return `message/${item.data.id}`
       case "part":
-        return `part@lgcode/${item.data.messageID}@lgcode/${item.data.id}`
+        return `part/${item.data.messageID}/${item.data.id}`
       case "session_diff":
         return "session_diff"
       case "model":

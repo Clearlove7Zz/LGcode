@@ -1,15 +1,15 @@
-export * as SkillTool from ".@lgcode/skill"
+export * as SkillTool from "./skill"
 
 import path from "path"
 import { pathToFileURL } from "url"
-import { ToolFailure } from "@lgcode/llm"
+import { ToolFailure } from "@opencode@lgcode/llm"
 import { Effect, Layer, Schema } from "effect"
-import { FSUtil } from "..@lgcode/fs-util"
-import { PluginBoot } from "..@lgcode/plugin@lgcode/boot"
-import { SkillV2 } from "..@lgcode/skill"
-import { PermissionV2 } from "..@lgcode/permission"
-import { Tool } from ".@lgcode/tool"
-import { Tools } from ".@lgcode/tools"
+import { FSUtil } from "../fs-util"
+import { PluginBoot } from "../plugin/boot"
+import { SkillV2 } from "../skill"
+import { PermissionV2 } from "../permission"
+import { Tool } from "./tool"
+import { Tools } from "./tools"
 
 export const name = "skill"
 const FILE_LIMIT = 10
@@ -41,13 +41,13 @@ export const toModelOutput = (skill: SkillV2.Info, files: ReadonlyArray<string>)
     skill.content.trim(),
     "",
     `Base directory for this skill: ${pathToFileURL(directory).href}`,
-    "Relative paths in this skill (e.g., scripts@lgcode/, reference@lgcode/) are relative to this base directory.",
+    "Relative paths in this skill (e.g., scripts/, reference/) are relative to this base directory.",
     "Note: file list is sampled.",
     "",
     "<skill_files>",
-    ...files.map((file) => `<file>${file}<@lgcode/file>`),
-    "<@lgcode/skill_files>",
-    "<@lgcode/skill_content>",
+    ...files.map((file) => `<file>${file}</file>`),
+    "</skill_files>",
+    "</skill_content>",
   ].join("\n")
 }
 
@@ -86,7 +86,7 @@ export const layer = Layer.effectDiscard(
                 const directory = path.dirname(skill.location)
                 const files =
                   path.basename(skill.location) === "SKILL.md"
-                    ? (yield* fs.glob("**@lgcode/*", { cwd: directory, absolute: true, include: "file", dot: true }))
+                    ? (yield* fs.glob("**/*", { cwd: directory, absolute: true, include: "file", dot: true }))
                         .filter((file) => path.basename(file) !== "SKILL.md")
                         .toSorted()
                         .slice(0, FILE_LIMIT)

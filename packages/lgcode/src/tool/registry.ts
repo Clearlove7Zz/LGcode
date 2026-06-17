@@ -1,57 +1,57 @@
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
-import { httpClient } from "@lgcode/core@lgcode/effect@lgcode/layer-node-platform"
-import { Ripgrep } from "@lgcode/core@lgcode/ripgrep"
-import { PlanExitTool } from ".@lgcode/plan"
-import { Session } from "@@lgcode/session@lgcode/session"
-import { QuestionTool } from ".@lgcode/question"
-import { ShellTool } from ".@lgcode/shell"
-import { EditTool } from ".@lgcode/edit"
-import { GlobTool } from ".@lgcode/glob"
-import { GrepTool } from ".@lgcode/grep"
-import { ReadTool } from ".@lgcode/read"
-import { TaskTool } from ".@lgcode/task"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { TodoWriteTool } from ".@lgcode/todo"
-import { WebFetchTool } from ".@lgcode/webfetch"
-import { WriteTool } from ".@lgcode/write"
-import { InvalidTool } from ".@lgcode/invalid"
-import { SkillTool } from ".@lgcode/skill"
-import * as Tool from ".@lgcode/tool"
-import { Config } from "@@lgcode/config@lgcode/config"
-import { type ToolContext as PluginToolContext, type ToolDefinition } from "@lgcode/plugin"
-import type { JSONSchema7, JSONSchema7Definition } from "@ai-sdk@lgcode/provider"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { httpClient } from "@opencode@lgcode/core/effect/layer-node-platform"
+import { Ripgrep } from "@opencode@lgcode/core/ripgrep"
+import { PlanExitTool } from "./plan"
+import { Session } from "@/session/session"
+import { QuestionTool } from "./question"
+import { ShellTool } from "./shell"
+import { EditTool } from "./edit"
+import { GlobTool } from "./glob"
+import { GrepTool } from "./grep"
+import { ReadTool } from "./read"
+import { TaskTool } from "./task"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { TodoWriteTool } from "./todo"
+import { WebFetchTool } from "./webfetch"
+import { WriteTool } from "./write"
+import { InvalidTool } from "./invalid"
+import { SkillTool } from "./skill"
+import * as Tool from "./tool"
+import { Config } from "@/config/config"
+import { type ToolContext as PluginToolContext, type ToolDefinition } from "@opencode@lgcode/plugin"
+import type { JSONSchema7, JSONSchema7Definition } from "@ai-sdk/provider"
 import { Schema } from "effect"
 import z from "zod"
-import { Plugin } from "..@lgcode/plugin"
-import { Provider } from "@@lgcode/provider@lgcode/provider"
+import { Plugin } from "../plugin"
+import { Provider } from "@/provider/provider"
 
-import { WebSearchTool } from ".@lgcode/websearch"
-import { LspTool } from ".@lgcode/lsp"
-import * as Truncate from ".@lgcode/truncate"
-import { ApplyPatchTool } from ".@lgcode/apply_patch"
-import { Glob } from "@lgcode/core@lgcode/util@lgcode/glob"
+import { WebSearchTool } from "./websearch"
+import { LspTool } from "./lsp"
+import * as Truncate from "./truncate"
+import { ApplyPatchTool } from "./apply_patch"
+import { Glob } from "@opencode@lgcode/core/util/glob"
 import path from "path"
 import { pathToFileURL } from "url"
 import { Effect, Layer, Context } from "effect"
-import { FetchHttpClient, HttpClient } from "effect@lgcode/unstable@lgcode/http"
-import { ChildProcessSpawner } from "effect@lgcode/unstable@lgcode/process@lgcode/ChildProcessSpawner"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import { Format } from "..@lgcode/format"
-import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
-import { EffectBridge } from "@@lgcode/effect@lgcode/bridge"
-import { Question } from "..@lgcode/question"
-import { Todo } from "..@lgcode/session@lgcode/todo"
-import { LSP } from "@@lgcode/lsp@lgcode/lsp"
-import { Instruction } from "..@lgcode/session@lgcode/instruction"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
-import { Agent } from "..@lgcode/agent@lgcode/agent"
-import { Skill } from "..@lgcode/skill"
-import { Permission } from "@@lgcode/permission"
-import { BackgroundJob } from "@@lgcode/background@lgcode/job"
-import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { FetchHttpClient, HttpClient } from "effect/unstable/http"
+import { ChildProcessSpawner } from "effect/unstable/process/ChildProcessSpawner"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { Format } from "../format"
+import { InstanceState } from "@/effect/instance-state"
+import { EffectBridge } from "@/effect/bridge"
+import { Question } from "../question"
+import { Todo } from "../session/todo"
+import { LSP } from "@/lsp/lsp"
+import { Instruction } from "../session/instruction"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { EventV2Bridge } from "@/event-v2-bridge"
+import { Agent } from "../agent/agent"
+import { Skill } from "../skill"
+import { Permission } from "@/permission"
+import { BackgroundJob } from "@/background/job"
+import { RuntimeFlags } from "@/effect/runtime-flags"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelV2 } from "@opencode@lgcode/core/model"
 
 export function webSearchEnabled(providerID: ProviderV2.ID, flags = { exa: false, parallel: false }) {
   return providerID === ProviderV2.ID.opencode || flags.exa || flags.parallel
@@ -78,7 +78,7 @@ export interface Interface {
   }) => Effect.Effect<Tool.Def[]>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/ToolRegistry") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/ToolRegistry") {}
 
 export const layer = Layer.effect(
   Service,
@@ -112,10 +112,10 @@ export const layer = Layer.effect(
         const custom: Tool.Def[] = []
 
         function fromPlugin(id: string, def: ToolDefinition): Tool.Def {
-          @lgcode/@lgcode/ Plugin tools still expose Zod args publicly; keep that compatibility
-          @lgcode/@lgcode/ boxed at the registry boundary and give the LLM the original JSON Schema.
-          @lgcode/@lgcode/ Normalize missing args to `{}` once — pre-1.14.49 the code was
-          @lgcode/@lgcode/ `z.object(def.args)` and Zod silently tolerated undefined (#27451, #27630).
+          // Plugin tools still expose Zod args publicly; keep that compatibility
+          // boxed at the registry boundary and give the LLM the original JSON Schema.
+          // Normalize missing args to `{}` once — pre-1.14.49 the code was
+          // `z.object(def.args)` and Zod silently tolerated undefined (#27451, #27630).
           const args = def.args ?? {}
           const entries = Object.entries(args)
           const allZod = entries.every((entry) => isZodType(entry[1]))
@@ -131,8 +131,8 @@ export const layer = Layer.effect(
             description: def.description,
             execute: (args, toolCtx) =>
               Effect.gen(function* () {
-                @lgcode/@lgcode/ Bridge the host's Effect-based `ask` into a Promise-returning
-                @lgcode/@lgcode/ function for the plugin to make sure context persists
+                // Bridge the host's Effect-based `ask` into a Promise-returning
+                // function for the plugin to make sure context persists
                 const bridge = yield* EffectBridge.make()
                 const pluginCtx: PluginToolContext = {
                   ...toolCtx,
@@ -171,13 +171,13 @@ export const layer = Layer.effect(
 
         const dirs = yield* config.directories()
         const matches = dirs.flatMap((dir) =>
-          Glob.scanSync("{tool,tools}@lgcode/*.{js,ts}", { cwd: dir, absolute: true, dot: true, symlink: true }),
+          Glob.scanSync("{tool,tools}/*.{js,ts}", { cwd: dir, absolute: true, dot: true, symlink: true }),
         )
         if (matches.length) yield* config.waitForDependencies()
         for (const match of matches) {
           const namespace = path.basename(match, path.extname(match))
-          @lgcode/@lgcode/ `match` is an absolute filesystem path from `Glob.scanSync(..., { absolute: true })`.
-          @lgcode/@lgcode/ Import it as `file:@lgcode/@lgcode/` so Node on Windows accepts the dynamic import.
+          // `match` is an absolute filesystem path from `Glob.scanSync(..., { absolute: true })`.
+          // Import it as `file://` so Node on Windows accepts the dynamic import.
           const mod = yield* Effect.promise(() => import(pathToFileURL(match).href))
           for (const [id, def] of Object.entries(mod)) {
             if (!isPluginTool(def)) continue
@@ -437,4 +437,4 @@ export const node = LayerNode.make(layer.pipe(Layer.provide(Ripgrep.defaultLayer
   Database.node,
 ])
 
-export * as ToolRegistry from ".@lgcode/registry"
+export * as ToolRegistry from "./registry"

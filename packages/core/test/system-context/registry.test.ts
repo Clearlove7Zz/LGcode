@@ -1,8 +1,8 @@
 import { describe, expect } from "bun:test"
 import { Cause, Effect, Exit, Schema, Scope } from "effect"
-import { SystemContext } from "@lgcode/core@lgcode/system-context"
-import { SystemContextRegistry } from "@lgcode/core@lgcode/system-context@lgcode/registry"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { SystemContext } from "@opencode@lgcode/core/system-context"
+import { SystemContextRegistry } from "@opencode@lgcode/core/system-context/registry"
+import { testEffect } from "../lib/effect"
 
 const entry = (key: string, text: string, sourceKey = key) => ({
   key: SystemContext.Key.make(key),
@@ -31,8 +31,8 @@ describe("SystemContextRegistry", () => {
   it.effect("loads scoped entries in stable key order", () =>
     Effect.gen(function* () {
       const registry = yield* SystemContextRegistry.Service
-      yield* registry.register(entry("test@lgcode/second", "second"))
-      yield* registry.register(entry("test@lgcode/first", "first"))
+      yield* registry.register(entry("test/second", "second"))
+      yield* registry.register(entry("test/first", "first"))
 
       expect((yield* SystemContext.initialize(yield* registry.load())).baseline).toBe("first\n\nsecond")
     }),
@@ -43,7 +43,7 @@ describe("SystemContextRegistry", () => {
       const registry = yield* SystemContextRegistry.Service
       let loads = 0
       yield* registry.register({
-        key: SystemContext.Key.make("test@lgcode/dynamic"),
+        key: SystemContext.Key.make("test/dynamic"),
         load: Effect.sync(() => {
           loads++
           return SystemContext.empty
@@ -61,7 +61,7 @@ describe("SystemContextRegistry", () => {
     Effect.gen(function* () {
       const registry = yield* SystemContextRegistry.Service
       const failure = new Error("entry failed")
-      yield* registry.register({ key: SystemContext.Key.make("test@lgcode/failure"), load: Effect.die(failure) })
+      yield* registry.register({ key: SystemContext.Key.make("test/failure"), load: Effect.die(failure) })
 
       const exit = yield* registry.load().pipe(Effect.exit)
 
@@ -73,15 +73,15 @@ describe("SystemContextRegistry", () => {
   it.effect("rejects duplicate source keys from separate entries", () =>
     Effect.gen(function* () {
       const registry = yield* SystemContextRegistry.Service
-      yield* registry.register(entry("test@lgcode/first", "first", "test@lgcode/duplicate"))
-      yield* registry.register(entry("test@lgcode/second", "second", "test@lgcode/duplicate"))
+      yield* registry.register(entry("test/first", "first", "test/duplicate"))
+      yield* registry.register(entry("test/second", "second", "test/duplicate"))
 
       const exit = yield* registry.load().pipe(Effect.exit)
 
       expect(Exit.isFailure(exit)).toBe(true)
       if (Exit.isFailure(exit)) {
         expect(Cause.squash(exit.cause)).toBeInstanceOf(SystemContext.DuplicateKeyError)
-        expect(Cause.squash(exit.cause)).toMatchObject({ key: SystemContext.Key.make("test@lgcode/duplicate") })
+        expect(Cause.squash(exit.cause)).toMatchObject({ key: SystemContext.Key.make("test/duplicate") })
       }
     }),
   )
@@ -89,9 +89,9 @@ describe("SystemContextRegistry", () => {
   it.effect("rejects duplicate entry keys", () =>
     Effect.gen(function* () {
       const registry = yield* SystemContextRegistry.Service
-      yield* registry.register(entry("test@lgcode/duplicate", "first"))
+      yield* registry.register(entry("test/duplicate", "first"))
 
-      const exit = yield* registry.register(entry("test@lgcode/duplicate", "second", "test@lgcode/other")).pipe(Effect.exit)
+      const exit = yield* registry.register(entry("test/duplicate", "second", "test/other")).pipe(Effect.exit)
 
       expect(Exit.isFailure(exit)).toBe(true)
       if (Exit.isFailure(exit)) expect(Cause.pretty(exit.cause)).toContain("Duplicate system context entry key")
@@ -102,7 +102,7 @@ describe("SystemContextRegistry", () => {
     Effect.gen(function* () {
       const registry = yield* SystemContextRegistry.Service
       const scope = yield* Scope.make()
-      yield* registry.register(entry("test@lgcode/scoped", "scoped")).pipe(Scope.provide(scope))
+      yield* registry.register(entry("test/scoped", "scoped")).pipe(Scope.provide(scope))
 
       expect((yield* SystemContext.initialize(yield* registry.load())).baseline).toBe("scoped")
 

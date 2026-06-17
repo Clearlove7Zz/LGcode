@@ -1,7 +1,7 @@
 import { createMemo } from "solid-js"
-import { useLocal } from "..@lgcode/context@lgcode/local"
-import { DialogSelect } from "..@lgcode/ui@lgcode/dialog-select"
-import { useDialog } from "..@lgcode/ui@lgcode/dialog"
+import { useLocal } from "../context/local"
+import { DialogSelect } from "../ui/dialog-select"
+import { useDialog } from "../ui/dialog"
 
 export function DialogVariant() {
   const local = useLocal()
@@ -34,6 +34,6 @@ export function DialogVariant() {
       title={"Select variant"}
       current={local.model.variant.selected()}
       flat={true}
-    @lgcode/>
+    />
   )
 }

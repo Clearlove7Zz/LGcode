@@ -1,19 +1,19 @@
-@lgcode/** @jsxImportSource @opentui@lgcode/solid *@lgcode/
+/** @jsxImportSource @opentui/solid */
 import { expect, test } from "bun:test"
-import { createDefaultOpenTuiKeymap } from "@opentui@lgcode/keymap@lgcode/opentui"
-import { DiffRenderable, type Renderable, ScrollBoxRenderable } from "@opentui@lgcode/core"
-import { testRender, useRenderer } from "@opentui@lgcode/solid"
-import type { TuiPluginApi, TuiPluginMeta, TuiRouteCurrent, TuiRouteDefinition } from "@lgcode/plugin@lgcode/tui"
-import type { Session } from "@lgcode/sdk@lgcode/v2"
-import { KVProvider } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/context@lgcode/kv"
-import { ThemeProvider } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/context@lgcode/theme"
-import { TuiConfigProvider } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/config"
-import { TuiKeybind } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/config@lgcode/keybind"
-import { OpencodeKeymapProvider } from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/keymap"
-import diffViewerPlugin from "..@lgcode/..@lgcode/..@lgcode/src@lgcode/feature-plugins@lgcode/system@lgcode/diff-viewer"
-import { createTuiPluginApi } from "..@lgcode/..@lgcode/fixture@lgcode/tui-plugin"
-import { createTuiResolvedConfig } from "..@lgcode/..@lgcode/fixture@lgcode/tui-runtime"
-import { TestTuiContexts } from "..@lgcode/..@lgcode/fixture@lgcode/tui-environment"
+import { createDefaultOpenTuiKeymap } from "@opentui/keymap/opentui"
+import { DiffRenderable, type Renderable, ScrollBoxRenderable } from "@opentui/core"
+import { testRender, useRenderer } from "@opentui/solid"
+import type { TuiPluginApi, TuiPluginMeta, TuiRouteCurrent, TuiRouteDefinition } from "@opencode@lgcode/plugin/tui"
+import type { Session } from "@opencode@lgcode/sdk/v2"
+import { KVProvider } from "../../../src/context/kv"
+import { ThemeProvider } from "../../../src/context/theme"
+import { TuiConfigProvider } from "../../../src/config"
+import { TuiKeybind } from "../../../src/config/keybind"
+import { OpencodeKeymapProvider } from "../../../src/keymap"
+import diffViewerPlugin from "../../../src/feature-plugins/system/diff-viewer"
+import { createTuiPluginApi } from "../../fixture/tui-plugin"
+import { createTuiResolvedConfig } from "../../fixture/tui-runtime"
+import { TestTuiContexts } from "../../fixture/tui-environment"
 
 test("closing the diff viewer returns to the route it opened from", async () => {
   const viewer = await renderDiffViewer([])
@@ -22,7 +22,7 @@ test("closing the diff viewer returns to the route it opened from", async () => 
       name: "diff",
       params: { mode: "git", sessionID: "session-1", returnRoute: startRoute },
     })
-    expect(viewer.vcsDiffInput()).toEqual({ directory: "@lgcode/repo@lgcode/session", mode: "git", context: 12 })
+    expect(viewer.vcsDiffInput()).toEqual({ directory: "/repo/session", mode: "git", context: 12 })
 
     expect(viewer.commands.has("diff.close")).toBe(true)
     viewer.commands.get("diff.close")!.run?.({} as never)
@@ -36,12 +36,12 @@ test("brackets navigate diff hunks", async () => {
   const viewer = await renderDiffViewer(
     [
       {
-        file: "src@lgcode/file.ts",
+        file: "src/file.ts",
         additions: 3,
         deletions: 3,
         status: "modified",
-        patch: `--- a@lgcode/src@lgcode/file.ts
-+++ b@lgcode/src@lgcode/file.ts
+        patch: `--- a/src/file.ts
++++ b/src/file.ts
 @@ -1,3 +1,3 @@
  const first = true
 -const oldFirst = true
@@ -158,15 +158,15 @@ async function renderDiffViewer(vcsDiff: unknown[], height = 20) {
             <KVProvider>
               <ThemeProvider mode="dark">
                 {renderDiff?.({ params: "params" in current ? current.params : undefined })}
-              <@lgcode/ThemeProvider>
-            <@lgcode/KVProvider>
-          <@lgcode/TuiConfigProvider>
-        <@lgcode/OpencodeKeymapProvider>
-      <@lgcode/TestTuiContexts>
+              </ThemeProvider>
+            </KVProvider>
+          </TuiConfigProvider>
+        </OpencodeKeymapProvider>
+      </TestTuiContexts>
     )
   }
 
-  const app = await testRender(() => <Harness @lgcode/>, { width: 80, height })
+  const app = await testRender(() => <Harness />, { width: 80, height })
   await waitForCommand(app, commands, "diff.close")
   return {
     app,
@@ -192,7 +192,7 @@ const session = {
   id: "session-1",
   slug: "session-1",
   projectID: "project-1",
-  directory: "@lgcode/repo@lgcode/session",
+  directory: "/repo/session",
   title: "Session",
   version: "1",
   time: {

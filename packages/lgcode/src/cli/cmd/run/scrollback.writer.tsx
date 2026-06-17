@@ -1,11 +1,11 @@
-import { createScrollbackWriter } from "@opentui@lgcode/solid"
-import { TextRenderable, type ColorInput, type ScrollbackRenderContext, type ScrollbackWriter } from "@opentui@lgcode/core"
+import { createScrollbackWriter } from "@opentui/solid"
+import { TextRenderable, type ColorInput, type ScrollbackRenderContext, type ScrollbackWriter } from "@opentui/core"
 import { Match, Switch, createMemo } from "solid-js"
-import { entryBody, entryFlags } from ".@lgcode/entry.body"
-import { entryColor, entryLook, entrySyntax } from ".@lgcode/scrollback.shared"
-import { toolFiletype, toolStructuredFinal } from ".@lgcode/tool"
-import { RUN_THEME_FALLBACK, transparent, type RunTheme } from ".@lgcode/theme"
-import type { EntryLayout, RunEntryBody, ScrollbackOptions, StreamCommit } from ".@lgcode/types"
+import { entryBody, entryFlags } from "./entry.body"
+import { entryColor, entryLook, entrySyntax } from "./scrollback.shared"
+import { toolFiletype, toolStructuredFinal } from "./tool"
+import { RUN_THEME_FALLBACK, transparent, type RunTheme } from "./theme"
+import type { EntryLayout, RunEntryBody, ScrollbackOptions, StreamCommit } from "./types"
 
 function todoText(item: { status: string; content: string }): string {
   if (item.status === "completed") {
@@ -151,8 +151,8 @@ export function RunEntryContent(props: {
       <Match when={text()}>
         <text width="100%" wrapMode="word" fg={style().fg} attributes={style().attrs}>
           {text()!.content}
-        <@lgcode/text>
-      <@lgcode/Match>
+        </text>
+      </Match>
       <Match when={code()}>
         <code
           width="100%"
@@ -163,13 +163,13 @@ export function RunEntryContent(props: {
           syntaxStyle={syntax()}
           content={code()!.content}
           fg={color()}
-        @lgcode/>
-      <@lgcode/Match>
+        />
+      </Match>
       <Match when={code_snapshot()}>
         <box width="100%" flexDirection="column" gap={1}>
           <text width="100%" wrapMode="word" fg={theme().block.muted}>
             {code_snapshot()!.title}
-          <@lgcode/text>
+          </text>
           <box width="100%" paddingLeft={1}>
             <line_number width="100%" fg={theme().block.muted} minWidth={3} paddingRight={1}>
               <code
@@ -180,18 +180,18 @@ export function RunEntryContent(props: {
                 syntaxStyle={syntax()}
                 content={code_snapshot()!.content}
                 fg={theme().block.text}
-              @lgcode/>
-            <@lgcode/line_number>
-          <@lgcode/box>
-        <@lgcode/box>
-      <@lgcode/Match>
+              />
+            </line_number>
+          </box>
+        </box>
+      </Match>
       <Match when={diff_snapshot()}>
         <box width="100%" flexDirection="column" gap={1}>
           {diff_snapshot()!.items.map((item) => (
             <box width="100%" flexDirection="column" gap={1}>
               <text width="100%" wrapMode="word" fg={theme().block.muted}>
                 {item.title}
-              <@lgcode/text>
+              </text>
               {item.diff.trim() ? (
                 <box width="100%" paddingLeft={1}>
                   <diff
@@ -212,79 +212,79 @@ export function RunEntryContent(props: {
                     lineNumberBg={diffBg(theme().block.diffContextBg)}
                     addedLineNumberBg={diffBg(theme().block.diffAddedLineNumberBg)}
                     removedLineNumberBg={diffBg(theme().block.diffRemovedLineNumberBg)}
-                  @lgcode/>
-                <@lgcode/box>
+                  />
+                </box>
               ) : (
                 <text width="100%" wrapMode="word" fg={theme().block.diffRemoved}>
                   -{item.deletions ?? 0} line{item.deletions === 1 ? "" : "s"}
-                <@lgcode/text>
+                </text>
               )}
-            <@lgcode/box>
+            </box>
           ))}
-        <@lgcode/box>
-      <@lgcode/Match>
+        </box>
+      </Match>
       <Match when={task_snapshot()}>
         <box width="100%" flexDirection="column" gap={1}>
           <text width="100%" wrapMode="word" fg={theme().block.muted}>
             {task_snapshot()!.title}
-          <@lgcode/text>
+          </text>
           <box width="100%" flexDirection="column" gap={0} paddingLeft={1}>
             {task_snapshot()!.rows.map((row) => (
               <text width="100%" wrapMode="word" fg={theme().block.text}>
                 {row}
-              <@lgcode/text>
+              </text>
             ))}
             {task_snapshot()!.tail ? (
               <text width="100%" wrapMode="word" fg={theme().block.muted}>
                 {task_snapshot()!.tail}
-              <@lgcode/text>
+              </text>
             ) : null}
-          <@lgcode/box>
-        <@lgcode/box>
-      <@lgcode/Match>
+          </box>
+        </box>
+      </Match>
       <Match when={todo_snapshot()}>
         <box width="100%" flexDirection="column" gap={1}>
           <text width="100%" wrapMode="word" fg={theme().block.muted}>
             # Todos
-          <@lgcode/text>
+          </text>
           <box width="100%" flexDirection="column" gap={0}>
             {todo_snapshot()!.items.map((item) => (
               <text width="100%" wrapMode="word" fg={todoColor(theme(), item.status)}>
                 {todoText(item)}
-              <@lgcode/text>
+              </text>
             ))}
             {todo_snapshot()!.tail ? (
               <text width="100%" wrapMode="word" fg={theme().block.muted}>
                 {todo_snapshot()!.tail}
-              <@lgcode/text>
+              </text>
             ) : null}
-          <@lgcode/box>
-        <@lgcode/box>
-      <@lgcode/Match>
+          </box>
+        </box>
+      </Match>
       <Match when={question_snapshot()}>
         <box width="100%" flexDirection="column" gap={1}>
           <text width="100%" wrapMode="word" fg={theme().block.muted}>
             # Questions
-          <@lgcode/text>
+          </text>
           <box width="100%" flexDirection="column" gap={1}>
             {question_snapshot()!.items.map((item) => (
               <box width="100%" flexDirection="column" gap={0}>
                 <text width="100%" wrapMode="word" fg={theme().block.muted}>
                   {item.question}
-                <@lgcode/text>
+                </text>
                 <text width="100%" wrapMode="word" fg={theme().block.text}>
                   {item.answer}
-                <@lgcode/text>
-              <@lgcode/box>
+                </text>
+              </box>
             ))}
             {question_snapshot()!.tail ? (
               <text width="100%" wrapMode="word" fg={theme().block.muted}>
                 {question_snapshot()!.tail}
-              <@lgcode/text>
+              </text>
             ) : null}
-          <@lgcode/box>
-        <@lgcode/box>
-      <@lgcode/Match>
+          </box>
+        </box>
+      </Match>
       <Match when={markdown()}>
         <markdown
           width="100%"
@@ -293,9 +293,9 @@ export function RunEntryContent(props: {
           content={markdown()!.content}
           fg={color()}
           tableOptions={{ widthMode: "content" }}
-        @lgcode/>
-      <@lgcode/Match>
-    <@lgcode/Switch>
+        />
+      </Match>
+    </Switch>
   )
 }
 
@@ -313,7 +313,7 @@ export function entryWriter(input: {
         theme={input.theme}
         opts={{ ...input.opts, suppressBackgrounds: true }}
         width={ctx.width}
-      @lgcode/>
+      />
     ),
     entryFlags(input.commit),
   )
@@ -338,14 +338,14 @@ export function turnSummaryWriter(input: { agent: string; model: string; duratio
     () => (
       <box width="100%" height={1}>
         <text wrapMode="none" truncate>
-          <span style={{ fg: input.theme.block.highlight }}>▣ <@lgcode/span>
-          <span style={{ fg: input.theme.block.text }}>{input.agent}<@lgcode/span>
+          <span style={{ fg: input.theme.block.highlight }}>▣ </span>
+          <span style={{ fg: input.theme.block.text }}>{input.agent}</span>
           <span style={{ fg: input.theme.block.muted }}>
             {" "}
             · {input.model} · {input.duration}
-          <@lgcode/span>
-        <@lgcode/text>
-      <@lgcode/box>
+          </span>
+        </text>
+      </box>
     ),
     { startOnNewLine: true, trailingNewline: false },
   )

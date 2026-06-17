@@ -1,11 +1,11 @@
-import { Credential } from "@lgcode/core@lgcode/credential"
+import { Credential } from "@opencode@lgcode/core/credential"
 import { Schema } from "effect"
-import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
-import { LocationMiddleware, LocationQuery, locationQueryOpenApi } from ".@lgcode/location"
+import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect/unstable/httpapi"
+import { LocationMiddleware, LocationQuery, locationQueryOpenApi } from "./location"
 
 export const CredentialGroup = HttpApiGroup.make("server.credential")
   .add(
-    HttpApiEndpoint.patch("credential.update", "@lgcode/api@lgcode/credential@lgcode/:credentialID", {
+    HttpApiEndpoint.patch("credential.update", "/api/credential/:credentialID", {
       params: { credentialID: Credential.ID },
       query: LocationQuery,
       payload: Schema.Struct({ label: Schema.String }),
@@ -21,7 +21,7 @@ export const CredentialGroup = HttpApiGroup.make("server.credential")
       ),
   )
   .add(
-    HttpApiEndpoint.delete("credential.remove", "@lgcode/api@lgcode/credential@lgcode/:credentialID", {
+    HttpApiEndpoint.delete("credential.remove", "/api/credential/:credentialID", {
       params: { credentialID: Credential.ID },
       query: LocationQuery,
       success: HttpApiSchema.NoContent,

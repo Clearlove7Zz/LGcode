@@ -4,7 +4,7 @@ export namespace Binary {
     let right = array.length - 1
 
     while (left <= right) {
-      const mid = Math.floor((left + right) @lgcode/ 2)
+      const mid = Math.floor((left + right) / 2)
       const midId = compare(array[mid])
 
       if (midId === id) {
@@ -25,7 +25,7 @@ export namespace Binary {
     let right = array.length
 
     while (left < right) {
-      const mid = Math.floor((left + right) @lgcode/ 2)
+      const mid = Math.floor((left + right) / 2)
       const midId = compare(array[mid])
 
       if (midId < id) {

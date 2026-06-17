@@ -1,67 +1,67 @@
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
-import { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
 import path from "path"
-import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
+import { SessionV1 } from "@opencode@lgcode/core/v1/session"
 import os from "os"
-import { SessionID, MessageID, PartID } from ".@lgcode/schema"
-import { MessageV2 } from ".@lgcode/message-v2"
-import { SessionRevert } from ".@lgcode/revert"
-import { Session } from ".@lgcode/session"
-import { Agent } from "..@lgcode/agent@lgcode/agent"
-import { Provider } from "@@lgcode/provider@lgcode/provider"
+import { SessionID, MessageID, PartID } from "./schema"
+import { MessageV2 } from "./message-v2"
+import { SessionRevert } from "./revert"
+import { Session } from "./session"
+import { Agent } from "../agent/agent"
+import { Provider } from "@/provider/provider"
 
 import { type Tool as AITool, tool, jsonSchema } from "ai"
-import type { JSONSchema7 } from "@ai-sdk@lgcode/provider"
-import { SessionCompaction } from ".@lgcode/compaction"
-import { SystemPrompt } from ".@lgcode/system"
-import { Instruction } from ".@lgcode/instruction"
-import { Plugin } from "..@lgcode/plugin"
-import MAX_STEPS from "..@lgcode/session@lgcode/prompt@lgcode/max-steps.txt"
-import { ToolRegistry } from "@@lgcode/tool@lgcode/registry"
-import { MCP } from "..@lgcode/mcp"
-import { LSP } from "@@lgcode/lsp@lgcode/lsp"
+import type { JSONSchema7 } from "@ai-sdk/provider"
+import { SessionCompaction } from "./compaction"
+import { SystemPrompt } from "./system"
+import { Instruction } from "./instruction"
+import { Plugin } from "../plugin"
+import MAX_STEPS from "../session/prompt/max-steps.txt"
+import { ToolRegistry } from "@/tool/registry"
+import { MCP } from "../mcp"
+import { LSP } from "@/lsp/lsp"
 import { ulid } from "ulid"
-import { ChildProcess, ChildProcessSpawner } from "effect@lgcode/unstable@lgcode/process"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import * as Stream from "effect@lgcode/Stream"
-import { Command } from "..@lgcode/command"
+import { ChildProcess, ChildProcessSpawner } from "effect/unstable/process"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import * as Stream from "effect/Stream"
+import { Command } from "../command"
 import { pathToFileURL, fileURLToPath } from "url"
-import { Config } from "@@lgcode/config@lgcode/config"
-import { ConfigMarkdown } from "@@lgcode/config@lgcode/markdown"
-import { SessionSummary } from ".@lgcode/summary"
-import { NamedError } from "@lgcode/core@lgcode/util@lgcode/error"
-import { SessionProcessor } from ".@lgcode/processor"
-import { Tool } from "@@lgcode/tool@lgcode/tool"
-import { Permission } from "@@lgcode/permission"
-import { SessionStatus } from ".@lgcode/status"
-import { LLM } from ".@lgcode/llm"
-import { Shell } from "@lgcode/core@lgcode/shell"
-import { ShellID } from "@@lgcode/tool@lgcode/shell@lgcode/id"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { Truncate } from "@@lgcode/tool@lgcode/truncate"
-import { Image } from "@@lgcode/image@lgcode/image"
-import { decodeDataUrl } from "@@lgcode/util@lgcode/data-url"
-import { Process } from "@@lgcode/util@lgcode/process"
+import { Config } from "@/config/config"
+import { ConfigMarkdown } from "@/config/markdown"
+import { SessionSummary } from "./summary"
+import { NamedError } from "@opencode@lgcode/core/util/error"
+import { SessionProcessor } from "./processor"
+import { Tool } from "@/tool/tool"
+import { Permission } from "@/permission"
+import { SessionStatus } from "./status"
+import { LLM } from "./llm"
+import { Shell } from "@opencode@lgcode/core/shell"
+import { ShellID } from "@/tool/shell/id"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { Truncate } from "@/tool/truncate"
+import { Image } from "@/image/image"
+import { decodeDataUrl } from "@/util/data-url"
+import { Process } from "@/util/process"
 import { Cause, Effect, Exit, Latch, Layer, Option, Scope, Context, Schema, Types } from "effect"
-import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
-import { TaskTool, type TaskPromptOps } from "@@lgcode/tool@lgcode/task"
-import { SessionRunState } from ".@lgcode/run-state"
-import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
-import { EventV2Bridge } from "@@lgcode/event-v2-bridge"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { SessionEvent } from "@lgcode/core@lgcode/session@lgcode/event"
-import { SessionMessage } from "@lgcode/core@lgcode/session@lgcode/message"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { AgentAttachment, FileAttachment, Prompt, Source } from "@lgcode/core@lgcode/session@lgcode/prompt"
-import * as DateTime from "effect@lgcode/DateTime"
+import { InstanceState } from "@/effect/instance-state"
+import { TaskTool, type TaskPromptOps } from "@/tool/task"
+import { SessionRunState } from "./run-state"
+import { RuntimeFlags } from "@/effect/runtime-flags"
+import { EventV2Bridge } from "@/event-v2-bridge"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { SessionEvent } from "@opencode@lgcode/core/session/event"
+import { SessionMessage } from "@opencode@lgcode/core/session/message"
+import { ModelV2 } from "@opencode@lgcode/core/model"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { AgentAttachment, FileAttachment, Prompt, Source } from "@opencode@lgcode/core/session/prompt"
+import * as DateTime from "effect/DateTime"
 import { eq } from "drizzle-orm"
-import { SessionTable } from "@lgcode/core@lgcode/session@lgcode/sql"
-import { SessionReminders } from ".@lgcode/reminders"
-import { SessionTools } from ".@lgcode/tools"
-import { LLMEvent } from "@lgcode/llm"
+import { SessionTable } from "@opencode@lgcode/core/session/sql"
+import { SessionReminders } from "./reminders"
+import { SessionTools } from "./tools"
+import { LLMEvent } from "@opencode@lgcode/llm"
 
-@lgcode/@lgcode/ @ts-ignore
+// @ts-ignore
 globalThis.AI_SDK_LOG_WARNINGS = false
 
 const decodeMessageInfo = Schema.decodeUnknownExit(SessionV1.Info)
@@ -78,8 +78,8 @@ IMPORTANT:
 const STRUCTURED_OUTPUT_SYSTEM_PROMPT = `IMPORTANT: The user has requested structured output. You MUST use the StructuredOutput tool to provide your final response. Do NOT respond with plain text - you MUST call the StructuredOutput tool with your answer formatted according to the schema.`
 
 function isOrphanedInterruptedTool(part: SessionV1.ToolPart) {
-  @lgcode/@lgcode/ cleanup() marks abandoned tool_use blocks this way after retries@lgcode/aborts.
-  @lgcode/@lgcode/ They are not pending work and must not trigger an assistant-prefill request.
+  // cleanup() marks abandoned tool_use blocks this way after retries/aborts.
+  // They are not pending work and must not trigger an assistant-prefill request.
   return part.state.status === "error" && part.state.metadata?.interrupted === true
 }
 
@@ -92,7 +92,7 @@ export interface Interface {
   readonly resolvePromptParts: (template: string) => Effect.Effect<PromptInput["parts"]>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/SessionPrompt") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/SessionPrompt") {}
 
 export const layer = Layer.effect(
   Service,
@@ -151,7 +151,7 @@ export const layer = Layer.effect(
           if (seen.has(name)) return
           seen.add(name)
 
-          const filepath = name.startsWith("~@lgcode/")
+          const filepath = name.startsWith("~/")
             ? path.join(os.homedir(), name.slice(2))
             : path.resolve(ctx.worktree, name)
 
@@ -166,7 +166,7 @@ export const layer = Layer.effect(
             type: "file",
             url: pathToFileURL(filepath).href,
             filename: name,
-            mime: stat.type === "Directory" ? "application@lgcode/x-directory" : "text@lgcode/plain",
+            mime: stat.type === "Directory" ? "application/x-directory" : "text/plain",
           })
         }),
         { concurrency: "unbounded", discard: true },
@@ -225,7 +225,7 @@ export const layer = Layer.effect(
           Effect.orDie,
         )
       const cleaned = text
-        .replace(@lgcode/<think>[\s\S]*?<\@lgcode/think>\s*@lgcode/g, "")
+        .replace(/<think>[\s\S]*?<\/think>\s*/g, "")
         .split("\n")
         .map((line) => line.trim())
         .find((line) => line.length > 0)
@@ -521,7 +521,7 @@ export const layer = Layer.effect(
           const finish = Effect.uninterruptible(
             Effect.gen(function* () {
               if (aborted) {
-                output += "\n\n" + ["<metadata>", "User aborted the command", "<@lgcode/metadata>"].join("\n")
+                output += "\n\n" + ["<metadata>", "User aborted the command", "</metadata>"].join("\n")
               }
               const completed = Date.now()
               if (flags.experimentalEventSystem) {
@@ -605,7 +605,7 @@ export const layer = Layer.effect(
         yield* events.publish(Session.Event.Error, {
           sessionID,
           error: new NamedError.Unknown({
-            message: `Model not found: ${err.providerID}@lgcode/${err.modelID}.${hint}`,
+            message: `Model not found: ${err.providerID}/${err.modelID}.${hint}`,
           }).toObject(),
         })
       }
@@ -728,7 +728,7 @@ export const layer = Layer.effect(
             const exit = yield* mcp.readResource(clientName, uri).pipe(Effect.exit)
             if (Exit.isSuccess(exit)) {
               const content = exit.value
-              if (!content) throw new Error(`Resource not found: ${clientName}@lgcode/${uri}`)
+              if (!content) throw new Error(`Resource not found: ${clientName}/${uri}`)
               const items = Array.isArray(content.contents) ? content.contents : [content.contents]
               for (const c of items) {
                 if ("text" in c && c.text) {
@@ -768,7 +768,7 @@ export const layer = Layer.effect(
           const url = new URL(part.url)
           switch (url.protocol) {
             case "data:":
-              if (part.mime === "text@lgcode/plain") {
+              if (part.mime === "text/plain") {
                 return [
                   {
                     messageID: info.id,
@@ -791,7 +791,7 @@ export const layer = Layer.effect(
             case "file:": {
               yield* Effect.logInfo("file", { mime: part.mime })
               const filepath = fileURLToPath(part.url)
-              const mime = (yield* fsys.isDir(filepath)) ? "application@lgcode/x-directory" : part.mime
+              const mime = (yield* fsys.isDir(filepath)) ? "application/x-directory" : part.mime
 
               const { read } = yield* registry.named()
               const execRead = (args: Parameters<typeof read.execute>[0], extra?: Tool.Context["extra"]) => {
@@ -810,7 +810,7 @@ export const layer = Layer.effect(
                   .pipe(Effect.onInterrupt(() => Effect.sync(() => controller.abort())))
               }
 
-              if (mime === "text@lgcode/plain") {
+              if (mime === "text/plain") {
                 let offset: number | undefined
                 let limit: number | undefined
                 const range = { start: url.searchParams.get("start"), end: url.searchParams.get("end") }
@@ -889,7 +889,7 @@ export const layer = Layer.effect(
                 return pieces
               }
 
-              if (mime === "application@lgcode/x-directory") {
+              if (mime === "application/x-directory") {
                 const args = { filePath: filepath }
                 const exit = yield* execRead(args).pipe(Effect.exit)
                 if (Exit.isFailure(exit)) {
@@ -992,7 +992,7 @@ export const layer = Layer.effect(
       )
 
       const parts = yield* Effect.forEach(resolvedParts, (part) =>
-        part.type === "file" && part.mime.startsWith("image@lgcode/")
+        part.type === "file" && part.mime.startsWith("image/")
           ? image.normalize(part).pipe(
               Effect.catchIf(
                 (error) => error instanceof Image.ResizerUnavailableError,
@@ -1073,7 +1073,7 @@ export const layer = Layer.effect(
           synthetic: [] as string[],
         },
       )
-      @lgcode/@lgcode/ TODO(v2): Temporary dual-write while migrating session messages to v2 events.
+      // TODO(v2): Temporary dual-write while migrating session messages to v2 events.
       if (flags.experimentalEventSystem) {
         yield* events.publish(SessionEvent.Prompted, {
           sessionID: input.sessionID,
@@ -1088,7 +1088,7 @@ export const layer = Layer.effect(
         })
       }
       for (const text of nextPrompt.synthetic) {
-        @lgcode/@lgcode/ TODO(v2): Temporary dual-write while migrating session messages to v2 events.
+        // TODO(v2): Temporary dual-write while migrating session messages to v2 events.
         if (flags.experimentalEventSystem) {
           yield* events.publish(SessionEvent.Synthetic, {
             sessionID: input.sessionID,
@@ -1153,9 +1153,9 @@ export const layer = Layer.effect(
           const lastAssistantMsg = msgs.findLast(
             (msg) => msg.info.role === "assistant" && msg.info.id === lastAssistant?.id,
           )
-          @lgcode/@lgcode/ Some providers return "stop" even when the assistant message contains
-          @lgcode/@lgcode/ tool calls. Keep the loop running so tool results can be sent back to
-          @lgcode/@lgcode/ the model, but ignore cleanup-marked interrupted orphans.
+          // Some providers return "stop" even when the assistant message contains
+          // tool calls. Keep the loop running so tool results can be sent back to
+          // the model, but ignore cleanup-marked interrupted orphans.
           const hasToolCalls =
             lastAssistantMsg?.parts.some(
               (part) => part.type === "tool" && !part.metadata?.providerExecuted && !isOrphanedInterruptedTool(part),
@@ -1316,7 +1316,7 @@ export const layer = Layer.effect(
                     p.text,
                     "",
                     "Please address this message and continue with your tasks.",
-                    "<@lgcode/system-reminder>",
+                    "</system-reminder>",
                   ].join("\n")
                 }
               }
@@ -1355,10 +1355,10 @@ export const layer = Layer.effect(
 
             const finished = handle.message.finish && !["tool-calls", "unknown"].includes(handle.message.finish)
             if (finished && !handle.message.error) {
-              @lgcode/@lgcode/ Surface any content-filter finish (e.g. Anthropic stop_reason:
-              @lgcode/@lgcode/ refusal) as an error. These turns may have produced no visible
-              @lgcode/@lgcode/ output at all — previously the session went idle silently — or
-              @lgcode/@lgcode/ partial text that was cut off by the provider's filter.
+              // Surface any content-filter finish (e.g. Anthropic stop_reason:
+              // refusal) as an error. These turns may have produced no visible
+              // output at all — previously the session went idle silently — or
+              // partial text that was cut off by the provider's filter.
               if (handle.message.finish === "content-filter") {
                 handle.message.error = new SessionV1.ContentFilterError({
                   message: "The response was blocked by the provider's content filter",
@@ -1636,9 +1636,9 @@ export const CommandInput = Schema.Struct({
   arguments: Schema.String,
   command: Schema.String,
   variant: Schema.optional(Schema.String),
-  @lgcode/@lgcode/ Inlined (no identifier annotation) to keep the original SDK output — the
-  @lgcode/@lgcode/ PromptInput call site below references FilePartInput by ref via the
-  @lgcode/@lgcode/ Schema export in message-v2.ts.
+  // Inlined (no identifier annotation) to keep the original SDK output — the
+  // PromptInput call site below references FilePartInput by ref via the
+  // Schema export in message-v2.ts.
   parts: Schema.optional(
     Schema.Array(
       Schema.Union([
@@ -1656,19 +1656,19 @@ export const CommandInput = Schema.Struct({
 })
 export type CommandInput = Schema.Schema.Type<typeof CommandInput>
 
-@lgcode/** @internal Exported for testing *@lgcode/
+/** @internal Exported for testing */
 export function createStructuredOutputTool(input: {
   schema: Record<string, any>
   onSuccess: (output: unknown) => void
 }): AITool {
-  @lgcode/@lgcode/ Remove $schema property if present (not needed for tool input)
+  // Remove $schema property if present (not needed for tool input)
   const { $schema: _, ...toolSchema } = input.schema
 
   return tool({
     description: STRUCTURED_OUTPUT_DESCRIPTION,
     inputSchema: jsonSchema(toolSchema as JSONSchema7),
     async execute(args) {
-      @lgcode/@lgcode/ AI SDK validates args against inputSchema before calling execute()
+      // AI SDK validates args against inputSchema before calling execute()
       input.onSuccess(args)
       return {
         output: "Structured output captured successfully.",
@@ -1684,11 +1684,11 @@ export function createStructuredOutputTool(input: {
     },
   })
 }
-const bashRegex = @lgcode/!`([^`]+)`@lgcode/g
-@lgcode/@lgcode/ Match [Image N] as single token, quoted strings, or non-space sequences
-const argsRegex = @lgcode/(?:\[Image\s+\d+\]|"[^"]*"|'[^']*'|[^\s"']+)@lgcode/gi
-const placeholderRegex = @lgcode/\$(\d+)@lgcode/g
-const quoteTrimRegex = @lgcode/^["']|["']$@lgcode/g
+const bashRegex = /!`([^`]+)`/g
+// Match [Image N] as single token, quoted strings, or non-space sequences
+const argsRegex = /(?:\[Image\s+\d+\]|"[^"]*"|'[^']*'|[^\s"']+)/gi
+const placeholderRegex = /\$(\d+)/g
+const quoteTrimRegex = /^["']|["']$/g
 
 export const node = LayerNode.make(layer, [
   SessionStatus.node,
@@ -1719,4 +1719,4 @@ export const node = LayerNode.make(layer, [
   Database.node,
 ])
 
-export * as SessionPrompt from ".@lgcode/prompt"
+export * as SessionPrompt from "./prompt"

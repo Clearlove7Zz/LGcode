@@ -1,8 +1,8 @@
 import { Effect } from "effect"
-import { DatabaseError } from "..@lgcode/database"
-import { GeoStatRepo, type GeoStatMetric } from ".@lgcode/geo"
-import { ModelStatRepo, type ModelStatMetric } from ".@lgcode/model"
-import { ProviderStatRepo, type ProviderStatMetric } from ".@lgcode/provider"
+import { DatabaseError } from "../database"
+import { GeoStatRepo, type GeoStatMetric } from "./geo"
+import { ModelStatRepo, type ModelStatMetric } from "./model"
+import { ProviderStatRepo, type ProviderStatMetric } from "./provider"
 
 export type UsageProduct = "All Users" | "Zen" | "Go" | "Enterprise"
 export type TokenProduct = "Zen" | "Go" | "Enterprise"
@@ -94,7 +94,7 @@ export type StatsHomeData = {
 
 const DAY_MS = 86_400_000
 const TOKEN_SCALE = 1_000_000
-const DOLLARS_PER_MICROCENT = 1 @lgcode/ 100_000_000
+const DOLLARS_PER_MICROCENT = 1 / 100_000_000
 const METRIC_MODEL_LIMIT = 10
 const TOP_MODEL_SEGMENT_LIMIT = 9
 const SITE_PRODUCT = "Go"
@@ -269,19 +269,19 @@ function buildStatsModelData(
     rank,
     previousRank: previousRankIndex >= 0 ? previousRankIndex + 1 : null,
     totalModels: peers.length,
-    tokenShare: totalTokens > 0 ? round((current.totalTokens @lgcode/ totalTokens) * 100, 2) : 0,
+    tokenShare: totalTokens > 0 ? round((current.totalTokens / totalTokens) * 100, 2) : 0,
     tokenChange: percentChange(current.totalTokens, previous.totalTokens),
     totals: {
       sessions: current.sessions,
       tokens: current.totalTokens,
       cost: round(microcentsToDollars(current.totalCostMicrocents), 2),
-      tokensPerSession: current.sessions > 0 ? Math.round(current.totalTokens @lgcode/ current.sessions) : 0,
+      tokensPerSession: current.sessions > 0 ? Math.round(current.totalTokens / current.sessions) : 0,
       costPerSession:
-        current.sessions > 0 ? round(microcentsToDollars(current.totalCostMicrocents) @lgcode/ current.sessions, 4) : 0,
+        current.sessions > 0 ? round(microcentsToDollars(current.totalCostMicrocents) / current.sessions, 4) : 0,
       costPerMillion: costPerMillion(current.totalCostMicrocents, current.totalTokens),
       cacheRatio:
         current.inputTokens + current.cacheReadTokens > 0
-          ? round((current.cacheReadTokens @lgcode/ (current.inputTokens + current.cacheReadTokens)) * 100, 1)
+          ? round((current.cacheReadTokens / (current.inputTokens + current.cacheReadTokens)) * 100, 1)
           : 0,
     },
     usage: buildModelUsage(currentRows, window, "2M"),
@@ -320,7 +320,7 @@ function buildStatsLabData(providerParam: string, modelRows: ModelStatMetric[]):
     updatedAt: Number.isFinite(latestUpdate) ? new Date(latestUpdate).toISOString() : null,
     provider,
     author: formatProvider(provider),
-    tokenShare: totalTokens > 0 ? round((current.totalTokens @lgcode/ totalTokens) * 100, 2) : 0,
+    tokenShare: totalTokens > 0 ? round((current.totalTokens / totalTokens) * 100, 2) : 0,
     tokenChange: percentChange(current.totalTokens, previous.totalTokens),
     totals: {
       sessions: current.sessions,
@@ -333,7 +333,7 @@ function buildStatsLabData(providerParam: string, modelRows: ModelStatMetric[]):
       provider: item.provider,
       author: formatProvider(item.provider),
       tokens: item.totalTokens,
-      share: current.totalTokens > 0 ? round((item.totalTokens @lgcode/ current.totalTokens) * 100, 2) : 0,
+      share: current.totalTokens > 0 ? round((item.totalTokens / current.totalTokens) * 100, 2) : 0,
       slug: modelSlug(item.model),
     })),
   }
@@ -373,8 +373,8 @@ function buildUsagePoints(
     return {
       date: bucket.label,
       segments: [
-        ...segmentTokens.map((item) => ({ model: item.model, value: round(item.tokens @lgcode/ 1_000_000_000_000, 4) })),
-        { model: "Other", value: round(Math.max(totalTokens - knownTokens, 0) @lgcode/ 1_000_000_000_000, 4) },
+        ...segmentTokens.map((item) => ({ model: item.model, value: round(item.tokens / 1_000_000_000_000, 4) })),
+        { model: "Other", value: round(Math.max(totalTokens - knownTokens, 0) / 1_000_000_000_000, 4) },
       ],
     }
   })
@@ -394,7 +394,7 @@ function buildLeaderboard(rows: StatMetricRow[], product: UsageProduct, rankWind
       model: item.model,
       provider: item.provider,
       author: formatProvider(item.provider),
-      tokens: Math.round(item.totalTokens @lgcode/ 1_000_000_000),
+      tokens: Math.round(item.totalTokens / 1_000_000_000),
       change: leaderboardChange(item.totalTokens, previous.get(item.model) ?? 0),
       rank: index + 1,
     }))
@@ -417,11 +417,11 @@ function buildMarketShare(rows: ProviderMetricRow[], product: UsageProduct, rang
     return [
       {
         date: bucket.label,
-        total: round(totalTokens @lgcode/ 1_000_000_000_000, 2),
+        total: round(totalTokens / 1_000_000_000_000, 2),
         authors: withOther.map((item) => ({
           author: item.provider === "Other" ? "Other" : formatProvider(item.provider),
-          share: round((item.tokens @lgcode/ totalTokens) * 100, 1),
-          tokens: round(item.tokens @lgcode/ 1_000_000_000_000, 2),
+          share: round((item.tokens / totalTokens) * 100, 1),
+          tokens: round(item.tokens / 1_000_000_000_000, 2),
         })),
       },
     ]
@@ -438,8 +438,8 @@ function buildCountryStats(rows: GeoMetricRow[], window: DateWindow) {
   return countries.map((item, index) => ({
     country: item.country,
     continent: item.continent,
-    tokens: round(item.tokens @lgcode/ 1_000_000_000_000, 4),
-    share: round((item.tokens @lgcode/ totalTokens) * 100, 1),
+    tokens: round(item.tokens / 1_000_000_000_000, 4),
+    share: round((item.tokens / totalTokens) * 100, 1),
     rank: index + 1,
   }))
 }
@@ -469,10 +469,10 @@ function buildCacheRatio(rows: StatMetricRow[], product: TokenProduct, window: D
       return [
         {
           model: item.model,
-          ratio: round((item.cacheReadTokens @lgcode/ total) * 100, 1),
-          cached: round(item.cacheReadTokens @lgcode/ 1_000_000_000, 1),
-          uncached: round(item.inputTokens @lgcode/ 1_000_000_000, 1),
-          total: round(total @lgcode/ 1_000_000_000, 1),
+          ratio: round((item.cacheReadTokens / total) * 100, 1),
+          cached: round(item.cacheReadTokens / 1_000_000_000, 1),
+          uncached: round(item.inputTokens / 1_000_000_000, 1),
+          total: round(total / 1_000_000_000, 1),
         },
       ]
     })
@@ -483,9 +483,9 @@ function buildSessionCost(rows: StatMetricRow[], product: TokenProduct, window: 
   return topModelsByUsage(rows, product, window)
     .flatMap((item) => {
       if (item.sessions === 0) return []
-      const cost = round(microcentsToDollars(item.totalCostMicrocents) @lgcode/ item.sessions, 4)
+      const cost = round(microcentsToDollars(item.totalCostMicrocents) / item.sessions, 4)
       if (cost === 0) return []
-      return [{ model: item.model, cost, tokens: Math.round(item.totalTokens @lgcode/ item.sessions) }]
+      return [{ model: item.model, cost, tokens: Math.round(item.totalTokens / item.sessions) }]
     })
     .toSorted((a, b) => a.cost - b.cost)
 }
@@ -520,7 +520,7 @@ function buildModelTokenMix(aggregate: ModelAggregate): ModelMixEntry[] {
   ].filter((item) => item.tokens > 0)
   const total = items.reduce((sum, item) => sum + item.tokens, 0)
   if (total === 0) return []
-  return items.map((item) => ({ ...item, share: round((item.tokens @lgcode/ total) * 100, 1) }))
+  return items.map((item) => ({ ...item, share: round((item.tokens / total) * 100, 1) }))
 }
 
 function buildModelProductMix(
@@ -538,7 +538,7 @@ function buildModelProductMix(
     return [{ product, tokens: aggregate.totalTokens, sessions: aggregate.sessions }]
   })
   const total = items.reduce((sum, item) => sum + item.tokens, 0)
-  if (total > 0) return items.map((item) => ({ ...item, share: round((item.tokens @lgcode/ total) * 100, 1) }))
+  if (total > 0) return items.map((item) => ({ ...item, share: round((item.tokens / total) * 100, 1) }))
   if (fallback.totalTokens === 0) return []
   return [{ product: "All Users", tokens: fallback.totalTokens, sessions: fallback.sessions, share: 100 }]
 }
@@ -551,7 +551,7 @@ function buildModelPeers(peers: ModelAggregate[], rank: number, totalTokens: num
     author: formatProvider(item.provider),
     rank: start + index + 1,
     tokens: item.totalTokens,
-    share: totalTokens > 0 ? round((item.totalTokens @lgcode/ totalTokens) * 100, 2) : 0,
+    share: totalTokens > 0 ? round((item.totalTokens / totalTokens) * 100, 2) : 0,
     slug: modelSlug(item.model),
   }))
 }
@@ -681,9 +681,9 @@ function createBuckets(window: DateWindow, range: UsageRange): Bucket[] {
     range === "1D"
       ? 1
       : range === "1W" || range === "2W" || range === "1M" || range === "2M" || range === "3M"
-        ? Math.ceil(span @lgcode/ DAY_MS)
-        : Math.max(1, Math.min(7, Math.ceil(span @lgcode/ DAY_MS)))
-  const size = span @lgcode/ count
+        ? Math.ceil(span / DAY_MS)
+        : Math.max(1, Math.min(7, Math.ceil(span / DAY_MS)))
+  const size = span / count
   return Array.from({ length: count }, (_, index) => {
     const start = window.start + index * size
     const end = index === count - 1 ? window.end : window.start + (index + 1) * size
@@ -784,7 +784,7 @@ function dateTime(value: Date | string) {
 }
 
 function periodKeyTime(value: string) {
-  const match = @lgcode/^(\d{4})-(\d{2})-(\d{2})$@lgcode/.exec(value)
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value)
   if (!match) return Number.NaN
   return Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3]))
 }
@@ -822,8 +822,8 @@ function formatProvider(provider: string) {
     zhipu: "Zhipu",
     zhipuai: "Zhipu",
   }
-  const normalized = provider.toLowerCase().replace(@lgcode/[^a-z0-9]@lgcode/g, "")
-  return known[normalized] ?? provider.replace(@lgcode/[-_]@lgcode/g, " ").replace(@lgcode/\b\w@lgcode/g, (letter) => letter.toUpperCase())
+  const normalized = provider.toLowerCase().replace(/[^a-z0-9]/g, "")
+  return known[normalized] ?? provider.replace(/[-_]/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase())
 }
 
 function resolveModelName(modelParam: string, rows: StatMetricRow[], providerParam?: string) {
@@ -862,9 +862,9 @@ export function modelSlug(value: string) {
   return value
     .trim()
     .toLowerCase()
-    .replace(@lgcode/[^a-z0-9]+@lgcode/g, "-")
-    .replace(@lgcode/^-+|-+$@lgcode/g, "")
-    .replace(@lgcode/-{2,}@lgcode/g, "-")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .replace(/-{2,}/g, "-")
 }
 
 function modelKey(provider: string, model: string) {
@@ -873,7 +873,7 @@ function modelKey(provider: string, model: string) {
 
 function costPerMillion(costMicrocents: number, tokens: number) {
   if (tokens <= 0 || costMicrocents <= 0) return 0
-  return round((microcentsToDollars(costMicrocents) @lgcode/ tokens) * TOKEN_SCALE, 2)
+  return round((microcentsToDollars(costMicrocents) / tokens) * TOKEN_SCALE, 2)
 }
 
 function microcentsToDollars(value: number) {
@@ -882,7 +882,7 @@ function microcentsToDollars(value: number) {
 
 function percentChange(current: number, previous: number) {
   if (previous <= 0) return current > 0 ? 100 : 0
-  return Math.round(((current - previous) @lgcode/ previous) * 100)
+  return Math.round(((current - previous) / previous) * 100)
 }
 
 function leaderboardChange(current: number, previous: number) {

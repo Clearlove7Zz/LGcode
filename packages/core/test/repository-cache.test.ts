@@ -1,17 +1,17 @@
 import { describe, expect } from "bun:test"
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import path from "path"
 import { pathToFileURL } from "url"
 import { Effect, Layer } from "effect"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { Git } from "@lgcode/core@lgcode/git"
-import { Global } from "@lgcode/core@lgcode/global"
-import { Repository } from "@lgcode/core@lgcode/repository"
-import { RepositoryCache } from "@lgcode/core@lgcode/repository-cache"
-import { EffectFlock } from "@lgcode/core@lgcode/util@lgcode/effect-flock"
-import { git, gitRemote } from ".@lgcode/fixture@lgcode/git"
-import { tmpdir } from ".@lgcode/fixture@lgcode/tmpdir"
-import { testEffect } from ".@lgcode/lib@lgcode/effect"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { Git } from "@opencode@lgcode/core/git"
+import { Global } from "@opencode@lgcode/core/global"
+import { Repository } from "@opencode@lgcode/core/repository"
+import { RepositoryCache } from "@opencode@lgcode/core/repository-cache"
+import { EffectFlock } from "@opencode@lgcode/core/util/effect-flock"
+import { git, gitRemote } from "./fixture/git"
+import { tmpdir } from "./fixture/tmpdir"
+import { testEffect } from "./lib/effect"
 
 const it = testEffect(Layer.empty)
 
@@ -55,7 +55,7 @@ describe("RepositoryCache", () => {
         const cache = yield* RepositoryCache.Service
         const initial = yield* cache.ensure({ reference: fixture.reference })
         yield* Effect.promise(async () => {
-          await git(initial.localPath, "config", "remote.origin.url", "https:@lgcode/@lgcode/github.com@lgcode/other@lgcode/repo.git")
+          await git(initial.localPath, "config", "remote.origin.url", "https://github.com/other/repo.git")
           await fs.writeFile(path.join(initial.localPath, "stale.txt"), "stale")
         })
 
@@ -74,7 +74,7 @@ describe("RepositoryCache", () => {
         const invalidRepository = yield* Effect.flip(RepositoryCache.parseRemote("not-a-repo"))
         expect(invalidRepository).toBeInstanceOf(RepositoryCache.InvalidRepositoryError)
 
-        const invalidBranch = yield* Effect.flip(cache.ensure({ reference: fixture.reference, branch: "..@lgcode/unsafe" }))
+        const invalidBranch = yield* Effect.flip(cache.ensure({ reference: fixture.reference, branch: "../unsafe" }))
         expect(invalidBranch).toBeInstanceOf(RepositoryCache.InvalidBranchError)
 
         const cloneFailure = yield* Effect.flip(
@@ -112,7 +112,7 @@ function withRemote<A, E, R>(body: (fixture: Awaited<ReturnType<typeof gitRemote
 }
 
 function read(file: string) {
-  return Effect.promise(() => fs.readFile(file, "utf8")).pipe(Effect.map((content) => content.replace(@lgcode/\r\n@lgcode/g, "\n")))
+  return Effect.promise(() => fs.readFile(file, "utf8")).pipe(Effect.map((content) => content.replace(/\r\n/g, "\n")))
 }
 
 function exists(file: string) {

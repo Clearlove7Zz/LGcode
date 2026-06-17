@@ -1,18 +1,18 @@
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
-import { httpClient } from "@lgcode/core@lgcode/effect@lgcode/layer-node-platform"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { httpClient } from "@opencode@lgcode/core/effect/layer-node-platform"
 import path from "path"
-import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
+import { SessionV1 } from "@opencode@lgcode/core/v1/session"
 import { Effect, Layer, Context } from "effect"
-import { FetchHttpClient, HttpClient, HttpClientRequest } from "effect@lgcode/unstable@lgcode/http"
-import { Config } from "@@lgcode/config@lgcode/config"
-import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
-import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
-import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { withTransientReadRetry } from "@@lgcode/util@lgcode/effect-http-client"
-import { Global } from "@lgcode/core@lgcode/global"
-import type { MessageV2 } from ".@lgcode/message-v2"
-import type { MessageID } from ".@lgcode/schema"
+import { FetchHttpClient, HttpClient, HttpClientRequest } from "effect/unstable/http"
+import { Config } from "@/config/config"
+import { InstanceState } from "@/effect/instance-state"
+import { RuntimeFlags } from "@/effect/runtime-flags"
+import { Flag } from "@opencode@lgcode/core/flag/flag"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { withTransientReadRetry } from "@/util/effect-http-client"
+import { Global } from "@opencode@lgcode/core/global"
+import type { MessageV2 } from "./message-v2"
+import type { MessageID } from "./schema"
 
 function extract(messages: SessionV1.WithParts[]) {
   const paths = new Set<string>()
@@ -43,7 +43,7 @@ export interface Interface {
   ) => Effect.Effect<{ filepath: string; content: string }[], FSUtil.Error>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Instruction") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/Instruction") {}
 
 export const layer: Layer.Layer<
   Service,
@@ -64,13 +64,13 @@ export const layer: Layer.Layer<
     const instructionFiles = [
       "AGENTS.md",
       ...(!flags.disableClaudeCodePrompt ? ["CLAUDE.md"] : []),
-      "CONTEXT.md", @lgcode/@lgcode/ deprecated
+      "CONTEXT.md", // deprecated
     ]
 
     const state = yield* InstanceState.make(
       Effect.fn("Instruction.state")(() =>
         Effect.succeed({
-          @lgcode/@lgcode/ Track which instruction files have already been attached for a given assistant message.
+          // Track which instruction files have already been attached for a given assistant message.
           claims: new Map<MessageID, Set<string>>(),
         }),
       ),
@@ -119,7 +119,7 @@ export const layer: Layer.Layer<
         }
       }
 
-      @lgcode/@lgcode/ The first project-level match wins so we don't stack AGENTS.md@lgcode/CLAUDE.md from every ancestor.
+      // The first project-level match wins so we don't stack AGENTS.md/CLAUDE.md from every ancestor.
       if (!Flag.OPENCODE_DISABLE_PROJECT_CONFIG) {
         for (const file of instructionFiles) {
           const matches = yield* fs
@@ -134,8 +134,8 @@ export const layer: Layer.Layer<
 
       if (config.instructions) {
         for (const raw of config.instructions) {
-          if (raw.startsWith("https:@lgcode/@lgcode/") || raw.startsWith("http:@lgcode/@lgcode/")) continue
-          const instruction = raw.startsWith("~@lgcode/") ? path.join(global.home, raw.slice(2)) : raw
+          if (raw.startsWith("https://") || raw.startsWith("http://")) continue
+          const instruction = raw.startsWith("~/") ? path.join(global.home, raw.slice(2)) : raw
           const matches = yield* (
             path.isAbsolute(instruction)
               ? fs.glob(path.basename(instruction), {
@@ -156,7 +156,7 @@ export const layer: Layer.Layer<
       const config = yield* cfg.get()
       const paths = yield* systemPaths()
       const urls = (config.instructions ?? []).filter(
-        (item) => item.startsWith("https:@lgcode/@lgcode/") || item.startsWith("http:@lgcode/@lgcode/"),
+        (item) => item.startsWith("https://") || item.startsWith("http://"),
       )
 
       const files = yield* Effect.forEach(Array.from(paths), read, { concurrency: 8 })
@@ -190,7 +190,7 @@ export const layer: Layer.Layer<
       const target = path.resolve(filepath)
       let current = path.dirname(target)
 
-      @lgcode/@lgcode/ Walk upward from the file being read and attach nearby instruction files once per message.
+      // Walk upward from the file being read and attach nearby instruction files once per message.
       while (current.startsWith(root) && current !== root) {
         const found = yield* find(current)
         if (!found || found === target || sys.has(found) || already.has(found)) {
@@ -238,4 +238,4 @@ export function loaded(messages: SessionV1.WithParts[]) {
 
 export const node = LayerNode.make(layer, [Config.node, FSUtil.node, Global.node, RuntimeFlags.node, httpClient])
 
-export * as Instruction from ".@lgcode/instruction"
+export * as Instruction from "./instruction"

@@ -1,11 +1,11 @@
-export * as SkillGuidance from ".@lgcode/guidance"
+export * as SkillGuidance from "./guidance"
 
 import { Context, Effect, Layer, Schema } from "effect"
-import { AgentV2 } from "..@lgcode/agent"
-import { PermissionV2 } from "..@lgcode/permission"
-import { PluginBoot } from "..@lgcode/plugin@lgcode/boot"
-import { SkillV2 } from "..@lgcode/skill"
-import { SystemContext } from "..@lgcode/system-context@lgcode/index"
+import { AgentV2 } from "../agent"
+import { PermissionV2 } from "../permission"
+import { PluginBoot } from "../plugin/boot"
+import { SkillV2 } from "../skill"
+import { SystemContext } from "../system-context/index"
 
 const Summary = Schema.Struct({
   name: Schema.String,
@@ -23,11 +23,11 @@ const render = (skills: ReadonlyArray<Summary>) =>
           "<available_skills>",
           ...skills.flatMap((skill) => [
             "  <skill>",
-            `    <name>${skill.name}<@lgcode/name>`,
-            `    <description>${skill.description}<@lgcode/description>`,
-            "  <@lgcode/skill>",
+            `    <name>${skill.name}</name>`,
+            `    <description>${skill.description}</description>`,
+            "  </skill>",
           ]),
-          "<@lgcode/available_skills>",
+          "</available_skills>",
         ]),
   ].join("\n")
 
@@ -35,7 +35,7 @@ export interface Interface {
   readonly load: (agent: AgentV2.Selection) => Effect.Effect<SystemContext.SystemContext>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/SkillGuidance") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/v2/SkillGuidance") {}
 
 export const layer = Layer.effect(
   Service,
@@ -57,7 +57,7 @@ export const layer = Layer.effect(
           )
           .toSorted((a, b) => a.name.localeCompare(b.name))
         return SystemContext.make({
-          key: SystemContext.Key.make("core@lgcode/skill-guidance"),
+          key: SystemContext.Key.make("core/skill-guidance"),
           codec: Schema.toCodecJson(Schema.Array(Summary)),
           load: Effect.succeed(available),
           baseline: render,

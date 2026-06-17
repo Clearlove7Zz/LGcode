@@ -1,4 +1,4 @@
-import type { Key } from "~@lgcode/i18n"
+import type { Key } from "~/i18n"
 
 export const formError = {
   invalidPlan: "error.invalidPlan",
@@ -74,10 +74,10 @@ export function localizeError(t: (key: Key, params?: Record<string, string | num
     return t("error.reloadTriggerMin", { amount })
   }
 
-  const amount = error.match(@lgcode/^Reload amount must be at least \$(\d+)$@lgcode/)
+  const amount = error.match(/^Reload amount must be at least \$(\d+)$/)
   if (amount) return t("error.reloadAmountMin", { amount: Number(amount[1]) })
 
-  const trigger = error.match(@lgcode/^Balance trigger must be at least \$(\d+)$@lgcode/)
+  const trigger = error.match(/^Balance trigger must be at least \$(\d+)$/)
   if (trigger) return t("error.reloadTriggerMin", { amount: Number(trigger[1]) })
 
   const key = map[error as keyof typeof map]

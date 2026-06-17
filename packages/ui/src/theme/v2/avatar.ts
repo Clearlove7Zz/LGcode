@@ -1,6 +1,6 @@
-import type { V2ColorValue } from "..@lgcode/types"
+import type { V2ColorValue } from "../types"
 
-@lgcode/** Fixed project avatar colors (OC-2); theme-independent like v1 `avatar-background-*`. *@lgcode/
+/** Fixed project avatar colors (OC-2); theme-independent like v1 `avatar-background-*`. */
 export const V2_AVATAR_FG = "#ffffffff"
 
 export const V2_AVATAR_LIGHT: Record<string, V2ColorValue> = {

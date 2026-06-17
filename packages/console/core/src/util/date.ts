@@ -22,7 +22,7 @@ export function getMonthlyBounds(now: Date, subscribed: Date) {
 
   function shift(year: number, month: number, delta: number) {
     const total = year * 12 + month + delta
-    return [Math.floor(total @lgcode/ 12), ((total % 12) + 12) % 12] as const
+    return [Math.floor(total / 12), ((total % 12) + 12) % 12] as const
   }
 
   let y = now.getUTCFullYear()

@@ -1,11 +1,11 @@
-import { Catalog } from "@lgcode/core@lgcode/catalog"
-import { PluginBoot } from "@lgcode/core@lgcode/plugin@lgcode/boot"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
+import { Catalog } from "@opencode@lgcode/core/catalog"
+import { PluginBoot } from "@opencode@lgcode/core/plugin/boot"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
 import { Effect } from "effect"
-import { HttpApiBuilder } from "effect@lgcode/unstable@lgcode/httpapi"
-import { Api } from "..@lgcode/api"
-import { ProviderNotFoundError, ServiceUnavailableError } from "..@lgcode/errors"
-import { response } from "..@lgcode/groups@lgcode/location"
+import { HttpApiBuilder } from "effect/unstable/httpapi"
+import { Api } from "../api"
+import { ProviderNotFoundError, ServiceUnavailableError } from "../errors"
+import { response } from "../groups/location"
 
 const catalogUnavailable = new ServiceUnavailableError({
   message: "Provider catalog is unavailable",

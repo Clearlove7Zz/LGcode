@@ -4,14 +4,14 @@ import type {
   ToolContent,
   ToolDefinition as ToolDefinitionClass,
   ToolOutput as ToolOutputType,
-} from ".@lgcode/schema"
-import { ToolDefinition, ToolFailure, ToolOutput } from ".@lgcode/schema"
+} from "./schema"
+import { ToolDefinition, ToolFailure, ToolOutput } from "./schema"
 
-@lgcode/**
- * Schema constraint for tool parameters @lgcode/ success values: no decoding or
+/**
+ * Schema constraint for tool parameters / success values: no decoding or
  * encoding services are allowed. Tools should be self-contained — anything
  * beyond pure data conversion belongs in the handler closure.
- *@lgcode/
+ */
 export type ToolSchema<T> = Schema.Codec<T, any, never, never>
 export interface ToolExecuteContext {
   readonly id: ToolCallPart["id"]
@@ -33,7 +33,7 @@ export type ToolToModelOutput<Parameters extends ToolSchema<any>, Success extend
   input: ToolModelOutputInput<Schema.Schema.Type<Parameters>, Success["Encoded"]>,
 ) => ReadonlyArray<ToolContent>
 
-@lgcode/**
+/**
  * A type-safe LLM tool. Each tool bundles its own description, parameter
  * Schema and success Schema. The execute handler is optional: omit it when you
  * only want to expose a tool schema to the model and handle tool calls outside
@@ -44,7 +44,7 @@ export type ToolToModelOutput<Parameters extends ToolSchema<any>, Success extend
  *
  * Internally each tool also carries memoized codecs and a precomputed
  * `ToolDefinition` so callers do not rebuild them per invocation.
- *@lgcode/
+ */
 export interface Tool<Parameters extends ToolSchema<any>, Success extends ToolSchema<any>> {
   readonly description: string
   readonly parameters: Parameters
@@ -52,19 +52,19 @@ export interface Tool<Parameters extends ToolSchema<any>, Success extends ToolSc
   readonly execute?: ToolExecute<Parameters, Success>
   readonly toModelOutput?: ToolToModelOutput<Parameters, Success>
   readonly toStructuredOutput?: (output: Success["Encoded"]) => unknown
-  @lgcode/** @internal *@lgcode/
+  /** @internal */
   readonly _decode: (input: unknown) => Effect.Effect<Schema.Schema.Type<Parameters>, Schema.SchemaError>
-  @lgcode/** @internal *@lgcode/
+  /** @internal */
   readonly _encode: (value: Schema.Schema.Type<Success>) => Effect.Effect<unknown, Schema.SchemaError>
-  @lgcode/** @internal *@lgcode/
+  /** @internal */
   readonly _project: (
     parameters: Schema.Schema.Type<Parameters>,
     callID: ToolCallPart["id"],
     output: unknown,
   ) => ToolOutputType
-  @lgcode/** @internal *@lgcode/
+  /** @internal */
   readonly _legacyResult: boolean
-  @lgcode/** @internal *@lgcode/
+  /** @internal */
   readonly _definition: ToolDefinitionClass
 }
 
@@ -99,11 +99,11 @@ type DynamicToolConfig = {
   readonly toStructuredOutput?: (output: unknown) => unknown
 }
 
-@lgcode/**
+/**
  * Constructs a tool. Two input modes:
  *
  * 1. **Typed** — pass Effect `parameters` and `success` Schemas; inputs and
- *    outputs are statically typed and decoded@lgcode/encoded automatically.
+ *    outputs are statically typed and decoded/encoded automatically.
  *
  *    ```ts
  *    Tool.make({
@@ -129,7 +129,7 @@ type DynamicToolConfig = {
  *
  * In both modes the produced tool flows through `toDefinitions(...)`
  * identically.
- *@lgcode/
+ */
 export function make<Parameters extends ToolSchema<any>, Success extends ToolSchema<any>>(config: {
   readonly description: string
   readonly parameters: Parameters
@@ -205,19 +205,19 @@ export function make(config: TypedToolConfig | DynamicToolConfig): AnyTool {
   }
 }
 
-@lgcode/**
+/**
  * A record of named tools. The record key becomes the tool name on the wire.
- *@lgcode/
+ */
 export type Tools = Record<string, AnyTool>
 
-@lgcode/**
+/**
  * Convert a tools record into the `ToolDefinition[]` shape that
  * `LLMRequest.tools` expects.
  *
  * Tool names come from the record keys, so the per-tool cached
  * `_definition` is rebuilt with the correct name here. The JSON Schema body
  * is reused.
- *@lgcode/
+ */
 export const toDefinitions = (tools: Tools): ReadonlyArray<ToolDefinitionClass> =>
   Object.entries(tools).map(
     ([name, item]) =>
@@ -250,4 +250,4 @@ const project = (
 
 export { ToolFailure }
 
-export * as Tool from ".@lgcode/tool"
+export * as Tool from "./tool"

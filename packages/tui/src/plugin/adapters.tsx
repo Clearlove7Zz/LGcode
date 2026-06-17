@@ -1,24 +1,24 @@
-import type { TuiDialogSelectOption, TuiPluginApi, TuiSlotProps } from "@lgcode/plugin@lgcode/tui"
-import type { TuiConfig } from "..@lgcode/config"
-import type { useEvent } from "..@lgcode/context@lgcode/event"
-import type { useRoute } from "..@lgcode/context@lgcode/route"
-import type { useSDK } from "..@lgcode/context@lgcode/sdk"
-import type { useSync } from "..@lgcode/context@lgcode/sync"
-import type { useTheme } from "..@lgcode/context@lgcode/theme"
-import { Dialog as DialogUI, type useDialog } from "..@lgcode/ui@lgcode/dialog"
-import type { useOpencodeKeymap } from "..@lgcode/keymap"
-import type { useKV } from "..@lgcode/context@lgcode/kv"
-import { DialogAlert } from "..@lgcode/ui@lgcode/dialog-alert"
-import { DialogConfirm } from "..@lgcode/ui@lgcode/dialog-confirm"
-import { DialogPrompt } from "..@lgcode/ui@lgcode/dialog-prompt"
-import { DialogSelect, type DialogSelectOption as SelectOption } from "..@lgcode/ui@lgcode/dialog-select"
-import { Prompt } from "..@lgcode/component@lgcode/prompt"
-import type { useToast } from "..@lgcode/ui@lgcode/toast"
-import * as Keymap from "..@lgcode/keymap"
-import { createCommandShim } from ".@lgcode/command-shim"
-import type { PluginRoutes } from ".@lgcode/api"
-export type { RouteMap } from ".@lgcode/api"
-export { createPluginRoutes, createTuiApi } from ".@lgcode/api"
+import type { TuiDialogSelectOption, TuiPluginApi, TuiSlotProps } from "@opencode@lgcode/plugin/tui"
+import type { TuiConfig } from "../config"
+import type { useEvent } from "../context/event"
+import type { useRoute } from "../context/route"
+import type { useSDK } from "../context/sdk"
+import type { useSync } from "../context/sync"
+import type { useTheme } from "../context/theme"
+import { Dialog as DialogUI, type useDialog } from "../ui/dialog"
+import type { useOpencodeKeymap } from "../keymap"
+import type { useKV } from "../context/kv"
+import { DialogAlert } from "../ui/dialog-alert"
+import { DialogConfirm } from "../ui/dialog-confirm"
+import { DialogPrompt } from "../ui/dialog-prompt"
+import { DialogSelect, type DialogSelectOption as SelectOption } from "../ui/dialog-select"
+import { Prompt } from "../component/prompt"
+import type { useToast } from "../ui/toast"
+import * as Keymap from "../keymap"
+import { createCommandShim } from "./command-shim"
+import type { PluginRoutes } from "./api"
+export type { RouteMap } from "./api"
+export { createPluginRoutes, createTuiApi } from "./api"
 
 type Input = {
   version: string
@@ -173,7 +173,7 @@ export function createTuiApiAdapters(input: Input): Omit<TuiPluginApi, "lifecycl
   return {
     app: appApi(input.version),
     attention: input.attention,
-    @lgcode/@lgcode/ Keep deprecated `api.command` working for v1 plugins; remove in v2.
+    // Keep deprecated `api.command` working for v1 plugins; remove in v2.
     command: createCommandShim(input.keymap, input.dialog, input.tuiConfig.keybinds),
     keys: {
       formatSequence(parts) {
@@ -208,17 +208,17 @@ export function createTuiApiAdapters(input: Input): Omit<TuiPluginApi, "lifecycl
         return (
           <DialogUI size={props.size} onClose={props.onClose}>
             {props.children}
-          <@lgcode/DialogUI>
+          </DialogUI>
         )
       },
       DialogAlert(props) {
-        return <DialogAlert {...props} @lgcode/>
+        return <DialogAlert {...props} />
       },
       DialogConfirm(props) {
-        return <DialogConfirm {...props} @lgcode/>
+        return <DialogConfirm {...props} />
       },
       DialogPrompt(props) {
-        return <DialogPrompt {...props} description={props.description} @lgcode/>
+        return <DialogPrompt {...props} description={props.description} />
       },
       DialogSelect(props) {
         return (
@@ -232,11 +232,11 @@ export function createTuiApiAdapters(input: Input): Omit<TuiPluginApi, "lifecycl
             onSelect={mapOptionCb(props.onSelect)}
             skipFilter={props.skipFilter}
             current={props.current}
-          @lgcode/>
+          />
         )
       },
       Slot<Name extends string>(props: TuiSlotProps<Name>) {
-        return <input.Slot {...props} @lgcode/>
+        return <input.Slot {...props} />
       },
       Prompt(props) {
         return (
@@ -250,7 +250,7 @@ export function createTuiApiAdapters(input: Input): Omit<TuiPluginApi, "lifecycl
             right={props.right}
             showPlaceholder={props.showPlaceholder}
             placeholders={props.placeholders}
-          @lgcode/>
+          />
         )
       },
       toast(inputToast) {

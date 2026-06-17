@@ -1,5 +1,5 @@
-import { useFilteredList } from "@lgcode/ui@lgcode/hooks"
-import { useSpring } from "@lgcode/ui@lgcode/motion-spring"
+import { useFilteredList } from "@opencode@lgcode/ui/hooks"
+import { useSpring } from "@opencode@lgcode/ui/motion-spring"
 import {
   createEffect,
   on,
@@ -16,10 +16,10 @@ import {
   type ComponentProps,
   type JSX,
 } from "solid-js"
-import { Popover as KobaltePopover } from "@kobalte@lgcode/core@lgcode/popover"
-import { createStore, type SetStoreFunction, type Store } from "solid-js@lgcode/store"
-import type { useLocal } from "@@lgcode/context@lgcode/local"
-import { selectionFromLines, type SelectedLineRange, useFile } from "@@lgcode/context@lgcode/file"
+import { Popover as KobaltePopover } from "@kobalte/core/popover"
+import { createStore, type SetStoreFunction, type Store } from "solid-js/store"
+import type { useLocal } from "@/context/local"
+import { selectionFromLines, type SelectedLineRange, useFile } from "@/context/file"
 import {
   ContentPart,
   DEFAULT_PROMPT,
@@ -29,29 +29,29 @@ import {
   ImageAttachmentPart,
   AgentPart,
   FileAttachmentPart,
-} from "@@lgcode/context@lgcode/prompt"
-import { useLayout } from "@@lgcode/context@lgcode/layout"
-import { useSDK } from "@@lgcode/context@lgcode/sdk"
-import { useSync } from "@@lgcode/context@lgcode/sync"
-import { useComments } from "@@lgcode/context@lgcode/comments"
-import { Button } from "@lgcode/ui@lgcode/button"
-import { DockShellForm, DockTray } from "@lgcode/ui@lgcode/dock-surface"
-import { Icon, type IconProps } from "@lgcode/ui@lgcode/icon"
-import { ProviderIcon } from "@lgcode/ui@lgcode/provider-icon"
-import { Tooltip, TooltipKeybind } from "@lgcode/ui@lgcode/tooltip"
-import { IconButton } from "@lgcode/ui@lgcode/icon-button"
-import { Select } from "@lgcode/ui@lgcode/select"
-import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
-import { ModelSelectorPopover } from "@@lgcode/components@lgcode/dialog-select-model"
-import { useCommand } from "@@lgcode/context@lgcode/command"
-import { Persist, persisted } from "@@lgcode/utils@lgcode/persist"
-import { usePermission } from "@@lgcode/context@lgcode/permission"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
-import { usePlatform } from "@@lgcode/context@lgcode/platform"
-import { createSessionTabs } from "@@lgcode/pages@lgcode/session@lgcode/helpers"
-import { createTextFragment, getCursorPosition, setCursorPosition, setRangeEdge } from ".@lgcode/prompt-input@lgcode/editor-dom"
-import { createPromptAttachments } from ".@lgcode/prompt-input@lgcode/attachments"
-import { ACCEPTED_FILE_TYPES, pickAttachmentFiles } from ".@lgcode/prompt-input@lgcode/files"
+} from "@/context/prompt"
+import { useLayout } from "@/context/layout"
+import { useSDK } from "@/context/sdk"
+import { useSync } from "@/context/sync"
+import { useComments } from "@/context/comments"
+import { Button } from "@opencode@lgcode/ui/button"
+import { DockShellForm, DockTray } from "@opencode@lgcode/ui/dock-surface"
+import { Icon, type IconProps } from "@opencode@lgcode/ui/icon"
+import { ProviderIcon } from "@opencode@lgcode/ui/provider-icon"
+import { Tooltip, TooltipKeybind } from "@opencode@lgcode/ui/tooltip"
+import { IconButton } from "@opencode@lgcode/ui/icon-button"
+import { Select } from "@opencode@lgcode/ui/select"
+import { useDialog } from "@opencode@lgcode/ui/context/dialog"
+import { ModelSelectorPopover } from "@/components/dialog-select-model"
+import { useCommand } from "@/context/command"
+import { Persist, persisted } from "@/utils/persist"
+import { usePermission } from "@/context/permission"
+import { useLanguage } from "@/context/language"
+import { usePlatform } from "@/context/platform"
+import { createSessionTabs } from "@/pages/session/helpers"
+import { createTextFragment, getCursorPosition, setCursorPosition, setRangeEdge } from "./prompt-input/editor-dom"
+import { createPromptAttachments } from "./prompt-input/attachments"
+import { ACCEPTED_FILE_TYPES, pickAttachmentFiles } from "./prompt-input/files"
 import {
   canNavigateHistoryAtCursor,
   navigatePromptHistory,
@@ -60,17 +60,17 @@ import {
   type PromptHistoryEntry,
   type PromptHistoryStoredEntry,
   promptLength,
-} from ".@lgcode/prompt-input@lgcode/history"
-import { createPromptSubmit, type FollowupDraft } from ".@lgcode/prompt-input@lgcode/submit"
-import { PromptPopover, type AtOption, type SlashCommand } from ".@lgcode/prompt-input@lgcode/slash-popover"
-import { PromptContextItems } from ".@lgcode/prompt-input@lgcode/context-items"
-import { PromptImageAttachments } from ".@lgcode/prompt-input@lgcode/image-attachments"
-import { PromptDragOverlay } from ".@lgcode/prompt-input@lgcode/drag-overlay"
-import { promptPlaceholder } from ".@lgcode/prompt-input@lgcode/placeholder"
-import { showToast } from "@@lgcode/utils@lgcode/toast"
-import { ImagePreview } from "@lgcode/ui@lgcode/image-preview"
-import { pathKey } from "@@lgcode/utils@lgcode/path-key"
-import { displayName } from "@@lgcode/pages@lgcode/layout@lgcode/helpers"
+} from "./prompt-input/history"
+import { createPromptSubmit, type FollowupDraft } from "./prompt-input/submit"
+import { PromptPopover, type AtOption, type SlashCommand } from "./prompt-input/slash-popover"
+import { PromptContextItems } from "./prompt-input/context-items"
+import { PromptImageAttachments } from "./prompt-input/image-attachments"
+import { PromptDragOverlay } from "./prompt-input/drag-overlay"
+import { promptPlaceholder } from "./prompt-input/placeholder"
+import { showToast } from "@/utils/toast"
+import { ImagePreview } from "@opencode@lgcode/ui/image-preview"
+import { pathKey } from "@/utils/path-key"
+import { displayName } from "@/pages/layout/helpers"
 
 export type PromptInputState = ReturnType<typeof usePrompt>
 
@@ -271,7 +271,7 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
   const activeFileTab = createSessionTabs({
     tabs,
     pathFromTab: files.pathFromTab,
-    normalizeTab: (tab) => (tab.startsWith("file:@lgcode/@lgcode/") ? files.tab(tab) : tab),
+    normalizeTab: (tab) => (tab.startsWith("file://") ? files.tab(tab) : tab),
   }).activeFileTab
 
   const commentInReview = (path: string) => {
@@ -397,17 +397,17 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
     if (stopping()) {
       return (
         <div class="flex items-center gap-2">
-          <span>{language.t("prompt.action.stop")}<@lgcode/span>
-          <span class="text-icon-base text-12-medium text-[10px]!">{language.t("common.key.esc")}<@lgcode/span>
-        <@lgcode/div>
+          <span>{language.t("prompt.action.stop")}</span>
+          <span class="text-icon-base text-12-medium text-[10px]!">{language.t("common.key.esc")}</span>
+        </div>
       )
     }
 
     return (
       <div class="flex items-center gap-2">
-        <span>{language.t("prompt.action.send")}<@lgcode/span>
-        <Icon name="enter" size="small" class="text-icon-base" @lgcode/>
-      <@lgcode/div>
+        <span>{language.t("prompt.action.send")}</span>
+        <Icon name="enter" size="small" class="text-icon-base" />
+      </div>
     )
   }
 
@@ -746,7 +746,7 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
     const images = imageAttachments()
 
     if (cmd.type === "custom") {
-      const text = `@lgcode/${cmd.trigger} `
+      const text = `/${cmd.trigger} `
       setEditorText(text)
       prompt.set([{ type: "text", content: text, start: 0, end: text.length }, ...images], text.length)
       focusEditorEnd()
@@ -820,7 +820,7 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
     }
   }
 
-  @lgcode/@lgcode/ Auto-scroll active command into view when navigating with keyboard
+  // Auto-scroll active command into view when navigating with keyboard
   createEffect(() => {
     const activeId = slashActive()
     if (!activeId || !slashPopoverRef) return
@@ -881,8 +881,8 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
 
     const flushText = () => {
       let content = buffer
-      if (content.includes("\r")) content = content.replace(@lgcode/\r\n?@lgcode/g, "\n")
-      if (content.includes("\u200B")) content = content.replace(@lgcode/\u200B@lgcode/g, "")
+      if (content.includes("\r")) content = content.replace(/\r\n?/g, "\n")
+      if (content.includes("\u200B")) content = content.replace(/\u200B/g, "")
       buffer = ""
       if (!content) return
       parts.push({ type: "text", content, start: position, end: position + content.length })
@@ -965,9 +965,9 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
         ? rawParts[0].content
         : rawParts.map((p) => ("content" in p ? p.content : "")).join("")
     const hasNonText = rawParts.some((part) => part.type !== "text")
-    const textContent = (editorRef.textContent ?? "").replace(@lgcode/\u200B@lgcode/g, "")
+    const textContent = (editorRef.textContent ?? "").replace(/\u200B/g, "")
     const shouldReset =
-      textContent.length === 0 && rawText.replace(@lgcode/\n@lgcode/g, "").length === 0 && !hasNonText && images.length === 0
+      textContent.length === 0 && rawText.replace(/\n/g, "").length === 0 && !hasNonText && images.length === 0
 
     if (shouldReset) {
       closePopover()
@@ -983,8 +983,8 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
     const shellMode = store.mode === "shell"
 
     if (!shellMode) {
-      const atMatch = rawText.substring(0, cursorPosition).match(@lgcode/@(\S*)$@lgcode/)
-      const slashMatch = rawText.match(@lgcode/^\@lgcode/(\S*)$@lgcode/)
+      const atMatch = rawText.substring(0, cursorPosition).match(/@(\S*)$/)
+      const slashMatch = rawText.match(/^\/(\S*)$/)
 
       if (atMatch) {
         atOnInput(atMatch[1])
@@ -1029,7 +1029,7 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
         .map((p) => ("content" in p ? p.content : ""))
         .join("")
       const textBeforeCursor = rawText.substring(0, cursorPosition)
-      const atMatch = textBeforeCursor.match(@lgcode/@(\S*)$@lgcode/)
+      const atMatch = textBeforeCursor.match(/@(\S*)$/)
       const pill = createPill(part)
       const gap = document.createTextNode(" ")
 
@@ -1172,11 +1172,11 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
         if (list) void addAttachments(Array.from(list))
         e.currentTarget.value = ""
       }}
-    @lgcode/>
+    />
   )
 
   const variants = createMemo(() => ["default", ...props.controls.model.selection.variant.list()])
-  @lgcode/@lgcode/ Check provider variants directly: `variants` also includes the UI-only default option.
+  // Check provider variants directly: `variants` also includes the UI-only default option.
   const showVariantControl = createMemo(() => props.controls.model.selection.variant.list().length > 0)
   const accepting = createMemo(() => {
     const id = props.controls.session.id
@@ -1226,7 +1226,7 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
         const offset = selection.anchorOffset
         if (node && node.nodeType === Node.TEXT_NODE) {
           const text = node.textContent ?? ""
-          if (@lgcode/^\u200B+$@lgcode/.test(text) && offset > 0) {
+          if (/^\u200B+$/.test(text) && offset > 0) {
             const range = document.createRange()
             range.setStart(node, 0)
             range.collapse(true)
@@ -1286,8 +1286,8 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
       }
     }
 
-    @lgcode/@lgcode/ Handle Shift+Enter BEFORE IME check - Shift+Enter is never used for IME input
-    @lgcode/@lgcode/ and should always insert a newline regardless of composition state
+    // Handle Shift+Enter BEFORE IME check - Shift+Enter is never used for IME input
+    // and should always insert a newline regardless of composition state
     if (event.key === "Enter" && event.shiftKey) {
       addPart({ type: "text", content: "\n", start: 0, end: 0 })
       event.preventDefault()
@@ -1353,7 +1353,7 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
       return
     }
 
-    @lgcode/@lgcode/ Note: Shift+Enter is handled earlier, before IME check
+    // Note: Shift+Enter is handled earlier, before IME check
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault()
       if (event.repeat) return
@@ -1385,7 +1385,7 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
 
   const designPlaceholder = () => {
     if (store.mode === "shell") return placeholder()
-    return "Ask anything, @lgcode/ for commands, @ for context..."
+    return "Ask anything, / for commands, @ for context..."
   }
 
   const modelControlState = createMemo<ComposerModelControlState>(() => ({
@@ -1399,8 +1399,8 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
     style: control(),
     onClose: restoreFocus,
     onUnpaidClick: () => {
-      void import("@@lgcode/components@lgcode/dialog-select-model-unpaid").then((x) => {
-        dialog.show(() => <x.DialogSelectModelUnpaid model={props.controls.model.selection} @lgcode/>)
+      void import("@/components/dialog-select-model-unpaid").then((x) => {
+        dialog.show(() => <x.DialogSelectModelUnpaid model={props.controls.model.selection} />)
       })
     },
   }))
@@ -1509,7 +1509,7 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
         onSlashSelect={handleSlashSelect}
         commandKeybind={command.keybind}
         t={(key) => language.t(key as Parameters<typeof language.t>[0])}
-      @lgcode/>
+      />
       <Switch>
         <Match when={props.controls.newLayoutDesigns}>
           <div class="flex flex-col gap-3">
@@ -1517,7 +1517,7 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
               data-component={newSession() ? "session-new-composer" : "session-composer"}
               onSubmit={handleSubmit}
               classList={{
-                "group@lgcode/prompt-input min-h-[96px] w-full rounded-xl bg-v2-background-bg-base shadow-[var(--v2-elevation-raised)]": true,
+                "group/prompt-input min-h-[96px] w-full rounded-xl bg-v2-background-bg-base shadow-[var(--v2-elevation-raised)]": true,
                 "border-icon-info-active border-dashed": store.draggingType !== null,
                 [props.class ?? ""]: !!props.class,
               }}
@@ -1527,7 +1527,7 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
                 label={language.t(
                   store.draggingType === "@mention" ? "prompt.dropzone.file.label" : "prompt.dropzone.label",
                 )}
-              @lgcode/>
+              />
               <PromptContextItems
                 items={contextItems()}
                 active={(item) => {
@@ -1540,15 +1540,15 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
                   prompt.context.remove(item.key)
                 }}
                 t={(key) => language.t(key as Parameters<typeof language.t>[0])}
-              @lgcode/>
+              />
               <PromptImageAttachments
                 attachments={imageAttachments()}
                 onOpen={(attachment) =>
-                  dialog.show(() => <ImagePreview src={attachment.dataUrl} alt={attachment.filename} @lgcode/>)
+                  dialog.show(() => <ImagePreview src={attachment.dataUrl} alt={attachment.filename} />)
                 }
                 onRemove={removeAttachment}
                 removeLabel={language.t("prompt.attachment.remove")}
-              @lgcode/>
+              />
               <div
                 class="relative min-h-[52px]"
                 onMouseDown={(e) => {
@@ -1573,7 +1573,7 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
                     autocorrect={store.mode === "normal" ? "on" : "off"}
                     spellcheck={store.mode === "normal"}
                     inputMode="text"
-                    @lgcode/@lgcode/ @ts-expect-error
+                    // @ts-expect-error
                     autocomplete="off"
                     onInput={handleInput}
                     onPaste={handlePaste}
@@ -1588,16 +1588,16 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
                       "[&_[data-type=agent]]:text-syntax-type": true,
                       "font-mono!": store.mode === "shell",
                     }}
-                  @lgcode/>
+                  />
                   <div
                     data-component={newSession() ? "session-new-design-text" : "session-composer-text"}
                     class="absolute top-0 inset-x-0 px-4 pt-4 pointer-events-none whitespace-nowrap truncate leading-5 text-[13px] font-[440] text-v2-text-text-faint [font-family:Inter,var(--font-family-sans)]"
                     classList={{ "font-mono!": store.mode === "shell", hidden: prompt.dirty() }}
                   >
                     {designPlaceholder()}
-                  <@lgcode/div>
-                <@lgcode/div>
-              <@lgcode/div>
+                  </div>
+                </div>
+              </div>
               <div class="flex h-11 items-center px-2">
                 <div class="flex min-w-0 flex-1 items-center gap-0">
                   {fileAttachmentInput()}
@@ -1617,20 +1617,20 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
                       disabled={store.mode !== "normal"}
                       tabIndex={store.mode === "normal" ? undefined : -1}
                       aria-label={language.t("prompt.action.attachFile")}
-                    @lgcode/>
-                  <@lgcode/TooltipKeybind>
+                    />
+                  </TooltipKeybind>
                   <Show when={showAgentControl()}>
-                    <ComposerAgentControl state={agentControlState()} @lgcode/>
-                  <@lgcode/Show>
+                    <ComposerAgentControl state={agentControlState()} />
+                  </Show>
                   <Show when={newSession() && !selectedProject()}>
-                    <ComposerPickerTrigger state={newProjectTriggerState()} @lgcode/>
-                  <@lgcode/Show>
-                  <ComposerModelControl state={modelControlState()} @lgcode/>
+                    <ComposerPickerTrigger state={newProjectTriggerState()} />
+                  </Show>
+                  <ComposerModelControl state={modelControlState()} />
                   <Show when={store.mode !== "shell" && showVariantControl()}>
                     <div
                       data-component="prompt-variant-control"
                       classList={{
-                        "hidden group-hover@lgcode/prompt-input:block group-focus-within@lgcode/prompt-input:block":
+                        "hidden group-hover/prompt-input:block group-focus-within/prompt-input:block":
                           !props.controls.model.selection.variant.current() && !store.variantOpen,
                       }}
                     >
@@ -1655,11 +1655,11 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
                           triggerStyle={control()}
                           triggerProps={{ "data-action": "prompt-model-variant" }}
                           variant="ghost"
-                        @lgcode/>
-                      <@lgcode/TooltipKeybind>
-                    <@lgcode/div>
-                  <@lgcode/Show>
-                <@lgcode/div>
+                        />
+                      </TooltipKeybind>
+                    </div>
+                  </Show>
+                </div>
                 <Tooltip placement="top" inactive={!working() && blank()} value={tip()}>
                   <IconButton
                     data-action="prompt-submit"
@@ -1674,22 +1674,22 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
                         "linear-gradient(180deg,var(--v2-alpha-light-20) 0%,var(--v2-alpha-light-0) 100%),linear-gradient(90deg,var(--v2-background-bg-contrast) 0%,var(--v2-background-bg-contrast) 100%)",
                     }}
                     aria-label={stopping() ? language.t("prompt.action.stop") : language.t("prompt.action.send")}
-                  @lgcode/>
-                <@lgcode/Tooltip>
-              <@lgcode/div>
-            <@lgcode/DockShellForm>
+                  />
+                </Tooltip>
+              </div>
+            </DockShellForm>
             <Show when={newSession() && selectedProject()}>
               <div class="flex h-7 min-w-0 items-center gap-0 px-2">
-                <ComposerPicker state={projectPickerState()} @lgcode/>
-              <@lgcode/div>
-            <@lgcode/Show>
-          <@lgcode/div>
-        <@lgcode/Match>
+                <ComposerPicker state={projectPickerState()} />
+              </div>
+            </Show>
+          </div>
+        </Match>
         <Match when>
           <DockShellForm
             onSubmit={handleSubmit}
             classList={{
-              "group@lgcode/prompt-input": true,
+              "group/prompt-input": true,
               "focus-within:shadow-xs-border": true,
               "border-icon-info-active border-dashed": store.draggingType !== null,
               [props.class ?? ""]: !!props.class,
@@ -1700,7 +1700,7 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
               label={language.t(
                 store.draggingType === "@mention" ? "prompt.dropzone.file.label" : "prompt.dropzone.label",
               )}
-            @lgcode/>
+            />
             <PromptContextItems
               items={contextItems()}
               active={(item) => {
@@ -1713,15 +1713,15 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
                 prompt.context.remove(item.key)
               }}
               t={(key) => language.t(key as Parameters<typeof language.t>[0])}
-            @lgcode/>
+            />
             <PromptImageAttachments
               attachments={imageAttachments()}
               onOpen={(attachment) =>
-                dialog.show(() => <ImagePreview src={attachment.dataUrl} alt={attachment.filename} @lgcode/>)
+                dialog.show(() => <ImagePreview src={attachment.dataUrl} alt={attachment.filename} />)
               }
               onRemove={removeAttachment}
               removeLabel={language.t("prompt.attachment.remove")}
-            @lgcode/>
+            />
             <div
               class="relative"
               onMouseDown={(e) => {
@@ -1752,7 +1752,7 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
                   autocorrect={store.mode === "normal" ? "on" : "off"}
                   spellcheck={store.mode === "normal"}
                   inputMode="text"
-                  @lgcode/@lgcode/ @ts-expect-error
+                  // @ts-expect-error
                   autocomplete="off"
                   onInput={handleInput}
                   onPaste={handlePaste}
@@ -1768,15 +1768,15 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
                     "font-mono!": store.mode === "shell",
                   }}
                   style={{ "padding-bottom": space }}
-                @lgcode/>
+                />
                 <div
                   class="absolute top-0 inset-x-0 pl-3 pr-2 pt-2 text-14-regular text-text-weak pointer-events-none whitespace-nowrap truncate"
                   classList={{ "font-mono!": store.mode === "shell" }}
                   style={{ "padding-bottom": space, display: prompt.dirty() ? "none" : undefined }}
                 >
                   {placeholder()}
-                <@lgcode/div>
-              <@lgcode/div>
+                </div>
+              </div>
 
               <div
                 aria-hidden="true"
@@ -1786,7 +1786,7 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
                   background:
                     "linear-gradient(to top, var(--surface-raised-stronger-non-alpha) calc(100% - 20px), transparent)",
                 }}
-              @lgcode/>
+              />
 
               <div class="pointer-events-none absolute bottom-2 right-2 flex items-center gap-2">
                 <input
@@ -1800,7 +1800,7 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
                     if (list) void addAttachments(Array.from(list))
                     e.currentTarget.value = ""
                   }}
-                @lgcode/>
+                />
 
                 <div class="flex items-center gap-1 pointer-events-auto">
                   <Tooltip placement="top" inactive={!working() && blank()} value={tip()}>
@@ -1813,10 +1813,10 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
                       variant="primary"
                       class="size-8"
                       aria-label={stopping() ? language.t("prompt.action.stop") : language.t("prompt.action.send")}
-                    @lgcode/>
-                  <@lgcode/Tooltip>
-                <@lgcode/div>
-              <@lgcode/div>
+                    />
+                  </Tooltip>
+                </div>
+              </div>
 
               <div class="pointer-events-none absolute bottom-2 left-2">
                 <div
@@ -1842,13 +1842,13 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
                       tabIndex={store.mode === "normal" ? undefined : -1}
                       aria-label={language.t("prompt.action.attachFile")}
                     >
-                      <Icon name="plus" class="size-4.5" @lgcode/>
-                    <@lgcode/Button>
-                  <@lgcode/TooltipKeybind>
-                <@lgcode/div>
-              <@lgcode/div>
-            <@lgcode/div>
-          <@lgcode/DockShellForm>
+                      <Icon name="plus" class="size-4.5" />
+                    </Button>
+                  </TooltipKeybind>
+                </div>
+              </div>
+            </div>
+          </DockShellForm>
           <Show when={store.mode === "normal" || store.mode === "shell"}>
             <DockTray attach="top">
               <div class="px-1.75 pt-5.5 pb-2 flex items-center gap-2 min-w-0">
@@ -1860,9 +1860,9 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
                       ...shell(),
                     }}
                   >
-                    <Icon name="console" @lgcode/>
-                    <span class="truncate text-13-medium text-text-base">{language.t("prompt.mode.shell")}<@lgcode/span>
-                    <div class="flex-1" @lgcode/>
+                    <Icon name="console" />
+                    <span class="truncate text-13-medium text-text-base">{language.t("prompt.mode.shell")}</span>
+                    <div class="flex-1" />
                     <Button
                       variant="ghost"
                       class="text-text-base"
@@ -1871,8 +1871,8 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
                       }}
                     >
                       {language.t("common.cancel")}
-                    <@lgcode/Button>
-                  <@lgcode/div>
+                    </Button>
+                  </div>
                   <div class="flex items-center gap-1.5 min-w-0 flex-1 h-7">
                     <Show when={!agentsLoading()}>
                       <div
@@ -1898,10 +1898,10 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
                             triggerStyle={control()}
                             triggerProps={{ "data-action": "prompt-agent" }}
                             variant="ghost"
-                          @lgcode/>
-                        <@lgcode/TooltipKeybind>
-                      <@lgcode/div>
-                    <@lgcode/Show>
+                          />
+                        </TooltipKeybind>
+                      </div>
+                    </Show>
                     <Show when={!providersLoading()}>
                       <Show when={store.mode !== "shell"}>
                         <div
@@ -1925,9 +1925,9 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
                                   class="min-w-0 max-w-[320px] text-13-regular text-text-base group"
                                   style={control()}
                                   onClick={() => {
-                                    void import("@@lgcode/components@lgcode/dialog-select-model-unpaid").then((x) => {
+                                    void import("@/components/dialog-select-model-unpaid").then((x) => {
                                       dialog.show(() => (
-                                        <x.DialogSelectModelUnpaid model={props.controls.model.selection} @lgcode/>
+                                        <x.DialogSelectModelUnpaid model={props.controls.model.selection} />
                                       ))
                                     })
                                   }}
@@ -1937,15 +1937,15 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
                                       id={props.controls.model.selection.current()?.provider?.id ?? ""}
                                       class="size-4 shrink-0 opacity-40 group-hover:opacity-100 transition-opacity duration-150"
                                       style={{ "will-change": "opacity", transform: "translateZ(0)" }}
-                                    @lgcode/>
-                                  <@lgcode/Show>
+                                    />
+                                  </Show>
                                   <span class="truncate">
                                     {props.controls.model.selection.current()?.name ??
                                       language.t("dialog.model.select.title")}
-                                  <@lgcode/span>
-                                  <Icon name="chevron-down" size="small" class="shrink-0" @lgcode/>
-                                <@lgcode/Button>
-                              <@lgcode/TooltipKeybind>
+                                  </span>
+                                  <Icon name="chevron-down" size="small" class="shrink-0" />
+                                </Button>
+                              </TooltipKeybind>
                             }
                           >
                             <TooltipKeybind
@@ -1971,17 +1971,17 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
                                     id={props.controls.model.selection.current()?.provider?.id ?? ""}
                                     class="size-4 shrink-0 opacity-40 group-hover:opacity-100 transition-opacity duration-150"
                                     style={{ "will-change": "opacity", transform: "translateZ(0)" }}
-                                  @lgcode/>
-                                <@lgcode/Show>
+                                  />
+                                </Show>
                                 <span class="truncate">
                                   {props.controls.model.selection.current()?.name ??
                                     language.t("dialog.model.select.title")}
-                                <@lgcode/span>
-                                <Icon name="chevron-down" size="small" class="shrink-0" @lgcode/>
-                              <@lgcode/ModelSelectorPopover>
-                            <@lgcode/TooltipKeybind>
-                          <@lgcode/Show>
-                        <@lgcode/div>
+                                </span>
+                                <Icon name="chevron-down" size="small" class="shrink-0" />
+                              </ModelSelectorPopover>
+                            </TooltipKeybind>
+                          </Show>
+                        </div>
                         <Show when={showVariantControl()}>
                           <div
                             data-component="prompt-variant-control"
@@ -2007,20 +2007,20 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
                                 triggerStyle={control()}
                                 triggerProps={{ "data-action": "prompt-model-variant" }}
                                 variant="ghost"
-                              @lgcode/>
-                            <@lgcode/TooltipKeybind>
-                          <@lgcode/div>
-                        <@lgcode/Show>
-                      <@lgcode/Show>
-                    <@lgcode/Show>
-                  <@lgcode/div>
-                <@lgcode/div>
-              <@lgcode/div>
-            <@lgcode/DockTray>
-          <@lgcode/Show>
-        <@lgcode/Match>
-      <@lgcode/Switch>
-    <@lgcode/div>
+                              />
+                            </TooltipKeybind>
+                          </div>
+                        </Show>
+                      </Show>
+                    </Show>
+                  </div>
+                </div>
+              </div>
+            </DockTray>
+          </Show>
+        </Match>
+      </Switch>
+    </div>
   )
 }
 
@@ -2089,11 +2089,11 @@ function ComposerPickerTrigger(props: ComponentProps<"button"> & { state: Compos
       onClick={() => local.state.onPress()}
     >
       <Show when={local.state.icon}>
-        {(icon) => <Icon name={icon()} size="small" class="shrink-0 text-v2-icon-icon-muted" @lgcode/>}
-      <@lgcode/Show>
-      <span class="min-w-0 truncate leading-5">{local.state.label}<@lgcode/span>
-      <Icon name="chevron-down" size="small" class="shrink-0 text-v2-icon-icon-muted" @lgcode/>
-    <@lgcode/button>
+        {(icon) => <Icon name={icon()} size="small" class="shrink-0 text-v2-icon-icon-muted" />}
+      </Show>
+      <span class="min-w-0 truncate leading-5">{local.state.label}</span>
+      <Icon name="chevron-down" size="small" class="shrink-0 text-v2-icon-icon-muted" />
+    </button>
   )
 }
 
@@ -2104,12 +2104,12 @@ function ComposerPickerMenuItem(props: { state: ComposerPickerItemState }) {
       class="flex h-7 w-full items-center gap-2 rounded px-3 text-left text-[13px] font-[440] leading-5 tracking-[-0.04px] text-v2-text-text-base hover:bg-v2-overlay-simple-overlay-hover focus-visible:bg-v2-overlay-simple-overlay-hover focus-visible:outline-none"
       onClick={props.state.onSelect}
     >
-      <Icon name={props.state.icon} size="small" class="shrink-0 text-v2-icon-icon-base" @lgcode/>
-      <span class="min-w-0 flex-1 truncate leading-5">{props.state.label}<@lgcode/span>
+      <Icon name={props.state.icon} size="small" class="shrink-0 text-v2-icon-icon-base" />
+      <span class="min-w-0 flex-1 truncate leading-5">{props.state.label}</span>
       <Show when={props.state.selected}>
-        <Icon name="check-small" size="small" class="shrink-0 text-v2-icon-icon-base" @lgcode/>
-      <@lgcode/Show>
-    <@lgcode/button>
+        <Icon name="check-small" size="small" class="shrink-0 text-v2-icon-icon-base" />
+      </Show>
+    </button>
   )
 }
 
@@ -2122,7 +2122,7 @@ function ComposerPicker(props: { state: ComposerPickerState }) {
       modal={false}
       onOpenChange={props.state.onOpenChange}
     >
-      <KobaltePopover.Trigger as={ComposerPickerTrigger} state={props.state.trigger} @lgcode/>
+      <KobaltePopover.Trigger as={ComposerPickerTrigger} state={props.state.trigger} />
       <KobaltePopover.Portal>
         <KobaltePopover.Content
           class="w-[243px] overflow-hidden rounded-md bg-v2-background-bg-layer-01 shadow-[var(--v2-elevation-floating)] focus:outline-none"
@@ -2130,14 +2130,14 @@ function ComposerPicker(props: { state: ComposerPickerState }) {
         >
           <div class={`flex flex-col p-0.5 ${props.state.listClass ?? ""}`}>
             <div class="flex h-7 items-center gap-2 rounded px-3 text-v2-icon-icon-muted">
-              <Icon name="magnifying-glass" size="small" class="shrink-0" @lgcode/>
+              <Icon name="magnifying-glass" size="small" class="shrink-0" />
               <input
                 ref={props.state.searchRef}
                 value={props.state.search}
                 placeholder={props.state.searchPlaceholder}
                 class="h-7 min-w-0 flex-1 border-0 bg-transparent text-[13px] font-[440] leading-5 tracking-[-0.04px] text-v2-text-text-base outline-none placeholder:text-v2-text-text-faint"
                 onInput={(event) => props.state.onSearchInput(event.currentTarget.value)}
-              @lgcode/>
+              />
               <Show when={props.state.search.trim()}>
                 <button
                   type="button"
@@ -2145,28 +2145,28 @@ function ComposerPicker(props: { state: ComposerPickerState }) {
                   onClick={props.state.onSearchClear}
                   aria-label={props.state.clearLabel}
                 >
-                  <Icon name="close-small" size="small" @lgcode/>
-                <@lgcode/button>
-              <@lgcode/Show>
-            <@lgcode/div>
-            <For each={props.state.items}>{(item) => <ComposerPickerMenuItem state={item} @lgcode/>}<@lgcode/For>
-          <@lgcode/div>
-          <div class="h-px bg-v2-border-border-muted" @lgcode/>
+                  <Icon name="close-small" size="small" />
+                </button>
+              </Show>
+            </div>
+            <For each={props.state.items}>{(item) => <ComposerPickerMenuItem state={item} />}</For>
+          </div>
+          <div class="h-px bg-v2-border-border-muted" />
           <div class="flex flex-col p-0.5">
-            <ComposerPickerMenuItem state={props.state.action} @lgcode/>
-          <@lgcode/div>
-        <@lgcode/KobaltePopover.Content>
-      <@lgcode/KobaltePopover.Portal>
-    <@lgcode/KobaltePopover>
+            <ComposerPickerMenuItem state={props.state.action} />
+          </div>
+        </KobaltePopover.Content>
+      </KobaltePopover.Portal>
+    </KobaltePopover>
   )
 }
 
 function ComposerAgentControl(props: { state: ComposerAgentControlState }) {
   return (
     <div class="relative">
-      <div class="pointer-events-none absolute left-2 top-1@lgcode/2 z-10 flex size-4 -translate-y-1@lgcode/2 items-center justify-center text-v2-icon-icon-muted">
-        <Icon name="sliders" size="small" @lgcode/>
-      <@lgcode/div>
+      <div class="pointer-events-none absolute left-2 top-1/2 z-10 flex size-4 -translate-y-1/2 items-center justify-center text-v2-icon-icon-muted">
+        <Icon name="sliders" size="small" />
+      </div>
       <TooltipKeybind placement="top" gutter={4} title={props.state.title} keybind={props.state.keybind}>
         <Select
           size="normal"
@@ -2178,9 +2178,9 @@ function ComposerAgentControl(props: { state: ComposerAgentControlState }) {
           triggerStyle={props.state.style}
           triggerProps={{ "data-action": "prompt-agent" }}
           variant="ghost"
-        @lgcode/>
-      <@lgcode/TooltipKeybind>
-    <@lgcode/div>
+        />
+      </TooltipKeybind>
+    </div>
   )
 }
 
@@ -2206,13 +2206,13 @@ function ComposerModelControl(props: { state: ComposerModelControlState }) {
                     id={providerID()}
                     class="size-4 shrink-0 opacity-40 group-hover:opacity-100 transition-opacity duration-150"
                     style={{ "will-change": "opacity", transform: "translateZ(0)" }}
-                  @lgcode/>
+                  />
                 )}
-              <@lgcode/Show>
-              <span class="truncate">{props.state.modelName}<@lgcode/span>
-              <Icon name="chevron-down" size="small" class="shrink-0 text-v2-icon-icon-muted" @lgcode/>
-            <@lgcode/Button>
-          <@lgcode/TooltipKeybind>
+              </Show>
+              <span class="truncate">{props.state.modelName}</span>
+              <Icon name="chevron-down" size="small" class="shrink-0 text-v2-icon-icon-muted" />
+            </Button>
+          </TooltipKeybind>
         }
       >
         <TooltipKeybind placement="top" gutter={4} title={props.state.title} keybind={props.state.keybind}>
@@ -2235,14 +2235,14 @@ function ComposerModelControl(props: { state: ComposerModelControlState }) {
                   id={providerID()}
                   class="size-4 shrink-0 opacity-40 group-hover:opacity-100 transition-opacity duration-150"
                   style={{ "will-change": "opacity", transform: "translateZ(0)" }}
-                @lgcode/>
+                />
               )}
-            <@lgcode/Show>
-            <span class="truncate">{props.state.modelName}<@lgcode/span>
-            <Icon name="chevron-down" size="small" class="shrink-0 text-v2-icon-icon-muted" @lgcode/>
-          <@lgcode/ModelSelectorPopover>
-        <@lgcode/TooltipKeybind>
-      <@lgcode/Show>
-    <@lgcode/Show>
+            </Show>
+            <span class="truncate">{props.state.modelName}</span>
+            <Icon name="chevron-down" size="small" class="shrink-0 text-v2-icon-icon-muted" />
+          </ModelSelectorPopover>
+        </TooltipKeybind>
+      </Show>
+    </Show>
   )
 }

@@ -1,37 +1,37 @@
-import { SyntaxStyle, RGBA, type TerminalColors } from "@opentui@lgcode/core"
-import aura from ".@lgcode/assets@lgcode/aura.json" with { type: "json" }
-import ayu from ".@lgcode/assets@lgcode/ayu.json" with { type: "json" }
-import carbonfox from ".@lgcode/assets@lgcode/carbonfox.json" with { type: "json" }
-import catppuccinFrappe from ".@lgcode/assets@lgcode/catppuccin-frappe.json" with { type: "json" }
-import catppuccinMacchiato from ".@lgcode/assets@lgcode/catppuccin-macchiato.json" with { type: "json" }
-import catppuccin from ".@lgcode/assets@lgcode/catppuccin.json" with { type: "json" }
-import cobalt2 from ".@lgcode/assets@lgcode/cobalt2.json" with { type: "json" }
-import cursor from ".@lgcode/assets@lgcode/cursor.json" with { type: "json" }
-import dracula from ".@lgcode/assets@lgcode/dracula.json" with { type: "json" }
-import everforest from ".@lgcode/assets@lgcode/everforest.json" with { type: "json" }
-import flexoki from ".@lgcode/assets@lgcode/flexoki.json" with { type: "json" }
-import github from ".@lgcode/assets@lgcode/github.json" with { type: "json" }
-import gruvbox from ".@lgcode/assets@lgcode/gruvbox.json" with { type: "json" }
-import kanagawa from ".@lgcode/assets@lgcode/kanagawa.json" with { type: "json" }
-import lucentOrng from ".@lgcode/assets@lgcode/lucent-orng.json" with { type: "json" }
-import material from ".@lgcode/assets@lgcode/material.json" with { type: "json" }
-import matrix from ".@lgcode/assets@lgcode/matrix.json" with { type: "json" }
-import mercury from ".@lgcode/assets@lgcode/mercury.json" with { type: "json" }
-import monokai from ".@lgcode/assets@lgcode/monokai.json" with { type: "json" }
-import nightowl from ".@lgcode/assets@lgcode/nightowl.json" with { type: "json" }
-import nord from ".@lgcode/assets@lgcode/nord.json" with { type: "json" }
-import onedark from ".@lgcode/assets@lgcode/one-dark.json" with { type: "json" }
-import opencode from ".@lgcode/assets@lgcode/opencode.json" with { type: "json" }
-import orng from ".@lgcode/assets@lgcode/orng.json" with { type: "json" }
-import osakaJade from ".@lgcode/assets@lgcode/osaka-jade.json" with { type: "json" }
-import palenight from ".@lgcode/assets@lgcode/palenight.json" with { type: "json" }
-import rosepine from ".@lgcode/assets@lgcode/rosepine.json" with { type: "json" }
-import solarized from ".@lgcode/assets@lgcode/solarized.json" with { type: "json" }
-import synthwave84 from ".@lgcode/assets@lgcode/synthwave84.json" with { type: "json" }
-import tokyonight from ".@lgcode/assets@lgcode/tokyonight.json" with { type: "json" }
-import vercel from ".@lgcode/assets@lgcode/vercel.json" with { type: "json" }
-import vesper from ".@lgcode/assets@lgcode/vesper.json" with { type: "json" }
-import zenburn from ".@lgcode/assets@lgcode/zenburn.json" with { type: "json" }
+import { SyntaxStyle, RGBA, type TerminalColors } from "@opentui/core"
+import aura from "./assets/aura.json" with { type: "json" }
+import ayu from "./assets/ayu.json" with { type: "json" }
+import carbonfox from "./assets/carbonfox.json" with { type: "json" }
+import catppuccinFrappe from "./assets/catppuccin-frappe.json" with { type: "json" }
+import catppuccinMacchiato from "./assets/catppuccin-macchiato.json" with { type: "json" }
+import catppuccin from "./assets/catppuccin.json" with { type: "json" }
+import cobalt2 from "./assets/cobalt2.json" with { type: "json" }
+import cursor from "./assets/cursor.json" with { type: "json" }
+import dracula from "./assets/dracula.json" with { type: "json" }
+import everforest from "./assets/everforest.json" with { type: "json" }
+import flexoki from "./assets/flexoki.json" with { type: "json" }
+import github from "./assets/github.json" with { type: "json" }
+import gruvbox from "./assets/gruvbox.json" with { type: "json" }
+import kanagawa from "./assets/kanagawa.json" with { type: "json" }
+import lucentOrng from "./assets/lucent-orng.json" with { type: "json" }
+import material from "./assets/material.json" with { type: "json" }
+import matrix from "./assets/matrix.json" with { type: "json" }
+import mercury from "./assets/mercury.json" with { type: "json" }
+import monokai from "./assets/monokai.json" with { type: "json" }
+import nightowl from "./assets/nightowl.json" with { type: "json" }
+import nord from "./assets/nord.json" with { type: "json" }
+import onedark from "./assets/one-dark.json" with { type: "json" }
+import opencode from "./assets/opencode.json" with { type: "json" }
+import orng from "./assets/orng.json" with { type: "json" }
+import osakaJade from "./assets/osaka-jade.json" with { type: "json" }
+import palenight from "./assets/palenight.json" with { type: "json" }
+import rosepine from "./assets/rosepine.json" with { type: "json" }
+import solarized from "./assets/solarized.json" with { type: "json" }
+import synthwave84 from "./assets/synthwave84.json" with { type: "json" }
+import tokyonight from "./assets/tokyonight.json" with { type: "json" }
+import vercel from "./assets/vercel.json" with { type: "json" }
+import vesper from "./assets/vesper.json" with { type: "json" }
+import zenburn from "./assets/zenburn.json" with { type: "json" }
 
 export type Theme = {
   readonly primary: RGBA
@@ -93,12 +93,12 @@ type ThemeColor = Exclude<keyof Theme, "thinkingOpacity" | "_hasSelectedListItem
 export type SyntaxStyleOverrides = Record<string, { italic?: boolean }>
 
 export function selectedForeground(theme: Theme, bg?: RGBA): RGBA {
-  @lgcode/@lgcode/ If theme explicitly defines selectedListItemText, use it
+  // If theme explicitly defines selectedListItemText, use it
   if (theme._hasSelectedListItemText) {
     return theme.selectedListItemText
   }
 
-  @lgcode/@lgcode/ For transparent backgrounds, calculate contrast based on the actual bg (or fallback to primary)
+  // For transparent backgrounds, calculate contrast based on the actual bg (or fallback to primary)
   if (theme.background.a === 0) {
     const targetColor = bg ?? theme.primary
     const { r, g, b } = targetColor
@@ -106,7 +106,7 @@ export function selectedForeground(theme: Theme, bg?: RGBA): RGBA {
     return luminance > 0.5 ? RGBA.fromInts(0, 0, 0) : RGBA.fromInts(255, 255, 255)
   }
 
-  @lgcode/@lgcode/ Fall back to background color
+  // Fall back to background color
   return theme.background
 }
 
@@ -169,7 +169,7 @@ let systemTheme: ThemeJson | undefined
 const listeners = new Set<(themes: Record<string, ThemeJson>) => void>()
 
 function listThemes() {
-  @lgcode/@lgcode/ Priority: defaults < plugin installs < custom files < generated system.
+  // Priority: defaults < plugin installs < custom files < generated system.
   const themes = {
     ...DEFAULT_THEMES,
     ...pluginThemes,
@@ -271,24 +271,24 @@ export function resolveTheme(theme: ThemeJson, mode: "dark" | "light") {
       }),
   ) as Partial<Record<ThemeColor, RGBA>>
 
-  @lgcode/@lgcode/ Handle selectedListItemText separately since it's optional
+  // Handle selectedListItemText separately since it's optional
   const hasSelectedListItemText = theme.theme.selectedListItemText !== undefined
   if (hasSelectedListItemText) {
     resolved.selectedListItemText = resolveColor(theme.theme.selectedListItemText!)
   } else {
-    @lgcode/@lgcode/ Backward compatibility: if selectedListItemText is not defined, use background color
-    @lgcode/@lgcode/ This preserves the current behavior for all existing themes
+    // Backward compatibility: if selectedListItemText is not defined, use background color
+    // This preserves the current behavior for all existing themes
     resolved.selectedListItemText = resolved.background
   }
 
-  @lgcode/@lgcode/ Handle backgroundMenu - optional with fallback to backgroundElement
+  // Handle backgroundMenu - optional with fallback to backgroundElement
   if (theme.theme.backgroundMenu !== undefined) {
     resolved.backgroundMenu = resolveColor(theme.theme.backgroundMenu)
   } else {
     resolved.backgroundMenu = resolved.backgroundElement
   }
 
-  @lgcode/@lgcode/ Handle thinkingOpacity - optional with default of 0.6
+  // Handle thinkingOpacity - optional with default of 0.6
   const thinkingOpacity = theme.theme.thinkingOpacity ?? 0.6
 
   return {
@@ -299,47 +299,47 @@ export function resolveTheme(theme: ThemeJson, mode: "dark" | "light") {
 }
 
 function ansiToRgba(code: number): RGBA {
-  @lgcode/@lgcode/ Standard ANSI colors (0-15)
+  // Standard ANSI colors (0-15)
   if (code < 16) {
     const ansiColors = [
-      "#000000", @lgcode/@lgcode/ Black
-      "#800000", @lgcode/@lgcode/ Red
-      "#008000", @lgcode/@lgcode/ Green
-      "#808000", @lgcode/@lgcode/ Yellow
-      "#000080", @lgcode/@lgcode/ Blue
-      "#800080", @lgcode/@lgcode/ Magenta
-      "#008080", @lgcode/@lgcode/ Cyan
-      "#c0c0c0", @lgcode/@lgcode/ White
-      "#808080", @lgcode/@lgcode/ Bright Black
-      "#ff0000", @lgcode/@lgcode/ Bright Red
-      "#00ff00", @lgcode/@lgcode/ Bright Green
-      "#ffff00", @lgcode/@lgcode/ Bright Yellow
-      "#0000ff", @lgcode/@lgcode/ Bright Blue
-      "#ff00ff", @lgcode/@lgcode/ Bright Magenta
-      "#00ffff", @lgcode/@lgcode/ Bright Cyan
-      "#ffffff", @lgcode/@lgcode/ Bright White
+      "#000000", // Black
+      "#800000", // Red
+      "#008000", // Green
+      "#808000", // Yellow
+      "#000080", // Blue
+      "#800080", // Magenta
+      "#008080", // Cyan
+      "#c0c0c0", // White
+      "#808080", // Bright Black
+      "#ff0000", // Bright Red
+      "#00ff00", // Bright Green
+      "#ffff00", // Bright Yellow
+      "#0000ff", // Bright Blue
+      "#ff00ff", // Bright Magenta
+      "#00ffff", // Bright Cyan
+      "#ffffff", // Bright White
     ]
     return RGBA.fromHex(ansiColors[code] ?? "#000000")
   }
 
-  @lgcode/@lgcode/ 6x6x6 Color Cube (16-231)
+  // 6x6x6 Color Cube (16-231)
   if (code < 232) {
     const index = code - 16
     const b = index % 6
-    const g = Math.floor(index @lgcode/ 6) % 6
-    const r = Math.floor(index @lgcode/ 36)
+    const g = Math.floor(index / 6) % 6
+    const r = Math.floor(index / 36)
 
     const val = (x: number) => (x === 0 ? 0 : x * 40 + 55)
     return RGBA.fromInts(val(r), val(g), val(b))
   }
 
-  @lgcode/@lgcode/ Grayscale Ramp (232-255)
+  // Grayscale Ramp (232-255)
   if (code < 256) {
     const gray = (code - 232) * 10 + 8
     return RGBA.fromInts(gray, gray, gray)
   }
 
-  @lgcode/@lgcode/ Fallback for invalid codes
+  // Fallback for invalid codes
   return RGBA.fromInts(0, 0, 0)
 }
 
@@ -369,11 +369,11 @@ export function generateSystem(colors: TerminalColors, mode: "dark" | "light"): 
     return ansiToRgba(i)
   }
 
-  @lgcode/@lgcode/ Generate gray scale based on terminal background
+  // Generate gray scale based on terminal background
   const grays = generateGrayScale(bg, isDark)
   const textMuted = generateMutedTextColor(bg, isDark)
 
-  @lgcode/@lgcode/ ANSI color references
+  // ANSI color references
   const ansiColors = {
     black: col(0),
     red: col(1),
@@ -397,34 +397,34 @@ export function generateSystem(colors: TerminalColors, mode: "dark" | "light"): 
 
   return {
     theme: {
-      @lgcode/@lgcode/ Primary colors using ANSI
+      // Primary colors using ANSI
       primary: ansiColors.cyan,
       secondary: ansiColors.magenta,
       accent: ansiColors.cyan,
 
-      @lgcode/@lgcode/ Status colors using ANSI
+      // Status colors using ANSI
       error: ansiColors.red,
       warning: ansiColors.yellow,
       success: ansiColors.green,
       info: ansiColors.cyan,
 
-      @lgcode/@lgcode/ Text colors
+      // Text colors
       text: fg,
       textMuted,
       selectedListItemText: bg,
 
-      @lgcode/@lgcode/ Background colors - use transparent to respect terminal transparency
+      // Background colors - use transparent to respect terminal transparency
       background: transparent,
       backgroundPanel: grays[2],
       backgroundElement: grays[3],
       backgroundMenu: grays[3],
 
-      @lgcode/@lgcode/ Border colors
+      // Border colors
       borderSubtle: grays[6],
       border: grays[7],
       borderActive: grays[8],
 
-      @lgcode/@lgcode/ Diff colors
+      // Diff colors
       diffAdded: ansiColors.green,
       diffRemoved: ansiColors.red,
       diffContext: grays[7],
@@ -438,7 +438,7 @@ export function generateSystem(colors: TerminalColors, mode: "dark" | "light"): 
       diffAddedLineNumberBg,
       diffRemovedLineNumberBg,
 
-      @lgcode/@lgcode/ Markdown colors
+      // Markdown colors
       markdownText: fg,
       markdownHeading: fg,
       markdownLink: ansiColors.blue,
@@ -454,7 +454,7 @@ export function generateSystem(colors: TerminalColors, mode: "dark" | "light"): 
       markdownImageText: ansiColors.cyan,
       markdownCodeBlock: fg,
 
-      @lgcode/@lgcode/ Syntax colors
+      // Syntax colors
       syntaxComment: textMuted,
       syntaxKeyword: ansiColors.magenta,
       syntaxFunction: ansiColors.blue,
@@ -471,7 +471,7 @@ export function generateSystem(colors: TerminalColors, mode: "dark" | "light"): 
 function generateGrayScale(bg: RGBA, isDark: boolean): Record<number, RGBA> {
   const grays: Record<number, RGBA> = {}
 
-  @lgcode/@lgcode/ RGBA stores floats in range 0-1, convert to 0-255
+  // RGBA stores floats in range 0-1, convert to 0-255
   const bgR = bg.r * 255
   const bgG = bg.g * 255
   const bgB = bg.b * 255
@@ -479,7 +479,7 @@ function generateGrayScale(bg: RGBA, isDark: boolean): Record<number, RGBA> {
   const luminance = 0.299 * bgR + 0.587 * bgG + 0.114 * bgB
 
   for (let i = 1; i <= 12; i++) {
-    const factor = i @lgcode/ 12.0
+    const factor = i / 12.0
 
     let grayValue: number
     let newR: number
@@ -495,7 +495,7 @@ function generateGrayScale(bg: RGBA, isDark: boolean): Record<number, RGBA> {
       } else {
         const newLum = luminance + (255 - luminance) * factor * 0.4
 
-        const ratio = newLum @lgcode/ luminance
+        const ratio = newLum / luminance
         newR = Math.min(bgR * ratio, 255)
         newG = Math.min(bgG * ratio, 255)
         newB = Math.min(bgB * ratio, 255)
@@ -509,7 +509,7 @@ function generateGrayScale(bg: RGBA, isDark: boolean): Record<number, RGBA> {
       } else {
         const newLum = luminance * (1 - factor * 0.4)
 
-        const ratio = newLum @lgcode/ luminance
+        const ratio = newLum / luminance
         newR = Math.max(bgR * ratio, 0)
         newG = Math.max(bgG * ratio, 0)
         newB = Math.max(bgB * ratio, 0)
@@ -523,7 +523,7 @@ function generateGrayScale(bg: RGBA, isDark: boolean): Record<number, RGBA> {
 }
 
 function generateMutedTextColor(bg: RGBA, isDark: boolean): RGBA {
-  @lgcode/@lgcode/ RGBA stores floats in range 0-1, convert to 0-255
+  // RGBA stores floats in range 0-1, convert to 0-255
   const bgR = bg.r * 255
   const bgG = bg.g * 255
   const bgB = bg.b * 255
@@ -534,18 +534,18 @@ function generateMutedTextColor(bg: RGBA, isDark: boolean): RGBA {
 
   if (isDark) {
     if (bgLum < 10) {
-      @lgcode/@lgcode/ Very dark@lgcode/black background
-      grayValue = 180 @lgcode/@lgcode/ #b4b4b4
+      // Very dark/black background
+      grayValue = 180 // #b4b4b4
     } else {
-      @lgcode/@lgcode/ Scale up for lighter dark backgrounds
+      // Scale up for lighter dark backgrounds
       grayValue = Math.min(Math.floor(160 + bgLum * 0.3), 200)
     }
   } else {
     if (bgLum > 245) {
-      @lgcode/@lgcode/ Very light@lgcode/white background
-      grayValue = 75 @lgcode/@lgcode/ #4b4b4b
+      // Very light/white background
+      grayValue = 75 // #4b4b4b
     } else {
-      @lgcode/@lgcode/ Scale down for darker light backgrounds
+      // Scale down for darker light backgrounds
       grayValue = Math.max(Math.floor(100 - (255 - bgLum) * 0.2), 60)
     }
   }
@@ -790,7 +790,7 @@ function getSyntaxRules(theme: Theme) {
         italic: true,
       },
     },
-    @lgcode/@lgcode/ Markdown specific styles
+    // Markdown specific styles
     {
       scope: ["markup.heading"],
       style: {
@@ -920,7 +920,7 @@ function getSyntaxRules(theme: Theme) {
         foreground: theme.textMuted,
       },
     },
-    @lgcode/@lgcode/ Additional common highlight groups
+    // Additional common highlight groups
     {
       scope: ["string.special", "string.special.url"],
       style: {

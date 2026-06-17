@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test"
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import os from "os"
 import path from "path"
-import { Global } from "@lgcode/core@lgcode/global"
+import { Global } from "@opencode@lgcode/core/global"
 
 describe("global paths", () => {
   test("tmp path is under the system temp directory", () => {

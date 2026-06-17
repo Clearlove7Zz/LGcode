@@ -1,10 +1,10 @@
 import { describe, expect, test } from "bun:test"
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import { spawn } from "child_process"
 import path from "path"
 import os from "os"
-import { Flock } from "@lgcode/core@lgcode/util@lgcode/flock"
-import { Hash } from "@lgcode/core@lgcode/util@lgcode/hash"
+import { Flock } from "@opencode@lgcode/core/util/flock"
+import { Hash } from "@opencode@lgcode/core/util/hash"
 
 type Msg = {
   key: string
@@ -19,8 +19,8 @@ type Msg = {
   done?: string
 }
 
-const root = path.join(import.meta.dir, "..@lgcode/..")
-const worker = path.join(import.meta.dir, "..@lgcode/fixture@lgcode/flock-worker.ts")
+const root = path.join(import.meta.dir, "../..")
+const worker = path.join(import.meta.dir, "../fixture/flock-worker.ts")
 
 async function tmpdir() {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), "flock-test-"))
@@ -100,7 +100,7 @@ async function stopWorker(proc: ReturnType<typeof spawnWorker>) {
   }
 
   await new Promise<void>((resolve) => {
-    const killProc = spawn("taskkill", ["@lgcode/pid", String(proc.pid), "@lgcode/T", "@lgcode/F"])
+    const killProc = spawn("taskkill", ["/pid", String(proc.pid), "/T", "/F"])
     killProc.on("close", () => {
       proc.kill()
       resolve()

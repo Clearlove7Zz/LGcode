@@ -1,5 +1,5 @@
-import { createSimpleContext } from ".@lgcode/helper"
-import type { PromptRef } from "..@lgcode/component@lgcode/prompt"
+import { createSimpleContext } from "./helper"
+import type { PromptRef } from "../component/prompt"
 
 export const { use: usePromptRef, provider: PromptRefProvider } = createSimpleContext({
   name: "PromptRef",

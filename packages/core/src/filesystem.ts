@@ -1,14 +1,14 @@
-export * as FileSystem from ".@lgcode/filesystem"
+export * as FileSystem from "./filesystem"
 
 import path from "path"
 import { Context, Effect, Layer, Schema } from "effect"
-import { EventV2 } from ".@lgcode/event"
-import { FSUtil } from ".@lgcode/fs-util"
-import { Location } from ".@lgcode/location"
-import { PositiveInt, RelativePath } from ".@lgcode/schema"
-import { FileSystemSearch } from ".@lgcode/filesystem@lgcode/search"
-import { Entry, Match } from ".@lgcode/filesystem@lgcode/schema"
-export { Entry, Match, Submatch } from ".@lgcode/filesystem@lgcode/schema"
+import { EventV2 } from "./event"
+import { FSUtil } from "./fs-util"
+import { Location } from "./location"
+import { PositiveInt, RelativePath } from "./schema"
+import { FileSystemSearch } from "./filesystem/search"
+import { Entry, Match } from "./filesystem/schema"
+export { Entry, Match, Submatch } from "./filesystem/schema"
 
 export const ReadInput = Schema.Struct({
   path: RelativePath,
@@ -65,7 +65,7 @@ export interface Interface {
   readonly grep: (input: GrepInput) => Effect.Effect<readonly Match[]>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/FileSystem") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/v2/FileSystem") {}
 
 const baseLayer = Layer.effect(
   Service,
@@ -111,7 +111,7 @@ const baseLayer = Layer.effect(
                   new Entry({
                     path: RelativePath.make(relative + (item.type === "directory" ? path.sep : "")),
                     type: item.type,
-                    mime: item.type === "directory" ? "application@lgcode/x-directory" : FSUtil.mimeType(absolute),
+                    mime: item.type === "directory" ? "application/x-directory" : FSUtil.mimeType(absolute),
                   }),
                 ]
               })

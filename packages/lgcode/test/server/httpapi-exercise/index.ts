@@ -1,4 +1,4 @@
-@lgcode/**
+/**
  * End-to-end exerciser for the Effect HttpApi routes.
  *
  * The goal is not to be a normal unit test file. This is a route-coverage harness:
@@ -7,35 +7,35 @@
  * returns the expected response shape.
  *
  * The script intentionally isolates `OPENCODE_DB` before importing modules that touch
- * storage. Scenarios may create@lgcode/delete sessions and reset the database after each run,
+ * storage. Scenarios may create/delete sessions and reset the database after each run,
  * so this must never point at a developer's real session database.
  *
  * DSL shape:
- * - `http.protected.get@lgcode/post@lgcode/...` starts a scenario for one OpenAPI route key.
+ * - `http.protected.get/post/...` starts a scenario for one OpenAPI route key.
  * - `.seeded(...)` creates typed per-scenario state using Effect helpers on `ctx`.
  * - `.at(...)` builds the request from that typed state.
- * - `.json(...)` @lgcode/ `.jsonEffect(...)` assert response shape and optional side effects.
+ * - `.json(...)` / `.jsonEffect(...)` assert response shape and optional side effects.
  * - `.mutating()` tells the runner to reset isolated state after destructive routes.
- *@lgcode/
+ */
 import { Effect } from "effect"
-import { OpenApi } from "effect@lgcode/unstable@lgcode/httpapi"
-import { TestLLMServer } from "..@lgcode/..@lgcode/lib@lgcode/llm-server"
+import { OpenApi } from "effect/unstable/httpapi"
+import { TestLLMServer } from "../../lib/llm-server"
 import path from "path"
-import { array, boolean, check, isRecord, message, object, stable } from ".@lgcode/assertions"
-import { controlledPtyInput, http, route } from ".@lgcode/dsl"
+import { array, boolean, check, isRecord, message, object, stable } from "./assertions"
+import { controlledPtyInput, http, route } from "./dsl"
 import {
   cleanupExercisePaths,
   exerciseConfigDirectory,
   exerciseDataDirectory,
   exerciseDatabasePath,
   exerciseGlobalRoot,
-} from ".@lgcode/environment"
-import { color, printHeader, printResults } from ".@lgcode/report"
-import { coverageResult, parseOptions, routeKey, routeKeys, selectedScenarios } from ".@lgcode/routing"
-import { runScenario } from ".@lgcode/runner"
-import { disposeApps } from ".@lgcode/backend"
-import { runtime } from ".@lgcode/runtime"
-import { type Scenario } from ".@lgcode/types"
+} from "./environment"
+import { color, printHeader, printResults } from "./report"
+import { coverageResult, parseOptions, routeKey, routeKeys, selectedScenarios } from "./routing"
+import { runScenario } from "./runner"
+import { disposeApps } from "./backend"
+import { runtime } from "./runtime"
+import { type Scenario } from "./types"
 
 function cursor(input: Record<string, unknown>) {
   return Buffer.from(JSON.stringify(input)).toString("base64url")
@@ -59,28 +59,28 @@ function locationData(validate: (value: any) => void) {
 
 const scenarios: Scenario[] = [
   http.protected
-    .get("@lgcode/global@lgcode/health", "global.health")
+    .get("/global/health", "global.health")
     .global()
     .json(200, (body) => {
       object(body)
       check(body.healthy === true, "server should report healthy")
     }),
   http.protected
-    .get("@lgcode/global@lgcode/event", "global.event")
+    .get("/global/event", "global.event")
     .global()
     .stream()
     .status(
       200,
       (_ctx, result) =>
         Effect.sync(() => {
-          check(result.contentType.includes("text@lgcode/event-stream"), "global event should be an SSE stream")
+          check(result.contentType.includes("text/event-stream"), "global event should be an SSE stream")
           check(result.text.includes("server.connected"), "global event should emit initial connection event")
         }),
       "status",
     ),
-  http.protected.get("@lgcode/global@lgcode/config", "global.config.get").global().json(),
+  http.protected.get("/global/config", "global.config.get").global().json(),
   http.protected
-    .patch("@lgcode/global@lgcode/config", "global.config.update")
+    .patch("/global/config", "global.config.update")
     .global()
     .seeded(() =>
       Effect.promise(() =>
@@ -90,7 +90,7 @@ const scenarios: Scenario[] = [
         ),
       ),
     )
-    .at(() => ({ path: "@lgcode/global@lgcode/config", body: { username: "httpapi-global" } }))
+    .at(() => ({ path: "/global/config", body: { username: "httpapi-global" } }))
     .jsonEffect(
       200,
       (body) =>
@@ -105,7 +105,7 @@ const scenarios: Scenario[] = [
       "status",
     ),
   http.protected
-    .post("@lgcode/global@lgcode/dispose", "global.dispose")
+    .post("/global/dispose", "global.dispose")
     .global()
     .mutating()
     .json(
@@ -115,18 +115,18 @@ const scenarios: Scenario[] = [
       },
       "status",
     ),
-  http.protected.get("@lgcode/path", "path.get").json(200, (body, ctx) => {
+  http.protected.get("/path", "path.get").json(200, (body, ctx) => {
     object(body)
     check(body.directory === ctx.directory, "directory should resolve from x-opencode-directory")
     check(body.worktree === ctx.directory, "worktree should resolve from x-opencode-directory")
   }),
-  http.protected.get("@lgcode/vcs", "vcs.get").json(),
-  http.protected.get("@lgcode/vcs@lgcode/status", "vcs.status").json(200, array),
+  http.protected.get("/vcs", "vcs.get").json(),
+  http.protected.get("/vcs/status", "vcs.status").json(200, array),
   http.protected
-    .get("@lgcode/vcs@lgcode/diff", "vcs.diff")
-    .at((ctx) => ({ path: "@lgcode/vcs@lgcode/diff?mode=git", headers: ctx.headers() }))
+    .get("/vcs/diff", "vcs.diff")
+    .at((ctx) => ({ path: "/vcs/diff?mode=git", headers: ctx.headers() }))
     .json(200, array),
-  http.protected.get("@lgcode/vcs@lgcode/diff@lgcode/raw", "vcs.diff.raw").status(
+  http.protected.get("/vcs/diff/raw", "vcs.diff.raw").status(
     200,
     (_ctx, result) =>
       Effect.sync(() => {
@@ -135,20 +135,20 @@ const scenarios: Scenario[] = [
     "status",
   ),
   http.protected
-    .post("@lgcode/vcs@lgcode/apply", "vcs.apply")
+    .post("/vcs/apply", "vcs.apply")
     .inProject({ git: false })
-    .at((ctx) => ({ path: "@lgcode/vcs@lgcode/apply", headers: ctx.headers(), body: { patch: "" } }))
+    .at((ctx) => ({ path: "/vcs/apply", headers: ctx.headers(), body: { patch: "" } }))
     .status(400, undefined, "status"),
-  http.protected.get("@lgcode/command", "command.list").json(200, array, "status"),
-  http.protected.get("@lgcode/agent", "app.agents").json(200, array, "status"),
-  http.protected.get("@lgcode/skill", "app.skills").json(200, array, "status"),
-  http.protected.get("@lgcode/lsp", "lsp.status").json(200, array),
-  http.protected.get("@lgcode/formatter", "formatter.status").json(200, array),
-  http.protected.get("@lgcode/config", "config.get").json(200, undefined, "status"),
+  http.protected.get("/command", "command.list").json(200, array, "status"),
+  http.protected.get("/agent", "app.agents").json(200, array, "status"),
+  http.protected.get("/skill", "app.skills").json(200, array, "status"),
+  http.protected.get("/lsp", "lsp.status").json(200, array),
+  http.protected.get("/formatter", "formatter.status").json(200, array),
+  http.protected.get("/config", "config.get").json(200, undefined, "status"),
   http.protected
-    .patch("@lgcode/config", "config.update")
+    .patch("/config", "config.update")
     .mutating()
-    .at((ctx) => ({ path: "@lgcode/config", headers: ctx.headers(), body: { username: "httpapi-local" } }))
+    .at((ctx) => ({ path: "/config", headers: ctx.headers(), body: { username: "httpapi-local" } }))
     .json(
       200,
       (body) => {
@@ -158,12 +158,12 @@ const scenarios: Scenario[] = [
       "status",
     ),
   http.protected
-    .patch("@lgcode/config", "config.update.invalid")
-    .at((ctx) => ({ path: "@lgcode/config", headers: ctx.headers(), body: { username: 1 } }))
+    .patch("/config", "config.update.invalid")
+    .at((ctx) => ({ path: "/config", headers: ctx.headers(), body: { username: 1 } }))
     .status(400),
-  http.protected.get("@lgcode/config@lgcode/providers", "config.providers").json(),
-  http.protected.get("@lgcode/project", "project.list").json(200, array, "status"),
-  http.protected.get("@lgcode/project@lgcode/current", "project.current").json(
+  http.protected.get("/config/providers", "config.providers").json(),
+  http.protected.get("/project", "project.list").json(200, array, "status"),
+  http.protected.get("/project/current", "project.current").json(
     200,
     (body, ctx) => {
       object(body)
@@ -172,11 +172,11 @@ const scenarios: Scenario[] = [
     "status",
   ),
   http.protected
-    .patch("@lgcode/project@lgcode/{projectID}", "project.update")
+    .patch("/project/{projectID}", "project.update")
     .mutating()
     .seeded((ctx) => ctx.project())
     .at((ctx) => ({
-      path: route("@lgcode/project@lgcode/{projectID}", { projectID: ctx.state.id }),
+      path: route("/project/{projectID}", { projectID: ctx.state.id }),
       headers: ctx.headers(),
       body: { name: "HTTP API Project", commands: { start: "bun --version" } },
     }))
@@ -193,16 +193,16 @@ const scenarios: Scenario[] = [
       "status",
     ),
   http.protected
-    .patch("@lgcode/project@lgcode/{projectID}", "project.update.missing")
+    .patch("/project/{projectID}", "project.update.missing")
     .mutating()
     .at((ctx) => ({
-      path: route("@lgcode/project@lgcode/{projectID}", { projectID: "project_httpapi_missing" }),
+      path: route("/project/{projectID}", { projectID: "project_httpapi_missing" }),
       headers: ctx.headers(),
       body: { name: "Missing Project" },
     }))
     .json(404, object, "status"),
   http.protected
-    .post("@lgcode/project@lgcode/git@lgcode/init", "project.initGit")
+    .post("/project/git/init", "project.initGit")
     .mutating()
     .inProject({ git: false })
     .json(
@@ -215,18 +215,18 @@ const scenarios: Scenario[] = [
       "status",
     ),
   http.protected
-    .get("@lgcode/project@lgcode/{projectID}@lgcode/directories", "project.directories")
+    .get("/project/{projectID}/directories", "project.directories")
     .seeded((ctx) => ctx.project())
     .at((ctx) => ({
-      path: route("@lgcode/project@lgcode/{projectID}@lgcode/directories", { projectID: ctx.state.id }),
+      path: route("/project/{projectID}/directories", { projectID: ctx.state.id }),
       headers: ctx.headers(),
     }))
     .json(200, array, "status"),
   http.protected
-    .post("@lgcode/experimental@lgcode/project@lgcode/{projectID}@lgcode/copy@lgcode/generate-name", "experimental.projectCopy.generateName")
+    .post("/experimental/project/{projectID}/copy/generate-name", "experimental.projectCopy.generateName")
     .seeded((ctx) => ctx.project())
     .at((ctx) => ({
-      path: route("@lgcode/experimental@lgcode/project@lgcode/{projectID}@lgcode/copy@lgcode/generate-name", { projectID: ctx.state.id }),
+      path: route("/experimental/project/{projectID}/copy/generate-name", { projectID: ctx.state.id }),
       headers: ctx.headers(),
       body: {},
     }))
@@ -235,148 +235,148 @@ const scenarios: Scenario[] = [
       check(typeof body.name === "string" && body.name.length > 0, "generated copy name should be non-empty")
     }),
   http.protected
-    .post("@lgcode/experimental@lgcode/project@lgcode/{projectID}@lgcode/copy", "experimental.projectCopy.create")
+    .post("/experimental/project/{projectID}/copy", "experimental.projectCopy.create")
     .seeded((ctx) => ctx.project())
     .at((ctx) => ({
-      path: route("@lgcode/experimental@lgcode/project@lgcode/{projectID}@lgcode/copy", { projectID: ctx.state.id }),
+      path: route("/experimental/project/{projectID}/copy", { projectID: ctx.state.id }),
       headers: ctx.headers(),
       body: {},
     }))
     .status(400),
   http.protected
-    .delete("@lgcode/experimental@lgcode/project@lgcode/{projectID}@lgcode/copy", "experimental.projectCopy.remove")
+    .delete("/experimental/project/{projectID}/copy", "experimental.projectCopy.remove")
     .seeded((ctx) => ctx.project())
     .at((ctx) => ({
-      path: route("@lgcode/experimental@lgcode/project@lgcode/{projectID}@lgcode/copy", { projectID: ctx.state.id }),
+      path: route("/experimental/project/{projectID}/copy", { projectID: ctx.state.id }),
       headers: ctx.headers(),
       body: {},
     }))
     .status(400),
   http.protected
-    .post("@lgcode/experimental@lgcode/project@lgcode/{projectID}@lgcode/copy@lgcode/refresh", "experimental.projectCopy.refresh")
+    .post("/experimental/project/{projectID}/copy/refresh", "experimental.projectCopy.refresh")
     .mutating()
     .seeded((ctx) => ctx.project())
     .at((ctx) => ({
-      path: route("@lgcode/experimental@lgcode/project@lgcode/{projectID}@lgcode/copy@lgcode/refresh", { projectID: ctx.state.id }),
+      path: route("/experimental/project/{projectID}/copy/refresh", { projectID: ctx.state.id }),
       headers: ctx.headers(),
     }))
     .status(204, undefined, "status"),
-  http.protected.get("@lgcode/provider", "provider.list").json(),
-  http.protected.get("@lgcode/provider@lgcode/auth", "provider.auth").json(),
+  http.protected.get("/provider", "provider.list").json(),
+  http.protected.get("/provider/auth", "provider.auth").json(),
   http.protected
-    .post("@lgcode/provider@lgcode/{providerID}@lgcode/oauth@lgcode/authorize", "provider.oauth.authorize")
+    .post("/provider/{providerID}/oauth/authorize", "provider.oauth.authorize")
     .at((ctx) => ({
-      path: route("@lgcode/provider@lgcode/{providerID}@lgcode/oauth@lgcode/authorize", { providerID: "httpapi" }),
+      path: route("/provider/{providerID}/oauth/authorize", { providerID: "httpapi" }),
       headers: ctx.headers(),
       body: { method: "bad" },
     }))
     .status(400),
   http.protected
-    .post("@lgcode/provider@lgcode/{providerID}@lgcode/oauth@lgcode/callback", "provider.oauth.callback")
+    .post("/provider/{providerID}/oauth/callback", "provider.oauth.callback")
     .at((ctx) => ({
-      path: route("@lgcode/provider@lgcode/{providerID}@lgcode/oauth@lgcode/callback", { providerID: "httpapi" }),
+      path: route("/provider/{providerID}/oauth/callback", { providerID: "httpapi" }),
       headers: ctx.headers(),
       body: { method: "bad" },
     }))
     .status(400),
-  http.protected.get("@lgcode/permission", "permission.list").json(200, array),
+  http.protected.get("/permission", "permission.list").json(200, array),
   http.protected
-    .post("@lgcode/permission@lgcode/{requestID}@lgcode/reply", "permission.reply.invalid")
+    .post("/permission/{requestID}/reply", "permission.reply.invalid")
     .at((ctx) => ({
-      path: route("@lgcode/permission@lgcode/{requestID}@lgcode/reply", { requestID: "per_httpapi" }),
+      path: route("/permission/{requestID}/reply", { requestID: "per_httpapi" }),
       headers: ctx.headers(),
       body: { reply: "bad" },
     }))
     .status(400),
   http.protected
-    .post("@lgcode/permission@lgcode/{requestID}@lgcode/reply", "permission.reply")
+    .post("/permission/{requestID}/reply", "permission.reply")
     .at((ctx) => ({
-      path: route("@lgcode/permission@lgcode/{requestID}@lgcode/reply", { requestID: "per_httpapi" }),
+      path: route("/permission/{requestID}/reply", { requestID: "per_httpapi" }),
       headers: ctx.headers(),
       body: { reply: "once" },
     }))
     .json(404, object, "status"),
-  http.protected.get("@lgcode/question", "question.list").json(200, array),
+  http.protected.get("/question", "question.list").json(200, array),
   http.protected
-    .post("@lgcode/question@lgcode/{requestID}@lgcode/reply", "question.reply.invalid")
+    .post("/question/{requestID}/reply", "question.reply.invalid")
     .at((ctx) => ({
-      path: route("@lgcode/question@lgcode/{requestID}@lgcode/reply", { requestID: "que_httpapi_reply" }),
+      path: route("/question/{requestID}/reply", { requestID: "que_httpapi_reply" }),
       headers: ctx.headers(),
       body: { answers: "Yes" },
     }))
     .status(400),
   http.protected
-    .post("@lgcode/question@lgcode/{requestID}@lgcode/reply", "question.reply")
+    .post("/question/{requestID}/reply", "question.reply")
     .at((ctx) => ({
-      path: route("@lgcode/question@lgcode/{requestID}@lgcode/reply", { requestID: "que_httpapi_reply" }),
+      path: route("/question/{requestID}/reply", { requestID: "que_httpapi_reply" }),
       headers: ctx.headers(),
       body: { answers: [["Yes"]] },
     }))
     .json(404, object, "status"),
   http.protected
-    .post("@lgcode/question@lgcode/{requestID}@lgcode/reject", "question.reject")
+    .post("/question/{requestID}/reject", "question.reject")
     .at((ctx) => ({
-      path: route("@lgcode/question@lgcode/{requestID}@lgcode/reject", { requestID: "que_httpapi_reject" }),
+      path: route("/question/{requestID}/reject", { requestID: "que_httpapi_reject" }),
       headers: ctx.headers(),
     }))
     .json(404, object, "status"),
   http.protected
-    .get("@lgcode/file", "file.list")
+    .get("/file", "file.list")
     .seeded((ctx) => ctx.file("hello.txt", "hello\n"))
-    .at((ctx) => ({ path: `@lgcode/file?${new URLSearchParams({ path: "." })}`, headers: ctx.headers() }))
+    .at((ctx) => ({ path: `/file?${new URLSearchParams({ path: "." })}`, headers: ctx.headers() }))
     .json(200, array),
   http.protected
-    .get("@lgcode/file@lgcode/content", "file.read")
+    .get("/file/content", "file.read")
     .seeded((ctx) => ctx.file("hello.txt", "hello\n"))
-    .at((ctx) => ({ path: `@lgcode/file@lgcode/content?${new URLSearchParams({ path: "hello.txt" })}`, headers: ctx.headers() }))
+    .at((ctx) => ({ path: `/file/content?${new URLSearchParams({ path: "hello.txt" })}`, headers: ctx.headers() }))
     .json(200, (body) => {
       object(body)
       check(body.content === "hello", `content should match seeded file: ${JSON.stringify(body)}`)
     }),
   http.protected
-    .get("@lgcode/file@lgcode/content", "file.read.missing")
-    .at((ctx) => ({ path: `@lgcode/file@lgcode/content?${new URLSearchParams({ path: "missing.txt" })}`, headers: ctx.headers() }))
+    .get("/file/content", "file.read.missing")
+    .at((ctx) => ({ path: `/file/content?${new URLSearchParams({ path: "missing.txt" })}`, headers: ctx.headers() }))
     .json(200, (body) => {
       object(body)
       check(body.type === "text" && body.content === "", "missing file content should return an empty text result")
     }),
-  http.protected.get("@lgcode/file@lgcode/status", "file.status").json(200, array),
+  http.protected.get("/file/status", "file.status").json(200, array),
   http.protected
-    .get("@lgcode/find", "find.text")
+    .get("/find", "find.text")
     .seeded((ctx) => ctx.file("hello.txt", "hello\n"))
-    .at((ctx) => ({ path: `@lgcode/find?${new URLSearchParams({ pattern: "hello" })}`, headers: ctx.headers() }))
+    .at((ctx) => ({ path: `/find?${new URLSearchParams({ pattern: "hello" })}`, headers: ctx.headers() }))
     .json(200, array),
   http.protected
-    .get("@lgcode/find@lgcode/file", "find.files")
+    .get("/find/file", "find.files")
     .seeded((ctx) => ctx.file("hello.txt", "hello\n"))
     .at((ctx) => ({
-      path: `@lgcode/find@lgcode/file?${new URLSearchParams({ query: "hello", dirs: "false" })}`,
+      path: `/find/file?${new URLSearchParams({ query: "hello", dirs: "false" })}`,
       headers: ctx.headers(),
     }))
     .json(200, array),
   http.protected
-    .get("@lgcode/find@lgcode/symbol", "find.symbols")
+    .get("/find/symbol", "find.symbols")
     .seeded((ctx) => ctx.file("hello.ts", "export const hello = 1\n"))
-    .at((ctx) => ({ path: `@lgcode/find@lgcode/symbol?${new URLSearchParams({ query: "hello" })}`, headers: ctx.headers() }))
+    .at((ctx) => ({ path: `/find/symbol?${new URLSearchParams({ query: "hello" })}`, headers: ctx.headers() }))
     .json(200, array),
   http.protected
-    .get("@lgcode/event", "event.stream")
+    .get("/event", "event.stream")
     .stream()
     .status(
       200,
       (_ctx, result) =>
         Effect.sync(() => {
-          check(result.contentType.includes("text@lgcode/event-stream"), "event should be an SSE stream")
+          check(result.contentType.includes("text/event-stream"), "event should be an SSE stream")
           check(result.text.includes("server.connected"), "event should emit initial connection event")
         }),
       "status",
     ),
-  http.protected.get("@lgcode/mcp", "mcp.status").json(),
+  http.protected.get("/mcp", "mcp.status").json(),
   http.protected
-    .post("@lgcode/mcp", "mcp.add")
+    .post("/mcp", "mcp.add")
     .mutating()
     .at((ctx) => ({
-      path: "@lgcode/mcp",
+      path: "/mcp",
       headers: ctx.headers(),
       body: { name: "httpapi-disabled", config: { type: "local", command: ["bun", "--version"], enabled: false } },
     }))
@@ -390,153 +390,153 @@ const scenarios: Scenario[] = [
       "status",
     ),
   http.protected
-    .post("@lgcode/mcp", "mcp.add.invalid")
+    .post("/mcp", "mcp.add.invalid")
     .at((ctx) => ({
-      path: "@lgcode/mcp",
+      path: "/mcp",
       headers: ctx.headers(),
       body: { name: "httpapi-invalid", config: { type: "invalid" } },
     }))
     .status(400),
   http.protected
-    .post("@lgcode/mcp@lgcode/{name}@lgcode/auth", "mcp.auth.start")
-    .at((ctx) => ({ path: route("@lgcode/mcp@lgcode/{name}@lgcode/auth", { name: "httpapi-missing" }), headers: ctx.headers() }))
+    .post("/mcp/{name}/auth", "mcp.auth.start")
+    .at((ctx) => ({ path: route("/mcp/{name}/auth", { name: "httpapi-missing" }), headers: ctx.headers() }))
     .json(404, object, "status"),
   http.protected
-    .delete("@lgcode/mcp@lgcode/{name}@lgcode/auth", "mcp.auth.remove")
+    .delete("/mcp/{name}/auth", "mcp.auth.remove")
     .mutating()
-    .at((ctx) => ({ path: route("@lgcode/mcp@lgcode/{name}@lgcode/auth", { name: "httpapi-missing" }), headers: ctx.headers() }))
+    .at((ctx) => ({ path: route("/mcp/{name}/auth", { name: "httpapi-missing" }), headers: ctx.headers() }))
     .json(404, object, "status"),
   http.protected
-    .post("@lgcode/mcp@lgcode/{name}@lgcode/auth@lgcode/authenticate", "mcp.auth.authenticate")
+    .post("/mcp/{name}/auth/authenticate", "mcp.auth.authenticate")
     .at((ctx) => ({
-      path: route("@lgcode/mcp@lgcode/{name}@lgcode/auth@lgcode/authenticate", { name: "httpapi-missing" }),
+      path: route("/mcp/{name}/auth/authenticate", { name: "httpapi-missing" }),
       headers: ctx.headers(),
     }))
     .json(404, object, "status"),
   http.protected
-    .post("@lgcode/mcp@lgcode/{name}@lgcode/auth@lgcode/callback", "mcp.auth.callback")
+    .post("/mcp/{name}/auth/callback", "mcp.auth.callback")
     .at((ctx) => ({
-      path: route("@lgcode/mcp@lgcode/{name}@lgcode/auth@lgcode/callback", { name: "httpapi-missing" }),
+      path: route("/mcp/{name}/auth/callback", { name: "httpapi-missing" }),
       headers: ctx.headers(),
       body: { code: "code" },
     }))
     .json(404, object, "status"),
   http.protected
-    .post("@lgcode/mcp@lgcode/{name}@lgcode/connect", "mcp.connect")
+    .post("/mcp/{name}/connect", "mcp.connect")
     .mutating()
-    .at((ctx) => ({ path: route("@lgcode/mcp@lgcode/{name}@lgcode/connect", { name: "httpapi-missing" }), headers: ctx.headers() }))
+    .at((ctx) => ({ path: route("/mcp/{name}/connect", { name: "httpapi-missing" }), headers: ctx.headers() }))
     .json(404, object, "status"),
   http.protected
-    .post("@lgcode/mcp@lgcode/{name}@lgcode/disconnect", "mcp.disconnect")
+    .post("/mcp/{name}/disconnect", "mcp.disconnect")
     .mutating()
-    .at((ctx) => ({ path: route("@lgcode/mcp@lgcode/{name}@lgcode/disconnect", { name: "httpapi-missing" }), headers: ctx.headers() }))
+    .at((ctx) => ({ path: route("/mcp/{name}/disconnect", { name: "httpapi-missing" }), headers: ctx.headers() }))
     .json(404, object, "status"),
-  http.protected.get("@lgcode/pty@lgcode/shells", "pty.shells").json(200, array),
-  http.protected.get("@lgcode/pty", "pty.list").json(200, array),
+  http.protected.get("/pty/shells", "pty.shells").json(200, array),
+  http.protected.get("/pty", "pty.list").json(200, array),
   http.protected
-    .post("@lgcode/pty", "pty.create")
+    .post("/pty", "pty.create")
     .mutating()
-    .at((ctx) => ({ path: "@lgcode/pty", headers: ctx.headers(), body: controlledPtyInput("HTTP API PTY") }))
+    .at((ctx) => ({ path: "/pty", headers: ctx.headers(), body: controlledPtyInput("HTTP API PTY") }))
     .json(
       200,
       (body, ctx) => {
         object(body)
         check(body.title === "HTTP API PTY", "PTY create should return requested title")
-        check(body.command === "@lgcode/bin@lgcode/sh", "PTY create should use controlled shell command")
+        check(body.command === "/bin/sh", "PTY create should use controlled shell command")
         check(body.cwd === ctx.directory, "PTY create should default cwd to scenario directory")
       },
       "status",
     ),
   http.protected
-    .post("@lgcode/pty", "pty.create.invalid")
-    .at((ctx) => ({ path: "@lgcode/pty", headers: ctx.headers(), body: { command: 1 } }))
+    .post("/pty", "pty.create.invalid")
+    .at((ctx) => ({ path: "/pty", headers: ctx.headers(), body: { command: 1 } }))
     .status(400),
   http.protected
-    .post("@lgcode/pty@lgcode/{ptyID}@lgcode/connect-token", "pty.connectToken.invalid")
+    .post("/pty/{ptyID}/connect-token", "pty.connectToken.invalid")
     .at((ctx) => ({
-      path: route("@lgcode/pty@lgcode/{ptyID}@lgcode/connect-token", { ptyID: "pty_httpapi_missing" }),
+      path: route("/pty/{ptyID}/connect-token", { ptyID: "pty_httpapi_missing" }),
       headers: ctx.headers(),
     }))
     .status(403, undefined, "status"),
   http.protected
-    .get("@lgcode/pty@lgcode/{ptyID}", "pty.get")
-    .at((ctx) => ({ path: route("@lgcode/pty@lgcode/{ptyID}", { ptyID: "pty_httpapi_missing" }), headers: ctx.headers() }))
+    .get("/pty/{ptyID}", "pty.get")
+    .at((ctx) => ({ path: route("/pty/{ptyID}", { ptyID: "pty_httpapi_missing" }), headers: ctx.headers() }))
     .status(404),
   http.protected
-    .put("@lgcode/pty@lgcode/{ptyID}", "pty.update")
+    .put("/pty/{ptyID}", "pty.update")
     .mutating()
     .at((ctx) => ({
-      path: route("@lgcode/pty@lgcode/{ptyID}", { ptyID: "pty_httpapi_missing" }),
+      path: route("/pty/{ptyID}", { ptyID: "pty_httpapi_missing" }),
       headers: ctx.headers(),
       body: { size: { rows: 0, cols: 0 } },
     }))
     .status(400),
   http.protected
-    .delete("@lgcode/pty@lgcode/{ptyID}", "pty.remove")
+    .delete("/pty/{ptyID}", "pty.remove")
     .mutating()
-    .at((ctx) => ({ path: route("@lgcode/pty@lgcode/{ptyID}", { ptyID: "pty_httpapi_missing" }), headers: ctx.headers() }))
+    .at((ctx) => ({ path: route("/pty/{ptyID}", { ptyID: "pty_httpapi_missing" }), headers: ctx.headers() }))
     .json(404, object, "status"),
   http.protected
-    .get("@lgcode/pty@lgcode/{ptyID}@lgcode/connect", "pty.connect")
-    .at((ctx) => ({ path: route("@lgcode/pty@lgcode/{ptyID}@lgcode/connect", { ptyID: "pty_httpapi_missing" }), headers: ctx.headers() }))
+    .get("/pty/{ptyID}/connect", "pty.connect")
+    .at((ctx) => ({ path: route("/pty/{ptyID}/connect", { ptyID: "pty_httpapi_missing" }), headers: ctx.headers() }))
     .status(404, undefined, "none"),
-  http.protected.get("@lgcode/experimental@lgcode/console", "experimental.console.get").json(),
-  http.protected.get("@lgcode/experimental@lgcode/console@lgcode/orgs", "experimental.console.listOrgs").json(),
+  http.protected.get("/experimental/console", "experimental.console.get").json(),
+  http.protected.get("/experimental/console/orgs", "experimental.console.listOrgs").json(),
   http.protected
-    .post("@lgcode/experimental@lgcode/console@lgcode/switch", "experimental.console.switchOrg")
+    .post("/experimental/console/switch", "experimental.console.switchOrg")
     .at((ctx) => ({
-      path: "@lgcode/experimental@lgcode/console@lgcode/switch",
+      path: "/experimental/console/switch",
       headers: ctx.headers(),
       body: { accountID: "httpapi-account", orgID: "httpapi-org" },
     }))
     .status(400, undefined, "none"),
-  http.protected.get("@lgcode/experimental@lgcode/workspace@lgcode/adapter", "experimental.workspace.adapter.list").json(200, array),
-  http.protected.get("@lgcode/experimental@lgcode/workspace", "experimental.workspace.list").json(200, array),
-  http.protected.get("@lgcode/experimental@lgcode/workspace@lgcode/status", "experimental.workspace.status").json(200, array),
+  http.protected.get("/experimental/workspace/adapter", "experimental.workspace.adapter.list").json(200, array),
+  http.protected.get("/experimental/workspace", "experimental.workspace.list").json(200, array),
+  http.protected.get("/experimental/workspace/status", "experimental.workspace.status").json(200, array),
   http.protected
-    .post("@lgcode/experimental@lgcode/workspace", "experimental.workspace.create")
-    .at((ctx) => ({ path: "@lgcode/experimental@lgcode/workspace", headers: ctx.headers(), body: {} }))
+    .post("/experimental/workspace", "experimental.workspace.create")
+    .at((ctx) => ({ path: "/experimental/workspace", headers: ctx.headers(), body: {} }))
     .status(400),
   http.protected
-    .post("@lgcode/experimental@lgcode/workspace@lgcode/sync-list", "experimental.workspace.syncList")
+    .post("/experimental/workspace/sync-list", "experimental.workspace.syncList")
     .status(204, undefined, "status"),
   http.protected
-    .delete("@lgcode/experimental@lgcode/workspace@lgcode/{id}", "experimental.workspace.remove")
+    .delete("/experimental/workspace/{id}", "experimental.workspace.remove")
     .mutating()
     .at((ctx) => ({
-      path: route("@lgcode/experimental@lgcode/workspace@lgcode/{id}", { id: "wrk_httpapi_missing" }),
+      path: route("/experimental/workspace/{id}", { id: "wrk_httpapi_missing" }),
       headers: ctx.headers(),
     }))
     .status(200),
   http.protected
-    .post("@lgcode/experimental@lgcode/workspace@lgcode/warp", "experimental.workspace.warp")
+    .post("/experimental/workspace/warp", "experimental.workspace.warp")
     .at((ctx) => ({
-      path: "@lgcode/experimental@lgcode/workspace@lgcode/warp",
+      path: "/experimental/workspace/warp",
       headers: ctx.headers(),
       body: {},
     }))
     .status(400),
   http.protected
-    .post("@lgcode/experimental@lgcode/control-plane@lgcode/move-session", "experimental.controlPlane.moveSession")
+    .post("/experimental/control-plane/move-session", "experimental.controlPlane.moveSession")
     .global()
     .at(() => ({
-      path: "@lgcode/experimental@lgcode/control-plane@lgcode/move-session",
+      path: "/experimental/control-plane/move-session",
       body: {},
     }))
     .status(400),
   http.protected
-    .get("@lgcode/experimental@lgcode/tool", "tool.list")
+    .get("/experimental/tool", "tool.list")
     .at((ctx) => ({
-      path: `@lgcode/experimental@lgcode/tool?${new URLSearchParams({ provider: "opencode", model: "test" })}`,
+      path: `/experimental/tool?${new URLSearchParams({ provider: "opencode", model: "test" })}`,
       headers: ctx.headers(),
     }))
     .json(200, array, "status"),
-  http.protected.get("@lgcode/experimental@lgcode/tool@lgcode/ids", "tool.ids").json(200, array),
-  http.protected.get("@lgcode/experimental@lgcode/worktree", "worktree.list").json(200, array),
+  http.protected.get("/experimental/tool/ids", "tool.ids").json(200, array),
+  http.protected.get("/experimental/worktree", "worktree.list").json(200, array),
   http.protected
-    .post("@lgcode/experimental@lgcode/worktree", "worktree.create")
+    .post("/experimental/worktree", "worktree.create")
     .mutating()
-    .at((ctx) => ({ path: "@lgcode/experimental@lgcode/worktree", headers: ctx.headers(), body: { name: "api-dsl" } }))
+    .at((ctx) => ({ path: "/experimental/worktree", headers: ctx.headers(), body: { name: "api-dsl" } }))
     .jsonEffect(
       200,
       (body, ctx) =>
@@ -548,23 +548,23 @@ const scenarios: Scenario[] = [
       "status",
     ),
   http.protected
-    .post("@lgcode/experimental@lgcode/worktree", "worktree.create.invalid")
-    .at((ctx) => ({ path: "@lgcode/experimental@lgcode/worktree", headers: ctx.headers(), body: { name: 1 } }))
+    .post("/experimental/worktree", "worktree.create.invalid")
+    .at((ctx) => ({ path: "/experimental/worktree", headers: ctx.headers(), body: { name: 1 } }))
     .status(400),
   http.protected
-    .delete("@lgcode/experimental@lgcode/worktree", "worktree.remove")
+    .delete("/experimental/worktree", "worktree.remove")
     .mutating()
     .seeded((ctx) => ctx.worktree({ name: "api-remove" }))
-    .at((ctx) => ({ path: "@lgcode/experimental@lgcode/worktree", headers: ctx.headers(), body: { directory: ctx.state.directory } }))
+    .at((ctx) => ({ path: "/experimental/worktree", headers: ctx.headers(), body: { directory: ctx.state.directory } }))
     .json(200, (body) => {
       check(body === true, "worktree remove should return true")
     }),
   http.protected
-    .post("@lgcode/experimental@lgcode/worktree@lgcode/reset", "worktree.reset")
+    .post("/experimental/worktree/reset", "worktree.reset")
     .mutating()
     .seeded((ctx) => ctx.worktree({ name: "api-reset" }))
     .at((ctx) => ({
-      path: "@lgcode/experimental@lgcode/worktree@lgcode/reset",
+      path: "/experimental/worktree/reset",
       headers: ctx.headers(),
       body: { directory: ctx.state.directory },
     }))
@@ -575,57 +575,57 @@ const scenarios: Scenario[] = [
       }),
     ),
   http.protected
-    .get("@lgcode/experimental@lgcode/session", "experimental.session.list")
-    .at((ctx) => ({ path: "@lgcode/experimental@lgcode/session?roots=false&archived=false", headers: ctx.headers() }))
+    .get("/experimental/session", "experimental.session.list")
+    .at((ctx) => ({ path: "/experimental/session?roots=false&archived=false", headers: ctx.headers() }))
     .json(200, array),
   http.protected
-    .post("@lgcode/experimental@lgcode/session@lgcode/{sessionID}@lgcode/background", "experimental.session.background")
+    .post("/experimental/session/{sessionID}/background", "experimental.session.background")
     .mutating()
     .seeded((ctx) => ctx.session({ title: "Background route owner" }))
     .at((ctx) => ({
-      path: route("@lgcode/experimental@lgcode/session@lgcode/{sessionID}@lgcode/background", { sessionID: ctx.state.id }),
+      path: route("/experimental/session/{sessionID}/background", { sessionID: ctx.state.id }),
       headers: ctx.headers(),
     }))
     .json(200, (body) => {
       check(body === false, "background route should be a no-op without running subagents")
     }),
-  http.protected.get("@lgcode/experimental@lgcode/resource", "experimental.resource.list").json(),
+  http.protected.get("/experimental/resource", "experimental.resource.list").json(),
   http.protected
-    .post("@lgcode/sync@lgcode/history", "sync.history.list")
-    .at((ctx) => ({ path: "@lgcode/sync@lgcode/history", headers: ctx.headers(), body: {} }))
+    .post("/sync/history", "sync.history.list")
+    .at((ctx) => ({ path: "/sync/history", headers: ctx.headers(), body: {} }))
     .json(200, array),
   http.protected
-    .post("@lgcode/sync@lgcode/replay", "sync.replay")
-    .at((ctx) => ({ path: "@lgcode/sync@lgcode/replay", headers: ctx.headers(), body: { directory: ctx.directory, events: [] } }))
+    .post("/sync/replay", "sync.replay")
+    .at((ctx) => ({ path: "/sync/replay", headers: ctx.headers(), body: { directory: ctx.directory, events: [] } }))
     .status(400),
   http.protected
-    .post("@lgcode/sync@lgcode/steal", "sync.steal.invalid")
-    .at((ctx) => ({ path: "@lgcode/sync@lgcode/steal", headers: ctx.headers(), body: {} }))
+    .post("/sync/steal", "sync.steal.invalid")
+    .at((ctx) => ({ path: "/sync/steal", headers: ctx.headers(), body: {} }))
     .status(400, undefined, "status"),
   http.protected
-    .post("@lgcode/sync@lgcode/start", "sync.start")
+    .post("/sync/start", "sync.start")
     .mutating()
     .preserveDatabase()
     .json(200, (body) => {
       check(body === true, "sync start should return true when no workspace sessions exist")
     }),
   http.protected
-    .post("@lgcode/instance@lgcode/dispose", "instance.dispose")
+    .post("/instance/dispose", "instance.dispose")
     .mutating()
     .json(200, (body) => {
       check(body === true, "instance dispose should return true")
     }),
   http.protected
-    .post("@lgcode/log", "app.log")
+    .post("/log", "app.log")
     .global()
-    .at(() => ({ path: "@lgcode/log", body: { service: "httpapi-exercise", level: "info", message: "route coverage" } }))
+    .at(() => ({ path: "/log", body: { service: "httpapi-exercise", level: "info", message: "route coverage" } }))
     .json(200, (body) => {
       check(body === true, "log route should return true")
     }),
   http.protected
-    .put("@lgcode/auth@lgcode/{providerID}", "auth.set")
+    .put("/auth/{providerID}", "auth.set")
     .global()
-    .at(() => ({ path: route("@lgcode/auth@lgcode/{providerID}", { providerID: "test" }), body: { type: "api", key: "test-key" } }))
+    .at(() => ({ path: route("/auth/{providerID}", { providerID: "test" }), body: { type: "api", key: "test-key" } }))
     .jsonEffect(200, (body) =>
       Effect.gen(function* () {
         check(body === true, "auth set should return true")
@@ -635,7 +635,7 @@ const scenarios: Scenario[] = [
       }),
     ),
   http.protected
-    .delete("@lgcode/auth@lgcode/{providerID}", "auth.remove")
+    .delete("/auth/{providerID}", "auth.remove")
     .global()
     .seeded(() =>
       Effect.promise(() =>
@@ -645,7 +645,7 @@ const scenarios: Scenario[] = [
         ),
       ),
     )
-    .at(() => ({ path: route("@lgcode/auth@lgcode/{providerID}", { providerID: "test" }) }))
+    .at(() => ({ path: route("/auth/{providerID}", { providerID: "test" }) }))
     .jsonEffect(200, (body) =>
       Effect.gen(function* () {
         check(body === true, "auth remove should return true")
@@ -654,183 +654,183 @@ const scenarios: Scenario[] = [
         check(auth.test === undefined, "auth remove should delete provider from isolated auth file")
       }),
     ),
-  http.protected.get("@lgcode/api@lgcode/health", "v2.health.get").json(200, (body) => {
+  http.protected.get("/api/health", "v2.health.get").json(200, (body) => {
     object(body)
     check(body.healthy === true, "v2 server should report healthy")
   }),
-  http.protected.get("@lgcode/api@lgcode/location", "v2.location.get").json(200, object),
-  http.protected.get("@lgcode/api@lgcode/agent", "v2.agent.list").json(200, locationData(array)),
-  http.protected.get("@lgcode/api@lgcode/model", "v2.model.list").json(200, locationData(array)),
-  http.protected.get("@lgcode/api@lgcode/provider", "v2.provider.list").json(200, locationData(array)),
-  http.protected.get("@lgcode/api@lgcode/integration", "v2.integration.list").json(200, locationData(array)),
+  http.protected.get("/api/location", "v2.location.get").json(200, object),
+  http.protected.get("/api/agent", "v2.agent.list").json(200, locationData(array)),
+  http.protected.get("/api/model", "v2.model.list").json(200, locationData(array)),
+  http.protected.get("/api/provider", "v2.provider.list").json(200, locationData(array)),
+  http.protected.get("/api/integration", "v2.integration.list").json(200, locationData(array)),
   http.protected
-    .get("@lgcode/api@lgcode/integration@lgcode/{integrationID}", "v2.integration.get")
+    .get("/api/integration/{integrationID}", "v2.integration.get")
     .at((ctx) => ({
-      path: route("@lgcode/api@lgcode/integration@lgcode/{integrationID}", { integrationID: "missing" }),
+      path: route("/api/integration/{integrationID}", { integrationID: "missing" }),
       headers: ctx.headers(),
     }))
     .json(200, object),
   http.protected
-    .post("@lgcode/api@lgcode/integration@lgcode/{integrationID}@lgcode/connect@lgcode/key", "v2.integration.connect.key")
+    .post("/api/integration/{integrationID}/connect/key", "v2.integration.connect.key")
     .at((ctx) => ({
-      path: route("@lgcode/api@lgcode/integration@lgcode/{integrationID}@lgcode/connect@lgcode/key", { integrationID: "missing" }),
+      path: route("/api/integration/{integrationID}/connect/key", { integrationID: "missing" }),
       headers: ctx.headers(),
       body: { key: "test" },
     }))
     .status(500, undefined, "status"),
   http.protected
-    .post("@lgcode/api@lgcode/integration@lgcode/{integrationID}@lgcode/connect@lgcode/oauth", "v2.integration.connect.oauth")
+    .post("/api/integration/{integrationID}/connect/oauth", "v2.integration.connect.oauth")
     .at((ctx) => ({
-      path: route("@lgcode/api@lgcode/integration@lgcode/{integrationID}@lgcode/connect@lgcode/oauth", { integrationID: "missing" }),
+      path: route("/api/integration/{integrationID}/connect/oauth", { integrationID: "missing" }),
       headers: ctx.headers(),
       body: { methodID: "missing", inputs: {} },
     }))
     .status(500, undefined, "status"),
   http.protected
-    .get("@lgcode/api@lgcode/integration@lgcode/attempt@lgcode/{attemptID}", "v2.integration.attempt.status")
+    .get("/api/integration/attempt/{attemptID}", "v2.integration.attempt.status")
     .at((ctx) => ({
-      path: route("@lgcode/api@lgcode/integration@lgcode/attempt@lgcode/{attemptID}", { attemptID: "con_missing" }),
+      path: route("/api/integration/attempt/{attemptID}", { attemptID: "con_missing" }),
       headers: ctx.headers(),
     }))
     .status(500, undefined, "status"),
   http.protected
-    .post("@lgcode/api@lgcode/integration@lgcode/attempt@lgcode/{attemptID}@lgcode/complete", "v2.integration.attempt.complete")
+    .post("/api/integration/attempt/{attemptID}/complete", "v2.integration.attempt.complete")
     .at((ctx) => ({
-      path: route("@lgcode/api@lgcode/integration@lgcode/attempt@lgcode/{attemptID}@lgcode/complete", { attemptID: "con_missing" }),
+      path: route("/api/integration/attempt/{attemptID}/complete", { attemptID: "con_missing" }),
       headers: ctx.headers(),
       body: {},
     }))
     .status(500, undefined, "status"),
   http.protected
-    .delete("@lgcode/api@lgcode/integration@lgcode/attempt@lgcode/{attemptID}", "v2.integration.attempt.cancel")
+    .delete("/api/integration/attempt/{attemptID}", "v2.integration.attempt.cancel")
     .at((ctx) => ({
-      path: route("@lgcode/api@lgcode/integration@lgcode/attempt@lgcode/{attemptID}", { attemptID: "con_missing" }),
+      path: route("/api/integration/attempt/{attemptID}", { attemptID: "con_missing" }),
       headers: ctx.headers(),
     }))
     .status(204, undefined, "status"),
   http.protected
-    .delete("@lgcode/api@lgcode/credential@lgcode/{credentialID}", "v2.credential.remove")
+    .delete("/api/credential/{credentialID}", "v2.credential.remove")
     .at((ctx) => ({
-      path: route("@lgcode/api@lgcode/credential@lgcode/{credentialID}", { credentialID: "cred_missing" }),
+      path: route("/api/credential/{credentialID}", { credentialID: "cred_missing" }),
       headers: ctx.headers(),
     }))
     .status(204, undefined, "status"),
   http.protected
-    .patch("@lgcode/api@lgcode/credential@lgcode/{credentialID}", "v2.credential.update")
+    .patch("/api/credential/{credentialID}", "v2.credential.update")
     .at((ctx) => ({
-      path: route("@lgcode/api@lgcode/credential@lgcode/{credentialID}", { credentialID: "cred_missing" }),
+      path: route("/api/credential/{credentialID}", { credentialID: "cred_missing" }),
       headers: ctx.headers(),
       body: { label: "Work" },
     }))
     .status(204, undefined, "status"),
-  http.protected.get("@lgcode/api@lgcode/command", "v2.command.list").json(200, locationData(array)),
-  http.protected.get("@lgcode/api@lgcode/skill", "v2.skill.list").json(200, locationData(array)),
+  http.protected.get("/api/command", "v2.command.list").json(200, locationData(array)),
+  http.protected.get("/api/skill", "v2.skill.list").json(200, locationData(array)),
   http.protected
-    .get("@lgcode/api@lgcode/event", "v2.event.subscribe")
+    .get("/api/event", "v2.event.subscribe")
     .stream()
     .status(
       200,
       (ctx, result) =>
         Effect.sync(() => {
-          check(result.contentType.includes("text@lgcode/event-stream"), "v2 event should be an SSE stream")
+          check(result.contentType.includes("text/event-stream"), "v2 event should be an SSE stream")
           check(result.text.includes("server.connected"), "v2 event should emit initial connection event")
           check(!!ctx.directory && result.text.includes(ctx.directory), "v2 event should include the resolved location")
         }),
       "status",
     ),
   http.protected
-    .get("@lgcode/api@lgcode/fs@lgcode/read@lgcode/*", "v2.fs.read")
+    .get("/api/fs/read/*", "v2.fs.read")
     .seeded((ctx) => ctx.file("hello.txt", "hello\n"))
-    .at((ctx) => ({ path: "@lgcode/api@lgcode/fs@lgcode/read@lgcode/hello.txt", headers: ctx.headers() }))
+    .at((ctx) => ({ path: "/api/fs/read/hello.txt", headers: ctx.headers() }))
     .status(
       200,
       (_ctx, result) =>
         Effect.sync(() => {
           check(result.text === "hello\n", "v2 fs read should return the file body")
-          check(result.contentType.includes("text@lgcode/plain"), "v2 fs read should return the file content type")
+          check(result.contentType.includes("text/plain"), "v2 fs read should return the file content type")
         }),
       "status",
     ),
-  http.protected.get("@lgcode/api@lgcode/fs@lgcode/list", "v2.fs.list").json(200, locationData(array)),
+  http.protected.get("/api/fs/list", "v2.fs.list").json(200, locationData(array)),
   http.protected
-    .get("@lgcode/api@lgcode/fs@lgcode/find", "v2.fs.find")
+    .get("/api/fs/find", "v2.fs.find")
     .seeded((ctx) => ctx.file("hello.txt", "hello\n"))
-    .at((ctx) => ({ path: "@lgcode/api@lgcode/fs@lgcode/find?query=hello&type=file", headers: ctx.headers() }))
+    .at((ctx) => ({ path: "/api/fs/find?query=hello&type=file", headers: ctx.headers() }))
     .json(200, locationData(array)),
-  http.protected.get("@lgcode/api@lgcode/pty", "v2.pty.list").json(200, locationData(array)),
+  http.protected.get("/api/pty", "v2.pty.list").json(200, locationData(array)),
   http.protected
-    .post("@lgcode/api@lgcode/pty", "v2.pty.create")
+    .post("/api/pty", "v2.pty.create")
     .mutating()
-    .at((ctx) => ({ path: "@lgcode/api@lgcode/pty", headers: ctx.headers(), body: controlledPtyInput("HTTP API V2 PTY") }))
+    .at((ctx) => ({ path: "/api/pty", headers: ctx.headers(), body: controlledPtyInput("HTTP API V2 PTY") }))
     .json(200, locationData(object)),
   http.protected
-    .get("@lgcode/api@lgcode/pty@lgcode/{ptyID}", "v2.pty.get")
-    .at((ctx) => ({ path: route("@lgcode/api@lgcode/pty@lgcode/{ptyID}", { ptyID: "pty_httpapi_missing" }), headers: ctx.headers() }))
+    .get("/api/pty/{ptyID}", "v2.pty.get")
+    .at((ctx) => ({ path: route("/api/pty/{ptyID}", { ptyID: "pty_httpapi_missing" }), headers: ctx.headers() }))
     .json(404, object, "status"),
   http.protected
-    .put("@lgcode/api@lgcode/pty@lgcode/{ptyID}", "v2.pty.update")
+    .put("/api/pty/{ptyID}", "v2.pty.update")
     .mutating()
     .at((ctx) => ({
-      path: route("@lgcode/api@lgcode/pty@lgcode/{ptyID}", { ptyID: "pty_httpapi_missing" }),
+      path: route("/api/pty/{ptyID}", { ptyID: "pty_httpapi_missing" }),
       headers: ctx.headers(),
       body: { title: "missing" },
     }))
     .json(404, object, "status"),
   http.protected
-    .delete("@lgcode/api@lgcode/pty@lgcode/{ptyID}", "v2.pty.remove")
+    .delete("/api/pty/{ptyID}", "v2.pty.remove")
     .mutating()
-    .at((ctx) => ({ path: route("@lgcode/api@lgcode/pty@lgcode/{ptyID}", { ptyID: "pty_httpapi_missing" }), headers: ctx.headers() }))
+    .at((ctx) => ({ path: route("/api/pty/{ptyID}", { ptyID: "pty_httpapi_missing" }), headers: ctx.headers() }))
     .json(404, object, "status"),
   http.protected
-    .post("@lgcode/api@lgcode/pty@lgcode/{ptyID}@lgcode/connect-token", "v2.pty.connectToken")
+    .post("/api/pty/{ptyID}/connect-token", "v2.pty.connectToken")
     .at((ctx) => ({
-      path: route("@lgcode/api@lgcode/pty@lgcode/{ptyID}@lgcode/connect-token", { ptyID: "pty_httpapi_missing" }),
+      path: route("/api/pty/{ptyID}/connect-token", { ptyID: "pty_httpapi_missing" }),
       headers: { ...ctx.headers(), "x-opencode-ticket": "1" },
     }))
     .json(404, object, "status"),
   http.protected
-    .get("@lgcode/api@lgcode/pty@lgcode/{ptyID}@lgcode/connect", "v2.pty.connect")
+    .get("/api/pty/{ptyID}/connect", "v2.pty.connect")
     .at((ctx) => ({
-      path: route("@lgcode/api@lgcode/pty@lgcode/{ptyID}@lgcode/connect", { ptyID: "pty_httpapi_missing" }),
+      path: route("/api/pty/{ptyID}/connect", { ptyID: "pty_httpapi_missing" }),
       headers: ctx.headers(),
     }))
     .status(404, undefined, "none"),
-  http.protected.get("@lgcode/api@lgcode/reference", "v2.reference.list").json(200, object),
+  http.protected.get("/api/reference", "v2.reference.list").json(200, object),
   http.protected
-    .get("@lgcode/api@lgcode/provider@lgcode/{providerID}", "v2.provider.get")
-    .at((ctx) => ({ path: route("@lgcode/api@lgcode/provider@lgcode/{providerID}", { providerID: "missing" }), headers: ctx.headers() }))
+    .get("/api/provider/{providerID}", "v2.provider.get")
+    .at((ctx) => ({ path: route("/api/provider/{providerID}", { providerID: "missing" }), headers: ctx.headers() }))
     .json(404, object, "status"),
-  http.protected.get("@lgcode/api@lgcode/permission@lgcode/request", "v2.permission.request.list").json(200, (body) => {
+  http.protected.get("/api/permission/request", "v2.permission.request.list").json(200, (body) => {
     object(body)
     object(body.location)
     array(body.data)
   }),
-  http.protected.get("@lgcode/api@lgcode/question@lgcode/request", "v2.question.request.list").json(200, (body) => {
+  http.protected.get("/api/question/request", "v2.question.request.list").json(200, (body) => {
     object(body)
     object(body.location)
     array(body.data)
   }),
   http.protected
-    .get("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/permission", "v2.session.permission.list")
+    .get("/api/session/{sessionID}/permission", "v2.session.permission.list")
     .seeded((ctx) => ctx.session({ title: "Permission list owner" }))
     .at((ctx) => ({
-      path: route("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/permission", { sessionID: ctx.state.id }),
+      path: route("/api/session/{sessionID}/permission", { sessionID: ctx.state.id }),
       headers: ctx.headers(),
     }))
     .json(200, data(array)),
   http.protected
-    .get("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/question", "v2.session.question.list")
+    .get("/api/session/{sessionID}/question", "v2.session.question.list")
     .seeded((ctx) => ctx.session({ title: "Question list owner" }))
     .at((ctx) => ({
-      path: route("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/question", { sessionID: ctx.state.id }),
+      path: route("/api/session/{sessionID}/question", { sessionID: ctx.state.id }),
       headers: ctx.headers(),
     }))
     .json(200, data(array)),
   http.protected
-    .post("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/permission@lgcode/{requestID}@lgcode/reply", "v2.session.permission.reply")
+    .post("/api/session/{sessionID}/permission/{requestID}/reply", "v2.session.permission.reply")
     .seeded((ctx) => ctx.session({ title: "Permission owner" }))
     .at((ctx) => ({
-      path: route("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/permission@lgcode/{requestID}@lgcode/reply", {
+      path: route("/api/session/{sessionID}/permission/{requestID}/reply", {
         sessionID: ctx.state.id,
         requestID: "per_httpapi_missing",
       }),
@@ -839,10 +839,10 @@ const scenarios: Scenario[] = [
     }))
     .json(404, object, "status"),
   http.protected
-    .post("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/question@lgcode/{requestID}@lgcode/reply", "v2.session.question.reply")
+    .post("/api/session/{sessionID}/question/{requestID}/reply", "v2.session.question.reply")
     .seeded((ctx) => ctx.session({ title: "Question reply owner" }))
     .at((ctx) => ({
-      path: route("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/question@lgcode/{requestID}@lgcode/reply", {
+      path: route("/api/session/{sessionID}/question/{requestID}/reply", {
         sessionID: ctx.state.id,
         requestID: "que_httpapi_missing",
       }),
@@ -851,27 +851,27 @@ const scenarios: Scenario[] = [
     }))
     .json(404, object, "status"),
   http.protected
-    .post("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/question@lgcode/{requestID}@lgcode/reject", "v2.session.question.reject")
+    .post("/api/session/{sessionID}/question/{requestID}/reject", "v2.session.question.reject")
     .seeded((ctx) => ctx.session({ title: "Question reject owner" }))
     .at((ctx) => ({
-      path: route("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/question@lgcode/{requestID}@lgcode/reject", {
+      path: route("/api/session/{sessionID}/question/{requestID}/reject", {
         sessionID: ctx.state.id,
         requestID: "que_httpapi_missing",
       }),
       headers: ctx.headers(),
     }))
     .json(404, object, "status"),
-  http.protected.get("@lgcode/api@lgcode/permission@lgcode/saved", "v2.permission.saved.list").json(200, (body) => {
+  http.protected.get("/api/permission/saved", "v2.permission.saved.list").json(200, (body) => {
     object(body)
     array(body.data)
   }),
   http.protected
-    .delete("@lgcode/api@lgcode/permission@lgcode/saved@lgcode/{id}", "v2.permission.saved.remove")
-    .at((ctx) => ({ path: route("@lgcode/api@lgcode/permission@lgcode/saved@lgcode/{id}", { id: "psv_httpapi_missing" }), headers: ctx.headers() }))
+    .delete("/api/permission/saved/{id}", "v2.permission.saved.remove")
+    .at((ctx) => ({ path: route("/api/permission/saved/{id}", { id: "psv_httpapi_missing" }), headers: ctx.headers() }))
     .status(204, undefined, "status"),
   http.protected
-    .get("@lgcode/api@lgcode/session", "v2.session.list")
-    .at((ctx) => ({ path: "@lgcode/api@lgcode/session?roots=true", headers: ctx.headers() }))
+    .get("/api/session", "v2.session.list")
+    .at((ctx) => ({ path: "/api/session?roots=true", headers: ctx.headers() }))
     .json(
       200,
       (body) => {
@@ -882,9 +882,9 @@ const scenarios: Scenario[] = [
       "none",
     ),
   http.protected
-    .get("@lgcode/api@lgcode/session", "v2.session.list.filters")
+    .get("/api/session", "v2.session.list.filters")
     .at((ctx) => ({
-      path: `@lgcode/api@lgcode/session?${new URLSearchParams({
+      path: `/api/session?${new URLSearchParams({
         limit: "2",
         order: "asc",
         path: ".",
@@ -905,9 +905,9 @@ const scenarios: Scenario[] = [
       "none",
     ),
   http.protected
-    .get("@lgcode/api@lgcode/session", "v2.session.list.cursor")
+    .get("/api/session", "v2.session.list.cursor")
     .at((ctx) => ({
-      path: `@lgcode/api@lgcode/session?${new URLSearchParams({
+      path: `/api/session?${new URLSearchParams({
         limit: "2",
         cursor: cursor({
           order: "desc",
@@ -927,48 +927,48 @@ const scenarios: Scenario[] = [
       "none",
     ),
   http.protected
-    .get("@lgcode/api@lgcode/session", "v2.session.list.cursor.invalid")
+    .get("/api/session", "v2.session.list.cursor.invalid")
     .at((ctx) => ({
-      path: `@lgcode/api@lgcode/session?${new URLSearchParams({
+      path: `/api/session?${new URLSearchParams({
         cursor: "invalid",
       })}`,
       headers: ctx.headers(),
     }))
     .status(400, undefined, "none"),
   http.protected
-    .post("@lgcode/api@lgcode/session", "v2.session.create")
+    .post("/api/session", "v2.session.create")
     .at((ctx) => ({
-      path: "@lgcode/api@lgcode/session",
-      headers: { ...ctx.headers(), "content-type": "application@lgcode/json" },
+      path: "/api/session",
+      headers: { ...ctx.headers(), "content-type": "application/json" },
       body: {},
     }))
     .json(200, data(object)),
   http.protected
-    .get("@lgcode/api@lgcode/session@lgcode/{sessionID}", "v2.session.get")
+    .get("/api/session/{sessionID}", "v2.session.get")
     .seeded((ctx) => ctx.session({ title: "Session get" }))
     .at((ctx) => ({
-      path: route("@lgcode/api@lgcode/session@lgcode/{sessionID}", { sessionID: ctx.state.id }),
+      path: route("/api/session/{sessionID}", { sessionID: ctx.state.id }),
       headers: ctx.headers(),
     }))
     .json(200, data(object)),
   http.protected
-    .get("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/context", "v2.session.context")
+    .get("/api/session/{sessionID}/context", "v2.session.context")
     .at((ctx) => ({
-      path: route("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/context", { sessionID: "ses_httpapi_missing" }),
+      path: route("/api/session/{sessionID}/context", { sessionID: "ses_httpapi_missing" }),
       headers: ctx.headers(),
     }))
     .json(404, object, "status"),
   http.protected
-    .get("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/message", "v2.session.messages")
+    .get("/api/session/{sessionID}/message", "v2.session.messages")
     .at((ctx) => ({
-      path: route("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/message", { sessionID: "ses_httpapi_missing" }),
+      path: route("/api/session/{sessionID}/message", { sessionID: "ses_httpapi_missing" }),
       headers: ctx.headers(),
     }))
     .json(404, object, "status"),
   http.protected
-    .get("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/message", "v2.session.messages.params")
+    .get("/api/session/{sessionID}/message", "v2.session.messages.params")
     .at((ctx) => ({
-      path: `${route("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/message", { sessionID: "ses_httpapi_missing" })}?${new URLSearchParams({
+      path: `${route("/api/session/{sessionID}/message", { sessionID: "ses_httpapi_missing" })}?${new URLSearchParams({
         limit: "2",
         order: "asc",
       })}`,
@@ -976,9 +976,9 @@ const scenarios: Scenario[] = [
     }))
     .json(404, object, "status"),
   http.protected
-    .get("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/message", "v2.session.messages.cursor")
+    .get("/api/session/{sessionID}/message", "v2.session.messages.cursor")
     .at((ctx) => ({
-      path: `${route("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/message", { sessionID: "ses_httpapi_missing" })}?${new URLSearchParams({
+      path: `${route("/api/session/{sessionID}/message", { sessionID: "ses_httpapi_missing" })}?${new URLSearchParams({
         limit: "2",
         directory: ctx.directory ?? "",
         cursor: cursor({ id: "msg_httpapi_missing", time: 0, order: "desc", direction: "next" }),
@@ -987,10 +987,10 @@ const scenarios: Scenario[] = [
     }))
     .json(404, object, "status"),
   http.protected
-    .get("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/message", "v2.session.messages.cursor.invalid")
+    .get("/api/session/{sessionID}/message", "v2.session.messages.cursor.invalid")
     .seeded((ctx) => ctx.session({ title: "Invalid message cursor owner" }))
     .at((ctx) => ({
-      path: `${route("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/message", { sessionID: ctx.state.id })}?${new URLSearchParams({
+      path: `${route("/api/session/{sessionID}/message", { sessionID: ctx.state.id })}?${new URLSearchParams({
         cursor: cursor({ id: "msg_httpapi_missing", time: 0, order: "desc", direction: "next" }),
         order: "asc",
       })}`,
@@ -998,32 +998,32 @@ const scenarios: Scenario[] = [
     }))
     .status(400, undefined, "none"),
   http.protected
-    .post("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/prompt", "v2.session.prompt.invalid")
+    .post("/api/session/{sessionID}/prompt", "v2.session.prompt.invalid")
     .seeded((ctx) => ctx.session({ title: "Invalid prompt owner" }))
     .at((ctx) => ({
-      path: route("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/prompt", { sessionID: ctx.state.id }),
+      path: route("/api/session/{sessionID}/prompt", { sessionID: ctx.state.id }),
       headers: ctx.headers(),
       body: {},
     }))
     .status(400, undefined, "none"),
   http.protected
-    .post("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/compact", "v2.session.compact")
+    .post("/api/session/{sessionID}/compact", "v2.session.compact")
     .at((ctx) => ({
-      path: route("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/compact", { sessionID: "ses_httpapi_missing" }),
+      path: route("/api/session/{sessionID}/compact", { sessionID: "ses_httpapi_missing" }),
       headers: ctx.headers(),
     }))
     .status(404, undefined, "status"),
   http.protected
-    .post("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/wait", "v2.session.wait")
+    .post("/api/session/{sessionID}/wait", "v2.session.wait")
     .at((ctx) => ({
-      path: route("@lgcode/api@lgcode/session@lgcode/{sessionID}@lgcode/wait", { sessionID: "ses_httpapi_missing" }),
+      path: route("/api/session/{sessionID}/wait", { sessionID: "ses_httpapi_missing" }),
       headers: ctx.headers(),
     }))
     .status(404, undefined, "status"),
   http.protected
-    .get("@lgcode/session", "session.list")
+    .get("/session", "session.list")
     .seeded((ctx) => ctx.session({ title: "List me" }))
-    .at((ctx) => ({ path: "@lgcode/session?roots=true", headers: ctx.headers() }))
+    .at((ctx) => ({ path: "/session?roots=true", headers: ctx.headers() }))
     .json(200, (body, ctx) => {
       array(body)
       check(
@@ -1032,13 +1032,13 @@ const scenarios: Scenario[] = [
       )
     }),
   http.protected
-    .get("@lgcode/session@lgcode/status", "session.status")
+    .get("/session/status", "session.status")
     .seeded((ctx) => ctx.session({ title: "Status session" }))
     .json(200, object),
   http.protected
-    .post("@lgcode/session", "session.create")
+    .post("/session", "session.create")
     .mutating()
-    .at((ctx) => ({ path: "@lgcode/session", headers: ctx.headers(), body: { title: "Created session" } }))
+    .at((ctx) => ({ path: "/session", headers: ctx.headers(), body: { title: "Created session" } }))
     .json(
       200,
       (body, ctx) => {
@@ -1049,27 +1049,27 @@ const scenarios: Scenario[] = [
       "status",
     ),
   http.protected
-    .get("@lgcode/session@lgcode/{sessionID}", "session.get")
+    .get("/session/{sessionID}", "session.get")
     .seeded((ctx) => ctx.session({ title: "Get me" }))
-    .at((ctx) => ({ path: route("@lgcode/session@lgcode/{sessionID}", { sessionID: ctx.state.id }), headers: ctx.headers() }))
+    .at((ctx) => ({ path: route("/session/{sessionID}", { sessionID: ctx.state.id }), headers: ctx.headers() }))
     .json(200, (body, ctx) => {
       object(body)
       check(body.id === ctx.state.id, "should return requested session")
       check(body.title === "Get me", "should preserve seeded title")
     }),
   http.protected
-    .get("@lgcode/session@lgcode/{sessionID}", "session.get.missing")
+    .get("/session/{sessionID}", "session.get.missing")
     .at((ctx) => ({
-      path: route("@lgcode/session@lgcode/{sessionID}", { sessionID: "ses_httpapi_missing" }),
+      path: route("/session/{sessionID}", { sessionID: "ses_httpapi_missing" }),
       headers: ctx.headers(),
     }))
     .status(404),
   http.protected
-    .patch("@lgcode/session@lgcode/{sessionID}", "session.update")
+    .patch("/session/{sessionID}", "session.update")
     .mutating()
     .seeded((ctx) => ctx.session({ title: "Before rename" }))
     .at((ctx) => ({
-      path: route("@lgcode/session@lgcode/{sessionID}", { sessionID: ctx.state.id }),
+      path: route("/session/{sessionID}", { sessionID: ctx.state.id }),
       headers: ctx.headers(),
       body: { title: "After rename" },
     }))
@@ -1082,19 +1082,19 @@ const scenarios: Scenario[] = [
       "status",
     ),
   http.protected
-    .patch("@lgcode/session@lgcode/{sessionID}", "session.update.invalid")
+    .patch("/session/{sessionID}", "session.update.invalid")
     .mutating()
     .at((ctx) => ({
-      path: route("@lgcode/session@lgcode/{sessionID}", { sessionID: "ses_httpapi_missing" }),
+      path: route("/session/{sessionID}", { sessionID: "ses_httpapi_missing" }),
       headers: ctx.headers(),
       body: { title: 1 },
     }))
     .status(400),
   http.protected
-    .delete("@lgcode/session@lgcode/{sessionID}", "session.delete")
+    .delete("/session/{sessionID}", "session.delete")
     .mutating()
     .seeded((ctx) => ctx.session({ title: "Delete me" }))
-    .at((ctx) => ({ path: route("@lgcode/session@lgcode/{sessionID}", { sessionID: ctx.state.id }), headers: ctx.headers() }))
+    .at((ctx) => ({ path: route("/session/{sessionID}", { sessionID: ctx.state.id }), headers: ctx.headers() }))
     .jsonEffect(200, (body, ctx) =>
       Effect.gen(function* () {
         check(body === true, "delete should return true")
@@ -1102,7 +1102,7 @@ const scenarios: Scenario[] = [
       }),
     ),
   http.protected
-    .get("@lgcode/session@lgcode/{sessionID}@lgcode/children", "session.children")
+    .get("/session/{sessionID}/children", "session.children")
     .seeded((ctx) =>
       Effect.gen(function* () {
         const parent = yield* ctx.session({ title: "Parent" })
@@ -1111,7 +1111,7 @@ const scenarios: Scenario[] = [
       }),
     )
     .at((ctx) => ({
-      path: route("@lgcode/session@lgcode/{sessionID}@lgcode/children", { sessionID: ctx.state.parent.id }),
+      path: route("/session/{sessionID}/children", { sessionID: ctx.state.parent.id }),
       headers: ctx.headers(),
     }))
     .json(200, (body, ctx) => {
@@ -1122,7 +1122,7 @@ const scenarios: Scenario[] = [
       )
     }),
   http.protected
-    .get("@lgcode/session@lgcode/{sessionID}@lgcode/todo", "session.todo")
+    .get("/session/{sessionID}/todo", "session.todo")
     .seeded((ctx) =>
       Effect.gen(function* () {
         const session = yield* ctx.session({ title: "Todo session" })
@@ -1132,27 +1132,27 @@ const scenarios: Scenario[] = [
       }),
     )
     .at((ctx) => ({
-      path: route("@lgcode/session@lgcode/{sessionID}@lgcode/todo", { sessionID: ctx.state.session.id }),
+      path: route("/session/{sessionID}/todo", { sessionID: ctx.state.session.id }),
       headers: ctx.headers(),
     }))
     .json(200, (body, ctx) => {
       check(stable(body) === stable(ctx.state.todos), "todos should match seeded state")
     }),
   http.protected
-    .get("@lgcode/session@lgcode/{sessionID}@lgcode/diff", "session.diff")
+    .get("/session/{sessionID}/diff", "session.diff")
     .seeded((ctx) => ctx.session({ title: "Diff session" }))
-    .at((ctx) => ({ path: route("@lgcode/session@lgcode/{sessionID}@lgcode/diff", { sessionID: ctx.state.id }), headers: ctx.headers() }))
+    .at((ctx) => ({ path: route("/session/{sessionID}/diff", { sessionID: ctx.state.id }), headers: ctx.headers() }))
     .json(200, array),
   http.protected
-    .get("@lgcode/session@lgcode/{sessionID}@lgcode/message", "session.messages")
+    .get("/session/{sessionID}/message", "session.messages")
     .seeded((ctx) => ctx.session({ title: "Messages session" }))
-    .at((ctx) => ({ path: route("@lgcode/session@lgcode/{sessionID}@lgcode/message", { sessionID: ctx.state.id }), headers: ctx.headers() }))
+    .at((ctx) => ({ path: route("/session/{sessionID}/message", { sessionID: ctx.state.id }), headers: ctx.headers() }))
     .json(200, (body) => {
       array(body)
       check(body.length === 0, "new session should have no messages")
     }),
   http.protected
-    .get("@lgcode/session@lgcode/{sessionID}@lgcode/message@lgcode/{messageID}", "session.message")
+    .get("/session/{sessionID}/message/{messageID}", "session.message")
     .seeded((ctx) =>
       Effect.gen(function* () {
         const session = yield* ctx.session({ title: "Message get session" })
@@ -1161,7 +1161,7 @@ const scenarios: Scenario[] = [
       }),
     )
     .at((ctx) => ({
-      path: route("@lgcode/session@lgcode/{sessionID}@lgcode/message@lgcode/{messageID}", {
+      path: route("/session/{sessionID}/message/{messageID}", {
         sessionID: ctx.state.session.id,
         messageID: ctx.state.message.info.id,
       }),
@@ -1176,7 +1176,7 @@ const scenarios: Scenario[] = [
       )
     }),
   http.protected
-    .patch("@lgcode/session@lgcode/{sessionID}@lgcode/message@lgcode/{messageID}@lgcode/part@lgcode/{partID}", "part.update")
+    .patch("/session/{sessionID}/message/{messageID}/part/{partID}", "part.update")
     .mutating()
     .seeded((ctx) =>
       Effect.gen(function* () {
@@ -1186,7 +1186,7 @@ const scenarios: Scenario[] = [
       }),
     )
     .at((ctx) => ({
-      path: route("@lgcode/session@lgcode/{sessionID}@lgcode/message@lgcode/{messageID}@lgcode/part@lgcode/{partID}", {
+      path: route("/session/{sessionID}/message/{messageID}/part/{partID}", {
         sessionID: ctx.state.session.id,
         messageID: ctx.state.message.info.id,
         partID: ctx.state.message.part.id,
@@ -1203,7 +1203,7 @@ const scenarios: Scenario[] = [
       "status",
     ),
   http.protected
-    .delete("@lgcode/session@lgcode/{sessionID}@lgcode/message@lgcode/{messageID}@lgcode/part@lgcode/{partID}", "part.delete")
+    .delete("/session/{sessionID}/message/{messageID}/part/{partID}", "part.delete")
     .mutating()
     .seeded((ctx) =>
       Effect.gen(function* () {
@@ -1213,7 +1213,7 @@ const scenarios: Scenario[] = [
       }),
     )
     .at((ctx) => ({
-      path: route("@lgcode/session@lgcode/{sessionID}@lgcode/message@lgcode/{messageID}@lgcode/part@lgcode/{partID}", {
+      path: route("/session/{sessionID}/message/{messageID}/part/{partID}", {
         sessionID: ctx.state.session.id,
         messageID: ctx.state.message.info.id,
         partID: ctx.state.message.part.id,
@@ -1228,7 +1228,7 @@ const scenarios: Scenario[] = [
       }),
     ),
   http.protected
-    .delete("@lgcode/session@lgcode/{sessionID}@lgcode/message@lgcode/{messageID}", "session.deleteMessage")
+    .delete("/session/{sessionID}/message/{messageID}", "session.deleteMessage")
     .mutating()
     .seeded((ctx) =>
       Effect.gen(function* () {
@@ -1238,7 +1238,7 @@ const scenarios: Scenario[] = [
       }),
     )
     .at((ctx) => ({
-      path: route("@lgcode/session@lgcode/{sessionID}@lgcode/message@lgcode/{messageID}", {
+      path: route("/session/{sessionID}/message/{messageID}", {
         sessionID: ctx.state.session.id,
         messageID: ctx.state.message.info.id,
       }),
@@ -1251,11 +1251,11 @@ const scenarios: Scenario[] = [
       }),
     ),
   http.protected
-    .post("@lgcode/session@lgcode/{sessionID}@lgcode/fork", "session.fork")
+    .post("/session/{sessionID}/fork", "session.fork")
     .mutating()
     .seeded((ctx) => ctx.session({ title: "Fork source" }))
     .at((ctx) => ({
-      path: route("@lgcode/session@lgcode/{sessionID}@lgcode/fork", { sessionID: ctx.state.id }),
+      path: route("/session/{sessionID}/fork", { sessionID: ctx.state.id }),
       headers: ctx.headers(),
       body: {},
     }))
@@ -1268,24 +1268,24 @@ const scenarios: Scenario[] = [
       "status",
     ),
   http.protected
-    .post("@lgcode/session@lgcode/{sessionID}@lgcode/abort", "session.abort")
+    .post("/session/{sessionID}/abort", "session.abort")
     .mutating()
     .seeded((ctx) => ctx.session({ title: "Abort session" }))
-    .at((ctx) => ({ path: route("@lgcode/session@lgcode/{sessionID}@lgcode/abort", { sessionID: ctx.state.id }), headers: ctx.headers() }))
+    .at((ctx) => ({ path: route("/session/{sessionID}/abort", { sessionID: ctx.state.id }), headers: ctx.headers() }))
     .json(200, (body) => {
       check(body === true, "abort should return true")
     }),
   http.protected
-    .post("@lgcode/session@lgcode/{sessionID}@lgcode/abort", "session.abort.missing")
+    .post("/session/{sessionID}/abort", "session.abort.missing")
     .at((ctx) => ({
-      path: route("@lgcode/session@lgcode/{sessionID}@lgcode/abort", { sessionID: "ses_httpapi_missing" }),
+      path: route("/session/{sessionID}/abort", { sessionID: "ses_httpapi_missing" }),
       headers: ctx.headers(),
     }))
     .json(200, (body) => {
       check(body === true, "missing session abort should remain a no-op success")
     }),
   http.protected
-    .post("@lgcode/session@lgcode/{sessionID}@lgcode/init", "session.init")
+    .post("/session/{sessionID}/init", "session.init")
     .preserveDatabase()
     .withLlm()
     .seeded((ctx) =>
@@ -1298,7 +1298,7 @@ const scenarios: Scenario[] = [
       }),
     )
     .at((ctx) => ({
-      path: route("@lgcode/session@lgcode/{sessionID}@lgcode/init", { sessionID: ctx.state.session.id }),
+      path: route("/session/{sessionID}/init", { sessionID: ctx.state.session.id }),
       headers: ctx.headers(),
       body: { providerID: "test", modelID: "test-model", messageID: ctx.state.message.info.id },
     }))
@@ -1309,7 +1309,7 @@ const scenarios: Scenario[] = [
       }),
     ),
   http.protected
-    .post("@lgcode/session@lgcode/{sessionID}@lgcode/message", "session.prompt")
+    .post("/session/{sessionID}/message", "session.prompt")
     .preserveDatabase()
     .withLlm()
     .seeded((ctx) =>
@@ -1321,7 +1321,7 @@ const scenarios: Scenario[] = [
       }),
     )
     .at((ctx) => ({
-      path: route("@lgcode/session@lgcode/{sessionID}@lgcode/message", { sessionID: ctx.state.id }),
+      path: route("/session/{sessionID}/message", { sessionID: ctx.state.id }),
       headers: ctx.headers(),
       body: {
         agent: "build",
@@ -1344,7 +1344,7 @@ const scenarios: Scenario[] = [
       "status",
     ),
   http.protected
-    .post("@lgcode/session@lgcode/{sessionID}@lgcode/prompt_async", "session.prompt_async")
+    .post("/session/{sessionID}/prompt_async", "session.prompt_async")
     .preserveDatabase()
     .withLlm()
     .seeded((ctx) =>
@@ -1356,7 +1356,7 @@ const scenarios: Scenario[] = [
       }),
     )
     .at((ctx) => ({
-      path: route("@lgcode/session@lgcode/{sessionID}@lgcode/prompt_async", { sessionID: ctx.state.id }),
+      path: route("/session/{sessionID}/prompt_async", { sessionID: ctx.state.id }),
       headers: ctx.headers(),
       body: {
         agent: "build",
@@ -1370,7 +1370,7 @@ const scenarios: Scenario[] = [
       }),
     ),
   http.protected
-    .post("@lgcode/session@lgcode/{sessionID}@lgcode/command", "session.command")
+    .post("/session/{sessionID}/command", "session.command")
     .preserveDatabase()
     .withLlm()
     .seeded((ctx) =>
@@ -1382,9 +1382,9 @@ const scenarios: Scenario[] = [
       }),
     )
     .at((ctx) => ({
-      path: route("@lgcode/session@lgcode/{sessionID}@lgcode/command", { sessionID: ctx.state.id }),
+      path: route("/session/{sessionID}/command", { sessionID: ctx.state.id }),
       headers: ctx.headers(),
-      body: { command: "init", arguments: "", model: "test@lgcode/test-model" },
+      body: { command: "init", arguments: "", model: "test/test-model" },
     }))
     .jsonEffect(
       200,
@@ -1397,12 +1397,12 @@ const scenarios: Scenario[] = [
       "status",
     ),
   http.protected
-    .post("@lgcode/session@lgcode/{sessionID}@lgcode/shell", "session.shell")
+    .post("/session/{sessionID}/shell", "session.shell")
     .preserveDatabase()
     .mutating()
     .seeded((ctx) => ctx.session({ title: "Shell session" }))
     .at((ctx) => ({
-      path: route("@lgcode/session@lgcode/{sessionID}@lgcode/shell", { sessionID: ctx.state.id }),
+      path: route("/session/{sessionID}/shell", { sessionID: ctx.state.id }),
       headers: ctx.headers(),
       body: { agent: "build", model: { providerID: "test", modelID: "test-model" }, command: "printf shell-ok" },
     }))
@@ -1419,7 +1419,7 @@ const scenarios: Scenario[] = [
       "status",
     ),
   http.protected
-    .post("@lgcode/session@lgcode/{sessionID}@lgcode/summarize", "session.summarize")
+    .post("/session/{sessionID}/summarize", "session.summarize")
     .preserveDatabase()
     .withLlm()
     .seeded((ctx) =>
@@ -1453,7 +1453,7 @@ const scenarios: Scenario[] = [
           "- Test fixture.",
           "",
           "## Relevant Files",
-          "- test@lgcode/server@lgcode/httpapi-exercise@lgcode/index.ts: scenario",
+          "- test/server/httpapi-exercise/index.ts: scenario",
         ].join("\n")
         yield* ctx.llmText(summary)
         yield* ctx.llmText(summary)
@@ -1461,7 +1461,7 @@ const scenarios: Scenario[] = [
       }),
     )
     .at((ctx) => ({
-      path: route("@lgcode/session@lgcode/{sessionID}@lgcode/summarize", { sessionID: ctx.state.id }),
+      path: route("/session/{sessionID}/summarize", { sessionID: ctx.state.id }),
       headers: ctx.headers(),
       body: { providerID: "test", modelID: "test-model", auto: false },
     }))
@@ -1480,7 +1480,7 @@ const scenarios: Scenario[] = [
       "status",
     ),
   http.protected
-    .post("@lgcode/session@lgcode/{sessionID}@lgcode/revert", "session.revert")
+    .post("/session/{sessionID}/revert", "session.revert")
     .mutating()
     .seeded((ctx) =>
       Effect.gen(function* () {
@@ -1490,7 +1490,7 @@ const scenarios: Scenario[] = [
       }),
     )
     .at((ctx) => ({
-      path: route("@lgcode/session@lgcode/{sessionID}@lgcode/revert", { sessionID: ctx.state.session.id }),
+      path: route("/session/{sessionID}/revert", { sessionID: ctx.state.session.id }),
       headers: ctx.headers(),
       body: { messageID: ctx.state.message.info.id },
     }))
@@ -1507,11 +1507,11 @@ const scenarios: Scenario[] = [
       "status",
     ),
   http.protected
-    .post("@lgcode/session@lgcode/{sessionID}@lgcode/unrevert", "session.unrevert")
+    .post("/session/{sessionID}/unrevert", "session.unrevert")
     .mutating()
     .seeded((ctx) => ctx.session({ title: "Unrevert session" }))
     .at((ctx) => ({
-      path: route("@lgcode/session@lgcode/{sessionID}@lgcode/unrevert", { sessionID: ctx.state.id }),
+      path: route("/session/{sessionID}/unrevert", { sessionID: ctx.state.id }),
       headers: ctx.headers(),
     }))
     .json(
@@ -1523,10 +1523,10 @@ const scenarios: Scenario[] = [
       "status",
     ),
   http.protected
-    .post("@lgcode/session@lgcode/{sessionID}@lgcode/permissions@lgcode/{permissionID}", "permission.respond")
+    .post("/session/{sessionID}/permissions/{permissionID}", "permission.respond")
     .seeded((ctx) => ctx.session({ title: "Deprecated permission session" }))
     .at((ctx) => ({
-      path: route("@lgcode/session@lgcode/{sessionID}@lgcode/permissions@lgcode/{permissionID}", {
+      path: route("/session/{sessionID}/permissions/{permissionID}", {
         sessionID: ctx.state.id,
         permissionID: "per_httpapi_deprecated",
       }),
@@ -1535,10 +1535,10 @@ const scenarios: Scenario[] = [
     }))
     .json(404, object, "status"),
   http.protected
-    .post("@lgcode/session@lgcode/{sessionID}@lgcode/share", "session.share")
+    .post("/session/{sessionID}/share", "session.share")
     .mutating()
     .seeded((ctx) => ctx.session({ title: "Share session" }))
-    .at((ctx) => ({ path: route("@lgcode/session@lgcode/{sessionID}@lgcode/share", { sessionID: ctx.state.id }), headers: ctx.headers() }))
+    .at((ctx) => ({ path: route("/session/{sessionID}/share", { sessionID: ctx.state.id }), headers: ctx.headers() }))
     .json(
       200,
       (body, ctx) => {
@@ -1548,10 +1548,10 @@ const scenarios: Scenario[] = [
       "status",
     ),
   http.protected
-    .delete("@lgcode/session@lgcode/{sessionID}@lgcode/share", "session.unshare")
+    .delete("/session/{sessionID}/share", "session.unshare")
     .mutating()
     .seeded((ctx) => ctx.session({ title: "Unshare session" }))
-    .at((ctx) => ({ path: route("@lgcode/session@lgcode/{sessionID}@lgcode/share", { sessionID: ctx.state.id }), headers: ctx.headers() }))
+    .at((ctx) => ({ path: route("/session/{sessionID}/share", { sessionID: ctx.state.id }), headers: ctx.headers() }))
     .json(
       200,
       (body, ctx) => {
@@ -1561,67 +1561,67 @@ const scenarios: Scenario[] = [
       "status",
     ),
   http.protected
-    .post("@lgcode/tui@lgcode/append-prompt", "tui.appendPrompt")
-    .at((ctx) => ({ path: "@lgcode/tui@lgcode/append-prompt", headers: ctx.headers(), body: { text: "hello" } }))
+    .post("/tui/append-prompt", "tui.appendPrompt")
+    .at((ctx) => ({ path: "/tui/append-prompt", headers: ctx.headers(), body: { text: "hello" } }))
     .json(200, boolean, "status"),
   http.protected
-    .post("@lgcode/tui@lgcode/select-session", "tui.selectSession.invalid")
-    .at((ctx) => ({ path: "@lgcode/tui@lgcode/select-session", headers: ctx.headers(), body: { sessionID: "invalid" } }))
+    .post("/tui/select-session", "tui.selectSession.invalid")
+    .at((ctx) => ({ path: "/tui/select-session", headers: ctx.headers(), body: { sessionID: "invalid" } }))
     .status(400),
-  http.protected.post("@lgcode/tui@lgcode/open-help", "tui.openHelp").json(200, boolean, "status"),
-  http.protected.post("@lgcode/tui@lgcode/open-sessions", "tui.openSessions").json(200, boolean, "status"),
-  http.protected.post("@lgcode/tui@lgcode/open-themes", "tui.openThemes").json(200, boolean, "status"),
-  http.protected.post("@lgcode/tui@lgcode/open-models", "tui.openModels").json(200, boolean, "status"),
-  http.protected.post("@lgcode/tui@lgcode/submit-prompt", "tui.submitPrompt").json(200, boolean, "status"),
-  http.protected.post("@lgcode/tui@lgcode/clear-prompt", "tui.clearPrompt").json(200, boolean, "status"),
+  http.protected.post("/tui/open-help", "tui.openHelp").json(200, boolean, "status"),
+  http.protected.post("/tui/open-sessions", "tui.openSessions").json(200, boolean, "status"),
+  http.protected.post("/tui/open-themes", "tui.openThemes").json(200, boolean, "status"),
+  http.protected.post("/tui/open-models", "tui.openModels").json(200, boolean, "status"),
+  http.protected.post("/tui/submit-prompt", "tui.submitPrompt").json(200, boolean, "status"),
+  http.protected.post("/tui/clear-prompt", "tui.clearPrompt").json(200, boolean, "status"),
   http.protected
-    .post("@lgcode/tui@lgcode/execute-command", "tui.executeCommand")
-    .at((ctx) => ({ path: "@lgcode/tui@lgcode/execute-command", headers: ctx.headers(), body: { command: "agent_cycle" } }))
+    .post("/tui/execute-command", "tui.executeCommand")
+    .at((ctx) => ({ path: "/tui/execute-command", headers: ctx.headers(), body: { command: "agent_cycle" } }))
     .json(200, boolean, "status"),
   http.protected
-    .post("@lgcode/tui@lgcode/show-toast", "tui.showToast")
+    .post("/tui/show-toast", "tui.showToast")
     .at((ctx) => ({
-      path: "@lgcode/tui@lgcode/show-toast",
+      path: "/tui/show-toast",
       headers: ctx.headers(),
       body: { title: "Exercise", message: "covered", variant: "info", duration: 1000 },
     }))
     .json(200, boolean, "status"),
   http.protected
-    .post("@lgcode/tui@lgcode/publish", "tui.publish")
+    .post("/tui/publish", "tui.publish")
     .at((ctx) => ({
-      path: "@lgcode/tui@lgcode/publish",
+      path: "/tui/publish",
       headers: ctx.headers(),
       body: { type: "tui.prompt.append", properties: { text: "published" } },
     }))
     .json(200, boolean, "status"),
   http.protected
-    .post("@lgcode/tui@lgcode/select-session", "tui.selectSession")
+    .post("/tui/select-session", "tui.selectSession")
     .seeded((ctx) => ctx.session({ title: "TUI select" }))
-    .at((ctx) => ({ path: "@lgcode/tui@lgcode/select-session", headers: ctx.headers(), body: { sessionID: ctx.state.id } }))
+    .at((ctx) => ({ path: "/tui/select-session", headers: ctx.headers(), body: { sessionID: ctx.state.id } }))
     .json(200, boolean, "status"),
   http.protected
-    .post("@lgcode/tui@lgcode/control@lgcode/response", "tui.control.response")
-    .at((ctx) => ({ path: "@lgcode/tui@lgcode/control@lgcode/response", headers: ctx.headers(), body: { ok: true } }))
+    .post("/tui/control/response", "tui.control.response")
+    .at((ctx) => ({ path: "/tui/control/response", headers: ctx.headers(), body: { ok: true } }))
     .json(200, boolean, "status"),
   http.protected
-    .get("@lgcode/tui@lgcode/control@lgcode/next", "tui.control.next")
+    .get("/tui/control/next", "tui.control.next")
     .mutating()
-    .seeded((ctx) => ctx.tuiRequest({ path: "@lgcode/tui@lgcode/exercise", body: { text: "queued" } }))
+    .seeded((ctx) => ctx.tuiRequest({ path: "/tui/exercise", body: { text: "queued" } }))
     .json(
       200,
       (body) => {
         object(body)
-        check(body.path === "@lgcode/tui@lgcode/exercise", "control next should return queued path")
+        check(body.path === "/tui/exercise", "control next should return queued path")
         object(body.body)
         check(body.body.text === "queued", "control next should return queued body")
       },
       "status",
     ),
   http.protected
-    .post("@lgcode/global@lgcode/upgrade", "global.upgrade")
+    .post("/global/upgrade", "global.upgrade")
     .global()
-    .probe({ path: "@lgcode/global@lgcode/upgrade", body: { target: 1 } })
-    .at(() => ({ path: "@lgcode/global@lgcode/upgrade", body: { target: 1 } }))
+    .probe({ path: "/global/upgrade", body: { target: 1 } })
+    .at(() => ({ path: "/global/upgrade", body: { target: 1 } }))
     .status(400),
 ]
 

@@ -1,23 +1,23 @@
 import type { Component, ComponentProps } from "solid-js"
 import { createSignal, onCleanup, onMount, splitProps } from "solid-js"
-import type { IconName } from ".@lgcode/app-icons@lgcode/types"
+import type { IconName } from "./app-icons/types"
 
-import androidStudio from "..@lgcode/assets@lgcode/icons@lgcode/app@lgcode/android-studio.svg"
-import antigravity from "..@lgcode/assets@lgcode/icons@lgcode/app@lgcode/antigravity.svg"
-import cursor from "..@lgcode/assets@lgcode/icons@lgcode/app@lgcode/cursor.svg"
-import fileExplorer from "..@lgcode/assets@lgcode/icons@lgcode/app@lgcode/file-explorer.svg"
-import finder from "..@lgcode/assets@lgcode/icons@lgcode/app@lgcode/finder.png"
-import ghostty from "..@lgcode/assets@lgcode/icons@lgcode/app@lgcode/ghostty.svg"
-import iterm2 from "..@lgcode/assets@lgcode/icons@lgcode/app@lgcode/iterm2.svg"
-import powershell from "..@lgcode/assets@lgcode/icons@lgcode/app@lgcode/powershell.svg"
-import terminal from "..@lgcode/assets@lgcode/icons@lgcode/app@lgcode/terminal.png"
-import textmate from "..@lgcode/assets@lgcode/icons@lgcode/app@lgcode/textmate.png"
-import vscode from "..@lgcode/assets@lgcode/icons@lgcode/app@lgcode/vscode.svg"
-import warp from "..@lgcode/assets@lgcode/icons@lgcode/app@lgcode/warp.png"
-import xcode from "..@lgcode/assets@lgcode/icons@lgcode/app@lgcode/xcode.png"
-import zed from "..@lgcode/assets@lgcode/icons@lgcode/app@lgcode/zed.svg"
-import zedDark from "..@lgcode/assets@lgcode/icons@lgcode/app@lgcode/zed-dark.svg"
-import sublimetext from "..@lgcode/assets@lgcode/icons@lgcode/app@lgcode/sublimetext.svg"
+import androidStudio from "../assets/icons/app/android-studio.svg"
+import antigravity from "../assets/icons/app/antigravity.svg"
+import cursor from "../assets/icons/app/cursor.svg"
+import fileExplorer from "../assets/icons/app/file-explorer.svg"
+import finder from "../assets/icons/app/finder.png"
+import ghostty from "../assets/icons/app/ghostty.svg"
+import iterm2 from "../assets/icons/app/iterm2.svg"
+import powershell from "../assets/icons/app/powershell.svg"
+import terminal from "../assets/icons/app/terminal.png"
+import textmate from "../assets/icons/app/textmate.png"
+import vscode from "../assets/icons/app/vscode.svg"
+import warp from "../assets/icons/app/warp.png"
+import xcode from "../assets/icons/app/xcode.png"
+import zed from "../assets/icons/app/zed.svg"
+import zedDark from "../assets/icons/app/zed-dark.svg"
+import sublimetext from "../assets/icons/app/sublimetext.svg"
 
 const icons = {
   vscode,
@@ -80,6 +80,6 @@ export const AppIcon: Component<AppIconProps> = (props) => {
         ...local.classList,
         [local.class ?? ""]: !!local.class,
       }}
-    @lgcode/>
+    />
   )
 }

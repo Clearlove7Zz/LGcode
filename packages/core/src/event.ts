@@ -1,13 +1,13 @@
-export * as EventV2 from ".@lgcode/event"
+export * as EventV2 from "./event"
 
 import { Cause, Context, Effect, Layer, Option, PubSub, Schema, Stream } from "effect"
 import { and, asc, eq, gt } from "drizzle-orm"
-import { Database } from ".@lgcode/database@lgcode/database"
-import { EventSequenceTable, EventTable } from ".@lgcode/event@lgcode/sql"
-import { Location } from ".@lgcode/location"
-import { externalID, type ExternalID, NonNegativeInt, withStatics } from ".@lgcode/schema"
-import { Identifier } from ".@lgcode/util@lgcode/identifier"
-import { LayerNode } from ".@lgcode/effect@lgcode/layer-node"
+import { Database } from "./database/database"
+import { EventSequenceTable, EventTable } from "./event/sql"
+import { Location } from "./location"
+import { externalID, type ExternalID, NonNegativeInt, withStatics } from "./schema"
+import { Identifier } from "./util/identifier"
+import { LayerNode } from "./effect/layer-node"
 import { isDeepStrictEqual } from "node:util"
 
 export const ID = Schema.String.check(Schema.isStartsWith("evt_")).pipe(
@@ -19,10 +19,10 @@ export const ID = Schema.String.check(Schema.isStartsWith("evt_")).pipe(
 )
 export type ID = typeof ID.Type
 
-@lgcode/**
+/**
  * Durable aggregate continuation position for embedded replay streams.
- * TODO: Decide whether a future HTTP @lgcode/ SDK surface should expose an opaque cursor instead.
- *@lgcode/
+ * TODO: Decide whether a future HTTP / SDK surface should expose an opaque cursor instead.
+ */
 export const Cursor = NonNegativeInt.pipe(Schema.brand("EventV2.Cursor"))
 export type Cursor = typeof Cursor.Type
 
@@ -41,12 +41,12 @@ export type Payload<D extends Definition = Definition> = {
   readonly id: ID
   readonly type: D["type"]
   readonly data: Data<D>
-  @lgcode/** Durable aggregate order, populated while synchronized events are projected. *@lgcode/
+  /** Durable aggregate order, populated while synchronized events are projected. */
   readonly seq?: number
   readonly version?: number
   readonly location?: Location.Ref
   readonly metadata?: Record<string, unknown>
-  @lgcode/** Internal replay marker for projectors that own non-replicated operational state. *@lgcode/
+  /** Internal replay marker for projectors that own non-replicated operational state. */
   readonly replay?: boolean
 }
 
@@ -90,7 +90,7 @@ type SyncDefinition = Definition & {
 }
 const syncRegistry = new Map<string, SyncDefinition>()
 
-@lgcode/@lgcode/ Synchronized events cross a JSON boundary, so their data schemas must encode and decode without services.
+// Synchronized events cross a JSON boundary, so their data schemas must encode and decode without services.
 const syncCodec = (definition: Definition) => definition.data as Schema.Codec<unknown, unknown, never, never>
 
 export function define<const Type extends string, Fields extends Schema.Struct.Fields>(input: {
@@ -140,7 +140,7 @@ export interface PublishOptions {
   readonly id?: ID
   readonly metadata?: Record<string, unknown>
   readonly location?: Location.Ref
-  @lgcode/** Local operational projection committed atomically with a new synchronized event. Not replayed or serialized. *@lgcode/
+  /** Local operational projection committed atomically with a new synchronized event. Not replayed or serialized. */
   readonly commit?: (seq: number) => Effect.Effect<void>
 }
 
@@ -172,7 +172,7 @@ export interface Interface {
   readonly claim: (aggregateID: string, ownerID: string) => Effect.Effect<void>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Event") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/Event") {}
 
 export interface LayerOptions {
   readonly beforeAggregateRead?: (aggregateID: string) => Effect.Effect<void>

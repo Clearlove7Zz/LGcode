@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { parsePluginSpecifier } from "..@lgcode/..@lgcode/src@lgcode/plugin@lgcode/shared"
+import { parsePluginSpecifier } from "../../src/plugin/shared"
 
 describe("parsePluginSpecifier", () => {
   test("parses standard npm package without version", () => {
@@ -17,71 +17,71 @@ describe("parsePluginSpecifier", () => {
   })
 
   test("parses scoped npm package without version", () => {
-    expect(parsePluginSpecifier("@lgcode/acme")).toEqual({
-      pkg: "@lgcode/acme",
+    expect(parsePluginSpecifier("@opencode/acme")).toEqual({
+      pkg: "@opencode/acme",
       version: "latest",
     })
   })
 
   test("parses scoped npm package with version", () => {
-    expect(parsePluginSpecifier("@lgcode/acme@1.0.0")).toEqual({
-      pkg: "@lgcode/acme",
+    expect(parsePluginSpecifier("@opencode/acme@1.0.0")).toEqual({
+      pkg: "@opencode/acme",
       version: "1.0.0",
     })
   })
 
   test("parses package with git+https url", () => {
-    expect(parsePluginSpecifier("acme@git+https:@lgcode/@lgcode/github.com@lgcode/opencode@lgcode/acme.git")).toEqual({
+    expect(parsePluginSpecifier("acme@git+https://github.com/opencode/acme.git")).toEqual({
       pkg: "acme",
-      version: "git+https:@lgcode/@lgcode/github.com@lgcode/opencode@lgcode/acme.git",
+      version: "git+https://github.com/opencode/acme.git",
     })
   })
 
   test("parses scoped package with git+https url", () => {
-    expect(parsePluginSpecifier("@lgcode/acme@git+https:@lgcode/@lgcode/github.com@lgcode/opencode@lgcode/acme.git")).toEqual({
-      pkg: "@lgcode/acme",
-      version: "git+https:@lgcode/@lgcode/github.com@lgcode/opencode@lgcode/acme.git",
+    expect(parsePluginSpecifier("@opencode/acme@git+https://github.com/opencode/acme.git")).toEqual({
+      pkg: "@opencode/acme",
+      version: "git+https://github.com/opencode/acme.git",
     })
   })
 
   test("parses package with git+ssh url containing another @", () => {
-    expect(parsePluginSpecifier("acme@git+ssh:@lgcode/@lgcode/git@github.com@lgcode/opencode@lgcode/acme.git")).toEqual({
+    expect(parsePluginSpecifier("acme@git+ssh://git@github.com/opencode/acme.git")).toEqual({
       pkg: "acme",
-      version: "git+ssh:@lgcode/@lgcode/git@github.com@lgcode/opencode@lgcode/acme.git",
+      version: "git+ssh://git@github.com/opencode/acme.git",
     })
   })
 
   test("parses scoped package with git+ssh url containing another @", () => {
-    expect(parsePluginSpecifier("@lgcode/acme@git+ssh:@lgcode/@lgcode/git@github.com@lgcode/opencode@lgcode/acme.git")).toEqual({
-      pkg: "@lgcode/acme",
-      version: "git+ssh:@lgcode/@lgcode/git@github.com@lgcode/opencode@lgcode/acme.git",
+    expect(parsePluginSpecifier("@opencode/acme@git+ssh://git@github.com/opencode/acme.git")).toEqual({
+      pkg: "@opencode/acme",
+      version: "git+ssh://git@github.com/opencode/acme.git",
     })
   })
 
   test("parses unaliased git+ssh url", () => {
-    expect(parsePluginSpecifier("git+ssh:@lgcode/@lgcode/git@github.com@lgcode/opencode@lgcode/acme.git")).toEqual({
-      pkg: "git+ssh:@lgcode/@lgcode/git@github.com@lgcode/opencode@lgcode/acme.git",
+    expect(parsePluginSpecifier("git+ssh://git@github.com/opencode/acme.git")).toEqual({
+      pkg: "git+ssh://git@github.com/opencode/acme.git",
       version: "",
     })
   })
 
   test("parses npm alias using the alias name", () => {
-    expect(parsePluginSpecifier("acme@npm:@lgcode/acme@1.0.0")).toEqual({
+    expect(parsePluginSpecifier("acme@npm:@opencode/acme@1.0.0")).toEqual({
       pkg: "acme",
-      version: "npm:@lgcode/acme@1.0.0",
+      version: "npm:@opencode/acme@1.0.0",
     })
   })
 
   test("parses bare npm protocol specifier using the target package", () => {
-    expect(parsePluginSpecifier("npm:@lgcode/acme@1.0.0")).toEqual({
-      pkg: "@lgcode/acme",
+    expect(parsePluginSpecifier("npm:@opencode/acme@1.0.0")).toEqual({
+      pkg: "@opencode/acme",
       version: "1.0.0",
     })
   })
 
   test("parses unversioned npm protocol specifier", () => {
-    expect(parsePluginSpecifier("npm:@lgcode/acme")).toEqual({
-      pkg: "@lgcode/acme",
+    expect(parsePluginSpecifier("npm:@opencode/acme")).toEqual({
+      pkg: "@opencode/acme",
       version: "latest",
     })
   })

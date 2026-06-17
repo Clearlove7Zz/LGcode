@@ -1,16 +1,16 @@
 import { Component, createMemo } from "solid-js"
-import { useNavigate, useParams } from "@solidjs@lgcode/router"
-import { useSync } from "@@lgcode/context@lgcode/sync"
-import { useSDK } from "@@lgcode/context@lgcode/sdk"
-import { usePrompt } from "@@lgcode/context@lgcode/prompt"
-import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
-import { Dialog } from "@lgcode/ui@lgcode/dialog"
-import { List } from "@lgcode/ui@lgcode/list"
-import { showToast } from "@@lgcode/utils@lgcode/toast"
-import { extractPromptFromParts } from "@@lgcode/utils@lgcode/prompt"
-import type { TextPart as SDKTextPart } from "@lgcode/sdk@lgcode/v2@lgcode/client"
-import { base64Encode } from "@lgcode/core@lgcode/util@lgcode/encode"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
+import { useNavigate, useParams } from "@solidjs/router"
+import { useSync } from "@/context/sync"
+import { useSDK } from "@/context/sdk"
+import { usePrompt } from "@/context/prompt"
+import { useDialog } from "@opencode@lgcode/ui/context/dialog"
+import { Dialog } from "@opencode@lgcode/ui/dialog"
+import { List } from "@opencode@lgcode/ui/list"
+import { showToast } from "@/utils/toast"
+import { extractPromptFromParts } from "@/utils/prompt"
+import type { TextPart as SDKTextPart } from "@opencode@lgcode/sdk/v2/client"
+import { base64Encode } from "@opencode@lgcode/core/util/encode"
+import { useLanguage } from "@/context/language"
 
 interface ForkableMessage {
   id: string
@@ -47,7 +47,7 @@ export const DialogFork: Component = () => {
 
       result.push({
         id: message.id,
-        text: textPart.text.replace(@lgcode/\n@lgcode/g, " ").slice(0, 200),
+        text: textPart.text.replace(/\n/g, " ").slice(0, 200),
         time: formatTime(new Date(message.time.created)),
       })
     }
@@ -77,7 +77,7 @@ export const DialogFork: Component = () => {
         }
         dialog.close()
         prompt.set(restored, undefined, { dir, id: forked.data.id })
-        navigate(`@lgcode/${dir}@lgcode/session@lgcode/${forked.data.id}`)
+        navigate(`/${dir}/session/${forked.data.id}`)
       })
       .catch((err: unknown) => {
         const message = err instanceof Error ? err.message : String(err)
@@ -98,11 +98,11 @@ export const DialogFork: Component = () => {
       >
         {(item) => (
           <div class="w-full flex items-center gap-2">
-            <span class="truncate flex-1 min-w-0 text-left font-normal">{item.text}<@lgcode/span>
-            <span class="text-text-weak shrink-0 font-normal">{item.time}<@lgcode/span>
-          <@lgcode/div>
+            <span class="truncate flex-1 min-w-0 text-left font-normal">{item.text}</span>
+            <span class="text-text-weak shrink-0 font-normal">{item.time}</span>
+          </div>
         )}
-      <@lgcode/List>
-    <@lgcode/Dialog>
+      </List>
+    </Dialog>
   )
 }

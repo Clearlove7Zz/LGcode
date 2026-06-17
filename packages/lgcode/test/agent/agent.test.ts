@@ -1,20 +1,20 @@
 import { afterEach, expect } from "bun:test"
 import { Cause, Effect, Exit, Layer } from "effect"
 import path from "path"
-import { disposeAllInstances, TestInstance } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
-import { Agent } from "..@lgcode/..@lgcode/src@lgcode/agent@lgcode/agent"
-import { Auth } from "..@lgcode/..@lgcode/src@lgcode/auth"
-import { Config } from "..@lgcode/..@lgcode/src@lgcode/config@lgcode/config"
-import { RuntimeFlags } from "..@lgcode/..@lgcode/src@lgcode/effect@lgcode/runtime-flags"
-import { Global } from "@lgcode/core@lgcode/global"
-import { Permission } from "..@lgcode/..@lgcode/src@lgcode/permission"
-import { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
-import { Plugin } from "..@lgcode/..@lgcode/src@lgcode/plugin"
-import { Provider } from "..@lgcode/..@lgcode/src@lgcode/provider@lgcode/provider"
-import { Skill } from "..@lgcode/..@lgcode/src@lgcode/skill"
-import { Truncate } from "..@lgcode/..@lgcode/src@lgcode/tool@lgcode/truncate"
-import { LocationServiceMap } from "@lgcode/core@lgcode/location-layer"
+import { disposeAllInstances, TestInstance } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
+import { Agent } from "../../src/agent/agent"
+import { Auth } from "../../src/auth"
+import { Config } from "../../src/config/config"
+import { RuntimeFlags } from "../../src/effect/runtime-flags"
+import { Global } from "@opencode@lgcode/core/global"
+import { Permission } from "../../src/permission"
+import { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
+import { Plugin } from "../../src/plugin"
+import { Provider } from "../../src/provider/provider"
+import { Skill } from "../../src/skill"
+import { Truncate } from "../../src/tool/truncate"
+import { LocationServiceMap } from "@opencode@lgcode/core/location-layer"
 
 const agentLayer = (flags: Partial<RuntimeFlags.Info> = {}) =>
   Agent.layer.pipe(
@@ -29,7 +29,7 @@ const agentLayer = (flags: Partial<RuntimeFlags.Info> = {}) =>
 
 const it = testEffect(agentLayer())
 
-@lgcode/@lgcode/ Helper to evaluate permission for a tool with wildcard pattern
+// Helper to evaluate permission for a tool with wildcard pattern
 function evalPerm(agent: Agent.Info | undefined, permission: string): PermissionV1.Action | undefined {
   if (!agent) return undefined
   return Permission.evaluate(permission, "*", agent.permission).action
@@ -74,14 +74,14 @@ it.instance("build agent has correct default properties", () =>
   }),
 )
 
-it.instance("plan agent denies edits except .opencode@lgcode/plans@lgcode/*", () =>
+it.instance("plan agent denies edits except .opencode/plans/*", () =>
   Effect.gen(function* () {
     const plan = yield* load((svc) => svc.get("plan"))
     expect(plan).toBeDefined()
-    @lgcode/@lgcode/ Wildcard is denied
+    // Wildcard is denied
     expect(evalPerm(plan, "edit")).toBe("deny")
-    @lgcode/@lgcode/ But specific path is allowed
-    expect(Permission.evaluate("edit", ".opencode@lgcode/plans@lgcode/foo.md", plan!.permission).action).toBe("allow")
+    // But specific path is allowed
+    expect(Permission.evaluate("edit", ".opencode/plans/foo.md", plan!.permission).action).toBe("allow")
   }),
 )
 
@@ -129,7 +129,7 @@ it.instance("explore agent asks for external directories and allows whitelisted 
   Effect.gen(function* () {
     const explore = yield* load((svc) => svc.get("explore"))
     expect(explore).toBeDefined()
-    expect(Permission.evaluate("external_directory", "@lgcode/some@lgcode/other@lgcode/path", explore!.permission).action).toBe("ask")
+    expect(Permission.evaluate("external_directory", "/some/other/path", explore!.permission).action).toBe("ask")
     expect(Permission.evaluate("external_directory", Truncate.GLOB, explore!.permission).action).toBe("allow")
     expect(
       Permission.evaluate("external_directory", path.join(Global.Path.tmp, "agent-work"), explore!.permission).action,
@@ -151,14 +151,14 @@ it.instance(
   {
     config: {
       references: {
-        effect: "github.com@lgcode/effect@lgcode/effect-smol",
+        effect: "github.com/effect/effect-smol",
         effectFull: {
-          repository: "Effect-TS@lgcode/effect",
+          repository: "Effect-TS/effect",
           branch: "main",
         },
-        localdocs: "..@lgcode/docs",
+        localdocs: "../docs",
         localdocsFull: {
-          path: "..@lgcode/local-docs",
+          path: "../local-docs",
         },
       },
     },
@@ -204,7 +204,7 @@ it.instance(
     config: {
       agent: {
         my_custom_agent: {
-          model: "openai@lgcode/gpt-4",
+          model: "openai/gpt-4",
           description: "My custom agent",
           temperature: 0.5,
           top_p: 0.9,
@@ -231,7 +231,7 @@ it.instance(
     config: {
       agent: {
         build: {
-          model: "anthropic@lgcode/claude-3",
+          model: "anthropic/claude-3",
           description: "Custom build agent",
           temperature: 0.7,
           color: "#FF0000",
@@ -266,9 +266,9 @@ it.instance(
     Effect.gen(function* () {
       const build = yield* load((svc) => svc.get("build"))
       expect(build).toBeDefined()
-      @lgcode/@lgcode/ Specific pattern is denied
+      // Specific pattern is denied
       expect(Permission.evaluate("bash", "rm -rf *", build!.permission).action).toBe("deny")
-      @lgcode/@lgcode/ Edit still allowed
+      // Edit still allowed
       expect(evalPerm(build, "edit")).toBe("allow")
     }),
   {
@@ -304,7 +304,7 @@ it.instance(
 )
 
 it.instance(
-  "agent steps@lgcode/maxSteps config sets steps property",
+  "agent steps/maxSteps config sets steps property",
   () =>
     Effect.gen(function* () {
       const build = yield* load((svc) => svc.get("build"))
@@ -509,7 +509,7 @@ it.instance(
 )
 
 it.instance(
-  "legacy tools config maps write@lgcode/edit@lgcode/patch to edit permission",
+  "legacy tools config maps write/edit/patch to edit permission",
   () =>
     Effect.gen(function* () {
       const build = yield* load((svc) => svc.get("build"))
@@ -535,7 +535,7 @@ it.instance(
       const build = yield* load((svc) => svc.get("build"))
       expect(Permission.evaluate("external_directory", Truncate.GLOB, build!.permission).action).toBe("allow")
       expect(Permission.evaluate("external_directory", Truncate.DIR, build!.permission).action).toBe("deny")
-      expect(Permission.evaluate("external_directory", "@lgcode/some@lgcode/other@lgcode/path", build!.permission).action).toBe("deny")
+      expect(Permission.evaluate("external_directory", "/some/other/path", build!.permission).action).toBe("deny")
     }),
   {
     config: {
@@ -552,7 +552,7 @@ it.instance("global tmp directory children are allowed for external_directory", 
     expect(
       Permission.evaluate("external_directory", path.join(Global.Path.tmp, "scratch"), build!.permission).action,
     ).toBe("allow")
-    expect(Permission.evaluate("external_directory", "@lgcode/some@lgcode/other@lgcode/path", build!.permission).action).toBe("ask")
+    expect(Permission.evaluate("external_directory", "/some/other/path", build!.permission).action).toBe("ask")
   }),
 )
 
@@ -563,7 +563,7 @@ it.instance(
       const build = yield* load((svc) => svc.get("build"))
       expect(Permission.evaluate("external_directory", Truncate.GLOB, build!.permission).action).toBe("allow")
       expect(Permission.evaluate("external_directory", Truncate.DIR, build!.permission).action).toBe("deny")
-      expect(Permission.evaluate("external_directory", "@lgcode/some@lgcode/other@lgcode/path", build!.permission).action).toBe("deny")
+      expect(Permission.evaluate("external_directory", "/some/other/path", build!.permission).action).toBe("deny")
     }),
   {
     config: {
@@ -638,14 +638,14 @@ it.instance(
     Effect.gen(function* () {
       const test = yield* TestInstance
       const build = yield* load((svc) => svc.get("build"))
-      const target = path.resolve(test.directory, "..@lgcode/docs@lgcode/reference@lgcode/notes.md")
+      const target = path.resolve(test.directory, "../docs/reference/notes.md")
       expect(Permission.evaluate("external_directory", target, build!.permission).action).toBe("allow")
     }),
   {
     git: true,
     config: {
       references: {
-        docs: "..@lgcode/docs",
+        docs: "../docs",
       },
     },
   },
@@ -734,7 +734,7 @@ it.instance(
   () =>
     Effect.gen(function* () {
       const agent = yield* load((svc) => svc.defaultAgent())
-      @lgcode/@lgcode/ build is disabled, so it should return plan (next primary agent)
+      // build is disabled, so it should return plan (next primary agent)
       expect(agent).toBe("plan")
     }),
   {

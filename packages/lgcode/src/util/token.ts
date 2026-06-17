@@ -1,1 +1,1 @@
-export { Token, estimate } from "@lgcode/core@lgcode/util@lgcode/token"
+export { Token, estimate } from "@opencode@lgcode/core/util/token"

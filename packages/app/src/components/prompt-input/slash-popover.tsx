@@ -1,7 +1,7 @@
 import { Component, For, Match, Show, Switch } from "solid-js"
-import { FileIcon } from "@lgcode/ui@lgcode/file-icon"
-import { Icon } from "@lgcode/ui@lgcode/icon"
-import { getDirectory, getFilename } from "@lgcode/core@lgcode/util@lgcode/path"
+import { FileIcon } from "@opencode@lgcode/ui/file-icon"
+import { Icon } from "@opencode@lgcode/ui/icon"
+import { getDirectory, getFilename } from "@opencode@lgcode/core/util/path"
 
 export type AtOption =
   | { type: "agent"; name: string; display: string }
@@ -49,7 +49,7 @@ export const PromptPopover: Component<PromptPopoverProps> = (props) => {
           <Match when={props.popover === "at"}>
             <Show
               when={props.atFlat.length > 0}
-              fallback={<div class="text-text-weak px-2 py-1">{props.t("prompt.popover.emptyResults")}<@lgcode/div>}
+              fallback={<div class="text-text-weak px-2 py-1">{props.t("prompt.popover.emptyResults")}</div>}
             >
               <For each={props.atFlat.slice(0, 10)}>
                 {(item) => {
@@ -63,13 +63,13 @@ export const PromptPopover: Component<PromptPopoverProps> = (props) => {
                         onClick={() => props.onAtSelect(item)}
                         onMouseEnter={() => props.setAtActive(key)}
                       >
-                        <Icon name="brain" size="small" class="text-icon-info-active shrink-0" @lgcode/>
-                        <span class="text-14-regular text-text-strong whitespace-nowrap">@{item.name}<@lgcode/span>
-                      <@lgcode/button>
+                        <Icon name="brain" size="small" class="text-icon-info-active shrink-0" />
+                        <span class="text-14-regular text-text-strong whitespace-nowrap">@{item.name}</span>
+                      </button>
                     )
                   }
 
-                  const isDirectory = item.path.endsWith("@lgcode/")
+                  const isDirectory = item.path.endsWith("/")
                   const directory = isDirectory ? item.path : getDirectory(item.path)
                   const filename = isDirectory ? "" : getFilename(item.path)
 
@@ -80,23 +80,23 @@ export const PromptPopover: Component<PromptPopoverProps> = (props) => {
                       onClick={() => props.onAtSelect(item)}
                       onMouseEnter={() => props.setAtActive(key)}
                     >
-                      <FileIcon node={{ path: item.path, type: "file" }} class="shrink-0 size-4" @lgcode/>
+                      <FileIcon node={{ path: item.path, type: "file" }} class="shrink-0 size-4" />
                       <div class="flex items-center text-14-regular min-w-0">
-                        <span class="text-text-weak whitespace-nowrap truncate min-w-0">{directory}<@lgcode/span>
+                        <span class="text-text-weak whitespace-nowrap truncate min-w-0">{directory}</span>
                         <Show when={!isDirectory}>
-                          <span class="text-text-strong whitespace-nowrap">{filename}<@lgcode/span>
-                        <@lgcode/Show>
-                      <@lgcode/div>
-                    <@lgcode/button>
+                          <span class="text-text-strong whitespace-nowrap">{filename}</span>
+                        </Show>
+                      </div>
+                    </button>
                   )
                 }}
-              <@lgcode/For>
-            <@lgcode/Show>
-          <@lgcode/Match>
+              </For>
+            </Show>
+          </Match>
           <Match when={props.popover === "slash"}>
             <Show
               when={props.slashFlat.length > 0}
-              fallback={<div class="text-text-weak px-2 py-1">{props.t("prompt.popover.emptyCommands")}<@lgcode/div>}
+              fallback={<div class="text-text-weak px-2 py-1">{props.t("prompt.popover.emptyCommands")}</div>}
             >
               <For each={props.slashFlat}>
                 {(cmd) => (
@@ -110,11 +110,11 @@ export const PromptPopover: Component<PromptPopoverProps> = (props) => {
                     onMouseEnter={() => props.setSlashActive(cmd.id)}
                   >
                     <div class="flex items-center gap-2 min-w-0">
-                      <span class="text-14-regular text-text-strong whitespace-nowrap">@lgcode/{cmd.trigger}<@lgcode/span>
+                      <span class="text-14-regular text-text-strong whitespace-nowrap">/{cmd.trigger}</span>
                       <Show when={cmd.description}>
-                        <span class="text-14-regular text-text-weak truncate">{cmd.description}<@lgcode/span>
-                      <@lgcode/Show>
-                    <@lgcode/div>
+                        <span class="text-14-regular text-text-weak truncate">{cmd.description}</span>
+                      </Show>
+                    </div>
                     <div class="flex items-center gap-2 shrink-0">
                       <Show when={cmd.type === "custom" && cmd.source !== "command"}>
                         <span class="text-11-regular text-text-subtle px-1.5 py-0.5 bg-surface-base rounded">
@@ -123,19 +123,19 @@ export const PromptPopover: Component<PromptPopoverProps> = (props) => {
                             : cmd.source === "mcp"
                               ? props.t("prompt.slash.badge.mcp")
                               : props.t("prompt.slash.badge.custom")}
-                        <@lgcode/span>
-                      <@lgcode/Show>
+                        </span>
+                      </Show>
                       <Show when={props.commandKeybind(cmd.id)}>
-                        <span class="text-12-regular text-text-subtle">{props.commandKeybind(cmd.id)}<@lgcode/span>
-                      <@lgcode/Show>
-                    <@lgcode/div>
-                  <@lgcode/button>
+                        <span class="text-12-regular text-text-subtle">{props.commandKeybind(cmd.id)}</span>
+                      </Show>
+                    </div>
+                  </button>
                 )}
-              <@lgcode/For>
-            <@lgcode/Show>
-          <@lgcode/Match>
-        <@lgcode/Switch>
-      <@lgcode/div>
-    <@lgcode/Show>
+              </For>
+            </Show>
+          </Match>
+        </Switch>
+      </div>
+    </Show>
   )
 }

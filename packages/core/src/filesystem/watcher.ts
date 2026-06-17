@@ -1,19 +1,19 @@
-export * as Watcher from ".@lgcode/watcher"
+export * as Watcher from "./watcher"
 
-@lgcode/@lgcode/ @ts-ignore
-import { createWrapper } from "@parcel@lgcode/watcher@lgcode/wrapper"
-import type ParcelWatcher from "@parcel@lgcode/watcher"
+// @ts-ignore
+import { createWrapper } from "@parcel/watcher/wrapper"
+import type ParcelWatcher from "@parcel/watcher"
 import { Cause, Context, Effect, Layer, Schema } from "effect"
 import path from "path"
-import { Config } from "..@lgcode/config"
-import { EventV2 } from "..@lgcode/event"
-import { Flag } from "..@lgcode/flag@lgcode/flag"
-import { FSUtil } from "..@lgcode/fs-util"
-import { Git } from "..@lgcode/git"
-import { Location } from "..@lgcode/location"
-import { lazy } from "..@lgcode/util@lgcode/lazy"
-import { Ignore } from ".@lgcode/ignore"
-import { Protected } from ".@lgcode/protected"
+import { Config } from "../config"
+import { EventV2 } from "../event"
+import { Flag } from "../flag/flag"
+import { FSUtil } from "../fs-util"
+import { Git } from "../git"
+import { Location } from "../location"
+import { lazy } from "../util/lazy"
+import { Ignore } from "./ignore"
+import { Protected } from "./protected"
 
 declare const OPENCODE_LIBC: string | undefined
 
@@ -29,13 +29,13 @@ export const Event = {
   }),
 }
 
-const watcher = lazy((): typeof import("@parcel@lgcode/watcher") | undefined => {
+const watcher = lazy((): typeof import("@parcel/watcher") | undefined => {
   try {
     const libc = typeof OPENCODE_LIBC === "undefined" ? undefined : OPENCODE_LIBC
     const binding = require(
-      `@parcel@lgcode/watcher-${process.platform}-${process.arch}${process.platform === "linux" ? `-${libc || "glibc"}` : ""}`,
+      `@parcel/watcher-${process.platform}-${process.arch}${process.platform === "linux" ? `-${libc || "glibc"}` : ""}`,
     )
-    return createWrapper(binding) as typeof import("@parcel@lgcode/watcher")
+    return createWrapper(binding) as typeof import("@parcel/watcher")
   } catch {
     return
   }
@@ -58,7 +58,7 @@ export const hasNativeBinding = () => !!watcher()
 
 export interface Interface {}
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/FileWatcher") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/v2/FileWatcher") {}
 
 export const layer = Layer.effect(
   Service,

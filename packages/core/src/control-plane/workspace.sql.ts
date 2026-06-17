@@ -1,7 +1,7 @@
-import { sqliteTable, text, integer } from "drizzle-orm@lgcode/sqlite-core"
-import { ProjectTable } from "..@lgcode/project@lgcode/sql"
-import { ProjectV2 } from "..@lgcode/project"
-import { WorkspaceV2 } from "..@lgcode/workspace"
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core"
+import { ProjectTable } from "../project/sql"
+import { ProjectV2 } from "../project"
+import { WorkspaceV2 } from "../workspace"
 
 export const WorkspaceTable = sqliteTable("workspace", {
   id: text().$type<WorkspaceV2.ID>().primaryKey(),

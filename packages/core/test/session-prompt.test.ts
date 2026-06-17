@@ -1,22 +1,22 @@
 import { describe, expect } from "bun:test"
 import { DateTime, Effect, Fiber, Layer, Stream } from "effect"
 import { eq } from "drizzle-orm"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import { EventTable } from "@lgcode/core@lgcode/event@lgcode/sql"
-import { SessionEvent } from "@lgcode/core@lgcode/session@lgcode/event"
-import { Project } from "@lgcode/core@lgcode/project"
-import { ProjectTable } from "@lgcode/core@lgcode/project@lgcode/sql"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
-import { SessionV2 } from "@lgcode/core@lgcode/session"
-import { Prompt } from "@lgcode/core@lgcode/session@lgcode/prompt"
-import { SessionMessage } from "@lgcode/core@lgcode/session@lgcode/message"
-import { SessionProjector } from "@lgcode/core@lgcode/session@lgcode/projector"
-import { SessionExecution } from "@lgcode/core@lgcode/session@lgcode/execution"
-import { SessionInput } from "@lgcode/core@lgcode/session@lgcode/input"
-import { SessionInputTable, SessionMessageTable, SessionTable } from "@lgcode/core@lgcode/session@lgcode/sql"
-import { SessionStore } from "@lgcode/core@lgcode/session@lgcode/store"
-import { testEffect } from ".@lgcode/lib@lgcode/effect"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import { EventTable } from "@opencode@lgcode/core/event/sql"
+import { SessionEvent } from "@opencode@lgcode/core/session/event"
+import { Project } from "@opencode@lgcode/core/project"
+import { ProjectTable } from "@opencode@lgcode/core/project/sql"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
+import { SessionV2 } from "@opencode@lgcode/core/session"
+import { Prompt } from "@opencode@lgcode/core/session/prompt"
+import { SessionMessage } from "@opencode@lgcode/core/session/message"
+import { SessionProjector } from "@opencode@lgcode/core/session/projector"
+import { SessionExecution } from "@opencode@lgcode/core/session/execution"
+import { SessionInput } from "@opencode@lgcode/core/session/input"
+import { SessionInputTable, SessionMessageTable, SessionTable } from "@opencode@lgcode/core/session/sql"
+import { SessionStore } from "@opencode@lgcode/core/session/store"
+import { testEffect } from "./lib/effect"
 
 const database = Database.layerFromPath(":memory:")
 const events = EventV2.layer.pipe(Layer.provide(database))
@@ -61,7 +61,7 @@ const setup = Effect.gen(function* () {
   const { db } = yield* Database.Service
   yield* db
     .insert(ProjectTable)
-    .values({ id: Project.ID.global, worktree: AbsolutePath.make("@lgcode/project"), sandboxes: [] })
+    .values({ id: Project.ID.global, worktree: AbsolutePath.make("/project"), sandboxes: [] })
     .onConflictDoNothing()
     .run()
     .pipe(Effect.orDie)
@@ -71,7 +71,7 @@ const setup = Effect.gen(function* () {
       id: sessionID,
       project_id: Project.ID.global,
       slug: "test",
-      directory: "@lgcode/project",
+      directory: "/project",
       title: "test",
       version: "test",
     })
@@ -536,7 +536,7 @@ describe("SessionV2.prompt", () => {
           id: other,
           project_id: Project.ID.global,
           slug: "other",
-          directory: "@lgcode/project",
+          directory: "/project",
           title: "other",
           version: "test",
         })

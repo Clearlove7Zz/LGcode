@@ -1,14 +1,14 @@
 import { batch, createEffect, createMemo, onCleanup } from "solid-js"
-import { createStore, produce, reconcile } from "solid-js@lgcode/store"
-import { createSimpleContext } from "@lgcode/ui@lgcode/context"
-import { showToast } from "@@lgcode/utils@lgcode/toast"
-import { useParams } from "@solidjs@lgcode/router"
-import { getFilename } from "@lgcode/core@lgcode/util@lgcode/path"
-import { useSDK } from ".@lgcode/sdk"
-import { useSync } from ".@lgcode/sync"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
-import { useLayout } from "@@lgcode/context@lgcode/layout"
-import { createPathHelpers } from ".@lgcode/file@lgcode/path"
+import { createStore, produce, reconcile } from "solid-js/store"
+import { createSimpleContext } from "@opencode@lgcode/ui/context"
+import { showToast } from "@/utils/toast"
+import { useParams } from "@solidjs/router"
+import { getFilename } from "@opencode@lgcode/core/util/path"
+import { useSDK } from "./sdk"
+import { useSync } from "./sync"
+import { useLanguage } from "@/context/language"
+import { useLayout } from "@/context/layout"
+import { createPathHelpers } from "./file/path"
 import {
   approxBytes,
   evictContentLru,
@@ -19,19 +19,19 @@ import {
   resetFileContentLru,
   setFileContentBytes,
   touchFileContent,
-} from ".@lgcode/file@lgcode/content-cache"
-import { createFileViewCache } from ".@lgcode/file@lgcode/view-cache"
-import { useServerSDK } from ".@lgcode/server-sdk"
-import { SessionRouteKey, SessionStateKey } from "@@lgcode/utils@lgcode/server-scope"
-import { createFileTreeStore } from ".@lgcode/file@lgcode/tree-store"
-import { invalidateFromWatcher } from ".@lgcode/file@lgcode/watcher"
+} from "./file/content-cache"
+import { createFileViewCache } from "./file/view-cache"
+import { useServerSDK } from "./server-sdk"
+import { SessionRouteKey, SessionStateKey } from "@/utils/server-scope"
+import { createFileTreeStore } from "./file/tree-store"
+import { invalidateFromWatcher } from "./file/watcher"
 import {
   selectionFromLines,
   type FileState,
   type FileSelection,
   type FileViewState,
   type SelectedLineRange,
-} from ".@lgcode/file@lgcode/types"
+} from "./file/types"
 
 export type { FileSelection, SelectedLineRange, FileViewState, FileState }
 export { selectionFromLines }

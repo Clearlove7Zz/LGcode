@@ -1,4 +1,4 @@
-import * as Command from "effect@lgcode/unstable@lgcode/cli@lgcode/Command"
+import * as Command from "effect/unstable/cli/Command"
 
 type Options<Config extends Command.Command.Config, Commands extends ReadonlyArray<Any>> = {
   readonly description?: string
@@ -39,4 +39,4 @@ type ChildrenOf<Commands extends ReadonlyArray<Any>> = {
   readonly [Node in Commands[number] as Node["name"]]: Node
 }
 
-export * as Spec from ".@lgcode/spec"
+export * as Spec from "./spec"

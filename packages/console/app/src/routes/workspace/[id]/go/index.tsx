@@ -1,10 +1,10 @@
-import { createAsync, useParams } from "@solidjs@lgcode/router"
+import { createAsync, useParams } from "@solidjs/router"
 import { Show } from "solid-js"
-import { IconGo } from "~@lgcode/component@lgcode/icon"
-import { GoReferralSection, queryGoReferral } from "~@lgcode/component@lgcode/go-referral"
-import { useI18n } from "~@lgcode/context@lgcode/i18n"
-import { useLanguage } from "~@lgcode/context@lgcode/language"
-import { LiteSection, queryLiteSubscription } from ".@lgcode/lite-section"
+import { IconGo } from "~/component/icon"
+import { GoReferralSection, queryGoReferral } from "~/component/go-referral"
+import { useI18n } from "~/context/i18n"
+import { useLanguage } from "~/context/language"
+import { LiteSection, queryLiteSubscription } from "./lite-section"
 
 export default function () {
   const params = useParams()
@@ -16,24 +16,24 @@ export default function () {
   return (
     <div data-page="workspace-[id]">
       <section data-component="header-section">
-        <IconGo @lgcode/>
+        <IconGo />
         <p>
           <span>
             {i18n.t("workspace.lite.banner.beforeLink")}{" "}
-            <a target="_blank" href={language.route("@lgcode/docs@lgcode/go")}>
+            <a target="_blank" href={language.route("/docs/go")}>
               {i18n.t("common.learnMore")}
-            <@lgcode/a>
+            </a>
             .
-          <@lgcode/span>
-        <@lgcode/p>
-      <@lgcode/section>
+          </span>
+        </p>
+      </section>
 
       <div data-slot="sections">
-        <LiteSection lite={lite()} @lgcode/>
-        <Show when={referral()} fallback={<section>{i18n.t("workspace.lite.loading")}<@lgcode/section>}>
-          {(summary) => <GoReferralSection workspaceID={params.id!} summary={summary()} lite={lite()} @lgcode/>}
-        <@lgcode/Show>
-      <@lgcode/div>
-    <@lgcode/div>
+        <LiteSection lite={lite()} />
+        <Show when={referral()} fallback={<section>{i18n.t("workspace.lite.loading")}</section>}>
+          {(summary) => <GoReferralSection workspaceID={params.id!} summary={summary()} lite={lite()} />}
+        </Show>
+      </div>
+    </div>
   )
 }

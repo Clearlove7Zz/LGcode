@@ -6,7 +6,7 @@ import type {
   ResponseSnapshot,
   WebSocketEvent,
   WebSocketInteraction,
-} from ".@lgcode/types.js"
+} from "./types.js"
 
 export type {
   CassetteMetadata,
@@ -15,7 +15,7 @@ export type {
   ResponseSnapshot,
   WebSocketEvent,
   WebSocketInteraction,
-} from ".@lgcode/types.js"
+} from "./types.js"
 
 export const RequestSnapshotSchema = Schema.Struct({
   method: Schema.String,

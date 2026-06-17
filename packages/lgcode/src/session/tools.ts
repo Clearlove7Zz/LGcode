@@ -1,25 +1,25 @@
-import { Agent } from "@@lgcode/agent@lgcode/agent"
-import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
-import { Provider } from "@@lgcode/provider@lgcode/provider"
-import { ProviderTransform } from "@@lgcode/provider@lgcode/transform"
-import { MCP } from "@@lgcode/mcp"
-import { Permission } from "@@lgcode/permission"
-import { Tool } from "@@lgcode/tool@lgcode/tool"
-import { ToolJsonSchema } from "@@lgcode/tool@lgcode/json-schema"
-import { ToolRegistry } from "@@lgcode/tool@lgcode/registry"
-import { Truncate } from "@@lgcode/tool@lgcode/truncate"
+import { Agent } from "@/agent/agent"
+import { SessionV1 } from "@opencode@lgcode/core/v1/session"
+import { Provider } from "@/provider/provider"
+import { ProviderTransform } from "@/provider/transform"
+import { MCP } from "@/mcp"
+import { Permission } from "@/permission"
+import { Tool } from "@/tool/tool"
+import { ToolJsonSchema } from "@/tool/json-schema"
+import { ToolRegistry } from "@/tool/registry"
+import { Truncate } from "@/tool/truncate"
 
-import { Plugin } from "@@lgcode/plugin"
-import type { TaskPromptOps } from "@@lgcode/tool@lgcode/task"
+import { Plugin } from "@/plugin"
+import type { TaskPromptOps } from "@/tool/task"
 import { type Tool as AITool, tool, jsonSchema, type ToolExecutionOptions, asSchema } from "ai"
 import { Effect } from "effect"
-import { MessageV2 } from ".@lgcode/message-v2"
-import { Session } from ".@lgcode/session"
-import { SessionProcessor } from ".@lgcode/processor"
-import { PartID } from ".@lgcode/schema"
-import { EffectBridge } from "@@lgcode/effect@lgcode/bridge"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { MessageV2 } from "./message-v2"
+import { Session } from "./session"
+import { SessionProcessor } from "./processor"
+import { PartID } from "./schema"
+import { EffectBridge } from "@/effect/bridge"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelV2 } from "@opencode@lgcode/core/model"
 
 export const resolve = Effect.fn("SessionTools.resolve")(function* (input: {
   agent: Agent.Info
@@ -165,8 +165,8 @@ export const resolve = Effect.fn("SessionTools.resolve")(function* (input: {
               if (resource.blob) {
                 attachments.push({
                   type: "file",
-                  mime: resource.mimeType ?? "application@lgcode/octet-stream",
-                  url: `data:${resource.mimeType ?? "application@lgcode/octet-stream"};base64,${resource.blob}`,
+                  mime: resource.mimeType ?? "application/octet-stream",
+                  url: `data:${resource.mimeType ?? "application/octet-stream"};base64,${resource.blob}`,
                   filename: resource.uri,
                 })
               }
@@ -204,4 +204,4 @@ export const resolve = Effect.fn("SessionTools.resolve")(function* (input: {
   return tools
 })
 
-export * as SessionTools from ".@lgcode/tools"
+export * as SessionTools from "./tools"

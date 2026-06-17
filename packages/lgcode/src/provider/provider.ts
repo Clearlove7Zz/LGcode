@@ -1,43 +1,43 @@
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
 import os from "os"
-import { ConfigV1 } from "@lgcode/core@lgcode/v1@lgcode/config@lgcode/config"
+import { ConfigV1 } from "@opencode@lgcode/core/v1/config/config"
 import fuzzysort from "fuzzysort"
-import { Config } from "@@lgcode/config@lgcode/config"
+import { Config } from "@/config/config"
 import { mapValues, mergeDeep, omit, pickBy, sortBy } from "remeda"
 import { NoSuchModelError, type Provider as SDK } from "ai"
-import { Npm } from "@lgcode/core@lgcode/npm"
-import { Hash } from "@lgcode/core@lgcode/util@lgcode/hash"
-import { Plugin } from "..@lgcode/plugin"
-import { serviceUse } from "@lgcode/core@lgcode/effect@lgcode/service-use"
-import { type LanguageModelV3 } from "@ai-sdk@lgcode/provider"
-import { ModelsDev } from "@lgcode/core@lgcode/models-dev"
-import { Auth } from "..@lgcode/auth"
-import { Env } from "..@lgcode/env"
-import { InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
-import { iife } from "@@lgcode/util@lgcode/iife"
-import { Global } from "@lgcode/core@lgcode/global"
+import { Npm } from "@opencode@lgcode/core/npm"
+import { Hash } from "@opencode@lgcode/core/util/hash"
+import { Plugin } from "../plugin"
+import { serviceUse } from "@opencode@lgcode/core/effect/service-use"
+import { type LanguageModelV3 } from "@ai-sdk/provider"
+import { ModelsDev } from "@opencode@lgcode/core/models-dev"
+import { Auth } from "../auth"
+import { Env } from "../env"
+import { InstallationVersion } from "@opencode@lgcode/core/installation/version"
+import { iife } from "@/util/iife"
+import { Global } from "@opencode@lgcode/core/global"
 import path from "path"
 import { pathToFileURL } from "url"
 import { Effect, Layer, Context, Schema, Types } from "effect"
-import { EffectBridge } from "@@lgcode/effect@lgcode/bridge"
-import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
-import { EffectPromise } from "@@lgcode/effect@lgcode/promise"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { isRecord } from "@@lgcode/util@lgcode/record"
-import { optionalOmitUndefined } from "@lgcode/core@lgcode/schema"
-import { ProviderTransform } from ".@lgcode/transform"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
-import { ModelStatus } from ".@lgcode/model-status"
-import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
-import { ProviderError } from ".@lgcode/error"
+import { EffectBridge } from "@/effect/bridge"
+import { InstanceState } from "@/effect/instance-state"
+import { EffectPromise } from "@/effect/promise"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { isRecord } from "@/util/record"
+import { optionalOmitUndefined } from "@opencode@lgcode/core/schema"
+import { ProviderTransform } from "./transform"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelV2 } from "@opencode@lgcode/core/model"
+import { ModelStatus } from "./model-status"
+import { RuntimeFlags } from "@/effect/runtime-flags"
+import { ProviderError } from "./error"
 
 const OPENAI_HEADER_TIMEOUT_DEFAULT = 10_000
 
 function wrapSSE(res: Response, ms: number, ctl: AbortController) {
   if (typeof ms !== "number" || ms <= 0) return res
   if (!res.body) return res
-  if (!res.headers.get("content-type")?.includes("text@lgcode/event-stream")) return res
+  if (!res.headers.get("content-type")?.includes("text/event-stream")) return res
 
   const reader = res.body.getReader()
   const body = new ReadableStream<Uint8Array>({
@@ -94,8 +94,8 @@ function timeoutController(ms: number) {
 function googleVertexAnthropicBaseURL(project: string | undefined, location: string | undefined) {
   if (!project) return
   if (location !== "eu" && location !== "us") return
-  @lgcode/@lgcode/ Continental multi-regions require Regional Endpoint Platform domains.
-  return `https:@lgcode/@lgcode/aiplatform.${location}.rep.googleapis.com@lgcode/v1@lgcode/projects@lgcode/${project}@lgcode/locations@lgcode/${location}@lgcode/publishers@lgcode/anthropic@lgcode/models`
+  // Continental multi-regions require Regional Endpoint Platform domains.
+  return `https://aiplatform.${location}.rep.googleapis.com/v1/projects/${project}/locations/${location}/publishers/anthropic/models`
 }
 
 type BundledSDK = {
@@ -105,31 +105,31 @@ type BundledSDK = {
 }
 
 const BUNDLED_PROVIDERS: Record<string, () => Promise<(opts: any) => BundledSDK>> = {
-  "@ai-sdk@lgcode/amazon-bedrock": () => import("@ai-sdk@lgcode/amazon-bedrock").then((m) => m.createAmazonBedrock),
-  "@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle": () => import("@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle").then((m) => m.createBedrockMantle),
-  "@ai-sdk@lgcode/anthropic": () => import("@ai-sdk@lgcode/anthropic").then((m) => m.createAnthropic),
-  "@ai-sdk@lgcode/azure": () => import("@ai-sdk@lgcode/azure").then((m) => m.createAzure),
-  "@ai-sdk@lgcode/google": () => import("@ai-sdk@lgcode/google").then((m) => m.createGoogleGenerativeAI),
-  "@ai-sdk@lgcode/google-vertex": () => import("@ai-sdk@lgcode/google-vertex").then((m) => m.createVertex),
-  "@ai-sdk@lgcode/google-vertex@lgcode/anthropic": () =>
-    import("@ai-sdk@lgcode/google-vertex@lgcode/anthropic").then((m) => m.createVertexAnthropic),
-  "@ai-sdk@lgcode/openai": () => import("@ai-sdk@lgcode/openai").then((m) => m.createOpenAI),
-  "@ai-sdk@lgcode/openai-compatible": () => import("@ai-sdk@lgcode/openai-compatible").then((m) => m.createOpenAICompatible),
-  "@openrouter@lgcode/ai-sdk-provider": () => import("@openrouter@lgcode/ai-sdk-provider").then((m) => m.createOpenRouter),
-  "@ai-sdk@lgcode/xai": () => import("@ai-sdk@lgcode/xai").then((m) => m.createXai),
-  "@ai-sdk@lgcode/mistral": () => import("@ai-sdk@lgcode/mistral").then((m) => m.createMistral),
-  "@ai-sdk@lgcode/groq": () => import("@ai-sdk@lgcode/groq").then((m) => m.createGroq),
-  "@ai-sdk@lgcode/deepinfra": () => import("@ai-sdk@lgcode/deepinfra").then((m) => m.createDeepInfra),
-  "@ai-sdk@lgcode/cerebras": () => import("@ai-sdk@lgcode/cerebras").then((m) => m.createCerebras),
-  "@ai-sdk@lgcode/cohere": () => import("@ai-sdk@lgcode/cohere").then((m) => m.createCohere),
-  "@ai-sdk@lgcode/gateway": () => import("@ai-sdk@lgcode/gateway").then((m) => m.createGateway),
-  "@ai-sdk@lgcode/togetherai": () => import("@ai-sdk@lgcode/togetherai").then((m) => m.createTogetherAI),
-  "@ai-sdk@lgcode/perplexity": () => import("@ai-sdk@lgcode/perplexity").then((m) => m.createPerplexity),
-  "@ai-sdk@lgcode/vercel": () => import("@ai-sdk@lgcode/vercel").then((m) => m.createVercel),
-  "@ai-sdk@lgcode/alibaba": () => import("@ai-sdk@lgcode/alibaba").then((m) => m.createAlibaba),
+  "@ai-sdk/amazon-bedrock": () => import("@ai-sdk/amazon-bedrock").then((m) => m.createAmazonBedrock),
+  "@ai-sdk/amazon-bedrock/mantle": () => import("@ai-sdk/amazon-bedrock/mantle").then((m) => m.createBedrockMantle),
+  "@ai-sdk/anthropic": () => import("@ai-sdk/anthropic").then((m) => m.createAnthropic),
+  "@ai-sdk/azure": () => import("@ai-sdk/azure").then((m) => m.createAzure),
+  "@ai-sdk/google": () => import("@ai-sdk/google").then((m) => m.createGoogleGenerativeAI),
+  "@ai-sdk/google-vertex": () => import("@ai-sdk/google-vertex").then((m) => m.createVertex),
+  "@ai-sdk/google-vertex/anthropic": () =>
+    import("@ai-sdk/google-vertex/anthropic").then((m) => m.createVertexAnthropic),
+  "@ai-sdk/openai": () => import("@ai-sdk/openai").then((m) => m.createOpenAI),
+  "@ai-sdk/openai-compatible": () => import("@ai-sdk/openai-compatible").then((m) => m.createOpenAICompatible),
+  "@openrouter/ai-sdk-provider": () => import("@openrouter/ai-sdk-provider").then((m) => m.createOpenRouter),
+  "@ai-sdk/xai": () => import("@ai-sdk/xai").then((m) => m.createXai),
+  "@ai-sdk/mistral": () => import("@ai-sdk/mistral").then((m) => m.createMistral),
+  "@ai-sdk/groq": () => import("@ai-sdk/groq").then((m) => m.createGroq),
+  "@ai-sdk/deepinfra": () => import("@ai-sdk/deepinfra").then((m) => m.createDeepInfra),
+  "@ai-sdk/cerebras": () => import("@ai-sdk/cerebras").then((m) => m.createCerebras),
+  "@ai-sdk/cohere": () => import("@ai-sdk/cohere").then((m) => m.createCohere),
+  "@ai-sdk/gateway": () => import("@ai-sdk/gateway").then((m) => m.createGateway),
+  "@ai-sdk/togetherai": () => import("@ai-sdk/togetherai").then((m) => m.createTogetherAI),
+  "@ai-sdk/perplexity": () => import("@ai-sdk/perplexity").then((m) => m.createPerplexity),
+  "@ai-sdk/vercel": () => import("@ai-sdk/vercel").then((m) => m.createVercel),
+  "@ai-sdk/alibaba": () => import("@ai-sdk/alibaba").then((m) => m.createAlibaba),
   "gitlab-ai-provider": () => import("gitlab-ai-provider").then((m) => m.createGitLab),
-  "@ai-sdk@lgcode/github-copilot": () =>
-    import("@lgcode/core@lgcode/github-copilot@lgcode/copilot-provider").then((m) => m.createOpenaiCompatible),
+  "@ai-sdk/github-copilot": () =>
+    import("@opencode@lgcode/core/github-copilot/copilot-provider").then((m) => m.createOpenaiCompatible),
   "venice-ai-sdk-provider": () => import("venice-ai-sdk-provider").then((m) => m.createVenice),
 }
 
@@ -220,7 +220,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
         autoload: false,
         async getModel(sdk: any, modelID: string, _options?: Record<string, any>) {
           if (sdk.responses === undefined && sdk.chat === undefined) return sdk.languageModel(modelID)
-          const match = @lgcode/^gpt-(\d+)@lgcode/.exec(modelID)
+          const match = /^gpt-(\d+)/.exec(modelID)
           if (match && Number(match[1]) >= 5 && !modelID.startsWith("gpt-5-mini")) return sdk.responses(modelID)
           return sdk.chat(modelID)
         },
@@ -274,7 +274,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
           return selectAzureLanguageModel(sdk, modelID, Boolean(options?.["useCompletionUrls"]))
         },
         options: {
-          baseURL: resourceName ? `https:@lgcode/@lgcode/${resourceName}.cognitiveservices.azure.com@lgcode/openai` : undefined,
+          baseURL: resourceName ? `https://${resourceName}.cognitiveservices.azure.com/openai` : undefined,
         },
       }
     }),
@@ -283,12 +283,12 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
       const auth = yield* dep.auth("amazon-bedrock")
       const env = yield* dep.env()
 
-      @lgcode/@lgcode/ Region precedence: 1) config file, 2) env var, 3) default
+      // Region precedence: 1) config file, 2) env var, 3) default
       const configRegion = providerConfig?.options?.region
       const envRegion = env["AWS_REGION"]
       const defaultRegion = configRegion ?? envRegion ?? "us-east-1"
 
-      @lgcode/@lgcode/ Profile: config file takes precedence over env var
+      // Profile: config file takes precedence over env var
       const configProfile = providerConfig?.options?.profile
       const envProfile = env["AWS_PROFILE"]
       const profile = configProfile ?? envProfile
@@ -296,8 +296,8 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
       const awsAccessKeyId = env["AWS_ACCESS_KEY_ID"]
       const configApiKey = providerConfig?.options?.apiKey
 
-      @lgcode/@lgcode/ TODO: Using process.env directly because Env.set only updates a process.env shallow copy,
-      @lgcode/@lgcode/ until the scope of the Env API is clarified (test only or runtime?)
+      // TODO: Using process.env directly because Env.set only updates a process.env shallow copy,
+      // until the scope of the Env API is clarified (test only or runtime?)
       const awsBearerToken = iife(() => {
         const envToken = process.env.AWS_BEARER_TOKEN_BEDROCK
         if (envToken) return envToken
@@ -324,22 +324,22 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
       )
         return { autoload: false }
 
-      const { fromNodeProviderChain } = yield* Effect.promise(() => import("@aws-sdk@lgcode/credential-providers"))
+      const { fromNodeProviderChain } = yield* Effect.promise(() => import("@aws-sdk/credential-providers"))
 
       const providerOptions: Record<string, any> = {
         region: defaultRegion,
       }
 
-      @lgcode/@lgcode/ Only use credential chain if no bearer token exists
-      @lgcode/@lgcode/ Bearer token takes precedence over credential chain (profiles, access keys, IAM roles, web identity tokens)
+      // Only use credential chain if no bearer token exists
+      // Bearer token takes precedence over credential chain (profiles, access keys, IAM roles, web identity tokens)
       if (!awsBearerToken && !configApiKey) {
-        @lgcode/@lgcode/ Build credential provider options (only pass profile if specified)
+        // Build credential provider options (only pass profile if specified)
         const credentialProviderOptions = profile ? { profile } : {}
 
         providerOptions.credentialProvider = fromNodeProviderChain(credentialProviderOptions)
       }
 
-      @lgcode/@lgcode/ Add custom endpoint if specified (endpoint takes precedence over baseURL)
+      // Add custom endpoint if specified (endpoint takes precedence over baseURL)
       const endpoint = providerConfig?.options?.endpoint ?? providerConfig?.options?.baseURL
       if (endpoint) {
         providerOptions.baseURL = endpoint
@@ -352,19 +352,19 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
           return { AWS_REGION: options.region ?? defaultRegion }
         },
         async getModel(sdk: any, modelID: string, options?: Record<string, any>, model?: Model) {
-          if (model?.api.npm === "@ai-sdk@lgcode/amazon-bedrock@lgcode/mantle") return selectBedrockMantleLanguageModel(sdk, modelID)
+          if (model?.api.npm === "@ai-sdk/amazon-bedrock/mantle") return selectBedrockMantleLanguageModel(sdk, modelID)
 
-          @lgcode/@lgcode/ Skip region prefixing if model already has a cross-region inference profile prefix
-          @lgcode/@lgcode/ Models from models.dev may already include prefixes like us., eu., global., etc.
+          // Skip region prefixing if model already has a cross-region inference profile prefix
+          // Models from models.dev may already include prefixes like us., eu., global., etc.
           const crossRegionPrefixes = ["global.", "us.", "eu.", "jp.", "apac.", "au."]
           if (crossRegionPrefixes.some((prefix) => modelID.startsWith(prefix))) {
             return sdk.languageModel(modelID)
           }
 
-          @lgcode/@lgcode/ Region resolution precedence (highest to lowest):
-          @lgcode/@lgcode/ 1. options.region from opencode.json provider config
-          @lgcode/@lgcode/ 2. defaultRegion from AWS_REGION environment variable
-          @lgcode/@lgcode/ 3. Default "us-east-1" (baked into defaultRegion)
+          // Region resolution precedence (highest to lowest):
+          // 1. options.region from opencode.json provider config
+          // 2. defaultRegion from AWS_REGION environment variable
+          // 3. Default "us-east-1" (baked into defaultRegion)
           const region = options?.region ?? defaultRegion
 
           let regionPrefix = region.split("-")[0]
@@ -414,7 +414,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
                 regionPrefix = "au"
                 modelID = `${regionPrefix}.${modelID}`
               } else if (isTokyoRegion) {
-                @lgcode/@lgcode/ Tokyo region uses jp. prefix for cross-region inference
+                // Tokyo region uses jp. prefix for cross-region inference
                 const modelRequiresPrefix = ["claude", "nova-lite", "nova-micro", "nova-pro"].some((m) =>
                   modelID.includes(m),
                 )
@@ -423,7 +423,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
                   modelID = `${regionPrefix}.${modelID}`
                 }
               } else {
-                @lgcode/@lgcode/ Other APAC regions use apac. prefix
+                // Other APAC regions use apac. prefix
                 const modelRequiresPrefix = ["claude", "nova-lite", "nova-micro", "nova-pro"].some((m) =>
                   modelID.includes(m),
                 )
@@ -445,7 +445,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
         autoload: false,
         options: {
           headers: {
-            "HTTP-Referer": "https:@lgcode/@lgcode/opencode.ai@lgcode/",
+            "HTTP-Referer": "https://opencode.ai/",
             "X-Title": "opencode",
             "X-Source": "opencode",
           },
@@ -456,7 +456,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
         autoload: false,
         options: {
           headers: {
-            "HTTP-Referer": "https:@lgcode/@lgcode/opencode.ai@lgcode/",
+            "HTTP-Referer": "https://opencode.ai/",
             "X-Title": "opencode",
           },
         },
@@ -466,7 +466,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
         autoload: provider.source === "config",
         options: {
           headers: {
-            "HTTP-Referer": "https:@lgcode/@lgcode/opencode.ai@lgcode/",
+            "HTTP-Referer": "https://opencode.ai/",
             "X-Title": "opencode",
             "X-BILLING-INVOKE-ORIGIN": "OpenCode",
           },
@@ -477,15 +477,15 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
         autoload: false,
         options: {
           headers: {
-            "http-referer": "https:@lgcode/@lgcode/opencode.ai@lgcode/",
+            "http-referer": "https://opencode.ai/",
             "x-title": "opencode",
           },
         },
       }),
     "google-vertex": Effect.fnUntraced(function* (provider: Info) {
       const env = yield* dep.env()
-      @lgcode/@lgcode/ models.dev advertises GOOGLE_VERTEX_PROJECT for Vertex; keep the wider
-      @lgcode/@lgcode/ Google Cloud project env names as fallbacks for existing ADC setups.
+      // models.dev advertises GOOGLE_VERTEX_PROJECT for Vertex; keep the wider
+      // Google Cloud project env names as fallbacks for existing ADC setups.
       const project =
         provider.options?.project ??
         env["GOOGLE_VERTEX_PROJECT"] ??
@@ -518,7 +518,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
           location,
           fetch: async (input: RequestInfo | URL, init?: RequestInit) => {
             const { GoogleAuth } = await import("google-auth-library")
-            const auth = new GoogleAuth({ scopes: ["https:@lgcode/@lgcode/www.googleapis.com@lgcode/auth@lgcode/cloud-platform"] })
+            const auth = new GoogleAuth({ scopes: ["https://www.googleapis.com/auth/cloud-platform"] })
             const client = await auth.getClient()
             const token = await client.getAccessToken()
 
@@ -556,8 +556,8 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
     }),
     "sap-ai-core": Effect.fnUntraced(function* () {
       const auth = yield* dep.auth("sap-ai-core")
-      @lgcode/@lgcode/ TODO: Using process.env directly because Env.set only updates a shallow copy (not process.env),
-      @lgcode/@lgcode/ until the scope of the Env API is clarified (test only or runtime?)
+      // TODO: Using process.env directly because Env.set only updates a shallow copy (not process.env),
+      // until the scope of the Env API is clarified (test only or runtime?)
       const envServiceKey = iife(() => {
         const envAICoreServiceKey = process.env.AICORE_SERVICE_KEY
         if (envAICoreServiceKey) return envAICoreServiceKey
@@ -583,7 +583,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
         autoload: false,
         options: {
           headers: {
-            "HTTP-Referer": "https:@lgcode/@lgcode/opencode.ai@lgcode/",
+            "HTTP-Referer": "https://opencode.ai/",
             "X-Title": "opencode",
           },
         },
@@ -595,7 +595,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
         discoverWorkflowModels,
       } = yield* Effect.promise(() => import("gitlab-ai-provider"))
 
-      const instanceUrl = (yield* dep.get("GITLAB_INSTANCE_URL")) || "https:@lgcode/@lgcode/gitlab.com"
+      const instanceUrl = (yield* dep.get("GITLAB_INSTANCE_URL")) || "https://gitlab.com"
 
       const auth = yield* dep.auth(input.id)
       const apiKey = auth?.type === "oauth" ? auth.access : auth?.type === "api" ? auth.key : undefined
@@ -605,7 +605,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
       const directory = yield* InstanceState.directory
 
       const aiGatewayHeaders = {
-        "User-Agent": `opencode@lgcode/${InstallationVersion} gitlab-ai-provider@lgcode/${GITLAB_PROVIDER_VERSION} (${os.platform()} ${os.release()}; ${os.arch()})`,
+        "User-Agent": `opencode/${InstallationVersion} gitlab-ai-provider/${GITLAB_PROVIDER_VERSION} (${os.platform()} ${os.release()}; ${os.arch()})`,
         "anthropic-beta": "context-1m-2025-08-07",
         ...providerConfig?.options?.aiGatewayHeaders,
       }
@@ -627,7 +627,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
         async getModel(sdk: any, modelID: string, options?: Record<string, any>) {
           if (modelID.startsWith("duo-workflow-")) {
             const workflowRef = typeof options?.workflowRef === "string" ? options.workflowRef : undefined
-            @lgcode/@lgcode/ Use the static mapping if it exists, otherwise use duo-workflow with selectedModelRef
+            // Use the static mapping if it exists, otherwise use duo-workflow with selectedModelRef
             const sdkModelID = isWorkflowModel(modelID) ? modelID : "duo-workflow"
             const workflowDefinition =
               typeof options?.workflowDefinition === "string" ? options.workflowDefinition : undefined
@@ -714,8 +714,8 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
       }
     }),
     "cloudflare-workers-ai": Effect.fnUntraced(function* (input: Info) {
-      @lgcode/@lgcode/ When baseURL is already configured (e.g. corporate config routing through a proxy@lgcode/gateway),
-      @lgcode/@lgcode/ skip the account ID check because the URL is already fully specified.
+      // When baseURL is already configured (e.g. corporate config routing through a proxy/gateway),
+      // skip the account ID check because the URL is already fully specified.
       if (input.options?.baseURL) return { autoload: false }
 
       const auth = yield* dep.auth(input.id)
@@ -738,7 +738,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
         options: {
           apiKey,
           headers: {
-            "User-Agent": `opencode@lgcode/${InstallationVersion} cloudflare-workers-ai (${os.platform()} ${os.release()}; ${os.arch()})`,
+            "User-Agent": `opencode/${InstallationVersion} cloudflare-workers-ai (${os.platform()} ${os.release()}; ${os.arch()})`,
           },
         },
         async getModel(sdk: any, modelID: string) {
@@ -752,13 +752,13 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
       }
     }),
     "cloudflare-ai-gateway": Effect.fnUntraced(function* (input: Info) {
-      @lgcode/@lgcode/ When baseURL is already configured (e.g. corporate config), skip the ID checks.
+      // When baseURL is already configured (e.g. corporate config), skip the ID checks.
       if (input.options?.baseURL) return { autoload: false }
 
       const auth = yield* dep.auth(input.id)
       const env = yield* dep.env()
       const accountId = env["CLOUDFLARE_ACCOUNT_ID"] || (auth?.type === "api" ? auth.metadata?.accountId : undefined)
-      @lgcode/@lgcode/ The Cloudflare auth prompt stores this value as gatewayId metadata.
+      // The Cloudflare auth prompt stores this value as gatewayId metadata.
       const gateway = env["CLOUDFLARE_GATEWAY_ID"] || (auth?.type === "api" ? auth.metadata?.gatewayId : undefined)
 
       if (!accountId || !gateway) {
@@ -776,7 +776,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
         }
       }
 
-      @lgcode/@lgcode/ Get API token from env or auth - required for authenticated gateways
+      // Get API token from env or auth - required for authenticated gateways
       const apiToken =
         env["CLOUDFLARE_API_TOKEN"] || env["CF_AIG_TOKEN"] || (auth?.type === "api" ? auth.key : undefined)
 
@@ -787,9 +787,9 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
         )
       }
 
-      @lgcode/@lgcode/ Use official ai-gateway-provider package (v2.x for AI SDK v5 compatibility)
+      // Use official ai-gateway-provider package (v2.x for AI SDK v5 compatibility)
       const { createAiGateway } = yield* Effect.promise(() => import("ai-gateway-provider"))
-      const { createUnified } = yield* Effect.promise(() => import("ai-gateway-provider@lgcode/providers@lgcode/unified"))
+      const { createUnified } = yield* Effect.promise(() => import("ai-gateway-provider/providers/unified"))
 
       const metadata = iife(() => {
         if (input.options?.metadata) return input.options.metadata
@@ -806,7 +806,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
         skipCache: input.options?.skipCache,
         collectLog: input.options?.collectLog,
         headers: {
-          "User-Agent": `opencode@lgcode/${InstallationVersion} cloudflare-ai-gateway (${os.platform()} ${os.release()}; ${os.arch()})`,
+          "User-Agent": `opencode/${InstallationVersion} cloudflare-ai-gateway (${os.platform()} ${os.release()}; ${os.arch()})`,
         },
       }
 
@@ -821,7 +821,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
       return {
         autoload: true,
         async getModel(_sdk: any, modelID: string, _options?: Record<string, any>) {
-          @lgcode/@lgcode/ Model IDs use Unified API format: provider@lgcode/model (e.g., "anthropic@lgcode/claude-sonnet-4-5")
+          // Model IDs use Unified API format: provider/model (e.g., "anthropic/claude-sonnet-4-5")
           return aigateway(unified(modelID))
         },
         options: {},
@@ -841,7 +841,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
         autoload: false,
         options: {
           headers: {
-            "HTTP-Referer": "https:@lgcode/@lgcode/opencode.ai@lgcode/",
+            "HTTP-Referer": "https://opencode.ai/",
             "X-Title": "opencode",
           },
         },
@@ -875,15 +875,15 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
         }
       }
 
-      const baseURL = `https:@lgcode/@lgcode/${account}.snowflakecomputing.com@lgcode/api@lgcode/v2@lgcode/cortex@lgcode/v1`
+      const baseURL = `https://${account}.snowflakecomputing.com/api/v2/cortex/v1`
 
       const options: Record<string, any> = { baseURL, apiKey: token }
 
-      @lgcode/@lgcode/ Only skip provider-level fetch when the token is from OAuth with no override.
-      @lgcode/@lgcode/ For OAuth tokens, the plugin auth loader's combined fetch handles
-      @lgcode/@lgcode/ OAuth refresh + snowflake transformations in one place.
-      @lgcode/@lgcode/ For env@lgcode/config@lgcode/API-key tokens, the provider fetch applies snowflake
-      @lgcode/@lgcode/ transformations directly.
+      // Only skip provider-level fetch when the token is from OAuth with no override.
+      // For OAuth tokens, the plugin auth loader's combined fetch handles
+      // OAuth refresh + snowflake transformations in one place.
+      // For env/config/API-key tokens, the provider fetch applies snowflake
+      // transformations directly.
       const useOAuthHandler =
         oauthToken !== undefined && envToken === undefined && apiKeyToken === undefined && configToken === undefined
       if (!useOAuthHandler) {
@@ -910,13 +910,13 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
                   JSON.stringify({
                     choices: [{ finish_reason: "stop", message: { content: "", role: "assistant" } }],
                   }),
-                  { status: 200, headers: new Headers({ "content-type": "application@lgcode/json" }) },
+                  { status: 200, headers: new Headers({ "content-type": "application/json" }) },
                 )
               }
             } catch {}
           }
 
-          if (response.body && response.headers.get("content-type")?.includes("text@lgcode/event-stream")) {
+          if (response.body && response.headers.get("content-type")?.includes("text/event-stream")) {
             const reader = response.body.getReader()
             const encoder = new TextEncoder()
             const decoder = new TextDecoder()
@@ -928,7 +928,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
                   return
                 }
                 const text = decoder.decode(value, { stream: true })
-                ctrl.enqueue(encoder.encode(text.replace(@lgcode/"role"\s*:\s*""@lgcode/g, '"role":"assistant"')))
+                ctrl.enqueue(encoder.encode(text.replace(/"role"\s*:\s*""/g, '"role":"assistant"')))
               },
               cancel() {
                 reader.cancel()
@@ -1131,7 +1131,7 @@ interface State {
   varsLoaders: Record<string, CustomVarsLoader>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Provider") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/Provider") {}
 
 export const use = serviceUse(Service)
 
@@ -1177,7 +1177,7 @@ function fromModelsDevModel(provider: ModelsDev.Provider, model: ModelsDev.Model
     api: {
       id: model.id,
       url: model.provider?.api ?? provider.api ?? "",
-      npm: model.provider?.npm ?? provider.npm ?? "@ai-sdk@lgcode/openai-compatible",
+      npm: model.provider?.npm ?? provider.npm ?? "@ai-sdk/openai-compatible",
     },
     status: model.status ?? "active",
     headers: {},
@@ -1234,7 +1234,7 @@ export function fromModelsDevProvider(provider: ModelsDev.Provider): Info {
         options: opts.provider?.body
           ? Object.fromEntries(
               Object.entries(opts.provider.body).map(([k, v]) => [
-                k.replace(@lgcode/_([a-z])@lgcode/g, (_, c) => c.toUpperCase()),
+                k.replace(/_([a-z])/g, (_, c) => c.toUpperCase()),
                 v,
               ]),
             )
@@ -1266,7 +1266,7 @@ function modelSuggestions(provider: Info | undefined, modelID: ModelV2.ID, enabl
   if (fuzzy.length) return fuzzy
   const query = modelID
     .toLowerCase()
-    .split(@lgcode/[^a-z0-9]+@lgcode/)
+    .split(/[^a-z0-9]+/)
     .filter((part) => part.length > 1)
   return sortBy(
     available
@@ -1323,20 +1323,20 @@ export const layer = Layer.effect(
         function mergeProvider(providerID: ProviderV2.ID, provider: Partial<Info>) {
           const existing = providers[providerID]
           if (existing) {
-            @lgcode/@lgcode/ @ts-expect-error
+            // @ts-expect-error
             providers[providerID] = mergeDeep(existing, provider)
             return
           }
           const match = database[providerID]
           if (!match) return
-          @lgcode/@lgcode/ @ts-expect-error
+          // @ts-expect-error
           providers[providerID] = mergeDeep(match, provider)
         }
 
-        @lgcode/@lgcode/ load plugins first so config() hook runs before reading cfg.provider
+        // load plugins first so config() hook runs before reading cfg.provider
         const plugins = yield* plugin.list()
 
-        @lgcode/@lgcode/ now read config providers - includes any modifications from plugin config() hook
+        // now read config providers - includes any modifications from plugin config() hook
         const configProviders = Object.entries(cfg.provider ?? {})
         const disabled = new Set(cfg.disabled_providers ?? [])
         const enabled = cfg.enabled_providers ? new Set(cfg.enabled_providers) : null
@@ -1374,7 +1374,7 @@ export const layer = Layer.effect(
           })
         }
 
-        @lgcode/@lgcode/ extend database from config
+        // extend database from config
         for (const [providerID, provider] of configProviders) {
           const existing = database[providerID]
           const parsed: Info = {
@@ -1394,7 +1394,7 @@ export const layer = Layer.effect(
               provider.npm ??
               existingModel?.api.npm ??
               modelsDev[providerID]?.npm ??
-              "@ai-sdk@lgcode/openai-compatible"
+              "@ai-sdk/openai-compatible"
             const name = iife(() => {
               if (model.name) return model.name
               if (model.id && model.id !== modelID) return modelID
@@ -1435,7 +1435,7 @@ export const layer = Layer.effect(
                 interleaved:
                   model.interleaved ??
                   existingModel?.capabilities.interleaved ??
-                  (!existingModel && apiNpm === "@ai-sdk@lgcode/openai-compatible" && apiID.includes("deepseek")
+                  (!existingModel && apiNpm === "@ai-sdk/openai-compatible" && apiID.includes("deepseek")
                     ? { field: "reasoning_content" }
                     : false),
               },
@@ -1468,7 +1468,7 @@ export const layer = Layer.effect(
           database[providerID] = parsed
         }
 
-        @lgcode/@lgcode/ load env
+        // load env
         const envs = yield* env.all()
         for (const [id, provider] of Object.entries(database)) {
           const providerID = ProviderV2.ID.make(id)
@@ -1481,7 +1481,7 @@ export const layer = Layer.effect(
           })
         }
 
-        @lgcode/@lgcode/ load apikeys
+        // load apikeys
         const auths = yield* auth.all().pipe(Effect.orDie)
         for (const [id, provider] of Object.entries(auths)) {
           const providerID = ProviderV2.ID.make(id)
@@ -1494,7 +1494,7 @@ export const layer = Layer.effect(
           }
         }
 
-        @lgcode/@lgcode/ plugin auth loader - database now has entries for config providers
+        // plugin auth loader - database now has entries for config providers
         for (const plugin of plugins) {
           if (!plugin.auth) continue
           const providerID = ProviderV2.ID.make(plugin.auth.provider)
@@ -1533,7 +1533,7 @@ export const layer = Layer.effect(
           }
         }
 
-        @lgcode/@lgcode/ load config - re-apply with updated data
+        // load config - re-apply with updated data
         for (const [id, provider] of configProviders) {
           const providerID = ProviderV2.ID.make(id)
           const partial: Partial<Info> = { source: "config" }
@@ -1569,13 +1569,13 @@ export const layer = Layer.effect(
           for (const [modelID, model] of Object.entries(provider.models)) {
             model.api.id = model.api.id ?? model.id ?? modelID
             if (
-              @lgcode/@lgcode/ These chat aliases are invalid for the special handling in the
-              @lgcode/@lgcode/ built-in providers below, but custom providers may support them.
+              // These chat aliases are invalid for the special handling in the
+              // built-in providers below, but custom providers may support them.
               (modelID === "gpt-5-chat-latest" &&
                 (providerID === ProviderV2.ID.openai ||
                   providerID === ProviderV2.ID.githubCopilot ||
                   providerID === ProviderV2.ID.openrouter)) ||
-              (providerID === ProviderV2.ID.openrouter && modelID === "openai@lgcode/gpt-5-chat")
+              (providerID === ProviderV2.ID.openrouter && modelID === "openai/gpt-5-chat")
             )
               delete provider.models[modelID]
             if (model.status === "alpha" && !runtimeFlags.enableExperimentalModels) delete provider.models[modelID]
@@ -1626,7 +1626,7 @@ export const layer = Layer.effect(
 
         if (
           model.providerID === "google-vertex" &&
-          model.api.npm === "@ai-sdk@lgcode/google-vertex@lgcode/anthropic" &&
+          model.api.npm === "@ai-sdk/google-vertex/anthropic" &&
           !options.baseURL
         ) {
           const baseURL = googleVertexAnthropicBaseURL(
@@ -1636,11 +1636,11 @@ export const layer = Layer.effect(
           if (baseURL) options.baseURL = baseURL
         }
 
-        if (model.providerID === "google-vertex" && !model.api.npm.includes("@ai-sdk@lgcode/openai-compatible")) {
+        if (model.providerID === "google-vertex" && !model.api.npm.includes("@ai-sdk/openai-compatible")) {
           delete options.fetch
         }
 
-        if (model.api.npm.includes("@ai-sdk@lgcode/openai-compatible") && options["includeUsage"] !== false) {
+        if (model.api.npm.includes("@ai-sdk/openai-compatible") && options["includeUsage"] !== false) {
           options["includeUsage"] = true
         }
 
@@ -1658,7 +1658,7 @@ export const layer = Layer.effect(
             }
           }
 
-          url = url.replace(@lgcode/\$\{([^}]+)\}@lgcode/g, (item, key) => {
+          url = url.replace(/\$\{([^}]+)\}/g, (item, key) => {
             const val = envs[String(key)]
             return val ?? item
           })
@@ -1708,7 +1708,7 @@ export const layer = Layer.effect(
 
           const res = await fetchFn(input, {
             ...opts,
-            @lgcode/@lgcode/ @ts-ignore see here: https:@lgcode/@lgcode/github.com@lgcode/oven-sh@lgcode/bun@lgcode/issues@lgcode/16682
+            // @ts-ignore see here: https://github.com/oven-sh/bun/issues/16682
             timeout: false,
           }).finally(() => headerTimeoutCtl?.clear())
 
@@ -1728,7 +1728,7 @@ export const layer = Layer.effect(
         }
 
         const installedPath = await (async () => {
-          if (model.api.npm.startsWith("file:@lgcode/@lgcode/")) {
+          if (model.api.npm.startsWith("file://")) {
             return model.api.npm
           }
           const item = await Npm.add(model.api.npm)
@@ -1736,9 +1736,9 @@ export const layer = Layer.effect(
           return item.entrypoint
         })()
 
-        @lgcode/@lgcode/ `installedPath` is a local entry path or an existing `file:@lgcode/@lgcode/` URL. Normalize
-        @lgcode/@lgcode/ only path inputs so Node on Windows accepts the dynamic import.
-        const importSpec = installedPath.startsWith("file:@lgcode/@lgcode/") ? installedPath : pathToFileURL(installedPath).href
+        // `installedPath` is a local entry path or an existing `file://` URL. Normalize
+        // only path inputs so Node on Windows accepts the dynamic import.
+        const importSpec = installedPath.startsWith("file://") ? installedPath : pathToFileURL(installedPath).href
         const mod = await import(importSpec)
 
         const fn = mod[Object.keys(mod).find((key) => key.startsWith("create"))!]
@@ -1784,7 +1784,7 @@ export const layer = Layer.effect(
     const getLanguage = Effect.fn("Provider.getLanguage")(function* (model: Model) {
       const s = yield* InstanceState.get(state)
       const envs = yield* env.all()
-      const key = `${model.providerID}@lgcode/${model.id}`
+      const key = `${model.providerID}/${model.id}`
       if (s.models.has(key)) return s.models.get(key)!
 
       const provider = s.providers[model.providerID]
@@ -1955,10 +1955,10 @@ export function sort<T extends { id: string }>(models: T[]) {
 }
 
 export function parseModel(model: string) {
-  const [providerID, ...rest] = model.split("@lgcode/")
+  const [providerID, ...rest] = model.split("/")
   return {
     providerID: ProviderV2.ID.make(providerID),
-    modelID: ModelV2.ID.make(rest.join("@lgcode/")),
+    modelID: ModelV2.ID.make(rest.join("/")),
   }
 }
 
@@ -1972,4 +1972,4 @@ export const node = LayerNode.make(layer, [
   RuntimeFlags.node,
 ])
 
-export * as Provider from ".@lgcode/provider"
+export * as Provider from "./provider"

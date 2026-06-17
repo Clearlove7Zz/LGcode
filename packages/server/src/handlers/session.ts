@@ -1,16 +1,16 @@
-import { SessionV2 } from "@lgcode/core@lgcode/session"
+import { SessionV2 } from "@opencode@lgcode/core/session"
 import { DateTime, Effect } from "effect"
-import { HttpApiBuilder, HttpApiSchema } from "effect@lgcode/unstable@lgcode/httpapi"
-import { Api } from "..@lgcode/api"
-import { SessionsCursor } from "..@lgcode/groups@lgcode/session"
+import { HttpApiBuilder, HttpApiSchema } from "effect/unstable/httpapi"
+import { Api } from "../api"
+import { SessionsCursor } from "../groups/session"
 import {
   ConflictError,
   InvalidCursorError,
   ServiceUnavailableError,
   SessionNotFoundError,
   UnknownError,
-} from "..@lgcode/errors"
-import { AbsolutePath } from "@lgcode/core@lgcode/schema"
+} from "../errors"
+import { AbsolutePath } from "@opencode@lgcode/core/schema"
 
 const DefaultSessionsLimit = 50
 

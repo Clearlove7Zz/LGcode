@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js"
-import { Dropdown } from "~@lgcode/component@lgcode/dropdown"
-import ".@lgcode/role-dropdown.css"
+import { Dropdown } from "~/component/dropdown"
+import "./role-dropdown.css"
 
 interface RoleOption {
   value: string
@@ -34,12 +34,12 @@ export function RoleDropdown(props: RoleDropdownProps) {
             onClick={() => handleSelect(option.value)}
           >
             <div>
-              <strong>{option.label}<@lgcode/strong>
-              <p>{option.description}<@lgcode/p>
-            <@lgcode/div>
-          <@lgcode/button>
+              <strong>{option.label}</strong>
+              <p>{option.description}</p>
+            </div>
+          </button>
         ))}
-      <@lgcode/>
-    <@lgcode/Dropdown>
+      </>
+    </Dropdown>
   )
 }

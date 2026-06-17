@@ -16,29 +16,29 @@ const DARWIN_HOME = [
 ]
 
 const DARWIN_LIBRARY = [
-  "Application Support@lgcode/AddressBook",
+  "Application Support/AddressBook",
   "Calendars",
   "Mail",
   "Messages",
   "Safari",
   "Cookies",
-  "Application Support@lgcode/com.apple.TCC",
+  "Application Support/com.apple.TCC",
   "PersonalizationPortrait",
-  "Metadata@lgcode/CoreSpotlight",
+  "Metadata/CoreSpotlight",
   "Suggestions",
 ]
 
-const DARWIN_ROOT = ["@lgcode/.DocumentRevisions-V100", "@lgcode/.Spotlight-V100", "@lgcode/.Trashes", "@lgcode/.fseventsd"]
+const DARWIN_ROOT = ["/.DocumentRevisions-V100", "/.Spotlight-V100", "/.Trashes", "/.fseventsd"]
 const WIN32_HOME = ["AppData", "Downloads", "Desktop", "Documents", "Pictures", "Music", "Videos", "OneDrive"]
 
-@lgcode/** Directory basenames to skip when scanning the home directory. *@lgcode/
+/** Directory basenames to skip when scanning the home directory. */
 export function names(): ReadonlySet<string> {
   if (process.platform === "darwin") return new Set(DARWIN_HOME)
   if (process.platform === "win32") return new Set(WIN32_HOME)
   return new Set()
 }
 
-@lgcode/** Absolute paths that should never be watched, stated, or scanned. *@lgcode/
+/** Absolute paths that should never be watched, stated, or scanned. */
 export function paths(): string[] {
   if (process.platform === "darwin")
     return [
@@ -50,4 +50,4 @@ export function paths(): string[] {
   return []
 }
 
-export * as Protected from ".@lgcode/protected"
+export * as Protected from "./protected"

@@ -1,8 +1,8 @@
 import { type ComponentProps, type JSX, Show, onMount, splitProps } from "solid-js"
-import { ButtonV2 } from ".@lgcode/button-v2"
-import ".@lgcode/line-comment-v2.css"
+import { ButtonV2 } from "./button-v2"
+import "./line-comment-v2.css"
 
-@lgcode/** Horizontal “more” glyph for the display-card overflow control (Figma outline-dots). *@lgcode/
+/** Horizontal “more” glyph for the display-card overflow control (Figma outline-dots). */
 export function LineCommentV2OverflowIcon(props: ComponentProps<"svg">) {
   return (
     <svg
@@ -11,22 +11,22 @@ export function LineCommentV2OverflowIcon(props: ComponentProps<"svg">) {
       height={props.height ?? 16}
       viewBox="0 0 16 16"
       fill="none"
-      xmlns="http:@lgcode/@lgcode/www.w3.org@lgcode/2000@lgcode/svg"
+      xmlns="http://www.w3.org/2000/svg"
       aria-hidden={props["aria-hidden"] ?? "true"}
     >
-      <path d="M2.5 7.5H3.5V8.5H2.5V7.5Z" stroke="currentColor" @lgcode/>
-      <path d="M7.5 7.5H8.5V8.5H7.5V7.5Z" stroke="currentColor" @lgcode/>
-      <path d="M12.5 7.5H13.5V8.5H12.5V7.5Z" stroke="currentColor" @lgcode/>
-    <@lgcode/svg>
+      <path d="M2.5 7.5H3.5V8.5H2.5V7.5Z" stroke="currentColor" />
+      <path d="M7.5 7.5H8.5V8.5H7.5V7.5Z" stroke="currentColor" />
+      <path d="M12.5 7.5H13.5V8.5H12.5V7.5Z" stroke="currentColor" />
+    </svg>
   )
 }
 
 export interface LineCommentV2Props extends ComponentProps<"div"> {
-  @lgcode/** Main comment body (text or rich content). *@lgcode/
+  /** Main comment body (text or rich content). */
   comment: JSX.Element
-  @lgcode/** Line @lgcode/ selection context (e.g. “Comment on line 40”). *@lgcode/
+  /** Line / selection context (e.g. “Comment on line 40”). */
   selection: JSX.Element
-  @lgcode/** Typically an overflow menu trigger; use `LineCommentV2OverflowIcon` inside `line-comment-v2-overflow`. *@lgcode/
+  /** Typically an overflow menu trigger; use `LineCommentV2OverflowIcon` inside `line-comment-v2-overflow`. */
   actions?: JSX.Element
 }
 
@@ -44,17 +44,17 @@ export function LineCommentV2(props: LineCommentV2Props) {
     >
       <div data-slot="line-comment-v2-shell">
         <div data-slot="line-comment-v2-column">
-          <div data-slot="line-comment-v2-text">{local.comment}<@lgcode/div>
-          <div data-slot="line-comment-v2-meta">{local.selection}<@lgcode/div>
-        <@lgcode/div>
-        <Show when={local.actions}>{(actions) => <div data-slot="line-comment-v2-tools">{actions()}<@lgcode/div>}<@lgcode/Show>
-      <@lgcode/div>
-    <@lgcode/div>
+          <div data-slot="line-comment-v2-text">{local.comment}</div>
+          <div data-slot="line-comment-v2-meta">{local.selection}</div>
+        </div>
+        <Show when={local.actions}>{(actions) => <div data-slot="line-comment-v2-tools">{actions()}</div>}</Show>
+      </div>
+    </div>
   )
 }
 
 export interface LineCommentEditorV2Props extends Omit<ComponentProps<"div">, "children" | "onInput" | "onSubmit"> {
-  @lgcode/** Visible field label above the textarea (default: “Comment”). *@lgcode/
+  /** Visible field label above the textarea (default: “Comment”). */
   heading?: JSX.Element | string
   value: string
   onInput: (value: string) => void
@@ -113,7 +113,7 @@ export function LineCommentEditorV2(props: LineCommentEditorV2Props) {
     >
       <div data-slot="line-comment-v2-shell">
         <div data-slot="line-comment-v2-field">
-          <div data-slot="line-comment-v2-label">{heading()}<@lgcode/div>
+          <div data-slot="line-comment-v2-label">{heading()}</div>
           <textarea
             ref={(el) => {
               textareaRef = el
@@ -136,20 +136,20 @@ export function LineCommentEditorV2(props: LineCommentEditorV2Props) {
                 submit()
               }
             }}
-          @lgcode/>
-        <@lgcode/div>
+          />
+        </div>
         <div data-slot="line-comment-v2-footer">
-          <div data-slot="line-comment-v2-footer-meta">{local.selection}<@lgcode/div>
+          <div data-slot="line-comment-v2-footer-meta">{local.selection}</div>
           <div data-slot="line-comment-v2-footer-actions">
             <ButtonV2 type="button" size="normal" variant="neutral" onClick={() => local.onCancel()}>
               {local.cancelLabel ?? "Cancel"}
-            <@lgcode/ButtonV2>
+            </ButtonV2>
             <ButtonV2 type="button" size="normal" variant="contrast" disabled={!canSubmit()} onClick={submit}>
               {local.submitLabel ?? "Comment"}
-            <@lgcode/ButtonV2>
-          <@lgcode/div>
-        <@lgcode/div>
-      <@lgcode/div>
-    <@lgcode/div>
+            </ButtonV2>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }

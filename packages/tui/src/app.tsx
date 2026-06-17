@@ -1,15 +1,15 @@
-import { render, TimeToFirstDraw, useRenderer, useTerminalDimensions } from "@opentui@lgcode/solid"
-import { createDefaultOpenTuiKeymap } from "@opentui@lgcode/keymap@lgcode/opentui"
+import { render, TimeToFirstDraw, useRenderer, useTerminalDimensions } from "@opentui/solid"
+import { createDefaultOpenTuiKeymap } from "@opentui/keymap/opentui"
 import { Deferred, Effect } from "effect"
-import { Global } from "@lgcode/core@lgcode/global"
-import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
-import { InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
-import { ClipboardProvider, useClipboard } from ".@lgcode/context@lgcode/clipboard"
-import { ExitProvider, useExit } from ".@lgcode/context@lgcode/exit"
-import { EpilogueProvider } from ".@lgcode/context@lgcode/epilogue"
-import * as Selection from ".@lgcode/util@lgcode/selection"
-import { createCliRenderer, MouseButton, type CliRenderer } from "@opentui@lgcode/core"
-import { RouteProvider, useRoute } from ".@lgcode/context@lgcode/route"
+import { Global } from "@opencode@lgcode/core/global"
+import { Flag } from "@opencode@lgcode/core/flag/flag"
+import { InstallationVersion } from "@opencode@lgcode/core/installation/version"
+import { ClipboardProvider, useClipboard } from "./context/clipboard"
+import { ExitProvider, useExit } from "./context/exit"
+import { EpilogueProvider } from "./context/epilogue"
+import * as Selection from "./util/selection"
+import { createCliRenderer, MouseButton, type CliRenderer } from "@opentui/core"
+import { RouteProvider, useRoute } from "./context/route"
 import {
   Switch,
   Match,
@@ -23,49 +23,49 @@ import {
   Show,
   on,
 } from "solid-js"
-import { TuiPathsProvider, TuiStartupProvider, TuiTerminalEnvironmentProvider, useTuiStartup } from ".@lgcode/context@lgcode/runtime"
-import { DialogProvider, useDialog } from ".@lgcode/ui@lgcode/dialog"
-import { DialogProvider as DialogProviderList } from ".@lgcode/component@lgcode/dialog-provider"
-import { ErrorComponent } from ".@lgcode/component@lgcode/error-component"
-import { PluginRouteMissing } from ".@lgcode/component@lgcode/plugin-route-missing"
-import { ProjectProvider, useProject } from ".@lgcode/context@lgcode/project"
-import { EditorContextProvider } from ".@lgcode/context@lgcode/editor"
-import { useEvent } from ".@lgcode/context@lgcode/event"
-import { SDKProvider, useSDK } from ".@lgcode/context@lgcode/sdk"
-import { StartupLoading } from ".@lgcode/component@lgcode/startup-loading"
-import { SyncProvider, useSync } from ".@lgcode/context@lgcode/sync"
-import { DataProvider } from ".@lgcode/context@lgcode/data"
-import { LocalProvider, useLocal } from ".@lgcode/context@lgcode/local"
-import { DialogModel } from ".@lgcode/component@lgcode/dialog-model"
-import { useConnected } from ".@lgcode/component@lgcode/use-connected"
-import { DialogMcp } from ".@lgcode/component@lgcode/dialog-mcp"
-import { DialogStatus } from ".@lgcode/component@lgcode/dialog-status"
-import { DialogThemeList } from ".@lgcode/component@lgcode/dialog-theme-list"
-import { DialogHelp } from ".@lgcode/ui@lgcode/dialog-help"
-import { DialogAgent } from ".@lgcode/component@lgcode/dialog-agent"
-import { DialogSessionList } from ".@lgcode/component@lgcode/dialog-session-list"
-import { DialogWorkspaceList } from ".@lgcode/component@lgcode/dialog-workspace-list"
-import { DialogConsoleOrg } from ".@lgcode/component@lgcode/dialog-console-org"
-import { ThemeProvider, useTheme } from ".@lgcode/context@lgcode/theme"
-import { Home } from ".@lgcode/routes@lgcode/home"
-import { Session } from ".@lgcode/routes@lgcode/session"
-import { PromptHistoryProvider } from ".@lgcode/component@lgcode/prompt@lgcode/history"
-import { FrecencyProvider } from ".@lgcode/component@lgcode/prompt@lgcode/frecency"
-import { PromptStashProvider } from ".@lgcode/component@lgcode/prompt@lgcode/stash"
-import { DialogAlert } from ".@lgcode/ui@lgcode/dialog-alert"
-import { DialogConfirm } from ".@lgcode/ui@lgcode/dialog-confirm"
-import { ToastProvider, useToast } from ".@lgcode/ui@lgcode/toast"
-import { isDefaultTitle } from ".@lgcode/util@lgcode/session"
-import { KVProvider, useKV } from ".@lgcode/context@lgcode/kv"
-import * as Model from ".@lgcode/util@lgcode/model"
-import { ArgsProvider, useArgs, type Args } from ".@lgcode/context@lgcode/args"
+import { TuiPathsProvider, TuiStartupProvider, TuiTerminalEnvironmentProvider, useTuiStartup } from "./context/runtime"
+import { DialogProvider, useDialog } from "./ui/dialog"
+import { DialogProvider as DialogProviderList } from "./component/dialog-provider"
+import { ErrorComponent } from "./component/error-component"
+import { PluginRouteMissing } from "./component/plugin-route-missing"
+import { ProjectProvider, useProject } from "./context/project"
+import { EditorContextProvider } from "./context/editor"
+import { useEvent } from "./context/event"
+import { SDKProvider, useSDK } from "./context/sdk"
+import { StartupLoading } from "./component/startup-loading"
+import { SyncProvider, useSync } from "./context/sync"
+import { DataProvider } from "./context/data"
+import { LocalProvider, useLocal } from "./context/local"
+import { DialogModel } from "./component/dialog-model"
+import { useConnected } from "./component/use-connected"
+import { DialogMcp } from "./component/dialog-mcp"
+import { DialogStatus } from "./component/dialog-status"
+import { DialogThemeList } from "./component/dialog-theme-list"
+import { DialogHelp } from "./ui/dialog-help"
+import { DialogAgent } from "./component/dialog-agent"
+import { DialogSessionList } from "./component/dialog-session-list"
+import { DialogWorkspaceList } from "./component/dialog-workspace-list"
+import { DialogConsoleOrg } from "./component/dialog-console-org"
+import { ThemeProvider, useTheme } from "./context/theme"
+import { Home } from "./routes/home"
+import { Session } from "./routes/session"
+import { PromptHistoryProvider } from "./component/prompt/history"
+import { FrecencyProvider } from "./component/prompt/frecency"
+import { PromptStashProvider } from "./component/prompt/stash"
+import { DialogAlert } from "./ui/dialog-alert"
+import { DialogConfirm } from "./ui/dialog-confirm"
+import { ToastProvider, useToast } from "./ui/toast"
+import { isDefaultTitle } from "./util/session"
+import { KVProvider, useKV } from "./context/kv"
+import * as Model from "./util/model"
+import { ArgsProvider, useArgs, type Args } from "./context/args"
 import open from "open"
-import { PromptRefProvider, usePromptRef } from ".@lgcode/context@lgcode/prompt"
-import { TuiConfigProvider, useTuiConfig, type TuiConfig } from ".@lgcode/config"
-import { createTuiApiAdapters } from ".@lgcode/plugin@lgcode/adapters"
-import { createTuiApi } from ".@lgcode/plugin@lgcode/api"
-import { createPluginRuntime, PluginRuntimeProvider, usePluginRuntime, type TuiPluginHost } from ".@lgcode/plugin@lgcode/runtime"
-import { CommandPaletteDialog } from ".@lgcode/component@lgcode/command-palette"
+import { PromptRefProvider, usePromptRef } from "./context/prompt"
+import { TuiConfigProvider, useTuiConfig, type TuiConfig } from "./config"
+import { createTuiApiAdapters } from "./plugin/adapters"
+import { createTuiApi } from "./plugin/api"
+import { createPluginRuntime, PluginRuntimeProvider, usePluginRuntime, type TuiPluginHost } from "./plugin/runtime"
+import { CommandPaletteDialog } from "./component/command-palette"
 import {
   COMMAND_PALETTE_COMMAND,
   OPENCODE_BASE_MODE,
@@ -73,15 +73,15 @@ import {
   registerOpencodeKeymap,
   useBindings,
   useOpencodeKeymap,
-} from ".@lgcode/keymap"
+} from "./keymap"
 
-import type { EventSource } from ".@lgcode/context@lgcode/sdk"
-import { DialogVariant } from ".@lgcode/component@lgcode/dialog-variant"
-import { createTuiAttention } from ".@lgcode/attention"
-import * as TuiAudio from ".@lgcode/audio"
-import { win32DisableProcessedInput, win32FlushInputBuffer } from ".@lgcode/terminal-win32"
-import { destroyRenderer } from ".@lgcode/util@lgcode/renderer"
-import { cliErrorMessage, errorFormat } from ".@lgcode/util@lgcode/error"
+import type { EventSource } from "./context/sdk"
+import { DialogVariant } from "./component/dialog-variant"
+import { createTuiAttention } from "./attention"
+import * as TuiAudio from "./audio"
+import { win32DisableProcessedInput, win32FlushInputBuffer } from "./terminal-win32"
+import { destroyRenderer } from "./util/renderer"
+import { cliErrorMessage, errorFormat } from "./util/error"
 
 const appGlobalBindingCommands = [
   "session.list",
@@ -160,7 +160,7 @@ function errorMessage(error: unknown) {
 
 function isVersionGreater(left: string, right: string) {
   const parse = (value: string) => {
-    const [core, prerelease] = value.replace(@lgcode/^v@lgcode/, "").split("-", 2)
+    const [core, prerelease] = value.replace(/^v/, "").split("-", 2)
     return { core: core.split(".").map((part) => Number.parseInt(part, 10) || 0), prerelease }
   }
   const a = parse(left)
@@ -227,7 +227,7 @@ export const run = Effect.fn("Tui.run")(function* (input: TuiInput) {
       const pluginRuntime = createPluginRuntime()
 
       yield* Effect.tryPromise(async () => {
-        @lgcode/@lgcode/ Prewarm palette before ThemeProvider mounts so `system` theme avoids a first-paint fallback flash.
+        // Prewarm palette before ThemeProvider mounts so `system` theme avoids a first-paint fallback flash.
         void renderer.getPalette({ size: 16 }).catch(() => undefined)
         const mode = (await renderer.waitForThemeMode(1000)) ?? "dark"
         if (renderer.isDestroyed) return
@@ -242,13 +242,13 @@ export const run = Effect.fn("Tui.run")(function* (input: TuiInput) {
               }}
             >
               <EpilogueProvider set={(value) => (exit.epilogue = value)}>
-                <ErrorBoundary fallback={(error, reset) => <ErrorComponent error={error} reset={reset} mode={mode} @lgcode/>}>
+                <ErrorBoundary fallback={(error, reset) => <ErrorComponent error={error} reset={reset} mode={mode} />}>
                   <TuiPathsProvider
                     value={{
                       cwd: process.cwd(),
                       home: global.home,
                       state: global.state,
-                      worktree: global.data + "@lgcode/worktree",
+                      worktree: global.data + "/worktree",
                     }}
                   >
                     <TuiTerminalEnvironmentProvider
@@ -306,33 +306,33 @@ export const run = Effect.fn("Tui.run")(function* (input: TuiInput) {
                                                                 <App
                                                                   onSnapshot={input.onSnapshot}
                                                                   pluginHost={input.pluginHost}
-                                                                @lgcode/>
-                                                              <@lgcode/EditorContextProvider>
-                                                            <@lgcode/PromptRefProvider>
-                                                          <@lgcode/PromptHistoryProvider>
-                                                        <@lgcode/FrecencyProvider>
-                                                      <@lgcode/DialogProvider>
-                                                    <@lgcode/PromptStashProvider>
-                                                  <@lgcode/LocalProvider>
-                                                <@lgcode/ThemeProvider>
-                                              <@lgcode/DataProvider>
-                                            <@lgcode/SyncProvider>
-                                          <@lgcode/ProjectProvider>
-                                        <@lgcode/SDKProvider>
-                                      <@lgcode/PluginRuntimeProvider>
-                                    <@lgcode/TuiConfigProvider>
-                                  <@lgcode/RouteProvider>
-                                <@lgcode/ToastProvider>
-                              <@lgcode/KVProvider>
-                            <@lgcode/ArgsProvider>
-                          <@lgcode/OpencodeKeymapProvider>
-                        <@lgcode/ClipboardProvider>
-                      <@lgcode/TuiStartupProvider>
-                    <@lgcode/TuiTerminalEnvironmentProvider>
-                  <@lgcode/TuiPathsProvider>
-                <@lgcode/ErrorBoundary>
-              <@lgcode/EpilogueProvider>
-            <@lgcode/ExitProvider>
+                                                                />
+                                                              </EditorContextProvider>
+                                                            </PromptRefProvider>
+                                                          </PromptHistoryProvider>
+                                                        </FrecencyProvider>
+                                                      </DialogProvider>
+                                                    </PromptStashProvider>
+                                                  </LocalProvider>
+                                                </ThemeProvider>
+                                              </DataProvider>
+                                            </SyncProvider>
+                                          </ProjectProvider>
+                                        </SDKProvider>
+                                      </PluginRuntimeProvider>
+                                    </TuiConfigProvider>
+                                  </RouteProvider>
+                                </ToastProvider>
+                              </KVProvider>
+                            </ArgsProvider>
+                          </OpencodeKeymapProvider>
+                        </ClipboardProvider>
+                      </TuiStartupProvider>
+                    </TuiTerminalEnvironmentProvider>
+                  </TuiPathsProvider>
+                </ErrorBoundary>
+              </EpilogueProvider>
+            </ExitProvider>
           )
         }, renderer)
       })
@@ -405,7 +405,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
       setReady(true)
     })
 
-  @lgcode/@lgcode/ Let selection copy@lgcode/dismiss win ahead of normal bindings when explicit copy is required.
+  // Let selection copy/dismiss win ahead of normal bindings when explicit copy is required.
   const offSelectionKeys = keymap.intercept(
     "key",
     ({ event }) => {
@@ -419,7 +419,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
     attention.dispose()
   })
 
-  @lgcode/@lgcode/ Wire up console copy-to-clipboard via opentui's onCopySelection callback
+  // Wire up console copy-to-clipboard via opentui's onCopySelection callback
   renderer.console.onCopySelection = async (text: string) => {
     if (!text || text.length === 0) return
 
@@ -435,7 +435,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
     kv.get("paste_summary_enabled", !sync.data.config.experimental?.disable_paste_summary),
   )
 
-  @lgcode/@lgcode/ Update terminal window title based on current route and session
+  // Update terminal window title based on current route and session
   createEffect(() => {
     if (!terminalTitleEnabled() || Flag.OPENCODE_DISABLE_TERMINAL_TITLE) return
 
@@ -486,7 +486,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
 
   let continued = false
   createEffect(() => {
-    @lgcode/@lgcode/ When using -c, session list is loaded in blocking phase, so we can navigate at "partial"
+    // When using -c, session list is loaded in blocking phase, so we can navigate at "partial"
     if (continued || sync.status === "loading" || !args.continue) return
     const match = sync.data.session
       .toSorted((a, b) => b.time.updated - a.time.updated)
@@ -507,9 +507,9 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
     }
   })
 
-  @lgcode/@lgcode/ Handle --session with --fork: wait for sync to be fully complete before forking
-  @lgcode/@lgcode/ (session list loads in non-blocking phase for --session, so we must wait for "complete"
-  @lgcode/@lgcode/ to avoid a race where reconcile overwrites the newly forked session)
+  // Handle --session with --fork: wait for sync to be fully complete before forking
+  // (session list loads in non-blocking phase for --session, so we must wait for "complete"
+  // to avoid a race where reconcile overwrites the newly forked session)
   let forked = false
   createEffect(() => {
     if (forked || sync.status !== "complete" || !args.sessionID || !args.fork) return
@@ -527,9 +527,9 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
     on(
       () => sync.status === "complete" && sync.data.provider.length === 0,
       (isEmpty, wasEmpty) => {
-        @lgcode/@lgcode/ only trigger when we transition into an empty-provider state
+        // only trigger when we transition into an empty-provider state
         if (!isEmpty || wasEmpty) return
-        dialog.replace(() => <DialogProviderList @lgcode/>)
+        dialog.replace(() => <DialogProviderList />)
       },
     ),
   )
@@ -550,7 +550,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
         category: "System",
         hidden: true,
         run: () => {
-          dialog.replace(() => <CommandPaletteDialog @lgcode/>)
+          dialog.replace(() => <CommandPaletteDialog />)
         },
       },
       {
@@ -561,7 +561,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
         slashName: "sessions",
         slashAliases: ["resume", "continue"],
         run: () => {
-          dialog.replace(() => <DialogSessionList @lgcode/>)
+          dialog.replace(() => <DialogSessionList />)
         },
       },
       {
@@ -600,7 +600,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
         hidden: !Flag.OPENCODE_EXPERIMENTAL_WORKSPACES,
         slashName: "workspaces",
         run: () => {
-          dialog.replace(() => <DialogWorkspaceList @lgcode/>)
+          dialog.replace(() => <DialogWorkspaceList />)
         },
       },
       ...Array.from({ length: 9 }, (_, i) => ({
@@ -618,10 +618,10 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
         suggested: true,
         category: "Agent",
         slashName: "models",
-        @lgcode/@lgcode/ Bias @lgcode/mo toward @lgcode/models over @lgcode/move without changing global fuzzy scoring.
+        // Bias /mo toward /models over /move without changing global fuzzy scoring.
         slashAliases: ["mo"],
         run: () => {
-          dialog.replace(() => <DialogModel @lgcode/>)
+          dialog.replace(() => <DialogModel />)
         },
       },
       {
@@ -666,7 +666,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
         category: "Agent",
         slashName: "agents",
         run: () => {
-          dialog.replace(() => <DialogAgent @lgcode/>)
+          dialog.replace(() => <DialogAgent />)
         },
       },
       {
@@ -675,7 +675,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
         category: "Agent",
         slashName: "mcps",
         run: () => {
-          dialog.replace(() => <DialogMcp @lgcode/>)
+          dialog.replace(() => <DialogMcp />)
         },
       },
       {
@@ -709,7 +709,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
               variant: "info",
             })
           }
-          dialog.replace(() => <DialogVariant @lgcode/>)
+          dialog.replace(() => <DialogVariant />)
         },
       },
       {
@@ -727,7 +727,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
         suggested: !connected(),
         slashName: "connect",
         run: () => {
-          dialog.replace(() => <DialogProviderList @lgcode/>)
+          dialog.replace(() => <DialogProviderList />)
         },
         category: "Provider",
       },
@@ -740,7 +740,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
               slashName: "org",
               slashAliases: ["orgs", "switch-org"],
               run: () => {
-                dialog.replace(() => <DialogConsoleOrg @lgcode/>)
+                dialog.replace(() => <DialogConsoleOrg />)
               },
               category: "Provider",
             },
@@ -751,7 +751,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
         title: "View status",
         slashName: "status",
         run: () => {
-          dialog.replace(() => <DialogStatus @lgcode/>)
+          dialog.replace(() => <DialogStatus />)
         },
         category: "System",
       },
@@ -760,7 +760,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
         title: "Switch theme",
         slashName: "themes",
         run: () => {
-          dialog.replace(() => <DialogThemeList @lgcode/>)
+          dialog.replace(() => <DialogThemeList />)
         },
         category: "System",
       },
@@ -788,7 +788,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
         title: "Help",
         slashName: "help",
         run: () => {
-          dialog.replace(() => <DialogHelp @lgcode/>)
+          dialog.replace(() => <DialogHelp />)
         },
         category: "System",
       },
@@ -796,7 +796,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
         name: "docs.open",
         title: "Open docs",
         run: () => {
-          open("https:@lgcode/@lgcode/opencode.ai@lgcode/docs").catch(() => {})
+          open("https://opencode.ai/docs").catch(() => {})
           dialog.clear()
         },
         category: "System",
@@ -1047,7 +1047,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
     if (!ready()) return
     if (route.data.type !== "plugin") return
     const render = pluginRuntime.routes.get(route.data.id)
-    if (!render) return <PluginRouteMissing id={route.data.id} onHome={() => route.navigate({ type: "home" })} @lgcode/>
+    if (!render) return <PluginRouteMissing id={route.data.id} onHome={() => route.navigate({ type: "home" })} />
     return render({ params: route.data.data })
   })
 
@@ -1072,30 +1072,30 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
       }
     >
       <Show when={Flag.OPENCODE_SHOW_TTFD}>
-        <TimeToFirstDraw @lgcode/>
-      <@lgcode/Show>
+        <TimeToFirstDraw />
+      </Show>
       <Show when={ready()}>
         <box flexGrow={1} minHeight={0} flexDirection="column">
           <Switch>
             <Match when={route.data.type === "home"}>
-              <Home @lgcode/>
-            <@lgcode/Match>
+              <Home />
+            </Match>
             <Match when={route.data.type === "session"}>
               <Show when={route.data.type === "session" ? route.data.sessionID : undefined} keyed>
-                {(_) => <Session @lgcode/>}
-              <@lgcode/Show>
-            <@lgcode/Match>
-          <@lgcode/Switch>
+                {(_) => <Session />}
+              </Show>
+            </Match>
+          </Switch>
           {plugin()}
-        <@lgcode/box>
+        </box>
         <box flexShrink={0}>
-          <pluginRuntime.Slot name="app_bottom" @lgcode/>
-        <@lgcode/box>
-        <pluginRuntime.Slot name="app" @lgcode/>
-      <@lgcode/Show>
+          <pluginRuntime.Slot name="app_bottom" />
+        </box>
+        <pluginRuntime.Slot name="app" />
+      </Show>
       <Show when={!startup.skipInitialLoading}>
-        <StartupLoading ready={ready} @lgcode/>
-      <@lgcode/Show>
-    <@lgcode/box>
+        <StartupLoading ready={ready} />
+      </Show>
+    </box>
   )
 }

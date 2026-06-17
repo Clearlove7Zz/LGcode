@@ -1,6 +1,6 @@
-import { Database, eq } from "..@lgcode/src@lgcode/drizzle@lgcode/index.js"
-import { BillingTable } from "..@lgcode/src@lgcode/schema@lgcode/billing.sql.js"
-import { WorkspaceTable } from "..@lgcode/src@lgcode/schema@lgcode/workspace.sql.js"
+import { Database, eq } from "../src/drizzle/index.js"
+import { BillingTable } from "../src/schema/billing.sql.js"
+import { WorkspaceTable } from "../src/schema/workspace.sql.js"
 
 const workspaceID = process.argv[2]
 

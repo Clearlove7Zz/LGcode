@@ -1,14 +1,14 @@
 import { describe, expect, test } from "bun:test"
-import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
+import { SessionV1 } from "@opencode@lgcode/core/v1/session"
 import { APICallError } from "ai"
-import { MessageV2 } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/message-v2"
-import { ProviderTransform } from "@@lgcode/provider@lgcode/transform"
-import type { Provider } from "@@lgcode/provider@lgcode/provider"
+import { MessageV2 } from "../../src/session/message-v2"
+import { ProviderTransform } from "@/provider/transform"
+import type { Provider } from "@/provider/provider"
 
-import { SessionID, MessageID, PartID } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
-import { Question } from "..@lgcode/..@lgcode/src@lgcode/question"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
+import { SessionID, MessageID, PartID } from "../../src/session/schema"
+import { Question } from "../../src/question"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelV2 } from "@opencode@lgcode/core/model"
 
 const sessionID = SessionID.make("session")
 const providerID = ProviderV2.ID.make("test")
@@ -17,8 +17,8 @@ const model: Provider.Model = {
   providerID,
   api: {
     id: "test-model",
-    url: "https:@lgcode/@lgcode/example.com",
-    npm: "@ai-sdk@lgcode/openai",
+    url: "https://example.com",
+    npm: "@ai-sdk/openai",
   },
   name: "Test Model",
   capabilities: {
@@ -92,7 +92,7 @@ function assistantInfo(
     providerID: infoModel.providerID,
     mode: "",
     agent: "agent",
-    path: { cwd: "@lgcode/", root: "@lgcode/" },
+    path: { cwd: "/", root: "/" },
     cost: 0,
     tokens: {
       input: 0,
@@ -246,7 +246,7 @@ describe("session.message-v2.toModelMessage", () => {
     ])
   })
 
-  test("converts user text@lgcode/file parts and injects compaction@lgcode/subtask prompts", async () => {
+  test("converts user text/file parts and injects compaction/subtask prompts", async () => {
     const messageID = "m-user"
 
     const input: SessionV1.WithParts[] = [
@@ -267,23 +267,23 @@ describe("session.message-v2.toModelMessage", () => {
           {
             ...basePart(messageID, "p3"),
             type: "file",
-            mime: "image@lgcode/png",
+            mime: "image/png",
             filename: "img.png",
-            url: "https:@lgcode/@lgcode/example.com@lgcode/img.png",
+            url: "https://example.com/img.png",
           },
           {
             ...basePart(messageID, "p4"),
             type: "file",
-            mime: "text@lgcode/plain",
+            mime: "text/plain",
             filename: "note.txt",
-            url: "https:@lgcode/@lgcode/example.com@lgcode/note.txt",
+            url: "https://example.com/note.txt",
           },
           {
             ...basePart(messageID, "p5"),
             type: "file",
-            mime: "application@lgcode/x-directory",
+            mime: "application/x-directory",
             filename: "dir",
-            url: "https:@lgcode/@lgcode/example.com@lgcode/dir",
+            url: "https://example.com/dir",
           },
           {
             ...basePart(messageID, "p6"),
@@ -308,9 +308,9 @@ describe("session.message-v2.toModelMessage", () => {
           { type: "text", text: "hello" },
           {
             type: "file",
-            mediaType: "image@lgcode/png",
+            mediaType: "image/png",
             filename: "img.png",
-            data: "https:@lgcode/@lgcode/example.com@lgcode/img.png",
+            data: "https://example.com/img.png",
           },
           { type: "text", text: "What did we do so far?" },
           { type: "text", text: "The following tool was executed by the user" },
@@ -359,9 +359,9 @@ describe("session.message-v2.toModelMessage", () => {
                 {
                   ...basePart(assistantID, "file-1"),
                   type: "file",
-                  mime: "image@lgcode/png",
+                  mime: "image/png",
                   filename: "attachment.png",
-                  url: "data:image@lgcode/png;base64,Zm9v",
+                  url: "data:image/png;base64,Zm9v",
                 },
               ],
             },
@@ -401,7 +401,7 @@ describe("session.message-v2.toModelMessage", () => {
               type: "content",
               value: [
                 { type: "text", text: "ok" },
-                { type: "media", mediaType: "image@lgcode/png", data: "Zm9v" },
+                { type: "media", mediaType: "image/png", data: "Zm9v" },
               ],
             },
             providerOptions: { openai: { tool: "meta" } },
@@ -414,12 +414,12 @@ describe("session.message-v2.toModelMessage", () => {
   test("preserves jpeg tool-result media for anthropic models", async () => {
     const anthropicModel: Provider.Model = {
       ...model,
-      id: ModelV2.ID.make("anthropic@lgcode/claude-opus-4-7"),
+      id: ModelV2.ID.make("anthropic/claude-opus-4-7"),
       providerID: ProviderV2.ID.make("anthropic"),
       api: {
         id: "claude-opus-4-7-20250805",
-        url: "https:@lgcode/@lgcode/api.anthropic.com",
-        npm: "@ai-sdk@lgcode/anthropic",
+        url: "https://api.anthropic.com",
+        npm: "@ai-sdk/anthropic",
       },
       capabilities: {
         ...model.capabilities,
@@ -457,7 +457,7 @@ describe("session.message-v2.toModelMessage", () => {
             tool: "read",
             state: {
               status: "completed",
-              input: { filePath: "@lgcode/tmp@lgcode/rails-demo.png" },
+              input: { filePath: "/tmp/rails-demo.png" },
               output: "Image read successfully",
               title: "Read",
               metadata: {},
@@ -466,9 +466,9 @@ describe("session.message-v2.toModelMessage", () => {
                 {
                   ...basePart(assistantID, "file-anthropic-1"),
                   type: "file",
-                  mime: "image@lgcode/jpeg",
+                  mime: "image/jpeg",
                   filename: "rails-demo.png",
-                  url: `data:image@lgcode/jpeg;base64,${jpeg}`,
+                  url: `data:image/jpeg;base64,${jpeg}`,
                 },
               ],
             },
@@ -488,7 +488,7 @@ describe("session.message-v2.toModelMessage", () => {
         type: "content",
         value: [
           { type: "text", text: "Image read successfully" },
-          { type: "media", mediaType: "image@lgcode/jpeg", data: jpeg },
+          { type: "media", mediaType: "image/jpeg", data: jpeg },
         ],
       },
     })
@@ -497,12 +497,12 @@ describe("session.message-v2.toModelMessage", () => {
   test("moves bedrock pdf tool-result media into a separate user message", async () => {
     const bedrockModel: Provider.Model = {
       ...model,
-      id: ModelV2.ID.make("amazon-bedrock@lgcode/anthropic.claude-sonnet-4-6"),
+      id: ModelV2.ID.make("amazon-bedrock/anthropic.claude-sonnet-4-6"),
       providerID: ProviderV2.ID.make("amazon-bedrock"),
       api: {
         id: "anthropic.claude-sonnet-4-6",
-        url: "https:@lgcode/@lgcode/bedrock-runtime.us-east-1.amazonaws.com",
-        npm: "@ai-sdk@lgcode/amazon-bedrock",
+        url: "https://bedrock-runtime.us-east-1.amazonaws.com",
+        npm: "@ai-sdk/amazon-bedrock",
       },
       capabilities: {
         ...model.capabilities,
@@ -538,7 +538,7 @@ describe("session.message-v2.toModelMessage", () => {
             tool: "read",
             state: {
               status: "completed",
-              input: { filePath: "@lgcode/tmp@lgcode/example.pdf" },
+              input: { filePath: "/tmp/example.pdf" },
               output: "PDF read successfully",
               title: "Read",
               metadata: {},
@@ -547,9 +547,9 @@ describe("session.message-v2.toModelMessage", () => {
                 {
                   ...basePart(assistantID, "file-bedrock-pdf-1"),
                   type: "file",
-                  mime: "application@lgcode/pdf",
+                  mime: "application/pdf",
                   filename: "example.pdf",
-                  url: `data:application@lgcode/pdf;base64,${pdf}`,
+                  url: `data:application/pdf;base64,${pdf}`,
                 },
               ],
             },
@@ -570,7 +570,7 @@ describe("session.message-v2.toModelMessage", () => {
             type: "tool-call",
             toolCallId: "call-bedrock-pdf-1",
             toolName: "read",
-            input: { filePath: "@lgcode/tmp@lgcode/example.pdf" },
+            input: { filePath: "/tmp/example.pdf" },
             providerExecuted: undefined,
           },
         ],
@@ -592,9 +592,9 @@ describe("session.message-v2.toModelMessage", () => {
           { type: "text", text: "Attached media from tool result:" },
           {
             type: "file",
-            mediaType: "application@lgcode/pdf",
+            mediaType: "application/pdf",
             filename: "example.pdf",
-            data: `data:application@lgcode/pdf;base64,${pdf}`,
+            data: `data:application/pdf;base64,${pdf}`,
           },
         ],
       },
@@ -900,7 +900,7 @@ describe("session.message-v2.toModelMessage", () => {
       "",
       "<shell_metadata>",
       "User aborted the command",
-      "<@lgcode/shell_metadata>",
+      "</shell_metadata>",
     ].join("\n")
 
     const input: SessionV1.WithParts[] = [
@@ -988,7 +988,7 @@ describe("session.message-v2.toModelMessage", () => {
     expect(await MessageV2.toModelMessages(input, model)).toStrictEqual([])
   })
 
-  test("includes aborted assistant messages only when they have non-step-start@lgcode/reasoning content", async () => {
+  test("includes aborted assistant messages only when they have non-step-start/reasoning content", async () => {
     const assistantID1 = "m-assistant-1"
     const assistantID2 = "m-assistant-2"
 
@@ -1045,12 +1045,12 @@ describe("session.message-v2.toModelMessage", () => {
     const assistantID = "m-assistant"
     const openrouterModel: Provider.Model = {
       ...model,
-      id: ModelV2.ID.make("deepseek@lgcode/deepseek-v4-pro"),
+      id: ModelV2.ID.make("deepseek/deepseek-v4-pro"),
       providerID: ProviderV2.ID.make("openrouter"),
       api: {
-        id: "deepseek@lgcode/deepseek-v4-pro",
-        url: "https:@lgcode/@lgcode/openrouter.ai@lgcode/api@lgcode/v1",
-        npm: "@openrouter@lgcode/ai-sdk-provider",
+        id: "deepseek/deepseek-v4-pro",
+        url: "https://openrouter.ai/api/v1",
+        npm: "@openrouter/ai-sdk-provider",
       },
       capabilities: {
         ...model.capabilities,
@@ -1169,7 +1169,7 @@ describe("session.message-v2.toModelMessage", () => {
     expect(await MessageV2.toModelMessages(input, model)).toStrictEqual([])
   })
 
-  test("converts pending@lgcode/running tool calls to error results to prevent dangling tool_use", async () => {
+  test("converts pending/running tool calls to error results to prevent dangling tool_use", async () => {
     const userID = "m-user"
     const assistantID = "m-assistant"
 
@@ -1205,7 +1205,7 @@ describe("session.message-v2.toModelMessage", () => {
             tool: "read",
             state: {
               status: "running",
-              input: { path: "@lgcode/tmp" },
+              input: { path: "/tmp" },
               time: { start: 0 },
             },
           },
@@ -1234,7 +1234,7 @@ describe("session.message-v2.toModelMessage", () => {
             type: "tool-call",
             toolCallId: "call-running",
             toolName: "read",
-            input: { path: "@lgcode/tmp" },
+            input: { path: "/tmp" },
             providerExecuted: undefined,
           },
         ],
@@ -1260,7 +1260,7 @@ describe("session.message-v2.toModelMessage", () => {
   })
 
   test("substitutes space for empty text between signed reasoning blocks", async () => {
-    @lgcode/@lgcode/ Reproduces the bug pattern: [reasoning(sig), text(""), reasoning(sig), text(full)]
+    // Reproduces the bug pattern: [reasoning(sig), text(""), reasoning(sig), text(full)]
     const assistantID = "m-assistant"
     const input: SessionV1.WithParts[] = [
       {
@@ -1288,15 +1288,15 @@ describe("session.message-v2.toModelMessage", () => {
 
     const result = await MessageV2.toModelMessages(input, model)
 
-    @lgcode/@lgcode/ step-start splits into two assistant messages; SDK's groupIntoBlocks merges them later
+    // step-start splits into two assistant messages; SDK's groupIntoBlocks merges them later
     expect(result).toHaveLength(2)
     expect((result[0].content as any[]).find((p) => p.type === "text").text).toBe(" ")
     expect((result[1].content as any[]).find((p) => p.type === "text").text).toBe("the answer")
   })
 
   test("leaves empty text alone when reasoning signature is under 'bedrock' namespace", async () => {
-    @lgcode/@lgcode/ Bedrock signed reasoning is preserved as reasoning metadata, but unlike the
-    @lgcode/@lgcode/ direct Anthropic path we do not preserve empty text separators for Bedrock.
+    // Bedrock signed reasoning is preserved as reasoning metadata, but unlike the
+    // direct Anthropic path we do not preserve empty text separators for Bedrock.
     const assistantID = "m-assistant-bedrock"
     const input: SessionV1.WithParts[] = [
       {
@@ -1322,8 +1322,8 @@ describe("session.message-v2.toModelMessage", () => {
   })
 
   test("leaves empty text alone when reasoning has no Anthropic signature", async () => {
-    @lgcode/@lgcode/ Non-Anthropic providers' reasoning doesn't position-validate, so empty text
-    @lgcode/@lgcode/ should be filtered normally rather than substituted.
+    // Non-Anthropic providers' reasoning doesn't position-validate, so empty text
+    // should be filtered normally rather than substituted.
     const assistantID = "m-assistant-unsigned"
     const input: SessionV1.WithParts[] = [
       {
@@ -1390,7 +1390,7 @@ describe("session.message-v2.fromError", () => {
       },
       {
         code: "usage_not_included",
-        message: "To use Codex with your ChatGPT plan, upgrade to Plus: https:@lgcode/@lgcode/chatgpt.com@lgcode/explore@lgcode/plus.",
+        message: "To use Codex with your ChatGPT plan, upgrade to Plus: https://chatgpt.com/explore/plus.",
       },
       {
         code: "invalid_prompt",
@@ -1456,10 +1456,10 @@ describe("session.message-v2.fromError", () => {
     cases.forEach((message) => {
       const error = new APICallError({
         message,
-        url: "https:@lgcode/@lgcode/example.com",
+        url: "https://example.com",
         requestBodyValues: {},
         statusCode: 400,
-        responseHeaders: { "content-type": "application@lgcode/json" },
+        responseHeaders: { "content-type": "application/json" },
         isRetryable: false,
       })
       const result = MessageV2.fromError(error, { providerID })
@@ -1470,10 +1470,10 @@ describe("session.message-v2.fromError", () => {
   test("detects context overflow from context_length_exceeded code in response body", () => {
     const error = new APICallError({
       message: "Request failed",
-      url: "https:@lgcode/@lgcode/example.com",
+      url: "https://example.com",
       requestBodyValues: {},
       statusCode: 422,
-      responseHeaders: { "content-type": "application@lgcode/json" },
+      responseHeaders: { "content-type": "application/json" },
       responseBody: JSON.stringify({
         error: {
           message: "Some message",
@@ -1491,10 +1491,10 @@ describe("session.message-v2.fromError", () => {
     const result = MessageV2.fromError(
       new APICallError({
         message: "429 status code (no body)",
-        url: "https:@lgcode/@lgcode/example.com",
+        url: "https://example.com",
         requestBodyValues: {},
         statusCode: 429,
-        responseHeaders: { "content-type": "application@lgcode/json" },
+        responseHeaders: { "content-type": "application/json" },
         isRetryable: false,
       }),
       { providerID },
@@ -1527,7 +1527,7 @@ describe("session.message-v2.fromError", () => {
 
   test("classifies ZlibError from fetch as retryable APIError", () => {
     const zlibError = new Error(
-      'ZlibError fetching "https:@lgcode/@lgcode/opencode.cloudflare.dev@lgcode/anthropic@lgcode/messages". For more information, pass `verbose: true` in the second argument to fetch()',
+      'ZlibError fetching "https://opencode.cloudflare.dev/anthropic/messages". For more information, pass `verbose: true` in the second argument to fetch()',
     )
     ;(zlibError as any).code = "ZlibError"
     ;(zlibError as any).errno = 0
@@ -1542,7 +1542,7 @@ describe("session.message-v2.fromError", () => {
 
   test("classifies ZlibError as AbortedError when abort context is provided", () => {
     const zlibError = new Error(
-      'ZlibError fetching "https:@lgcode/@lgcode/opencode.cloudflare.dev@lgcode/anthropic@lgcode/messages". For more information, pass `verbose: true` in the second argument to fetch()',
+      'ZlibError fetching "https://opencode.cloudflare.dev/anthropic/messages". For more information, pass `verbose: true` in the second argument to fetch()',
     )
     ;(zlibError as any).code = "ZlibError"
     ;(zlibError as any).errno = 0
@@ -1610,11 +1610,11 @@ describe("session.message-v2.latest", () => {
     ] as SessionV1.Part[],
   }
 
-  @lgcode/@lgcode/ Regression for double auto-compaction. The reorder in filterCompacted
-  @lgcode/@lgcode/ (#27145) returns [compaction-user, summary, ...tail..., continue-user],
-  @lgcode/@lgcode/ so picking lastFinished by array position landed on the pre-compaction
-  @lgcode/@lgcode/ overflow assistant and bypassed the `summary !== true` overflow guard
-  @lgcode/@lgcode/ in SessionPrompt.runLoop, firing a second compaction.create immediately.
+  // Regression for double auto-compaction. The reorder in filterCompacted
+  // (#27145) returns [compaction-user, summary, ...tail..., continue-user],
+  // so picking lastFinished by array position landed on the pre-compaction
+  // overflow assistant and bypassed the `summary !== true` overflow guard
+  // in SessionPrompt.runLoop, firing a second compaction.create immediately.
   test("finished is the chronologically-latest finished assistant, not the array-latest", () => {
     const filtered = MessageV2.filterCompacted([
       continueUser,

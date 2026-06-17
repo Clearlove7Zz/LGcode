@@ -1,6 +1,6 @@
-import { parseCommentNote, readCommentMetadata } from "@@lgcode/utils@lgcode/comment-note"
-import { AssistantMessage, Part, SessionStatus, SnapshotFileDiff, UserMessage } from "@lgcode/sdk@lgcode/v2"
-import { groupParts, PartGroup, renderable } from "@lgcode/ui@lgcode/message-part"
+import { parseCommentNote, readCommentMetadata } from "@/utils/comment-note"
+import { AssistantMessage, Part, SessionStatus, SnapshotFileDiff, UserMessage } from "@opencode@lgcode/sdk/v2"
+import { groupParts, PartGroup, renderable } from "@opencode@lgcode/ui/message-part"
 import { Data, Equal } from "effect"
 
 export type SummaryDiff = SnapshotFileDiff & { file: string }
@@ -247,26 +247,26 @@ export namespace Timeline {
   }
 
   function reasoningHeading(text: string) {
-    const markdown = text.replace(@lgcode/\r\n?@lgcode/g, "\n")
-    const html = markdown.match(@lgcode/<h[1-6][^>]*>([\s\S]*?)<\@lgcode/h[1-6]>@lgcode/i)
+    const markdown = text.replace(/\r\n?/g, "\n")
+    const html = markdown.match(/<h[1-6][^>]*>([\s\S]*?)<\/h[1-6]>/i)
     if (html?.[1]) {
-      const value = cleanHeading(html[1].replace(@lgcode/<[^>]+>@lgcode/g, " "))
+      const value = cleanHeading(html[1].replace(/<[^>]+>/g, " "))
       if (value) return value
     }
 
-    const atx = markdown.match(@lgcode/^\s{0,3}#{1,6}[ \t]+(.+?)(?:[ \t]+#+[ \t]*)?$@lgcode/m)
+    const atx = markdown.match(/^\s{0,3}#{1,6}[ \t]+(.+?)(?:[ \t]+#+[ \t]*)?$/m)
     if (atx?.[1]) {
       const value = cleanHeading(atx[1])
       if (value) return value
     }
 
-    const setext = markdown.match(@lgcode/^([^\n]+)\n(?:=+|-+)\s*$@lgcode/m)
+    const setext = markdown.match(/^([^\n]+)\n(?:=+|-+)\s*$/m)
     if (setext?.[1]) {
       const value = cleanHeading(setext[1])
       if (value) return value
     }
 
-    const strong = markdown.match(@lgcode/^\s*(?:\*\*|__)(.+?)(?:\*\*|__)\s*$@lgcode/m)
+    const strong = markdown.match(/^\s*(?:\*\*|__)(.+?)(?:\*\*|__)\s*$/m)
     if (strong?.[1]) {
       const value = cleanHeading(strong[1])
       if (value) return value
@@ -275,14 +275,14 @@ export namespace Timeline {
 
   function cleanHeading(value: string) {
     return value
-      .replace(@lgcode/`([^`]+)`@lgcode/g, "$1")
-      .replace(@lgcode/\[([^\]]+)\]\([^)]+\)@lgcode/g, "$1")
-      .replace(@lgcode/[*_~]+@lgcode/g, "")
+      .replace(/`([^`]+)`/g, "$1")
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+      .replace(/[*_~]+/g, "")
       .trim()
   }
 
   function unwrapErrorMessage(message: string) {
-    const text = message.replace(@lgcode/^Error:\s*@lgcode/, "").trim()
+    const text = message.replace(/^Error:\s*/, "").trim()
 
     const parse = (value: string) => {
       try {

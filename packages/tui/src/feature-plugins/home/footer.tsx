@@ -1,9 +1,9 @@
-import type { TuiPlugin, TuiPluginApi } from "@lgcode/plugin@lgcode/tui"
-import type { BuiltinTuiPlugin } from "..@lgcode/builtins"
+import type { TuiPlugin, TuiPluginApi } from "@opencode@lgcode/plugin/tui"
+import type { BuiltinTuiPlugin } from "../builtins"
 import { createMemo, Match, Show, Switch } from "solid-js"
-import { abbreviateHome } from "..@lgcode/..@lgcode/runtime"
-import { useTuiPaths } from "..@lgcode/..@lgcode/context@lgcode/runtime"
-import { useHomeSessionDestination } from "..@lgcode/..@lgcode/routes@lgcode/home@lgcode/session-destination"
+import { abbreviateHome } from "../../runtime"
+import { useTuiPaths } from "../../context/runtime"
+import { useHomeSessionDestination } from "../../routes/home/session-destination"
 
 const id = "internal:home-footer"
 
@@ -21,7 +21,7 @@ function Directory(props: { api: TuiPluginApi }) {
     return out
   })
 
-  return <Show when={dir()}>{(value) => <text fg={theme().textMuted}>{value()}<@lgcode/text>}<@lgcode/Show>
+  return <Show when={dir()}>{(value) => <text fg={theme().textMuted}>{value()}</text>}</Show>
 }
 
 function Mcp(props: { api: TuiPluginApi }) {
@@ -37,17 +37,17 @@ function Mcp(props: { api: TuiPluginApi }) {
         <text fg={theme().text}>
           <Switch>
             <Match when={err()}>
-              <span style={{ fg: theme().error }}>⊙ <@lgcode/span>
-            <@lgcode/Match>
+              <span style={{ fg: theme().error }}>⊙ </span>
+            </Match>
             <Match when={true}>
-              <span style={{ fg: count() > 0 ? theme().success : theme().textMuted }}>⊙ <@lgcode/span>
-            <@lgcode/Match>
-          <@lgcode/Switch>
+              <span style={{ fg: count() > 0 ? theme().success : theme().textMuted }}>⊙ </span>
+            </Match>
+          </Switch>
           {count()} MCP
-        <@lgcode/text>
-        <text fg={theme().textMuted}>@lgcode/status<@lgcode/text>
-      <@lgcode/box>
-    <@lgcode/Show>
+        </text>
+        <text fg={theme().textMuted}>/status</text>
+      </box>
+    </Show>
   )
 }
 
@@ -56,8 +56,8 @@ function Version(props: { api: TuiPluginApi }) {
 
   return (
     <box flexShrink={0}>
-      <text fg={theme().textMuted}>{props.api.app.version}<@lgcode/text>
-    <@lgcode/box>
+      <text fg={theme().textMuted}>{props.api.app.version}</text>
+    </box>
   )
 }
 
@@ -73,11 +73,11 @@ function View(props: { api: TuiPluginApi }) {
       flexShrink={0}
       gap={2}
     >
-      <Directory api={props.api} @lgcode/>
-      <Mcp api={props.api} @lgcode/>
-      <box flexGrow={1} @lgcode/>
-      <Version api={props.api} @lgcode/>
-    <@lgcode/box>
+      <Directory api={props.api} />
+      <Mcp api={props.api} />
+      <box flexGrow={1} />
+      <Version api={props.api} />
+    </box>
   )
 }
 
@@ -86,7 +86,7 @@ const tui: TuiPlugin = async (api) => {
     order: 100,
     slots: {
       home_footer() {
-        return <View api={api} @lgcode/>
+        return <View api={api} />
       },
     },
   })

@@ -1,8 +1,8 @@
-import { NodeHttpServer, NodeServices } from "@effect@lgcode/platform-node"
+import { NodeHttpServer, NodeServices } from "@effect/platform-node"
 import { Config, Layer } from "effect"
-import { HttpClient, HttpClientRequest, HttpRouter, HttpServer } from "effect@lgcode/unstable@lgcode/http"
-import { layerWebSocketConstructorGlobal } from "effect@lgcode/unstable@lgcode/socket@lgcode/Socket"
-import { HttpApiApp } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/server"
+import { HttpClient, HttpClientRequest, HttpRouter, HttpServer } from "effect/unstable/http"
+import { layerWebSocketConstructorGlobal } from "effect/unstable/socket/Socket"
+import { HttpApiApp } from "../../src/server/routes/instance/httpapi/server"
 
 const servedRoutes: Layer.Layer<never, Config.ConfigError, HttpServer.HttpServer> = HttpRouter.serve(
   HttpApiApp.routes,
@@ -19,7 +19,7 @@ export const httpApiLayer = servedRoutes.pipe(
 )
 
 export function request(path: string, init?: RequestInit) {
-  const url = new URL(path, "http:@lgcode/@lgcode/localhost")
+  const url = new URL(path, "http://localhost")
   return HttpClientRequest.fromWeb(new Request(url, init)).pipe(
     HttpClientRequest.setUrl(url.pathname),
     HttpClient.execute,

@@ -1,5 +1,5 @@
 import { AwsClient } from "aws4fetch"
-import { lazy } from "@lgcode/core@lgcode/util@lgcode/lazy"
+import { lazy } from "@opencode@lgcode/core/util/lazy"
 
 export namespace Storage {
   export interface Adapter {
@@ -10,28 +10,28 @@ export namespace Storage {
   }
 
   function createAdapter(client: AwsClient, endpoint: string, bucket: string): Adapter {
-    const base = `${endpoint}@lgcode/${bucket}`
+    const base = `${endpoint}/${bucket}`
     return {
       async read(path: string): Promise<string | undefined> {
-        const response = await client.fetch(`${base}@lgcode/${path}`)
+        const response = await client.fetch(`${base}/${path}`)
         if (response.status === 404) return undefined
         if (!response.ok) throw new Error(`Failed to read ${path}: ${response.status}`)
         return response.text()
       },
 
       async write(path: string, value: string): Promise<void> {
-        const response = await client.fetch(`${base}@lgcode/${path}`, {
+        const response = await client.fetch(`${base}/${path}`, {
           method: "PUT",
           body: value,
           headers: {
-            "Content-Type": "application@lgcode/json",
+            "Content-Type": "application/json",
           },
         })
         if (!response.ok) throw new Error(`Failed to write ${path}: ${response.status}`)
       },
 
       async remove(path: string): Promise<void> {
-        const response = await client.fetch(`${base}@lgcode/${path}`, {
+        const response = await client.fetch(`${base}/${path}`, {
           method: "DELETE",
         })
         if (!response.ok) throw new Error(`Failed to remove ${path}: ${response.status}`)
@@ -49,7 +49,7 @@ export namespace Storage {
         if (!response.ok) throw new Error(`Failed to list ${prefix}: ${response.status}`)
         const xml = await response.text()
         const keys: string[] = []
-        const regex = @lgcode/<Key>([^<]+)<\@lgcode/Key>@lgcode/g
+        const regex = /<Key>([^<]+)<\/Key>/g
         let match
         while ((match = regex.exec(xml)) !== null) {
           keys.push(match[1])
@@ -71,7 +71,7 @@ export namespace Storage {
       accessKeyId: process.env.OPENCODE_STORAGE_ACCESS_KEY_ID!,
       secretAccessKey: process.env.OPENCODE_STORAGE_SECRET_ACCESS_KEY!,
     })
-    return createAdapter(client, `https:@lgcode/@lgcode/s3.${region}.amazonaws.com`, bucket)
+    return createAdapter(client, `https://s3.${region}.amazonaws.com`, bucket)
   }
 
   function r2() {
@@ -80,7 +80,7 @@ export namespace Storage {
       accessKeyId: process.env.OPENCODE_STORAGE_ACCESS_KEY_ID!,
       secretAccessKey: process.env.OPENCODE_STORAGE_SECRET_ACCESS_KEY!,
     })
-    return createAdapter(client, `https:@lgcode/@lgcode/${accountId}.r2.cloudflarestorage.com`, process.env.OPENCODE_STORAGE_BUCKET!)
+    return createAdapter(client, `https://${accountId}.r2.cloudflarestorage.com`, process.env.OPENCODE_STORAGE_BUCKET!)
   }
 
   const adapter = lazy(() => {
@@ -91,7 +91,7 @@ export namespace Storage {
   })
 
   function resolve(key: string[]) {
-    return key.join("@lgcode/") + ".json"
+    return key.join("/") + ".json"
   }
 
   export async function read<T>(key: string[]) {
@@ -109,14 +109,14 @@ export namespace Storage {
   }
 
   export async function list(options?: { prefix?: string[]; limit?: number; after?: string; before?: string }) {
-    const p = options?.prefix ? options.prefix.join("@lgcode/") + (options.prefix.length ? "@lgcode/" : "") : ""
+    const p = options?.prefix ? options.prefix.join("/") + (options.prefix.length ? "/" : "") : ""
     const result = await adapter().list({
       prefix: p,
       limit: options?.limit,
       after: options?.after,
       before: options?.before,
     })
-    return result.map((x) => x.replace(@lgcode/\.json$@lgcode/, "").split("@lgcode/"))
+    return result.map((x) => x.replace(/\.json$/, "").split("/"))
   }
 
   export async function update<T>(key: string[], fn: (draft: T) => void) {

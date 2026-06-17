@@ -1,11 +1,11 @@
-@lgcode/** @jsxImportSource @opentui@lgcode/solid *@lgcode/
-import { createDefaultOpenTuiKeymap } from "@opentui@lgcode/keymap@lgcode/opentui"
-import { createBindingLookup } from "@opentui@lgcode/keymap@lgcode/extras"
-import { testRender, useRenderer } from "@opentui@lgcode/solid"
+/** @jsxImportSource @opentui/solid */
+import { createDefaultOpenTuiKeymap } from "@opentui/keymap/opentui"
+import { createBindingLookup } from "@opentui/keymap/extras"
+import { testRender, useRenderer } from "@opentui/solid"
 import { expect, test } from "bun:test"
 import { onCleanup } from "solid-js"
-import { TuiKeybind } from "..@lgcode/src@lgcode/config@lgcode/keybind"
-import { getOpencodeModeStack, OPENCODE_BASE_MODE, OpencodeKeymapProvider, registerOpencodeKeymap } from "..@lgcode/src@lgcode/keymap"
+import { TuiKeybind } from "../src/config/keybind"
+import { getOpencodeModeStack, OPENCODE_BASE_MODE, OpencodeKeymapProvider, registerOpencodeKeymap } from "../src/keymap"
 
 function createResolvedKeymapConfig(input: TuiKeybind.KeybindOverrides = {}) {
   const keybinds = TuiKeybind.parse(input)
@@ -47,12 +47,12 @@ test("legacy page key aliases compile as page keys", async () => {
 
     return (
       <OpencodeKeymapProvider keymap={keymap}>
-        <box @lgcode/>
-      <@lgcode/OpencodeKeymapProvider>
+        <box />
+      </OpencodeKeymapProvider>
     )
   }
 
-  const app = await testRender(() => <Harness @lgcode/>)
+  const app = await testRender(() => <Harness />)
   try {
     expect(sequences).toEqual({
       up: [["pageup"]],
@@ -117,12 +117,12 @@ test("mode-less bindings stay active when opencode mode changes", async () => {
 
     return (
       <OpencodeKeymapProvider keymap={keymap}>
-        <box @lgcode/>
-      <@lgcode/OpencodeKeymapProvider>
+        <box />
+      </OpencodeKeymapProvider>
     )
   }
 
-  const app = await testRender(() => <Harness @lgcode/>)
+  const app = await testRender(() => <Harness />)
   try {
     expect(counts).toEqual({
       base: { "session.list": 1, "session.new": 1, "session.page.up": 2, "session.first": 2, "model.list": 1 },

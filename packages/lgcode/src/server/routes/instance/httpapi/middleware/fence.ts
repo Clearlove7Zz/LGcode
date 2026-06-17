@@ -1,8 +1,8 @@
-import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
+import { Flag } from "@opencode@lgcode/core/flag/flag"
+import { Database } from "@opencode@lgcode/core/database/database"
 import { Effect } from "effect"
-import { HttpRouter, HttpServerRequest, HttpServerResponse } from "effect@lgcode/unstable@lgcode/http"
-import * as Fence from "@@lgcode/server@lgcode/shared@lgcode/fence"
+import { HttpRouter, HttpServerRequest, HttpServerResponse } from "effect/unstable/http"
+import * as Fence from "@/server/shared/fence"
 
 const ignoredMethods = new Set(["GET", "HEAD", "OPTIONS"])
 

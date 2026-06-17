@@ -1,11 +1,11 @@
-@lgcode/** @jsxImportSource @opentui@lgcode/solid *@lgcode/
+/** @jsxImportSource @opentui/solid */
 import { expect, test } from "bun:test"
-import { BoxRenderable, RGBA, type RootRenderable } from "@opentui@lgcode/core"
-import { testRender, useRenderer } from "@opentui@lgcode/solid"
+import { BoxRenderable, RGBA, type RootRenderable } from "@opentui/core"
+import { testRender, useRenderer } from "@opentui/solid"
 import { createSignal } from "solid-js"
-import { createDefaultOpenTuiKeymap } from "@opentui@lgcode/keymap@lgcode/opentui"
-import type { QuestionRequest } from "@lgcode/sdk@lgcode/v2"
-import { OpencodeKeymapProvider, registerOpencodeKeymap } from "@lgcode/tui@lgcode/keymap"
+import { createDefaultOpenTuiKeymap } from "@opentui/keymap/opentui"
+import type { QuestionRequest } from "@opencode@lgcode/sdk/v2"
+import { OpencodeKeymapProvider, registerOpencodeKeymap } from "@opencode@lgcode/tui/keymap"
 import {
   RUN_COMMAND_PANEL_ROWS,
   RUN_SUBAGENT_PANEL_ROWS,
@@ -15,10 +15,10 @@ import {
   RunSkillSelectBody,
   RunSubagentSelectBody,
   RunVariantSelectBody,
-} from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/footer.command"
-import { RunFooterView } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/footer.view"
-import { RunEntryContent } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/scrollback.writer"
-import { RUN_THEME_FALLBACK, type RunTheme } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/theme"
+} from "@/cli/cmd/run/footer.command"
+import { RunFooterView } from "@/cli/cmd/run/footer.view"
+import { RunEntryContent } from "@/cli/cmd/run/scrollback.writer"
+import { RUN_THEME_FALLBACK, type RunTheme } from "@/cli/cmd/run/theme"
 import type {
   FooterState,
   FooterSubagentState,
@@ -30,10 +30,10 @@ import type {
   RunProvider,
   RunTuiConfig,
   StreamCommit,
-} from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/types"
-import { RunQuestionBody } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/footer.question"
-import { RejectField } from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/footer.permission"
-import { createTuiResolvedConfig } from "..@lgcode/..@lgcode/fixture@lgcode/tui-runtime"
+} from "@/cli/cmd/run/types"
+import { RunQuestionBody } from "@/cli/cmd/run/footer.question"
+import { RejectField } from "@/cli/cmd/run/footer.permission"
+import { createTuiResolvedConfig } from "../../fixture/tui-runtime"
 
 const tuiConfig = createTuiResolvedConfig()
 
@@ -59,8 +59,8 @@ function model(input: {
     providerID: "opencode",
     api: {
       id: "opencode",
-      url: "https:@lgcode/@lgcode/opencode.ai",
-      npm: "@ai-sdk@lgcode/openai-compatible",
+      url: "https://opencode.ai",
+      npm: "@ai-sdk/openai-compatible",
     },
     name: input.name,
     capabilities: {
@@ -184,7 +184,7 @@ async function renderFooter(
     return (
       <OpencodeKeymapProvider keymap={keymap}>
         <RunFooterView
-          directory="@lgcode/tmp"
+          directory="/tmp"
           findFiles={async () => []}
           agents={() => []}
           resources={() => []}
@@ -215,16 +215,16 @@ async function renderFooter(
           onLayout={() => {}}
           onStatus={() => {}}
           onQueuedRemove={async () => true}
-        @lgcode/>
-      <@lgcode/OpencodeKeymapProvider>
+        />
+      </OpencodeKeymapProvider>
     )
   }
 
   const app = await testRender(
     () => (
       <box width={input.width ?? 100} height={input.height ?? 8}>
-        <Harness @lgcode/>
-      <@lgcode/box>
+        <Harness />
+      </box>
     ),
     { width: input.width ?? 100, height: input.height ?? 8, kittyKeyboard: true },
   )
@@ -326,8 +326,8 @@ test("run entry content updates when live commit text changes", async () => {
   const app = await testRender(
     () => (
       <box width={80} height={4}>
-        <RunEntryContent commit={commit()} theme={RUN_THEME_FALLBACK} width={80} @lgcode/>
-      <@lgcode/box>
+        <RunEntryContent commit={commit()} theme={RUN_THEME_FALLBACK} width={80} />
+      </box>
     ),
     {
       width: 80,
@@ -386,8 +386,8 @@ test("direct command panel renders grouped command palette", async () => {
           onCommand={() => {}}
           onNew={() => {}}
           onExit={() => {}}
-        @lgcode/>
-      <@lgcode/box>
+        />
+      </box>
     ),
     {
       width: 100,
@@ -405,14 +405,14 @@ test("direct command panel renders grouped command palette", async () => {
     expect(frame).toContain("Agent")
     expect(frame).toContain("Prompt")
     expect(frame).toContain("Open editor")
-    expect(frame).toContain("@lgcode/editor")
+    expect(frame).toContain("/editor")
     expect(frame).toContain("Switch model")
     expect(frame).toContain("Skills")
-    expect(frame).toContain("@lgcode/skills")
-    expect(frame.match(@lgcode/\bAgent\b@lgcode/g)?.length).toBe(1)
+    expect(frame).toContain("/skills")
+    expect(frame.match(/\bAgent\b/g)?.length).toBe(1)
     expect(frame).not.toContain("┌")
     expect(frame).not.toContain("┃")
-    expect(frame).not.toContain("@lgcode/internal")
+    expect(frame).not.toContain("/internal")
     expect(frame).not.toContain("Choose model for future turns")
     expect(frame).not.toContain("Cycle reasoning effort for future turns")
     expect(frame).not.toContain("Review code")
@@ -437,8 +437,8 @@ test("direct skill panel renders searchable skill list", async () => {
           commands={commands}
           onClose={() => {}}
           onSelect={() => {}}
-        @lgcode/>
-      <@lgcode/box>
+        />
+      </box>
     ),
     {
       width: 100,
@@ -453,7 +453,7 @@ test("direct skill panel renders searchable skill list", async () => {
     expect(frame).toContain("Skills")
     expect(frame).toContain("Search")
     expect(frame).toContain("internal")
-    expect(frame).not.toContain("@lgcode/internal")
+    expect(frame).not.toContain("/internal")
     expect(frame).toContain("formatter")
     expect(frame).toContain("Apply formatter fixes")
     expect(frame).not.toContain("review")
@@ -480,8 +480,8 @@ test("direct skill panel truncates long descriptions from the end", async () => 
           commands={commands}
           onClose={() => {}}
           onSelect={() => {}}
-        @lgcode/>
-      <@lgcode/box>
+        />
+      </box>
     ),
     {
       width: 100,
@@ -495,7 +495,7 @@ test("direct skill panel truncates long descriptions from the end", async () => 
 
     expect(frame).toContain("terminal-control")
     expect(frame).toContain("Control and test terminal applications")
-    expect(frame).not.toMatch(@lgcode/application(?:…|\.\.\.)ocess@lgcode/)
+    expect(frame).not.toMatch(/application(?:…|\.\.\.)ocess/)
   } finally {
     app.renderer.destroy()
   }
@@ -527,8 +527,8 @@ test("direct command panel shows subagent entry when available", async () => {
           onCommand={() => {}}
           onNew={() => {}}
           onExit={() => {}}
-        @lgcode/>
-      <@lgcode/box>
+        />
+      </box>
     ),
     {
       width: 100,
@@ -575,8 +575,8 @@ test("direct command panel keeps completed subagents available", async () => {
           onCommand={() => {}}
           onNew={() => {}}
           onExit={() => {}}
-        @lgcode/>
-      <@lgcode/box>
+        />
+      </box>
     ),
     {
       width: 100,
@@ -615,8 +615,8 @@ test("direct subagent panel renders active subagents", async () => {
           onRows={(value) => {
             rows = value
           }}
-        @lgcode/>
-      <@lgcode/box>
+        />
+      </box>
     ),
     {
       width: 100,
@@ -656,8 +656,8 @@ test("direct queued prompt panel renders pending prompt actions", async () => {
           onClose={() => {}}
           onEdit={() => {}}
           onDelete={() => {}}
-        @lgcode/>
-      <@lgcode/box>
+        />
+      </box>
     ),
     { width: 100, height: RUN_SUBAGENT_PANEL_ROWS },
   )
@@ -678,8 +678,8 @@ test("direct queued prompt panel renders pending prompt actions", async () => {
   }
 })
 
-@lgcode/@lgcode/ OpenTUI currently crashes Bun in the full `test@lgcode/cli@lgcode/run` directory run here.
-@lgcode/@lgcode/ Re-enable after the upstream OpenTUI fix lands in this repo.
+// OpenTUI currently crashes Bun in the full `test/cli/run` directory run here.
+// Re-enable after the upstream OpenTUI fix lands in this repo.
 test.skip("direct footer recreates the frame across command panel transitions", async () => {
   const app = await renderFooter()
 
@@ -755,31 +755,31 @@ test("direct footer submits slash autocomplete selections without dispatching sh
 
   try {
     await app.renderOnce()
-    "@lgcode/rev".split("").forEach((key) => app.mockInput.pressKey(key))
+    "/rev".split("").forEach((key) => app.mockInput.pressKey(key))
     await app.renderOnce()
     app.mockInput.pressEnter()
     await app.renderOnce()
 
-    "@lgcode/rev".split("").forEach((key) => app.mockInput.pressKey(key))
+    "/rev".split("").forEach((key) => app.mockInput.pressKey(key))
     await app.renderOnce()
     app.mockInput.pressKey("TAB")
     await app.renderOnce()
 
-    "@lgcode/re branch".split("").forEach((key) => app.mockInput.pressKey(key))
+    "/re branch".split("").forEach((key) => app.mockInput.pressKey(key))
     Array.from({ length: 7 }).forEach(() => app.mockInput.pressKey("ARROW_LEFT"))
     app.mockInput.pressKey("v")
     await app.renderOnce()
     app.mockInput.pressEnter()
     await app.renderOnce()
 
-    "@lgcode/nx".split("").forEach((key) => app.mockInput.pressKey(key))
+    "/nx".split("").forEach((key) => app.mockInput.pressKey(key))
     app.mockInput.pressKey("ARROW_LEFT")
     app.mockInput.pressKey("e")
     await app.renderOnce()
     app.mockInput.pressEnter()
     await app.renderOnce()
 
-    "@lgcode/n scratch".split("").forEach((key) => app.mockInput.pressKey(key))
+    "/n scratch".split("").forEach((key) => app.mockInput.pressKey(key))
     Array.from({ length: 8 }).forEach(() => app.mockInput.pressKey("ARROW_LEFT"))
     app.mockInput.pressKey("e")
     await app.renderOnce()
@@ -787,19 +787,19 @@ test("direct footer submits slash autocomplete selections without dispatching sh
     await app.renderOnce()
 
     app.mockInput.pressKey("!")
-    "@lgcode/rev".split("").forEach((key) => app.mockInput.pressKey(key))
+    "/rev".split("").forEach((key) => app.mockInput.pressKey(key))
     await app.renderOnce()
     app.mockInput.pressEnter()
     await app.renderOnce()
 
     expect(submits).toEqual([
-      { text: "@lgcode/review ", parts: [], command: { name: "review", arguments: "" } },
-      { text: "@lgcode/review ", parts: [], command: { name: "review", arguments: "" } },
-      { text: "@lgcode/review branch", parts: [], command: { name: "review", arguments: "branch" } },
-      { text: "@lgcode/new ", parts: [] },
-      { text: "@lgcode/new ", parts: [] },
+      { text: "/review ", parts: [], command: { name: "review", arguments: "" } },
+      { text: "/review ", parts: [], command: { name: "review", arguments: "" } },
+      { text: "/review branch", parts: [], command: { name: "review", arguments: "branch" } },
+      { text: "/new ", parts: [] },
+      { text: "/new ", parts: [] },
     ])
-    expect(app.captureCharFrame()).toContain("@lgcode/review")
+    expect(app.captureCharFrame()).toContain("/review")
   } finally {
     app.cleanup()
   }
@@ -820,20 +820,20 @@ test("direct footer slash autocomplete keeps a real skills command", async () =>
 
   try {
     await app.renderOnce()
-    "@lgcode/skills".split("").forEach((key) => app.mockInput.pressKey(key))
+    "/skills".split("").forEach((key) => app.mockInput.pressKey(key))
     await app.renderOnce()
     app.mockInput.pressEnter()
     await app.renderOnce()
 
-    expect(submits).toEqual([{ text: "@lgcode/skills ", parts: [], command: { name: "skills", arguments: "" } }])
+    expect(submits).toEqual([{ text: "/skills ", parts: [], command: { name: "skills", arguments: "" } }])
     expect(app.captureCharFrame()).not.toContain("Apply formatter fixes")
   } finally {
     app.cleanup()
   }
 })
 
-@lgcode/@lgcode/ OpenTUI currently segfaults Bun while tearing down this composer-to-skill-panel transition.
-@lgcode/@lgcode/ Re-enable after the upstream renderer teardown fix lands.
+// OpenTUI currently segfaults Bun while tearing down this composer-to-skill-panel transition.
+// Re-enable after the upstream renderer teardown fix lands.
 test.skip("direct footer skill picker inserts an editable bound skill command", async () => {
   const submits: RunPrompt[] = []
   const app = await renderFooter({
@@ -846,7 +846,7 @@ test.skip("direct footer skill picker inserts an editable bound skill command", 
 
   try {
     await app.renderOnce()
-    "@lgcode/skills".split("").forEach((key) => app.mockInput.pressKey(key))
+    "/skills".split("").forEach((key) => app.mockInput.pressKey(key))
     await app.renderOnce()
     app.mockInput.pressEnter()
     await app.renderOnce()
@@ -857,21 +857,21 @@ test.skip("direct footer skill picker inserts an editable bound skill command", 
     await app.renderOnce()
 
     expect(submits).toEqual([])
-    expect(app.captureCharFrame()).toContain("@lgcode/new")
+    expect(app.captureCharFrame()).toContain("/new")
 
     "task".split("").forEach((key) => app.mockInput.pressKey(key))
     await app.renderOnce()
     app.mockInput.pressEnter()
     await app.renderOnce()
 
-    expect(submits).toEqual([{ text: "@lgcode/new task", parts: [], command: { name: "new", arguments: "task" } }])
+    expect(submits).toEqual([{ text: "/new task", parts: [], command: { name: "new", arguments: "task" } }])
   } finally {
     app.cleanup()
   }
 })
 
-@lgcode/@lgcode/ OpenTUI currently segfaults Bun while tearing down this skill-panel close transition.
-@lgcode/@lgcode/ Re-enable after the upstream renderer teardown fix lands.
+// OpenTUI currently segfaults Bun while tearing down this skill-panel close transition.
+// Re-enable after the upstream renderer teardown fix lands.
 test.skip("direct footer clears the synthetic skills draft when the panel closes", async () => {
   const submits: RunPrompt[] = []
   const app = await renderFooter({
@@ -884,7 +884,7 @@ test.skip("direct footer clears the synthetic skills draft when the panel closes
 
   try {
     await app.renderOnce()
-    "@lgcode/skills".split("").forEach((key) => app.mockInput.pressKey(key))
+    "/skills".split("").forEach((key) => app.mockInput.pressKey(key))
     await app.renderOnce()
     app.mockInput.pressEnter()
     await app.renderOnce()
@@ -897,7 +897,7 @@ test.skip("direct footer clears the synthetic skills draft when the panel closes
     await app.renderOnce()
 
     expect(submits).toEqual([])
-    expect(app.captureCharFrame()).not.toContain("@lgcode/skills")
+    expect(app.captureCharFrame()).not.toContain("/skills")
   } finally {
     app.cleanup()
   }
@@ -931,7 +931,7 @@ test("direct footer shows editable prompts and additional queued work while runn
     return (
       <OpencodeKeymapProvider keymap={keymap}>
         <RunFooterView
-          directory="@lgcode/tmp"
+          directory="/tmp"
           findFiles={async () => []}
           agents={() => []}
           resources={() => []}
@@ -968,16 +968,16 @@ test("direct footer shows editable prompts and additional queued work while runn
           onLayout={() => {}}
           onStatus={() => {}}
           onQueuedRemove={async () => true}
-        @lgcode/>
-      <@lgcode/OpencodeKeymapProvider>
+        />
+      </OpencodeKeymapProvider>
     )
   }
 
   const app = await testRender(
     () => (
       <box width={160} height={8}>
-        <Harness @lgcode/>
-      <@lgcode/box>
+        <Harness />
+      </box>
     ),
     {
       width: 160,
@@ -1155,8 +1155,8 @@ test("direct question body separates single-select checkmark from label", async 
             replies.push(input)
           }}
           onReject={() => {}}
-        @lgcode/>
-      <@lgcode/box>
+        />
+      </box>
     ),
     {
       width: 100,
@@ -1175,8 +1175,8 @@ test("direct question body separates single-select checkmark from label", async 
   }
 })
 
-@lgcode/@lgcode/ OpenTUI currently segfaults while tearing down this textarea-backed keymap renderer.
-@lgcode/@lgcode/ Re-enable after the runtime fix.
+// OpenTUI currently segfaults while tearing down this textarea-backed keymap renderer.
+// Re-enable after the runtime fix.
 test.skip("direct custom answer submits through keymap return binding", async () => {
   const question = {
     id: "question-1",
@@ -1207,16 +1207,16 @@ test.skip("direct custom answer submits through keymap return binding", async ()
             questions.push(input)
           }}
           onReject={() => {}}
-        @lgcode/>
-      <@lgcode/OpencodeKeymapProvider>
+        />
+      </OpencodeKeymapProvider>
     )
   }
 
   const app = await testRender(
     () => (
       <box width={100} height={18}>
-        <Harness @lgcode/>
-      <@lgcode/box>
+        <Harness />
+      </box>
     ),
     { width: 100, height: 18, kittyKeyboard: true },
   )
@@ -1261,16 +1261,16 @@ test("direct permission rejection submits through keymap return binding", async 
             submits.push(text)
           }}
           onCancel={() => {}}
-        @lgcode/>
-      <@lgcode/OpencodeKeymapProvider>
+        />
+      </OpencodeKeymapProvider>
     )
   }
 
   const app = await testRender(
     () => (
       <box width={100} height={18}>
-        <Harness @lgcode/>
-      <@lgcode/box>
+        <Harness />
+      </box>
     ),
     { width: 100, height: 18, kittyKeyboard: true },
   )
@@ -1304,8 +1304,8 @@ test("direct model panel renders current model selector", async () => {
           current={current}
           onClose={() => {}}
           onSelect={() => {}}
-        @lgcode/>
-      <@lgcode/box>
+        />
+      </box>
     ),
     {
       width: 100,
@@ -1347,8 +1347,8 @@ test("direct variant panel renders current variant selector", async () => {
           current={current}
           onClose={() => {}}
           onSelect={() => {}}
-        @lgcode/>
-      <@lgcode/box>
+        />
+      </box>
     ),
     {
       width: 100,

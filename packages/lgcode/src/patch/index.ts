@@ -1,7 +1,7 @@
 import { Effect, Schema } from "effect"
 import * as path from "path"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import * as Bom from "..@lgcode/util@lgcode/bom"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import * as Bom from "../util/bom"
 
 export const PatchSchema = Schema.Struct({
   patchText: Schema.String.annotate({ description: "The full patch text that describes all changes to be made" }),
@@ -9,7 +9,7 @@ export const PatchSchema = Schema.Struct({
 
 export type PatchParams = Schema.Schema.Type<typeof PatchSchema>
 
-@lgcode/@lgcode/ Core types matching the Rust implementation
+// Core types matching the Rust implementation
 export interface ApplyPatchArgs {
   patch: string
   hunks: Hunk[]
@@ -66,7 +66,7 @@ export enum MaybeApplyPatchVerified {
   NotApplyPatch = "NotApplyPatch",
 }
 
-@lgcode/@lgcode/ Parser implementation
+// Parser implementation
 function parsePatchHeader(
   lines: string[],
   startIdx: number,
@@ -88,7 +88,7 @@ function parsePatchHeader(
     let movePath: string | undefined
     let nextIdx = startIdx + 1
 
-    @lgcode/@lgcode/ Check for move directive
+    // Check for move directive
     if (nextIdx < lines.length && lines[nextIdx].startsWith("*** Move to:")) {
       movePath = lines[nextIdx].slice("*** Move to:".length).trim()
       nextIdx++
@@ -106,7 +106,7 @@ function parseUpdateFileChunks(lines: string[], startIdx: number): { chunks: Upd
 
   while (i < lines.length && !lines[i].startsWith("***")) {
     if (lines[i].startsWith("@@")) {
-      @lgcode/@lgcode/ Parse context line
+      // Parse context line
       const contextLine = lines[i].substring(2).trim()
       i++
 
@@ -114,7 +114,7 @@ function parseUpdateFileChunks(lines: string[], startIdx: number): { chunks: Upd
       const newLines: string[] = []
       let isEndOfFile = false
 
-      @lgcode/@lgcode/ Parse change lines
+      // Parse change lines
       while (i < lines.length && !lines[i].startsWith("@@") && !lines[i].startsWith("***")) {
         const changeLine = lines[i]
 
@@ -125,15 +125,15 @@ function parseUpdateFileChunks(lines: string[], startIdx: number): { chunks: Upd
         }
 
         if (changeLine.startsWith(" ")) {
-          @lgcode/@lgcode/ Keep line - appears in both old and new
+          // Keep line - appears in both old and new
           const content = changeLine.substring(1)
           oldLines.push(content)
           newLines.push(content)
         } else if (changeLine.startsWith("-")) {
-          @lgcode/@lgcode/ Remove line - only in old
+          // Remove line - only in old
           oldLines.push(changeLine.substring(1))
         } else if (changeLine.startsWith("+")) {
-          @lgcode/@lgcode/ Add line - only in new
+          // Add line - only in new
           newLines.push(changeLine.substring(1))
         }
 
@@ -165,7 +165,7 @@ function parseAddFileContent(lines: string[], startIdx: number): { content: stri
     i++
   }
 
-  @lgcode/@lgcode/ Remove trailing newline
+  // Remove trailing newline
   if (content.endsWith("\n")) {
     content = content.slice(0, -1)
   }
@@ -174,8 +174,8 @@ function parseAddFileContent(lines: string[], startIdx: number): { content: stri
 }
 
 function stripHeredoc(input: string): string {
-  @lgcode/@lgcode/ Match heredoc patterns like: cat <<'EOF'\n...\nEOF or <<EOF\n...\nEOF
-  const heredocMatch = input.match(@lgcode/^(?:cat\s+)?<<['"]?(\w+)['"]?\s*\n([\s\S]*?)\n\1\s*$@lgcode/)
+  // Match heredoc patterns like: cat <<'EOF'\n...\nEOF or <<EOF\n...\nEOF
+  const heredocMatch = input.match(/^(?:cat\s+)?<<['"]?(\w+)['"]?\s*\n([\s\S]*?)\n\1\s*$/)
   if (heredocMatch) {
     return heredocMatch[2]
   }
@@ -188,7 +188,7 @@ export function parsePatch(patchText: string): { hunks: Hunk[] } {
   const hunks: Hunk[] = []
   let i = 0
 
-  @lgcode/@lgcode/ Look for Begin@lgcode/End patch markers
+  // Look for Begin/End patch markers
   const beginMarker = "*** Begin Patch"
   const endMarker = "*** End Patch"
 
@@ -196,10 +196,10 @@ export function parsePatch(patchText: string): { hunks: Hunk[] } {
   const endIdx = lines.findIndex((line) => line.trim() === endMarker)
 
   if (beginIdx === -1 || endIdx === -1 || beginIdx >= endIdx) {
-    throw new Error("Invalid patch format: missing Begin@lgcode/End markers")
+    throw new Error("Invalid patch format: missing Begin/End markers")
   }
 
-  @lgcode/@lgcode/ Parse content between markers
+  // Parse content between markers
   i = beginIdx + 1
 
   while (i < endIdx) {
@@ -240,7 +240,7 @@ export function parsePatch(patchText: string): { hunks: Hunk[] } {
   return { hunks }
 }
 
-@lgcode/@lgcode/ Apply patch functionality
+// Apply patch functionality
 export function maybeParseApplyPatch(
   argv: string[],
 ):
@@ -249,7 +249,7 @@ export function maybeParseApplyPatch(
   | { type: MaybeApplyPatch.NotApplyPatch } {
   const APPLY_PATCH_COMMANDS = ["apply_patch", "applypatch"]
 
-  @lgcode/@lgcode/ Direct invocation: apply_patch <patch>
+  // Direct invocation: apply_patch <patch>
   if (argv.length === 2 && APPLY_PATCH_COMMANDS.includes(argv[0])) {
     try {
       const { hunks } = parsePatch(argv[1])
@@ -268,11 +268,11 @@ export function maybeParseApplyPatch(
     }
   }
 
-  @lgcode/@lgcode/ Bash heredoc form: bash -lc 'apply_patch <<"EOF" ...'
+  // Bash heredoc form: bash -lc 'apply_patch <<"EOF" ...'
   if (argv.length === 3 && argv[0] === "bash" && argv[1] === "-lc") {
-    @lgcode/@lgcode/ Simple extraction - in real implementation would need proper bash parsing
+    // Simple extraction - in real implementation would need proper bash parsing
     const script = argv[2]
-    const heredocMatch = script.match(@lgcode/apply_patch\s*<<['"](\w+)['"]\s*\n([\s\S]*?)\n\1@lgcode/)
+    const heredocMatch = script.match(/apply_patch\s*<<['"](\w+)['"]\s*\n([\s\S]*?)\n\1/)
 
     if (heredocMatch) {
       const patchContent = heredocMatch[2]
@@ -297,7 +297,7 @@ export function maybeParseApplyPatch(
   return { type: MaybeApplyPatch.NotApplyPatch }
 }
 
-@lgcode/@lgcode/ File content manipulation
+// File content manipulation
 interface ApplyPatchFileUpdate {
   unified_diff: string
   content: string
@@ -313,7 +313,7 @@ export function deriveNewContentsFromChunks(
 
   let originalLines = originalContent.text.split("\n")
 
-  @lgcode/@lgcode/ Drop trailing empty element for consistent line counting
+  // Drop trailing empty element for consistent line counting
   if (originalLines.length > 0 && originalLines[originalLines.length - 1] === "") {
     originalLines.pop()
   }
@@ -321,7 +321,7 @@ export function deriveNewContentsFromChunks(
   const replacements = computeReplacements(originalLines, filePath, chunks)
   let newLines = applyReplacements(originalLines, replacements)
 
-  @lgcode/@lgcode/ Ensure trailing newline
+  // Ensure trailing newline
   if (newLines.length === 0 || newLines[newLines.length - 1] !== "") {
     newLines.push("")
   }
@@ -329,7 +329,7 @@ export function deriveNewContentsFromChunks(
   const next = Bom.split(newLines.join("\n"))
   const newContent = next.text
 
-  @lgcode/@lgcode/ Generate unified diff
+  // Generate unified diff
   const unifiedDiff = generateUnifiedDiff(originalContent.text, newContent)
 
   return {
@@ -348,7 +348,7 @@ function computeReplacements(
   let lineIndex = 0
 
   for (const chunk of chunks) {
-    @lgcode/@lgcode/ Handle context-based seeking
+    // Handle context-based seeking
     if (chunk.change_context) {
       const contextIdx = seekSequence(originalLines, [chunk.change_context], lineIndex)
       if (contextIdx === -1) {
@@ -357,7 +357,7 @@ function computeReplacements(
       lineIndex = contextIdx + 1
     }
 
-    @lgcode/@lgcode/ Handle pure addition (no old lines)
+    // Handle pure addition (no old lines)
     if (chunk.old_lines.length === 0) {
       const insertionIdx =
         originalLines.length > 0 && originalLines[originalLines.length - 1] === ""
@@ -367,12 +367,12 @@ function computeReplacements(
       continue
     }
 
-    @lgcode/@lgcode/ Try to match old lines in the file
+    // Try to match old lines in the file
     let pattern = chunk.old_lines
     let newSlice = chunk.new_lines
     let found = seekSequence(originalLines, pattern, lineIndex, chunk.is_end_of_file)
 
-    @lgcode/@lgcode/ Retry without trailing empty line if not found
+    // Retry without trailing empty line if not found
     if (found === -1 && pattern.length > 0 && pattern[pattern.length - 1] === "") {
       pattern = pattern.slice(0, -1)
       if (newSlice.length > 0 && newSlice[newSlice.length - 1] === "") {
@@ -389,23 +389,23 @@ function computeReplacements(
     }
   }
 
-  @lgcode/@lgcode/ Sort replacements by index to apply in order
+  // Sort replacements by index to apply in order
   replacements.sort((a, b) => a[0] - b[0])
 
   return replacements
 }
 
 function applyReplacements(lines: string[], replacements: Array<[number, number, string[]]>): string[] {
-  @lgcode/@lgcode/ Apply replacements in reverse order to avoid index shifting
+  // Apply replacements in reverse order to avoid index shifting
   const result = [...lines]
 
   for (let i = replacements.length - 1; i >= 0; i--) {
     const [startIdx, oldLen, newSegment] = replacements[i]
 
-    @lgcode/@lgcode/ Remove old lines
+    // Remove old lines
     result.splice(startIdx, oldLen)
 
-    @lgcode/@lgcode/ Insert new lines
+    // Insert new lines
     for (let j = 0; j < newSegment.length; j++) {
       result.splice(startIdx + j, 0, newSegment[j])
     }
@@ -414,20 +414,20 @@ function applyReplacements(lines: string[], replacements: Array<[number, number,
   return result
 }
 
-@lgcode/@lgcode/ Normalize Unicode punctuation to ASCII equivalents (like Rust's normalize_unicode)
+// Normalize Unicode punctuation to ASCII equivalents (like Rust's normalize_unicode)
 function normalizeUnicode(str: string): string {
   return str
-    .replace(@lgcode/[‘’‚‛]@lgcode/g, "'") @lgcode/@lgcode/ single quotes
-    .replace(@lgcode/[“”„‟]@lgcode/g, '"') @lgcode/@lgcode/ double quotes
-    .replace(@lgcode/[‐‑‒–—―]@lgcode/g, "-") @lgcode/@lgcode/ dashes
-    .replace(@lgcode/…@lgcode/g, "...") @lgcode/@lgcode/ ellipsis
-    .replace(@lgcode/ @lgcode/g, " ") @lgcode/@lgcode/ non-breaking space
+    .replace(/[‘’‚‛]/g, "'") // single quotes
+    .replace(/[“”„‟]/g, '"') // double quotes
+    .replace(/[‐‑‒–—―]/g, "-") // dashes
+    .replace(/…/g, "...") // ellipsis
+    .replace(/ /g, " ") // non-breaking space
 }
 
 type Comparator = (a: string, b: string) => boolean
 
 function tryMatch(lines: string[], pattern: string[], startIndex: number, compare: Comparator, eof: boolean): number {
-  @lgcode/@lgcode/ If EOF anchor, try matching from end of file first
+  // If EOF anchor, try matching from end of file first
   if (eof) {
     const fromEnd = lines.length - pattern.length
     if (fromEnd >= startIndex) {
@@ -442,7 +442,7 @@ function tryMatch(lines: string[], pattern: string[], startIndex: number, compar
     }
   }
 
-  @lgcode/@lgcode/ Forward search from startIndex
+  // Forward search from startIndex
   for (let i = startIndex; i <= lines.length - pattern.length; i++) {
     let matches = true
     for (let j = 0; j < pattern.length; j++) {
@@ -460,19 +460,19 @@ function tryMatch(lines: string[], pattern: string[], startIndex: number, compar
 function seekSequence(lines: string[], pattern: string[], startIndex: number, eof = false): number {
   if (pattern.length === 0) return -1
 
-  @lgcode/@lgcode/ Pass 1: exact match
+  // Pass 1: exact match
   const exact = tryMatch(lines, pattern, startIndex, (a, b) => a === b, eof)
   if (exact !== -1) return exact
 
-  @lgcode/@lgcode/ Pass 2: rstrip (trim trailing whitespace)
+  // Pass 2: rstrip (trim trailing whitespace)
   const rstrip = tryMatch(lines, pattern, startIndex, (a, b) => a.trimEnd() === b.trimEnd(), eof)
   if (rstrip !== -1) return rstrip
 
-  @lgcode/@lgcode/ Pass 3: trim (both ends)
+  // Pass 3: trim (both ends)
   const trim = tryMatch(lines, pattern, startIndex, (a, b) => a.trim() === b.trim(), eof)
   if (trim !== -1) return trim
 
-  @lgcode/@lgcode/ Pass 4: normalized (Unicode punctuation to ASCII)
+  // Pass 4: normalized (Unicode punctuation to ASCII)
   const normalized = tryMatch(
     lines,
     pattern,
@@ -487,10 +487,10 @@ function generateUnifiedDiff(oldContent: string, newContent: string): string {
   const oldLines = oldContent.split("\n")
   const newLines = newContent.split("\n")
 
-  @lgcode/@lgcode/ Simple diff generation - in a real implementation you'd use a proper diff algorithm
+  // Simple diff generation - in a real implementation you'd use a proper diff algorithm
   let diff = "@@ -1 +1 @@\n"
 
-  @lgcode/@lgcode/ Find changes (simplified approach)
+  // Find changes (simplified approach)
   const maxLen = Math.max(oldLines.length, newLines.length)
   let hasChanges = false
 
@@ -510,7 +510,7 @@ function generateUnifiedDiff(oldContent: string, newContent: string): string {
   return hasChanges ? diff : ""
 }
 
-@lgcode/@lgcode/ Apply hunks to filesystem
+// Apply hunks to filesystem
 export const applyHunksToFiles = Effect.fn("Patch.applyHunksToFiles")(function* (hunks: Hunk[]) {
   if (hunks.length === 0) {
     return yield* Effect.fail(new Error("No files were modified."))
@@ -560,7 +560,7 @@ export const applyHunksToFiles = Effect.fn("Patch.applyHunksToFiles")(function* 
   return { added, modified, deleted } satisfies AffectedPaths
 })
 
-@lgcode/@lgcode/ Main patch application function
+// Main patch application function
 export const applyPatch = Effect.fn("Patch.applyPatch")(function* (patchText: string) {
   const { hunks } = parsePatch(patchText)
   return yield* applyHunksToFiles(hunks)
@@ -571,12 +571,12 @@ type MaybeApplyPatchVerifiedResult =
   | { type: MaybeApplyPatchVerified.CorrectnessError; error: Error }
   | { type: MaybeApplyPatchVerified.NotApplyPatch }
 
-@lgcode/@lgcode/ Effectful verified-parse: needs FSUtil.Service to read existing files
+// Effectful verified-parse: needs FSUtil.Service to read existing files
 export const maybeParseApplyPatchVerified = Effect.fn("Patch.maybeParseApplyPatchVerified")(function* (
   argv: string[],
   cwd: string,
 ) {
-  @lgcode/@lgcode/ Detect implicit patch invocation (raw patch without apply_patch command)
+  // Detect implicit patch invocation (raw patch without apply_patch command)
   if (argv.length === 1) {
     try {
       parsePatch(argv[0])
@@ -585,7 +585,7 @@ export const maybeParseApplyPatchVerified = Effect.fn("Patch.maybeParseApplyPatc
         error: new Error(ApplyPatchError.ImplicitInvocation),
       } satisfies MaybeApplyPatchVerifiedResult
     } catch {
-      @lgcode/@lgcode/ Not a patch, continue
+      // Not a patch, continue
     }
   }
 

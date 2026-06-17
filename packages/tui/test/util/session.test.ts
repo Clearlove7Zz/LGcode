@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { isDefaultTitle } from "..@lgcode/..@lgcode/src@lgcode/util@lgcode/session"
+import { isDefaultTitle } from "../../src/util/session"
 
 describe("util.session", () => {
   test("recognizes generated parent and child titles", () => {

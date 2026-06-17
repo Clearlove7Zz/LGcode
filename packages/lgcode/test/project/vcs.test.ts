@@ -1,9 +1,9 @@
 import { afterEach, describe, expect } from "bun:test"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
 import { parsePatch } from "diff"
 import { Deferred, Effect, Layer } from "effect"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import fs from "fs@lgcode/promises"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import fs from "fs/promises"
 import path from "path"
 import {
   disposeAllInstances,
@@ -11,16 +11,16 @@ import {
   testInstanceStoreLayer,
   TestInstance,
   tmpdirScoped,
-} from "..@lgcode/fixture@lgcode/fixture"
-import { EventV2Bridge } from "..@lgcode/..@lgcode/src@lgcode/event-v2-bridge"
-import { Watcher } from "@lgcode/core@lgcode/filesystem@lgcode/watcher"
-import { Git } from "..@lgcode/..@lgcode/src@lgcode/git"
-import { Vcs } from "@@lgcode/project@lgcode/vcs"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+} from "../fixture/fixture"
+import { EventV2Bridge } from "../../src/event-v2-bridge"
+import { Watcher } from "@opencode@lgcode/core/filesystem/watcher"
+import { Git } from "../../src/git"
+import { Vcs } from "@/project/vcs"
+import { testEffect } from "../lib/effect"
 
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
-@lgcode/@lgcode/ Helpers
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
 
 const weird = process.platform === "win32" ? "space file.txt" : "tab\tfile.txt"
 
@@ -79,9 +79,9 @@ const publishHeadChangeUntil = Effect.fn("VcsTest.publishHeadChangeUntil")(funct
   }
 })
 
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
-@lgcode/@lgcode/ Tests
-@lgcode/@lgcode/ ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Tests
+// ---------------------------------------------------------------------------
 
 describe("Vcs", () => {
   afterEach(async () => {
@@ -111,7 +111,7 @@ describe("Vcs", () => {
   )
 
   it.instance(
-    "publishes BranchUpdated when .git@lgcode/HEAD changes",
+    "publishes BranchUpdated when .git/HEAD changes",
     () =>
       Effect.gen(function* () {
         const test = yield* TestInstance
@@ -123,7 +123,7 @@ describe("Vcs", () => {
         const pending = yield* nextBranchUpdate()
 
         const head = path.join(test.directory, ".git", "HEAD")
-        yield* write(head, `ref: refs@lgcode/heads@lgcode/${branch}\n`)
+        yield* write(head, `ref: refs/heads/${branch}\n`)
         yield* publishHeadChangeUntil(pending, head)
 
         const updated = yield* Deferred.await(pending).pipe(Effect.timeout("2 seconds"))
@@ -145,7 +145,7 @@ describe("Vcs", () => {
         const pending = yield* nextBranchUpdate()
 
         const head = path.join(test.directory, ".git", "HEAD")
-        yield* write(head, `ref: refs@lgcode/heads@lgcode/${branch}\n`)
+        yield* write(head, `ref: refs/heads/${branch}\n`)
         yield* publishHeadChangeUntil(pending, head)
         yield* Deferred.await(pending).pipe(Effect.timeout("2 seconds"))
 
@@ -198,7 +198,7 @@ describe("Vcs diff", () => {
       const wt = yield* tmpdirScoped()
       yield* git(tmp, ["branch", "-M", "main"])
       const dir = path.join(wt, "feature")
-      yield* git(tmp, ["worktree", "add", "-b", "feature@lgcode/test", dir, "HEAD"])
+      yield* git(tmp, ["worktree", "add", "-b", "feature/test", dir, "HEAD"])
 
       const [branch, base] = yield* Effect.gen(function* () {
         const vcs = yield* init()
@@ -206,7 +206,7 @@ describe("Vcs diff", () => {
       }).pipe(provideInstance(dir))
 
       expect(branch).toBeDefined()
-      expect(branch).toBe("feature@lgcode/test")
+      expect(branch).toBe("feature/test")
       expect(base).toBe("main")
     }),
   )
@@ -314,7 +314,7 @@ describe("Vcs diff", () => {
       Effect.gen(function* () {
         const test = yield* TestInstance
         yield* git(test.directory, ["branch", "-M", "main"])
-        yield* git(test.directory, ["checkout", "-b", "feature@lgcode/test"])
+        yield* git(test.directory, ["checkout", "-b", "feature/test"])
         yield* write(path.join(test.directory, "branch.txt"), "hello\n")
         yield* git(test.directory, ["add", "."])
         yield* git(test.directory, ["commit", "--no-gpg-sign", "-m", "branch file"])

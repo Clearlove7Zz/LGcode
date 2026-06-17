@@ -1,17 +1,17 @@
-import type { Hooks, PluginInput } from "@lgcode/plugin"
-import type { Model } from "@lgcode/sdk@lgcode/v2"
-import { InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
+import type { Hooks, PluginInput } from "@opencode@lgcode/plugin"
+import type { Model } from "@opencode@lgcode/sdk/v2"
+import { InstallationVersion } from "@opencode@lgcode/core/installation/version"
 import { createServer } from "http"
 import open from "open"
 
 const DO_OAUTH_CLIENT_ID = "b1a6c5158156caac821fd1b30253ca8acb52454a48fa744420e41889cb589f82"
-const DO_AUTHORIZE_URL = "https:@lgcode/@lgcode/cloud.digitalocean.com@lgcode/v1@lgcode/oauth@lgcode/authorize"
-const DO_API_BASE = "https:@lgcode/@lgcode/api.digitalocean.com"
-const DO_GENAI_API = `${DO_API_BASE}@lgcode/v2@lgcode/gen-ai`
-const DO_INFERENCE_BASE = "https:@lgcode/@lgcode/inference.do-ai.run@lgcode/v1"
+const DO_AUTHORIZE_URL = "https://cloud.digitalocean.com/v1/oauth/authorize"
+const DO_API_BASE = "https://api.digitalocean.com"
+const DO_GENAI_API = `${DO_API_BASE}/v2/gen-ai`
+const DO_INFERENCE_BASE = "https://inference.do-ai.run/v1"
 const OAUTH_PORT = 1456
-const OAUTH_REDIRECT_PATH = "@lgcode/auth@lgcode/callback"
-const OAUTH_TOKEN_PATH = "@lgcode/auth@lgcode/token"
+const OAUTH_REDIRECT_PATH = "/auth/callback"
+const OAUTH_TOKEN_PATH = "/auth/token"
 const ROUTER_REFRESH_INTERVAL_MS = 5 * 60 * 1000
 const OAUTH_SCOPES = "genai:read inference:query"
 
@@ -44,7 +44,7 @@ function generateState(): string {
 }
 
 function redirectUri(): string {
-  return `http:@lgcode/@lgcode/localhost:${OAUTH_PORT}${OAUTH_REDIRECT_PATH}`
+  return `http://localhost:${OAUTH_PORT}${OAUTH_REDIRECT_PATH}`
 }
 
 function buildAuthorizeUrl(state: string): string {
@@ -61,21 +61,21 @@ function buildAuthorizeUrl(state: string): string {
 const HTML_CALLBACK = `<!doctype html>
 <html>
   <head>
-    <meta charset="utf-8" @lgcode/>
-    <title>OpenCode - DigitalOcean Authorization<@lgcode/title>
+    <meta charset="utf-8" />
+    <title>OpenCode - DigitalOcean Authorization</title>
     <style>
       body { font-family: system-ui, -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #0b1220; color: #e8eef9; }
       .container { text-align: center; padding: 2rem; max-width: 32rem; }
       h1 { color: #e8eef9; margin-bottom: 1rem; }
       p { color: #9aa9c0; }
       .error { color: #ff917b; font-family: monospace; margin-top: 1rem; padding: 1rem; background: #3c140d; border-radius: 0.5rem; }
-    <@lgcode/style>
-  <@lgcode/head>
+    </style>
+  </head>
   <body>
     <div class="container">
-      <h1 id="title">Finishing sign-in...<@lgcode/h1>
-      <p id="msg">You can close this window once it says you're signed in.<@lgcode/p>
-    <@lgcode/div>
+      <h1 id="title">Finishing sign-in...</h1>
+      <p id="msg">You can close this window once it says you're signed in.</p>
+    </div>
     <script>
       (async function() {
         const params = new URLSearchParams((window.location.hash || "").slice(1))
@@ -91,7 +91,7 @@ const HTML_CALLBACK = `<!doctype html>
             : { access_token: params.get("access_token") || "", expires_in: params.get("expires_in") || "0", state: params.get("state") || "" }
           const res = await fetch(tokenUrl, {
             method: "POST",
-            headers: { "Content-Type": "application@lgcode/json" },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body),
           })
           if (!res.ok) {
@@ -113,17 +113,17 @@ const HTML_CALLBACK = `<!doctype html>
           msgEl.className = "error"
         }
       })()
-    <@lgcode/script>
-  <@lgcode/body>
-<@lgcode/html>`
+    </script>
+  </body>
+</html>`
 
 async function startOAuthServer(): Promise<void> {
   if (oauthServer) return
   oauthServer = createServer((req, res) => {
-    const url = new URL(req.url || "@lgcode/", `http:@lgcode/@lgcode/localhost:${OAUTH_PORT}`)
+    const url = new URL(req.url || "/", `http://localhost:${OAUTH_PORT}`)
 
     if (req.method === "GET" && url.pathname === OAUTH_REDIRECT_PATH) {
-      res.writeHead(200, { "Content-Type": "text@lgcode/html" })
+      res.writeHead(200, { "Content-Type": "text/html" })
       res.end(HTML_CALLBACK)
       return
     }
@@ -140,7 +140,7 @@ async function startOAuthServer(): Promise<void> {
           body = {}
         }
         if (!pendingOAuth) {
-          res.writeHead(409, { "Content-Type": "application@lgcode/json" })
+          res.writeHead(409, { "Content-Type": "application/json" })
           res.end(JSON.stringify({ error: "no_pending_oauth" }))
           return
         }
@@ -148,21 +148,21 @@ async function startOAuthServer(): Promise<void> {
           const message = body.error_description || body.error || "OAuth error"
           pendingOAuth.reject(new Error(String(message)))
           pendingOAuth = undefined
-          res.writeHead(200, { "Content-Type": "application@lgcode/json" })
+          res.writeHead(200, { "Content-Type": "application/json" })
           res.end(JSON.stringify({ ok: true }))
           return
         }
         if (!body.access_token) {
           pendingOAuth.reject(new Error("Missing access_token in callback"))
           pendingOAuth = undefined
-          res.writeHead(400, { "Content-Type": "application@lgcode/json" })
+          res.writeHead(400, { "Content-Type": "application/json" })
           res.end(JSON.stringify({ error: "missing_access_token" }))
           return
         }
         if (body.state !== pendingOAuth.state) {
           pendingOAuth.reject(new Error("Invalid state - potential CSRF attack"))
           pendingOAuth = undefined
-          res.writeHead(400, { "Content-Type": "application@lgcode/json" })
+          res.writeHead(400, { "Content-Type": "application/json" })
           res.end(JSON.stringify({ error: "invalid_state" }))
           return
         }
@@ -173,7 +173,7 @@ async function startOAuthServer(): Promise<void> {
           state: body.state,
         })
         pendingOAuth = undefined
-        res.writeHead(200, { "Content-Type": "application@lgcode/json" })
+        res.writeHead(200, { "Content-Type": "application/json" })
         res.end(JSON.stringify({ ok: true }))
       })
       return
@@ -225,11 +225,11 @@ function waitForOAuthCallback(state: string): Promise<ImplicitTokenPayload> {
 async function listRouters(
   bearer: string,
 ): Promise<{ ok: true; routers: RouterEntry[] } | { ok: false; status: number }> {
-  const res = await fetch(`${DO_GENAI_API}@lgcode/models@lgcode/routers`, {
+  const res = await fetch(`${DO_GENAI_API}/models/routers`, {
     headers: {
       Authorization: `Bearer ${bearer}`,
-      Accept: "application@lgcode/json",
-      "User-Agent": `opencode@lgcode/${InstallationVersion}`,
+      Accept: "application/json",
+      "User-Agent": `opencode/${InstallationVersion}`,
     },
     signal: AbortSignal.timeout(10_000),
   }).catch(() => undefined)
@@ -246,7 +246,7 @@ function routerModel(router: RouterEntry, providerID: string): Model {
     providerID,
     name: router.name,
     family: "digitalocean-inference-routers",
-    api: { id, url: DO_INFERENCE_BASE, npm: "@ai-sdk@lgcode/openai-compatible" },
+    api: { id, url: DO_INFERENCE_BASE, npm: "@ai-sdk/openai-compatible" },
     status: "active",
     headers: {},
     options: {},
@@ -341,7 +341,7 @@ export async function DigitalOceanAuthPlugin(input: PluginInput): Promise<Hooks>
             return {
               url,
               instructions:
-                "Sign in to DigitalOcean in your browser. OpenCode will use your DigitalOcean API token directly for inference and load your Inference Routers. Re-run @lgcode/connect to refresh routers later.",
+                "Sign in to DigitalOcean in your browser. OpenCode will use your DigitalOcean API token directly for inference and load your Inference Routers. Re-run /connect to refresh routers later.",
               method: "auto" as const,
               async callback() {
                 try {

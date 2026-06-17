@@ -1,9 +1,9 @@
-export * as CommandV2 from ".@lgcode/command"
+export * as CommandV2 from "./command"
 
 import { Context, Effect, Layer, Schema } from "effect"
 import { castDraft, type Draft } from "immer"
-import { ModelV2 } from ".@lgcode/model"
-import { State } from ".@lgcode/state"
+import { ModelV2 } from "./model"
+import { State } from "./state"
 
 export class Info extends Schema.Class<Info>("CommandV2.Info")({
   name: Schema.String,
@@ -32,7 +32,7 @@ export interface Interface {
   readonly list: () => Effect.Effect<Info[]>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/Command") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/v2/Command") {}
 
 export const layer = Layer.effect(
   Service,

@@ -1,24 +1,24 @@
 import { createEffect, createMemo, createSignal, Match, on, onCleanup, Switch } from "solid-js"
-import { createStore } from "solid-js@lgcode/store"
-import { Dynamic } from "solid-js@lgcode/web"
-import { makeEventListener } from "@solid-primitives@lgcode/event-listener"
-import type { FileSearchHandle } from "@lgcode/ui@lgcode/file"
-import { useFileComponent } from "@lgcode/ui@lgcode/context@lgcode/file"
-import { cloneSelectedLineRange, previewSelectedLines } from "@lgcode/ui@lgcode/pierre@lgcode/selection-bridge"
-import { createLineCommentController } from "@lgcode/ui@lgcode/line-comment-annotations"
-import { sampledChecksum } from "@lgcode/core@lgcode/util@lgcode/encode"
-import { DropdownMenu } from "@lgcode/ui@lgcode/dropdown-menu"
-import { IconButton } from "@lgcode/ui@lgcode/icon-button"
-import { Tabs } from "@lgcode/ui@lgcode/tabs"
-import { ScrollView } from "@lgcode/ui@lgcode/scroll-view"
-import { showToast } from "@@lgcode/utils@lgcode/toast"
-import { selectionFromLines, useFile, type FileSelection, type SelectedLineRange } from "@@lgcode/context@lgcode/file"
-import { useComments } from "@@lgcode/context@lgcode/comments"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
-import { usePrompt } from "@@lgcode/context@lgcode/prompt"
-import { getSessionHandoff } from "@@lgcode/pages@lgcode/session@lgcode/handoff"
-import { useSessionLayout } from "@@lgcode/pages@lgcode/session@lgcode/session-layout"
-import { createSessionTabs } from "@@lgcode/pages@lgcode/session@lgcode/helpers"
+import { createStore } from "solid-js/store"
+import { Dynamic } from "solid-js/web"
+import { makeEventListener } from "@solid-primitives/event-listener"
+import type { FileSearchHandle } from "@opencode@lgcode/ui/file"
+import { useFileComponent } from "@opencode@lgcode/ui/context/file"
+import { cloneSelectedLineRange, previewSelectedLines } from "@opencode@lgcode/ui/pierre/selection-bridge"
+import { createLineCommentController } from "@opencode@lgcode/ui/line-comment-annotations"
+import { sampledChecksum } from "@opencode@lgcode/core/util/encode"
+import { DropdownMenu } from "@opencode@lgcode/ui/dropdown-menu"
+import { IconButton } from "@opencode@lgcode/ui/icon-button"
+import { Tabs } from "@opencode@lgcode/ui/tabs"
+import { ScrollView } from "@opencode@lgcode/ui/scroll-view"
+import { showToast } from "@/utils/toast"
+import { selectionFromLines, useFile, type FileSelection, type SelectedLineRange } from "@/context/file"
+import { useComments } from "@/context/comments"
+import { useLanguage } from "@/context/language"
+import { usePrompt } from "@/context/prompt"
+import { getSessionHandoff } from "@/pages/session/handoff"
+import { useSessionLayout } from "@/pages/session/session-layout"
+import { createSessionTabs } from "@/pages/session/helpers"
 
 function FileCommentMenu(props: {
   moreLabel: string
@@ -37,19 +37,19 @@ function FileCommentMenu(props: {
           size="small"
           class="size-6 rounded-md"
           aria-label={props.moreLabel}
-        @lgcode/>
+        />
         <DropdownMenu.Portal>
           <DropdownMenu.Content>
             <DropdownMenu.Item onSelect={props.onEdit}>
-              <DropdownMenu.ItemLabel>{props.editLabel}<@lgcode/DropdownMenu.ItemLabel>
-            <@lgcode/DropdownMenu.Item>
+              <DropdownMenu.ItemLabel>{props.editLabel}</DropdownMenu.ItemLabel>
+            </DropdownMenu.Item>
             <DropdownMenu.Item onSelect={props.onDelete}>
-              <DropdownMenu.ItemLabel>{props.deleteLabel}<@lgcode/DropdownMenu.ItemLabel>
-            <@lgcode/DropdownMenu.Item>
-          <@lgcode/DropdownMenu.Content>
-        <@lgcode/DropdownMenu.Portal>
-      <@lgcode/DropdownMenu>
-    <@lgcode/div>
+              <DropdownMenu.ItemLabel>{props.deleteLabel}</DropdownMenu.ItemLabel>
+            </DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Portal>
+      </DropdownMenu>
+    </div>
   )
 }
 
@@ -181,7 +181,7 @@ export function FileTabContent(props: { tab: string }) {
   const activeFileTab = createSessionTabs({
     tabs,
     pathFromTab: file.pathFromTab,
-    normalizeTab: (tab) => (tab.startsWith("file:@lgcode/@lgcode/") ? file.tab(tab) : tab),
+    normalizeTab: (tab) => (tab.startsWith("file://") ? file.tab(tab) : tab),
   }).activeFileTab
 
   let find: FileSearchHandle | null = null
@@ -334,7 +334,7 @@ export function FileTabContent(props: { tab: string }) {
         deleteLabel={language.t("common.delete")}
         onEdit={controls.edit}
         onDelete={controls.remove}
-      @lgcode/>
+      />
     ),
   })
 
@@ -436,21 +436,21 @@ export function FileTabContent(props: { tab: string }) {
             })
           },
         }}
-      @lgcode/>
-    <@lgcode/div>
+      />
+    </div>
   )
 
   return (
     <Tabs.Content value={props.tab} class="mt-3 relative h-full">
       <ScrollView class="h-full" viewportRef={scrollSync.setViewport} onScroll={scrollSync.handleScroll as any}>
         <Switch>
-          <Match when={state()?.loaded}>{renderFile(contents())}<@lgcode/Match>
+          <Match when={state()?.loaded}>{renderFile(contents())}</Match>
           <Match when={state()?.loading}>
-            <div class="px-6 py-4 text-text-weak">{language.t("common.loading")}...<@lgcode/div>
-          <@lgcode/Match>
-          <Match when={state()?.error}>{(err) => <div class="px-6 py-4 text-text-weak">{err()}<@lgcode/div>}<@lgcode/Match>
-        <@lgcode/Switch>
-      <@lgcode/ScrollView>
-    <@lgcode/Tabs.Content>
+            <div class="px-6 py-4 text-text-weak">{language.t("common.loading")}...</div>
+          </Match>
+          <Match when={state()?.error}>{(err) => <div class="px-6 py-4 text-text-weak">{err()}</div>}</Match>
+        </Switch>
+      </ScrollView>
+    </Tabs.Content>
   )
 }

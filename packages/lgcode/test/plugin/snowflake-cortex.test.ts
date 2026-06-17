@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
-import { OAUTH_DUMMY_KEY } from "..@lgcode/..@lgcode/src@lgcode/auth"
-import { oauthScope, SnowflakeCortexAuthPlugin } from "..@lgcode/..@lgcode/src@lgcode/plugin@lgcode/snowflake-cortex"
+import { OAUTH_DUMMY_KEY } from "../../src/auth"
+import { oauthScope, SnowflakeCortexAuthPlugin } from "../../src/plugin/snowflake-cortex"
 
 function makeInput() {
   let auth: any = {
@@ -61,11 +61,11 @@ describe("plugin.snowflake-cortex", () => {
     const captured: Headers[] = []
     globalThis.fetch = (async (_request, init) => {
       captured.push(new Headers(init?.headers))
-      return new Response("{}", { status: 200, headers: { "content-type": "application@lgcode/json" } })
+      return new Response("{}", { status: 200, headers: { "content-type": "application/json" } })
     }) as typeof fetch
 
     try {
-      await options.fetch("https:@lgcode/@lgcode/example.test@lgcode/v1@lgcode/chat", {
+      await options.fetch("https://example.test/v1/chat", {
         headers: { Authorization: `Bearer ${OAUTH_DUMMY_KEY}`, "x-keep": "yes" },
       })
     } finally {
@@ -75,7 +75,7 @@ describe("plugin.snowflake-cortex", () => {
     expect(captured).toHaveLength(1)
     expect(captured[0].get("authorization")).toBe("Bearer access-live")
     expect(captured[0].get("x-keep")).toBe("yes")
-    expect(captured[0].get("user-agent")).toMatch(@lgcode/^opencode\@lgcode/@lgcode/)
+    expect(captured[0].get("user-agent")).toMatch(/^opencode\//)
   })
 
   test("loader refreshes expired token with single-flight and persists refreshed oauth", async () => {
@@ -83,24 +83,24 @@ describe("plugin.snowflake-cortex", () => {
     let refreshCalls = 0
     const apiAuthHeaders: string[] = []
 
-    @lgcode/@lgcode/ Must mock fetch before calling loader because startup refresh triggers for expires: 0
+    // Must mock fetch before calling loader because startup refresh triggers for expires: 0
     const originalFetch = globalThis.fetch
     globalThis.fetch = (async (request, init) => {
       const url =
         typeof request === "string" ? request : request instanceof URL ? request.toString() : String(request.url)
 
-      if (url.includes("@lgcode/oauth@lgcode/token-request")) {
+      if (url.includes("/oauth/token-request")) {
         refreshCalls += 1
         const body = new URLSearchParams(String(init?.body ?? ""))
         expect(body.get("grant_type")).toBe("refresh_token")
         expect(body.get("refresh_token")).toBe("refresh-old")
-        expect(new Headers(init?.headers).get("authorization")).toMatch(@lgcode/^Basic @lgcode/)
+        expect(new Headers(init?.headers).get("authorization")).toMatch(/^Basic /)
         await new Promise((resolve) => setTimeout(resolve, 20))
         return Response.json({ access_token: "access-new", refresh_token: "refresh-new", expires_in: 3600 })
       }
 
       apiAuthHeaders.push(new Headers(init?.headers).get("authorization") || "")
-      return new Response("{}", { status: 200, headers: { "content-type": "application@lgcode/json" } })
+      return new Response("{}", { status: 200, headers: { "content-type": "application/json" } })
     }) as typeof fetch
 
     try {
@@ -118,8 +118,8 @@ describe("plugin.snowflake-cortex", () => {
       )
 
       await Promise.all([
-        options.fetch("https:@lgcode/@lgcode/example.test@lgcode/v1@lgcode/chat", { headers: {} }),
-        options.fetch("https:@lgcode/@lgcode/example.test@lgcode/v1@lgcode/chat", { headers: {} }),
+        options.fetch("https://example.test/v1/chat", { headers: {} }),
+        options.fetch("https://example.test/v1/chat", { headers: {} }),
       ])
     } finally {
       globalThis.fetch = originalFetch
@@ -158,18 +158,18 @@ describe("plugin.snowflake-cortex", () => {
       const url =
         typeof request === "string" ? request : request instanceof URL ? request.toString() : String(request.url)
 
-      if (url.includes("@lgcode/oauth@lgcode/token-request")) {
+      if (url.includes("/oauth/token-request")) {
         return Response.json({ access_token: "access-fresh", refresh_token: "refresh-fresh", expires_in: 3600 })
       }
 
       apiCalls += 1
       seenAuth.push(new Headers(init?.headers).get("authorization") || "")
       if (apiCalls === 1) return new Response("unauthorized", { status: 401 })
-      return new Response("{}", { status: 200, headers: { "content-type": "application@lgcode/json" } })
+      return new Response("{}", { status: 200, headers: { "content-type": "application/json" } })
     }) as typeof fetch
 
     try {
-      const response = await options.fetch("https:@lgcode/@lgcode/example.test@lgcode/v1@lgcode/chat", { headers: {} })
+      const response = await options.fetch("https://example.test/v1/chat", { headers: {} })
       expect(response.status).toBe(200)
     } finally {
       globalThis.fetch = originalFetch
@@ -195,11 +195,11 @@ describe("plugin.snowflake-cortex", () => {
     const originalFetch = globalThis.fetch
     globalThis.fetch = (async (request, init) => {
       sentBody = typeof init?.body === "string" ? init.body : undefined
-      return new Response("{}", { status: 200, headers: { "content-type": "application@lgcode/json" } })
+      return new Response("{}", { status: 200, headers: { "content-type": "application/json" } })
     }) as typeof fetch
 
     try {
-      await options.fetch("https:@lgcode/@lgcode/example.test@lgcode/v1@lgcode/chat", {
+      await options.fetch("https://example.test/v1/chat", {
         method: "POST",
         body: JSON.stringify({ model: "claude-sonnet-4-5", max_tokens: 4096, messages: [] }),
       })
@@ -223,12 +223,12 @@ describe("plugin.snowflake-cortex", () => {
     globalThis.fetch = (async () => {
       return new Response(JSON.stringify({ message: "Conversation complete" }), {
         status: 400,
-        headers: { "content-type": "application@lgcode/json" },
+        headers: { "content-type": "application/json" },
       })
     }) as unknown as typeof fetch
 
     try {
-      const response = await options.fetch("https:@lgcode/@lgcode/example.test@lgcode/v1@lgcode/chat", {
+      const response = await options.fetch("https://example.test/v1/chat", {
         method: "POST",
         body: JSON.stringify({ model: "test", messages: [] }),
       })
@@ -256,12 +256,12 @@ describe("plugin.snowflake-cortex", () => {
       })
       return new Response(stream, {
         status: 200,
-        headers: { "content-type": "text@lgcode/event-stream" },
+        headers: { "content-type": "text/event-stream" },
       })
     }) as unknown as typeof fetch
 
     try {
-      const response = await options.fetch("https:@lgcode/@lgcode/example.test@lgcode/v1@lgcode/chat", {
+      const response = await options.fetch("https://example.test/v1/chat", {
         method: "POST",
         body: JSON.stringify({ model: "test", messages: [], stream: true }),
       })

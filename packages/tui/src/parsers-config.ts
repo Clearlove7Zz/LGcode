@@ -1,384 +1,384 @@
 export default {
-  @lgcode/@lgcode/ NOTE: FOR markdown, javascript and typescript, we use the opentui built-in parsers
-  @lgcode/@lgcode/ Warn: when taking queries from the nvim-treesitter repo, make sure to include the query dependencies as well
-  @lgcode/@lgcode/       marked with for example `; inherits: ecma` at the top of the file. Just put the dependencies before the actual query.
-  @lgcode/@lgcode/       ALSO: Some queries use breaking changes in the nvim-treesitter repo, that are not compatible with the (web-)tree-sitter parser.
+  // NOTE: FOR markdown, javascript and typescript, we use the opentui built-in parsers
+  // Warn: when taking queries from the nvim-treesitter repo, make sure to include the query dependencies as well
+  //       marked with for example `; inherits: ecma` at the top of the file. Just put the dependencies before the actual query.
+  //       ALSO: Some queries use breaking changes in the nvim-treesitter repo, that are not compatible with the (web-)tree-sitter parser.
   parsers: [
     {
       filetype: "python",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter@lgcode/tree-sitter-python@lgcode/releases@lgcode/download@lgcode/v0.23.6@lgcode/tree-sitter-python.wasm",
+      wasm: "https://github.com/tree-sitter/tree-sitter-python/releases/download/v0.23.6/tree-sitter-python.wasm",
       queries: {
         highlights: [
-          @lgcode/@lgcode/ NOTE: This nvim-treesitter query is currently broken, because the parser is not compatible with the query apparently.
-          @lgcode/@lgcode/       it is using "except" nodes that the parser is complaining about, but it has been in the query for 3+ years.
-          @lgcode/@lgcode/       Unclear.
-          @lgcode/@lgcode/ "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/python@lgcode/highlights.scm",
-          "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter@lgcode/tree-sitter-python@lgcode/raw@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/highlights.scm",
+          // NOTE: This nvim-treesitter query is currently broken, because the parser is not compatible with the query apparently.
+          //       it is using "except" nodes that the parser is complaining about, but it has been in the query for 3+ years.
+          //       Unclear.
+          // "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/python/highlights.scm",
+          "https://github.com/tree-sitter/tree-sitter-python/raw/refs/heads/master/queries/highlights.scm",
         ],
         locals: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/python@lgcode/locals.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/python/locals.scm",
         ],
       },
     },
     {
       filetype: "rust",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter@lgcode/tree-sitter-rust@lgcode/releases@lgcode/download@lgcode/v0.24.0@lgcode/tree-sitter-rust.wasm",
+      wasm: "https://github.com/tree-sitter/tree-sitter-rust/releases/download/v0.24.0/tree-sitter-rust.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/rust@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/rust/highlights.scm",
         ],
         locals: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/rust@lgcode/locals.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/rust/locals.scm",
         ],
       },
     },
     {
       filetype: "go",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter@lgcode/tree-sitter-go@lgcode/releases@lgcode/download@lgcode/v0.25.0@lgcode/tree-sitter-go.wasm",
+      wasm: "https://github.com/tree-sitter/tree-sitter-go/releases/download/v0.25.0/tree-sitter-go.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/go@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/go/highlights.scm",
         ],
         locals: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/go@lgcode/locals.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/go/locals.scm",
         ],
       },
     },
     {
       filetype: "cpp",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter@lgcode/tree-sitter-cpp@lgcode/releases@lgcode/download@lgcode/v0.23.4@lgcode/tree-sitter-cpp.wasm",
+      wasm: "https://github.com/tree-sitter/tree-sitter-cpp/releases/download/v0.23.4/tree-sitter-cpp.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/cpp@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/cpp/highlights.scm",
         ],
         locals: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/cpp@lgcode/locals.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/cpp/locals.scm",
         ],
       },
     },
     {
       filetype: "csharp",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter@lgcode/tree-sitter-c-sharp@lgcode/releases@lgcode/download@lgcode/v0.23.1@lgcode/tree-sitter-c_sharp.wasm",
+      wasm: "https://github.com/tree-sitter/tree-sitter-c-sharp/releases/download/v0.23.1/tree-sitter-c_sharp.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/c_sharp@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/c_sharp/highlights.scm",
         ],
         locals: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/c_sharp@lgcode/locals.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/c_sharp/locals.scm",
         ],
       },
     },
     {
       filetype: "bash",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter@lgcode/tree-sitter-bash@lgcode/releases@lgcode/download@lgcode/v0.25.0@lgcode/tree-sitter-bash.wasm",
+      wasm: "https://github.com/tree-sitter/tree-sitter-bash/releases/download/v0.25.0/tree-sitter-bash.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/bash@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/bash/highlights.scm",
         ],
       },
     },
     {
       filetype: "c",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter@lgcode/tree-sitter-c@lgcode/releases@lgcode/download@lgcode/v0.24.1@lgcode/tree-sitter-c.wasm",
+      wasm: "https://github.com/tree-sitter/tree-sitter-c/releases/download/v0.24.1/tree-sitter-c.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/c@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/c/highlights.scm",
         ],
         locals: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/c@lgcode/locals.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/c/locals.scm",
         ],
       },
     },
     {
       filetype: "java",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter@lgcode/tree-sitter-java@lgcode/releases@lgcode/download@lgcode/v0.23.5@lgcode/tree-sitter-java.wasm",
+      wasm: "https://github.com/tree-sitter/tree-sitter-java/releases/download/v0.23.5/tree-sitter-java.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/java@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/java/highlights.scm",
         ],
         locals: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/java@lgcode/locals.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/java/locals.scm",
         ],
       },
     },
     {
       filetype: "kotlin",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/fwcd@lgcode/tree-sitter-kotlin@lgcode/releases@lgcode/download@lgcode/0.3.8@lgcode/tree-sitter-kotlin.wasm",
+      wasm: "https://github.com/fwcd/tree-sitter-kotlin/releases/download/0.3.8/tree-sitter-kotlin.wasm",
       queries: {
-        highlights: ["https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/fwcd@lgcode/tree-sitter-kotlin@lgcode/0.3.8@lgcode/queries@lgcode/highlights.scm"],
-        locals: ["https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/master@lgcode/queries@lgcode/kotlin@lgcode/locals.scm"],
+        highlights: ["https://raw.githubusercontent.com/fwcd/tree-sitter-kotlin/0.3.8/queries/highlights.scm"],
+        locals: ["https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/master/queries/kotlin/locals.scm"],
       },
     },
     {
       filetype: "ruby",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter@lgcode/tree-sitter-ruby@lgcode/releases@lgcode/download@lgcode/v0.23.1@lgcode/tree-sitter-ruby.wasm",
+      wasm: "https://github.com/tree-sitter/tree-sitter-ruby/releases/download/v0.23.1/tree-sitter-ruby.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/ruby@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/ruby/highlights.scm",
         ],
         locals: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/ruby@lgcode/locals.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/ruby/locals.scm",
         ],
       },
     },
     {
       filetype: "php",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter@lgcode/tree-sitter-php@lgcode/releases@lgcode/download@lgcode/v0.24.2@lgcode/tree-sitter-php.wasm",
+      wasm: "https://github.com/tree-sitter/tree-sitter-php/releases/download/v0.24.2/tree-sitter-php.wasm",
       queries: {
         highlights: [
-          @lgcode/@lgcode/ NOTE: This nvim-treesitter query is currently broken, because the parser is not compatible with the query apparently.
-          @lgcode/@lgcode/ "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/php@lgcode/highlights.scm",
-          "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter@lgcode/tree-sitter-php@lgcode/raw@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/highlights.scm",
+          // NOTE: This nvim-treesitter query is currently broken, because the parser is not compatible with the query apparently.
+          // "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/php/highlights.scm",
+          "https://github.com/tree-sitter/tree-sitter-php/raw/refs/heads/master/queries/highlights.scm",
         ],
       },
     },
     {
       filetype: "scala",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter@lgcode/tree-sitter-scala@lgcode/releases@lgcode/download@lgcode/v0.24.0@lgcode/tree-sitter-scala.wasm",
+      wasm: "https://github.com/tree-sitter/tree-sitter-scala/releases/download/v0.24.0/tree-sitter-scala.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/scala@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/scala/highlights.scm",
         ],
       },
     },
     {
       filetype: "html",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter@lgcode/tree-sitter-html@lgcode/releases@lgcode/download@lgcode/v0.23.2@lgcode/tree-sitter-html.wasm",
+      wasm: "https://github.com/tree-sitter/tree-sitter-html/releases/download/v0.23.2/tree-sitter-html.wasm",
       queries: {
         highlights: [
-          @lgcode/@lgcode/ NOTE: This nvim-treesitter query is currently broken, because the parser is not compatible with the query apparently.
-          @lgcode/@lgcode/ "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/html@lgcode/highlights.scm",
-          "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter@lgcode/tree-sitter-html@lgcode/raw@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/highlights.scm",
+          // NOTE: This nvim-treesitter query is currently broken, because the parser is not compatible with the query apparently.
+          // "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/html/highlights.scm",
+          "https://github.com/tree-sitter/tree-sitter-html/raw/refs/heads/master/queries/highlights.scm",
         ],
-        @lgcode/@lgcode/ TODO: Injections not working for some reason
-        @lgcode/@lgcode/ injections: [
-        @lgcode/@lgcode/   "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter@lgcode/tree-sitter-html@lgcode/raw@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/injections.scm",
-        @lgcode/@lgcode/ ],
+        // TODO: Injections not working for some reason
+        // injections: [
+        //   "https://github.com/tree-sitter/tree-sitter-html/raw/refs/heads/master/queries/injections.scm",
+        // ],
       },
-      @lgcode/@lgcode/ injectionMapping: {
-      @lgcode/@lgcode/   nodeTypes: {
-      @lgcode/@lgcode/     script_element: "javascript",
-      @lgcode/@lgcode/     style_element: "css",
-      @lgcode/@lgcode/   },
-      @lgcode/@lgcode/   infoStringMap: {
-      @lgcode/@lgcode/     javascript: "javascript",
-      @lgcode/@lgcode/     css: "css",
-      @lgcode/@lgcode/   },
-      @lgcode/@lgcode/ },
+      // injectionMapping: {
+      //   nodeTypes: {
+      //     script_element: "javascript",
+      //     style_element: "css",
+      //   },
+      //   infoStringMap: {
+      //     javascript: "javascript",
+      //     css: "css",
+      //   },
+      // },
     },
     {
       filetype: "vue",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/anomalyco@lgcode/tree-sitter-vue@lgcode/releases@lgcode/download@lgcode/v0.1.2@lgcode/tree-sitter-vue.wasm",
+      wasm: "https://github.com/anomalyco/tree-sitter-vue/releases/download/v0.1.2/tree-sitter-vue.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/anomalyco@lgcode/tree-sitter-vue@lgcode/v0.1.2@lgcode/queries@lgcode/html_tags@lgcode/highlights.scm",
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/anomalyco@lgcode/tree-sitter-vue@lgcode/v0.1.2@lgcode/queries@lgcode/vue@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/anomalyco/tree-sitter-vue/v0.1.2/queries/html_tags/highlights.scm",
+          "https://raw.githubusercontent.com/anomalyco/tree-sitter-vue/v0.1.2/queries/vue/highlights.scm",
         ],
       },
     },
     {
       filetype: "hcl",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter-grammars@lgcode/tree-sitter-hcl@lgcode/releases@lgcode/download@lgcode/v1.2.0@lgcode/tree-sitter-hcl.wasm",
+      wasm: "https://github.com/tree-sitter-grammars/tree-sitter-hcl/releases/download/v1.2.0/tree-sitter-hcl.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/master@lgcode/queries@lgcode/hcl@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/master/queries/hcl/highlights.scm",
         ],
       },
     },
     {
       filetype: "json",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter@lgcode/tree-sitter-json@lgcode/releases@lgcode/download@lgcode/v0.24.8@lgcode/tree-sitter-json.wasm",
+      wasm: "https://github.com/tree-sitter/tree-sitter-json/releases/download/v0.24.8/tree-sitter-json.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/json@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/json/highlights.scm",
         ],
       },
     },
     {
       filetype: "yaml",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter-grammars@lgcode/tree-sitter-yaml@lgcode/releases@lgcode/download@lgcode/v0.7.2@lgcode/tree-sitter-yaml.wasm",
+      wasm: "https://github.com/tree-sitter-grammars/tree-sitter-yaml/releases/download/v0.7.2/tree-sitter-yaml.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/yaml@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/yaml/highlights.scm",
         ],
       },
     },
     {
       filetype: "haskell",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter@lgcode/tree-sitter-haskell@lgcode/releases@lgcode/download@lgcode/v0.23.1@lgcode/tree-sitter-haskell.wasm",
+      wasm: "https://github.com/tree-sitter/tree-sitter-haskell/releases/download/v0.23.1/tree-sitter-haskell.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/haskell@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/haskell/highlights.scm",
         ],
       },
     },
     {
       filetype: "css",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter@lgcode/tree-sitter-css@lgcode/releases@lgcode/download@lgcode/v0.25.0@lgcode/tree-sitter-css.wasm",
+      wasm: "https://github.com/tree-sitter/tree-sitter-css/releases/download/v0.25.0/tree-sitter-css.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/css@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/css/highlights.scm",
         ],
       },
     },
     {
       filetype: "julia",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter@lgcode/tree-sitter-julia@lgcode/releases@lgcode/download@lgcode/v0.23.1@lgcode/tree-sitter-julia.wasm",
+      wasm: "https://github.com/tree-sitter/tree-sitter-julia/releases/download/v0.23.1/tree-sitter-julia.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/julia@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/julia/highlights.scm",
         ],
       },
     },
     {
       filetype: "lua",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter-grammars@lgcode/tree-sitter-lua@lgcode/releases@lgcode/download@lgcode/v0.5.0@lgcode/tree-sitter-lua.wasm",
+      wasm: "https://github.com/tree-sitter-grammars/tree-sitter-lua/releases/download/v0.5.0/tree-sitter-lua.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/tree-sitter-grammars@lgcode/tree-sitter-lua@lgcode/v0.5.0@lgcode/queries@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/tree-sitter-grammars/tree-sitter-lua/v0.5.0/queries/highlights.scm",
         ],
-        locals: ["https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/tree-sitter-grammars@lgcode/tree-sitter-lua@lgcode/v0.5.0@lgcode/queries@lgcode/locals.scm"],
+        locals: ["https://raw.githubusercontent.com/tree-sitter-grammars/tree-sitter-lua/v0.5.0/queries/locals.scm"],
       },
     },
     {
       filetype: "ocaml",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter@lgcode/tree-sitter-ocaml@lgcode/releases@lgcode/download@lgcode/v0.24.2@lgcode/tree-sitter-ocaml.wasm",
+      wasm: "https://github.com/tree-sitter/tree-sitter-ocaml/releases/download/v0.24.2/tree-sitter-ocaml.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/ocaml@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/ocaml/highlights.scm",
         ],
       },
     },
     {
       filetype: "clojure",
-      @lgcode/@lgcode/ temporarily using fork to fix issues
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/anomalyco@lgcode/tree-sitter-clojure@lgcode/releases@lgcode/download@lgcode/v0.0.1@lgcode/tree-sitter-clojure.wasm",
+      // temporarily using fork to fix issues
+      wasm: "https://github.com/anomalyco/tree-sitter-clojure/releases/download/v0.0.1/tree-sitter-clojure.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/clojure@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/clojure/highlights.scm",
         ],
       },
     },
     {
       filetype: "swift",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/alex-pinkus@lgcode/tree-sitter-swift@lgcode/releases@lgcode/download@lgcode/0.7.1@lgcode/tree-sitter-swift.wasm",
+      wasm: "https://github.com/alex-pinkus/tree-sitter-swift/releases/download/0.7.1/tree-sitter-swift.wasm",
       queries: {
         highlights: [
-          @lgcode/@lgcode/ NOTE: Using parser repo queries instead of nvim-treesitter due to incompatible #lua-match? predicates
-          @lgcode/@lgcode/ "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/highlights.scm
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/alex-pinkus@lgcode/tree-sitter-swift@lgcode/main@lgcode/queries@lgcode/highlights.scm",
+          // NOTE: Using parser repo queries instead of nvim-treesitter due to incompatible #lua-match? predicates
+          // "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/highlights.scm
+          "https://raw.githubusercontent.com/alex-pinkus/tree-sitter-swift/main/queries/highlights.scm",
         ],
         locals: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/swift@lgcode/locals.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/swift/locals.scm",
         ],
       },
     },
     {
       filetype: "toml",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter-grammars@lgcode/tree-sitter-toml@lgcode/releases@lgcode/download@lgcode/v0.7.0@lgcode/tree-sitter-toml.wasm",
+      wasm: "https://github.com/tree-sitter-grammars/tree-sitter-toml/releases/download/v0.7.0/tree-sitter-toml.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/master@lgcode/queries@lgcode/toml@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/master/queries/toml/highlights.scm",
         ],
       },
     },
     {
       filetype: "nix",
-      @lgcode/@lgcode/ TODO: Replace with official tree-sitter-nix WASM when published
-      @lgcode/@lgcode/ See: https:@lgcode/@lgcode/github.com@lgcode/nix-community@lgcode/tree-sitter-nix@lgcode/issues@lgcode/66
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/ast-grep@lgcode/ast-grep.github.io@lgcode/raw@lgcode/40b84530640aa83a0d34a20a2b0623d7b8e5ea97@lgcode/website@lgcode/public@lgcode/parsers@lgcode/tree-sitter-nix.wasm",
+      // TODO: Replace with official tree-sitter-nix WASM when published
+      // See: https://github.com/nix-community/tree-sitter-nix/issues/66
+      wasm: "https://github.com/ast-grep/ast-grep.github.io/raw/40b84530640aa83a0d34a20a2b0623d7b8e5ea97/website/public/parsers/tree-sitter-nix.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/nix@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/nix/highlights.scm",
         ],
         locals: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/nix@lgcode/locals.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/nix/locals.scm",
         ],
       },
     },
     {
       filetype: "diff",
       aliases: ["udiff", "patch"],
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter-grammars@lgcode/tree-sitter-diff@lgcode/releases@lgcode/download@lgcode/v0.1.0@lgcode/tree-sitter-diff.wasm",
+      wasm: "https://github.com/tree-sitter-grammars/tree-sitter-diff/releases/download/v0.1.0/tree-sitter-diff.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/tree-sitter-grammars@lgcode/tree-sitter-diff@lgcode/master@lgcode/queries@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/tree-sitter-grammars/tree-sitter-diff/master/queries/highlights.scm",
         ],
       },
     },
     {
       filetype: "elixir",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/elixir-lang@lgcode/tree-sitter-elixir@lgcode/releases@lgcode/download@lgcode/v0.3.5@lgcode/tree-sitter-elixir.wasm",
+      wasm: "https://github.com/elixir-lang/tree-sitter-elixir/releases/download/v0.3.5/tree-sitter-elixir.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/elixir@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/elixir/highlights.scm",
         ],
         locals: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/elixir@lgcode/locals.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/elixir/locals.scm",
         ],
       },
     },
     {
       filetype: "fsharp",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/ionide@lgcode/tree-sitter-fsharp@lgcode/releases@lgcode/download@lgcode/0.3.0@lgcode/tree-sitter-fsharp.wasm",
+      wasm: "https://github.com/ionide/tree-sitter-fsharp/releases/download/0.3.0/tree-sitter-fsharp.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/fsharp@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/fsharp/highlights.scm",
         ],
       },
     },
     {
       filetype: "r",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/r-lib@lgcode/tree-sitter-r@lgcode/releases@lgcode/download@lgcode/v1.2.0@lgcode/tree-sitter-r.wasm",
+      wasm: "https://github.com/r-lib/tree-sitter-r/releases/download/v1.2.0/tree-sitter-r.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/r@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/r/highlights.scm",
         ],
         locals: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/r@lgcode/locals.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/r/locals.scm",
         ],
       },
     },
     {
       filetype: "make",
       aliases: ["makefile"],
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter-grammars@lgcode/tree-sitter-make@lgcode/releases@lgcode/download@lgcode/v1.1.1@lgcode/tree-sitter-make.wasm",
+      wasm: "https://github.com/tree-sitter-grammars/tree-sitter-make/releases/download/v1.1.1/tree-sitter-make.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/make@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/make/highlights.scm",
         ],
       },
     },
     {
       filetype: "vim",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter-grammars@lgcode/tree-sitter-vim@lgcode/releases@lgcode/download@lgcode/v0.8.1@lgcode/tree-sitter-vim.wasm",
+      wasm: "https://github.com/tree-sitter-grammars/tree-sitter-vim/releases/download/v0.8.1/tree-sitter-vim.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/vim@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/vim/highlights.scm",
         ],
         locals: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/vim@lgcode/locals.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/vim/locals.scm",
         ],
       },
     },
     {
       filetype: "xml",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter-grammars@lgcode/tree-sitter-xml@lgcode/releases@lgcode/download@lgcode/v0.7.0@lgcode/tree-sitter-xml.wasm",
+      wasm: "https://github.com/tree-sitter-grammars/tree-sitter-xml/releases/download/v0.7.0/tree-sitter-xml.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/xml@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/xml/highlights.scm",
         ],
         locals: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/xml@lgcode/locals.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/xml/locals.scm",
         ],
       },
     },
     {
       filetype: "agda",
-      wasm: "https:@lgcode/@lgcode/github.com@lgcode/tree-sitter@lgcode/tree-sitter-agda@lgcode/releases@lgcode/download@lgcode/v1.3.3@lgcode/tree-sitter-agda.wasm",
+      wasm: "https://github.com/tree-sitter/tree-sitter-agda/releases/download/v1.3.3/tree-sitter-agda.wasm",
       queries: {
         highlights: [
-          "https:@lgcode/@lgcode/raw.githubusercontent.com@lgcode/nvim-treesitter@lgcode/nvim-treesitter@lgcode/refs@lgcode/heads@lgcode/master@lgcode/queries@lgcode/agda@lgcode/highlights.scm",
+          "https://raw.githubusercontent.com/nvim-treesitter/nvim-treesitter/refs/heads/master/queries/agda/highlights.scm",
         ],
       },
     },

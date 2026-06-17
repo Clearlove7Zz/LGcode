@@ -1,9 +1,9 @@
 import { describe, expect } from "bun:test"
 import { Context, Deferred, Effect, Exit, Fiber, Layer, Scope } from "effect"
-import { EventV2 } from "@lgcode/core@lgcode/event"
-import { PluginV2 } from "@lgcode/core@lgcode/plugin"
-import { State } from "@lgcode/core@lgcode/state"
-import { it } from ".@lgcode/lib@lgcode/effect"
+import { EventV2 } from "@opencode@lgcode/core/event"
+import { PluginV2 } from "@opencode@lgcode/core/plugin"
+import { State } from "@opencode@lgcode/core/state"
+import { it } from "./lib/effect"
 
 const events = Layer.mock(EventV2.Service)({
   publish: (definition, data) =>

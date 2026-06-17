@@ -21,7 +21,7 @@ export function resolveInteractiveStdin(
     return { stdin }
   }
 
-  const file = platform === "win32" ? "CONIN$" : "@lgcode/dev@lgcode/tty"
+  const file = platform === "win32" ? "CONIN$" : "/dev/tty"
 
   try {
     const stream = open(file)

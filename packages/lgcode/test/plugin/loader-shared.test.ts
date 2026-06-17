@@ -1,20 +1,20 @@
 import { afterEach, describe, expect, spyOn } from "bun:test"
 import { Effect, Layer } from "effect"
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import path from "path"
 import { pathToFileURL } from "url"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { disposeAllInstances, provideInstance, testInstanceStoreLayer, tmpdirScoped } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { disposeAllInstances, provideInstance, testInstanceStoreLayer, tmpdirScoped } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
 
-const { Plugin } = await import("..@lgcode/..@lgcode/src@lgcode/plugin@lgcode/index")
-const { PluginLoader } = await import("..@lgcode/..@lgcode/src@lgcode/plugin@lgcode/loader")
-const { readPackageThemes } = await import("..@lgcode/..@lgcode/src@lgcode/plugin@lgcode/shared")
-const { EventV2Bridge } = await import("..@lgcode/..@lgcode/src@lgcode/event-v2-bridge")
-const { Npm } = await import("@lgcode/core@lgcode/npm")
-const { TestConfig } = await import("..@lgcode/fixture@lgcode/config")
-const { RuntimeFlags } = await import("..@lgcode/..@lgcode/src@lgcode/effect@lgcode/runtime-flags")
+const { Plugin } = await import("../../src/plugin/index")
+const { PluginLoader } = await import("../../src/plugin/loader")
+const { readPackageThemes } = await import("../../src/plugin/shared")
+const { EventV2Bridge } = await import("../../src/event-v2-bridge")
+const { Npm } = await import("@opencode@lgcode/core/npm")
+const { TestConfig } = await import("../fixture/config")
+const { RuntimeFlags } = await import("../../src/effect/runtime-flags")
 
 afterEach(async () => {
   await disposeAllInstances()
@@ -66,7 +66,7 @@ function load(dir: string, flags?: Parameters<typeof RuntimeFlags.layer>[0]) {
 }
 
 describe("plugin.loader.shared", () => {
-  it.live("loads a file:@lgcode/@lgcode/ plugin function export", () =>
+  it.live("loads a file:// plugin function export", () =>
     withTmp(
       async (dir) => {
         const file = path.join(dir, "plugin.ts")
@@ -261,12 +261,12 @@ describe("plugin.loader.shared", () => {
         await fs.mkdir(scope, { recursive: true })
         await Bun.write(
           path.join(acme, "package.json"),
-          JSON.stringify({ name: "acme-plugin", type: "module", main: ".@lgcode/index.js" }, null, 2),
+          JSON.stringify({ name: "acme-plugin", type: "module", main: "./index.js" }, null, 2),
         )
         await Bun.write(path.join(acme, "index.js"), "export default { server: async () => ({}) }\n")
         await Bun.write(
           path.join(scope, "package.json"),
-          JSON.stringify({ name: "scope-plugin", type: "module", main: ".@lgcode/index.js" }, null, 2),
+          JSON.stringify({ name: "scope-plugin", type: "module", main: "./index.js" }, null, 2),
         )
         await Bun.write(path.join(scope, "index.js"), "export default { server: async () => ({}) }\n")
 
@@ -296,7 +296,7 @@ describe("plugin.loader.shared", () => {
     ),
   )
 
-  it.live("loads npm server plugin from package .@lgcode/server export", () =>
+  it.live("loads npm server plugin from package ./server export", () =>
     withTmp(
       async (dir) => {
         const mod = path.join(dir, "mods", "acme-plugin")
@@ -310,16 +310,16 @@ describe("plugin.loader.shared", () => {
               name: "acme-plugin",
               type: "module",
               exports: {
-                ".": ".@lgcode/index.js",
-                ".@lgcode/server": ".@lgcode/server.js",
-                ".@lgcode/tui": ".@lgcode/tui.js",
+                ".": "./index.js",
+                "./server": "./server.js",
+                "./tui": "./tui.js",
               },
             },
             null,
             2,
           ),
         )
-        await Bun.write(path.join(mod, "index.js"), 'import ".@lgcode/main-throws.js"\nexport default {}\n')
+        await Bun.write(path.join(mod, "index.js"), 'import "./main-throws.js"\nexport default {}\n')
         await Bun.write(path.join(mod, "main-throws.js"), 'throw new Error("main loaded")\n')
         await Bun.write(
           path.join(mod, "server.js"),
@@ -371,15 +371,15 @@ describe("plugin.loader.shared", () => {
               name: "acme-plugin",
               type: "module",
               exports: {
-                ".": ".@lgcode/index.js",
-                ".@lgcode/server": "dist@lgcode/server.js",
+                ".": "./index.js",
+                "./server": "dist/server.js",
               },
             },
             null,
             2,
           ),
         )
-        await Bun.write(path.join(mod, "index.js"), 'import ".@lgcode/main-throws.js"\nexport default {}\n')
+        await Bun.write(path.join(mod, "index.js"), 'import "./main-throws.js"\nexport default {}\n')
         await Bun.write(path.join(mod, "main-throws.js"), 'throw new Error("main loaded")\n')
         await Bun.write(
           path.join(dist, "server.js"),
@@ -429,7 +429,7 @@ describe("plugin.loader.shared", () => {
             {
               name: "acme-plugin",
               type: "module",
-              main: "dist@lgcode/index.js",
+              main: "dist/index.js",
             },
             null,
             2,
@@ -481,7 +481,7 @@ describe("plugin.loader.shared", () => {
           JSON.stringify({
             name: "acme-plugin",
             type: "module",
-            exports: { ".": ".@lgcode/index.js" },
+            exports: { ".": "./index.js" },
           }),
         )
         await Bun.write(
@@ -539,8 +539,8 @@ describe("plugin.loader.shared", () => {
               name: "acme-plugin",
               type: "module",
               exports: {
-                ".": ".@lgcode/index.js",
-                ".@lgcode/server": ".@lgcode/escape@lgcode/server.js",
+                ".": "./index.js",
+                "./server": "./escape/server.js",
               },
             },
             null,
@@ -857,7 +857,7 @@ describe("plugin.loader.shared", () => {
 
         await Bun.write(
           a,
-          `import fs from "fs@lgcode/promises"
+          `import fs from "fs/promises"
 
 export default {
   id: "demo.order.a",
@@ -872,7 +872,7 @@ export default {
         )
         await Bun.write(
           b,
-          `import fs from "fs@lgcode/promises"
+          `import fs from "fs/promises"
 
 export default {
   id: "demo.order.b",
@@ -948,7 +948,7 @@ export default {
             {
               name: "acme-plugin",
               version: "1.0.0",
-              "oc-themes": ["themes@lgcode/one.json", ".@lgcode/themes@lgcode/one.json", "themes@lgcode/two.json"],
+              "oc-themes": ["themes/one.json", "./themes/one.json", "themes/two.json"],
             },
             null,
             2,
@@ -987,7 +987,7 @@ export default {
             {
               name: "acme-plugin",
               version: "1.0.0",
-              "oc-themes": ["themes@lgcode/night.json"],
+              "oc-themes": ["themes/night.json"],
             },
             null,
             2,
@@ -1057,9 +1057,9 @@ export default {
               name: "acme-plugin",
               version: "1.0.0",
               exports: {
-                ".@lgcode/tui": ".@lgcode/tui.js",
+                "./tui": "./tui.js",
               },
-              "oc-themes": ["themes@lgcode/night.json"],
+              "oc-themes": ["themes/night.json"],
             },
             null,
             2,
@@ -1113,7 +1113,7 @@ export default {
         const mod = path.join(dir, "mod")
         await fs.mkdir(mod, { recursive: true })
         const file = path.join(mod, "package.json")
-        await Bun.write(file, JSON.stringify({ name: "acme", "oc-themes": ["..@lgcode/escape.json"] }, null, 2))
+        await Bun.write(file, JSON.stringify({ name: "acme", "oc-themes": ["../escape.json"] }, null, 2))
         return { mod, file }
       },
       (tmp) =>
@@ -1188,7 +1188,7 @@ export default {
         await fs.mkdir(mod, { recursive: true })
         await Bun.write(
           path.join(mod, "package.json"),
-          JSON.stringify({ exports: { ".@lgcode/tui": "..@lgcode/outside.js" } }, null, 2),
+          JSON.stringify({ exports: { "./tui": "../outside.js" } }, null, 2),
         )
         return { spec }
       },

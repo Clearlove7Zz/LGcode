@@ -1,4 +1,4 @@
-@lgcode/* oxlint-disable *@lgcode/
+/* oxlint-disable */
 export interface UpgradeResult {
   newDb: boolean
 }

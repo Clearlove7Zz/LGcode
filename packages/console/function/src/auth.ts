@@ -1,22 +1,22 @@
-import type { KVNamespace } from "@cloudflare@lgcode/workers-types"
+import type { KVNamespace } from "@cloudflare/workers-types"
 import { z } from "zod"
-import { issuer } from "@openauthjs@lgcode/openauth"
-import type { Theme } from "@openauthjs@lgcode/openauth@lgcode/ui@lgcode/theme"
-import { createSubjects } from "@openauthjs@lgcode/openauth@lgcode/subject"
-import { THEME_OPENAUTH } from "@openauthjs@lgcode/openauth@lgcode/ui@lgcode/theme"
-import { GithubProvider } from "@openauthjs@lgcode/openauth@lgcode/provider@lgcode/github"
-import { GoogleOidcProvider } from "@openauthjs@lgcode/openauth@lgcode/provider@lgcode/google"
-import { CloudflareStorage } from "@openauthjs@lgcode/openauth@lgcode/storage@lgcode/cloudflare"
-import { Account } from "@lgcode/console-core@lgcode/account.js"
-import { Workspace } from "@lgcode/console-core@lgcode/workspace.js"
-import { Actor } from "@lgcode/console-core@lgcode/actor.js"
-import { Resource } from "@lgcode/console-resource"
-import { User } from "@lgcode/console-core@lgcode/user.js"
-import { and, Database, eq, isNull, or } from "@lgcode/console-core@lgcode/drizzle@lgcode/index.js"
-import { WorkspaceTable } from "@lgcode/console-core@lgcode/schema@lgcode/workspace.sql.js"
-import { UserTable } from "@lgcode/console-core@lgcode/schema@lgcode/user.sql.js"
-import { AuthTable } from "@lgcode/console-core@lgcode/schema@lgcode/auth.sql.js"
-import { Identifier } from "@lgcode/console-core@lgcode/identifier.js"
+import { issuer } from "@openauthjs/openauth"
+import type { Theme } from "@openauthjs/openauth/ui/theme"
+import { createSubjects } from "@openauthjs/openauth/subject"
+import { THEME_OPENAUTH } from "@openauthjs/openauth/ui/theme"
+import { GithubProvider } from "@openauthjs/openauth/provider/github"
+import { GoogleOidcProvider } from "@openauthjs/openauth/provider/google"
+import { CloudflareStorage } from "@openauthjs/openauth/storage/cloudflare"
+import { Account } from "@opencode@lgcode/console-core/account.js"
+import { Workspace } from "@opencode@lgcode/console-core/workspace.js"
+import { Actor } from "@opencode@lgcode/console-core/actor.js"
+import { Resource } from "@opencode@lgcode/console-resource"
+import { User } from "@opencode@lgcode/console-core/user.js"
+import { and, Database, eq, isNull, or } from "@opencode@lgcode/console-core/drizzle/index.js"
+import { WorkspaceTable } from "@opencode@lgcode/console-core/schema/workspace.sql.js"
+import { UserTable } from "@opencode@lgcode/console-core/schema/user.sql.js"
+import { AuthTable } from "@opencode@lgcode/console-core/schema/auth.sql.js"
+import { Identifier } from "@opencode@lgcode/console-core/identifier.js"
 
 type Env = {
   AuthStorage: KVNamespace
@@ -36,7 +36,7 @@ export const subjects = createSubjects({
 
 const MY_THEME: Theme = {
   ...THEME_OPENAUTH,
-  logo: "https:@lgcode/@lgcode/opencode.ai@lgcode/favicon-v3.svg",
+  logo: "https://opencode.ai/favicon-v3.svg",
 }
 
 export default {
@@ -53,52 +53,52 @@ export default {
           clientID: Resource.GOOGLE_CLIENT_ID.value,
           scopes: ["openid", "email"],
         }),
-        @lgcode/@lgcode/        email: CodeProvider({
-        @lgcode/@lgcode/          async request(req, state, form, error) {
-        @lgcode/@lgcode/            console.log(state)
-        @lgcode/@lgcode/            const params = new URLSearchParams()
-        @lgcode/@lgcode/            if (error) {
-        @lgcode/@lgcode/              params.set("error", error.type)
-        @lgcode/@lgcode/            }
-        @lgcode/@lgcode/            if (state.type === "start") {
-        @lgcode/@lgcode/              return Response.redirect(process.env.AUTH_FRONTEND_URL + "@lgcode/auth@lgcode/email?" + params.toString(), 302)
-        @lgcode/@lgcode/            }
-        @lgcode/@lgcode/
-        @lgcode/@lgcode/            if (state.type === "code") {
-        @lgcode/@lgcode/              return Response.redirect(process.env.AUTH_FRONTEND_URL + "@lgcode/auth@lgcode/code?" + params.toString(), 302)
-        @lgcode/@lgcode/            }
-        @lgcode/@lgcode/
-        @lgcode/@lgcode/            return new Response("ok")
-        @lgcode/@lgcode/          },
-        @lgcode/@lgcode/          async sendCode(claims, code) {
-        @lgcode/@lgcode/            const email = z.string().email().parse(claims.email)
-        @lgcode/@lgcode/            const cmd = new SendEmailCommand({
-        @lgcode/@lgcode/              Destination: {
-        @lgcode/@lgcode/                ToAddresses: [email],
-        @lgcode/@lgcode/              },
-        @lgcode/@lgcode/              FromEmailAddress: `SST <auth@${Resource.Email.sender}>`,
-        @lgcode/@lgcode/              Content: {
-        @lgcode/@lgcode/                Simple: {
-        @lgcode/@lgcode/                  Body: {
-        @lgcode/@lgcode/                    Html: {
-        @lgcode/@lgcode/                      Data: `Your pin code is <strong>${code}<@lgcode/strong>`,
-        @lgcode/@lgcode/                    },
-        @lgcode/@lgcode/                    Text: {
-        @lgcode/@lgcode/                      Data: `Your pin code is ${code}`,
-        @lgcode/@lgcode/                    },
-        @lgcode/@lgcode/                  },
-        @lgcode/@lgcode/                  Subject: {
-        @lgcode/@lgcode/                    Data: "SST Console Pin Code: " + code,
-        @lgcode/@lgcode/                  },
-        @lgcode/@lgcode/                },
-        @lgcode/@lgcode/              },
-        @lgcode/@lgcode/            })
-        @lgcode/@lgcode/            await ses.send(cmd)
-        @lgcode/@lgcode/          },
-        @lgcode/@lgcode/        }),
+        //        email: CodeProvider({
+        //          async request(req, state, form, error) {
+        //            console.log(state)
+        //            const params = new URLSearchParams()
+        //            if (error) {
+        //              params.set("error", error.type)
+        //            }
+        //            if (state.type === "start") {
+        //              return Response.redirect(process.env.AUTH_FRONTEND_URL + "/auth/email?" + params.toString(), 302)
+        //            }
+        //
+        //            if (state.type === "code") {
+        //              return Response.redirect(process.env.AUTH_FRONTEND_URL + "/auth/code?" + params.toString(), 302)
+        //            }
+        //
+        //            return new Response("ok")
+        //          },
+        //          async sendCode(claims, code) {
+        //            const email = z.string().email().parse(claims.email)
+        //            const cmd = new SendEmailCommand({
+        //              Destination: {
+        //                ToAddresses: [email],
+        //              },
+        //              FromEmailAddress: `SST <auth@${Resource.Email.sender}>`,
+        //              Content: {
+        //                Simple: {
+        //                  Body: {
+        //                    Html: {
+        //                      Data: `Your pin code is <strong>${code}</strong>`,
+        //                    },
+        //                    Text: {
+        //                      Data: `Your pin code is ${code}`,
+        //                    },
+        //                  },
+        //                  Subject: {
+        //                    Data: "SST Console Pin Code: " + code,
+        //                  },
+        //                },
+        //              },
+        //            })
+        //            await ses.send(cmd)
+        //          },
+        //        }),
       },
       storage: CloudflareStorage({
-        @lgcode/@lgcode/ @ts-ignore
+        // @ts-ignore
         namespace: env.AuthStorage,
       }),
       subjects,
@@ -109,18 +109,18 @@ export default {
         let email: string | undefined
 
         if (response.provider === "github") {
-          const emails = (await fetch("https:@lgcode/@lgcode/api.github.com@lgcode/user@lgcode/emails", {
+          const emails = (await fetch("https://api.github.com/user/emails", {
             headers: {
               Authorization: `Bearer ${response.tokenset.access}`,
               "User-Agent": "opencode",
-              Accept: "application@lgcode/vnd.github+json",
+              Accept: "application/vnd.github+json",
             },
           }).then((x) => x.json())) as any
-          const user = (await fetch("https:@lgcode/@lgcode/api.github.com@lgcode/user", {
+          const user = (await fetch("https://api.github.com/user", {
             headers: {
               Authorization: `Bearer ${response.tokenset.access}`,
               "User-Agent": "opencode",
-              Accept: "application@lgcode/vnd.github+json",
+              Accept: "application/vnd.github+json",
             },
           }).then((x) => x.json())) as any
           subject = user.id.toString()
@@ -142,7 +142,7 @@ export default {
           throw new Error("Invalid email")
         }
 
-        @lgcode/@lgcode/ Get account
+        // Get account
         let newAccount = false
         const accountID = await (async () => {
           const matches = await Database.use(async (tx) =>
@@ -163,7 +163,7 @@ export default {
           const idByEmail = matches.find((x) => x.provider === "email")?.accountID
           if (idByProvider && idByEmail) return idByProvider
 
-          @lgcode/@lgcode/ create account if not found
+          // create account if not found
           let accountID = idByProvider ?? idByEmail
           if (!accountID) {
             console.log("creating account for", email)
@@ -198,7 +198,7 @@ export default {
           return accountID
         })()
 
-        @lgcode/@lgcode/ Get workspace
+        // Get workspace
         await Actor.provide("account", { accountID, email }, async () => {
           await User.joinInvitedWorkspaces()
           const workspaces = await Database.use((tx) =>

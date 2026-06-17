@@ -1,6 +1,6 @@
-import type { APIEvent } from "@solidjs@lgcode/start@lgcode/server"
-import { handler } from "~@lgcode/routes@lgcode/zen@lgcode/util@lgcode/handler"
-import { parseOpenAiVariant } from "~@lgcode/routes@lgcode/zen@lgcode/util@lgcode/variant"
+import type { APIEvent } from "@solidjs/start/server"
+import { handler } from "~/routes/zen/util/handler"
+import { parseOpenAiVariant } from "~/routes/zen/util/variant"
 
 export function POST(input: APIEvent) {
   return handler(input, {

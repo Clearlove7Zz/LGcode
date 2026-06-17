@@ -3,16 +3,16 @@ import os from "os"
 import { randomUUID } from "crypto"
 import { Context, Effect, Function, Layer, Option, Schedule, Schema } from "effect"
 import type { FileSystem, Scope } from "effect"
-import type { PlatformError } from "effect@lgcode/PlatformError"
-import { FSUtil } from "..@lgcode/fs-util"
-import { Global } from "..@lgcode/global"
-import { LayerNode } from "..@lgcode/effect@lgcode/layer-node"
-import { Hash } from ".@lgcode/hash"
+import type { PlatformError } from "effect/PlatformError"
+import { FSUtil } from "../fs-util"
+import { Global } from "../global"
+import { LayerNode } from "../effect/layer-node"
+import { Hash } from "./hash"
 
 export namespace EffectFlock {
-  @lgcode/@lgcode/ ---------------------------------------------------------------------------
-  @lgcode/@lgcode/ Errors
-  @lgcode/@lgcode/ ---------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // Errors
+  // ---------------------------------------------------------------------------
 
   export class LockTimeoutError extends Schema.TaggedErrorClass<LockTimeoutError>()("LockTimeoutError", {
     key: Schema.String,
@@ -31,20 +31,20 @@ export namespace EffectFlock {
     }
   }
 
-  @lgcode/** Internal: signals "lock is held, retry later". Never leaks to callers. *@lgcode/
+  /** Internal: signals "lock is held, retry later". Never leaks to callers. */
   class NotAcquired extends Schema.TaggedErrorClass<NotAcquired>()("NotAcquired", {}) {}
 
   export type LockError = LockTimeoutError | LockCompromisedError
 
-  @lgcode/@lgcode/ ---------------------------------------------------------------------------
-  @lgcode/@lgcode/ Timing (baked in — no caller ever overrides these)
-  @lgcode/@lgcode/ ---------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // Timing (baked in — no caller ever overrides these)
+  // ---------------------------------------------------------------------------
 
   const STALE_MS = 60_000
   const TIMEOUT_MS = 5 * 60_000
   const BASE_DELAY_MS = 100
   const MAX_DELAY_MS = 2_000
-  const HEARTBEAT_MS = Math.max(100, Math.floor(STALE_MS @lgcode/ 3))
+  const HEARTBEAT_MS = Math.max(100, Math.floor(STALE_MS / 3))
 
   const retrySchedule = Schedule.exponential(BASE_DELAY_MS, 1.7).pipe(
     Schedule.either(Schedule.spaced(MAX_DELAY_MS)),
@@ -52,9 +52,9 @@ export namespace EffectFlock {
     Schedule.while((meta) => meta.elapsed < TIMEOUT_MS),
   )
 
-  @lgcode/@lgcode/ ---------------------------------------------------------------------------
-  @lgcode/@lgcode/ Lock metadata schema
-  @lgcode/@lgcode/ ---------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // Lock metadata schema
+  // ---------------------------------------------------------------------------
 
   const LockMetaJson = Schema.fromJsonString(
     Schema.Struct({
@@ -68,9 +68,9 @@ export namespace EffectFlock {
   const decodeMeta = Schema.decodeUnknownSync(LockMetaJson)
   const encodeMeta = Schema.encodeSync(LockMetaJson)
 
-  @lgcode/@lgcode/ ---------------------------------------------------------------------------
-  @lgcode/@lgcode/ Service
-  @lgcode/@lgcode/ ---------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // Service
+  // ---------------------------------------------------------------------------
 
   export interface Interface {
     readonly acquire: (key: string, dir?: string) => Effect.Effect<void, LockError, Scope.Scope>
@@ -82,9 +82,9 @@ export namespace EffectFlock {
 
   export class Service extends Context.Service<Service, Interface>()("EffectFlock") {}
 
-  @lgcode/@lgcode/ ---------------------------------------------------------------------------
-  @lgcode/@lgcode/ Layer
-  @lgcode/@lgcode/ ---------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // Layer
+  // ---------------------------------------------------------------------------
 
   function wall() {
     return performance.timeOrigin + performance.now()
@@ -103,7 +103,7 @@ export namespace EffectFlock {
       const hostname = os.hostname()
       const ensuredDirs = new Set<string>()
 
-      @lgcode/@lgcode/ -- helpers (close over fs) --
+      // -- helpers (close over fs) --
 
       const safeStat = (file: string) =>
         fs.stat(file).pipe(
@@ -113,7 +113,7 @@ export namespace EffectFlock {
 
       const forceRemove = (target: string) => fs.remove(target, { recursive: true }).pipe(Effect.ignore)
 
-      @lgcode/** Atomic mkdir — returns true if created, false if already exists, dies on other errors. *@lgcode/
+      /** Atomic mkdir — returns true if created, false if already exists, dies on other errors. */
       const atomicMkdir = (dir: string) =>
         fs.makeDirectory(dir, { mode: 0o700 }).pipe(
           Effect.as(true),
@@ -124,7 +124,7 @@ export namespace EffectFlock {
           Effect.orDie,
         )
 
-      @lgcode/** Write with exclusive create — compromised error if file already exists. *@lgcode/
+      /** Write with exclusive create — compromised error if file already exists. */
       const exclusiveWrite = (filePath: string, content: string, lockDir: string, detail: string) =>
         fs.writeFileString(filePath, content, { flag: "wx" }).pipe(
           Effect.catch(() =>
@@ -162,7 +162,7 @@ export namespace EffectFlock {
         return now - mtimeMs(dir) > STALE_MS
       })
 
-      @lgcode/@lgcode/ -- single lock attempt --
+      // -- single lock attempt --
 
       type Handle = { token: string; metaPath: string; heartbeatPath: string; lockDir: string }
 
@@ -172,13 +172,13 @@ export namespace EffectFlock {
           const metaPath = path.join(lockDir, "meta.json")
           const heartbeatPath = path.join(lockDir, "heartbeat")
 
-          @lgcode/@lgcode/ Atomic mkdir — the POSIX lock primitive
+          // Atomic mkdir — the POSIX lock primitive
           const created = yield* atomicMkdir(lockDir)
 
           if (!created) {
             if (!(yield* isStale(lockDir, heartbeatPath, metaPath))) return yield* new NotAcquired()
 
-            @lgcode/@lgcode/ Stale — race for breaker ownership
+            // Stale — race for breaker ownership
             const breakerPath = lockDir + ".breaker"
 
             const claimed = yield* fs.makeDirectory(breakerPath, { mode: 0o700 }).pipe(
@@ -193,7 +193,7 @@ export namespace EffectFlock {
 
             if (!claimed) return yield* new NotAcquired()
 
-            @lgcode/@lgcode/ We own the breaker — double-check staleness, nuke, recreate
+            // We own the breaker — double-check staleness, nuke, recreate
             const recreated = yield* Effect.gen(function* () {
               if (!(yield* isStale(lockDir, heartbeatPath, metaPath))) return false
               yield* forceRemove(lockDir)
@@ -203,7 +203,7 @@ export namespace EffectFlock {
             if (!recreated) return yield* new NotAcquired()
           }
 
-          @lgcode/@lgcode/ We own the lock dir — write heartbeat + meta with exclusive create
+          // We own the lock dir — write heartbeat + meta with exclusive create
           yield* exclusiveWrite(heartbeatPath, "", lockDir, "heartbeat already existed")
 
           const metaJson = encodeMeta({ token, pid: process.pid, hostname, createdAt: new Date().toISOString() })
@@ -216,7 +216,7 @@ export namespace EffectFlock {
           }),
         )
 
-      @lgcode/@lgcode/ -- retry wrapper (preserves Handle type) --
+      // -- retry wrapper (preserves Handle type) --
 
       const acquireHandle = (lockfile: string, key: string): Effect.Effect<Handle, LockError> =>
         tryAcquireLockDir(lockfile, key).pipe(
@@ -227,7 +227,7 @@ export namespace EffectFlock {
           Effect.catchTag("NotAcquired", () => Effect.fail(new LockTimeoutError({ key }))),
         )
 
-      @lgcode/@lgcode/ -- release --
+      // -- release --
 
       const release = (handle: Handle) =>
         Effect.gen(function* () {
@@ -248,7 +248,7 @@ export namespace EffectFlock {
           yield* forceRemove(handle.lockDir)
         })
 
-      @lgcode/@lgcode/ -- build service --
+      // -- build service --
 
       const acquire = Effect.fn("EffectFlock.acquire")(function* (key: string, dir?: string) {
         const lockDir = dir ?? lockRoot
@@ -256,10 +256,10 @@ export namespace EffectFlock {
 
         const lockfile = path.join(lockDir, Hash.fast(key) + ".lock")
 
-        @lgcode/@lgcode/ acquireRelease: acquire is uninterruptible, release is guaranteed
+        // acquireRelease: acquire is uninterruptible, release is guaranteed
         const handle = yield* Effect.acquireRelease(acquireHandle(lockfile, key), (handle) => release(handle))
 
-        @lgcode/@lgcode/ Heartbeat fiber — scoped, so it's interrupted before release runs
+        // Heartbeat fiber — scoped, so it's interrupted before release runs
         yield* fs
           .utimes(handle.heartbeatPath, new Date(), new Date())
           .pipe(Effect.ignore, Effect.repeat(Schedule.spaced(HEARTBEAT_MS)), Effect.forkScoped)

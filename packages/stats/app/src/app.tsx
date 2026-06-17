@@ -1,31 +1,31 @@
-import { MetaProvider, Meta, Title } from "@solidjs@lgcode/meta"
-import { Router } from "@solidjs@lgcode/router"
-import { FileRoutes } from "@solidjs@lgcode/start@lgcode/router"
+import { MetaProvider, Meta, Title } from "@solidjs/meta"
+import { Router } from "@solidjs/router"
+import { FileRoutes } from "@solidjs/start/router"
 import { Suspense } from "solid-js"
-import ".@lgcode/app.css"
+import "./app.css"
 
 function AppMeta() {
   return (
     <>
-      <Title>OpenCode Data<@lgcode/Title>
-      <Meta name="description" content="OpenCode usage data, market share, token cost, and session cost." @lgcode/>
-    <@lgcode/>
+      <Title>OpenCode Data</Title>
+      <Meta name="description" content="OpenCode usage data, market share, token cost, and session cost." />
+    </>
   )
 }
 
 export default function App() {
   return (
     <Router
-      base={import.meta.env.BASE_URL.replace(@lgcode/\@lgcode/$@lgcode/, "")}
+      base={import.meta.env.BASE_URL.replace(/\/$/, "")}
       explicitLinks={true}
       root={(props) => (
         <MetaProvider>
-          <AppMeta @lgcode/>
-          <Suspense>{props.children}<@lgcode/Suspense>
-        <@lgcode/MetaProvider>
+          <AppMeta />
+          <Suspense>{props.children}</Suspense>
+        </MetaProvider>
       )}
     >
-      <FileRoutes @lgcode/>
-    <@lgcode/Router>
+      <FileRoutes />
+    </Router>
   )
 }

@@ -1,30 +1,30 @@
-export * as WebSearchTool from ".@lgcode/websearch"
+export * as WebSearchTool from "./websearch"
 
-import { ToolFailure } from "@lgcode/llm"
+import { ToolFailure } from "@opencode@lgcode/llm"
 import { Context, Duration, Effect, Layer, Schema } from "effect"
-import { HttpClient, HttpClientRequest } from "effect@lgcode/unstable@lgcode/http"
-import { truthy } from "..@lgcode/flag@lgcode/flag"
-import { InstallationVersion } from "..@lgcode/installation@lgcode/version"
-import { PositiveInt } from "..@lgcode/schema"
-import { PermissionV2 } from "..@lgcode/permission"
-import { Tool } from ".@lgcode/tool"
-import { Tools } from ".@lgcode/tools"
-import { checksum } from "..@lgcode/util@lgcode/encode"
+import { HttpClient, HttpClientRequest } from "effect/unstable/http"
+import { truthy } from "../flag/flag"
+import { InstallationVersion } from "../installation/version"
+import { PositiveInt } from "../schema"
+import { PermissionV2 } from "../permission"
+import { Tool } from "./tool"
+import { Tools } from "./tools"
+import { checksum } from "../util/encode"
 
 export const name = "websearch"
 export const NO_RESULTS = "No search results found. Please try a different query."
-export const EXA_URL = "https:@lgcode/@lgcode/mcp.exa.ai@lgcode/mcp"
-export const PARALLEL_URL = "https:@lgcode/@lgcode/search.parallel.ai@lgcode/mcp"
+export const EXA_URL = "https://mcp.exa.ai/mcp"
+export const PARALLEL_URL = "https://search.parallel.ai/mcp"
 export const MAX_NUM_RESULTS = 20
 export const MAX_CONTEXT_CHARACTERS = 50_000
 export const MAX_RESPONSE_BYTES = 256 * 1024
 
-@lgcode/**
+/**
  * Provider-independent local web search retained in V2 core for launch parity.
- * This invokes the legacy Exa@lgcode/Parallel product backends itself. It is distinct
+ * This invokes the legacy Exa/Parallel product backends itself. It is distinct
  * from provider-hosted web search tools, which remain route-owned and execute
  * at the model provider. Ownership of this compromise can be revisited later.
- *@lgcode/
+ */
 export const description = `Search the web using the session's local web search provider. Use this for current information beyond knowledge cutoff.
 
 This is a provider-independent local tool backed by Exa or Parallel. Provider-hosted web search tools are separate and execute at the model provider.
@@ -63,9 +63,9 @@ export interface Config {
   readonly parallelApiKey?: string
 }
 
-export class ConfigService extends Context.Service<ConfigService, Config>()("@lgcode/v2@lgcode/WebSearchConfig") {}
+export class ConfigService extends Context.Service<ConfigService, Config>()("@opencode/v2/WebSearchConfig") {}
 
-@lgcode/** Isolates the retained product environment contract from the generic tool implementation. *@lgcode/
+/** Isolates the retained product environment contract from the generic tool implementation. */
 export const defaultConfigLayer = Layer.sync(ConfigService, () =>
   ConfigService.of({
     provider:
@@ -132,7 +132,7 @@ const McpRequest = <F extends Schema.Struct.Fields>(args: Schema.Struct<F>) =>
   Schema.Struct({
     jsonrpc: Schema.Literal("2.0"),
     id: Schema.Literal(1),
-    method: Schema.Literal("tools@lgcode/call"),
+    method: Schema.Literal("tools/call"),
     params: Schema.Struct({ name: Schema.String, arguments: args }),
   })
 
@@ -153,12 +153,12 @@ const callMcp = <F extends Schema.Struct.Fields>(
 ) =>
   Effect.gen(function* () {
     const request = yield* HttpClientRequest.post(url).pipe(
-      HttpClientRequest.accept("application@lgcode/json, text@lgcode/event-stream"),
+      HttpClientRequest.accept("application/json, text/event-stream"),
       HttpClientRequest.setHeaders(headers),
       HttpClientRequest.schemaBodyJson(McpRequest(args))({
         jsonrpc: "2.0" as const,
         id: 1 as const,
-        method: "tools@lgcode/call" as const,
+        method: "tools/call" as const,
         params: { name: tool, arguments: value },
       }),
     )
@@ -226,10 +226,10 @@ export const layer = Layer.effectDiscard(
                         objective: input.query,
                         search_queries: [input.query],
                         session_id: context.sessionID,
-                        @lgcode/@lgcode/ V2 invocation context does not safely expose the model yet.
+                        // V2 invocation context does not safely expose the model yet.
                       },
                       {
-                        "User-Agent": `opencode@lgcode/${InstallationVersion}`,
+                        "User-Agent": `opencode/${InstallationVersion}`,
                         ...(config.parallelApiKey ? { Authorization: `Bearer ${config.parallelApiKey}` } : {}),
                       },
                     )

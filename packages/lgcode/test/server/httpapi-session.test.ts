@@ -1,41 +1,41 @@
-import { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
+import { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
 import { afterEach, describe, expect } from "bun:test"
-import { NodeHttpServer, NodeServices } from "@effect@lgcode/platform-node"
-import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
-import { mkdir } from "node:fs@lgcode/promises"
+import { NodeHttpServer, NodeServices } from "@effect/platform-node"
+import { SessionV1 } from "@opencode@lgcode/core/v1/session"
+import { mkdir } from "node:fs/promises"
 import path from "node:path"
 import { Cause, Config, Effect, Exit, Layer } from "effect"
-import { HttpClient, HttpClientRequest, HttpClientResponse, HttpRouter, HttpServer } from "effect@lgcode/unstable@lgcode/http"
-import { layerWebSocketConstructorGlobal } from "effect@lgcode/unstable@lgcode/socket@lgcode/Socket"
-import { CrossSpawnSpawner } from "@lgcode/core@lgcode/cross-spawn-spawner"
-import { Flag } from "@lgcode/core@lgcode/flag@lgcode/flag"
-import { Ripgrep } from "@lgcode/core@lgcode/ripgrep"
-import { registerAdapter } from "..@lgcode/..@lgcode/src@lgcode/control-plane@lgcode/adapters"
-import type { WorkspaceAdapter } from "..@lgcode/..@lgcode/src@lgcode/control-plane@lgcode/types"
-import { Workspace } from "..@lgcode/..@lgcode/src@lgcode/control-plane@lgcode/workspace"
+import { HttpClient, HttpClientRequest, HttpClientResponse, HttpRouter, HttpServer } from "effect/unstable/http"
+import { layerWebSocketConstructorGlobal } from "effect/unstable/socket/Socket"
+import { CrossSpawnSpawner } from "@opencode@lgcode/core/cross-spawn-spawner"
+import { Flag } from "@opencode@lgcode/core/flag/flag"
+import { Ripgrep } from "@opencode@lgcode/core/ripgrep"
+import { registerAdapter } from "../../src/control-plane/adapters"
+import type { WorkspaceAdapter } from "../../src/control-plane/types"
+import { Workspace } from "../../src/control-plane/workspace"
 
-import { InstanceBootstrap } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/bootstrap"
-import { InstanceBootstrap as InstanceBootstrapService } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/bootstrap-service"
-import { InstanceStore } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/instance-store"
-import { Project } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/project"
-import { HttpApiApp } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/server"
-import * as HttpSessionError from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/handlers@lgcode/session-errors"
-import { SessionPaths } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/session"
-import { Session } from "@@lgcode/session@lgcode/session"
-import { MessageID, PartID, SessionID, type SessionID as SessionIDType } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/schema"
-import { MessageV2 } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/message-v2"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { SessionInputTable, SessionMessageTable, SessionTable } from "@lgcode/core@lgcode/session@lgcode/sql"
-import { SessionMessage } from "@lgcode/core@lgcode/session@lgcode/message"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import * as DateTime from "effect@lgcode/DateTime"
+import { InstanceBootstrap } from "../../src/project/bootstrap"
+import { InstanceBootstrap as InstanceBootstrapService } from "../../src/project/bootstrap-service"
+import { InstanceStore } from "../../src/project/instance-store"
+import { Project } from "../../src/project/project"
+import { HttpApiApp } from "../../src/server/routes/instance/httpapi/server"
+import * as HttpSessionError from "../../src/server/routes/instance/httpapi/handlers/session-errors"
+import { SessionPaths } from "../../src/server/routes/instance/httpapi/groups/session"
+import { Session } from "@/session/session"
+import { MessageID, PartID, SessionID, type SessionID as SessionIDType } from "../../src/session/schema"
+import { MessageV2 } from "../../src/session/message-v2"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { SessionInputTable, SessionMessageTable, SessionTable } from "@opencode@lgcode/core/session/sql"
+import { SessionMessage } from "@opencode@lgcode/core/session/message"
+import { ModelV2 } from "@opencode@lgcode/core/model"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import * as DateTime from "effect/DateTime"
 import { eq } from "drizzle-orm"
-import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
-import { disposeAllInstances, provideInstanceEffect, TestInstance, tmpdirScoped } from "..@lgcode/fixture@lgcode/fixture"
-import { TestLLMServer } from "..@lgcode/lib@lgcode/llm-server"
-import { testProviderConfig } from "..@lgcode/lib@lgcode/test-provider"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+import { resetDatabase } from "../fixture/db"
+import { disposeAllInstances, provideInstanceEffect, TestInstance, tmpdirScoped } from "../fixture/fixture"
+import { TestLLMServer } from "../lib/llm-server"
+import { testProviderConfig } from "../lib/test-provider"
+import { testEffect } from "../lib/effect"
 
 const originalWorkspaces = Flag.OPENCODE_EXPERIMENTAL_WORKSPACES
 const workspaceLayer = Workspace.defaultLayer.pipe(
@@ -217,7 +217,7 @@ const clearSessionPath = (sessionID: SessionIDType) =>
   })
 
 function request(path: string, init?: RequestInit) {
-  const url = new URL(path, "http:@lgcode/@lgcode/localhost")
+  const url = new URL(path, "http://localhost")
   return HttpClientRequest.fromWeb(new Request(url, init)).pipe(
     HttpClientRequest.setUrl(url.pathname),
     HttpClient.execute,
@@ -296,7 +296,7 @@ describe("session HttpApi", () => {
         expect(yield* responseJson(remove)).toEqual(missingSessionBody)
 
         const prompt = yield* request(pathFor(SessionPaths.prompt, { sessionID: missingSession }), {
-          headers: { ...headers, "content-type": "application@lgcode/json" },
+          headers: { ...headers, "content-type": "application/json" },
           method: "POST",
           body: JSON.stringify({ agent: "build", noReply: true, parts: [{ type: "text", text: "hello" }] }),
         })
@@ -389,7 +389,7 @@ describe("session HttpApi", () => {
         yield* insertLegacyAssistantMessage(parent.id)
 
         expect(
-          (yield* requestJson<{ data: SessionMessage.Message[] }>(`@lgcode/api@lgcode/session@lgcode/${parent.id}@lgcode/message`, {
+          (yield* requestJson<{ data: SessionMessage.Message[] }>(`/api/session/${parent.id}/message`, {
             headers,
           })).data,
         ).toMatchObject([{ type: "assistant" }])
@@ -413,7 +413,7 @@ describe("session HttpApi", () => {
         `${pathFor(SessionPaths.prompt, { sessionID: session.id })}?directory=${encodeURIComponent(requestDirectory)}`,
         {
           method: "POST",
-          headers: { "content-type": "application@lgcode/json" },
+          headers: { "content-type": "application/json" },
           body: JSON.stringify({
             agent: "build",
             model: { providerID: "test", modelID: "test-model" },
@@ -447,7 +447,7 @@ describe("session HttpApi", () => {
         const secondMessage = yield* insertLegacyAssistantMessage(session.id, 2, 1)
 
         const sessionPage = yield* request(
-          `@lgcode/api@lgcode/session?${new URLSearchParams({
+          `/api/session?${new URLSearchParams({
             limit: "1",
             order: "asc",
             directory: test.directory,
@@ -465,24 +465,24 @@ describe("session HttpApi", () => {
           anchor: { id: session.id, direction: "next" },
         })
 
-        const sessionNextPage = yield* request(`@lgcode/api@lgcode/session?cursor=${sessionCursor}`, { headers })
+        const sessionNextPage = yield* request(`/api/session?cursor=${sessionCursor}`, { headers })
         expect(sessionNextPage.status).toBe(200)
 
-        const invalidSessionCursor = yield* request(`@lgcode/api@lgcode/session?cursor=invalid`, { headers })
+        const invalidSessionCursor = yield* request(`/api/session?cursor=invalid`, { headers })
         expect(invalidSessionCursor.status).toBe(400)
         expect(yield* responseJson(invalidSessionCursor)).toMatchObject({
           _tag: "InvalidCursorError",
           message: "Invalid cursor",
         })
 
-        const invalidWorkspace = yield* request(`@lgcode/api@lgcode/session?workspace=bad`, { headers })
+        const invalidWorkspace = yield* request(`/api/session?workspace=bad`, { headers })
         expect(invalidWorkspace.status).toBe(400)
         expect(yield* responseJson(invalidWorkspace)).toMatchObject({
           _tag: "InvalidRequestError",
           kind: "Query",
         })
 
-        const messagePage = yield* request(`@lgcode/api@lgcode/session@lgcode/${session.id}@lgcode/message?limit=1`, { headers })
+        const messagePage = yield* request(`/api/session/${session.id}/message?limit=1`, { headers })
         const messageBody = yield* json<{ data: SessionMessage.Message[]; cursor: { next?: string } }>(messagePage)
         const messageCursor = messageBody.cursor.next
         expect(messageCursor).toBeTruthy()
@@ -493,7 +493,7 @@ describe("session HttpApi", () => {
           direction: "next",
         })
 
-        const nextMessagePage = yield* request(`@lgcode/api@lgcode/session@lgcode/${session.id}@lgcode/message?cursor=${messageCursor}`, {
+        const nextMessagePage = yield* request(`/api/session/${session.id}/message?cursor=${messageCursor}`, {
           headers,
         })
         expect(
@@ -503,7 +503,7 @@ describe("session HttpApi", () => {
         const legacyMessageCursor = Buffer.from(
           JSON.stringify({ id: secondMessage.id, time: 1, order: "desc", direction: "next" }),
         ).toString("base64url")
-        const legacyMessagePage = yield* request(`@lgcode/api@lgcode/session@lgcode/${session.id}@lgcode/message?cursor=${legacyMessageCursor}`, {
+        const legacyMessagePage = yield* request(`/api/session/${session.id}/message?cursor=${legacyMessageCursor}`, {
           headers,
         })
         expect(
@@ -511,7 +511,7 @@ describe("session HttpApi", () => {
         ).toEqual([firstMessage.id])
 
         const messageCursorWithOrder = yield* request(
-          `@lgcode/api@lgcode/session@lgcode/${session.id}@lgcode/message?cursor=${messageCursor}&order=asc`,
+          `/api/session/${session.id}/message?cursor=${messageCursor}&order=asc`,
           { headers },
         )
         expect(messageCursorWithOrder.status).toBe(400)
@@ -520,7 +520,7 @@ describe("session HttpApi", () => {
           message: "Cursor cannot be combined with order",
         })
 
-        const invalidMessageCursor = yield* request(`@lgcode/api@lgcode/session@lgcode/${session.id}@lgcode/message?cursor=invalid`, { headers })
+        const invalidMessageCursor = yield* request(`/api/session/${session.id}/message?cursor=invalid`, { headers })
         expect(invalidMessageCursor.status).toBe(400)
         expect(yield* responseJson(invalidMessageCursor)).toMatchObject({
           _tag: "InvalidCursorError",
@@ -543,25 +543,25 @@ describe("session HttpApi", () => {
           message: `Session not found: ${missing}`,
         }
 
-        const messages = yield* request(`@lgcode/api@lgcode/session@lgcode/${missing}@lgcode/message`, { headers })
+        const messages = yield* request(`/api/session/${missing}/message`, { headers })
         expect(messages.status).toBe(404)
         expect(yield* responseJson(messages)).toEqual(expected)
 
-        const context = yield* request(`@lgcode/api@lgcode/session@lgcode/${missing}@lgcode/context`, { headers })
+        const context = yield* request(`/api/session/${missing}/context`, { headers })
         expect(context.status).toBe(404)
         expect(yield* responseJson(context)).toEqual(expected)
 
-        const compact = yield* request(`@lgcode/api@lgcode/session@lgcode/${missing}@lgcode/compact`, { method: "POST", headers })
+        const compact = yield* request(`/api/session/${missing}/compact`, { method: "POST", headers })
         expect(compact.status).toBe(404)
         expect(yield* responseJson(compact)).toEqual(expected)
 
-        const wait = yield* request(`@lgcode/api@lgcode/session@lgcode/${missing}@lgcode/wait`, { method: "POST", headers })
+        const wait = yield* request(`/api/session/${missing}/wait`, { method: "POST", headers })
         expect(wait.status).toBe(404)
         expect(yield* responseJson(wait)).toEqual(expected)
 
-        const prompt = yield* request(`@lgcode/api@lgcode/session@lgcode/${missing}@lgcode/prompt`, {
+        const prompt = yield* request(`/api/session/${missing}/prompt`, {
           method: "POST",
-          headers: { ...headers, "content-type": "application@lgcode/json" },
+          headers: { ...headers, "content-type": "application/json" },
           body: JSON.stringify({ prompt: { text: "hello" } }),
         })
         expect(prompt.status).toBe(404)
@@ -579,9 +579,9 @@ describe("session HttpApi", () => {
         const session = yield* createSession({ title: "v2 prompt recording" })
 
         const recordPrompt = () =>
-          request(`@lgcode/api@lgcode/session@lgcode/${session.id}@lgcode/prompt`, {
+          request(`/api/session/${session.id}/prompt`, {
             method: "POST",
-            headers: { ...headers, "content-type": "application@lgcode/json" },
+            headers: { ...headers, "content-type": "application/json" },
             body: JSON.stringify({ id: "msg_http_prompt", prompt: { text: "hello" } }),
           })
         const first = yield* recordPrompt()
@@ -596,7 +596,7 @@ describe("session HttpApi", () => {
           data: { id: "msg_http_prompt", prompt: { text: "hello" }, delivery: "steer" },
         })
 
-        const messages = yield* requestJson<{ data: PromptBody[] }>(`@lgcode/api@lgcode/session@lgcode/${session.id}@lgcode/message`, {
+        const messages = yield* requestJson<{ data: PromptBody[] }>(`/api/session/${session.id}/message`, {
           headers,
         })
         expect(messages.data).toHaveLength(0)
@@ -614,9 +614,9 @@ describe("session HttpApi", () => {
           delivery: "steer",
           promoted_seq: null,
         })
-        const conflict = yield* request(`@lgcode/api@lgcode/session@lgcode/${session.id}@lgcode/prompt`, {
+        const conflict = yield* request(`/api/session/${session.id}/prompt`, {
           method: "POST",
-          headers: { ...headers, "content-type": "application@lgcode/json" },
+          headers: { ...headers, "content-type": "application/json" },
           body: JSON.stringify({ id: "msg_http_prompt", prompt: { text: "goodbye" } }),
         })
         expect(conflict.status).toBe(409)
@@ -637,7 +637,7 @@ describe("session HttpApi", () => {
         const headers = { "x-opencode-directory": test.directory }
         const session = yield* createSession({ title: "v2 unavailable" })
 
-        const compact = yield* request(`@lgcode/api@lgcode/session@lgcode/${session.id}@lgcode/compact`, { method: "POST", headers })
+        const compact = yield* request(`/api/session/${session.id}/compact`, { method: "POST", headers })
         expect(compact.status).toBe(503)
         expect(yield* responseJson(compact)).toEqual({
           _tag: "ServiceUnavailableError",
@@ -645,7 +645,7 @@ describe("session HttpApi", () => {
           service: "session.compact",
         })
 
-        const wait = yield* request(`@lgcode/api@lgcode/session@lgcode/${session.id}@lgcode/wait`, { method: "POST", headers })
+        const wait = yield* request(`/api/session/${session.id}/wait`, { method: "POST", headers })
         expect(wait.status).toBe(503)
         expect(yield* responseJson(wait)).toEqual({
           _tag: "ServiceUnavailableError",
@@ -664,7 +664,7 @@ describe("session HttpApi", () => {
         const session = yield* createSession({ title: "v2 corrupt message" })
         yield* insertCorruptV2Message(session.id)
 
-        const messages = yield* request(`@lgcode/api@lgcode/session@lgcode/${session.id}@lgcode/message`, {
+        const messages = yield* request(`/api/session/${session.id}/message`, {
           headers: { "x-opencode-directory": test.directory },
         })
         const messagesBody = yield* responseJson(messages)
@@ -673,10 +673,10 @@ describe("session HttpApi", () => {
           _tag: "UnknownError",
           message: "Unexpected server error. Check server logs for details.",
         })
-        expect((messagesBody as { ref?: unknown }).ref).toMatch(@lgcode/^err_[0-9a-f-]{8}$@lgcode/)
+        expect((messagesBody as { ref?: unknown }).ref).toMatch(/^err_[0-9a-f-]{8}$/)
         expect(JSON.stringify(messagesBody)).not.toContain("assistant")
 
-        const context = yield* request(`@lgcode/api@lgcode/session@lgcode/${session.id}@lgcode/context`, {
+        const context = yield* request(`/api/session/${session.id}/context`, {
           headers: { "x-opencode-directory": test.directory },
         })
         const contextBody = yield* responseJson(context)
@@ -685,7 +685,7 @@ describe("session HttpApi", () => {
           _tag: "UnknownError",
           message: "Unexpected server error. Check server logs for details.",
         })
-        expect((contextBody as { ref?: unknown }).ref).toMatch(@lgcode/^err_[0-9a-f-]{8}$@lgcode/)
+        expect((contextBody as { ref?: unknown }).ref).toMatch(/^err_[0-9a-f-]{8}$/)
         expect(JSON.stringify(contextBody)).not.toContain("assistant")
       }),
     { git: true, config: { formatter: false, lsp: false } },
@@ -714,7 +714,7 @@ describe("session HttpApi", () => {
     () =>
       Effect.gen(function* () {
         const test = yield* TestInstance
-        const headers = { "x-opencode-directory": test.directory, "content-type": "application@lgcode/json" }
+        const headers = { "x-opencode-directory": test.directory, "content-type": "application/json" }
 
         const createdEmpty = yield* requestJson<Session.Info>(SessionPaths.create, {
           method: "POST",
@@ -800,7 +800,7 @@ describe("session HttpApi", () => {
 
         const created = yield* requestJson<Session.Info>(`${SessionPaths.create}?workspace=${workspace.id}`, {
           method: "POST",
-          headers: { "x-opencode-directory": test.directory, "content-type": "application@lgcode/json" },
+          headers: { "x-opencode-directory": test.directory, "content-type": "application/json" },
           body: JSON.stringify({ title: "workspace session" }),
         })
         const messages = yield* request(
@@ -822,7 +822,7 @@ describe("session HttpApi", () => {
     () =>
       Effect.gen(function* () {
         const test = yield* TestInstance
-        const headers = { "x-opencode-directory": test.directory, "content-type": "application@lgcode/json" }
+        const headers = { "x-opencode-directory": test.directory, "content-type": "application/json" }
         const session = yield* createSession({ title: "archived" })
         const body = JSON.stringify({ time: { archived: -1 } })
 
@@ -859,7 +859,7 @@ describe("session HttpApi", () => {
 
         const query = new URLSearchParams({
           scope: "project",
-          path: "packages@lgcode/opencode@lgcode/src",
+          path: "packages/opencode/src",
           directory: currentDir,
         })
         const headers = { "x-opencode-directory": test.directory }
@@ -898,7 +898,7 @@ describe("session HttpApi", () => {
     () =>
       Effect.gen(function* () {
         const test = yield* TestInstance
-        const headers = { "x-opencode-directory": test.directory, "content-type": "application@lgcode/json" }
+        const headers = { "x-opencode-directory": test.directory, "content-type": "application/json" }
         const session = yield* createSession({ title: "messages" })
         const first = yield* createTextMessage(session.id, "first")
         const second = yield* createTextMessage(session.id, "second")
@@ -943,7 +943,7 @@ describe("session HttpApi", () => {
     () =>
       Effect.gen(function* () {
         const test = yield* TestInstance
-        const headers = { "x-opencode-directory": test.directory, "content-type": "application@lgcode/json" }
+        const headers = { "x-opencode-directory": test.directory, "content-type": "application/json" }
         const session = yield* createSession({ title: "part mismatch" })
         const message = yield* createTextMessage(session.id, "first")
         const response = yield* request(
@@ -969,7 +969,7 @@ describe("session HttpApi", () => {
     () =>
       Effect.gen(function* () {
         const test = yield* TestInstance
-        const headers = { "x-opencode-directory": test.directory, "content-type": "application@lgcode/json" }
+        const headers = { "x-opencode-directory": test.directory, "content-type": "application/json" }
         const session = yield* createSession({ title: "remaining" })
 
         expect(

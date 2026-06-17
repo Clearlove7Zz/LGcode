@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test"
 import path from "path"
-import { Shell } from "@lgcode/core@lgcode/shell"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { which } from "@lgcode/core@lgcode/util@lgcode/which"
+import { Shell } from "@opencode@lgcode/core/shell"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { which } from "@opencode@lgcode/core/util/which"
 
 const withShell = async (shell: string | undefined, fn: () => void | Promise<void>) => {
   const prev = process.env.SHELL
@@ -22,22 +22,22 @@ const withShell = async (shell: string | undefined, fn: () => void | Promise<voi
 
 describe("shell", () => {
   test("normalizes shell names", () => {
-    expect(Shell.name("@lgcode/bin@lgcode/bash")).toBe("bash")
+    expect(Shell.name("/bin/bash")).toBe("bash")
     if (process.platform === "win32") {
-      expect(Shell.name("C:@lgcode/tools@lgcode/NU.EXE")).toBe("nu")
-      expect(Shell.name("C:@lgcode/tools@lgcode/PWSH.EXE")).toBe("pwsh")
+      expect(Shell.name("C:/tools/NU.EXE")).toBe("nu")
+      expect(Shell.name("C:/tools/PWSH.EXE")).toBe("pwsh")
     }
   })
 
   test("detects login shells", () => {
-    expect(Shell.login("@lgcode/bin@lgcode/bash")).toBe(true)
-    expect(Shell.login("C:@lgcode/tools@lgcode/pwsh.exe")).toBe(false)
+    expect(Shell.login("/bin/bash")).toBe(true)
+    expect(Shell.login("C:/tools/pwsh.exe")).toBe(false)
   })
 
   test("detects posix shells", () => {
-    expect(Shell.posix("@lgcode/bin@lgcode/bash")).toBe(true)
-    expect(Shell.posix("@lgcode/bin@lgcode/fish")).toBe(false)
-    expect(Shell.posix("C:@lgcode/tools@lgcode/pwsh.exe")).toBe(false)
+    expect(Shell.posix("/bin/bash")).toBe(true)
+    expect(Shell.posix("/bin/fish")).toBe(false)
+    expect(Shell.posix("C:/tools/pwsh.exe")).toBe(false)
   })
 
   test("falls back when configured shell cannot be resolved", async () => {
@@ -55,12 +55,12 @@ describe("shell", () => {
   })
 
   test("builds command args per shell family", () => {
-    expect(Shell.args("@lgcode/bin@lgcode/sh", "echo hi", "@lgcode/tmp")).toEqual(["-c", "echo hi"])
-    expect(Shell.args("@lgcode/usr@lgcode/bin@lgcode/fish", "echo hi", "@lgcode/tmp")).toEqual(["-c", "echo hi"])
-    const zsh = Shell.args("@lgcode/bin@lgcode/zsh", "echo hi", "@lgcode/tmp")
+    expect(Shell.args("/bin/sh", "echo hi", "/tmp")).toEqual(["-c", "echo hi"])
+    expect(Shell.args("/usr/bin/fish", "echo hi", "/tmp")).toEqual(["-c", "echo hi"])
+    const zsh = Shell.args("/bin/zsh", "echo hi", "/tmp")
     expect(zsh[0]).toBe("-l")
     expect(zsh[1]).toBe("-c")
-    expect(zsh.at(-1)).toBe("@lgcode/tmp")
+    expect(zsh.at(-1)).toBe("/tmp")
   })
 
   if (process.platform === "win32") {
@@ -71,16 +71,16 @@ describe("shell", () => {
     })
 
     test("normalizes Git Bash shell paths from env", async () => {
-      const shell = "@lgcode/cygdrive@lgcode/c@lgcode/Program Files@lgcode/Git@lgcode/bin@lgcode/bash.exe"
+      const shell = "/cygdrive/c/Program Files/Git/bin/bash.exe"
       await withShell(shell, async () => {
         expect(Shell.preferred()).toBe(FSUtil.windowsPath(shell))
       })
     })
 
-    test("resolves @lgcode/usr@lgcode/bin@lgcode/bash from env to Git Bash", async () => {
+    test("resolves /usr/bin/bash from env to Git Bash", async () => {
       const bash = Shell.gitbash()
       if (!bash) return
-      await withShell("@lgcode/usr@lgcode/bin@lgcode/bash", async () => {
+      await withShell("/usr/bin/bash", async () => {
         expect(Shell.acceptable()).toBe(bash)
         expect(Shell.preferred()).toBe(bash)
       })

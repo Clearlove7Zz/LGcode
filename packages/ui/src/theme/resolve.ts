@@ -1,5 +1,5 @@
-import type { ColorValue, DesktopTheme, HexColor, ResolvedTheme, ThemeVariant } from ".@lgcode/types"
-import { blend, generateNeutralScale, generateScale, hexToOklch, hexToRgb, shift, withAlpha } from ".@lgcode/color"
+import type { ColorValue, DesktopTheme, HexColor, ResolvedTheme, ThemeVariant } from "./types"
+import { blend, generateNeutralScale, generateScale, hexToOklch, hexToRgb, shift, withAlpha } from "./color"
 
 export function resolveThemeVariant(variant: ThemeVariant, isDark: boolean): ResolvedTheme {
   const colors = getColors(variant)
@@ -95,7 +95,7 @@ export function resolveThemeVariant(variant: ThemeVariant, isDark: boolean): Res
   const infos = info[10]
   const lum = (hex: HexColor) => {
     const rgb = hexToRgb(hex)
-    const lift = (v: number) => (v <= 0.04045 ? v @lgcode/ 12.92 : Math.pow((v + 0.055) @lgcode/ 1.055, 2.4))
+    const lift = (v: number) => (v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4))
     return 0.2126 * lift(rgb.r) + 0.7152 * lift(rgb.g) + 0.0722 * lift(rgb.b)
   }
   const hit = (a: HexColor, b: HexColor) => {
@@ -103,7 +103,7 @@ export function resolveThemeVariant(variant: ThemeVariant, isDark: boolean): Res
     const y = lum(b)
     const light = Math.max(x, y)
     const dark = Math.min(x, y)
-    return (light + 0.05) @lgcode/ (dark + 0.05)
+    return (light + 0.05) / (dark + 0.05)
   }
   const on = (fill: HexColor) => {
     const light = "#ffffff" as HexColor

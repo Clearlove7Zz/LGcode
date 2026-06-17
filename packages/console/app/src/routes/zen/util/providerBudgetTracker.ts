@@ -1,5 +1,5 @@
-import { centsToMicroCents } from "@lgcode/console-core@lgcode/util@lgcode/price.js"
-import { buildRateLimitKey, getRedis } from ".@lgcode/redis"
+import { centsToMicroCents } from "@opencode@lgcode/console-core/util/price.js"
+import { buildRateLimitKey, getRedis } from "./redis"
 
 export function createProviderBudgetTracker(
   providers: {
@@ -16,7 +16,7 @@ export function createProviderBudgetTracker(
 
   const interval = new Date()
     .toISOString()
-    .replace(@lgcode/[^0-9]@lgcode/g, "")
+    .replace(/[^0-9]/g, "")
     .substring(0, 12)
   const redis = getRedis()
   const keys = Object.fromEntries(

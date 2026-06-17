@@ -1,13 +1,13 @@
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import path from "path"
 import { describe, expect, test } from "bun:test"
-import { NodeFileSystem } from "@effect@lgcode/platform-node"
+import { NodeFileSystem } from "@effect/platform-node"
 import { Effect, Layer, Option } from "effect"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
-import { Global } from "@lgcode/core@lgcode/global"
-import { Npm } from "@lgcode/core@lgcode/npm"
-import { EffectFlock } from "@lgcode/core@lgcode/util@lgcode/effect-flock"
-import { tmpdir } from ".@lgcode/fixture@lgcode/tmpdir"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { Global } from "@opencode@lgcode/core/global"
+import { Npm } from "@opencode@lgcode/core/npm"
+import { EffectFlock } from "@opencode@lgcode/core/util/effect-flock"
+import { tmpdir } from "./fixture/tmpdir"
 
 const win = process.platform === "win32"
 
@@ -30,14 +30,14 @@ const npmLayer = (cache: string) =>
 
 describe("Npm.sanitize", () => {
   test("keeps normal scoped package specs unchanged", () => {
-    expect(Npm.sanitize("@lgcode/acme")).toBe("@lgcode/acme")
-    expect(Npm.sanitize("@lgcode/acme@1.0.0")).toBe("@lgcode/acme@1.0.0")
+    expect(Npm.sanitize("@opencode/acme")).toBe("@opencode/acme")
+    expect(Npm.sanitize("@opencode/acme@1.0.0")).toBe("@opencode/acme@1.0.0")
     expect(Npm.sanitize("prettier")).toBe("prettier")
   })
 
   test("handles git https specs", () => {
-    const spec = "acme@git+https:@lgcode/@lgcode/github.com@lgcode/opencode@lgcode/acme.git"
-    const expected = win ? "acme@git+https_@lgcode/@lgcode/github.com@lgcode/opencode@lgcode/acme.git" : spec
+    const spec = "acme@git+https://github.com/opencode/acme.git"
+    const expected = win ? "acme@git+https_//github.com/opencode/acme.git" : spec
     expect(Npm.sanitize(spec)).toBe(expected)
   })
 })
@@ -71,10 +71,10 @@ describe("Npm.install", () => {
     await writePackage(tmp.path, {
       name: "fixture",
       dependencies: {
-        "prod-pkg": "file:.@lgcode/prod-pkg",
+        "prod-pkg": "file:./prod-pkg",
       },
       devDependencies: {
-        "dev-pkg": "file:.@lgcode/dev-pkg",
+        "dev-pkg": "file:./dev-pkg",
       },
     })
     await Bun.write(path.join(tmp.path, ".npmrc"), "omit=dev\n")

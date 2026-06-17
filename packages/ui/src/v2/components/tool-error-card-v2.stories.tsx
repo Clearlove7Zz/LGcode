@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js"
-import { ButtonV2 } from ".@lgcode/button-v2"
-import { ToolErrorCardV2, type ToolErrorCardV2Props } from ".@lgcode/tool-error-card-v2"
+import { ButtonV2 } from "./button-v2"
+import { ToolErrorCardV2, type ToolErrorCardV2Props } from "./tool-error-card-v2"
 
 const docs = `### Overview
 Compact tool error row with optional expandable detail, aligned to the OpenCode design system spec.
@@ -14,7 +14,7 @@ Compact tool error row with optional expandable detail, aligned to the OpenCode 
 `
 
 export default {
-  title: "UI V2@lgcode/ToolErrorCard",
+  title: "UI V2/ToolErrorCard",
   id: "components-tool-error-card-v2",
   component: ToolErrorCardV2,
   tags: ["autodocs"],
@@ -36,7 +36,7 @@ export const Default = {
     suffix: "The tool could not access the requested path.",
     defaultOpen: false,
   } satisfies ToolErrorCardV2Props,
-  render: (args: ToolErrorCardV2Props) => <ToolErrorCardV2 {...args} @lgcode/>,
+  render: (args: ToolErrorCardV2Props) => <ToolErrorCardV2 {...args} />,
 }
 
 export const Loading = {
@@ -47,18 +47,18 @@ export const Loading = {
     loading: true,
     defaultOpen: false,
   } satisfies ToolErrorCardV2Props,
-  render: (args: ToolErrorCardV2Props) => <ToolErrorCardV2 {...args} @lgcode/>,
+  render: (args: ToolErrorCardV2Props) => <ToolErrorCardV2 {...args} />,
 }
 
 export const SubtitleLink = {
   args: {
     title: "Task",
     subtitle: "View logs",
-    subtitleHref: "https:@lgcode/@lgcode/example.com",
+    subtitleHref: "https://example.com",
     suffix: "Subagent exited with code 1.",
     defaultOpen: false,
   } satisfies ToolErrorCardV2Props,
-  render: (args: ToolErrorCardV2Props) => <ToolErrorCardV2 {...args} @lgcode/>,
+  render: (args: ToolErrorCardV2Props) => <ToolErrorCardV2 {...args} />,
 }
 
 export const NoSuffixDisabled = {
@@ -67,7 +67,7 @@ export const NoSuffixDisabled = {
     subtitle: "No detail",
     defaultOpen: false,
   } satisfies ToolErrorCardV2Props,
-  render: (args: ToolErrorCardV2Props) => <ToolErrorCardV2 {...args} @lgcode/>,
+  render: (args: ToolErrorCardV2Props) => <ToolErrorCardV2 {...args} />,
 }
 
 export const Controlled = {
@@ -77,15 +77,15 @@ export const Controlled = {
       <div style={{ display: "flex", "flex-direction": "column", gap: "24px", "max-width": "420px" }}>
         <ButtonV2 type="button" classList={{ "w-fit": true }} onClick={() => setOpen((o) => !o)}>
           Toggle from outside: {open() ? "Open" : "Closed"}
-        <@lgcode/ButtonV2>
+        </ButtonV2>
         <ToolErrorCardV2
           title="Grep"
           subtitle="Timeout"
           suffix="Operation exceeded 30s."
           open={open()}
           onOpenChange={setOpen}
-        @lgcode/>
-      <@lgcode/div>
+        />
+      </div>
     )
   },
 }

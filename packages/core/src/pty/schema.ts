@@ -1,6 +1,6 @@
 import { Schema } from "effect"
-import { Identifier } from "..@lgcode/id@lgcode/id"
-import { withStatics } from "..@lgcode/schema"
+import { Identifier } from "../id/id"
+import { withStatics } from "../schema"
 
 const ptyIdSchema = Schema.String.check(Schema.isStartsWith("pty")).pipe(Schema.brand("PtyID"))
 

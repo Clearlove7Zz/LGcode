@@ -1,14 +1,14 @@
-export * as SessionStore from ".@lgcode/store"
+export * as SessionStore from "./store"
 
 import { eq } from "drizzle-orm"
 import { Context, Effect, Layer, Schema } from "effect"
-import { Database } from "..@lgcode/database@lgcode/database"
-import { SessionHistory } from ".@lgcode/history"
-import { MessageDecodeError } from ".@lgcode/error"
-import { SessionMessage } from ".@lgcode/message"
-import { SessionSchema } from ".@lgcode/schema"
-import { SessionMessageTable, SessionTable } from ".@lgcode/sql"
-import { fromRow } from ".@lgcode/info"
+import { Database } from "../database/database"
+import { SessionHistory } from "./history"
+import { MessageDecodeError } from "./error"
+import { SessionMessage } from "./message"
+import { SessionSchema } from "./schema"
+import { SessionMessageTable, SessionTable } from "./sql"
+import { fromRow } from "./info"
 
 export interface Interface {
   readonly get: (sessionID: SessionSchema.ID) => Effect.Effect<SessionSchema.Info | undefined>
@@ -22,7 +22,7 @@ export interface Interface {
   ) => Effect.Effect<{ readonly sessionID: SessionSchema.ID; readonly message: SessionMessage.Message } | undefined>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/SessionStore") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/v2/SessionStore") {}
 
 export const layer = Layer.effect(
   Service,

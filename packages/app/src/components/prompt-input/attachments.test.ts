@@ -1,25 +1,25 @@
 import { describe, expect, test } from "bun:test"
-import { attachmentMime, pickAttachmentFiles } from ".@lgcode/files"
-import { pasteMode } from ".@lgcode/paste"
+import { attachmentMime, pickAttachmentFiles } from "./files"
+import { pasteMode } from "./paste"
 
 describe("attachmentMime", () => {
   test("keeps PDFs when the browser reports the mime", async () => {
-    const file = new File(["%PDF-1.7"], "guide.pdf", { type: "application@lgcode/pdf" })
-    expect(await attachmentMime(file)).toBe("application@lgcode/pdf")
+    const file = new File(["%PDF-1.7"], "guide.pdf", { type: "application/pdf" })
+    expect(await attachmentMime(file)).toBe("application/pdf")
   })
 
-  test("normalizes structured text types to text@lgcode/plain", async () => {
-    const file = new File(['{"ok":true}\n'], "data.json", { type: "application@lgcode/json" })
-    expect(await attachmentMime(file)).toBe("text@lgcode/plain")
+  test("normalizes structured text types to text/plain", async () => {
+    const file = new File(['{"ok":true}\n'], "data.json", { type: "application/json" })
+    expect(await attachmentMime(file)).toBe("text/plain")
   })
 
   test("accepts text files even with a misleading browser mime", async () => {
-    const file = new File(["export const x = 1\n"], "main.ts", { type: "video@lgcode/mp2t" })
-    expect(await attachmentMime(file)).toBe("text@lgcode/plain")
+    const file = new File(["export const x = 1\n"], "main.ts", { type: "video/mp2t" })
+    expect(await attachmentMime(file)).toBe("text/plain")
   })
 
   test("rejects binary files", async () => {
-    const file = new File([Uint8Array.of(0, 255, 1, 2)], "blob.bin", { type: "application@lgcode/octet-stream" })
+    const file = new File([Uint8Array.of(0, 255, 1, 2)], "blob.bin", { type: "application/octet-stream" })
     expect(await attachmentMime(file)).toBeUndefined()
   })
 })
@@ -28,7 +28,7 @@ describe("pickAttachmentFiles", () => {
   test("reads the current project directory for every native picker invocation", async () => {
     const paths: string[] = []
     const files: File[] = []
-    const file = new File(["hello"], "hello.txt", { type: "text@lgcode/plain" })
+    const file = new File(["hello"], "hello.txt", { type: "text/plain" })
     let directory = "C:\\Projects\\LoremIpsum"
     const picker = async (options?: { defaultPath?: string }, onFile?: (file: File) => Promise<unknown>) => {
       paths.push(options?.defaultPath ?? "")
@@ -59,7 +59,7 @@ describe("pickAttachmentFiles", () => {
   test("uses the browser file input when no native picker exists", async () => {
     let fallback = 0
     pickAttachmentFiles({
-      directory: () => "@lgcode/projects@lgcode/consectetur-adipiscing",
+      directory: () => "/projects/consectetur-adipiscing",
       fallback: () => {
         fallback += 1
       },

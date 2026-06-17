@@ -1,6 +1,6 @@
-import type { Project, UserMessage } from "@lgcode/sdk@lgcode/v2"
-import { useDialog } from "@lgcode/ui@lgcode/context@lgcode/dialog"
-import { createQuery, skipToken, useMutation, useQueryClient } from "@tanstack@lgcode/solid-query"
+import type { Project, UserMessage } from "@opencode@lgcode/sdk/v2"
+import { useDialog } from "@opencode@lgcode/ui/context/dialog"
+import { createQuery, skipToken, useMutation, useQueryClient } from "@tanstack/solid-query"
 import {
   batch,
   onCleanup,
@@ -14,36 +14,36 @@ import {
   onMount,
   untrack,
 } from "solid-js"
-import { makeEventListener } from "@solid-primitives@lgcode/event-listener"
-import { createMediaQuery } from "@solid-primitives@lgcode/media"
-import { createResizeObserver } from "@solid-primitives@lgcode/resize-observer"
-import { debounce } from "@solid-primitives@lgcode/scheduled"
-import { useLocal } from "@@lgcode/context@lgcode/local"
-import { selectionFromLines, useFile, type FileSelection, type SelectedLineRange } from "@@lgcode/context@lgcode/file"
-import { createStore } from "solid-js@lgcode/store"
-import { ResizeHandle } from "@lgcode/ui@lgcode/resize-handle"
-import { Select } from "@lgcode/ui@lgcode/select"
-import { Tabs } from "@lgcode/ui@lgcode/tabs"
-import { createAutoScroll } from "@lgcode/ui@lgcode/hooks"
-import { previewSelectedLines } from "@lgcode/ui@lgcode/pierre@lgcode/selection-bridge"
-import { Button } from "@lgcode/ui@lgcode/button"
-import { showToast } from "@@lgcode/utils@lgcode/toast"
-import { checksum } from "@lgcode/core@lgcode/util@lgcode/encode"
-import { useLocation, useSearchParams } from "@solidjs@lgcode/router"
-import { NewSessionView, SessionHeader } from "@@lgcode/components@lgcode/session"
-import { useComments } from "@@lgcode/context@lgcode/comments"
-import { useServerSync } from "@@lgcode/context@lgcode/server-sync"
-import { useLanguage } from "@@lgcode/context@lgcode/language"
-import { useLayout } from "@@lgcode/context@lgcode/layout"
-import { usePrompt } from "@@lgcode/context@lgcode/prompt"
-import { usePlatform } from "@@lgcode/context@lgcode/platform"
-import { useSDK } from "@@lgcode/context@lgcode/sdk"
-import { useServerSDK } from "@@lgcode/context@lgcode/server-sdk"
-import { useSettings } from "@@lgcode/context@lgcode/settings"
-import { useSync } from "@@lgcode/context@lgcode/sync"
-import { useTerminal } from "@@lgcode/context@lgcode/terminal"
-import { type FollowupDraft, sendFollowupDraft } from "@@lgcode/components@lgcode/prompt-input@lgcode/submit"
-import { createSessionComposerState, SessionComposerRegion } from "@@lgcode/pages@lgcode/session@lgcode/composer"
+import { makeEventListener } from "@solid-primitives/event-listener"
+import { createMediaQuery } from "@solid-primitives/media"
+import { createResizeObserver } from "@solid-primitives/resize-observer"
+import { debounce } from "@solid-primitives/scheduled"
+import { useLocal } from "@/context/local"
+import { selectionFromLines, useFile, type FileSelection, type SelectedLineRange } from "@/context/file"
+import { createStore } from "solid-js/store"
+import { ResizeHandle } from "@opencode@lgcode/ui/resize-handle"
+import { Select } from "@opencode@lgcode/ui/select"
+import { Tabs } from "@opencode@lgcode/ui/tabs"
+import { createAutoScroll } from "@opencode@lgcode/ui/hooks"
+import { previewSelectedLines } from "@opencode@lgcode/ui/pierre/selection-bridge"
+import { Button } from "@opencode@lgcode/ui/button"
+import { showToast } from "@/utils/toast"
+import { checksum } from "@opencode@lgcode/core/util/encode"
+import { useLocation, useSearchParams } from "@solidjs/router"
+import { NewSessionView, SessionHeader } from "@/components/session"
+import { useComments } from "@/context/comments"
+import { useServerSync } from "@/context/server-sync"
+import { useLanguage } from "@/context/language"
+import { useLayout } from "@/context/layout"
+import { usePrompt } from "@/context/prompt"
+import { usePlatform } from "@/context/platform"
+import { useSDK } from "@/context/sdk"
+import { useServerSDK } from "@/context/server-sdk"
+import { useSettings } from "@/context/settings"
+import { useSync } from "@/context/sync"
+import { useTerminal } from "@/context/terminal"
+import { type FollowupDraft, sendFollowupDraft } from "@/components/prompt-input/submit"
+import { createSessionComposerState, SessionComposerRegion } from "@/pages/session/composer"
 import {
   createOpenReviewFile,
   createSessionTabs,
@@ -51,23 +51,23 @@ import {
   focusTerminalById,
   shouldFocusTerminalOnKeyDown,
   shouldShowFileTree,
-} from "@@lgcode/pages@lgcode/session@lgcode/helpers"
-import { MessageTimeline } from "@@lgcode/pages@lgcode/session@lgcode/timeline@lgcode/message-timeline"
-import { createTimelineModel } from "@@lgcode/pages@lgcode/session@lgcode/timeline@lgcode/model"
-import { type DiffStyle, SessionReviewTab, type SessionReviewTabProps } from "@@lgcode/pages@lgcode/session@lgcode/review-tab"
-import { useSessionLayout } from "@@lgcode/pages@lgcode/session@lgcode/session-layout"
-import { useServer } from "@@lgcode/context@lgcode/server"
-import { syncSessionModel } from "@@lgcode/pages@lgcode/session@lgcode/session-model-helpers"
-import { SessionSidePanel } from "@@lgcode/pages@lgcode/session@lgcode/session-side-panel"
-import { TerminalPanel } from "@@lgcode/pages@lgcode/session@lgcode/terminal-panel"
-import { useSessionCommands } from "@@lgcode/pages@lgcode/session@lgcode/use-session-commands"
-import { useSessionHashScroll } from "@@lgcode/pages@lgcode/session@lgcode/use-session-hash-scroll"
-import { Identifier } from "@@lgcode/utils@lgcode/id"
-import { diffs as list } from "@@lgcode/utils@lgcode/diffs"
-import { Persist, persisted } from "@@lgcode/utils@lgcode/persist"
-import { extractPromptFromParts } from "@@lgcode/utils@lgcode/prompt"
-import { formatServerError } from "@@lgcode/utils@lgcode/server-errors"
-import { useUsageExceededDialogs } from ".@lgcode/session@lgcode/usage-exceeded-dialogs"
+} from "@/pages/session/helpers"
+import { MessageTimeline } from "@/pages/session/timeline/message-timeline"
+import { createTimelineModel } from "@/pages/session/timeline/model"
+import { type DiffStyle, SessionReviewTab, type SessionReviewTabProps } from "@/pages/session/review-tab"
+import { useSessionLayout } from "@/pages/session/session-layout"
+import { useServer } from "@/context/server"
+import { syncSessionModel } from "@/pages/session/session-model-helpers"
+import { SessionSidePanel } from "@/pages/session/session-side-panel"
+import { TerminalPanel } from "@/pages/session/terminal-panel"
+import { useSessionCommands } from "@/pages/session/use-session-commands"
+import { useSessionHashScroll } from "@/pages/session/use-session-hash-scroll"
+import { Identifier } from "@/utils/id"
+import { diffs as list } from "@/utils/diffs"
+import { Persist, persisted } from "@/utils/persist"
+import { extractPromptFromParts } from "@/utils/prompt"
+import { formatServerError } from "@/utils/server-errors"
+import { useUsageExceededDialogs } from "./session/usage-exceeded-dialogs"
 
 type FollowupItem = FollowupDraft & { id: string }
 type FollowupEdit = Pick<FollowupItem, "id" | "prompt" | "context">
@@ -181,7 +181,7 @@ export default function Page() {
   const centered = createMemo(() => isDesktop() && !desktopReviewOpen())
 
   function normalizeTab(tab: string) {
-    if (!tab.startsWith("file:@lgcode/@lgcode/")) return tab
+    if (!tab.startsWith("file://")) return tab
     return file.tab(tab)
   }
 
@@ -361,7 +361,7 @@ export default function Page() {
   const refreshVcs = debounce(() => void queryClient.invalidateQueries({ queryKey: vcsKey() }), 100)
   const reviewDiffs = () => {
     if (store.changes === "git" || store.changes === "branch")
-      @lgcode/@lgcode/ avoids suspense
+      // avoids suspense
       return vcsQuery.isFetched ? (vcsQuery.data ?? []) : []
     return turnDiffs()
   }
@@ -568,7 +568,7 @@ export default function Page() {
         ? (evt.details.properties as Record<string, unknown>)
         : undefined
     const file = typeof props?.file === "string" ? props.file : undefined
-    if (!file || file.startsWith(".git@lgcode/")) return
+    if (!file || file.startsWith(".git/")) return
     refreshVcs()
   })
   onCleanup(stopVcs)
@@ -643,7 +643,7 @@ export default function Page() {
 
   const isEditableTarget = (target: EventTarget | null | undefined) => {
     if (!(target instanceof HTMLElement)) return false
-    return @lgcode/^(INPUT|TEXTAREA|SELECT|BUTTON)$@lgcode/.test(target.tagName) || target.isContentEditable
+    return /^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(target.tagName) || target.isContentEditable
   }
 
   const deepActiveElement = () => {
@@ -676,13 +676,13 @@ export default function Page() {
       return
     }
 
-    @lgcode/@lgcode/ Prefer the open terminal over the composer when it can take focus
+    // Prefer the open terminal over the composer when it can take focus
     if (view().terminal.opened()) {
       const id = terminal.active()
       if (id && shouldFocusTerminalOnKeyDown(event) && focusTerminalById(id)) return
     }
 
-    @lgcode/@lgcode/ Only treat explicit scroll keys as potential "user scroll" gestures.
+    // Only treat explicit scroll keys as potential "user scroll" gestures.
     if (event.key === "PageUp" || event.key === "PageDown" || event.key === "Home" || event.key === "End") {
       markScrollGesture()
       return
@@ -781,30 +781,30 @@ export default function Page() {
         variant="ghost"
         size="small"
         valueClass="text-14-medium"
-      @lgcode/>
+      />
     )
   }
 
   const empty = (text: string) => (
     <div class="h-full pb-64 -mt-4 flex flex-col items-center justify-center text-center gap-6">
-      <div class="text-14-regular text-text-weak max-w-56">{text}<@lgcode/div>
-    <@lgcode/div>
+      <div class="text-14-regular text-text-weak max-w-56">{text}</div>
+    </div>
   )
 
   const createGit = (input: { emptyClass: string }) => (
     <div class={input.emptyClass}>
       <div class="flex flex-col gap-3">
-        <div class="text-14-medium text-text-strong">{language.t("session.review.noVcs.createGit.title")}<@lgcode/div>
+        <div class="text-14-medium text-text-strong">{language.t("session.review.noVcs.createGit.title")}</div>
         <div class="text-14-regular text-text-base max-w-md" style={{ "line-height": "var(--line-height-normal)" }}>
           {language.t("session.review.noVcs.createGit.description")}
-        <@lgcode/div>
-      <@lgcode/div>
+        </div>
+      </div>
       <Button size="large" disabled={gitMutation.isPending} onClick={initGit}>
         {gitMutation.isPending
           ? language.t("session.review.noVcs.createGit.actionLoading")
           : language.t("session.review.noVcs.createGit.action")}
-      <@lgcode/Button>
-    <@lgcode/div>
+      </Button>
+    </div>
   )
 
   const reviewEmptyText = createMemo(() => {
@@ -815,7 +815,7 @@ export default function Page() {
 
   const reviewEmpty = (input: { loadingClass: string; emptyClass: string }) => {
     if (store.changes === "git" || store.changes === "branch") {
-      if (!reviewReady()) return <div class={input.loadingClass}>{language.t("session.review.loadingChanges")}<@lgcode/div>
+      if (!reviewReady()) return <div class={input.loadingClass}>{language.t("session.review.loadingChanges")}</div>
       return empty(reviewEmptyText())
     }
 
@@ -826,8 +826,8 @@ export default function Page() {
 
     return (
       <div class={input.emptyClass}>
-        <div class="text-14-regular text-text-weak max-w-56">{reviewEmptyText()}<@lgcode/div>
-      <@lgcode/div>
+        <div class="text-14-regular text-text-weak max-w-56">{reviewEmptyText()}</div>
+      </div>
     )
   }
 
@@ -860,8 +860,8 @@ export default function Page() {
         onFocusedCommentChange={comments.setFocus}
         onViewFile={openReviewFile}
         classes={input.classes}
-      @lgcode/>
-    <@lgcode/Show>
+      />
+    </Show>
   )
 
   const reviewPanel = () => (
@@ -873,8 +873,8 @@ export default function Page() {
           loadingClass: "px-6 py-4 text-text-weak",
           emptyClass: "h-full pb-64 -mt-4 flex flex-col items-center justify-center text-center gap-6",
         })}
-      <@lgcode/div>
-    <@lgcode/div>
+      </div>
+    </div>
   )
 
   createEffect(
@@ -1092,7 +1092,7 @@ export default function Page() {
     if (el) scheduleScrollState(el)
   }
 
-  @lgcode/@lgcode/ When the user returns to the bottom, treat the active message as "latest".
+  // When the user returns to the bottom, treat the active message as "latest".
   createEffect(
     on(
       autoScroll.userScrolled,
@@ -1185,7 +1185,7 @@ export default function Page() {
     const text = draft(id)
       .map((part) => (part.type === "image" ? `[image:${part.filename}]` : part.content))
       .join("")
-      .replace(@lgcode/\s+@lgcode/g, " ")
+      .replace(/\s+/g, " ")
       .trim()
     if (text) return text
     return `[${language.t("common.attachment")}]`
@@ -1282,7 +1282,7 @@ export default function Page() {
         return part.content
       })
       .join("")
-      .split(@lgcode/\r?\n@lgcode/)
+      .split(/\r?\n/)
       .map((line) => line.trim())
       .find((line) => !!line)
 
@@ -1567,13 +1567,13 @@ export default function Page() {
       setPromptDockRef={(el) => {
         promptDock = el
       }}
-    @lgcode/>
+    />
   )
 
   return (
     <div class="relative size-full overflow-hidden flex flex-col">
       {sessionSync() ?? ""}
-      <SessionHeader @lgcode/>
+      <SessionHeader />
       <div
         class="flex-1 min-h-0 flex flex-col md:flex-row "
         classList={{
@@ -1585,25 +1585,25 @@ export default function Page() {
             <Tabs.List>
               <Tabs.Trigger
                 value="session"
-                class="!w-1@lgcode/2 !max-w-none"
+                class="!w-1/2 !max-w-none"
                 classes={{ button: "w-full" }}
                 onClick={() => setStore("mobileTab", "session")}
               >
                 {language.t("session.tab.session")}
-              <@lgcode/Tabs.Trigger>
+              </Tabs.Trigger>
               <Tabs.Trigger
                 value="changes"
-                class="!w-1@lgcode/2 !max-w-none !border-r-0"
+                class="!w-1/2 !max-w-none !border-r-0"
                 classes={{ button: "w-full" }}
                 onClick={() => setStore("mobileTab", "changes")}
               >
                 {hasReview()
                   ? language.t("session.review.filesChanged", { count: reviewCount() })
                   : language.t("session.review.change.other")}
-              <@lgcode/Tabs.Trigger>
-            <@lgcode/Tabs.List>
-          <@lgcode/Tabs>
-        <@lgcode/Show>
+              </Tabs.Trigger>
+            </Tabs.List>
+          </Tabs>
+        </Show>
 
         <div
           classList={{
@@ -1636,8 +1636,8 @@ export default function Page() {
                       loadingClass: "px-4 py-4 text-text-weak",
                       emptyClass: "h-full pb-64 -mt-4 flex flex-col items-center justify-center text-center gap-6",
                     })}
-                  <@lgcode/div>
-                <@lgcode/Match>
+                  </div>
+                </Match>
                 <Match when={params.id}>
                   <Show when={messagesReady() ? params.id : undefined} keyed>
                     {(_id) => (
@@ -1676,18 +1676,18 @@ export default function Page() {
                         setScrollToEnd={(fn) => {
                           scrollToEnd = fn
                         }}
-                      @lgcode/>
+                      />
                     )}
-                  <@lgcode/Show>
-                <@lgcode/Match>
+                  </Show>
+                </Match>
                 <Match when={true}>
-                  <NewSessionView worktree={newSessionWorktree()} @lgcode/>
-                <@lgcode/Match>
-              <@lgcode/Switch>
-            <@lgcode/div>
+                  <NewSessionView worktree={newSessionWorktree()} />
+                </Match>
+              </Switch>
+            </div>
 
-            <Show when={params.id || !newSessionDesign()}>{composerRegion("dock")}<@lgcode/Show>
-          <@lgcode/div>
+            <Show when={params.id || !newSessionDesign()}>{composerRegion("dock")}</Show>
+          </div>
 
           <Show when={desktopReviewOpen()}>
             <div onPointerDown={() => size.start()}>
@@ -1703,10 +1703,10 @@ export default function Page() {
                   size.touch()
                   layout.session.resize(width)
                 }}
-              @lgcode/>
-            <@lgcode/div>
-          <@lgcode/Show>
-        <@lgcode/div>
+              />
+            </div>
+          </Show>
+        </div>
 
         <SessionSidePanel
           canReview={canReview}
@@ -1720,10 +1720,10 @@ export default function Page() {
           focusReviewDiff={focusReviewDiff}
           reviewSnap={ui.reviewSnap}
           size={size}
-        @lgcode/>
-      <@lgcode/div>
+        />
+      </div>
 
-      <TerminalPanel @lgcode/>
-    <@lgcode/div>
+      <TerminalPanel />
+    </div>
   )
 }

@@ -1,18 +1,18 @@
-import { Resource } from "@lgcode/console-resource"
-import { and, Database, eq, isNull } from "..@lgcode/src@lgcode/drizzle@lgcode/index.js"
-import { Identifier } from "..@lgcode/src@lgcode/identifier.js"
-import { AccountTable } from "..@lgcode/src@lgcode/schema@lgcode/account.sql.js"
-import { AuthTable } from "..@lgcode/src@lgcode/schema@lgcode/auth.sql.js"
-import { BillingTable } from "..@lgcode/src@lgcode/schema@lgcode/billing.sql.js"
-import { KeyTable } from "..@lgcode/src@lgcode/schema@lgcode/key.sql.js"
-import { UserTable } from "..@lgcode/src@lgcode/schema@lgcode/user.sql.js"
-import { WorkspaceTable } from "..@lgcode/src@lgcode/schema@lgcode/workspace.sql.js"
-import { centsToMicroCents } from "..@lgcode/src@lgcode/util@lgcode/price.js"
+import { Resource } from "@opencode@lgcode/console-resource"
+import { and, Database, eq, isNull } from "../src/drizzle/index.js"
+import { Identifier } from "../src/identifier.js"
+import { AccountTable } from "../src/schema/account.sql.js"
+import { AuthTable } from "../src/schema/auth.sql.js"
+import { BillingTable } from "../src/schema/billing.sql.js"
+import { KeyTable } from "../src/schema/key.sql.js"
+import { UserTable } from "../src/schema/user.sql.js"
+import { WorkspaceTable } from "../src/schema/workspace.sql.js"
+import { centsToMicroCents } from "../src/util/price.js"
 
 const args = parseArgs(process.argv.slice(2))
 if (!args.email) {
   console.error(
-    "Usage: bun script@lgcode/create-api-key.ts --email <email> [--workspace-id <wrk_...>] [--workspace-name <name>] [--key-name <name>] [--balance-dollars <amount>] [--allow-production]",
+    "Usage: bun script/create-api-key.ts --email <email> [--workspace-id <wrk_...>] [--workspace-name <name>] [--key-name <name>] [--balance-dollars <amount>] [--allow-production]",
   )
   process.exit(1)
 }

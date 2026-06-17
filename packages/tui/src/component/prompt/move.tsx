@@ -1,18 +1,18 @@
 import { createEffect, createMemo, createSignal, onCleanup } from "solid-js"
 import path from "path"
-import { useTuiPaths } from "..@lgcode/..@lgcode/context@lgcode/runtime"
-import { errorMessage } from "..@lgcode/..@lgcode/util@lgcode/error"
-import { useDialog } from "..@lgcode/..@lgcode/ui@lgcode/dialog"
-import { useSDK } from "..@lgcode/..@lgcode/context@lgcode/sdk"
-import { useSync } from "..@lgcode/..@lgcode/context@lgcode/sync"
-import { useToast } from "..@lgcode/..@lgcode/ui@lgcode/toast"
-import { DialogMoveSession, type MoveSessionSelection } from "..@lgcode/dialog-move-session"
-import { DialogWorkspaceFileChanges } from "..@lgcode/dialog-workspace-file-changes"
-import { useHomeSessionDestination } from "..@lgcode/..@lgcode/routes@lgcode/home@lgcode/session-destination"
-import { useProject } from "..@lgcode/..@lgcode/context@lgcode/project"
+import { useTuiPaths } from "../../context/runtime"
+import { errorMessage } from "../../util/error"
+import { useDialog } from "../../ui/dialog"
+import { useSDK } from "../../context/sdk"
+import { useSync } from "../../context/sync"
+import { useToast } from "../../ui/toast"
+import { DialogMoveSession, type MoveSessionSelection } from "../dialog-move-session"
+import { DialogWorkspaceFileChanges } from "../dialog-workspace-file-changes"
+import { useHomeSessionDestination } from "../../routes/home/session-destination"
+import { useProject } from "../../context/project"
 
 function moveReminderText(directory: string) {
-  return `<system-reminder>The user has changed the current working directory to "${directory}". This is still the same project but at a possibly new location; take this into account when working with any files from now on.<@lgcode/system-reminder>`
+  return `<system-reminder>The user has changed the current working directory to "${directory}". This is still the same project but at a possibly new location; take this into account when working with any files from now on.</system-reminder>`
 }
 
 export function usePromptMove(input: { projectID: () => string | undefined; sessionID: () => string | undefined }) {
@@ -50,8 +50,8 @@ export function usePromptMove(input: { projectID: () => string | undefined; sess
       const directory = result.data?.directory
       if (!directory) throw new Error("No project copy directory returned")
 
-      @lgcode/@lgcode/ Call a location-based route to make sure it's bootstrapped
-      @lgcode/@lgcode/ before moving on
+      // Call a location-based route to make sure it's bootstrapped
+      // before moving on
       await sdk.client.path.get({ directory }, { throwOnError: true })
 
       setProgress("Creating session")
@@ -97,7 +97,7 @@ export function usePromptMove(input: { projectID: () => string | undefined; sess
           }
           void moveExistingSession(sessionID, selection)
         }}
-      @lgcode/>
+      />
     ))
   }
 

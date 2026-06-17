@@ -1,8 +1,8 @@
-@lgcode/**
- * Shared chunk shapes for OpenAI Chat @lgcode/ OpenAI-compatible Chat fixture tests.
+/**
+ * Shared chunk shapes for OpenAI Chat / OpenAI-compatible Chat fixture tests.
  * Multiple test files build the same `{ id, choices: [{ delta, finish_reason }], usage }`
  * envelope; consolidating here keeps tool-call event shapes consistent.
- *@lgcode/
+ */
 
 const FIXTURE_ID = "chatcmpl_fixture"
 

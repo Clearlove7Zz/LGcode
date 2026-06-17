@@ -1,5 +1,5 @@
 import { Effect, JsonSchema, Schema } from "effect"
-import { LLMClient } from ".@lgcode/route@lgcode/client"
+import { LLMClient } from "./route/client"
 import {
   GenerationOptions,
   HttpOptions,
@@ -15,8 +15,8 @@ import {
   ToolDefinition,
   type ContentPart,
   ToolResultPart,
-} from ".@lgcode/schema"
-import { make as makeTool, toDefinitions, type ToolSchema } from ".@lgcode/tool"
+} from "./schema"
+import { make as makeTool, toDefinitions, type ToolSchema } from "./tool"
 
 export type ModelInput = SchemaModelInput
 
@@ -27,7 +27,7 @@ export type ToolChoiceMode = ToolChoice.Mode
 
 export type ToolResultInput = Parameters<typeof ToolResultPart.make>[0]
 
-@lgcode/** Input accepted by `LLM.request`, normalized into the canonical `LLMRequest` class. *@lgcode/
+/** Input accepted by `LLM.request`, normalized into the canonical `LLMRequest` class. */
 export type RequestInput = Omit<
   ConstructorParameters<typeof LLMRequest>[0],
   "system" | "messages" | "tools" | "toolChoice" | "generation" | "http" | "providerOptions"
@@ -103,7 +103,7 @@ export interface GenerateObjectOptions<S extends ToolSchema<any>> extends Genera
 }
 
 export interface GenerateObjectDynamicOptions extends GenerateObjectBase {
-  @lgcode/** Raw JSON Schema object describing the expected output shape. *@lgcode/
+  /** Raw JSON Schema object describing the expected output shape. */
   readonly jsonSchema: JsonSchema.JsonSchema
 }
 
@@ -143,7 +143,7 @@ const runGenerateObject = Effect.fn("LLM.generateObject")(function* (
   return new GenerateObjectResponse(object, response)
 })
 
-@lgcode/**
+/**
  * Run a model and decode its output against `schema`. Works on every protocol
  * because it forces a synthetic tool call internally — provider-native JSON
  * modes are intentionally avoided so behaviour is uniform.
@@ -154,7 +154,7 @@ const runGenerateObject = Effect.fn("LLM.generateObject")(function* (
  *    Decode failures surface as `LLMError`.
  * 2. `jsonSchema: JsonSchema.JsonSchema` — `.object` is `unknown`. Use when
  *    the schema is only available at runtime (MCP, plugin manifests). Caller validates.
- *@lgcode/
+ */
 export function generateObject<S extends ToolSchema<any>>(
   options: GenerateObjectOptions<S>,
 ): Effect.Effect<GenerateObjectResponse<Schema.Schema.Type<S>>, LLMError>

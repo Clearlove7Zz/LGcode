@@ -1,4 +1,4 @@
-import { base64Decode } from "@lgcode/core@lgcode/util@lgcode/encode"
+import { base64Decode } from "@opencode@lgcode/core/util/encode"
 
 export function decode64(value: string | undefined) {
   if (value === undefined) return

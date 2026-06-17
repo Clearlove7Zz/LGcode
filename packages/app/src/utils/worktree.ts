@@ -1,6 +1,6 @@
-import { ScopedKey, type ServerScope } from "@@lgcode/utils@lgcode/server-scope"
+import { ScopedKey, type ServerScope } from "@/utils/server-scope"
 
-const normalize = (directory: string) => directory.replace(@lgcode/[\\@lgcode/]+$@lgcode/, "")
+const normalize = (directory: string) => directory.replace(/[\\/]+$/, "")
 const key = (scope: ServerScope, directory: string) => ScopedKey.from(scope, normalize(directory))
 
 type State =

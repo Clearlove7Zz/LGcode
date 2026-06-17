@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { readPartText } from ".@lgcode/message-part-text"
+import { readPartText } from "./message-part-text"
 
 describe("readPartText", () => {
   test("returns empty string when accum is undefined and part text is undefined", () => {

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { withTimeout } from "..@lgcode/..@lgcode/src@lgcode/util@lgcode/timeout"
+import { withTimeout } from "../../src/util/timeout"
 
 describe("util.timeout", () => {
   test("should resolve when promise completes before timeout", async () => {

@@ -1,4 +1,4 @@
-import { displaySlice } from ".@lgcode/display"
+import { displaySlice } from "./display"
 
 export function stripPromptPartIDs<Part extends { id: string; messageID: string; sessionID: string }>(part: Part) {
   const { id: _id, messageID: _messageID, sessionID: _sessionID, ...rest } = part

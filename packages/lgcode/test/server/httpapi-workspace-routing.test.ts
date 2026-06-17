@@ -1,4 +1,4 @@
-import { NodeHttpServer, NodeServices } from "@effect@lgcode/platform-node"
+import { NodeHttpServer, NodeServices } from "@effect/platform-node"
 import { describe, expect } from "bun:test"
 import { Context, Effect, Layer, Queue, Ref, Schema, Stream } from "effect"
 import {
@@ -9,33 +9,33 @@ import {
   HttpServer,
   HttpServerRequest,
   HttpServerResponse,
-} from "effect@lgcode/unstable@lgcode/http"
-import * as Socket from "effect@lgcode/unstable@lgcode/socket@lgcode/Socket"
-import { HttpApi, HttpApiBuilder, HttpApiEndpoint, HttpApiGroup } from "effect@lgcode/unstable@lgcode/httpapi"
+} from "effect/unstable/http"
+import * as Socket from "effect/unstable/socket/Socket"
+import { HttpApi, HttpApiBuilder, HttpApiEndpoint, HttpApiGroup } from "effect/unstable/httpapi"
 import Http from "node:http"
-import { mkdir } from "node:fs@lgcode/promises"
+import { mkdir } from "node:fs/promises"
 import path from "node:path"
-import { registerAdapter } from "..@lgcode/..@lgcode/src@lgcode/control-plane@lgcode/adapters"
-import { WorkspaceV2 } from "@lgcode/core@lgcode/workspace"
-import type { WorkspaceAdapter } from "..@lgcode/..@lgcode/src@lgcode/control-plane@lgcode/types"
-import { Workspace } from "..@lgcode/..@lgcode/src@lgcode/control-plane@lgcode/workspace"
-import { WorkspaceTable } from "@lgcode/core@lgcode/control-plane@lgcode/workspace.sql"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { Ripgrep } from "@lgcode/core@lgcode/ripgrep"
-import { Project } from "..@lgcode/..@lgcode/src@lgcode/project@lgcode/project"
-import { Session } from "..@lgcode/..@lgcode/src@lgcode/session@lgcode/session"
-import { WorkspacePaths } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/groups@lgcode/workspace"
+import { registerAdapter } from "../../src/control-plane/adapters"
+import { WorkspaceV2 } from "@opencode@lgcode/core/workspace"
+import type { WorkspaceAdapter } from "../../src/control-plane/types"
+import { Workspace } from "../../src/control-plane/workspace"
+import { WorkspaceTable } from "@opencode@lgcode/core/control-plane/workspace.sql"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { Ripgrep } from "@opencode@lgcode/core/ripgrep"
+import { Project } from "../../src/project/project"
+import { Session } from "../../src/session/session"
+import { WorkspacePaths } from "../../src/server/routes/instance/httpapi/groups/workspace"
 import {
   WorkspaceRoutingMiddleware,
   WorkspaceRoutingQuery,
   WorkspaceRouteContext,
   workspaceRoutingLayer,
-} from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/routes@lgcode/instance@lgcode/httpapi@lgcode/middleware@lgcode/workspace-routing"
-import { HEADER as FenceHeader } from "..@lgcode/..@lgcode/src@lgcode/server@lgcode/shared@lgcode/fence"
-import { resetDatabase } from "..@lgcode/fixture@lgcode/db"
-import { workspaceLayerWithRuntimeFlags } from "..@lgcode/fixture@lgcode/workspace"
-import { tmpdirScoped } from "..@lgcode/fixture@lgcode/fixture"
-import { testEffect } from "..@lgcode/lib@lgcode/effect"
+} from "../../src/server/routes/instance/httpapi/middleware/workspace-routing"
+import { HEADER as FenceHeader } from "../../src/server/shared/fence"
+import { resetDatabase } from "../fixture/db"
+import { workspaceLayerWithRuntimeFlags } from "../fixture/workspace"
+import { tmpdirScoped } from "../fixture/fixture"
+import { testEffect } from "../lib/effect"
 
 const testStateLayer = Layer.effectDiscard(
   Effect.gen(function* () {
@@ -79,7 +79,7 @@ const workspaceRoutingTestLayer = workspaceRoutingLayer.pipe(
 
 const serverUrl = HttpServer.HttpServer.use((server) => Effect.succeed(HttpServer.formatAddress(server.address)))
 
-const requestURL = (request: { readonly url: string }) => new URL(request.url, "http:@lgcode/@lgcode/localhost")
+const requestURL = (request: { readonly url: string }) => new URL(request.url, "http://localhost")
 
 const listenAdditionalServer = <E, R>(handler: TestHandler<E, R>) =>
   Effect.gen(function* () {
@@ -113,13 +113,13 @@ const remoteAdapter = (directory: string, url: string, headers?: HeadersInit): W
 
 const eventStreamResponse = () =>
   HttpServerResponse.text('data: {"payload":{"type":"server.connected","properties":{}}}\n\n', {
-    contentType: "text@lgcode/event-stream",
+    contentType: "text/event-stream",
   })
 
 const syncResponse = (request: HttpServerRequest.HttpServerRequest) => {
   const url = requestURL(request)
-  if (url.pathname === "@lgcode/base@lgcode/global@lgcode/event") return Effect.succeed(eventStreamResponse())
-  if (url.pathname === "@lgcode/base@lgcode/sync@lgcode/history") return HttpServerResponse.json([])
+  if (url.pathname === "/base/global/event") return Effect.succeed(eventStreamResponse())
+  if (url.pathname === "/base/sync/history") return HttpServerResponse.json([])
   return undefined
 }
 
@@ -145,9 +145,9 @@ const createRemoteWorkspace = (input: {
   url: string
   headers?: HeadersInit
 }) =>
-  @lgcode/@lgcode/ Workspace.create starts the remote sync loop. The test upstream exposes
-  @lgcode/@lgcode/ @lgcode/global@lgcode/event and @lgcode/sync@lgcode/history so middleware proxying sees the remote
-  @lgcode/@lgcode/ workspace as active, just like production would.
+  // Workspace.create starts the remote sync loop. The test upstream exposes
+  // /global/event and /sync/history so middleware proxying sees the remote
+  // workspace as active, just like production would.
   createWorkspace({
     projectID: input.projectID,
     type: input.type,
@@ -184,9 +184,9 @@ const startRemoteWorkspaceHttpServer = <E, R>(
 ) =>
   listenAdditionalServer((request) =>
     Effect.gen(function* () {
-      @lgcode/@lgcode/ Remote workspaces run a sync loop against their target server. These
-      @lgcode/@lgcode/ bootstrap routes make Workspace.isSyncing(...) true for proxy tests;
-      @lgcode/@lgcode/ everything else is the request being proxied by the middleware.
+      // Remote workspaces run a sync loop against their target server. These
+      // bootstrap routes make Workspace.isSyncing(...) true for proxy tests;
+      // everything else is the request being proxied by the middleware.
       const sync = syncResponse(request)
       if (sync) return yield* sync
       return yield* handler({
@@ -202,7 +202,7 @@ const listenRemoteWebSocket = () =>
   listenAdditionalServer((request) => {
     const sync = syncResponse(request)
     if (sync) return sync
-    if (requestURL(request).pathname !== "@lgcode/base@lgcode/probe") return Effect.succeed(HttpServerResponse.empty({ status: 404 }))
+    if (requestURL(request).pathname !== "/base/probe") return Effect.succeed(HttpServerResponse.empty({ status: 404 }))
     return echoWebSocket(request)
   })
 
@@ -228,9 +228,9 @@ const ProbeResult = Schema.Struct({
 const ProbeApi = HttpApi.make("workspace-routing-probe").add(
   HttpApiGroup.make("probe")
     .add(
-      HttpApiEndpoint.get("get", "@lgcode/probe", { query: WorkspaceRoutingQuery, success: ProbeResult }),
-      HttpApiEndpoint.patch("patch", "@lgcode/probe", { query: WorkspaceRoutingQuery, success: Schema.Boolean }),
-      HttpApiEndpoint.get("session", "@lgcode/session", { query: WorkspaceRoutingQuery, success: ProbeResult }),
+      HttpApiEndpoint.get("get", "/probe", { query: WorkspaceRoutingQuery, success: ProbeResult }),
+      HttpApiEndpoint.patch("patch", "/probe", { query: WorkspaceRoutingQuery, success: Schema.Boolean }),
+      HttpApiEndpoint.get("session", "/session", { query: WorkspaceRoutingQuery, success: ProbeResult }),
       HttpApiEndpoint.get("workspace", WorkspacePaths.list, {
         query: WorkspaceRoutingQuery,
         success: ProbeResult,
@@ -267,9 +267,9 @@ describe("HttpApi workspace routing middleware", () => {
       const project = yield* Project.use.fromDirectory(dir)
       let forwarded: ProxiedRequest | undefined
 
-      @lgcode/@lgcode/ This starts a second HTTP server that stands in for the opencode server
-      @lgcode/@lgcode/ backing a remote workspace. The client below still calls the local test
-      @lgcode/@lgcode/ server; only the middleware should call this server.
+      // This starts a second HTTP server that stands in for the opencode server
+      // backing a remote workspace. The client below still calls the local test
+      // server; only the middleware should call this server.
       const remoteUrl = yield* startRemoteWorkspaceHttpServer((request) => {
         forwarded = request
         const url = requestURL(request)
@@ -283,30 +283,30 @@ describe("HttpApi workspace routing middleware", () => {
           { status: 201, headers: { "x-remote": "yes" } },
         )
       })
-      @lgcode/@lgcode/ The adapter target tells the middleware where to proxy selected remote
-      @lgcode/@lgcode/ workspace requests. Appending @lgcode/probe to this base should produce
-      @lgcode/@lgcode/ `${remoteUrl}@lgcode/base@lgcode/probe` on the fake remote server above.
+      // The adapter target tells the middleware where to proxy selected remote
+      // workspace requests. Appending /probe to this base should produce
+      // `${remoteUrl}/base/probe` on the fake remote server above.
       const workspace = yield* createRemoteWorkspace({
         dir,
         projectID: project.project.id,
         type: "remote-http-target",
-        url: `${remoteUrl}@lgcode/base`,
+        url: `${remoteUrl}/base`,
         headers: { "x-target-auth": "secret" },
       })
 
-      @lgcode/@lgcode/ The local @lgcode/probe handler should not run. Selecting a remote workspace
-      @lgcode/@lgcode/ should make the middleware call HttpApiProxy.http instead.
+      // The local /probe handler should not run. Selecting a remote workspace
+      // should make the middleware call HttpApiProxy.http instead.
       yield* serveProbe
 
       const body = '{"title":"Remote workspace request"}'
-      const response = yield* HttpClientRequest.patch(`@lgcode/probe?workspace=${workspace.id}&keep=yes`).pipe(
+      const response = yield* HttpClientRequest.patch(`/probe?workspace=${workspace.id}&keep=yes`).pipe(
         HttpClientRequest.setHeaders({
-          "x-opencode-directory": "@lgcode/secret@lgcode/path",
+          "x-opencode-directory": "/secret/path",
           "x-opencode-workspace": "internal",
         }),
         HttpClientRequest.bodyStream(
           Stream.make(new TextEncoder().encode('{"title":"Remote '), new TextEncoder().encode('workspace request"}')),
-          { contentType: "application@lgcode/json" },
+          { contentType: "application/json" },
         ),
         HttpClient.execute,
         Effect.timeout("2 seconds"),
@@ -314,16 +314,16 @@ describe("HttpApi workspace routing middleware", () => {
 
       expect(response.status).toBe(201)
       expect(response.headers["x-remote"]).toBe("yes")
-      expect(yield* response.json).toEqual({ proxied: true, path: "@lgcode/base@lgcode/probe", keep: "yes", workspace: null })
+      expect(yield* response.json).toEqual({ proxied: true, path: "/base/probe", keep: "yes", workspace: null })
       const forwardedURL = forwarded ? requestURL(forwarded) : undefined
-      @lgcode/@lgcode/ These assertions are the routing contract: append the original path to
-      @lgcode/@lgcode/ the remote base URL, preserve normal query params, and remove workspace.
-      expect(forwardedURL?.pathname).toBe("@lgcode/base@lgcode/probe")
+      // These assertions are the routing contract: append the original path to
+      // the remote base URL, preserve normal query params, and remove workspace.
+      expect(forwardedURL?.pathname).toBe("/base/probe")
       expect(forwardedURL?.searchParams.get("keep")).toBe("yes")
       expect(forwardedURL?.searchParams.get("workspace")).toBeNull()
       expect(forwarded?.method).toBe("PATCH")
       expect(forwarded?.body).toBe(body)
-      expect(forwarded?.headers["content-type"]).toBe("application@lgcode/json")
+      expect(forwarded?.headers["content-type"]).toBe("application/json")
       expect(forwarded?.headers["x-target-auth"]).toBe("secret")
       expect(forwarded?.headers["x-opencode-directory"]).toBeUndefined()
       expect(forwarded?.headers["x-opencode-workspace"]).toBeUndefined()
@@ -346,7 +346,7 @@ describe("HttpApi workspace routing middleware", () => {
           { status: 202, headers: { [FenceHeader]: JSON.stringify({ aggregate: 3 }) } },
         ),
       )
-      registerAdapter(project.project.id, type, remoteAdapter(path.join(dir, `.${type}`), `${remoteUrl}@lgcode/base`))
+      registerAdapter(project.project.id, type, remoteAdapter(path.join(dir, `.${type}`), `${remoteUrl}/base`))
 
       const workspace = Workspace.Service.of({
         create: () => Effect.die("unused"),
@@ -384,7 +384,7 @@ describe("HttpApi workspace routing middleware", () => {
         Layer.build,
       )
 
-      const response = yield* HttpClientRequest.patch(`@lgcode/probe?workspace=${workspaceID}`).pipe(HttpClient.execute)
+      const response = yield* HttpClientRequest.patch(`/probe?workspace=${workspaceID}`).pipe(HttpClient.execute)
 
       expect(response.status).toBe(202)
       expect(yield* response.json).toEqual({ proxied: true })
@@ -400,12 +400,12 @@ describe("HttpApi workspace routing middleware", () => {
         dir,
         projectID: project.project.id,
         type: "remote-not-syncing",
-        url: "http:@lgcode/@lgcode/127.0.0.1:1@lgcode/base",
+        url: "http://127.0.0.1:1/base",
       })
 
       yield* serveProbe
 
-      const response = yield* HttpClient.get(`@lgcode/probe?workspace=${workspaceID}`)
+      const response = yield* HttpClient.get(`/probe?workspace=${workspaceID}`)
 
       expect(response.status).toBe(503)
       expect(yield* response.text).toBe(`broken sync connection for workspace: ${workspaceID}`)
@@ -421,15 +421,15 @@ describe("HttpApi workspace routing middleware", () => {
         dir,
         projectID: project.project.id,
         type: "remote-websocket-target",
-        url: `${remoteUrl}@lgcode/base`,
+        url: `${remoteUrl}/base`,
       })
 
-      @lgcode/@lgcode/ The client connects to the local test server. The middleware should
-      @lgcode/@lgcode/ detect the WebSocket upgrade and proxy it to the remote @lgcode/base@lgcode/probe.
+      // The client connects to the local test server. The middleware should
+      // detect the WebSocket upgrade and proxy it to the remote /base/probe.
       yield* serveProbe
 
       const socket = yield* Socket.makeWebSocket(
-        `${(yield* serverUrl).replace(@lgcode/^http@lgcode/, "ws")}@lgcode/probe?workspace=${workspace.id}`,
+        `${(yield* serverUrl).replace(/^http/, "ws")}/probe?workspace=${workspace.id}`,
         {
           closeCodeIsError: () => false,
           protocols: "chat",
@@ -448,11 +448,11 @@ describe("HttpApi workspace routing middleware", () => {
   it.live("returns a missing workspace response for unknown workspace ids", () =>
     Effect.gen(function* () {
       const workspaceID = WorkspaceV2.ID.ascending("wrk_missing")
-      @lgcode/@lgcode/ If the middleware resolves the workspace first, this handler is never
-      @lgcode/@lgcode/ reached and the response should be the middleware error response.
+      // If the middleware resolves the workspace first, this handler is never
+      // reached and the response should be the middleware error response.
       yield* serveProbe
 
-      const response = yield* HttpClient.get(`@lgcode/probe?workspace=${workspaceID}`)
+      const response = yield* HttpClient.get(`/probe?workspace=${workspaceID}`)
 
       expect(response.status).toBe(500)
       expect(yield* response.text).toBe(`Workspace not found: ${workspaceID}`)
@@ -471,11 +471,11 @@ describe("HttpApi workspace routing middleware", () => {
         directory: workspaceDir,
       })
 
-      @lgcode/@lgcode/ GET @lgcode/session is a control-plane route: it lists sessions for the main
-      @lgcode/@lgcode/ process and should not be redirected into the selected workspace target.
+      // GET /session is a control-plane route: it lists sessions for the main
+      // process and should not be redirected into the selected workspace target.
       yield* serveProbe
 
-      const response = yield* HttpClient.get(`@lgcode/session?workspace=${workspace.id}`)
+      const response = yield* HttpClient.get(`/session?workspace=${workspace.id}`)
 
       expect(response.status).toBe(200)
       expect(yield* response.json).toEqual({ directory: process.cwd(), workspaceID: workspace.id })
@@ -493,9 +493,9 @@ describe("HttpApi workspace routing middleware", () => {
         directory: workspaceDir,
       })
 
-      @lgcode/@lgcode/ Workspace CRUD@lgcode/status routes manage the control plane itself. Selecting
-      @lgcode/@lgcode/ a workspace should preserve the selected id for handlers, but must not
-      @lgcode/@lgcode/ swap the route context to the workspace target directory.
+      // Workspace CRUD/status routes manage the control plane itself. Selecting
+      // a workspace should preserve the selected id for handlers, but must not
+      // swap the route context to the workspace target directory.
       yield* serveProbe
 
       const response = yield* HttpClient.get(`${WorkspacePaths.list}?workspace=${workspace.id}`)
@@ -505,17 +505,17 @@ describe("HttpApi workspace routing middleware", () => {
     }),
   )
 
-  it.live("uses directory query@lgcode/header fallback when no workspace is selected", () =>
+  it.live("uses directory query/header fallback when no workspace is selected", () =>
     Effect.gen(function* () {
       const dir = yield* tmpdirScoped()
       const queryDir = path.join(dir, "query-target")
       const headerDir = path.join(dir, "header-target")
       yield* serveProbe
 
-      @lgcode/@lgcode/ Without a selected workspace, the middleware falls back to request
-      @lgcode/@lgcode/ directory hints before using the process cwd.
-      const queryResponse = yield* HttpClient.get(`@lgcode/probe?directory=${encodeURIComponent(queryDir)}`)
-      const headerResponse = yield* HttpClientRequest.get("@lgcode/probe").pipe(
+      // Without a selected workspace, the middleware falls back to request
+      // directory hints before using the process cwd.
+      const queryResponse = yield* HttpClient.get(`/probe?directory=${encodeURIComponent(queryDir)}`)
+      const headerResponse = yield* HttpClientRequest.get("/probe").pipe(
         HttpClientRequest.setHeader("x-opencode-directory", headerDir),
         HttpClient.execute,
       )
@@ -541,9 +541,9 @@ describe("HttpApi workspace routing middleware", () => {
 
       yield* serveProbe
 
-      @lgcode/@lgcode/ @lgcode/probe is not a control-plane route, so selecting a local workspace
-      @lgcode/@lgcode/ should swap the route context to the workspace target directory.
-      const response = yield* HttpClient.get(`@lgcode/probe?workspace=${workspace.id}`)
+      // /probe is not a control-plane route, so selecting a local workspace
+      // should swap the route context to the workspace target directory.
+      const response = yield* HttpClient.get(`/probe?workspace=${workspace.id}`)
 
       expect(response.status).toBe(200)
       expect(yield* response.json).toEqual({

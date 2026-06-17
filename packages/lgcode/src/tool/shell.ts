@@ -1,28 +1,28 @@
 import { Effect, Stream } from "effect"
 import os from "os"
 import { createWriteStream } from "node:fs"
-import * as Tool from ".@lgcode/tool"
+import * as Tool from "./tool"
 import path from "path"
-import { containsPath, type InstanceContext } from "..@lgcode/project@lgcode/instance-context"
-import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
-import { lazy } from "@@lgcode/util@lgcode/lazy"
+import { containsPath, type InstanceContext } from "../project/instance-context"
+import { InstanceState } from "@/effect/instance-state"
+import { lazy } from "@/util/lazy"
 import { Language, type Node } from "web-tree-sitter"
 
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
 import { fileURLToPath } from "url"
-import { Config } from "@@lgcode/config@lgcode/config"
-import { RuntimeFlags } from "@@lgcode/effect@lgcode/runtime-flags"
-import { Shell } from "@lgcode/core@lgcode/shell"
-import { ShellID } from ".@lgcode/shell@lgcode/id"
+import { Config } from "@/config/config"
+import { RuntimeFlags } from "@/effect/runtime-flags"
+import { Shell } from "@opencode@lgcode/core/shell"
+import { ShellID } from "./shell/id"
 
-import * as Truncate from ".@lgcode/truncate"
-import { Plugin } from "@@lgcode/plugin"
-import { ChildProcess } from "effect@lgcode/unstable@lgcode/process"
-import { ChildProcessSpawner } from "effect@lgcode/unstable@lgcode/process@lgcode/ChildProcessSpawner"
-import { ShellPrompt, type Parameters } from ".@lgcode/shell@lgcode/prompt"
-import { BashArity } from "@@lgcode/permission@lgcode/arity"
+import * as Truncate from "./truncate"
+import { Plugin } from "@/plugin"
+import { ChildProcess } from "effect/unstable/process"
+import { ChildProcessSpawner } from "effect/unstable/process/ChildProcessSpawner"
+import { ShellPrompt, type Parameters } from "./shell/prompt"
+import { BashArity } from "@/permission/arity"
 
-export { Parameters } from ".@lgcode/shell@lgcode/prompt"
+export { Parameters } from "./shell/prompt"
 
 const MAX_METADATA_LENGTH = 30_000
 const CWD = new Set(["cd", "chdir", "popd", "pushd", "push-location", "set-location"])
@@ -36,9 +36,9 @@ const FILES = new Set([
   "chmod",
   "chown",
   "cat",
-  @lgcode/@lgcode/ Leave PowerShell aliases out for now. Common ones like cat@lgcode/cp@lgcode/mv@lgcode/rm@lgcode/mkdir
-  @lgcode/@lgcode/ already hit the entries above, and alias normalization should happen in one
-  @lgcode/@lgcode/ place later so we do not risk double-prompting.
+  // Leave PowerShell aliases out for now. Common ones like cat/cp/mv/rm/mkdir
+  // already hit the entries above, and alias normalization should happen in one
+  // place later so we do not risk double-prompting.
   "get-content",
   "set-content",
   "add-content",
@@ -82,8 +82,8 @@ type Chunk = {
 }
 
 const resolveWasm = (asset: string) => {
-  if (asset.startsWith("file:@lgcode/@lgcode/")) return fileURLToPath(asset)
-  if (asset.startsWith("@lgcode/") || @lgcode/^[a-z]:@lgcode/i.test(asset)) return asset
+  if (asset.startsWith("file://")) return fileURLToPath(asset)
+  if (asset.startsWith("/") || /^[a-z]:/i.test(asset)) return asset
   const url = new URL(asset, import.meta.url)
   return fileURLToPath(url)
 }
@@ -134,7 +134,7 @@ function unquote(text: string) {
 
 function home(text: string) {
   if (text === "~") return os.homedir()
-  if (text.startsWith("~@lgcode/") || text.startsWith("~\\")) return path.join(os.homedir(), text.slice(2))
+  if (text.startsWith("~/") || text.startsWith("~\\")) return path.join(os.homedir(), text.slice(2))
   return text
 }
 
@@ -153,19 +153,19 @@ function auto(key: string, cwd: string, shell: string) {
 
 function expand(text: string, cwd: string, shell: string) {
   const out = unquote(text)
-    .replace(@lgcode/\$\{env:([^}]+)\}@lgcode/gi, (_, key: string) => envValue(key) || "")
-    .replace(@lgcode/\$env:([A-Za-z_][A-Za-z0-9_]*)@lgcode/gi, (_, key: string) => envValue(key) || "")
-    .replace(@lgcode/\$(HOME|PWD|PSHOME)(?=$|[\\@lgcode/])@lgcode/gi, (_, key: string) => auto(key, cwd, shell) || "")
+    .replace(/\$\{env:([^}]+)\}/gi, (_, key: string) => envValue(key) || "")
+    .replace(/\$env:([A-Za-z_][A-Za-z0-9_]*)/gi, (_, key: string) => envValue(key) || "")
+    .replace(/\$(HOME|PWD|PSHOME)(?=$|[\\/])/gi, (_, key: string) => auto(key, cwd, shell) || "")
   return home(out)
 }
 
 function provider(text: string) {
-  const match = text.match(@lgcode/^([A-Za-z]+)::(.*)$@lgcode/)
+  const match = text.match(/^([A-Za-z]+)::(.*)$/)
   if (match) {
     if (match[1].toLowerCase() !== "filesystem") return
     return match[2]
   }
-  const prefix = text.match(@lgcode/^([A-Za-z]+):(.*)$@lgcode/)
+  const prefix = text.match(/^([A-Za-z]+):(.*)$/)
   if (!prefix) return text
   if (prefix[1].length === 1) return text
   return
@@ -174,12 +174,12 @@ function provider(text: string) {
 function dynamic(text: string, ps: boolean) {
   if (text.startsWith("(") || text.startsWith("@(")) return true
   if (text.includes("$(") || text.includes("${") || text.includes("`")) return true
-  if (ps) return @lgcode/\$(?!env:)@lgcode/i.test(text)
+  if (ps) return /\$(?!env:)/i.test(text)
   return text.includes("$")
 }
 
 function prefix(text: string) {
-  const match = @lgcode/[?*[]@lgcode/.exec(text)
+  const match = /[?*[]/.exec(text)
   if (!match) return text
   if (match.index === 0) return
   return text.slice(0, match.index)
@@ -192,7 +192,7 @@ function pathArgs(list: Part[], ps: boolean, cmd = false) {
       .filter(
         (item) =>
           !item.text.startsWith("-") &&
-          !(cmd && item.text.startsWith("@lgcode/")) &&
+          !(cmd && item.text.startsWith("/")) &&
           !(list[0]?.text === "chmod" && item.text.startsWith("+")),
       )
       .map((item) => item.text)
@@ -316,7 +316,7 @@ function cmd(shell: string, command: string, cwd: string, env: NodeJS.ProcessEnv
 }
 const parser = lazy(async () => {
   const { Parser } = await import("web-tree-sitter")
-  const { default: treeWasm } = await import("web-tree-sitter@lgcode/tree-sitter.wasm" as string, {
+  const { default: treeWasm } = await import("web-tree-sitter/tree-sitter.wasm" as string, {
     with: { type: "wasm" },
   })
   const treePath = resolveWasm(treeWasm)
@@ -325,10 +325,10 @@ const parser = lazy(async () => {
       return treePath
     },
   })
-  const { default: bashWasm } = await import("tree-sitter-bash@lgcode/tree-sitter-bash.wasm" as string, {
+  const { default: bashWasm } = await import("tree-sitter-bash/tree-sitter-bash.wasm" as string, {
     with: { type: "wasm" },
   })
-  const { default: psWasm } = await import("tree-sitter-powershell@lgcode/tree-sitter-powershell.wasm" as string, {
+  const { default: psWasm } = await import("tree-sitter-powershell/tree-sitter-powershell.wasm" as string, {
     with: { type: "wasm" },
   })
   const bashPath = resolveWasm(bashWasm)
@@ -363,7 +363,7 @@ export const ShellTool = Tool.define(
 
     const resolvePath = Effect.fn("ShellTool.resolvePath")(function* (text: string, root: string, shell: string) {
       if (process.platform === "win32") {
-        if (Shell.posix(shell) && text.startsWith("@lgcode/") && FSUtil.windowsPath(text) === text) {
+        if (Shell.posix(shell) && text.startsWith("/") && FSUtil.windowsPath(text) === text) {
           const file = yield* cygpath(shell, text)
           if (file) return file
         }
@@ -590,7 +590,7 @@ export const ShellTool = Tool.define(
       }
 
       if (meta.length > 0) {
-        output += "\n\n<shell_metadata>\n" + meta.join("\n") + "\n<@lgcode/shell_metadata>"
+        output += "\n\n<shell_metadata>\n" + meta.join("\n") + "\n</shell_metadata>"
       }
       return {
         title: input.description,

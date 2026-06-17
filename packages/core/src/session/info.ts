@@ -1,13 +1,13 @@
 import { DateTime } from "effect"
-import { AgentV2 } from "..@lgcode/agent"
-import { Location } from "..@lgcode/location"
-import { ModelV2 } from "..@lgcode/model"
-import { ProjectV2 } from "..@lgcode/project"
-import { ProviderV2 } from "..@lgcode/provider"
-import { AbsolutePath, RelativePath } from "..@lgcode/schema"
-import { WorkspaceV2 } from "..@lgcode/workspace"
-import { SessionSchema } from ".@lgcode/schema"
-import { SessionTable } from ".@lgcode/sql"
+import { AgentV2 } from "../agent"
+import { Location } from "../location"
+import { ModelV2 } from "../model"
+import { ProjectV2 } from "../project"
+import { ProviderV2 } from "../provider"
+import { AbsolutePath, RelativePath } from "../schema"
+import { WorkspaceV2 } from "../workspace"
+import { SessionSchema } from "./schema"
+import { SessionTable } from "./sql"
 
 export function fromRow(row: typeof SessionTable.$inferSelect): SessionSchema.Info {
   return SessionSchema.Info.make({

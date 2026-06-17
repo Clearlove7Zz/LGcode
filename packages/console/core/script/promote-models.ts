@@ -1,9 +1,9 @@
-#!@lgcode/usr@lgcode/bin@lgcode/env bun
+#!/usr/bin/env bun
 
 import { $ } from "bun"
 import path from "path"
 import os from "os"
-import { ZenData } from "..@lgcode/src@lgcode/model"
+import { ZenData } from "../src/model"
 
 const stage = process.argv[2]
 if (!stage) throw new Error("Stage is required")
@@ -11,7 +11,7 @@ if (!stage) throw new Error("Stage is required")
 const root = path.resolve(process.cwd(), "..", "..", "..")
 const PARTS = 30
 
-@lgcode/@lgcode/ read the secret
+// read the secret
 const ret = await $`bun sst secret list --stage frank`.cwd(root).text()
 const lines = ret.split("\n")
 const values = Array.from({ length: PARTS }, (_, i) => {
@@ -24,10 +24,10 @@ const values = Array.from({ length: PARTS }, (_, i) => {
   return value
 })
 
-@lgcode/@lgcode/ validate value
+// validate value
 ZenData.validate(JSON.parse(values.join("")))
 
-@lgcode/@lgcode/ update the secret
+// update the secret
 const envFile = Bun.file(path.join(os.tmpdir(), `models-${Date.now()}.env`))
-await envFile.write(values.map((v, i) => `ZEN_MODELS${i + 1}="${v.replace(@lgcode/"@lgcode/g, '\\"')}"`).join("\n"))
+await envFile.write(values.map((v, i) => `ZEN_MODELS${i + 1}="${v.replace(/"/g, '\\"')}"`).join("\n"))
 await $`bun sst secret load ${envFile.name} --stage ${stage}`.cwd(root)

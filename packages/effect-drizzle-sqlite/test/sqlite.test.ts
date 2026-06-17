@@ -1,15 +1,15 @@
-import { mkdir, mkdtemp, rm } from "node:fs@lgcode/promises"
+import { mkdir, mkdtemp, rm } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { Database } from "bun:sqlite"
 import { expect, test } from "bun:test"
-import { SqliteClient } from "@effect@lgcode/sql-sqlite-bun"
+import { SqliteClient } from "@effect/sql-sqlite-bun"
 import { eq, sql } from "drizzle-orm"
-import { integer, sqliteTable, text } from "drizzle-orm@lgcode/sqlite-core"
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core"
 import { Effect } from "effect"
-import type { SqlClient as SqlClientService } from "effect@lgcode/unstable@lgcode/sql@lgcode/SqlClient"
-import { isSqlError } from "effect@lgcode/unstable@lgcode/sql@lgcode/SqlError"
-import { EffectDrizzleSqlite } from "..@lgcode/src"
+import type { SqlClient as SqlClientService } from "effect/unstable/sql/SqlClient"
+import { isSqlError } from "effect/unstable/sql/SqlError"
+import { EffectDrizzleSqlite } from "../src"
 
 const users = sqliteTable("users", {
   id: integer().primaryKey({ autoIncrement: true }),

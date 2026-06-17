@@ -1,4 +1,4 @@
-import * as Schema from "effect@lgcode/Schema"
+import * as Schema from "effect/Schema"
 
 export class Source extends Schema.Class<Source>("Prompt.Source")({
   start: Schema.Finite,

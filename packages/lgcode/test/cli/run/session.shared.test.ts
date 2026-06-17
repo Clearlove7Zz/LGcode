@@ -5,7 +5,7 @@ import {
   sessionVariant,
   type RunSession,
   type SessionMessages,
-} from "@@lgcode/cli@lgcode/cmd@lgcode/run@lgcode/session.shared"
+} from "@/cli/cmd/run/session.shared"
 
 type Message = SessionMessages[number]
 type Part = Message["parts"][number]
@@ -52,8 +52,8 @@ function assistantMessage(id: string, parts: Message["parts"]): Message {
       mode: "chat",
       agent: "build",
       path: {
-        cwd: "@lgcode/tmp",
-        root: "@lgcode/tmp",
+        cwd: "/tmp",
+        root: "/tmp",
       },
       cost: 0,
       tokens: {
@@ -98,7 +98,7 @@ function filePart(id: string, messageID: string, url: string, input: Partial<Fil
     sessionID: "session-1",
     messageID,
     type: "file",
-    mime: input.mime ?? "text@lgcode/plain",
+    mime: input.mime ?? "text/plain",
     filename: input.filename,
     url,
     source: input.source,
@@ -117,7 +117,7 @@ describe("run session shared", () => {
           end: 10,
           value: "@scan",
         }),
-        filePart("file-user-1", "msg-user-1", "file:@lgcode/@lgcode/@lgcode/tmp@lgcode/note.ts"),
+        filePart("file-user-1", "msg-user-1", "file:///tmp/note.ts"),
       ]),
     ]
 
@@ -137,12 +137,12 @@ describe("run session shared", () => {
       },
       {
         type: "file",
-        mime: "text@lgcode/plain",
+        mime: "text/plain",
         filename: undefined,
-        url: "file:@lgcode/@lgcode/@lgcode/tmp@lgcode/note.ts",
+        url: "file:///tmp/note.ts",
         source: {
           type: "file",
-          path: "file:@lgcode/@lgcode/@lgcode/tmp@lgcode/note.ts",
+          path: "file:///tmp/note.ts",
           text: {
             start: 11,
             end: 19,
@@ -158,7 +158,7 @@ describe("run session shared", () => {
       userMessage("msg-user-1", [
         textPart("txt-user-1", "msg-user-1", "look @scan @note.ts"),
         agentPart("agent-user-1", "msg-user-1", "scan"),
-        filePart("file-user-1", "msg-user-1", "file:@lgcode/@lgcode/@lgcode/tmp@lgcode/note.ts"),
+        filePart("file-user-1", "msg-user-1", "file:///tmp/note.ts"),
       ]),
     ])
 
@@ -176,12 +176,12 @@ describe("run session shared", () => {
         },
         {
           type: "file",
-          mime: "text@lgcode/plain",
+          mime: "text/plain",
           filename: undefined,
-          url: "file:@lgcode/@lgcode/@lgcode/tmp@lgcode/note.ts",
+          url: "file:///tmp/note.ts",
           source: {
             type: "file",
-            path: "file:@lgcode/@lgcode/@lgcode/tmp@lgcode/note.ts",
+            path: "file:///tmp/note.ts",
             text: {
               start: 11,
               end: 19,

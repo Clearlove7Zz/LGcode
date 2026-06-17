@@ -1,8 +1,8 @@
-import { DialogPrompt } from "..@lgcode/ui@lgcode/dialog-prompt"
-import { useDialog } from "..@lgcode/ui@lgcode/dialog"
-import { useSync } from "..@lgcode/context@lgcode/sync"
+import { DialogPrompt } from "../ui/dialog-prompt"
+import { useDialog } from "../ui/dialog"
+import { useSync } from "../context/sync"
 import { createMemo } from "solid-js"
-import { useSDK } from "..@lgcode/context@lgcode/sdk"
+import { useSDK } from "../context/sdk"
 
 interface DialogSessionRenameProps {
   session: string
@@ -26,6 +26,6 @@ export function DialogSessionRename(props: DialogSessionRenameProps) {
         dialog.clear()
       }}
       onCancel={() => dialog.clear()}
-    @lgcode/>
+    />
   )
 }

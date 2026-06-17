@@ -1,4 +1,4 @@
-import { dict as en } from ".@lgcode/en"
+import { dict as en } from "./en"
 
 type Keys = keyof typeof en
 
@@ -25,7 +25,7 @@ export const dict = {
   "theme.scheme.light": "Açık",
   "theme.scheme.dark": "Koyu",
 
-  "command.sidebar.toggle": "Kenar çubuğunu aç@lgcode/kapat",
+  "command.sidebar.toggle": "Kenar çubuğunu aç/kapat",
   "command.project.open": "Proje aç",
   "command.provider.connect": "Sağlayıcı bağla",
   "command.server.switch": "Sunucu değiştir",
@@ -52,12 +52,12 @@ export const dict = {
   "command.context.addSelection": "Seçimi bağlama ekle",
   "command.context.addSelection.description": "Mevcut dosyadan seçili satırları ekle",
   "command.input.focus": "Girişi odakla",
-  "command.terminal.toggle": "Terminali aç@lgcode/kapat",
-  "command.fileTree.toggle": "Dosya ağacını aç@lgcode/kapat",
-  "command.review.toggle": "İncelemeyi aç@lgcode/kapat",
+  "command.terminal.toggle": "Terminali aç/kapat",
+  "command.fileTree.toggle": "Dosya ağacını aç/kapat",
+  "command.review.toggle": "İncelemeyi aç/kapat",
   "command.terminal.new": "Yeni terminal",
   "command.terminal.new.description": "Yeni bir terminal sekmesi oluştur",
-  "command.steps.toggle": "Adımları aç@lgcode/kapat",
+  "command.steps.toggle": "Adımları aç/kapat",
   "command.steps.toggle.description": "Mevcut mesaj için adımları göster veya gizle",
   "command.message.previous": "Önceki mesaj",
   "command.message.previous.description": "Önceki kullanıcı mesajına git",
@@ -65,8 +65,8 @@ export const dict = {
   "command.message.next.description": "Sonraki kullanıcı mesajına git",
   "command.model.choose": "Model seç",
   "command.model.choose.description": "Farklı bir model seç",
-  "command.mcp.toggle": "MCP'leri aç@lgcode/kapat",
-  "command.mcp.toggle.description": "MCP'leri aç@lgcode/kapat",
+  "command.mcp.toggle": "MCP'leri aç/kapat",
+  "command.mcp.toggle.description": "MCP'leri aç/kapat",
   "command.agent.cycle": "Ajan değiştir",
   "command.agent.cycle.description": "Sonraki ajana geç",
   "command.agent.cycle.reverse": "Ajanı geri değiştir",
@@ -77,7 +77,7 @@ export const dict = {
   "command.prompt.mode.normal": "Komut",
   "command.permissions.autoaccept.enable": "Düzenlemeleri otomatik kabul et",
   "command.permissions.autoaccept.disable": "Otomatik kabulü durdur",
-  "command.workspace.toggle": "Çalışma alanlarını aç@lgcode/kapat",
+  "command.workspace.toggle": "Çalışma alanlarını aç/kapat",
   "command.workspace.toggle.description": "Kenar çubuğunda birden fazla çalışma alanını göster veya gizle",
   "command.session.undo": "Geri al",
   "command.session.undo.description": "Son mesajı geri al",
@@ -117,7 +117,7 @@ export const dict = {
   "dialog.model.empty": "Model sonucu yok",
   "dialog.model.manage": "Modelleri yönet",
   "dialog.model.manage.description": "Model seçicide hangi modellerin görüneceğini özelleştirin.",
-  "dialog.model.manage.provider.toggle": "Tüm {{provider}} modellerini aç@lgcode/kapat",
+  "dialog.model.manage.provider.toggle": "Tüm {{provider}} modellerini aç/kapat",
 
   "dialog.model.unpaid.freeModels.title": "OpenCode tarafından sunulan ücretsiz modeller",
   "dialog.model.unpaid.addMore.title": "Popüler sağlayıcılardan daha fazla model ekleyin",
@@ -125,7 +125,7 @@ export const dict = {
   "dialog.provider.viewAll": "Daha fazla sağlayıcı göster",
 
   "provider.connect.title": "{{provider}} bağla",
-  "provider.connect.title.anthropicProMax": "Claude Pro@lgcode/Max ile giriş yap",
+  "provider.connect.title.anthropicProMax": "Claude Pro/Max ile giriş yap",
   "provider.connect.selectMethod": "{{provider}} için giriş yöntemini seçin.",
   "provider.connect.method.apiKey": "API anahtarı",
   "provider.connect.status.inProgress": "Yetkilendirme devam ediyor...",
@@ -141,7 +141,7 @@ export const dict = {
   "provider.connect.opencodeZen.line2":
     "Tek bir API anahtarıyla Claude, GPT, Gemini, GLM ve daha fazlası gibi modellere erişebilirsiniz.",
   "provider.connect.opencodeZen.visit.prefix": "",
-  "provider.connect.opencodeZen.visit.link": "opencode.ai@lgcode/zen",
+  "provider.connect.opencodeZen.visit.link": "opencode.ai/zen",
   "provider.connect.opencodeZen.visit.suffix": " adresini ziyaret ederek API anahtarınızı alın.",
   "provider.connect.oauth.code.visit.prefix":
     "Hesabınızı bağlamak ve OpenCode'da {{provider}} modellerini kullanmak için ",
@@ -169,7 +169,7 @@ export const dict = {
   "provider.custom.field.name.label": "Görünen ad",
   "provider.custom.field.name.placeholder": "Yapay Zekâ Sağlayıcım",
   "provider.custom.field.baseURL.label": "Temel URL",
-  "provider.custom.field.baseURL.placeholder": "https:@lgcode/@lgcode/api.saglayicim.com@lgcode/v1",
+  "provider.custom.field.baseURL.placeholder": "https://api.saglayicim.com/v1",
   "provider.custom.field.apiKey.label": "API anahtarı",
   "provider.custom.field.apiKey.placeholder": "API anahtarı",
   "provider.custom.field.apiKey.description":
@@ -193,7 +193,7 @@ export const dict = {
   "provider.custom.error.providerID.exists": "Bu sağlayıcı kimlik zaten mevcut",
   "provider.custom.error.name.required": "Görünen ad gerekli",
   "provider.custom.error.baseURL.required": "Temel URL gerekli",
-  "provider.custom.error.baseURL.format": "http:@lgcode/@lgcode/ veya https:@lgcode/@lgcode/ ile başlamalı",
+  "provider.custom.error.baseURL.format": "http:// veya https:// ile başlamalı",
   "provider.custom.error.required": "Gerekli",
   "provider.custom.error.duplicate": "Tekrar",
 
@@ -323,7 +323,7 @@ export const dict = {
   "dialog.server.empty": "Henüz sunucu yok",
   "dialog.server.add.title": "Sunucu ekle",
   "dialog.server.add.url": "Sunucu URL'si",
-  "dialog.server.add.placeholder": "http:@lgcode/@lgcode/localhost:4096",
+  "dialog.server.add.placeholder": "http://localhost:4096",
   "dialog.server.add.error": "Sunucuya bağlanılamadı",
   "dialog.server.add.checking": "Kontrol ediliyor...",
   "dialog.server.add.button": "Sunucu ekle",
@@ -380,7 +380,7 @@ export const dict = {
   "context.stats.inputTokens": "Girdi Tokenleri",
   "context.stats.outputTokens": "Çıktı Tokenleri",
   "context.stats.reasoningTokens": "Akıl Yürütme Tokenleri",
-  "context.stats.cacheTokens": "Önbellek Tokenleri (okuma@lgcode/yazma)",
+  "context.stats.cacheTokens": "Önbellek Tokenleri (okuma/yazma)",
   "context.stats.userMessages": "Kullanıcı Mesajları",
   "context.stats.assistantMessages": "Asistan Mesajları",
   "context.stats.totalCost": "Toplam Maliyet",
@@ -480,8 +480,8 @@ export const dict = {
   "error.chain.retryable": "Yeniden denenebilir: {{retryable}}",
   "error.chain.responseBody": "Yanıt gövdesi:\n{{body}}",
   "error.chain.didYouMean": "Bunu mu demek istediniz: {{suggestions}}",
-  "error.chain.modelNotFound": "Model bulunamadı: {{provider}}@lgcode/{{model}}",
-  "error.chain.checkConfig": "Yapılandırma dosyanızı (opencode.json) sağlayıcı@lgcode/model adlarını kontrol edin",
+  "error.chain.modelNotFound": "Model bulunamadı: {{provider}}/{{model}}",
+  "error.chain.checkConfig": "Yapılandırma dosyanızı (opencode.json) sağlayıcı/model adlarını kontrol edin",
   "error.chain.mcpFailed":
     'MCP sunucusu "{{name}}" başarısız oldu. Not: OpenCode henüz MCP kimlik doğrulamasını desteklemiyor.',
   "error.chain.providerAuthFailed": "Sağlayıcı kimlik doğrulaması başarısız ({{provider}}): {{message}}",
@@ -612,7 +612,7 @@ export const dict = {
   "common.loadMore": "Daha fazla yükle",
   "common.key.esc": "ESC",
 
-  "sidebar.menu.toggle": "Menüyü aç@lgcode/kapat",
+  "sidebar.menu.toggle": "Menüyü aç/kapat",
   "sidebar.nav.projectsAndSessions": "Projeler ve oturumlar",
   "sidebar.settings": "Ayarlar",
   "sidebar.help": "Yardım",

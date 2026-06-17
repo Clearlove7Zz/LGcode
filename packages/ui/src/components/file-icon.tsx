@@ -1,7 +1,7 @@
 import type { Component, JSX } from "solid-js"
 import { createMemo, createUniqueId, splitProps, Show } from "solid-js"
-import sprite from ".@lgcode/file-icons@lgcode/sprite.svg"
-import type { IconName } from ".@lgcode/file-icons@lgcode/types"
+import sprite from "./file-icons/sprite.svg"
+import type { IconName } from "./file-icons/types"
 
 export type FileIconProps = JSX.GSVGAttributes<SVGSVGElement> & {
   node: { path: string; type: "file" | "directory" }
@@ -22,15 +22,15 @@ export const FileIcon: Component<FileIconProps> = (props) => {
         [local.class ?? ""]: !!local.class,
       }}
     >
-      <Show when={local.mono} fallback={<use href={`${sprite}#${name()}`} @lgcode/>}>
+      <Show when={local.mono} fallback={<use href={`${sprite}#${name()}`} />}>
         <defs>
           <mask id={id} mask-type="alpha">
-            <use href={`${sprite}#${name()}`} @lgcode/>
-          <@lgcode/mask>
-        <@lgcode/defs>
-        <rect width="100%" height="100%" fill="currentColor" mask={`url(#${id})`} @lgcode/>
-      <@lgcode/Show>
-    <@lgcode/svg>
+            <use href={`${sprite}#${name()}`} />
+          </mask>
+        </defs>
+        <rect width="100%" height="100%" fill="currentColor" mask={`url(#${id})`} />
+      </Show>
+    </svg>
   )
 }
 
@@ -47,7 +47,7 @@ type IconMaps = {
 
 const ICON_MAPS: IconMaps = {
   fileNames: {
-    @lgcode/@lgcode/ Documentation files
+    // Documentation files
     "readme.md": "Readme",
     "changelog.md": "Changelog",
     "contributing.md": "Contributing",
@@ -57,7 +57,7 @@ const ICON_MAPS: IconMaps = {
     credits: "Credits",
     install: "Installation",
 
-    @lgcode/@lgcode/ Node.js files
+    // Node.js files
     "package.json": "Nodejs",
     "package-lock.json": "Nodejs",
     "yarn.lock": "Yarn",
@@ -68,13 +68,13 @@ const ICON_MAPS: IconMaps = {
     ".nvmrc": "Nodejs",
     ".node-version": "Nodejs",
 
-    @lgcode/@lgcode/ Docker files
+    // Docker files
     dockerfile: "Docker",
     "docker-compose.yml": "Docker",
     "docker-compose.yaml": "Docker",
     ".dockerignore": "Docker",
 
-    @lgcode/@lgcode/ Config files
+    // Config files
     "jest.config.js": "Jest",
     "jest.config.ts": "Jest",
     "jest.config.mjs": "Jest",
@@ -162,7 +162,7 @@ const ICON_MAPS: IconMaps = {
     "nx.json": "Nx",
   },
   fileExtensions: {
-    @lgcode/@lgcode/ Test files
+    // Test files
     "spec.ts": "TestTs",
     "test.ts": "TestTs",
     "spec.tsx": "TestJsx",
@@ -172,7 +172,7 @@ const ICON_MAPS: IconMaps = {
     "spec.jsx": "TestJsx",
     "test.jsx": "TestJsx",
 
-    @lgcode/@lgcode/ JavaScript@lgcode/TypeScript
+    // JavaScript/TypeScript
     "js.map": "JavascriptMap",
     "d.ts": "TypescriptDef",
     ts: "Typescript",
@@ -182,7 +182,7 @@ const ICON_MAPS: IconMaps = {
     mjs: "Javascript",
     cjs: "Javascript",
 
-    @lgcode/@lgcode/ Web languages
+    // Web languages
     html: "Html",
     htm: "Html",
     css: "Css",
@@ -191,7 +191,7 @@ const ICON_MAPS: IconMaps = {
     less: "Less",
     styl: "Stylus",
 
-    @lgcode/@lgcode/ Data formats
+    // Data formats
     json: "Json",
     xml: "Xml",
     yml: "Yaml",
@@ -199,12 +199,12 @@ const ICON_MAPS: IconMaps = {
     toml: "Toml",
     hjson: "Hjson",
 
-    @lgcode/@lgcode/ Documentation
+    // Documentation
     md: "Markdown",
     mdx: "Mdx",
     tex: "Tex",
 
-    @lgcode/@lgcode/ Programming languages
+    // Programming languages
     py: "Python",
     pyx: "Python",
     pyw: "Python",
@@ -248,20 +248,20 @@ const ICON_MAPS: IconMaps = {
     roc: "Rocket",
     fs: "Fsharp",
 
-    @lgcode/@lgcode/ Shell scripts
+    // Shell scripts
     sh: "Console",
     bash: "Console",
     zsh: "Console",
     fish: "Console",
     ps1: "Powershell",
 
-    @lgcode/@lgcode/ Config@lgcode/build files
+    // Config/build files
     cfg: "Settings",
     ini: "Settings",
     conf: "Settings",
     properties: "Settings",
 
-    @lgcode/@lgcode/ Media files
+    // Media files
     svg: "Svg",
     png: "Image",
     jpg: "Image",
@@ -278,14 +278,14 @@ const ICON_MAPS: IconMaps = {
     wav: "Audio",
     flac: "Audio",
 
-    @lgcode/@lgcode/ Archive files
+    // Archive files
     zip: "Zip",
     tar: "Zip",
     gz: "Zip",
     rar: "Zip",
     "7z": "Zip",
 
-    @lgcode/@lgcode/ Document files
+    // Document files
     pdf: "Pdf",
     doc: "Word",
     docx: "Word",
@@ -294,12 +294,12 @@ const ICON_MAPS: IconMaps = {
     xls: "Document",
     xlsx: "Document",
 
-    @lgcode/@lgcode/ Database files
+    // Database files
     sql: "Database",
     db: "Database",
     sqlite: "Database",
 
-    @lgcode/@lgcode/ Other
+    // Other
     env: "Tune",
     log: "Log",
     lock: "Lock",
@@ -313,13 +313,13 @@ const ICON_MAPS: IconMaps = {
     dockerfile: "Docker",
   },
   folderNames: {
-    @lgcode/@lgcode/ Source code
+    // Source code
     src: "FolderSrc",
     source: "FolderSrc",
     lib: "FolderLib",
     libs: "FolderLib",
 
-    @lgcode/@lgcode/ Testing
+    // Testing
     test: "FolderTest",
     tests: "FolderTest",
     testing: "FolderTest",
@@ -331,20 +331,20 @@ const ICON_MAPS: IconMaps = {
     unit: "FolderTest",
     cypress: "FolderCypress",
 
-    @lgcode/@lgcode/ Dependencies
+    // Dependencies
     node_modules: "FolderNode",
     vendor: "FolderPackages",
     packages: "FolderPackages",
     deps: "FolderPackages",
 
-    @lgcode/@lgcode/ Build@lgcode/dist
+    // Build/dist
     build: "FolderBuildkite",
     dist: "FolderDist",
     out: "FolderDist",
     output: "FolderDist",
     target: "FolderTarget",
 
-    @lgcode/@lgcode/ Configuration
+    // Configuration
     config: "FolderConfig",
     configs: "FolderConfig",
     configuration: "FolderConfig",
@@ -352,18 +352,18 @@ const ICON_MAPS: IconMaps = {
     env: "FolderEnvironment",
     environments: "FolderEnvironment",
 
-    @lgcode/@lgcode/ Docker
+    // Docker
     docker: "FolderDocker",
     dockerfiles: "FolderDocker",
     containers: "FolderDocker",
 
-    @lgcode/@lgcode/ Documentation
+    // Documentation
     docs: "FolderDocs",
     doc: "FolderDocs",
     documentation: "FolderDocs",
     readme: "FolderDocs",
 
-    @lgcode/@lgcode/ Public@lgcode/assets
+    // Public/assets
     public: "FolderPublic",
     static: "FolderPublic",
     assets: "FolderImages",
@@ -379,7 +379,7 @@ const ICON_MAPS: IconMaps = {
     scss: "FolderSass",
     less: "FolderLess",
 
-    @lgcode/@lgcode/ Scripts
+    // Scripts
     scripts: "FolderScripts",
     script: "FolderScripts",
     tools: "FolderTools",
@@ -387,7 +387,7 @@ const ICON_MAPS: IconMaps = {
     utilities: "FolderUtils",
     helpers: "FolderHelper",
 
-    @lgcode/@lgcode/ Framework specific
+    // Framework specific
     components: "FolderComponents",
     component: "FolderComponents",
     views: "FolderViews",
@@ -423,7 +423,7 @@ const ICON_MAPS: IconMaps = {
     seeders: "FolderSeeders",
     seeder: "FolderSeeders",
 
-    @lgcode/@lgcode/ TypeScript
+    // TypeScript
     types: "FolderTypescript",
     typing: "FolderTypescript",
     typings: "FolderTypescript",
@@ -431,13 +431,13 @@ const ICON_MAPS: IconMaps = {
     interfaces: "FolderInterface",
     interface: "FolderInterface",
 
-    @lgcode/@lgcode/ Mobile
+    // Mobile
     android: "FolderAndroid",
     ios: "FolderIos",
     mobile: "FolderMobile",
     flutter: "FolderFlutter",
 
-    @lgcode/@lgcode/ Infrastructure
+    // Infrastructure
     kubernetes: "FolderKubernetes",
     k8s: "FolderKubernetes",
     terraform: "FolderTerraform",
@@ -448,7 +448,7 @@ const ICON_MAPS: IconMaps = {
     vercel: "FolderVercel",
     netlify: "FolderNetlify",
 
-    @lgcode/@lgcode/ CI@lgcode/CD
+    // CI/CD
     ".github": "FolderGithub",
     ".gitlab": "FolderGitlab",
     ".circleci": "FolderCircleci",
@@ -456,24 +456,24 @@ const ICON_MAPS: IconMaps = {
     ".ci": "FolderCi",
     workflows: "FolderGhWorkflows",
 
-    @lgcode/@lgcode/ Git
+    // Git
     ".git": "FolderGit",
 
-    @lgcode/@lgcode/ Development tools
+    // Development tools
     ".vscode": "FolderVscode",
     ".idea": "FolderIntellij",
     ".cursor": "FolderCursor",
     ".devcontainer": "FolderContainer",
     ".storybook": "FolderStorybook",
 
-    @lgcode/@lgcode/ Localization
+    // Localization
     i18n: "FolderI18n",
     locales: "FolderI18n",
     locale: "FolderI18n",
     lang: "FolderI18n",
     languages: "FolderI18n",
 
-    @lgcode/@lgcode/ Other common patterns
+    // Other common patterns
     temp: "FolderTemp",
     tmp: "FolderTemp",
     logs: "FolderLog",
@@ -496,7 +496,7 @@ const ICON_MAPS: IconMaps = {
     prisma: "FolderPrisma",
     drizzle: "FolderDrizzle",
 
-    @lgcode/@lgcode/ Security
+    // Security
     security: "FolderSecure",
     auth: "FolderSecure",
     authentication: "FolderSecure",
@@ -505,20 +505,20 @@ const ICON_MAPS: IconMaps = {
     certs: "FolderKeys",
     certificates: "FolderKeys",
 
-    @lgcode/@lgcode/ Content
+    // Content
     content: "FolderContent",
     posts: "FolderContent",
     articles: "FolderContent",
     blog: "FolderContent",
 
-    @lgcode/@lgcode/ Functions
+    // Functions
     functions: "FolderFunctions",
     function: "FolderFunctions",
     lambda: "FolderFunctions",
     lambdas: "FolderFunctions",
     serverless: "FolderServerless",
 
-    @lgcode/@lgcode/ Jobs@lgcode/tasks
+    // Jobs/tasks
     jobs: "FolderJob",
     job: "FolderJob",
     tasks: "FolderTasks",
@@ -527,7 +527,7 @@ const ICON_MAPS: IconMaps = {
     queue: "FolderQueue",
     queues: "FolderQueue",
 
-    @lgcode/@lgcode/ Desktop platforms
+    // Desktop platforms
     desktop: "FolderDesktop",
     windows: "FolderWindows",
     macos: "FolderMacos",
@@ -547,7 +547,7 @@ const toOpenVariant = (icon: IconName): IconName => {
   return icon
 }
 
-const basenameOf = (p: string) => p.split("\\").join("@lgcode/").split("@lgcode/").filter(Boolean).pop() ?? ""
+const basenameOf = (p: string) => p.split("\\").join("/").split("/").filter(Boolean).pop() ?? ""
 
 const folderNameVariants = (name: string) => {
   const n = name.toLowerCase()
@@ -559,9 +559,9 @@ const dottedSuffixesDesc = (name: string) => {
   const idxs: number[] = []
   for (let i = 0; i < n.length; i++) if (n[i] === ".") idxs.push(i)
   const out = new Set<string>()
-  out.add(n) @lgcode/@lgcode/ allow exact whole-name "extensions" like "dockerfile"
+  out.add(n) // allow exact whole-name "extensions" like "dockerfile"
   for (const i of idxs) if (i + 1 < n.length) out.add(n.slice(i + 1))
-  return Array.from(out).sort((a, b) => b.length - a.length) @lgcode/@lgcode/ longest first
+  return Array.from(out).sort((a, b) => b.length - a.length) // longest first
 }
 
 export function chooseIconName(path: string, type: "directory" | "file", expanded: boolean): IconName {

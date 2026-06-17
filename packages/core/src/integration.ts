@@ -1,14 +1,14 @@
-export * as Integration from ".@lgcode/integration"
+export * as Integration from "./integration"
 
 import { Cause, Clock, Context, Duration, Effect, Exit, Layer, Schedule, Schema, Scope, SynchronizedRef } from "effect"
 import { castDraft, enableMapSet, type Draft } from "immer"
-import { Credential } from ".@lgcode/credential"
-import { IntegrationSchema } from ".@lgcode/integration@lgcode/schema"
-import { withStatics } from ".@lgcode/schema"
-import { State } from ".@lgcode/state"
-import { Identifier } from ".@lgcode/util@lgcode/identifier"
-import { EventV2 } from ".@lgcode/event"
-import { IntegrationConnection } from ".@lgcode/integration@lgcode/connection"
+import { Credential } from "./credential"
+import { IntegrationSchema } from "./integration/schema"
+import { withStatics } from "./schema"
+import { State } from "./state"
+import { Identifier } from "./util/identifier"
+import { EventV2 } from "./event"
+import { IntegrationConnection } from "./integration/connection"
 
 export const ID = IntegrationSchema.ID
 export type ID = IntegrationSchema.ID
@@ -194,63 +194,63 @@ export type Editor = {
 }
 
 export interface Interface {
-  @lgcode/** Registers a scoped transform over the integration registry. *@lgcode/
+  /** Registers a scoped transform over the integration registry. */
   readonly transform: State.Interface<Data, Editor>["transform"]
-  @lgcode/** Registers and immediately applies a scoped integration registry update. *@lgcode/
+  /** Registers and immediately applies a scoped integration registry update. */
   readonly update: State.Interface<Data, Editor>["update"]
-  @lgcode/** Returns one integration with its methods and current connections. *@lgcode/
+  /** Returns one integration with its methods and current connections. */
   readonly get: (id: ID) => Effect.Effect<Info | undefined>
-  @lgcode/** Returns all integrations with their methods and current connections. *@lgcode/
+  /** Returns all integrations with their methods and current connections. */
   readonly list: () => Effect.Effect<Info[]>
   readonly connection: {
-    @lgcode/** Returns active connections for every registered or credential-backed integration. *@lgcode/
+    /** Returns active connections for every registered or credential-backed integration. */
     readonly list: () => Effect.Effect<Map<ID, IntegrationConnection.Info>>
-    @lgcode/** Returns the active connection for one integration. *@lgcode/
+    /** Returns the active connection for one integration. */
     readonly forIntegration: (id: ID) => Effect.Effect<IntegrationConnection.Info | undefined>
-    @lgcode/** Runs a key method and stores the resulting credential. *@lgcode/
+    /** Runs a key method and stores the resulting credential. */
     readonly key: (input: {
-      @lgcode/** Integration receiving the credential. *@lgcode/
+      /** Integration receiving the credential. */
       readonly integrationID: ID
-      @lgcode/** Secret entered by the user. *@lgcode/
+      /** Secret entered by the user. */
       readonly key: string
-      @lgcode/** User-facing label for the stored credential. *@lgcode/
+      /** User-facing label for the stored credential. */
       readonly label?: string
     }) => Effect.Effect<void, AuthorizationError>
-    @lgcode/** Starts a stateful OAuth attempt. *@lgcode/
+    /** Starts a stateful OAuth attempt. */
     readonly oauth: (input: {
-      @lgcode/** Integration being authenticated. *@lgcode/
+      /** Integration being authenticated. */
       readonly integrationID: ID
-      @lgcode/** OAuth method selected by the caller. *@lgcode/
+      /** OAuth method selected by the caller. */
       readonly methodID: MethodID
-      @lgcode/** Answers to the method's optional prompts. *@lgcode/
+      /** Answers to the method's optional prompts. */
       readonly inputs: Inputs
-      @lgcode/** User-facing label for the credential created on completion. *@lgcode/
+      /** User-facing label for the credential created on completion. */
       readonly label?: string
     }) => Effect.Effect<Attempt, AuthorizationError>
-    @lgcode/** Updates a stored credential exposed as a connection. *@lgcode/
+    /** Updates a stored credential exposed as a connection. */
     readonly update: (
       credentialID: Credential.ID,
       updates: Partial<Pick<Credential.Stored, "label">>,
     ) => Effect.Effect<void>
-    @lgcode/** Removes a stored credential connection. *@lgcode/
+    /** Removes a stored credential connection. */
     readonly remove: (credentialID: Credential.ID) => Effect.Effect<void>
   }
   readonly attempt: {
-    @lgcode/** Returns the current state of an OAuth attempt. *@lgcode/
+    /** Returns the current state of an OAuth attempt. */
     readonly status: (attemptID: AttemptID) => Effect.Effect<AttemptStatus>
-    @lgcode/** Completes the attempt and stores its credential. *@lgcode/
+    /** Completes the attempt and stores its credential. */
     readonly complete: (input: {
-      @lgcode/** Opaque handle returned by `oauth`. *@lgcode/
+      /** Opaque handle returned by `oauth`. */
       readonly attemptID: AttemptID
-      @lgcode/** Authorization code required by attempts in code mode. *@lgcode/
+      /** Authorization code required by attempts in code mode. */
       readonly code?: string
     }) => Effect.Effect<void, CodeRequiredError | AuthorizationError>
-    @lgcode/** Cancels an attempt and releases its resources. *@lgcode/
+    /** Cancels an attempt and releases its resources. */
     readonly cancel: (attemptID: AttemptID) => Effect.Effect<void>
   }
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2@lgcode/Integration") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/v2/Integration") {}
 
 enableMapSet()
 
@@ -477,7 +477,7 @@ export const locationLayer = Layer.effect(
         oauth: Effect.fn("Integration.connection.oauth")(function* (input) {
           const method = state.get().integrations.get(input.integrationID)?.implementations.get(input.methodID)
           if (!method) {
-            return yield* Effect.die(`OAuth method not found: ${input.integrationID}@lgcode/${input.methodID}`)
+            return yield* Effect.die(`OAuth method not found: ${input.integrationID}/${input.methodID}`)
           }
           const attemptScope = yield* Scope.fork(scope)
           const authorization = yield* authorize(method.authorize(input.inputs)).pipe(

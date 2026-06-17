@@ -7,15 +7,15 @@ const make = (directory: string) => ({
     abort: async () => ({ data: undefined }),
   },
   worktree: {
-    create: async () => ({ data: { directory: `${directory}@lgcode/worktree-1` } }),
+    create: async () => ({ data: { directory: `${directory}/worktree-1` } }),
   },
 })
 
-const root = "@lgcode/tmp@lgcode/story"
+const root = "/tmp/story"
 const sdk = {
   directory: root,
   scope: "story-server",
-  url: "http:@lgcode/@lgcode/localhost:4096",
+  url: "http://localhost:4096",
   client: make(root),
   createClient(input: { directory: string }) {
     return make(input.directory)

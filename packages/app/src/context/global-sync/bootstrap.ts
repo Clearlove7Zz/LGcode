@@ -8,19 +8,19 @@ import type {
   QuestionRequest,
   Session,
   Todo,
-} from "@lgcode/sdk@lgcode/v2@lgcode/client"
-import { showToast } from "@@lgcode/utils@lgcode/toast"
-import { getFilename } from "@lgcode/core@lgcode/util@lgcode/path"
-import { retry } from "@lgcode/core@lgcode/util@lgcode/retry"
+} from "@opencode@lgcode/sdk/v2/client"
+import { showToast } from "@/utils/toast"
+import { getFilename } from "@opencode@lgcode/core/util/path"
+import { retry } from "@opencode@lgcode/core/util/retry"
 import { batch } from "solid-js"
-import { reconcile, type SetStoreFunction, type Store } from "solid-js@lgcode/store"
-import type { State, VcsCache } from ".@lgcode/types"
-import { cmp, normalizeAgentList, normalizeProviderList } from ".@lgcode/utils"
-import { formatServerError } from "@@lgcode/utils@lgcode/server-errors"
-import { QueryClient, queryOptions } from "@tanstack@lgcode/solid-query"
-import { loadMcpQuery } from "..@lgcode/server-sync"
-import { NormalizedProviderListResponse } from "@lgcode/ui@lgcode/context"
-import { ScopedKey, type ServerScope } from "@@lgcode/utils@lgcode/server-scope"
+import { reconcile, type SetStoreFunction, type Store } from "solid-js/store"
+import type { State, VcsCache } from "./types"
+import { cmp, normalizeAgentList, normalizeProviderList } from "./utils"
+import { formatServerError } from "@/utils/server-errors"
+import { QueryClient, queryOptions } from "@tanstack/solid-query"
+import { loadMcpQuery } from "../server-sync"
+import { NormalizedProviderListResponse } from "@opencode@lgcode/ui/context"
+import { ScopedKey, type ServerScope } from "@/utils/server-scope"
 
 type GlobalStore = {
   ready: boolean
@@ -124,12 +124,12 @@ export async function bootstrapGlobal(input: {
         .then((data) => input.setGlobalStore("project", data)),
   ]
   await runAll(slow)
-  @lgcode/@lgcode/ showErrors({
-  @lgcode/@lgcode/   errors: errors(),
-  @lgcode/@lgcode/   title: input.requestFailedTitle,
-  @lgcode/@lgcode/   translate: input.translate,
-  @lgcode/@lgcode/   formatMoreCount: input.formatMoreCount,
-  @lgcode/@lgcode/ })
+  // showErrors({
+  //   errors: errors(),
+  //   title: input.requestFailedTitle,
+  //   translate: input.translate,
+  //   formatMoreCount: input.formatMoreCount,
+  // })
 }
 
 function groupBySession<T extends { id: string; sessionID: string }>(input: T[]) {

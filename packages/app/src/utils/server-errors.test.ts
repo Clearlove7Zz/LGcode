@@ -1,10 +1,10 @@
 import { describe, expect, test } from "bun:test"
-import type { ConfigInvalidError, ProviderModelNotFoundError } from ".@lgcode/server-errors"
-import { formatServerError, parseReadableConfigInvalidError } from ".@lgcode/server-errors"
+import type { ConfigInvalidError, ProviderModelNotFoundError } from "./server-errors"
+import { formatServerError, parseReadableConfigInvalidError } from "./server-errors"
 
 function fill(text: string, vars?: Record<string, string | number>) {
   if (!vars) return text
-  return text.replace(@lgcode/{{\s*(\w+)\s*}}@lgcode/g, (_, key: string) => {
+  return text.replace(/{{\s*(\w+)\s*}}/g, (_, key: string) => {
     const value = vars[key]
     if (value === undefined) return ""
     return String(value)
@@ -16,9 +16,9 @@ function useLanguageMock() {
     "error.chain.unknown": "Erro desconhecido",
     "error.chain.configInvalid": "Arquivo de config em {{path}} invalido",
     "error.chain.configInvalidWithMessage": "Arquivo de config em {{path}} invalido: {{message}}",
-    "error.chain.modelNotFound": "Modelo nao encontrado: {{provider}}@lgcode/{{model}}",
+    "error.chain.modelNotFound": "Modelo nao encontrado: {{provider}}/{{model}}",
     "error.chain.didYouMean": "Voce quis dizer: {{suggestions}}",
-    "error.chain.checkConfig": "Revise provider@lgcode/model no config",
+    "error.chain.checkConfig": "Revise provider/model no config",
   }
   return {
     t(key: string, vars?: Record<string, string | number>) {
@@ -100,7 +100,7 @@ describe("formatServerError", () => {
     )
   })
 
-  test("formats provider model errors using provider@lgcode/model", () => {
+  test("formats provider model errors using provider/model", () => {
     const error = {
       name: "ProviderModelNotFoundError",
       data: {
@@ -110,7 +110,7 @@ describe("formatServerError", () => {
     } satisfies ProviderModelNotFoundError
 
     expect(formatServerError(error, language.t)).toBe(
-      ["Modelo nao encontrado: openai@lgcode/gpt-4.1", "Revise provider@lgcode/model no config"].join("\n"),
+      ["Modelo nao encontrado: openai/gpt-4.1", "Revise provider/model no config"].join("\n"),
     )
   })
 
@@ -120,12 +120,12 @@ describe("formatServerError", () => {
       data: {
         providerID: "x",
         modelID: "y",
-        suggestions: ["x@lgcode/y2", "x@lgcode/y3"],
+        suggestions: ["x/y2", "x/y3"],
       },
     } satisfies ProviderModelNotFoundError
 
     expect(formatServerError(error, language.t)).toBe(
-      ["Modelo nao encontrado: x@lgcode/y", "Voce quis dizer: x@lgcode/y2, x@lgcode/y3", "Revise provider@lgcode/model no config"].join("\n"),
+      ["Modelo nao encontrado: x/y", "Voce quis dizer: x/y2, x/y3", "Revise provider/model no config"].join("\n"),
     )
   })
 

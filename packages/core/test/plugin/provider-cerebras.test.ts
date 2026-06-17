@@ -1,14 +1,14 @@
 import { describe, expect, mock } from "bun:test"
 import { Effect } from "effect"
-import { Catalog } from "@lgcode/core@lgcode/catalog"
-import { PluginV2 } from "@lgcode/core@lgcode/plugin"
-import { CerebrasPlugin } from "@lgcode/core@lgcode/plugin@lgcode/provider@lgcode/cerebras"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { it, model } from ".@lgcode/provider-helper"
+import { Catalog } from "@opencode@lgcode/core/catalog"
+import { PluginV2 } from "@opencode@lgcode/core/plugin"
+import { CerebrasPlugin } from "@opencode@lgcode/core/plugin/provider/cerebras"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { it, model } from "./provider-helper"
 
 const cerebrasOptions: Record<string, unknown>[] = []
 
-void mock.module("@ai-sdk@lgcode/cerebras", () => ({
+void mock.module("@ai-sdk/cerebras", () => ({
   createCerebras: (options: Record<string, unknown>) => {
     const snapshot = { ...options }
     cerebrasOptions.push(snapshot)
@@ -27,7 +27,7 @@ describe("CerebrasPlugin", () => {
       const transform = yield* catalog.transform()
       yield* transform((catalog) => {
         catalog.provider.update(ProviderV2.ID.make("cerebras"), (item) => {
-          item.api = { type: "aisdk", package: "@ai-sdk@lgcode/cerebras" }
+          item.api = { type: "aisdk", package: "@ai-sdk/cerebras" }
           item.request.headers.Existing = "1"
         })
       })
@@ -58,7 +58,7 @@ describe("CerebrasPlugin", () => {
         "aisdk.sdk",
         {
           model: model("custom-cerebras", "llama-4-scout-17b-16e-instruct"),
-          package: "@ai-sdk@lgcode/cerebras",
+          package: "@ai-sdk/cerebras",
           options: { name: "custom-cerebras", apiKey: "test" },
         },
         {},
@@ -77,7 +77,7 @@ describe("CerebrasPlugin", () => {
         "aisdk.sdk",
         {
           model: model("custom-cerebras", "llama-4-scout-17b-16e-instruct"),
-          package: "@ai-sdk@lgcode/cerebras",
+          package: "@ai-sdk/cerebras",
           options: { name: "configured-cerebras", apiKey: "test" },
         },
         {},
@@ -95,7 +95,7 @@ describe("CerebrasPlugin", () => {
         "aisdk.sdk",
         {
           model: model("custom-cerebras", "llama-4-scout-17b-16e-instruct"),
-          package: "@ai-sdk@lgcode/groq",
+          package: "@ai-sdk/groq",
           options: { name: "custom-cerebras", apiKey: "test" },
         },
         {},

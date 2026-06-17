@@ -1,19 +1,19 @@
-import { AuthOptions, type ProviderAuthOption } from "..@lgcode/route@lgcode/auth-options"
-import type { Route, RouteDefaultsInput } from "..@lgcode/route@lgcode/client"
-import { ProviderID, type ModelID } from "..@lgcode/schema"
-import * as OpenAIChat from "..@lgcode/protocols@lgcode/openai-chat"
-import * as OpenAIResponses from "..@lgcode/protocols@lgcode/openai-responses"
-import { withOpenAIOptions, type OpenAIProviderOptionsInput } from ".@lgcode/openai-options"
+import { AuthOptions, type ProviderAuthOption } from "../route/auth-options"
+import type { Route, RouteDefaultsInput } from "../route/client"
+import { ProviderID, type ModelID } from "../schema"
+import * as OpenAIChat from "../protocols/openai-chat"
+import * as OpenAIResponses from "../protocols/openai-responses"
+import { withOpenAIOptions, type OpenAIProviderOptionsInput } from "./openai-options"
 
-export type { OpenAIOptionsInput, OpenAIResponseIncludable } from ".@lgcode/openai-options"
+export type { OpenAIOptionsInput, OpenAIResponseIncludable } from "./openai-options"
 
 export const id = ProviderID.make("openai")
 
 export const routes = [OpenAIResponses.route, OpenAIResponses.webSocketRoute, OpenAIChat.route]
 
-@lgcode/@lgcode/ This provider facade wraps the lower-level Responses and Chat model factories
-@lgcode/@lgcode/ with OpenAI-specific conveniences: typed options, API-key sugar, env fallback,
-@lgcode/@lgcode/ and default option normalization.
+// This provider facade wraps the lower-level Responses and Chat model factories
+// with OpenAI-specific conveniences: typed options, API-key sugar, env fallback,
+// and default option normalization.
 export type Config = RouteDefaultsInput &
   ProviderAuthOption<"optional"> & {
     readonly baseURL?: string

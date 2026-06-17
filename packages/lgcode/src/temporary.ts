@@ -1,7 +1,7 @@
 import yargs from "yargs"
-import { TuiThreadCommand } from ".@lgcode/cli@lgcode/cmd@lgcode/tui"
-import { InstallationVersion } from "@lgcode/core@lgcode/installation@lgcode/version"
-import { hideBin } from "yargs@lgcode/helpers"
+import { TuiThreadCommand } from "./cli/cmd/tui"
+import { InstallationVersion } from "@opencode@lgcode/core/installation/version"
+import { hideBin } from "yargs/helpers"
 const cli = yargs(hideBin(process.argv))
   .parserConfiguration({ "populate--": true })
   .scriptName("opencode")

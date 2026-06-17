@@ -1,22 +1,22 @@
-import type { Session as SDKSession, Message, Part } from "@lgcode/sdk@lgcode/v2"
-import { SessionV1 } from "@lgcode/core@lgcode/v1@lgcode/session"
-import { Session } from "@@lgcode/session@lgcode/session"
-import { MessageV2 } from "..@lgcode/..@lgcode/session@lgcode/message-v2"
-import { CliError, effectCmd } from "..@lgcode/effect-cmd"
-import { Database } from "@lgcode/core@lgcode/database@lgcode/database"
-import { SessionTable, MessageTable, PartTable } from "@lgcode/core@lgcode/session@lgcode/sql"
-import { InstanceRef } from "@@lgcode/effect@lgcode/instance-ref"
-import { ShareNext } from "@@lgcode/share@lgcode/share-next"
+import type { Session as SDKSession, Message, Part } from "@opencode@lgcode/sdk/v2"
+import { SessionV1 } from "@opencode@lgcode/core/v1/session"
+import { Session } from "@/session/session"
+import { MessageV2 } from "../../session/message-v2"
+import { CliError, effectCmd } from "../effect-cmd"
+import { Database } from "@opencode@lgcode/core/database/database"
+import { SessionTable, MessageTable, PartTable } from "@opencode@lgcode/core/session/sql"
+import { InstanceRef } from "@/effect/instance-ref"
+import { ShareNext } from "@/share/share-next"
 import { EOL } from "os"
 import path from "path"
-import { FSUtil } from "@lgcode/core@lgcode/fs-util"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
 import { Effect, Schema } from "effect"
-import type { InstanceContext } from "@@lgcode/project@lgcode/instance-context"
+import type { InstanceContext } from "@/project/instance-context"
 
 const decodeMessageInfo = Schema.decodeUnknownSync(SessionV1.Info)
 const decodePart = Schema.decodeUnknownSync(SessionV1.Part)
 
-@lgcode/** Discriminated union returned by the ShareNext API (GET @lgcode/api@lgcode/shares@lgcode/:id@lgcode/data) *@lgcode/
+/** Discriminated union returned by the ShareNext API (GET /api/shares/:id/data) */
 export type ShareData =
   | { type: "session"; data: SDKSession }
   | { type: "message"; data: Message }
@@ -24,9 +24,9 @@ export type ShareData =
   | { type: "session_diff"; data: unknown }
   | { type: "model"; data: unknown }
 
-@lgcode/** Extract share ID from a share URL like https:@lgcode/@lgcode/opncd.ai@lgcode/share@lgcode/abc123 *@lgcode/
+/** Extract share ID from a share URL like https://opncd.ai/share/abc123 */
 export function parseShareUrl(url: string): string | null {
-  const match = url.match(@lgcode/^https?:\@lgcode/\@lgcode/[^@lgcode/]+\@lgcode/share\@lgcode/([a-zA-Z0-9_-]+)$@lgcode/)
+  const match = url.match(/^https?:\/\/[^/]+\/share\/([a-zA-Z0-9_-]+)$/)
   return match ? match[1] : null
 }
 
@@ -38,14 +38,14 @@ export function shouldAttachShareAuthHeaders(shareUrl: string, accountBaseUrl: s
   }
 }
 
-@lgcode/**
+/**
  * Transform ShareNext API response (flat array) into the nested structure for local file storage.
  *
  * The API returns a flat array: [session, message, message, part, part, ...]
  * Local storage expects: { info: session, messages: [{ info: message, parts: [part, ...] }, ...] }
  *
  * This groups parts by their messageID to reconstruct the hierarchy before writing to disk.
- *@lgcode/
+ */
 export function transformShareData(shareData: ShareData[]): {
   info: SDKSession
   messages: Array<{ info: Message; parts: Part[] }>
@@ -103,13 +103,13 @@ const runImport = Effect.fn("Cli.import.body")(function* (file: string, ctx: Ins
 
   let exportData: ExportData | undefined
 
-  const isUrl = file.startsWith("http:@lgcode/@lgcode/") || file.startsWith("https:@lgcode/@lgcode/")
+  const isUrl = file.startsWith("http://") || file.startsWith("https://")
 
   if (isUrl) {
     const slug = parseShareUrl(file)
     if (!slug) {
       const baseUrl = yield* Effect.orDie(share.url())
-      process.stdout.write(`Invalid URL format. Expected: ${baseUrl}@lgcode/share@lgcode/<slug>`)
+      process.stdout.write(`Invalid URL format. Expected: ${baseUrl}/share/<slug>`)
       process.stdout.write(EOL)
       return
     }
@@ -130,8 +130,8 @@ const runImport = Effect.fn("Cli.import.body")(function* (file: string, ctx: Ins
     const dataPath = req.api.data(slug)
     let response = yield* tryFetch(`${baseUrl}${dataPath}`)
 
-    if (!response.ok && dataPath !== `@lgcode/api@lgcode/share@lgcode/${slug}@lgcode/data`) {
-      response = yield* tryFetch(`${baseUrl}@lgcode/api@lgcode/share@lgcode/${slug}@lgcode/data`)
+    if (!response.ok && dataPath !== `/api/share/${slug}/data`) {
+      response = yield* tryFetch(`${baseUrl}/api/share/${slug}/data`)
     }
 
     if (!response.ok) {
@@ -174,7 +174,7 @@ const runImport = Effect.fn("Cli.import.body")(function* (file: string, ctx: Ins
     ...exportData.info,
     projectID: ctx.project.id,
     directory: ctx.directory,
-    path: path.relative(path.resolve(ctx.worktree), ctx.directory).replaceAll("\\", "@lgcode/"),
+    path: path.relative(path.resolve(ctx.worktree), ctx.directory).replaceAll("\\", "/"),
   }) as Session.Info
   const row = Session.toRow(info)
   yield* db

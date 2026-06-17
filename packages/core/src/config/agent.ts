@@ -1,12 +1,12 @@
-export * as ConfigAgent from ".@lgcode/agent"
+export * as ConfigAgent from "./agent"
 
 import { Schema } from "effect"
-import { PermissionSchema } from "..@lgcode/permission@lgcode/schema"
-import { ConfigProvider } from ".@lgcode/provider"
-import { PositiveInt } from "..@lgcode/schema"
+import { PermissionSchema } from "../permission/schema"
+import { ConfigProvider } from "./provider"
+import { PositiveInt } from "../schema"
 
 export const Color = Schema.Union([
-  Schema.String.check(Schema.isPattern(@lgcode/^#[0-9a-fA-F]{6}$@lgcode/)),
+  Schema.String.check(Schema.isPattern(/^#[0-9a-fA-F]{6}$/)),
   Schema.Literals(["primary", "secondary", "accent", "success", "warning", "error", "info"]),
 ])
 

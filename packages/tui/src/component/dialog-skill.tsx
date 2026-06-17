@@ -1,7 +1,7 @@
-import { DialogSelect, type DialogSelectOption } from "..@lgcode/ui@lgcode/dialog-select"
+import { DialogSelect, type DialogSelectOption } from "../ui/dialog-select"
 import { createResource, createMemo } from "solid-js"
-import { useDialog } from "..@lgcode/ui@lgcode/dialog"
-import { useSDK } from "..@lgcode/context@lgcode/sdk"
+import { useDialog } from "../ui/dialog"
+import { useSDK } from "../context/sdk"
 
 export type DialogSkillProps = {
   onSelect: (skill: string) => void
@@ -22,7 +22,7 @@ export function DialogSkill(props: DialogSkillProps) {
     const maxWidth = Math.max(0, ...list.map((s) => s.name.length))
     return list.map((skill) => ({
       title: skill.name.padEnd(maxWidth),
-      description: skill.description?.replace(@lgcode/\s+@lgcode/g, " ").trim(),
+      description: skill.description?.replace(/\s+/g, " ").trim(),
       value: skill.name,
       category: "Skills",
       onSelect: () => {
@@ -32,5 +32,5 @@ export function DialogSkill(props: DialogSkillProps) {
     }))
   })
 
-  return <DialogSelect title="Skills" placeholder="Search skills..." options={options()} @lgcode/>
+  return <DialogSelect title="Skills" placeholder="Search skills..." options={options()} />
 }

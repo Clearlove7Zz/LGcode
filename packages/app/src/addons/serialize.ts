@@ -1,4 +1,4 @@
-@lgcode/**
+/**
  * SerializeAddon - Serialize terminal buffer contents
  *
  * Port of xterm.js addon-serialize for ghostty-web.
@@ -11,13 +11,13 @@
  * term.loadAddon(serializeAddon);
  * const content = serializeAddon.serialize();
  * ```
- *@lgcode/
+ */
 
 import type { ITerminalAddon, ITerminalCore, IBufferRange } from "ghostty-web"
 
-@lgcode/@lgcode/ ============================================================================
-@lgcode/@lgcode/ Buffer Types (matching ghostty-web internal interfaces)
-@lgcode/@lgcode/ ============================================================================
+// ============================================================================
+// Buffer Types (matching ghostty-web internal interfaces)
+// ============================================================================
 
 interface IBuffer {
   readonly type: "normal" | "alternate"
@@ -89,64 +89,64 @@ const getTerminalBuffers = (value: ITerminalCore): TerminalBuffers | undefined =
   return { active, normal, alternate }
 }
 
-@lgcode/@lgcode/ ============================================================================
-@lgcode/@lgcode/ Types
-@lgcode/@lgcode/ ============================================================================
+// ============================================================================
+// Types
+// ============================================================================
 
 export interface ISerializeOptions {
-  @lgcode/**
+  /**
    * The row range to serialize. When an explicit range is specified, the cursor
    * will get its final repositioning.
-   *@lgcode/
+   */
   range?: ISerializeRange
-  @lgcode/**
+  /**
    * The number of rows in the scrollback buffer to serialize, starting from
    * the bottom of the scrollback buffer. When not specified, all available
    * rows in the scrollback buffer will be serialized.
-   *@lgcode/
+   */
   scrollback?: number
-  @lgcode/**
+  /**
    * Whether to exclude the terminal modes from the serialization.
    * Default: false
-   *@lgcode/
+   */
   excludeModes?: boolean
-  @lgcode/**
+  /**
    * Whether to exclude the alt buffer from the serialization.
    * Default: false
-   *@lgcode/
+   */
   excludeAltBuffer?: boolean
 }
 
 export interface ISerializeRange {
-  @lgcode/**
+  /**
    * The line to start serializing (inclusive).
-   *@lgcode/
+   */
   start: number
-  @lgcode/**
+  /**
    * The line to end serializing (inclusive).
-   *@lgcode/
+   */
   end: number
 }
 
 export interface IHTMLSerializeOptions {
-  @lgcode/**
+  /**
    * The number of rows in the scrollback buffer to serialize, starting from
    * the bottom of the scrollback buffer.
-   *@lgcode/
+   */
   scrollback?: number
-  @lgcode/**
+  /**
    * Whether to only serialize the selection.
    * Default: false
-   *@lgcode/
+   */
   onlySelection?: boolean
-  @lgcode/**
+  /**
    * Whether to include the global background of the terminal.
    * Default: false
-   *@lgcode/
+   */
   includeGlobalBackground?: boolean
-  @lgcode/**
+  /**
    * The range to serialize. This is prioritized over onlySelection.
-   *@lgcode/
+   */
   range?: {
     startLine: number
     endLine: number
@@ -154,9 +154,9 @@ export interface IHTMLSerializeOptions {
   }
 }
 
-@lgcode/@lgcode/ ============================================================================
-@lgcode/@lgcode/ Helper Functions
-@lgcode/@lgcode/ ============================================================================
+// ============================================================================
+// Helper Functions
+// ============================================================================
 
 function constrain(value: number, low: number, high: number): number {
   return Math.max(low, Math.min(value, high))
@@ -183,9 +183,9 @@ function equalFlags(cell1: IBufferCell, cell2: IBufferCell): boolean {
   )
 }
 
-@lgcode/@lgcode/ ============================================================================
-@lgcode/@lgcode/ Base Serialize Handler
-@lgcode/@lgcode/ ============================================================================
+// ============================================================================
+// Base Serialize Handler
+// ============================================================================
 
 abstract class BaseSerializeHandler {
   constructor(protected readonly _buffer: IBuffer) {}
@@ -232,9 +232,9 @@ abstract class BaseSerializeHandler {
   }
 }
 
-@lgcode/@lgcode/ ============================================================================
-@lgcode/@lgcode/ String Serialize Handler
-@lgcode/@lgcode/ ============================================================================
+// ============================================================================
+// String Serialize Handler
+// ============================================================================
 
 class StringSerializeHandler extends BaseSerializeHandler {
   private _rowIndex: number = 0
@@ -339,7 +339,7 @@ class StringSerializeHandler extends BaseSerializeHandler {
           if (mode === 2 || mode === 3 || mode === -1) {
             sgrSeq.push(38, 2, (color >>> 16) & 0xff, (color >>> 8) & 0xff, color & 0xff)
           } else if (mode === 1) {
-            @lgcode/@lgcode/ Palette
+            // Palette
             if (color >= 16) {
               sgrSeq.push(38, 5, color)
             } else {
@@ -355,7 +355,7 @@ class StringSerializeHandler extends BaseSerializeHandler {
           if (mode === 2 || mode === 3 || mode === -1) {
             sgrSeq.push(48, 2, (color >>> 16) & 0xff, (color >>> 8) & 0xff, color & 0xff)
           } else if (mode === 1) {
-            @lgcode/@lgcode/ Palette
+            // Palette
             if (color >= 16) {
               sgrSeq.push(48, 5, color)
             } else {
@@ -498,34 +498,34 @@ class StringSerializeHandler extends BaseSerializeHandler {
   }
 }
 
-@lgcode/@lgcode/ ============================================================================
-@lgcode/@lgcode/ SerializeAddon Class
-@lgcode/@lgcode/ ============================================================================
+// ============================================================================
+// SerializeAddon Class
+// ============================================================================
 
 export class SerializeAddon implements ITerminalAddon {
   private _terminal?: ITerminalCore
 
-  @lgcode/**
+  /**
    * Activate the addon (called by Terminal.loadAddon)
-   *@lgcode/
+   */
   public activate(terminal: ITerminalCore): void {
     this._terminal = terminal
   }
 
-  @lgcode/**
+  /**
    * Dispose the addon and clean up resources
-   *@lgcode/
+   */
   public dispose(): void {
     this._terminal = undefined
   }
 
-  @lgcode/**
+  /**
    * Serializes terminal rows into a string that can be written back to the
    * terminal to restore the state. The cursor will also be positioned to the
    * correct cell.
    *
    * @param options Custom options to allow control over what gets serialized.
-   *@lgcode/
+   */
   public serialize(options?: ISerializeOptions): string {
     if (!this._terminal) {
       throw new Error("Cannot use addon until it has been loaded")
@@ -556,10 +556,10 @@ export class SerializeAddon implements ITerminalAddon {
     return content
   }
 
-  @lgcode/**
+  /**
    * Serializes terminal content as plain text (no escape sequences)
    * @param options Custom options to allow control over what gets serialized.
-   *@lgcode/
+   */
   public serializeAsText(options?: { scrollback?: number; trimWhitespace?: boolean }): string {
     if (!this._terminal) {
       throw new Error("Cannot use addon until it has been loaded")
@@ -592,7 +592,7 @@ export class SerializeAddon implements ITerminalAddon {
       }
     }
 
-    @lgcode/@lgcode/ Trim trailing empty lines if requested
+    // Trim trailing empty lines if requested
     if (options?.trimWhitespace) {
       while (lines.length > 0 && lines[lines.length - 1] === "") {
         lines.pop()

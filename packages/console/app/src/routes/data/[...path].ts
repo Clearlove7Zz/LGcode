@@ -1,4 +1,4 @@
-import { statsProxy } from "~@lgcode/lib@lgcode/stats-proxy"
+import { statsProxy } from "~/lib/stats-proxy"
 
 export const GET = statsProxy
 export const POST = statsProxy

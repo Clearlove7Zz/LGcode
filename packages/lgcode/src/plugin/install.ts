@@ -7,13 +7,13 @@ import {
   printParseErrorCode,
 } from "jsonc-parser"
 
-import * as ConfigPaths from "@@lgcode/config@lgcode/paths"
-import { Global } from "@lgcode/core@lgcode/global"
-import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
-import { Flock } from "@lgcode/core@lgcode/util@lgcode/flock"
-import { isRecord } from "@@lgcode/util@lgcode/record"
+import * as ConfigPaths from "@/config/paths"
+import { Global } from "@opencode@lgcode/core/global"
+import { Filesystem } from "@/util/filesystem"
+import { Flock } from "@opencode@lgcode/core/util/flock"
+import { isRecord } from "@/util/record"
 
-import { parsePluginSpecifier, readPackageThemes, readPluginPackage, resolvePluginTarget } from ".@lgcode/shared"
+import { parsePluginSpecifier, readPackageThemes, readPluginPackage, resolvePluginTarget } from "./shared"
 
 type Mode = "noop" | "add" | "replace"
 type Kind = "server" | "tui"
@@ -128,7 +128,7 @@ function exportOptions(value: unknown): Record<string, unknown> | undefined {
 function exportTarget(pkg: Record<string, unknown>, kind: Kind) {
   const exports = pkg.exports
   if (!isRecord(exports)) return
-  const value = exports[`.@lgcode/${kind}`]
+  const value = exports[`./${kind}`]
   const entry = exportValue(value)
   if (!entry) return
   return {
@@ -194,7 +194,7 @@ function patchPluginList(
   const dup = rows.filter((item) => {
     if (!item.spec) return false
     if (item.spec === spec) return true
-    if (item.spec.startsWith("file:@lgcode/@lgcode/")) return false
+    if (item.spec.startsWith("file://")) return false
     return parsePluginSpecifier(item.spec).pkg === pkg
   })
 
@@ -332,7 +332,7 @@ export async function readPluginManifest(target: string): Promise<ManifestResult
 
 function patchDir(input: PatchInput) {
   if (input.global) return input.config ?? Global.Path.config
-  const git = input.vcs === "git" && input.worktree !== "@lgcode/"
+  const git = input.vcs === "git" && input.worktree !== "/"
   const root = git ? input.worktree : input.directory
   return path.join(root, ".opencode")
 }

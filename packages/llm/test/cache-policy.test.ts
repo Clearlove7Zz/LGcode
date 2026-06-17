@@ -1,16 +1,16 @@
 import { describe, expect, test } from "bun:test"
 import { Effect } from "effect"
-import { CacheHint, LLM, Message } from "..@lgcode/src"
-import { Auth, LLMClient } from "..@lgcode/src@lgcode/route"
-import { AmazonBedrock } from "..@lgcode/src@lgcode/providers"
-import * as AnthropicMessages from "..@lgcode/src@lgcode/protocols@lgcode/anthropic-messages"
-import * as Gemini from "..@lgcode/src@lgcode/protocols@lgcode/gemini"
-import * as OpenAIChat from "..@lgcode/src@lgcode/protocols@lgcode/openai-chat"
-import { applyCachePolicy } from "..@lgcode/src@lgcode/cache-policy"
-import { it } from ".@lgcode/lib@lgcode/effect"
+import { CacheHint, LLM, Message } from "../src"
+import { Auth, LLMClient } from "../src/route"
+import { AmazonBedrock } from "../src/providers"
+import * as AnthropicMessages from "../src/protocols/anthropic-messages"
+import * as Gemini from "../src/protocols/gemini"
+import * as OpenAIChat from "../src/protocols/openai-chat"
+import { applyCachePolicy } from "../src/cache-policy"
+import { it } from "./lib/effect"
 
 const anthropicModel = AnthropicMessages.route
-  .with({ endpoint: { baseURL: "https:@lgcode/@lgcode/api.anthropic.test@lgcode/v1@lgcode/" }, auth: Auth.header("x-api-key", "test") })
+  .with({ endpoint: { baseURL: "https://api.anthropic.test/v1/" }, auth: Auth.header("x-api-key", "test") })
   .model({ id: "claude-sonnet-4-5" })
 
 const bedrockModel = AmazonBedrock.configure({
@@ -18,12 +18,12 @@ const bedrockModel = AmazonBedrock.configure({
 }).model("anthropic.claude-3-5-sonnet-20241022-v2:0")
 
 const openaiModel = OpenAIChat.route
-  .with({ endpoint: { baseURL: "https:@lgcode/@lgcode/api.openai.test@lgcode/v1@lgcode/" }, auth: Auth.bearer("test") })
+  .with({ endpoint: { baseURL: "https://api.openai.test/v1/" }, auth: Auth.bearer("test") })
   .model({ id: "gpt-4o-mini" })
 
 const geminiModel = Gemini.route
   .with({
-    endpoint: { baseURL: "https:@lgcode/@lgcode/generativelanguage.test@lgcode/v1beta@lgcode/" },
+    endpoint: { baseURL: "https://generativelanguage.test/v1beta/" },
     auth: Auth.header("x-goog-api-key", "test"),
   })
   .model({ id: "gemini-2.5-flash" })
@@ -39,8 +39,8 @@ describe("applyCachePolicy", () => {
         }),
       )
 
-      @lgcode/@lgcode/ No explicit cache field → auto policy fires → last system part + latest
-      @lgcode/@lgcode/ user message both get cache_control markers.
+      // No explicit cache field → auto policy fires → last system part + latest
+      // user message both get cache_control markers.
       expect(prepared.body).toMatchObject({
         system: [{ type: "text", text: "You are concise.", cache_control: { type: "ephemeral" } }],
         messages: [{ role: "user", content: [{ type: "text", text: "hi", cache_control: { type: "ephemeral" } }] }],
@@ -91,7 +91,7 @@ describe("applyCachePolicy", () => {
       )
 
       const body = prepared.body as { messages: Array<{ content: unknown }> }
-      @lgcode/@lgcode/ OpenAI doesn't accept cache_control on messages — policy must skip.
+      // OpenAI doesn't accept cache_control on messages — policy must skip.
       const flat = JSON.stringify(body)
       expect(flat).not.toContain("cache_control")
       expect(flat).not.toContain("cachePoint")

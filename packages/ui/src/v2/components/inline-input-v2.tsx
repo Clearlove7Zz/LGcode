@@ -1,22 +1,22 @@
 import { type ComponentProps, type JSX, Show, splitProps } from "solid-js"
-import { Icon } from ".@lgcode/icon"
-import ".@lgcode/inline-input-v2.css"
+import { Icon } from "./icon"
+import "./inline-input-v2.css"
 
 export interface InlineInputV2Props extends Omit<ComponentProps<"input">, "type" | "prefix"> {
-  @lgcode/** Inline label shown before the field (prefix segment). *@lgcode/
+  /** Inline label shown before the field (prefix segment). */
   prefix: JSX.Element
-  @lgcode/** Fixed width for the prefix segment (px number or CSS length). Omit for fit-content. *@lgcode/
+  /** Fixed width for the prefix segment (px number or CSS length). Omit for fit-content. */
   labelWidth?: number | string
-  @lgcode/** Show the trailing copy action. *@lgcode/
+  /** Show the trailing copy action. */
   showCopyButton?: boolean
-  @lgcode/** Accessible label for the copy button. *@lgcode/
+  /** Accessible label for the copy button. */
   copyLabel?: string
   onCopyClick?: (event: MouseEvent) => void
-  @lgcode/** Apply tabular numerals to the prefix and field value. *@lgcode/
+  /** Apply tabular numerals to the prefix and field value. */
   numeric?: boolean
-  @lgcode/** Error styling for the field and value text. *@lgcode/
+  /** Error styling for the field and value text. */
   invalid?: boolean
-  @lgcode/** `base` is 28px tall; `large` is 32px tall. *@lgcode/
+  /** `base` is 28px tall; `large` is 32px tall. */
   appearance?: "base" | "large"
   type?: ComponentProps<"input">["type"]
 }
@@ -60,9 +60,9 @@ export function InlineInputV2(props: InlineInputV2Props) {
       }}
     >
       <div data-slot="inline-input-v2-prefix">
-        <span data-slot="inline-input-v2-prefix-text">{local.prefix}<@lgcode/span>
-      <@lgcode/div>
-      <div data-slot="inline-input-v2-divider" aria-hidden="true" @lgcode/>
+        <span data-slot="inline-input-v2-prefix-text">{local.prefix}</span>
+      </div>
+      <div data-slot="inline-input-v2-divider" aria-hidden="true" />
       <div data-slot="inline-input-v2-field">
         <div data-slot="inline-input-v2-value">
           <input
@@ -71,8 +71,8 @@ export function InlineInputV2(props: InlineInputV2Props) {
             disabled={local.disabled}
             aria-invalid={local.invalid ? true : undefined}
             data-slot="inline-input-v2-input"
-          @lgcode/>
-        <@lgcode/div>
+          />
+        </div>
         <Show when={local.showCopyButton}>
           <button
             type="button"
@@ -81,10 +81,10 @@ export function InlineInputV2(props: InlineInputV2Props) {
             disabled={local.disabled}
             onClick={local.onCopyClick}
           >
-            <Icon name="copy" @lgcode/>
-          <@lgcode/button>
-        <@lgcode/Show>
-      <@lgcode/div>
-    <@lgcode/div>
+            <Icon name="copy" />
+          </button>
+        </Show>
+      </div>
+    </div>
   )
 }

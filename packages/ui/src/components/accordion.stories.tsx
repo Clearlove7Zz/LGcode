@@ -1,7 +1,7 @@
-@lgcode/@lgcode/ @ts-nocheck
+// @ts-nocheck
 import { createEffect, createSignal } from "solid-js"
-import * as mod from ".@lgcode/accordion"
-import { create } from "..@lgcode/storybook@lgcode/scaffold"
+import * as mod from "./accordion"
+import { create } from "../storybook/scaffold"
 
 const docs = `### Overview
 Accordion for collapsible content sections with optional multi-open behavior.
@@ -17,19 +17,19 @@ Use one trigger per item; keep content concise.
 - Collapsible or fixed-open behavior.
 
 ### Behavior
-- Controlled via \`value\`@lgcode/\`onChange\` when provided.
+- Controlled via \`value\`/\`onChange\` when provided.
 
 ### Accessibility
 - TODO: confirm keyboard navigation from Kobalte Accordion.
 
-### Theming@lgcode/tokens
+### Theming/tokens
 - Uses \`data-component="accordion"\` and slot data attributes.
 
 `
 
-const story = create({ title: "UI@lgcode/Accordion", mod })
+const story = create({ title: "UI/Accordion", mod })
 export default {
-  title: "UI@lgcode/Accordion",
+  title: "UI/Accordion",
   id: "components-accordion",
   component: story.meta.component,
   tags: ["autodocs"],
@@ -80,22 +80,22 @@ export const Basic = {
         <mod.Accordion collapsible={props.collapsible} multiple={props.multiple} value={current()} onChange={setValue}>
           <mod.Accordion.Item value="first">
             <mod.Accordion.Header>
-              <mod.Accordion.Trigger>First<@lgcode/mod.Accordion.Trigger>
-            <@lgcode/mod.Accordion.Header>
+              <mod.Accordion.Trigger>First</mod.Accordion.Trigger>
+            </mod.Accordion.Header>
             <mod.Accordion.Content>
-              <div style={{ color: "var(--text-weak)", padding: "8px 0" }}>Accordion content.<@lgcode/div>
-            <@lgcode/mod.Accordion.Content>
-          <@lgcode/mod.Accordion.Item>
+              <div style={{ color: "var(--text-weak)", padding: "8px 0" }}>Accordion content.</div>
+            </mod.Accordion.Content>
+          </mod.Accordion.Item>
           <mod.Accordion.Item value="second">
             <mod.Accordion.Header>
-              <mod.Accordion.Trigger>Second<@lgcode/mod.Accordion.Trigger>
-            <@lgcode/mod.Accordion.Header>
+              <mod.Accordion.Trigger>Second</mod.Accordion.Trigger>
+            </mod.Accordion.Header>
             <mod.Accordion.Content>
-              <div style={{ color: "var(--text-weak)", padding: "8px 0" }}>More content.<@lgcode/div>
-            <@lgcode/mod.Accordion.Content>
-          <@lgcode/mod.Accordion.Item>
-        <@lgcode/mod.Accordion>
-      <@lgcode/div>
+              <div style={{ color: "var(--text-weak)", padding: "8px 0" }}>More content.</div>
+            </mod.Accordion.Content>
+          </mod.Accordion.Item>
+        </mod.Accordion>
+      </div>
     )
   },
 }
@@ -110,21 +110,21 @@ export const Multiple = {
     <mod.Accordion collapsible={props.collapsible} multiple={props.multiple} value={props.value}>
       <mod.Accordion.Item value="first">
         <mod.Accordion.Header>
-          <mod.Accordion.Trigger>First<@lgcode/mod.Accordion.Trigger>
-        <@lgcode/mod.Accordion.Header>
+          <mod.Accordion.Trigger>First</mod.Accordion.Trigger>
+        </mod.Accordion.Header>
         <mod.Accordion.Content>
-          <div style={{ color: "var(--text-weak)", padding: "8px 0" }}>Accordion content.<@lgcode/div>
-        <@lgcode/mod.Accordion.Content>
-      <@lgcode/mod.Accordion.Item>
+          <div style={{ color: "var(--text-weak)", padding: "8px 0" }}>Accordion content.</div>
+        </mod.Accordion.Content>
+      </mod.Accordion.Item>
       <mod.Accordion.Item value="second">
         <mod.Accordion.Header>
-          <mod.Accordion.Trigger>Second<@lgcode/mod.Accordion.Trigger>
-        <@lgcode/mod.Accordion.Header>
+          <mod.Accordion.Trigger>Second</mod.Accordion.Trigger>
+        </mod.Accordion.Header>
         <mod.Accordion.Content>
-          <div style={{ color: "var(--text-weak)", padding: "8px 0" }}>More content.<@lgcode/div>
-        <@lgcode/mod.Accordion.Content>
-      <@lgcode/mod.Accordion.Item>
-    <@lgcode/mod.Accordion>
+          <div style={{ color: "var(--text-weak)", padding: "8px 0" }}>More content.</div>
+        </mod.Accordion.Content>
+      </mod.Accordion.Item>
+    </mod.Accordion>
   ),
 }
 
@@ -138,12 +138,12 @@ export const NonCollapsible = {
     <mod.Accordion collapsible={props.collapsible} multiple={props.multiple} value={props.value}>
       <mod.Accordion.Item value="first">
         <mod.Accordion.Header>
-          <mod.Accordion.Trigger>First<@lgcode/mod.Accordion.Trigger>
-        <@lgcode/mod.Accordion.Header>
+          <mod.Accordion.Trigger>First</mod.Accordion.Trigger>
+        </mod.Accordion.Header>
         <mod.Accordion.Content>
-          <div style={{ color: "var(--text-weak)", padding: "8px 0" }}>Accordion content.<@lgcode/div>
-        <@lgcode/mod.Accordion.Content>
-      <@lgcode/mod.Accordion.Item>
-    <@lgcode/mod.Accordion>
+          <div style={{ color: "var(--text-weak)", padding: "8px 0" }}>Accordion content.</div>
+        </mod.Accordion.Content>
+      </mod.Accordion.Item>
+    </mod.Accordion>
   ),
 }

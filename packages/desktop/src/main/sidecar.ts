@@ -61,7 +61,7 @@ async function start(command: StartCommand) {
       hostname: command.hostname,
       username: "opencode",
       password: command.password,
-      cors: ["oc:@lgcode/@lgcode/renderer"],
+      cors: ["oc://renderer"],
     })
     parentPort.postMessage({ type: "ready" })
   } catch (error) {

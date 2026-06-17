@@ -1,9 +1,9 @@
 import { describe, expect, test } from "bun:test"
 import { Schema } from "effect"
-import * as OpenAIChat from "..@lgcode/src@lgcode/protocols@lgcode/openai-chat"
-import * as OpenAIResponses from "..@lgcode/src@lgcode/protocols@lgcode/openai-responses"
-import { ContentPart, LLMEvent, LLMRequest, Model, ModelID, ProviderID, Usage } from "..@lgcode/src@lgcode/schema"
-import { ProviderShared } from "..@lgcode/src@lgcode/protocols@lgcode/shared"
+import * as OpenAIChat from "../src/protocols/openai-chat"
+import * as OpenAIResponses from "../src/protocols/openai-responses"
+import { ContentPart, LLMEvent, LLMRequest, Model, ModelID, ProviderID, Usage } from "../src/schema"
+import { ProviderShared } from "../src/protocols/shared"
 
 const model = new Model({
   id: ModelID.make("fake-model"),
@@ -60,9 +60,9 @@ describe("llm schema", () => {
 
 describe("LLM.Usage", () => {
   test("subtractTokens clamps non-sensical breakdowns to zero", () => {
-    @lgcode/@lgcode/ Defense against a provider reporting cached_tokens > prompt_tokens or
-    @lgcode/@lgcode/ reasoning_tokens > completion_tokens — the negative would otherwise
-    @lgcode/@lgcode/ round-trip through the pipeline and crash strict downstream schemas.
+    // Defense against a provider reporting cached_tokens > prompt_tokens or
+    // reasoning_tokens > completion_tokens — the negative would otherwise
+    // round-trip through the pipeline and crash strict downstream schemas.
     expect(ProviderShared.subtractTokens(5, 3)).toBe(2)
     expect(ProviderShared.subtractTokens(5, 10)).toBe(0)
     expect(ProviderShared.subtractTokens(5, undefined)).toBe(5)

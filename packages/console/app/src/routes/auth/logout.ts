@@ -1,6 +1,6 @@
-import { redirect } from "@solidjs@lgcode/router"
-import { APIEvent } from "@solidjs@lgcode/start"
-import { useAuthSession } from "~@lgcode/context@lgcode/auth"
+import { redirect } from "@solidjs/router"
+import { APIEvent } from "@solidjs/start"
+import { useAuthSession } from "~/context/auth"
 
 export async function GET(event: APIEvent) {
   const auth = await useAuthSession()
@@ -13,5 +13,5 @@ export async function GET(event: APIEvent) {
       event!.locals.actor = undefined
       return val
     })
-  return redirect("@lgcode/zen")
+  return redirect("/zen")
 }

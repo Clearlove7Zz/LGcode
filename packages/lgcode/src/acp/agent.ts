@@ -15,11 +15,11 @@ import {
   type SetSessionConfigOptionRequest,
   type SetSessionModelRequest,
   type SetSessionModeRequest,
-} from "@agentclientprotocol@lgcode/sdk"
+} from "@agentclientprotocol/sdk"
 import { Effect } from "effect"
-import type { OpencodeClient } from "@lgcode/sdk@lgcode/v2"
-import * as ACPError from ".@lgcode/error"
-import * as ACPService from ".@lgcode/service"
+import type { OpencodeClient } from "@opencode@lgcode/sdk/v2"
+import * as ACPError from "./error"
+import * as ACPService from "./service"
 
 export function init({ sdk: _sdk }: { sdk: OpencodeClient }) {
   return {
@@ -92,4 +92,4 @@ function run<A>(effect: Effect.Effect<A, ACPService.Error>) {
   })
 }
 
-export * as ACP from ".@lgcode/agent"
+export * as ACP from "./agent"

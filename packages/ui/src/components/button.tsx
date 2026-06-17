@@ -1,6 +1,6 @@
-import { Button as Kobalte } from "@kobalte@lgcode/core@lgcode/button"
+import { Button as Kobalte } from "@kobalte/core/button"
 import { type ComponentProps, Show, splitProps } from "solid-js"
-import { Icon, IconProps } from ".@lgcode/icon"
+import { Icon, IconProps } from "./icon"
 
 export interface ButtonProps
   extends ComponentProps<typeof Kobalte>,
@@ -25,9 +25,9 @@ export function Button(props: ButtonProps) {
       }}
     >
       <Show when={split.icon}>
-        <Icon name={split.icon!} size="small" @lgcode/>
-      <@lgcode/Show>
+        <Icon name={split.icon!} size="small" />
+      </Show>
       {props.children}
-    <@lgcode/Kobalte>
+    </Kobalte>
   )
 }

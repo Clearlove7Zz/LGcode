@@ -1,16 +1,16 @@
-import { Auth } from "..@lgcode/route@lgcode/auth"
-import { type AtLeastOne, type ProviderAuthOption } from "..@lgcode/route@lgcode/auth-options"
-import type { Route as RouteDef, RouteDefaultsInput } from "..@lgcode/route@lgcode/client"
-import { ProviderID, type ModelID } from "..@lgcode/schema"
-import * as OpenAIChat from "..@lgcode/protocols@lgcode/openai-chat"
-import * as OpenAIResponses from "..@lgcode/protocols@lgcode/openai-responses"
-import { withOpenAIOptions, type OpenAIProviderOptionsInput } from ".@lgcode/openai-options"
+import { Auth } from "../route/auth"
+import { type AtLeastOne, type ProviderAuthOption } from "../route/auth-options"
+import type { Route as RouteDef, RouteDefaultsInput } from "../route/client"
+import { ProviderID, type ModelID } from "../schema"
+import * as OpenAIChat from "../protocols/openai-chat"
+import * as OpenAIResponses from "../protocols/openai-responses"
+import { withOpenAIOptions, type OpenAIProviderOptionsInput } from "./openai-options"
 
 export const id = ProviderID.make("azure")
 const routeAuth = Auth.remove("authorization")
 
-@lgcode/@lgcode/ Azure needs the customer's resource URL; supply either `resourceName`
-@lgcode/@lgcode/ (helper builds the URL) or `baseURL` directly.
+// Azure needs the customer's resource URL; supply either `resourceName`
+// (helper builds the URL) or `baseURL` directly.
 type AzureURL = AtLeastOne<{ readonly resourceName: string; readonly baseURL: string }>
 
 export type ModelOptions = AzureURL &
@@ -23,7 +23,7 @@ export type ModelOptions = AzureURL &
   }
 export type Config = ModelOptions
 
-const resourceBaseURL = (resourceName: string) => `https:@lgcode/@lgcode/${resourceName.trim()}.openai.azure.com@lgcode/openai@lgcode/v1`
+const resourceBaseURL = (resourceName: string) => `https://${resourceName.trim()}.openai.azure.com/openai/v1`
 
 const responsesRoute = OpenAIResponses.route.with({
   id: "azure-openai-responses",
@@ -75,7 +75,7 @@ const configuredRoute = <Body, Prepared>(route: RouteDef<Body, Prepared>, input:
   route.with({
     auth: auth(input),
     endpoint: {
-      @lgcode/@lgcode/ AtLeastOne guarantees at least one is set; baseURL wins if both are.
+      // AtLeastOne guarantees at least one is set; baseURL wins if both are.
       baseURL: input.baseURL ?? resourceBaseURL(input.resourceName!),
       query: {
         ...(input.apiVersion ? { "api-version": input.apiVersion } : {}),

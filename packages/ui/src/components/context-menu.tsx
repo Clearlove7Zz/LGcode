@@ -1,4 +1,4 @@
-import { ContextMenu as Kobalte } from "@kobalte@lgcode/core@lgcode/context-menu"
+import { ContextMenu as Kobalte } from "@kobalte/core/context-menu"
 import { splitProps } from "solid-js"
 import type { ComponentProps, ParentProps } from "solid-js"
 
@@ -23,7 +23,7 @@ export interface ContextMenuSubTriggerProps extends ComponentProps<typeof Kobalt
 export interface ContextMenuSubContentProps extends ComponentProps<typeof Kobalte.SubContent> {}
 
 function ContextMenuRoot(props: ContextMenuProps) {
-  return <Kobalte {...props} data-component="context-menu" @lgcode/>
+  return <Kobalte {...props} data-component="context-menu" />
 }
 
 function ContextMenuTrigger(props: ParentProps<ContextMenuTriggerProps>) {
@@ -38,7 +38,7 @@ function ContextMenuTrigger(props: ParentProps<ContextMenuTriggerProps>) {
       }}
     >
       {local.children}
-    <@lgcode/Kobalte.Trigger>
+    </Kobalte.Trigger>
   )
 }
 
@@ -54,12 +54,12 @@ function ContextMenuIcon(props: ParentProps<ContextMenuIconProps>) {
       }}
     >
       {local.children}
-    <@lgcode/Kobalte.Icon>
+    </Kobalte.Icon>
   )
 }
 
 function ContextMenuPortal(props: ContextMenuPortalProps) {
-  return <Kobalte.Portal {...props} @lgcode/>
+  return <Kobalte.Portal {...props} />
 }
 
 function ContextMenuContent(props: ParentProps<ContextMenuContentProps>) {
@@ -74,7 +74,7 @@ function ContextMenuContent(props: ParentProps<ContextMenuContentProps>) {
       }}
     >
       {local.children}
-    <@lgcode/Kobalte.Content>
+    </Kobalte.Content>
   )
 }
 
@@ -88,7 +88,7 @@ function ContextMenuArrow(props: ContextMenuArrowProps) {
         ...local.classList,
         [local.class ?? ""]: !!local.class,
       }}
-    @lgcode/>
+    />
   )
 }
 
@@ -102,7 +102,7 @@ function ContextMenuSeparator(props: ContextMenuSeparatorProps) {
         ...local.classList,
         [local.class ?? ""]: !!local.class,
       }}
-    @lgcode/>
+    />
   )
 }
 
@@ -118,7 +118,7 @@ function ContextMenuGroup(props: ParentProps<ContextMenuGroupProps>) {
       }}
     >
       {local.children}
-    <@lgcode/Kobalte.Group>
+    </Kobalte.Group>
   )
 }
 
@@ -134,7 +134,7 @@ function ContextMenuGroupLabel(props: ParentProps<ContextMenuGroupLabelProps>) {
       }}
     >
       {local.children}
-    <@lgcode/Kobalte.GroupLabel>
+    </Kobalte.GroupLabel>
   )
 }
 
@@ -150,7 +150,7 @@ function ContextMenuItem(props: ParentProps<ContextMenuItemProps>) {
       }}
     >
       {local.children}
-    <@lgcode/Kobalte.Item>
+    </Kobalte.Item>
   )
 }
 
@@ -166,7 +166,7 @@ function ContextMenuItemLabel(props: ParentProps<ContextMenuItemLabelProps>) {
       }}
     >
       {local.children}
-    <@lgcode/Kobalte.ItemLabel>
+    </Kobalte.ItemLabel>
   )
 }
 
@@ -182,7 +182,7 @@ function ContextMenuItemDescription(props: ParentProps<ContextMenuItemDescriptio
       }}
     >
       {local.children}
-    <@lgcode/Kobalte.ItemDescription>
+    </Kobalte.ItemDescription>
   )
 }
 
@@ -198,7 +198,7 @@ function ContextMenuItemIndicator(props: ParentProps<ContextMenuItemIndicatorPro
       }}
     >
       {local.children}
-    <@lgcode/Kobalte.ItemIndicator>
+    </Kobalte.ItemIndicator>
   )
 }
 
@@ -214,7 +214,7 @@ function ContextMenuRadioGroup(props: ParentProps<ContextMenuRadioGroupProps>) {
       }}
     >
       {local.children}
-    <@lgcode/Kobalte.RadioGroup>
+    </Kobalte.RadioGroup>
   )
 }
 
@@ -230,7 +230,7 @@ function ContextMenuRadioItem(props: ParentProps<ContextMenuRadioItemProps>) {
       }}
     >
       {local.children}
-    <@lgcode/Kobalte.RadioItem>
+    </Kobalte.RadioItem>
   )
 }
 
@@ -246,12 +246,12 @@ function ContextMenuCheckboxItem(props: ParentProps<ContextMenuCheckboxItemProps
       }}
     >
       {local.children}
-    <@lgcode/Kobalte.CheckboxItem>
+    </Kobalte.CheckboxItem>
   )
 }
 
 function ContextMenuSub(props: ContextMenuSubProps) {
-  return <Kobalte.Sub {...props} @lgcode/>
+  return <Kobalte.Sub {...props} />
 }
 
 function ContextMenuSubTrigger(props: ParentProps<ContextMenuSubTriggerProps>) {
@@ -266,7 +266,7 @@ function ContextMenuSubTrigger(props: ParentProps<ContextMenuSubTriggerProps>) {
       }}
     >
       {local.children}
-    <@lgcode/Kobalte.SubTrigger>
+    </Kobalte.SubTrigger>
   )
 }
 
@@ -282,7 +282,7 @@ function ContextMenuSubContent(props: ParentProps<ContextMenuSubContentProps>) {
       }}
     >
       {local.children}
-    <@lgcode/Kobalte.SubContent>
+    </Kobalte.SubContent>
   )
 }
 

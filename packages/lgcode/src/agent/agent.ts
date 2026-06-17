@@ -1,36 +1,36 @@
-import { LayerNode } from "@lgcode/core@lgcode/effect@lgcode/layer-node"
-import { PermissionV1 } from "@lgcode/core@lgcode/v1@lgcode/permission"
-import { Config } from "@@lgcode/config@lgcode/config"
-import { serviceUse } from "@lgcode/core@lgcode/effect@lgcode/service-use"
-import { Provider } from "@@lgcode/provider@lgcode/provider"
+import { LayerNode } from "@opencode@lgcode/core/effect/layer-node"
+import { PermissionV1 } from "@opencode@lgcode/core/v1/permission"
+import { Config } from "@/config/config"
+import { serviceUse } from "@opencode@lgcode/core/effect/service-use"
+import { Provider } from "@/provider/provider"
 
 import { generateObject, streamObject, type ModelMessage } from "ai"
-import { Truncate } from "@@lgcode/tool@lgcode/truncate"
-import { Auth } from "..@lgcode/auth"
-import { ProviderTransform } from "@@lgcode/provider@lgcode/transform"
+import { Truncate } from "@/tool/truncate"
+import { Auth } from "../auth"
+import { ProviderTransform } from "@/provider/transform"
 
-import PROMPT_GENERATE from ".@lgcode/generate.txt"
-import PROMPT_COMPACTION from ".@lgcode/prompt@lgcode/compaction.txt"
-import PROMPT_EXPLORE from ".@lgcode/prompt@lgcode/explore.txt"
-import PROMPT_SUMMARY from ".@lgcode/prompt@lgcode/summary.txt"
-import PROMPT_TITLE from ".@lgcode/prompt@lgcode/title.txt"
-import { Permission } from "@@lgcode/permission"
+import PROMPT_GENERATE from "./generate.txt"
+import PROMPT_COMPACTION from "./prompt/compaction.txt"
+import PROMPT_EXPLORE from "./prompt/explore.txt"
+import PROMPT_SUMMARY from "./prompt/summary.txt"
+import PROMPT_TITLE from "./prompt/title.txt"
+import { Permission } from "@/permission"
 import { mergeDeep, pipe, sortBy, values } from "remeda"
-import { Global } from "@lgcode/core@lgcode/global"
+import { Global } from "@opencode@lgcode/core/global"
 import path from "path"
-import { Plugin } from "@@lgcode/plugin"
-import { Skill } from "..@lgcode/skill"
+import { Plugin } from "@/plugin"
+import { Skill } from "../skill"
 import { Effect, Context, Layer, Schema } from "effect"
-import { InstanceState } from "@@lgcode/effect@lgcode/instance-state"
-import * as Option from "effect@lgcode/Option"
-import * as OtelTracer from "@effect@lgcode/opentelemetry@lgcode/Tracer"
-import { AbsolutePath, type DeepMutable } from "@lgcode/core@lgcode/schema"
-import { ProviderV2 } from "@lgcode/core@lgcode/provider"
-import { ModelV2 } from "@lgcode/core@lgcode/model"
-import { LocationServiceMap } from "@lgcode/core@lgcode/location-layer"
-import { PluginBoot } from "@lgcode/core@lgcode/plugin@lgcode/boot"
-import { Reference } from "@lgcode/core@lgcode/reference"
-import { Location } from "@lgcode/core@lgcode/location"
+import { InstanceState } from "@/effect/instance-state"
+import * as Option from "effect/Option"
+import * as OtelTracer from "@effect/opentelemetry/Tracer"
+import { AbsolutePath, type DeepMutable } from "@opencode@lgcode/core/schema"
+import { ProviderV2 } from "@opencode@lgcode/core/provider"
+import { ModelV2 } from "@opencode@lgcode/core/model"
+import { LocationServiceMap } from "@opencode@lgcode/core/location-layer"
+import { PluginBoot } from "@opencode@lgcode/core/plugin/boot"
+import { Reference } from "@opencode@lgcode/core/reference"
+import { Location } from "@opencode@lgcode/core/location"
 
 export const Info = Schema.Struct({
   name: Schema.String,
@@ -81,7 +81,7 @@ export interface Interface {
 
 type State = Omit<Interface, "generate">
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Agent") {}
+export class Service extends Context.Service<Service, Interface>()("@opencode/Agent") {}
 
 export const use = serviceUse(Service)
 
@@ -124,7 +124,7 @@ export const layer = Layer.effect(
           question: "deny",
           plan_enter: "deny",
           plan_exit: "deny",
-          @lgcode/@lgcode/ mirrors github.com@lgcode/github@lgcode/gitignore Node.gitignore pattern for .env files
+          // mirrors github.com/github/gitignore Node.gitignore pattern for .env files
           read: {
             "*": "allow",
             "*.env": "ask",
@@ -208,7 +208,7 @@ export const layer = Layer.effect(
               }),
               user,
             ),
-            description: `Fast agent specialized for exploring codebases. Use this when you need to quickly find files by patterns (eg. "src@lgcode/components@lgcode/**@lgcode/*.tsx"), search code for keywords (eg. "API endpoints"), or answer questions about the codebase (eg. "how do API endpoints work?"). When calling this agent, specify the desired thoroughness level: "quick" for basic searches, "medium" for moderate exploration, or "very thorough" for comprehensive analysis across multiple locations and naming conventions.`,
+            description: `Fast agent specialized for exploring codebases. Use this when you need to quickly find files by patterns (eg. "src/components/**/*.tsx"), search code for keywords (eg. "API endpoints"), or answer questions about the codebase (eg. "how do API endpoints work?"). When calling this agent, specify the desired thoroughness level: "quick" for basic searches, "medium" for moderate exploration, or "very thorough" for comprehensive analysis across multiple locations and naming conventions.`,
             prompt: PROMPT_EXPLORE,
             options: {},
             mode: "subagent",
@@ -291,7 +291,7 @@ export const layer = Layer.effect(
           item.permission = Permission.merge(item.permission, Permission.fromConfig(value.permission ?? {}))
         }
 
-        @lgcode/@lgcode/ Ensure Truncate.GLOB is allowed unless explicitly configured
+        // Ensure Truncate.GLOB is allowed unless explicitly configured
         for (const name in agents) {
           const agent = agents[name]
           const explicit = agent.permission.some((r) => {
@@ -379,7 +379,7 @@ export const layer = Layer.effect(
         yield* plugin.trigger("experimental.chat.system.transform", { model: resolved }, { system })
         const existing = yield* InstanceState.useEffect(state, (s) => s.list())
 
-        @lgcode/@lgcode/ TODO: clean this up so provider specific logic doesnt bleed over
+        // TODO: clean this up so provider specific logic doesnt bleed over
         const authInfo = yield* auth.get(model.providerID).pipe(Effect.orDie)
         const isOpenaiOauth = model.providerID === "openai" && authInfo?.type === "oauth"
 
@@ -456,4 +456,4 @@ export const node = LayerNode.make(layer, [
   locationServiceMapNode,
 ])
 
-export * as Agent from ".@lgcode/agent"
+export * as Agent from "./agent"

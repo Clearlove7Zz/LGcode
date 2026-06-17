@@ -1,13 +1,13 @@
 import { describe, expect, test } from "bun:test"
-import fs from "fs@lgcode/promises"
+import fs from "fs/promises"
 import path from "path"
 
-import { Process } from "@@lgcode/util@lgcode/process"
-import { Filesystem } from "@@lgcode/util@lgcode/filesystem"
-import { tmpdir } from "..@lgcode/fixture@lgcode/fixture"
+import { Process } from "@/util/process"
+import { Filesystem } from "@/util/filesystem"
+import { tmpdir } from "../fixture/fixture"
 
-const root = path.join(import.meta.dir, "..@lgcode/..")
-const worker = path.join(import.meta.dir, "..@lgcode/fixture@lgcode/plug-worker.ts")
+const root = path.join(import.meta.dir, "../..")
+const worker = path.join(import.meta.dir, "../fixture/plug-worker.ts")
 
 type Msg = {
   dir: string
@@ -28,8 +28,8 @@ async function plugin(dir: string, kinds: Array<"server" | "tui">) {
   const server = kinds.includes("server")
   const tui = kinds.includes("tui")
   const exports: Record<string, string> = {}
-  if (server) exports[".@lgcode/server"] = ".@lgcode/server.js"
-  if (tui) exports[".@lgcode/tui"] = ".@lgcode/tui.js"
+  if (server) exports["./server"] = "./server.js"
+  if (tui) exports["./tui"] = "./tui.js"
   await fs.mkdir(p, { recursive: true })
   await Bun.write(
     path.join(p, "package.json"),
@@ -37,7 +37,7 @@ async function plugin(dir: string, kinds: Array<"server" | "tui">) {
       {
         name: "acme",
         version: "1.0.0",
-        ...(server ? { main: ".@lgcode/server.js" } : {}),
+        ...(server ? { main: "./server.js" } : {}),
         ...(Object.keys(exports).length ? { exports } : {}),
       },
       null,
