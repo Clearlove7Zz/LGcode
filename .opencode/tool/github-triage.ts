@@ -1,5 +1,5 @@
 /// <reference path="../env.d.ts" />
-import { tool } from "@opencode-ai/plugin"
+import { tool } from "@lgcode/plugin"
 
 const TEAM = {
   tui: ["kommander", "simonklee"],
