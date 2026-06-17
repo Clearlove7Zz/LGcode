@@ -13,6 +13,7 @@ export const profiles = {
   openrouter: { provider: "openrouter", baseURL: "https://openrouter.ai/api/v1" },
   togetherai: { provider: "togetherai", baseURL: "https://api.together.xyz/v1" },
   xai: { provider: "xai", baseURL: "https://api.x.ai/v1" },
+  lgdg: { provider: "lgdg", baseURL: "https://modelhub.lgdg.cc/aigateway/v1" },
 } as const satisfies Record<string, OpenAICompatibleProfile>
 
 export const byProvider: Record<string, OpenAICompatibleProfile> = Object.fromEntries(
