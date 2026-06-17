@@ -1,9 +1,9 @@
 import path from "path"
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { Credential } from "@opencode-ai/core/credential"
-import { Database } from "@opencode-ai/core/database/database"
-import { Integration } from "@opencode-ai/core/integration"
+import { Credential } from "@lgcode/core/credential"
+import { Database } from "@lgcode/core/database/database"
+import { Integration } from "@lgcode/core/integration"
 import { tmpdir } from "./fixture/tmpdir"
 import { it } from "./lib/effect"
 

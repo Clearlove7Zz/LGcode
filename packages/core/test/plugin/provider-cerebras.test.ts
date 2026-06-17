@@ -1,9 +1,9 @@
 import { describe, expect, mock } from "bun:test"
 import { Effect } from "effect"
-import { Catalog } from "@opencode-ai/core/catalog"
-import { PluginV2 } from "@opencode-ai/core/plugin"
-import { CerebrasPlugin } from "@opencode-ai/core/plugin/provider/cerebras"
-import { ProviderV2 } from "@opencode-ai/core/provider"
+import { Catalog } from "@lgcode/core/catalog"
+import { PluginV2 } from "@lgcode/core/plugin"
+import { CerebrasPlugin } from "@lgcode/core/plugin/provider/cerebras"
+import { ProviderV2 } from "@lgcode/core/provider"
 import { it, model } from "./provider-helper"
 
 const cerebrasOptions: Record<string, unknown>[] = []

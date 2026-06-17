@@ -1,12 +1,12 @@
 import path from "path"
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { AgentV2 } from "@opencode-ai/core/agent"
-import { PluginBoot } from "@opencode-ai/core/plugin/boot"
-import { AbsolutePath } from "@opencode-ai/core/schema"
-import { SkillV2 } from "@opencode-ai/core/skill"
-import { SystemContext } from "@opencode-ai/core/system-context"
-import { SkillGuidance } from "@opencode-ai/core/skill/guidance"
+import { AgentV2 } from "@lgcode/core/agent"
+import { PluginBoot } from "@lgcode/core/plugin/boot"
+import { AbsolutePath } from "@lgcode/core/schema"
+import { SkillV2 } from "@lgcode/core/skill"
+import { SystemContext } from "@lgcode/core/system-context"
+import { SkillGuidance } from "@lgcode/core/skill/guidance"
 import { it } from "../lib/effect"
 
 const build = AgentV2.ID.make("build")

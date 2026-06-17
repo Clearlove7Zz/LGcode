@@ -1,10 +1,10 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { Catalog } from "@opencode-ai/core/catalog"
-import { PluginV2 } from "@opencode-ai/core/plugin"
-import { ProviderPlugins } from "@opencode-ai/core/plugin/provider"
-import { ZenmuxPlugin } from "@opencode-ai/core/plugin/provider/zenmux"
-import { ProviderV2 } from "@opencode-ai/core/provider"
+import { Catalog } from "@lgcode/core/catalog"
+import { PluginV2 } from "@lgcode/core/plugin"
+import { ProviderPlugins } from "@lgcode/core/plugin/provider"
+import { ZenmuxPlugin } from "@lgcode/core/plugin/provider/zenmux"
+import { ProviderV2 } from "@lgcode/core/provider"
 import { expectPluginRegistered, it, provider } from "./provider-helper"
 
 describe("ZenmuxPlugin", () => {
