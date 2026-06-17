@@ -81,19 +81,19 @@ beforeAll(async () => {
     useSearchParams: () => [{}, () => undefined],
   }))
 
-  mock.module("@opencode@lgcode/sdk/v2/client", () => ({
+  mock.module("@opencode-ai/sdk/v2/client", () => ({
     createOpencodeClient: (input: { directory: string }) => {
       createdClients.push(input.directory)
       return clientFor(input.directory)
     },
   }))
 
-  mock.module("@opencode@lgcode/ui/toast", () => ({
+  mock.module("@opencode-ai/ui/toast", () => ({
     Toast: { Region: () => null },
     showToast: () => 0,
   }))
 
-  mock.module("@opencode@lgcode/core/util/encode", () => ({
+  mock.module("@opencode-ai/core/util/encode", () => ({
     base64Encode: (value: string) => value,
   }))
 

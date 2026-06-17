@@ -35,8 +35,8 @@ const cloudflareWorkers = CloudflareWorkersAI.configure({
   accountId: process.env.CLOUDFLARE_ACCOUNT_ID ?? "fixture-account",
   apiKey: process.env.CLOUDFLARE_API_KEY ?? "fixture",
 })
-const cloudflareAIGatewayWorkers = cloudflareAIGateway.model("workers@lgcode/@cf/meta/llama-3.1-8b-instruct")
-const cloudflareAIGatewayWorkersTools = cloudflareAIGateway.model("workers@lgcode/@cf/openai/gpt-oss-20b")
+const cloudflareAIGatewayWorkers = cloudflareAIGateway.model("workers-ai/@cf/meta/llama-3.1-8b-instruct")
+const cloudflareAIGatewayWorkersTools = cloudflareAIGateway.model("workers-ai/@cf/openai/gpt-oss-20b")
 const cloudflareWorkersAI = cloudflareWorkers.model("@cf/meta/llama-3.1-8b-instruct")
 const cloudflareWorkersAITools = cloudflareWorkers.model("@cf/openai/gpt-oss-20b")
 const deepseek = OpenAICompatible.deepseek

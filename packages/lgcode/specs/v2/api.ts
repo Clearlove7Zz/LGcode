@@ -1,7 +1,7 @@
 // @ts-nocheck
 
-import { OpenCode } from "@opencode@lgcode/core"
-import { ReadTool } from "@opencode@lgcode/core/tools"
+import { OpenCode } from "@opencode-ai/core"
+import { ReadTool } from "@opencode-ai/core/tools"
 
 const opencode = OpenCode.make({})
 

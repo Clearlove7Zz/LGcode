@@ -1,6 +1,6 @@
-import { EventV2 } from "@opencode@lgcode/core/event"
+import { EventV2 } from "@opencode-ai/core/event"
 import { Schema } from "effect"
-import { NamedError } from "@opencode@lgcode/core/util/error"
+import { NamedError } from "@opencode-ai/core/util/error"
 import { Process } from "@/util/process"
 
 const SUPPORTED_IDES = [

@@ -25,10 +25,10 @@ describe("Cloudflare", () => {
         accountId: "test-account",
         gatewayId: "test-gateway",
         apiKey: "test-token",
-      }).model("workers@lgcode/@cf/meta/llama-3.3-70b-instruct")
+      }).model("workers-ai/@cf/meta/llama-3.3-70b-instruct")
 
       expect(model).toMatchObject({
-        id: "workers@lgcode/@cf/meta/llama-3.3-70b-instruct",
+        id: "workers-ai/@cf/meta/llama-3.3-70b-instruct",
         provider: "cloudflare-ai-gateway",
         route: { id: "cloudflare-ai-gateway" },
       })
@@ -38,7 +38,7 @@ describe("Cloudflare", () => {
 
       expect(prepared.route).toBe("cloudflare-ai-gateway")
       expect(prepared.body).toMatchObject({
-        model: "workers@lgcode/@cf/meta/llama-3.3-70b-instruct",
+        model: "workers-ai/@cf/meta/llama-3.3-70b-instruct",
         messages: [{ role: "user", content: "Say hello." }],
         stream: true,
       })
@@ -90,7 +90,7 @@ describe("Cloudflare", () => {
           accountId: "test-account",
           gatewayId: "",
           gatewayApiKey: "test-token",
-        }).model("workers@lgcode/@cf/meta/llama-3.3-70b-instruct").route.endpoint.baseURL,
+        }).model("workers-ai/@cf/meta/llama-3.3-70b-instruct").route.endpoint.baseURL,
       ).toBe("https://gateway.ai.cloudflare.com/v1/test-account/default/compat")
     }),
   )

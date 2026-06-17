@@ -1,7 +1,7 @@
 import { Match, Show, Switch, createMemo } from "solid-js"
-import { Tooltip, type TooltipProps } from "@opencode@lgcode/ui/tooltip"
-import { ProgressCircle } from "@opencode@lgcode/ui/progress-circle"
-import { Button } from "@opencode@lgcode/ui/button"
+import { Tooltip, type TooltipProps } from "@opencode-ai/ui/tooltip"
+import { ProgressCircle } from "@opencode-ai/ui/progress-circle"
+import { Button } from "@opencode-ai/ui/button"
 
 import { useFile } from "@/context/file"
 import { useLayout } from "@/context/layout"

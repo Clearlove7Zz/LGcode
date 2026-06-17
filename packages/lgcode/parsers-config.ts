@@ -1,1 +1,1 @@
-export { default } from "@opencode@lgcode/tui/parsers-config"
+export { default } from "@opencode-ai/tui/parsers-config"
