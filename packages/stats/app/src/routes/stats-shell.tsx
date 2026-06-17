@@ -21,7 +21,7 @@ export const githubLink = {
   ariaLabel: "Star LGcode on GitHub",
 }
 export const themePreferences = ["dark", "light", "system"] as const
-export const themeStorageKey = "opencode:stats-theme"
+export const themeStorageKey = "lgcode:stats-theme"
 export type ThemePreference = (typeof themePreferences)[number]
 
 const compactNumberFormatter = new Intl.NumberFormat("en", {

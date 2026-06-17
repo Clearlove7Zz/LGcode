@@ -42,8 +42,8 @@ Per esempio, se la tua configurazione globale imposta `autoupdate: true` e la co
 
 Le sorgenti di configurazione vengono caricate in questo ordine (le successive sovrascrivono le precedenti):
 
-1. **Config remota** (da `.well-known/opencode`) - default dell'organizzazione
-2. **Config globale** (`~/.config/opencode/lgcode.json`) - preferenze utente
+1. **Config remota** (da `.well-known/lgcode`) - default dell'organizzazione
+2. **Config globale** (`~/.config/lgcode/lgcode.json`) - preferenze utente
 3. **Config personalizzata** (variabile d'ambiente `LGCODE_CONFIG`) - sovrascritture personalizzate
 4. **Config di progetto** (`lgcode.json` nel progetto) - impostazioni specifiche del progetto
 5. **Directory `.lgcode`** - agenti, comandi, plugin
@@ -52,20 +52,20 @@ Le sorgenti di configurazione vengono caricate in questo ordine (le successive s
 Questo significa che la configurazione di progetto puo sovrascrivere i default globali, e la configurazione globale puo sovrascrivere i default remoti dell'organizzazione.
 
 :::note
-Le directory `.lgcode` e `~/.config/opencode` usano **nomi al plurale** per le sottodirectory: `agents/`, `commands/`, `modes/`, `plugins/`, `skills/`, `tools/` e `themes/`. I nomi al singolare (ad es. `agent/`) sono supportati per retrocompatibilita.
+Le directory `.lgcode` e `~/.config/lgcode` usano **nomi al plurale** per le sottodirectory: `agents/`, `commands/`, `modes/`, `plugins/`, `skills/`, `tools/` e `themes/`. I nomi al singolare (ad es. `agent/`) sono supportati per retrocompatibilita.
 :::
 
 ---
 
 ### Configurazione remota
 
-Le organizzazioni possono fornire una configurazione predefinita tramite l'endpoint `.well-known/opencode`. Viene recuperata automaticamente quando ti autentichi con un provider che lo supporta.
+Le organizzazioni possono fornire una configurazione predefinita tramite l'endpoint `.well-known/lgcode`. Viene recuperata automaticamente quando ti autentichi con un provider che lo supporta.
 
 La configurazione remota viene caricata per prima e fa da livello base. Tutte le altre sorgenti (globale, progetto) possono sovrascrivere questi default.
 
 Per esempio, se la tua organizzazione fornisce server MCP disabilitati per impostazione predefinita:
 
-```json title="Remote config from .well-known/opencode"
+```json title="Remote config from .well-known/lgcode"
 {
   "mcp": {
     "jira": {
@@ -95,9 +95,9 @@ Puoi abilitare server specifici nella tua configurazione locale:
 
 ### Configurazione globale
 
-Metti la configurazione globale di LGcode in `~/.config/opencode/lgcode.json`. Usa la configurazione globale per preferenze server/runtime valide per l'utente come provider, modelli e permessi.
+Metti la configurazione globale di LGcode in `~/.config/lgcode/lgcode.json`. Usa la configurazione globale per preferenze server/runtime valide per l'utente come provider, modelli e permessi.
 
-Per le impostazioni specifiche della TUI, usa `~/.config/opencode/tui.json`.
+Per le impostazioni specifiche della TUI, usa `~/.config/lgcode/tui.json`.
 
 La configurazione globale sovrascrive i default remoti dell'organizzazione.
 
@@ -200,7 +200,7 @@ Opzioni disponibili:
 - `port` - Porta su cui ascoltare.
 - `hostname` - Nome host su cui ascoltare. Quando `mdns` e abilitato e non e impostato alcun hostname, il default e `0.0.0.0`.
 - `mdns` - Abilita la scoperta del servizio mDNS. Questo permette ad altri dispositivi sulla rete di scoprire il tuo server LGcode.
-- `mdnsDomain` - Nome di dominio personalizzato per il servizio mDNS. Predefinito: `opencode.local`. Utile per eseguire piu istanze sulla stessa rete.
+- `mdnsDomain` - Nome di dominio personalizzato per il servizio mDNS. Predefinito: `lgcode.local`. Utile per eseguire piu istanze sulla stessa rete.
 - `cors` - Origini aggiuntive da consentire per CORS quando usi il server HTTP da un client basato su browser. I valori devono essere origini complete (schema + host + porta opzionale), ad es. `https://app.example.com`.
 
 [Scopri di piu sul server](/docs/server).
@@ -335,7 +335,7 @@ Puoi configurare agenti specializzati per task specifici tramite l'opzione `agen
 }
 ```
 
-Puoi anche definire agenti usando file markdown in `~/.config/opencode/agents/` o `.lgcode/agents/`. [Scopri di piu](/docs/agents).
+Puoi anche definire agenti usando file markdown in `~/.config/lgcode/agents/` o `.lgcode/agents/`. [Scopri di piu](/docs/agents).
 
 ---
 
@@ -399,7 +399,7 @@ Puoi configurare comandi personalizzati per task ripetitivi tramite l'opzione `c
 }
 ```
 
-Puoi anche definire comandi usando file markdown in `~/.config/opencode/commands/` o `.lgcode/commands/`. [Scopri di piu](/docs/commands).
+Puoi anche definire comandi usando file markdown in `~/.config/lgcode/commands/` o `.lgcode/commands/`. [Scopri di piu](/docs/commands).
 
 ---
 
@@ -462,7 +462,7 @@ Puoi configurare i formatter di codice tramite l'opzione `formatter`.
 
 ### Permessi
 
-Per impostazione predefinita, opencode **consente tutte le operazioni** senza richiedere un'approvazione esplicita. Puoi cambiarlo usando l'opzione `permission`.
+Per impostazione predefinita, lgcode **consente tutte le operazioni** senza richiedere un'approvazione esplicita. Puoi cambiarlo usando l'opzione `permission`.
 
 Per esempio, per fare in modo che gli strumenti `edit` e `bash` richiedano l'approvazione dell'utente:
 
@@ -537,7 +537,7 @@ Puoi configurare i server MCP che vuoi usare tramite l'opzione `mcp`.
 
 [I plugin](/docs/plugins) estendono LGcode con strumenti personalizzati, hook e integrazioni.
 
-Metti i file dei plugin in `.lgcode/plugins/` o `~/.config/opencode/plugins/`. Puoi anche caricare plugin da npm tramite l'opzione `plugin`.
+Metti i file dei plugin in `.lgcode/plugins/` o `~/.config/lgcode/plugins/`. Puoi anche caricare plugin da npm tramite l'opzione `plugin`.
 
 ```json title="lgcode.json"
 {

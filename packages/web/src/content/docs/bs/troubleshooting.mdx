@@ -11,12 +11,12 @@ Da biste otklonili probleme s LGcode, počnite provjeravanjem dnevnika i lokalni
 
 Log fajlovi se pišu na:
 
-- **macOS/Linux**: `~/.local/share/opencode/log/`
-- **Windows**: Pritisnite `WIN+R` i zalijepite `%USERPROFILE%\.local\share\opencode\log`
+- **macOS/Linux**: `~/.local/share/lgcode/log/`
+- **Windows**: Pritisnite `WIN+R` i zalijepite `%USERPROFILE%\.local\share\lgcode\log`
 
 Datoteke evidencije se imenuju vremenskim oznakama (npr. `2025-01-09T123456.log`) i čuvaju se najnovijih 10 datoteka dnevnika.
 
-Možete postaviti nivo dnevnika pomoću opcije komandne linije `--log-level` da biste dobili detaljnije informacije o otklanjanju grešaka. Na primjer, `opencode --log-level DEBUG`.
+Možete postaviti nivo dnevnika pomoću opcije komandne linije `--log-level` da biste dobili detaljnije informacije o otklanjanju grešaka. Na primjer, `lgcode --log-level DEBUG`.
 
 ---
 
@@ -24,8 +24,8 @@ Možete postaviti nivo dnevnika pomoću opcije komandne linije `--log-level` da 
 
 LGcode pohranjuje podatke o sesiji i druge podatke aplikacije na disku na:
 
-- **macOS/Linux**: `~/.local/share/opencode/`
-- **Windows**: Pritisnite `WIN+R` i zalijepite `%USERPROFILE%\.local\share\opencode`
+- **macOS/Linux**: `~/.local/share/lgcode/`
+- **Windows**: Pritisnite `WIN+R` i zalijepite `%USERPROFILE%\.local\share\lgcode`
 
 Ovaj direktorij sadrži:
 
@@ -57,9 +57,9 @@ Ako se desktop aplikacija ruši pri pokretanju, visi ili se čudno ponaša, poč
 
 Otvorite svoju globalnu konfiguracijsku datoteku i potražite ključ `plugin`.
 
-- **macOS/Linux**: `~/.config/opencode/lgcode.jsonc` (ili `~/.config/opencode/lgcode.json`)
-- **macOS/Linux** (starije instalacije): `~/.local/share/opencode/lgcode.jsonc`
-- **Windows**: Pritisnite `WIN+R` i zalijepite `%USERPROFILE%\.config\opencode\lgcode.jsonc`
+- **macOS/Linux**: `~/.config/lgcode/lgcode.jsonc` (ili `~/.config/lgcode/lgcode.json`)
+- **macOS/Linux** (starije instalacije): `~/.local/share/lgcode/lgcode.jsonc`
+- **Windows**: Pritisnite `WIN+R` i zalijepite `%USERPROFILE%\.config\lgcode\lgcode.jsonc`
 
 Ako imate konfigurirane dodatke, privremeno ih onemogućite uklanjanjem ključa ili postavljanjem na prazan niz:
 
@@ -75,8 +75,8 @@ Ako imate konfigurirane dodatke, privremeno ih onemogućite uklanjanjem ključa 
 LGcode također može učitati lokalne dodatke s diska. Privremeno ih maknite s puta (ili preimenujte folder) i ponovo pokrenite desktop aplikaciju:
 
 - **Globalni dodaci**
-  - **macOS/Linux**: `~/.config/opencode/plugins/`
-  - **Windows**: Pritisnite `WIN+R` i zalijepite `%USERPROFILE%\.config\opencode\plugins`
+  - **macOS/Linux**: `~/.config/lgcode/plugins/`
+  - **Windows**: Pritisnite `WIN+R` i zalijepite `%USERPROFILE%\.config\lgcode\plugins`
 - **Projektni dodaci** (samo ako koristite konfiguraciju po projektu)
   - `<your-project>/.lgcode/plugins/`
 
@@ -91,9 +91,9 @@ Ako onemogućavanje dodataka ne pomogne (ili se instalacija dodatka zaglavila), 
 1. Potpuno zatvorite LGcode Desktop.
 2. Izbrišite keš direktorij:
 
-- **macOS**: Finder -> `Cmd+Shift+G` -> zalijepi `~/.cache/opencode`
-- **Linux**: obrišite `~/.cache/opencode` (ili pokrenite `rm -rf ~/.cache/opencode`)
-- **Windows**: Pritisnite `WIN+R` i zalijepite `%USERPROFILE%\.cache\opencode`
+- **macOS**: Finder -> `Cmd+Shift+G` -> zalijepi `~/.cache/lgcode`
+- **Linux**: obrišite `~/.cache/lgcode` (ili pokrenite `rm -rf ~/.cache/lgcode`)
+- **Windows**: Pritisnite `WIN+R` i zalijepite `%USERPROFILE%\.cache\lgcode`
 
 3. Ponovo pokrenite LGcode Desktop.
 
@@ -158,8 +158,8 @@ Ako se aplikacija ne pokrene i ne možete izbrisati postavke unutar korisničkog
 1. Zatvorite LGcode Desktop.
 2. Pronađite i izbrišite ove datoteke (oni žive u direktoriju podataka LGcode Desktop aplikacije):
 
-- `opencode.settings.dat` (URL zadanog servera za desktop)
-- `opencode.global.dat` i `opencode.workspace.*.dat` (stanje korisničkog interfejsa poput nedavnih servera/projekata)
+- `lgcode.settings.dat` (URL zadanog servera za desktop)
+- `lgcode.global.dat` i `lgcode.workspace.*.dat` (stanje korisničkog interfejsa poput nedavnih servera/projekata)
 
 Da brzo pronađete direktorij:
 
@@ -199,7 +199,7 @@ Evo nekih uobičajenih problema i kako ih riješiti.
 
 1. Provjerite dnevnike za poruke o greškama
 2. Pokušajte pokrenuti sa `--print-logs` da vidite izlaz u terminalu
-3. Uvjerite se da imate najnoviju verziju sa `opencode upgrade`
+3. Uvjerite se da imate najnoviju verziju sa `lgcode upgrade`
 
 ---
 
@@ -225,9 +225,9 @@ primjeri:
 
 - `openai/gpt-4.1`
 - `openrouter/google/gemini-2.5-flash`
-- `opencode/kimi-k2`
+- `lgcode/kimi-k2`
 
-Da saznate kojim modelima imate pristup, pokrenite `opencode models`
+Da saznate kojim modelima imate pristup, pokrenite `lgcode models`
 
 ---
 
@@ -241,10 +241,10 @@ Da biste ovo riješili:
 2. Ako se problem nastavi, pokušajte obrisati pohranjenu konfiguraciju:
 
 ```bash
-   rm -rf ~/.local/share/opencode
+   rm -rf ~/.local/share/lgcode
 ```
 
-Na Windows-u pritisnite `WIN+R` i izbrišite: `%USERPROFILE%\.local\share\opencode`
+Na Windows-u pritisnite `WIN+R` i izbrišite: `%USERPROFILE%\.local\share\lgcode`
 
 3. Ponovo izvršite autentifikaciju kod svog provajdera koristeći naredbu `/connect` u TUI.
 
@@ -259,10 +259,10 @@ Da biste riješili probleme s paketom dobavljača:
 1. Obrišite keš paketa provajdera:
 
 ```bash
-   rm -rf ~/.cache/opencode
+   rm -rf ~/.cache/lgcode
 ```
 
-Na Windows-u pritisnite `WIN+R` i izbrišite: `%USERPROFILE%\.cache\opencode`
+Na Windows-u pritisnite `WIN+R` i izbrišite: `%USERPROFILE%\.cache\lgcode`
 
 2. Ponovo pokrenite LGcode da ponovo instalirate najnovije pakete dobavljača
 

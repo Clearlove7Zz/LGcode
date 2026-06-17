@@ -3,7 +3,7 @@ import { defineConfig } from "electron-vite"
 import appPlugin from "@lgcode/app/vite"
 import * as fs from "node:fs/promises"
 
-const LGCODE_SERVER_DIST = "../opencode/dist/node"
+const LGCODE_SERVER_DIST = "../lgcode/dist/node"
 
 const channel = (() => {
   const raw = process.env.LGCODE_CHANNEL
@@ -44,21 +44,21 @@ export default defineConfig({
     },
     plugins: [
       {
-        name: "opencode:node-pty-narrower",
+        name: "lgcode:node-pty-narrower",
         enforce: "pre",
         resolveId(s) {
           if (s === "@lydell/node-pty") return nodePtyPkg
         },
       },
       {
-        name: "opencode:virtual-server-module",
+        name: "lgcode:virtual-server-module",
         enforce: "pre",
         resolveId(id) {
           if (id === "virtual:lgcode-server") return this.resolve(`${LGCODE_SERVER_DIST}/node.js`)
         },
       },
       {
-        name: "opencode:copy-server-assets",
+        name: "lgcode:copy-server-assets",
         async writeBundle() {
           for (const l of await fs.readdir(LGCODE_SERVER_DIST)) {
             if (!l.endsWith(".wasm")) continue

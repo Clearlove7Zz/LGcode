@@ -13,7 +13,7 @@ In both cases, LGcode will run on your GitLab runners.
 
 LGcode works in a regular GitLab pipeline. You can build it into a pipeline as a [CI component](https://docs.gitlab.com/ee/ci/components/)
 
-Here we are using a community-created CI/CD component for LGcode — [nagyv/gitlab-opencode](https://gitlab.com/nagyv/gitlab-opencode).
+Here we are using a community-created CI/CD component for LGcode — [nagyv/gitlab-lgcode](https://gitlab.com/nagyv/gitlab-lgcode).
 
 ---
 
@@ -32,7 +32,7 @@ Here we are using a community-created CI/CD component for LGcode — [nagyv/gitl
 
    ```yaml title=".gitlab-ci.yml"
    include:
-     - component: $CI_SERVER_FQDN/nagyv/gitlab-opencode/opencode@2
+     - component: $CI_SERVER_FQDN/nagyv/gitlab-lgcode/lgcode@2
        inputs:
          config_dir: ${CI_PROJECT_DIR}/lgcode-config
          auth_json: $LGCODE_AUTH_JSON # The variable name for your LGcode authentication JSON
@@ -40,14 +40,14 @@ Here we are using a community-created CI/CD component for LGcode — [nagyv/gitl
          message: "Your prompt here"
    ```
 
-For more inputs and use cases [check out the docs](https://gitlab.com/explore/catalog/nagyv/gitlab-opencode) for this component.
+For more inputs and use cases [check out the docs](https://gitlab.com/explore/catalog/nagyv/gitlab-lgcode) for this component.
 
 ---
 
 ## GitLab Duo
 
 LGcode integrates with your GitLab workflow.
-Mention `@opencode` in a comment, and LGcode will execute tasks within your GitLab CI pipeline.
+Mention `@lgcode` in a comment, and LGcode will execute tasks within your GitLab CI pipeline.
 
 ---
 
@@ -82,7 +82,7 @@ Check out the [**GitLab docs**](https://docs.gitlab.com/user/duo_agent_platform/
     ```yaml
     image: node:22-slim
     commands:
-      - echo "Installing opencode"
+      - echo "Installing lgcode"
       - npm install --global lgcode-ai
       - echo "Installing glab"
       - export GITLAB_TOKEN=$GITLAB_TOKEN_LGCODE
@@ -92,9 +92,9 @@ Check out the [**GitLab docs**](https://docs.gitlab.com/user/duo_agent_platform/
       - echo "Configuring glab"
       - echo $GITLAB_HOST
       - echo "Creating LGcode auth configuration"
-      - mkdir --parents ~/.local/share/opencode
+      - mkdir --parents ~/.local/share/lgcode
       - |
-        cat > ~/.local/share/opencode/auth.json << EOF
+        cat > ~/.local/share/lgcode/auth.json << EOF
         {
           "anthropic": {
             "type": "api",
@@ -103,7 +103,7 @@ Check out the [**GitLab docs**](https://docs.gitlab.com/user/duo_agent_platform/
         }
         EOF
       - echo "Configuring git"
-      - git config --global user.email "opencode@gitlab.com"
+      - git config --global user.email "lgcode@gitlab.com"
       - git config --global user.name "LGcode"
       - echo "Testing glab"
       - glab issue list
@@ -161,7 +161,7 @@ You can refer to the [GitLab CLI agents docs](https://docs.gitlab.com/user/duo_a
 Here are some examples of how you can use LGcode in GitLab.
 
 :::tip
-You can configure to use a different trigger phrase than `@opencode`.
+You can configure to use a different trigger phrase than `@lgcode`.
 :::
 
 - **Explain an issue**
@@ -169,7 +169,7 @@ You can configure to use a different trigger phrase than `@opencode`.
   Add this comment in a GitLab issue.
 
   ```
-  @opencode explain this issue
+  @lgcode explain this issue
   ```
 
   LGcode will read the issue and reply with a clear explanation.
@@ -179,7 +179,7 @@ You can configure to use a different trigger phrase than `@opencode`.
   In a GitLab issue, say:
 
   ```
-  @opencode fix this
+  @lgcode fix this
   ```
 
   LGcode will create a new branch, implement the changes, and open a merge request with the changes.
@@ -189,7 +189,7 @@ You can configure to use a different trigger phrase than `@opencode`.
   Leave the following comment on a GitLab merge request.
 
   ```
-  @opencode review this merge request
+  @lgcode review this merge request
   ```
 
   LGcode will review the merge request and provide feedback.

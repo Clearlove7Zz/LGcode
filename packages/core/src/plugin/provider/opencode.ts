@@ -4,7 +4,7 @@ import { PluginV2 } from "../../plugin"
 import { ProviderV2 } from "../../provider"
 
 export const OpencodePlugin = PluginV2.define({
-  id: PluginV2.ID.make("opencode"),
+  id: PluginV2.ID.make("lgcode"),
   effect: Effect.gen(function* () {
     const integrations = yield* Integration.Service
     let hasKey = false

@@ -266,11 +266,11 @@ describe("session.retry.retryable", () => {
       }).toObject(),
     )
 
-    expect(SessionRetry.retryable(error, "opencode")).toEqual({
+    expect(SessionRetry.retryable(error, "lgcode")).toEqual({
       message: SessionRetry.GO_UPSELL_MESSAGE,
       action: {
         reason: "free_tier_limit",
-        provider: "opencode",
+        provider: "lgcode",
         title: "Free limit reached",
         message: "Subscribe to LGcode Go for reliable access to the best open-source models, starting at $5/month.",
         label: "subscribe",

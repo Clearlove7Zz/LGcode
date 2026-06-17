@@ -140,7 +140,7 @@ describe("installation", () => {
         (cmd, args) => {
           // getBrewFormula: return core formula (no tap)
           if (cmd === "brew" && args.includes("--formula") && args.includes("anomalyco/tap/lgcode")) return ""
-          if (cmd === "brew" && args.includes("--formula") && args.includes("opencode")) return "opencode"
+          if (cmd === "brew" && args.includes("--formula") && args.includes("lgcode")) return "lgcode"
           return ""
         },
       ),
@@ -158,7 +158,7 @@ describe("installation", () => {
       testLayer(
         () => jsonResponse({}), // HTTP not used for tap formula
         (cmd, args) => {
-          if (cmd === "brew" && args.includes("anomalyco/tap/lgcode") && args.includes("--formula")) return "opencode"
+          if (cmd === "brew" && args.includes("anomalyco/tap/lgcode") && args.includes("--formula")) return "lgcode"
           if (cmd === "brew" && args.includes("--json=v2")) return brewInfoJson
           return ""
         },

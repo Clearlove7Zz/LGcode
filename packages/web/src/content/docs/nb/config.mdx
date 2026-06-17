@@ -1,6 +1,6 @@
 ---
 title: Konfigurasjon
-description: Ved å bruke opencode JSON-konfigurasjonen.
+description: Ved å bruke lgcode JSON-konfigurasjonen.
 ---
 
 Du kan konfigurere LGcode ved å bruke en JSON konfigurasjonsfil.
@@ -35,7 +35,7 @@ Konfigurasjonsfiler er **slått sammen**, ikke erstattet.
 
 Konfigurasjonsfiler slås sammen, ikke erstattes. Innstillinger fra følgende konfigurasjonsplasseringer kombineres. Senere konfigurasjoner overstyrer tidligere kun for motstridende nøkler. Ikke-motstridende innstillinger fra alle konfigurasjoner er bevart.
 
-For eksempel, hvis din globale konfigurasjon setter `theme: "opencode"` og `autoupdate: true`, og prosjektkonfigurasjonen setter `model: "anthropic/claude-sonnet-4-5"`, vil den endelige konfigurasjonen inkludere alle tre innstillingene.
+For eksempel, hvis din globale konfigurasjon setter `theme: "lgcode"` og `autoupdate: true`, og prosjektkonfigurasjonen setter `model: "anthropic/claude-sonnet-4-5"`, vil den endelige konfigurasjonen inkludere alle tre innstillingene.
 
 ---
 
@@ -43,8 +43,8 @@ For eksempel, hvis din globale konfigurasjon setter `theme: "opencode"` og `auto
 
 Konfigurasjonskilder lastes inn i denne rekkefølgen (senere kilder overstyrer tidligere):
 
-1. **Ekstern konfigurasjon** (fra `.well-known/opencode`) - organisasjonsstandarder
-2. **Global konfigurasjon** (`~/.config/opencode/lgcode.json`) - brukerinnstillinger
+1. **Ekstern konfigurasjon** (fra `.well-known/lgcode`) - organisasjonsstandarder
+2. **Global konfigurasjon** (`~/.config/lgcode/lgcode.json`) - brukerinnstillinger
 3. **Egendefinert konfigurasjon** (`LGCODE_CONFIG` env var) - egendefinerte overstyringer
 4. **Prosjektkonfigurasjon** (`lgcode.json` i prosjekt) - prosjektspesifikke innstillinger
 5. **`.lgcode` kataloger** - agenter, kommandoer, plugins
@@ -53,20 +53,20 @@ Konfigurasjonskilder lastes inn i denne rekkefølgen (senere kilder overstyrer t
 Dette betyr at prosjektkonfigurasjoner kan overstyre globale standardinnstillinger, og globale konfigurasjoner kan overstyre eksterne organisasjonsstandarder.
 
 :::note
-`.lgcode` og `~/.config/opencode` katalogene bruker **flertallsnavn** på underkataloger: `agents/`, `commands/`, `modes/`, `plugins/`, `skills/`, `tools/` og `themes/`. Enkeltnavn (f.eks. `agent/`) støttes også for bakoverkompatibilitet.
+`.lgcode` og `~/.config/lgcode` katalogene bruker **flertallsnavn** på underkataloger: `agents/`, `commands/`, `modes/`, `plugins/`, `skills/`, `tools/` og `themes/`. Enkeltnavn (f.eks. `agent/`) støttes også for bakoverkompatibilitet.
 :::
 
 ---
 
 ### Ekstern konfigurasjon
 
-Organisasjoner kan tilby standardkonfigurasjon via `.well-known/opencode`-endepunktet. Dette hentes automatisk når du autentiserer med en leverandør som støtter det.
+Organisasjoner kan tilby standardkonfigurasjon via `.well-known/lgcode`-endepunktet. Dette hentes automatisk når du autentiserer med en leverandør som støtter det.
 
 Ekstern konfigurasjon lastes først, og fungerer som grunnlaget. Alle andre konfigurasjonskilder (global, prosjekt) kan overstyre disse standardinnstillingene.
 
 For eksempel, hvis organisasjonen din tilbyr MCP servere som er deaktivert som standard:
 
-```json title="Remote config from .well-known/opencode"
+```json title="Remote config from .well-known/lgcode"
 {
   "mcp": {
     "jira": {
@@ -96,7 +96,7 @@ Du kan aktivere spesifikke servere i din lokale konfigurasjon:
 
 ### Global konfigurasjon
 
-Plasser din globale LGcode-konfigurasjon i `~/.config/opencode/lgcode.json`. Bruk global konfigurasjon for brukerspesifikke preferanser som temaer, leverandører eller nøkkelbindinger.
+Plasser din globale LGcode-konfigurasjon i `~/.config/lgcode/lgcode.json`. Bruk global konfigurasjon for brukerspesifikke preferanser som temaer, leverandører eller nøkkelbindinger.
 
 Global konfigurasjon overstyrer eksterne organisasjonsstandarder.
 
@@ -202,7 +202,7 @@ Tilgjengelige alternativer:
 - `port` - Port å lytte på.
 - `hostname` - Vertsnavn å lytte på. Når `mdns` er aktivert og ingen vertsnavn er angitt, er standard `0.0.0.0`.
 - `mdns` - Aktiver mDNS-tjenesteoppdagelse. Dette lar andre enheter på nettverket oppdage LGcode-serveren din.
-- `mdnsDomain` - Egendefinert domenenavn for mDNS-tjeneste. Standard er `opencode.local`. Nyttig for å kjøre flere forekomster på samme nettverk.
+- `mdnsDomain` - Egendefinert domenenavn for mDNS-tjeneste. Standard er `lgcode.local`. Nyttig for å kjøre flere forekomster på samme nettverk.
 - `cors` - Ytterligere opprinnelser for å tillate CORS når du bruker HTTP-serveren fra en nettleserbasert klient. Verdiene må være fullstendige opprinnelser (skjema + vert + valgfri port), f.eks. `https://app.example.com`.
 
 [Les mer om serveren her](/docs/server).
@@ -337,7 +337,7 @@ Du kan konfigurere spesialiserte agenter for spesifikke oppgaver gjennom alterna
 }
 ```
 
-Du kan også definere agenter ved å bruke markdown-filer i `~/.config/opencode/agents/` eller `.lgcode/agents/`. [Les mer her](/docs/agents).
+Du kan også definere agenter ved å bruke markdown-filer i `~/.config/lgcode/agents/` eller `.lgcode/agents/`. [Les mer her](/docs/agents).
 
 ---
 
@@ -401,7 +401,7 @@ Du kan konfigurere egendefinerte kommandoer for repeterende oppgaver gjennom alt
 }
 ```
 
-Du kan også definere kommandoer ved å bruke markdown-filer i `~/.config/opencode/commands/` eller `.lgcode/commands/`. [Les mer her](/docs/commands).
+Du kan også definere kommandoer ved å bruke markdown-filer i `~/.config/lgcode/commands/` eller `.lgcode/commands/`. [Les mer her](/docs/commands).
 
 ---
 
@@ -539,7 +539,7 @@ Du kan konfigurere MCP-servere du vil bruke gjennom alternativet `mcp`.
 
 [Plugins](/docs/plugins) utvider LGcode med tilpassede verktøy, kroker og integrasjoner.
 
-Plasser plugin-filer i `.lgcode/plugins/` eller `~/.config/opencode/plugins/`. Du kan også laste inn plugins fra npm gjennom alternativet `plugin`.
+Plasser plugin-filer i `.lgcode/plugins/` eller `~/.config/lgcode/plugins/`. Du kan også laste inn plugins fra npm gjennom alternativet `plugin`.
 
 ```json title="lgcode.json"
 {

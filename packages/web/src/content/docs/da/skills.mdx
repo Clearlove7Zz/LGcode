@@ -14,7 +14,7 @@ Opret én mappe per ferdighetsnavn og tilføj inn en `SKILL.md` i den.
 LGcode søker etter disse stedene:
 
 - Prosjektkonfigurasjon: `.lgcode/skills/<name>/SKILL.md`
-- Global konfigurasjon: `~/.config/opencode/skills/<name>/SKILL.md`
+- Global konfigurasjon: `~/.config/lgcode/skills/<name>/SKILL.md`
 - Prosjekt Claude-kompatibel: `.claude/skills/<name>/SKILL.md`
 - Global Claude-kompatibel: `~/.claude/skills/<name>/SKILL.md`
 - Prosjektagent-kompatibel: `.agents/skills/<name>/SKILL.md`
@@ -27,7 +27,7 @@ LGcode søker etter disse stedene:
 For prosjektlokale stier går LGcode opp fra din nåværende arbejdskatalog til den når git-arbeidstreet.
 Den laster alle matchende `skills/*/SKILL.md` i `.lgcode/` og alle matchende `.claude/skills/*/SKILL.md` eller `.agents/skills/*/SKILL.md` underveis.
 
-Globale definisjoner lastes også inn fra `~/.config/opencode/skills/*/SKILL.md`, `~/.claude/skills/*/SKILL.md` og `~/.agents/skills/*/SKILL.md`.
+Globale definisjoner lastes også inn fra `~/.config/lgcode/skills/*/SKILL.md`, `~/.claude/skills/*/SKILL.md` og `~/.agents/skills/*/SKILL.md`.
 
 ---
 
@@ -80,7 +80,7 @@ Lag `.lgcode/skills/git-release/SKILL.md` slik:
 name: git-release
 description: Create consistent releases and changelogs
 license: MIT
-compatibility: opencode
+compatibility: lgcode
 metadata:
   audience: maintainers
   workflow: github

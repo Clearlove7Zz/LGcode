@@ -15,7 +15,7 @@ import { jsonSchema, tool as aiTool, type ModelMessage, type Tool } from "ai"
 import type { Plugin } from "@/plugin"
 import { mergeDeep } from "remeda"
 
-const USER_AGENT = `opencode/${InstallationVersion}`
+const USER_AGENT = `lgcode/${InstallationVersion}`
 
 type PrepareInput = {
   readonly user: SessionV1.User
@@ -164,7 +164,7 @@ export const prepare = Effect.fn("LLMRequestPrep.prepare")(function* (input: Pre
     })
   }
 
-  const opencodeProjectID = input.model.providerID.startsWith("opencode")
+  const opencodeProjectID = input.model.providerID.startsWith("lgcode")
     ? (yield* InstanceState.context).project.id
     : undefined
 
@@ -175,7 +175,7 @@ export const prepare = Effect.fn("LLMRequestPrep.prepare")(function* (input: Pre
     params,
     messageTransformOptions: options,
     headers: {
-      ...(input.model.providerID.startsWith("opencode")
+      ...(input.model.providerID.startsWith("lgcode")
         ? {
             ...(opencodeProjectID ? { "x-lgcode-project": opencodeProjectID } : {}),
             "x-lgcode-session": input.sessionID,

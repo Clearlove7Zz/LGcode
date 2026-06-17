@@ -18,7 +18,7 @@ Um einen Anbieter hinzuzufügen, müssen Sie:
 ### Anmeldeinformationen
 
 Wenn Sie die API-Schlüssel eines Anbieters mit dem Befehl `/connect` hinzufügen, werden diese gespeichert
-in `~/.local/share/opencode/auth.json`.
+in `~/.local/share/lgcode/auth.json`.
 
 ---
 
@@ -172,13 +172,13 @@ So verwenden Sie Amazon Bedrock mit LGcode:
 
    ```bash
    # Option 1: Using AWS access keys
-   AWS_ACCESS_KEY_ID=XXX AWS_SECRET_ACCESS_KEY=YYY opencode
+   AWS_ACCESS_KEY_ID=XXX AWS_SECRET_ACCESS_KEY=YYY lgcode
 
    # Option 2: Using named AWS profile
-   AWS_PROFILE=my-profile opencode
+   AWS_PROFILE=my-profile lgcode
 
    # Option 3: Using Bedrock bearer token
-   AWS_BEARER_TOKEN_BEDROCK=XXX opencode
+   AWS_BEARER_TOKEN_BEDROCK=XXX lgcode
    ```
 
    Oder fügen Sie sie Ihrem Bash-Profil hinzu:
@@ -323,7 +323,7 @@ Wenn Sie bereits über einen API-Schlüssel verfügen, können Sie **API-Schlüs
 
 ### Atomic Chat
 
-Sie können opencode so konfigurieren, dass es lokale Modelle über [Atomic Chat](https://atomic.chat) verwendet — eine Desktop-Anwendung, die lokale LLMs hinter einem OpenAI-kompatiblen API-Server bereitstellt (Standard-Endpunkt `http://127.0.0.1:1337/v1`).
+Sie können lgcode so konfigurieren, dass es lokale Modelle über [Atomic Chat](https://atomic.chat) verwendet — eine Desktop-Anwendung, die lokale LLMs hinter einem OpenAI-kompatiblen API-Server bereitstellt (Standard-Endpunkt `http://127.0.0.1:1337/v1`).
 
 ```json title="lgcode.json" "atomic-chat" {5, 6, 8, 10-14}
 {
@@ -393,7 +393,7 @@ Wenn Sie auf die Fehlermeldung „Es tut mir leid, aber ich kann Ihnen bei diese
 5. Legen Sie Ihren Ressourcennamen als Umgebungsvariable fest:
 
    ```bash
-   AZURE_RESOURCE_NAME=XXX opencode
+   AZURE_RESOURCE_NAME=XXX lgcode
    ```
 
    Oder fügen Sie es Ihrem Bash-Profil hinzu:
@@ -440,7 +440,7 @@ Wenn Sie auf die Fehlermeldung „Es tut mir leid, aber ich kann Ihnen bei diese
 5. Legen Sie Ihren Ressourcennamen als Umgebungsvariable fest:
 
    ```bash
-   AZURE_COGNITIVE_SERVICES_RESOURCE_NAME=XXX opencode
+   AZURE_COGNITIVE_SERVICES_RESOURCE_NAME=XXX lgcode
    ```
 
    Oder fügen Sie es Ihrem Bash-Profil hinzu:
@@ -907,7 +907,7 @@ So verwenden Sie Google Vertex AI mit LGcode:
    Legen Sie sie fest, während Sie LGcode ausführen.
 
    ```bash
-   GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json GOOGLE_CLOUD_PROJECT=your-project-id opencode
+   GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json GOOGLE_CLOUD_PROJECT=your-project-id lgcode
    ```
 
    Oder fügen Sie sie Ihrem Bash-Profil hinzu.
@@ -1021,7 +1021,7 @@ Falls Sie eine Funktion oder ein Modell von Helicone sehen, das nicht automatisc
 
 Hier ist [Helicone's Model Directory](https://helicone.ai/models). Sie benötigen dies, um die IDs der Modelle abzurufen, die Sie hinzufügen möchten.
 
-```jsonc title="~/.config/opencode/lgcode.jsonc"
+```jsonc title="~/.config/lgcode/lgcode.jsonc"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -1049,7 +1049,7 @@ Hier ist [Helicone's Model Directory](https://helicone.ai/models). Sie benötige
 
 Helicone unterstützt benutzerdefinierte Header für Funktionen wie Caching, Benutzerverfolgung und Sitzungsverwaltung. Fügen Sie sie mit `options.headers` zu Ihrer Anbieterkonfiguration hinzu:
 
-```jsonc title="~/.config/opencode/lgcode.jsonc"
+```jsonc title="~/.config/lgcode/lgcode.jsonc"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -1060,7 +1060,7 @@ Helicone unterstützt benutzerdefinierte Header für Funktionen wie Caching, Ben
         "baseURL": "https://ai-gateway.helicone.ai",
         "headers": {
           "Helicone-Cache-Enabled": "true",
-          "Helicone-User-Id": "opencode",
+          "Helicone-User-Id": "lgcode",
         },
       },
     },
@@ -1288,7 +1288,7 @@ So verwenden Sie Kimi K2 von Moonshot AI:
 Sie können LGcode über Ollama für die Verwendung lokaler Modelle konfigurieren.
 
 :::tip
-Ollama kann sich automatisch für LGcode konfigurieren. Weitere Informationen finden Sie unter [Ollama integration docs](https://docs.ollama.com/integrations/opencode).
+Ollama kann sich automatisch für LGcode konfigurieren. Weitere Informationen finden Sie unter [Ollama integration docs](https://docs.ollama.com/integrations/lgcode).
 :::
 
 ```json title="lgcode.json" "ollama" {5, 6, 8, 10-14}
@@ -1518,7 +1518,7 @@ SAP AI Core bietet Zugriff auf 40+ Modelle von OpenAI, Anthropic, Google, Amazon
    Oder legen Sie die Umgebungsvariable `AICORE_SERVICE_KEY` fest:
 
    ```bash
-   AICORE_SERVICE_KEY='{"clientid":"...","clientsecret":"...","url":"...","serviceurls":{"AI_API_URL":"..."}}' opencode
+   AICORE_SERVICE_KEY='{"clientid":"...","clientsecret":"...","url":"...","serviceurls":{"AI_API_URL":"..."}}' lgcode
    ```
 
    Oder fügen Sie es Ihrem Bash-Profil hinzu:
@@ -1530,7 +1530,7 @@ SAP AI Core bietet Zugriff auf 40+ Modelle von OpenAI, Anthropic, Google, Amazon
 4. Legen Sie optional die Bereitstellung ID und die Ressourcengruppe fest:
 
    ```bash
-   AICORE_DEPLOYMENT_ID=your-deployment-id AICORE_RESOURCE_GROUP=your-resource-group opencode
+   AICORE_DEPLOYMENT_ID=your-deployment-id AICORE_RESOURCE_GROUP=your-resource-group lgcode
    ```
 
    :::note
@@ -1976,7 +1976,7 @@ Mithilfe der `limit`-Felder kann LGcode erkennen, wie viel Kontext Sie noch habe
 
 Wenn Sie Probleme beim Konfigurieren eines Anbieters haben, überprüfen Sie Folgendes:
 
-1. **Überprüfen Sie die Authentifizierungseinrichtung**: Führen Sie `opencode auth list` aus, um zu sehen, ob die Anmeldeinformationen vorhanden sind
+1. **Überprüfen Sie die Authentifizierungseinrichtung**: Führen Sie `lgcode auth list` aus, um zu sehen, ob die Anmeldeinformationen vorhanden sind
    für den Anbieter werden Ihrer Konfiguration hinzugefügt.
 
    Dies gilt nicht für Anbieter wie Amazon Bedrock, die für ihre Authentifizierung auf Umgebungsvariablen angewiesen sind.

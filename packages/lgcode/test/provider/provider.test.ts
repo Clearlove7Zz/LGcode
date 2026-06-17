@@ -70,7 +70,7 @@ const providerLayer = (flags: Partial<RuntimeFlags.Info> = {}) =>
 const list = Provider.use.list()
 
 const paid = (providers: Record<string, { models: Record<string, { cost: { input: number } }> }>) => {
-  const item = providers[ProviderV2.ID.make("opencode")]
+  const item = providers[ProviderV2.ID.make("lgcode")]
   expect(item).toBeDefined()
   return Object.values(item.models).filter((model) => model.cost.input > 0).length
 }
@@ -1122,7 +1122,7 @@ it.instance(
     const providers = yield* list
     expect(providers[ProviderV2.ID.make("nvidia")].options.headers).toEqual({
       "HTTP-Referer": "https://modelhub.lgdg.cc/",
-      "X-Title": "opencode",
+      "X-Title": "lgcode",
       "X-BILLING-INVOKE-ORIGIN": "LGcode",
     })
   }),
@@ -1135,7 +1135,7 @@ it.instance(
     const providers = yield* list
     expect(providers[ProviderV2.ID.make("nvidia")].options.headers).toEqual({
       "HTTP-Referer": "https://modelhub.lgdg.cc/",
-      "X-Title": "opencode",
+      "X-Title": "lgcode",
       "X-BILLING-INVOKE-ORIGIN": "LGcode",
     })
   }),
@@ -1633,12 +1633,12 @@ it.instance(
     expect(providers[ProviderV2.ID.make("cloudflare-ai-gateway")]).toBeDefined()
     expect(providers[ProviderV2.ID.make("cloudflare-ai-gateway")].options.metadata).toEqual({
       invoked_by: "test",
-      project: "opencode",
+      project: "lgcode",
     })
   }),
   {
     config: {
-      provider: { "cloudflare-ai-gateway": { options: { metadata: { invoked_by: "test", project: "opencode" } } } },
+      provider: { "cloudflare-ai-gateway": { options: { metadata: { invoked_by: "test", project: "lgcode" } } } },
     },
   },
 )
@@ -1739,11 +1739,11 @@ it.instance(
   }),
 )
 
-it.effect("opencode loader keeps paid models when config apiKey is present", () =>
+it.effect("lgcode loader keeps paid models when config apiKey is present", () =>
   Effect.gen(function* () {
     const noneDir = yield* tmpdirScoped()
     const keyedDir = yield* tmpdirScoped({
-      config: { provider: { opencode: { options: { apiKey: "test-key" } } } },
+      config: { provider: { lgcode: { options: { apiKey: "test-key" } } } },
     })
 
     const listIn = (directory: string) =>
@@ -1760,7 +1760,7 @@ it.effect("opencode loader keeps paid models when config apiKey is present", () 
   }).pipe(provideMultiInstance),
 )
 
-it.effect("opencode loader keeps paid models when auth exists", () =>
+it.effect("lgcode loader keeps paid models when auth exists", () =>
   Effect.gen(function* () {
     const noneDir = yield* tmpdirScoped()
     const keyedDir = yield* tmpdirScoped()
@@ -1777,7 +1777,7 @@ it.effect("opencode loader keeps paid models when auth exists", () =>
     const original = yield* Effect.promise(() => Filesystem.readText(authPath).catch(() => undefined))
 
     yield* Effect.acquireRelease(
-      Effect.promise(() => Filesystem.write(authPath, JSON.stringify({ opencode: { type: "api", key: "test-key" } }))),
+      Effect.promise(() => Filesystem.write(authPath, JSON.stringify({ lgcode: { type: "api", key: "test-key" } }))),
       () =>
         Effect.promise(async () => {
           if (original !== undefined) await Filesystem.write(authPath, original)

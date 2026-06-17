@@ -15,7 +15,7 @@ ACP er en åben protokol, der standardiserer kommunikation mellem kodeeditorer o
 
 ## Konfiguration
 
-For at bruge LGcode via ACP, konfigurer din editor til at køre kommandoen `opencode acp`.
+For at bruge LGcode via ACP, konfigurer din editor til at køre kommandoen `lgcode acp`.
 
 Kommandoen starter LGcode som en ACP-kompatibel underproces, der kommunikerer med din editor over JSON-RPC via stdio.
 
@@ -31,7 +31,7 @@ Føj til din [Zed](https://zed.dev)-konfiguration (`~/.config/zed/settings.json`
 {
   "agent_servers": {
     "LGcode": {
-      "command": "opencode",
+      "command": "lgcode",
       "args": ["acp"]
     }
   }
@@ -53,7 +53,7 @@ Du kan også binde en tastaturgenvej ved at redigere din `keymap.json`:
             "custom": {
               "name": "LGcode",
               "command": {
-                "command": "opencode",
+                "command": "lgcode",
                 "args": ["acp"]
               }
             }
@@ -75,7 +75,7 @@ Tilføj til din [JetBrains IDE](https://www.jetbrains.com/) acp.json i henhold t
 {
   "agent_servers": {
     "LGcode": {
-      "command": "/absolute/path/bin/opencode",
+      "command": "/absolute/path/bin/lgcode",
       "args": ["acp"]
     }
   }
@@ -93,8 +93,8 @@ Føj til din [Avante.nvim](https://github.com/yetone/avante.nvim)-konfiguration:
 ```lua
 {
   acp_providers = {
-    ["opencode"] = {
-      command = "opencode",
+    ["lgcode"] = {
+      command = "lgcode",
       args = { "acp" }
     }
   }
@@ -106,8 +106,8 @@ Hvis du har brug for at videregive miljøvariabler:
 ```lua {6-8}
 {
   acp_providers = {
-    ["opencode"] = {
-      command = "opencode",
+    ["lgcode"] = {
+      command = "lgcode",
       args = { "acp" },
       env = {
         LGCODE_API_KEY = os.getenv("LGCODE_API_KEY")
@@ -128,7 +128,7 @@ require("codecompanion").setup({
   interactions = {
     chat = {
       adapter = {
-        name = "opencode",
+        name = "lgcode",
         model = "claude-sonnet-4",
       },
     },

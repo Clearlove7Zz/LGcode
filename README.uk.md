@@ -51,14 +51,14 @@ curl -fsSL https://modelhub.lgdg.cc/install | bash
 
 # Менеджери пакетів
 npm i -g lgcode-ai@latest        # або bun/pnpm/yarn
-scoop install opencode             # Windows
-choco install opencode             # Windows
-brew install anomalyco/tap/opencode # macOS і Linux (рекомендовано, завжди актуально)
-brew install opencode              # macOS і Linux (офіційна формула Homebrew, оновлюється рідше)
-sudo pacman -S opencode            # Arch Linux (Stable)
+scoop install lgcode             # Windows
+choco install lgcode             # Windows
+brew install anomalyco/tap/lgcode # macOS і Linux (рекомендовано, завжди актуально)
+brew install lgcode              # macOS і Linux (офіційна формула Homebrew, оновлюється рідше)
+sudo pacman -S lgcode            # Arch Linux (Stable)
 paru -S lgcode-bin               # Arch Linux (Latest from AUR)
-mise use -g opencode               # Будь-яка ОС
-nix run nixpkgs#opencode           # або github:Clearlove7Zz/LGcode для найновішої dev-гілки
+mise use -g lgcode               # Будь-яка ОС
+nix run nixpkgs#lgcode           # або github:Clearlove7Zz/LGcode для найновішої dev-гілки
 ```
 
 > [!TIP]
@@ -122,9 +122,9 @@ LGcode містить два вбудовані агенти, між якими 
 
 ### Проєкти на базі LGcode
 
-Якщо ви працюєте над проєктом, пов'язаним з LGcode, і використовуєте "opencode" у назві, наприклад "lgcode-dashboard" або "lgcode-mobile", додайте примітку до свого README.
+Якщо ви працюєте над проєктом, пов'язаним з LGcode, і використовуєте "lgcode" у назві, наприклад "lgcode-dashboard" або "lgcode-mobile", додайте примітку до свого README.
 Уточніть, що цей проєкт не створений командою LGcode і жодним чином не афілійований із нами.
 
 ---
 
-**Приєднуйтеся до нашої спільноти** [Discord](https://discord.gg/opencode) | [X.com](https://x.com/opencode)
+**Приєднуйтеся до нашої спільноти** [Discord](https://discord.gg/lgcode) | [X.com](https://x.com/lgcode)

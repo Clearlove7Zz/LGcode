@@ -13,7 +13,7 @@ I begge tilfælde vil LGcode køre på dine GitLab-løbere.
 
 LGcode fungerer i en almindelig GitLab-pipeline. Du kan bygge det ind i en pipeline som en [CI component](https://docs.gitlab.com/ee/ci/components/)
 
-Her bruger vi en community-skabt CI/CD-komponent til LGcode — [nagyv/gitlab-opencode](https://gitlab.com/nagyv/gitlab-opencode).
+Her bruger vi en community-skabt CI/CD-komponent til LGcode — [nagyv/gitlab-lgcode](https://gitlab.com/nagyv/gitlab-lgcode).
 
 ---
 
@@ -32,7 +32,7 @@ Her bruger vi en community-skabt CI/CD-komponent til LGcode — [nagyv/gitlab-op
 
    ```yaml title=".gitlab-ci.yml"
    include:
-     - component: $CI_SERVER_FQDN/nagyv/gitlab-opencode/opencode@2
+     - component: $CI_SERVER_FQDN/nagyv/gitlab-lgcode/lgcode@2
        inputs:
          config_dir: ${CI_PROJECT_DIR}/lgcode-config
          auth_json: $LGCODE_AUTH_JSON # The variable name for your LGcode authentication JSON
@@ -40,14 +40,14 @@ Her bruger vi en community-skabt CI/CD-komponent til LGcode — [nagyv/gitlab-op
          message: "Your prompt here"
    ```
 
-For flere input og use cases [check out the docs](https://gitlab.com/explore/catalog/nagyv/gitlab-opencode) for denne komponent.
+For flere input og use cases [check out the docs](https://gitlab.com/explore/catalog/nagyv/gitlab-lgcode) for denne komponent.
 
 ---
 
 ## GitLab Duo
 
 LGcode integreres med din GitLab-arbejdsgang.
-Nævn `@opencode` i en kommentar, og LGcode vil udføre opgaver i din GitLab CI-pipeline.
+Nævn `@lgcode` i en kommentar, og LGcode vil udføre opgaver i din GitLab CI-pipeline.
 
 ---
 
@@ -82,7 +82,7 @@ Tjek [**GitLab docs**](https://docs.gitlab.com/user/duo_agent_platform/agent_ass
     ```yaml
     image: node:22-slim
     commands:
-      - echo "Installing opencode"
+      - echo "Installing lgcode"
       - npm install --global lgcode-ai
       - echo "Installing glab"
       - export GITLAB_TOKEN=$GITLAB_TOKEN_LGCODE
@@ -92,9 +92,9 @@ Tjek [**GitLab docs**](https://docs.gitlab.com/user/duo_agent_platform/agent_ass
       - echo "Configuring glab"
       - echo $GITLAB_HOST
       - echo "Creating LGcode auth configuration"
-      - mkdir --parents ~/.local/share/opencode
+      - mkdir --parents ~/.local/share/lgcode
       - |
-        cat > ~/.local/share/opencode/auth.json << EOF
+        cat > ~/.local/share/lgcode/auth.json << EOF
         {
           "anthropic": {
             "type": "api",
@@ -103,7 +103,7 @@ Tjek [**GitLab docs**](https://docs.gitlab.com/user/duo_agent_platform/agent_ass
         }
         EOF
       - echo "Configuring git"
-      - git config --global user.email "opencode@gitlab.com"
+      - git config --global user.email "lgcode@gitlab.com"
       - git config --global user.name "LGcode"
       - echo "Testing glab"
       - glab issue list
@@ -161,7 +161,7 @@ Du kan henvise til [GitLab CLI agents docs](https://docs.gitlab.com/user/duo_age
 Her er nogle eksempler på, hvordan du kan bruge LGcode i GitLab.
 
 :::tip
-Du kan konfigurere til at bruge en anden udløsersætning end `@opencode`.
+Du kan konfigurere til at bruge en anden udløsersætning end `@lgcode`.
 :::
 
 - **Forklar et problem**
@@ -169,7 +169,7 @@ Du kan konfigurere til at bruge en anden udløsersætning end `@opencode`.
   Tilføj denne kommentar i et GitLab-problem.
 
   ```
-  @opencode explain this issue
+  @lgcode explain this issue
   ```
 
   LGcode vil læse spørgsmålet og svare med en klar forklaring.
@@ -179,7 +179,7 @@ Du kan konfigurere til at bruge en anden udløsersætning end `@opencode`.
   I et GitLab-nummer skal du sige:
 
   ```
-  @opencode fix this
+  @lgcode fix this
   ```
 
   LGcode vil oprette en ny branch, implementere ændringer og åbne en Merge Request med ændringer.
@@ -189,7 +189,7 @@ Du kan konfigurere til at bruge en anden udløsersætning end `@opencode`.
   Efterlad følgende kommentar til en GitLab-Merge Request.
 
   ```
-  @opencode review this merge request
+  @lgcode review this merge request
   ```
 
   LGcode vil gennemgå din Merge Request og give feedback.

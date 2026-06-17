@@ -16,15 +16,15 @@ const it = testEffect(
 )
 
 describe("SkillPlugin.Plugin", () => {
-  it.effect("registers the built-in customize-opencode skill", () =>
+  it.effect("registers the built-in customize-lgcode skill", () =>
     Effect.gen(function* () {
       const skill = yield* SkillV2.Service
       yield* SkillPlugin.Plugin.effect.pipe(Effect.provideService(SkillV2.Service, skill))
 
       expect(yield* skill.list()).toContainEqual(
         expect.objectContaining({
-          name: "customize-opencode",
-          description: expect.stringContaining("opencode's own configuration"),
+          name: "customize-lgcode",
+          description: expect.stringContaining("lgcode's own configuration"),
         }),
       )
     }),

@@ -1,9 +1,9 @@
 ---
 title: Plugins
-description: Escreva seus próprios plugins para estender o opencode.
+description: Escreva seus próprios plugins para estender o lgcode.
 ---
 
-Plugins permitem que você estenda o opencode conectando-se a vários eventos e personalizando o comportamento. Você pode criar plugins para adicionar novos recursos, integrar-se a serviços externos ou modificar o comportamento padrão do opencode.
+Plugins permitem que você estenda o lgcode conectando-se a vários eventos e personalizando o comportamento. Você pode criar plugins para adicionar novos recursos, integrar-se a serviços externos ou modificar o comportamento padrão do lgcode.
 
 Para exemplos, confira os [plugins](/docs/ecosystem#plugins) criados pela comunidade.
 
@@ -20,7 +20,7 @@ Existem duas maneiras de carregar plugins.
 Coloque arquivos JavaScript ou TypeScript no diretório de plugins.
 
 - `.lgcode/plugins/` - Plugins em nível de projeto
-- `~/.config/opencode/plugins/` - Plugins globais
+- `~/.config/lgcode/plugins/` - Plugins globais
 
 Os arquivos nesses diretórios são carregados automaticamente na inicialização.
 
@@ -45,7 +45,7 @@ Navegue pelos plugins disponíveis no [ecossistema](/docs/ecosystem#plugins).
 
 ### Como os plugins são instalados
 
-**Plugins npm** são instalados automaticamente usando Bun na inicialização. Pacotes e suas dependências são armazenados em cache em `~/.cache/opencode/node_modules/`.
+**Plugins npm** são instalados automaticamente usando Bun na inicialização. Pacotes e suas dependências são armazenados em cache em `~/.cache/lgcode/node_modules/`.
 
 **Plugins locais** são carregados diretamente do diretório de plugins. Para usar pacotes externos, você deve criar um `package.json` dentro do seu diretório de configuração (veja [Dependências](#dependencies)), ou publicar o plugin no npm e [adicioná-lo à sua configuração](/docs/config#plugins).
 
@@ -55,9 +55,9 @@ Navegue pelos plugins disponíveis no [ecossistema](/docs/ecosystem#plugins).
 
 Os plugins são carregados de todas as fontes e todos os hooks são executados em sequência. A ordem de carregamento é:
 
-1. Configuração global (`~/.config/opencode/lgcode.json`)
+1. Configuração global (`~/.config/lgcode/lgcode.json`)
 2. Configuração do projeto (`lgcode.json`)
-3. Diretório de plugins global (`~/.config/opencode/plugins/`)
+3. Diretório de plugins global (`~/.config/lgcode/plugins/`)
 4. Diretório de plugins do projeto (`.lgcode/plugins/`)
 
 Pacotes npm duplicados com o mesmo nome e versão são carregados uma vez. No entanto, um plugin local e um plugin npm com nomes semelhantes são carregados separadamente.
@@ -82,7 +82,7 @@ Plugins locais e ferramentas personalizadas podem usar pacotes npm externos. Adi
 }
 ```
 
-O opencode executa `bun install` na inicialização para instalar esses pacotes. Seus plugins e ferramentas podem então importá-los.
+O lgcode executa `bun install` na inicialização para instalar esses pacotes. Seus plugins e ferramentas podem então importá-los.
 
 ```ts title=".lgcode/plugins/my-plugin.ts"
 import { escape } from "shescape"
@@ -117,7 +117,7 @@ A função do plugin recebe:
 - `project`: As informações do projeto atual.
 - `directory`: O diretório de trabalho atual.
 - `worktree`: O caminho do worktree do git.
-- `client`: Um cliente SDK do opencode para interagir com a AI.
+- `client`: Um cliente SDK do lgcode para interagir com a AI.
 - `$`: A [API shell](https://bun.com/docs/runtime/shell) do Bun para executar comandos.
 
 ---
@@ -210,7 +210,7 @@ Plugins podem se inscrever em eventos como visto abaixo na seção Exemplos. Aqu
 
 ## Exemplos
 
-Aqui estão alguns exemplos de plugins que você pode usar para estender o opencode.
+Aqui estão alguns exemplos de plugins que você pode usar para estender o lgcode.
 
 ---
 
@@ -224,7 +224,7 @@ export const NotificationPlugin = async ({ project, client, $, directory, worktr
     event: async ({ event }) => {
       // Send notification on session completion
       if (event.type === "session.idle") {
-        await $`osascript -e 'display notification "Session completed!" with title "opencode"'`
+        await $`osascript -e 'display notification "Session completed!" with title "lgcode"'`
       }
     },
   }
@@ -234,14 +234,14 @@ export const NotificationPlugin = async ({ project, client, $, directory, worktr
 Estamos usando `osascript` para executar AppleScript no macOS. Aqui estamos usando para enviar notificações.
 
 :::note
-Se você estiver usando o aplicativo desktop opencode, ele pode enviar notificações do sistema automaticamente quando uma resposta estiver pronta ou quando ocorrer um erro na sessão.
+Se você estiver usando o aplicativo desktop lgcode, ele pode enviar notificações do sistema automaticamente quando uma resposta estiver pronta ou quando ocorrer um erro na sessão.
 :::
 
 ---
 
 ### Proteção .env
 
-Impeça o opencode de ler arquivos `.env`:
+Impeça o lgcode de ler arquivos `.env`:
 
 ```javascript title=".lgcode/plugins/env-protection.js"
 export const EnvProtection = async ({ project, client, $, directory, worktree }) => {
@@ -276,7 +276,7 @@ export const InjectEnvPlugin = async () => {
 
 ### Ferramentas personalizadas
 
-Plugins também podem adicionar ferramentas personalizadas ao opencode:
+Plugins também podem adicionar ferramentas personalizadas ao lgcode:
 
 ```ts title=".lgcode/plugins/custom-tools.ts"
 import { type Plugin, tool } from "@lgcode-ai/plugin"
@@ -299,13 +299,13 @@ export const CustomToolsPlugin: Plugin = async (ctx) => {
 }
 ```
 
-O helper `tool` cria uma ferramenta personalizada que o opencode pode chamar. Ele aceita uma função de esquema Zod e retorna uma definição de ferramenta com:
+O helper `tool` cria uma ferramenta personalizada que o lgcode pode chamar. Ele aceita uma função de esquema Zod e retorna uma definição de ferramenta com:
 
 - `description`: O que a ferramenta faz
 - `args`: Esquema Zod para os argumentos da ferramenta
 - `execute`: Função que é executada quando a ferramenta é chamada
 
-Suas ferramentas personalizadas estarão disponíveis para o opencode junto com as ferramentas integradas.
+Suas ferramentas personalizadas estarão disponíveis para o lgcode junto com as ferramentas integradas.
 
 :::note
 Se uma ferramenta de plugin usar o mesmo nome que uma ferramenta integrada, a ferramenta de plugin tem precedência.

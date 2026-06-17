@@ -50,7 +50,7 @@ export function path() {
     process.env.LGCODE_DISABLE_CHANNEL_DB === "1" ||
     process.env.LGCODE_DISABLE_CHANNEL_DB === "true"
   )
-    return join(Global.Path.data, "opencode.db")
+    return join(Global.Path.data, "lgcode.db")
   return join(Global.Path.data, `lgcode-${InstallationChannel.replace(/[^a-zA-Z0-9._-]/g, "-")}.db`)
 }
 

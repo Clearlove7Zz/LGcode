@@ -14,7 +14,7 @@ Kreirajte jedan folder po nazivu skill-a i stavite `SKILL.md` unutar njega.
 LGcode pretrazuje ove lokacije:
 
 - Konfiguracija projekta: `.lgcode/skills/<name>/SKILL.md`
-- Globalna konfiguracija: `~/.config/opencode/skills/<name>/SKILL.md`
+- Globalna konfiguracija: `~/.config/lgcode/skills/<name>/SKILL.md`
 - Claude kompatibilno u projektu: `.claude/skills/<name>/SKILL.md`
 - Globalno Claude kompatibilno: `~/.claude/skills/<name>/SKILL.md`
 - Agent kompatibilno u projektu: `.agents/skills/<name>/SKILL.md`
@@ -27,7 +27,7 @@ LGcode pretrazuje ove lokacije:
 Za projektne lokalne putanje, LGcode ide prema gore od trenutnog radnog direktorija dok ne dode do git worktree-ja.
 Usput ucitava sve odgovarajuce `skills/*/SKILL.md` u `.lgcode/` i odgovarajuce `.claude/skills/*/SKILL.md` ili `.agents/skills/*/SKILL.md`.
 
-Globalne definicije se takoder ucitavaju iz `~/.config/opencode/skills/*/SKILL.md`, `~/.claude/skills/*/SKILL.md` i `~/.agents/skills/*/SKILL.md`.
+Globalne definicije se takoder ucitavaju iz `~/.config/lgcode/skills/*/SKILL.md`, `~/.claude/skills/*/SKILL.md` i `~/.agents/skills/*/SKILL.md`.
 
 ---
 
@@ -80,7 +80,7 @@ Kreirajte `.lgcode/skills/git-release/SKILL.md` ovako:
 name: git-release
 description: Create consistent releases and changelogs
 license: MIT
-compatibility: opencode
+compatibility: lgcode
 metadata:
   audience: maintainers
   workflow: github

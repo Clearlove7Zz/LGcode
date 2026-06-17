@@ -52,6 +52,6 @@ describe("WSL server settings presentation", () => {
       async (distro) => calls.push(distro),
       (step) => calls.push(step),
     )
-    expect(calls).toEqual(["Debian", "opencode"])
+    expect(calls).toEqual(["Debian", "lgcode"])
   })
 })

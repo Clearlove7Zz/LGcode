@@ -20,7 +20,7 @@ description: اكتب إضافاتك الخاصة لتوسيع LGcode.
 ضع ملفات JavaScript أو TypeScript في دليل الإضافات.
 
 - `.lgcode/plugins/` - إضافات على مستوى المشروع
-- `~/.config/opencode/plugins/` - إضافات عامة
+- `~/.config/lgcode/plugins/` - إضافات عامة
 
 تُحمَّل الملفات في هذه الأدلة تلقائيا عند بدء التشغيل.
 
@@ -45,7 +45,7 @@ description: اكتب إضافاتك الخاصة لتوسيع LGcode.
 
 ### كيفية تثبيت الإضافات
 
-**إضافات npm** تُثبَّت تلقائيا باستخدام Bun عند بدء التشغيل. تُخزَّن الحزم واعتمادياتها مؤقتا في `~/.cache/opencode/node_modules/`.
+**إضافات npm** تُثبَّت تلقائيا باستخدام Bun عند بدء التشغيل. تُخزَّن الحزم واعتمادياتها مؤقتا في `~/.cache/lgcode/node_modules/`.
 
 **الإضافات المحلية** تُحمَّل مباشرة من دليل الإضافات. لاستخدام حزم خارجية، يجب إنشاء `package.json` داخل دليل الإعدادات لديك (راجع [الاعتماديات](#dependencies))، أو نشر الإضافة على npm ثم [إضافتها إلى إعداداتك](/docs/config#plugins).
 
@@ -55,9 +55,9 @@ description: اكتب إضافاتك الخاصة لتوسيع LGcode.
 
 تُحمَّل الإضافات من جميع المصادر وتعمل جميع الخطافات بالتتابع. ترتيب التحميل هو:
 
-1. إعدادات عامة (`~/.config/opencode/lgcode.json`)
+1. إعدادات عامة (`~/.config/lgcode/lgcode.json`)
 2. إعدادات المشروع (`lgcode.json`)
-3. دليل الإضافات العام (`~/.config/opencode/plugins/`)
+3. دليل الإضافات العام (`~/.config/lgcode/plugins/`)
 4. دليل إضافات المشروع (`.lgcode/plugins/`)
 
 تُحمَّل حزم npm المكررة ذات الاسم والإصدار نفسيهما مرة واحدة. ومع ذلك، تُحمَّل الإضافة المحلية وإضافة npm ذات الاسم المشابه كلتاهما بشكل مستقل.
@@ -118,7 +118,7 @@ export const MyPlugin = async ({ project, client, $, directory, worktree }) => {
 - `project`: معلومات المشروع الحالي.
 - `directory`: دليل العمل الحالي.
 - `worktree`: مسار git worktree.
-- `client`: عميل SDK لـ opencode للتفاعل مع الذكاء الاصطناعي.
+- `client`: عميل SDK لـ lgcode للتفاعل مع الذكاء الاصطناعي.
 - `$`: واجهة [shell API](https://bun.com/docs/runtime/shell) الخاصة بـ Bun لتنفيذ الأوامر.
 
 ---
@@ -211,7 +211,7 @@ export const MyPlugin: Plugin = async ({ project, client, $, directory, worktree
 
 ## أمثلة
 
-فيما يلي بعض أمثلة الإضافات التي يمكنك استخدامها لتوسيع opencode.
+فيما يلي بعض أمثلة الإضافات التي يمكنك استخدامها لتوسيع lgcode.
 
 ---
 
@@ -225,7 +225,7 @@ export const NotificationPlugin = async ({ project, client, $, directory, worktr
     event: async ({ event }) => {
       // Send notification on session completion
       if (event.type === "session.idle") {
-        await $`osascript -e 'display notification "Session completed!" with title "opencode"'`
+        await $`osascript -e 'display notification "Session completed!" with title "lgcode"'`
       }
     },
   }
@@ -242,7 +242,7 @@ export const NotificationPlugin = async ({ project, client, $, directory, worktr
 
 ### حماية .env
 
-امنع opencode من قراءة ملفات `.env`:
+امنع lgcode من قراءة ملفات `.env`:
 
 ```javascript title=".lgcode/plugins/env-protection.js"
 export const EnvProtection = async ({ project, client, $, directory, worktree }) => {
@@ -277,7 +277,7 @@ export const InjectEnvPlugin = async () => {
 
 ### أدوات مخصصة
 
-يمكن للإضافات أيضا إضافة أدوات مخصصة إلى opencode:
+يمكن للإضافات أيضا إضافة أدوات مخصصة إلى lgcode:
 
 ```ts title=".lgcode/plugins/custom-tools.ts"
 import { type Plugin, tool } from "@lgcode-ai/plugin"
@@ -300,13 +300,13 @@ export const CustomToolsPlugin: Plugin = async (ctx) => {
 }
 ```
 
-تقوم الدالة المساعدة `tool` بإنشاء أداة مخصصة يمكن لـ opencode استدعاؤها. تأخذ دالة مخطط Zod وتعيد تعريف أداة يتضمن:
+تقوم الدالة المساعدة `tool` بإنشاء أداة مخصصة يمكن لـ lgcode استدعاؤها. تأخذ دالة مخطط Zod وتعيد تعريف أداة يتضمن:
 
 - `description`: ما الذي تفعله الأداة
 - `args`: مخطط Zod لوسائط الأداة
 - `execute`: الدالة التي تُشغَّل عند استدعاء الأداة
 
-ستكون أدواتك المخصصة متاحة لـ opencode إلى جانب الأدوات المضمنة.
+ستكون أدواتك المخصصة متاحة لـ lgcode إلى جانب الأدوات المضمنة.
 
 ---
 

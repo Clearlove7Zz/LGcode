@@ -18,7 +18,7 @@ Za dodavanje provajdera potrebno je:
 ### Vjerodajnice
 
 Kada dodate API ključeve dobavljača sa naredbom `/connect`, oni se pohranjuju
-u `~/.local/share/opencode/auth.json`.
+u `~/.local/share/lgcode/auth.json`.
 
 ---
 
@@ -57,7 +57,7 @@ testirano i potvrđeno da dobro radi sa LGcode. [Saznajte više](/docs/zen).
 Ako ste novi, preporučujemo da počnete sa LGcode Zen.
 :::
 
-1. Pokrenite naredbu `/connect` u TUI-u, odaberite opencode i idite na [modelhub.lgdg.cc/auth](https://modelhub.lgdg.cc/auth).
+1. Pokrenite naredbu `/connect` u TUI-u, odaberite lgcode i idite na [modelhub.lgdg.cc/auth](https://modelhub.lgdg.cc/auth).
 
 ```txt
    /connect
@@ -168,17 +168,17 @@ Da biste koristili Amazon Bedrock s LGcode:
 
    #### Varijable okruženja (Brzi početak)
 
-   Postavite jednu od ovih varijabli okruženja dok pokrećete opencode:
+   Postavite jednu od ovih varijabli okruženja dok pokrećete lgcode:
 
 ```bash
    # Option 1: Using AWS access keys
-   AWS_ACCESS_KEY_ID=XXX AWS_SECRET_ACCESS_KEY=YYY opencode
+   AWS_ACCESS_KEY_ID=XXX AWS_SECRET_ACCESS_KEY=YYY lgcode
 
    # Option 2: Using named AWS profile
-   AWS_PROFILE=my-profile opencode
+   AWS_PROFILE=my-profile lgcode
 
    # Option 3: Using Bedrock bearer token
-   AWS_BEARER_TOKEN_BEDROCK=XXX opencode
+   AWS_BEARER_TOKEN_BEDROCK=XXX lgcode
 ```
 
 Ili ih dodajte na svoj bash profil:
@@ -326,7 +326,7 @@ Ili ako već imate API ključ, možete odabrati **Ručno unesite API ključ** i 
 
 ### Atomic Chat
 
-Možete konfigurirati opencode za korištenje lokalnih modela preko [Atomic Chata](https://atomic.chat) — desktop aplikacije koja pokreće lokalne LLM-ove iza OpenAI-kompatibilnog API servera (zadana krajnja tačka `http://127.0.0.1:1337/v1`).
+Možete konfigurirati lgcode za korištenje lokalnih modela preko [Atomic Chata](https://atomic.chat) — desktop aplikacije koja pokreće lokalne LLM-ove iza OpenAI-kompatibilnog API servera (zadana krajnja tačka `http://127.0.0.1:1337/v1`).
 
 ```json title="lgcode.json" "atomic-chat" {5, 6, 8, 10-14}
 {
@@ -375,7 +375,7 @@ Ako naiđete na greške "Žao mi je, ali ne mogu pomoći s tim zahtjevom", poku�
 2. Idite na [Azure AI Foundry](https://ai.azure.com/) i implementirajte model.
 
    :::note
-   Ime implementacije mora odgovarati imenu modela da bi opencode ispravno radio.
+   Ime implementacije mora odgovarati imenu modela da bi lgcode ispravno radio.
    :::
 
 3. Pokrenite naredbu `/connect` i potražite **Azure**.
@@ -396,7 +396,7 @@ Ako naiđete na greške "Žao mi je, ali ne mogu pomoći s tim zahtjevom", poku�
 5. Postavite ime vašeg resursa kao varijablu okruženja:
 
 ```bash
-   AZURE_RESOURCE_NAME=XXX opencode
+   AZURE_RESOURCE_NAME=XXX lgcode
 ```
 
 Ili ga dodajte na svoj bash profil:
@@ -422,7 +422,7 @@ Ili ga dodajte na svoj bash profil:
 2. Idite na [Azure AI Foundry](https://ai.azure.com/) i implementirajte model.
 
    :::note
-   Ime implementacije mora odgovarati imenu modela da bi opencode ispravno radio.
+   Ime implementacije mora odgovarati imenu modela da bi lgcode ispravno radio.
    :::
 
 3. Pokrenite naredbu `/connect` i potražite **Azure kognitivne usluge**.
@@ -443,7 +443,7 @@ Ili ga dodajte na svoj bash profil:
 5. Postavite ime vašeg resursa kao varijablu okruženja:
 
 ```bash
-   AZURE_COGNITIVE_SERVICES_RESOURCE_NAME=XXX opencode
+   AZURE_COGNITIVE_SERVICES_RESOURCE_NAME=XXX lgcode
 ```
 
 Ili ga dodajte na svoj bash profil:
@@ -554,7 +554,7 @@ Ili ga postavite kao varijablu okruženja.
    /models
 ```
 
-Također možete dodati modele kroz svoju opencode konfiguraciju.
+Također možete dodati modele kroz svoju lgcode konfiguraciju.
 
 ```json title="lgcode.json"
 {
@@ -753,7 +753,7 @@ Dostupna su tri modela bazirana na Claudeu:
 
 :::note
 Također možete odrediti 'GITLAB_TOKEN' varijablu okruženja ako ne želite
-da pohrani token u opencode auth memoriju.
+da pohrani token u lgcode auth memoriju.
 :::
 
 ##### Samostalni GitLab
@@ -856,7 +856,7 @@ Ovaj dodatak pruža sveobuhvatne mogućnosti upravljanja GitLab repozitorijumom,
 
 ### GitHub Copilot
 
-Da biste koristili svoju GitHub Copilot pretplatu s opencode:
+Da biste koristili svoju GitHub Copilot pretplatu s lgcode:
 
 :::note
 Neki modeli će možda trebati [Pro+
@@ -909,10 +909,10 @@ Za korištenje Google Vertex AI s LGcode:
      - `GOOGLE_APPLICATION_CREDENTIALS`: Put do JSON ključnog fajla vašeg naloga usluge
      - Autentifikacija koristeći gcloud CLI: `gcloud auth application-default login`
 
-   Postavite ih dok se pokreće opencode.
+   Postavite ih dok se pokreće lgcode.
 
 ```bash
-   GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json GOOGLE_CLOUD_PROJECT=your-project-id opencode
+   GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json GOOGLE_CLOUD_PROJECT=your-project-id lgcode
 ```
 
 Ili ih dodajte svom bash profilu.
@@ -1026,7 +1026,7 @@ U slučaju da vidite funkciju ili model iz Helicone-a koji nije automatski konfi
 
 Evo [Heliconeov katalog modela](https://helicone.ai/models), ovo će vam trebati da preuzmete ID-ove modela koje želite dodati.
 
-```jsonc title="~/.config/opencode/lgcode.jsonc"
+```jsonc title="~/.config/lgcode/lgcode.jsonc"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -1054,7 +1054,7 @@ Evo [Heliconeov katalog modela](https://helicone.ai/models), ovo će vam trebati
 
 Helicone podržava prilagođena zaglavlja za funkcije kao što su keširanje, praćenje korisnika i upravljanje sesijom. Dodajte ih u konfiguraciju svog provajdera koristeći `options.headers`:
 
-```jsonc title="~/.config/opencode/lgcode.jsonc"
+```jsonc title="~/.config/lgcode/lgcode.jsonc"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -1065,7 +1065,7 @@ Helicone podržava prilagođena zaglavlja za funkcije kao što su keširanje, pr
         "baseURL": "https://ai-gateway.helicone.ai",
         "headers": {
           "Helicone-Cache-Enabled": "true",
-          "Helicone-User-Id": "opencode",
+          "Helicone-User-Id": "lgcode",
         },
       },
     },
@@ -1106,7 +1106,7 @@ Pogledajte [Helicone Header Directory](https://docs.helicone.ai/helicone-headers
 
 ### llama.cpp
 
-Možete konfigurirati opencode za korištenje lokalnih modela putem [llama.cpp's](https://github.com/ggml-org/llama.cpp) uslužnog programa llama-server
+Možete konfigurirati lgcode za korištenje lokalnih modela putem [llama.cpp's](https://github.com/ggml-org/llama.cpp) uslužnog programa llama-server
 
 ```json title="lgcode.json" "llama.cpp" {5, 6, 8, 10-15}
 {
@@ -1173,7 +1173,7 @@ IO.NET nudi 17 modela optimiziranih za različite slučajeve upotrebe:
 
 ### LM Studio
 
-Možete konfigurirati opencode za korištenje lokalnih modela preko LM Studio.
+Možete konfigurirati lgcode za korištenje lokalnih modela preko LM Studio.
 
 ```json title="lgcode.json" "lmstudio" {5, 6, 8, 10-14}
 {
@@ -1290,10 +1290,10 @@ Da biste koristili Kimi K2 iz Moonshot AI:
 
 ### Ollama
 
-Možete konfigurirati opencode za korištenje lokalnih modela putem Ollame.
+Možete konfigurirati lgcode za korištenje lokalnih modela putem Ollame.
 
 :::tip
-Ollama se može automatski konfigurirati za LGcode. Pogledajte [Ollama integracijske dokumente](https://docs.ollama.com/integrations/opencode) za detalje.
+Ollama se može automatski konfigurirati za LGcode. Pogledajte [Ollama integracijske dokumente](https://docs.ollama.com/integrations/lgcode) za detalje.
 :::
 
 ```json title="lgcode.json" "ollama" {5, 6, 8, 10-14}
@@ -1456,7 +1456,7 @@ LGcode Zen je lista testiranih i verifikovanih modela koju je obezbedio LGcode t
    /models
 ```
 
-Također možete dodati dodatne modele putem vaše opencode konfiguracije.
+Također možete dodati dodatne modele putem vaše lgcode konfiguracije.
 
 ```json title="lgcode.json" {6}
 {
@@ -1471,7 +1471,7 @@ Također možete dodati dodatne modele putem vaše opencode konfiguracije.
 }
 ```
 
-5. Također ih možete prilagoditi putem vaše opencode konfiguracije. Evo primjera navođenja provajdera
+5. Također ih možete prilagoditi putem vaše lgcode konfiguracije. Evo primjera navođenja provajdera
 
 ```json title="lgcode.json"
 {
@@ -1523,7 +1523,7 @@ SAP AI Core omogućava pristup preko 40+ modela iz OpenAI, Anthropic, Google, Am
 Ili postavite varijablu okruženja `AICORE_SERVICE_KEY`:
 
 ```bash
-   AICORE_SERVICE_KEY='{"clientid":"...","clientsecret":"...","url":"...","serviceurls":{"AI_API_URL":"..."}}' opencode
+   AICORE_SERVICE_KEY='{"clientid":"...","clientsecret":"...","url":"...","serviceurls":{"AI_API_URL":"..."}}' lgcode
 ```
 
 Ili ga dodajte na svoj bash profil:
@@ -1535,7 +1535,7 @@ Ili ga dodajte na svoj bash profil:
 4. Opciono postavite ID implementacije i grupu resursa:
 
 ```bash
-   AICORE_DEPLOYMENT_ID=your-deployment-id AICORE_RESOURCE_GROUP=your-resource-group opencode
+   AICORE_DEPLOYMENT_ID=your-deployment-id AICORE_RESOURCE_GROUP=your-resource-group lgcode
 ```
 
 :::note
@@ -1720,7 +1720,7 @@ Vercel AI Gateway vam omogućava da pristupite modelima iz OpenAI, Anthropic, Go
    /models
 ```
 
-Također možete prilagoditi modele kroz svoju opencode konfiguraciju. Evo primjera specificiranja redoslijeda usmjeravanja dobavljača.
+Također možete prilagoditi modele kroz svoju lgcode konfiguraciju. Evo primjera specificiranja redoslijeda usmjeravanja dobavljača.
 
 ```json title="lgcode.json"
 {
@@ -1830,7 +1830,7 @@ Ako ste pretplaćeni na **GLM plan kodiranja**, odaberite **Z.AI plan kodiranja*
    /models
 ```
 
-Također možete dodati dodatne modele putem vaše opencode konfiguracije.
+Također možete dodati dodatne modele putem vaše lgcode konfiguracije.
 
 ```json title="lgcode.json" {6}
 {
@@ -1982,12 +1982,12 @@ Polja `limit` omogućavaju LGcode da shvati koliko vam je konteksta ostalo. Stan
 
 Ako imate problema s konfiguracijom provajdera, provjerite sljedeće:
 
-1. **Provjerite postavke autentifikacije**: Pokrenite `opencode auth list` da vidite da li su vjerodajnice
+1. **Provjerite postavke autentifikacije**: Pokrenite `lgcode auth list` da vidite da li su vjerodajnice
    za provajdera se dodaju u vašu konfiguraciju.
 
    Ovo se ne odnosi na dobavljače kao što je Amazon Bedrock, koji se oslanjaju na varijable okruženja za svoju autentifikaciju.
 
 2. Za prilagođene provajdere, provjerite LGcode konfiguraciju i:
-   - Uvjerite se da ID provajdera korišten u naredbi `/connect` odgovara ID-u u vašoj opencode konfiguraciji.
+   - Uvjerite se da ID provajdera korišten u naredbi `/connect` odgovara ID-u u vašoj lgcode konfiguraciji.
    - Za provajdera se koristi pravi npm paket. Na primjer, koristite `@ai-sdk/cerebras` za Cerebras. A za sve ostale OpenAI kompatibilne provajdere, koristite `@ai-sdk/openai-compatible`.
    - Provjerite da li se ispravna krajnja tačka API-ja koristi u polju `options.baseURL`.

@@ -442,7 +442,7 @@ test("loads project config from Cygwin paths on Windows", async () => {
   })
 })
 
-it.instance("ignores legacy tui keys in opencode config", () =>
+it.instance("ignores legacy tui keys in lgcode config", () =>
   Effect.gen(function* () {
     const test = yield* TestInstance
     yield* writeConfigEffect(test.directory, {
@@ -593,7 +593,7 @@ const accountTokenIt = configIt({
     config: () =>
       Effect.succeed(
         Option.some({
-          provider: { opencode: { options: { apiKey: "{env:LGCODE_CONSOLE_TOKEN}" } } },
+          provider: { lgcode: { options: { apiKey: "{env:LGCODE_CONSOLE_TOKEN}" } } },
         }),
       ),
     token: () => Effect.succeed(Option.some(AccessToken.make("st_test_token"))),
@@ -603,7 +603,7 @@ const accountTokenIt = configIt({
 accountTokenIt.instance("resolves env templates in account config with account token", () =>
   Effect.gen(function* () {
     const config = yield* Config.use.get()
-    expect(config.provider?.["opencode"]?.options?.apiKey).toBe("st_test_token")
+    expect(config.provider?.["lgcode"]?.options?.apiKey).toBe("st_test_token")
   }),
 )
 
@@ -1524,7 +1524,7 @@ test("remote well-known config can use FetchHttpClient layer", async () => {
         Config.Service.use((svc) =>
           Effect.gen(function* () {
             const config = yield* svc.get()
-            expect(fetchedUrl).toBe(`${server.url.origin}/.well-known/opencode`)
+            expect(fetchedUrl).toBe(`${server.url.origin}/.well-known/lgcode`)
             expect(config.mcp?.jira?.enabled).toBe(true)
           }),
         ),
@@ -1669,7 +1669,7 @@ describe("resolvePluginSpec", () => {
   test("keeps package specs unchanged", async () => {
     await using tmp = await tmpdir()
     const file = path.join(tmp.path, "lgcode.json")
-    expect(await ConfigPlugin.resolvePluginSpec("oh-my-opencode@2.4.3", file)).toBe("oh-my-opencode@2.4.3")
+    expect(await ConfigPlugin.resolvePluginSpec("oh-my-lgcode@2.4.3", file)).toBe("oh-my-lgcode@2.4.3")
     expect(await ConfigPlugin.resolvePluginSpec("@scope/pkg", file)).toBe("@scope/pkg")
   })
 
@@ -1758,7 +1758,7 @@ describe("deduplicatePluginOrigins", () => {
   })
 
   test("keeps path plugins separate from package plugins", () => {
-    const plugins = ["oh-my-opencode@2.4.3", "file:///project/.lgcode/plugin/oh-my-opencode.js"]
+    const plugins = ["oh-my-lgcode@2.4.3", "file:///project/.lgcode/plugin/oh-my-lgcode.js"]
 
     const result = dedupe(plugins)
 

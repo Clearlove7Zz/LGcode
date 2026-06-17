@@ -8,7 +8,7 @@ import config from "../../../../config.mjs"
 export const console = config.console
 
 [**LGcode**](/) je AI agent za kodiranje otvorenog koda. Dostupan je kao interfejs baziran na terminalu, desktop aplikacija ili IDE ekstenzija.
-![LGcode TUI sa opencode temom](../../../assets/lander/screenshot.png)
+![LGcode TUI sa lgcode temom](../../../assets/lander/screenshot.png)
 Hajde da počnemo.
 
 ---
@@ -73,15 +73,15 @@ Također ga možete instalirati pomoću sljedećih naredbi:
 - **Korištenje Homebrew-a na macOS-u i Linux-u**
 
 ```bash
-  brew install anomalyco/tap/opencode
+  brew install anomalyco/tap/lgcode
 ```
 
-> Preporučujemo korištenje LGcode tap za najnovija izdanja. Službenu formulu `brew install opencode` održava Homebrew tim i ažurira se rjeđe.
+> Preporučujemo korištenje LGcode tap za najnovija izdanja. Službenu formulu `brew install lgcode` održava Homebrew tim i ažurira se rjeđe.
 
 - **Korištenje Parua na Arch Linuxu**
 
   ```bash
-  sudo pacman -S opencode           # Arch Linux (Stable)
+  sudo pacman -S lgcode           # Arch Linux (Stable)
   paru -S lgcode-bin              # Arch Linux (Latest from AUR)
   ```
 
@@ -94,13 +94,13 @@ Za najbolje iskustvo na Windows-u preporučujemo korištenje [Windows Subsystem 
 - **Korištenje Chocolatey-a**
 
 ```bash
-  choco install opencode
+  choco install lgcode
 ```
 
 - **Korištenje Scoop-a**
 
 ```bash
-  scoop install opencode
+  scoop install lgcode
 ```
 
 - **Korištenje NPM-a**
@@ -132,7 +132,7 @@ Uz LGcode možete koristiti bilo kojeg LLM provajdera tako što ćete konfigurir
 Ako ste tek počeli koristiti LLM provajdere, preporučujemo korištenje [LGcode Zen](/docs/zen).
 To je kurirana lista modela koji su testirani i verifikovani od strane LGcode tima.
 
-1. Pokrenite naredbu `/connect` u TUI-u, odaberite opencode i idite na [modelhub.lgdg.cc/auth](https://modelhub.lgdg.cc/auth).
+1. Pokrenite naredbu `/connect` u TUI-u, odaberite lgcode i idite na [modelhub.lgdg.cc/auth](https://modelhub.lgdg.cc/auth).
 
 ```txt
    /connect
@@ -163,7 +163,7 @@ cd /path/to/project
 I pokrenite LGcode.
 
 ```bash
-opencode
+lgcode
 ```
 
 Zatim inicijalizirajte LGcode za projekat pokretanjem sljedeće naredbe.

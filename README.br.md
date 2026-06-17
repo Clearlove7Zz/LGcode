@@ -51,14 +51,14 @@ curl -fsSL https://modelhub.lgdg.cc/install | bash
 
 # Gerenciadores de pacotes
 npm i -g lgcode-ai@latest        # ou bun/pnpm/yarn
-scoop install opencode             # Windows
-choco install opencode             # Windows
-brew install anomalyco/tap/opencode # macOS e Linux (recomendado, sempre atualizado)
-brew install opencode              # macOS e Linux (fórmula oficial do brew, atualiza menos)
-sudo pacman -S opencode            # Arch Linux (Stable)
+scoop install lgcode             # Windows
+choco install lgcode             # Windows
+brew install anomalyco/tap/lgcode # macOS e Linux (recomendado, sempre atualizado)
+brew install lgcode              # macOS e Linux (fórmula oficial do brew, atualiza menos)
+sudo pacman -S lgcode            # Arch Linux (Stable)
 paru -S lgcode-bin               # Arch Linux (Latest from AUR)
-mise use -g opencode               # qualquer sistema
-nix run nixpkgs#opencode           # ou github:Clearlove7Zz/LGcode para a branch dev mais recente
+mise use -g lgcode               # qualquer sistema
+nix run nixpkgs#lgcode           # ou github:Clearlove7Zz/LGcode para a branch dev mais recente
 ```
 
 > [!TIP]
@@ -122,8 +122,8 @@ Se você tem interesse em contribuir com o LGcode, leia os [contributing docs](.
 
 ### Construindo com LGcode
 
-Se você estiver trabalhando em um projeto relacionado ao LGcode e estiver usando "opencode" como parte do nome (por exemplo, "lgcode-dashboard" ou "lgcode-mobile"), adicione uma nota no README para deixar claro que não foi construído pela equipe do LGcode e não é afiliado a nós de nenhuma forma.
+Se você estiver trabalhando em um projeto relacionado ao LGcode e estiver usando "lgcode" como parte do nome (por exemplo, "lgcode-dashboard" ou "lgcode-mobile"), adicione uma nota no README para deixar claro que não foi construído pela equipe do LGcode e não é afiliado a nós de nenhuma forma.
 
 ---
 
-**Junte-se à nossa comunidade** [Discord](https://discord.gg/opencode) | [X.com](https://x.com/opencode)
+**Junte-se à nossa comunidade** [Discord](https://discord.gg/lgcode) | [X.com](https://x.com/lgcode)

@@ -13,7 +13,7 @@
     "typecheck": "tsgo --noEmit"
   },
   "bin": {
-    "opencode": "./bin/lgcode"
+    "lgcode": "./bin/lgcode"
   },
   "exports": {
     "./public": "./src/public/index.ts",

@@ -43,8 +43,8 @@ export const dict = {
   "notFound.docs": "เอกสาร",
   "notFound.github": "GitHub",
   "notFound.discord": "Discord",
-  "notFound.logoLightAlt": "โลโก้ opencode แบบสว่าง",
-  "notFound.logoDarkAlt": "โลโก้ opencode แบบมืด",
+  "notFound.logoLightAlt": "โลโก้ lgcode แบบสว่าง",
+  "notFound.logoDarkAlt": "โลโก้ lgcode แบบมืด",
 
   "user.logout": "ออกจากระบบ",
 
@@ -98,8 +98,8 @@ export const dict = {
   "temp.feature.models.afterLink": "รวมถึงโมเดล Local",
   "temp.screenshot.caption": "LGcode TUI พร้อมธีม tokyonight",
   "temp.screenshot.alt": "LGcode TUI พร้อมธีม tokyonight",
-  "temp.logoLightAlt": "โลโก้ opencode แบบสว่าง",
-  "temp.logoDarkAlt": "โลโก้ opencode แบบมืด",
+  "temp.logoLightAlt": "โลโก้ lgcode แบบสว่าง",
+  "temp.logoDarkAlt": "โลโก้ lgcode แบบมืด",
 
   "home.banner.badge": "ใหม่",
   "home.banner.text": "แอปเดสก์ท็อปพร้อมใช้งานในเวอร์ชันเบต้า",
@@ -648,7 +648,7 @@ export const dict = {
   "workspace.lite.subscription.resetsIn": "รีเซ็ตใน",
   "workspace.lite.subscription.useBalance": "ใช้ยอดคงเหลือของคุณหลังจากถึงขีดจำกัดการใช้งาน",
   "workspace.lite.subscription.selectProvider":
-    'เลือก "LGcode Go" เป็นผู้ให้บริการในการตั้งค่า opencode ของคุณเพื่อใช้โมเดล Go',
+    'เลือก "LGcode Go" เป็นผู้ให้บริการในการตั้งค่า lgcode ของคุณเพื่อใช้โมเดล Go',
   "workspace.lite.black.message":
     "ขณะนี้คุณสมัครสมาชิก LGcode Black หรืออยู่ในรายการรอ โปรดยกเลิกการสมัครก่อนหากต้องการเปลี่ยนไปใช้ Go",
   "workspace.lite.other.message":

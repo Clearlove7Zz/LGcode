@@ -47,7 +47,7 @@
 
 Run:
 ```bash
-cd D:/Desktop/LGcode/opencode
+cd D:/Desktop/LGcode/lgcode
 git mv packages/lgcode packages/lgcode
 ```
 
@@ -160,7 +160,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 - [ ] **Step 1: Update root `package.json`**
 
 Modify `package.json`:
-- `"name": "opencode"` → `"name": "lgcode"`
+- `"name": "lgcode"` → `"name": "lgcode"`
 - `"@lgcode-ai/plugin": "workspace:*"` → `"@lgcode/plugin": "workspace:*"`
 - `"@lgcode-ai/script": "workspace:*"` → `"@lgcode/script": "workspace:*"`
 - `"@lgcode-ai/sdk": "workspace:*"` → `"@lgcode/sdk": "workspace:*"`
@@ -169,15 +169,15 @@ Modify `package.json`:
 - [ ] **Step 2: Update `packages/lgcode/package.json`**
 
 Modify `packages/lgcode/package.json`:
-- `"name": "opencode"` → `"name": "lgcode"`
-- `"opencode": "./bin/opencode"` → `"lgcode": "./bin/lgcode"`
-- Rename `bin/opencode` file reference and the file itself to `bin/lgcode`
+- `"name": "lgcode"` → `"name": "lgcode"`
+- `"lgcode": "./bin/lgcode"` → `"lgcode": "./bin/lgcode"`
+- Rename `bin/lgcode` file reference and the file itself to `bin/lgcode`
 - Update all `@lgcode-ai/*` deps to `@lgcode/*`
 - Remove repository/homepage URLs
 
 Run:
 ```bash
-git mv packages/lgcode/bin/opencode packages/lgcode/bin/lgcode
+git mv packages/lgcode/bin/lgcode packages/lgcode/bin/lgcode
 ```
 
 - [ ] **Step 3: Update all remaining package.json files**
@@ -186,7 +186,7 @@ For every `packages/*/package.json` and `sdks/vscode/package.json`:
 - Change `"name"` from `@lgcode-ai/X` to `@lgcode/X`
 - Change all `@lgcode-ai/*` dependency references to `@lgcode/*`
 - Remove `repository`, `homepage`, `bugs` URLs
-- Update scripts that reference `opencode`
+- Update scripts that reference `lgcode`
 
 Key files:
 - `packages/core/package.json`
@@ -228,7 +228,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 
 Run:
 ```bash
-cd D:/Desktop/LGcode/opencode
+cd D:/Desktop/LGcode/lgcode
 # Use a tool like sd or perl; ensure no accidental replacements in strings
 find packages sdks -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.mjs" \) -exec sed -i 's/@lgcode-ai\//\@lgcode\//g' {} +
 ```
@@ -267,11 +267,11 @@ Run:
 find packages sdks .github -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.yml" -o -name "*.html" -o -name "*.md" -o -name "*.ans" \) -exec sed -i 's/LGcode/LGcode/g' {} +
 ```
 
-- [ ] **Step 2: Replace user-facing `opencode` with `lgcode`**
+- [ ] **Step 2: Replace user-facing `lgcode` with `lgcode`**
 
 Run:
 ```bash
-find packages sdks .github -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.yml" -o -name "*.html" -o -name "*.md" -o -name "*.ans" \) -exec sed -i 's/opencode/lgcode/g' {} +
+find packages sdks .github -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.yml" -o -name "*.html" -o -name "*.md" -o -name "*.ans" \) -exec sed -i 's/lgcode/lgcode/g' {} +
 ```
 
 - [ ] **Step 3: Review and fix over-replacements**
@@ -310,7 +310,7 @@ Ensure `packages/lgcode/bin/lgcode` references the correct entry point.
 
 ```bash
 git add -A
-git commit -m "refactor: replace user-facing opencode brand strings with lgcode
+git commit -m "refactor: replace user-facing lgcode brand strings with lgcode
 
 Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 ```
@@ -420,7 +420,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 
 Search for existing LGcode logo or title rendering:
 ```bash
-grep -R "LGcode\|opencode" packages/lgcode/src --include="*.ts" --include="*.tsx"
+grep -R "LGcode\|lgcode" packages/lgcode/src --include="*.ts" --include="*.tsx"
 ```
 
 - [ ] **Step 2: Read ANSI logo file at runtime**
@@ -515,13 +515,13 @@ In `sdks/vscode/package.json`:
 - `"displayName": "LGcode"`
 - `"description": "LGcode for VS Code"`
 - Remove `repository.url`
-- Change all command IDs and titles from `opencode` to `lgcode`
+- Change all command IDs and titles from `lgcode` to `lgcode`
 
 - [ ] **Step 2: Update command registration in source**
 
 Replace command identifiers and titles in `sdks/vscode/src/`:
-- `opencode.openTerminal` → `lgcode.openTerminal`
-- `Open opencode` → `Open LGcode`
+- `lgcode.openTerminal` → `lgcode.openTerminal`
+- `Open lgcode` → `Open LGcode`
 - etc.
 
 - [ ] **Step 3: Commit**
@@ -545,7 +545,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 
 Replace:
 - `LGcode` → `LGcode`
-- `opencode` → `lgcode`
+- `lgcode` → `lgcode`
 - Remove all `modelhub.lgdg.cc` URLs and installation instructions that reference public LGcode distribution
 - Update logo paths to new PNG/SVG assets
 - Add a note that this is an internal fork

@@ -75,7 +75,7 @@ const getBase = (appId: string): Configuration => ({
   },
   protocols: {
     name: "LGcode",
-    schemes: ["opencode"],
+    schemes: ["lgcode"],
   },
   win: {
     icon: `resources/icons/icon.ico`,
@@ -124,7 +124,7 @@ function getConfig() {
         ...base,
         appId,
         productName: "LGcode Beta",
-        protocols: { name: "LGcode Beta", schemes: ["opencode"] },
+        protocols: { name: "LGcode Beta", schemes: ["lgcode"] },
         publish: { provider: "github", owner: "anomalyco", repo: "lgcode-beta", channel: "latest" },
         rpm: { packageName: "lgcode-beta" },
       }
@@ -134,10 +134,10 @@ function getConfig() {
         ...base,
         appId,
         productName: "LGcode",
-        protocols: { name: "LGcode", schemes: ["opencode"] },
-        publish: { provider: "github", owner: "anomalyco", repo: "opencode", channel: "latest" },
+        protocols: { name: "LGcode", schemes: ["lgcode"] },
+        publish: { provider: "github", owner: "anomalyco", repo: "lgcode", channel: "latest" },
         deb: { fpm: [legacyDesktopEntryFpm] },
-        rpm: { packageName: "opencode", fpm: [legacyDesktopEntryFpm] },
+        rpm: { packageName: "lgcode", fpm: [legacyDesktopEntryFpm] },
       }
     }
   }

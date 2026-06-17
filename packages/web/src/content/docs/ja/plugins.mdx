@@ -20,7 +20,7 @@ description: LGcode を拡張する独自のプラグインを作成します。
 JavaScript または TypeScript ファイルをプラグインディレクトリに配置します。
 
 - `.lgcode/plugins/` - プロジェクトレベルのプラグイン
-- `~/.config/opencode/plugins/` - グローバルプラグイン
+- `~/.config/lgcode/plugins/` - グローバルプラグイン
 
 これらのディレクトリ内のファイルは起動時に自動的にロードされます。
 
@@ -45,7 +45,7 @@ JavaScript または TypeScript ファイルをプラグインディレクトリ
 
 ### プラグインのインストール
 
-**npm プラグイン** は、起動時に Bun を使用して自動的にインストールされます。パッケージとその依存関係は `~/.cache/opencode/node_modules/` にキャッシュされます。
+**npm プラグイン** は、起動時に Bun を使用して自動的にインストールされます。パッケージとその依存関係は `~/.cache/lgcode/node_modules/` にキャッシュされます。
 
 **ローカルプラグイン**は、プラグインディレクトリから直接ロードされます。外部パッケージを使用するには、config ディレクトリ内に `package.json` を作成するか ([Dependency](#dependencies) を参照)、プラグインを npm に公開して [config](/docs/config#plugins) に追加する必要があります。
 
@@ -55,9 +55,9 @@ JavaScript または TypeScript ファイルをプラグインディレクトリ
 
 プラグインはすべてのソースからロードされ、すべてのフックが順番に実行されます。ロード順序は次のとおりです。
 
-1. グローバル設定 (`~/.config/opencode/lgcode.json`)
+1. グローバル設定 (`~/.config/lgcode/lgcode.json`)
 2. プロジェクト設定 (`lgcode.json`)
-3. グローバルプラグインディレクトリ (`~/.config/opencode/plugins/`)
+3. グローバルプラグインディレクトリ (`~/.config/lgcode/plugins/`)
 4. プロジェクトプラグインディレクトリ (`.lgcode/plugins/`)
 
 同じ名前とバージョンを持つ重複した npm パッケージは 1 回ロードされます。ただし、似た名前のローカルプラグインと npm プラグインは両方とも別々にロードされます。
@@ -225,7 +225,7 @@ export const NotificationPlugin = async ({ project, client, $, directory, worktr
     event: async ({ event }) => {
       // Send notification on session completion
       if (event.type === "session.idle") {
-        await $`osascript -e 'display notification "Session completed!" with title "opencode"'`
+        await $`osascript -e 'display notification "Session completed!" with title "lgcode"'`
       }
     },
   }

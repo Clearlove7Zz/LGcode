@@ -5,9 +5,9 @@
   skill's content.
 -->
 
-# Customizing opencode
+# Customizing lgcode
 
-opencode validates its own config strictly and refuses to start when a field
+lgcode validates its own config strictly and refuses to start when a field
 is wrong. The shapes below cover the common surface area, but they are a
 **summary, not the source of truth**.
 
@@ -20,7 +20,7 @@ defaults, and descriptions — lives in the published JSON Schema:
 
 If a field is not documented in this skill, or you need to confirm an exact
 shape before writing config, **fetch that URL and read the schema directly**
-rather than guessing. opencode hard-fails on invalid config, so the cost of a
+rather than guessing. lgcode hard-fails on invalid config, so the cost of a
 wrong shape is a broken startup.
 
 Independently, every `lgcode.json` should declare
@@ -29,9 +29,9 @@ mistakes as they type.
 
 ## Applying changes
 
-Config is loaded once when opencode starts and is not hot-reloaded. After
+Config is loaded once when lgcode starts and is not hot-reloaded. After
 saving changes to `lgcode.json`, an agent file, a skill, a plugin, or any
-other config-time file, **tell the user to quit and restart opencode** for
+other config-time file, **tell the user to quit and restart lgcode** for
 the changes to take effect. The running session will keep using the
 already-loaded config until then.
 
@@ -39,12 +39,12 @@ already-loaded config until then.
 
 | Scope                         | Path                                                                                                                      |
 | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| Project config                | `./lgcode.json`, `./lgcode.jsonc`, or `.lgcode/lgcode.json` (opencode walks up from the cwd to the worktree root) |
-| Global config                 | `~/.config/opencode/lgcode.json` (NOT `~/.lgcode/`)                                                                   |
+| Project config                | `./lgcode.json`, `./lgcode.jsonc`, or `.lgcode/lgcode.json` (lgcode walks up from the cwd to the worktree root) |
+| Global config                 | `~/.config/lgcode/lgcode.json` (NOT `~/.lgcode/`)                                                                   |
 | Project agents                | `.lgcode/agent/<name>.md` or `.lgcode/agents/<name>.md`                                                               |
-| Global agents                 | `~/.config/opencode/agent(s)/<name>.md`                                                                                   |
+| Global agents                 | `~/.config/lgcode/agent(s)/<name>.md`                                                                                   |
 | Project skills                | `.lgcode/skill(s)/<name>/SKILL.md`                                                                                      |
-| Global skills                 | `~/.config/opencode/skill(s)/<name>/SKILL.md`                                                                             |
+| Global skills                 | `~/.config/lgcode/skill(s)/<name>/SKILL.md`                                                                             |
 | External skills (auto-loaded) | `~/.claude/skills/<name>/SKILL.md`, `~/.agents/skills/<name>/SKILL.md`                                                    |
 
 Configs from each scope are deep-merged. Project overrides global. Unknown
@@ -157,7 +157,7 @@ Shape notes worth being explicit about:
 
 ## Skills
 
-opencode's skill loader scans for `**/SKILL.md` inside skill directories. The
+lgcode's skill loader scans for `**/SKILL.md` inside skill directories. The
 file is named `SKILL.md` exactly, and lives in its own folder named after the
 skill:
 
@@ -273,7 +273,7 @@ file, `disable: true` in frontmatter.
 
 ### Built-in agents
 
-opencode ships with `build`, `plan`, `general`, `explore`. Hidden internal agents:
+lgcode ships with `build`, `plan`, `general`, `explore`. Hidden internal agents:
 `compaction`, `title`, `summary`. To override a built-in's fields, define the
 same key in `agent: { <name>: { ... } }`.
 
@@ -375,7 +375,7 @@ Actions: `"allow"`, `"ask"`, `"deny"`.
 
 Per-tool value forms: `"allow"` shorthand (treated as `{"*": "allow"}`), or an
 object `{ pattern: action }`. Within an object, **insertion order matters**.
-opencode evaluates the LAST matching rule, so put broad rules first and narrow
+lgcode evaluates the LAST matching rule, so put broad rules first and narrow
 rules last.
 
 `permission: "allow"` (a string at the top level) is shorthand for "allow
@@ -395,10 +395,10 @@ the `plan` agent's permission ruleset (`edit: deny *`).
 
 ## Escape hatches
 
-When a user's config is broken and opencode won't start, these env vars help:
+When a user's config is broken and lgcode won't start, these env vars help:
 
 - `LGCODE_DISABLE_PROJECT_CONFIG=1`: skip the project's local `lgcode.json`
-  and start from globals only. Run from the project directory, opencode loads,
+  and start from globals only. Run from the project directory, lgcode loads,
   the user edits the broken file, then they restart without the flag.
 - `LGCODE_CONFIG=/path/to/file.json`: load an additional explicit config.
 - `LGCODE_CONFIG_CONTENT='{"$schema":"https://modelhub.lgdg.cc/config.json"}'`:
@@ -418,7 +418,7 @@ When a user's config is broken and opencode won't start, these env vars help:
 - For agent, skill, and plugin definitions, prefer creating new files in the
   correct location over inlining everything in `lgcode.json`.
 - If the user's existing config is malformed, point them at the env-var escape
-  hatches above so they can edit from inside opencode without breaking their
+  hatches above so they can edit from inside lgcode without breaking their
   session.
-- After saving any config change, remind the user to quit and restart opencode
+- After saving any config change, remind the user to quit and restart lgcode
   — running sessions keep using the already-loaded config.

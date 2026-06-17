@@ -23,7 +23,7 @@ lgcode serve [--port <number>] [--hostname <string>] [--cors <origin>]
 | `--port`        | Port at lytte på                             | `4096`           |
 | `--hostname`    | Værtsnavn at lytte på                        | `127.0.0.1`      |
 | `--mdns`        | Aktiver mDNS-opdagelse                       | `false`          |
-| `--mdns-domain` | Brugerdefineret domænenavn for mDNS-tjeneste | `opencode.local` |
+| `--mdns-domain` | Brugerdefineret domænenavn for mDNS-tjeneste | `lgcode.local` |
 | `--cors`        | Yderligere browseroprindelse for at tillade  | `[]`             |
 
 `--cors` kan angives flere gange:
@@ -36,7 +36,7 @@ lgcode serve --cors http://localhost:5173 --cors https://app.example.com
 
 ### Godkendelse
 
-Indstil `LGCODE_SERVER_PASSWORD` for at beskytte serveren med HTTP grundlæggende godkendelse. Brugernavnet er som standard `opencode`, eller indstil `LGCODE_SERVER_USERNAME` for at tilsidesætte det. Dette gælder både `lgcode serve` og `lgcode web`.
+Indstil `LGCODE_SERVER_PASSWORD` for at beskytte serveren med HTTP grundlæggende godkendelse. Brugernavnet er som standard `lgcode`, eller indstil `LGCODE_SERVER_USERNAME` for at tilsidesætte det. Dette gælder både `lgcode serve` og `lgcode web`.
 
 ```bash
 LGCODE_SERVER_PASSWORD=your-password lgcode serve
@@ -46,18 +46,18 @@ LGCODE_SERVER_PASSWORD=your-password lgcode serve
 
 ### Sådan fungerer det
 
-Når du kører `opencode` starter den en TUI og en server. Hvor TUI er
+Når du kører `lgcode` starter den en TUI og en server. Hvor TUI er
 klient som taler med serveren. Serveren viser en OpenAPI 3.1-specifikation
 endpoint. Dette endpoint bruges også til at generere en [SDK](/docs/sdk).
 
 :::tip
-Brug lgcode-serveren til at interagere med opencode programmatisk.
+Brug lgcode-serveren til at interagere med lgcode programmatisk.
 :::
 
-Denne arkitektur lader opencode understøtte flere klienter og lader dig interagere med opencode programmatisk.
+Denne arkitektur lader lgcode understøtte flere klienter og lader dig interagere med lgcode programmatisk.
 
 Du kan køre `lgcode serve` for at starte en selvstændig server. Hvis du har
-opencode TUI kørende, vil `lgcode serve` starte en ny server.
+lgcode TUI kørende, vil `lgcode serve` starte en ny server.
 
 ---
 

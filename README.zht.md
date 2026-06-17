@@ -51,14 +51,14 @@ curl -fsSL https://modelhub.lgdg.cc/install | bash
 
 # 套件管理員
 npm i -g lgcode-ai@latest        # 也可使用 bun/pnpm/yarn
-scoop install opencode             # Windows
-choco install opencode             # Windows
-brew install anomalyco/tap/opencode # macOS 與 Linux（推薦，始終保持最新）
-brew install opencode              # macOS 與 Linux（官方 brew formula，更新頻率較低）
-sudo pacman -S opencode            # Arch Linux (Stable)
+scoop install lgcode             # Windows
+choco install lgcode             # Windows
+brew install anomalyco/tap/lgcode # macOS 與 Linux（推薦，始終保持最新）
+brew install lgcode              # macOS 與 Linux（官方 brew formula，更新頻率較低）
+sudo pacman -S lgcode            # Arch Linux (Stable)
 paru -S lgcode-bin               # Arch Linux (Latest from AUR)
-mise use -g opencode               # 任何作業系統
-nix run nixpkgs#opencode           # 或使用 github:Clearlove7Zz/LGcode 以取得最新開發分支
+mise use -g lgcode               # 任何作業系統
+nix run nixpkgs#lgcode           # 或使用 github:Clearlove7Zz/LGcode 以取得最新開發分支
 ```
 
 > [!TIP]
@@ -121,8 +121,8 @@ LGcode 內建了兩種 Agent，您可以使用 `Tab` 鍵快速切換。
 
 ### 基於 LGcode 進行開發
 
-如果您正在開發與 LGcode 相關的專案，並在名稱中使用了 "opencode"（例如 "lgcode-dashboard" 或 "lgcode-mobile"），請在您的 README 中加入聲明，說明該專案並非由 LGcode 團隊開發，且與我們沒有任何隸屬關係。
+如果您正在開發與 LGcode 相關的專案，並在名稱中使用了 "lgcode"（例如 "lgcode-dashboard" 或 "lgcode-mobile"），請在您的 README 中加入聲明，說明該專案並非由 LGcode 團隊開發，且與我們沒有任何隸屬關係。
 
 ---
 
-**加入我們的社群** [飞书](https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=738j8655-cd59-4633-a30a-1124e0096789&qr_code=true) | [X.com](https://x.com/opencode)
+**加入我們的社群** [飞书](https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=738j8655-cd59-4633-a30a-1124e0096789&qr_code=true) | [X.com](https://x.com/lgcode)

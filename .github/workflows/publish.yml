@@ -158,9 +158,9 @@ jobs:
           signing-account-name: ${{ env.AZURE_TRUSTED_SIGNING_ACCOUNT_NAME }}
           certificate-profile-name: ${{ env.AZURE_TRUSTED_SIGNING_CERTIFICATE_PROFILE }}
           files: |
-            ${{ github.workspace }}\packages\opencode\dist\lgcode-windows-arm64\bin\opencode.exe
-            ${{ github.workspace }}\packages\opencode\dist\lgcode-windows-x64\bin\opencode.exe
-            ${{ github.workspace }}\packages\opencode\dist\lgcode-windows-x64-baseline\bin\opencode.exe
+            ${{ github.workspace }}\packages\lgcode\dist\lgcode-windows-arm64\bin\lgcode.exe
+            ${{ github.workspace }}\packages\lgcode\dist\lgcode-windows-x64\bin\lgcode.exe
+            ${{ github.workspace }}\packages\lgcode\dist\lgcode-windows-x64-baseline\bin\lgcode.exe
           exclude-environment-credential: true
           exclude-workload-identity-credential: true
           exclude-managed-identity-credential: true
@@ -176,9 +176,9 @@ jobs:
         shell: pwsh
         run: |
           $files = @(
-            "${{ github.workspace }}\packages\opencode\dist\lgcode-windows-arm64\bin\opencode.exe",
-            "${{ github.workspace }}\packages\opencode\dist\lgcode-windows-x64\bin\opencode.exe",
-            "${{ github.workspace }}\packages\opencode\dist\lgcode-windows-x64-baseline\bin\opencode.exe"
+            "${{ github.workspace }}\packages\lgcode\dist\lgcode-windows-arm64\bin\lgcode.exe",
+            "${{ github.workspace }}\packages\lgcode\dist\lgcode-windows-x64\bin\lgcode.exe",
+            "${{ github.workspace }}\packages\lgcode\dist\lgcode-windows-x64-baseline\bin\lgcode.exe"
           )
 
           foreach ($file in $files) {
@@ -203,9 +203,9 @@ jobs:
           GH_TOKEN: ${{ steps.committer.outputs.token }}
         run: |
           gh release upload "v${{ needs.version.outputs.version }}" `
-            "${{ github.workspace }}\packages\opencode\dist\lgcode-windows-arm64.zip" `
-            "${{ github.workspace }}\packages\opencode\dist\lgcode-windows-x64.zip" `
-            "${{ github.workspace }}\packages\opencode\dist\lgcode-windows-x64-baseline.zip" `
+            "${{ github.workspace }}\packages\lgcode\dist\lgcode-windows-arm64.zip" `
+            "${{ github.workspace }}\packages\lgcode\dist\lgcode-windows-x64.zip" `
+            "${{ github.workspace }}\packages\lgcode\dist\lgcode-windows-x64-baseline.zip" `
             --clobber `
             --repo "${{ needs.version.outputs.repo }}"
 
@@ -490,8 +490,8 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.AUR_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          git config --global user.email "opencode@sst.dev"
-          git config --global user.name "opencode"
+          git config --global user.email "lgcode@sst.dev"
+          git config --global user.name "lgcode"
           ssh-keyscan -H aur.archlinux.org >> ~/.ssh/known_hosts || true
 
       - name: Upload desktop release assets

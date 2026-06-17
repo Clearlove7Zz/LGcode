@@ -1,13 +1,13 @@
 ---
 title: SDK
-description: opencode sunucusu için type-safe JS istemcisi.
+description: lgcode sunucusu için type-safe JS istemcisi.
 ---
 
 import config from "../../../../config.mjs"
 export const typesUrl = `${config.github}/blob/dev/packages/sdk/js/src/gen/types.gen.ts`
 
-opencode JS/TS SDK, sunucu ile etkileşmek için type-safe bir istemci sağlar.
-opencode'u programatik olarak kontrol etmek ve entegrasyonlar oluşturmak için kullanabilirsiniz.
+lgcode JS/TS SDK, sunucu ile etkileşmek için type-safe bir istemci sağlar.
+lgcode'u programatik olarak kontrol etmek ve entegrasyonlar oluşturmak için kullanabilirsiniz.
 
 [Sunucu](/docs/server) sayfasında nasıl çalıştığını görebilir, örnekler için topluluğun oluşturduğu [projeler](/docs/ecosystem#projects) bölümüne bakabilirsiniz.
 
@@ -25,7 +25,7 @@ npm install @lgcode-ai/sdk
 
 ## İstemci Oluşturma
 
-Bir opencode örneği oluşturun:
+Bir lgcode örneği oluşturun:
 
 ```javascript
 import { createOpencode } from "@lgcode-ai/sdk"
@@ -54,7 +54,7 @@ Davranışı özelleştirmek için bir yapılandırma nesnesi iletebilirsiniz. �
 ```javascript
 import { createOpencode } from "@lgcode-ai/sdk"
 
-const opencode = await createOpencode({
+const lgcode = await createOpencode({
   hostname: "127.0.0.1",
   port: 4096,
   config: {
@@ -62,14 +62,14 @@ const opencode = await createOpencode({
   },
 })
 
-console.log(`Server running at ${opencode.server.url}`)
+console.log(`Server running at ${lgcode.server.url}`)
 
-opencode.server.close()
+lgcode.server.close()
 ```
 
 ## Yalnızca istemci
 
-Halihazırda çalışan bir opencode örneğiniz varsa, ona bağlanmak için bir istemci örneği oluşturabilirsiniz:
+Halihazırda çalışan bir lgcode örneğiniz varsa, ona bağlanmak için bir istemci örneği oluşturabilirsiniz:
 
 ```javascript
 import { createOpencodeClient } from "@lgcode-ai/sdk"
@@ -376,7 +376,7 @@ await client.session.prompt({
 ```javascript
 // Search and read files
 const textResults = await client.find.text({
-  query: { pattern: "function.*opencode" },
+  query: { pattern: "function.*lgcode" },
 })
 
 const files = await client.find.files({

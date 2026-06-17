@@ -20,7 +20,7 @@ Hay dos formas de cargar complementos.
 Coloque los archivos JavaScript o TypeScript en el directorio del complemento.
 
 - `.lgcode/plugins/` - Complementos a nivel de proyecto
-- `~/.config/opencode/plugins/` - Complementos globales
+- `~/.config/lgcode/plugins/` - Complementos globales
 
 Los archivos en estos directorios se cargan automáticamente al inicio.
 
@@ -45,7 +45,7 @@ Explore los complementos disponibles en el [ecosistema](/docs/ecosystem#plugins)
 
 ### Cómo se instalan los complementos
 
-Los **complementos npm** se instalan automáticamente usando Bun al inicio. Los paquetes y sus dependencias se almacenan en caché en `~/.cache/opencode/node_modules/`.
+Los **complementos npm** se instalan automáticamente usando Bun al inicio. Los paquetes y sus dependencias se almacenan en caché en `~/.cache/lgcode/node_modules/`.
 
 **Los complementos locales** se cargan directamente desde el directorio de complementos. Para usar paquetes externos, debe crear un `package.json` dentro de su directorio de configuración (consulte [Dependencias](#dependencies)), o publicar el complemento en npm y [agregarlo a su configuración](/docs/config#plugins).
 
@@ -55,9 +55,9 @@ Los **complementos npm** se instalan automáticamente usando Bun al inicio. Los 
 
 Los complementos se cargan desde todas las fuentes y todos los enlaces se ejecutan en secuencia. El orden de carga es:
 
-1. Configuración global (`~/.config/opencode/lgcode.json`)
+1. Configuración global (`~/.config/lgcode/lgcode.json`)
 2. Configuración del proyecto (`lgcode.json`)
-3. Directorio global de complementos (`~/.config/opencode/plugins/`)
+3. Directorio global de complementos (`~/.config/lgcode/plugins/`)
 4. Directorio de complementos del proyecto (`.lgcode/plugins/`)
 
 Los paquetes npm duplicados con el mismo nombre y versión se cargan una vez. Sin embargo, un complemento local y un complemento npm con nombres similares se cargan por separado.
@@ -118,7 +118,7 @@ La función del complemento recibe:
 - `project`: La información actual del proyecto.
 - `directory`: El directorio de trabajo actual.
 - `worktree`: La ruta del árbol de trabajo de git.
-- `client`: Un cliente SDK opencode para interactuar con la IA.
+- `client`: Un cliente SDK lgcode para interactuar con la IA.
 - `$`: [shell API](https://bun.com/docs/runtime/shell) de Bun para ejecutar comandos.
 
 ---
@@ -211,7 +211,7 @@ Los complementos pueden suscribirse a eventos como se ve a continuación en la s
 
 ## Ejemplos
 
-A continuación se muestran algunos ejemplos de complementos que puede utilizar para ampliar opencode.
+A continuación se muestran algunos ejemplos de complementos que puede utilizar para ampliar lgcode.
 
 ---
 
@@ -225,7 +225,7 @@ export const NotificationPlugin = async ({ project, client, $, directory, worktr
     event: async ({ event }) => {
       // Send notification on session completion
       if (event.type === "session.idle") {
-        await $`osascript -e 'display notification "Session completed!" with title "opencode"'`
+        await $`osascript -e 'display notification "Session completed!" with title "lgcode"'`
       }
     },
   }
@@ -242,7 +242,7 @@ Si está utilizando la aplicación de escritorio LGcode, puede enviar notificaci
 
 ### Protección .env
 
-Evite que opencode lea archivos `.env`:
+Evite que lgcode lea archivos `.env`:
 
 ```javascript title=".lgcode/plugins/env-protection.js"
 export const EnvProtection = async ({ project, client, $, directory, worktree }) => {
@@ -277,7 +277,7 @@ export const InjectEnvPlugin = async () => {
 
 ### Herramientas personalizadas
 
-Los complementos también pueden agregar herramientas personalizadas a opencode:
+Los complementos también pueden agregar herramientas personalizadas a lgcode:
 
 ```ts title=".lgcode/plugins/custom-tools.ts"
 import { type Plugin, tool } from "@lgcode-ai/plugin"
@@ -300,13 +300,13 @@ export const CustomToolsPlugin: Plugin = async (ctx) => {
 }
 ```
 
-El ayudante `tool` crea una herramienta personalizada a la que opencode puede llamar. Toma una función de esquema Zod y devuelve una definición de herramienta con:
+El ayudante `tool` crea una herramienta personalizada a la que lgcode puede llamar. Toma una función de esquema Zod y devuelve una definición de herramienta con:
 
 - `description`: Qué hace la herramienta
 - `args`: Esquema Zod para los argumentos de la herramienta.
 - `execute`: Función que se ejecuta cuando se llama a la herramienta
 
-Sus herramientas personalizadas estarán disponibles para opencode junto con las herramientas integradas.
+Sus herramientas personalizadas estarán disponibles para lgcode junto con las herramientas integradas.
 
 :::note
 Si una herramienta de complemento utiliza el mismo nombre que una herramienta integrada, la herramienta de complemento tiene prioridad.

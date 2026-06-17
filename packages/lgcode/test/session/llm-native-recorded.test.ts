@@ -120,7 +120,7 @@ const RECORDED_SCENARIOS = [
     modelID: "gpt-4.1-mini",
     cassette: "session/native-openai-tool-loop",
     protocol: "openai-responses",
-    tags: ["opencode", "native", "tool-loop"],
+    tags: ["lgcode", "native", "tool-loop"],
     canRecord: () => Boolean(envValue("LGCODE_RECORD_OPENAI_API_KEY", "OPENAI_API_KEY")),
     config: (model) =>
       providerConfig({
@@ -143,7 +143,7 @@ const RECORDED_SCENARIOS = [
     modelID: "gpt-5.5",
     cassette: "session/native-openai-oauth-tool-loop",
     protocol: "openai-responses",
-    tags: ["opencode", "native", "oauth", "tool-loop"],
+    tags: ["lgcode", "native", "oauth", "tool-loop"],
     canRecord: () => recordOpenAIOAuth() !== undefined,
     recordAuth: recordOpenAIOAuth,
     replayAuth: replayOpenAIOAuth,
@@ -166,7 +166,7 @@ const RECORDED_SCENARIOS = [
     modelID: "gpt-5.2-codex",
     cassette: "session/native-zen-tool-loop",
     protocol: "openai-responses",
-    tags: ["opencode", "zen", "native", "tool-loop"],
+    tags: ["lgcode", "zen", "native", "tool-loop"],
     canRecord: () => Boolean(process.env.LGCODE_RECORD_CONSOLE_TOKEN && process.env.LGCODE_RECORD_ZEN_ORG_ID),
     config: (model) =>
       providerConfig({
@@ -189,7 +189,7 @@ const RECORDED_SCENARIOS = [
     modelID: "claude-haiku-4-5-20251001",
     cassette: "session/native-anthropic-tool-loop",
     protocol: "anthropic-messages",
-    tags: ["opencode", "native", "tool-loop"],
+    tags: ["lgcode", "native", "tool-loop"],
     canRecord: () => Boolean(envValue("LGCODE_RECORD_ANTHROPIC_API_KEY", "ANTHROPIC_API_KEY")),
     config: (model) =>
       providerConfig({
@@ -271,7 +271,7 @@ function recordedNativeLLMLayer(scenario: RecordedScenario) {
     Layer.provide(ModelsDev.defaultLayer),
     Layer.provide(RuntimeFlags.defaultLayer),
   )
-  // Only the HTTP client is recorded; RequestExecutor and the opencode LLM stack remain real.
+  // Only the HTTP client is recorded; RequestExecutor and the lgcode LLM stack remain real.
   const metadata = {
     provider: scenario.providerID,
     protocol: scenario.protocol,

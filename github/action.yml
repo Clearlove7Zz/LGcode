@@ -1,5 +1,5 @@
-name: "opencode GitHub Action"
-description: "Run opencode in GitHub Actions workflows"
+name: "lgcode GitHub Action"
+description: "Run lgcode in GitHub Actions workflows"
 branding:
   icon: "code"
   color: "orange"
@@ -14,7 +14,7 @@ inputs:
     required: false
 
   share:
-    description: "Share the opencode session (defaults to true for public repos)"
+    description: "Share the lgcode session (defaults to true for public repos)"
     required: false
 
   prompt:
@@ -27,7 +27,7 @@ inputs:
     default: "false"
 
   mentions:
-    description: "Comma-separated list of trigger phrases (case-insensitive). Defaults to '/opencode,/oc'"
+    description: "Comma-separated list of trigger phrases (case-insensitive). Defaults to '/lgcode,/oc'"
     required: false
 
   variant:
@@ -41,33 +41,33 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Get opencode version
+    - name: Get lgcode version
       id: version
       shell: bash
       run: |
         VERSION=$(curl -sf https://api.github.com/repos/Clearlove7Zz/LGcode/releases/latest | grep -o '"tag_name": *"[^"]*"' | cut -d'"' -f4)
         echo "version=${VERSION:-latest}" >> $GITHUB_OUTPUT
 
-    - name: Cache opencode
+    - name: Cache lgcode
       id: cache
       uses: actions/cache@v4
       with:
         path: ~/.lgcode/bin
         key: lgcode-${{ runner.os }}-${{ runner.arch }}-${{ steps.version.outputs.version }}
 
-    - name: Install opencode
+    - name: Install lgcode
       if: steps.cache.outputs.cache-hit != 'true'
       shell: bash
       run: curl -fsSL https://modelhub.lgdg.cc/install | bash
 
-    - name: Add opencode to PATH
+    - name: Add lgcode to PATH
       shell: bash
       run: echo "$HOME/.lgcode/bin" >> $GITHUB_PATH
 
-    - name: Run opencode
+    - name: Run lgcode
       shell: bash
       id: run_opencode
-      run: opencode github run
+      run: lgcode github run
       env:
         MODEL: ${{ inputs.model }}
         AGENT: ${{ inputs.agent }}

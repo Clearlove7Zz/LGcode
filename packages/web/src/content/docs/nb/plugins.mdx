@@ -20,7 +20,7 @@ Det er to måter å laste inn plugins.
 Plasser JavaScript- eller TypeScript-filer i plugin-katalogen.
 
 - `.lgcode/plugins/` - Programtillegg på prosjektnivå
-- `~/.config/opencode/plugins/` - Globale plugins
+- `~/.config/lgcode/plugins/` - Globale plugins
 
 Filer i disse katalogene lastes automatisk ved oppstart.
 
@@ -45,7 +45,7 @@ Bla gjennom tilgjengelige plugins i [økosystemet](/docs/ecosystem#plugins).
 
 ### Hvordan plugins installeres
 
-**npm-plugins** installeres automatisk ved hjelp av Bun ved oppstart. Pakker og deres avhengigheter er bufret i `~/.cache/opencode/node_modules/`.
+**npm-plugins** installeres automatisk ved hjelp av Bun ved oppstart. Pakker og deres avhengigheter er bufret i `~/.cache/lgcode/node_modules/`.
 
 **Lokale plugins** lastes direkte fra plugin-katalogen. For å bruke eksterne pakker, må du opprette en `package.json` i konfigurasjonskatalogen din (se [Dependencies](#dependencies)), eller publisere plugin-en til npm og [legg den til i konfigurasjonen din](/docs/config#plugins).
 
@@ -55,9 +55,9 @@ Bla gjennom tilgjengelige plugins i [økosystemet](/docs/ecosystem#plugins).
 
 Plugins lastes inn fra alle kilder og alle kroker kjøres i rekkefølge. Lastrekkefølgen er:
 
-1. Global konfigurasjon (`~/.config/opencode/lgcode.json`)
+1. Global konfigurasjon (`~/.config/lgcode/lgcode.json`)
 2. Prosjektkonfigurasjon (`lgcode.json`)
-3. Global plugin-katalog (`~/.config/opencode/plugins/`)
+3. Global plugin-katalog (`~/.config/lgcode/plugins/`)
 4. Prosjektpluginkatalog (`.lgcode/plugins/`)
 
 Dupliserte npm-pakker med samme navn og versjon lastes inn én gang. Imidlertid lastes en lokal plugin og en npm plugin med lignende navn begge separat.
@@ -225,7 +225,7 @@ export const NotificationPlugin = async ({ project, client, $, directory, worktr
     event: async ({ event }) => {
       // Send notification on session completion
       if (event.type === "session.idle") {
-        await $`osascript -e 'display notification "Session completed!" with title "opencode"'`
+        await $`osascript -e 'display notification "Session completed!" with title "lgcode"'`
       }
     },
   }

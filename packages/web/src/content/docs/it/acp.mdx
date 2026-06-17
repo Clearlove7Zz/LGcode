@@ -15,7 +15,7 @@ ACP e è un protocollo aperto che standardizza la comunicazione tra editor di co
 
 ## Configurazione
 
-Per usare LGcode via ACP, configura l'editor in modo che esegua il comando `opencode acp`.
+Per usare LGcode via ACP, configura l'editor in modo che esegua il comando `lgcode acp`.
 
 Il comando avvia LGcode come sottoprocesso compatibile con ACP che comunica con l'editor via JSON-RPC su stdio.
 
@@ -31,7 +31,7 @@ Aggiungi alla configurazione di [Zed](https://zed.dev) (`~/.config/zed/settings.
 {
   "agent_servers": {
     "LGcode": {
-      "command": "opencode",
+      "command": "lgcode",
       "args": ["acp"]
     }
   }
@@ -53,7 +53,7 @@ Puoi anche assegnare una scorciatoia da tastiera modificando `keymap.json`:
             "custom": {
               "name": "LGcode",
               "command": {
-                "command": "opencode",
+                "command": "lgcode",
                 "args": ["acp"]
               }
             }
@@ -75,7 +75,7 @@ Aggiungi al tuo acp.json per [JetBrains IDE](https://www.jetbrains.com/) secondo
 {
   "agent_servers": {
     "LGcode": {
-      "command": "/absolute/path/bin/opencode",
+      "command": "/absolute/path/bin/lgcode",
       "args": ["acp"]
     }
   }
@@ -93,8 +93,8 @@ Aggiungi alla configurazione di [Avante.nvim](https://github.com/yetone/avante.n
 ```lua
 {
   acp_providers = {
-    ["opencode"] = {
-      command = "opencode",
+    ["lgcode"] = {
+      command = "lgcode",
       args = { "acp" }
     }
   }
@@ -106,8 +106,8 @@ Se devi passare variabili d'ambiente:
 ```lua {6-8}
 {
   acp_providers = {
-    ["opencode"] = {
-      command = "opencode",
+    ["lgcode"] = {
+      command = "lgcode",
       args = { "acp" },
       env = {
         LGCODE_API_KEY = os.getenv("LGCODE_API_KEY")
@@ -128,7 +128,7 @@ require("codecompanion").setup({
   interactions = {
     chat = {
       adapter = {
-        name = "opencode",
+        name = "lgcode",
         model = "claude-sonnet-4",
       },
     },

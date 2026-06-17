@@ -36,14 +36,14 @@ export const dict = {
   "email.subscribe": "Subscribe",
   "email.success": "Almost done, check your inbox and confirm your email address",
 
-  "notFound.title": "Not Found | opencode",
+  "notFound.title": "Not Found | lgcode",
   "notFound.heading": "404 - Page Not Found",
   "notFound.home": "Home",
   "notFound.docs": "Docs",
   "notFound.github": "GitHub",
   "notFound.discord": "Discord",
-  "notFound.logoLightAlt": "opencode logo light",
-  "notFound.logoDarkAlt": "opencode logo dark",
+  "notFound.logoLightAlt": "lgcode logo light",
+  "notFound.logoDarkAlt": "lgcode logo dark",
 
   "user.logout": "Logout",
 
@@ -85,21 +85,21 @@ export const dict = {
 
   "home.title": "LGcode | The open source AI coding agent",
 
-  "temp.title": "opencode | AI coding agent built for the terminal",
+  "temp.title": "lgcode | AI coding agent built for the terminal",
   "temp.hero.title": "The AI coding agent built for the terminal",
-  "temp.zen": "opencode zen",
+  "temp.zen": "lgcode zen",
   "temp.getStarted": "Get Started",
   "temp.feature.native.title": "Native TUI",
   "temp.feature.native.body": "A responsive, native, themeable terminal UI",
   "temp.feature.zen.beforeLink": "A",
   "temp.feature.zen.link": "curated list of models",
-  "temp.feature.zen.afterLink": "provided by opencode",
+  "temp.feature.zen.afterLink": "provided by lgcode",
   "temp.feature.models.beforeLink": "Supports 75+ LLM providers through",
   "temp.feature.models.afterLink": ", including local models",
-  "temp.screenshot.caption": "opencode TUI with the tokyonight theme",
-  "temp.screenshot.alt": "opencode TUI with tokyonight theme",
-  "temp.logoLightAlt": "opencode logo light",
-  "temp.logoDarkAlt": "opencode logo dark",
+  "temp.screenshot.caption": "lgcode TUI with the tokyonight theme",
+  "temp.screenshot.alt": "lgcode TUI with tokyonight theme",
+  "temp.logoLightAlt": "lgcode logo light",
+  "temp.logoDarkAlt": "lgcode logo dark",
 
   "home.banner.badge": "New",
   "home.banner.text": "Desktop app available in beta",
@@ -442,15 +442,15 @@ export const dict = {
     "Access models configured for optimal performance - no downgrades or routing to cheaper providers.",
   "workspace.newUser.feature.lockin.title": "No Lock-in",
   "workspace.newUser.feature.lockin.body":
-    "Use Zen with any coding agent, and continue using other providers with opencode whenever you want.",
+    "Use Zen with any coding agent, and continue using other providers with lgcode whenever you want.",
   "workspace.newUser.copyApiKey": "Copy API key",
   "workspace.newUser.copyKey": "Copy Key",
   "workspace.newUser.copied": "Copied!",
   "workspace.newUser.step.enableBilling": "Enable billing",
   "workspace.newUser.step.login.before": "Run",
-  "workspace.newUser.step.login.after": "and select opencode",
+  "workspace.newUser.step.login.after": "and select lgcode",
   "workspace.newUser.step.pasteKey": "Paste your API key",
-  "workspace.newUser.step.models.before": "Start opencode and run",
+  "workspace.newUser.step.models.before": "Start lgcode and run",
   "workspace.newUser.step.models.after": "to select a model",
 
   "workspace.models.title": "Models",
@@ -496,10 +496,10 @@ export const dict = {
   "workspace.cost.subscriptionShort": "sub",
 
   "workspace.keys.title": "API Keys",
-  "workspace.keys.subtitle": "Manage your API keys for accessing opencode services.",
+  "workspace.keys.subtitle": "Manage your API keys for accessing lgcode services.",
   "workspace.keys.create": "Create API Key",
   "workspace.keys.placeholder": "Enter key name",
-  "workspace.keys.empty": "Create an opencode Gateway API key",
+  "workspace.keys.empty": "Create an lgcode Gateway API key",
   "workspace.keys.table.name": "Name",
   "workspace.keys.table.key": "Key",
   "workspace.keys.table.createdBy": "Created By",
@@ -648,7 +648,7 @@ export const dict = {
   "workspace.lite.subscription.resetsIn": "Resets in",
   "workspace.lite.subscription.useBalance": "Use your available balance after reaching the usage limits",
   "workspace.lite.subscription.selectProvider":
-    'Select "LGcode Go" as the provider in your opencode configuration to use Go models.',
+    'Select "LGcode Go" as the provider in your lgcode configuration to use Go models.',
   "workspace.lite.black.message":
     "You're currently subscribed to LGcode Black or on the waitlist. Please unsubscribe first if you'd like to switch to Go.",
   "workspace.lite.other.message":

@@ -71,7 +71,7 @@ export default function TermsOfService() {
                 RIGHT TO PARTICIPATE IN A CLASS ACTION LAWSUIT OR CLASS-WIDE ARBITRATION.
               </p>
 
-              <h2 id="what-is-opencode">What is LGcode?</h2>
+              <h2 id="what-is-lgcode">What is LGcode?</h2>
               <p>
                 LGcode is an AI-powered coding agent that helps you write, understand, and modify code using large
                 language models. Certain of these large language models are provided by third parties ("Third Party

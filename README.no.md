@@ -51,14 +51,14 @@ curl -fsSL https://modelhub.lgdg.cc/install | bash
 
 # Pakkehåndterere
 npm i -g lgcode-ai@latest        # eller bun/pnpm/yarn
-scoop install opencode             # Windows
-choco install opencode             # Windows
-brew install anomalyco/tap/opencode # macOS og Linux (anbefalt, alltid oppdatert)
-brew install opencode              # macOS og Linux (offisiell brew-formel, oppdateres sjeldnere)
-sudo pacman -S opencode            # Arch Linux (Stable)
+scoop install lgcode             # Windows
+choco install lgcode             # Windows
+brew install anomalyco/tap/lgcode # macOS og Linux (anbefalt, alltid oppdatert)
+brew install lgcode              # macOS og Linux (offisiell brew-formel, oppdateres sjeldnere)
+sudo pacman -S lgcode            # Arch Linux (Stable)
 paru -S lgcode-bin               # Arch Linux (Latest from AUR)
-mise use -g opencode               # alle OS
-nix run nixpkgs#opencode           # eller github:Clearlove7Zz/LGcode for nyeste dev-branch
+mise use -g lgcode               # alle OS
+nix run nixpkgs#lgcode           # eller github:Clearlove7Zz/LGcode for nyeste dev-branch
 ```
 
 > [!TIP]
@@ -122,8 +122,8 @@ Hvis du vil bidra til LGcode, les [contributing docs](./CONTRIBUTING.md) før du
 
 ### Bygge på LGcode
 
-Hvis du jobber med et prosjekt som er relatert til LGcode og bruker "opencode" som en del av navnet; for eksempel "lgcode-dashboard" eller "lgcode-mobile", legg inn en merknad i README som presiserer at det ikke er bygget av LGcode-teamet og ikke er tilknyttet oss på noen måte.
+Hvis du jobber med et prosjekt som er relatert til LGcode og bruker "lgcode" som en del av navnet; for eksempel "lgcode-dashboard" eller "lgcode-mobile", legg inn en merknad i README som presiserer at det ikke er bygget av LGcode-teamet og ikke er tilknyttet oss på noen måte.
 
 ---
 
-**Bli med i fellesskapet** [Discord](https://discord.gg/opencode) | [X.com](https://x.com/opencode)
+**Bli med i fellesskapet** [Discord](https://discord.gg/lgcode) | [X.com](https://x.com/lgcode)

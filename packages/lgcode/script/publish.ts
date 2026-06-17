@@ -108,8 +108,8 @@ if (!Script.preview) {
     "url='https://github.com/Clearlove7Zz/LGcode'",
     "arch=('aarch64' 'x86_64')",
     "license=('MIT')",
-    "provides=('opencode')",
-    "conflicts=('opencode')",
+    "provides=('lgcode')",
+    "conflicts=('lgcode')",
     "depends=('ripgrep')",
     "",
     `source_aarch64=("\${pkgname}_\${pkgver}_aarch64.tar.gz::https://github.com/Clearlove7Zz/LGcode/releases/download/v\${pkgver}\${_subver}/lgcode-linux-arm64.tar.gz")`,
@@ -119,7 +119,7 @@ if (!Script.preview) {
     `sha256sums_x86_64=('${x64Sha}')`,
     "",
     "package() {",
-    '  install -Dm755 ./opencode "${pkgdir}/usr/bin/lgcode"',
+    '  install -Dm755 ./lgcode "${pkgdir}/usr/bin/lgcode"',
     "}",
     "",
   ].join("\n")
@@ -162,7 +162,7 @@ if (!Script.preview) {
     `      sha256 "${macX64Sha}"`,
     "",
     "      def install",
-    '        bin.install "opencode"',
+    '        bin.install "lgcode"',
     "      end",
     "    end",
     "    if Hardware::CPU.arm?",
@@ -170,7 +170,7 @@ if (!Script.preview) {
     `      sha256 "${macArm64Sha}"`,
     "",
     "      def install",
-    '        bin.install "opencode"',
+    '        bin.install "lgcode"',
     "      end",
     "    end",
     "  end",
@@ -180,14 +180,14 @@ if (!Script.preview) {
     `      url "https://github.com/Clearlove7Zz/LGcode/releases/download/v${Script.version}/lgcode-linux-x64.tar.gz"`,
     `      sha256 "${x64Sha}"`,
     "      def install",
-    '        bin.install "opencode"',
+    '        bin.install "lgcode"',
     "      end",
     "    end",
     "    if Hardware::CPU.arm? and Hardware::CPU.is_64_bit?",
     `      url "https://github.com/Clearlove7Zz/LGcode/releases/download/v${Script.version}/lgcode-linux-arm64.tar.gz"`,
     `      sha256 "${arm64Sha}"`,
     "      def install",
-    '        bin.install "opencode"',
+    '        bin.install "lgcode"',
     "      end",
     "    end",
     "  end",
@@ -204,8 +204,8 @@ if (!Script.preview) {
   const tap = `https://x-access-token:${token}@github.com/anomalyco/homebrew-tap.git`
   await $`rm -rf ./dist/homebrew-tap`
   await $`git clone ${tap} ./dist/homebrew-tap`
-  await Bun.file("./dist/homebrew-tap/opencode.rb").write(homebrewFormula)
-  await $`cd ./dist/homebrew-tap && git add opencode.rb`
+  await Bun.file("./dist/homebrew-tap/lgcode.rb").write(homebrewFormula)
+  await $`cd ./dist/homebrew-tap && git add lgcode.rb`
   if ((await $`cd ./dist/homebrew-tap && git diff --cached --quiet`.nothrow()).exitCode !== 0) {
     await $`cd ./dist/homebrew-tap && git commit -m "Update to v${Script.version}"`
     await $`cd ./dist/homebrew-tap && git push`

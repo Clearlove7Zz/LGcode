@@ -17,7 +17,7 @@ For at tilføje en udbyder skal du:
 
 ### Legitimationsoplysninger
 
-Når du tilføjer en udbyders API-nøgler med `/connect`-kommandoen, gemmes de i `~/.local/share/opencode/auth.json`.
+Når du tilføjer en udbyders API-nøgler med `/connect`-kommandoen, gemmes de i `~/.local/share/lgcode/auth.json`.
 
 ---
 
@@ -54,7 +54,7 @@ LGcode Zen er en liste over modeller leveret af LGcode-teamet, som er blevet tes
 Hvis du er ny, anbefaler vi at starte med LGcode Zen.
 :::
 
-1. Kør kommandoen `/connect` i TUI, vælg opencode og gå til [modelhub.lgdg.cc/auth](https://modelhub.lgdg.cc/auth).
+1. Kør kommandoen `/connect` i TUI, vælg lgcode og gå til [modelhub.lgdg.cc/auth](https://modelhub.lgdg.cc/auth).
 
    ```txt
    /connect
@@ -163,17 +163,17 @@ Sådan bruger du Amazon Bedrock med LGcode:
 
    #### Miljøvariabler (hurtigstart)
 
-   Angiv en af disse miljøvariabler, mens du kører opencode:
+   Angiv en af disse miljøvariabler, mens du kører lgcode:
 
    ```bash
    # Option 1: Using AWS access keys
-   AWS_ACCESS_KEY_ID=XXX AWS_SECRET_ACCESS_KEY=YYY opencode
+   AWS_ACCESS_KEY_ID=XXX AWS_SECRET_ACCESS_KEY=YYY lgcode
 
    # Option 2: Using named AWS profile
-   AWS_PROFILE=my-profile opencode
+   AWS_PROFILE=my-profile lgcode
 
    # Option 3: Using Bedrock bearer token
-   AWS_BEARER_TOKEN_BEDROCK=XXX opencode
+   AWS_BEARER_TOKEN_BEDROCK=XXX lgcode
    ```
 
    Eller tilføj dem til din bash-profil:
@@ -317,7 +317,7 @@ Eller hvis du allerede har en API-nøgle, kan du vælge **Manually enter API Key
 
 ### Atomic Chat
 
-Du kan konfigurere opencode til at bruge lokale modeller via [Atomic Chat](https://atomic.chat) — en desktopapplikation, der kører lokale LLM'er bag en OpenAI-kompatibel API-server (standard-endpoint `http://127.0.0.1:1337/v1`).
+Du kan konfigurere lgcode til at bruge lokale modeller via [Atomic Chat](https://atomic.chat) — en desktopapplikation, der kører lokale LLM'er bag en OpenAI-kompatibel API-server (standard-endpoint `http://127.0.0.1:1337/v1`).
 
 ```json title="lgcode.json" "atomic-chat" {5, 6, 8, 10-14}
 {
@@ -366,7 +366,7 @@ Hvis du støder på "Beklager, men jeg kan ikke hjælpe med den anmodning"-fejl,
 2. Gå til [Azure AI Foundry](https://ai.azure.com/) og distribuer en model.
 
    :::note
-   Distributionsnavnet skal matche modelnavnet for at opencode skal fungere korrekt.
+   Distributionsnavnet skal matche modelnavnet for at lgcode skal fungere korrekt.
    :::
 
 3. Kør kommandoen `/connect` og søg efter **Azure**.
@@ -387,7 +387,7 @@ Hvis du støder på "Beklager, men jeg kan ikke hjælpe med den anmodning"-fejl,
 5. Angiv dit ressourcenavn som en miljøvariabel:
 
    ```bash
-   AZURE_RESOURCE_NAME=XXX opencode
+   AZURE_RESOURCE_NAME=XXX lgcode
    ```
 
    Eller tilføj den til din bash-profil:
@@ -413,7 +413,7 @@ Hvis du støder på "Beklager, men jeg kan ikke hjælpe med den anmodning"-fejl,
 2. Gå til [Azure AI Foundry](https://ai.azure.com/) og distribuer en model.
 
    :::note
-   Distributionsnavnet skal matche modelnavnet for at opencode skal fungere korrekt.
+   Distributionsnavnet skal matche modelnavnet for at lgcode skal fungere korrekt.
    :::
 
 3. Kør kommandoen `/connect` og søg efter **Azure Cognitive Services**.
@@ -434,7 +434,7 @@ Hvis du støder på "Beklager, men jeg kan ikke hjælpe med den anmodning"-fejl,
 5. Angiv dit ressourcenavn som en miljøvariabel:
 
    ```bash
-   AZURE_COGNITIVE_SERVICES_RESOURCE_NAME=XXX opencode
+   AZURE_COGNITIVE_SERVICES_RESOURCE_NAME=XXX lgcode
    ```
 
    Eller tilføj den til din bash-profil:
@@ -742,7 +742,7 @@ GitLab Duo giver AI-drevet agentchat med native værktøjskaldsfunktioner gennem
 
 :::note
 Du kan også specificere 'GITLAB_TOKEN' miljøvariabel, hvis du ikke vil
-gemme tokenet i opencode auth-lagring.
+gemme tokenet i lgcode auth-lagring.
 :::
 
 ##### Selvhostet GitLab
@@ -898,10 +898,10 @@ Sådan bruger du Google Vertex AI med LGcode:
      - `GOOGLE_APPLICATION_CREDENTIALS`: Sti til tjenestekontoens JSON-nøglefil
      - Godkend med gcloud CLI: `gcloud auth application-default login`
 
-   Sæt dem mens du kører opencode.
+   Sæt dem mens du kører lgcode.
 
    ```bash
-   GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json GOOGLE_CLOUD_PROJECT=your-project-id opencode
+   GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json GOOGLE_CLOUD_PROJECT=your-project-id lgcode
    ```
 
    Eller tilføj dem til din bash-profil.
@@ -1011,11 +1011,11 @@ For flere udbydere og avancerede funktioner som caching og hastighedsbegrænsnin
 
 #### Valgfrie konfigurationer
 
-I tilfælde af at du ser en funktion eller model fra Helicone som ikke konfigureres automatisk gennem opencode, kan du altid konfigurere den selv.
+I tilfælde af at du ser en funktion eller model fra Helicone som ikke konfigureres automatisk gennem lgcode, kan du altid konfigurere den selv.
 
 Her er [Helicone's Model Directory](https://helicone.ai/models), du skal bruge denne for at hente ID'erne til de modeller du vil tilføje.
 
-```jsonc title="~/.config/opencode/lgcode.jsonc"
+```jsonc title="~/.config/lgcode/lgcode.jsonc"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -1043,7 +1043,7 @@ Her er [Helicone's Model Directory](https://helicone.ai/models), du skal bruge d
 
 Helicone understøtter tilpassede headers for funktioner som caching, brugersporing og sessionsadministration. Læg dem til din udbyderkonfiguration ved at bruge `options.headers`:
 
-```jsonc title="~/.config/opencode/lgcode.jsonc"
+```jsonc title="~/.config/lgcode/lgcode.jsonc"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -1054,7 +1054,7 @@ Helicone understøtter tilpassede headers for funktioner som caching, brugerspor
         "baseURL": "https://ai-gateway.helicone.ai",
         "headers": {
           "Helicone-Cache-Enabled": "true",
-          "Helicone-User-Id": "opencode",
+          "Helicone-User-Id": "lgcode",
         },
       },
     },
@@ -1095,7 +1095,7 @@ Se [Helicone Header Directory](https://docs.helicone.ai/helicone-headers/header-
 
 ### llama.cpp
 
-Du kan konfigurere opencode til at bruge lokale modeller gennem [llama.cpps](https://github.com/ggml-org/llama.cpp) llama-server-værktøj
+Du kan konfigurere lgcode til at bruge lokale modeller gennem [llama.cpps](https://github.com/ggml-org/llama.cpp) llama-server-værktøj
 
 ```json title="lgcode.json" "llama.cpp" {5, 6, 8, 10-15}
 {
@@ -1162,7 +1162,7 @@ IO.NET tilbyder 17 modeller optimeret for forskellige brugstilfælde:
 
 ### LM Studio
 
-Du kan konfigurere opencode til at bruge lokale modeller gennem LM Studio.
+Du kan konfigurere lgcode til at bruge lokale modeller gennem LM Studio.
 
 ```json title="lgcode.json" "lmstudio" {5, 6, 8, 10-14}
 {
@@ -1279,10 +1279,10 @@ Sådan bruger du Kimi K2 fra Moonshot AI:
 
 ### Ollama
 
-Du kan konfigurere opencode til at bruge lokale modeller gennem Ollama.
+Du kan konfigurere lgcode til at bruge lokale modeller gennem Ollama.
 
 :::tip
-Ollama kan automatisk konfigurere sig selv for LGcode. Se [Ollama-integrationsdokumenterne](https://docs.ollama.com/integrations/opencode) for detaljer.
+Ollama kan automatisk konfigurere sig selv for LGcode. Se [Ollama-integrationsdokumenterne](https://docs.ollama.com/integrations/lgcode) for detaljer.
 :::
 
 ```json title="lgcode.json" "ollama" {5, 6, 8, 10-14}
@@ -1512,7 +1512,7 @@ SAP AI Core giver adgang til 40+ modeller fra OpenAI, Anthropic, Google, Amazon,
    Eller angiv miljøvariablen `AICORE_SERVICE_KEY`:
 
    ```bash
-   AICORE_SERVICE_KEY='{"clientid":"...","clientsecret":"...","url":"...","serviceurls":{"AI_API_URL":"..."}}' opencode
+   AICORE_SERVICE_KEY='{"clientid":"...","clientsecret":"...","url":"...","serviceurls":{"AI_API_URL":"..."}}' lgcode
    ```
 
    Eller tilføj den til din bash-profil:
@@ -1524,7 +1524,7 @@ SAP AI Core giver adgang til 40+ modeller fra OpenAI, Anthropic, Google, Amazon,
 4. Angiv eventuelt deployment-ID og ressourcegruppe:
 
    ```bash
-   AICORE_DEPLOYMENT_ID=your-deployment-id AICORE_RESOURCE_GROUP=your-resource-group opencode
+   AICORE_DEPLOYMENT_ID=your-deployment-id AICORE_RESOURCE_GROUP=your-resource-group lgcode
    ```
 
    :::note
@@ -1841,7 +1841,7 @@ Nogle nyttige rutealternativer:
 Sådan tilføjer du en **OpenAI-kompatibel** udbyder som ikke er opført i `/connect`-kommandoen:
 
 :::tip
-Du kan bruge hvilken som helst OpenAI-kompatibel udbyder med opencode. De fleste moderne AI-udbydere tilbyder OpenAI-kompatible API'er.
+Du kan bruge hvilken som helst OpenAI-kompatibel udbyder med lgcode. De fleste moderne AI-udbydere tilbyder OpenAI-kompatible API'er.
 :::
 
 1. Kør kommandoen `/connect` og rul ned til **Other**.
@@ -1970,7 +1970,7 @@ Konfigurationsdetaljer:
 
 Hvis du har problemer med at konfigurere en udbyder, tjek følgende:
 
-1. **Tjek godkendelsesopsætningen**: Kør `opencode auth list` for at se om legitimationsoplysningerne
+1. **Tjek godkendelsesopsætningen**: Kør `lgcode auth list` for at se om legitimationsoplysningerne
    for udbyderen er tilføjet til din konfiguration.
 
    Dette gælder ikke udbydere som Amazon Bedrock, som er afhængige af miljøvariabler for godkendelse.

@@ -3,11 +3,11 @@
 import { LGcode } from "@lgcode/core"
 import { ReadTool } from "@lgcode/core/tools"
 
-const opencode = LGcode.make({})
+const lgcode = LGcode.make({})
 
-opencode.tool.add(ReadTool)
+lgcode.tool.add(ReadTool)
 
-opencode.tool.add({
+lgcode.tool.add({
   name: "bash",
   schema: {
     type: "object",
@@ -22,13 +22,13 @@ opencode.tool.add({
   execute(input, ctx) {},
 })
 
-opencode.auth.add({
+lgcode.auth.add({
   provider: "openai",
   type: "api",
   value: process.env.OPENAI_API_KEY,
 })
 
-opencode.agent.add({
+lgcode.agent.add({
   name: "build",
   permissions: [],
   model: {
@@ -38,20 +38,20 @@ opencode.agent.add({
   },
 })
 
-const sessionID = await opencode.session.create({
+const sessionID = await lgcode.session.create({
   agent: "build",
 })
 
-opencode.subscribe((event) => {
+lgcode.subscribe((event) => {
   console.log(event)
 })
 
-await opencode.session.prompt({
+await lgcode.session.prompt({
   sessionID,
   text: "hey what is up",
 })
 
-await opencode.session.prompt({
+await lgcode.session.prompt({
   sessionID,
   text: "what is up with this",
   files: [
@@ -62,6 +62,6 @@ await opencode.session.prompt({
   ],
 })
 
-await opencode.session.wait()
+await lgcode.session.wait()
 
-console.log(await opencode.session.messages(sessionID))
+console.log(await lgcode.session.messages(sessionID))

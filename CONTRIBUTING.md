@@ -47,7 +47,7 @@ By default, `bun dev` runs LGcode in the `packages/lgcode` directory. To run it 
 bun dev <directory>
 ```
 
-To run LGcode in the root of the opencode repo itself:
+To run LGcode in the root of the lgcode repo itself:
 
 ```bash
 bun dev .
@@ -64,7 +64,7 @@ To compile a standalone executable:
 Then run it with:
 
 ```bash
-./packages/lgcode/dist/lgcode-<platform>/bin/opencode
+./packages/lgcode/dist/lgcode-<platform>/bin/lgcode
 ```
 
 Replace `<platform>` with your platform (e.g., `darwin-arm64`, `linux-x64`).
@@ -76,9 +76,9 @@ Replace `<platform>` with your platform (e.g., `darwin-arm64`, `linux-x64`).
   - `packages/desktop`: The native desktop app, built with Electron (wraps `packages/app`)
   - `packages/plugin`: Source for `@lgcode-ai/plugin`
 
-### Understanding bun dev vs opencode
+### Understanding bun dev vs lgcode
 
-During development, `bun dev` is the local equivalent of the built `opencode` command. Both run the same CLI interface:
+During development, `bun dev` is the local equivalent of the built `lgcode` command. Both run the same CLI interface:
 
 ```bash
 # Development (from project root)
@@ -88,10 +88,10 @@ bun dev web              # Start server + open web interface
 bun dev <directory>      # Start TUI in specific directory
 
 # Production
-opencode --help          # Show all available commands
+lgcode --help          # Show all available commands
 lgcode serve           # Start headless API server
 lgcode web             # Start server + open web interface
-opencode <directory>     # Start TUI in specific directory
+lgcode <directory>     # Start TUI in specific directory
 ```
 
 ### Running the API Server
@@ -224,7 +224,7 @@ You can optionally include a scope to indicate which package is affected:
 
 - `feat(app):` feature in the app package
 - `fix(desktop):` bug fix in the desktop package
-- `chore(opencode):` maintenance in the opencode package
+- `chore(lgcode):` maintenance in the lgcode package
 
 Examples:
 

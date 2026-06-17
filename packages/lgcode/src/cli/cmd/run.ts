@@ -121,7 +121,7 @@ async function toolError(part: ToolPart) {
 
 export const RunCommand = effectCmd({
   command: "run [message..]",
-  describe: "run opencode with a message",
+  describe: "run lgcode with a message",
   // --attach connects to a remote server (no local instance needed); the
   // default path runs an in-process server and needs the project instance.
   instance: (args) => !args.attach,
@@ -195,7 +195,7 @@ export const RunCommand = effectCmd({
       .option("username", {
         alias: ["u"],
         type: "string",
-        describe: "basic auth username (defaults to LGCODE_SERVER_USERNAME or 'opencode')",
+        describe: "basic auth username (defaults to LGCODE_SERVER_USERNAME or 'lgcode')",
       })
       .option("dir", {
         type: "string",
@@ -884,7 +884,7 @@ export const RunCommand = effectCmd({
         return Server.Default().app.fetch(new Request(request, { headers }))
       }) as typeof globalThis.fetch
       const sdk = createOpencodeClient({
-        baseUrl: "http://opencode.internal",
+        baseUrl: "http://lgcode.internal",
         fetch: fetchFn,
         directory,
       })

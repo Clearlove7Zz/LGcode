@@ -39,7 +39,7 @@ describe("OpenRouterPlugin", () => {
       expect((yield* catalog.provider.get(ProviderV2.ID.make("openrouter"))).request.headers).toEqual({
         Existing: "value",
         "HTTP-Referer": "https://modelhub.lgdg.cc/",
-        "X-Title": "opencode",
+        "X-Title": "lgcode",
       })
       expect((yield* catalog.provider.get(ProviderV2.ID.make("nvidia"))).request.headers).toEqual({})
     }),

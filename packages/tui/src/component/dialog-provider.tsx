@@ -17,7 +17,7 @@ import { useBindings } from "../keymap"
 import { useClipboard } from "../context/clipboard"
 
 const PROVIDER_PRIORITY: Record<string, number> = {
-  opencode: 0,
+  lgcode: 0,
   "lgcode-go": 1,
   openai: 2,
   "github-copilot": 3,
@@ -59,7 +59,7 @@ export function providerOptions(list: { id: string; name: string }[]): ProviderO
         value: provider.id,
         providerID: provider.id,
         description: {
-          opencode: "(Recommended)",
+          lgcode: "(Recommended)",
           anthropic: "(API key)",
           openai: "(ChatGPT Plus/Pro or API key)",
           "lgcode-go": "Low cost subscription for everyone",
@@ -368,7 +368,7 @@ function ApiMethod(props: ApiMethodProps) {
       placeholder="API key"
       description={
         {
-          opencode: (
+          lgcode: (
             <box gap={1}>
               <text fg={theme.textMuted}>
                 LGcode Zen gives you access to all the best coding models at the cheapest prices with a single API

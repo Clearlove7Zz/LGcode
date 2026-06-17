@@ -1,11 +1,11 @@
 ---
 title: Web
-description: Korzystanie z opencode w przeglądarce.
+description: Korzystanie z lgcode w przeglądarce.
 ---
 
-opencode może działać jako aplikacja internetowa w przeglądarce, zapewniając takie same możliwości kodowania AI bez konieczności korzystania z terminala.
+lgcode może działać jako aplikacja internetowa w przeglądarce, zapewniając takie same możliwości kodowania AI bez konieczności korzystania z terminala.
 
-![Sieć opencode - Nowa sesja](../../../assets/web/web-homepage-new-session.png)
+![Sieć lgcode - Nowa sesja](../../../assets/web/web-homepage-new-session.png)
 
 ## Pierwsze kroki
 
@@ -15,7 +15,7 @@ Uruchom interfejs sieciowy, uruchamiając:
 lgcode web
 ```
 
-Spowoduje to uruchomienie lokalnego serwera na `127.0.0.1` z losowo dostępnym portem i automatyczne otwarcie opencode w domyślnej przeglądarce.
+Spowoduje to uruchomienie lokalnego serwera na `127.0.0.1` z losowo dostępnym portem i automatyczne otwarcie lgcode w domyślnej przeglądarce.
 
 :::caution
 Jeśli `LGCODE_SERVER_PASSWORD` nie jest ustawione, serwer będzie niezabezpieczony. Jest to dobre rozwiązanie do użytku lokalnego, ale powinno być ustawione na dostęp do sieci.
@@ -33,7 +33,7 @@ Możesz skonfigurować serwer WWW za pomocą flag wiersza poleceń lub w [pliku 
 
 ### Port
 
-Domyślnie opencode wybiera dostępny port. Możesz określić port:
+Domyślnie lgcode wybiera dostępny port. Możesz określić port:
 
 ```bash
 lgcode web --port 4096
@@ -41,13 +41,13 @@ lgcode web --port 4096
 
 ### Nazwa hosta
 
-Domyślnie serwer łączy się z `127.0.0.1` (tylko localhost). Aby udostępnić opencode w swojej sieci:
+Domyślnie serwer łączy się z `127.0.0.1` (tylko localhost). Aby udostępnić lgcode w swojej sieci:
 
 ```bash
 lgcode web --hostname 0.0.0.0
 ```
 
-Podczas korzystania z `0.0.0.0` opencode wyświetli zarówno adresy lokalne, jak i sieciowe:
+Podczas korzystania z `0.0.0.0` lgcode wyświetli zarówno adresy lokalne, jak i sieciowe:
 
 ```
   Local access:       http://localhost:4096
@@ -62,7 +62,7 @@ Włącz mDNS, aby Twój serwer był wykrywalny w sieci lokalnej:
 lgcode web --mdns
 ```
 
-To automatycznie ustawia nazwę hosta na `0.0.0.0` i anonsuje serwer jako `opencode.local`.
+To automatycznie ustawia nazwę hosta na `0.0.0.0` i anonsuje serwer jako `lgcode.local`.
 
 Możesz dostosować nazwę domeny mDNS, aby uruchamiała wiele instancji w tej samej sieci:
 
@@ -86,25 +86,25 @@ Aby chronić dostęp, ustaw hasło za pomocą zmiennej środowiskowej `LGCODE_SE
 LGCODE_SERVER_PASSWORD=secret lgcode web
 ```
 
-Domyślna nazwa użytkownika to `opencode`, ale można ją zmienić za pomocą `LGCODE_SERVER_USERNAME`.
+Domyślna nazwa użytkownika to `lgcode`, ale można ją zmienić za pomocą `LGCODE_SERVER_USERNAME`.
 
 ---
 
 ## Korzystanie z interfejsu internetowego
 
-Po uruchomieniu interfejs sieciowy zapewnia dostęp do sesji opencode.
+Po uruchomieniu interfejs sieciowy zapewnia dostęp do sesji lgcode.
 
 ### Sesje
 
 Przeglądaj sesje i zarządzaj nimi ze strony głównej. Możesz zobaczyć aktywne sesje i rozpocząć nowe.
 
-![opencode Web - Aktywna sesja](../../../assets/web/web-homepage-active-session.png)
+![lgcode Web - Aktywna sesja](../../../assets/web/web-homepage-active-session.png)
 
 ### Stan serwera
 
 Kliknij „Zobacz serwery”, aby wyświetlić podłączone serwery i ich status.
 
-![opencode Web - See Servers](../../../assets/web/web-homepage-see-servers.png)
+![lgcode Web - See Servers](../../../assets/web/web-homepage-see-servers.png)
 
 ---
 

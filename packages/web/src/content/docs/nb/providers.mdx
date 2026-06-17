@@ -18,7 +18,7 @@ For å legge til en leverandør må du:
 ### Legitimasjon
 
 Når du legger til en leverandørs API-nøkler med `/connect`-kommandoen, lagres de
-i `~/.local/share/opencode/auth.json`.
+i `~/.local/share/lgcode/auth.json`.
 
 ---
 
@@ -174,13 +174,13 @@ Slik bruker du Amazon Bedrock med LGcode:
 
    ```bash
    # Option 1: Using AWS access keys
-   AWS_ACCESS_KEY_ID=XXX AWS_SECRET_ACCESS_KEY=YYY opencode
+   AWS_ACCESS_KEY_ID=XXX AWS_SECRET_ACCESS_KEY=YYY lgcode
 
    # Option 2: Using named AWS profile
-   AWS_PROFILE=my-profile opencode
+   AWS_PROFILE=my-profile lgcode
 
    # Option 3: Using Bedrock bearer token
-   AWS_BEARER_TOKEN_BEDROCK=XXX opencode
+   AWS_BEARER_TOKEN_BEDROCK=XXX lgcode
    ```
 
    Eller legg dem til bash-profilen din:
@@ -312,7 +312,7 @@ For egendefinerte slutningsprofiler, bruk modellen og leverandørnavnet i nøkke
    ```
 
 :::info
-Å bruke Claude Pro/Max-abonnementet ditt i opencode støttes ikke offisielt av [Anthropic](https://anthropic.com).
+Å bruke Claude Pro/Max-abonnementet ditt i lgcode støttes ikke offisielt av [Anthropic](https://anthropic.com).
 :::
 
 ##### Bruke API-nøkler
@@ -325,7 +325,7 @@ Eller hvis du allerede har en API-nøkkel, kan du velge **Angi API-nøkkel manue
 
 ### Atomic Chat
 
-Du kan konfigurere opencode til å bruke lokale modeller via [Atomic Chat](https://atomic.chat) — et skrivebordsprogram som kjører lokale LLM-er bak en OpenAI-kompatibel API-server (standard endepunkt `http://127.0.0.1:1337/v1`).
+Du kan konfigurere lgcode til å bruke lokale modeller via [Atomic Chat](https://atomic.chat) — et skrivebordsprogram som kjører lokale LLM-er bak en OpenAI-kompatibel API-server (standard endepunkt `http://127.0.0.1:1337/v1`).
 
 ```json title="lgcode.json" "atomic-chat" {5, 6, 8, 10-14}
 {
@@ -395,7 +395,7 @@ Hvis du støter på «Beklager, men jeg kan ikke hjelpe med den forespørselen»
 5. Angi ressursnavnet ditt som en miljøvariabel:
 
    ```bash
-   AZURE_RESOURCE_NAME=XXX opencode
+   AZURE_RESOURCE_NAME=XXX lgcode
    ```
 
    Eller legg den til bash-profilen din:
@@ -442,7 +442,7 @@ Hvis du støter på «Beklager, men jeg kan ikke hjelpe med den forespørselen»
 5. Angi ressursnavnet ditt som en miljøvariabel:
 
    ```bash
-   AZURE_COGNITIVE_SERVICES_RESOURCE_NAME=XXX opencode
+   AZURE_COGNITIVE_SERVICES_RESOURCE_NAME=XXX lgcode
    ```
 
    Eller legg den til bash-profilen din:
@@ -909,7 +909,7 @@ Slik bruker du Google Vertex AI med LGcode:
    Sett dem mens du kjører LGcode.
 
    ```bash
-   GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json GOOGLE_CLOUD_PROJECT=your-project-id opencode
+   GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json GOOGLE_CLOUD_PROJECT=your-project-id lgcode
    ```
 
    Eller legg dem til på bash-profilen din.
@@ -1023,7 +1023,7 @@ I tilfelle du ser en funksjon eller modell fra Helicone som ikke konfigureres au
 
 Her er [Helicone's Model Directory](https://helicone.ai/models), du trenger denne for å hente ID-ene til modellene du vil legge til.
 
-```jsonc title="~/.config/opencode/lgcode.jsonc"
+```jsonc title="~/.config/lgcode/lgcode.jsonc"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -1051,7 +1051,7 @@ Her er [Helicone's Model Directory](https://helicone.ai/models), du trenger denn
 
 Helicone støtter tilpassede headere for funksjoner som bufring, brukersporing og øktadministrasjon. Legg dem til leverandørkonfigurasjonen din ved å bruke `options.headers`:
 
-```jsonc title="~/.config/opencode/lgcode.jsonc"
+```jsonc title="~/.config/lgcode/lgcode.jsonc"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -1062,7 +1062,7 @@ Helicone støtter tilpassede headere for funksjoner som bufring, brukersporing o
         "baseURL": "https://ai-gateway.helicone.ai",
         "headers": {
           "Helicone-Cache-Enabled": "true",
-          "Helicone-User-Id": "opencode",
+          "Helicone-User-Id": "lgcode",
         },
       },
     },
@@ -1290,7 +1290,7 @@ Slik bruker du Kimi K2 fra Moonshot AI:
 Du kan konfigurere LGcode for å bruke lokale modeller gjennom Ollama.
 
 :::tip
-Ollama kan automatisk konfigurere seg selv for LGcode. Se [Ollama-integrasjonsdokumentene](https://docs.ollama.com/integrations/opencode) for detaljer.
+Ollama kan automatisk konfigurere seg selv for LGcode. Se [Ollama-integrasjonsdokumentene](https://docs.ollama.com/integrations/lgcode) for detaljer.
 :::
 
 ```json title="lgcode.json" "ollama" {5, 6, 8, 10-14}
@@ -1520,7 +1520,7 @@ SAP AI Core gir tilgang til 40+ modeller fra OpenAI, Anthropic, Google, Amazon, 
    Eller angi miljøvariabelen `AICORE_SERVICE_KEY`:
 
    ```bash
-   AICORE_SERVICE_KEY='{"clientid":"...","clientsecret":"...","url":"...","serviceurls":{"AI_API_URL":"..."}}' opencode
+   AICORE_SERVICE_KEY='{"clientid":"...","clientsecret":"...","url":"...","serviceurls":{"AI_API_URL":"..."}}' lgcode
    ```
 
    Eller legg den til bash-profilen din:
@@ -1532,7 +1532,7 @@ SAP AI Core gir tilgang til 40+ modeller fra OpenAI, Anthropic, Google, Amazon, 
 4. Angi eventuelt distribusjon ID og ressursgruppe:
 
    ```bash
-   AICORE_DEPLOYMENT_ID=your-deployment-id AICORE_RESOURCE_GROUP=your-resource-group opencode
+   AICORE_DEPLOYMENT_ID=your-deployment-id AICORE_RESOURCE_GROUP=your-resource-group lgcode
    ```
 
    :::note
@@ -1945,7 +1945,7 @@ Konfigurasjonsdetaljer:
 
 Hvis du har problemer med å konfigurere en leverandør, sjekk følgende:
 
-1. **Sjekk autentiseringsoppsettet**: Kjør `opencode auth list` for å se om legitimasjonen
+1. **Sjekk autentiseringsoppsettet**: Kjør `lgcode auth list` for å se om legitimasjonen
    for leverandøren legges til konfigurasjonen din.
 
    Dette gjelder ikke leverandører som Amazon Bedrock, som er avhengige av miljøvariabler for godkjenning.

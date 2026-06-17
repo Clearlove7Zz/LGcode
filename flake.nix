@@ -39,11 +39,11 @@
             };
           in
           rec {
-            opencode = final.callPackage ./nix/opencode.nix {
+            lgcode = final.callPackage ./nix/lgcode.nix {
               inherit node_modules;
             };
             lgcode-desktop = final.callPackage ./nix/desktop.nix {
-              inherit opencode;
+              inherit lgcode;
             };
           };
       };
@@ -56,12 +56,12 @@
           };
         in
         rec {
-          default = opencode;
-          opencode = pkgs.callPackage ./nix/opencode.nix {
+          default = lgcode;
+          lgcode = pkgs.callPackage ./nix/lgcode.nix {
             inherit node_modules;
           };
           lgcode-desktop = pkgs.callPackage ./nix/desktop.nix {
-            inherit opencode;
+            inherit lgcode;
           };
           # Updater derivation with fakeHash - build fails and reveals correct hash
           node_modules_updater = node_modules.override {

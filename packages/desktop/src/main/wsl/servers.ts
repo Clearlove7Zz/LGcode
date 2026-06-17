@@ -152,7 +152,7 @@ export function createWslServersController(
       })
       .catch((error) => {
         const message = error instanceof Error ? error.message : String(error)
-        logger?.error("wsl opencode check failed", { id, distro, message })
+        logger?.error("wsl lgcode check failed", { id, distro, message })
       })
   }
 
@@ -166,7 +166,7 @@ export function createWslServersController(
           })
           .catch((error) => {
             const message = error instanceof Error ? error.message : String(error)
-            logger?.error("wsl opencode check failed", {
+            logger?.error("wsl lgcode check failed", {
               id: item.config.id,
               distro: item.config.distro,
               message,
@@ -335,13 +335,13 @@ export function createWslServersController(
     },
 
     async probeOpencode(name: string) {
-      await runJob({ kind: "probe-opencode", distro: name, startedAt: Date.now() }, async (abort) => {
+      await runJob({ kind: "probe-lgcode", distro: name, startedAt: Date.now() }, async (abort) => {
         await refreshOpencodeCheck(name, { signal: abort.signal })
       })
     },
 
     async installOpencode(name: string) {
-      await runJob({ kind: "install-opencode", distro: name, startedAt: Date.now() }, async (abort) => {
+      await runJob({ kind: "install-lgcode", distro: name, startedAt: Date.now() }, async (abort) => {
         const result = await installWslOpencode(appVersion, name, { signal: abort.signal })
         if (result.code !== 0) {
           throw new Error(summarize(result.stderr || result.stdout) || "LGcode installation failed")
@@ -457,7 +457,7 @@ function opencodeCheck(
       version: null,
       expectedVersion,
       matchesDesktop: null,
-      error: "opencode is not installed in this distro",
+      error: "lgcode is not installed in this distro",
     }
   }
   if (!version) {
@@ -467,7 +467,7 @@ function opencodeCheck(
       version: null,
       expectedVersion,
       matchesDesktop: null,
-      error: "opencode is installed but could not run",
+      error: "lgcode is installed but could not run",
     }
   }
   return {

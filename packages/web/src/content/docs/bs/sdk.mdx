@@ -6,7 +6,7 @@ description: Type-safe JS klijent za lgcode server.
 import config from "../../../../config.mjs"
 export const typesUrl = `${config.github}/blob/dev/packages/sdk/js/src/gen/types.gen.ts`
 
-opencode JS/TS SDK pruza type-safe klijent za interakciju sa serverom.
+lgcode JS/TS SDK pruza type-safe klijent za interakciju sa serverom.
 Koristite ga za izradu integracija i programsko upravljanje lgcode-om.
 
 [Saznajte vise](/docs/server) kako server radi. Za primjere pogledajte [projects](/docs/ecosystem#projects) koje je napravila zajednica.
@@ -25,7 +25,7 @@ npm install @lgcode-ai/sdk
 
 ## Kreiranje klijenta
 
-Kreirajte instancu opencode:
+Kreirajte instancu lgcode:
 
 ```javascript
 import { createOpencode } from "@lgcode-ai/sdk"
@@ -54,7 +54,7 @@ Mozete proslijediti konfiguracijski objekat za prilagodavanje ponasanja. Instanc
 ```javascript
 import { createOpencode } from "@lgcode-ai/sdk"
 
-const opencode = await createOpencode({
+const lgcode = await createOpencode({
   hostname: "127.0.0.1",
   port: 4096,
   config: {
@@ -62,14 +62,14 @@ const opencode = await createOpencode({
   },
 })
 
-console.log(`Server running at ${opencode.server.url}`)
+console.log(`Server running at ${lgcode.server.url}`)
 
-opencode.server.close()
+lgcode.server.close()
 ```
 
 ## Samo klijent
 
-Ako vec imate pokrenutu opencode instancu, mozete napraviti klijentsku instancu i povezati se na nju:
+Ako vec imate pokrenutu lgcode instancu, mozete napraviti klijentsku instancu i povezati se na nju:
 
 ```javascript
 import { createOpencodeClient } from "@lgcode-ai/sdk"
@@ -376,7 +376,7 @@ await client.session.prompt({
 ```javascript
 // Search and read files
 const textResults = await client.find.text({
-  query: { pattern: "function.*opencode" },
+  query: { pattern: "function.*lgcode" },
 })
 
 const files = await client.find.files({

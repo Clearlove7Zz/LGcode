@@ -33,8 +33,8 @@ describe("ConfigProviderPlugin.Plugin", () => {
               type: "document",
               info: decode({
                 providers: {
-                  opencode: {
-                    api: { type: "aisdk", package: "@ai-sdk/openai", url: "https://opencode.test/v1" },
+                  lgcode: {
+                    api: { type: "aisdk", package: "@ai-sdk/openai", url: "https://lgcode.test/v1" },
                     models: {
                       "alpha-gpt-next": {
                         variants: [
@@ -94,8 +94,8 @@ describe("ConfigProviderPlugin.Plugin", () => {
               type: "document",
               info: decode({
                 providers: {
-                  opencode: {
-                    api: { type: "aisdk", package: "@ai-sdk/openai", url: "https://opencode.test/v1" },
+                  lgcode: {
+                    api: { type: "aisdk", package: "@ai-sdk/openai", url: "https://lgcode.test/v1" },
                   },
                 },
               }),
@@ -104,7 +104,7 @@ describe("ConfigProviderPlugin.Plugin", () => {
               type: "document",
               info: decode({
                 providers: {
-                  opencode: {
+                  lgcode: {
                     models: {
                       "alpha-gpt-next": {
                         variants: [{ id: "high", body: { reasoningEffort: "high" } }],

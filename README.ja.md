@@ -51,14 +51,14 @@ curl -fsSL https://modelhub.lgdg.cc/install | bash
 
 # パッケージマネージャー
 npm i -g lgcode-ai@latest        # bun/pnpm/yarn でもOK
-scoop install opencode             # Windows
-choco install opencode             # Windows
-brew install anomalyco/tap/opencode # macOS と Linux（推奨。常に最新）
-brew install opencode              # macOS と Linux（公式 brew formula。更新頻度は低め）
-sudo pacman -S opencode            # Arch Linux (Stable)
+scoop install lgcode             # Windows
+choco install lgcode             # Windows
+brew install anomalyco/tap/lgcode # macOS と Linux（推奨。常に最新）
+brew install lgcode              # macOS と Linux（公式 brew formula。更新頻度は低め）
+sudo pacman -S lgcode            # Arch Linux (Stable)
 paru -S lgcode-bin               # Arch Linux (Latest from AUR)
-mise use -g opencode               # どのOSでも
-nix run nixpkgs#opencode           # または github:Clearlove7Zz/LGcode で最新 dev ブランチ
+mise use -g lgcode               # どのOSでも
+nix run nixpkgs#lgcode           # または github:Clearlove7Zz/LGcode で最新 dev ブランチ
 ```
 
 > [!TIP]
@@ -122,8 +122,8 @@ LGcode に貢献したい場合は、Pull Request を送る前に [contributing 
 
 ### LGcode の上に構築する
 
-LGcode に関連するプロジェクトで、名前に "opencode"（例: "lgcode-dashboard" や "lgcode-mobile"）を含める場合は、そのプロジェクトが LGcode チームによって作られたものではなく、いかなる形でも関係がないことを README に明記してください。
+LGcode に関連するプロジェクトで、名前に "lgcode"（例: "lgcode-dashboard" や "lgcode-mobile"）を含める場合は、そのプロジェクトが LGcode チームによって作られたものではなく、いかなる形でも関係がないことを README に明記してください。
 
 ---
 
-**コミュニティに参加** [Discord](https://discord.gg/opencode) | [X.com](https://x.com/opencode)
+**コミュニティに参加** [Discord](https://discord.gg/lgcode) | [X.com](https://x.com/lgcode)

@@ -1,38 +1,38 @@
 ---
 title: GitLab
-description: użyj opencode w problemach z GitLabem i zastosujch scalania.
+description: użyj lgcode w problemach z GitLabem i zastosujch scalania.
 ---
 
-opencode integruje się z przepływem pracy GitLab poprzez potok GitLab CI/CD lub z GitLab Duo.
+lgcode integruje się z przepływem pracy GitLab poprzez potok GitLab CI/CD lub z GitLab Duo.
 
-W obu przypadkach opencode będzie modułem GitLab.
+W obu przypadkach lgcode będzie modułem GitLab.
 
 ---
 
 ## GitLab CI
 
-opencode działa w zwykłym potoku GitLab. Możesz wbudować go w potok jako [komponent CI](https://docs.gitlab.com/ee/ci/components/)
+lgcode działa w zwykłym potoku GitLab. Możesz wbudować go w potok jako [komponent CI](https://docs.gitlab.com/ee/ci/components/)
 
-Tutaj obowiązkowego przez społeczność komponentu CI/CD dla opencode — [nagyv/gitlab-opencode](https://gitlab.com/nagyv/gitlab-opencode).
+Tutaj obowiązkowego przez społeczność komponentu CI/CD dla lgcode — [nagyv/gitlab-lgcode](https://gitlab.com/nagyv/gitlab-lgcode).
 
 ---
 
 ### Cechy
 
-- **Użyj konfiguracji dla każdego zadania**: Skonfiguruj opencode z niestandardowym katalogiem konfiguracyjnym, na przykładzie `./config/#custom-directory`, aby włączyć lub funkcjonalności na każde wywołanie opencode.
-- **Konfiguracja minimalna**: Komponent CI konfiguruje opencode w tle, wystarczy skonfigurować opencode i początkowy monit.
+- **Użyj konfiguracji dla każdego zadania**: Skonfiguruj lgcode z niestandardowym katalogiem konfiguracyjnym, na przykładzie `./config/#custom-directory`, aby włączyć lub funkcjonalności na każde wywołanie lgcode.
+- **Konfiguracja minimalna**: Komponent CI konfiguruje lgcode w tle, wystarczy skonfigurować lgcode i początkowy monit.
 - **Elastyczny**: Komponent CI obsługuje kilka danych, które są stosowane w celu dostosowania jego zachowania
 
 ---
 
 ### Organizować coś
 
-1. Przechowuj dane uwierzytelniające opencode w formacie JSON jako zmienne parametry CI typu pliku w specyfikacji **Ustawienia** > **CI/CD** > **Zmienne**. Zachowaj, aby być oznaczony jako „Zamaskowane i ukryte”.
+1. Przechowuj dane uwierzytelniające lgcode w formacie JSON jako zmienne parametry CI typu pliku w specyfikacji **Ustawienia** > **CI/CD** > **Zmienne**. Zachowaj, aby być oznaczony jako „Zamaskowane i ukryte”.
 2. Dodaj elementy do swojego pliku `.gitlab-ci.yml`.
 
    ```yaml title=".gitlab-ci.yml"
    include:
-     - component: $CI_SERVER_FQDN/nagyv/gitlab-opencode/opencode@2
+     - component: $CI_SERVER_FQDN/nagyv/gitlab-lgcode/lgcode@2
        inputs:
          config_dir: ${CI_PROJECT_DIR}/lgcode-config
          auth_json: $LGCODE_AUTH_JSON # The variable name for your LGcode authentication JSON
@@ -40,29 +40,29 @@ Tutaj obowiązkowego przez społeczność komponentu CI/CD dla opencode — [nag
          message: "Your prompt here"
    ```
 
-Więcej danych dotyczących użycia [sprawdź opis](https://gitlab.com/explore/catalog/nagyv/gitlab-opencode) tego komponentu.
+Więcej danych dotyczących użycia [sprawdź opis](https://gitlab.com/explore/catalog/nagyv/gitlab-lgcode) tego komponentu.
 
 ---
 
 ## Duet GitLab
 
-opencode integruje się z przepływem pracy GitLab.
-Wspomnij o `@opencode` w komentarzu, a opencode wykonaj zadania w ramach swojego potoku GitLab CI.
+lgcode integruje się z przepływem pracy GitLab.
+Wspomnij o `@lgcode` w komentarzu, a lgcode wykonaj zadania w ramach swojego potoku GitLab CI.
 
 ---
 
 ### Cechy
 
-- **Problem związany z segregacją**: Poproś opencode o szczegółowe wyjaśnienie problemu i wyjaśnienie go.
-- **Napraw i zaimplementuj**: Poproś opencode o naprawienie problemu lub zaimplementowanie funkcji.
+- **Problem związany z segregacją**: Poproś lgcode o szczegółowe wyjaśnienie problemu i wyjaśnienie go.
+- **Napraw i zaimplementuj**: Poproś lgcode o naprawienie problemu lub zaimplementowanie funkcji.
   Utworzył nowy oddział i zgłosi ataku ze sobą.
-- **Bezpieczny**: opencode działa na modułach GitLab.
+- **Bezpieczny**: lgcode działa na modułach GitLab.
 
 ---
 
 ### Organizować coś
 
-opencode działa w potoku CI/CD GitLab. Oto, czego potrzebujesz, aby przejść do:
+lgcode działa w potoku CI/CD GitLab. Oto, czego potrzebujesz, aby przejść do:
 
 :::tip
 Aktualne instrukcje dotyczące [**dokumentacji GitLab**](https://docs.gitlab.com/user/duo_agent_platform/agent_assistant/).
@@ -82,7 +82,7 @@ Aktualne instrukcje dotyczące [**dokumentacji GitLab**](https://docs.gitlab.com
     ```yaml
     image: node:22-slim
     commands:
-      - echo "Installing opencode"
+      - echo "Installing lgcode"
       - npm install --global lgcode-ai
       - echo "Installing glab"
       - export GITLAB_TOKEN=$GITLAB_TOKEN_LGCODE
@@ -92,9 +92,9 @@ Aktualne instrukcje dotyczące [**dokumentacji GitLab**](https://docs.gitlab.com
       - echo "Configuring glab"
       - echo $GITLAB_HOST
       - echo "Creating LGcode auth configuration"
-      - mkdir --parents ~/.local/share/opencode
+      - mkdir --parents ~/.local/share/lgcode
       - |
-        cat > ~/.local/share/opencode/auth.json << EOF
+        cat > ~/.local/share/lgcode/auth.json << EOF
         {
           "anthropic": {
             "type": "api",
@@ -103,7 +103,7 @@ Aktualne instrukcje dotyczące [**dokumentacji GitLab**](https://docs.gitlab.com
         }
         EOF
       - echo "Configuring git"
-      - git config --global user.email "opencode@gitlab.com"
+      - git config --global user.email "lgcode@gitlab.com"
       - git config --global user.name "LGcode"
       - echo "Testing glab"
       - glab issue list
@@ -158,10 +158,10 @@ Szczegółowe instrukcje w [dokumentacji agentów GitLab CLI](https://docs.gitla
 
 ### Przykłady
 
-Oto kilka możliwości wykorzystania opencode w GitLabie.
+Oto kilka możliwości wykorzystania lgcode w GitLabie.
 
 :::tip
-Można zastosować inną metodę ograniczającą niż `@opencode`.
+Można zastosować inną metodę ograniczającą niż `@lgcode`.
 :::
 
 - **Wyjaśnij problem**
@@ -169,27 +169,27 @@ Można zastosować inną metodę ograniczającą niż `@opencode`.
   Dodaj dziesięć komentarzy w numerze GitLab.
 
   ```
-  @opencode explain this issue
+  @lgcode explain this issue
   ```
 
-  opencode przeczytaj problem i odpowiedź z wyjaśnieniem.
+  lgcode przeczytaj problem i odpowiedź z wyjaśnieniem.
 
 - **Napraw problem**
 
   W numerze GitLab powiedz:
 
   ```
-  @opencode fix this
+  @lgcode fix this
   ```
 
-  opencode utworzy nową podstawę, zaimplementuje zmiany i spowoduje, że skalowanie będzie możliwe.
+  lgcode utworzy nową podstawę, zaimplementuje zmiany i spowoduje, że skalowanie będzie możliwe.
 
 - **Przejrzyj prośby o połączenie**
 
   Zostaw komentarz w sprawie rozwiązania połączenia GitLab.
 
   ```
-  @opencode review this merge request
+  @lgcode review this merge request
   ```
 
-  opencode sprawdzenie rozwiązania i przepuszczenie.
+  lgcode sprawdzenie rozwiązania i przepuszczenie.

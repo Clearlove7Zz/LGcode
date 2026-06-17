@@ -14,7 +14,7 @@ Crea una cartella per ogni nome di skill e metti un `SKILL.md` al suo interno.
 LGcode cerca in queste posizioni:
 
 - Config di progetto: `.lgcode/skills/<name>/SKILL.md`
-- Config globale: `~/.config/opencode/skills/<name>/SKILL.md`
+- Config globale: `~/.config/lgcode/skills/<name>/SKILL.md`
 - Progetto compatibile con Claude: `.claude/skills/<name>/SKILL.md`
 - Globale compatibile con Claude: `~/.claude/skills/<name>/SKILL.md`
 - Progetto compatibile con agent: `.agents/skills/<name>/SKILL.md`
@@ -27,7 +27,7 @@ LGcode cerca in queste posizioni:
 Per i percorsi locali al progetto, LGcode risale dalla directory di lavoro corrente finche' non raggiunge il worktree git.
 Carica qualsiasi `skills/*/SKILL.md` corrispondente in `.lgcode/` e qualsiasi `.claude/skills/*/SKILL.md` o `.agents/skills/*/SKILL.md` corrispondente lungo il percorso.
 
-Le definizioni globali vengono caricate anche da `~/.config/opencode/skills/*/SKILL.md`, `~/.claude/skills/*/SKILL.md` e `~/.agents/skills/*/SKILL.md`.
+Le definizioni globali vengono caricate anche da `~/.config/lgcode/skills/*/SKILL.md`, `~/.claude/skills/*/SKILL.md` e `~/.agents/skills/*/SKILL.md`.
 
 ---
 
@@ -80,7 +80,7 @@ Crea `.lgcode/skills/git-release/SKILL.md` cosi':
 name: git-release
 description: Create consistent releases and changelogs
 license: MIT
-compatibility: opencode
+compatibility: lgcode
 metadata:
   audience: maintainers
   workflow: github

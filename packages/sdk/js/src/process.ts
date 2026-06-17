@@ -1,7 +1,7 @@
 import { type ChildProcess, spawnSync } from "node:child_process"
 
 // Duplicated from `packages/lgcode/src/util/process.ts` because the SDK cannot
-// import `opencode` without creating a cycle (`opencode` depends on `@lgcode/sdk`).
+// import `lgcode` without creating a cycle (`lgcode` depends on `@lgcode/sdk`).
 export function stop(proc: ChildProcess) {
   if (proc.exitCode !== null || proc.signalCode !== null) return
   if (process.platform === "win32" && proc.pid) {

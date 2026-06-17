@@ -11,21 +11,21 @@ For at fejlfinde problemer med LGcode, start med at tjekke logfilerne og de loka
 
 Logfiler skrives til:
 
-- **macOS/Linux**: `~/.local/share/opencode/log/`
-- **Windows**: Tryk `WIN+R` og indsæt `%USERPROFILE%\.local\share\opencode\log`
+- **macOS/Linux**: `~/.local/share/lgcode/log/`
+- **Windows**: Tryk `WIN+R` og indsæt `%USERPROFILE%\.local\share\lgcode\log`
 
 Logfiler navngives med tidsstempler (f.eks. `2025-01-09T123456.log`) og de sidste 10 logfiler beholdes.
 
-Du kan angive logniveauet med kommandolinjeflaget `--log-level` for at få mere detaljeret fejlfindingsinformation. For eksempel `opencode --log-level DEBUG`.
+Du kan angive logniveauet med kommandolinjeflaget `--log-level` for at få mere detaljeret fejlfindingsinformation. For eksempel `lgcode --log-level DEBUG`.
 
 ---
 
 ## Lagring
 
-opencode gemmer sessionsdata og andre applikationsdata på disken på:
+lgcode gemmer sessionsdata og andre applikationsdata på disken på:
 
-- **macOS/Linux**: `~/.local/share/opencode/`
-- **Windows**: Tryk `WIN+R` og indsæt `%USERPROFILE%\.local\share\opencode`
+- **macOS/Linux**: `~/.local/share/lgcode/`
+- **Windows**: Tryk `WIN+R` og indsæt `%USERPROFILE%\.local\share\lgcode`
 
 Denne mappe indeholder:
 
@@ -57,9 +57,9 @@ Hvis skrivebordsappen går ned ved opstart, hænger eller opfører sig mærkelig
 
 Åbn den globale konfigurationsfil og se efter en `plugin`-nøgle.
 
-- **macOS/Linux**: `~/.config/opencode/lgcode.jsonc` (eller `~/.config/opencode/lgcode.json`)
-- **macOS/Linux** (ældre installationer): `~/.local/share/opencode/lgcode.jsonc`
-- **Windows**: Tryk `WIN+R` og indsæt `%USERPROFILE%\.config\opencode\lgcode.jsonc`
+- **macOS/Linux**: `~/.config/lgcode/lgcode.jsonc` (eller `~/.config/lgcode/lgcode.json`)
+- **macOS/Linux** (ældre installationer): `~/.local/share/lgcode/lgcode.jsonc`
+- **Windows**: Tryk `WIN+R` og indsæt `%USERPROFILE%\.config\lgcode\lgcode.jsonc`
 
 Hvis du har konfigureret plugins, deaktiver dem midlertidigt ved at fjerne nøglen eller sætte den til et tomt array:
 
@@ -75,8 +75,8 @@ Hvis du har konfigureret plugins, deaktiver dem midlertidigt ved at fjerne nøgl
 LGcode kan også indlæse lokale plugins fra disken. Flyt disse midlertidigt væk (eller giv mappen nyt navn) og start skrivebordsappen på ny:
 
 - **Globale plugins**
-  - **macOS/Linux**: `~/.config/opencode/plugins/`
-  - **Windows**: Tryk `WIN+R` og indsæt `%USERPROFILE%\.config\opencode\plugins`
+  - **macOS/Linux**: `~/.config/lgcode/plugins/`
+  - **Windows**: Tryk `WIN+R` og indsæt `%USERPROFILE%\.config\lgcode\plugins`
 - **Projektplugins** (kun hvis du bruger konfiguration per projekt)
   - `<your-project>/.lgcode/plugins/`
 
@@ -91,9 +91,9 @@ Hvis deaktivering af plugins ikke hjælper (eller en plugin-installation sidder 
 1. Afslut LGcode Desktop helt.
 2. Slet cache-mappen:
 
-- **macOS**: Finder -> `Cmd+Shift+G` -> indsæt `~/.cache/opencode`
-- **Linux**: slet `~/.cache/opencode` (eller kør `rm -rf ~/.cache/opencode`)
-- **Windows**: Tryk `WIN+R` og indsæt `%USERPROFILE%\.cache\opencode`
+- **macOS**: Finder -> `Cmd+Shift+G` -> indsæt `~/.cache/lgcode`
+- **Linux**: slet `~/.cache/lgcode` (eller kør `rm -rf ~/.cache/lgcode`)
+- **Windows**: Tryk `WIN+R` og indsæt `%USERPROFILE%\.cache\lgcode`
 
 3. Start LGcode Desktop på ny.
 
@@ -158,8 +158,8 @@ Hvis appen ikke starter og du ikke kan slette indstillingerne fra UI, nulstil sk
 1. Afslut LGcode Desktop.
 2. Find og slet disse filer (de findes i LGcode Desktop-appens datamappe):
 
-- `opencode.settings.dat` (skrivebordsstandardserver URL)
-- `opencode.global.dat` og `opencode.workspace.*.dat` (UI tilstand som nylige servere/projekter)
+- `lgcode.settings.dat` (skrivebordsstandardserver URL)
+- `lgcode.global.dat` og `lgcode.workspace.*.dat` (UI tilstand som nylige servere/projekter)
 
 Sådan finder du mappen hurtigt:
 
@@ -199,7 +199,7 @@ Her er nogle almindelige problemer og hvordan du kan løse dem.
 
 1. Tjek logfilerne for fejlmeddelelser
 2. Prøv at køre med `--print-logs` for at se output i terminalen
-3. Sørg for at du har den nyeste version med `opencode upgrade`
+3. Sørg for at du har den nyeste version med `lgcode upgrade`
 
 ---
 
@@ -225,9 +225,9 @@ Eksempler:
 
 - `openai/gpt-4.1`
 - `openrouter/google/gemini-2.5-flash`
-- `opencode/kimi-k2`
+- `lgcode/kimi-k2`
 
-For at finde ud af hvilke modeller du har adgang til, kør `opencode models`
+For at finde ud af hvilke modeller du har adgang til, kør `lgcode models`
 
 ---
 
@@ -241,10 +241,10 @@ For at løse dette:
 2. Hvis problemet vedvarer, prøv at tømme den gemte konfiguration:
 
    ```bash
-   rm -rf ~/.local/share/opencode
+   rm -rf ~/.local/share/lgcode
    ```
 
-   På Windows, tryk `WIN+R` og slet: `%USERPROFILE%\.local\share\opencode`
+   På Windows, tryk `WIN+R` og slet: `%USERPROFILE%\.local\share\lgcode`
 
 3. Godkend på ny med din udbyder ved at bruge kommandoen `/connect` i TUI.
 
@@ -252,21 +252,21 @@ For at løse dette:
 
 ### AI_APICallError og udbyderpakkeproblemer
 
-Hvis du støder på API-kaldsfejl, kan dette skyldes forældede udbyderpakker. opencode installerer dynamisk udbyderpakker (OpenAI, Anthropic, Google, etc.) efter behov og cacher dem lokalt.
+Hvis du støder på API-kaldsfejl, kan dette skyldes forældede udbyderpakker. lgcode installerer dynamisk udbyderpakker (OpenAI, Anthropic, Google, etc.) efter behov og cacher dem lokalt.
 
 For at løse problemer med udbyderpakke:
 
 1. Tøm udbyderens pakkecache:
 
    ```bash
-   rm -rf ~/.cache/opencode
+   rm -rf ~/.cache/lgcode
    ```
 
-   På Windows, tryk `WIN+R` og slet: `%USERPROFILE%\.cache\opencode`
+   På Windows, tryk `WIN+R` og slet: `%USERPROFILE%\.cache\lgcode`
 
-2. Start opencode på ny for at installere de nyeste udbyderpakker på ny
+2. Start lgcode på ny for at installere de nyeste udbyderpakker på ny
 
-Dette vil tvinge opencode til at downloade de nyeste versioner af udbyderpakkerne, som ofte løser kompatibilitetsproblemer med modelparametre og API-ændringer.
+Dette vil tvinge lgcode til at downloade de nyeste versioner af udbyderpakkerne, som ofte løser kompatibilitetsproblemer med modelparametre og API-ændringer.
 
 ---
 
@@ -297,4 +297,4 @@ Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 export DISPLAY=:99.0
 ```
 
-opencode vil opdage om du bruger Wayland og foretrække `wl-clipboard`, ellers vil den prøve at finde udklipsholderværktøjer i rækkefølgen: `xclip` og `xsel`.
+lgcode vil opdage om du bruger Wayland og foretrække `wl-clipboard`, ellers vil den prøve at finde udklipsholderværktøjer i rækkefølgen: `xclip` og `xsel`.

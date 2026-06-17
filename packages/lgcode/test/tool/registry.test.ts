@@ -95,8 +95,8 @@ describe("tool.registry", () => {
   it.instance("loads tools from .lgcode/tool (singular)", () =>
     Effect.gen(function* () {
       const test = yield* TestInstance
-      const opencode = path.join(test.directory, ".lgcode")
-      const tool = path.join(opencode, "tool")
+      const lgcode = path.join(test.directory, ".lgcode")
+      const tool = path.join(lgcode, "tool")
       yield* Effect.promise(() => fs.mkdir(tool, { recursive: true }))
       yield* Effect.promise(() =>
         Bun.write(
@@ -183,7 +183,7 @@ describe("tool.registry", () => {
   )
 
   // Same regression, plugin entry point. The original reports (#27451, #27630)
-  // came in through `plugin.list()` — `oh-my-opencode` was registering a tool
+  // came in through `plugin.list()` — `oh-my-lgcode` was registering a tool
   // with `args: undefined` and crashing every message submit. The file-scan
   // and plugin-list loops both funnel through `fromPlugin`, but covering both
   // entry points means a future refactor that splits them won't silently lose
@@ -200,8 +200,8 @@ describe("tool.registry", () => {
   it.instance("loads tools from .lgcode/tools (plural)", () =>
     Effect.gen(function* () {
       const test = yield* TestInstance
-      const opencode = path.join(test.directory, ".lgcode")
-      const tools = path.join(opencode, "tools")
+      const lgcode = path.join(test.directory, ".lgcode")
+      const tools = path.join(lgcode, "tools")
       yield* Effect.promise(() => fs.mkdir(tools, { recursive: true }))
       yield* Effect.promise(() =>
         Bun.write(
@@ -280,13 +280,13 @@ describe("tool.registry", () => {
     () =>
       Effect.gen(function* () {
         const test = yield* TestInstance
-        const opencode = path.join(test.directory, ".lgcode")
-        const customTools = path.join(opencode, "tools")
-        const plugin = path.join(opencode, "node_modules", "@lgcode-ai", "plugin")
+        const lgcode = path.join(test.directory, ".lgcode")
+        const customTools = path.join(lgcode, "tools")
+        const plugin = path.join(lgcode, "node_modules", "@lgcode-ai", "plugin")
         yield* Effect.promise(() => fs.mkdir(path.join(plugin, "dist"), { recursive: true }))
         yield* Effect.promise(() => fs.mkdir(customTools, { recursive: true }))
         yield* Effect.promise(() =>
-          fs.cp(path.dirname(fileURLToPath(import.meta.resolve("zod"))), path.join(opencode, "node_modules", "zod"), {
+          fs.cp(path.dirname(fileURLToPath(import.meta.resolve("zod"))), path.join(lgcode, "node_modules", "zod"), {
             dereference: true,
             recursive: true,
           }),
@@ -422,12 +422,12 @@ describe("tool.registry", () => {
   it.instance("loads tools with external dependencies without crashing", () =>
     Effect.gen(function* () {
       const test = yield* TestInstance
-      const opencode = path.join(test.directory, ".lgcode")
-      const tools = path.join(opencode, "tools")
+      const lgcode = path.join(test.directory, ".lgcode")
+      const tools = path.join(lgcode, "tools")
       yield* Effect.promise(() => fs.mkdir(tools, { recursive: true }))
       yield* Effect.promise(() =>
         Bun.write(
-          path.join(opencode, "package.json"),
+          path.join(lgcode, "package.json"),
           JSON.stringify({
             name: "custom-tools",
             dependencies: {
@@ -439,7 +439,7 @@ describe("tool.registry", () => {
       )
       yield* Effect.promise(() =>
         Bun.write(
-          path.join(opencode, "package-lock.json"),
+          path.join(lgcode, "package-lock.json"),
           JSON.stringify({
             name: "custom-tools",
             lockfileVersion: 3,
@@ -455,7 +455,7 @@ describe("tool.registry", () => {
         ),
       )
 
-      const cowsay = path.join(opencode, "node_modules", "cowsay")
+      const cowsay = path.join(lgcode, "node_modules", "cowsay")
       yield* Effect.promise(() => fs.mkdir(cowsay, { recursive: true }))
       yield* Effect.promise(() =>
         Bun.write(

@@ -46,7 +46,7 @@ Du kan også deaktivere en server ved å sette `enabled` til `false`. Dette er n
 
 ### Overstyring av fjernstandarder
 
-Organisasjoner kan tilby standard MCP-servere via deres `.well-known/opencode`-endepunkt. Disse serverne kan være deaktivert som standard, slik at brukere kan melde seg på de de trenger.
+Organisasjoner kan tilby standard MCP-servere via deres `.well-known/lgcode`-endepunkt. Disse serverne kan være deaktivert som standard, slik at brukere kan melde seg på de de trenger.
 
 For å aktivere en spesifikk server fra organisasjonens eksterne konfigurasjon, legg den til i din lokale konfigurasjon med `enabled: true`:
 
@@ -189,7 +189,7 @@ For de fleste OAuth-aktiverte MCP-servere er ingen spesiell konfigurasjon nødve
 }
 ```
 
-Hvis serveren krever autentisering, vil LGcode be deg om å autentisere når du prøver å bruke den for første gang. Hvis ikke, kan du [utløse flyten manuelt](#authenticating) med `opencode mcp auth <server-name>`.
+Hvis serveren krever autentisering, vil LGcode be deg om å autentisere når du prøver å bruke den for første gang. Hvis ikke, kan du [utløse flyten manuelt](#authenticating) med `lgcode mcp auth <server-name>`.
 
 ---
 
@@ -223,22 +223,22 @@ Du kan utløse autentisering manuelt eller administrere legitimasjon.
 Autentiser med en spesifikk MCP-server:
 
 ```bash
-opencode mcp auth my-oauth-server
+lgcode mcp auth my-oauth-server
 ```
 
 Liste alle MCP-servere og deres autentiseringsstatus:
 
 ```bash
-opencode mcp list
+lgcode mcp list
 ```
 
 Fjern lagret legitimasjon:
 
 ```bash
-opencode mcp logout my-oauth-server
+lgcode mcp logout my-oauth-server
 ```
 
-Kommandoen `mcp auth` åpner nettleseren din for autorisasjon. Etter at du har godkjent, vil LGcode lagre tokens sikkert i `~/.local/share/opencode/mcp-auth.json`.
+Kommandoen `mcp auth` åpner nettleseren din for autorisasjon. Etter at du har godkjent, vil LGcode lagre tokens sikkert i `~/.local/share/lgcode/mcp-auth.json`.
 
 ---
 
@@ -279,10 +279,10 @@ Hvis en ekstern MCP-server ikke klarer å autentisere, kan du diagnostisere prob
 
 ```bash
 # View auth status for all OAuth-capable servers
-opencode mcp auth list
+lgcode mcp auth list
 
 # Debug connection and OAuth flow for a specific server
-opencode mcp debug my-oauth-server
+lgcode mcp debug my-oauth-server
 ```
 
 Kommandoen `mcp debug` viser gjeldende autentiseringsstatus, tester HTTP-tilkoblingen og forsøker OAuth-oppdagelsesflyten.
@@ -420,7 +420,7 @@ Legg til [Sentry MCP-serveren](https://mcp.sentry.dev) for å samhandle med Sent
 Etter å ha lagt til konfigurasjonen, autentiser med Sentry:
 
 ```bash
-opencode mcp auth sentry
+lgcode mcp auth sentry
 ```
 
 Dette åpner et nettleservindu for å fullføre OAuth-flyten og koble LGcode til Sentry-kontoen din.
@@ -547,7 +547,7 @@ I tilfelle du ser en funksjon eller modell fra Helicone som ikke konfigureres au
 
 Her er [Helicone's Model Directory](https://helicone.ai/models), du trenger denne for å hente ID-ene til modellene du vil legge til.
 
-```jsonc title="~/.config/opencode/lgcode.jsonc"
+```jsonc title="~/.config/lgcode/lgcode.jsonc"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -575,7 +575,7 @@ Her er [Helicone's Model Directory](https://helicone.ai/models), du trenger denn
 
 Helicone støtter tilpassede headere for funksjoner som bufring, brukersporing og øktadministrasjon. Legg dem til leverandørkonfigurasjonen din ved å bruke `options.headers`:
 
-```jsonc title="~/.config/opencode/lgcode.jsonc"
+```jsonc title="~/.config/lgcode/lgcode.jsonc"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -586,7 +586,7 @@ Helicone støtter tilpassede headere for funksjoner som bufring, brukersporing o
         "baseURL": "https://ai-gateway.helicone.ai",
         "headers": {
           "Helicone-Cache-Enabled": "true",
-          "Helicone-User-Id": "opencode",
+          "Helicone-User-Id": "lgcode",
         },
       },
     },

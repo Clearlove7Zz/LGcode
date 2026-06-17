@@ -42,8 +42,8 @@ Na primjer, ako vaša globalna konfiguracija postavlja `autoupdate: true`, a va�
 
 Izvori konfiguracije se učitavaju ovim redoslijedom (kasniji izvori poništavaju ranije):
 
-1. **Udaljena konfiguracija** (od `.well-known/opencode`) - organizacijske postavke
-2. **Globalna konfiguracija** (`~/.config/opencode/lgcode.json`) - korisničke preferencije
+1. **Udaljena konfiguracija** (od `.well-known/lgcode`) - organizacijske postavke
+2. **Globalna konfiguracija** (`~/.config/lgcode/lgcode.json`) - korisničke preferencije
 3. **Prilagođena konfiguracija** (`LGCODE_CONFIG` env var) - prilagođena preinačenja
 4. **Konfiguracija projekta** (`lgcode.json` u projektu) - postavke specifične za projekat
 5. **`.lgcode` direktoriji** - agenti, komande, dodaci
@@ -52,20 +52,20 @@ Izvori konfiguracije se učitavaju ovim redoslijedom (kasniji izvori poništavaj
 To znači da konfiguracije projekta mogu nadjačati globalne zadane postavke, a globalne konfiguracije mogu nadjačati postavke udaljene organizacije.
 
 :::note
-Direktoriji `.lgcode` i `~/.config/opencode` koriste **imena u množini** za poddirektorije: `agents/`, `commands/`, `modes/`, `plugins/`, `skills/`, `tools/` i `themes/`. Pojedinačna imena (npr. `agent/`) su također podržana za kompatibilnost unatrag.
+Direktoriji `.lgcode` i `~/.config/lgcode` koriste **imena u množini** za poddirektorije: `agents/`, `commands/`, `modes/`, `plugins/`, `skills/`, `tools/` i `themes/`. Pojedinačna imena (npr. `agent/`) su također podržana za kompatibilnost unatrag.
 :::
 
 ---
 
 ### Udaljeno (Remote)
 
-Organizacije mogu pružiti zadanu konfiguraciju preko `.well-known/opencode` krajnje tačke. Ovo se automatski preuzima kada se autentifikujete kod provajdera koji to podržava.
+Organizacije mogu pružiti zadanu konfiguraciju preko `.well-known/lgcode` krajnje tačke. Ovo se automatski preuzima kada se autentifikujete kod provajdera koji to podržava.
 
 Prvo se učitava udaljena konfiguracija koja služi kao osnovni sloj. Svi ostali izvori konfiguracije (globalni, projektni) mogu nadjačati ove zadane postavke.
 
 Na primjer, ako vaša organizacija nudi MCP servere koji su po defaultu onemogućeni:
 
-```json title="Remote config from .well-known/opencode"
+```json title="Remote config from .well-known/lgcode"
 {
   "mcp": {
     "jira": {
@@ -95,9 +95,9 @@ Možete omogućiti određene servere u vašoj lokalnoj konfiguraciji:
 
 ### Globalno
 
-Postavite svoju globalnu LGcode konfiguraciju u `~/.config/opencode/lgcode.json`. Koristite globalnu konfiguraciju za korisničke preferencije kao što su provajderi, modeli i dozvole.
+Postavite svoju globalnu LGcode konfiguraciju u `~/.config/lgcode/lgcode.json`. Koristite globalnu konfiguraciju za korisničke preferencije kao što su provajderi, modeli i dozvole.
 
-Za postavke specifične za TUI, koristite `~/.config/opencode/tui.json`.
+Za postavke specifične za TUI, koristite `~/.config/lgcode/tui.json`.
 
 Globalna konfiguracija poništava zadane postavke udaljene organizacije.
 
@@ -200,7 +200,7 @@ Dostupne opcije:
 - `port` - Port za slušanje.
 - `hostname` - Hostname za slušanje. Kada je `mdns` omogućen i nije postavljeno ime hosta, podrazumevano je `0.0.0.0`.
 - `mdns` - Omogući mDNS otkrivanje servisa. Ovo omogućava drugim uređajima na mreži da otkriju vaš LGcode server.
-- `mdnsDomain` - Prilagođeno ime domene za mDNS servis. Zadano je `opencode.local`. Korisno za pokretanje više instanci na istoj mreži.
+- `mdnsDomain` - Prilagođeno ime domene za mDNS servis. Zadano je `lgcode.local`. Korisno za pokretanje više instanci na istoj mreži.
 - `cors` - Dodatni origini koji omogućavaju CORS kada koristite HTTP server iz klijenta baziranog na pretraživaču. Vrijednosti moraju biti puni origin (shema + host + opcijski port), npr. `https://app.example.com`.
 
 [Saznajte više o serveru ovdje](/docs/server).
@@ -335,7 +335,7 @@ Možete konfigurirati specijalizirane agente za određene zadatke putem opcije `
 }
 ```
 
-Također možete definirati agente koristeći markdown datoteke u `~/.config/opencode/agents/` ili `.lgcode/agents/`. [Saznajte više ovdje](/docs/agents).
+Također možete definirati agente koristeći markdown datoteke u `~/.config/lgcode/agents/` ili `.lgcode/agents/`. [Saznajte više ovdje](/docs/agents).
 
 ---
 
@@ -399,7 +399,7 @@ Možete konfigurirati prilagođene naredbe za ponavljanje zadataka putem opcije 
 }
 ```
 
-Također možete definirati naredbe koristeći markdown fajlove u `~/.config/opencode/commands/` ili `.lgcode/commands/`. [Saznajte više ovdje](/docs/commands).
+Također možete definirati naredbe koristeći markdown fajlove u `~/.config/lgcode/commands/` ili `.lgcode/commands/`. [Saznajte više ovdje](/docs/commands).
 
 ---
 
@@ -537,7 +537,7 @@ Možete konfigurirati MCP servere koje želite koristiti putem opcije `mcp`.
 
 [Plugins](/docs/plugins) proširuju LGcode sa prilagođenim alatima, kukicama i integracijama.
 
-Postavite datoteke dodataka u `.lgcode/plugins/` ili `~/.config/opencode/plugins/`. Također možete učitati dodatke iz npm-a preko opcije `plugin`.
+Postavite datoteke dodataka u `.lgcode/plugins/` ili `~/.config/lgcode/plugins/`. Također možete učitati dodatke iz npm-a preko opcije `plugin`.
 
 ```json title="lgcode.json"
 {

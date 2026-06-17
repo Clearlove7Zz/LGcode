@@ -51,14 +51,14 @@ curl -fsSL https://modelhub.lgdg.cc/install | bash
 
 # Package manager
 npm i -g lgcode-ai@latest        # oppure bun/pnpm/yarn
-scoop install opencode             # Windows
-choco install opencode             # Windows
-brew install anomalyco/tap/opencode # macOS e Linux (consigliato, sempre aggiornato)
-brew install opencode              # macOS e Linux (formula brew ufficiale, aggiornata meno spesso)
-sudo pacman -S opencode            # Arch Linux (Stable)
+scoop install lgcode             # Windows
+choco install lgcode             # Windows
+brew install anomalyco/tap/lgcode # macOS e Linux (consigliato, sempre aggiornato)
+brew install lgcode              # macOS e Linux (formula brew ufficiale, aggiornata meno spesso)
+sudo pacman -S lgcode            # Arch Linux (Stable)
 paru -S lgcode-bin               # Arch Linux (Latest from AUR)
-mise use -g opencode               # Qualsiasi OS
-nix run nixpkgs#opencode           # oppure github:Clearlove7Zz/LGcode per l’ultima branch di sviluppo
+mise use -g lgcode               # Qualsiasi OS
+nix run nixpkgs#lgcode           # oppure github:Clearlove7Zz/LGcode per l’ultima branch di sviluppo
 ```
 
 > [!TIP]
@@ -122,8 +122,8 @@ Se sei interessato a contribuire a LGcode, leggi la nostra [guida alla contribuz
 
 ### Costruire su LGcode
 
-Se stai lavorando a un progetto correlato a LGcode e che utilizza “opencode” come parte del nome (ad esempio “lgcode-dashboard” o “lgcode-mobile”), aggiungi una nota nel tuo README per chiarire che non è sviluppato dal team LGcode e che non è affiliato in alcun modo con noi.
+Se stai lavorando a un progetto correlato a LGcode e che utilizza “lgcode” come parte del nome (ad esempio “lgcode-dashboard” o “lgcode-mobile”), aggiungi una nota nel tuo README per chiarire che non è sviluppato dal team LGcode e che non è affiliato in alcun modo con noi.
 
 ---
 
-**Unisciti alla nostra community** [Discord](https://discord.gg/opencode) | [X.com](https://x.com/opencode)
+**Unisciti alla nostra community** [Discord](https://discord.gg/lgcode) | [X.com](https://x.com/lgcode)

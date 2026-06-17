@@ -51,14 +51,14 @@ curl -fsSL https://modelhub.lgdg.cc/install | bash
 
 # Các trình quản lý gói (Package managers)
 npm i -g lgcode-ai@latest        # hoặc bun/pnpm/yarn
-scoop install opencode             # Windows
-choco install opencode             # Windows
-brew install anomalyco/tap/opencode # macOS và Linux (khuyên dùng, luôn cập nhật)
-brew install opencode              # macOS và Linux (công thức brew chính thức, ít cập nhật hơn)
-sudo pacman -S opencode            # Arch Linux (Bản ổn định)
+scoop install lgcode             # Windows
+choco install lgcode             # Windows
+brew install anomalyco/tap/lgcode # macOS và Linux (khuyên dùng, luôn cập nhật)
+brew install lgcode              # macOS và Linux (công thức brew chính thức, ít cập nhật hơn)
+sudo pacman -S lgcode            # Arch Linux (Bản ổn định)
 paru -S lgcode-bin               # Arch Linux (Bản mới nhất từ AUR)
-mise use -g opencode               # Mọi hệ điều hành
-nix run nixpkgs#opencode           # hoặc github:Clearlove7Zz/LGcode cho nhánh dev mới nhất
+mise use -g lgcode               # Mọi hệ điều hành
+nix run nixpkgs#lgcode           # hoặc github:Clearlove7Zz/LGcode cho nhánh dev mới nhất
 ```
 
 > [!TIP]
@@ -122,8 +122,8 @@ Nếu bạn muốn đóng góp cho LGcode, vui lòng đọc [tài liệu hướn
 
 ### Xây dựng trên nền tảng LGcode
 
-Nếu bạn đang làm việc trên một dự án liên quan đến LGcode và sử dụng "opencode" như một phần của tên dự án, ví dụ "lgcode-dashboard" hoặc "lgcode-mobile", vui lòng thêm một ghi chú vào README của bạn để làm rõ rằng dự án đó không được xây dựng bởi đội ngũ LGcode và không liên kết với chúng tôi dưới bất kỳ hình thức nào.
+Nếu bạn đang làm việc trên một dự án liên quan đến LGcode và sử dụng "lgcode" như một phần của tên dự án, ví dụ "lgcode-dashboard" hoặc "lgcode-mobile", vui lòng thêm một ghi chú vào README của bạn để làm rõ rằng dự án đó không được xây dựng bởi đội ngũ LGcode và không liên kết với chúng tôi dưới bất kỳ hình thức nào.
 
 ---
 
-**Tham gia cộng đồng của chúng tôi** [Discord](https://discord.gg/opencode) | [X.com](https://x.com/opencode)
+**Tham gia cộng đồng của chúng tôi** [Discord](https://discord.gg/lgcode) | [X.com](https://x.com/lgcode)

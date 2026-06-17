@@ -43,32 +43,32 @@ For example, if your global config sets `autoupdate: true` and your project conf
 
 Config sources are loaded in this order (later sources override earlier ones):
 
-1. **Remote config** (from `.well-known/opencode`) - organizational defaults
-2. **Global config** (`~/.config/opencode/lgcode.json`) - user preferences
+1. **Remote config** (from `.well-known/lgcode`) - organizational defaults
+2. **Global config** (`~/.config/lgcode/lgcode.json`) - user preferences
 3. **Custom config** (`LGCODE_CONFIG` env var) - custom overrides
 4. **Project config** (`lgcode.json` in project) - project-specific settings
 5. **`.lgcode` directories** - agents, commands, plugins
 6. **Inline config** (`LGCODE_CONFIG_CONTENT` env var) - runtime overrides
-7. **Managed config files** (`/Library/Application Support/opencode/` on macOS) - admin-controlled
+7. **Managed config files** (`/Library/Application Support/lgcode/` on macOS) - admin-controlled
 8. **macOS managed preferences** (`.mobileconfig` via MDM) - highest priority, not user-overridable
 
 This means project configs can override global defaults, and global configs can override remote organizational defaults. Managed settings override everything.
 
 :::note
-The `.lgcode` and `~/.config/opencode` directories use **plural names** for subdirectories: `agents/`, `commands/`, `modes/`, `plugins/`, `skills/`, `tools/`, and `themes/`. Singular names (e.g., `agent/`) are also supported for backwards compatibility.
+The `.lgcode` and `~/.config/lgcode` directories use **plural names** for subdirectories: `agents/`, `commands/`, `modes/`, `plugins/`, `skills/`, `tools/`, and `themes/`. Singular names (e.g., `agent/`) are also supported for backwards compatibility.
 :::
 
 ---
 
 ### Remote
 
-Organizations can provide default configuration via the `.well-known/opencode` endpoint. This is fetched automatically when you authenticate with a provider that supports it.
+Organizations can provide default configuration via the `.well-known/lgcode` endpoint. This is fetched automatically when you authenticate with a provider that supports it.
 
 Remote config is loaded first, serving as the base layer. All other config sources (global, project) can override these defaults.
 
 For example, if your organization provides MCP servers that are disabled by default:
 
-```json title="Remote config from .well-known/opencode"
+```json title="Remote config from .well-known/lgcode"
 {
   "mcp": {
     "jira": {
@@ -98,9 +98,9 @@ You can enable specific servers in your local config:
 
 ### Global
 
-Place your global LGcode config in `~/.config/opencode/lgcode.json`. Use global config for user-wide server/runtime preferences like providers, models, and permissions.
+Place your global LGcode config in `~/.config/lgcode/lgcode.json`. Use global config for user-wide server/runtime preferences like providers, models, and permissions.
 
-For TUI-specific settings, use `~/.config/opencode/tui.json`.
+For TUI-specific settings, use `~/.config/lgcode/tui.json`.
 
 Global config overrides remote organizational defaults.
 
@@ -161,9 +161,9 @@ Drop an `lgcode.json` or `lgcode.jsonc` file in the system managed config direct
 
 | Platform | Path                                     |
 | -------- | ---------------------------------------- |
-| macOS    | `/Library/Application Support/opencode/` |
-| Linux    | `/etc/opencode/`                         |
-| Windows  | `%ProgramData%\opencode`                 |
+| macOS    | `/Library/Application Support/lgcode/` |
+| Linux    | `/etc/lgcode/`                         |
+| Windows  | `%ProgramData%\lgcode`                 |
 
 These directories require admin/root access to write, so users cannot modify them.
 
@@ -244,7 +244,7 @@ Generate unique UUIDs with `uuidgen`. Customize the settings to match your organ
 Double-click the `.mobileconfig` to install locally for testing (shows in System Settings > Privacy & Security > Profiles), then run:
 
 ```bash
-opencode debug config
+lgcode debug config
 ```
 
 All managed preference keys appear in the resolved config and cannot be overridden by user or project configuration.
@@ -313,7 +313,7 @@ Available options:
 - `port` - Port to listen on.
 - `hostname` - Hostname to listen on. When `mdns` is enabled and no hostname is set, defaults to `0.0.0.0`.
 - `mdns` - Enable mDNS service discovery. This allows other devices on the network to discover your LGcode server.
-- `mdnsDomain` - Custom domain name for mDNS service. Defaults to `opencode.local`. Useful for running multiple instances on the same network.
+- `mdnsDomain` - Custom domain name for mDNS service. Defaults to `lgcode.local`. Useful for running multiple instances on the same network.
 - `cors` - Additional origins to allow for CORS when using the HTTP server from a browser-based client. Values must be full origins (scheme + host + optional port), eg `https://app.example.com`.
 
 [Learn more about the server here](/docs/server).
@@ -517,7 +517,7 @@ You can configure specialized agents for specific tasks through the `agent` opti
 }
 ```
 
-You can also define agents using markdown files in `~/.config/opencode/agents/` or `.lgcode/agents/`. [Learn more here](/docs/agents).
+You can also define agents using markdown files in `~/.config/lgcode/agents/` or `.lgcode/agents/`. [Learn more here](/docs/agents).
 
 ---
 
@@ -581,7 +581,7 @@ You can configure custom commands for repetitive tasks through the `command` opt
 }
 ```
 
-You can also define commands using markdown files in `~/.config/opencode/commands/` or `.lgcode/commands/`. [Learn more here](/docs/commands).
+You can also define commands using markdown files in `~/.config/lgcode/commands/` or `.lgcode/commands/`. [Learn more here](/docs/commands).
 
 ---
 
@@ -702,7 +702,7 @@ Use an object to keep built-ins enabled while configuring overrides or custom LS
 
 ### Permissions
 
-By default, opencode **allows all operations** without requiring explicit approval. You can change this using the `permission` option.
+By default, lgcode **allows all operations** without requiring explicit approval. You can change this using the `permission` option.
 
 For example, to ensure that the `edit` and `bash` tools require user approval:
 
@@ -777,7 +777,7 @@ You can configure MCP servers you want to use through the `mcp` option.
 
 [Plugins](/docs/plugins) extend LGcode with custom tools, hooks, and integrations.
 
-Place plugin files in `.lgcode/plugins/` or `~/.config/opencode/plugins/`. You can also load plugins from npm through the `plugin` option.
+Place plugin files in `.lgcode/plugins/` or `~/.config/lgcode/plugins/`. You can also load plugins from npm through the `plugin` option.
 
 ```json title="lgcode.json"
 {

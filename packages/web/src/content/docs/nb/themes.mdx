@@ -5,7 +5,7 @@ description: Velg et innebygd tema eller definer ditt eget.
 
 Med LGcode kan du velge fra ett av flere innebygde temaer, bruke et tema som tilpasser seg terminaltemaet ditt, eller definere ditt eget tilpassede tema.
 
-Som standard bruker LGcode vårt eget `opencode`-tema.
+Som standard bruker LGcode vårt eget `lgcode`-tema.
 
 ---
 
@@ -83,7 +83,7 @@ LGcode støtter et fleksibelt JSON-basert temasystem som lar brukere enkelt lage
 Temaer lastes inn fra flere kataloger i følgende rekkefølge der senere kataloger overstyrer tidligere:
 
 1. **Innebygde temaer** - Disse er innebygd i binæren
-2. **Brukerkonfigurasjonskatalog** - Definert i `~/.config/opencode/themes/*.json` eller `$XDG_CONFIG_HOME/opencode/themes/*.json`
+2. **Brukerkonfigurasjonskatalog** - Definert i `~/.config/lgcode/themes/*.json` eller `$XDG_CONFIG_HOME/lgcode/themes/*.json`
 3. **Prosjektrotkatalog** - Definert i `<project-root>/.lgcode/themes/*.json`
 4. **Gjeldende arbeidskatalog** - Definert i `./.lgcode/themes/*.json`
 
@@ -98,8 +98,8 @@ For å lage et tilpasset tema, lag en JSON-fil i en av temakatalogene.
 For brukerspesifikke temaer:
 
 ```bash no-frame
-mkdir -p ~/.config/opencode/themes
-vim ~/.config/opencode/themes/my-theme.json
+mkdir -p ~/.config/lgcode/themes
+vim ~/.config/lgcode/themes/my-theme.json
 ```
 
 Og for prosjektspesifikke temaer.

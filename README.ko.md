@@ -51,14 +51,14 @@ curl -fsSL https://modelhub.lgdg.cc/install | bash
 
 # 패키지 매니저
 npm i -g lgcode-ai@latest        # bun/pnpm/yarn 도 가능
-scoop install opencode             # Windows
-choco install opencode             # Windows
-brew install anomalyco/tap/opencode # macOS 및 Linux (권장, 항상 최신)
-brew install opencode              # macOS 및 Linux (공식 brew formula, 업데이트 빈도 낮음)
-sudo pacman -S opencode            # Arch Linux (Stable)
+scoop install lgcode             # Windows
+choco install lgcode             # Windows
+brew install anomalyco/tap/lgcode # macOS 및 Linux (권장, 항상 최신)
+brew install lgcode              # macOS 및 Linux (공식 brew formula, 업데이트 빈도 낮음)
+sudo pacman -S lgcode            # Arch Linux (Stable)
 paru -S lgcode-bin               # Arch Linux (Latest from AUR)
-mise use -g opencode               # 어떤 OS든
-nix run nixpkgs#opencode           # 또는 github:Clearlove7Zz/LGcode 로 최신 dev 브랜치
+mise use -g lgcode               # 어떤 OS든
+nix run nixpkgs#lgcode           # 또는 github:Clearlove7Zz/LGcode 로 최신 dev 브랜치
 ```
 
 > [!TIP]
@@ -122,8 +122,8 @@ LGcode 에 기여하고 싶다면, Pull Request 를 제출하기 전에 [contrib
 
 ### LGcode 기반으로 만들기
 
-LGcode 와 관련된 프로젝트를 진행하면서 이름에 "opencode"(예: "lgcode-dashboard" 또는 "lgcode-mobile") 를 포함한다면, README 에 해당 프로젝트가 LGcode 팀이 만든 것이 아니며 어떤 방식으로도 우리와 제휴되어 있지 않다는 점을 명시해 주세요.
+LGcode 와 관련된 프로젝트를 진행하면서 이름에 "lgcode"(예: "lgcode-dashboard" 또는 "lgcode-mobile") 를 포함한다면, README 에 해당 프로젝트가 LGcode 팀이 만든 것이 아니며 어떤 방식으로도 우리와 제휴되어 있지 않다는 점을 명시해 주세요.
 
 ---
 
-**커뮤니티에 참여하기** [Discord](https://discord.gg/opencode) | [X.com](https://x.com/opencode)
+**커뮤니티에 참여하기** [Discord](https://discord.gg/lgcode) | [X.com](https://x.com/lgcode)

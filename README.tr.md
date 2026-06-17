@@ -51,14 +51,14 @@ curl -fsSL https://modelhub.lgdg.cc/install | bash
 
 # Paket yöneticileri
 npm i -g lgcode-ai@latest        # veya bun/pnpm/yarn
-scoop install opencode             # Windows
-choco install opencode             # Windows
-brew install anomalyco/tap/opencode # macOS ve Linux (önerilir, her zaman güncel)
-brew install opencode              # macOS ve Linux (resmi brew formülü, daha az güncellenir)
-sudo pacman -S opencode            # Arch Linux (Stable)
+scoop install lgcode             # Windows
+choco install lgcode             # Windows
+brew install anomalyco/tap/lgcode # macOS ve Linux (önerilir, her zaman güncel)
+brew install lgcode              # macOS ve Linux (resmi brew formülü, daha az güncellenir)
+sudo pacman -S lgcode            # Arch Linux (Stable)
 paru -S lgcode-bin               # Arch Linux (Latest from AUR)
-mise use -g opencode               # Tüm işletim sistemleri
-nix run nixpkgs#opencode           # veya en güncel geliştirme dalı için github:Clearlove7Zz/LGcode
+mise use -g lgcode               # Tüm işletim sistemleri
+nix run nixpkgs#lgcode           # veya en güncel geliştirme dalı için github:Clearlove7Zz/LGcode
 ```
 
 > [!TIP]
@@ -122,8 +122,8 @@ LGcode'a katkıda bulunmak istiyorsanız, lütfen bir pull request göndermeden 
 
 ### LGcode Üzerine Geliştirme
 
-LGcode ile ilgili bir proje üzerinde çalışıyorsanız ve projenizin adının bir parçası olarak "opencode" kullanıyorsanız (örneğin, "lgcode-dashboard" veya "lgcode-mobile"), lütfen README dosyanıza projenin LGcode ekibi tarafından geliştirilmediğini ve bizimle hiçbir şekilde bağlantılı olmadığını belirten bir not ekleyin.
+LGcode ile ilgili bir proje üzerinde çalışıyorsanız ve projenizin adının bir parçası olarak "lgcode" kullanıyorsanız (örneğin, "lgcode-dashboard" veya "lgcode-mobile"), lütfen README dosyanıza projenin LGcode ekibi tarafından geliştirilmediğini ve bizimle hiçbir şekilde bağlantılı olmadığını belirten bir not ekleyin.
 
 ---
 
-**Topluluğumuza katılın** [Discord](https://discord.gg/opencode) | [X.com](https://x.com/opencode)
+**Topluluğumuza katılın** [Discord](https://discord.gg/lgcode) | [X.com](https://x.com/lgcode)

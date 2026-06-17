@@ -33,9 +33,9 @@ describe("OpencodePlugin", () => {
         yield* plugin.add(pluginWithIntegrations(yield* Integration.Service))
         const transform = yield* catalog.transform()
         yield* transform((catalog) => {
-          const item = provider("opencode")
+          const item = provider("lgcode")
           catalog.provider.update(item.id, () => {})
-          const paid = model("opencode", "paid", { cost: cost(1) })
+          const paid = model("lgcode", "paid", { cost: cost(1) })
           catalog.model.update(item.id, paid.id, (draft) => {
             draft.cost = [...paid.cost]
           })
@@ -54,9 +54,9 @@ describe("OpencodePlugin", () => {
         yield* plugin.add(pluginWithIntegrations(yield* Integration.Service))
         const transform = yield* catalog.transform()
         yield* transform((catalog) => {
-          const item = provider("opencode")
+          const item = provider("lgcode")
           catalog.provider.update(item.id, () => {})
-          const free = model("opencode", "free", { cost: cost(0) })
+          const free = model("lgcode", "free", { cost: cost(0) })
           catalog.model.update(item.id, free.id, (draft) => {
             draft.cost = [...free.cost]
           })
@@ -75,9 +75,9 @@ describe("OpencodePlugin", () => {
         yield* plugin.add(pluginWithIntegrations(yield* Integration.Service))
         const transform = yield* catalog.transform()
         yield* transform((catalog) => {
-          const item = provider("opencode")
+          const item = provider("lgcode")
           catalog.provider.update(item.id, () => {})
-          const outputOnly = model("opencode", "output-only", { cost: cost(0, 1) })
+          const outputOnly = model("lgcode", "output-only", { cost: cost(0, 1) })
           catalog.model.update(item.id, outputOnly.id, (draft) => {
             draft.cost = [...outputOnly.cost]
           })
@@ -96,9 +96,9 @@ describe("OpencodePlugin", () => {
         yield* plugin.add(pluginWithIntegrations(yield* Integration.Service))
         const transform = yield* catalog.transform()
         yield* transform((catalog) => {
-          const item = provider("opencode")
+          const item = provider("lgcode")
           catalog.provider.update(item.id, () => {})
-          const paid = model("opencode", "paid", { cost: cost(1) })
+          const paid = model("lgcode", "paid", { cost: cost(1) })
           catalog.model.update(item.id, paid.id, (draft) => {
             draft.cost = [...paid.cost]
           })
@@ -118,15 +118,15 @@ describe("OpencodePlugin", () => {
         yield* plugin.add(pluginWithIntegrations(integrations))
         yield* integrations.update((editor) => {
           editor.method.update({
-            integrationID: Integration.ID.make("opencode"),
+            integrationID: Integration.ID.make("lgcode"),
             method: { type: "env", names: ["CUSTOM_LGCODE_API_KEY"] },
           })
         })
         const transform = yield* catalog.transform()
         yield* transform((catalog) => {
-          const item = provider("opencode")
+          const item = provider("lgcode")
           catalog.provider.update(item.id, () => {})
-          const paid = model("opencode", "paid", { cost: cost(1) })
+          const paid = model("lgcode", "paid", { cost: cost(1) })
           catalog.model.update(item.id, paid.id, (draft) => {
             draft.cost = [...paid.cost]
           })
@@ -145,7 +145,7 @@ describe("OpencodePlugin", () => {
         yield* plugin.add(pluginWithIntegrations(yield* Integration.Service))
         const transform = yield* catalog.transform()
         yield* transform((catalog) => {
-          const item = provider("opencode", {
+          const item = provider("lgcode", {
             request: {
               headers: {},
               body: { apiKey: "configured" },
@@ -154,7 +154,7 @@ describe("OpencodePlugin", () => {
           catalog.provider.update(item.id, (draft) => {
             draft.request = item.request
           })
-          const paid = model("opencode", "paid", { cost: cost(1) })
+          const paid = model("lgcode", "paid", { cost: cost(1) })
           catalog.model.update(item.id, paid.id, (draft) => {
             draft.cost = [...paid.cost]
           })
@@ -165,7 +165,7 @@ describe("OpencodePlugin", () => {
     ),
   )
 
-  it.effect("ignores non-opencode providers and models", () =>
+  it.effect("ignores non-lgcode providers and models", () =>
     withEnv({ LGCODE_API_KEY: undefined }, () =>
       Effect.gen(function* () {
         const plugin = yield* PluginV2.Service
@@ -186,7 +186,7 @@ describe("OpencodePlugin", () => {
     ),
   )
 
-  it.effect("prefers gpt-5-nano as the opencode small model", () =>
+  it.effect("prefers gpt-5-nano as the lgcode small model", () =>
     Effect.gen(function* () {
       const catalog = yield* Catalog.Service
       const providerID = ProviderV2.ID.lgcode

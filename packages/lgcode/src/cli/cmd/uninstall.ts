@@ -24,7 +24,7 @@ interface RemovalTargets {
 
 export const UninstallCommand = {
   command: "uninstall",
-  describe: "uninstall opencode and remove all related files",
+  describe: "uninstall lgcode and remove all related files",
   builder: (yargs: Argv) =>
     yargs
       .option("keep-config", {
@@ -133,9 +133,9 @@ async function showRemovalSummary(targets: RemovalTargets, method: Installation.
       pnpm: "pnpm uninstall -g lgcode-ai",
       bun: "bun remove -g lgcode-ai",
       yarn: "yarn global remove lgcode-ai",
-      brew: "brew uninstall opencode",
-      choco: "choco uninstall opencode",
-      scoop: "scoop uninstall opencode",
+      brew: "brew uninstall lgcode",
+      choco: "choco uninstall lgcode",
+      scoop: "scoop uninstall lgcode",
     }
     prompts.log.info(`  ✓ Package: ${cmds[method] || method}`)
   }
@@ -184,15 +184,15 @@ async function executeUninstall(method: Installation.Method, targets: RemovalTar
       pnpm: ["pnpm", "uninstall", "-g", "lgcode-ai"],
       bun: ["bun", "remove", "-g", "lgcode-ai"],
       yarn: ["yarn", "global", "remove", "lgcode-ai"],
-      brew: ["brew", "uninstall", "opencode"],
-      choco: ["choco", "uninstall", "opencode"],
-      scoop: ["scoop", "uninstall", "opencode"],
+      brew: ["brew", "uninstall", "lgcode"],
+      choco: ["choco", "uninstall", "lgcode"],
+      scoop: ["scoop", "uninstall", "lgcode"],
     }
 
     const cmd = cmds[method]
     if (cmd) {
       spinner.start(`Running ${cmd.join(" ")}...`)
-      const result = await Process.run(method === "choco" ? ["choco", "uninstall", "opencode", "-y", "-r"] : cmd, {
+      const result = await Process.run(method === "choco" ? ["choco", "uninstall", "lgcode", "-y", "-r"] : cmd, {
         nothrow: true,
       })
       if (result.code !== 0) {
@@ -266,7 +266,7 @@ async function getShellConfigFile(): Promise<string | null> {
     if (!exists) continue
 
     const content = await Filesystem.readText(file).catch(() => "")
-    if (content.includes("# opencode") || content.includes(".lgcode/bin")) {
+    if (content.includes("# lgcode") || content.includes(".lgcode/bin")) {
       return file
     }
   }
@@ -284,7 +284,7 @@ async function cleanShellConfig(file: string) {
   for (const line of lines) {
     const trimmed = line.trim()
 
-    if (trimmed === "# opencode") {
+    if (trimmed === "# lgcode") {
       skip = true
       continue
     }

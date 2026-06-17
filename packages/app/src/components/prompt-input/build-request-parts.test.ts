@@ -83,8 +83,8 @@ describe("buildRequestParts", () => {
         {
           type: "image",
           id: "img_external",
-          filename: "opencode.global.dat",
-          sourcePath: "C:\\Users\\Luke\\AppData\\Roaming\\ai.lgcode.desktop.beta\\opencode.global.dat",
+          filename: "lgcode.global.dat",
+          sourcePath: "C:\\Users\\Luke\\AppData\\Roaming\\ai.lgcode.desktop.beta\\lgcode.global.dat",
           mime: "text/plain",
           dataUrl: "data:text/plain;base64,AAA",
         },
@@ -92,11 +92,11 @@ describe("buildRequestParts", () => {
       text: "inspect this",
       messageID: "msg_external",
       sessionID: "ses_external",
-      sessionDirectory: "C:\\Repos\\sst\\opencode",
+      sessionDirectory: "C:\\Repos\\sst\\lgcode",
     })
 
     expect(result.requestParts.find((part) => part.type === "file")?.filename).toBe(
-      "C:\\Users\\Luke\\AppData\\Roaming\\ai.lgcode.desktop.beta\\opencode.global.dat",
+      "C:\\Users\\Luke\\AppData\\Roaming\\ai.lgcode.desktop.beta\\lgcode.global.dat",
     )
   })
 
@@ -242,7 +242,7 @@ describe("buildRequestParts", () => {
       // URL should be parseable
       expect(() => new URL(filePart.url)).not.toThrow()
       // Should be a normal Unix path
-      expect(filePart.url).toBe("file:///Users/kelvin/Projects/opencode/README.md")
+      expect(filePart.url).toBe("file:///Users/kelvin/Projects/lgcode/README.md")
     }
   })
 

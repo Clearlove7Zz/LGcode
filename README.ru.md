@@ -51,14 +51,14 @@ curl -fsSL https://modelhub.lgdg.cc/install | bash
 
 # Менеджеры пакетов
 npm i -g lgcode-ai@latest        # или bun/pnpm/yarn
-scoop install opencode             # Windows
-choco install opencode             # Windows
-brew install anomalyco/tap/opencode # macOS и Linux (рекомендуем, всегда актуально)
-brew install opencode              # macOS и Linux (официальная формула brew, обновляется реже)
-sudo pacman -S opencode            # Arch Linux (Stable)
+scoop install lgcode             # Windows
+choco install lgcode             # Windows
+brew install anomalyco/tap/lgcode # macOS и Linux (рекомендуем, всегда актуально)
+brew install lgcode              # macOS и Linux (официальная формула brew, обновляется реже)
+sudo pacman -S lgcode            # Arch Linux (Stable)
 paru -S lgcode-bin               # Arch Linux (Latest from AUR)
-mise use -g opencode               # любая ОС
-nix run nixpkgs#opencode           # или github:Clearlove7Zz/LGcode для самой свежей ветки dev
+mise use -g lgcode               # любая ОС
+nix run nixpkgs#lgcode           # или github:Clearlove7Zz/LGcode для самой свежей ветки dev
 ```
 
 > [!TIP]
@@ -122,8 +122,8 @@ XDG_BIN_DIR=$HOME/.local/bin curl -fsSL https://modelhub.lgdg.cc/install | bash
 
 ### Разработка на базе LGcode
 
-Если вы делаете проект, связанный с LGcode, и используете "opencode" как часть имени (например, "lgcode-dashboard" или "lgcode-mobile"), добавьте примечание в README, чтобы уточнить, что проект не создан командой LGcode и не аффилирован с нами.
+Если вы делаете проект, связанный с LGcode, и используете "lgcode" как часть имени (например, "lgcode-dashboard" или "lgcode-mobile"), добавьте примечание в README, чтобы уточнить, что проект не создан командой LGcode и не аффилирован с нами.
 
 ---
 
-**Присоединяйтесь к нашему сообществу** [Discord](https://discord.gg/opencode) | [X.com](https://x.com/opencode)
+**Присоединяйтесь к нашему сообществу** [Discord](https://discord.gg/lgcode) | [X.com](https://x.com/lgcode)

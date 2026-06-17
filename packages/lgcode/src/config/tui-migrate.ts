@@ -27,8 +27,8 @@ interface MigrateInput {
  * skips only locations where a tui.json already exists.
  */
 export async function migrateTuiConfig(input: MigrateInput) {
-  const opencode = await opencodeFiles(input)
-  for (const file of opencode) {
+  const lgcode = await opencodeFiles(input)
+  for (const file of lgcode) {
     const source = await Filesystem.readText(file).catch(() => undefined)
     if (!source) continue
     const errors: JsoncParseError[] = []
@@ -114,11 +114,11 @@ async function backupAndStripLegacy(file: string, source: string) {
 
 async function opencodeFiles(input: { directories: string[]; cwd: string }) {
   const files = [
-    ...ConfigPaths.fileInDirectory(Global.Path.config, "opencode"),
+    ...ConfigPaths.fileInDirectory(Global.Path.config, "lgcode"),
     ...(await Filesystem.findUp(["lgcode.json", "lgcode.jsonc"], input.cwd, undefined, { rootFirst: true })),
   ]
   for (const dir of unique(input.directories)) {
-    files.push(...ConfigPaths.fileInDirectory(dir, "opencode"))
+    files.push(...ConfigPaths.fileInDirectory(dir, "lgcode"))
   }
   if (Flag.LGCODE_CONFIG) files.push(Flag.LGCODE_CONFIG)
 

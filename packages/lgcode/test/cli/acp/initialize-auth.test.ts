@@ -4,12 +4,12 @@ import { Effect } from "effect"
 import { cliIt } from "../../lib/cli-process"
 import { createAcpClient, expectErrorCode, initialize } from "./helpers"
 
-describe("opencode acp initialize/auth subprocess", () => {
+describe("lgcode acp initialize/auth subprocess", () => {
   cliIt.live(
     "initialize responds with capabilities",
-    ({ opencode }) =>
+    ({ lgcode }) =>
       Effect.gen(function* () {
-        const initialized = yield* initialize(yield* createAcpClient({ opencode }))
+        const initialized = yield* initialize(yield* createAcpClient({ lgcode }))
 
         expect(initialized.protocolVersion).toBe(1)
         expect(initialized.agentCapabilities?.promptCapabilities?.embeddedContext).toBe(true)
@@ -28,9 +28,9 @@ describe("opencode acp initialize/auth subprocess", () => {
 
   cliIt.live(
     "auth negotiation is explicit and safe",
-    ({ opencode }) =>
+    ({ lgcode }) =>
       Effect.gen(function* () {
-        const acp = yield* createAcpClient({ opencode })
+        const acp = yield* createAcpClient({ lgcode })
         const initialized = yield* initialize(acp)
 
         expect(initialized.authMethods?.[0]?.id).toBe("lgcode-login")
@@ -48,9 +48,9 @@ describe("opencode acp initialize/auth subprocess", () => {
 
   cliIt.live(
     "initialize without terminal-auth metadata keeps auth command implicit",
-    ({ opencode }) =>
+    ({ lgcode }) =>
       Effect.gen(function* () {
-        const acp = yield* createAcpClient({ opencode })
+        const acp = yield* createAcpClient({ lgcode })
         const initialized = yield* acp.request<InitializeResponse>("initialize", { protocolVersion: 1 })
 
         expect(initialized.result?.authMethods?.[0]?.id).toBe("lgcode-login")

@@ -5,7 +5,7 @@ description: Seleccione un tema integrado o defina el suyo propio.
 
 Con LGcode puede seleccionar uno de varios temas integrados, usar un tema que se adapte al tema de su terminal o definir su propio tema personalizado.
 
-De forma predeterminada, LGcode usa nuestro propio tema `opencode`.
+De forma predeterminada, LGcode usa nuestro propio tema `lgcode`.
 
 ---
 
@@ -83,7 +83,7 @@ LGcode admite un sistema de temas flexible basado en JSON que permite a los usua
 Los temas se cargan desde varios directorios en el siguiente orden, donde los directorios posteriores anulan los anteriores:
 
 1. **Temas integrados**: están integrados en el binario
-2. **Directorio de configuración de usuario**: definido en `~/.config/opencode/themes/*.json` o `$XDG_CONFIG_HOME/opencode/themes/*.json`
+2. **Directorio de configuración de usuario**: definido en `~/.config/lgcode/themes/*.json` o `$XDG_CONFIG_HOME/lgcode/themes/*.json`
 3. **Directorio raíz del proyecto**: definido en `<project-root>/.lgcode/themes/*.json`
 4. **Directorio de trabajo actual** - Definido en `./.lgcode/themes/*.json`
 
@@ -98,8 +98,8 @@ Para crear un tema personalizado, cree un archivo JSON en uno de los directorios
 Para temas para todo el usuario:
 
 ```bash no-frame
-mkdir -p ~/.config/opencode/themes
-vim ~/.config/opencode/themes/my-theme.json
+mkdir -p ~/.config/lgcode/themes
+vim ~/.config/lgcode/themes/my-theme.json
 ```
 
 Y para temas específicos del proyecto.

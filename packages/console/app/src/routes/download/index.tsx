@@ -139,13 +139,13 @@ export default function Download() {
               </button>
               <button data-component="cli-row" onClick={handleCopyClick("brew install anomalyco/tap/lgcode")}>
                 <code>
-                  brew install <strong>anomalyco/tap/opencode</strong>
+                  brew install <strong>anomalyco/tap/lgcode</strong>
                 </code>
                 <CopyStatus />
               </button>
-              <button data-component="cli-row" onClick={handleCopyClick("paru -S opencode")}>
+              <button data-component="cli-row" onClick={handleCopyClick("paru -S lgcode")}>
                 <code>
-                  paru -S <strong>opencode</strong>
+                  paru -S <strong>lgcode</strong>
                 </code>
                 <CopyStatus />
               </button>

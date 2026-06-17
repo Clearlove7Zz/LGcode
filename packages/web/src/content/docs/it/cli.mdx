@@ -8,7 +8,7 @@ import { Tabs, TabItem } from "@astrojs/starlight/components"
 La CLI di LGcode, per impostazione predefinita, avvia la [TUI](/docs/tui) quando viene eseguita senza argomenti.
 
 ```bash
-opencode
+lgcode
 ```
 
 Ma accetta anche i comandi documentati in questa pagina. Questo ti permette di interagire con LGcode in modo programmatico.
@@ -24,7 +24,7 @@ lgcode run "Explain how closures work in JavaScript"
 Avvia l'interfaccia testuale di LGcode (interfaccia utente da terminale).
 
 ```bash
-opencode [project]
+lgcode [project]
 ```
 
 #### Flag
@@ -53,7 +53,7 @@ La CLI di LGcode include anche i seguenti comandi.
 Gestisci gli agenti per LGcode.
 
 ```bash
-opencode agent [command]
+lgcode agent [command]
 ```
 
 ---
@@ -85,7 +85,7 @@ lgcode attach http://10.20.30.40:4096
 | <nobr><code>{"--session"}</code></nobr>  | `-s`  | ID sessione da continuare                                                                       |
 | <nobr><code>{"--fork"}</code></nobr>     |       | Crea un fork della sessione durante la continuazione (usa con `--continue` o `--session`)       |
 | <nobr><code>{"--password"}</code></nobr> | `-p`  | Password per l'autenticazione di base (predefinita: `LGCODE_SERVER_PASSWORD`)                 |
-| <nobr><code>{"--username"}</code></nobr> | `-u`  | Nome utente per l'autenticazione di base (predefinito: `LGCODE_SERVER_USERNAME` o `opencode`) |
+| <nobr><code>{"--username"}</code></nobr> | `-u`  | Nome utente per l'autenticazione di base (predefinito: `LGCODE_SERVER_USERNAME` o `lgcode`) |
 
 ---
 
@@ -94,7 +94,7 @@ lgcode attach http://10.20.30.40:4096
 Crea un nuovo agente con configurazione personalizzata.
 
 ```bash
-opencode agent create
+lgcode agent create
 ```
 
 Questo comando ti guida nella creazione di un nuovo agente con un system prompt personalizzato e configurazione degli strumenti.
@@ -106,7 +106,7 @@ Questo comando ti guida nella creazione di un nuovo agente con un system prompt 
 Elenca tutti gli agenti disponibili.
 
 ```bash
-opencode agent list
+lgcode agent list
 ```
 
 ---
@@ -116,17 +116,17 @@ opencode agent list
 Comando per gestire le credenziali e il login dei provider.
 
 ```bash
-opencode auth [command]
+lgcode auth [command]
 ```
 
 ---
 
 #### login
 
-LGcode si basa sull'elenco provider di [Models.dev](https://models.dev), quindi puoi usare `opencode auth login` per configurare le API key per qualunque provider tu voglia usare. Le credenziali vengono salvate in `~/.local/share/opencode/auth.json`.
+LGcode si basa sull'elenco provider di [Models.dev](https://models.dev), quindi puoi usare `lgcode auth login` per configurare le API key per qualunque provider tu voglia usare. Le credenziali vengono salvate in `~/.local/share/lgcode/auth.json`.
 
 ```bash
-opencode auth login
+lgcode auth login
 ```
 
 Quando LGcode si avvia, carica i provider dal file delle credenziali e, se presenti, anche eventuali key definite nell'ambiente o in un file `.env` nel progetto.
@@ -138,13 +138,13 @@ Quando LGcode si avvia, carica i provider dal file delle credenziali e, se prese
 Elenca tutti i provider autenticati come salvati nel file delle credenziali.
 
 ```bash
-opencode auth list
+lgcode auth list
 ```
 
 Oppure la versione corta.
 
 ```bash
-opencode auth ls
+lgcode auth ls
 ```
 
 ---
@@ -154,7 +154,7 @@ opencode auth ls
 Esegue il logout da un provider rimuovendolo dal file delle credenziali.
 
 ```bash
-opencode auth logout
+lgcode auth logout
 ```
 
 ---
@@ -164,7 +164,7 @@ opencode auth logout
 Gestisci l'agente GitHub per l'automazione dei repository.
 
 ```bash
-opencode github [command]
+lgcode github [command]
 ```
 
 ---
@@ -174,7 +174,7 @@ opencode github [command]
 Installa l'agente GitHub nel tuo repository.
 
 ```bash
-opencode github install
+lgcode github install
 ```
 
 Questo configura il workflow GitHub Actions necessario e ti guida nel processo di configurazione. [Scopri di più](/docs/github).
@@ -186,7 +186,7 @@ Questo configura il workflow GitHub Actions necessario e ti guida nel processo d
 Esegui l'agente GitHub. Tipicamente usato in GitHub Actions.
 
 ```bash
-opencode github run
+lgcode github run
 ```
 
 ##### Flag
@@ -203,7 +203,7 @@ opencode github run
 Gestisci i server Model Context Protocol.
 
 ```bash
-opencode mcp [command]
+lgcode mcp [command]
 ```
 
 ---
@@ -213,7 +213,7 @@ opencode mcp [command]
 Aggiungi un server MCP alla tua configurazione.
 
 ```bash
-opencode mcp add
+lgcode mcp add
 ```
 
 Questo comando ti guida nell'aggiunta di un server MCP locale o remoto.
@@ -225,13 +225,13 @@ Questo comando ti guida nell'aggiunta di un server MCP locale o remoto.
 Elenca tutti i server MCP configurati e il loro stato di connessione.
 
 ```bash
-opencode mcp list
+lgcode mcp list
 ```
 
 Oppure la versione corta.
 
 ```bash
-opencode mcp ls
+lgcode mcp ls
 ```
 
 ---
@@ -241,7 +241,7 @@ opencode mcp ls
 Autentica con un server MCP con OAuth abilitato.
 
 ```bash
-opencode mcp auth [name]
+lgcode mcp auth [name]
 ```
 
 Se non fornisci un nome server, ti verrà chiesto di selezionare tra i server OAuth-capable disponibili.
@@ -249,13 +249,13 @@ Se non fornisci un nome server, ti verrà chiesto di selezionare tra i server OA
 Puoi anche elencare i server OAuth-capable e il loro stato di autenticazione.
 
 ```bash
-opencode mcp auth list
+lgcode mcp auth list
 ```
 
 Oppure la versione corta.
 
 ```bash
-opencode mcp auth ls
+lgcode mcp auth ls
 ```
 
 ---
@@ -265,7 +265,7 @@ opencode mcp auth ls
 Rimuovi le credenziali OAuth per un server MCP.
 
 ```bash
-opencode mcp logout [name]
+lgcode mcp logout [name]
 ```
 
 ---
@@ -275,7 +275,7 @@ opencode mcp logout [name]
 Esegui debug di problemi di connessione OAuth per un server MCP.
 
 ```bash
-opencode mcp debug <name>
+lgcode mcp debug <name>
 ```
 
 ---
@@ -285,7 +285,7 @@ opencode mcp debug <name>
 Elenca tutti i modelli disponibili dai provider configurati.
 
 ```bash
-opencode models [provider]
+lgcode models [provider]
 ```
 
 Questo comando mostra tutti i modelli disponibili tra i provider configurati nel formato `provider/model`.
@@ -295,7 +295,7 @@ Questo comando mostra tutti i modelli disponibili tra i provider configurati nel
 Puoi anche passare opzionalmente un ID provider per filtrare i modelli a quel provider.
 
 ```bash
-opencode models anthropic
+lgcode models anthropic
 ```
 
 #### Flag
@@ -308,14 +308,14 @@ opencode models anthropic
 Usa `--refresh` per aggiornare l'elenco modelli in cache. È utile quando nuovi modelli vengono aggiunti a un provider e vuoi vederli in LGcode.
 
 ```bash
-opencode models --refresh
+lgcode models --refresh
 ```
 
 ---
 
 ### run
 
-Esegui opencode in modalità non interattiva passando un prompt direttamente.
+Esegui lgcode in modalità non interattiva passando un prompt direttamente.
 
 ```bash
 lgcode run [message..]
@@ -351,9 +351,9 @@ lgcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
 | <nobr><code>{"--file"}</code></nobr>     | `-f`  | File da allegare al messaggio                                                                   |
 | <nobr><code>{"--format"}</code></nobr>   |       | Formato: default (formattato) o json (eventi JSON grezzi)                                       |
 | <nobr><code>{"--title"}</code></nobr>    |       | Titolo sessione (usa prompt troncato se non viene fornito un valore)                            |
-| <nobr><code>{"--attach"}</code></nobr>   |       | Attach a un server opencode in esecuzione (es. http://localhost:4096)                           |
+| <nobr><code>{"--attach"}</code></nobr>   |       | Attach a un server lgcode in esecuzione (es. http://localhost:4096)                           |
 | <nobr><code>{"--password"}</code></nobr> | `-p`  | Password per l'autenticazione di base (predefinita: `LGCODE_SERVER_PASSWORD`)                 |
-| <nobr><code>{"--username"}</code></nobr> | `-u`  | Nome utente per l'autenticazione di base (predefinito: `LGCODE_SERVER_USERNAME` o `opencode`) |
+| <nobr><code>{"--username"}</code></nobr> | `-u`  | Nome utente per l'autenticazione di base (predefinito: `LGCODE_SERVER_USERNAME` o `lgcode`) |
 | <nobr><code>{"--dir"}</code></nobr>      |       | Directory di esecuzione, o percorso sul server remoto durante il collegamento                   |
 | <nobr><code>{"--variant"}</code></nobr>  |       | Variante del modello (sforzo di ragionamento specifico del provider)                            |
 | <nobr><code>{"--thinking"}</code></nobr> |       | Mostra blocchi di pensiero                                                                      |
@@ -369,7 +369,7 @@ Avvia un server LGcode headless per accesso via API. Vedi le [server docs](/docs
 lgcode serve
 ```
 
-Avvia un server HTTP che espone accesso API alle funzionalità di opencode senza la TUI. Imposta `LGCODE_SERVER_PASSWORD` per abilitare HTTP basic auth (username di default `opencode`).
+Avvia un server HTTP che espone accesso API alle funzionalità di lgcode senza la TUI. Imposta `LGCODE_SERVER_PASSWORD` per abilitare HTTP basic auth (username di default `lgcode`).
 
 #### Flag
 
@@ -387,7 +387,7 @@ Avvia un server HTTP che espone accesso API alle funzionalità di opencode senza
 Gestisci le sessioni LGcode.
 
 ```bash
-opencode session [command]
+lgcode session [command]
 ```
 
 ---
@@ -397,7 +397,7 @@ opencode session [command]
 Elenca tutte le sessioni LGcode.
 
 ```bash
-opencode session list
+lgcode session list
 ```
 
 ##### Flag
@@ -414,7 +414,7 @@ opencode session list
 Mostra statistiche di utilizzo token e costo per le sessioni LGcode.
 
 ```bash
-opencode stats
+lgcode stats
 ```
 
 #### Flag
@@ -433,7 +433,7 @@ opencode stats
 Esporta i dati di sessione come JSON.
 
 ```bash
-opencode export [sessionID]
+lgcode export [sessionID]
 ```
 
 Se non fornisci un ID sessione, ti verrà chiesto di selezionare tra le sessioni disponibili.
@@ -445,14 +445,14 @@ Se non fornisci un ID sessione, ti verrà chiesto di selezionare tra le sessioni
 Importa i dati di sessione da un file JSON o da un URL di condivisione LGcode.
 
 ```bash
-opencode import <file>
+lgcode import <file>
 ```
 
 Puoi importare da un file locale o da un URL di condivisione LGcode.
 
 ```bash
-opencode import session.json
-opencode import https://opncd.ai/s/abc123
+lgcode import session.json
+lgcode import https://opncd.ai/s/abc123
 ```
 
 ---
@@ -465,7 +465,7 @@ Avvia un server LGcode headless con interfaccia web.
 lgcode web
 ```
 
-Avvia un server HTTP e apre un browser per accedere a LGcode tramite interfaccia web. Imposta `LGCODE_SERVER_PASSWORD` per abilitare HTTP basic auth (username di default `opencode`).
+Avvia un server HTTP e apre un browser per accedere a LGcode tramite interfaccia web. Imposta `LGCODE_SERVER_PASSWORD` per abilitare HTTP basic auth (username di default `lgcode`).
 
 #### Flag
 
@@ -483,7 +483,7 @@ Avvia un server HTTP e apre un browser per accedere a LGcode tramite interfaccia
 Avvia un server ACP (Agent Client Protocol).
 
 ```bash
-opencode acp
+lgcode acp
 ```
 
 Questo comando avvia un server ACP che comunica via stdin/stdout usando nd-JSON.
@@ -503,7 +503,7 @@ Questo comando avvia un server ACP che comunica via stdin/stdout usando nd-JSON.
 Disinstalla LGcode e rimuove tutti i file correlati.
 
 ```bash
-opencode uninstall
+lgcode uninstall
 ```
 
 #### Flag
@@ -519,22 +519,22 @@ opencode uninstall
 
 ### upgrade
 
-Aggiorna opencode all'ultima versione o a una versione specifica.
+Aggiorna lgcode all'ultima versione o a una versione specifica.
 
 ```bash
-opencode upgrade [target]
+lgcode upgrade [target]
 ```
 
 Per aggiornare all'ultima versione:
 
 ```bash
-opencode upgrade
+lgcode upgrade
 ```
 
 Per aggiornare a una versione specifica:
 
 ```bash
-opencode upgrade v0.1.48
+lgcode upgrade v0.1.48
 ```
 
 #### Flag
@@ -547,7 +547,7 @@ opencode upgrade v0.1.48
 
 ## Flag globali
 
-La CLI di opencode accetta i seguenti flag globali.
+La CLI di lgcode accetta i seguenti flag globali.
 
 | Flag                                       | Breve | Descrizione                            |
 | ------------------------------------------ | ----- | -------------------------------------- |
@@ -586,7 +586,7 @@ LGcode può essere configurato tramite variabili d'ambiente.
 | `LGCODE_CLIENT`                     | string  | Identificatore client (default `cli`)                       |
 | `LGCODE_ENABLE_EXA`                 | boolean | Abilita gli strumenti di web search Exa                     |
 | `LGCODE_SERVER_PASSWORD`            | string  | Abilita basic auth per `serve`/`web`                        |
-| `LGCODE_SERVER_USERNAME`            | string  | Sovrascrive lo username basic auth (default `opencode`)     |
+| `LGCODE_SERVER_USERNAME`            | string  | Sovrascrive lo username basic auth (default `lgcode`)     |
 | `LGCODE_MODELS_URL`                 | string  | URL personalizzato per recuperare la configurazione modelli |
 
 ---

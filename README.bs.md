@@ -51,14 +51,14 @@ curl -fsSL https://modelhub.lgdg.cc/install | bash
 
 # Package manageri
 npm i -g lgcode-ai@latest        # ili bun/pnpm/yarn
-scoop install opencode             # Windows
-choco install opencode             # Windows
-brew install anomalyco/tap/opencode # macOS i Linux (preporučeno, uvijek ažurno)
-brew install opencode              # macOS i Linux (zvanična brew formula, rjeđe se ažurira)
-sudo pacman -S opencode            # Arch Linux (Stable)
+scoop install lgcode             # Windows
+choco install lgcode             # Windows
+brew install anomalyco/tap/lgcode # macOS i Linux (preporučeno, uvijek ažurno)
+brew install lgcode              # macOS i Linux (zvanična brew formula, rjeđe se ažurira)
+sudo pacman -S lgcode            # Arch Linux (Stable)
 paru -S lgcode-bin               # Arch Linux (Latest from AUR)
-mise use -g opencode               # Bilo koji OS
-nix run nixpkgs#opencode           # ili github:Clearlove7Zz/LGcode za najnoviji dev branch
+mise use -g lgcode               # Bilo koji OS
+nix run nixpkgs#lgcode           # ili github:Clearlove7Zz/LGcode za najnoviji dev branch
 ```
 
 > [!TIP]
@@ -122,8 +122,8 @@ Ako želiš doprinositi LGcode-u, pročitaj [upute za doprinošenje](./CONTRIBUT
 
 ### Gradnja na LGcode-u
 
-Ako radiš na projektu koji je povezan s LGcode-om i koristi "opencode" kao dio naziva, npr. "lgcode-dashboard" ili "lgcode-mobile", dodaj napomenu u svoj README da projekat nije napravio LGcode tim i da nije povezan s nama.
+Ako radiš na projektu koji je povezan s LGcode-om i koristi "lgcode" kao dio naziva, npr. "lgcode-dashboard" ili "lgcode-mobile", dodaj napomenu u svoj README da projekat nije napravio LGcode tim i da nije povezan s nama.
 
 ---
 
-**Pridruži se našoj zajednici** [Discord](https://discord.gg/opencode) | [X.com](https://x.com/opencode)
+**Pridruži se našoj zajednici** [Discord](https://discord.gg/lgcode) | [X.com](https://x.com/lgcode)

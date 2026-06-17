@@ -31,7 +31,7 @@ export type ServiceClass<Self, Id extends string, Service> = Context.ServiceClas
  *   "@lgcode/ServerAuthConfig",
  *   {
  *     password: Config.string("LGCODE_SERVER_PASSWORD").pipe(Config.option),
- *     username: Config.string("LGCODE_SERVER_USERNAME").pipe(Config.withDefault("opencode")),
+ *     username: Config.string("LGCODE_SERVER_USERNAME").pipe(Config.withDefault("lgcode")),
  *   },
  * ) {}
  *

@@ -5,7 +5,7 @@ description: Izaberite ugradenu temu ili napravite svoju.
 
 U LGcode mozete birati izmedu vise ugradenih tema, koristiti temu koja se prilagodava terminalu ili definisati vlastitu temu.
 
-Po defaultu, LGcode koristi nasu `opencode` temu.
+Po defaultu, LGcode koristi nasu `lgcode` temu.
 
 ---
 
@@ -83,7 +83,7 @@ LGcode podrzava fleksibilan sistem tema baziran na JSON-u koji olaksava kreiranj
 Teme se ucitavaju iz vise direktorija ovim redoslijedom, gdje kasniji direktoriji prepisuju ranije:
 
 1. **Ugradene teme** - Ugradene su u binarni fajl
-2. **Korisnicki config direktorij** - `~/.config/opencode/themes/*.json` ili `$XDG_CONFIG_HOME/opencode/themes/*.json`
+2. **Korisnicki config direktorij** - `~/.config/lgcode/themes/*.json` ili `$XDG_CONFIG_HOME/lgcode/themes/*.json`
 3. **Korijenski direktorij projekta** - `<project-root>/.lgcode/themes/*.json`
 4. **Trenutni radni direktorij** - `./.lgcode/themes/*.json`
 
@@ -98,8 +98,8 @@ Da kreirate prilagodenu temu, napravite JSON datoteku u jednom od direktorija za
 Za korisnicke teme na nivou sistema:
 
 ```bash no-frame
-mkdir -p ~/.config/opencode/themes
-vim ~/.config/opencode/themes/my-theme.json
+mkdir -p ~/.config/lgcode/themes
+vim ~/.config/lgcode/themes/my-theme.json
 ```
 
 I za teme specificne za projekat.

@@ -1,38 +1,38 @@
 ---
 title: GitLab
-description: Используйте opencode в задачах GitLab и мерж-реквестах.
+description: Используйте lgcode в задачах GitLab и мерж-реквестах.
 ---
 
-opencode интегрируется с вашим рабочим процессом GitLab через конвейер GitLab CI/CD или с GitLab Duo.
+lgcode интегрируется с вашим рабочим процессом GitLab через конвейер GitLab CI/CD или с GitLab Duo.
 
-В обоих случаях opencode будет работать на ваших программах GitLab.
+В обоих случаях lgcode будет работать на ваших программах GitLab.
 
 ---
 
 ## GitLab
 
-opencode работает в обычном конвейере GitLab. Вы можете встроить его в конвейер как [CI-компонент](https://docs.gitlab.com/ee/ci/components/)
+lgcode работает в обычном конвейере GitLab. Вы можете встроить его в конвейер как [CI-компонент](https://docs.gitlab.com/ee/ci/components/)
 
-Здесь мы используем созданный сообществом компонент CI/CD для opencode — [nagyv/gitlab-opencode](https://gitlab.com/nagyv/gitlab-opencode).
+Здесь мы используем созданный сообществом компонент CI/CD для lgcode — [nagyv/gitlab-lgcode](https://gitlab.com/nagyv/gitlab-lgcode).
 
 ---
 
 ### Функции
 
-- **Использовать пользовательскую конфигурацию для каждого задания**. Настройте opencode с помощью пользовательского каталога конфигурации, например `./config/#custom-directory`, чтобы включать или отключать функциональность для каждого вызова opencode.
-- **Минимальная настройка**: компонент CI настраивает opencode в фоновом режиме, вам нужно только создать конфигурацию opencode и начальное приглашение.
+- **Использовать пользовательскую конфигурацию для каждого задания**. Настройте lgcode с помощью пользовательского каталога конфигурации, например `./config/#custom-directory`, чтобы включать или отключать функциональность для каждого вызова lgcode.
+- **Минимальная настройка**: компонент CI настраивает lgcode в фоновом режиме, вам нужно только создать конфигурацию lgcode и начальное приглашение.
 - **Гибкость**: компонент CI поддерживает несколько входных данных для настройки его поведения.
 
 ---
 
 ### Настройка
 
-1. Сохраните JSON аутентификации opencode как переменные среды CI типа файла в разделе **Настройки** > **CI/CD** > **Переменные**. Обязательно пометьте их как «Замаскированные и скрытые».
+1. Сохраните JSON аутентификации lgcode как переменные среды CI типа файла в разделе **Настройки** > **CI/CD** > **Переменные**. Обязательно пометьте их как «Замаскированные и скрытые».
 2. Добавьте следующее в файл `.gitlab-ci.yml`.
 
    ```yaml title=".gitlab-ci.yml"
    include:
-     - component: $CI_SERVER_FQDN/nagyv/gitlab-opencode/opencode@2
+     - component: $CI_SERVER_FQDN/nagyv/gitlab-lgcode/lgcode@2
        inputs:
          config_dir: ${CI_PROJECT_DIR}/lgcode-config
          auth_json: $LGCODE_AUTH_JSON # The variable name for your LGcode authentication JSON
@@ -40,29 +40,29 @@ opencode работает в обычном конвейере GitLab. Вы мо
          message: "Your prompt here"
    ```
 
-Дополнительные сведения и варианты использования см. в документации ](https://gitlab.com/explore/catalog/nagyv/gitlab-opencode) для этого компонента.
+Дополнительные сведения и варианты использования см. в документации ](https://gitlab.com/explore/catalog/nagyv/gitlab-lgcode) для этого компонента.
 
 ---
 
 ## GitLab Duo
 
-opencode интегрируется с вашим рабочим процессом GitLab.
-Упомяните `@opencode` в комментарии, и opencode выполнит задачи в вашем конвейере GitLab CI.
+lgcode интегрируется с вашим рабочим процессом GitLab.
+Упомяните `@lgcode` в комментарии, и lgcode выполнит задачи в вашем конвейере GitLab CI.
 
 ---
 
 ### Функции
 
-- **Триаж задач (Issue Triage)**. Попросите opencode разобраться в проблеме и объяснить ее вам.
-- **Исправление и реализация**. Попросите opencode исправить проблему или реализовать функцию.
+- **Триаж задач (Issue Triage)**. Попросите lgcode разобраться в проблеме и объяснить ее вам.
+- **Исправление и реализация**. Попросите lgcode исправить проблему или реализовать функцию.
   Он создаст новую ветку и создаст мерж-реквест с изменениями.
-- **Безопасность**: opencode работает на ваших программах GitLab.
+- **Безопасность**: lgcode работает на ваших программах GitLab.
 
 ---
 
 ### Настройка
 
-opencode работает в вашем конвейере GitLab CI/CD. Вот что вам понадобится для его настройки:
+lgcode работает в вашем конвейере GitLab CI/CD. Вот что вам понадобится для его настройки:
 
 :::tip
 Ознакомьтесь с [**документацией GitLab**](https://docs.gitlab.com/user/duo_agent_platform/agent_assistant/) для получения актуальных инструкций.
@@ -82,7 +82,7 @@ opencode работает в вашем конвейере GitLab CI/CD. Вот 
     ```yaml
     image: node:22-slim
     commands:
-      - echo "Installing opencode"
+      - echo "Installing lgcode"
       - npm install --global lgcode-ai
       - echo "Installing glab"
       - export GITLAB_TOKEN=$GITLAB_TOKEN_LGCODE
@@ -92,9 +92,9 @@ opencode работает в вашем конвейере GitLab CI/CD. Вот 
       - echo "Configuring glab"
       - echo $GITLAB_HOST
       - echo "Creating LGcode auth configuration"
-      - mkdir --parents ~/.local/share/opencode
+      - mkdir --parents ~/.local/share/lgcode
       - |
-        cat > ~/.local/share/opencode/auth.json << EOF
+        cat > ~/.local/share/lgcode/auth.json << EOF
         {
           "anthropic": {
             "type": "api",
@@ -103,7 +103,7 @@ opencode работает в вашем конвейере GitLab CI/CD. Вот 
         }
         EOF
       - echo "Configuring git"
-      - git config --global user.email "opencode@gitlab.com"
+      - git config --global user.email "lgcode@gitlab.com"
       - git config --global user.name "LGcode"
       - echo "Testing glab"
       - glab issue list
@@ -158,10 +158,10 @@ opencode работает в вашем конвейере GitLab CI/CD. Вот 
 
 ### Примеры
 
-Вот несколько примеров того, как вы можете использовать opencode в GitLab.
+Вот несколько примеров того, как вы можете использовать lgcode в GitLab.
 
 :::tip
-Вы можете настроить использование триггерной фразы, отличной от `@opencode`.
+Вы можете настроить использование триггерной фразы, отличной от `@lgcode`.
 :::
 
 - **Объяснение проблемы**
@@ -169,27 +169,27 @@ opencode работает в вашем конвейере GitLab CI/CD. Вот 
   Добавьте этот комментарий в issue GitLab.
 
   ```
-  @opencode explain this issue
+  @lgcode explain this issue
   ```
 
-  opencode прочитает проблему и ответит с четким объяснением.
+  lgcode прочитает проблему и ответит с четким объяснением.
 
 - **Исправление проблемы**
 
   В issue GitLab напишите:
 
   ```
-  @opencode fix this
+  @lgcode fix this
   ```
 
-  opencode создаст новую ветку, внедрит изменения и откроет мерж-реквест с изменениями.
+  lgcode создаст новую ветку, внедрит изменения и откроет мерж-реквест с изменениями.
 
 - **Проверка Merge Request**
 
   Оставьте следующий комментарий к мерж-реквесту GitLab.
 
   ```
-  @opencode review this merge request
+  @lgcode review this merge request
   ```
 
-  opencode рассмотрит мерж-реквест и предоставит отзыв.
+  lgcode рассмотрит мерж-реквест и предоставит отзыв.

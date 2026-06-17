@@ -51,14 +51,14 @@ curl -fsSL https://modelhub.lgdg.cc/install | bash
 
 # Package managers
 npm i -g lgcode-ai@latest        # or bun/pnpm/yarn
-scoop install opencode             # Windows
-choco install opencode             # Windows
-brew install anomalyco/tap/opencode # macOS and Linux (recommended, always up to date)
-brew install opencode              # macOS and Linux (official brew formula, updated less)
-sudo pacman -S opencode            # Arch Linux (Stable)
+scoop install lgcode             # Windows
+choco install lgcode             # Windows
+brew install anomalyco/tap/lgcode # macOS and Linux (recommended, always up to date)
+brew install lgcode              # macOS and Linux (official brew formula, updated less)
+sudo pacman -S lgcode            # Arch Linux (Stable)
 paru -S lgcode-bin               # Arch Linux (Latest from AUR)
-mise use -g opencode               # Any OS
-nix run nixpkgs#opencode           # or github:Clearlove7Zz/LGcode for latest dev branch
+mise use -g lgcode               # Any OS
+nix run nixpkgs#lgcode           # or github:Clearlove7Zz/LGcode for latest dev branch
 ```
 
 > [!TIP]
@@ -122,8 +122,8 @@ If you're interested in contributing to LGcode, please read our [contributing do
 
 ### Building on LGcode
 
-If you are working on a project that's related to LGcode and is using "opencode" as part of its name, for example "lgcode-dashboard" or "lgcode-mobile", please add a note to your README to clarify that it is not built by the LGcode team and is not affiliated with us in any way.
+If you are working on a project that's related to LGcode and is using "lgcode" as part of its name, for example "lgcode-dashboard" or "lgcode-mobile", please add a note to your README to clarify that it is not built by the LGcode team and is not affiliated with us in any way.
 
 ---
 
-**Join our community** [Discord](https://discord.gg/opencode) | [X.com](https://x.com/opencode)
+**Join our community** [Discord](https://discord.gg/lgcode) | [X.com](https://x.com/lgcode)

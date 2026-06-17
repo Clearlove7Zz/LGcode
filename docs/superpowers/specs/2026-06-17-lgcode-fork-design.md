@@ -10,7 +10,7 @@
 
 Fork the LGcode repository and transform it into `LGcode`, a branded AI coding agent for internal company use. The fork must:
 
-- Replace all user-facing `LGcode` / `opencode` branding with `LGcode` / `lgcode`.
+- Replace all user-facing `LGcode` / `lgcode` branding with `LGcode` / `lgcode`.
 - Integrate the company model cluster `https://modelhub.lgdg.cc/aigateway/v1` as a first-class provider.
 - Preserve the existing multi-provider architecture so users can still choose other providers.
 - Replace core logo assets with the provided PNG set.
@@ -36,7 +36,7 @@ The repository remains a Bun-based monorepo using workspaces. The high-level arc
 ```
 LGcode/
 ├── packages/
-│   ├── lgcode/          # CLI/TUI entry point (renamed from opencode)
+│   ├── lgcode/          # CLI/TUI entry point (renamed from lgcode)
 │   ├── core/            # @lgcode/core
 │   ├── app/             # @lgcode/app
 │   ├── llm/             # @lgcode/llm
@@ -82,7 +82,7 @@ Both will be available as selectable models under the `LGDG_ModelHub` provider. 
 | Current | New | Notes |
 |---|---|---|
 | `LGcode` | `LGcode` | User-facing product name |
-| `opencode` | `lgcode` | CLI command, package name, extension ID, settings keys |
+| `lgcode` | `lgcode` | CLI command, package name, extension ID, settings keys |
 | `@lgcode-ai/*` | `@lgcode/*` | Workspace package names |
 | `lgcode-ai` | `lgcode` | Published npm package scope/name |
 | `modelhub.lgdg.cc` / `https://modelhub.lgdg.cc/*` | `https://modelhub.lgdg.cc` | Model cluster base URL; other non-API `modelhub.lgdg.cc` URLs are removed |
@@ -147,8 +147,8 @@ Every `package.json` in the monorepo needs updates for:
 - `name`
 - `dependencies` / `devDependencies` workspace references (`@lgcode-ai/*` → `@lgcode/*`)
 - `repository`, `homepage`, `bugs` URLs (removed for now)
-- `bin` entries (`opencode` → `lgcode`)
-- `scripts` that reference `opencode`
+- `bin` entries (`lgcode` → `lgcode`)
+- `scripts` that reference `lgcode`
 
 Key files:
 
@@ -174,8 +174,8 @@ Key files:
 Search and replace user-visible strings:
 
 - `LGcode` → `LGcode`
-- `opencode` → `lgcode` in product strings, commands, settings keys, directory names
-- Keep `opencode` only where it is a dependency/package name that is being renamed separately.
+- `lgcode` → `lgcode` in product strings, commands, settings keys, directory names
+- Keep `lgcode` only where it is a dependency/package name that is being renamed separately.
 
 Important code areas:
 

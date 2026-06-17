@@ -304,7 +304,7 @@ export const ProvidersLoginCommand = effectCmd({
   builder: (yargs: Argv) =>
     yargs
       .positional("url", {
-        describe: "opencode auth provider",
+        describe: "lgcode auth provider",
         type: "string",
       })
       .option("provider", {
@@ -325,7 +325,7 @@ export const ProvidersLoginCommand = effectCmd({
     if (args.url) {
       const url = args.url.replace(/\/+$/, "")
       const wellknown = (yield* cliTry(`Failed to load auth provider metadata from ${url}: `, () =>
-        fetch(`${url}/.well-known/opencode`).then((x) => x.json()),
+        fetch(`${url}/.well-known/lgcode`).then((x) => x.json()),
       )) as {
         auth: { command: string[]; env: string }
       }
@@ -369,7 +369,7 @@ export const ProvidersLoginCommand = effectCmd({
     const hooks = yield* pluginSvc.list()
 
     const priority: Record<string, number> = {
-      opencode: 0,
+      lgcode: 0,
       openai: 1,
       "github-copilot": 2,
       google: 3,
@@ -396,7 +396,7 @@ export const ProvidersLoginCommand = effectCmd({
           label: x.name,
           value: x.id,
           hint: {
-            opencode: "recommended",
+            lgcode: "recommended",
             openai: "ChatGPT Plus/Pro or API key",
           }[x.id],
         })),
@@ -463,7 +463,7 @@ export const ProvidersLoginCommand = effectCmd({
       )
     }
 
-    if (provider === "opencode") {
+    if (provider === "lgcode") {
       yield* Prompt.log.info("Create an api key at https://modelhub.lgdg.cc/auth")
     }
 

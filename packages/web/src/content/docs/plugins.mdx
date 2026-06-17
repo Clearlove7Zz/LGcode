@@ -20,7 +20,7 @@ There are two ways to load plugins.
 Place JavaScript or TypeScript files in the plugin directory.
 
 - `.lgcode/plugins/` - Project-level plugins
-- `~/.config/opencode/plugins/` - Global plugins
+- `~/.config/lgcode/plugins/` - Global plugins
 
 Files in these directories are automatically loaded at startup.
 
@@ -45,7 +45,7 @@ Browse available plugins in the [ecosystem](/docs/ecosystem#plugins).
 
 ### How plugins are installed
 
-**npm plugins** are installed automatically using Bun at startup. Packages and their dependencies are cached in `~/.cache/opencode/node_modules/`.
+**npm plugins** are installed automatically using Bun at startup. Packages and their dependencies are cached in `~/.cache/lgcode/node_modules/`.
 
 **Local plugins** are loaded directly from the plugin directory. To use external packages, you must create a `package.json` within your config directory (see [Dependencies](#dependencies)), or publish the plugin to npm and [add it to your config](/docs/config#plugins).
 
@@ -55,9 +55,9 @@ Browse available plugins in the [ecosystem](/docs/ecosystem#plugins).
 
 Plugins are loaded from all sources and all hooks run in sequence. The load order is:
 
-1. Global config (`~/.config/opencode/lgcode.json`)
+1. Global config (`~/.config/lgcode/lgcode.json`)
 2. Project config (`lgcode.json`)
-3. Global plugin directory (`~/.config/opencode/plugins/`)
+3. Global plugin directory (`~/.config/lgcode/plugins/`)
 4. Project plugin directory (`.lgcode/plugins/`)
 
 Duplicate npm packages with the same name and version are loaded once. However, a local plugin and an npm plugin with similar names are both loaded separately.
@@ -118,7 +118,7 @@ The plugin function receives:
 - `project`: The current project information.
 - `directory`: The current working directory.
 - `worktree`: The git worktree path.
-- `client`: An opencode SDK client for interacting with the AI.
+- `client`: An lgcode SDK client for interacting with the AI.
 - `$`: Bun's [shell API](https://bun.com/docs/runtime/shell) for executing commands.
 
 ---
@@ -211,7 +211,7 @@ Plugins can subscribe to events as seen below in the Examples section. Here is a
 
 ## Examples
 
-Here are some examples of plugins you can use to extend opencode.
+Here are some examples of plugins you can use to extend lgcode.
 
 ---
 
@@ -225,7 +225,7 @@ export const NotificationPlugin = async ({ project, client, $, directory, worktr
     event: async ({ event }) => {
       // Send notification on session completion
       if (event.type === "session.idle") {
-        await $`osascript -e 'display notification "Session completed!" with title "opencode"'`
+        await $`osascript -e 'display notification "Session completed!" with title "lgcode"'`
       }
     },
   }
@@ -242,7 +242,7 @@ If you’re using the LGcode desktop app, it can send system notifications autom
 
 ### .env protection
 
-Prevent opencode from reading `.env` files:
+Prevent lgcode from reading `.env` files:
 
 ```javascript title=".lgcode/plugins/env-protection.js"
 export const EnvProtection = async ({ project, client, $, directory, worktree }) => {
@@ -277,7 +277,7 @@ export const InjectEnvPlugin = async () => {
 
 ### Custom tools
 
-Plugins can also add custom tools to opencode:
+Plugins can also add custom tools to lgcode:
 
 ```ts title=".lgcode/plugins/custom-tools.ts"
 import { type Plugin, tool } from "@lgcode-ai/plugin"
@@ -300,13 +300,13 @@ export const CustomToolsPlugin: Plugin = async (ctx) => {
 }
 ```
 
-The `tool` helper creates a custom tool that opencode can call. It takes a Zod schema function and returns a tool definition with:
+The `tool` helper creates a custom tool that lgcode can call. It takes a Zod schema function and returns a tool definition with:
 
 - `description`: What the tool does
 - `args`: Zod schema for the tool's arguments
 - `execute`: Function that runs when the tool is called
 
-Your custom tools will be available to opencode alongside built-in tools.
+Your custom tools will be available to lgcode alongside built-in tools.
 
 :::note
 If a plugin tool uses the same name as a built-in tool, the plugin tool takes precedence.

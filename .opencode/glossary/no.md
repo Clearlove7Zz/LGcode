@@ -7,7 +7,7 @@
 
 ## Do Not Translate (Locale Additions)
 
-- `LGcode` (preserve casing in prose; keep `opencode` only in commands, package names, paths, or code)
+- `LGcode` (preserve casing in prose; keep `lgcode` only in commands, package names, paths, or code)
 - `LGcode CLI`
 - `CLI`, `TUI`, `MCP`, `OAuth`
 - Sound names (PR #10018 notes these were intentionally left untranslated)

@@ -23,7 +23,7 @@ lgcode serve [--port <number>] [--hostname <string>] [--cors <origin>]
 | `--port`        | リッスンするポート                | `4096`           |
 | `--hostname`    | リッスンするホスト名              | `127.0.0.1`      |
 | `--mdns`        | mDNS 検出を有効にする             | `false`          |
-| `--mdns-domain` | mDNS サービスのカスタムドメイン名 | `opencode.local` |
+| `--mdns-domain` | mDNS サービスのカスタムドメイン名 | `lgcode.local` |
 | `--cors`        | 許可する追加のブラウザーオリジン  | `[]`             |
 
 `--cors` は複数回渡すことができます。
@@ -36,7 +36,7 @@ lgcode serve --cors http://localhost:5173 --cors https://app.example.com
 
 ### 認証
 
-HTTP 基本認証でサーバーを保護するには、`LGCODE_SERVER_PASSWORD` を設定します。ユーザー名はデフォルトで `opencode` になるか、`LGCODE_SERVER_USERNAME` を設定してオーバーライドします。これは、`lgcode serve` と `lgcode web` の両方に当てはまります。
+HTTP 基本認証でサーバーを保護するには、`LGCODE_SERVER_PASSWORD` を設定します。ユーザー名はデフォルトで `lgcode` になるか、`LGCODE_SERVER_USERNAME` を設定してオーバーライドします。これは、`lgcode serve` と `lgcode web` の両方に当てはまります。
 
 ```bash
 LGCODE_SERVER_PASSWORD=your-password lgcode serve
@@ -46,7 +46,7 @@ LGCODE_SERVER_PASSWORD=your-password lgcode serve
 
 ### 仕組み
 
-`opencode` を実行すると、TUI とサーバーが起動します。 TUI はサーバーと通信するクライアントです。サーバーは OpenAPI 3.1 仕様のエンドポイントを公開します。このエンドポイントは、[SDK](/docs/sdk) を使用してアクセスできます。
+`lgcode` を実行すると、TUI とサーバーが起動します。 TUI はサーバーと通信するクライアントです。サーバーは OpenAPI 3.1 仕様のエンドポイントを公開します。このエンドポイントは、[SDK](/docs/sdk) を使用してアクセスできます。
 
 :::tip
 LGcode サーバーを使用して、プログラムで LGcode と対話します。

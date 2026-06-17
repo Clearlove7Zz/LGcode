@@ -19,7 +19,7 @@ jobs:
       - name: Setup Bun
         uses: ./.github/actions/setup-bun
 
-      - name: Install opencode
+      - name: Install lgcode
         run: curl -fsSL https://modelhub.lgdg.cc/install | bash
 
       - name: Triage issue

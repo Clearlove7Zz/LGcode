@@ -6,10 +6,10 @@ export const wslRuntimeRetryable = (runtime: WslServerRuntime) =>
 export async function enterWslOpencodeStep(
   distro: string,
   probe: (distro: string) => Promise<unknown>,
-  select: (step: "opencode") => void,
+  select: (step: "lgcode") => void,
 ) {
   await probe(distro)
-  select("opencode")
+  select("lgcode")
 }
 
 export function wslOpencodeAction(check?: WslOpencodeCheck) {

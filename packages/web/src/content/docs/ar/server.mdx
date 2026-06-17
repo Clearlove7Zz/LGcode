@@ -1,12 +1,12 @@
 ---
 title: الخادم
-description: تفاعل مع خادم opencode عبر HTTP.
+description: تفاعل مع خادم lgcode عبر HTTP.
 ---
 
 import config from "../../../../config.mjs"
 export const typesUrl = `${config.github}/blob/dev/packages/sdk/js/src/gen/types.gen.ts`
 
-يشغّل الأمر `lgcode serve` خادما HTTP دون واجهة ويعرض نقطة نهاية OpenAPI يمكن لعميل opencode استخدامها.
+يشغّل الأمر `lgcode serve` خادما HTTP دون واجهة ويعرض نقطة نهاية OpenAPI يمكن لعميل lgcode استخدامها.
 
 ---
 
@@ -23,7 +23,7 @@ lgcode serve [--port <number>] [--hostname <string>] [--cors <origin>]
 | `--port`        | المنفذ الذي يستمع عليه                | `4096`           |
 | `--hostname`    | اسم المضيف الذي يستمع عليه            | `127.0.0.1`      |
 | `--mdns`        | تفعيل اكتشاف mDNS                     | `false`          |
-| `--mdns-domain` | اسم نطاق مخصص لخدمة mDNS              | `opencode.local` |
+| `--mdns-domain` | اسم نطاق مخصص لخدمة mDNS              | `lgcode.local` |
 | `--cors`        | أصول (Origins) متصفح إضافية مسموح بها | `[]`             |
 
 يمكن تمرير `--cors` عدة مرات:
@@ -36,7 +36,7 @@ lgcode serve --cors http://localhost:5173 --cors https://app.example.com
 
 ### المصادقة
 
-عيّن `LGCODE_SERVER_PASSWORD` لحماية الخادم باستخدام مصادقة HTTP الأساسية. اسم المستخدم افتراضيا هو `opencode`، أو عيّن `LGCODE_SERVER_USERNAME` لتغييره. ينطبق ذلك على كل من `lgcode serve` و `lgcode web`.
+عيّن `LGCODE_SERVER_PASSWORD` لحماية الخادم باستخدام مصادقة HTTP الأساسية. اسم المستخدم افتراضيا هو `lgcode`، أو عيّن `LGCODE_SERVER_USERNAME` لتغييره. ينطبق ذلك على كل من `lgcode serve` و `lgcode web`.
 
 ```bash
 LGCODE_SERVER_PASSWORD=your-password lgcode serve
@@ -46,17 +46,17 @@ LGCODE_SERVER_PASSWORD=your-password lgcode serve
 
 ### كيف يعمل
 
-عند تشغيل `opencode` يبدأ تشغيل واجهة terminal تفاعلية (TUI) وخادما. تكون الـ TUI هي
+عند تشغيل `lgcode` يبدأ تشغيل واجهة terminal تفاعلية (TUI) وخادما. تكون الـ TUI هي
 العميل الذي يتحدث إلى الخادم. يوفّر الخادم نقطة نهاية لمواصفة OpenAPI 3.1.
 وتُستخدم هذه النقطة أيضا لتوليد [SDK](/docs/sdk).
 
 :::tip
-استخدم خادم opencode للتفاعل مع opencode برمجيا.
+استخدم خادم lgcode للتفاعل مع lgcode برمجيا.
 :::
 
-تتيح هذه البنية لـ opencode دعم عدة عملاء وتمكّنك من التفاعل مع opencode برمجيا.
+تتيح هذه البنية لـ lgcode دعم عدة عملاء وتمكّنك من التفاعل مع lgcode برمجيا.
 
-يمكنك تشغيل `lgcode serve` لبدء خادم مستقل. إذا كانت واجهة opencode في terminal (TUI)
+يمكنك تشغيل `lgcode serve` لبدء خادم مستقل. إذا كانت واجهة lgcode في terminal (TUI)
 قيد التشغيل، فسيبدأ `lgcode serve` خادما جديدا.
 
 ---
@@ -83,7 +83,7 @@ http://<hostname>:<port>/doc
 
 ## واجهات API
 
-يعرض خادم opencode واجهات API التالية.
+يعرض خادم lgcode واجهات API التالية.
 
 ---
 

@@ -20,7 +20,7 @@ Eklentileri yüklemenin iki yolu vardır.
 JavaScript veya TypeScript dosyalarını eklenti dizinine yerleştirin.
 
 - `.lgcode/plugins/` - Proje düzeyinde eklentiler
-- `~/.config/opencode/plugins/` - Genel eklentiler
+- `~/.config/lgcode/plugins/` - Genel eklentiler
 
 Bu dizinlerdeki dosyalar başlangıçta otomatik olarak yüklenir.
 
@@ -45,7 +45,7 @@ Hem normal hem de kapsamlı npm paketleri desteklenir.
 
 ### Eklentiler nasıl kurulur?
 
-**npm eklentileri** başlangıçta Bun kullanılarak otomatik olarak yüklenir. Paketler ve bağımlılıkları `~/.cache/opencode/node_modules/`'da önbelleğe alınır.
+**npm eklentileri** başlangıçta Bun kullanılarak otomatik olarak yüklenir. Paketler ve bağımlılıkları `~/.cache/lgcode/node_modules/`'da önbelleğe alınır.
 
 **Yerel eklentiler** doğrudan eklenti dizininden yüklenir. Harici paketleri kullanmak için, sisteminizin dizininde bir `package.json` oluşturmanız (bkz. [Bağımlılıklar](#dependencies)) veya eklentiyi npm ve [yapılandırmanıza eklemeniz](/docs/config#plugins) gerekir.
 
@@ -55,9 +55,9 @@ Hem normal hem de kapsamlı npm paketleri desteklenir.
 
 Eklentiler tüm kaynaklardan yüklenir ve tüm kancalar sırayla çalışır. Yükleme sırası şöyledir:
 
-1. Global config (`~/.config/opencode/lgcode.json`)
+1. Global config (`~/.config/lgcode/lgcode.json`)
 2. Project config (`lgcode.json`)
-3. Global eklenti dizini (`~/.config/opencode/plugins/`)
+3. Global eklenti dizini (`~/.config/lgcode/plugins/`)
 4. Proje eklenti dizini (`.lgcode/plugins/`)
 
 Aynı ad ve sürüme sahip yinelenen npm paketleri bir kez yüklenir. Ancak benzer adlara sahip bir yerel eklenti ve bir npm eklentisinin her ikisi de ayrı ayrı yüklenir.
@@ -224,7 +224,7 @@ export const NotificationPlugin = async ({ project, client, $, directory, worktr
     event: async ({ event }) => {
       // Send notification on session completion
       if (event.type === "session.idle") {
-        await $`osascript -e 'display notification "Session completed!" with title "opencode"'`
+        await $`osascript -e 'display notification "Session completed!" with title "lgcode"'`
       }
     },
   }

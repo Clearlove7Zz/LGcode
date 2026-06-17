@@ -3,7 +3,7 @@
 import { $ } from "bun"
 import fs from "fs/promises"
 
-const model = "opencode/gpt-5.3-codex"
+const model = "lgcode/gpt-5.3-codex"
 
 interface PR {
   number: number
@@ -142,7 +142,7 @@ async function install() {
 }
 
 async function fix(pr: PR, files: string[], prs: PR[], applied: number[], idx: number) {
-  console.log(`  Trying to auto-resolve ${files.length} conflict(s) with opencode...`)
+  console.log(`  Trying to auto-resolve ${files.length} conflict(s) with lgcode...`)
 
   const done = lines(prs.filter((x) => applied.includes(x.number)))
   const next = lines(prs.slice(idx + 1))
@@ -170,7 +170,7 @@ async function fix(pr: PR, files: string[], prs: PR[], applied: number[], idx: n
   try {
     await $`lgcode run -m ${model} ${prompt}`
   } catch (err) {
-    console.log(`  opencode failed: ${err}`)
+    console.log(`  lgcode failed: ${err}`)
     return false
   }
 
@@ -184,7 +184,7 @@ async function fix(pr: PR, files: string[], prs: PR[], applied: number[], idx: n
 
   if (!(await typecheck())) return false
 
-  console.log("  Conflicts resolved with opencode")
+  console.log("  Conflicts resolved with lgcode")
   return true
 }
 
@@ -193,7 +193,7 @@ async function smoke(prs: PR[], applied: number[]) {
 
   if (await validate()) return commitSmokeChanges()
 
-  console.log("\nTrying to fix final smoke check with opencode...")
+  console.log("\nTrying to fix final smoke check with lgcode...")
 
   const done = lines(prs.filter((x) => applied.includes(x.number)))
   const prompt = [

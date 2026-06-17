@@ -3,7 +3,7 @@ title: Ferramentas
 description: Gerencie as ferramentas que um LLM pode usar.
 ---
 
-As ferramentas permitem que o LLM execute ações em sua base de código. O opencode vem com um conjunto de ferramentas integradas, mas você pode estendê-lo com [ferramentas personalizadas](/docs/custom-tools) ou [servidores MCP](/docs/mcp-servers).
+As ferramentas permitem que o LLM execute ações em sua base de código. O lgcode vem com um conjunto de ferramentas integradas, mas você pode estendê-lo com [ferramentas personalizadas](/docs/custom-tools) ou [servidores MCP](/docs/mcp-servers).
 
 Por padrão, todas as ferramentas estão **ativadas** e não precisam de permissão para serem executadas. Você pode controlar o comportamento das ferramentas através de [permissões](/docs/permissions).
 
@@ -41,7 +41,7 @@ Você também pode usar curingas para controlar várias ferramentas ao mesmo tem
 
 ## Integradas
 
-Aqui estão todas as ferramentas integradas disponíveis no opencode.
+Aqui estão todas as ferramentas integradas disponíveis no lgcode.
 
 ---
 
@@ -253,12 +253,12 @@ Permite que o LLM busque e leia páginas da web. Útil para consultar documenta�
 Pesquise na web por informações.
 
 :::note
-Esta ferramenta está disponível apenas ao usar o provedor opencode ou quando a variável de ambiente `LGCODE_ENABLE_EXA` está definida como qualquer valor verdadeiro (por exemplo, `true` ou `1`).
+Esta ferramenta está disponível apenas ao usar o provedor lgcode ou quando a variável de ambiente `LGCODE_ENABLE_EXA` está definida como qualquer valor verdadeiro (por exemplo, `true` ou `1`).
 
-Para habilitar ao iniciar o opencode:
+Para habilitar ao iniciar o lgcode:
 
 ```bash
-LGCODE_ENABLE_EXA=1 opencode
+LGCODE_ENABLE_EXA=1 lgcode
 ```
 
 :::

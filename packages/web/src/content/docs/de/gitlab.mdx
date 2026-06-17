@@ -13,7 +13,7 @@ In beiden Fällen läuft LGcode auf Ihren GitLab Runners.
 
 LGcode funktioniert in einer regulären GitLab-Pipeline. Sie können es als [CI component](https://docs.gitlab.com/ee/ci/components/) in eine Pipeline einbauen.
 
-Hier verwenden wir eine von der Community erstellte CI/CD-Komponente für LGcode – [nagyv/gitlab-opencode](https://gitlab.com/nagyv/gitlab-opencode).
+Hier verwenden wir eine von der Community erstellte CI/CD-Komponente für LGcode – [nagyv/gitlab-lgcode](https://gitlab.com/nagyv/gitlab-lgcode).
 
 ---
 
@@ -32,7 +32,7 @@ Hier verwenden wir eine von der Community erstellte CI/CD-Komponente für LGcode
 
    ```yaml title=".gitlab-ci.yml"
    include:
-     - component: $CI_SERVER_FQDN/nagyv/gitlab-opencode/opencode@2
+     - component: $CI_SERVER_FQDN/nagyv/gitlab-lgcode/lgcode@2
        inputs:
          config_dir: ${CI_PROJECT_DIR}/lgcode-config
          auth_json: $LGCODE_AUTH_JSON # Die variable name für ihre LGcode authentifizierung JSON
@@ -40,14 +40,14 @@ Hier verwenden wir eine von der Community erstellte CI/CD-Komponente für LGcode
          message: "Your prompt here"
    ```
 
-Weitere Eingaben und Anwendungsfälle finden Sie unter [check out the docs](https://gitlab.com/explore/catalog/nagyv/gitlab-opencode) für diese Komponente.
+Weitere Eingaben und Anwendungsfälle finden Sie unter [check out the docs](https://gitlab.com/explore/catalog/nagyv/gitlab-lgcode) für diese Komponente.
 
 ---
 
 ## GitLab Duo
 
 LGcode lässt sich in Ihren GitLab-Workflow integrieren.
-Erwähnen Sie `@opencode` in einem Kommentar und LGcode führt Aufgaben innerhalb Ihrer GitLab CI-Pipeline aus.
+Erwähnen Sie `@lgcode` in einem Kommentar und LGcode führt Aufgaben innerhalb Ihrer GitLab CI-Pipeline aus.
 
 ---
 
@@ -82,7 +82,7 @@ Aktuelle Anweisungen finden Sie im [**GitLab docs**](https://docs.gitlab.com/use
     ```yaml
     image: node:22-slim
     commands:
-      - echo "Installing opencode"
+      - echo "Installing lgcode"
       - npm install --global lgcode-ai
       - echo "Installing glab"
       - export GITLAB_TOKEN=$GITLAB_TOKEN_LGCODE
@@ -92,9 +92,9 @@ Aktuelle Anweisungen finden Sie im [**GitLab docs**](https://docs.gitlab.com/use
       - echo "Configuring glab"
       - echo $GITLAB_HOST
       - echo "Creating LGcode auth configuration"
-      - mkdir --parents ~/.local/share/opencode
+      - mkdir --parents ~/.local/share/lgcode
       - |
-        cat > ~/.local/share/opencode/auth.json << EOF
+        cat > ~/.local/share/lgcode/auth.json << EOF
         {
           "anthropic": {
             "type": "api",
@@ -103,7 +103,7 @@ Aktuelle Anweisungen finden Sie im [**GitLab docs**](https://docs.gitlab.com/use
         }
         EOF
       - echo "Configuring git"
-      - git config --global user.email "opencode@gitlab.com"
+      - git config --global user.email "lgcode@gitlab.com"
       - git config --global user.name "LGcode"
       - echo "Testing glab"
       - glab issue list
@@ -161,7 +161,7 @@ Ausführliche Anweisungen finden Sie unter [GitLab CLI agents docs](https://docs
 Hier sind einige Beispiele, wie Sie LGcode in GitLab verwenden können.
 
 :::tip
-Sie können die Verwendung einer anderen Triggerphrase als `@opencode` konfigurieren.
+Sie können die Verwendung einer anderen Triggerphrase als `@lgcode` konfigurieren.
 :::
 
 - **Erklären Sie ein Problem**
@@ -169,7 +169,7 @@ Sie können die Verwendung einer anderen Triggerphrase als `@opencode` konfiguri
   Fügen Sie diesen Kommentar in einer GitLab-Ausgabe hinzu.
 
   ```
-  @opencode explain this issue
+  @lgcode explain this issue
   ```
 
   LGcode liest das Problem und antwortet mit einer klaren Erklärung.
@@ -179,7 +179,7 @@ Sie können die Verwendung einer anderen Triggerphrase als `@opencode` konfiguri
   Sagen Sie in einer GitLab-Ausgabe:
 
   ```
-  @opencode fix this
+  @lgcode fix this
   ```
 
   LGcode erstellt einen neuen Branch, implementiert die Änderungen und öffnet eine Merge Request mit den Änderungen.
@@ -189,7 +189,7 @@ Sie können die Verwendung einer anderen Triggerphrase als `@opencode` konfiguri
   Hinterlassen Sie den folgenden Kommentar zu einer GitLab Merge Request.
 
   ```
-  @opencode review this merge request
+  @lgcode review this merge request
   ```
 
   LGcode prüft die Merge Request und gibt Feedback.

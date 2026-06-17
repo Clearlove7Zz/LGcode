@@ -57810,8 +57810,8 @@
       }
     }
   },
-  "opencode": {
-    "id": "opencode",
+  "lgcode": {
+    "id": "lgcode",
     "env": ["LGCODE_API_KEY"],
     "npm": "@ai-sdk/openai-compatible",
     "api": "https://modelhub.lgdg.cc/zen/v1",

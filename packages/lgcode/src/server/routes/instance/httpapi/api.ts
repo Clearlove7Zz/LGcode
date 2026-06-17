@@ -66,7 +66,7 @@ export const InstanceHttpApi = HttpApi.make("lgcode-instance")
   .addHttpApi(WorkspaceApi)
   .middleware(SchemaErrorMiddleware)
 
-export const LGcodeHttpApi = HttpApi.make("opencode")
+export const LGcodeHttpApi = HttpApi.make("lgcode")
   .addHttpApi(RootHttpApi)
   .addHttpApi(EventApi)
   .addHttpApi(InstanceHttpApi)

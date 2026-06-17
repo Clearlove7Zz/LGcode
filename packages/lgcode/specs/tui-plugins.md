@@ -35,7 +35,7 @@ Example:
     "notifications": true,
     "sound": true,
     "volume": 0.4,
-    "sound_pack": "opencode.default",
+    "sound_pack": "lgcode.default",
     "sounds": {
       "error": "/Users/me/sounds/error.mp3"
     }
@@ -167,7 +167,7 @@ Example:
     }
   },
   "engines": {
-    "opencode": "^1.0.0"
+    "lgcode": "^1.0.0"
   }
 }
 ```
@@ -179,7 +179,7 @@ npm plugins can declare a version compatibility range in `package.json` using th
 ```json
 {
   "engines": {
-    "opencode": "^1.0.0"
+    "lgcode": "^1.0.0"
   }
 }
 ```
@@ -191,8 +191,8 @@ npm plugins can declare a version compatibility range in `package.json` using th
 
 - Install flow is shared by CLI and TUI in `src/plugin/install.ts`.
 - Shared helpers are `installPlugin`, `readPluginManifest`, and `patchPluginConfig`.
-- `opencode plugin <module>` and TUI install both run install → manifest read → config patch.
-- Alias: `opencode plug <module>`.
+- `lgcode plugin <module>` and TUI install both run install → manifest read → config patch.
+- Alias: `lgcode plug <module>`.
 - `-g` / `--global` writes into the global config dir.
 - Local installs resolve target dir inside `patchPluginConfig`.
 - For local scope, path is `<worktree>/.lgcode` only when VCS is git and `worktree !== "/"`; otherwise `<directory>/.lgcode`.
@@ -328,7 +328,7 @@ Mode pushes are automatically tracked by the plugin runtime. If a plugin is disa
 ### Attention
 
 - `api.attention.notify({ title?, message, notification?, sound? })` requests user attention while keeping terminal focus, notifications, and audio owned by the host.
-- `message` is required; `title` defaults to `"opencode"`; `notification` defaults to enabled with `when: "blurred"`; `sound` defaults to enabled with `when: "always"`.
+- `message` is required; `title` defaults to `"lgcode"`; `notification` defaults to enabled with `when: "blurred"`; `sound` defaults to enabled with `when: "always"`.
 - `when: "always"` requests delivery regardless of terminal focus state.
 - `when: "focused"` only requests delivery after the terminal is known focused; `when: "blurred"` only requests delivery after the terminal is known blurred.
 - Example: `notification: { when: "blurred" }, sound: { name: "question", when: "always" }` plays sound while focused but only triggers system notifications when blurred.
@@ -338,7 +338,7 @@ Mode pushes are automatically tracked by the plugin runtime. If a plugin is disa
 - `api.attention.soundboard.registerPack({ id, name?, sounds })` registers a sound pack and returns a disposer. Relative paths resolve from the plugin root and are cleaned up on plugin deactivation.
 - `api.attention.soundboard.activate(id, { persist })` selects the active pack. `persist: true` writes the selected pack id to TUI KV state, not `tui.json`.
 - `api.attention.soundboard.current()` and `list()` expose the active/registered packs for plugin UX.
-- Config `attention.sounds` overrides active-pack sounds by slot. Failed loads fall back to the active pack and then `opencode.default`.
+- Config `attention.sounds` overrides active-pack sounds by slot. Failed loads fall back to the active pack and then `lgcode.default`.
 - The host strips ANSI/control characters and collapses newlines before sending text to the terminal notification API.
 - Terminal and OS settings decide whether a requested notification is visibly displayed.
 - Prefer privacy-safe messages such as `"A question needs your input"`; avoid full commands, paths, prompts, errors, secrets, or file contents unless the plugin intentionally exposes them.

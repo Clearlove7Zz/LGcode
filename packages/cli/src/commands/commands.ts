@@ -3,7 +3,7 @@ import { Spec } from "../framework/spec"
 
 declare const LGCODE_CLI_NAME: string | undefined
 
-export const Commands = Spec.make(typeof LGCODE_CLI_NAME === "string" ? LGCODE_CLI_NAME : "opencode", {
+export const Commands = Spec.make(typeof LGCODE_CLI_NAME === "string" ? LGCODE_CLI_NAME : "lgcode", {
   description: "LGcode 2.0 preview command line interface",
   commands: [
     Spec.make("debug", {

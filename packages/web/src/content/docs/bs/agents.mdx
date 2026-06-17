@@ -188,10 +188,10 @@ Konfigurirajte agente u svom konfiguracijskom fajlu `lgcode.json`:
 
 Također možete definirati agente koristeći markdown datoteke. Stavite ih u:
 
-- Globalno: `~/.config/opencode/agents/`
+- Globalno: `~/.config/lgcode/agents/`
 - Po projektu: `.lgcode/agents/`
 
-```markdown title="~/.config/opencode/agents/review.md"
+```markdown title="~/.config/lgcode/agents/review.md"
 ---
 description: Reviews code for quality and best practices
 mode: subagent
@@ -366,7 +366,7 @@ Ako ne navedete model, primarni agenti koriste [model globalno konfiguriran](/do
 }
 ```
 
-ID modela u vašoj LGcode konfiguraciji koristi format `provider/model-id`. Na primjer, ako koristite [LGcode Zen](/docs/zen), koristili biste `opencode/gpt-5.1-codex` za GPT 5.1 Codex.
+ID modela u vašoj LGcode konfiguraciji koristi format `provider/model-id`. Na primjer, ako koristite [LGcode Zen](/docs/zen), koristili biste `lgcode/gpt-5.1-codex` za GPT 5.1 Codex.
 
 ---
 
@@ -454,7 +454,7 @@ Možete nadjačati ove dozvole po agentu.
 
 Također možete postaviti dozvole u Markdown agentima.
 
-```markdown title="~/.config/opencode/agents/review.md"
+```markdown title="~/.config/lgcode/agents/review.md"
 ---
 description: Code review without edits
 mode: subagent
@@ -664,7 +664,7 @@ Na primjer, sa OpenAI-jevim modelima rezonovanja, možete kontrolisati napor ras
 Ove dodatne opcije su specifične za model i dobavljača. U dokumentaciji vašeg provajdera provjerite dostupne parametre.
 
 :::tip
-Pokrenite `opencode models` da vidite listu dostupnih modela.
+Pokrenite `lgcode models` da vidite listu dostupnih modela.
 :::
 
 ---
@@ -674,7 +674,7 @@ Pokrenite `opencode models` da vidite listu dostupnih modela.
 Možete kreirati nove agente koristeći sljedeću naredbu:
 
 ```bash
-opencode agent create
+lgcode agent create
 ```
 
 Ova interaktivna komanda će:
@@ -711,7 +711,7 @@ Imate li agenta kojeg biste željeli podijeliti? [Pošalji PR](https://github.co
 
 ### Agent za dokumentaciju
 
-```markdown title="~/.config/opencode/agents/docs-writer.md"
+```markdown title="~/.config/lgcode/agents/docs-writer.md"
 ---
 description: Writes and maintains project documentation
 mode: subagent
@@ -733,7 +733,7 @@ Focus on:
 
 ### Sigurnosni revizor
 
-```markdown title="~/.config/opencode/agents/security-auditor.md"
+```markdown title="~/.config/lgcode/agents/security-auditor.md"
 ---
 description: Performs security audits and identifies vulnerabilities
 mode: subagent

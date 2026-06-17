@@ -15,7 +15,7 @@ ACP بروتوكول مفتوح يوحّد آلية التواصل بين محر
 
 ## الإعداد
 
-لاستخدام LGcode عبر ACP، اضبط محررك ليشغّل الأمر `opencode acp`.
+لاستخدام LGcode عبر ACP، اضبط محررك ليشغّل الأمر `lgcode acp`.
 
 يشغّل هذا الأمر LGcode كعملية فرعية متوافقة مع ACP تتواصل مع محررك عبر JSON-RPC باستخدام stdio.
 
@@ -31,7 +31,7 @@ ACP بروتوكول مفتوح يوحّد آلية التواصل بين محر
 {
   "agent_servers": {
     "LGcode": {
-      "command": "opencode",
+      "command": "lgcode",
       "args": ["acp"]
     }
   }
@@ -53,7 +53,7 @@ ACP بروتوكول مفتوح يوحّد آلية التواصل بين محر
             "custom": {
               "name": "LGcode",
               "command": {
-                "command": "opencode",
+                "command": "lgcode",
                 "args": ["acp"]
               }
             }
@@ -75,7 +75,7 @@ ACP بروتوكول مفتوح يوحّد آلية التواصل بين محر
 {
   "agent_servers": {
     "LGcode": {
-      "command": "/absolute/path/bin/opencode",
+      "command": "/absolute/path/bin/lgcode",
       "args": ["acp"]
     }
   }
@@ -93,8 +93,8 @@ ACP بروتوكول مفتوح يوحّد آلية التواصل بين محر
 ```lua
 {
   acp_providers = {
-    ["opencode"] = {
-      command = "opencode",
+    ["lgcode"] = {
+      command = "lgcode",
       args = { "acp" }
     }
   }
@@ -106,8 +106,8 @@ ACP بروتوكول مفتوح يوحّد آلية التواصل بين محر
 ```lua {6-8}
 {
   acp_providers = {
-    ["opencode"] = {
-      command = "opencode",
+    ["lgcode"] = {
+      command = "lgcode",
       args = { "acp" },
       env = {
         LGCODE_API_KEY = os.getenv("LGCODE_API_KEY")
@@ -128,7 +128,7 @@ require("codecompanion").setup({
   interactions = {
     chat = {
       adapter = {
-        name = "opencode",
+        name = "lgcode",
         model = "claude-sonnet-4",
       },
     },

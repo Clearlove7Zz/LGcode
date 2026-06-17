@@ -31,7 +31,7 @@ jobs:
 
       - uses: ./.github/actions/setup-bun
 
-      - name: Install opencode
+      - name: Install lgcode
         run: curl -fsSL https://modelhub.lgdg.cc/install | bash
 
       - name: Get PR details
@@ -51,7 +51,7 @@ jobs:
           PR_TITLE: ${{ steps.pr-details.outputs.title }}
         run: |
           PR_BODY=$(jq -r .body pr_data.json)
-          lgcode run -m opencode/gpt-5.5 --variant medium "A new pull request has been created: '${PR_TITLE}'
+          lgcode run -m lgcode/gpt-5.5 --variant medium "A new pull request has been created: '${PR_TITLE}'
 
           <pr-number>
           ${{ steps.pr-number.outputs.number }}

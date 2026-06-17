@@ -13,9 +13,9 @@ describe("cli.error", () => {
       },
       {
         tag: "ConfigDirectoryTypoError",
-        data: { path: "/tmp/lgcode.jsonc", dir: ".lgcode", suggestion: "opencode" },
+        data: { path: "/tmp/lgcode.jsonc", dir: ".lgcode", suggestion: "lgcode" },
         expected:
-          'Directory ".lgcode" in /tmp/lgcode.jsonc is not valid. Rename the directory to "opencode" or remove it. This is a common typo.',
+          'Directory ".lgcode" in /tmp/lgcode.jsonc is not valid. Rename the directory to "lgcode" or remove it. This is a common typo.',
       },
       {
         tag: "ConfigFrontmatterError",
@@ -73,7 +73,7 @@ describe("cli.error", () => {
     const expected = [
       "Model not found: anthropic/claude-sonet-4",
       "Did you mean: claude-sonnet-4",
-      "Try: `opencode models` to list available models",
+      "Try: `lgcode models` to list available models",
       "Or check your config (lgcode.json) provider/model names",
     ].join("\n")
 

@@ -6,7 +6,7 @@
 
 ## Do Not Translate (Locale Additions)
 
-- `LGcode` (preserve casing in prose; keep `opencode` only when it is part of commands, package names, paths, or code)
+- `LGcode` (preserve casing in prose; keep `lgcode` only when it is part of commands, package names, paths, or code)
 - `LGcode Zen`
 - `LGcode CLI`
 - `CLI`, `TUI`, `MCP`, `OAuth`
@@ -38,5 +38,5 @@ These are preferred terms for docs/UI prose and may evolve.
 
 ## Avoid
 
-- Avoid `opencode` in prose when referring to the product name; use `LGcode`
+- Avoid `lgcode` in prose when referring to the product name; use `LGcode`
 - Avoid mixing alternative terms for the same concept across docs when a preferred term is already established

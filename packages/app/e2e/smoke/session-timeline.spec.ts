@@ -116,7 +116,7 @@ test.describe("smoke: session timeline", () => {
     await page.addInitScript(
       ({ dirBase64, sourceID, targetID }) => {
         localStorage.setItem(
-          "opencode.global.dat:tabs",
+          "lgcode.global.dat:tabs",
           JSON.stringify(
             [sourceID, targetID].map((sessionId) => ({
               type: "session",
@@ -242,7 +242,7 @@ test.describe("smoke: session timeline", () => {
     await page.addInitScript(
       ({ dirBase64, sourceID, targetID }) => {
         localStorage.setItem(
-          "opencode.global.dat:tabs",
+          "lgcode.global.dat:tabs",
           JSON.stringify(
             [sourceID, targetID].map((sessionId) => ({
               type: "session",
@@ -347,7 +347,7 @@ async function configureSmokePage(page: Page, directory: string) {
 
   await page.addInitScript((directory) => {
     localStorage.setItem(
-      "opencode.global.dat:server",
+      "lgcode.global.dat:server",
       JSON.stringify({
         projects: {
           local: [{ worktree: directory, expanded: true }],

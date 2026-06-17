@@ -1,6 +1,6 @@
 ---
 title: ACP-støtte
-description: Bruk opencode i en hvilken som helst ACP-kompatibel editor.
+description: Bruk lgcode i en hvilken som helst ACP-kompatibel editor.
 ---
 
 LGcode støtter [Agent Client Protocol](https://agentclientprotocol.com) eller (ACP), slik at du kan bruke den direkte i kompatible editorer og IDE-er.
@@ -15,7 +15,7 @@ ACP er en åpen protokoll som standardiserer kommunikasjon mellom kodeditorer og
 
 ## Konfigurasjon
 
-For å bruke LGcode via ACP, konfigurer redigeringsprogrammet til å kjøre kommandoen `opencode acp`.
+For å bruke LGcode via ACP, konfigurer redigeringsprogrammet til å kjøre kommandoen `lgcode acp`.
 
 Kommandoen starter LGcode som en ACP-kompatibel underprosess som kommuniserer med editoren din over JSON-RPC via stdio.
 
@@ -31,7 +31,7 @@ Legg til i [Zed](https://zed.dev)-konfigurasjonen (`~/.config/zed/settings.json`
 {
   "agent_servers": {
     "LGcode": {
-      "command": "opencode",
+      "command": "lgcode",
       "args": ["acp"]
     }
   }
@@ -53,7 +53,7 @@ Du kan også binde en hurtigtast ved å redigere `keymap.json`:
             "custom": {
               "name": "LGcode",
               "command": {
-                "command": "opencode",
+                "command": "lgcode",
                 "args": ["acp"]
               }
             }
@@ -75,7 +75,7 @@ Legg til [JetBrains IDE](https://www.jetbrains.com/) acp.json i henhold til [dok
 {
   "agent_servers": {
     "LGcode": {
-      "command": "/absolute/path/bin/opencode",
+      "command": "/absolute/path/bin/lgcode",
       "args": ["acp"]
     }
   }
@@ -93,8 +93,8 @@ Legg til i [Avante.nvim](https://github.com/yetone/avante.nvim)-konfigurasjonen:
 ```lua
 {
   acp_providers = {
-    ["opencode"] = {
-      command = "opencode",
+    ["lgcode"] = {
+      command = "lgcode",
       args = { "acp" }
     }
   }
@@ -106,8 +106,8 @@ Hvis du trenger å sende miljøvariabler:
 ```lua {6-8}
 {
   acp_providers = {
-    ["opencode"] = {
-      command = "opencode",
+    ["lgcode"] = {
+      command = "lgcode",
       args = { "acp" },
       env = {
         LGCODE_API_KEY = os.getenv("LGCODE_API_KEY")
@@ -128,7 +128,7 @@ require("codecompanion").setup({
   interactions = {
     chat = {
       adapter = {
-        name = "opencode",
+        name = "lgcode",
         model = "claude-sonnet-4",
       },
     },

@@ -51,14 +51,14 @@ curl -fsSL https://modelhub.lgdg.cc/install | bash
 
 # Διαχειριστές πακέτων
 npm i -g lgcode-ai@latest        # ή bun/pnpm/yarn
-scoop install opencode             # Windows
-choco install opencode             # Windows
-brew install anomalyco/tap/opencode # macOS και Linux (προτείνεται, πάντα ενημερωμένο)
-brew install opencode              # macOS και Linux (επίσημος τύπος brew, λιγότερο συχνές ενημερώσεις)
-sudo pacman -S opencode            # Arch Linux (Σταθερό)
+scoop install lgcode             # Windows
+choco install lgcode             # Windows
+brew install anomalyco/tap/lgcode # macOS και Linux (προτείνεται, πάντα ενημερωμένο)
+brew install lgcode              # macOS και Linux (επίσημος τύπος brew, λιγότερο συχνές ενημερώσεις)
+sudo pacman -S lgcode            # Arch Linux (Σταθερό)
 paru -S lgcode-bin               # Arch Linux (Τελευταία έκδοση από AUR)
-mise use -g opencode               # Οποιοδήποτε λειτουργικό σύστημα
-nix run nixpkgs#opencode           # ή github:Clearlove7Zz/LGcode με βάση την πιο πρόσφατη αλλαγή από το dev branch
+mise use -g lgcode               # Οποιοδήποτε λειτουργικό σύστημα
+nix run nixpkgs#lgcode           # ή github:Clearlove7Zz/LGcode με βάση την πιο πρόσφατη αλλαγή από το dev branch
 ```
 
 > [!TIP]
@@ -122,8 +122,8 @@ XDG_BIN_DIR=$HOME/.local/bin curl -fsSL https://modelhub.lgdg.cc/install | bash
 
 ### Δημιουργία πάνω στο LGcode
 
-Εάν εργάζεσαι σε ένα έργο σχετικό με το LGcode και χρησιμοποιείτε το "opencode" ως μέρος του ονόματός του, για παράδειγμα "lgcode-dashboard" ή "lgcode-mobile", πρόσθεσε μια σημείωση στο README σας για να διευκρινίσεις ότι δεν είναι κατασκευασμένο από την ομάδα του LGcode και δεν έχει καμία σχέση με εμάς.
+Εάν εργάζεσαι σε ένα έργο σχετικό με το LGcode και χρησιμοποιείτε το "lgcode" ως μέρος του ονόματός του, για παράδειγμα "lgcode-dashboard" ή "lgcode-mobile", πρόσθεσε μια σημείωση στο README σας για να διευκρινίσεις ότι δεν είναι κατασκευασμένο από την ομάδα του LGcode και δεν έχει καμία σχέση με εμάς.
 
 ---
 
-**Γίνε μέλος της κοινότητάς μας** [Discord](https://discord.gg/opencode) | [X.com](https://x.com/opencode)
+**Γίνε μέλος της κοινότητάς μας** [Discord](https://discord.gg/lgcode) | [X.com](https://x.com/lgcode)

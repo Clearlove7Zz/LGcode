@@ -37,14 +37,14 @@ export const dict = {
   "email.subscribe": "اشتراك",
   "email.success": "تبقّت خطوة واحدة: تحقق من بريدك وأكّد عنوانك",
 
-  "notFound.title": "غير موجود | opencode",
+  "notFound.title": "غير موجود | lgcode",
   "notFound.heading": "404 - الصفحة غير موجودة",
   "notFound.home": "الرئيسية",
   "notFound.docs": "الوثائق",
   "notFound.github": "GitHub",
   "notFound.discord": "Discord",
-  "notFound.logoLightAlt": "شعار opencode الفاتح",
-  "notFound.logoDarkAlt": "شعار opencode الداكن",
+  "notFound.logoLightAlt": "شعار lgcode الفاتح",
+  "notFound.logoDarkAlt": "شعار lgcode الداكن",
 
   "user.logout": "تسجيل الخروج",
 
@@ -85,21 +85,21 @@ export const dict = {
 
   "home.title": "LGcode | وكيل برمجة بالذكاء الاصطناعي مفتوح المصدر",
 
-  "temp.title": "opencode | وكيل برمجة بالذكاء الاصطناعي مبني للطرفية",
+  "temp.title": "lgcode | وكيل برمجة بالذكاء الاصطناعي مبني للطرفية",
   "temp.hero.title": "وكيل البرمجة بالذكاء الاصطناعي المبني للطرفية",
-  "temp.zen": "opencode zen",
+  "temp.zen": "lgcode zen",
   "temp.getStarted": "ابدأ",
   "temp.feature.native.title": "واجهة طرفية أصلية",
   "temp.feature.native.body": "واجهة مستخدم طرفية سريعة الاستجابة، أصلية، وقابلة للتخصيص",
   "temp.feature.zen.beforeLink": "قائمة",
   "temp.feature.zen.link": "منسقة من النماذج",
-  "temp.feature.zen.afterLink": "مقدمة من opencode",
+  "temp.feature.zen.afterLink": "مقدمة من lgcode",
   "temp.feature.models.beforeLink": "يدعم أكثر من 75 مزود LLM من خلال",
   "temp.feature.models.afterLink": "، بما في ذلك النماذج المحلية",
   "temp.screenshot.caption": "واجهة LGcode الطرفية مع سمة tokyonight",
   "temp.screenshot.alt": "واجهة LGcode الطرفية بسمة tokyonight",
-  "temp.logoLightAlt": "شعار opencode الفاتح",
-  "temp.logoDarkAlt": "شعار opencode الداكن",
+  "temp.logoLightAlt": "شعار lgcode الفاتح",
+  "temp.logoDarkAlt": "شعار lgcode الداكن",
 
   "home.banner.badge": "جديد",
   "home.banner.text": "تطبيق سطح المكتب متاح بنسخة تجريبية",
@@ -440,15 +440,15 @@ export const dict = {
     "الوصول إلى النماذج التي تم تكوينها لتحقيق الأداء الأمثل - لا تقليل للجودة أو توجيه إلى موفري خدمة أرخص.",
   "workspace.newUser.feature.lockin.title": "لا قيود على المزود",
   "workspace.newUser.feature.lockin.body":
-    "استخدم Zen مع أي وكيل برمجة، واستمر في استخدام موفرين آخرين مع opencode وقتما تشاء.",
+    "استخدم Zen مع أي وكيل برمجة، واستمر في استخدام موفرين آخرين مع lgcode وقتما تشاء.",
   "workspace.newUser.copyApiKey": "نسخ مفتاح API",
   "workspace.newUser.copyKey": "نسخ المفتاح",
   "workspace.newUser.copied": "تم النسخ!",
   "workspace.newUser.step.enableBilling": "تمكين الفوترة",
   "workspace.newUser.step.login.before": "شغّل",
-  "workspace.newUser.step.login.after": "واختر opencode",
+  "workspace.newUser.step.login.after": "واختر lgcode",
   "workspace.newUser.step.pasteKey": "الصق مفتاح API الخاص بك",
-  "workspace.newUser.step.models.before": "ابدأ opencode ثم نفّذ",
+  "workspace.newUser.step.models.before": "ابدأ lgcode ثم نفّذ",
   "workspace.newUser.step.models.after": "لاختيار نموذج",
 
   "workspace.models.title": "النماذج",
@@ -494,10 +494,10 @@ export const dict = {
   "workspace.cost.subscriptionShort": "اشتراك",
 
   "workspace.keys.title": "مفاتيح API",
-  "workspace.keys.subtitle": "إدارة مفاتيح API الخاصة بك للوصول إلى خدمات opencode.",
+  "workspace.keys.subtitle": "إدارة مفاتيح API الخاصة بك للوصول إلى خدمات lgcode.",
   "workspace.keys.create": "إنشاء مفتاح API",
   "workspace.keys.placeholder": "أدخل اسم المفتاح",
-  "workspace.keys.empty": "أنشئ مفتاح API لبوابة opencode",
+  "workspace.keys.empty": "أنشئ مفتاح API لبوابة lgcode",
   "workspace.keys.table.name": "الاسم",
   "workspace.keys.table.key": "المفتاح",
   "workspace.keys.table.createdBy": "تم الإنشاء بواسطة",
@@ -645,7 +645,7 @@ export const dict = {
   "workspace.lite.subscription.resetsIn": "إعادة تعيين في",
   "workspace.lite.subscription.useBalance": "استخدم رصيدك المتوفر بعد الوصول إلى حدود الاستخدام",
   "workspace.lite.subscription.selectProvider":
-    'اختر "LGcode Go" كمزود في إعدادات opencode الخاصة بك لاستخدام نماذج Go.',
+    'اختر "LGcode Go" كمزود في إعدادات lgcode الخاصة بك لاستخدام نماذج Go.',
   "workspace.lite.black.message":
     "أنت مشترك حاليًا في LGcode Black أو في قائمة الانتظار. يرجى إلغاء الاشتراك أولاً إذا كنت ترغب في التبديل إلى Go.",
   "workspace.lite.other.message":

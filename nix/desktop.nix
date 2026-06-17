@@ -8,14 +8,14 @@
   makeWrapper,
   writableTmpDirAsHomeHook,
   autoPatchelfHook,
-  opencode,
+  lgcode,
 }:
 let
   electron = electron_41;
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "lgcode-desktop";
-  inherit (opencode)
+  inherit (lgcode)
     version
     src
     node_modules
@@ -38,7 +38,7 @@ stdenv.mkDerivation (finalAttrs: {
     (lib.getLib stdenv.cc.cc)
   ];
 
-  env = opencode.env // {
+  env = lgcode.env // {
     ELECTRON_SKIP_BINARY_DOWNLOAD = "1";
   };
 
@@ -105,6 +105,6 @@ stdenv.mkDerivation (finalAttrs: {
   meta = {
     description = "LGcode Desktop App";
     mainProgram = "lgcode-desktop";
-    inherit (opencode.meta) homepage license platforms;
+    inherit (lgcode.meta) homepage license platforms;
   };
 })

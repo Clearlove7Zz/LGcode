@@ -3,7 +3,7 @@ title: GitHub
 description: Usa LGcode in issue e pull request su GitHub.
 ---
 
-LGcode si integra nel tuo workflow GitHub. Menziona `/opencode` o `/oc` in un commento e LGcode eseguira' i task dentro il runner di GitHub Actions.
+LGcode si integra nel tuo workflow GitHub. Menziona `/lgcode` o `/oc` in un commento e LGcode eseguira' i task dentro il runner di GitHub Actions.
 
 ---
 
@@ -20,7 +20,7 @@ LGcode si integra nel tuo workflow GitHub. Menziona `/opencode` o `/oc` in un co
 Esegui il comando seguente in un progetto che si trova in un repo GitHub:
 
 ```bash
-opencode github install
+lgcode github install
 ```
 
 Questo ti guidera' nell'installazione della GitHub app, nella creazione del workflow e nella configurazione dei secret.
@@ -37,10 +37,10 @@ In alternativa, puoi configurarlo manualmente.
 
 2. **Aggiungi il workflow**
 
-   Aggiungi il seguente file workflow in `.github/workflows/opencode.yml` nel tuo repo. Assicurati di impostare il `model` appropriato e le API key richieste in `env`.
+   Aggiungi il seguente file workflow in `.github/workflows/lgcode.yml` nel tuo repo. Assicurati di impostare il `model` appropriato e le API key richieste in `env`.
 
-   ```yml title=".github/workflows/opencode.yml" {24,26}
-   name: opencode
+   ```yml title=".github/workflows/lgcode.yml" {24,26}
+   name: lgcode
 
    on:
      issue_comment:
@@ -49,10 +49,10 @@ In alternativa, puoi configurarlo manualmente.
        types: [created]
 
    jobs:
-     opencode:
+     lgcode:
        if: |
          contains(github.event.comment.body, '/oc') ||
-         contains(github.event.comment.body, '/opencode')
+         contains(github.event.comment.body, '/lgcode')
        runs-on: ubuntu-latest
        permissions:
          id-token: write
@@ -107,8 +107,8 @@ LGcode puo' essere attivato dai seguenti eventi GitHub:
 
 | Tipo evento                   | Attivato da                            | Dettagli                                                                                                                  |
 | ----------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `issue_comment`               | Commento su una issue o PR             | Menziona `/opencode` o `/oc` nel commento. LGcode legge il contesto e puo' creare branch, aprire PR o rispondere.       |
-| `pull_request_review_comment` | Commento su specifiche righe in una PR | Menziona `/opencode` o `/oc` durante una review. LGcode riceve path file, numeri di riga e contesto del diff.           |
+| `issue_comment`               | Commento su una issue o PR             | Menziona `/lgcode` o `/oc` nel commento. LGcode legge il contesto e puo' creare branch, aprire PR o rispondere.       |
+| `pull_request_review_comment` | Commento su specifiche righe in una PR | Menziona `/lgcode` o `/oc` durante una review. LGcode riceve path file, numeri di riga e contesto del diff.           |
 | `issues`                      | Issue aperta o modificata              | Attiva automaticamente LGcode quando le issue vengono create o modificate. Richiede l'input `prompt`.                   |
 | `pull_request`                | PR aperta o aggiornata                 | Attiva automaticamente LGcode quando le PR vengono aperte, sincronizzate o riaperte. Utile per review automatiche.      |
 | `schedule`                    | Pianificazione basata su cron          | Esegue LGcode a pianificazione. Richiede l'input `prompt`. Output nei log e nelle PR (nessuna issue su cui commentare). |
@@ -126,7 +126,7 @@ on:
     - cron: "0 9 * * 1" # Every Monday at 9am UTC
 
 jobs:
-  opencode:
+  lgcode:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -254,7 +254,7 @@ Per gli eventi `issues`, l'input `prompt` e' **obbligatorio** dato che non c'e' 
 
 Sovrascrivi il prompt di default per personalizzare il comportamento di LGcode nel tuo workflow.
 
-```yaml title=".github/workflows/opencode.yml"
+```yaml title=".github/workflows/lgcode.yml"
 - uses: Clearlove7Zz/LGcode/github@latest
   with:
     model: anthropic/claude-sonnet-4-5
@@ -278,7 +278,7 @@ Ecco alcuni esempi di come puoi usare LGcode su GitHub.
   Aggiungi questo commento in una issue GitHub.
 
   ```
-  /opencode explain this issue
+  /lgcode explain this issue
   ```
 
   LGcode leggera' l'intero thread, inclusi tutti i commenti, e rispondera' con una spiegazione chiara.
@@ -288,7 +288,7 @@ Ecco alcuni esempi di come puoi usare LGcode su GitHub.
   In una issue GitHub, scrivi:
 
   ```
-  /opencode fix this
+  /lgcode fix this
   ```
 
   LGcode creera' un nuovo branch, implementera' le modifiche e aprira' una PR con i cambiamenti.

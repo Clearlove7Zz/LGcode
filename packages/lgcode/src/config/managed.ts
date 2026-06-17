@@ -22,7 +22,7 @@ function systemManagedConfigDir(): string {
     case "darwin":
       return "/Library/Application Support/lgcode"
     case "win32":
-      return path.join(process.env.ProgramData || "C:\\ProgramData", "opencode")
+      return path.join(process.env.ProgramData || "C:\\ProgramData", "lgcode")
     default:
       return "/etc/lgcode"
   }

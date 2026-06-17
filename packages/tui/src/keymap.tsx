@@ -21,7 +21,7 @@ export const LEADER_TOKEN = "leader"
 export const LGCODE_BASE_MODE = "base"
 export const COMMAND_PALETTE_COMMAND = "command.palette.show"
 
-const LGCODE_MODE_KEY = "opencode.mode"
+const LGCODE_MODE_KEY = "lgcode.mode"
 
 export const OpencodeKeymapProvider = KeymapProvider
 export const useOpencodeKeymap = useKeymap

@@ -11,10 +11,10 @@ Ferdigheter lastes inn på forespørsel via det innebygde `skill`-verktøyet –
 ## Plasser filer
 
 Opprett én mappe per ferdighetsnavn og legg inn en `SKILL.md` i den.
-opencode søker etter disse stedene:
+lgcode søker etter disse stedene:
 
 - Prosjektkonfigurasjon: `.lgcode/skills/<name>/SKILL.md`
-- Global konfigurasjon: `~/.config/opencode/skills/<name>/SKILL.md`
+- Global konfigurasjon: `~/.config/lgcode/skills/<name>/SKILL.md`
 - Prosjekt Claude-kompatibel: `.claude/skills/<name>/SKILL.md`
 - Global Claude-kompatibel: `~/.claude/skills/<name>/SKILL.md`
 - Prosjektagent-kompatibel: `.agents/skills/<name>/SKILL.md`
@@ -24,10 +24,10 @@ opencode søker etter disse stedene:
 
 ## Forstå oppdagelsen
 
-For prosjektlokale stier går opencode opp fra din nåværende arbeidskatalog til den når git-arbeidstreet.
+For prosjektlokale stier går lgcode opp fra din nåværende arbeidskatalog til den når git-arbeidstreet.
 Den laster alle matchende `skills/*/SKILL.md` i `.lgcode/` og alle matchende `.claude/skills/*/SKILL.md` eller `.agents/skills/*/SKILL.md` underveis.
 
-Globale definisjoner lastes også inn fra `~/.config/opencode/skills/*/SKILL.md`, `~/.claude/skills/*/SKILL.md` og `~/.agents/skills/*/SKILL.md`.
+Globale definisjoner lastes også inn fra `~/.config/lgcode/skills/*/SKILL.md`, `~/.claude/skills/*/SKILL.md` og `~/.agents/skills/*/SKILL.md`.
 
 ---
 
@@ -80,7 +80,7 @@ Lag `.lgcode/skills/git-release/SKILL.md` slik:
 name: git-release
 description: Create consistent releases and changelogs
 license: MIT
-compatibility: opencode
+compatibility: lgcode
 metadata:
   audience: maintainers
   workflow: github
@@ -102,7 +102,7 @@ Ask clarifying questions if the target versioning scheme is unclear.
 
 ## Forstå verktøybeskrivelsen
 
-opencode viser tilgjengelige ferdigheter i `skill`-verktøybeskrivelsen.
+lgcode viser tilgjengelige ferdigheter i `skill`-verktøybeskrivelsen.
 Hver oppføring inneholder ferdighetsnavnet og beskrivelsen:
 
 ```xml

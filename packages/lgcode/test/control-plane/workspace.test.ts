@@ -123,7 +123,7 @@ async function initGitRepo(dir: string) {
   await $`git init`.cwd(dir).quiet()
   await $`git config core.fsmonitor false`.cwd(dir).quiet()
   await $`git config commit.gpgsign false`.cwd(dir).quiet()
-  await $`git config user.email "test@opencode.test"`.cwd(dir).quiet()
+  await $`git config user.email "test@lgcode.test"`.cwd(dir).quiet()
   await $`git config user.name "Test"`.cwd(dir).quiet()
   await fs.writeFile(path.join(dir, "tracked.txt"), "base\n")
   await $`git add tracked.txt`.cwd(dir).quiet()

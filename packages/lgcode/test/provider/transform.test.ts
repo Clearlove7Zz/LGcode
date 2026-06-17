@@ -1321,7 +1321,7 @@ describe("ProviderTransform.schema - openai supported schema subset", () => {
   })
 
   test.each([
-    ["opencode", "@ai-sdk/openai"],
+    ["lgcode", "@ai-sdk/openai"],
     ["custom-openai-compatible", "@ai-sdk/openai"],
     ["azure", "@ai-sdk/azure"],
   ])("sanitizes %s models using %s", (providerID, npm) => {
@@ -2321,7 +2321,7 @@ describe("ProviderTransform.message - strip openai metadata when store=false", (
   test("preserves metadata using providerID key when store is false", () => {
     const opencodeModel = {
       ...openaiModel,
-      providerID: "opencode",
+      providerID: "lgcode",
       api: {
         id: "lgcode-test",
         url: "https://api.modelhub.lgdg.cc",
@@ -2336,7 +2336,7 @@ describe("ProviderTransform.message - strip openai metadata when store=false", (
             type: "text",
             text: "Hello",
             providerOptions: {
-              opencode: {
+              lgcode: {
                 itemId: "msg_123",
                 otherOption: "value",
               },
@@ -2355,7 +2355,7 @@ describe("ProviderTransform.message - strip openai metadata when store=false", (
   test("preserves itemId across all providerOptions keys", () => {
     const opencodeModel = {
       ...openaiModel,
-      providerID: "opencode",
+      providerID: "lgcode",
       api: {
         id: "lgcode-test",
         url: "https://api.modelhub.lgdg.cc",
@@ -2367,7 +2367,7 @@ describe("ProviderTransform.message - strip openai metadata when store=false", (
         role: "assistant",
         providerOptions: {
           openai: { itemId: "msg_root" },
-          opencode: { itemId: "msg_opencode" },
+          lgcode: { itemId: "msg_opencode" },
           extra: { itemId: "msg_extra" },
         },
         content: [
@@ -2376,7 +2376,7 @@ describe("ProviderTransform.message - strip openai metadata when store=false", (
             text: "Hello",
             providerOptions: {
               openai: { itemId: "msg_openai_part" },
-              opencode: { itemId: "msg_lgcode_part" },
+              lgcode: { itemId: "msg_lgcode_part" },
               extra: { itemId: "msg_extra_part" },
             },
           },

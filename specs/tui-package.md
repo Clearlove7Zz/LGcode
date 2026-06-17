@@ -144,7 +144,7 @@ Exit criteria:
 
 - `packages/tui` typechecks independently.
 - Its test command runs from `packages/tui`.
-- The package has no dependency on `opencode`, `@lgcode-ai/cli`, or
+- The package has no dependency on `lgcode`, `@lgcode-ai/cli`, or
   `@lgcode-ai/core`.
 
 Checkpoint commit:

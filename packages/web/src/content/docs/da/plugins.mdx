@@ -20,7 +20,7 @@ Der er to måder at indlæse plugins på.
 Placer JavaScript- eller TypeScript-filer i plugin-mappen.
 
 - `.lgcode/plugins/` - Plugins på projektniveau
-- `~/.config/opencode/plugins/` - Globale plugins
+- `~/.config/lgcode/plugins/` - Globale plugins
 
 Filer i disse mapper indlæses automatisk ved opstart.
 
@@ -45,7 +45,7 @@ Gennemse tilgængelige plugins i [ecosystem](/docs/ecosystem#plugins).
 
 ### Installation af plugins
 
-**npm plugins** installeres automatisk ved hjælp af Bun ved opstart. Pakker og deres afhængigheder cachelagres i `~/.cache/opencode/node_modules/`.
+**npm plugins** installeres automatisk ved hjælp af Bun ved opstart. Pakker og deres afhængigheder cachelagres i `~/.cache/lgcode/node_modules/`.
 
 **Lokale plugins** indlæses direkte fra plugin-biblioteket. For at bruge eksterne pakker skal du oprette en `package.json` i din konfigurationsmappe (se [Dependencies](#dependencies)), eller udgive pluginnet til npm og [add it to your config](/docs/config#plugins).
 
@@ -55,9 +55,9 @@ Gennemse tilgængelige plugins i [ecosystem](/docs/ecosystem#plugins).
 
 Plugins indlæses fra alle kilder, og alle hooks kører i rækkefølge. Indlæsningsrækkefølgen er:
 
-1. Global konfiguration (`~/.config/opencode/lgcode.json`)
+1. Global konfiguration (`~/.config/lgcode/lgcode.json`)
 2. Projektkonfiguration (`lgcode.json`)
-3. Global plugin-mappe (`~/.config/opencode/plugins/`)
+3. Global plugin-mappe (`~/.config/lgcode/plugins/`)
 4. Projekt plugin bibliotek (`.lgcode/plugins/`)
 
 Dublerede npm-pakker med samme navn og version indlæses én gang. Et lokalt plugin og et npm plugin med lignende navne indlæses dog hver for sig.
@@ -118,7 +118,7 @@ Plugin-funktionen modtager:
 - `project`: Den aktuelle projektinformation.
 - `directory`: Den aktuelle arbejdsmappe.
 - `worktree`: Git worktree-stien.
-- `client`: En opencode SDK klient til interaktion med AI.
+- `client`: En lgcode SDK klient til interaktion med AI.
 - `$`: Buns [shell API](https://bun.com/docs/runtime/shell) til udførelse af kommandoer.
 
 ---
@@ -211,7 +211,7 @@ Plugins kan abonnere på begivenheder som vist nedenfor i afsnittet Eksempler. H
 
 ## Eksempler
 
-Her er nogle eksempler på plugins, du kan bruge til at udvide opencode.
+Her er nogle eksempler på plugins, du kan bruge til at udvide lgcode.
 
 ---
 
@@ -225,7 +225,7 @@ export const NotificationPlugin = async ({ project, client, $, directory, worktr
     event: async ({ event }) => {
       // Send notification on session completion
       if (event.type === "session.idle") {
-        await $`osascript -e 'display notification "Session completed!" with title "opencode"'`
+        await $`osascript -e 'display notification "Session completed!" with title "lgcode"'`
       }
     },
   }
@@ -242,7 +242,7 @@ Hvis du bruger LGcode desktop-appen, kan den sende systemmeddelelser automatisk,
 
 ### .env-beskyttelse
 
-Undgå opencode i at læse `.env` filer:
+Undgå lgcode i at læse `.env` filer:
 
 ```javascript title=".lgcode/plugins/env-protection.js"
 export const EnvProtection = async ({ project, client, $, directory, worktree }) => {
@@ -277,7 +277,7 @@ export const InjectEnvPlugin = async () => {
 
 ### Brugerdefinerede værktøjer
 
-Plugins kan også tilføje brugerdefinerede værktøjer til opencode:
+Plugins kan også tilføje brugerdefinerede værktøjer til lgcode:
 
 ```ts title=".lgcode/plugins/custom-tools.ts"
 import { type Plugin, tool } from "@lgcode-ai/plugin"
@@ -300,13 +300,13 @@ export const CustomToolsPlugin: Plugin = async (ctx) => {
 }
 ```
 
-`tool`-hjælperen opretter et brugerdefineret værktøj, som opencode kan kalde. Det tager en Zod-skemafunktion og returnerer en værktøjsdefinition med:
+`tool`-hjælperen opretter et brugerdefineret værktøj, som lgcode kan kalde. Det tager en Zod-skemafunktion og returnerer en værktøjsdefinition med:
 
 - `description`: Hvad værktøjet gør
 - `args`: Zod-skema for værktøjets argumenter
 - `execute`: Funktion, der kører, når værktøjet kaldes
 
-Dine tilpassede værktøjer vil være tilgængelige for opencode sammen med indbyggede værktøjer.
+Dine tilpassede værktøjer vil være tilgængelige for lgcode sammen med indbyggede værktøjer.
 
 :::note
 Hvis et plugin-værktøj bruger samme navn som et indbygget værktøj, har plugin-værktøjet forrang.

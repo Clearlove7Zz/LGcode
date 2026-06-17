@@ -18,7 +18,7 @@ To add a provider you need to:
 ### Credentials
 
 When you add a provider's API keys with the `/connect` command, they are stored
-in `~/.local/share/opencode/auth.json`.
+in `~/.local/share/lgcode/auth.json`.
 
 ---
 
@@ -171,17 +171,17 @@ To use Amazon Bedrock with LGcode:
 
    #### Environment Variables (Quick Start)
 
-   Set one of these environment variables while running opencode:
+   Set one of these environment variables while running lgcode:
 
    ```bash
    # Option 1: Using AWS access keys
-   AWS_ACCESS_KEY_ID=XXX AWS_SECRET_ACCESS_KEY=YYY opencode
+   AWS_ACCESS_KEY_ID=XXX AWS_SECRET_ACCESS_KEY=YYY lgcode
 
    # Option 2: Using named AWS profile
-   AWS_PROFILE=my-profile opencode
+   AWS_PROFILE=my-profile lgcode
 
    # Option 3: Using Bedrock bearer token
-   AWS_BEARER_TOKEN_BEDROCK=XXX opencode
+   AWS_BEARER_TOKEN_BEDROCK=XXX lgcode
    ```
 
    Or add them to your bash profile:
@@ -336,7 +336,7 @@ the following subscriptions in LGcode with zero setup:
 
 ### Atomic Chat
 
-You can configure opencode to use local models through [Atomic Chat](https://atomic.chat), a desktop application that runs local LLMs behind an OpenAI-compatible API server (default endpoint `http://127.0.0.1:1337/v1`).
+You can configure lgcode to use local models through [Atomic Chat](https://atomic.chat), a desktop application that runs local LLMs behind an OpenAI-compatible API server (default endpoint `http://127.0.0.1:1337/v1`).
 
 ```json title="lgcode.json" "atomic-chat" {5, 6, 8, 10-14}
 {
@@ -385,7 +385,7 @@ If you encounter "I'm sorry, but I cannot assist with that request" errors, try 
 2. Go to [Azure AI Foundry](https://ai.azure.com/) and deploy a model.
 
    :::note
-   The deployment name must match the model name for opencode to work properly.
+   The deployment name must match the model name for lgcode to work properly.
    :::
 
 3. Run the `/connect` command and search for **Azure**.
@@ -406,7 +406,7 @@ If you encounter "I'm sorry, but I cannot assist with that request" errors, try 
 5. Set your resource name as an environment variable:
 
    ```bash
-   AZURE_RESOURCE_NAME=XXX opencode
+   AZURE_RESOURCE_NAME=XXX lgcode
    ```
 
    Or add it to your bash profile:
@@ -432,7 +432,7 @@ If you encounter "I'm sorry, but I cannot assist with that request" errors, try 
 2. Go to [Azure AI Foundry](https://ai.azure.com/) and deploy a model.
 
    :::note
-   The deployment name must match the model name for opencode to work properly.
+   The deployment name must match the model name for lgcode to work properly.
    :::
 
 3. Run the `/connect` command and search for **Azure Cognitive Services**.
@@ -453,7 +453,7 @@ If you encounter "I'm sorry, but I cannot assist with that request" errors, try 
 5. Set your resource name as an environment variable:
 
    ```bash
-   AZURE_COGNITIVE_SERVICES_RESOURCE_NAME=XXX opencode
+   AZURE_COGNITIVE_SERVICES_RESOURCE_NAME=XXX lgcode
    ```
 
    Or add it to your bash profile:
@@ -569,7 +569,7 @@ Cloudflare AI Gateway lets you access models from OpenAI, Anthropic, Workers AI,
    /models
    ```
 
-   You can also add models through your opencode config.
+   You can also add models through your lgcode config.
 
    ```json title="lgcode.json"
    {
@@ -918,7 +918,7 @@ for full requirements.
 
 :::note
 You can also specify 'GITLAB_TOKEN' environment variable if you don't want
-to store token in opencode auth storage.
+to store token in lgcode auth storage.
 :::
 
 ##### Self-Hosted GitLab
@@ -1037,7 +1037,7 @@ This plugin provides comprehensive GitLab repository management capabilities inc
 
 ### GitHub Copilot
 
-To use your GitHub Copilot subscription with opencode:
+To use your GitHub Copilot subscription with lgcode:
 
 :::note
 Some models might need a [Pro+
@@ -1088,10 +1088,10 @@ To use Google Vertex AI with LGcode:
      - `GOOGLE_APPLICATION_CREDENTIALS`: Path to your service account JSON key file
      - Authenticate using gcloud CLI: `gcloud auth application-default login`
 
-   Set them while running opencode.
+   Set them while running lgcode.
 
    ```bash
-   GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json GOOGLE_CLOUD_PROJECT=your-project-id opencode
+   GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json GOOGLE_CLOUD_PROJECT=your-project-id lgcode
    ```
 
    Or add them to your bash profile.
@@ -1201,11 +1201,11 @@ For more providers and advanced features like caching and rate limiting, check t
 
 #### Optional Configs
 
-In the event you see a feature or model from Helicone that isn't configured automatically through opencode, you can always configure it yourself.
+In the event you see a feature or model from Helicone that isn't configured automatically through lgcode, you can always configure it yourself.
 
 Here's [Helicone's Model Directory](https://helicone.ai/models), you'll need this to grab the IDs of the models you want to add.
 
-```jsonc title="~/.config/opencode/lgcode.jsonc"
+```jsonc title="~/.config/lgcode/lgcode.jsonc"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -1233,7 +1233,7 @@ Here's [Helicone's Model Directory](https://helicone.ai/models), you'll need thi
 
 Helicone supports custom headers for features like caching, user tracking, and session management. Add them to your provider config using `options.headers`:
 
-```jsonc title="~/.config/opencode/lgcode.jsonc"
+```jsonc title="~/.config/lgcode/lgcode.jsonc"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -1244,7 +1244,7 @@ Helicone supports custom headers for features like caching, user tracking, and s
         "baseURL": "https://ai-gateway.helicone.ai",
         "headers": {
           "Helicone-Cache-Enabled": "true",
-          "Helicone-User-Id": "opencode",
+          "Helicone-User-Id": "lgcode",
         },
       },
     },
@@ -1285,7 +1285,7 @@ See the [Helicone Header Directory](https://docs.helicone.ai/helicone-headers/he
 
 ### llama.cpp
 
-You can configure opencode to use local models through [llama.cpp's](https://github.com/ggml-org/llama.cpp) llama-server utility
+You can configure lgcode to use local models through [llama.cpp's](https://github.com/ggml-org/llama.cpp) llama-server utility
 
 ```json title="lgcode.json" "llama.cpp" {5, 6, 8, 10-15}
 {
@@ -1352,7 +1352,7 @@ IO.NET offers 17 models optimized for various use cases:
 
 ### LM Studio
 
-You can configure opencode to use local models through LM Studio.
+You can configure lgcode to use local models through LM Studio.
 
 ```json title="lgcode.json" "lmstudio" {5, 6, 8, 10-14}
 {
@@ -1523,10 +1523,10 @@ export NVIDIA_API_KEY=nvapi-your-key-here
 
 ### Ollama
 
-You can configure opencode to use local models through Ollama.
+You can configure lgcode to use local models through Ollama.
 
 :::tip
-Ollama can automatically configure itself for LGcode. See the [Ollama integration docs](https://docs.ollama.com/integrations/opencode) for details.
+Ollama can automatically configure itself for LGcode. See the [Ollama integration docs](https://docs.ollama.com/integrations/lgcode) for details.
 :::
 
 ```json title="lgcode.json" "ollama" {5, 6, 8, 10-14}
@@ -1689,7 +1689,7 @@ LGcode Zen is a list of tested and verified models provided by the LGcode team. 
    /models
    ```
 
-   You can also add additional models through your opencode config.
+   You can also add additional models through your lgcode config.
 
    ```json title="lgcode.json" {6}
    {
@@ -1704,7 +1704,7 @@ LGcode Zen is a list of tested and verified models provided by the LGcode team. 
    }
    ```
 
-5. You can also customize them through your opencode config. Here's an example of specifying a provider
+5. You can also customize them through your lgcode config. Here's an example of specifying a provider
 
    ```json title="lgcode.json"
    {
@@ -1753,7 +1753,7 @@ LGcode Zen is a list of tested and verified models provided by the LGcode team. 
    /models
    ```
 
-   You can also add additional models through your opencode config.
+   You can also add additional models through your lgcode config.
 
    ```json title="lgcode.json" {6}
    {
@@ -1768,7 +1768,7 @@ LGcode Zen is a list of tested and verified models provided by the LGcode team. 
    }
    ```
 
-5. You can also customize them through your opencode config. Here's an example of specifying a provider
+5. You can also customize them through your lgcode config. Here's an example of specifying a provider
 
    ```json title="lgcode.json"
    {
@@ -1824,7 +1824,7 @@ SAP AI Core provides access to 40+ models from OpenAI, Anthropic, Google, Amazon
    Or set the `AICORE_SERVICE_KEY` environment variable:
 
    ```bash
-   AICORE_SERVICE_KEY='{"clientid":"...","clientsecret":"...","url":"...","serviceurls":{"AI_API_URL":"..."}}' opencode
+   AICORE_SERVICE_KEY='{"clientid":"...","clientsecret":"...","url":"...","serviceurls":{"AI_API_URL":"..."}}' lgcode
    ```
 
    Or add it to your bash profile:
@@ -1836,7 +1836,7 @@ SAP AI Core provides access to 40+ models from OpenAI, Anthropic, Google, Amazon
 4. Optionally set deployment ID and resource group:
 
    ```bash
-   AICORE_DEPLOYMENT_ID=your-deployment-id AICORE_RESOURCE_GROUP=your-resource-group opencode
+   AICORE_DEPLOYMENT_ID=your-deployment-id AICORE_RESOURCE_GROUP=your-resource-group lgcode
    ```
 
    :::note
@@ -1944,9 +1944,9 @@ To use [Scaleway Generative APIs](https://www.scaleway.com/en/docs/generative-ap
 
 [Snowflake Cortex](https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-rest-api) gives you access to frontier models (Claude, OpenAI GPT-5, and more) via an OpenAI-compatible API. All inference runs within the Snowflake perimeter and is billed in Snowflake credits. For per-model rates, see the [Snowflake Service Consumption Table](https://www.snowflake.com/legal-files/CreditConsumptionTable.pdf).
 
-Don't have a Snowflake account? [Sign up for a free trial](https://signup.snowflake.com/?utm_source=opencode&utm_medium=docs&utm_campaign=cortex-provider).
+Don't have a Snowflake account? [Sign up for a free trial](https://signup.snowflake.com/?utm_source=lgcode&utm_medium=docs&utm_campaign=cortex-provider).
 
-opencode's core workflow for coding, editing files, and running commands relies on tool calling. Only the Claude and OpenAI families within Snowflake Cortex support this. The provider is limited to those families to support the core workflow.
+lgcode's core workflow for coding, editing files, and running commands relies on tool calling. Only the Claude and OpenAI families within Snowflake Cortex support this. The provider is limited to those families to support the core workflow.
 
 LGcode supports two authentication methods:
 
@@ -2020,7 +2020,7 @@ If you prefer to paste a token directly, or if `SNOWFLAKE$LOCAL_APPLICATION` is 
 
 #### Environment variable
 
-For CI or headless environments, set a PAT or JWT before starting opencode:
+For CI or headless environments, set a PAT or JWT before starting lgcode:
 
 ```bash
 export SNOWFLAKE_ACCOUNT=myorg-myaccount
@@ -2124,7 +2124,7 @@ Vercel AI Gateway lets you access models from OpenAI, Anthropic, Google, xAI, an
    /models
    ```
 
-You can also customize models through your opencode config. Here's an example of specifying provider routing order.
+You can also customize models through your lgcode config. Here's an example of specifying provider routing order.
 
 ```json title="lgcode.json"
 {
@@ -2274,7 +2274,7 @@ Use this when LGcode is running somewhere a browser can't reach the loopback red
    /models
    ```
 
-   You can also add additional models through your opencode config.
+   You can also add additional models through your lgcode config.
 
    ```json title="lgcode.json" {6}
    {
@@ -2296,7 +2296,7 @@ Use this when LGcode is running somewhere a browser can't reach the loopback red
 To add any **OpenAI-compatible** provider that's not listed in the `/connect` command:
 
 :::tip
-You can use any OpenAI-compatible provider with opencode. Most modern AI providers offer OpenAI-compatible APIs.
+You can use any OpenAI-compatible provider with lgcode. Most modern AI providers offer OpenAI-compatible APIs.
 :::
 
 1. Run the `/connect` command and scroll down to **Other**.
@@ -2425,12 +2425,12 @@ The `limit` fields allow LGcode to understand how much context you have left. St
 
 If you are having trouble with configuring a provider, check the following:
 
-1. **Check the auth setup**: Run `opencode auth list` to see if the credentials
+1. **Check the auth setup**: Run `lgcode auth list` to see if the credentials
    for the provider are added to your config.
 
    This doesn't apply to providers like Amazon Bedrock, that rely on environment variables for their auth.
 
-2. For custom providers, check the opencode config and:
-   - Make sure the provider ID used in the `/connect` command matches the ID in your opencode config.
+2. For custom providers, check the lgcode config and:
+   - Make sure the provider ID used in the `/connect` command matches the ID in your lgcode config.
    - The right npm package is used for the provider. For example, use `@ai-sdk/cerebras` for Cerebras. And for all other OpenAI-compatible providers, use `@ai-sdk/openai-compatible` (for `/v1/chat/completions`); if a model uses `/v1/responses`, use `@ai-sdk/openai`. For mixed setups under one provider, you can override per model via `provider.npm`.
    - Check correct API endpoint is used in the `options.baseURL` field.

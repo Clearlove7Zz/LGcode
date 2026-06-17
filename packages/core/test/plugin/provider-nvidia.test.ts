@@ -37,7 +37,7 @@ describe("NvidiaPlugin", () => {
       expect((yield* catalog.provider.get(ProviderV2.ID.make("nvidia"))).request.headers).toEqual({
         Existing: "value",
         "HTTP-Referer": "https://modelhub.lgdg.cc/",
-        "X-Title": "opencode",
+        "X-Title": "lgcode",
         "X-BILLING-INVOKE-ORIGIN": "LGcode",
       })
       expect((yield* catalog.provider.get(ProviderV2.ID.openrouter)).request.headers).toEqual({})
@@ -63,7 +63,7 @@ describe("NvidiaPlugin", () => {
 
       expect((yield* catalog.provider.get(ProviderV2.ID.make("nvidia"))).request.headers).toEqual({
         "HTTP-Referer": "https://modelhub.lgdg.cc/",
-        "X-Title": "opencode",
+        "X-Title": "lgcode",
         "X-BILLING-INVOKE-ORIGIN": "LGcode",
       })
     }),
@@ -91,7 +91,7 @@ describe("NvidiaPlugin", () => {
 
       expect((yield* catalog.provider.get(ProviderV2.ID.make("nvidia"))).request.headers).toEqual({
         "HTTP-Referer": "https://modelhub.lgdg.cc/",
-        "X-Title": "opencode",
+        "X-Title": "lgcode",
         "X-BILLING-INVOKE-ORIGIN": "CustomOrigin",
       })
     }),

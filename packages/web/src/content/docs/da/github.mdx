@@ -3,7 +3,7 @@ title: GitHub
 description: Brug LGcode i GitHub-problemer og Pull Requests.
 ---
 
-LGcode integreres med din GitHub arbejdsgang. Nævn `/opencode` eller `/oc` i din kommentar, og LGcode vil udføre opgaver i din GitHub Actions-løber.
+LGcode integreres med din GitHub arbejdsgang. Nævn `/lgcode` eller `/oc` i din kommentar, og LGcode vil udføre opgaver i din GitHub Actions-løber.
 
 ---
 
@@ -20,7 +20,7 @@ LGcode integreres med din GitHub arbejdsgang. Nævn `/opencode` eller `/oc` i di
 Kør følgende kommando i et projekt, der er i en GitHub repo:
 
 ```bash
-opencode github install
+lgcode github install
 ```
 
 Dette vil lede dig gennem installation af GitHub-appen, oprettelse af arbejdsgangen og opsætning af hemmeligheder.
@@ -37,10 +37,10 @@ Eller du kan indstille det manuelt.
 
 2. **Tilføj arbejdsgangen**
 
-   Tilføj følgende workflow-fil til `.github/workflows/opencode.yml` i din repo. Sørg for at indstille de relevante `model` og nødvendige API-nøgler i `env`.
+   Tilføj følgende workflow-fil til `.github/workflows/lgcode.yml` i din repo. Sørg for at indstille de relevante `model` og nødvendige API-nøgler i `env`.
 
-   ```yml title=".github/workflows/opencode.yml" {24,26}
-   name: opencode
+   ```yml title=".github/workflows/lgcode.yml" {24,26}
+   name: lgcode
 
    on:
      issue_comment:
@@ -49,10 +49,10 @@ Eller du kan indstille det manuelt.
        types: [created]
 
    jobs:
-     opencode:
+     lgcode:
        if: |
          contains(github.event.comment.body, '/oc') ||
-         contains(github.event.comment.body, '/opencode')
+         contains(github.event.comment.body, '/lgcode')
        runs-on: ubuntu-latest
        permissions:
          id-token: write
@@ -107,8 +107,8 @@ LGcode kan udløses af følgende GitHub hændelser:
 
 | Begivenhedstype               | Udløst af                               | Detaljer                                                                                                                |
 | ----------------------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `issue_comment`               | Kommentarer og problemer eller PR       | Nævn `/opencode` eller `/oc` i din kommentar. LGcode læser kontekst og kan oprette brancher, åbne PR'er eller svare.  |
-| `pull_request_review_comment` | Kommenter specifikke kodelinjer i en PR | Nævn `/opencode` eller `/oc`, mens du gennemgår koden. LGcode modtager filsti, linjenumre og diff-kontekst.           |
+| `issue_comment`               | Kommentarer og problemer eller PR       | Nævn `/lgcode` eller `/oc` i din kommentar. LGcode læser kontekst og kan oprette brancher, åbne PR'er eller svare.  |
+| `pull_request_review_comment` | Kommenter specifikke kodelinjer i en PR | Nævn `/lgcode` eller `/oc`, mens du gennemgår koden. LGcode modtager filsti, linjenumre og diff-kontekst.           |
 | `issues`                      | Udgave åbnet eller redigeret            | Udløs automatisk LGcode, når problemer oprettes eller ændres. Kræver `prompt` input.                                  |
 | `pull_request`                | PR åbnet eller opdateret                | Udløs automatisk LGcode, når PR'er åbnes, synkroniseres eller genåbnes. Nyttigt til automatiserede kodegennemgange.   |
 | `schedule`                    | Cron-baseret tidsplan                   | Kør LGcode efter en tidsplan. Kræver `prompt` input. Output går til logfiler og PR'er (intet problem ved kommentere). |
@@ -126,7 +126,7 @@ on:
     - cron: "0 9 * * 1" # Every Monday at 9am UTC
 
 jobs:
-  opencode:
+  lgcode:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -254,7 +254,7 @@ For `issues` begivenheder er `prompt` input **påkrævet**, da der ikke er nogen
 
 Tilsidesæt standardprompten for at tilpasse LGcodes adfærd til din arbejdsgang.
 
-```yaml title=".github/workflows/opencode.yml"
+```yaml title=".github/workflows/lgcode.yml"
 - uses: Clearlove7Zz/LGcode/github@latest
   with:
     model: anthropic/claude-sonnet-4-5
@@ -278,7 +278,7 @@ Her er nogle eksempler på, hvordan du kan bruge LGcode i GitHub.
   Tilføj denne kommentar i et GitHub-nummer.
 
   ```
-  /opencode explain this issue
+  /lgcode explain this issue
   ```
 
   LGcode vil læse hele tråden, inklusive alle kommentarer, og svare med en klar forklaring.
@@ -288,7 +288,7 @@ Her er nogle eksempler på, hvordan du kan bruge LGcode i GitHub.
   I et GitHub-problem skal du sige:
 
   ```
-  /opencode fix this
+  /lgcode fix this
   ```
 
   Og LGcode vil oprette en ny branch, implementere ændringer og åbne en PR med ændringer.

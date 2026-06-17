@@ -15,7 +15,7 @@ ACP est un protocole ouvert qui standardise la communication entre les éditeurs
 
 ## Configuration
 
-Pour utiliser LGcode via ACP, configurez votre éditeur pour exécuter la commande `opencode acp`.
+Pour utiliser LGcode via ACP, configurez votre éditeur pour exécuter la commande `lgcode acp`.
 
 La commande démarre LGcode en tant que sous-processus compatible ACP qui communique avec votre éditeur via JSON-RPC sur stdio.
 
@@ -31,7 +31,7 @@ Ajoutez à votre configuration [Zed](https://zed.dev) (`~/.config/zed/settings.j
 {
   "agent_servers": {
     "LGcode": {
-      "command": "opencode",
+      "command": "lgcode",
       "args": ["acp"]
     }
   }
@@ -53,7 +53,7 @@ Vous pouvez également associer un raccourci clavier en modifiant votre `keymap.
             "custom": {
               "name": "LGcode",
               "command": {
-                "command": "opencode",
+                "command": "lgcode",
                 "args": ["acp"]
               }
             }
@@ -75,7 +75,7 @@ Ajoutez `acp.json` à votre [IDE JetBrains](https://www.jetbrains.com/) conform�
 {
   "agent_servers": {
     "LGcode": {
-      "command": "/absolute/path/bin/opencode",
+      "command": "/absolute/path/bin/lgcode",
       "args": ["acp"]
     }
   }
@@ -93,8 +93,8 @@ Ajoutez à votre configuration [Avante.nvim](https://github.com/yetone/avante.nv
 ```lua
 {
   acp_providers = {
-    ["opencode"] = {
-      command = "opencode",
+    ["lgcode"] = {
+      command = "lgcode",
       args = { "acp" }
     }
   }
@@ -106,8 +106,8 @@ Si vous devez transmettre des variables d'environnement :
 ```lua {6-8}
 {
   acp_providers = {
-    ["opencode"] = {
-      command = "opencode",
+    ["lgcode"] = {
+      command = "lgcode",
       args = { "acp" },
       env = {
         LGCODE_API_KEY = os.getenv("LGCODE_API_KEY")
@@ -128,7 +128,7 @@ require("codecompanion").setup({
   interactions = {
     chat = {
       adapter = {
-        name = "opencode",
+        name = "lgcode",
         model = "claude-sonnet-4",
       },
     },

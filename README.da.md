@@ -51,14 +51,14 @@ curl -fsSL https://modelhub.lgdg.cc/install | bash
 
 # Pakkehåndteringer
 npm i -g lgcode-ai@latest        # eller bun/pnpm/yarn
-scoop install opencode             # Windows
-choco install opencode             # Windows
-brew install anomalyco/tap/opencode # macOS og Linux (anbefalet, altid up to date)
-brew install opencode              # macOS og Linux (officiel brew formula, opdateres sjældnere)
-sudo pacman -S opencode            # Arch Linux (Stable)
+scoop install lgcode             # Windows
+choco install lgcode             # Windows
+brew install anomalyco/tap/lgcode # macOS og Linux (anbefalet, altid up to date)
+brew install lgcode              # macOS og Linux (officiel brew formula, opdateres sjældnere)
+sudo pacman -S lgcode            # Arch Linux (Stable)
 paru -S lgcode-bin               # Arch Linux (Latest from AUR)
-mise use -g opencode               # alle OS
-nix run nixpkgs#opencode           # eller github:Clearlove7Zz/LGcode for nyeste dev-branch
+mise use -g lgcode               # alle OS
+nix run nixpkgs#lgcode           # eller github:Clearlove7Zz/LGcode for nyeste dev-branch
 ```
 
 > [!TIP]
@@ -122,8 +122,8 @@ Hvis du vil bidrage til LGcode, så læs vores [contributing docs](./CONTRIBUTIN
 
 ### Bygget på LGcode
 
-Hvis du arbejder på et projekt der er relateret til LGcode og bruger "opencode" som en del af navnet; f.eks. "lgcode-dashboard" eller "lgcode-mobile", så tilføj en note i din README, der tydeliggør at projektet ikke er bygget af LGcode-teamet og ikke er tilknyttet os på nogen måde.
+Hvis du arbejder på et projekt der er relateret til LGcode og bruger "lgcode" som en del af navnet; f.eks. "lgcode-dashboard" eller "lgcode-mobile", så tilføj en note i din README, der tydeliggør at projektet ikke er bygget af LGcode-teamet og ikke er tilknyttet os på nogen måde.
 
 ---
 
-**Bliv en del af vores community** [Discord](https://discord.gg/opencode) | [X.com](https://x.com/opencode)
+**Bliv en del af vores community** [Discord](https://discord.gg/lgcode) | [X.com](https://x.com/lgcode)

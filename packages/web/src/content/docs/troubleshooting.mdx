@@ -11,21 +11,21 @@ To debug issues with LGcode, start by checking the logs and local data it stores
 
 Log files are written to:
 
-- **macOS/Linux**: `~/.local/share/opencode/log/`
-- **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.local\share\opencode\log`
+- **macOS/Linux**: `~/.local/share/lgcode/log/`
+- **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.local\share\lgcode\log`
 
 Log files are named with timestamps (e.g., `2025-01-09T123456.log`) and the most recent 10 log files are kept.
 
-You can set the log level with the `--log-level` command-line option to get more detailed debug information. For example, `opencode --log-level DEBUG`.
+You can set the log level with the `--log-level` command-line option to get more detailed debug information. For example, `lgcode --log-level DEBUG`.
 
 ---
 
 ## Storage
 
-opencode stores session data and other application data on disk at:
+lgcode stores session data and other application data on disk at:
 
-- **macOS/Linux**: `~/.local/share/opencode/`
-- **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.local\share\opencode`
+- **macOS/Linux**: `~/.local/share/lgcode/`
+- **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.local\share\lgcode`
 
 This directory contains:
 
@@ -42,7 +42,7 @@ This directory contains:
 To uninstall the LGcode CLI and remove its related files, run:
 
 ```bash
-opencode uninstall
+lgcode uninstall
 ```
 
 The command shows what will be removed and asks for confirmation. See the [CLI reference](/docs/cli#uninstall) for options to keep your configuration or application data.
@@ -71,9 +71,9 @@ If the desktop app is crashing on launch, hanging, or behaving strangely, start 
 
 Open your global config file and look for a `plugin` key.
 
-- **macOS/Linux**: `~/.config/opencode/lgcode.jsonc` (or `~/.config/opencode/lgcode.json`)
-- **macOS/Linux** (older installs): `~/.local/share/opencode/lgcode.jsonc`
-- **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.config\opencode\lgcode.jsonc`
+- **macOS/Linux**: `~/.config/lgcode/lgcode.jsonc` (or `~/.config/lgcode/lgcode.json`)
+- **macOS/Linux** (older installs): `~/.local/share/lgcode/lgcode.jsonc`
+- **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.config\lgcode\lgcode.jsonc`
 
 If you have plugins configured, temporarily disable them by removing the key or setting it to an empty array:
 
@@ -89,8 +89,8 @@ If you have plugins configured, temporarily disable them by removing the key or 
 LGcode can also load local plugins from disk. Temporarily move these out of the way (or rename the folder) and restart the desktop app:
 
 - **Global plugins**
-  - **macOS/Linux**: `~/.config/opencode/plugins/`
-  - **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.config\opencode\plugins`
+  - **macOS/Linux**: `~/.config/lgcode/plugins/`
+  - **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.config\lgcode\plugins`
 - **Project plugins** (only if you use per-project config)
   - `<your-project>/.lgcode/plugins/`
 
@@ -105,9 +105,9 @@ If disabling plugins doesn't help (or a plugin install is stuck), clear the cach
 1. Quit LGcode Desktop completely.
 2. Delete the cache directory:
 
-- **macOS**: Finder -> `Cmd+Shift+G` -> paste `~/.cache/opencode`
-- **Linux**: delete `~/.cache/opencode` (or run `rm -rf ~/.cache/opencode`)
-- **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.cache\opencode`
+- **macOS**: Finder -> `Cmd+Shift+G` -> paste `~/.cache/lgcode`
+- **Linux**: delete `~/.cache/lgcode` (or run `rm -rf ~/.cache/lgcode`)
+- **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.cache\lgcode`
 
 3. Restart LGcode Desktop.
 
@@ -172,8 +172,8 @@ If the app won't start and you can't clear settings from inside the UI, reset th
 1. Quit LGcode Desktop.
 2. Find and delete these files (they live in the LGcode Desktop app data directory):
 
-- `opencode.settings.dat` (desktop default server URL)
-- `opencode.global.dat` and `opencode.workspace.*.dat` (UI state like recent servers/projects)
+- `lgcode.settings.dat` (desktop default server URL)
+- `lgcode.global.dat` and `lgcode.workspace.*.dat` (UI state like recent servers/projects)
 
 To find the directory quickly:
 
@@ -213,7 +213,7 @@ Here are some common issues and how to resolve them.
 
 1. Check the logs for error messages
 2. Try running with `--print-logs` to see output in the terminal
-3. Ensure you have the latest version with `opencode upgrade`
+3. Ensure you have the latest version with `lgcode upgrade`
 
 ---
 
@@ -239,9 +239,9 @@ Examples:
 
 - `openai/gpt-4.1`
 - `openrouter/google/gemini-2.5-flash`
-- `opencode/kimi-k2`
+- `lgcode/kimi-k2`
 
-To figure out what models you have access to, run `opencode models`
+To figure out what models you have access to, run `lgcode models`
 
 ---
 
@@ -255,10 +255,10 @@ To resolve this:
 2. If the issue persists, try clearing your stored configuration:
 
    ```bash
-   rm -rf ~/.local/share/opencode
+   rm -rf ~/.local/share/lgcode
    ```
 
-   On Windows, press `WIN+R` and delete: `%USERPROFILE%\.local\share\opencode`
+   On Windows, press `WIN+R` and delete: `%USERPROFILE%\.local\share\lgcode`
 
 3. Re-authenticate with your provider using the `/connect` command in the TUI.
 
@@ -266,21 +266,21 @@ To resolve this:
 
 ### AI_APICallError and provider package issues
 
-If you encounter API call errors, this may be due to outdated provider packages. opencode dynamically installs provider packages (OpenAI, Anthropic, Google, etc.) as needed and caches them locally.
+If you encounter API call errors, this may be due to outdated provider packages. lgcode dynamically installs provider packages (OpenAI, Anthropic, Google, etc.) as needed and caches them locally.
 
 To resolve provider package issues:
 
 1. Clear the provider package cache:
 
    ```bash
-   rm -rf ~/.cache/opencode
+   rm -rf ~/.cache/lgcode
    ```
 
-   On Windows, press `WIN+R` and delete: `%USERPROFILE%\.cache\opencode`
+   On Windows, press `WIN+R` and delete: `%USERPROFILE%\.cache\lgcode`
 
-2. Restart opencode to reinstall the latest provider packages
+2. Restart lgcode to reinstall the latest provider packages
 
-This will force opencode to download the most recent versions of provider packages, which often resolves compatibility issues with model parameters and API changes.
+This will force lgcode to download the most recent versions of provider packages, which often resolves compatibility issues with model parameters and API changes.
 
 ---
 
@@ -311,4 +311,4 @@ Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 export DISPLAY=:99.0
 ```
 
-opencode will detect if you're using Wayland and prefer `wl-clipboard`, otherwise it will try to find clipboard tools in order of: `xclip` and `xsel`.
+lgcode will detect if you're using Wayland and prefer `wl-clipboard`, otherwise it will try to find clipboard tools in order of: `xclip` and `xsel`.

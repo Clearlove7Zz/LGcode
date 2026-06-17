@@ -51,8 +51,8 @@ describe("LLMGatewayPlugin", () => {
       expect((yield* catalog.provider.get(ProviderV2.ID.make("llmgateway"))).request.headers).toEqual({
         Existing: "value",
         "HTTP-Referer": "https://modelhub.lgdg.cc/",
-        "X-Title": "opencode",
-        "X-Source": "opencode",
+        "X-Title": "lgcode",
+        "X-Source": "lgcode",
       })
       expect((yield* catalog.provider.get(ProviderV2.ID.openrouter)).request.headers).toEqual({})
     }),

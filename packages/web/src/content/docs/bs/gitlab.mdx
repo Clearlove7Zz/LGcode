@@ -11,7 +11,7 @@ U oba slučaja, LGcode će se pokrenuti na vašim GitLab pokretačima.
 ## GitLab CI
 
 LGcode radi u redovnom GitLab cevovodu. Možete ga ugraditi u cjevovod kao [CI komponenta](https://docs.gitlab.com/ee/ci/components/)
-Ovdje koristimo CI/CD komponentu kreiranu u zajednici za LGcode — [nagyv/gitlab-opencode](https://gitlab.com/nagyv/gitlab-opencode).
+Ovdje koristimo CI/CD komponentu kreiranu u zajednici za LGcode — [nagyv/gitlab-lgcode](https://gitlab.com/nagyv/gitlab-lgcode).
 
 ---
 
@@ -30,7 +30,7 @@ Ovdje koristimo CI/CD komponentu kreiranu u zajednici za LGcode — [nagyv/gitla
 
 ```yaml title=".gitlab-ci.yml"
 include:
-  - component: $CI_SERVER_FQDN/nagyv/gitlab-opencode/opencode@2
+  - component: $CI_SERVER_FQDN/nagyv/gitlab-lgcode/lgcode@2
     inputs:
       config_dir: ${CI_PROJECT_DIR}/lgcode-config
       auth_json: $LGCODE_AUTH_JSON # The variable name for your LGcode authentication JSON
@@ -38,14 +38,14 @@ include:
       message: "Your prompt here"
 ```
 
-Za više unosa i slučajeva upotrebe [pogledajte dokumente docs](https://gitlab.com/explore/catalog/nagyv/gitlab-opencode) za ovu komponentu.
+Za više unosa i slučajeva upotrebe [pogledajte dokumente docs](https://gitlab.com/explore/catalog/nagyv/gitlab-lgcode) za ovu komponentu.
 
 ---
 
 ## GitLab Duo
 
 LGcode se integriše sa vašim GitLab tokovom rada.
-Spomenite `@opencode` u komentaru i LGcode će izvršiti zadatke unutar vašeg GitLab CI cevovoda.
+Spomenite `@lgcode` u komentaru i LGcode će izvršiti zadatke unutar vašeg GitLab CI cevovoda.
 
 ---
 
@@ -79,7 +79,7 @@ Pogledajte [**GitLab dokumente**](https://docs.gitlab.com/user/duo_agent_platfor
     ```yaml
     image: node:22-slim
     commands:
-      - echo "Installing opencode"
+      - echo "Installing lgcode"
       - npm install --global lgcode-ai
       - echo "Installing glab"
       - export GITLAB_TOKEN=$GITLAB_TOKEN_LGCODE
@@ -89,9 +89,9 @@ Pogledajte [**GitLab dokumente**](https://docs.gitlab.com/user/duo_agent_platfor
       - echo "Configuring glab"
       - echo $GITLAB_HOST
       - echo "Creating LGcode auth configuration"
-      - mkdir --parents ~/.local/share/opencode
+      - mkdir --parents ~/.local/share/lgcode
       - |
-        cat > ~/.local/share/opencode/auth.json << EOF
+        cat > ~/.local/share/lgcode/auth.json << EOF
         {
           "anthropic": {
             "type": "api",
@@ -100,7 +100,7 @@ Pogledajte [**GitLab dokumente**](https://docs.gitlab.com/user/duo_agent_platfor
         }
         EOF
       - echo "Configuring git"
-      - git config --global user.email "opencode@gitlab.com"
+      - git config --global user.email "lgcode@gitlab.com"
       - git config --global user.name "LGcode"
       - echo "Testing glab"
       - glab issue list
@@ -157,14 +157,14 @@ Možete vidjeti [GitLab CLI agenti docs](https://docs.gitlab.com/user/duo_agent_
 
 Evo nekoliko primjera kako možete koristiti LGcode u GitLab.
 :::tip
-Možete konfigurirati da koristite drugu frazu okidača od `@opencode`.
+Možete konfigurirati da koristite drugu frazu okidača od `@lgcode`.
 :::
 
 - **Objasnite problem**
   Dodajte ovaj komentar u izdanje GitLaba.
 
 ```
-  @opencode explain this issue
+  @lgcode explain this issue
 ```
 
 LGcode će pročitati problem i odgovoriti jasnim objašnjenjem.
@@ -173,7 +173,7 @@ LGcode će pročitati problem i odgovoriti jasnim objašnjenjem.
   U izdanju GitLaba recite:
 
 ```
-  @opencode fix this
+  @lgcode fix this
 ```
 
 LGcode će kreirati novu granu, implementirati promjene i otvoriti zahtjev za spajanje s promjenama.
@@ -182,7 +182,7 @@ LGcode će kreirati novu granu, implementirati promjene i otvoriti zahtjev za sp
   Ostavite sljedeći komentar na zahtjev za spajanje GitLab-a.
 
 ```
-  @opencode review this merge request
+  @lgcode review this merge request
 ```
 
 LGcode će pregledati zahtjev za spajanje i dati povratne informacije.

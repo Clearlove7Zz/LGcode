@@ -9,9 +9,9 @@ import { usePlatform } from "@/context/platform"
 import { useWslServers } from "./context"
 import { enterWslOpencodeStep } from "./settings-model"
 
-type WslServerStep = "wsl" | "distro" | "opencode"
+type WslServerStep = "wsl" | "distro" | "lgcode"
 
-const STEPS: WslServerStep[] = ["wsl", "distro", "opencode"]
+const STEPS: WslServerStep[] = ["wsl", "distro", "lgcode"]
 
 function isHiddenDistro(name: string) {
   return /^docker-desktop(?:-data)?$/i.test(name)
@@ -115,18 +115,18 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
   const installingDistro = createMemo(() => current()?.job?.kind === "install-distro")
   const installingOpencode = createMemo(() => {
     const job = current()?.job
-    return job?.kind === "install-opencode" && job.distro === selectedDistro()
+    return job?.kind === "install-lgcode" && job.distro === selectedDistro()
   })
   const allReady = createMemo(() => wslReady() && distroReady() && opencodeReady())
   const addDisabled = createMemo(() => {
     const job = current()?.job
     if (!job) return store.adding
-    return store.adding || job.kind !== "probe-opencode"
+    return store.adding || job.kind !== "probe-lgcode"
   })
   const recommendedStep = createMemo<WslServerStep>(() => {
     if (!wslReady()) return "wsl"
     if (!distroReady()) return "distro"
-    return "opencode"
+    return "lgcode"
   })
   // activeStep falls back to recommendedStep when the user hasn't picked one.
   // Once the user clicks a step tab we respect their choice rather than snapping
@@ -148,7 +148,7 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
     }
     if (!distro || !distroReady()) return null
     if (!state.lgcodeChecks[distro]) {
-      return { key: `probe-opencode:${distro}`, run: () => api.probeOpencode(distro) }
+      return { key: `probe-lgcode:${distro}`, run: () => api.probeOpencode(distro) }
     }
     return null
   })
@@ -201,12 +201,12 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
     const state = current()
     if (!state) return language.t("wsl.onboarding.checkingOpencode")
     const distro = selectedDistro()
-    if (state.job?.kind === "install-opencode") {
+    if (state.job?.kind === "install-lgcode") {
       return distro
         ? language.t("wsl.onboarding.updatingOpencodeIn", { distro })
         : language.t("wsl.onboarding.updatingOpencode")
     }
-    if (state.job?.kind === "probe-opencode") {
+    if (state.job?.kind === "probe-lgcode") {
       return distro
         ? language.t("wsl.onboarding.checkingOpencodeIn", { distro })
         : language.t("wsl.onboarding.checkingOpencode")
@@ -536,7 +536,7 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
               </div>
             </Match>
 
-            <Match when={activeStep() === "opencode"}>
+            <Match when={activeStep() === "lgcode"}>
               <div class="rounded-md bg-surface-base p-4 flex flex-col gap-3">
                 <div class="flex items-center justify-between gap-3">
                   <div class="text-14-medium text-text-strong">{language.t("wsl.onboarding.step.lgcode")}</div>
@@ -597,7 +597,7 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
             </Match>
           </Switch>
 
-          <Show when={activeStep() === "opencode" && allReady() && selectedDistro()}>
+          <Show when={activeStep() === "lgcode" && allReady() && selectedDistro()}>
             <div class="flex items-center justify-end gap-2">
               <Button variant="ghost" size="large" disabled={store.adding} onClick={() => dialog.close()}>
                 {language.t("common.cancel")}
