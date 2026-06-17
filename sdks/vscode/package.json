@@ -1,7 +1,7 @@
 {
   "name": "lgcode-vscode",
-  "displayName": "lgcode",
-  "description": "lgcode for VS Code",
+  "displayName": "LGcode",
+  "description": "LGcode AI coding agent for VS Code",
   "version": "1.17.7",
   "publisher": "sst-dev",
   "license": "MIT",
@@ -22,7 +22,7 @@
     "commands": [
       {
         "command": "lgcode.openTerminal",
-        "title": "Open lgcode",
+        "title": "Open LGcode",
         "icon": {
           "light": "images/button-dark.svg",
           "dark": "images/button-light.svg"
@@ -30,7 +30,7 @@
       },
       {
         "command": "lgcode.openNewTerminal",
-        "title": "Open lgcode in new tab",
+        "title": "Open LGcode in new tab",
         "icon": {
           "light": "images/button-dark.svg",
           "dark": "images/button-light.svg"
