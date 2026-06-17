@@ -1,10 +1,10 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { AgentV2 } from "@opencode-ai/core/agent"
-import { FSUtil } from "@opencode-ai/core/fs-util"
-import { SkillPlugin } from "@opencode-ai/core/plugin/skill"
-import { SkillV2 } from "@opencode-ai/core/skill"
-import { SkillDiscovery } from "@opencode-ai/core/skill/discovery"
+import { AgentV2 } from "@opencode@lgcode/core/agent"
+import { FSUtil } from "@opencode@lgcode/core/fs-util"
+import { SkillPlugin } from "@opencode@lgcode/core/plugin/skill"
+import { SkillV2 } from "@opencode@lgcode/core/skill"
+import { SkillDiscovery } from "@opencode@lgcode/core/skill/discovery"
 import { testEffect } from "../lib/effect"
 
 const it = testEffect(

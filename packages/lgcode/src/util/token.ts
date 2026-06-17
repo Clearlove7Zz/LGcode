@@ -1,1 +1,1 @@
-export { Token, estimate } from "@opencode-ai/core/util/token"
+export { Token, estimate } from "@opencode@lgcode/core/util/token"

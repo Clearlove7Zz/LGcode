@@ -107,7 +107,7 @@ const PROVIDERS: ReadonlyArray<Provider> = [
     id: "cloudflare-ai-gateway",
     label: "Cloudflare AI Gateway",
     tier: "canary",
-    note: "Cloudflare Unified/OpenAI-compatible gateway; supports provider/model ids like workers-ai/@cf/...",
+    note: "Cloudflare Unified/OpenAI-compatible gateway; supports provider/model ids like workers@lgcode/@cf/...",
     vars: [
       { name: "CLOUDFLARE_ACCOUNT_ID", label: "Cloudflare account ID", secret: false },
       {
@@ -126,7 +126,7 @@ const PROVIDERS: ReadonlyArray<Provider> = [
         })}/chat/completions`,
         token: Redacted.make(envValue(env, Cloudflare.aiGatewayAuthEnvVars)),
         tokenHeader: "cf-aig-authorization",
-        model: "workers-ai/@cf/meta/llama-3.1-8b-instruct",
+        model: "workers@lgcode/@cf/meta/llama-3.1-8b-instruct",
       }),
   },
   {
