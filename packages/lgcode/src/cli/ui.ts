@@ -9,7 +9,7 @@ let _ansiLogo: string | undefined
 function getAnsiLogo(): string {
   if (_ansiLogo === undefined) {
     try {
-      _ansiLogo = readFileSync(join(__dirname, "../asset/logo-terminal.ans"), "utf-8").trimEnd()
+      _ansiLogo = readFileSync(join(__dirname, "asset/logo-terminal.ans"), "utf-8").trimEnd()
     } catch {
       _ansiLogo = ""
     }
@@ -19,8 +19,8 @@ function getAnsiLogo(): string {
 
 const wordmark = [
   `⠀                     ▄     `,
-  `█     █▀▀█ █▀▀█ █▀▀▀ █▀▀█`,
-  `█     █  █ █▀▀▀ █    █  █`,
+  `█     █▀▀▀ █▀▀▄ █▀▀▀ █▀▀▄`,
+  `█     █▄▄▀ █  █ █▄▄▀ █  █`,
   `▀▀▀▀  ▀▀▀▀ ▀▀▀▀ ▀▀▀▀ ▀▀▀▀`,
 ]
 

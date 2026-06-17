@@ -1525,6 +1525,8 @@ export const layer = Layer.effect(
           })
         }
 
+        console.log("[LGdg DEBUG] env loop done, providers has lgdg:", !!providers[lgdgID], "all providers:", Object.keys(providers))
+
         // load apikeys
         const auths = yield* auth.all().pipe(Effect.orDie)
         for (const [id, provider] of Object.entries(auths)) {
@@ -1650,6 +1652,7 @@ export const layer = Layer.effect(
           }
         }
 
+        console.log("[LGdg DEBUG] final providers:", Object.keys(providers), "lgdg in providers:", !!providers[lgdgID])
         return {
           models: languages,
           providers,
@@ -1962,7 +1965,10 @@ export const layer = Layer.effect(
         return { providerID: entry.providerID, modelID: entry.modelID }
       }
 
-      const provider = Object.values(s.providers).find((p) => !cfg.provider || Object.keys(cfg.provider).includes(p.id))
+      // Prefer LGDG_ModelHub as default provider when no config is set
+      const lgdgProvider = Object.values(s.providers).find((p) => p.id === "lgdg")
+      const fallbackProvider = Object.values(s.providers).find((p) => !cfg.provider || Object.keys(cfg.provider).includes(p.id))
+      const provider = lgdgProvider ?? fallbackProvider
       if (!provider) return yield* new NoProvidersError()
       const [model] = sort(Object.values(provider.models))
       if (!model) return yield* new NoModelsError({ providerID: provider.id })

@@ -55,3 +55,6 @@ export function createLgcodeClient(config?: Config & { directory?: string }) {
   client.interceptors.error.use(wrapClientError)
   return new OpencodeClient({ client })
 }
+
+// Backward-compatible alias
+export const createOpencodeClient = createLgcodeClient
