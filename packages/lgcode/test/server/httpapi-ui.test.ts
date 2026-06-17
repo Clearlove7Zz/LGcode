@@ -22,18 +22,18 @@ import { testEffect } from "../lib/effect"
 const testStateLayer = Layer.effectDiscard(
   Effect.gen(function* () {
     const original = {
-      OPENCODE_SERVER_PASSWORD: Flag.OPENCODE_SERVER_PASSWORD,
-      OPENCODE_SERVER_USERNAME: Flag.OPENCODE_SERVER_USERNAME,
-      envPassword: process.env.OPENCODE_SERVER_PASSWORD,
-      envUsername: process.env.OPENCODE_SERVER_USERNAME,
+      LGCODE_SERVER_PASSWORD: Flag.LGCODE_SERVER_PASSWORD,
+      LGCODE_SERVER_USERNAME: Flag.LGCODE_SERVER_USERNAME,
+      envPassword: process.env.LGCODE_SERVER_PASSWORD,
+      envUsername: process.env.LGCODE_SERVER_USERNAME,
     }
 
     yield* Effect.addFinalizer(() =>
       Effect.sync(() => {
-        Flag.OPENCODE_SERVER_PASSWORD = original.OPENCODE_SERVER_PASSWORD
-        Flag.OPENCODE_SERVER_USERNAME = original.OPENCODE_SERVER_USERNAME
-        restoreEnv("OPENCODE_SERVER_PASSWORD", original.envPassword)
-        restoreEnv("OPENCODE_SERVER_USERNAME", original.envUsername)
+        Flag.LGCODE_SERVER_PASSWORD = original.LGCODE_SERVER_PASSWORD
+        Flag.LGCODE_SERVER_USERNAME = original.LGCODE_SERVER_USERNAME
+        restoreEnv("LGCODE_SERVER_PASSWORD", original.envPassword)
+        restoreEnv("LGCODE_SERVER_USERNAME", original.envUsername)
       }),
     )
   }),
@@ -55,8 +55,8 @@ function app(input?: { password?: string; username?: string }) {
       Layer.provide(
         ConfigProvider.layer(
           ConfigProvider.fromUnknown({
-            OPENCODE_SERVER_PASSWORD: input?.password,
-            OPENCODE_SERVER_USERNAME: input?.username,
+            LGCODE_SERVER_PASSWORD: input?.password,
+            LGCODE_SERVER_USERNAME: input?.username,
           }),
         ),
       ),
@@ -102,8 +102,8 @@ function uiApp(input?: {
         HttpServer.layerServices,
         ConfigProvider.layer(
           ConfigProvider.fromUnknown({
-            OPENCODE_SERVER_PASSWORD: input?.password,
-            OPENCODE_SERVER_USERNAME: input?.username,
+            LGCODE_SERVER_PASSWORD: input?.password,
+            LGCODE_SERVER_USERNAME: input?.username,
           }),
         ),
       ]),
@@ -198,7 +198,7 @@ describe("HttpApi UI fallback", () => {
       expect(response.status).toBe(200)
       expect(response.headers.get("content-type")).toContain("text/html")
       expect(yield* responseText(response)).toBe("<html>opencode</html>")
-      expect(proxiedUrl).toBe("https://app.opencode.ai/")
+      expect(proxiedUrl).toBe("https://app.modelhub.lgdg.cc/")
     }),
   )
 
@@ -243,7 +243,7 @@ describe("HttpApi UI fallback", () => {
       )
 
       expect(response.status).toBe(200)
-      expect(proxiedUrl).toBe("https://app.opencode.ai/assets/app.js")
+      expect(proxiedUrl).toBe("https://app.modelhub.lgdg.cc/assets/app.js")
       expect(response.headers.get("content-encoding")).toBeNull()
       expect(response.headers.get("content-length")).not.toBe("999")
       expect(response.headers.get("content-type")).toContain("text/javascript")

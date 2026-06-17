@@ -45,9 +45,9 @@ const bootstrapFixture = Effect.gen(function* () {
   )
   yield* Effect.promise(() =>
     Bun.write(
-      path.join(dir, "opencode.json"),
+      path.join(dir, "lgcode.json"),
       JSON.stringify({
-        $schema: "https://opencode.ai/config.json",
+        $schema: "https://modelhub.lgdg.cc/config.json",
         plugin: [pathToFileURL(pluginFile).href],
       }),
     ),

@@ -7,7 +7,7 @@ import { Integration } from "@lgcode/core/integration"
 import { Location } from "@lgcode/core/location"
 import { ModelV2 } from "@lgcode/core/model"
 import { PluginV2 } from "@lgcode/core/plugin"
-import { OpencodePlugin } from "@lgcode/core/plugin/provider/opencode"
+import { OpencodePlugin } from "@lgcode/core/plugin/provider/lgcode"
 import { ProviderV2 } from "@lgcode/core/provider"
 import { AbsolutePath } from "@lgcode/core/schema"
 import { location } from "../fixture/location"
@@ -26,7 +26,7 @@ const pluginWithIntegrations = (integrations: Integration.Interface) => ({
 
 describe("OpencodePlugin", () => {
   it.effect("uses a public key and disables paid models without credentials", () =>
-    withEnv({ OPENCODE_API_KEY: undefined }, () =>
+    withEnv({ LGCODE_API_KEY: undefined }, () =>
       Effect.gen(function* () {
         const plugin = yield* PluginV2.Service
         const catalog = yield* Catalog.Service
@@ -40,14 +40,14 @@ describe("OpencodePlugin", () => {
             draft.cost = [...paid.cost]
           })
         })
-        expect((yield* catalog.provider.get(ProviderV2.ID.opencode)).request.body.apiKey).toBe("public")
-        expect((yield* catalog.model.get(ProviderV2.ID.opencode, ModelV2.ID.make("paid"))).enabled).toBe(false)
+        expect((yield* catalog.provider.get(ProviderV2.ID.lgcode)).request.body.apiKey).toBe("public")
+        expect((yield* catalog.model.get(ProviderV2.ID.lgcode, ModelV2.ID.make("paid"))).enabled).toBe(false)
       }),
     ),
   )
 
   it.effect("keeps free models without credentials", () =>
-    withEnv({ OPENCODE_API_KEY: undefined }, () =>
+    withEnv({ LGCODE_API_KEY: undefined }, () =>
       Effect.gen(function* () {
         const plugin = yield* PluginV2.Service
         const catalog = yield* Catalog.Service
@@ -61,14 +61,14 @@ describe("OpencodePlugin", () => {
             draft.cost = [...free.cost]
           })
         })
-        expect((yield* catalog.provider.get(ProviderV2.ID.opencode)).request.body.apiKey).toBe("public")
-        expect((yield* catalog.model.get(ProviderV2.ID.opencode, ModelV2.ID.make("free"))).enabled).toBe(true)
+        expect((yield* catalog.provider.get(ProviderV2.ID.lgcode)).request.body.apiKey).toBe("public")
+        expect((yield* catalog.model.get(ProviderV2.ID.lgcode, ModelV2.ID.make("free"))).enabled).toBe(true)
       }),
     ),
   )
 
   it.effect("treats output-only cost as free without credentials", () =>
-    withEnv({ OPENCODE_API_KEY: undefined }, () =>
+    withEnv({ LGCODE_API_KEY: undefined }, () =>
       Effect.gen(function* () {
         const plugin = yield* PluginV2.Service
         const catalog = yield* Catalog.Service
@@ -82,14 +82,14 @@ describe("OpencodePlugin", () => {
             draft.cost = [...outputOnly.cost]
           })
         })
-        expect((yield* catalog.provider.get(ProviderV2.ID.opencode)).request.body.apiKey).toBe("public")
-        expect((yield* catalog.model.get(ProviderV2.ID.opencode, ModelV2.ID.make("output-only"))).enabled).toBe(true)
+        expect((yield* catalog.provider.get(ProviderV2.ID.lgcode)).request.body.apiKey).toBe("public")
+        expect((yield* catalog.model.get(ProviderV2.ID.lgcode, ModelV2.ID.make("output-only"))).enabled).toBe(true)
       }),
     ),
   )
 
-  it.effect("uses OPENCODE_API_KEY as credentials", () =>
-    withEnv({ OPENCODE_API_KEY: "secret" }, () =>
+  it.effect("uses LGCODE_API_KEY as credentials", () =>
+    withEnv({ LGCODE_API_KEY: "secret" }, () =>
       Effect.gen(function* () {
         const plugin = yield* PluginV2.Service
         const catalog = yield* Catalog.Service
@@ -103,14 +103,14 @@ describe("OpencodePlugin", () => {
             draft.cost = [...paid.cost]
           })
         })
-        expect((yield* catalog.provider.get(ProviderV2.ID.opencode)).request.body.apiKey).toBeUndefined()
-        expect((yield* catalog.model.get(ProviderV2.ID.opencode, ModelV2.ID.make("paid"))).enabled).toBe(true)
+        expect((yield* catalog.provider.get(ProviderV2.ID.lgcode)).request.body.apiKey).toBeUndefined()
+        expect((yield* catalog.model.get(ProviderV2.ID.lgcode, ModelV2.ID.make("paid"))).enabled).toBe(true)
       }),
     ),
   )
 
   it.effect("uses configured provider env vars as credentials", () =>
-    withEnv({ OPENCODE_API_KEY: undefined, CUSTOM_OPENCODE_API_KEY: "secret" }, () =>
+    withEnv({ LGCODE_API_KEY: undefined, CUSTOM_LGCODE_API_KEY: "secret" }, () =>
       Effect.gen(function* () {
         const plugin = yield* PluginV2.Service
         const catalog = yield* Catalog.Service
@@ -119,7 +119,7 @@ describe("OpencodePlugin", () => {
         yield* integrations.update((editor) => {
           editor.method.update({
             integrationID: Integration.ID.make("opencode"),
-            method: { type: "env", names: ["CUSTOM_OPENCODE_API_KEY"] },
+            method: { type: "env", names: ["CUSTOM_LGCODE_API_KEY"] },
           })
         })
         const transform = yield* catalog.transform()
@@ -131,14 +131,14 @@ describe("OpencodePlugin", () => {
             draft.cost = [...paid.cost]
           })
         })
-        expect((yield* catalog.provider.get(ProviderV2.ID.opencode)).request.body.apiKey).toBeUndefined()
-        expect((yield* catalog.model.get(ProviderV2.ID.opencode, ModelV2.ID.make("paid"))).enabled).toBe(true)
+        expect((yield* catalog.provider.get(ProviderV2.ID.lgcode)).request.body.apiKey).toBeUndefined()
+        expect((yield* catalog.model.get(ProviderV2.ID.lgcode, ModelV2.ID.make("paid"))).enabled).toBe(true)
       }),
     ),
   )
 
   it.effect("uses configured apiKey as credentials", () =>
-    withEnv({ OPENCODE_API_KEY: undefined }, () =>
+    withEnv({ LGCODE_API_KEY: undefined }, () =>
       Effect.gen(function* () {
         const plugin = yield* PluginV2.Service
         const catalog = yield* Catalog.Service
@@ -159,14 +159,14 @@ describe("OpencodePlugin", () => {
             draft.cost = [...paid.cost]
           })
         })
-        expect((yield* catalog.provider.get(ProviderV2.ID.opencode)).request.body.apiKey).toBe("configured")
-        expect((yield* catalog.model.get(ProviderV2.ID.opencode, ModelV2.ID.make("paid"))).enabled).toBe(true)
+        expect((yield* catalog.provider.get(ProviderV2.ID.lgcode)).request.body.apiKey).toBe("configured")
+        expect((yield* catalog.model.get(ProviderV2.ID.lgcode, ModelV2.ID.make("paid"))).enabled).toBe(true)
       }),
     ),
   )
 
   it.effect("ignores non-opencode providers and models", () =>
-    withEnv({ OPENCODE_API_KEY: undefined }, () =>
+    withEnv({ LGCODE_API_KEY: undefined }, () =>
       Effect.gen(function* () {
         const plugin = yield* PluginV2.Service
         const catalog = yield* Catalog.Service
@@ -189,7 +189,7 @@ describe("OpencodePlugin", () => {
   it.effect("prefers gpt-5-nano as the opencode small model", () =>
     Effect.gen(function* () {
       const catalog = yield* Catalog.Service
-      const providerID = ProviderV2.ID.opencode
+      const providerID = ProviderV2.ID.lgcode
 
       const transform = yield* catalog.transform()
       yield* transform((catalog) => {

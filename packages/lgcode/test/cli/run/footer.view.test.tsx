@@ -59,7 +59,7 @@ function model(input: {
     providerID: "opencode",
     api: {
       id: "opencode",
-      url: "https://opencode.ai",
+      url: "https://modelhub.lgdg.cc",
       npm: "@ai-sdk/openai-compatible",
     },
     name: input.name,

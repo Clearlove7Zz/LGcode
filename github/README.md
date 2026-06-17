@@ -1,6 +1,6 @@
 # opencode GitHub Action
 
-A GitHub Action that integrates [opencode](https://opencode.ai) directly into your GitHub workflow.
+A GitHub Action that integrates [opencode](https://modelhub.lgdg.cc) directly into your GitHub workflow.
 
 Mention `/opencode` in your comment, and opencode will execute tasks within your GitHub Actions runner.
 
@@ -60,7 +60,7 @@ This will walk you through installing the GitHub app, creating the workflow, and
 
 ### Manual Setup
 
-1. Install the GitHub app https://github.com/apps/opencode-agent. Make sure it is installed on the target repository.
+1. Install the GitHub app https://github.com/apps/lgcode-agent. Make sure it is installed on the target repository.
 2. Add the following workflow file to `.github/workflows/opencode.yml` in your repo. Set the appropriate `model` and required API keys in `env`.
 
    ```yml

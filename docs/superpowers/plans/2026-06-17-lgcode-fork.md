@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Rebrand the OpenCode monorepo into LGcode, add the LGdg internal model cluster as an OpenAI-compatible provider, replace logos with provided PNG assets, and update documentation.
+**Goal:** Rebrand the LGcode monorepo into LGcode, add the LGdg internal model cluster as an OpenAI-compatible provider, replace logos with provided PNG assets, and update documentation.
 
-**Architecture:** The monorepo stays structurally the same but all workspace packages are renamed from `@opencode-ai/*` to `@lgcode/*`, the CLI package moves from `packages/opencode` to `packages/lgcode`, and the LGdg provider is added as a new profile in the existing OpenAI-compatible provider family. Logo assets are replaced with PNGs and the ANSI TUI logo is loaded from a file.
+**Architecture:** The monorepo stays structurally the same but all workspace packages are renamed from `@lgcode-ai/*` to `@lgcode/*`, the CLI package moves from `packages/lgcode` to `packages/lgcode`, and the LGdg provider is added as a new profile in the existing OpenAI-compatible provider family. Logo assets are replaced with PNGs and the ANSI TUI logo is loaded from a file.
 
 **Tech Stack:** Bun monorepo, TypeScript, SolidJS, Effect, Vite, Turbo.
 
@@ -16,14 +16,14 @@
 |---|---|
 | `package.json` | Root workspace names and scripts |
 | `packages/*/package.json` | Per-package names and workspace deps |
-| `packages/lgcode/package.json` | CLI package (renamed from `packages/opencode`) |
+| `packages/lgcode/package.json` | CLI package (renamed from `packages/lgcode`) |
 | `packages/lgcode/src/index.ts` | CLI/TUI entry point |
 | `packages/lgcode/src/asset/logo-terminal.ans` | ANSI logo for TUI |
 | `packages/llm/src/providers/openai-compatible-profile.ts` | LGdg provider profile |
 | `packages/llm/src/providers/openai-compatible.ts` | LGdg provider export |
 | `packages/llm/src/assets/icons/provider/lgdg.png` | LGdg provider icon |
 | `packages/ui/src/components/provider-icon.tsx` | Provider icon name mapping |
-| `packages/opencode/src/provider/provider.ts` | Provider registration |
+| `packages/lgcode/src/provider/provider.ts` | Provider registration |
 | `packages/core/src/config/*.ts` | Config directory names and defaults |
 | `packages/app/index.html` | Favicon links |
 | `packages/console/app/src/component/header.tsx` | Header logo imports |
@@ -39,16 +39,16 @@
 
 **Files:**
 - Create: `packages/lgcode/`
-- Modify: `packages/opencode/` → `packages/lgcode/`
+- Modify: `packages/lgcode/` → `packages/lgcode/`
 - Create: `packages/lgcode/src/asset/logo-terminal.ans`
 - Copy from: `D:/Desktop/LGcode/logo-terminal-24col.ans`
 
-- [ ] **Step 1: Rename `packages/opencode` to `packages/lgcode`**
+- [ ] **Step 1: Rename `packages/lgcode` to `packages/lgcode`**
 
 Run:
 ```bash
 cd D:/Desktop/LGcode/opencode
-git mv packages/opencode packages/lgcode
+git mv packages/lgcode packages/lgcode
 ```
 
 - [ ] **Step 2: Copy ANSI logo into the CLI package**
@@ -73,7 +73,7 @@ Expected: both files exist.
 
 ```bash
 git add -A
-git commit -m "chore: rename packages/opencode to packages/lgcode and add ANSI logo
+git commit -m "chore: rename packages/lgcode to packages/lgcode and add ANSI logo
 
 Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 ```
@@ -161,9 +161,9 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 
 Modify `package.json`:
 - `"name": "opencode"` → `"name": "lgcode"`
-- `"@opencode-ai/plugin": "workspace:*"` → `"@lgcode/plugin": "workspace:*"`
-- `"@opencode-ai/script": "workspace:*"` → `"@lgcode/script": "workspace:*"`
-- `"@opencode-ai/sdk": "workspace:*"` → `"@lgcode/sdk": "workspace:*"`
+- `"@lgcode-ai/plugin": "workspace:*"` → `"@lgcode/plugin": "workspace:*"`
+- `"@lgcode-ai/script": "workspace:*"` → `"@lgcode/script": "workspace:*"`
+- `"@lgcode-ai/sdk": "workspace:*"` → `"@lgcode/sdk": "workspace:*"`
 - `"url": "https://github.com/anomalyco/opencode"` → remove
 
 - [ ] **Step 2: Update `packages/lgcode/package.json`**
@@ -172,7 +172,7 @@ Modify `packages/lgcode/package.json`:
 - `"name": "opencode"` → `"name": "lgcode"`
 - `"opencode": "./bin/opencode"` → `"lgcode": "./bin/lgcode"`
 - Rename `bin/opencode` file reference and the file itself to `bin/lgcode`
-- Update all `@opencode-ai/*` deps to `@lgcode/*`
+- Update all `@lgcode-ai/*` deps to `@lgcode/*`
 - Remove repository/homepage URLs
 
 Run:
@@ -183,8 +183,8 @@ git mv packages/lgcode/bin/opencode packages/lgcode/bin/lgcode
 - [ ] **Step 3: Update all remaining package.json files**
 
 For every `packages/*/package.json` and `sdks/vscode/package.json`:
-- Change `"name"` from `@opencode-ai/X` to `@lgcode/X`
-- Change all `@opencode-ai/*` dependency references to `@lgcode/*`
+- Change `"name"` from `@lgcode-ai/X` to `@lgcode/X`
+- Change all `@lgcode-ai/*` dependency references to `@lgcode/*`
 - Remove `repository`, `homepage`, `bugs` URLs
 - Update scripts that reference `opencode`
 
@@ -206,13 +206,13 @@ Key files:
 
 - [ ] **Step 4: Update `turbo.json`**
 
-Replace `@opencode-ai/` with `@lgcode/` in all task names.
+Replace `@lgcode-ai/` with `@lgcode/` in all task names.
 
 - [ ] **Step 5: Commit**
 
 ```bash
 git add -A
-git commit -m "chore: rename workspace packages from @opencode-ai to @lgcode
+git commit -m "chore: rename workspace packages from @lgcode-ai to @lgcode
 
 Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 ```
@@ -222,7 +222,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 ## Task 4: Update source code imports
 
 **Files:**
-- Modify: all `*.ts`, `*.tsx` files that import `@opencode-ai/*`
+- Modify: all `*.ts`, `*.tsx` files that import `@lgcode-ai/*`
 
 - [ ] **Step 1: Replace import prefixes across the monorepo**
 
@@ -230,16 +230,16 @@ Run:
 ```bash
 cd D:/Desktop/LGcode/opencode
 # Use a tool like sd or perl; ensure no accidental replacements in strings
-find packages sdks -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.mjs" \) -exec sed -i 's/@opencode-ai\//\@lgcode\//g' {} +
+find packages sdks -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.mjs" \) -exec sed -i 's/@lgcode-ai\//\@lgcode\//g' {} +
 ```
 
-On Windows with bash via Git Bash, the above should work. If `sed -i` has issues, use `perl -pi -e 's/@opencode-ai\//\@lgcode\//g'`.
+On Windows with bash via Git Bash, the above should work. If `sed -i` has issues, use `perl -pi -e 's/@lgcode-ai\//\@lgcode\//g'`.
 
 - [ ] **Step 2: Verify no broken workspace imports remain**
 
 Run:
 ```bash
-grep -R "@opencode-ai" packages sdks --include="*.ts" --include="*.tsx" --include="*.js" --include="*.json" || echo "No @opencode-ai references found"
+grep -R "@lgcode-ai" packages sdks --include="*.ts" --include="*.tsx" --include="*.js" --include="*.json" || echo "No @lgcode-ai references found"
 ```
 
 Expected: no matches (or only matches in comments/patches that are intentionally kept).
@@ -248,7 +248,7 @@ Expected: no matches (or only matches in comments/patches that are intentionally
 
 ```bash
 git add -A
-git commit -m "refactor: update all imports from @opencode-ai to @lgcode
+git commit -m "refactor: update all imports from @lgcode-ai to @lgcode
 
 Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 ```
@@ -260,11 +260,11 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 **Files:**
 - Modify: all `*.ts`, `*.tsx`, `*.json`, `*.md`, `*.yml`, `*.html`, `*.ans`
 
-- [ ] **Step 1: Replace `OpenCode` with `LGcode`**
+- [ ] **Step 1: Replace `LGcode` with `LGcode`**
 
 Run:
 ```bash
-find packages sdks .github -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.yml" -o -name "*.html" -o -name "*.md" -o -name "*.ans" \) -exec sed -i 's/OpenCode/LGcode/g' {} +
+find packages sdks .github -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.yml" -o -name "*.html" -o -name "*.md" -o -name "*.ans" \) -exec sed -i 's/LGcode/LGcode/g' {} +
 ```
 
 - [ ] **Step 2: Replace user-facing `opencode` with `lgcode`**
@@ -277,9 +277,9 @@ find packages sdks .github -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.
 - [ ] **Step 3: Review and fix over-replacements**
 
 Manually check and revert accidental replacements in:
-- Third-party package names like `opencode-gitlab-auth` → should stay unless those packages are also renamed
+- Third-party package names like `lgcode-gitlab-auth` → should stay unless those packages are also renamed
 - `ghostty-web`: `github:anomalyco/ghostty-web#main` should not be changed
-- URLs like `opencode.ai` already removed in previous tasks
+- URLs like `modelhub.lgdg.cc` already removed in previous tasks
 - `packages/llm/src/providers/openai-compatible-profile.ts`: the `openrouter` provider string should remain `openrouter`, not `lgcode-router`
 
 Use git diff to review:
@@ -289,7 +289,7 @@ git diff --stat
 
 - [ ] **Step 4: Update configuration directory helpers**
 
-Find files that reference `~/.opencode` or `.opencode` as a config directory and change to `~/.lgcode` / `.lgcode`.
+Find files that reference `~/.lgcode` or `.lgcode` as a config directory and change to `~/.lgcode` / `.lgcode`.
 
 Likely files:
 - `packages/core/src/config/*.ts`
@@ -297,7 +297,7 @@ Likely files:
 
 Search:
 ```bash
-grep -R "\.opencode" packages --include="*.ts" --include="*.tsx"
+grep -R "\.lgcode" packages --include="*.ts" --include="*.tsx"
 ```
 
 Change relevant occurrences to `.lgcode`.
@@ -418,9 +418,9 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 
 - [ ] **Step 1: Locate TUI startup / version rendering code**
 
-Search for existing OpenCode logo or title rendering:
+Search for existing LGcode logo or title rendering:
 ```bash
-grep -R "OpenCode\|opencode" packages/lgcode/src --include="*.ts" --include="*.tsx"
+grep -R "LGcode\|opencode" packages/lgcode/src --include="*.ts" --include="*.tsx"
 ```
 
 - [ ] **Step 2: Read ANSI logo file at runtime**
@@ -544,9 +544,9 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 - [ ] **Step 1: Rewrite English README**
 
 Replace:
-- `OpenCode` → `LGcode`
+- `LGcode` → `LGcode`
 - `opencode` → `lgcode`
-- Remove all `opencode.ai` URLs and installation instructions that reference public OpenCode distribution
+- Remove all `modelhub.lgdg.cc` URLs and installation instructions that reference public LGcode distribution
 - Update logo paths to new PNG/SVG assets
 - Add a note that this is an internal fork
 

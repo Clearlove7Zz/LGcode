@@ -45,7 +45,7 @@ import { ModelV2 } from "@lgcode/core/model"
 import { Provider } from "@/provider/provider"
 import type { Command } from "@/command"
 
-export const AuthMethodID = "opencode-login"
+export const AuthMethodID = "lgcode-login"
 
 export type Error = ACPError.Error
 type ServiceConnection = Pick<AgentSideConnection, "sessionUpdate"> &
@@ -69,7 +69,7 @@ export type Interface = {
   readonly cancel: (input: CancelNotification) => Effect.Effect<void, Error>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/ACP/Service") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/ACP/Service") {}
 
 export function make(input: {
   sdk: OpencodeClient
@@ -101,7 +101,7 @@ export function make(input: {
         "terminal-auth": {
           command: "opencode",
           args: ["auth", "login"],
-          label: "OpenCode Login",
+          label: "LGcode Login",
         },
       }
     }
@@ -127,7 +127,7 @@ export function make(input: {
       },
       authMethods: [authMethod],
       agentInfo: {
-        name: "OpenCode",
+        name: "LGcode",
         version: InstallationVersion,
       },
     }
@@ -1010,7 +1010,7 @@ function fromUnknownError(error: unknown, service?: string): Error {
   if (isAuthRequired(error)) {
     return new ACPError.AuthRequiredError({ providerId: findProviderID(error) })
   }
-  return new ACPError.ServiceFailureError({ safeMessage: "OpenCode service failure", service })
+  return new ACPError.ServiceFailureError({ safeMessage: "LGcode service failure", service })
 }
 
 function isACPError(error: unknown): error is Error {

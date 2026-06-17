@@ -1,6 +1,6 @@
-# OpenCode Desktop
+# LGcode Desktop
 
-The OpenCode Desktop app, built with Electron.
+The LGcode Desktop app, built with Electron.
 
 ## Development
 

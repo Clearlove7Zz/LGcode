@@ -1,16 +1,16 @@
 <p align="center">
-  <a href="https://opencode.ai">
+  <a href="https://modelhub.lgdg.cc">
     <picture>
       <source srcset="packages/console/app/src/asset/logo-ornate-dark.svg" media="(prefers-color-scheme: dark)">
       <source srcset="packages/console/app/src/asset/logo-ornate-light.svg" media="(prefers-color-scheme: light)">
-      <img src="packages/console/app/src/asset/logo-ornate-light.svg" alt="OpenCode logo">
+      <img src="packages/console/app/src/asset/logo-ornate-light.svg" alt="LGcode logo">
     </picture>
   </a>
 </p>
 <p align="center">Otwartoźródłowy agent kodujący AI.</p>
 <p align="center">
-  <a href="https://opencode.ai/discord"><img alt="Discord" src="https://img.shields.io/discord/1391832426048651334?style=flat-square&label=discord" /></a>
-  <a href="https://www.npmjs.com/package/opencode-ai"><img alt="npm" src="https://img.shields.io/npm/v/opencode-ai?style=flat-square" /></a>
+  <a href="https://modelhub.lgdg.cc/discord"><img alt="Discord" src="https://img.shields.io/discord/1391832426048651334?style=flat-square&label=discord" /></a>
+  <a href="https://www.npmjs.com/package/lgcode-ai"><img alt="npm" src="https://img.shields.io/npm/v/lgcode-ai?style=flat-square" /></a>
   <a href="https://github.com/anomalyco/opencode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/anomalyco/opencode/publish.yml?style=flat-square&branch=dev" /></a>
 </p>
 
@@ -39,7 +39,7 @@
   <a href="README.vi.md">Tiếng Việt</a>
 </p>
 
-[![OpenCode Terminal UI](packages/web/src/assets/lander/screenshot.png)](https://opencode.ai)
+[![LGcode Terminal UI](packages/web/src/assets/lander/screenshot.png)](https://modelhub.lgdg.cc)
 
 ---
 
@@ -47,16 +47,16 @@
 
 ```bash
 # YOLO
-curl -fsSL https://opencode.ai/install | bash
+curl -fsSL https://modelhub.lgdg.cc/install | bash
 
 # Menedżery pakietów
-npm i -g opencode-ai@latest        # albo bun/pnpm/yarn
+npm i -g lgcode-ai@latest        # albo bun/pnpm/yarn
 scoop install opencode             # Windows
 choco install opencode             # Windows
 brew install anomalyco/tap/opencode # macOS i Linux (polecane, zawsze aktualne)
 brew install opencode              # macOS i Linux (oficjalna formuła brew, rzadziej aktualizowana)
 sudo pacman -S opencode            # Arch Linux (Stable)
-paru -S opencode-bin               # Arch Linux (Latest from AUR)
+paru -S lgcode-bin               # Arch Linux (Latest from AUR)
 mise use -g opencode               # dowolny system
 nix run nixpkgs#opencode           # lub github:anomalyco/opencode dla najnowszej gałęzi dev
 ```
@@ -66,40 +66,40 @@ nix run nixpkgs#opencode           # lub github:anomalyco/opencode dla najnowsze
 
 ### Aplikacja desktopowa (BETA)
 
-OpenCode jest także dostępny jako aplikacja desktopowa. Pobierz ją bezpośrednio ze strony [releases](https://github.com/anomalyco/opencode/releases) lub z [opencode.ai/download](https://opencode.ai/download).
+LGcode jest także dostępny jako aplikacja desktopowa. Pobierz ją bezpośrednio ze strony [releases](https://github.com/anomalyco/opencode/releases) lub z [modelhub.lgdg.cc/download](https://modelhub.lgdg.cc/download).
 
 | Platforma             | Pobieranie                         |
 | --------------------- | ---------------------------------- |
-| macOS (Apple Silicon) | `opencode-desktop-mac-arm64.dmg`   |
-| macOS (Intel)         | `opencode-desktop-mac-x64.dmg`     |
-| Windows               | `opencode-desktop-windows-x64.exe` |
+| macOS (Apple Silicon) | `lgcode-desktop-mac-arm64.dmg`   |
+| macOS (Intel)         | `lgcode-desktop-mac-x64.dmg`     |
+| Windows               | `lgcode-desktop-windows-x64.exe` |
 | Linux                 | `.deb`, `.rpm` lub AppImage        |
 
 ```bash
 # macOS (Homebrew)
-brew install --cask opencode-desktop
+brew install --cask lgcode-desktop
 # Windows (Scoop)
-scoop bucket add extras; scoop install extras/opencode-desktop
+scoop bucket add extras; scoop install extras/lgcode-desktop
 ```
 
 #### Katalog instalacji
 
 Skrypt instalacyjny stosuje następujący priorytet wyboru ścieżki instalacji:
 
-1. `$OPENCODE_INSTALL_DIR` - Własny katalog instalacji
+1. `$LGCODE_INSTALL_DIR` - Własny katalog instalacji
 2. `$XDG_BIN_DIR` - Ścieżka zgodna ze specyfikacją XDG Base Directory
 3. `$HOME/bin` - Standardowy katalog binarny użytkownika (jeśli istnieje lub można go utworzyć)
-4. `$HOME/.opencode/bin` - Domyślny fallback
+4. `$HOME/.lgcode/bin` - Domyślny fallback
 
 ```bash
 # Przykłady
-OPENCODE_INSTALL_DIR=/usr/local/bin curl -fsSL https://opencode.ai/install | bash
-XDG_BIN_DIR=$HOME/.local/bin curl -fsSL https://opencode.ai/install | bash
+LGCODE_INSTALL_DIR=/usr/local/bin curl -fsSL https://modelhub.lgdg.cc/install | bash
+XDG_BIN_DIR=$HOME/.local/bin curl -fsSL https://modelhub.lgdg.cc/install | bash
 ```
 
 ### Agents
 
-OpenCode zawiera dwóch wbudowanych agentów, między którymi możesz przełączać się klawiszem `Tab`.
+LGcode zawiera dwóch wbudowanych agentów, między którymi możesz przełączać się klawiszem `Tab`.
 
 - **build** - Domyślny agent z pełnym dostępem do pracy developerskiej
 - **plan** - Agent tylko do odczytu do analizy i eksploracji kodu
@@ -110,19 +110,19 @@ OpenCode zawiera dwóch wbudowanych agentów, między którymi możesz przełąc
 Dodatkowo jest subagent **general** do złożonych wyszukiwań i wieloetapowych zadań.
 Jest używany wewnętrznie i można go wywołać w wiadomościach przez `@general`.
 
-Dowiedz się więcej o [agents](https://opencode.ai/docs/agents).
+Dowiedz się więcej o [agents](https://modelhub.lgdg.cc/docs/agents).
 
 ### Dokumentacja
 
-Więcej informacji o konfiguracji OpenCode znajdziesz w [**dokumentacji**](https://opencode.ai/docs).
+Więcej informacji o konfiguracji LGcode znajdziesz w [**dokumentacji**](https://modelhub.lgdg.cc/docs).
 
 ### Współtworzenie
 
-Jeśli chcesz współtworzyć OpenCode, przeczytaj [contributing docs](./CONTRIBUTING.md) przed wysłaniem pull requesta.
+Jeśli chcesz współtworzyć LGcode, przeczytaj [contributing docs](./CONTRIBUTING.md) przed wysłaniem pull requesta.
 
-### Budowanie na OpenCode
+### Budowanie na LGcode
 
-Jeśli pracujesz nad projektem związanym z OpenCode i używasz "opencode" jako części nazwy (na przykład "opencode-dashboard" lub "opencode-mobile"), dodaj proszę notatkę do swojego README, aby wyjaśnić, że projekt nie jest tworzony przez zespół OpenCode i nie jest z nami w żaden sposób powiązany.
+Jeśli pracujesz nad projektem związanym z LGcode i używasz "opencode" jako części nazwy (na przykład "lgcode-dashboard" lub "lgcode-mobile"), dodaj proszę notatkę do swojego README, aby wyjaśnić, że projekt nie jest tworzony przez zespół LGcode i nie jest z nami w żaden sposób powiązany.
 
 ---
 

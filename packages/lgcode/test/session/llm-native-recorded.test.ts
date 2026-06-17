@@ -29,7 +29,7 @@ import { ModelV2 } from "@lgcode/core/model"
 
 const FIXTURES_DIR = path.join(import.meta.dir, "../fixtures/recordings")
 
-const zenURL = (connection: string) => `https://console.opencode.ai/proxy/connections/${connection}/v1`
+const zenURL = (connection: string) => `https://console.modelhub.lgdg.cc/proxy/connections/${connection}/v1`
 
 const replayOpenAIOAuth = {
   type: "oauth",
@@ -80,7 +80,7 @@ const recordOpenAIOAuth = (() => {
 })()
 
 function decodeRecordOpenAIOAuth() {
-  const value = process.env.OPENCODE_RECORD_OPENAI_AUTH
+  const value = process.env.LGCODE_RECORD_OPENAI_AUTH
   if (!value) return undefined
   try {
     const auth = Option.getOrUndefined(decodeAuth(JSON.parse(value)))
@@ -121,7 +121,7 @@ const RECORDED_SCENARIOS = [
     cassette: "session/native-openai-tool-loop",
     protocol: "openai-responses",
     tags: ["opencode", "native", "tool-loop"],
-    canRecord: () => Boolean(envValue("OPENCODE_RECORD_OPENAI_API_KEY", "OPENAI_API_KEY")),
+    canRecord: () => Boolean(envValue("LGCODE_RECORD_OPENAI_API_KEY", "OPENAI_API_KEY")),
     config: (model) =>
       providerConfig({
         providerID: ProviderV2.ID.openai,
@@ -131,7 +131,7 @@ const RECORDED_SCENARIOS = [
         api: "https://api.openai.com/v1",
         model,
         options: {
-          apiKey: envValue("OPENCODE_RECORD_OPENAI_API_KEY", "OPENAI_API_KEY") ?? "fixture-openai-key",
+          apiKey: envValue("LGCODE_RECORD_OPENAI_API_KEY", "OPENAI_API_KEY") ?? "fixture-openai-key",
           baseURL: "https://api.openai.com/v1",
         },
       }),
@@ -160,25 +160,25 @@ const RECORDED_SCENARIOS = [
       }),
   },
   {
-    id: "opencode-proxy",
-    name: "OpenCode proxy",
-    providerID: ProviderV2.ID.opencode,
+    id: "lgcode-proxy",
+    name: "LGcode proxy",
+    providerID: ProviderV2.ID.lgcode,
     modelID: "gpt-5.2-codex",
     cassette: "session/native-zen-tool-loop",
     protocol: "openai-responses",
     tags: ["opencode", "zen", "native", "tool-loop"],
-    canRecord: () => Boolean(process.env.OPENCODE_RECORD_CONSOLE_TOKEN && process.env.OPENCODE_RECORD_ZEN_ORG_ID),
+    canRecord: () => Boolean(process.env.LGCODE_RECORD_CONSOLE_TOKEN && process.env.LGCODE_RECORD_ZEN_ORG_ID),
     config: (model) =>
       providerConfig({
-        providerID: ProviderV2.ID.opencode,
-        name: "OpenCode Zen",
-        env: ["OPENCODE_CONSOLE_TOKEN"],
+        providerID: ProviderV2.ID.lgcode,
+        name: "LGcode Zen",
+        env: ["LGCODE_CONSOLE_TOKEN"],
         npm: "@ai-sdk/openai-compatible",
-        api: zenURL(process.env.OPENCODE_RECORD_ZEN_CONNECTION ?? "fixture"),
+        api: zenURL(process.env.LGCODE_RECORD_ZEN_CONNECTION ?? "fixture"),
         model,
         options: {
-          apiKey: process.env.OPENCODE_RECORD_CONSOLE_TOKEN ?? "fixture-console-token",
-          headers: { "x-org-id": process.env.OPENCODE_RECORD_ZEN_ORG_ID ?? "fixture-org" },
+          apiKey: process.env.LGCODE_RECORD_CONSOLE_TOKEN ?? "fixture-console-token",
+          headers: { "x-org-id": process.env.LGCODE_RECORD_ZEN_ORG_ID ?? "fixture-org" },
         },
       }),
   },
@@ -190,7 +190,7 @@ const RECORDED_SCENARIOS = [
     cassette: "session/native-anthropic-tool-loop",
     protocol: "anthropic-messages",
     tags: ["opencode", "native", "tool-loop"],
-    canRecord: () => Boolean(envValue("OPENCODE_RECORD_ANTHROPIC_API_KEY", "ANTHROPIC_API_KEY")),
+    canRecord: () => Boolean(envValue("LGCODE_RECORD_ANTHROPIC_API_KEY", "ANTHROPIC_API_KEY")),
     config: (model) =>
       providerConfig({
         providerID: ProviderV2.ID.anthropic,
@@ -200,7 +200,7 @@ const RECORDED_SCENARIOS = [
         api: "https://api.anthropic.com/v1",
         model,
         options: {
-          apiKey: envValue("OPENCODE_RECORD_ANTHROPIC_API_KEY", "ANTHROPIC_API_KEY") ?? "fixture-anthropic-key",
+          apiKey: envValue("LGCODE_RECORD_ANTHROPIC_API_KEY", "ANTHROPIC_API_KEY") ?? "fixture-anthropic-key",
           baseURL: "https://api.anthropic.com/v1",
         },
       }),
@@ -209,7 +209,7 @@ const RECORDED_SCENARIOS = [
 
 const shouldRecord = process.env.RECORD === "true"
 const selectedScenarios = new Set(
-  (envValue("OPENCODE_RECORDED_SCENARIO", "RECORDED_PROVIDER") ?? "")
+  (envValue("LGCODE_RECORDED_SCENARIO", "RECORDED_PROVIDER") ?? "")
     .split(",")
     .map((item) => item.trim().toLowerCase())
     .filter(Boolean),
@@ -229,7 +229,7 @@ const canRun = (scenario: RecordedScenario) =>
 
 const recordError = (scenario: RecordedScenario) =>
   scenario.id === "openai-oauth"
-    ? "Set OPENCODE_RECORD_OPENAI_AUTH to an OAuth auth JSON object in the recording environment."
+    ? "Set LGCODE_RECORD_OPENAI_AUTH to an OAuth auth JSON object in the recording environment."
     : `Missing recording credentials for ${scenario.name}.`
 
 const redactRecordedBody = (body: string) =>
@@ -310,8 +310,8 @@ function recordedNativeLLMLayer(scenario: RecordedScenario) {
 const writeConfig = (directory: string, scenario: RecordedScenario, model: ModelsDev.Provider["models"][string]) =>
   Effect.promise(() =>
     Bun.write(
-      path.join(directory, "opencode.json"),
-      JSON.stringify({ $schema: "https://opencode.ai/config.json", ...scenario.config(model) }),
+      path.join(directory, "lgcode.json"),
+      JSON.stringify({ $schema: "https://modelhub.lgdg.cc/config.json", ...scenario.config(model) }),
     ),
   )
 

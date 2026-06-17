@@ -49,7 +49,7 @@ if (import.meta.env.VITE_SENTRY_DSN) {
         (i) =>
           i.name !== "Breadcrumbs" &&
           !(
-            import.meta.env.OPENCODE_CHANNEL === "prod" &&
+            import.meta.env.LGCODE_CHANNEL === "prod" &&
             (i.name === "GlobalHandlers" || i.name === "BrowserApiErrors")
           ),
       )
@@ -66,9 +66,9 @@ const deepLinkEvent = "opencode:deep-link"
 
 const emitDeepLinks = (urls: string[]) => {
   if (urls.length === 0) return
-  window.__OPENCODE__ ??= {}
-  const pending = window.__OPENCODE__.deepLinks ?? []
-  window.__OPENCODE__.deepLinks = [...pending, ...urls]
+  window.__LGCODE__ ??= {}
+  const pending = window.__LGCODE__.deepLinks ?? []
+  window.__LGCODE__.deepLinks = [...pending, ...urls]
   window.dispatchEvent(new CustomEvent(deepLinkEvent, { detail: { urls } }))
 }
 
@@ -216,7 +216,7 @@ const createPlatform = (): Platform => {
 
       const notification = new Notification(title, {
         body: description ?? "",
-        icon: "https://opencode.ai/favicon-96x96-v3.png",
+        icon: "https://modelhub.lgdg.cc/favicon-96x96-v3.png",
       })
       notification.onclick = () => {
         void window.api.showWindow()

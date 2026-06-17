@@ -138,7 +138,7 @@ type IssueQueryResponse = {
   }
 }
 
-const AGENT_USERNAME = "opencode-agent[bot]"
+const AGENT_USERNAME = "lgcode-agent[bot]"
 const AGENT_REACTION = "eyes"
 const WORKFLOW_FILE = ".github/workflows/opencode.yml"
 
@@ -200,7 +200,7 @@ export const githubInstall = Effect.fn("Cli.github.install")(function* () {
             "",
             "    3. Go to a GitHub issue and comment `/oc summarize` to see the agent in action",
             "",
-            "   Learn more about the GitHub agent - https://opencode.ai/docs/github/#usage-examples",
+            "   Learn more about the GitHub agent - https://modelhub.lgdg.cc/docs/github/#usage-examples",
           ].join("\n"),
         )
       }
@@ -284,7 +284,7 @@ export const githubInstall = Effect.fn("Cli.github.install")(function* () {
         if (installation) return s.stop("GitHub app already installed")
 
         // Open browser
-        const url = "https://github.com/apps/opencode-agent"
+        const url = "https://github.com/apps/lgcode-agent"
         const command =
           process.platform === "darwin"
             ? `open "${url}"`
@@ -320,7 +320,7 @@ export const githubInstall = Effect.fn("Cli.github.install")(function* () {
         s.stop("Installed GitHub app")
 
         async function getInstallation() {
-          return await fetch(`https://api.opencode.ai/get_github_app_installation?owner=${app.owner}&repo=${app.repo}`)
+          return await fetch(`https://api.modelhub.lgdg.cc/get_github_app_installation?owner=${app.owner}&repo=${app.repo}`)
             .then((res) => res.json())
             .then((data) => data.installation)
         }
@@ -426,7 +426,7 @@ export const githubRun = Effect.fn("Cli.github.run")(function* (args: { event?: 
         ? (payload as IssueCommentEvent | IssuesEvent).issue.number
         : (payload as PullRequestEvent | PullRequestReviewCommentEvent).pull_request.number
     const runUrl = `/${owner}/${repo}/actions/runs/${runId}`
-    const shareBaseUrl = isMock ? "https://dev.opencode.ai" : "https://opencode.ai"
+    const shareBaseUrl = isMock ? "https://dev.modelhub.lgdg.cc" : "https://modelhub.lgdg.cc"
 
     let appToken: string
     let octoRest: Octokit
@@ -687,7 +687,7 @@ export const githubRun = Effect.fn("Cli.github.run")(function* (args: { event?: 
 
     function normalizeOidcBaseUrl(): string {
       const value = process.env["OIDC_BASE_URL"]
-      if (!value) return "https://api.opencode.ai"
+      if (!value) return "https://api.modelhub.lgdg.cc"
       return value.replace(/\/+$/, "")
     }
 
@@ -975,7 +975,7 @@ export const githubRun = Effect.fn("Cli.github.run")(function* (args: { event?: 
 
     async function getOidcToken() {
       try {
-        return await core.getIDToken("opencode-github-action")
+        return await core.getIDToken("lgcode-github-action")
       } catch (error) {
         console.error("Failed to get OIDC token:", error instanceof Error ? error.message : error)
         throw new Error(
@@ -1350,7 +1350,7 @@ export const githubRun = Effect.fn("Cli.github.run")(function* (args: { event?: 
         const titleAlt = encodeURIComponent(session.title.substring(0, 50))
         const title64 = Buffer.from(session.title.substring(0, 700), "utf8").toString("base64")
 
-        return `<a href="${shareBaseUrl}/s/${shareId}"><img width="200" alt="${titleAlt}" src="https://social-cards.sst.dev/opencode-share/${title64}.png?model=${providerID}/${modelID}&version=${session.version}&id=${shareId}" /></a>\n`
+        return `<a href="${shareBaseUrl}/s/${shareId}"><img width="200" alt="${titleAlt}" src="https://social-cards.sst.dev/lgcode-share/${title64}.png?model=${providerID}/${modelID}&version=${session.version}&id=${shareId}" /></a>\n`
       })()
       const shareUrl = shareId ? `[opencode session](${shareBaseUrl}/s/${shareId})&nbsp;&nbsp;|&nbsp;&nbsp;` : ""
       return `\n\n${image}${shareUrl}[github run](${runUrl})`

@@ -3,11 +3,11 @@
  */
 export const config = {
   // Base URL
-  baseUrl: "https://opencode.ai",
+  baseUrl: "https://modelhub.lgdg.cc",
 
   // GitHub
   github: {
-    repoUrl: "https://github.com/anomalyco/opencode",
+    repoUrl: "https://github.com/Clearlove7Zz/LGcode.git",
     starsFormatted: {
       compact: "160K",
       full: "160,000",
@@ -16,8 +16,8 @@ export const config = {
 
   // Social links
   social: {
-    twitter: "https://x.com/opencode",
-    discord: "https://discord.gg/opencode",
+    twitter: "https://x.com/lgcode",
+    discord: "https://discord.gg/lgcode",
   },
 
   // Static stats (used on landing page)

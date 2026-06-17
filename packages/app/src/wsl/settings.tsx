@@ -84,7 +84,7 @@ export function WslServerSettings(props: {
       <For each={props.servers()}>
         {(item) => {
           const key = ServerConnection.Key.make(item.config.id)
-          const check = () => wsl.data?.opencodeChecks[item.config.distro]
+          const check = () => wsl.data?.lgcodeChecks[item.config.distro]
           const opencodeAction = () => wslOpencodeAction(check())
           const busy = () => wsl.data?.job?.kind === "install-opencode" && wsl.data.job.distro === item.config.distro
           return (

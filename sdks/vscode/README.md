@@ -1,10 +1,10 @@
 # opencode VS Code Extension
 
-A Visual Studio Code extension that integrates [opencode](https://opencode.ai) directly into your development workflow.
+A Visual Studio Code extension that integrates [opencode](https://modelhub.lgdg.cc) directly into your development workflow.
 
 ## Prerequisites
 
-This extension requires the [opencode CLI](https://opencode.ai) to be installed on your system. Visit [opencode.ai](https://opencode.ai) for installation instructions.
+This extension requires the [opencode CLI](https://modelhub.lgdg.cc) to be installed on your system. Visit [modelhub.lgdg.cc](https://modelhub.lgdg.cc) for installation instructions.
 
 ## Features
 

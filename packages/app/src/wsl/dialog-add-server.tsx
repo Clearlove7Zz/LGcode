@@ -69,7 +69,7 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
   const opencodeCheck = createMemo(() => {
     const distro = selectedDistro()
     if (!distro) return null
-    return current()?.opencodeChecks[distro] ?? null
+    return current()?.lgcodeChecks[distro] ?? null
   })
   const wslReady = createMemo(() => !!current()?.runtime?.available && !current()?.pendingRestart)
   const distroReady = createMemo(() => {
@@ -147,7 +147,7 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
       return { key: `probe-distro:${distro}`, run: () => api.probeDistro(distro) }
     }
     if (!distro || !distroReady()) return null
-    if (!state.opencodeChecks[distro]) {
+    if (!state.lgcodeChecks[distro]) {
       return { key: `probe-opencode:${distro}`, run: () => api.probeOpencode(distro) }
     }
     return null
@@ -219,8 +219,8 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
     }
     if (opencodeReady()) {
       return distro
-        ? language.t("wsl.onboarding.opencodeReadyIn", { distro })
-        : language.t("wsl.onboarding.opencodeReady")
+        ? language.t("wsl.onboarding.lgcodeReadyIn", { distro })
+        : language.t("wsl.onboarding.lgcodeReady")
     }
     return distro
       ? language.t("wsl.onboarding.installOpencodeIn", { distro })
@@ -283,7 +283,7 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
             ? language.t("wsl.server.label")
             : step === "distro"
               ? language.t("wsl.onboarding.step.distro")
-              : language.t("wsl.onboarding.step.opencode"),
+              : language.t("wsl.onboarding.step.lgcode"),
         state:
           active === step
             ? "current"
@@ -539,7 +539,7 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
             <Match when={activeStep() === "opencode"}>
               <div class="rounded-md bg-surface-base p-4 flex flex-col gap-3">
                 <div class="flex items-center justify-between gap-3">
-                  <div class="text-14-medium text-text-strong">{language.t("wsl.onboarding.step.opencode")}</div>
+                  <div class="text-14-medium text-text-strong">{language.t("wsl.onboarding.step.lgcode")}</div>
                   <div class="flex items-center gap-2">
                     <Show when={selectedDistro()}>
                       <Button

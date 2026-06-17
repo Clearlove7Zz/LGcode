@@ -53,7 +53,7 @@ describe("Session.Info", () => {
       projectID,
       workspaceID,
       directory: "/tmp/proj",
-      path: "packages/opencode",
+      path: "packages/lgcode",
       parentID: sessionIDChild,
       summary: {
         additions: 10,
@@ -238,9 +238,9 @@ describe("SessionStatus.Info", () => {
         reason: "free_tier_limit",
         provider: "opencode",
         title: "Free limit reached",
-        message: "Subscribe to OpenCode Go.",
+        message: "Subscribe to LGcode Go.",
         label: "subscribe",
-        link: "https://opencode.ai/go",
+        link: "https://modelhub.lgdg.cc/go",
       },
       next: 500,
     }

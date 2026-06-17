@@ -86,7 +86,7 @@ async function build() {
   console.log("  Running final build smoke check...")
 
   try {
-    await $`./script/build.ts --single`.cwd("packages/opencode")
+    await $`./script/build.ts --single`.cwd("packages/lgcode")
     return true
   } catch (err) {
     console.log(`Build failed: ${err}`)
@@ -168,7 +168,7 @@ async function fix(pr: PR, files: string[], prs: PR[], applied: number[], idx: n
   ].join("\n")
 
   try {
-    await $`opencode run -m ${model} ${prompt}`
+    await $`lgcode run -m ${model} ${prompt}`
   } catch (err) {
     console.log(`  opencode failed: ${err}`)
     return false
@@ -200,13 +200,13 @@ async function smoke(prs: PR[], applied: number[]) {
     "The beta merge batch is complete, but the deterministic final smoke check failed.",
     `Merged PRs on HEAD:\n${done}`,
     "Run `bun typecheck` at the repo root.",
-    "Run `./script/build.ts --single` in `packages/opencode`.",
+    "Run `./script/build.ts --single` in `packages/lgcode`.",
     "Fix any merge-caused issues until both commands pass.",
     "Do not create a commit.",
   ].join("\n")
 
   try {
-    await $`opencode run -m ${model} ${prompt}`
+    await $`lgcode run -m ${model} ${prompt}`
   } catch (err) {
     console.log(`Smoke fix failed: ${err}`)
     return false

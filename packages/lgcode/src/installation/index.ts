@@ -91,7 +91,7 @@ export interface Interface {
   readonly upgrade: (method: Method, target: string) => Effect.Effect<void, UpgradeFailedError>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@opencode/Installation") {}
+export class Service extends Context.Service<Service, Interface>()("@lgcode/Installation") {}
 
 export const use = serviceUse(Service)
 
@@ -135,8 +135,8 @@ export const layer: Layer.Layer<Service, never, HttpClient.HttpClient | AppProce
     )
 
     const getBrewFormula = Effect.fnUntraced(function* () {
-      const tapFormula = yield* text(["brew", "list", "--formula", "anomalyco/tap/opencode"])
-      if (tapFormula.includes("opencode")) return "anomalyco/tap/opencode"
+      const tapFormula = yield* text(["brew", "list", "--formula", "anomalyco/tap/lgcode"])
+      if (tapFormula.includes("opencode")) return "anomalyco/tap/lgcode"
       const coreFormula = yield* text(["brew", "list", "--formula", "opencode"])
       if (coreFormula.includes("opencode")) return "opencode"
       return "opencode"
@@ -156,7 +156,7 @@ export const layer: Layer.Layer<Service, never, HttpClient.HttpClient | AppProce
 
     const upgradeCurl = Effect.fnUntraced(
       function* (target: string) {
-        const response = yield* httpOk.execute(HttpClientRequest.get("https://opencode.ai/install"))
+        const response = yield* httpOk.execute(HttpClientRequest.get("https://modelhub.lgdg.cc/install"))
         const body = yield* response.text
         const bodyBytes = new TextEncoder().encode(body)
         const shell = yield* upgradeScriptShell()
@@ -184,7 +184,7 @@ export const layer: Layer.Layer<Service, never, HttpClient.HttpClient | AppProce
         }
       }),
       method: Effect.fn("Installation.method")(function* () {
-        if (process.execPath.includes(path.join(".opencode", "bin"))) return "curl" as Method
+        if (process.execPath.includes(path.join(".lgcode", "bin"))) return "curl" as Method
         if (process.execPath.includes(path.join(".local", "bin"))) return "curl" as Method
         const exec = process.execPath.toLowerCase()
 
@@ -209,7 +209,7 @@ export const layer: Layer.Layer<Service, never, HttpClient.HttpClient | AppProce
         for (const check of checks) {
           const output = yield* check.command()
           const installedName =
-            check.name === "brew" || check.name === "choco" || check.name === "scoop" ? "opencode" : "opencode-ai"
+            check.name === "brew" || check.name === "choco" || check.name === "scoop" ? "opencode" : "lgcode-ai"
           if (output.includes(installedName)) {
             return check.name
           }
@@ -228,7 +228,7 @@ export const layer: Layer.Layer<Service, never, HttpClient.HttpClient | AppProce
             return info.formulae[0].versions.stable
           }
           const response = yield* httpOk.execute(
-            HttpClientRequest.get("https://formulae.brew.sh/api/formula/opencode.json").pipe(
+            HttpClientRequest.get("https://formulae.brew.sh/api/formula/lgcode.json").pipe(
               HttpClientRequest.acceptJson,
             ),
           )
@@ -239,7 +239,7 @@ export const layer: Layer.Layer<Service, never, HttpClient.HttpClient | AppProce
         if (detectedMethod === "npm" || detectedMethod === "bun" || detectedMethod === "pnpm") {
           const response = yield* httpOk.execute(
             HttpClientRequest.get(
-              `${yield* NpmConfig.registry(process.cwd())}/opencode-ai/${InstallationChannel}`,
+              `${yield* NpmConfig.registry(process.cwd())}/lgcode-ai/${InstallationChannel}`,
             ).pipe(HttpClientRequest.acceptJson),
           )
           const data = yield* HttpClientResponse.schemaBodyJson(NpmPackage)(response)
@@ -259,7 +259,7 @@ export const layer: Layer.Layer<Service, never, HttpClient.HttpClient | AppProce
         if (detectedMethod === "scoop") {
           const response = yield* httpOk.execute(
             HttpClientRequest.get(
-              "https://raw.githubusercontent.com/ScoopInstaller/Main/master/bucket/opencode.json",
+              "https://raw.githubusercontent.com/ScoopInstaller/Main/master/bucket/lgcode.json",
             ).pipe(HttpClientRequest.setHeaders({ Accept: "application/json" })),
           )
           const data = yield* HttpClientResponse.schemaBodyJson(ScoopManifest)(response)
@@ -281,13 +281,13 @@ export const layer: Layer.Layer<Service, never, HttpClient.HttpClient | AppProce
             upgradeResult = yield* upgradeCurl(target)
             break
           case "npm":
-            upgradeResult = yield* run(["npm", "install", "-g", `opencode-ai@${target}`])
+            upgradeResult = yield* run(["npm", "install", "-g", `lgcode-ai@${target}`])
             break
           case "pnpm":
-            upgradeResult = yield* run(["pnpm", "install", "-g", `opencode-ai@${target}`])
+            upgradeResult = yield* run(["pnpm", "install", "-g", `lgcode-ai@${target}`])
             break
           case "bun":
-            upgradeResult = yield* run(["bun", "install", "-g", `opencode-ai@${target}`])
+            upgradeResult = yield* run(["bun", "install", "-g", `lgcode-ai@${target}`])
             break
           case "brew": {
             const formula = yield* getBrewFormula()

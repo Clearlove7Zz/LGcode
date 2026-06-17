@@ -1,8 +1,8 @@
 const stage = process.env.SST_STAGE || "dev"
 
 export default {
-  url: stage === "production" ? "https://opencode.ai" : `https://${stage}.opencode.ai`,
-  console: stage === "production" ? "https://opencode.ai/auth" : `https://${stage}.opencode.ai/auth`,
+  url: stage === "production" ? "https://opencode.ai" : `https://${stage}.lgcode.ai`,
+  console: stage === "production" ? "https://opencode.ai/auth" : `https://${stage}.lgcode.ai/auth`,
   email: "help@anoma.ly",
   socialCard: "https://social-cards.sst.dev",
   github: "https://github.com/anomalyco/opencode",

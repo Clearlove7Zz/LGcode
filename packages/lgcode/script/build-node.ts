@@ -20,11 +20,11 @@ await Bun.build({
   sourcemap: "linked",
   external: ["jsonc-parser", "@lydell/node-pty"],
   define: {
-    OPENCODE_MODELS_DEV: generated.modelsData,
-    OPENCODE_CHANNEL: `'${Script.channel}'`,
+    LGCODE_MODELS_DEV: generated.modelsData,
+    LGCODE_CHANNEL: `'${Script.channel}'`,
   },
   files: {
-    "opencode-web-ui.gen.ts": "",
+    "lgcode-web-ui.gen.ts": "",
   },
 })
 

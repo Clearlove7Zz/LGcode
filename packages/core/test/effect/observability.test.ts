@@ -8,14 +8,14 @@ import { fileLogger } from "../../src/observability/logging"
 import { resource } from "../../src/observability/otlp"
 
 const otelResourceAttributes = process.env.OTEL_RESOURCE_ATTRIBUTES
-const opencodeClient = process.env.OPENCODE_CLIENT
+const opencodeClient = process.env.LGCODE_CLIENT
 
 afterEach(() => {
   if (otelResourceAttributes === undefined) delete process.env.OTEL_RESOURCE_ATTRIBUTES
   else process.env.OTEL_RESOURCE_ATTRIBUTES = otelResourceAttributes
 
-  if (opencodeClient === undefined) delete process.env.OPENCODE_CLIENT
-  else process.env.OPENCODE_CLIENT = opencodeClient
+  if (opencodeClient === undefined) delete process.env.LGCODE_CLIENT
+  else process.env.LGCODE_CLIENT = opencodeClient
 })
 
 describe("resource", () => {
@@ -39,7 +39,7 @@ describe("resource", () => {
   })
 
   test("keeps built-in attributes when env values conflict", () => {
-    process.env.OPENCODE_CLIENT = "cli"
+    process.env.LGCODE_CLIENT = "cli"
     process.env.OTEL_RESOURCE_ATTRIBUTES =
       "opencode.client=web,service.instance.id=override,service.namespace=anomalyco"
 
@@ -53,7 +53,7 @@ describe("resource", () => {
 })
 
 test("file logger appends concurrent runs with a run on every line", async () => {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "opencode-log-test-"))
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "lgcode-log-test-"))
   await using _ = {
     async [Symbol.asyncDispose]() {
       await fs.rm(dir, { recursive: true, force: true })
@@ -81,7 +81,7 @@ test("file logger appends concurrent runs with a run on every line", async () =>
 })
 
 test("file logger flattens nested objects", async () => {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "opencode-log-test-"))
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "lgcode-log-test-"))
   await using _ = {
     async [Symbol.asyncDispose]() {
       await fs.rm(dir, { recursive: true, force: true })

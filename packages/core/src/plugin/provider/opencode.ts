@@ -10,11 +10,11 @@ export const OpencodePlugin = PluginV2.define({
     let hasKey = false
     return {
       "catalog.transform": Effect.fn(function* (evt) {
-        const item = evt.provider.get(ProviderV2.ID.opencode)
+        const item = evt.provider.get(ProviderV2.ID.lgcode)
         if (!item) return
         const integration = yield* integrations.get(Integration.ID.make(item.provider.id))
         hasKey = Boolean(
-          process.env.OPENCODE_API_KEY || integration?.connections.length || item.provider.request.body.apiKey,
+          process.env.LGCODE_API_KEY || integration?.connections.length || item.provider.request.body.apiKey,
         )
         evt.provider.update(item.provider.id, (provider) => {
           if (!hasKey) provider.request.body.apiKey = "public"

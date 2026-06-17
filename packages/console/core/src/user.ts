@@ -141,12 +141,12 @@ export namespace User {
         const { InviteEmail } = await import("@lgcode/console-mail/InviteEmail.jsx")
         await AWS.sendEmail({
           to: email,
-          subject: `You've been invited to join the ${emailInfo.workspaceName} workspace on OpenCode`,
+          subject: `You've been invited to join the ${emailInfo.workspaceName} workspace on LGcode`,
           body: render(
             // @ts-ignore
             InviteEmail({
               inviter: emailInfo.inviterEmail,
-              assetsUrl: `https://opencode.ai/email`,
+              assetsUrl: `https://modelhub.lgdg.cc/email`,
               workspaceID: workspaceID,
               workspaceName: emailInfo.workspaceName,
             }),

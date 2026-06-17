@@ -1,9 +1,9 @@
 // @ts-nocheck
 
-import { OpenCode } from "@lgcode/core"
+import { LGcode } from "@lgcode/core"
 import { ReadTool } from "@lgcode/core/tools"
 
-const opencode = OpenCode.make({})
+const opencode = LGcode.make({})
 
 opencode.tool.add(ReadTool)
 

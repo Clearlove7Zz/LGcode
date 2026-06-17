@@ -18,36 +18,36 @@ if (!semver.satisfies(process.versions.bun, expectedBunVersionRange)) {
 }
 
 const env = {
-  OPENCODE_CHANNEL: process.env["OPENCODE_CHANNEL"],
-  OPENCODE_BUMP: process.env["OPENCODE_BUMP"],
-  OPENCODE_VERSION: process.env["OPENCODE_VERSION"],
-  OPENCODE_RELEASE: process.env["OPENCODE_RELEASE"],
+  LGCODE_CHANNEL: process.env["LGCODE_CHANNEL"],
+  LGCODE_BUMP: process.env["LGCODE_BUMP"],
+  LGCODE_VERSION: process.env["LGCODE_VERSION"],
+  LGCODE_RELEASE: process.env["LGCODE_RELEASE"],
 }
 const CHANNEL = await (async () => {
-  if (env.OPENCODE_CHANNEL) return env.OPENCODE_CHANNEL
-  if (env.OPENCODE_BUMP) return "latest"
-  if (env.OPENCODE_VERSION && !env.OPENCODE_VERSION.startsWith("0.0.0-")) return "latest"
+  if (env.LGCODE_CHANNEL) return env.LGCODE_CHANNEL
+  if (env.LGCODE_BUMP) return "latest"
+  if (env.LGCODE_VERSION && !env.LGCODE_VERSION.startsWith("0.0.0-")) return "latest"
   return await $`git branch --show-current`.text().then((x) => x.trim())
 })()
 const IS_PREVIEW = CHANNEL !== "latest"
 
 const VERSION = await (async () => {
-  if (env.OPENCODE_VERSION) return env.OPENCODE_VERSION
+  if (env.LGCODE_VERSION) return env.LGCODE_VERSION
   if (IS_PREVIEW) return `0.0.0-${CHANNEL}-${new Date().toISOString().slice(0, 16).replace(/[-:T]/g, "")}`
-  const version = await fetch("https://registry.npmjs.org/opencode-ai/latest")
+  const version = await fetch("https://registry.npmjs.org/lgcode-ai/latest")
     .then((res) => {
       if (!res.ok) throw new Error(res.statusText)
       return res.json()
     })
     .then((data: any) => data.version)
   const [major, minor, patch] = version.split(".").map((x: string) => Number(x) || 0)
-  const t = env.OPENCODE_BUMP?.toLowerCase()
+  const t = env.LGCODE_BUMP?.toLowerCase()
   if (t === "major") return `${major + 1}.0.0`
   if (t === "minor") return `${major}.${minor + 1}.0`
   return `${major}.${minor}.${patch + 1}`
 })()
 
-const bot = ["actions-user", "opencode", "opencode-agent[bot]"]
+const bot = ["actions-user", "opencode", "lgcode-agent[bot]"]
 const teamPath = path.resolve(import.meta.dir, "../../../.github/TEAM_MEMBERS")
 const team = [
   ...(await Bun.file(teamPath)
@@ -68,7 +68,7 @@ export const Script = {
     return IS_PREVIEW
   },
   get release(): boolean {
-    return !!env.OPENCODE_RELEASE
+    return !!env.LGCODE_RELEASE
   },
   get team() {
     return team

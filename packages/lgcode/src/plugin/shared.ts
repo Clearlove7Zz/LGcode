@@ -7,7 +7,7 @@ import { isRecord } from "@/util/record"
 import { Npm } from "@lgcode/core/npm"
 
 // Old npm package names for plugins that are now built-in
-export const DEPRECATED_PLUGIN_PACKAGES = ["opencode-openai-codex-auth", "opencode-copilot-auth"]
+export const DEPRECATED_PLUGIN_PACKAGES = ["lgcode-openai-codex-auth", "lgcode-copilot-auth"]
 
 export function isDeprecatedPlugin(spec: string) {
   return DEPRECATED_PLUGIN_PACKAGES.some((pkg) => spec.includes(pkg))
@@ -197,7 +197,7 @@ export async function checkPluginCompatibility(target: string, opencodeVersion: 
   if (!hit) return
   const engines = hit.json.engines
   if (!isRecord(engines)) return
-  const range = engines.opencode
+  const range = engines.lgcode
   if (typeof range !== "string") return
   if (!semver.satisfies(opencodeVersion, range)) {
     throw new Error(`Plugin requires opencode ${range} but running ${opencodeVersion}`)

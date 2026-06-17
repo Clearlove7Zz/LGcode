@@ -1,6 +1,6 @@
 {
-  "$schema": "https://opencode.ai/desktop-theme.json",
-  "name": "OpenCode",
+  "$schema": "https://modelhub.lgdg.cc/desktop-theme.json",
+  "name": "LGcode",
   "id": "opencode",
   "light": {
     "palette": {

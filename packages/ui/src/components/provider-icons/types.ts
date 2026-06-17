@@ -35,7 +35,7 @@ export const iconNames = [
   "llmgateway",
   "lgdg",
   "opencode",
-  "opencode-go",
+  "lgcode-go",
   "openai",
   "ollama-cloud",
   "nvidia",

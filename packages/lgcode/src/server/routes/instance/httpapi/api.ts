@@ -41,14 +41,14 @@ const EventSchema = Schema.Union([
   InstanceDisposed,
 ]).annotate({ identifier: "Event" })
 
-export const RootHttpApi = HttpApi.make("opencode-root")
+export const RootHttpApi = HttpApi.make("lgcode-root")
   .addHttpApi(ControlApi)
   .addHttpApi(ControlPlaneApi)
   .addHttpApi(GlobalApi)
   .middleware(SchemaErrorMiddleware)
   .middleware(Authorization)
 
-export const InstanceHttpApi = HttpApi.make("opencode-instance")
+export const InstanceHttpApi = HttpApi.make("lgcode-instance")
   .addHttpApi(ConfigApi)
   .addHttpApi(ExperimentalApi)
   .addHttpApi(FileApi)
@@ -66,7 +66,7 @@ export const InstanceHttpApi = HttpApi.make("opencode-instance")
   .addHttpApi(WorkspaceApi)
   .middleware(SchemaErrorMiddleware)
 
-export const OpenCodeHttpApi = HttpApi.make("opencode")
+export const LGcodeHttpApi = HttpApi.make("opencode")
   .addHttpApi(RootHttpApi)
   .addHttpApi(EventApi)
   .addHttpApi(InstanceHttpApi)

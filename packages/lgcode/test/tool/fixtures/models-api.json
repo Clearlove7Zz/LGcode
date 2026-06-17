@@ -28000,13 +28000,13 @@
       }
     }
   },
-  "opencode-go": {
-    "id": "opencode-go",
-    "env": ["OPENCODE_API_KEY"],
+  "lgcode-go": {
+    "id": "lgcode-go",
+    "env": ["LGCODE_API_KEY"],
     "npm": "@ai-sdk/openai-compatible",
-    "api": "https://opencode.ai/zen/go/v1",
-    "name": "OpenCode Go",
-    "doc": "https://opencode.ai/docs/zen",
+    "api": "https://modelhub.lgdg.cc/zen/go/v1",
+    "name": "LGcode Go",
+    "doc": "https://modelhub.lgdg.cc/docs/zen",
     "models": {
       "minimax-m2.7": {
         "id": "minimax-m2.7",
@@ -57812,11 +57812,11 @@
   },
   "opencode": {
     "id": "opencode",
-    "env": ["OPENCODE_API_KEY"],
+    "env": ["LGCODE_API_KEY"],
     "npm": "@ai-sdk/openai-compatible",
-    "api": "https://opencode.ai/zen/v1",
-    "name": "OpenCode Zen",
-    "doc": "https://opencode.ai/docs/zen",
+    "api": "https://modelhub.lgdg.cc/zen/v1",
+    "name": "LGcode Zen",
+    "doc": "https://modelhub.lgdg.cc/docs/zen",
     "models": {
       "minimax-m2.7": {
         "id": "minimax-m2.7",

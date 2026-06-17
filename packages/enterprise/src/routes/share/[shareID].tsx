@@ -179,13 +179,13 @@ export default function () {
               modelParam = "unknown"
             }
             const version = `v${info().version}`
-            return `https://social-cards.sst.dev/opencode-share/${encodedTitle}.png?model=${modelParam}&version=${version}&id=${data().shareID}`
+            return `https://social-cards.sst.dev/lgcode-share/${encodedTitle}.png?model=${modelParam}&version=${version}&id=${data().shareID}`
           })
 
           return (
             <>
               <Show when={info().title}>
-                <Title>{info().title} | OpenCode</Title>
+                <Title>{info().title} | LGcode</Title>
               </Show>
               <Meta name="description" content="opencode - The AI coding agent built for the terminal." />
               <Meta property="og:image" content={ogImage()} />
@@ -274,21 +274,21 @@ export default function () {
                         <div class="relative bg-background-stronger w-screen h-screen overflow-hidden flex flex-col">
                           <header class="h-12 px-6 py-2 flex items-center justify-between self-stretch bg-background-base border-b border-border-weak-base">
                             <div class="">
-                              <a href="https://opencode.ai">
+                              <a href="https://modelhub.lgdg.cc">
                                 <Mark />
                               </a>
                             </div>
                             <div class="flex gap-3 items-center">
                               <IconButton
                                 as={"a"}
-                                href="https://github.com/anomalyco/opencode"
+                                href="https://github.com/Clearlove7Zz/LGcode.git"
                                 target="_blank"
                                 icon="github"
                                 variant="ghost"
                               />
                               <IconButton
                                 as={"a"}
-                                href="https://opencode.ai/discord"
+                                href="https://modelhub.lgdg.cc/discord"
                                 target="_blank"
                                 icon="discord"
                                 variant="ghost"

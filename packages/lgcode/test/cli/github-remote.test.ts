@@ -6,7 +6,7 @@ test("parses https URL with .git suffix", () => {
 })
 
 test("parses https URL without .git suffix", () => {
-  expect(parseGitHubRemote("https://github.com/sst/opencode")).toEqual({ owner: "sst", repo: "opencode" })
+  expect(parseGitHubRemote("https://github.com/sst/lgcode")).toEqual({ owner: "sst", repo: "opencode" })
 })
 
 test("parses git@ URL with .git suffix", () => {
@@ -14,7 +14,7 @@ test("parses git@ URL with .git suffix", () => {
 })
 
 test("parses git@ URL without .git suffix", () => {
-  expect(parseGitHubRemote("git@github.com:sst/opencode")).toEqual({ owner: "sst", repo: "opencode" })
+  expect(parseGitHubRemote("git@github.com:sst/lgcode")).toEqual({ owner: "sst", repo: "opencode" })
 })
 
 test("parses ssh:// URL with .git suffix", () => {
@@ -22,7 +22,7 @@ test("parses ssh:// URL with .git suffix", () => {
 })
 
 test("parses ssh:// URL without .git suffix", () => {
-  expect(parseGitHubRemote("ssh://git@github.com/sst/opencode")).toEqual({ owner: "sst", repo: "opencode" })
+  expect(parseGitHubRemote("ssh://git@github.com/sst/lgcode")).toEqual({ owner: "sst", repo: "opencode" })
 })
 
 test("parses git protocol URLs from package metadata", () => {

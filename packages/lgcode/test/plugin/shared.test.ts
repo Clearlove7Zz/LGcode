@@ -17,15 +17,15 @@ describe("parsePluginSpecifier", () => {
   })
 
   test("parses scoped npm package without version", () => {
-    expect(parsePluginSpecifier("@opencode/acme")).toEqual({
-      pkg: "@opencode/acme",
+    expect(parsePluginSpecifier("@lgcode/acme")).toEqual({
+      pkg: "@lgcode/acme",
       version: "latest",
     })
   })
 
   test("parses scoped npm package with version", () => {
-    expect(parsePluginSpecifier("@opencode/acme@1.0.0")).toEqual({
-      pkg: "@opencode/acme",
+    expect(parsePluginSpecifier("@lgcode/acme@1.0.0")).toEqual({
+      pkg: "@lgcode/acme",
       version: "1.0.0",
     })
   })
@@ -38,8 +38,8 @@ describe("parsePluginSpecifier", () => {
   })
 
   test("parses scoped package with git+https url", () => {
-    expect(parsePluginSpecifier("@opencode/acme@git+https://github.com/opencode/acme.git")).toEqual({
-      pkg: "@opencode/acme",
+    expect(parsePluginSpecifier("@lgcode/acme@git+https://github.com/opencode/acme.git")).toEqual({
+      pkg: "@lgcode/acme",
       version: "git+https://github.com/opencode/acme.git",
     })
   })
@@ -52,8 +52,8 @@ describe("parsePluginSpecifier", () => {
   })
 
   test("parses scoped package with git+ssh url containing another @", () => {
-    expect(parsePluginSpecifier("@opencode/acme@git+ssh://git@github.com/opencode/acme.git")).toEqual({
-      pkg: "@opencode/acme",
+    expect(parsePluginSpecifier("@lgcode/acme@git+ssh://git@github.com/opencode/acme.git")).toEqual({
+      pkg: "@lgcode/acme",
       version: "git+ssh://git@github.com/opencode/acme.git",
     })
   })
@@ -66,22 +66,22 @@ describe("parsePluginSpecifier", () => {
   })
 
   test("parses npm alias using the alias name", () => {
-    expect(parsePluginSpecifier("acme@npm:@opencode/acme@1.0.0")).toEqual({
+    expect(parsePluginSpecifier("acme@npm:@lgcode/acme@1.0.0")).toEqual({
       pkg: "acme",
-      version: "npm:@opencode/acme@1.0.0",
+      version: "npm:@lgcode/acme@1.0.0",
     })
   })
 
   test("parses bare npm protocol specifier using the target package", () => {
-    expect(parsePluginSpecifier("npm:@opencode/acme@1.0.0")).toEqual({
-      pkg: "@opencode/acme",
+    expect(parsePluginSpecifier("npm:@lgcode/acme@1.0.0")).toEqual({
+      pkg: "@lgcode/acme",
       version: "1.0.0",
     })
   })
 
   test("parses unversioned npm protocol specifier", () => {
-    expect(parsePluginSpecifier("npm:@opencode/acme")).toEqual({
-      pkg: "@opencode/acme",
+    expect(parsePluginSpecifier("npm:@lgcode/acme")).toEqual({
+      pkg: "@lgcode/acme",
       version: "latest",
     })
   })

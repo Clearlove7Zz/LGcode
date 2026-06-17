@@ -1,5 +1,5 @@
 import type { PermissionV1 } from "@lgcode/core/v1/permission"
-// CLI entry point for `opencode run`.
+// CLI entry point for `lgcode run`.
 //
 // Handles three modes:
 //   1. Non-interactive (default): sends a single prompt, streams events to
@@ -190,12 +190,12 @@ export const RunCommand = effectCmd({
       .option("password", {
         alias: ["p"],
         type: "string",
-        describe: "basic auth password (defaults to OPENCODE_SERVER_PASSWORD)",
+        describe: "basic auth password (defaults to LGCODE_SERVER_PASSWORD)",
       })
       .option("username", {
         alias: ["u"],
         type: "string",
-        describe: "basic auth username (defaults to OPENCODE_SERVER_USERNAME or 'opencode')",
+        describe: "basic auth username (defaults to LGCODE_SERVER_USERNAME or 'opencode')",
       })
       .option("dir", {
         type: "string",

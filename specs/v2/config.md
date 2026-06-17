@@ -94,7 +94,7 @@ Plugin order remains part of the v2 configuration contract because hook registra
 ```jsonc
 {
   "plugins": [
-    "opencode-helicone-session",
+    "lgcode-helicone-session",
     {
       "package": "@my-org/audit-plugin",
       "options": {
@@ -105,7 +105,7 @@ Plugin order remains part of the v2 configuration contract because hook registra
 }
 ```
 
-The configured `plugins` list represents package-loaded plugins only. Local plugin code remains discovered from plugin directories such as `.opencode/plugins/`; v2 does not port arbitrary configured local paths or file URLs into this field.
+The configured `plugins` list represents package-loaded plugins only. Local plugin code remains discovered from plugin directories such as `.lgcode/plugins/`; v2 does not port arbitrary configured local paths or file URLs into this field.
 
 ## Group 5: Filesystem And Tool Runtime
 
@@ -199,7 +199,7 @@ Provider selection rules belong in `experimental.policies` rather than provider 
 
 See [provider-policy.md](./provider-policy.md) for the provider policy semantics and precedence rules.
 
-Policy evaluation will consume authored config documents in reverse order while preserving statement order inside each document. The precedence of `.opencode` policy sources remains open until `.opencode` configuration is reviewed.
+Policy evaluation will consume authored config documents in reverse order while preserving statement order inside each document. The precedence of `.lgcode` policy sources remains open until `.lgcode` configuration is reviewed.
 
 Provider configuration uses the plural `providers` key in v2. This intentionally differs from the legacy singular `provider` key; v2 does not add a compatibility alias while its configuration surface is still being defined.
 

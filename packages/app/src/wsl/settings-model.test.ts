@@ -11,7 +11,7 @@ describe("WSL server settings presentation", () => {
     expect(wslRuntimeRetryable({ kind: "stopped" })).toBe(true)
   })
 
-  test("offers install and update only when OpenCode needs attention", () => {
+  test("offers install and update only when LGcode needs attention", () => {
     expect(wslOpencodeAction(undefined)).toBeUndefined()
     expect(
       wslOpencodeAction({
@@ -22,21 +22,21 @@ describe("WSL server settings presentation", () => {
         matchesDesktop: null,
         error: null,
       }),
-    ).toBe("Install OpenCode")
+    ).toBe("Install LGcode")
     expect(
       wslOpencodeAction({
         distro: "Debian",
-        resolvedPath: "/usr/local/bin/opencode",
+        resolvedPath: "/usr/local/bin/lgcode",
         version: "1.2.2",
         expectedVersion: "1.2.3",
         matchesDesktop: false,
         error: null,
       }),
-    ).toBe("Update OpenCode")
+    ).toBe("Update LGcode")
     expect(
       wslOpencodeAction({
         distro: "Debian",
-        resolvedPath: "/usr/local/bin/opencode",
+        resolvedPath: "/usr/local/bin/lgcode",
         version: "1.2.3",
         expectedVersion: "1.2.3",
         matchesDesktop: true,
@@ -45,7 +45,7 @@ describe("WSL server settings presentation", () => {
     ).toBeUndefined()
   })
 
-  test("probes the selected distro before entering the OpenCode step", async () => {
+  test("probes the selected distro before entering the LGcode step", async () => {
     const calls: string[] = []
     await enterWslOpencodeStep(
       "Debian",

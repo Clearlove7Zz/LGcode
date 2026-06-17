@@ -2,15 +2,15 @@
 
 **Date:** 2026-06-17  
 **Status:** Approved  
-**Scope:** Rebrand OpenCode monorepo into a company-internal product named `LGcode`, integrate the company model cluster, and keep the multi-provider architecture intact.
+**Scope:** Rebrand LGcode monorepo into a company-internal product named `LGcode`, integrate the company model cluster, and keep the multi-provider architecture intact.
 
 ---
 
 ## 1. Goal
 
-Fork the OpenCode repository and transform it into `LGcode`, a branded AI coding agent for internal company use. The fork must:
+Fork the LGcode repository and transform it into `LGcode`, a branded AI coding agent for internal company use. The fork must:
 
-- Replace all user-facing `OpenCode` / `opencode` branding with `LGcode` / `lgcode`.
+- Replace all user-facing `LGcode` / `opencode` branding with `LGcode` / `lgcode`.
 - Integrate the company model cluster `https://modelhub.lgdg.cc/aigateway/v1` as a first-class provider.
 - Preserve the existing multi-provider architecture so users can still choose other providers.
 - Replace core logo assets with the provided PNG set.
@@ -81,20 +81,20 @@ Both will be available as selectable models under the `LGDG_ModelHub` provider. 
 
 | Current | New | Notes |
 |---|---|---|
-| `OpenCode` | `LGcode` | User-facing product name |
+| `LGcode` | `LGcode` | User-facing product name |
 | `opencode` | `lgcode` | CLI command, package name, extension ID, settings keys |
-| `@opencode-ai/*` | `@lgcode/*` | Workspace package names |
-| `opencode-ai` | `lgcode` | Published npm package scope/name |
-| `opencode.ai` / `https://opencode.ai/*` | `https://modelhub.lgdg.cc` | Model cluster base URL; other non-API `opencode.ai` URLs are removed |
+| `@lgcode-ai/*` | `@lgcode/*` | Workspace package names |
+| `lgcode-ai` | `lgcode` | Published npm package scope/name |
+| `modelhub.lgdg.cc` / `https://modelhub.lgdg.cc/*` | `https://modelhub.lgdg.cc` | Model cluster base URL; other non-API `modelhub.lgdg.cc` URLs are removed |
 | `https://github.com/anomalyco/opencode` | temporarily removed | Repository references are removed until the private repo is made public |
-| `~/.opencode` | `~/.lgcode` | User configuration directory |
+| `~/.lgcode` | `~/.lgcode` | User configuration directory |
 
 ### Environment variables
 
 | Current | New |
 |---|---|
 | `OPENAI_API_KEY` (for OpenAI) | unchanged for OpenAI provider |
-| `OPENCODE_*` | `LGCODE_*` for LGcode-specific settings |
+| `LGCODE_*` | `LGCODE_*` for LGcode-specific settings |
 | New | `LG_CODE_API_KEY` for the LGdg model cluster |
 
 ---
@@ -145,7 +145,7 @@ The ANSI art file `logo-terminal-24col.ans` will be copied to `packages/lgcode/s
 Every `package.json` in the monorepo needs updates for:
 
 - `name`
-- `dependencies` / `devDependencies` workspace references (`@opencode-ai/*` → `@lgcode/*`)
+- `dependencies` / `devDependencies` workspace references (`@lgcode-ai/*` → `@lgcode/*`)
 - `repository`, `homepage`, `bugs` URLs (removed for now)
 - `bin` entries (`opencode` → `lgcode`)
 - `scripts` that reference `opencode`
@@ -153,7 +153,7 @@ Every `package.json` in the monorepo needs updates for:
 Key files:
 
 - `package.json`
-- `packages/lgcode/package.json` (renamed from `packages/opencode/package.json`)
+- `packages/lgcode/package.json` (renamed from `packages/lgcode/package.json`)
 - `packages/core/package.json`
 - `packages/app/package.json`
 - `packages/llm/package.json`
@@ -173,7 +173,7 @@ Key files:
 
 Search and replace user-visible strings:
 
-- `OpenCode` → `LGcode`
+- `LGcode` → `LGcode`
 - `opencode` → `lgcode` in product strings, commands, settings keys, directory names
 - Keep `opencode` only where it is a dependency/package name that is being renamed separately.
 
@@ -195,8 +195,8 @@ Important code areas:
 
 ### Configuration files
 
-- `turbo.json`: task names like `@opencode-ai/app#test` → `@lgcode/app#test`
-- `.opencode/tui.json` and `.opencode/themes/*.json`: schema URLs removed or updated
+- `turbo.json`: task names like `@lgcode-ai/app#test` → `@lgcode/app#test`
+- `.lgcode/tui.json` and `.lgcode/themes/*.json`: schema URLs removed or updated
 - `.github/workflows/*.yml`: product name references updated
 - `README.md`, `README.zh.md`: full rebrand
 
@@ -301,7 +301,7 @@ None remaining; all clarified during brainstorming.
 | Keep multi-provider architecture | User explicitly chose option C: internal cluster as one optional provider |
 | Only PNG assets | User only has PNGs; SVG imports will be converted |
 | Remove GitHub URLs temporarily | Repo is private; URLs will be re-added after public release |
-| Use `modelhub.lgdg.cc` for all former `opencode.ai` URLs | User chose option A |
+| Use `modelhub.lgdg.cc` for all former `modelhub.lgdg.cc` URLs | User chose option A |
 | Update README.md and README.zh.md only | Other languages deferred to phase-three |
 | `LG_CODE_API_KEY` for auth | User-specified environment variable name |
 | Display name `LGDG_ModelHub` | User-specified provider label |

@@ -122,7 +122,7 @@ export function createWslServersController(
   const setOpencodeCheck = (distro: string, check: WslOpencodeCheck) => {
     setState({
       opencodeChecks: {
-        ...state.opencodeChecks,
+        ...state.lgcodeChecks,
         [distro]: check,
       },
     })
@@ -344,10 +344,10 @@ export function createWslServersController(
       await runJob({ kind: "install-opencode", distro: name, startedAt: Date.now() }, async (abort) => {
         const result = await installWslOpencode(appVersion, name, { signal: abort.signal })
         if (result.code !== 0) {
-          throw new Error(summarize(result.stderr || result.stdout) || "OpenCode installation failed")
+          throw new Error(summarize(result.stderr || result.stdout) || "LGcode installation failed")
         }
         await refreshOpencodeCheck(name, { signal: abort.signal })
-        expectOpencodeVersion(state.opencodeChecks[name]?.version ?? null, appVersion, name)
+        expectOpencodeVersion(state.lgcodeChecks[name]?.version ?? null, appVersion, name)
         const id = wslServerIdToRestart(state.servers, name)
         if (id) await startServer(id)
       })
@@ -382,7 +382,7 @@ export function createWslServersController(
       persistServers(remaining)
       setState({
         servers: state.servers.filter((item) => item.config.id !== id),
-        ...(distro ? clearWslDistroState(state.distroProbes, state.opencodeChecks, distro) : {}),
+        ...(distro ? clearWslDistroState(state.distroProbes, state.lgcodeChecks, distro) : {}),
       })
     },
 
