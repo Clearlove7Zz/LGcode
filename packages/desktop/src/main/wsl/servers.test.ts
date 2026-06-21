@@ -58,7 +58,7 @@ test("clears cached distro probes when removing a WSL server", () => {
       },
       "Debian",
     ),
-  ).toEqual({ distroProbes: {}, opencodeChecks: {} })
+  ).toEqual({ distroProbes: {}, lgcodeChecks: {} })
 })
 
 test("opens terminals for distro names containing spaces", () => {

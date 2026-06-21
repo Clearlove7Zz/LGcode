@@ -7,7 +7,7 @@ const state = (kind: "starting" | "ready" | "failed" | "stopped"): WslServersSta
   installed: [],
   online: [],
   distroProbes: {},
-  opencodeChecks: {},
+  lgcodeChecks: {},
   pendingRestart: false,
   job: null,
   servers: [

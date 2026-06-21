@@ -62,7 +62,7 @@ export type WslServersState = {
   installed: WslInstalledDistro[]
   online: WslOnlineDistro[]
   distroProbes: Record<string, WslDistroProbe>
-  opencodeChecks: Record<string, WslOpencodeCheck>
+  lgcodeChecks: Record<string, WslOpencodeCheck>
   pendingRestart: boolean
   servers: WslServerItem[]
   job: WslJob | null

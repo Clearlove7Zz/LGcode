@@ -121,7 +121,7 @@ export function createWslServersController(
 
   const setOpencodeCheck = (distro: string, check: WslOpencodeCheck) => {
     setState({
-      opencodeChecks: {
+      lgcodeChecks: {
         ...state.lgcodeChecks,
         [distro]: check,
       },
@@ -408,7 +408,7 @@ function initialState(): WslServersState {
     installed: [],
     online: [],
     distroProbes: {},
-    opencodeChecks: {},
+    lgcodeChecks: {},
     pendingRestart: false,
     servers: [],
     job: null,
