@@ -1,3 +1,4 @@
+import { ProviderV2 } from "@lgcode/core/provider"
 import { RequestError } from "@agentclientprotocol/sdk"
 import { Schema } from "effect"
 
@@ -74,8 +75,15 @@ export function toRequestError(error: Error) {
       return RequestError.invalidParams({ effort: error.effort }, `effort not found: ${error.effort}`)
     case "ACPInvalidModeError":
       return RequestError.invalidParams({ mode: error.mode }, `mode not found: ${error.mode}`)
-    case "ACPAuthRequiredError":
-      return RequestError.authRequired({ providerId: error.providerId }, "provider authentication required")
+    case "ACPAuthRequiredError": {
+      const isLgdg = error.providerId === ProviderV2.ID.make("lgdg")
+      return RequestError.authRequired(
+        { providerId: error.providerId },
+        isLgdg
+          ? "LGDG_ModelHub API key required. Get one at https://modelhub.lgdg.cc/auth"
+          : "provider authentication required",
+      )
+    }
     case "ACPUnknownAuthMethodError":
       return RequestError.invalidParams({ methodId: error.methodId }, `unknown auth method: ${error.methodId}`)
     case "ACPUnsupportedOperationError":

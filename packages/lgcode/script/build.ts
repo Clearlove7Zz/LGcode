@@ -189,9 +189,9 @@ for (const item of targets) {
     define: {
       FFF_LIBC: JSON.stringify(item.abi === "musl" ? "musl" : "gnu"),
       LGCODE_VERSION: `'${Script.version}'`,
-      LGCODE_MODELS_DEV: generated.modelsData,
-      OTUI_TREE_SITTER_WORKER_PATH: bunfsRoot + workerRelativePath,
-      LGCODE_WORKER_PATH: workerPath,
+      LGCODE_MODELS_DEV: JSON.stringify(generated.modelsData),
+      OTUI_TREE_SITTER_WORKER_PATH: JSON.stringify(bunfsRoot + workerRelativePath),
+      LGCODE_WORKER_PATH: JSON.stringify(workerPath),
       LGCODE_CHANNEL: `'${Script.channel}'`,
       LGCODE_LIBC: item.os === "linux" ? `'${item.abi ?? "glibc"}'` : "",
       ...(item.os === "linux" ? { "process.env.OPENTUI_LIBC": JSON.stringify(item.abi ?? "glibc") } : {}),

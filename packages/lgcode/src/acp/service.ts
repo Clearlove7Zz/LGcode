@@ -780,11 +780,11 @@ function defaultModelFromConfig(
   if (configured && providers[configured.providerID]?.models[configured.modelID]) return configured
 
   // First-session ACP startup must not scan historical sessions just to infer
-  // a default. Configured model, lgcode provider, then sorted best model keep
+  // a default. Configured model, lgdg provider, then sorted best model keep
   // the protocol response deterministic without extra session/message reads.
-  const opencodeProvider = providers[ProviderV2.ID.make("lgcode")]
-  const opencodeModel = opencodeProvider ? Provider.sort(Object.values(opencodeProvider.models))[0] : undefined
-  if (opencodeProvider && opencodeModel) return { providerID: opencodeProvider.id, modelID: opencodeModel.id }
+  const lgdgProvider = providers[ProviderV2.ID.make("lgdg")]
+  const lgdgModel = lgdgProvider ? Provider.sort(Object.values(lgdgProvider.models))[0] : undefined
+  if (lgdgProvider && lgdgModel) return { providerID: lgdgProvider.id, modelID: lgdgModel.id }
 
   const best = Provider.sort(Object.values(providers).flatMap((provider) => Object.values(provider.models)))[0]
   if (best) return { providerID: best.providerID, modelID: best.id }
@@ -1026,6 +1026,14 @@ function isACPError(error: unknown): error is Error {
 function isAuthRequired(value: unknown): boolean {
   if (typeof value !== "object" || value === null) return false
   if (value instanceof Error && (value.name === "ProviderAuthError" || value.name === "LoadAPIKeyError")) return true
+  if (
+    value instanceof Error &&
+    value.name === "APICallError" &&
+    "status" in value &&
+    (value as Record<string, unknown>).status === 401
+  ) {
+    return true
+  }
   if (
     value instanceof Error &&
     (value.message.includes("ProviderAuthError") || value.message.includes("LoadAPIKeyError"))

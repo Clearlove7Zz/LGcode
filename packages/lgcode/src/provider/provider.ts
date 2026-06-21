@@ -199,6 +199,150 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
         options: ok ? {} : { apiKey: "public" },
       }
     }),
+    lgdg: Effect.fnUntraced(function* (input: Info) {
+      const env = yield* dep.env()
+      const hasKey = iife(() => {
+        if (input.env.some((item) => env[item])) return true
+        return false
+      })
+      const ok =
+        hasKey ||
+        Boolean(yield* dep.auth(input.id)) ||
+        Boolean((yield* dep.config()).provider?.["lgdg"]?.options?.apiKey)
+
+      const baseURL = input.options?.baseURL ?? "https://modelhub.lgdg.cc/aigateway/v1"
+
+      return {
+        autoload: true,
+        options: {},
+        async getModel(sdk: any, modelID: string) {
+          if (!ok) {
+            const err = new Error(
+              "LGDG_ModelHub API key required. Get one at https://modelhub.lgdg.cc/auth",
+            ) as Error & { providerID?: string }
+            err.name = "LoadAPIKeyError"
+            err.providerID = "lgdg"
+            throw err
+          }
+          return sdk.chat(modelID)
+        },
+        async discoverModels(): Promise<Record<string, Model>> {
+          try {
+            const apiKey =
+              env["LG_CODE_API_KEY"] ??
+              (typeof input.options?.apiKey === "string" ? input.options.apiKey : undefined)
+
+            const headers: Record<string, string> = { "Content-Type": "application/json" }
+            if (apiKey) headers["Authorization"] = `Bearer ${apiKey}`
+
+            const response = await fetch(`${baseURL}/models`, {
+              method: "GET",
+              headers,
+              signal: AbortSignal.timeout(10_000),
+            })
+
+            if (!response.ok) return {}
+
+            const data = (await response.json()) as {
+              object: string
+              data?: Array<{
+                id: string
+                object: string
+                created: number
+                owned_by: string
+                task: string
+                metadata?: {
+                  is_csgbot_default_model?: boolean
+                  is_csgbot_model?: boolean
+                  llm_type?: string
+                  pricing?: {
+                    input_token_price?: { currency?: string; price_per_million?: number }
+                    output_token_price?: { currency?: string; price_per_million?: number }
+                  }
+                  tasks?: string[]
+                }
+                availability?: { is_available?: boolean }
+              }>
+            }
+
+            if (!data?.data) return {}
+
+            const models: Record<string, Model> = {}
+            for (const m of data.data) {
+              if (!m.availability?.is_available) continue
+
+              const id = m.id
+              // Skip models that already exist to avoid duplicates from the API.
+              if (input.models[id]) continue
+
+              const pricing = m.metadata?.pricing
+              const inputPrice = pricing?.input_token_price?.price_per_million ?? 0
+              const outputPrice = pricing?.output_token_price?.price_per_million ?? 0
+
+              const tasks = m.metadata?.tasks ?? []
+              const hasVision = tasks.some((t) => t.toLowerCase().includes("image"))
+              const modelIdLower = id.toLowerCase()
+              const hasReasoning =
+                modelIdLower.includes("deepseek-r1") ||
+                modelIdLower.includes("deepseek-v4") ||
+                modelIdLower.includes("kimi-k2")
+
+              models[id] = {
+                id: ModelV2.ID.make(id),
+                providerID: ProviderV2.ID.make("lgdg"),
+                name: id,
+                family: "",
+                api: {
+                  id,
+                  url: baseURL,
+                  npm: "@ai-sdk/openai-compatible",
+                },
+                status: "active",
+                headers: {},
+                options: {},
+                cost: {
+                  input: inputPrice,
+                  output: outputPrice,
+                  cache: { read: 0, write: 0 },
+                },
+                limit: {
+                  context: 128000,
+                  input: 128000,
+                  output: 8192,
+                },
+                capabilities: {
+                  temperature: true,
+                  reasoning: hasReasoning,
+                  attachment: false,
+                  toolcall: true,
+                  input: {
+                    text: true,
+                    audio: false,
+                    image: hasVision,
+                    video: false,
+                    pdf: false,
+                  },
+                  output: {
+                    text: true,
+                    audio: false,
+                    image: false,
+                    video: false,
+                    pdf: false,
+                  },
+                  interleaved: false,
+                },
+                release_date: "",
+                variants: {},
+              }
+            }
+
+            return models
+          } catch {
+            return {}
+          }
+        },
+      }
+    }),
     openai: () =>
       Effect.succeed({
         autoload: false,
@@ -1301,7 +1445,9 @@ export const layer = Layer.effect(
         const catalog = mapValues(modelsDev, fromModelsDevProvider)
         const database = mapValues(catalog, toPublicInfo)
 
-        // Add LGdg (company model cluster) as a built-in provider
+        // Add LGdg (company model cluster) as a built-in provider.
+        // Models are always fetched dynamically from the modelhub API so users
+        // can browse the catalog without a key. Requests still require a key.
         const lgdgID = ProviderV2.ID.make("lgdg")
         if (!database[lgdgID]) {
           database[lgdgID] = {
@@ -1310,38 +1456,7 @@ export const layer = Layer.effect(
             env: ["LG_CODE_API_KEY"],
             source: "config",
             options: {},
-            models: {
-              "DeepSeek-V4-Flash-w8a8-mtp": {
-                id: ModelV2.ID.make("DeepSeek-V4-Flash-w8a8-mtp"),
-                api: { id: "DeepSeek-V4-Flash-w8a8-mtp", npm: "@ai-sdk/openai-compatible", url: "https://modelhub.lgdg.cc/aigateway/v1" },
-                providerID: lgdgID,
-                name: "DeepSeek V4 Flash (w8a8-mtp)",
-                status: "active",
-                capabilities: { temperature: true, reasoning: true, attachment: false, toolcall: true, input: { text: true, audio: false, image: false, video: false, pdf: false }, output: { text: true, audio: false, image: false, video: false, pdf: false }, interleaved: false },
-                cost: { input: 0, output: 0, cache: { read: 0, write: 0 } },
-                options: {},
-                limit: { context: 128000, input: 128000, output: 8192 },
-                headers: {},
-                family: "deepseek",
-                release_date: "",
-                variants: {},
-              },
-              "GLM-5.1-w4a8": {
-                id: ModelV2.ID.make("GLM-5.1-w4a8"),
-                api: { id: "GLM-5.1-w4a8", npm: "@ai-sdk/openai-compatible", url: "https://modelhub.lgdg.cc/aigateway/v1" },
-                providerID: lgdgID,
-                name: "GLM 5.1 (w4a8)",
-                status: "active",
-                capabilities: { temperature: true, reasoning: false, attachment: false, toolcall: true, input: { text: true, audio: false, image: false, video: false, pdf: false }, output: { text: true, audio: false, image: false, video: false, pdf: false }, interleaved: false },
-                cost: { input: 0, output: 0, cache: { read: 0, write: 0 } },
-                options: {},
-                limit: { context: 128000, input: 128000, output: 8192 },
-                headers: {},
-                family: "glm",
-                release_date: "",
-                variants: {},
-              },
-            },
+            models: {},
           }
         }
 
@@ -1525,8 +1640,6 @@ export const layer = Layer.effect(
           })
         }
 
-        console.log("[LGdg DEBUG] env loop done, providers has lgdg:", !!providers[lgdgID], "all providers:", Object.keys(providers))
-
         // load apikeys
         const auths = yield* auth.all().pipe(Effect.orDie)
         for (const [id, provider] of Object.entries(auths)) {
@@ -1589,18 +1702,21 @@ export const layer = Layer.effect(
           mergeProvider(providerID, partial)
         }
 
-        const gitlab = ProviderV2.ID.make("gitlab")
-        if (discoveryLoaders[gitlab] && providers[gitlab] && isProviderAllowed(gitlab)) {
-          yield* Effect.promise(async () => {
-            try {
-              const discovered = await discoveryLoaders[gitlab]()
-              for (const [modelID, model] of Object.entries(discovered)) {
-                if (!providers[gitlab].models[modelID]) {
-                  providers[gitlab].models[modelID] = model
+        // Run model discovery for any provider that supports it
+        for (const [pid, discover] of Object.entries(discoveryLoaders)) {
+          const providerID = ProviderV2.ID.make(pid)
+          if (providers[providerID] && isProviderAllowed(providerID)) {
+            yield* Effect.promise(async () => {
+              try {
+                const discovered = await discover()
+                for (const [modelID, model] of Object.entries(discovered)) {
+                  if (!providers[providerID].models[modelID]) {
+                    providers[providerID].models[modelID] = model
+                  }
                 }
-              }
-            } catch (e) {}
-          })
+              } catch (e) {}
+            })
+          }
         }
 
         for (const [id, provider] of Object.entries(providers)) {
@@ -1652,7 +1768,6 @@ export const layer = Layer.effect(
           }
         }
 
-        console.log("[LGdg DEBUG] final providers:", Object.keys(providers), "lgdg in providers:", !!providers[lgdgID])
         return {
           models: languages,
           providers,
@@ -1907,11 +2022,13 @@ export const layer = Layer.effect(
         "gemini-2.5-flash",
         "gpt-5-nano",
       ]
-      const priority = providerID.startsWith("lgcode")
-        ? ["gpt-5-nano"]
-        : providerID.startsWith("github-copilot")
-          ? ["gpt-5-mini", "claude-haiku-4.5", ...defaultPriority]
-          : defaultPriority
+      const priority = providerID === "lgdg"
+        ? ["qwen3-30b-a3b", "deepseek-v4-flash"]
+        : providerID.startsWith("lgcode")
+          ? ["gpt-5-nano"]
+          : providerID.startsWith("github-copilot")
+            ? ["gpt-5-mini", "claude-haiku-4.5", ...defaultPriority]
+            : defaultPriority
       for (const item of priority) {
         if (providerID === ProviderV2.ID.amazonBedrock) {
           const crossRegionPrefixes = ["global.", "us.", "eu."]
@@ -1965,10 +2082,12 @@ export const layer = Layer.effect(
         return { providerID: entry.providerID, modelID: entry.modelID }
       }
 
-      // Prefer LGDG_ModelHub as default provider when no config is set
-      const lgdgProvider = Object.values(s.providers).find((p) => p.id === "lgdg")
-      const fallbackProvider = Object.values(s.providers).find((p) => !cfg.provider || Object.keys(cfg.provider).includes(p.id))
-      const provider = lgdgProvider ?? fallbackProvider
+      // Fall back to the first configured provider, then the best available model.
+      // This mirrors opencode's original behavior, with lgdg taking the "preferred"
+      // slot only in the ACP directory defaultModelFromConfig path.
+      const provider = Object.values(s.providers).find(
+        (p) => !cfg.provider || Object.keys(cfg.provider).includes(p.id),
+      )
       if (!provider) return yield* new NoProvidersError()
       const [model] = sort(Object.values(provider.models))
       if (!model) return yield* new NoModelsError({ providerID: provider.id })
@@ -1994,7 +2113,7 @@ export const defaultLayer = Layer.suspend(() =>
   ),
 )
 
-const priority = ["gpt-5", "claude-sonnet-4", "big-pickle", "gemini-3-pro"]
+const priority = ["gpt-5", "claude-sonnet-4", "big-pickle", "gemini-3-pro", "deepseek-v4-pro", "deepseek-v4", "kimi", "glm-5"]
 export function sort<T extends { id: string }>(models: T[]) {
   return sortBy(
     models,
