@@ -98,7 +98,7 @@ export const PrCommand = effectCmd({
     UI.println("Starting lgcode...")
     UI.println()
 
-    const opencodeArgs = sessionId ? ["-s", sessionId] : []
+    const lgcodeArgs = sessionId ? ["-s", sessionId] : []
     const code = yield* Effect.promise(
       () =>
         Process.spawn(["lgcode", ...lgcodeArgs], {
