@@ -225,7 +225,7 @@ export default function () {
                         <div class="flex flex-col gap-4">
                           <div class="flex flex-col gap-2 sm:flex-row sm:gap-4 sm:items-center sm:h-8 justify-start self-stretch">
                             <div class="pl-[2.5px] pr-2 flex items-center gap-1.75 bg-surface-strong shadow-xs-border-base w-fit">
-                              <Mark class="shrink-0 w-3 my-0.5" />
+                              <Mark class="shrink-0 h-3 my-0.5" />
                               <div class="text-12-mono text-text-base">v{info().version}</div>
                             </div>
                             <div class="flex gap-4 items-center">
@@ -275,7 +275,7 @@ export default function () {
                           <header class="h-12 px-6 py-2 flex items-center justify-between self-stretch bg-background-base border-b border-border-weak-base">
                             <div class="">
                               <a href="https://modelhub.lgdg.cc">
-                                <Mark />
+                                <Mark class="h-6" />
                               </a>
                             </div>
                             <div class="flex gap-3 items-center">

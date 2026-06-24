@@ -16,6 +16,7 @@ export const DialogSelectProvider: Component = () => {
   const providers = useProviders()
   const language = useLanguage()
 
+  const lgdgGroup = () => language.t("dialog.provider.group.lgdg")
   const popularGroup = () => language.t("dialog.provider.group.popular")
   const otherGroup = () => language.t("dialog.provider.group.other")
   const customLabel = () => language.t("settings.providers.tag.custom")
@@ -39,7 +40,10 @@ export const DialogSelectProvider: Component = () => {
           return [{ id: CUSTOM_ID, name: customLabel() }, ...providers.all().values()]
         }}
         filterKeys={["id", "name"]}
-        groupBy={(x) => (popularProviders.includes(x.id) ? popularGroup() : otherGroup())}
+        groupBy={(x) => {
+          if (x.id === "lgdg") return lgdgGroup()
+          return popularProviders.includes(x.id) ? popularGroup() : otherGroup()
+        }}
         sortBy={(a, b) => {
           if (a.id === CUSTOM_ID) return -1
           if (b.id === CUSTOM_ID) return 1
@@ -66,13 +70,13 @@ export const DialogSelectProvider: Component = () => {
           <div class="px-1.25 w-full flex items-center gap-x-3">
             <ProviderIcon data-slot="list-item-extra-icon" id={i.id} />
             <span>{i.name}</span>
-            <Show when={i.id === "lgcode"}>
+            <Show when={i.id === "lgcode" || i.id === "lgdg"}>
               <div class="text-14-regular text-text-weak">{language.t("dialog.provider.lgcode.tagline")}</div>
             </Show>
             <Show when={i.id === CUSTOM_ID}>
               <Tag>{language.t("settings.providers.tag.custom")}</Tag>
             </Show>
-            <Show when={i.id === "lgcode"}>
+            <Show when={i.id === "lgcode" || i.id === "lgdg"}>
               <Tag>{language.t("dialog.provider.tag.recommended")}</Tag>
             </Show>
             <Show when={note(i.id)}>{(value) => <div class="text-14-regular text-text-weak">{value()}</div>}</Show>

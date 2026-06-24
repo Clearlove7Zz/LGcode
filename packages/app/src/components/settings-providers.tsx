@@ -198,6 +198,9 @@ const SettingsProvidersContent: Component = () => {
                       <Show when={item.id === "lgcode"}>
                         <Tag>{language.t("dialog.provider.tag.recommended")}</Tag>
                       </Show>
+                      <Show when={item.id === "lgdg"}>
+                        <Tag>{language.t("dialog.provider.tag.recommended")}</Tag>
+                      </Show>
                       <Show when={item.id === "lgcode-go"}>
                         <Tag>{language.t("dialog.provider.tag.recommended")}</Tag>
                       </Show>

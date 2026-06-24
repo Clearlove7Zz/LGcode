@@ -197,7 +197,7 @@ export const SettingsProvidersV2: Component = () => {
                     <div class="settings-v2-provider-copy">
                       <div class="settings-v2-provider-main">
                         <span class="settings-v2-provider-name">{item.name}</span>
-                        <Show when={item.id === "lgcode" || item.id === "lgcode-go"}>
+                        <Show when={item.id === "lgcode" || item.id === "lgdg" || item.id === "lgcode-go"}>
                           <Tag>{language.t("dialog.provider.tag.recommended")}</Tag>
                         </Show>
                       </div>

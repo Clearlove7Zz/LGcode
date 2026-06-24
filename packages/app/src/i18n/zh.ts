@@ -123,6 +123,7 @@ export const dict = {
   "dialog.provider.search.placeholder": "搜索提供商",
   "dialog.provider.empty": "未找到提供商",
   "dialog.provider.group.popular": "热门",
+  "dialog.provider.group.lgdg": "龙岗数据",
   "dialog.provider.group.other": "其他",
   "dialog.provider.tag.recommended": "推荐",
   "dialog.provider.lgcode.note": "使用 LGcode Zen 或 API 密钥连接",

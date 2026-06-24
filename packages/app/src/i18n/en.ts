@@ -99,6 +99,7 @@ export const dict = {
   "dialog.provider.search.placeholder": "Search providers",
   "dialog.provider.empty": "No providers found",
   "dialog.provider.group.popular": "Popular",
+  "dialog.provider.group.lgdg": "LGDG",
   "dialog.provider.group.other": "Other",
   "dialog.provider.tag.recommended": "Recommended",
   "dialog.provider.lgcode.note": "Curated models including Claude, GPT, Gemini and more",

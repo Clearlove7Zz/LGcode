@@ -334,7 +334,7 @@ render(() => {
     const wslServers = useWslServers()
     const splash = (
       <div class="h-dvh w-screen flex flex-col items-center justify-center bg-background-base">
-        <Splash class="w-16 h-16 opacity-50 animate-pulse" />
+        <Splash class="w-40 opacity-50 animate-pulse" />
       </div>
     )
 

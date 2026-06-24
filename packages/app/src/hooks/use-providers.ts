@@ -5,6 +5,7 @@ import { Iterable, pipe } from "effect"
 import { createMemo } from "solid-js"
 
 export const popularProviders = [
+  "lgdg",
   "lgcode",
   "lgcode-go",
   "anthropic",
@@ -36,6 +37,11 @@ export function useProviders() {
         Iterable.map(([, p]) => p),
         Iterable.filter((p) => popularProviderSet.has(p.id)),
         (v) => Array.from(v),
+        (arr) =>
+          arr.sort(
+            (a, b) =>
+              popularProviders.indexOf(a.id) - popularProviders.indexOf(b.id),
+          ),
       ),
     connected: () => {
       const connected = new Set(providers().connected)
