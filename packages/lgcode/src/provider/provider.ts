@@ -224,7 +224,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
             err.providerID = "lgdg"
             throw err
           }
-          return sdk.chat(modelID)
+          return sdk.chat?.(modelID) ?? sdk.languageModel(modelID)
         },
         async discoverModels(): Promise<Record<string, Model>> {
           try {

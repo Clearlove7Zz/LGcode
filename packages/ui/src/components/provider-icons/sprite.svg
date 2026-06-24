@@ -2,7 +2,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="0" height="0">
   <defs>
     <symbol viewBox="0 0 40 40" id="lgdg">
-      <image xlink:href="../assets/icons/provider/lgdg.png" x="0" y="0" width="40" height="40" />
+      <path fill="#00b76f" d="M18.5 2h3v1h3v1h2v1h2v1h1v1h1v2h1v11h-1v2h-1v1h-1v1h-2v1h-2v1h-3v-1h-3v1h-11v-1h-2v-1h-1v-1h-1v-2h-1v-2H3v-2h1v-1h1v-1h1v-1h1v-1h2v-1h2v-1h3z" />
+      <path fill="#070707" d="M20 12h3v4h-1v2h-1v2h-1v3h1v2h-2v-2h-1v-3h1v-2h1v-2h1v-3h-1z M15 15h2v1h2v1h1v2h-1v1h-2v-1h-1v-1h-1z M21 20h2v-1h1v-2h2v2h-1v1h-2v1h-2v-2h1z" />
+      <path fill="#070707" d="M12 13h2v1h1v1h1v2h-1v1h-1v1h-2v-1h-1v-1h-1v-2h1v-1h1z" />
+      <rect x="12" y="14" width="2" height="2" fill="#00b76f" />
+      <path fill="#070707" d="M20 9h3v1h1v1h1v3h-1v1h-1v1h-3v-1h-1v-1h-1V11h1v-1h1z" />
+      <rect x="20" y="10" width="3" height="2" fill="#00b76f" />
+      <path fill="#070707" d="M25 17h2v1h1v1h1v3h-1v1h-1v1h-2v-1h-1v-1h-1v-3h1v-1h1z" />
+      <rect x="25" y="18" width="2" height="2" fill="#00b76f" />
     </symbol>
     <symbol viewBox="0 0 40 40" id="zhipuai">
       <path

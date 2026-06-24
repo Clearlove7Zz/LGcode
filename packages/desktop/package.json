@@ -30,9 +30,9 @@
   },
   "devDependencies": {
     "@actions/artifact": "4.0.0",
-    "@lydell/node-pty": "catalog:",
     "@lgcode/app": "workspace:*",
     "@lgcode/ui": "workspace:*",
+    "@lydell/node-pty": "catalog:",
     "@sentry/solid": "catalog:",
     "@sentry/vite-plugin": "catalog:",
     "@solid-primitives/i18n": "2.2.1",

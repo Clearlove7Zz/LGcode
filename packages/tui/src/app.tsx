@@ -1,4 +1,9 @@
+import { registerSpinner } from "opentui-spinner/solid"
 import { render, TimeToFirstDraw, useRenderer, useTerminalDimensions } from "@opentui/solid"
+// Register the <spinner> custom element with the Solid reconciler before any render.
+// The side-effect import alone gets tree-shaken in the compiled binary; calling the
+// registrar explicitly forces it to be retained.
+registerSpinner()
 import { createDefaultOpenTuiKeymap } from "@opentui/keymap/opentui"
 import { Deferred, Effect } from "effect"
 import { Global } from "@lgcode/core/global"

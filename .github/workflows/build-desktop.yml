@@ -1,0 +1,99 @@
+name: build-desktop
+
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: "Build channel"
+        required: false
+        type: choice
+        default: prod
+        options:
+          - prod
+          - beta
+          - dev
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-14
+            platform_flag: --mac --arm64
+            label: mac-arm64
+          - os: macos-13
+            platform_flag: --mac --x64
+            label: mac-x64
+          - os: ubuntu-22.04
+            platform_flag: --linux
+            label: linux-x64
+          - os: windows-2022
+            platform_flag: --win
+            label: win-x64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Install Linux deps
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rpm
+
+      - name: Build
+        run: bun run build
+        working-directory: packages/desktop
+        env:
+          LGCODE_CHANNEL: ${{ inputs.channel }}
+
+      - name: Package (macOS)
+        if: runner.os == 'macOS'
+        run: npx electron-builder ${{ matrix.platform_flag }} --publish never --config electron-builder.config.ts
+        working-directory: packages/desktop
+        env:
+          LGCODE_CHANNEL: ${{ inputs.channel }}
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+
+      - name: Package (Linux)
+        if: runner.os == 'Linux'
+        run: npx electron-builder ${{ matrix.platform_flag }} --publish never --config electron-builder.config.ts
+        working-directory: packages/desktop
+        env:
+          LGCODE_CHANNEL: ${{ inputs.channel }}
+
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        run: npx electron-builder ${{ matrix.platform_flag }} --publish never --config electron-builder.config.ts
+        working-directory: packages/desktop
+        env:
+          LGCODE_CHANNEL: ${{ inputs.channel }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: lgcode-desktop-${{ matrix.label }}
+          path: |
+            packages/desktop/dist/*.exe
+            packages/desktop/dist/*.zip
+            packages/desktop/dist/*.dmg
+            packages/desktop/dist/*.tar.gz
+            packages/desktop/dist/*.deb
+            packages/desktop/dist/*.rpm
+            packages/desktop/dist/*.AppImage
+            packages/desktop/dist/*.blockmap
+          if-no-files-found: ignore

@@ -51,6 +51,11 @@ const getBase = (appId: string): Configuration => ({
   // https://www.electron.build/docs/linux/
   extraMetadata: {
     desktopName: `${appId}.desktop`,
+    homepage: "https://github.com/Clearlove7Zz/LGcode",
+    author: {
+      name: "LGcode",
+      email: "lgcode@example.com",
+    },
   },
   files: ["out/**/*", "resources/**/*"],
   extraResources: [
@@ -62,16 +67,16 @@ const getBase = (appId: string): Configuration => ({
   ],
   mac: {
     category: "public.app-category.developer-tools",
-    icon: `resources/icons/icon.icns`,
-    hardenedRuntime: true,
+    icon: `resources/icons/icon.png`,
+    hardenedRuntime: false,
     gatekeeperAssess: false,
     entitlements: "resources/entitlements.plist",
     entitlementsInherit: "resources/entitlements.plist",
-    notarize: true,
+    notarize: false,
     target: ["dmg", "zip"],
   },
   dmg: {
-    sign: true,
+    sign: false,
   },
   protocols: {
     name: "LGcode",
@@ -102,7 +107,7 @@ const getBase = (appId: string): Configuration => ({
         StartupWMClass: appId,
       },
     },
-    target: ["AppImage", "deb", "rpm"],
+    target: ["tar.gz"],
   },
 })
 
