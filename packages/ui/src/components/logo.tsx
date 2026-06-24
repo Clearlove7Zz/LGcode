@@ -8,10 +8,9 @@ export const Mark = (props: { class?: string }) => {
       viewBox="0 0 1200 1200"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      xmlnsXlink="http://www.w3.org/1999/xlink"
     >
       <image id="image0" width="1200" height="1200" x="0" y="0"
-      xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABLAAAASwCAMAAADc/0P9AAAAIGNIUk0AAHomAACAhAAA+gAAAIDo
+      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABLAAAASwCAMAAADc/0P9AAAAIGNIUk0AAHomAACAhAAA+gAAAIDo
       AAB1MAAA6mAAADqYAAAXcJy6UTwAAAB1UExURQAAAACvaACvaACsaQCtaACtaACvaACvaQCvagCv
       cACtZgCuaACuaACuZwCuaQCtaQCvZwCvaACuZwCvZQCxZwCvaQCsZgCtaQCvZwCuaQCuaACvaQCv
       ZgCvaACuaACxaQCvaQCsaACvZgCtaACuaACuaP///xPOk78AAAAldFJOUwAgQFBggJ+PMBBwv9/v
@@ -369,10 +368,9 @@ export const Splash = (props: Pick<ComponentProps<"svg">, "ref" | "class">) => {
       viewBox="0 0 1200 1200"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      xmlnsXlink="http://www.w3.org/1999/xlink"
     >
       <image id="image0" width="1200" height="1200" x="0" y="0"
-      xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABLAAAASwCAMAAADc/0P9AAAAIGNIUk0AAHomAACAhAAA+gAAAIDo
+      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABLAAAASwCAMAAADc/0P9AAAAIGNIUk0AAHomAACAhAAA+gAAAIDo
       AAB1MAAA6mAAADqYAAAXcJy6UTwAAAB1UExURQAAAACvaACvaACsaQCtaACtaACvaACvaQCvagCv
       cACtZgCuaACuaACuZwCuaQCtaQCvZwCvaACuZwCvZQCxZwCvaQCsZgCtaQCvZwCuaQCuaACvaQCv
       ZgCvaACuaACxaQCvaQCsaACvZgCtaACuaACuaP///xPOk78AAAAldFJOUwAgQFBggJ+PMBBwv9/v
