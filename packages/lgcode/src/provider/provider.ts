@@ -1763,7 +1763,10 @@ export const layer = Layer.effect(
           }
 
           if (Object.keys(provider.models).length === 0) {
-            delete providers[providerID]
+            // Always keep LGDG visible so users can discover and configure it
+            if (providerID !== lgdgID) {
+              delete providers[providerID]
+            }
             continue
           }
         }

@@ -52,7 +52,10 @@ export const DialogSelectProvider: Component = () => {
           return a.name.localeCompare(b.name)
         }}
         sortGroupsBy={(a, b) => {
+          const lgdg = lgdgGroup()
           const popular = popularGroup()
+          if (a.category === lgdg && b.category !== lgdg) return -1
+          if (b.category === lgdg && a.category !== lgdg) return 1
           if (a.category === popular && b.category !== popular) return -1
           if (b.category === popular && a.category !== popular) return 1
           return 0
