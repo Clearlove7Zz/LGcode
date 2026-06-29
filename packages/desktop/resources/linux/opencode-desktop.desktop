@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=LGcode
+Exec=/opt/LGcode/ai.lgcode.desktop %U
+Terminal=false
+Type=Application
+Icon=ai.lgcode.desktop
+StartupWMClass=ai.lgcode.desktop
+NoDisplay=true
+Comment=Open source AI coding agent
+Categories=Development;

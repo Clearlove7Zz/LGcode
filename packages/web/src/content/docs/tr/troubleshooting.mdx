@@ -1,0 +1,299 @@
+---
+title: Sorun giderme
+description: Yaygin sorunlar ve cozum adimlari.
+---
+
+lgcode ile ilgili bir sorunu ayiklamak icin once loglari ve diskte tuttugu yerel verileri kontrol edin.
+
+---
+
+## Loglar
+
+Log dosyalari su konuma yazilir:
+
+- **macOS/Linux**: `~/.local/share/lgcode/log/`
+- **Windows**: `WIN+R` tuslayip `%USERPROFILE%\.local\share\lgcode\log` yapistirin
+
+Log dosyalari zaman damgasiyla adlandirilir (ornegin `2025-01-09T123456.log`) ve en yeni 10 log dosyasi tutulur.
+
+Daha ayrintili ayiklama bilgisi icin `--log-level` komut satiri secenegini kullanabilirsiniz. Ornek: `lgcode --log-level DEBUG`.
+
+---
+
+## Depolama
+
+lgcode, oturum verilerini ve diger uygulama verilerini diskte su konumda saklar:
+
+- **macOS/Linux**: `~/.local/share/lgcode/`
+- **Windows**: `WIN+R` tuslayip `%USERPROFILE%\.local\share\lgcode` yapistirin
+
+Bu dizin sunlari icerir:
+
+- `auth.json` - API anahtarlari, OAuth tokenlari gibi kimlik dogrulama verileri
+- `log/` - Uygulama loglari
+- `project/` - Oturum ve mesaj verileri gibi projeye ozel veriler
+  - Proje bir Git deposundaysa `./<project-slug>/storage/` altinda saklanir
+  - Git deposu degilse `./global/storage/` altinda saklanir
+
+---
+
+## Masaüstü uygulaması
+
+lgcode Desktop arka planda yerel bir lgcode sunucusu (`lgcode-cli` sidecar) calistirir. Sorunlarin cogu bozuk bir plugin, hasarli cache veya hatali sunucu ayarindan kaynaklanir.
+
+### Hızlı kontroller
+
+- Uygulamayi tamamen kapatip yeniden acin
+- Uygulama hata ekrani gosteriyorsa **Restart**'a tiklayip hata detaylarini kopyalayin
+- Yalnizca macOS: `lgcode` menusu -> **Reload Webview** (arayuz bos/donukse yardimci olur)
+
+---
+
+### Eklentileri devre dışı bırakın
+
+Desktop uygulamasi acilista cokuyorsa, takiliyorsa veya garip davranislar gosteriyorsa once pluginleri devre disi birakin.
+
+#### Global config'i kontrol edin
+
+Global config dosyanizi acin ve `plugin` anahtarini arayin.
+
+- **macOS/Linux**: `~/.config/lgcode/lgcode.jsonc` (veya `~/.config/lgcode/lgcode.json`)
+- **macOS/Linux** (eski kurulumlar): `~/.local/share/lgcode/lgcode.jsonc`
+- **Windows**: `WIN+R` tuslayip `%USERPROFILE%\.config\lgcode\lgcode.jsonc` yapistirin
+
+Plugin tanimliysa anahtari kaldirarak veya bos bir diziye cekerek gecici olarak devre disi birakin:
+
+```jsonc
+{
+  "$schema": "https://modelhub.lgdg.cc/config.json",
+  "plugin": [],
+}
+```
+
+#### Eklenti dizinlerini kontrol edin
+
+lgcode diskten yerel plugin de yukleyebilir. Bu dizinleri gecici olarak tasiyin (veya klasoru yeniden adlandirin) ve uygulamayi yeniden baslatin:
+
+- **Global plugins**
+  - **macOS/Linux**: `~/.config/lgcode/plugins/`
+  - **Windows**: `WIN+R` tuslayip `%USERPROFILE%\.config\lgcode\plugins` yapistirin
+- **Project plugins** (sadece proje bazli config kullaniyorsaniz)
+  - `<your-project>/.lgcode/plugins/`
+
+Uygulama duzelirse soruna neden olan plugini bulmak icin pluginleri tek tek yeniden etkinlestirin.
+
+---
+
+### Cache'i temizleyin
+
+Pluginleri kapatmak ise yaramazsa (veya plugin kurulumu takili kaldiysa), lgcode'un cache'i yeniden olusturmasi icin cache'i temizleyin.
+
+1. lgcode Desktop'u tamamen kapatin
+2. Cache dizinini silin:
+
+- **macOS**: Finder -> `Cmd+Shift+G` -> `~/.cache/lgcode`
+- **Linux**: `~/.cache/lgcode` dizinini silin (veya `rm -rf ~/.cache/lgcode` calistirin)
+- **Windows**: `WIN+R` tuslayip `%USERPROFILE%\.cache\lgcode` yapistirin
+
+3. lgcode Desktop'u yeniden baslatin
+
+---
+
+### Sunucu bağlantı sorunlarını düzeltin
+
+lgcode Desktop ya kendi yerel sunucusunu baslatir (varsayilan) ya da sizin tanimladiginiz bir sunucu URL'sine baglanir.
+
+**"Connection Failed"** penceresi goruyorsaniz (veya uygulama acilis ekranini gecemiyorsa), ozel bir sunucu URL'si olup olmadigini kontrol edin.
+
+#### Desktop varsayilan sunucu URL'sini temizleyin
+
+Ana ekranda sunucu adina (durum noktali) tiklayarak Server secicisini acin. **Default server** bolumunde **Clear**'a tiklayin.
+
+#### Config'ten `server.port` / `server.hostname` kaldirin
+
+`lgcode.json(c)` dosyanizda `server` bolumu varsa gecici olarak kaldirin ve desktop uygulamasini yeniden baslatin.
+
+#### Ortam degiskenlerini kontrol edin
+
+Ortamda `LGCODE_PORT` ayarliysa desktop uygulamasi yerel sunucu icin o portu kullanmaya calisir.
+
+- `LGCODE_PORT` degerini kaldirin (veya bos bir port secin) ve yeniden baslatin
+
+---
+
+### Linux: Wayland / X11 sorunları
+
+Linux'ta bazi Wayland kurulumlari bos pencere veya compositor hatalarina yol acabilir.
+
+- Wayland kullaniyorsaniz ve uygulama bos/acilmiyorsa `OC_ALLOW_WAYLAND=1` ile baslatin
+- Bu daha kotu olursa kaldirip X11 oturumunda baslatmayi deneyin
+
+---
+
+### Windows: WebView2 Çalışma Zamanı
+
+Windows'ta lgcode Desktop, Microsoft Edge **WebView2 Runtime** gerektirir. Uygulama bos pencereyle aciliyorsa veya hic baslamiyorsa WebView2'yi kurup/guncelleyip tekrar deneyin.
+
+---
+
+### Windows: Genel performans sorunları
+
+Windows'ta yavaslik, dosya erisim sorunlari veya terminal problemleri yasiyorsaniz [WSL (Windows Subsystem for Linux)](/docs/windows-wsl) kullanmayi deneyin. WSL, lgcode ozellikleriyle daha sorunsuz calisan bir Linux ortami saglar.
+
+---
+
+### Bildirimler görünmüyor
+
+lgcode Desktop sistem bildirimlerini yalnizca su durumlarda gosterir:
+
+- Isletim sistemi ayarlarinizda lgcode icin bildirimler etkinse
+- Uygulama penceresi odakta degilse
+
+---
+
+### Desktop depolamasını sıfırlayın (son çare)
+
+Uygulama acilmiyorsa ve ayarlari arayuz icinden temizleyemiyorsaniz, desktop uygulamasinin kayitli durumunu sifirlayin.
+
+1. lgcode Desktop'u kapatin
+2. Su dosyalari bulun ve silin (lgcode Desktop uygulama veri dizininde yer alirlar):
+
+- `lgcode.settings.dat` (desktop varsayilan sunucu URL'si)
+- `lgcode.global.dat` ve `lgcode.workspace.*.dat` (son sunucular/projeler gibi UI durumu)
+
+Dizini hizlica bulmak icin:
+
+- **macOS**: Finder -> `Cmd+Shift+G` -> `~/Library/Application Support` (ardindan yukaridaki dosya adlarini aratin)
+- **Linux**: `~/.local/share` altinda bu dosya adlarini aratin
+- **Windows**: `WIN+R` -> `%APPDATA%` (ardindan bu dosya adlarini aratin)
+
+---
+
+## Yardım alın
+
+lgcode ile ilgili bir sorun yasiyorsaniz:
+
+1. **GitHub'da issue acin**
+
+   Hata bildirmek veya ozellik talep etmek icin en iyi yol GitHub depomuzdur:
+
+   [**github.com/Clearlove7Zz/LGcode/issues**](https://github.com/Clearlove7Zz/LGcode/issues)
+
+   Yeni issue acmadan once sorununuzun daha once raporlanip raporlanmadigini kontrol edin.
+
+2. **Discord'a katilin**
+
+   Gercek zamanli yardim ve topluluk sohbeti icin Discord sunucumuza katilin:
+
+   [**modelhub.lgdg.cc/discord**](https://modelhub.lgdg.cc/discord)
+
+---
+
+## Yaygın sorunlar
+
+Asagida yaygin sorunlar ve cozumleri yer aliyor.
+
+---
+
+### lgcode başlamıyor
+
+1. Hata mesaji icin loglari kontrol edin
+2. Terminalde cikti gormek icin `--print-logs` ile calistirin
+3. `lgcode upgrade` ile en guncel surumu kullandiginizdan emin olun
+
+---
+
+### Kimlik doğrulama sorunları
+
+1. TUI'da `/connect` komutuyla yeniden kimlik dogrulamasi yapin
+2. API anahtarlarinizin gecerli oldugunu kontrol edin
+3. Aginizin provider API baglantilarina izin verdiginden emin olun
+
+---
+
+### Model kullanılamıyor
+
+1. Provider ile kimlik dogrulamasi yaptiginizi kontrol edin
+2. Config'teki model adinin dogru oldugunu dogrulayin
+3. Bazi modeller ozel erisim veya abonelik gerektirebilir
+
+`ProviderModelNotFoundError` aliyorsaniz buyuk olasilikla bir yerde model referansi yanlistir.
+Model referansi su formatta olmalidir: `<providerId>/<modelId>`
+
+Ornekler:
+
+- `openai/gpt-4.1`
+- `openrouter/google/gemini-2.5-flash`
+- `lgcode/kimi-k2`
+
+Erisiminiz olan modelleri gormek icin `lgcode models` calistirin.
+
+---
+
+### ProviderInitError
+
+`ProviderInitError` aliyorsaniz buyuk olasilikla config'iniz gecersiz veya bozulmustur.
+
+Cozum adimlari:
+
+1. Once [providers rehberini](/docs/providers) izleyerek provider kurulumunun dogru oldugunu dogrulayin
+2. Sorun surerse kayitli konfigurasyonu temizlemeyi deneyin:
+
+   ```bash
+   rm -rf ~/.local/share/lgcode
+   ```
+
+   Windows'ta `WIN+R` tuslayip su konumu silin: `%USERPROFILE%\.local\share\lgcode`
+
+3. TUI'da `/connect` komutuyla provider kimlik dogrulamasini tekrar yapin
+
+---
+
+### AI_APICallError ve provider paket sorunlari
+
+API cagrisi hatalari aliyorsaniz bunun nedeni guncel olmayan provider paketleri olabilir. lgcode, provider paketlerini (OpenAI, Anthropic, Google vb.) gerektikce dinamik yukler ve yerelde onbellekler.
+
+Provider paket sorunlarini gidermek icin:
+
+1. Provider paket cache'ini temizleyin:
+
+   ```bash
+   rm -rf ~/.cache/lgcode
+   ```
+
+   Windows'ta `WIN+R` tuslayip su konumu silin: `%USERPROFILE%\.cache\lgcode`
+
+2. En guncel provider paketlerini yeniden kurmak icin lgcode'u yeniden baslatin
+
+Bu, lgcode'un en yeni provider paket surumlerini indirmesini zorlar ve model parametresi/API degisikliklerinden kaynakli uyumsuzluklari cogu zaman cozer.
+
+---
+
+### Linux'ta kopyala/yapıştır çalışmıyor
+
+Linux kullanicilarinin kopyala/yapistir ozelliginin calismasi icin asagidaki pano araclarindan en az birini kurmasi gerekir:
+
+**X11 sistemleri icin:**
+
+```bash
+apt install -y xclip
+# or
+apt install -y xsel
+```
+
+**Wayland sistemleri icin:**
+
+```bash
+apt install -y wl-clipboard
+```
+
+**Headless ortamlar icin:**
+
+```bash
+apt install -y xvfb
+# and run:
+Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+export DISPLAY=:99.0
+```
+
+lgcode, Wayland kullandiginizi algilarsa `wl-clipboard` tercihi yapar. Aksi halde sirayla `xclip` ve `xsel` araclarini arar.

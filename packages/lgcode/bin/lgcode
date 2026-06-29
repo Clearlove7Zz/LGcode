@@ -1,0 +1,18 @@
+#!/usr/bin/env bun
+import { argv, env, execPath, exit } from "node:process"
+import { spawn } from "node:child_process"
+import { join } from "node:path"
+
+const pkgDir = join(import.meta.dirname, "..")
+const entry = join(pkgDir, "src", "index.ts")
+
+const child = spawn(execPath, ["run", "--conditions=browser", entry, ...argv.slice(2)], {
+  stdio: "inherit",
+  cwd: pkgDir,
+  env,
+})
+
+child.on("exit", (code, signal) => {
+  if (signal) process.kill(process.pid, signal)
+  exit(typeof code === "number" ? code : 0)
+})

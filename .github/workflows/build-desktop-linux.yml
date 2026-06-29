@@ -1,0 +1,52 @@
+name: build-desktop-linux
+
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: "Build channel"
+        required: false
+        type: choice
+        default: prod
+        options:
+          - prod
+          - beta
+          - dev
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup-bun
+
+      - name: Install Linux deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rpm
+
+      - name: Build
+        run: bun run build
+        working-directory: packages/desktop
+        env:
+          LGCODE_CHANNEL: ${{ inputs.channel }}
+
+      - name: Package
+        run: npx electron-builder --linux --publish never --config electron-builder.config.ts
+        working-directory: packages/desktop
+        env:
+          LGCODE_CHANNEL: ${{ inputs.channel }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: lgcode-desktop-linux-x64
+          path: |
+            packages/desktop/dist/*.tar.gz
+            packages/desktop/dist/*.deb
+            packages/desktop/dist/*.rpm
+          if-no-files-found: ignore

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://v2-8-13.turborepo.dev/schema.json",
+  "globalEnv": ["CI", "LGCODE_DISABLE_SHARE"],
+  "globalPassThroughEnv": ["CI", "LGCODE_DISABLE_SHARE"],
+  "tasks": {
+    "typecheck": {},
+    "build": {
+      "dependsOn": [],
+      "outputs": ["dist/**"]
+    },
+    "lgcode#test": {
+      "dependsOn": ["^build"],
+      "outputs": [],
+      "passThroughEnv": ["*"]
+    },
+    "@lgcode/app#test": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "@lgcode/ui#test": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    }
+  }
+}

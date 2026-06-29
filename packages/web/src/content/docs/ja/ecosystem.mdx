@@ -1,0 +1,78 @@
+---
+title: エコシステム
+description: LGcode で構築されたプロジェクトと統合。
+---
+
+LGcode に基づいて構築されたコミュニティプロジェクトのコレクション。
+
+:::note
+LGcode 関連プロジェクトをこのリストに追加したいですか? PR を送信してください。
+:::
+
+[awesome-lgcode](https://github.com/awesome-lgcode/awesome-lgcode) および [lgcode.cafe](https://lgcode.cafe) もチェックしてください。
+
+---
+
+## プラグイン
+
+| 名前                                                                                               | 説明                                                                                                                 |
+| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| [lgcode-daytona](https://github.com/daytonaio/daytona/tree/main/libs/lgcode-plugin)            | git sync とライブプレビューを使用して、隔離された Daytona サンドボックスで LGcode セッションを自動的に実行します。 |
+| [lgcode-helicone-session](https://github.com/H2Shami/lgcode-helicone-session)                  | リクエストのグループ化のために Helicone セッションヘッダーを自動的に挿入する                                         |
+| [lgcode-type-inject](https://github.com/nick-vi/lgcode-type-inject)                            | ルックアップツールを使用して TypeScript/Svelte 型をファイル読み取りに自動挿入する                                    |
+| [lgcode-openai-codex-auth](https://github.com/numman-ali/lgcode-openai-codex-auth)             | API クレジットの代わりに ChatGPT Plus/Pro サブスクリプションを使用する                                               |
+| [lgcode-gemini-auth](https://github.com/jenslys/lgcode-gemini-auth)                            | API 課金の代わりに既存の Gemini プランを使用する                                                                     |
+| [lgcode-antigravity-auth](https://github.com/NoeFabris/lgcode-antigravity-auth)                | API 課金の代わりに Antigravity の無料モデルを使用する                                                                |
+| [lgcode-devcontainers](https://github.com/athal7/lgcode-devcontainers)                         | 浅いクローンと自動割り当てポートを使用したマルチブランチ devcontainer の分離                                         |
+| [lgcode-google-antigravity-auth](https://github.com/shekohex/lgcode-google-antigravity-auth)   | Google Antigravity OAuth プラグイン、Google 検索のサポート、およびより堅牢な API 処理                                |
+| [lgcode-dynamic-context-pruning](https://github.com/Tarquinen/lgcode-dynamic-context-pruning)  | 古いツールの出力を削除してトークンの使用を最適化する                                                                 |
+| [lgcode-vibeguard](https://github.com/inkdust2021/lgcode-vibeguard)                            | LLM 呼び出しの前にシークレット/PII を VibeGuard スタイルのプレースホルダーに編集し、ローカルで復元する               |
+| [lgcode-websearch-cited](https://github.com/ghoulr/lgcode-websearch-cited.git)                 | Google ベースのスタイルでサポートされているプロバイダーにネイティブ Web 検索サポートを追加                           |
+| [lgcode-pty](https://github.com/shekohex/lgcode-pty.git)                                       | AI エージェントが PTY でバックグラウンドプロセスを実行し、インタラクティブな入力を送信できるようにします。           |
+| [lgcode-shell-strategy](https://github.com/JRedeker/lgcode-shell-strategy)                     | 非対話型シェルコマンドの手順 - TTY に依存する操作によるハングの防止                                                  |
+| [lgcode-wakatime](https://github.com/angristan/lgcode-wakatime)                                | wakatime で LGcode の使用状況を追跡する                                                                            |
+| [lgcode-md-table-formatter](https://github.com/franlol/lgcode-md-table-formatter/tree/main)    | LLM によって生成された Markdown テーブルをクリーンアップする                                                         |
+| [lgcode-morph-plugin](https://github.com/morphllm/lgcode-morph-plugin)                         | Morph による Fast Apply 編集、WarpGrep コードベース検索、コンテキスト圧縮                                            |
+| [oh-my-lgcode](https://github.com/code-yeongyu/oh-my-lgcode)                                   | バックグラウンドエージェント、事前構築された LSP/AST/MCP ツール、厳選されたエージェント、Claude Code 互換            |
+| [lgcode-notificator](https://github.com/panta82/lgcode-notificator)                            | LGcode セッションのデスクトップ通知とサウンドアラート                                                              |
+| [lgcode-notifier](https://github.com/mohak34/lgcode-notifier)                                  | 許可、完了、エラーイベントのデスクトップ通知とサウンドアラート                                                       |
+| [lgcode-zellij-namer](https://github.com/24601/lgcode-zellij-namer)                            | LGcode コンテキストに基づいた AI による自動 Zellij セッション命名                                                  |
+| [lgcode-skillful](https://github.com/zenobi-us/lgcode-skillful)                                | LGcode エージェントがスキルの検出と挿入を使用してオンデマンドでプロンプトを遅延ロードできるようにする              |
+| [lgcode-supermemory](https://github.com/supermemoryai/lgcode-supermemory)                      | スーパーメモリを使用したセッション間での永続メモリ                                                                   |
+| [@plannotator/lgcode](https://github.com/backnotprop/plannotator/tree/main/apps/lgcode-plugin) | 視覚的な注釈とプライベート/オフライン共有による対話型の計画レビュー                                                  |
+| [@openspoon/subtask2](https://github.com/spoons-and-mirrors/subtask2)                              | LGcode/コマンドをきめ細かいフロー制御を備えた強力なオーケストレーションシステムに拡張                              |
+| [lgcode-scheduler](https://github.com/different-ai/lgcode-scheduler)                           | launchd (Mac) または systemd (Linux) を cron 構文で使用して、定期的なジョブをスケジュールする                        |
+| [micode](https://github.com/vtemian/micode)                                                        | 構造化されたブレインストーミング → 計画 → セッション継続性のあるワークフローの実装                                   |
+| [octto](https://github.com/vtemian/octto)                                                          | 複数の質問フォームを使用した AI ブレインストーミング用のインタラクティブなブラウザ UI                                |
+| [lgcode-background-agents](https://github.com/kdcokenny/lgcode-background-agents)              | 非同期委任とコンテキスト永続性を備えた Claude Code スタイルのバックグラウンドエージェント                            |
+| [lgcode-notify](https://github.com/kdcokenny/lgcode-notify)                                    | LGcode のネイティブ OS 通知 – タスクがいつ完了したかを知る                                                         |
+| [lgcode-workspace](https://github.com/kdcokenny/lgcode-workspace)                              | バンドルされたマルチエージェントオーケストレーションハーネス – 16 コンポーネント、1 回のインストール                 |
+| [lgcode-worktree](https://github.com/kdcokenny/lgcode-worktree)                                | LGcode 用のゼロフリクション Git ワークツリー                                                                       |
+| [lgcode-sentry-monitor](https://github.com/stolinski/lgcode-sentry-monitor)                    | Sentry AI Monitoring を使用して AI エージェントをトレースおよびデバッグする                                          |
+
+---
+
+## プロジェクト
+
+| 名前                                                                                       | 説明                                                                             |
+| ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------- |
+| [kimaki](https://github.com/remorses/kimaki)                                               | SDK 上に構築された LGcode セッションを制御する Discord ボット                  |
+| [lgcode.nvim](https://github.com/NickvanDyke/lgcode.nvim)                              | API に基づいて構築された、エディター対応プロンプト用の Neovim プラグイン         |
+| [portal](https://github.com/hosenur/portal)                                                | Tailscale/VPN 上の LGcode 向けモバイルファースト Web UI                        |
+| [lgcode plugin template](https://github.com/zenobi-us/lgcode-plugin-template/)         | LGcode プラグインを構築するためのテンプレート                                  |
+| [lgcode.nvim](https://github.com/sudo-tee/lgcode.nvim)                                 | Neovim LGcode用フロントエンド - ターミナルベースの AI コーディングエージェント |
+| [ai-sdk-provider-lgcode-sdk](https://github.com/ben-vargas/ai-sdk-provider-lgcode-sdk) | @lgcode-ai/sdk 経由で LGcode を使用するための Vercel AI SDK プロバイダー     |
+| [OpenChamber](https://github.com/btriapitsyn/openchamber)                                  | LGcode 用の Web/デスクトップアプリと VS Code 拡張機能                          |
+| [LGcode-Obsidian](https://github.com/mtymek/lgcode-obsidian)                           | Obsidian の UI に LGcode を埋め込む Obsidian プラグイン                        |
+| [OpenWork](https://github.com/different-ai/openwork)                                       | LGcode を利用した、Claude Cowork に代わるオープンソース                        |
+| [ocx](https://github.com/kdcokenny/ocx)                                                    | 移植可能な独立したプロファイルを備えた LGcode 拡張機能マネージャー。           |
+| [CodeNomad](https://github.com/NeuralNomadsAI/CodeNomad)                                   | LGcode 用のデスクトップ、Web、モバイル、およびリモートクライアントアプリ       |
+
+---
+
+## エージェント
+
+| 名前                                                              | 説明                                                                           |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| [Agentic](https://github.com/Cluster444/agentic)                  | 構造化開発のためのモジュール型 AI エージェントとコマンド                       |
+| [lgcode-agents](https://github.com/darrenhinde/lgcode-agents) | 強化されたワークフローのための構成、プロンプト、エージェント、およびプラグイン |

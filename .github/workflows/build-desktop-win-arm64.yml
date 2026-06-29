@@ -1,0 +1,46 @@
+name: build-desktop-win-arm64
+
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: "Build channel"
+        required: false
+        type: choice
+        default: prod
+        options:
+          - prod
+          - beta
+          - dev
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-11-arm
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup-bun
+
+      - name: Build
+        run: bun run build
+        working-directory: packages/desktop
+        env:
+          LGCODE_CHANNEL: ${{ inputs.channel }}
+
+      - name: Package
+        run: npx electron-builder --win --arm64 --publish never --config electron-builder.config.ts
+        working-directory: packages/desktop
+        env:
+          LGCODE_CHANNEL: ${{ inputs.channel }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: lgcode-desktop-win-arm64
+          path: |
+            packages/desktop/dist/*.exe
+            packages/desktop/dist/*.blockmap
+          if-no-files-found: ignore
