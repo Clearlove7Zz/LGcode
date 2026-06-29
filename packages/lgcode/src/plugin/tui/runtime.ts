@@ -10,12 +10,12 @@ import {
   type TuiPluginStatus,
   type TuiSlotPlugin,
   type TuiTheme,
-} from "@lgcode/plugin/tui"
+} from "@loongcode/plugin/tui"
 import path from "path"
 import { fileURLToPath } from "url"
 import { TuiConfig } from "@/config/tui"
-import { errorData, errorMessage } from "@lgcode/tui/util/error"
-import { isRecord } from "@lgcode/tui/util/record"
+import { errorData, errorMessage } from "@loongcode/tui/util/error"
+import { isRecord } from "@loongcode/tui/util/record"
 import { resolveHostAttentionSoundPaths } from "@/config/tui-host-attention"
 import {
   readPackageThemes,
@@ -28,20 +28,20 @@ import {
 import { PluginLoader } from "@/plugin/loader"
 import { PluginMeta } from "@/plugin/meta"
 import { installPlugin as installModulePlugin, patchPluginConfig, readPluginManifest } from "@/plugin/install"
-import { hasTheme, upsertTheme } from "@lgcode/tui/context/theme"
-import { Global } from "@lgcode/core/global"
+import { hasTheme, upsertTheme } from "@loongcode/tui/context/theme"
+import { Global } from "@loongcode/core/global"
 import { Filesystem } from "@/util/filesystem"
 import { Process } from "@/util/process"
-import { Flock } from "@lgcode/core/util/flock"
-import { Flag } from "@lgcode/core/flag/flag"
+import { Flock } from "@loongcode/core/util/flock"
+import { Flag } from "@loongcode/core/flag/flag"
 import { internalTuiPlugins, type InternalTuiPlugin } from "./internal"
-import type { HostPluginApi, HostSlots } from "@lgcode/tui/plugin/slots"
+import type { HostPluginApi, HostSlots } from "@loongcode/tui/plugin/slots"
 import { ConfigPlugin } from "@/config/plugin"
-import { ConfigPluginV1 } from "@lgcode/core/v1/config/plugin"
-import { createCommandShim } from "@lgcode/tui/plugin/command-shim"
+import { ConfigPluginV1 } from "@loongcode/core/v1/config/plugin"
+import { createCommandShim } from "@loongcode/tui/plugin/command-shim"
 import { RuntimeFlags } from "@/effect/runtime-flags"
 import { Effect } from "effect"
-import { createPluginRuntime, type PluginRuntime, type TuiPluginHost } from "@lgcode/tui/plugin/runtime"
+import { createPluginRuntime, type PluginRuntime, type TuiPluginHost } from "@loongcode/tui/plugin/runtime"
 
 ensureRuntimePluginSupport({ additional: keymapRuntimeModules })
 
@@ -252,9 +252,9 @@ function createThemeInstaller(
     const name = path.basename(src, path.extname(src))
     const source_dir = path.dirname(meta.source)
     const local_dir =
-      path.basename(source_dir) === ".lgcode"
+      path.basename(source_dir) === ".loongcode"
         ? path.join(source_dir, "themes")
-        : path.join(source_dir, ".lgcode", "themes")
+        : path.join(source_dir, ".loongcode", "themes")
     const dest_dir = meta.scope === "local" ? local_dir : path.join(Global.Path.config, "themes")
     const dest = path.join(dest_dir, `${name}.json`)
     const stat = await Filesystem.statAsync(src)
@@ -813,7 +813,7 @@ function defaultPluginOrigin(state: RuntimeState, spec: string): ConfigPlugin.Or
   return {
     spec,
     scope: "local",
-    source: state.api.state.path.config || path.join(state.directory, ".lgcode", "tui.json"),
+    source: state.api.state.path.config || path.join(state.directory, ".loongcode", "tui.json"),
   }
 }
 
@@ -1085,8 +1085,8 @@ async function load(input: {
       }).pipe(Effect.provide(RuntimeFlags.defaultLayer)),
     )
     const pluginOrigins = config.plugin_origins ?? (await TuiConfig.pluginOrigins())
-    const records = Flag.LGCODE_PURE ? [] : pluginOrigins
-    if (Flag.LGCODE_PURE && pluginOrigins.length) {
+    const records = Flag.LOONGCODE_PURE ? [] : pluginOrigins
+    if (Flag.LOONGCODE_PURE && pluginOrigins.length) {
     }
 
     for (const item of internalTuiPlugins(flags)) {

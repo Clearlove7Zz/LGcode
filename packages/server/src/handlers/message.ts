@@ -1,5 +1,5 @@
-import { SessionMessage } from "@lgcode/core/session/message"
-import { SessionV2 } from "@lgcode/core/session"
+import { SessionMessage } from "@loongcode/core/session/message"
+import { SessionV2 } from "@loongcode/core/session"
 import { Effect, Schema } from "effect"
 import { HttpApiBuilder } from "effect/unstable/httpapi"
 import { Api } from "../api"

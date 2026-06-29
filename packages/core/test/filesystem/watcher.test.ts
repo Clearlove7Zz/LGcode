@@ -3,13 +3,13 @@ import { describe, expect } from "bun:test"
 import fs from "fs/promises"
 import path from "path"
 import { ConfigProvider, Deferred, Duration, Effect, Fiber, Layer, Option, Stream } from "effect"
-import { Config } from "@lgcode/core/config"
-import { EventV2 } from "@lgcode/core/event"
-import { FSUtil } from "@lgcode/core/fs-util"
-import { Watcher } from "@lgcode/core/filesystem/watcher"
-import { Git } from "@lgcode/core/git"
-import { Location } from "@lgcode/core/location"
-import { AbsolutePath } from "@lgcode/core/schema"
+import { Config } from "@loongcode/core/config"
+import { EventV2 } from "@loongcode/core/event"
+import { FSUtil } from "@loongcode/core/fs-util"
+import { Watcher } from "@loongcode/core/filesystem/watcher"
+import { Git } from "@loongcode/core/git"
+import { Location } from "@loongcode/core/location"
+import { AbsolutePath } from "@loongcode/core/schema"
 import { location } from "../fixture/location"
 import { tmpdir } from "../fixture/tmpdir"
 import { testEffect } from "../lib/effect"
@@ -29,8 +29,8 @@ const configLayer = Layer.succeed(
 
 const flagsLayer = ConfigProvider.layer(
   ConfigProvider.fromUnknown({
-    LGCODE_EXPERIMENTAL_FILEWATCHER: "true",
-    LGCODE_EXPERIMENTAL_DISABLE_FILEWATCHER: "false",
+    LOONGCODE_EXPERIMENTAL_FILEWATCHER: "true",
+    LOONGCODE_EXPERIMENTAL_DISABLE_FILEWATCHER: "false",
   }),
 )
 
@@ -60,7 +60,7 @@ function withTmp<A, E, R>(
       await $`git init`.cwd(tmp.path).quiet()
       await $`git config core.fsmonitor false`.cwd(tmp.path).quiet()
       await $`git config commit.gpgsign false`.cwd(tmp.path).quiet()
-      await $`git config user.email test@lgcode.test`.cwd(tmp.path).quiet()
+      await $`git config user.email test@loongcode.test`.cwd(tmp.path).quiet()
       await $`git config user.name Test`.cwd(tmp.path).quiet()
       await $`git commit --allow-empty -m root`.cwd(tmp.path).quiet()
       await options.init?.(tmp.path)

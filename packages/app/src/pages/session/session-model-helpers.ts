@@ -1,4 +1,4 @@
-import type { UserMessage } from "@lgcode/sdk/v2"
+import type { UserMessage } from "@loongcode/sdk/v2"
 
 type Local = {
   session: {

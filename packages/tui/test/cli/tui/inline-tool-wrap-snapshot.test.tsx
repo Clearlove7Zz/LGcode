@@ -29,25 +29,25 @@ const tools: readonly ToolFixture[] = [
   {
     icon: "✱",
     label:
-      'Grep "LGCODE.*DB|database|sqlite|drizzle|dev.*db|data.*dir|xdg|APPDATA" in packages/lgcode/src (151 matches)',
+      'Grep "LOONGCODE.*DB|database|sqlite|drizzle|dev.*db|data.*dir|xdg|APPDATA" in packages/loongcode/src (151 matches)',
   },
   {
     icon: "✱",
-    label: 'Glob "**/*db*" in packages/lgcode (6 matches)',
+    label: 'Glob "**/*db*" in packages/loongcode (6 matches)',
   },
   {
     icon: "→",
-    label: "Read packages/lgcode/src/storage/db.ts [offset=1, limit=130]",
+    label: "Read packages/loongcode/src/storage/db.ts [offset=1, limit=130]",
   },
   {
     icon: "→",
-    label: "Read packages/lgcode/src/index.ts [offset=1, limit=100]",
+    label: "Read packages/loongcode/src/index.ts [offset=1, limit=100]",
     error: "No LSP server available for this file type.",
   },
   {
     icon: "✱",
     label:
-      'Grep "export const LGCODE_DB|LGCODE_DB|LGCODE_DEV|Global\\.Path\\.data|data =" in packages/lgcode/src (115 matches)',
+      'Grep "export const LOONGCODE_DB|LOONGCODE_DB|LOONGCODE_DEV|Global\\.Path\\.data|data =" in packages/loongcode/src (115 matches)',
   },
 ] as const
 

@@ -1,19 +1,19 @@
 import type { APIEvent } from "@solidjs/start/server"
-import { and, Database, eq, isNull, lt, or, sql } from "@lgcode/console-core/drizzle/index.js"
-import { KeyTable } from "@lgcode/console-core/schema/key.sql.js"
-import { BillingTable, LiteTable, SubscriptionTable, UsageTable } from "@lgcode/console-core/schema/billing.sql.js"
-import { centsToMicroCents } from "@lgcode/console-core/util/price.js"
-import { getMonthlyBounds, getWeekBounds } from "@lgcode/console-core/util/date.js"
-import { Identifier } from "@lgcode/console-core/identifier.js"
-import { Billing } from "@lgcode/console-core/billing.js"
-import { Actor } from "@lgcode/console-core/actor.js"
-import { WorkspaceTable } from "@lgcode/console-core/schema/workspace.sql.js"
-import { ZenData } from "@lgcode/console-core/model.js"
-import { Subscription } from "@lgcode/console-core/subscription.js"
-import { BlackData } from "@lgcode/console-core/black.js"
-import { UserTable } from "@lgcode/console-core/schema/user.sql.js"
-import { ModelTable } from "@lgcode/console-core/schema/model.sql.js"
-import { ProviderTable } from "@lgcode/console-core/schema/provider.sql.js"
+import { and, Database, eq, isNull, lt, or, sql } from "@loongcode/console-core/drizzle/index.js"
+import { KeyTable } from "@loongcode/console-core/schema/key.sql.js"
+import { BillingTable, LiteTable, SubscriptionTable, UsageTable } from "@loongcode/console-core/schema/billing.sql.js"
+import { centsToMicroCents } from "@loongcode/console-core/util/price.js"
+import { getMonthlyBounds, getWeekBounds } from "@loongcode/console-core/util/date.js"
+import { Identifier } from "@loongcode/console-core/identifier.js"
+import { Billing } from "@loongcode/console-core/billing.js"
+import { Actor } from "@loongcode/console-core/actor.js"
+import { WorkspaceTable } from "@loongcode/console-core/schema/workspace.sql.js"
+import { ZenData } from "@loongcode/console-core/model.js"
+import { Subscription } from "@loongcode/console-core/subscription.js"
+import { BlackData } from "@loongcode/console-core/black.js"
+import { UserTable } from "@loongcode/console-core/schema/user.sql.js"
+import { ModelTable } from "@loongcode/console-core/schema/model.sql.js"
+import { ProviderTable } from "@loongcode/console-core/schema/provider.sql.js"
 import { logger } from "./logger"
 import {
   AuthError,
@@ -41,8 +41,8 @@ import { createRateLimiter as createIpRateLimiter } from "./ipRateLimiter"
 import { createRateLimiter as createKeyRateLimiter } from "./keyRateLimiter"
 import { createTrialLimiter } from "./trialLimiter"
 import { createStickyTracker } from "./stickyProviderTracker"
-import { LiteData } from "@lgcode/console-core/lite.js"
-import { Resource } from "@lgcode/console-resource"
+import { LiteData } from "@loongcode/console-core/lite.js"
+import { Resource } from "@loongcode/console-resource"
 import { i18n, type Key } from "~/i18n"
 import { localeFromRequest } from "~/lib/language"
 import { createModelTpmLimiter } from "./modelTpmLimiter"
@@ -102,9 +102,9 @@ export async function handler(
     const ip = rawIp.includes(":") ? rawIp.split(":").slice(0, 4).join(":") : rawIp
     const rawZenApiKey = opts.parseApiKey(input.request.headers)
     const zenApiKey = rawZenApiKey === "public" ? undefined : rawZenApiKey
-    const sessionId = input.request.headers.get("x-lgcode-session") ?? ""
-    const requestId = input.request.headers.get("x-lgcode-request") ?? ""
-    const ocClient = input.request.headers.get("x-lgcode-client") ?? ""
+    const sessionId = input.request.headers.get("x-loongcode-session") ?? ""
+    const requestId = input.request.headers.get("x-loongcode-request") ?? ""
+    const ocClient = input.request.headers.get("x-loongcode-client") ?? ""
     const userAgent = input.request.headers.get("user-agent") ?? ""
     logger.metric({
       is_stream: isStream,
@@ -201,10 +201,10 @@ export async function handler(
           })
           headers.delete("host")
           headers.delete("content-length")
-          headers.delete("x-lgcode-request")
-          headers.delete("x-lgcode-session")
-          headers.delete("x-lgcode-project")
-          headers.delete("x-lgcode-client")
+          headers.delete("x-loongcode-request")
+          headers.delete("x-loongcode-session")
+          headers.delete("x-loongcode-project")
+          headers.delete("x-loongcode-client")
           return headers
         })(),
         body: reqBody,

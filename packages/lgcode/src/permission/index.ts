@@ -1,12 +1,12 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
-import { ConfigPermissionV1 } from "@lgcode/core/v1/config/permission"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
+import { ConfigPermissionV1 } from "@loongcode/core/v1/config/permission"
 import { InstanceState } from "@/effect/instance-state"
-import { Wildcard } from "@lgcode/core/util/wildcard"
+import { Wildcard } from "@loongcode/core/util/wildcard"
 import { Deferred, Effect, Layer, Context } from "effect"
 import os from "os"
-import { PermissionV1 } from "@lgcode/core/v1/permission"
+import { PermissionV1 } from "@loongcode/core/v1/permission"
 import { EventV2Bridge } from "@/event-v2-bridge"
-import { EventV2 } from "@lgcode/core/event"
+import { EventV2 } from "@loongcode/core/event"
 
 export const Event = {
   Asked: EventV2.define({ type: "permission.asked", schema: PermissionV1.Request.fields }),
@@ -48,7 +48,7 @@ export function evaluate(permission: string, pattern: string, ...rulesets: Permi
   )
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Permission") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/Permission") {}
 
 export const layer = Layer.effect(
   Service,

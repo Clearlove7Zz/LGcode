@@ -2,7 +2,7 @@
 import { Avatar } from "./avatar-v2"
 
 const docs = `### Overview
-Avatar matching LGcode DS variants from Figma.
+Avatar matching Loongcode DS variants from Figma.
 
 Use in user lists and headers.
 

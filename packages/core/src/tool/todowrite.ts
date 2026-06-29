@@ -1,6 +1,6 @@
 export * as TodoWriteTool from "./todowrite"
 
-import { ToolFailure } from "@lgcode/llm"
+import { ToolFailure } from "@loongcode/llm"
 import { Effect, Layer, Schema } from "effect"
 import { PermissionV2 } from "../permission"
 import { SessionTodo } from "../session/todo"

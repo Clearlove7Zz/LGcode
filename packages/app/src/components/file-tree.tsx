@@ -1,8 +1,8 @@
 import { useFile } from "@/context/file"
 import { encodeFilePath } from "@/context/file/path"
-import { Collapsible } from "@lgcode/ui/collapsible"
-import { FileIcon } from "@lgcode/ui/file-icon"
-import { Icon } from "@lgcode/ui/icon"
+import { Collapsible } from "@loongcode/ui/collapsible"
+import { FileIcon } from "@loongcode/ui/file-icon"
+import { Icon } from "@loongcode/ui/icon"
 import {
   createEffect,
   createMemo,
@@ -17,7 +17,7 @@ import {
   type ParentProps,
 } from "solid-js"
 import { Dynamic } from "solid-js/web"
-import type { FileNode } from "@lgcode/sdk/v2"
+import type { FileNode } from "@loongcode/sdk/v2"
 
 const MAX_DEPTH = 128
 

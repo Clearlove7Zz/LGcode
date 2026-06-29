@@ -4,7 +4,7 @@ import { sql } from "drizzle-orm"
 
 import { AccountRepo } from "../../src/account/repo"
 import { AccessToken, AccountID, OrgID, RefreshToken } from "../../src/account/schema"
-import { Database } from "@lgcode/core/database/database"
+import { Database } from "@loongcode/core/database/database"
 import { testEffect } from "../lib/effect"
 
 const truncate = Layer.effectDiscard(

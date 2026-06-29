@@ -1,5 +1,5 @@
-import { ProviderV2 } from "@lgcode/core/provider"
-import { Location } from "@lgcode/core/location"
+import { ProviderV2 } from "@loongcode/core/provider"
+import { Location } from "@loongcode/core/location"
 import { Schema } from "effect"
 import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
 import { ProviderNotFoundError, ServiceUnavailableError } from "../errors"

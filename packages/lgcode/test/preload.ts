@@ -7,7 +7,7 @@ import { setTimeout as sleep } from "node:timers/promises"
 import { afterAll } from "bun:test"
 
 // Set XDG env vars FIRST, before any src/ imports
-const dir = path.join(os.tmpdir(), "lgcode-test-data-" + process.pid)
+const dir = path.join(os.tmpdir(), "loongcode-test-data-" + process.pid)
 await fs.mkdir(dir, { recursive: true })
 afterAll(async () => {
   const { AppRuntime } = await import("../src/effect/app-runtime")
@@ -35,22 +35,22 @@ process.env["XDG_DATA_HOME"] = path.join(dir, "share")
 process.env["XDG_CACHE_HOME"] = path.join(dir, "cache")
 process.env["XDG_CONFIG_HOME"] = path.join(dir, "config")
 process.env["XDG_STATE_HOME"] = path.join(dir, "state")
-process.env["LGCODE_MODELS_PATH"] = path.join(import.meta.dir, "tool", "fixtures", "models-api.json")
-process.env["LGCODE_EXPERIMENTAL_EVENT_SYSTEM"] = "true"
-process.env["LGCODE_EXPERIMENTAL_WORKSPACES"] = "true"
+process.env["LOONGCODE_MODELS_PATH"] = path.join(import.meta.dir, "tool", "fixtures", "models-api.json")
+process.env["LOONGCODE_EXPERIMENTAL_EVENT_SYSTEM"] = "true"
+process.env["LOONGCODE_EXPERIMENTAL_WORKSPACES"] = "true"
 
 // Set test home directory to isolate tests from user's actual home directory
 // This prevents tests from picking up real user configs/skills from ~/.claude/skills
 const testHome = path.join(dir, "home")
 await fs.mkdir(testHome, { recursive: true })
-process.env["LGCODE_TEST_HOME"] = testHome
+process.env["LOONGCODE_TEST_HOME"] = testHome
 
 // Set test managed config directory to isolate tests from system managed settings
 const testManagedConfigDir = path.join(dir, "managed")
-process.env["LGCODE_TEST_MANAGED_CONFIG_DIR"] = testManagedConfigDir
+process.env["LOONGCODE_TEST_MANAGED_CONFIG_DIR"] = testManagedConfigDir
 
 // Write the cache version file to prevent global/index.ts from clearing the cache
-const cacheDir = path.join(dir, "cache", "lgcode")
+const cacheDir = path.join(dir, "cache", "loongcode")
 await fs.mkdir(cacheDir, { recursive: true })
 await fs.writeFile(path.join(cacheDir, "version"), "14")
 
@@ -75,16 +75,16 @@ delete process.env["DEEPSEEK_API_KEY"]
 delete process.env["FIREWORKS_API_KEY"]
 delete process.env["CEREBRAS_API_KEY"]
 delete process.env["SAMBANOVA_API_KEY"]
-delete process.env["LGCODE_SERVER_PASSWORD"]
-delete process.env["LGCODE_SERVER_USERNAME"]
-delete process.env["LGCODE_EXPERIMENTAL"]
-delete process.env["LGCODE_ENABLE_EXPERIMENTAL_MODELS"]
+delete process.env["LOONGCODE_SERVER_PASSWORD"]
+delete process.env["LOONGCODE_SERVER_USERNAME"]
+delete process.env["LOONGCODE_EXPERIMENTAL"]
+delete process.env["LOONGCODE_ENABLE_EXPERIMENTAL_MODELS"]
 delete process.env["OTEL_EXPORTER_OTLP_ENDPOINT"]
 delete process.env["OTEL_EXPORTER_OTLP_HEADERS"]
 delete process.env["OTEL_RESOURCE_ATTRIBUTES"]
 
 // Use in-memory sqlite
-process.env["LGCODE_DB"] = ":memory:"
+process.env["LOONGCODE_DB"] = ":memory:"
 
 // Now safe to import from src/
 const { initProjectors } = await import("../src/server/projectors")

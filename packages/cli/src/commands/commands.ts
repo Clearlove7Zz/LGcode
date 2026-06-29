@@ -1,10 +1,10 @@
 import { Argument, Flag } from "effect/unstable/cli"
 import { Spec } from "../framework/spec"
 
-declare const LGCODE_CLI_NAME: string | undefined
+declare const LOONGCODE_CLI_NAME: string | undefined
 
-export const Commands = Spec.make(typeof LGCODE_CLI_NAME === "string" ? LGCODE_CLI_NAME : "lgcode", {
-  description: "LGcode 2.0 preview command line interface",
+export const Commands = Spec.make(typeof LOONGCODE_CLI_NAME === "string" ? LOONGCODE_CLI_NAME : "loongcode", {
+  description: "Loongcode 2.0 preview command line interface",
   commands: [
     Spec.make("debug", {
       description: "Debugging and troubleshooting tools",

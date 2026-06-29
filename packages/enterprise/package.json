@@ -1,5 +1,5 @@
 {
-  "name": "@lgcode/enterprise",
+  "name": "@loongcode/enterprise",
   "version": "1.17.7",
   "private": true,
   "type": "module",
@@ -8,13 +8,13 @@
     "typecheck": "tsgo --noEmit",
     "dev": "vite dev",
     "build": "vite build",
-    "build:cloudflare": "LGCODE_DEPLOYMENT_TARGET=cloudflare vite build",
+    "build:cloudflare": "LOONGCODE_DEPLOYMENT_TARGET=cloudflare vite build",
     "start": "vite start",
     "shell-prod": "sst shell --target Teams --stage production"
   },
   "dependencies": {
-    "@lgcode/core": "workspace:*",
-    "@lgcode/ui": "workspace:*",
+    "@loongcode/core": "workspace:*",
+    "@loongcode/ui": "workspace:*",
     "aws4fetch": "^1.0.20",
     "@pierre/diffs": "catalog:",
     "@solidjs/router": "catalog:",

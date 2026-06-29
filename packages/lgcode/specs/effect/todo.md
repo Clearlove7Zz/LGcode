@@ -1,6 +1,6 @@
 # Effect TODO
 
-Short roadmap for Effect cleanup in `packages/lgcode`.
+Short roadmap for Effect cleanup in `packages/loongcode`.
 
 Current patterns and examples live in [`guide.md`](./guide.md). Error
 boundary migration details live in
@@ -207,7 +207,7 @@ Problems to reduce:
 - Importing the module creates directories.
 - Tests override `Global.Path` by mutating exported module state.
 - Most callers use `Global.Path` directly instead of the Effect service.
-- `Global.make()` still reads mutable `Flag.LGCODE_CONFIG_DIR`.
+- `Global.make()` still reads mutable `Flag.LOONGCODE_CONFIG_DIR`.
 
 Next PR candidates:
 

@@ -18,16 +18,16 @@ import { describe, expect } from "bun:test"
 import { Effect } from "effect"
 import { cliIt } from "../../lib/cli-process"
 
-describe("lgcode read-only commands (smoke)", () => {
+describe("loongcode read-only commands (smoke)", () => {
   // `mcp list` reads MCP server config and pings each one. With the empty
-  // LGCODE_CONFIG_CONTENT={} we provide, no servers should be configured
+  // LOONGCODE_CONFIG_CONTENT={} we provide, no servers should be configured
   // and the command should report that cleanly.
   cliIt.live(
     "mcp list: exits 0",
-    ({ lgcode }) =>
+    ({ loongcode }) =>
       Effect.gen(function* () {
-        const r = yield* lgcode.spawn(["mcp", "list"])
-        lgcode.expectExit(r, 0, "mcp list")
+        const r = yield* loongcode.spawn(["mcp", "list"])
+        loongcode.expectExit(r, 0, "mcp list")
       }),
     60_000,
   )
@@ -40,10 +40,10 @@ describe("lgcode read-only commands (smoke)", () => {
   // test passes on a clean CI runner without env-var leakage.
   cliIt.live(
     "providers list: exits 0 and prints the credentials section",
-    ({ lgcode }) =>
+    ({ loongcode }) =>
       Effect.gen(function* () {
-        const r = yield* lgcode.spawn(["providers", "list"])
-        lgcode.expectExit(r, 0, "providers list")
+        const r = yield* loongcode.spawn(["providers", "list"])
+        loongcode.expectExit(r, 0, "providers list")
         expect(r.stdout).toContain("Credentials")
       }),
     60_000,
@@ -53,10 +53,10 @@ describe("lgcode read-only commands (smoke)", () => {
   // should appear because it's wired into the test provider config.
   cliIt.live(
     "models: exits 0 and lists the test model",
-    ({ lgcode }) =>
+    ({ loongcode }) =>
       Effect.gen(function* () {
-        const r = yield* lgcode.spawn(["models"])
-        lgcode.expectExit(r, 0, "models")
+        const r = yield* loongcode.spawn(["models"])
+        loongcode.expectExit(r, 0, "models")
         expect(r.stdout).toContain("test/test-model")
       }),
     60_000,
@@ -67,22 +67,22 @@ describe("lgcode read-only commands (smoke)", () => {
   // similar. We don't pin the message — just exit cleanly.
   cliIt.live(
     "agent list: exits 0",
-    ({ lgcode }) =>
+    ({ loongcode }) =>
       Effect.gen(function* () {
-        const r = yield* lgcode.spawn(["agent", "list"])
-        lgcode.expectExit(r, 0, "agent list")
+        const r = yield* loongcode.spawn(["agent", "list"])
+        loongcode.expectExit(r, 0, "agent list")
       }),
     60_000,
   )
 
-  // `session list` reads the session DB. Fresh LGCODE_TEST_HOME means
+  // `session list` reads the session DB. Fresh LOONGCODE_TEST_HOME means
   // empty DB. Exit 0 with no sessions.
   cliIt.live(
     "session list: exits 0",
-    ({ lgcode }) =>
+    ({ loongcode }) =>
       Effect.gen(function* () {
-        const r = yield* lgcode.spawn(["session", "list"])
-        lgcode.expectExit(r, 0, "session list")
+        const r = yield* loongcode.spawn(["session", "list"])
+        loongcode.expectExit(r, 0, "session list")
       }),
     60_000,
   )
@@ -90,24 +90,24 @@ describe("lgcode read-only commands (smoke)", () => {
   // `stats` aggregates token usage from the session DB. Empty DB → all zeros.
   cliIt.live(
     "stats: exits 0",
-    ({ lgcode }) =>
+    ({ loongcode }) =>
       Effect.gen(function* () {
-        const r = yield* lgcode.spawn(["stats"])
-        lgcode.expectExit(r, 0, "stats")
+        const r = yield* loongcode.spawn(["stats"])
+        loongcode.expectExit(r, 0, "stats")
       }),
     60_000,
   )
 
   // `db path` prints the DB file location. Under harness isolation the DB
   // resolves to SQLite's `:memory:` (no on-disk pollution between tests);
-  // in production it'd be a path under LGCODE_TEST_HOME / XDG_DATA_HOME.
+  // in production it'd be a path under LOONGCODE_TEST_HOME / XDG_DATA_HOME.
   // Accept either form — both prove the resolver ran without crashing.
   cliIt.live(
     "db path: exits 0 and prints a path or :memory:",
-    ({ lgcode }) =>
+    ({ loongcode }) =>
       Effect.gen(function* () {
-        const r = yield* lgcode.spawn(["db", "path"])
-        lgcode.expectExit(r, 0, "db path")
+        const r = yield* loongcode.spawn(["db", "path"])
+        loongcode.expectExit(r, 0, "db path")
         expect(r.stdout.trim()).toMatch(/^(:memory:|[/\\].+\.(db|sqlite|sqlite3))$/i)
       }),
     60_000,

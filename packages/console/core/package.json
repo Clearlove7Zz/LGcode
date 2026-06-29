@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "name": "@lgcode/console-core",
+  "name": "@loongcode/console-core",
   "version": "1.17.7",
   "private": true,
   "type": "module",
@@ -8,8 +8,8 @@
   "dependencies": {
     "@aws-sdk/client-sts": "3.782.0",
     "@jsx-email/render": "1.1.1",
-    "@lgcode/console-mail": "workspace:*",
-    "@lgcode/console-resource": "workspace:*",
+    "@loongcode/console-mail": "workspace:*",
+    "@loongcode/console-resource": "workspace:*",
     "@planetscale/database": "1.19.0",
     "aws4fetch": "1.0.20",
     "drizzle-orm": "catalog:",

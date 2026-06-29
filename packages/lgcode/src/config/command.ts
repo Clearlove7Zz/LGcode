@@ -2,10 +2,10 @@ export * as ConfigCommand from "./command"
 
 import path from "path"
 import { Cause, Exit, Schema } from "effect"
-import { Glob } from "@lgcode/core/util/glob"
-import { ConfigCommandV1 } from "@lgcode/core/v1/config/command"
+import { Glob } from "@loongcode/core/util/glob"
+import { ConfigCommandV1 } from "@loongcode/core/v1/config/command"
 import { configEntryNameFromPath } from "./entry-name"
-import { InvalidError } from "@lgcode/core/v1/config/error"
+import { InvalidError } from "@loongcode/core/v1/config/error"
 import * as ConfigMarkdown from "./markdown"
 
 const decodeInfo = Schema.decodeUnknownExit(ConfigCommandV1.Info)

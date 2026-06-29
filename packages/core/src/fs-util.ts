@@ -40,7 +40,7 @@ export namespace FSUtil {
     readonly globMatch: (pattern: string, filepath: string) => boolean
   }
 
-  export class Service extends Context.Service<Service, Interface>()("@lgcode/FileSystem") {}
+  export class Service extends Context.Service<Service, Interface>()("@loongcode/FileSystem") {}
 
   export const use = serviceUse(Service)
 

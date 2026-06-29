@@ -1,7 +1,7 @@
-export const deepLinkEvent = "lgcode:deep-link"
+export const deepLinkEvent = "loongcode:deep-link"
 
 const parseUrl = (input: string) => {
-  if (!input.startsWith("lgcode://")) return
+  if (!input.startsWith("loongcode://")) return
   if (typeof URL.canParse === "function" && !URL.canParse(input)) return
   try {
     return new URL(input)
@@ -36,15 +36,15 @@ export const collectOpenProjectDeepLinks = (urls: string[]) =>
 export const collectNewSessionDeepLinks = (urls: string[]) =>
   urls.map(parseNewSessionDeepLink).filter((link): link is { directory: string; prompt?: string } => !!link)
 
-type LGcodeWindow = Window & {
-  __LGCODE__?: {
+type LoongcodeWindow = Window & {
+  __LOONGCODE__?: {
     deepLinks?: string[]
   }
 }
 
-export const drainPendingDeepLinks = (target: LGcodeWindow) => {
-  const pending = target.__LGCODE__?.deepLinks ?? []
+export const drainPendingDeepLinks = (target: LoongcodeWindow) => {
+  const pending = target.__LOONGCODE__?.deepLinks ?? []
   if (pending.length === 0) return []
-  if (target.__LGCODE__) target.__LGCODE__.deepLinks = []
+  if (target.__LOONGCODE__) target.__LOONGCODE__.deepLinks = []
   return pending
 }

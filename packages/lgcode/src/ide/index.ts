@@ -1,6 +1,6 @@
-import { EventV2 } from "@lgcode/core/event"
+import { EventV2 } from "@loongcode/core/event"
 import { Schema } from "effect"
-import { NamedError } from "@lgcode/core/util/error"
+import { NamedError } from "@loongcode/core/util/error"
 import { Process } from "@/util/process"
 
 const SUPPORTED_IDES = [
@@ -37,14 +37,14 @@ export function ide() {
 }
 
 export function alreadyInstalled() {
-  return process.env["LGCODE_CALLER"] === "vscode" || process.env["LGCODE_CALLER"] === "vscode-insiders"
+  return process.env["LOONGCODE_CALLER"] === "vscode" || process.env["LOONGCODE_CALLER"] === "vscode-insiders"
 }
 
 export async function install(ide: (typeof SUPPORTED_IDES)[number]["name"]) {
   const cmd = SUPPORTED_IDES.find((i) => i.name === ide)?.cmd
   if (!cmd) throw new Error(`Unknown IDE: ${ide}`)
 
-  const p = await Process.run([cmd, "--install-extension", "sst-dev.lgcode"], {
+  const p = await Process.run([cmd, "--install-extension", "sst-dev.loongcode"], {
     nothrow: true,
   })
   const stdout = p.stdout.toString()

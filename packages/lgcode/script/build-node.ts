@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 
-import { Script } from "@lgcode/script"
+import { Script } from "@loongcode/script"
 import path from "path"
 import { fileURLToPath } from "url"
 
@@ -20,11 +20,11 @@ await Bun.build({
   sourcemap: "linked",
   external: ["jsonc-parser", "@lydell/node-pty"],
   define: {
-    LGCODE_MODELS_DEV: generated.modelsData,
-    LGCODE_CHANNEL: `'${Script.channel}'`,
+    LOONGCODE_MODELS_DEV: generated.modelsData,
+    LOONGCODE_CHANNEL: `'${Script.channel}'`,
   },
   files: {
-    "lgcode-web-ui.gen.ts": "",
+    "loongcode-web-ui.gen.ts": "",
   },
 })
 

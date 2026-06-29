@@ -25,8 +25,8 @@ export default defineConfig({
     reuseExistingServer: reuse,
     timeout: 120_000,
     env: {
-      VITE_LGCODE_SERVER_HOST: serverHost,
-      VITE_LGCODE_SERVER_PORT: serverPort,
+      VITE_LOONGCODE_SERVER_HOST: serverHost,
+      VITE_LOONGCODE_SERVER_PORT: serverPort,
     },
   },
   use: {

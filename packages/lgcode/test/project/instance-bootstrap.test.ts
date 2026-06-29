@@ -2,7 +2,7 @@ import { afterEach, expect } from "bun:test"
 import { existsSync } from "node:fs"
 import path from "node:path"
 import { pathToFileURL } from "node:url"
-import { CrossSpawnSpawner } from "@lgcode/core/cross-spawn-spawner"
+import { CrossSpawnSpawner } from "@loongcode/core/cross-spawn-spawner"
 import { Cause, Effect, Exit, Fiber, Layer } from "effect"
 import { bootstrap as cliBootstrap } from "../../src/cli/bootstrap"
 import { InstanceLayer } from "../../src/project/instance-layer"
@@ -45,7 +45,7 @@ const bootstrapFixture = Effect.gen(function* () {
   )
   yield* Effect.promise(() =>
     Bun.write(
-      path.join(dir, "lgcode.json"),
+      path.join(dir, "loongcode.json"),
       JSON.stringify({
         $schema: "https://modelhub.lgdg.cc/config.json",
         plugin: [pathToFileURL(pluginFile).href],

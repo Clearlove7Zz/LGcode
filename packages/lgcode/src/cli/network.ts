@@ -1,5 +1,5 @@
 import type { Argv, InferredOptionTypes } from "yargs"
-import { ConfigV1 } from "@lgcode/core/v1/config/config"
+import { ConfigV1 } from "@loongcode/core/v1/config/config"
 import type { Config } from "@/config/config"
 import { Effect } from "effect"
 
@@ -21,8 +21,8 @@ const options = {
   },
   "mdns-domain": {
     type: "string" as const,
-    describe: "custom domain name for mDNS service (default: lgcode.local)",
-    default: "lgcode.local",
+    describe: "custom domain name for mDNS service (default: loongcode.local)",
+    default: "loongcode.local",
   },
   cors: {
     type: "string" as const,

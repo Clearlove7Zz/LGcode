@@ -2,9 +2,9 @@ import { afterEach, expect } from "bun:test"
 import { createServer, type Server } from "node:http"
 import { streamText } from "ai"
 import { Effect, Layer } from "effect"
-import { CrossSpawnSpawner } from "@lgcode/core/cross-spawn-spawner"
-import { ProviderV2 } from "@lgcode/core/provider"
-import { ModelV2 } from "@lgcode/core/model"
+import { CrossSpawnSpawner } from "@loongcode/core/cross-spawn-spawner"
+import { ProviderV2 } from "@loongcode/core/provider"
+import { ModelV2 } from "@loongcode/core/model"
 import { disposeAllInstances, provideTmpdirInstance } from "../fixture/fixture"
 import { testEffect } from "../lib/effect"
 import { testProviderConfig } from "../lib/test-provider"
@@ -213,15 +213,15 @@ async function delayedBodyServer(delay: number): Promise<{ server: Server; url: 
 function withAuthContent<A, E, R>(self: Effect.Effect<A, E, R>, value: Record<string, unknown> = defaultAuthContent()) {
   return Effect.acquireUseRelease(
     Effect.sync(() => {
-      const previous = process.env.LGCODE_AUTH_CONTENT
-      process.env.LGCODE_AUTH_CONTENT = JSON.stringify(value)
+      const previous = process.env.LOONGCODE_AUTH_CONTENT
+      process.env.LOONGCODE_AUTH_CONTENT = JSON.stringify(value)
       return previous
     }),
     () => self,
     (previous) =>
       Effect.sync(() => {
-        if (previous === undefined) delete process.env.LGCODE_AUTH_CONTENT
-        else process.env.LGCODE_AUTH_CONTENT = previous
+        if (previous === undefined) delete process.env.LOONGCODE_AUTH_CONTENT
+        else process.env.LOONGCODE_AUTH_CONTENT = previous
       }),
   )
 }

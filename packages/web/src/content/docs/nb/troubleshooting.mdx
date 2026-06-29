@@ -3,7 +3,7 @@ title: Feilsøking
 description: Vanlige problemer og hvordan de kan løses.
 ---
 
-For å feilsøke problemer med LGcode, start med å sjekke loggene og lokale data den lagrer på disken.
+For å feilsøke problemer med Loongcode, start med å sjekke loggene og lokale data den lagrer på disken.
 
 ---
 
@@ -11,21 +11,21 @@ For å feilsøke problemer med LGcode, start med å sjekke loggene og lokale dat
 
 Loggfiler skrives til:
 
-- **macOS/Linux**: `~/.local/share/lgcode/log/`
-- **Windows**: Trykk `WIN+R` og lim inn `%USERPROFILE%\.local\share\lgcode\log`
+- **macOS/Linux**: `~/.local/share/loongcode/log/`
+- **Windows**: Trykk `WIN+R` og lim inn `%USERPROFILE%\.local\share\loongcode\log`
 
 Loggfiler navngis med tidsstempler (f.eks. `2025-01-09T123456.log`) og de siste 10 loggfilene beholdes.
 
-Du kan angi loggnivået med kommandolinjealternativet `--log-level` for å få mer detaljert feilsøkingsinformasjon. For eksempel `lgcode --log-level DEBUG`.
+Du kan angi loggnivået med kommandolinjealternativet `--log-level` for å få mer detaljert feilsøkingsinformasjon. For eksempel `loongcode --log-level DEBUG`.
 
 ---
 
 ## Lagring
 
-LGcode lagrer øktdata og andre applikasjonsdata på disken på:
+Loongcode lagrer øktdata og andre applikasjonsdata på disken på:
 
-- **macOS/Linux**: `~/.local/share/lgcode/`
-- **Windows**: Trykk `WIN+R` og lim inn `%USERPROFILE%\.local\share\lgcode`
+- **macOS/Linux**: `~/.local/share/loongcode/`
+- **Windows**: Trykk `WIN+R` og lim inn `%USERPROFILE%\.local\share\loongcode`
 
 Denne katalogen inneholder:
 
@@ -39,13 +39,13 @@ Denne katalogen inneholder:
 
 ## Skrivebordsapp
 
-LGcode Desktop kjører en lokal LGcode-server (`lgcode-cli` sidevognen) i bakgrunnen. De fleste problemene er forårsaket av en plugin som fungerer dårlig, en ødelagt cache eller en dårlig serverinnstilling.
+Loongcode Desktop kjører en lokal Loongcode-server (`loongcode-cli` sidevognen) i bakgrunnen. De fleste problemene er forårsaket av en plugin som fungerer dårlig, en ødelagt cache eller en dårlig serverinnstilling.
 
 ### Raske sjekker
 
 - Avslutt og start appen på nytt.
 - Hvis appen viser en feilskjerm, klikker du på **Start på nytt** og kopierer feildetaljene.
-- Bare macOS: `LGcode`-meny -> **Last nettvisning på nytt** (hjelper hvis UI er tom/frosset).
+- Bare macOS: `Loongcode`-meny -> **Last nettvisning på nytt** (hjelper hvis UI er tom/frosset).
 
 ---
 
@@ -57,9 +57,9 @@ Hvis skrivebordsappen krasjer ved oppstart, henger eller oppfører seg merkelig,
 
 Åpne den globale konfigurasjonsfilen og se etter en `plugin`-nøkkel.
 
-- **macOS/Linux**: `~/.config/lgcode/lgcode.jsonc` (eller `~/.config/lgcode/lgcode.json`)
-- **macOS/Linux** (eldre installasjoner): `~/.local/share/lgcode/lgcode.jsonc`
-- **Windows**: Trykk `WIN+R` og lim inn `%USERPROFILE%\.config\lgcode\lgcode.jsonc`
+- **macOS/Linux**: `~/.config/loongcode/loongcode.jsonc` (eller `~/.config/loongcode/loongcode.json`)
+- **macOS/Linux** (eldre installasjoner): `~/.local/share/loongcode/loongcode.jsonc`
+- **Windows**: Trykk `WIN+R` og lim inn `%USERPROFILE%\.config\loongcode\loongcode.jsonc`
 
 Hvis du har konfigurert plugins, deaktiver dem midlertidig ved å fjerne nøkkelen eller sette den til en tom matrise:
 
@@ -72,13 +72,13 @@ Hvis du har konfigurert plugins, deaktiver dem midlertidig ved å fjerne nøkkel
 
 #### Sjekk plugin-kataloger
 
-LGcode kan også laste lokale plugins fra disken. Flytt disse midlertidig ut av veien (eller gi nytt navn til mappen) og start skrivebordsappen på nytt:
+Loongcode kan også laste lokale plugins fra disken. Flytt disse midlertidig ut av veien (eller gi nytt navn til mappen) og start skrivebordsappen på nytt:
 
 - **Globale plugins**
-  - **macOS/Linux**: `~/.config/lgcode/plugins/`
-  - **Windows**: Trykk `WIN+R` og lim inn `%USERPROFILE%\.config\lgcode\plugins`
+  - **macOS/Linux**: `~/.config/loongcode/plugins/`
+  - **Windows**: Trykk `WIN+R` og lim inn `%USERPROFILE%\.config\loongcode\plugins`
 - **Prosjektplugins** (bare hvis du bruker konfigurasjon per prosjekt)
-  - `<your-project>/.lgcode/plugins/`
+  - `<your-project>/.loongcode/plugins/`
 
 Hvis appen begynner å fungere igjen, aktiverer du plugins én om gangen for å finne ut hvilken som forårsaker problemet.
 
@@ -86,22 +86,22 @@ Hvis appen begynner å fungere igjen, aktiverer du plugins én om gangen for å 
 
 ### Tøm hurtigbufferen
 
-Hvis deaktivering av plugins ikke hjelper (eller en plugin-installasjon sitter fast), tøm hurtigbufferen slik at LGcode kan gjenoppbygge den.
+Hvis deaktivering av plugins ikke hjelper (eller en plugin-installasjon sitter fast), tøm hurtigbufferen slik at Loongcode kan gjenoppbygge den.
 
-1. Avslutt LGcode Desktop helt.
+1. Avslutt Loongcode Desktop helt.
 2. Slett hurtigbufferkatalogen:
 
-- **macOS**: Finder -> `Cmd+Shift+G` -> lim inn `~/.cache/lgcode`
-- **Linux**: slett `~/.cache/lgcode` (eller kjør `rm -rf ~/.cache/lgcode`)
-- **Windows**: Trykk `WIN+R` og lim inn `%USERPROFILE%\.cache\lgcode`
+- **macOS**: Finder -> `Cmd+Shift+G` -> lim inn `~/.cache/loongcode`
+- **Linux**: slett `~/.cache/loongcode` (eller kjør `rm -rf ~/.cache/loongcode`)
+- **Windows**: Trykk `WIN+R` og lim inn `%USERPROFILE%\.cache\loongcode`
 
-3. Start LGcode Desktop på nytt.
+3. Start Loongcode Desktop på nytt.
 
 ---
 
 ### Løs problemer med servertilkobling
 
-LGcode Desktop kan enten starte sin egen lokale server (standard) eller koble til en server URL du har konfigurert.
+Loongcode Desktop kan enten starte sin egen lokale server (standard) eller koble til en server URL du har konfigurert.
 
 Hvis du ser en **"Tilkobling mislyktes"**-dialogboks (eller appen kommer aldri forbi splash-skjermen), se etter en tilpasset server URL.
 
@@ -111,13 +111,13 @@ Fra startskjermen klikker du på servernavnet (med statusprikken) for å åpne s
 
 #### Fjern `server.port` / `server.hostname` fra konfigurasjonen din
 
-Hvis `lgcode.json(c)` inneholder en `server`-del, fjern den midlertidig og start skrivebordsappen på nytt.
+Hvis `loongcode.json(c)` inneholder en `server`-del, fjern den midlertidig og start skrivebordsappen på nytt.
 
 #### Sjekk miljøvariabler
 
-Hvis du har `LGCODE_PORT` satt i miljøet ditt, vil skrivebordsappen prøve å bruke den porten for den lokale serveren.
+Hvis du har `LOONGCODE_PORT` satt i miljøet ditt, vil skrivebordsappen prøve å bruke den porten for den lokale serveren.
 
-- Deaktiver `LGCODE_PORT` (eller velg en ledig port) og start på nytt.
+- Deaktiver `LOONGCODE_PORT` (eller velg en ledig port) og start på nytt.
 
 ---
 
@@ -132,21 +132,21 @@ På Linux kan noen Wayland-oppsett forårsake tomme vinduer eller kompositorfeil
 
 ### Windows: WebView2 kjøretid
 
-På Windows krever LGcode Desktop Microsoft Edge **WebView2 Runtime**. Hvis appen åpnes i et tomt vindu eller ikke starter, installer/oppdater WebView2 og prøv igjen.
+På Windows krever Loongcode Desktop Microsoft Edge **WebView2 Runtime**. Hvis appen åpnes i et tomt vindu eller ikke starter, installer/oppdater WebView2 og prøv igjen.
 
 ---
 
 ### Windows: Generelle ytelsesproblemer
 
-Hvis du opplever treg ytelse, problemer med filtilgang eller terminalproblemer på Windows, kan du prøve å bruke [WSL (Windows Subsystem for Linux)](/docs/windows-wsl). WSL gir et Linux-miljø som fungerer mer sømløst med funksjonene til LGcode.
+Hvis du opplever treg ytelse, problemer med filtilgang eller terminalproblemer på Windows, kan du prøve å bruke [WSL (Windows Subsystem for Linux)](/docs/windows-wsl). WSL gir et Linux-miljø som fungerer mer sømløst med funksjonene til Loongcode.
 
 ---
 
 ### Varsler vises ikke
 
-LGcode Desktop viser bare systemvarsler når:
+Loongcode Desktop viser bare systemvarsler når:
 
-- varsler er aktivert for LGcode i OS-innstillingene dine, og
+- varsler er aktivert for Loongcode i OS-innstillingene dine, og
 - appvinduet er ikke fokusert.
 
 ---
@@ -155,11 +155,11 @@ LGcode Desktop viser bare systemvarsler når:
 
 Hvis appen ikke starter og du ikke kan slette innstillingene fra UI-et, tilbakestill skrivebordsappens lagrede tilstand.
 
-1. Avslutt LGcode Desktop.
-2. Finn og slett disse filene (de finnes i LGcode Desktop-appens datakatalog):
+1. Avslutt Loongcode Desktop.
+2. Finn og slett disse filene (de finnes i Loongcode Desktop-appens datakatalog):
 
-- `lgcode.settings.dat` (stasjonær standardserver URL)
-- `lgcode.global.dat` og `lgcode.workspace.*.dat` (UI tilstand som nylige servere/prosjekter)
+- `loongcode.settings.dat` (stasjonær standardserver URL)
+- `loongcode.global.dat` og `loongcode.workspace.*.dat` (UI tilstand som nylige servere/prosjekter)
 
 ---
 
@@ -177,21 +177,21 @@ Modeller skal refereres slik: `<providerId>/<modelId>`
 
 ### AI_APICallError og leverandørpakkeproblemer
 
-Hvis du støter på API-anropsfeil, kan dette skyldes utdaterte provider-pakker. LGcode installerer dynamisk provider-pakker (OpenAI, Anthropic, Google, etc.) etter behov og cacher dem lokalt.
+Hvis du støter på API-anropsfeil, kan dette skyldes utdaterte provider-pakker. Loongcode installerer dynamisk provider-pakker (OpenAI, Anthropic, Google, etc.) etter behov og cacher dem lokalt.
 
 For å løse problemer med leverandørpakke:
 
 1. Tøm leverandørens pakkebuffer:
 
    ```bash
-   rm -rf ~/.cache/lgcode
+   rm -rf ~/.cache/loongcode
    ```
 
-   På Windows, trykk `WIN+R` og slett: `%USERPROFILE%\.cache\lgcode`
+   På Windows, trykk `WIN+R` og slett: `%USERPROFILE%\.cache\loongcode`
 
-2. Start LGcode på nytt for å installere de nyeste provider-pakkene på nytt
+2. Start Loongcode på nytt for å installere de nyeste provider-pakkene på nytt
 
-Dette vil tvinge LGcode til å laste ned de nyeste versjonene av provider-pakkene, som ofte løser kompatibilitetsproblemer med modellparametere og API-endringer.
+Dette vil tvinge Loongcode til å laste ned de nyeste versjonene av provider-pakkene, som ofte løser kompatibilitetsproblemer med modellparametere og API-endringer.
 
 ---
 
@@ -222,4 +222,4 @@ Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 export DISPLAY=:99.0
 ```
 
-LGcode vil oppdage om du bruker Wayland og foretrekker `wl-clipboard`, ellers vil den prøve å finne utklippstavle-verktøy i rekkefølgen: `xclip` og `xsel`.
+Loongcode vil oppdage om du bruker Wayland og foretrekker `wl-clipboard`, ellers vil den prøve å finne utklippstavle-verktøy i rekkefølgen: `xclip` og `xsel`.

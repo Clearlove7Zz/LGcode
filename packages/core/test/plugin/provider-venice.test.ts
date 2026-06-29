@@ -1,7 +1,7 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { PluginV2 } from "@lgcode/core/plugin"
-import { VenicePlugin } from "@lgcode/core/plugin/provider/venice"
+import { PluginV2 } from "@loongcode/core/plugin"
+import { VenicePlugin } from "@loongcode/core/plugin/provider/venice"
 import { fakeSelectorSdk, it, model } from "./provider-helper"
 
 describe("VenicePlugin", () => {

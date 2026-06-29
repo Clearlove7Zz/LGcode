@@ -5,10 +5,10 @@ import { eq } from "drizzle-orm"
 import { GlobalBus, type GlobalEvent } from "@/bus/global"
 import { ExperimentalPaths } from "../../src/server/routes/instance/httpapi/groups/experimental"
 import { Session } from "@/session/session"
-import { SessionTable } from "@lgcode/core/session/sql"
-import { Database } from "@lgcode/core/database/database"
-import { AccountV2 } from "@lgcode/core/account"
-import { AccountTable } from "@lgcode/core/account/sql"
+import { SessionTable } from "@loongcode/core/session/sql"
+import { Database } from "@loongcode/core/database/database"
+import { AccountV2 } from "@loongcode/core/account"
+import { AccountTable } from "@loongcode/core/account/sql"
 import { Worktree } from "../../src/worktree"
 import { resetDatabase } from "../fixture/db"
 import { disposeAllInstances, TestInstance } from "../fixture/fixture"
@@ -111,7 +111,7 @@ function withCreatedWorktree(
 
       expect(created.status).toBe(200)
       const info = yield* json<Worktree.Info>(created)
-      expect(info).toMatchObject({ name, branch: "lgcode/api-test" })
+      expect(info).toMatchObject({ name, branch: "loongcode/api-test" })
       yield* Fiber.join(ready)
       return info
     }),
@@ -146,7 +146,7 @@ describe("experimental HttpApi", () => {
           [
             request(ExperimentalPaths.console, directory),
             request(ExperimentalPaths.consoleOrgs, directory),
-            request(`${ExperimentalPaths.tool}?provider=lgcode&model=gpt-5`, directory),
+            request(`${ExperimentalPaths.tool}?provider=loongcode&model=gpt-5`, directory),
             request(ExperimentalPaths.toolIDs, directory),
             request(ExperimentalPaths.worktree, directory),
             request(ExperimentalPaths.resource, directory),

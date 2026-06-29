@@ -1,30 +1,30 @@
 ---
 title: CLI
-description: lgcode CLI seçenekleri ve komutları.
+description: loongcode CLI seçenekleri ve komutları.
 ---
 
 import { Tabs, TabItem } from "@astrojs/starlight/components"
 
-lgcode CLI herhangi bir argüman olmadan çalıştırıldığında varsayılan olarak [TUI](/docs/tui)'yi başlatır.
+loongcode CLI herhangi bir argüman olmadan çalıştırıldığında varsayılan olarak [TUI](/docs/tui)'yi başlatır.
 
 ```bash
-lgcode
+loongcode
 ```
 
-Ancak bu sayfada belgelendiği gibi komutları da kabul eder. Bu, lgcode ile programlı olarak etkileşim kurmanıza olanak tanır.
+Ancak bu sayfada belgelendiği gibi komutları da kabul eder. Bu, loongcode ile programlı olarak etkileşim kurmanıza olanak tanır.
 
 ```bash
-lgcode run "Explain how closures work in JavaScript"
+loongcode run "Explain how closures work in JavaScript"
 ```
 
 ---
 
 ### tui
 
-lgcode terminal kullanıcı arayüzünü başlatır.
+loongcode terminal kullanıcı arayüzünü başlatır.
 
 ```bash
-lgcode [project]
+loongcode [project]
 ```
 
 #### Bayraklar
@@ -44,36 +44,36 @@ lgcode [project]
 
 ## Komutlar
 
-lgcode CLI ayrıca aşağıdaki komutlara da sahiptir.
+loongcode CLI ayrıca aşağıdaki komutlara da sahiptir.
 
 ---
 
 ### agent
 
-lgcode için agent'ları yönetin.
+loongcode için agent'ları yönetin.
 
 ```bash
-lgcode agent [command]
+loongcode agent [command]
 ```
 
 ---
 
 ### attach
 
-`serve` veya `web` komutlarıyla başlatılan, halihazırda çalışan bir lgcode arka uç sunucusuna bir terminal ekleyin.
+`serve` veya `web` komutlarıyla başlatılan, halihazırda çalışan bir loongcode arka uç sunucusuna bir terminal ekleyin.
 
 ```bash
-lgcode attach [url]
+loongcode attach [url]
 ```
 
-Bu, TUI öğesinin uzak bir lgcode arka ucuyla kullanılmasına olanak tanır. Örneğin:
+Bu, TUI öğesinin uzak bir loongcode arka ucuyla kullanılmasına olanak tanır. Örneğin:
 
 ```bash
 # Start the backend server for web/mobile access
-lgcode web --port 4096 --hostname 0.0.0.0
+loongcode web --port 4096 --hostname 0.0.0.0
 
 # In another terminal, attach the TUI to the running backend
-lgcode attach http://10.20.30.40:4096
+loongcode attach http://10.20.30.40:4096
 ```
 
 #### Bayraklar
@@ -84,8 +84,8 @@ lgcode attach http://10.20.30.40:4096
 | <nobr><code>{"--continue"}</code></nobr> | `-c` | Son oturuma devam et                                                                          |
 | <nobr><code>{"--session"}</code></nobr>  | `-s` | Devam edecek oturum açma bilgileri                                                            |
 | <nobr><code>{"--fork"}</code></nobr>     |      | Devam ederken oturumu çatalla (`--continue` veya `--session` ile kullanın)                    |
-| <nobr><code>{"--password"}</code></nobr> | `-p` | Temel kimlik doğrulama parolası (varsayılan: `LGCODE_SERVER_PASSWORD`)                      |
-| <nobr><code>{"--username"}</code></nobr> | `-u` | Temel kimlik doğrulama kullanıcı adı (varsayılan: `LGCODE_SERVER_USERNAME` veya `lgcode`) |
+| <nobr><code>{"--password"}</code></nobr> | `-p` | Temel kimlik doğrulama parolası (varsayılan: `LOONGCODE_SERVER_PASSWORD`)                      |
+| <nobr><code>{"--username"}</code></nobr> | `-u` | Temel kimlik doğrulama kullanıcı adı (varsayılan: `LOONGCODE_SERVER_USERNAME` veya `loongcode`) |
 
 ---
 
@@ -94,7 +94,7 @@ lgcode attach http://10.20.30.40:4096
 Özel yapılandırmaya sahip yeni bir agent oluşturun.
 
 ```bash
-lgcode agent create
+loongcode agent create
 ```
 
 Bu komut, özel sistem istemi ve araç yapılandırmasıyla yeni bir agent oluşturma konusunda size yol gösterecektir.
@@ -106,7 +106,7 @@ Bu komut, özel sistem istemi ve araç yapılandırmasıyla yeni bir agent oluş
 Mevcut tüm agent'ları listeleyin.
 
 ```bash
-lgcode agent list
+loongcode agent list
 ```
 
 ---
@@ -116,20 +116,20 @@ lgcode agent list
 Sağlayıcılar için kimlik bilgilerini ve oturum açmayı yönetme komutu.
 
 ```bash
-lgcode auth [command]
+loongcode auth [command]
 ```
 
 ---
 
 #### login
 
-lgcode, [Models.dev](https://models.dev) adresindeki sağlayıcı listesi tarafından desteklenmektedir, dolayısıyla kullanmak istediğiniz herhangi bir sağlayıcı için API anahtarlarını ayarlamak üzere `lgcode auth login` kullanabilirsiniz. Bu `~/.local/share/lgcode/auth.json`'de saklanıyor.
+loongcode, [Models.dev](https://models.dev) adresindeki sağlayıcı listesi tarafından desteklenmektedir, dolayısıyla kullanmak istediğiniz herhangi bir sağlayıcı için API anahtarlarını ayarlamak üzere `loongcode auth login` kullanabilirsiniz. Bu `~/.local/share/loongcode/auth.json`'de saklanıyor.
 
 ```bash
-lgcode auth login
+loongcode auth login
 ```
 
-lgcode başlatıldığında sağlayıcıları kimlik bilgileri dosyasından yükler. Ayrıca ortam değişkenlerindeki veya projenizdeki `.env` dosyasındaki anahtarları da kullanır.
+loongcode başlatıldığında sağlayıcıları kimlik bilgileri dosyasından yükler. Ayrıca ortam değişkenlerindeki veya projenizdeki `.env` dosyasındaki anahtarları da kullanır.
 
 ---
 
@@ -138,13 +138,13 @@ lgcode başlatıldığında sağlayıcıları kimlik bilgileri dosyasından yük
 Kimlik bilgileri dosyasında depolanan tüm kimliği doğrulanmış sağlayıcıları listeler.
 
 ```bash
-lgcode auth list
+loongcode auth list
 ```
 
 Veya kısa versiyonu.
 
 ```bash
-lgcode auth ls
+loongcode auth ls
 ```
 
 ---
@@ -154,7 +154,7 @@ lgcode auth ls
 Bir sağlayıcıyı kimlik bilgileri dosyasından temizleyerek oturumunuzu kapatır.
 
 ```bash
-lgcode auth logout
+loongcode auth logout
 ```
 
 ---
@@ -164,7 +164,7 @@ lgcode auth logout
 Depo otomasyonu için GitHub aracısını yönetin.
 
 ```bash
-lgcode github [command]
+loongcode github [command]
 ```
 
 ---
@@ -174,7 +174,7 @@ lgcode github [command]
 GitHub aracısını deponuza yükleyin.
 
 ```bash
-lgcode github install
+loongcode github install
 ```
 
 Bu komut gerekli GitHub Actions workflow'unu kurar ve yapılandırma adımlarında size rehberlik eder. [Daha fazla bilgi](/docs/github).
@@ -186,7 +186,7 @@ Bu komut gerekli GitHub Actions workflow'unu kurar ve yapılandırma adımların
 GitHub aracısını çalıştırın. Bu genellikle GitHub Eylemlerinde kullanılır.
 
 ```bash
-lgcode github run
+loongcode github run
 ```
 
 ##### Bayraklar
@@ -203,7 +203,7 @@ lgcode github run
 Model Bağlam Protokolü sunucularını yönetin.
 
 ```bash
-lgcode mcp [command]
+loongcode mcp [command]
 ```
 
 ---
@@ -213,7 +213,7 @@ lgcode mcp [command]
 Yapılandırmanıza bir MCP sunucusu ekleyin.
 
 ```bash
-lgcode mcp add
+loongcode mcp add
 ```
 
 Bu komut, yerel veya uzak bir MCP sunucusu ekleme konusunda size yol gösterecektir.
@@ -225,13 +225,13 @@ Bu komut, yerel veya uzak bir MCP sunucusu ekleme konusunda size yol gösterecek
 Yapılandırılmış tüm MCP sunucularını ve bağlantı durumlarını listeleyin.
 
 ```bash
-lgcode mcp list
+loongcode mcp list
 ```
 
 Veya kısa versiyonunu kullanın.
 
 ```bash
-lgcode mcp ls
+loongcode mcp ls
 ```
 
 ---
@@ -241,7 +241,7 @@ lgcode mcp ls
 OAuth'un etkin olduğu bir MCP sunucusuyla kimlik doğrulaması yapın.
 
 ```bash
-lgcode mcp auth [name]
+loongcode mcp auth [name]
 ```
 
 Sunucu adı belirtmezseniz mevcut OAuth özellikli sunucular arasından seçim yapmanız istenir.
@@ -249,13 +249,13 @@ Sunucu adı belirtmezseniz mevcut OAuth özellikli sunucular arasından seçim y
 Ayrıca OAuth özellikli sunucuları ve bunların kimlik doğrulama durumlarını da listeleyebilirsiniz.
 
 ```bash
-lgcode mcp auth list
+loongcode mcp auth list
 ```
 
 Veya kısa versiyonunu kullanın.
 
 ```bash
-lgcode mcp auth ls
+loongcode mcp auth ls
 ```
 
 ---
@@ -265,7 +265,7 @@ lgcode mcp auth ls
 MCP sunucusu için OAuth kimlik bilgilerini kaldırın.
 
 ```bash
-lgcode mcp logout [name]
+loongcode mcp logout [name]
 ```
 
 ---
@@ -275,7 +275,7 @@ lgcode mcp logout [name]
 MCP sunucusu için OAuth bağlantı sorunlarının hatalarını ayıklayın.
 
 ```bash
-lgcode mcp debug <name>
+loongcode mcp debug <name>
 ```
 
 ---
@@ -285,7 +285,7 @@ lgcode mcp debug <name>
 Yapılandırılmış sağlayıcıların tüm mevcut modellerini listeleyin.
 
 ```bash
-lgcode models [provider]
+loongcode models [provider]
 ```
 
 Bu komut, yapılandırdığınız sağlayıcılardaki modelleri `provider/model` formatında listeler.
@@ -295,7 +295,7 @@ Bu, [config dosyanızda](/docs/config/) kullanmanız gereken tam model adını b
 Modelleri bu sağlayıcıya göre filtrelemek için isteğe bağlı olarak bir sağlayıcı kimliğini iletebilirsiniz.
 
 ```bash
-lgcode models anthropic
+loongcode models anthropic
 ```
 
 #### Bayraklar
@@ -305,36 +305,36 @@ lgcode models anthropic
 | <nobr><code>{"--refresh"}</code></nobr> | Modeller.dev'den model önbelleğini yenileyin                                |
 | <nobr><code>{"--verbose"}</code></nobr> | Daha ayrıntılı model çıktısı kullanın (maliyetler gibi meta veriler içerir) |
 
-Önbelleğe alınan model listesini güncellemek için `--refresh` bayrağını kullanın. Bu, bir sağlayıcıya yeni modeller eklendiğinde ve bunları lgcode'da görmek istediğinizde kullanışlıdır.
+Önbelleğe alınan model listesini güncellemek için `--refresh` bayrağını kullanın. Bu, bir sağlayıcıya yeni modeller eklendiğinde ve bunları loongcode'da görmek istediğinizde kullanışlıdır.
 
 ```bash
-lgcode models --refresh
+loongcode models --refresh
 ```
 
 ---
 
 ### run
 
-Doğrudan bir istem ileterek lgcode'u etkileşimli olmayan modda çalıştırın.
+Doğrudan bir istem ileterek loongcode'u etkileşimli olmayan modda çalıştırın.
 
 ```bash
-lgcode run [message..]
+loongcode run [message..]
 ```
 
 Bu, komut dosyası oluşturma, otomasyon veya TUI'un tamamını başlatmadan hızlı bir yanıt istediğinizde kullanışlıdır. Örneğin.
 
-```bash "lgcode run"
-lgcode run Explain the use of context in Go
+```bash "loongcode run"
+loongcode run Explain the use of context in Go
 ```
 
-Ayrıca, her çalıştırmada MCP sunucusunun soğuk önyükleme sürelerini önlemek için çalışan bir `lgcode serve` örneğine de ekleyebilirsiniz:
+Ayrıca, her çalıştırmada MCP sunucusunun soğuk önyükleme sürelerini önlemek için çalışan bir `loongcode serve` örneğine de ekleyebilirsiniz:
 
 ```bash
 # Start a headless server in one terminal
-lgcode serve
+loongcode serve
 
 # In another terminal, run commands that attach to it
-lgcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
+loongcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
 ```
 
 #### Bayraklar
@@ -351,9 +351,9 @@ lgcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
 | <nobr><code>{"--file"}</code></nobr>     | `-f` | Mesaja eklenecek dosya(lar)                                                                   |
 | <nobr><code>{"--format"}</code></nobr>   |      | Biçim: varsayılan (biçimlendirilmiş) veya json (ham JSON olayları)                            |
 | <nobr><code>{"--title"}</code></nobr>    |      | Oturumun başlığı (değer sağlanmazsa kısaltılmış bilgi istemi kullanılır)                      |
-| <nobr><code>{"--attach"}</code></nobr>   |      | Çalışan bir lgcode sunucusuna ekleyin (ör. http://localhost:4096)                           |
-| <nobr><code>{"--password"}</code></nobr> | `-p` | Temel kimlik doğrulama parolası (varsayılan: `LGCODE_SERVER_PASSWORD`)                      |
-| <nobr><code>{"--username"}</code></nobr> | `-u` | Temel kimlik doğrulama kullanıcı adı (varsayılan: `LGCODE_SERVER_USERNAME` veya `lgcode`) |
+| <nobr><code>{"--attach"}</code></nobr>   |      | Çalışan bir loongcode sunucusuna ekleyin (ör. http://localhost:4096)                           |
+| <nobr><code>{"--password"}</code></nobr> | `-p` | Temel kimlik doğrulama parolası (varsayılan: `LOONGCODE_SERVER_PASSWORD`)                      |
+| <nobr><code>{"--username"}</code></nobr> | `-u` | Temel kimlik doğrulama kullanıcı adı (varsayılan: `LOONGCODE_SERVER_USERNAME` veya `loongcode`) |
 | <nobr><code>{"--dir"}</code></nobr>      |      | Çalıştırılacak dizin veya bağlanırken uzak sunucudaki yol                                     |
 | <nobr><code>{"--variant"}</code></nobr>  |      | Model varyantı (sağlayıcıya özgü muhakeme düzeyi)                                             |
 | <nobr><code>{"--thinking"}</code></nobr> |      | Düşünme bloklarını göster                                                                     |
@@ -363,13 +363,13 @@ lgcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
 
 ### serve
 
-API erişimi için headless bir lgcode sunucusu başlatır. Tam HTTP arayüzü için [server docs](/docs/server) sayfasına bakın.
+API erişimi için headless bir loongcode sunucusu başlatır. Tam HTTP arayüzü için [server docs](/docs/server) sayfasına bakın.
 
 ```bash
-lgcode serve
+loongcode serve
 ```
 
-Bu, TUI arayüzü olmadan lgcode işlevselliğine API erişimi sağlayan bir HTTP sunucusunu başlatır. HTTP temel kimlik doğrulamasını etkinleştirmek için `LGCODE_SERVER_PASSWORD` öğesini ayarlayın (kullanıcı adı varsayılan olarak `lgcode` şeklindedir).
+Bu, TUI arayüzü olmadan loongcode işlevselliğine API erişimi sağlayan bir HTTP sunucusunu başlatır. HTTP temel kimlik doğrulamasını etkinleştirmek için `LOONGCODE_SERVER_PASSWORD` öğesini ayarlayın (kullanıcı adı varsayılan olarak `loongcode` şeklindedir).
 
 #### Bayraklar
 
@@ -384,20 +384,20 @@ Bu, TUI arayüzü olmadan lgcode işlevselliğine API erişimi sağlayan bir HTT
 
 ### session
 
-lgcode oturumlarını yönetin.
+loongcode oturumlarını yönetin.
 
 ```bash
-lgcode session [command]
+loongcode session [command]
 ```
 
 ---
 
 #### list
 
-Tüm lgcode oturumlarını listeleyin.
+Tüm loongcode oturumlarını listeleyin.
 
 ```bash
-lgcode session list
+loongcode session list
 ```
 
 ##### Bayraklar
@@ -411,10 +411,10 @@ lgcode session list
 
 ### stats
 
-lgcode oturumlarınız için belirteç kullanımı ve maliyet istatistiklerini gösterin.
+loongcode oturumlarınız için belirteç kullanımı ve maliyet istatistiklerini gösterin.
 
 ```bash
-lgcode stats
+loongcode stats
 ```
 
 #### Bayraklar
@@ -433,7 +433,7 @@ lgcode stats
 Oturum verilerini JSON olarak dışa aktarın.
 
 ```bash
-lgcode export [sessionID]
+loongcode export [sessionID]
 ```
 
 Bir oturum kimliği sağlamazsanız mevcut oturumlar arasından seçim yapmanız istenir.
@@ -442,30 +442,30 @@ Bir oturum kimliği sağlamazsanız mevcut oturumlar arasından seçim yapmanız
 
 ### import
 
-Bir JSON dosyasından veya lgcode paylaşımından URL oturum verilerini içe aktarın.
+Bir JSON dosyasından veya loongcode paylaşımından URL oturum verilerini içe aktarın.
 
 ```bash
-lgcode import <file>
+loongcode import <file>
 ```
 
-Yerel bir dosyadan veya lgcode paylaşımından (URL) içe aktarabilirsiniz.
+Yerel bir dosyadan veya loongcode paylaşımından (URL) içe aktarabilirsiniz.
 
 ```bash
-lgcode import session.json
-lgcode import https://opncd.ai/s/abc123
+loongcode import session.json
+loongcode import https://opncd.ai/s/abc123
 ```
 
 ---
 
 ### web
 
-Web arayüzüyle başsız bir lgcode sunucusu başlatın.
+Web arayüzüyle başsız bir loongcode sunucusu başlatın.
 
 ```bash
-lgcode web
+loongcode web
 ```
 
-Bu, bir HTTP sunucusunu başlatır ve bir web arayüzü aracılığıyla lgcode'a erişmek için bir web tarayıcısı açar. HTTP temel kimlik doğrulamasını etkinleştirmek için `LGCODE_SERVER_PASSWORD` öğesini ayarlayın (kullanıcı adı varsayılan olarak `lgcode` şeklindedir).
+Bu, bir HTTP sunucusunu başlatır ve bir web arayüzü aracılığıyla loongcode'a erişmek için bir web tarayıcısı açar. HTTP temel kimlik doğrulamasını etkinleştirmek için `LOONGCODE_SERVER_PASSWORD` öğesini ayarlayın (kullanıcı adı varsayılan olarak `loongcode` şeklindedir).
 
 #### Bayraklar
 
@@ -483,7 +483,7 @@ Bu, bir HTTP sunucusunu başlatır ve bir web arayüzü aracılığıyla lgcode'
 Bir ACP (Ajan İstemci Protokolü) sunucusu başlatın.
 
 ```bash
-lgcode acp
+loongcode acp
 ```
 
 Bu komut, nd-JSON kullanarak stdin/stdout aracılığıyla iletişim kuran bir ACP sunucusunu başlatır.
@@ -500,10 +500,10 @@ Bu komut, nd-JSON kullanarak stdin/stdout aracılığıyla iletişim kuran bir A
 
 ### uninstall
 
-lgcode'u kaldırın ve ilgili tüm dosyaları kaldırın.
+loongcode'u kaldırın ve ilgili tüm dosyaları kaldırın.
 
 ```bash
-lgcode uninstall
+loongcode uninstall
 ```
 
 #### Bayraklar
@@ -519,22 +519,22 @@ lgcode uninstall
 
 ### upgrade
 
-lgcode'u en son sürüme veya belirli bir sürüme günceller.
+loongcode'u en son sürüme veya belirli bir sürüme günceller.
 
 ```bash
-lgcode upgrade [target]
+loongcode upgrade [target]
 ```
 
 En son sürüme yükseltmek için.
 
 ```bash
-lgcode upgrade
+loongcode upgrade
 ```
 
 Belirli bir sürüme yükseltmek için:
 
 ```bash
-lgcode upgrade v0.1.48
+loongcode upgrade v0.1.48
 ```
 
 #### Bayraklar
@@ -547,7 +547,7 @@ lgcode upgrade v0.1.48
 
 ## Global bayraklar
 
-lgcode CLI aşağıdaki global bayrakları destekler.
+loongcode CLI aşağıdaki global bayrakları destekler.
 
 | Bayrak                                     | Kısa | Tanım                                    |
 | ------------------------------------------ | ---- | ---------------------------------------- |
@@ -560,34 +560,34 @@ lgcode CLI aşağıdaki global bayrakları destekler.
 
 ## Ortam değişkenleri
 
-lgcode ortam değişkenleri kullanılarak yapılandırılabilir.
+loongcode ortam değişkenleri kullanılarak yapılandırılabilir.
 
 | Değişken                              | Tip     | Açıklama                                                                    |
 | ------------------------------------- | ------- | --------------------------------------------------------------------------- |
-| `LGCODE_AUTO_SHARE`                 | boolean | Oturumları otomatik olarak paylaş                                           |
-| `LGCODE_GIT_BASH_PATH`              | string  | Windows'ta yürütülebilir Git Bash'in Yolu                                   |
-| `LGCODE_CONFIG`                     | string  | Yapılandırma dosyasının yolu                                                |
-| `LGCODE_TUI_CONFIG`                 | string  | TUI yapılandırma dosyasının yolu                                            |
-| `LGCODE_CONFIG_DIR`                 | string  | Yapılandırma dizinine giden yol                                             |
-| `LGCODE_CONFIG_CONTENT`             | string  | Satır içi JSON config içeriği                                               |
-| `LGCODE_DISABLE_AUTOUPDATE`         | boolean | Otomatik güncelleme kontrollerini devre dışı bırak                          |
-| `LGCODE_DISABLE_PRUNE`              | boolean | Eski verilerin temizlenmesini devre dışı bırak                              |
-| `LGCODE_DISABLE_TERMINAL_TITLE`     | boolean | Otomatik terminal başlığı güncellemelerini devre dışı bırakın               |
-| `LGCODE_PERMISSION`                 | string  | Satır içi JSON izin config'i                                                |
-| `LGCODE_DISABLE_DEFAULT_PLUGINS`    | boolean | Varsayılan eklentileri devre dışı bırakın                                   |
-| `LGCODE_DISABLE_LSP_DOWNLOAD`       | boolean | Otomatik LSP sunucu indirmelerini devre dışı bırakın                        |
-| `LGCODE_ENABLE_EXPERIMENTAL_MODELS` | boolean | Deneysel modelleri etkinleştir                                              |
-| `LGCODE_DISABLE_AUTOCOMPACT`        | boolean | Otomatik context sıkıştırmayı devre dışı bırak                              |
-| `LGCODE_DISABLE_CLAUDE_CODE`        | boolean | `.claude`'den okumayı devre dışı bırak (istem + beceriler)                  |
-| `LGCODE_DISABLE_CLAUDE_CODE_PROMPT` | boolean | `~/.claude/CLAUDE.md` dosyasını okumayı devre dışı bırak                    |
-| `LGCODE_DISABLE_CLAUDE_CODE_SKILLS` | boolean | `.claude/skills` yüklemesini devre dışı bırak                               |
-| `LGCODE_DISABLE_MODELS_FETCH`       | boolean | Uzak kaynaklardan model getirmeyi devre dışı bırakın                        |
-| `LGCODE_FAKE_VCS`                   | string  | Test amaçlı sahte VCS sağlayıcısı                                           |
-| `LGCODE_CLIENT`                     | string  | Client kimliği (varsayılan: `cli`)                                          |
-| `LGCODE_ENABLE_EXA`                 | boolean | Exa web arama araçlarını etkinleştir                                        |
-| `LGCODE_SERVER_PASSWORD`            | string  | `serve`/`web` için temel kimlik doğrulamayı etkinleştirin                   |
-| `LGCODE_SERVER_USERNAME`            | string  | Temel kimlik doğrulama kullanıcı adını geçersiz kıl (varsayılan `lgcode`) |
-| `LGCODE_MODELS_URL`                 | string  | Model yapılandırmasını almak için özel URL                                  |
+| `LOONGCODE_AUTO_SHARE`                 | boolean | Oturumları otomatik olarak paylaş                                           |
+| `LOONGCODE_GIT_BASH_PATH`              | string  | Windows'ta yürütülebilir Git Bash'in Yolu                                   |
+| `LOONGCODE_CONFIG`                     | string  | Yapılandırma dosyasının yolu                                                |
+| `LOONGCODE_TUI_CONFIG`                 | string  | TUI yapılandırma dosyasının yolu                                            |
+| `LOONGCODE_CONFIG_DIR`                 | string  | Yapılandırma dizinine giden yol                                             |
+| `LOONGCODE_CONFIG_CONTENT`             | string  | Satır içi JSON config içeriği                                               |
+| `LOONGCODE_DISABLE_AUTOUPDATE`         | boolean | Otomatik güncelleme kontrollerini devre dışı bırak                          |
+| `LOONGCODE_DISABLE_PRUNE`              | boolean | Eski verilerin temizlenmesini devre dışı bırak                              |
+| `LOONGCODE_DISABLE_TERMINAL_TITLE`     | boolean | Otomatik terminal başlığı güncellemelerini devre dışı bırakın               |
+| `LOONGCODE_PERMISSION`                 | string  | Satır içi JSON izin config'i                                                |
+| `LOONGCODE_DISABLE_DEFAULT_PLUGINS`    | boolean | Varsayılan eklentileri devre dışı bırakın                                   |
+| `LOONGCODE_DISABLE_LSP_DOWNLOAD`       | boolean | Otomatik LSP sunucu indirmelerini devre dışı bırakın                        |
+| `LOONGCODE_ENABLE_EXPERIMENTAL_MODELS` | boolean | Deneysel modelleri etkinleştir                                              |
+| `LOONGCODE_DISABLE_AUTOCOMPACT`        | boolean | Otomatik context sıkıştırmayı devre dışı bırak                              |
+| `LOONGCODE_DISABLE_CLAUDE_CODE`        | boolean | `.claude`'den okumayı devre dışı bırak (istem + beceriler)                  |
+| `LOONGCODE_DISABLE_CLAUDE_CODE_PROMPT` | boolean | `~/.claude/CLAUDE.md` dosyasını okumayı devre dışı bırak                    |
+| `LOONGCODE_DISABLE_CLAUDE_CODE_SKILLS` | boolean | `.claude/skills` yüklemesini devre dışı bırak                               |
+| `LOONGCODE_DISABLE_MODELS_FETCH`       | boolean | Uzak kaynaklardan model getirmeyi devre dışı bırakın                        |
+| `LOONGCODE_FAKE_VCS`                   | string  | Test amaçlı sahte VCS sağlayıcısı                                           |
+| `LOONGCODE_CLIENT`                     | string  | Client kimliği (varsayılan: `cli`)                                          |
+| `LOONGCODE_ENABLE_EXA`                 | boolean | Exa web arama araçlarını etkinleştir                                        |
+| `LOONGCODE_SERVER_PASSWORD`            | string  | `serve`/`web` için temel kimlik doğrulamayı etkinleştirin                   |
+| `LOONGCODE_SERVER_USERNAME`            | string  | Temel kimlik doğrulama kullanıcı adını geçersiz kıl (varsayılan `loongcode`) |
+| `LOONGCODE_MODELS_URL`                 | string  | Model yapılandırmasını almak için özel URL                                  |
 
 ---
 
@@ -597,21 +597,21 @@ Bu ortam değişkenleri değişebilecek veya kaldırılabilecek deneysel özelli
 
 | Değişken                                        | Tip     | Tanım                                                   |
 | ----------------------------------------------- | ------- | ------------------------------------------------------- |
-| `LGCODE_EXPERIMENTAL`                         | boolean | Şemsiye bayrağa bağlı deneysel özellikleri etkinleştir  |
-| `LGCODE_EXPERIMENTAL_ICON_DISCOVERY`          | boolean | Simge bulmayı etkinleştir                               |
-| `LGCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT`  | boolean | TUI'da seçim yapıldığında kopyalamayı devre dışı bırak  |
-| `LGCODE_EXPERIMENTAL_BASH_DEFAULT_TIMEOUT_MS` | number  | MS cinsinden bash komutları için varsayılan zaman aşımı |
-| `LGCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX`        | number  | LLM yanıtları için maksimum çıktı belirteçleri          |
-| `LGCODE_EXPERIMENTAL_FILEWATCHER`             | boolean | Tüm dizin için dosya izleyiciyi etkinleştir             |
-| `LGCODE_EXPERIMENTAL_OXFMT`                   | boolean | Oxfmt biçimlendiriciyi etkinleştir                      |
-| `LGCODE_EXPERIMENTAL_LSP_TOOL`                | boolean | Deneysel LSP aracını etkinleştir                        |
-| `LGCODE_EXPERIMENTAL_DISABLE_FILEWATCHER`     | boolean | Dosya izleyiciyi devre dışı bırak                       |
-| `LGCODE_EXPERIMENTAL_EXA`                     | boolean | Deneysel Exa özelliklerini etkinleştirin                |
-| `LGCODE_EXPERIMENTAL_LSP_TY`                  | boolean | python dosyaları için TY LSP'yi etkinleştir             |
-| `LGCODE_EXPERIMENTAL_PLAN_MODE`               | boolean | Plan modunu etkinleştir                                 |
-| `LGCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS`    | boolean | Arka plan alt ajan görevlerini etkinleştir              |
-| `LGCODE_EXPERIMENTAL_EVENT_SYSTEM`            | boolean | Deneysel olay sistemini etkinleştir                     |
-| `LGCODE_EXPERIMENTAL_NATIVE_LLM`              | boolean | Yerel LLM istek yolunu etkinleştir                      |
-| `LGCODE_EXPERIMENTAL_PARALLEL`                | boolean | Paralel web araması yürütmesini etkinleştir             |
-| `LGCODE_EXPERIMENTAL_SCOUT`                   | boolean | Scout alt ajanını etkinleştir                           |
-| `LGCODE_EXPERIMENTAL_WORKSPACES`              | boolean | Çalışma alanı desteğini etkinleştir                     |
+| `LOONGCODE_EXPERIMENTAL`                         | boolean | Şemsiye bayrağa bağlı deneysel özellikleri etkinleştir  |
+| `LOONGCODE_EXPERIMENTAL_ICON_DISCOVERY`          | boolean | Simge bulmayı etkinleştir                               |
+| `LOONGCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT`  | boolean | TUI'da seçim yapıldığında kopyalamayı devre dışı bırak  |
+| `LOONGCODE_EXPERIMENTAL_BASH_DEFAULT_TIMEOUT_MS` | number  | MS cinsinden bash komutları için varsayılan zaman aşımı |
+| `LOONGCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX`        | number  | LLM yanıtları için maksimum çıktı belirteçleri          |
+| `LOONGCODE_EXPERIMENTAL_FILEWATCHER`             | boolean | Tüm dizin için dosya izleyiciyi etkinleştir             |
+| `LOONGCODE_EXPERIMENTAL_OXFMT`                   | boolean | Oxfmt biçimlendiriciyi etkinleştir                      |
+| `LOONGCODE_EXPERIMENTAL_LSP_TOOL`                | boolean | Deneysel LSP aracını etkinleştir                        |
+| `LOONGCODE_EXPERIMENTAL_DISABLE_FILEWATCHER`     | boolean | Dosya izleyiciyi devre dışı bırak                       |
+| `LOONGCODE_EXPERIMENTAL_EXA`                     | boolean | Deneysel Exa özelliklerini etkinleştirin                |
+| `LOONGCODE_EXPERIMENTAL_LSP_TY`                  | boolean | python dosyaları için TY LSP'yi etkinleştir             |
+| `LOONGCODE_EXPERIMENTAL_PLAN_MODE`               | boolean | Plan modunu etkinleştir                                 |
+| `LOONGCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS`    | boolean | Arka plan alt ajan görevlerini etkinleştir              |
+| `LOONGCODE_EXPERIMENTAL_EVENT_SYSTEM`            | boolean | Deneysel olay sistemini etkinleştir                     |
+| `LOONGCODE_EXPERIMENTAL_NATIVE_LLM`              | boolean | Yerel LLM istek yolunu etkinleştir                      |
+| `LOONGCODE_EXPERIMENTAL_PARALLEL`                | boolean | Paralel web araması yürütmesini etkinleştir             |
+| `LOONGCODE_EXPERIMENTAL_SCOUT`                   | boolean | Scout alt ajanını etkinleştir                           |
+| `LOONGCODE_EXPERIMENTAL_WORKSPACES`              | boolean | Çalışma alanı desteğini etkinleştir                     |

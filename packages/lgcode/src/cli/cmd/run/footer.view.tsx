@@ -11,7 +11,7 @@
 import { useTerminalDimensions } from "@opentui/solid"
 import { For, Match, Show, Switch, createEffect, createMemo, createSignal, onCleanup } from "solid-js"
 import "opentui-spinner/solid"
-import { createColors, createFrames } from "@lgcode/tui/ui/spinner"
+import { createColors, createFrames } from "@loongcode/tui/ui/spinner"
 import {
   RUN_SUBAGENT_PANEL_ROWS,
   RunCommandMenuBody,
@@ -28,13 +28,13 @@ import { RunPermissionBody } from "./footer.permission"
 import { RunQuestionBody } from "./footer.question"
 import { footerWidthPolicy } from "./footer.width"
 import {
-  LGCODE_BASE_MODE,
+  LOONGCODE_BASE_MODE,
   formatKeyBindings,
   formatKeySequence,
   useBindings,
   useKeymapSelector,
   type OpenTuiKeymap,
-} from "@lgcode/tui/keymap"
+} from "@loongcode/tui/keymap"
 import type {
   FooterPromptRoute,
   FooterQueuedPrompt,
@@ -496,7 +496,7 @@ export function RunFooterView(props: RunFooterViewProps) {
   })
 
   useBindings(() => ({
-    mode: LGCODE_BASE_MODE,
+    mode: LOONGCODE_BASE_MODE,
     enabled: active().type === "prompt" && route().type === "composer" && !composer.visible(),
     commands: [
       {
@@ -519,7 +519,7 @@ export function RunFooterView(props: RunFooterViewProps) {
   }))
 
   useBindings(() => ({
-    mode: LGCODE_BASE_MODE,
+    mode: LOONGCODE_BASE_MODE,
     enabled: active().type === "prompt" && route().type === "composer" && foregroundSubagents(),
     priority: 1,
     commands: [
@@ -534,7 +534,7 @@ export function RunFooterView(props: RunFooterViewProps) {
   }))
 
   useBindings(() => ({
-    mode: LGCODE_BASE_MODE,
+    mode: LOONGCODE_BASE_MODE,
     enabled: active().type === "prompt" && route().type === "composer" && tabs().length > 0,
     commands: [
       {
@@ -548,7 +548,7 @@ export function RunFooterView(props: RunFooterViewProps) {
   }))
 
   useBindings(() => ({
-    mode: LGCODE_BASE_MODE,
+    mode: LOONGCODE_BASE_MODE,
     enabled: active().type === "prompt" && route().type === "composer" && queuedPrompts().length > 0,
     commands: [
       {

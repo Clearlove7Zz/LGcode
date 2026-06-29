@@ -8,14 +8,14 @@
   makeWrapper,
   writableTmpDirAsHomeHook,
   autoPatchelfHook,
-  lgcode,
+  loongcode,
 }:
 let
   electron = electron_41;
 in
 stdenv.mkDerivation (finalAttrs: {
-  pname = "lgcode-desktop";
-  inherit (lgcode)
+  pname = "loongcode-desktop";
+  inherit (loongcode)
     version
     src
     node_modules
@@ -38,7 +38,7 @@ stdenv.mkDerivation (finalAttrs: {
     (lib.getLib stdenv.cc.cc)
   ];
 
-  env = lgcode.env // {
+  env = loongcode.env // {
     ELECTRON_SKIP_BINARY_DOWNLOAD = "1";
   };
 
@@ -49,7 +49,7 @@ stdenv.mkDerivation (finalAttrs: {
     FILES=(src/main/windows.ts)
     for file in "''${FILES[@]}"; do
       substituteInPlace $BASE_PATH/$file \
-        --replace-fail "process.resourcesPath" "'$out/opt/lgcode-desktop/resources'"
+        --replace-fail "process.resourcesPath" "'$out/opt/loongcode-desktop/resources'"
     done
   '';
 
@@ -83,15 +83,15 @@ stdenv.mkDerivation (finalAttrs: {
     + lib.optionalString stdenv.hostPlatform.isDarwin ''
       mkdir -p $out/Applications
       mv dist/mac*/*.app $out/Applications
-      makeWrapper "$out/Applications/LGcode.app/Contents/MacOS/LGcode" $out/bin/lgcode-desktop
+      makeWrapper "$out/Applications/Loongcode.app/Contents/MacOS/Loongcode" $out/bin/loongcode-desktop
     ''
     + lib.optionalString stdenv.hostPlatform.isLinux ''
-      mkdir -p $out/opt/lgcode-desktop
-      cp -r dist/linux*-unpacked/{resources,LICENSE*} $out/opt/lgcode-desktop
-      makeWrapper ${lib.getExe electron} $out/bin/lgcode-desktop \
+      mkdir -p $out/opt/loongcode-desktop
+      cp -r dist/linux*-unpacked/{resources,LICENSE*} $out/opt/loongcode-desktop
+      makeWrapper ${lib.getExe electron} $out/bin/loongcode-desktop \
         --inherit-argv0 \
         --set ELECTRON_FORCE_IS_PACKAGED 1 \
-        --add-flags $out/opt/lgcode-desktop/resources/app.asar \
+        --add-flags $out/opt/loongcode-desktop/resources/app.asar \
         --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}}"
     ''
     + ''
@@ -103,8 +103,8 @@ stdenv.mkDerivation (finalAttrs: {
   ];
 
   meta = {
-    description = "LGcode Desktop App";
-    mainProgram = "lgcode-desktop";
-    inherit (lgcode.meta) homepage license platforms;
+    description = "Loongcode Desktop App";
+    mainProgram = "loongcode-desktop";
+    inherit (loongcode.meta) homepage license platforms;
   };
 })

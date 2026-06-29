@@ -1,14 +1,14 @@
 import { batch, createMemo } from "solid-js"
 import { createStore, produce, reconcile } from "solid-js/store"
-import { Binary } from "@lgcode/core/util/binary"
-import { retry } from "@lgcode/core/util/retry"
+import { Binary } from "@loongcode/core/util/binary"
+import { retry } from "@loongcode/core/util/retry"
 import {
   clearSessionPrefetch,
   getSessionPrefetch,
   getSessionPrefetchPromise,
   setSessionPrefetch,
 } from "./global-sync/session-prefetch"
-import type { Message, Part } from "@lgcode/sdk/v2/client"
+import type { Message, Part } from "@loongcode/sdk/v2/client"
 import { SESSION_CACHE_LIMIT, dropSessionCaches, pickSessionCacheEvictions } from "./global-sync/session-cache"
 import { diffs as list, message as clean } from "@/utils/diffs"
 import { type createServerSdkContext } from "./server-sdk"

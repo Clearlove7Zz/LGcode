@@ -1,10 +1,10 @@
-import { SessionMessage } from "@lgcode/core/session/message"
-import { SessionInput } from "@lgcode/core/session/input"
-import { Prompt } from "@lgcode/core/session/prompt"
-import { SessionV2 } from "@lgcode/core/session"
-import { ProjectV2 } from "@lgcode/core/project"
-import { AbsolutePath, PositiveInt, RelativePath, withStatics } from "@lgcode/core/schema"
-import { WorkspaceV2 } from "@lgcode/core/workspace"
+import { SessionMessage } from "@loongcode/core/session/message"
+import { SessionInput } from "@loongcode/core/session/input"
+import { Prompt } from "@loongcode/core/session/prompt"
+import { SessionV2 } from "@loongcode/core/session"
+import { ProjectV2 } from "@loongcode/core/project"
+import { AbsolutePath, PositiveInt, RelativePath, withStatics } from "@loongcode/core/schema"
+import { WorkspaceV2 } from "@loongcode/core/workspace"
 import { Schema, Struct } from "effect"
 import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect/unstable/httpapi"
 import {
@@ -16,9 +16,9 @@ import {
   UnknownError,
 } from "../errors"
 import { SessionLocationMiddleware } from "../middleware/session-location"
-import { AgentV2 } from "@lgcode/core/agent"
-import { ModelV2 } from "@lgcode/core/model"
-import { Location } from "@lgcode/core/location"
+import { AgentV2 } from "@loongcode/core/agent"
+import { ModelV2 } from "@loongcode/core/model"
+import { Location } from "@loongcode/core/location"
 
 const SessionsQueryFields = {
   workspace: WorkspaceV2.ID.pipe(Schema.optional),

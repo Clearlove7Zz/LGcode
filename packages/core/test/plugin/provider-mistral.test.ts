@@ -1,8 +1,8 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { ModelV2 } from "@lgcode/core/model"
-import { PluginV2 } from "@lgcode/core/plugin"
-import { MistralPlugin } from "@lgcode/core/plugin/provider/mistral"
+import { ModelV2 } from "@loongcode/core/model"
+import { PluginV2 } from "@loongcode/core/plugin"
+import { MistralPlugin } from "@loongcode/core/plugin/provider/mistral"
 import { fakeSelectorSdk, it, model } from "./provider-helper"
 
 describe("MistralPlugin", () => {

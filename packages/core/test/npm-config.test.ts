@@ -1,7 +1,7 @@
 import path from "path"
 import { describe, expect, test } from "bun:test"
 import { Effect } from "effect"
-import { NpmConfig } from "@lgcode/core/npm-config"
+import { NpmConfig } from "@loongcode/core/npm-config"
 import { tmpdir } from "./fixture/tmpdir"
 
 describe("NpmConfig.load", () => {

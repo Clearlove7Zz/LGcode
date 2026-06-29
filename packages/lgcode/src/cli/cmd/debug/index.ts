@@ -1,6 +1,6 @@
-import { Global } from "@lgcode/core/global"
-import { InstallationVersion } from "@lgcode/core/installation/version"
-import { Flag } from "@lgcode/core/flag/flag"
+import { Global } from "@loongcode/core/global"
+import { InstallationVersion } from "@loongcode/core/installation/version"
+import { Flag } from "@loongcode/core/flag/flag"
 import os from "os"
 import { Duration, Effect } from "effect"
 import { effectCmd } from "../../effect-cmd"
@@ -58,11 +58,11 @@ const InfoCommand = effectCmd({
       : undefined
     const terminal = [termProgram, process.env.TERM].filter((item): item is string => Boolean(item)).join(" / ")
 
-    console.log(`lgcode version: ${InstallationVersion}`)
+    console.log(`loongcode version: ${InstallationVersion}`)
     console.log(`os: ${os.type()} ${os.release()} ${os.arch()}`)
     console.log(`terminal: ${terminal || "unknown"}`)
     console.log("plugins:")
-    if (Flag.LGCODE_PURE) {
+    if (Flag.LOONGCODE_PURE) {
       console.log("external plugins disabled (--pure)")
       return
     }

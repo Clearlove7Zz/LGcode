@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test"
 import Notifications from "../../../../src/feature-plugins/system/notifications"
-import type { Event, PermissionRequest, QuestionRequest, Session } from "@lgcode/sdk/v2"
-import type { TuiAttentionNotifyInput } from "@lgcode/plugin/tui"
+import type { Event, PermissionRequest, QuestionRequest, Session } from "@loongcode/sdk/v2"
+import type { TuiAttentionNotifyInput } from "@loongcode/plugin/tui"
 import { createTuiPluginApi } from "../../../fixture/tui-plugin"
 
 async function setup() {

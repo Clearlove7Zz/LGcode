@@ -1,6 +1,6 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
 import { Effect, Layer, Context, Schema } from "effect"
-import { SessionV1 } from "@lgcode/core/v1/session"
+import { SessionV1 } from "@loongcode/core/v1/session"
 import { EventV2Bridge } from "@/event-v2-bridge"
 import { Snapshot } from "@/snapshot"
 import { Session } from "./session"
@@ -69,7 +69,7 @@ export interface Interface {
   readonly computeDiff: (input: { messages: SessionV1.WithParts[] }) => Effect.Effect<Snapshot.FileDiff[]>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/SessionSummary") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/SessionSummary") {}
 
 export const layer = Layer.effect(
   Service,

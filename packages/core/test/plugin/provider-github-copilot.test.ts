@@ -1,10 +1,10 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { Catalog } from "@lgcode/core/catalog"
-import { ModelV2 } from "@lgcode/core/model"
-import { PluginV2 } from "@lgcode/core/plugin"
-import { GithubCopilotPlugin } from "@lgcode/core/plugin/provider/github-copilot"
-import { ProviderV2 } from "@lgcode/core/provider"
+import { Catalog } from "@loongcode/core/catalog"
+import { ModelV2 } from "@loongcode/core/model"
+import { PluginV2 } from "@loongcode/core/plugin"
+import { GithubCopilotPlugin } from "@loongcode/core/plugin/provider/github-copilot"
+import { ProviderV2 } from "@loongcode/core/provider"
 import { fakeSelectorSdk, it, model } from "./provider-helper"
 
 describe("GithubCopilotPlugin", () => {

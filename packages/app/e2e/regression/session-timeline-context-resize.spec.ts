@@ -1,12 +1,12 @@
 import { expect, test, type Page } from "@playwright/test"
-import { mockLGcodeServer } from "../utils/mock-server"
+import { mockLoongcodeServer } from "../utils/mock-server"
 import { expectAppVisible, expectSessionTitle } from "../utils/waits"
 
-const directory = "C:/LGcode/ContextResizeRegression"
+const directory = "C:/Loongcode/ContextResizeRegression"
 const projectID = "proj_context_resize_regression"
 const sessionID = "ses_context_resize_regression"
 const title = "Context resize regression"
-const model = { providerID: "lgcode", modelID: "claude-opus-4-6", variant: "max" }
+const model = { providerID: "loongcode", modelID: "claude-opus-4-6", variant: "max" }
 const contextIDs = ["prt_0100_read", "prt_0101_glob", "prt_0102_grep", "prt_0103_list"]
 const followingTextID = "prt_0104_text"
 
@@ -209,7 +209,7 @@ function contextTool(partID: string, messageID: string, tool: string, input: Rec
 }
 
 async function mockServer(page: Page) {
-  await mockLGcodeServer(page, {
+  await mockLoongcodeServer(page, {
     directory,
     project: project(),
     provider: provider(),
@@ -253,13 +253,13 @@ function provider() {
   return {
     all: [
       {
-        id: "lgcode",
-        name: "LGcode",
+        id: "loongcode",
+        name: "Loongcode",
         models: { "claude-opus-4-6": { id: "claude-opus-4-6", name: "Claude Opus 4.6", limit: { context: 200_000 } } },
       },
     ],
-    connected: ["lgcode"],
-    default: { providerID: "lgcode", modelID: "claude-opus-4-6" },
+    connected: ["loongcode"],
+    default: { providerID: "loongcode", modelID: "claude-opus-4-6" },
   }
 }
 

@@ -8,10 +8,10 @@ new sst.cloudflare.x.SolidStart("Teams", {
   path: "packages/enterprise",
   buildCommand: "bun run build:cloudflare",
   environment: {
-    LGCODE_STORAGE_ADAPTER: "r2",
-    LGCODE_STORAGE_ACCOUNT_ID: sst.cloudflare.DEFAULT_ACCOUNT_ID,
-    LGCODE_STORAGE_ACCESS_KEY_ID: SECRET.R2AccessKey.value,
-    LGCODE_STORAGE_SECRET_ACCESS_KEY: SECRET.R2SecretKey.value,
-    LGCODE_STORAGE_BUCKET: storage.name,
+    LOONGCODE_STORAGE_ADAPTER: "r2",
+    LOONGCODE_STORAGE_ACCOUNT_ID: sst.cloudflare.DEFAULT_ACCOUNT_ID,
+    LOONGCODE_STORAGE_ACCESS_KEY_ID: SECRET.R2AccessKey.value,
+    LOONGCODE_STORAGE_SECRET_ACCESS_KEY: SECRET.R2SecretKey.value,
+    LOONGCODE_STORAGE_BUCKET: storage.name,
   },
 })

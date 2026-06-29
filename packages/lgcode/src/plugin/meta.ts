@@ -1,10 +1,10 @@
 import path from "path"
 import { fileURLToPath } from "url"
 
-import { Flag } from "@lgcode/core/flag/flag"
-import { Global } from "@lgcode/core/global"
+import { Flag } from "@loongcode/core/flag/flag"
+import { Global } from "@loongcode/core/global"
 import { Filesystem } from "@/util/filesystem"
-import { Flock } from "@lgcode/core/util/flock"
+import { Flock } from "@loongcode/core/util/flock"
 
 import { parsePluginSpecifier, pluginSource } from "./shared"
 
@@ -46,7 +46,7 @@ type Core = Omit<Entry, "first_time" | "last_time" | "time_changed" | "load_coun
 type Row = Touch & { core: Core }
 
 function storePath() {
-  return Flag.LGCODE_PLUGIN_META_FILE ?? path.join(Global.Path.state, "plugin-meta.json")
+  return Flag.LOONGCODE_PLUGIN_META_FILE ?? path.join(Global.Path.state, "plugin-meta.json")
 }
 
 function lock(file: string) {

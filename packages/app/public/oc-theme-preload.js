@@ -1,15 +1,15 @@
 ;(function () {
-  var key = "lgcode-theme-id"
+  var key = "loongcode-theme-id"
   var themeId = localStorage.getItem(key) || "oc-2"
 
   if (themeId === "oc-1") {
     themeId = "oc-2"
     localStorage.setItem(key, themeId)
-    localStorage.removeItem("lgcode-theme-css-light")
-    localStorage.removeItem("lgcode-theme-css-dark")
+    localStorage.removeItem("loongcode-theme-css-light")
+    localStorage.removeItem("loongcode-theme-css-dark")
   }
 
-  var scheme = localStorage.getItem("lgcode-color-scheme") || "system"
+  var scheme = localStorage.getItem("loongcode-color-scheme") || "system"
   var isDark = scheme === "dark" || (scheme === "system" && matchMedia("(prefers-color-scheme: dark)").matches)
   var mode = isDark ? "dark" : "light"
 
@@ -22,7 +22,7 @@
 
   if (themeId === "oc-2") return
 
-  var css = localStorage.getItem("lgcode-theme-css-" + mode)
+  var css = localStorage.getItem("loongcode-theme-css-" + mode)
   if (css) {
     var style = document.createElement("style")
     style.id = "oc-theme-preload"

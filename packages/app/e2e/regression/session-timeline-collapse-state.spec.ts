@@ -1,8 +1,8 @@
 import { expect, test, type Locator, type Page } from "@playwright/test"
-import { mockLGcodeServer } from "../utils/mock-server"
+import { mockLoongcodeServer } from "../utils/mock-server"
 import { expectAppVisible, expectSessionTitle } from "../utils/waits"
 
-const directory = "C:/LGcode/TimelineStateRegression"
+const directory = "C:/Loongcode/TimelineStateRegression"
 const projectID = "proj_timeline_state_regression"
 const sessionID = "ses_timeline_state_regression"
 const userMessageID = "msg_user_regression"
@@ -10,7 +10,7 @@ const assistantMessageID = "msg_assistant_regression"
 const editPartID = "prt_0001_edit"
 const textPartID = "prt_9999_text"
 const title = "Timeline collapse state regression"
-const model = { providerID: "lgcode", modelID: "claude-opus-4-6", variant: "max" }
+const model = { providerID: "loongcode", modelID: "claude-opus-4-6", variant: "max" }
 
 type EventPayload = {
   directory: string
@@ -387,7 +387,7 @@ function readExpanded(element: Element) {
 }
 
 async function mockServer(page: Page, events: EventPayload[], messages = [userMessage, assistantMessage]) {
-  await mockLGcodeServer(page, {
+  await mockLoongcodeServer(page, {
     directory,
     project: project(),
     provider: provider(),
@@ -425,13 +425,13 @@ function provider() {
   return {
     all: [
       {
-        id: "lgcode",
-        name: "LGcode",
+        id: "loongcode",
+        name: "Loongcode",
         models: { "claude-opus-4-6": { id: "claude-opus-4-6", name: "Claude Opus 4.6", limit: { context: 200_000 } } },
       },
     ],
-    connected: ["lgcode"],
-    default: { providerID: "lgcode", modelID: "claude-opus-4-6" },
+    connected: ["loongcode"],
+    default: { providerID: "loongcode", modelID: "claude-opus-4-6" },
   }
 }
 

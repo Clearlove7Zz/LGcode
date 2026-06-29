@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, mock } from "bun:test"
 import { Context, Effect, Layer } from "effect"
-import { Flag } from "@lgcode/core/flag/flag"
+import { Flag } from "@loongcode/core/flag/flag"
 import { SyncPaths } from "../../src/server/routes/instance/httpapi/groups/sync"
 import { HttpApiApp } from "../../src/server/routes/instance/httpapi/server"
 import { Session } from "@/session/session"
@@ -9,13 +9,13 @@ import { disposeAllInstances, TestInstance } from "../fixture/fixture"
 import { testEffect } from "../lib/effect"
 import { httpApiLayer, requestInDirectory } from "./httpapi-layer"
 
-const originalWorkspaces = Flag.LGCODE_EXPERIMENTAL_WORKSPACES
+const originalWorkspaces = Flag.LOONGCODE_EXPERIMENTAL_WORKSPACES
 const context = Context.empty() as Context.Context<unknown>
 const it = testEffect(Layer.mergeAll(Session.defaultLayer, httpApiLayer))
 
 afterEach(async () => {
   mock.restore()
-  Flag.LGCODE_EXPERIMENTAL_WORKSPACES = originalWorkspaces
+  Flag.LOONGCODE_EXPERIMENTAL_WORKSPACES = originalWorkspaces
   await disposeAllInstances()
   await resetDatabase()
 })
@@ -25,9 +25,9 @@ describe("sync HttpApi", () => {
     "serves sync routes",
     () =>
       Effect.gen(function* () {
-        Flag.LGCODE_EXPERIMENTAL_WORKSPACES = true
+        Flag.LOONGCODE_EXPERIMENTAL_WORKSPACES = true
         const tmp = yield* TestInstance
-        const headers = { "x-lgcode-directory": tmp.directory, "content-type": "application/json" }
+        const headers = { "x-loongcode-directory": tmp.directory, "content-type": "application/json" }
         const session = yield* Session.use.create({ title: "sync" })
 
         const started = yield* requestInDirectory(SyncPaths.start, tmp.directory, { method: "POST", headers })
@@ -76,7 +76,7 @@ describe("sync HttpApi", () => {
     () =>
       Effect.gen(function* () {
         const tmp = yield* TestInstance
-        const headers = { "x-lgcode-directory": tmp.directory, "content-type": "application/json" }
+        const headers = { "x-loongcode-directory": tmp.directory, "content-type": "application/json" }
         const cases = [
           {
             path: SyncPaths.history,
@@ -130,7 +130,7 @@ describe("sync HttpApi", () => {
           HttpApiApp.webHandler().handler(
             new Request(`http://localhost${SyncPaths.history}`, {
               method: "POST",
-              headers: { "x-lgcode-directory": tmp.directory, "content-type": "application/json" },
+              headers: { "x-loongcode-directory": tmp.directory, "content-type": "application/json" },
               body: JSON.stringify({ aggregate: -1 }),
             }),
             context,

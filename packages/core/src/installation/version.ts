@@ -1,8 +1,8 @@
 declare global {
-  const LGCODE_VERSION: string
-  const LGCODE_CHANNEL: string
+  const LOONGCODE_VERSION: string
+  const LOONGCODE_CHANNEL: string
 }
 
-export const InstallationVersion = typeof LGCODE_VERSION === "string" ? LGCODE_VERSION : "local"
-export const InstallationChannel = typeof LGCODE_CHANNEL === "string" ? LGCODE_CHANNEL : "local"
+export const InstallationVersion = typeof LOONGCODE_VERSION === "string" ? LOONGCODE_VERSION : "local"
+export const InstallationChannel = typeof LOONGCODE_CHANNEL === "string" ? LOONGCODE_CHANNEL : "local"
 export const InstallationLocal = InstallationChannel === "local"

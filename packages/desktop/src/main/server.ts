@@ -16,7 +16,7 @@ type SidecarMessage =
 
 export type SidecarListener = { stop: () => Promise<void> }
 
-const SIDECAR_SERVICE_NAME = "lgcode server"
+const SIDECAR_SERVICE_NAME = "loongcode server"
 const SIDECAR_START_STALL_TIMEOUT = 60_000
 const SIDECAR_STOP_TIMEOUT = 6_000
 
@@ -45,9 +45,9 @@ export function preferAppEnv(userDataPath: string) {
   const shell = process.platform === "win32" ? null : getUserShell()
   Object.assign(process.env, {
     ...(shell ? loadShellEnv(shell, getLogger()) : null),
-    LGCODE_EXPERIMENTAL_ICON_DISCOVERY: "true",
-    LGCODE_EXPERIMENTAL_FILEWATCHER: "true",
-    LGCODE_CLIENT: "desktop",
+    LOONGCODE_EXPERIMENTAL_ICON_DISCOVERY: "true",
+    LOONGCODE_EXPERIMENTAL_FILEWATCHER: "true",
+    LOONGCODE_CLIENT: "desktop",
     XDG_STATE_HOME: process.env.XDG_STATE_HOME ?? userDataPath,
   })
 }
@@ -191,7 +191,7 @@ export async function checkHealth(url: string, password?: string | null): Promis
 
   const headers = new Headers()
   if (password) {
-    const auth = Buffer.from(`lgcode:${password}`).toString("base64")
+    const auth = Buffer.from(`loongcode:${password}`).toString("base64")
     headers.set("authorization", `Basic ${auth}`)
   }
 
@@ -213,7 +213,7 @@ function createSidecarEnv(): Record<string, string> {
   )
   delete env.DEBUG
   if (process.platform === "linux") delete env.LD_PRELOAD
-  if (!app.isPackaged) env.LGCODE_DISABLE_CHANNEL_DB = "1"
+  if (!app.isPackaged) env.LOONGCODE_DISABLE_CHANNEL_DB = "1"
   return env
 }
 

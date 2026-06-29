@@ -5,22 +5,22 @@ import { $ } from "bun"
 import path from "path"
 import { tmpdirScoped } from "../fixture/fixture"
 import { GlobalBus } from "../../src/bus/global"
-import { Database } from "@lgcode/core/database/database"
-import { ProjectTable } from "@lgcode/core/project/sql"
-import { SessionTable } from "@lgcode/core/session/sql"
-import { WorkspaceTable } from "@lgcode/core/control-plane/workspace.sql"
+import { Database } from "@loongcode/core/database/database"
+import { ProjectTable } from "@loongcode/core/project/sql"
+import { SessionTable } from "@loongcode/core/session/sql"
+import { WorkspaceTable } from "@loongcode/core/control-plane/workspace.sql"
 import { eq } from "drizzle-orm"
-import { Hash } from "@lgcode/core/util/hash"
+import { Hash } from "@loongcode/core/util/hash"
 import { SessionID } from "@/session/schema"
-import { WorkspaceV2 } from "@lgcode/core/workspace"
+import { WorkspaceV2 } from "@loongcode/core/workspace"
 import { Cause, Effect, Exit, Layer, Stream } from "effect"
 import { ChildProcess, ChildProcessSpawner } from "effect/unstable/process"
 import { NodePath } from "@effect/platform-node"
-import { FSUtil } from "@lgcode/core/fs-util"
-import { AppProcess } from "@lgcode/core/process"
-import { ProjectV2 } from "@lgcode/core/project"
-import { ProjectDirectories } from "@lgcode/core/project/directories"
-import { CrossSpawnSpawner } from "@lgcode/core/cross-spawn-spawner"
+import { FSUtil } from "@loongcode/core/fs-util"
+import { AppProcess } from "@loongcode/core/process"
+import { ProjectV2 } from "@loongcode/core/project"
+import { ProjectDirectories } from "@loongcode/core/project/directories"
+import { CrossSpawnSpawner } from "@loongcode/core/cross-spawn-spawner"
 import { testEffect } from "../lib/effect"
 import { RuntimeFlags } from "@/effect/runtime-flags"
 
@@ -127,7 +127,7 @@ describe("Project.fromDirectory", () => {
       expect(result.project.vcs).toBe("git")
       expect(result.project.worktree).toBe(tmp)
 
-      const opencodeFile = path.join(tmp, ".git", "lgcode")
+      const opencodeFile = path.join(tmp, ".git", "loongcode")
       expect(yield* Effect.promise(() => Bun.file(opencodeFile).exists())).toBe(false)
     }),
   )
@@ -342,7 +342,7 @@ describe("Project.fromDirectory with worktrees", () => {
 
       expect(next.project.id).toBe(result.project.id)
 
-      const cache = path.join(tmp, ".git", "lgcode")
+      const cache = path.join(tmp, ".git", "loongcode")
       const exists = yield* Effect.promise(() => Bun.file(cache).exists())
       expect(exists).toBe(true)
     }),
@@ -743,8 +743,8 @@ describe("Project.fromDirectory with bare repos", () => {
       expect(result.project.id).not.toBe(ProjectV2.ID.global)
       expect(result.project.worktree).toBe(worktreePath)
 
-      const correctCache = path.join(barePath, "lgcode")
-      const wrongCache = path.join(parentDir, ".git", "lgcode")
+      const correctCache = path.join(barePath, "loongcode")
+      const wrongCache = path.join(parentDir, ".git", "loongcode")
 
       expect(yield* Effect.promise(() => Bun.file(correctCache).exists())).toBe(true)
       expect(yield* Effect.promise(() => Bun.file(wrongCache).exists())).toBe(false)
@@ -778,9 +778,9 @@ describe("Project.fromDirectory with bare repos", () => {
 
       expect(result.project.id).not.toBe(next.project.id)
 
-      const cacheA = path.join(bareA, "lgcode")
-      const cacheB = path.join(bareB, "lgcode")
-      const wrongCache = path.join(parentDir, ".git", "lgcode")
+      const cacheA = path.join(bareA, "loongcode")
+      const cacheB = path.join(bareB, "loongcode")
+      const wrongCache = path.join(parentDir, ".git", "loongcode")
 
       expect(yield* Effect.promise(() => Bun.file(cacheA).exists())).toBe(true)
       expect(yield* Effect.promise(() => Bun.file(cacheB).exists())).toBe(true)
@@ -808,7 +808,7 @@ describe("Project.fromDirectory with bare repos", () => {
       expect(result.project.id).not.toBe(ProjectV2.ID.global)
       expect(result.project.worktree).toBe(worktreePath)
 
-      const correctCache = path.join(barePath, "lgcode")
+      const correctCache = path.join(barePath, "loongcode")
       expect(yield* Effect.promise(() => Bun.file(correctCache).exists())).toBe(true)
     }),
   )

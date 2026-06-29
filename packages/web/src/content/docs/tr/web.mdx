@@ -1,28 +1,28 @@
 ---
 title: Web
-description: Tarayıcınızda lgcode'u kullanma.
+description: Tarayıcınızda loongcode'u kullanma.
 ---
 
-lgcode, tarayıcınızda bir web uygulaması olarak çalışabilir ve bir terminale ihtiyaç duymadan aynı güçlü AI kodlama deneyimini sağlayabilir.
+loongcode, tarayıcınızda bir web uygulaması olarak çalışabilir ve bir terminale ihtiyaç duymadan aynı güçlü AI kodlama deneyimini sağlayabilir.
 
-![lgcode Web - Yeni Oturum](../../../assets/web/web-homepage-new-session.png)
+![loongcode Web - Yeni Oturum](../../../assets/web/web-homepage-new-session.png)
 
 ## Başlarken
 
 Aşağıdakileri çalıştırarak web arayüzünü başlatın:
 
 ```bash
-lgcode web
+loongcode web
 ```
 
-Bu, `127.0.0.1` üzerinde rastgele kullanılabilir bir bağlantı noktasına sahip yerel bir sunucuyu başlatır ve lgcode'u varsayılan tarayıcınızda otomatik olarak açar.
+Bu, `127.0.0.1` üzerinde rastgele kullanılabilir bir bağlantı noktasına sahip yerel bir sunucuyu başlatır ve loongcode'u varsayılan tarayıcınızda otomatik olarak açar.
 
 :::caution
-`LGCODE_SERVER_PASSWORD` ayarlanmadıysa sunucunun güvenliği kaldırılacaktır. Bu, yerel kullanım için iyidir ancak ağ erişimi için ayarlanmalıdır.
+`LOONGCODE_SERVER_PASSWORD` ayarlanmadıysa sunucunun güvenliği kaldırılacaktır. Bu, yerel kullanım için iyidir ancak ağ erişimi için ayarlanmalıdır.
 :::
 
 :::tip[Windows Kullanıcıları]
-En iyi deneyim için PowerShell yerine `lgcode web`'yi [WSL](/docs/windows-wsl)'den çalıştırın. Bu, uygun dosya sistemi erişimini ve terminal entegrasyonunu sağlar.
+En iyi deneyim için PowerShell yerine `loongcode web`'yi [WSL](/docs/windows-wsl)'den çalıştırın. Bu, uygun dosya sistemi erişimini ve terminal entegrasyonunu sağlar.
 :::
 
 ---
@@ -33,21 +33,21 @@ Web sunucusunu komut satırı bayraklarıyla veya [config dosyanızda](/docs/con
 
 ### Port
 
-lgcode varsayılan olarak kullanılabilir bir bağlantı noktasını seçer. Bir bağlantı noktası belirtebilirsiniz:
+loongcode varsayılan olarak kullanılabilir bir bağlantı noktasını seçer. Bir bağlantı noktası belirtebilirsiniz:
 
 ```bash
-lgcode web --port 4096
+loongcode web --port 4096
 ```
 
 ### Ana makine adı
 
-Varsayılan olarak sunucu `127.0.0.1` (yalnızca localhost) öğesine bağlanır. lgcode'u ağınızda erişilebilir kılmak için:
+Varsayılan olarak sunucu `127.0.0.1` (yalnızca localhost) öğesine bağlanır. loongcode'u ağınızda erişilebilir kılmak için:
 
 ```bash
-lgcode web --hostname 0.0.0.0
+loongcode web --hostname 0.0.0.0
 ```
 
-`0.0.0.0` kullanıldığında, lgcode hem yerel hem de ağ adreslerini gösterecektir:
+`0.0.0.0` kullanıldığında, loongcode hem yerel hem de ağ adreslerini gösterecektir:
 
 ```
   Local access:       http://localhost:4096
@@ -59,15 +59,15 @@ lgcode web --hostname 0.0.0.0
 Sunucunuzun yerel ağda bulunabilir olmasını sağlamak için mDNS'yi etkinleştirin:
 
 ```bash
-lgcode web --mdns
+loongcode web --mdns
 ```
 
-Bu, ana bilgisayar adını otomatik olarak `0.0.0.0` olarak ayarlar ve sunucuyu `lgcode.local` olarak tanıtır.
+Bu, ana bilgisayar adını otomatik olarak `0.0.0.0` olarak ayarlar ve sunucuyu `loongcode.local` olarak tanıtır.
 
 Aynı ağ üzerinde birden fazla örneği çalıştıracak şekilde mDNS alan adını özelleştirebilirsiniz:
 
 ```bash
-lgcode web --mdns --mdns-domain myproject.local
+loongcode web --mdns --mdns-domain myproject.local
 ```
 
 ### CORS
@@ -75,36 +75,36 @@ lgcode web --mdns --mdns-domain myproject.local
 CORS'a yönelik ek alan adlarına izin vermek için (özel ön uçlar için kullanışlıdır):
 
 ```bash
-lgcode web --cors https://example.com
+loongcode web --cors https://example.com
 ```
 
 ### Kimlik Doğrulaması
 
-Erişimi korumak için `LGCODE_SERVER_PASSWORD` ortam değişkenini kullanarak bir parola ayarlayın:
+Erişimi korumak için `LOONGCODE_SERVER_PASSWORD` ortam değişkenini kullanarak bir parola ayarlayın:
 
 ```bash
-LGCODE_SERVER_PASSWORD=secret lgcode web
+LOONGCODE_SERVER_PASSWORD=secret loongcode web
 ```
 
-Kullanıcı adı varsayılan olarak `lgcode` şeklindedir ancak `LGCODE_SERVER_USERNAME` ile değiştirilebilir.
+Kullanıcı adı varsayılan olarak `loongcode` şeklindedir ancak `LOONGCODE_SERVER_USERNAME` ile değiştirilebilir.
 
 ---
 
 ## Web Arayüzünü Kullanma
 
-Web arayüzü başlatıldığında lgcode oturumlarınıza erişim sağlar.
+Web arayüzü başlatıldığında loongcode oturumlarınıza erişim sağlar.
 
 ### Oturum
 
 Oturumlarınızı ana sayfadan görüntüleyin ve yönetin. Aktif oturumları görebilir ve yenilerini başlatabilirsiniz.
 
-![lgcode Web - Etkin Oturum](../../../assets/web/web-homepage-active-session.png)
+![loongcode Web - Etkin Oturum](../../../assets/web/web-homepage-active-session.png)
 
 ### Sunucu Durumu
 
 Bağlı sunucuları ve durumlarını görüntülemek için "Sunucuları Gör" seçeneğini tıklayın.
 
-![lgcode Web - Sunuculara bakın](../../../assets/web/web-homepage-see-servers.png)
+![loongcode Web - Sunuculara bakın](../../../assets/web/web-homepage-see-servers.png)
 
 ---
 
@@ -114,10 +114,10 @@ Bağlı sunucuları ve durumlarını görüntülemek için "Sunucuları Gör" se
 
 ```bash
 # Start the web server
-lgcode web --port 4096
+loongcode web --port 4096
 
 # In another terminal, attach the TUI
-lgcode attach http://localhost:4096
+loongcode attach http://localhost:4096
 ```
 
 Bu, aynı oturumları ve durumu paylaşarak hem web arayüzünü hem de terminali aynı anda kullanmanıza olanak tanır.
@@ -126,7 +126,7 @@ Bu, aynı oturumları ve durumu paylaşarak hem web arayüzünü hem de terminal
 
 ## Yapılandırma Dosyası
 
-Sunucu ayarlarını `lgcode.json` yapılandırma dosyanızda da yapılandırabilirsiniz:
+Sunucu ayarlarını `loongcode.json` yapılandırma dosyanızda da yapılandırabilirsiniz:
 
 ```json
 {

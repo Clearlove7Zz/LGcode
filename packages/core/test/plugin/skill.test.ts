@@ -1,10 +1,10 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { AgentV2 } from "@lgcode/core/agent"
-import { FSUtil } from "@lgcode/core/fs-util"
-import { SkillPlugin } from "@lgcode/core/plugin/skill"
-import { SkillV2 } from "@lgcode/core/skill"
-import { SkillDiscovery } from "@lgcode/core/skill/discovery"
+import { AgentV2 } from "@loongcode/core/agent"
+import { FSUtil } from "@loongcode/core/fs-util"
+import { SkillPlugin } from "@loongcode/core/plugin/skill"
+import { SkillV2 } from "@loongcode/core/skill"
+import { SkillDiscovery } from "@loongcode/core/skill/discovery"
 import { testEffect } from "../lib/effect"
 
 const it = testEffect(
@@ -16,15 +16,15 @@ const it = testEffect(
 )
 
 describe("SkillPlugin.Plugin", () => {
-  it.effect("registers the built-in customize-lgcode skill", () =>
+  it.effect("registers the built-in customize-loongcode skill", () =>
     Effect.gen(function* () {
       const skill = yield* SkillV2.Service
       yield* SkillPlugin.Plugin.effect.pipe(Effect.provideService(SkillV2.Service, skill))
 
       expect(yield* skill.list()).toContainEqual(
         expect.objectContaining({
-          name: "customize-lgcode",
-          description: expect.stringContaining("lgcode's own configuration"),
+          name: "customize-loongcode",
+          description: expect.stringContaining("loongcode's own configuration"),
         }),
       )
     }),

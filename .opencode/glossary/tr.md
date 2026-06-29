@@ -6,8 +6,8 @@
 
 ## Do Not Translate (Locale Additions)
 
-- `LGcode` (preserve casing in prose, docs, and UI copy)
-- Keep lowercase `lgcode` in commands, package names, paths, URLs, and other exact identifiers
+- `Loongcode` (preserve casing in prose, docs, and UI copy)
+- Keep lowercase `loongcode` in commands, package names, paths, URLs, and other exact identifiers
 - `<TAB>` stays the literal key token in code blocks; use `Tab` for the nearby explanatory label in prose
 - Commands, flags, file paths, and code literals (keep exactly as written)
 
@@ -27,7 +27,7 @@ These are PR-backed wording preferences and may evolve.
 
 - Prefer natural Turkish phrasing over literal translation
 - Merge broken sentence fragments into one clear sentence when the source is a single thought
-- Keep product naming consistent: `LGcode` in prose, `lgcode` only for exact technical identifiers
+- Keep product naming consistent: `Loongcode` in prose, `loongcode` only for exact technical identifiers
 - When an English technical term is intentionally kept, add a short Turkish clarification only if it improves readability
 
 ## Avoid
@@ -35,4 +35,4 @@ These are PR-backed wording preferences and may evolve.
 - Avoid `beta olarak kullanılabilir` when `beta olarak mevcut` fits
 - Avoid `Önce gizlilik için tasarlandı`; use the more natural reviewed wording instead
 - Avoid `Sekme` for the translated key label in prose when referring to `<TAB>`
-- Avoid changing `lgcode` to `LGcode` inside commands, URLs, package names, or code literals
+- Avoid changing `loongcode` to `Loongcode` inside commands, URLs, package names, or code literals

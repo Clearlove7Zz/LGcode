@@ -1,18 +1,18 @@
 // Opencode publish boundary for core events. Attach routed instance location
 // so direct EventV2 consumers can isolate directory/workspace streams.
-import { LayerNode } from "@lgcode/core/effect/layer-node"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
 import { InstanceRef, WorkspaceRef } from "@/effect/instance-ref"
 import { GlobalBus } from "@/bus/global"
-import { EventV2 } from "@lgcode/core/event"
-import { Location } from "@lgcode/core/location"
-import { Project } from "@lgcode/core/project"
-import { AbsolutePath } from "@lgcode/core/schema"
-import "@lgcode/core/account"
-import "@lgcode/core/catalog"
-import "@lgcode/core/session/event"
+import { EventV2 } from "@loongcode/core/event"
+import { Location } from "@loongcode/core/location"
+import { Project } from "@loongcode/core/project"
+import { AbsolutePath } from "@loongcode/core/schema"
+import "@loongcode/core/account"
+import "@loongcode/core/catalog"
+import "@loongcode/core/session/event"
 import { Context, Effect, Layer } from "effect"
 
-export class Service extends Context.Service<Service, EventV2.Interface>()("@lgcode/EventV2Bridge") {}
+export class Service extends Context.Service<Service, EventV2.Interface>()("@loongcode/EventV2Bridge") {}
 
 export const layer = Layer.effect(
   Service,

@@ -1,19 +1,19 @@
 ---
 title: Server
-description: Interagisci con il server lgcode via HTTP.
+description: Interagisci con il server loongcode via HTTP.
 ---
 
 import config from "../../../../config.mjs"
 export const typesUrl = `${config.github}/blob/dev/packages/sdk/js/src/gen/types.gen.ts`
 
-Il comando `lgcode serve` avvia un server HTTP headless che espone un endpoint OpenAPI utilizzabile da un client lgcode.
+Il comando `loongcode serve` avvia un server HTTP headless che espone un endpoint OpenAPI utilizzabile da un client loongcode.
 
 ---
 
 ### Utilizzo
 
 ```bash
-lgcode serve [--port <number>] [--hostname <string>] [--cors <origin>]
+loongcode serve [--port <number>] [--hostname <string>] [--cors <origin>]
 ```
 
 #### Opzioni
@@ -23,38 +23,38 @@ lgcode serve [--port <number>] [--hostname <string>] [--cors <origin>]
 | `--port`        | Porta su cui ascoltare                  | `4096`           |
 | `--hostname`    | Hostname su cui ascoltare               | `127.0.0.1`      |
 | `--mdns`        | Abilita la scoperta mDNS                | `false`          |
-| `--mdns-domain` | Nome di dominio personalizzato mDNS     | `lgcode.local` |
+| `--mdns-domain` | Nome di dominio personalizzato mDNS     | `loongcode.local` |
 | `--cors`        | Origin browser aggiuntive da permettere | `[]`             |
 
 `--cors` puo essere passato piu volte:
 
 ```bash
-lgcode serve --cors http://localhost:5173 --cors https://app.example.com
+loongcode serve --cors http://localhost:5173 --cors https://app.example.com
 ```
 
 ---
 
 ### Autenticazione
 
-Imposta `LGCODE_SERVER_PASSWORD` per proteggere il server con HTTP basic auth. Lo username predefinito e `lgcode`, oppure imposta `LGCODE_SERVER_USERNAME` per sovrascriverlo. Questo vale sia per `lgcode serve` sia per `lgcode web`.
+Imposta `LOONGCODE_SERVER_PASSWORD` per proteggere il server con HTTP basic auth. Lo username predefinito e `loongcode`, oppure imposta `LOONGCODE_SERVER_USERNAME` per sovrascriverlo. Questo vale sia per `loongcode serve` sia per `loongcode web`.
 
 ```bash
-LGCODE_SERVER_PASSWORD=your-password lgcode serve
+LOONGCODE_SERVER_PASSWORD=your-password loongcode serve
 ```
 
 ---
 
 ### Come funziona
 
-Quando esegui `lgcode` avvia una TUI e un server. La TUI e il client che parla col server. Il server espone un endpoint con specifica OpenAPI 3.1. Questo endpoint viene anche usato per generare un [SDK](/docs/sdk).
+Quando esegui `loongcode` avvia una TUI e un server. La TUI e il client che parla col server. Il server espone un endpoint con specifica OpenAPI 3.1. Questo endpoint viene anche usato per generare un [SDK](/docs/sdk).
 
 :::tip
-Usa il server lgcode per interagire con lgcode in modo programmatico.
+Usa il server loongcode per interagire con loongcode in modo programmatico.
 :::
 
-Questa architettura permette a lgcode di supportare piu client e di essere usato in modo programmatico.
+Questa architettura permette a loongcode di supportare piu client e di essere usato in modo programmatico.
 
-Puoi eseguire `lgcode serve` per avviare un server standalone. Se la TUI di lgcode e gia in esecuzione, `lgcode serve` avviera un nuovo server.
+Puoi eseguire `loongcode serve` per avviare un server standalone. Se la TUI di loongcode e gia in esecuzione, `loongcode serve` avviera un nuovo server.
 
 ---
 
@@ -62,7 +62,7 @@ Puoi eseguire `lgcode serve` per avviare un server standalone. Se la TUI di lgco
 
 Quando avvii la TUI assegna casualmente porta e hostname. In alternativa puoi passare i [flag](/docs/cli) `--hostname` e `--port` e poi usare questi valori per connetterti al suo server.
 
-L'endpoint [`/tui`](#tui) puo essere usato per pilotare la TUI tramite il server. Per esempio, puoi precompilare o eseguire un prompt. Questa configurazione e usata dai plugin [IDE](/docs/ide) di LGcode.
+L'endpoint [`/tui`](#tui) puo essere usato per pilotare la TUI tramite il server. Per esempio, puoi precompilare o eseguire un prompt. Questa configurazione e usata dai plugin [IDE](/docs/ide) di Loongcode.
 
 ---
 
@@ -80,7 +80,7 @@ Per esempio, `http://localhost:4096/doc`. Usa la spec per generare client o ispe
 
 ## API
 
-Il server lgcode espone le seguenti API.
+Il server loongcode espone le seguenti API.
 
 ---
 

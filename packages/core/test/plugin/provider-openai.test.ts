@@ -1,11 +1,11 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { Catalog } from "@lgcode/core/catalog"
-import { Integration } from "@lgcode/core/integration"
-import { ModelV2 } from "@lgcode/core/model"
-import { PluginV2 } from "@lgcode/core/plugin"
-import { OpenAIPlugin } from "@lgcode/core/plugin/provider/openai"
-import { ProviderV2 } from "@lgcode/core/provider"
+import { Catalog } from "@loongcode/core/catalog"
+import { Integration } from "@loongcode/core/integration"
+import { ModelV2 } from "@loongcode/core/model"
+import { PluginV2 } from "@loongcode/core/plugin"
+import { OpenAIPlugin } from "@loongcode/core/plugin/provider/openai"
+import { ProviderV2 } from "@loongcode/core/provider"
 import { fakeSelectorSdk, it, model, provider } from "./provider-helper"
 
 function add(plugin: PluginV2.Interface, integrations: Integration.Interface) {

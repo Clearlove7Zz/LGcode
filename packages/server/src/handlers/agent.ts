@@ -1,5 +1,5 @@
-import { AgentV2 } from "@lgcode/core/agent"
-import { PluginBoot } from "@lgcode/core/plugin/boot"
+import { AgentV2 } from "@loongcode/core/agent"
+import { PluginBoot } from "@loongcode/core/plugin/boot"
 import { Effect } from "effect"
 import { HttpApiBuilder } from "effect/unstable/httpapi"
 import { Api } from "../api"

@@ -1,4 +1,4 @@
-import type { HttpRecorder } from "@lgcode/http-recorder"
+import type { HttpRecorder } from "@loongcode/http-recorder"
 import { describe } from "bun:test"
 import { Effect } from "effect"
 import type { Model } from "../src"

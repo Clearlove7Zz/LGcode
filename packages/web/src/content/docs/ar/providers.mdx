@@ -1,30 +1,30 @@
 ---
 title: المزوّدون
-description: استخدام أي موفّر LLM في LGcode.
+description: استخدام أي موفّر LLM في Loongcode.
 ---
 
 import config from "../../../../config.mjs"
 export const console = config.console
 
-يستخدم LGcode ‏[AI SDK](https://ai-sdk.dev/) و[Models.dev](https://models.dev) لدعم **أكثر من 75 موفّر LLM**، كما يدعم تشغيل النماذج المحلية.
+يستخدم Loongcode ‏[AI SDK](https://ai-sdk.dev/) و[Models.dev](https://models.dev) لدعم **أكثر من 75 موفّر LLM**، كما يدعم تشغيل النماذج المحلية.
 
 لإضافة مزوّد تحتاج إلى:
 
 1. أضف مفاتيح API الخاصة بالمزوّد باستخدام الأمر `/connect`.
-2. اضبط المزوّد في ملف إعدادات LGcode.
+2. اضبط المزوّد في ملف إعدادات Loongcode.
 
 ---
 
 ### بيانات الاعتماد
 
 عند إضافة مفاتيح API الخاصة بمزوّد عبر الأمر `/connect`، يتم تخزينها
-في `~/.local/share/lgcode/auth.json`.
+في `~/.local/share/loongcode/auth.json`.
 
 ---
 
 ### الإعدادات
 
-يمكنك تخصيص المزوّدات عبر قسم `provider` في ملف إعدادات LGcode.
+يمكنك تخصيص المزوّدات عبر قسم `provider` في ملف إعدادات Loongcode.
 
 ---
 
@@ -32,7 +32,7 @@ export const console = config.console
 
 يمكنك تخصيص عنوان URL الأساسي لأي مزوّد عبر خيار `baseURL`. يفيد ذلك عند استخدام خدمات وسيطة (proxy) أو نقاط نهاية مخصّصة.
 
-```json title="lgcode.json" {6}
+```json title="loongcode.json" {6}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -47,16 +47,16 @@ export const console = config.console
 
 ---
 
-## LGcode Zen
+## Loongcode Zen
 
-LGcode Zen هي قائمة نماذج يوفّرها فريق LGcode وقد تم
-اختبارها والتحقق من أنها تعمل بشكل جيد مع LGcode. [اعرف المزيد](/docs/zen).
+Loongcode Zen هي قائمة نماذج يوفّرها فريق Loongcode وقد تم
+اختبارها والتحقق من أنها تعمل بشكل جيد مع Loongcode. [اعرف المزيد](/docs/zen).
 
 :::tip
-إذا كنت جديدا، فننصح بالبدء مع LGcode Zen.
+إذا كنت جديدا، فننصح بالبدء مع Loongcode Zen.
 :::
 
-1. شغّل الأمر `/connect` في TUI، واختر lgcode، ثم انتقل إلى [modelhub.lgdg.cc/auth](https://modelhub.lgdg.cc/auth).
+1. شغّل الأمر `/connect` في TUI، واختر loongcode، ثم انتقل إلى [modelhub.lgdg.cc/auth](https://modelhub.lgdg.cc/auth).
 
    ```txt
    /connect
@@ -79,15 +79,15 @@ LGcode Zen هي قائمة نماذج يوفّرها فريق LGcode وقد تم
    /models
    ```
 
-يعمل مثل أي مزوّد آخر في LGcode واستخدامه اختياري بالكامل.
+يعمل مثل أي مزوّد آخر في Loongcode واستخدامه اختياري بالكامل.
 
 ---
 
-## LGcode Go
+## Loongcode Go
 
-LGcode Go هي خطة اشتراك منخفضة التكلفة توفّر وصولا موثوقا إلى نماذج البرمجة المفتوحة الشهيرة المقدّمة من فريق LGcode، والتي تم اختبارها والتحقق من أنها تعمل بشكل جيد مع LGcode.
+Loongcode Go هي خطة اشتراك منخفضة التكلفة توفّر وصولا موثوقا إلى نماذج البرمجة المفتوحة الشهيرة المقدّمة من فريق Loongcode، والتي تم اختبارها والتحقق من أنها تعمل بشكل جيد مع Loongcode.
 
-1. شغّل الأمر `/connect` في TUI، واختر `LGcode Go`، ثم انتقل إلى [modelhub.lgdg.cc/auth](https://modelhub.lgdg.cc/zen).
+1. شغّل الأمر `/connect` في TUI، واختر `Loongcode Go`، ثم انتقل إلى [modelhub.lgdg.cc/auth](https://modelhub.lgdg.cc/zen).
 
    ```txt
    /connect
@@ -110,7 +110,7 @@ LGcode Go هي خطة اشتراك منخفضة التكلفة توفّر وصو
    /models
    ```
 
-يعمل مثل أي مزوّد آخر في LGcode واستخدامه اختياري بالكامل.
+يعمل مثل أي مزوّد آخر في Loongcode واستخدامه اختياري بالكامل.
 
 ---
 
@@ -154,7 +154,7 @@ LGcode Go هي خطة اشتراك منخفضة التكلفة توفّر وصو
 
 ### Amazon Bedrock
 
-لاستخدام Amazon Bedrock مع LGcode:
+لاستخدام Amazon Bedrock مع Loongcode:
 
 1. توجّه إلى **Model catalog** في Amazon Bedrock console واطلب
    الوصول إلى النماذج التي تريدها.
@@ -167,17 +167,17 @@ LGcode Go هي خطة اشتراك منخفضة التكلفة توفّر وصو
 
    #### متغيرات البيئة (بدء سريع)
 
-   عيّن أحد متغيرات البيئة التالية أثناء تشغيل lgcode:
+   عيّن أحد متغيرات البيئة التالية أثناء تشغيل loongcode:
 
    ```bash
    # الخيار 1: استخدام مفاتيح وصول AWS
-   AWS_ACCESS_KEY_ID=XXX AWS_SECRET_ACCESS_KEY=YYY lgcode
+   AWS_ACCESS_KEY_ID=XXX AWS_SECRET_ACCESS_KEY=YYY loongcode
 
    # الخيار 2: استخدام ملف تعريف AWS مسمّى
-   AWS_PROFILE=my-profile lgcode
+   AWS_PROFILE=my-profile loongcode
 
    # الخيار 3: استخدام رمز Bedrock المميز (bearer token)
-   AWS_BEARER_TOKEN_BEDROCK=XXX lgcode
+   AWS_BEARER_TOKEN_BEDROCK=XXX loongcode
    ```
 
    أو أضفها إلى bash profile:
@@ -189,9 +189,9 @@ LGcode Go هي خطة اشتراك منخفضة التكلفة توفّر وصو
 
    #### ملف الإعدادات (موصى به)
 
-   للإعداد الخاص بالمشروع أو الإعداد الدائم، استخدم `lgcode.json`:
+   للإعداد الخاص بالمشروع أو الإعداد الدائم، استخدم `loongcode.json`:
 
-   ```json title="lgcode.json"
+   ```json title="loongcode.json"
    {
      "$schema": "https://modelhub.lgdg.cc/config.json",
      "provider": {
@@ -218,7 +218,7 @@ LGcode Go هي خطة اشتراك منخفضة التكلفة توفّر وصو
 
    إذا كنت تستخدم نقاط نهاية VPC لـ Bedrock:
 
-   ```json title="lgcode.json"
+   ```json title="loongcode.json"
    {
      "$schema": "https://modelhub.lgdg.cc/config.json",
      "provider": {
@@ -261,7 +261,7 @@ LGcode Go هي خطة اشتراك منخفضة التكلفة توفّر وصو
 :::note
 بالنسبة إلى ملفات تعريف الاستدلال المخصّصة، استخدم اسم النموذج واسم المزوّد في المفتاح وعيّن الخاصية `id` إلى arn. يضمن ذلك التخزين المؤقت الصحيح:
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -308,7 +308,7 @@ LGcode Go هي خطة اشتراك منخفضة التكلفة توفّر وصو
    ```
 
 :::info
-استخدام اشتراك Claude Pro/Max داخل LGcode غير مدعوم رسميا من [Anthropic](https://anthropic.com).
+استخدام اشتراك Claude Pro/Max داخل Loongcode غير مدعوم رسميا من [Anthropic](https://anthropic.com).
 :::
 
 ##### استخدام مفاتيح API
@@ -321,9 +321,9 @@ LGcode Go هي خطة اشتراك منخفضة التكلفة توفّر وصو
 
 ### Atomic Chat
 
-يمكنك تكوين lgcode لاستخدام النماذج المحلية عبر [Atomic Chat](https://atomic.chat)، وهو تطبيق سطح مكتب يقوم بتشغيل LLMs المحلية خلف خادم API متوافق مع OpenAI (نقطة النهاية الافتراضية `http://127.0.0.1:1337/v1`).
+يمكنك تكوين loongcode لاستخدام النماذج المحلية عبر [Atomic Chat](https://atomic.chat)، وهو تطبيق سطح مكتب يقوم بتشغيل LLMs المحلية خلف خادم API متوافق مع OpenAI (نقطة النهاية الافتراضية `http://127.0.0.1:1337/v1`).
 
-```json title="lgcode.json" "atomic-chat" {5, 6, 8, 10-14}
+```json title="loongcode.json" "atomic-chat" {5, 6, 8, 10-14}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -370,7 +370,7 @@ LGcode Go هي خطة اشتراك منخفضة التكلفة توفّر وصو
 2. اذهب إلى [Azure AI Foundry](https://ai.azure.com/) وانشر نموذجا.
 
    :::note
-   يجب أن يطابق اسم النشر اسم النموذج كي يعمل lgcode بشكل صحيح.
+   يجب أن يطابق اسم النشر اسم النموذج كي يعمل loongcode بشكل صحيح.
    :::
 
 3. شغّل الأمر `/connect` وابحث عن **Azure**.
@@ -391,7 +391,7 @@ LGcode Go هي خطة اشتراك منخفضة التكلفة توفّر وصو
 5. عيّن اسم المورد كمتغير بيئة:
 
    ```bash
-   AZURE_RESOURCE_NAME=XXX lgcode
+   AZURE_RESOURCE_NAME=XXX loongcode
    ```
 
    أو أضفه إلى bash profile:
@@ -417,7 +417,7 @@ LGcode Go هي خطة اشتراك منخفضة التكلفة توفّر وصو
 2. اذهب إلى [Azure AI Foundry](https://ai.azure.com/) وانشر نموذجا.
 
    :::note
-   يجب أن يطابق اسم النشر اسم النموذج كي يعمل lgcode بشكل صحيح.
+   يجب أن يطابق اسم النشر اسم النموذج كي يعمل loongcode بشكل صحيح.
    :::
 
 3. شغّل الأمر `/connect` وابحث عن **Azure Cognitive Services**.
@@ -438,7 +438,7 @@ LGcode Go هي خطة اشتراك منخفضة التكلفة توفّر وصو
 5. عيّن اسم المورد كمتغير بيئة:
 
    ```bash
-   AZURE_COGNITIVE_SERVICES_RESOURCE_NAME=XXX lgcode
+   AZURE_COGNITIVE_SERVICES_RESOURCE_NAME=XXX loongcode
    ```
 
    أو أضفه إلى bash profile:
@@ -549,9 +549,9 @@ LGcode Go هي خطة اشتراك منخفضة التكلفة توفّر وصو
    /models
    ```
 
-   يمكنك أيضا إضافة نماذج عبر إعدادات lgcode.
+   يمكنك أيضا إضافة نماذج عبر إعدادات loongcode.
 
-   ```json title="lgcode.json"
+   ```json title="loongcode.json"
    {
      "$schema": "https://modelhub.lgdg.cc/config.json",
      "provider": {
@@ -728,7 +728,7 @@ LGcode Go هي خطة اشتراك منخفضة التكلفة توفّر وصو
 
    #### استخدام Personal Access Token 1. اذهب إلى [GitLab User Settings > Access Tokens](https://gitlab.com/-/user_settings/personal_access_tokens)
    2. انقر **Add new token**
-   3. Name: `LGcode`، Scopes: `api`
+   3. Name: `Loongcode`، Scopes: `api`
    4. انسخ الرمز (يبدأ بـ `glpat-`)
    5. أدخله في terminal
 
@@ -745,16 +745,16 @@ LGcode Go هي خطة اشتراك منخفضة التكلفة توفّر وصو
 
 :::note
 يمكنك أيضا تعيين متغير البيئة 'GITLAB_TOKEN' إذا لم تكن تريد
-تخزين الرمز في مساحة تخزين مصادقة lgcode.
+تخزين الرمز في مساحة تخزين مصادقة loongcode.
 :::
 
 ##### GitLab مستضاف ذاتيا
 
 :::note[ملاحظة امتثال]
-يستخدم LGcode نموذجا صغيرا لبعض مهام الذكاء الاصطناعي مثل إنشاء عنوان الجلسة.
-تم ضبطه لاستخدام gpt-5-nano افتراضيا، مستضافا عبر Zen. لحصر LGcode
+يستخدم Loongcode نموذجا صغيرا لبعض مهام الذكاء الاصطناعي مثل إنشاء عنوان الجلسة.
+تم ضبطه لاستخدام gpt-5-nano افتراضيا، مستضافا عبر Zen. لحصر Loongcode
 على استخدام مثيل GitLab المستضاف لديك فقط، أضف ما يلي إلى ملف
-`lgcode.json` لديك. يوصى أيضا بتعطيل مشاركة الجلسات.
+`loongcode.json` لديك. يوصى أيضا بتعطيل مشاركة الجلسات.
 
 ```json
 {
@@ -816,9 +816,9 @@ export GITLAB_OAUTH_CLIENT_ID=your_application_id_here
 
 ##### التهيئة
 
-خصّص عبر `lgcode.json`:
+خصّص عبر `loongcode.json`:
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -835,10 +835,10 @@ export GITLAB_OAUTH_CLIENT_ID=your_application_id_here
 
 للوصول إلى أدوات GitLab (merge requests وissues وpipelines وCI/CD وغيرها):
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
-  "plugin": ["lgcode-gitlab-plugin"]
+  "plugin": ["loongcode-gitlab-plugin"]
 }
 ```
 
@@ -848,7 +848,7 @@ export GITLAB_OAUTH_CLIENT_ID=your_application_id_here
 
 ### GitHub Copilot
 
-لاستخدام اشتراك GitHub Copilot مع lgcode:
+لاستخدام اشتراك GitHub Copilot مع loongcode:
 
 :::note
 قد تتطلب بعض النماذج اشتراك [Pro+](https://github.com/features/copilot/plans) للاستخدام.
@@ -884,7 +884,7 @@ export GITLAB_OAUTH_CLIENT_ID=your_application_id_here
 
 ### Google Vertex AI
 
-لاستخدام Google Vertex AI مع LGcode:
+لاستخدام Google Vertex AI مع Loongcode:
 
 1. توجّه إلى **Model Garden** في Google Cloud Console وتحقق من
    النماذج المتاحة في منطقتك.
@@ -900,10 +900,10 @@ export GITLAB_OAUTH_CLIENT_ID=your_application_id_here
      - `GOOGLE_APPLICATION_CREDENTIALS`: مسار ملف مفتاح حساب الخدمة بصيغة JSON
      - المصادقة عبر gcloud CLI: ‏`gcloud auth application-default login`
 
-   عيّنها أثناء تشغيل lgcode.
+   عيّنها أثناء تشغيل loongcode.
 
    ```bash
-   GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json GOOGLE_CLOUD_PROJECT=your-project-id lgcode
+   GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json GOOGLE_CLOUD_PROJECT=your-project-id loongcode
    ```
 
    أو أضفها إلى bash profile.
@@ -1013,11 +1013,11 @@ export GITLAB_OAUTH_CLIENT_ID=your_application_id_here
 
 #### إعدادات اختيارية
 
-إذا رأيت ميزة أو نموذجا في Helicone لم يتم ضبطه تلقائيا عبر lgcode، فيمكنك دائما ضبطه بنفسك.
+إذا رأيت ميزة أو نموذجا في Helicone لم يتم ضبطه تلقائيا عبر loongcode، فيمكنك دائما ضبطه بنفسك.
 
 هذه هي [Helicone's Model Directory](https://helicone.ai/models)، وستحتاجها للحصول على IDs الخاصة بالنماذج التي تريد إضافتها.
 
-```jsonc title="~/.config/lgcode/lgcode.jsonc"
+```jsonc title="~/.config/loongcode/loongcode.jsonc"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -1045,7 +1045,7 @@ export GITLAB_OAUTH_CLIENT_ID=your_application_id_here
 
 تدعم Helicone ترويسات مخصّصة لميزات مثل التخزين المؤقت وتتبع المستخدم وإدارة الجلسات. أضفها إلى إعداد المزوّد عبر `options.headers`:
 
-```jsonc title="~/.config/lgcode/lgcode.jsonc"
+```jsonc title="~/.config/loongcode/loongcode.jsonc"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -1056,7 +1056,7 @@ export GITLAB_OAUTH_CLIENT_ID=your_application_id_here
         "baseURL": "https://ai-gateway.helicone.ai",
         "headers": {
           "Helicone-Cache-Enabled": "true",
-          "Helicone-User-Id": "lgcode",
+          "Helicone-User-Id": "loongcode",
         },
       },
     },
@@ -1066,21 +1066,21 @@ export GITLAB_OAUTH_CLIENT_ID=your_application_id_here
 
 ##### تتبع الجلسات
 
-تتيح ميزة [Sessions](https://docs.helicone.ai/features/sessions) في Helicone تجميع طلبات LLM المرتبطة معا. استخدم ملحق [lgcode-helicone-session](https://github.com/H2Shami/lgcode-helicone-session) لتسجيل كل محادثة LGcode تلقائيا كجلسة في Helicone.
+تتيح ميزة [Sessions](https://docs.helicone.ai/features/sessions) في Helicone تجميع طلبات LLM المرتبطة معا. استخدم ملحق [loongcode-helicone-session](https://github.com/H2Shami/loongcode-helicone-session) لتسجيل كل محادثة Loongcode تلقائيا كجلسة في Helicone.
 
 ```bash
-npm install -g lgcode-helicone-session
+npm install -g loongcode-helicone-session
 ```
 
 أضفه إلى إعداداتك.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
-  "plugin": ["lgcode-helicone-session"]
+  "plugin": ["loongcode-helicone-session"]
 }
 ```
 
-يقوم الملحق بحقن ترويسات `Helicone-Session-Id` و`Helicone-Session-Name` ضمن طلباتك. في صفحة Sessions داخل Helicone، سترى كل محادثة LGcode مدرجة كجلسة مستقلة.
+يقوم الملحق بحقن ترويسات `Helicone-Session-Id` و`Helicone-Session-Name` ضمن طلباتك. في صفحة Sessions داخل Helicone، سترى كل محادثة Loongcode مدرجة كجلسة مستقلة.
 
 ##### ترويسات Helicone الشائعة
 
@@ -1097,9 +1097,9 @@ npm install -g lgcode-helicone-session
 
 ### llama.cpp
 
-يمكنك ضبط lgcode لاستخدام نماذج محلية عبر أداة llama-server ضمن [llama.cpp](https://github.com/ggml-org/llama.cpp)
+يمكنك ضبط loongcode لاستخدام نماذج محلية عبر أداة llama-server ضمن [llama.cpp](https://github.com/ggml-org/llama.cpp)
 
-```json title="lgcode.json" "llama.cpp" {5, 6, 8, 10-15}
+```json title="loongcode.json" "llama.cpp" {5, 6, 8, 10-15}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -1164,9 +1164,9 @@ npm install -g lgcode-helicone-session
 
 ### LM Studio
 
-يمكنك ضبط lgcode لاستخدام نماذج محلية عبر LM Studio.
+يمكنك ضبط loongcode لاستخدام نماذج محلية عبر LM Studio.
 
-```json title="lgcode.json" "lmstudio" {5, 6, 8, 10-14}
+```json title="loongcode.json" "lmstudio" {5, 6, 8, 10-14}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -1281,13 +1281,13 @@ npm install -g lgcode-helicone-session
 
 ### Ollama
 
-يمكنك ضبط lgcode لاستخدام نماذج محلية عبر Ollama.
+يمكنك ضبط loongcode لاستخدام نماذج محلية عبر Ollama.
 
 :::tip
-يمكن لـ Ollama ضبط نفسه تلقائيا للعمل مع LGcode. راجع [توثيق تكامل Ollama](https://docs.ollama.com/integrations/lgcode) للتفاصيل.
+يمكن لـ Ollama ضبط نفسه تلقائيا للعمل مع Loongcode. راجع [توثيق تكامل Ollama](https://docs.ollama.com/integrations/loongcode) للتفاصيل.
 :::
 
-```json title="lgcode.json" "ollama" {5, 6, 8, 10-14}
+```json title="loongcode.json" "ollama" {5, 6, 8, 10-14}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -1323,13 +1323,13 @@ npm install -g lgcode-helicone-session
 
 ### Ollama Cloud
 
-لاستخدام Ollama Cloud مع LGcode:
+لاستخدام Ollama Cloud مع Loongcode:
 
 1. توجّه إلى [https://ollama.com/](https://ollama.com/) وسجّل الدخول أو أنشئ حسابا.
 
 2. انتقل إلى **Settings** > **Keys** وانقر **Add API Key** لإنشاء مفتاح API جديد.
 
-3. انسخ مفتاح API لاستخدامه في LGcode.
+3. انسخ مفتاح API لاستخدامه في Loongcode.
 
 4. شغّل الأمر `/connect` وابحث عن **Ollama Cloud**.
 
@@ -1346,7 +1346,7 @@ npm install -g lgcode-helicone-session
    └ enter
    ```
 
-6. **مهم**: قبل استخدام نماذج السحابة في LGcode، يجب سحب معلومات النموذج محليا:
+6. **مهم**: قبل استخدام نماذج السحابة في Loongcode، يجب سحب معلومات النموذج محليا:
 
    ```bash
    ollama pull gpt-oss:20b-cloud
@@ -1393,19 +1393,19 @@ npm install -g lgcode-helicone-session
 
 ---
 
-### LGcode Zen
+### Loongcode Zen
 
-LGcode Zen هي قائمة من النماذج التي تم اختبارها والتحقق منها مقدّمة من فريق LGcode. [اعرف المزيد](/docs/zen).
+Loongcode Zen هي قائمة من النماذج التي تم اختبارها والتحقق منها مقدّمة من فريق Loongcode. [اعرف المزيد](/docs/zen).
 
-1. سجّل الدخول إلى **<a href={console}>LGcode Zen</a>** وانقر **Create API Key**.
+1. سجّل الدخول إلى **<a href={console}>Loongcode Zen</a>** وانقر **Create API Key**.
 
-2. شغّل الأمر `/connect` وابحث عن **LGcode Zen**.
+2. شغّل الأمر `/connect` وابحث عن **Loongcode Zen**.
 
    ```txt
    /connect
    ```
 
-3. أدخل مفتاح API الخاص بـ LGcode.
+3. أدخل مفتاح API الخاص بـ Loongcode.
 
    ```txt
    ┌ API key
@@ -1447,9 +1447,9 @@ LGcode Zen هي قائمة من النماذج التي تم اختبارها و
    /models
    ```
 
-   يمكنك أيضا إضافة نماذج إضافية عبر إعدادات lgcode.
+   يمكنك أيضا إضافة نماذج إضافية عبر إعدادات loongcode.
 
-   ```json title="lgcode.json" {6}
+   ```json title="loongcode.json" {6}
    {
      "$schema": "https://modelhub.lgdg.cc/config.json",
      "provider": {
@@ -1462,9 +1462,9 @@ LGcode Zen هي قائمة من النماذج التي تم اختبارها و
    }
    ```
 
-5. يمكنك أيضا تخصيصها عبر إعدادات lgcode. إليك مثالا على تحديد مزوّد
+5. يمكنك أيضا تخصيصها عبر إعدادات loongcode. إليك مثالا على تحديد مزوّد
 
-   ```json title="lgcode.json"
+   ```json title="loongcode.json"
    {
      "$schema": "https://modelhub.lgdg.cc/config.json",
      "provider": {
@@ -1514,7 +1514,7 @@ LGcode Zen هي قائمة من النماذج التي تم اختبارها و
    أو عيّن متغير البيئة `AICORE_SERVICE_KEY`:
 
    ```bash
-   AICORE_SERVICE_KEY='{"clientid":"...","clientsecret":"...","url":"...","serviceurls":{"AI_API_URL":"..."}}' lgcode
+   AICORE_SERVICE_KEY='{"clientid":"...","clientsecret":"...","url":"...","serviceurls":{"AI_API_URL":"..."}}' loongcode
    ```
 
    أو أضفه إلى bash profile:
@@ -1526,7 +1526,7 @@ LGcode Zen هي قائمة من النماذج التي تم اختبارها و
 4. اختياريا، عيّن deployment ID وresource group:
 
    ```bash
-   AICORE_DEPLOYMENT_ID=your-deployment-id AICORE_RESOURCE_GROUP=your-resource-group lgcode
+   AICORE_DEPLOYMENT_ID=your-deployment-id AICORE_RESOURCE_GROUP=your-resource-group loongcode
    ```
 
    :::note
@@ -1711,9 +1711,9 @@ LGcode Zen هي قائمة من النماذج التي تم اختبارها و
    /models
    ```
 
-يمكنك أيضا تخصيص النماذج عبر إعدادات lgcode. إليك مثالا على تحديد ترتيب توجيه المزوّدات.
+يمكنك أيضا تخصيص النماذج عبر إعدادات loongcode. إليك مثالا على تحديد ترتيب توجيه المزوّدات.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -1821,9 +1821,9 @@ LGcode Zen هي قائمة من النماذج التي تم اختبارها و
    /models
    ```
 
-   يمكنك أيضا إضافة نماذج إضافية عبر إعدادات lgcode.
+   يمكنك أيضا إضافة نماذج إضافية عبر إعدادات loongcode.
 
-   ```json title="lgcode.json" {6}
+   ```json title="loongcode.json" {6}
    {
      "$schema": "https://modelhub.lgdg.cc/config.json",
      "provider": {
@@ -1843,7 +1843,7 @@ LGcode Zen هي قائمة من النماذج التي تم اختبارها و
 لإضافة أي مزوّد **OpenAI-compatible** غير موجود ضمن الأمر `/connect`:
 
 :::tip
-يمكنك استخدام أي مزوّد OpenAI-compatible مع lgcode. معظم مزوّدي الذكاء الاصطناعي الحديثة يقدّمون APIs متوافقة مع OpenAI.
+يمكنك استخدام أي مزوّد OpenAI-compatible مع loongcode. معظم مزوّدي الذكاء الاصطناعي الحديثة يقدّمون APIs متوافقة مع OpenAI.
 :::
 
 1. شغّل الأمر `/connect` ومرّر للأسفل حتى **Other**.
@@ -1882,16 +1882,16 @@ LGcode Zen هي قائمة من النماذج التي تم اختبارها و
 
    ┌  Add credential
    │
-   ▲  This only stores a credential for myprovider - you will need to configure it in lgcode.json, check the docs for examples.
+   ▲  This only stores a credential for myprovider - you will need to configure it in loongcode.json, check the docs for examples.
    │
    ◇  Enter your API key
    │  sk-...
    └
    ```
 
-4. أنشئ أو حدّث ملف `lgcode.json` في دليل مشروعك:
+4. أنشئ أو حدّث ملف `loongcode.json` في دليل مشروعك:
 
-   ```json title="lgcode.json" ""myprovider"" {5-15}
+   ```json title="loongcode.json" ""myprovider"" {5-15}
    {
      "$schema": "https://modelhub.lgdg.cc/config.json",
      "provider": {
@@ -1929,7 +1929,7 @@ LGcode Zen هي قائمة من النماذج التي تم اختبارها و
 
 إليك مثالا يضبط خيارات `apiKey` و`headers` وخيارات `limit` الخاصة بالنموذج.
 
-```json title="lgcode.json" {9,11,17-20}
+```json title="loongcode.json" {9,11,17-20}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -1964,7 +1964,7 @@ LGcode Zen هي قائمة من النماذج التي تم اختبارها و
 - **limit.context**: الحد الأقصى لرموز الإدخال التي يقبلها النموذج.
 - **limit.output**: الحد الأقصى للرموز التي يمكن للنموذج توليدها.
 
-تسمح حقول `limit` لـ LGcode بفهم مقدار السياق المتبقي لديك. تسحب المزوّدات القياسية هذه القيم تلقائيا من models.dev.
+تسمح حقول `limit` لـ Loongcode بفهم مقدار السياق المتبقي لديك. تسحب المزوّدات القياسية هذه القيم تلقائيا من models.dev.
 
 ---
 
@@ -1972,12 +1972,12 @@ LGcode Zen هي قائمة من النماذج التي تم اختبارها و
 
 إذا كنت تواجه مشكلة في تهيئة مزوّد، فتحقق مما يلي:
 
-1. **تحقق من إعداد auth**: شغّل `lgcode auth list` لمعرفة ما إذا كانت بيانات الاعتماد
+1. **تحقق من إعداد auth**: شغّل `loongcode auth list` لمعرفة ما إذا كانت بيانات الاعتماد
    الخاصة بالمزوّد قد أضيفت إلى إعداداتك.
 
    لا ينطبق هذا على مزوّدات مثل Amazon Bedrock التي تعتمد على متغيرات البيئة لـ auth.
 
-2. للمزوّدات المخصّصة، راجع إعدادات lgcode وتأكد من:
-   - أن provider ID المستخدم في الأمر `/connect` يطابق الـ ID في إعدادات lgcode.
+2. للمزوّدات المخصّصة، راجع إعدادات loongcode وتأكد من:
+   - أن provider ID المستخدم في الأمر `/connect` يطابق الـ ID في إعدادات loongcode.
    - استخدام حزمة npm الصحيحة للمزوّد. على سبيل المثال استخدم `@ai-sdk/cerebras` لـ Cerebras. ولكل المزوّدات الأخرى المتوافقة مع OpenAI استخدم `@ai-sdk/openai-compatible`.
    - استخدام نقطة نهاية API الصحيحة في الحقل `options.baseURL`.

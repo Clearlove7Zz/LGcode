@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { ModelRequest } from "@lgcode/core/model-request"
+import { ModelRequest } from "@loongcode/core/model-request"
 
 describe("ModelRequest", () => {
   test("partitions AI SDK model and models.dev mode options", () => {

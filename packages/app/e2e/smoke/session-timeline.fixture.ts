@@ -23,9 +23,9 @@ const words = [
 
 const sourceID = "ses_smoke_source"
 const targetID = "ses_smoke_target"
-const directory = "C:/LGcode/SmokeProject"
+const directory = "C:/Loongcode/SmokeProject"
 const projectID = "proj_smoke_timeline"
-const model = { providerID: "lgcode", modelID: "claude-opus-4-6", variant: "max" }
+const model = { providerID: "loongcode", modelID: "claude-opus-4-6", variant: "max" }
 
 type MessageInfo = Record<string, unknown> & { id: string; role: "user" | "assistant" }
 type MessagePart = Record<string, unknown> & { id: string; type: string; text?: string; tool?: string }
@@ -253,13 +253,13 @@ export const fixture = {
   provider: {
     all: [
       {
-        id: "lgcode",
-        name: "LGcode",
+        id: "loongcode",
+        name: "Loongcode",
         models: { "claude-opus-4-6": { id: "claude-opus-4-6", name: "Claude Opus 4.6", limit: { context: 200_000 } } },
       },
     ],
-    connected: ["lgcode"],
-    default: { providerID: "lgcode", modelID: "claude-opus-4-6" },
+    connected: ["loongcode"],
+    default: { providerID: "loongcode", modelID: "claude-opus-4-6" },
   },
   sessions: [
     {

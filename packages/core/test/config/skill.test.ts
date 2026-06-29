@@ -1,12 +1,12 @@
 import path from "path"
 import { describe, expect } from "bun:test"
 import { Effect, Layer, Schema } from "effect"
-import { Config } from "@lgcode/core/config"
-import { ConfigSkillPlugin } from "@lgcode/core/config/plugin/skill"
-import { Global } from "@lgcode/core/global"
-import { Location } from "@lgcode/core/location"
-import { AbsolutePath } from "@lgcode/core/schema"
-import { SkillV2 } from "@lgcode/core/skill"
+import { Config } from "@loongcode/core/config"
+import { ConfigSkillPlugin } from "@loongcode/core/config/plugin/skill"
+import { Global } from "@loongcode/core/global"
+import { Location } from "@loongcode/core/location"
+import { AbsolutePath } from "@loongcode/core/schema"
+import { SkillV2 } from "@loongcode/core/skill"
 import { location } from "../fixture/location"
 import { testEffect } from "../lib/effect"
 
@@ -33,7 +33,7 @@ describe("ConfigSkillPlugin.Plugin", () => {
           Config.Service.of({
             entries: () =>
               Effect.succeed([
-                new Config.Directory({ type: "directory", path: AbsolutePath.make("/repo/.lgcode") }),
+                new Config.Directory({ type: "directory", path: AbsolutePath.make("/repo/.loongcode") }),
                 new Config.Document({
                   type: "document",
                   info: decode({
@@ -58,11 +58,11 @@ describe("ConfigSkillPlugin.Plugin", () => {
       expect(sources).toEqual([
         new SkillV2.DirectorySource({
           type: "directory",
-          path: AbsolutePath.make(path.join("/repo/.lgcode", "skill")),
+          path: AbsolutePath.make(path.join("/repo/.loongcode", "skill")),
         }),
         new SkillV2.DirectorySource({
           type: "directory",
-          path: AbsolutePath.make(path.join("/repo/.lgcode", "skills")),
+          path: AbsolutePath.make(path.join("/repo/.loongcode", "skills")),
         }),
         new SkillV2.DirectorySource({ type: "directory", path: AbsolutePath.make(path.join(directory, "skills")) }),
         new SkillV2.DirectorySource({

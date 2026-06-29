@@ -1,9 +1,9 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { Catalog } from "@lgcode/core/catalog"
-import { PluginV2 } from "@lgcode/core/plugin"
-import { GoogleVertexAnthropicPlugin, GoogleVertexPlugin } from "@lgcode/core/plugin/provider/google-vertex"
-import { ProviderV2 } from "@lgcode/core/provider"
+import { Catalog } from "@loongcode/core/catalog"
+import { PluginV2 } from "@loongcode/core/plugin"
+import { GoogleVertexAnthropicPlugin, GoogleVertexPlugin } from "@loongcode/core/plugin/provider/google-vertex"
+import { ProviderV2 } from "@loongcode/core/provider"
 import { fakeSelectorSdk, it, model, withEnv } from "./provider-helper"
 
 describe("GoogleVertexAnthropicPlugin", () => {

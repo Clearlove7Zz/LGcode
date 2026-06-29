@@ -7,52 +7,52 @@ const positiveInteger = (name: string) =>
     Config.map((value) => (Number.isInteger(value) && value > 0 ? value : undefined)),
     Config.orElse(() => Config.succeed(undefined)),
   )
-const experimental = bool("LGCODE_EXPERIMENTAL")
+const experimental = bool("LOONGCODE_EXPERIMENTAL")
 const enabledByExperimental = (name: string) =>
   Config.all({ experimental, enabled: Config.boolean(name).pipe(Config.option) }).pipe(
     Config.map((flags) => Option.getOrElse(flags.enabled, () => flags.experimental)),
   )
 
-export class Service extends ConfigService.Service<Service>()("@lgcode/RuntimeFlags", {
-  autoShare: bool("LGCODE_AUTO_SHARE"),
-  pure: bool("LGCODE_PURE"),
-  disableDefaultPlugins: bool("LGCODE_DISABLE_DEFAULT_PLUGINS"),
-  disableEmbeddedWebUi: bool("LGCODE_DISABLE_EMBEDDED_WEB_UI"),
-  disableExternalSkills: bool("LGCODE_DISABLE_EXTERNAL_SKILLS"),
-  disableLspDownload: bool("LGCODE_DISABLE_LSP_DOWNLOAD"),
+export class Service extends ConfigService.Service<Service>()("@loongcode/RuntimeFlags", {
+  autoShare: bool("LOONGCODE_AUTO_SHARE"),
+  pure: bool("LOONGCODE_PURE"),
+  disableDefaultPlugins: bool("LOONGCODE_DISABLE_DEFAULT_PLUGINS"),
+  disableEmbeddedWebUi: bool("LOONGCODE_DISABLE_EMBEDDED_WEB_UI"),
+  disableExternalSkills: bool("LOONGCODE_DISABLE_EXTERNAL_SKILLS"),
+  disableLspDownload: bool("LOONGCODE_DISABLE_LSP_DOWNLOAD"),
   disableClaudeCodePrompt: Config.all({
-    broad: bool("LGCODE_DISABLE_CLAUDE_CODE"),
-    direct: bool("LGCODE_DISABLE_CLAUDE_CODE_PROMPT"),
+    broad: bool("LOONGCODE_DISABLE_CLAUDE_CODE"),
+    direct: bool("LOONGCODE_DISABLE_CLAUDE_CODE_PROMPT"),
   }).pipe(Config.map((flags) => flags.broad || flags.direct)),
   disableClaudeCodeSkills: Config.all({
-    broad: bool("LGCODE_DISABLE_CLAUDE_CODE"),
-    direct: bool("LGCODE_DISABLE_CLAUDE_CODE_SKILLS"),
+    broad: bool("LOONGCODE_DISABLE_CLAUDE_CODE"),
+    direct: bool("LOONGCODE_DISABLE_CLAUDE_CODE_SKILLS"),
   }).pipe(Config.map((flags) => flags.broad || flags.direct)),
   enableExa: Config.all({
     experimental,
-    enabled: bool("LGCODE_ENABLE_EXA"),
-    legacy: bool("LGCODE_EXPERIMENTAL_EXA"),
+    enabled: bool("LOONGCODE_ENABLE_EXA"),
+    legacy: bool("LOONGCODE_EXPERIMENTAL_EXA"),
   }).pipe(Config.map((flags) => flags.experimental || flags.enabled || flags.legacy)),
   enableParallel: Config.all({
-    enabled: bool("LGCODE_ENABLE_PARALLEL"),
-    legacy: bool("LGCODE_EXPERIMENTAL_PARALLEL"),
+    enabled: bool("LOONGCODE_ENABLE_PARALLEL"),
+    legacy: bool("LOONGCODE_EXPERIMENTAL_PARALLEL"),
   }).pipe(Config.map((flags) => flags.enabled || flags.legacy)),
-  enableExperimentalModels: bool("LGCODE_ENABLE_EXPERIMENTAL_MODELS"),
-  enableQuestionTool: bool("LGCODE_ENABLE_QUESTION_TOOL"),
-  experimentalReferences: enabledByExperimental("LGCODE_EXPERIMENTAL_REFERENCES"),
-  experimentalBackgroundSubagents: enabledByExperimental("LGCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS"),
-  experimentalLspTy: bool("LGCODE_EXPERIMENTAL_LSP_TY"),
-  experimentalLspTool: enabledByExperimental("LGCODE_EXPERIMENTAL_LSP_TOOL"),
-  experimentalOxfmt: enabledByExperimental("LGCODE_EXPERIMENTAL_OXFMT"),
-  experimentalPlanMode: enabledByExperimental("LGCODE_EXPERIMENTAL_PLAN_MODE"),
-  experimentalEventSystem: enabledByExperimental("LGCODE_EXPERIMENTAL_EVENT_SYSTEM"),
-  experimentalWorkspaces: enabledByExperimental("LGCODE_EXPERIMENTAL_WORKSPACES"),
-  experimentalIconDiscovery: enabledByExperimental("LGCODE_EXPERIMENTAL_ICON_DISCOVERY"),
-  outputTokenMax: positiveInteger("LGCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX"),
-  bashDefaultTimeoutMs: positiveInteger("LGCODE_EXPERIMENTAL_BASH_DEFAULT_TIMEOUT_MS"),
-  experimentalNativeLlm: bool("LGCODE_EXPERIMENTAL_NATIVE_LLM"),
-  experimentalWebSockets: bool("LGCODE_EXPERIMENTAL_WEBSOCKETS"),
-  client: Config.string("LGCODE_CLIENT").pipe(Config.withDefault("cli")),
+  enableExperimentalModels: bool("LOONGCODE_ENABLE_EXPERIMENTAL_MODELS"),
+  enableQuestionTool: bool("LOONGCODE_ENABLE_QUESTION_TOOL"),
+  experimentalReferences: enabledByExperimental("LOONGCODE_EXPERIMENTAL_REFERENCES"),
+  experimentalBackgroundSubagents: enabledByExperimental("LOONGCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS"),
+  experimentalLspTy: bool("LOONGCODE_EXPERIMENTAL_LSP_TY"),
+  experimentalLspTool: enabledByExperimental("LOONGCODE_EXPERIMENTAL_LSP_TOOL"),
+  experimentalOxfmt: enabledByExperimental("LOONGCODE_EXPERIMENTAL_OXFMT"),
+  experimentalPlanMode: enabledByExperimental("LOONGCODE_EXPERIMENTAL_PLAN_MODE"),
+  experimentalEventSystem: enabledByExperimental("LOONGCODE_EXPERIMENTAL_EVENT_SYSTEM"),
+  experimentalWorkspaces: enabledByExperimental("LOONGCODE_EXPERIMENTAL_WORKSPACES"),
+  experimentalIconDiscovery: enabledByExperimental("LOONGCODE_EXPERIMENTAL_ICON_DISCOVERY"),
+  outputTokenMax: positiveInteger("LOONGCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX"),
+  bashDefaultTimeoutMs: positiveInteger("LOONGCODE_EXPERIMENTAL_BASH_DEFAULT_TIMEOUT_MS"),
+  experimentalNativeLlm: bool("LOONGCODE_EXPERIMENTAL_NATIVE_LLM"),
+  experimentalWebSockets: bool("LOONGCODE_EXPERIMENTAL_WEBSOCKETS"),
+  client: Config.string("LOONGCODE_CLIENT").pipe(Config.withDefault("cli")),
 }) {}
 
 export type Info = Context.Service.Shape<typeof Service>
@@ -76,4 +76,4 @@ export const defaultLayer = Service.defaultLayer.pipe(Layer.orDie)
 export const node = LayerNode.make(defaultLayer, [])
 
 export * as RuntimeFlags from "./runtime-flags"
-import { LayerNode } from "@lgcode/core/effect/layer-node"
+import { LayerNode } from "@loongcode/core/effect/layer-node"

@@ -1,7 +1,7 @@
 import { describe, test, expect } from "bun:test"
 import { Effect, Layer, FileSystem } from "effect"
 import { NodeFileSystem } from "@effect/platform-node"
-import { FSUtil } from "@lgcode/core/fs-util"
+import { FSUtil } from "@loongcode/core/fs-util"
 import { testEffect } from "../lib/effect"
 import path from "path"
 

@@ -1,10 +1,10 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
 import path from "path"
-import { serviceUse } from "@lgcode/core/effect/service-use"
-import { Global } from "@lgcode/core/global"
+import { serviceUse } from "@loongcode/core/effect/service-use"
+import { Global } from "@loongcode/core/global"
 import { Effect, Layer, Context, Option, Schema } from "effect"
-import { FSUtil } from "@lgcode/core/fs-util"
-import { EffectFlock } from "@lgcode/core/util/effect-flock"
+import { FSUtil } from "@loongcode/core/fs-util"
+import { EffectFlock } from "@loongcode/core/util/effect-flock"
 
 export const Tokens = Schema.Struct({
   accessToken: Schema.mutableKey(Schema.String),
@@ -53,7 +53,7 @@ export interface Interface {
   readonly isTokenExpired: (mcpName: string) => Effect.Effect<boolean | null>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/McpAuth") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/McpAuth") {}
 
 export const use = serviceUse(Service)
 

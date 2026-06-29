@@ -1,5 +1,5 @@
-import type { AssistantMessage } from "@lgcode/sdk/v2"
-import type { TuiPlugin, TuiPluginApi } from "@lgcode/plugin/tui"
+import type { AssistantMessage } from "@loongcode/sdk/v2"
+import type { TuiPlugin, TuiPluginApi } from "@loongcode/plugin/tui"
 import type { BuiltinTuiPlugin } from "../builtins"
 import { createMemo } from "solid-js"
 

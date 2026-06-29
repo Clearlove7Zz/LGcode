@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import type { Agent } from "@lgcode/sdk/v2/client"
+import type { Agent } from "@loongcode/sdk/v2/client"
 import { directoryKey, normalizeAgentList } from "./utils"
 
 const agent = (name = "build") =>
@@ -36,8 +36,8 @@ describe("normalizeAgentList", () => {
 
 describe("directoryKey", () => {
   test("normalizes slashes", () => {
-    expect(String(directoryKey("C:\\Repos\\sst\\lgcode"))).toBe("C:/Repos/sst/lgcode")
-    expect(String(directoryKey("C:/Repos/sst/lgcode"))).toBe("C:/Repos/sst/lgcode")
+    expect(String(directoryKey("C:\\Repos\\sst\\loongcode"))).toBe("C:/Repos/sst/loongcode")
+    expect(String(directoryKey("C:/Repos/sst/loongcode"))).toBe("C:/Repos/sst/loongcode")
   })
 
   test("preserves backslashes in posix paths", () => {
@@ -45,7 +45,7 @@ describe("directoryKey", () => {
   })
 
   test("trims trailing slashes without breaking roots", () => {
-    expect(String(directoryKey("C:/Repos/Clearlove7Zz/LGcode/"))).toBe("C:/Repos/sst/lgcode")
+    expect(String(directoryKey("C:/Repos/Clearlove7Zz/LGcode/"))).toBe("C:/Repos/sst/loongcode")
     expect(String(directoryKey("C:/"))).toBe("C:/")
     expect(String(directoryKey("/"))).toBe("/")
   })

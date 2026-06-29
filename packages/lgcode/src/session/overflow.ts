@@ -1,6 +1,6 @@
 import type { Config } from "@/config/config"
-import { ConfigV1 } from "@lgcode/core/v1/config/config"
-import { SessionV1 } from "@lgcode/core/v1/session"
+import { ConfigV1 } from "@loongcode/core/v1/config/config"
+import { SessionV1 } from "@loongcode/core/v1/session"
 import type { Provider } from "@/provider/provider"
 import { ProviderTransform } from "@/provider/transform"
 import type { MessageV2 } from "./message-v2"

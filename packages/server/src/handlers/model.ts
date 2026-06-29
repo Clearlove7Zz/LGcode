@@ -1,5 +1,5 @@
-import { Catalog } from "@lgcode/core/catalog"
-import { PluginBoot } from "@lgcode/core/plugin/boot"
+import { Catalog } from "@loongcode/core/catalog"
+import { PluginBoot } from "@loongcode/core/plugin/boot"
 import { Effect } from "effect"
 import { HttpApiBuilder } from "effect/unstable/httpapi"
 import { Api } from "../api"

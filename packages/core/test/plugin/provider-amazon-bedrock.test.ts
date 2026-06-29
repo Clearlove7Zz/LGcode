@@ -1,9 +1,9 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { Catalog } from "@lgcode/core/catalog"
-import { PluginV2 } from "@lgcode/core/plugin"
-import { AmazonBedrockPlugin } from "@lgcode/core/plugin/provider/amazon-bedrock"
-import { ProviderV2 } from "@lgcode/core/provider"
+import { Catalog } from "@loongcode/core/catalog"
+import { PluginV2 } from "@loongcode/core/plugin"
+import { AmazonBedrockPlugin } from "@loongcode/core/plugin/provider/amazon-bedrock"
+import { ProviderV2 } from "@loongcode/core/provider"
 import { fakeSelectorSdk, it, model, provider, withEnv } from "./provider-helper"
 
 function bedrockBaseURL(sdk: unknown, modelID = "anthropic.claude-sonnet-4-5") {

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { SessionV1 } from "@lgcode/core/v1/session"
+import { SessionV1 } from "@loongcode/core/v1/session"
 import { APICallError } from "ai"
 import { MessageV2 } from "../../src/session/message-v2"
 import { ProviderTransform } from "@/provider/transform"
@@ -7,8 +7,8 @@ import type { Provider } from "@/provider/provider"
 
 import { SessionID, MessageID, PartID } from "../../src/session/schema"
 import { Question } from "../../src/question"
-import { ProviderV2 } from "@lgcode/core/provider"
-import { ModelV2 } from "@lgcode/core/model"
+import { ProviderV2 } from "@loongcode/core/provider"
+import { ModelV2 } from "@loongcode/core/model"
 
 const sessionID = SessionID.make("session")
 const providerID = ProviderV2.ID.make("test")
@@ -1527,7 +1527,7 @@ describe("session.message-v2.fromError", () => {
 
   test("classifies ZlibError from fetch as retryable APIError", () => {
     const zlibError = new Error(
-      'ZlibError fetching "https://lgcode.cloudflare.dev/anthropic/messages". For more information, pass `verbose: true` in the second argument to fetch()',
+      'ZlibError fetching "https://loongcode.cloudflare.dev/anthropic/messages". For more information, pass `verbose: true` in the second argument to fetch()',
     )
     ;(zlibError as any).code = "ZlibError"
     ;(zlibError as any).errno = 0
@@ -1542,7 +1542,7 @@ describe("session.message-v2.fromError", () => {
 
   test("classifies ZlibError as AbortedError when abort context is provided", () => {
     const zlibError = new Error(
-      'ZlibError fetching "https://lgcode.cloudflare.dev/anthropic/messages". For more information, pass `verbose: true` in the second argument to fetch()',
+      'ZlibError fetching "https://loongcode.cloudflare.dev/anthropic/messages". For more information, pass `verbose: true` in the second argument to fetch()',
     )
     ;(zlibError as any).code = "ZlibError"
     ;(zlibError as any).errno = 0

@@ -15,7 +15,7 @@ import { lazy } from "../util/lazy"
 import { Ignore } from "./ignore"
 import { Protected } from "./protected"
 
-declare const LGCODE_LIBC: string | undefined
+declare const LOONGCODE_LIBC: string | undefined
 
 const SUBSCRIBE_TIMEOUT_MS = 10_000
 
@@ -31,7 +31,7 @@ export const Event = {
 
 const watcher = lazy((): typeof import("@parcel/watcher") | undefined => {
   try {
-    const libc = typeof LGCODE_LIBC === "undefined" ? undefined : LGCODE_LIBC
+    const libc = typeof LOONGCODE_LIBC === "undefined" ? undefined : LOONGCODE_LIBC
     const binding = require(
       `@parcel/watcher-${process.platform}-${process.arch}${process.platform === "linux" ? `-${libc || "glibc"}` : ""}`,
     )
@@ -58,12 +58,12 @@ export const hasNativeBinding = () => !!watcher()
 
 export interface Interface {}
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2/FileWatcher") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/v2/FileWatcher") {}
 
 export const layer = Layer.effect(
   Service,
   Effect.gen(function* () {
-    if (yield* Flag.LGCODE_EXPERIMENTAL_DISABLE_FILEWATCHER) return Service.of({})
+    if (yield* Flag.LOONGCODE_EXPERIMENTAL_DISABLE_FILEWATCHER) return Service.of({})
 
     const backend = getBackend()
     const location = yield* Location.Service
@@ -112,7 +112,7 @@ export const layer = Layer.effect(
     const config = (yield* (yield* Config.Service).entries())
       .filter((entry): entry is Config.Document => entry.type === "document")
       .flatMap((item) => item.info.watcher?.ignore ?? [])
-    if (yield* Flag.LGCODE_EXPERIMENTAL_FILEWATCHER) {
+    if (yield* Flag.LOONGCODE_EXPERIMENTAL_FILEWATCHER) {
       yield* Effect.forkScoped(
         subscribe(location.directory, [...Ignore.PATTERNS, ...config, ...protecteds(location.directory)]),
       )

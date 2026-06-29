@@ -8,8 +8,8 @@
 // diff tells you exactly which command(s) changed.
 //
 // Snapshots are taken at COLUMNS=120 so wrapping is stable across
-// terminal sizes. The default lgcode tui command is excluded —
-// `lgcode --help` includes an ASCII banner that pulls in the install
+// terminal sizes. The default loongcode tui command is excluded —
+// `loongcode --help` includes an ASCII banner that pulls in the install
 // version (changes per release), so we'd snapshot a moving target.
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
@@ -39,10 +39,10 @@ function normalize(text: string): string {
   })
 }
 
-// Top-level commands. Order matches what `lgcode --help` prints today;
+// Top-level commands. Order matches what `loongcode --help` prints today;
 // keep it in that order so the snapshot file reads as a table of contents.
 // `completion` is intentionally excluded — it's a yargs built-in that emits
-// top-level help on `--help` and exits 1; not a real lgcode command.
+// top-level help on `--help` and exits 1; not a real loongcode command.
 const TOP_LEVEL = [
   "acp",
   "mcp",
@@ -91,15 +91,15 @@ const SUBCOMMANDS = [
 // different wraps from a 200-col local terminal.
 const SNAPSHOT_ENV = { COLUMNS: "120" }
 
-describe("lgcode CLI help-text snapshots", () => {
+describe("loongcode CLI help-text snapshots", () => {
   // Single test, parallel spawns. Each command's help fires under
   // `concurrency: 8` — wall-clock stays under ~10s even for ~35 commands,
   // versus ~1 minute if we serialized.
   cliIt.live(
     "every documented command emits stable help text",
-    ({ lgcode }) =>
+    ({ loongcode }) =>
       Effect.gen(function* () {
-        const topLevel = yield* lgcode.spawn(["--help"], { env: SNAPSHOT_ENV })
+        const topLevel = yield* loongcode.spawn(["--help"], { env: SNAPSHOT_ENV })
         expect(topLevel.exitCode).toBe(0)
         expect(topLevel.stderr.endsWith(EOL)).toBe(true)
 
@@ -113,9 +113,9 @@ describe("lgcode CLI help-text snapshots", () => {
           argvs,
           (argv) =>
             Effect.gen(function* () {
-              const result = yield* lgcode.spawn([...argv, "--help"], { env: SNAPSHOT_ENV })
+              const result = yield* loongcode.spawn([...argv, "--help"], { env: SNAPSHOT_ENV })
               if (result.exitCode !== 0) {
-                return yield* Effect.fail(`lgcode ${argv.join(" ")}: exit ${result.exitCode}`)
+                return yield* Effect.fail(`loongcode ${argv.join(" ")}: exit ${result.exitCode}`)
               }
               return { argv, result }
             }),
@@ -126,7 +126,7 @@ describe("lgcode CLI help-text snapshots", () => {
           // yargs writes --help to stderr, not stdout. Snapshotting stderr
           // means our test catches the help body; stdout for these commands
           // is expected to be empty.
-          expect(normalize(result.stderr)).toMatchSnapshot(`lgcode ${argv.join(" ")} --help`)
+          expect(normalize(result.stderr)).toMatchSnapshot(`loongcode ${argv.join(" ")} --help`)
         }
         if (failures.length > 0) {
           throw new Error(`Help text failed for:\n  ${failures.join("\n  ")}`)

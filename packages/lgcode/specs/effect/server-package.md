@@ -1,11 +1,11 @@
 # Server Package Extraction
 
-Practical reference for a future `packages/server` split after the lgcode
+Practical reference for a future `packages/server` split after the loongcode
 server moved to the Effect HttpApi backend.
 
 ## Current State
 
-- The server still lives in `packages/lgcode`.
+- The server still lives in `packages/loongcode`.
 - The runtime and app layer are centralized in `src/effect/app-runtime.ts` and
   `src/effect/run-service.ts`.
 - The route tree lives under `src/server/routes/instance/httpapi` and is hosted
@@ -29,22 +29,22 @@ Target package layout:
 
 Do not create a package cycle.
 
-Until enough shared service code lives outside `packages/lgcode`, a future
+Until enough shared service code lives outside `packages/loongcode`, a future
 `packages/server` should either:
 
 - own pure HttpApi contracts only, or
-- accept host-provided services/layers/callbacks from `packages/lgcode`
+- accept host-provided services/layers/callbacks from `packages/loongcode`
 
-It should not import `packages/lgcode` services while `packages/lgcode`
+It should not import `packages/loongcode` services while `packages/loongcode`
 imports it to host routes.
 
 ## Suggested PR Sequence
 
 1. Keep shrinking OpenAPI compatibility shims in `httpapi/public.ts`.
 2. Move stable domain schemas into shared packages only when they no longer
-   depend on lgcode-local runtime modules.
+   depend on loongcode-local runtime modules.
 3. Extract pure HttpApi contract modules into `packages/server` once the contract
-   can compile without importing `packages/lgcode` implementation details.
+   can compile without importing `packages/loongcode` implementation details.
 4. Extract handler factories after their service dependencies can be supplied by
    a host layer instead of imported directly.
 5. Move server hosting last, after package ownership is clear.

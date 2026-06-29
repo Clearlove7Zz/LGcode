@@ -1,5 +1,5 @@
 import { OpenApi } from "effect/unstable/httpapi"
-import { LGcodeHttpApi } from "./api"
+import { LoongcodeHttpApi } from "./api"
 import { QueryBooleanOpenApi } from "./groups/query"
 
 type OpenApiParameter = {
@@ -75,7 +75,7 @@ const QueryParameterSchemas: Record<string, OpenApiSchema> = {
 
 const LegacyComponentDescriptions: Record<string, string> = {
   LogLevel: "Log level",
-  ServerConfig: "Server configuration for lgcode serve and web commands",
+  ServerConfig: "Server configuration for loongcode serve and web commands",
   LayoutConfig: "@deprecated Always uses stretch layout.",
 }
 
@@ -447,7 +447,7 @@ function fixSelfReferencingComponents(spec: OpenApiSpec) {
     }
   }
   // Simplest fix: generate the raw spec (without transform) to get correct schemas
-  const raw: OpenApiSpec = OpenApi.fromApi(LGcodeHttpApi)
+  const raw: OpenApiSpec = OpenApi.fromApi(LoongcodeHttpApi)
   const rawSchemas = raw.components?.schemas
   if (!rawSchemas) return
   for (const name of selfRefs) {
@@ -525,11 +525,11 @@ function normalizeParameter(param: OpenApiParameter, route: string) {
   param.schema = stripOptionalNull(param.schema)
 }
 
-export const PublicApi = LGcodeHttpApi.annotateMerge(
+export const PublicApi = LoongcodeHttpApi.annotateMerge(
   OpenApi.annotations({
-    title: "lgcode",
+    title: "loongcode",
     version: "1.0.0",
-    description: "lgcode api",
+    description: "loongcode api",
     transform: matchLegacyOpenApi,
   }),
 )

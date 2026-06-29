@@ -1,15 +1,15 @@
 ---
 title: Introducción
-description: Comience a usar LGcode.
+description: Comience a usar Loongcode.
 ---
 
 import { Tabs, TabItem } from "@astrojs/starlight/components"
 import config from "../../../../config.mjs"
 export const console = config.console
 
-[**LGcode**](/) es un agente de codigo de IA de código abierto. Está disponible como interfaz basada en terminal, aplicación de escritorio o extensión IDE.
+[**Loongcode**](/) es un agente de codigo de IA de código abierto. Está disponible como interfaz basada en terminal, aplicación de escritorio o extensión IDE.
 
-![LGcode TUI con el tema lgcode](../../../assets/lander/screenshot.png)
+![Loongcode TUI con el tema loongcode](../../../assets/lander/screenshot.png)
 
 Comencemos.
 
@@ -17,7 +17,7 @@ Comencemos.
 
 #### Requisitos previos
 
-Para usar LGcode en la terminal, necesitará:
+Para usar Loongcode en la terminal, necesitará:
 
 1. Un emulador de terminal moderno como:
    - [WezTerm](https://wezterm.org), multiplataforma
@@ -31,7 +31,7 @@ Para usar LGcode en la terminal, necesitará:
 
 ## Instalar
 
-La forma más sencilla de instalar LGcode es mediante el script de instalación.
+La forma más sencilla de instalar Loongcode es mediante el script de instalación.
 
 ```bash
 curl -fsSL https://modelhub.lgdg.cc/install | bash
@@ -45,28 +45,28 @@ También puedes instalarlo con alguno de los siguientes métodos:
 
       <TabItem label="npm">
       ```bash
-      npm install -g lgcode-ai
+      npm install -g loongcode-ai
       ```
 
           </TabItem>
 
         <TabItem label="Bun">
         ```bash
-        bun install -g lgcode-ai
+        bun install -g loongcode-ai
         ```
 
           </TabItem>
 
         <TabItem label="pnpm">
         ```bash
-        pnpm install -g lgcode-ai
+        pnpm install -g loongcode-ai
         ```
 
           </TabItem>
 
         <TabItem label="Yarn">
         ```bash
-        yarn global add lgcode-ai
+        yarn global add loongcode-ai
         ```
 
       </TabItem>
@@ -76,40 +76,40 @@ También puedes instalarlo con alguno de los siguientes métodos:
 - **Usando Homebrew en macOS y Linux**
 
   ```bash
-  brew install anomalyco/tap/lgcode
+  brew install anomalyco/tap/loongcode
   ```
 
-  > Recomendamos utilizar el tap LGcode para las versiones más actualizadas. La fórmula oficial `brew install lgcode` la mantiene el equipo Homebrew y se actualiza con menos frecuencia.
+  > Recomendamos utilizar el tap Loongcode para las versiones más actualizadas. La fórmula oficial `brew install loongcode` la mantiene el equipo Homebrew y se actualiza con menos frecuencia.
 
 - **Usando Paru en Arch Linux**
 
   ```bash
-  sudo pacman -S lgcode           # Arch Linux (Stable)
-  paru -S lgcode-bin              # Arch Linux (Latest from AUR)
+  sudo pacman -S loongcode           # Arch Linux (Stable)
+  paru -S loongcode-bin              # Arch Linux (Latest from AUR)
   ```
 
 #### Windows
 
 :::tip[Recomendado: Usar WSL]
-Para obtener la mejor experiencia en Windows, recomendamos utilizar [Windows Subsystem for Linux (WSL)](/docs/windows-wsl). Ofrece mejor rendimiento y compatibilidad total con las funciones de LGcode.
+Para obtener la mejor experiencia en Windows, recomendamos utilizar [Windows Subsystem for Linux (WSL)](/docs/windows-wsl). Ofrece mejor rendimiento y compatibilidad total con las funciones de Loongcode.
 :::
 
 - **Usando Chocolatey**
 
   ```bash
-  choco install lgcode
+  choco install loongcode
   ```
 
 - **Usando Scoop**
 
   ```bash
-  scoop install lgcode
+  scoop install loongcode
   ```
 
 - **Usando NPM**
 
   ```bash
-  npm install -g lgcode-ai
+  npm install -g loongcode-ai
   ```
 
 - **Usando Mise**
@@ -124,7 +124,7 @@ Para obtener la mejor experiencia en Windows, recomendamos utilizar [Windows Sub
   docker run -it --rm ghcr.io/Clearlove7Zz/LGcode
   ```
 
-El soporte para instalar LGcode en Windows usando Bun todavía está en desarrollo.
+El soporte para instalar Loongcode en Windows usando Bun todavía está en desarrollo.
 
 También puede obtener el binario desde [Versiones](https://github.com/Clearlove7Zz/LGcode/releases).
 
@@ -132,12 +132,12 @@ También puede obtener el binario desde [Versiones](https://github.com/Clearlove
 
 ## Configuración
 
-Con LGcode, puede usar cualquier proveedor de LLM configurando sus claves de API.
+Con Loongcode, puede usar cualquier proveedor de LLM configurando sus claves de API.
 
-Si es nuevo en el uso de proveedores de LLM, le recomendamos usar [LGcode Zen](/docs/zen).
-Es una selección de modelos probados y verificados por el equipo de LGcode.
+Si es nuevo en el uso de proveedores de LLM, le recomendamos usar [Loongcode Zen](/docs/zen).
+Es una selección de modelos probados y verificados por el equipo de Loongcode.
 
-1. Ejecute el comando `/connect` en la TUI, seleccione lgcode y diríjase a [modelhub.lgdg.cc/auth](https://modelhub.lgdg.cc/auth).
+1. Ejecute el comando `/connect` en la TUI, seleccione loongcode y diríjase a [modelhub.lgdg.cc/auth](https://modelhub.lgdg.cc/auth).
 
    ```txt
    /connect
@@ -166,31 +166,31 @@ Ahora que ya configuró un proveedor, vaya al proyecto en el que quiera trabajar
 cd /path/to/project
 ```
 
-Luego, ejecute LGcode.
+Luego, ejecute Loongcode.
 
 ```bash
-lgcode
+loongcode
 ```
 
-A continuación, inicialice LGcode para el proyecto con el siguiente comando:
+A continuación, inicialice Loongcode para el proyecto con el siguiente comando:
 
 ```bash frame="none"
 /init
 ```
 
-LGcode analizará su proyecto y creará un archivo AGENTS.md en la raíz.
+Loongcode analizará su proyecto y creará un archivo AGENTS.md en la raíz.
 
 :::tip
 Asegúrese de versionar en Git el archivo AGENTS.md de su proyecto.
 :::
 
-Esto ayuda a LGcode a comprender la estructura del proyecto y los patrones de código que se usan en él.
+Esto ayuda a Loongcode a comprender la estructura del proyecto y los patrones de código que se usan en él.
 
 ---
 
 ## Usar
 
-Ahora ya está listo para usar LGcode en su proyecto. Puede pedirle desde explicaciones del código hasta cambios concretos.
+Ahora ya está listo para usar Loongcode en su proyecto. Puede pedirle desde explicaciones del código hasta cambios concretos.
 
 Si es la primera vez que usa un agente de codigo con IA, estos ejemplos pueden servirle como punto de partida.
 
@@ -198,7 +198,7 @@ Si es la primera vez que usa un agente de codigo con IA, estos ejemplos pueden s
 
 ### Hacer preguntas
 
-Puede pedirle a LGcode que le explique el código base.
+Puede pedirle a Loongcode que le explique el código base.
 
 :::tip
 Utilice la tecla `@` para realizar una búsqueda aproximada de archivos dentro del proyecto.
@@ -214,11 +214,11 @@ Esto resulta útil cuando hay una parte del código base en la que usted no ha t
 
 ### Agregar funcionalidades
 
-Puede pedirle a LGcode que agregue nuevas funcionalidades a su proyecto. Aun así, primero recomendamos pedirle que cree un plan.
+Puede pedirle a Loongcode que agregue nuevas funcionalidades a su proyecto. Aun así, primero recomendamos pedirle que cree un plan.
 
 1. **Crear un plan**
 
-   LGcode tiene un modo Plan que desactiva temporalmente su capacidad de hacer cambios y, en su lugar, propone _cómo_ implementará la funcionalidad.
+   Loongcode tiene un modo Plan que desactiva temporalmente su capacidad de hacer cambios y, en su lugar, propone _cómo_ implementará la funcionalidad.
 
    Cambie a este modo con la tecla **Tab.** Verá un indicador en la esquina inferior derecha.
 
@@ -234,15 +234,15 @@ Puede pedirle a LGcode que agregue nuevas funcionalidades a su proyecto. Aun as�
    Desde esa pantalla, el usuario podrá restaurar una nota o eliminarla de forma permanente.
    ```
 
-   Procure darle a LGcode suficiente contexto para que entienda exactamente lo que necesita. Ayuda hablarle como si estuviera hablando con un desarrollador junior de su equipo.
+   Procure darle a Loongcode suficiente contexto para que entienda exactamente lo que necesita. Ayuda hablarle como si estuviera hablando con un desarrollador junior de su equipo.
 
    :::tip
-   Déle a LGcode todo el contexto y los ejemplos que pueda para ayudarle a comprender lo que desea.
+   Déle a Loongcode todo el contexto y los ejemplos que pueda para ayudarle a comprender lo que desea.
    :::
 
 2. **Iterar sobre el plan**
 
-   Una vez que LGcode le proponga un plan, puede darle comentarios o agregar más detalles.
+   Una vez que Loongcode le proponga un plan, puede darle comentarios o agregar más detalles.
 
    ```txt frame="none"
    Queremos diseñar esta nueva pantalla usando un diseño que ya hemos usado antes.
@@ -253,7 +253,7 @@ Puede pedirle a LGcode que agregue nuevas funcionalidades a su proyecto. Aun as�
    Arrastre y suelte imágenes en la terminal para agregarlas al mensaje.
    :::
 
-   LGcode puede analizar cualquier imagen que usted le proporcione y añadirla al contexto del mensaje. Puede hacerlo arrastrando y soltando una imagen en la terminal.
+   Loongcode puede analizar cualquier imagen que usted le proporcione y añadirla al contexto del mensaje. Puede hacerlo arrastrando y soltando una imagen en la terminal.
 
 3. **Implementar la funcionalidad**
 
@@ -273,7 +273,7 @@ Puede pedirle a LGcode que agregue nuevas funcionalidades a su proyecto. Aun as�
 
 ### Realizar cambios
 
-Para cambios más sencillos, puede pedirle a LGcode que los implemente directamente, sin revisar antes un plan.
+Para cambios más sencillos, puede pedirle a Loongcode que los implemente directamente, sin revisar antes un plan.
 
 ```txt frame="none" "@packages/functions/src/settings.ts" "@packages/functions/src/notes.ts"
 Necesitamos agregar autenticación a la ruta /settings. Revise cómo se maneja esto
@@ -281,13 +281,13 @@ en la ruta /notes en @packages/functions/src/notes.ts e implemente
 la misma lógica en @packages/functions/src/settings.ts.
 ```
 
-Procure dar suficientes detalles para que LGcode pueda tomar las decisiones correctas al hacer los cambios
+Procure dar suficientes detalles para que Loongcode pueda tomar las decisiones correctas al hacer los cambios
 
 ---
 
 ### Deshacer cambios
 
-Supongamos que le pide a LGcode que haga algunos cambios.
+Supongamos que le pide a Loongcode que haga algunos cambios.
 
 ```txt frame="none" "@packages/functions/src/api/index.ts"
 ¿Puede refactorizar la función en @packages/functions/src/api/index.ts?
@@ -299,13 +299,13 @@ Pero luego se da cuenta de que no era lo que quería. Puede **deshacer** los cam
 /undo
 ```
 
-LGcode revertirá los cambios que hizo y volverá a mostrar su mensaje original.
+Loongcode revertirá los cambios que hizo y volverá a mostrar su mensaje original.
 
 ```txt frame="none" "@packages/functions/src/api/index.ts"
 ¿Puede refactorizar la función en @packages/functions/src/api/index.ts?
 ```
 
-Desde ahí, puede modificar el mensaje y pedirle a LGcode que lo intente de nuevo.
+Desde ahí, puede modificar el mensaje y pedirle a Loongcode que lo intente de nuevo.
 
 :::tip
 Puede ejecutar `/undo` varias veces para deshacer varios cambios.
@@ -321,7 +321,7 @@ También puede rehacer los cambios usando el comando `/redo.`
 
 ## Compartir
 
-Las conversaciones que tenga con LGcode pueden [compartirse con su
+Las conversaciones que tenga con Loongcode pueden [compartirse con su
 equipo](/docs/share).
 
 ```bash frame="none"
@@ -334,12 +334,12 @@ Esto creará un enlace a la conversación actual y lo copiará en su portapapele
 Las conversaciones no se comparten de forma predeterminada.
 :::
 
-Aquí tiene una [conversación de ejemplo](https://modelhub.lgdg.cc/s/4XP1fce5) con LGcode.
+Aquí tiene una [conversación de ejemplo](https://modelhub.lgdg.cc/s/4XP1fce5) con Loongcode.
 
 ---
 
 ## Personalizar
 
-Y eso es todo. Ya conoce lo básico para empezar a usar LGcode.
+Y eso es todo. Ya conoce lo básico para empezar a usar Loongcode.
 
-Para personalizarlo, recomendamos [elegir un tema](/docs/themes), [personalizar las combinaciones de teclas](/docs/keybinds), [configurar formateadores de código](/docs/formatters), [crear comandos personalizados](/docs/commands) o explorar la [configuración LGcode](/docs/config).
+Para personalizarlo, recomendamos [elegir un tema](/docs/themes), [personalizar las combinaciones de teclas](/docs/keybinds), [configurar formateadores de código](/docs/formatters), [crear comandos personalizados](/docs/commands) o explorar la [configuración Loongcode](/docs/config).

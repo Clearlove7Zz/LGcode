@@ -3,10 +3,10 @@ import path from "path"
 import { describe, expect, test } from "bun:test"
 import { NodeFileSystem } from "@effect/platform-node"
 import { Effect, Layer, Option } from "effect"
-import { FSUtil } from "@lgcode/core/fs-util"
-import { Global } from "@lgcode/core/global"
-import { Npm } from "@lgcode/core/npm"
-import { EffectFlock } from "@lgcode/core/util/effect-flock"
+import { FSUtil } from "@loongcode/core/fs-util"
+import { Global } from "@loongcode/core/global"
+import { Npm } from "@loongcode/core/npm"
+import { EffectFlock } from "@loongcode/core/util/effect-flock"
 import { tmpdir } from "./fixture/tmpdir"
 
 const win = process.platform === "win32"
@@ -30,14 +30,14 @@ const npmLayer = (cache: string) =>
 
 describe("Npm.sanitize", () => {
   test("keeps normal scoped package specs unchanged", () => {
-    expect(Npm.sanitize("@lgcode/acme")).toBe("@lgcode/acme")
-    expect(Npm.sanitize("@lgcode/acme@1.0.0")).toBe("@lgcode/acme@1.0.0")
+    expect(Npm.sanitize("@loongcode/acme")).toBe("@loongcode/acme")
+    expect(Npm.sanitize("@loongcode/acme@1.0.0")).toBe("@loongcode/acme@1.0.0")
     expect(Npm.sanitize("prettier")).toBe("prettier")
   })
 
   test("handles git https specs", () => {
-    const spec = "acme@git+https://github.com/lgcode/acme.git"
-    const expected = win ? "acme@git+https_//github.com/lgcode/acme.git" : spec
+    const spec = "acme@git+https://github.com/loongcode/acme.git"
+    const expected = win ? "acme@git+https_//github.com/loongcode/acme.git" : spec
     expect(Npm.sanitize(spec)).toBe(expected)
   })
 })

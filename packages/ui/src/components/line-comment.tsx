@@ -1,5 +1,5 @@
-import { useFilteredList } from "@lgcode/ui/hooks"
-import { getDirectory, getFilename } from "@lgcode/core/util/path"
+import { useFilteredList } from "@loongcode/ui/hooks"
+import { getDirectory, getFilename } from "@loongcode/core/util/path"
 import { createSignal, For, onMount, Show, splitProps, type JSX } from "solid-js"
 import { Button } from "./button"
 import { FileIcon } from "./file-icon"

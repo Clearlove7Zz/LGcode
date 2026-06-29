@@ -1,19 +1,19 @@
 ---
 title: Server
-description: Komunicirajte s lgcode serverom preko HTTP-a.
+description: Komunicirajte s loongcode serverom preko HTTP-a.
 ---
 
 import config from "../../../../config.mjs"
 export const typesUrl = `${config.github}/blob/dev/packages/sdk/js/src/gen/types.gen.ts`
 
-Komanda `lgcode serve` pokrece headless HTTP server koji izlaže OpenAPI endpoint koji lgcode klijent moze koristiti.
+Komanda `loongcode serve` pokrece headless HTTP server koji izlaže OpenAPI endpoint koji loongcode klijent moze koristiti.
 
 ---
 
 ### Korištenje
 
 ```bash
-lgcode serve [--port <number>] [--hostname <string>] [--cors <origin>]
+loongcode serve [--port <number>] [--hostname <string>] [--cors <origin>]
 ```
 
 #### Opcije
@@ -23,38 +23,38 @@ lgcode serve [--port <number>] [--hostname <string>] [--cors <origin>]
 | `--port`        | Port na kojem slusa                 | `4096`           |
 | `--hostname`    | Hostname na kojem slusa             | `127.0.0.1`      |
 | `--mdns`        | Ukljuci mDNS otkrivanje             | `false`          |
-| `--mdns-domain` | Prilagodeni domen za mDNS servis    | `lgcode.local` |
+| `--mdns-domain` | Prilagodeni domen za mDNS servis    | `loongcode.local` |
 | `--cors`        | Dodatni browser origin-i koje dozv. | `[]`             |
 
 `--cors` mozete navesti vise puta:
 
 ```bash
-lgcode serve --cors http://localhost:5173 --cors https://app.example.com
+loongcode serve --cors http://localhost:5173 --cors https://app.example.com
 ```
 
 ---
 
 ### Autentifikacija
 
-Postavite `LGCODE_SERVER_PASSWORD` da zastitite server HTTP basic auth mehanizmom. Korisnicko ime je po defaultu `lgcode`, ili postavite `LGCODE_SERVER_USERNAME` za nadjacavanje. Ovo vazi i za `lgcode serve` i za `lgcode web`.
+Postavite `LOONGCODE_SERVER_PASSWORD` da zastitite server HTTP basic auth mehanizmom. Korisnicko ime je po defaultu `loongcode`, ili postavite `LOONGCODE_SERVER_USERNAME` za nadjacavanje. Ovo vazi i za `loongcode serve` i za `loongcode web`.
 
 ```bash
-LGCODE_SERVER_PASSWORD=your-password lgcode serve
+LOONGCODE_SERVER_PASSWORD=your-password loongcode serve
 ```
 
 ---
 
 ### Kako radi
 
-Kada pokrenete `lgcode`, pokrecu se TUI i server. TUI je klijent koji komunicira sa serverom. Server izlaže OpenAPI 3.1 spec endpoint koji se koristi i za generisanje [SDK-a](/docs/sdk).
+Kada pokrenete `loongcode`, pokrecu se TUI i server. TUI je klijent koji komunicira sa serverom. Server izlaže OpenAPI 3.1 spec endpoint koji se koristi i za generisanje [SDK-a](/docs/sdk).
 
 :::tip
-Koristite lgcode server za programsku interakciju sa lgcode-om.
+Koristite loongcode server za programsku interakciju sa loongcode-om.
 :::
 
-Ova arhitektura omogucava lgcode podrsku za vise klijenata i programsku interakciju.
+Ova arhitektura omogucava loongcode podrsku za vise klijenata i programsku interakciju.
 
-Mozete pokrenuti `lgcode serve` da startate standalone server. Ako je lgcode TUI vec pokrenut, `lgcode serve` ce pokrenuti novi server.
+Mozete pokrenuti `loongcode serve` da startate standalone server. Ako je loongcode TUI vec pokrenut, `loongcode serve` ce pokrenuti novi server.
 
 ---
 
@@ -62,7 +62,7 @@ Mozete pokrenuti `lgcode serve` da startate standalone server. Ako je lgcode TUI
 
 Kada pokrenete TUI, port i hostname se nasumicno dodijele. Umjesto toga, mozete zadati `--hostname` i `--port` [zastave](/docs/cli), pa se povezati na taj server.
 
-Endpoint [`/tui`](#tui) mozete koristiti za upravljanje TUI-jem kroz server. Na primjer, mozete unaprijed popuniti ili pokrenuti prompt. Ovaj setup koriste LGcode [IDE](/docs/ide) pluginovi.
+Endpoint [`/tui`](#tui) mozete koristiti za upravljanje TUI-jem kroz server. Na primjer, mozete unaprijed popuniti ili pokrenuti prompt. Ovaj setup koriste Loongcode [IDE](/docs/ide) pluginovi.
 
 ---
 
@@ -80,7 +80,7 @@ Na primjer, `http://localhost:4096/doc`. Koristite specifikaciju da generisete k
 
 ## API-ji
 
-lgcode server izlaže sljedece API-je.
+loongcode server izlaže sljedece API-je.
 
 ---
 

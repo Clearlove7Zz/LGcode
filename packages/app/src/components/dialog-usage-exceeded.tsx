@@ -1,7 +1,7 @@
 import { usePlatform } from "@/context/platform"
-import { Button } from "@lgcode/ui/button"
-import { useDialog } from "@lgcode/ui/context/dialog"
-import { Dialog } from "@lgcode/ui/dialog"
+import { Button } from "@loongcode/ui/button"
+import { useDialog } from "@loongcode/ui/context/dialog"
+import { Dialog } from "@loongcode/ui/dialog"
 import { JSX } from "solid-js"
 
 export type DialogGoUpsellProps = {

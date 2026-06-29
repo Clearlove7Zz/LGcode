@@ -1,11 +1,11 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { Catalog } from "@lgcode/core/catalog"
-import { Integration } from "@lgcode/core/integration"
-import { PluginV2 } from "@lgcode/core/plugin"
-import { ProviderPlugins } from "@lgcode/core/plugin/provider"
-import { LLMGatewayPlugin } from "@lgcode/core/plugin/provider/llmgateway"
-import { ProviderV2 } from "@lgcode/core/provider"
+import { Catalog } from "@loongcode/core/catalog"
+import { Integration } from "@loongcode/core/integration"
+import { PluginV2 } from "@loongcode/core/plugin"
+import { ProviderPlugins } from "@loongcode/core/plugin/provider"
+import { LLMGatewayPlugin } from "@loongcode/core/plugin/provider/llmgateway"
+import { ProviderV2 } from "@loongcode/core/provider"
 import { expectPluginRegistered, it, provider } from "./provider-helper"
 
 describe("LLMGatewayPlugin", () => {
@@ -51,8 +51,8 @@ describe("LLMGatewayPlugin", () => {
       expect((yield* catalog.provider.get(ProviderV2.ID.make("llmgateway"))).request.headers).toEqual({
         Existing: "value",
         "HTTP-Referer": "https://modelhub.lgdg.cc/",
-        "X-Title": "lgcode",
-        "X-Source": "lgcode",
+        "X-Title": "loongcode",
+        "X-Source": "loongcode",
       })
       expect((yield* catalog.provider.get(ProviderV2.ID.openrouter)).request.headers).toEqual({})
     }),

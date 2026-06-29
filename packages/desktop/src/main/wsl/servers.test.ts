@@ -23,11 +23,11 @@ test("starts every configured WSL server on initialization", () => {
 test("rejects an update that did not install the desktop version", () => {
   expect(() => expectOpencodeVersion("1.16.2", "1.16.2")).not.toThrow()
   expect(() => expectOpencodeVersion("1.14.35", "1.16.2")).toThrow(
-    "LGcode update finished but Debian still reports 1.14.35; expected 1.16.2",
+    "Loongcode update finished but Debian still reports 1.14.35; expected 1.16.2",
   )
 })
 
-test("restarts an existing distro server after updating LGcode", () => {
+test("restarts an existing distro server after updating Loongcode", () => {
   expect(
     wslServerIdToRestart(
       [
@@ -49,7 +49,7 @@ test("clears cached distro probes when removing a WSL server", () => {
       {
         Debian: {
           distro: "Debian",
-          resolvedPath: "/home/luke/.lgcode/bin/lgcode",
+          resolvedPath: "/home/luke/.loongcode/bin/loongcode",
           version: "1.16.2",
           expectedVersion: "1.16.2",
           matchesDesktop: true,
@@ -58,7 +58,7 @@ test("clears cached distro probes when removing a WSL server", () => {
       },
       "Debian",
     ),
-  ).toEqual({ distroProbes: {}, lgcodeChecks: {} })
+  ).toEqual({ distroProbes: {}, loongcodeChecks: {} })
 })
 
 test("opens terminals for distro names containing spaces", () => {
@@ -96,7 +96,7 @@ test("derives a required Windows restart from the post-install runtime probe", (
   expect(pendingRestartAfterWslInstall({ available: true, version: "WSL version: 2.6.1", error: null })).toBe(false)
 })
 
-test("ignores stale background LGcode checks after removing a WSL server", async () => {
+test("ignores stale background Loongcode checks after removing a WSL server", async () => {
   persistedServers = []
   releaseOpencodeResolve = undefined
   const controller = createWslServersController(
@@ -107,7 +107,7 @@ test("ignores stale background LGcode checks after removing a WSL server", async
         onExit: () => undefined,
       },
       url: "http://127.0.0.1:4096",
-      username: "lgcode",
+      username: "loongcode",
       password: "secret",
     }),
     testControllerOptions(),
@@ -120,10 +120,10 @@ test("ignores stale background LGcode checks after removing a WSL server", async
   await new Promise((resolve) => setTimeout(resolve, 0))
 
   expect(controller.getState().servers).toEqual([])
-  expect(controller.getState().lgcodeChecks).toEqual({})
+  expect(controller.getState().loongcodeChecks).toEqual({})
 })
 
-test("ignores stale startup LGcode checks after removing a WSL server", async () => {
+test("ignores stale startup Loongcode checks after removing a WSL server", async () => {
   persistedServers = [{ id: "wsl:Debian", distro: "Debian" }]
   releaseOpencodeResolve = undefined
   const controller = createWslServersController(
@@ -139,7 +139,7 @@ test("ignores stale startup LGcode checks after removing a WSL server", async ()
   await new Promise((resolve) => setTimeout(resolve, 0))
 
   expect(controller.getState().servers).toEqual([])
-  expect(controller.getState().lgcodeChecks).toEqual({})
+  expect(controller.getState().loongcodeChecks).toEqual({})
 })
 
 async function waitFor(check: () => boolean) {
@@ -161,7 +161,7 @@ function testControllerOptions() {
       await new Promise<void>((resolve) => {
         releaseOpencodeResolve = resolve
       })
-      return "/home/me/.lgcode/bin/lgcode"
+      return "/home/me/.loongcode/bin/loongcode"
     },
   }
 }

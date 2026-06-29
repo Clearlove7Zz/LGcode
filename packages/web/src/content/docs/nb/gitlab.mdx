@@ -1,68 +1,68 @@
 ---
 title: GitLab
-description: Bruk lgcode i GitLab-problemer og Merge Requests.
+description: Bruk loongcode i GitLab-problemer og Merge Requests.
 ---
 
-LGcode integreres med GitLab arbeidsflyten gjennom GitLab CI/CD pipeline eller med GitLab Duo.
+Loongcode integreres med GitLab arbeidsflyten gjennom GitLab CI/CD pipeline eller med GitLab Duo.
 
-I begge tilfeller vil LGcode kjøre på GitLab Runners.
+I begge tilfeller vil Loongcode kjøre på GitLab Runners.
 
 ---
 
 ## GitLab CI
 
-LGcode fungerer i en vanlig GitLab-pipeline. Du kan bygge den inn i en pipeline som en [CI-komponent](https://docs.gitlab.com/ee/ci/components/)
+Loongcode fungerer i en vanlig GitLab-pipeline. Du kan bygge den inn i en pipeline som en [CI-komponent](https://docs.gitlab.com/ee/ci/components/)
 
-Her bruker vi en fellesskapsskapt CI/CD-komponent for LGcode — [nagyv/gitlab-lgcode](https://gitlab.com/nagyv/gitlab-lgcode).
+Her bruker vi en fellesskapsskapt CI/CD-komponent for Loongcode — [nagyv/gitlab-loongcode](https://gitlab.com/nagyv/gitlab-loongcode).
 
 ---
 
 ### Funksjoner
 
-- **Bruk tilpasset konfigurasjon per jobb**: Konfigurer LGcode med en tilpasset konfigurasjonskatalog, for eksempel `./config/#custom-directory` for å aktivere eller deaktivere funksjonalitet per LGcode-anrop.
-- **Minimalt oppsett**: CI-komponenten setter opp LGcode i bakgrunnen, du trenger bare å lage LGcode-konfigurasjonen og den første ledeteksten.
+- **Bruk tilpasset konfigurasjon per jobb**: Konfigurer Loongcode med en tilpasset konfigurasjonskatalog, for eksempel `./config/#custom-directory` for å aktivere eller deaktivere funksjonalitet per Loongcode-anrop.
+- **Minimalt oppsett**: CI-komponenten setter opp Loongcode i bakgrunnen, du trenger bare å lage Loongcode-konfigurasjonen og den første ledeteksten.
 - **Fleksibel**: CI-komponenten støtter flere innganger for å tilpasse virkemåten
 
 ---
 
 ### Oppsett
 
-1. Lagre LGcode sin autentiserings-JSON som en CI-miljøvariabel av typen Fil under **Innstillinger** > **CI/CD** > **Variabler**. Sørg for å merke dem som "Masked and hidden".
+1. Lagre Loongcode sin autentiserings-JSON som en CI-miljøvariabel av typen Fil under **Innstillinger** > **CI/CD** > **Variabler**. Sørg for å merke dem som "Masked and hidden".
 2. Legg til følgende i `.gitlab-ci.yml`-filen.
 
    ```yaml title=".gitlab-ci.yml"
    include:
-     - component: $CI_SERVER_FQDN/nagyv/gitlab-lgcode/lgcode@2
+     - component: $CI_SERVER_FQDN/nagyv/gitlab-loongcode/loongcode@2
        inputs:
-         config_dir: ${CI_PROJECT_DIR}/lgcode-config
-         auth_json: $LGCODE_AUTH_JSON # The variable name for your LGcode authentication JSON
+         config_dir: ${CI_PROJECT_DIR}/loongcode-config
+         auth_json: $LOONGCODE_AUTH_JSON # The variable name for your Loongcode authentication JSON
          command: optional-custom-command
          message: "Your prompt here"
    ```
 
-For flere inndata og brukstilfeller [sjekk ut dokumentene](https://gitlab.com/explore/catalog/nagyv/gitlab-lgcode) for denne komponenten.
+For flere inndata og brukstilfeller [sjekk ut dokumentene](https://gitlab.com/explore/catalog/nagyv/gitlab-loongcode) for denne komponenten.
 
 ---
 
 ## GitLab Duo
 
-LGcode integreres med din GitLab arbeidsflyt.
-Nevn `@lgcode` i en kommentar, og LGcode vil utføre oppgaver innenfor din GitLab CI-pipeline.
+Loongcode integreres med din GitLab arbeidsflyt.
+Nevn `@loongcode` i en kommentar, og Loongcode vil utføre oppgaver innenfor din GitLab CI-pipeline.
 
 ---
 
 ### Funksjoner
 
-- **Triage av saker**: Be LGcode se på en sak og forklare den for deg.
-- **Fiks og implementer**: Be LGcode om å fikse en sak eller implementere en funksjon.
+- **Triage av saker**: Be Loongcode se på en sak og forklare den for deg.
+- **Fiks og implementer**: Be Loongcode om å fikse en sak eller implementere en funksjon.
   Det vil opprette en ny gren og sende en Merge Request med endringene.
-- **Sikkert**: LGcode kjører på GitLab Runners.
+- **Sikkert**: Loongcode kjører på GitLab Runners.
 
 ---
 
 ### Oppsett
 
-LGcode kjører i GitLab CI/CD pipeline, her er det du trenger for å sette den opp:
+Loongcode kjører i GitLab CI/CD pipeline, her er det du trenger for å sette den opp:
 
 :::tip
 Sjekk ut [**GitLab-dokumentene**](https://docs.gitlab.com/user/duo_agent_platform/agent_assistant/) for oppdaterte instruksjoner.
@@ -82,19 +82,19 @@ Sjekk ut [**GitLab-dokumentene**](https://docs.gitlab.com/user/duo_agent_platfor
     ```yaml
     image: node:22-slim
     commands:
-      - echo "Installing lgcode"
-      - npm install --global lgcode-ai
+      - echo "Installing loongcode"
+      - npm install --global loongcode-ai
       - echo "Installing glab"
-      - export GITLAB_TOKEN=$GITLAB_TOKEN_LGCODE
+      - export GITLAB_TOKEN=$GITLAB_TOKEN_LOONGCODE
       - apt-get update --quiet && apt-get install --yes curl wget gpg git && rm --recursive --force /var/lib/apt/lists/*
       - curl --silent --show-error --location "https://raw.githubusercontent.com/upciti/wakemeops/main/assets/install_repository" | bash
       - apt-get install --yes glab
       - echo "Configuring glab"
       - echo $GITLAB_HOST
-      - echo "Creating LGcode auth configuration"
-      - mkdir --parents ~/.local/share/lgcode
+      - echo "Creating Loongcode auth configuration"
+      - mkdir --parents ~/.local/share/loongcode
       - |
-        cat > ~/.local/share/lgcode/auth.json << EOF
+        cat > ~/.local/share/loongcode/auth.json << EOF
         {
           "anthropic": {
             "type": "api",
@@ -103,13 +103,13 @@ Sjekk ut [**GitLab-dokumentene**](https://docs.gitlab.com/user/duo_agent_platfor
         }
         EOF
       - echo "Configuring git"
-      - git config --global user.email "lgcode@gitlab.com"
-      - git config --global user.name "LGcode"
+      - git config --global user.email "loongcode@gitlab.com"
+      - git config --global user.name "Loongcode"
       - echo "Testing glab"
       - glab issue list
-      - echo "Running LGcode"
+      - echo "Running Loongcode"
       - |
-        lgcode run "
+        loongcode run "
         You are an AI assistant helping with GitLab operations.
 
         Context: $AI_FLOW_CONTEXT
@@ -146,7 +146,7 @@ Sjekk ut [**GitLab-dokumentene**](https://docs.gitlab.com/user/duo_agent_platfor
         fi
     variables:
       - ANTHROPIC_API_KEY
-      - GITLAB_TOKEN_LGCODE
+      - GITLAB_TOKEN_LOONGCODE
       - GITLAB_HOST
     ```
 
@@ -158,10 +158,10 @@ Du kan se [GitLab CLI agents docs](https://docs.gitlab.com/user/duo_agent_platfo
 
 ### Eksempler
 
-Her er noen eksempler på hvordan du kan bruke LGcode i GitLab.
+Her er noen eksempler på hvordan du kan bruke Loongcode i GitLab.
 
 :::tip
-Du kan konfigurere til å bruke en annen triggerfrase enn `@lgcode`.
+Du kan konfigurere til å bruke en annen triggerfrase enn `@loongcode`.
 :::
 
 - **Forklar en sak**
@@ -169,27 +169,27 @@ Du kan konfigurere til å bruke en annen triggerfrase enn `@lgcode`.
   Legg til denne kommentaren i en GitLab-sak.
 
   ```
-  @lgcode explain this issue
+  @loongcode explain this issue
   ```
 
-  LGcode vil lese saken og svare med en klar forklaring.
+  Loongcode vil lese saken og svare med en klar forklaring.
 
 - **Fiks en sak**
 
   I en GitLab-sak, si:
 
   ```
-  @lgcode fix this
+  @loongcode fix this
   ```
 
-  LGcode vil opprette en ny gren, implementere endringene og åpne en Merge Request med endringene.
+  Loongcode vil opprette en ny gren, implementere endringene og åpne en Merge Request med endringene.
 
 - **Review av Merge Requests**
 
   Legg igjen følgende kommentar på en GitLab Merge Request.
 
   ```
-  @lgcode review this merge request
+  @loongcode review this merge request
   ```
 
-  LGcode vil gjennomgå Merge Request-en og gi tilbakemelding.
+  Loongcode vil gjennomgå Merge Request-en og gi tilbakemelding.

@@ -1,10 +1,10 @@
 export * as SessionRunnerModel from "./model"
 
-import { type Model } from "@lgcode/llm"
-import * as AnthropicMessages from "@lgcode/llm/protocols/anthropic-messages"
-import * as OpenAICompatibleChat from "@lgcode/llm/protocols/openai-compatible-chat"
-import * as OpenAIResponses from "@lgcode/llm/protocols/openai-responses"
-import { Auth, type AnyRoute } from "@lgcode/llm/route"
+import { type Model } from "@loongcode/llm"
+import * as AnthropicMessages from "@loongcode/llm/protocols/anthropic-messages"
+import * as OpenAICompatibleChat from "@loongcode/llm/protocols/openai-compatible-chat"
+import * as OpenAIResponses from "@loongcode/llm/protocols/openai-responses"
+import { Auth, type AnyRoute } from "@loongcode/llm/route"
 import { Context, Effect, Layer, Option, Schema } from "effect"
 import { produce } from "immer"
 import { Catalog } from "../../catalog"
@@ -43,7 +43,7 @@ export interface Interface {
   readonly resolve: (session: SessionSchema.Info) => Effect.Effect<Model, Error>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2/SessionRunnerModel") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/v2/SessionRunnerModel") {}
 
 /** Test or embedding seam for supplying a model resolver directly. */
 export const layerWith = (resolve: Interface["resolve"]) => Layer.succeed(Service, Service.of({ resolve }))

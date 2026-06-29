@@ -32,10 +32,10 @@ export async function createOpencodeServer(options?: ServerOptions) {
   const args = [`serve`, `--hostname=${options.hostname}`, `--port=${options.port}`]
   if (options.config?.logLevel) args.push(`--log-level=${options.config.logLevel}`)
 
-  const proc = launch(`lgcode`, args, {
+  const proc = launch(`loongcode`, args, {
     env: {
       ...process.env,
-      LGCODE_CONFIG_CONTENT: JSON.stringify(options.config ?? {}),
+      LOONGCODE_CONFIG_CONTENT: JSON.stringify(options.config ?? {}),
     },
   })
   let clear = () => {}
@@ -53,7 +53,7 @@ export async function createOpencodeServer(options?: ServerOptions) {
       output += chunk.toString()
       const lines = output.split("\n")
       for (const line of lines) {
-        if (line.startsWith("lgcode server listening")) {
+        if (line.startsWith("loongcode server listening")) {
           const match = line.match(/on\s+(https?:\/\/[^\s]+)/)
           if (!match) {
             clear()
@@ -115,11 +115,11 @@ export function createOpencodeTui(options?: TuiOptions) {
     args.push(`--agent=${options.agent}`)
   }
 
-  const proc = launch(`lgcode`, args, {
+  const proc = launch(`loongcode`, args, {
     stdio: "inherit",
     env: {
       ...process.env,
-      LGCODE_CONFIG_CONTENT: JSON.stringify(options?.config ?? {}),
+      LOONGCODE_CONFIG_CONTENT: JSON.stringify(options?.config ?? {}),
     },
   })
 

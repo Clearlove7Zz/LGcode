@@ -1,13 +1,13 @@
 ---
 title: SDK
-description: Cliente JS seguro em tipos para o servidor lgcode.
+description: Cliente JS seguro em tipos para o servidor loongcode.
 ---
 
 import config from "../../../../config.mjs"
 export const typesUrl = `${config.github}/blob/dev/packages/sdk/js/src/gen/types.gen.ts`
 
-O SDK JS/TS do lgcode fornece um cliente seguro em tipos para interagir com o servidor.
-Use-o para construir integrações e controlar o lgcode programaticamente.
+O SDK JS/TS do loongcode fornece um cliente seguro em tipos para interagir com o servidor.
+Use-o para construir integrações e controlar o loongcode programaticamente.
 
 [Saiba mais](/docs/server) sobre como o servidor funciona. Para exemplos, confira os [projetos](/docs/ecosystem#projects) construídos pela comunidade.
 
@@ -18,17 +18,17 @@ Use-o para construir integrações e controlar o lgcode programaticamente.
 Instale o SDK a partir do npm:
 
 ```bash
-npm install @lgcode-ai/sdk
+npm install @loongcode-ai/sdk
 ```
 
 ---
 
 ## Criar cliente
 
-Crie uma instância do lgcode:
+Crie uma instância do loongcode:
 
 ```javascript
-import { createOpencode } from "@lgcode-ai/sdk"
+import { createOpencode } from "@loongcode-ai/sdk"
 
 const { client } = await createOpencode()
 ```
@@ -49,12 +49,12 @@ Isso inicia tanto um servidor quanto um cliente.
 
 ## Configuração
 
-Você pode passar um objeto de configuração para personalizar o comportamento. A instância ainda pega seu `lgcode.json`, mas você pode substituir ou adicionar configuração inline:
+Você pode passar um objeto de configuração para personalizar o comportamento. A instância ainda pega seu `loongcode.json`, mas você pode substituir ou adicionar configuração inline:
 
 ```javascript
-import { createOpencode } from "@lgcode-ai/sdk"
+import { createOpencode } from "@loongcode-ai/sdk"
 
-const lgcode = await createOpencode({
+const loongcode = await createOpencode({
   hostname: "127.0.0.1",
   port: 4096,
   config: {
@@ -62,17 +62,17 @@ const lgcode = await createOpencode({
   },
 })
 
-console.log(`Server running at ${lgcode.server.url}`)
+console.log(`Server running at ${loongcode.server.url}`)
 
-lgcode.server.close()
+loongcode.server.close()
 ```
 
 ## Apenas cliente
 
-Se você já tem uma instância do lgcode em execução, pode criar uma instância de cliente para se conectar a ela:
+Se você já tem uma instância do loongcode em execução, pode criar uma instância de cliente para se conectar a ela:
 
 ```javascript
-import { createOpencodeClient } from "@lgcode-ai/sdk"
+import { createOpencodeClient } from "@loongcode-ai/sdk"
 
 const client = createOpencodeClient({
   baseUrl: "http://localhost:4096",
@@ -96,7 +96,7 @@ const client = createOpencodeClient({
 O SDK inclui definições TypeScript para todos os tipos da API. Importe-os diretamente:
 
 ```typescript
-import type { Session, Message, Part } from "@lgcode-ai/sdk"
+import type { Session, Message, Part } from "@loongcode-ai/sdk"
 ```
 
 Todos os tipos são gerados a partir da especificação OpenAPI do servidor e estão disponíveis no <a href={typesUrl}>arquivo de tipos</a>.
@@ -376,7 +376,7 @@ await client.session.prompt({
 ```javascript
 // Search and read files
 const textResults = await client.find.text({
-  query: { pattern: "function.*lgcode" },
+  query: { pattern: "function.*loongcode" },
 })
 
 const files = await client.find.files({

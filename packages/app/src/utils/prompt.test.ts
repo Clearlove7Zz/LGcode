@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import type { Part } from "@lgcode/sdk/v2"
+import type { Part } from "@loongcode/sdk/v2"
 import { extractPromptFromParts } from "./prompt"
 
 describe("extractPromptFromParts", () => {

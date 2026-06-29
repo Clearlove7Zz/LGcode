@@ -1,5 +1,5 @@
 ---
-model: lgcode/gpt-5.4
+model: loongcode/gpt-5.4
 ---
 
 Create `UPCOMING_CHANGELOG.md` from the structured changelog input below.

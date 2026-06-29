@@ -1,11 +1,11 @@
-import { Database } from "@lgcode/core/database/database"
+import { Database } from "@loongcode/core/database/database"
 import { inArray } from "drizzle-orm"
-import { EventSequenceTable } from "@lgcode/core/event/sql"
+import { EventSequenceTable } from "@loongcode/core/event/sql"
 import { Workspace } from "@/control-plane/workspace"
-import type { WorkspaceV2 } from "@lgcode/core/workspace"
+import type { WorkspaceV2 } from "@loongcode/core/workspace"
 import { Effect } from "effect"
 
-export const HEADER = "x-lgcode-sync"
+export const HEADER = "x-loongcode-sync"
 export type State = Record<string, number>
 
 export function load(db: Database.Interface["db"], ids?: string[]) {

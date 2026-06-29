@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "name": "@lgcode/cli",
+  "name": "@loongcode/cli",
   "version": "1.17.7",
   "type": "module",
   "license": "MIT",
@@ -17,10 +17,10 @@
   },
   "dependencies": {
     "@effect/platform-node": "catalog:",
-    "@lgcode/core": "workspace:*",
-    "@lgcode/sdk": "workspace:*",
-    "@lgcode/server": "workspace:*",
-    "@lgcode/tui": "workspace:*",
+    "@loongcode/core": "workspace:*",
+    "@loongcode/sdk": "workspace:*",
+    "@loongcode/server": "workspace:*",
+    "@loongcode/tui": "workspace:*",
     "@opentui/core": "catalog:",
     "@opentui/solid": "catalog:",
     "@parcel/watcher": "2.5.1",
@@ -28,7 +28,7 @@
     "solid-js": "catalog:"
   },
   "devDependencies": {
-    "@lgcode/script": "workspace:*",
+    "@loongcode/script": "workspace:*",
     "@tsconfig/bun": "catalog:",
     "@types/bun": "catalog:",
     "@typescript/native-preview": "catalog:"

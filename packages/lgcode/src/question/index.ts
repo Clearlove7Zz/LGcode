@@ -1,10 +1,10 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
 import { Deferred, Effect, Layer, Schema, Context } from "effect"
 import { InstanceState } from "@/effect/instance-state"
 import { SessionID, MessageID } from "@/session/schema"
 import { QuestionID } from "./schema"
 import { EventV2Bridge } from "@/event-v2-bridge"
-import { EventV2 } from "@lgcode/core/event"
+import { EventV2 } from "@loongcode/core/event"
 
 // Schemas — these are pure data; nothing checks class identity (see PR
 // description) so they're plain `Schema.Struct` + type alias. That lets
@@ -125,7 +125,7 @@ export interface Interface {
   readonly list: () => Effect.Effect<ReadonlyArray<Request>>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Question") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/Question") {}
 
 export const layer = Layer.effect(
   Service,

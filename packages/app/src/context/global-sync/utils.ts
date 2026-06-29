@@ -1,5 +1,5 @@
-import type { Agent, Project, ProviderListResponse } from "@lgcode/sdk/v2/client"
-import { NormalizedProviderListResponse } from "@lgcode/ui/context"
+import type { Agent, Project, ProviderListResponse } from "@loongcode/sdk/v2/client"
+import { NormalizedProviderListResponse } from "@loongcode/ui/context"
 export { pathKey as directoryKey, type PathKey as DirectoryKey } from "@/utils/path-key"
 
 export const cmp = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0)

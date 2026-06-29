@@ -1,6 +1,6 @@
-import { Flag } from "@lgcode/core/flag/flag"
-import { ConfigV1 } from "@lgcode/core/v1/config/config"
-import { SessionV1 } from "@lgcode/core/v1/session"
+import { Flag } from "@loongcode/core/flag/flag"
+import { ConfigV1 } from "@loongcode/core/v1/config/config"
+import { SessionV1 } from "@loongcode/core/v1/session"
 import { Cause, Duration, Effect, Layer, Scope } from "effect"
 import { TestLLMServer } from "../../lib/llm-server"
 import type { Config } from "../../../src/config/config"
@@ -11,8 +11,8 @@ import { call, callAuthProbe, disposeApps } from "./backend"
 import { original } from "./environment"
 import { runtime } from "./runtime"
 import type { ActiveScenario, Options, ProjectOptions, Result, Scenario, ScenarioContext, SeededContext } from "./types"
-import { ProviderV2 } from "@lgcode/core/provider"
-import { ModelV2 } from "@lgcode/core/model"
+import { ProviderV2 } from "@loongcode/core/provider"
+import { ModelV2 } from "@loongcode/core/model"
 
 export function runScenario(options: Options) {
   return (scenario: Scenario) => {
@@ -126,7 +126,7 @@ function withContext<A, E>(
         const base: ScenarioContext = {
           directory: context.dir?.path,
           headers: (extra) => ({
-            ...(context.dir?.path ? { "x-lgcode-directory": context.dir.path } : {}),
+            ...(context.dir?.path ? { "x-loongcode-directory": context.dir.path } : {}),
             ...extra,
           }),
           file: (name, content) =>
@@ -153,7 +153,7 @@ function withContext<A, E>(
                 time: { created: Date.now() },
                 agent: "build",
                 model: {
-                  providerID: ProviderV2.ID.lgcode,
+                  providerID: ProviderV2.ID.loongcode,
                   modelID: ModelV2.ID.make("test"),
                 },
               }
@@ -258,8 +258,8 @@ function fakeLlmConfig(url: string): Partial<ConfigV1.Info> {
 
 const resetState = Effect.promise(async () => {
   const modules = await runtime()
-  Flag.LGCODE_SERVER_PASSWORD = original.LGCODE_SERVER_PASSWORD
-  Flag.LGCODE_SERVER_USERNAME = original.LGCODE_SERVER_USERNAME
+  Flag.LOONGCODE_SERVER_PASSWORD = original.LOONGCODE_SERVER_PASSWORD
+  Flag.LOONGCODE_SERVER_USERNAME = original.LOONGCODE_SERVER_USERNAME
   await disposeApps()
   await modules.disposeAllInstances()
   await modules.resetDatabase()

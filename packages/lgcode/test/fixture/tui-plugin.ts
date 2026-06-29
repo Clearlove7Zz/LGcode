@@ -1,6 +1,6 @@
-import { createOpencodeClient } from "@lgcode/sdk/v2"
+import { createOpencodeClient } from "@loongcode/sdk/v2"
 import { RGBA, type CliRenderer } from "@opentui/core"
-import type { HostPluginApi } from "@lgcode/tui/plugin/slots"
+import type { HostPluginApi } from "@loongcode/tui/plugin/slots"
 import { createTuiResolvedConfig } from "./tui-runtime"
 
 type Count = {
@@ -141,7 +141,7 @@ export function createTuiPluginApi(opts: Opts = {}): HostPluginApi {
   let depth = 0
   let size: "medium" | "large" | "xlarge" = "medium"
   const has = opts.theme?.has ?? (() => false)
-  let selected = opts.theme?.selected ?? "lgcode"
+  let selected = opts.theme?.selected ?? "loongcode"
   const set =
     opts.theme?.set ??
     ((name: string) => {
@@ -197,7 +197,7 @@ export function createTuiPluginApi(opts: Opts = {}): HostPluginApi {
       soundboard: {
         registerPack: (pack) => opts.attention?.soundboard?.registerPack?.(pack) ?? (() => {}),
         activate: (id, options) => opts.attention?.soundboard?.activate?.(id, options) ?? false,
-        current: () => opts.attention?.soundboard?.current?.() ?? "lgcode.default",
+        current: () => opts.attention?.soundboard?.current?.() ?? "loongcode.default",
         list: () => opts.attention?.soundboard?.list?.() ?? [],
       },
     },

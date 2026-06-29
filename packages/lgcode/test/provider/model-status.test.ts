@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test"
 import { Schema } from "effect"
-import { ConfigProviderV1 } from "@lgcode/core/v1/config/provider"
+import { ConfigProviderV1 } from "@loongcode/core/v1/config/provider"
 import { CatalogModelStatus, ModelStatus } from "@/provider/model-status"
-import { ModelsDev } from "@lgcode/core/models-dev"
+import { ModelsDev } from "@loongcode/core/models-dev"
 import { Provider } from "@/provider/provider"
 
 describe("provider model status schemas", () => {

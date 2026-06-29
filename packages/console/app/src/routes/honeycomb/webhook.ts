@@ -1,7 +1,7 @@
 import type { APIEvent } from "@solidjs/start/server"
 import { z } from "zod"
-import { Resource } from "@lgcode/console-resource"
-import { safeEqual } from "@lgcode/console-core/util/crypto.js"
+import { Resource } from "@loongcode/console-resource"
+import { safeEqual } from "@loongcode/console-core/util/crypto.js"
 
 const DISCORD_ALERT_ROLE_ID = "1501447160175136838"
 

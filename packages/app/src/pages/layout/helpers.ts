@@ -1,5 +1,5 @@
-import { getFilename } from "@lgcode/core/util/path"
-import { type Session } from "@lgcode/sdk/v2/client"
+import { getFilename } from "@loongcode/core/util/path"
+import { type Session } from "@loongcode/sdk/v2/client"
 import { pathKey } from "@/utils/path-key"
 import type { ServerConnection } from "@/context/server"
 
@@ -93,10 +93,10 @@ export function homeSessionServerStatus(active: boolean, status: () => { working
   return status()
 }
 
-const LGCODE_PROJECT_ID = "4b0ea68d7af9a6031a7ffda7ad66e0cb83315750"
+const LOONGCODE_PROJECT_ID = "4b0ea68d7af9a6031a7ffda7ad66e0cb83315750"
 
 export function getProjectAvatarSource(id?: string, icon?: { color?: string; url?: string; override?: string }) {
-  if (id === LGCODE_PROJECT_ID) return "https://modelhub.lgdg.cc/favicon.svg"
+  if (id === LOONGCODE_PROJECT_ID) return "https://modelhub.lgdg.cc/favicon.svg"
   if (icon?.override) return icon.override
   if (icon?.color) return undefined
   return icon?.url

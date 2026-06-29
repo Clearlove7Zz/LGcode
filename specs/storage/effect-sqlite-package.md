@@ -2,9 +2,9 @@
 
 ## Goal
 
-Create a small workspace package that vendors the Drizzle `effect-sqlite` adapter shape for our repo. This is not an lgcode storage abstraction. It is a local package that ports the Drizzle Effect SQLite implementation so we can use it before/independently of upstream release timing.
+Create a small workspace package that vendors the Drizzle `effect-sqlite` adapter shape for our repo. This is not an loongcode storage abstraction. It is a local package that ports the Drizzle Effect SQLite implementation so we can use it before/independently of upstream release timing.
 
-`packages/lgcode` will use it internally, but the package itself should be generic: Drizzle + Effect + SQLite. No lgcode paths, migrations, tables, transaction hooks, post-commit behavior, or domain language should live in this package.
+`packages/loongcode` will use it internally, but the package itself should be generic: Drizzle + Effect + SQLite. No loongcode paths, migrations, tables, transaction hooks, post-commit behavior, or domain language should live in this package.
 
 ## Package Shape
 
@@ -18,7 +18,7 @@ Add a package similar in style to `packages/http-recorder`:
 
 Package name:
 
-- `@lgcode-ai/effect-drizzle-sqlite`
+- `@loongcode-ai/effect-drizzle-sqlite`
 
 Initial exports:
 
@@ -78,29 +78,29 @@ Notes:
 - `make` / `makeWithDefaults` should match the Drizzle Effect SQLite branch as much as possible.
 - `DefaultServices` should provide Drizzle's default logger/cache services, same as Effect Postgres.
 - The package should depend on Effect SQL SQLite clients (`@effect/sql-sqlite-bun` and/or node) the same way the Drizzle branch does.
-- Opencode-specific path/channel selection stays in `packages/lgcode`.
+- Opencode-specific path/channel selection stays in `packages/loongcode`.
 
 ## Opencode Adoption Notes
 
-These are not package requirements, but they matter for the later lgcode adoption PR.
+These are not package requirements, but they matter for the later loongcode adoption PR.
 
-The current `packages/lgcode/src/storage/db.ts` has two non-obvious semantics that the lgcode wrapper must preserve when it consumes this adapter:
+The current `packages/loongcode/src/storage/db.ts` has two non-obvious semantics that the loongcode wrapper must preserve when it consumes this adapter:
 
 - Nested `Database.use` inside `Database.transaction` sees the current transaction, not the root client.
 - `Database.effect` queues post-commit side effects while inside a transaction, and runs immediately outside a transaction.
 
-The lgcode wrapper can implement that using Effect context instead of `LocalContext`:
+The loongcode wrapper can implement that using Effect context instead of `LocalContext`:
 
 - A private transaction context holding `{ tx, afterCommit }`.
 - `withDb`/`db` methods read the current transaction context if present, otherwise use the root db.
 - `transaction` installs a transaction context around the effect.
 - Nested transactions can either reuse the existing tx initially, matching current behavior, or later use explicit savepoints if needed.
 
-Do not remove this behavior while moving lgcode to Effect SQLite. `SyncEvent.run` depends on transaction composability and `behavior: "immediate"` for sequencing correctness.
+Do not remove this behavior while moving loongcode to Effect SQLite. `SyncEvent.run` depends on transaction composability and `behavior: "immediate"` for sequencing correctness.
 
 ## Migration Strategy
 
-1. Add `@lgcode-ai/effect-drizzle-sqlite` with a minimal in-memory/file SQLite test schema.
+1. Add `@loongcode-ai/effect-drizzle-sqlite` with a minimal in-memory/file SQLite test schema.
 2. Port the Drizzle Effect SQLite adapter from the SQLite branch into the package, preserving upstream names and API shape.
 3. Test adapter-level guarantees:
    - query builders are yieldable Effect values,
@@ -108,38 +108,38 @@ Do not remove this behavior while moving lgcode to Effect SQLite. `SyncEvent.run
    - failed transaction rolls back,
    - migrations run once and in order,
    - close finalizer closes the underlying SQLite database.
-4. Add `@lgcode-ai/effect-drizzle-sqlite` as a dependency of `packages/lgcode`.
-5. Port `packages/lgcode/src/storage/db.ts` to be a thin compatibility wrapper over the adapter plus lgcode-specific transaction/post-commit context.
+4. Add `@loongcode-ai/effect-drizzle-sqlite` as a dependency of `packages/loongcode`.
+5. Port `packages/loongcode/src/storage/db.ts` to be a thin compatibility wrapper over the adapter plus loongcode-specific transaction/post-commit context.
 6. Keep existing call sites working first:
    - `Database.Client()`
    - `Database.use(...)`
    - `Database.transaction(...)`
    - `Database.effect(...)`
 7. After compatibility is stable, migrate call sites from callback-style `Database.use` to yielding Effect Drizzle queries directly.
-8. Only then build domain stores like session/message/project stores on top of lgcode's storage wrapper.
+8. Only then build domain stores like session/message/project stores on top of loongcode's storage wrapper.
 
 ## Why This Is Cleaner Than Starting With SessionStorage
 
 `SessionStorage` is a useful domain seam, but it does not answer the core adapter problem: how to make Drizzle SQLite Effect-native in this repo.
 
-An Effect Drizzle SQLite package lets us vendor the adapter once. Then lgcode can build its own storage wrapper on top, and `SessionStorage`, `MessageStorage`, event store, and projector writes can all share the same transaction and migration model.
+An Effect Drizzle SQLite package lets us vendor the adapter once. Then loongcode can build its own storage wrapper on top, and `SessionStorage`, `MessageStorage`, event store, and projector writes can all share the same transaction and migration model.
 
 ## Open Questions
 
 - Which client should the first package target: `@effect/sql-sqlite-bun`, `@effect/sql-sqlite-node`, or both behind separate layers?
 - How much source should we copy from the Drizzle branch versus import from catalog `drizzle-orm` internals?
 - What is the update path once Drizzle upstream ships `effect-sqlite`?
-- Should `afterCommit` stay lgcode-specific until event publishing moves? Default answer: yes.
+- Should `afterCommit` stay loongcode-specific until event publishing moves? Default answer: yes.
 - Should the compatibility wrapper preserve synchronous return types temporarily, or should the migration intentionally force Effect call sites?
-- Do CLI/admin raw SQL and sqlite shell stay in `packages/lgcode`, or does the storage package expose backend capabilities for them?
+- Do CLI/admin raw SQL and sqlite shell stay in `packages/loongcode`, or does the storage package expose backend capabilities for them?
 
 ## Recommended First PR
 
 Make the first PR package-only and intentionally boring:
 
 - Add `packages/effect-drizzle-sqlite`.
-- Use a tiny test schema, not lgcode domain tables.
+- Use a tiny test schema, not loongcode domain tables.
 - Prove Effect Drizzle SQLite queries, transactions, and migrations.
-- Do not migrate `packages/lgcode` yet except possibly adding the dependency if needed for typechecking.
+- Do not migrate `packages/loongcode` yet except possibly adding the dependency if needed for typechecking.
 
-That gives us a focused place to validate the Effect SQLite approach before disturbing lgcode's current database runtime.
+That gives us a focused place to validate the Effect SQLite approach before disturbing loongcode's current database runtime.

@@ -1,7 +1,7 @@
 interface ImportMetaEnv {
-  readonly VITE_LGCODE_SERVER_HOST: string
-  readonly VITE_LGCODE_SERVER_PORT: string
-  readonly VITE_LGCODE_CHANNEL?: "dev" | "beta" | "prod"
+  readonly VITE_LOONGCODE_SERVER_HOST: string
+  readonly VITE_LOONGCODE_SERVER_PORT: string
+  readonly VITE_LOONGCODE_CHANNEL?: "dev" | "beta" | "prod"
 
   readonly VITE_SENTRY_DSN?: string
   readonly VITE_SENTRY_ENVIRONMENT?: string

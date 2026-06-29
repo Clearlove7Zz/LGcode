@@ -1,4 +1,4 @@
-import { Resource } from "@lgcode/console-resource"
+import { Resource } from "@loongcode/console-resource"
 
 export const logger = {
   metric: (values: Record<string, any>) => {

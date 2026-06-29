@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import { Ignore } from "@lgcode/core/filesystem/ignore"
+import { Ignore } from "@loongcode/core/filesystem/ignore"
 
 test("match nested and non-nested", () => {
   expect(Ignore.match("node_modules/index.js")).toBe(true)

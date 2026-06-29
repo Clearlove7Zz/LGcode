@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import type { QuestionRequest } from "@lgcode/sdk/v2"
+import type { QuestionRequest } from "@loongcode/sdk/v2"
 import {
   createQuestionBodyState,
   questionConfirm,

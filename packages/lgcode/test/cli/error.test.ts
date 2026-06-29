@@ -8,14 +8,14 @@ describe("cli.error", () => {
     const cases = [
       {
         tag: "ConfigJsonError",
-        data: { path: "/tmp/lgcode.jsonc", message: "Unexpected token" },
-        expected: "Config file at /tmp/lgcode.jsonc is not valid JSON(C): Unexpected token",
+        data: { path: "/tmp/loongcode.jsonc", message: "Unexpected token" },
+        expected: "Config file at /tmp/loongcode.jsonc is not valid JSON(C): Unexpected token",
       },
       {
         tag: "ConfigDirectoryTypoError",
-        data: { path: "/tmp/lgcode.jsonc", dir: ".lgcode", suggestion: "lgcode" },
+        data: { path: "/tmp/loongcode.jsonc", dir: ".loongcode", suggestion: "loongcode" },
         expected:
-          'Directory ".lgcode" in /tmp/lgcode.jsonc is not valid. Rename the directory to "lgcode" or remove it. This is a common typo.',
+          'Directory ".loongcode" in /tmp/loongcode.jsonc is not valid. Rename the directory to "loongcode" or remove it. This is a common typo.',
       },
       {
         tag: "ConfigFrontmatterError",
@@ -25,11 +25,11 @@ describe("cli.error", () => {
       {
         tag: "ConfigInvalidError",
         data: {
-          path: "/tmp/lgcode.jsonc",
+          path: "/tmp/loongcode.jsonc",
           message: "schema mismatch",
           issues: [{ message: "Expected string", path: ["provider", "id"] }],
         },
-        expected: "Configuration is invalid at /tmp/lgcode.jsonc: schema mismatch\n↳ Expected string provider.id",
+        expected: "Configuration is invalid at /tmp/loongcode.jsonc: schema mismatch\n↳ Expected string provider.id",
       },
     ]
 
@@ -41,7 +41,7 @@ describe("cli.error", () => {
 
   test("preserves multiline JSONC diagnostics for tagged config errors", () => {
     const data = {
-      path: "/tmp/lgcode.jsonc",
+      path: "/tmp/loongcode.jsonc",
       message:
         '\n--- JSONC Input ---\n{\n  "model": \n}\n--- Errors ---\nValueExpected at line 3, column 1\n   Line 3: }\n          ^\n--- End ---',
     }
@@ -73,8 +73,8 @@ describe("cli.error", () => {
     const expected = [
       "Model not found: anthropic/claude-sonet-4",
       "Did you mean: claude-sonnet-4",
-      "Try: `lgcode models` to list available models",
-      "Or check your config (lgcode.json) provider/model names",
+      "Try: `loongcode models` to list available models",
+      "Or check your config (loongcode.json) provider/model names",
     ].join("\n")
 
     expect(FormatError({ name: "ProviderModelNotFoundError", data })).toBe(expected)

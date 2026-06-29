@@ -1,9 +1,9 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { Catalog } from "@lgcode/core/catalog"
-import { PluginV2 } from "@lgcode/core/plugin"
-import { VercelPlugin } from "@lgcode/core/plugin/provider/vercel"
-import { ProviderV2 } from "@lgcode/core/provider"
+import { Catalog } from "@loongcode/core/catalog"
+import { PluginV2 } from "@loongcode/core/plugin"
+import { VercelPlugin } from "@loongcode/core/plugin/provider/vercel"
+import { ProviderV2 } from "@loongcode/core/provider"
 import { it, model, provider } from "./provider-helper"
 
 describe("VercelPlugin", () => {
@@ -26,7 +26,7 @@ describe("VercelPlugin", () => {
       expect((yield* catalog.provider.get(ProviderV2.ID.make("vercel"))).request.headers).toEqual({
         Existing: "1",
         "http-referer": "https://modelhub.lgdg.cc/",
-        "x-title": "lgcode",
+        "x-title": "loongcode",
       })
     }),
   )

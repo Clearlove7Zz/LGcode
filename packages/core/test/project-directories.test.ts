@@ -1,11 +1,11 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer, Schema } from "effect"
-import { Database } from "@lgcode/core/database/database"
-import { EventV2 } from "@lgcode/core/event"
-import { Project } from "@lgcode/core/project"
-import { ProjectDirectories } from "@lgcode/core/project/directories"
-import { ProjectTable } from "@lgcode/core/project/sql"
-import { AbsolutePath } from "@lgcode/core/schema"
+import { Database } from "@loongcode/core/database/database"
+import { EventV2 } from "@loongcode/core/event"
+import { Project } from "@loongcode/core/project"
+import { ProjectDirectories } from "@loongcode/core/project/directories"
+import { ProjectTable } from "@loongcode/core/project/sql"
+import { AbsolutePath } from "@loongcode/core/schema"
 import { testEffect } from "./lib/effect"
 
 const database = Database.layerFromPath(":memory:")

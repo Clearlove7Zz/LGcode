@@ -5,10 +5,10 @@ import path from "path"
 import os from "os"
 import { Cause, Effect, Exit, Layer } from "effect"
 import { testEffect } from "../lib/effect"
-import { FSUtil } from "@lgcode/core/fs-util"
-import { EffectFlock } from "@lgcode/core/util/effect-flock"
-import { Global } from "@lgcode/core/global"
-import { Hash } from "@lgcode/core/util/hash"
+import { FSUtil } from "@loongcode/core/fs-util"
+import { EffectFlock } from "@loongcode/core/util/effect-flock"
+import { Global } from "@loongcode/core/global"
+import { Hash } from "@loongcode/core/util/hash"
 
 function lock(dir: string, key: string) {
   return path.join(dir, Hash.fast(key) + ".lock")

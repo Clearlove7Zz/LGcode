@@ -1,5 +1,5 @@
 import type { APIEvent } from "@solidjs/start/server"
-import { Resource } from "@lgcode/console-resource"
+import { Resource } from "@loongcode/console-resource"
 
 const dataPath = "/data"
 

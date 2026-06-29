@@ -63,7 +63,7 @@ export interface Interface {
   readonly pull: (url: string) => Effect.Effect<AbsolutePath[]>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2/SkillDiscovery") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/v2/SkillDiscovery") {}
 
 export const layer = Layer.effect(
   Service,

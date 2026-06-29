@@ -1,31 +1,31 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
-import { httpClient } from "@lgcode/core/effect/layer-node-platform"
-import { serviceUse } from "@lgcode/core/effect/service-use"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
+import { httpClient } from "@loongcode/core/effect/layer-node-platform"
+import { serviceUse } from "@loongcode/core/effect/service-use"
 import path from "path"
 import { pathToFileURL } from "url"
 import os from "os"
 import { mergeDeep } from "remeda"
-import { Global } from "@lgcode/core/global"
+import { Global } from "@loongcode/core/global"
 import fsNode from "fs/promises"
-import { Flag } from "@lgcode/core/flag/flag"
+import { Flag } from "@loongcode/core/flag/flag"
 import { Auth } from "../auth"
 import { Env } from "../env"
 import { applyEdits, modify } from "jsonc-parser"
-import { InstallationLocal, InstallationVersion } from "@lgcode/core/installation/version"
+import { InstallationLocal, InstallationVersion } from "@loongcode/core/installation/version"
 import { existsSync } from "fs"
 import { Account } from "@/account/account"
 import { isRecord } from "@/util/record"
-import type { ConsoleState } from "@lgcode/core/v1/config/console-state"
-import { FSUtil } from "@lgcode/core/fs-util"
+import type { ConsoleState } from "@loongcode/core/v1/config/console-state"
+import { FSUtil } from "@loongcode/core/fs-util"
 import { InstanceState } from "@/effect/instance-state"
 import { Context, Duration, Effect, Exit, Fiber, Layer, Option, Schema } from "effect"
 import { FetchHttpClient, HttpClient, HttpClientRequest } from "effect/unstable/http"
-import { EffectFlock } from "@lgcode/core/util/effect-flock"
+import { EffectFlock } from "@loongcode/core/util/effect-flock"
 import { containsPath, type InstanceContext } from "../project/instance-context"
-import { ConfigV1 } from "@lgcode/core/v1/config/config"
-import { RemoteAuthError } from "@lgcode/core/v1/config/error"
-import { ConfigPermissionV1 } from "@lgcode/core/v1/config/permission"
-import { ConfigPluginV1 } from "@lgcode/core/v1/config/plugin"
+import { ConfigV1 } from "@loongcode/core/v1/config/config"
+import { RemoteAuthError } from "@loongcode/core/v1/config/error"
+import { ConfigPermissionV1 } from "@loongcode/core/v1/config/permission"
+import { ConfigPluginV1 } from "@loongcode/core/v1/config/plugin"
 import { ConfigAgent } from "./agent"
 import { ConfigCommand } from "./command"
 import { ConfigManaged } from "./managed"
@@ -33,7 +33,7 @@ import { ConfigParse } from "./parse"
 import { ConfigPaths } from "./paths"
 import { ConfigPlugin } from "./plugin"
 import { ConfigVariable } from "./variable"
-import { Npm } from "@lgcode/core/npm"
+import { Npm } from "@loongcode/core/npm"
 import { withTransientReadRetry } from "@/util/effect-http-client"
 
 // Custom merge function that concatenates array fields instead of replacing them
@@ -132,12 +132,12 @@ export interface Interface {
   readonly waitForDependencies: () => Effect.Effect<void>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Config") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/Config") {}
 
 export const use = serviceUse(Service)
 
 function globalConfigFile() {
-  const candidates = ["lgcode.jsonc", "lgcode.json", "config.json"].map((file) =>
+  const candidates = ["loongcode.jsonc", "loongcode.json", "config.json"].map((file) =>
     path.join(Global.Path.config, file),
   )
   for (const file of candidates) {
@@ -247,7 +247,7 @@ export const layer = Layer.effect(
       let result: Info = {}
       // Seed the default global config with the schema for editor completion, but avoid writing when the user
       // explicitly routes config through env-provided paths or content.
-      if (!Flag.LGCODE_CONFIG && !Flag.LGCODE_CONFIG_DIR && !Flag.LGCODE_CONFIG_CONTENT) {
+      if (!Flag.LOONGCODE_CONFIG && !Flag.LOONGCODE_CONFIG_DIR && !Flag.LOONGCODE_CONFIG_CONTENT) {
         const file = globalConfigFile()
         if (!existsSync(file)) {
           yield* fs
@@ -256,8 +256,8 @@ export const layer = Layer.effect(
         }
       }
       result = mergeConfig(result, yield* loadFile(path.join(Global.Path.config, "config.json"), env))
-      result = mergeConfig(result, yield* loadFile(path.join(Global.Path.config, "lgcode.json"), env))
-      result = mergeConfig(result, yield* loadFile(path.join(Global.Path.config, "lgcode.jsonc"), env))
+      result = mergeConfig(result, yield* loadFile(path.join(Global.Path.config, "loongcode.json"), env))
+      result = mergeConfig(result, yield* loadFile(path.join(Global.Path.config, "loongcode.jsonc"), env))
 
       const legacy = path.join(Global.Path.config, "config")
       if (existsSync(legacy)) {
@@ -321,7 +321,7 @@ export const layer = Layer.effect(
 
         const pluginScopeForSource = Effect.fnUntraced(function* (source: string) {
           if (source.startsWith("http://") || source.startsWith("https://")) return "global"
-          if (source === "LGCODE_CONFIG_CONTENT") return "local"
+          if (source === "LOONGCODE_CONFIG_CONTENT") return "local"
           if (containsPath(source, ctx)) return "local"
           return "global"
         })
@@ -356,7 +356,7 @@ export const layer = Layer.effect(
           if (value.type === "wellknown") {
             const url = key.replace(/\/+$/, "")
             authEnv[value.key] = value.token
-            const wellknownURL = `${url}/.well-known/lgcode`
+            const wellknownURL = `${url}/.well-known/loongcode`
             yield* Effect.logDebug("fetching remote config", { url: wellknownURL })
             const wellknown = yield* fetchRemoteJson(wellknownURL, undefined, ConfigV1.WellKnown, url)
             const remote = yield* Effect.promise(() =>
@@ -397,13 +397,13 @@ export const layer = Layer.effect(
         const global = Object.keys(authEnv).length ? yield* loadGlobal(authEnv) : yield* getGlobal()
         yield* merge(Global.Path.config, global, "global")
 
-        if (Flag.LGCODE_CONFIG) {
-          yield* merge(Flag.LGCODE_CONFIG, yield* loadFile(Flag.LGCODE_CONFIG, authEnv))
-          yield* Effect.logDebug("loaded custom config", { path: Flag.LGCODE_CONFIG })
+        if (Flag.LOONGCODE_CONFIG) {
+          yield* merge(Flag.LOONGCODE_CONFIG, yield* loadFile(Flag.LOONGCODE_CONFIG, authEnv))
+          yield* Effect.logDebug("loaded custom config", { path: Flag.LOONGCODE_CONFIG })
         }
 
-        if (!Flag.LGCODE_DISABLE_PROJECT_CONFIG) {
-          for (const file of yield* ConfigPaths.files("lgcode", ctx.directory, ctx.worktree).pipe(Effect.orDie)) {
+        if (!Flag.LOONGCODE_DISABLE_PROJECT_CONFIG) {
+          for (const file of yield* ConfigPaths.files("loongcode", ctx.directory, ctx.worktree).pipe(Effect.orDie)) {
             yield* merge(file, yield* loadFile(file, authEnv), "local")
           }
         }
@@ -414,15 +414,15 @@ export const layer = Layer.effect(
 
         const directories = yield* ConfigPaths.directories(ctx.directory, ctx.worktree)
 
-        if (Flag.LGCODE_CONFIG_DIR) {
-          yield* Effect.logDebug("loading config from LGCODE_CONFIG_DIR", { path: Flag.LGCODE_CONFIG_DIR })
+        if (Flag.LOONGCODE_CONFIG_DIR) {
+          yield* Effect.logDebug("loading config from LOONGCODE_CONFIG_DIR", { path: Flag.LOONGCODE_CONFIG_DIR })
         }
 
         const deps: Fiber.Fiber<void>[] = []
 
         for (const dir of directories) {
-          if (dir.endsWith(".lgcode") || dir === Flag.LGCODE_CONFIG_DIR) {
-            for (const file of ["lgcode.json", "lgcode.jsonc"]) {
+          if (dir.endsWith(".loongcode") || dir === Flag.LOONGCODE_CONFIG_DIR) {
+            for (const file of ["loongcode.json", "loongcode.jsonc"]) {
               const source = path.join(dir, file)
               yield* Effect.logDebug(`loading config from ${source}`)
               yield* merge(source, yield* loadFile(source, authEnv))
@@ -438,7 +438,7 @@ export const layer = Layer.effect(
             .install(dir, {
               add: [
                 {
-                  name: "@lgcode/plugin",
+                  name: "@loongcode/plugin",
                   version: InstallationLocal ? undefined : InstallationVersion,
                 },
               ],
@@ -458,20 +458,20 @@ export const layer = Layer.effect(
           result.command = mergeDeep(result.command ?? {}, yield* Effect.promise(() => ConfigCommand.load(dir)))
           result.agent = mergeDeep(result.agent ?? {}, yield* Effect.promise(() => ConfigAgent.load(dir)))
           result.agent = mergeDeep(result.agent ?? {}, yield* Effect.promise(() => ConfigAgent.loadMode(dir)))
-          // Auto-discovered plugins under `.lgcode/plugin(s)` are already local files, so ConfigPlugin.load
+          // Auto-discovered plugins under `.loongcode/plugin(s)` are already local files, so ConfigPlugin.load
           // returns normalized Specs and we only need to attach origin metadata here.
           const list = yield* Effect.promise(() => ConfigPlugin.load(dir))
           yield* mergePluginOrigins(dir, list)
         }
 
-        if (process.env.LGCODE_CONFIG_CONTENT) {
-          const source = "LGCODE_CONFIG_CONTENT"
-          const next = yield* loadConfig(process.env.LGCODE_CONFIG_CONTENT, {
+        if (process.env.LOONGCODE_CONFIG_CONTENT) {
+          const source = "LOONGCODE_CONFIG_CONTENT"
+          const next = yield* loadConfig(process.env.LOONGCODE_CONFIG_CONTENT, {
             dir: ctx.directory,
             source,
           })
           yield* merge(source, next, "local")
-          yield* Effect.logDebug("loaded custom config from LGCODE_CONFIG_CONTENT")
+          yield* Effect.logDebug("loaded custom config from LOONGCODE_CONFIG_CONTENT")
         }
 
         const activeAccount = Option.getOrUndefined(
@@ -487,8 +487,8 @@ export const layer = Layer.effect(
               { concurrency: 2 },
             )
             if (Option.isSome(tokenOpt)) {
-              process.env["LGCODE_CONSOLE_TOKEN"] = tokenOpt.value
-              yield* env.set("LGCODE_CONSOLE_TOKEN", tokenOpt.value)
+              process.env["LOONGCODE_CONSOLE_TOKEN"] = tokenOpt.value
+              yield* env.set("LOONGCODE_CONSOLE_TOKEN", tokenOpt.value)
             }
 
             if (Option.isSome(configOpt)) {
@@ -514,7 +514,7 @@ export const layer = Layer.effect(
 
         const managedDir = ConfigManaged.managedConfigDir()
         if (existsSync(managedDir)) {
-          for (const file of ["lgcode.json", "lgcode.jsonc"]) {
+          for (const file of ["loongcode.json", "loongcode.jsonc"]) {
             const source = path.join(managedDir, file)
             yield* merge(source, yield* loadFile(source), "global")
           }
@@ -541,11 +541,11 @@ export const layer = Layer.effect(
           })
         }
 
-        if (Flag.LGCODE_PERMISSION) {
+        if (Flag.LOONGCODE_PERMISSION) {
           try {
-            result.permission = mergeDeep(result.permission ?? {}, JSON.parse(Flag.LGCODE_PERMISSION))
+            result.permission = mergeDeep(result.permission ?? {}, JSON.parse(Flag.LOONGCODE_PERMISSION))
           } catch (err) {
-            yield* Effect.logWarning("LGCODE_PERMISSION contains invalid JSON, skipping", { err })
+            yield* Effect.logWarning("LOONGCODE_PERMISSION contains invalid JSON, skipping", { err })
           }
         }
 
@@ -575,10 +575,10 @@ export const layer = Layer.effect(
           result.share = "auto"
         }
 
-        if (Flag.LGCODE_DISABLE_AUTOCOMPACT) {
+        if (Flag.LOONGCODE_DISABLE_AUTOCOMPACT) {
           result.compaction = { ...result.compaction, auto: false }
         }
-        if (Flag.LGCODE_DISABLE_PRUNE) {
+        if (Flag.LOONGCODE_DISABLE_PRUNE) {
           result.compaction = { ...result.compaction, prune: false }
         }
 

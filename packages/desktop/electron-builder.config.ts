@@ -10,10 +10,10 @@ const packageDir = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.resolve(packageDir, "../..")
 const signScript = path.join(rootDir, "script", "sign-windows.ps1")
 // The Electron 42 packaging update briefly installed Linux launchers/icons under
-// "lgcode-desktop". Keep that hidden desktop entry around so existing GNOME/KDE
-// pins still resolve after the canonical app id changes back to ai.lgcode.desktop.
-const legacyDesktopEntry = path.join(packageDir, "resources", "linux", "lgcode-desktop.desktop")
-const legacyDesktopEntryFpm = `${legacyDesktopEntry}=/usr/share/applications/lgcode-desktop.desktop`
+// "loongcode-desktop". Keep that hidden desktop entry around so existing GNOME/KDE
+// pins still resolve after the canonical app id changes back to ai.loongcode.desktop.
+const legacyDesktopEntry = path.join(packageDir, "resources", "linux", "loongcode-desktop.desktop")
+const legacyDesktopEntryFpm = `${legacyDesktopEntry}=/usr/share/applications/loongcode-desktop.desktop`
 
 async function signWindows(configuration: { path: string }) {
   if (process.platform !== "win32") return
@@ -27,34 +27,34 @@ async function signWindows(configuration: { path: string }) {
 }
 
 const channel = (() => {
-  const raw = process.env.LGCODE_CHANNEL
+  const raw = process.env.LOONGCODE_CHANNEL
   if (raw === "dev" || raw === "beta" || raw === "prod") return raw
   return "dev"
 })()
 
 const APP_IDS = {
-  dev: "ai.lgcode.desktop.dev",
-  beta: "ai.lgcode.desktop.beta",
-  prod: "ai.lgcode.desktop",
+  dev: "ai.loongcode.desktop.dev",
+  beta: "ai.loongcode.desktop.beta",
+  prod: "ai.loongcode.desktop",
 } as const
 
 const getBase = (appId: string): Configuration => ({
-  artifactName: "lgcode-desktop-${os}-${arch}.${ext}",
+  artifactName: "loongcode-desktop-${os}-${arch}.${ext}",
   directories: {
     output: "dist",
     buildResources: "resources",
   },
   // Linux launchers are .desktop files, so this is the desktop file name,
-  // not just the app id. For prod, app id "ai.lgcode.desktop" becomes
-  // "ai.lgcode.desktop.desktop".
+  // not just the app id. For prod, app id "ai.loongcode.desktop" becomes
+  // "ai.loongcode.desktop.desktop".
   // https://developer.gnome.org/documentation/guidelines/maintainer/integrating.html
   // https://www.electron.build/docs/linux/
   extraMetadata: {
     desktopName: `${appId}.desktop`,
     homepage: "https://github.com/Clearlove7Zz/LGcode",
     author: {
-      name: "LGcode",
-      email: "lgcode@example.com",
+      name: "Loongcode",
+      email: "loongcode@example.com",
     },
   },
   files: ["out/**/*", "resources/**/*"],
@@ -79,8 +79,8 @@ const getBase = (appId: string): Configuration => ({
     sign: false,
   },
   protocols: {
-    name: "LGcode",
-    schemes: ["lgcode"],
+    name: "Loongcode",
+    schemes: ["loongcode"],
   },
   win: {
     icon: `resources/icons/icon.ico`,
@@ -120,29 +120,29 @@ function getConfig() {
       return {
         ...base,
         appId,
-        productName: "LGcode Dev",
-        rpm: { packageName: "lgcode-dev" },
+        productName: "Loongcode Dev",
+        rpm: { packageName: "loongcode-dev" },
       }
     }
     case "beta": {
       return {
         ...base,
         appId,
-        productName: "LGcode Beta",
-        protocols: { name: "LGcode Beta", schemes: ["lgcode"] },
-        publish: { provider: "github", owner: "anomalyco", repo: "lgcode-beta", channel: "latest" },
-        rpm: { packageName: "lgcode-beta" },
+        productName: "Loongcode Beta",
+        protocols: { name: "Loongcode Beta", schemes: ["loongcode"] },
+        publish: { provider: "github", owner: "anomalyco", repo: "loongcode-beta", channel: "latest" },
+        rpm: { packageName: "loongcode-beta" },
       }
     }
     case "prod": {
       return {
         ...base,
         appId,
-        productName: "LGcode",
-        protocols: { name: "LGcode", schemes: ["lgcode"] },
-        publish: { provider: "github", owner: "anomalyco", repo: "lgcode", channel: "latest" },
+        productName: "Loongcode",
+        protocols: { name: "Loongcode", schemes: ["loongcode"] },
+        publish: { provider: "github", owner: "anomalyco", repo: "loongcode", channel: "latest" },
         deb: { fpm: [legacyDesktopEntryFpm] },
-        rpm: { packageName: "lgcode", fpm: [legacyDesktopEntryFpm] },
+        rpm: { packageName: "loongcode", fpm: [legacyDesktopEntryFpm] },
       }
     }
   }

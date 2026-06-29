@@ -1,11 +1,11 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
-import { httpClient, path } from "@lgcode/core/effect/layer-node-platform"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
+import { httpClient, path } from "@loongcode/core/effect/layer-node-platform"
 import { NodePath } from "@effect/platform-node"
 import { Effect, Layer, Path, Schema, Context } from "effect"
 import { FetchHttpClient, HttpClient, HttpClientRequest, HttpClientResponse } from "effect/unstable/http"
 import { withTransientReadRetry } from "@/util/effect-http-client"
-import { FSUtil } from "@lgcode/core/fs-util"
-import { Global } from "@lgcode/core/global"
+import { FSUtil } from "@loongcode/core/fs-util"
+import { Global } from "@loongcode/core/global"
 
 const skillConcurrency = 4
 const fileConcurrency = 8
@@ -23,7 +23,7 @@ export interface Interface {
   readonly pull: (url: string) => Effect.Effect<string[]>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/SkillDiscovery") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/SkillDiscovery") {}
 
 export const layer: Layer.Layer<Service, never, FSUtil.Service | Path.Path | HttpClient.HttpClient> = Layer.effect(
   Service,

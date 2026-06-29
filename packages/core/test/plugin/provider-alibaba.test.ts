@@ -1,9 +1,9 @@
 import { describe, expect } from "bun:test"
 import { createAlibaba } from "@ai-sdk/alibaba"
 import { Effect } from "effect"
-import { ModelV2 } from "@lgcode/core/model"
-import { PluginV2 } from "@lgcode/core/plugin"
-import { AlibabaPlugin } from "@lgcode/core/plugin/provider/alibaba"
+import { ModelV2 } from "@loongcode/core/model"
+import { PluginV2 } from "@loongcode/core/plugin"
+import { AlibabaPlugin } from "@loongcode/core/plugin/provider/alibaba"
 import { it, model } from "./provider-helper"
 
 describe("AlibabaPlugin", () => {

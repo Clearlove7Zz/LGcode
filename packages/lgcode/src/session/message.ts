@@ -1,11 +1,11 @@
 import { Schema } from "effect"
 import { SessionID } from "./schema"
 
-import { NonNegativeInt } from "@lgcode/core/schema"
+import { NonNegativeInt } from "@loongcode/core/schema"
 import { MessageError } from "./message-error"
 import { AuthError, OutputLengthError } from "./message-error"
-import { ProviderV2 } from "@lgcode/core/provider"
-import { ModelV2 } from "@lgcode/core/model"
+import { ProviderV2 } from "@loongcode/core/provider"
+import { ModelV2 } from "@loongcode/core/model"
 export { AuthError, OutputLengthError } from "./message-error"
 
 export const ToolCall = Schema.Struct({

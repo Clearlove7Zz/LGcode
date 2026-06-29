@@ -1,7 +1,7 @@
-import { withAlpha } from "@lgcode/ui/theme/color"
-import { useTheme } from "@lgcode/ui/theme/context"
-import { resolveThemeVariant } from "@lgcode/ui/theme/resolve"
-import type { HexColor } from "@lgcode/ui/theme/types"
+import { withAlpha } from "@loongcode/ui/theme/color"
+import { useTheme } from "@loongcode/ui/theme/context"
+import { resolveThemeVariant } from "@loongcode/ui/theme/resolve"
+import type { HexColor } from "@loongcode/ui/theme/types"
 import { showToast } from "@/utils/toast"
 import type { FitAddon, Ghostty, Terminal as Term } from "ghostty-web"
 import { type ComponentProps, createEffect, createMemo, onCleanup, onMount, splitProps } from "solid-js"
@@ -165,7 +165,7 @@ export const Terminal = (props: TerminalProps) => {
   const client = sdk().client
   const url = sdk().url
   const auth = server.current?.http
-  const username = auth?.username ?? "lgcode"
+  const username = auth?.username ?? "loongcode"
   const password = auth?.password ?? ""
   const sameOrigin = new URL(url, location.href).origin === location.origin
   let container!: HTMLDivElement
@@ -485,7 +485,7 @@ export const Terminal = (props: TerminalProps) => {
             { ptyID: id, directory },
             {
               throwOnError: false,
-              headers: { "x-lgcode-ticket": "1" },
+              headers: { "x-loongcode-ticket": "1" },
             },
           )
           .catch((err: unknown) => {

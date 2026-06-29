@@ -3,8 +3,8 @@ import { Effect, Layer, Stream } from "effect"
 import { HttpClient, HttpClientRequest, HttpClientResponse } from "effect/unstable/http"
 import { ChildProcess, ChildProcessSpawner } from "effect/unstable/process"
 import { Installation } from "../../src/installation"
-import { InstallationChannel } from "@lgcode/core/installation/version"
-import { AppProcess } from "@lgcode/core/process"
+import { InstallationChannel } from "@loongcode/core/installation/version"
+import { AppProcess } from "@loongcode/core/process"
 import { testEffect } from "../lib/effect"
 
 const encoder = new TextEncoder()
@@ -86,7 +86,7 @@ describe("installation", () => {
       Effect.gen(function* () {
         const result = yield* Installation.use.latest("npm")
         expect(result).toBe("1.5.0")
-        expect(npmCalls).toContain(`https://registry.npmjs.org/lgcode-ai/${InstallationChannel}`)
+        expect(npmCalls).toContain(`https://registry.npmjs.org/loongcode-ai/${InstallationChannel}`)
       }),
     )
 
@@ -100,7 +100,7 @@ describe("installation", () => {
       Effect.gen(function* () {
         const result = yield* Installation.use.latest("bun")
         expect(result).toBe("1.6.0")
-        expect(bunCalls).toContain(`https://registry.npmjs.org/lgcode-ai/${InstallationChannel}`)
+        expect(bunCalls).toContain(`https://registry.npmjs.org/loongcode-ai/${InstallationChannel}`)
       }),
     )
 
@@ -114,7 +114,7 @@ describe("installation", () => {
       Effect.gen(function* () {
         const result = yield* Installation.use.latest("pnpm")
         expect(result).toBe("1.7.0")
-        expect(pnpmCalls).toContain(`https://registry.npmjs.org/lgcode-ai/${InstallationChannel}`)
+        expect(pnpmCalls).toContain(`https://registry.npmjs.org/loongcode-ai/${InstallationChannel}`)
       }),
     )
 
@@ -139,8 +139,8 @@ describe("installation", () => {
         () => jsonResponse({ versions: { stable: "2.0.0" } }),
         (cmd, args) => {
           // getBrewFormula: return core formula (no tap)
-          if (cmd === "brew" && args.includes("--formula") && args.includes("anomalyco/tap/lgcode")) return ""
-          if (cmd === "brew" && args.includes("--formula") && args.includes("lgcode")) return "lgcode"
+          if (cmd === "brew" && args.includes("--formula") && args.includes("anomalyco/tap/loongcode")) return ""
+          if (cmd === "brew" && args.includes("--formula") && args.includes("loongcode")) return "loongcode"
           return ""
         },
       ),
@@ -158,7 +158,7 @@ describe("installation", () => {
       testLayer(
         () => jsonResponse({}), // HTTP not used for tap formula
         (cmd, args) => {
-          if (cmd === "brew" && args.includes("anomalyco/tap/lgcode") && args.includes("--formula")) return "lgcode"
+          if (cmd === "brew" && args.includes("anomalyco/tap/loongcode") && args.includes("--formula")) return "loongcode"
           if (cmd === "brew" && args.includes("--json=v2")) return brewInfoJson
           return ""
         },

@@ -1,10 +1,10 @@
 import { EOL } from "os"
 import { Effect, Option } from "effect"
-import { Catalog } from "@lgcode/core/catalog"
-import { LocationServiceMap } from "@lgcode/core/location-layer"
-import { Location } from "@lgcode/core/location"
-import { PluginBoot } from "@lgcode/core/plugin/boot"
-import { AbsolutePath } from "@lgcode/core/schema"
+import { Catalog } from "@loongcode/core/catalog"
+import { LocationServiceMap } from "@loongcode/core/location-layer"
+import { Location } from "@loongcode/core/location"
+import { PluginBoot } from "@loongcode/core/plugin/boot"
+import { AbsolutePath } from "@loongcode/core/schema"
 import { effectCmd } from "../../effect-cmd"
 
 export const V2Command = effectCmd({

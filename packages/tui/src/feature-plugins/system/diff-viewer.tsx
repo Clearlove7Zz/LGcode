@@ -1,6 +1,6 @@
 /** @jsxImportSource @opentui/solid */
-import type { TuiPlugin, TuiPluginApi, TuiRouteCurrent } from "@lgcode/plugin/tui"
-import type { SnapshotFileDiff, VcsFileDiff } from "@lgcode/sdk/v2"
+import type { TuiPlugin, TuiPluginApi, TuiRouteCurrent } from "@loongcode/plugin/tui"
+import type { SnapshotFileDiff, VcsFileDiff } from "@loongcode/sdk/v2"
 import {
   TextAttributes,
   type BorderSides,
@@ -38,7 +38,7 @@ import {
 const ROUTE = "diff"
 const MIN_SPLIT_WIDTH = 100
 const FILE_TREE_WIDTH = 32
-const PLAIN_TEXT_FILETYPE = "lgcode-plain-text"
+const PLAIN_TEXT_FILETYPE = "loongcode-plain-text"
 const WORKING_TREE_DIFF_CONTEXT_LINES = 12
 const KV_SHOW_FILE_TREE = "diff_viewer_show_file_tree"
 const KV_SINGLE_PATCH = "diff_viewer_single_patch"

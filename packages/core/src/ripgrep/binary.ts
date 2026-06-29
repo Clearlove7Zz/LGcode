@@ -26,7 +26,7 @@ export namespace RipgrepBinary {
     readonly filepath: Effect.Effect<string, Error>
   }
 
-  export class Service extends Context.Service<Service, Interface>()("@lgcode/RipgrepBinary") {}
+  export class Service extends Context.Service<Service, Interface>()("@loongcode/RipgrepBinary") {}
 
   export const layer = Layer.effect(
     Service,

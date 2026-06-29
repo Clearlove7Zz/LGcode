@@ -1,9 +1,9 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { CommandV2 } from "@lgcode/core/command"
-import { Location } from "@lgcode/core/location"
-import { CommandPlugin } from "@lgcode/core/plugin/command"
-import { AbsolutePath } from "@lgcode/core/schema"
+import { CommandV2 } from "@loongcode/core/command"
+import { Location } from "@loongcode/core/location"
+import { CommandPlugin } from "@loongcode/core/plugin/command"
+import { AbsolutePath } from "@loongcode/core/schema"
 import { location } from "../fixture/location"
 import { testEffect } from "../lib/effect"
 

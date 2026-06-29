@@ -3,7 +3,7 @@ title: Prilagođeni alati
 description: Kreirajte alate koje LLM može pozvati u otvorenom kodu.
 ---
 
-Prilagođeni alati su funkcije koje kreirate i koje LLM može pozvati tokom razgovora. Oni rade zajedno sa [ugrađenim lgcode](/docs/tools) alatima kao što su `read`, `write` i `bash`.
+Prilagođeni alati su funkcije koje kreirate i koje LLM može pozvati tokom razgovora. Oni rade zajedno sa [ugrađenim loongcode](/docs/tools) alatima kao što su `read`, `write` i `bash`.
 
 ---
 
@@ -17,8 +17,8 @@ Alati su definisani kao **TypeScript** ili **JavaScript** datoteke. Međutim, de
 
 Mogu se definisati:
 
-- Lokalno postavljanjem u `.lgcode/tools/` direktorij vašeg projekta.
-- Ili globalno, postavljanjem u `~/.config/lgcode/tools/`.
+- Lokalno postavljanjem u `.loongcode/tools/` direktorij vašeg projekta.
+- Ili globalno, postavljanjem u `~/.config/loongcode/tools/`.
 
 ---
 
@@ -26,8 +26,8 @@ Mogu se definisati:
 
 Najlakši način za kreiranje alata je korištenje pomoćnika `tool()` koji pruža sigurnost tipa i validaciju.
 
-```ts title=".lgcode/tools/database.ts" {1}
-import { tool } from "@lgcode-ai/plugin"
+```ts title=".loongcode/tools/database.ts" {1}
+import { tool } from "@loongcode-ai/plugin"
 
 export default tool({
   description: "Query the project database",
@@ -49,8 +49,8 @@ export default tool({
 
 Također možete izvesti više alata iz jedne datoteke. Svaki izvoz postaje **poseban alat** pod nazivom **`<filename>_<exportname>`**:
 
-```ts title=".lgcode/tools/math.ts"
-import { tool } from "@lgcode-ai/plugin"
+```ts title=".loongcode/tools/math.ts"
+import { tool } from "@loongcode-ai/plugin"
 
 export const add = tool({
   description: "Add two numbers",
@@ -85,8 +85,8 @@ Prilagođeni alati su prepoznati po imenu. Ako prilagođeni alat koristi isto im
 
 Na primjer, ova datoteka zamjenjuje ugrađeni `bash` alat:
 
-```ts title=".lgcode/tools/bash.ts"
-import { tool } from "@lgcode-ai/plugin"
+```ts title=".loongcode/tools/bash.ts"
+import { tool } from "@loongcode-ai/plugin"
 
 export default tool({
   description: "Restricted bash wrapper",
@@ -138,8 +138,8 @@ export default {
 
 Alati primaju kontekst o trenutnoj sesiji:
 
-```ts title=".lgcode/tools/project.ts" {8}
-import { tool } from "@lgcode-ai/plugin"
+```ts title=".loongcode/tools/project.ts" {8}
+import { tool } from "@loongcode-ai/plugin"
 
 export default tool({
   description: "Get project information",
@@ -164,7 +164,7 @@ Koristite `context.worktree` za korijen git radnog stabla.
 Možete pisati svoje alate na bilo kom jeziku koji želite. Evo primjera koji zbraja dva broja koristeći Python.
 Prvo kreirajte alat kao Python skriptu:
 
-```python title=".lgcode/tools/add.py"
+```python title=".loongcode/tools/add.py"
 import sys
 
 a = int(sys.argv[1])
@@ -174,8 +174,8 @@ print(a + b)
 
 Zatim kreirajte definiciju alata koja ga poziva:
 
-```ts title=".lgcode/tools/python-add.ts" {10}
-import { tool } from "@lgcode-ai/plugin"
+```ts title=".loongcode/tools/python-add.ts" {10}
+import { tool } from "@loongcode-ai/plugin"
 import path from "path"
 
 export default tool({
@@ -185,7 +185,7 @@ export default tool({
     b: tool.schema.number().describe("Second number"),
   },
   async execute(args, context) {
-    const script = path.join(context.worktree, ".lgcode/tools/add.py")
+    const script = path.join(context.worktree, ".loongcode/tools/add.py")
     const result = await Bun.$`python3 ${script} ${args.a} ${args.b}`.text()
     return result.trim()
   },

@@ -1,7 +1,7 @@
 import { NodeFileSystem } from "@effect/platform-node"
-import { ConfigV1 } from "@lgcode/core/v1/config/config"
-import { SessionV1 } from "@lgcode/core/v1/session"
-import { Database } from "@lgcode/core/database/database"
+import { ConfigV1 } from "@loongcode/core/v1/config/config"
+import { SessionV1 } from "@loongcode/core/v1/session"
+import { Database } from "@loongcode/core/database/database"
 import { eq } from "drizzle-orm"
 import { EventV2Bridge } from "@/event-v2-bridge"
 import { FetchHttpClient } from "effect/unstable/http"
@@ -9,7 +9,7 @@ import { expect } from "bun:test"
 import { Cause, Deferred, Duration, Effect, Exit, Fiber, Layer } from "effect"
 import path from "path"
 import { fileURLToPath, pathToFileURL } from "url"
-import { NamedError } from "@lgcode/core/util/error"
+import { NamedError } from "@loongcode/core/util/error"
 import { Agent as AgentSvc } from "../../src/agent/agent"
 import { BackgroundJob } from "@/background/job"
 import { Command } from "../../src/command"
@@ -26,10 +26,10 @@ import { Image } from "../../src/image/image"
 import { Question } from "../../src/question"
 import { Todo } from "../../src/session/todo"
 import { Session } from "@/session/session"
-import { SessionMessageTable } from "@lgcode/core/session/sql"
+import { SessionMessageTable } from "@loongcode/core/session/sql"
 import { LLM } from "../../src/session/llm"
 import { MessageV2 } from "../../src/session/message-v2"
-import { FSUtil } from "@lgcode/core/fs-util"
+import { FSUtil } from "@loongcode/core/fs-util"
 import { SessionCompaction } from "../../src/session/compaction"
 import { SessionSummary } from "../../src/session/summary"
 import { Instruction } from "../../src/session/instruction"
@@ -39,23 +39,23 @@ import { SessionRevert } from "../../src/session/revert"
 import { SessionRunState } from "../../src/session/run-state"
 import { MessageID, PartID, SessionID } from "../../src/session/schema"
 import { SessionStatus } from "../../src/session/status"
-import { SessionV2 } from "@lgcode/core/session"
-import { SessionExecution } from "@lgcode/core/session/execution"
+import { SessionV2 } from "@loongcode/core/session"
+import { SessionExecution } from "@loongcode/core/session/execution"
 import { Skill } from "../../src/skill"
 import { SystemPrompt } from "../../src/session/system"
-import { Shell } from "@lgcode/core/shell"
+import { Shell } from "@loongcode/core/shell"
 import { Snapshot } from "../../src/snapshot"
 import { ToolRegistry } from "@/tool/registry"
 import { Truncate } from "@/tool/truncate"
-import { CrossSpawnSpawner } from "@lgcode/core/cross-spawn-spawner"
-import { Ripgrep } from "@lgcode/core/ripgrep"
+import { CrossSpawnSpawner } from "@loongcode/core/cross-spawn-spawner"
+import { Ripgrep } from "@loongcode/core/ripgrep"
 import { Format } from "../../src/format"
 import { TestInstance } from "../fixture/fixture"
 import { awaitWithTimeout, pollWithTimeout, testEffect } from "../lib/effect"
 import { reply, TestLLMServer } from "../lib/llm-server"
 import { RuntimeFlags } from "@/effect/runtime-flags"
-import { ProviderV2 } from "@lgcode/core/provider"
-import { ModelV2 } from "@lgcode/core/model"
+import { ProviderV2 } from "@loongcode/core/provider"
+import { ModelV2 } from "@loongcode/core/model"
 
 const summary = Layer.succeed(
   SessionSummary.Service,
@@ -302,7 +302,7 @@ const ensureDir = Effect.fn("test.ensureDir")(function* (dir: string) {
 
 const writeConfig = Effect.fn("test.writeConfig")(function* (dir: string, config: Partial<ConfigV1.Info>) {
   yield* writeText(
-    path.join(dir, "lgcode.json"),
+    path.join(dir, "loongcode.json"),
     JSON.stringify({ $schema: "https://modelhub.lgdg.cc/config.json", ...config }),
   )
 })
@@ -2108,7 +2108,7 @@ it.instance("does not loop empty assistant turns for a simple reply", () =>
     const sessions = yield* Session.Service
     const session = yield* sessions.create({ title: "Prompt regression" })
 
-    yield* llm.text("packages/lgcode/src/session/processor.ts")
+    yield* llm.text("packages/loongcode/src/session/processor.ts")
 
     const result = yield* prompt.prompt({
       sessionID: session.id,
@@ -2179,7 +2179,7 @@ noLLMServer.instance(
       const other = yield* prompt.prompt({
         sessionID: session.id,
         agent: "build",
-        model: { providerID: ProviderV2.ID.make("lgcode"), modelID: ModelV2.ID.make("kimi-k2.5-free") },
+        model: { providerID: ProviderV2.ID.make("loongcode"), modelID: ModelV2.ID.make("kimi-k2.5-free") },
         noReply: true,
         parts: [{ type: "text", text: "hello" }],
       })

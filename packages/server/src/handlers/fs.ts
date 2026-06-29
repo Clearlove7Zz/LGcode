@@ -1,5 +1,5 @@
-import { FileSystem } from "@lgcode/core/filesystem"
-import { RelativePath } from "@lgcode/core/schema"
+import { FileSystem } from "@loongcode/core/filesystem"
+import { RelativePath } from "@loongcode/core/schema"
 import { Effect } from "effect"
 import { HttpServerResponse } from "effect/unstable/http"
 import { HttpApiBuilder } from "effect/unstable/httpapi"

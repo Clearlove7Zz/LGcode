@@ -1,21 +1,21 @@
 ---
 title: Configuración
-description: Usando la configuración LGcode JSON.
+description: Usando la configuración Loongcode JSON.
 ---
 
-Puede configurar LGcode usando un archivo de configuración JSON.
+Puede configurar Loongcode usando un archivo de configuración JSON.
 
 ---
 
 ## Formato
 
-LGcode admite los formatos **JSON** y **JSONC** (JSON con comentarios).
+Loongcode admite los formatos **JSON** y **JSONC** (JSON con comentarios).
 
-```jsonc title="lgcode.jsonc"
+```jsonc title="loongcode.jsonc"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   // Theme configuration
-  "theme": "lgcode",
+  "theme": "loongcode",
   "model": "anthropic/claude-sonnet-4-5",
   "autoupdate": true,
 }
@@ -34,7 +34,7 @@ Los archivos de configuración se **fusionan**, no se reemplazan.
 
 Los archivos de configuración se fusionan, no se reemplazan. Se combinan las configuraciones de las siguientes ubicaciones de configuración. Las configuraciones posteriores anulan las anteriores solo para claves en conflicto. Se conservan las configuraciones no conflictivas de todas las configuraciones.
 
-Por ejemplo, si su configuración global establece `theme: "lgcode"` y `autoupdate: true`, y la configuración de su proyecto establece `model: "anthropic/claude-sonnet-4-5"`, la configuración final incluirá las tres configuraciones.
+Por ejemplo, si su configuración global establece `theme: "loongcode"` y `autoupdate: true`, y la configuración de su proyecto establece `model: "anthropic/claude-sonnet-4-5"`, la configuración final incluirá las tres configuraciones.
 
 ---
 
@@ -42,30 +42,30 @@ Por ejemplo, si su configuración global establece `theme: "lgcode"` y `autoupda
 
 Las fuentes de configuración se cargan en este orden (las fuentes posteriores anulan las anteriores):
 
-1. **Configuración remota** (de `.well-known/lgcode`): valores predeterminados de la organización
-2. **Configuración global** (`~/.config/lgcode/lgcode.json`) - preferencias del usuario
-3. **Configuración personalizada** (`LGCODE_CONFIG` env var): anulaciones personalizadas
-4. **Configuración del proyecto** (`lgcode.json` en el proyecto): configuración específica del proyecto
-5. Directorios **`.lgcode`** - agentes, comandos, complementos
-6. **Configuración en línea** (`LGCODE_CONFIG_CONTENT` env var): anulaciones del tiempo de ejecución
+1. **Configuración remota** (de `.well-known/loongcode`): valores predeterminados de la organización
+2. **Configuración global** (`~/.config/loongcode/loongcode.json`) - preferencias del usuario
+3. **Configuración personalizada** (`LOONGCODE_CONFIG` env var): anulaciones personalizadas
+4. **Configuración del proyecto** (`loongcode.json` en el proyecto): configuración específica del proyecto
+5. Directorios **`.loongcode`** - agentes, comandos, complementos
+6. **Configuración en línea** (`LOONGCODE_CONFIG_CONTENT` env var): anulaciones del tiempo de ejecución
 
 Esto significa que las configuraciones del proyecto pueden anular los valores predeterminados globales y las configuraciones globales pueden anular los valores predeterminados de la organización remota.
 
 :::note
-Los directorios `.lgcode` y `~/.config/lgcode` usan **nombres en plural** para los subdirectorios: `agents/`, `commands/`, `modes/`, `plugins/`, `skills/`, `tools/` y `themes/`. También se admiten nombres singulares (por ejemplo, `agent/`) para compatibilidad con versiones anteriores.
+Los directorios `.loongcode` y `~/.config/loongcode` usan **nombres en plural** para los subdirectorios: `agents/`, `commands/`, `modes/`, `plugins/`, `skills/`, `tools/` y `themes/`. También se admiten nombres singulares (por ejemplo, `agent/`) para compatibilidad con versiones anteriores.
 :::
 
 ---
 
 ### Remoto
 
-Las organizaciones pueden proporcionar una configuración predeterminada a través del punto final `.well-known/lgcode`. Esto se obtiene automáticamente cuando se autentica con un proveedor que lo admita.
+Las organizaciones pueden proporcionar una configuración predeterminada a través del punto final `.well-known/loongcode`. Esto se obtiene automáticamente cuando se autentica con un proveedor que lo admita.
 
 La configuración remota se carga primero y sirve como capa base. Todas las demás fuentes de configuración (global, proyecto) pueden anular estos valores predeterminados.
 
 Por ejemplo, si su organización proporciona servidores MCP que están deshabilitados de forma predeterminada:
 
-```json title="Remote config from .well-known/lgcode"
+```json title="Remote config from .well-known/loongcode"
 {
   "mcp": {
     "jira": {
@@ -79,7 +79,7 @@ Por ejemplo, si su organización proporciona servidores MCP que están deshabili
 
 Puede habilitar servidores específicos en su configuración local:
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "mcp": {
     "jira": {
@@ -95,7 +95,7 @@ Puede habilitar servidores específicos en su configuración local:
 
 ### Global
 
-Coloque su configuración global LGcode en `~/.config/lgcode/lgcode.json`. Utilice la configuración global para las preferencias de todo el usuario, como temas, proveedores o combinaciones de teclas.
+Coloque su configuración global Loongcode en `~/.config/loongcode/loongcode.json`. Utilice la configuración global para las preferencias de todo el usuario, como temas, proveedores o combinaciones de teclas.
 
 La configuración global anula los valores predeterminados de la organización remota.
 
@@ -103,13 +103,13 @@ La configuración global anula los valores predeterminados de la organización r
 
 ### Por proyecto
 
-Agregue `lgcode.json` en la raíz de su proyecto. La configuración del proyecto tiene la mayor prioridad entre los archivos de configuración estándar: anula las configuraciones globales y remotas.
+Agregue `loongcode.json` en la raíz de su proyecto. La configuración del proyecto tiene la mayor prioridad entre los archivos de configuración estándar: anula las configuraciones globales y remotas.
 
 :::tip
 Coloque la configuración específica del proyecto en la raíz de su proyecto.
 :::
 
-Cuando se inicia LGcode, busca un archivo de configuración en el directorio actual o recorre hasta el directorio Git más cercano.
+Cuando se inicia Loongcode, busca un archivo de configuración en el directorio actual o recorre hasta el directorio Git más cercano.
 
 Esto también es seguro para registrarlo en Git y utiliza el mismo esquema que el global.
 
@@ -117,11 +117,11 @@ Esto también es seguro para registrarlo en Git y utiliza el mismo esquema que e
 
 ### Ruta personalizada
 
-Especifique una ruta de archivo de configuración personalizada utilizando la variable de entorno `LGCODE_CONFIG`.
+Especifique una ruta de archivo de configuración personalizada utilizando la variable de entorno `LOONGCODE_CONFIG`.
 
 ```bash
-export LGCODE_CONFIG=/path/to/my/custom-config.json
-lgcode run "Hello world"
+export LOONGCODE_CONFIG=/path/to/my/custom-config.json
+loongcode run "Hello world"
 ```
 
 La configuración personalizada se carga entre las configuraciones globales y del proyecto en orden de prioridad.
@@ -130,17 +130,17 @@ La configuración personalizada se carga entre las configuraciones globales y de
 
 ### Directorio personalizado
 
-Especifique un directorio de configuración personalizado usando `LGCODE_CONFIG_DIR`
+Especifique un directorio de configuración personalizado usando `LOONGCODE_CONFIG_DIR`
 variable de entorno. En este directorio se buscarán agentes, comandos,
-modos y complementos como el directorio estándar `.lgcode`, y debería
+modos y complementos como el directorio estándar `.loongcode`, y debería
 Sigue la misma estructura.
 
 ```bash
-export LGCODE_CONFIG_DIR=/path/to/my/config-directory
-lgcode run "Hello world"
+export LOONGCODE_CONFIG_DIR=/path/to/my/config-directory
+loongcode run "Hello world"
 ```
 
-El directorio personalizado se carga después de los directorios global config y `.lgcode`, por lo que **puede anular** su configuración.
+El directorio personalizado se carga después de los directorios global config y `.loongcode`, por lo que **puede anular** su configuración.
 
 ---
 
@@ -156,7 +156,7 @@ Su editor debería poder validar y autocompletar según el esquema.
 
 Puede configurar ajustes específicos de TUI a través de la opción `tui`.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "tui": {
@@ -181,9 +181,9 @@ Opciones disponibles:
 
 ### Servidor
 
-Puede configurar los ajustes del servidor para los comandos `lgcode serve` y `lgcode web` a través de la opción `server`.
+Puede configurar los ajustes del servidor para los comandos `loongcode serve` y `loongcode web` a través de la opción `server`.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "server": {
@@ -200,8 +200,8 @@ Opciones disponibles:
 
 - `port` - Puerto para escuchar.
 - `hostname`: nombre de host para escuchar. Cuando `mdns` está habilitado y no se establece ningún nombre de host, el valor predeterminado es `0.0.0.0`.
-- `mdns`: habilita el descubrimiento de servicios mDNS. Esto permite que otros dispositivos en la red descubran su servidor LGcode.
-- `mdnsDomain` - Nombre de dominio personalizado para el servicio mDNS. El valor predeterminado es `lgcode.local`. Útil para ejecutar múltiples instancias en la misma red.
+- `mdns`: habilita el descubrimiento de servicios mDNS. Esto permite que otros dispositivos en la red descubran su servidor Loongcode.
+- `mdnsDomain` - Nombre de dominio personalizado para el servicio mDNS. El valor predeterminado es `loongcode.local`. Útil para ejecutar múltiples instancias en la misma red.
 - `cors`: orígenes adicionales para permitir CORS cuando se utiliza el servidor HTTP desde un cliente basado en navegador. Los valores deben ser orígenes completos (esquema + host + puerto opcional), por ejemplo, `https://app.example.com`.
 
 [Obtenga más información sobre el servidor aquí](/docs/server).
@@ -212,7 +212,7 @@ Opciones disponibles:
 
 Puede administrar las herramientas que un LLM puede usar a través de la opción `tools`.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "tools": {
@@ -228,9 +228,9 @@ Puede administrar las herramientas que un LLM puede usar a través de la opción
 
 ### Modelos
 
-Puede configurar los proveedores y modelos que desea utilizar en su configuración LGcode a través de las opciones `provider`, `model` y `small_model`.
+Puede configurar los proveedores y modelos que desea utilizar en su configuración Loongcode a través de las opciones `provider`, `model` y `small_model`.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {},
@@ -239,11 +239,11 @@ Puede configurar los proveedores y modelos que desea utilizar en su configuraci�
 }
 ```
 
-La opción `small_model` configura un modelo separado para tareas livianas como la generación de títulos. De forma predeterminada, LGcode intenta utilizar un modelo más económico si su proveedor tiene uno disponible; de ​​lo contrario, recurre a su modelo principal.
+La opción `small_model` configura un modelo separado para tareas livianas como la generación de títulos. De forma predeterminada, Loongcode intenta utilizar un modelo más económico si su proveedor tiene uno disponible; de ​​lo contrario, recurre a su modelo principal.
 
 Las opciones de proveedores pueden incluir `timeout` y `setCacheKey`:
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -272,7 +272,7 @@ Algunos proveedores admiten opciones de configuración adicionales más allá de
 
 Amazon Bedrock admite la configuración específica de AWS:
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -301,9 +301,9 @@ Los tokens de portador (`AWS_BEARER_TOKEN_BEDROCK` o `/connect`) tienen priorida
 
 ### Temas
 
-Puede configurar el tema que desea usar en su configuración LGcode a través de la opción `theme`.
+Puede configurar el tema que desea usar en su configuración Loongcode a través de la opción `theme`.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "theme": ""
@@ -318,7 +318,7 @@ Puede configurar el tema que desea usar en su configuración LGcode a través de
 
 Puedes configurar agentes especializados para tareas específicas a través de la opción `agent`.
 
-```jsonc title="lgcode.jsonc"
+```jsonc title="loongcode.jsonc"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "agent": {
@@ -336,7 +336,7 @@ Puedes configurar agentes especializados para tareas específicas a través de l
 }
 ```
 
-También puede definir agentes utilizando archivos de Markdown en `~/.config/lgcode/agents/` o `.lgcode/agents/`. [Más información aquí](/docs/agents).
+También puede definir agentes utilizando archivos de Markdown en `~/.config/loongcode/agents/` o `.loongcode/agents/`. [Más información aquí](/docs/agents).
 
 ---
 
@@ -344,16 +344,16 @@ También puede definir agentes utilizando archivos de Markdown en `~/.config/lgc
 
 Puede configurar el agente predeterminado usando la opción `default_agent`. Esto determina qué agente se utiliza cuando no se especifica ninguno explícitamente.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "default_agent": "plan"
 }
 ```
 
-El agente predeterminado debe ser un agente principal (no un subagente). Puede ser un agente integrado como `"build"` o `"plan"`, o un [agente personalizado](/docs/agents) que haya definido. Si el agente especificado no existe o es un subagente, LGcode recurrirá a `"build"` con una advertencia.
+El agente predeterminado debe ser un agente principal (no un subagente). Puede ser un agente integrado como `"build"` o `"plan"`, o un [agente personalizado](/docs/agents) que haya definido. Si el agente especificado no existe o es un subagente, Loongcode recurrirá a `"build"` con una advertencia.
 
-Esta configuración se aplica en todas las interfaces: TUI, CLI (`lgcode run`), aplicación de escritorio y GitHub Acción.
+Esta configuración se aplica en todas las interfaces: TUI, CLI (`loongcode run`), aplicación de escritorio y GitHub Acción.
 
 ---
 
@@ -361,7 +361,7 @@ Esta configuración se aplica en todas las interfaces: TUI, CLI (`lgcode run`), 
 
 Puede configurar la función [compartir](/docs/share) a través de la opción `share`.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "share": "manual"
@@ -382,7 +382,7 @@ De forma predeterminada, el uso compartido está configurado en modo manual, don
 
 Puede configurar comandos personalizados para tareas repetitivas a través de la opción `command`.
 
-```jsonc title="lgcode.jsonc"
+```jsonc title="loongcode.jsonc"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "command": {
@@ -400,7 +400,7 @@ Puede configurar comandos personalizados para tareas repetitivas a través de la
 }
 ```
 
-También puede definir comandos utilizando archivos de Markdown en `~/.config/lgcode/commands/` o `.lgcode/commands/`. [Más información aquí](/docs/commands).
+También puede definir comandos utilizando archivos de Markdown en `~/.config/loongcode/commands/` o `.loongcode/commands/`. [Más información aquí](/docs/commands).
 
 ---
 
@@ -408,7 +408,7 @@ También puede definir comandos utilizando archivos de Markdown en `~/.config/lg
 
 Puede personalizar sus combinaciones de teclas a través de la opción `keybinds`.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "keybinds": {}
@@ -421,9 +421,9 @@ Puede personalizar sus combinaciones de teclas a través de la opción `keybinds
 
 ### Actualización automática
 
-LGcode descargará automáticamente cualquier actualización nueva cuando se inicie. Puede desactivar esto con la opción `autoupdate`.
+Loongcode descargará automáticamente cualquier actualización nueva cuando se inicie. Puede desactivar esto con la opción `autoupdate`.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "autoupdate": false
@@ -439,7 +439,7 @@ Tenga en cuenta que esto sólo funciona si no se instaló mediante un administra
 
 Puede configurar formateadores de código a través de la opción `formatter`.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "formatter": {
@@ -463,11 +463,11 @@ Puede configurar formateadores de código a través de la opción `formatter`.
 
 ### Permisos
 
-De forma predeterminada, lgcode **permite todas las operaciones** sin requerir aprobación explícita. Puede cambiar esto usando la opción `permission`.
+De forma predeterminada, loongcode **permite todas las operaciones** sin requerir aprobación explícita. Puede cambiar esto usando la opción `permission`.
 
 Por ejemplo, para garantizar que las herramientas `edit` y `bash` requieran la aprobación del usuario:
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "permission": {
@@ -485,7 +485,7 @@ Por ejemplo, para garantizar que las herramientas `edit` y `bash` requieran la a
 
 Puede controlar el comportamiento de compactación del contexto a través de la opción `compaction`.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "compaction": {
@@ -504,7 +504,7 @@ Puede controlar el comportamiento de compactación del contexto a través de la 
 
 Puede configurar patrones de ignorancia del observador de archivos a través de la opción `watcher`.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "watcher": {
@@ -521,7 +521,7 @@ Los patrones siguen la sintaxis global. Utilice esto para excluir directorios ru
 
 Puede configurar los servidores MCP que desee utilizar a través de la opción `mcp`.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "mcp": {}
@@ -534,14 +534,14 @@ Puede configurar los servidores MCP que desee utilizar a través de la opción `
 
 ### Complementos
 
-Los [complementos](/docs/plugins) amplían LGcode con herramientas, enlaces e integraciones personalizados.
+Los [complementos](/docs/plugins) amplían Loongcode con herramientas, enlaces e integraciones personalizados.
 
-Coloque los archivos de complemento en `.lgcode/plugins/` o `~/.config/lgcode/plugins/`. También puedes cargar complementos desde npm a través de la opción `plugin`.
+Coloque los archivos de complemento en `.loongcode/plugins/` o `~/.config/loongcode/plugins/`. También puedes cargar complementos desde npm a través de la opción `plugin`.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
-  "plugin": ["lgcode-helicone-session", "@my-org/custom-plugin"]
+  "plugin": ["loongcode-helicone-session", "@my-org/custom-plugin"]
 }
 ```
 
@@ -553,7 +553,7 @@ Coloque los archivos de complemento en `.lgcode/plugins/` o `~/.config/lgcode/pl
 
 Puedes configurar las instrucciones para el modelo que estás usando a través de la opción `instructions`.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "instructions": ["CONTRIBUTING.md", "docs/guidelines.md", ".cursor/rules/*.md"]
@@ -569,7 +569,7 @@ sobre las reglas aquí](/docs/rules).
 
 Puede deshabilitar proveedores que se cargan automáticamente a través de la opción `disabled_providers`. Esto es útil cuando desea evitar que se carguen ciertos proveedores incluso si sus credenciales están disponibles.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "disabled_providers": ["openai", "gemini"]
@@ -592,14 +592,14 @@ La opción `disabled_providers` acepta una variedad de ID de proveedores. Cuando
 
 Puede especificar una lista de proveedores permitidos a través de la opción `enabled_providers`. Cuando se establece, solo se habilitarán los proveedores especificados y se ignorarán todos los demás.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "enabled_providers": ["anthropic", "openai"]
 }
 ```
 
-Esto es útil cuando desea restringir LGcode para que utilice únicamente proveedores específicos en lugar de deshabilitarlos uno por uno.
+Esto es útil cuando desea restringir Loongcode para que utilice únicamente proveedores específicos en lugar de deshabilitarlos uno por uno.
 
 :::note
 El `disabled_providers` tiene prioridad sobre `enabled_providers`.
@@ -613,7 +613,7 @@ Si un proveedor aparece tanto en `enabled_providers` como en `disabled_providers
 
 La clave `experimental` contiene opciones que se encuentran en desarrollo activo.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "experimental": {}
@@ -636,10 +636,10 @@ Puede utilizar la sustitución de variables en sus archivos de configuración pa
 
 Utilice `{env:VARIABLE_NAME}` para sustituir variables de entorno:
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
-  "model": "{env:LGCODE_MODEL}",
+  "model": "{env:LOONGCODE_MODEL}",
   "provider": {
     "anthropic": {
       "models": {},
@@ -659,7 +659,7 @@ Si la variable de entorno no está configurada, se reemplazará con una cadena v
 
 Utilice `{file:path/to/file}` para sustituir el contenido de un archivo:
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "instructions": ["./custom-instructions.md"],

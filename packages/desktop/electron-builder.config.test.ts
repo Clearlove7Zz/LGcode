@@ -1,24 +1,24 @@
 import { expect, test } from "bun:test"
 import type { Configuration } from "electron-builder"
 
-const legacyDesktopEntry = "resources/linux/lgcode-desktop.desktop"
+const legacyDesktopEntry = "resources/linux/loongcode-desktop.desktop"
 
 const channels = [
-  { channel: "dev", appId: "ai.lgcode.desktop.dev" },
-  { channel: "beta", appId: "ai.lgcode.desktop.beta" },
-  { channel: "prod", appId: "ai.lgcode.desktop" },
+  { channel: "dev", appId: "ai.loongcode.desktop.dev" },
+  { channel: "beta", appId: "ai.loongcode.desktop.beta" },
+  { channel: "prod", appId: "ai.loongcode.desktop" },
 ] as const
 
 for (const channel of channels) {
   test(`uses one Linux desktop identity for ${channel.channel}`, async () => {
-    const previous = process.env.LGCODE_CHANNEL
-    process.env.LGCODE_CHANNEL = channel.channel
+    const previous = process.env.LOONGCODE_CHANNEL
+    process.env.LOONGCODE_CHANNEL = channel.channel
 
     const module = await import(`./electron-builder.config.ts?channel=${channel.channel}`)
     const config = module.default as Configuration
 
-    if (previous === undefined) delete process.env.LGCODE_CHANNEL
-    else process.env.LGCODE_CHANNEL = previous
+    if (previous === undefined) delete process.env.LOONGCODE_CHANNEL
+    else process.env.LOONGCODE_CHANNEL = previous
 
     expect(config.appId).toBe(channel.appId)
     expect(config.extraMetadata?.desktopName).toBe(`${channel.appId}.desktop`)
@@ -28,21 +28,21 @@ for (const channel of channels) {
 }
 
 test("keeps a hidden prod launcher for old Linux pins", async () => {
-  const previous = process.env.LGCODE_CHANNEL
-  process.env.LGCODE_CHANNEL = "prod"
+  const previous = process.env.LOONGCODE_CHANNEL
+  process.env.LOONGCODE_CHANNEL = "prod"
 
   const module = await import("./electron-builder.config.ts?compat=prod")
   const config = module.default as Configuration
 
-  if (previous === undefined) delete process.env.LGCODE_CHANNEL
-  else process.env.LGCODE_CHANNEL = previous
+  if (previous === undefined) delete process.env.LOONGCODE_CHANNEL
+  else process.env.LOONGCODE_CHANNEL = previous
 
-  expect(config.deb?.fpm?.[0]).toEndWith(`${legacyDesktopEntry}=/usr/share/applications/lgcode-desktop.desktop`)
-  expect(config.rpm?.fpm?.[0]).toEndWith(`${legacyDesktopEntry}=/usr/share/applications/lgcode-desktop.desktop`)
+  expect(config.deb?.fpm?.[0]).toEndWith(`${legacyDesktopEntry}=/usr/share/applications/loongcode-desktop.desktop`)
+  expect(config.rpm?.fpm?.[0]).toEndWith(`${legacyDesktopEntry}=/usr/share/applications/loongcode-desktop.desktop`)
 
   const desktop = await Bun.file(legacyDesktopEntry).text()
-  expect(desktop).toContain("Exec=/opt/LGcode/ai.lgcode.desktop %U")
-  expect(desktop).toContain("Icon=ai.lgcode.desktop")
-  expect(desktop).toContain("StartupWMClass=ai.lgcode.desktop")
+  expect(desktop).toContain("Exec=/opt/Loongcode/ai.loongcode.desktop %U")
+  expect(desktop).toContain("Icon=ai.loongcode.desktop")
+  expect(desktop).toContain("StartupWMClass=ai.loongcode.desktop")
   expect(desktop).toContain("NoDisplay=true")
 })

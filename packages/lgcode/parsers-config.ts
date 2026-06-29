@@ -1,1 +1,1 @@
-export { default } from "@lgcode/tui/parsers-config"
+export { default } from "@loongcode/tui/parsers-config"

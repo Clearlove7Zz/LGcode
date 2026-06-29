@@ -1,6 +1,6 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
-import { httpClient } from "@lgcode/core/effect/layer-node-platform"
-import { Ripgrep } from "@lgcode/core/ripgrep"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
+import { httpClient } from "@loongcode/core/effect/layer-node-platform"
+import { Ripgrep } from "@loongcode/core/ripgrep"
 import { PlanExitTool } from "./plan"
 import { Session } from "@/session/session"
 import { QuestionTool } from "./question"
@@ -10,7 +10,7 @@ import { GlobTool } from "./glob"
 import { GrepTool } from "./grep"
 import { ReadTool } from "./read"
 import { TaskTool } from "./task"
-import { Database } from "@lgcode/core/database/database"
+import { Database } from "@loongcode/core/database/database"
 import { TodoWriteTool } from "./todo"
 import { WebFetchTool } from "./webfetch"
 import { WriteTool } from "./write"
@@ -18,7 +18,7 @@ import { InvalidTool } from "./invalid"
 import { SkillTool } from "./skill"
 import * as Tool from "./tool"
 import { Config } from "@/config/config"
-import { type ToolContext as PluginToolContext, type ToolDefinition } from "@lgcode/plugin"
+import { type ToolContext as PluginToolContext, type ToolDefinition } from "@loongcode/plugin"
 import type { JSONSchema7, JSONSchema7Definition } from "@ai-sdk/provider"
 import { Schema } from "effect"
 import z from "zod"
@@ -29,13 +29,13 @@ import { WebSearchTool } from "./websearch"
 import { LspTool } from "./lsp"
 import * as Truncate from "./truncate"
 import { ApplyPatchTool } from "./apply_patch"
-import { Glob } from "@lgcode/core/util/glob"
+import { Glob } from "@loongcode/core/util/glob"
 import path from "path"
 import { pathToFileURL } from "url"
 import { Effect, Layer, Context } from "effect"
 import { FetchHttpClient, HttpClient } from "effect/unstable/http"
 import { ChildProcessSpawner } from "effect/unstable/process/ChildProcessSpawner"
-import { CrossSpawnSpawner } from "@lgcode/core/cross-spawn-spawner"
+import { CrossSpawnSpawner } from "@loongcode/core/cross-spawn-spawner"
 import { Format } from "../format"
 import { InstanceState } from "@/effect/instance-state"
 import { EffectBridge } from "@/effect/bridge"
@@ -43,18 +43,18 @@ import { Question } from "../question"
 import { Todo } from "../session/todo"
 import { LSP } from "@/lsp/lsp"
 import { Instruction } from "../session/instruction"
-import { FSUtil } from "@lgcode/core/fs-util"
+import { FSUtil } from "@loongcode/core/fs-util"
 import { EventV2Bridge } from "@/event-v2-bridge"
 import { Agent } from "../agent/agent"
 import { Skill } from "../skill"
 import { Permission } from "@/permission"
 import { BackgroundJob } from "@/background/job"
 import { RuntimeFlags } from "@/effect/runtime-flags"
-import { ProviderV2 } from "@lgcode/core/provider"
-import { ModelV2 } from "@lgcode/core/model"
+import { ProviderV2 } from "@loongcode/core/provider"
+import { ModelV2 } from "@loongcode/core/model"
 
 export function webSearchEnabled(providerID: ProviderV2.ID, flags = { exa: false, parallel: false }) {
-  return providerID === ProviderV2.ID.lgcode || flags.exa || flags.parallel
+  return providerID === ProviderV2.ID.loongcode || flags.exa || flags.parallel
 }
 
 type TaskDef = Tool.InferDef<typeof TaskTool>
@@ -78,7 +78,7 @@ export interface Interface {
   }) => Effect.Effect<Tool.Def[]>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/ToolRegistry") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/ToolRegistry") {}
 
 export const layer = Layer.effect(
   Service,

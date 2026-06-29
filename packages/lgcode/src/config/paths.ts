@@ -1,11 +1,11 @@
 export * as ConfigPaths from "./paths"
 
 import path from "path"
-import { Flag } from "@lgcode/core/flag/flag"
-import { Global } from "@lgcode/core/global"
+import { Flag } from "@loongcode/core/flag/flag"
+import { Global } from "@loongcode/core/global"
 import { unique } from "remeda"
 import * as Effect from "effect/Effect"
-import { FSUtil } from "@lgcode/core/fs-util"
+import { FSUtil } from "@loongcode/core/fs-util"
 
 export const files = Effect.fn("ConfigPaths.projectFiles")(function* (
   name: string,
@@ -24,19 +24,19 @@ export const directories = Effect.fn("ConfigPaths.directories")(function* (direc
   const afs = yield* FSUtil.Service
   return unique([
     Global.Path.config,
-    ...(!Flag.LGCODE_DISABLE_PROJECT_CONFIG
+    ...(!Flag.LOONGCODE_DISABLE_PROJECT_CONFIG
       ? yield* afs.up({
-          targets: [".lgcode"],
+          targets: [".loongcode"],
           start: directory,
           stop: worktree,
         })
       : []),
     ...(yield* afs.up({
-      targets: [".lgcode"],
+      targets: [".loongcode"],
       start: Global.Path.home,
       stop: Global.Path.home,
     })),
-    ...(Flag.LGCODE_CONFIG_DIR ? [Flag.LGCODE_CONFIG_DIR] : []),
+    ...(Flag.LOONGCODE_CONFIG_DIR ? [Flag.LOONGCODE_CONFIG_DIR] : []),
   ])
 })
 

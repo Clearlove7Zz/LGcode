@@ -1,6 +1,6 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
 import { Config } from "@/config/config"
-import { SessionV1 } from "@lgcode/core/v1/session"
+import { SessionV1 } from "@loongcode/core/v1/session"
 import type { MessageV2 } from "@/session/message-v2"
 import photonWasm from "@silvia-odwyer/photon-node/photon_rs_bg.wasm" with { type: "file" }
 import { Context, Effect, Layer, Schema } from "effect"
@@ -54,7 +54,7 @@ export interface Interface {
   readonly normalize: (input: SessionV1.FilePart) => Effect.Effect<SessionV1.FilePart, Error>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Image") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/Image") {}
 
 export const layer = Layer.effect(
   Service,
@@ -63,7 +63,7 @@ export const layer = Layer.effect(
     const loadPhoton = yield* Effect.cached(
       Effect.sync(() => {
         // Patched photon-node reads this during module init so Bun compiled binaries use the embedded wasm path.
-        ;(globalThis as typeof globalThis & { __LGCODE_PHOTON_WASM_PATH?: string }).__LGCODE_PHOTON_WASM_PATH =
+        ;(globalThis as typeof globalThis & { __LOONGCODE_PHOTON_WASM_PATH?: string }).__LOONGCODE_PHOTON_WASM_PATH =
           path.isAbsolute(photonWasm) ? photonWasm : fileURLToPath(new URL(photonWasm, import.meta.url))
       }).pipe(
         Effect.andThen(() => Effect.tryPromise(() => import("@silvia-odwyer/photon-node"))),

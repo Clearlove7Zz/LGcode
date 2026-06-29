@@ -2,9 +2,9 @@ import path from "path"
 import { type ParseError as JsoncParseError, applyEdits, modify, parse as parseJsonc } from "jsonc-parser"
 import { unique } from "remeda"
 import { Option, Schema } from "effect"
-import { TuiConfig } from "@lgcode/tui/config"
-import { Flag } from "@lgcode/core/flag/flag"
-import { Global } from "@lgcode/core/global"
+import { TuiConfig } from "@loongcode/tui/config"
+import { Flag } from "@loongcode/core/flag/flag"
+import { Global } from "@loongcode/core/global"
 import { Filesystem } from "@/util/filesystem"
 import * as ConfigPaths from "@/config/paths"
 
@@ -22,13 +22,13 @@ interface MigrateInput {
 }
 
 /**
- * Migrates tui-specific keys (theme, keybinds, tui) from lgcode.json files
+ * Migrates tui-specific keys (theme, keybinds, tui) from loongcode.json files
  * into dedicated tui.json files. Migration is performed per-directory and
  * skips only locations where a tui.json already exists.
  */
 export async function migrateTuiConfig(input: MigrateInput) {
-  const lgcode = await opencodeFiles(input)
-  for (const file of lgcode) {
+  const loongcode = await opencodeFiles(input)
+  for (const file of loongcode) {
     const source = await Filesystem.readText(file).catch(() => undefined)
     if (!source) continue
     const errors: JsoncParseError[] = []
@@ -114,13 +114,13 @@ async function backupAndStripLegacy(file: string, source: string) {
 
 async function opencodeFiles(input: { directories: string[]; cwd: string }) {
   const files = [
-    ...ConfigPaths.fileInDirectory(Global.Path.config, "lgcode"),
-    ...(await Filesystem.findUp(["lgcode.json", "lgcode.jsonc"], input.cwd, undefined, { rootFirst: true })),
+    ...ConfigPaths.fileInDirectory(Global.Path.config, "loongcode"),
+    ...(await Filesystem.findUp(["loongcode.json", "loongcode.jsonc"], input.cwd, undefined, { rootFirst: true })),
   ]
   for (const dir of unique(input.directories)) {
-    files.push(...ConfigPaths.fileInDirectory(dir, "lgcode"))
+    files.push(...ConfigPaths.fileInDirectory(dir, "loongcode"))
   }
-  if (Flag.LGCODE_CONFIG) files.push(Flag.LGCODE_CONFIG)
+  if (Flag.LOONGCODE_CONFIG) files.push(Flag.LOONGCODE_CONFIG)
 
   const existing = await Promise.all(
     unique(files).map(async (file) => {

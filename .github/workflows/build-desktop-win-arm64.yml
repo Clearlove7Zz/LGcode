@@ -28,18 +28,18 @@ jobs:
         run: bun run build
         working-directory: packages/desktop
         env:
-          LGCODE_CHANNEL: ${{ inputs.channel }}
+          LOONGCODE_CHANNEL: ${{ inputs.channel }}
 
       - name: Package
         run: npx electron-builder --win --arm64 --publish never --config electron-builder.config.ts
         working-directory: packages/desktop
         env:
-          LGCODE_CHANNEL: ${{ inputs.channel }}
+          LOONGCODE_CHANNEL: ${{ inputs.channel }}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: lgcode-desktop-win-arm64
+          name: loongcode-desktop-win-arm64
           path: |
             packages/desktop/dist/*.exe
             packages/desktop/dist/*.blockmap

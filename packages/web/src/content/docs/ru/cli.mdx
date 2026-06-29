@@ -1,30 +1,30 @@
 ---
 title: CLI
-description: Параметры и команда lgcode CLI.
+description: Параметры и команда loongcode CLI.
 ---
 
 import { Tabs, TabItem } from "@astrojs/starlight/components"
 
-CLI lgcode по умолчанию запускает [TUI](/docs/tui) при запуске без каких-либо аргументов.
+CLI loongcode по умолчанию запускает [TUI](/docs/tui) при запуске без каких-либо аргументов.
 
 ```bash
-lgcode
+loongcode
 ```
 
-Но он также принимает команды, описанные на этой странице. Это позволяет вам программно взаимодействовать с lgcode.
+Но он также принимает команды, описанные на этой странице. Это позволяет вам программно взаимодействовать с loongcode.
 
 ```bash
-lgcode run "Explain how closures work in JavaScript"
+loongcode run "Explain how closures work in JavaScript"
 ```
 
 ---
 
 ### tui
 
-Запустите TUI lgcode.
+Запустите TUI loongcode.
 
 ```bash
-lgcode [project]
+loongcode [project]
 ```
 
 #### Флаги
@@ -44,36 +44,36 @@ lgcode [project]
 
 ## Команды
 
-CLI lgcode также имеет следующие команды.
+CLI loongcode также имеет следующие команды.
 
 ---
 
 ### agent
 
-Управляйте агентами для lgcode.
+Управляйте агентами для loongcode.
 
 ```bash
-lgcode agent [command]
+loongcode agent [command]
 ```
 
 ---
 
 ### attach
 
-Подключите терминал к уже работающему внутреннему серверу lgcode, запущенному с помощью команд `serve` или `web`.
+Подключите терминал к уже работающему внутреннему серверу loongcode, запущенному с помощью команд `serve` или `web`.
 
 ```bash
-lgcode attach [url]
+loongcode attach [url]
 ```
 
-Это позволяет использовать TUI с удаленным сервером lgcode. Например:
+Это позволяет использовать TUI с удаленным сервером loongcode. Например:
 
 ```bash
 # Start the backend server for web/mobile access
-lgcode web --port 4096 --hostname 0.0.0.0
+loongcode web --port 4096 --hostname 0.0.0.0
 
 # In another terminal, attach the TUI to the running backend
-lgcode attach http://10.20.30.40:4096
+loongcode attach http://10.20.30.40:4096
 ```
 
 #### Флаги
@@ -84,8 +84,8 @@ lgcode attach http://10.20.30.40:4096
 | <nobr><code>{"--continue"}</code></nobr> | `-c`     | Продолжить последний сеанс                                                                       |
 | <nobr><code>{"--session"}</code></nobr>  | `-s`     | Идентификатор сеанса для продолжения                                                             |
 | <nobr><code>{"--fork"}</code></nobr>     |          | Создать ответвление сеанса при продолжении (используйте с `--continue` или `--session`)          |
-| <nobr><code>{"--password"}</code></nobr> | `-p`     | Пароль базовой аутентификации (по умолчанию `LGCODE_SERVER_PASSWORD`)                          |
-| <nobr><code>{"--username"}</code></nobr> | `-u`     | Имя пользователя базовой аутентификации (по умолчанию `LGCODE_SERVER_USERNAME` или `lgcode`) |
+| <nobr><code>{"--password"}</code></nobr> | `-p`     | Пароль базовой аутентификации (по умолчанию `LOONGCODE_SERVER_PASSWORD`)                          |
+| <nobr><code>{"--username"}</code></nobr> | `-u`     | Имя пользователя базовой аутентификации (по умолчанию `LOONGCODE_SERVER_USERNAME` или `loongcode`) |
 
 ---
 
@@ -94,7 +94,7 @@ lgcode attach http://10.20.30.40:4096
 Создайте нового агента с пользовательской конфигурацией.
 
 ```bash
-lgcode agent create
+loongcode agent create
 ```
 
 Эта команда поможет вам создать новый агент с настраиваемой системной подсказкой и настройкой инструмента.
@@ -106,7 +106,7 @@ lgcode agent create
 Перечислите всех доступных агентов.
 
 ```bash
-lgcode agent list
+loongcode agent list
 ```
 
 ---
@@ -116,20 +116,20 @@ lgcode agent list
 Команда для управления учетными данными и входом в систему для провайдеров.
 
 ```bash
-lgcode auth [command]
+loongcode auth [command]
 ```
 
 ---
 
 #### login
 
-lgcode использует список провайдеров с [Models.dev](https://models.dev), поэтому вы можете использовать `lgcode auth login` для настройки ключей API для любого поставщика, которого вы хотите использовать. Это хранится в `~/.local/share/lgcode/auth.json`.
+loongcode использует список провайдеров с [Models.dev](https://models.dev), поэтому вы можете использовать `loongcode auth login` для настройки ключей API для любого поставщика, которого вы хотите использовать. Это хранится в `~/.local/share/loongcode/auth.json`.
 
 ```bash
-lgcode auth login
+loongcode auth login
 ```
 
-Когда lgcode запускается, он загружает поставщиков из файла учетных данных. И если в ваших средах определены какие-либо ключи или файл `.env` в вашем проекте.
+Когда loongcode запускается, он загружает поставщиков из файла учетных данных. И если в ваших средах определены какие-либо ключи или файл `.env` в вашем проекте.
 
 ---
 
@@ -138,13 +138,13 @@ lgcode auth login
 Перечисляет всех проверенных поставщиков, которые хранятся в файле учетных данных.
 
 ```bash
-lgcode auth list
+loongcode auth list
 ```
 
 Или короткая версия.
 
 ```bash
-lgcode auth ls
+loongcode auth ls
 ```
 
 ---
@@ -154,7 +154,7 @@ lgcode auth ls
 Выключает вас из провайдера, удаляя его из файла учетных данных.
 
 ```bash
-lgcode auth logout
+loongcode auth logout
 ```
 
 ---
@@ -164,7 +164,7 @@ lgcode auth logout
 Управляйте агентом GitHub для автоматизации репозитория.
 
 ```bash
-lgcode github [command]
+loongcode github [command]
 ```
 
 ---
@@ -174,7 +174,7 @@ lgcode github [command]
 Установите агент GitHub в свой репозиторий.
 
 ```bash
-lgcode github install
+loongcode github install
 ```
 
 Это настроит необходимый рабочий процесс GitHub Actions и проведет вас через процесс настройки. [Подробнее](/docs/github).
@@ -186,7 +186,7 @@ lgcode github install
 Запустите агент GitHub. Обычно это используется в действиях GitHub.
 
 ```bash
-lgcode github run
+loongcode github run
 ```
 
 ##### Флаги
@@ -203,7 +203,7 @@ lgcode github run
 Управляйте серверами протокола контекста модели.
 
 ```bash
-lgcode mcp [command]
+loongcode mcp [command]
 ```
 
 ---
@@ -213,7 +213,7 @@ lgcode mcp [command]
 Добавьте сервер MCP в свою конфигурацию.
 
 ```bash
-lgcode mcp add
+loongcode mcp add
 ```
 
 Эта команда поможет вам добавить локальный или удаленный сервер MCP.
@@ -225,13 +225,13 @@ lgcode mcp add
 Перечислите все настроенные серверы MCP и состояние их подключения.
 
 ```bash
-lgcode mcp list
+loongcode mcp list
 ```
 
 Или используйте короткую версию.
 
 ```bash
-lgcode mcp ls
+loongcode mcp ls
 ```
 
 ---
@@ -241,7 +241,7 @@ lgcode mcp ls
 Аутентификация с помощью сервера MCP с поддержкой OAuth.
 
 ```bash
-lgcode mcp auth [name]
+loongcode mcp auth [name]
 ```
 
 Если вы не укажете имя сервера, вам будет предложено выбрать один из доступных серверов с поддержкой OAuth.
@@ -249,13 +249,13 @@ lgcode mcp auth [name]
 Вы также можете перечислить серверы с поддержкой OAuth и их статус аутентификации.
 
 ```bash
-lgcode mcp auth list
+loongcode mcp auth list
 ```
 
 Или используйте короткую версию.
 
 ```bash
-lgcode mcp auth ls
+loongcode mcp auth ls
 ```
 
 ---
@@ -265,7 +265,7 @@ lgcode mcp auth ls
 Удалите учетные данные OAuth для сервера MCP.
 
 ```bash
-lgcode mcp logout [name]
+loongcode mcp logout [name]
 ```
 
 ---
@@ -275,7 +275,7 @@ lgcode mcp logout [name]
 Отладка проблем с подключением OAuth для сервера MCP.
 
 ```bash
-lgcode mcp debug <name>
+loongcode mcp debug <name>
 ```
 
 ---
@@ -285,7 +285,7 @@ lgcode mcp debug <name>
 Перечислите все доступные модели от настроенных поставщиков.
 
 ```bash
-lgcode models [provider]
+loongcode models [provider]
 ```
 
 Эта команда отображает все модели, доступные у настроенных вами поставщиков, в формате `provider/model`.
@@ -295,7 +295,7 @@ lgcode models [provider]
 При желании вы можете передать идентификатор поставщика, чтобы фильтровать модели по этому поставщику.
 
 ```bash
-lgcode models anthropic
+loongcode models anthropic
 ```
 
 #### Флаги
@@ -305,36 +305,36 @@ lgcode models anthropic
 | <nobr><code>{"--refresh"}</code></nobr> | Обновите кеш моделей на сайте models.dev.                                         |
 | <nobr><code>{"--verbose"}</code></nobr> | Используйте более подробный вывод модели (включая метаданные, такие как затраты). |
 
-Используйте флаг `--refresh` для обновления списка кэшированных моделей. Это полезно, когда к поставщику добавлены новые модели и вы хотите увидеть их в lgcode.
+Используйте флаг `--refresh` для обновления списка кэшированных моделей. Это полезно, когда к поставщику добавлены новые модели и вы хотите увидеть их в loongcode.
 
 ```bash
-lgcode models --refresh
+loongcode models --refresh
 ```
 
 ---
 
 ### run
 
-Запустите lgcode в неинтерактивном режиме, передав приглашение напрямую.
+Запустите loongcode в неинтерактивном режиме, передав приглашение напрямую.
 
 ```bash
-lgcode run [message..]
+loongcode run [message..]
 ```
 
 Это полезно для создания сценариев, автоматизации или когда вам нужен быстрый ответ без запуска полного TUI. Например.
 
-```bash "lgcode run"
-lgcode run Explain the use of context in Go
+```bash "loongcode run"
+loongcode run Explain the use of context in Go
 ```
 
-Вы также можете подключиться к работающему экземпляру `lgcode serve`, чтобы избежать холодной загрузки сервера MCP при каждом запуске:
+Вы также можете подключиться к работающему экземпляру `loongcode serve`, чтобы избежать холодной загрузки сервера MCP при каждом запуске:
 
 ```bash
 # Start a headless server in one terminal
-lgcode serve
+loongcode serve
 
 # In another terminal, run commands that attach to it
-lgcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
+loongcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
 ```
 
 #### Флаги
@@ -351,9 +351,9 @@ lgcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
 | <nobr><code>{"--file"}</code></nobr>     | `-f`     | Файл(ы) для прикрепления к сообщению                                                             |
 | <nobr><code>{"--format"}</code></nobr>   |          | Формат: по умолчанию (отформатированный) или json (необработанные события JSON).                 |
 | <nobr><code>{"--title"}</code></nobr>    |          | Название сеанса (использует усеченное приглашение, если значение не указано)                     |
-| <nobr><code>{"--attach"}</code></nobr>   |          | Подключитесь к работающему серверу lgcode (например, http://localhost:4096)                    |
-| <nobr><code>{"--password"}</code></nobr> | `-p`     | Пароль базовой аутентификации (по умолчанию `LGCODE_SERVER_PASSWORD`)                          |
-| <nobr><code>{"--username"}</code></nobr> | `-u`     | Имя пользователя базовой аутентификации (по умолчанию `LGCODE_SERVER_USERNAME` или `lgcode`) |
+| <nobr><code>{"--attach"}</code></nobr>   |          | Подключитесь к работающему серверу loongcode (например, http://localhost:4096)                    |
+| <nobr><code>{"--password"}</code></nobr> | `-p`     | Пароль базовой аутентификации (по умолчанию `LOONGCODE_SERVER_PASSWORD`)                          |
+| <nobr><code>{"--username"}</code></nobr> | `-u`     | Имя пользователя базовой аутентификации (по умолчанию `LOONGCODE_SERVER_USERNAME` или `loongcode`) |
 | <nobr><code>{"--dir"}</code></nobr>      |          | Каталог для выполнения или путь на удалённом сервере при подключении                             |
 | <nobr><code>{"--variant"}</code></nobr>  |          | Вариант модели (уровень рассуждений для провайдера)                                              |
 | <nobr><code>{"--thinking"}</code></nobr> |          | Показать блоки размышлений                                                                       |
@@ -363,13 +363,13 @@ lgcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
 
 ### serve
 
-Запустите автономный сервер lgcode для доступа к API. Полный HTTP-интерфейс можно найти в [server docs](/docs/server).
+Запустите автономный сервер loongcode для доступа к API. Полный HTTP-интерфейс можно найти в [server docs](/docs/server).
 
 ```bash
-lgcode serve
+loongcode serve
 ```
 
-При этом запускается HTTP-сервер, который обеспечивает доступ API к функциям lgcode без интерфейса TUI. Установите `LGCODE_SERVER_PASSWORD`, чтобы включить базовую аутентификацию HTTP (имя пользователя по умолчанию — `lgcode`).
+При этом запускается HTTP-сервер, который обеспечивает доступ API к функциям loongcode без интерфейса TUI. Установите `LOONGCODE_SERVER_PASSWORD`, чтобы включить базовую аутентификацию HTTP (имя пользователя по умолчанию — `loongcode`).
 
 #### Флаги
 
@@ -384,20 +384,20 @@ lgcode serve
 
 ### session
 
-Управляйте сессиями lgcode.
+Управляйте сессиями loongcode.
 
 ```bash
-lgcode session [command]
+loongcode session [command]
 ```
 
 ---
 
 #### list
 
-Перечислите все сеансы lgcode.
+Перечислите все сеансы loongcode.
 
 ```bash
-lgcode session list
+loongcode session list
 ```
 
 ##### Флаги
@@ -411,10 +411,10 @@ lgcode session list
 
 ### stats
 
-Покажите статистику использования токенов и затрат для ваших сеансов lgcode.
+Покажите статистику использования токенов и затрат для ваших сеансов loongcode.
 
 ```bash
-lgcode stats
+loongcode stats
 ```
 
 #### Флаги
@@ -433,7 +433,7 @@ lgcode stats
 Экспортируйте данные сеанса в формате JSON.
 
 ```bash
-lgcode export [sessionID]
+loongcode export [sessionID]
 ```
 
 Если вы не укажете идентификатор сеанса, вам будет предложено выбрать один из доступных сеансов.
@@ -442,30 +442,30 @@ lgcode export [sessionID]
 
 ### import
 
-Импортируйте данные сеанса из файла JSON или URL-адреса общего ресурса lgcode.
+Импортируйте данные сеанса из файла JSON или URL-адреса общего ресурса loongcode.
 
 ```bash
-lgcode import <file>
+loongcode import <file>
 ```
 
-Вы можете импортировать из локального файла или URL-адреса общего ресурса lgcode.
+Вы можете импортировать из локального файла или URL-адреса общего ресурса loongcode.
 
 ```bash
-lgcode import session.json
-lgcode import https://opncd.ai/s/abc123
+loongcode import session.json
+loongcode import https://opncd.ai/s/abc123
 ```
 
 ---
 
 ### web
 
-Запустите автономный сервер lgcode с веб-интерфейсом.
+Запустите автономный сервер loongcode с веб-интерфейсом.
 
 ```bash
-lgcode web
+loongcode web
 ```
 
-При этом запускается HTTP-сервер и открывается веб-браузер для доступа к lgcode через веб-интерфейс. Установите `LGCODE_SERVER_PASSWORD`, чтобы включить базовую аутентификацию HTTP (имя пользователя по умолчанию — `lgcode`).
+При этом запускается HTTP-сервер и открывается веб-браузер для доступа к loongcode через веб-интерфейс. Установите `LOONGCODE_SERVER_PASSWORD`, чтобы включить базовую аутентификацию HTTP (имя пользователя по умолчанию — `loongcode`).
 
 #### Флаги
 
@@ -483,7 +483,7 @@ lgcode web
 Запустите сервер ACP (агент-клиентский протокол).
 
 ```bash
-lgcode acp
+loongcode acp
 ```
 
 Эта команда запускает сервер ACP, который обменивается данными через stdin/stdout с использованием nd-JSON.
@@ -500,10 +500,10 @@ lgcode acp
 
 ### uninstall
 
-Удалите lgcode и удалите все связанные файлы.
+Удалите loongcode и удалите все связанные файлы.
 
 ```bash
-lgcode uninstall
+loongcode uninstall
 ```
 
 #### Флаги
@@ -519,22 +519,22 @@ lgcode uninstall
 
 ### upgrade
 
-Обновляет lgcode до последней версии или определенной версии.
+Обновляет loongcode до последней версии или определенной версии.
 
 ```bash
-lgcode upgrade [target]
+loongcode upgrade [target]
 ```
 
 Чтобы обновиться до последней версии.
 
 ```bash
-lgcode upgrade
+loongcode upgrade
 ```
 
 Для обновления до определенной версии.
 
 ```bash
-lgcode upgrade v0.1.48
+loongcode upgrade v0.1.48
 ```
 
 #### Флаги
@@ -547,7 +547,7 @@ lgcode upgrade v0.1.48
 
 ## Глобальные флаги
 
-CLI lgcode принимает следующие глобальные флаги.
+CLI loongcode принимает следующие глобальные флаги.
 
 | Флаг                                       | Короткий | Описание                                   |
 | ------------------------------------------ | -------- | ------------------------------------------ |
@@ -560,34 +560,34 @@ CLI lgcode принимает следующие глобальные флаги
 
 ## Переменные среды
 
-lgcode можно настроить с помощью переменных среды.
+loongcode можно настроить с помощью переменных среды.
 
 | Переменная                            | Тип                 | Описание                                                                         |
 | ------------------------------------- | ------------------- | -------------------------------------------------------------------------------- |
-| `LGCODE_AUTO_SHARE`                 | логическое значение | Автоматически делиться сеансами                                                  |
-| `LGCODE_GIT_BASH_PATH`              | строка              | Путь к исполняемому файлу Git Bash в Windows                                     |
-| `LGCODE_CONFIG`                     | строка              | Путь к файлу конфигурации                                                        |
-| `LGCODE_TUI_CONFIG`                 | строка              | Путь к файлу конфигурации TUI                                                    |
-| `LGCODE_CONFIG_DIR`                 | строка              | Путь к каталогу конфигурации                                                     |
-| `LGCODE_CONFIG_CONTENT`             | строка              | Встроенное содержимое конфигурации json                                          |
-| `LGCODE_DISABLE_AUTOUPDATE`         | логическое значение | Отключить автоматическую проверку обновлений                                     |
-| `LGCODE_DISABLE_PRUNE`              | логическое значение | Отключить удаление старых данных                                                 |
-| `LGCODE_DISABLE_TERMINAL_TITLE`     | логическое значение | Отключить автоматическое обновление заголовка терминала                          |
-| `LGCODE_PERMISSION`                 | строка              | Встроенная конфигурация разрешений json                                          |
-| `LGCODE_DISABLE_DEFAULT_PLUGINS`    | логическое значение | Отключить плагины по умолчанию                                                   |
-| `LGCODE_DISABLE_LSP_DOWNLOAD`       | логическое значение | Отключить автоматическую загрузку LSP-сервера                                    |
-| `LGCODE_ENABLE_EXPERIMENTAL_MODELS` | логическое значение | Включить экспериментальные модели                                                |
-| `LGCODE_DISABLE_AUTOCOMPACT`        | логическое значение | Отключить автоматическое сжатие контекста                                        |
-| `LGCODE_DISABLE_CLAUDE_CODE`        | логическое значение | Отключить чтение из `.claude` (подсказка + навыки)                               |
-| `LGCODE_DISABLE_CLAUDE_CODE_PROMPT` | логическое значение | Отключить чтение `~/.claude/CLAUDE.md`                                           |
-| `LGCODE_DISABLE_CLAUDE_CODE_SKILLS` | логическое значение | Отключить загрузку `.claude/skills`                                              |
-| `LGCODE_DISABLE_MODELS_FETCH`       | логическое значение | Отключить получение моделей из удаленных источников                              |
-| `LGCODE_FAKE_VCS`                   | строка              | Поддельный поставщик VCS для целей тестирования                                  |
-| `LGCODE_CLIENT`                     | строка              | Идентификатор клиента (по умолчанию `cli`)                                       |
-| `LGCODE_ENABLE_EXA`                 | логическое значение | Включить инструменты веб-поиска Exa                                              |
-| `LGCODE_SERVER_PASSWORD`            | строка              | Включить базовую аутентификацию для `serve`/`web`                                |
-| `LGCODE_SERVER_USERNAME`            | строка              | Переопределить имя пользователя базовой аутентификации (по умолчанию `lgcode`) |
-| `LGCODE_MODELS_URL`                 | строка              | Пользовательский URL-адрес для получения конфигурации модели                     |
+| `LOONGCODE_AUTO_SHARE`                 | логическое значение | Автоматически делиться сеансами                                                  |
+| `LOONGCODE_GIT_BASH_PATH`              | строка              | Путь к исполняемому файлу Git Bash в Windows                                     |
+| `LOONGCODE_CONFIG`                     | строка              | Путь к файлу конфигурации                                                        |
+| `LOONGCODE_TUI_CONFIG`                 | строка              | Путь к файлу конфигурации TUI                                                    |
+| `LOONGCODE_CONFIG_DIR`                 | строка              | Путь к каталогу конфигурации                                                     |
+| `LOONGCODE_CONFIG_CONTENT`             | строка              | Встроенное содержимое конфигурации json                                          |
+| `LOONGCODE_DISABLE_AUTOUPDATE`         | логическое значение | Отключить автоматическую проверку обновлений                                     |
+| `LOONGCODE_DISABLE_PRUNE`              | логическое значение | Отключить удаление старых данных                                                 |
+| `LOONGCODE_DISABLE_TERMINAL_TITLE`     | логическое значение | Отключить автоматическое обновление заголовка терминала                          |
+| `LOONGCODE_PERMISSION`                 | строка              | Встроенная конфигурация разрешений json                                          |
+| `LOONGCODE_DISABLE_DEFAULT_PLUGINS`    | логическое значение | Отключить плагины по умолчанию                                                   |
+| `LOONGCODE_DISABLE_LSP_DOWNLOAD`       | логическое значение | Отключить автоматическую загрузку LSP-сервера                                    |
+| `LOONGCODE_ENABLE_EXPERIMENTAL_MODELS` | логическое значение | Включить экспериментальные модели                                                |
+| `LOONGCODE_DISABLE_AUTOCOMPACT`        | логическое значение | Отключить автоматическое сжатие контекста                                        |
+| `LOONGCODE_DISABLE_CLAUDE_CODE`        | логическое значение | Отключить чтение из `.claude` (подсказка + навыки)                               |
+| `LOONGCODE_DISABLE_CLAUDE_CODE_PROMPT` | логическое значение | Отключить чтение `~/.claude/CLAUDE.md`                                           |
+| `LOONGCODE_DISABLE_CLAUDE_CODE_SKILLS` | логическое значение | Отключить загрузку `.claude/skills`                                              |
+| `LOONGCODE_DISABLE_MODELS_FETCH`       | логическое значение | Отключить получение моделей из удаленных источников                              |
+| `LOONGCODE_FAKE_VCS`                   | строка              | Поддельный поставщик VCS для целей тестирования                                  |
+| `LOONGCODE_CLIENT`                     | строка              | Идентификатор клиента (по умолчанию `cli`)                                       |
+| `LOONGCODE_ENABLE_EXA`                 | логическое значение | Включить инструменты веб-поиска Exa                                              |
+| `LOONGCODE_SERVER_PASSWORD`            | строка              | Включить базовую аутентификацию для `serve`/`web`                                |
+| `LOONGCODE_SERVER_USERNAME`            | строка              | Переопределить имя пользователя базовой аутентификации (по умолчанию `loongcode`) |
+| `LOONGCODE_MODELS_URL`                 | строка              | Пользовательский URL-адрес для получения конфигурации модели                     |
 
 ---
 
@@ -597,21 +597,21 @@ lgcode можно настроить с помощью переменных ср
 
 | Переменная                                      | Тип                 | Описание                                               |
 | ----------------------------------------------- | ------------------- | ------------------------------------------------------ |
-| `LGCODE_EXPERIMENTAL`                         | логическое значение | Включить экспериментальные функции под общим флагом    |
-| `LGCODE_EXPERIMENTAL_ICON_DISCOVERY`          | логическое значение | Включить обнаружение значков                           |
-| `LGCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT`  | логическое значение | Отключить копирование при выборе в TUI                 |
-| `LGCODE_EXPERIMENTAL_BASH_DEFAULT_TIMEOUT_MS` | число               | Таймаут по умолчанию для команд bash в мс              |
-| `LGCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX`        | число               | Максимальное количество токенов вывода для ответов LLM |
-| `LGCODE_EXPERIMENTAL_FILEWATCHER`             | логическое значение | Включить просмотр файлов для всего каталога            |
-| `LGCODE_EXPERIMENTAL_OXFMT`                   | логическое значение | Включить форматтер oxfmt                               |
-| `LGCODE_EXPERIMENTAL_LSP_TOOL`                | логическое значение | Включить экспериментальный инструмент LSP              |
-| `LGCODE_EXPERIMENTAL_DISABLE_FILEWATCHER`     | логическое значение | Отключить просмотрщик файлов                           |
-| `LGCODE_EXPERIMENTAL_EXA`                     | логическое значение | Включить экспериментальные функции Exa                 |
-| `LGCODE_EXPERIMENTAL_LSP_TY`                  | логическое значение | Включить TY LSP для файлов python                      |
-| `LGCODE_EXPERIMENTAL_PLAN_MODE`               | логическое значение | Включить режим плана                                   |
-| `LGCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS`    | логическое значение | Включить фоновые задачи субагентов                     |
-| `LGCODE_EXPERIMENTAL_EVENT_SYSTEM`            | логическое значение | Включить экспериментальную систему событий             |
-| `LGCODE_EXPERIMENTAL_NATIVE_LLM`              | логическое значение | Включить нативный путь запросов LLM                    |
-| `LGCODE_EXPERIMENTAL_PARALLEL`                | логическое значение | Включить параллельное выполнение веб-поиска            |
-| `LGCODE_EXPERIMENTAL_SCOUT`                   | логическое значение | Включить субагент Scout                                |
-| `LGCODE_EXPERIMENTAL_WORKSPACES`              | логическое значение | Включить поддержку рабочих областей                    |
+| `LOONGCODE_EXPERIMENTAL`                         | логическое значение | Включить экспериментальные функции под общим флагом    |
+| `LOONGCODE_EXPERIMENTAL_ICON_DISCOVERY`          | логическое значение | Включить обнаружение значков                           |
+| `LOONGCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT`  | логическое значение | Отключить копирование при выборе в TUI                 |
+| `LOONGCODE_EXPERIMENTAL_BASH_DEFAULT_TIMEOUT_MS` | число               | Таймаут по умолчанию для команд bash в мс              |
+| `LOONGCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX`        | число               | Максимальное количество токенов вывода для ответов LLM |
+| `LOONGCODE_EXPERIMENTAL_FILEWATCHER`             | логическое значение | Включить просмотр файлов для всего каталога            |
+| `LOONGCODE_EXPERIMENTAL_OXFMT`                   | логическое значение | Включить форматтер oxfmt                               |
+| `LOONGCODE_EXPERIMENTAL_LSP_TOOL`                | логическое значение | Включить экспериментальный инструмент LSP              |
+| `LOONGCODE_EXPERIMENTAL_DISABLE_FILEWATCHER`     | логическое значение | Отключить просмотрщик файлов                           |
+| `LOONGCODE_EXPERIMENTAL_EXA`                     | логическое значение | Включить экспериментальные функции Exa                 |
+| `LOONGCODE_EXPERIMENTAL_LSP_TY`                  | логическое значение | Включить TY LSP для файлов python                      |
+| `LOONGCODE_EXPERIMENTAL_PLAN_MODE`               | логическое значение | Включить режим плана                                   |
+| `LOONGCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS`    | логическое значение | Включить фоновые задачи субагентов                     |
+| `LOONGCODE_EXPERIMENTAL_EVENT_SYSTEM`            | логическое значение | Включить экспериментальную систему событий             |
+| `LOONGCODE_EXPERIMENTAL_NATIVE_LLM`              | логическое значение | Включить нативный путь запросов LLM                    |
+| `LOONGCODE_EXPERIMENTAL_PARALLEL`                | логическое значение | Включить параллельное выполнение веб-поиска            |
+| `LOONGCODE_EXPERIMENTAL_SCOUT`                   | логическое значение | Включить субагент Scout                                |
+| `LOONGCODE_EXPERIMENTAL_WORKSPACES`              | логическое значение | Включить поддержку рабочих областей                    |

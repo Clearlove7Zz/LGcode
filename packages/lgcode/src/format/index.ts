@@ -1,8 +1,8 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
 import { Effect, Layer, Context, Schema } from "effect"
-import { serviceUse } from "@lgcode/core/effect/service-use"
+import { serviceUse } from "@loongcode/core/effect/service-use"
 import { ChildProcess } from "effect/unstable/process"
-import { AppProcess } from "@lgcode/core/process"
+import { AppProcess } from "@loongcode/core/process"
 import { InstanceState } from "@/effect/instance-state"
 import path from "path"
 import { mergeDeep } from "remeda"
@@ -24,7 +24,7 @@ export interface Interface {
   readonly file: (filepath: string) => Effect.Effect<boolean>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Format") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/Format") {}
 
 export const use = serviceUse(Service)
 

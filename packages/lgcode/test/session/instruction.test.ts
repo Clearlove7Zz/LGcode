@@ -1,22 +1,22 @@
 import { describe, expect, test } from "bun:test"
-import { SessionV1 } from "@lgcode/core/v1/session"
+import { SessionV1 } from "@loongcode/core/v1/session"
 import path from "path"
 import { Effect, FileSystem, Layer } from "effect"
 import { FetchHttpClient } from "effect/unstable/http"
 import { NodeFileSystem } from "@effect/platform-node"
-import { CrossSpawnSpawner } from "@lgcode/core/cross-spawn-spawner"
-import { FSUtil } from "@lgcode/core/fs-util"
+import { CrossSpawnSpawner } from "@loongcode/core/cross-spawn-spawner"
+import { FSUtil } from "@loongcode/core/fs-util"
 
 import { Instruction } from "../../src/session/instruction"
 import type { MessageV2 } from "../../src/session/message-v2"
 import { MessageID, PartID, SessionID } from "../../src/session/schema"
-import { Global } from "@lgcode/core/global"
+import { Global } from "@loongcode/core/global"
 import { RuntimeFlags } from "../../src/effect/runtime-flags"
 import { provideInstance, provideTmpdirInstance, testInstanceStoreLayer, tmpdirScoped } from "../fixture/fixture"
 import { testEffect } from "../lib/effect"
 import { TestConfig } from "../fixture/config"
-import { ProviderV2 } from "@lgcode/core/provider"
-import { ModelV2 } from "@lgcode/core/model"
+import { ProviderV2 } from "@loongcode/core/provider"
+import { ModelV2 } from "@loongcode/core/model"
 
 const it = testEffect(Layer.mergeAll(CrossSpawnSpawner.defaultLayer, NodeFileSystem.layer, testInstanceStoreLayer))
 

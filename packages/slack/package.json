@@ -1,5 +1,5 @@
 {
-  "name": "@lgcode/slack",
+  "name": "@loongcode/slack",
   "version": "1.17.7",
   "type": "module",
   "license": "MIT",
@@ -8,7 +8,7 @@
     "typecheck": "tsgo --noEmit"
   },
   "dependencies": {
-    "@lgcode/sdk": "workspace:*",
+    "@loongcode/sdk": "workspace:*",
     "@slack/bolt": "^3.17.1"
   },
   "devDependencies": {

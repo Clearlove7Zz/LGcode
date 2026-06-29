@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 
-import { Script } from "@lgcode/script"
+import { Script } from "@loongcode/script"
 import { $ } from "bun"
 import { fileURLToPath } from "url"
 

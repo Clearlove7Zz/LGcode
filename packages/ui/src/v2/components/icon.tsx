@@ -67,8 +67,8 @@ const icons = {
   },
 }
 
-const spriteID = "lgcode-v2-icon-sprite"
-const symbol = (name: keyof typeof icons) => `lgcode-v2-icon-${name}`
+const spriteID = "loongcode-v2-icon-sprite"
+const symbol = (name: keyof typeof icons) => `loongcode-v2-icon-${name}`
 let spriteInserted = false
 
 function ensureSprite() {

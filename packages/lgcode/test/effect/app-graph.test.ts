@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
 import { Cause, Context, Effect, Exit, Layer } from "effect"
-import { LayerNode } from "@lgcode/core/effect/layer-node"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
 
 const { buildLayer: build, group, replace, replaceWithNode } = LayerNode
 const node = LayerNode.make

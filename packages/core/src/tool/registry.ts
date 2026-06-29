@@ -1,6 +1,6 @@
 export * as ToolRegistry from "./registry"
 
-import { ToolOutput, type ToolCall, type ToolDefinition, type ToolResultValue } from "@lgcode/llm"
+import { ToolOutput, type ToolCall, type ToolDefinition, type ToolResultValue } from "@loongcode/llm"
 import { Context, Effect, Layer, Scope } from "effect"
 import { AgentV2 } from "../agent"
 import { PermissionV2 } from "../permission"
@@ -36,7 +36,7 @@ export interface Settlement {
   readonly outputPaths?: ReadonlyArray<string>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2/ToolRegistry") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/v2/ToolRegistry") {}
 
 const registryLayer = Layer.effect(
   Service,

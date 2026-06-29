@@ -1,6 +1,6 @@
-# LGcode Desktop
+# Loongcode Desktop
 
-The LGcode Desktop app, built with Electron.
+The Loongcode Desktop app, built with Electron.
 
 ## Development
 

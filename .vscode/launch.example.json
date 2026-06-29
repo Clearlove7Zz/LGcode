@@ -4,7 +4,7 @@
     {
       "type": "bun",
       "request": "attach",
-      "name": "lgcode (attach)",
+      "name": "loongcode (attach)",
       "url": "ws://localhost:6499/"
     }
   ]

@@ -2,13 +2,13 @@ import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
 import fs from "fs/promises"
 import path from "path"
-import { FSUtil } from "@lgcode/core/fs-util"
-import { Global } from "@lgcode/core/global"
-import { InstructionContext } from "@lgcode/core/instruction-context"
-import { Location } from "@lgcode/core/location"
-import { AbsolutePath } from "@lgcode/core/schema"
-import { SystemContext } from "@lgcode/core/system-context"
-import { SystemContextRegistry } from "@lgcode/core/system-context/registry"
+import { FSUtil } from "@loongcode/core/fs-util"
+import { Global } from "@loongcode/core/global"
+import { InstructionContext } from "@loongcode/core/instruction-context"
+import { Location } from "@loongcode/core/location"
+import { AbsolutePath } from "@loongcode/core/schema"
+import { SystemContext } from "@loongcode/core/system-context"
+import { SystemContextRegistry } from "@loongcode/core/system-context/registry"
 import { location } from "./fixture/location"
 import { tmpdir } from "./fixture/tmpdir"
 import { testEffect } from "./lib/effect"
@@ -235,9 +235,9 @@ describe("InstructionContext", () => {
 
   it.effect("honors the project instruction opt-out", () =>
     Effect.gen(function* () {
-      const previous = process.env.LGCODE_DISABLE_PROJECT_CONFIG
+      const previous = process.env.LOONGCODE_DISABLE_PROJECT_CONFIG
       let scanned = false
-      process.env.LGCODE_DISABLE_PROJECT_CONFIG = "1"
+      process.env.LOONGCODE_DISABLE_PROJECT_CONFIG = "1"
 
       yield* SystemContextRegistry.Service.pipe(
         Effect.flatMap((service) => service.load()),
@@ -256,8 +256,8 @@ describe("InstructionContext", () => {
         ),
         Effect.ensuring(
           Effect.sync(() => {
-            if (previous === undefined) delete process.env.LGCODE_DISABLE_PROJECT_CONFIG
-            else process.env.LGCODE_DISABLE_PROJECT_CONFIG = previous
+            if (previous === undefined) delete process.env.LOONGCODE_DISABLE_PROJECT_CONFIG
+            else process.env.LOONGCODE_DISABLE_PROJECT_CONFIG = previous
           }),
         ),
       )

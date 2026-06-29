@@ -284,7 +284,7 @@ export const CommandMap = {
   theme_mode_lock: "theme.mode.lock",
   sidebar_toggle: "session.sidebar.toggle",
   scrollbar_toggle: "session.toggle.scrollbar",
-  status_view: "lgcode.status",
+  status_view: "loongcode.status",
   session_export: "session.export",
   session_copy: "session.copy",
   session_new: "session.new",

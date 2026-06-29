@@ -1,10 +1,10 @@
-import { Database } from "@lgcode/core/database/database"
-import { LocationServiceMap } from "@lgcode/core/location-layer"
-import { Location } from "@lgcode/core/location"
-import { AbsolutePath } from "@lgcode/core/schema"
-import { SessionV2 } from "@lgcode/core/session"
-import { SessionTable } from "@lgcode/core/session/sql"
-import { WorkspaceV2 } from "@lgcode/core/workspace"
+import { Database } from "@loongcode/core/database/database"
+import { LocationServiceMap } from "@loongcode/core/location-layer"
+import { Location } from "@loongcode/core/location"
+import { AbsolutePath } from "@loongcode/core/schema"
+import { SessionV2 } from "@loongcode/core/session"
+import { SessionTable } from "@loongcode/core/session/sql"
+import { WorkspaceV2 } from "@loongcode/core/workspace"
 import { eq } from "drizzle-orm"
 import { Effect, Layer, Schema } from "effect"
 import { HttpRouter } from "effect/unstable/http"
@@ -17,7 +17,7 @@ export class SessionLocationMiddleware extends HttpApiMiddleware.Service<
   {
     provides: LocationServices
   }
->()("@lgcode/HttpApiSessionLocation", {
+>()("@loongcode/HttpApiSessionLocation", {
   error: [InvalidRequestError, SessionNotFoundError],
 }) {}
 

@@ -1,4 +1,4 @@
-# lgcode database guide
+# loongcode database guide
 
 ## Database
 
@@ -7,10 +7,10 @@
 
 ## Development server
 
-- Running `bun dev` from `packages/lgcode` starts the live interactive TUI. Do not run it as a blocking foreground command when you need to inspect the result.
-- Start it in `tmux` instead: `tmux new-session -d -s lgcode-dev 'bun dev'`.
-- Capture the current TUI output with: `tmux capture-pane -pt lgcode-dev`.
-- Stop the session explicitly when done: `tmux kill-session -t lgcode-dev`.
+- Running `bun dev` from `packages/loongcode` starts the live interactive TUI. Do not run it as a blocking foreground command when you need to inspect the result.
+- Start it in `tmux` instead: `tmux new-session -d -s loongcode-dev 'bun dev'`.
+- Capture the current TUI output with: `tmux capture-pane -pt loongcode-dev`.
+- Stop the session explicitly when done: `tmux kill-session -t loongcode-dev`.
 
 # Module shape
 
@@ -22,7 +22,7 @@ of the file:
 ```ts
 // src/foo/foo.ts
 export interface Interface { ... }
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Foo") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/Foo") {}
 export const layer = Layer.effect(Service, ...)
 export const defaultLayer = layer.pipe(...)
 
@@ -69,7 +69,7 @@ import { SessionStatus } from "@/session/status"
 Barrels in multi-sibling directories force every import through the barrel to
 evaluate every sibling, which defeats tree-shaking and slows module load.
 
-# lgcode Effect rules
+# loongcode Effect rules
 
 Use these rules when writing or migrating Effect code.
 

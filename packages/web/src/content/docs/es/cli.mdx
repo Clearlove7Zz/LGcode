@@ -1,30 +1,30 @@
 ---
 title: CLI
-description: Opciones y comandos de la CLI de LGcode.
+description: Opciones y comandos de la CLI de Loongcode.
 ---
 
 import { Tabs, TabItem } from "@astrojs/starlight/components"
 
-La CLI de LGcode de forma predeterminada inicia el [TUI](/docs/tui) cuando se ejecuta sin ningún argumento.
+La CLI de Loongcode de forma predeterminada inicia el [TUI](/docs/tui) cuando se ejecuta sin ningún argumento.
 
 ```bash
-lgcode
+loongcode
 ```
 
-Pero también acepta comandos como se documenta en esta página. Esto le permite interactuar con LGcode mediante programación.
+Pero también acepta comandos como se documenta en esta página. Esto le permite interactuar con Loongcode mediante programación.
 
 ```bash
-lgcode run "Explain how closures work in JavaScript"
+loongcode run "Explain how closures work in JavaScript"
 ```
 
 ---
 
 ### tui
 
-Inicie la interfaz de usuario del terminal LGcode.
+Inicie la interfaz de usuario del terminal Loongcode.
 
 ```bash
-lgcode [project]
+loongcode [project]
 ```
 
 #### Opciones
@@ -44,36 +44,36 @@ lgcode [project]
 
 ## Comandos
 
-La CLI de LGcode también tiene los siguientes comandos.
+La CLI de Loongcode también tiene los siguientes comandos.
 
 ---
 
 ### agent
 
-Administrar agentes para LGcode.
+Administrar agentes para Loongcode.
 
 ```bash
-lgcode agent [command]
+loongcode agent [command]
 ```
 
 ---
 
 ### attach
 
-Conecte una terminal a un servidor backend LGcode que ya se esté ejecutando y iniciado mediante los comandos `serve` o `web`.
+Conecte una terminal a un servidor backend Loongcode que ya se esté ejecutando y iniciado mediante los comandos `serve` o `web`.
 
 ```bash
-lgcode attach [url]
+loongcode attach [url]
 ```
 
-Esto permite usar TUI con un backend remoto LGcode. Por ejemplo:
+Esto permite usar TUI con un backend remoto Loongcode. Por ejemplo:
 
 ```bash
 # Start the backend server for web/mobile access
-lgcode web --port 4096 --hostname 0.0.0.0
+loongcode web --port 4096 --hostname 0.0.0.0
 
 # In another terminal, attach the TUI to the running backend
-lgcode attach http://10.20.30.40:4096
+loongcode attach http://10.20.30.40:4096
 ```
 
 #### Opciones
@@ -84,8 +84,8 @@ lgcode attach http://10.20.30.40:4096
 | <nobr><code>{"--continue"}</code></nobr> | `-c`  | Continuar la última sesión                                                                |
 | <nobr><code>{"--session"}</code></nobr>  | `-s`  | ID de sesión para continuar                                                               |
 | <nobr><code>{"--fork"}</code></nobr>     |       | Bifurcar la sesión al continuar (usar con `--continue` o `--session`)                     |
-| <nobr><code>{"--password"}</code></nobr> | `-p`  | Contraseña de autenticación básica (predeterminada: `LGCODE_SERVER_PASSWORD`)           |
-| <nobr><code>{"--username"}</code></nobr> | `-u`  | Usuario de autenticación básica (predeterminado: `LGCODE_SERVER_USERNAME` u `lgcode`) |
+| <nobr><code>{"--password"}</code></nobr> | `-p`  | Contraseña de autenticación básica (predeterminada: `LOONGCODE_SERVER_PASSWORD`)           |
+| <nobr><code>{"--username"}</code></nobr> | `-u`  | Usuario de autenticación básica (predeterminado: `LOONGCODE_SERVER_USERNAME` u `loongcode`) |
 
 ---
 
@@ -94,7 +94,7 @@ lgcode attach http://10.20.30.40:4096
 Cree un nuevo agente con configuración personalizada.
 
 ```bash
-lgcode agent create
+loongcode agent create
 ```
 
 Este comando lo guiará en la creación de un nuevo agente con un mensaje del sistema personalizado y una configuración de herramientas.
@@ -106,7 +106,7 @@ Este comando lo guiará en la creación de un nuevo agente con un mensaje del si
 Enumere todos los agentes disponibles.
 
 ```bash
-lgcode agent list
+loongcode agent list
 ```
 
 ---
@@ -116,20 +116,20 @@ lgcode agent list
 Comando para administrar credenciales e iniciar sesión para proveedores.
 
 ```bash
-lgcode auth [command]
+loongcode auth [command]
 ```
 
 ---
 
 #### login
 
-LGcode funciona con la lista de proveedores en [Models.dev](https://models.dev), por lo que puede usar `lgcode auth login` para configurar las claves API para cualquier proveedor que desee utilizar. Esto se almacena en `~/.local/share/lgcode/auth.json`.
+Loongcode funciona con la lista de proveedores en [Models.dev](https://models.dev), por lo que puede usar `loongcode auth login` para configurar las claves API para cualquier proveedor que desee utilizar. Esto se almacena en `~/.local/share/loongcode/auth.json`.
 
 ```bash
-lgcode auth login
+loongcode auth login
 ```
 
-Cuando se inicia LGcode, carga los proveedores desde el archivo de credenciales. Y si hay claves definidas en sus entornos o un archivo `.env` en su proyecto.
+Cuando se inicia Loongcode, carga los proveedores desde el archivo de credenciales. Y si hay claves definidas en sus entornos o un archivo `.env` en su proyecto.
 
 ---
 
@@ -138,13 +138,13 @@ Cuando se inicia LGcode, carga los proveedores desde el archivo de credenciales.
 Enumera todos los proveedores autenticados tal como están almacenados en el archivo de credenciales.
 
 ```bash
-lgcode auth list
+loongcode auth list
 ```
 
 O la versión corta.
 
 ```bash
-lgcode auth ls
+loongcode auth ls
 ```
 
 ---
@@ -154,7 +154,7 @@ lgcode auth ls
 Cierra tu sesión de un proveedor eliminándolo del archivo de credenciales.
 
 ```bash
-lgcode auth logout
+loongcode auth logout
 ```
 
 ---
@@ -164,7 +164,7 @@ lgcode auth logout
 Administre el agente GitHub para la automatización del repositorio.
 
 ```bash
-lgcode github [command]
+loongcode github [command]
 ```
 
 ---
@@ -174,7 +174,7 @@ lgcode github [command]
 Instale el agente GitHub en su repositorio.
 
 ```bash
-lgcode github install
+loongcode github install
 ```
 
 Esto configura el flujo de trabajo de acciones GitHub necesario y lo guía a través del proceso de configuración. [Más información](/docs/github).
@@ -186,7 +186,7 @@ Esto configura el flujo de trabajo de acciones GitHub necesario y lo guía a tra
 Ejecute el agente GitHub. Esto se usa normalmente en acciones GitHub.
 
 ```bash
-lgcode github run
+loongcode github run
 ```
 
 ##### Opciones
@@ -203,7 +203,7 @@ lgcode github run
 Administrar servidores de protocolo de contexto modelo.
 
 ```bash
-lgcode mcp [command]
+loongcode mcp [command]
 ```
 
 ---
@@ -213,7 +213,7 @@ lgcode mcp [command]
 Agregue un servidor MCP a su configuración.
 
 ```bash
-lgcode mcp add
+loongcode mcp add
 ```
 
 Este comando lo guiará para agregar un servidor MCP local o remoto.
@@ -225,13 +225,13 @@ Este comando lo guiará para agregar un servidor MCP local o remoto.
 Enumere todos los servidores MCP configurados y su estado de conexión.
 
 ```bash
-lgcode mcp list
+loongcode mcp list
 ```
 
 O utilice la versión corta.
 
 ```bash
-lgcode mcp ls
+loongcode mcp ls
 ```
 
 ---
@@ -241,7 +241,7 @@ lgcode mcp ls
 Autentíquese con un servidor MCP habilitado para OAuth.
 
 ```bash
-lgcode mcp auth [name]
+loongcode mcp auth [name]
 ```
 
 Si no proporciona un nombre de servidor, se le pedirá que seleccione entre los servidores compatibles con OAuth disponibles.
@@ -249,13 +249,13 @@ Si no proporciona un nombre de servidor, se le pedirá que seleccione entre los 
 También puede enumerar los servidores compatibles con OAuth y su estado de autenticación.
 
 ```bash
-lgcode mcp auth list
+loongcode mcp auth list
 ```
 
 O utilice la versión corta.
 
 ```bash
-lgcode mcp auth ls
+loongcode mcp auth ls
 ```
 
 ---
@@ -265,7 +265,7 @@ lgcode mcp auth ls
 Elimine las credenciales OAuth para un servidor MCP.
 
 ```bash
-lgcode mcp logout [name]
+loongcode mcp logout [name]
 ```
 
 ---
@@ -275,7 +275,7 @@ lgcode mcp logout [name]
 Depurar problemas de conexión OAuth para un servidor MCP.
 
 ```bash
-lgcode mcp debug <name>
+loongcode mcp debug <name>
 ```
 
 ---
@@ -285,7 +285,7 @@ lgcode mcp debug <name>
 Enumere todos los modelos disponibles de los proveedores configurados.
 
 ```bash
-lgcode models [provider]
+loongcode models [provider]
 ```
 
 Este comando muestra todos los modelos disponibles en sus proveedores configurados en el formato `provider/model`.
@@ -295,7 +295,7 @@ Esto es útil para determinar el nombre exacto del modelo que se usará en [su c
 Opcionalmente, puede pasar un ID de proveedor para filtrar modelos por ese proveedor.
 
 ```bash
-lgcode models anthropic
+loongcode models anthropic
 ```
 
 #### Opciones
@@ -305,36 +305,36 @@ lgcode models anthropic
 | <nobr><code>{"--refresh"}</code></nobr> | Actualizar la caché de modelos desde models.dev                             |
 | <nobr><code>{"--verbose"}</code></nobr> | Utilice una salida del modelo más detallada (incluye metadatos como costos) |
 
-Utilice el indicador `--refresh` para actualizar la lista de modelos almacenados en caché. Esto es útil cuando se han agregado nuevos modelos a un proveedor y desea verlos en LGcode.
+Utilice el indicador `--refresh` para actualizar la lista de modelos almacenados en caché. Esto es útil cuando se han agregado nuevos modelos a un proveedor y desea verlos en Loongcode.
 
 ```bash
-lgcode models --refresh
+loongcode models --refresh
 ```
 
 ---
 
 ### run
 
-Ejecute lgcode en modo no interactivo pasando un mensaje directamente.
+Ejecute loongcode en modo no interactivo pasando un mensaje directamente.
 
 ```bash
-lgcode run [message..]
+loongcode run [message..]
 ```
 
 Esto es útil para secuencias de comandos, automatización o cuando desea una respuesta rápida sin iniciar el TUI completo. Por ejemplo.
 
-```bash "lgcode run"
-lgcode run Explain the use of context in Go
+```bash "loongcode run"
+loongcode run Explain the use of context in Go
 ```
 
-También puede conectarse a una instancia `lgcode serve` en ejecución para evitar tiempos de arranque en frío del servidor MCP en cada ejecución:
+También puede conectarse a una instancia `loongcode serve` en ejecución para evitar tiempos de arranque en frío del servidor MCP en cada ejecución:
 
 ```bash
 # Start a headless server in one terminal
-lgcode serve
+loongcode serve
 
 # In another terminal, run commands that attach to it
-lgcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
+loongcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
 ```
 
 #### Opciones
@@ -351,9 +351,9 @@ lgcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
 | <nobr><code>{"--file"}</code></nobr>     | `-f`  | Archivo(s) para adjuntar al mensaje                                                       |
 | <nobr><code>{"--format"}</code></nobr>   |       | Formato: predeterminado (formateado) o json (eventos JSON sin formato)                    |
 | <nobr><code>{"--title"}</code></nobr>    |       | Título de la sesión (utiliza un mensaje truncado si no se proporciona ningún valor)       |
-| <nobr><code>{"--attach"}</code></nobr>   |       | Adjuntar a un servidor lgcode en ejecución (por ejemplo, http://localhost:4096)         |
-| <nobr><code>{"--password"}</code></nobr> | `-p`  | Contraseña de autenticación básica (predeterminada: `LGCODE_SERVER_PASSWORD`)           |
-| <nobr><code>{"--username"}</code></nobr> | `-u`  | Usuario de autenticación básica (predeterminado: `LGCODE_SERVER_USERNAME` u `lgcode`) |
+| <nobr><code>{"--attach"}</code></nobr>   |       | Adjuntar a un servidor loongcode en ejecución (por ejemplo, http://localhost:4096)         |
+| <nobr><code>{"--password"}</code></nobr> | `-p`  | Contraseña de autenticación básica (predeterminada: `LOONGCODE_SERVER_PASSWORD`)           |
+| <nobr><code>{"--username"}</code></nobr> | `-u`  | Usuario de autenticación básica (predeterminado: `LOONGCODE_SERVER_USERNAME` u `loongcode`) |
 | <nobr><code>{"--dir"}</code></nobr>      |       | Directorio de ejecución, o ruta en el servidor remoto al adjuntar                         |
 | <nobr><code>{"--variant"}</code></nobr>  |       | Variante del modelo (esfuerzo de razonamiento específico del proveedor)                   |
 | <nobr><code>{"--thinking"}</code></nobr> |       | Mostrar bloques de pensamiento                                                            |
@@ -363,13 +363,13 @@ lgcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
 
 ### serve
 
-Inicie un servidor LGcode sin cabeza para acceso API. Consulte los [documentos del servidor](/docs/server) para conocer la interfaz HTTP completa.
+Inicie un servidor Loongcode sin cabeza para acceso API. Consulte los [documentos del servidor](/docs/server) para conocer la interfaz HTTP completa.
 
 ```bash
-lgcode serve
+loongcode serve
 ```
 
-Esto inicia un servidor HTTP que proporciona acceso API a la funcionalidad lgcode sin la interfaz TUI. Configure `LGCODE_SERVER_PASSWORD` para habilitar la autenticación básica HTTP (el nombre de usuario predeterminado es `lgcode`).
+Esto inicia un servidor HTTP que proporciona acceso API a la funcionalidad loongcode sin la interfaz TUI. Configure `LOONGCODE_SERVER_PASSWORD` para habilitar la autenticación básica HTTP (el nombre de usuario predeterminado es `loongcode`).
 
 #### Opciones
 
@@ -384,20 +384,20 @@ Esto inicia un servidor HTTP que proporciona acceso API a la funcionalidad lgcod
 
 ### session
 
-Administrar LGcode sesiones.
+Administrar Loongcode sesiones.
 
 ```bash
-lgcode session [command]
+loongcode session [command]
 ```
 
 ---
 
 #### list
 
-Enumere todas las sesiones LGcode.
+Enumere todas las sesiones Loongcode.
 
 ```bash
-lgcode session list
+loongcode session list
 ```
 
 ##### Opciones
@@ -411,10 +411,10 @@ lgcode session list
 
 ### stats
 
-Muestre el uso de tokens y las estadísticas de costos para sus sesiones LGcode.
+Muestre el uso de tokens y las estadísticas de costos para sus sesiones Loongcode.
 
 ```bash
-lgcode stats
+loongcode stats
 ```
 
 #### Opciones
@@ -433,7 +433,7 @@ lgcode stats
 Exportar datos de la sesión como JSON.
 
 ```bash
-lgcode export [sessionID]
+loongcode export [sessionID]
 ```
 
 Si no proporciona una ID de sesión, se le pedirá que seleccione entre las sesiones disponibles.
@@ -442,30 +442,30 @@ Si no proporciona una ID de sesión, se le pedirá que seleccione entre las sesi
 
 ### import
 
-Importe datos de sesión desde un archivo JSON o una URL compartida LGcode.
+Importe datos de sesión desde un archivo JSON o una URL compartida Loongcode.
 
 ```bash
-lgcode import <file>
+loongcode import <file>
 ```
 
-Puede importar desde un archivo local o una URL compartida LGcode.
+Puede importar desde un archivo local o una URL compartida Loongcode.
 
 ```bash
-lgcode import session.json
-lgcode import https://opncd.ai/s/abc123
+loongcode import session.json
+loongcode import https://opncd.ai/s/abc123
 ```
 
 ---
 
 ### web
 
-Inicie un servidor LGcode sin cabeza con una interfaz web.
+Inicie un servidor Loongcode sin cabeza con una interfaz web.
 
 ```bash
-lgcode web
+loongcode web
 ```
 
-Esto inicia un servidor HTTP y abre un navegador web para acceder a LGcode a través de una interfaz web. Configure `LGCODE_SERVER_PASSWORD` para habilitar la autenticación básica HTTP (el nombre de usuario predeterminado es `lgcode`).
+Esto inicia un servidor HTTP y abre un navegador web para acceder a Loongcode a través de una interfaz web. Configure `LOONGCODE_SERVER_PASSWORD` para habilitar la autenticación básica HTTP (el nombre de usuario predeterminado es `loongcode`).
 
 #### Opciones
 
@@ -483,7 +483,7 @@ Esto inicia un servidor HTTP y abre un navegador web para acceder a LGcode a tra
 Inicie un servidor ACP (Agent Client Protocol).
 
 ```bash
-lgcode acp
+loongcode acp
 ```
 
 Este comando inicia un servidor ACP que se comunica a través de stdin/stdout usando nd-JSON.
@@ -500,10 +500,10 @@ Este comando inicia un servidor ACP que se comunica a través de stdin/stdout us
 
 ### uninstall
 
-Desinstale LGcode y elimine todos los archivos relacionados.
+Desinstale Loongcode y elimine todos los archivos relacionados.
 
 ```bash
-lgcode uninstall
+loongcode uninstall
 ```
 
 #### Opciones
@@ -519,22 +519,22 @@ lgcode uninstall
 
 ### upgrade
 
-Actualiza lgcode a la última versión o a una versión específica.
+Actualiza loongcode a la última versión o a una versión específica.
 
 ```bash
-lgcode upgrade [target]
+loongcode upgrade [target]
 ```
 
 Para actualizar a la última versión.
 
 ```bash
-lgcode upgrade
+loongcode upgrade
 ```
 
 Para actualizar a una versión específica.
 
 ```bash
-lgcode upgrade v0.1.48
+loongcode upgrade v0.1.48
 ```
 
 #### Opciones
@@ -547,7 +547,7 @@ lgcode upgrade v0.1.48
 
 ## Opciones globales
 
-La CLI de LGcode toma las siguientes banderas globales.
+La CLI de Loongcode toma las siguientes banderas globales.
 
 | Opción                                     | Corta | Descripción                                  |
 | ------------------------------------------ | ----- | -------------------------------------------- |
@@ -560,33 +560,33 @@ La CLI de LGcode toma las siguientes banderas globales.
 
 ## Variables de entorno
 
-LGcode se puede configurar mediante variables de entorno.
+Loongcode se puede configurar mediante variables de entorno.
 
 | Variable                              | Type     | Description                                                                     |
 | ------------------------------------- | -------- | ------------------------------------------------------------------------------- |
-| `LGCODE_AUTO_SHARE`                 | booleano | Compartir sesiones automáticamente                                              |
-| `LGCODE_GIT_BASH_PATH`              | cadena   | Ruta al ejecutable de Git Bash en Windows                                       |
-| `LGCODE_CONFIG`                     | cadena   | Ruta al archivo de configuración                                                |
-| `LGCODE_CONFIG_DIR`                 | cadena   | Ruta al directorio de configuración                                             |
-| `LGCODE_CONFIG_CONTENT`             | cadena   | Contenido de configuración json en línea                                        |
-| `LGCODE_DISABLE_AUTOUPDATE`         | booleano | Deshabilitar las comprobaciones automáticas de actualizaciones                  |
-| `LGCODE_DISABLE_PRUNE`              | booleano | Deshabilitar la poda de datos antiguos                                          |
-| `LGCODE_DISABLE_TERMINAL_TITLE`     | booleano | Deshabilitar las actualizaciones automáticas de títulos de terminal             |
-| `LGCODE_PERMISSION`                 | cadena   | Configuración de permisos json incorporados                                     |
-| `LGCODE_DISABLE_DEFAULT_PLUGINS`    | booleano | Deshabilitar complementos predeterminados                                       |
-| `LGCODE_DISABLE_LSP_DOWNLOAD`       | booleano | Deshabilitar las descargas automáticas del servidor LSP                         |
-| `LGCODE_ENABLE_EXPERIMENTAL_MODELS` | booleano | Habilitar modelos experimentales                                                |
-| `LGCODE_DISABLE_AUTOCOMPACT`        | booleano | Deshabilitar la compactación automática de contexto                             |
-| `LGCODE_DISABLE_CLAUDE_CODE`        | booleano | Deshabilitar la lectura desde `.claude` (mensaje + habilidades)                 |
-| `LGCODE_DISABLE_CLAUDE_CODE_PROMPT` | booleano | Desactivar lectura `~/.claude/CLAUDE.md`                                        |
-| `LGCODE_DISABLE_CLAUDE_CODE_SKILLS` | booleano | Deshabilitar la carga `.claude/skills`                                          |
-| `LGCODE_DISABLE_MODELS_FETCH`       | booleano | Deshabilitar la recuperación de modelos desde fuentes remotas                   |
-| `LGCODE_FAKE_VCS`                   | cadena   | Proveedor de VCS falso para fines de prueba                                     |
-| `LGCODE_CLIENT`                     | cadena   | Identificador de cliente (por defecto `cli`)                                    |
-| `LGCODE_ENABLE_EXA`                 | booleano | Habilitar las herramientas de búsqueda web de Exa                               |
-| `LGCODE_SERVER_PASSWORD`            | cadena   | Habilite la autenticación básica para `serve`/`web`                             |
-| `LGCODE_SERVER_USERNAME`            | cadena   | Anular el nombre de usuario de autenticación básica (predeterminado `lgcode`) |
-| `LGCODE_MODELS_URL`                 | cadena   | URL personalizada para buscar la configuración de modelos                       |
+| `LOONGCODE_AUTO_SHARE`                 | booleano | Compartir sesiones automáticamente                                              |
+| `LOONGCODE_GIT_BASH_PATH`              | cadena   | Ruta al ejecutable de Git Bash en Windows                                       |
+| `LOONGCODE_CONFIG`                     | cadena   | Ruta al archivo de configuración                                                |
+| `LOONGCODE_CONFIG_DIR`                 | cadena   | Ruta al directorio de configuración                                             |
+| `LOONGCODE_CONFIG_CONTENT`             | cadena   | Contenido de configuración json en línea                                        |
+| `LOONGCODE_DISABLE_AUTOUPDATE`         | booleano | Deshabilitar las comprobaciones automáticas de actualizaciones                  |
+| `LOONGCODE_DISABLE_PRUNE`              | booleano | Deshabilitar la poda de datos antiguos                                          |
+| `LOONGCODE_DISABLE_TERMINAL_TITLE`     | booleano | Deshabilitar las actualizaciones automáticas de títulos de terminal             |
+| `LOONGCODE_PERMISSION`                 | cadena   | Configuración de permisos json incorporados                                     |
+| `LOONGCODE_DISABLE_DEFAULT_PLUGINS`    | booleano | Deshabilitar complementos predeterminados                                       |
+| `LOONGCODE_DISABLE_LSP_DOWNLOAD`       | booleano | Deshabilitar las descargas automáticas del servidor LSP                         |
+| `LOONGCODE_ENABLE_EXPERIMENTAL_MODELS` | booleano | Habilitar modelos experimentales                                                |
+| `LOONGCODE_DISABLE_AUTOCOMPACT`        | booleano | Deshabilitar la compactación automática de contexto                             |
+| `LOONGCODE_DISABLE_CLAUDE_CODE`        | booleano | Deshabilitar la lectura desde `.claude` (mensaje + habilidades)                 |
+| `LOONGCODE_DISABLE_CLAUDE_CODE_PROMPT` | booleano | Desactivar lectura `~/.claude/CLAUDE.md`                                        |
+| `LOONGCODE_DISABLE_CLAUDE_CODE_SKILLS` | booleano | Deshabilitar la carga `.claude/skills`                                          |
+| `LOONGCODE_DISABLE_MODELS_FETCH`       | booleano | Deshabilitar la recuperación de modelos desde fuentes remotas                   |
+| `LOONGCODE_FAKE_VCS`                   | cadena   | Proveedor de VCS falso para fines de prueba                                     |
+| `LOONGCODE_CLIENT`                     | cadena   | Identificador de cliente (por defecto `cli`)                                    |
+| `LOONGCODE_ENABLE_EXA`                 | booleano | Habilitar las herramientas de búsqueda web de Exa                               |
+| `LOONGCODE_SERVER_PASSWORD`            | cadena   | Habilite la autenticación básica para `serve`/`web`                             |
+| `LOONGCODE_SERVER_USERNAME`            | cadena   | Anular el nombre de usuario de autenticación básica (predeterminado `loongcode`) |
+| `LOONGCODE_MODELS_URL`                 | cadena   | URL personalizada para buscar la configuración de modelos                       |
 
 ---
 
@@ -596,21 +596,21 @@ Estas variables de entorno habilitan funciones experimentales que pueden cambiar
 
 | Variable                                        | Type     | Description                                                |
 | ----------------------------------------------- | -------- | ---------------------------------------------------------- |
-| `LGCODE_EXPERIMENTAL`                         | booleano | Habilitar funciones experimentales de la bandera global    |
-| `LGCODE_EXPERIMENTAL_ICON_DISCOVERY`          | booleano | Habilitar descubrimiento de íconos                         |
-| `LGCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT`  | booleano | Deshabilitar copia al seleccionar en TUI                   |
-| `LGCODE_EXPERIMENTAL_BASH_DEFAULT_TIMEOUT_MS` | número   | Tiempo de espera predeterminado para comandos bash en ms   |
-| `LGCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX`        | número   | Tokens de salida máximos para respuestas LLM               |
-| `LGCODE_EXPERIMENTAL_FILEWATCHER`             | booleano | Habilite el observador de archivos para todo el directorio |
-| `LGCODE_EXPERIMENTAL_OXFMT`                   | booleano | Habilitar el formateador oxfmt                             |
-| `LGCODE_EXPERIMENTAL_LSP_TOOL`                | booleano | Habilitar herramienta experimental LSP                     |
-| `LGCODE_EXPERIMENTAL_DISABLE_FILEWATCHER`     | booleano | Deshabilitar el observador de archivos                     |
-| `LGCODE_EXPERIMENTAL_EXA`                     | booleano | Habilitar funciones experimentales de Exa                  |
-| `LGCODE_EXPERIMENTAL_LSP_TY`                  | booleano | Habilitar Habilitar TY LSP para archivos python            |
-| `LGCODE_EXPERIMENTAL_PLAN_MODE`               | booleano | Habilitar modo de plan                                     |
-| `LGCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS`    | booleano | Habilitar tareas de subagentes en segundo plano            |
-| `LGCODE_EXPERIMENTAL_EVENT_SYSTEM`            | booleano | Habilitar sistema de eventos experimental                  |
-| `LGCODE_EXPERIMENTAL_NATIVE_LLM`              | booleano | Habilitar ruta nativa de solicitud LLM                     |
-| `LGCODE_EXPERIMENTAL_PARALLEL`                | booleano | Habilitar ejecución paralela de búsqueda web               |
-| `LGCODE_EXPERIMENTAL_SCOUT`                   | booleano | Habilitar subagente Scout                                  |
-| `LGCODE_EXPERIMENTAL_WORKSPACES`              | booleano | Habilitar soporte de espacios de trabajo                   |
+| `LOONGCODE_EXPERIMENTAL`                         | booleano | Habilitar funciones experimentales de la bandera global    |
+| `LOONGCODE_EXPERIMENTAL_ICON_DISCOVERY`          | booleano | Habilitar descubrimiento de íconos                         |
+| `LOONGCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT`  | booleano | Deshabilitar copia al seleccionar en TUI                   |
+| `LOONGCODE_EXPERIMENTAL_BASH_DEFAULT_TIMEOUT_MS` | número   | Tiempo de espera predeterminado para comandos bash en ms   |
+| `LOONGCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX`        | número   | Tokens de salida máximos para respuestas LLM               |
+| `LOONGCODE_EXPERIMENTAL_FILEWATCHER`             | booleano | Habilite el observador de archivos para todo el directorio |
+| `LOONGCODE_EXPERIMENTAL_OXFMT`                   | booleano | Habilitar el formateador oxfmt                             |
+| `LOONGCODE_EXPERIMENTAL_LSP_TOOL`                | booleano | Habilitar herramienta experimental LSP                     |
+| `LOONGCODE_EXPERIMENTAL_DISABLE_FILEWATCHER`     | booleano | Deshabilitar el observador de archivos                     |
+| `LOONGCODE_EXPERIMENTAL_EXA`                     | booleano | Habilitar funciones experimentales de Exa                  |
+| `LOONGCODE_EXPERIMENTAL_LSP_TY`                  | booleano | Habilitar Habilitar TY LSP para archivos python            |
+| `LOONGCODE_EXPERIMENTAL_PLAN_MODE`               | booleano | Habilitar modo de plan                                     |
+| `LOONGCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS`    | booleano | Habilitar tareas de subagentes en segundo plano            |
+| `LOONGCODE_EXPERIMENTAL_EVENT_SYSTEM`            | booleano | Habilitar sistema de eventos experimental                  |
+| `LOONGCODE_EXPERIMENTAL_NATIVE_LLM`              | booleano | Habilitar ruta nativa de solicitud LLM                     |
+| `LOONGCODE_EXPERIMENTAL_PARALLEL`                | booleano | Habilitar ejecución paralela de búsqueda web               |
+| `LOONGCODE_EXPERIMENTAL_SCOUT`                   | booleano | Habilitar subagente Scout                                  |
+| `LOONGCODE_EXPERIMENTAL_WORKSPACES`              | booleano | Habilitar soporte de espacios de trabajo                   |

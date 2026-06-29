@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto"
 import { describe, expect } from "bun:test"
-import { Flag } from "@lgcode/core/flag/flag"
+import { Flag } from "@loongcode/core/flag/flag"
 import { ConfigProvider, Effect, Layer } from "effect"
 import {
   HttpClient,
@@ -11,7 +11,7 @@ import {
   HttpServerRequest,
   HttpServerResponse,
 } from "effect/unstable/http"
-import { FSUtil } from "@lgcode/core/fs-util"
+import { FSUtil } from "@loongcode/core/fs-util"
 import { RuntimeFlags } from "../../src/effect/runtime-flags"
 import { ServerAuth } from "../../src/server/auth"
 import { authorizationRouterMiddleware } from "../../src/server/routes/instance/httpapi/middleware/authorization"
@@ -22,18 +22,18 @@ import { testEffect } from "../lib/effect"
 const testStateLayer = Layer.effectDiscard(
   Effect.gen(function* () {
     const original = {
-      LGCODE_SERVER_PASSWORD: Flag.LGCODE_SERVER_PASSWORD,
-      LGCODE_SERVER_USERNAME: Flag.LGCODE_SERVER_USERNAME,
-      envPassword: process.env.LGCODE_SERVER_PASSWORD,
-      envUsername: process.env.LGCODE_SERVER_USERNAME,
+      LOONGCODE_SERVER_PASSWORD: Flag.LOONGCODE_SERVER_PASSWORD,
+      LOONGCODE_SERVER_USERNAME: Flag.LOONGCODE_SERVER_USERNAME,
+      envPassword: process.env.LOONGCODE_SERVER_PASSWORD,
+      envUsername: process.env.LOONGCODE_SERVER_USERNAME,
     }
 
     yield* Effect.addFinalizer(() =>
       Effect.sync(() => {
-        Flag.LGCODE_SERVER_PASSWORD = original.LGCODE_SERVER_PASSWORD
-        Flag.LGCODE_SERVER_USERNAME = original.LGCODE_SERVER_USERNAME
-        restoreEnv("LGCODE_SERVER_PASSWORD", original.envPassword)
-        restoreEnv("LGCODE_SERVER_USERNAME", original.envUsername)
+        Flag.LOONGCODE_SERVER_PASSWORD = original.LOONGCODE_SERVER_PASSWORD
+        Flag.LOONGCODE_SERVER_USERNAME = original.LOONGCODE_SERVER_USERNAME
+        restoreEnv("LOONGCODE_SERVER_PASSWORD", original.envPassword)
+        restoreEnv("LOONGCODE_SERVER_USERNAME", original.envUsername)
       }),
     )
   }),
@@ -55,8 +55,8 @@ function app(input?: { password?: string; username?: string }) {
       Layer.provide(
         ConfigProvider.layer(
           ConfigProvider.fromUnknown({
-            LGCODE_SERVER_PASSWORD: input?.password,
-            LGCODE_SERVER_USERNAME: input?.username,
+            LOONGCODE_SERVER_PASSWORD: input?.password,
+            LOONGCODE_SERVER_USERNAME: input?.username,
           }),
         ),
       ),
@@ -102,8 +102,8 @@ function uiApp(input?: {
         HttpServer.layerServices,
         ConfigProvider.layer(
           ConfigProvider.fromUnknown({
-            LGCODE_SERVER_PASSWORD: input?.password,
-            LGCODE_SERVER_USERNAME: input?.username,
+            LOONGCODE_SERVER_PASSWORD: input?.password,
+            LOONGCODE_SERVER_USERNAME: input?.username,
           }),
         ),
       ]),
@@ -188,7 +188,7 @@ describe("HttpApi UI fallback", () => {
       const response = yield* uiApp({
         disableEmbeddedWebUi: true,
         client: httpClient(
-          new Response("<html>lgcode</html>", { headers: { "content-type": "text/html" } }),
+          new Response("<html>loongcode</html>", { headers: { "content-type": "text/html" } }),
           (request) => {
             proxiedUrl = request.url
           },
@@ -197,7 +197,7 @@ describe("HttpApi UI fallback", () => {
 
       expect(response.status).toBe(200)
       expect(response.headers.get("content-type")).toContain("text/html")
-      expect(yield* responseText(response)).toBe("<html>lgcode</html>")
+      expect(yield* responseText(response)).toBe("<html>loongcode</html>")
       expect(proxiedUrl).toBe("https://app.modelhub.lgdg.cc/")
     }),
   )
@@ -275,7 +275,7 @@ describe("HttpApi UI fallback", () => {
                 Effect.succeed(
                   HttpClientResponse.fromWeb(
                     request,
-                    new Response("<html>lgcode</html>", {
+                    new Response("<html>loongcode</html>", {
                       headers: {
                         "transfer-encoding": "chunked",
                         "content-type": "text/html",
@@ -292,7 +292,7 @@ describe("HttpApi UI fallback", () => {
 
       expect(response.status).toBe(200)
       expect(response.headers.get("transfer-encoding")).toBeNull()
-      expect(yield* responseText(response)).toBe("<html>lgcode</html>")
+      expect(yield* responseText(response)).toBe("<html>loongcode</html>")
     }),
   )
 
@@ -366,7 +366,7 @@ describe("HttpApi UI fallback", () => {
     Effect.gen(function* () {
       const response = yield* uiApp({
         password: "secret",
-        username: "lgcode",
+        username: "loongcode",
         disableEmbeddedWebUi: true,
       }).request("/")
 
@@ -379,13 +379,13 @@ describe("HttpApi UI fallback", () => {
     Effect.gen(function* () {
       const response = yield* uiApp({
         password: "secret",
-        username: "lgcode",
+        username: "loongcode",
         disableEmbeddedWebUi: true,
-        client: httpClient(new Response("<html>lgcode</html>", { headers: { "content-type": "text/html" } })),
-      }).request(`/?auth_token=${btoa("lgcode:secret")}`)
+        client: httpClient(new Response("<html>loongcode</html>", { headers: { "content-type": "text/html" } })),
+      }).request(`/?auth_token=${btoa("loongcode:secret")}`)
 
       expect(response.status).toBe(200)
-      expect(yield* responseText(response)).toBe("<html>lgcode</html>")
+      expect(yield* responseText(response)).toBe("<html>loongcode</html>")
     }),
   )
 
@@ -393,10 +393,10 @@ describe("HttpApi UI fallback", () => {
     Effect.gen(function* () {
       const response = yield* uiApp({
         password: "secret",
-        username: "lgcode",
+        username: "loongcode",
         disableEmbeddedWebUi: true,
       }).request("/", {
-        headers: { authorization: `Basic ${btoa("lgcode:secret")}` },
+        headers: { authorization: `Basic ${btoa("loongcode:secret")}` },
       })
 
       expect(response.status).toBe(200)
@@ -407,10 +407,10 @@ describe("HttpApi UI fallback", () => {
     Effect.gen(function* () {
       const response = yield* uiApp({
         password: "sec:ret",
-        username: "lgcode",
+        username: "loongcode",
         disableEmbeddedWebUi: true,
       }).request("/", {
-        headers: { authorization: `Basic ${btoa("lgcode:sec:ret")}` },
+        headers: { authorization: `Basic ${btoa("loongcode:sec:ret")}` },
       })
 
       expect(response.status).toBe(200)
@@ -427,7 +427,7 @@ describe("HttpApi UI fallback", () => {
       for (const path of ["/site.webmanifest", "/web-app-manifest-192x192.png", "/web-app-manifest-512x512.png"]) {
         const response = yield* uiApp({
           password: "secret",
-          username: "lgcode",
+          username: "loongcode",
           disableEmbeddedWebUi: true,
           client: httpClient(new Response("ok")),
         }).request(path)
@@ -438,7 +438,7 @@ describe("HttpApi UI fallback", () => {
 
   it.live("allows web UI preflight without auth", () =>
     Effect.gen(function* () {
-      const response = yield* app({ password: "secret", username: "lgcode" }).request("/", {
+      const response = yield* app({ password: "secret", username: "loongcode" }).request("/", {
         method: "OPTIONS",
         headers: {
           origin: "http://localhost:3000",

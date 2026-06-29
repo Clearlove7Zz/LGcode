@@ -52,7 +52,7 @@ export interface Interface {
   readonly wait: () => Effect.Effect<void>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2/PluginBoot") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/v2/PluginBoot") {}
 
 export const layer = Layer.effect(
   Service,

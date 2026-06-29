@@ -6,7 +6,7 @@ import * as core from "@actions/core"
 import * as github from "@actions/github"
 import type { Context as GitHubContext } from "@actions/github/lib/context"
 import type { IssueCommentEvent, PullRequestReviewCommentEvent } from "@octokit/webhooks-types"
-import { createOpencodeClient } from "@lgcode/sdk"
+import { createOpencodeClient } from "@loongcode/sdk"
 import { spawn } from "node:child_process"
 import { setTimeout as sleep } from "node:timers/promises"
 
@@ -142,7 +142,7 @@ try {
   const comment = await createComment()
   commentId = comment.data.id
 
-  // Setup lgcode session
+  // Setup loongcode session
   const repoData = await fetchRepo()
   session = await client.session.create<true>().then((r) => r.data)
   await subscribeSessionEvents()
@@ -152,7 +152,7 @@ try {
     await client.session.share<true>({ path: session })
     return session.id.slice(-8)
   })()
-  console.log("lgcode session", session.id)
+  console.log("loongcode session", session.id)
   if (shareId) {
     console.log("Share link:", `${useShareUrl()}/s/${shareId}`)
   }
@@ -232,7 +232,7 @@ function createOpencode() {
   const host = "127.0.0.1"
   const port = 4096
   const url = `http://${host}:${port}`
-  const proc = spawn(`lgcode`, [`serve`, `--hostname=${host}`, `--port=${port}`])
+  const proc = spawn(`loongcode`, [`serve`, `--hostname=${host}`, `--port=${port}`])
   const client = createOpencodeClient({ baseUrl: url })
 
   return {
@@ -244,8 +244,8 @@ function createOpencode() {
 function assertPayloadKeyword() {
   const payload = useContext().payload as IssueCommentEvent | PullRequestReviewCommentEvent
   const body = payload.comment.body.trim()
-  if (!body.match(/(?:^|\s)(?:\/lgcode|\/oc)(?=$|\s)/)) {
-    throw new Error("Comments must mention `/lgcode` or `/oc`")
+  if (!body.match(/(?:^|\s)(?:\/loongcode|\/oc)(?=$|\s)/)) {
+    throw new Error("Comments must mention `/loongcode` or `/oc`")
   }
 }
 
@@ -286,7 +286,7 @@ async function assertOpencodeConnected() {
   } while (retry++ < 30)
 
   if (!connected) {
-    throw new Error("Failed to connect to lgcode server")
+    throw new Error("Failed to connect to loongcode server")
   }
 }
 
@@ -382,7 +382,7 @@ async function getAccessToken() {
       body: JSON.stringify({ owner: repo.owner, repo: repo.repo }),
     })
   } else {
-    const oidcToken = await core.getIDToken("lgcode-github-action")
+    const oidcToken = await core.getIDToken("loongcode-github-action")
     response = await fetch("https://api.modelhub.lgdg.cc/exchange_github_app_token", {
       method: "POST",
       headers: {
@@ -418,19 +418,19 @@ async function getUserPrompt() {
 
   let prompt = (() => {
     const body = payload.comment.body.trim()
-    if (body === "/lgcode" || body === "/oc") {
+    if (body === "/loongcode" || body === "/oc") {
       if (reviewContext) {
         return `Review this code change and suggest improvements for the commented lines:\n\nFile: ${reviewContext.file}\nLines: ${reviewContext.line}\n\n${reviewContext.diffHunk}`
       }
       return "Summarize this thread"
     }
-    if (body.includes("/lgcode") || body.includes("/oc")) {
+    if (body.includes("/loongcode") || body.includes("/oc")) {
       if (reviewContext) {
         return `${body}\n\nContext: You are reviewing a comment on file "${reviewContext.file}" at line ${reviewContext.line}.\n\nDiff context:\n${reviewContext.diffHunk}`
       }
       return body
     }
-    throw new Error("Comments must mention `/lgcode` or `/oc`")
+    throw new Error("Comments must mention `/loongcode` or `/oc`")
   })()
 
   // Handle images
@@ -607,7 +607,7 @@ async function resolveAgent(): Promise<string | undefined> {
 }
 
 async function chat(text: string, files: PromptFiles = []) {
-  console.log("Sending message to lgcode...")
+  console.log("Sending message to loongcode...")
   const { providerID, modelID } = useEnvModel()
   const agent = await resolveAgent()
 
@@ -717,7 +717,7 @@ function generateBranchName(type: "issue" | "pr") {
     .replace(/\.\d{3}Z/, "")
     .split("T")
     .join("")
-  return `lgcode/${type}${useIssueId()}-${timestamp}`
+  return `loongcode/${type}${useIssueId()}-${timestamp}`
 }
 
 async function pushToNewBranch(summary: string, branch: string) {
@@ -831,9 +831,9 @@ function footer(opts?: { image?: boolean }) {
     const titleAlt = encodeURIComponent(session.title.substring(0, 50))
     const title64 = Buffer.from(session.title.substring(0, 700), "utf8").toString("base64")
 
-    return `<a href="${useShareUrl()}/s/${shareId}"><img width="200" alt="${titleAlt}" src="https://social-cards.sst.dev/lgcode-share/${title64}.png?model=${providerID}/${modelID}&version=${session.version}&id=${shareId}" /></a>\n`
+    return `<a href="${useShareUrl()}/s/${shareId}"><img width="200" alt="${titleAlt}" src="https://social-cards.sst.dev/loongcode-share/${title64}.png?model=${providerID}/${modelID}&version=${session.version}&id=${shareId}" /></a>\n`
   })()
-  const shareUrl = shareId ? `[lgcode session](${useShareUrl()}/s/${shareId})&nbsp;&nbsp;|&nbsp;&nbsp;` : ""
+  const shareUrl = shareId ? `[loongcode session](${useShareUrl()}/s/${shareId})&nbsp;&nbsp;|&nbsp;&nbsp;` : ""
   return `\n\n${image}${shareUrl}[github run](${useEnvRunUrl()})`
 }
 

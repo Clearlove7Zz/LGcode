@@ -1,11 +1,11 @@
 import { describe, expect } from "bun:test"
 import { Effect, Exit, Layer, Scope } from "effect"
-import { AbsolutePath } from "@lgcode/core/schema"
-import { Global } from "@lgcode/core/global"
-import { Reference } from "@lgcode/core/reference"
-import { Repository } from "@lgcode/core/repository"
-import { RepositoryCache } from "@lgcode/core/repository-cache"
-import { EventV2 } from "@lgcode/core/event"
+import { AbsolutePath } from "@loongcode/core/schema"
+import { Global } from "@loongcode/core/global"
+import { Reference } from "@loongcode/core/reference"
+import { Repository } from "@loongcode/core/repository"
+import { RepositoryCache } from "@loongcode/core/repository-cache"
+import { EventV2 } from "@loongcode/core/event"
 import { it } from "./lib/effect"
 
 const cache = Layer.mock(RepositoryCache.Service, {

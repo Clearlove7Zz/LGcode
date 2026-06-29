@@ -17,7 +17,7 @@ export interface Interface {
   readonly grep: (input: FileSystem.GrepInput) => Effect.Effect<readonly FileSystem.Match[]>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2/FileSystem/Search") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/v2/FileSystem/Search") {}
 
 export const ripgrepLayer = Layer.effect(
   Service,
@@ -233,5 +233,5 @@ export const fffLayer = Layer.effect(
 )
 
 export const defaultLayer = Layer.unwrap(
-  Effect.sync(() => (Flag.LGCODE_DISABLE_FFF || !Fff.available() ? ripgrepLayer : fffLayer)),
+  Effect.sync(() => (Flag.LOONGCODE_DISABLE_FFF || !Fff.available() ? ripgrepLayer : fffLayer)),
 )

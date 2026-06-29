@@ -1,13 +1,13 @@
-import { PermissionV1 } from "@lgcode/core/v1/permission"
+import { PermissionV1 } from "@loongcode/core/v1/permission"
 import { describe, expect } from "bun:test"
 import path from "path"
 import { Cause, Effect, Exit, Layer } from "effect"
 import { GlobTool } from "../../src/tool/glob"
 import { SessionID, MessageID } from "../../src/session/schema"
-import { CrossSpawnSpawner } from "@lgcode/core/cross-spawn-spawner"
-import { Ripgrep } from "@lgcode/core/ripgrep"
-import { FSUtil } from "@lgcode/core/fs-util"
-import { Global } from "@lgcode/core/global"
+import { CrossSpawnSpawner } from "@loongcode/core/cross-spawn-spawner"
+import { Ripgrep } from "@loongcode/core/ripgrep"
+import { FSUtil } from "@loongcode/core/fs-util"
+import { Global } from "@loongcode/core/global"
 import { Truncate } from "@/tool/truncate"
 import { Agent } from "../../src/agent/agent"
 import { TestInstance, tmpdirScoped } from "../fixture/fixture"
@@ -60,15 +60,15 @@ const asks = () => {
 const githubBase = <A, E, R>(url: string, self: Effect.Effect<A, E, R>) =>
   Effect.acquireUseRelease(
     Effect.sync(() => {
-      const previous = process.env.LGCODE_REPO_CLONE_GITHUB_BASE_URL
-      process.env.LGCODE_REPO_CLONE_GITHUB_BASE_URL = url
+      const previous = process.env.LOONGCODE_REPO_CLONE_GITHUB_BASE_URL
+      process.env.LOONGCODE_REPO_CLONE_GITHUB_BASE_URL = url
       return previous
     }),
     () => self,
     (previous) =>
       Effect.sync(() => {
-        if (previous) process.env.LGCODE_REPO_CLONE_GITHUB_BASE_URL = previous
-        else delete process.env.LGCODE_REPO_CLONE_GITHUB_BASE_URL
+        if (previous) process.env.LOONGCODE_REPO_CLONE_GITHUB_BASE_URL = previous
+        else delete process.env.LOONGCODE_REPO_CLONE_GITHUB_BASE_URL
       }),
   )
 

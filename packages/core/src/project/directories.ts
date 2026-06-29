@@ -7,7 +7,7 @@ import { LayerNode } from "../effect/layer-node"
 import { AbsolutePath, optionalOmitUndefined } from "../schema"
 import { ProjectSchema } from "./schema"
 import { ProjectDirectoryTable } from "./sql"
-import type { EffectDrizzleSqlite } from "@lgcode/effect-drizzle-sqlite"
+import type { EffectDrizzleSqlite } from "@loongcode/effect-drizzle-sqlite"
 
 export interface Directory {
   readonly directory: AbsolutePath
@@ -55,7 +55,7 @@ export interface Interface {
   readonly remove: (input: RemoveInput, tx?: Transaction) => Effect.Effect<boolean>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/ProjectDirectories") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/ProjectDirectories") {}
 
 export const layer = Layer.effect(
   Service,

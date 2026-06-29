@@ -1,10 +1,10 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { AbsolutePath } from "@lgcode/core/schema"
-import { PluginBoot } from "@lgcode/core/plugin/boot"
-import { Reference } from "@lgcode/core/reference"
-import { ReferenceGuidance } from "@lgcode/core/reference/guidance"
-import { SystemContext } from "@lgcode/core/system-context/index"
+import { AbsolutePath } from "@loongcode/core/schema"
+import { PluginBoot } from "@loongcode/core/plugin/boot"
+import { Reference } from "@loongcode/core/reference"
+import { ReferenceGuidance } from "@loongcode/core/reference/guidance"
+import { SystemContext } from "@loongcode/core/system-context/index"
 import { it } from "./lib/effect"
 
 describe("ReferenceGuidance", () => {

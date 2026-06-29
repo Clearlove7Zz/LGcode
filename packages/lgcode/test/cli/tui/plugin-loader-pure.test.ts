@@ -33,10 +33,10 @@ test("skips external tui plugins in pure mode", async () => {
     },
   })
 
-  const pure = process.env.LGCODE_PURE
-  const meta = process.env.LGCODE_PLUGIN_META_FILE
-  process.env.LGCODE_PURE = "1"
-  process.env.LGCODE_PLUGIN_META_FILE = tmp.extra.meta
+  const pure = process.env.LOONGCODE_PURE
+  const meta = process.env.LOONGCODE_PLUGIN_META_FILE
+  process.env.LOONGCODE_PURE = "1"
+  process.env.LOONGCODE_PLUGIN_META_FILE = tmp.extra.meta
 
   const config = createTuiResolvedConfig({
     plugin: [[tmp.extra.spec, { marker: tmp.extra.marker }]],
@@ -59,14 +59,14 @@ test("skips external tui plugins in pure mode", async () => {
     cwd.mockRestore()
     wait.mockRestore()
     if (pure === undefined) {
-      delete process.env.LGCODE_PURE
+      delete process.env.LOONGCODE_PURE
     } else {
-      process.env.LGCODE_PURE = pure
+      process.env.LOONGCODE_PURE = pure
     }
     if (meta === undefined) {
-      delete process.env.LGCODE_PLUGIN_META_FILE
+      delete process.env.LOONGCODE_PLUGIN_META_FILE
     } else {
-      process.env.LGCODE_PLUGIN_META_FILE = meta
+      process.env.LOONGCODE_PLUGIN_META_FILE = meta
     }
   }
 })

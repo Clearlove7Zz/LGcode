@@ -3,7 +3,7 @@ title: Vještine agenata
 description: "Definisite ponasanje koje se moze ponovo koristiti"
 ---
 
-Agent skills omogucavaju LGcode da pronade uputstva koja se mogu ponovo koristiti iz repozitorija ili home direktorija.
+Agent skills omogucavaju Loongcode da pronade uputstva koja se mogu ponovo koristiti iz repozitorija ili home direktorija.
 Skills se ucitavaju po potrebi kroz ugradeni `skill` alat - agenti vide dostupne skills i ucitavaju puni sadrzaj kad zatreba.
 
 ---
@@ -11,10 +11,10 @@ Skills se ucitavaju po potrebi kroz ugradeni `skill` alat - agenti vide dostupne
 ## Postavite datoteke
 
 Kreirajte jedan folder po nazivu skill-a i stavite `SKILL.md` unutar njega.
-LGcode pretrazuje ove lokacije:
+Loongcode pretrazuje ove lokacije:
 
-- Konfiguracija projekta: `.lgcode/skills/<name>/SKILL.md`
-- Globalna konfiguracija: `~/.config/lgcode/skills/<name>/SKILL.md`
+- Konfiguracija projekta: `.loongcode/skills/<name>/SKILL.md`
+- Globalna konfiguracija: `~/.config/loongcode/skills/<name>/SKILL.md`
 - Claude kompatibilno u projektu: `.claude/skills/<name>/SKILL.md`
 - Globalno Claude kompatibilno: `~/.claude/skills/<name>/SKILL.md`
 - Agent kompatibilno u projektu: `.agents/skills/<name>/SKILL.md`
@@ -24,10 +24,10 @@ LGcode pretrazuje ove lokacije:
 
 ## Razumijte otkrivanje
 
-Za projektne lokalne putanje, LGcode ide prema gore od trenutnog radnog direktorija dok ne dode do git worktree-ja.
-Usput ucitava sve odgovarajuce `skills/*/SKILL.md` u `.lgcode/` i odgovarajuce `.claude/skills/*/SKILL.md` ili `.agents/skills/*/SKILL.md`.
+Za projektne lokalne putanje, Loongcode ide prema gore od trenutnog radnog direktorija dok ne dode do git worktree-ja.
+Usput ucitava sve odgovarajuce `skills/*/SKILL.md` u `.loongcode/` i odgovarajuce `.claude/skills/*/SKILL.md` ili `.agents/skills/*/SKILL.md`.
 
-Globalne definicije se takoder ucitavaju iz `~/.config/lgcode/skills/*/SKILL.md`, `~/.claude/skills/*/SKILL.md` i `~/.agents/skills/*/SKILL.md`.
+Globalne definicije se takoder ucitavaju iz `~/.config/loongcode/skills/*/SKILL.md`, `~/.claude/skills/*/SKILL.md` i `~/.agents/skills/*/SKILL.md`.
 
 ---
 
@@ -73,14 +73,14 @@ Neka bude dovoljno precizan da agent moze pravilno odabrati.
 
 ## Primjer
 
-Kreirajte `.lgcode/skills/git-release/SKILL.md` ovako:
+Kreirajte `.loongcode/skills/git-release/SKILL.md` ovako:
 
 ```markdown
 ---
 name: git-release
 description: Create consistent releases and changelogs
 license: MIT
-compatibility: lgcode
+compatibility: loongcode
 metadata:
   audience: maintainers
   workflow: github
@@ -102,7 +102,7 @@ Ask clarifying questions if the target versioning scheme is unclear.
 
 ## Opis alata
 
-LGcode navodi dostupne skills u opisu `skill` alata.
+Loongcode navodi dostupne skills u opisu `skill` alata.
 Svaki unos sadrzi naziv i opis skill-a:
 
 ```xml
@@ -124,7 +124,7 @@ skill({ name: "git-release" })
 
 ## Konfiguracija dozvola
 
-Kontrolisite kojim skills agenti mogu pristupiti pomocu dozvola baziranih na obrascima u `lgcode.json`:
+Kontrolisite kojim skills agenti mogu pristupiti pomocu dozvola baziranih na obrascima u `loongcode.json`:
 
 ```json
 {
@@ -163,7 +163,7 @@ permission:
 ---
 ```
 
-**Za ugradene agente** (u `lgcode.json`):
+**Za ugradene agente** (u `loongcode.json`):
 
 ```json
 {

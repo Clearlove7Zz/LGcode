@@ -1,4 +1,4 @@
-import { SessionV2 } from "@lgcode/core/session"
+import { SessionV2 } from "@loongcode/core/session"
 import { DateTime, Effect } from "effect"
 import { HttpApiBuilder, HttpApiSchema } from "effect/unstable/httpapi"
 import { Api } from "../api"
@@ -10,7 +10,7 @@ import {
   SessionNotFoundError,
   UnknownError,
 } from "../errors"
-import { AbsolutePath } from "@lgcode/core/schema"
+import { AbsolutePath } from "@loongcode/core/schema"
 
 const DefaultSessionsLimit = 50
 

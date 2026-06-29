@@ -4,7 +4,7 @@ import { $ } from "bun"
 import fs from "fs"
 import { rm } from "fs/promises"
 import path from "path"
-import { Script } from "@lgcode/script"
+import { Script } from "@loongcode/script"
 import { createSolidTransformPlugin } from "@opentui/solid/bun-plugin"
 import pkg from "../package.json"
 import { modelsData } from "./generate"
@@ -87,11 +87,11 @@ for (const item of targets) {
       windows: {},
     },
     define: {
-      LGCODE_VERSION: `'${Script.version}'`,
-      LGCODE_CLI_NAME: `'${binary}'`,
-      LGCODE_MODELS_DEV: modelsData,
-      LGCODE_CHANNEL: `'${Script.channel}'`,
-      LGCODE_LIBC: item.os === "linux" ? `'${item.abi ?? "glibc"}'` : "undefined",
+      LOONGCODE_VERSION: `'${Script.version}'`,
+      LOONGCODE_CLI_NAME: `'${binary}'`,
+      LOONGCODE_MODELS_DEV: modelsData,
+      LOONGCODE_CHANNEL: `'${Script.channel}'`,
+      LOONGCODE_LIBC: item.os === "linux" ? `'${item.abi ?? "glibc"}'` : "undefined",
       // FFF_LIBC selects the fff native lib variant: "musl" or "gnu".
       FFF_LIBC: item.os === "linux" ? `'${item.abi ?? "gnu"}'` : "undefined",
       OTUI_TREE_SITTER_WORKER_PATH:
@@ -111,7 +111,7 @@ for (const item of targets) {
     `./dist/${name}/package.json`,
     JSON.stringify(
       {
-        name: `@lgcode/${name}`,
+        name: `@loongcode/${name}`,
         version: Script.version,
         license: "MIT",
         repository: { type: "git", url: "git+https://github.com/Clearlove7Zz/LGcode.git" },

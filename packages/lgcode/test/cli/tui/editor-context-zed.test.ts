@@ -3,7 +3,7 @@ import { mkdir, symlink } from "node:fs/promises"
 import os from "node:os"
 import path from "node:path"
 import { afterEach, expect, spyOn, test } from "bun:test"
-import { isZedTerminal, offsetToPosition, resolveZedDbPath, resolveZedSelection } from "@lgcode/tui/editor-zed"
+import { isZedTerminal, offsetToPosition, resolveZedDbPath, resolveZedSelection } from "@loongcode/tui/editor-zed"
 import { tmpdir } from "../../fixture/fixture"
 
 const originalZedTerm = process.env.ZED_TERM
@@ -83,14 +83,14 @@ test("resolveZedDbPath skips candidates that cannot be stated", async () => {
   const loop = path.join(tmp.path, "loop")
   await symlink(loop, loop)
   const home = spyOn(os, "homedir").mockImplementation(() => tmp.path)
-  const previous = process.env.LGCODE_ZED_DB
-  process.env.LGCODE_ZED_DB = loop
+  const previous = process.env.LOONGCODE_ZED_DB
+  process.env.LOONGCODE_ZED_DB = loop
 
   try {
     expect(resolveZedDbPath()).toBeUndefined()
   } finally {
-    if (previous === undefined) delete process.env.LGCODE_ZED_DB
-    else process.env.LGCODE_ZED_DB = previous
+    if (previous === undefined) delete process.env.LOONGCODE_ZED_DB
+    else process.env.LOONGCODE_ZED_DB = previous
     home.mockRestore()
   }
 })

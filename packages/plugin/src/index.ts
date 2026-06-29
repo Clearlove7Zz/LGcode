@@ -9,8 +9,8 @@ import type {
   Message,
   Part,
   Config as SDKConfig,
-} from "@lgcode/sdk"
-import type { Provider as ProviderV2, Model as ModelV2, Auth } from "@lgcode/sdk/v2"
+} from "@loongcode/sdk"
+import type { Provider as ProviderV2, Model as ModelV2, Auth } from "@loongcode/sdk/v2"
 
 import type { BunShell } from "./shell.js"
 import { type ToolDefinition } from "./tool.js"

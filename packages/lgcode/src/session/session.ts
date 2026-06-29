@@ -1,19 +1,19 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
-import { PermissionV1 } from "@lgcode/core/v1/permission"
-import { Slug } from "@lgcode/core/util/slug"
-import { SessionV1 } from "@lgcode/core/v1/session"
-import { serviceUse } from "@lgcode/core/effect/service-use"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
+import { PermissionV1 } from "@loongcode/core/v1/permission"
+import { Slug } from "@loongcode/core/util/slug"
+import { SessionV1 } from "@loongcode/core/v1/session"
+import { serviceUse } from "@loongcode/core/effect/service-use"
 import path from "path"
 import { BackgroundJob } from "@/background/job"
 import { Decimal } from "decimal.js"
-import type { ProviderMetadata, Usage } from "@lgcode/llm"
-import { InstallationVersion } from "@lgcode/core/installation/version"
-import { Database } from "@lgcode/core/database/database"
-import { makeRuntime } from "@lgcode/core/effect/runtime"
+import type { ProviderMetadata, Usage } from "@loongcode/llm"
+import { InstallationVersion } from "@loongcode/core/installation/version"
+import { Database } from "@loongcode/core/database/database"
+import { makeRuntime } from "@loongcode/core/effect/runtime"
 import { EventV2Bridge } from "@/event-v2-bridge"
-import { EventV2 } from "@lgcode/core/event"
-import { SessionV2 } from "@lgcode/core/session"
-import { SessionExecution } from "@lgcode/core/session/execution"
+import { EventV2 } from "@loongcode/core/event"
+import { SessionV2 } from "@loongcode/core/session"
+import { SessionExecution } from "@loongcode/core/session/execution"
 
 import { NotFoundError } from "@/storage/storage"
 import { eq } from "drizzle-orm"
@@ -27,24 +27,24 @@ import { inArray } from "drizzle-orm"
 import { lt } from "drizzle-orm"
 import { or } from "drizzle-orm"
 import type { SQL } from "drizzle-orm"
-import { PartTable, SessionTable } from "@lgcode/core/session/sql"
-import { ProjectTable } from "@lgcode/core/project/sql"
+import { PartTable, SessionTable } from "@loongcode/core/session/sql"
+import { ProjectTable } from "@loongcode/core/project/sql"
 import { MessageV2 } from "./message-v2"
 import type { InstanceContext } from "../project/instance-context"
 import { InstanceState } from "@/effect/instance-state"
 import { Snapshot } from "@/snapshot"
-import { ProjectV2 } from "@lgcode/core/project"
-import { WorkspaceV2 } from "@lgcode/core/workspace"
+import { ProjectV2 } from "@loongcode/core/project"
+import { WorkspaceV2 } from "@loongcode/core/workspace"
 import { SessionID, MessageID, PartID } from "./schema"
 
 import type { Provider } from "@/provider/provider"
 import { Permission } from "@/permission"
-import { Global } from "@lgcode/core/global"
+import { Global } from "@loongcode/core/global"
 import { Effect, Layer, Option, Context, Schema, Types } from "effect"
-import { NonNegativeInt, optionalOmitUndefined } from "@lgcode/core/schema"
+import { NonNegativeInt, optionalOmitUndefined } from "@loongcode/core/schema"
 import { RuntimeFlags } from "@/effect/runtime-flags"
-import { ProviderV2 } from "@lgcode/core/provider"
-import { ModelV2 } from "@lgcode/core/model"
+import { ProviderV2 } from "@loongcode/core/provider"
+import { ModelV2 } from "@loongcode/core/model"
 
 const runtime = makeRuntime(Database.Service, Database.defaultLayer)
 
@@ -376,7 +376,7 @@ export const Event = {
 
 export function plan(input: { slug: string; time: { created: number } }, instance: InstanceContext) {
   const base = instance.project.vcs
-    ? path.join(instance.worktree, ".lgcode", "plans")
+    ? path.join(instance.worktree, ".loongcode", "plans")
     : path.join(Global.Path.data, "plans")
   return path.join(base, [input.time.created, input.slug].join("-") + ".md")
 }
@@ -513,7 +513,7 @@ export interface Interface {
   ) => Effect.Effect<Option.Option<SessionV1.WithParts>, NotFound>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Session") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/Session") {}
 
 export const use = serviceUse(Service)
 

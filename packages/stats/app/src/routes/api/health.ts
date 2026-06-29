@@ -1,5 +1,5 @@
-import { AppConfig } from "@lgcode/stats-core/config"
-import { runtime } from "@lgcode/stats-core/runtime"
+import { AppConfig } from "@loongcode/stats-core/config"
+import { runtime } from "@loongcode/stats-core/runtime"
 import { Effect } from "effect"
 
 export async function GET() {

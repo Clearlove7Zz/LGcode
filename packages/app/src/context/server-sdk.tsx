@@ -1,5 +1,5 @@
-import type { Event } from "@lgcode/sdk/v2/client"
-import { createSimpleContext } from "@lgcode/ui/context"
+import type { Event } from "@loongcode/sdk/v2/client"
+import { createSimpleContext } from "@loongcode/ui/context"
 import { createGlobalEmitter } from "@solid-primitives/event-bus"
 import { makeEventListener } from "@solid-primitives/event-listener"
 import { type Accessor, batch, createMemo, onCleanup, onMount } from "solid-js"

@@ -1,7 +1,7 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
-import { httpClient } from "@lgcode/core/effect/layer-node-platform"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
+import { httpClient } from "@loongcode/core/effect/layer-node-platform"
 import { Cache, Clock, Duration, Effect, Layer, Option, Schema, SchemaGetter, Context } from "effect"
-import { serviceUse } from "@lgcode/core/effect/service-use"
+import { serviceUse } from "@loongcode/core/effect/service-use"
 import {
   FetchHttpClient,
   HttpClient,
@@ -134,7 +134,7 @@ class TokenRefreshRequest extends Schema.Class<TokenRefreshRequest>("TokenRefres
   client_id: Schema.String,
 }) {}
 
-const clientId = "lgcode-cli"
+const clientId = "loongcode-cli"
 const eagerRefreshThreshold = Duration.minutes(5)
 const eagerRefreshThresholdMs = Duration.toMillis(eagerRefreshThreshold)
 
@@ -182,7 +182,7 @@ export interface Interface {
   readonly poll: (input: Login) => Effect.Effect<PollResult, AccountError>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Account") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/Account") {}
 
 export const use = serviceUse(Service)
 

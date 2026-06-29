@@ -4,18 +4,18 @@ import { type rpc } from "../tui/worker"
 import path from "path"
 import { fileURLToPath } from "url"
 import { UI } from "@/cli/ui"
-import { errorMessage } from "@lgcode/tui/util/error"
+import { errorMessage } from "@loongcode/tui/util/error"
 import { withTimeout } from "@/util/timeout"
 import { withNetworkOptions, resolveNetworkOptionsNoConfig } from "@/cli/network"
 import { Filesystem } from "@/util/filesystem"
-import type { GlobalEvent } from "@lgcode/sdk/v2"
-import type { EventSource } from "@lgcode/tui/context/sdk"
+import type { GlobalEvent } from "@loongcode/sdk/v2"
+import type { EventSource } from "@loongcode/tui/context/sdk"
 import { writeHeapSnapshot } from "v8"
 import { validateSession } from "../tui/validate-session"
-import { win32InstallCtrlCGuard } from "@lgcode/tui/terminal-win32"
+import { win32InstallCtrlCGuard } from "@loongcode/tui/terminal-win32"
 
 declare global {
-  const LGCODE_WORKER_PATH: string
+  const LOONGCODE_WORKER_PATH: string
 }
 
 type RpcClient = ReturnType<typeof Rpc.client<typeof rpc>>
@@ -49,7 +49,7 @@ function createEventSource(client: RpcClient): EventSource {
 }
 
 async function target() {
-  if (typeof LGCODE_WORKER_PATH !== "undefined") return LGCODE_WORKER_PATH
+  if (typeof LOONGCODE_WORKER_PATH !== "undefined") return LOONGCODE_WORKER_PATH
   const dist = new URL("./cli/tui/worker.js", import.meta.url)
   if (await Filesystem.exists(fileURLToPath(dist))) return dist
   return new URL("../tui/worker.ts", import.meta.url)
@@ -70,12 +70,12 @@ export function resolveThreadDirectory(project?: string, envPWD = process.env.PW
 
 export const TuiThreadCommand = cmd({
   command: "$0 [project]",
-  describe: "start lgcode tui",
+  describe: "start loongcode tui",
   builder: (yargs) =>
     withNetworkOptions(yargs)
       .positional("project", {
         type: "string",
-        describe: "path to start lgcode in",
+        describe: "path to start loongcode in",
       })
       .option("model", {
         type: "string",
@@ -161,7 +161,7 @@ export const TuiThreadCommand = cmd({
             events: undefined,
           }
         : {
-            url: "http://lgcode.internal",
+            url: "http://loongcode.internal",
             fetch: createWorkerFetch(client),
             events: createEventSource(client),
           }

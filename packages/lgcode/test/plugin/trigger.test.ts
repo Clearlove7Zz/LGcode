@@ -1,9 +1,9 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
 import { FetchHttpClient } from "effect/unstable/http"
-import { CrossSpawnSpawner } from "@lgcode/core/cross-spawn-spawner"
-import { FSUtil } from "@lgcode/core/fs-util"
-import { EffectFlock } from "@lgcode/core/util/effect-flock"
+import { CrossSpawnSpawner } from "@loongcode/core/cross-spawn-spawner"
+import { FSUtil } from "@loongcode/core/fs-util"
+import { EffectFlock } from "@loongcode/core/util/effect-flock"
 import path from "path"
 import { pathToFileURL } from "url"
 import { EventV2Bridge } from "../../src/event-v2-bridge"
@@ -17,8 +17,8 @@ import { testEffect } from "../lib/effect"
 import { AccountTest } from "../fake/account"
 import { AuthTest } from "../fake/auth"
 import { NpmTest } from "../fake/npm"
-import { ProviderV2 } from "@lgcode/core/provider"
-import { ModelV2 } from "@lgcode/core/model"
+import { ProviderV2 } from "@loongcode/core/provider"
+import { ModelV2 } from "@loongcode/core/model"
 
 const configLayer = Config.layer.pipe(
   Layer.provide(EffectFlock.defaultLayer),
@@ -50,7 +50,7 @@ function withProject<A, E, R>(source: string, self: Effect.Effect<A, E, R>) {
         Effect.promise(() => Bun.write(file, source)),
         Effect.promise(() =>
           Bun.write(
-            path.join(test.directory, "lgcode.json"),
+            path.join(test.directory, "loongcode.json"),
             JSON.stringify(
               {
                 $schema: "https://modelhub.lgdg.cc/config.json",

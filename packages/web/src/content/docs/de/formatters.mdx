@@ -1,15 +1,15 @@
 ---
 title: Formatierer
-description: LGcode verwendet sprachspezifische Formatierer.
+description: Loongcode verwendet sprachspezifische Formatierer.
 ---
 
-LGcode formatiert Dateien automatisch, nachdem sie mit sprachspezifischen Formatierern geschrieben oder bearbeitet wurden. Dadurch wird sichergestellt, dass der generierte Code dem Codestil Ihres Projekts entspricht.
+Loongcode formatiert Dateien automatisch, nachdem sie mit sprachspezifischen Formatierern geschrieben oder bearbeitet wurden. Dadurch wird sichergestellt, dass der generierte Code dem Codestil Ihres Projekts entspricht.
 
 ---
 
 ## Integriert
 
-LGcode verfügt über mehrere integrierte Formatierer für gängige Sprachen und Frameworks. Nachfolgend finden Sie eine Liste der Formatierer, unterstützten Dateierweiterungen und benötigten Befehle oder Konfigurationsoptionen.
+Loongcode verfügt über mehrere integrierte Formatierer für gängige Sprachen und Frameworks. Nachfolgend finden Sie eine Liste der Formatierer, unterstützten Dateierweiterungen und benötigten Befehle oder Konfigurationsoptionen.
 
 | Formatierer          | Erweiterungen                                                                                            | Anforderungen                                                                                              |
 | -------------------- | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
@@ -39,13 +39,13 @@ LGcode verfügt über mehrere integrierte Formatierer für gängige Sprachen und
 | oxfmt (Experimental) | .js, .jsx, .ts, .tsx                                                                                     | `oxfmt`-Abhängigkeit in `package.json` und einer [experimental env variable flag](/docs/cli/#experimental) |
 | Ormolu               | .hs                                                                                                      | `ormolu`-Befehl verfügbar                                                                                  |
 
-Wenn Ihr Projekt auch `prettier` in Ihrem `package.json` hat, wird LGcode automatisch verwendet.
+Wenn Ihr Projekt auch `prettier` in Ihrem `package.json` hat, wird Loongcode automatisch verwendet.
 
 ---
 
 ## Funktionsweise
 
-Wenn LGcode eine Datei schreibt oder bearbeitet, geschieht Folgendes:
+Wenn Loongcode eine Datei schreibt oder bearbeitet, geschieht Folgendes:
 
 1. Überprüft die Dateierweiterung anhand aller aktivierten Formatierer.
 2. Führt den entsprechenden Formatierungsbefehl für die Datei aus.
@@ -57,9 +57,9 @@ Dieser Prozess findet im Hintergrund statt und stellt sicher, dass Ihr Codestile
 
 ## Konfiguration
 
-Sie können Formatierer über den Abschnitt `formatter` in Ihrer LGcode-Konfiguration anpassen.
+Sie können Formatierer über den Abschnitt `formatter` in Ihrer Loongcode-Konfiguration anpassen.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "formatter": {}
@@ -83,7 +83,7 @@ Schauen wir uns einige Beispiele an.
 
 Um **alle** Formatierer global zu deaktivieren, setzen Sie `formatter` auf `false`:
 
-```json title="lgcode.json" {3}
+```json title="loongcode.json" {3}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "formatter": false
@@ -92,7 +92,7 @@ Um **alle** Formatierer global zu deaktivieren, setzen Sie `formatter` auf `fals
 
 Um einen **bestimmten** Formatierer zu deaktivieren, setzen Sie `disabled` auf `true`:
 
-```json title="lgcode.json" {5}
+```json title="loongcode.json" {5}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "formatter": {
@@ -109,7 +109,7 @@ Um einen **bestimmten** Formatierer zu deaktivieren, setzen Sie `disabled` auf `
 
 Sie können den integrierten Formatierer überschreiben oder neu hinzufügen, indem Sie den Befehl, Umgebungsvariablen und Dateierweiterungen angeben:
 
-```json title="lgcode.json" {4-14}
+```json title="loongcode.json" {4-14}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "formatter": {

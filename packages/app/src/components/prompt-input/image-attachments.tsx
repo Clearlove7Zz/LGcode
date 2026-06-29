@@ -1,6 +1,6 @@
 import { Component, For, Show } from "solid-js"
-import { Icon } from "@lgcode/ui/icon"
-import { Tooltip } from "@lgcode/ui/tooltip"
+import { Icon } from "@loongcode/ui/icon"
+import { Tooltip } from "@loongcode/ui/tooltip"
 import type { ImageAttachmentPart } from "@/context/prompt"
 
 type PromptImageAttachmentsProps = {

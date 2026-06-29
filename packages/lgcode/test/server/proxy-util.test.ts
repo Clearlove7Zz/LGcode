@@ -65,18 +65,18 @@ describe("ProxyUtil", () => {
       expect(result.get("content-type")).toBe("application/json")
     })
 
-    test("strips lgcode-specific headers", () => {
+    test("strips loongcode-specific headers", () => {
       const req = new Request("http://localhost", {
         headers: {
-          "x-lgcode-directory": "/home/user/project",
-          "x-lgcode-workspace": "ws_123",
+          "x-loongcode-directory": "/home/user/project",
+          "x-loongcode-workspace": "ws_123",
           "accept-encoding": "gzip",
           "x-custom": "keep",
         },
       })
       const result = ProxyUtil.headers(req)
-      expect(result.get("x-lgcode-directory")).toBeNull()
-      expect(result.get("x-lgcode-workspace")).toBeNull()
+      expect(result.get("x-loongcode-directory")).toBeNull()
+      expect(result.get("x-loongcode-workspace")).toBeNull()
       expect(result.get("accept-encoding")).toBeNull()
       expect(result.get("x-custom")).toBe("keep")
     })

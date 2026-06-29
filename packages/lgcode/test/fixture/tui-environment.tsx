@@ -4,7 +4,7 @@ import {
   TuiStartupProvider,
   TuiTerminalEnvironmentProvider,
   type TuiPaths,
-} from "@lgcode/tui/context/runtime"
+} from "@loongcode/tui/context/runtime"
 import type { ParentProps } from "solid-js"
 
 export function TestTuiContexts(
@@ -17,10 +17,10 @@ export function TestTuiContexts(
   return (
     <TuiPathsProvider
       value={{
-        cwd: props.cwd ?? props.directory ?? "/tmp/lgcode/packages/lgcode",
-        home: "/tmp/lgcode/home",
-        state: "/tmp/lgcode/state",
-        worktree: "/tmp/lgcode",
+        cwd: props.cwd ?? props.directory ?? "/tmp/loongcode/packages/loongcode",
+        home: "/tmp/loongcode/home",
+        state: "/tmp/loongcode/state",
+        worktree: "/tmp/loongcode",
         ...props.paths,
       }}
     >

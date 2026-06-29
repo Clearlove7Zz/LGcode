@@ -1,6 +1,6 @@
 /** @jsxImportSource @opentui/solid */
 import { expect, test } from "bun:test"
-import type { GlobalEvent } from "@lgcode/sdk/v2"
+import type { GlobalEvent } from "@loongcode/sdk/v2"
 import { tmpdir } from "../../../fixture/fixture"
 import { json, mount, wait } from "./sync-fixture"
 
@@ -12,7 +12,7 @@ const session = {
   title: "race",
   time: { created: 0, updated: 0 },
   version: "1.15.13",
-  directory: "/tmp/lgcode/packages/lgcode",
+  directory: "/tmp/loongcode/packages/loongcode",
 }
 const assistant = {
   id: messageID,

@@ -1,1 +1,1 @@
-export * from "@lgcode/tui/prompt/display"
+export * from "@loongcode/tui/prompt/display"

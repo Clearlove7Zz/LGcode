@@ -3,9 +3,9 @@ title: Themes
 description: Wybierz wbudowany motyw lub zdefiniuj własny.
 ---
 
-Dzięki lgcode możesz wybrać jeden z kilku wbudowanych motywów, użyć motywu, który dostosowuje się do motywu terminala lub zdefiniować własny, niestandardowy motyw.
+Dzięki loongcode możesz wybrać jeden z kilku wbudowanych motywów, użyć motywu, który dostosowuje się do motywu terminala lub zdefiniować własny, niestandardowy motyw.
 
-Domyślnie lgcode używa naszego własnego motywu `lgcode`.
+Domyślnie loongcode używa naszego własnego motywu `loongcode`.
 
 ---
 
@@ -23,7 +23,7 @@ Bez obsługi Truecolor motywy mogą pojawiać się ze zmniejszoną dokładności
 
 ## Wbudowane motywy
 
-lgcode ma kilka wbudowanych motywów.
+loongcode ma kilka wbudowanych motywów.
 
 | Name                   | Description                                                                       |
 | ---------------------- | --------------------------------------------------------------------------------- |
@@ -53,7 +53,7 @@ Motyw `system` został zaprojektowany tak, aby automatycznie dostosowywał się 
 
 Motyw systemu przeznaczony jest dla użytkowników, którzy:
 
-- Chcą, aby LGcode pasował do wyglądu ich terminala
+- Chcą, aby Loongcode pasował do wyglądu ich terminala
 - Używają niestandardowych schematów kolorów terminala
 - Preferują spójny wygląd we wszystkich aplikacjach terminalowych
 
@@ -74,7 +74,7 @@ Możesz wybrać motyw, wywołując opcję wyboru motywu za pomocą polecenia `/t
 
 ## Motywy niestandardowe
 
-lgcode obsługuje elastyczny system motywów oparty na JSON, który pozwala użytkownikom łatwo tworzyć i dostosowywać motywy.
+loongcode obsługuje elastyczny system motywów oparty na JSON, który pozwala użytkownikom łatwo tworzyć i dostosowywać motywy.
 
 ---
 
@@ -83,9 +83,9 @@ lgcode obsługuje elastyczny system motywów oparty na JSON, który pozwala uży
 Motywy są ładowane z wielu katalogów w następującej kolejności, przy czym późniejsze katalogi zastępują wcześniejsze:
 
 1. **Wbudowane motywy** – są osadzone w formacie binarnym
-2. **Katalog konfiguracji użytkownika** - Zdefiniowany w `~/.config/lgcode/themes/*.json` lub `$XDG_CONFIG_HOME/lgcode/themes/*.json`
-3. **Katalog główny projektu** - Zdefiniowany w `<project-root>/.lgcode/themes/*.json`
-4. **Bieżący katalog roboczy** - Zdefiniowany w `./.lgcode/themes/*.json`
+2. **Katalog konfiguracji użytkownika** - Zdefiniowany w `~/.config/loongcode/themes/*.json` lub `$XDG_CONFIG_HOME/loongcode/themes/*.json`
+3. **Katalog główny projektu** - Zdefiniowany w `<project-root>/.loongcode/themes/*.json`
+4. **Bieżący katalog roboczy** - Zdefiniowany w `./.loongcode/themes/*.json`
 
 Jeśli wiele katalogów zawiera motyw o tej samej nazwie, zostanie użyty motyw z katalogu o wyższym priorytecie.
 
@@ -98,15 +98,15 @@ Aby utworzyć niestandardowy motyw, utwórz plik JSON w jednym z katalogów moty
 W przypadku motywów dla całego użytkownika:
 
 ```bash no-frame
-mkdir -p ~/.config/lgcode/themes
-vim ~/.config/lgcode/themes/my-theme.json
+mkdir -p ~/.config/loongcode/themes
+vim ~/.config/loongcode/themes/my-theme.json
 ```
 
 Oraz dla tematów specyficznych dla projektu.
 
 ```bash no-frame
-mkdir -p .lgcode/themes
-vim .lgcode/themes/my-theme.json
+mkdir -p .loongcode/themes
+vim .loongcode/themes/my-theme.json
 ```
 
 ---

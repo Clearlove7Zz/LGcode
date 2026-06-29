@@ -1,5 +1,5 @@
-import { CommandV2 } from "@lgcode/core/command"
-import { Location } from "@lgcode/core/location"
+import { CommandV2 } from "@loongcode/core/command"
+import { Location } from "@loongcode/core/location"
 import { Schema } from "effect"
 import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
 import { LocationQuery, locationQueryOpenApi, LocationMiddleware } from "./location"

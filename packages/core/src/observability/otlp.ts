@@ -35,13 +35,13 @@ function resourceAttributes() {
 
 export function resource(): { serviceName: string; serviceVersion: string; attributes: Record<string, string> } {
   return {
-    serviceName: "lgcode",
+    serviceName: "loongcode",
     serviceVersion: InstallationVersion,
     attributes: {
       ...resourceAttributes(),
       "deployment.environment.name": InstallationChannel,
-      "lgcode.client": Flag.LGCODE_CLIENT,
-      "lgcode.run": runID,
+      "loongcode.client": Flag.LOONGCODE_CLIENT,
+      "loongcode.run": runID,
       "service.instance.id": runID,
     },
   }

@@ -3,7 +3,7 @@ import path from "path"
 import fs from "fs/promises"
 import { fileURLToPath, pathToFileURL } from "url"
 import { Effect, Layer, Result, Schema } from "effect"
-import { LayerNode } from "@lgcode/core/effect/layer-node"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
 import { ToolRegistry } from "@/tool/registry"
 import { Tool } from "@/tool/tool"
 import { disposeAllInstances, TestInstance } from "../fixture/fixture"
@@ -17,11 +17,11 @@ import { InstanceState } from "@/effect/instance-state"
 import { ToolJsonSchema } from "@/tool/json-schema"
 import { MessageID, SessionID } from "@/session/schema"
 import { RuntimeFlags } from "@/effect/runtime-flags"
-import { ProviderV2 } from "@lgcode/core/provider"
-import { ModelV2 } from "@lgcode/core/model"
+import { ProviderV2 } from "@loongcode/core/provider"
+import { ModelV2 } from "@loongcode/core/model"
 
 const configLayer = TestConfig.layer({
-  directories: () => InstanceState.directory.pipe(Effect.map((dir) => [path.join(dir, ".lgcode")])),
+  directories: () => InstanceState.directory.pipe(Effect.map((dir) => [path.join(dir, ".loongcode")])),
 })
 
 // Fake Plugin.Service that returns a single plugin whose `tool` map contains
@@ -82,7 +82,7 @@ describe("tool.registry", () => {
       const build = yield* agent.get("build")
       if (!build) throw new Error("build agent not found")
       const task = (yield* registry.tools({
-        providerID: ProviderV2.ID.lgcode,
+        providerID: ProviderV2.ID.loongcode,
         modelID: ModelV2.ID.make("test"),
         agent: build,
       })).find((tool) => tool.id === "task")
@@ -92,11 +92,11 @@ describe("tool.registry", () => {
     }),
   )
 
-  it.instance("loads tools from .lgcode/tool (singular)", () =>
+  it.instance("loads tools from .loongcode/tool (singular)", () =>
     Effect.gen(function* () {
       const test = yield* TestInstance
-      const lgcode = path.join(test.directory, ".lgcode")
-      const tool = path.join(lgcode, "tool")
+      const loongcode = path.join(test.directory, ".loongcode")
+      const tool = path.join(loongcode, "tool")
       yield* Effect.promise(() => fs.mkdir(tool, { recursive: true }))
       yield* Effect.promise(() =>
         Bun.write(
@@ -119,10 +119,10 @@ describe("tool.registry", () => {
     }),
   )
 
-  it.instance("ignores non-tool exports in .lgcode/tool files", () =>
+  it.instance("ignores non-tool exports in .loongcode/tool files", () =>
     Effect.gen(function* () {
       const test = yield* TestInstance
-      const tool = path.join(test.directory, ".lgcode", "tool")
+      const tool = path.join(test.directory, ".loongcode", "tool")
       yield* Effect.promise(() => fs.mkdir(tool, { recursive: true }))
       yield* Effect.promise(() =>
         Bun.write(
@@ -155,7 +155,7 @@ describe("tool.registry", () => {
   it.instance("tolerates a custom tool exporting null/undefined args (no-args fallback)", () =>
     Effect.gen(function* () {
       const test = yield* TestInstance
-      const tool = path.join(test.directory, ".lgcode", "tool")
+      const tool = path.join(test.directory, ".loongcode", "tool")
       yield* Effect.promise(() => fs.mkdir(tool, { recursive: true }))
       yield* Effect.promise(() =>
         Bun.write(
@@ -183,7 +183,7 @@ describe("tool.registry", () => {
   )
 
   // Same regression, plugin entry point. The original reports (#27451, #27630)
-  // came in through `plugin.list()` — `oh-my-lgcode` was registering a tool
+  // came in through `plugin.list()` — `oh-my-loongcode` was registering a tool
   // with `args: undefined` and crashing every message submit. The file-scan
   // and plugin-list loops both funnel through `fromPlugin`, but covering both
   // entry points means a future refactor that splits them won't silently lose
@@ -197,11 +197,11 @@ describe("tool.registry", () => {
     }),
   )
 
-  it.instance("loads tools from .lgcode/tools (plural)", () =>
+  it.instance("loads tools from .loongcode/tools (plural)", () =>
     Effect.gen(function* () {
       const test = yield* TestInstance
-      const lgcode = path.join(test.directory, ".lgcode")
-      const tools = path.join(lgcode, "tools")
+      const loongcode = path.join(test.directory, ".loongcode")
+      const tools = path.join(loongcode, "tools")
       yield* Effect.promise(() => fs.mkdir(tools, { recursive: true }))
       yield* Effect.promise(() =>
         Bun.write(
@@ -227,7 +227,7 @@ describe("tool.registry", () => {
   it.instance("loads Zod-schema custom tools with JSON Schema and validation", () =>
     Effect.gen(function* () {
       const test = yield* TestInstance
-      const customTools = path.join(test.directory, ".lgcode", "tools")
+      const customTools = path.join(test.directory, ".loongcode", "tools")
       const pluginTool = pathToFileURL(path.resolve(import.meta.dir, "../../../plugin/src/tool.ts")).href
       yield* Effect.promise(() => fs.mkdir(customTools, { recursive: true }))
       yield* Effect.promise(() =>
@@ -260,7 +260,7 @@ describe("tool.registry", () => {
 
       const agents = yield* Agent.Service
       const promptTools = yield* registry.tools({
-        providerID: ProviderV2.ID.lgcode,
+        providerID: ProviderV2.ID.loongcode,
         modelID: ModelV2.ID.make("test"),
         agent: yield* agents.defaultInfo(),
       })
@@ -280,13 +280,13 @@ describe("tool.registry", () => {
     () =>
       Effect.gen(function* () {
         const test = yield* TestInstance
-        const lgcode = path.join(test.directory, ".lgcode")
-        const customTools = path.join(lgcode, "tools")
-        const plugin = path.join(lgcode, "node_modules", "@lgcode-ai", "plugin")
+        const loongcode = path.join(test.directory, ".loongcode")
+        const customTools = path.join(loongcode, "tools")
+        const plugin = path.join(loongcode, "node_modules", "@loongcode-ai", "plugin")
         yield* Effect.promise(() => fs.mkdir(path.join(plugin, "dist"), { recursive: true }))
         yield* Effect.promise(() => fs.mkdir(customTools, { recursive: true }))
         yield* Effect.promise(() =>
-          fs.cp(path.dirname(fileURLToPath(import.meta.resolve("zod"))), path.join(lgcode, "node_modules", "zod"), {
+          fs.cp(path.dirname(fileURLToPath(import.meta.resolve("zod"))), path.join(loongcode, "node_modules", "zod"), {
             dereference: true,
             recursive: true,
           }),
@@ -294,7 +294,7 @@ describe("tool.registry", () => {
         yield* Effect.promise(() =>
           Bun.write(
             path.join(plugin, "package.json"),
-            JSON.stringify({ name: "@lgcode/plugin", type: "module", exports: { ".": "./dist/index.js" } }),
+            JSON.stringify({ name: "@loongcode/plugin", type: "module", exports: { ".": "./dist/index.js" } }),
           ),
         )
         yield* Effect.promise(() =>
@@ -314,7 +314,7 @@ describe("tool.registry", () => {
           Bun.write(
             path.join(customTools, "addition.ts"),
             [
-              'import { tool } from "@lgcode/plugin"',
+              'import { tool } from "@loongcode/plugin"',
               "export default tool({",
               "  description: 'Use this tool to add two numbers and return their sum.',",
               "  args: {",
@@ -345,7 +345,7 @@ describe("tool.registry", () => {
   it.instance("preserves attachments from structured custom tool results", () =>
     Effect.gen(function* () {
       const test = yield* TestInstance
-      const customTools = path.join(test.directory, ".lgcode", "tools")
+      const customTools = path.join(test.directory, ".loongcode", "tools")
       const pluginTool = pathToFileURL(path.resolve(import.meta.dir, "../../../plugin/src/tool.ts")).href
       yield* Effect.promise(() => fs.mkdir(customTools, { recursive: true }))
       yield* Effect.promise(() =>
@@ -390,7 +390,7 @@ describe("tool.registry", () => {
   it.instance("loads legacy JSON-schema-shaped custom tools with wire schema", () =>
     Effect.gen(function* () {
       const test = yield* TestInstance
-      const tools = path.join(test.directory, ".lgcode", "tools")
+      const tools = path.join(test.directory, ".loongcode", "tools")
       yield* Effect.promise(() => fs.mkdir(tools, { recursive: true }))
       yield* Effect.promise(() =>
         Bun.write(
@@ -422,16 +422,16 @@ describe("tool.registry", () => {
   it.instance("loads tools with external dependencies without crashing", () =>
     Effect.gen(function* () {
       const test = yield* TestInstance
-      const lgcode = path.join(test.directory, ".lgcode")
-      const tools = path.join(lgcode, "tools")
+      const loongcode = path.join(test.directory, ".loongcode")
+      const tools = path.join(loongcode, "tools")
       yield* Effect.promise(() => fs.mkdir(tools, { recursive: true }))
       yield* Effect.promise(() =>
         Bun.write(
-          path.join(lgcode, "package.json"),
+          path.join(loongcode, "package.json"),
           JSON.stringify({
             name: "custom-tools",
             dependencies: {
-              "@lgcode/plugin": "^0.0.0",
+              "@loongcode/plugin": "^0.0.0",
               cowsay: "^1.6.0",
             },
           }),
@@ -439,14 +439,14 @@ describe("tool.registry", () => {
       )
       yield* Effect.promise(() =>
         Bun.write(
-          path.join(lgcode, "package-lock.json"),
+          path.join(loongcode, "package-lock.json"),
           JSON.stringify({
             name: "custom-tools",
             lockfileVersion: 3,
             packages: {
               "": {
                 dependencies: {
-                  "@lgcode/plugin": "^0.0.0",
+                  "@loongcode/plugin": "^0.0.0",
                   cowsay: "^1.6.0",
                 },
               },
@@ -455,7 +455,7 @@ describe("tool.registry", () => {
         ),
       )
 
-      const cowsay = path.join(lgcode, "node_modules", "cowsay")
+      const cowsay = path.join(loongcode, "node_modules", "cowsay")
       yield* Effect.promise(() => fs.mkdir(cowsay, { recursive: true }))
       yield* Effect.promise(() =>
         Bun.write(

@@ -1,17 +1,17 @@
 import type { ChildProcessWithoutNullStreams } from "child_process"
 import path from "path"
 import os from "os"
-import { Global } from "@lgcode/core/global"
+import { Global } from "@loongcode/core/global"
 import { text } from "node:stream/consumers"
 import fs from "fs/promises"
 import { Filesystem } from "@/util/filesystem"
 import type { InstanceContext } from "../project/instance-context"
 import { Archive } from "@/util/archive"
 import { Process } from "@/util/process"
-import { which } from "@lgcode/core/util/which"
-import { Module } from "@lgcode/core/util/module"
+import { which } from "@loongcode/core/util/which"
+import { Module } from "@loongcode/core/util/module"
 import { spawn } from "./launch"
-import { Npm } from "@lgcode/core/npm"
+import { Npm } from "@loongcode/core/npm"
 import type { RuntimeFlags } from "@/effect/runtime-flags"
 
 const pathExists = async (p: string) =>
@@ -1243,7 +1243,7 @@ export const JDTLS: Info = {
         }
       })(),
     )
-    const dataDir = await fs.mkdtemp(path.join(os.tmpdir(), "lgcode-jdtls-data"))
+    const dataDir = await fs.mkdtemp(path.join(os.tmpdir(), "loongcode-jdtls-data"))
     return {
       process: spawn(
         java,

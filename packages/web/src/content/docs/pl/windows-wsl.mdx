@@ -1,14 +1,14 @@
 ---
 title: Windows (WSL)
-description: Uruchamiaj lgcode na Windows z WSL dla najlepszych efektow.
+description: Uruchamiaj loongcode na Windows z WSL dla najlepszych efektow.
 ---
 
 import { Steps } from "@astrojs/starlight/components"
 
-Chociaz lgcode moze dzialac bezposrednio na Windows, dla najlepszych rezultatow zalecamy [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install). WSL zapewnia srodowisko Linuksa, ktore bardzo dobrze wspolpracuje z funkcjami lgcode.
+Chociaz loongcode moze dzialac bezposrednio na Windows, dla najlepszych rezultatow zalecamy [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install). WSL zapewnia srodowisko Linuksa, ktore bardzo dobrze wspolpracuje z funkcjami loongcode.
 
 :::tip[Dlaczego WSL?]
-WSL oferuje lepsza wydajnosc systemu plikow, pelna obsluge terminala i zgodnosc z narzedziami developerskimi, na ktorych opiera sie lgcode.
+WSL oferuje lepsza wydajnosc systemu plikow, pelna obsluge terminala i zgodnosc z narzedziami developerskimi, na ktorych opiera sie loongcode.
 :::
 
 ---
@@ -21,21 +21,21 @@ WSL oferuje lepsza wydajnosc systemu plikow, pelna obsluge terminala i zgodnosc 
 
    Jesli jeszcze tego nie zrobiles, [zainstaluj WSL](https://learn.microsoft.com/en-us/windows/wsl/install) wedlug oficjalnego przewodnika Microsoft.
 
-2. **Zainstaluj lgcode w WSL**
+2. **Zainstaluj loongcode w WSL**
 
-   Po skonfigurowaniu WSL otworz terminal WSL i zainstaluj lgcode jedna z [metod instalacji](/docs/).
+   Po skonfigurowaniu WSL otworz terminal WSL i zainstaluj loongcode jedna z [metod instalacji](/docs/).
 
    ```bash
    curl -fsSL https://modelhub.lgdg.cc/install | bash
    ```
 
-3. **Korzystaj z lgcode przez WSL**
+3. **Korzystaj z loongcode przez WSL**
 
-   Przejdz do katalogu projektu (pliki Windows sa dostepne przez `/mnt/c/`, `/mnt/d/` itd.) i uruchom lgcode.
+   Przejdz do katalogu projektu (pliki Windows sa dostepne przez `/mnt/c/`, `/mnt/d/` itd.) i uruchom loongcode.
 
    ```bash
    cd /mnt/c/Users/YourName/project
-   lgcode
+   loongcode
    ```
 
 </Steps>
@@ -44,12 +44,12 @@ WSL oferuje lepsza wydajnosc systemu plikow, pelna obsluge terminala i zgodnosc 
 
 ## Aplikacja desktopowa + serwer WSL
 
-Jesli wolisz aplikacje desktopowa lgcode, ale chcesz uruchamiac serwer w WSL:
+Jesli wolisz aplikacje desktopowa loongcode, ale chcesz uruchamiac serwer w WSL:
 
 1. **Uruchom serwer w WSL** z `--hostname 0.0.0.0`, aby zezwolic na polaczenia zewnetrzne:
 
    ```bash
-   lgcode serve --hostname 0.0.0.0 --port 4096
+   loongcode serve --hostname 0.0.0.0 --port 4096
    ```
 
 2. **Polacz aplikacje desktopowa** z `http://localhost:4096`
@@ -59,10 +59,10 @@ Jesli `localhost` nie dziala w Twojej konfiguracji, polacz sie przez adres IP WS
 :::
 
 :::caution
-Przy uzyciu `--hostname 0.0.0.0` ustaw `LGCODE_SERVER_PASSWORD`, aby zabezpieczyc serwer.
+Przy uzyciu `--hostname 0.0.0.0` ustaw `LOONGCODE_SERVER_PASSWORD`, aby zabezpieczyc serwer.
 
 ```bash
-LGCODE_SERVER_PASSWORD=your-password lgcode serve --hostname 0.0.0.0
+LOONGCODE_SERVER_PASSWORD=your-password loongcode serve --hostname 0.0.0.0
 ```
 
 :::
@@ -73,15 +73,15 @@ LGCODE_SERVER_PASSWORD=your-password lgcode serve --hostname 0.0.0.0
 
 Dla najlepszej pracy w przegladarce na Windows:
 
-1. **Uruchamiaj `lgcode web` w terminalu WSL**, a nie w PowerShell:
+1. **Uruchamiaj `loongcode web` w terminalu WSL**, a nie w PowerShell:
 
    ```bash
-   lgcode web --hostname 0.0.0.0
+   loongcode web --hostname 0.0.0.0
    ```
 
-2. **Otworz w przegladarce Windows** pod adresem `http://localhost:<port>` (lgcode wypisze URL)
+2. **Otworz w przegladarce Windows** pod adresem `http://localhost:<port>` (loongcode wypisze URL)
 
-Uruchamianie `lgcode web` z WSL zapewnia poprawny dostep do systemu plikow i integracje z terminalem, a nadal pozostaje dostepne z przegladarki Windows.
+Uruchamianie `loongcode web` z WSL zapewnia poprawny dostep do systemu plikow i integracje z terminalem, a nadal pozostaje dostepne z przegladarki Windows.
 
 ---
 
@@ -97,17 +97,17 @@ Przyklad:
 
 ```bash
 cd /mnt/c/Users/YourName/Documents/project
-lgcode
+loongcode
 ```
 
 :::tip
-Aby uzyskac najplynniejsza prace, rozwaz sklonowanie/skopiowanie repozytorium do systemu plikow WSL (np. do `~/code/`) i uruchamianie tam lgcode.
+Aby uzyskac najplynniejsza prace, rozwaz sklonowanie/skopiowanie repozytorium do systemu plikow WSL (np. do `~/code/`) i uruchamianie tam loongcode.
 :::
 
 ---
 
 ## Wskazowki
 
-- Uruchamiaj lgcode w WSL dla projektow zapisanych na dyskach Windows - dostep do plikow jest bezproblemowy
-- Uzywaj [rozszerzenia WSL dla VS Code](https://code.visualstudio.com/docs/remote/wsl) razem z lgcode, aby miec zintegrowany workflow
-- Konfiguracja lgcode i sesje sa przechowywane w srodowisku WSL pod `~/.local/share/lgcode/`
+- Uruchamiaj loongcode w WSL dla projektow zapisanych na dyskach Windows - dostep do plikow jest bezproblemowy
+- Uzywaj [rozszerzenia WSL dla VS Code](https://code.visualstudio.com/docs/remote/wsl) razem z loongcode, aby miec zintegrowany workflow
+- Konfiguracja loongcode i sesje sa przechowywane w srodowisku WSL pod `~/.local/share/loongcode/`

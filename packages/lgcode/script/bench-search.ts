@@ -1,8 +1,8 @@
 import { Effect } from "effect"
-import { Fff } from "@lgcode/core/filesystem/fff.bun"
+import { Fff } from "@loongcode/core/filesystem/fff.bun"
 import { AppRuntime } from "@/effect/app-runtime"
-import { FileSystem } from "@lgcode/core/filesystem"
-import { AbsolutePath } from "@lgcode/core/schema"
+import { FileSystem } from "@loongcode/core/filesystem"
+import { AbsolutePath } from "@loongcode/core/schema"
 import { InstanceStore } from "@/project/instance-store"
 
 const dir = AbsolutePath.make(process.cwd())

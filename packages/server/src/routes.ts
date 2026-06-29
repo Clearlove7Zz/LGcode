@@ -1,6 +1,6 @@
-import { Database } from "@lgcode/core/database/database"
-import { EventV2 } from "@lgcode/core/event"
-import { LocationServiceMap } from "@lgcode/core/location-layer"
+import { Database } from "@loongcode/core/database/database"
+import { EventV2 } from "@loongcode/core/event"
+import { LocationServiceMap } from "@loongcode/core/location-layer"
 import { FetchHttpClient, HttpRouter, HttpServer } from "effect/unstable/http"
 import { HttpApiBuilder } from "effect/unstable/httpapi"
 import { Layer, Option } from "effect"
@@ -19,7 +19,7 @@ export function createRoutes(password?: string) {
     Layer.provide(schemaErrorLayer),
     Layer.provide(
       password
-        ? ServerAuth.Config.layer({ username: "lgcode", password: Option.some(password) })
+        ? ServerAuth.Config.layer({ username: "loongcode", password: Option.some(password) })
         : ServerAuth.Config.defaultLayer,
     ),
     Layer.provide(LocationServiceMap.layer),

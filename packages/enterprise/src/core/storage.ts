@@ -1,5 +1,5 @@
 import { AwsClient } from "aws4fetch"
-import { lazy } from "@lgcode/core/util/lazy"
+import { lazy } from "@loongcode/core/util/lazy"
 
 export namespace Storage {
   export interface Adapter {
@@ -64,27 +64,27 @@ export namespace Storage {
   }
 
   function s3(): Adapter {
-    const bucket = process.env.LGCODE_STORAGE_BUCKET!
-    const region = process.env.LGCODE_STORAGE_REGION || "us-east-1"
+    const bucket = process.env.LOONGCODE_STORAGE_BUCKET!
+    const region = process.env.LOONGCODE_STORAGE_REGION || "us-east-1"
     const client = new AwsClient({
       region,
-      accessKeyId: process.env.LGCODE_STORAGE_ACCESS_KEY_ID!,
-      secretAccessKey: process.env.LGCODE_STORAGE_SECRET_ACCESS_KEY!,
+      accessKeyId: process.env.LOONGCODE_STORAGE_ACCESS_KEY_ID!,
+      secretAccessKey: process.env.LOONGCODE_STORAGE_SECRET_ACCESS_KEY!,
     })
     return createAdapter(client, `https://s3.${region}.amazonaws.com`, bucket)
   }
 
   function r2() {
-    const accountId = process.env.LGCODE_STORAGE_ACCOUNT_ID!
+    const accountId = process.env.LOONGCODE_STORAGE_ACCOUNT_ID!
     const client = new AwsClient({
-      accessKeyId: process.env.LGCODE_STORAGE_ACCESS_KEY_ID!,
-      secretAccessKey: process.env.LGCODE_STORAGE_SECRET_ACCESS_KEY!,
+      accessKeyId: process.env.LOONGCODE_STORAGE_ACCESS_KEY_ID!,
+      secretAccessKey: process.env.LOONGCODE_STORAGE_SECRET_ACCESS_KEY!,
     })
-    return createAdapter(client, `https://${accountId}.r2.cloudflarestorage.com`, process.env.LGCODE_STORAGE_BUCKET!)
+    return createAdapter(client, `https://${accountId}.r2.cloudflarestorage.com`, process.env.LOONGCODE_STORAGE_BUCKET!)
   }
 
   const adapter = lazy(() => {
-    const type = process.env.LGCODE_STORAGE_ADAPTER
+    const type = process.env.LOONGCODE_STORAGE_ADAPTER
     if (type === "r2") return r2()
     if (type === "s3") return s3()
     throw new Error("No storage adapter configured")

@@ -1,7 +1,7 @@
 import * as NodeRuntime from "@effect/platform-node/NodeRuntime"
-import { Athena } from "@lgcode/stats-core/athena"
-import { layer as statsLayer } from "@lgcode/stats-core/runtime"
-import { syncStats } from "@lgcode/stats-core/stat-sync"
+import { Athena } from "@loongcode/stats-core/athena"
+import { layer as statsLayer } from "@loongcode/stats-core/runtime"
+import { syncStats } from "@loongcode/stats-core/stat-sync"
 import { Cause, Effect, Layer, Schedule } from "effect"
 
 const SYNC_INTERVAL = "1 hour"

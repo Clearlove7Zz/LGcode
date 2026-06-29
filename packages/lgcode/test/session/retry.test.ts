@@ -1,17 +1,17 @@
 import { describe, expect, test } from "bun:test"
-import { SessionV1 } from "@lgcode/core/v1/session"
-import type { NamedError } from "@lgcode/core/util/error"
+import { SessionV1 } from "@loongcode/core/v1/session"
+import type { NamedError } from "@loongcode/core/util/error"
 import { APICallError } from "ai"
 import { setTimeout as sleep } from "node:timers/promises"
 import { Effect, Layer, Schedule, Schema } from "effect"
-import { CrossSpawnSpawner } from "@lgcode/core/cross-spawn-spawner"
+import { CrossSpawnSpawner } from "@loongcode/core/cross-spawn-spawner"
 import { SessionRetry } from "../../src/session/retry"
 import { MessageV2 } from "../../src/session/message-v2"
 import { ProviderError } from "../../src/provider/error"
 import { SessionID } from "../../src/session/schema"
 import { SessionStatus } from "../../src/session/status"
 import { testEffect } from "../lib/effect"
-import { ProviderV2 } from "@lgcode/core/provider"
+import { ProviderV2 } from "@loongcode/core/provider"
 
 const providerID = ProviderV2.ID.make("test")
 const retryProvider = "test"
@@ -266,13 +266,13 @@ describe("session.retry.retryable", () => {
       }).toObject(),
     )
 
-    expect(SessionRetry.retryable(error, "lgcode")).toEqual({
+    expect(SessionRetry.retryable(error, "loongcode")).toEqual({
       message: SessionRetry.GO_UPSELL_MESSAGE,
       action: {
         reason: "free_tier_limit",
-        provider: "lgcode",
+        provider: "loongcode",
         title: "Free limit reached",
-        message: "Subscribe to LGcode Go for reliable access to the best open-source models, starting at $5/month.",
+        message: "Subscribe to Loongcode Go for reliable access to the best open-source models, starting at $5/month.",
         label: "subscribe",
         link: SessionRetry.GO_UPSELL_URL,
       },
@@ -302,12 +302,12 @@ describe("session.retry.retryable", () => {
       }).toObject(),
     )
 
-    expect(SessionRetry.retryable(error, "lgcode-go")).toEqual({
+    expect(SessionRetry.retryable(error, "loongcode-go")).toEqual({
       message:
         "5 hour usage limit reached. It will reset in 5 hours 23 minutes. To continue using this model now, enable usage from your available balance - https://modelhub.lgdg.cc/workspace/wrk_01K6XGM22R6FM8JVABE9XDQXGH/go",
       action: {
         reason: "account_rate_limit",
-        provider: "lgcode-go",
+        provider: "loongcode-go",
         title: "Go limit reached",
         message:
           "5 hour usage limit reached. It will reset in 5 hours 23 minutes. To continue using this model now, enable usage from your available balance",
@@ -339,7 +339,7 @@ describe("session.retry.retryable", () => {
       }).toObject(),
     )
 
-    expect(SessionRetry.retryable(error, "lgcode-go")?.action?.message).toBe(
+    expect(SessionRetry.retryable(error, "loongcode-go")?.action?.message).toBe(
       "Usage limit reached. It will reset in 15 minutes. To continue using this model now, enable usage from your available balance",
     )
   })

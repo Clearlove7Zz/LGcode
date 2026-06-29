@@ -24,9 +24,9 @@ const archMap = {
 
 const platform = platformMap[os.platform()] ?? os.platform()
 const arch = archMap[os.arch()] ?? os.arch()
-const base = `lgcode-${platform}-${arch}`
-const sourceBinary = platform === "windows" ? "lgcode.exe" : "lgcode"
-const targetBinary = path.join(__dirname, "bin", "lgcode.exe")
+const base = `loongcode-${platform}-${arch}`
+const sourceBinary = platform === "windows" ? "loongcode.exe" : "loongcode"
+const targetBinary = path.join(__dirname, "bin", "loongcode.exe")
 
 function supportsAvx2() {
   if (arch !== "x64") return false
@@ -127,7 +127,7 @@ function installPackage(name) {
   const version = packageJson.optionalDependencies?.[name]
   if (!version) return
 
-  const temp = fs.mkdtempSync(path.join(os.tmpdir(), "lgcode-install-"))
+  const temp = fs.mkdtempSync(path.join(os.tmpdir(), "loongcode-install-"))
   try {
     const result = childProcess.spawnSync(
       "npm",
@@ -175,7 +175,7 @@ function main() {
   }
 
   throw new Error(
-    `It seems your package manager failed to install the right lgcode CLI package. Try manually installing ${packageNames()
+    `It seems your package manager failed to install the right loongcode CLI package. Try manually installing ${packageNames()
       .map((name) => JSON.stringify(name))
       .join(" or ")}.`,
   )

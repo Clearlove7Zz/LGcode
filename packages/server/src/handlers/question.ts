@@ -1,4 +1,4 @@
-import { QuestionV2 } from "@lgcode/core/question"
+import { QuestionV2 } from "@loongcode/core/question"
 import { Effect } from "effect"
 import { HttpApiBuilder, HttpApiSchema } from "effect/unstable/httpapi"
 import { Api } from "../api"

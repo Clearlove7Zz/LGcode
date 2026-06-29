@@ -1,13 +1,13 @@
-import { AppIcon } from "@lgcode/ui/app-icon"
-import { Button } from "@lgcode/ui/button"
-import { DropdownMenu } from "@lgcode/ui/dropdown-menu"
-import { Icon } from "@lgcode/ui/icon"
-import { IconButton } from "@lgcode/ui/icon-button"
-import { Keybind } from "@lgcode/ui/keybind"
-import { Spinner } from "@lgcode/ui/spinner"
+import { AppIcon } from "@loongcode/ui/app-icon"
+import { Button } from "@loongcode/ui/button"
+import { DropdownMenu } from "@loongcode/ui/dropdown-menu"
+import { Icon } from "@loongcode/ui/icon"
+import { IconButton } from "@loongcode/ui/icon-button"
+import { Keybind } from "@loongcode/ui/keybind"
+import { Spinner } from "@loongcode/ui/spinner"
 import { showToast } from "@/utils/toast"
-import { Tooltip, TooltipKeybind } from "@lgcode/ui/tooltip"
-import { getFilename } from "@lgcode/core/util/path"
+import { Tooltip, TooltipKeybind } from "@loongcode/ui/tooltip"
+import { getFilename } from "@loongcode/core/util/path"
 import { createEffect, createMemo, createSignal, For, onMount, Show } from "solid-js"
 import { createStore } from "solid-js/store"
 import { Portal } from "solid-js/web"
@@ -25,8 +25,8 @@ import { messageAgentColor } from "@/utils/agent"
 import { decode64 } from "@/utils/base64"
 import { Persist, persisted } from "@/utils/persist"
 import { StatusPopover, StatusPopoverV2 } from "../status-popover"
-import { IconButtonV2 } from "@lgcode/ui/v2/icon-button-v2"
-import { Icon as IconV2 } from "@lgcode/ui/v2/icon"
+import { IconButtonV2 } from "@loongcode/ui/v2/icon-button-v2"
+import { Icon as IconV2 } from "@loongcode/ui/v2/icon"
 
 const OPEN_APPS = [
   "vscode",
@@ -280,8 +280,8 @@ export function SessionHeader() {
   const [centerMount, setCenterMount] = createSignal<HTMLElement | null>(null)
   const [rightMount, setRightMount] = createSignal<HTMLElement | null>(null)
   onMount(() => {
-    setCenterMount(document.getElementById("lgcode-titlebar-center"))
-    setRightMount(document.getElementById("lgcode-titlebar-right"))
+    setCenterMount(document.getElementById("loongcode-titlebar-center"))
+    setRightMount(document.getElementById("loongcode-titlebar-right"))
   })
 
   return (

@@ -1,8 +1,8 @@
-import { Button } from "@lgcode/ui/button"
-import { useDialog } from "@lgcode/ui/context/dialog"
-import { Icon } from "@lgcode/ui/icon"
-import { Switch } from "@lgcode/ui/switch"
-import { Tabs } from "@lgcode/ui/tabs"
+import { Button } from "@loongcode/ui/button"
+import { useDialog } from "@loongcode/ui/context/dialog"
+import { Icon } from "@loongcode/ui/icon"
+import { Switch } from "@loongcode/ui/switch"
+import { Tabs } from "@loongcode/ui/tabs"
 import { showToast } from "@/utils/toast"
 import { useNavigate } from "@solidjs/router"
 import { type Accessor, createEffect, createMemo, For, type JSXElement, onCleanup, Show } from "solid-js"
@@ -288,7 +288,7 @@ export function StatusPopoverBody(props: { shown: Accessor<boolean> }) {
     (sync().data.config.plugin ?? []).map((item) => (typeof item === "string" ? item : item[0])),
   )
   const pluginCount = createMemo(() => plugins().length)
-  const pluginEmpty = createMemo(() => pluginEmptyMessage(language.t("dialog.plugins.empty"), "lgcode.json"))
+  const pluginEmpty = createMemo(() => pluginEmptyMessage(language.t("dialog.plugins.empty"), "loongcode.json"))
 
   return (
     <div class="flex items-center gap-1 w-[360px] rounded-xl shadow-[var(--shadow-lg-border-base)]">

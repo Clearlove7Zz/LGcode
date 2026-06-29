@@ -1,7 +1,7 @@
 // Dev-only JSONL event trace for direct interactive mode.
 //
-// Enable with LGCODE_DIRECT_TRACE=1. Writes one JSON line per event to
-// ~/.local/share/lgcode/log/direct/<timestamp>-<pid>.jsonl. Also writes
+// Enable with LOONGCODE_DIRECT_TRACE=1. Writes one JSON line per event to
+// ~/.local/share/loongcode/log/direct/<timestamp>-<pid>.jsonl. Also writes
 // a latest.json pointer so you can quickly find the most recent trace.
 //
 // The trace captures the full closed loop: outbound prompts, inbound SDK
@@ -13,7 +13,7 @@
 // active based on the env var, and subsequent calls return the cached result.
 import fs from "fs"
 import path from "path"
-import { Global } from "@lgcode/core/global"
+import { Global } from "@loongcode/core/global"
 
 export type Trace = {
   write(type: string, data?: unknown): void
@@ -55,7 +55,7 @@ export function trace(): Trace | undefined {
     return state || undefined
   }
 
-  if (!process.env.LGCODE_DIRECT_TRACE) {
+  if (!process.env.LOONGCODE_DIRECT_TRACE) {
     state = false
     return undefined
   }

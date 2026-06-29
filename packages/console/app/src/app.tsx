@@ -2,8 +2,8 @@ import { MetaProvider, Title, Meta } from "@solidjs/meta"
 import { Router } from "@solidjs/router"
 import { FileRoutes } from "@solidjs/start/router"
 import { Suspense } from "solid-js"
-import { Favicon } from "@lgcode/ui/favicon"
-import { Font } from "@lgcode/ui/font"
+import { Favicon } from "@loongcode/ui/favicon"
+import { Font } from "@loongcode/ui/font"
 import "@ibm/plex/css/ibm-plex.css"
 import "./app.css"
 import { LanguageProvider } from "~/context/language"
@@ -14,7 +14,7 @@ function AppMeta() {
   const i18n = useI18n()
   return (
     <>
-      <Title>lgcode</Title>
+      <Title>loongcode</Title>
       <Meta name="description" content={i18n.t("app.meta.description")} />
       <Favicon />
       <Font />

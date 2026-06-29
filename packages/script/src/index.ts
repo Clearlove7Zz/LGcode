@@ -18,36 +18,36 @@ if (!semver.satisfies(process.versions.bun, expectedBunVersionRange)) {
 }
 
 const env = {
-  LGCODE_CHANNEL: process.env["LGCODE_CHANNEL"],
-  LGCODE_BUMP: process.env["LGCODE_BUMP"],
-  LGCODE_VERSION: process.env["LGCODE_VERSION"],
-  LGCODE_RELEASE: process.env["LGCODE_RELEASE"],
+  LOONGCODE_CHANNEL: process.env["LOONGCODE_CHANNEL"],
+  LOONGCODE_BUMP: process.env["LOONGCODE_BUMP"],
+  LOONGCODE_VERSION: process.env["LOONGCODE_VERSION"],
+  LOONGCODE_RELEASE: process.env["LOONGCODE_RELEASE"],
 }
 const CHANNEL = await (async () => {
-  if (env.LGCODE_CHANNEL) return env.LGCODE_CHANNEL
-  if (env.LGCODE_BUMP) return "latest"
-  if (env.LGCODE_VERSION && !env.LGCODE_VERSION.startsWith("0.0.0-")) return "latest"
+  if (env.LOONGCODE_CHANNEL) return env.LOONGCODE_CHANNEL
+  if (env.LOONGCODE_BUMP) return "latest"
+  if (env.LOONGCODE_VERSION && !env.LOONGCODE_VERSION.startsWith("0.0.0-")) return "latest"
   return await $`git branch --show-current`.text().then((x) => x.trim())
 })()
 const IS_PREVIEW = CHANNEL !== "latest"
 
 const VERSION = await (async () => {
-  if (env.LGCODE_VERSION) return env.LGCODE_VERSION
+  if (env.LOONGCODE_VERSION) return env.LOONGCODE_VERSION
   if (IS_PREVIEW) return `0.0.0-${CHANNEL}-${new Date().toISOString().slice(0, 16).replace(/[-:T]/g, "")}`
-  const version = await fetch("https://registry.npmjs.org/lgcode-ai/latest")
+  const version = await fetch("https://registry.npmjs.org/loongcode-ai/latest")
     .then((res) => {
       if (!res.ok) throw new Error(res.statusText)
       return res.json()
     })
     .then((data: any) => data.version)
   const [major, minor, patch] = version.split(".").map((x: string) => Number(x) || 0)
-  const t = env.LGCODE_BUMP?.toLowerCase()
+  const t = env.LOONGCODE_BUMP?.toLowerCase()
   if (t === "major") return `${major + 1}.0.0`
   if (t === "minor") return `${major}.${minor + 1}.0`
   return `${major}.${minor}.${patch + 1}`
 })()
 
-const bot = ["actions-user", "lgcode", "lgcode-agent[bot]"]
+const bot = ["actions-user", "loongcode", "loongcode-agent[bot]"]
 const teamPath = path.resolve(import.meta.dir, "../../../.github/TEAM_MEMBERS")
 const team = [
   ...(await Bun.file(teamPath)
@@ -68,10 +68,10 @@ export const Script = {
     return IS_PREVIEW
   },
   get release(): boolean {
-    return !!env.LGCODE_RELEASE
+    return !!env.LOONGCODE_RELEASE
   },
   get team() {
     return team
   },
 }
-console.log(`lgcode script`, JSON.stringify(Script, null, 2))
+console.log(`loongcode script`, JSON.stringify(Script, null, 2))

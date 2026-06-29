@@ -128,7 +128,7 @@ describe("HttpApi workspace proxy", () => {
     }),
   )
 
-  it.live("strips lgcode-internal headers and merges extra headers", () =>
+  it.live("strips loongcode-internal headers and merges extra headers", () =>
     Effect.gen(function* () {
       let forwarded: Record<string, string> = {}
       const url = yield* listenServer((req) =>
@@ -141,8 +141,8 @@ describe("HttpApi workspace proxy", () => {
       const request = HttpServerRequest.fromWeb(
         new Request("http://localhost/test", {
           headers: {
-            "x-lgcode-directory": "/secret/path",
-            "x-lgcode-workspace": "ws_123",
+            "x-loongcode-directory": "/secret/path",
+            "x-loongcode-workspace": "ws_123",
             "x-custom": "preserved",
           },
         }),
@@ -150,8 +150,8 @@ describe("HttpApi workspace proxy", () => {
       const httpClient = yield* HttpClient.HttpClient
       yield* HttpApiProxy.http(httpClient, `${url}/test`, { "x-injected": "extra" }, request)
 
-      expect(forwarded["x-lgcode-directory"]).toBeUndefined()
-      expect(forwarded["x-lgcode-workspace"]).toBeUndefined()
+      expect(forwarded["x-loongcode-directory"]).toBeUndefined()
+      expect(forwarded["x-loongcode-workspace"]).toBeUndefined()
       expect(forwarded["x-custom"]).toBe("preserved")
       expect(forwarded["x-injected"]).toBe("extra")
     }),

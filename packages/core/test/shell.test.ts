@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test"
 import path from "path"
-import { Shell } from "@lgcode/core/shell"
-import { FSUtil } from "@lgcode/core/fs-util"
-import { which } from "@lgcode/core/util/which"
+import { Shell } from "@loongcode/core/shell"
+import { FSUtil } from "@loongcode/core/fs-util"
+import { which } from "@loongcode/core/util/which"
 
 const withShell = async (shell: string | undefined, fn: () => void | Promise<void>) => {
   const prev = process.env.SHELL
@@ -44,8 +44,8 @@ describe("shell", () => {
     await withShell(undefined, async () => {
       const preferred = Shell.preferred()
       const acceptable = Shell.acceptable()
-      expect(Shell.preferred("lgcode-missing-shell")).toBe(preferred)
-      expect(Shell.acceptable("lgcode-missing-shell")).toBe(acceptable)
+      expect(Shell.preferred("loongcode-missing-shell")).toBe(preferred)
+      expect(Shell.acceptable("loongcode-missing-shell")).toBe(acceptable)
     })
   })
 

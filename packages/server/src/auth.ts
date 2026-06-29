@@ -17,7 +17,7 @@ export type Info = {
   readonly username: string
 }
 
-export class Config extends Context.Service<Config, Info>()("@lgcode/ServerAuthConfig") {
+export class Config extends Context.Service<Config, Info>()("@loongcode/ServerAuthConfig") {
   static layer(input: Info) {
     return Layer.succeed(this, this.of(input))
   }
@@ -28,8 +28,8 @@ export class Config extends Context.Service<Config, Info>()("@lgcode/ServerAuthC
       Effect.gen(function* () {
         return Config.of(
           yield* EffectConfig.all({
-            password: EffectConfig.string("LGCODE_SERVER_PASSWORD").pipe(EffectConfig.option),
-            username: EffectConfig.string("LGCODE_SERVER_USERNAME").pipe(EffectConfig.withDefault("lgcode")),
+            password: EffectConfig.string("LOONGCODE_SERVER_PASSWORD").pipe(EffectConfig.option),
+            username: EffectConfig.string("LOONGCODE_SERVER_USERNAME").pipe(EffectConfig.withDefault("loongcode")),
           }),
         )
       }),
@@ -50,10 +50,10 @@ export function authorized(credentials: DecodedCredentials, config: Info) {
 }
 
 export function header(credentials?: Credentials) {
-  const password = credentials?.password ?? process.env.LGCODE_SERVER_PASSWORD
+  const password = credentials?.password ?? process.env.LOONGCODE_SERVER_PASSWORD
   if (!password) return undefined
 
-  return `Basic ${Buffer.from(`${credentials?.username ?? process.env.LGCODE_SERVER_USERNAME ?? "lgcode"}:${password}`).toString("base64")}`
+  return `Basic ${Buffer.from(`${credentials?.username ?? process.env.LOONGCODE_SERVER_USERNAME ?? "loongcode"}:${password}`).toString("base64")}`
 }
 
 export function headers(credentials?: Credentials) {

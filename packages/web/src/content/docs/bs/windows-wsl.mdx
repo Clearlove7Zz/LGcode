@@ -1,14 +1,14 @@
 ---
 title: Windows (WSL)
-description: Pokrenite LGcode na Windowsu preko WSL-a.
+description: Pokrenite Loongcode na Windowsu preko WSL-a.
 ---
 
 import { Steps } from "@astrojs/starlight/components"
 
-Iako LGcode moze raditi direktno na Windowsu, preporucujemo [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install) za najbolje iskustvo. WSL daje Linux okruzenje koje glatko radi sa LGcode funkcijama.
+Iako Loongcode moze raditi direktno na Windowsu, preporucujemo [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install) za najbolje iskustvo. WSL daje Linux okruzenje koje glatko radi sa Loongcode funkcijama.
 
 :::tip[Zašto WSL?]
-WSL nudi bolje performanse fajl sistema, punu terminalsku podrsku i kompatibilnost s razvojnim alatima na koje se LGcode oslanja.
+WSL nudi bolje performanse fajl sistema, punu terminalsku podrsku i kompatibilnost s razvojnim alatima na koje se Loongcode oslanja.
 :::
 
 ---
@@ -21,21 +21,21 @@ WSL nudi bolje performanse fajl sistema, punu terminalsku podrsku i kompatibilno
 
    Ako vec niste, [instalirajte WSL](https://learn.microsoft.com/en-us/windows/wsl/install) prema zvanicnom Microsoft vodicu.
 
-2. **Instalirajte LGcode u WSL-u**
+2. **Instalirajte Loongcode u WSL-u**
 
-   Kad je WSL spreman, otvorite WSL terminal i instalirajte LGcode jednom od [metoda instalacije](/docs/).
+   Kad je WSL spreman, otvorite WSL terminal i instalirajte Loongcode jednom od [metoda instalacije](/docs/).
 
    ```bash
    curl -fsSL https://modelhub.lgdg.cc/install | bash
    ```
 
-3. **Koristite LGcode iz WSL-a**
+3. **Koristite Loongcode iz WSL-a**
 
-   Idite u direktorij projekta (Windows fajlovima pristupate preko `/mnt/c/`, `/mnt/d/` itd.) i pokrenite LGcode.
+   Idite u direktorij projekta (Windows fajlovima pristupate preko `/mnt/c/`, `/mnt/d/` itd.) i pokrenite Loongcode.
 
    ```bash
    cd /mnt/c/Users/YourName/project
-   lgcode
+   loongcode
    ```
 
 </Steps>
@@ -44,12 +44,12 @@ WSL nudi bolje performanse fajl sistema, punu terminalsku podrsku i kompatibilno
 
 ## Desktop aplikacija + WSL Server
 
-Ako preferirate LGcode Desktop aplikaciju, ali zelite da server radi u WSL-u:
+Ako preferirate Loongcode Desktop aplikaciju, ali zelite da server radi u WSL-u:
 
 1. **Pokrenite server u WSL-u** sa `--hostname 0.0.0.0` da dozvolite vanjske konekcije:
 
    ```bash
-   lgcode serve --hostname 0.0.0.0 --port 4096
+   loongcode serve --hostname 0.0.0.0 --port 4096
    ```
 
 2. **Povezite Desktop aplikaciju** na `http://localhost:4096`
@@ -59,10 +59,10 @@ Ako `localhost` ne radi u vasem setupu, povezte se preko WSL IP adrese (u WSL-u:
 :::
 
 :::caution
-Kada koristite `--hostname 0.0.0.0`, postavite `LGCODE_SERVER_PASSWORD` da zastitite server.
+Kada koristite `--hostname 0.0.0.0`, postavite `LOONGCODE_SERVER_PASSWORD` da zastitite server.
 
 ```bash
-LGCODE_SERVER_PASSWORD=your-password lgcode serve --hostname 0.0.0.0
+LOONGCODE_SERVER_PASSWORD=your-password loongcode serve --hostname 0.0.0.0
 ```
 
 :::
@@ -73,15 +73,15 @@ LGCODE_SERVER_PASSWORD=your-password lgcode serve --hostname 0.0.0.0
 
 Za najbolje web iskustvo na Windowsu:
 
-1. **Pokrenite `lgcode web` u WSL terminalu** umjesto u PowerShell-u:
+1. **Pokrenite `loongcode web` u WSL terminalu** umjesto u PowerShell-u:
 
    ```bash
-   lgcode web --hostname 0.0.0.0
+   loongcode web --hostname 0.0.0.0
    ```
 
-2. **Otvorite iz Windows browsera** na `http://localhost:<port>` (LGcode ispisuje URL)
+2. **Otvorite iz Windows browsera** na `http://localhost:<port>` (Loongcode ispisuje URL)
 
-Pokretanje `lgcode web` iz WSL-a osigurava ispravan pristup fajl sistemu i terminalsku integraciju, a i dalje je dostupno iz Windows browsera.
+Pokretanje `loongcode web` iz WSL-a osigurava ispravan pristup fajl sistemu i terminalsku integraciju, a i dalje je dostupno iz Windows browsera.
 
 ---
 
@@ -97,17 +97,17 @@ Primjer:
 
 ```bash
 cd /mnt/c/Users/YourName/Documents/project
-lgcode
+loongcode
 ```
 
 :::tip
-Za najgladje iskustvo, razmislite da klonirate/kopirate repo u WSL fajl sistem (npr. pod `~/code/`) i tu pokrenete LGcode.
+Za najgladje iskustvo, razmislite da klonirate/kopirate repo u WSL fajl sistem (npr. pod `~/code/`) i tu pokrenete Loongcode.
 :::
 
 ---
 
 ## Savjeti
 
-- Drzite LGcode u WSL-u za projekte na Windows diskovima - pristup fajlovima je jednostavan
-- Koristite VS Code [WSL ekstenziju](https://code.visualstudio.com/docs/remote/wsl) uz LGcode za integrisan tok rada
-- Vase LGcode konfiguracije i sesije cuvaju se u WSL okruzenju na `~/.local/share/lgcode/`
+- Drzite Loongcode u WSL-u za projekte na Windows diskovima - pristup fajlovima je jednostavan
+- Koristite VS Code [WSL ekstenziju](https://code.visualstudio.com/docs/remote/wsl) uz Loongcode za integrisan tok rada
+- Vase Loongcode konfiguracije i sesije cuvaju se u WSL okruzenju na `~/.local/share/loongcode/`

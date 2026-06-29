@@ -1,4 +1,4 @@
-import { Resource } from "@lgcode/console-resource"
+import { Resource } from "@loongcode/console-resource"
 
 async function login() {
   const url = Resource.SALESFORCE_INSTANCE_URL.value.replace(/\/$/, "")

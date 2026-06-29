@@ -14,8 +14,8 @@ import type {
   SnapshotFileDiff,
   Todo,
   VcsInfo,
-} from "@lgcode/sdk/v2/client"
-import { NormalizedProviderListResponse } from "@lgcode/ui/context"
+} from "@loongcode/sdk/v2/client"
+import { NormalizedProviderListResponse } from "@loongcode/ui/context"
 import type { Accessor } from "solid-js"
 import type { SetStoreFunction, Store } from "solid-js/store"
 

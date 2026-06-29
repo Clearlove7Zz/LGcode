@@ -1,4 +1,4 @@
-import type { TuiPluginApi } from "@lgcode/plugin/tui"
+import type { TuiPluginApi } from "@loongcode/plugin/tui"
 import { RGBA } from "@opentui/core"
 import { createTuiResolvedConfig } from "./tui-runtime"
 

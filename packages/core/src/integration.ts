@@ -250,7 +250,7 @@ export interface Interface {
   }
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2/Integration") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/v2/Integration") {}
 
 enableMapSet()
 

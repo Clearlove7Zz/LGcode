@@ -1,7 +1,7 @@
 import { createSignal } from "solid-js"
-import { Dialog } from "@lgcode/ui/dialog"
-import { Button } from "@lgcode/ui/button"
-import { useDialog } from "@lgcode/ui/context/dialog"
+import { Dialog } from "@loongcode/ui/dialog"
+import { Button } from "@loongcode/ui/button"
+import { useDialog } from "@loongcode/ui/context/dialog"
 import { useLanguage } from "@/context/language"
 import { useSettings } from "@/context/settings"
 

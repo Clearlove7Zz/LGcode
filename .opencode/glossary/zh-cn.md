@@ -6,9 +6,9 @@
 
 ## Do Not Translate (Locale Additions)
 
-- `LGcode` (preserve casing in prose; keep `lgcode` only when it is part of commands, package names, paths, or code)
-- `LGcode Zen`
-- `LGcode CLI`
+- `Loongcode` (preserve casing in prose; keep `loongcode` only when it is part of commands, package names, paths, or code)
+- `Loongcode Zen`
+- `Loongcode CLI`
 - `CLI`, `TUI`, `MCP`, `OAuth`
 - `Model Context Protocol` (prefer the English expansion when introducing `MCP`)
 
@@ -38,5 +38,5 @@ These are preferred terms for docs/UI prose and may evolve.
 
 ## Avoid
 
-- Avoid `lgcode` in prose when referring to the product name; use `LGcode`
+- Avoid `loongcode` in prose when referring to the product name; use `Loongcode`
 - Avoid mixing alternative terms for the same concept across docs when a preferred term is already established

@@ -1,5 +1,5 @@
 import { expect } from "bun:test"
-import { CrossSpawnSpawner } from "@lgcode/core/cross-spawn-spawner"
+import { CrossSpawnSpawner } from "@loongcode/core/cross-spawn-spawner"
 import { $ } from "bun"
 import { Context, Deferred, Duration, Effect, Exit, Fiber, Layer } from "effect"
 import { InstanceState } from "@/effect/instance-state"

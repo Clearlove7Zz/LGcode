@@ -46,22 +46,22 @@ jobs:
         id: committer
         uses: ./.github/actions/setup-git-committer
         with:
-          lgcode-app-id: ${{ vars.LGCODE_APP_ID }}
-          lgcode-app-secret: ${{ secrets.LGCODE_APP_SECRET }}
+          loongcode-app-id: ${{ vars.LOONGCODE_APP_ID }}
+          loongcode-app-secret: ${{ secrets.LOONGCODE_APP_SECRET }}
 
-      - name: Install LGcode
+      - name: Install Loongcode
         if: inputs.bump || inputs.version
-        run: bun i -g lgcode-ai
+        run: bun i -g loongcode-ai
 
       - id: version
         run: |
           ./script/version.ts
         env:
           GH_TOKEN: ${{ steps.committer.outputs.token }}
-          LGCODE_BUMP: ${{ inputs.bump }}
-          LGCODE_VERSION: ${{ inputs.version }}
-          LGCODE_API_KEY: ${{ secrets.LGCODE_API_KEY }}
-          GH_REPO: ${{ (github.ref_name == 'beta' && 'anomalyco/lgcode-beta') || github.repository }}
+          LOONGCODE_BUMP: ${{ inputs.bump }}
+          LOONGCODE_VERSION: ${{ inputs.version }}
+          LOONGCODE_API_KEY: ${{ secrets.LOONGCODE_API_KEY }}
+          GH_REPO: ${{ (github.ref_name == 'beta' && 'anomalyco/loongcode-beta') || github.repository }}
     outputs:
       version: ${{ steps.version.outputs.version }}
       release: ${{ steps.version.outputs.release }}
@@ -83,35 +83,35 @@ jobs:
         id: committer
         uses: ./.github/actions/setup-git-committer
         with:
-          lgcode-app-id: ${{ vars.LGCODE_APP_ID }}
-          lgcode-app-secret: ${{ secrets.LGCODE_APP_SECRET }}
+          loongcode-app-id: ${{ vars.LOONGCODE_APP_ID }}
+          loongcode-app-secret: ${{ secrets.LOONGCODE_APP_SECRET }}
 
       - name: Build
         id: build
         run: |
-          ./packages/lgcode/script/build.ts ${{ (github.ref_name == 'beta' && '--sourcemaps') || '' }}
+          ./packages/loongcode/script/build.ts ${{ (github.ref_name == 'beta' && '--sourcemaps') || '' }}
           ./packages/cli/script/build.ts ${{ (github.ref_name == 'beta' && '--sourcemaps') || '' }}
         env:
-          LGCODE_VERSION: ${{ needs.version.outputs.version }}
-          LGCODE_RELEASE: ${{ needs.version.outputs.release }}
+          LOONGCODE_VERSION: ${{ needs.version.outputs.version }}
+          LOONGCODE_RELEASE: ${{ needs.version.outputs.release }}
           GH_REPO: ${{ needs.version.outputs.repo }}
           GH_TOKEN: ${{ steps.committer.outputs.token }}
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: lgcode-cli
+          name: loongcode-cli
           path: |
-            packages/lgcode/dist/lgcode-darwin*
-            packages/lgcode/dist/lgcode-linux*
+            packages/loongcode/dist/loongcode-darwin*
+            packages/loongcode/dist/loongcode-linux*
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: lgcode-cli-windows
-          path: packages/lgcode/dist/lgcode-windows*
+          name: loongcode-cli-windows
+          path: packages/loongcode/dist/loongcode-windows*
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: lgcode-preview-cli
+          name: loongcode-preview-cli
           path: packages/cli/dist/cli-*
 
     outputs:
@@ -135,15 +135,15 @@ jobs:
 
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
-          name: lgcode-cli-windows
-          path: packages/lgcode/dist
+          name: loongcode-cli-windows
+          path: packages/loongcode/dist
 
       - name: Setup git committer
         id: committer
         uses: ./.github/actions/setup-git-committer
         with:
-          lgcode-app-id: ${{ vars.LGCODE_APP_ID }}
-          lgcode-app-secret: ${{ secrets.LGCODE_APP_SECRET }}
+          loongcode-app-id: ${{ vars.LOONGCODE_APP_ID }}
+          loongcode-app-secret: ${{ secrets.LOONGCODE_APP_SECRET }}
 
       - name: Azure login
         uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5 # v2.3.0
@@ -158,9 +158,9 @@ jobs:
           signing-account-name: ${{ env.AZURE_TRUSTED_SIGNING_ACCOUNT_NAME }}
           certificate-profile-name: ${{ env.AZURE_TRUSTED_SIGNING_CERTIFICATE_PROFILE }}
           files: |
-            ${{ github.workspace }}\packages\lgcode\dist\lgcode-windows-arm64\bin\lgcode.exe
-            ${{ github.workspace }}\packages\lgcode\dist\lgcode-windows-x64\bin\lgcode.exe
-            ${{ github.workspace }}\packages\lgcode\dist\lgcode-windows-x64-baseline\bin\lgcode.exe
+            ${{ github.workspace }}\packages\loongcode\dist\loongcode-windows-arm64\bin\loongcode.exe
+            ${{ github.workspace }}\packages\loongcode\dist\loongcode-windows-x64\bin\loongcode.exe
+            ${{ github.workspace }}\packages\loongcode\dist\loongcode-windows-x64-baseline\bin\loongcode.exe
           exclude-environment-credential: true
           exclude-workload-identity-credential: true
           exclude-managed-identity-credential: true
@@ -176,9 +176,9 @@ jobs:
         shell: pwsh
         run: |
           $files = @(
-            "${{ github.workspace }}\packages\lgcode\dist\lgcode-windows-arm64\bin\lgcode.exe",
-            "${{ github.workspace }}\packages\lgcode\dist\lgcode-windows-x64\bin\lgcode.exe",
-            "${{ github.workspace }}\packages\lgcode\dist\lgcode-windows-x64-baseline\bin\lgcode.exe"
+            "${{ github.workspace }}\packages\loongcode\dist\loongcode-windows-arm64\bin\loongcode.exe",
+            "${{ github.workspace }}\packages\loongcode\dist\loongcode-windows-x64\bin\loongcode.exe",
+            "${{ github.workspace }}\packages\loongcode\dist\loongcode-windows-x64-baseline\bin\loongcode.exe"
           )
 
           foreach ($file in $files) {
@@ -189,12 +189,12 @@ jobs:
           }
 
       - name: Repack Windows CLI archives
-        working-directory: packages/lgcode/dist
+        working-directory: packages/loongcode/dist
         shell: pwsh
         run: |
-          Compress-Archive -Path "lgcode-windows-arm64\bin\*" -DestinationPath "lgcode-windows-arm64.zip" -Force
-          Compress-Archive -Path "lgcode-windows-x64\bin\*" -DestinationPath "lgcode-windows-x64.zip" -Force
-          Compress-Archive -Path "lgcode-windows-x64-baseline\bin\*" -DestinationPath "lgcode-windows-x64-baseline.zip" -Force
+          Compress-Archive -Path "loongcode-windows-arm64\bin\*" -DestinationPath "loongcode-windows-arm64.zip" -Force
+          Compress-Archive -Path "loongcode-windows-x64\bin\*" -DestinationPath "loongcode-windows-x64.zip" -Force
+          Compress-Archive -Path "loongcode-windows-x64-baseline\bin\*" -DestinationPath "loongcode-windows-x64-baseline.zip" -Force
 
       - name: Upload signed Windows CLI release assets
         if: needs.version.outputs.release != ''
@@ -203,19 +203,19 @@ jobs:
           GH_TOKEN: ${{ steps.committer.outputs.token }}
         run: |
           gh release upload "v${{ needs.version.outputs.version }}" `
-            "${{ github.workspace }}\packages\lgcode\dist\lgcode-windows-arm64.zip" `
-            "${{ github.workspace }}\packages\lgcode\dist\lgcode-windows-x64.zip" `
-            "${{ github.workspace }}\packages\lgcode\dist\lgcode-windows-x64-baseline.zip" `
+            "${{ github.workspace }}\packages\loongcode\dist\loongcode-windows-arm64.zip" `
+            "${{ github.workspace }}\packages\loongcode\dist\loongcode-windows-x64.zip" `
+            "${{ github.workspace }}\packages\loongcode\dist\loongcode-windows-x64-baseline.zip" `
             --clobber `
             --repo "${{ needs.version.outputs.repo }}"
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: lgcode-cli-signed-windows
+          name: loongcode-cli-signed-windows
           path: |
-            packages/lgcode/dist/lgcode-windows-arm64
-            packages/lgcode/dist/lgcode-windows-x64
-            packages/lgcode/dist/lgcode-windows-x64-baseline
+            packages/loongcode/dist/loongcode-windows-arm64
+            packages/loongcode/dist/loongcode-windows-x64
+            packages/loongcode/dist/loongcode-windows-x64-baseline
 
   build-electron:
     needs:
@@ -307,16 +307,16 @@ jobs:
         id: committer
         uses: ./.github/actions/setup-git-committer
         with:
-          lgcode-app-id: ${{ vars.LGCODE_APP_ID }}
-          lgcode-app-secret: ${{ secrets.LGCODE_APP_SECRET }}
+          loongcode-app-id: ${{ vars.LOONGCODE_APP_ID }}
+          loongcode-app-secret: ${{ secrets.LOONGCODE_APP_SECRET }}
 
       - name: Prepare
         run: bun ./scripts/prepare.ts
         working-directory: packages/desktop
         env:
-          LGCODE_VERSION: ${{ needs.version.outputs.version }}
-          LGCODE_CHANNEL: ${{ (github.ref_name == 'beta' && 'beta') || 'prod' }}
-          LGCODE_CLI_ARTIFACT: ${{ (runner.os == 'Windows' && 'lgcode-cli-windows') || 'lgcode-cli' }}
+          LOONGCODE_VERSION: ${{ needs.version.outputs.version }}
+          LOONGCODE_CHANNEL: ${{ (github.ref_name == 'beta' && 'beta') || 'prod' }}
+          LOONGCODE_CLI_ARTIFACT: ${{ (runner.os == 'Windows' && 'loongcode-cli-windows') || 'loongcode-cli' }}
           RUST_TARGET: ${{ matrix.settings.target }}
           GH_TOKEN: ${{ github.token }}
           GITHUB_RUN_ID: ${{ github.run_id }}
@@ -325,7 +325,7 @@ jobs:
         run: bun run build
         working-directory: packages/desktop
         env:
-          LGCODE_CHANNEL: ${{ (github.ref_name == 'beta' && 'beta') || 'prod' }}
+          LOONGCODE_CHANNEL: ${{ (github.ref_name == 'beta' && 'beta') || 'prod' }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ vars.SENTRY_ORG }}
           SENTRY_PROJECT: ${{ vars.WEB_SENTRY_PROJECT }}
@@ -340,7 +340,7 @@ jobs:
         working-directory: packages/desktop
         timeout-minutes: 60
         env:
-          LGCODE_CHANNEL: ${{ (github.ref_name == 'beta' && 'beta') || 'prod' }}
+          LOONGCODE_CHANNEL: ${{ (github.ref_name == 'beta' && 'beta') || 'prod' }}
           GH_TOKEN: ${{ steps.committer.outputs.token }}
           CSC_LINK: ${{ secrets.APPLE_CERTIFICATE }}
           CSC_KEY_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
@@ -354,7 +354,7 @@ jobs:
         working-directory: packages/desktop
         timeout-minutes: 60
         env:
-          LGCODE_CHANNEL: ${{ (github.ref_name == 'beta' && 'beta') || 'prod' }}
+          LOONGCODE_CHANNEL: ${{ (github.ref_name == 'beta' && 'beta') || 'prod' }}
 
       - name: Create macOS .app.tar.gz
         if: runner.os == 'macOS' && needs.version.outputs.release
@@ -362,10 +362,10 @@ jobs:
         run: |
           if [[ "${{ matrix.settings.target }}" == "x86_64-apple-darwin" ]]; then
             APP_DIR="mac"
-            OUT_NAME="lgcode-desktop-mac-x64.app.tar.gz"
+            OUT_NAME="loongcode-desktop-mac-x64.app.tar.gz"
           elif [[ "${{ matrix.settings.target }}" == "aarch64-apple-darwin" ]]; then
             APP_DIR="mac-arm64"
-            OUT_NAME="lgcode-desktop-mac-arm64.app.tar.gz"
+            OUT_NAME="loongcode-desktop-mac-arm64.app.tar.gz"
           else
             echo "Unknown macOS target: ${{ matrix.settings.target }}"
             exit 1
@@ -384,7 +384,7 @@ jobs:
           $files = @()
           $files += Get-ChildItem "${{ github.workspace }}\packages\desktop\dist\*.exe" | Select-Object -ExpandProperty FullName
           $files += Get-ChildItem "${{ github.workspace }}\packages\desktop\dist\*unpacked\*.exe" | Select-Object -ExpandProperty FullName
-          $files += Get-ChildItem "${{ github.workspace }}\packages\desktop\dist\*unpacked\resources\lgcode-cli.exe" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty FullName
+          $files += Get-ChildItem "${{ github.workspace }}\packages\desktop\dist\*unpacked\resources\loongcode-cli.exe" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty FullName
 
           foreach ($file in $files | Select-Object -Unique) {
             $sig = Get-AuthenticodeSignature $file
@@ -395,7 +395,7 @@ jobs:
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: lgcode-desktop-${{ matrix.settings.target }}
+          name: loongcode-desktop-${{ matrix.settings.target }}
           path: packages/desktop/dist/*
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -437,22 +437,22 @@ jobs:
 
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
-          name: lgcode-cli
-          path: packages/lgcode/dist
+          name: loongcode-cli
+          path: packages/loongcode/dist
 
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
-          name: lgcode-cli-windows
-          path: packages/lgcode/dist
+          name: loongcode-cli-windows
+          path: packages/loongcode/dist
 
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
-          name: lgcode-cli-signed-windows
-          path: packages/lgcode/dist
+          name: loongcode-cli-signed-windows
+          path: packages/loongcode/dist
 
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
-          name: lgcode-preview-cli
+          name: loongcode-preview-cli
           path: packages/cli/dist
 
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
@@ -464,7 +464,7 @@ jobs:
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         if: needs.version.outputs.release
         with:
-          pattern: lgcode-desktop-*
+          pattern: loongcode-desktop-*
           path: /tmp/desktop
           merge-multiple: true
 
@@ -472,8 +472,8 @@ jobs:
         id: committer
         uses: ./.github/actions/setup-git-committer
         with:
-          lgcode-app-id: ${{ vars.LGCODE_APP_ID }}
-          lgcode-app-secret: ${{ secrets.LGCODE_APP_SECRET }}
+          loongcode-app-id: ${{ vars.LOONGCODE_APP_ID }}
+          loongcode-app-secret: ${{ secrets.LOONGCODE_APP_SECRET }}
 
       - name: Cache apt packages (AUR)
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
@@ -490,8 +490,8 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.AUR_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          git config --global user.email "lgcode@sst.dev"
-          git config --global user.name "lgcode"
+          git config --global user.email "loongcode@sst.dev"
+          git config --global user.name "loongcode"
           ssh-keyscan -H aur.archlinux.org >> ~/.ssh/known_hosts || true
 
       - name: Upload desktop release assets
@@ -509,8 +509,8 @@ jobs:
 
       - run: ./script/publish.ts
         env:
-          LGCODE_VERSION: ${{ needs.version.outputs.version }}
-          LGCODE_RELEASE: ${{ needs.version.outputs.release }}
+          LOONGCODE_VERSION: ${{ needs.version.outputs.version }}
+          LOONGCODE_RELEASE: ${{ needs.version.outputs.release }}
           AUR_KEY: ${{ secrets.AUR_KEY }}
           GITHUB_TOKEN: ${{ steps.committer.outputs.token }}
           GH_REPO: ${{ needs.version.outputs.repo }}

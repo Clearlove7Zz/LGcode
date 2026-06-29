@@ -1,10 +1,10 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
 import { InstanceState } from "@/effect/instance-state"
 import { SessionID } from "./schema"
-import { NonNegativeInt } from "@lgcode/core/schema"
+import { NonNegativeInt } from "@loongcode/core/schema"
 import { Effect, Layer, Context, Schema } from "effect"
 import { EventV2Bridge } from "@/event-v2-bridge"
-import { EventV2 } from "@lgcode/core/event"
+import { EventV2 } from "@loongcode/core/event"
 
 export const Info = Schema.Union([
   Schema.Struct({
@@ -55,7 +55,7 @@ export interface Interface {
   readonly set: (sessionID: SessionID, status: Info) => Effect.Effect<void>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/SessionStatus") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/SessionStatus") {}
 
 export const layer = Layer.effect(
   Service,

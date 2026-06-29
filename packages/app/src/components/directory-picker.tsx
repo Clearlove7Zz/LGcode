@@ -1,4 +1,4 @@
-import { useDialog } from "@lgcode/ui/context/dialog"
+import { useDialog } from "@loongcode/ui/context/dialog"
 import { ServerConnection } from "@/context/server"
 import { usePlatform } from "@/context/platform"
 import { useSettings } from "@/context/settings"

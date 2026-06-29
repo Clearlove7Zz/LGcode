@@ -2,16 +2,16 @@ import { afterEach, describe, expect, mock } from "bun:test"
 import { mkdir } from "node:fs/promises"
 import path from "node:path"
 import { Effect, Layer, Stream } from "effect"
-import { Flag } from "@lgcode/core/flag/flag"
+import { Flag } from "@loongcode/core/flag/flag"
 import { registerAdapter } from "../../src/control-plane/adapters"
-import { WorkspaceV2 } from "@lgcode/core/workspace"
+import { WorkspaceV2 } from "@loongcode/core/workspace"
 import type { WorkspaceAdapter } from "../../src/control-plane/types"
 import { Workspace } from "../../src/control-plane/workspace"
 import { WorkspacePaths } from "../../src/server/routes/instance/httpapi/groups/workspace"
 import { EventPaths } from "../../src/server/routes/instance/httpapi/groups/event"
 import { Session } from "@/session/session"
-import { Database } from "@lgcode/core/database/database"
-import { Ripgrep } from "@lgcode/core/ripgrep"
+import { Database } from "@loongcode/core/database/database"
+import { Ripgrep } from "@loongcode/core/ripgrep"
 import { Server } from "../../src/server/server"
 import { resetDatabase } from "../fixture/db"
 import { disposeAllInstances, provideInstance, tmpdirScoped } from "../fixture/fixture"
@@ -22,7 +22,7 @@ import { InstancePaths } from "../../src/server/routes/instance/httpapi/groups/i
 import { testEffect } from "../lib/effect"
 import { httpApiLayer, requestInDirectory } from "./httpapi-layer"
 
-const originalWorkspaces = Flag.LGCODE_EXPERIMENTAL_WORKSPACES
+const originalWorkspaces = Flag.LOONGCODE_EXPERIMENTAL_WORKSPACES
 const workspaceLayer = Workspace.defaultLayer.pipe(
   Layer.provide(InstanceStore.defaultLayer),
   Layer.provide(InstanceBootstrap.defaultLayer),
@@ -48,7 +48,7 @@ function requestDefault(path: string, directory: string, init: RequestInit = {})
 
 function requestServer(path: string, directory: string, init: RequestInit = {}) {
   const headers = new Headers(init.headers)
-  headers.set("x-lgcode-directory", directory)
+  headers.set("x-loongcode-directory", directory)
   return Effect.promise(() => Promise.resolve(Server.Default().app.request(path, { ...init, headers })))
 }
 
@@ -176,7 +176,7 @@ function eventStreamResponse() {
 
 afterEach(async () => {
   mock.restore()
-  Flag.LGCODE_EXPERIMENTAL_WORKSPACES = originalWorkspaces
+  Flag.LOONGCODE_EXPERIMENTAL_WORKSPACES = originalWorkspaces
   await disposeAllInstances()
   await resetDatabase()
 })
@@ -209,7 +209,7 @@ describe("workspace HttpApi", () => {
 
   it.live("serves mutation endpoints", () =>
     Effect.gen(function* () {
-      Flag.LGCODE_EXPERIMENTAL_WORKSPACES = true
+      Flag.LOONGCODE_EXPERIMENTAL_WORKSPACES = true
       const dir = yield* tmpdirScoped({ git: true })
       const project = yield* Project.use.fromDirectory(dir)
       registerAdapter(project.project.id, "local-test", localAdapter(path.join(dir, ".workspace")))
@@ -243,7 +243,7 @@ describe("workspace HttpApi", () => {
 
   it.live("serves list sync endpoint", () =>
     Effect.gen(function* () {
-      Flag.LGCODE_EXPERIMENTAL_WORKSPACES = true
+      Flag.LOONGCODE_EXPERIMENTAL_WORKSPACES = true
       const dir = yield* tmpdirScoped({ git: true })
       const project = yield* Project.use.fromDirectory(dir)
       const type = `listed-${Math.random().toString(36).slice(2)}`
@@ -287,7 +287,7 @@ describe("workspace HttpApi", () => {
 
   it.live("creates workspace with the TUI payload shape", () =>
     Effect.gen(function* () {
-      Flag.LGCODE_EXPERIMENTAL_WORKSPACES = true
+      Flag.LOONGCODE_EXPERIMENTAL_WORKSPACES = true
       const dir = yield* tmpdirScoped({ git: true })
       const project = yield* Project.use.fromDirectory(dir)
       registerAdapter(project.project.id, "local-test", localAdapter(path.join(dir, ".workspace")))
@@ -308,7 +308,7 @@ describe("workspace HttpApi", () => {
 
   it.live("creates a real git worktree workspace via the builtin adapter", () =>
     Effect.gen(function* () {
-      Flag.LGCODE_EXPERIMENTAL_WORKSPACES = true
+      Flag.LOONGCODE_EXPERIMENTAL_WORKSPACES = true
       const dir = yield* tmpdirScoped({ git: true })
 
       const created = yield* requestServer(WorkspacePaths.list, dir, {
@@ -326,7 +326,7 @@ describe("workspace HttpApi", () => {
 
   it.live("routes local workspace requests through the workspace target directory", () =>
     Effect.gen(function* () {
-      Flag.LGCODE_EXPERIMENTAL_WORKSPACES = true
+      Flag.LOONGCODE_EXPERIMENTAL_WORKSPACES = true
       const dir = yield* tmpdirScoped({ git: true })
       const workspaceDir = path.join(dir, ".workspace-local")
       const project = yield* Project.use.fromDirectory(dir)
@@ -351,7 +351,7 @@ describe("workspace HttpApi", () => {
 
   it.live("proxies remote workspace HTTP requests with sanitized forwarding", () =>
     Effect.gen(function* () {
-      Flag.LGCODE_EXPERIMENTAL_WORKSPACES = true
+      Flag.LOONGCODE_EXPERIMENTAL_WORKSPACES = true
       const dir = yield* tmpdirScoped({ git: true })
       const proxied: ProxiedRequest[] = []
       const remote = listenRemoteHttp((request) => {
@@ -404,7 +404,7 @@ describe("workspace HttpApi", () => {
           headers: {
             "accept-encoding": "br",
             "content-type": "application/json",
-            "x-lgcode-workspace": "internal",
+            "x-loongcode-workspace": "internal",
           },
           body: JSON.stringify({ $schema: "https://modelhub.lgdg.cc/config.json" }),
         })
@@ -426,8 +426,8 @@ describe("workspace HttpApi", () => {
             body: JSON.stringify({ $schema: "https://modelhub.lgdg.cc/config.json" }),
           },
         ])
-        expect(forwarded[0]?.headers).not.toHaveProperty("x-lgcode-directory")
-        expect(forwarded[0]?.headers).not.toHaveProperty("x-lgcode-workspace")
+        expect(forwarded[0]?.headers).not.toHaveProperty("x-loongcode-directory")
+        expect(forwarded[0]?.headers).not.toHaveProperty("x-loongcode-workspace")
 
         const eventURL = new URL(`http://localhost${EventPaths.event}`)
         eventURL.searchParams.set("workspace", workspace.id)
@@ -446,7 +446,7 @@ describe("workspace HttpApi", () => {
 
   it.live("proxies remote workspace requests selected from session ownership", () =>
     Effect.gen(function* () {
-      Flag.LGCODE_EXPERIMENTAL_WORKSPACES = true
+      Flag.LOONGCODE_EXPERIMENTAL_WORKSPACES = true
       const dir = yield* tmpdirScoped({ git: true })
       const proxied: ProxiedRequest[] = []
       const remote = listenRemoteHttp((request) => {

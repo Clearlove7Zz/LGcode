@@ -1,12 +1,12 @@
-import { TextField } from "@lgcode/ui/text-field"
+import { TextField } from "@loongcode/ui/text-field"
 import * as Sentry from "@sentry/solid"
-import { Logo } from "@lgcode/ui/logo"
-import { Button } from "@lgcode/ui/button"
+import { Logo } from "@loongcode/ui/logo"
+import { Button } from "@loongcode/ui/button"
 import { Component, createSignal, onMount, Show } from "solid-js"
 import { createStore } from "solid-js/store"
 import { usePlatform } from "@/context/platform"
 import { useLanguage } from "@/context/language"
-import { Icon } from "@lgcode/ui/icon"
+import { Icon } from "@loongcode/ui/icon"
 import { errorDescriptionKey } from "./error-description"
 
 export type InitError = {

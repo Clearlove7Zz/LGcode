@@ -2,7 +2,7 @@ import type { Argv } from "yargs"
 import { UI } from "../ui"
 import * as prompts from "@clack/prompts"
 import { Installation } from "../../installation"
-import { Global } from "@lgcode/core/global"
+import { Global } from "@loongcode/core/global"
 import fs from "fs/promises"
 import path from "path"
 import os from "os"
@@ -24,7 +24,7 @@ interface RemovalTargets {
 
 export const UninstallCommand = {
   command: "uninstall",
-  describe: "uninstall lgcode and remove all related files",
+  describe: "uninstall loongcode and remove all related files",
   builder: (yargs: Argv) =>
     yargs
       .option("keep-config", {
@@ -55,7 +55,7 @@ export const UninstallCommand = {
     UI.empty()
     UI.println(UI.logo("  "))
     UI.empty()
-    prompts.intro("Uninstall LGcode")
+    prompts.intro("Uninstall Loongcode")
 
     const method = await Installation.method()
     prompts.log.info(`Installation method: ${method}`)
@@ -129,13 +129,13 @@ async function showRemovalSummary(targets: RemovalTargets, method: Installation.
 
   if (method !== "curl" && method !== "unknown") {
     const cmds: Record<string, string> = {
-      npm: "npm uninstall -g lgcode-ai",
-      pnpm: "pnpm uninstall -g lgcode-ai",
-      bun: "bun remove -g lgcode-ai",
-      yarn: "yarn global remove lgcode-ai",
-      brew: "brew uninstall lgcode",
-      choco: "choco uninstall lgcode",
-      scoop: "scoop uninstall lgcode",
+      npm: "npm uninstall -g loongcode-ai",
+      pnpm: "pnpm uninstall -g loongcode-ai",
+      bun: "bun remove -g loongcode-ai",
+      yarn: "yarn global remove loongcode-ai",
+      brew: "brew uninstall loongcode",
+      choco: "choco uninstall loongcode",
+      scoop: "scoop uninstall loongcode",
     }
     prompts.log.info(`  ✓ Package: ${cmds[method] || method}`)
   }
@@ -180,19 +180,19 @@ async function executeUninstall(method: Installation.Method, targets: RemovalTar
 
   if (method !== "curl" && method !== "unknown") {
     const cmds: Record<string, string[]> = {
-      npm: ["npm", "uninstall", "-g", "lgcode-ai"],
-      pnpm: ["pnpm", "uninstall", "-g", "lgcode-ai"],
-      bun: ["bun", "remove", "-g", "lgcode-ai"],
-      yarn: ["yarn", "global", "remove", "lgcode-ai"],
-      brew: ["brew", "uninstall", "lgcode"],
-      choco: ["choco", "uninstall", "lgcode"],
-      scoop: ["scoop", "uninstall", "lgcode"],
+      npm: ["npm", "uninstall", "-g", "loongcode-ai"],
+      pnpm: ["pnpm", "uninstall", "-g", "loongcode-ai"],
+      bun: ["bun", "remove", "-g", "loongcode-ai"],
+      yarn: ["yarn", "global", "remove", "loongcode-ai"],
+      brew: ["brew", "uninstall", "loongcode"],
+      choco: ["choco", "uninstall", "loongcode"],
+      scoop: ["scoop", "uninstall", "loongcode"],
     }
 
     const cmd = cmds[method]
     if (cmd) {
       spinner.start(`Running ${cmd.join(" ")}...`)
-      const result = await Process.run(method === "choco" ? ["choco", "uninstall", "lgcode", "-y", "-r"] : cmd, {
+      const result = await Process.run(method === "choco" ? ["choco", "uninstall", "loongcode", "-y", "-r"] : cmd, {
         nothrow: true,
       })
       if (result.code !== 0) {
@@ -215,7 +215,7 @@ async function executeUninstall(method: Installation.Method, targets: RemovalTar
     prompts.log.info(`  rm "${targets.binary}"`)
 
     const binDir = path.dirname(targets.binary)
-    if (binDir.includes(".lgcode")) {
+    if (binDir.includes(".loongcode")) {
       prompts.log.info(`  rmdir "${binDir}" 2>/dev/null`)
     }
   }
@@ -229,7 +229,7 @@ async function executeUninstall(method: Installation.Method, targets: RemovalTar
   }
 
   UI.empty()
-  prompts.log.success("Thank you for using LGcode!")
+  prompts.log.success("Thank you for using Loongcode!")
 }
 
 async function getShellConfigFile(): Promise<string | null> {
@@ -266,7 +266,7 @@ async function getShellConfigFile(): Promise<string | null> {
     if (!exists) continue
 
     const content = await Filesystem.readText(file).catch(() => "")
-    if (content.includes("# lgcode") || content.includes(".lgcode/bin")) {
+    if (content.includes("# loongcode") || content.includes(".loongcode/bin")) {
       return file
     }
   }
@@ -284,21 +284,21 @@ async function cleanShellConfig(file: string) {
   for (const line of lines) {
     const trimmed = line.trim()
 
-    if (trimmed === "# lgcode") {
+    if (trimmed === "# loongcode") {
       skip = true
       continue
     }
 
     if (skip) {
       skip = false
-      if (trimmed.includes(".lgcode/bin") || trimmed.includes("fish_add_path")) {
+      if (trimmed.includes(".loongcode/bin") || trimmed.includes("fish_add_path")) {
         continue
       }
     }
 
     if (
-      (trimmed.startsWith("export PATH=") && trimmed.includes(".lgcode/bin")) ||
-      (trimmed.startsWith("fish_add_path") && trimmed.includes(".lgcode"))
+      (trimmed.startsWith("export PATH=") && trimmed.includes(".loongcode/bin")) ||
+      (trimmed.startsWith("fish_add_path") && trimmed.includes(".loongcode"))
     ) {
       continue
     }

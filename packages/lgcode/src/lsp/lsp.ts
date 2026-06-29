@@ -1,7 +1,7 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
-import { FSUtil } from "@lgcode/core/fs-util"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
+import { FSUtil } from "@loongcode/core/fs-util"
 import { EventV2Bridge } from "@/event-v2-bridge"
-import { EventV2 } from "@lgcode/core/event"
+import { EventV2 } from "@loongcode/core/event"
 import * as LSPClient from "./client"
 import path from "path"
 import { pathToFileURL, fileURLToPath } from "url"
@@ -12,7 +12,7 @@ import { spawn as lspspawn } from "./launch"
 import { Effect, Layer, Context, Schema } from "effect"
 import { InstanceState } from "@/effect/instance-state"
 import { containsPath } from "@/project/instance-context"
-import { NonNegativeInt } from "@lgcode/core/schema"
+import { NonNegativeInt } from "@loongcode/core/schema"
 import { RuntimeFlags } from "@/effect/runtime-flags"
 
 export const Event = {
@@ -135,7 +135,7 @@ export interface Interface {
   readonly outgoingCalls: (input: LocInput) => Effect.Effect<any[]>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/LSP") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/LSP") {}
 
 export const layer = Layer.effect(
   Service,

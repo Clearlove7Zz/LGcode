@@ -1,6 +1,6 @@
-import { DataProvider } from "@lgcode/ui/context"
+import { DataProvider } from "@loongcode/ui/context"
 import { showToast } from "@/utils/toast"
-import { base64Encode } from "@lgcode/core/util/encode"
+import { base64Encode } from "@loongcode/core/util/encode"
 import { useLocation, useNavigate, useParams } from "@solidjs/router"
 import { createEffect, createMemo, createResource, type ParentProps, Show } from "solid-js"
 import { useLanguage } from "@/context/language"

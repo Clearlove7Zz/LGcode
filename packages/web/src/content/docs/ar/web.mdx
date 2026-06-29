@@ -1,28 +1,28 @@
 ---
 title: الويب
-description: استخدام LGcode في متصفحك.
+description: استخدام Loongcode في متصفحك.
 ---
 
-يمكن تشغيل LGcode كتطبيق ويب داخل متصفحك، ليمنحك تجربة البرمجة القوية بالذكاء الاصطناعي نفسها دون الحاجة إلى terminal.
+يمكن تشغيل Loongcode كتطبيق ويب داخل متصفحك، ليمنحك تجربة البرمجة القوية بالذكاء الاصطناعي نفسها دون الحاجة إلى terminal.
 
-![LGcode Web - جلسة جديدة](../../../assets/web/web-homepage-new-session.png)
+![Loongcode Web - جلسة جديدة](../../../assets/web/web-homepage-new-session.png)
 
 ## البدء
 
 ابدأ تشغيل واجهة الويب عبر تنفيذ:
 
 ```bash
-lgcode web
+loongcode web
 ```
 
-يؤدي ذلك إلى تشغيل خادم محلي على `127.0.0.1` بمنفذ عشوائي متاح، ويفتح LGcode تلقائيا في المتصفح الافتراضي لديك.
+يؤدي ذلك إلى تشغيل خادم محلي على `127.0.0.1` بمنفذ عشوائي متاح، ويفتح Loongcode تلقائيا في المتصفح الافتراضي لديك.
 
 :::caution
-إذا لم يتم تعيين `LGCODE_SERVER_PASSWORD` فسيكون الخادم دون حماية. هذا مناسب للاستخدام المحلي، لكنه يجب أن يكون مُعينا عند إتاحة الوصول عبر الشبكة.
+إذا لم يتم تعيين `LOONGCODE_SERVER_PASSWORD` فسيكون الخادم دون حماية. هذا مناسب للاستخدام المحلي، لكنه يجب أن يكون مُعينا عند إتاحة الوصول عبر الشبكة.
 :::
 
 :::tip[مستخدمو Windows]
-لأفضل تجربة، شغّل `lgcode web` من [WSL](/docs/windows-wsl) بدلا من PowerShell. يضمن ذلك وصولا صحيحا إلى نظام الملفات وتكاملا أفضل مع terminal.
+لأفضل تجربة، شغّل `loongcode web` من [WSL](/docs/windows-wsl) بدلا من PowerShell. يضمن ذلك وصولا صحيحا إلى نظام الملفات وتكاملا أفضل مع terminal.
 :::
 
 ---
@@ -33,21 +33,21 @@ lgcode web
 
 ### المنفذ
 
-افتراضيا، يختار LGcode منفذا متاحا. يمكنك تحديد منفذ:
+افتراضيا، يختار Loongcode منفذا متاحا. يمكنك تحديد منفذ:
 
 ```bash
-lgcode web --port 4096
+loongcode web --port 4096
 ```
 
 ### اسم المضيف
 
-افتراضيا، يرتبط الخادم بـ `127.0.0.1` (للاستخدام المحلي فقط). لجعل LGcode متاحا على شبكتك:
+افتراضيا، يرتبط الخادم بـ `127.0.0.1` (للاستخدام المحلي فقط). لجعل Loongcode متاحا على شبكتك:
 
 ```bash
-lgcode web --hostname 0.0.0.0
+loongcode web --hostname 0.0.0.0
 ```
 
-عند استخدام `0.0.0.0` سيعرض LGcode كلا من عناوين الوصول المحلي وعناوين الشبكة:
+عند استخدام `0.0.0.0` سيعرض Loongcode كلا من عناوين الوصول المحلي وعناوين الشبكة:
 
 ```
   Local access:       http://localhost:4096
@@ -59,15 +59,15 @@ lgcode web --hostname 0.0.0.0
 فعّل mDNS لجعل خادمك قابلا للاكتشاف على الشبكة المحلية:
 
 ```bash
-lgcode web --mdns
+loongcode web --mdns
 ```
 
-يضبط ذلك تلقائيا اسم المضيف إلى `0.0.0.0` ويعلن عن الخادم باسم `lgcode.local`.
+يضبط ذلك تلقائيا اسم المضيف إلى `0.0.0.0` ويعلن عن الخادم باسم `loongcode.local`.
 
 يمكنك تخصيص اسم نطاق mDNS لتشغيل عدة نسخ على الشبكة نفسها:
 
 ```bash
-lgcode web --mdns --mdns-domain myproject.local
+loongcode web --mdns --mdns-domain myproject.local
 ```
 
 ### CORS
@@ -75,36 +75,36 @@ lgcode web --mdns --mdns-domain myproject.local
 للسماح بنطاقات إضافية عبر CORS (مفيد للواجهات الأمامية المخصصة):
 
 ```bash
-lgcode web --cors https://example.com
+loongcode web --cors https://example.com
 ```
 
 ### المصادقة
 
-لحماية الوصول، عيّن كلمة مرور عبر متغير البيئة `LGCODE_SERVER_PASSWORD`:
+لحماية الوصول، عيّن كلمة مرور عبر متغير البيئة `LOONGCODE_SERVER_PASSWORD`:
 
 ```bash
-LGCODE_SERVER_PASSWORD=secret lgcode web
+LOONGCODE_SERVER_PASSWORD=secret loongcode web
 ```
 
-اسم المستخدم الافتراضي هو `lgcode`، ويمكن تغييره عبر `LGCODE_SERVER_USERNAME`.
+اسم المستخدم الافتراضي هو `loongcode`، ويمكن تغييره عبر `LOONGCODE_SERVER_USERNAME`.
 
 ---
 
 ## استخدام واجهة الويب
 
-بعد التشغيل، تتيح لك واجهة الويب الوصول إلى جلسات LGcode الخاصة بك.
+بعد التشغيل، تتيح لك واجهة الويب الوصول إلى جلسات Loongcode الخاصة بك.
 
 ### الجلسات
 
 اعرض جلساتك وأدرها من الصفحة الرئيسية. يمكنك رؤية الجلسات النشطة وبدء جلسات جديدة.
 
-![LGcode Web - جلسة نشطة](../../../assets/web/web-homepage-active-session.png)
+![Loongcode Web - جلسة نشطة](../../../assets/web/web-homepage-active-session.png)
 
 ### حالة الخادم
 
 انقر على "See Servers" لعرض الخوادم المتصلة وحالتها.
 
-![LGcode Web - See Servers (عرض الخوادم)](../../../assets/web/web-homepage-see-servers.png)
+![Loongcode Web - See Servers (عرض الخوادم)](../../../assets/web/web-homepage-see-servers.png)
 
 ---
 
@@ -114,10 +114,10 @@ LGCODE_SERVER_PASSWORD=secret lgcode web
 
 ```bash
 # ابدأ خادم الويب
-lgcode web --port 4096
+loongcode web --port 4096
 
 # في محطة طرفية أخرى، اربط TUI
-lgcode attach http://localhost:4096
+loongcode attach http://localhost:4096
 ```
 
 يتيح لك ذلك استخدام واجهة الويب وterminal في الوقت نفسه، مع مشاركة الجلسات والحالة نفسها.
@@ -126,7 +126,7 @@ lgcode attach http://localhost:4096
 
 ## ملف الإعدادات
 
-يمكنك أيضا ضبط إعدادات الخادم داخل ملف الإعدادات `lgcode.json`:
+يمكنك أيضا ضبط إعدادات الخادم داخل ملف الإعدادات `loongcode.json`:
 
 ```json
 {

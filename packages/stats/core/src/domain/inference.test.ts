@@ -28,13 +28,13 @@ describe("inference stat normalization", () => {
     expect(modelAuthor("alpha-gpt-next")).toBeUndefined()
   })
 
-  test("uses provider.model to resolve lgcode route providers", () => {
+  test("uses provider.model to resolve loongcode route providers", () => {
     expect(statModel("big-pickle", "claude-sonnet-4-5")).toBe("claude-sonnet-4-5")
     expect(statModel("big-pickle", "gpt-5-free")).toBe("gpt-5")
     expect(statModel("big-pickle", "")).toBe("unknown")
-    expect(statProvider("big-pickle", "claude-sonnet-4-5", "lgcode")).toBe("anthropic")
-    expect(statProvider("big-pickle", "gpt-5", "lgcode")).toBe("openai")
-    expect(statProvider("big-pickle", "", "lgcode")).toBe("unknown")
+    expect(statProvider("big-pickle", "claude-sonnet-4-5", "loongcode")).toBe("anthropic")
+    expect(statProvider("big-pickle", "gpt-5", "loongcode")).toBe("openai")
+    expect(statProvider("big-pickle", "", "loongcode")).toBe("unknown")
     expect(statProvider("unknown", "", "custom-provider")).toBe("custom-provider")
   })
 
@@ -50,7 +50,7 @@ describe("inference stat normalization", () => {
     ])
 
     expect(
-      toModelAggregate({ ...aggregate("big-pickle", "lgcode"), provider_model: "claude-sonnet-4-5" }),
+      toModelAggregate({ ...aggregate("big-pickle", "loongcode"), provider_model: "claude-sonnet-4-5" }),
     ).toMatchObject([
       {
         provider: "anthropic",
@@ -60,15 +60,15 @@ describe("inference stat normalization", () => {
     ])
   })
 
-  test("provider aggregates never keep lgcode as the provider", () => {
-    expect(toProviderAggregate({ ...aggregate("big-pickle", "lgcode"), provider_model: "gpt-5" })).toMatchObject([
+  test("provider aggregates never keep loongcode as the provider", () => {
+    expect(toProviderAggregate({ ...aggregate("big-pickle", "loongcode"), provider_model: "gpt-5" })).toMatchObject([
       { provider: "openai" },
     ])
-    expect(toProviderAggregate(aggregate("big-pickle", "lgcode"))).toMatchObject([{ provider: "unknown" }])
+    expect(toProviderAggregate(aggregate("big-pickle", "loongcode"))).toMatchObject([{ provider: "unknown" }])
   })
 
-  test("geo aggregates never keep lgcode or big-pickle dimensions", () => {
-    expect(toGeoAggregate({ ...aggregate("big-pickle", "lgcode"), country: "US" })).toMatchObject([
+  test("geo aggregates never keep loongcode or big-pickle dimensions", () => {
+    expect(toGeoAggregate({ ...aggregate("big-pickle", "loongcode"), country: "US" })).toMatchObject([
       { provider: "unknown", model: "unknown", country: "US" },
     ])
   })

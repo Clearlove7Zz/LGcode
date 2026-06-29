@@ -1,11 +1,11 @@
 import { describe, expect } from "bun:test"
 import { Cause, Deferred, Effect, Exit, Layer, Queue } from "effect"
-import { Config } from "@lgcode/core/config"
-import { EventV2 } from "@lgcode/core/event"
-import { Location } from "@lgcode/core/location"
-import { Pty } from "@lgcode/core/pty"
-import type { PtyID } from "@lgcode/core/pty/schema"
-import { AbsolutePath } from "@lgcode/core/schema"
+import { Config } from "@loongcode/core/config"
+import { EventV2 } from "@loongcode/core/event"
+import { Location } from "@loongcode/core/location"
+import { Pty } from "@loongcode/core/pty"
+import type { PtyID } from "@loongcode/core/pty/schema"
+import { AbsolutePath } from "@loongcode/core/schema"
 import { location } from "../fixture/location"
 import { testEffect } from "../lib/effect"
 
@@ -44,7 +44,7 @@ const subscribePtyEvents = Effect.fn("PtySessionTest.subscribePtyEvents")(functi
 const createPty = Effect.fn("PtySessionTest.createPty")(function* (command: string, args: string[] = []) {
   const pty = yield* Pty.Service
   return yield* Effect.acquireRelease(
-    pty.create({ command, args, cwd: "/tmp", env: { TERM: "xterm-256color", LGCODE_TERMINAL: "1" } }),
+    pty.create({ command, args, cwd: "/tmp", env: { TERM: "xterm-256color", LOONGCODE_TERMINAL: "1" } }),
     (info) => pty.remove(info.id).pipe(Effect.ignore),
   )
 })

@@ -3,7 +3,7 @@ import fs from "fs/promises"
 import path from "path"
 import { promisify } from "util"
 import { pathToFileURL } from "url"
-import { Repository } from "@lgcode/core/repository"
+import { Repository } from "@loongcode/core/repository"
 
 const exec = promisify(execFile)
 

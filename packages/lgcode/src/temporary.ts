@@ -1,10 +1,10 @@
 import yargs from "yargs"
 import { TuiThreadCommand } from "./cli/cmd/tui"
-import { InstallationVersion } from "@lgcode/core/installation/version"
+import { InstallationVersion } from "@loongcode/core/installation/version"
 import { hideBin } from "yargs/helpers"
 const cli = yargs(hideBin(process.argv))
   .parserConfiguration({ "populate--": true })
-  .scriptName("lgcode")
+  .scriptName("loongcode")
   .wrap(100)
   .help("help", "show help")
   .alias("help", "h")
@@ -24,8 +24,8 @@ const cli = yargs(hideBin(process.argv))
     type: "boolean",
   })
   .middleware((opts) => {
-    if (opts.printLogs) process.env.LGCODE_PRINT_LOGS = "1"
-    if (opts.logLevel) process.env.LGCODE_LOG_LEVEL = opts.logLevel
+    if (opts.printLogs) process.env.LOONGCODE_PRINT_LOGS = "1"
+    if (opts.logLevel) process.env.LOONGCODE_LOG_LEVEL = opts.logLevel
   })
   .command(TuiThreadCommand)
   .parse()

@@ -1,6 +1,6 @@
 export * as Database from "./database"
 
-import { EffectDrizzleSqlite } from "@lgcode/effect-drizzle-sqlite"
+import { EffectDrizzleSqlite } from "@loongcode/effect-drizzle-sqlite"
 import { layer as sqliteLayer } from "#sqlite"
 import { Context, Effect, Layer } from "effect"
 import { Global } from "../global"
@@ -17,7 +17,7 @@ export interface Interface {
   db: DatabaseShape
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2/storage/Database") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/v2/storage/Database") {}
 
 export const layer = Layer.effect(
   Service,
@@ -41,17 +41,17 @@ export function layerFromPath(filename: string) {
 }
 
 export function path() {
-  if (Flag.LGCODE_DB) {
-    if (Flag.LGCODE_DB === ":memory:" || isAbsolute(Flag.LGCODE_DB)) return Flag.LGCODE_DB
-    return join(Global.Path.data, Flag.LGCODE_DB)
+  if (Flag.LOONGCODE_DB) {
+    if (Flag.LOONGCODE_DB === ":memory:" || isAbsolute(Flag.LOONGCODE_DB)) return Flag.LOONGCODE_DB
+    return join(Global.Path.data, Flag.LOONGCODE_DB)
   }
   if (
     ["latest", "beta", "prod"].includes(InstallationChannel) ||
-    process.env.LGCODE_DISABLE_CHANNEL_DB === "1" ||
-    process.env.LGCODE_DISABLE_CHANNEL_DB === "true"
+    process.env.LOONGCODE_DISABLE_CHANNEL_DB === "1" ||
+    process.env.LOONGCODE_DISABLE_CHANNEL_DB === "true"
   )
-    return join(Global.Path.data, "lgcode.db")
-  return join(Global.Path.data, `lgcode-${InstallationChannel.replace(/[^a-zA-Z0-9._-]/g, "-")}.db`)
+    return join(Global.Path.data, "loongcode.db")
+  return join(Global.Path.data, `loongcode-${InstallationChannel.replace(/[^a-zA-Z0-9._-]/g, "-")}.db`)
 }
 
 export const defaultLayer = Layer.unwrap(

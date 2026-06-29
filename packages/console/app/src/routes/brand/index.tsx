@@ -5,31 +5,31 @@ import { Footer } from "~/component/footer"
 import { Legal } from "~/component/legal"
 import { useI18n } from "~/context/i18n"
 import { LocaleLinks } from "~/component/locale-links"
-import previewLogoLight from "../../asset/brand/preview-lgcode-logo-light.png"
-import previewLogoDark from "../../asset/brand/preview-lgcode-logo-dark.png"
-import previewLogoLightSquare from "../../asset/brand/preview-lgcode-logo-light-square.png"
-import previewLogoDarkSquare from "../../asset/brand/preview-lgcode-logo-dark-square.png"
-import previewWordmarkLight from "../../asset/brand/preview-lgcode-wordmark-light.png"
-import previewWordmarkDark from "../../asset/brand/preview-lgcode-wordmark-dark.png"
-import previewWordmarkSimpleLight from "../../asset/brand/preview-lgcode-wordmark-simple-light.png"
-import previewWordmarkSimpleDark from "../../asset/brand/preview-lgcode-wordmark-simple-dark.png"
-import logoLightPng from "../../asset/brand/lgcode-logo-light.png"
-import logoDarkPng from "../../asset/brand/lgcode-logo-dark.png"
-import logoLightSquarePng from "../../asset/brand/lgcode-logo-light-square.png"
-import logoDarkSquarePng from "../../asset/brand/lgcode-logo-dark-square.png"
-import wordmarkLightPng from "../../asset/brand/lgcode-wordmark-light.png"
-import wordmarkDarkPng from "../../asset/brand/lgcode-wordmark-dark.png"
-import wordmarkSimpleLightPng from "../../asset/brand/lgcode-wordmark-simple-light.png"
-import wordmarkSimpleDarkPng from "../../asset/brand/lgcode-wordmark-simple-dark.png"
-import logoLightSvg from "../../asset/brand/lgcode-logo-light.svg"
-import logoDarkSvg from "../../asset/brand/lgcode-logo-dark.svg"
-import logoLightSquareSvg from "../../asset/brand/lgcode-logo-light-square.svg"
-import logoDarkSquareSvg from "../../asset/brand/lgcode-logo-dark-square.svg"
-import wordmarkLightSvg from "../../asset/brand/lgcode-wordmark-light.svg"
-import wordmarkDarkSvg from "../../asset/brand/lgcode-wordmark-dark.svg"
-import wordmarkSimpleLightSvg from "../../asset/brand/lgcode-wordmark-simple-light.svg"
-import wordmarkSimpleDarkSvg from "../../asset/brand/lgcode-wordmark-simple-dark.svg"
-const brandAssets = "/lgcode-brand-assets.zip"
+import previewLogoLight from "../../asset/brand/preview-loongcode-logo-light.png"
+import previewLogoDark from "../../asset/brand/preview-loongcode-logo-dark.png"
+import previewLogoLightSquare from "../../asset/brand/preview-loongcode-logo-light-square.png"
+import previewLogoDarkSquare from "../../asset/brand/preview-loongcode-logo-dark-square.png"
+import previewWordmarkLight from "../../asset/brand/preview-loongcode-wordmark-light.png"
+import previewWordmarkDark from "../../asset/brand/preview-loongcode-wordmark-dark.png"
+import previewWordmarkSimpleLight from "../../asset/brand/preview-loongcode-wordmark-simple-light.png"
+import previewWordmarkSimpleDark from "../../asset/brand/preview-loongcode-wordmark-simple-dark.png"
+import logoLightPng from "../../asset/brand/loongcode-logo-light.png"
+import logoDarkPng from "../../asset/brand/loongcode-logo-dark.png"
+import logoLightSquarePng from "../../asset/brand/loongcode-logo-light-square.png"
+import logoDarkSquarePng from "../../asset/brand/loongcode-logo-dark-square.png"
+import wordmarkLightPng from "../../asset/brand/loongcode-wordmark-light.png"
+import wordmarkDarkPng from "../../asset/brand/loongcode-wordmark-dark.png"
+import wordmarkSimpleLightPng from "../../asset/brand/loongcode-wordmark-simple-light.png"
+import wordmarkSimpleDarkPng from "../../asset/brand/loongcode-wordmark-simple-dark.png"
+import logoLightSvg from "../../asset/brand/loongcode-logo-light.svg"
+import logoDarkSvg from "../../asset/brand/loongcode-logo-dark.svg"
+import logoLightSquareSvg from "../../asset/brand/loongcode-logo-light-square.svg"
+import logoDarkSquareSvg from "../../asset/brand/loongcode-logo-dark-square.svg"
+import wordmarkLightSvg from "../../asset/brand/loongcode-wordmark-light.svg"
+import wordmarkDarkSvg from "../../asset/brand/loongcode-wordmark-dark.svg"
+import wordmarkSimpleLightSvg from "../../asset/brand/loongcode-wordmark-simple-light.svg"
+import wordmarkSimpleDarkSvg from "../../asset/brand/loongcode-wordmark-simple-dark.svg"
+const brandAssets = "/loongcode-brand-assets.zip"
 
 export default function Brand() {
   const i18n = useI18n()
@@ -74,7 +74,7 @@ export default function Brand() {
             <p>{i18n.t("brand.subtitle")}</p>
             <button
               data-component="download-button"
-              onClick={() => downloadFile(brandAssets, "lgcode-brand-assets.zip")}
+              onClick={() => downloadFile(brandAssets, "loongcode-brand-assets.zip")}
             >
               {i18n.t("brand.downloadAll")}
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -91,7 +91,7 @@ export default function Brand() {
               <div>
                 <img src={previewLogoLight} alt={alt} />
                 <div data-component="actions">
-                  <button onClick={() => downloadFile(logoLightPng, "lgcode-logo-light.png")}>
+                  <button onClick={() => downloadFile(logoLightPng, "loongcode-logo-light.png")}>
                     PNG
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -102,7 +102,7 @@ export default function Brand() {
                       />
                     </svg>
                   </button>
-                  <button onClick={() => downloadFile(logoLightSvg, "lgcode-logo-light.svg")}>
+                  <button onClick={() => downloadFile(logoLightSvg, "loongcode-logo-light.svg")}>
                     SVG
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -118,7 +118,7 @@ export default function Brand() {
               <div>
                 <img src={previewLogoDark} alt={alt} />
                 <div data-component="actions">
-                  <button onClick={() => downloadFile(logoDarkPng, "lgcode-logo-dark.png")}>
+                  <button onClick={() => downloadFile(logoDarkPng, "loongcode-logo-dark.png")}>
                     PNG
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -129,7 +129,7 @@ export default function Brand() {
                       />
                     </svg>
                   </button>
-                  <button onClick={() => downloadFile(logoDarkSvg, "lgcode-logo-dark.svg")}>
+                  <button onClick={() => downloadFile(logoDarkSvg, "loongcode-logo-dark.svg")}>
                     SVG
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -145,7 +145,7 @@ export default function Brand() {
               <div>
                 <img src={previewLogoLightSquare} alt={alt} />
                 <div data-component="actions">
-                  <button onClick={() => downloadFile(logoLightSquarePng, "lgcode-logo-light-square.png")}>
+                  <button onClick={() => downloadFile(logoLightSquarePng, "loongcode-logo-light-square.png")}>
                     PNG
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -156,7 +156,7 @@ export default function Brand() {
                       />
                     </svg>
                   </button>
-                  <button onClick={() => downloadFile(logoLightSquareSvg, "lgcode-logo-light-square.svg")}>
+                  <button onClick={() => downloadFile(logoLightSquareSvg, "loongcode-logo-light-square.svg")}>
                     SVG
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -172,7 +172,7 @@ export default function Brand() {
               <div>
                 <img src={previewLogoDarkSquare} alt={alt} />
                 <div data-component="actions">
-                  <button onClick={() => downloadFile(logoDarkSquarePng, "lgcode-logo-dark-square.png")}>
+                  <button onClick={() => downloadFile(logoDarkSquarePng, "loongcode-logo-dark-square.png")}>
                     PNG
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -183,7 +183,7 @@ export default function Brand() {
                       />
                     </svg>
                   </button>
-                  <button onClick={() => downloadFile(logoDarkSquareSvg, "lgcode-logo-dark-square.svg")}>
+                  <button onClick={() => downloadFile(logoDarkSquareSvg, "loongcode-logo-dark-square.svg")}>
                     SVG
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -199,7 +199,7 @@ export default function Brand() {
               <div>
                 <img src={previewWordmarkLight} alt={alt} />
                 <div data-component="actions">
-                  <button onClick={() => downloadFile(wordmarkLightPng, "lgcode-wordmark-light.png")}>
+                  <button onClick={() => downloadFile(wordmarkLightPng, "loongcode-wordmark-light.png")}>
                     PNG
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -210,7 +210,7 @@ export default function Brand() {
                       />
                     </svg>
                   </button>
-                  <button onClick={() => downloadFile(wordmarkLightSvg, "lgcode-wordmark-light.svg")}>
+                  <button onClick={() => downloadFile(wordmarkLightSvg, "loongcode-wordmark-light.svg")}>
                     SVG
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -226,7 +226,7 @@ export default function Brand() {
               <div>
                 <img src={previewWordmarkDark} alt={alt} />
                 <div data-component="actions">
-                  <button onClick={() => downloadFile(wordmarkDarkPng, "lgcode-wordmark-dark.png")}>
+                  <button onClick={() => downloadFile(wordmarkDarkPng, "loongcode-wordmark-dark.png")}>
                     PNG
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -237,7 +237,7 @@ export default function Brand() {
                       />
                     </svg>
                   </button>
-                  <button onClick={() => downloadFile(wordmarkDarkSvg, "lgcode-wordmark-dark.svg")}>
+                  <button onClick={() => downloadFile(wordmarkDarkSvg, "loongcode-wordmark-dark.svg")}>
                     SVG
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -253,7 +253,7 @@ export default function Brand() {
               <div>
                 <img src={previewWordmarkSimpleLight} alt={alt} />
                 <div data-component="actions">
-                  <button onClick={() => downloadFile(wordmarkSimpleLightPng, "lgcode-wordmark-simple-light.png")}>
+                  <button onClick={() => downloadFile(wordmarkSimpleLightPng, "loongcode-wordmark-simple-light.png")}>
                     PNG
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -264,7 +264,7 @@ export default function Brand() {
                       />
                     </svg>
                   </button>
-                  <button onClick={() => downloadFile(wordmarkSimpleLightSvg, "lgcode-wordmark-simple-light.svg")}>
+                  <button onClick={() => downloadFile(wordmarkSimpleLightSvg, "loongcode-wordmark-simple-light.svg")}>
                     SVG
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -280,7 +280,7 @@ export default function Brand() {
               <div>
                 <img src={previewWordmarkSimpleDark} alt={alt} />
                 <div data-component="actions">
-                  <button onClick={() => downloadFile(wordmarkSimpleDarkPng, "lgcode-wordmark-simple-dark.png")}>
+                  <button onClick={() => downloadFile(wordmarkSimpleDarkPng, "loongcode-wordmark-simple-dark.png")}>
                     PNG
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -291,7 +291,7 @@ export default function Brand() {
                       />
                     </svg>
                   </button>
-                  <button onClick={() => downloadFile(wordmarkSimpleDarkSvg, "lgcode-wordmark-simple-dark.svg")}>
+                  <button onClick={() => downloadFile(wordmarkSimpleDarkSvg, "loongcode-wordmark-simple-dark.svg")}>
                     SVG
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path

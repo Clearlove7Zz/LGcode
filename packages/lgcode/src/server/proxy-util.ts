@@ -14,8 +14,8 @@ const hop = new Set([
 function sanitize(out: Headers) {
   for (const key of hop) out.delete(key)
   out.delete("accept-encoding")
-  out.delete("x-lgcode-directory")
-  out.delete("x-lgcode-workspace")
+  out.delete("x-loongcode-directory")
+  out.delete("x-loongcode-workspace")
 }
 
 export function headers(input: Request | HeadersInit | Record<string, string>, extra?: HeadersInit) {

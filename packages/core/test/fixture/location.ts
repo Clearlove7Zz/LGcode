@@ -1,6 +1,6 @@
-import { Location } from "@lgcode/core/location"
-import { Project } from "@lgcode/core/project"
-import { AbsolutePath } from "@lgcode/core/schema"
+import { Location } from "@loongcode/core/location"
+import { Project } from "@loongcode/core/project"
+import { AbsolutePath } from "@loongcode/core/schema"
 
 export function location(ref: Location.Ref, input: { projectDirectory?: AbsolutePath; vcs?: Project.Vcs } = {}) {
   return {

@@ -1,6 +1,6 @@
-import type { Hooks, PluginInput } from "@lgcode/plugin"
+import type { Hooks, PluginInput } from "@loongcode/plugin"
 import { OAUTH_DUMMY_KEY } from "../auth"
-import { InstallationVersion } from "@lgcode/core/installation/version"
+import { InstallationVersion } from "@loongcode/core/installation/version"
 import { createServer } from "http"
 import open from "open"
 
@@ -79,7 +79,7 @@ function authHeaders() {
   return {
     "Content-Type": "application/x-www-form-urlencoded",
     Accept: "application/json",
-    "User-Agent": `lgcode/${InstallationVersion}`,
+    "User-Agent": `loongcode/${InstallationVersion}`,
   }
 }
 
@@ -158,11 +158,11 @@ async function refreshAccessToken(account: string, refreshToken: string) {
 
 const HTML_SUCCESS = `<!doctype html>
 <html>
-  <head><title>LGcode - Snowflake Authorization Successful</title></head>
+  <head><title>Loongcode - Snowflake Authorization Successful</title></head>
   <body style="font-family: system-ui; display:flex; align-items:center; justify-content:center; height:100vh; margin:0; background:#111; color:#eee;">
     <div style="text-align:center; max-width:36rem; padding:2rem;">
       <h1 style="color:#7ee787;">Authorization Successful</h1>
-      <p>You can close this window and return to LGcode.</p>
+      <p>You can close this window and return to Loongcode.</p>
     </div>
     <script>setTimeout(() => window.close(), 1500)</script>
   </body>
@@ -170,7 +170,7 @@ const HTML_SUCCESS = `<!doctype html>
 
 const htmlError = (message: string) => `<!doctype html>
 <html>
-  <head><title>LGcode - Snowflake Authorization Failed</title></head>
+  <head><title>Loongcode - Snowflake Authorization Failed</title></head>
   <body style="font-family: system-ui; display:flex; align-items:center; justify-content:center; height:100vh; margin:0; background:#111; color:#eee;">
     <div style="text-align:center; max-width:48rem; padding:2rem;">
       <h1 style="color:#ff7b72;">Authorization Failed</h1>
@@ -402,7 +402,7 @@ export async function SnowflakeCortexAuthPlugin(_input: PluginInput): Promise<Ho
                 }
               }
               headers.set("authorization", `Bearer ${currentOauth.access}`)
-              headers.set("User-Agent", `lgcode/${InstallationVersion}`)
+              headers.set("User-Agent", `loongcode/${InstallationVersion}`)
 
               let body = init?.body
               if (body && typeof body === "string") {
@@ -497,7 +497,7 @@ export async function SnowflakeCortexAuthPlugin(_input: PluginInput): Promise<Ho
             return {
               url,
               instructions:
-                "Complete Snowflake sign-in in your browser. LGcode will capture the OAuth callback and store the bearer token automatically.",
+                "Complete Snowflake sign-in in your browser. Loongcode will capture the OAuth callback and store the bearer token automatically.",
               method: "auto" as const,
               async callback() {
                 try {

@@ -1,16 +1,16 @@
-# lgcode VS Code Extension
+# loongcode VS Code Extension
 
-A Visual Studio Code extension that integrates [lgcode](https://modelhub.lgdg.cc) directly into your development workflow.
+A Visual Studio Code extension that integrates [loongcode](https://modelhub.lgdg.cc) directly into your development workflow.
 
 ## Prerequisites
 
-This extension requires the [lgcode CLI](https://modelhub.lgdg.cc) to be installed on your system. Visit [modelhub.lgdg.cc](https://modelhub.lgdg.cc) for installation instructions.
+This extension requires the [loongcode CLI](https://modelhub.lgdg.cc) to be installed on your system. Visit [modelhub.lgdg.cc](https://modelhub.lgdg.cc) for installation instructions.
 
 ## Features
 
-- **Quick Launch**: Use `Cmd+Esc` (Mac) or `Ctrl+Esc` (Windows/Linux) to open lgcode in a split terminal view, or focus an existing terminal session if one is already running.
-- **New Session**: Use `Cmd+Shift+Esc` (Mac) or `Ctrl+Shift+Esc` (Windows/Linux) to start a new lgcode terminal session, even if one is already open. You can also click the lgcode button in the UI.
-- **Context Awareness**: Automatically share your current selection or tab with lgcode.
+- **Quick Launch**: Use `Cmd+Esc` (Mac) or `Ctrl+Esc` (Windows/Linux) to open loongcode in a split terminal view, or focus an existing terminal session if one is already running.
+- **New Session**: Use `Cmd+Shift+Esc` (Mac) or `Ctrl+Shift+Esc` (Windows/Linux) to start a new loongcode terminal session, even if one is already open. You can also click the loongcode button in the UI.
+- **Context Awareness**: Automatically share your current selection or tab with loongcode.
 - **File Reference Shortcuts**: Use `Cmd+Option+K` (Mac) or `Alt+Ctrl+K` (Linux/Windows) to insert file references. For example, `@File#L37-42`.
 
 ## Support

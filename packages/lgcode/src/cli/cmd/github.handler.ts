@@ -17,7 +17,7 @@ import type {
   PullRequestEvent,
 } from "@octokit/webhooks-types"
 import { UI } from "../ui"
-import { ModelsDev } from "@lgcode/core/models-dev"
+import { ModelsDev } from "@loongcode/core/models-dev"
 import { InstanceRef } from "@/effect/instance-ref"
 import { SessionShare } from "@/share/session"
 import { Session } from "@/session/session"
@@ -26,7 +26,7 @@ import { MessageID, PartID } from "../../session/schema"
 import { Provider } from "@/provider/provider"
 import { MessageV2 } from "../../session/message-v2"
 import { EventV2Bridge } from "@/event-v2-bridge"
-import { EventV2 } from "@lgcode/core/event"
+import { EventV2 } from "@loongcode/core/event"
 import { SessionPrompt } from "@/session/prompt"
 import { Git } from "@/git"
 import { setTimeout as sleep } from "node:timers/promises"
@@ -138,9 +138,9 @@ type IssueQueryResponse = {
   }
 }
 
-const AGENT_USERNAME = "lgcode-agent[bot]"
+const AGENT_USERNAME = "loongcode-agent[bot]"
 const AGENT_REACTION = "eyes"
-const WORKFLOW_FILE = ".github/workflows/lgcode.yml"
+const WORKFLOW_FILE = ".github/workflows/loongcode.yml"
 
 // Event categories for routing
 // USER_EVENTS: triggered by user actions, have actor/issueId, support reactions/comments
@@ -226,7 +226,7 @@ export const githubInstall = Effect.fn("Cli.github.install")(function* () {
 
       async function promptProvider() {
         const priority: Record<string, number> = {
-          lgcode: 0,
+          loongcode: 0,
           anthropic: 1,
           openai: 2,
           google: 3,
@@ -284,7 +284,7 @@ export const githubInstall = Effect.fn("Cli.github.install")(function* () {
         if (installation) return s.stop("GitHub app already installed")
 
         // Open browser
-        const url = "https://github.com/apps/lgcode-agent"
+        const url = "https://github.com/apps/loongcode-agent"
         const command =
           process.platform === "darwin"
             ? `open "${url}"`
@@ -334,7 +334,7 @@ export const githubInstall = Effect.fn("Cli.github.install")(function* () {
 
         await Filesystem.write(
           path.join(app.root, WORKFLOW_FILE),
-          `name: lgcode
+          `name: loongcode
 
 on:
   issue_comment:
@@ -343,12 +343,12 @@ on:
     types: [created]
 
 jobs:
-  lgcode:
+  loongcode:
     if: |
       contains(github.event.comment.body, ' /oc') ||
       startsWith(github.event.comment.body, '/oc') ||
-      contains(github.event.comment.body, ' /lgcode') ||
-      startsWith(github.event.comment.body, '/lgcode')
+      contains(github.event.comment.body, ' /loongcode') ||
+      startsWith(github.event.comment.body, '/loongcode')
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -361,7 +361,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Run lgcode
+      - name: Run loongcode
         uses: Clearlove7Zz/LGcode/github@latest${envStr}
         with:
           model: ${provider}/${model}`,
@@ -494,7 +494,7 @@ export const githubRun = Effect.fn("Cli.github.run")(function* (args: { event?: 
         await addReaction(commentType)
       }
 
-      // Setup lgcode session
+      // Setup loongcode session
       const repoData = await fetchRepo()
       session = await runLocalEffect(
         sessionSvc.create({
@@ -514,7 +514,7 @@ export const githubRun = Effect.fn("Cli.github.run")(function* (args: { event?: 
         await runLocalEffect(sessionShare.share(session.id))
         return session.id.slice(-8)
       })()
-      console.log("lgcode session", session.id)
+      console.log("loongcode session", session.id)
 
       // Handle event types:
       // REPO_EVENTS (schedule, workflow_dispatch): no issue/PR context, output to logs/PR only
@@ -736,7 +736,7 @@ export const githubRun = Effect.fn("Cli.github.run")(function* (args: { event?: 
       }
 
       const reviewContext = getReviewCommentContext()
-      const mentions = (process.env["MENTIONS"] || "/lgcode,/oc")
+      const mentions = (process.env["MENTIONS"] || "/loongcode,/oc")
         .split(",")
         .map((m) => m.trim().toLowerCase())
         .filter(Boolean)
@@ -887,7 +887,7 @@ export const githubRun = Effect.fn("Cli.github.run")(function* (args: { event?: 
     }
 
     async function chat(message: string, files: PromptFiles = []) {
-      console.log("Sending message to lgcode...")
+      console.log("Sending message to loongcode...")
 
       return runLocalEffect(
         Effect.gen(function* () {
@@ -975,7 +975,7 @@ export const githubRun = Effect.fn("Cli.github.run")(function* (args: { event?: 
 
     async function getOidcToken() {
       try {
-        return await core.getIDToken("lgcode-github-action")
+        return await core.getIDToken("loongcode-github-action")
       } catch (error) {
         console.error("Failed to get OIDC token:", error instanceof Error ? error.message : error)
         throw new Error(
@@ -1076,9 +1076,9 @@ export const githubRun = Effect.fn("Cli.github.run")(function* (args: { event?: 
         .join("")
       if (type === "schedule" || type === "dispatch") {
         const hex = crypto.randomUUID().slice(0, 6)
-        return `lgcode/${type}-${hex}-${timestamp}`
+        return `loongcode/${type}-${hex}-${timestamp}`
       }
-      return `lgcode/${type}${issueId}-${timestamp}`
+      return `loongcode/${type}${issueId}-${timestamp}`
     }
 
     async function pushToNewBranch(summary: string, branch: string, commit: boolean, isSchedule: boolean) {
@@ -1350,9 +1350,9 @@ export const githubRun = Effect.fn("Cli.github.run")(function* (args: { event?: 
         const titleAlt = encodeURIComponent(session.title.substring(0, 50))
         const title64 = Buffer.from(session.title.substring(0, 700), "utf8").toString("base64")
 
-        return `<a href="${shareBaseUrl}/s/${shareId}"><img width="200" alt="${titleAlt}" src="https://social-cards.sst.dev/lgcode-share/${title64}.png?model=${providerID}/${modelID}&version=${session.version}&id=${shareId}" /></a>\n`
+        return `<a href="${shareBaseUrl}/s/${shareId}"><img width="200" alt="${titleAlt}" src="https://social-cards.sst.dev/loongcode-share/${title64}.png?model=${providerID}/${modelID}&version=${session.version}&id=${shareId}" /></a>\n`
       })()
-      const shareUrl = shareId ? `[lgcode session](${shareBaseUrl}/s/${shareId})&nbsp;&nbsp;|&nbsp;&nbsp;` : ""
+      const shareUrl = shareId ? `[loongcode session](${shareBaseUrl}/s/${shareId})&nbsp;&nbsp;|&nbsp;&nbsp;` : ""
       return `\n\n${image}${shareUrl}[github run](${runUrl})`
     }
 
@@ -1413,7 +1413,7 @@ query($owner: String!, $repo: String!, $number: Int!) {
       return [
         "<github_action_context>",
         "You are running as a GitHub Action. Important:",
-        "- Git push and PR creation are handled AUTOMATICALLY by the lgcode infrastructure after your response",
+        "- Git push and PR creation are handled AUTOMATICALLY by the loongcode infrastructure after your response",
         "- Do NOT include warnings or disclaimers about GitHub tokens, workflow permissions, or PR creation capabilities",
         "- Do NOT suggest manual steps for creating PRs or pushing code - this happens automatically",
         "- Focus only on the code changes and your analysis/response",
@@ -1551,7 +1551,7 @@ query($owner: String!, $repo: String!, $number: Int!) {
       return [
         "<github_action_context>",
         "You are running as a GitHub Action. Important:",
-        "- Git push and PR creation are handled AUTOMATICALLY by the lgcode infrastructure after your response",
+        "- Git push and PR creation are handled AUTOMATICALLY by the loongcode infrastructure after your response",
         "- Do NOT include warnings or disclaimers about GitHub tokens, workflow permissions, or PR creation capabilities",
         "- Do NOT suggest manual steps for creating PRs or pushing code - this happens automatically",
         "- Focus only on the code changes and your analysis/response",

@@ -1,4 +1,4 @@
-import { createLgcodeClient, createOpencodeServer } from "@lgcode/sdk"
+import { createLgcodeClient, createOpencodeServer } from "@loongcode/sdk"
 import { pathToFileURL } from "bun"
 
 const server = await createOpencodeServer()

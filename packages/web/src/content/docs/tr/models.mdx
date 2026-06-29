@@ -3,13 +3,13 @@ title: Modeller
 description: LLM sağlayıcılarını ve model seçimlerini yapılandırın.
 ---
 
-lgcode, **75+ LLM sağlayıcısını** desteklemek için [AI SDK](https://ai-sdk.dev/) ve [Models.dev](https://models.dev) kullanır ve yerel modellerin çalıştırılmasını destekler.
+loongcode, **75+ LLM sağlayıcısını** desteklemek için [AI SDK](https://ai-sdk.dev/) ve [Models.dev](https://models.dev) kullanır ve yerel modellerin çalıştırılmasını destekler.
 
 ---
 
 ## Sağlayıcılar
 
-Çoğu popüler sağlayıcı varsayılan olarak önceden yüklenmiştir. Bir sağlayıcının kimlik bilgilerini `/connect` komutu aracılığıyla eklediyseniz, bunlar lgcode'u başlattığınızda kullanılabilir olacaktır.
+Çoğu popüler sağlayıcı varsayılan olarak önceden yüklenmiştir. Bir sağlayıcının kimlik bilgilerini `/connect` komutu aracılığıyla eklediyseniz, bunlar loongcode'u başlattığınızda kullanılabilir olacaktır.
 
 [Sağlayıcılar](/docs/providers) hakkında daha fazla bilgi edinin.
 
@@ -35,7 +35,7 @@ Piyasada pek çok model var ve her hafta yeni modeller çıkıyor.
 
 Ancak, hem kod oluşturmada hem de araç çağırmada iyi olan yalnızca birkaçı var.
 
-Burada, lgcode ile belirli bir sıraya göre iyi çalışan birkaç model yer almaktadır. (Bu kapsamlı bir liste değildir ve mutlaka güncel olması da gerekmez):
+Burada, loongcode ile belirli bir sıraya göre iyi çalışan birkaç model yer almaktadır. (Bu kapsamlı bir liste değildir ve mutlaka güncel olması da gerekmez):
 
 - GPT 5.2
 - GPT 5.1 Codex
@@ -49,16 +49,16 @@ Burada, lgcode ile belirli bir sıraya göre iyi çalışan birkaç model yer al
 ## Varsayılan ayarlama
 
 Bunlardan birini varsayılan model olarak ayarlamak için `model` anahtarınızı telefonunuzudan ayarlayabilirsiniz.
-lgcode yapılandırması
+loongcode yapılandırması
 
-```json title="lgcode.json" {3}
+```json title="loongcode.json" {3}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "model": "lmstudio/google/gemma-3n-e4b"
 }
 ```
 
-Burada tam kimlik `provider_id/model_id`'dir. Örneğin, [LGcode Zen](/docs/zen) kullanıyorsanız, GPT 5.1 Codex için `lgcode/gpt-5.1-codex` kullanırsınız.
+Burada tam kimlik `provider_id/model_id`'dir. Örneğin, [Loongcode Zen](/docs/zen) kullanıyorsanız, GPT 5.1 Codex için `loongcode/gpt-5.1-codex` kullanırsınız.
 
 Bir [custom provider](/docs/providers#custom) yapılandırılmışsa, `provider_id`, performansınızın `provider` bölümünden gelen anahtardır ve `model_id`, `provider.models`'den gelen anahtardır.
 
@@ -68,7 +68,7 @@ Bir [custom provider](/docs/providers#custom) yapılandırılmışsa, `provider_
 
 Bir modelin seçeneklerini genel olarak yapılandırma aracılığıyla yapılandırabilirsiniz.
 
-```jsonc title="lgcode.jsonc" {7-12,19-24}
+```jsonc title="loongcode.jsonc" {7-12,19-24}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -107,11 +107,11 @@ Bu seçenekleri kullandığınız tüm aracılar için de yapılandırabilirsini
 
 Ayrıca yerleşik çeşitleri genişleten özel varyantlar da tanımlayabilirsiniz. Varyantlar, yinelenen girişler oluşturmadan aynı model için farklı ayarları yapılandırmanıza olanak tanır:
 
-```jsonc title="lgcode.jsonc" {6-21}
+```jsonc title="loongcode.jsonc" {6-21}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
-    "lgcode": {
+    "loongcode": {
       "models": {
         "gpt-5": {
           "variants": {
@@ -137,11 +137,11 @@ Ayrıca yerleşik çeşitleri genişleten özel varyantlar da tanımlayabilirsin
 
 ## Varyantlar
 
-Birçok model, farklı konfigürasyonlara sahip birden fazla kapasiteye sahip. lgcode, popüler sağlayıcılar için sunulan değişkenlerle birlikte gelir.
+Birçok model, farklı konfigürasyonlara sahip birden fazla kapasiteye sahip. loongcode, popüler sağlayıcılar için sunulan değişkenlerle birlikte gelir.
 
 ### Yerleşik çeşitler
 
-lgcode birçok sağlayıcı için varsayılan değişkenlerle birlikte gelir:
+loongcode birçok sağlayıcı için varsayılan değişkenlerle birlikte gelir:
 
 **Antropik**:
 
@@ -172,7 +172,7 @@ Bu liste kapsamlı değildir. Diğer birçok sağlayıcının da yerleşik varsa
 
 Mevcut varyantları geçersiz kılabilir veya kendinizinkini ekleyebilirsiniz:
 
-```jsonc title="lgcode.jsonc" {7-18}
+```jsonc title="loongcode.jsonc" {7-18}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -203,13 +203,13 @@ Mevcut varyantları geçersiz kılabilir veya kendinizinkini ekleyebilirsiniz:
 
 ## Modelleri yükleme
 
-lgcode başlatıldığında modelleri aşağıdaki öncelik sırasına göre kontrol eder:
+loongcode başlatıldığında modelleri aşağıdaki öncelik sırasına göre kontrol eder:
 
 1. `--model` veya `-m` komut satırı bayrağı. Biçim, yapılandırma dosyasındakiyle aynıdır: `provider_id/model_id`.
 
-2. lgcode yapılandırmasındaki model listesi.
+2. loongcode yapılandırmasındaki model listesi.
 
-   ```json title="lgcode.json"
+   ```json title="loongcode.json"
    {
      "$schema": "https://modelhub.lgdg.cc/config.json",
      "model": "anthropic/claude-sonnet-4-20250514"

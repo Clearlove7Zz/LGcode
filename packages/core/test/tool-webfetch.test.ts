@@ -2,10 +2,10 @@ import { describe, expect, test } from "bun:test"
 import { Duration, Effect, Fiber, Layer, Schema } from "effect"
 import * as TestClock from "effect/testing/TestClock"
 import { FetchHttpClient, HttpClient, HttpClientRequest, HttpClientResponse } from "effect/unstable/http"
-import { PermissionV2 } from "@lgcode/core/permission"
-import { SessionV2 } from "@lgcode/core/session"
-import { ToolRegistry } from "@lgcode/core/tool/registry"
-import { WebFetchTool } from "@lgcode/core/tool/webfetch"
+import { PermissionV2 } from "@loongcode/core/permission"
+import { SessionV2 } from "@loongcode/core/session"
+import { ToolRegistry } from "@loongcode/core/tool/registry"
+import { WebFetchTool } from "@loongcode/core/tool/webfetch"
 import { testEffect } from "./lib/effect"
 import { toolIdentity, executeTool, settleTool, toolDefinitions } from "./lib/tool"
 
@@ -238,7 +238,7 @@ describe("WebFetchTool registration", () => {
       })
       expect(requests).toHaveLength(2)
       expect(requests[0]?.headers["user-agent"]).toContain("Mozilla/5.0")
-      expect(requests[1]?.headers["user-agent"]).toBe("lgcode")
+      expect(requests[1]?.headers["user-agent"]).toBe("loongcode")
     }),
   )
 

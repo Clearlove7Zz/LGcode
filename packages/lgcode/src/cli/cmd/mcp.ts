@@ -1,5 +1,5 @@
 import { cmd } from "./cmd"
-import { ConfigV1 } from "@lgcode/core/v1/config/config"
+import { ConfigV1 } from "@loongcode/core/v1/config/config"
 import { effectCmd } from "../effect-cmd"
 import { Cause } from "effect"
 import { Client } from "@modelcontextprotocol/sdk/client/index.js"
@@ -12,15 +12,15 @@ import { MCP } from "../../mcp"
 import { McpAuth } from "../../mcp/auth"
 import { McpOAuthProvider } from "../../mcp/oauth-provider"
 import { Config } from "@/config/config"
-import { ConfigMCPV1 } from "@lgcode/core/v1/config/mcp"
+import { ConfigMCPV1 } from "@loongcode/core/v1/config/mcp"
 import { InstanceRef } from "@/effect/instance-ref"
-import { InstallationVersion } from "@lgcode/core/installation/version"
+import { InstallationVersion } from "@loongcode/core/installation/version"
 import path from "path"
-import { Global } from "@lgcode/core/global"
+import { Global } from "@loongcode/core/global"
 import { modify, applyEdits } from "jsonc-parser"
 import { Filesystem } from "@/util/filesystem"
 import { EventV2Bridge } from "@/event-v2-bridge"
-import { EventV2 } from "@lgcode/core/event"
+import { EventV2 } from "@loongcode/core/event"
 import { Effect } from "effect"
 
 function getAuthStatusIcon(status: MCP.AuthStatus): string {
@@ -121,7 +121,7 @@ export const McpListCommand = effectCmd({
 
     if (servers.length === 0) {
       prompts.log.warn("No MCP servers configured")
-      prompts.outro("Add servers with: lgcode mcp add")
+      prompts.outro("Add servers with: loongcode mcp add")
       return
     }
 
@@ -189,7 +189,7 @@ export const McpAuthCommand = effectCmd({
 
     if (servers.length === 0) {
       prompts.log.warn("No OAuth-capable MCP servers configured")
-      prompts.log.info("Remote MCP servers support OAuth by default. Add a remote server in lgcode.json:")
+      prompts.log.info("Remote MCP servers support OAuth by default. Add a remote server in loongcode.json:")
       prompts.log.info(`
   "mcp": {
     "my-server": {
@@ -403,11 +403,11 @@ export const McpLogoutCommand = effectCmd({
 })
 
 async function resolveConfigPath(baseDir: string, global = false) {
-  // Check for existing config files (prefer .jsonc over .json, check .lgcode/ subdirectory too)
-  const candidates = [path.join(baseDir, "lgcode.json"), path.join(baseDir, "lgcode.jsonc")]
+  // Check for existing config files (prefer .jsonc over .json, check .loongcode/ subdirectory too)
+  const candidates = [path.join(baseDir, "loongcode.json"), path.join(baseDir, "loongcode.jsonc")]
 
   if (!global) {
-    candidates.push(path.join(baseDir, ".lgcode", "lgcode.json"), path.join(baseDir, ".lgcode", "lgcode.jsonc"))
+    candidates.push(path.join(baseDir, ".loongcode", "loongcode.json"), path.join(baseDir, ".loongcode", "loongcode.jsonc"))
   }
 
   for (const candidate of candidates) {
@@ -416,7 +416,7 @@ async function resolveConfigPath(baseDir: string, global = false) {
     }
   }
 
-  // Default to lgcode.json if none exist
+  // Default to loongcode.json if none exist
   return candidates[0]
 }
 
@@ -570,7 +570,7 @@ export const McpAddCommand = effectCmd({
       if (type === "local") {
         const command = await prompts.text({
           message: "Enter command to run",
-          placeholder: "e.g., lgcode x @modelcontextprotocol/server-filesystem",
+          placeholder: "e.g., loongcode x @modelcontextprotocol/server-filesystem",
           validate: (x) => (x && x.length > 0 ? undefined : "Required"),
         })
         if (prompts.isCancel(command)) throw new UI.CancelledError()
@@ -755,7 +755,7 @@ export const McpDebugCommand = effectCmd({
             params: {
               protocolVersion: LATEST_PROTOCOL_VERSION,
               capabilities: {},
-              clientInfo: { name: "lgcode-debug", version: InstallationVersion },
+              clientInfo: { name: "loongcode-debug", version: InstallationVersion },
             },
             id: 1,
           }),
@@ -799,7 +799,7 @@ export const McpDebugCommand = effectCmd({
 
           try {
             const client = new Client({
-              name: "lgcode-debug",
+              name: "loongcode-debug",
               version: InstallationVersion,
             })
             await client.connect(transport)

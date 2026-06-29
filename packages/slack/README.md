@@ -1,6 +1,6 @@
-# @lgcode-ai/slack
+# @loongcode-ai/slack
 
-Slack bot integration for lgcode that creates threaded conversations.
+Slack bot integration for loongcode that creates threaded conversations.
 
 ## Setup
 
@@ -24,4 +24,4 @@ Slack bot integration for lgcode that creates threaded conversations.
 bun dev
 ```
 
-The bot will respond to messages in channels where it's added, creating separate lgcode sessions for each thread.
+The bot will respond to messages in channels where it's added, creating separate loongcode sessions for each thread.

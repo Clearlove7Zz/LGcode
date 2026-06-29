@@ -1,5 +1,5 @@
 import { NodeHttpServer, NodeServices } from "@effect/platform-node"
-import { Flag } from "@lgcode/core/flag/flag"
+import { Flag } from "@loongcode/core/flag/flag"
 import { describe, expect } from "bun:test"
 import { Config, ConfigProvider, Effect, Layer } from "effect"
 import { HttpClient, HttpClientRequest, HttpRouter, HttpServer } from "effect/unstable/http"
@@ -13,13 +13,13 @@ import { testEffect } from "../lib/effect"
 const testStateLayer = Layer.effectDiscard(
   Effect.gen(function* () {
     const original = {
-      LGCODE_SERVER_PASSWORD: Flag.LGCODE_SERVER_PASSWORD,
+      LOONGCODE_SERVER_PASSWORD: Flag.LOONGCODE_SERVER_PASSWORD,
     }
-    Flag.LGCODE_SERVER_PASSWORD = "secret"
+    Flag.LOONGCODE_SERVER_PASSWORD = "secret"
     yield* Effect.promise(() => resetDatabase())
     yield* Effect.addFinalizer(() =>
       Effect.promise(async () => {
-        Flag.LGCODE_SERVER_PASSWORD = original.LGCODE_SERVER_PASSWORD
+        Flag.LOONGCODE_SERVER_PASSWORD = original.LOONGCODE_SERVER_PASSWORD
         await resetDatabase()
       }),
     )
@@ -64,7 +64,7 @@ describe("HttpApi CORS", () => {
     Effect.gen(function* () {
       const handler = HttpRouter.toWebHandler(
         HttpApiApp.createRoutes().pipe(
-          Layer.provide(ConfigProvider.layer(ConfigProvider.fromUnknown({ LGCODE_SERVER_PASSWORD: "secret" }))),
+          Layer.provide(ConfigProvider.layer(ConfigProvider.fromUnknown({ LOONGCODE_SERVER_PASSWORD: "secret" }))),
         ),
         { disableLogger: true },
       ).handler

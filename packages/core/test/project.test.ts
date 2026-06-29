@@ -3,13 +3,13 @@ import { $ } from "bun"
 import fs from "fs/promises"
 import path from "path"
 import { Effect, Layer, Schema } from "effect"
-import { ProjectV2 } from "@lgcode/core/project"
-import { Database } from "@lgcode/core/database/database"
-import { FSUtil } from "@lgcode/core/fs-util"
-import { Git } from "@lgcode/core/git"
-import { AbsolutePath } from "@lgcode/core/schema"
-import { Hash } from "@lgcode/core/util/hash"
-import { ProjectDirectories } from "@lgcode/core/project/directories"
+import { ProjectV2 } from "@loongcode/core/project"
+import { Database } from "@loongcode/core/database/database"
+import { FSUtil } from "@loongcode/core/fs-util"
+import { Git } from "@loongcode/core/git"
+import { AbsolutePath } from "@loongcode/core/schema"
+import { Hash } from "@loongcode/core/util/hash"
+import { ProjectDirectories } from "@loongcode/core/project/directories"
 import { tmpdir } from "./fixture/tmpdir"
 import { testEffect } from "./lib/effect"
 
@@ -44,7 +44,7 @@ async function initRepo(dir: string, opts?: { commit?: boolean; remote?: string 
   await $`git init`.cwd(dir).quiet()
   await $`git config core.fsmonitor false`.cwd(dir).quiet()
   await $`git config commit.gpgsign false`.cwd(dir).quiet()
-  await $`git config user.email test@lgcode.test`.cwd(dir).quiet()
+  await $`git config user.email test@loongcode.test`.cwd(dir).quiet()
   await $`git config user.name Test`.cwd(dir).quiet()
   if (opts?.commit) await $`git commit --allow-empty -m root`.cwd(dir).quiet()
   if (opts?.remote) await $`git remote add origin ${opts.remote}`.cwd(dir).quiet()
@@ -170,7 +170,7 @@ describe("ProjectV2.resolve", () => {
         (tmp) => Effect.promise(() => tmp[Symbol.asyncDispose]()),
       )
       yield* Effect.promise(() => initRepo(tmp.path, { commit: true, remote: "git@github.com:owner/repo.git" }))
-      yield* Effect.promise(() => Bun.write(path.join(tmp.path, ".git", "lgcode"), "old-id"))
+      yield* Effect.promise(() => Bun.write(path.join(tmp.path, ".git", "loongcode"), "old-id"))
       const project = yield* ProjectV2.Service
 
       const result = yield* project.resolve(abs(tmp.path))
@@ -191,7 +191,7 @@ describe("ProjectV2.resolve", () => {
 
       yield* project.resolve(abs(tmp.path))
 
-      expect(yield* Effect.promise(() => Bun.file(path.join(tmp.path, ".git", "lgcode")).exists())).toBe(false)
+      expect(yield* Effect.promise(() => Bun.file(path.join(tmp.path, ".git", "loongcode")).exists())).toBe(false)
     }),
   )
 
@@ -222,7 +222,7 @@ describe("ProjectV2.resolve", () => {
         Effect.promise(() => $`rm -rf ${worktree}`.quiet().nothrow()).pipe(Effect.ignore),
       )
       yield* Effect.promise(() => initRepo(tmp.path, { commit: true, remote: "git@github.com:owner/repo.git" }))
-      yield* Effect.promise(() => Bun.write(path.join(tmp.path, ".git", "lgcode"), "old-id"))
+      yield* Effect.promise(() => Bun.write(path.join(tmp.path, ".git", "loongcode"), "old-id"))
       yield* Effect.promise(() => $`git worktree add ${worktree} -b test-${Date.now()}`.cwd(tmp.path).quiet())
       const project = yield* ProjectV2.Service
 

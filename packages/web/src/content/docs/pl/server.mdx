@@ -1,19 +1,19 @@
 ---
 title: Serwer
-description: Interakcja z serwerem lgcode za pośrednictwem protokołu HTTP.
+description: Interakcja z serwerem loongcode za pośrednictwem protokołu HTTP.
 ---
 
 import config from "../../../../config.mjs"
 export const typesUrl = `${config.github}/blob/dev/packages/sdk/js/src/gen/types.gen.ts`
 
-Komenda `lgcode serve` uruchamia bezgłowy serwer HTTP, który udostępnia punkt końcowy OpenAPI, z którego może korzystać klient lgcode.
+Komenda `loongcode serve` uruchamia bezgłowy serwer HTTP, który udostępnia punkt końcowy OpenAPI, z którego może korzystać klient loongcode.
 
 ---
 
 ### Użycie
 
 ```bash
-lgcode serve [--port <number>] [--hostname <string>] [--cors <origin>]
+loongcode serve [--port <number>] [--hostname <string>] [--cors <origin>]
 ```
 
 #### Opcje
@@ -23,41 +23,41 @@ lgcode serve [--port <number>] [--hostname <string>] [--cors <origin>]
 | `--port`        | Port nasłuchiwania                           | `4096`           |
 | `--hostname`    | Nazwa hosta do nasłuchiwania                 | `127.0.0.1`      |
 | `--mdns`        | Włącz wykrywanie mDNS                        | `false`          |
-| `--mdns-domain` | Niestandardowa nazwa domeny dla usługi mDNS  | `lgcode.local` |
+| `--mdns-domain` | Niestandardowa nazwa domeny dla usługi mDNS  | `loongcode.local` |
 | `--cors`        | Dodatkowe originy przeglądarki do dozwolenia | `[]`             |
 
 `--cors` można przekazać wiele razy:
 
 ```bash
-lgcode serve --cors http://localhost:5173 --cors https://app.example.com
+loongcode serve --cors http://localhost:5173 --cors https://app.example.com
 ```
 
 ---
 
 ### Uwierzytelnianie
 
-Ustaw `LGCODE_SERVER_PASSWORD`, aby chronić serwer za pomocą podstawowego uwierzytelniania HTTP. Domyślną nazwą użytkownika jest `lgcode` lub ustaw `LGCODE_SERVER_USERNAME`, aby ją zastąpić. Dotyczy to zarówno `lgcode serve`, jak i `lgcode web`.
+Ustaw `LOONGCODE_SERVER_PASSWORD`, aby chronić serwer za pomocą podstawowego uwierzytelniania HTTP. Domyślną nazwą użytkownika jest `loongcode` lub ustaw `LOONGCODE_SERVER_USERNAME`, aby ją zastąpić. Dotyczy to zarówno `loongcode serve`, jak i `loongcode web`.
 
 ```bash
-LGCODE_SERVER_PASSWORD=your-password lgcode serve
+LOONGCODE_SERVER_PASSWORD=your-password loongcode serve
 ```
 
 ---
 
 ### Jak to działa
 
-Kiedy uruchomisz `lgcode`, uruchomi się TUI i serwer. Gdzie jest TUI
+Kiedy uruchomisz `loongcode`, uruchomi się TUI i serwer. Gdzie jest TUI
 klient komunikujący się z serwerem. Serwer udostępnia specyfikację OpenAPI 3.1
 punkt końcowy. Ten punkt końcowy jest również używany do generowania [SDK](/docs/sdk).
 
 :::tip
-Użyj serwera lgcode do programowej interakcji z lgcode.
+Użyj serwera loongcode do programowej interakcji z loongcode.
 :::
 
-Ta architektura umożliwia obsługę wielu klientów przez lgcode i programową interakcję z kodem otwartym.
+Ta architektura umożliwia obsługę wielu klientów przez loongcode i programową interakcję z kodem otwartym.
 
-Możesz uruchomić `lgcode serve`, aby uruchomić samodzielny serwer. Jeśli masz
-lgcode TUI działa, `lgcode serve` uruchomi nowy serwer.
+Możesz uruchomić `loongcode serve`, aby uruchomić samodzielny serwer. Jeśli masz
+loongcode TUI działa, `loongcode serve` uruchomi nowy serwer.
 
 ---
 
@@ -65,7 +65,7 @@ lgcode TUI działa, `lgcode serve` uruchomi nowy serwer.
 
 Po uruchomieniu TUI losowo przypisuje port i nazwę hosta. Zamiast tego możesz przekazać `--hostname` i `--port` [flagi](/docs/cli). Następnie użyj tego, aby połączyć się z serwerem.
 
-Punktu końcowego [`/tui`](#TUI) można użyć do sterowania TUI przez serwer. Można na przykład wstępnie wypełnić lub uruchomić monit. Ta konfiguracja jest używana przez wtyczki lgcode [IDE](/docs/ide).
+Punktu końcowego [`/tui`](#TUI) można użyć do sterowania TUI przez serwer. Można na przykład wstępnie wypełnić lub uruchomić monit. Ta konfiguracja jest używana przez wtyczki loongcode [IDE](/docs/ide).
 
 ---
 
@@ -83,7 +83,7 @@ Na przykład `http://localhost:4096/doc`. Użyj specyfikacji, aby wygenerować k
 
 ## API
 
-Serwer lgcode udostępnia następujące interfejsy API.
+Serwer loongcode udostępnia następujące interfejsy API.
 
 ---
 

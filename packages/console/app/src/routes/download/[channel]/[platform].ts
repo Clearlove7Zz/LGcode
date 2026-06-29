@@ -2,28 +2,28 @@ import type { APIEvent } from "@solidjs/start"
 import type { DownloadPlatform } from "../types"
 
 const prodAssetNames: Record<string, string> = {
-  "darwin-aarch64-dmg": "lgcode-desktop-mac-arm64.dmg",
-  "darwin-x64-dmg": "lgcode-desktop-mac-x64.dmg",
-  "windows-x64-nsis": "lgcode-desktop-win-x64.exe",
-  "linux-x64-deb": "lgcode-desktop-linux-amd64.deb",
-  "linux-x64-appimage": "lgcode-desktop-linux-x86_64.AppImage",
-  "linux-x64-rpm": "lgcode-desktop-linux-x86_64.rpm",
+  "darwin-aarch64-dmg": "loongcode-desktop-mac-arm64.dmg",
+  "darwin-x64-dmg": "loongcode-desktop-mac-x64.dmg",
+  "windows-x64-nsis": "loongcode-desktop-win-x64.exe",
+  "linux-x64-deb": "loongcode-desktop-linux-amd64.deb",
+  "linux-x64-appimage": "loongcode-desktop-linux-x86_64.AppImage",
+  "linux-x64-rpm": "loongcode-desktop-linux-x86_64.rpm",
 } satisfies Record<DownloadPlatform, string>
 
 const betaAssetNames: Record<string, string> = {
-  "darwin-aarch64-dmg": "lgcode-desktop-mac-arm64.dmg",
-  "darwin-x64-dmg": "lgcode-desktop-mac-x64.dmg",
-  "windows-x64-nsis": "lgcode-desktop-win-x64.exe",
-  "linux-x64-deb": "lgcode-desktop-linux-amd64.deb",
-  "linux-x64-appimage": "lgcode-desktop-linux-x86_64.AppImage",
-  "linux-x64-rpm": "lgcode-desktop-linux-x86_64.rpm",
+  "darwin-aarch64-dmg": "loongcode-desktop-mac-arm64.dmg",
+  "darwin-x64-dmg": "loongcode-desktop-mac-x64.dmg",
+  "windows-x64-nsis": "loongcode-desktop-win-x64.exe",
+  "linux-x64-deb": "loongcode-desktop-linux-amd64.deb",
+  "linux-x64-appimage": "loongcode-desktop-linux-x86_64.AppImage",
+  "linux-x64-rpm": "loongcode-desktop-linux-x86_64.rpm",
 } satisfies Record<DownloadPlatform, string>
 
 // Doing this on the server lets us preserve the original name for platforms we don't care to rename for
 const downloadNames: Record<string, string> = {
-  "darwin-aarch64-dmg": "LGcode Desktop.dmg",
-  "darwin-x64-dmg": "LGcode Desktop.dmg",
-  "windows-x64-nsis": "LGcode Desktop Installer.exe",
+  "darwin-aarch64-dmg": "Loongcode Desktop.dmg",
+  "darwin-x64-dmg": "Loongcode Desktop.dmg",
+  "windows-x64-nsis": "Loongcode Desktop Installer.exe",
 } satisfies { [K in DownloadPlatform]?: string }
 
 export async function GET({ params: { platform, channel } }: APIEvent) {
@@ -31,7 +31,7 @@ export async function GET({ params: { platform, channel } }: APIEvent) {
   if (!assetName) return new Response(null, { status: 404 })
 
   const resp = await fetch(
-    `https://github.com/anomalyco/${channel === "stable" ? "lgcode" : "lgcode-beta"}/releases/latest/download/${assetName}`,
+    `https://github.com/anomalyco/${channel === "stable" ? "loongcode" : "loongcode-beta"}/releases/latest/download/${assetName}`,
   )
 
   const downloadName = downloadNames[platform]

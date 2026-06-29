@@ -6,7 +6,7 @@
 export const ID = Schema.String.pipe(
   Schema.brand("ProviderV2.ID"),
   withStatics((schema) => ({
-    lgcode: schema.make("lgcode"),
+    loongcode: schema.make("loongcode"),
     anthropic: schema.make("anthropic"),
     openai: schema.make("openai"),
     google: schema.make("google"),

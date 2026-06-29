@@ -1,5 +1,5 @@
-name: "lgcode GitHub Action"
-description: "Run lgcode in GitHub Actions workflows"
+name: "loongcode GitHub Action"
+description: "Run loongcode in GitHub Actions workflows"
 branding:
   icon: "code"
   color: "orange"
@@ -14,7 +14,7 @@ inputs:
     required: false
 
   share:
-    description: "Share the lgcode session (defaults to true for public repos)"
+    description: "Share the loongcode session (defaults to true for public repos)"
     required: false
 
   prompt:
@@ -22,12 +22,12 @@ inputs:
     required: false
 
   use_github_token:
-    description: "Use GITHUB_TOKEN directly instead of LGcode App token exchange. When true, skips OIDC and uses the GITHUB_TOKEN env var."
+    description: "Use GITHUB_TOKEN directly instead of Loongcode App token exchange. When true, skips OIDC and uses the GITHUB_TOKEN env var."
     required: false
     default: "false"
 
   mentions:
-    description: "Comma-separated list of trigger phrases (case-insensitive). Defaults to '/lgcode,/oc'"
+    description: "Comma-separated list of trigger phrases (case-insensitive). Defaults to '/loongcode,/oc'"
     required: false
 
   variant:
@@ -41,33 +41,33 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Get lgcode version
+    - name: Get loongcode version
       id: version
       shell: bash
       run: |
         VERSION=$(curl -sf https://api.github.com/repos/Clearlove7Zz/LGcode/releases/latest | grep -o '"tag_name": *"[^"]*"' | cut -d'"' -f4)
         echo "version=${VERSION:-latest}" >> $GITHUB_OUTPUT
 
-    - name: Cache lgcode
+    - name: Cache loongcode
       id: cache
       uses: actions/cache@v4
       with:
-        path: ~/.lgcode/bin
-        key: lgcode-${{ runner.os }}-${{ runner.arch }}-${{ steps.version.outputs.version }}
+        path: ~/.loongcode/bin
+        key: loongcode-${{ runner.os }}-${{ runner.arch }}-${{ steps.version.outputs.version }}
 
-    - name: Install lgcode
+    - name: Install loongcode
       if: steps.cache.outputs.cache-hit != 'true'
       shell: bash
       run: curl -fsSL https://modelhub.lgdg.cc/install | bash
 
-    - name: Add lgcode to PATH
+    - name: Add loongcode to PATH
       shell: bash
-      run: echo "$HOME/.lgcode/bin" >> $GITHUB_PATH
+      run: echo "$HOME/.loongcode/bin" >> $GITHUB_PATH
 
-    - name: Run lgcode
+    - name: Run loongcode
       shell: bash
       id: run_opencode
-      run: lgcode github run
+      run: loongcode github run
       env:
         MODEL: ${{ inputs.model }}
         AGENT: ${{ inputs.agent }}

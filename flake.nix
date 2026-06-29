@@ -1,5 +1,5 @@
 {
-  description = "LGcode development flake";
+  description = "Loongcode development flake";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -39,11 +39,11 @@
             };
           in
           rec {
-            lgcode = final.callPackage ./nix/lgcode.nix {
+            loongcode = final.callPackage ./nix/loongcode.nix {
               inherit node_modules;
             };
-            lgcode-desktop = final.callPackage ./nix/desktop.nix {
-              inherit lgcode;
+            loongcode-desktop = final.callPackage ./nix/desktop.nix {
+              inherit loongcode;
             };
           };
       };
@@ -56,12 +56,12 @@
           };
         in
         rec {
-          default = lgcode;
-          lgcode = pkgs.callPackage ./nix/lgcode.nix {
+          default = loongcode;
+          loongcode = pkgs.callPackage ./nix/loongcode.nix {
             inherit node_modules;
           };
-          lgcode-desktop = pkgs.callPackage ./nix/desktop.nix {
-            inherit lgcode;
+          loongcode-desktop = pkgs.callPackage ./nix/desktop.nix {
+            inherit loongcode;
           };
           # Updater derivation with fakeHash - build fails and reveals correct hash
           node_modules_updater = node_modules.override {

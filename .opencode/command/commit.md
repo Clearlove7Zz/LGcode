@@ -1,6 +1,6 @@
 ---
 description: git commit and push
-model: lgcode/kimi-k2.5
+model: loongcode/kimi-k2.5
 subtask: true
 ---
 

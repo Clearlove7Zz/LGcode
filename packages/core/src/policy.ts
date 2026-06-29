@@ -19,7 +19,7 @@ export interface Interface {
   readonly hasStatements: () => boolean
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/v2/Policy") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/v2/Policy") {}
 
 export const layer = Layer.effect(
   Service,

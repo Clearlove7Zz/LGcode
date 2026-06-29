@@ -1,4 +1,4 @@
-import { PermissionV1 } from "@lgcode/core/v1/permission"
+import { PermissionV1 } from "@loongcode/core/v1/permission"
 import { Permission } from "@/permission"
 import { Schema } from "effect"
 import { HttpApi, HttpApiEndpoint, HttpApiError, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
@@ -54,7 +54,7 @@ export const PermissionApi = HttpApi.make("permission")
   )
   .annotateMerge(
     OpenApi.annotations({
-      title: "lgcode experimental HttpApi",
+      title: "loongcode experimental HttpApi",
       version: "0.0.1",
       description: "Experimental HttpApi surface for selected instance routes.",
     }),

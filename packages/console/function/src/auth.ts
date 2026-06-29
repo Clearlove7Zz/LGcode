@@ -7,16 +7,16 @@ import { THEME_OPENAUTH } from "@openauthjs/openauth/ui/theme"
 import { GithubProvider } from "@openauthjs/openauth/provider/github"
 import { GoogleOidcProvider } from "@openauthjs/openauth/provider/google"
 import { CloudflareStorage } from "@openauthjs/openauth/storage/cloudflare"
-import { Account } from "@lgcode/console-core/account.js"
-import { Workspace } from "@lgcode/console-core/workspace.js"
-import { Actor } from "@lgcode/console-core/actor.js"
-import { Resource } from "@lgcode/console-resource"
-import { User } from "@lgcode/console-core/user.js"
-import { and, Database, eq, isNull, or } from "@lgcode/console-core/drizzle/index.js"
-import { WorkspaceTable } from "@lgcode/console-core/schema/workspace.sql.js"
-import { UserTable } from "@lgcode/console-core/schema/user.sql.js"
-import { AuthTable } from "@lgcode/console-core/schema/auth.sql.js"
-import { Identifier } from "@lgcode/console-core/identifier.js"
+import { Account } from "@loongcode/console-core/account.js"
+import { Workspace } from "@loongcode/console-core/workspace.js"
+import { Actor } from "@loongcode/console-core/actor.js"
+import { Resource } from "@loongcode/console-resource"
+import { User } from "@loongcode/console-core/user.js"
+import { and, Database, eq, isNull, or } from "@loongcode/console-core/drizzle/index.js"
+import { WorkspaceTable } from "@loongcode/console-core/schema/workspace.sql.js"
+import { UserTable } from "@loongcode/console-core/schema/user.sql.js"
+import { AuthTable } from "@loongcode/console-core/schema/auth.sql.js"
+import { Identifier } from "@loongcode/console-core/identifier.js"
 
 type Env = {
   AuthStorage: KVNamespace
@@ -112,14 +112,14 @@ export default {
           const emails = (await fetch("https://api.github.com/user/emails", {
             headers: {
               Authorization: `Bearer ${response.tokenset.access}`,
-              "User-Agent": "lgcode",
+              "User-Agent": "loongcode",
               Accept: "application/vnd.github+json",
             },
           }).then((x) => x.json())) as any
           const user = (await fetch("https://api.github.com/user", {
             headers: {
               Authorization: `Bearer ${response.tokenset.access}`,
-              "User-Agent": "lgcode",
+              "User-Agent": "loongcode",
               Accept: "application/vnd.github+json",
             },
           }).then((x) => x.json())) as any

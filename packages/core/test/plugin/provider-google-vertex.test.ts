@@ -1,9 +1,9 @@
 import { describe, expect, mock } from "bun:test"
 import { Effect } from "effect"
-import { Catalog } from "@lgcode/core/catalog"
-import { PluginV2 } from "@lgcode/core/plugin"
-import { GoogleVertexPlugin } from "@lgcode/core/plugin/provider/google-vertex"
-import { ProviderV2 } from "@lgcode/core/provider"
+import { Catalog } from "@loongcode/core/catalog"
+import { PluginV2 } from "@loongcode/core/plugin"
+import { GoogleVertexPlugin } from "@loongcode/core/plugin/provider/google-vertex"
+import { ProviderV2 } from "@loongcode/core/provider"
 import { fakeSelectorSdk, it, model, withEnv } from "./provider-helper"
 
 const vertexOptions: Record<string, any>[] = []
@@ -42,7 +42,7 @@ describe("GoogleVertexPlugin", () => {
       yield* plugin.add(GoogleVertexPlugin)
       const transform = yield* catalog.transform()
       yield* transform((catalog) =>
-        catalog.provider.update(ProviderV2.ID.lgcode, (provider) => {
+        catalog.provider.update(ProviderV2.ID.loongcode, (provider) => {
           provider.api = {
             type: "aisdk",
             package: "@ai-sdk/openai-compatible",
@@ -51,7 +51,7 @@ describe("GoogleVertexPlugin", () => {
         }),
       )
 
-      const provider = yield* catalog.provider.get(ProviderV2.ID.lgcode)
+      const provider = yield* catalog.provider.get(ProviderV2.ID.loongcode)
       expect(provider.request.body).toEqual({})
     }),
   )

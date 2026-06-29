@@ -1,13 +1,13 @@
 import "@/index.css"
 import * as Sentry from "@sentry/solid"
-import { I18nProvider } from "@lgcode/ui/context"
-import { DialogProvider } from "@lgcode/ui/context/dialog"
-import { FileComponentProvider } from "@lgcode/ui/context/file"
-import { MarkedProvider } from "@lgcode/ui/context/marked"
-import { File } from "@lgcode/ui/file"
-import { Font } from "@lgcode/ui/font"
-import { Splash } from "@lgcode/ui/logo"
-import { ThemeProvider } from "@lgcode/ui/theme/context"
+import { I18nProvider } from "@loongcode/ui/context"
+import { DialogProvider } from "@loongcode/ui/context/dialog"
+import { FileComponentProvider } from "@loongcode/ui/context/file"
+import { MarkedProvider } from "@loongcode/ui/context/marked"
+import { File } from "@loongcode/ui/file"
+import { Font } from "@loongcode/ui/font"
+import { Splash } from "@loongcode/ui/logo"
+import { ThemeProvider } from "@loongcode/ui/theme/context"
 import { MetaProvider } from "@solidjs/meta"
 import { type BaseRouterProps, Navigate, Route, Router, useParams, useSearchParams } from "@solidjs/router"
 import { QueryClient, QueryClientProvider } from "@tanstack/solid-query"
@@ -167,7 +167,7 @@ function UiI18nBridge(props: ParentProps) {
 
 declare global {
   interface Window {
-    __LGCODE__?: {
+    __LOONGCODE__?: {
       deepLinks?: string[]
     }
     api?: {

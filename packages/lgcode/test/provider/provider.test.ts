@@ -2,10 +2,10 @@ import { afterEach, expect, test } from "bun:test"
 import { mkdir, unlink } from "fs/promises"
 import path from "path"
 import { Effect, Layer } from "effect"
-import { ModelsDev } from "@lgcode/core/models-dev"
-import { FSUtil } from "@lgcode/core/fs-util"
-import { CrossSpawnSpawner } from "@lgcode/core/cross-spawn-spawner"
-import { Global } from "@lgcode/core/global"
+import { ModelsDev } from "@loongcode/core/models-dev"
+import { FSUtil } from "@loongcode/core/fs-util"
+import { CrossSpawnSpawner } from "@loongcode/core/cross-spawn-spawner"
+import { Global } from "@loongcode/core/global"
 import { disposeAllInstances, provideInstanceEffect, tmpdirScoped, TestInstance } from "../fixture/fixture"
 import { markPluginDependenciesReady } from "../fixture/plugin"
 import { Auth } from "@/auth"
@@ -18,8 +18,8 @@ import { RuntimeFlags } from "@/effect/runtime-flags"
 import { Filesystem } from "@/util/filesystem"
 import { InstanceLayer } from "@/project/instance-layer"
 import { testEffect } from "../lib/effect"
-import { ProviderV2 } from "@lgcode/core/provider"
-import { ModelV2 } from "@lgcode/core/model"
+import { ProviderV2 } from "@loongcode/core/provider"
+import { ModelV2 } from "@loongcode/core/model"
 
 const originalEnv = new Map<string, string | undefined>()
 
@@ -70,7 +70,7 @@ const providerLayer = (flags: Partial<RuntimeFlags.Info> = {}) =>
 const list = Provider.use.list()
 
 const paid = (providers: Record<string, { models: Record<string, { cost: { input: number } }> }>) => {
-  const item = providers[ProviderV2.ID.make("lgcode")]
+  const item = providers[ProviderV2.ID.make("loongcode")]
   expect(item).toBeDefined()
   return Object.values(item.models).filter((model) => model.cost.input > 0).length
 }
@@ -1032,9 +1032,9 @@ it.instance("ModelNotFoundError for provider includes suggestions", () =>
 
 it.instance("ModelNotFoundError suggests catalog models for unloaded providers", () =>
   Effect.gen(function* () {
-    yield* remove("LGCODE_API_KEY")
+    yield* remove("LOONGCODE_API_KEY")
     const error = yield* Provider.use
-      .getModel(ProviderV2.ID.lgcode, ModelV2.ID.make("claude-haiku-fake-model"))
+      .getModel(ProviderV2.ID.loongcode, ModelV2.ID.make("claude-haiku-fake-model"))
       .pipe(Effect.flip)
     if (!Provider.ModelNotFoundError.isInstance(error)) throw error
     expect(error.suggestions ?? []).toContain("claude-haiku-4-5")
@@ -1122,8 +1122,8 @@ it.instance(
     const providers = yield* list
     expect(providers[ProviderV2.ID.make("nvidia")].options.headers).toEqual({
       "HTTP-Referer": "https://modelhub.lgdg.cc/",
-      "X-Title": "lgcode",
-      "X-BILLING-INVOKE-ORIGIN": "LGcode",
+      "X-Title": "loongcode",
+      "X-BILLING-INVOKE-ORIGIN": "Loongcode",
     })
   }),
   { config: { provider: { nvidia: { options: { apiKey: "test-api-key" } } } } },
@@ -1135,8 +1135,8 @@ it.instance(
     const providers = yield* list
     expect(providers[ProviderV2.ID.make("nvidia")].options.headers).toEqual({
       "HTTP-Referer": "https://modelhub.lgdg.cc/",
-      "X-Title": "lgcode",
-      "X-BILLING-INVOKE-ORIGIN": "LGcode",
+      "X-Title": "loongcode",
+      "X-BILLING-INVOKE-ORIGIN": "Loongcode",
     })
   }),
   { config: { provider: { nvidia: { options: { apiKey: "test-api-key", baseURL: "http://localhost:8000/v1" } } } } },
@@ -1633,12 +1633,12 @@ it.instance(
     expect(providers[ProviderV2.ID.make("cloudflare-ai-gateway")]).toBeDefined()
     expect(providers[ProviderV2.ID.make("cloudflare-ai-gateway")].options.metadata).toEqual({
       invoked_by: "test",
-      project: "lgcode",
+      project: "loongcode",
     })
   }),
   {
     config: {
-      provider: { "cloudflare-ai-gateway": { options: { metadata: { invoked_by: "test", project: "lgcode" } } } },
+      provider: { "cloudflare-ai-gateway": { options: { metadata: { invoked_by: "test", project: "loongcode" } } } },
     },
   },
 )
@@ -1652,7 +1652,7 @@ const provideMultiInstance = <A, E, R>(eff: Effect.Effect<A, E, R>) =>
 it.effect("plugin config providers persist after instance dispose", () =>
   Effect.gen(function* () {
     const dir = yield* tmpdirScoped()
-    const configDir = path.join(dir, ".lgcode")
+    const configDir = path.join(dir, ".loongcode")
     const root = path.join(configDir, "plugin")
     yield* Effect.promise(() => mkdir(root, { recursive: true }))
     yield* Effect.promise(() => markPluginDependenciesReady(configDir))
@@ -1709,7 +1709,7 @@ it.instance(
   "plugin config enabled and disabled providers are honored",
   Effect.gen(function* () {
     const instance = yield* TestInstance
-    const configDir = path.join(instance.directory, ".lgcode")
+    const configDir = path.join(instance.directory, ".loongcode")
     const root = path.join(configDir, "plugin")
     yield* Effect.promise(() => mkdir(root, { recursive: true }))
     yield* Effect.promise(() => markPluginDependenciesReady(configDir))
@@ -1739,11 +1739,11 @@ it.instance(
   }),
 )
 
-it.effect("lgcode loader keeps paid models when config apiKey is present", () =>
+it.effect("loongcode loader keeps paid models when config apiKey is present", () =>
   Effect.gen(function* () {
     const noneDir = yield* tmpdirScoped()
     const keyedDir = yield* tmpdirScoped({
-      config: { provider: { lgcode: { options: { apiKey: "test-key" } } } },
+      config: { provider: { loongcode: { options: { apiKey: "test-key" } } } },
     })
 
     const listIn = (directory: string) =>
@@ -1760,7 +1760,7 @@ it.effect("lgcode loader keeps paid models when config apiKey is present", () =>
   }).pipe(provideMultiInstance),
 )
 
-it.effect("lgcode loader keeps paid models when auth exists", () =>
+it.effect("loongcode loader keeps paid models when auth exists", () =>
   Effect.gen(function* () {
     const noneDir = yield* tmpdirScoped()
     const keyedDir = yield* tmpdirScoped()
@@ -1777,7 +1777,7 @@ it.effect("lgcode loader keeps paid models when auth exists", () =>
     const original = yield* Effect.promise(() => Filesystem.readText(authPath).catch(() => undefined))
 
     yield* Effect.acquireRelease(
-      Effect.promise(() => Filesystem.write(authPath, JSON.stringify({ lgcode: { type: "api", key: "test-key" } }))),
+      Effect.promise(() => Filesystem.write(authPath, JSON.stringify({ loongcode: { type: "api", key: "test-key" } }))),
       () =>
         Effect.promise(async () => {
           if (original !== undefined) await Filesystem.write(authPath, original)

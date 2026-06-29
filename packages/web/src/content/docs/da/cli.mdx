@@ -1,30 +1,30 @@
 ---
 title: CLI
-description: LGcode CLI muligheder og kommandoer.
+description: Loongcode CLI muligheder og kommandoer.
 ---
 
 import { Tabs, TabItem } from "@astrojs/starlight/components"
 
-LGcode CLI starter som standard [TUI](/docs/tui), når den kører uden nogen argumenter.
+Loongcode CLI starter som standard [TUI](/docs/tui), når den kører uden nogen argumenter.
 
 ```bash
-lgcode
+loongcode
 ```
 
-Men den accepterer også kommandoer som dokumenteret på denne side. Dette giver dig mulighed for at interagere med LGcode programmatisk.
+Men den accepterer også kommandoer som dokumenteret på denne side. Dette giver dig mulighed for at interagere med Loongcode programmatisk.
 
 ```bash
-lgcode run "Explain how closures work in JavaScript"
+loongcode run "Explain how closures work in JavaScript"
 ```
 
 ---
 
 ### tui
 
-Start LGcode terminalbrugergrænsefladen.
+Start Loongcode terminalbrugergrænsefladen.
 
 ```bash
-lgcode [project]
+loongcode [project]
 ```
 
 #### Flag
@@ -44,36 +44,36 @@ lgcode [project]
 
 ## Kommandoer
 
-LGcode CLI har også følgende kommandoer.
+Loongcode CLI har også følgende kommandoer.
 
 ---
 
 ### agent
 
-Administrer agenter i LGcode.
+Administrer agenter i Loongcode.
 
 ```bash
-lgcode agent [command]
+loongcode agent [command]
 ```
 
 ---
 
 ### attach
 
-Tilslut en terminal til en allerede kørende LGcode backend-server startet via `serve` eller `web` kommandoer.
+Tilslut en terminal til en allerede kørende Loongcode backend-server startet via `serve` eller `web` kommandoer.
 
 ```bash
-lgcode attach [url]
+loongcode attach [url]
 ```
 
-Dette gør det muligt at bruge TUI med en ekstern LGcode backend. For eksempel:
+Dette gør det muligt at bruge TUI med en ekstern Loongcode backend. For eksempel:
 
 ```bash
 # Start the backend server for web/mobile access
-lgcode web --port 4096 --hostname 0.0.0.0
+loongcode web --port 4096 --hostname 0.0.0.0
 
 # In another terminal, attach the TUI to the running backend
-lgcode attach http://10.20.30.40:4096
+loongcode attach http://10.20.30.40:4096
 ```
 
 #### Flag
@@ -84,8 +84,8 @@ lgcode attach http://10.20.30.40:4096
 | <nobr><code>{"--continue"}</code></nobr> | `-c` | Fortsæt den seneste session                                                       |
 | <nobr><code>{"--session"}</code></nobr>  | `-s` | Sessions-id for at fortsætte                                                      |
 | <nobr><code>{"--fork"}</code></nobr>     |      | Forgren sessionen ved fortsættelse (brug med `--continue` eller `--session`)      |
-| <nobr><code>{"--password"}</code></nobr> | `-p` | Adgangskode til basic auth (standard: `LGCODE_SERVER_PASSWORD`)                 |
-| <nobr><code>{"--username"}</code></nobr> | `-u` | Brugernavn til basic auth (standard: `LGCODE_SERVER_USERNAME` eller `lgcode`) |
+| <nobr><code>{"--password"}</code></nobr> | `-p` | Adgangskode til basic auth (standard: `LOONGCODE_SERVER_PASSWORD`)                 |
+| <nobr><code>{"--username"}</code></nobr> | `-u` | Brugernavn til basic auth (standard: `LOONGCODE_SERVER_USERNAME` eller `loongcode`) |
 
 ---
 
@@ -94,7 +94,7 @@ lgcode attach http://10.20.30.40:4096
 Opret en ny agent med brugerdefineret konfiguration.
 
 ```bash
-lgcode agent create
+loongcode agent create
 ```
 
 Denne kommando vil guide dig gennem oprettelse af en ny agent med en brugerdefineret systemprompt og værktøjskonfiguration.
@@ -106,7 +106,7 @@ Denne kommando vil guide dig gennem oprettelse af en ny agent med en brugerdefin
 Liste over alle tilgængelige agenter.
 
 ```bash
-lgcode agent list
+loongcode agent list
 ```
 
 ---
@@ -116,20 +116,20 @@ lgcode agent list
 Kommando til at administrere legitimationsoplysninger og login for udbydere.
 
 ```bash
-lgcode auth [command]
+loongcode auth [command]
 ```
 
 ---
 
 #### login
 
-LGcode drives af udbyderlisten på [Models.dev](https://models.dev), så du kan bruge `lgcode auth login` til at konfigurere API-nøgler for enhver udbyder, du vil bruge. Dette er gemt i `~/.local/share/lgcode/auth.json`.
+Loongcode drives af udbyderlisten på [Models.dev](https://models.dev), så du kan bruge `loongcode auth login` til at konfigurere API-nøgler for enhver udbyder, du vil bruge. Dette er gemt i `~/.local/share/loongcode/auth.json`.
 
 ```bash
-lgcode auth login
+loongcode auth login
 ```
 
-Når LGcode starter op, indlæser den udbyderne fra legitimationsfilen. Og hvis der er nogen nøgler defineret i dine miljøer eller en `.env` fil i dit projekt.
+Når Loongcode starter op, indlæser den udbyderne fra legitimationsfilen. Og hvis der er nogen nøgler defineret i dine miljøer eller en `.env` fil i dit projekt.
 
 ---
 
@@ -138,13 +138,13 @@ Når LGcode starter op, indlæser den udbyderne fra legitimationsfilen. Og hvis 
 Viser alle de godkendte udbydere som gemt i legitimationsfilen.
 
 ```bash
-lgcode auth list
+loongcode auth list
 ```
 
 Eller den korte version.
 
 ```bash
-lgcode auth ls
+loongcode auth ls
 ```
 
 ---
@@ -154,7 +154,7 @@ lgcode auth ls
 Logger dig ud af en udbyder ved at rydde den fra legitimationsfilen.
 
 ```bash
-lgcode auth logout
+loongcode auth logout
 ```
 
 ---
@@ -164,7 +164,7 @@ lgcode auth logout
 Administrator GitHub-agenten til lagerautomatisering.
 
 ```bash
-lgcode github [command]
+loongcode github [command]
 ```
 
 ---
@@ -174,7 +174,7 @@ lgcode github [command]
 Installatør GitHub-agenten i dit lager.
 
 ```bash
-lgcode github install
+loongcode github install
 ```
 
 Dette opsætter det nødvendige GitHub Actions workflow og guider dig gennem konfigurationsprocessen. [Learn more](/docs/github).
@@ -186,7 +186,7 @@ Dette opsætter det nødvendige GitHub Actions workflow og guider dig gennem kon
 Kør GitHub-agenten. Dette bruges typisk i GitHub Actions.
 
 ```bash
-lgcode github run
+loongcode github run
 ```
 
 ##### Flag
@@ -203,7 +203,7 @@ lgcode github run
 Administrator Model Context Protocol-servere.
 
 ```bash
-lgcode mcp [command]
+loongcode mcp [command]
 ```
 
 ---
@@ -213,7 +213,7 @@ lgcode mcp [command]
 Tilføj en MCP-server til din konfiguration.
 
 ```bash
-lgcode mcp add
+loongcode mcp add
 ```
 
 Denne kommando vil guide dig gennem tilføjelse af enten en lokal eller ekstern MCP-server.
@@ -225,13 +225,13 @@ Denne kommando vil guide dig gennem tilføjelse af enten en lokal eller ekstern 
 Liste over alle konfigurerede MCP-servere og deres forbindelsesstatus.
 
 ```bash
-lgcode mcp list
+loongcode mcp list
 ```
 
 Eller brug den korte version.
 
 ```bash
-lgcode mcp ls
+loongcode mcp ls
 ```
 
 ---
@@ -241,7 +241,7 @@ lgcode mcp ls
 Godkendt med en OAuth-aktiveret MCP-server.
 
 ```bash
-lgcode mcp auth [name]
+loongcode mcp auth [name]
 ```
 
 Hvis du ikke angiver et servernavn, bliver du bedt om at vælge blandt tilgængelige OAuth-kompatible servere.
@@ -249,13 +249,13 @@ Hvis du ikke angiver et servernavn, bliver du bedt om at vælge blandt tilgænge
 Du kan også angive OAuth-kompatible servere og deres godkendelsesstatus.
 
 ```bash
-lgcode mcp auth list
+loongcode mcp auth list
 ```
 
 Eller brug den korte version.
 
 ```bash
-lgcode mcp auth ls
+loongcode mcp auth ls
 ```
 
 ---
@@ -265,7 +265,7 @@ lgcode mcp auth ls
 Fjern OAuth-legitimationsoplysninger for en MCP-server.
 
 ```bash
-lgcode mcp logout [name]
+loongcode mcp logout [name]
 ```
 
 ---
@@ -275,7 +275,7 @@ lgcode mcp logout [name]
 Fejlfinding af OAuth-forbindelsesproblemer for en MCP-server.
 
 ```bash
-lgcode mcp debug <name>
+loongcode mcp debug <name>
 ```
 
 ---
@@ -285,7 +285,7 @@ lgcode mcp debug <name>
 Liste over alle tilgængelige modeller fra konfigurerede udbydere.
 
 ```bash
-lgcode models [provider]
+loongcode models [provider]
 ```
 
 Denne kommando viser alle tilgængelige modeller på tværs af dine konfigurerede udbydere i formatet `provider/model`.
@@ -295,7 +295,7 @@ Dette er nyttigt til at finde ud af det nøjagtige modelnavn, der skal bruges i 
 Du kan eventuelt videregive et udbyder-id for at filtrere modeller efter den udbyder.
 
 ```bash
-lgcode models anthropic
+loongcode models anthropic
 ```
 
 #### Flag
@@ -305,36 +305,36 @@ lgcode models anthropic
 | <nobr><code>{"--refresh"}</code></nobr> | Opdater modelcachen fra models.dev                                      |
 | <nobr><code>{"--verbose"}</code></nobr> | Brug mere detaljeret modeloutput (inkluderer metadata som omkostninger) |
 
-Brug flaget `--refresh` til at opdatere den cachelagrede modelliste. Dette er nyttigt, når nye modeller er blevet tilføjet til en udbyder, og du vil se dem i LGcode.
+Brug flaget `--refresh` til at opdatere den cachelagrede modelliste. Dette er nyttigt, når nye modeller er blevet tilføjet til en udbyder, og du vil se dem i Loongcode.
 
 ```bash
-lgcode models --refresh
+loongcode models --refresh
 ```
 
 ---
 
 ### run
 
-Kør lgcode i ikke-interaktiv tilstand ved at sende en prompt direkte.
+Kør loongcode i ikke-interaktiv tilstand ved at sende en prompt direkte.
 
 ```bash
-lgcode run [message..]
+loongcode run [message..]
 ```
 
 Dette er nyttigt til scripting, automatisering, eller når du vil have et hurtigt svar uden at starte hele TUI. F.eks.
 
-```bash "lgcode run"
-lgcode run Explain the use of context in Go
+```bash "loongcode run"
+loongcode run Explain the use of context in Go
 ```
 
-Du kan også vedhæfte til en kørende `lgcode serve`-instans for at undgå MCP serverens kolde opstartstider ved hver kørsel:
+Du kan også vedhæfte til en kørende `loongcode serve`-instans for at undgå MCP serverens kolde opstartstider ved hver kørsel:
 
 ```bash
 # Start a headless server in one terminal
-lgcode serve
+loongcode serve
 
 # In another terminal, run commands that attach to it
-lgcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
+loongcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
 ```
 
 #### Flag
@@ -351,9 +351,9 @@ lgcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
 | <nobr><code>{"--file"}</code></nobr>     | `-f` | Fil(er), der skal vedhæftes til meddelelsen                                         |
 | <nobr><code>{"--format"}</code></nobr>   |      | Format: standard (formateret) eller json (rå JSON hændelser)                        |
 | <nobr><code>{"--title"}</code></nobr>    |      | Titel for sessionen (bruger trunkeret prompt, hvis der ikke er angivet nogen værdi) |
-| <nobr><code>{"--attach"}</code></nobr>   |      | Tilslut til en kørende lgcode-server (f.eks. http://localhost:4096)               |
-| <nobr><code>{"--password"}</code></nobr> | `-p` | Adgangskode til basic auth (standard: `LGCODE_SERVER_PASSWORD`)                   |
-| <nobr><code>{"--username"}</code></nobr> | `-u` | Brugernavn til basic auth (standard: `LGCODE_SERVER_USERNAME` eller `lgcode`)   |
+| <nobr><code>{"--attach"}</code></nobr>   |      | Tilslut til en kørende loongcode-server (f.eks. http://localhost:4096)               |
+| <nobr><code>{"--password"}</code></nobr> | `-p` | Adgangskode til basic auth (standard: `LOONGCODE_SERVER_PASSWORD`)                   |
+| <nobr><code>{"--username"}</code></nobr> | `-u` | Brugernavn til basic auth (standard: `LOONGCODE_SERVER_USERNAME` eller `loongcode`)   |
 | <nobr><code>{"--dir"}</code></nobr>      |      | Mappe at køre i, eller sti på fjernserveren ved tilkobling                          |
 | <nobr><code>{"--variant"}</code></nobr>  |      | Modelvariant (udbyder-specifik ræsonneringsindsats)                                 |
 | <nobr><code>{"--thinking"}</code></nobr> |      | Vis tænkeblokke                                                                     |
@@ -363,13 +363,13 @@ lgcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
 
 ### serve
 
-Start en hovedløs LGcode-server til API-adgang. Tjek [server docs](/docs/server) for den fulde HTTP-grænseflade.
+Start en hovedløs Loongcode-server til API-adgang. Tjek [server docs](/docs/server) for den fulde HTTP-grænseflade.
 
 ```bash
-lgcode serve
+loongcode serve
 ```
 
-Dette starter en HTTP-server, der giver API-adgang til lgcode-funktionalitet uden TUI-grænsefladen. Indstil `LGCODE_SERVER_PASSWORD` for at aktivere HTTP grundlæggende godkendelse (brugernavn er standard til `lgcode`).
+Dette starter en HTTP-server, der giver API-adgang til loongcode-funktionalitet uden TUI-grænsefladen. Indstil `LOONGCODE_SERVER_PASSWORD` for at aktivere HTTP grundlæggende godkendelse (brugernavn er standard til `loongcode`).
 
 #### Flag
 
@@ -384,20 +384,20 @@ Dette starter en HTTP-server, der giver API-adgang til lgcode-funktionalitet ude
 
 ### session
 
-Administrator LGcode sessionsholder.
+Administrator Loongcode sessionsholder.
 
 ```bash
-lgcode session [command]
+loongcode session [command]
 ```
 
 ---
 
 #### list
 
-Liste over alle LGcode sessioner.
+Liste over alle Loongcode sessioner.
 
 ```bash
-lgcode session list
+loongcode session list
 ```
 
 ##### Flag
@@ -411,10 +411,10 @@ lgcode session list
 
 ### stats
 
-Vis tokenbrug og omkostningsstatistikker for dine LGcode-sessioner.
+Vis tokenbrug og omkostningsstatistikker for dine Loongcode-sessioner.
 
 ```bash
-lgcode stats
+loongcode stats
 ```
 
 #### Flag
@@ -433,7 +433,7 @@ lgcode stats
 Eksporter sessionsdata som JSON.
 
 ```bash
-lgcode export [sessionID]
+loongcode export [sessionID]
 ```
 
 Hvis du ikke angiver et sessions-id, bliver du bedt om at vælge mellem tilgængelige sessioner.
@@ -442,30 +442,30 @@ Hvis du ikke angiver et sessions-id, bliver du bedt om at vælge mellem tilgæng
 
 ### import
 
-Importer sessionsdata fra en JSON fil eller LGcode del URL.
+Importer sessionsdata fra en JSON fil eller Loongcode del URL.
 
 ```bash
-lgcode import <file>
+loongcode import <file>
 ```
 
-Du kan importere fra en lokal fil eller en LGcode share URL.
+Du kan importere fra en lokal fil eller en Loongcode share URL.
 
 ```bash
-lgcode import session.json
-lgcode import https://opncd.ai/s/abc123
+loongcode import session.json
+loongcode import https://opncd.ai/s/abc123
 ```
 
 ---
 
 ### web
 
-Start en hovedløs LGcode-server med en webgrænseflade.
+Start en hovedløs Loongcode-server med en webgrænseflade.
 
 ```bash
-lgcode web
+loongcode web
 ```
 
-Dette starter en HTTP-server og åbner en webbrowser for at få adgang til LGcode via en webgrænseflade. Indstil `LGCODE_SERVER_PASSWORD` for at aktivere HTTP grundlæggende godkendelse (brugernavn er standard til `lgcode`).
+Dette starter en HTTP-server og åbner en webbrowser for at få adgang til Loongcode via en webgrænseflade. Indstil `LOONGCODE_SERVER_PASSWORD` for at aktivere HTTP grundlæggende godkendelse (brugernavn er standard til `loongcode`).
 
 #### Flag
 
@@ -483,7 +483,7 @@ Dette starter en HTTP-server og åbner en webbrowser for at få adgang til LGcod
 Start en ACP-server (Agent Client Protocol).
 
 ```bash
-lgcode acp
+loongcode acp
 ```
 
 Denne kommando starter en ACP-server, der kommunikerer via stdin/stdout ved hjælp af nd-JSON.
@@ -500,10 +500,10 @@ Denne kommando starter en ACP-server, der kommunikerer via stdin/stdout ved hjæ
 
 ### uninstall
 
-Afinstaller LGcode og fjern alle relaterede filer.
+Afinstaller Loongcode og fjern alle relaterede filer.
 
 ```bash
-lgcode uninstall
+loongcode uninstall
 ```
 
 #### Flag
@@ -519,22 +519,22 @@ lgcode uninstall
 
 ### upgrade
 
-Opdaterer LGcode til den nyeste version eller en specifik version.
+Opdaterer Loongcode til den nyeste version eller en specifik version.
 
 ```bash
-lgcode upgrade [target]
+loongcode upgrade [target]
 ```
 
 For at opgradere til den nyeste version.
 
 ```bash
-lgcode upgrade
+loongcode upgrade
 ```
 
 For at opgradere til en bestemt version.
 
 ```bash
-lgcode upgrade v0.1.48
+loongcode upgrade v0.1.48
 ```
 
 #### upgrade
@@ -547,7 +547,7 @@ lgcode upgrade v0.1.48
 
 ## Globale flag
 
-lgcode CLI tager følgende globale flag.
+loongcode CLI tager følgende globale flag.
 
 | Flag                                       | Kort | Beskrivelse                          |
 | ------------------------------------------ | ---- | ------------------------------------ |
@@ -560,34 +560,34 @@ lgcode CLI tager følgende globale flag.
 
 ## Miljøvariabler
 
-LGcode kan konfigureres ved hjælp af miljøvariabler.
+Loongcode kan konfigureres ved hjælp af miljøvariabler.
 
 | Variabel                              | Skriv   | Beskrivelse                                                           |
 | ------------------------------------- | ------- | --------------------------------------------------------------------- |
-| `LGCODE_AUTO_SHARE`                 | boolean | Del automatisk session                                                |
-| `LGCODE_GIT_BASH_PATH`              | string  | Sti til Git Bash eksekverbar på Windows                               |
-| `LGCODE_CONFIG`                     | string  | Sti til konfigurationsfil                                             |
-| `LGCODE_TUI_CONFIG`                 | string  | Sti til TUI-konfigurationsfil                                         |
-| `LGCODE_CONFIG_DIR`                 | string  | Sti til konfigurationsmappe                                           |
-| `LGCODE_CONFIG_CONTENT`             | string  | Indbygget json-konfigurationsindhold                                  |
-| `LGCODE_DISABLE_AUTOUPDATE`         | boolean | Deaktiver automatisk opdateringskontrol                               |
-| `LGCODE_DISABLE_PRUNE`              | boolean | Deaktiver beskæring af gamle data                                     |
-| `LGCODE_DISABLE_TERMINAL_TITLE`     | boolean | Deaktiver automatisk opdatering af terminaltitel                      |
-| `LGCODE_PERMISSION`                 | string  | Indbygget json-tilladelseskonfiguration                               |
-| `LGCODE_DISABLE_DEFAULT_PLUGINS`    | boolean | Deaktiver standard plugins                                            |
-| `LGCODE_DISABLE_LSP_DOWNLOAD`       | boolean | Deaktiver automatisk LSP-serverdownloads                              |
-| `LGCODE_ENABLE_EXPERIMENTAL_MODELS` | boolean | Aktive eksperimentelle modeller                                       |
-| `LGCODE_DISABLE_AUTOCOMPACT`        | boolean | Deaktiver automatisk kontekstkomprimering                             |
-| `LGCODE_DISABLE_CLAUDE_CODE`        | boolean | Deaktiver læsning fra `.claude` (prompt + færdigheder)                |
-| `LGCODE_DISABLE_CLAUDE_CODE_PROMPT` | boolean | Deaktiver læsning `~/.claude/CLAUDE.md`                               |
-| `LGCODE_DISABLE_CLAUDE_CODE_SKILLS` | boolean | Deaktiver indlæsning af `.claude/skills`                              |
-| `LGCODE_DISABLE_MODELS_FETCH`       | boolean | Deaktivering af modeller fra eksterne kilder                          |
-| `LGCODE_FAKE_VCS`                   | string  | Falsk VCS-udbyder til testformål                                      |
-| `LGCODE_CLIENT`                     | string  | Klient-id (standard til `cli`)                                        |
-| `LGCODE_ENABLE_EXA`                 | boolean | Aktiver Exa-websøgeværktøjer                                          |
-| `LGCODE_SERVER_PASSWORD`            | string  | Aktiver grundlæggende godkendelse for `serve`/`web`                   |
-| `LGCODE_SERVER_USERNAME`            | string  | Tilsidesæt grundlæggende godkendelsesbrugernavn (standard `lgcode`) |
-| `LGCODE_MODELS_URL`                 | string  | Brugerdefineret URL til hentning af modelkonfiguration                |
+| `LOONGCODE_AUTO_SHARE`                 | boolean | Del automatisk session                                                |
+| `LOONGCODE_GIT_BASH_PATH`              | string  | Sti til Git Bash eksekverbar på Windows                               |
+| `LOONGCODE_CONFIG`                     | string  | Sti til konfigurationsfil                                             |
+| `LOONGCODE_TUI_CONFIG`                 | string  | Sti til TUI-konfigurationsfil                                         |
+| `LOONGCODE_CONFIG_DIR`                 | string  | Sti til konfigurationsmappe                                           |
+| `LOONGCODE_CONFIG_CONTENT`             | string  | Indbygget json-konfigurationsindhold                                  |
+| `LOONGCODE_DISABLE_AUTOUPDATE`         | boolean | Deaktiver automatisk opdateringskontrol                               |
+| `LOONGCODE_DISABLE_PRUNE`              | boolean | Deaktiver beskæring af gamle data                                     |
+| `LOONGCODE_DISABLE_TERMINAL_TITLE`     | boolean | Deaktiver automatisk opdatering af terminaltitel                      |
+| `LOONGCODE_PERMISSION`                 | string  | Indbygget json-tilladelseskonfiguration                               |
+| `LOONGCODE_DISABLE_DEFAULT_PLUGINS`    | boolean | Deaktiver standard plugins                                            |
+| `LOONGCODE_DISABLE_LSP_DOWNLOAD`       | boolean | Deaktiver automatisk LSP-serverdownloads                              |
+| `LOONGCODE_ENABLE_EXPERIMENTAL_MODELS` | boolean | Aktive eksperimentelle modeller                                       |
+| `LOONGCODE_DISABLE_AUTOCOMPACT`        | boolean | Deaktiver automatisk kontekstkomprimering                             |
+| `LOONGCODE_DISABLE_CLAUDE_CODE`        | boolean | Deaktiver læsning fra `.claude` (prompt + færdigheder)                |
+| `LOONGCODE_DISABLE_CLAUDE_CODE_PROMPT` | boolean | Deaktiver læsning `~/.claude/CLAUDE.md`                               |
+| `LOONGCODE_DISABLE_CLAUDE_CODE_SKILLS` | boolean | Deaktiver indlæsning af `.claude/skills`                              |
+| `LOONGCODE_DISABLE_MODELS_FETCH`       | boolean | Deaktivering af modeller fra eksterne kilder                          |
+| `LOONGCODE_FAKE_VCS`                   | string  | Falsk VCS-udbyder til testformål                                      |
+| `LOONGCODE_CLIENT`                     | string  | Klient-id (standard til `cli`)                                        |
+| `LOONGCODE_ENABLE_EXA`                 | boolean | Aktiver Exa-websøgeværktøjer                                          |
+| `LOONGCODE_SERVER_PASSWORD`            | string  | Aktiver grundlæggende godkendelse for `serve`/`web`                   |
+| `LOONGCODE_SERVER_USERNAME`            | string  | Tilsidesæt grundlæggende godkendelsesbrugernavn (standard `loongcode`) |
+| `LOONGCODE_MODELS_URL`                 | string  | Brugerdefineret URL til hentning af modelkonfiguration                |
 
 ---
 
@@ -597,21 +597,21 @@ Disse miljøvariabler muliggør eksperimentelle funktioner, der kan ændres elle
 
 | Variabel                                        | Skriv   | Beskrivelse                                          |
 | ----------------------------------------------- | ------- | ---------------------------------------------------- |
-| `LGCODE_EXPERIMENTAL`                         | boolean | Aktiver eksperimentelle funktioner under samleflaget |
-| `LGCODE_EXPERIMENTAL_ICON_DISCOVERY`          | boolean | Aktiver ikonopdagelse                                |
-| `LGCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT`  | boolean | Deaktiver kopi ved valg i TUI                        |
-| `LGCODE_EXPERIMENTAL_BASH_DEFAULT_TIMEOUT_MS` | nummer  | Standard timeout for bash-kommandoer i ms            |
-| `LGCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX`        | nummer  | Maks. output-tokens for LLM-svar                     |
-| `LGCODE_EXPERIMENTAL_FILEWATCHER`             | boolean | Aktiver filovervågning for hele dir                  |
-| `LGCODE_EXPERIMENTAL_OXFMT`                   | boolean | Aktiver oxfmt formatter                              |
-| `LGCODE_EXPERIMENTAL_LSP_TOOL`                | boolean | Aktive eksperimenter LSP værktøj                     |
-| `LGCODE_EXPERIMENTAL_DISABLE_FILEWATCHER`     | boolean | Deaktiver filovervågning                             |
-| `LGCODE_EXPERIMENTAL_EXA`                     | boolean | Aktive eksperimenter Exa-funktioner                  |
-| `LGCODE_EXPERIMENTAL_LSP_TY`                  | boolean | Aktiver TY LSP for python-filer                      |
-| `LGCODE_EXPERIMENTAL_PLAN_MODE`               | boolean | Aktiver plantilstand                                 |
-| `LGCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS`    | boolean | Aktiver baggrundsopgaver for subagenter              |
-| `LGCODE_EXPERIMENTAL_EVENT_SYSTEM`            | boolean | Aktiver eksperimentelt hændelsessystem               |
-| `LGCODE_EXPERIMENTAL_NATIVE_LLM`              | boolean | Aktiver native LLM-anmodningssti                     |
-| `LGCODE_EXPERIMENTAL_PARALLEL`                | boolean | Aktiver parallel udførelse af websøgning             |
-| `LGCODE_EXPERIMENTAL_SCOUT`                   | boolean | Aktiver Scout-subagent                               |
-| `LGCODE_EXPERIMENTAL_WORKSPACES`              | boolean | Aktiver workspace-understøttelse                     |
+| `LOONGCODE_EXPERIMENTAL`                         | boolean | Aktiver eksperimentelle funktioner under samleflaget |
+| `LOONGCODE_EXPERIMENTAL_ICON_DISCOVERY`          | boolean | Aktiver ikonopdagelse                                |
+| `LOONGCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT`  | boolean | Deaktiver kopi ved valg i TUI                        |
+| `LOONGCODE_EXPERIMENTAL_BASH_DEFAULT_TIMEOUT_MS` | nummer  | Standard timeout for bash-kommandoer i ms            |
+| `LOONGCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX`        | nummer  | Maks. output-tokens for LLM-svar                     |
+| `LOONGCODE_EXPERIMENTAL_FILEWATCHER`             | boolean | Aktiver filovervågning for hele dir                  |
+| `LOONGCODE_EXPERIMENTAL_OXFMT`                   | boolean | Aktiver oxfmt formatter                              |
+| `LOONGCODE_EXPERIMENTAL_LSP_TOOL`                | boolean | Aktive eksperimenter LSP værktøj                     |
+| `LOONGCODE_EXPERIMENTAL_DISABLE_FILEWATCHER`     | boolean | Deaktiver filovervågning                             |
+| `LOONGCODE_EXPERIMENTAL_EXA`                     | boolean | Aktive eksperimenter Exa-funktioner                  |
+| `LOONGCODE_EXPERIMENTAL_LSP_TY`                  | boolean | Aktiver TY LSP for python-filer                      |
+| `LOONGCODE_EXPERIMENTAL_PLAN_MODE`               | boolean | Aktiver plantilstand                                 |
+| `LOONGCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS`    | boolean | Aktiver baggrundsopgaver for subagenter              |
+| `LOONGCODE_EXPERIMENTAL_EVENT_SYSTEM`            | boolean | Aktiver eksperimentelt hændelsessystem               |
+| `LOONGCODE_EXPERIMENTAL_NATIVE_LLM`              | boolean | Aktiver native LLM-anmodningssti                     |
+| `LOONGCODE_EXPERIMENTAL_PARALLEL`                | boolean | Aktiver parallel udførelse af websøgning             |
+| `LOONGCODE_EXPERIMENTAL_SCOUT`                   | boolean | Aktiver Scout-subagent                               |
+| `LOONGCODE_EXPERIMENTAL_WORKSPACES`              | boolean | Aktiver workspace-understøttelse                     |

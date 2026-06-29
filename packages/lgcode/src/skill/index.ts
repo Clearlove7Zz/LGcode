@@ -1,38 +1,38 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
 import path from "path"
 import { pathToFileURL } from "url"
 import { Effect, Layer, Context, Schema } from "effect"
-import { NamedError } from "@lgcode/core/util/error"
+import { NamedError } from "@loongcode/core/util/error"
 import type { Agent } from "@/agent/agent"
 import { EventV2Bridge } from "@/event-v2-bridge"
 import { InstanceState } from "@/effect/instance-state"
-import { Global } from "@lgcode/core/global"
-import { SkillPlugin } from "@lgcode/core/plugin/skill"
+import { Global } from "@loongcode/core/global"
+import { SkillPlugin } from "@loongcode/core/plugin/skill"
 import { Permission } from "@/permission"
-import { FSUtil } from "@lgcode/core/fs-util"
+import { FSUtil } from "@loongcode/core/fs-util"
 import { Config } from "@/config/config"
-import { FrontmatterError } from "@lgcode/core/v1/config/error"
+import { FrontmatterError } from "@loongcode/core/v1/config/error"
 import { ConfigMarkdown } from "@/config/markdown"
 import { RuntimeFlags } from "@/effect/runtime-flags"
-import { Glob } from "@lgcode/core/util/glob"
+import { Glob } from "@loongcode/core/util/glob"
 import { Discovery } from "./discovery"
 import { isRecord } from "@/util/record"
 
 const CLAUDE_EXTERNAL_DIR = ".claude"
 const AGENTS_EXTERNAL_DIR = ".agents"
 const EXTERNAL_SKILL_PATTERN = "skills/**/SKILL.md"
-const LGCODE_SKILL_PATTERN = "{skill,skills}/**/SKILL.md"
+const LOONGCODE_SKILL_PATTERN = "{skill,skills}/**/SKILL.md"
 const SKILL_PATTERN = "**/SKILL.md"
 
-// Built-in skill that ships with lgcode. The model's intuition for what an
-// lgcode.json should look like is often wrong, and lgcode hard-fails on
+// Built-in skill that ships with loongcode. The model's intuition for what an
+// loongcode.json should look like is often wrong, and loongcode hard-fails on
 // invalid config, so users hit cryptic startup errors. Loading this skill
-// when the model is asked to touch lgcode's own config files gives it the
+// when the model is asked to touch loongcode's own config files gives it the
 // actual schemas instead of guesses.
-const CUSTOMIZE_LGCODE_SKILL_NAME = "customize-lgcode"
-const CUSTOMIZE_LGCODE_SKILL_DESCRIPTION =
-  "Use ONLY when the user is editing or creating lgcode's own configuration: lgcode.json, lgcode.jsonc, files under .lgcode/, or files under ~/.config/lgcode/. Also use when creating or fixing lgcode agents, subagents, skills, plugins, MCP servers, or permission rules. Do not use for the user's own application code, or for any project that is not configuring lgcode itself."
-const CUSTOMIZE_LGCODE_SKILL_BODY = SkillPlugin.CustomizeOpencodeContent
+const CUSTOMIZE_LOONGCODE_SKILL_NAME = "customize-loongcode"
+const CUSTOMIZE_LOONGCODE_SKILL_DESCRIPTION =
+  "Use ONLY when the user is editing or creating loongcode's own configuration: loongcode.json, loongcode.jsonc, files under .loongcode/, or files under ~/.config/loongcode/. Also use when creating or fixing loongcode agents, subagents, skills, plugins, MCP servers, or permission rules. Do not use for the user's own application code, or for any project that is not configuring loongcode itself."
+const CUSTOMIZE_LOONGCODE_SKILL_BODY = SkillPlugin.CustomizeOpencodeContent
 
 export const Info = Schema.Struct({
   name: Schema.String,
@@ -204,7 +204,7 @@ const discoverSkills = Effect.fnUntraced(function* (
 
   const configDirs = yield* config.directories()
   for (const dir of configDirs) {
-    yield* scan(state, dir, LGCODE_SKILL_PATTERN)
+    yield* scan(state, dir, LOONGCODE_SKILL_PATTERN)
   }
 
   const cfg = yield* config.get()
@@ -245,7 +245,7 @@ const loadSkills = Effect.fnUntraced(function* (
   yield* Effect.logInfo("init", { count: Object.keys(state.skills).length })
 })
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Skill") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/Skill") {}
 
 export const layer = Layer.effect(
   Service,
@@ -275,11 +275,11 @@ export const layer = Layer.effect(
         const s: State = { skills: {}, dirs: new Set() }
         // Register the built-in skill BEFORE disk discovery so a user-disk
         // skill with the same name can override it.
-        s.skills[CUSTOMIZE_LGCODE_SKILL_NAME] = {
-          name: CUSTOMIZE_LGCODE_SKILL_NAME,
-          description: CUSTOMIZE_LGCODE_SKILL_DESCRIPTION,
+        s.skills[CUSTOMIZE_LOONGCODE_SKILL_NAME] = {
+          name: CUSTOMIZE_LOONGCODE_SKILL_NAME,
+          description: CUSTOMIZE_LOONGCODE_SKILL_DESCRIPTION,
           location: "<built-in>",
-          content: CUSTOMIZE_LGCODE_SKILL_BODY,
+          content: CUSTOMIZE_LOONGCODE_SKILL_BODY,
         }
         yield* loadSkills(s, yield* InstanceState.get(discovered), events)
         return s

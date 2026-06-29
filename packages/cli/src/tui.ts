@@ -1,7 +1,7 @@
-import { run } from "@lgcode/tui"
-import { TuiConfig } from "@lgcode/tui/config"
+import { run } from "@loongcode/tui"
+import { TuiConfig } from "@loongcode/tui/config"
 import { Effect } from "effect"
-import { Global } from "@lgcode/core/global"
+import { Global } from "@loongcode/core/global"
 
 export function runTui(transport: { url: string; headers: RequestInit["headers"] }) {
   const config = TuiConfig.resolve({}, { terminalSuspend: false })

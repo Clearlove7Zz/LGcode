@@ -1,8 +1,8 @@
 import { For, Show, createEffect, createMemo } from "solid-js"
 import { createStore } from "solid-js/store"
-import { Button } from "@lgcode/ui/button"
-import { DockTray } from "@lgcode/ui/dock-surface"
-import { IconButton } from "@lgcode/ui/icon-button"
+import { Button } from "@loongcode/ui/button"
+import { DockTray } from "@loongcode/ui/dock-surface"
+import { IconButton } from "@loongcode/ui/icon-button"
 import { useLanguage } from "@/context/language"
 
 export function SessionRevertDock(props: {

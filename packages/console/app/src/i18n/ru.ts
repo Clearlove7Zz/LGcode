@@ -15,7 +15,7 @@ export const dict = {
   "nav.home": "Главная",
   "nav.openMenu": "Открыть меню",
   "nav.getStartedFree": "Начать бесплатно",
-  "nav.logoAlt": "LGcode",
+  "nav.logoAlt": "Loongcode",
 
   "nav.context.copyLogo": "Скопировать логотип как SVG",
   "nav.context.copyWordmark": "Скопировать название как SVG",
@@ -37,14 +37,14 @@ export const dict = {
   "email.subscribe": "Подписаться",
   "email.success": "Почти готово, проверьте почту и подтвердите ваш email",
 
-  "notFound.title": "Не найдено | lgcode",
+  "notFound.title": "Не найдено | loongcode",
   "notFound.heading": "404 - Страница не найдена",
   "notFound.home": "Главная",
   "notFound.docs": "Документация",
   "notFound.github": "GitHub",
   "notFound.discord": "Discord",
-  "notFound.logoLightAlt": "светлый логотип lgcode",
-  "notFound.logoDarkAlt": "темный логотип lgcode",
+  "notFound.logoLightAlt": "светлый логотип loongcode",
+  "notFound.logoDarkAlt": "темный логотип loongcode",
 
   "user.logout": "Выйти",
 
@@ -81,25 +81,25 @@ export const dict = {
   "error.reloadAmountMin": "Сумма пополнения должна быть не менее ${{amount}}",
   "error.reloadTriggerMin": "Порог баланса должен быть не менее ${{amount}}",
 
-  "app.meta.description": "LGcode - AI-агент с открытым кодом для программирования.",
+  "app.meta.description": "Loongcode - AI-агент с открытым кодом для программирования.",
 
-  "home.title": "LGcode | AI-агент с открытым кодом для программирования",
+  "home.title": "Loongcode | AI-агент с открытым кодом для программирования",
 
-  "temp.title": "lgcode | AI-агент для программирования в терминале",
+  "temp.title": "loongcode | AI-агент для программирования в терминале",
   "temp.hero.title": "AI-агент для программирования в терминале",
-  "temp.zen": "lgcode zen",
+  "temp.zen": "loongcode zen",
   "temp.getStarted": "Начать",
   "temp.feature.native.title": "Нативный TUI",
   "temp.feature.native.body": "Отзывчивый, нативный, темизируемый терминальный интерфейс",
   "temp.feature.zen.beforeLink": "",
   "temp.feature.zen.link": "Отобранный список моделей",
-  "temp.feature.zen.afterLink": "от lgcode",
+  "temp.feature.zen.afterLink": "от loongcode",
   "temp.feature.models.beforeLink": "Поддерживает 75+ провайдеров LLM через",
   "temp.feature.models.afterLink": ", включая локальные модели",
-  "temp.screenshot.caption": "LGcode TUI с темой tokyonight",
-  "temp.screenshot.alt": "LGcode TUI с темой tokyonight",
-  "temp.logoLightAlt": "светлый логотип lgcode",
-  "temp.logoDarkAlt": "темный логотип lgcode",
+  "temp.screenshot.caption": "Loongcode TUI с темой tokyonight",
+  "temp.screenshot.alt": "Loongcode TUI с темой tokyonight",
+  "temp.logoLightAlt": "светлый логотип loongcode",
+  "temp.logoDarkAlt": "темный логотип loongcode",
 
   "home.banner.badge": "Новое",
   "home.banner.text": "Доступно десктопное приложение (бета)",
@@ -113,9 +113,9 @@ export const dict = {
 
   "home.install.ariaLabel": "Варианты установки",
 
-  "home.what.title": "Что такое LGcode?",
+  "home.what.title": "Что такое Loongcode?",
   "home.what.body":
-    "LGcode — это агент с открытым исходным кодом, который помогает писать код в терминале, IDE или на десктопе.",
+    "Loongcode — это агент с открытым исходным кодом, который помогает писать код в терминале, IDE или на десктопе.",
   "home.what.lsp.title": "Поддержка LSP",
   "home.what.lsp.body": "Автоматически загружает нужные LSP для LLM",
   "home.what.multiSession.title": "Мульти-сессии",
@@ -134,44 +134,44 @@ export const dict = {
 
   "home.growth.title": "AI-агент с открытым кодом для программирования",
   "home.growth.body":
-    "С более чем <strong>{{stars}}</strong> звезд на GitHub, <strong>{{contributors}}</strong> контрибьюторов и <strong>{{commits}}</strong> коммитов, LGcode доверяют более <strong>{{monthlyUsers}}</strong> разработчиков ежемесячно.",
+    "С более чем <strong>{{stars}}</strong> звезд на GitHub, <strong>{{contributors}}</strong> контрибьюторов и <strong>{{commits}}</strong> коммитов, Loongcode доверяют более <strong>{{monthlyUsers}}</strong> разработчиков ежемесячно.",
   "home.growth.githubStars": "Звезд на GitHub",
   "home.growth.contributors": "Контрибьюторов",
   "home.growth.monthlyDevs": "Разработчиков в месяц",
 
   "home.privacy.title": "Создан с заботой о приватности",
   "home.privacy.body":
-    "LGcode не хранит ваш код или контекстные данные, поэтому он может работать в средах, чувствительных к приватности.",
+    "Loongcode не хранит ваш код или контекстные данные, поэтому он может работать в средах, чувствительных к приватности.",
   "home.privacy.learnMore": "Подробнее о",
   "home.privacy.link": "приватности",
 
-  "home.faq.q1": "Что такое LGcode?",
+  "home.faq.q1": "Что такое Loongcode?",
   "home.faq.a1":
-    "LGcode — это агент с открытым исходным кодом, который помогает писать и запускать код с любой AI-моделью. Доступен как терминальный интерфейс, десктопное приложение или расширение для IDE.",
-  "home.faq.q2": "Как использовать LGcode?",
+    "Loongcode — это агент с открытым исходным кодом, который помогает писать и запускать код с любой AI-моделью. Доступен как терминальный интерфейс, десктопное приложение или расширение для IDE.",
+  "home.faq.q2": "Как использовать Loongcode?",
   "home.faq.a2.before": "Проще всего начать с чтения",
   "home.faq.a2.link": "введения",
-  "home.faq.q3": "Нужны ли дополнительные подписки на AI для использования LGcode?",
+  "home.faq.q3": "Нужны ли дополнительные подписки на AI для использования Loongcode?",
   "home.faq.a3.p1":
-    "Не обязательно, LGcode поставляется с набором бесплатных моделей, которые можно использовать без создания аккаунта.",
+    "Не обязательно, Loongcode поставляется с набором бесплатных моделей, которые можно использовать без создания аккаунта.",
   "home.faq.a3.p2.beforeZen":
     "Помимо этого, вы можете использовать любые популярные модели для кодинга, создав аккаунт",
   "home.faq.a3.p2.afterZen": ".",
   "home.faq.a3.p3":
-    "Хотя мы рекомендуем использовать Zen, LGcode также работает со всеми популярными провайдерами, такими как OpenAI, Anthropic, xAI и др.",
+    "Хотя мы рекомендуем использовать Zen, Loongcode также работает со всеми популярными провайдерами, такими как OpenAI, Anthropic, xAI и др.",
   "home.faq.a3.p4.beforeLocal": "Вы даже можете подключить ваши",
   "home.faq.a3.p4.localLink": "локальные модели",
-  "home.faq.q4": "Могу ли я использовать мои существующие AI-подписки с LGcode?",
+  "home.faq.q4": "Могу ли я использовать мои существующие AI-подписки с Loongcode?",
   "home.faq.a4.p1":
-    "Да, LGcode поддерживает подписки всех основных провайдеров. Вы можете использовать ваши подписки Claude Pro/Max, ChatGPT Plus/Pro или GitHub Copilot.",
-  "home.faq.q5": "Можно ли использовать LGcode только в терминале?",
-  "home.faq.a5.beforeDesktop": "Больше нет! LGcode теперь доступен как приложение для",
+    "Да, Loongcode поддерживает подписки всех основных провайдеров. Вы можете использовать ваши подписки Claude Pro/Max, ChatGPT Plus/Pro или GitHub Copilot.",
+  "home.faq.q5": "Можно ли использовать Loongcode только в терминале?",
+  "home.faq.a5.beforeDesktop": "Больше нет! Loongcode теперь доступен как приложение для",
   "home.faq.a5.desktop": "десктопа",
   "home.faq.a5.and": "и",
   "home.faq.a5.web": "веба",
-  "home.faq.q6": "Сколько стоит LGcode?",
+  "home.faq.q6": "Сколько стоит Loongcode?",
   "home.faq.a6":
-    "LGcode на 100% бесплатен. Он также включает набор бесплатных моделей. Дополнительные расходы могут возникнуть, если вы подключите другого провайдера.",
+    "Loongcode на 100% бесплатен. Он также включает набор бесплатных моделей. Дополнительные расходы могут возникнуть, если вы подключите другого провайдера.",
   "home.faq.q7": "Как насчет данных и приватности?",
   "home.faq.a7.p1":
     "Ваши данные сохраняются только тогда, когда вы используете наши бесплатные модели или создаете ссылки для шеринга.",
@@ -179,8 +179,8 @@ export const dict = {
   "home.faq.a7.p2.modelsLink": "наших моделях",
   "home.faq.a7.p2.and": "и",
   "home.faq.a7.p2.shareLink": "страницах шеринга",
-  "home.faq.q8": "LGcode — это open source?",
-  "home.faq.a8.p1": "Да, LGcode полностью open source. Исходный код доступен публично на",
+  "home.faq.q8": "Loongcode — это open source?",
+  "home.faq.a8.p1": "Да, Loongcode полностью open source. Исходный код доступен публично на",
   "home.faq.a8.p2": "под",
   "home.faq.a8.mitLicense": "лицензией MIT",
   "home.faq.a8.p3":
@@ -188,23 +188,23 @@ export const dict = {
 
   "home.zenCta.title": "Доступ к надежным оптимизированным моделям для кодинг-агентов",
   "home.zenCta.body":
-    "Zen дает доступ к отобранному набору AI-моделей, которые LGcode протестировал и проверил специально для кодинг-агентов. Не нужно беспокоиться о нестабильной производительности и качестве разных провайдеров, используйте проверенные модели, которые работают.",
+    "Zen дает доступ к отобранному набору AI-моделей, которые Loongcode протестировал и проверил специально для кодинг-агентов. Не нужно беспокоиться о нестабильной производительности и качестве разных провайдеров, используйте проверенные модели, которые работают.",
   "home.zenCta.link": "Узнать о Zen",
 
-  "zen.title": "LGcode Zen | Набор надежных оптимизированных моделей для кодинг-агентов",
+  "zen.title": "Loongcode Zen | Набор надежных оптимизированных моделей для кодинг-агентов",
   "zen.hero.title": "Надежные оптимизированные модели для кодинг-агентов",
   "zen.hero.body":
-    "Zen дает доступ к отобранному набору AI-моделей, которые LGcode протестировал и проверил специально для кодинг-агентов. Не нужно беспокоиться о нестабильной производительности и качестве, используйте проверенные модели, которые работают.",
+    "Zen дает доступ к отобранному набору AI-моделей, которые Loongcode протестировал и проверил специально для кодинг-агентов. Не нужно беспокоиться о нестабильной производительности и качестве, используйте проверенные модели, которые работают.",
 
-  "zen.faq.q1": "Что такое LGcode Zen?",
+  "zen.faq.q1": "Что такое Loongcode Zen?",
   "zen.faq.a1":
-    "Zen — это отобранный набор AI-моделей, протестированных и проверенных для кодинг-агентов командой, стоящей за LGcode.",
+    "Zen — это отобранный набор AI-моделей, протестированных и проверенных для кодинг-агентов командой, стоящей за Loongcode.",
   "zen.faq.q2": "Почему Zen точнее?",
   "zen.faq.a2":
     "Zen предоставляет только те модели, которые были специально протестированы и проверены для кодинг-агентов. Вы же не режете стейк ножом для масла, не используйте плохие модели для кодинга.",
   "zen.faq.q3": "Zen дешевле?",
   "zen.faq.a3":
-    "Zen — некоммерческий проект. Zen транслирует расходы от провайдеров моделей вам. Чем больше использование Zen, тем лучшие тарифы LGcode может согласовать и передать вам.",
+    "Zen — некоммерческий проект. Zen транслирует расходы от провайдеров моделей вам. Чем больше использование Zen, тем лучшие тарифы Loongcode может согласовать и передать вам.",
   "zen.faq.q4": "Сколько стоит Zen?",
   "zen.faq.a4.p1.beforePricing": "Zen",
   "zen.faq.a4.p1.pricingLink": "взимает плату за запрос",
@@ -214,7 +214,7 @@ export const dict = {
     "Общая стоимость зависит от использования, и вы можете установить ежемесячные лимиты расходов в своем",
   "zen.faq.a4.p2.accountLink": "аккаунте",
   "zen.faq.a4.p3":
-    "Для покрытия расходов LGcode добавляет лишь небольшую комиссию за обработку платежа в размере $1.23 при пополнении баланса на $20.",
+    "Для покрытия расходов Loongcode добавляет лишь небольшую комиссию за обработку платежа в размере $1.23 при пополнении баланса на $20.",
   "zen.faq.q5": "Как насчет данных и приватности?",
   "zen.faq.a5.beforeExceptions":
     "Все модели Zen размещены в США. Провайдеры следуют политике нулевого хранения и не используют ваши данные для обучения моделей, за",
@@ -225,7 +225,7 @@ export const dict = {
   "zen.faq.a7": "Да, вы можете отключить оплату в любое время и использовать оставшийся баланс.",
   "zen.faq.q8": "Могу ли я использовать Zen с другими кодинг-агентами?",
   "zen.faq.a8":
-    "Хотя Zen отлично работает с LGcode, вы можете использовать Zen с любым агентом. Следуйте инструкциям по настройке в вашем любимом агенте.",
+    "Хотя Zen отлично работает с Loongcode, вы можете использовать Zen с любым агентом. Следуйте инструкциям по настройке в вашем любимом агенте.",
 
   "zen.cta.start": "Начать работу с Zen",
   "zen.pricing.title": "Пополнить баланс на $20 (Pay as you go)",
@@ -234,12 +234,12 @@ export const dict = {
   "zen.problem.title": "Какую проблему решает Zen?",
   "zen.problem.body":
     "Доступно множество моделей, но лишь немногие хорошо работают с кодинг-агентами. Большинство провайдеров настраивают их по-разному с разными результатами.",
-  "zen.problem.subtitle": "Мы исправляем это для всех, а не только для пользователей LGcode.",
+  "zen.problem.subtitle": "Мы исправляем это для всех, а не только для пользователей Loongcode.",
   "zen.problem.item1": "Тестирование избранных моделей и консультации с их командами",
   "zen.problem.item2": "Работа с провайдерами для обеспечения правильной доставки",
   "zen.problem.item3": "Бенчмаркинг всех рекомендуемых нами комбинаций модель-провайдер",
   "zen.how.title": "Как работает Zen",
-  "zen.how.body": "Хотя мы предлагаем использовать Zen с LGcode, вы можете использовать его с любым агентом.",
+  "zen.how.body": "Хотя мы предлагаем использовать Zen с Loongcode, вы можете использовать его с любым агентом.",
   "zen.how.step1.title": "Зарегистрируйтесь и пополните баланс на $20",
   "zen.how.step1.beforeLink": "следуйте",
   "zen.how.step1.link": "инструкциям по настройке",
@@ -253,7 +253,7 @@ export const dict = {
     "Все модели Zen размещены в США. Провайдеры следуют политике нулевого хранения и не используют ваши данные для обучения моделей, за",
   "zen.privacy.exceptionsLink": "следующими исключениями",
 
-  "go.title": "LGcode Go | Недорогие модели для кодинга для всех",
+  "go.title": "Loongcode Go | Недорогие модели для кодинга для всех",
   "go.banner.text": "MiniMax M3 получает 3x лимиты использования на ограниченное время",
   "go.meta.description":
     "Go начинается с $5 за первый месяц, затем $10/месяц, с щедрыми лимитами запросов за 5 часов для GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro и DeepSeek V4 Flash.",
@@ -278,7 +278,7 @@ export const dict = {
 
   "go.testimonials.brand.zen": "Zen",
   "go.testimonials.brand.go": "Go",
-  "go.testimonials.handle": "@LGcode",
+  "go.testimonials.handle": "@Loongcode",
   "go.testimonials.dax.name": "Dax Raad",
   "go.testimonials.dax.title": "ex-CEO, Terminal Products",
   "go.testimonials.dax.quoteAfter": "изменил мою жизнь, это действительно очевидный выбор.",
@@ -300,7 +300,7 @@ export const dict = {
   "go.testimonials.frank.quote": "Жаль, что я больше не в Nvidia.",
   "go.problem.title": "Какую проблему решает Go?",
   "go.problem.body":
-    "Мы стремимся сделать LGcode доступным для как можно большего числа людей. LGcode Go - это недорогая подписка: $5 за первый месяц, затем $10/месяц. Она предоставляет щедрые лимиты и надежный доступ к самым мощным моделям с открытым исходным кодом.",
+    "Мы стремимся сделать Loongcode доступным для как можно большего числа людей. Loongcode Go - это недорогая подписка: $5 за первый месяц, затем $10/месяц. Она предоставляет щедрые лимиты и надежный доступ к самым мощным моделям с открытым исходным кодом.",
   "go.problem.subtitle": " ",
   "go.problem.item1": "Недорогая подписка",
   "go.problem.item2": "Щедрые лимиты и надежный доступ",
@@ -309,7 +309,7 @@ export const dict = {
     "Включает GLM-5.1, GLM-5, Kimi K2.7 Code, Kimi K2.6, MiMo-V2.5-Pro, MiMo-V2.5, Qwen3.7 Max, Qwen3.7 Plus, Qwen3.6 Plus, MiniMax M2.7, MiniMax M3, DeepSeek V4 Pro и DeepSeek V4 Flash",
   "go.how.title": "Как работает Go",
   "go.how.body":
-    "Go начинается с $5 за первый месяц, затем $10/месяц. Вы можете использовать его с LGcode или любым агентом.",
+    "Go начинается с $5 за первый месяц, затем $10/месяц. Вы можете использовать его с Loongcode или любым агентом.",
   "go.how.step1.title": "Создайте аккаунт",
   "go.how.step1.beforeLink": "следуйте",
   "go.how.step1.link": "инструкциям по настройке",
@@ -325,7 +325,7 @@ export const dict = {
   "go.privacy.beforeExceptions":
     "Модели Go размещены в США. Провайдеры следуют политике нулевого хранения и не используют ваши данные для обучения моделей, за",
   "go.privacy.exceptionsLink": "следующими исключениями",
-  "go.faq.q1": "Что такое LGcode Go?",
+  "go.faq.q1": "Что такое Loongcode Go?",
   "go.faq.a1":
     "Go — это недорогая подписка, дающая надежный доступ к мощным моделям с открытым исходным кодом для агентов-программистов.",
   "go.faq.q2": "Какие модели включает Go?",
@@ -380,13 +380,13 @@ export const dict = {
     "Вы достигли ежемесячного лимита расходов в ${{amount}}. Управляйте лимитами здесь: {{membersUrl}}",
   "zen.api.error.modelDisabled": "Модель отключена",
   "zen.api.error.trialEnded":
-    "Бесплатная акция для {{model}} завершена. Вы можете продолжить использование модели, подписавшись на LGcode Go - {{link}}",
+    "Бесплатная акция для {{model}} завершена. Вы можете продолжить использование модели, подписавшись на Loongcode Go - {{link}}",
 
-  "black.meta.title": "LGcode Black | Доступ к лучшим моделям для кодинга в мире",
-  "black.meta.description": "Получите доступ к Claude, GPT, Gemini и другим моделям с подпиской LGcode Black.",
+  "black.meta.title": "Loongcode Black | Доступ к лучшим моделям для кодинга в мире",
+  "black.meta.description": "Получите доступ к Claude, GPT, Gemini и другим моделям с подпиской Loongcode Black.",
   "black.hero.title": "Доступ к лучшим моделям для кодинга в мире",
   "black.hero.subtitle": "Включая Claude, GPT, Gemini и другие",
-  "black.title": "LGcode Black | Цены",
+  "black.title": "Loongcode Black | Цены",
   "black.paused": "Регистрация на план Black временно приостановлена.",
   "black.plan.icon20": "План Black 20",
   "black.plan.icon100": "План Black 100",
@@ -406,10 +406,10 @@ export const dict = {
   "black.action.continue": "Продолжить",
   "black.finePrint.beforeTerms": "Указанные цены не включают применимые налоги",
   "black.finePrint.terms": "Условия обслуживания",
-  "black.workspace.title": "LGcode Black | Выбор рабочего пространства",
+  "black.workspace.title": "Loongcode Black | Выбор рабочего пространства",
   "black.workspace.selectPlan": "Выберите рабочее пространство для этого плана",
   "black.workspace.name": "Рабочее пространство {{n}}",
-  "black.subscribe.title": "Подписаться на LGcode Black",
+  "black.subscribe.title": "Подписаться на Loongcode Black",
   "black.subscribe.paymentMethod": "Способ оплаты",
   "black.subscribe.loadingPaymentForm": "Загрузка формы оплаты...",
   "black.subscribe.selectWorkspaceToContinue": "Выберите рабочее пространство для продолжения",
@@ -421,9 +421,9 @@ export const dict = {
   "black.subscribe.processing": "Обработка...",
   "black.subscribe.submit": "Подписаться на ${{plan}}",
   "black.subscribe.form.chargeNotice": "Оплата будет списана только при активации вашей подписки",
-  "black.subscribe.success.title": "Вы в списке ожидания LGcode Black",
+  "black.subscribe.success.title": "Вы в списке ожидания Loongcode Black",
   "black.subscribe.success.subscriptionPlan": "План подписки",
-  "black.subscribe.success.planName": "LGcode Black {{plan}}",
+  "black.subscribe.success.planName": "Loongcode Black {{plan}}",
   "black.subscribe.success.amount": "Сумма",
   "black.subscribe.success.amountValue": "${{plan}} в месяц",
   "black.subscribe.success.paymentMethod": "Способ оплаты",
@@ -452,15 +452,15 @@ export const dict = {
     "Доступ к моделям, настроенным для оптимальной производительности — никаких даунгрейдов или перенаправления к дешевым провайдерам.",
   "workspace.newUser.feature.lockin.title": "Без привязки (Lock-in)",
   "workspace.newUser.feature.lockin.body":
-    "Используйте Zen с любым кодинг-агентом и продолжайте использовать других провайдеров с lgcode, когда захотите.",
+    "Используйте Zen с любым кодинг-агентом и продолжайте использовать других провайдеров с loongcode, когда захотите.",
   "workspace.newUser.copyApiKey": "Копировать API ключ",
   "workspace.newUser.copyKey": "Копировать ключ",
   "workspace.newUser.copied": "Скопировано!",
   "workspace.newUser.step.enableBilling": "Включить оплату",
   "workspace.newUser.step.login.before": "Запустите",
-  "workspace.newUser.step.login.after": "и выберите lgcode",
+  "workspace.newUser.step.login.after": "и выберите loongcode",
   "workspace.newUser.step.pasteKey": "Вставьте ваш API ключ",
-  "workspace.newUser.step.models.before": "Запустите lgcode и выполните",
+  "workspace.newUser.step.models.before": "Запустите loongcode и выполните",
   "workspace.newUser.step.models.after": "для выбора модели",
 
   "workspace.models.title": "Модели",
@@ -507,10 +507,10 @@ export const dict = {
   "workspace.cost.subscriptionShort": "подписка",
 
   "workspace.keys.title": "API Ключи",
-  "workspace.keys.subtitle": "Управляйте вашими API ключами для доступа к сервисам lgcode.",
+  "workspace.keys.subtitle": "Управляйте вашими API ключами для доступа к сервисам loongcode.",
   "workspace.keys.create": "Создать API ключ",
   "workspace.keys.placeholder": "Введите название ключа",
-  "workspace.keys.empty": "Создайте API ключ для шлюза lgcode",
+  "workspace.keys.empty": "Создайте API ключ для шлюза loongcode",
   "workspace.keys.table.name": "Название",
   "workspace.keys.table.key": "Ключ",
   "workspace.keys.table.createdBy": "Создан",
@@ -625,15 +625,15 @@ export const dict = {
   "workspace.black.time.minutes": "минут",
   "workspace.black.time.fewSeconds": "несколько секунд",
   "workspace.black.subscription.title": "Подписка",
-  "workspace.black.subscription.message": "Вы подписаны на LGcode Black за ${{plan}} в месяц.",
+  "workspace.black.subscription.message": "Вы подписаны на Loongcode Black за ${{plan}} в месяц.",
   "workspace.black.subscription.manage": "Управление подпиской",
   "workspace.black.subscription.rollingUsage": "5-часовое использование",
   "workspace.black.subscription.weeklyUsage": "Недельное использование",
   "workspace.black.subscription.resetsIn": "Сброс через",
   "workspace.black.subscription.useBalance": "Использовать доступный баланс после достижения лимитов",
   "workspace.black.waitlist.title": "Список ожидания",
-  "workspace.black.waitlist.joined": "Вы в списке ожидания плана LGcode Black за ${{plan}} в месяц.",
-  "workspace.black.waitlist.ready": "Мы готовы подключить вас к плану LGcode Black за ${{plan}} в месяц.",
+  "workspace.black.waitlist.joined": "Вы в списке ожидания плана Loongcode Black за ${{plan}} в месяц.",
+  "workspace.black.waitlist.ready": "Мы готовы подключить вас к плану Loongcode Black за ${{plan}} в месяц.",
   "workspace.black.waitlist.leave": "Покинуть список ожидания",
   "workspace.black.waitlist.leaving": "Выход...",
   "workspace.black.waitlist.left": "Вы покинули",
@@ -651,7 +651,7 @@ export const dict = {
   "workspace.lite.time.minute": "минута",
   "workspace.lite.time.minutes": "минут",
   "workspace.lite.time.fewSeconds": "несколько секунд",
-  "workspace.lite.subscription.message": "Вы подписаны на LGcode Go.",
+  "workspace.lite.subscription.message": "Вы подписаны на Loongcode Go.",
   "workspace.lite.subscription.manage": "Управление подпиской",
   "workspace.lite.subscription.rollingUsage": "Скользящее использование",
   "workspace.lite.subscription.weeklyUsage": "Недельное использование",
@@ -659,13 +659,13 @@ export const dict = {
   "workspace.lite.subscription.resetsIn": "Сброс через",
   "workspace.lite.subscription.useBalance": "Использовать доступный баланс после достижения лимитов",
   "workspace.lite.subscription.selectProvider":
-    'Выберите "LGcode Go" в качестве провайдера в настройках lgcode для использования моделей Go.',
+    'Выберите "Loongcode Go" в качестве провайдера в настройках loongcode для использования моделей Go.',
   "workspace.lite.black.message":
-    "Вы подписаны на LGcode Black или находитесь в списке ожидания. Пожалуйста, сначала отмените подписку, если хотите перейти на Go.",
+    "Вы подписаны на Loongcode Black или находитесь в списке ожидания. Пожалуйста, сначала отмените подписку, если хотите перейти на Go.",
   "workspace.lite.other.message":
-    "Другой участник в этом рабочем пространстве уже подписан на LGcode Go. Только один участник в рабочем пространстве может оформить подписку.",
+    "Другой участник в этом рабочем пространстве уже подписан на Loongcode Go. Только один участник в рабочем пространстве может оформить подписку.",
   "workspace.lite.promo.description":
-    "LGcode Go начинается с {{price}}, затем $10/месяц и предоставляет надежный доступ к популярным открытым моделям кодирования с щедрыми лимитами использования.",
+    "Loongcode Go начинается с {{price}}, затем $10/месяц и предоставляет надежный доступ к популярным открытым моделям кодирования с щедрыми лимитами использования.",
   "workspace.lite.promo.price": "$5 за первый месяц",
   "workspace.lite.promo.modelsTitle": "Что включено",
   "workspace.lite.promo.footer":
@@ -710,15 +710,15 @@ export const dict = {
     "Используйте {{amount}}, чтобы уменьшить текущее использование этого workspace.",
   "workspace.referral.apply.confirmAction": "Применить",
 
-  "download.title": "LGcode | Скачать",
-  "download.meta.description": "Скачать LGcode для macOS, Windows и Linux",
-  "download.hero.title": "Скачать LGcode",
+  "download.title": "Loongcode | Скачать",
+  "download.meta.description": "Скачать Loongcode для macOS, Windows и Linux",
+  "download.hero.title": "Скачать Loongcode",
   "download.hero.subtitle": "Доступна бета для macOS, Windows и Linux",
   "download.hero.button": "Скачать для {{os}}",
-  "download.section.terminal": "LGcode Terminal",
-  "download.section.desktop": "LGcode Desktop (Beta)",
-  "download.section.extensions": "Расширения LGcode",
-  "download.section.integrations": "Интеграции LGcode",
+  "download.section.terminal": "Loongcode Terminal",
+  "download.section.desktop": "Loongcode Desktop (Beta)",
+  "download.section.extensions": "Расширения Loongcode",
+  "download.section.integrations": "Интеграции Loongcode",
   "download.action.download": "Скачать",
   "download.action.install": "Установить",
 
@@ -729,26 +729,26 @@ export const dict = {
   "download.platform.linuxRpm": "Linux (.rpm)",
 
   "download.faq.a3.beforeLocal":
-    "Не обязательно, но возможно. Вам понадобится AI подписка, если вы хотите подключить LGcode к платному провайдеру, хотя вы можете работать с",
+    "Не обязательно, но возможно. Вам понадобится AI подписка, если вы хотите подключить Loongcode к платному провайдеру, хотя вы можете работать с",
   "download.faq.a3.localLink": "локальными моделями",
   "download.faq.a3.afterLocal.beforeZen": "бесплатно. Хотя мы рекомендуем использовать",
   "download.faq.a3.afterZen":
-    ", LGcode работает со всеми популярными провайдерами, такими как OpenAI, Anthropic, xAI и др.",
+    ", Loongcode работает со всеми популярными провайдерами, такими как OpenAI, Anthropic, xAI и др.",
 
-  "download.faq.a5.p1": "LGcode на 100% бесплатен.",
+  "download.faq.a5.p1": "Loongcode на 100% бесплатен.",
   "download.faq.a5.p2.beforeZen":
-    "Любые дополнительные расходы будут связаны с вашей подпиской у провайдера моделей. Хотя LGcode работает с любым провайдером моделей, мы рекомендуем использовать",
+    "Любые дополнительные расходы будут связаны с вашей подпиской у провайдера моделей. Хотя Loongcode работает с любым провайдером моделей, мы рекомендуем использовать",
   "download.faq.a5.p2.afterZen": ".",
 
-  "download.faq.a6.p1": "Ваши данные и информация сохраняются только при создании ссылок для шеринга в LGcode.",
+  "download.faq.a6.p1": "Ваши данные и информация сохраняются только при создании ссылок для шеринга в Loongcode.",
   "download.faq.a6.p2.beforeShare": "Подробнее о",
   "download.faq.a6.shareLink": "страницах шеринга",
 
-  "enterprise.title": "LGcode | Корпоративные решения для вашей организации",
-  "enterprise.meta.description": "Свяжитесь с LGcode для корпоративных решений",
+  "enterprise.title": "Loongcode | Корпоративные решения для вашей организации",
+  "enterprise.meta.description": "Свяжитесь с Loongcode для корпоративных решений",
   "enterprise.hero.title": "Ваш код принадлежит вам",
   "enterprise.hero.body1":
-    "LGcode безопасно работает внутри вашей организации: не хранит данные и контекст, без лицензионных ограничений и претензий на собственность. Начните пробный период с командой, затем разверните по всей организации, интегрировав с SSO и внутренним AI-шлюзом.",
+    "Loongcode безопасно работает внутри вашей организации: не хранит данные и контекст, без лицензионных ограничений и претензий на собственность. Начните пробный период с командой, затем разверните по всей организации, интегрировав с SSO и внутренним AI-шлюзом.",
   "enterprise.hero.body2": "Сообщите нам, чем мы можем помочь.",
   "enterprise.form.name.label": "Полное имя",
   "enterprise.form.name.placeholder": "Джефф Безос",
@@ -770,29 +770,29 @@ export const dict = {
   "enterprise.form.error.invalidEmailFormat": "Неверный формат email.",
   "enterprise.form.error.internalServer": "Внутренняя ошибка сервера.",
   "enterprise.faq.title": "FAQ",
-  "enterprise.faq.q1": "Что такое LGcode Enterprise?",
+  "enterprise.faq.q1": "Что такое Loongcode Enterprise?",
   "enterprise.faq.a1":
-    "LGcode Enterprise предназначен для организаций, которые хотят гарантировать, что их код и данные никогда не покинут их инфраструктуру. Это достигается за счет централизованной конфигурации, интегрированной с вашим SSO и внутренним AI-шлюзом.",
-  "enterprise.faq.q2": "Как начать работу с LGcode Enterprise?",
+    "Loongcode Enterprise предназначен для организаций, которые хотят гарантировать, что их код и данные никогда не покинут их инфраструктуру. Это достигается за счет централизованной конфигурации, интегрированной с вашим SSO и внутренним AI-шлюзом.",
+  "enterprise.faq.q2": "Как начать работу с Loongcode Enterprise?",
   "enterprise.faq.a2":
-    "Просто начните с внутреннего триала с вашей командой. LGcode по умолчанию не хранит ваш код или контекстные данные, поэтому начать легко. Затем свяжитесь с нами, чтобы обсудить цены и варианты внедрения.",
+    "Просто начните с внутреннего триала с вашей командой. Loongcode по умолчанию не хранит ваш код или контекстные данные, поэтому начать легко. Затем свяжитесь с нами, чтобы обсудить цены и варианты внедрения.",
   "enterprise.faq.q3": "Как работает корпоративное ценообразование?",
   "enterprise.faq.a3":
     "Мы предлагаем модель ценообразования за рабочее место (per-seat). Если у вас есть собственный LLM-шлюз, мы не взимаем плату за использованные токены. Для получения подробной информации свяжитесь с нами для индивидуального расчета на основе потребностей вашей организации.",
-  "enterprise.faq.q4": "Безопасны ли мои данные с LGcode Enterprise?",
+  "enterprise.faq.q4": "Безопасны ли мои данные с Loongcode Enterprise?",
   "enterprise.faq.a4":
-    "Да. LGcode не хранит ваш код или контекстные данные. Вся обработка происходит локально или через прямые вызовы API к вашему AI-провайдеру. Благодаря централизованной конфигурации и интеграции SSO ваши данные остаются защищенными внутри инфраструктуры вашей организации.",
+    "Да. Loongcode не хранит ваш код или контекстные данные. Вся обработка происходит локально или через прямые вызовы API к вашему AI-провайдеру. Благодаря централизованной конфигурации и интеграции SSO ваши данные остаются защищенными внутри инфраструктуры вашей организации.",
 
-  "brand.title": "LGcode | Бренд",
-  "brand.meta.description": "Гайдлайны бренда LGcode",
+  "brand.title": "Loongcode | Бренд",
+  "brand.meta.description": "Гайдлайны бренда Loongcode",
   "brand.heading": "Гайдлайны бренда",
-  "brand.subtitle": "Ресурсы и активы, которые помогут вам работать с брендом LGcode.",
+  "brand.subtitle": "Ресурсы и активы, которые помогут вам работать с брендом Loongcode.",
   "brand.downloadAll": "Скачать все ресурсы",
 
-  "changelog.title": "LGcode | Список изменений",
-  "changelog.meta.description": "Примечания к релизам и список изменений LGcode",
+  "changelog.title": "Loongcode | Список изменений",
+  "changelog.meta.description": "Примечания к релизам и список изменений Loongcode",
   "changelog.hero.title": "Список изменений",
-  "changelog.hero.subtitle": "Новые обновления и улучшения LGcode",
+  "changelog.hero.subtitle": "Новые обновления и улучшения Loongcode",
   "changelog.empty": "Записи в списке изменений не найдены.",
   "changelog.viewJson": "Посмотреть JSON",
 

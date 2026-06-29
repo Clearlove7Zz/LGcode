@@ -1,8 +1,8 @@
-import type { GlobalEvent } from "@lgcode/sdk/v2"
-import type { EventSource } from "@lgcode/tui/context/sdk"
+import type { GlobalEvent } from "@loongcode/sdk/v2"
+import type { EventSource } from "@loongcode/tui/context/sdk"
 
-export const worktree = "/tmp/lgcode"
-export const directory = `${worktree}/packages/lgcode`
+export const worktree = "/tmp/loongcode"
+export const directory = `${worktree}/packages/loongcode`
 
 export function json(data: unknown, init?: ResponseInit) {
   return new Response(JSON.stringify(data), {

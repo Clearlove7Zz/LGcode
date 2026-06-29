@@ -1,5 +1,5 @@
-import { MoveSession } from "@lgcode/core/control-plane/move-session"
-import { SessionV2 } from "@lgcode/core/session"
+import { MoveSession } from "@loongcode/core/control-plane/move-session"
+import { SessionV2 } from "@loongcode/core/session"
 import { Effect } from "effect"
 import { HttpApiBuilder } from "effect/unstable/httpapi"
 import { RootHttpApi } from "../api"

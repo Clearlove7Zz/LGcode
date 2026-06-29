@@ -1,4 +1,4 @@
-import { ProviderV2 } from "@lgcode/core/provider"
+import { ProviderV2 } from "@loongcode/core/provider"
 import { RequestError } from "@agentclientprotocol/sdk"
 import { Schema } from "effect"
 

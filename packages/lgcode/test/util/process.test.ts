@@ -69,9 +69,9 @@ describe("util.process", () => {
   })
 
   test("merges environment overrides", async () => {
-    const out = await Process.run(node('process.stdout.write(process.env.LGCODE_TEST ?? "")'), {
+    const out = await Process.run(node('process.stdout.write(process.env.LOONGCODE_TEST ?? "")'), {
       env: {
-        LGCODE_TEST: "set",
+        LOONGCODE_TEST: "set",
       },
     })
     expect(out.stdout.toString()).toBe("set")
@@ -80,15 +80,15 @@ describe("util.process", () => {
   test("uses shell in run on Windows", async () => {
     if (process.platform !== "win32") return
 
-    const out = await Process.run(["set", "LGCODE_TEST_SHELL"], {
+    const out = await Process.run(["set", "LOONGCODE_TEST_SHELL"], {
       shell: true,
       env: {
-        LGCODE_TEST_SHELL: "ok",
+        LOONGCODE_TEST_SHELL: "ok",
       },
     })
 
     expect(out.code).toBe(0)
-    expect(out.stdout.toString()).toContain("LGCODE_TEST_SHELL=ok")
+    expect(out.stdout.toString()).toContain("LOONGCODE_TEST_SHELL=ok")
   })
 
   test("runs cmd scripts with spaces on Windows without shell", async () => {

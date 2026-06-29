@@ -1,5 +1,5 @@
 {
-  "name": "@lgcode/console-mail",
+  "name": "@loongcode/console-mail",
   "version": "1.17.7",
   "dependencies": {
     "@jsx-email/all": "2.2.3",

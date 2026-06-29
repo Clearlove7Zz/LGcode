@@ -1,10 +1,10 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { Catalog } from "@lgcode/core/catalog"
-import { PluginV2 } from "@lgcode/core/plugin"
-import { ProviderPlugins } from "@lgcode/core/plugin/provider"
-import { KiloPlugin } from "@lgcode/core/plugin/provider/kilo"
-import { ProviderV2 } from "@lgcode/core/provider"
+import { Catalog } from "@loongcode/core/catalog"
+import { PluginV2 } from "@loongcode/core/plugin"
+import { ProviderPlugins } from "@loongcode/core/plugin/provider"
+import { KiloPlugin } from "@loongcode/core/plugin/provider/kilo"
+import { ProviderV2 } from "@loongcode/core/provider"
 import { expectPluginRegistered, it, provider } from "./provider-helper"
 
 describe("KiloPlugin", () => {
@@ -37,7 +37,7 @@ describe("KiloPlugin", () => {
       expect((yield* catalog.provider.get(ProviderV2.ID.make("kilo"))).request.headers).toEqual({
         Existing: "value",
         "HTTP-Referer": "https://modelhub.lgdg.cc/",
-        "X-Title": "lgcode",
+        "X-Title": "loongcode",
       })
       expect((yield* catalog.provider.get(ProviderV2.ID.openrouter)).request.headers).toEqual({})
     }),
@@ -61,7 +61,7 @@ describe("KiloPlugin", () => {
       const result = yield* catalog.provider.get(ProviderV2.ID.make("kilo"))
       expect(result.request.headers).toEqual({
         "HTTP-Referer": "https://modelhub.lgdg.cc/",
-        "X-Title": "lgcode",
+        "X-Title": "loongcode",
       })
       expect(result.request.headers).not.toHaveProperty("http-referer")
       expect(result.request.headers).not.toHaveProperty("x-title")
@@ -92,7 +92,7 @@ describe("KiloPlugin", () => {
 
       expect((yield* catalog.provider.get(ProviderV2.ID.make("kilo"))).request.headers).toEqual({
         "HTTP-Referer": "https://modelhub.lgdg.cc/",
-        "X-Title": "lgcode",
+        "X-Title": "loongcode",
       })
       expect((yield* catalog.provider.get(ProviderV2.ID.make("custom-kilo"))).request.headers).toEqual({})
     }),

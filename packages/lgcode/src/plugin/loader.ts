@@ -9,8 +9,8 @@ import {
   type PluginSource,
 } from "./shared"
 import { ConfigPlugin } from "@/config/plugin"
-import { ConfigPluginV1 } from "@lgcode/core/v1/config/plugin"
-import { InstallationVersion } from "@lgcode/core/installation/version"
+import { ConfigPluginV1 } from "@loongcode/core/v1/config/plugin"
+import { InstallationVersion } from "@loongcode/core/installation/version"
 
 export namespace PluginLoader {
   // A normalized plugin declaration derived from config before any filesystem or npm work happens.
@@ -120,7 +120,7 @@ export namespace PluginLoader {
         },
       }
 
-    // npm plugins can declare which lgcode versions they support; file plugins are treated
+    // npm plugins can declare which loongcode versions they support; file plugins are treated
     // as local development code and skip this compatibility gate.
     if (base.source === "npm") {
       try {

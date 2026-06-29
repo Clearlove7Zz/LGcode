@@ -1,9 +1,9 @@
 import { describe, expect } from "bun:test"
 import { Duration, Effect, Exit, Fiber, Layer, Scope, Stream } from "effect"
 import * as TestClock from "effect/testing/TestClock"
-import { Integration } from "@lgcode/core/integration"
-import { Credential } from "@lgcode/core/credential"
-import { EventV2 } from "@lgcode/core/event"
+import { Integration } from "@loongcode/core/integration"
+import { Credential } from "@loongcode/core/credential"
+import { EventV2 } from "@loongcode/core/event"
 import { it } from "./lib/effect"
 
 const layer = Integration.locationLayer.pipe(

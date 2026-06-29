@@ -72,7 +72,7 @@ export type DesktopMenu = {
 export const DESKTOP_MENU: DesktopMenu[] = [
   {
     id: "app",
-    label: "LGcode",
+    label: "Loongcode",
     platforms: ["macos"],
     items: [
       { type: "item", role: "about" },
@@ -200,8 +200,8 @@ export const DESKTOP_MENU: DesktopMenu[] = [
     id: "help",
     label: "Help",
     items: [
-      { type: "item", label: "LGcode Documentation", href: "https://modelhub.lgdg.cc/docs" },
-      { type: "item", label: "Support Forum", href: "https://discord.com/invite/lgcode" },
+      { type: "item", label: "Loongcode Documentation", href: "https://modelhub.lgdg.cc/docs" },
+      { type: "item", label: "Support Forum", href: "https://discord.com/invite/loongcode" },
       { type: "item", label: "Export Logs...", command: "logs.export" },
       { type: "separator" },
       {

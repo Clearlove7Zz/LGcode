@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "name": "@lgcode/stats-core",
+  "name": "@loongcode/stats-core",
   "version": "1.17.7",
   "private": true,
   "type": "module",

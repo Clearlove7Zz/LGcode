@@ -5,7 +5,7 @@ import path from "node:path"
 import { Effect, Exit, Stream } from "effect"
 import type * as PlatformError from "effect/PlatformError"
 import { ChildProcess, ChildProcessSpawner } from "effect/unstable/process"
-import { CrossSpawnSpawner } from "@lgcode/core/cross-spawn-spawner"
+import { CrossSpawnSpawner } from "@loongcode/core/cross-spawn-spawner"
 import { testEffect } from "../lib/effect"
 
 const live = CrossSpawnSpawner.defaultLayer
@@ -40,7 +40,7 @@ function alive(pid: number) {
 }
 
 async function tmpdir() {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "lgcode-core-test-"))
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "loongcode-core-test-"))
   return {
     path: dir,
     async [Symbol.asyncDispose]() {
@@ -383,14 +383,14 @@ describe("cross-spawn spawner", () => {
 
         const out = yield* ChildProcessSpawner.ChildProcessSpawner.use((svc) =>
           svc.string(
-            ChildProcess.make("set", ["LGCODE_TEST_SHELL"], {
+            ChildProcess.make("set", ["LOONGCODE_TEST_SHELL"], {
               shell: true,
               extendEnv: true,
-              env: { LGCODE_TEST_SHELL: "ok" },
+              env: { LOONGCODE_TEST_SHELL: "ok" },
             }),
           ),
         )
-        expect(out).toContain("LGCODE_TEST_SHELL=ok")
+        expect(out).toContain("LOONGCODE_TEST_SHELL=ok")
       }),
     )
 

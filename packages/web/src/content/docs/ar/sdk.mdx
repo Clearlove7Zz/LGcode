@@ -1,13 +1,13 @@
 ---
 title: مجموعة تطوير البرمجيات (SDK)
-description: عميل JavaScript آمن الأنواع لخادم lgcode.
+description: عميل JavaScript آمن الأنواع لخادم loongcode.
 ---
 
 import config from "../../../../config.mjs"
 export const typesUrl = `${config.github}/blob/dev/packages/sdk/js/src/gen/types.gen.ts`
 
-توفر SDK الخاصة بـ lgcode لـ JS/TS عميلا آمنا للأنواع للتفاعل مع الخادم.
-استخدمها لبناء التكاملات والتحكم في lgcode برمجيا.
+توفر SDK الخاصة بـ loongcode لـ JS/TS عميلا آمنا للأنواع للتفاعل مع الخادم.
+استخدمها لبناء التكاملات والتحكم في loongcode برمجيا.
 
 [اعرف المزيد](/docs/server) حول كيفية عمل الخادم. للاطلاع على أمثلة، تفقد [المشاريع](/docs/ecosystem#projects) التي أنشأها المجتمع.
 
@@ -18,17 +18,17 @@ export const typesUrl = `${config.github}/blob/dev/packages/sdk/js/src/gen/types
 ثبّت SDK من npm:
 
 ```bash
-npm install @lgcode-ai/sdk
+npm install @loongcode-ai/sdk
 ```
 
 ---
 
 ## إنشاء عميل
 
-أنشئ مثيلا من lgcode:
+أنشئ مثيلا من loongcode:
 
 ```javascript
-import { createOpencode } from "@lgcode-ai/sdk"
+import { createOpencode } from "@loongcode-ai/sdk"
 
 const { client } = await createOpencode()
 ```
@@ -49,12 +49,12 @@ const { client } = await createOpencode()
 
 ## الإعدادات
 
-يمكنك تمرير كائن إعدادات لتخصيص السلوك. سيستمر المثيل في التقاط `lgcode.json` لديك، لكن يمكنك تجاوز الإعدادات أو إضافة إعدادات مباشرة:
+يمكنك تمرير كائن إعدادات لتخصيص السلوك. سيستمر المثيل في التقاط `loongcode.json` لديك، لكن يمكنك تجاوز الإعدادات أو إضافة إعدادات مباشرة:
 
 ```javascript
-import { createOpencode } from "@lgcode-ai/sdk"
+import { createOpencode } from "@loongcode-ai/sdk"
 
-const lgcode = await createOpencode({
+const loongcode = await createOpencode({
   hostname: "127.0.0.1",
   port: 4096,
   config: {
@@ -62,17 +62,17 @@ const lgcode = await createOpencode({
   },
 })
 
-console.log(`Server running at ${lgcode.server.url}`)
+console.log(`Server running at ${loongcode.server.url}`)
 
-lgcode.server.close()
+loongcode.server.close()
 ```
 
 ## العميل فقط
 
-إذا كان لديك مثيل lgcode يعمل بالفعل، يمكنك إنشاء مثيل عميل للاتصال به:
+إذا كان لديك مثيل loongcode يعمل بالفعل، يمكنك إنشاء مثيل عميل للاتصال به:
 
 ```javascript
-import { createOpencodeClient } from "@lgcode-ai/sdk"
+import { createOpencodeClient } from "@loongcode-ai/sdk"
 
 const client = createOpencodeClient({
   baseUrl: "http://localhost:4096",
@@ -96,7 +96,7 @@ const client = createOpencodeClient({
 تتضمن SDK تعريفات TypeScript لجميع أنواع API. استوردها مباشرة:
 
 ```typescript
-import type { Session, Message, Part } from "@lgcode-ai/sdk"
+import type { Session, Message, Part } from "@loongcode-ai/sdk"
 ```
 
 جميع الأنواع مولّدة من مواصفات OpenAPI الخاصة بالخادم ومتاحة في <a href={typesUrl}>ملف الأنواع</a>.
@@ -376,7 +376,7 @@ await client.session.prompt({
 ```javascript
 // Search and read files
 const textResults = await client.find.text({
-  query: { pattern: "function.*lgcode" },
+  query: { pattern: "function.*loongcode" },
 })
 
 const files = await client.find.files({

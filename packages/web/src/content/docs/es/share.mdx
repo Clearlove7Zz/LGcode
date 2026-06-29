@@ -1,9 +1,9 @@
 ---
 title: Compartir
-description: Comparte tus conversaciones LGcode.
+description: Comparte tus conversaciones Loongcode.
 ---
 
-La función para compartir de LGcode te permite crear enlaces públicos a tus conversaciones de LGcode, para que puedas colaborar con compañeros de equipo u obtener ayuda de otros.
+La función para compartir de Loongcode te permite crear enlaces públicos a tus conversaciones de Loongcode, para que puedas colaborar con compañeros de equipo u obtener ayuda de otros.
 
 :::note
 Las conversaciones compartidas son de acceso público para cualquier persona que tenga el enlace.
@@ -13,7 +13,7 @@ Las conversaciones compartidas son de acceso público para cualquier persona que
 
 ## Cómo funciona
 
-Cuando compartes una conversación, LGcode:
+Cuando compartes una conversación, Loongcode:
 
 1. Crea una URL pública única para su sesión.
 2. Sincroniza tu historial de conversaciones con nuestros servidores
@@ -23,13 +23,13 @@ Cuando compartes una conversación, LGcode:
 
 ## Uso compartido
 
-LGcode admite tres modos de compartir que controlan cómo se comparten las conversaciones:
+Loongcode admite tres modos de compartir que controlan cómo se comparten las conversaciones:
 
 ---
 
 ### Manual (predeterminado)
 
-De forma predeterminada, LGcode usa el modo de compartir manual. Las sesiones no se comparten automáticamente, pero puedes compartirlas manualmente usando el comando `/share`:
+De forma predeterminada, Loongcode usa el modo de compartir manual. Las sesiones no se comparten automáticamente, pero puedes compartirlas manualmente usando el comando `/share`:
 
 ```
 /share
@@ -39,7 +39,7 @@ Esto generará una URL única que se copiará en su portapapeles.
 
 Para configurar explícitamente el modo manual en su [archivo de configuración](/docs/config):
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "share": "manual"
@@ -52,7 +52,7 @@ Para configurar explícitamente el modo manual en su [archivo de configuración]
 
 Puede habilitar el uso compartido automático para todas las conversaciones nuevas configurando la opción `share` en `"auto"` en su [archivo de configuración](/docs/config):
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "share": "auto"
@@ -67,14 +67,14 @@ Con el uso compartido automático habilitado, cada nueva conversación se compar
 
 Puede desactivar el uso compartido por completo configurando la opción `share` en `"disabled"` en su [archivo de configuración](/docs/config):
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "share": "disabled"
 }
 ```
 
-Para aplicar esto en todo su equipo para un proyecto determinado, agréguelo al `lgcode.json` en su proyecto y regístrelo en Git.
+Para aplicar esto en todo su equipo para un proyecto determinado, agréguelo al `loongcode.json` en su proyecto y regístrelo en Git.
 
 ---
 
@@ -125,4 +125,4 @@ Para implementaciones empresariales, la función de compartir puede ser:
 - **Restringido** solo a usuarios autenticados a través de SSO
 - **Autohospedado** en tu propia infraestructura
 
-[Obtenga más información](/docs/enterprise) sobre el uso de lgcode en su organización.
+[Obtenga más información](/docs/enterprise) sobre el uso de loongcode en su organización.

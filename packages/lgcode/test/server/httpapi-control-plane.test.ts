@@ -3,9 +3,9 @@ import { describe, expect } from "bun:test"
 import { Context, Effect, Layer, Option, Ref } from "effect"
 import { HttpBody, HttpClient, HttpClientRequest, HttpRouter } from "effect/unstable/http"
 import { HttpApiBuilder } from "effect/unstable/httpapi"
-import { MoveSession } from "@lgcode/core/control-plane/move-session"
-import { AbsolutePath } from "@lgcode/core/schema"
-import { SessionV2 } from "@lgcode/core/session"
+import { MoveSession } from "@loongcode/core/control-plane/move-session"
+import { AbsolutePath } from "@loongcode/core/schema"
+import { SessionV2 } from "@loongcode/core/session"
 import { Auth } from "../../src/auth"
 import { Config } from "../../src/config/config"
 import { Installation } from "../../src/installation"
@@ -44,7 +44,7 @@ const apiLayer = HttpRouter.serve(
       moveSession: (value) => Ref.set(called, value),
     }),
   ),
-  Layer.provide(ServerAuth.Config.layer({ password: Option.none(), username: "lgcode" })),
+  Layer.provide(ServerAuth.Config.layer({ password: Option.none(), username: "loongcode" })),
 )
 const it = testEffect(apiLayer)
 

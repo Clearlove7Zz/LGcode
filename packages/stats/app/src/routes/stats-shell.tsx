@@ -15,13 +15,13 @@ export const headerLinks = [
 ] as const
 export const githubLink = {
   href: "https://github.com/Clearlove7Zz/LGcode.git",
-  apiHref: "https://api.github.com/repos/anomalyco/lgcode",
+  apiHref: "https://api.github.com/repos/anomalyco/loongcode",
   label: "GitHub",
   fallbackStars: "150K",
-  ariaLabel: "Star LGcode on GitHub",
+  ariaLabel: "Star Loongcode on GitHub",
 }
 export const themePreferences = ["dark", "light", "system"] as const
-export const themeStorageKey = "lgcode:stats-theme"
+export const themeStorageKey = "loongcode:stats-theme"
 export type ThemePreference = (typeof themePreferences)[number]
 
 const compactNumberFormatter = new Intl.NumberFormat("en", {
@@ -128,7 +128,7 @@ export function Header(props: { githubStars: string; links?: readonly HeaderLink
             <span>[{props.githubStars}]</span>
           </a>
           <a data-slot="header-button" data-variant="contrast" href="https://modelhub.lgdg.cc/">
-            <strong>Try LGcode</strong>
+            <strong>Try Loongcode</strong>
           </a>
           <button
             data-slot="menu-button"
@@ -192,9 +192,9 @@ function DataWordmark() {
   )
 }
 
-function LGcodeMark() {
+function LoongcodeMark() {
   return (
-    <svg data-slot="lgcode-mark" width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+    <svg data-slot="loongcode-mark" width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
       <path d="M40 40H0V0H40V40Z" fill="var(--stats-logo-bg)" />
       <path d="M26 29H14V17H26V29Z" fill="var(--stats-logo-fill)" />
       <path d="M26 11H14V29H26V11ZM32 35H8V5H32V35Z" fill="var(--stats-logo-stroke)" />
@@ -224,7 +224,7 @@ export function Footer(props: {
   const connect = [
     { href: "mailto:hello@modelhub.lgdg.cc", label: "Contact us" },
     { href: "https://modelhub.lgdg.cc/discord", label: "Community" },
-    { href: "https://x.com/lgcode", label: "X" },
+    { href: "https://x.com/loongcode", label: "X" },
     githubLink,
     { href: "https://www.youtube.com/@anomaly-co", label: "YouTube" },
   ]
@@ -233,8 +233,8 @@ export function Footer(props: {
     <footer data-component="footer">
       <SectionBridge label="GEO BREAKDOWN" href="#geo-breakdown" />
       <div data-slot="footer-grid">
-        <a data-slot="footer-mark" href="https://modelhub.lgdg.cc" aria-label="LGcode home">
-          <LGcodeMark />
+        <a data-slot="footer-mark" href="https://modelhub.lgdg.cc" aria-label="Loongcode home">
+          <LoongcodeMark />
         </a>
         <FooterColumn title="Model Data" links={modelStats} />
         <FooterColumn title="Legal" links={legal} />
@@ -385,7 +385,7 @@ function SubscribeModal(props: { onClose: () => void }) {
       <div data-slot="modal-scrim" aria-hidden="true" onClick={props.onClose} />
       <div data-slot="modal-panel">
         <div data-slot="modal-brand">
-          <img data-slot="modal-logo" src={opencodeWordmarkDark} alt="LGcode" />
+          <img data-slot="modal-logo" src={opencodeWordmarkDark} alt="Loongcode" />
           <button data-slot="modal-close" type="button" aria-label="Close newsletter signup" onClick={props.onClose}>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <path d="M4.44 4.44L11.56 11.56M11.56 4.44L4.44 11.56" stroke="currentColor" />
@@ -394,7 +394,7 @@ function SubscribeModal(props: { onClose: () => void }) {
         </div>
         <div data-slot="modal-body">
           <div data-slot="modal-intro">
-            <h2 id="subscribe-title">LGcode Newsletter</h2>
+            <h2 id="subscribe-title">Loongcode Newsletter</h2>
             <p>
               Be the first to know
               <br />

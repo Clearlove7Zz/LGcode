@@ -17,10 +17,10 @@ export function TestTuiContexts(
   return (
     <TuiPathsProvider
       value={{
-        cwd: props.cwd ?? props.directory ?? "/tmp/lgcode/packages/tui",
-        home: "/tmp/lgcode/home",
-        state: "/tmp/lgcode/state",
-        worktree: "/tmp/lgcode",
+        cwd: props.cwd ?? props.directory ?? "/tmp/loongcode/packages/tui",
+        home: "/tmp/loongcode/home",
+        state: "/tmp/loongcode/state",
+        worktree: "/tmp/loongcode",
         ...props.paths,
       }}
     >

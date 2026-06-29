@@ -1,7 +1,7 @@
 import path from "path"
 import { writeHeapSnapshot } from "node:v8"
-import { Flag } from "@lgcode/core/flag/flag"
-import { Global } from "@lgcode/core/global"
+import { Flag } from "@loongcode/core/flag/flag"
+import { Global } from "@loongcode/core/global"
 const MINUTE = 60_000
 const LIMIT = 2 * 1024 * 1024 * 1024
 
@@ -10,7 +10,7 @@ let lock = false
 let armed = true
 
 export function start() {
-  if (!Flag.LGCODE_AUTO_HEAP_SNAPSHOT) return
+  if (!Flag.LOONGCODE_AUTO_HEAP_SNAPSHOT) return
   if (timer) return
 
   const run = async () => {

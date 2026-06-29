@@ -1,6 +1,6 @@
 export * as ApplyPatchTool from "./apply-patch"
 
-import { ToolFailure } from "@lgcode/llm"
+import { ToolFailure } from "@loongcode/llm"
 import { Effect, Layer, Schema } from "effect"
 import { FileMutation } from "../file-mutation"
 import { FSUtil } from "../fs-util"

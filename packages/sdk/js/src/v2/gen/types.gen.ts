@@ -1667,7 +1667,7 @@ export type GlobalEvent = {
 export type LogLevel = "DEBUG" | "INFO" | "WARN" | "ERROR"
 
 /**
- * Server configuration for lgcode serve and web commands
+ * Server configuration for loongcode serve and web commands
  */
 export type ServerConfig = {
   port?: number

@@ -16,8 +16,8 @@ export const LLMGatewayPlugin = PluginV2.define({
           if (item.provider.api.url !== "https://api.llmgateway.io/v1") continue
           evt.provider.update(item.provider.id, (provider) => {
             provider.request.headers["HTTP-Referer"] = "https://modelhub.lgdg.cc/"
-            provider.request.headers["X-Title"] = "lgcode"
-            provider.request.headers["X-Source"] = "lgcode"
+            provider.request.headers["X-Title"] = "loongcode"
+            provider.request.headers["X-Source"] = "loongcode"
           })
         }
       }),

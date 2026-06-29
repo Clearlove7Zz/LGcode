@@ -1,6 +1,6 @@
 import { contextBridge, ipcRenderer, webUtils } from "electron"
 import type { ElectronAPI, WslServersEvent } from "./types"
-import type { UpdaterState } from "@lgcode/app/updater"
+import type { UpdaterState } from "@loongcode/app/updater"
 
 const updaterCallbacks = new Set<(state: UpdaterState) => void>()
 let updaterState: UpdaterState | undefined
@@ -30,8 +30,8 @@ const api: ElectronAPI = {
     installWsl: () => ipcRenderer.invoke("wsl-servers-install-wsl"),
     installDistro: (name) => ipcRenderer.invoke("wsl-servers-install-distro", name),
     probeDistro: (name) => ipcRenderer.invoke("wsl-servers-probe-distro", name),
-    probeOpencode: (name) => ipcRenderer.invoke("wsl-servers-probe-lgcode", name),
-    installOpencode: (name) => ipcRenderer.invoke("wsl-servers-install-lgcode", name),
+    probeOpencode: (name) => ipcRenderer.invoke("wsl-servers-probe-loongcode", name),
+    installOpencode: (name) => ipcRenderer.invoke("wsl-servers-install-loongcode", name),
     openTerminal: (name) => ipcRenderer.invoke("wsl-servers-open-terminal", name),
     addServer: (distro) => ipcRenderer.invoke("wsl-servers-add", distro),
     removeServer: (id) => ipcRenderer.invoke("wsl-servers-remove", id),

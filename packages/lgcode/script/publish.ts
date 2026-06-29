@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 import { $ } from "bun"
 import pkg from "../package.json"
-import { Script } from "@lgcode/script"
+import { Script } from "@loongcode/script"
 import { fileURLToPath } from "url"
 
 const dir = fileURLToPath(new URL("..", import.meta.url))
@@ -78,7 +78,7 @@ const tasks = Object.entries(binaries).map(async ([name]) => {
 await Promise.all(tasks)
 await publish(`./dist/${pkg.name}`, `${pkg.name}-ai`, version)
 
-const image = "ghcr.io/anomalyco/lgcode"
+const image = "ghcr.io/anomalyco/loongcode"
 const platforms = "linux/amd64,linux/arm64"
 const tags = [`${image}:${version}`, `${image}:${Script.channel}`]
 const tagFlags = tags.flatMap((t) => ["-t", t])
@@ -87,10 +87,10 @@ const tagFlags = tags.flatMap((t) => ["-t", t])
 if (!Script.preview) {
   await $`docker buildx build --platform ${platforms} ${tagFlags} --push .`
   // Calculate SHA values
-  const arm64Sha = await $`sha256sum ./dist/lgcode-linux-arm64.tar.gz | cut -d' ' -f1`.text().then((x) => x.trim())
-  const x64Sha = await $`sha256sum ./dist/lgcode-linux-x64.tar.gz | cut -d' ' -f1`.text().then((x) => x.trim())
-  const macX64Sha = await $`sha256sum ./dist/lgcode-darwin-x64.zip | cut -d' ' -f1`.text().then((x) => x.trim())
-  const macArm64Sha = await $`sha256sum ./dist/lgcode-darwin-arm64.zip | cut -d' ' -f1`.text().then((x) => x.trim())
+  const arm64Sha = await $`sha256sum ./dist/loongcode-linux-arm64.tar.gz | cut -d' ' -f1`.text().then((x) => x.trim())
+  const x64Sha = await $`sha256sum ./dist/loongcode-linux-x64.tar.gz | cut -d' ' -f1`.text().then((x) => x.trim())
+  const macX64Sha = await $`sha256sum ./dist/loongcode-darwin-x64.zip | cut -d' ' -f1`.text().then((x) => x.trim())
+  const macArm64Sha = await $`sha256sum ./dist/loongcode-darwin-arm64.zip | cut -d' ' -f1`.text().then((x) => x.trim())
 
   const [pkgver, _subver = ""] = Script.version.split(/(-.*)/, 2)
 
@@ -99,7 +99,7 @@ if (!Script.preview) {
     "# Maintainer: dax",
     "# Maintainer: adam",
     "",
-    "pkgname='lgcode-bin'",
+    "pkgname='loongcode-bin'",
     `pkgver=${pkgver}`,
     `_subver=${_subver}`,
     "options=('!debug' '!strip')",
@@ -108,23 +108,23 @@ if (!Script.preview) {
     "url='https://github.com/Clearlove7Zz/LGcode'",
     "arch=('aarch64' 'x86_64')",
     "license=('MIT')",
-    "provides=('lgcode')",
-    "conflicts=('lgcode')",
+    "provides=('loongcode')",
+    "conflicts=('loongcode')",
     "depends=('ripgrep')",
     "",
-    `source_aarch64=("\${pkgname}_\${pkgver}_aarch64.tar.gz::https://github.com/Clearlove7Zz/LGcode/releases/download/v\${pkgver}\${_subver}/lgcode-linux-arm64.tar.gz")`,
+    `source_aarch64=("\${pkgname}_\${pkgver}_aarch64.tar.gz::https://github.com/Clearlove7Zz/LGcode/releases/download/v\${pkgver}\${_subver}/loongcode-linux-arm64.tar.gz")`,
     `sha256sums_aarch64=('${arm64Sha}')`,
 
-    `source_x86_64=("\${pkgname}_\${pkgver}_x86_64.tar.gz::https://github.com/Clearlove7Zz/LGcode/releases/download/v\${pkgver}\${_subver}/lgcode-linux-x64.tar.gz")`,
+    `source_x86_64=("\${pkgname}_\${pkgver}_x86_64.tar.gz::https://github.com/Clearlove7Zz/LGcode/releases/download/v\${pkgver}\${_subver}/loongcode-linux-x64.tar.gz")`,
     `sha256sums_x86_64=('${x64Sha}')`,
     "",
     "package() {",
-    '  install -Dm755 ./lgcode "${pkgdir}/usr/bin/lgcode"',
+    '  install -Dm755 ./loongcode "${pkgdir}/usr/bin/loongcode"',
     "}",
     "",
   ].join("\n")
 
-  for (const [pkg, pkgbuild] of [["lgcode-bin", binaryPkgbuild]]) {
+  for (const [pkg, pkgbuild] of [["loongcode-bin", binaryPkgbuild]]) {
     for (let i = 0; i < 30; i++) {
       try {
         await $`rm -rf ./dist/aur-${pkg}`
@@ -158,36 +158,36 @@ if (!Script.preview) {
     "",
     "  on_macos do",
     "    if Hardware::CPU.intel?",
-    `      url "https://github.com/Clearlove7Zz/LGcode/releases/download/v${Script.version}/lgcode-darwin-x64.zip"`,
+    `      url "https://github.com/Clearlove7Zz/LGcode/releases/download/v${Script.version}/loongcode-darwin-x64.zip"`,
     `      sha256 "${macX64Sha}"`,
     "",
     "      def install",
-    '        bin.install "lgcode"',
+    '        bin.install "loongcode"',
     "      end",
     "    end",
     "    if Hardware::CPU.arm?",
-    `      url "https://github.com/Clearlove7Zz/LGcode/releases/download/v${Script.version}/lgcode-darwin-arm64.zip"`,
+    `      url "https://github.com/Clearlove7Zz/LGcode/releases/download/v${Script.version}/loongcode-darwin-arm64.zip"`,
     `      sha256 "${macArm64Sha}"`,
     "",
     "      def install",
-    '        bin.install "lgcode"',
+    '        bin.install "loongcode"',
     "      end",
     "    end",
     "  end",
     "",
     "  on_linux do",
     "    if Hardware::CPU.intel? and Hardware::CPU.is_64_bit?",
-    `      url "https://github.com/Clearlove7Zz/LGcode/releases/download/v${Script.version}/lgcode-linux-x64.tar.gz"`,
+    `      url "https://github.com/Clearlove7Zz/LGcode/releases/download/v${Script.version}/loongcode-linux-x64.tar.gz"`,
     `      sha256 "${x64Sha}"`,
     "      def install",
-    '        bin.install "lgcode"',
+    '        bin.install "loongcode"',
     "      end",
     "    end",
     "    if Hardware::CPU.arm? and Hardware::CPU.is_64_bit?",
-    `      url "https://github.com/Clearlove7Zz/LGcode/releases/download/v${Script.version}/lgcode-linux-arm64.tar.gz"`,
+    `      url "https://github.com/Clearlove7Zz/LGcode/releases/download/v${Script.version}/loongcode-linux-arm64.tar.gz"`,
     `      sha256 "${arm64Sha}"`,
     "      def install",
-    '        bin.install "lgcode"',
+    '        bin.install "loongcode"',
     "      end",
     "    end",
     "  end",
@@ -204,8 +204,8 @@ if (!Script.preview) {
   const tap = `https://x-access-token:${token}@github.com/anomalyco/homebrew-tap.git`
   await $`rm -rf ./dist/homebrew-tap`
   await $`git clone ${tap} ./dist/homebrew-tap`
-  await Bun.file("./dist/homebrew-tap/lgcode.rb").write(homebrewFormula)
-  await $`cd ./dist/homebrew-tap && git add lgcode.rb`
+  await Bun.file("./dist/homebrew-tap/loongcode.rb").write(homebrewFormula)
+  await $`cd ./dist/homebrew-tap && git add loongcode.rb`
   if ((await $`cd ./dist/homebrew-tap && git diff --cached --quiet`.nothrow()).exitCode !== 0) {
     await $`cd ./dist/homebrew-tap && git commit -m "Update to v${Script.version}"`
     await $`cd ./dist/homebrew-tap && git push`

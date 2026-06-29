@@ -5,7 +5,7 @@ import { testRender, useRenderer } from "@opentui/solid"
 import { expect, test } from "bun:test"
 import { onCleanup } from "solid-js"
 import { TuiKeybind } from "../src/config/keybind"
-import { getOpencodeModeStack, LGCODE_BASE_MODE, OpencodeKeymapProvider, registerOpencodeKeymap } from "../src/keymap"
+import { getOpencodeModeStack, LOONGCODE_BASE_MODE, OpencodeKeymapProvider, registerOpencodeKeymap } from "../src/keymap"
 
 function createResolvedKeymapConfig(input: TuiKeybind.KeybindOverrides = {}) {
   const keybinds = TuiKeybind.parse(input)
@@ -63,7 +63,7 @@ test("legacy page key aliases compile as page keys", async () => {
   }
 })
 
-test("mode-less bindings stay active when lgcode mode changes", async () => {
+test("mode-less bindings stay active when loongcode mode changes", async () => {
   const counts: Record<string, Record<string, number>> = {}
 
   function Harness() {
@@ -86,7 +86,7 @@ test("mode-less bindings stay active when lgcode mode changes", async () => {
       ]),
     })
     const offBase = keymap.registerLayer({
-      mode: LGCODE_BASE_MODE,
+      mode: LOONGCODE_BASE_MODE,
       commands: [{ name: "model.list", run() {} }],
       bindings: config.keybinds.gather("test.base", ["model.list"]),
     })

@@ -1,21 +1,21 @@
 ---
 title: Pravila
-description: Postavite prilagodena uputstva za lgcode.
+description: Postavite prilagodena uputstva za loongcode.
 ---
 
-Mozete dodati prilagodena uputstva za lgcode tako sto kreirate `AGENTS.md` datoteku. Ovo je slicno pravilima u Cursor-u. Sadrzi uputstva koja se ubacuju u LLM kontekst da prilagode ponasanje za vas projekat.
+Mozete dodati prilagodena uputstva za loongcode tako sto kreirate `AGENTS.md` datoteku. Ovo je slicno pravilima u Cursor-u. Sadrzi uputstva koja se ubacuju u LLM kontekst da prilagode ponasanje za vas projekat.
 
 ---
 
 ## Inicijalizacija
 
-Da kreirate novu `AGENTS.md` datoteku, pokrenite `/init` komandu u lgcode.
+Da kreirate novu `AGENTS.md` datoteku, pokrenite `/init` komandu u loongcode.
 
 :::tip
 Preporuceno je da `AGENTS.md` iz projekta commitujete u Git.
 :::
 
-Ovo skenira projekat i njegov sadrzaj, razumije cemu projekat sluzi i generise `AGENTS.md`. Tako lgcode bolje navigira kroz kod.
+Ovo skenira projekat i njegov sadrzaj, razumije cemu projekat sluzi i generise `AGENTS.md`. Tako loongcode bolje navigira kroz kod.
 
 Ako vec imate `AGENTS.md`, komanda ce pokusati da ga dopuni.
 
@@ -54,7 +54,7 @@ Ovdje dodajete uputstva specificna za projekat koja se dijele sa timom.
 
 ## Tipovi
 
-lgcode podrzava citanje `AGENTS.md` datoteke sa vise lokacija. Svaka lokacija ima drugu svrhu.
+loongcode podrzava citanje `AGENTS.md` datoteke sa vise lokacija. Svaka lokacija ima drugu svrhu.
 
 ### Projekat
 
@@ -62,47 +62,47 @@ Stavite `AGENTS.md` u korijen projekta za pravila specificna za taj projekat. Pr
 
 ### Globalno
 
-Mozete imati i globalna pravila u `~/.config/lgcode/AGENTS.md`. Ona se primjenjuju u svim lgcode sesijama.
+Mozete imati i globalna pravila u `~/.config/loongcode/AGENTS.md`. Ona se primjenjuju u svim loongcode sesijama.
 
 Posto se ovo ne commituje u Git niti dijeli s timom, najbolje je da ovdje cuvate licna pravila koja LLM treba pratiti.
 
 ### Kompatibilnost s Claude Code
 
-Za korisnike koji prelaze sa Claude Code, LGcode podrzava i Claude konvencije datoteka kao rezervu:
+Za korisnike koji prelaze sa Claude Code, Loongcode podrzava i Claude konvencije datoteka kao rezervu:
 
 - **Pravila projekta**: `CLAUDE.md` u direktoriju projekta (koristi se ako ne postoji `AGENTS.md`)
-- **Globalna pravila**: `~/.claude/CLAUDE.md` (koristi se ako ne postoji `~/.config/lgcode/AGENTS.md`)
+- **Globalna pravila**: `~/.claude/CLAUDE.md` (koristi se ako ne postoji `~/.config/loongcode/AGENTS.md`)
 - **Skills**: `~/.claude/skills/` — pogledajte [Agent Skills](/docs/skills/) za detalje
 
 Da iskljucite kompatibilnost sa Claude Code, postavite jednu od ovih varijabli okruzenja:
 
 ```bash
-export LGCODE_DISABLE_CLAUDE_CODE=1        # Disable all .claude support
-export LGCODE_DISABLE_CLAUDE_CODE_PROMPT=1 # Disable only ~/.claude/CLAUDE.md
-export LGCODE_DISABLE_CLAUDE_CODE_SKILLS=1 # Disable only .claude/skills
+export LOONGCODE_DISABLE_CLAUDE_CODE=1        # Disable all .claude support
+export LOONGCODE_DISABLE_CLAUDE_CODE_PROMPT=1 # Disable only ~/.claude/CLAUDE.md
+export LOONGCODE_DISABLE_CLAUDE_CODE_SKILLS=1 # Disable only .claude/skills
 ```
 
 ---
 
 ## Prioritet
 
-Kada se lgcode pokrene, trazi datoteke pravila ovim redoslijedom:
+Kada se loongcode pokrene, trazi datoteke pravila ovim redoslijedom:
 
 1. **Lokalne datoteke** pretrazivanjem prema gore od trenutnog direktorija (`AGENTS.md`, `CLAUDE.md`)
-2. **Globalna datoteka** na `~/.config/lgcode/AGENTS.md`
+2. **Globalna datoteka** na `~/.config/loongcode/AGENTS.md`
 3. **Claude Code datoteka** na `~/.claude/CLAUDE.md` (osim ako je iskljucena)
 
-Prva pronadena datoteka pobjeduje u svakoj kategoriji. Na primjer, ako imate i `AGENTS.md` i `CLAUDE.md`, koristi se samo `AGENTS.md`. Isto tako, `~/.config/lgcode/AGENTS.md` ima prednost nad `~/.claude/CLAUDE.md`.
+Prva pronadena datoteka pobjeduje u svakoj kategoriji. Na primjer, ako imate i `AGENTS.md` i `CLAUDE.md`, koristi se samo `AGENTS.md`. Isto tako, `~/.config/loongcode/AGENTS.md` ima prednost nad `~/.claude/CLAUDE.md`.
 
 ---
 
 ## Prilagođena uputstva
 
-Mozete navesti prilagodene datoteke uputstava u `lgcode.json` ili globalnom `~/.config/lgcode/lgcode.json`. Tako vi i tim ponovo koristite postojeca pravila bez dupliranja u AGENTS.md.
+Mozete navesti prilagodene datoteke uputstava u `loongcode.json` ili globalnom `~/.config/loongcode/loongcode.json`. Tako vi i tim ponovo koristite postojeca pravila bez dupliranja u AGENTS.md.
 
 Primjer:
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "instructions": ["CONTRIBUTING.md", "docs/guidelines.md", ".cursor/rules/*.md"]
@@ -111,7 +111,7 @@ Primjer:
 
 Mozete koristiti i udaljene URL-ove za ucitavanje uputstava sa weba.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "instructions": ["https://raw.githubusercontent.com/my-org/shared-rules/main/style.md"]
@@ -126,13 +126,13 @@ Sve datoteke uputstava se kombinuju sa vasim `AGENTS.md` datotekama.
 
 ## Referenciranje eksternih datoteka
 
-Iako lgcode ne parsira automatski reference datoteka u `AGENTS.md`, slicno ponasanje mozete dobiti na dva nacina:
+Iako loongcode ne parsira automatski reference datoteka u `AGENTS.md`, slicno ponasanje mozete dobiti na dva nacina:
 
-### Korištenje lgcode.json
+### Korištenje loongcode.json
 
-Preporuceni pristup je da koristite `instructions` polje u `lgcode.json`:
+Preporuceni pristup je da koristite `instructions` polje u `loongcode.json`:
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "instructions": ["docs/development-standards.md", "test/testing-guidelines.md", "packages/*/AGENTS.md"]
@@ -141,7 +141,7 @@ Preporuceni pristup je da koristite `instructions` polje u `lgcode.json`:
 
 ### Ručna uputstva u AGENTS.md
 
-Mozete nauciti lgcode da cita eksterne datoteke tako sto cete dati eksplicitna uputstva u `AGENTS.md`. Evo prakticnog primjera:
+Mozete nauciti loongcode da cita eksterne datoteke tako sto cete dati eksplicitna uputstva u `AGENTS.md`. Evo prakticnog primjera:
 
 ```markdown title="AGENTS.md"
 # TypeScript Project Rules
@@ -173,8 +173,8 @@ Ovaj pristup vam omogucava da:
 - Kreirate modularne datoteke pravila koje se mogu ponovo koristiti
 - Dijelite pravila izmedu projekata kroz symlinkove ili git submodule
 - Drzite AGENTS.md kratkim dok upucujete na detaljne smjernice
-- Osigurate da lgcode ucitava datoteke samo kad su potrebne za konkretan zadatak
+- Osigurate da loongcode ucitava datoteke samo kad su potrebne za konkretan zadatak
 
 :::tip
-Za monorepo projekte ili projekte sa zajednickim standardima, odrzivije je koristiti `lgcode.json` sa glob obrascima (npr. `packages/*/AGENTS.md`) nego rucna uputstva.
+Za monorepo projekte ili projekte sa zajednickim standardima, odrzivije je koristiti `loongcode.json` sa glob obrascima (npr. `packages/*/AGENTS.md`) nego rucna uputstva.
 :::

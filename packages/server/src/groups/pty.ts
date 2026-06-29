@@ -1,14 +1,14 @@
-import { Pty } from "@lgcode/core/pty"
-import { PtyID } from "@lgcode/core/pty/schema"
-import { PtyTicket } from "@lgcode/core/pty/ticket"
-import { Location } from "@lgcode/core/location"
+import { Pty } from "@loongcode/core/pty"
+import { PtyID } from "@loongcode/core/pty/schema"
+import { PtyTicket } from "@loongcode/core/pty/ticket"
+import { Location } from "@loongcode/core/location"
 import { Schema } from "effect"
 import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect/unstable/httpapi"
 import { ForbiddenError, PtyNotFoundError } from "../errors"
 import { LocationQuery, locationQueryOpenApi, LocationMiddleware } from "./location"
 
 export const PTY_CONNECT_TICKET_QUERY = "ticket"
-export const PTY_CONNECT_TOKEN_HEADER = "x-lgcode-ticket"
+export const PTY_CONNECT_TOKEN_HEADER = "x-loongcode-ticket"
 export const PTY_CONNECT_TOKEN_HEADER_VALUE = "1"
 
 const PTY_CONNECT_PATH = /^\/api\/pty\/[^/]+\/connect$/

@@ -1,7 +1,7 @@
 import { NodeHttpServer, NodeServices } from "@effect/platform-node"
-import { NamedError } from "@lgcode/core/util/error"
+import { NamedError } from "@loongcode/core/util/error"
 import { describe, expect } from "bun:test"
-import { ConfigErrorV1 } from "@lgcode/core/v1/config/error"
+import { ConfigErrorV1 } from "@loongcode/core/v1/config/error"
 import { Effect, Layer } from "effect"
 import { HttpClient, HttpClientRequest, HttpRouter } from "effect/unstable/http"
 import { errorLayer } from "../../src/server/routes/instance/httpapi/middleware/error"
@@ -56,7 +56,7 @@ describe("HttpApi error middleware", () => {
   it.live("returns invalid config defects as structured client errors", () =>
     Effect.gen(function* () {
       const configError = new ConfigErrorV1.InvalidError({
-        path: "/tmp/lgcode.json",
+        path: "/tmp/loongcode.json",
         issues: [{ message: "Expected object", path: ["provider", "anthropic", "options"] }],
       })
 
@@ -74,11 +74,11 @@ describe("HttpApi error middleware", () => {
       expect(body).toMatchObject({
         name: "ConfigInvalidError",
         data: {
-          path: "/tmp/lgcode.json",
+          path: "/tmp/loongcode.json",
           issues: [{ message: "Expected object", path: ["provider", "anthropic", "options"] }],
         },
       })
-      expect(serialized).toContain("/tmp/lgcode.json")
+      expect(serialized).toContain("/tmp/loongcode.json")
       expect(serialized).toContain("anthropic")
     }),
   )

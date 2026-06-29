@@ -1,9 +1,9 @@
 import path from "node:path"
 import { pathToFileURL } from "node:url"
-import { LayerNode } from "@lgcode/core/effect/layer-node"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
 import { type Tool } from "ai"
-import { ConfigV1 } from "@lgcode/core/v1/config/config"
-import { serviceUse } from "@lgcode/core/effect/service-use"
+import { ConfigV1 } from "@loongcode/core/v1/config/config"
+import { serviceUse } from "@loongcode/core/effect/service-use"
 import { Client, type ClientOptions } from "@modelcontextprotocol/sdk/client/index.js"
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js"
 import { SSEClientTransport } from "@modelcontextprotocol/sdk/client/sse.js"
@@ -17,23 +17,23 @@ import {
   ToolListChangedNotificationSchema,
 } from "@modelcontextprotocol/sdk/types.js"
 import { Config } from "@/config/config"
-import { ConfigMCPV1 } from "@lgcode/core/v1/config/mcp"
-import { NamedError } from "@lgcode/core/util/error"
-import { InstallationVersion } from "@lgcode/core/installation/version"
+import { ConfigMCPV1 } from "@loongcode/core/v1/config/mcp"
+import { NamedError } from "@loongcode/core/util/error"
+import { InstallationVersion } from "@loongcode/core/installation/version"
 import { withTimeout } from "@/util/timeout"
-import { FSUtil } from "@lgcode/core/fs-util"
+import { FSUtil } from "@loongcode/core/fs-util"
 import { McpOAuthProvider, OAUTH_CALLBACK_PATH } from "./oauth-provider"
 import { McpOAuthCallback } from "./oauth-callback"
 import { McpAuth } from "./auth"
 import { EventV2Bridge } from "@/event-v2-bridge"
-import { EventV2 } from "@lgcode/core/event"
+import { EventV2 } from "@loongcode/core/event"
 import { TuiEvent } from "@/server/tui-event"
 import open from "open"
 import { Cause, Effect, Exit, Layer, Option, Context, Schema, Stream } from "effect"
 import { EffectBridge } from "@/effect/bridge"
 import { InstanceState } from "@/effect/instance-state"
 import { ChildProcess, ChildProcessSpawner } from "effect/unstable/process"
-import { CrossSpawnSpawner } from "@lgcode/core/cross-spawn-spawner"
+import { CrossSpawnSpawner } from "@loongcode/core/cross-spawn-spawner"
 import { McpCatalog } from "./catalog"
 
 const DEFAULT_TIMEOUT = 30_000
@@ -85,7 +85,7 @@ export class NotFoundError extends Schema.TaggedErrorClass<NotFoundError>()("MCP
 type MCPClient = Client
 
 function createClient(directory: string) {
-  const client = new Client({ name: "lgcode", version: InstallationVersion }, CLIENT_OPTIONS)
+  const client = new Client({ name: "loongcode", version: InstallationVersion }, CLIENT_OPTIONS)
   client.setRequestHandler(ListRootsRequestSchema, () =>
     Promise.resolve({ roots: [{ uri: pathToFileURL(directory).href }] }),
   )
@@ -185,7 +185,7 @@ export interface Interface {
   readonly getAuthStatus: (mcpName: string) => Effect.Effect<AuthStatus>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/MCP") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/MCP") {}
 
 export const use = serviceUse(Service)
 
@@ -301,7 +301,7 @@ export const layer = Layer.effect(
                 return events
                   .publish(TuiEvent.ToastShow, {
                     title: "MCP Authentication Required",
-                    message: `Server "${key}" requires authentication. Run: lgcode mcp auth ${key}`,
+                    message: `Server "${key}" requires authentication. Run: loongcode mcp auth ${key}`,
                     variant: "warning",
                     duration: 8000,
                   })
@@ -338,7 +338,7 @@ export const layer = Layer.effect(
         cwd,
         env: {
           ...process.env,
-          ...(cmd === "lgcode" ? { BUN_BE_BUN: "1" } : {}),
+          ...(cmd === "loongcode" ? { BUN_BE_BUN: "1" } : {}),
           ...mcp.environment,
         },
       })

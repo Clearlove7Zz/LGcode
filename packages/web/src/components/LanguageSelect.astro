@@ -5,14 +5,14 @@ import StarlightLanguageSelect from "@astrojs/starlight/components/LanguageSelec
 const locales = Object.keys(config.locales ?? {})
 ---
 
-<lgcode-language-select data-locales={JSON.stringify(locales)}>
+<loongcode-language-select data-locales={JSON.stringify(locales)}>
   <StarlightLanguageSelect />
-</lgcode-language-select>
+</loongcode-language-select>
 
 <script>
   document.addEventListener("change", (event) => {
     if (!(event.target instanceof HTMLSelectElement)) return
-    const wrapper = event.target.closest("lgcode-language-select")
+    const wrapper = event.target.closest("loongcode-language-select")
     if (!(wrapper instanceof HTMLElement)) return
 
     const locales = JSON.parse(wrapper.dataset.locales ?? "[]") as string[]
@@ -23,7 +23,7 @@ const locales = Object.keys(config.locales ?? {})
 </script>
 
 <style>
-  lgcode-language-select {
+  loongcode-language-select {
     display: contents;
   }
 </style>

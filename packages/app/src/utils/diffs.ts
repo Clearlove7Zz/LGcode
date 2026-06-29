@@ -1,5 +1,5 @@
-import type { SnapshotFileDiff, VcsFileDiff } from "@lgcode/sdk/v2"
-import type { Message } from "@lgcode/sdk/v2/client"
+import type { SnapshotFileDiff, VcsFileDiff } from "@loongcode/sdk/v2"
+import type { Message } from "@loongcode/sdk/v2/client"
 
 type Diff = SnapshotFileDiff | VcsFileDiff
 

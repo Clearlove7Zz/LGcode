@@ -1,6 +1,6 @@
 import { test } from "bun:test"
 import { Context, Effect, Layer } from "effect"
-import { LayerNode } from "@lgcode/core/effect/layer-node"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
 
 class A extends Context.Service<A, { readonly value: "a" }>()("test/A") {}
 class B extends Context.Service<B, { readonly value: "b" }>()("test/B") {}

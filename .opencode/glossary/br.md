@@ -6,8 +6,8 @@
 
 ## Do Not Translate (Locale Additions)
 
-- `LGcode` (preserve casing in prose; keep `lgcode` only in commands, package names, paths, or code)
-- `LGcode CLI`
+- `Loongcode` (preserve casing in prose; keep `loongcode` only in commands, package names, paths, or code)
+- `Loongcode CLI`
 - `CLI`, `TUI`, `MCP`, `OAuth`
 - Locale code `br` in repo config, code, and paths (repo alias for Brazilian Portuguese)
 

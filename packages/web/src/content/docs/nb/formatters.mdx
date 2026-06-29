@@ -1,15 +1,15 @@
 ---
 title: Formattere
-description: LGcode bruker språkspesifikke formattere.
+description: Loongcode bruker språkspesifikke formattere.
 ---
 
-LGcode formaterer automatisk filer etter at de er skrevet eller redigert ved hjelp av språkspesifikke formattere. Dette sikrer at koden som genereres følger kodestilene til prosjektet ditt.
+Loongcode formaterer automatisk filer etter at de er skrevet eller redigert ved hjelp av språkspesifikke formattere. Dette sikrer at koden som genereres følger kodestilene til prosjektet ditt.
 
 ---
 
 ## Innebygde formattere
 
-LGcode kommer med flere innebygde formattere for populære språk og rammeverk. Nedenfor er en liste over formattere, støttede filendelser og kommandoer eller konfigurasjonsalternativer den krever.
+Loongcode kommer med flere innebygde formattere for populære språk og rammeverk. Nedenfor er en liste over formattere, støttede filendelser og kommandoer eller konfigurasjonsalternativer den krever.
 
 | Formatter              | Filendelser                                                                                             | Krav                                                                                                    |
 | ---------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
@@ -39,13 +39,13 @@ LGcode kommer med flere innebygde formattere for populære språk og rammeverk. 
 | oxfmt (Eksperimentell) | .js, .jsx, .ts, .tsx                                                                                    | `oxfmt` avhengighet i `package.json` og et [eksperimentelt env variabel flagg](/docs/cli/#experimental) |
 | ormolu                 | .hs                                                                                                     | `ormolu` kommando tilgjengelig                                                                          |
 
-Så hvis prosjektet ditt har `prettier` i `package.json`, vil LGcode automatisk bruke det.
+Så hvis prosjektet ditt har `prettier` i `package.json`, vil Loongcode automatisk bruke det.
 
 ---
 
 ## Slik fungerer det
 
-Når LGcode skriver eller redigerer en fil, gjør den:
+Når Loongcode skriver eller redigerer en fil, gjør den:
 
 1. Kontrollerer filtypen mot alle aktiverte formattere.
 2. Kjører riktig formateringskommando på filen.
@@ -57,9 +57,9 @@ Denne prosessen skjer i bakgrunnen, og sikrer at kodestilene dine opprettholdes 
 
 ## Konfigurasjon
 
-Du kan tilpasse formattere gjennom `formatter`-delen i LGcode-konfigurasjonen.
+Du kan tilpasse formattere gjennom `formatter`-delen i Loongcode-konfigurasjonen.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "formatter": {}
@@ -83,7 +83,7 @@ La oss se på noen eksempler.
 
 For å deaktivere **alle** formattere globalt, sett `formatter` til `false`:
 
-```json title="lgcode.json" {3}
+```json title="loongcode.json" {3}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "formatter": false
@@ -92,7 +92,7 @@ For å deaktivere **alle** formattere globalt, sett `formatter` til `false`:
 
 For å deaktivere en **spesifikk** formatter, sett `disabled` til `true`:
 
-```json title="lgcode.json" {5}
+```json title="loongcode.json" {5}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "formatter": {
@@ -109,7 +109,7 @@ For å deaktivere en **spesifikk** formatter, sett `disabled` til `true`:
 
 Du kan overstyre de innebygde formatterne eller legge til nye ved å spesifisere kommandoen, miljøvariablene og filtypene:
 
-```json title="lgcode.json" {4-14}
+```json title="loongcode.json" {4-14}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "formatter": {

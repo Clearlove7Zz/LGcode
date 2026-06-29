@@ -1,4 +1,4 @@
-// End-to-end regression test for lgcode#24432.
+// End-to-end regression test for loongcode#24432.
 //
 // Routes through the actual ai-gateway-provider + @ai-sdk/openai-compatible
 // chain that provider.ts:811 builds at runtime, with only the network boundary
@@ -13,8 +13,8 @@ import { createAiGateway } from "ai-gateway-provider"
 import { createUnified } from "ai-gateway-provider/providers/unified"
 import { ProviderTransform } from "@/provider/transform"
 import type * as Provider from "@/provider/provider"
-import { ProviderV2 } from "@lgcode/core/provider"
-import { ModelV2 } from "@lgcode/core/model"
+import { ProviderV2 } from "@loongcode/core/provider"
+import { ModelV2 } from "@loongcode/core/model"
 
 type Captured = { url: string; outerBody: unknown }
 type ProviderOptions = Record<string, Record<string, JSONValue>>

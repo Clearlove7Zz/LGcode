@@ -7,14 +7,14 @@ import { Agent } from "../../src/agent/agent"
 import { Auth } from "../../src/auth"
 import { Config } from "../../src/config/config"
 import { RuntimeFlags } from "../../src/effect/runtime-flags"
-import { Global } from "@lgcode/core/global"
+import { Global } from "@loongcode/core/global"
 import { Permission } from "../../src/permission"
-import { PermissionV1 } from "@lgcode/core/v1/permission"
+import { PermissionV1 } from "@loongcode/core/v1/permission"
 import { Plugin } from "../../src/plugin"
 import { Provider } from "../../src/provider/provider"
 import { Skill } from "../../src/skill"
 import { Truncate } from "../../src/tool/truncate"
-import { LocationServiceMap } from "@lgcode/core/location-layer"
+import { LocationServiceMap } from "@loongcode/core/location-layer"
 
 const agentLayer = (flags: Partial<RuntimeFlags.Info> = {}) =>
   Agent.layer.pipe(
@@ -74,14 +74,14 @@ it.instance("build agent has correct default properties", () =>
   }),
 )
 
-it.instance("plan agent denies edits except .lgcode/plans/*", () =>
+it.instance("plan agent denies edits except .loongcode/plans/*", () =>
   Effect.gen(function* () {
     const plan = yield* load((svc) => svc.get("plan"))
     expect(plan).toBeDefined()
     // Wildcard is denied
     expect(evalPerm(plan, "edit")).toBe("deny")
     // But specific path is allowed
-    expect(Permission.evaluate("edit", ".lgcode/plans/foo.md", plan!.permission).action).toBe("allow")
+    expect(Permission.evaluate("edit", ".loongcode/plans/foo.md", plan!.permission).action).toBe("allow")
   }),
 )
 
@@ -603,7 +603,7 @@ it.instance(
   () =>
     Effect.gen(function* () {
       const test = yield* TestInstance
-      const skillDir = path.join(test.directory, ".lgcode", "skill", "perm-skill")
+      const skillDir = path.join(test.directory, ".loongcode", "skill", "perm-skill")
       yield* Effect.promise(() =>
         Bun.write(
           path.join(skillDir, "SKILL.md"),
@@ -617,11 +617,11 @@ description: Permission skill.
         ),
       )
 
-      const home = process.env.LGCODE_TEST_HOME
-      process.env.LGCODE_TEST_HOME = test.directory
+      const home = process.env.LOONGCODE_TEST_HOME
+      process.env.LOONGCODE_TEST_HOME = test.directory
       yield* Effect.addFinalizer(() =>
         Effect.sync(() => {
-          process.env.LGCODE_TEST_HOME = home
+          process.env.LOONGCODE_TEST_HOME = home
         }),
       )
 

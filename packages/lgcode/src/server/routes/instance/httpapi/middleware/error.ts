@@ -1,5 +1,5 @@
-import { NamedError } from "@lgcode/core/util/error"
-import { ConfigErrorV1 } from "@lgcode/core/v1/config/error"
+import { NamedError } from "@loongcode/core/util/error"
+import { ConfigErrorV1 } from "@loongcode/core/v1/config/error"
 import { Cause, Effect } from "effect"
 import { HttpRouter, HttpServerError, HttpServerRespondable, HttpServerResponse } from "effect/unstable/http"
 

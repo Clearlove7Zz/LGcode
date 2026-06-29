@@ -1,6 +1,6 @@
-import { Icon, type IconProps } from "@lgcode/ui/icon"
-import { Toast, showToast as showLegacyToast, type ToastOptions, type ToastVariant } from "@lgcode/ui/toast"
-import { ToastV2, showToastV2 } from "@lgcode/ui/v2/toast-v2"
+import { Icon, type IconProps } from "@loongcode/ui/icon"
+import { Toast, showToast as showLegacyToast, type ToastOptions, type ToastVariant } from "@loongcode/ui/toast"
+import { ToastV2, showToastV2 } from "@loongcode/ui/v2/toast-v2"
 
 let v2 = false
 

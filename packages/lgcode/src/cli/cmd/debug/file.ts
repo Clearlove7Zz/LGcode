@@ -1,9 +1,9 @@
 import { EOL } from "os"
 import { Effect } from "effect"
-import { FileSystem } from "@lgcode/core/filesystem"
-import { LocationServiceMap } from "@lgcode/core/location-layer"
-import { Location } from "@lgcode/core/location"
-import { AbsolutePath, RelativePath } from "@lgcode/core/schema"
+import { FileSystem } from "@loongcode/core/filesystem"
+import { LocationServiceMap } from "@loongcode/core/location-layer"
+import { Location } from "@loongcode/core/location"
+import { AbsolutePath, RelativePath } from "@loongcode/core/schema"
 import { effectCmd } from "../../effect-cmd"
 import { cmd } from "../cmd"
 

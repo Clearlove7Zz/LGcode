@@ -13,23 +13,23 @@
  */
 import { expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { LayerNode } from "@lgcode/core/effect/layer-node"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
 import fs from "fs/promises"
 import path from "path"
 import { Session } from "@/session/session"
 import { SessionPrompt } from "../../src/session/prompt"
 import { SessionSummary } from "../../src/session/summary"
 import { MessageV2 } from "../../src/session/message-v2"
-import { SessionV1 } from "@lgcode/core/v1/session"
-import { Database } from "@lgcode/core/database/database"
-import { SessionProjector } from "@lgcode/core/session/projector"
+import { SessionV1 } from "@loongcode/core/v1/session"
+import { Database } from "@loongcode/core/database/database"
+import { SessionProjector } from "@loongcode/core/session/projector"
 import { provideTmpdirServer } from "../fixture/fixture"
 import { testEffect } from "../lib/effect"
 import { TestLLMServer } from "../lib/llm-server"
 
 import { LSP } from "@/lsp/lsp"
 import { MCP } from "../../src/mcp"
-import { CrossSpawnSpawner } from "@lgcode/core/cross-spawn-spawner"
+import { CrossSpawnSpawner } from "@loongcode/core/cross-spawn-spawner"
 import { RuntimeFlags } from "@/effect/runtime-flags"
 
 const mcp = Layer.succeed(

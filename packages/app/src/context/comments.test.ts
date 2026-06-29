@@ -11,7 +11,7 @@ beforeAll(async () => {
     useLocation: () => ({}),
     useSearchParams: () => [{}, () => undefined],
   }))
-  mock.module("@lgcode/ui/context", () => ({
+  mock.module("@loongcode/ui/context", () => ({
     createSimpleContext: () => ({
       use: () => undefined,
       provider: () => undefined,

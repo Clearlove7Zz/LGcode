@@ -1,5 +1,5 @@
-import { ModelV2 } from "@lgcode/core/model"
-import { Location } from "@lgcode/core/location"
+import { ModelV2 } from "@loongcode/core/model"
+import { Location } from "@loongcode/core/location"
 import { Schema } from "effect"
 import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
 import { ServiceUnavailableError } from "../errors"

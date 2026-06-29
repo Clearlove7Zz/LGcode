@@ -1,4 +1,4 @@
-import { EventV2 } from "@lgcode/core/event"
+import { EventV2 } from "@loongcode/core/event"
 import { Schema } from "effect"
 
 export const Event = {

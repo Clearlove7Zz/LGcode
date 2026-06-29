@@ -1,19 +1,19 @@
 ---
 title: Server
-description: Interact with lgcode server over HTTP.
+description: Interact with loongcode server over HTTP.
 ---
 
 import config from "../../../config.mjs"
 export const typesUrl = `${config.github}/blob/dev/packages/sdk/js/src/gen/types.gen.ts`
 
-The `lgcode serve` command runs a headless HTTP server that exposes an OpenAPI endpoint that an lgcode client can use.
+The `loongcode serve` command runs a headless HTTP server that exposes an OpenAPI endpoint that an loongcode client can use.
 
 ---
 
 ### Usage
 
 ```bash
-lgcode serve [--port <number>] [--hostname <string>] [--cors <origin>]
+loongcode serve [--port <number>] [--hostname <string>] [--cors <origin>]
 ```
 
 #### Options
@@ -23,41 +23,41 @@ lgcode serve [--port <number>] [--hostname <string>] [--cors <origin>]
 | `--port`        | Port to listen on                   | `4096`           |
 | `--hostname`    | Hostname to listen on               | `127.0.0.1`      |
 | `--mdns`        | Enable mDNS discovery               | `false`          |
-| `--mdns-domain` | Custom domain name for mDNS service | `lgcode.local` |
+| `--mdns-domain` | Custom domain name for mDNS service | `loongcode.local` |
 | `--cors`        | Additional browser origins to allow | `[]`             |
 
 `--cors` can be passed multiple times:
 
 ```bash
-lgcode serve --cors http://localhost:5173 --cors https://app.example.com
+loongcode serve --cors http://localhost:5173 --cors https://app.example.com
 ```
 
 ---
 
 ### Authentication
 
-Set `LGCODE_SERVER_PASSWORD` to protect the server with HTTP basic auth. The username defaults to `lgcode`, or set `LGCODE_SERVER_USERNAME` to override it. This applies to both `lgcode serve` and `lgcode web`.
+Set `LOONGCODE_SERVER_PASSWORD` to protect the server with HTTP basic auth. The username defaults to `loongcode`, or set `LOONGCODE_SERVER_USERNAME` to override it. This applies to both `loongcode serve` and `loongcode web`.
 
 ```bash
-LGCODE_SERVER_PASSWORD=your-password lgcode serve
+LOONGCODE_SERVER_PASSWORD=your-password loongcode serve
 ```
 
 ---
 
 ### How it works
 
-When you run `lgcode` it starts a TUI and a server. Where the TUI is the
+When you run `loongcode` it starts a TUI and a server. Where the TUI is the
 client that talks to the server. The server exposes an OpenAPI 3.1 spec
 endpoint. This endpoint is also used to generate an [SDK](/docs/sdk).
 
 :::tip
-Use the lgcode server to interact with lgcode programmatically.
+Use the loongcode server to interact with loongcode programmatically.
 :::
 
-This architecture lets lgcode support multiple clients and allows you to interact with lgcode programmatically.
+This architecture lets loongcode support multiple clients and allows you to interact with loongcode programmatically.
 
-You can run `lgcode serve` to start a standalone server. If you have the
-lgcode TUI running, `lgcode serve` will start a new server.
+You can run `loongcode serve` to start a standalone server. If you have the
+loongcode TUI running, `loongcode serve` will start a new server.
 
 ---
 
@@ -65,7 +65,7 @@ lgcode TUI running, `lgcode serve` will start a new server.
 
 When you start the TUI it randomly assigns a port and hostname. You can instead pass in the `--hostname` and `--port` [flags](/docs/cli). Then use this to connect to its server.
 
-The [`/tui`](#tui) endpoint can be used to drive the TUI through the server. For example, you can prefill or run a prompt. This setup is used by the LGcode [IDE](/docs/ide) plugins.
+The [`/tui`](#tui) endpoint can be used to drive the TUI through the server. For example, you can prefill or run a prompt. This setup is used by the Loongcode [IDE](/docs/ide) plugins.
 
 ---
 
@@ -83,7 +83,7 @@ For example, `http://localhost:4096/doc`. Use the spec to generate clients or in
 
 ## APIs
 
-The lgcode server exposes the following APIs.
+The loongcode server exposes the following APIs.
 
 ---
 

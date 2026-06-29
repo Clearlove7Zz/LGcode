@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "name": "@lgcode/server",
+  "name": "@loongcode/server",
   "version": "1.17.7",
   "private": true,
   "type": "module",
@@ -12,7 +12,7 @@
     "typecheck": "tsgo --noEmit"
   },
   "dependencies": {
-    "@lgcode/core": "workspace:*",
+    "@loongcode/core": "workspace:*",
     "drizzle-orm": "catalog:",
     "effect": "catalog:"
   },

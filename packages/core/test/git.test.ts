@@ -3,8 +3,8 @@ import { $ } from "bun"
 import fs from "fs/promises"
 import path from "path"
 import { Effect } from "effect"
-import { Git } from "@lgcode/core/git"
-import { AbsolutePath } from "@lgcode/core/schema"
+import { Git } from "@loongcode/core/git"
+import { AbsolutePath } from "@loongcode/core/schema"
 import { branch, commit, gitRemote } from "./fixture/git"
 import { tmpdir } from "./fixture/tmpdir"
 import { testEffect } from "./lib/effect"
@@ -71,7 +71,7 @@ async function initRepo(directory: string) {
   await $`git init`.cwd(directory).quiet()
   await $`git config core.fsmonitor false`.cwd(directory).quiet()
   await $`git config commit.gpgsign false`.cwd(directory).quiet()
-  await $`git config user.email test@lgcode.test`.cwd(directory).quiet()
+  await $`git config user.email test@loongcode.test`.cwd(directory).quiet()
   await $`git config user.name Test`.cwd(directory).quiet()
   await $`git commit --allow-empty -m root`.cwd(directory).quiet()
 }

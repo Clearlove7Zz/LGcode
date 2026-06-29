@@ -1,4 +1,4 @@
-import { FSUtil } from "@lgcode/core/fs-util"
+import { FSUtil } from "@loongcode/core/fs-util"
 import { Effect, Stream } from "effect"
 import { HttpBody, HttpClient, HttpClientRequest, HttpServerRequest, HttpServerResponse } from "effect/unstable/http"
 import { createHash } from "node:crypto"
@@ -45,7 +45,7 @@ export function embeddedUI(disableEmbeddedWebUi: boolean) {
   if (disableEmbeddedWebUi) return Promise.resolve(null)
   return (embeddedUIPromise ??=
     // @ts-expect-error - generated file at build time
-    import("lgcode-web-ui.gen.ts").then((module) => module.default as Record<string, string>).catch(() => null))
+    import("loongcode-web-ui.gen.ts").then((module) => module.default as Record<string, string>).catch(() => null))
 }
 
 function notFound() {

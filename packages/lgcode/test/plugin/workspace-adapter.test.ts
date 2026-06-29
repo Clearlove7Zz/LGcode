@@ -1,11 +1,11 @@
 import { afterEach, describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
 import { FetchHttpClient } from "effect/unstable/http"
-import { CrossSpawnSpawner } from "@lgcode/core/cross-spawn-spawner"
-import { Database } from "@lgcode/core/database/database"
-import { FSUtil } from "@lgcode/core/fs-util"
-import { Ripgrep } from "@lgcode/core/ripgrep"
-import { EffectFlock } from "@lgcode/core/util/effect-flock"
+import { CrossSpawnSpawner } from "@loongcode/core/cross-spawn-spawner"
+import { Database } from "@loongcode/core/database/database"
+import { FSUtil } from "@loongcode/core/fs-util"
+import { Ripgrep } from "@loongcode/core/ripgrep"
+import { EffectFlock } from "@loongcode/core/util/effect-flock"
 import path from "path"
 import { pathToFileURL } from "url"
 import { Auth } from "../../src/auth"
@@ -100,7 +100,7 @@ describe("plugin.workspace", () => {
 
       yield* Effect.promise(() =>
         Bun.write(
-          path.join(dir, "lgcode.json"),
+          path.join(dir, "loongcode.json"),
           JSON.stringify(
             {
               $schema: "https://modelhub.lgdg.cc/config.json",

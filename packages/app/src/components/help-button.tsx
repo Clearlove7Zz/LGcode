@@ -1,10 +1,10 @@
-import { Icon } from "@lgcode/ui/v2/icon"
-import { Popover } from "@lgcode/ui/popover"
+import { Icon } from "@loongcode/ui/v2/icon"
+import { Popover } from "@loongcode/ui/popover"
 import { createSignal, Show } from "solid-js"
 import { createStore } from "solid-js/store"
 
 export function HelpButton() {
-  if (import.meta.env.VITE_LGCODE_CHANNEL !== "dev") return null
+  if (import.meta.env.VITE_LOONGCODE_CHANNEL !== "dev") return null
 
   const [state, setState] = /* persisted(Persist.global("help-button"), */ createStore({ dismissed: false }) /* ) */
   const [shown, setShown] = createSignal(false)

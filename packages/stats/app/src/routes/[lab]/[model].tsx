@@ -1,6 +1,6 @@
 import "../index.css"
 import { Link, Meta, Title } from "@solidjs/meta"
-import { ProviderIcon } from "@lgcode/ui/provider-icon"
+import { ProviderIcon } from "@loongcode/ui/provider-icon"
 import { geoEquirectangular, geoPath } from "d3-geo"
 import { scaleSqrt } from "d3-scale"
 import countryCodesSource from "i18n-iso-countries/codes.json?raw"
@@ -13,8 +13,8 @@ import {
   type ModelUsagePoint,
   type StatsModelData,
   type UsageRange,
-} from "@lgcode/stats-core/domain/home"
-import { runtime } from "@lgcode/stats-core/runtime"
+} from "@loongcode/stats-core/domain/home"
+import { runtime } from "@loongcode/stats-core/runtime"
 import { createAsync, query, useParams } from "@solidjs/router"
 import { createMemo, createSignal, For, onMount, Show, type JSX } from "solid-js"
 import { getRequestEvent } from "solid-js/web"
@@ -40,7 +40,7 @@ import {
 
 const statsCanonicalBaseUrl = "https://modelhub.lgdg.cc/data/"
 const statsUnfurlPath = "banner.png"
-const statsUnfurlAlt = "LGcode Data wordmark on a dark patterned background"
+const statsUnfurlAlt = "Loongcode Data wordmark on a dark patterned background"
 const statsUnfurlUrl = new URL(statsUnfurlPath, statsCanonicalBaseUrl).toString()
 const modelHeaderLinks: readonly HeaderLink[] = [
   { href: "#overview", label: "Overview" },
@@ -123,8 +123,8 @@ export default function StatsModel() {
   const modelTitle = createMemo(() => `${modelName()} Data`)
   const modelDescription = createMemo(() =>
     stats()
-      ? `${modelName()} usage, rank, token mix, cost, geo breakdown, and peer data across LGcode.`
-      : `${modelName()} model facts, limits, and LGcode usage availability.`,
+      ? `${modelName()} usage, rank, token mix, cost, geo breakdown, and peer data across Loongcode.`
+      : `${modelName()} model facts, limits, and Loongcode usage availability.`,
   )
   const modelUrl = createMemo(() =>
     new URL(
@@ -153,7 +153,7 @@ export default function StatsModel() {
       <Meta name="description" content={modelDescription()} />
       <Link rel="canonical" href={modelUrl()} />
       <Meta property="og:type" content="website" />
-      <Meta property="og:site_name" content="LGcode" />
+      <Meta property="og:site_name" content="Loongcode" />
       <Meta property="og:title" content={modelTitle()} />
       <Meta property="og:description" content={modelDescription()} />
       <Meta property="og:url" content={modelUrl()} />
@@ -257,14 +257,14 @@ function ModelHero(props: { data: StatsModelData | null; catalog: ModelCatalogEn
           <Show
             when={props.data}
             fallback={
-              <p>Model facts from the shared model index. LGcode usage appears once this model has activity.</p>
+              <p>Model facts from the shared model index. Loongcode usage appears once this model has activity.</p>
             }
           >
             {(data) => (
               <p>
                 {data().rank === null
-                  ? "Unranked across last week's LGcode Go usage"
-                  : `Ranked #${data().rank} across last week's LGcode Go usage`}{" "}
+                  ? "Unranked across last week's Loongcode Go usage"
+                  : `Ranked #${data().rank} across last week's Loongcode Go usage`}{" "}
                 with {formatPercent(data().tokenShare)} of observed 2M volume.
               </p>
             )}
@@ -298,7 +298,7 @@ function ModelCatalogCallout(props: { catalog: ModelCatalogEntry | null }) {
     <div data-component="model-rank-panel">
       <span>Model Profile</span>
       <strong>{props.catalog?.releaseDate ? formatCatalogDate(props.catalog.releaseDate) : "Listed"}</strong>
-      <p>No LGcode usage in the current data window.</p>
+      <p>No Loongcode usage in the current data window.</p>
     </div>
   )
 }
@@ -332,7 +332,7 @@ function ModelOverview(props: { data: StatsModelData | null }) {
       <SectionTitle title="Overview" description="Recent tokens, sessions, and market position." />
       <Show
         when={props.data}
-        fallback={<ModelEmptyState title="No usage summary" description="This model has no LGcode usage rows yet." />}
+        fallback={<ModelEmptyState title="No usage summary" description="This model has no Loongcode usage rows yet." />}
       >
         {(data) => (
           <div data-component="model-metric-grid">

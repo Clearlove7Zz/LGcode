@@ -1,9 +1,9 @@
 import { describe, expect, mock } from "bun:test"
 import { Effect, Layer } from "effect"
-import { AISDK } from "@lgcode/core/aisdk"
-import { EventV2 } from "@lgcode/core/event"
-import { PluginV2 } from "@lgcode/core/plugin"
-import { DeepInfraPlugin } from "@lgcode/core/plugin/provider/deepinfra"
+import { AISDK } from "@loongcode/core/aisdk"
+import { EventV2 } from "@loongcode/core/event"
+import { PluginV2 } from "@loongcode/core/plugin"
+import { DeepInfraPlugin } from "@loongcode/core/plugin/provider/deepinfra"
 import { testEffect } from "../lib/effect"
 import { it, model } from "./provider-helper"
 

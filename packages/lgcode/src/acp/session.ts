@@ -1,7 +1,7 @@
 import type { McpServer } from "@agentclientprotocol/sdk"
-import type { Message, Part } from "@lgcode/sdk/v2"
-import { ProviderV2 } from "@lgcode/core/provider"
-import { ModelV2 } from "@lgcode/core/model"
+import type { Message, Part } from "@loongcode/sdk/v2"
+import { ProviderV2 } from "@loongcode/core/provider"
+import { ModelV2 } from "@loongcode/core/model"
 import { Context, Effect, Layer, Ref } from "effect"
 import * as ACPError from "./error"
 
@@ -89,7 +89,7 @@ export type Interface = {
   readonly tryGetPartMetadata: (input: PartMetadataLookupInput) => Effect.Effect<KnownMessagePartMetadata | undefined>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/ACP/Session") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/ACP/Session") {}
 
 type State = Map<string, Info>
 

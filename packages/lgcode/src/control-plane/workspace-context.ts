@@ -1,5 +1,5 @@
 import { LocalContext } from "@/util/local-context"
-import type { WorkspaceV2 } from "@lgcode/core/workspace"
+import type { WorkspaceV2 } from "@loongcode/core/workspace"
 
 export interface WorkspaceContext {
   workspaceID: WorkspaceV2.ID | undefined

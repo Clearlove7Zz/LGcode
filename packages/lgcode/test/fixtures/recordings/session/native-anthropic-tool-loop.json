@@ -6,7 +6,7 @@
     "provider": "anthropic",
     "protocol": "anthropic-messages",
     "route": "anthropic-messages",
-    "tags": ["lgcode", "native", "tool-loop"]
+    "tags": ["loongcode", "native", "tool-loop"]
   },
   "interactions": [
     {

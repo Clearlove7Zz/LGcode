@@ -8,8 +8,8 @@ import { SessionStatus } from "../../src/session/status"
 import { SessionSummary } from "../../src/session/summary"
 import { Todo } from "../../src/session/todo"
 import { SessionID, MessageID, PartID } from "../../src/session/schema"
-import { ProjectV2 } from "@lgcode/core/project"
-import { WorkspaceV2 } from "@lgcode/core/workspace"
+import { ProjectV2 } from "@loongcode/core/project"
+import { WorkspaceV2 } from "@loongcode/core/workspace"
 
 // Covers the session-domain Effect Schema migration. For each migrated
 // schema we assert:
@@ -53,7 +53,7 @@ describe("Session.Info", () => {
       projectID,
       workspaceID,
       directory: "/tmp/proj",
-      path: "packages/lgcode",
+      path: "packages/loongcode",
       parentID: sessionIDChild,
       summary: {
         additions: 10,
@@ -236,9 +236,9 @@ describe("SessionStatus.Info", () => {
       message: "transient",
       action: {
         reason: "free_tier_limit",
-        provider: "lgcode",
+        provider: "loongcode",
         title: "Free limit reached",
-        message: "Subscribe to LGcode Go.",
+        message: "Subscribe to Loongcode Go.",
         label: "subscribe",
         link: "https://modelhub.lgdg.cc/go",
       },

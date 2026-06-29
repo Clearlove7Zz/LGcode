@@ -3,12 +3,12 @@ import { Effect } from "effect"
 import path from "path"
 import { cliIt } from "../lib/cli-process"
 
-describe("lgcode mcp add (non-interactive subprocess)", () => {
+describe("loongcode mcp add (non-interactive subprocess)", () => {
   cliIt.concurrent(
     "adds a remote server with HTTP headers",
-    ({ home, lgcode }) =>
+    ({ home, loongcode }) =>
       Effect.gen(function* () {
-        const result = yield* lgcode.spawn([
+        const result = yield* loongcode.spawn([
           "mcp",
           "add",
           "github",
@@ -19,10 +19,10 @@ describe("lgcode mcp add (non-interactive subprocess)", () => {
           "--header",
           "X-Option=one=two",
         ])
-        lgcode.expectExit(result, 0)
+        loongcode.expectExit(result, 0)
 
         const config = yield* Effect.promise(() =>
-          Bun.file(path.join(home, ".config", "lgcode", "lgcode.json")).json(),
+          Bun.file(path.join(home, ".config", "loongcode", "loongcode.json")).json(),
         )
         expect(config.mcp.github).toEqual({
           type: "remote",
@@ -38,9 +38,9 @@ describe("lgcode mcp add (non-interactive subprocess)", () => {
 
   cliIt.concurrent(
     "adds a local server while preserving argv and environment values",
-    ({ home, lgcode }) =>
+    ({ home, loongcode }) =>
       Effect.gen(function* () {
-        const result = yield* lgcode.spawn([
+        const result = yield* loongcode.spawn([
           "mcp",
           "add",
           "local",
@@ -55,10 +55,10 @@ describe("lgcode mcp add (non-interactive subprocess)", () => {
           "--label",
           "two words",
         ])
-        lgcode.expectExit(result, 0)
+        loongcode.expectExit(result, 0)
 
         const config = yield* Effect.promise(() =>
-          Bun.file(path.join(home, ".config", "lgcode", "lgcode.json")).json(),
+          Bun.file(path.join(home, ".config", "loongcode", "loongcode.json")).json(),
         )
         expect(config.mcp.local).toEqual({
           type: "local",

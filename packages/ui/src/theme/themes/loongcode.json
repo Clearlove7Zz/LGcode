@@ -1,7 +1,7 @@
 {
   "$schema": "https://modelhub.lgdg.cc/desktop-theme.json",
-  "name": "LGcode",
-  "id": "lgcode",
+  "name": "Loongcode",
+  "id": "loongcode",
   "light": {
     "palette": {
       "neutral": "#ffffff",

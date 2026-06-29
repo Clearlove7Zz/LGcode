@@ -1,4 +1,4 @@
-import { Location } from "@lgcode/core/location"
+import { Location } from "@loongcode/core/location"
 import { Effect } from "effect"
 import { HttpApiBuilder } from "effect/unstable/httpapi"
 import { Api } from "../api"

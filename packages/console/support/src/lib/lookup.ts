@@ -1,8 +1,8 @@
 "use server"
 
-import { Database, and, eq, isNull, sql } from "@lgcode/console-core/drizzle/index.js"
-import { AuthTable } from "@lgcode/console-core/schema/auth.sql.js"
-import { UserTable } from "@lgcode/console-core/schema/user.sql.js"
+import { Database, and, eq, isNull, sql } from "@loongcode/console-core/drizzle/index.js"
+import { AuthTable } from "@loongcode/console-core/schema/auth.sql.js"
+import { UserTable } from "@loongcode/console-core/schema/user.sql.js"
 import {
   BillingTable,
   PaymentTable,
@@ -10,15 +10,15 @@ import {
   BlackPlans,
   UsageTable,
   LiteTable,
-} from "@lgcode/console-core/schema/billing.sql.js"
-import { WorkspaceTable } from "@lgcode/console-core/schema/workspace.sql.js"
-import { KeyTable } from "@lgcode/console-core/schema/key.sql.js"
-import { ModelTable } from "@lgcode/console-core/schema/model.sql.js"
-import { BlackData } from "@lgcode/console-core/black.js"
-import { LiteData } from "@lgcode/console-core/lite.js"
-import { Subscription } from "@lgcode/console-core/subscription.js"
-import { centsToMicroCents } from "@lgcode/console-core/util/price.js"
-import { getWeekBounds } from "@lgcode/console-core/util/date.js"
+} from "@loongcode/console-core/schema/billing.sql.js"
+import { WorkspaceTable } from "@loongcode/console-core/schema/workspace.sql.js"
+import { KeyTable } from "@loongcode/console-core/schema/key.sql.js"
+import { ModelTable } from "@loongcode/console-core/schema/model.sql.js"
+import { BlackData } from "@loongcode/console-core/black.js"
+import { LiteData } from "@loongcode/console-core/lite.js"
+import { Subscription } from "@loongcode/console-core/subscription.js"
+import { centsToMicroCents } from "@loongcode/console-core/util/price.js"
+import { getWeekBounds } from "@loongcode/console-core/util/date.js"
 
 export type LookupResult = {
   identifier: string

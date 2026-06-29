@@ -6,9 +6,9 @@ import { fileURLToPath } from "url"
 const theme = fileURLToPath(new URL("./public/oc-theme-preload.js", import.meta.url))
 
 const channel = (() => {
-  const raw = process.env.LGCODE_CHANNEL
+  const raw = process.env.LOONGCODE_CHANNEL
   if (raw === "dev" || raw === "beta" || raw === "prod") return raw
-  if (process.env.LGCODE_CHANNEL === "latest") return "prod"
+  if (process.env.LOONGCODE_CHANNEL === "latest") return "prod"
   return "dev"
 })()
 
@@ -17,7 +17,7 @@ const channel = (() => {
  */
 export default [
   {
-    name: "lgcode-desktop:config",
+    name: "loongcode-desktop:config",
     config() {
       return {
         resolve: {
@@ -26,7 +26,7 @@ export default [
           },
         },
         define: {
-          "import.meta.env.VITE_LGCODE_CHANNEL": JSON.stringify(channel),
+          "import.meta.env.VITE_LOONGCODE_CHANNEL": JSON.stringify(channel),
         },
         worker: {
           format: "es",
@@ -35,7 +35,7 @@ export default [
     },
   },
   {
-    name: "lgcode-desktop:theme-preload",
+    name: "loongcode-desktop:theme-preload",
     transformIndexHtml(html) {
       return html.replace(
         '<script id="oc-theme-preload-script" src="/oc-theme-preload.js"></script>',

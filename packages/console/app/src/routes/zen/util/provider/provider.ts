@@ -1,4 +1,4 @@
-import { ZenData } from "@lgcode/console-core/model.js"
+import { ZenData } from "@loongcode/console-core/model.js"
 import {
   fromAnthropicChunk,
   fromAnthropicRequest,

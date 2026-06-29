@@ -1,7 +1,7 @@
 import { describe, expect, mock } from "bun:test"
 import { Effect } from "effect"
-import { PluginV2 } from "@lgcode/core/plugin"
-import { CloudflareAIGatewayPlugin } from "@lgcode/core/plugin/provider/cloudflare-ai-gateway"
+import { PluginV2 } from "@loongcode/core/plugin"
+import { CloudflareAIGatewayPlugin } from "@loongcode/core/plugin/provider/cloudflare-ai-gateway"
 import { it, model, withEnv } from "./provider-helper"
 
 const aiGatewayCalls: Record<string, unknown>[] = []
@@ -107,7 +107,7 @@ describe("CloudflareAIGatewayPlugin", () => {
             package: "ai-gateway-provider",
             options: {
               name: "cloudflare-ai-gateway",
-              metadata: { invoked_by: "test", project: "lgcode" },
+              metadata: { invoked_by: "test", project: "loongcode" },
               cacheTtl: 300,
               cacheKey: "cache-key",
               skipCache: true,
@@ -123,13 +123,13 @@ describe("CloudflareAIGatewayPlugin", () => {
           gateway: "env-gateway",
           apiKey: "env-token",
           options: {
-            metadata: { invoked_by: "test", project: "lgcode" },
+            metadata: { invoked_by: "test", project: "loongcode" },
             cacheTtl: 300,
             cacheKey: "cache-key",
             skipCache: true,
             collectLog: false,
             headers: {
-              "User-Agent": expect.stringContaining("lgcode/"),
+              "User-Agent": expect.stringContaining("loongcode/"),
             },
           },
         })
@@ -152,7 +152,7 @@ describe("CloudflareAIGatewayPlugin", () => {
             options: {
               name: "cloudflare-ai-gateway",
               headers: {
-                "cf-aig-metadata": JSON.stringify({ invoked_by: "header", project: "lgcode" }),
+                "cf-aig-metadata": JSON.stringify({ invoked_by: "header", project: "loongcode" }),
               },
             },
           },
@@ -160,7 +160,7 @@ describe("CloudflareAIGatewayPlugin", () => {
         )
 
         expect(aiGatewayCalls[0]?.options).toMatchObject({
-          metadata: { invoked_by: "header", project: "lgcode" },
+          metadata: { invoked_by: "header", project: "loongcode" },
         })
       }),
     ),

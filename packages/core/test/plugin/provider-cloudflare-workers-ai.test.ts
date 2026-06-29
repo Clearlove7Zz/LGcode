@@ -1,16 +1,16 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { Credential } from "@lgcode/core/credential"
-import { Integration } from "@lgcode/core/integration"
-import { Database } from "@lgcode/core/database/database"
-import { Catalog } from "@lgcode/core/catalog"
-import { Location } from "@lgcode/core/location"
-import { EventV2 } from "@lgcode/core/event"
-import { ModelV2 } from "@lgcode/core/model"
-import { PluginV2 } from "@lgcode/core/plugin"
-import { CloudflareWorkersAIPlugin } from "@lgcode/core/plugin/provider/cloudflare-workers-ai"
-import { ProviderV2 } from "@lgcode/core/provider"
-import { AbsolutePath } from "@lgcode/core/schema"
+import { Credential } from "@loongcode/core/credential"
+import { Integration } from "@loongcode/core/integration"
+import { Database } from "@loongcode/core/database/database"
+import { Catalog } from "@loongcode/core/catalog"
+import { Location } from "@loongcode/core/location"
+import { EventV2 } from "@loongcode/core/event"
+import { ModelV2 } from "@loongcode/core/model"
+import { PluginV2 } from "@loongcode/core/plugin"
+import { CloudflareWorkersAIPlugin } from "@loongcode/core/plugin/provider/cloudflare-workers-ai"
+import { ProviderV2 } from "@loongcode/core/provider"
+import { AbsolutePath } from "@loongcode/core/schema"
 import { location } from "../fixture/location"
 import { testEffect } from "../lib/effect"
 import { fakeSelectorSdk, it, model, npmLayer, withEnv } from "./provider-helper"
@@ -208,7 +208,7 @@ describe("CloudflareWorkersAIPlugin", () => {
         const headers = yield* Effect.promise(() => Promise.resolve(cloudflareHeaders(result.sdk)))
         expect(headers.authorization).toBe("Bearer env-key")
         expect(headers.custom).toBe("header")
-        expect(headers["user-agent"]).toMatch(/^lgcode\/.* cloudflare-workers-ai \(.+\) ai-sdk\/openai-compatible\//)
+        expect(headers["user-agent"]).toMatch(/^loongcode\/.* cloudflare-workers-ai \(.+\) ai-sdk\/openai-compatible\//)
       }),
     ),
   )

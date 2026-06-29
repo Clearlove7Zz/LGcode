@@ -1,4 +1,4 @@
-import type { FileNode } from "@lgcode/sdk/v2"
+import type { FileNode } from "@loongcode/sdk/v2"
 
 type WatcherEvent = {
   type: string

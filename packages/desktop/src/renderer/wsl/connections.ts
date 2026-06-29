@@ -1,4 +1,4 @@
-import type { WslServersState } from "@lgcode/app/wsl/types"
+import type { WslServersState } from "@loongcode/app/wsl/types"
 
 export function readyWslConnections(state?: WslServersState) {
   return (state?.servers ?? []).flatMap((item) => {

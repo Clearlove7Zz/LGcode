@@ -62,7 +62,7 @@ The `Policy` module owns the shared `Policy.Info` interface, `Policy.Effect` typ
 
 ## Matching
 
-Both `action` and `resource` use lgcode's existing wildcard matching behavior.
+Both `action` and `resource` use loongcode's existing wildcard matching behavior.
 
 Examples:
 
@@ -187,7 +187,7 @@ Result:
 provider.use / openai -> deny
 ```
 
-The relative policy precedence of direct project files and `.lgcode` files is intentionally deferred until `.lgcode` configuration is reviewed.
+The relative policy precedence of direct project files and `.loongcode` files is intentionally deferred until `.loongcode` configuration is reviewed.
 
 ## Organization-Managed Policy
 
@@ -197,7 +197,7 @@ Organization-managed policy is not ordinary authored config. When implemented, m
 repository policy -> user-global policy -> organization-managed policy
 ```
 
-Plugins must not be allowed to add, remove, or override policy statements. Plugins can contribute functionality or configured providers; policy determines whether lgcode permits an operation through its managed execution paths.
+Plugins must not be allowed to add, remove, or override policy statements. Plugins can contribute functionality or configured providers; policy determines whether loongcode permits an operation through its managed execution paths.
 
 Provider policy is not a full sandbox for executable plugins. A denied provider must not be usable through the normal provider/model path, but arbitrary plugin code requires separate governance if that becomes a compliance requirement.
 

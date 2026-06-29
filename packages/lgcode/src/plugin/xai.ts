@@ -1,7 +1,7 @@
-import type { Hooks, PluginInput } from "@lgcode/plugin"
+import type { Hooks, PluginInput } from "@loongcode/plugin"
 import { OAUTH_DUMMY_KEY } from "../auth"
 import { createServer } from "http"
-import { InstallationVersion } from "@lgcode/core/installation/version"
+import { InstallationVersion } from "@loongcode/core/installation/version"
 import { escapeHtml } from "@/util/html"
 
 // Public Grok-CLI OAuth client. xAI's auth server rejects loopback OAuth from
@@ -88,7 +88,7 @@ function authHeaders() {
   return {
     "Content-Type": "application/x-www-form-urlencoded",
     Accept: "application/json",
-    "User-Agent": `lgcode/${InstallationVersion}`,
+    "User-Agent": `loongcode/${InstallationVersion}`,
   }
 }
 
@@ -123,7 +123,7 @@ export function buildAuthorizeUrl(
 ): string {
   // `plan=generic` opts the consent screen into xAI's generic OAuth plan tier;
   // without it, accounts.x.ai rejects loopback OAuth from non-allowlisted
-  // clients. `referrer=lgcode` lets xAI attribute lgcode-originated
+  // clients. `referrer=loongcode` lets xAI attribute loongcode-originated
   // logins in their OAuth server logs (best-effort attribution while we
   // continue to reuse the Grok-CLI client_id).
   const params = new URLSearchParams({
@@ -136,7 +136,7 @@ export function buildAuthorizeUrl(
     state,
     nonce,
     plan: "generic",
-    referrer: "lgcode",
+    referrer: "loongcode",
   })
   return `${options.authorizeUrl ?? AUTHORIZE_URL}?${params.toString()}`
 }
@@ -288,7 +288,7 @@ export async function pollDeviceCodeToken(
 const HTML_SUCCESS = `<!doctype html>
 <html>
   <head>
-    <title>LGcode - xAI Authorization Successful</title>
+    <title>Loongcode - xAI Authorization Successful</title>
     <style>
       body {
         font-family:
@@ -319,7 +319,7 @@ const HTML_SUCCESS = `<!doctype html>
   <body>
     <div class="container">
       <h1>Authorization Successful</h1>
-      <p>You can close this window and return to LGcode.</p>
+      <p>You can close this window and return to Loongcode.</p>
     </div>
     <script>
       setTimeout(() => window.close(), 2000)
@@ -330,7 +330,7 @@ const HTML_SUCCESS = `<!doctype html>
 const HTML_ERROR = (error: string) => `<!doctype html>
 <html>
   <head>
-    <title>LGcode - xAI Authorization Failed</title>
+    <title>Loongcode - xAI Authorization Failed</title>
     <style>
       body {
         font-family:
@@ -486,7 +486,7 @@ async function startOAuthServer(): Promise<{ port: number; redirectUri: string }
       // After listen() succeeds, install a permanent log-only listener so
       // that subsequent server errors (e.g. accept() failures, socket-level
       // errors) don't trip Node's default "unhandled error event = throw"
-      // behavior and crash the entire lgcode process. Matches the silent-
+      // behavior and crash the entire loongcode process. Matches the silent-
       // swallow behavior the Codex plugin gets from its permanent
       // `oauthServer!.on("error", reject)`.
       resolve()
@@ -631,7 +631,7 @@ export async function XaiAuthPlugin(input: PluginInput, options: XaiAuthPluginOp
               }
             }
             headers.set("authorization", `Bearer ${currentAuth.access}`)
-            headers.set("User-Agent", `lgcode/${InstallationVersion}`)
+            headers.set("User-Agent", `loongcode/${InstallationVersion}`)
 
             return fetch(requestInput, { ...init, headers })
           },

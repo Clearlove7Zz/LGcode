@@ -29,8 +29,8 @@ import {
   type SetSessionModeRequest,
   type SetSessionModeResponse,
 } from "@agentclientprotocol/sdk"
-import { InstallationVersion } from "@lgcode/core/installation/version"
-import type { Message, OpencodeClient, SessionMessageResponse } from "@lgcode/sdk/v2"
+import { InstallationVersion } from "@loongcode/core/installation/version"
+import type { Message, OpencodeClient, SessionMessageResponse } from "@loongcode/sdk/v2"
 import { Context, Effect, Layer, ManagedRuntime } from "effect"
 import * as ACPError from "./error"
 import { buildConfigOptions, parseModelSelection } from "./config-option"
@@ -40,12 +40,12 @@ import { ACPEvent } from "./event"
 import { ACPSession } from "./session"
 import { UsageService } from "./usage"
 import { ACPProfile } from "./profile"
-import { ProviderV2 } from "@lgcode/core/provider"
-import { ModelV2 } from "@lgcode/core/model"
+import { ProviderV2 } from "@loongcode/core/provider"
+import { ModelV2 } from "@loongcode/core/model"
 import { Provider } from "@/provider/provider"
 import type { Command } from "@/command"
 
-export const AuthMethodID = "lgcode-login"
+export const AuthMethodID = "loongcode-login"
 
 export type Error = ACPError.Error
 type ServiceConnection = Pick<AgentSideConnection, "sessionUpdate"> &
@@ -69,7 +69,7 @@ export type Interface = {
   readonly cancel: (input: CancelNotification) => Effect.Effect<void, Error>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/ACP/Service") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/ACP/Service") {}
 
 export function make(input: {
   sdk: OpencodeClient
@@ -91,17 +91,17 @@ export function make(input: {
   const initialize = Effect.fn("ACP.initialize")(function* (params: InitializeRequest) {
     const started = performance.now()
     const authMethod: AuthMethod = {
-      description: "Run `lgcode auth login` in the terminal",
-      name: "Login with lgcode",
+      description: "Run `loongcode auth login` in the terminal",
+      name: "Login with loongcode",
       id: AuthMethodID,
     }
 
     if (params.clientCapabilities?._meta?.["terminal-auth"] === true) {
       authMethod._meta = {
         "terminal-auth": {
-          command: "lgcode",
+          command: "loongcode",
           args: ["auth", "login"],
-          label: "LGcode Login",
+          label: "Loongcode Login",
         },
       }
     }
@@ -127,7 +127,7 @@ export function make(input: {
       },
       authMethods: [authMethod],
       agentInfo: {
-        name: "LGcode",
+        name: "Loongcode",
         version: InstallationVersion,
       },
     }
@@ -1010,7 +1010,7 @@ function fromUnknownError(error: unknown, service?: string): Error {
   if (isAuthRequired(error)) {
     return new ACPError.AuthRequiredError({ providerId: findProviderID(error) })
   }
-  return new ACPError.ServiceFailureError({ safeMessage: "LGcode service failure", service })
+  return new ACPError.ServiceFailureError({ safeMessage: "Loongcode service failure", service })
 }
 
 function isACPError(error: unknown): error is Error {

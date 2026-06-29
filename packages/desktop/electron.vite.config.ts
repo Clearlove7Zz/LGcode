@@ -1,14 +1,14 @@
 import { sentryVitePlugin } from "@sentry/vite-plugin"
 import { defineConfig } from "electron-vite"
-import appPlugin from "@lgcode/app/vite"
+import appPlugin from "@loongcode/app/vite"
 import * as fs from "node:fs/promises"
 
-const LGCODE_SERVER_DIST = "../lgcode/dist/node"
+const LOONGCODE_SERVER_DIST = "../loongcode/dist/node"
 
 const channel = (() => {
-  const raw = process.env.LGCODE_CHANNEL
+  const raw = process.env.LOONGCODE_CHANNEL
   if (raw === "dev" || raw === "beta" || raw === "prod") return raw
-  if (process.env.LGCODE_CHANNEL === "latest") return "prod"
+  if (process.env.LOONGCODE_CHANNEL === "latest") return "prod"
   return "dev"
 })()
 
@@ -34,7 +34,7 @@ const sentry =
 export default defineConfig({
   main: {
     define: {
-      "import.meta.env.LGCODE_CHANNEL": JSON.stringify(channel),
+      "import.meta.env.LOONGCODE_CHANNEL": JSON.stringify(channel),
     },
     build: {
       rollupOptions: {
@@ -44,25 +44,25 @@ export default defineConfig({
     },
     plugins: [
       {
-        name: "lgcode:node-pty-narrower",
+        name: "loongcode:node-pty-narrower",
         enforce: "pre",
         resolveId(s) {
           if (s === "@lydell/node-pty") return nodePtyPkg
         },
       },
       {
-        name: "lgcode:virtual-server-module",
+        name: "loongcode:virtual-server-module",
         enforce: "pre",
         resolveId(id) {
-          if (id === "virtual:lgcode-server") return this.resolve(`${LGCODE_SERVER_DIST}/node.js`)
+          if (id === "virtual:loongcode-server") return this.resolve(`${LOONGCODE_SERVER_DIST}/node.js`)
         },
       },
       {
-        name: "lgcode:copy-server-assets",
+        name: "loongcode:copy-server-assets",
         async writeBundle() {
-          for (const l of await fs.readdir(LGCODE_SERVER_DIST)) {
+          for (const l of await fs.readdir(LOONGCODE_SERVER_DIST)) {
             if (!l.endsWith(".wasm")) continue
-            await fs.writeFile(`./out/main/chunks/${l}`, await fs.readFile(`${LGCODE_SERVER_DIST}/${l}`))
+            await fs.writeFile(`./out/main/chunks/${l}`, await fs.readFile(`${LOONGCODE_SERVER_DIST}/${l}`))
           }
         },
       },

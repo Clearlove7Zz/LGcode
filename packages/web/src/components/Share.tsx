@@ -5,9 +5,9 @@ import { IconArrowDown } from "./icons"
 import { IconOpencode } from "./icons/custom"
 import { ShareI18nProvider, formatCurrency, formatNumber, normalizeLocale } from "./share/common"
 import styles from "./share.module.css"
-import type { MessageV2 } from "lgcode/session/message-v2"
-import type { Message } from "lgcode/session/message"
-import type { Session } from "lgcode/session/index"
+import type { MessageV2 } from "loongcode/session/message-v2"
+import type { Message } from "loongcode/session/message"
+import type { Session } from "loongcode/session/index"
 import { Part, ProviderIcon } from "./share/part"
 
 type MessageWithParts = MessageV2.Info & { parts: MessageV2.Part[] }
@@ -303,8 +303,8 @@ export default function Share(props: {
             <h1 data-component="header-title">{store.info?.title}</h1>
             <div data-component="header-details">
               <ul data-component="header-stats">
-                <li title={props.messages.lgcode_version} data-slot="item">
-                  <div data-slot="icon" title={props.messages.lgcode_name}>
+                <li title={props.messages.loongcode_version} data-slot="item">
+                  <div data-slot="icon" title={props.messages.loongcode_name}>
                     <IconOpencode width={16} height={16} />
                   </div>
                   <Show when={store.info?.version} fallback="v0.0.1">

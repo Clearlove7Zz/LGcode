@@ -1,8 +1,8 @@
 import { Schema } from "effect"
 
 import { Identifier } from "@/id/id"
-import { SessionV2 } from "@lgcode/core/session"
-import { withStatics } from "@lgcode/core/schema"
+import { SessionV2 } from "@loongcode/core/session"
+import { withStatics } from "@loongcode/core/schema"
 
 export const SessionID = SessionV2.ID
 export type SessionID = Schema.Schema.Type<typeof SessionID>

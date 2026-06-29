@@ -3,7 +3,7 @@ import { ProviderError } from "@/provider/error"
 import { isRecord } from "@/util/record"
 import { OpenAIWebSocket } from "./ws"
 
-export const TITLE_HEADER = "x-lgcode-title"
+export const TITLE_HEADER = "x-loongcode-title"
 
 export interface CreateWebSocketFetchOptions {
   httpFetch?: typeof globalThis.fetch

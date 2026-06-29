@@ -1,5 +1,5 @@
 {
-  "name": "@lgcode/console-app",
+  "name": "@loongcode/console-app",
   "version": "1.17.7",
   "type": "module",
   "license": "MIT",
@@ -7,7 +7,7 @@
     "typecheck": "tsgo --noEmit",
     "dev": "vite dev --host 0.0.0.0",
     "dev:remote": "",
-    "build": "bun ./script/generate-sitemap.ts && vite build && bun ../../lgcode/script/schema.ts ./.output/public/config.json ./.output/public/tui.json",
+    "build": "bun ./script/generate-sitemap.ts && vite build && bun ../../loongcode/script/schema.ts ./.output/public/config.json ./.output/public/tui.json",
     "start": "vite start"
   },
   "dependencies": {
@@ -16,10 +16,10 @@
     "@jsx-email/render": "1.1.1",
     "@kobalte/core": "catalog:",
     "@openauthjs/openauth": "catalog:",
-    "@lgcode/console-core": "workspace:*",
-    "@lgcode/console-mail": "workspace:*",
-    "@lgcode/console-resource": "workspace:*",
-    "@lgcode/ui": "workspace:*",
+    "@loongcode/console-core": "workspace:*",
+    "@loongcode/console-mail": "workspace:*",
+    "@loongcode/console-resource": "workspace:*",
+    "@loongcode/ui": "workspace:*",
     "@smithy/eventstream-codec": "4.2.7",
     "@smithy/util-utf8": "4.2.0",
     "@solidjs/meta": "catalog:",

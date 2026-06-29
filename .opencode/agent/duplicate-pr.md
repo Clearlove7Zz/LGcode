@@ -1,7 +1,7 @@
 ---
 mode: primary
 hidden: true
-model: lgcode/claude-haiku-4-5
+model: loongcode/claude-haiku-4-5
 color: "#E67E22"
 tools:
   "*": false

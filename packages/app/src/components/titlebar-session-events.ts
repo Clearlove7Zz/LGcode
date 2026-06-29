@@ -1,4 +1,4 @@
-export const SESSION_TABS_REMOVED_EVENT = "lgcode:session-tabs-removed"
+export const SESSION_TABS_REMOVED_EVENT = "loongcode:session-tabs-removed"
 
 export type SessionTabsRemovedDetail = {
   directory: string

@@ -2,20 +2,20 @@ import fs from "fs/promises"
 import path from "path"
 import { describe, expect } from "bun:test"
 import { Effect, Schema } from "effect"
-import { AbsolutePath, Location, Model, LGcode, Session, Tool } from "@lgcode/core/public"
+import { AbsolutePath, Location, Model, Loongcode, Session, Tool } from "@loongcode/core/public"
 import { tmpdir } from "./fixture/tmpdir"
 import { testEffect } from "./lib/effect"
 
-const it = testEffect(LGcode.layer)
+const it = testEffect(Loongcode.layer)
 
-describe("public native LGcode API", () => {
+describe("public native Loongcode API", () => {
   it.effect("exposes only the intentional Session capabilities", () =>
     Effect.gen(function* () {
-      const lgcode = yield* LGcode.Service
+      const loongcode = yield* Loongcode.Service
 
-      expect(Object.keys(lgcode).sort()).toEqual(["sessions", "tools"])
+      expect(Object.keys(loongcode).sort()).toEqual(["sessions", "tools"])
 
-      expect(Object.keys(lgcode.sessions).sort()).toEqual([
+      expect(Object.keys(loongcode.sessions).sort()).toEqual([
         "context",
         "create",
         "events",
@@ -29,8 +29,8 @@ describe("public native LGcode API", () => {
       ])
       expect(Session.ID.create()).toStartWith("ses_")
       expect(Session.MessageID.create()).toStartWith("msg_")
-      expect(yield* lgcode.sessions.list()).toBeArray()
-      yield* lgcode.tools.register({
+      expect(yield* loongcode.sessions.list()).toBeArray()
+      yield* loongcode.tools.register({
         public_tool: Tool.make({
           description: "Public tool",
           input: Schema.Struct({}),
@@ -49,17 +49,17 @@ describe("public native LGcode API", () => {
       Effect.flatMap((tmp) =>
         Effect.gen(function* () {
           yield* writeProvider(tmp.path)
-          const lgcode = yield* LGcode.Service
+          const loongcode = yield* Loongcode.Service
           const sessionID = Session.ID.make("ses_public_switch_available")
           const model = ref({ variant: "fast" })
-          yield* lgcode.sessions.create({
+          yield* loongcode.sessions.create({
             id: sessionID,
             location: Location.Ref.make({ directory: AbsolutePath.make(tmp.path) }),
           })
 
-          yield* lgcode.sessions.switchModel({ sessionID, model })
+          yield* loongcode.sessions.switchModel({ sessionID, model })
 
-          expect((yield* lgcode.sessions.get(sessionID)).model).toEqual(model)
+          expect((yield* loongcode.sessions.get(sessionID)).model).toEqual(model)
         }),
       ),
     ),
@@ -74,30 +74,30 @@ describe("public native LGcode API", () => {
         Effect.gen(function* () {
           yield* writeProvider(available.path)
           yield* writeProvider(disabled.path, true)
-          const lgcode = yield* LGcode.Service
+          const loongcode = yield* Loongcode.Service
           const availableID = Session.ID.make("ses_public_switch_exact_available")
           const disabledID = Session.ID.make("ses_public_switch_exact_disabled")
-          yield* lgcode.sessions.create({
+          yield* loongcode.sessions.create({
             id: availableID,
             location: Location.Ref.make({ directory: AbsolutePath.make(available.path) }),
           })
-          yield* lgcode.sessions.create({
+          yield* loongcode.sessions.create({
             id: disabledID,
             location: Location.Ref.make({ directory: AbsolutePath.make(disabled.path) }),
           })
 
-          yield* lgcode.sessions.switchModel({ sessionID: availableID, model: ref({ variant: "default" }) })
-          const disabledError = yield* lgcode.sessions
+          yield* loongcode.sessions.switchModel({ sessionID: availableID, model: ref({ variant: "default" }) })
+          const disabledError = yield* loongcode.sessions
             .switchModel({ sessionID: disabledID, model: ref() })
             .pipe(Effect.flip)
-          const missingError = yield* lgcode.sessions
+          const missingError = yield* loongcode.sessions
             .switchModel({ sessionID: disabledID, model: ref({ id: "missing" }) })
             .pipe(Effect.flip)
 
           expect(disabledError).toBeInstanceOf(Session.ModelUnavailableError)
           expect(missingError).toBeInstanceOf(Session.ModelUnavailableError)
-          expect((yield* lgcode.sessions.get(availableID)).model).toEqual(ref({ variant: "default" }))
-          expect((yield* lgcode.sessions.get(disabledID)).model).toBeUndefined()
+          expect((yield* loongcode.sessions.get(availableID)).model).toEqual(ref({ variant: "default" }))
+          expect((yield* loongcode.sessions.get(disabledID)).model).toBeUndefined()
         }),
       ),
     ),
@@ -111,21 +111,21 @@ describe("public native LGcode API", () => {
       Effect.flatMap((tmp) =>
         Effect.gen(function* () {
           yield* writeProvider(tmp.path)
-          const lgcode = yield* LGcode.Service
+          const loongcode = yield* Loongcode.Service
           const sessionID = Session.ID.make("ses_public_switch_variant")
           const selected = ref({ variant: "fast" })
-          yield* lgcode.sessions.create({
+          yield* loongcode.sessions.create({
             id: sessionID,
             location: Location.Ref.make({ directory: AbsolutePath.make(tmp.path) }),
           })
-          yield* lgcode.sessions.switchModel({ sessionID, model: selected })
+          yield* loongcode.sessions.switchModel({ sessionID, model: selected })
 
-          const error = yield* lgcode.sessions
+          const error = yield* loongcode.sessions
             .switchModel({ sessionID, model: ref({ variant: "unknown" }) })
             .pipe(Effect.flip)
 
           expect(error).toBeInstanceOf(Session.VariantUnavailableError)
-          expect((yield* lgcode.sessions.get(sessionID)).model).toEqual(selected)
+          expect((yield* loongcode.sessions.get(sessionID)).model).toEqual(selected)
         }),
       ),
     ),
@@ -133,9 +133,9 @@ describe("public native LGcode API", () => {
 
   it.effect("preserves the typed not-found error for a missing Session", () =>
     Effect.gen(function* () {
-      const lgcode = yield* LGcode.Service
+      const loongcode = yield* Loongcode.Service
       const sessionID = Session.ID.make("ses_public_switch_missing")
-      const error = yield* lgcode.sessions
+      const error = yield* loongcode.sessions
         .switchModel({
           sessionID,
           model: Schema.decodeUnknownSync(Model.Ref)({ id: "claude-sonnet-4-5", providerID: "anthropic" }),
@@ -158,7 +158,7 @@ const ref = (input: { id?: string; variant?: string } = {}) =>
 const writeProvider = (directory: string, disabled = false) =>
   Effect.promise(() =>
     fs.writeFile(
-      path.join(directory, "lgcode.json"),
+      path.join(directory, "loongcode.json"),
       JSON.stringify({
         providers: {
           "public-test": {

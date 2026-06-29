@@ -526,7 +526,7 @@ export class App extends HeyApiClient {
   /**
    * List agents
    *
-   * Get a list of all available AI agents in the LGcode system.
+   * Get a list of all available AI agents in the Loongcode system.
    */
   public agents<ThrowOnError extends boolean = false>(
     parameters?: {
@@ -556,7 +556,7 @@ export class App extends HeyApiClient {
   /**
    * List skills
    *
-   * Get a list of all available skills in the LGcode system.
+   * Get a list of all available skills in the Loongcode system.
    */
   public skills<ThrowOnError extends boolean = false>(
     parameters?: {
@@ -699,7 +699,7 @@ export class Console extends HeyApiClient {
   /**
    * Switch active Console org
    *
-   * Persist a new active Console account/org selection for the current local LGcode state.
+   * Persist a new active Console account/org selection for the current local Loongcode state.
    */
   public switchOrg<ThrowOnError extends boolean = false>(
     parameters?: {
@@ -740,7 +740,7 @@ export class Session extends HeyApiClient {
   /**
    * List sessions
    *
-   * Get a list of all LGcode sessions across projects, sorted by most recently updated. Archived sessions are excluded by default.
+   * Get a list of all Loongcode sessions across projects, sorted by most recently updated. Archived sessions are excluded by default.
    */
   public list<ThrowOnError extends boolean = false>(
     parameters?: {
@@ -1210,7 +1210,7 @@ export class Config extends HeyApiClient {
   /**
    * Get global configuration
    *
-   * Retrieve the current global LGcode configuration settings and preferences.
+   * Retrieve the current global Loongcode configuration settings and preferences.
    */
   public get<ThrowOnError extends boolean = false>(options?: Options<never, ThrowOnError>) {
     return (options?.client ?? this.client).get<GlobalConfigGetResponses, GlobalConfigGetErrors, ThrowOnError>({
@@ -1222,7 +1222,7 @@ export class Config extends HeyApiClient {
   /**
    * Update global configuration
    *
-   * Update global LGcode configuration settings and preferences.
+   * Update global Loongcode configuration settings and preferences.
    */
   public update<ThrowOnError extends boolean = false>(
     parameters?: {
@@ -1248,7 +1248,7 @@ export class Global extends HeyApiClient {
   /**
    * Get health
    *
-   * Get health information about the LGcode server.
+   * Get health information about the Loongcode server.
    */
   public health<ThrowOnError extends boolean = false>(options?: Options<never, ThrowOnError>) {
     return (options?.client ?? this.client).get<GlobalHealthResponses, GlobalHealthErrors, ThrowOnError>({
@@ -1260,7 +1260,7 @@ export class Global extends HeyApiClient {
   /**
    * Get global events
    *
-   * Subscribe to global events from the LGcode system using server-sent events.
+   * Subscribe to global events from the Loongcode system using server-sent events.
    */
   public event<ThrowOnError extends boolean = false>(options?: Options<never, ThrowOnError>) {
     return (options?.client ?? this.client).sse.get<GlobalEventResponses, GlobalEventErrors, ThrowOnError>({
@@ -1272,7 +1272,7 @@ export class Global extends HeyApiClient {
   /**
    * Dispose instance
    *
-   * Clean up and dispose all LGcode instances, releasing all resources.
+   * Clean up and dispose all Loongcode instances, releasing all resources.
    */
   public dispose<ThrowOnError extends boolean = false>(options?: Options<never, ThrowOnError>) {
     return (options?.client ?? this.client).post<GlobalDisposeResponses, GlobalDisposeErrors, ThrowOnError>({
@@ -1282,9 +1282,9 @@ export class Global extends HeyApiClient {
   }
 
   /**
-   * Upgrade lgcode
+   * Upgrade loongcode
    *
-   * Upgrade lgcode to the specified version or latest if not specified.
+   * Upgrade loongcode to the specified version or latest if not specified.
    */
   public upgrade<ThrowOnError extends boolean = false>(
     parameters?: {
@@ -1347,7 +1347,7 @@ export class Config2 extends HeyApiClient {
   /**
    * Get configuration
    *
-   * Retrieve the current LGcode configuration settings and preferences.
+   * Retrieve the current Loongcode configuration settings and preferences.
    */
   public get<ThrowOnError extends boolean = false>(
     parameters?: {
@@ -1377,7 +1377,7 @@ export class Config2 extends HeyApiClient {
   /**
    * Update configuration
    *
-   * Update LGcode configuration settings and preferences.
+   * Update Loongcode configuration settings and preferences.
    */
   public update<ThrowOnError extends boolean = false>(
     parameters?: {
@@ -1855,7 +1855,7 @@ export class Instance extends HeyApiClient {
   /**
    * Dispose instance
    *
-   * Clean up and dispose the current LGcode instance, releasing all resources.
+   * Clean up and dispose the current Loongcode instance, releasing all resources.
    */
   public dispose<ThrowOnError extends boolean = false>(
     parameters?: {
@@ -1887,7 +1887,7 @@ export class Path extends HeyApiClient {
   /**
    * Get paths
    *
-   * Retrieve the current working directory and related path information for the LGcode instance.
+   * Retrieve the current working directory and related path information for the Loongcode instance.
    */
   public get<ThrowOnError extends boolean = false>(
     parameters?: {
@@ -2089,7 +2089,7 @@ export class Command extends HeyApiClient {
   /**
    * List commands
    *
-   * Get a list of all available commands in the LGcode system.
+   * Get a list of all available commands in the Loongcode system.
    */
   public list<ThrowOnError extends boolean = false>(
     parameters?: {
@@ -2460,7 +2460,7 @@ export class Project extends HeyApiClient {
   /**
    * List all projects
    *
-   * Get a list of projects that have been opened with LGcode.
+   * Get a list of projects that have been opened with Loongcode.
    */
   public list<ThrowOnError extends boolean = false>(
     parameters?: {
@@ -2490,7 +2490,7 @@ export class Project extends HeyApiClient {
   /**
    * Get current project
    *
-   * Retrieve the currently active project that LGcode is working with.
+   * Retrieve the currently active project that Loongcode is working with.
    */
   public current<ThrowOnError extends boolean = false>(
     parameters?: {
@@ -2666,7 +2666,7 @@ export class Pty extends HeyApiClient {
   /**
    * List PTY sessions
    *
-   * Get a list of all active pseudo-terminal (PTY) sessions managed by LGcode.
+   * Get a list of all active pseudo-terminal (PTY) sessions managed by Loongcode.
    */
   public list<ThrowOnError extends boolean = false>(
     parameters?: {
@@ -3301,7 +3301,7 @@ export class Session2 extends HeyApiClient {
   /**
    * List sessions
    *
-   * Get a list of all LGcode sessions, sorted by most recently updated.
+   * Get a list of all Loongcode sessions, sorted by most recently updated.
    */
   public list<ThrowOnError extends boolean = false>(
     parameters?: {
@@ -3343,7 +3343,7 @@ export class Session2 extends HeyApiClient {
   /**
    * Create session
    *
-   * Create a new LGcode session for interacting with AI assistants and managing conversations.
+   * Create a new Loongcode session for interacting with AI assistants and managing conversations.
    */
   public create<ThrowOnError extends boolean = false>(
     parameters?: {
@@ -3460,7 +3460,7 @@ export class Session2 extends HeyApiClient {
   /**
    * Get session
    *
-   * Retrieve detailed information about a specific LGcode session.
+   * Retrieve detailed information about a specific Loongcode session.
    */
   public get<ThrowOnError extends boolean = false>(
     parameters: {

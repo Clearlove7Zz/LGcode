@@ -1,5 +1,5 @@
-import { Message, Model, Part, Session, SnapshotFileDiff } from "@lgcode/sdk/v2"
-import { iife } from "@lgcode/core/util/iife"
+import { Message, Model, Part, Session, SnapshotFileDiff } from "@loongcode/sdk/v2"
+import { iife } from "@loongcode/core/util/iife"
 import z from "zod"
 import { Storage } from "./storage"
 

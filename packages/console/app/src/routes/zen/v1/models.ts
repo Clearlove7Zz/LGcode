@@ -1,9 +1,9 @@
 import type { APIEvent } from "@solidjs/start/server"
-import { ZenData } from "@lgcode/console-core/model.js"
-import { and, Database, eq, isNull } from "@lgcode/console-core/drizzle/index.js"
-import { KeyTable } from "@lgcode/console-core/schema/key.sql.js"
-import { WorkspaceTable } from "@lgcode/console-core/schema/workspace.sql.js"
-import { ModelTable } from "@lgcode/console-core/schema/model.sql.js"
+import { ZenData } from "@loongcode/console-core/model.js"
+import { and, Database, eq, isNull } from "@loongcode/console-core/drizzle/index.js"
+import { KeyTable } from "@loongcode/console-core/schema/key.sql.js"
+import { WorkspaceTable } from "@loongcode/console-core/schema/workspace.sql.js"
+import { ModelTable } from "@loongcode/console-core/schema/model.sql.js"
 import { buildOptionsResponse, buildModelsResponse } from "~/routes/zen/util/modelsHandler"
 
 export async function OPTIONS(_input: APIEvent) {

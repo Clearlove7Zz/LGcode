@@ -1,19 +1,19 @@
 ---
 title: Server
-description: Interager med lgcode-serveren over HTTP.
+description: Interager med loongcode-serveren over HTTP.
 ---
 
 import config from "../../../../config.mjs"
 export const typesUrl = `${config.github}/blob/dev/packages/sdk/js/src/gen/types.gen.ts`
 
-Kommandoen `lgcode serve` kører en hovedløs HTTP-server, som afslører et OpenAPI-endpoint, som en lgcode-klient kan bruge.
+Kommandoen `loongcode serve` kører en hovedløs HTTP-server, som afslører et OpenAPI-endpoint, som en loongcode-klient kan bruge.
 
 ---
 
 ### Brug
 
 ```bash
-lgcode serve [--port <number>] [--hostname <string>] [--cors <origin>]
+loongcode serve [--port <number>] [--hostname <string>] [--cors <origin>]
 ```
 
 #### Indstillinger
@@ -23,41 +23,41 @@ lgcode serve [--port <number>] [--hostname <string>] [--cors <origin>]
 | `--port`        | Port at lytte på                             | `4096`           |
 | `--hostname`    | Værtsnavn at lytte på                        | `127.0.0.1`      |
 | `--mdns`        | Aktiver mDNS-opdagelse                       | `false`          |
-| `--mdns-domain` | Brugerdefineret domænenavn for mDNS-tjeneste | `lgcode.local` |
+| `--mdns-domain` | Brugerdefineret domænenavn for mDNS-tjeneste | `loongcode.local` |
 | `--cors`        | Yderligere browseroprindelse for at tillade  | `[]`             |
 
 `--cors` kan angives flere gange:
 
 ```bash
-lgcode serve --cors http://localhost:5173 --cors https://app.example.com
+loongcode serve --cors http://localhost:5173 --cors https://app.example.com
 ```
 
 ---
 
 ### Godkendelse
 
-Indstil `LGCODE_SERVER_PASSWORD` for at beskytte serveren med HTTP grundlæggende godkendelse. Brugernavnet er som standard `lgcode`, eller indstil `LGCODE_SERVER_USERNAME` for at tilsidesætte det. Dette gælder både `lgcode serve` og `lgcode web`.
+Indstil `LOONGCODE_SERVER_PASSWORD` for at beskytte serveren med HTTP grundlæggende godkendelse. Brugernavnet er som standard `loongcode`, eller indstil `LOONGCODE_SERVER_USERNAME` for at tilsidesætte det. Dette gælder både `loongcode serve` og `loongcode web`.
 
 ```bash
-LGCODE_SERVER_PASSWORD=your-password lgcode serve
+LOONGCODE_SERVER_PASSWORD=your-password loongcode serve
 ```
 
 ---
 
 ### Sådan fungerer det
 
-Når du kører `lgcode` starter den en TUI og en server. Hvor TUI er
+Når du kører `loongcode` starter den en TUI og en server. Hvor TUI er
 klient som taler med serveren. Serveren viser en OpenAPI 3.1-specifikation
 endpoint. Dette endpoint bruges også til at generere en [SDK](/docs/sdk).
 
 :::tip
-Brug lgcode-serveren til at interagere med lgcode programmatisk.
+Brug loongcode-serveren til at interagere med loongcode programmatisk.
 :::
 
-Denne arkitektur lader lgcode understøtte flere klienter og lader dig interagere med lgcode programmatisk.
+Denne arkitektur lader loongcode understøtte flere klienter og lader dig interagere med loongcode programmatisk.
 
-Du kan køre `lgcode serve` for at starte en selvstændig server. Hvis du har
-lgcode TUI kørende, vil `lgcode serve` starte en ny server.
+Du kan køre `loongcode serve` for at starte en selvstændig server. Hvis du har
+loongcode TUI kørende, vil `loongcode serve` starte en ny server.
 
 ---
 
@@ -65,7 +65,7 @@ lgcode TUI kørende, vil `lgcode serve` starte en ny server.
 
 Når du starter TUI, tildeler den tilfældigt en port og et værtsnavn. Du kan i stedet sende `--hostname` og `--port` [flagene](/docs/cli). Brug derefter disse til at forbinde til serveren.
 
-[`/tui`](#tui) endpointet kan bruges til at køre TUI gennem serveren. Du kan for eksempel forududfylde eller køre en forespørgsel. Denne opsætning bruges af LGcode [IDE](/docs/ide) plugins.
+[`/tui`](#tui) endpointet kan bruges til at køre TUI gennem serveren. Du kan for eksempel forududfylde eller køre en forespørgsel. Denne opsætning bruges af Loongcode [IDE](/docs/ide) plugins.
 
 ---
 
@@ -83,7 +83,7 @@ For eksempel `http://localhost:4096/doc`. Brug specifikationen til at generere k
 
 ## API'er
 
-LGcode-serveren viser følgende API'er.
+Loongcode-serveren viser følgende API'er.
 
 ---
 

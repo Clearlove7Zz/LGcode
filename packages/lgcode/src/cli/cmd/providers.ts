@@ -4,15 +4,15 @@ import { cmd } from "./cmd"
 import { CliError, effectCmd, fail } from "../effect-cmd"
 import { UI } from "../ui"
 import * as Prompt from "../effect/prompt"
-import { ModelsDev } from "@lgcode/core/models-dev"
+import { ModelsDev } from "@loongcode/core/models-dev"
 
 import { map, pipe, sortBy, values } from "remeda"
 import path from "path"
 import os from "os"
 import { Config } from "@/config/config"
-import { Global } from "@lgcode/core/global"
+import { Global } from "@loongcode/core/global"
 import { Plugin } from "../../plugin"
-import type { Hooks } from "@lgcode/plugin"
+import type { Hooks } from "@loongcode/plugin"
 import { Process } from "@/util/process"
 import { errorMessage } from "@/util/error"
 import { text } from "node:stream/consumers"
@@ -304,7 +304,7 @@ export const ProvidersLoginCommand = effectCmd({
   builder: (yargs: Argv) =>
     yargs
       .positional("url", {
-        describe: "lgcode auth provider",
+        describe: "loongcode auth provider",
         type: "string",
       })
       .option("provider", {
@@ -325,7 +325,7 @@ export const ProvidersLoginCommand = effectCmd({
     if (args.url) {
       const url = args.url.replace(/\/+$/, "")
       const wellknown = (yield* cliTry(`Failed to load auth provider metadata from ${url}: `, () =>
-        fetch(`${url}/.well-known/lgcode`).then((x) => x.json()),
+        fetch(`${url}/.well-known/loongcode`).then((x) => x.json()),
       )) as {
         auth: { command: string[]; env: string }
       }
@@ -369,7 +369,7 @@ export const ProvidersLoginCommand = effectCmd({
     const hooks = yield* pluginSvc.list()
 
     const priority: Record<string, number> = {
-      lgcode: 0,
+      loongcode: 0,
       openai: 1,
       "github-copilot": 2,
       google: 3,
@@ -396,7 +396,7 @@ export const ProvidersLoginCommand = effectCmd({
           label: x.name,
           value: x.id,
           hint: {
-            lgcode: "recommended",
+            loongcode: "recommended",
             openai: "ChatGPT Plus/Pro or API key",
           }[x.id],
         })),
@@ -449,7 +449,7 @@ export const ProvidersLoginCommand = effectCmd({
       }
 
       yield* Prompt.log.warn(
-        `This only stores a credential for ${provider} - you will need configure it in lgcode.json, check the docs for examples.`,
+        `This only stores a credential for ${provider} - you will need configure it in loongcode.json, check the docs for examples.`,
       )
     }
 
@@ -458,12 +458,12 @@ export const ProvidersLoginCommand = effectCmd({
         "Amazon Bedrock authentication priority:\n" +
           "  1. Bearer token (AWS_BEARER_TOKEN_BEDROCK or /connect)\n" +
           "  2. AWS credential chain (profile, access keys, IAM roles, EKS IRSA)\n\n" +
-          "Configure via lgcode.json options (profile, region, endpoint) or\n" +
+          "Configure via loongcode.json options (profile, region, endpoint) or\n" +
           "AWS environment variables (AWS_PROFILE, AWS_REGION, AWS_ACCESS_KEY_ID, AWS_WEB_IDENTITY_TOKEN_FILE).",
       )
     }
 
-    if (provider === "lgcode") {
+    if (provider === "loongcode") {
       yield* Prompt.log.info("Create an api key at https://modelhub.lgdg.cc/auth")
     }
 

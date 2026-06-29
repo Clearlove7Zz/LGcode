@@ -15,7 +15,7 @@ export const dict = {
   "nav.home": "ホーム",
   "nav.openMenu": "メニューを開く",
   "nav.getStartedFree": "無料ではじめる",
-  "nav.logoAlt": "LGcode",
+  "nav.logoAlt": "Loongcode",
 
   "nav.context.copyLogo": "ロゴをSVGでコピー",
   "nav.context.copyWordmark": "ワードマークをSVGでコピー",
@@ -37,7 +37,7 @@ export const dict = {
   "email.subscribe": "登録",
   "email.success": "ほぼ完了です。受信トレイを確認してメールアドレスを認証してください",
 
-  "notFound.title": "見つかりません | LGcode",
+  "notFound.title": "見つかりません | Loongcode",
   "notFound.heading": "404 - ページが見つかりません",
   "notFound.home": "ホーム",
   "notFound.docs": "ドキュメント",
@@ -81,23 +81,23 @@ export const dict = {
   "error.reloadAmountMin": "リロード額は少なくとも ${{amount}} である必要があります",
   "error.reloadTriggerMin": "残高トリガーは少なくとも ${{amount}} である必要があります",
 
-  "app.meta.description": "LGcode - オープンソースのコーディングエージェント。",
+  "app.meta.description": "Loongcode - オープンソースのコーディングエージェント。",
 
-  "home.title": "LGcode | オープンソースのAIコーディングエージェント",
+  "home.title": "Loongcode | オープンソースのAIコーディングエージェント",
 
-  "temp.title": "LGcode | ターミナル向けに構築されたAIコーディングエージェント",
+  "temp.title": "Loongcode | ターミナル向けに構築されたAIコーディングエージェント",
   "temp.hero.title": "ターミナル向けに構築されたAIコーディングエージェント",
-  "temp.zen": "LGcode Zen",
+  "temp.zen": "Loongcode Zen",
   "temp.getStarted": "はじめる",
   "temp.feature.native.title": "ネイティブ TUI",
   "temp.feature.native.body": "レスポンシブでネイティブ、テーマ変更可能なターミナルUI",
-  "temp.feature.zen.beforeLink": "LGcodeが提供する",
+  "temp.feature.zen.beforeLink": "Loongcodeが提供する",
   "temp.feature.zen.link": "厳選されたモデルリスト",
   "temp.feature.zen.afterLink": "",
   "temp.feature.models.beforeLink": "ローカルモデルを含む、",
   "temp.feature.models.afterLink": "を通じて75以上のLLMプロバイダーをサポート",
-  "temp.screenshot.caption": "tokyonight テーマを使用した LGcode TUI",
-  "temp.screenshot.alt": "tokyonight テーマの LGcode TUI",
+  "temp.screenshot.caption": "tokyonight テーマを使用した Loongcode TUI",
+  "temp.screenshot.alt": "tokyonight テーマの Loongcode TUI",
   "temp.logoLightAlt": "opencodeのロゴ（ライト）",
   "temp.logoDarkAlt": "opencodeのロゴ（ダーク）",
 
@@ -113,9 +113,9 @@ export const dict = {
 
   "home.install.ariaLabel": "インストールオプション",
 
-  "home.what.title": "LGcodeとは？",
+  "home.what.title": "Loongcodeとは？",
   "home.what.body":
-    "LGcodeは、ターミナル、IDE、またはデスクトップでのコード作成を支援するオープンソースのエージェントです。",
+    "Loongcodeは、ターミナル、IDE、またはデスクトップでのコード作成を支援するオープンソースのエージェントです。",
   "home.what.lsp.title": "LSP対応",
   "home.what.lsp.body": "LLMに適したLSPを自動的に読み込みます",
   "home.what.multiSession.title": "マルチセッション",
@@ -141,43 +141,43 @@ export const dict = {
 
   "home.privacy.title": "プライバシーを最優先に設計",
   "home.privacy.body":
-    "LGcodeはコードやコンテキストデータを一切保存しないため、プライバシーが重視される環境でも利用できます。",
+    "Loongcodeはコードやコンテキストデータを一切保存しないため、プライバシーが重視される環境でも利用できます。",
   "home.privacy.learnMore": "詳しくは",
   "home.privacy.link": "プライバシー",
 
-  "home.faq.q1": "LGcodeとは？",
+  "home.faq.q1": "Loongcodeとは？",
   "home.faq.a1":
-    "LGcodeは、任意のAIモデルでコードの作成・実行を支援するオープンソースのエージェントです。ターミナルベースのインターフェース、デスクトップアプリ、IDE拡張として利用できます。",
-  "home.faq.q2": "LGcodeの使い方は？",
+    "Loongcodeは、任意のAIモデルでコードの作成・実行を支援するオープンソースのエージェントです。ターミナルベースのインターフェース、デスクトップアプリ、IDE拡張として利用できます。",
+  "home.faq.q2": "Loongcodeの使い方は？",
   "home.faq.a2.before": "最も簡単な始め方は",
   "home.faq.a2.link": "イントロを読む",
-  "home.faq.q3": "LGcodeには追加のAIサブスクリプションが必要ですか？",
-  "home.faq.a3.p1": "必ずしも必要ではありません。LGcodeには、アカウント不要で使える無料モデルが含まれています。",
+  "home.faq.q3": "Loongcodeには追加のAIサブスクリプションが必要ですか？",
+  "home.faq.a3.p1": "必ずしも必要ではありません。Loongcodeには、アカウント不要で使える無料モデルが含まれています。",
   "home.faq.a3.p2.beforeZen": "これらに加えて、",
   "home.faq.a3.p2.afterZen": " アカウントを作成することで、人気のコーディングモデルを利用できます。",
   "home.faq.a3.p3":
-    "Zenの利用を推奨していますが、LGcodeはOpenAI、Anthropic、xAIなどの主要プロバイダーにも対応しています。",
+    "Zenの利用を推奨していますが、LoongcodeはOpenAI、Anthropic、xAIなどの主要プロバイダーにも対応しています。",
   "home.faq.a3.p4.beforeLocal": "さらに、",
   "home.faq.a3.p4.localLink": "ローカルモデル",
-  "home.faq.q4": "既存のAIサブスクリプションをLGcodeで使えますか？",
+  "home.faq.q4": "既存のAIサブスクリプションをLoongcodeで使えますか？",
   "home.faq.a4.p1":
-    "はい、LGcodeは主要プロバイダーのサブスクリプションプランに対応しています。Claude Pro/Max、ChatGPT Plus/Pro、GitHub Copilotのサブスクリプションを利用できます。",
+    "はい、Loongcodeは主要プロバイダーのサブスクリプションプランに対応しています。Claude Pro/Max、ChatGPT Plus/Pro、GitHub Copilotのサブスクリプションを利用できます。",
   "home.faq.q5": "ターミナルだけで使えますか？",
-  "home.faq.a5.beforeDesktop": "もう違います！LGcodeは今は",
+  "home.faq.a5.beforeDesktop": "もう違います！Loongcodeは今は",
   "home.faq.a5.desktop": "デスクトップ",
   "home.faq.a5.and": "と",
   "home.faq.a5.web": "ウェブ",
-  "home.faq.q6": "LGcodeの価格は？",
+  "home.faq.q6": "Loongcodeの価格は？",
   "home.faq.a6":
-    "LGcodeは100%無料で使えます。無料モデルも含まれています。他のプロバイダーに接続する場合は追加費用が発生することがあります。",
+    "Loongcodeは100%無料で使えます。無料モデルも含まれています。他のプロバイダーに接続する場合は追加費用が発生することがあります。",
   "home.faq.q7": "データとプライバシーは？",
   "home.faq.a7.p1": "無料モデルを使う場合や共有リンクを作成する場合にのみ、データが保存されます。",
   "home.faq.a7.p2.beforeModels": "詳しくは",
   "home.faq.a7.p2.modelsLink": "モデルのプライバシー",
   "home.faq.a7.p2.and": "と",
   "home.faq.a7.p2.shareLink": "共有ページのプライバシー",
-  "home.faq.q8": "LGcodeはオープンソースですか？",
-  "home.faq.a8.p1": "はい、LGcodeは完全にオープンソースです。ソースコードは",
+  "home.faq.q8": "Loongcodeはオープンソースですか？",
+  "home.faq.a8.p1": "はい、Loongcodeは完全にオープンソースです。ソースコードは",
   "home.faq.a8.p2": "の",
   "home.faq.a8.mitLicense": "MITライセンス",
   "home.faq.a8.p3":
@@ -185,30 +185,30 @@ export const dict = {
 
   "home.zenCta.title": "コーディングエージェント向けの信頼できる最適化モデル",
   "home.zenCta.body":
-    "Zenは、LGcodeがコーディングエージェント向けにテスト・ベンチマーク済みのAIモデルを厳選して提供します。プロバイダー間の性能・品質のブレを気にせず、検証済みのモデルを利用できます。",
+    "Zenは、Loongcodeがコーディングエージェント向けにテスト・ベンチマーク済みのAIモデルを厳選して提供します。プロバイダー間の性能・品質のブレを気にせず、検証済みのモデルを利用できます。",
   "home.zenCta.link": "Zenについて知る",
 
-  "zen.title": "LGcode Zen | コーディングエージェント向けの信頼できる最適化モデル",
+  "zen.title": "Loongcode Zen | コーディングエージェント向けの信頼できる最適化モデル",
   "zen.hero.title": "コーディングエージェント向けの信頼できる最適化モデル",
   "zen.hero.body":
-    "Zenは、LGcodeがコーディングエージェント向けにテスト・ベンチマーク済みのAIモデルを厳選して提供します。プロバイダー間の性能・品質のブレを気にせず、検証済みのモデルを利用できます。",
+    "Zenは、Loongcodeがコーディングエージェント向けにテスト・ベンチマーク済みのAIモデルを厳選して提供します。プロバイダー間の性能・品質のブレを気にせず、検証済みのモデルを利用できます。",
 
-  "zen.faq.q1": "LGcode Zenとは？",
+  "zen.faq.q1": "Loongcode Zenとは？",
   "zen.faq.a1":
-    "Zenは、LGcodeのチームが作成した、コーディングエージェント向けにテスト・ベンチマークされたAIモデルの厳選セットです。",
+    "Zenは、Loongcodeのチームが作成した、コーディングエージェント向けにテスト・ベンチマークされたAIモデルの厳選セットです。",
   "zen.faq.q2": "Zenはなぜ精度が高いのですか？",
   "zen.faq.a2":
     "Zenはコーディングエージェント向けにテスト・ベンチマークされたモデルだけを提供します。ステーキを切るのにバターナイフを使わないように、コーディングには品質の低いモデルを使わないでください。",
   "zen.faq.q3": "Zenは安いですか？",
   "zen.faq.a3":
-    "Zenは営利目的ではありません。Zenはモデル提供元のコストをそのままあなたに渡します。Zenの利用が増えるほど、LGcodeはより良いレートを交渉し、その分をあなたに還元できます。",
+    "Zenは営利目的ではありません。Zenはモデル提供元のコストをそのままあなたに渡します。Zenの利用が増えるほど、Loongcodeはより良いレートを交渉し、その分をあなたに還元できます。",
   "zen.faq.q4": "Zenの料金は？",
   "zen.faq.a4.p1.beforePricing": "Zenは",
   "zen.faq.a4.p1.pricingLink": "リクエスト単位で課金",
   "zen.faq.a4.p1.afterPricing": "し、マークアップはありません。つまり、モデル提供元の請求額をそのまま支払います。",
   "zen.faq.a4.p2.beforeAccount": "総コストは利用量に依存し、月次の支出上限を",
   "zen.faq.a4.p2.accountLink": "アカウント",
-  "zen.faq.a4.p3": "コストを賄うために、LGcodeは$20の残高チャージあたり$1.23の小さな決済手数料のみを追加します。",
+  "zen.faq.a4.p3": "コストを賄うために、Loongcodeは$20の残高チャージあたり$1.23の小さな決済手数料のみを追加します。",
   "zen.faq.q5": "データとプライバシーは？",
   "zen.faq.a5.beforeExceptions":
     "Zenのモデルはすべて米国でホストされています。プロバイダーはゼロ保持ポリシーを守り、データをモデル学習に使用しません（",
@@ -219,7 +219,7 @@ export const dict = {
   "zen.faq.a7": "はい、いつでも請求を無効化し、残りの残高を利用できます。",
   "zen.faq.q8": "他のコーディングエージェントでもZenを使えますか？",
   "zen.faq.a8":
-    "ZenはLGcodeとの相性が良いですが、どのエージェントでもZenを利用できます。お使いのコーディングエージェントのセットアップ手順に従ってください。",
+    "ZenはLoongcodeとの相性が良いですが、どのエージェントでもZenを利用できます。お使いのコーディングエージェントのセットアップ手順に従ってください。",
 
   "zen.cta.start": "Zenをはじめる",
   "zen.pricing.title": "$20の従量課金制残高を追加",
@@ -229,12 +229,12 @@ export const dict = {
   "zen.problem.title": "Zenはどのような問題を解決していますか？",
   "zen.problem.body":
     "利用可能なモデルは非常に多くありますが、コーディングエージェントで適切に機能するモデルはほんのわずかです。ほとんどのプロバイダーは、それらを異なる設定で提供し、結果も異なります。",
-  "zen.problem.subtitle": "LGcodeユーザーだけでなく、すべての人を対象にこの問題を修正しています。",
+  "zen.problem.subtitle": "Loongcodeユーザーだけでなく、すべての人を対象にこの問題を修正しています。",
   "zen.problem.item1": "選択したモデルをテストし、チームに相談する",
   "zen.problem.item2": "プロバイダーと連携して適切に提供されるようにする",
   "zen.problem.item3": "私たちが推奨するすべてのモデルとプロバイダーの組み合わせをベンチマークする",
   "zen.how.title": "Zenの仕組み",
-  "zen.how.body": "ZenをLGcodeとともに使用することをお勧めしますが、Zenはどのエージェントでも使用できます。",
+  "zen.how.body": "ZenをLoongcodeとともに使用することをお勧めしますが、Zenはどのエージェントでも使用できます。",
   "zen.how.step1.title": "サインアップして$20の残高を追加",
   "zen.how.step1.beforeLink": "",
   "zen.how.step1.link": "セットアップ手順",
@@ -248,7 +248,7 @@ export const dict = {
     "すべてのZenモデルは米国でホストされています。プロバイダーはゼロ保持ポリシーに従い、モデルのトレーニングにデータを使用しません（",
   "zen.privacy.exceptionsLink": "以下の例外",
 
-  "go.title": "LGcode Go | すべての人のための低価格なコーディングモデル",
+  "go.title": "Loongcode Go | すべての人のための低価格なコーディングモデル",
   "go.banner.text": "MiniMax M3の利用上限が期間限定で3倍に",
   "go.meta.description":
     "Goは最初の月$5、その後$10/月で、GLM-5.1、GLM-5、Kimi K2.7 Code、Kimi K2.6、MiMo-V2.5-Pro、MiMo-V2.5、Qwen3.7 Max、Qwen3.7 Plus、Qwen3.6 Plus、MiniMax M2.7、MiniMax M3、DeepSeek V4 Pro、DeepSeek V4 Flashに対して5時間のゆとりあるリクエスト上限があります。",
@@ -273,7 +273,7 @@ export const dict = {
 
   "go.testimonials.brand.zen": "Zen",
   "go.testimonials.brand.go": "Go",
-  "go.testimonials.handle": "@LGcode",
+  "go.testimonials.handle": "@Loongcode",
   "go.testimonials.dax.name": "Dax Raad",
   "go.testimonials.dax.title": "元CEO, Terminal Products",
   "go.testimonials.dax.quoteAfter": "は人生を変えるものでした。本当に迷う必要はありません。",
@@ -295,7 +295,7 @@ export const dict = {
   "go.testimonials.frank.quote": "まだNvidiaにいられたらよかったのに。",
   "go.problem.title": "Goはどのような問題を解決していますか？",
   "go.problem.body":
-    "私たちはLGcodeの体験をできるだけ多くの人に届けることに注力しています。LGcode Goは低価格のサブスクリプションで、最初の月は$5、その後は$10/月です。ゆとりある上限と、最も高性能なオープンソースモデルへの信頼できるアクセスを提供します。",
+    "私たちはLoongcodeの体験をできるだけ多くの人に届けることに注力しています。Loongcode Goは低価格のサブスクリプションで、最初の月は$5、その後は$10/月です。ゆとりある上限と、最も高性能なオープンソースモデルへの信頼できるアクセスを提供します。",
   "go.problem.subtitle": " ",
   "go.problem.item1": "低価格なサブスクリプション料金",
   "go.problem.item2": "十分な制限と安定したアクセス",
@@ -303,7 +303,7 @@ export const dict = {
   "go.problem.item4":
     "GLM-5.1、GLM-5、Kimi K2.7 Code、Kimi K2.6、MiMo-V2.5-Pro、MiMo-V2.5、Qwen3.7 Max、Qwen3.7 Plus、Qwen3.6 Plus、MiniMax M2.7、MiniMax M3、DeepSeek V4 Pro、DeepSeek V4 Flashを含む",
   "go.how.title": "Goの仕組み",
-  "go.how.body": "Goは最初の月$5、その後$10/月で始まります。LGcodeまたは任意のエージェントで使えます。",
+  "go.how.body": "Goは最初の月$5、その後$10/月で始まります。Loongcodeまたは任意のエージェントで使えます。",
   "go.how.step1.title": "アカウントを作成",
   "go.how.step1.beforeLink": "",
   "go.how.step1.link": "セットアップ手順はこちら",
@@ -319,7 +319,7 @@ export const dict = {
   "go.privacy.beforeExceptions":
     "Goのモデルは米国でホストされています。プロバイダーはゼロ保持ポリシーに従い、モデルのトレーニングにデータを使用しません（",
   "go.privacy.exceptionsLink": "以下の例外",
-  "go.faq.q1": "LGcode Goとは？",
+  "go.faq.q1": "Loongcode Goとは？",
   "go.faq.a1":
     "Goは、エージェント型コーディングのための有能なオープンソースモデルへの安定したアクセスを提供する低価格なサブスクリプションです。",
   "go.faq.q2": "Goにはどのモデルが含まれますか？",
@@ -375,13 +375,13 @@ export const dict = {
     "月額の利用上限 ${{amount}} に達しました。こちらから上限を管理してください: {{membersUrl}}",
   "zen.api.error.modelDisabled": "モデルが無効です",
   "zen.api.error.trialEnded":
-    "{{model}} の無料プロモーションは終了しました。LGcode Go を購読するとモデルを引き続き使用できます - {{link}}",
+    "{{model}} の無料プロモーションは終了しました。Loongcode Go を購読するとモデルを引き続き使用できます - {{link}}",
 
-  "black.meta.title": "LGcode Black | 世界最高峰のコーディングモデルすべてにアクセス",
-  "black.meta.description": "LGcode Black サブスクリプションプランで、Claude、GPT、Gemini などにアクセス。",
+  "black.meta.title": "Loongcode Black | 世界最高峰のコーディングモデルすべてにアクセス",
+  "black.meta.description": "Loongcode Black サブスクリプションプランで、Claude、GPT、Gemini などにアクセス。",
   "black.hero.title": "世界最高峰のコーディングモデルすべてにアクセス",
   "black.hero.subtitle": "Claude、GPT、Gemini などを含む",
-  "black.title": "LGcode Black | 料金",
+  "black.title": "Loongcode Black | 料金",
   "black.paused": "Blackプランの登録は一時的に停止しています。",
   "black.plan.icon20": "Black 20 プラン",
   "black.plan.icon100": "Black 100 プラン",
@@ -400,10 +400,10 @@ export const dict = {
   "black.action.continue": "続ける",
   "black.finePrint.beforeTerms": "表示価格には適用される税金は含まれていません",
   "black.finePrint.terms": "利用規約",
-  "black.workspace.title": "LGcode Black | ワークスペースの選択",
+  "black.workspace.title": "Loongcode Black | ワークスペースの選択",
   "black.workspace.selectPlan": "このプランのワークスペースを選択してください",
   "black.workspace.name": "ワークスペース {{n}}",
-  "black.subscribe.title": "LGcode Black を購読する",
+  "black.subscribe.title": "Loongcode Black を購読する",
   "black.subscribe.paymentMethod": "支払い方法",
   "black.subscribe.loadingPaymentForm": "支払いフォームを読み込み中...",
   "black.subscribe.selectWorkspaceToContinue": "続けるにはワークスペースを選択してください",
@@ -415,9 +415,9 @@ export const dict = {
   "black.subscribe.processing": "処理中...",
   "black.subscribe.submit": "購読する ${{plan}}",
   "black.subscribe.form.chargeNotice": "サブスクリプションが有効化された時点でのみ請求されます",
-  "black.subscribe.success.title": "LGcode Black ウェイトリストに登録されました",
+  "black.subscribe.success.title": "Loongcode Black ウェイトリストに登録されました",
   "black.subscribe.success.subscriptionPlan": "サブスクリプションプラン",
-  "black.subscribe.success.planName": "LGcode Black {{plan}}",
+  "black.subscribe.success.planName": "Loongcode Black {{plan}}",
   "black.subscribe.success.amount": "金額",
   "black.subscribe.success.amountValue": "${{plan}} / 月",
   "black.subscribe.success.paymentMethod": "支払い方法",
@@ -446,15 +446,15 @@ export const dict = {
     "最適なパフォーマンスを実現するように構成されたモデルにアクセスします。ダウングレードや安価なプロバイダーへのルーティングはありません。",
   "workspace.newUser.feature.lockin.title": "ロックインなし",
   "workspace.newUser.feature.lockin.body":
-    "任意のコーディングエージェントでZenを使用でき、必要に応じていつでもLGcodeを備えた他のプロバイダーを使用し続けることができます。",
+    "任意のコーディングエージェントでZenを使用でき、必要に応じていつでもLoongcodeを備えた他のプロバイダーを使用し続けることができます。",
   "workspace.newUser.copyApiKey": "APIキーをコピー",
   "workspace.newUser.copyKey": "キーをコピー",
   "workspace.newUser.copied": "コピーしました！",
   "workspace.newUser.step.enableBilling": "課金を有効にする",
   "workspace.newUser.step.login.before": "実行",
-  "workspace.newUser.step.login.after": "してLGcodeを選択",
+  "workspace.newUser.step.login.after": "してLoongcodeを選択",
   "workspace.newUser.step.pasteKey": "APIキーを貼り付け",
-  "workspace.newUser.step.models.before": "LGcodeを起動し実行",
+  "workspace.newUser.step.models.before": "Loongcodeを起動し実行",
   "workspace.newUser.step.models.after": "してモデルを選択",
 
   "workspace.models.title": "モデル",
@@ -500,10 +500,10 @@ export const dict = {
   "workspace.cost.subscriptionShort": "サブ",
 
   "workspace.keys.title": "APIキー",
-  "workspace.keys.subtitle": "LGcodeサービスにアクセスするためのAPIキーを管理します。",
+  "workspace.keys.subtitle": "LoongcodeサービスにアクセスするためのAPIキーを管理します。",
   "workspace.keys.create": "APIキーの作成",
   "workspace.keys.placeholder": "キー名を入力してください",
-  "workspace.keys.empty": "LGcodeゲートウェイAPIキーを作成する",
+  "workspace.keys.empty": "LoongcodeゲートウェイAPIキーを作成する",
   "workspace.keys.table.name": "名前",
   "workspace.keys.table.key": "キー",
   "workspace.keys.table.createdBy": "作成者",
@@ -618,7 +618,7 @@ export const dict = {
   "workspace.black.time.minutes": "分",
   "workspace.black.time.fewSeconds": "数秒",
   "workspace.black.subscription.title": "サブスクリプション",
-  "workspace.black.subscription.message": "あなたは LGcode Black を月額 ${{plan}} で購読しています。",
+  "workspace.black.subscription.message": "あなたは Loongcode Black を月額 ${{plan}} で購読しています。",
   "workspace.black.subscription.manage": "サブスクリプションの管理",
   "workspace.black.subscription.rollingUsage": "5時間利用",
   "workspace.black.subscription.weeklyUsage": "週間利用量",
@@ -626,8 +626,8 @@ export const dict = {
   "workspace.black.subscription.useBalance": "利用限度額に達したら利用可能な残高を使用する",
   "workspace.black.waitlist.title": "ウェイトリスト",
   "workspace.black.waitlist.joined":
-    "あなたは月額 ${{plan}} の LGcode Black プランのウェイトリストに登録されています。",
-  "workspace.black.waitlist.ready": "月額 ${{plan}} の LGcode Black プランに登録する準備ができました。",
+    "あなたは月額 ${{plan}} の Loongcode Black プランのウェイトリストに登録されています。",
+  "workspace.black.waitlist.ready": "月額 ${{plan}} の Loongcode Black プランに登録する準備ができました。",
   "workspace.black.waitlist.leave": "ウェイトリストから抜ける",
   "workspace.black.waitlist.leaving": "処理中...",
   "workspace.black.waitlist.left": "退会済み",
@@ -645,7 +645,7 @@ export const dict = {
   "workspace.lite.time.minute": "分",
   "workspace.lite.time.minutes": "分",
   "workspace.lite.time.fewSeconds": "数秒",
-  "workspace.lite.subscription.message": "あなたは LGcode Go を購読しています。",
+  "workspace.lite.subscription.message": "あなたは Loongcode Go を購読しています。",
   "workspace.lite.subscription.manage": "サブスクリプションの管理",
   "workspace.lite.subscription.rollingUsage": "ローリング利用量",
   "workspace.lite.subscription.weeklyUsage": "週間利用量",
@@ -653,13 +653,13 @@ export const dict = {
   "workspace.lite.subscription.resetsIn": "リセットまで",
   "workspace.lite.subscription.useBalance": "利用限度額に達したら利用可能な残高を使用する",
   "workspace.lite.subscription.selectProvider":
-    "Go モデルを使用するには、lgcode の設定で「LGcode Go」をプロバイダーとして選択してください。",
+    "Go モデルを使用するには、loongcode の設定で「Loongcode Go」をプロバイダーとして選択してください。",
   "workspace.lite.black.message":
-    "現在 LGcode Black を購読中、またはウェイティングリストに登録されています。Go に切り替える場合は、先に登録を解除してください。",
+    "現在 Loongcode Black を購読中、またはウェイティングリストに登録されています。Go に切り替える場合は、先に登録を解除してください。",
   "workspace.lite.other.message":
-    "このワークスペースの別のメンバーが既に LGcode Go を購読しています。ワークスペースにつき1人のメンバーのみが購読できます。",
+    "このワークスペースの別のメンバーが既に Loongcode Go を購読しています。ワークスペースにつき1人のメンバーのみが購読できます。",
   "workspace.lite.promo.description":
-    "LGcode Goは{{price}}で始まり、その後は$10/月で、人気の高いオープンコーディングモデルへの安定したアクセスと余裕のある利用枠を提供します。",
+    "Loongcode Goは{{price}}で始まり、その後は$10/月で、人気の高いオープンコーディングモデルへの安定したアクセスと余裕のある利用枠を提供します。",
   "workspace.lite.promo.price": "初月$5",
   "workspace.lite.promo.modelsTitle": "含まれるもの",
   "workspace.lite.promo.footer":
@@ -702,15 +702,15 @@ export const dict = {
   "workspace.referral.apply.confirmBody": "{{amount}} を適用して、このワークスペースの現在の使用量を減らします。",
   "workspace.referral.apply.confirmAction": "適用",
 
-  "download.title": "LGcode | ダウンロード",
-  "download.meta.description": "LGcode を macOS、Windows、Linux 向けにダウンロード",
-  "download.hero.title": "LGcode をダウンロード",
+  "download.title": "Loongcode | ダウンロード",
+  "download.meta.description": "Loongcode を macOS、Windows、Linux 向けにダウンロード",
+  "download.hero.title": "Loongcode をダウンロード",
   "download.hero.subtitle": "macOS、Windows、Linux 向けベータ版を利用可能",
   "download.hero.button": "{{os}} 向けダウンロード",
-  "download.section.terminal": "LGcode Terminal",
-  "download.section.desktop": "LGcode Desktop (Beta)",
-  "download.section.extensions": "LGcode Extensions",
-  "download.section.integrations": "LGcode Integrations",
+  "download.section.terminal": "Loongcode Terminal",
+  "download.section.desktop": "Loongcode Desktop (Beta)",
+  "download.section.extensions": "Loongcode Extensions",
+  "download.section.integrations": "Loongcode Integrations",
   "download.action.download": "ダウンロード",
   "download.action.install": "インストール",
 
@@ -721,26 +721,26 @@ export const dict = {
   "download.platform.linuxRpm": "Linux (.rpm)",
 
   "download.faq.a3.beforeLocal":
-    "必ずしもそうではありませんが、おそらく必要です。LGcodeを有料プロバイダーに接続したい場合はAIサブスクリプションが必要ですが、",
+    "必ずしもそうではありませんが、おそらく必要です。Loongcodeを有料プロバイダーに接続したい場合はAIサブスクリプションが必要ですが、",
   "download.faq.a3.localLink": "ローカルモデル",
   "download.faq.a3.afterLocal.beforeZen": "であれば無料で利用できます。ユーザーには",
   "download.faq.a3.afterZen":
-    "の利用をお勧めしていますが、LGcodeはOpenAI、Anthropic、xAIなどの主要なプロバイダーに対応しています。",
+    "の利用をお勧めしていますが、LoongcodeはOpenAI、Anthropic、xAIなどの主要なプロバイダーに対応しています。",
 
-  "download.faq.a5.p1": "LGcodeは100%無料で利用できます。",
+  "download.faq.a5.p1": "Loongcodeは100%無料で利用できます。",
   "download.faq.a5.p2.beforeZen":
-    "追加コストはモデルプロバイダーのサブスクリプションから発生します。LGcodeはどのモデルプロバイダーでも利用できますが、",
+    "追加コストはモデルプロバイダーのサブスクリプションから発生します。Loongcodeはどのモデルプロバイダーでも利用できますが、",
   "download.faq.a5.p2.afterZen": "の利用をおすすめします。",
 
-  "download.faq.a6.p1": "あなたのデータと情報は、LGcodeで共有リンクを作成したときにのみ保存されます。",
+  "download.faq.a6.p1": "あなたのデータと情報は、Loongcodeで共有リンクを作成したときにのみ保存されます。",
   "download.faq.a6.p2.beforeShare": "詳しくは",
   "download.faq.a6.shareLink": "共有ページ",
 
-  "enterprise.title": "LGcode | 組織向けエンタープライズソリューション",
-  "enterprise.meta.description": "エンタープライズソリューションについてLGcodeに問い合わせる",
+  "enterprise.title": "Loongcode | 組織向けエンタープライズソリューション",
+  "enterprise.meta.description": "エンタープライズソリューションについてLoongcodeに問い合わせる",
   "enterprise.hero.title": "あなたのコードはあなたのもの",
   "enterprise.hero.body1":
-    "LGcodeは、データやコンテキストを一切保存せず、ライセンス制限や所有権の主張もなく、組織内で安全に動作します。チームでのトライアルから始め、SSOや社内AIゲートウェイと統合して組織全体に展開できます。",
+    "Loongcodeは、データやコンテキストを一切保存せず、ライセンス制限や所有権の主張もなく、組織内で安全に動作します。チームでのトライアルから始め、SSOや社内AIゲートウェイと統合して組織全体に展開できます。",
   "enterprise.hero.body2": "どのような支援ができるか、お聞かせください。",
   "enterprise.form.name.label": "氏名",
   "enterprise.form.name.placeholder": "ジェフ・ベゾス",
@@ -762,29 +762,29 @@ export const dict = {
   "enterprise.form.error.invalidEmailFormat": "無効なメール形式です。",
   "enterprise.form.error.internalServer": "内部サーバーエラー。",
   "enterprise.faq.title": "FAQ",
-  "enterprise.faq.q1": "LGcode Enterpriseとは？",
+  "enterprise.faq.q1": "Loongcode Enterpriseとは？",
   "enterprise.faq.a1":
-    "LGcode Enterpriseは、コードとデータが決してインフラの外に出ないことを保証したい組織向けです。SSOや社内AIゲートウェイと統合する集中設定を使用することでこれを実現します。",
-  "enterprise.faq.q2": "LGcode Enterpriseを始めるには？",
+    "Loongcode Enterpriseは、コードとデータが決してインフラの外に出ないことを保証したい組織向けです。SSOや社内AIゲートウェイと統合する集中設定を使用することでこれを実現します。",
+  "enterprise.faq.q2": "Loongcode Enterpriseを始めるには？",
   "enterprise.faq.a2":
-    "まずはチームでの社内トライアルから始めてください。LGcodeはデフォルトでコードやコンテキストデータを保存しないため、簡単に始められます。その後、価格や導入オプションについてお問い合わせください。",
+    "まずはチームでの社内トライアルから始めてください。Loongcodeはデフォルトでコードやコンテキストデータを保存しないため、簡単に始められます。その後、価格や導入オプションについてお問い合わせください。",
   "enterprise.faq.q3": "エンタープライズ価格の仕組みは？",
   "enterprise.faq.a3":
     "シート単位（ユーザー数）でのエンタープライズ価格を提供します。独自のLLMゲートウェイをお持ちの場合、使用トークンに対する課金はありません。詳細は、組織の要件に基づいた見積もりのためにお問い合わせください。",
-  "enterprise.faq.q4": "LGcode Enterpriseでデータは安全ですか？",
+  "enterprise.faq.q4": "Loongcode Enterpriseでデータは安全ですか？",
   "enterprise.faq.a4":
-    "はい。LGcodeはコードやコンテキストデータを保存しません。すべての処理はローカル、またはAIプロバイダーへの直接API呼び出しを通じて行われます。集中設定とSSO統合により、データは組織のインフラ内で安全に保たれます。",
+    "はい。Loongcodeはコードやコンテキストデータを保存しません。すべての処理はローカル、またはAIプロバイダーへの直接API呼び出しを通じて行われます。集中設定とSSO統合により、データは組織のインフラ内で安全に保たれます。",
 
-  "brand.title": "LGcode | ブランド",
-  "brand.meta.description": "LGcode ブランドガイドライン",
+  "brand.title": "Loongcode | ブランド",
+  "brand.meta.description": "Loongcode ブランドガイドライン",
   "brand.heading": "ブランドガイドライン",
-  "brand.subtitle": "LGcodeブランドを扱うためのリソースと素材です。",
+  "brand.subtitle": "Loongcodeブランドを扱うためのリソースと素材です。",
   "brand.downloadAll": "すべての素材をダウンロード",
 
-  "changelog.title": "LGcode | 変更履歴",
-  "changelog.meta.description": "LGcode リリースノートと変更履歴",
+  "changelog.title": "Loongcode | 変更履歴",
+  "changelog.meta.description": "Loongcode リリースノートと変更履歴",
   "changelog.hero.title": "変更履歴",
-  "changelog.hero.subtitle": "LGcodeの新しいアップデートと改善",
+  "changelog.hero.subtitle": "Loongcodeの新しいアップデートと改善",
   "changelog.empty": "変更履歴が見つかりませんでした。",
   "changelog.viewJson": "JSONを表示",
 

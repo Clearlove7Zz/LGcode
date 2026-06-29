@@ -61,7 +61,7 @@ export interface Interface {
   readonly list: (path: AbsolutePath, page?: PageInput) => Effect.Effect<ListPage>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/ReadToolFileSystem") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/ReadToolFileSystem") {}
 
 const extensions = new Set([
   ".zip",

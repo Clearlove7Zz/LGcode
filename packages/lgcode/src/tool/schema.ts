@@ -1,7 +1,7 @@
 import { Schema } from "effect"
 
 import { Identifier } from "@/id/id"
-import { withStatics } from "@lgcode/core/schema"
+import { withStatics } from "@loongcode/core/schema"
 
 const toolIdSchema = Schema.String.check(Schema.isStartsWith("tool")).pipe(Schema.brand("ToolID"))
 

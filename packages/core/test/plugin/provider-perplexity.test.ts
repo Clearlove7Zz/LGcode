@@ -1,8 +1,8 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { ModelV2 } from "@lgcode/core/model"
-import { PluginV2 } from "@lgcode/core/plugin"
-import { PerplexityPlugin } from "@lgcode/core/plugin/provider/perplexity"
+import { ModelV2 } from "@loongcode/core/model"
+import { PluginV2 } from "@loongcode/core/plugin"
+import { PerplexityPlugin } from "@loongcode/core/plugin/provider/perplexity"
 import { fakeSelectorSdk, it, model } from "./provider-helper"
 
 describe("PerplexityPlugin", () => {

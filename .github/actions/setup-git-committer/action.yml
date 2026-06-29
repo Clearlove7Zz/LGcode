@@ -1,11 +1,11 @@
 name: "Setup Git Committer"
 description: "Create app token and configure git user"
 inputs:
-  lgcode-app-id:
-    description: "LGcode GitHub App ID"
+  loongcode-app-id:
+    description: "Loongcode GitHub App ID"
     required: true
-  lgcode-app-secret:
-    description: "LGcode GitHub App private key"
+  loongcode-app-secret:
+    description: "Loongcode GitHub App private key"
     required: true
 outputs:
   token:
@@ -21,8 +21,8 @@ runs:
       id: apptoken
       uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2.2.2
       with:
-        app-id: ${{ inputs.lgcode-app-id }}
-        private-key: ${{ inputs.lgcode-app-secret }}
+        app-id: ${{ inputs.loongcode-app-id }}
+        private-key: ${{ inputs.loongcode-app-secret }}
         owner: ${{ github.repository_owner }}
 
     - name: Configure git user

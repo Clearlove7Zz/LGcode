@@ -1,9 +1,9 @@
 import { EOL } from "os"
 import { Effect } from "effect"
-import { ModelsDev } from "@lgcode/core/models-dev"
+import { ModelsDev } from "@loongcode/core/models-dev"
 import { effectCmd, fail } from "../effect-cmd"
 import { UI } from "../ui"
-import { ProviderV2 } from "@lgcode/core/provider"
+import { ProviderV2 } from "@loongcode/core/provider"
 
 export const ModelsCommand = effectCmd({
   command: "models [provider]",
@@ -54,8 +54,8 @@ export const ModelsCommand = effectCmd({
     }
 
     const ids = Object.keys(providers).sort((a, b) => {
-      const aIsOpencode = a.startsWith("lgcode")
-      const bIsOpencode = b.startsWith("lgcode")
+      const aIsOpencode = a.startsWith("loongcode")
+      const bIsOpencode = b.startsWith("loongcode")
       if (aIsOpencode && !bIsOpencode) return -1
       if (!aIsOpencode && bIsOpencode) return 1
       return a.localeCompare(b)

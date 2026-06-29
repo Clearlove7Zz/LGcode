@@ -1,6 +1,6 @@
 import { SessionID } from "@/session/schema"
-import { PositiveInt } from "@lgcode/core/schema"
-import { EventV2 } from "@lgcode/core/event"
+import { PositiveInt } from "@loongcode/core/schema"
+import { EventV2 } from "@loongcode/core/event"
 import { Effect, Schema } from "effect"
 
 const DEFAULT_TOAST_DURATION = 5000

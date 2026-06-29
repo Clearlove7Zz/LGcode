@@ -1,4 +1,4 @@
-import { CommandV2 } from "@lgcode/core/command"
+import { CommandV2 } from "@loongcode/core/command"
 import { Effect } from "effect"
 import { HttpApiBuilder } from "effect/unstable/httpapi"
 import { Api } from "../api"

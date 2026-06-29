@@ -1,9 +1,9 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { Location } from "@lgcode/core/location"
-import { Project } from "@lgcode/core/project"
-import { AbsolutePath } from "@lgcode/core/schema"
-import { WorkspaceV2 } from "@lgcode/core/workspace"
+import { Location } from "@loongcode/core/location"
+import { Project } from "@loongcode/core/project"
+import { AbsolutePath } from "@loongcode/core/schema"
+import { WorkspaceV2 } from "@loongcode/core/workspace"
 import { testEffect } from "./lib/effect"
 
 const workspaceID = WorkspaceV2.ID.make("wrk_test")

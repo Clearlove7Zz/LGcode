@@ -1,30 +1,30 @@
 ---
 title: CLI
-description: أوامر وخيارات CLI في LGcode.
+description: أوامر وخيارات CLI في Loongcode.
 ---
 
 import { Tabs, TabItem } from "@astrojs/starlight/components"
 
-يبدأ CLI الخاص بـ LGcode افتراضيا واجهة [TUI](/docs/tui) عند تشغيله بدون أي معاملات.
+يبدأ CLI الخاص بـ Loongcode افتراضيا واجهة [TUI](/docs/tui) عند تشغيله بدون أي معاملات.
 
 ```bash
-lgcode
+loongcode
 ```
 
-كما يدعم أيضا أوامر موثقة في هذه الصفحة، ما يتيح لك التفاعل مع LGcode برمجيا.
+كما يدعم أيضا أوامر موثقة في هذه الصفحة، ما يتيح لك التفاعل مع Loongcode برمجيا.
 
 ```bash
-lgcode run "Explain how closures work in JavaScript"
+loongcode run "Explain how closures work in JavaScript"
 ```
 
 ---
 
 ### tui
 
-بدء واجهة المستخدم terminal (TUI) الخاصة بـ LGcode.
+بدء واجهة المستخدم terminal (TUI) الخاصة بـ Loongcode.
 
 ```bash
-lgcode [project]
+loongcode [project]
 ```
 
 #### الخيارات
@@ -44,36 +44,36 @@ lgcode [project]
 
 ## الأوامر
 
-يتضمن CLI الخاص بـ LGcode أيضا الأوامر التالية.
+يتضمن CLI الخاص بـ Loongcode أيضا الأوامر التالية.
 
 ---
 
 ### agent
 
-إدارة وكلاء LGcode.
+إدارة وكلاء Loongcode.
 
 ```bash
-lgcode agent [command]
+loongcode agent [command]
 ```
 
 ---
 
 ### attach
 
-إرفاق terminal بخادم الواجهة الخلفية لـ LGcode قيد التشغيل بالفعل، والذي تم تشغيله عبر الأمرين `serve` أو `web`.
+إرفاق terminal بخادم الواجهة الخلفية لـ Loongcode قيد التشغيل بالفعل، والذي تم تشغيله عبر الأمرين `serve` أو `web`.
 
 ```bash
-lgcode attach [url]
+loongcode attach [url]
 ```
 
-يتيح ذلك استخدام واجهة TUI مع واجهة خلفية لـ LGcode تعمل عن بعد. على سبيل المثال:
+يتيح ذلك استخدام واجهة TUI مع واجهة خلفية لـ Loongcode تعمل عن بعد. على سبيل المثال:
 
 ```bash
 # ابدأ خادم الواجهة الخلفية للوصول عبر الويب/الجوال
-lgcode web --port 4096 --hostname 0.0.0.0
+loongcode web --port 4096 --hostname 0.0.0.0
 
 # في محطة طرفية (terminal) أخرى، اربط TUI بالواجهة الخلفية قيد التشغيل
-lgcode attach http://10.20.30.40:4096
+loongcode attach http://10.20.30.40:4096
 ```
 
 #### الرايات
@@ -84,8 +84,8 @@ lgcode attach http://10.20.30.40:4096
 | <nobr><code>{"--continue"}</code></nobr> | `-c`    | متابعة آخر جلسة                                                                   |
 | <nobr><code>{"--session"}</code></nobr>  | `-s`    | معرّف الجلسة للمتابعة                                                             |
 | <nobr><code>{"--fork"}</code></nobr>     |         | تفريع الجلسة عند المتابعة (استخدمه مع `--continue` أو `--session`)                |
-| <nobr><code>{"--password"}</code></nobr> | `-p`    | كلمة مرور المصادقة الأساسية (الافتراضي `LGCODE_SERVER_PASSWORD`)                |
-| <nobr><code>{"--username"}</code></nobr> | `-u`    | اسم مستخدم المصادقة الأساسية (الافتراضي `LGCODE_SERVER_USERNAME` أو `lgcode`) |
+| <nobr><code>{"--password"}</code></nobr> | `-p`    | كلمة مرور المصادقة الأساسية (الافتراضي `LOONGCODE_SERVER_PASSWORD`)                |
+| <nobr><code>{"--username"}</code></nobr> | `-u`    | اسم مستخدم المصادقة الأساسية (الافتراضي `LOONGCODE_SERVER_USERNAME` أو `loongcode`) |
 
 ---
 
@@ -94,7 +94,7 @@ lgcode attach http://10.20.30.40:4096
 إنشاء وكيل جديد بإعدادات مخصصة.
 
 ```bash
-lgcode agent create
+loongcode agent create
 ```
 
 سيرشدك هذا الأمر خلال إنشاء وكيل جديد مع موجه نظام مخصص وإعدادات الأدوات.
@@ -106,7 +106,7 @@ lgcode agent create
 عرض جميع الوكلاء المتاحين.
 
 ```bash
-lgcode agent list
+loongcode agent list
 ```
 
 ---
@@ -116,20 +116,20 @@ lgcode agent list
 أمر لإدارة بيانات الاعتماد وتسجيل الدخول لمزودي الخدمة.
 
 ```bash
-lgcode auth [command]
+loongcode auth [command]
 ```
 
 ---
 
 #### login
 
-يعتمد LGcode على قائمة المزودين في [Models.dev](https://models.dev)، لذا يمكنك استخدام `lgcode auth login` لتهيئة مفاتيح API لأي مزود ترغب باستخدامه. يتم حفظ ذلك في `~/.local/share/lgcode/auth.json`.
+يعتمد Loongcode على قائمة المزودين في [Models.dev](https://models.dev)، لذا يمكنك استخدام `loongcode auth login` لتهيئة مفاتيح API لأي مزود ترغب باستخدامه. يتم حفظ ذلك في `~/.local/share/loongcode/auth.json`.
 
 ```bash
-lgcode auth login
+loongcode auth login
 ```
 
-عند تشغيل LGcode يقوم بتحميل المزودين من ملف بيانات الاعتماد، وكذلك أي مفاتيح معرّفة في متغيرات البيئة لديك أو في ملف `.env` ضمن مشروعك.
+عند تشغيل Loongcode يقوم بتحميل المزودين من ملف بيانات الاعتماد، وكذلك أي مفاتيح معرّفة في متغيرات البيئة لديك أو في ملف `.env` ضمن مشروعك.
 
 ---
 
@@ -138,13 +138,13 @@ lgcode auth login
 يسرد جميع المزودين الذين تم توثيقهم كما هم محفوظون في ملف بيانات الاعتماد.
 
 ```bash
-lgcode auth list
+loongcode auth list
 ```
 
 أو النسخة المختصرة.
 
 ```bash
-lgcode auth ls
+loongcode auth ls
 ```
 
 ---
@@ -154,7 +154,7 @@ lgcode auth ls
 يسجلك خارج مزود عبر حذفه من ملف بيانات الاعتماد.
 
 ```bash
-lgcode auth logout
+loongcode auth logout
 ```
 
 ---
@@ -164,7 +164,7 @@ lgcode auth logout
 إدارة وكيل GitHub لأتمتة المستودع.
 
 ```bash
-lgcode github [command]
+loongcode github [command]
 ```
 
 ---
@@ -174,7 +174,7 @@ lgcode github [command]
 تثبيت وكيل GitHub في مستودعك.
 
 ```bash
-lgcode github install
+loongcode github install
 ```
 
 يقوم ذلك بإعداد سير عمل GitHub Actions اللازم ويرشدك خلال عملية التهيئة. [اعرف المزيد](/docs/github).
@@ -186,7 +186,7 @@ lgcode github install
 تشغيل وكيل GitHub. يُستخدم هذا عادة ضمن GitHub Actions.
 
 ```bash
-lgcode github run
+loongcode github run
 ```
 
 ##### الرايات
@@ -203,7 +203,7 @@ lgcode github run
 إدارة خوادم Model Context Protocol.
 
 ```bash
-lgcode mcp [command]
+loongcode mcp [command]
 ```
 
 ---
@@ -213,7 +213,7 @@ lgcode mcp [command]
 إضافة خادم MCP إلى تهيئتك.
 
 ```bash
-lgcode mcp add
+loongcode mcp add
 ```
 
 سيرشدك هذا الأمر خلال إضافة خادم MCP محلي أو بعيد.
@@ -225,13 +225,13 @@ lgcode mcp add
 عرض جميع خوادم MCP المُهيأة وحالة اتصالها.
 
 ```bash
-lgcode mcp list
+loongcode mcp list
 ```
 
 أو استخدم النسخة المختصرة.
 
 ```bash
-lgcode mcp ls
+loongcode mcp ls
 ```
 
 ---
@@ -241,7 +241,7 @@ lgcode mcp ls
 إجراء المصادقة مع خادم MCP يدعم OAuth.
 
 ```bash
-lgcode mcp auth [name]
+loongcode mcp auth [name]
 ```
 
 إذا لم تُحدِّد اسم خادم، فسيُطلب منك الاختيار من الخوادم المتاحة الداعمة لـ OAuth.
@@ -249,13 +249,13 @@ lgcode mcp auth [name]
 يمكنك أيضا عرض الخوادم الداعمة لـ OAuth وحالة المصادقة الخاصة بها.
 
 ```bash
-lgcode mcp auth list
+loongcode mcp auth list
 ```
 
 أو استخدم النسخة المختصرة.
 
 ```bash
-lgcode mcp auth ls
+loongcode mcp auth ls
 ```
 
 ---
@@ -265,7 +265,7 @@ lgcode mcp auth ls
 إزالة بيانات اعتماد OAuth لخادم MCP.
 
 ```bash
-lgcode mcp logout [name]
+loongcode mcp logout [name]
 ```
 
 ---
@@ -275,7 +275,7 @@ lgcode mcp logout [name]
 تشخيص مشاكل اتصال OAuth لخادم MCP.
 
 ```bash
-lgcode mcp debug <name>
+loongcode mcp debug <name>
 ```
 
 ---
@@ -285,7 +285,7 @@ lgcode mcp debug <name>
 عرض جميع النماذج المتاحة من المزودين المُهيأين.
 
 ```bash
-lgcode models [provider]
+loongcode models [provider]
 ```
 
 يعرض هذا الأمر جميع النماذج المتاحة عبر المزودين المُهيأين لديك بصيغة `provider/model`.
@@ -295,7 +295,7 @@ lgcode models [provider]
 يمكنك اختياريا تمرير معرّف مزود لتصفية النماذج حسب ذلك المزود.
 
 ```bash
-lgcode models anthropic
+loongcode models anthropic
 ```
 
 #### الرايات
@@ -305,36 +305,36 @@ lgcode models anthropic
 | <nobr><code>{"--refresh"}</code></nobr> | تحديث ذاكرة التخزين المؤقت للنماذج من models.dev              |
 | <nobr><code>{"--verbose"}</code></nobr> | استخدام مخرجات أكثر تفصيلا للنماذج (تشمل بيانات مثل التكاليف) |
 
-استخدم الراية `--refresh` لتحديث قائمة النماذج المخزنة مؤقتا. يفيد ذلك عند إضافة نماذج جديدة إلى مزود وتريد رؤيتها في LGcode.
+استخدم الراية `--refresh` لتحديث قائمة النماذج المخزنة مؤقتا. يفيد ذلك عند إضافة نماذج جديدة إلى مزود وتريد رؤيتها في Loongcode.
 
 ```bash
-lgcode models --refresh
+loongcode models --refresh
 ```
 
 ---
 
 ### run
 
-تشغيل lgcode في وضع غير تفاعلي عبر تمرير موجه مباشرة.
+تشغيل loongcode في وضع غير تفاعلي عبر تمرير موجه مباشرة.
 
 ```bash
-lgcode run [message..]
+loongcode run [message..]
 ```
 
 هذا مفيد للبرمجة النصية والأتمتة، أو عندما تريد إجابة سريعة دون تشغيل واجهة TUI كاملة. على سبيل المثال.
 
-```bash "lgcode run"
-lgcode run Explain the use of context in Go
+```bash "loongcode run"
+loongcode run Explain the use of context in Go
 ```
 
-يمكنك أيضا الإرفاق بمثيل `lgcode serve` قيد التشغيل لتجنّب زمن الإقلاع البارد لخوادم MCP في كل تشغيل:
+يمكنك أيضا الإرفاق بمثيل `loongcode serve` قيد التشغيل لتجنّب زمن الإقلاع البارد لخوادم MCP في كل تشغيل:
 
 ```bash
 # ابدأ خادمًا بلا واجهة في محطة طرفية واحدة
-lgcode serve
+loongcode serve
 
 # في محطة طرفية أخرى، شغّل الأوامر التي ترتبط به
-lgcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
+loongcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
 ```
 
 #### الرايات
@@ -351,9 +351,9 @@ lgcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
 | <nobr><code>{"--file"}</code></nobr>     | `-f`    | ملف/ملفات لإرفاقها بالرسالة                                                       |
 | <nobr><code>{"--format"}</code></nobr>   |         | التنسيق: default (منسق) أو json (أحداث JSON خام)                                  |
 | <nobr><code>{"--title"}</code></nobr>    |         | عنوان للجلسة (يستخدم موجهًا مقتطعًا إن لم تُحدَّد قيمة)                           |
-| <nobr><code>{"--attach"}</code></nobr>   |         | الإرفاق بخادم lgcode قيد التشغيل (مثل http://localhost:4096)                    |
-| <nobr><code>{"--password"}</code></nobr> | `-p`    | كلمة مرور المصادقة الأساسية (الافتراضي `LGCODE_SERVER_PASSWORD`)                |
-| <nobr><code>{"--username"}</code></nobr> | `-u`    | اسم مستخدم المصادقة الأساسية (الافتراضي `LGCODE_SERVER_USERNAME` أو `lgcode`) |
+| <nobr><code>{"--attach"}</code></nobr>   |         | الإرفاق بخادم loongcode قيد التشغيل (مثل http://localhost:4096)                    |
+| <nobr><code>{"--password"}</code></nobr> | `-p`    | كلمة مرور المصادقة الأساسية (الافتراضي `LOONGCODE_SERVER_PASSWORD`)                |
+| <nobr><code>{"--username"}</code></nobr> | `-u`    | اسم مستخدم المصادقة الأساسية (الافتراضي `LOONGCODE_SERVER_USERNAME` أو `loongcode`) |
 | <nobr><code>{"--dir"}</code></nobr>      |         | دليل التشغيل، أو المسار على الخادم البعيد عند الإرفاق                             |
 | <nobr><code>{"--variant"}</code></nobr>  |         | متغير النموذج (جهد الاستدلال الخاص بالمزود)                                       |
 | <nobr><code>{"--thinking"}</code></nobr> |         | عرض كتل التفكير                                                                   |
@@ -363,13 +363,13 @@ lgcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
 
 ### serve
 
-بدء خادم LGcode بدون واجهة للوصول عبر API. راجع [توثيق الخادم](/docs/server) لواجهة HTTP الكاملة.
+بدء خادم Loongcode بدون واجهة للوصول عبر API. راجع [توثيق الخادم](/docs/server) لواجهة HTTP الكاملة.
 
 ```bash
-lgcode serve
+loongcode serve
 ```
 
-يشغّل هذا خادم HTTP يوفّر وصولا عبر API لوظائف lgcode دون واجهة TUI. اضبط `LGCODE_SERVER_PASSWORD` لتفعيل مصادقة HTTP الأساسية (اسم المستخدم الافتراضي `lgcode`).
+يشغّل هذا خادم HTTP يوفّر وصولا عبر API لوظائف loongcode دون واجهة TUI. اضبط `LOONGCODE_SERVER_PASSWORD` لتفعيل مصادقة HTTP الأساسية (اسم المستخدم الافتراضي `loongcode`).
 
 #### الرايات
 
@@ -384,20 +384,20 @@ lgcode serve
 
 ### session
 
-إدارة جلسات LGcode.
+إدارة جلسات Loongcode.
 
 ```bash
-lgcode session [command]
+loongcode session [command]
 ```
 
 ---
 
 #### list
 
-عرض جميع جلسات LGcode.
+عرض جميع جلسات Loongcode.
 
 ```bash
-lgcode session list
+loongcode session list
 ```
 
 ##### الرايات
@@ -411,10 +411,10 @@ lgcode session list
 
 ### stats
 
-عرض إحصاءات استخدام الرموز والتكلفة لجلسات LGcode لديك.
+عرض إحصاءات استخدام الرموز والتكلفة لجلسات Loongcode لديك.
 
 ```bash
-lgcode stats
+loongcode stats
 ```
 
 #### الرايات
@@ -433,7 +433,7 @@ lgcode stats
 تصدير بيانات الجلسة بصيغة JSON.
 
 ```bash
-lgcode export [sessionID]
+loongcode export [sessionID]
 ```
 
 إذا لم تُقدّم معرّف جلسة، فسيُطلب منك الاختيار من الجلسات المتاحة.
@@ -442,30 +442,30 @@ lgcode export [sessionID]
 
 ### import
 
-استيراد بيانات الجلسة من ملف JSON أو رابط مشاركة LGcode.
+استيراد بيانات الجلسة من ملف JSON أو رابط مشاركة Loongcode.
 
 ```bash
-lgcode import <file>
+loongcode import <file>
 ```
 
-يمكنك الاستيراد من ملف محلي أو من رابط مشاركة LGcode.
+يمكنك الاستيراد من ملف محلي أو من رابط مشاركة Loongcode.
 
 ```bash
-lgcode import session.json
-lgcode import https://opncd.ai/s/abc123
+loongcode import session.json
+loongcode import https://opncd.ai/s/abc123
 ```
 
 ---
 
 ### web
 
-بدء خادم LGcode بدون واجهة مع واجهة ويب.
+بدء خادم Loongcode بدون واجهة مع واجهة ويب.
 
 ```bash
-lgcode web
+loongcode web
 ```
 
-يشغّل هذا خادم HTTP ويفتح متصفح ويب للوصول إلى LGcode عبر واجهة ويب. اضبط `LGCODE_SERVER_PASSWORD` لتفعيل مصادقة HTTP الأساسية (اسم المستخدم الافتراضي `lgcode`).
+يشغّل هذا خادم HTTP ويفتح متصفح ويب للوصول إلى Loongcode عبر واجهة ويب. اضبط `LOONGCODE_SERVER_PASSWORD` لتفعيل مصادقة HTTP الأساسية (اسم المستخدم الافتراضي `loongcode`).
 
 #### الرايات
 
@@ -483,7 +483,7 @@ lgcode web
 بدء خادم ACP (Agent Client Protocol).
 
 ```bash
-lgcode acp
+loongcode acp
 ```
 
 يشغّل هذا الأمر خادم ACP يتواصل عبر stdin/stdout باستخدام nd-JSON.
@@ -500,10 +500,10 @@ lgcode acp
 
 ### uninstall
 
-إلغاء تثبيت LGcode وإزالة جميع الملفات ذات الصلة.
+إلغاء تثبيت Loongcode وإزالة جميع الملفات ذات الصلة.
 
 ```bash
-lgcode uninstall
+loongcode uninstall
 ```
 
 #### الرايات
@@ -519,22 +519,22 @@ lgcode uninstall
 
 ### upgrade
 
-تحديث lgcode إلى أحدث إصدار أو إلى إصدار محدد.
+تحديث loongcode إلى أحدث إصدار أو إلى إصدار محدد.
 
 ```bash
-lgcode upgrade [target]
+loongcode upgrade [target]
 ```
 
 للترقية إلى أحدث إصدار.
 
 ```bash
-lgcode upgrade
+loongcode upgrade
 ```
 
 للترقية إلى إصدار محدد.
 
 ```bash
-lgcode upgrade v0.1.48
+loongcode upgrade v0.1.48
 ```
 
 #### الرايات
@@ -547,7 +547,7 @@ lgcode upgrade v0.1.48
 
 ## الخيارات العامة
 
-يدعم سطر أوامر lgcode الخيارات العامة التالية.
+يدعم سطر أوامر loongcode الخيارات العامة التالية.
 
 | الراية                                     | المختصر | الوصف                                  |
 | ------------------------------------------ | ------- | -------------------------------------- |
@@ -560,33 +560,33 @@ lgcode upgrade v0.1.48
 
 ## متغيرات البيئة
 
-يمكن تهيئة LGcode باستخدام متغيرات البيئة.
+يمكن تهيئة Loongcode باستخدام متغيرات البيئة.
 
 | المتغير                               | النوع   | الوصف                                                     |
 | ------------------------------------- | ------- | --------------------------------------------------------- |
-| `LGCODE_AUTO_SHARE`                 | boolean | مشاركة الجلسات تلقائيا                                    |
-| `LGCODE_GIT_BASH_PATH`              | string  | مسار ملف Git Bash التنفيذي على Windows                    |
-| `LGCODE_CONFIG`                     | string  | مسار ملف التهيئة                                          |
-| `LGCODE_CONFIG_DIR`                 | string  | مسار دليل التهيئة                                         |
-| `LGCODE_CONFIG_CONTENT`             | string  | محتوى تهيئة JSON مُضمّن                                   |
-| `LGCODE_DISABLE_AUTOUPDATE`         | boolean | تعطيل التحقق التلقائي من التحديثات                        |
-| `LGCODE_DISABLE_PRUNE`              | boolean | تعطيل تنقية البيانات القديمة                              |
-| `LGCODE_DISABLE_TERMINAL_TITLE`     | boolean | تعطيل تحديث عنوان terminal تلقائيا                        |
-| `LGCODE_PERMISSION`                 | string  | تهيئة أذونات JSON مُضمّنة                                 |
-| `LGCODE_DISABLE_DEFAULT_PLUGINS`    | boolean | تعطيل الإضافات الافتراضية                                 |
-| `LGCODE_DISABLE_LSP_DOWNLOAD`       | boolean | تعطيل تنزيل خوادم LSP تلقائيا                             |
-| `LGCODE_ENABLE_EXPERIMENTAL_MODELS` | boolean | تفعيل النماذج التجريبية                                   |
-| `LGCODE_DISABLE_AUTOCOMPACT`        | boolean | تعطيل ضغط السياق تلقائيا                                  |
-| `LGCODE_DISABLE_CLAUDE_CODE`        | boolean | تعطيل القراءة من `.claude` (الموجه + المهارات)            |
-| `LGCODE_DISABLE_CLAUDE_CODE_PROMPT` | boolean | تعطيل قراءة `~/.claude/CLAUDE.md`                         |
-| `LGCODE_DISABLE_CLAUDE_CODE_SKILLS` | boolean | تعطيل تحميل `.claude/skills`                              |
-| `LGCODE_DISABLE_MODELS_FETCH`       | boolean | تعطيل جلب النماذج من مصادر بعيدة                          |
-| `LGCODE_FAKE_VCS`                   | string  | مزود VCS وهمي لأغراض الاختبار                             |
-| `LGCODE_CLIENT`                     | string  | معرّف العميل (الافتراضي `cli`)                            |
-| `LGCODE_ENABLE_EXA`                 | boolean | تفعيل أدوات بحث الويب من Exa                              |
-| `LGCODE_SERVER_PASSWORD`            | string  | تفعيل المصادقة الأساسية لخادمي `serve`/`web`              |
-| `LGCODE_SERVER_USERNAME`            | string  | تجاوز اسم مستخدم المصادقة الأساسية (الافتراضي `lgcode`) |
-| `LGCODE_MODELS_URL`                 | string  | رابط مخصص لجلب تهيئة النماذج                              |
+| `LOONGCODE_AUTO_SHARE`                 | boolean | مشاركة الجلسات تلقائيا                                    |
+| `LOONGCODE_GIT_BASH_PATH`              | string  | مسار ملف Git Bash التنفيذي على Windows                    |
+| `LOONGCODE_CONFIG`                     | string  | مسار ملف التهيئة                                          |
+| `LOONGCODE_CONFIG_DIR`                 | string  | مسار دليل التهيئة                                         |
+| `LOONGCODE_CONFIG_CONTENT`             | string  | محتوى تهيئة JSON مُضمّن                                   |
+| `LOONGCODE_DISABLE_AUTOUPDATE`         | boolean | تعطيل التحقق التلقائي من التحديثات                        |
+| `LOONGCODE_DISABLE_PRUNE`              | boolean | تعطيل تنقية البيانات القديمة                              |
+| `LOONGCODE_DISABLE_TERMINAL_TITLE`     | boolean | تعطيل تحديث عنوان terminal تلقائيا                        |
+| `LOONGCODE_PERMISSION`                 | string  | تهيئة أذونات JSON مُضمّنة                                 |
+| `LOONGCODE_DISABLE_DEFAULT_PLUGINS`    | boolean | تعطيل الإضافات الافتراضية                                 |
+| `LOONGCODE_DISABLE_LSP_DOWNLOAD`       | boolean | تعطيل تنزيل خوادم LSP تلقائيا                             |
+| `LOONGCODE_ENABLE_EXPERIMENTAL_MODELS` | boolean | تفعيل النماذج التجريبية                                   |
+| `LOONGCODE_DISABLE_AUTOCOMPACT`        | boolean | تعطيل ضغط السياق تلقائيا                                  |
+| `LOONGCODE_DISABLE_CLAUDE_CODE`        | boolean | تعطيل القراءة من `.claude` (الموجه + المهارات)            |
+| `LOONGCODE_DISABLE_CLAUDE_CODE_PROMPT` | boolean | تعطيل قراءة `~/.claude/CLAUDE.md`                         |
+| `LOONGCODE_DISABLE_CLAUDE_CODE_SKILLS` | boolean | تعطيل تحميل `.claude/skills`                              |
+| `LOONGCODE_DISABLE_MODELS_FETCH`       | boolean | تعطيل جلب النماذج من مصادر بعيدة                          |
+| `LOONGCODE_FAKE_VCS`                   | string  | مزود VCS وهمي لأغراض الاختبار                             |
+| `LOONGCODE_CLIENT`                     | string  | معرّف العميل (الافتراضي `cli`)                            |
+| `LOONGCODE_ENABLE_EXA`                 | boolean | تفعيل أدوات بحث الويب من Exa                              |
+| `LOONGCODE_SERVER_PASSWORD`            | string  | تفعيل المصادقة الأساسية لخادمي `serve`/`web`              |
+| `LOONGCODE_SERVER_USERNAME`            | string  | تجاوز اسم مستخدم المصادقة الأساسية (الافتراضي `loongcode`) |
+| `LOONGCODE_MODELS_URL`                 | string  | رابط مخصص لجلب تهيئة النماذج                              |
 
 ---
 
@@ -596,21 +596,21 @@ lgcode upgrade v0.1.48
 
 | المتغير                                         | النوع   | الوصف                                        |
 | ----------------------------------------------- | ------- | -------------------------------------------- |
-| `LGCODE_EXPERIMENTAL`                         | boolean | تفعيل الميزات التجريبية الخاضعة للعلم الشامل |
-| `LGCODE_EXPERIMENTAL_ICON_DISCOVERY`          | boolean | تفعيل اكتشاف الأيقونات                       |
-| `LGCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT`  | boolean | تعطيل النسخ عند التحديد في TUI               |
-| `LGCODE_EXPERIMENTAL_BASH_DEFAULT_TIMEOUT_MS` | number  | المهلة الافتراضية لأوامر bash بالميلي ثانية  |
-| `LGCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX`        | number  | الحد الأقصى لرموز المخرجات لاستجابات LLM     |
-| `LGCODE_EXPERIMENTAL_FILEWATCHER`             | boolean | تفعيل مراقب الملفات لكامل الدليل             |
-| `LGCODE_EXPERIMENTAL_OXFMT`                   | boolean | تفعيل مُنسّق oxfmt                           |
-| `LGCODE_EXPERIMENTAL_LSP_TOOL`                | boolean | تفعيل أداة LSP تجريبية                       |
-| `LGCODE_EXPERIMENTAL_DISABLE_FILEWATCHER`     | boolean | تعطيل مراقب الملفات                          |
-| `LGCODE_EXPERIMENTAL_EXA`                     | boolean | تفعيل ميزات Exa التجريبية                    |
-| `LGCODE_EXPERIMENTAL_LSP_TY`                  | boolean | تمكين TY LSP لملفات python                   |
-| `LGCODE_EXPERIMENTAL_PLAN_MODE`               | boolean | تفعيل وضع الخطة                              |
-| `LGCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS`    | boolean | تفعيل مهام subagent في الخلفية               |
-| `LGCODE_EXPERIMENTAL_EVENT_SYSTEM`            | boolean | تفعيل نظام الأحداث التجريبي                  |
-| `LGCODE_EXPERIMENTAL_NATIVE_LLM`              | boolean | تفعيل مسار طلبات LLM الأصلي                  |
-| `LGCODE_EXPERIMENTAL_PARALLEL`                | boolean | تفعيل تنفيذ بحث الويب بالتوازي               |
-| `LGCODE_EXPERIMENTAL_SCOUT`                   | boolean | تفعيل Scout subagent                         |
-| `LGCODE_EXPERIMENTAL_WORKSPACES`              | boolean | تفعيل دعم مساحات العمل                       |
+| `LOONGCODE_EXPERIMENTAL`                         | boolean | تفعيل الميزات التجريبية الخاضعة للعلم الشامل |
+| `LOONGCODE_EXPERIMENTAL_ICON_DISCOVERY`          | boolean | تفعيل اكتشاف الأيقونات                       |
+| `LOONGCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT`  | boolean | تعطيل النسخ عند التحديد في TUI               |
+| `LOONGCODE_EXPERIMENTAL_BASH_DEFAULT_TIMEOUT_MS` | number  | المهلة الافتراضية لأوامر bash بالميلي ثانية  |
+| `LOONGCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX`        | number  | الحد الأقصى لرموز المخرجات لاستجابات LLM     |
+| `LOONGCODE_EXPERIMENTAL_FILEWATCHER`             | boolean | تفعيل مراقب الملفات لكامل الدليل             |
+| `LOONGCODE_EXPERIMENTAL_OXFMT`                   | boolean | تفعيل مُنسّق oxfmt                           |
+| `LOONGCODE_EXPERIMENTAL_LSP_TOOL`                | boolean | تفعيل أداة LSP تجريبية                       |
+| `LOONGCODE_EXPERIMENTAL_DISABLE_FILEWATCHER`     | boolean | تعطيل مراقب الملفات                          |
+| `LOONGCODE_EXPERIMENTAL_EXA`                     | boolean | تفعيل ميزات Exa التجريبية                    |
+| `LOONGCODE_EXPERIMENTAL_LSP_TY`                  | boolean | تمكين TY LSP لملفات python                   |
+| `LOONGCODE_EXPERIMENTAL_PLAN_MODE`               | boolean | تفعيل وضع الخطة                              |
+| `LOONGCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS`    | boolean | تفعيل مهام subagent في الخلفية               |
+| `LOONGCODE_EXPERIMENTAL_EVENT_SYSTEM`            | boolean | تفعيل نظام الأحداث التجريبي                  |
+| `LOONGCODE_EXPERIMENTAL_NATIVE_LLM`              | boolean | تفعيل مسار طلبات LLM الأصلي                  |
+| `LOONGCODE_EXPERIMENTAL_PARALLEL`                | boolean | تفعيل تنفيذ بحث الويب بالتوازي               |
+| `LOONGCODE_EXPERIMENTAL_SCOUT`                   | boolean | تفعيل Scout subagent                         |
+| `LOONGCODE_EXPERIMENTAL_WORKSPACES`              | boolean | تفعيل دعم مساحات العمل                       |

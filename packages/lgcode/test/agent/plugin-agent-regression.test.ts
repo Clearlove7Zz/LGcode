@@ -1,6 +1,6 @@
 import { expect } from "bun:test"
-import { FSUtil } from "@lgcode/core/fs-util"
-import { LocationServiceMap } from "@lgcode/core/location-layer"
+import { FSUtil } from "@loongcode/core/fs-util"
+import { LocationServiceMap } from "@loongcode/core/location-layer"
 import { Effect, Layer } from "effect"
 import { FetchHttpClient } from "effect/unstable/http"
 import path from "path"

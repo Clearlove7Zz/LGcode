@@ -1,12 +1,12 @@
 import { $ } from "bun"
-import { ConfigV1 } from "@lgcode/core/v1/config/config"
+import { ConfigV1 } from "@loongcode/core/v1/config/config"
 import * as fs from "fs/promises"
 import os from "os"
 import path from "path"
 import { Effect, Context, Layer } from "effect"
 import type * as PlatformError from "effect/PlatformError"
 import type * as Scope from "effect/Scope"
-import { CrossSpawnSpawner } from "@lgcode/core/cross-spawn-spawner"
+import { CrossSpawnSpawner } from "@loongcode/core/cross-spawn-spawner"
 import { ChildProcess, ChildProcessSpawner } from "effect/unstable/process"
 import type { Config } from "@/config/config"
 import { InstanceRef } from "../../src/effect/instance-ref"
@@ -78,19 +78,19 @@ type TmpDirOptions<T> = {
   dispose?: (dir: string) => Promise<T>
 }
 export async function tmpdir<T>(options?: TmpDirOptions<T>) {
-  const dirpath = sanitizePath(path.join(os.tmpdir(), "lgcode-test-" + Math.random().toString(36).slice(2)))
+  const dirpath = sanitizePath(path.join(os.tmpdir(), "loongcode-test-" + Math.random().toString(36).slice(2)))
   await fs.mkdir(dirpath, { recursive: true })
   if (options?.git) {
     await $`git init`.cwd(dirpath).quiet()
     await $`git config core.fsmonitor false`.cwd(dirpath).quiet()
     await $`git config commit.gpgsign false`.cwd(dirpath).quiet()
-    await $`git config user.email "test@lgcode.test"`.cwd(dirpath).quiet()
+    await $`git config user.email "test@loongcode.test"`.cwd(dirpath).quiet()
     await $`git config user.name "Test"`.cwd(dirpath).quiet()
     await $`git commit --allow-empty -m "root commit ${dirpath}"`.cwd(dirpath).quiet()
   }
   if (options?.config) {
     await Bun.write(
-      path.join(dirpath, "lgcode.json"),
+      path.join(dirpath, "loongcode.json"),
       JSON.stringify({
         $schema: "https://modelhub.lgdg.cc/config.json",
         ...options.config,
@@ -122,7 +122,7 @@ export function tmpdirScoped<E = never, R = never>(options?: {
 }) {
   return Effect.gen(function* () {
     const spawner = yield* ChildProcessSpawner.ChildProcessSpawner
-    const dirpath = sanitizePath(path.join(os.tmpdir(), "lgcode-test-" + Math.random().toString(36).slice(2)))
+    const dirpath = sanitizePath(path.join(os.tmpdir(), "loongcode-test-" + Math.random().toString(36).slice(2)))
     yield* Effect.promise(() => fs.mkdir(dirpath, { recursive: true }))
     const dir = sanitizePath(yield* Effect.promise(() => fs.realpath(dirpath)))
 
@@ -140,7 +140,7 @@ export function tmpdirScoped<E = never, R = never>(options?: {
       yield* git("init")
       yield* git("config", "core.fsmonitor", "false")
       yield* git("config", "commit.gpgsign", "false")
-      yield* git("config", "user.email", "test@lgcode.test")
+      yield* git("config", "user.email", "test@loongcode.test")
       yield* git("config", "user.name", "Test")
       yield* git("commit", "--allow-empty", "-m", `root commit ${dir}`)
     }
@@ -149,7 +149,7 @@ export function tmpdirScoped<E = never, R = never>(options?: {
       const resolved = typeof options.config === "function" ? options.config() : options.config
       yield* Effect.promise(() =>
         fs.writeFile(
-          path.join(dir, "lgcode.json"),
+          path.join(dir, "loongcode.json"),
           JSON.stringify({ $schema: "https://modelhub.lgdg.cc/config.json", ...resolved }),
         ),
       )

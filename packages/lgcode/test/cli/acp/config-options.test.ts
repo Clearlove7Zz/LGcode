@@ -12,14 +12,14 @@ import {
   verifierConfig,
 } from "./helpers"
 
-describe("lgcode acp config option subprocess", () => {
+describe("loongcode acp config option subprocess", () => {
   cliIt.live(
     'model option is listed with category "model"',
-    ({ home, llm, lgcode }) =>
+    ({ home, llm, loongcode }) =>
       Effect.gen(function* () {
         const acp = yield* createAcpClient(
-          { lgcode },
-          { LGCODE_CONFIG_CONTENT: JSON.stringify(verifierConfig(llm.url)) },
+          { loongcode },
+          { LOONGCODE_CONFIG_CONTENT: JSON.stringify(verifierConfig(llm.url)) },
         )
         yield* initialize(acp)
         const model = expectSelectOption((yield* newSession(acp, home)).configOptions, "model")
@@ -33,11 +33,11 @@ describe("lgcode acp config option subprocess", () => {
 
   cliIt.live(
     "model switch updates currentValue",
-    ({ home, llm, lgcode }) =>
+    ({ home, llm, loongcode }) =>
       Effect.gen(function* () {
         const acp = yield* createAcpClient(
-          { lgcode },
-          { LGCODE_CONFIG_CONTENT: JSON.stringify(verifierConfig(llm.url)) },
+          { loongcode },
+          { LOONGCODE_CONFIG_CONTENT: JSON.stringify(verifierConfig(llm.url)) },
         )
         yield* initialize(acp)
         const session = yield* newSession(acp, home)
@@ -60,11 +60,11 @@ describe("lgcode acp config option subprocess", () => {
 
   cliIt.live(
     'effort option is listed with category "thought_level" when selected model supports variants',
-    ({ home, llm, lgcode }) =>
+    ({ home, llm, loongcode }) =>
       Effect.gen(function* () {
         const acp = yield* createAcpClient(
-          { lgcode },
-          { LGCODE_CONFIG_CONTENT: JSON.stringify(verifierConfig(llm.url)) },
+          { loongcode },
+          { LOONGCODE_CONFIG_CONTENT: JSON.stringify(verifierConfig(llm.url)) },
         )
         yield* initialize(acp)
         const effort = expectSelectOption((yield* newSession(acp, home)).configOptions, "effort")
@@ -78,11 +78,11 @@ describe("lgcode acp config option subprocess", () => {
 
   cliIt.live(
     "effort switch updates currentValue",
-    ({ home, llm, lgcode }) =>
+    ({ home, llm, loongcode }) =>
       Effect.gen(function* () {
         const acp = yield* createAcpClient(
-          { lgcode },
-          { LGCODE_CONFIG_CONTENT: JSON.stringify(verifierConfig(llm.url)) },
+          { loongcode },
+          { LOONGCODE_CONFIG_CONTENT: JSON.stringify(verifierConfig(llm.url)) },
         )
         yield* initialize(acp)
         const session = yield* newSession(acp, home)

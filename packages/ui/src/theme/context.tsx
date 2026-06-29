@@ -12,10 +12,10 @@ import type { DesktopTheme } from "./types"
 export type ColorScheme = "light" | "dark" | "system"
 
 const STORAGE_KEYS = {
-  THEME_ID: "lgcode-theme-id",
-  COLOR_SCHEME: "lgcode-color-scheme",
-  THEME_CSS_LIGHT: "lgcode-theme-css-light",
-  THEME_CSS_DARK: "lgcode-theme-css-dark",
+  THEME_ID: "loongcode-theme-id",
+  COLOR_SCHEME: "loongcode-color-scheme",
+  THEME_CSS_LIGHT: "loongcode-theme-css-light",
+  THEME_CSS_DARK: "loongcode-theme-css-dark",
 } as const
 
 const THEME_STYLE_ID = "oc-theme"
@@ -69,7 +69,7 @@ const names: Record<string, string> = {
   nord: "Nord",
   "one-dark": "One Dark",
   onedarkpro: "One Dark Pro",
-  lgcode: "LGcode",
+  loongcode: "Loongcode",
   orng: "Orng",
   "osaka-jade": "Osaka Jade",
   palenight: "Palenight",

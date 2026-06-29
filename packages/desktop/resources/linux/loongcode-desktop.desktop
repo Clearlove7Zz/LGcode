@@ -1,10 +1,10 @@
 [Desktop Entry]
-Name=LGcode
-Exec=/opt/LGcode/ai.lgcode.desktop %U
+Name=Loongcode
+Exec=/opt/Loongcode/ai.loongcode.desktop %U
 Terminal=false
 Type=Application
-Icon=ai.lgcode.desktop
-StartupWMClass=ai.lgcode.desktop
+Icon=ai.loongcode.desktop
+StartupWMClass=ai.loongcode.desktop
 NoDisplay=true
 Comment=Open source AI coding agent
 Categories=Development;

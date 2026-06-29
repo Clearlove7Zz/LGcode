@@ -1,7 +1,7 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
-import { PermissionV1 } from "@lgcode/core/v1/permission"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
+import { PermissionV1 } from "@loongcode/core/v1/permission"
 import { Config } from "@/config/config"
-import { serviceUse } from "@lgcode/core/effect/service-use"
+import { serviceUse } from "@loongcode/core/effect/service-use"
 import { Provider } from "@/provider/provider"
 
 import { generateObject, streamObject, type ModelMessage } from "ai"
@@ -16,7 +16,7 @@ import PROMPT_SUMMARY from "./prompt/summary.txt"
 import PROMPT_TITLE from "./prompt/title.txt"
 import { Permission } from "@/permission"
 import { mergeDeep, pipe, sortBy, values } from "remeda"
-import { Global } from "@lgcode/core/global"
+import { Global } from "@loongcode/core/global"
 import path from "path"
 import { Plugin } from "@/plugin"
 import { Skill } from "../skill"
@@ -24,13 +24,13 @@ import { Effect, Context, Layer, Schema } from "effect"
 import { InstanceState } from "@/effect/instance-state"
 import * as Option from "effect/Option"
 import * as OtelTracer from "@effect/opentelemetry/Tracer"
-import { AbsolutePath, type DeepMutable } from "@lgcode/core/schema"
-import { ProviderV2 } from "@lgcode/core/provider"
-import { ModelV2 } from "@lgcode/core/model"
-import { LocationServiceMap } from "@lgcode/core/location-layer"
-import { PluginBoot } from "@lgcode/core/plugin/boot"
-import { Reference } from "@lgcode/core/reference"
-import { Location } from "@lgcode/core/location"
+import { AbsolutePath, type DeepMutable } from "@loongcode/core/schema"
+import { ProviderV2 } from "@loongcode/core/provider"
+import { ModelV2 } from "@loongcode/core/model"
+import { LocationServiceMap } from "@loongcode/core/location-layer"
+import { PluginBoot } from "@loongcode/core/plugin/boot"
+import { Reference } from "@loongcode/core/reference"
+import { Location } from "@loongcode/core/location"
 
 export const Info = Schema.Struct({
   name: Schema.String,
@@ -81,7 +81,7 @@ export interface Interface {
 
 type State = Omit<Interface, "generate">
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Agent") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/Agent") {}
 
 export const use = serviceUse(Service)
 
@@ -168,7 +168,7 @@ export const layer = Layer.effect(
                 },
                 edit: {
                   "*": "deny",
-                  [path.join(".lgcode", "plans", "*.md")]: "allow",
+                  [path.join(".loongcode", "plans", "*.md")]: "allow",
                   [path.relative(ctx.worktree, path.join(Global.Path.data, path.join("plans", "*.md")))]: "allow",
                 },
               }),

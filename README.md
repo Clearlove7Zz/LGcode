@@ -3,13 +3,13 @@
     <picture>
       <source srcset="packages/console/app/src/asset/logo-ornate-dark.png" media="(prefers-color-scheme: dark)">
       <source srcset="packages/console/app/src/asset/logo-ornate-light.png" media="(prefers-color-scheme: light)">
-      <img src="packages/console/app/src/asset/logo-ornate-light.png" alt="LGcode logo">
+      <img src="packages/console/app/src/asset/logo-ornate-light.png" alt="Loongcode logo">
     </picture>
   </a>
 </p>
-<p align="center">AI-powered development tool by LGcode.</p>
+<p align="center">AI-powered development tool by Loongcode.</p>
 <p align="center">
-  <a href="https://www.npmjs.com/package/lgcode"><img alt="npm" src="https://img.shields.io/npm/v/lgcode?style=flat-square" /></a>
+  <a href="https://www.npmjs.com/package/loongcode"><img alt="npm" src="https://img.shields.io/npm/v/loongcode?style=flat-square" /></a>
   <a href="https://github.com/Clearlove7Zz/LGcode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/Clearlove7Zz/LGcode/publish.yml?style=flat-square&branch=dev" /></a>
 </p>
 
@@ -38,7 +38,7 @@
   <a href="README.vi.md">Tiếng Việt</a>
 </p>
 
-[![LGcode Terminal UI](packages/web/src/assets/lander/screenshot.png)](https://modelhub.lgdg.cc)
+[![Loongcode Terminal UI](packages/web/src/assets/lander/screenshot.png)](https://modelhub.lgdg.cc)
 
 ---
 
@@ -49,15 +49,15 @@
 curl -fsSL https://modelhub.lgdg.cc/install | bash
 
 # Package managers
-npm i -g lgcode@latest        # or bun/pnpm/yarn
-scoop install lgcode             # Windows
-choco install lgcode             # Windows
-brew install anomalyco/tap/lgcode # macOS and Linux (recommended, always up to date)
-brew install lgcode              # macOS and Linux (official brew formula, updated less)
-sudo pacman -S lgcode            # Arch Linux (Stable)
-paru -S lgcode-bin               # Arch Linux (Latest from AUR)
-mise use -g lgcode               # Any OS
-nix run nixpkgs#lgcode           # or github:Clearlove7Zz/LGcode for latest dev branch
+npm i -g loongcode@latest        # or bun/pnpm/yarn
+scoop install loongcode             # Windows
+choco install loongcode             # Windows
+brew install anomalyco/tap/loongcode # macOS and Linux (recommended, always up to date)
+brew install loongcode              # macOS and Linux (official brew formula, updated less)
+sudo pacman -S loongcode            # Arch Linux (Stable)
+paru -S loongcode-bin               # Arch Linux (Latest from AUR)
+mise use -g loongcode               # Any OS
+nix run nixpkgs#loongcode           # or github:Clearlove7Zz/LGcode for latest dev branch
 ```
 
 > [!TIP]
@@ -65,40 +65,40 @@ nix run nixpkgs#lgcode           # or github:Clearlove7Zz/LGcode for latest dev 
 
 ### Desktop App (BETA)
 
-LGcode is also available as a desktop application. Download directly from the [releases page](https://github.com/Clearlove7Zz/LGcode/releases) or [modelhub.lgdg.cc/download](https://modelhub.lgdg.cc/download).
+Loongcode is also available as a desktop application. Download directly from the [releases page](https://github.com/Clearlove7Zz/LGcode/releases) or [modelhub.lgdg.cc/download](https://modelhub.lgdg.cc/download).
 
 | Platform              | Download                           |
 | --------------------- | ---------------------------------- |
-| macOS (Apple Silicon) | `lgcode-desktop-mac-arm64.dmg`   |
-| macOS (Intel)         | `lgcode-desktop-mac-x64.dmg`     |
-| Windows               | `lgcode-desktop-windows-x64.exe` |
+| macOS (Apple Silicon) | `loongcode-desktop-mac-arm64.dmg`   |
+| macOS (Intel)         | `loongcode-desktop-mac-x64.dmg`     |
+| Windows               | `loongcode-desktop-windows-x64.exe` |
 | Linux                 | `.deb`, `.rpm`, or `.AppImage`     |
 
 ```bash
 # macOS (Homebrew)
-brew install --cask lgcode-desktop
+brew install --cask loongcode-desktop
 # Windows (Scoop)
-scoop bucket add extras; scoop install extras/lgcode-desktop
+scoop bucket add extras; scoop install extras/loongcode-desktop
 ```
 
 #### Installation Directory
 
 The install script respects the following priority order for the installation path:
 
-1. `$LGCODE_INSTALL_DIR` - Custom installation directory
+1. `$LOONGCODE_INSTALL_DIR` - Custom installation directory
 2. `$XDG_BIN_DIR` - XDG Base Directory Specification compliant path
 3. `$HOME/bin` - Standard user binary directory (if it exists or can be created)
-4. `$HOME/.lgcode/bin` - Default fallback
+4. `$HOME/.loongcode/bin` - Default fallback
 
 ```bash
 # Examples
-LGCODE_INSTALL_DIR=/usr/local/bin curl -fsSL https://modelhub.lgdg.cc/install | bash
+LOONGCODE_INSTALL_DIR=/usr/local/bin curl -fsSL https://modelhub.lgdg.cc/install | bash
 XDG_BIN_DIR=$HOME/.local/bin curl -fsSL https://modelhub.lgdg.cc/install | bash
 ```
 
 ### Agents
 
-LGcode includes two built-in agents you can switch between with the `Tab` key.
+Loongcode includes two built-in agents you can switch between with the `Tab` key.
 
 - **build** - Default, full-access agent for development work
 - **plan** - Read-only agent for analysis and code exploration
@@ -113,16 +113,16 @@ Learn more about [agents](https://modelhub.lgdg.cc/docs/agents).
 
 ### Documentation
 
-For more info on how to configure LGcode, [**head over to our docs**](https://modelhub.lgdg.cc/docs).
+For more info on how to configure Loongcode, [**head over to our docs**](https://modelhub.lgdg.cc/docs).
 
 ### Contributing
 
-If you're interested in contributing to LGcode, please read our [contributing docs](./CONTRIBUTING.md) before submitting a pull request.
+If you're interested in contributing to Loongcode, please read our [contributing docs](./CONTRIBUTING.md) before submitting a pull request.
 
-### Building on LGcode
+### Building on Loongcode
 
-If you are working on a project that's related to LGcode and is using "lgcode" as part of its name, for example "lgcode-dashboard" or "lgcode-mobile", please add a note to your README to clarify that it is not built by the LGcode team and is not affiliated with us in any way.
+If you are working on a project that's related to Loongcode and is using "loongcode" as part of its name, for example "loongcode-dashboard" or "loongcode-mobile", please add a note to your README to clarify that it is not built by the Loongcode team and is not affiliated with us in any way.
 
 ---
 
-**Join our community** [Discord](https://discord.gg/lgcode) | [X.com](https://x.com/lgcode)
+**Join our community** [Discord](https://discord.gg/loongcode) | [X.com](https://x.com/loongcode)

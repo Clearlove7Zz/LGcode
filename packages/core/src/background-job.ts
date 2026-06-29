@@ -95,7 +95,7 @@ export interface Interface {
   readonly cancel: (id: string) => Effect.Effect<Info | undefined>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/BackgroundJob") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/BackgroundJob") {}
 
 function snapshot(job: Active): Info {
   return {

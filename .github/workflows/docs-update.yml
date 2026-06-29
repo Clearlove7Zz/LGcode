@@ -41,13 +41,13 @@ jobs:
             } >> $GITHUB_OUTPUT
           fi
 
-      - name: Run lgcode
+      - name: Run loongcode
         if: steps.commits.outputs.has_commits == 'true'
         uses: Clearlove7Zz/LGcode/github@2c14fc5586fe0b88e5c04732d2e846769cc35671 # latest
         env:
-          LGCODE_API_KEY: ${{ secrets.LGCODE_API_KEY }}
+          LOONGCODE_API_KEY: ${{ secrets.LOONGCODE_API_KEY }}
         with:
-          model: lgcode/gpt-5.2
+          model: loongcode/gpt-5.2
           agent: docs
           prompt: |
             Review the following commits from the last ${{ env.LOOKBACK_HOURS }} hours and identify any new features that may need documentation.

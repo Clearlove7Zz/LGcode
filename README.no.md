@@ -3,14 +3,14 @@
     <picture>
       <source srcset="packages/console/app/src/asset/logo-ornate-dark.svg" media="(prefers-color-scheme: dark)">
       <source srcset="packages/console/app/src/asset/logo-ornate-light.svg" media="(prefers-color-scheme: light)">
-      <img src="packages/console/app/src/asset/logo-ornate-light.svg" alt="LGcode logo">
+      <img src="packages/console/app/src/asset/logo-ornate-light.svg" alt="Loongcode logo">
     </picture>
   </a>
 </p>
 <p align="center">AI-kodeagent med åpen kildekode.</p>
 <p align="center">
   <a href="https://modelhub.lgdg.cc/discord"><img alt="Discord" src="https://img.shields.io/discord/1391832426048651334?style=flat-square&label=discord" /></a>
-  <a href="https://www.npmjs.com/package/lgcode-ai"><img alt="npm" src="https://img.shields.io/npm/v/lgcode-ai?style=flat-square" /></a>
+  <a href="https://www.npmjs.com/package/loongcode-ai"><img alt="npm" src="https://img.shields.io/npm/v/loongcode-ai?style=flat-square" /></a>
   <a href="https://github.com/Clearlove7Zz/LGcode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/Clearlove7Zz/LGcode/publish.yml?style=flat-square&branch=dev" /></a>
 </p>
 
@@ -39,7 +39,7 @@
   <a href="README.vi.md">Tiếng Việt</a>
 </p>
 
-[![LGcode Terminal UI](packages/web/src/assets/lander/screenshot.png)](https://modelhub.lgdg.cc)
+[![Loongcode Terminal UI](packages/web/src/assets/lander/screenshot.png)](https://modelhub.lgdg.cc)
 
 ---
 
@@ -50,15 +50,15 @@
 curl -fsSL https://modelhub.lgdg.cc/install | bash
 
 # Pakkehåndterere
-npm i -g lgcode-ai@latest        # eller bun/pnpm/yarn
-scoop install lgcode             # Windows
-choco install lgcode             # Windows
-brew install anomalyco/tap/lgcode # macOS og Linux (anbefalt, alltid oppdatert)
-brew install lgcode              # macOS og Linux (offisiell brew-formel, oppdateres sjeldnere)
-sudo pacman -S lgcode            # Arch Linux (Stable)
-paru -S lgcode-bin               # Arch Linux (Latest from AUR)
-mise use -g lgcode               # alle OS
-nix run nixpkgs#lgcode           # eller github:Clearlove7Zz/LGcode for nyeste dev-branch
+npm i -g loongcode-ai@latest        # eller bun/pnpm/yarn
+scoop install loongcode             # Windows
+choco install loongcode             # Windows
+brew install anomalyco/tap/loongcode # macOS og Linux (anbefalt, alltid oppdatert)
+brew install loongcode              # macOS og Linux (offisiell brew-formel, oppdateres sjeldnere)
+sudo pacman -S loongcode            # Arch Linux (Stable)
+paru -S loongcode-bin               # Arch Linux (Latest from AUR)
+mise use -g loongcode               # alle OS
+nix run nixpkgs#loongcode           # eller github:Clearlove7Zz/LGcode for nyeste dev-branch
 ```
 
 > [!TIP]
@@ -66,40 +66,40 @@ nix run nixpkgs#lgcode           # eller github:Clearlove7Zz/LGcode for nyeste d
 
 ### Desktop-app (BETA)
 
-LGcode er også tilgjengelig som en desktop-app. Last ned direkte fra [releases-siden](https://github.com/Clearlove7Zz/LGcode/releases) eller [modelhub.lgdg.cc/download](https://modelhub.lgdg.cc/download).
+Loongcode er også tilgjengelig som en desktop-app. Last ned direkte fra [releases-siden](https://github.com/Clearlove7Zz/LGcode/releases) eller [modelhub.lgdg.cc/download](https://modelhub.lgdg.cc/download).
 
 | Plattform             | Nedlasting                         |
 | --------------------- | ---------------------------------- |
-| macOS (Apple Silicon) | `lgcode-desktop-mac-arm64.dmg`   |
-| macOS (Intel)         | `lgcode-desktop-mac-x64.dmg`     |
-| Windows               | `lgcode-desktop-windows-x64.exe` |
+| macOS (Apple Silicon) | `loongcode-desktop-mac-arm64.dmg`   |
+| macOS (Intel)         | `loongcode-desktop-mac-x64.dmg`     |
+| Windows               | `loongcode-desktop-windows-x64.exe` |
 | Linux                 | `.deb`, `.rpm` eller AppImage      |
 
 ```bash
 # macOS (Homebrew)
-brew install --cask lgcode-desktop
+brew install --cask loongcode-desktop
 # Windows (Scoop)
-scoop bucket add extras; scoop install extras/lgcode-desktop
+scoop bucket add extras; scoop install extras/loongcode-desktop
 ```
 
 #### Installasjonsmappe
 
 Installasjonsskriptet bruker følgende prioritet for installasjonsstien:
 
-1. `$LGCODE_INSTALL_DIR` - Egendefinert installasjonsmappe
+1. `$LOONGCODE_INSTALL_DIR` - Egendefinert installasjonsmappe
 2. `$XDG_BIN_DIR` - Sti som følger XDG Base Directory Specification
 3. `$HOME/bin` - Standard brukerbinar-mappe (hvis den finnes eller kan opprettes)
-4. `$HOME/.lgcode/bin` - Standard fallback
+4. `$HOME/.loongcode/bin` - Standard fallback
 
 ```bash
 # Eksempler
-LGCODE_INSTALL_DIR=/usr/local/bin curl -fsSL https://modelhub.lgdg.cc/install | bash
+LOONGCODE_INSTALL_DIR=/usr/local/bin curl -fsSL https://modelhub.lgdg.cc/install | bash
 XDG_BIN_DIR=$HOME/.local/bin curl -fsSL https://modelhub.lgdg.cc/install | bash
 ```
 
 ### Agents
 
-LGcode har to innebygde agents du kan bytte mellom med `Tab`-tasten.
+Loongcode har to innebygde agents du kan bytte mellom med `Tab`-tasten.
 
 - **build** - Standard, agent med full tilgang for utviklingsarbeid
 - **plan** - Skrivebeskyttet agent for analyse og kodeutforsking
@@ -114,16 +114,16 @@ Les mer om [agents](https://modelhub.lgdg.cc/docs/agents).
 
 ### Dokumentasjon
 
-For mer info om hvordan du konfigurerer LGcode, [**se dokumentasjonen**](https://modelhub.lgdg.cc/docs).
+For mer info om hvordan du konfigurerer Loongcode, [**se dokumentasjonen**](https://modelhub.lgdg.cc/docs).
 
 ### Bidra
 
-Hvis du vil bidra til LGcode, les [contributing docs](./CONTRIBUTING.md) før du sender en pull request.
+Hvis du vil bidra til Loongcode, les [contributing docs](./CONTRIBUTING.md) før du sender en pull request.
 
-### Bygge på LGcode
+### Bygge på Loongcode
 
-Hvis du jobber med et prosjekt som er relatert til LGcode og bruker "lgcode" som en del av navnet; for eksempel "lgcode-dashboard" eller "lgcode-mobile", legg inn en merknad i README som presiserer at det ikke er bygget av LGcode-teamet og ikke er tilknyttet oss på noen måte.
+Hvis du jobber med et prosjekt som er relatert til Loongcode og bruker "loongcode" som en del av navnet; for eksempel "loongcode-dashboard" eller "loongcode-mobile", legg inn en merknad i README som presiserer at det ikke er bygget av Loongcode-teamet og ikke er tilknyttet oss på noen måte.
 
 ---
 
-**Bli med i fellesskapet** [Discord](https://discord.gg/lgcode) | [X.com](https://x.com/lgcode)
+**Bli med i fellesskapet** [Discord](https://discord.gg/loongcode) | [X.com](https://x.com/loongcode)

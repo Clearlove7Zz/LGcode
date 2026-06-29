@@ -1,11 +1,11 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
 import path from "path"
 import { Effect, Layer, Record, Result, Schema, Context } from "effect"
-import { NonNegativeInt } from "@lgcode/core/schema"
-import { Global } from "@lgcode/core/global"
-import { FSUtil } from "@lgcode/core/fs-util"
+import { NonNegativeInt } from "@loongcode/core/schema"
+import { Global } from "@loongcode/core/global"
+import { FSUtil } from "@loongcode/core/fs-util"
 
-export const OAUTH_DUMMY_KEY = "lgcode-oauth-dummy-key"
+export const OAUTH_DUMMY_KEY = "loongcode-oauth-dummy-key"
 
 const file = path.join(Global.Path.data, "auth.json")
 
@@ -47,7 +47,7 @@ export interface Interface {
   readonly remove: (key: string) => Effect.Effect<void, AuthError>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Auth") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/Auth") {}
 
 export const layer = Layer.effect(
   Service,
@@ -56,9 +56,9 @@ export const layer = Layer.effect(
     const decode = Schema.decodeUnknownOption(Info)
 
     const all = Effect.fn("Auth.all")(function* () {
-      if (process.env.LGCODE_AUTH_CONTENT) {
+      if (process.env.LOONGCODE_AUTH_CONTENT) {
         try {
-          return JSON.parse(process.env.LGCODE_AUTH_CONTENT)
+          return JSON.parse(process.env.LOONGCODE_AUTH_CONTENT)
         } catch (err) {}
       }
 

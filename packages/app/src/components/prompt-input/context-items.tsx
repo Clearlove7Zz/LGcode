@@ -1,8 +1,8 @@
 import { Component, For, Show } from "solid-js"
-import { FileIcon } from "@lgcode/ui/file-icon"
-import { IconButton } from "@lgcode/ui/icon-button"
-import { Tooltip } from "@lgcode/ui/tooltip"
-import { getDirectory, getFilename, getFilenameTruncated } from "@lgcode/core/util/path"
+import { FileIcon } from "@loongcode/ui/file-icon"
+import { IconButton } from "@loongcode/ui/icon-button"
+import { Tooltip } from "@loongcode/ui/tooltip"
+import { getDirectory, getFilename, getFilenameTruncated } from "@loongcode/core/util/path"
 import type { ContextItem } from "@/context/prompt"
 
 type PromptContextItem = ContextItem & { key: string }

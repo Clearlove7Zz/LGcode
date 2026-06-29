@@ -79,8 +79,8 @@ function installShortcuts() {
 function clearHighlightFind() {
   const api = (globalThis as { CSS?: { highlights?: { delete: (name: string) => void } } }).CSS?.highlights
   if (!api) return
-  api.delete("lgcode-find")
-  api.delete("lgcode-find-current")
+  api.delete("loongcode-find")
+  api.delete("loongcode-find-current")
 }
 
 function supportsHighlights() {
@@ -296,14 +296,14 @@ export function createFileFind(opts: CreateFileFindOptions) {
     const Highlight = (globalThis as unknown as { Highlight?: any }).Highlight
     if (!api || typeof Highlight !== "function") return false
 
-    api.delete("lgcode-find")
-    api.delete("lgcode-find-current")
+    api.delete("loongcode-find")
+    api.delete("loongcode-find-current")
 
     const active = ranges[currentIndex]
-    if (active) api.set("lgcode-find-current", new Highlight(active))
+    if (active) api.set("loongcode-find-current", new Highlight(active))
 
     const rest = ranges.filter((_, i) => i !== currentIndex)
-    if (rest.length > 0) api.set("lgcode-find", new Highlight(...rest))
+    if (rest.length > 0) api.set("loongcode-find", new Highlight(...rest))
     return true
   }
 

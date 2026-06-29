@@ -3,14 +3,14 @@
 // Variants are provider-specific reasoning effort levels (e.g., "high", "max").
 // Resolution priority: CLI --variant flag > saved preference > session history.
 //
-// The saved variant persists across sessions in ~/.local/state/lgcode/model.json
+// The saved variant persists across sessions in ~/.local/state/loongcode/model.json
 // so your last-used variant sticks. Cycling (ctrl+t) updates both the active
 // variant and the persisted file.
 import path from "path"
-import { FSUtil } from "@lgcode/core/fs-util"
+import { FSUtil } from "@loongcode/core/fs-util"
 import { Context, Effect, Layer } from "effect"
 import { makeRuntime } from "@/effect/run-service"
-import { Global } from "@lgcode/core/global"
+import { Global } from "@loongcode/core/global"
 import { isRecord } from "@/util/record"
 import { createSession, sessionVariant, type RunSession, type SessionMessages } from "./session.shared"
 import type { RunInput, RunProvider } from "./types"
@@ -29,7 +29,7 @@ type VariantRuntime = {
   saveVariant(model: RunInput["model"], variant: string | undefined): Promise<void>
 }
 
-class Service extends Context.Service<Service, VariantService>()("@lgcode/RunVariant") {}
+class Service extends Context.Service<Service, VariantService>()("@loongcode/RunVariant") {}
 
 function modelKey(provider: string, model: string): string {
   return `${provider}/${model}`

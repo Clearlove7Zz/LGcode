@@ -3,7 +3,7 @@ title: "Agent Skills"
 description: "Define reusable behavior via SKILL.md definitions"
 ---
 
-Agent skills let LGcode discover reusable instructions from your repo or home directory.
+Agent skills let Loongcode discover reusable instructions from your repo or home directory.
 Skills are loaded on-demand via the native `skill` tool—agents see available skills and can load the full content when needed.
 
 ---
@@ -11,10 +11,10 @@ Skills are loaded on-demand via the native `skill` tool—agents see available s
 ## Place files
 
 Create one folder per skill name and put a `SKILL.md` inside it.
-LGcode searches these locations:
+Loongcode searches these locations:
 
-- Project config: `.lgcode/skills/<name>/SKILL.md`
-- Global config: `~/.config/lgcode/skills/<name>/SKILL.md`
+- Project config: `.loongcode/skills/<name>/SKILL.md`
+- Global config: `~/.config/loongcode/skills/<name>/SKILL.md`
 - Project Claude-compatible: `.claude/skills/<name>/SKILL.md`
 - Global Claude-compatible: `~/.claude/skills/<name>/SKILL.md`
 - Project agent-compatible: `.agents/skills/<name>/SKILL.md`
@@ -24,10 +24,10 @@ LGcode searches these locations:
 
 ## Understand discovery
 
-For project-local paths, LGcode walks up from your current working directory until it reaches the git worktree.
-It loads any matching `skills/*/SKILL.md` in `.lgcode/` and any matching `.claude/skills/*/SKILL.md` or `.agents/skills/*/SKILL.md` along the way.
+For project-local paths, Loongcode walks up from your current working directory until it reaches the git worktree.
+It loads any matching `skills/*/SKILL.md` in `.loongcode/` and any matching `.claude/skills/*/SKILL.md` or `.agents/skills/*/SKILL.md` along the way.
 
-Global definitions are also loaded from `~/.config/lgcode/skills/*/SKILL.md`, `~/.claude/skills/*/SKILL.md`, and `~/.agents/skills/*/SKILL.md`.
+Global definitions are also loaded from `~/.config/loongcode/skills/*/SKILL.md`, `~/.claude/skills/*/SKILL.md`, and `~/.agents/skills/*/SKILL.md`.
 
 ---
 
@@ -73,14 +73,14 @@ Keep it specific enough for the agent to choose correctly.
 
 ## Use an example
 
-Create `.lgcode/skills/git-release/SKILL.md` like this:
+Create `.loongcode/skills/git-release/SKILL.md` like this:
 
 ```markdown
 ---
 name: git-release
 description: Create consistent releases and changelogs
 license: MIT
-compatibility: lgcode
+compatibility: loongcode
 metadata:
   audience: maintainers
   workflow: github
@@ -102,7 +102,7 @@ Ask clarifying questions if the target versioning scheme is unclear.
 
 ## Recognize tool description
 
-LGcode lists available skills in the `skill` tool description.
+Loongcode lists available skills in the `skill` tool description.
 Each entry includes the skill name and description:
 
 ```xml
@@ -124,7 +124,7 @@ skill({ name: "git-release" })
 
 ## Configure permissions
 
-Control which skills agents can access using pattern-based permissions in `lgcode.json`:
+Control which skills agents can access using pattern-based permissions in `loongcode.json`:
 
 ```json
 {
@@ -163,7 +163,7 @@ permission:
 ---
 ```
 
-**For built-in agents** (in `lgcode.json`):
+**For built-in agents** (in `loongcode.json`):
 
 ```json
 {

@@ -1,11 +1,11 @@
-import { Button } from "@lgcode/ui/button"
-import { useDialog } from "@lgcode/ui/context/dialog"
-import { Dialog } from "@lgcode/ui/dialog"
-import { DropdownMenu } from "@lgcode/ui/dropdown-menu"
-import { Icon } from "@lgcode/ui/icon"
-import { IconButton } from "@lgcode/ui/icon-button"
-import { List } from "@lgcode/ui/list"
-import { TextField } from "@lgcode/ui/text-field"
+import { Button } from "@loongcode/ui/button"
+import { useDialog } from "@loongcode/ui/context/dialog"
+import { Dialog } from "@loongcode/ui/dialog"
+import { DropdownMenu } from "@loongcode/ui/dropdown-menu"
+import { Icon } from "@loongcode/ui/icon"
+import { IconButton } from "@loongcode/ui/icon-button"
+import { List } from "@loongcode/ui/list"
+import { TextField } from "@loongcode/ui/text-field"
 import { useMutation } from "@tanstack/solid-query"
 import { showToast } from "@/utils/toast"
 import { useNavigate } from "@solidjs/router"
@@ -20,7 +20,7 @@ import { type ServerHealth, useCheckServerHealth } from "@/utils/server-health"
 import { useSettings } from "@/context/settings"
 import { useTabs } from "@/context/tabs"
 
-const DEFAULT_USERNAME = "lgcode"
+const DEFAULT_USERNAME = "loongcode"
 
 interface ServerFormProps {
   value: string

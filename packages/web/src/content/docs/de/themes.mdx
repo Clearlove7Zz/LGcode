@@ -3,9 +3,9 @@ title: Themes
 description: Waehle ein eingebautes Theme oder erstelle eins.
 ---
 
-Mit LGcode kannst du ein eingebautes Theme waehlen, ein an dein Terminal angepasstes Theme nutzen oder ein eigenes Theme definieren.
+Mit Loongcode kannst du ein eingebautes Theme waehlen, ein an dein Terminal angepasstes Theme nutzen oder ein eigenes Theme definieren.
 
-Standardmaessig verwendet LGcode das `lgcode`-Theme.
+Standardmaessig verwendet Loongcode das `loongcode`-Theme.
 
 ---
 
@@ -24,7 +24,7 @@ Ohne truecolor werden Farben weniger exakt dargestellt oder auf eine 256-Farben-
 
 ## Eingebaute Themes
 
-LGcode liefert mehrere eingebaute Themes mit.
+Loongcode liefert mehrere eingebaute Themes mit.
 
 | Name                   | Description                                                                  |
 | ---------------------- | ---------------------------------------------------------------------------- |
@@ -55,7 +55,7 @@ Im Gegensatz zu Themes mit festen Farben gilt beim _system_-Theme:
 
 Das System-Theme ist ideal fuer Nutzer, die:
 
-- LGcode optisch ans Terminal anpassen wollen
+- Loongcode optisch ans Terminal anpassen wollen
 - eigene Terminal-Farbschemata nutzen
 - ein konsistentes Erscheinungsbild in Terminal-Apps bevorzugen
 
@@ -65,7 +65,7 @@ Das System-Theme ist ideal fuer Nutzer, die:
 
 Du kannst ein Theme ueber `/theme` auswaehlen oder direkt in der [Konfiguration](/docs/config) setzen.
 
-```json title="lgcode.json" {3}
+```json title="loongcode.json" {3}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "theme": "tokyonight"
@@ -76,7 +76,7 @@ Du kannst ein Theme ueber `/theme` auswaehlen oder direkt in der [Konfiguration]
 
 ## Eigene Themes
 
-LGcode unterstuetzt ein flexibles JSON-basiertes Theme-System.
+Loongcode unterstuetzt ein flexibles JSON-basiertes Theme-System.
 Damit lassen sich Themes einfach erstellen und anpassen.
 
 ---
@@ -86,9 +86,9 @@ Damit lassen sich Themes einfach erstellen und anpassen.
 Themes werden aus mehreren Verzeichnissen in folgender Reihenfolge geladen, wobei spaetere Verzeichnisse fruehere ueberschreiben:
 
 1. **Eingebaute Themes** - Diese sind im Binary eingebettet
-2. **Benutzer-Config-Verzeichnis** - Definiert in `~/.config/lgcode/themes/*.json` oder `$XDG_CONFIG_HOME/lgcode/themes/*.json`
-3. **Projekt-Root-Verzeichnis** - Definiert in `<project-root>/.lgcode/themes/*.json`
-4. **Aktuelles Arbeitsverzeichnis** - Definiert in `./.lgcode/themes/*.json`
+2. **Benutzer-Config-Verzeichnis** - Definiert in `~/.config/loongcode/themes/*.json` oder `$XDG_CONFIG_HOME/loongcode/themes/*.json`
+3. **Projekt-Root-Verzeichnis** - Definiert in `<project-root>/.loongcode/themes/*.json`
+4. **Aktuelles Arbeitsverzeichnis** - Definiert in `./.loongcode/themes/*.json`
 
 Wenn mehrere Verzeichnisse ein Theme mit demselben Namen enthalten, wird das Theme aus dem Verzeichnis mit der hoeheren Prioritaet verwendet.
 
@@ -101,15 +101,15 @@ Um ein eigenes Theme zu erstellen, lege eine JSON-Datei in einem der Theme-Verze
 Fuer benutzerweite Themes:
 
 ```bash no-frame
-mkdir -p ~/.config/lgcode/themes
-vim ~/.config/lgcode/themes/my-theme.json
+mkdir -p ~/.config/loongcode/themes
+vim ~/.config/loongcode/themes/my-theme.json
 ```
 
 Und fuer projektspezifische Themes:
 
 ```bash no-frame
-mkdir -p .lgcode/themes
-vim .lgcode/themes/my-theme.json
+mkdir -p .loongcode/themes
+vim .loongcode/themes/my-theme.json
 ```
 
 ---

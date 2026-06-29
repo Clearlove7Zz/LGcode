@@ -1,5 +1,5 @@
-import { FileSystem } from "@lgcode/core/filesystem"
-import { NonNegativeInt } from "@lgcode/core/schema"
+import { FileSystem } from "@loongcode/core/filesystem"
+import { NonNegativeInt } from "@loongcode/core/schema"
 import { LSP } from "@/lsp/lsp"
 import { Schema } from "effect"
 import { HttpApi, HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
@@ -178,7 +178,7 @@ export const FileApi = HttpApi.make("file")
   )
   .annotateMerge(
     OpenApi.annotations({
-      title: "lgcode experimental HttpApi",
+      title: "loongcode experimental HttpApi",
       version: "0.0.1",
       description: "Experimental HttpApi surface for selected instance routes.",
     }),

@@ -1,4 +1,4 @@
-import type { AssistantMessage, Message } from "@lgcode/sdk/v2/client"
+import type { AssistantMessage, Message } from "@loongcode/sdk/v2/client"
 
 type Provider = {
   id: string

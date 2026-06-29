@@ -154,20 +154,20 @@ describe("filesystem", () => {
       const nested = path.join(project, "nested")
       await fs.mkdir(nested, { recursive: true })
 
-      await fs.writeFile(path.join(tmp.path, "lgcode.json"), "{}", "utf-8")
-      await fs.writeFile(path.join(tmp.path, "lgcode.jsonc"), "{}", "utf-8")
-      await fs.writeFile(path.join(project, "lgcode.json"), "{}", "utf-8")
-      await fs.writeFile(path.join(project, "lgcode.jsonc"), "{}", "utf-8")
+      await fs.writeFile(path.join(tmp.path, "loongcode.json"), "{}", "utf-8")
+      await fs.writeFile(path.join(tmp.path, "loongcode.jsonc"), "{}", "utf-8")
+      await fs.writeFile(path.join(project, "loongcode.json"), "{}", "utf-8")
+      await fs.writeFile(path.join(project, "loongcode.jsonc"), "{}", "utf-8")
 
-      const result = await Filesystem.findUp(["lgcode.json", "lgcode.jsonc"], nested, tmp.path, {
+      const result = await Filesystem.findUp(["loongcode.json", "loongcode.jsonc"], nested, tmp.path, {
         rootFirst: true,
       })
 
       expect(result).toEqual([
-        path.join(tmp.path, "lgcode.json"),
-        path.join(tmp.path, "lgcode.jsonc"),
-        path.join(project, "lgcode.json"),
-        path.join(project, "lgcode.jsonc"),
+        path.join(tmp.path, "loongcode.json"),
+        path.join(tmp.path, "loongcode.jsonc"),
+        path.join(project, "loongcode.json"),
+        path.join(project, "loongcode.jsonc"),
       ])
     })
   })

@@ -1,8 +1,8 @@
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { Location } from "@lgcode/core/location"
-import { Policy } from "@lgcode/core/policy"
-import { AbsolutePath } from "@lgcode/core/schema"
+import { Location } from "@loongcode/core/location"
+import { Policy } from "@loongcode/core/policy"
+import { AbsolutePath } from "@loongcode/core/schema"
 import { location } from "./fixture/location"
 import { testEffect } from "./lib/effect"
 

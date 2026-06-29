@@ -1,16 +1,16 @@
-This is a plugin to simulate a remote environment locally. Add this to `.lgcode/lgcode.jsonc`:
+This is a plugin to simulate a remote environment locally. Add this to `.loongcode/loongcode.jsonc`:
 
 ```json
-  "plugin": ["../packages/lgcode/src/control-plane/dev/debug-workspace-plugin.ts"],
+  "plugin": ["../packages/loongcode/src/control-plane/dev/debug-workspace-plugin.ts"],
 ```
 
-In a separate terminal, run a separate LGcode server. This will act like a remote server and the local instance will proxy all requests to it:
+In a separate terminal, run a separate Loongcode server. This will act like a remote server and the local instance will proxy all requests to it:
 
 ```
-./packages/lgcode/script/run-workspace-server
+./packages/loongcode/script/run-workspace-server
 ```
 
-With the plugin install, you can now run LGcode and create a `debug` workspace type. This will create a "remote" workspace which talks to the second workspace server started above.
+With the plugin install, you can now run Loongcode and create a `debug` workspace type. This will create a "remote" workspace which talks to the second workspace server started above.
 
 How this works:
 

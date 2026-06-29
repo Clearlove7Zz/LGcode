@@ -1,6 +1,6 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
 import { Effect, Layer, Context, Schema } from "effect"
-import { SessionV1 } from "@lgcode/core/v1/session"
+import { SessionV1 } from "@loongcode/core/v1/session"
 import { EventV2Bridge } from "@/event-v2-bridge"
 import { Snapshot } from "../snapshot"
 import { Storage } from "@/storage/storage"
@@ -23,7 +23,7 @@ export interface Interface {
   readonly cleanup: (session: Session.Info) => Effect.Effect<void>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/SessionRevert") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/SessionRevert") {}
 
 export const layer = Layer.effect(
   Service,

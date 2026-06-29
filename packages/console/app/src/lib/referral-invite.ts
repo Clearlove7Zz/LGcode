@@ -1,5 +1,5 @@
-import { Actor } from "@lgcode/console-core/actor.js"
-import { Referral } from "@lgcode/console-core/referral.js"
+import { Actor } from "@loongcode/console-core/actor.js"
+import { Referral } from "@loongcode/console-core/referral.js"
 import { getRequestEvent } from "solid-js/web"
 
 const REFERRAL_COOKIE = "oc_referral"

@@ -6,7 +6,7 @@ import { Effect } from "effect"
 import { PluginV2 } from "../plugin"
 import { AbsolutePath } from "../schema"
 import { SkillV2 } from "../skill"
-import customizeOpencodeContent from "./skill/customize-lgcode.md" with { type: "text" }
+import customizeOpencodeContent from "./skill/customize-loongcode.md" with { type: "text" }
 
 export const CustomizeOpencodeContent = customizeOpencodeContent
 
@@ -21,10 +21,10 @@ export const Plugin = PluginV2.define({
         new SkillV2.EmbeddedSource({
           type: "embedded",
           skill: new SkillV2.Info({
-            name: "customize-lgcode",
+            name: "customize-loongcode",
             description:
-              "Use ONLY when the user is editing or creating lgcode's own configuration: lgcode.json, lgcode.jsonc, files under .lgcode/, or files under ~/.config/lgcode/. Also use when creating or fixing lgcode agents, subagents, skills, plugins, MCP servers, or permission rules. Do not use for the user's own application code, or for any project that is not configuring lgcode itself.",
-            location: AbsolutePath.make("/builtin/customize-lgcode.md"),
+              "Use ONLY when the user is editing or creating loongcode's own configuration: loongcode.json, loongcode.jsonc, files under .loongcode/, or files under ~/.config/loongcode/. Also use when creating or fixing loongcode agents, subagents, skills, plugins, MCP servers, or permission rules. Do not use for the user's own application code, or for any project that is not configuring loongcode itself.",
+            location: AbsolutePath.make("/builtin/customize-loongcode.md"),
             content: CustomizeOpencodeContent,
           }),
         }),

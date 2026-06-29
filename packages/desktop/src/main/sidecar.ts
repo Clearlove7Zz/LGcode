@@ -54,12 +54,12 @@ async function start(command: StartCommand) {
     ensureLoopbackNoProxy()
     useSystemCertificates()
     useEnvProxy()
-    const { Server } = await import("virtual:lgcode-server")
+    const { Server } = await import("virtual:loongcode-server")
 
     listener = await Server.listen({
       port: command.port,
       hostname: command.hostname,
-      username: "lgcode",
+      username: "loongcode",
       password: command.password,
       cors: ["oc://renderer"],
     })
@@ -82,8 +82,8 @@ async function stop() {
 
 function prepareSidecarEnv(password: string, userDataPath: string) {
   Object.assign(process.env, {
-    LGCODE_SERVER_USERNAME: "lgcode",
-    LGCODE_SERVER_PASSWORD: password,
+    LOONGCODE_SERVER_USERNAME: "loongcode",
+    LOONGCODE_SERVER_PASSWORD: password,
     XDG_STATE_HOME: process.env.XDG_STATE_HOME ?? userDataPath,
   })
 }

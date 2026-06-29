@@ -1,5 +1,5 @@
-import { SessionV2 } from "@lgcode/core/session"
-import { SessionMessage } from "@lgcode/core/session/message"
+import { SessionV2 } from "@loongcode/core/session"
+import { SessionMessage } from "@loongcode/core/session/message"
 import { Schema } from "effect"
 import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
 import { InvalidCursorError, SessionNotFoundError, UnknownError } from "../errors"

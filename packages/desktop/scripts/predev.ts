@@ -1,5 +1,5 @@
 import { $ } from "bun"
 
-await $`bun ./scripts/copy-icons.ts ${process.env.LGCODE_CHANNEL ?? "dev"}`
+await $`bun ./scripts/copy-icons.ts ${process.env.LOONGCODE_CHANNEL ?? "dev"}`
 
-await $`cd ../lgcode && bun script/build-node.ts`
+await $`cd ../loongcode && bun script/build-node.ts`

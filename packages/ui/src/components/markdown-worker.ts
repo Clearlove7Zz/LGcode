@@ -1,5 +1,5 @@
 import MarkdownShikiWorkerUrl from "./markdown-shiki.worker.ts?worker&url"
-import { LGcodeTheme } from "../context/marked"
+import { LoongcodeTheme } from "../context/marked"
 import {
   applyMarkdownWorkerResponse,
   shouldReleaseMarkdownWorkerState,
@@ -117,6 +117,6 @@ function getWorker() {
   }
   worker.onerror = (event) => fail(event.message || "Markdown highlighting worker failed")
   worker.onmessageerror = () => fail("Markdown worker response failed")
-  worker.postMessage({ type: "init", theme: LGcodeTheme } satisfies MarkdownWorkerRequest)
+  worker.postMessage({ type: "init", theme: LoongcodeTheme } satisfies MarkdownWorkerRequest)
   return worker
 }

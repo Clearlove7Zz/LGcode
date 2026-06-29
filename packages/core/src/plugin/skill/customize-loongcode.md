@@ -1,13 +1,13 @@
 <!--
   Built-in skill. Name and description are registered in code at
   packages/core/src/plugin/skill.ts
-  and CUSTOMIZE_LGCODE_SKILL_DESCRIPTION). The body below becomes the
+  and CUSTOMIZE_LOONGCODE_SKILL_DESCRIPTION). The body below becomes the
   skill's content.
 -->
 
-# Customizing lgcode
+# Customizing loongcode
 
-lgcode validates its own config strictly and refuses to start when a field
+loongcode validates its own config strictly and refuses to start when a field
 is wrong. The shapes below cover the common surface area, but they are a
 **summary, not the source of truth**.
 
@@ -20,18 +20,18 @@ defaults, and descriptions — lives in the published JSON Schema:
 
 If a field is not documented in this skill, or you need to confirm an exact
 shape before writing config, **fetch that URL and read the schema directly**
-rather than guessing. lgcode hard-fails on invalid config, so the cost of a
+rather than guessing. loongcode hard-fails on invalid config, so the cost of a
 wrong shape is a broken startup.
 
-Independently, every `lgcode.json` should declare
+Independently, every `loongcode.json` should declare
 `"$schema": "https://modelhub.lgdg.cc/config.json"` so the user's editor catches
 mistakes as they type.
 
 ## Applying changes
 
-Config is loaded once when lgcode starts and is not hot-reloaded. After
-saving changes to `lgcode.json`, an agent file, a skill, a plugin, or any
-other config-time file, **tell the user to quit and restart lgcode** for
+Config is loaded once when loongcode starts and is not hot-reloaded. After
+saving changes to `loongcode.json`, an agent file, a skill, a plugin, or any
+other config-time file, **tell the user to quit and restart loongcode** for
 the changes to take effect. The running session will keep using the
 already-loaded config until then.
 
@@ -39,18 +39,18 @@ already-loaded config until then.
 
 | Scope                         | Path                                                                                                                      |
 | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| Project config                | `./lgcode.json`, `./lgcode.jsonc`, or `.lgcode/lgcode.json` (lgcode walks up from the cwd to the worktree root) |
-| Global config                 | `~/.config/lgcode/lgcode.json` (NOT `~/.lgcode/`)                                                                   |
-| Project agents                | `.lgcode/agent/<name>.md` or `.lgcode/agents/<name>.md`                                                               |
-| Global agents                 | `~/.config/lgcode/agent(s)/<name>.md`                                                                                   |
-| Project skills                | `.lgcode/skill(s)/<name>/SKILL.md`                                                                                      |
-| Global skills                 | `~/.config/lgcode/skill(s)/<name>/SKILL.md`                                                                             |
+| Project config                | `./loongcode.json`, `./loongcode.jsonc`, or `.loongcode/loongcode.json` (loongcode walks up from the cwd to the worktree root) |
+| Global config                 | `~/.config/loongcode/loongcode.json` (NOT `~/.loongcode/`)                                                                   |
+| Project agents                | `.loongcode/agent/<name>.md` or `.loongcode/agents/<name>.md`                                                               |
+| Global agents                 | `~/.config/loongcode/agent(s)/<name>.md`                                                                                   |
+| Project skills                | `.loongcode/skill(s)/<name>/SKILL.md`                                                                                      |
+| Global skills                 | `~/.config/loongcode/skill(s)/<name>/SKILL.md`                                                                             |
 | External skills (auto-loaded) | `~/.claude/skills/<name>/SKILL.md`, `~/.agents/skills/<name>/SKILL.md`                                                    |
 
 Configs from each scope are deep-merged. Project overrides global. Unknown
-top-level keys in `lgcode.json` are rejected with `ConfigInvalidError`.
+top-level keys in `loongcode.json` are rejected with `ConfigInvalidError`.
 
-## lgcode.json
+## loongcode.json
 
 Every field is optional.
 
@@ -69,7 +69,7 @@ Every field is optional.
   "instructions": ["AGENTS.md", "docs/style.md"],
 
   "skills": {
-    "paths": [".lgcode/skills", "/abs/path/to/skills"],
+    "paths": [".loongcode/skills", "/abs/path/to/skills"],
     "urls": ["https://example.com/.well-known/skills/"]
   },
 
@@ -120,10 +120,10 @@ Every field is optional.
   },
 
   "plugin": [
-    "lgcode-gemini-auth",
-    "lgcode-foo@1.2.3",
+    "loongcode-gemini-auth",
+    "loongcode-foo@1.2.3",
     "./local-plugin.ts",
-    ["lgcode-bar", { "option": "value" }]
+    ["loongcode-bar", { "option": "value" }]
   ],
 
   "permission": {
@@ -157,12 +157,12 @@ Shape notes worth being explicit about:
 
 ## Skills
 
-lgcode's skill loader scans for `**/SKILL.md` inside skill directories. The
+loongcode's skill loader scans for `**/SKILL.md` inside skill directories. The
 file is named `SKILL.md` exactly, and lives in its own folder named after the
 skill:
 
 ```
-.lgcode/skills/my-skill/SKILL.md
+.loongcode/skills/my-skill/SKILL.md
 ```
 
 Frontmatter:
@@ -222,7 +222,7 @@ Local `path` values may be relative to the declaring config, absolute, or use
 
 Two ways to define an agent. Use the file form for anything non-trivial.
 
-### Inline (in `lgcode.json`)
+### Inline (in `loongcode.json`)
 
 ```json
 {
@@ -241,7 +241,7 @@ Two ways to define an agent. Use the file form for anything non-trivial.
 ### File
 
 ```
-.lgcode/agent/my-reviewer.md      OR     .lgcode/agents/my-reviewer.md
+.loongcode/agent/my-reviewer.md      OR     .loongcode/agents/my-reviewer.md
 ```
 
 ```markdown
@@ -273,7 +273,7 @@ file, `disable: true` in frontmatter.
 
 ### Built-in agents
 
-lgcode ships with `build`, `plan`, `general`, `explore`. Hidden internal agents:
+loongcode ships with `build`, `plan`, `general`, `explore`. Hidden internal agents:
 `compaction`, `title`, `summary`. To override a built-in's fields, define the
 same key in `agent: { <name>: { ... } }`.
 
@@ -283,16 +283,16 @@ same key in `agent: { <name>: { ... } }`.
 
 ```json
 "plugin": [
-  "lgcode-gemini-auth",            // npm spec, latest
-  "lgcode-foo@1.2.3",              // npm spec, pinned
+  "loongcode-gemini-auth",            // npm spec, latest
+  "loongcode-foo@1.2.3",              // npm spec, pinned
   "./local-plugin.ts",               // file path, relative to the declaring config
   "file:///abs/path/plugin.js",      // file URL
-  ["lgcode-bar", { "key": "val" }] // tuple form with options
+  ["loongcode-bar", { "key": "val" }] // tuple form with options
 ]
 ```
 
 Auto-discovered plugins (no config entry needed): any `*.ts` or `*.js` file in
-`.lgcode/plugin/` or `.lgcode/plugins/`.
+`.loongcode/plugin/` or `.loongcode/plugins/`.
 
 A plugin module exports `default` (or any named export) of type
 `Plugin = (input: PluginInput, options?) => Promise<Hooks>`. The export is a
@@ -300,7 +300,7 @@ function, not a plain object literal, and the function returns an object
 (return `{}` if there is nothing to register).
 
 ```ts
-import type { Plugin } from "@lgcode-ai/plugin"
+import type { Plugin } from "@loongcode-ai/plugin"
 
 export default (async ({ client, project, directory, $ }) => {
   return {
@@ -375,7 +375,7 @@ Actions: `"allow"`, `"ask"`, `"deny"`.
 
 Per-tool value forms: `"allow"` shorthand (treated as `{"*": "allow"}`), or an
 object `{ pattern: action }`. Within an object, **insertion order matters**.
-lgcode evaluates the LAST matching rule, so put broad rules first and narrow
+loongcode evaluates the LAST matching rule, so put broad rules first and narrow
 rules last.
 
 `permission: "allow"` (a string at the top level) is shorthand for "allow
@@ -395,18 +395,18 @@ the `plan` agent's permission ruleset (`edit: deny *`).
 
 ## Escape hatches
 
-When a user's config is broken and lgcode won't start, these env vars help:
+When a user's config is broken and loongcode won't start, these env vars help:
 
-- `LGCODE_DISABLE_PROJECT_CONFIG=1`: skip the project's local `lgcode.json`
-  and start from globals only. Run from the project directory, lgcode loads,
+- `LOONGCODE_DISABLE_PROJECT_CONFIG=1`: skip the project's local `loongcode.json`
+  and start from globals only. Run from the project directory, loongcode loads,
   the user edits the broken file, then they restart without the flag.
-- `LGCODE_CONFIG=/path/to/file.json`: load an additional explicit config.
-- `LGCODE_CONFIG_CONTENT='{"$schema":"https://modelhub.lgdg.cc/config.json"}'`:
+- `LOONGCODE_CONFIG=/path/to/file.json`: load an additional explicit config.
+- `LOONGCODE_CONFIG_CONTENT='{"$schema":"https://modelhub.lgdg.cc/config.json"}'`:
   inject inline JSON as a final local-scope merge.
-- `LGCODE_DISABLE_DEFAULT_PLUGINS=1`: skip default plugins.
-- `LGCODE_PURE=1`: skip external plugins entirely.
-- `LGCODE_DISABLE_EXTERNAL_SKILLS=1`,
-  `LGCODE_DISABLE_CLAUDE_CODE_SKILLS=1`: skip the external skill scans under
+- `LOONGCODE_DISABLE_DEFAULT_PLUGINS=1`: skip default plugins.
+- `LOONGCODE_PURE=1`: skip external plugins entirely.
+- `LOONGCODE_DISABLE_EXTERNAL_SKILLS=1`,
+  `LOONGCODE_DISABLE_CLAUDE_CODE_SKILLS=1`: skip the external skill scans under
   `~/.claude/` and `~/.agents/`.
 
 ## When proposing edits
@@ -416,9 +416,9 @@ When a user's config is broken and lgcode won't start, these env vars help:
   `https://modelhub.lgdg.cc/config.json` and read the schema rather than guessing.
 - Preserve `$schema` and any existing fields the user did not ask to change.
 - For agent, skill, and plugin definitions, prefer creating new files in the
-  correct location over inlining everything in `lgcode.json`.
+  correct location over inlining everything in `loongcode.json`.
 - If the user's existing config is malformed, point them at the env-var escape
-  hatches above so they can edit from inside lgcode without breaking their
+  hatches above so they can edit from inside loongcode without breaking their
   session.
-- After saving any config change, remind the user to quit and restart lgcode
+- After saving any config change, remind the user to quit and restart loongcode
   — running sessions keep using the already-loaded config.

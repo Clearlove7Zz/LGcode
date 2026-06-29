@@ -2,12 +2,12 @@ import { expect, test } from "bun:test"
 import { Effect } from "effect"
 import * as DateTime from "effect/DateTime"
 import { SessionID } from "../../src/session/schema"
-import { EventV2 } from "@lgcode/core/event"
-import { ModelV2 } from "@lgcode/core/model"
-import { ProviderV2 } from "@lgcode/core/provider"
-import { SessionEvent } from "@lgcode/core/session/event"
-import { SessionMessageUpdater } from "@lgcode/core/session/message-updater"
-import { SessionMessage } from "@lgcode/core/session/message"
+import { EventV2 } from "@loongcode/core/event"
+import { ModelV2 } from "@loongcode/core/model"
+import { ProviderV2 } from "@loongcode/core/provider"
+import { SessionEvent } from "@loongcode/core/session/event"
+import { SessionMessageUpdater } from "@loongcode/core/session/message-updater"
+import { SessionMessage } from "@loongcode/core/session/message"
 
 test.skip("step snapshots carry over to assistant messages", () => {
   const state: SessionMessageUpdater.MemoryState = { messages: [] }

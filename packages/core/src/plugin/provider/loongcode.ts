@@ -4,17 +4,17 @@ import { PluginV2 } from "../../plugin"
 import { ProviderV2 } from "../../provider"
 
 export const OpencodePlugin = PluginV2.define({
-  id: PluginV2.ID.make("lgcode"),
+  id: PluginV2.ID.make("loongcode"),
   effect: Effect.gen(function* () {
     const integrations = yield* Integration.Service
     let hasKey = false
     return {
       "catalog.transform": Effect.fn(function* (evt) {
-        const item = evt.provider.get(ProviderV2.ID.lgcode)
+        const item = evt.provider.get(ProviderV2.ID.loongcode)
         if (!item) return
         const integration = yield* integrations.get(Integration.ID.make(item.provider.id))
         hasKey = Boolean(
-          process.env.LGCODE_API_KEY || integration?.connections.length || item.provider.request.body.apiKey,
+          process.env.LOONGCODE_API_KEY || integration?.connections.length || item.provider.request.body.apiKey,
         )
         evt.provider.update(item.provider.id, (provider) => {
           if (!hasKey) provider.request.body.apiKey = "public"

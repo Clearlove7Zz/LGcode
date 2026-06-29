@@ -1,5 +1,5 @@
-import { Integration } from "@lgcode/core/integration"
-import { Location } from "@lgcode/core/location"
+import { Integration } from "@loongcode/core/integration"
+import { Location } from "@loongcode/core/location"
 import { Schema } from "effect"
 import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect/unstable/httpapi"
 import { InvalidRequestError } from "../errors"

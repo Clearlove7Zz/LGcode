@@ -13,8 +13,8 @@ import {
   ServerConnection,
   useCommand,
   useWslServers,
-} from "@lgcode/app"
-import type { UpdaterState } from "@lgcode/app/updater"
+} from "@loongcode/app"
+import type { UpdaterState } from "@loongcode/app/updater"
 import * as Sentry from "@sentry/solid"
 import type { AsyncStorage } from "@solid-primitives/storage"
 import { MemoryRouter } from "@solidjs/router"
@@ -26,8 +26,8 @@ import { initializationData, initializationReady } from "./initialization"
 import { resetZoom, setPinchZoomEnabled, webviewZoom, zoomIn, zoomOut } from "./webview-zoom"
 import { availableStartupServer, readyWslConnections } from "./wsl/connections"
 import "./styles.css"
-import { Splash } from "@lgcode/ui/logo"
-import { useTheme } from "@lgcode/ui/theme/context"
+import { Splash } from "@loongcode/ui/logo"
+import { useTheme } from "@loongcode/ui/theme/context"
 
 const root = document.getElementById("root")
 if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
@@ -49,7 +49,7 @@ if (import.meta.env.VITE_SENTRY_DSN) {
         (i) =>
           i.name !== "Breadcrumbs" &&
           !(
-            import.meta.env.LGCODE_CHANNEL === "prod" &&
+            import.meta.env.LOONGCODE_CHANNEL === "prod" &&
             (i.name === "GlobalHandlers" || i.name === "BrowserApiErrors")
           ),
       )
@@ -62,13 +62,13 @@ void initI18n()
 const [updaterState, setUpdaterState] = createSignal<UpdaterState>({ status: "disabled" })
 void window.api.updater.subscribe(setUpdaterState)
 
-const deepLinkEvent = "lgcode:deep-link"
+const deepLinkEvent = "loongcode:deep-link"
 
 const emitDeepLinks = (urls: string[]) => {
   if (urls.length === 0) return
-  window.__LGCODE__ ??= {}
-  const pending = window.__LGCODE__.deepLinks ?? []
-  window.__LGCODE__.deepLinks = [...pending, ...urls]
+  window.__LOONGCODE__ ??= {}
+  const pending = window.__LOONGCODE__.deepLinks ?? []
+  window.__LOONGCODE__.deepLinks = [...pending, ...urls]
   window.dispatchEvent(new CustomEvent(deepLinkEvent, { detail: { urls } }))
 }
 
@@ -285,7 +285,7 @@ listenForDeepLinks()
 render(() => {
   const platform = createPlatform()
   const loadLocale = async () => {
-    const current = await platform.storage?.("lgcode.global.dat").getItem("language")
+    const current = await platform.storage?.("loongcode.global.dat").getItem("language")
     const legacy = current ? undefined : await platform.storage?.().getItem("language.v1")
     const raw = current ?? legacy
     if (!raw) return

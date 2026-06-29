@@ -25,13 +25,13 @@ describe("shell env", () => {
       },
       {
         PATH: "/desktop/path",
-        LGCODE_CLIENT: "desktop",
+        LOONGCODE_CLIENT: "desktop",
       },
     )
 
     expect(env.PATH).toBe("/desktop/path")
     expect(env.HOME).toBe("/tmp/home")
-    expect(env.LGCODE_CLIENT).toBe("desktop")
+    expect(env.LOONGCODE_CLIENT).toBe("desktop")
   })
 
   test("resolveUserShell falls back to the login shell before /bin/sh", () => {

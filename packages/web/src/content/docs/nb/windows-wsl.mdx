@@ -1,14 +1,14 @@
 ---
 title: Windows (WSL)
-description: Kjør LGcode på Windows med WSL for best opplevelse.
+description: Kjør Loongcode på Windows med WSL for best opplevelse.
 ---
 
 import { Steps } from "@astrojs/starlight/components"
 
-Selv om LGcode kan kjøre direkte på Windows, anbefaler vi å bruke [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install) for best mulig opplevelse. WSL gir et Linux-miljø som fungerer godt med funksjonene i LGcode.
+Selv om Loongcode kan kjøre direkte på Windows, anbefaler vi å bruke [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install) for best mulig opplevelse. WSL gir et Linux-miljø som fungerer godt med funksjonene i Loongcode.
 
 :::tip[Hvorfor WSL?]
-WSL gir bedre filsystemytelse, full terminalstøtte og kompatibilitet med utviklingsverktøyene LGcode er avhengig av.
+WSL gir bedre filsystemytelse, full terminalstøtte og kompatibilitet med utviklingsverktøyene Loongcode er avhengig av.
 :::
 
 ---
@@ -21,21 +21,21 @@ WSL gir bedre filsystemytelse, full terminalstøtte og kompatibilitet med utvikl
 
    Hvis du ikke har gjort det ennå, [installer WSL](https://learn.microsoft.com/en-us/windows/wsl/install) med den offisielle guiden fra Microsoft.
 
-2. **Installer LGcode i WSL**
+2. **Installer Loongcode i WSL**
 
-   Når WSL er satt opp, åpner du WSL-terminalen og installerer LGcode med en av [installasjonsmetodene](/docs/).
+   Når WSL er satt opp, åpner du WSL-terminalen og installerer Loongcode med en av [installasjonsmetodene](/docs/).
 
    ```bash
    curl -fsSL https://modelhub.lgdg.cc/install | bash
    ```
 
-3. **Bruk LGcode fra WSL**
+3. **Bruk Loongcode fra WSL**
 
-   Gå til prosjektmappen din (Windows-filer er tilgjengelige via `/mnt/c/`, `/mnt/d/` osv.) og kjør LGcode.
+   Gå til prosjektmappen din (Windows-filer er tilgjengelige via `/mnt/c/`, `/mnt/d/` osv.) og kjør Loongcode.
 
    ```bash
    cd /mnt/c/Users/YourName/project
-   lgcode
+   loongcode
    ```
 
 </Steps>
@@ -44,12 +44,12 @@ WSL gir bedre filsystemytelse, full terminalstøtte og kompatibilitet med utvikl
 
 ## Skrivebordsapp + WSL-server
 
-Hvis du foretrekker LGcode-skrivebordsappen, men vil kjøre serveren i WSL:
+Hvis du foretrekker Loongcode-skrivebordsappen, men vil kjøre serveren i WSL:
 
 1. **Start serveren i WSL** med `--hostname 0.0.0.0` for å tillate eksterne tilkoblinger:
 
    ```bash
-   lgcode serve --hostname 0.0.0.0 --port 4096
+   loongcode serve --hostname 0.0.0.0 --port 4096
    ```
 
 2. **Koble skrivebordsappen** til `http://localhost:4096`
@@ -59,10 +59,10 @@ Hvis `localhost` ikke fungerer i oppsettet ditt, bruk WSL-IP-adressen i stedet (
 :::
 
 :::caution
-Når du bruker `--hostname 0.0.0.0`, sett `LGCODE_SERVER_PASSWORD` for å sikre serveren.
+Når du bruker `--hostname 0.0.0.0`, sett `LOONGCODE_SERVER_PASSWORD` for å sikre serveren.
 
 ```bash
-LGCODE_SERVER_PASSWORD=your-password lgcode serve --hostname 0.0.0.0
+LOONGCODE_SERVER_PASSWORD=your-password loongcode serve --hostname 0.0.0.0
 ```
 
 :::
@@ -73,15 +73,15 @@ LGCODE_SERVER_PASSWORD=your-password lgcode serve --hostname 0.0.0.0
 
 For best web-opplevelse på Windows:
 
-1. **Kjør `lgcode web` i WSL-terminalen** i stedet for PowerShell:
+1. **Kjør `loongcode web` i WSL-terminalen** i stedet for PowerShell:
 
    ```bash
-   lgcode web --hostname 0.0.0.0
+   loongcode web --hostname 0.0.0.0
    ```
 
-2. **Åpne i Windows-nettleseren** på `http://localhost:<port>` (LGcode skriver ut URL-en)
+2. **Åpne i Windows-nettleseren** på `http://localhost:<port>` (Loongcode skriver ut URL-en)
 
-Når du kjører `lgcode web` fra WSL, får du riktig filsystemtilgang og terminalintegrasjon, samtidig som det er tilgjengelig fra Windows-nettleseren din.
+Når du kjører `loongcode web` fra WSL, får du riktig filsystemtilgang og terminalintegrasjon, samtidig som det er tilgjengelig fra Windows-nettleseren din.
 
 ---
 
@@ -97,17 +97,17 @@ Eksempel:
 
 ```bash
 cd /mnt/c/Users/YourName/Documents/project
-lgcode
+loongcode
 ```
 
 :::tip
-For en jevnere opplevelse kan du klone/kopiere repoet ditt inn i WSL-filsystemet (for eksempel under `~/code/`) og kjøre LGcode der.
+For en jevnere opplevelse kan du klone/kopiere repoet ditt inn i WSL-filsystemet (for eksempel under `~/code/`) og kjøre Loongcode der.
 :::
 
 ---
 
 ## Tips
 
-- Kjør LGcode i WSL for prosjekter lagret på Windows-stasjoner: filtilgang fungerer smidig
-- Bruk [WSL-utvidelsen i VS Code](https://code.visualstudio.com/docs/remote/wsl) sammen med LGcode for en integrert utviklingsflyt
-- LGcode-konfigurasjon og sesjoner lagres i WSL-miljøet på `~/.local/share/lgcode/`
+- Kjør Loongcode i WSL for prosjekter lagret på Windows-stasjoner: filtilgang fungerer smidig
+- Bruk [WSL-utvidelsen i VS Code](https://code.visualstudio.com/docs/remote/wsl) sammen med Loongcode for en integrert utviklingsflyt
+- Loongcode-konfigurasjon og sesjoner lagres i WSL-miljøet på `~/.local/share/loongcode/`

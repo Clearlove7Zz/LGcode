@@ -16,7 +16,7 @@ function request(route: string, directory: string, query?: Record<string, string
   return HttpApiApp.webHandler().handler(
     new Request(url, {
       headers: {
-        "x-lgcode-directory": directory,
+        "x-loongcode-directory": directory,
       },
     }),
     context,

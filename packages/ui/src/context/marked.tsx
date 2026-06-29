@@ -6,8 +6,8 @@ import { bundledLanguages, type BundledLanguage } from "shiki"
 import { createSimpleContext } from "./helper"
 import { getSharedHighlighter, registerCustomTheme, ThemeRegistrationResolved } from "@pierre/diffs"
 
-export const LGcodeTheme = {
-  name: "LGcode",
+export const LoongcodeTheme = {
+  name: "Loongcode",
   bg: "var(--color-background-stronger)",
   fg: "var(--text-base)",
   colors: {
@@ -377,7 +377,7 @@ export const LGcodeTheme = {
   },
 } as unknown as ThemeRegistrationResolved
 
-registerCustomTheme("LGcode", () => Promise.resolve(LGcodeTheme))
+registerCustomTheme("Loongcode", () => Promise.resolve(LoongcodeTheme))
 
 function renderMathInText(text: string): string {
   let result = text
@@ -432,7 +432,7 @@ async function highlightCodeBlocks(html: string): Promise<string> {
   if (matches.length === 0) return html
 
   const highlighter = await getSharedHighlighter({
-    themes: ["LGcode"],
+    themes: ["Loongcode"],
     langs: [],
     preferredHighlighter: "shiki-wasm",
   })
@@ -457,7 +457,7 @@ async function highlightCodeBlocks(html: string): Promise<string> {
 
     const highlighted = highlighter.codeToHtml(code, {
       lang: language,
-      theme: "LGcode",
+      theme: "Loongcode",
       tabindex: false,
     })
     result = result.replace(fullMatch, () => highlighted)
@@ -487,7 +487,7 @@ export const { use: useMarked, provider: MarkedProvider } = createSimpleContext(
       markedShiki({
         async highlight(code, lang) {
           const highlighter = await getSharedHighlighter({
-            themes: ["LGcode"],
+            themes: ["Loongcode"],
             langs: [],
             preferredHighlighter: "shiki-wasm",
           })
@@ -499,7 +499,7 @@ export const { use: useMarked, provider: MarkedProvider } = createSimpleContext(
           }
           return highlighter.codeToHtml(code, {
             lang: lang || "text",
-            theme: "LGcode",
+            theme: "Loongcode",
             tabindex: false,
           })
         },

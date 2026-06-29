@@ -1,7 +1,7 @@
 export * as ServerAuth from "./auth"
 
 import { ConfigService } from "@/effect/config-service"
-import { Flag } from "@lgcode/core/flag/flag"
+import { Flag } from "@loongcode/core/flag/flag"
 import { Config as EffectConfig, Context, Option, Redacted } from "effect"
 
 export type Credentials = {
@@ -14,9 +14,9 @@ export type DecodedCredentials = {
   readonly password: Redacted.Redacted
 }
 
-export class Config extends ConfigService.Service<Config>()("@lgcode/ServerAuthConfig", {
-  password: EffectConfig.string("LGCODE_SERVER_PASSWORD").pipe(EffectConfig.option),
-  username: EffectConfig.string("LGCODE_SERVER_USERNAME").pipe(EffectConfig.withDefault("lgcode")),
+export class Config extends ConfigService.Service<Config>()("@loongcode/ServerAuthConfig", {
+  password: EffectConfig.string("LOONGCODE_SERVER_PASSWORD").pipe(EffectConfig.option),
+  username: EffectConfig.string("LOONGCODE_SERVER_USERNAME").pipe(EffectConfig.withDefault("loongcode")),
 }) {}
 
 export type Info = Context.Service.Shape<typeof Config>
@@ -34,10 +34,10 @@ export function authorized(credentials: DecodedCredentials, config: Info) {
 }
 
 export function header(credentials?: Credentials) {
-  const password = credentials?.password ?? Flag.LGCODE_SERVER_PASSWORD
+  const password = credentials?.password ?? Flag.LOONGCODE_SERVER_PASSWORD
   if (!password) return undefined
 
-  const username = credentials?.username ?? Flag.LGCODE_SERVER_USERNAME ?? "lgcode"
+  const username = credentials?.username ?? Flag.LOONGCODE_SERVER_USERNAME ?? "loongcode"
   return `Basic ${Buffer.from(`${username}:${password}`).toString("base64")}`
 }
 

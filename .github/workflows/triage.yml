@@ -19,18 +19,18 @@ jobs:
       - name: Setup Bun
         uses: ./.github/actions/setup-bun
 
-      - name: Install lgcode
+      - name: Install loongcode
         run: curl -fsSL https://modelhub.lgdg.cc/install | bash
 
       - name: Triage issue
         env:
-          LGCODE_API_KEY: ${{ secrets.LGCODE_API_KEY }}
+          LOONGCODE_API_KEY: ${{ secrets.LOONGCODE_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           ISSUE_TITLE: ${{ github.event.issue.title }}
           ISSUE_BODY: ${{ github.event.issue.body }}
         run: |
-          lgcode run --agent triage "The following issue was just opened, triage it:
+          loongcode run --agent triage "The following issue was just opened, triage it:
 
           Title: $ISSUE_TITLE
 

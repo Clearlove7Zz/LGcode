@@ -1,6 +1,6 @@
-import { PermissionV1 } from "@lgcode/core/v1/permission"
-import { CrossSpawnSpawner } from "@lgcode/core/cross-spawn-spawner"
-import { Ripgrep } from "@lgcode/core/ripgrep"
+import { PermissionV1 } from "@loongcode/core/v1/permission"
+import { CrossSpawnSpawner } from "@loongcode/core/cross-spawn-spawner"
+import { Ripgrep } from "@loongcode/core/ripgrep"
 import { Cause, Effect, Exit, Layer } from "effect"
 import { afterEach, describe, expect } from "bun:test"
 import path from "path"
@@ -35,7 +35,7 @@ describe("tool.skill", () => {
   it.instance("execute returns skill content block with files", () =>
     Effect.gen(function* () {
       const dir = (yield* TestInstance).directory
-      const skill = path.join(dir, ".lgcode", "skill", "tool-skill")
+      const skill = path.join(dir, ".loongcode", "skill", "tool-skill")
       yield* Effect.promise(() =>
         Bun.write(
           path.join(skill, "SKILL.md"),
@@ -52,18 +52,18 @@ Use this skill.
       )
       yield* Effect.promise(() => Bun.write(path.join(skill, "scripts", "demo.txt"), "demo"))
 
-      const home = process.env.LGCODE_TEST_HOME
-      process.env.LGCODE_TEST_HOME = dir
+      const home = process.env.LOONGCODE_TEST_HOME
+      process.env.LOONGCODE_TEST_HOME = dir
       yield* Effect.addFinalizer(() =>
         Effect.sync(() => {
-          process.env.LGCODE_TEST_HOME = home
+          process.env.LOONGCODE_TEST_HOME = home
         }),
       )
 
       const registry = yield* ToolRegistry.Service
       const agent = { name: "build", mode: "primary" as const, permission: [], options: {} }
       const tool = (yield* registry.tools({
-        providerID: "lgcode" as any,
+        providerID: "loongcode" as any,
         modelID: "gpt-5" as any,
         agent,
       })).find((tool) => tool.id === SkillTool.id)
@@ -98,18 +98,18 @@ Use this skill.
   it.instance("execute preserves not found message", () =>
     Effect.gen(function* () {
       const dir = (yield* TestInstance).directory
-      const home = process.env.LGCODE_TEST_HOME
-      process.env.LGCODE_TEST_HOME = dir
+      const home = process.env.LOONGCODE_TEST_HOME
+      process.env.LOONGCODE_TEST_HOME = dir
       yield* Effect.addFinalizer(() =>
         Effect.sync(() => {
-          process.env.LGCODE_TEST_HOME = home
+          process.env.LOONGCODE_TEST_HOME = home
         }),
       )
 
       const registry = yield* ToolRegistry.Service
       const agent = { name: "build", mode: "primary" as const, permission: [], options: {} }
       const tool = (yield* registry.tools({
-        providerID: "lgcode" as any,
+        providerID: "loongcode" as any,
         modelID: "gpt-5" as any,
         agent,
       })).find((tool) => tool.id === SkillTool.id)

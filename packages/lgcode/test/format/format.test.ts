@@ -3,7 +3,7 @@ import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
 import { provideTmpdirInstance, testInstanceStoreLayer, TestInstance } from "../fixture/fixture"
 import { testEffect } from "../lib/effect"
-import { CrossSpawnSpawner } from "@lgcode/core/cross-spawn-spawner"
+import { CrossSpawnSpawner } from "@loongcode/core/cross-spawn-spawner"
 import { Format } from "../../src/format"
 import * as Formatter from "../../src/format/formatter"
 

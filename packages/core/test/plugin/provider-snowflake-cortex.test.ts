@@ -1,8 +1,8 @@
 import { describe, expect, it as bun_it } from "bun:test"
 import { Effect } from "effect"
-import { PluginV2 } from "@lgcode/core/plugin"
-import { SnowflakeCortexPlugin, cortexFetch } from "@lgcode/core/plugin/provider/snowflake-cortex"
-import { ProviderPlugins } from "@lgcode/core/plugin/provider"
+import { PluginV2 } from "@loongcode/core/plugin"
+import { SnowflakeCortexPlugin, cortexFetch } from "@loongcode/core/plugin/provider/snowflake-cortex"
+import { ProviderPlugins } from "@loongcode/core/plugin/provider"
 import { expectPluginRegistered, it, model, withEnv } from "./provider-helper"
 
 describe("SnowflakeCortexPlugin", () => {

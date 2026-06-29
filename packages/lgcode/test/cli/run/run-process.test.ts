@@ -1,22 +1,22 @@
-// Subprocess integration tests for `lgcode run` (non-interactive mode).
+// Subprocess integration tests for `loongcode run` (non-interactive mode).
 // These exercise the real CLI binary against a TestLLMServer running in the
 // same process. See `test/lib/cli-process.ts` for the harness — each test uses
-// `lgcode.run(message, opts?)` to spawn `bun src/index.ts run ...` with
-// `LGCODE_CONFIG_CONTENT` providing the test provider config inline.
+// `loongcode.run(message, opts?)` to spawn `bun src/index.ts run ...` with
+// `LOONGCODE_CONFIG_CONTENT` providing the test provider config inline.
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
 import { cliIt } from "../../lib/cli-process"
 
-describe("lgcode run (non-interactive subprocess)", () => {
+describe("loongcode run (non-interactive subprocess)", () => {
   // Happy path: prompt completes, output reaches stdout, process exits 0.
   // If this fails, all the others likely will too — debug here first.
   cliIt.concurrent(
     "exits 0 and writes the response to stdout on a successful prompt",
-    ({ llm, lgcode }) =>
+    ({ llm, loongcode }) =>
       Effect.gen(function* () {
         yield* llm.text("hello from the test llm")
-        const result = yield* lgcode.run("say hi")
-        lgcode.expectExit(result, 0)
+        const result = yield* loongcode.run("say hi")
+        loongcode.expectExit(result, 0)
         expect(result.stdout).toContain("hello from the test llm")
       }),
     60_000,
@@ -29,9 +29,9 @@ describe("lgcode run (non-interactive subprocess)", () => {
   // would expire the timeout and produce a different (signal-killed) failure.
   cliIt.concurrent(
     "exits nonzero promptly when the model is unknown (regression for #27371)",
-    ({ lgcode }) =>
+    ({ loongcode }) =>
       Effect.gen(function* () {
-        const result = yield* lgcode.run("say hi", {
+        const result = yield* loongcode.run("say hi", {
           model: "test/nonexistent-model",
           timeoutMs: 15_000,
         })
@@ -42,17 +42,17 @@ describe("lgcode run (non-interactive subprocess)", () => {
   )
 
   // Locks in the current behavior: when the LLM stream errors mid-response
-  // (the prompt was accepted, then the upstream provider failed), lgcode
+  // (the prompt was accepted, then the upstream provider failed), loongcode
   // emits a session.error event and the process exits 0 today.
   //
   // This is debatable — a future cleanup might flip it to exit 1. If you're
   // changing this expectation, do it deliberately and say so in the PR.
   cliIt.concurrent(
     "mid-stream LLM error still exits 0 today (contract lock-in)",
-    ({ llm, lgcode }) =>
+    ({ llm, loongcode }) =>
       Effect.gen(function* () {
         yield* llm.fail("upstream provider exploded mid-stream")
-        const result = yield* lgcode.run("trigger midstream error", { timeoutMs: 30_000 })
+        const result = yield* loongcode.run("trigger midstream error", { timeoutMs: 30_000 })
         expect(result.exitCode).toBe(0)
       }),
     60_000,
@@ -63,13 +63,13 @@ describe("lgcode run (non-interactive subprocess)", () => {
   // shape so a future event-emit change has to update this expectation.
   cliIt.concurrent(
     "--format json emits parseable line-delimited JSON to stdout",
-    ({ llm, lgcode }) =>
+    ({ llm, loongcode }) =>
       Effect.gen(function* () {
         yield* llm.text("structured output")
-        const result = yield* lgcode.run("say hi", { format: "json" })
-        lgcode.expectExit(result, 0)
+        const result = yield* loongcode.run("say hi", { format: "json" })
+        loongcode.expectExit(result, 0)
 
-        const events = lgcode.parseJsonEvents(result.stdout)
+        const events = loongcode.parseJsonEvents(result.stdout)
         expect(events.length).toBeGreaterThan(0)
         for (const evt of events) {
           expect(typeof evt.type).toBe("string")

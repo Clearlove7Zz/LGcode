@@ -1,5 +1,5 @@
 import { createMemo } from "solid-js"
-import { createSimpleContext } from "@lgcode/ui/context"
+import { createSimpleContext } from "@loongcode/ui/context"
 import { i18n, type Key } from "~/i18n"
 import { useLanguage } from "~/context/language"
 

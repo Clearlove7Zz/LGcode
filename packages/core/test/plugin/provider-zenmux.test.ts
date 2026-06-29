@@ -1,10 +1,10 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { Catalog } from "@lgcode/core/catalog"
-import { PluginV2 } from "@lgcode/core/plugin"
-import { ProviderPlugins } from "@lgcode/core/plugin/provider"
-import { ZenmuxPlugin } from "@lgcode/core/plugin/provider/zenmux"
-import { ProviderV2 } from "@lgcode/core/provider"
+import { Catalog } from "@loongcode/core/catalog"
+import { PluginV2 } from "@loongcode/core/plugin"
+import { ProviderPlugins } from "@loongcode/core/plugin/provider"
+import { ZenmuxPlugin } from "@loongcode/core/plugin/provider/zenmux"
+import { ProviderV2 } from "@loongcode/core/provider"
 import { expectPluginRegistered, it, provider } from "./provider-helper"
 
 describe("ZenmuxPlugin", () => {
@@ -32,7 +32,7 @@ describe("ZenmuxPlugin", () => {
         })
       })
       const result = yield* catalog.provider.get(ProviderV2.ID.make("zenmux"))
-      expect(result.request.headers).toEqual({ "HTTP-Referer": "https://modelhub.lgdg.cc/", "X-Title": "lgcode" })
+      expect(result.request.headers).toEqual({ "HTTP-Referer": "https://modelhub.lgdg.cc/", "X-Title": "loongcode" })
       expect(Object.keys(result.request.headers).sort()).toEqual(["HTTP-Referer", "X-Title"])
     }),
   )
@@ -57,7 +57,7 @@ describe("ZenmuxPlugin", () => {
       expect((yield* catalog.provider.get(ProviderV2.ID.make("zenmux"))).request.headers).toEqual({
         Existing: "value",
         "HTTP-Referer": "https://modelhub.lgdg.cc/",
-        "X-Title": "lgcode",
+        "X-Title": "loongcode",
       })
     }),
   )

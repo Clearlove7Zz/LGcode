@@ -1,4 +1,4 @@
-import type { Event } from "@lgcode/sdk/v2"
+import type { Event } from "@loongcode/sdk/v2"
 import { useSDK } from "./sdk"
 
 type EventMetadata = {

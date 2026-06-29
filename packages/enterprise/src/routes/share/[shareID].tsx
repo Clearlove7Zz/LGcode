@@ -1,31 +1,31 @@
-import { Message, Model, Part, Session, SessionStatus, SnapshotFileDiff, UserMessage } from "@lgcode/sdk/v2"
-import { SessionTurn } from "@lgcode/ui/session-turn"
-import { SessionReview } from "@lgcode/ui/session-review"
-import { DataProvider } from "@lgcode/ui/context"
-import { FileComponentProvider } from "@lgcode/ui/context/file"
-import { WorkerPoolProvider } from "@lgcode/ui/context/worker-pool"
+import { Message, Model, Part, Session, SessionStatus, SnapshotFileDiff, UserMessage } from "@loongcode/sdk/v2"
+import { SessionTurn } from "@loongcode/ui/session-turn"
+import { SessionReview } from "@loongcode/ui/session-review"
+import { DataProvider } from "@loongcode/ui/context"
+import { FileComponentProvider } from "@loongcode/ui/context/file"
+import { WorkerPoolProvider } from "@loongcode/ui/context/worker-pool"
 import { createAsync, query, useParams } from "@solidjs/router"
 import { createMemo, createSignal, ErrorBoundary, For, Match, Show, Switch } from "solid-js"
 import { Share } from "~/core/share"
-import { Logo, Mark } from "@lgcode/ui/logo"
-import { IconButton } from "@lgcode/ui/icon-button"
-import { ProviderIcon } from "@lgcode/ui/provider-icon"
-import { iife } from "@lgcode/core/util/iife"
-import { Binary } from "@lgcode/core/util/binary"
-import { NamedError } from "@lgcode/core/util/error"
+import { Logo, Mark } from "@loongcode/ui/logo"
+import { IconButton } from "@loongcode/ui/icon-button"
+import { ProviderIcon } from "@loongcode/ui/provider-icon"
+import { iife } from "@loongcode/core/util/iife"
+import { Binary } from "@loongcode/core/util/binary"
+import { NamedError } from "@loongcode/core/util/error"
 import { DateTime } from "luxon"
 import { createStore } from "solid-js/store"
 import NotFound from "../[...404]"
-import { Tabs } from "@lgcode/ui/tabs"
-import { MessageNav } from "@lgcode/ui/message-nav"
-import { FileSSR } from "@lgcode/ui/file-ssr"
+import { Tabs } from "@loongcode/ui/tabs"
+import { MessageNav } from "@loongcode/ui/message-nav"
+import { FileSSR } from "@loongcode/ui/file-ssr"
 import { clientOnly } from "@solidjs/start"
 import { Meta, Title } from "@solidjs/meta"
 import { Base64 } from "js-base64"
 import { getRequestEvent } from "solid-js/web"
 
 const ClientOnlyWorkerPoolProvider = clientOnly(() =>
-  import("@lgcode/ui/pierre/worker").then((m) => ({
+  import("@loongcode/ui/pierre/worker").then((m) => ({
     default: (props: { children: any }) => (
       <WorkerPoolProvider pools={m.getWorkerPools()}>{props.children}</WorkerPoolProvider>
     ),
@@ -179,15 +179,15 @@ export default function () {
               modelParam = "unknown"
             }
             const version = `v${info().version}`
-            return `https://social-cards.sst.dev/lgcode-share/${encodedTitle}.png?model=${modelParam}&version=${version}&id=${data().shareID}`
+            return `https://social-cards.sst.dev/loongcode-share/${encodedTitle}.png?model=${modelParam}&version=${version}&id=${data().shareID}`
           })
 
           return (
             <>
               <Show when={info().title}>
-                <Title>{info().title} | LGcode</Title>
+                <Title>{info().title} | Loongcode</Title>
               </Show>
-              <Meta name="description" content="lgcode - The AI coding agent built for the terminal." />
+              <Meta name="description" content="loongcode - The AI coding agent built for the terminal." />
               <Meta property="og:image" content={ogImage()} />
               <Meta name="twitter:image" content={ogImage()} />
               <ClientOnlyWorkerPoolProvider>

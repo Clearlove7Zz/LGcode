@@ -3,11 +3,11 @@ title: Modeli
 description: Konfiguriranje LLM provajdera i modela.
 ---
 
-LGcode koristi [AI SDK](https://ai-sdk.dev/) i [Models.dev](https://models.dev) za podršku **75+ LLM providera**, uključujući lokalne modele.
+Loongcode koristi [AI SDK](https://ai-sdk.dev/) i [Models.dev](https://models.dev) za podršku **75+ LLM providera**, uključujući lokalne modele.
 
 ## Provajderi
 
-Većina popularnih provajdera su unaprijed učitani prema zadanim postavkama. Ako ste dodali vjerodajnice za provajdera putem naredbe `/connect`, oni će biti dostupni kada pokrenete LGcode.
+Većina popularnih provajdera su unaprijed učitani prema zadanim postavkama. Ako ste dodali vjerodajnice za provajdera putem naredbe `/connect`, oni će biti dostupni kada pokrenete Loongcode.
 Saznajte više o [providers](/docs/providers).
 
 ---
@@ -30,7 +30,7 @@ Razmislite o korištenju jednog od modela koje preporučujemo.
 :::
 
 Međutim, postoji samo nekoliko njih koji su dobri i u generiranju koda i u pozivanju alata.
-Evo nekoliko modela koji dobro rade sa LGcode, bez posebnog redosleda. (Ovo nije potpuna lista niti je nužno ažurirana):
+Evo nekoliko modela koji dobro rade sa Loongcode, bez posebnog redosleda. (Ovo nije potpuna lista niti je nužno ažurirana):
 
 - GPT 5.2
 - Codex GPT 5.1
@@ -44,16 +44,16 @@ Evo nekoliko modela koji dobro rade sa LGcode, bez posebnog redosleda. (Ovo nije
 ## Postavljanje zadanog
 
 Da postavite jedan od ovih kao zadani model, možete postaviti ključ `model` u svom
-LGcode config.
+Loongcode config.
 
-```json title="lgcode.json" {3}
+```json title="loongcode.json" {3}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "model": "lmstudio/google/gemma-3n-e4b"
 }
 ```
 
-Ovdje je puni ID `provider_id/model_id`. Na primjer, ako koristite [LGcode Zen](/docs/zen), koristili biste `lgcode/gpt-5.1-codex` za GPT 5.1 Codex.
+Ovdje je puni ID `provider_id/model_id`. Na primjer, ako koristite [Loongcode Zen](/docs/zen), koristili biste `loongcode/gpt-5.1-codex` za GPT 5.1 Codex.
 Ako ste konfigurirali [prilagođenog provajdera](/docs/providers#custom), `provider_id` je ključ iz `provider` dijela vaše konfiguracije, a `model_id` je ključ iz `provider.models`.
 
 ---
@@ -62,7 +62,7 @@ Ako ste konfigurirali [prilagođenog provajdera](/docs/providers#custom), `provi
 
 Možete globalno konfigurirati opcije modela kroz config.
 
-```jsonc title="lgcode.jsonc" {7-12,19-24}
+```jsonc title="loongcode.jsonc" {7-12,19-24}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -99,11 +99,11 @@ Ugrađeni dobavljač i nazivi modela mogu se naći na [Models.dev](https://model
 Također možete konfigurirati ove opcije za sve agente koje koristite. Konfiguracija agenta poništava sve globalne opcije ovdje. [Saznajte više](/docs/agents/#additional).
 Također možete definirati prilagođene varijante koje proširuju ugrađene. Varijante vam omogućavaju da konfigurirate različite postavke za isti model bez stvaranja duplih unosa:
 
-```jsonc title="lgcode.jsonc" {6-21}
+```jsonc title="loongcode.jsonc" {6-21}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
-    "lgcode": {
+    "loongcode": {
       "models": {
         "gpt-5": {
           "variants": {
@@ -129,11 +129,11 @@ Također možete definirati prilagođene varijante koje proširuju ugrađene. Va
 
 ## Varijante
 
-Mnogi modeli podržavaju više varijanti sa različitim konfiguracijama. LGcode se isporučuje sa ugrađenim podrazumevanim varijantama za popularne provajdere.
+Mnogi modeli podržavaju više varijanti sa različitim konfiguracijama. Loongcode se isporučuje sa ugrađenim podrazumevanim varijantama za popularne provajdere.
 
 ### Ugrađene varijante
 
-LGcode se isporučuje sa zadanim varijantama za mnoge provajdere:
+Loongcode se isporučuje sa zadanim varijantama za mnoge provajdere:
 **Anthropic**:
 
 - `high` - Visok budžet za razmišljanje (zadano)
@@ -157,7 +157,7 @@ LGcode se isporučuje sa zadanim varijantama za mnoge provajdere:
 
 Možete nadjačati postojeće varijante ili dodati svoje:
 
-```jsonc title="lgcode.jsonc" {7-18}
+```jsonc title="loongcode.jsonc" {7-18}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -186,12 +186,12 @@ Koristite keybind `variant_cycle` za brzo prebacivanje između varijanti. [Sazna
 
 ## Učitavanje modela
 
-Kada se LGcode pokrene, on provjerava modele u sljedećem prioritetnom redoslijedu:
+Kada se Loongcode pokrene, on provjerava modele u sljedećem prioritetnom redoslijedu:
 
 1. Oznaka komandne linije `--model` ili `-m`. Format je isti kao u konfiguracijskoj datoteci: `provider_id/model_id`.
-2. Lista modela u LGcode konfiguraciji.
+2. Lista modela u Loongcode konfiguraciji.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "model": "anthropic/claude-sonnet-4-20250514"

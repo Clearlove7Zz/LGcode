@@ -14,7 +14,7 @@
   node_modules ? callPackage ./node-modules.nix { },
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
-  pname = "lgcode";
+  pname = "loongcode";
   inherit (node_modules) version src;
   inherit node_modules;
 
@@ -38,14 +38,14 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   '';
 
   env.MODELS_DEV_API_JSON = "${models-dev}/dist/_api.json";
-  env.LGCODE_DISABLE_MODELS_FETCH = true;
-  env.LGCODE_VERSION = finalAttrs.version;
-  env.LGCODE_CHANNEL = "prod";
+  env.LOONGCODE_DISABLE_MODELS_FETCH = true;
+  env.LOONGCODE_VERSION = finalAttrs.version;
+  env.LOONGCODE_CHANNEL = "prod";
 
   buildPhase = ''
     runHook preBuild
 
-    cd ./packages/lgcode
+    cd ./packages/loongcode
     bun --bun ./script/build.ts --single --skip-install
     bun --bun ./script/schema.ts schema.json
 
@@ -55,10 +55,10 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   installPhase = ''
     runHook preInstall
 
-    install -Dm755 dist/lgcode-*/bin/lgcode $out/bin/lgcode
-    install -Dm644 schema.json $out/share/lgcode/schema.json
+    install -Dm755 dist/loongcode-*/bin/loongcode $out/bin/loongcode
+    install -Dm644 schema.json $out/share/loongcode/schema.json
 
-    wrapProgram $out/bin/lgcode \
+    wrapProgram $out/bin/loongcode \
       --prefix PATH : ${
         lib.makeBinPath (
           [
@@ -74,9 +74,9 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   postInstall = lib.optionalString (stdenvNoCC.buildPlatform.canExecute stdenvNoCC.hostPlatform) ''
     # trick yargs into also generating zsh completions
-    installShellCompletion --cmd lgcode \
-      --bash <($out/bin/lgcode completion) \
-      --zsh <(SHELL=/bin/zsh $out/bin/lgcode completion)
+    installShellCompletion --cmd loongcode \
+      --bash <($out/bin/loongcode completion) \
+      --zsh <(SHELL=/bin/zsh $out/bin/loongcode completion)
   '';
 
   nativeInstallCheckInputs = [
@@ -84,11 +84,11 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     writableTmpDirAsHomeHook
   ];
   doInstallCheck = true;
-  versionCheckKeepEnvironment = [ "HOME" "LGCODE_DISABLE_MODELS_FETCH" ];
+  versionCheckKeepEnvironment = [ "HOME" "LOONGCODE_DISABLE_MODELS_FETCH" ];
   versionCheckProgramArg = "--version";
 
   passthru = {
-    jsonschema = "${placeholder "out"}/share/lgcode/schema.json";
+    jsonschema = "${placeholder "out"}/share/loongcode/schema.json";
     env = finalAttrs.env;
   };
 
@@ -96,7 +96,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     description = "The open source coding agent";
     homepage = "https://modelhub.lgdg.cc";
     license = lib.licenses.mit;
-    mainProgram = "lgcode";
+    mainProgram = "loongcode";
     inherit (node_modules.meta) platforms;
   };
 })

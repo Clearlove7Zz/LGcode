@@ -1,9 +1,9 @@
 ---
 title: Suporte ACP
-description: Use o lgcode em qualquer editor compatível com ACP.
+description: Use o loongcode em qualquer editor compatível com ACP.
 ---
 
-O lgcode suporta o [Agent Client Protocol](https://agentclientprotocol.com) ou (ACP), permitindo que você o utilize diretamente em editores e IDEs compatíveis.
+O loongcode suporta o [Agent Client Protocol](https://agentclientprotocol.com) ou (ACP), permitindo que você o utilize diretamente em editores e IDEs compatíveis.
 
 :::tip
 Para uma lista de editores e ferramentas que suportam ACP, confira o [relatório de progresso do ACP](https://zed.dev/blog/acp-progress-report#available-now).
@@ -15,9 +15,9 @@ O ACP é um protocolo aberto que padroniza a comunicação entre editores de có
 
 ## Configuração
 
-Para usar lgcode via ACP, configure seu editor para executar o comando `lgcode acp`.
+Para usar loongcode via ACP, configure seu editor para executar o comando `loongcode acp`.
 
-Este comando inicia o lgcode como um subprocesso compatível com ACP que se comunica com seu editor via JSON-RPC através do stdio.
+Este comando inicia o loongcode como um subprocesso compatível com ACP que se comunica com seu editor via JSON-RPC através do stdio.
 
 Abaixo estão exemplos para editores populares que suportam ACP.
 
@@ -30,8 +30,8 @@ Adicione à sua configuração do [Zed](https://zed.dev) (`~/.config/zed/setting
 ```json title="~/.config/zed/settings.json"
 {
   "agent_servers": {
-    "LGcode": {
-      "command": "lgcode",
+    "Loongcode": {
+      "command": "loongcode",
       "args": ["acp"]
     }
   }
@@ -51,9 +51,9 @@ Você também pode vincular um atalho de teclado editando seu `keymap.json`:
         {
           "agent": {
             "custom": {
-              "name": "LGcode",
+              "name": "Loongcode",
               "command": {
-                "command": "lgcode",
+                "command": "loongcode",
                 "args": ["acp"]
               }
             }
@@ -74,15 +74,15 @@ Adicione ao seu acp.json do [JetBrains IDE](https://www.jetbrains.com/) de acord
 ```json title="acp.json"
 {
   "agent_servers": {
-    "LGcode": {
-      "command": "/absolute/path/bin/lgcode",
+    "Loongcode": {
+      "command": "/absolute/path/bin/loongcode",
       "args": ["acp"]
     }
   }
 }
 ```
 
-Para abri-lo, use o novo agente 'lgcode' no seletor de agentes do AI Chat.
+Para abri-lo, use o novo agente 'loongcode' no seletor de agentes do AI Chat.
 
 ---
 
@@ -93,8 +93,8 @@ Adicione à sua configuração do [Avante.nvim](https://github.com/yetone/avante
 ```lua
 {
   acp_providers = {
-    ["lgcode"] = {
-      command = "lgcode",
+    ["loongcode"] = {
+      command = "loongcode",
       args = { "acp" }
     }
   }
@@ -106,11 +106,11 @@ Se você precisar passar variáveis de ambiente:
 ```lua {6-8}
 {
   acp_providers = {
-    ["lgcode"] = {
-      command = "lgcode",
+    ["loongcode"] = {
+      command = "loongcode",
       args = { "acp" },
       env = {
-        LGCODE_API_KEY = os.getenv("LGCODE_API_KEY")
+        LOONGCODE_API_KEY = os.getenv("LOONGCODE_API_KEY")
       }
     }
   }
@@ -121,14 +121,14 @@ Se você precisar passar variáveis de ambiente:
 
 ### CodeCompanion.nvim
 
-Para usar lgcode como um agente ACP no [CodeCompanion.nvim](https://github.com/olimorris/codecompanion.nvim), adicione o seguinte à sua configuração do Neovim:
+Para usar loongcode como um agente ACP no [CodeCompanion.nvim](https://github.com/olimorris/codecompanion.nvim), adicione o seguinte à sua configuração do Neovim:
 
 ```lua
 require("codecompanion").setup({
   interactions = {
     chat = {
       adapter = {
-        name = "lgcode",
+        name = "loongcode",
         model = "claude-sonnet-4",
       },
     },
@@ -136,13 +136,13 @@ require("codecompanion").setup({
 })
 ```
 
-Esta configuração configura o CodeCompanion para usar lgcode como o agente ACP para chat.
+Esta configuração configura o CodeCompanion para usar loongcode como o agente ACP para chat.
 
-Se você precisar passar variáveis de ambiente (como `LGCODE_API_KEY`), consulte [Configurando Adaptadores: Variáveis de Ambiente](https://codecompanion.olimorris.dev/getting-started#setting-an-api-key) na documentação do CodeCompanion.nvim para detalhes completos.
+Se você precisar passar variáveis de ambiente (como `LOONGCODE_API_KEY`), consulte [Configurando Adaptadores: Variáveis de Ambiente](https://codecompanion.olimorris.dev/getting-started#setting-an-api-key) na documentação do CodeCompanion.nvim para detalhes completos.
 
 ## Suporte
 
-O lgcode funciona da mesma forma via ACP como funciona no terminal. Todos os recursos são suportados:
+O loongcode funciona da mesma forma via ACP como funciona no terminal. Todos os recursos são suportados:
 
 :::note
 Alguns comandos de barra integrados, como `/undo` e `/redo`, atualmente não são suportados.
@@ -150,7 +150,7 @@ Alguns comandos de barra integrados, como `/undo` e `/redo`, atualmente não sã
 
 - Ferramentas integradas (operações de arquivo, comandos de terminal, etc.)
 - Ferramentas personalizadas e comandos de barra
-- Servidores MCP configurados na sua configuração do lgcode
+- Servidores MCP configurados na sua configuração do loongcode
 - Regras específicas do projeto do `AGENTS.md`
 - Formatadores e linters personalizados
 - Sistema de agentes e permissões

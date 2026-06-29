@@ -1,68 +1,68 @@
 ---
 title: GitLab
-description: Use o lgcode em problemas e solicitações de mesclagem do GitLab.
+description: Use o loongcode em problemas e solicitações de mesclagem do GitLab.
 ---
 
-O lgcode se integra ao seu fluxo de trabalho do GitLab através do seu pipeline CI/CD do GitLab ou com o GitLab Duo.
+O loongcode se integra ao seu fluxo de trabalho do GitLab através do seu pipeline CI/CD do GitLab ou com o GitLab Duo.
 
-Em ambos os casos, o lgcode será executado em seus runners do GitLab.
+Em ambos os casos, o loongcode será executado em seus runners do GitLab.
 
 ---
 
 ## GitLab CI
 
-O lgcode funciona em um pipeline regular do GitLab. Você pode integrá-lo a um pipeline como um [componente CI](https://docs.gitlab.com/ee/ci/components/)
+O loongcode funciona em um pipeline regular do GitLab. Você pode integrá-lo a um pipeline como um [componente CI](https://docs.gitlab.com/ee/ci/components/)
 
-Aqui estamos usando um componente CI/CD criado pela comunidade para lgcode — [nagyv/gitlab-lgcode](https://gitlab.com/nagyv/gitlab-lgcode).
+Aqui estamos usando um componente CI/CD criado pela comunidade para loongcode — [nagyv/gitlab-loongcode](https://gitlab.com/nagyv/gitlab-loongcode).
 
 ---
 
 ### Recursos
 
-- **Use configuração personalizada por trabalho**: Configure o lgcode com um diretório de configuração personalizado, por exemplo `./config/#custom-directory` para habilitar ou desabilitar funcionalidades por invocação do lgcode.
-- **Configuração mínima**: O componente CI configura o lgcode em segundo plano, você só precisa criar a configuração do lgcode e o prompt inicial.
+- **Use configuração personalizada por trabalho**: Configure o loongcode com um diretório de configuração personalizado, por exemplo `./config/#custom-directory` para habilitar ou desabilitar funcionalidades por invocação do loongcode.
+- **Configuração mínima**: O componente CI configura o loongcode em segundo plano, você só precisa criar a configuração do loongcode e o prompt inicial.
 - **Flexível**: O componente CI suporta várias entradas para personalizar seu comportamento.
 
 ---
 
 ### Configuração
 
-1. Armazene seu JSON de autenticação do lgcode como variáveis de ambiente do tipo File em **Configurações** > **CI/CD** > **Variáveis**. Certifique-se de marcá-las como "Mascaradas e ocultas".
+1. Armazene seu JSON de autenticação do loongcode como variáveis de ambiente do tipo File em **Configurações** > **CI/CD** > **Variáveis**. Certifique-se de marcá-las como "Mascaradas e ocultas".
 2. Adicione o seguinte ao seu arquivo `.gitlab-ci.yml`.
 
    ```yaml title=".gitlab-ci.yml"
    include:
-     - component: $CI_SERVER_FQDN/nagyv/gitlab-lgcode/lgcode@2
+     - component: $CI_SERVER_FQDN/nagyv/gitlab-loongcode/loongcode@2
        inputs:
-         config_dir: ${CI_PROJECT_DIR}/lgcode-config
-         auth_json: $LGCODE_AUTH_JSON # O nome da variável para seu JSON de autenticação do LGcode
+         config_dir: ${CI_PROJECT_DIR}/loongcode-config
+         auth_json: $LOONGCODE_AUTH_JSON # O nome da variável para seu JSON de autenticação do Loongcode
          command: optional-custom-command
          message: "Seu prompt aqui"
    ```
 
-Para mais entradas e casos de uso [consulte a documentação](https://gitlab.com/explore/catalog/nagyv/gitlab-lgcode) deste componente.
+Para mais entradas e casos de uso [consulte a documentação](https://gitlab.com/explore/catalog/nagyv/gitlab-loongcode) deste componente.
 
 ---
 
 ## GitLab Duo
 
-O lgcode se integra ao seu fluxo de trabalho do GitLab.
-Mencione `@lgcode` em um comentário, e o lgcode executará tarefas dentro do seu pipeline CI do GitLab.
+O loongcode se integra ao seu fluxo de trabalho do GitLab.
+Mencione `@loongcode` em um comentário, e o loongcode executará tarefas dentro do seu pipeline CI do GitLab.
 
 ---
 
 ### Recursos
 
-- **Triagem de problemas**: Peça ao lgcode para analisar um problema e explicá-lo para você.
-- **Corrigir e implementar**: Peça ao lgcode para corrigir um problema ou implementar uma funcionalidade.
+- **Triagem de problemas**: Peça ao loongcode para analisar um problema e explicá-lo para você.
+- **Corrigir e implementar**: Peça ao loongcode para corrigir um problema ou implementar uma funcionalidade.
   Ele criará um novo branch e abrirá uma solicitação de mesclagem com as alterações.
-- **Seguro**: O lgcode é executado em seus runners do GitLab.
+- **Seguro**: O loongcode é executado em seus runners do GitLab.
 
 ---
 
 ### Configuração
 
-O lgcode é executado em seu pipeline CI/CD do GitLab, aqui está o que você precisará para configurá-lo:
+O loongcode é executado em seu pipeline CI/CD do GitLab, aqui está o que você precisará para configurá-lo:
 
 :::tip
 Consulte a [**documentação do GitLab**](https://docs.gitlab.com/user/duo_agent_platform/agent_assistant/) para instruções atualizadas.
@@ -82,19 +82,19 @@ Consulte a [**documentação do GitLab**](https://docs.gitlab.com/user/duo_agent
     ```yaml
     image: node:22-slim
     commands:
-      - echo "Instalando lgcode"
-      - npm install --global lgcode-ai
+      - echo "Instalando loongcode"
+      - npm install --global loongcode-ai
       - echo "Instalando glab"
-      - export GITLAB_TOKEN=$GITLAB_TOKEN_LGCODE
+      - export GITLAB_TOKEN=$GITLAB_TOKEN_LOONGCODE
       - apt-get update --quiet && apt-get install --yes curl wget gpg git && rm --recursive --force /var/lib/apt/lists/*
       - curl --silent --show-error --location "https://raw.githubusercontent.com/upciti/wakemeops/main/assets/install_repository" | bash
       - apt-get install --yes glab
       - echo "Configurando glab"
       - echo $GITLAB_HOST
-      - echo "Criando configuração de auth do LGcode"
-      - mkdir --parents ~/.local/share/lgcode
+      - echo "Criando configuração de auth do Loongcode"
+      - mkdir --parents ~/.local/share/loongcode
       - |
-        cat > ~/.local/share/lgcode/auth.json << EOF
+        cat > ~/.local/share/loongcode/auth.json << EOF
         {
           "anthropic": {
             "type": "api",
@@ -103,13 +103,13 @@ Consulte a [**documentação do GitLab**](https://docs.gitlab.com/user/duo_agent
         }
         EOF
       - echo "Configurando git"
-      - git config --global user.email "lgcode@gitlab.com"
-      - git config --global user.name "LGcode"
+      - git config --global user.email "loongcode@gitlab.com"
+      - git config --global user.name "Loongcode"
       - echo "Testando glab"
       - glab issue list
-      - echo "Executando LGcode"
+      - echo "Executando Loongcode"
       - |
-        lgcode run "
+        loongcode run "
         Você é um assistente de IA ajudando com operações do GitLab.
 
         Contexto: $AI_FLOW_CONTEXT
@@ -146,7 +146,7 @@ Consulte a [**documentação do GitLab**](https://docs.gitlab.com/user/duo_agent
         fi
     variables:
       - ANTHROPIC_API_KEY
-      - GITLAB_TOKEN_LGCODE
+      - GITLAB_TOKEN_LOONGCODE
       - GITLAB_HOST
     ```
 
@@ -158,10 +158,10 @@ Você pode consultar a [documentação dos agentes da CLI do GitLab](https://doc
 
 ### Exemplos
 
-Aqui estão alguns exemplos de como você pode usar o lgcode no GitLab.
+Aqui estão alguns exemplos de como você pode usar o loongcode no GitLab.
 
 :::tip
-Você pode configurar para usar uma frase de gatilho diferente de `@lgcode`.
+Você pode configurar para usar uma frase de gatilho diferente de `@loongcode`.
 :::
 
 - **Explicar um problema**
@@ -169,27 +169,27 @@ Você pode configurar para usar uma frase de gatilho diferente de `@lgcode`.
   Adicione este comentário em um problema do GitLab.
 
   ```
-  @lgcode explain this issue
+  @loongcode explain this issue
   ```
 
-  O lgcode lerá o problema e responderá com uma explicação clara.
+  O loongcode lerá o problema e responderá com uma explicação clara.
 
 - **Corrigir um problema**
 
   Em um problema do GitLab, diga:
 
   ```
-  @lgcode fix this
+  @loongcode fix this
   ```
 
-  O lgcode criará um novo branch, implementará as alterações e abrirá uma solicitação de mesclagem com as alterações.
+  O loongcode criará um novo branch, implementará as alterações e abrirá uma solicitação de mesclagem com as alterações.
 
 - **Revisar solicitações de mesclagem**
 
   Deixe o seguinte comentário em uma solicitação de mesclagem do GitLab.
 
   ```
-  @lgcode review this merge request
+  @loongcode review this merge request
   ```
 
-  O lgcode revisará a solicitação de mesclagem e fornecerá feedback.
+  O loongcode revisará a solicitação de mesclagem e fornecerá feedback.

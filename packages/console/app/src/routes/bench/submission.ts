@@ -1,7 +1,7 @@
 import type { APIEvent } from "@solidjs/start/server"
-import { Database } from "@lgcode/console-core/drizzle/index.js"
-import { BenchmarkTable } from "@lgcode/console-core/schema/benchmark.sql.js"
-import { Identifier } from "@lgcode/console-core/identifier.js"
+import { Database } from "@loongcode/console-core/drizzle/index.js"
+import { BenchmarkTable } from "@loongcode/console-core/schema/benchmark.sql.js"
+import { Identifier } from "@loongcode/console-core/identifier.js"
 import { i18n } from "~/i18n"
 import { localeFromRequest } from "~/lib/language"
 

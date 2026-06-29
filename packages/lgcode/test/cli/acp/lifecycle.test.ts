@@ -10,12 +10,12 @@ import { cliIt } from "../../lib/cli-process"
 import { expectOk, selectConfigOption } from "./acp-test-client"
 import { createAcpClient, initialize, newSession, verifierConfig } from "./helpers"
 
-describe("lgcode acp lifecycle subprocess", () => {
+describe("loongcode acp lifecycle subprocess", () => {
   cliIt.live(
     "stdin EOF exits cleanly",
-    ({ lgcode }) =>
+    ({ loongcode }) =>
       Effect.gen(function* () {
-        const acp = yield* lgcode.acp()
+        const acp = yield* loongcode.acp()
         acp.close()
 
         const code = yield* Effect.promise(() => acp.exited).pipe(Effect.timeout(Duration.seconds(5)))
@@ -26,11 +26,11 @@ describe("lgcode acp lifecycle subprocess", () => {
 
   cliIt.live(
     "close capability and close request",
-    ({ home, llm, lgcode }) =>
+    ({ home, llm, loongcode }) =>
       Effect.gen(function* () {
         const acp = yield* createAcpClient(
-          { lgcode },
-          { LGCODE_CONFIG_CONTENT: JSON.stringify(verifierConfig(llm.url)) },
+          { loongcode },
+          { LOONGCODE_CONFIG_CONTENT: JSON.stringify(verifierConfig(llm.url)) },
         )
         const initialized = yield* initialize(acp)
         expect(initialized.agentCapabilities?.sessionCapabilities?.close).toEqual({})
@@ -43,11 +43,11 @@ describe("lgcode acp lifecycle subprocess", () => {
 
   cliIt.live(
     "loadSession capability and load request return session config options",
-    ({ home, llm, lgcode }) =>
+    ({ home, llm, loongcode }) =>
       Effect.gen(function* () {
         const acp = yield* createAcpClient(
-          { lgcode },
-          { LGCODE_CONFIG_CONTENT: JSON.stringify(verifierConfig(llm.url)) },
+          { loongcode },
+          { LOONGCODE_CONFIG_CONTENT: JSON.stringify(verifierConfig(llm.url)) },
         )
         const initialized = yield* initialize(acp)
         expect(initialized.agentCapabilities?.loadSession).toBe(true)
@@ -67,11 +67,11 @@ describe("lgcode acp lifecycle subprocess", () => {
 
   cliIt.live(
     "list request includes a live ACP-created session",
-    ({ home, llm, lgcode }) =>
+    ({ home, llm, loongcode }) =>
       Effect.gen(function* () {
         const acp = yield* createAcpClient(
-          { lgcode },
-          { LGCODE_CONFIG_CONTENT: JSON.stringify(verifierConfig(llm.url)) },
+          { loongcode },
+          { LOONGCODE_CONFIG_CONTENT: JSON.stringify(verifierConfig(llm.url)) },
         )
         yield* initialize(acp)
         const session = yield* newSession(acp, home)
@@ -84,9 +84,9 @@ describe("lgcode acp lifecycle subprocess", () => {
 
   cliIt.live(
     "resume capability advertisement",
-    ({ lgcode }) =>
+    ({ loongcode }) =>
       Effect.gen(function* () {
-        const initialized = yield* initialize(yield* createAcpClient({ lgcode }))
+        const initialized = yield* initialize(yield* createAcpClient({ loongcode }))
 
         expect(initialized.agentCapabilities?.sessionCapabilities?.resume).toEqual({})
       }),
@@ -95,11 +95,11 @@ describe("lgcode acp lifecycle subprocess", () => {
 
   cliIt.live(
     "resume request returns session config options",
-    ({ home, llm, lgcode }) =>
+    ({ home, llm, loongcode }) =>
       Effect.gen(function* () {
         const acp = yield* createAcpClient(
-          { lgcode },
-          { LGCODE_CONFIG_CONTENT: JSON.stringify(verifierConfig(llm.url)) },
+          { loongcode },
+          { LOONGCODE_CONFIG_CONTENT: JSON.stringify(verifierConfig(llm.url)) },
         )
         yield* initialize(acp)
         const session = yield* newSession(acp, home)

@@ -1,8 +1,8 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { CommandV2 } from "@lgcode/core/command"
-import { ModelV2 } from "@lgcode/core/model"
-import { ProviderV2 } from "@lgcode/core/provider"
+import { CommandV2 } from "@loongcode/core/command"
+import { ModelV2 } from "@loongcode/core/model"
+import { ProviderV2 } from "@loongcode/core/provider"
 import { testEffect } from "./lib/effect"
 
 const it = testEffect(CommandV2.locationLayer)

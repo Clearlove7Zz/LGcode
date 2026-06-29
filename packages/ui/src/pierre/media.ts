@@ -1,4 +1,4 @@
-import type { FileContent } from "@lgcode/sdk/v2"
+import type { FileContent } from "@loongcode/sdk/v2"
 
 export type MediaKind = "image" | "audio" | "svg"
 

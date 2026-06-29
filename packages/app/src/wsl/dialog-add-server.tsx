@@ -1,7 +1,7 @@
-import { Button } from "@lgcode/ui/button"
-import { useDialog } from "@lgcode/ui/context/dialog"
-import { Spinner } from "@lgcode/ui/spinner"
-import { showToast } from "@lgcode/ui/toast"
+import { Button } from "@loongcode/ui/button"
+import { useDialog } from "@loongcode/ui/context/dialog"
+import { Spinner } from "@loongcode/ui/spinner"
+import { showToast } from "@loongcode/ui/toast"
 import { createEffect, createMemo, For, Match, onCleanup, Show, Switch } from "solid-js"
 import { createStore } from "solid-js/store"
 import { useLanguage } from "@/context/language"
@@ -9,9 +9,9 @@ import { usePlatform } from "@/context/platform"
 import { useWslServers } from "./context"
 import { enterWslOpencodeStep } from "./settings-model"
 
-type WslServerStep = "wsl" | "distro" | "lgcode"
+type WslServerStep = "wsl" | "distro" | "loongcode"
 
-const STEPS: WslServerStep[] = ["wsl", "distro", "lgcode"]
+const STEPS: WslServerStep[] = ["wsl", "distro", "loongcode"]
 
 function isHiddenDistro(name: string) {
   return /^docker-desktop(?:-data)?$/i.test(name)
@@ -69,7 +69,7 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
   const opencodeCheck = createMemo(() => {
     const distro = selectedDistro()
     if (!distro) return null
-    return current()?.lgcodeChecks[distro] ?? null
+    return current()?.loongcodeChecks[distro] ?? null
   })
   const wslReady = createMemo(() => !!current()?.runtime?.available && !current()?.pendingRestart)
   const distroReady = createMemo(() => {
@@ -115,18 +115,18 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
   const installingDistro = createMemo(() => current()?.job?.kind === "install-distro")
   const installingOpencode = createMemo(() => {
     const job = current()?.job
-    return job?.kind === "install-lgcode" && job.distro === selectedDistro()
+    return job?.kind === "install-loongcode" && job.distro === selectedDistro()
   })
   const allReady = createMemo(() => wslReady() && distroReady() && opencodeReady())
   const addDisabled = createMemo(() => {
     const job = current()?.job
     if (!job) return store.adding
-    return store.adding || job.kind !== "probe-lgcode"
+    return store.adding || job.kind !== "probe-loongcode"
   })
   const recommendedStep = createMemo<WslServerStep>(() => {
     if (!wslReady()) return "wsl"
     if (!distroReady()) return "distro"
-    return "lgcode"
+    return "loongcode"
   })
   // activeStep falls back to recommendedStep when the user hasn't picked one.
   // Once the user clicks a step tab we respect their choice rather than snapping
@@ -147,8 +147,8 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
       return { key: `probe-distro:${distro}`, run: () => api.probeDistro(distro) }
     }
     if (!distro || !distroReady()) return null
-    if (!state.lgcodeChecks[distro]) {
-      return { key: `probe-lgcode:${distro}`, run: () => api.probeOpencode(distro) }
+    if (!state.loongcodeChecks[distro]) {
+      return { key: `probe-loongcode:${distro}`, run: () => api.probeOpencode(distro) }
     }
     return null
   })
@@ -201,12 +201,12 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
     const state = current()
     if (!state) return language.t("wsl.onboarding.checkingOpencode")
     const distro = selectedDistro()
-    if (state.job?.kind === "install-lgcode") {
+    if (state.job?.kind === "install-loongcode") {
       return distro
         ? language.t("wsl.onboarding.updatingOpencodeIn", { distro })
         : language.t("wsl.onboarding.updatingOpencode")
     }
-    if (state.job?.kind === "probe-lgcode") {
+    if (state.job?.kind === "probe-loongcode") {
       return distro
         ? language.t("wsl.onboarding.checkingOpencodeIn", { distro })
         : language.t("wsl.onboarding.checkingOpencode")
@@ -219,8 +219,8 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
     }
     if (opencodeReady()) {
       return distro
-        ? language.t("wsl.onboarding.lgcodeReadyIn", { distro })
-        : language.t("wsl.onboarding.lgcodeReady")
+        ? language.t("wsl.onboarding.loongcodeReadyIn", { distro })
+        : language.t("wsl.onboarding.loongcodeReady")
     }
     return distro
       ? language.t("wsl.onboarding.installOpencodeIn", { distro })
@@ -283,7 +283,7 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
             ? language.t("wsl.server.label")
             : step === "distro"
               ? language.t("wsl.onboarding.step.distro")
-              : language.t("wsl.onboarding.step.lgcode"),
+              : language.t("wsl.onboarding.step.loongcode"),
         state:
           active === step
             ? "current"
@@ -536,10 +536,10 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
               </div>
             </Match>
 
-            <Match when={activeStep() === "lgcode"}>
+            <Match when={activeStep() === "loongcode"}>
               <div class="rounded-md bg-surface-base p-4 flex flex-col gap-3">
                 <div class="flex items-center justify-between gap-3">
-                  <div class="text-14-medium text-text-strong">{language.t("wsl.onboarding.step.lgcode")}</div>
+                  <div class="text-14-medium text-text-strong">{language.t("wsl.onboarding.step.loongcode")}</div>
                   <div class="flex items-center gap-2">
                     <Show when={selectedDistro()}>
                       <Button
@@ -597,7 +597,7 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
             </Match>
           </Switch>
 
-          <Show when={activeStep() === "lgcode" && allReady() && selectedDistro()}>
+          <Show when={activeStep() === "loongcode" && allReady() && selectedDistro()}>
             <div class="flex items-center justify-end gap-2">
               <Button variant="ghost" size="large" disabled={store.adding} onClick={() => dialog.close()}>
                 {language.t("common.cancel")}

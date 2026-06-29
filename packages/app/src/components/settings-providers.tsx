@@ -1,7 +1,7 @@
-import { Button } from "@lgcode/ui/button"
-import { useDialog } from "@lgcode/ui/context/dialog"
-import { ProviderIcon } from "@lgcode/ui/provider-icon"
-import { Tag } from "@lgcode/ui/tag"
+import { Button } from "@loongcode/ui/button"
+import { useDialog } from "@loongcode/ui/context/dialog"
+import { ProviderIcon } from "@loongcode/ui/provider-icon"
+import { Tag } from "@loongcode/ui/tag"
 import { showToast } from "@/utils/toast"
 import { popularProviders, useProviders } from "@/hooks/use-providers"
 import { createMemo, type Component, For, Show } from "solid-js"
@@ -18,8 +18,8 @@ type ProviderSource = "env" | "api" | "config" | "custom"
 type ProviderItem = ReturnType<ReturnType<typeof useProviders>["connected"]>[number]
 
 const PROVIDER_NOTES = [
-  { match: (id: string) => id === "lgcode", key: "dialog.provider.lgcode.note" },
-  { match: (id: string) => id === "lgcode-go", key: "dialog.provider.lgcodeGo.tagline" },
+  { match: (id: string) => id === "loongcode", key: "dialog.provider.loongcode.note" },
+  { match: (id: string) => id === "loongcode-go", key: "dialog.provider.loongcodeGo.tagline" },
   { match: (id: string) => id === "anthropic", key: "dialog.provider.anthropic.note" },
   { match: (id: string) => id.startsWith("github-copilot"), key: "dialog.provider.copilot.note" },
   { match: (id: string) => id === "openai", key: "dialog.provider.openai.note" },
@@ -46,7 +46,7 @@ const SettingsProvidersContent: Component = () => {
   const connected = createMemo(() => {
     return providers
       .connected()
-      .filter((p) => p.id !== "lgcode" || Object.values(p.models).find((m) => m.cost?.input))
+      .filter((p) => p.id !== "loongcode" || Object.values(p.models).find((m) => m.cost?.input))
   })
 
   const popular = createMemo(() => {
@@ -195,13 +195,13 @@ const SettingsProvidersContent: Component = () => {
                     <div class="flex items-center gap-x-3">
                       <ProviderIcon id={item.id} class="size-5 shrink-0 icon-strong-base" />
                       <span class="text-14-medium text-text-strong">{item.name}</span>
-                      <Show when={item.id === "lgcode"}>
+                      <Show when={item.id === "loongcode"}>
                         <Tag>{language.t("dialog.provider.tag.recommended")}</Tag>
                       </Show>
                       <Show when={item.id === "lgdg"}>
                         <Tag>{language.t("dialog.provider.tag.recommended")}</Tag>
                       </Show>
-                      <Show when={item.id === "lgcode-go"}>
+                      <Show when={item.id === "loongcode-go"}>
                         <Tag>{language.t("dialog.provider.tag.recommended")}</Tag>
                       </Show>
                     </div>

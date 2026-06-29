@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://modelhub.lgdg.cc/desktop-theme.json",
-  "title": "LGcode Desktop Theme",
-  "description": "A theme definition for the LGcode desktop application",
+  "title": "Loongcode Desktop Theme",
+  "description": "A theme definition for the Loongcode desktop application",
   "type": "object",
   "required": ["name", "id", "light", "dark"],
   "properties": {

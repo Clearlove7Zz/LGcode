@@ -1,6 +1,6 @@
 import { batch, createMemo, createRoot, onCleanup } from "solid-js"
 import { createStore, reconcile, type SetStoreFunction, type Store } from "solid-js/store"
-import { createSimpleContext } from "@lgcode/ui/context"
+import { createSimpleContext } from "@loongcode/ui/context"
 import { useParams } from "@solidjs/router"
 import { Persist, persisted } from "@/utils/persist"
 import { useServerSDK } from "./server-sdk"

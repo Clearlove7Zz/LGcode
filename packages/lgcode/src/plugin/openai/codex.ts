@@ -1,5 +1,5 @@
-import type { Hooks, PluginInput } from "@lgcode/plugin"
-import { InstallationVersion } from "@lgcode/core/installation/version"
+import type { Hooks, PluginInput } from "@loongcode/plugin"
+import { InstallationVersion } from "@loongcode/core/installation/version"
 import { OAUTH_DUMMY_KEY } from "../../auth"
 import os from "os"
 import { setTimeout as sleep } from "node:timers/promises"
@@ -85,7 +85,7 @@ function buildAuthorizeUrl(redirectUri: string, pkce: PkceCodes, state: string):
     id_token_add_organizations: "true",
     codex_cli_simplified_flow: "true",
     state,
-    originator: "lgcode",
+    originator: "loongcode",
   })
   return `${ISSUER}/oauth/authorize?${params.toString()}`
 }
@@ -140,7 +140,7 @@ async function refreshAccessToken(refreshToken: string, issuer = ISSUER): Promis
 const HTML_SUCCESS = `<!doctype html>
 <html>
   <head>
-    <title>LGcode - Codex Authorization Successful</title>
+    <title>Loongcode - Codex Authorization Successful</title>
     <style>
       body {
         font-family:
@@ -171,7 +171,7 @@ const HTML_SUCCESS = `<!doctype html>
   <body>
     <div class="container">
       <h1>Authorization Successful</h1>
-      <p>You can close this window and return to LGcode.</p>
+      <p>You can close this window and return to Loongcode.</p>
     </div>
     <script>
       setTimeout(() => window.close(), 2000)
@@ -182,7 +182,7 @@ const HTML_SUCCESS = `<!doctype html>
 export const renderOAuthError = (error: string) => `<!doctype html>
 <html>
   <head>
-    <title>LGcode - Codex Authorization Failed</title>
+    <title>Loongcode - Codex Authorization Failed</title>
     <style>
       body {
         font-family:
@@ -541,7 +541,7 @@ export async function CodexAuthPlugin(input: PluginInput, options: CodexAuthPlug
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
-                "User-Agent": `lgcode/${InstallationVersion}`,
+                "User-Agent": `loongcode/${InstallationVersion}`,
               },
               body: JSON.stringify({ client_id: CLIENT_ID }),
             })
@@ -565,7 +565,7 @@ export async function CodexAuthPlugin(input: PluginInput, options: CodexAuthPlug
                     method: "POST",
                     headers: {
                       "Content-Type": "application/json",
-                      "User-Agent": `lgcode/${InstallationVersion}`,
+                      "User-Agent": `loongcode/${InstallationVersion}`,
                     },
                     body: JSON.stringify({
                       device_auth_id: deviceData.device_auth_id,
@@ -624,8 +624,8 @@ export async function CodexAuthPlugin(input: PluginInput, options: CodexAuthPlug
     },
     "chat.headers": async (input, output) => {
       if (input.model.providerID !== "openai") return
-      output.headers.originator = "lgcode"
-      output.headers["User-Agent"] = `lgcode/${InstallationVersion} (${os.platform()} ${os.release()}; ${os.arch()})`
+      output.headers.originator = "loongcode"
+      output.headers["User-Agent"] = `loongcode/${InstallationVersion} (${os.platform()} ${os.release()}; ${os.arch()})`
       output.headers["session-id"] = input.sessionID
       // Temporary fetch-layer hack: title generation currently shares the conversation
       // session ID, so the OpenAI plugin marks it for HTTP fallback until transport

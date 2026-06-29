@@ -1,16 +1,16 @@
-# LGcode Fork Design
+# Loongcode Fork Design
 
 **Date:** 2026-06-17  
 **Status:** Approved  
-**Scope:** Rebrand LGcode monorepo into a company-internal product named `LGcode`, integrate the company model cluster, and keep the multi-provider architecture intact.
+**Scope:** Rebrand Loongcode monorepo into a company-internal product named `Loongcode`, integrate the company model cluster, and keep the multi-provider architecture intact.
 
 ---
 
 ## 1. Goal
 
-Fork the LGcode repository and transform it into `LGcode`, a branded AI coding agent for internal company use. The fork must:
+Fork the Loongcode repository and transform it into `Loongcode`, a branded AI coding agent for internal company use. The fork must:
 
-- Replace all user-facing `LGcode` / `lgcode` branding with `LGcode` / `lgcode`.
+- Replace all user-facing `Loongcode` / `loongcode` branding with `Loongcode` / `loongcode`.
 - Integrate the company model cluster `https://modelhub.lgdg.cc/aigateway/v1` as a first-class provider.
 - Preserve the existing multi-provider architecture so users can still choose other providers.
 - Replace core logo assets with the provided PNG set.
@@ -34,22 +34,22 @@ Fork the LGcode repository and transform it into `LGcode`, a branded AI coding a
 The repository remains a Bun-based monorepo using workspaces. The high-level architecture after the fork:
 
 ```
-LGcode/
+Loongcode/
 ├── packages/
-│   ├── lgcode/          # CLI/TUI entry point (renamed from lgcode)
-│   ├── core/            # @lgcode/core
-│   ├── app/             # @lgcode/app
-│   ├── llm/             # @lgcode/llm
-│   ├── ui/              # @lgcode/ui
-│   ├── server/          # @lgcode/server
-│   ├── tui/             # @lgcode/tui
-│   ├── desktop/         # @lgcode/desktop
-│   ├── sdk/js           # @lgcode/sdk
-│   ├── plugin/          # @lgcode/plugin
-│   ├── console/*        # @lgcode/console-*
-│   ├── web/             # @lgcode/web
+│   ├── loongcode/          # CLI/TUI entry point (renamed from loongcode)
+│   ├── core/            # @loongcode/core
+│   ├── app/             # @loongcode/app
+│   ├── llm/             # @loongcode/llm
+│   ├── ui/              # @loongcode/ui
+│   ├── server/          # @loongcode/server
+│   ├── tui/             # @loongcode/tui
+│   ├── desktop/         # @loongcode/desktop
+│   ├── sdk/js           # @loongcode/sdk
+│   ├── plugin/          # @loongcode/plugin
+│   ├── console/*        # @loongcode/console-*
+│   ├── web/             # @loongcode/web
 │   └── ...              # other packages renamed similarly
-├── sdks/vscode/         # VS Code extension renamed to lgcode
+├── sdks/vscode/         # VS Code extension renamed to loongcode
 └── docs/superpowers/specs/ # this document
 ```
 
@@ -81,20 +81,20 @@ Both will be available as selectable models under the `LGDG_ModelHub` provider. 
 
 | Current | New | Notes |
 |---|---|---|
-| `LGcode` | `LGcode` | User-facing product name |
-| `lgcode` | `lgcode` | CLI command, package name, extension ID, settings keys |
-| `@lgcode-ai/*` | `@lgcode/*` | Workspace package names |
-| `lgcode-ai` | `lgcode` | Published npm package scope/name |
+| `Loongcode` | `Loongcode` | User-facing product name |
+| `loongcode` | `loongcode` | CLI command, package name, extension ID, settings keys |
+| `@loongcode-ai/*` | `@loongcode/*` | Workspace package names |
+| `loongcode-ai` | `loongcode` | Published npm package scope/name |
 | `modelhub.lgdg.cc` / `https://modelhub.lgdg.cc/*` | `https://modelhub.lgdg.cc` | Model cluster base URL; other non-API `modelhub.lgdg.cc` URLs are removed |
 | `https://github.com/Clearlove7Zz/LGcode` | temporarily removed | Repository references are removed until the private repo is made public |
-| `~/.lgcode` | `~/.lgcode` | User configuration directory |
+| `~/.loongcode` | `~/.loongcode` | User configuration directory |
 
 ### Environment variables
 
 | Current | New |
 |---|---|
 | `OPENAI_API_KEY` (for OpenAI) | unchanged for OpenAI provider |
-| `LGCODE_*` | `LGCODE_*` for LGcode-specific settings |
+| `LOONGCODE_*` | `LOONGCODE_*` for Loongcode-specific settings |
 | New | `LG_CODE_API_KEY` for the LGdg model cluster |
 
 ---
@@ -124,11 +124,11 @@ The provided source assets are two PNGs: a green version and a white version. On
 
 ### TUI logo
 
-The ANSI art file `logo-terminal-24col.ans` will be copied to `packages/lgcode/src/asset/logo-terminal.ans` and rendered on:
+The ANSI art file `logo-terminal-24col.ans` will be copied to `packages/loongcode/src/asset/logo-terminal.ans` and rendered on:
 
 - TUI startup
-- `lgcode --version`
-- `lgcode --about` (if such a command exists)
+- `loongcode --version`
+- `loongcode --about` (if such a command exists)
 
 ### Optional / phase-two assets
 
@@ -145,15 +145,15 @@ The ANSI art file `logo-terminal-24col.ans` will be copied to `packages/lgcode/s
 Every `package.json` in the monorepo needs updates for:
 
 - `name`
-- `dependencies` / `devDependencies` workspace references (`@lgcode-ai/*` → `@lgcode/*`)
+- `dependencies` / `devDependencies` workspace references (`@loongcode-ai/*` → `@loongcode/*`)
 - `repository`, `homepage`, `bugs` URLs (removed for now)
-- `bin` entries (`lgcode` → `lgcode`)
-- `scripts` that reference `lgcode`
+- `bin` entries (`loongcode` → `loongcode`)
+- `scripts` that reference `loongcode`
 
 Key files:
 
 - `package.json`
-- `packages/lgcode/package.json` (renamed from `packages/lgcode/package.json`)
+- `packages/loongcode/package.json` (renamed from `packages/loongcode/package.json`)
 - `packages/core/package.json`
 - `packages/app/package.json`
 - `packages/llm/package.json`
@@ -173,13 +173,13 @@ Key files:
 
 Search and replace user-visible strings:
 
-- `LGcode` → `LGcode`
-- `lgcode` → `lgcode` in product strings, commands, settings keys, directory names
-- Keep `lgcode` only where it is a dependency/package name that is being renamed separately.
+- `Loongcode` → `Loongcode`
+- `loongcode` → `loongcode` in product strings, commands, settings keys, directory names
+- Keep `loongcode` only where it is a dependency/package name that is being renamed separately.
 
 Important code areas:
 
-- `packages/lgcode/src/`: CLI/TUI entry, command names, config paths
+- `packages/loongcode/src/`: CLI/TUI entry, command names, config paths
 - `packages/core/src/`: config directory helpers, settings schema defaults
 - `packages/app/src/`: page titles, notification bodies, project avatar URLs
 - `packages/console/app/src/`: header, routes, meta tags
@@ -195,8 +195,8 @@ Important code areas:
 
 ### Configuration files
 
-- `turbo.json`: task names like `@lgcode-ai/app#test` → `@lgcode/app#test`
-- `.lgcode/tui.json` and `.lgcode/themes/*.json`: schema URLs removed or updated
+- `turbo.json`: task names like `@loongcode-ai/app#test` → `@loongcode/app#test`
+- `.loongcode/tui.json` and `.loongcode/themes/*.json`: schema URLs removed or updated
 - `.github/workflows/*.yml`: product name references updated
 - `README.md`, `README.zh.md`: full rebrand
 
@@ -233,7 +233,7 @@ Auth:
 AuthOptions.bearer(input, "LG_CODE_API_KEY")
 ```
 
-In the `packages/lgcode` provider registration, the LGdg provider will be registered so it appears in the UI alongside other providers.
+In the `packages/loongcode` provider registration, the LGdg provider will be registered so it appears in the UI alongside other providers.
 
 ---
 
@@ -241,7 +241,7 @@ In the `packages/lgcode` provider registration, the LGdg provider will be regist
 
 - Run `bun install` after renaming packages to ensure workspace references resolve.
 - Run `bun turbo typecheck` to catch broken imports.
-- Run the CLI with `--version` and verify output shows `LGcode`.
+- Run the CLI with `--version` and verify output shows `Loongcode`.
 - Start the TUI and verify the ANSI logo renders.
 - Start the web app and verify the header logo loads as PNG.
 - Configure `LG_CODE_API_KEY` and send a chat request to the LGdg provider; verify the request hits `https://modelhub.lgdg.cc/aigateway/v1/chat/completions`.
@@ -256,7 +256,7 @@ In the `packages/lgcode` provider registration, the LGdg provider will be regist
 | Mass rename breaks imports | Use codemod / scripted replace, then run typecheck |
 | Lockfile stale after rename | Delete and regenerate `bun.lockb` |
 | Desktop icon generation fails | Keep a single `icon.png` as fallback; full icon sets are phase-two |
-| LGdg provider not appearing in UI | Verify provider registration in `packages/lgcode/src/provider/provider.ts` |
+| LGdg provider not appearing in UI | Verify provider registration in `packages/loongcode/src/provider/provider.ts` |
 | Existing tests fail due to brand strings | Update snapshot / assertion strings |
 | SVG-to-PNG import breaks build | Update import paths and ensure Vite handles PNG static assets |
 
@@ -282,7 +282,7 @@ In the `packages/lgcode` provider registration, the LGdg provider will be regist
 
 - Add GitHub repository URL back to package.json files.
 - Set up public documentation site (if needed).
-- Publish `lgcode` npm package and VS Code extension.
+- Publish `loongcode` npm package and VS Code extension.
 
 ---
 
@@ -296,8 +296,8 @@ None remaining; all clarified during brainstorming.
 
 | Decision | Rationale |
 |---|---|
-| Use `lgcode` not `lg-code` | Matches the user's explicit naming and common CLI conventions |
-| Use `@lgcode/*` scope | Cleaner than `@lgcode-ai/*`; consistent with product name |
+| Use `loongcode` not `lg-code` | Matches the user's explicit naming and common CLI conventions |
+| Use `@loongcode/*` scope | Cleaner than `@loongcode-ai/*`; consistent with product name |
 | Keep multi-provider architecture | User explicitly chose option C: internal cluster as one optional provider |
 | Only PNG assets | User only has PNGs; SVG imports will be converted |
 | Remove GitHub URLs temporarily | Repo is private; URLs will be re-added after public release |

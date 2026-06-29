@@ -1,5 +1,5 @@
-import type { NamedError } from "@lgcode/core/util/error"
-import { SessionV1 } from "@lgcode/core/v1/session"
+import type { NamedError } from "@loongcode/core/util/error"
+import { SessionV1 } from "@loongcode/core/v1/session"
 import { Cause, Clock, Duration, Effect, Schedule } from "effect"
 import { MessageV2 } from "./message-v2"
 import { iife } from "@/util/iife"
@@ -80,7 +80,7 @@ export function retryable(error: Err, provider: string) {
           reason: "free_tier_limit",
           provider,
           title: "Free limit reached",
-          message: "Subscribe to LGcode Go for reliable access to the best open-source models, starting at $5/month.",
+          message: "Subscribe to Loongcode Go for reliable access to the best open-source models, starting at $5/month.",
           label: "subscribe",
           link: GO_UPSELL_URL,
         },

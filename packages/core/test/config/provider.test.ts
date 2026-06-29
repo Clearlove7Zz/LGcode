@@ -1,12 +1,12 @@
 import { describe, expect } from "bun:test"
 import { Effect, Option, Schema } from "effect"
-import { Catalog } from "@lgcode/core/catalog"
-import { Config } from "@lgcode/core/config"
-import { ConfigProviderPlugin } from "@lgcode/core/config/plugin/provider"
-import { Integration } from "@lgcode/core/integration"
-import { ModelV2 } from "@lgcode/core/model"
-import { PluginV2 } from "@lgcode/core/plugin"
-import { ProviderV2 } from "@lgcode/core/provider"
+import { Catalog } from "@loongcode/core/catalog"
+import { Config } from "@loongcode/core/config"
+import { ConfigProviderPlugin } from "@loongcode/core/config/plugin/provider"
+import { Integration } from "@loongcode/core/integration"
+import { ModelV2 } from "@loongcode/core/model"
+import { PluginV2 } from "@loongcode/core/plugin"
+import { ProviderV2 } from "@loongcode/core/provider"
 import { it, withEnv } from "../plugin/provider-helper"
 
 function request(headers: Record<string, string>, variant?: string) {
@@ -24,7 +24,7 @@ describe("ConfigProviderPlugin.Plugin", () => {
       const catalog = yield* Catalog.Service
       const integrations = yield* Integration.Service
       const plugin = yield* PluginV2.Service
-      const providerID = ProviderV2.ID.lgcode
+      const providerID = ProviderV2.ID.loongcode
       const modelID = ModelV2.ID.make("alpha-gpt-next")
       const config = Config.Service.of({
         entries: () =>
@@ -33,8 +33,8 @@ describe("ConfigProviderPlugin.Plugin", () => {
               type: "document",
               info: decode({
                 providers: {
-                  lgcode: {
-                    api: { type: "aisdk", package: "@ai-sdk/openai", url: "https://lgcode.test/v1" },
+                  loongcode: {
+                    api: { type: "aisdk", package: "@ai-sdk/openai", url: "https://loongcode.test/v1" },
                     models: {
                       "alpha-gpt-next": {
                         variants: [
@@ -85,7 +85,7 @@ describe("ConfigProviderPlugin.Plugin", () => {
       const catalog = yield* Catalog.Service
       const integrations = yield* Integration.Service
       const plugin = yield* PluginV2.Service
-      const providerID = ProviderV2.ID.lgcode
+      const providerID = ProviderV2.ID.loongcode
       const modelID = ModelV2.ID.make("alpha-gpt-next")
       const config = Config.Service.of({
         entries: () =>
@@ -94,8 +94,8 @@ describe("ConfigProviderPlugin.Plugin", () => {
               type: "document",
               info: decode({
                 providers: {
-                  lgcode: {
-                    api: { type: "aisdk", package: "@ai-sdk/openai", url: "https://lgcode.test/v1" },
+                  loongcode: {
+                    api: { type: "aisdk", package: "@ai-sdk/openai", url: "https://loongcode.test/v1" },
                   },
                 },
               }),
@@ -104,7 +104,7 @@ describe("ConfigProviderPlugin.Plugin", () => {
               type: "document",
               info: decode({
                 providers: {
-                  lgcode: {
+                  loongcode: {
                     models: {
                       "alpha-gpt-next": {
                         variants: [{ id: "high", body: { reasoningEffort: "high" } }],

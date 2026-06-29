@@ -1,6 +1,6 @@
 ---
 title: Brugerdefinerede værktøjer
-description: Opret værktøjer, som LLM kan kalde lgcode ind.
+description: Opret værktøjer, som LLM kan kalde loongcode ind.
 ---
 
 Brugerdefinerede værktøjer er funktioner, du opretter, som LLM kan kalde under samtaler. De arbejder sammen med opencodes [built-in tools](/docs/tools) som `read`, `write` og `bash`.
@@ -17,8 +17,8 @@ Værktøjer er defineret som **TypeScript**- eller **JavaScript**-filer. Værkt�
 
 De kan definere:
 
-- Lokalt ved at placere dem i biblioteket `.lgcode/tools/` i dit projekt.
-- Eller globalt ved at placere dem i `~/.config/lgcode/tools/`.
+- Lokalt ved at placere dem i biblioteket `.loongcode/tools/` i dit projekt.
+- Eller globalt ved at placere dem i `~/.config/loongcode/tools/`.
 
 ---
 
@@ -26,8 +26,8 @@ De kan definere:
 
 Den nemmeste måde at oprette værktøjer på er at bruge `tool()`-hjælperen, som giver typesikkerhed og validering.
 
-```ts title=".lgcode/tools/database.ts" {1}
-import { tool } from "@lgcode-ai/plugin"
+```ts title=".loongcode/tools/database.ts" {1}
+import { tool } from "@loongcode-ai/plugin"
 
 export default tool({
   description: "Query the project database",
@@ -49,8 +49,8 @@ export default tool({
 
 Du kan også eksportere flere værktøjer fra en enkelt fil. Hver eksport bliver **et separat værktøj** med navnet **`<filename>_<exportname>`**:
 
-```ts title=".lgcode/tools/math.ts"
-import { tool } from "@lgcode-ai/plugin"
+```ts title=".loongcode/tools/math.ts"
+import { tool } from "@loongcode-ai/plugin"
 
 export const add = tool({
   description: "Add two numbers",
@@ -85,8 +85,8 @@ Brugerdefinerede værktøjer er identificeret ved værktøjsnavn. Hvis et bruger
 
 For eksempel erstatter denne fil det indbyggede `bash` værktøj:
 
-```ts title=".lgcode/tools/bash.ts"
-import { tool } from "@lgcode-ai/plugin"
+```ts title=".loongcode/tools/bash.ts"
+import { tool } from "@loongcode-ai/plugin"
 
 export default tool({
   description: "Restricted bash wrapper",
@@ -138,8 +138,8 @@ export default {
 
 Værktøjer modtager kontekst om den aktuelle session:
 
-```ts title=".lgcode/tools/project.ts" {8}
-import { tool } from "@lgcode-ai/plugin"
+```ts title=".loongcode/tools/project.ts" {8}
+import { tool } from "@loongcode-ai/plugin"
 
 export default tool({
   description: "Get project information",
@@ -165,7 +165,7 @@ Du kan skrive dine værktøjer på et hvilket som helst sprog, du ønsker. Her e
 
 Først skal du oprette værktøjet som et Python-script:
 
-```python title=".lgcode/tools/add.py"
+```python title=".loongcode/tools/add.py"
 import sys
 
 a = int(sys.argv[1])
@@ -175,8 +175,8 @@ print(a + b)
 
 Opret derefter værktøjsdefinitionen, der kalder den:
 
-```ts title=".lgcode/tools/python-add.ts" {10}
-import { tool } from "@lgcode-ai/plugin"
+```ts title=".loongcode/tools/python-add.ts" {10}
+import { tool } from "@loongcode-ai/plugin"
 import path from "path"
 
 export default tool({
@@ -186,7 +186,7 @@ export default tool({
     b: tool.schema.number().describe("Second number"),
   },
   async execute(args, context) {
-    const script = path.join(context.worktree, ".lgcode/tools/add.py")
+    const script = path.join(context.worktree, ".loongcode/tools/add.py")
     const result = await Bun.$`python3 ${script} ${args.a} ${args.b}`.text()
     return result.trim()
   },

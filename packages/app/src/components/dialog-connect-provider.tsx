@@ -1,13 +1,13 @@
-import type { ProviderAuthAuthorization, ProviderAuthMethod } from "@lgcode/sdk/v2/client"
-import { Button } from "@lgcode/ui/button"
-import { useDialog } from "@lgcode/ui/context/dialog"
-import { Dialog } from "@lgcode/ui/dialog"
-import { Icon } from "@lgcode/ui/icon"
-import { IconButton } from "@lgcode/ui/icon-button"
-import { List, type ListRef } from "@lgcode/ui/list"
-import { ProviderIcon } from "@lgcode/ui/provider-icon"
-import { Spinner } from "@lgcode/ui/spinner"
-import { TextField } from "@lgcode/ui/text-field"
+import type { ProviderAuthAuthorization, ProviderAuthMethod } from "@loongcode/sdk/v2/client"
+import { Button } from "@loongcode/ui/button"
+import { useDialog } from "@loongcode/ui/context/dialog"
+import { Dialog } from "@loongcode/ui/dialog"
+import { Icon } from "@loongcode/ui/icon"
+import { IconButton } from "@loongcode/ui/icon-button"
+import { List, type ListRef } from "@loongcode/ui/list"
+import { ProviderIcon } from "@loongcode/ui/provider-icon"
+import { Spinner } from "@loongcode/ui/spinner"
+import { TextField } from "@loongcode/ui/text-field"
 import { showToast } from "@/utils/toast"
 import { createEffect, createMemo, createResource, Match, onCleanup, onMount, Switch } from "solid-js"
 import { createStore, produce } from "solid-js/store"
@@ -422,16 +422,16 @@ export function DialogConnectProvider(props: { provider: string }) {
     return (
       <div class="flex flex-col gap-6">
         <Switch>
-          <Match when={provider().id === "lgcode"}>
+          <Match when={provider().id === "loongcode"}>
             <div class="flex flex-col gap-4">
-              <div class="text-14-regular text-text-base">{language.t("provider.connect.lgcodeZen.line1")}</div>
-              <div class="text-14-regular text-text-base">{language.t("provider.connect.lgcodeZen.line2")}</div>
+              <div class="text-14-regular text-text-base">{language.t("provider.connect.loongcodeZen.line1")}</div>
+              <div class="text-14-regular text-text-base">{language.t("provider.connect.loongcodeZen.line2")}</div>
               <div class="text-14-regular text-text-base">
-                {language.t("provider.connect.lgcodeZen.visit.prefix")}
+                {language.t("provider.connect.loongcodeZen.visit.prefix")}
                 <Link href="https://modelhub.lgdg.cc/zen" tabIndex={-1}>
-                  {language.t("provider.connect.lgcodeZen.visit.link")}
+                  {language.t("provider.connect.loongcodeZen.visit.link")}
                 </Link>
-                {language.t("provider.connect.lgcodeZen.visit.suffix")}
+                {language.t("provider.connect.loongcodeZen.visit.suffix")}
               </div>
             </div>
           </Match>

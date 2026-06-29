@@ -1,7 +1,7 @@
-import { EventV2 } from "@lgcode/core/event"
+import { EventV2 } from "@loongcode/core/event"
 import { SessionID, MessageID, PartID } from "./schema"
-import { SessionV1 } from "@lgcode/core/v1/session"
-import { ProviderV2 } from "@lgcode/core/provider"
+import { SessionV1 } from "@loongcode/core/v1/session"
+import { ProviderV2 } from "@loongcode/core/provider"
 import {
   APIError,
   AbortedError,
@@ -17,11 +17,11 @@ import {
   User,
   WithParts,
   type ToolPart,
-} from "@lgcode/core/v1/session"
+} from "@loongcode/core/v1/session"
 
-import { NamedError } from "@lgcode/core/util/error"
+import { NamedError } from "@loongcode/core/util/error"
 import { APICallError, convertToModelMessages, LoadAPIKeyError, type ModelMessage, type UIMessage } from "ai"
-import { Database } from "@lgcode/core/database/database"
+import { Database } from "@loongcode/core/database/database"
 import { NotFoundError } from "@/storage/storage"
 import { and } from "drizzle-orm"
 import { desc } from "drizzle-orm"
@@ -29,7 +29,7 @@ import { eq } from "drizzle-orm"
 import { inArray } from "drizzle-orm"
 import { lt } from "drizzle-orm"
 import { or } from "drizzle-orm"
-import { MessageTable, PartTable, SessionTable } from "@lgcode/core/session/sql"
+import { MessageTable, PartTable, SessionTable } from "@loongcode/core/session/sql"
 import { ProviderError } from "@/provider/error"
 import { iife } from "@/util/iife"
 import { errorMessage } from "@/util/error"

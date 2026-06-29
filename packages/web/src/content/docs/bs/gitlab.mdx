@@ -1,66 +1,66 @@
 ---
 title: GitLab
-description: Koristite LGcode u GitLab problemima i zahtjevima za spajanje.
+description: Koristite Loongcode u GitLab problemima i zahtjevima za spajanje.
 ---
 
-LGcode se integriše sa vašim GitLab radnim tokom kroz vaš GitLab CI/CD cevovod ili sa GitLab Duo.
-U oba slučaja, LGcode će se pokrenuti na vašim GitLab pokretačima.
+Loongcode se integriše sa vašim GitLab radnim tokom kroz vaš GitLab CI/CD cevovod ili sa GitLab Duo.
+U oba slučaja, Loongcode će se pokrenuti na vašim GitLab pokretačima.
 
 ---
 
 ## GitLab CI
 
-LGcode radi u redovnom GitLab cevovodu. Možete ga ugraditi u cjevovod kao [CI komponenta](https://docs.gitlab.com/ee/ci/components/)
-Ovdje koristimo CI/CD komponentu kreiranu u zajednici za LGcode — [nagyv/gitlab-lgcode](https://gitlab.com/nagyv/gitlab-lgcode).
+Loongcode radi u redovnom GitLab cevovodu. Možete ga ugraditi u cjevovod kao [CI komponenta](https://docs.gitlab.com/ee/ci/components/)
+Ovdje koristimo CI/CD komponentu kreiranu u zajednici za Loongcode — [nagyv/gitlab-loongcode](https://gitlab.com/nagyv/gitlab-loongcode).
 
 ---
 
 ### Funkcije
 
-- **Koristite prilagođenu konfiguraciju po poslu**: Konfigurirajte LGcode s prilagođenim konfiguracijskim direktorijem, na primjer `./config/#custom-directory` da omogućite ili onemogućite funkcionalnost po LGcode pozivanju.
-- **Minimalno podešavanje**: CI komponenta postavlja LGcode u pozadini, samo trebate kreirati LGcode konfiguraciju i početnu prompt.
+- **Koristite prilagođenu konfiguraciju po poslu**: Konfigurirajte Loongcode s prilagođenim konfiguracijskim direktorijem, na primjer `./config/#custom-directory` da omogućite ili onemogućite funkcionalnost po Loongcode pozivanju.
+- **Minimalno podešavanje**: CI komponenta postavlja Loongcode u pozadini, samo trebate kreirati Loongcode konfiguraciju i početnu prompt.
 - **Fleksibilno**: CI komponenta podržava nekoliko ulaza za prilagođavanje njenog ponašanja
 
 ---
 
 ### Podešavanje
 
-1. Sačuvajte JSON za autentifikaciju LGcode kao CI varijable okruženja tipa datoteke pod **Postavke** > **CI/CD** > **Varijable**. Obavezno ih označite kao "Maskirane i skrivene".
+1. Sačuvajte JSON za autentifikaciju Loongcode kao CI varijable okruženja tipa datoteke pod **Postavke** > **CI/CD** > **Varijable**. Obavezno ih označite kao "Maskirane i skrivene".
 2. Dodajte sljedeće u svoju `.gitlab-ci.yml` datoteku.
 
 ```yaml title=".gitlab-ci.yml"
 include:
-  - component: $CI_SERVER_FQDN/nagyv/gitlab-lgcode/lgcode@2
+  - component: $CI_SERVER_FQDN/nagyv/gitlab-loongcode/loongcode@2
     inputs:
-      config_dir: ${CI_PROJECT_DIR}/lgcode-config
-      auth_json: $LGCODE_AUTH_JSON # The variable name for your LGcode authentication JSON
+      config_dir: ${CI_PROJECT_DIR}/loongcode-config
+      auth_json: $LOONGCODE_AUTH_JSON # The variable name for your Loongcode authentication JSON
       command: optional-custom-command
       message: "Your prompt here"
 ```
 
-Za više unosa i slučajeva upotrebe [pogledajte dokumente docs](https://gitlab.com/explore/catalog/nagyv/gitlab-lgcode) za ovu komponentu.
+Za više unosa i slučajeva upotrebe [pogledajte dokumente docs](https://gitlab.com/explore/catalog/nagyv/gitlab-loongcode) za ovu komponentu.
 
 ---
 
 ## GitLab Duo
 
-LGcode se integriše sa vašim GitLab tokovom rada.
-Spomenite `@lgcode` u komentaru i LGcode će izvršiti zadatke unutar vašeg GitLab CI cevovoda.
+Loongcode se integriše sa vašim GitLab tokovom rada.
+Spomenite `@loongcode` u komentaru i Loongcode će izvršiti zadatke unutar vašeg GitLab CI cevovoda.
 
 ---
 
 ### Funkcije
 
-- **Problemi trijaže**: Zamolite LGcode da ispita problem i objasni vam ga.
-- **Popravi i implementiraj**: Zamolite LGcode da popravi problem ili implementira funkciju.
+- **Problemi trijaže**: Zamolite Loongcode da ispita problem i objasni vam ga.
+- **Popravi i implementiraj**: Zamolite Loongcode da popravi problem ili implementira funkciju.
   To će kreirati novu granu i pokrenuti zahtjev za spajanje s promjenama.
-- **Secure**: LGcode radi na vašim GitLab pokretačima.
+- **Secure**: Loongcode radi na vašim GitLab pokretačima.
 
 ---
 
 ### Podešavanje
 
-LGcode radi u vašem GitLab CI/CD cevovodu, evo šta će vam trebati da ga postavite:
+Loongcode radi u vašem GitLab CI/CD cevovodu, evo šta će vam trebati da ga postavite:
 :::tip
 Pogledajte [**GitLab dokumente**](https://docs.gitlab.com/user/duo_agent_platform/agent_assistant/) za ažurirane upute.
 :::
@@ -79,19 +79,19 @@ Pogledajte [**GitLab dokumente**](https://docs.gitlab.com/user/duo_agent_platfor
     ```yaml
     image: node:22-slim
     commands:
-      - echo "Installing lgcode"
-      - npm install --global lgcode-ai
+      - echo "Installing loongcode"
+      - npm install --global loongcode-ai
       - echo "Installing glab"
-      - export GITLAB_TOKEN=$GITLAB_TOKEN_LGCODE
+      - export GITLAB_TOKEN=$GITLAB_TOKEN_LOONGCODE
       - apt-get update --quiet && apt-get install --yes curl wget gpg git && rm --recursive --force /var/lib/apt/lists/*
       - curl --silent --show-error --location "https://raw.githubusercontent.com/upciti/wakemeops/main/assets/install_repository" | bash
       - apt-get install --yes glab
       - echo "Configuring glab"
       - echo $GITLAB_HOST
-      - echo "Creating LGcode auth configuration"
-      - mkdir --parents ~/.local/share/lgcode
+      - echo "Creating Loongcode auth configuration"
+      - mkdir --parents ~/.local/share/loongcode
       - |
-        cat > ~/.local/share/lgcode/auth.json << EOF
+        cat > ~/.local/share/loongcode/auth.json << EOF
         {
           "anthropic": {
             "type": "api",
@@ -100,13 +100,13 @@ Pogledajte [**GitLab dokumente**](https://docs.gitlab.com/user/duo_agent_platfor
         }
         EOF
       - echo "Configuring git"
-      - git config --global user.email "lgcode@gitlab.com"
-      - git config --global user.name "LGcode"
+      - git config --global user.email "loongcode@gitlab.com"
+      - git config --global user.name "Loongcode"
       - echo "Testing glab"
       - glab issue list
-      - echo "Running LGcode"
+      - echo "Running Loongcode"
       - |
-        lgcode run "
+        loongcode run "
         You are an AI assistant helping with GitLab operations.
 
         Context: $AI_FLOW_CONTEXT
@@ -143,7 +143,7 @@ Pogledajte [**GitLab dokumente**](https://docs.gitlab.com/user/duo_agent_platfor
         fi
     variables:
       - ANTHROPIC_API_KEY
-      - GITLAB_TOKEN_LGCODE
+      - GITLAB_TOKEN_LOONGCODE
       - GITLAB_HOST
     ```
 
@@ -155,34 +155,34 @@ Možete vidjeti [GitLab CLI agenti docs](https://docs.gitlab.com/user/duo_agent_
 
 ### Primjeri
 
-Evo nekoliko primjera kako možete koristiti LGcode u GitLab.
+Evo nekoliko primjera kako možete koristiti Loongcode u GitLab.
 :::tip
-Možete konfigurirati da koristite drugu frazu okidača od `@lgcode`.
+Možete konfigurirati da koristite drugu frazu okidača od `@loongcode`.
 :::
 
 - **Objasnite problem**
   Dodajte ovaj komentar u izdanje GitLaba.
 
 ```
-  @lgcode explain this issue
+  @loongcode explain this issue
 ```
 
-LGcode će pročitati problem i odgovoriti jasnim objašnjenjem.
+Loongcode će pročitati problem i odgovoriti jasnim objašnjenjem.
 
 - **Reši problem**
   U izdanju GitLaba recite:
 
 ```
-  @lgcode fix this
+  @loongcode fix this
 ```
 
-LGcode će kreirati novu granu, implementirati promjene i otvoriti zahtjev za spajanje s promjenama.
+Loongcode će kreirati novu granu, implementirati promjene i otvoriti zahtjev za spajanje s promjenama.
 
 - **Pregledajte zahtjeve za pridruživanje**
   Ostavite sljedeći komentar na zahtjev za spajanje GitLab-a.
 
 ```
-  @lgcode review this merge request
+  @loongcode review this merge request
 ```
 
-LGcode će pregledati zahtjev za spajanje i dati povratne informacije.
+Loongcode će pregledati zahtjev za spajanje i dati povratne informacije.

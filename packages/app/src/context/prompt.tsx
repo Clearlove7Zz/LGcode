@@ -1,5 +1,5 @@
-import { createSimpleContext } from "@lgcode/ui/context"
-import { checksum } from "@lgcode/core/util/encode"
+import { createSimpleContext } from "@loongcode/ui/context"
+import { checksum } from "@loongcode/core/util/encode"
 import { useParams, useSearchParams } from "@solidjs/router"
 import { batch, createMemo, createRoot, getOwner, onCleanup } from "solid-js"
 import { createStore, type SetStoreFunction } from "solid-js/store"

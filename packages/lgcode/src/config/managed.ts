@@ -5,9 +5,9 @@ import os from "os"
 import path from "path"
 import { Process } from "@/util/process"
 
-const MANAGED_PLIST_DOMAIN = "ai.lgcode.managed"
+const MANAGED_PLIST_DOMAIN = "ai.loongcode.managed"
 
-// Keys injected by macOS/MDM into the managed plist that are not LGcode config
+// Keys injected by macOS/MDM into the managed plist that are not Loongcode config
 const PLIST_META = new Set([
   "PayloadDisplayName",
   "PayloadIdentifier",
@@ -20,16 +20,16 @@ const PLIST_META = new Set([
 function systemManagedConfigDir(): string {
   switch (process.platform) {
     case "darwin":
-      return "/Library/Application Support/lgcode"
+      return "/Library/Application Support/loongcode"
     case "win32":
-      return path.join(process.env.ProgramData || "C:\\ProgramData", "lgcode")
+      return path.join(process.env.ProgramData || "C:\\ProgramData", "loongcode")
     default:
-      return "/etc/lgcode"
+      return "/etc/loongcode"
   }
 }
 
 export function managedConfigDir() {
-  return process.env.LGCODE_TEST_MANAGED_CONFIG_DIR || systemManagedConfigDir()
+  return process.env.LOONGCODE_TEST_MANAGED_CONFIG_DIR || systemManagedConfigDir()
 }
 
 export function parseManagedPlist(json: string): string {

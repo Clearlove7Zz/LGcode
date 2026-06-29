@@ -1,4 +1,4 @@
-import { Reference } from "@lgcode/core/reference"
+import { Reference } from "@loongcode/core/reference"
 import { HttpApiBuilder } from "effect/unstable/httpapi"
 import { Api } from "../api"
 import { response } from "../groups/location"

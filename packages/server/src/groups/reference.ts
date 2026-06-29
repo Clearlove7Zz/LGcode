@@ -1,5 +1,5 @@
-import { Location } from "@lgcode/core/location"
-import { Reference } from "@lgcode/core/reference"
+import { Location } from "@loongcode/core/location"
+import { Reference } from "@loongcode/core/reference"
 import { Schema } from "effect"
 import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
 import { LocationMiddleware, LocationQuery, locationQueryOpenApi } from "./location"

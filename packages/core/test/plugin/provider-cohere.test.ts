@@ -1,8 +1,8 @@
 import { describe, expect, mock } from "bun:test"
 import { Effect } from "effect"
-import { ModelV2 } from "@lgcode/core/model"
-import { PluginV2 } from "@lgcode/core/plugin"
-import { CoherePlugin } from "@lgcode/core/plugin/provider/cohere"
+import { ModelV2 } from "@loongcode/core/model"
+import { PluginV2 } from "@loongcode/core/plugin"
+import { CoherePlugin } from "@loongcode/core/plugin/provider/cohere"
 import { fakeSelectorSdk, it, model } from "./provider-helper"
 
 const cohereOptions: Record<string, any>[] = []

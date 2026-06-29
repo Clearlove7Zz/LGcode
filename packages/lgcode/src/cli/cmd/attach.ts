@@ -1,12 +1,12 @@
 import { cmd } from "./cmd"
 import { UI } from "@/cli/ui"
-import { errorMessage } from "@lgcode/tui/util/error"
+import { errorMessage } from "@loongcode/tui/util/error"
 import { validateSession } from "../tui/validate-session"
 import { ServerAuth } from "@/server/auth"
 
 export const AttachCommand = cmd({
   command: "attach <url>",
-  describe: "attach to a running lgcode server",
+  describe: "attach to a running loongcode server",
   builder: (yargs) =>
     yargs
       .positional("url", {
@@ -35,12 +35,12 @@ export const AttachCommand = cmd({
       .option("password", {
         alias: ["p"],
         type: "string",
-        describe: "basic auth password (defaults to LGCODE_SERVER_PASSWORD)",
+        describe: "basic auth password (defaults to LOONGCODE_SERVER_PASSWORD)",
       })
       .option("username", {
         alias: ["u"],
         type: "string",
-        describe: "basic auth username (defaults to LGCODE_SERVER_USERNAME or 'lgcode')",
+        describe: "basic auth username (defaults to LOONGCODE_SERVER_USERNAME or 'loongcode')",
       }),
   handler: async (args) => {
     const { TuiConfig } = await import("@/config/tui")

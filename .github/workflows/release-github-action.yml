@@ -24,6 +24,6 @@ jobs:
 
       - name: Release
         run: |
-          git config --global user.email "lgcode@sst.dev"
-          git config --global user.name "lgcode"
+          git config --global user.email "loongcode@sst.dev"
+          git config --global user.name "loongcode"
           ./github/script/release

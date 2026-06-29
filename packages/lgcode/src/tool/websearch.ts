@@ -3,8 +3,8 @@ import { HttpClient } from "effect/unstable/http"
 import * as Tool from "./tool"
 import * as McpWebSearch from "./mcp-websearch"
 import DESCRIPTION from "./websearch.txt"
-import { checksum } from "@lgcode/core/util/encode"
-import { InstallationVersion } from "@lgcode/core/installation/version"
+import { checksum } from "@loongcode/core/util/encode"
+import { InstallationVersion } from "@loongcode/core/installation/version"
 import { RuntimeFlags } from "@/effect/runtime-flags"
 
 export const Parameters = Schema.Struct({
@@ -28,7 +28,7 @@ const WebSearchProviderSchema = Schema.Literals(["exa", "parallel"])
 export type WebSearchProvider = Schema.Schema.Type<typeof WebSearchProviderSchema>
 
 export function selectWebSearchProvider(sessionID: string, flags = { exa: false, parallel: false }): WebSearchProvider {
-  const override = process.env.LGCODE_WEBSEARCH_PROVIDER
+  const override = process.env.LOONGCODE_WEBSEARCH_PROVIDER
   if (override === "exa" || override === "parallel") return override
   if (flags.parallel) return "parallel"
   if (flags.exa) return "exa"
@@ -52,7 +52,7 @@ export function webSearchModelName(extra: Tool.Context["extra"]) {
 }
 
 function parallelAuthHeaders() {
-  const headers = { "User-Agent": `lgcode/${InstallationVersion}` }
+  const headers = { "User-Agent": `loongcode/${InstallationVersion}` }
   if (!process.env.PARALLEL_API_KEY) return headers
   return { ...headers, Authorization: `Bearer ${process.env.PARALLEL_API_KEY}` }
 }

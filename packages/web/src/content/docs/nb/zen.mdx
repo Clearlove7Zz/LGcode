@@ -1,17 +1,17 @@
 ---
 title: Zen
-description: Utvalgt liste over modeller levert av LGcode.
+description: Utvalgt liste over modeller levert av Loongcode.
 ---
 
 import config from "../../../../config.mjs"
 export const console = config.console
 export const email = `mailto:${config.email}`
 
-LGcode Zen er en liste over testede og verifiserte modeller levert av LGcode-teamet.
+Loongcode Zen er en liste over testede og verifiserte modeller levert av Loongcode-teamet.
 
-Zen fungerer som enhver annen leverandør i LGcode. Du logger inn på LGcode Zen og får
+Zen fungerer som enhver annen leverandør i Loongcode. Du logger inn på Loongcode Zen og får
 API-nøkkelen din. Det er **helt valgfritt**, og du trenger ikke bruke det for å bruke
-LGcode.
+Loongcode.
 
 ---
 
@@ -22,7 +22,7 @@ disse modellene fungerer godt som kodeagenter. I tillegg er de fleste leverandø
 konfigurert svært ulikt, så du får veldig ulik ytelse og kvalitet.
 
 :::tip
-Vi testet en utvalgt gruppe modeller og leverandører som fungerer godt med LGcode.
+Vi testet en utvalgt gruppe modeller og leverandører som fungerer godt med Loongcode.
 :::
 
 Så hvis du bruker en modell gjennom noe som OpenRouter, kan du aldri være
@@ -37,17 +37,17 @@ For å løse dette gjorde vi et par ting:
 3. Til slutt benchmarket vi kombinasjonen av modell/leverandør og laget
    en liste vi føler oss trygge på å anbefale.
 
-LGcode Zen er en AI gateway som gir deg tilgang til disse modellene.
+Loongcode Zen er en AI gateway som gir deg tilgang til disse modellene.
 
 ---
 
 ## Slik fungerer det
 
-LGcode Zen fungerer som enhver annen leverandør i LGcode.
+Loongcode Zen fungerer som enhver annen leverandør i Loongcode.
 
-1. Du logger inn på **<a href={console}>LGcode Zen</a>**, legger til
+1. Du logger inn på **<a href={console}>Loongcode Zen</a>**, legger til
    faktureringsdetaljene dine og kopierer API-nøkkelen din.
-2. Du kjører kommandoen `/connect` i TUI, velger LGcode Zen og limer inn API-nøkkelen din.
+2. Du kjører kommandoen `/connect` i TUI, velger Loongcode Zen og limer inn API-nøkkelen din.
 3. Kjør `/models` i TUI for å se listen over modeller vi anbefaler.
 
 Du blir belastet per forespørsel, og du kan legge til kreditt på kontoen din.
@@ -110,9 +110,9 @@ Du kan også få tilgang til modellene våre gjennom følgende API-endepunkter.
 | Nemotron 3 Ultra Free  | nemotron-3-ultra-free  | `https://modelhub.lgdg.cc/zen/v1/chat/completions`        | `@ai-sdk/openai-compatible` |
 | DeepSeek V4 Flash Free | deepseek-v4-flash-free | `https://modelhub.lgdg.cc/zen/v1/chat/completions`        | `@ai-sdk/openai-compatible` |
 
-[modell-id](/docs/config/#models) i LGcode-konfigurasjonen din
-bruker formatet `lgcode/<model-id>`. For eksempel, for GPT 5.5, ville du
-brukt `lgcode/gpt-5.5` i konfigurasjonen din.
+[modell-id](/docs/config/#models) i Loongcode-konfigurasjonen din
+bruker formatet `loongcode/<model-id>`. For eksempel, for GPT 5.5, ville du
+brukt `loongcode/gpt-5.5` i konfigurasjonen din.
 
 ---
 
@@ -194,11 +194,11 @@ Kredittkortgebyrer videreføres til kostpris (4.4% + $0.30 per transaction); vi 
 
 Gratis-modellene:
 
-- DeepSeek V4 Flash Free er tilgjengelig på LGcode i en begrenset periode. Teamet bruker denne tiden til å samle inn tilbakemeldinger og forbedre modellen.
-- MiMo-V2.5 Free er tilgjengelig på LGcode i en begrenset periode. Teamet bruker denne tiden til å samle inn tilbakemeldinger og forbedre modellen.
-- North Mini Code Free er tilgjengelig på LGcode i en begrenset periode. Teamet bruker denne tiden til å samle inn tilbakemeldinger og forbedre modellen.
-- Nemotron 3 Ultra Free er tilgjengelig på LGcode i en begrenset periode. Teamet bruker denne tiden til å samle inn tilbakemeldinger og forbedre modellen.
-- Big Pickle er en stealth-modell som er gratis på LGcode i en begrenset periode. Teamet bruker denne tiden til å samle inn tilbakemeldinger og forbedre modellen.
+- DeepSeek V4 Flash Free er tilgjengelig på Loongcode i en begrenset periode. Teamet bruker denne tiden til å samle inn tilbakemeldinger og forbedre modellen.
+- MiMo-V2.5 Free er tilgjengelig på Loongcode i en begrenset periode. Teamet bruker denne tiden til å samle inn tilbakemeldinger og forbedre modellen.
+- North Mini Code Free er tilgjengelig på Loongcode i en begrenset periode. Teamet bruker denne tiden til å samle inn tilbakemeldinger og forbedre modellen.
+- Nemotron 3 Ultra Free er tilgjengelig på Loongcode i en begrenset periode. Teamet bruker denne tiden til å samle inn tilbakemeldinger og forbedre modellen.
+- Big Pickle er en stealth-modell som er gratis på Loongcode i en begrenset periode. Teamet bruker denne tiden til å samle inn tilbakemeldinger og forbedre modellen.
 
 <a href={email}>Kontakt oss</a> hvis du har spørsmål.
 
@@ -306,9 +306,9 @@ og du vil bruke den i stedet for den Zen tilbyr.
 
 ## Mål
 
-Vi opprettet LGcode Zen for å:
+Vi opprettet Loongcode Zen for å:
 
 1. **Benchmarke** de beste modellene/leverandørene for kodeagenter.
 2. Ha tilgang til alternativene med **høyest kvalitet** og ikke nedgradere ytelsen eller rute til billigere leverandører.
 3. Videreføre eventuelle **prisreduksjoner** ved å selge til kostpris, slik at det eneste påslaget er for å dekke behandlingsgebyrene våre.
-4. Ha **ingen lock-in** ved å la deg bruke det med enhver annen kodeagent. Og alltid la deg bruke enhver annen leverandør med LGcode også.
+4. Ha **ingen lock-in** ved å la deg bruke det med enhver annen kodeagent. Og alltid la deg bruke enhver annen leverandør med Loongcode også.

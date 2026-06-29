@@ -1,10 +1,10 @@
-import { useDialog } from "@lgcode/ui/context/dialog"
-import { Tag } from "@lgcode/ui/v2/badge-v2"
-import { ButtonV2 } from "@lgcode/ui/v2/button-v2"
-import { Dialog } from "@lgcode/ui/v2/dialog-v2"
-import { Icon as IconV2 } from "@lgcode/ui/v2/icon"
-import { IconButtonV2 } from "@lgcode/ui/v2/icon-button-v2"
-import { MenuV2 } from "@lgcode/ui/v2/menu-v2"
+import { useDialog } from "@loongcode/ui/context/dialog"
+import { Tag } from "@loongcode/ui/v2/badge-v2"
+import { ButtonV2 } from "@loongcode/ui/v2/button-v2"
+import { Dialog } from "@loongcode/ui/v2/dialog-v2"
+import { Icon as IconV2 } from "@loongcode/ui/v2/icon"
+import { IconButtonV2 } from "@loongcode/ui/v2/icon-button-v2"
+import { MenuV2 } from "@loongcode/ui/v2/menu-v2"
 import { useMutation } from "@tanstack/solid-query"
 import fuzzysort from "fuzzysort"
 import { type Accessor, For, Show, createMemo } from "solid-js"
@@ -84,9 +84,9 @@ export function WslServerSettings(props: {
       <For each={props.servers()}>
         {(item) => {
           const key = ServerConnection.Key.make(item.config.id)
-          const check = () => wsl.data?.lgcodeChecks[item.config.distro]
+          const check = () => wsl.data?.loongcodeChecks[item.config.distro]
           const opencodeAction = () => wslOpencodeAction(check())
-          const busy = () => wsl.data?.job?.kind === "install-lgcode" && wsl.data.job.distro === item.config.distro
+          const busy = () => wsl.data?.job?.kind === "install-loongcode" && wsl.data.job.distro === item.config.distro
           return (
             <div class="settings-v2-servers-row">
               <div class="settings-v2-servers-lead">

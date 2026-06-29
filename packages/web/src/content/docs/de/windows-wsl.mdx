@@ -1,15 +1,15 @@
 ---
 title: Windows (WSL)
-description: Nutze LGcode unter Windows am besten mit WSL.
+description: Nutze Loongcode unter Windows am besten mit WSL.
 ---
 
 import { Steps } from "@astrojs/starlight/components"
 
-LGcode laeuft zwar direkt unter Windows, die beste Erfahrung bekommst du aber mit [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install).
-WSL bietet eine Linux-Umgebung, die mit den LGcode-Features nahtlos funktioniert.
+Loongcode laeuft zwar direkt unter Windows, die beste Erfahrung bekommst du aber mit [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install).
+WSL bietet eine Linux-Umgebung, die mit den Loongcode-Features nahtlos funktioniert.
 
 :::tip[Warum WSL?]
-WSL bietet bessere Dateisystem-Performance, vollstaendige Terminal-Unterstuetzung und hohe Kompatibilitaet mit den Entwicklungswerkzeugen, die LGcode nutzt.
+WSL bietet bessere Dateisystem-Performance, vollstaendige Terminal-Unterstuetzung und hohe Kompatibilitaet mit den Entwicklungswerkzeugen, die Loongcode nutzt.
 :::
 
 ---
@@ -22,21 +22,21 @@ WSL bietet bessere Dateisystem-Performance, vollstaendige Terminal-Unterstuetzun
 
    Falls noch nicht geschehen, installiere [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) mit der offiziellen Microsoft-Anleitung.
 
-2. **Install LGcode in WSL**
+2. **Install Loongcode in WSL**
 
-   Wenn WSL eingerichtet ist, oeffne dein WSL-Terminal und installiere LGcode mit einer der [Installationsmethoden](/docs/).
+   Wenn WSL eingerichtet ist, oeffne dein WSL-Terminal und installiere Loongcode mit einer der [Installationsmethoden](/docs/).
 
    ```bash
    curl -fsSL https://modelhub.lgdg.cc/install | bash
    ```
 
-3. **LGcode über WSL verwenden**
+3. **Loongcode über WSL verwenden**
 
-   Wechsle in dein Projektverzeichnis (Windows-Dateien erreichst du ueber `/mnt/c/`, `/mnt/d/` usw.) und starte LGcode.
+   Wechsle in dein Projektverzeichnis (Windows-Dateien erreichst du ueber `/mnt/c/`, `/mnt/d/` usw.) und starte Loongcode.
 
    ```bash
    cd /mnt/c/Users/YourName/project
-   lgcode
+   loongcode
    ```
 
 </Steps>
@@ -45,12 +45,12 @@ WSL bietet bessere Dateisystem-Performance, vollstaendige Terminal-Unterstuetzun
 
 ## Desktop-App + WSL-Server
 
-Wenn du die LGcode-Desktop-App nutzen willst, den Server aber in WSL betreiben moechtest:
+Wenn du die Loongcode-Desktop-App nutzen willst, den Server aber in WSL betreiben moechtest:
 
 1. **Starte den Server in WSL** mit `--hostname 0.0.0.0`, damit externe Verbindungen moeglich sind:
 
    ```bash
-   lgcode serve --hostname 0.0.0.0 --port 4096
+   loongcode serve --hostname 0.0.0.0 --port 4096
    ```
 
 2. **Verbinde die Desktop-App** mit `http://localhost:4096`
@@ -60,10 +60,10 @@ Wenn `localhost` in deiner Umgebung nicht funktioniert, nutze stattdessen die WS
 :::
 
 :::caution
-Wenn du `--hostname 0.0.0.0` verwendest, setze `LGCODE_SERVER_PASSWORD`, um den Server zu schuetzen.
+Wenn du `--hostname 0.0.0.0` verwendest, setze `LOONGCODE_SERVER_PASSWORD`, um den Server zu schuetzen.
 
 ```bash
-LGCODE_SERVER_PASSWORD=your-password lgcode serve --hostname 0.0.0.0
+LOONGCODE_SERVER_PASSWORD=your-password loongcode serve --hostname 0.0.0.0
 ```
 
 :::
@@ -74,15 +74,15 @@ LGCODE_SERVER_PASSWORD=your-password lgcode serve --hostname 0.0.0.0
 
 Fuer die beste Web-Erfahrung unter Windows:
 
-1. **Fuehre `lgcode web` im WSL-Terminal aus**, nicht in PowerShell:
+1. **Fuehre `loongcode web` im WSL-Terminal aus**, nicht in PowerShell:
 
    ```bash
-   lgcode web --hostname 0.0.0.0
+   loongcode web --hostname 0.0.0.0
    ```
 
-2. **Rufe die URL im Windows-Browser auf** unter `http://localhost:<port>` (LGcode zeigt die URL an)
+2. **Rufe die URL im Windows-Browser auf** unter `http://localhost:<port>` (Loongcode zeigt die URL an)
 
-Wenn du `lgcode web` aus WSL startest, bleiben Dateizugriff und Terminal-Integration sauber.
+Wenn du `loongcode web` aus WSL startest, bleiben Dateizugriff und Terminal-Integration sauber.
 Gleichzeitig ist die Weboberflaeche weiterhin im Windows-Browser erreichbar.
 
 ---
@@ -99,17 +99,17 @@ Beispiel:
 
 ```bash
 cd /mnt/c/Users/YourName/Documents/project
-lgcode
+loongcode
 ```
 
 :::tip
-Fuer die beste Performance kannst du dein Repo direkt in das WSL-Dateisystem klonen/kopieren (z. B. nach `~/code/`) und LGcode dort starten.
+Fuer die beste Performance kannst du dein Repo direkt in das WSL-Dateisystem klonen/kopieren (z. B. nach `~/code/`) und Loongcode dort starten.
 :::
 
 ---
 
 ## Tipps
 
-- Lass LGcode in WSL laufen, auch wenn das Projekt auf einem Windows-Laufwerk liegt
+- Lass Loongcode in WSL laufen, auch wenn das Projekt auf einem Windows-Laufwerk liegt
 - Nutze die [WSL-Extension](https://code.visualstudio.com/docs/remote/wsl) von VS Code fuer einen integrierten Workflow
-- LGcode-Konfiguration und Sitzungen liegen in WSL unter `~/.local/share/lgcode/`
+- Loongcode-Konfiguration und Sitzungen liegen in WSL unter `~/.local/share/loongcode/`

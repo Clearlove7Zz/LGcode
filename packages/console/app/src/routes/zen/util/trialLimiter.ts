@@ -1,7 +1,7 @@
-import { Database, eq, sql } from "@lgcode/console-core/drizzle/index.js"
-import { IpTable } from "@lgcode/console-core/schema/ip.sql.js"
+import { Database, eq, sql } from "@loongcode/console-core/drizzle/index.js"
+import { IpTable } from "@loongcode/console-core/schema/ip.sql.js"
 import { UsageInfo } from "./provider/provider"
-import { Subscription } from "@lgcode/console-core/subscription.js"
+import { Subscription } from "@loongcode/console-core/subscription.js"
 
 export function createTrialLimiter(trialProviders: string[] | undefined, ip: string) {
   if (!trialProviders) return

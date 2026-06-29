@@ -1,5 +1,5 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
-import { BackgroundJob as CoreBackgroundJob } from "@lgcode/core/background-job"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
+import { BackgroundJob as CoreBackgroundJob } from "@loongcode/core/background-job"
 import { InstanceState } from "@/effect/instance-state"
 import { Effect, Layer } from "effect"
 
@@ -12,7 +12,7 @@ export {
   type Status,
   type WaitInput,
   type WaitResult,
-} from "@lgcode/core/background-job"
+} from "@loongcode/core/background-job"
 
 /** Keeps the legacy service instance-scoped while sharing the core registry engine. */
 export const layer = Layer.effect(

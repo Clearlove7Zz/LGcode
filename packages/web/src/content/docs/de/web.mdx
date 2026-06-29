@@ -1,28 +1,28 @@
 ---
 title: Web
-description: Verwenden Sie LGcode in Ihrem Browser.
+description: Verwenden Sie Loongcode in Ihrem Browser.
 ---
 
-LGcode kann als Webanwendung in Ihrem Browser ausgeführt werden und bietet das gleiche leistungsstarke KI-Codierungserlebnis, ohne dass ein Terminal erforderlich ist.
+Loongcode kann als Webanwendung in Ihrem Browser ausgeführt werden und bietet das gleiche leistungsstarke KI-Codierungserlebnis, ohne dass ein Terminal erforderlich ist.
 
-![LGcode Web – Neue Sitzung](../../../assets/web/web-homepage-new-session.png)
+![Loongcode Web – Neue Sitzung](../../../assets/web/web-homepage-new-session.png)
 
 ## Erste Schritte
 
 Starten Sie die Weboberfläche, indem Sie Folgendes ausführen:
 
 ```bash
-lgcode web
+loongcode web
 ```
 
-Dadurch wird ein lokaler Server auf `127.0.0.1` mit einem zufällig verfügbaren Port gestartet und LGcode automatisch in Ihrem Standardbrowser geöffnet.
+Dadurch wird ein lokaler Server auf `127.0.0.1` mit einem zufällig verfügbaren Port gestartet und Loongcode automatisch in Ihrem Standardbrowser geöffnet.
 
 :::caution
-Wenn `LGCODE_SERVER_PASSWORD` nicht gesetzt ist, ist der Server ungesichert. Dies ist für den lokalen Gebrauch in Ordnung, sollte aber für den Netzwerkzugriff eingestellt werden.
+Wenn `LOONGCODE_SERVER_PASSWORD` nicht gesetzt ist, ist der Server ungesichert. Dies ist für den lokalen Gebrauch in Ordnung, sollte aber für den Netzwerkzugriff eingestellt werden.
 :::
 
 :::tip[Windows-Nutzer]
-Um die beste Erfahrung zu erzielen, führen Sie `lgcode web` über [WSL](/docs/windows-wsl) und nicht über PowerShell aus. Dies gewährleistet den ordnungsgemäßen Zugriff auf das Dateisystem und die Terminalintegration.
+Um die beste Erfahrung zu erzielen, führen Sie `loongcode web` über [WSL](/docs/windows-wsl) und nicht über PowerShell aus. Dies gewährleistet den ordnungsgemäßen Zugriff auf das Dateisystem und die Terminalintegration.
 :::
 
 ---
@@ -33,21 +33,21 @@ Sie können den Webserver mithilfe von Befehlszeilen-Flags oder in Ihrer [Konfig
 
 ### Port
 
-Standardmäßig wählt LGcode einen verfügbaren Port aus. Sie können einen Port angeben:
+Standardmäßig wählt Loongcode einen verfügbaren Port aus. Sie können einen Port angeben:
 
 ```bash
-lgcode web --port 4096
+loongcode web --port 4096
 ```
 
 ### Hostname
 
-Standardmäßig bindet der Server an `127.0.0.1` (nur localhost). So machen Sie LGcode in Ihrem Netzwerk zugänglich:
+Standardmäßig bindet der Server an `127.0.0.1` (nur localhost). So machen Sie Loongcode in Ihrem Netzwerk zugänglich:
 
 ```bash
-lgcode web --hostname 0.0.0.0
+loongcode web --hostname 0.0.0.0
 ```
 
-Bei Verwendung von `0.0.0.0` zeigt LGcode sowohl lokale als auch Netzwerkadressen an:
+Bei Verwendung von `0.0.0.0` zeigt Loongcode sowohl lokale als auch Netzwerkadressen an:
 
 ```
   Local access:       http://localhost:4096
@@ -59,15 +59,15 @@ Bei Verwendung von `0.0.0.0` zeigt LGcode sowohl lokale als auch Netzwerkadresse
 Aktivieren Sie mDNS, um Ihren Server im lokalen Netzwerk erkennbar zu machen:
 
 ```bash
-lgcode web --mdns
+loongcode web --mdns
 ```
 
-Dadurch wird der Hostname automatisch auf `0.0.0.0` gesetzt und der Server als `lgcode.local` angekündigt.
+Dadurch wird der Hostname automatisch auf `0.0.0.0` gesetzt und der Server als `loongcode.local` angekündigt.
 
 Sie können den mDNS-Domänennamen anpassen, um mehrere Instanzen im selben Netzwerk auszuführen:
 
 ```bash
-lgcode web --mdns --mdns-domain myproject.local
+loongcode web --mdns --mdns-domain myproject.local
 ```
 
 ### CORS
@@ -75,36 +75,36 @@ lgcode web --mdns --mdns-domain myproject.local
 So erlauben Sie zusätzliche Domänen für CORS (nützlich für benutzerdefinierte Frontends):
 
 ```bash
-lgcode web --cors https://example.com
+loongcode web --cors https://example.com
 ```
 
 ### Authentifizierung
 
-Um den Zugriff zu schützen, legen Sie mithilfe der Umgebungsvariablen `LGCODE_SERVER_PASSWORD` ein Passwort fest:
+Um den Zugriff zu schützen, legen Sie mithilfe der Umgebungsvariablen `LOONGCODE_SERVER_PASSWORD` ein Passwort fest:
 
 ```bash
-LGCODE_SERVER_PASSWORD=secret lgcode web
+LOONGCODE_SERVER_PASSWORD=secret loongcode web
 ```
 
-Der Benutzername ist standardmäßig `lgcode`, kann aber mit `LGCODE_SERVER_USERNAME` geändert werden.
+Der Benutzername ist standardmäßig `loongcode`, kann aber mit `LOONGCODE_SERVER_USERNAME` geändert werden.
 
 ---
 
 ## Verwenden der Weboberfläche
 
-Nach dem Start bietet die Weboberfläche Zugriff auf Ihre LGcode-Sitzungen.
+Nach dem Start bietet die Weboberfläche Zugriff auf Ihre Loongcode-Sitzungen.
 
 ### Sitzungen
 
 Zeigen Sie Ihre Sitzungen auf der Startseite an und verwalten Sie sie. Sie können aktive Sitzungen sehen und neue starten.
 
-![LGcode Web – Aktive Sitzung](../../../assets/web/web-homepage-active-session.png)
+![Loongcode Web – Aktive Sitzung](../../../assets/web/web-homepage-active-session.png)
 
 ### Serverstatus
 
 Klicken Sie auf „Server anzeigen“, um verbundene Server und deren Status anzuzeigen.
 
-![LGcode Web – Siehe Server](../../../assets/web/web-homepage-see-servers.png)
+![Loongcode Web – Siehe Server](../../../assets/web/web-homepage-see-servers.png)
 
 ---
 
@@ -114,10 +114,10 @@ Sie können eine Terminal-TUI an einen laufenden Webserver anschließen:
 
 ```bash
 # Start the web server
-lgcode web --port 4096
+loongcode web --port 4096
 
 # In another terminal, attach the TUI
-lgcode attach http://localhost:4096
+loongcode attach http://localhost:4096
 ```
 
 Dadurch können Sie sowohl die Weboberfläche als auch das Terminal gleichzeitig verwenden und dieselben Sitzungen und denselben Status teilen.
@@ -126,7 +126,7 @@ Dadurch können Sie sowohl die Weboberfläche als auch das Terminal gleichzeitig
 
 ## Konfigurationsdatei
 
-Sie können Servereinstellungen auch in Ihrer `lgcode.json`-Konfigurationsdatei konfigurieren:
+Sie können Servereinstellungen auch in Ihrer `loongcode.json`-Konfigurationsdatei konfigurieren:
 
 ```json
 {

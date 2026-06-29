@@ -54,15 +54,15 @@ export type WslJob =
   | { kind: "install-wsl"; startedAt: number }
   | { kind: "install-distro"; distro: string; startedAt: number }
   | { kind: "probe-distro"; distro: string; startedAt: number }
-  | { kind: "probe-lgcode"; distro: string; startedAt: number }
-  | { kind: "install-lgcode"; distro: string; startedAt: number }
+  | { kind: "probe-loongcode"; distro: string; startedAt: number }
+  | { kind: "install-loongcode"; distro: string; startedAt: number }
 
 export type WslServersState = {
   runtime: WslRuntimeCheck | null
   installed: WslInstalledDistro[]
   online: WslOnlineDistro[]
   distroProbes: Record<string, WslDistroProbe>
-  lgcodeChecks: Record<string, WslOpencodeCheck>
+  loongcodeChecks: Record<string, WslOpencodeCheck>
   pendingRestart: boolean
   servers: WslServerItem[]
   job: WslJob | null

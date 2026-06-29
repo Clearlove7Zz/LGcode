@@ -19,10 +19,10 @@ body:
       required: false
 
   - type: input
-    id: lgcode-version
+    id: loongcode-version
     attributes:
-      label: LGcode version
-      description: What version of LGcode are you using?
+      label: Loongcode version
+      description: What version of Loongcode are you using?
     validations:
       required: false
 

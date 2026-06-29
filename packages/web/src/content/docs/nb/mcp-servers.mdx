@@ -3,7 +3,7 @@ title: MCP-servere
 description: Legg til lokale og eksterne MCP-verktøy.
 ---
 
-Du kan legge til eksterne verktøy i LGcode ved å bruke _Model Context Protocol_ eller MCP. LGcode støtter både lokale og eksterne servere.
+Du kan legge til eksterne verktøy i Loongcode ved å bruke _Model Context Protocol_ eller MCP. Loongcode støtter både lokale og eksterne servere.
 
 Når de er lagt til, er MCP-verktøy automatisk tilgjengelige for LLM sammen med innebygde verktøy.
 
@@ -23,9 +23,9 @@ Enkelte MCP-servere, som GitHub MCP-serveren, har en tendens til å legge til ma
 
 ## Aktivering
 
-Du kan definere MCP-servere i [LGcode Config](https://modelhub.lgdg.cc/docs/config/) under `mcp`. Legg til hver MCP med et unikt navn. Du kan referere til den MCP ved navn når du spør LLM-en.
+Du kan definere MCP-servere i [Loongcode Config](https://modelhub.lgdg.cc/docs/config/) under `mcp`. Legg til hver MCP med et unikt navn. Du kan referere til den MCP ved navn når du spør LLM-en.
 
-```jsonc title="lgcode.jsonc" {6}
+```jsonc title="loongcode.jsonc" {6}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "mcp": {
@@ -46,11 +46,11 @@ Du kan også deaktivere en server ved å sette `enabled` til `false`. Dette er n
 
 ### Overstyring av fjernstandarder
 
-Organisasjoner kan tilby standard MCP-servere via deres `.well-known/lgcode`-endepunkt. Disse serverne kan være deaktivert som standard, slik at brukere kan melde seg på de de trenger.
+Organisasjoner kan tilby standard MCP-servere via deres `.well-known/loongcode`-endepunkt. Disse serverne kan være deaktivert som standard, slik at brukere kan melde seg på de de trenger.
 
 For å aktivere en spesifikk server fra organisasjonens eksterne konfigurasjon, legg den til i din lokale konfigurasjon med `enabled: true`:
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "mcp": {
@@ -71,7 +71,7 @@ Dine lokale konfigurasjonsverdier overstyrer de eksterne standardinnstillingene.
 
 Legg til lokale MCP-servere ved å bruke `type` til `"local"` i MCP-objektet.
 
-```jsonc title="lgcode.jsonc" {15}
+```jsonc title="loongcode.jsonc" {15}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "mcp": {
@@ -92,7 +92,7 @@ Kommandoen er hvordan den lokale MCP-serveren startes. Du kan også sende inn en
 
 For eksempel, her er hvordan du kan legge til test [`@modelcontextprotocol/server-everything`](https://www.npmjs.com/package/@modelcontextprotocol/server-everything) MCP serveren.
 
-```jsonc title="lgcode.jsonc"
+```jsonc title="loongcode.jsonc"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "mcp": {
@@ -130,7 +130,7 @@ Her er alle alternativene for å konfigurere en lokal MCP-server.
 
 Legg til eksterne MCP-servere ved å sette `type` til `"remote"`.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "mcp": {
@@ -165,7 +165,7 @@ Legg til eksterne MCP-servere ved å sette `type` til `"remote"`.
 
 ## OAuth
 
-LGcode håndterer automatisk OAuth-autentisering for eksterne MCP-servere. Når en server krever autentisering, vil LGcode:
+Loongcode håndterer automatisk OAuth-autentisering for eksterne MCP-servere. Når en server krever autentisering, vil Loongcode:
 
 1. Oppdag 401-svaret og start OAuth-flyten
 2. Bruk **Dynamisk klientregistrering (RFC 7591)** hvis det støttes av serveren
@@ -177,7 +177,7 @@ LGcode håndterer automatisk OAuth-autentisering for eksterne MCP-servere. Når 
 
 For de fleste OAuth-aktiverte MCP-servere er ingen spesiell konfigurasjon nødvendig. Bare konfigurer den eksterne serveren:
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "mcp": {
@@ -189,7 +189,7 @@ For de fleste OAuth-aktiverte MCP-servere er ingen spesiell konfigurasjon nødve
 }
 ```
 
-Hvis serveren krever autentisering, vil LGcode be deg om å autentisere når du prøver å bruke den for første gang. Hvis ikke, kan du [utløse flyten manuelt](#authenticating) med `lgcode mcp auth <server-name>`.
+Hvis serveren krever autentisering, vil Loongcode be deg om å autentisere når du prøver å bruke den for første gang. Hvis ikke, kan du [utløse flyten manuelt](#authenticating) med `loongcode mcp auth <server-name>`.
 
 ---
 
@@ -197,7 +197,7 @@ Hvis serveren krever autentisering, vil LGcode be deg om å autentisere når du 
 
 Hvis du har klientlegitimasjon fra MCP-serverleverandøren, kan du konfigurere dem:
 
-```json title="lgcode.json" {7-11}
+```json title="loongcode.json" {7-11}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "mcp": {
@@ -223,22 +223,22 @@ Du kan utløse autentisering manuelt eller administrere legitimasjon.
 Autentiser med en spesifikk MCP-server:
 
 ```bash
-lgcode mcp auth my-oauth-server
+loongcode mcp auth my-oauth-server
 ```
 
 Liste alle MCP-servere og deres autentiseringsstatus:
 
 ```bash
-lgcode mcp list
+loongcode mcp list
 ```
 
 Fjern lagret legitimasjon:
 
 ```bash
-lgcode mcp logout my-oauth-server
+loongcode mcp logout my-oauth-server
 ```
 
-Kommandoen `mcp auth` åpner nettleseren din for autorisasjon. Etter at du har godkjent, vil LGcode lagre tokens sikkert i `~/.local/share/lgcode/mcp-auth.json`.
+Kommandoen `mcp auth` åpner nettleseren din for autorisasjon. Etter at du har godkjent, vil Loongcode lagre tokens sikkert i `~/.local/share/loongcode/mcp-auth.json`.
 
 ---
 
@@ -246,7 +246,7 @@ Kommandoen `mcp auth` åpner nettleseren din for autorisasjon. Etter at du har g
 
 Hvis du vil deaktivere automatisk OAuth for en server (f.eks. for servere som bruker API-nøkler i stedet), setter du `oauth` til `false`:
 
-```json title="lgcode.json" {7}
+```json title="loongcode.json" {7}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "mcp": {
@@ -279,10 +279,10 @@ Hvis en ekstern MCP-server ikke klarer å autentisere, kan du diagnostisere prob
 
 ```bash
 # View auth status for all OAuth-capable servers
-lgcode mcp auth list
+loongcode mcp auth list
 
 # Debug connection and OAuth flow for a specific server
-lgcode mcp debug my-oauth-server
+loongcode mcp debug my-oauth-server
 ```
 
 Kommandoen `mcp debug` viser gjeldende autentiseringsstatus, tester HTTP-tilkoblingen og forsøker OAuth-oppdagelsesflyten.
@@ -291,7 +291,7 @@ Kommandoen `mcp debug` viser gjeldende autentiseringsstatus, tester HTTP-tilkobl
 
 ## Administrering
 
-MCP-ene dine er tilgjengelige som verktøy i LGcode, sammen med innebygde verktøy. Så du kan administrere dem gjennom LGcode-konfigurasjonen som alle andre verktøy.
+MCP-ene dine er tilgjengelige som verktøy i Loongcode, sammen med innebygde verktøy. Så du kan administrere dem gjennom Loongcode-konfigurasjonen som alle andre verktøy.
 
 ---
 
@@ -299,7 +299,7 @@ MCP-ene dine er tilgjengelige som verktøy i LGcode, sammen med innebygde verkt�
 
 Dette betyr at du kan aktivere eller deaktivere dem globalt.
 
-```json title="lgcode.json" {14}
+```json title="loongcode.json" {14}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "mcp": {
@@ -320,7 +320,7 @@ Dette betyr at du kan aktivere eller deaktivere dem globalt.
 
 Vi kan også bruke et globmønster for å deaktivere alle matchende MCP-er.
 
-```json title="lgcode.json" {14}
+```json title="loongcode.json" {14}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "mcp": {
@@ -350,7 +350,7 @@ Hvis du har et stort antall MCP-servere, vil du kanskje bare aktivere dem per ag
 1. Deaktiver det som et verktøy globalt.
 2. Aktiver MCP-serveren som et verktøy i [agent config](/docs/agents#tools).
 
-```json title="lgcode.json" {11, 14-18}
+```json title="loongcode.json" {11, 14-18}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "mcp": {
@@ -404,7 +404,7 @@ Nedenfor er eksempler på noen vanlige MCP-servere. Du kan sende inn en PR hvis 
 
 Legg til [Sentry MCP-serveren](https://mcp.sentry.dev) for å samhandle med Sentry-prosjektene og problemene dine.
 
-```json title="lgcode.json" {4-8}
+```json title="loongcode.json" {4-8}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "mcp": {
@@ -420,10 +420,10 @@ Legg til [Sentry MCP-serveren](https://mcp.sentry.dev) for å samhandle med Sent
 Etter å ha lagt til konfigurasjonen, autentiser med Sentry:
 
 ```bash
-lgcode mcp auth sentry
+loongcode mcp auth sentry
 ```
 
-Dette åpner et nettleservindu for å fullføre OAuth-flyten og koble LGcode til Sentry-kontoen din.
+Dette åpner et nettleservindu for å fullføre OAuth-flyten og koble Loongcode til Sentry-kontoen din.
 
 Når du er autentisert, kan du bruke Sentry-verktøy i ledetekstene dine for å spørre etter problemer, prosjekter og feildata.
 
@@ -437,7 +437,7 @@ Show me the latest unresolved issues in my project. use sentry
 
 Legg til [Context7 MCP-serveren](https://github.com/upstash/context7) for å søke gjennom dokumenter.
 
-```json title="lgcode.json" {4-7}
+```json title="loongcode.json" {4-7}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "mcp": {
@@ -451,7 +451,7 @@ Legg til [Context7 MCP-serveren](https://github.com/upstash/context7) for å sø
 
 Hvis du har registrert deg for en gratis konto, kan du bruke API-nøkkelen din og få høyere satsgrenser.
 
-```json title="lgcode.json" {7-9}
+```json title="loongcode.json" {7-9}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "mcp": {
@@ -486,7 +486,7 @@ When you need to search docs, use `context7` tools.
 
 Legg til [Grep by Vercel](https://grep.app) MCP-serveren for å søke gjennom kodebiter på GitHub.
 
-```json title="lgcode.json" {4-7}
+```json title="loongcode.json" {4-7}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "mcp": {
@@ -543,11 +543,11 @@ For flere leverandører og avanserte funksjoner som bufring og hastighetsbegrens
 
 #### Valgfrie konfigurasjoner
 
-I tilfelle du ser en funksjon eller modell fra Helicone som ikke konfigureres automatisk gjennom LGcode, kan du alltid konfigurere den selv.
+I tilfelle du ser en funksjon eller modell fra Helicone som ikke konfigureres automatisk gjennom Loongcode, kan du alltid konfigurere den selv.
 
 Her er [Helicone's Model Directory](https://helicone.ai/models), du trenger denne for å hente ID-ene til modellene du vil legge til.
 
-```jsonc title="~/.config/lgcode/lgcode.jsonc"
+```jsonc title="~/.config/loongcode/loongcode.jsonc"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -575,7 +575,7 @@ Her er [Helicone's Model Directory](https://helicone.ai/models), du trenger denn
 
 Helicone støtter tilpassede headere for funksjoner som bufring, brukersporing og øktadministrasjon. Legg dem til leverandørkonfigurasjonen din ved å bruke `options.headers`:
 
-```jsonc title="~/.config/lgcode/lgcode.jsonc"
+```jsonc title="~/.config/loongcode/loongcode.jsonc"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "provider": {
@@ -586,7 +586,7 @@ Helicone støtter tilpassede headere for funksjoner som bufring, brukersporing o
         "baseURL": "https://ai-gateway.helicone.ai",
         "headers": {
           "Helicone-Cache-Enabled": "true",
-          "Helicone-User-Id": "lgcode",
+          "Helicone-User-Id": "loongcode",
         },
       },
     },
@@ -596,21 +596,21 @@ Helicone støtter tilpassede headere for funksjoner som bufring, brukersporing o
 
 ##### Sesjonssporing
 
-Helicones [Sessions](https://docs.helicone.ai/features/sessions) funksjon lar deg gruppere relaterte LLM forespørsler sammen. Bruk [lgcode-helicone-session](https://github.com/H2Shami/lgcode-helicone-session) plugin for automatisk å logge hver LGcode-samtale som en økt i Helicone.
+Helicones [Sessions](https://docs.helicone.ai/features/sessions) funksjon lar deg gruppere relaterte LLM forespørsler sammen. Bruk [loongcode-helicone-session](https://github.com/H2Shami/loongcode-helicone-session) plugin for automatisk å logge hver Loongcode-samtale som en økt i Helicone.
 
 ```bash
-npm install -g lgcode-helicone-session
+npm install -g loongcode-helicone-session
 ```
 
 Legg den til i konfigurasjonen din.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
-  "plugin": ["lgcode-helicone-session"]
+  "plugin": ["loongcode-helicone-session"]
 }
 ```
 
-Programtillegget injiserer `Helicone-Session-Id` og `Helicone-Session-Name` overskrifter i forespørslene dine. På Helicones Sessions-side vil du se hver LGcode-samtale oppført som en separat økt.
+Programtillegget injiserer `Helicone-Session-Id` og `Helicone-Session-Name` overskrifter i forespørslene dine. På Helicones Sessions-side vil du se hver Loongcode-samtale oppført som en separat økt.
 
 ##### Vanlige Helicone-headere
 

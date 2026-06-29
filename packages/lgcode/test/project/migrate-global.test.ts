@@ -1,16 +1,16 @@
 import { describe, expect } from "bun:test"
 import { Project } from "@/project/project"
-import { Database } from "@lgcode/core/database/database"
+import { Database } from "@loongcode/core/database/database"
 import { eq } from "drizzle-orm"
-import { SessionTable } from "@lgcode/core/session/sql"
-import { ProjectTable } from "@lgcode/core/project/sql"
-import { AbsolutePath } from "@lgcode/core/schema"
-import { ProjectV2 } from "@lgcode/core/project"
+import { SessionTable } from "@loongcode/core/session/sql"
+import { ProjectTable } from "@loongcode/core/project/sql"
+import { AbsolutePath } from "@loongcode/core/schema"
+import { ProjectV2 } from "@loongcode/core/project"
 import { SessionID } from "../../src/session/schema"
 import { $ } from "bun"
 import { tmpdirScoped } from "../fixture/fixture"
 import { Effect, Layer } from "effect"
-import { CrossSpawnSpawner } from "@lgcode/core/cross-spawn-spawner"
+import { CrossSpawnSpawner } from "@loongcode/core/cross-spawn-spawner"
 import { testEffect } from "../lib/effect"
 
 const it = testEffect(Layer.mergeAll(Project.defaultLayer, CrossSpawnSpawner.defaultLayer, Database.defaultLayer))
@@ -64,7 +64,7 @@ describe("migrateFromGlobal", () => {
       const tmp = yield* tmpdirScoped()
       yield* Effect.promise(() => $`git init`.cwd(tmp).quiet())
       yield* Effect.promise(() => $`git config user.name "Test"`.cwd(tmp).quiet())
-      yield* Effect.promise(() => $`git config user.email "test@lgcode.test"`.cwd(tmp).quiet())
+      yield* Effect.promise(() => $`git config user.email "test@loongcode.test"`.cwd(tmp).quiet())
       yield* Effect.promise(() => $`git config commit.gpgsign false`.cwd(tmp).quiet())
       const projects = yield* Project.Service
       const { project: pre } = yield* projects.fromDirectory(tmp)

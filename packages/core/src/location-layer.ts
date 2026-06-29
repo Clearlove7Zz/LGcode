@@ -41,14 +41,14 @@ import { AppProcess } from "./process"
 import { SessionStore } from "./session/store"
 import { SessionTodo } from "./session/todo"
 import { QuestionV2 } from "./question"
-import { LLMClient } from "@lgcode/llm"
-import { RequestExecutor } from "@lgcode/llm/route"
+import { LLMClient } from "@loongcode/llm"
+import { RequestExecutor } from "@loongcode/llm/route"
 import * as SessionRunnerLLM from "./session/runner/llm"
 import { SessionRunnerModel } from "./session/runner/model"
 import { SystemContextBuiltIns } from "./system-context/builtins"
 import { FetchHttpClient } from "effect/unstable/http"
 
-export class LocationServiceMap extends LayerMap.Service<LocationServiceMap>()("@lgcode/example/LocationServiceMap", {
+export class LocationServiceMap extends LayerMap.Service<LocationServiceMap>()("@loongcode/example/LocationServiceMap", {
   lookup: (ref: Location.Ref) => {
     const boot = Layer.effectDiscard(
       Effect.logInfo("booting location services", { directory: ref.directory, workspaceID: ref.workspaceID }),

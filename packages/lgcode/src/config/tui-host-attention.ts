@@ -1,5 +1,5 @@
-import { TuiConfig } from "@lgcode/tui/config"
-import { isRecord } from "@lgcode/tui/util/record"
+import { TuiConfig } from "@loongcode/tui/config"
+import { isRecord } from "@loongcode/tui/util/record"
 import { Filesystem } from "@/util/filesystem"
 import { Schema } from "effect"
 

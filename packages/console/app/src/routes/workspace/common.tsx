@@ -1,11 +1,11 @@
-import { Resource } from "@lgcode/console-resource"
-import { Actor } from "@lgcode/console-core/actor.js"
+import { Resource } from "@loongcode/console-resource"
+import { Actor } from "@loongcode/console-core/actor.js"
 import { action, json, query } from "@solidjs/router"
 import { withActor } from "~/context/auth.withActor"
-import { Billing } from "@lgcode/console-core/billing.js"
-import { and, Database, desc, eq, isNull } from "@lgcode/console-core/drizzle/index.js"
-import { WorkspaceTable } from "@lgcode/console-core/schema/workspace.sql.js"
-import { UserTable } from "@lgcode/console-core/schema/user.sql.js"
+import { Billing } from "@loongcode/console-core/billing.js"
+import { and, Database, desc, eq, isNull } from "@loongcode/console-core/drizzle/index.js"
+import { WorkspaceTable } from "@loongcode/console-core/schema/workspace.sql.js"
+import { UserTable } from "@loongcode/console-core/schema/user.sql.js"
 
 export function formatDateForTable(date: Date) {
   const options: Intl.DateTimeFormatOptions = {

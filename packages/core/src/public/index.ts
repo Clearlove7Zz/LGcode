@@ -1,7 +1,7 @@
 /** Intentional supported native API. Other core subpaths remain internal implementation surfaces. */
 export { Agent } from "./agent"
 export { Model } from "./model"
-export { LGcode } from "./lgcode"
+export { Loongcode } from "./loongcode"
 export { Session } from "./session"
 export { Tool } from "./tool"
 export { Location } from "./location"

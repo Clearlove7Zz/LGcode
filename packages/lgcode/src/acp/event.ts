@@ -7,7 +7,7 @@ import type {
   Part,
   SessionMessageResponse,
   ToolPart,
-} from "@lgcode/sdk/v2"
+} from "@loongcode/sdk/v2"
 import { Effect } from "effect"
 import { ACPSession } from "./session"
 import { ACPPermission } from "./permission"

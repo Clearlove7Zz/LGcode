@@ -1,5 +1,5 @@
 {
-  "name": "@lgcode/desktop",
+  "name": "@loongcode/desktop",
   "private": true,
   "version": "1.17.7",
   "type": "module",
@@ -30,8 +30,8 @@
   },
   "devDependencies": {
     "@actions/artifact": "4.0.0",
-    "@lgcode/app": "workspace:*",
-    "@lgcode/ui": "workspace:*",
+    "@loongcode/app": "workspace:*",
+    "@loongcode/ui": "workspace:*",
     "@lydell/node-pty": "catalog:",
     "@sentry/solid": "catalog:",
     "@sentry/vite-plugin": "catalog:",

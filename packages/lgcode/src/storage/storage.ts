@@ -1,9 +1,9 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
 import path from "path"
-import { Global } from "@lgcode/core/global"
-import { FSUtil } from "@lgcode/core/fs-util"
+import { Global } from "@loongcode/core/global"
+import { FSUtil } from "@loongcode/core/fs-util"
 import { Effect, Exit, Layer, Option, RcMap, Schema, Context, TxReentrantLock } from "effect"
-import { NonNegativeInt } from "@lgcode/core/schema"
+import { NonNegativeInt } from "@loongcode/core/schema"
 import { Git } from "@/git"
 
 type Migration = (dir: string, fs: FSUtil.Interface, git: Git.Interface) => Effect.Effect<void, FSUtil.Error>
@@ -58,7 +58,7 @@ export interface Interface {
   readonly list: (prefix: string[]) => Effect.Effect<string[][], FSUtil.Error>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Storage") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/Storage") {}
 
 function file(dir: string, key: string[]) {
   return path.join(dir, ...key) + ".json"

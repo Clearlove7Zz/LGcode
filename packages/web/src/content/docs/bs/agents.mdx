@@ -15,7 +15,7 @@ Možete se prebacivati ​​između agenata tokom sesije ili ih pozvati spominj
 
 ## Vrste
 
-Postoje dvije vrste agenata u LGcode: primarni agenti i podagenti.
+Postoje dvije vrste agenata u Loongcode: primarni agenti i podagenti.
 
 ---
 
@@ -27,7 +27,7 @@ Primarni agenti su glavni pomoćnici s kojima direktno komunicirate. Možete se 
 Možete koristiti tipku **Tab** za prebacivanje između primarnih agenata tokom sesije.
 :::
 
-LGcode dolazi sa dva ugrađena primarna agenta, **Build** i **Plan**. Pogledat ćemo ih u nastavku.
+Loongcode dolazi sa dva ugrađena primarna agenta, **Build** i **Plan**. Pogledat ćemo ih u nastavku.
 
 ---
 
@@ -35,13 +35,13 @@ LGcode dolazi sa dva ugrađena primarna agenta, **Build** i **Plan**. Pogledat �
 
 Subagenti su specijalizovani pomoćnici koje primarni agenti mogu pozvati za određene zadatke. Možete ih i ručno pozvati **@ spominjanjem** u svojim porukama.
 
-LGcode dolazi sa tri ugrađena subagenta, **General**, **Explore** i **Scout**. Ovo ćemo pogledati u nastavku.
+Loongcode dolazi sa tri ugrađena subagenta, **General**, **Explore** i **Scout**. Ovo ćemo pogledati u nastavku.
 
 ---
 
 ## Ugrađeni
 
-LGcode dolazi sa dva ugrađena primarna agenta i tri ugrađena subagenta.
+Loongcode dolazi sa dva ugrađena primarna agenta i tri ugrađena subagenta.
 
 ---
 
@@ -87,7 +87,7 @@ Brzi agent samo za čitanje za istraživanje kodnih baza. Nije moguće mijenjati
 
 _Režim_: `subagent`
 
-Agent samo za čitanje za istraživanje eksterne dokumentacije i zavisnosti. Koristite ga kada trebate klonirati repozitorij zavisnosti u LGcode-ov upravljani cache, pregledati izvorni kod biblioteke ili uporediti lokalni kod sa upstream implementacijama bez mijenjanja vašeg radnog prostora.
+Agent samo za čitanje za istraživanje eksterne dokumentacije i zavisnosti. Koristite ga kada trebate klonirati repozitorij zavisnosti u Loongcode-ov upravljani cache, pregledati izvorni kod biblioteke ili uporediti lokalni kod sa upstream implementacijama bez mijenjanja vašeg radnog prostora.
 
 ---
 
@@ -143,9 +143,9 @@ Možete prilagoditi ugrađene agente ili kreirati vlastite kroz konfiguraciju. A
 
 ### JSON
 
-Konfigurirajte agente u svom konfiguracijskom fajlu `lgcode.json`:
+Konfigurirajte agente u svom konfiguracijskom fajlu `loongcode.json`:
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "agent": {
@@ -188,10 +188,10 @@ Konfigurirajte agente u svom konfiguracijskom fajlu `lgcode.json`:
 
 Također možete definirati agente koristeći markdown datoteke. Stavite ih u:
 
-- Globalno: `~/.config/lgcode/agents/`
-- Po projektu: `.lgcode/agents/`
+- Globalno: `~/.config/loongcode/agents/`
+- Po projektu: `.loongcode/agents/`
 
-```markdown title="~/.config/lgcode/agents/review.md"
+```markdown title="~/.config/loongcode/agents/review.md"
 ---
 description: Reviews code for quality and best practices
 mode: subagent
@@ -227,7 +227,7 @@ Pogledajmo ove opcije konfiguracije detaljno.
 
 Koristite opciju `description` da pružite kratak opis onoga što agent radi i kada ga koristiti.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "agent": {
     "review": {
@@ -247,7 +247,7 @@ Kontrolišite slučajnost i kreativnost odgovora LLM-a pomoću `temperature` kon
 
 Niže vrijednosti čine odgovore fokusiranijim i determinističkim, dok više vrijednosti povećavaju kreativnost i varijabilnost.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "agent": {
     "plan": {
@@ -266,7 +266,7 @@ Vrijednosti temperature se obično kreću od 0.0 do 1.0:
 - **0.3-0.5**: Uravnoteženi odgovori sa malo kreativnosti, dobro za opšte razvojne zadatke
 - **0.6-1.0**: Kreativniji i raznovrsniji odgovori, korisni za razmišljanje i istraživanje
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "agent": {
     "analyze": {
@@ -284,7 +284,7 @@ Vrijednosti temperature se obično kreću od 0.0 do 1.0:
 }
 ```
 
-Ako temperatura nije navedena, LGcode koristi standardne postavke specifične za model; obično 0 za većinu modela, 0.55 za Qwen modele.
+Ako temperatura nije navedena, Loongcode koristi standardne postavke specifične za model; obično 0 za većinu modela, 0.55 za Qwen modele.
 
 ---
 
@@ -294,7 +294,7 @@ Kontrolirajte maksimalni broj iteracija agenta koje agent može izvesti prije ne
 
 Ako ovo nije postavljeno, agent će nastaviti iterirati sve dok model ne odluči da se zaustavi ili korisnik ne prekine sesiju.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "agent": {
     "quick-thinker": {
@@ -318,7 +318,7 @@ Naslijeđeno polje `maxSteps` je zastarjelo. Umjesto toga koristite `steps`.
 
 Postavite na `true` da onemogućite agenta.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "agent": {
     "review": {
@@ -334,7 +334,7 @@ Postavite na `true` da onemogućite agenta.
 
 Navedite prilagođenu sistemsku prompt datoteku za ovog agenta sa `prompt` konfiguracijom. Datoteka s promptom treba da sadrži upute specifične za svrhu agenta.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "agent": {
     "review": {
@@ -344,7 +344,7 @@ Navedite prilagođenu sistemsku prompt datoteku za ovog agenta sa `prompt` konfi
 }
 ```
 
-Ova putanja je relativna u odnosu na mjesto gdje se nalazi konfiguracijski fajl. Dakle, ovo radi i za globalnu LGcode konfiguraciju i za konfiguraciju specifične za projekat.
+Ova putanja je relativna u odnosu na mjesto gdje se nalazi konfiguracijski fajl. Dakle, ovo radi i za globalnu Loongcode konfiguraciju i za konfiguraciju specifične za projekat.
 
 ---
 
@@ -356,7 +356,7 @@ Koristite `model` konfiguraciju da nadjačate model za ovog agenta. Korisno za k
 Ako ne navedete model, primarni agenti koriste [model globalno konfiguriran](/docs/config#models) dok će podagenti koristiti model primarnog agenta koji je pozvao subagenta.
 :::
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "agent": {
     "plan": {
@@ -366,7 +366,7 @@ Ako ne navedete model, primarni agenti koriste [model globalno konfiguriran](/do
 }
 ```
 
-ID modela u vašoj LGcode konfiguraciji koristi format `provider/model-id`. Na primjer, ako koristite [LGcode Zen](/docs/zen), koristili biste `lgcode/gpt-5.1-codex` za GPT 5.1 Codex.
+ID modela u vašoj Loongcode konfiguraciji koristi format `provider/model-id`. Na primjer, ako koristite [Loongcode Zen](/docs/zen), koristili biste `loongcode/gpt-5.1-codex` za GPT 5.1 Codex.
 
 ---
 
@@ -374,7 +374,7 @@ ID modela u vašoj LGcode konfiguraciji koristi format `provider/model-id`. Na p
 
 Kontrolirajte koji su alati dostupni u ovom agentu koristeći konfiguraciju `tools`. Možete omogućiti ili onemogućiti određene alate tako što ćete ih postaviti na `true` ili `false`.
 
-```json title="lgcode.json" {3-6,9-12}
+```json title="loongcode.json" {3-6,9-12}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "tools": {
@@ -398,7 +398,7 @@ Konfiguracija specifična za agenta poništava globalnu konfiguraciju.
 
 Također možete koristiti zamjenske znakove za kontrolu više alata odjednom. Na primjer, da onemogućite sve alate sa MCP servera:
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "agent": {
@@ -425,7 +425,7 @@ Možete konfigurirati dozvole za upravljanje radnjama koje agent može poduzeti.
 - `"allow"` — Dozvoli sve operacije bez odobrenja
 - `"deny"` — Onemogućite alat
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "permission": {
@@ -436,7 +436,7 @@ Možete konfigurirati dozvole za upravljanje radnjama koje agent može poduzeti.
 
 Možete nadjačati ove dozvole po agentu.
 
-```json title="lgcode.json" {3-5,8-10}
+```json title="loongcode.json" {3-5,8-10}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "permission": {
@@ -454,7 +454,7 @@ Možete nadjačati ove dozvole po agentu.
 
 Također možete postaviti dozvole u Markdown agentima.
 
-```markdown title="~/.config/lgcode/agents/review.md"
+```markdown title="~/.config/loongcode/agents/review.md"
 ---
 description: Code review without edits
 mode: subagent
@@ -473,7 +473,7 @@ Only analyze code and suggest changes.
 
 Možete postaviti dozvole za određene bash komande.
 
-```json title="lgcode.json" {7}
+```json title="loongcode.json" {7}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "agent": {
@@ -491,7 +491,7 @@ Možete postaviti dozvole za određene bash komande.
 
 Ovo može koristiti glob uzorak.
 
-```json title="lgcode.json" {7}
+```json title="loongcode.json" {7}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "agent": {
@@ -509,7 +509,7 @@ Ovo može koristiti glob uzorak.
 Također možete koristiti zamjenski znak `*` za kontrolu dozvola za sve komande.
 Budući da posljednje podudarno pravilo ima prednost, prvo postavite zamjenski znak `*`, a zatim navedena pravila.
 
-```json title="lgcode.json" {8}
+```json title="loongcode.json" {8}
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "agent": {
@@ -533,7 +533,7 @@ Budući da posljednje podudarno pravilo ima prednost, prvo postavite zamjenski z
 
 Kontrolirajte način rada agenta koristeći konfiguraciju `mode`. Opcija `mode` se koristi da specificira kako se agent može koristiti.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "agent": {
     "review": {
@@ -551,7 +551,7 @@ Opcija `mode` se može postaviti na `primary`, `subagent` ili `all`. Ako `mode` 
 
 Sakrij podagenta iz `@` menija za automatsko dovršavanje sa `hidden: true`. Korisno za interne podagente koje bi drugi agenti trebali programski pozvati samo preko Task alata.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "agent": {
     "internal-helper": {
@@ -574,7 +574,7 @@ Odnosi se samo na `mode: subagent` agente.
 
 Kontrolirajte koje podagente agent može pozvati preko Task alata sa `permission.task`. Koristi glob uzorke za fleksibilno uparivanje.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "agent": {
     "orchestrator": {
@@ -609,7 +609,7 @@ Prilagodite vizualni izgled agenta u korisničkom sučelju s opcijom `color`. Ov
 
 Koristite važeću heksadecimalnu boju (npr. `#FF5733`) ili boju teme: `primary`, `secondary`, `accent`, `success`, `warning`, `error`, `info`.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "agent": {
     "creative": {
@@ -628,7 +628,7 @@ Koristite važeću heksadecimalnu boju (npr. `#FF5733`) ili boju teme: `primary`
 
 Kontrolirajte raznolikost odgovora s opcijom `top_p`. Alternativa temperaturi za kontrolu nasumice.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "agent": {
     "brainstorm": {
@@ -648,7 +648,7 @@ Sve druge opcije koje navedete u konfiguraciji agenta će biti **direktno prosli
 
 Na primjer, sa OpenAI-jevim modelima rezonovanja, možete kontrolisati napor rasuđivanja:
 
-```json title="lgcode.json" {6,7}
+```json title="loongcode.json" {6,7}
 {
   "agent": {
     "deep-thinker": {
@@ -664,7 +664,7 @@ Na primjer, sa OpenAI-jevim modelima rezonovanja, možete kontrolisati napor ras
 Ove dodatne opcije su specifične za model i dobavljača. U dokumentaciji vašeg provajdera provjerite dostupne parametre.
 
 :::tip
-Pokrenite `lgcode models` da vidite listu dostupnih modela.
+Pokrenite `loongcode models` da vidite listu dostupnih modela.
 :::
 
 ---
@@ -674,7 +674,7 @@ Pokrenite `lgcode models` da vidite listu dostupnih modela.
 Možete kreirati nove agente koristeći sljedeću naredbu:
 
 ```bash
-lgcode agent create
+loongcode agent create
 ```
 
 Ova interaktivna komanda će:
@@ -711,7 +711,7 @@ Imate li agenta kojeg biste željeli podijeliti? [Pošalji PR](https://github.co
 
 ### Agent za dokumentaciju
 
-```markdown title="~/.config/lgcode/agents/docs-writer.md"
+```markdown title="~/.config/loongcode/agents/docs-writer.md"
 ---
 description: Writes and maintains project documentation
 mode: subagent
@@ -733,7 +733,7 @@ Focus on:
 
 ### Sigurnosni revizor
 
-```markdown title="~/.config/lgcode/agents/security-auditor.md"
+```markdown title="~/.config/loongcode/agents/security-auditor.md"
 ---
 description: Performs security audits and identifies vulnerabilities
 mode: subagent

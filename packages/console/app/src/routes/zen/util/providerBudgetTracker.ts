@@ -1,4 +1,4 @@
-import { centsToMicroCents } from "@lgcode/console-core/util/price.js"
+import { centsToMicroCents } from "@loongcode/console-core/util/price.js"
 import { buildRateLimitKey, getRedis } from "./redis"
 
 export function createProviderBudgetTracker(

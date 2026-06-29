@@ -1,15 +1,15 @@
 ---
 title: Zen
-description: Lista selecionada de modelos fornecidos pelo LGcode.
+description: Lista selecionada de modelos fornecidos pelo Loongcode.
 ---
 
 import config from "../../../../config.mjs"
 export const console = config.console
 export const email = `mailto:${config.email}`
 
-O LGcode Zen é uma lista de modelos testados e verificados fornecidos pela equipe do LGcode.
+O Loongcode Zen é uma lista de modelos testados e verificados fornecidos pela equipe do Loongcode.
 
-O Zen funciona como qualquer outro provedor no LGcode. Você faz login no LGcode Zen e recebe sua chave de API. É **completamente opcional** e você não precisa usá-lo para usar o LGcode.
+O Zen funciona como qualquer outro provedor no Loongcode. Você faz login no Loongcode Zen e recebe sua chave de API. É **completamente opcional** e você não precisa usá-lo para usar o Loongcode.
 
 ---
 
@@ -18,7 +18,7 @@ O Zen funciona como qualquer outro provedor no LGcode. Você faz login no LGcode
 Existe um grande número de modelos disponíveis, mas apenas alguns deles funcionam bem como agentes de codificação. Além disso, a maioria dos provedores é configurada de formas muito diferentes; portanto, você obtém desempenho e qualidade muito diferentes.
 
 :::tip
-Testamos um grupo selecionado de modelos e provedores que funcionam bem com o LGcode.
+Testamos um grupo selecionado de modelos e provedores que funcionam bem com o Loongcode.
 :::
 
 Então, se você estiver usando um modelo por meio de algo como OpenRouter, nunca pode ter certeza de que está obtendo a melhor versão do modelo que deseja.
@@ -29,16 +29,16 @@ Para corrigir isso, fizemos algumas coisas:
 2. Depois, trabalhamos com alguns provedores para garantir que esses modelos fossem servidos corretamente.
 3. Por fim, fizemos benchmark da combinação modelo/provedor e chegamos a uma lista que nos sentimos confortáveis em recomendar.
 
-O LGcode Zen é um gateway de AI que dá a você acesso a esses modelos.
+O Loongcode Zen é um gateway de AI que dá a você acesso a esses modelos.
 
 ---
 
 ## Como funciona
 
-O LGcode Zen funciona como qualquer outro provedor no LGcode.
+O Loongcode Zen funciona como qualquer outro provedor no Loongcode.
 
-1. Você faz login no **<a href={console}>LGcode Zen</a>**, adiciona seus dados de cobrança e copia sua chave de API.
-2. Você executa o comando `/connect` no TUI, seleciona LGcode Zen e cola sua chave de API.
+1. Você faz login no **<a href={console}>Loongcode Zen</a>**, adiciona seus dados de cobrança e copia sua chave de API.
+2. Você executa o comando `/connect` no TUI, seleciona Loongcode Zen e cola sua chave de API.
 3. Execute `/models` no TUI para ver a lista de modelos que recomendamos.
 
 Você é cobrado por solicitação e pode adicionar créditos à sua conta.
@@ -101,7 +101,7 @@ Você também pode acessar nossos modelos pelos seguintes endpoints de API.
 | Nemotron 3 Ultra Free  | nemotron-3-ultra-free  | `https://modelhub.lgdg.cc/zen/v1/chat/completions`        | `@ai-sdk/openai-compatible` |
 | DeepSeek V4 Flash Free | deepseek-v4-flash-free | `https://modelhub.lgdg.cc/zen/v1/chat/completions`        | `@ai-sdk/openai-compatible` |
 
-O [model id](/docs/config/#models) na sua configuração do LGcode usa o formato `lgcode/<model-id>`. Por exemplo, para GPT 5.5, você usaria `lgcode/gpt-5.5` na sua configuração.
+O [model id](/docs/config/#models) na sua configuração do Loongcode usa o formato `loongcode/<model-id>`. Por exemplo, para GPT 5.5, você usaria `loongcode/gpt-5.5` na sua configuração.
 
 ---
 
@@ -183,11 +183,11 @@ As taxas de cartão de crédito são repassadas a preço de custo (4.4% + $0.30 
 
 Os modelos gratuitos:
 
-- DeepSeek V4 Flash Free está disponível no LGcode por tempo limitado. A equipe está usando esse período para coletar feedback e melhorar o modelo.
-- MiMo-V2.5 Free está disponível no LGcode por tempo limitado. A equipe está usando esse período para coletar feedback e melhorar o modelo.
-- North Mini Code Free está disponível no LGcode por tempo limitado. A equipe está usando esse período para coletar feedback e melhorar o modelo.
-- Nemotron 3 Ultra Free está disponível no LGcode por tempo limitado. A equipe está usando esse período para coletar feedback e melhorar o modelo.
-- Big Pickle é um modelo stealth que está gratuito no LGcode por tempo limitado. A equipe está usando esse período para coletar feedback e melhorar o modelo.
+- DeepSeek V4 Flash Free está disponível no Loongcode por tempo limitado. A equipe está usando esse período para coletar feedback e melhorar o modelo.
+- MiMo-V2.5 Free está disponível no Loongcode por tempo limitado. A equipe está usando esse período para coletar feedback e melhorar o modelo.
+- North Mini Code Free está disponível no Loongcode por tempo limitado. A equipe está usando esse período para coletar feedback e melhorar o modelo.
+- Nemotron 3 Ultra Free está disponível no Loongcode por tempo limitado. A equipe está usando esse período para coletar feedback e melhorar o modelo.
+- Big Pickle é um modelo stealth que está gratuito no Loongcode por tempo limitado. A equipe está usando esse período para coletar feedback e melhorar o modelo.
 
 <a href={email}>Entre em contato</a> se você tiver alguma dúvida.
 
@@ -288,9 +288,9 @@ Por exemplo, sua organização pode já ter uma chave para OpenAI ou Anthropic e
 
 ## Objetivos
 
-Criamos o LGcode Zen para:
+Criamos o Loongcode Zen para:
 
 1. Fazer **benchmark** dos melhores modelos/provedores para agentes de codificação.
 2. Ter acesso às opções de **mais alta qualidade** e não degradar o desempenho nem encaminhar para provedores mais baratos.
 3. Repassar quaisquer **quedas de preço** vendendo a preço de custo; assim, a única margem é para cobrir nossas taxas de processamento.
-4. Não ter **lock-in**, permitindo que você o use com qualquer outro agente de codificação. E sempre permitir que você use qualquer outro provedor com o LGcode também.
+4. Não ter **lock-in**, permitindo que você o use com qualquer outro agente de codificação. E sempre permitir que você use qualquer outro provedor com o Loongcode também.

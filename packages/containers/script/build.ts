@@ -22,11 +22,11 @@ const images = ["base", "bun-node", "rust", "tauri-linux", "publish"]
 const setup = async () => {
   if (!push) return
   const list = await $`docker buildx ls`.text()
-  if (list.includes("lgcode")) {
-    await $`docker buildx use lgcode`
+  if (list.includes("loongcode")) {
+    await $`docker buildx use loongcode`
     return
   }
-  await $`docker buildx create --name lgcode --use`
+  await $`docker buildx create --name loongcode --use`
 }
 
 await setup()

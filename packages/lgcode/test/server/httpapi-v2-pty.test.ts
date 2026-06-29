@@ -6,9 +6,9 @@ import * as Socket from "effect/unstable/socket/Socket"
 import path from "path"
 import { pathToFileURL } from "url"
 import { mkdir } from "fs/promises"
-import { Location } from "@lgcode/core/location"
-import { Pty } from "@lgcode/core/pty"
-import { PtyTicket } from "@lgcode/core/pty/ticket"
+import { Location } from "@loongcode/core/location"
+import { Pty } from "@loongcode/core/pty"
+import { PtyTicket } from "@loongcode/core/pty/ticket"
 import { HttpApiApp } from "../../src/server/routes/instance/httpapi/server"
 import { resetDatabase } from "../fixture/db"
 import { disposeAllInstances, tmpdir, tmpdirScoped } from "../fixture/fixture"
@@ -19,7 +19,7 @@ const testPty = process.platform === "win32" ? test.skip : test
 
 function request(route: string, directory: string, init: RequestInit = {}) {
   const headers = new Headers(init.headers)
-  headers.set("x-lgcode-directory", directory)
+  headers.set("x-loongcode-directory", directory)
   return HttpApiApp.webHandler().handler(
     new Request(`http://localhost${route}`, {
       ...init,
@@ -53,7 +53,7 @@ const effectIt = testEffect(
   ),
 )
 
-const directoryHeader = (dir: string) => HttpClientRequest.setHeader("x-lgcode-directory", dir)
+const directoryHeader = (dir: string) => HttpClientRequest.setHeader("x-loongcode-directory", dir)
 
 const serverUrl = () => HttpServer.HttpServer.use((server) => Effect.succeed(HttpServer.formatAddress(server.address)))
 
@@ -117,7 +117,7 @@ describe("v2 pty HttpApi", () => {
 
       const token = await request(`/api/pty/${info.id}/connect-token`, tmp.path, {
         method: "POST",
-        headers: { "x-lgcode-ticket": "1" },
+        headers: { "x-loongcode-ticket": "1" },
       })
       expect(token.status).toBe(200)
       const ticket = Schema.decodeUnknownSync(Location.response(PtyTicket.ConnectToken))(await token.json()).data.ticket
@@ -200,7 +200,7 @@ describe("v2 pty HttpApi", () => {
         )
         yield* Effect.promise(() =>
           Bun.write(
-            path.join(dir, "lgcode.json"),
+            path.join(dir, "loongcode.json"),
             JSON.stringify({ plugin: [pathToFileURL(plugin).href], formatter: false, lsp: false }),
           ),
         )

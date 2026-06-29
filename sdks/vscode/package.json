@@ -1,7 +1,7 @@
 {
-  "name": "lgcode-vscode",
-  "displayName": "LGcode",
-  "description": "LGcode AI coding agent for VS Code",
+  "name": "loongcode-vscode",
+  "displayName": "Loongcode",
+  "description": "Loongcode AI coding agent for VS Code",
   "version": "1.17.7",
   "publisher": "sst-dev",
   "license": "MIT",
@@ -21,54 +21,54 @@
   "contributes": {
     "commands": [
       {
-        "command": "lgcode.openTerminal",
-        "title": "Open LGcode",
+        "command": "loongcode.openTerminal",
+        "title": "Open Loongcode",
         "icon": {
           "light": "images/button-dark.svg",
           "dark": "images/button-light.svg"
         }
       },
       {
-        "command": "lgcode.openNewTerminal",
-        "title": "Open LGcode in new tab",
+        "command": "loongcode.openNewTerminal",
+        "title": "Open Loongcode in new tab",
         "icon": {
           "light": "images/button-dark.svg",
           "dark": "images/button-light.svg"
         }
       },
       {
-        "command": "lgcode.addFilepathToTerminal",
+        "command": "loongcode.addFilepathToTerminal",
         "title": "Add Filepath to Terminal"
       }
     ],
     "menus": {
       "editor/title": [
         {
-          "command": "lgcode.openNewTerminal",
+          "command": "loongcode.openNewTerminal",
           "group": "navigation"
         }
       ]
     },
     "keybindings": [
       {
-        "command": "lgcode.openTerminal",
-        "title": "Run lgcode",
+        "command": "loongcode.openTerminal",
+        "title": "Run loongcode",
         "key": "cmd+escape",
         "mac": "cmd+escape",
         "win": "ctrl+escape",
         "linux": "ctrl+escape"
       },
       {
-        "command": "lgcode.openNewTerminal",
-        "title": "Run lgcode",
+        "command": "loongcode.openNewTerminal",
+        "title": "Run loongcode",
         "key": "cmd+shift+escape",
         "mac": "cmd+shift+escape",
         "win": "ctrl+shift+escape",
         "linux": "ctrl+shift+escape"
       },
       {
-        "command": "lgcode.addFilepathToTerminal",
-        "title": "lgcode: Insert At-Mentioned",
+        "command": "loongcode.addFilepathToTerminal",
+        "title": "loongcode: Insert At-Mentioned",
         "key": "cmd+alt+k",
         "mac": "cmd+alt+k",
         "win": "ctrl+alt+K",

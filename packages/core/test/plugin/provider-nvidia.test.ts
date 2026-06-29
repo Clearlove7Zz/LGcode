@@ -1,10 +1,10 @@
 import { describe, expect } from "bun:test"
 import { Effect } from "effect"
-import { Catalog } from "@lgcode/core/catalog"
-import { PluginV2 } from "@lgcode/core/plugin"
-import { ProviderPlugins } from "@lgcode/core/plugin/provider"
-import { NvidiaPlugin } from "@lgcode/core/plugin/provider/nvidia"
-import { ProviderV2 } from "@lgcode/core/provider"
+import { Catalog } from "@loongcode/core/catalog"
+import { PluginV2 } from "@loongcode/core/plugin"
+import { ProviderPlugins } from "@loongcode/core/plugin/provider"
+import { NvidiaPlugin } from "@loongcode/core/plugin/provider/nvidia"
+import { ProviderV2 } from "@loongcode/core/provider"
 import { expectPluginRegistered, it, provider } from "./provider-helper"
 
 describe("NvidiaPlugin", () => {
@@ -37,8 +37,8 @@ describe("NvidiaPlugin", () => {
       expect((yield* catalog.provider.get(ProviderV2.ID.make("nvidia"))).request.headers).toEqual({
         Existing: "value",
         "HTTP-Referer": "https://modelhub.lgdg.cc/",
-        "X-Title": "lgcode",
-        "X-BILLING-INVOKE-ORIGIN": "LGcode",
+        "X-Title": "loongcode",
+        "X-BILLING-INVOKE-ORIGIN": "Loongcode",
       })
       expect((yield* catalog.provider.get(ProviderV2.ID.openrouter)).request.headers).toEqual({})
     }),
@@ -63,8 +63,8 @@ describe("NvidiaPlugin", () => {
 
       expect((yield* catalog.provider.get(ProviderV2.ID.make("nvidia"))).request.headers).toEqual({
         "HTTP-Referer": "https://modelhub.lgdg.cc/",
-        "X-Title": "lgcode",
-        "X-BILLING-INVOKE-ORIGIN": "LGcode",
+        "X-Title": "loongcode",
+        "X-BILLING-INVOKE-ORIGIN": "Loongcode",
       })
     }),
   )
@@ -91,7 +91,7 @@ describe("NvidiaPlugin", () => {
 
       expect((yield* catalog.provider.get(ProviderV2.ID.make("nvidia"))).request.headers).toEqual({
         "HTTP-Referer": "https://modelhub.lgdg.cc/",
-        "X-Title": "lgcode",
+        "X-Title": "loongcode",
         "X-BILLING-INVOKE-ORIGIN": "CustomOrigin",
       })
     }),

@@ -1,6 +1,6 @@
 # HTTP Route Patterns
 
-Current guidance for `packages/lgcode/src/server/routes/instance/httpapi`.
+Current guidance for `packages/loongcode/src/server/routes/instance/httpapi`.
 
 ## Handler Shape
 

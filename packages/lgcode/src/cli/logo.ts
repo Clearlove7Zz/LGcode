@@ -1,1 +1,1 @@
-export * from "@lgcode/tui/logo"
+export * from "@loongcode/tui/logo"

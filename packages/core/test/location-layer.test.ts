@@ -2,13 +2,13 @@ import fs from "fs/promises"
 import path from "path"
 import { describe, expect } from "bun:test"
 import { Effect, Equal, Hash, Layer, Schema } from "effect"
-import { Tool } from "@lgcode/core/public"
-import { Catalog } from "@lgcode/core/catalog"
-import { LocationServiceMap } from "@lgcode/core/location-layer"
-import { Location } from "@lgcode/core/location"
-import { PluginBoot } from "@lgcode/core/plugin/boot"
-import { ProviderV2 } from "@lgcode/core/provider"
-import { AbsolutePath } from "@lgcode/core/schema"
+import { Tool } from "@loongcode/core/public"
+import { Catalog } from "@loongcode/core/catalog"
+import { LocationServiceMap } from "@loongcode/core/location-layer"
+import { Location } from "@loongcode/core/location"
+import { PluginBoot } from "@loongcode/core/plugin/boot"
+import { ProviderV2 } from "@loongcode/core/provider"
+import { AbsolutePath } from "@loongcode/core/schema"
 import { tmpdir } from "./fixture/tmpdir"
 import { testEffect } from "./lib/effect"
 import { toolDefinitions } from "./lib/tool"
@@ -74,7 +74,7 @@ describe("LocationServiceMap", () => {
           })
           yield* Effect.promise(() =>
             fs.writeFile(
-              path.join(blocked.path, "lgcode.json"),
+              path.join(blocked.path, "loongcode.json"),
               JSON.stringify({
                 experimental: { policies: [{ effect: "deny", action: "provider.use", resource: "test" }] },
               }),

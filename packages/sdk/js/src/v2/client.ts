@@ -22,8 +22,8 @@ function rewrite(request: Request, values: { directory?: string; workspace?: str
   let changed = false
 
   for (const [name, key] of [
-    ["x-lgcode-directory", "directory"],
-    ["x-lgcode-workspace", "workspace"],
+    ["x-loongcode-directory", "directory"],
+    ["x-loongcode-workspace", "workspace"],
   ] as const) {
     const value = pick(
       request.headers.get(name),
@@ -42,8 +42,8 @@ function rewrite(request: Request, values: { directory?: string; workspace?: str
   if (!changed) return request
 
   const next = new Request(url, request)
-  next.headers.delete("x-lgcode-directory")
-  next.headers.delete("x-lgcode-workspace")
+  next.headers.delete("x-loongcode-directory")
+  next.headers.delete("x-loongcode-workspace")
   return next
 }
 
@@ -63,14 +63,14 @@ export function createLgcodeClient(config?: Config & { directory?: string; exper
   if (config?.directory) {
     config.headers = {
       ...config.headers,
-      "x-lgcode-directory": encodeURIComponent(config.directory),
+      "x-loongcode-directory": encodeURIComponent(config.directory),
     }
   }
 
   if (config?.experimental_workspaceID) {
     config.headers = {
       ...config.headers,
-      "x-lgcode-workspace": config.experimental_workspaceID,
+      "x-loongcode-workspace": config.experimental_workspaceID,
     }
   }
 
@@ -84,7 +84,7 @@ export function createLgcodeClient(config?: Config & { directory?: string; exper
   client.interceptors.response.use((response) => {
     const contentType = response.headers.get("content-type")
     if (contentType === "text/html")
-      throw new Error("Request is not supported by this version of LGcode Server (Server responded with text/html)")
+      throw new Error("Request is not supported by this version of Loongcode Server (Server responded with text/html)")
 
     return response
   })

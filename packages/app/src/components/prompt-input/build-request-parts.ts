@@ -1,5 +1,5 @@
-import { getFilename } from "@lgcode/core/util/path"
-import { type AgentPartInput, type FilePartInput, type Part, type TextPartInput } from "@lgcode/sdk/v2/client"
+import { getFilename } from "@loongcode/core/util/path"
+import { type AgentPartInput, type FilePartInput, type Part, type TextPartInput } from "@loongcode/sdk/v2/client"
 import type { FileSelection } from "@/context/file"
 import { encodeFilePath } from "@/context/file/path"
 import type { AgentPart, FileAttachmentPart, ImageAttachmentPart, Prompt } from "@/context/prompt"

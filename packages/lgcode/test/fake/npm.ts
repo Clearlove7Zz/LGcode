@@ -1,4 +1,4 @@
-import { Npm } from "@lgcode/core/npm"
+import { Npm } from "@loongcode/core/npm"
 import { Effect, Layer } from "effect"
 
 export const noop = Layer.mock(Npm.Service)({

@@ -7,22 +7,22 @@ import { NodeHttpServer } from "@effect/platform-node"
 import { Effect, Exit, Fiber, Layer, Schema } from "effect"
 import { FetchHttpClient, HttpServer, HttpServerRequest, HttpServerResponse } from "effect/unstable/http"
 import { eq } from "drizzle-orm"
-import { FSUtil } from "@lgcode/core/fs-util"
+import { FSUtil } from "@loongcode/core/fs-util"
 import { GlobalBus, type GlobalEvent } from "@/bus/global"
-import { Database } from "@lgcode/core/database/database"
-import { ProjectV2 } from "@lgcode/core/project"
-import { ProjectTable } from "@lgcode/core/project/sql"
-import { AbsolutePath } from "@lgcode/core/schema"
+import { Database } from "@loongcode/core/database/database"
+import { ProjectV2 } from "@loongcode/core/project"
+import { ProjectTable } from "@loongcode/core/project/sql"
+import { AbsolutePath } from "@loongcode/core/schema"
 import { Session as SessionNs } from "@/session/session"
 import { SessionID } from "@/session/schema"
-import { SessionTable } from "@lgcode/core/session/sql"
-import { EventSequenceTable } from "@lgcode/core/event/sql"
+import { SessionTable } from "@loongcode/core/session/sql"
+import { EventSequenceTable } from "@loongcode/core/event/sql"
 import { resetDatabase } from "../fixture/db"
 import { disposeAllInstances, provideTmpdirInstance, requireInstance, TestInstance } from "../fixture/fixture"
 import { testEffect } from "../lib/effect"
 import { registerAdapter } from "../../src/control-plane/adapters"
-import { WorkspaceV2 } from "@lgcode/core/workspace"
-import { WorkspaceTable } from "@lgcode/core/control-plane/workspace.sql"
+import { WorkspaceV2 } from "@loongcode/core/workspace"
+import { WorkspaceTable } from "@loongcode/core/control-plane/workspace.sql"
 import type { Target, WorkspaceAdapter, WorkspaceInfo } from "../../src/control-plane/types"
 import * as Workspace from "../../src/control-plane/workspace"
 import { InstanceStore } from "@/project/instance-store"
@@ -33,11 +33,11 @@ import { Project } from "@/project/project"
 import { Vcs } from "@/project/vcs"
 import { RuntimeFlags } from "@/effect/runtime-flags"
 import { EventV2Bridge } from "@/event-v2-bridge"
-import { Ripgrep } from "@lgcode/core/ripgrep"
+import { Ripgrep } from "@loongcode/core/ripgrep"
 
 const originalEnv = {
-  LGCODE_AUTH_CONTENT: process.env.LGCODE_AUTH_CONTENT,
-  LGCODE_EXPERIMENTAL_WORKSPACES: process.env.LGCODE_EXPERIMENTAL_WORKSPACES,
+  LOONGCODE_AUTH_CONTENT: process.env.LOONGCODE_AUTH_CONTENT,
+  LOONGCODE_EXPERIMENTAL_WORKSPACES: process.env.LOONGCODE_EXPERIMENTAL_WORKSPACES,
   OTEL_EXPORTER_OTLP_HEADERS: process.env.OTEL_EXPORTER_OTLP_HEADERS,
   OTEL_EXPORTER_OTLP_ENDPOINT: process.env.OTEL_EXPORTER_OTLP_ENDPOINT,
   OTEL_RESOURCE_ATTRIBUTES: process.env.OTEL_RESOURCE_ATTRIBUTES,
@@ -108,7 +108,7 @@ function restoreEnv() {
 
 beforeEach(() => {
   restoreEnv()
-  process.env.LGCODE_EXPERIMENTAL_WORKSPACES = "true"
+  process.env.LOONGCODE_EXPERIMENTAL_WORKSPACES = "true"
 })
 
 afterEach(async () => {
@@ -123,7 +123,7 @@ async function initGitRepo(dir: string) {
   await $`git init`.cwd(dir).quiet()
   await $`git config core.fsmonitor false`.cwd(dir).quiet()
   await $`git config commit.gpgsign false`.cwd(dir).quiet()
-  await $`git config user.email "test@lgcode.test"`.cwd(dir).quiet()
+  await $`git config user.email "test@loongcode.test"`.cwd(dir).quiet()
   await $`git config user.name "Test"`.cwd(dir).quiet()
   await fs.writeFile(path.join(dir, "tracked.txt"), "base\n")
   await $`git add tracked.txt`.cwd(dir).quiet()
@@ -425,10 +425,10 @@ describe("workspace CRUD", () => {
       Effect.gen(function* () {
         const instance = yield* requireInstance
         const workspace = yield* Workspace.Service
-        process.env.LGCODE_AUTH_CONTENT = JSON.stringify({ test: { type: "api", key: "secret" } })
+        process.env.LOONGCODE_AUTH_CONTENT = JSON.stringify({ test: { type: "api", key: "secret" } })
         process.env.OTEL_EXPORTER_OTLP_HEADERS = "authorization=otel"
         process.env.OTEL_EXPORTER_OTLP_ENDPOINT = "https://otel.test"
-        process.env.OTEL_RESOURCE_ATTRIBUTES = "service.name=lgcode-test"
+        process.env.OTEL_RESOURCE_ATTRIBUTES = "service.name=loongcode-test"
 
         const workspaceID = WorkspaceV2.ID.ascending("wrk_create_local")
         const type = unique("create-local")
@@ -484,14 +484,14 @@ describe("workspace CRUD", () => {
           extra: { configured: true },
           projectID: instance.project.id,
         })
-        expect(JSON.parse(recorded.calls.create[0].env.LGCODE_AUTH_CONTENT ?? "{}")).toEqual({
+        expect(JSON.parse(recorded.calls.create[0].env.LOONGCODE_AUTH_CONTENT ?? "{}")).toEqual({
           test: { type: "api", key: "secret" },
         })
-        expect(recorded.calls.create[0].env.LGCODE_WORKSPACE_ID).toBe(workspaceID)
-        expect(recorded.calls.create[0].env.LGCODE_EXPERIMENTAL_WORKSPACES).toBe("true")
+        expect(recorded.calls.create[0].env.LOONGCODE_WORKSPACE_ID).toBe(workspaceID)
+        expect(recorded.calls.create[0].env.LOONGCODE_EXPERIMENTAL_WORKSPACES).toBe("true")
         expect(recorded.calls.create[0].env.OTEL_EXPORTER_OTLP_HEADERS).toBe("authorization=otel")
         expect(recorded.calls.create[0].env.OTEL_EXPORTER_OTLP_ENDPOINT).toBe("https://otel.test")
-        expect(recorded.calls.create[0].env.OTEL_RESOURCE_ATTRIBUTES).toBe("service.name=lgcode-test")
+        expect(recorded.calls.create[0].env.OTEL_RESOURCE_ATTRIBUTES).toBe("service.name=loongcode-test")
         expect((yield* workspace.status()).find((item) => item.workspaceID === workspaceID)?.status).toBe("connected")
 
         yield* workspace.remove(workspaceID)

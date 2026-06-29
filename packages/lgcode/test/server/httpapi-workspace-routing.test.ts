@@ -16,12 +16,12 @@ import Http from "node:http"
 import { mkdir } from "node:fs/promises"
 import path from "node:path"
 import { registerAdapter } from "../../src/control-plane/adapters"
-import { WorkspaceV2 } from "@lgcode/core/workspace"
+import { WorkspaceV2 } from "@loongcode/core/workspace"
 import type { WorkspaceAdapter } from "../../src/control-plane/types"
 import { Workspace } from "../../src/control-plane/workspace"
-import { WorkspaceTable } from "@lgcode/core/control-plane/workspace.sql"
-import { Database } from "@lgcode/core/database/database"
-import { Ripgrep } from "@lgcode/core/ripgrep"
+import { WorkspaceTable } from "@loongcode/core/control-plane/workspace.sql"
+import { Database } from "@loongcode/core/database/database"
+import { Ripgrep } from "@loongcode/core/ripgrep"
 import { Project } from "../../src/project/project"
 import { Session } from "../../src/session/session"
 import { WorkspacePaths } from "../../src/server/routes/instance/httpapi/groups/workspace"
@@ -267,7 +267,7 @@ describe("HttpApi workspace routing middleware", () => {
       const project = yield* Project.use.fromDirectory(dir)
       let forwarded: ProxiedRequest | undefined
 
-      // This starts a second HTTP server that stands in for the lgcode server
+      // This starts a second HTTP server that stands in for the loongcode server
       // backing a remote workspace. The client below still calls the local test
       // server; only the middleware should call this server.
       const remoteUrl = yield* startRemoteWorkspaceHttpServer((request) => {
@@ -301,8 +301,8 @@ describe("HttpApi workspace routing middleware", () => {
       const body = '{"title":"Remote workspace request"}'
       const response = yield* HttpClientRequest.patch(`/probe?workspace=${workspace.id}&keep=yes`).pipe(
         HttpClientRequest.setHeaders({
-          "x-lgcode-directory": "/secret/path",
-          "x-lgcode-workspace": "internal",
+          "x-loongcode-directory": "/secret/path",
+          "x-loongcode-workspace": "internal",
         }),
         HttpClientRequest.bodyStream(
           Stream.make(new TextEncoder().encode('{"title":"Remote '), new TextEncoder().encode('workspace request"}')),
@@ -325,8 +325,8 @@ describe("HttpApi workspace routing middleware", () => {
       expect(forwarded?.body).toBe(body)
       expect(forwarded?.headers["content-type"]).toBe("application/json")
       expect(forwarded?.headers["x-target-auth"]).toBe("secret")
-      expect(forwarded?.headers["x-lgcode-directory"]).toBeUndefined()
-      expect(forwarded?.headers["x-lgcode-workspace"]).toBeUndefined()
+      expect(forwarded?.headers["x-loongcode-directory"]).toBeUndefined()
+      expect(forwarded?.headers["x-loongcode-workspace"]).toBeUndefined()
     }),
   )
 
@@ -516,7 +516,7 @@ describe("HttpApi workspace routing middleware", () => {
       // directory hints before using the process cwd.
       const queryResponse = yield* HttpClient.get(`/probe?directory=${encodeURIComponent(queryDir)}`)
       const headerResponse = yield* HttpClientRequest.get("/probe").pipe(
-        HttpClientRequest.setHeader("x-lgcode-directory", headerDir),
+        HttpClientRequest.setHeader("x-loongcode-directory", headerDir),
         HttpClient.execute,
       )
 

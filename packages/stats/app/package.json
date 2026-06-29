@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "name": "@lgcode/stats-app",
+  "name": "@loongcode/stats-app",
   "version": "1.17.7",
   "private": true,
   "type": "module",
@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@ibm/plex": "6.4.1",
-    "@lgcode/stats-core": "workspace:*",
-    "@lgcode/ui": "workspace:*",
+    "@loongcode/stats-core": "workspace:*",
+    "@loongcode/ui": "workspace:*",
     "@solidjs/meta": "catalog:",
     "@solidjs/router": "catalog:",
     "@solidjs/start": "catalog:",

@@ -1,4 +1,4 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
 import { Session } from "@/session/session"
 import { SessionID } from "@/session/schema"
 import { Effect, Layer, Scope, Context } from "effect"
@@ -12,7 +12,7 @@ export interface Interface {
   readonly unshare: (sessionID: SessionID) => Effect.Effect<void, unknown>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/SessionShare") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/SessionShare") {}
 
 export const layer = Layer.effect(
   Service,

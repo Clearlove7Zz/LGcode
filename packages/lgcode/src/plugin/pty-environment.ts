@@ -1,6 +1,6 @@
 export * as PluginPtyEnvironment from "./pty-environment"
 
-import { PtyEnvironment } from "@lgcode/server/pty-environment"
+import { PtyEnvironment } from "@loongcode/server/pty-environment"
 import { Effect, Layer } from "effect"
 import { InstanceStore } from "@/project/instance-store"
 import { Plugin } from "."

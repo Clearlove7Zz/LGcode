@@ -20,23 +20,23 @@ beforeEach(() => {
 
 describe("theme preload", () => {
   test("migrates legacy oc-1 to oc-2 before mount", () => {
-    localStorage.setItem("lgcode-theme-id", "oc-1")
-    localStorage.setItem("lgcode-theme-css-light", "--background-base:#fff;")
-    localStorage.setItem("lgcode-theme-css-dark", "--background-base:#000;")
+    localStorage.setItem("loongcode-theme-id", "oc-1")
+    localStorage.setItem("loongcode-theme-css-light", "--background-base:#fff;")
+    localStorage.setItem("loongcode-theme-css-dark", "--background-base:#000;")
 
     run()
 
     expect(document.documentElement.dataset.theme).toBe("oc-2")
     expect(document.documentElement.dataset.colorScheme).toBe("light")
-    expect(localStorage.getItem("lgcode-theme-id")).toBe("oc-2")
-    expect(localStorage.getItem("lgcode-theme-css-light")).toBeNull()
-    expect(localStorage.getItem("lgcode-theme-css-dark")).toBeNull()
+    expect(localStorage.getItem("loongcode-theme-id")).toBe("oc-2")
+    expect(localStorage.getItem("loongcode-theme-css-light")).toBeNull()
+    expect(localStorage.getItem("loongcode-theme-css-dark")).toBeNull()
     expect(document.getElementById("oc-theme-preload")).toBeNull()
   })
 
   test("keeps cached css for non-default themes", () => {
-    localStorage.setItem("lgcode-theme-id", "nightowl")
-    localStorage.setItem("lgcode-theme-css-light", "--background-base:#fff;")
+    localStorage.setItem("loongcode-theme-id", "nightowl")
+    localStorage.setItem("loongcode-theme-css-light", "--background-base:#fff;")
 
     run()
 

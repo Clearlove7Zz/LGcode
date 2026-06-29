@@ -1,15 +1,15 @@
-import { Npm } from "@lgcode/core/npm"
+import { Npm } from "@loongcode/core/npm"
 import { describe, expect } from "bun:test"
 import { Cause, Effect, Layer, Option } from "effect"
 import fs from "fs/promises"
 import os from "os"
 import path from "path"
 import { fileURLToPath } from "url"
-import { AISDK } from "@lgcode/core/aisdk"
-import { EventV2 } from "@lgcode/core/event"
-import { ModelV2 } from "@lgcode/core/model"
-import { PluginV2 } from "@lgcode/core/plugin"
-import { DynamicProviderPlugin } from "@lgcode/core/plugin/provider/dynamic"
+import { AISDK } from "@loongcode/core/aisdk"
+import { EventV2 } from "@loongcode/core/event"
+import { ModelV2 } from "@loongcode/core/model"
+import { PluginV2 } from "@loongcode/core/plugin"
+import { DynamicProviderPlugin } from "@loongcode/core/plugin/provider/dynamic"
 import { testEffect } from "../lib/effect"
 import { fixtureProvider, it, model, npmLayer } from "./provider-helper"
 
@@ -36,7 +36,7 @@ function dynamicPlugin(layer = npmLayer) {
 function tempEntrypoint(source: string) {
   return Effect.acquireRelease(
     Effect.promise(async () => {
-      const directory = await fs.mkdtemp(path.join(os.tmpdir(), "lgcode-provider-dynamic-"))
+      const directory = await fs.mkdtemp(path.join(os.tmpdir(), "loongcode-provider-dynamic-"))
       const entrypoint = path.join(directory, "provider.mjs")
       await Bun.write(entrypoint, source)
       return { directory, entrypoint }

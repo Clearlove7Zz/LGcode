@@ -1,6 +1,6 @@
 export * as WebSearchTool from "./websearch"
 
-import { ToolFailure } from "@lgcode/llm"
+import { ToolFailure } from "@loongcode/llm"
 import { Context, Duration, Effect, Layer, Schema } from "effect"
 import { HttpClient, HttpClientRequest } from "effect/unstable/http"
 import { truthy } from "../flag/flag"
@@ -63,17 +63,17 @@ export interface Config {
   readonly parallelApiKey?: string
 }
 
-export class ConfigService extends Context.Service<ConfigService, Config>()("@lgcode/v2/WebSearchConfig") {}
+export class ConfigService extends Context.Service<ConfigService, Config>()("@loongcode/v2/WebSearchConfig") {}
 
 /** Isolates the retained product environment contract from the generic tool implementation. */
 export const defaultConfigLayer = Layer.sync(ConfigService, () =>
   ConfigService.of({
     provider:
-      process.env.LGCODE_WEBSEARCH_PROVIDER === "exa" || process.env.LGCODE_WEBSEARCH_PROVIDER === "parallel"
-        ? process.env.LGCODE_WEBSEARCH_PROVIDER
+      process.env.LOONGCODE_WEBSEARCH_PROVIDER === "exa" || process.env.LOONGCODE_WEBSEARCH_PROVIDER === "parallel"
+        ? process.env.LOONGCODE_WEBSEARCH_PROVIDER
         : undefined,
-    enableExa: truthy("LGCODE_EXPERIMENTAL") || truthy("LGCODE_ENABLE_EXA") || truthy("LGCODE_EXPERIMENTAL_EXA"),
-    enableParallel: truthy("LGCODE_ENABLE_PARALLEL") || truthy("LGCODE_EXPERIMENTAL_PARALLEL"),
+    enableExa: truthy("LOONGCODE_EXPERIMENTAL") || truthy("LOONGCODE_ENABLE_EXA") || truthy("LOONGCODE_EXPERIMENTAL_EXA"),
+    enableParallel: truthy("LOONGCODE_ENABLE_PARALLEL") || truthy("LOONGCODE_EXPERIMENTAL_PARALLEL"),
     exaApiKey: process.env.EXA_API_KEY,
     parallelApiKey: process.env.PARALLEL_API_KEY,
   }),
@@ -229,7 +229,7 @@ export const layer = Layer.effectDiscard(
                         // V2 invocation context does not safely expose the model yet.
                       },
                       {
-                        "User-Agent": `lgcode/${InstallationVersion}`,
+                        "User-Agent": `loongcode/${InstallationVersion}`,
                         ...(config.parallelApiKey ? { Authorization: `Bearer ${config.parallelApiKey}` } : {}),
                       },
                     )

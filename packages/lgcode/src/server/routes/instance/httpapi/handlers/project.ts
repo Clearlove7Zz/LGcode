@@ -1,6 +1,6 @@
 import * as InstanceState from "@/effect/instance-state"
 import { Project } from "@/project/project"
-import { ProjectV2 } from "@lgcode/core/project"
+import { ProjectV2 } from "@loongcode/core/project"
 import { Effect } from "effect"
 import { HttpApiBuilder } from "effect/unstable/httpapi"
 import { InstanceHttpApi } from "../api"

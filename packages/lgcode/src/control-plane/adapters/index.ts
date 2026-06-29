@@ -1,4 +1,4 @@
-import type { ProjectV2 } from "@lgcode/core/project"
+import type { ProjectV2 } from "@loongcode/core/project"
 import type { WorkspaceAdapter, WorkspaceAdapterEntry } from "../types"
 import { WorktreeAdapter } from "./worktree"
 

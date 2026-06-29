@@ -1,12 +1,12 @@
 import path from "path"
 import { describe, expect } from "bun:test"
 import { Effect, Layer } from "effect"
-import { AgentV2 } from "@lgcode/core/agent"
-import { PluginBoot } from "@lgcode/core/plugin/boot"
-import { AbsolutePath } from "@lgcode/core/schema"
-import { SkillV2 } from "@lgcode/core/skill"
-import { SystemContext } from "@lgcode/core/system-context"
-import { SkillGuidance } from "@lgcode/core/skill/guidance"
+import { AgentV2 } from "@loongcode/core/agent"
+import { PluginBoot } from "@loongcode/core/plugin/boot"
+import { AbsolutePath } from "@loongcode/core/schema"
+import { SkillV2 } from "@loongcode/core/skill"
+import { SystemContext } from "@loongcode/core/system-context"
+import { SkillGuidance } from "@loongcode/core/skill/guidance"
 import { it } from "../lib/effect"
 
 const build = AgentV2.ID.make("build")

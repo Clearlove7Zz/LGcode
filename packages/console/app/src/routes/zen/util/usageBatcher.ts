@@ -1,4 +1,4 @@
-import { Resource } from "@lgcode/console-resource"
+import { Resource } from "@loongcode/console-resource"
 import { getRedis } from "./redis"
 
 // Workspaces whose balance/usage updates should be batched in Redis to avoid

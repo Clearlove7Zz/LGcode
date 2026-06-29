@@ -1,8 +1,8 @@
 import { expect, test } from "bun:test"
 import { setTimeout as sleep } from "node:timers/promises"
 import { Effect, Layer } from "effect"
-import { FSUtil } from "@lgcode/core/fs-util"
-import { EffectFlock } from "@lgcode/core/util/effect-flock"
+import { FSUtil } from "@loongcode/core/fs-util"
+import { EffectFlock } from "@loongcode/core/util/effect-flock"
 import { McpAuth } from "../../src/mcp/auth"
 
 function authFile() {

@@ -1,68 +1,68 @@
 ---
 title: GitLab
-description: Используйте lgcode в задачах GitLab и мерж-реквестах.
+description: Используйте loongcode в задачах GitLab и мерж-реквестах.
 ---
 
-lgcode интегрируется с вашим рабочим процессом GitLab через конвейер GitLab CI/CD или с GitLab Duo.
+loongcode интегрируется с вашим рабочим процессом GitLab через конвейер GitLab CI/CD или с GitLab Duo.
 
-В обоих случаях lgcode будет работать на ваших программах GitLab.
+В обоих случаях loongcode будет работать на ваших программах GitLab.
 
 ---
 
 ## GitLab
 
-lgcode работает в обычном конвейере GitLab. Вы можете встроить его в конвейер как [CI-компонент](https://docs.gitlab.com/ee/ci/components/)
+loongcode работает в обычном конвейере GitLab. Вы можете встроить его в конвейер как [CI-компонент](https://docs.gitlab.com/ee/ci/components/)
 
-Здесь мы используем созданный сообществом компонент CI/CD для lgcode — [nagyv/gitlab-lgcode](https://gitlab.com/nagyv/gitlab-lgcode).
+Здесь мы используем созданный сообществом компонент CI/CD для loongcode — [nagyv/gitlab-loongcode](https://gitlab.com/nagyv/gitlab-loongcode).
 
 ---
 
 ### Функции
 
-- **Использовать пользовательскую конфигурацию для каждого задания**. Настройте lgcode с помощью пользовательского каталога конфигурации, например `./config/#custom-directory`, чтобы включать или отключать функциональность для каждого вызова lgcode.
-- **Минимальная настройка**: компонент CI настраивает lgcode в фоновом режиме, вам нужно только создать конфигурацию lgcode и начальное приглашение.
+- **Использовать пользовательскую конфигурацию для каждого задания**. Настройте loongcode с помощью пользовательского каталога конфигурации, например `./config/#custom-directory`, чтобы включать или отключать функциональность для каждого вызова loongcode.
+- **Минимальная настройка**: компонент CI настраивает loongcode в фоновом режиме, вам нужно только создать конфигурацию loongcode и начальное приглашение.
 - **Гибкость**: компонент CI поддерживает несколько входных данных для настройки его поведения.
 
 ---
 
 ### Настройка
 
-1. Сохраните JSON аутентификации lgcode как переменные среды CI типа файла в разделе **Настройки** > **CI/CD** > **Переменные**. Обязательно пометьте их как «Замаскированные и скрытые».
+1. Сохраните JSON аутентификации loongcode как переменные среды CI типа файла в разделе **Настройки** > **CI/CD** > **Переменные**. Обязательно пометьте их как «Замаскированные и скрытые».
 2. Добавьте следующее в файл `.gitlab-ci.yml`.
 
    ```yaml title=".gitlab-ci.yml"
    include:
-     - component: $CI_SERVER_FQDN/nagyv/gitlab-lgcode/lgcode@2
+     - component: $CI_SERVER_FQDN/nagyv/gitlab-loongcode/loongcode@2
        inputs:
-         config_dir: ${CI_PROJECT_DIR}/lgcode-config
-         auth_json: $LGCODE_AUTH_JSON # The variable name for your LGcode authentication JSON
+         config_dir: ${CI_PROJECT_DIR}/loongcode-config
+         auth_json: $LOONGCODE_AUTH_JSON # The variable name for your Loongcode authentication JSON
          command: optional-custom-command
          message: "Your prompt here"
    ```
 
-Дополнительные сведения и варианты использования см. в документации ](https://gitlab.com/explore/catalog/nagyv/gitlab-lgcode) для этого компонента.
+Дополнительные сведения и варианты использования см. в документации ](https://gitlab.com/explore/catalog/nagyv/gitlab-loongcode) для этого компонента.
 
 ---
 
 ## GitLab Duo
 
-lgcode интегрируется с вашим рабочим процессом GitLab.
-Упомяните `@lgcode` в комментарии, и lgcode выполнит задачи в вашем конвейере GitLab CI.
+loongcode интегрируется с вашим рабочим процессом GitLab.
+Упомяните `@loongcode` в комментарии, и loongcode выполнит задачи в вашем конвейере GitLab CI.
 
 ---
 
 ### Функции
 
-- **Триаж задач (Issue Triage)**. Попросите lgcode разобраться в проблеме и объяснить ее вам.
-- **Исправление и реализация**. Попросите lgcode исправить проблему или реализовать функцию.
+- **Триаж задач (Issue Triage)**. Попросите loongcode разобраться в проблеме и объяснить ее вам.
+- **Исправление и реализация**. Попросите loongcode исправить проблему или реализовать функцию.
   Он создаст новую ветку и создаст мерж-реквест с изменениями.
-- **Безопасность**: lgcode работает на ваших программах GitLab.
+- **Безопасность**: loongcode работает на ваших программах GitLab.
 
 ---
 
 ### Настройка
 
-lgcode работает в вашем конвейере GitLab CI/CD. Вот что вам понадобится для его настройки:
+loongcode работает в вашем конвейере GitLab CI/CD. Вот что вам понадобится для его настройки:
 
 :::tip
 Ознакомьтесь с [**документацией GitLab**](https://docs.gitlab.com/user/duo_agent_platform/agent_assistant/) для получения актуальных инструкций.
@@ -82,19 +82,19 @@ lgcode работает в вашем конвейере GitLab CI/CD. Вот ч
     ```yaml
     image: node:22-slim
     commands:
-      - echo "Installing lgcode"
-      - npm install --global lgcode-ai
+      - echo "Installing loongcode"
+      - npm install --global loongcode-ai
       - echo "Installing glab"
-      - export GITLAB_TOKEN=$GITLAB_TOKEN_LGCODE
+      - export GITLAB_TOKEN=$GITLAB_TOKEN_LOONGCODE
       - apt-get update --quiet && apt-get install --yes curl wget gpg git && rm --recursive --force /var/lib/apt/lists/*
       - curl --silent --show-error --location "https://raw.githubusercontent.com/upciti/wakemeops/main/assets/install_repository" | bash
       - apt-get install --yes glab
       - echo "Configuring glab"
       - echo $GITLAB_HOST
-      - echo "Creating LGcode auth configuration"
-      - mkdir --parents ~/.local/share/lgcode
+      - echo "Creating Loongcode auth configuration"
+      - mkdir --parents ~/.local/share/loongcode
       - |
-        cat > ~/.local/share/lgcode/auth.json << EOF
+        cat > ~/.local/share/loongcode/auth.json << EOF
         {
           "anthropic": {
             "type": "api",
@@ -103,13 +103,13 @@ lgcode работает в вашем конвейере GitLab CI/CD. Вот ч
         }
         EOF
       - echo "Configuring git"
-      - git config --global user.email "lgcode@gitlab.com"
-      - git config --global user.name "LGcode"
+      - git config --global user.email "loongcode@gitlab.com"
+      - git config --global user.name "Loongcode"
       - echo "Testing glab"
       - glab issue list
-      - echo "Running LGcode"
+      - echo "Running Loongcode"
       - |
-        lgcode run "
+        loongcode run "
         You are an AI assistant helping with GitLab operations.
 
         Context: $AI_FLOW_CONTEXT
@@ -146,7 +146,7 @@ lgcode работает в вашем конвейере GitLab CI/CD. Вот ч
         fi
     variables:
       - ANTHROPIC_API_KEY
-      - GITLAB_TOKEN_LGCODE
+      - GITLAB_TOKEN_LOONGCODE
       - GITLAB_HOST
     ```
 
@@ -158,10 +158,10 @@ lgcode работает в вашем конвейере GitLab CI/CD. Вот ч
 
 ### Примеры
 
-Вот несколько примеров того, как вы можете использовать lgcode в GitLab.
+Вот несколько примеров того, как вы можете использовать loongcode в GitLab.
 
 :::tip
-Вы можете настроить использование триггерной фразы, отличной от `@lgcode`.
+Вы можете настроить использование триггерной фразы, отличной от `@loongcode`.
 :::
 
 - **Объяснение проблемы**
@@ -169,27 +169,27 @@ lgcode работает в вашем конвейере GitLab CI/CD. Вот ч
   Добавьте этот комментарий в issue GitLab.
 
   ```
-  @lgcode explain this issue
+  @loongcode explain this issue
   ```
 
-  lgcode прочитает проблему и ответит с четким объяснением.
+  loongcode прочитает проблему и ответит с четким объяснением.
 
 - **Исправление проблемы**
 
   В issue GitLab напишите:
 
   ```
-  @lgcode fix this
+  @loongcode fix this
   ```
 
-  lgcode создаст новую ветку, внедрит изменения и откроет мерж-реквест с изменениями.
+  loongcode создаст новую ветку, внедрит изменения и откроет мерж-реквест с изменениями.
 
 - **Проверка Merge Request**
 
   Оставьте следующий комментарий к мерж-реквесту GitLab.
 
   ```
-  @lgcode review this merge request
+  @loongcode review this merge request
   ```
 
-  lgcode рассмотрит мерж-реквест и предоставит отзыв.
+  loongcode рассмотрит мерж-реквест и предоставит отзыв.

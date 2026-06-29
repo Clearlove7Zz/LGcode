@@ -1,9 +1,9 @@
 ---
 title: الأدوات المخصصة
-description: أنشئ أدوات يمكن لـ LLM استدعاؤها في lgcode.
+description: أنشئ أدوات يمكن لـ LLM استدعاؤها في loongcode.
 ---
 
-الأدوات المخصصة هي دوال تنشئها يمكن لـ LLM استدعاؤها أثناء المحادثات. تعمل جنبا إلى جنب مع [الأدوات المدمجة](/docs/tools) في lgcode مثل `read` و`write` و`bash`.
+الأدوات المخصصة هي دوال تنشئها يمكن لـ LLM استدعاؤها أثناء المحادثات. تعمل جنبا إلى جنب مع [الأدوات المدمجة](/docs/tools) في loongcode مثل `read` و`write` و`bash`.
 
 ---
 
@@ -17,8 +17,8 @@ description: أنشئ أدوات يمكن لـ LLM استدعاؤها في lgcod
 
 يمكن تعريفها:
 
-- محليا بوضعها في مجلد `.lgcode/tools/` داخل مشروعك.
-- أو عالميا بوضعها في `~/.config/lgcode/tools/`.
+- محليا بوضعها في مجلد `.loongcode/tools/` داخل مشروعك.
+- أو عالميا بوضعها في `~/.config/loongcode/tools/`.
 
 ---
 
@@ -26,8 +26,8 @@ description: أنشئ أدوات يمكن لـ LLM استدعاؤها في lgcod
 
 أسهل طريقة لإنشاء أدوات هي استخدام المساعد `tool()` الذي يوفر أمان الأنواع والتحقق.
 
-```ts title=".lgcode/tools/database.ts" {1}
-import { tool } from "@lgcode-ai/plugin"
+```ts title=".loongcode/tools/database.ts" {1}
+import { tool } from "@loongcode-ai/plugin"
 
 export default tool({
   description: "Query the project database",
@@ -49,8 +49,8 @@ export default tool({
 
 يمكنك أيضا تصدير عدة أدوات من ملف واحد. يصبح كل تصدير **أداة مستقلة** باسم **`<filename>_<exportname>`**:
 
-```ts title=".lgcode/tools/math.ts"
-import { tool } from "@lgcode-ai/plugin"
+```ts title=".loongcode/tools/math.ts"
+import { tool } from "@loongcode-ai/plugin"
 
 export const add = tool({
   description: "Add two numbers",
@@ -85,8 +85,8 @@ export const multiply = tool({
 
 على سبيل المثال، يستبدل هذا الملف أداة `bash` المدمجة:
 
-```ts title=".lgcode/tools/bash.ts"
-import { tool } from "@lgcode-ai/plugin"
+```ts title=".loongcode/tools/bash.ts"
+import { tool } from "@loongcode-ai/plugin"
 
 export default tool({
   description: "Restricted bash wrapper",
@@ -138,8 +138,8 @@ export default {
 
 تستقبل الأدوات سياقا حول الجلسة الحالية:
 
-```ts title=".lgcode/tools/project.ts" {8}
-import { tool } from "@lgcode-ai/plugin"
+```ts title=".loongcode/tools/project.ts" {8}
+import { tool } from "@loongcode-ai/plugin"
 
 export default tool({
   description: "Get project information",
@@ -165,7 +165,7 @@ export default tool({
 
 أولا، أنشئ الأداة كسكربت Python:
 
-```python title=".lgcode/tools/add.py"
+```python title=".loongcode/tools/add.py"
 import sys
 
 a = int(sys.argv[1])
@@ -175,8 +175,8 @@ print(a + b)
 
 ثم أنشئ تعريف الأداة الذي يستدعيه:
 
-```ts title=".lgcode/tools/python-add.ts" {10}
-import { tool } from "@lgcode-ai/plugin"
+```ts title=".loongcode/tools/python-add.ts" {10}
+import { tool } from "@loongcode-ai/plugin"
 import path from "path"
 
 export default tool({
@@ -186,7 +186,7 @@ export default tool({
     b: tool.schema.number().describe("Second number"),
   },
   async execute(args, context) {
-    const script = path.join(context.worktree, ".lgcode/tools/add.py")
+    const script = path.join(context.worktree, ".loongcode/tools/add.py")
     const result = await Bun.$`python3 ${script} ${args.a} ${args.b}`.text()
     return result.trim()
   },

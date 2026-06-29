@@ -1,5 +1,5 @@
-@import "@lgcode/ui/styles/tailwind";
-@import "@lgcode/ui/v2/styles/tailwind.css";
+@import "@loongcode/ui/styles/tailwind";
+@import "@loongcode/ui/v2/styles/tailwind.css";
 
 @font-face {
   font-family: "JetBrainsMono Nerd Font Mono";

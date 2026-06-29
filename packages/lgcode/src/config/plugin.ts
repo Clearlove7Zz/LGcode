@@ -1,5 +1,5 @@
-import { Glob } from "@lgcode/core/util/glob"
-import { ConfigPluginV1 } from "@lgcode/core/v1/config/plugin"
+import { Glob } from "@loongcode/core/util/glob"
+import { ConfigPluginV1 } from "@loongcode/core/v1/config/plugin"
 import { pathToFileURL } from "url"
 import { isPathPluginSpec, parsePluginSpecifier, resolvePathPluginTarget } from "@/plugin/shared"
 import path from "path"

@@ -3,7 +3,7 @@ import { $ } from "bun"
 export type Channel = "dev" | "beta" | "prod"
 
 export function resolveChannel(): Channel {
-  const raw = Bun.env.LGCODE_CHANNEL
+  const raw = Bun.env.LOONGCODE_CHANNEL
   if (raw === "dev" || raw === "beta" || raw === "prod") return raw
   return "dev"
 }
@@ -11,32 +11,32 @@ export function resolveChannel(): Channel {
 export const SIDECAR_BINARIES: Array<{ rustTarget: string; ocBinary: string; assetExt: string }> = [
   {
     rustTarget: "aarch64-apple-darwin",
-    ocBinary: "lgcode-darwin-arm64",
+    ocBinary: "loongcode-darwin-arm64",
     assetExt: "zip",
   },
   {
     rustTarget: "x86_64-apple-darwin",
-    ocBinary: "lgcode-darwin-x64-baseline",
+    ocBinary: "loongcode-darwin-x64-baseline",
     assetExt: "zip",
   },
   {
     rustTarget: "aarch64-pc-windows-msvc",
-    ocBinary: "lgcode-windows-arm64",
+    ocBinary: "loongcode-windows-arm64",
     assetExt: "zip",
   },
   {
     rustTarget: "x86_64-pc-windows-msvc",
-    ocBinary: "lgcode-windows-x64-baseline",
+    ocBinary: "loongcode-windows-x64-baseline",
     assetExt: "zip",
   },
   {
     rustTarget: "x86_64-unknown-linux-gnu",
-    ocBinary: "lgcode-linux-x64-baseline",
+    ocBinary: "loongcode-linux-x64-baseline",
     assetExt: "tar.gz",
   },
   {
     rustTarget: "aarch64-unknown-linux-gnu",
-    ocBinary: "lgcode-linux-arm64",
+    ocBinary: "loongcode-linux-arm64",
     assetExt: "tar.gz",
   },
 ]
@@ -61,7 +61,7 @@ export function getCurrentSidecar(target = RUST_TARGET ?? nativeTarget()) {
 export async function copyBinaryToSidecarFolder(source: string) {
   const dir = `resources`
   await $`mkdir -p ${dir}`
-  const dest = windowsify(`${dir}/lgcode-cli`)
+  const dest = windowsify(`${dir}/loongcode-cli`)
   await $`cp ${source} ${dest}`
   if (process.platform === "win32" && process.env.GITHUB_ACTIONS === "true") {
     await $`pwsh -NoLogo -NoProfile -ExecutionPolicy Bypass -File ../../script/sign-windows.ps1 ${dest}`

@@ -3,7 +3,7 @@ title: Troubleshooting
 description: Common issues and how to resolve them.
 ---
 
-To debug issues with LGcode, start by checking the logs and local data it stores on disk.
+To debug issues with Loongcode, start by checking the logs and local data it stores on disk.
 
 ---
 
@@ -11,21 +11,21 @@ To debug issues with LGcode, start by checking the logs and local data it stores
 
 Log files are written to:
 
-- **macOS/Linux**: `~/.local/share/lgcode/log/`
-- **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.local\share\lgcode\log`
+- **macOS/Linux**: `~/.local/share/loongcode/log/`
+- **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.local\share\loongcode\log`
 
 Log files are named with timestamps (e.g., `2025-01-09T123456.log`) and the most recent 10 log files are kept.
 
-You can set the log level with the `--log-level` command-line option to get more detailed debug information. For example, `lgcode --log-level DEBUG`.
+You can set the log level with the `--log-level` command-line option to get more detailed debug information. For example, `loongcode --log-level DEBUG`.
 
 ---
 
 ## Storage
 
-lgcode stores session data and other application data on disk at:
+loongcode stores session data and other application data on disk at:
 
-- **macOS/Linux**: `~/.local/share/lgcode/`
-- **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.local\share\lgcode`
+- **macOS/Linux**: `~/.local/share/loongcode/`
+- **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.local\share\loongcode`
 
 This directory contains:
 
@@ -39,27 +39,27 @@ This directory contains:
 
 ## Uninstall
 
-To uninstall the LGcode CLI and remove its related files, run:
+To uninstall the Loongcode CLI and remove its related files, run:
 
 ```bash
-lgcode uninstall
+loongcode uninstall
 ```
 
 The command shows what will be removed and asks for confirmation. See the [CLI reference](/docs/cli#uninstall) for options to keep your configuration or application data.
 
-To remove LGcode Desktop, uninstall the application through your operating system's app management tools.
+To remove Loongcode Desktop, uninstall the application through your operating system's app management tools.
 
 ---
 
 ## Desktop app
 
-LGcode Desktop runs a local LGcode server (the `lgcode-cli` sidecar) in the background. Most issues are caused by a misbehaving plugin, a corrupted cache, or a bad server setting.
+Loongcode Desktop runs a local Loongcode server (the `loongcode-cli` sidecar) in the background. Most issues are caused by a misbehaving plugin, a corrupted cache, or a bad server setting.
 
 ### Quick checks
 
 - Fully quit and relaunch the app.
 - If the app shows an error screen, click **Restart** and copy the error details.
-- macOS only: `LGcode` menu -> **Reload Webview** (helps if the UI is blank/frozen).
+- macOS only: `Loongcode` menu -> **Reload Webview** (helps if the UI is blank/frozen).
 
 ---
 
@@ -71,9 +71,9 @@ If the desktop app is crashing on launch, hanging, or behaving strangely, start 
 
 Open your global config file and look for a `plugin` key.
 
-- **macOS/Linux**: `~/.config/lgcode/lgcode.jsonc` (or `~/.config/lgcode/lgcode.json`)
-- **macOS/Linux** (older installs): `~/.local/share/lgcode/lgcode.jsonc`
-- **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.config\lgcode\lgcode.jsonc`
+- **macOS/Linux**: `~/.config/loongcode/loongcode.jsonc` (or `~/.config/loongcode/loongcode.json`)
+- **macOS/Linux** (older installs): `~/.local/share/loongcode/loongcode.jsonc`
+- **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.config\loongcode\loongcode.jsonc`
 
 If you have plugins configured, temporarily disable them by removing the key or setting it to an empty array:
 
@@ -86,13 +86,13 @@ If you have plugins configured, temporarily disable them by removing the key or 
 
 #### Check plugin directories
 
-LGcode can also load local plugins from disk. Temporarily move these out of the way (or rename the folder) and restart the desktop app:
+Loongcode can also load local plugins from disk. Temporarily move these out of the way (or rename the folder) and restart the desktop app:
 
 - **Global plugins**
-  - **macOS/Linux**: `~/.config/lgcode/plugins/`
-  - **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.config\lgcode\plugins`
+  - **macOS/Linux**: `~/.config/loongcode/plugins/`
+  - **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.config\loongcode\plugins`
 - **Project plugins** (only if you use per-project config)
-  - `<your-project>/.lgcode/plugins/`
+  - `<your-project>/.loongcode/plugins/`
 
 If the app starts working again, re-enable plugins one at a time to find which one is causing the issue.
 
@@ -100,22 +100,22 @@ If the app starts working again, re-enable plugins one at a time to find which o
 
 ### Clear the cache
 
-If disabling plugins doesn't help (or a plugin install is stuck), clear the cache so LGcode can rebuild it.
+If disabling plugins doesn't help (or a plugin install is stuck), clear the cache so Loongcode can rebuild it.
 
-1. Quit LGcode Desktop completely.
+1. Quit Loongcode Desktop completely.
 2. Delete the cache directory:
 
-- **macOS**: Finder -> `Cmd+Shift+G` -> paste `~/.cache/lgcode`
-- **Linux**: delete `~/.cache/lgcode` (or run `rm -rf ~/.cache/lgcode`)
-- **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.cache\lgcode`
+- **macOS**: Finder -> `Cmd+Shift+G` -> paste `~/.cache/loongcode`
+- **Linux**: delete `~/.cache/loongcode` (or run `rm -rf ~/.cache/loongcode`)
+- **Windows**: Press `WIN+R` and paste `%USERPROFILE%\.cache\loongcode`
 
-3. Restart LGcode Desktop.
+3. Restart Loongcode Desktop.
 
 ---
 
 ### Fix server connection issues
 
-LGcode Desktop can either start its own local server (default) or connect to a server URL you configured.
+Loongcode Desktop can either start its own local server (default) or connect to a server URL you configured.
 
 If you see a **"Connection Failed"** dialog (or the app never gets past the splash screen), check for a custom server URL.
 
@@ -125,13 +125,13 @@ From the Home screen, click the server name (with the status dot) to open the Se
 
 #### Remove `server.port` / `server.hostname` from your config
 
-If your `lgcode.json(c)` contains a `server` section, temporarily remove it and restart the desktop app.
+If your `loongcode.json(c)` contains a `server` section, temporarily remove it and restart the desktop app.
 
 #### Check environment variables
 
-If you have `LGCODE_PORT` set in your environment, the desktop app will try to use that port for the local server.
+If you have `LOONGCODE_PORT` set in your environment, the desktop app will try to use that port for the local server.
 
-- Unset `LGCODE_PORT` (or pick a free port) and restart.
+- Unset `LOONGCODE_PORT` (or pick a free port) and restart.
 
 ---
 
@@ -146,21 +146,21 @@ On Linux, some Wayland setups can cause blank windows or compositor errors.
 
 ### Windows: WebView2 runtime
 
-On Windows, LGcode Desktop requires the Microsoft Edge **WebView2 Runtime**. If the app opens to a blank window or won't start, install/update WebView2 and try again.
+On Windows, Loongcode Desktop requires the Microsoft Edge **WebView2 Runtime**. If the app opens to a blank window or won't start, install/update WebView2 and try again.
 
 ---
 
 ### Windows: General performance issues
 
-If you're experiencing slow performance, file access issues, or terminal problems on Windows, try using [WSL (Windows Subsystem for Linux)](/docs/windows-wsl). WSL provides a Linux environment that works more seamlessly with LGcode's features.
+If you're experiencing slow performance, file access issues, or terminal problems on Windows, try using [WSL (Windows Subsystem for Linux)](/docs/windows-wsl). WSL provides a Linux environment that works more seamlessly with Loongcode's features.
 
 ---
 
 ### Notifications not showing
 
-LGcode Desktop only shows system notifications when:
+Loongcode Desktop only shows system notifications when:
 
-- notifications are enabled for LGcode in your OS settings, and
+- notifications are enabled for Loongcode in your OS settings, and
 - the app window is not focused.
 
 ---
@@ -169,11 +169,11 @@ LGcode Desktop only shows system notifications when:
 
 If the app won't start and you can't clear settings from inside the UI, reset the desktop app's saved state.
 
-1. Quit LGcode Desktop.
-2. Find and delete these files (they live in the LGcode Desktop app data directory):
+1. Quit Loongcode Desktop.
+2. Find and delete these files (they live in the Loongcode Desktop app data directory):
 
-- `lgcode.settings.dat` (desktop default server URL)
-- `lgcode.global.dat` and `lgcode.workspace.*.dat` (UI state like recent servers/projects)
+- `loongcode.settings.dat` (desktop default server URL)
+- `loongcode.global.dat` and `loongcode.workspace.*.dat` (UI state like recent servers/projects)
 
 To find the directory quickly:
 
@@ -185,7 +185,7 @@ To find the directory quickly:
 
 ## Getting help
 
-If you're experiencing issues with LGcode:
+If you're experiencing issues with Loongcode:
 
 1. **Report issues on GitHub**
 
@@ -209,11 +209,11 @@ Here are some common issues and how to resolve them.
 
 ---
 
-### LGcode won't start
+### Loongcode won't start
 
 1. Check the logs for error messages
 2. Try running with `--print-logs` to see output in the terminal
-3. Ensure you have the latest version with `lgcode upgrade`
+3. Ensure you have the latest version with `loongcode upgrade`
 
 ---
 
@@ -239,9 +239,9 @@ Examples:
 
 - `openai/gpt-4.1`
 - `openrouter/google/gemini-2.5-flash`
-- `lgcode/kimi-k2`
+- `loongcode/kimi-k2`
 
-To figure out what models you have access to, run `lgcode models`
+To figure out what models you have access to, run `loongcode models`
 
 ---
 
@@ -255,10 +255,10 @@ To resolve this:
 2. If the issue persists, try clearing your stored configuration:
 
    ```bash
-   rm -rf ~/.local/share/lgcode
+   rm -rf ~/.local/share/loongcode
    ```
 
-   On Windows, press `WIN+R` and delete: `%USERPROFILE%\.local\share\lgcode`
+   On Windows, press `WIN+R` and delete: `%USERPROFILE%\.local\share\loongcode`
 
 3. Re-authenticate with your provider using the `/connect` command in the TUI.
 
@@ -266,21 +266,21 @@ To resolve this:
 
 ### AI_APICallError and provider package issues
 
-If you encounter API call errors, this may be due to outdated provider packages. lgcode dynamically installs provider packages (OpenAI, Anthropic, Google, etc.) as needed and caches them locally.
+If you encounter API call errors, this may be due to outdated provider packages. loongcode dynamically installs provider packages (OpenAI, Anthropic, Google, etc.) as needed and caches them locally.
 
 To resolve provider package issues:
 
 1. Clear the provider package cache:
 
    ```bash
-   rm -rf ~/.cache/lgcode
+   rm -rf ~/.cache/loongcode
    ```
 
-   On Windows, press `WIN+R` and delete: `%USERPROFILE%\.cache\lgcode`
+   On Windows, press `WIN+R` and delete: `%USERPROFILE%\.cache\loongcode`
 
-2. Restart lgcode to reinstall the latest provider packages
+2. Restart loongcode to reinstall the latest provider packages
 
-This will force lgcode to download the most recent versions of provider packages, which often resolves compatibility issues with model parameters and API changes.
+This will force loongcode to download the most recent versions of provider packages, which often resolves compatibility issues with model parameters and API changes.
 
 ---
 
@@ -311,4 +311,4 @@ Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 export DISPLAY=:99.0
 ```
 
-lgcode will detect if you're using Wayland and prefer `wl-clipboard`, otherwise it will try to find clipboard tools in order of: `xclip` and `xsel`.
+loongcode will detect if you're using Wayland and prefer `wl-clipboard`, otherwise it will try to find clipboard tools in order of: `xclip` and `xsel`.

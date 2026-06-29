@@ -1,5 +1,5 @@
-import { Binary } from "@lgcode/core/util/binary"
-import type { AssistantMessage, Message, Part, SessionStatus, UserMessage } from "@lgcode/sdk/v2"
+import { Binary } from "@loongcode/core/util/binary"
+import type { AssistantMessage, Message, Part, SessionStatus, UserMessage } from "@loongcode/sdk/v2"
 import { createMemo, mapArray, type Accessor } from "solid-js"
 import { Timeline, TimelineRow } from "./rows"
 

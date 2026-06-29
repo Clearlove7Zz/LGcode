@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test"
-import { SessionV1 } from "@lgcode/core/v1/session"
-import { Ripgrep } from "@lgcode/core/ripgrep"
+import { SessionV1 } from "@loongcode/core/v1/session"
+import { Ripgrep } from "@loongcode/core/ripgrep"
 import { Effect, Layer } from "effect"
 import { Session } from "@/session/session"
 import { SessionPrompt } from "../../src/session/prompt"

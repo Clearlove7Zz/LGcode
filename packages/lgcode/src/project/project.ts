@@ -1,26 +1,26 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
 import { and, eq, sql } from "drizzle-orm"
-import { Database } from "@lgcode/core/database/database"
-import { ProjectDirectoryTable, ProjectTable } from "@lgcode/core/project/sql"
-import { ProjectDirectories } from "@lgcode/core/project/directories"
-import { SessionTable } from "@lgcode/core/session/sql"
-import { WorkspaceTable } from "@lgcode/core/control-plane/workspace.sql"
-import { Flag } from "@lgcode/core/flag/flag"
+import { Database } from "@loongcode/core/database/database"
+import { ProjectDirectoryTable, ProjectTable } from "@loongcode/core/project/sql"
+import { ProjectDirectories } from "@loongcode/core/project/directories"
+import { SessionTable } from "@loongcode/core/session/sql"
+import { WorkspaceTable } from "@loongcode/core/control-plane/workspace.sql"
+import { Flag } from "@loongcode/core/flag/flag"
 import { GlobalBus } from "@/bus/global"
-import { which } from "@lgcode/core/util/which"
+import { which } from "@loongcode/core/util/which"
 import { Command } from "@/command"
 import { InstanceState } from "@/effect/instance-state"
 import { Effect, Layer, Scope, Context, Stream, Types, Schema } from "effect"
 import { ChildProcess, ChildProcessSpawner } from "effect/unstable/process"
-import { FSUtil } from "@lgcode/core/fs-util"
-import { AppProcess } from "@lgcode/core/process"
-import { ProjectV2 } from "@lgcode/core/project"
-import { CrossSpawnSpawner } from "@lgcode/core/cross-spawn-spawner"
-import { AbsolutePath, NonNegativeInt, optionalOmitUndefined } from "@lgcode/core/schema"
-import { serviceUse } from "@lgcode/core/effect/service-use"
+import { FSUtil } from "@loongcode/core/fs-util"
+import { AppProcess } from "@loongcode/core/process"
+import { ProjectV2 } from "@loongcode/core/project"
+import { CrossSpawnSpawner } from "@loongcode/core/cross-spawn-spawner"
+import { AbsolutePath, NonNegativeInt, optionalOmitUndefined } from "@loongcode/core/schema"
+import { serviceUse } from "@loongcode/core/effect/service-use"
 import { RuntimeFlags } from "@/effect/runtime-flags"
 import { EventV2Bridge } from "@/event-v2-bridge"
-import { EventV2 } from "@lgcode/core/event"
+import { EventV2 } from "@loongcode/core/event"
 
 const ProjectVcs = Schema.Literal("git")
 
@@ -127,7 +127,7 @@ export interface Interface {
   readonly removeSandbox: (id: ProjectV2.ID, directory: string) => Effect.Effect<void>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Project") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/Project") {}
 
 type GitResult = { code: number; text: string; stderr: string }
 
@@ -168,7 +168,7 @@ export const layer = Layer.effect(
         }),
       )
 
-    const fakeVcs = Schema.decodeUnknownSync(Schema.optional(ProjectVcs))(Flag.LGCODE_FAKE_VCS)
+    const fakeVcs = Schema.decodeUnknownSync(Schema.optional(ProjectVcs))(Flag.LOONGCODE_FAKE_VCS)
 
     const scope = yield* Scope.Scope
 

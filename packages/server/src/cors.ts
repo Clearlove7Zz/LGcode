@@ -1,10 +1,10 @@
 import { Context } from "effect"
 
-const opencodeOrigin = /^https:\/\/([a-z0-9-]+\.)*lgcode\.ai$/
+const opencodeOrigin = /^https:\/\/([a-z0-9-]+\.)*loongcode\.ai$/
 
 export type CorsOptions = { readonly cors?: ReadonlyArray<string> }
 
-export const CorsConfig = Context.Reference<CorsOptions | undefined>("@lgcode/ServerCorsConfig", {
+export const CorsConfig = Context.Reference<CorsOptions | undefined>("@loongcode/ServerCorsConfig", {
   defaultValue: () => undefined,
 })
 

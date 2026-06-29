@@ -1,6 +1,6 @@
 import "./index.css"
 import { Link, Meta, Title } from "@solidjs/meta"
-import { ProviderIcon } from "@lgcode/ui/provider-icon"
+import { ProviderIcon } from "@loongcode/ui/provider-icon"
 import { geoEquirectangular, geoPath } from "d3-geo"
 import { scaleSqrt } from "d3-scale"
 import countryCodesSource from "i18n-iso-countries/codes.json?raw"
@@ -20,8 +20,8 @@ import {
   type SessionCostEntry,
   type TokenCostEntry,
   type UsagePoint,
-} from "@lgcode/stats-core/domain/home"
-import { runtime } from "@lgcode/stats-core/runtime"
+} from "@loongcode/stats-core/domain/home"
+import { runtime } from "@loongcode/stats-core/runtime"
 import { createAsync, query } from "@solidjs/router"
 import { createEffect, createMemo, createSignal, For, onCleanup, onMount, Show, type JSX } from "solid-js"
 import { getRequestEvent } from "solid-js/web"
@@ -49,11 +49,11 @@ const rangeLabels: Record<UsageRange, string> = {
   "1M": "1 Month",
   "2M": "2 Months",
 }
-const statsHomeTitle = "LGcode Data"
-const statsHomeDescription = "LGcode usage data, market share, token cost, and session cost."
+const statsHomeTitle = "Loongcode Data"
+const statsHomeDescription = "Loongcode usage data, market share, token cost, and session cost."
 const statsHomeFallbackUrl = "https://modelhub.lgdg.cc/data/"
 const statsUnfurlPath = "banner.jpg"
-const statsUnfurlAlt = "LGcode Data wordmark on a dark patterned background"
+const statsUnfurlAlt = "Loongcode Data wordmark on a dark patterned background"
 const usageColors = [
   "#ed6aff",
   "#a684ff",
@@ -144,7 +144,7 @@ export default function StatsHome() {
       <Meta name="description" content={statsHomeDescription} />
       <Link rel="canonical" href={statsHomeUrl} />
       <Meta property="og:type" content="website" />
-      <Meta property="og:site_name" content="LGcode" />
+      <Meta property="og:site_name" content="Loongcode" />
       <Meta property="og:title" content={statsHomeTitle} />
       <Meta property="og:description" content={statsHomeDescription} />
       <Meta property="og:url" content={statsHomeUrl} />
@@ -401,7 +401,7 @@ function TopModelsSection(props: { data: StatsHomeData["usage"]; leaderboard: St
   return (
     <section id="top-models" data-section="top-models">
       <h2 data-slot="top-models-title">
-        <strong>Top models.</strong> <span>Usage of models across LGcode Go.</span>
+        <strong>Top models.</strong> <span>Usage of models across Loongcode Go.</span>
       </h2>
       <Show
         when={data().some((item) => usageTotal(item) > 0)}

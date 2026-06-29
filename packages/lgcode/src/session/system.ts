@@ -1,4 +1,4 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
 import { Context, Effect, Layer } from "effect"
 
 import { InstanceState } from "@/effect/instance-state"
@@ -16,11 +16,11 @@ import type { Provider } from "@/provider/provider"
 import type { Agent } from "@/agent/agent"
 import { Permission } from "@/permission"
 import { Skill } from "@/skill"
-import { AbsolutePath } from "@lgcode/core/schema"
-import { Location } from "@lgcode/core/location"
-import { LocationServiceMap } from "@lgcode/core/location-layer"
-import { PluginBoot } from "@lgcode/core/plugin/boot"
-import { Reference } from "@lgcode/core/reference"
+import { AbsolutePath } from "@loongcode/core/schema"
+import { Location } from "@loongcode/core/location"
+import { LocationServiceMap } from "@loongcode/core/location-layer"
+import { PluginBoot } from "@loongcode/core/plugin/boot"
+import { Reference } from "@loongcode/core/reference"
 
 export function provider(model: Provider.Model) {
   if (model.api.id.includes("gpt-4") || model.api.id.includes("o1") || model.api.id.includes("o3"))
@@ -43,7 +43,7 @@ export interface Interface {
   readonly skills: (agent: Agent.Info) => Effect.Effect<string | undefined>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/SystemPrompt") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/SystemPrompt") {}
 
 export const layer = Layer.effect(
   Service,

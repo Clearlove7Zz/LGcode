@@ -28000,12 +28000,12 @@
       }
     }
   },
-  "lgcode-go": {
-    "id": "lgcode-go",
-    "env": ["LGCODE_API_KEY"],
+  "loongcode-go": {
+    "id": "loongcode-go",
+    "env": ["LOONGCODE_API_KEY"],
     "npm": "@ai-sdk/openai-compatible",
     "api": "https://modelhub.lgdg.cc/zen/go/v1",
-    "name": "LGcode Go",
+    "name": "Loongcode Go",
     "doc": "https://modelhub.lgdg.cc/docs/zen",
     "models": {
       "minimax-m2.7": {
@@ -57810,12 +57810,12 @@
       }
     }
   },
-  "lgcode": {
-    "id": "lgcode",
-    "env": ["LGCODE_API_KEY"],
+  "loongcode": {
+    "id": "loongcode",
+    "env": ["LOONGCODE_API_KEY"],
     "npm": "@ai-sdk/openai-compatible",
     "api": "https://modelhub.lgdg.cc/zen/v1",
-    "name": "LGcode Zen",
+    "name": "Loongcode Zen",
     "doc": "https://modelhub.lgdg.cc/docs/zen",
     "models": {
       "minimax-m2.7": {

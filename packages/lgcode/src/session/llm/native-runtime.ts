@@ -15,8 +15,8 @@ import {
   toDefinitions,
   type JsonSchema,
   type LLMEvent,
-} from "@lgcode/llm"
-import type { LLMClientShape } from "@lgcode/llm/route"
+} from "@loongcode/llm"
+import type { LLMClientShape } from "@loongcode/llm/route"
 import { LLMNative } from "./native-request"
 
 export type RuntimeStatus =
@@ -52,8 +52,8 @@ function statusWithFetch(
   fetch: typeof globalThis.fetch | undefined,
 ): RuntimeStatus {
   const providerID = input.model.providerID
-  if (providerID !== "openai" && providerID !== "anthropic" && !providerID.startsWith("lgcode"))
-    return { type: "unsupported", reason: "provider is not openai, lgcode, or anthropic" }
+  if (providerID !== "openai" && providerID !== "anthropic" && !providerID.startsWith("loongcode"))
+    return { type: "unsupported", reason: "provider is not openai, loongcode, or anthropic" }
   const npm = input.model.api.npm
   if (npm !== "@ai-sdk/openai" && npm !== "@ai-sdk/openai-compatible" && npm !== "@ai-sdk/anthropic")
     return { type: "unsupported", reason: "provider package is not OpenAI, OpenAI-compatible, or Anthropic" }
@@ -76,7 +76,7 @@ export function stream(input: StreamInput): StreamResult {
   const current = statusWithFetch(input, fetch)
   if (current.type === "unsupported") return current
 
-  // Integration point with @lgcode/llm: native-request lowers session data
+  // Integration point with @loongcode/llm: native-request lowers session data
   // into an LLMRequest, then LLMClient handles route selection and transport.
   //
   // ProviderTransform.providerOptions builds AI-SDK-shaped options for the
@@ -170,8 +170,8 @@ export function nativeTools(tools: Record<string, Tool>, input: Pick<StreamInput
   return Object.fromEntries(
     Object.entries(tools).map(([name, item]) => [
       name,
-      // Tool execution remains lgcode-owned. The native runtime only adapts
-      // the @lgcode/llm tool call back into the AI SDK Tool.execute shape.
+      // Tool execution remains loongcode-owned. The native runtime only adapts
+      // the @loongcode/llm tool call back into the AI SDK Tool.execute shape.
       NativeTool.make({
         description: item.description ?? "",
         jsonSchema: nativeSchema(item.inputSchema),

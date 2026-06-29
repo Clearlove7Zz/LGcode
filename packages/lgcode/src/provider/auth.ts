@@ -1,11 +1,11 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
-import type { AuthOAuthResult, Hooks } from "@lgcode/plugin"
-import { serviceUse } from "@lgcode/core/effect/service-use"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
+import type { AuthOAuthResult, Hooks } from "@loongcode/plugin"
+import { serviceUse } from "@loongcode/core/effect/service-use"
 import { Auth } from "@/auth"
 import { InstanceState } from "@/effect/instance-state"
-import { optionalOmitUndefined } from "@lgcode/core/schema"
+import { optionalOmitUndefined } from "@loongcode/core/schema"
 import { Plugin } from "../plugin"
-import { ProviderV2 } from "@lgcode/core/provider"
+import { ProviderV2 } from "@loongcode/core/provider"
 import { Array as Arr, Effect, Layer, Record, Result, Context, Schema } from "effect"
 
 const When = Schema.Struct({
@@ -102,7 +102,7 @@ interface State {
   pending: Map<ProviderV2.ID, AuthOAuthResult>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/ProviderAuth") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/ProviderAuth") {}
 
 export const use = serviceUse(Service)
 

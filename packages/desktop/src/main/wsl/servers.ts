@@ -121,8 +121,8 @@ export function createWslServersController(
 
   const setOpencodeCheck = (distro: string, check: WslOpencodeCheck) => {
     setState({
-      lgcodeChecks: {
-        ...state.lgcodeChecks,
+      loongcodeChecks: {
+        ...state.loongcodeChecks,
         [distro]: check,
       },
     })
@@ -152,7 +152,7 @@ export function createWslServersController(
       })
       .catch((error) => {
         const message = error instanceof Error ? error.message : String(error)
-        logger?.error("wsl lgcode check failed", { id, distro, message })
+        logger?.error("wsl loongcode check failed", { id, distro, message })
       })
   }
 
@@ -166,7 +166,7 @@ export function createWslServersController(
           })
           .catch((error) => {
             const message = error instanceof Error ? error.message : String(error)
-            logger?.error("wsl lgcode check failed", {
+            logger?.error("wsl loongcode check failed", {
               id: item.config.id,
               distro: item.config.distro,
               message,
@@ -335,19 +335,19 @@ export function createWslServersController(
     },
 
     async probeOpencode(name: string) {
-      await runJob({ kind: "probe-lgcode", distro: name, startedAt: Date.now() }, async (abort) => {
+      await runJob({ kind: "probe-loongcode", distro: name, startedAt: Date.now() }, async (abort) => {
         await refreshOpencodeCheck(name, { signal: abort.signal })
       })
     },
 
     async installOpencode(name: string) {
-      await runJob({ kind: "install-lgcode", distro: name, startedAt: Date.now() }, async (abort) => {
+      await runJob({ kind: "install-loongcode", distro: name, startedAt: Date.now() }, async (abort) => {
         const result = await installWslOpencode(appVersion, name, { signal: abort.signal })
         if (result.code !== 0) {
-          throw new Error(summarize(result.stderr || result.stdout) || "LGcode installation failed")
+          throw new Error(summarize(result.stderr || result.stdout) || "Loongcode installation failed")
         }
         await refreshOpencodeCheck(name, { signal: abort.signal })
-        expectOpencodeVersion(state.lgcodeChecks[name]?.version ?? null, appVersion, name)
+        expectOpencodeVersion(state.loongcodeChecks[name]?.version ?? null, appVersion, name)
         const id = wslServerIdToRestart(state.servers, name)
         if (id) await startServer(id)
       })
@@ -382,7 +382,7 @@ export function createWslServersController(
       persistServers(remaining)
       setState({
         servers: state.servers.filter((item) => item.config.id !== id),
-        ...(distro ? clearWslDistroState(state.distroProbes, state.lgcodeChecks, distro) : {}),
+        ...(distro ? clearWslDistroState(state.distroProbes, state.loongcodeChecks, distro) : {}),
       })
     },
 
@@ -408,7 +408,7 @@ function initialState(): WslServersState {
     installed: [],
     online: [],
     distroProbes: {},
-    lgcodeChecks: {},
+    loongcodeChecks: {},
     pendingRestart: false,
     servers: [],
     job: null,
@@ -457,7 +457,7 @@ function opencodeCheck(
       version: null,
       expectedVersion,
       matchesDesktop: null,
-      error: "lgcode is not installed in this distro",
+      error: "loongcode is not installed in this distro",
     }
   }
   if (!version) {
@@ -467,7 +467,7 @@ function opencodeCheck(
       version: null,
       expectedVersion,
       matchesDesktop: null,
-      error: "lgcode is installed but could not run",
+      error: "loongcode is installed but could not run",
     }
   }
   return {

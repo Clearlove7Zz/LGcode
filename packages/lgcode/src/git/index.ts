@@ -1,5 +1,5 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
-import { AppProcess } from "@lgcode/core/process"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
+import { AppProcess } from "@loongcode/core/process"
 import { Effect, Layer, Context, Stream } from "effect"
 import { ChildProcess } from "effect/unstable/process"
 
@@ -98,7 +98,7 @@ const kind = (code: string): Kind => {
   return "modified"
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Git") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/Git") {}
 
 export const layer = Layer.effect(
   Service,

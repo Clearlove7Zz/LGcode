@@ -1,29 +1,29 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
-import { httpClient } from "@lgcode/core/effect/layer-node-platform"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
+import { httpClient } from "@loongcode/core/effect/layer-node-platform"
 import { Context, Effect, FiberMap, Iterable, Layer, Schema, Stream } from "effect"
-import { serviceUse } from "@lgcode/core/effect/service-use"
+import { serviceUse } from "@loongcode/core/effect/service-use"
 import { FetchHttpClient, HttpBody, HttpClient, HttpClientError, HttpClientRequest } from "effect/unstable/http"
-import { Database } from "@lgcode/core/database/database"
+import { Database } from "@loongcode/core/database/database"
 import { asc } from "drizzle-orm"
 import { eq } from "drizzle-orm"
 import { inArray } from "drizzle-orm"
 import { Project } from "@/project/project"
 import { GlobalBus } from "@/bus/global"
 import { Auth } from "@/auth"
-import { EventV2 } from "@lgcode/core/event"
+import { EventV2 } from "@loongcode/core/event"
 import { EventV2Bridge } from "@/event-v2-bridge"
-import { EventSequenceTable, EventTable } from "@lgcode/core/event/sql"
-import { FSUtil } from "@lgcode/core/fs-util"
+import { EventSequenceTable, EventTable } from "@loongcode/core/event/sql"
+import { FSUtil } from "@loongcode/core/fs-util"
 import { RuntimeFlags } from "@/effect/runtime-flags"
-import { ProjectV2 } from "@lgcode/core/project"
-import { Slug } from "@lgcode/core/util/slug"
-import { WorkspaceTable } from "@lgcode/core/control-plane/workspace.sql"
+import { ProjectV2 } from "@loongcode/core/project"
+import { Slug } from "@loongcode/core/util/slug"
+import { WorkspaceTable } from "@loongcode/core/control-plane/workspace.sql"
 import { getAdapter, registeredAdapters } from "./adapters"
 import { type Target, type WorkspaceInfo, WorkspaceInfo as WorkspaceInfoSchema } from "./types"
-import { WorkspaceV2 } from "@lgcode/core/workspace"
+import { WorkspaceV2 } from "@loongcode/core/workspace"
 import { Session } from "@/session/session"
 import { SessionPrompt } from "@/session/prompt"
-import { SessionTable } from "@lgcode/core/session/sql"
+import { SessionTable } from "@loongcode/core/session/sql"
 import { SessionID } from "@/session/schema"
 import { NotFoundError } from "@/storage/storage"
 import { errorData } from "@/util/error"
@@ -162,7 +162,7 @@ export interface Interface {
   readonly startWorkspaceSyncing: (projectID: ProjectV2.ID) => Effect.Effect<void>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/Workspace") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/Workspace") {}
 
 export const use = serviceUse(Service)
 
@@ -543,9 +543,9 @@ export const layer = Layer.effect(
         .pipe(Effect.orDie)
 
       const env = {
-        LGCODE_AUTH_CONTENT: JSON.stringify(yield* auth.all()),
-        LGCODE_WORKSPACE_ID: config.id,
-        LGCODE_EXPERIMENTAL_WORKSPACES: "true",
+        LOONGCODE_AUTH_CONTENT: JSON.stringify(yield* auth.all()),
+        LOONGCODE_WORKSPACE_ID: config.id,
+        LOONGCODE_EXPERIMENTAL_WORKSPACES: "true",
         OTEL_EXPORTER_OTLP_HEADERS: process.env.OTEL_EXPORTER_OTLP_HEADERS,
         OTEL_EXPORTER_OTLP_ENDPOINT: process.env.OTEL_EXPORTER_OTLP_ENDPOINT,
         OTEL_RESOURCE_ATTRIBUTES: process.env.OTEL_RESOURCE_ATTRIBUTES,

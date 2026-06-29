@@ -1,6 +1,6 @@
 import { ProviderAuth } from "@/provider/auth"
 import { Config } from "@/config/config"
-import { ModelsDev } from "@lgcode/core/models-dev"
+import { ModelsDev } from "@loongcode/core/models-dev"
 import { Provider } from "@/provider/provider"
 
 import { mapValues } from "remeda"
@@ -9,7 +9,7 @@ import { HttpServerRequest, HttpServerResponse } from "effect/unstable/http"
 import { HttpApiBuilder } from "effect/unstable/httpapi"
 import { InstanceHttpApi } from "../api"
 import { ProviderAuthApiError } from "../groups/provider"
-import { ProviderV2 } from "@lgcode/core/provider"
+import { ProviderV2 } from "@loongcode/core/provider"
 
 function mapProviderAuthError<A, R>(self: Effect.Effect<A, ProviderAuth.Error, R>) {
   return self.pipe(
@@ -48,8 +48,8 @@ export const providerHandlers = HttpApiBuilder.group(InstanceHttpApi, "provider"
       }
       const connected = yield* provider.list()
       const { appendFileSync } = require("fs")
-      try { appendFileSync("D:/Desktop/LGcode/opencode/debug-provider.log", `[HANDLER] connected: ${JSON.stringify(Object.keys(connected))}\n`) } catch(e) {}
-      try { appendFileSync("D:/Desktop/LGcode/opencode/debug-provider.log", `[HANDLER] filtered: ${JSON.stringify(Object.keys(filtered))}\n`) } catch(e) {}
+      try { appendFileSync("D:/Desktop/Loongcode/opencode/debug-provider.log", `[HANDLER] connected: ${JSON.stringify(Object.keys(connected))}\n`) } catch(e) {}
+      try { appendFileSync("D:/Desktop/Loongcode/opencode/debug-provider.log", `[HANDLER] filtered: ${JSON.stringify(Object.keys(filtered))}\n`) } catch(e) {}
       const providers = Object.assign(
         mapValues(filtered, (item) => Provider.fromModelsDevProvider(item)),
         connected,

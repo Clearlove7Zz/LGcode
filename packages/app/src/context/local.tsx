@@ -1,5 +1,5 @@
-import { createSimpleContext } from "@lgcode/ui/context"
-import { base64Encode } from "@lgcode/core/util/encode"
+import { createSimpleContext } from "@loongcode/ui/context"
+import { base64Encode } from "@loongcode/core/util/encode"
 import { useParams } from "@solidjs/router"
 import { batch, createEffect, createMemo } from "solid-js"
 import { createStore } from "solid-js/store"

@@ -1,9 +1,9 @@
 import path from "path"
 import { NodeFileSystem } from "@effect/platform-node"
-import { FSUtil } from "@lgcode/core/fs-util"
+import { FSUtil } from "@loongcode/core/fs-util"
 import { describe, expect, test } from "bun:test"
 import { Effect, FileSystem, Layer } from "effect"
-import { Global } from "@lgcode/core/global"
+import { Global } from "@loongcode/core/global"
 import {
   createVariantRuntime,
   cycleVariant,

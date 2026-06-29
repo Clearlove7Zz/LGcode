@@ -1,13 +1,13 @@
 // @ts-nocheck
 
-import { LGcode } from "@lgcode/core"
-import { ReadTool } from "@lgcode/core/tools"
+import { Loongcode } from "@loongcode/core"
+import { ReadTool } from "@loongcode/core/tools"
 
-const lgcode = LGcode.make({})
+const loongcode = Loongcode.make({})
 
-lgcode.tool.add(ReadTool)
+loongcode.tool.add(ReadTool)
 
-lgcode.tool.add({
+loongcode.tool.add({
   name: "bash",
   schema: {
     type: "object",
@@ -22,13 +22,13 @@ lgcode.tool.add({
   execute(input, ctx) {},
 })
 
-lgcode.auth.add({
+loongcode.auth.add({
   provider: "openai",
   type: "api",
   value: process.env.OPENAI_API_KEY,
 })
 
-lgcode.agent.add({
+loongcode.agent.add({
   name: "build",
   permissions: [],
   model: {
@@ -38,20 +38,20 @@ lgcode.agent.add({
   },
 })
 
-const sessionID = await lgcode.session.create({
+const sessionID = await loongcode.session.create({
   agent: "build",
 })
 
-lgcode.subscribe((event) => {
+loongcode.subscribe((event) => {
   console.log(event)
 })
 
-await lgcode.session.prompt({
+await loongcode.session.prompt({
   sessionID,
   text: "hey what is up",
 })
 
-await lgcode.session.prompt({
+await loongcode.session.prompt({
   sessionID,
   text: "what is up with this",
   files: [
@@ -62,6 +62,6 @@ await lgcode.session.prompt({
   ],
 })
 
-await lgcode.session.wait()
+await loongcode.session.wait()
 
-console.log(await lgcode.session.messages(sessionID))
+console.log(await loongcode.session.messages(sessionID))

@@ -62,20 +62,20 @@ describe("ide", () => {
     expect(Ide.ide()).toBe("unknown")
   })
 
-  test("should recognize vscode-insiders LGCODE_CALLER", () => {
-    process.env["LGCODE_CALLER"] = "vscode-insiders"
+  test("should recognize vscode-insiders LOONGCODE_CALLER", () => {
+    process.env["LOONGCODE_CALLER"] = "vscode-insiders"
 
     expect(Ide.alreadyInstalled()).toBe(true)
   })
 
-  test("should recognize vscode LGCODE_CALLER", () => {
-    process.env["LGCODE_CALLER"] = "vscode"
+  test("should recognize vscode LOONGCODE_CALLER", () => {
+    process.env["LOONGCODE_CALLER"] = "vscode"
 
     expect(Ide.alreadyInstalled()).toBe(true)
   })
 
-  test("should return false for unknown LGCODE_CALLER", () => {
-    process.env["LGCODE_CALLER"] = "unknown"
+  test("should return false for unknown LOONGCODE_CALLER", () => {
+    process.env["LOONGCODE_CALLER"] = "unknown"
 
     expect(Ide.alreadyInstalled()).toBe(false)
   })

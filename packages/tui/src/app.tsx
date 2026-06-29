@@ -6,9 +6,9 @@ import { render, TimeToFirstDraw, useRenderer, useTerminalDimensions } from "@op
 registerSpinner()
 import { createDefaultOpenTuiKeymap } from "@opentui/keymap/opentui"
 import { Deferred, Effect } from "effect"
-import { Global } from "@lgcode/core/global"
-import { Flag } from "@lgcode/core/flag/flag"
-import { InstallationVersion } from "@lgcode/core/installation/version"
+import { Global } from "@loongcode/core/global"
+import { Flag } from "@loongcode/core/flag/flag"
+import { InstallationVersion } from "@loongcode/core/installation/version"
 import { ClipboardProvider, useClipboard } from "./context/clipboard"
 import { ExitProvider, useExit } from "./context/exit"
 import { EpilogueProvider } from "./context/epilogue"
@@ -73,7 +73,7 @@ import { createPluginRuntime, PluginRuntimeProvider, usePluginRuntime, type TuiP
 import { CommandPaletteDialog } from "./component/command-palette"
 import {
   COMMAND_PALETTE_COMMAND,
-  LGCODE_BASE_MODE,
+  LOONGCODE_BASE_MODE,
   OpencodeKeymapProvider,
   registerOpencodeKeymap,
   useBindings,
@@ -117,7 +117,7 @@ const appBindingCommands = [
   "variant.list",
   "provider.connect",
   "console.org.switch",
-  "lgcode.status",
+  "loongcode.status",
   "theme.switch",
   "theme.switch_mode",
   "theme.mode.lock",
@@ -195,7 +195,7 @@ export const run = Effect.fn("Tui.run")(function* (input: TuiInput) {
             useKittyKeyboard: {},
             autoFocus: false,
             openConsoleOnError: false,
-            useMouse: !Flag.LGCODE_DISABLE_MOUSE && input.config.mouse,
+            useMouse: !Flag.LOONGCODE_DISABLE_MOUSE && input.config.mouse,
             consoleOptions: {
               keyBindings: [{ name: "y", ctrl: true, action: "copy-selection" }],
             },
@@ -269,8 +269,8 @@ export const run = Effect.fn("Tui.run")(function* (input: TuiInput) {
                     >
                       <TuiStartupProvider
                         value={{
-                          initialRoute: process.env.LGCODE_ROUTE ? JSON.parse(process.env.LGCODE_ROUTE) : undefined,
-                          skipInitialLoading: Boolean(process.env.LGCODE_FAST_BOOT),
+                          initialRoute: process.env.LOONGCODE_ROUTE ? JSON.parse(process.env.LOONGCODE_ROUTE) : undefined,
+                          skipInitialLoading: Boolean(process.env.LOONGCODE_FAST_BOOT),
                         }}
                       >
                         <ClipboardProvider>
@@ -414,7 +414,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
   const offSelectionKeys = keymap.intercept(
     "key",
     ({ event }) => {
-      if (!Flag.LGCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT) return
+      if (!Flag.LOONGCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT) return
       Selection.handleSelectionKey(renderer, toast, event, clipboard)
     },
     { priority: 1 },
@@ -442,17 +442,17 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
 
   // Update terminal window title based on current route and session
   createEffect(() => {
-    if (!terminalTitleEnabled() || Flag.LGCODE_DISABLE_TERMINAL_TITLE) return
+    if (!terminalTitleEnabled() || Flag.LOONGCODE_DISABLE_TERMINAL_TITLE) return
 
     if (route.data.type === "home") {
-      renderer.setTerminalTitle("LGcode")
+      renderer.setTerminalTitle("Loongcode")
       return
     }
 
     if (route.data.type === "session") {
       const session = sync.session.get(route.data.sessionID)
       if (!session || isDefaultTitle(session.title)) {
-        renderer.setTerminalTitle("LGcode")
+        renderer.setTerminalTitle("Loongcode")
         return
       }
 
@@ -602,7 +602,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
         name: "workspace.list",
         title: "Manage workspaces",
         category: "Workspace",
-        hidden: !Flag.LGCODE_EXPERIMENTAL_WORKSPACES,
+        hidden: !Flag.LOONGCODE_EXPERIMENTAL_WORKSPACES,
         slashName: "workspaces",
         run: () => {
           dialog.replace(() => <DialogWorkspaceList />)
@@ -752,7 +752,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
           ]
         : []),
       {
-        name: "lgcode.status",
+        name: "loongcode.status",
         title: "View status",
         slashName: "status",
         run: () => {
@@ -936,7 +936,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
   }))
 
   useBindings(() => ({
-    mode: LGCODE_BASE_MODE,
+    mode: LOONGCODE_BASE_MODE,
     bindings: tuiConfig.keybinds.gather("app", appBindingCommands),
   }))
 
@@ -945,7 +945,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
   }))
 
   useBindings(() => ({
-    mode: LGCODE_BASE_MODE,
+    mode: LOONGCODE_BASE_MODE,
     enabled: () => {
       const current = promptRef.current
       if (!current?.focused) return true
@@ -1042,7 +1042,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
     await DialogAlert.show(
       dialog,
       "Update Complete",
-      `Successfully updated to LGcode v${result.data.version}. Please restart the application.`,
+      `Successfully updated to Loongcode v${result.data.version}. Please restart the application.`,
     )
 
     void exit()
@@ -1063,7 +1063,7 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
       flexDirection="column"
       backgroundColor={theme.background}
       onMouseDown={(evt) => {
-        if (!Flag.LGCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT) return
+        if (!Flag.LOONGCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT) return
         if (evt.button !== MouseButton.RIGHT) return
 
         if (!Selection.copy(renderer, toast, clipboard)) return
@@ -1071,12 +1071,12 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
         evt.stopPropagation()
       }}
       onMouseUp={
-        !Flag.LGCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT
+        !Flag.LOONGCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT
           ? () => Selection.copy(renderer, toast, clipboard)
           : undefined
       }
     >
-      <Show when={Flag.LGCODE_SHOW_TTFD}>
+      <Show when={Flag.LOONGCODE_SHOW_TTFD}>
         <TimeToFirstDraw />
       </Show>
       <Show when={ready()}>

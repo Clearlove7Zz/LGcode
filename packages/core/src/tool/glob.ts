@@ -1,6 +1,6 @@
 export * as GlobTool from "./glob"
 
-import { ToolFailure } from "@lgcode/llm"
+import { ToolFailure } from "@loongcode/llm"
 import { Effect, Layer, Schema } from "effect"
 import path from "path"
 import { FileSystem } from "../filesystem"

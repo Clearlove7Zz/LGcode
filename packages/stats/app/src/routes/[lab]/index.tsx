@@ -5,8 +5,8 @@ import {
   type LabUsageModelEntry,
   type ModelUsagePoint,
   type StatsLabData,
-} from "@lgcode/stats-core/domain/home"
-import { runtime } from "@lgcode/stats-core/runtime"
+} from "@loongcode/stats-core/domain/home"
+import { runtime } from "@loongcode/stats-core/runtime"
 import { createAsync, query, useParams } from "@solidjs/router"
 import { createMemo, createSignal, For, onMount, Show, type JSX } from "solid-js"
 import { getRequestEvent } from "solid-js/web"
@@ -30,7 +30,7 @@ import {
 
 const statsCanonicalBaseUrl = "https://modelhub.lgdg.cc/data/"
 const statsUnfurlPath = "banner.png"
-const statsUnfurlAlt = "LGcode Data wordmark on a dark patterned background"
+const statsUnfurlAlt = "Loongcode Data wordmark on a dark patterned background"
 const statsUnfurlUrl = new URL(statsUnfurlPath, statsCanonicalBaseUrl).toString()
 const labHeaderLinks: readonly HeaderLink[] = [
   { href: "#overview", label: "Overview" },
@@ -72,7 +72,7 @@ export default function StatsLab() {
   const labTitle = createMemo(() => `${labName()} Models`)
   const labDescription = createMemo(
     () =>
-      `Explore ${labName()} models used in LGcode, with recent token usage, context windows, release dates, and model-specific data.`,
+      `Explore ${labName()} models used in Loongcode, with recent token usage, context windows, release dates, and model-specific data.`,
   )
   const labUrl = createMemo(() => new URL(lab()?.id ?? labParam(), statsCanonicalBaseUrl).toString())
   const updateThemePreference = (preference: ThemePreference) => {
@@ -96,7 +96,7 @@ export default function StatsLab() {
       <Meta name="description" content={labDescription()} />
       <Link rel="canonical" href={labUrl()} />
       <Meta property="og:type" content="website" />
-      <Meta property="og:site_name" content="LGcode" />
+      <Meta property="og:site_name" content="Loongcode" />
       <Meta property="og:title" content={labTitle()} />
       <Meta property="og:description" content={labDescription()} />
       <Meta property="og:url" content={labUrl()} />
@@ -144,7 +144,7 @@ function LabLoading() {
             Data
           </a>
           <h1>Model Lab</h1>
-          <p>Reading model availability and recent LGcode usage.</p>
+          <p>Reading model availability and recent Loongcode usage.</p>
         </div>
       </div>
     </section>
@@ -187,7 +187,7 @@ function LabHero(props: { lab: ModelCatalogLab; stats: StatsLabData | null }) {
           <h1>{props.lab.name}</h1>
           <div data-slot="model-hero-pattern" aria-hidden="true" />
           <p>
-            Explore {props.lab.models.length} {props.lab.name} models used in LGcode
+            Explore {props.lab.models.length} {props.lab.name} models used in Loongcode
             <Show when={featuredModels().length > 0}> including {formatList(featuredModels())}</Show>. Compare recent
             token usage, context windows, release dates, and model-specific data.
           </p>
@@ -197,7 +197,7 @@ function LabHero(props: { lab: ModelCatalogLab; stats: StatsLabData | null }) {
           <strong>{props.stats ? formatTokens(props.stats.totals.tokens) : "Pending"}</strong>
           <p>
             {props.stats
-              ? `${formatPercent(props.stats.tokenShare)} of recent LGcode usage`
+              ? `${formatPercent(props.stats.tokenShare)} of recent Loongcode usage`
               : latest()
                 ? `Latest release ${formatCatalogDate(latest())}`
                 : "Usage appears after model activity lands"}
@@ -222,7 +222,7 @@ function LabUsageSection(props: { lab: ModelCatalogLab; data: StatsLabData | nul
     <section id="usage" data-section="model-panel">
       <p data-slot="section-title">
         <strong>{props.lab.name} token usage.</strong>{" "}
-        <span>Daily LGcode token volume over the last two months.</span>
+        <span>Daily Loongcode token volume over the last two months.</span>
       </p>
       <Show
         when={usage().some((item) => item.tokens > 0)}

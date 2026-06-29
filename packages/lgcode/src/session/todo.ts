@@ -1,12 +1,12 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
 import { SessionID } from "./schema"
 import { Effect, Layer, Context, Schema } from "effect"
-import { Database } from "@lgcode/core/database/database"
+import { Database } from "@loongcode/core/database/database"
 import { eq } from "drizzle-orm"
 import { asc } from "drizzle-orm"
-import { TodoTable } from "@lgcode/core/session/sql"
+import { TodoTable } from "@loongcode/core/session/sql"
 import { EventV2Bridge } from "@/event-v2-bridge"
-import { EventV2 } from "@lgcode/core/event"
+import { EventV2 } from "@loongcode/core/event"
 
 export const Info = Schema.Struct({
   content: Schema.String.annotate({ description: "Brief description of the task" }),
@@ -32,7 +32,7 @@ export interface Interface {
   readonly get: (sessionID: SessionID) => Effect.Effect<Info[]>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/SessionTodo") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/SessionTodo") {}
 
 export const layer = Layer.effect(
   Service,

@@ -1,14 +1,14 @@
 import { afterEach, describe, expect } from "bun:test"
-import { ConfigV1 } from "@lgcode/core/v1/config/config"
-import { SessionV1 } from "@lgcode/core/v1/session"
+import { ConfigV1 } from "@loongcode/core/v1/config/config"
+import { SessionV1 } from "@loongcode/core/v1/session"
 import { Deferred, Effect, Layer } from "effect"
 import type * as Scope from "effect/Scope"
 import { HttpServer } from "effect/unstable/http"
 import { ChildProcessSpawner } from "effect/unstable/process"
-import { FSUtil } from "@lgcode/core/fs-util"
-import { CrossSpawnSpawner } from "@lgcode/core/cross-spawn-spawner"
-import { Flag } from "@lgcode/core/flag/flag"
-import { createOpencodeClient } from "@lgcode/sdk/v2"
+import { FSUtil } from "@loongcode/core/fs-util"
+import { CrossSpawnSpawner } from "@loongcode/core/cross-spawn-spawner"
+import { Flag } from "@loongcode/core/flag/flag"
+import { createOpencodeClient } from "@loongcode/sdk/v2"
 import { validateSession } from "../../src/cli/tui/validate-session"
 import { InstanceBootstrap } from "../../src/project/bootstrap-service"
 import { InstanceStore } from "../../src/project/instance-store"
@@ -24,9 +24,9 @@ import { resetDatabase } from "../fixture/db"
 import { disposeAllInstances, TestInstance, tmpdirScoped } from "../fixture/fixture"
 import { awaitWithTimeout, testEffect } from "../lib/effect"
 import { testProviderConfig } from "../lib/test-provider"
-import { ProviderV2 } from "@lgcode/core/provider"
-import { ModelV2 } from "@lgcode/core/model"
-import { Database } from "@lgcode/core/database/database"
+import { ProviderV2 } from "@loongcode/core/provider"
+import { ModelV2 } from "@loongcode/core/model"
+import { Database } from "@loongcode/core/database/database"
 import { httpApiLayer } from "./httpapi-layer"
 
 const noopBootstrap = Layer.succeed(InstanceBootstrap.Service, InstanceBootstrap.Service.of({ run: Effect.void }))
@@ -41,8 +41,8 @@ const it = testEffect(
 )
 
 const original = {
-  LGCODE_SERVER_PASSWORD: Flag.LGCODE_SERVER_PASSWORD,
-  LGCODE_SERVER_USERNAME: Flag.LGCODE_SERVER_USERNAME,
+  LOONGCODE_SERVER_PASSWORD: Flag.LOONGCODE_SERVER_PASSWORD,
+  LOONGCODE_SERVER_USERNAME: Flag.LOONGCODE_SERVER_USERNAME,
 }
 
 type ServerPath = "default" | "raw"
@@ -89,8 +89,8 @@ function serverFetch(
   return HttpServer.HttpServer.use((server) =>
     Effect.sync(() => {
       void serverPath
-      Flag.LGCODE_SERVER_PASSWORD = input?.password
-      Flag.LGCODE_SERVER_USERNAME = input?.username
+      Flag.LOONGCODE_SERVER_PASSWORD = input?.password
+      Flag.LOONGCODE_SERVER_USERNAME = input?.username
       const baseUrl = HttpServer.formatAddress(server.address)
       return Object.assign(
         async (request: RequestInfo | URL, init?: RequestInit) => {
@@ -286,7 +286,7 @@ function writeStandardFiles(dir: string) {
 function writeProjectSkill(dir: string) {
   return FSUtil.Service.use((fs) =>
     fs.writeWithDirs(
-      path.join(dir, ".lgcode", "skills", "project-rest-skill", "SKILL.md"),
+      path.join(dir, ".loongcode", "skills", "project-rest-skill", "SKILL.md"),
       `---
 name: project-rest-skill
 description: A project skill visible to REST API prompts.
@@ -329,8 +329,8 @@ function seedMessage(directory: string, sessionID: string) {
 }
 
 afterEach(async () => {
-  Flag.LGCODE_SERVER_PASSWORD = original.LGCODE_SERVER_PASSWORD
-  Flag.LGCODE_SERVER_USERNAME = original.LGCODE_SERVER_USERNAME
+  Flag.LOONGCODE_SERVER_PASSWORD = original.LOONGCODE_SERVER_PASSWORD
+  Flag.LOONGCODE_SERVER_USERNAME = original.LOONGCODE_SERVER_USERNAME
   await disposeAllInstances()
   await resetDatabase()
 })
@@ -398,8 +398,8 @@ describe("HttpApi SDK", () => {
         expect(url.searchParams.get("workspace")).toBe(workspaceID)
         expect(url.searchParams.get("location[directory]")).toBe(directory)
         expect(url.searchParams.get("location[workspace]")).toBe(workspaceID)
-        expect(request!.headers.has("x-lgcode-directory")).toBe(false)
-        expect(request!.headers.has("x-lgcode-workspace")).toBe(false)
+        expect(request!.headers.has("x-loongcode-directory")).toBe(false)
+        expect(request!.headers.has("x-loongcode-workspace")).toBe(false)
       }),
     ),
   )
@@ -493,12 +493,12 @@ describe("HttpApi SDK", () => {
         const missing = yield* capture(() => missingSdk.file.read({ path: "hello.txt" }))
         const badSdk = yield* client("raw", directory, {
           password: "secret",
-          headers: { authorization: authorization("lgcode", "wrong") },
+          headers: { authorization: authorization("loongcode", "wrong") },
         })
         const bad = yield* capture(() => badSdk.file.read({ path: "hello.txt" }))
         const goodSdk = yield* client("raw", directory, {
           password: "secret",
-          headers: { authorization: authorization("lgcode", "secret") },
+          headers: { authorization: authorization("loongcode", "secret") },
         })
         const good = yield* capture(() => goodSdk.file.read({ path: "hello.txt" }))
 

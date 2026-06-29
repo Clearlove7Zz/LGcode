@@ -1,1 +1,1 @@
-export * from "@lgcode/tui/util/error"
+export * from "@loongcode/tui/util/error"

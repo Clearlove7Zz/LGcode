@@ -3,9 +3,9 @@ title: Temalar
 description: Yerleşik bir tema seçin veya kendiniz oluşturun.
 ---
 
-lgcode ile birden fazla yerleşik tema arasından seçim yapabilir, terminal temanıza uyum sağlayan bir tema kullanabilir veya kendi özel temanızı tanımlayabilirsiniz.
+loongcode ile birden fazla yerleşik tema arasından seçim yapabilir, terminal temanıza uyum sağlayan bir tema kullanabilir veya kendi özel temanızı tanımlayabilirsiniz.
 
-Varsayılan olarak lgcode kendi `lgcode` temasını kullanır.
+Varsayılan olarak loongcode kendi `loongcode` temasını kullanır.
 
 ---
 
@@ -23,7 +23,7 @@ Truecolor desteği yoksa temalar daha düşük renk doğruluğu ile görünebili
 
 ## Yerleşik temalar
 
-lgcode birden fazla yerleşik temayla gelir.
+loongcode birden fazla yerleşik temayla gelir.
 
 | Ad                     | Açıklama                                                                      |
 | ---------------------- | ----------------------------------------------------------------------------- |
@@ -53,7 +53,7 @@ Ve daha fazlası; sürekli yeni temalar ekliyoruz.
 
 Sistem teması şu kullanıcılar için idealdir:
 
-- lgcode'un terminal görünümüyle birebir uyumlu olmasını isteyenler
+- loongcode'un terminal görünümüyle birebir uyumlu olmasını isteyenler
 - Özel terminal renk şemaları kullananlar
 - Tüm terminal uygulamalarında tutarlı bir görünüm tercih edenler
 
@@ -74,7 +74,7 @@ Sistem teması şu kullanıcılar için idealdir:
 
 ## Özel temalar
 
-lgcode, kullanıcıların kolayca tema oluşturup özelleştirebilmesi için esnek bir JSON tabanlı tema sistemi sunar.
+loongcode, kullanıcıların kolayca tema oluşturup özelleştirebilmesi için esnek bir JSON tabanlı tema sistemi sunar.
 
 ---
 
@@ -83,9 +83,9 @@ lgcode, kullanıcıların kolayca tema oluşturup özelleştirebilmesi için esn
 Temalar birden fazla dizinden şu sırayla yüklenir; daha sonra gelen dizin öncekini ezer:
 
 1. **Yerleşik temalar** - Binary içine gömülüdür
-2. **Kullanıcı yapılandırma dizini** - `~/.config/lgcode/themes/*.json` veya `$XDG_CONFIG_HOME/lgcode/themes/*.json`
-3. **Proje kök dizini** - `<project-root>/.lgcode/themes/*.json`
-4. **Geçerli çalışma dizini** - `./.lgcode/themes/*.json`
+2. **Kullanıcı yapılandırma dizini** - `~/.config/loongcode/themes/*.json` veya `$XDG_CONFIG_HOME/loongcode/themes/*.json`
+3. **Proje kök dizini** - `<project-root>/.loongcode/themes/*.json`
+4. **Geçerli çalışma dizini** - `./.loongcode/themes/*.json`
 
 Birden fazla dizinde aynı adlı tema varsa, önceliği daha yüksek dizindeki tema kullanılır.
 
@@ -98,15 +98,15 @@ Birden fazla dizinde aynı adlı tema varsa, önceliği daha yüksek dizindeki t
 Kullanıcı geneli temalar için:
 
 ```bash no-frame
-mkdir -p ~/.config/lgcode/themes
-vim ~/.config/lgcode/themes/my-theme.json
+mkdir -p ~/.config/loongcode/themes
+vim ~/.config/loongcode/themes/my-theme.json
 ```
 
 Proje özel temalar için:
 
 ```bash no-frame
-mkdir -p .lgcode/themes
-vim .lgcode/themes/my-theme.json
+mkdir -p .loongcode/themes
+vim .loongcode/themes/my-theme.json
 ```
 
 ---

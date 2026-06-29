@@ -1,5 +1,5 @@
-import { EventV2 } from "@lgcode/core/event"
-import { Location } from "@lgcode/core/location"
+import { EventV2 } from "@loongcode/core/event"
+import { Location } from "@loongcode/core/location"
 import { Effect, Stream } from "effect"
 import { HttpServerResponse } from "effect/unstable/http"
 import { HttpApiBuilder } from "effect/unstable/httpapi"

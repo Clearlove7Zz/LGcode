@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "name": "@lgcode/plugin",
+  "name": "@loongcode/plugin",
   "version": "1.17.7",
   "type": "module",
   "license": "MIT",
@@ -17,7 +17,7 @@
     "dist"
   ],
   "dependencies": {
-    "@lgcode/sdk": "workspace:*",
+    "@loongcode/sdk": "workspace:*",
     "effect": "catalog:",
     "zod": "catalog:"
   },

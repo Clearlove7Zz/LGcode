@@ -11,7 +11,7 @@ import { LocaleLinks } from "~/component/locale-links"
 import { config } from "~/config"
 import { useI18n } from "~/context/i18n"
 import { useLanguage } from "~/context/language"
-import desktopAppIcon from "../../asset/lander/lgcode-desktop-icon.png"
+import desktopAppIcon from "../../asset/lander/loongcode-desktop-icon.png"
 import type { DownloadPlatform } from "./types"
 
 type OS = "macOS" | "Windows" | "Linux" | null
@@ -125,27 +125,27 @@ export default function Download() {
                 </code>
                 <CopyStatus />
               </button>
-              <button data-component="cli-row" onClick={handleCopyClick("npm i -g lgcode-ai")}>
+              <button data-component="cli-row" onClick={handleCopyClick("npm i -g loongcode-ai")}>
                 <code>
-                  npm i -g <strong>lgcode-ai</strong>
+                  npm i -g <strong>loongcode-ai</strong>
                 </code>
                 <CopyStatus />
               </button>
-              <button data-component="cli-row" onClick={handleCopyClick("bun add -g lgcode-ai")}>
+              <button data-component="cli-row" onClick={handleCopyClick("bun add -g loongcode-ai")}>
                 <code>
-                  bun add -g <strong>lgcode-ai</strong>
+                  bun add -g <strong>loongcode-ai</strong>
                 </code>
                 <CopyStatus />
               </button>
-              <button data-component="cli-row" onClick={handleCopyClick("brew install anomalyco/tap/lgcode")}>
+              <button data-component="cli-row" onClick={handleCopyClick("brew install anomalyco/tap/loongcode")}>
                 <code>
-                  brew install <strong>anomalyco/tap/lgcode</strong>
+                  brew install <strong>anomalyco/tap/loongcode</strong>
                 </code>
                 <CopyStatus />
               </button>
-              <button data-component="cli-row" onClick={handleCopyClick("paru -S lgcode")}>
+              <button data-component="cli-row" onClick={handleCopyClick("paru -S loongcode")}>
                 <code>
-                  paru -S <strong>lgcode</strong>
+                  paru -S <strong>loongcode</strong>
                 </code>
                 <CopyStatus />
               </button>
@@ -157,9 +157,9 @@ export default function Download() {
               <span>[2]</span> {i18n.t("download.section.desktop")}
             </div>
             <div data-component="section-content">
-              <button data-component="cli-row" onClick={handleCopyClick("brew install --cask lgcode-desktop")}>
+              <button data-component="cli-row" onClick={handleCopyClick("brew install --cask loongcode-desktop")}>
                 <code>
-                  brew install --cask <strong>lgcode-desktop</strong>
+                  brew install --cask <strong>loongcode-desktop</strong>
                 </code>
                 <CopyStatus />
               </button>

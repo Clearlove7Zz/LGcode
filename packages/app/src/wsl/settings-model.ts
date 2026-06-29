@@ -6,14 +6,14 @@ export const wslRuntimeRetryable = (runtime: WslServerRuntime) =>
 export async function enterWslOpencodeStep(
   distro: string,
   probe: (distro: string) => Promise<unknown>,
-  select: (step: "lgcode") => void,
+  select: (step: "loongcode") => void,
 ) {
   await probe(distro)
-  select("lgcode")
+  select("loongcode")
 }
 
 export function wslOpencodeAction(check?: WslOpencodeCheck) {
   if (!check) return
-  if (!check.resolvedPath) return "Install LGcode"
-  if (check.matchesDesktop === false) return "Update LGcode"
+  if (!check.resolvedPath) return "Install Loongcode"
+  if (check.matchesDesktop === false) return "Update Loongcode"
 }

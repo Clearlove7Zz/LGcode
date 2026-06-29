@@ -1,4 +1,4 @@
-const enabled = process.env.LGCODE_ACP_PROFILE === "1"
+const enabled = process.env.LOONGCODE_ACP_PROFILE === "1"
 const started = performance.now()
 
 export function mark(name: string, fields?: Record<string, string | number | boolean | undefined>) {

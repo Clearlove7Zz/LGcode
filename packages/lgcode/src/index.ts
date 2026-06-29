@@ -9,7 +9,7 @@ import { UpgradeCommand } from "./cli/cmd/upgrade"
 import { UninstallCommand } from "./cli/cmd/uninstall"
 import { ModelsCommand } from "./cli/cmd/models"
 import { UI } from "./cli/ui"
-import { InstallationVersion } from "@lgcode/core/installation/version"
+import { InstallationVersion } from "@loongcode/core/installation/version"
 import { FormatError } from "./cli/error"
 import { ServeCommand } from "./cli/cmd/serve"
 import { DebugCommand } from "./cli/cmd/debug"
@@ -34,7 +34,7 @@ const args = hideBin(process.argv)
 
 function show(out: string) {
   const text = out.trimStart()
-  if (!text.startsWith("lgcode ")) {
+  if (!text.startsWith("loongcode ")) {
     process.stderr.write(UI.logo() + EOL + EOL)
     process.stderr.write(text + EOL)
     return
@@ -44,7 +44,7 @@ function show(out: string) {
 
 const cli = yargs(args)
   .parserConfiguration({ "populate--": true })
-  .scriptName("lgcode")
+  .scriptName("loongcode")
   .wrap(100)
   .help("help", "show help")
   .alias("help", "h")
@@ -64,17 +64,17 @@ const cli = yargs(args)
     type: "boolean",
   })
   .middleware(async (opts) => {
-    if (opts.printLogs) process.env.LGCODE_PRINT_LOGS = "1"
-    if (opts.logLevel) process.env.LGCODE_LOG_LEVEL = opts.logLevel
+    if (opts.printLogs) process.env.LOONGCODE_PRINT_LOGS = "1"
+    if (opts.logLevel) process.env.LOONGCODE_LOG_LEVEL = opts.logLevel
     if (opts.pure) {
-      process.env.LGCODE_PURE = "1"
+      process.env.LOONGCODE_PURE = "1"
     }
 
     Heap.start()
 
     process.env.AGENT = "1"
-    process.env.LGCODE = "1"
-    process.env.LGCODE_PID = String(process.pid)
+    process.env.LOONGCODE = "1"
+    process.env.LOONGCODE_PID = String(process.pid)
   })
   .usage("")
   .completion("completion", "generate shell completion script")

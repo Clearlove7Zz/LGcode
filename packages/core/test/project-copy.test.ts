@@ -4,15 +4,15 @@ import fs from "fs/promises"
 import path from "path"
 import { eq } from "drizzle-orm"
 import { Effect, Fiber, Layer, Stream } from "effect"
-import { AbsolutePath } from "@lgcode/core/schema"
-import { FSUtil } from "@lgcode/core/fs-util"
-import { Git } from "@lgcode/core/git"
-import { Database } from "@lgcode/core/database/database"
-import { EventV2 } from "@lgcode/core/event"
-import { Project } from "@lgcode/core/project"
-import { ProjectDirectoryTable, ProjectTable } from "@lgcode/core/project/sql"
-import { ProjectCopy } from "@lgcode/core/project/copy"
-import { ProjectDirectories } from "@lgcode/core/project/directories"
+import { AbsolutePath } from "@loongcode/core/schema"
+import { FSUtil } from "@loongcode/core/fs-util"
+import { Git } from "@loongcode/core/git"
+import { Database } from "@loongcode/core/database/database"
+import { EventV2 } from "@loongcode/core/event"
+import { Project } from "@loongcode/core/project"
+import { ProjectDirectoryTable, ProjectTable } from "@loongcode/core/project/sql"
+import { ProjectCopy } from "@loongcode/core/project/copy"
+import { ProjectDirectories } from "@loongcode/core/project/directories"
 import { tmpdir } from "./fixture/tmpdir"
 import { testEffect } from "./lib/effect"
 
@@ -38,7 +38,7 @@ async function initRepo(directory: string) {
   await $`git init`.cwd(directory).quiet()
   await $`git config core.fsmonitor false`.cwd(directory).quiet()
   await $`git config commit.gpgsign false`.cwd(directory).quiet()
-  await $`git config user.email test@lgcode.test`.cwd(directory).quiet()
+  await $`git config user.email test@loongcode.test`.cwd(directory).quiet()
   await $`git config user.name Test`.cwd(directory).quiet()
   await $`git commit --allow-empty -m root`.cwd(directory).quiet()
 }

@@ -52,7 +52,7 @@ jobs:
       - name: Configure git identity
         run: |
           git config --global user.email "bot@modelhub.lgdg.cc"
-          git config --global user.name "lgcode"
+          git config --global user.name "loongcode"
 
       - name: Cache Turbo
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
@@ -67,11 +67,11 @@ jobs:
         timeout-minutes: 20
         run: bun turbo test --output-logs=errors-only --log-order=grouped --log-prefix=task
         env:
-          LGCODE_EXPERIMENTAL_DISABLE_FILEWATCHER: ${{ runner.os == 'Windows' && 'true' || 'false' }}
+          LOONGCODE_EXPERIMENTAL_DISABLE_FILEWATCHER: ${{ runner.os == 'Windows' && 'true' || 'false' }}
 
       - name: Run HttpApi exerciser gates
         if: runner.os == 'Linux'
-        working-directory: packages/lgcode
+        working-directory: packages/loongcode
         run: bun run test:httpapi
 
   e2e:

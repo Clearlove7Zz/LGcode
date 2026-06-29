@@ -3,13 +3,13 @@ import {
   type SnapshotFileDiff,
   Message as MessageType,
   Part as PartType,
-} from "@lgcode/sdk/v2/client"
-import type { SessionStatus } from "@lgcode/sdk/v2"
+} from "@loongcode/sdk/v2/client"
+import type { SessionStatus } from "@loongcode/sdk/v2"
 import { useData } from "../context"
 import { useFileComponent } from "../context/file"
 
-import { Binary } from "@lgcode/core/util/binary"
-import { getDirectory, getFilename } from "@lgcode/core/util/path"
+import { Binary } from "@loongcode/core/util/binary"
+import { getDirectory, getFilename } from "@loongcode/core/util/path"
 import { createEffect, createMemo, createSignal, For, on, ParentProps, Show } from "solid-js"
 import { createStore } from "solid-js/store"
 import { Dynamic } from "solid-js/web"

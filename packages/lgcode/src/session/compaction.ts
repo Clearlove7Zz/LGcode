@@ -1,6 +1,6 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
-import { SessionV1 } from "@lgcode/core/v1/session"
-import { ConfigV1 } from "@lgcode/core/v1/config/config"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
+import { SessionV1 } from "@loongcode/core/v1/session"
+import { ConfigV1 } from "@loongcode/core/v1/config/config"
 import { Session } from "./session"
 import { SessionID, MessageID, PartID } from "./schema"
 import { Provider } from "@/provider/provider"
@@ -16,15 +16,15 @@ import { Effect, Layer, Context } from "effect"
 import * as DateTime from "effect/DateTime"
 import { InstanceState } from "@/effect/instance-state"
 import { isOverflow as overflow, usable } from "./overflow"
-import { serviceUse } from "@lgcode/core/effect/service-use"
+import { serviceUse } from "@loongcode/core/effect/service-use"
 import { RuntimeFlags } from "@/effect/runtime-flags"
 import { EventV2Bridge } from "@/event-v2-bridge"
-import { SessionEvent } from "@lgcode/core/session/event"
-import { SessionMessage } from "@lgcode/core/session/message"
-import { ProviderV2 } from "@lgcode/core/provider"
-import { ModelV2 } from "@lgcode/core/model"
-import { EventV2 } from "@lgcode/core/event"
-import { buildPrompt } from "@lgcode/core/session/compaction"
+import { SessionEvent } from "@loongcode/core/session/event"
+import { SessionMessage } from "@loongcode/core/session/message"
+import { ProviderV2 } from "@loongcode/core/provider"
+import { ModelV2 } from "@loongcode/core/model"
+import { EventV2 } from "@loongcode/core/event"
+import { buildPrompt } from "@loongcode/core/session/compaction"
 
 export const Event = {
   Compacted: EventV2.define({
@@ -159,7 +159,7 @@ export interface Interface {
   }) => Effect.Effect<void>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/SessionCompaction") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/SessionCompaction") {}
 
 export const use = serviceUse(Service)
 

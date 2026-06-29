@@ -1,30 +1,30 @@
 ---
 title: CLI
-description: LGcode CLI opcije i naredbe.
+description: Loongcode CLI opcije i naredbe.
 ---
 
 import { Tabs, TabItem } from "@astrojs/starlight/components"
 
-LGcode CLI po defaultu pokreće [TUI](/docs/tui) kada se pokrene bez ikakvih argumenata.
+Loongcode CLI po defaultu pokreće [TUI](/docs/tui) kada se pokrene bez ikakvih argumenata.
 
 ```bash
-lgcode
+loongcode
 ```
 
-Ali takođe prihvata naredbe kao što je dokumentovano na ovoj stranici. Ovo vam omogućava programsku interakciju sa LGcode.
+Ali takođe prihvata naredbe kao što je dokumentovano na ovoj stranici. Ovo vam omogućava programsku interakciju sa Loongcode.
 
 ```bash
-lgcode run "Explain how closures work in JavaScript"
+loongcode run "Explain how closures work in JavaScript"
 ```
 
 ---
 
 ### tui
 
-Pokrenite LGcode terminalski korisnički interfejs.
+Pokrenite Loongcode terminalski korisnički interfejs.
 
 ```bash
-lgcode [project]
+loongcode [project]
 ```
 
 #### Opcije
@@ -44,36 +44,36 @@ lgcode [project]
 
 ## Naredbe
 
-LGcode CLI takođe ima sljedeće naredbe.
+Loongcode CLI takođe ima sljedeće naredbe.
 
 ---
 
 ### agent
 
-Upravljajte LGcode agentima.
+Upravljajte Loongcode agentima.
 
 ```bash
-lgcode agent [command]
+loongcode agent [command]
 ```
 
 ---
 
 ### attach
 
-Priključite terminal na već pokrenut LGcode backend server pokrenut putem `serve` ili `web` naredbi.
+Priključite terminal na već pokrenut Loongcode backend server pokrenut putem `serve` ili `web` naredbi.
 
 ```bash
-lgcode attach [url]
+loongcode attach [url]
 ```
 
-Ovo omogućava korištenje TUI-ja sa udaljenim LGcode backend-om. Na primjer:
+Ovo omogućava korištenje TUI-ja sa udaljenim Loongcode backend-om. Na primjer:
 
 ```bash
 # Start the backend server for web/mobile access
-lgcode web --port 4096 --hostname 0.0.0.0
+loongcode web --port 4096 --hostname 0.0.0.0
 
 # In another terminal, attach the TUI to the running backend
-lgcode attach http://10.20.30.40:4096
+loongcode attach http://10.20.30.40:4096
 ```
 
 #### Opcije
@@ -84,8 +84,8 @@ lgcode attach http://10.20.30.40:4096
 | <nobr><code>{"--continue"}</code></nobr> | `-c`   | Nastavi posljednju sesiju                                                                     |
 | <nobr><code>{"--session"}</code></nobr>  | `-s`   | ID sesije za nastavak                                                                         |
 | <nobr><code>{"--fork"}</code></nobr>     |        | Forkuj sesiju prilikom nastavka (koristite sa `--continue` ili `--session`)                   |
-| <nobr><code>{"--password"}</code></nobr> | `-p`   | Lozinka za osnovnu autentifikaciju (zadano: `LGCODE_SERVER_PASSWORD`)                       |
-| <nobr><code>{"--username"}</code></nobr> | `-u`   | Korisničko ime za osnovnu autentifikaciju (zadano: `LGCODE_SERVER_USERNAME` ili `lgcode`) |
+| <nobr><code>{"--password"}</code></nobr> | `-p`   | Lozinka za osnovnu autentifikaciju (zadano: `LOONGCODE_SERVER_PASSWORD`)                       |
+| <nobr><code>{"--username"}</code></nobr> | `-u`   | Korisničko ime za osnovnu autentifikaciju (zadano: `LOONGCODE_SERVER_USERNAME` ili `loongcode`) |
 
 ---
 
@@ -94,7 +94,7 @@ lgcode attach http://10.20.30.40:4096
 Kreirajte novog agenta s prilagođenom konfiguracijom.
 
 ```bash
-lgcode agent create
+loongcode agent create
 ```
 
 Ova naredba će vas voditi kroz kreiranje novog agenta sa prilagođenim sistemskim promptom i konfiguracijom alata.
@@ -106,7 +106,7 @@ Ova naredba će vas voditi kroz kreiranje novog agenta sa prilagođenim sistemsk
 Navedite sve dostupne agente.
 
 ```bash
-lgcode agent list
+loongcode agent list
 ```
 
 ---
@@ -116,20 +116,20 @@ lgcode agent list
 Naredba za upravljanje vjerodajnicama i prijavom za provajdere.
 
 ```bash
-lgcode auth [command]
+loongcode auth [command]
 ```
 
 ---
 
 #### login
 
-LGcode pokreće lista provajdera na [Models.dev](https://models.dev), tako da možete koristiti `lgcode auth login` da konfigurirate API ključeve za bilo kojeg provajdera kojeg želite koristiti. Ovo je pohranjeno u `~/.local/share/lgcode/auth.json`.
+Loongcode pokreće lista provajdera na [Models.dev](https://models.dev), tako da možete koristiti `loongcode auth login` da konfigurirate API ključeve za bilo kojeg provajdera kojeg želite koristiti. Ovo je pohranjeno u `~/.local/share/loongcode/auth.json`.
 
 ```bash
-lgcode auth login
+loongcode auth login
 ```
 
-Kada se LGcode pokrene, učitava dobavljače iz datoteke vjerodajnica. I ako postoje neki ključevi definirani u vašim okruženjima ili `.env` fajl u vašem projektu.
+Kada se Loongcode pokrene, učitava dobavljače iz datoteke vjerodajnica. I ako postoje neki ključevi definirani u vašim okruženjima ili `.env` fajl u vašem projektu.
 
 ---
 
@@ -138,13 +138,13 @@ Kada se LGcode pokrene, učitava dobavljače iz datoteke vjerodajnica. I ako pos
 Navodi sve autentifikovane dobavljače pohranjene u datoteci vjerodajnica.
 
 ```bash
-lgcode auth list
+loongcode auth list
 ```
 
 Ili kratka verzija.
 
 ```bash
-lgcode auth ls
+loongcode auth ls
 ```
 
 ---
@@ -154,7 +154,7 @@ lgcode auth ls
 Odjavljuje vas s provajdera tako što ga briše iz datoteke vjerodajnica.
 
 ```bash
-lgcode auth logout
+loongcode auth logout
 ```
 
 ---
@@ -164,7 +164,7 @@ lgcode auth logout
 Upravljajte GitHub agentom za automatizaciju repozitorija.
 
 ```bash
-lgcode github [command]
+loongcode github [command]
 ```
 
 ---
@@ -174,7 +174,7 @@ lgcode github [command]
 Instalirajte GitHub agenta u svoj repozitorij.
 
 ```bash
-lgcode github install
+loongcode github install
 ```
 
 Ovo postavlja neophodni tok rada GitHub Actions i vodi vas kroz proces konfiguracije. [Saznajte više](/docs/github).
@@ -186,7 +186,7 @@ Ovo postavlja neophodni tok rada GitHub Actions i vodi vas kroz proces konfigura
 Pokrenite GitHub agent. Ovo se obično koristi u GitHub Actions.
 
 ```bash
-lgcode github run
+loongcode github run
 ```
 
 ##### Opcije
@@ -203,7 +203,7 @@ lgcode github run
 Upravljajte Model Context Protocol (MCP) serverima.
 
 ```bash
-lgcode mcp [command]
+loongcode mcp [command]
 ```
 
 ---
@@ -213,7 +213,7 @@ lgcode mcp [command]
 Dodajte MCP server svojoj konfiguraciji.
 
 ```bash
-lgcode mcp add
+loongcode mcp add
 ```
 
 Ova naredba će vas voditi kroz dodavanje lokalnog ili udaljenog MCP servera.
@@ -225,13 +225,13 @@ Ova naredba će vas voditi kroz dodavanje lokalnog ili udaljenog MCP servera.
 Navedite sve konfigurirane MCP servere i njihov status veze.
 
 ```bash
-lgcode mcp list
+loongcode mcp list
 ```
 
 Ili koristite kratku verziju.
 
 ```bash
-lgcode mcp ls
+loongcode mcp ls
 ```
 
 ---
@@ -241,20 +241,20 @@ lgcode mcp ls
 Autentifikujte se sa MCP serverom koji je omogućen za OAuth.
 
 ```bash
-lgcode mcp auth [name]
+loongcode mcp auth [name]
 ```
 
 Ako ne navedete ime servera, od vas će biti zatraženo da izaberete neki od dostupnih servera koji podržavaju OAuth.
 Također možete navesti servere koji podržavaju OAuth i njihov status autentifikacije.
 
 ```bash
-lgcode mcp auth list
+loongcode mcp auth list
 ```
 
 Ili koristite kratku verziju.
 
 ```bash
-lgcode mcp auth ls
+loongcode mcp auth ls
 ```
 
 ---
@@ -264,7 +264,7 @@ lgcode mcp auth ls
 Uklonite OAuth vjerodajnice za MCP server.
 
 ```bash
-lgcode mcp logout [name]
+loongcode mcp logout [name]
 ```
 
 ---
@@ -274,7 +274,7 @@ lgcode mcp logout [name]
 Otklanjanje grešaka (debug) OAuth veze sa MCP serverom.
 
 ```bash
-lgcode mcp debug <name>
+loongcode mcp debug <name>
 ```
 
 ---
@@ -284,7 +284,7 @@ lgcode mcp debug <name>
 Navedite sve dostupne modele konfiguriranih provajdera.
 
 ```bash
-lgcode models [provider]
+loongcode models [provider]
 ```
 
 Ova naredba prikazuje sve modele dostupne kod vaših konfiguriranih provajdera u formatu `provider/model`.
@@ -292,7 +292,7 @@ Ovo je korisno za pronalaženje tačnog naziva modela za korištenje u [vašoj k
 Opciono možete proslijediti ID provajdera za filtriranje modela po tom dobavljaču.
 
 ```bash
-lgcode models anthropic
+loongcode models anthropic
 ```
 
 #### Opcije
@@ -302,36 +302,36 @@ lgcode models anthropic
 | <nobr><code>{"--refresh"}</code></nobr> | Osvježite keš modela sa models.dev                                       |
 | <nobr><code>{"--verbose"}</code></nobr> | Koristite detaljniji izlaz modela (uključuje metapodatke poput troškova) |
 
-Koristite `--refresh` zastavicu da ažurirate keširanu listu modela. Ovo je korisno kada su novi modeli dodani provajderu i želite da ih vidite u LGcode.
+Koristite `--refresh` zastavicu da ažurirate keširanu listu modela. Ovo je korisno kada su novi modeli dodani provajderu i želite da ih vidite u Loongcode.
 
 ```bash
-lgcode models --refresh
+loongcode models --refresh
 ```
 
 ---
 
 ### run
 
-Pokrenite LGcode u neinteraktivnom modu tako što ćete direktno proslijediti prompt.
+Pokrenite Loongcode u neinteraktivnom modu tako što ćete direktno proslijediti prompt.
 
 ```bash
-lgcode run [message..]
+loongcode run [message..]
 ```
 
 Ovo je korisno za skriptiranje, automatizaciju ili kada želite brz odgovor bez pokretanja punog TUI-ja. Na primjer:
 
-```bash "lgcode run"
-lgcode run Explain the use of context in Go
+```bash "loongcode run"
+loongcode run Explain the use of context in Go
 ```
 
-Također možete priključiti pokrenutu `lgcode serve` instancu kako biste izbjegli vrijeme hladnog pokretanja MCP servera pri svakom pokretanju:
+Također možete priključiti pokrenutu `loongcode serve` instancu kako biste izbjegli vrijeme hladnog pokretanja MCP servera pri svakom pokretanju:
 
 ```bash
 # Start a headless server in one terminal
-lgcode serve
+loongcode serve
 
 # In another terminal, run commands that attach to it
-lgcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
+loongcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
 ```
 
 #### Opcije
@@ -348,9 +348,9 @@ lgcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
 | <nobr><code>{"--file"}</code></nobr>     | `-f`   | Fajlovi koje treba priložiti poruci                                                           |
 | <nobr><code>{"--format"}</code></nobr>   |        | Format: default (formatiran) ili json (sirovi JSON događaji)                                  |
 | <nobr><code>{"--title"}</code></nobr>    |        | Naslov sesije (koristi skraćeni prompt ako nije navedena vrijednost)                          |
-| <nobr><code>{"--attach"}</code></nobr>   |        | Priključite na pokrenuti LGcode server (npr. http://localhost:4096)                         |
-| <nobr><code>{"--password"}</code></nobr> | `-p`   | Lozinka za osnovnu autentifikaciju (zadano: `LGCODE_SERVER_PASSWORD`)                       |
-| <nobr><code>{"--username"}</code></nobr> | `-u`   | Korisničko ime za osnovnu autentifikaciju (zadano: `LGCODE_SERVER_USERNAME` ili `lgcode`) |
+| <nobr><code>{"--attach"}</code></nobr>   |        | Priključite na pokrenuti Loongcode server (npr. http://localhost:4096)                         |
+| <nobr><code>{"--password"}</code></nobr> | `-p`   | Lozinka za osnovnu autentifikaciju (zadano: `LOONGCODE_SERVER_PASSWORD`)                       |
+| <nobr><code>{"--username"}</code></nobr> | `-u`   | Korisničko ime za osnovnu autentifikaciju (zadano: `LOONGCODE_SERVER_USERNAME` ili `loongcode`) |
 | <nobr><code>{"--dir"}</code></nobr>      |        | Direktorij za pokretanje, ili putanja na udaljenom serveru pri spajanju                       |
 | <nobr><code>{"--variant"}</code></nobr>  |        | Varijanta modela (napor zaključivanja specifičan za provajdera)                               |
 | <nobr><code>{"--thinking"}</code></nobr> |        | Prikaži blokove razmišljanja                                                                  |
@@ -360,13 +360,13 @@ lgcode run --attach http://localhost:4096 "Explain async/await in JavaScript"
 
 ### serve
 
-Pokrenite LGcode headless server za API pristup. Pogledajte [server docs](/docs/server) za kompletan HTTP interfejs.
+Pokrenite Loongcode headless server za API pristup. Pogledajte [server docs](/docs/server) za kompletan HTTP interfejs.
 
 ```bash
-lgcode serve
+loongcode serve
 ```
 
-Ovo pokreće HTTP server koji pruža API pristup funkcionalnosti LGcode-a bez TUI interfejsa. Postavite `LGCODE_SERVER_PASSWORD` da omogućite HTTP osnovnu auth (korisničko ime je zadano na `lgcode`).
+Ovo pokreće HTTP server koji pruža API pristup funkcionalnosti Loongcode-a bez TUI interfejsa. Postavite `LOONGCODE_SERVER_PASSWORD` da omogućite HTTP osnovnu auth (korisničko ime je zadano na `loongcode`).
 
 #### Opcije
 
@@ -381,20 +381,20 @@ Ovo pokreće HTTP server koji pruža API pristup funkcionalnosti LGcode-a bez TU
 
 ### session
 
-Upravljajte LGcode sesijama.
+Upravljajte Loongcode sesijama.
 
 ```bash
-lgcode session [command]
+loongcode session [command]
 ```
 
 ---
 
 #### list
 
-Navedite sve LGcode sesije.
+Navedite sve Loongcode sesije.
 
 ```bash
-lgcode session list
+loongcode session list
 ```
 
 ##### Opcije
@@ -408,10 +408,10 @@ lgcode session list
 
 ### stats
 
-Prikaži statistiku upotrebe tokena i troškova za vaše LGcode sesije.
+Prikaži statistiku upotrebe tokena i troškova za vaše Loongcode sesije.
 
 ```bash
-lgcode stats
+loongcode stats
 ```
 
 #### Opcije
@@ -430,7 +430,7 @@ lgcode stats
 Izvezite podatke sesije kao JSON.
 
 ```bash
-lgcode export [sessionID]
+loongcode export [sessionID]
 ```
 
 Ako ne unesete ID sesije, od vas će biti zatraženo da odaberete neku od dostupnih sesija.
@@ -439,30 +439,30 @@ Ako ne unesete ID sesije, od vas će biti zatraženo da odaberete neku od dostup
 
 ### import
 
-Uvezite podatke sesije iz JSON datoteke ili LGcode dijeljenog URL-a.
+Uvezite podatke sesije iz JSON datoteke ili Loongcode dijeljenog URL-a.
 
 ```bash
-lgcode import <file>
+loongcode import <file>
 ```
 
-Možete uvesti iz lokalne datoteke ili LGcode dijeljenog URL-a.
+Možete uvesti iz lokalne datoteke ili Loongcode dijeljenog URL-a.
 
 ```bash
-lgcode import session.json
-lgcode import https://opncd.ai/s/abc123
+loongcode import session.json
+loongcode import https://opncd.ai/s/abc123
 ```
 
 ---
 
 ### web
 
-Pokrenite LGcode headless server sa web interfejsom.
+Pokrenite Loongcode headless server sa web interfejsom.
 
 ```bash
-lgcode web
+loongcode web
 ```
 
-Ovo pokreće HTTP server i otvara web pretraživač za pristup LGcode-u preko web interfejsa. Postavite `LGCODE_SERVER_PASSWORD` da omogućite HTTP osnovnu auth (korisničko ime je zadano na `lgcode`).
+Ovo pokreće HTTP server i otvara web pretraživač za pristup Loongcode-u preko web interfejsa. Postavite `LOONGCODE_SERVER_PASSWORD` da omogućite HTTP osnovnu auth (korisničko ime je zadano na `loongcode`).
 
 #### Opcije
 
@@ -480,7 +480,7 @@ Ovo pokreće HTTP server i otvara web pretraživač za pristup LGcode-u preko we
 Pokrenite ACP (Agent Client Protocol) server.
 
 ```bash
-lgcode acp
+loongcode acp
 ```
 
 Ova naredba pokreće ACP server koji komunicira preko stdin/stdout koristeći nd-JSON.
@@ -497,10 +497,10 @@ Ova naredba pokreće ACP server koji komunicira preko stdin/stdout koristeći nd
 
 ### uninstall
 
-Deinstalirajte LGcode i uklonite sve povezane datoteke.
+Deinstalirajte Loongcode i uklonite sve povezane datoteke.
 
 ```bash
-lgcode uninstall
+loongcode uninstall
 ```
 
 #### Opcije
@@ -516,22 +516,22 @@ lgcode uninstall
 
 ### upgrade
 
-Ažurira LGcode na najnoviju verziju ili određenu verziju.
+Ažurira Loongcode na najnoviju verziju ili određenu verziju.
 
 ```bash
-lgcode upgrade [target]
+loongcode upgrade [target]
 ```
 
 Za nadogradnju na najnoviju verziju.
 
 ```bash
-lgcode upgrade
+loongcode upgrade
 ```
 
 Za nadogradnju na određenu verziju.
 
 ```bash
-lgcode upgrade v0.1.48
+loongcode upgrade v0.1.48
 ```
 
 #### Opcije
@@ -544,7 +544,7 @@ lgcode upgrade v0.1.48
 
 ## Globalne opcije
 
-LGcode CLI prihvata sljedeće globalne zastavice.
+Loongcode CLI prihvata sljedeće globalne zastavice.
 
 | Opcija                                     | Kratko | Opis                                      |
 | ------------------------------------------ | ------ | ----------------------------------------- |
@@ -557,34 +557,34 @@ LGcode CLI prihvata sljedeće globalne zastavice.
 
 ## Varijable okruženja
 
-LGcode se može konfigurirati pomoću varijabli okruženja.
+Loongcode se može konfigurirati pomoću varijabli okruženja.
 
 | Varijabla                             | Tip     | Opis                                                               |
 | ------------------------------------- | ------- | ------------------------------------------------------------------ |
-| `LGCODE_AUTO_SHARE`                 | boolean | Automatski dijeli sesije                                           |
-| `LGCODE_GIT_BASH_PATH`              | string  | Putanja do Git Bash izvršne datoteke na Windows-u                  |
-| `LGCODE_CONFIG`                     | string  | Putanja do konfiguracijskog fajla                                  |
-| `LGCODE_TUI_CONFIG`                 | string  | Putanja do TUI konfiguracijskog fajla                              |
-| `LGCODE_CONFIG_DIR`                 | string  | Putanja do konfiguracijskog direktorija                            |
-| `LGCODE_CONFIG_CONTENT`             | string  | Inline json konfiguracijski sadržaj                                |
-| `LGCODE_DISABLE_AUTOUPDATE`         | boolean | Onemogući automatske provjere ažuriranja                           |
-| `LGCODE_DISABLE_PRUNE`              | boolean | Onemogući brisanje (pruning) starih podataka                       |
-| `LGCODE_DISABLE_TERMINAL_TITLE`     | boolean | Onemogući automatsko ažuriranje naslova terminala                  |
-| `LGCODE_PERMISSION`                 | string  | Inline json konfiguracija dozvola                                  |
-| `LGCODE_DISABLE_DEFAULT_PLUGINS`    | boolean | Onemogući podrazumijevane dodatke (plugins)                        |
-| `LGCODE_DISABLE_LSP_DOWNLOAD`       | boolean | Onemogući automatsko preuzimanje LSP servera                       |
-| `LGCODE_ENABLE_EXPERIMENTAL_MODELS` | boolean | Omogući eksperimentalne modele                                     |
-| `LGCODE_DISABLE_AUTOCOMPACT`        | boolean | Onemogući automatsko sažimanje konteksta                           |
-| `LGCODE_DISABLE_CLAUDE_CODE`        | boolean | Onemogući čitanje iz `.claude` (prompt + vještine)                 |
-| `LGCODE_DISABLE_CLAUDE_CODE_PROMPT` | boolean | Onemogući čitanje `~/.claude/CLAUDE.md`                            |
-| `LGCODE_DISABLE_CLAUDE_CODE_SKILLS` | boolean | Onemogući učitavanje `.claude/skills`                              |
-| `LGCODE_DISABLE_MODELS_FETCH`       | boolean | Onemogući dohvaćanje modela iz udaljenih izvora                    |
-| `LGCODE_FAKE_VCS`                   | string  | Lažni VCS provajder za potrebe testiranja                          |
-| `LGCODE_CLIENT`                     | string  | Identifikator klijenta (zadano na `cli`)                           |
-| `LGCODE_ENABLE_EXA`                 | boolean | Omogući Exa alate za web pretraživanje                             |
-| `LGCODE_SERVER_PASSWORD`            | string  | Omogući osnovnu autentifikaciju za `serve`/`web`                   |
-| `LGCODE_SERVER_USERNAME`            | string  | Poništi osnovno korisničko ime autentifikacije (zadano `lgcode`) |
-| `LGCODE_MODELS_URL`                 | string  | Prilagođeni URL za dohvaćanje konfiguracije modela                 |
+| `LOONGCODE_AUTO_SHARE`                 | boolean | Automatski dijeli sesije                                           |
+| `LOONGCODE_GIT_BASH_PATH`              | string  | Putanja do Git Bash izvršne datoteke na Windows-u                  |
+| `LOONGCODE_CONFIG`                     | string  | Putanja do konfiguracijskog fajla                                  |
+| `LOONGCODE_TUI_CONFIG`                 | string  | Putanja do TUI konfiguracijskog fajla                              |
+| `LOONGCODE_CONFIG_DIR`                 | string  | Putanja do konfiguracijskog direktorija                            |
+| `LOONGCODE_CONFIG_CONTENT`             | string  | Inline json konfiguracijski sadržaj                                |
+| `LOONGCODE_DISABLE_AUTOUPDATE`         | boolean | Onemogući automatske provjere ažuriranja                           |
+| `LOONGCODE_DISABLE_PRUNE`              | boolean | Onemogući brisanje (pruning) starih podataka                       |
+| `LOONGCODE_DISABLE_TERMINAL_TITLE`     | boolean | Onemogući automatsko ažuriranje naslova terminala                  |
+| `LOONGCODE_PERMISSION`                 | string  | Inline json konfiguracija dozvola                                  |
+| `LOONGCODE_DISABLE_DEFAULT_PLUGINS`    | boolean | Onemogući podrazumijevane dodatke (plugins)                        |
+| `LOONGCODE_DISABLE_LSP_DOWNLOAD`       | boolean | Onemogući automatsko preuzimanje LSP servera                       |
+| `LOONGCODE_ENABLE_EXPERIMENTAL_MODELS` | boolean | Omogući eksperimentalne modele                                     |
+| `LOONGCODE_DISABLE_AUTOCOMPACT`        | boolean | Onemogući automatsko sažimanje konteksta                           |
+| `LOONGCODE_DISABLE_CLAUDE_CODE`        | boolean | Onemogući čitanje iz `.claude` (prompt + vještine)                 |
+| `LOONGCODE_DISABLE_CLAUDE_CODE_PROMPT` | boolean | Onemogući čitanje `~/.claude/CLAUDE.md`                            |
+| `LOONGCODE_DISABLE_CLAUDE_CODE_SKILLS` | boolean | Onemogući učitavanje `.claude/skills`                              |
+| `LOONGCODE_DISABLE_MODELS_FETCH`       | boolean | Onemogući dohvaćanje modela iz udaljenih izvora                    |
+| `LOONGCODE_FAKE_VCS`                   | string  | Lažni VCS provajder za potrebe testiranja                          |
+| `LOONGCODE_CLIENT`                     | string  | Identifikator klijenta (zadano na `cli`)                           |
+| `LOONGCODE_ENABLE_EXA`                 | boolean | Omogući Exa alate za web pretraživanje                             |
+| `LOONGCODE_SERVER_PASSWORD`            | string  | Omogući osnovnu autentifikaciju za `serve`/`web`                   |
+| `LOONGCODE_SERVER_USERNAME`            | string  | Poništi osnovno korisničko ime autentifikacije (zadano `loongcode`) |
+| `LOONGCODE_MODELS_URL`                 | string  | Prilagođeni URL za dohvaćanje konfiguracije modela                 |
 
 ---
 
@@ -594,21 +594,21 @@ Ove varijable okruženja omogućavaju eksperimentalne karakteristike koje se mog
 
 | Varijabla                                       | Tip     | Opis                                                    |
 | ----------------------------------------------- | ------- | ------------------------------------------------------- |
-| `LGCODE_EXPERIMENTAL`                         | boolean | Omogući eksperimentalne funkcije pod zbirnom zastavicom |
-| `LGCODE_EXPERIMENTAL_ICON_DISCOVERY`          | boolean | Omogući otkrivanje ikona                                |
-| `LGCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT`  | boolean | Onemogući kopiranje pri odabiru u TUI                   |
-| `LGCODE_EXPERIMENTAL_BASH_DEFAULT_TIMEOUT_MS` | number  | Zadano vremensko ograničenje za bash naredbe u ms       |
-| `LGCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX`        | number  | Maksimalni izlazni tokeni za LLM odgovore               |
-| `LGCODE_EXPERIMENTAL_FILEWATCHER`             | boolean | Omogući praćenje datoteka za cijeli direktorij          |
-| `LGCODE_EXPERIMENTAL_OXFMT`                   | boolean | Omogući oxfmt formatter                                 |
-| `LGCODE_EXPERIMENTAL_LSP_TOOL`                | boolean | Omogući eksperimentalni LSP alat                        |
-| `LGCODE_EXPERIMENTAL_DISABLE_FILEWATCHER`     | boolean | Onemogući praćenje datoteka                             |
-| `LGCODE_EXPERIMENTAL_EXA`                     | boolean | Omogući eksperimentalne Exa funkcije                    |
-| `LGCODE_EXPERIMENTAL_LSP_TY`                  | boolean | Omogući TY LSP za python datoteke                       |
-| `LGCODE_EXPERIMENTAL_PLAN_MODE`               | boolean | Omogući Plan mod                                        |
-| `LGCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS`    | boolean | Omogući pozadinske zadatke subagenata                   |
-| `LGCODE_EXPERIMENTAL_EVENT_SYSTEM`            | boolean | Omogući eksperimentalni sistem događaja                 |
-| `LGCODE_EXPERIMENTAL_NATIVE_LLM`              | boolean | Omogući nativnu putanju LLM zahtjeva                    |
-| `LGCODE_EXPERIMENTAL_PARALLEL`                | boolean | Omogući paralelno izvršavanje web pretrage              |
-| `LGCODE_EXPERIMENTAL_SCOUT`                   | boolean | Omogući Scout subagenta                                 |
-| `LGCODE_EXPERIMENTAL_WORKSPACES`              | boolean | Omogući podršku za radne prostore                       |
+| `LOONGCODE_EXPERIMENTAL`                         | boolean | Omogući eksperimentalne funkcije pod zbirnom zastavicom |
+| `LOONGCODE_EXPERIMENTAL_ICON_DISCOVERY`          | boolean | Omogući otkrivanje ikona                                |
+| `LOONGCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT`  | boolean | Onemogući kopiranje pri odabiru u TUI                   |
+| `LOONGCODE_EXPERIMENTAL_BASH_DEFAULT_TIMEOUT_MS` | number  | Zadano vremensko ograničenje za bash naredbe u ms       |
+| `LOONGCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX`        | number  | Maksimalni izlazni tokeni za LLM odgovore               |
+| `LOONGCODE_EXPERIMENTAL_FILEWATCHER`             | boolean | Omogući praćenje datoteka za cijeli direktorij          |
+| `LOONGCODE_EXPERIMENTAL_OXFMT`                   | boolean | Omogući oxfmt formatter                                 |
+| `LOONGCODE_EXPERIMENTAL_LSP_TOOL`                | boolean | Omogući eksperimentalni LSP alat                        |
+| `LOONGCODE_EXPERIMENTAL_DISABLE_FILEWATCHER`     | boolean | Onemogući praćenje datoteka                             |
+| `LOONGCODE_EXPERIMENTAL_EXA`                     | boolean | Omogući eksperimentalne Exa funkcije                    |
+| `LOONGCODE_EXPERIMENTAL_LSP_TY`                  | boolean | Omogući TY LSP za python datoteke                       |
+| `LOONGCODE_EXPERIMENTAL_PLAN_MODE`               | boolean | Omogući Plan mod                                        |
+| `LOONGCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS`    | boolean | Omogući pozadinske zadatke subagenata                   |
+| `LOONGCODE_EXPERIMENTAL_EVENT_SYSTEM`            | boolean | Omogući eksperimentalni sistem događaja                 |
+| `LOONGCODE_EXPERIMENTAL_NATIVE_LLM`              | boolean | Omogući nativnu putanju LLM zahtjeva                    |
+| `LOONGCODE_EXPERIMENTAL_PARALLEL`                | boolean | Omogući paralelno izvršavanje web pretrage              |
+| `LOONGCODE_EXPERIMENTAL_SCOUT`                   | boolean | Omogući Scout subagenta                                 |
+| `LOONGCODE_EXPERIMENTAL_WORKSPACES`              | boolean | Omogući podršku za radne prostore                       |

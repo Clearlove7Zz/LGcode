@@ -1,8 +1,8 @@
-import { Npm } from "@lgcode/core/npm"
+import { Npm } from "@loongcode/core/npm"
 import type { InstanceContext } from "../project/instance-context"
 import { Filesystem } from "@/util/filesystem"
 import { Process } from "@/util/process"
-import { which } from "@lgcode/core/util/which"
+import { which } from "@loongcode/core/util/which"
 
 export interface Context extends Pick<InstanceContext, "directory" | "worktree"> {
   experimentalOxfmt: boolean

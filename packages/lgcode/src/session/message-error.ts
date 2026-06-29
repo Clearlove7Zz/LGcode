@@ -1,5 +1,5 @@
 import { Schema } from "effect"
-import { NamedError } from "@lgcode/core/util/error"
+import { NamedError } from "@loongcode/core/util/error"
 
 export const OutputLengthError = NamedError.create("MessageOutputLengthError", {})
 

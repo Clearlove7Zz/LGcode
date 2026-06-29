@@ -4,20 +4,20 @@ import fs from "fs/promises"
 import path from "path"
 import { eq } from "drizzle-orm"
 import { Effect, Layer } from "effect"
-import { MoveSession } from "@lgcode/core/control-plane/move-session"
-import { Database } from "@lgcode/core/database/database"
-import { FSUtil } from "@lgcode/core/fs-util"
-import { Git } from "@lgcode/core/git"
-import { EventV2 } from "@lgcode/core/event"
-import { Project } from "@lgcode/core/project"
-import { ProjectTable } from "@lgcode/core/project/sql"
-import { ProjectDirectories } from "@lgcode/core/project/directories"
-import { AbsolutePath } from "@lgcode/core/schema"
-import { SessionV2 } from "@lgcode/core/session"
-import { SessionExecution } from "@lgcode/core/session/execution"
-import { SessionProjector } from "@lgcode/core/session/projector"
-import { SessionTable } from "@lgcode/core/session/sql"
-import { SessionStore } from "@lgcode/core/session/store"
+import { MoveSession } from "@loongcode/core/control-plane/move-session"
+import { Database } from "@loongcode/core/database/database"
+import { FSUtil } from "@loongcode/core/fs-util"
+import { Git } from "@loongcode/core/git"
+import { EventV2 } from "@loongcode/core/event"
+import { Project } from "@loongcode/core/project"
+import { ProjectTable } from "@loongcode/core/project/sql"
+import { ProjectDirectories } from "@loongcode/core/project/directories"
+import { AbsolutePath } from "@loongcode/core/schema"
+import { SessionV2 } from "@loongcode/core/session"
+import { SessionExecution } from "@loongcode/core/session/execution"
+import { SessionProjector } from "@loongcode/core/session/projector"
+import { SessionTable } from "@loongcode/core/session/sql"
+import { SessionStore } from "@loongcode/core/session/store"
 import { tmpdir } from "./fixture/tmpdir"
 import { testEffect } from "./lib/effect"
 
@@ -60,7 +60,7 @@ async function initRepo(directory: string) {
   await $`git config core.autocrlf false`.cwd(directory).quiet()
   await $`git config core.fsmonitor false`.cwd(directory).quiet()
   await $`git config commit.gpgsign false`.cwd(directory).quiet()
-  await $`git config user.email test@lgcode.test`.cwd(directory).quiet()
+  await $`git config user.email test@loongcode.test`.cwd(directory).quiet()
   await $`git config user.name Test`.cwd(directory).quiet()
   await fs.writeFile(path.join(directory, "tracked.txt"), "initial\n")
   await $`git add tracked.txt`.cwd(directory).quiet()

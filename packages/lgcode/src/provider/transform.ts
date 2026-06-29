@@ -2,7 +2,7 @@ import type { ModelMessage, ToolResultPart } from "ai"
 import { mergeDeep, unique } from "remeda"
 import type { JSONSchema7 } from "@ai-sdk/provider"
 import type * as Provider from "./provider"
-import type * as ModelsDev from "@lgcode/core/models-dev"
+import type * as ModelsDev from "@loongcode/core/models-dev"
 import { iife } from "@/util/iife"
 
 type Modality = NonNullable<ModelsDev.Model["modalities"]>["input"][number]
@@ -1082,7 +1082,7 @@ export function options(input: {
 
   if (
     input.model.providerID === "baseten" ||
-    (input.model.providerID === "lgcode" && ["kimi-k2-thinking", "glm-4.6"].includes(input.model.api.id))
+    (input.model.providerID === "loongcode" && ["kimi-k2-thinking", "glm-4.6"].includes(input.model.api.id))
   ) {
     result["chat_template_args"] = { enable_thinking: true }
   }
@@ -1176,7 +1176,7 @@ export function options(input: {
       result["textVerbosity"] = "low"
     }
 
-    if (input.model.providerID.startsWith("lgcode")) {
+    if (input.model.providerID.startsWith("loongcode")) {
       result["promptCacheKey"] = input.sessionID
       result["include"] = INCLUDE_ENCRYPTED_REASONING
       result["reasoningSummary"] = "auto"
@@ -1397,7 +1397,7 @@ export function schema(model: Provider.Model, schema: JSONSchema7): JSONSchema7 
 
   if (model.api.npm === "@ai-sdk/openai" || model.api.npm === "@ai-sdk/azure") {
     schema = sanitizeOpenAISchema(schema) as JSONSchema7
-    // Codex also applies lossy compaction above 4 KB; defer that until LGcode needs the same schema budget.
+    // Codex also applies lossy compaction above 4 KB; defer that until Loongcode needs the same schema budget.
   }
 
   if (model.providerID === "moonshotai" || model.api.id.toLowerCase().includes("kimi")) {

@@ -3,7 +3,7 @@ title: Sorun giderme
 description: Yaygin sorunlar ve cozum adimlari.
 ---
 
-lgcode ile ilgili bir sorunu ayiklamak icin once loglari ve diskte tuttugu yerel verileri kontrol edin.
+loongcode ile ilgili bir sorunu ayiklamak icin once loglari ve diskte tuttugu yerel verileri kontrol edin.
 
 ---
 
@@ -11,21 +11,21 @@ lgcode ile ilgili bir sorunu ayiklamak icin once loglari ve diskte tuttugu yerel
 
 Log dosyalari su konuma yazilir:
 
-- **macOS/Linux**: `~/.local/share/lgcode/log/`
-- **Windows**: `WIN+R` tuslayip `%USERPROFILE%\.local\share\lgcode\log` yapistirin
+- **macOS/Linux**: `~/.local/share/loongcode/log/`
+- **Windows**: `WIN+R` tuslayip `%USERPROFILE%\.local\share\loongcode\log` yapistirin
 
 Log dosyalari zaman damgasiyla adlandirilir (ornegin `2025-01-09T123456.log`) ve en yeni 10 log dosyasi tutulur.
 
-Daha ayrintili ayiklama bilgisi icin `--log-level` komut satiri secenegini kullanabilirsiniz. Ornek: `lgcode --log-level DEBUG`.
+Daha ayrintili ayiklama bilgisi icin `--log-level` komut satiri secenegini kullanabilirsiniz. Ornek: `loongcode --log-level DEBUG`.
 
 ---
 
 ## Depolama
 
-lgcode, oturum verilerini ve diger uygulama verilerini diskte su konumda saklar:
+loongcode, oturum verilerini ve diger uygulama verilerini diskte su konumda saklar:
 
-- **macOS/Linux**: `~/.local/share/lgcode/`
-- **Windows**: `WIN+R` tuslayip `%USERPROFILE%\.local\share\lgcode` yapistirin
+- **macOS/Linux**: `~/.local/share/loongcode/`
+- **Windows**: `WIN+R` tuslayip `%USERPROFILE%\.local\share\loongcode` yapistirin
 
 Bu dizin sunlari icerir:
 
@@ -39,13 +39,13 @@ Bu dizin sunlari icerir:
 
 ## Masaüstü uygulaması
 
-lgcode Desktop arka planda yerel bir lgcode sunucusu (`lgcode-cli` sidecar) calistirir. Sorunlarin cogu bozuk bir plugin, hasarli cache veya hatali sunucu ayarindan kaynaklanir.
+loongcode Desktop arka planda yerel bir loongcode sunucusu (`loongcode-cli` sidecar) calistirir. Sorunlarin cogu bozuk bir plugin, hasarli cache veya hatali sunucu ayarindan kaynaklanir.
 
 ### Hızlı kontroller
 
 - Uygulamayi tamamen kapatip yeniden acin
 - Uygulama hata ekrani gosteriyorsa **Restart**'a tiklayip hata detaylarini kopyalayin
-- Yalnizca macOS: `lgcode` menusu -> **Reload Webview** (arayuz bos/donukse yardimci olur)
+- Yalnizca macOS: `loongcode` menusu -> **Reload Webview** (arayuz bos/donukse yardimci olur)
 
 ---
 
@@ -57,9 +57,9 @@ Desktop uygulamasi acilista cokuyorsa, takiliyorsa veya garip davranislar goster
 
 Global config dosyanizi acin ve `plugin` anahtarini arayin.
 
-- **macOS/Linux**: `~/.config/lgcode/lgcode.jsonc` (veya `~/.config/lgcode/lgcode.json`)
-- **macOS/Linux** (eski kurulumlar): `~/.local/share/lgcode/lgcode.jsonc`
-- **Windows**: `WIN+R` tuslayip `%USERPROFILE%\.config\lgcode\lgcode.jsonc` yapistirin
+- **macOS/Linux**: `~/.config/loongcode/loongcode.jsonc` (veya `~/.config/loongcode/loongcode.json`)
+- **macOS/Linux** (eski kurulumlar): `~/.local/share/loongcode/loongcode.jsonc`
+- **Windows**: `WIN+R` tuslayip `%USERPROFILE%\.config\loongcode\loongcode.jsonc` yapistirin
 
 Plugin tanimliysa anahtari kaldirarak veya bos bir diziye cekerek gecici olarak devre disi birakin:
 
@@ -72,13 +72,13 @@ Plugin tanimliysa anahtari kaldirarak veya bos bir diziye cekerek gecici olarak 
 
 #### Eklenti dizinlerini kontrol edin
 
-lgcode diskten yerel plugin de yukleyebilir. Bu dizinleri gecici olarak tasiyin (veya klasoru yeniden adlandirin) ve uygulamayi yeniden baslatin:
+loongcode diskten yerel plugin de yukleyebilir. Bu dizinleri gecici olarak tasiyin (veya klasoru yeniden adlandirin) ve uygulamayi yeniden baslatin:
 
 - **Global plugins**
-  - **macOS/Linux**: `~/.config/lgcode/plugins/`
-  - **Windows**: `WIN+R` tuslayip `%USERPROFILE%\.config\lgcode\plugins` yapistirin
+  - **macOS/Linux**: `~/.config/loongcode/plugins/`
+  - **Windows**: `WIN+R` tuslayip `%USERPROFILE%\.config\loongcode\plugins` yapistirin
 - **Project plugins** (sadece proje bazli config kullaniyorsaniz)
-  - `<your-project>/.lgcode/plugins/`
+  - `<your-project>/.loongcode/plugins/`
 
 Uygulama duzelirse soruna neden olan plugini bulmak icin pluginleri tek tek yeniden etkinlestirin.
 
@@ -86,22 +86,22 @@ Uygulama duzelirse soruna neden olan plugini bulmak icin pluginleri tek tek yeni
 
 ### Cache'i temizleyin
 
-Pluginleri kapatmak ise yaramazsa (veya plugin kurulumu takili kaldiysa), lgcode'un cache'i yeniden olusturmasi icin cache'i temizleyin.
+Pluginleri kapatmak ise yaramazsa (veya plugin kurulumu takili kaldiysa), loongcode'un cache'i yeniden olusturmasi icin cache'i temizleyin.
 
-1. lgcode Desktop'u tamamen kapatin
+1. loongcode Desktop'u tamamen kapatin
 2. Cache dizinini silin:
 
-- **macOS**: Finder -> `Cmd+Shift+G` -> `~/.cache/lgcode`
-- **Linux**: `~/.cache/lgcode` dizinini silin (veya `rm -rf ~/.cache/lgcode` calistirin)
-- **Windows**: `WIN+R` tuslayip `%USERPROFILE%\.cache\lgcode` yapistirin
+- **macOS**: Finder -> `Cmd+Shift+G` -> `~/.cache/loongcode`
+- **Linux**: `~/.cache/loongcode` dizinini silin (veya `rm -rf ~/.cache/loongcode` calistirin)
+- **Windows**: `WIN+R` tuslayip `%USERPROFILE%\.cache\loongcode` yapistirin
 
-3. lgcode Desktop'u yeniden baslatin
+3. loongcode Desktop'u yeniden baslatin
 
 ---
 
 ### Sunucu bağlantı sorunlarını düzeltin
 
-lgcode Desktop ya kendi yerel sunucusunu baslatir (varsayilan) ya da sizin tanimladiginiz bir sunucu URL'sine baglanir.
+loongcode Desktop ya kendi yerel sunucusunu baslatir (varsayilan) ya da sizin tanimladiginiz bir sunucu URL'sine baglanir.
 
 **"Connection Failed"** penceresi goruyorsaniz (veya uygulama acilis ekranini gecemiyorsa), ozel bir sunucu URL'si olup olmadigini kontrol edin.
 
@@ -111,13 +111,13 @@ Ana ekranda sunucu adina (durum noktali) tiklayarak Server secicisini acin. **De
 
 #### Config'ten `server.port` / `server.hostname` kaldirin
 
-`lgcode.json(c)` dosyanizda `server` bolumu varsa gecici olarak kaldirin ve desktop uygulamasini yeniden baslatin.
+`loongcode.json(c)` dosyanizda `server` bolumu varsa gecici olarak kaldirin ve desktop uygulamasini yeniden baslatin.
 
 #### Ortam degiskenlerini kontrol edin
 
-Ortamda `LGCODE_PORT` ayarliysa desktop uygulamasi yerel sunucu icin o portu kullanmaya calisir.
+Ortamda `LOONGCODE_PORT` ayarliysa desktop uygulamasi yerel sunucu icin o portu kullanmaya calisir.
 
-- `LGCODE_PORT` degerini kaldirin (veya bos bir port secin) ve yeniden baslatin
+- `LOONGCODE_PORT` degerini kaldirin (veya bos bir port secin) ve yeniden baslatin
 
 ---
 
@@ -132,21 +132,21 @@ Linux'ta bazi Wayland kurulumlari bos pencere veya compositor hatalarina yol aca
 
 ### Windows: WebView2 Çalışma Zamanı
 
-Windows'ta lgcode Desktop, Microsoft Edge **WebView2 Runtime** gerektirir. Uygulama bos pencereyle aciliyorsa veya hic baslamiyorsa WebView2'yi kurup/guncelleyip tekrar deneyin.
+Windows'ta loongcode Desktop, Microsoft Edge **WebView2 Runtime** gerektirir. Uygulama bos pencereyle aciliyorsa veya hic baslamiyorsa WebView2'yi kurup/guncelleyip tekrar deneyin.
 
 ---
 
 ### Windows: Genel performans sorunları
 
-Windows'ta yavaslik, dosya erisim sorunlari veya terminal problemleri yasiyorsaniz [WSL (Windows Subsystem for Linux)](/docs/windows-wsl) kullanmayi deneyin. WSL, lgcode ozellikleriyle daha sorunsuz calisan bir Linux ortami saglar.
+Windows'ta yavaslik, dosya erisim sorunlari veya terminal problemleri yasiyorsaniz [WSL (Windows Subsystem for Linux)](/docs/windows-wsl) kullanmayi deneyin. WSL, loongcode ozellikleriyle daha sorunsuz calisan bir Linux ortami saglar.
 
 ---
 
 ### Bildirimler görünmüyor
 
-lgcode Desktop sistem bildirimlerini yalnizca su durumlarda gosterir:
+loongcode Desktop sistem bildirimlerini yalnizca su durumlarda gosterir:
 
-- Isletim sistemi ayarlarinizda lgcode icin bildirimler etkinse
+- Isletim sistemi ayarlarinizda loongcode icin bildirimler etkinse
 - Uygulama penceresi odakta degilse
 
 ---
@@ -155,11 +155,11 @@ lgcode Desktop sistem bildirimlerini yalnizca su durumlarda gosterir:
 
 Uygulama acilmiyorsa ve ayarlari arayuz icinden temizleyemiyorsaniz, desktop uygulamasinin kayitli durumunu sifirlayin.
 
-1. lgcode Desktop'u kapatin
-2. Su dosyalari bulun ve silin (lgcode Desktop uygulama veri dizininde yer alirlar):
+1. loongcode Desktop'u kapatin
+2. Su dosyalari bulun ve silin (loongcode Desktop uygulama veri dizininde yer alirlar):
 
-- `lgcode.settings.dat` (desktop varsayilan sunucu URL'si)
-- `lgcode.global.dat` ve `lgcode.workspace.*.dat` (son sunucular/projeler gibi UI durumu)
+- `loongcode.settings.dat` (desktop varsayilan sunucu URL'si)
+- `loongcode.global.dat` ve `loongcode.workspace.*.dat` (son sunucular/projeler gibi UI durumu)
 
 Dizini hizlica bulmak icin:
 
@@ -171,7 +171,7 @@ Dizini hizlica bulmak icin:
 
 ## Yardım alın
 
-lgcode ile ilgili bir sorun yasiyorsaniz:
+loongcode ile ilgili bir sorun yasiyorsaniz:
 
 1. **GitHub'da issue acin**
 
@@ -195,11 +195,11 @@ Asagida yaygin sorunlar ve cozumleri yer aliyor.
 
 ---
 
-### lgcode başlamıyor
+### loongcode başlamıyor
 
 1. Hata mesaji icin loglari kontrol edin
 2. Terminalde cikti gormek icin `--print-logs` ile calistirin
-3. `lgcode upgrade` ile en guncel surumu kullandiginizdan emin olun
+3. `loongcode upgrade` ile en guncel surumu kullandiginizdan emin olun
 
 ---
 
@@ -224,9 +224,9 @@ Ornekler:
 
 - `openai/gpt-4.1`
 - `openrouter/google/gemini-2.5-flash`
-- `lgcode/kimi-k2`
+- `loongcode/kimi-k2`
 
-Erisiminiz olan modelleri gormek icin `lgcode models` calistirin.
+Erisiminiz olan modelleri gormek icin `loongcode models` calistirin.
 
 ---
 
@@ -240,10 +240,10 @@ Cozum adimlari:
 2. Sorun surerse kayitli konfigurasyonu temizlemeyi deneyin:
 
    ```bash
-   rm -rf ~/.local/share/lgcode
+   rm -rf ~/.local/share/loongcode
    ```
 
-   Windows'ta `WIN+R` tuslayip su konumu silin: `%USERPROFILE%\.local\share\lgcode`
+   Windows'ta `WIN+R` tuslayip su konumu silin: `%USERPROFILE%\.local\share\loongcode`
 
 3. TUI'da `/connect` komutuyla provider kimlik dogrulamasini tekrar yapin
 
@@ -251,21 +251,21 @@ Cozum adimlari:
 
 ### AI_APICallError ve provider paket sorunlari
 
-API cagrisi hatalari aliyorsaniz bunun nedeni guncel olmayan provider paketleri olabilir. lgcode, provider paketlerini (OpenAI, Anthropic, Google vb.) gerektikce dinamik yukler ve yerelde onbellekler.
+API cagrisi hatalari aliyorsaniz bunun nedeni guncel olmayan provider paketleri olabilir. loongcode, provider paketlerini (OpenAI, Anthropic, Google vb.) gerektikce dinamik yukler ve yerelde onbellekler.
 
 Provider paket sorunlarini gidermek icin:
 
 1. Provider paket cache'ini temizleyin:
 
    ```bash
-   rm -rf ~/.cache/lgcode
+   rm -rf ~/.cache/loongcode
    ```
 
-   Windows'ta `WIN+R` tuslayip su konumu silin: `%USERPROFILE%\.cache\lgcode`
+   Windows'ta `WIN+R` tuslayip su konumu silin: `%USERPROFILE%\.cache\loongcode`
 
-2. En guncel provider paketlerini yeniden kurmak icin lgcode'u yeniden baslatin
+2. En guncel provider paketlerini yeniden kurmak icin loongcode'u yeniden baslatin
 
-Bu, lgcode'un en yeni provider paket surumlerini indirmesini zorlar ve model parametresi/API degisikliklerinden kaynakli uyumsuzluklari cogu zaman cozer.
+Bu, loongcode'un en yeni provider paket surumlerini indirmesini zorlar ve model parametresi/API degisikliklerinden kaynakli uyumsuzluklari cogu zaman cozer.
 
 ---
 
@@ -296,4 +296,4 @@ Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 export DISPLAY=:99.0
 ```
 
-lgcode, Wayland kullandiginizi algilarsa `wl-clipboard` tercihi yapar. Aksi halde sirayla `xclip` ve `xsel` araclarini arar.
+loongcode, Wayland kullandiginizi algilarsa `wl-clipboard` tercihi yapar. Aksi halde sirayla `xclip` ve `xsel` araclarini arar.

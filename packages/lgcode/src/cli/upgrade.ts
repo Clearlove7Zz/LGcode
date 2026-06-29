@@ -1,18 +1,18 @@
 import { Config } from "@/config/config"
 import { AppRuntime } from "@/effect/app-runtime"
-import { Flag } from "@lgcode/core/flag/flag"
+import { Flag } from "@loongcode/core/flag/flag"
 import { Installation } from "@/installation"
-import { InstallationVersion } from "@lgcode/core/installation/version"
+import { InstallationVersion } from "@loongcode/core/installation/version"
 import { GlobalBus } from "@/bus/global"
 
 export async function upgrade() {
   const config = await AppRuntime.runPromise(Config.Service.use((cfg) => cfg.getGlobal()))
-  if (config.autoupdate === false || Flag.LGCODE_DISABLE_AUTOUPDATE) return
+  if (config.autoupdate === false || Flag.LOONGCODE_DISABLE_AUTOUPDATE) return
   const method = await Installation.method()
   const latest = await Installation.latest(method).catch(() => {})
   if (!latest) return
 
-  if (Flag.LGCODE_ALWAYS_NOTIFY_UPDATE) {
+  if (Flag.LOONGCODE_ALWAYS_NOTIFY_UPDATE) {
     GlobalBus.emit("event", {
       directory: "global",
       payload: {

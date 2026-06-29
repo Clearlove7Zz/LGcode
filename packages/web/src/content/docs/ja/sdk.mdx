@@ -1,13 +1,13 @@
 ---
 title: SDK
-description: LGcode サーバー用の型安全な JS クライアント。
+description: Loongcode サーバー用の型安全な JS クライアント。
 ---
 
 import config from "../../../../config.mjs"
 export const typesUrl = `${config.github}/blob/dev/packages/sdk/js/src/gen/types.gen.ts`
 
-LGcode JS/TS SDK は、サーバーと対話するための型安全なクライアントを提供します。
-これを使用して、統合を構築し、LGcode をプログラムで制御します。
+Loongcode JS/TS SDK は、サーバーと対話するための型安全なクライアントを提供します。
+これを使用して、統合を構築し、Loongcode をプログラムで制御します。
 
 [サーバーの仕組みについての詳細](/docs/server) をご覧ください。たとえば、コミュニティによって構築された [projects](/docs/ecosystem#projects) をチェックしてください。
 
@@ -18,17 +18,17 @@ LGcode JS/TS SDK は、サーバーと対話するための型安全なクライ
 npm から SDK をインストールします。
 
 ```bash
-npm install @lgcode-ai/sdk
+npm install @loongcode-ai/sdk
 ```
 
 ---
 
 ## クライアントの作成
 
-LGcode のインスタンスを作成します。
+Loongcode のインスタンスを作成します。
 
 ```javascript
-import { createOpencode } from "@lgcode-ai/sdk"
+import { createOpencode } from "@loongcode-ai/sdk"
 
 const { client } = await createOpencode()
 ```
@@ -49,12 +49,12 @@ const { client } = await createOpencode()
 
 ## 設定
 
-設定オブジェクトを渡して動作をカスタマイズできます。インスタンスは引き続き `lgcode.json` を取得しますが、設定をインラインでオーバーライドまたは追加することができます。
+設定オブジェクトを渡して動作をカスタマイズできます。インスタンスは引き続き `loongcode.json` を取得しますが、設定をインラインでオーバーライドまたは追加することができます。
 
 ```javascript
-import { createOpencode } from "@lgcode-ai/sdk"
+import { createOpencode } from "@loongcode-ai/sdk"
 
-const lgcode = await createOpencode({
+const loongcode = await createOpencode({
   hostname: "127.0.0.1",
   port: 4096,
   config: {
@@ -62,17 +62,17 @@ const lgcode = await createOpencode({
   },
 })
 
-console.log(`Server running at ${lgcode.server.url}`)
+console.log(`Server running at ${loongcode.server.url}`)
 
-lgcode.server.close()
+loongcode.server.close()
 ```
 
 ## クライアントのみ
 
-すでに実行中の LGcode のインスタンスがある場合は、それに接続するためのクライアントインスタンスを作成できます。
+すでに実行中の Loongcode のインスタンスがある場合は、それに接続するためのクライアントインスタンスを作成できます。
 
 ```javascript
-import { createOpencodeClient } from "@lgcode-ai/sdk"
+import { createOpencodeClient } from "@loongcode-ai/sdk"
 
 const client = createOpencodeClient({
   baseUrl: "http://localhost:4096",
@@ -96,7 +96,7 @@ const client = createOpencodeClient({
 SDK には、すべての API タイプの TypeScript 定義が含まれています。それらを直接インポートします。
 
 ```typescript
-import type { Session, Message, Part } from "@lgcode-ai/sdk"
+import type { Session, Message, Part } from "@loongcode-ai/sdk"
 ```
 
 すべてのタイプはサーバーの OpenAPI 仕様から生成され、<a href={typesUrl}>タイプファイル</a> で使用できます。
@@ -376,7 +376,7 @@ await client.session.prompt({
 ```javascript
 // Search and read files
 const textResults = await client.find.text({
-  query: { pattern: "function.*lgcode" },
+  query: { pattern: "function.*loongcode" },
 })
 
 const files = await client.find.files({

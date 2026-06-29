@@ -1,7 +1,7 @@
 import { Component, For, Match, Show, Switch } from "solid-js"
-import { FileIcon } from "@lgcode/ui/file-icon"
-import { Icon } from "@lgcode/ui/icon"
-import { getDirectory, getFilename } from "@lgcode/core/util/path"
+import { FileIcon } from "@loongcode/ui/file-icon"
+import { Icon } from "@loongcode/ui/icon"
+import { getDirectory, getFilename } from "@loongcode/core/util/path"
 
 export type AtOption =
   | { type: "agent"; name: string; display: string }

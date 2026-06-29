@@ -113,7 +113,7 @@ export default function Home() {
             <h3 data-component="title">npm</h3>
             <button data-copy data-slot="button">
               <span>
-                npm install -g <strong>lgcode-ai</strong>
+                npm install -g <strong>loongcode-ai</strong>
               </span>
               <CopyStatus />
             </button>
@@ -122,7 +122,7 @@ export default function Home() {
             <h3 data-component="title">bun</h3>
             <button data-copy data-slot="button">
               <span>
-                bun install -g <strong>lgcode-ai</strong>
+                bun install -g <strong>loongcode-ai</strong>
               </span>
               <CopyStatus />
             </button>
@@ -131,7 +131,7 @@ export default function Home() {
             <h3 data-component="title">homebrew</h3>
             <button data-copy data-slot="button">
               <span>
-                brew install <strong>lgcode</strong>
+                brew install <strong>loongcode</strong>
               </span>
               <CopyStatus />
             </button>
@@ -140,7 +140,7 @@ export default function Home() {
             <h3 data-component="title">paru</h3>
             <button data-copy data-slot="button">
               <span>
-                paru -S <strong>lgcode-bin</strong>
+                paru -S <strong>loongcode-bin</strong>
               </span>
               <CopyStatus />
             </button>
@@ -158,7 +158,7 @@ export default function Home() {
 
         <footer data-component="footer">
           <div data-slot="cell">
-            <a href="https://x.com/lgcode">{i18n.t("footer.x")}</a>
+            <a href="https://x.com/loongcode">{i18n.t("footer.x")}</a>
           </div>
           <div data-slot="cell">
             <a href="https://github.com/Clearlove7Zz/LGcode.git">{i18n.t("footer.github")}</a>

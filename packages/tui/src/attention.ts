@@ -9,17 +9,17 @@ import type {
   TuiAttentionSoundName,
   TuiAttentionSoundPack,
   TuiAttentionSoundPackInfo,
-} from "@lgcode/plugin/tui"
+} from "@loongcode/plugin/tui"
 import { AttentionSoundName, type TuiConfig } from "./config"
 import { Schema } from "effect"
 import stripAnsi from "strip-ansi"
 import * as TuiAudio from "./audio"
-import defaultSoundPath from "@lgcode/ui/audio/bip-bop-01.mp3" with { type: "file" }
-import questionSoundPath from "@lgcode/ui/audio/bip-bop-03.mp3" with { type: "file" }
-import permissionSoundPath from "@lgcode/ui/audio/staplebops-06.mp3" with { type: "file" }
-import errorSoundPath from "@lgcode/ui/audio/nope-03.mp3" with { type: "file" }
-import doneSoundPath from "@lgcode/ui/audio/bip-bop-01.mp3" with { type: "file" }
-import subagentDoneSoundPath from "@lgcode/ui/audio/yup-01.mp3" with { type: "file" }
+import defaultSoundPath from "@loongcode/ui/audio/bip-bop-01.mp3" with { type: "file" }
+import questionSoundPath from "@loongcode/ui/audio/bip-bop-03.mp3" with { type: "file" }
+import permissionSoundPath from "@loongcode/ui/audio/staplebops-06.mp3" with { type: "file" }
+import errorSoundPath from "@loongcode/ui/audio/nope-03.mp3" with { type: "file" }
+import doneSoundPath from "@loongcode/ui/audio/bip-bop-01.mp3" with { type: "file" }
+import subagentDoneSoundPath from "@loongcode/ui/audio/yup-01.mp3" with { type: "file" }
 
 type FocusState = "unknown" | "focused" | "blurred"
 
@@ -38,14 +38,14 @@ type TuiAttentionHost = TuiAttention & {
   dispose(): void
 }
 
-const DEFAULT_TITLE = "lgcode"
-const DEFAULT_PACK_ID = "lgcode.default"
+const DEFAULT_TITLE = "loongcode"
+const DEFAULT_PACK_ID = "loongcode.default"
 const KV_SOUND_PACK = "attention_sound_pack"
 const TITLE_LIMIT = 80
 const MESSAGE_LIMIT = 240
 const BUILTIN_PACK: RegisteredSoundPack = {
   id: DEFAULT_PACK_ID,
-  name: "LGcode Default",
+  name: "Loongcode Default",
   builtin: true,
   sounds: {
     default: defaultSoundPath,

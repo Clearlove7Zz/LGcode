@@ -1,7 +1,7 @@
 import { describe, expect, mock } from "bun:test"
 import { Effect } from "effect"
-import { PluginV2 } from "@lgcode/core/plugin"
-import { GatewayPlugin } from "@lgcode/core/plugin/provider/gateway"
+import { PluginV2 } from "@loongcode/core/plugin"
+import { GatewayPlugin } from "@loongcode/core/plugin/provider/gateway"
 import { it, model } from "./provider-helper"
 
 const gatewayCalls: Record<string, unknown>[] = []

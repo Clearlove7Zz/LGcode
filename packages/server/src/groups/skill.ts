@@ -1,5 +1,5 @@
-import { SkillV2 } from "@lgcode/core/skill"
-import { Location } from "@lgcode/core/location"
+import { SkillV2 } from "@loongcode/core/skill"
+import { Location } from "@loongcode/core/location"
 import { Schema } from "effect"
 import { HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
 import { LocationQuery, locationQueryOpenApi, LocationMiddleware } from "./location"

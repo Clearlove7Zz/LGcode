@@ -10,15 +10,15 @@ import { createAcpClient, initialize, newSession, verifierConfig } from "./helpe
 
 const tinyPng = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="
 
-describe("lgcode acp prompt content subprocess", () => {
+describe("loongcode acp prompt content subprocess", () => {
   cliIt.live(
     "accepts embedded text resource image and file resource link prompt content",
-    ({ home, llm, lgcode }) =>
+    ({ home, llm, loongcode }) =>
       Effect.gen(function* () {
         yield* Effect.promise(() => writeFile(path.join(home, "README.md"), "# ACP content smoke\n"))
         const acp = yield* createAcpClient(
-          { lgcode },
-          { LGCODE_CONFIG_CONTENT: JSON.stringify(promptContentConfig(llm.url)) },
+          { loongcode },
+          { LOONGCODE_CONFIG_CONTENT: JSON.stringify(promptContentConfig(llm.url)) },
         )
         yield* initialize(acp)
         const session = yield* newSession(acp, home)

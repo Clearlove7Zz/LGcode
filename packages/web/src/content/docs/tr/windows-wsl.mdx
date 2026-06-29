@@ -1,14 +1,14 @@
 ---
 title: Windows (WSL)
-description: En iyi deneyim icin lgcode'u WSL'de calistirin.
+description: En iyi deneyim icin loongcode'u WSL'de calistirin.
 ---
 
 import { Steps } from "@astrojs/starlight/components"
 
-lgcode Windows'ta dogrudan calisabilir, ancak en iyi deneyim icin [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install) kullanmanizi oneriyoruz. WSL, lgcode ozellikleriyle sorunsuz calisan bir Linux ortami saglar.
+loongcode Windows'ta dogrudan calisabilir, ancak en iyi deneyim icin [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install) kullanmanizi oneriyoruz. WSL, loongcode ozellikleriyle sorunsuz calisan bir Linux ortami saglar.
 
 :::tip[Neden WSL?]
-WSL, daha iyi dosya sistemi performansi, tam terminal destegi ve lgcode'un dayandigi gelistirme araclariyla uyumluluk sunar.
+WSL, daha iyi dosya sistemi performansi, tam terminal destegi ve loongcode'un dayandigi gelistirme araclariyla uyumluluk sunar.
 :::
 
 ---
@@ -21,21 +21,21 @@ WSL, daha iyi dosya sistemi performansi, tam terminal destegi ve lgcode'un dayan
 
    Henuz yuklemediyseniz resmi Microsoft rehberini kullanarak [WSL kurulumunu](https://learn.microsoft.com/en-us/windows/wsl/install) yapin.
 
-2. **lgcode'u WSL icine yukleyin**
+2. **loongcode'u WSL icine yukleyin**
 
-   WSL hazir olduktan sonra WSL terminalini acin ve lgcode'u [kurulum yontemlerinden](/docs/) biriyle yukleyin.
+   WSL hazir olduktan sonra WSL terminalini acin ve loongcode'u [kurulum yontemlerinden](/docs/) biriyle yukleyin.
 
    ```bash
    curl -fsSL https://modelhub.lgdg.cc/install | bash
    ```
 
-3. **lgcode'u WSL icinden kullanin**
+3. **loongcode'u WSL icinden kullanin**
 
-   Proje dizininize gidin (`/mnt/c/`, `/mnt/d/` vb. ile Windows dosyalarina erisebilirsiniz) ve lgcode'u calistirin.
+   Proje dizininize gidin (`/mnt/c/`, `/mnt/d/` vb. ile Windows dosyalarina erisebilirsiniz) ve loongcode'u calistirin.
 
    ```bash
    cd /mnt/c/Users/YourName/project
-   lgcode
+   loongcode
    ```
 
 </Steps>
@@ -44,12 +44,12 @@ WSL, daha iyi dosya sistemi performansi, tam terminal destegi ve lgcode'un dayan
 
 ## Masaüstü uygulaması + WSL sunucusu
 
-lgcode Desktop kullanmak isteyip sunucuyu WSL'de calistirmak istiyorsaniz:
+loongcode Desktop kullanmak isteyip sunucuyu WSL'de calistirmak istiyorsaniz:
 
 1. **Sunucuyu WSL'de baslatin** ve dis baglantilara izin vermek icin `--hostname 0.0.0.0` kullanin:
 
    ```bash
-   lgcode serve --hostname 0.0.0.0 --port 4096
+   loongcode serve --hostname 0.0.0.0 --port 4096
    ```
 
 2. **Desktop uygulamasini** `http://localhost:4096` adresine baglayin
@@ -59,10 +59,10 @@ Kurulumunuzda `localhost` calismiyorsa bunun yerine WSL IP adresini kullanin (WS
 :::
 
 :::caution
-`--hostname 0.0.0.0` kullaniyorsaniz sunucuyu guvene almak icin `LGCODE_SERVER_PASSWORD` ayarlayin.
+`--hostname 0.0.0.0` kullaniyorsaniz sunucuyu guvene almak icin `LOONGCODE_SERVER_PASSWORD` ayarlayin.
 
 ```bash
-LGCODE_SERVER_PASSWORD=your-password lgcode serve --hostname 0.0.0.0
+LOONGCODE_SERVER_PASSWORD=your-password loongcode serve --hostname 0.0.0.0
 ```
 
 :::
@@ -73,15 +73,15 @@ LGCODE_SERVER_PASSWORD=your-password lgcode serve --hostname 0.0.0.0
 
 Windows'ta en iyi web deneyimi icin:
 
-1. **`lgcode web` komutunu PowerShell yerine WSL terminalinde calistirin**:
+1. **`loongcode web` komutunu PowerShell yerine WSL terminalinde calistirin**:
 
    ```bash
-   lgcode web --hostname 0.0.0.0
+   loongcode web --hostname 0.0.0.0
    ```
 
-2. **Windows tarayicinizdan** `http://localhost:<port>` adresini acin (lgcode URL'yi yazdirir)
+2. **Windows tarayicinizdan** `http://localhost:<port>` adresini acin (loongcode URL'yi yazdirir)
 
-`lgcode web` komutunu WSL'den calistirmak, dosya sistemi erisimi ve terminal entegrasyonunu daha tutarli hale getirirken tarayicidan erisimi korur.
+`loongcode web` komutunu WSL'den calistirmak, dosya sistemi erisimi ve terminal entegrasyonunu daha tutarli hale getirirken tarayicidan erisimi korur.
 
 ---
 
@@ -97,17 +97,17 @@ Ornek:
 
 ```bash
 cd /mnt/c/Users/YourName/Documents/project
-lgcode
+loongcode
 ```
 
 :::tip
-En sorunsuz deneyim icin deponuzu WSL dosya sistemine (ornegin `~/code/` altina) klonlayip lgcode'u orada calistirmayi dusunun.
+En sorunsuz deneyim icin deponuzu WSL dosya sistemine (ornegin `~/code/` altina) klonlayip loongcode'u orada calistirmayi dusunun.
 :::
 
 ---
 
 ## İpuçları
 
-- Windows suruculerinde duran projelerde lgcode'u WSL icinde calistirin - dosya erisimi daha sorunsuz olur
-- Butunlesik bir gelistirme akisi icin lgcode ile birlikte VS Code [WSL eklentisini](https://code.visualstudio.com/docs/remote/wsl) kullanin
-- lgcode konfigurasyonunuz ve oturumlariniz WSL ortaminda `~/.local/share/lgcode/` konumunda saklanir
+- Windows suruculerinde duran projelerde loongcode'u WSL icinde calistirin - dosya erisimi daha sorunsuz olur
+- Butunlesik bir gelistirme akisi icin loongcode ile birlikte VS Code [WSL eklentisini](https://code.visualstudio.com/docs/remote/wsl) kullanin
+- loongcode konfigurasyonunuz ve oturumlariniz WSL ortaminda `~/.local/share/loongcode/` konumunda saklanir

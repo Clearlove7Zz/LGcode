@@ -3,9 +3,9 @@ title: Temas
 description: Selecione um tema embutido ou defina o seu próprio.
 ---
 
-Com o lgcode, você pode selecionar um dos vários temas embutidos, usar um tema que se adapta ao tema do seu terminal ou definir seu próprio tema personalizado.
+Com o loongcode, você pode selecionar um dos vários temas embutidos, usar um tema que se adapta ao tema do seu terminal ou definir seu próprio tema personalizado.
 
-Por padrão, o lgcode usa nosso próprio tema `lgcode`.
+Por padrão, o loongcode usa nosso próprio tema `loongcode`.
 
 ---
 
@@ -23,7 +23,7 @@ Sem suporte a truecolor, os temas podem aparecer com precisão de cor reduzida o
 
 ## Temas embutidos
 
-O lgcode vem com vários temas embutidos.
+O loongcode vem com vários temas embutidos.
 
 | Nome                   | Descrição                                                                   |
 | ---------------------- | --------------------------------------------------------------------------- |
@@ -53,7 +53,7 @@ O tema `system` é projetado para se adaptar automaticamente ao esquema de cores
 
 O tema do sistema é para usuários que:
 
-- Querem que o lgcode corresponda à aparência do seu terminal
+- Querem que o loongcode corresponda à aparência do seu terminal
 - Usam esquemas de cores de terminal personalizados
 - Preferem uma aparência consistente em todos os aplicativos de terminal
 
@@ -74,7 +74,7 @@ Você pode selecionar um tema chamando a seleção de tema com o comando `/theme
 
 ## Temas personalizados
 
-O lgcode suporta um sistema de temas flexível baseado em JSON que permite aos usuários criar e personalizar temas facilmente.
+O loongcode suporta um sistema de temas flexível baseado em JSON que permite aos usuários criar e personalizar temas facilmente.
 
 ---
 
@@ -83,9 +83,9 @@ O lgcode suporta um sistema de temas flexível baseado em JSON que permite aos u
 Os temas são carregados de vários diretórios na seguinte ordem, onde diretórios posteriores substituem os anteriores:
 
 1. **Temas embutidos** - Estes estão incorporados no binário
-2. **Diretório de configuração do usuário** - Definido em `~/.config/lgcode/themes/*.json` ou `$XDG_CONFIG_HOME/lgcode/themes/*.json`
-3. **Diretório raiz do projeto** - Definido em `<project-root>/.lgcode/themes/*.json`
-4. **Diretório de trabalho atual** - Definido em `./.lgcode/themes/*.json`
+2. **Diretório de configuração do usuário** - Definido em `~/.config/loongcode/themes/*.json` ou `$XDG_CONFIG_HOME/loongcode/themes/*.json`
+3. **Diretório raiz do projeto** - Definido em `<project-root>/.loongcode/themes/*.json`
+4. **Diretório de trabalho atual** - Definido em `./.loongcode/themes/*.json`
 
 Se vários diretórios contiverem um tema com o mesmo nome, o tema do diretório com maior prioridade será usado.
 
@@ -98,15 +98,15 @@ Para criar um tema personalizado, crie um arquivo JSON em um dos diretórios de 
 Para temas de usuário:
 
 ```bash no-frame
-mkdir -p ~/.config/lgcode/themes
-vim ~/.config/lgcode/themes/my-theme.json
+mkdir -p ~/.config/loongcode/themes
+vim ~/.config/loongcode/themes/my-theme.json
 ```
 
 E para temas específicos do projeto.
 
 ```bash no-frame
-mkdir -p .lgcode/themes
-vim .lgcode/themes/my-theme.json
+mkdir -p .loongcode/themes
+vim .loongcode/themes/my-theme.json
 ```
 
 ---

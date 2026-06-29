@@ -13,13 +13,13 @@ import {
 } from "solid-js"
 import { createStore } from "solid-js/store"
 import { useLocation, useMatch, useNavigate, useParams } from "@solidjs/router"
-import { IconButton } from "@lgcode/ui/icon-button"
-import { Icon } from "@lgcode/ui/icon"
-import { Button } from "@lgcode/ui/button"
-import { Tooltip, TooltipKeybind } from "@lgcode/ui/tooltip"
-import { useTheme } from "@lgcode/ui/theme/context"
-import { IconButtonV2 } from "@lgcode/ui/v2/icon-button-v2"
-import { Icon as IconV2 } from "@lgcode/ui/v2/icon"
+import { IconButton } from "@loongcode/ui/icon-button"
+import { Icon } from "@loongcode/ui/icon"
+import { Button } from "@loongcode/ui/button"
+import { Tooltip, TooltipKeybind } from "@loongcode/ui/tooltip"
+import { useTheme } from "@loongcode/ui/theme/context"
+import { IconButtonV2 } from "@loongcode/ui/v2/icon-button-v2"
+import { Icon as IconV2 } from "@loongcode/ui/v2/icon"
 
 import { getProjectAvatarVariant, LayoutRoute, useLayout, type LocalProject } from "@/context/layout"
 import { usePlatform } from "@/context/platform"
@@ -29,8 +29,8 @@ import { useSettings } from "@/context/settings"
 import { WindowsAppMenu } from "./windows-app-menu"
 import { applyPath, backPath, forwardPath } from "./titlebar-history"
 import { useServerSync } from "@/context/server-sync"
-import { base64Encode } from "@lgcode/core/util/encode"
-import { ProjectAvatar } from "@lgcode/ui/v2/project-avatar-v2"
+import { base64Encode } from "@loongcode/core/util/encode"
+import { ProjectAvatar } from "@loongcode/ui/v2/project-avatar-v2"
 import { displayName, getProjectAvatarSource, projectForSession } from "@/pages/layout/helpers"
 import { useSessionTabAvatarState } from "@/pages/layout/project-avatar-state"
 import { makeEventListener } from "@solid-primitives/event-listener"
@@ -684,7 +684,7 @@ export function Titlebar(props: { update?: TitlebarUpdate }) {
                         </Tooltip>
                       </div>
                     </Show>
-                    <div id="lgcode-titlebar-left" class="flex items-center gap-3 min-w-0 px-2" />
+                    <div id="loongcode-titlebar-left" class="flex items-center gap-3 min-w-0 px-2" />
                     <ChannelIndicator />
                   </div>
                 </div>
@@ -693,7 +693,7 @@ export function Titlebar(props: { update?: TitlebarUpdate }) {
 
             <div class="min-w-0 flex items-center justify-center pointer-events-none">
               <div
-                id="lgcode-titlebar-center"
+                id="loongcode-titlebar-center"
                 class="pointer-events-auto min-w-0 flex justify-center w-fit max-w-full"
               />
             </div>
@@ -706,7 +706,7 @@ export function Titlebar(props: { update?: TitlebarUpdate }) {
               data-tauri-drag-region
               onMouseDown={drag}
             >
-              <div id="lgcode-titlebar-right" class="flex items-center gap-1 shrink-0 justify-end" />
+              <div id="loongcode-titlebar-right" class="flex items-center gap-1 shrink-0 justify-end" />
               <Show when={windows()}>
                 {!tauriApi() && <div class="shrink-0" style={{ width: windowsControlsWidth() }} />}
                 <div data-tauri-decorum-tb class="flex flex-row" />
@@ -738,7 +738,7 @@ function TitlebarV2Right(props: { state: TitlebarV2RightState }) {
       <Show when={props.state.update.visible}>
         <TitlebarUpdateIconButton state={props.state.update} />
       </Show>
-      <div id="lgcode-titlebar-right" class="flex shrink-0 items-center justify-end gap-0" />
+      <div id="loongcode-titlebar-right" class="flex shrink-0 items-center justify-end gap-0" />
     </div>
   )
 }
@@ -988,9 +988,9 @@ function NewSessionTabItem(props: { ref?: HTMLDivElement; href: string; title: s
 function ChannelIndicator() {
   return (
     <>
-      {["beta", "dev"].includes(import.meta.env.VITE_LGCODE_CHANNEL) && (
+      {["beta", "dev"].includes(import.meta.env.VITE_LOONGCODE_CHANNEL) && (
         <div class="bg-icon-interactive-base text-[#FFF] font-medium px-2 rounded-sm uppercase font-mono">
-          {import.meta.env.VITE_LGCODE_CHANNEL.toUpperCase()}
+          {import.meta.env.VITE_LOONGCODE_CHANNEL.toUpperCase()}
         </div>
       )}
     </>

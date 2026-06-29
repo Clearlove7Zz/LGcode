@@ -1,7 +1,7 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
-import { httpClient } from "@lgcode/core/effect/layer-node-platform"
-import type * as SDK from "@lgcode/sdk/v2"
-import { serviceUse } from "@lgcode/core/effect/service-use"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
+import { httpClient } from "@loongcode/core/effect/layer-node-platform"
+import type * as SDK from "@loongcode/sdk/v2"
+import { serviceUse } from "@loongcode/core/effect/service-use"
 import { Effect, Exit, Layer, Option, Schema, Scope, Context, Stream } from "effect"
 import { FetchHttpClient, HttpClient, HttpClientRequest, HttpClientResponse } from "effect/unstable/http"
 import { Account } from "@/account/account"
@@ -12,15 +12,15 @@ import { Provider } from "@/provider/provider"
 import { Session } from "@/session/session"
 import { MessageV2 } from "@/session/message-v2"
 import type { SessionID } from "@/session/schema"
-import { Database } from "@lgcode/core/database/database"
+import { Database } from "@loongcode/core/database/database"
 import { eq } from "drizzle-orm"
 import { Config } from "@/config/config"
-import { SessionShareTable } from "@lgcode/core/share/sql"
-import { ProviderV2 } from "@lgcode/core/provider"
-import { ModelV2 } from "@lgcode/core/model"
-import { EventV2 } from "@lgcode/core/event"
+import { SessionShareTable } from "@loongcode/core/share/sql"
+import { ProviderV2 } from "@loongcode/core/provider"
+import { ModelV2 } from "@loongcode/core/model"
+import { EventV2 } from "@loongcode/core/event"
 
-const disabled = process.env["LGCODE_DISABLE_SHARE"] === "true" || process.env["LGCODE_DISABLE_SHARE"] === "1"
+const disabled = process.env["LOONGCODE_DISABLE_SHARE"] === "true" || process.env["LOONGCODE_DISABLE_SHARE"] === "1"
 
 export type Api = {
   create: string
@@ -78,7 +78,7 @@ export interface Interface {
   readonly remove: (sessionID: SessionID) => Effect.Effect<void, unknown>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/ShareNext") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/ShareNext") {}
 
 export const use = serviceUse(Service)
 

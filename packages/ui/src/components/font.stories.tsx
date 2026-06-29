@@ -41,8 +41,8 @@ export const Basic = {
   render: () => (
     <div style={{ display: "grid", gap: "8px" }}>
       <mod.Font />
-      <div style={{ "font-family": "var(--font-family-sans)" }}>LGcode Sans Sample</div>
-      <div style={{ "font-family": "var(--font-family-mono)" }}>LGcode Mono Sample</div>
+      <div style={{ "font-family": "var(--font-family-sans)" }}>Loongcode Sans Sample</div>
+      <div style={{ "font-family": "var(--font-family-mono)" }}>Loongcode Mono Sample</div>
     </div>
   ),
 }

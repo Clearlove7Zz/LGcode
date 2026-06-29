@@ -1,5 +1,5 @@
-import { ProjectCopy } from "@lgcode/core/project/copy"
-import { ProjectV2 } from "@lgcode/core/project"
+import { ProjectCopy } from "@loongcode/core/project/copy"
+import { ProjectV2 } from "@loongcode/core/project"
 import { Schema, Struct } from "effect"
 import { HttpApiEndpoint, HttpApiGroup, HttpApiSchema, OpenApi } from "effect/unstable/httpapi"
 import { LocationMiddleware, LocationQuery, locationQueryOpenApi } from "./location"

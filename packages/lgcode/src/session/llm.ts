@@ -1,15 +1,15 @@
-import { LayerNode } from "@lgcode/core/effect/layer-node"
-import { llmClient } from "@lgcode/core/effect/layer-node-platform"
-import { PermissionV1 } from "@lgcode/core/v1/permission"
+import { LayerNode } from "@loongcode/core/effect/layer-node"
+import { llmClient } from "@loongcode/core/effect/layer-node-platform"
+import { PermissionV1 } from "@loongcode/core/v1/permission"
 import { Provider } from "@/provider/provider"
-import { SessionV1 } from "@lgcode/core/v1/session"
-import { serviceUse } from "@lgcode/core/effect/service-use"
+import { SessionV1 } from "@loongcode/core/v1/session"
+import { serviceUse } from "@loongcode/core/effect/service-use"
 import { Context, Effect, Layer } from "effect"
 import * as Stream from "effect/Stream"
 import { streamText, wrapLanguageModel, type ModelMessage, type Tool } from "ai"
-import type { LLMEvent } from "@lgcode/llm"
-import { LLMClient, RequestExecutor, WebSocketExecutor } from "@lgcode/llm/route"
-import type { LLMClientService } from "@lgcode/llm/route"
+import type { LLMEvent } from "@loongcode/llm"
+import { LLMClient, RequestExecutor, WebSocketExecutor } from "@loongcode/llm/route"
+import type { LLMClientService } from "@loongcode/llm/route"
 import { GitLabWorkflowLanguageModel } from "gitlab-ai-provider"
 import { ProviderTransform } from "@/provider/transform"
 import { Config } from "@/config/config"
@@ -18,7 +18,7 @@ import type { MessageV2 } from "./message-v2"
 import { Plugin } from "@/plugin"
 import { Permission } from "@/permission"
 import { EventV2Bridge } from "@/event-v2-bridge"
-import { EventV2 } from "@lgcode/core/event"
+import { EventV2 } from "@loongcode/core/event"
 import { Wildcard } from "@/util/wildcard"
 import { SessionID } from "@/session/schema"
 import { Auth } from "@/auth"
@@ -55,7 +55,7 @@ export interface Interface {
   readonly stream: (input: StreamInput) => Stream.Stream<LLMEvent, unknown>
 }
 
-export class Service extends Context.Service<Service, Interface>()("@lgcode/LLM") {}
+export class Service extends Context.Service<Service, Interface>()("@loongcode/LLM") {}
 
 export const use = serviceUse(Service)
 
@@ -113,7 +113,7 @@ const live: Layer.Layer<
       })
 
       // Wire up toolExecutor for DWS workflow models so that tool calls
-      // from the workflow service are executed via lgcode's tool system
+      // from the workflow service are executed via loongcode's tool system
       // and results sent back over the WebSocket.
       const bridge = yield* EffectBridge.make()
       if (language instanceof GitLabWorkflowLanguageModel) {
@@ -221,7 +221,7 @@ const live: Layer.Layer<
           })
         : undefined
 
-      // Runtime seam: native is an opt-in adapter over @lgcode/llm. It
+      // Runtime seam: native is an opt-in adapter over @loongcode/llm. It
       // either returns a ready LLMEvent stream or a concrete fallback reason.
       if (flags.experimentalNativeLlm) {
         const native = LLMNativeRuntime.stream({

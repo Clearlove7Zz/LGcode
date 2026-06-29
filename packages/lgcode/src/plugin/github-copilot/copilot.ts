@@ -1,6 +1,6 @@
-import type { Hooks, PluginInput } from "@lgcode/plugin"
-import type { Model } from "@lgcode/sdk/v2"
-import { InstallationVersion } from "@lgcode/core/installation/version"
+import type { Hooks, PluginInput } from "@loongcode/plugin"
+import type { Model } from "@loongcode/sdk/v2"
+import { InstallationVersion } from "@loongcode/core/installation/version"
 import { iife } from "@/util/iife"
 import { setTimeout as sleep } from "node:timers/promises"
 import { CopilotModels } from "./models"
@@ -71,7 +71,7 @@ export async function CopilotAuthPlugin(input: PluginInput): Promise<Hooks> {
           base(auth.enterpriseUrl),
           {
             Authorization: `Bearer ${auth.refresh}`,
-            "User-Agent": `lgcode/${InstallationVersion}`,
+            "User-Agent": `loongcode/${InstallationVersion}`,
             "X-GitHub-Api-Version": API_VERSION,
           },
           provider.models,
@@ -159,7 +159,7 @@ export async function CopilotAuthPlugin(input: PluginInput): Promise<Hooks> {
             const headers: Record<string, string> = {
               "x-initiator": isAgent ? "agent" : "user",
               ...(init?.headers as Record<string, string>),
-              "User-Agent": `lgcode/${InstallationVersion}`,
+              "User-Agent": `loongcode/${InstallationVersion}`,
               Authorization: `Bearer ${info.refresh}`,
               "Openai-Intent": "conversation-edits",
             }
@@ -235,7 +235,7 @@ export async function CopilotAuthPlugin(input: PluginInput): Promise<Hooks> {
               headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
-                "User-Agent": `lgcode/${InstallationVersion}`,
+                "User-Agent": `loongcode/${InstallationVersion}`,
               },
               body: JSON.stringify({
                 client_id: CLIENT_ID,
@@ -265,7 +265,7 @@ export async function CopilotAuthPlugin(input: PluginInput): Promise<Hooks> {
                     headers: {
                       Accept: "application/json",
                       "Content-Type": "application/json",
-                      "User-Agent": `lgcode/${InstallationVersion}`,
+                      "User-Agent": `loongcode/${InstallationVersion}`,
                     },
                     body: JSON.stringify({
                       client_id: CLIENT_ID,

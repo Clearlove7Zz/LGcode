@@ -1,4 +1,4 @@
-import type { PermissionRequest, QuestionRequest, Session } from "@lgcode/sdk/v2/client"
+import type { PermissionRequest, QuestionRequest, Session } from "@loongcode/sdk/v2/client"
 
 function sessionTreeRequest<T>(
   session: Session[],

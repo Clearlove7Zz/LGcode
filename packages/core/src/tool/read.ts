@@ -1,6 +1,6 @@
 export * as ReadTool from "./read"
 
-import { ToolFailure } from "@lgcode/llm"
+import { ToolFailure } from "@loongcode/llm"
 import path from "path"
 import { Effect, Layer, Schema } from "effect"
 import { FileSystem } from "../filesystem"

@@ -14,7 +14,7 @@ process.chdir(dir)
 
 const generated = await import("./generate.ts")
 
-import { Script } from "@lgcode/script"
+import { Script } from "@loongcode/script"
 import pkg from "../package.json"
 
 const singleFlag = process.argv.includes("--single")
@@ -28,7 +28,7 @@ const createEmbeddedWebUIBundle = async () => {
   console.log(`Building Web UI to embed in the binary`)
   const appDir = path.join(import.meta.dirname, "../../app")
   const dist = path.join(appDir, "dist")
-  await $`LGCODE_CHANNEL=${Script.channel} bun run --cwd ${appDir} build`
+  await $`LOONGCODE_CHANNEL=${Script.channel} bun run --cwd ${appDir} build`
   const files = (await Array.fromAsync(new Bun.Glob("**/*").scan({ cwd: dist })))
     .map((file) => file.replaceAll("\\", "/"))
     .filter((file) => !file.endsWith(".map"))
@@ -180,27 +180,27 @@ for (const item of targets) {
       autoloadTsconfig: true,
       autoloadPackageJson: true,
       target: name.replace(pkg.name, "bun") as any,
-      outfile: `dist/${name}/bin/lgcode`,
-      execArgv: [`--user-agent=lgcode/${Script.version}`, "--use-system-ca", "--"],
+      outfile: `dist/${name}/bin/loongcode`,
+      execArgv: [`--user-agent=loongcode/${Script.version}`, "--use-system-ca", "--"],
       windows: {},
     },
-    files: embeddedFileMap ? { "lgcode-web-ui.gen.ts": embeddedFileMap } : {},
-    entrypoints: ["./src/index.ts", parserWorker, workerPath, ...(embeddedFileMap ? ["lgcode-web-ui.gen.ts"] : [])],
+    files: embeddedFileMap ? { "loongcode-web-ui.gen.ts": embeddedFileMap } : {},
+    entrypoints: ["./src/index.ts", parserWorker, workerPath, ...(embeddedFileMap ? ["loongcode-web-ui.gen.ts"] : [])],
     define: {
       FFF_LIBC: JSON.stringify(item.abi === "musl" ? "musl" : "gnu"),
-      LGCODE_VERSION: `'${Script.version}'`,
-      LGCODE_MODELS_DEV: JSON.stringify(generated.modelsData),
+      LOONGCODE_VERSION: `'${Script.version}'`,
+      LOONGCODE_MODELS_DEV: JSON.stringify(generated.modelsData),
       OTUI_TREE_SITTER_WORKER_PATH: JSON.stringify(bunfsRoot + workerRelativePath),
-      LGCODE_WORKER_PATH: JSON.stringify(workerPath),
-      LGCODE_CHANNEL: `'${Script.channel}'`,
-      LGCODE_LIBC: item.os === "linux" ? `'${item.abi ?? "glibc"}'` : "",
+      LOONGCODE_WORKER_PATH: JSON.stringify(workerPath),
+      LOONGCODE_CHANNEL: `'${Script.channel}'`,
+      LOONGCODE_LIBC: item.os === "linux" ? `'${item.abi ?? "glibc"}'` : "",
       ...(item.os === "linux" ? { "process.env.OPENTUI_LIBC": JSON.stringify(item.abi ?? "glibc") } : {}),
     },
   })
 
   // Smoke test: only run if binary is for current platform
   if (item.os === process.platform && item.arch === process.arch && !item.abi) {
-    const binaryPath = `dist/${name}/bin/lgcode`
+    const binaryPath = `dist/${name}/bin/loongcode`
     console.log(`Running smoke test: ${binaryPath} --version`)
     try {
       const versionOutput = await $`${binaryPath} --version`.text()

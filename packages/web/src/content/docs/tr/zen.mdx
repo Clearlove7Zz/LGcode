@@ -1,15 +1,15 @@
 ---
 title: Zen
-description: lgcode tarafından sağlanan seçilmiş modeller listesi.
+description: loongcode tarafından sağlanan seçilmiş modeller listesi.
 ---
 
 import config from "../../../../config.mjs"
 export const console = config.console
 export const email = `mailto:${config.email}`
 
-LGcode Zen, LGcode ekibi tarafından test edilip doğrulanmış modellerin bir listesidir.
+Loongcode Zen, Loongcode ekibi tarafından test edilip doğrulanmış modellerin bir listesidir.
 
-Zen, LGcode'daki diğer sağlayıcılar gibi çalışır. LGcode Zen'de oturum açıp API anahtarınızı alırsınız. Bu **tamamen isteğe bağlıdır** ve LGcode kullanmak için buna ihtiyacınız yoktur.
+Zen, Loongcode'daki diğer sağlayıcılar gibi çalışır. Loongcode Zen'de oturum açıp API anahtarınızı alırsınız. Bu **tamamen isteğe bağlıdır** ve Loongcode kullanmak için buna ihtiyacınız yoktur.
 
 ---
 
@@ -18,7 +18,7 @@ Zen, LGcode'daki diğer sağlayıcılar gibi çalışır. LGcode Zen'de oturum a
 Piyasada çok sayıda model var, ancak bunların yalnızca birkaçı kodlama ajanı olarak iyi çalışıyor. Ayrıca çoğu sağlayıcı çok farklı şekilde yapılandırılıyor; bu yüzden performans ve kalite de ciddi ölçüde değişiyor.
 
 :::tip
-LGcode ile iyi çalışan seçili bir model ve sağlayıcı grubunu test ettik.
+Loongcode ile iyi çalışan seçili bir model ve sağlayıcı grubunu test ettik.
 :::
 
 Bu yüzden, OpenRouter gibi bir şey üzerinden model kullanıyorsanız istediğiniz modelin en iyi sürümünü alıp almadığınızdan asla emin olamazsınız.
@@ -29,16 +29,16 @@ Bunu düzeltmek için birkaç şey yaptık:
 2. Ardından, bunların doğru şekilde sunulduğundan emin olmak için birkaç sağlayıcıyla birlikte çalıştık.
 3. Son olarak, model/sağlayıcı kombinasyonlarını benchmark edip gönül rahatlığıyla önerebileceğimiz bir liste çıkardık.
 
-LGcode Zen, bu modellere erişmenizi sağlayan bir AI ağ geçididir.
+Loongcode Zen, bu modellere erişmenizi sağlayan bir AI ağ geçididir.
 
 ---
 
 ## Nasıl çalışır
 
-LGcode Zen, LGcode'daki diğer sağlayıcılar gibi çalışır.
+Loongcode Zen, Loongcode'daki diğer sağlayıcılar gibi çalışır.
 
-1. **<a href={console}>LGcode Zen</a>**'de oturum açın, faturalandırma bilgilerinizi ekleyin ve API anahtarınızı kopyalayın.
-2. TUI'de `/connect` komutunu çalıştırın, LGcode Zen'i seçin ve API anahtarınızı yapıştırın.
+1. **<a href={console}>Loongcode Zen</a>**'de oturum açın, faturalandırma bilgilerinizi ekleyin ve API anahtarınızı kopyalayın.
+2. TUI'de `/connect` komutunu çalıştırın, Loongcode Zen'i seçin ve API anahtarınızı yapıştırın.
 3. Önerdiğimiz modellerin listesini görmek için TUI'de `/models` komutunu çalıştırın.
 
 İstek başına ücretlendirilirsiniz ve hesabınıza kredi ekleyebilirsiniz.
@@ -101,7 +101,7 @@ Modellerimize aşağıdaki API uç noktaları aracılığıyla da erişebilirsin
 | Nemotron 3 Ultra Free  | nemotron-3-ultra-free  | `https://modelhub.lgdg.cc/zen/v1/chat/completions`        | `@ai-sdk/openai-compatible` |
 | DeepSeek V4 Flash Free | deepseek-v4-flash-free | `https://modelhub.lgdg.cc/zen/v1/chat/completions`        | `@ai-sdk/openai-compatible` |
 
-LGcode yapılandırmanızdaki [model id](/docs/config/#models) `lgcode/<model-id>` biçimini kullanır. Örneğin, GPT 5.5 için yapılandırmanızda `lgcode/gpt-5.5` kullanırsınız.
+Loongcode yapılandırmanızdaki [model id](/docs/config/#models) `loongcode/<model-id>` biçimini kullanır. Örneğin, GPT 5.5 için yapılandırmanızda `loongcode/gpt-5.5` kullanırsınız.
 
 ---
 
@@ -183,11 +183,11 @@ Kredi kartı ücretleri maliyet üzerinden yansıtılır (%4.4 + işlem başına
 
 Ücretsiz modeller:
 
-- DeepSeek V4 Flash Free, sınırlı bir süre için LGcode'da ücretsizdir. Ekip bu süreyi geri bildirim toplamak ve modeli iyileştirmek için kullanıyor.
-- MiMo-V2.5 Free, sınırlı bir süre için LGcode'da ücretsizdir. Ekip bu süreyi geri bildirim toplamak ve modeli iyileştirmek için kullanıyor.
-- North Mini Code Free, sınırlı bir süre için LGcode'da ücretsizdir. Ekip bu süreyi geri bildirim toplamak ve modeli iyileştirmek için kullanıyor.
-- Nemotron 3 Ultra Free, sınırlı bir süre için LGcode'da ücretsizdir. Ekip bu süreyi geri bildirim toplamak ve modeli iyileştirmek için kullanıyor.
-- Big Pickle, sınırlı bir süre için LGcode'da ücretsiz olan gizli bir modeldir. Ekip bu süreyi geri bildirim toplamak ve modeli iyileştirmek için kullanıyor.
+- DeepSeek V4 Flash Free, sınırlı bir süre için Loongcode'da ücretsizdir. Ekip bu süreyi geri bildirim toplamak ve modeli iyileştirmek için kullanıyor.
+- MiMo-V2.5 Free, sınırlı bir süre için Loongcode'da ücretsizdir. Ekip bu süreyi geri bildirim toplamak ve modeli iyileştirmek için kullanıyor.
+- North Mini Code Free, sınırlı bir süre için Loongcode'da ücretsizdir. Ekip bu süreyi geri bildirim toplamak ve modeli iyileştirmek için kullanıyor.
+- Nemotron 3 Ultra Free, sınırlı bir süre için Loongcode'da ücretsizdir. Ekip bu süreyi geri bildirim toplamak ve modeli iyileştirmek için kullanıyor.
+- Big Pickle, sınırlı bir süre için Loongcode'da ücretsiz olan gizli bir modeldir. Ekip bu süreyi geri bildirim toplamak ve modeli iyileştirmek için kullanıyor.
 
 Sorularınız varsa <a href={email}>bizimle iletişime geçin</a>.
 
@@ -288,9 +288,9 @@ Kendi anahtarlarınızı kullandığınızda token'lar Zen tarafından değil, d
 
 ## Hedefler
 
-LGcode Zen'i şunlar için oluşturduk:
+Loongcode Zen'i şunlar için oluşturduk:
 
 1. Kodlama ajanları için en iyi modelleri/sağlayıcıları **kıyaslamak**.
 2. **En yüksek kaliteli** seçeneklere erişmek ve performansı düşürmemek ya da daha ucuz sağlayıcılara yönlendirmemek.
 3. Maliyetine satış yaparak tüm **fiyat düşüşlerini** yansıtmak; yani tek ek ücretimiz işlem ücretlerimizi karşılamak içindir.
-4. Başka herhangi bir kodlama ajanıyla kullanmanıza izin vererek **kilitlenme olmamasını** sağlamak. Ayrıca LGcode ile her zaman başka herhangi bir sağlayıcıyı da kullanabilmenizi sağlamak.
+4. Başka herhangi bir kodlama ajanıyla kullanmanıza izin vererek **kilitlenme olmamasını** sağlamak. Ayrıca Loongcode ile her zaman başka herhangi bir sağlayıcıyı da kullanabilmenizi sağlamak.

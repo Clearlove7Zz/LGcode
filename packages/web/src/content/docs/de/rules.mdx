@@ -1,25 +1,25 @@
 ---
 title: Regeln
-description: Lege eigene Anweisungen fuer lgcode fest.
+description: Lege eigene Anweisungen fuer loongcode fest.
 ---
 
-Du kannst lgcode ueber eine `AGENTS.md`-Datei mit eigenen Anweisungen steuern.
+Du kannst loongcode ueber eine `AGENTS.md`-Datei mit eigenen Anweisungen steuern.
 Das ist aehnlich zu den Regeln in Cursor und wird direkt in den LLM-Kontext geladen.
 
 ---
 
 ## Initialisierung
 
-Um eine neue `AGENTS.md` zu erstellen, fuehre in lgcode den Befehl `/init` aus.
+Um eine neue `AGENTS.md` zu erstellen, fuehre in loongcode den Befehl `/init` aus.
 
 :::tip
 Du solltest die `AGENTS.md` deines Projekts in Git committen.
 :::
 
 Der Befehl scannt dein Projekt und erzeugt daraus eine passende `AGENTS.md`.
-So kann lgcode sich in deinem Code besser orientieren.
+So kann loongcode sich in deinem Code besser orientieren.
 
-Wenn bereits eine `AGENTS.md` existiert, versucht lgcode sie zu erweitern.
+Wenn bereits eine `AGENTS.md` existiert, versucht loongcode sie zu erweitern.
 
 ---
 
@@ -57,7 +57,7 @@ Hier hinterlegst du projektspezifische Regeln, die dein Team gemeinsam nutzt.
 
 ## Typen
 
-lgcode kann `AGENTS.md` aus mehreren Orten lesen.
+loongcode kann `AGENTS.md` aus mehreren Orten lesen.
 Die Orte haben unterschiedliche Zwecke.
 
 ### Projekt
@@ -67,35 +67,35 @@ Diese gelten nur in diesem Verzeichnis und seinen Unterordnern.
 
 ### Global
 
-Du kannst auch globale Regeln in `~/.config/lgcode/AGENTS.md` speichern.
-Diese gelten in allen lgcode-Sitzungen.
+Du kannst auch globale Regeln in `~/.config/loongcode/AGENTS.md` speichern.
+Diese gelten in allen loongcode-Sitzungen.
 
 Da diese Datei nicht in Git landet und nicht mit dem Team geteilt wird, eignet sie sich fuer persoenliche Regeln.
 
 ### Claude Code-Kompatibilität
 
-Wenn du von Claude Code kommst, unterstuetzt LGcode dessen Dateikonventionen als Fallback:
+Wenn du von Claude Code kommst, unterstuetzt Loongcode dessen Dateikonventionen als Fallback:
 
 - **Projektregeln**: `CLAUDE.md` im Projekt (wenn keine `AGENTS.md` existiert)
-- **Globale Regeln**: `~/.claude/CLAUDE.md` (wenn keine `~/.config/lgcode/AGENTS.md` existiert)
+- **Globale Regeln**: `~/.claude/CLAUDE.md` (wenn keine `~/.config/loongcode/AGENTS.md` existiert)
 - **Skills**: `~/.claude/skills/` - siehe [Agent Skills](/docs/skills/) fuer Details
 
 Um die Claude-Code-Kompatibilitaet zu deaktivieren, setze eine dieser Umgebungsvariablen:
 
 ```bash
-export LGCODE_DISABLE_CLAUDE_CODE=1        # Disable all .claude support
-export LGCODE_DISABLE_CLAUDE_CODE_PROMPT=1 # Disable only ~/.claude/CLAUDE.md
-export LGCODE_DISABLE_CLAUDE_CODE_SKILLS=1 # Disable only .claude/skills
+export LOONGCODE_DISABLE_CLAUDE_CODE=1        # Disable all .claude support
+export LOONGCODE_DISABLE_CLAUDE_CODE_PROMPT=1 # Disable only ~/.claude/CLAUDE.md
+export LOONGCODE_DISABLE_CLAUDE_CODE_SKILLS=1 # Disable only .claude/skills
 ```
 
 ---
 
 ## Rangfolge
 
-Beim Start sucht lgcode in dieser Reihenfolge nach Regeldateien:
+Beim Start sucht loongcode in dieser Reihenfolge nach Regeldateien:
 
 1. **Lokale Dateien** beim Hochlaufen ab dem aktuellen Verzeichnis (`AGENTS.md`, `CLAUDE.md`)
-2. **Globale Datei** unter `~/.config/lgcode/AGENTS.md`
+2. **Globale Datei** unter `~/.config/loongcode/AGENTS.md`
 3. **Claude-Code-Datei** unter `~/.claude/CLAUDE.md` (falls nicht deaktiviert)
 
 Pro Kategorie gewinnt die zuerst passende Datei.
@@ -105,12 +105,12 @@ Wenn sowohl `AGENTS.md` als auch `CLAUDE.md` existieren, wird nur `AGENTS.md` ve
 
 ## Eigene Anweisungen
 
-Du kannst zusaetzliche Anweisungsdateien in deiner `lgcode.json` oder in `~/.config/lgcode/lgcode.json` angeben.
+Du kannst zusaetzliche Anweisungsdateien in deiner `loongcode.json` oder in `~/.config/loongcode/loongcode.json` angeben.
 So kann dein Team bestehende Regeln wiederverwenden, statt Inhalte in `AGENTS.md` zu duplizieren.
 
 Beispiel:
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "instructions": ["CONTRIBUTING.md", "docs/guidelines.md", ".cursor/rules/*.md"]
@@ -119,7 +119,7 @@ Beispiel:
 
 Du kannst auch Remote-URLs nutzen, um Regeln aus dem Web zu laden.
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "instructions": ["https://raw.githubusercontent.com/my-org/shared-rules/main/style.md"]
@@ -134,14 +134,14 @@ Alle Anweisungsdateien werden mit deinen `AGENTS.md`-Dateien kombiniert.
 
 ## Externe Dateien referenzieren
 
-lgcode parst Datei-Referenzen in `AGENTS.md` nicht automatisch.
+loongcode parst Datei-Referenzen in `AGENTS.md` nicht automatisch.
 Du erreichst aehnliches Verhalten auf zwei Wegen.
 
-### Mit lgcode.json
+### Mit loongcode.json
 
-Empfohlen ist das `instructions`-Feld in der `lgcode.json`:
+Empfohlen ist das `instructions`-Feld in der `loongcode.json`:
 
-```json title="lgcode.json"
+```json title="loongcode.json"
 {
   "$schema": "https://modelhub.lgdg.cc/config.json",
   "instructions": ["docs/development-standards.md", "test/testing-guidelines.md", "packages/*/AGENTS.md"]
@@ -150,7 +150,7 @@ Empfohlen ist das `instructions`-Feld in der `lgcode.json`:
 
 ### Manuelle Anweisungen in AGENTS.md
 
-Du kannst lgcode explizit anweisen, externe Dateien zu lesen.
+Du kannst loongcode explizit anweisen, externe Dateien zu lesen.
 Hier ein praxisnahes Beispiel:
 
 ```markdown title="AGENTS.md"
@@ -186,5 +186,5 @@ Damit kannst du:
 - Sicherstellen, dass Dateien nur bei Bedarf geladen werden
 
 :::tip
-Fuer Monorepos oder gemeinsame Standards ist `lgcode.json` mit Glob-Mustern (z. B. `packages/*/AGENTS.md`) oft wartbarer als manuelle Anweisungen.
+Fuer Monorepos oder gemeinsame Standards ist `loongcode.json` mit Glob-Mustern (z. B. `packages/*/AGENTS.md`) oft wartbarer als manuelle Anweisungen.
 :::
