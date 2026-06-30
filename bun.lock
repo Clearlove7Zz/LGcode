@@ -475,7 +475,25 @@
         "effect": "4.0.0-beta.74",
       },
     },
-    "packages/lgcode": {
+    "packages/llm": {
+      "name": "@loongcode/llm",
+      "version": "1.17.7",
+      "dependencies": {
+        "@smithy/eventstream-codec": "4.2.14",
+        "@smithy/util-utf8": "4.2.2",
+        "aws4fetch": "1.0.20",
+        "effect": "catalog:",
+      },
+      "devDependencies": {
+        "@clack/prompts": "1.0.0-alpha.1",
+        "@effect/platform-node": "catalog:",
+        "@loongcode/http-recorder": "workspace:*",
+        "@tsconfig/bun": "catalog:",
+        "@types/bun": "catalog:",
+        "@typescript/native-preview": "catalog:",
+      },
+    },
+    "packages/loongcode": {
       "name": "loongcode",
       "version": "1.17.7",
       "bin": {
@@ -601,24 +619,6 @@
         "typescript": "catalog:",
         "vscode-languageserver-types": "3.17.5",
         "why-is-node-running": "3.2.2",
-      },
-    },
-    "packages/llm": {
-      "name": "@loongcode/llm",
-      "version": "1.17.7",
-      "dependencies": {
-        "@smithy/eventstream-codec": "4.2.14",
-        "@smithy/util-utf8": "4.2.2",
-        "aws4fetch": "1.0.20",
-        "effect": "catalog:",
-      },
-      "devDependencies": {
-        "@clack/prompts": "1.0.0-alpha.1",
-        "@effect/platform-node": "catalog:",
-        "@loongcode/http-recorder": "workspace:*",
-        "@tsconfig/bun": "catalog:",
-        "@types/bun": "catalog:",
-        "@typescript/native-preview": "catalog:",
       },
     },
     "packages/plugin": {
@@ -4048,7 +4048,7 @@
 
     "longest-streak": ["longest-streak@3.1.0", "https://registry.npmmirror.com/longest-streak/-/longest-streak-3.1.0.tgz", {}, "sha512-9Ri+o0JYgehTaVBBDoMqIl8GXtbWg711O3srftcHhZ0dqnETqLaoIK0x17fUw9rFSlK/0NlsKe0Ahhyl5pXE2g=="],
 
-    "loongcode": ["loongcode@workspace:packages/lgcode"],
+    "loongcode": ["loongcode@workspace:packages/loongcode"],
 
     "loose-envify": ["loose-envify@1.4.0", "https://registry.npmmirror.com/loose-envify/-/loose-envify-1.4.0.tgz", { "dependencies": { "js-tokens": "^3.0.0 || ^4.0.0" }, "bin": { "loose-envify": "cli.js" } }, "sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q=="],
 

@@ -7,9 +7,9 @@
 // *Important*: make sure you add the debug workspace plugin first.
 // In `.lgcode/lgcode.jsonc` in the root of this project add:
 //
-// "plugin": ["../packages/lgcode/src/control-plane/dev/debug-workspace-plugin.ts"]
+// "plugin": ["../packages/loongcode/src/control-plane/dev/debug-workspace-plugin.ts"]
 //
-// Afterwards, run `./packages/lgcode/script/run-workspace-server`
+// Afterwards, run `./packages/loongcode/script/run-workspace-server`
 
 import { stat } from "node:fs/promises"
 import { setTimeout as sleep } from "node:timers/promises"
