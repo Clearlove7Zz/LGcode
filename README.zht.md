@@ -11,7 +11,7 @@
 <p align="center">
   <a href="https://modelhub.lgdg.cc/discord"><img alt="Discord" src="https://img.shields.io/discord/1391832426048651334?style=flat-square&label=discord" /></a>
   <a href="https://www.npmjs.com/package/loongcode-ai"><img alt="npm" src="https://img.shields.io/npm/v/loongcode-ai?style=flat-square" /></a>
-  <a href="https://github.com/Clearlove7Zz/LGcode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/Clearlove7Zz/LGcode/publish.yml?style=flat-square&branch=dev" /></a>
+  <a href="https://github.com/Clearlove7Zz/LoongCode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/Clearlove7Zz/LoongCode/publish.yml?style=flat-square&branch=dev" /></a>
 </p>
 
 <p align="center">
@@ -58,7 +58,7 @@ brew install loongcode              # macOS 與 Linux（官方 brew formula，�
 sudo pacman -S loongcode            # Arch Linux (Stable)
 paru -S loongcode-bin               # Arch Linux (Latest from AUR)
 mise use -g loongcode               # 任何作業系統
-nix run nixpkgs#loongcode           # 或使用 github:Clearlove7Zz/LGcode 以取得最新開發分支
+nix run nixpkgs#loongcode           # 或使用 github:Clearlove7Zz/LoongCode 以取得最新開發分支
 ```
 
 > [!TIP]
@@ -66,7 +66,7 @@ nix run nixpkgs#loongcode           # 或使用 github:Clearlove7Zz/LGcode 以�
 
 ### 桌面應用程式 (BETA)
 
-Loongcode 也提供桌面版應用程式。您可以直接從 [發佈頁面 (releases page)](https://github.com/Clearlove7Zz/LGcode/releases) 或 [modelhub.lgdg.cc/download](https://modelhub.lgdg.cc/download) 下載。
+Loongcode 也提供桌面版應用程式。您可以直接從 [發佈頁面 (releases page)](https://github.com/Clearlove7Zz/LoongCode/releases) 或 [modelhub.lgdg.cc/download](https://modelhub.lgdg.cc/download) 下載。
 
 | 平台                  | 下載連結                           |
 | --------------------- | ---------------------------------- |

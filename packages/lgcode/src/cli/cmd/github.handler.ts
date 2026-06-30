@@ -362,7 +362,7 @@ jobs:
           persist-credentials: false
 
       - name: Run loongcode
-        uses: Clearlove7Zz/LGcode/github@latest${envStr}
+        uses: Clearlove7Zz/LoongCode/github@latest${envStr}
         with:
           model: ${provider}/${model}`,
         )

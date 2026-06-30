@@ -11,7 +11,7 @@
 <p align="center">
   <a href="https://modelhub.lgdg.cc/discord"><img alt="Discord" src="https://img.shields.io/discord/1391832426048651334?style=flat-square&label=discord" /></a>
   <a href="https://www.npmjs.com/package/loongcode-ai"><img alt="npm" src="https://img.shields.io/npm/v/loongcode-ai?style=flat-square" /></a>
-  <a href="https://github.com/Clearlove7Zz/LGcode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/Clearlove7Zz/LGcode/publish.yml?style=flat-square&branch=dev" /></a>
+  <a href="https://github.com/Clearlove7Zz/LoongCode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/Clearlove7Zz/LoongCode/publish.yml?style=flat-square&branch=dev" /></a>
 </p>
 
 <p align="center">
@@ -58,7 +58,7 @@ brew install loongcode              # macOS 및 Linux (공식 brew formula, 업�
 sudo pacman -S loongcode            # Arch Linux (Stable)
 paru -S loongcode-bin               # Arch Linux (Latest from AUR)
 mise use -g loongcode               # 어떤 OS든
-nix run nixpkgs#loongcode           # 또는 github:Clearlove7Zz/LGcode 로 최신 dev 브랜치
+nix run nixpkgs#loongcode           # 또는 github:Clearlove7Zz/LoongCode 로 최신 dev 브랜치
 ```
 
 > [!TIP]
@@ -66,7 +66,7 @@ nix run nixpkgs#loongcode           # 또는 github:Clearlove7Zz/LGcode 로 최�
 
 ### 데스크톱 앱 (BETA)
 
-Loongcode 는 데스크톱 앱으로도 제공됩니다. [releases page](https://github.com/Clearlove7Zz/LGcode/releases) 에서 직접 다운로드하거나 [modelhub.lgdg.cc/download](https://modelhub.lgdg.cc/download) 를 이용하세요.
+Loongcode 는 데스크톱 앱으로도 제공됩니다. [releases page](https://github.com/Clearlove7Zz/LoongCode/releases) 에서 직접 다운로드하거나 [modelhub.lgdg.cc/download](https://modelhub.lgdg.cc/download) 를 이용하세요.
 
 | 플랫폼                | 다운로드                           |
 | --------------------- | ---------------------------------- |

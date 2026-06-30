@@ -11,7 +11,7 @@
 <p align="center">
   <a href="https://modelhub.lgdg.cc/discord"><img alt="Discord" src="https://img.shields.io/discord/1391832426048651334?style=flat-square&label=discord" /></a>
   <a href="https://www.npmjs.com/package/loongcode-ai"><img alt="npm" src="https://img.shields.io/npm/v/loongcode-ai?style=flat-square" /></a>
-  <a href="https://github.com/Clearlove7Zz/LGcode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/Clearlove7Zz/LGcode/publish.yml?style=flat-square&branch=dev" /></a>
+  <a href="https://github.com/Clearlove7Zz/LoongCode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/Clearlove7Zz/LoongCode/publish.yml?style=flat-square&branch=dev" /></a>
 </p>
 
 <p align="center">
@@ -58,7 +58,7 @@ brew install loongcode              # macOS và Linux (công thức brew chính 
 sudo pacman -S loongcode            # Arch Linux (Bản ổn định)
 paru -S loongcode-bin               # Arch Linux (Bản mới nhất từ AUR)
 mise use -g loongcode               # Mọi hệ điều hành
-nix run nixpkgs#loongcode           # hoặc github:Clearlove7Zz/LGcode cho nhánh dev mới nhất
+nix run nixpkgs#loongcode           # hoặc github:Clearlove7Zz/LoongCode cho nhánh dev mới nhất
 ```
 
 > [!TIP]
@@ -66,7 +66,7 @@ nix run nixpkgs#loongcode           # hoặc github:Clearlove7Zz/LGcode cho nhá
 
 ### Ứng dụng Desktop (BETA)
 
-Loongcode cũng có sẵn dưới dạng ứng dụng desktop. Tải trực tiếp từ [trang releases](https://github.com/Clearlove7Zz/LGcode/releases) hoặc [modelhub.lgdg.cc/download](https://modelhub.lgdg.cc/download).
+Loongcode cũng có sẵn dưới dạng ứng dụng desktop. Tải trực tiếp từ [trang releases](https://github.com/Clearlove7Zz/LoongCode/releases) hoặc [modelhub.lgdg.cc/download](https://modelhub.lgdg.cc/download).
 
 | Nền tảng              | Tải xuống                          |
 | --------------------- | ---------------------------------- |

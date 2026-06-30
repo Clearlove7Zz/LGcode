@@ -7,7 +7,7 @@ export const config = {
 
   // GitHub
   github: {
-    repoUrl: "https://github.com/Clearlove7Zz/LGcode.git",
+    repoUrl: "https://github.com/Clearlove7Zz/LoongCode.git",
     starsFormatted: {
       compact: "160K",
       full: "160,000",

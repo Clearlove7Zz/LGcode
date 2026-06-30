@@ -11,7 +11,7 @@
 <p align="center">
   <a href="https://modelhub.lgdg.cc/discord"><img alt="Discord" src="https://img.shields.io/discord/1391832426048651334?style=flat-square&label=discord" /></a>
   <a href="https://www.npmjs.com/package/loongcode-ai"><img alt="npm" src="https://img.shields.io/npm/v/loongcode-ai?style=flat-square" /></a>
-  <a href="https://github.com/Clearlove7Zz/LGcode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/Clearlove7Zz/LGcode/publish.yml?style=flat-square&branch=dev" /></a>
+  <a href="https://github.com/Clearlove7Zz/LoongCode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/Clearlove7Zz/LoongCode/publish.yml?style=flat-square&branch=dev" /></a>
 </p>
 
 <p align="center">
@@ -58,7 +58,7 @@ brew install loongcode              # macOS と Linux（公式 brew formula。�
 sudo pacman -S loongcode            # Arch Linux (Stable)
 paru -S loongcode-bin               # Arch Linux (Latest from AUR)
 mise use -g loongcode               # どのOSでも
-nix run nixpkgs#loongcode           # または github:Clearlove7Zz/LGcode で最新 dev ブランチ
+nix run nixpkgs#loongcode           # または github:Clearlove7Zz/LoongCode で最新 dev ブランチ
 ```
 
 > [!TIP]
@@ -66,7 +66,7 @@ nix run nixpkgs#loongcode           # または github:Clearlove7Zz/LGcode で�
 
 ### デスクトップアプリ (BETA)
 
-Loongcode はデスクトップアプリとしても利用できます。[releases page](https://github.com/Clearlove7Zz/LGcode/releases) から直接ダウンロードするか、[modelhub.lgdg.cc/download](https://modelhub.lgdg.cc/download) を利用してください。
+Loongcode はデスクトップアプリとしても利用できます。[releases page](https://github.com/Clearlove7Zz/LoongCode/releases) から直接ダウンロードするか、[modelhub.lgdg.cc/download](https://modelhub.lgdg.cc/download) を利用してください。
 
 | プラットフォーム      | ダウンロード                       |
 | --------------------- | ---------------------------------- |

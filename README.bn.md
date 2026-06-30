@@ -11,7 +11,7 @@
 <p align="center">
   <a href="https://modelhub.lgdg.cc/discord"><img alt="Discord" src="https://img.shields.io/discord/1391832426048651334?style=flat-square&label=discord" /></a>
   <a href="https://www.npmjs.com/package/loongcode-ai"><img alt="npm" src="https://img.shields.io/npm/v/loongcode-ai?style=flat-square" /></a>
-  <a href="https://github.com/Clearlove7Zz/LGcode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/Clearlove7Zz/LGcode/publish.yml?style=flat-square&branch=dev" /></a>
+  <a href="https://github.com/Clearlove7Zz/LoongCode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/Clearlove7Zz/LoongCode/publish.yml?style=flat-square&branch=dev" /></a>
 </p>
 
 <p align="center">
@@ -58,7 +58,7 @@ brew install loongcode              # macOS and Linux (official brew formula, up
 sudo pacman -S loongcode            # Arch Linux (Stable)
 paru -S loongcode-bin               # Arch Linux (Latest from AUR)
 mise use -g loongcode               # Any OS
-nix run nixpkgs#loongcode           # or github:Clearlove7Zz/LGcode for latest dev branch
+nix run nixpkgs#loongcode           # or github:Clearlove7Zz/LoongCode for latest dev branch
 ```
 
 > [!TIP]
@@ -66,7 +66,7 @@ nix run nixpkgs#loongcode           # or github:Clearlove7Zz/LGcode for latest d
 
 ### ডেস্কটপ অ্যাপ (BETA)
 
-Loongcode ডেস্কটপ অ্যাপ্লিকেশন হিসেবেও উপলব্ধ। সরাসরি [রিলিজ পেজ](https://github.com/Clearlove7Zz/LGcode/releases) অথবা [modelhub.lgdg.cc/download](https://modelhub.lgdg.cc/download) থেকে ডাউনলোড করুন।
+Loongcode ডেস্কটপ অ্যাপ্লিকেশন হিসেবেও উপলব্ধ। সরাসরি [রিলিজ পেজ](https://github.com/Clearlove7Zz/LoongCode/releases) অথবা [modelhub.lgdg.cc/download](https://modelhub.lgdg.cc/download) থেকে ডাউনলোড করুন।
 
 | প্ল্যাটফর্ম           | ডাউনলোড                            |
 | --------------------- | ---------------------------------- |

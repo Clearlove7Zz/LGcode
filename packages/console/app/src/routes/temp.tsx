@@ -161,7 +161,7 @@ export default function Home() {
             <a href="https://x.com/loongcode">{i18n.t("footer.x")}</a>
           </div>
           <div data-slot="cell">
-            <a href="https://github.com/Clearlove7Zz/LGcode.git">{i18n.t("footer.github")}</a>
+            <a href="https://github.com/Clearlove7Zz/LoongCode.git">{i18n.t("footer.github")}</a>
           </div>
           <div data-slot="cell">
             <a href="https://modelhub.lgdg.cc/discord">{i18n.t("footer.discord")}</a>

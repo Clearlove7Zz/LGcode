@@ -10,7 +10,7 @@
 <p align="center">AI-powered development tool by Loongcode.</p>
 <p align="center">
   <a href="https://www.npmjs.com/package/loongcode"><img alt="npm" src="https://img.shields.io/npm/v/loongcode?style=flat-square" /></a>
-  <a href="https://github.com/Clearlove7Zz/LGcode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/Clearlove7Zz/LGcode/publish.yml?style=flat-square&branch=dev" /></a>
+  <a href="https://github.com/Clearlove7Zz/LoongCode/actions/workflows/publish.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/Clearlove7Zz/LoongCode/publish.yml?style=flat-square&branch=dev" /></a>
 </p>
 
 <p align="center">
@@ -57,7 +57,7 @@ brew install loongcode              # macOS and Linux (official brew formula, up
 sudo pacman -S loongcode            # Arch Linux (Stable)
 paru -S loongcode-bin               # Arch Linux (Latest from AUR)
 mise use -g loongcode               # Any OS
-nix run nixpkgs#loongcode           # or github:Clearlove7Zz/LGcode for latest dev branch
+nix run nixpkgs#loongcode           # or github:Clearlove7Zz/LoongCode for latest dev branch
 ```
 
 > [!TIP]
@@ -65,7 +65,7 @@ nix run nixpkgs#loongcode           # or github:Clearlove7Zz/LGcode for latest d
 
 ### Desktop App (BETA)
 
-Loongcode is also available as a desktop application. Download directly from the [releases page](https://github.com/Clearlove7Zz/LGcode/releases) or [modelhub.lgdg.cc/download](https://modelhub.lgdg.cc/download).
+Loongcode is also available as a desktop application. Download directly from the [releases page](https://github.com/Clearlove7Zz/LoongCode/releases) or [modelhub.lgdg.cc/download](https://modelhub.lgdg.cc/download).
 
 | Platform              | Download                           |
 | --------------------- | ---------------------------------- |

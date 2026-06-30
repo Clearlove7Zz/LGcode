@@ -2,27 +2,27 @@ import { test, expect } from "bun:test"
 import { parseGitHubRemote } from "../../src/cli/cmd/github"
 
 test("parses https URL with .git suffix", () => {
-  expect(parseGitHubRemote("https://github.com/Clearlove7Zz/LGcode.git")).toEqual({ owner: "Clearlove7Zz", repo: "LGcode" })
+  expect(parseGitHubRemote("https://github.com/Clearlove7Zz/LoongCode.git")).toEqual({ owner: "Clearlove7Zz", repo: "LoongCode" })
 })
 
 test("parses https URL without .git suffix", () => {
-  expect(parseGitHubRemote("https://github.com/Clearlove7Zz/LGcode")).toEqual({ owner: "Clearlove7Zz", repo: "LGcode" })
+  expect(parseGitHubRemote("https://github.com/Clearlove7Zz/LoongCode")).toEqual({ owner: "Clearlove7Zz", repo: "LoongCode" })
 })
 
 test("parses git@ URL with .git suffix", () => {
-  expect(parseGitHubRemote("git@github.com:Clearlove7Zz/LGcode.git")).toEqual({ owner: "Clearlove7Zz", repo: "LGcode" })
+  expect(parseGitHubRemote("git@github.com:Clearlove7Zz/LoongCode.git")).toEqual({ owner: "Clearlove7Zz", repo: "LoongCode" })
 })
 
 test("parses git@ URL without .git suffix", () => {
-  expect(parseGitHubRemote("git@github.com:Clearlove7Zz/LGcode")).toEqual({ owner: "Clearlove7Zz", repo: "LGcode" })
+  expect(parseGitHubRemote("git@github.com:Clearlove7Zz/LoongCode")).toEqual({ owner: "Clearlove7Zz", repo: "LoongCode" })
 })
 
 test("parses ssh:// URL with .git suffix", () => {
-  expect(parseGitHubRemote("ssh://git@github.com/Clearlove7Zz/LGcode.git")).toEqual({ owner: "Clearlove7Zz", repo: "LGcode" })
+  expect(parseGitHubRemote("ssh://git@github.com/Clearlove7Zz/LoongCode.git")).toEqual({ owner: "Clearlove7Zz", repo: "LoongCode" })
 })
 
 test("parses ssh:// URL without .git suffix", () => {
-  expect(parseGitHubRemote("ssh://git@github.com/Clearlove7Zz/LGcode")).toEqual({ owner: "Clearlove7Zz", repo: "LGcode" })
+  expect(parseGitHubRemote("ssh://git@github.com/Clearlove7Zz/LoongCode")).toEqual({ owner: "Clearlove7Zz", repo: "LoongCode" })
 })
 
 test("parses git protocol URLs from package metadata", () => {

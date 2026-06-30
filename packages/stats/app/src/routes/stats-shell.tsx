@@ -14,7 +14,7 @@ export const headerLinks = [
   { href: "#geo-breakdown", label: "Geo Breakdown" },
 ] as const
 export const githubLink = {
-  href: "https://github.com/Clearlove7Zz/LGcode.git",
+  href: "https://github.com/Clearlove7Zz/LoongCode.git",
   apiHref: "https://api.github.com/repos/anomalyco/loongcode",
   label: "GitHub",
   fallbackStars: "150K",

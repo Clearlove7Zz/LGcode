@@ -1,11 +1,9 @@
-const stage = process.env.SST_STAGE || "dev"
-
 export default {
-  url: stage === "production" ? "https://modelhub.lgdg.cc" : `https://${stage}.loongcode.ai`,
-  console: stage === "production" ? "https://modelhub.lgdg.cc/auth" : `https://${stage}.loongcode.ai/auth`,
+  url: "https://modelhub.lgdg.cc",
+  console: "https://modelhub.lgdg.cc/auth",
   email: "help@anoma.ly",
   socialCard: "https://social-cards.sst.dev",
-  github: "https://github.com/Clearlove7Zz/LGcode",
+  github: "https://github.com/Clearlove7Zz/LoongCode",
   discord: "https://modelhub.lgdg.cc/discord",
   headerLinks: [
     { name: "app.header.home", url: "/" },
