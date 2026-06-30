@@ -61,7 +61,7 @@ jobs:
           LOONGCODE_BUMP: ${{ inputs.bump }}
           LOONGCODE_VERSION: ${{ inputs.version }}
           LOONGCODE_API_KEY: ${{ secrets.LOONGCODE_API_KEY }}
-          GH_REPO: ${{ (github.ref_name == 'beta' && 'anomalyco/loongcode-beta') || github.repository }}
+          GH_REPO: ${{ github.repository }}
     outputs:
       version: ${{ steps.version.outputs.version }}
       release: ${{ steps.version.outputs.release }}

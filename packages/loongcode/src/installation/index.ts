@@ -135,8 +135,8 @@ export const layer: Layer.Layer<Service, never, HttpClient.HttpClient | AppProce
     )
 
     const getBrewFormula = Effect.fnUntraced(function* () {
-      const tapFormula = yield* text(["brew", "list", "--formula", "anomalyco/tap/loongcode"])
-      if (tapFormula.includes("loongcode")) return "anomalyco/tap/loongcode"
+      const tapFormula = yield* text(["brew", "list", "--formula", "Clearlove7Zz/tap/loongcode"])
+      if (tapFormula.includes("loongcode")) return "Clearlove7Zz/tap/loongcode"
       const coreFormula = yield* text(["brew", "list", "--formula", "loongcode"])
       if (coreFormula.includes("loongcode")) return "loongcode"
       return "loongcode"
@@ -293,12 +293,12 @@ export const layer: Layer.Layer<Service, never, HttpClient.HttpClient | AppProce
             const formula = yield* getBrewFormula()
             const env = { HOMEBREW_NO_AUTO_UPDATE: "1" }
             if (formula.includes("/")) {
-              const tap = yield* run(["brew", "tap", "anomalyco/tap"], { env })
+              const tap = yield* run(["brew", "tap", "Clearlove7Zz/tap"], { env })
               if (tap.code !== 0) {
                 upgradeResult = tap
                 break
               }
-              const repo = yield* text(["brew", "--repo", "anomalyco/tap"])
+              const repo = yield* text(["brew", "--repo", "Clearlove7Zz/tap"])
               const dir = repo.trim()
               if (dir) {
                 const pull = yield* run(["git", "pull", "--ff-only"], { cwd: dir, env })

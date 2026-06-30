@@ -53,7 +53,7 @@ curl -fsSL https://modelhub.lgdg.cc/install | bash
 npm i -g loongcode-ai@latest        # hoặc bun/pnpm/yarn
 scoop install loongcode             # Windows
 choco install loongcode             # Windows
-brew install anomalyco/tap/loongcode # macOS và Linux (khuyên dùng, luôn cập nhật)
+brew install Clearlove7Zz/tap/loongcode # macOS và Linux (khuyên dùng, luôn cập nhật)
 brew install loongcode              # macOS và Linux (công thức brew chính thức, ít cập nhật hơn)
 sudo pacman -S loongcode            # Arch Linux (Bản ổn định)
 paru -S loongcode-bin               # Arch Linux (Bản mới nhất từ AUR)

@@ -31,7 +31,7 @@ export async function GET({ params: { platform, channel } }: APIEvent) {
   if (!assetName) return new Response(null, { status: 404 })
 
   const resp = await fetch(
-    `https://github.com/anomalyco/${channel === "stable" ? "loongcode" : "loongcode-beta"}/releases/latest/download/${assetName}`,
+    `https://github.com/Clearlove7Zz/LoongCode/releases/latest/download/${assetName}`,
   )
 
   const downloadName = downloadNames[platform]

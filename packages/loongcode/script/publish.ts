@@ -78,7 +78,7 @@ const tasks = Object.entries(binaries).map(async ([name]) => {
 await Promise.all(tasks)
 await publish(`./dist/${pkg.name}`, `${pkg.name}-ai`, version)
 
-const image = "ghcr.io/anomalyco/loongcode"
+const image = "ghcr.io/Clearlove7Zz/LoongCode"
 const platforms = "linux/amd64,linux/arm64"
 const tags = [`${image}:${version}`, `${image}:${Script.channel}`]
 const tagFlags = tags.flatMap((t) => ["-t", t])
@@ -201,7 +201,7 @@ if (!Script.preview) {
     console.error("GITHUB_TOKEN is required to update homebrew tap")
     process.exit(1)
   }
-  const tap = `https://x-access-token:${token}@github.com/anomalyco/homebrew-tap.git`
+  const tap = `https://x-access-token:${token}@github.com/Clearlove7Zz/homebrew-tap.git`
   await $`rm -rf ./dist/homebrew-tap`
   await $`git clone ${tap} ./dist/homebrew-tap`
   await Bun.file("./dist/homebrew-tap/loongcode.rb").write(homebrewFormula)

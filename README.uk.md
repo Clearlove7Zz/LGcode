@@ -53,7 +53,7 @@ curl -fsSL https://modelhub.lgdg.cc/install | bash
 npm i -g loongcode-ai@latest        # або bun/pnpm/yarn
 scoop install loongcode             # Windows
 choco install loongcode             # Windows
-brew install anomalyco/tap/loongcode # macOS і Linux (рекомендовано, завжди актуально)
+brew install Clearlove7Zz/tap/loongcode # macOS і Linux (рекомендовано, завжди актуально)
 brew install loongcode              # macOS і Linux (офіційна формула Homebrew, оновлюється рідше)
 sudo pacman -S loongcode            # Arch Linux (Stable)
 paru -S loongcode-bin               # Arch Linux (Latest from AUR)

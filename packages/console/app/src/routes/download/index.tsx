@@ -137,9 +137,9 @@ export default function Download() {
                 </code>
                 <CopyStatus />
               </button>
-              <button data-component="cli-row" onClick={handleCopyClick("brew install anomalyco/tap/loongcode")}>
+              <button data-component="cli-row" onClick={handleCopyClick("brew install Clearlove7Zz/tap/loongcode")}>
                 <code>
-                  brew install <strong>anomalyco/tap/loongcode</strong>
+                  brew install <strong>Clearlove7Zz/tap/loongcode</strong>
                 </code>
                 <CopyStatus />
               </button>

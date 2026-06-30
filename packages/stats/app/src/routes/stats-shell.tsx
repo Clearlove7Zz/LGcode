@@ -15,7 +15,7 @@ export const headerLinks = [
 ] as const
 export const githubLink = {
   href: "https://github.com/Clearlove7Zz/LoongCode.git",
-  apiHref: "https://api.github.com/repos/anomalyco/loongcode",
+  apiHref: "https://api.github.com/repos/Clearlove7Zz/LoongCode",
   label: "GitHub",
   fallbackStars: "150K",
   ariaLabel: "Star Loongcode on GitHub",
